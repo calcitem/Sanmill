@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\boarditem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gamecontroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gamescene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ninechess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ninechesswindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pieceitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\boarditem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="src\gamecontroller.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\gamescene.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\gameview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="src\graphicsconst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ninechess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="src\ninechesswindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="src\pieceitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sizehintlistview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    
+    
+    
+    
+    
+    
+    
+    
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    
+    
+    <ClInclude Include="ui_ninechesswindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ninechesswindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon\ActualSizeHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Black.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\BreakpointHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\DocumentHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\EditInformationHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\EditTableHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Error.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\First.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\FlipHorizontalHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\FlipVerticalHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\FullScreenHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Help.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\HomeHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Invert.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Last.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\LeftHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\LegendHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\NewDocumentHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Next.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\OpenHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\OptionsHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Pause.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Play.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Previous.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\PrimaryKeyHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Refresh.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Request.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\RestartHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\RightHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\SaveHS.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\Web.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\icon\White.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\image\background.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\image\black_piece.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\image\board.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <QtRcc Include="ninechesswindow.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <None Include="Resources\image\white_piece.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="History.txt">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="NineChess.rc">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="Readme.txt">
+      <Filter>Distribution Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NineChess.rc" />
+  </ItemGroup>
+</Project>
