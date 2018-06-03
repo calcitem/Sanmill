@@ -31,6 +31,7 @@ HEADERS  += \
     src\boarditem.h \
     src\gameview.h \
     src\ninechess.h \
+    src\sizehinttextedit.h \
     src\sizehintlistview.h \
     src\gamescene.h
 
@@ -41,8 +42,9 @@ RESOURCES += \
     ninechesswindow.qrc
 
 DISTFILES += \
-    Readme.txt \
     NineChess.rc \
+    Readme.md \
+    Licence.txt \
     History.txt
 
 RC_FILE += NineChess.rc

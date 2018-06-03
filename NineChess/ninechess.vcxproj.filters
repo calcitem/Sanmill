@@ -110,24 +110,17 @@
     <ClInclude Include="src\sizehintlistview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\sizehinttextedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    
-    
-    
-    
-    
-    
-    
-    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    
-    
     <ClInclude Include="ui_ninechesswindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>

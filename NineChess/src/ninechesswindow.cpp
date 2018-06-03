@@ -4,6 +4,7 @@
 #include "ninechesswindow.h"
 #include "gamecontroller.h"
 #include "gamescene.h"
+#include <QDesktopServices>
 #include <QMap>
 #include <QMessageBox>
 #include <QTimer>
@@ -84,11 +85,12 @@ NineChessWindow::~NineChessWindow()
 {
     if (game != NULL)
         delete game;
+    qDeleteAll(ruleActionList);
 }
 
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    // 重载这个函数只是为了让规则菜单显示提示
+    // 重载这个函数只是为了让规则菜单（动态）显示提示
     if (watched == ui.menu_R)
     {
         switch (event->type())
@@ -104,7 +106,7 @@ bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
             break;
         }
     }
-    QMainWindow::eventFilter(watched, event);
+    return QMainWindow::eventFilter(watched, event);
 }
 
 void NineChessWindow::initialize()
@@ -174,6 +176,10 @@ void NineChessWindow::initialize()
 
     // 重置游戏规则
     game->setRule(ruleNo);
+    // 规则提示
+    QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
+        .arg(tr(NineChess::RULES[ruleNo].info));
+    ui.tab_Rule->setPlainText(tip_Rule);
 }
 
 void NineChessWindow::actionRules_triggered()
@@ -188,6 +194,10 @@ void NineChessWindow::actionRules_triggered()
     ruleNo = action->data().toInt();
     // 重置游戏规则
     game->setRule(ruleNo);
+    // 规则提示
+    QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
+        .arg(tr(NineChess::RULES[ruleNo].info));
+    ui.tab_Rule->setPlainText(tip_Rule);
 }
 
 
@@ -279,10 +289,10 @@ void NineChessWindow::on_actionResign_R_triggered()
 void NineChessWindow::on_actionLimited_T_triggered()
 {
     /* 其实本来可以用设计器做个ui，然后从QDialog派生个自己的对话框
-     * 但我不想再派生新类了，又要多出一个类和两个文件
-     * 还要写与主窗口的接口，费劲
-     * 于是手写QDialog界面
-     */
+    * 但我不想再派生新类了，又要多出一个类和两个文件
+    * 还要写与主窗口的接口，费劲
+    * 于是手写QDialog界面
+    */
     int stepLimited = game->getStepsLimit();
     int timeLimited = game->getTimeLimit();
 
@@ -339,6 +349,10 @@ void NineChessWindow::on_actionLimited_T_triggered()
     if (dialog->exec() == QDialog::Accepted) {
         stepLimited = comboBox_step->currentData().toInt();
         timeLimited = comboBox_time->currentData().toInt();
+        // 选择当前规则
+        QAction *action = dynamic_cast<QAction *>(sender());
+        action->setChecked(true);
+        int ruleNo = action->data().toInt();
         // 重置游戏规则
         game->setRule(ruleNo, stepLimited, timeLimited);
     }
@@ -370,7 +384,7 @@ void NineChessWindow::on_actionViewHelp_V_triggered()
 
 void NineChessWindow::on_actionWeb_W_triggered()
 {
-
+    QDesktopServices::openUrl(QUrl("http://hy-tech.top"));
 }
 
 void NineChessWindow::on_actionAbout_A_triggered()

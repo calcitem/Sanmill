@@ -152,6 +152,7 @@ void GameController::setRule(int ruleNo)
         rule = NineChess::RULES[ruleNo];
     rule.maxSteps = stepsLimit;
     rule.maxTime = timeLimit;
+
     // 设置模型规则，重置游戏
     chess.setRule(&rule);
 
@@ -519,7 +520,7 @@ bool GameController::removePiece(QPointF pos)
 
 bool GameController::cleanForbidden()
 {
-    for each (PieceItem *p in pieceList)
+    foreach (PieceItem *p, pieceList)
     {
         if (p->isDeleted()) {
             pieceList.removeOne(p);

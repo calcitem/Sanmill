@@ -14,13 +14,14 @@
 const struct NineChess::Rule NineChess::RULES[RULENUM] = {
 {
     "成三棋",   // 成三棋
-    "双方各九颗子，开局依次摆子；\n"         // 规则说明
-    "凡出现三子相连，就提掉对手一子；\n"
-    "不能提对手的“三连”子，除非无子可提；\n"
-    "同时出现两个“三连”只能提一子；\n"
-    "摆完后依次走子，每次只能往相邻位置走一步；\n"
-    "把对手棋子提到少于3颗时胜利；\n"
-    "走棋阶段不能行动（被“闷”）算负。",
+    // 规则说明
+    "1. 双方各9颗子，开局依次摆子；\n"
+    "2. 凡出现三子相连，就提掉对手一子；\n"
+    "3. 不能提对手的“三连”子，除非无子可提；\n"
+    "4. 同时出现两个“三连”只能提一子；\n"
+    "5. 摆完后依次走子，每次只能往相邻位置走一步；\n"
+    "6. 把对手棋子提到少于3颗时胜利；\n"
+    "7. 走棋阶段不能行动（被“闷”）算负。",
     9,          // 双方各9子
     3,          // 赛点子数为3
     false,      // 没有斜线
@@ -36,11 +37,13 @@ const struct NineChess::Rule NineChess::RULES[RULENUM] = {
 },
 {
     "打三棋(12连棋)",           // 打三棋
-    "规则与成三棋基本相同，只是它用12颗子，并且有斜线；\n"    // 规则说明
-    "摆棋阶段被提子的位置不能再摆子，直到走棋阶段；\n"
-    "摆棋阶段，摆满棋盘算先手负；\n"
-    "走棋阶段，后摆棋的一方先走；\n"
-    "一步出现几个“三连”就可以提几个子。",
+    // 规则说明
+    "1. 双方各12颗子，棋盘有斜线；\n"
+    "2. 摆棋阶段被提子的位置不能再摆子，直到走棋阶段；\n"
+    "3. 摆棋阶段，摆满棋盘算先手负；\n"
+    "4. 走棋阶段，后摆棋的一方先走；\n"
+    "5. 一步出现几个“三连”就可以提几个子；\n"
+    "6. 其它规则与成三棋基本相同。",
     12,          // 双方各12子
     3,          // 赛点子数为3
     true,       // 有斜线
@@ -56,10 +59,11 @@ const struct NineChess::Rule NineChess::RULES[RULENUM] = {
 },
 {
     "九连棋",   // 九连棋
-    "规则与成三棋基本相同，只是它的棋子有序号，\n"    // 规则说明
-    "相同序号、位置的“三连”不能重复提子；\n"
-    "走棋阶段不能行动（被“闷”），则由对手继续走棋；\n"
-    "一步出现几个“三连”就可以提几个子。",
+    // 规则说明
+    "1. 规则与成三棋基本相同，只是它的棋子有序号，\n"
+    "2. 相同序号、位置的“三连”不能重复提子；\n"
+    "3. 走棋阶段不能行动（被“闷”），则由对手继续走棋；\n"
+    "4. 一步出现几个“三连”就可以提几个子。",
     9,          // 双方各9子
     3,          // 赛点子数为3
     false,      // 没有斜线
@@ -75,8 +79,8 @@ const struct NineChess::Rule NineChess::RULES[RULENUM] = {
 },
 {
     "莫里斯九子棋",      // 莫里斯九子棋
-    "规则与成三棋基本相同，只是在走子阶段，\n"         // 规则说明
-    "当一方仅剩3子时，他可以飞子到任意空位。",
+    // 规则说明
+    "规则与成三棋基本相同，只是在走子阶段，当一方仅剩3子时，他可以飞子到任意空位。",
     9,          // 双方各9子
     3,          // 赛点子数为3
     false,      // 没有斜线
@@ -820,7 +824,8 @@ bool NineChess::isSurrounded(int pos)
 {
     // 判断pos处的棋子是否被“闷”
     if ((turn == PLAYER1 && (player1_Remain > rule.numAtLest || !rule.canFly)) ||
-        (turn == PLAYER2 && (player2_Remain > rule.numAtLest || !rule.canFly))) {
+        (turn == PLAYER2 && (player2_Remain > rule.numAtLest || !rule.canFly)))
+    {
         int i, movePos;
         for (i = 0; i < 4; i++) {
             movePos = moveTable[pos][i];
@@ -846,6 +851,13 @@ bool NineChess::isAllSurrounded(enum Player ply)
     // 如果摆满
     if (player1_Remain + player2_Remain >= SEAT * RING)
         return true;
+    // 判断是否可以飞子
+    if ((turn == PLAYER1 && (player1_Remain <= rule.numAtLest && rule.canFly)) ||
+        (turn == PLAYER2 && (player2_Remain <= rule.numAtLest && rule.canFly)))
+    {
+        return false;
+    }
+    // 查询整个棋盘
     for (int i = 1; i <= RING; i++)
     {
         for (int j = 0; j < SEAT; j++)

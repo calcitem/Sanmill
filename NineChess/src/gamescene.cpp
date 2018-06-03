@@ -50,7 +50,7 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 
     // 取消其它棋子的选中状态
-    //for each (QGraphicsItem * item in selectedItems())
+    //foreach (QGraphicsItem * item, selectedItems())
     //{
     //    item->setSelected(false);
     //}
