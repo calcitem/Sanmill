@@ -2,6 +2,9 @@
 #define NINECHESSWINDOW_H
 
 #include <QtWidgets/QMainWindow>
+#include <QTextStream>
+#include <QStringListModel>
+#include <QFile>
 #include "ui_ninechesswindow.h"
 
 class GameScene;
@@ -29,6 +32,8 @@ private:
     QList <QAction *> ruleActionList;
     // 游戏的规则号，涉及菜单项和对话框，所以要有
     int ruleNo;
+    // 文件
+    QFile file;
 
 private slots:
     // 初始化

@@ -117,11 +117,17 @@ NineChess::~NineChess()
 {
 }
 
-bool NineChess::setData(const struct Rule *rule, int step, int flags, const char *boardsource,
+bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int flags, const char *boardsource,
     int p1_InHand, int p2_InHand, int num_NeedRemove)
 {
+    // 有效性判断
+    if (s < 0 || t < 0 || step < 0 || p1_InHand < 0 || p2_InHand < 0 || num_NeedRemove < 0)
+        return false;
+
     // 根据规则
     this->rule = *rule;
+    this->rule.maxSteps = s;
+    this->rule.maxTime = t;
     // 设置步数
     this->step = step;
     // 设置状态
@@ -286,13 +292,10 @@ bool NineChess::setData(const struct Rule *rule, int step, int flags, const char
 
     // 用时置零
     player1_MS = player2_MS = 0;
-    setTip();
-    return true;
-}
 
-bool NineChess::setRule(const struct Rule *rule)
-{
-    setData(rule);
+    // 提示
+    setTip();
+
     return true;
 }
 
@@ -315,15 +318,38 @@ bool NineChess::reset()
 
 bool NineChess::start()
 {
+    // 如果游戏已经开始，则返回false
+    if (phase == GAME_OPENING || phase == GAME_MID)
+        return false;
+
+    // 如果游戏结束，则重置游戏，进入未开始状态
     if (phase == GAME_OVER)
         reset();
-    update();
-    if (phase == GAME_NOTSTARTED)
+
+    // 如果游戏处于未开始状态
+    if (phase == GAME_NOTSTARTED) {
         phase = GAME_OPENING;
-    ftime(&startTimeb);
-    // 用时置零
-    player1_MS = player2_MS = 0;
-    return true;
+        // 启动计时器
+        ftime(&startTimeb);
+        // 计棋谱
+        cmdlist.clear();
+        int i;
+        for (i = 0; i < RULENUM; i++) {
+            if (strcmp(rule.name, RULES[i].name) == 0)
+                break;
+        }
+        if (sprintf(cmdline, "r%1d s%03d t%02d", i + 1, rule.maxSteps, rule.maxTime) > 0) {
+            cmdlist.push_back(string(cmdline));
+            return true;
+        }
+        else {
+            cmdline[0] = '\0';
+            return false;
+        }
+    }
+
+    // 其它情况
+    return false;
 }
 
 int NineChess::cp2pos(int c, int p)
@@ -366,6 +392,8 @@ bool NineChess::place(int c, int p)
             player2_InHand--;
             player2_Remain++;
         }
+        sprintf(cmdline, "(%1d,%1d)", c, p);
+        cmdlist.push_back(string(cmdline));
         posOfSelected = pos;
         step++;
         // 如果决出胜负
@@ -431,11 +459,14 @@ bool NineChess::place(int c, int p)
                 return false;
         }
         // 移子
+        sprintf(cmdline, "(%1d,%1d)->(%1d,%1d)", posOfSelected / RING, posOfSelected % RING + 1, c, p);
+        cmdlist.push_back(string(cmdline));
         board[pos] = board[posOfSelected];
         board[posOfSelected] = '\x00';
         posOfSelected = pos;
         step++;
         n = addMills(posOfSelected);
+
         // 中局阶段未成三
         if (n == 0) {
             // 进入选子状态
@@ -497,6 +528,8 @@ bool NineChess::remove(int c, int p)
         player2_Remain--;
     else if (turn == PLAYER2)
         player1_Remain--;
+    sprintf(cmdline, "-(%1d,%1d)", c, p);
+    cmdlist.push_back(string(cmdline));
     posOfSelected = 0;
     num_NeedRemove--;
     step++;
@@ -597,6 +630,40 @@ bool NineChess::choose(int c, int p)
     return false;
 }
 
+// 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小
+bool NineChess::command(const char *cmd)
+{
+    int r, s, t;
+    int c1, p1, c2, p2;
+
+    // 设置规则
+    if (sscanf(cmd, "r%d s%d t%d", &r, &s, &t) == 3) {
+        if (r <= 0 || r > RULENUM)
+            return false;
+        return setData(&NineChess::RULES[r - 1], s, t);
+    }
+
+    // 选子移动
+    else if (sscanf(cmd, "(%d,%d)->(%d,%d)", &c1, &p1, &c2, &p2) == 4) {
+        if (choose(c1, p1))
+            return place(c2, p2);
+        else
+            return false;
+    }
+
+    // 去子
+    else if (sscanf(cmd, "-(%d,%d)", &c1, &p1) == 2) {
+        return remove(c1, p1);
+    }
+
+    // 落子
+    else if (sscanf(cmd, "(%d,%d)", &c1, &p1) == 2) {
+        return place(c1, p1);
+    }
+
+    return false;
+}
+
 inline bool NineChess::update()
 {
     // 根据局面调整计时器
@@ -605,7 +672,7 @@ inline bool NineChess::update()
     case NineChess::GAME_OPENING:
     case NineChess::GAME_MID:
         ftime(&currentTimeb);
-        // 在时间更新时增添一套胜负判断的代码，以免频繁调用win()带来的效率问题
+        // 超时胜负判断
         if (turn == PLAYER1) {
             player1_MS = (long)(currentTimeb.time - startTimeb.time) * 1000
                 + (currentTimeb.millitm - startTimeb.millitm) - player2_MS;
@@ -650,8 +717,11 @@ bool NineChess::win()
     if (rule.maxTime > 0) {
         // 更新时间，判断胜负
         update();
-        if (winner != NOBODY)
+        if (winner != NOBODY) {
+            sprintf(cmdline, "Time over. Player%1d win!", winner == PLAYER1 ? 1 : 2);
+            cmdlist.push_back(string(cmdline));
             return true;
+        }
     }
 
     // 如果有步数限定
@@ -659,6 +729,8 @@ bool NineChess::win()
         if (step > rule.maxSteps) {
             winner = DRAW;
             phase = GAME_OVER;
+            sprintf(cmdline, "Steps over. In draw!");
+            cmdlist.push_back(string(cmdline));
             return true;
         }
     }
@@ -667,12 +739,16 @@ bool NineChess::win()
     if (player1_Remain + player1_InHand < rule.numAtLest) {
         winner = PLAYER2;
         phase = GAME_OVER;
+        sprintf(cmdline, "Player2 win!");
+        cmdlist.push_back(string(cmdline));
         return true;
     }
     // 如果玩家2子数小于赛点，则玩家1获胜
     else if (player2_Remain + player2_InHand < rule.numAtLest) {
         winner = PLAYER1;
         phase = GAME_OVER;
+        sprintf(cmdline, "Player1 win!");
+        cmdlist.push_back(string(cmdline));
         return true;
     }
     // 如果摆满了，根据规则判断胜负
@@ -680,12 +756,16 @@ bool NineChess::win()
         if (rule.isFullLose) {
             winner = PLAYER2;
             phase = GAME_OVER;
+            sprintf(cmdline, "Player2 win!");
+            cmdlist.push_back(string(cmdline));
             return true;
         }
         else
         {
             winner = DRAW;
             phase = GAME_OVER;
+            sprintf(cmdline, "Full. In draw!");
+            cmdlist.push_back(string(cmdline));
             return true;
         }
     }
@@ -696,6 +776,8 @@ bool NineChess::win()
         if (rule.isNoWayLose) {
             winner = (turn == PLAYER1) ? PLAYER2 : PLAYER1;
             phase = GAME_OVER;
+            sprintf(cmdline, "Surrounded. Player%1d win!", winner == PLAYER1 ? 1 : 2);
+            cmdlist.push_back(string(cmdline));
             return true;
         }
         // 否则让棋，由对手走
@@ -707,16 +789,6 @@ bool NineChess::win()
     }
 
     return false;
-}
-
-bool NineChess::command(const char *cmd)
-{
-    return true;
-}
-
-void NineChess::setCmdline()
-{
-
 }
 
 int NineChess::isInMills(int pos)

@@ -109,7 +109,7 @@
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
-      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB</Define>
+      <Define>_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
       <Include>$(Configuration)/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
@@ -161,7 +161,7 @@
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <OutputFile>$(OutDir)\NineChess.exe</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
     <Midl>
@@ -183,7 +183,7 @@
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
-      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB</Define>
+      <Define>_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_MULTIMEDIA_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</Define>
       <CompilerFlavor>msvc</CompilerFlavor>
       <Include>$(Configuration)/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>

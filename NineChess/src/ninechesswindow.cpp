@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QDialog>
+#include <QFileDialog>
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QComboBox>
@@ -35,14 +36,27 @@ NineChessWindow::NineChessWindow(QWidget *parent)
 
     // 设置场景
     scene = new GameScene(this);
+    // 初始化各个控件
+
     // 关联视图和场景
     ui.gameView->setScene(scene);
     // 视图反走样
     ui.gameView->setRenderHint(QPainter::Antialiasing, true);
-
-    // 初始化各个控件
     // 视图反锯齿
     ui.gameView->setRenderHint(QPainter::Antialiasing);
+
+    // 因功能限制，使部分功能不可用
+    ui.actionViewText_V->setDisabled(true);
+    ui.actionPrevious_B->setDisabled(true);
+    ui.actionNext_F->setDisabled(true);
+    ui.actionEnd_E->setDisabled(true);
+    ui.actionAutoRun_A->setDisabled(true);
+    ui.actionEngine_E->setDisabled(true);
+    ui.actionInternet_I->setDisabled(true);
+    ui.actionEngine1_T->setDisabled(true);
+    ui.actionEngine2_R->setDisabled(true);
+    ui.actionSetting_O->setDisabled(true);
+    ui.actionAnimation_A->setDisabled(true);
 
     // 关联既有动作信号和主窗口槽
     // 视图上下翻转
@@ -58,23 +72,6 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     connect(ui.actionTurnLeftt_L, &QAction::triggered,
         ui.gameView, &GameView::turnLeft);
 
-    // 因功能限制，使部分功能不可用
-    ui.actionNew_N->setDisabled(true);
-    ui.actionOpen_O->setDisabled(true);
-    ui.actionSave_S->setDisabled(true);
-    ui.actionSaveAs_A->setDisabled(true);
-    ui.actionViewText_V->setDisabled(true);
-    ui.actionPrevious_B->setDisabled(true);
-    ui.actionNext_F->setDisabled(true);
-    ui.actionEnd_E->setDisabled(true);
-    ui.actionAutoRun_A->setDisabled(true);
-    ui.actionEngine_E->setDisabled(true);
-    ui.actionInternet_I->setDisabled(true);
-    ui.actionEngine1_T->setDisabled(true);
-    ui.actionEngine2_R->setDisabled(true);
-    ui.actionSetting_O->setDisabled(true);
-    ui.actionAnimation_A->setDisabled(true);
-
     // 初始化游戏规则菜单
     ui.menu_R->installEventFilter(this);
     // 安装一次性定时器，执行初始化
@@ -86,6 +83,7 @@ NineChessWindow::~NineChessWindow()
     if (game != NULL)
         delete game;
     qDeleteAll(ruleActionList);
+    ;
 }
 
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
@@ -180,6 +178,9 @@ void NineChessWindow::initialize()
     QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
         .arg(tr(NineChess::RULES[ruleNo].info));
     ui.tab_Rule->setPlainText(tip_Rule);
+
+    // 关联列表视图和字符串列表模型
+    ui.tab_Manual->setModel(& game->manualListModel);
 }
 
 void NineChessWindow::actionRules_triggered()
@@ -208,7 +209,24 @@ void NineChessWindow::on_actionNew_N_triggered()
 
 void NineChessWindow::on_actionOpen_O_triggered()
 {
+    QString path = QFileDialog::getOpenFileName(this, "open", "../", "TXT(*.txt)");
+    if (path.isEmpty() == false)
+    {
+        //文件对象  
+        QFile file(path);
+        //打开文件,只读方式打开  
+        bool isok = file.open(QIODevice::ReadOnly);
+        if (isok = true)
+        {
 
+            //读文件  
+            QByteArray array = file.readAll();  
+            qDebug() << array;  
+
+        }
+        //文件关闭  
+        file.close();
+    }
 }
 
 void NineChessWindow::on_actionSave_S_triggered()

@@ -59,6 +59,7 @@ public:
         GAME_MID = 0x00000004,        // 中局（走棋）
         GAME_OVER = 0x00000008        // 结局
     };
+
     // 玩家标识,轮流状态,胜负标识
     enum Player {
         PLAYER1 = 0x00000010,         // 玩家1
@@ -66,6 +67,7 @@ public:
         DRAW = 0x00000040,            // 双方和棋
         NOBODY = 0x00000080           // 胜负未分
     };
+
     // 动作状态标识
     enum Actions {
         ACTION_CHOOSE = 0x00000100,   // 选子
@@ -88,15 +90,16 @@ public:
     ~NineChess();
     // 设置棋局状态和棋盘数据，用于初始化
     bool setData(const struct Rule *rule,
-                 int step = 0,   // 默认起始步数为0
-                 int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE | NOBODY, // 默认状态
-                 const char *boardsource = NULL,   // 默认空棋盘
-                 int p1_InHand = 12,     // 玩家1剩余未放置子数
-                 int p2_InHand = 12,     // 玩家2剩余未放置子数
-                 int num_NeedRemove = 0  // 尚待去除的子数
-            );
-    // 设置规则
-    bool setRule(const struct Rule *rule);
+        int s = 0,   // 限制步数
+        int t = 0,   // 限制时间
+        int step = 0,   // 默认起始步数为0
+        int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE | NOBODY, // 默认状态
+        const char *boardsource = NULL,   // 默认空棋盘
+        int p1_InHand = 12,     // 玩家1剩余未放置子数
+        int p2_InHand = 12,     // 玩家2剩余未放置子数
+        int num_NeedRemove = 0  // 尚待去除的子数
+    );
+
     // 获取棋局状态和棋盘数据
     void getData(struct Rule &rule, int &step, int &flags, const char *&boardsource, int &p1_InHand, int &p2_InHand, int &num_NeedRemove);
     // 获取当前规则
@@ -111,14 +114,18 @@ public:
     enum Actions getAction() { return action; }
     // 判断胜负
     enum Player whoWin() { return winner; }
-    // 获取当前招法
-    const char *getCmdline() { return cmdline; }
+    // 玩家1和玩家2的用时
+    void getPlayer_TimeMS(int &p1_ms, int &p2_ms);
     // 获取棋局的字符提示
     const string getTip() { return tip; }
     // 获取位置点棋子的归属人
     enum Player getWhosPiece(int c, int p);
     // 获取位置点棋子的序号
     int getPieceNum(int c, int p);
+    // 获取当前招法
+    const char *getCmdLine() { return cmdline; }
+    // 获得棋谱
+    const list<string> * getCmdList() { return &cmdlist; }
 
     // 玩家1剩余未放置子数
     int getPlayer1_InHand() { return player1_InHand; }
@@ -130,10 +137,8 @@ public:
     int getPlayer2_Remain() { return player2_Remain; }
     // 尚待去除的子数
     int getNum_NeedRemove() { return num_NeedRemove; }
-    // 玩家1和玩家2的用时
-    void getPlayer_TimeMS(int &p1_ms, int &p2_ms);
 
-    // 游戏清空
+    // 游戏重置
     bool reset();
     // 游戏开始
     bool start();
@@ -147,8 +152,6 @@ public:
     bool command(const char *cmd);
 
 protected:
-    // 设置当前招法的命令行指令，即一招棋谱
-    void setCmdline();
     // 判断棋盘pos处的棋子处于几个“三连”中
     int isInMills(int pos);
     // 判断玩家的所有棋子是否都处于“三连”状态
@@ -214,15 +217,15 @@ private:
      * 判断棋子是先手的用(board[i] & 0x10)
      * 判断棋子是后手的用(board[i] & 0x20)
      */
-    char board[(RING+2)*SEAT];
+    char board[(RING + 2)*SEAT];
     // 选中的棋子在board中的位置
     int posOfSelected;
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const char inBoard[(RING+2)*SEAT];
+    static const char inBoard[(RING + 2)*SEAT];
     // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
-    static char moveTable[(RING+2)*SEAT][4];
+    static char moveTable[(RING + 2)*SEAT][4];
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
-    static char millTable[(RING+2)*SEAT][3][2];
+    static char millTable[(RING + 2)*SEAT][3][2];
 
     /* 本打算用如下的结构体来表示“三连”
     struct Mill {
@@ -242,10 +245,10 @@ private:
 
     // 当前招法的命令行指令，即一招棋谱
     char cmdline[32];
+    // 棋谱
+    list <string> cmdlist;
     // 当前棋局的字符提示
     string tip;
-    // 招法不用结构体表示了，用int表示=原位置*256+新位置，落子没有原位置的计为0xff
-    short move;
 };
 
 #endif

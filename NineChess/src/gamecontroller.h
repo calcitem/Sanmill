@@ -12,6 +12,8 @@
 #include <QPointF>
 #include <QMap>
 #include <QList>
+#include <QTextStream>
+#include <QStringListModel>
 #include "gamescene.h"
 #include "ninechess.h"
 
@@ -28,6 +30,10 @@ public:
     const QMap <int, QStringList> getActions();
     int getTimeLimit() { return timeLimit; }
     int getStepsLimit() { return stepsLimit; }
+    // 文本流
+    QTextStream textStream;
+    // 棋谱字符串列表模型
+    QStringListModel manualListModel;
 
 signals:
     // 玩家1(先手）用时改变的信号
@@ -112,8 +118,7 @@ private:
     int time2;
     // 用于主窗口状态栏显示的字符串
     QString message;
-    // 文字棋谱
-    QStringList manual;
+
     // 各个音效文件路径
     QString soundNewgame;
     QString soundChoose;

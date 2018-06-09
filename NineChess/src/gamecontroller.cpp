@@ -69,8 +69,11 @@ const QMap<int, QStringList> GameController::getActions()
 
 void GameController::gameStart()
 {
+    chess.start();
     // 每隔100毫秒调用一次定时器处理函数
-    timeID = startTimer(100);
+    if (timeID == 0) {
+        timeID = startTimer(100);
+    }
 }
 
 void GameController::gameReset()
@@ -147,14 +150,11 @@ void GameController::setRule(int ruleNo)
     timeID = 0;
 
     // 更新规则，原限时和限步不变
-    struct NineChess::Rule rule;
-    if (ruleNo >= 0 && ruleNo < NineChess::RULENUM)
-        rule = NineChess::RULES[ruleNo];
-    rule.maxSteps = stepsLimit;
-    rule.maxTime = timeLimit;
-
+    // 更新规则，原限时和限步不变
+    if (ruleNo < 0 || ruleNo >= NineChess::RULENUM)
+        return;
     // 设置模型规则，重置游戏
-    chess.setRule(&rule);
+    chess.setData(&NineChess::RULES[ruleNo], stepsLimit, timeLimit);
 
     // 清除棋子
     qDeleteAll(pieceList);
@@ -193,13 +193,12 @@ void GameController::setRule(int ruleNo, int stepLimited, int timeLimited)
     timeID = 0;
 
     // 更新规则，原限时和限步不变
-    struct NineChess::Rule rule;
-    if (ruleNo >= 0 && ruleNo < NineChess::RULENUM)
-        rule = NineChess::RULES[ruleNo];
-    stepsLimit = rule.maxSteps = stepLimited;
-    timeLimit = rule.maxTime = timeLimited;
+    if (ruleNo < 0 || ruleNo >= NineChess::RULENUM)
+        return;
+    stepsLimit = stepLimited;
+    timeLimit = timeLimited;
     // 设置模型规则，重置游戏
-    chess.setRule(&rule);
+    chess.setData(&NineChess::RULES[ruleNo], stepsLimit, timeLimit);
 
     // 清除棋子
     qDeleteAll(pieceList);
@@ -329,7 +328,10 @@ bool GameController::actionPiece(QPointF pos)
     case NineChess::GAME_NOTSTARTED:
         // 如果未开局则开局，这里还要继续判断，不可break
         gameStart();
-        chess.start();
+        manualListModel.setStringList(QStringList());
+        manualListModel.insertRow(0);
+        manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
+
     case NineChess::GAME_OPENING:
         // 如果是开局阶段（轮流落下新子），落子
         if (chess.getAction() == NineChess::ACTION_PLACE) {
@@ -342,6 +344,7 @@ bool GameController::actionPiece(QPointF pos)
         if (chess.getPhase() == NineChess::GAME_MID && chess.getRule()->hasForbidden)
             cleanForbidden();
         break;
+
     case NineChess::GAME_MID:
         // 如果是中局阶段（轮流移子）
         // 选子
@@ -357,15 +360,28 @@ bool GameController::actionPiece(QPointF pos)
             result = removePiece(pos);
         }
         break;
-        // 如果是结局状态，不做任何响应
+
     default:
+        // 如果是结局状态，不做任何响应
         break;
     }
+
     if (result)
     {
-        if (chess.whoWin() != NineChess::NOBODY)
+        manualListModel.insertRow(manualListModel.rowCount());
+        int row = manualListModel.rowCount();
+        manualListModel.setData(manualListModel.index(row-1), chess.getCmdLine());
+        if (chess.whoWin() != NineChess::NOBODY) {
+            // 取胜时，会连续出2个命令行，需要将前一个插入
+            if (row < chess.getCmdList()->size()) {
+                manualListModel.insertRow(row-1);
+                auto i = (chess.getCmdList())->rbegin();
+                manualListModel.setData(manualListModel.index(row - 1), (*(++i)).c_str());
+            }
             playSound(soundWin);
+        }
     }
+
     return result;
 }
 
