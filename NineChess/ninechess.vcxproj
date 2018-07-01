@@ -240,7 +240,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_predefs.h;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CustomBuild>
-    <ClInclude Include="src\sizehinttextedit.h" />
     <ClInclude Include="ui_ninechesswindow.h" />
   </ItemGroup>
   <ItemGroup>

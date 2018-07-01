@@ -145,9 +145,9 @@ public:
     // 选子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool choose(int c, int p);
     // 落子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool place(int c, int p);
+    bool place(int c, int p, long time_p = -1);
     // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool remove(int c, int p);
+    bool remove(int c, int p, long time_p = -1);
     // 命令行解析函数
     bool command(const char *cmd);
 
@@ -165,7 +165,7 @@ protected:
     // 将第c圈，第p位转化为棋盘下标形式，c和p下标都从1开始
     int cp2pos(int c, int p);
     // 更新时间和状态，用内联函数以提高效率
-    inline bool update();
+    inline long update(long time_p = -1);
     // 是否分出胜负
     bool win();
     // 清除所有禁点

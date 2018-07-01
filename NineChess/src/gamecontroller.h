@@ -52,10 +52,8 @@ public slots:
     void setEditing(bool arg = true);
     // 设置黑白反转状态
     void setInvert(bool arg = true);
-    // 设置规则，不改变限时限步
-    void setRule(int ruleNo);
-    // 设置规则，改变限时限步
-    void setRule(int ruleNo, int stepLimited, int timeLimited);
+    // 设置规则
+    void setRule(int ruleNo, int stepLimited = -1, int timeLimited = -1);
     // 让电脑执先手
     void setEngine1(bool arg = true);
     // 让电脑执后手

@@ -141,7 +141,7 @@ void GameController::setInvert(bool arg)
     }
 }
 
-void GameController::setRule(int ruleNo)
+void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
     // 停止计时器
     if (timeID != 0)
@@ -150,9 +150,12 @@ void GameController::setRule(int ruleNo)
     timeID = 0;
 
     // 更新规则，原限时和限步不变
-    // 更新规则，原限时和限步不变
     if (ruleNo < 0 || ruleNo >= NineChess::RULENUM)
         return;
+    if (stepLimited != -1 && timeLimited != -1) {
+        stepsLimit = stepLimited;
+        timeLimit = timeLimited;
+    }
     // 设置模型规则，重置游戏
     chess.setData(&NineChess::RULES[ruleNo], stepsLimit, timeLimit);
 
@@ -177,50 +180,10 @@ void GameController::setRule(int ruleNo)
     QTime qtime = QTime(0, 0, 0, 0).addMSecs(time1);
     emit time1Changed(qtime.toString("mm:ss.zzz"));
     emit time2Changed(qtime.toString("mm:ss.zzz"));
-    // 发信号更新状态栏
-    message = QString::fromStdString(chess.getTip());
-    emit statusBarChanged(message);
-    // 播放音效
-    playSound(soundNewgame);
-}
-
-void GameController::setRule(int ruleNo, int stepLimited, int timeLimited)
-{
-    // 停止计时器
-    if (timeID != 0)
-        killTimer(timeID);
-    // 定时器ID为0
-    timeID = 0;
-
-    // 更新规则，原限时和限步不变
-    if (ruleNo < 0 || ruleNo >= NineChess::RULENUM)
-        return;
-    stepsLimit = stepLimited;
-    timeLimit = timeLimited;
-    // 设置模型规则，重置游戏
-    chess.setData(&NineChess::RULES[ruleNo], stepsLimit, timeLimit);
-
-    // 清除棋子
-    qDeleteAll(pieceList);
-    pieceList.clear();
-    piece = NULL;
-    // 重新绘制棋盘
-    scene.setDiagonal(chess.getRule()->hasObliqueLine);
-
-    // 如果规则不要求计时，则time1和time2表示已用时间
-    if (timeLimit <= 0) {
-        // 将玩家的已用时间清零
-        time1 = time2 = 0;
-    }
-    else
-    {
-        // 将玩家的剩余时间置为限定时间
-        time1 = time2 = timeLimit * 60000;
-    }
-    // 发出信号通知主窗口更新LCD显示
-    QTime qtime = QTime(0, 0, 0, 0).addMSecs(time1);
-    emit time1Changed(qtime.toString("mm:ss.zzz"));
-    emit time2Changed(qtime.toString("mm:ss.zzz"));
+    // 更新棋谱
+    manualListModel.removeRows(0, manualListModel.rowCount());
+    manualListModel.insertRow(0);
+    manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
     // 发信号更新状态栏
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
@@ -328,9 +291,6 @@ bool GameController::actionPiece(QPointF pos)
     case NineChess::GAME_NOTSTARTED:
         // 如果未开局则开局，这里还要继续判断，不可break
         gameStart();
-        manualListModel.setStringList(QStringList());
-        manualListModel.insertRow(0);
-        manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
 
     case NineChess::GAME_OPENING:
         // 如果是开局阶段（轮流落下新子），落子
@@ -353,7 +313,8 @@ bool GameController::actionPiece(QPointF pos)
         }// 移子
         else if (chess.getAction() == NineChess::ACTION_PLACE) {
             // 如果移子不成功，尝试重新选子
-            if (!movePiece(pos))
+            result = movePiece(pos);
+            if (!result)
                 result = choosePiece(pos);
         }// 去子
         else if (chess.getAction() == NineChess::ACTION_REMOVE) {
@@ -368,18 +329,16 @@ bool GameController::actionPiece(QPointF pos)
 
     if (result)
     {
-        manualListModel.insertRow(manualListModel.rowCount());
         int row = manualListModel.rowCount();
-        manualListModel.setData(manualListModel.index(row-1), chess.getCmdLine());
-        if (chess.whoWin() != NineChess::NOBODY) {
-            // 取胜时，会连续出2个命令行，需要将前一个插入
-            if (row < chess.getCmdList()->size()) {
-                manualListModel.insertRow(row-1);
-                auto i = (chess.getCmdList())->rbegin();
-                manualListModel.setData(manualListModel.index(row - 1), (*(++i)).c_str());
-            }
-            playSound(soundWin);
+        int size = chess.getCmdList()->size();
+        auto i = (chess.getCmdList())->rbegin();
+        // 输出命令行
+        for (int n = size - row; n > 0; n--) {
+            manualListModel.insertRow(row);
+            manualListModel.setData(manualListModel.index(row), (*(i++)).c_str());
         }
+        if (chess.whoWin() != NineChess::NOBODY)
+            playSound(soundWin);
     }
 
     return result;
@@ -536,7 +495,7 @@ bool GameController::removePiece(QPointF pos)
 
 bool GameController::cleanForbidden()
 {
-    foreach (PieceItem *p, pieceList)
+    foreach(PieceItem *p, pieceList)
     {
         if (p->isDeleted()) {
             pieceList.removeOne(p);

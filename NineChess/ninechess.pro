@@ -1,4 +1,4 @@
-#-------------------------------------------------
+﻿#-------------------------------------------------
 #
 # Project created by QtCreator 2015-11-03T22:30:34
 #
@@ -31,7 +31,6 @@ HEADERS  += \
     src\boarditem.h \
     src\gameview.h \
     src\ninechess.h \
-    src\sizehinttextedit.h \
     src\sizehintlistview.h \
     src\gamescene.h
 

@@ -379,53 +379,16 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="SizeHintListView" name="listView">
+           <property name="font">
+            <font>
+             <pointsize>7</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
         </layout>
-       </widget>
-       <widget class="QTabWidget" name="tabWidget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="tabPosition">
-         <enum>QTabWidget::South</enum>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="SizeHintTextEdit" name="tab_Rule">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <attribute name="title">
-          <string>规则</string>
-         </attribute>
-         <layout class="QFormLayout" name="formLayout"/>
-        </widget>
-        <widget class="SizeHintListView" name="tab_Manual">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>1</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <attribute name="title">
-          <string>棋谱</string>
-         </attribute>
-         <layout class="QFormLayout" name="formLayout"/>
-        </widget>
        </widget>
       </widget>
      </item>
@@ -854,11 +817,6 @@
    <class>SizeHintListView</class>
    <extends>QListView</extends>
    <header>sizehintlistview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>SizeHintTextEdit</class>
-   <extends>QPlainTextEdit</extends>
-   <header>sizehinttextedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>

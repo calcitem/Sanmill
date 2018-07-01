@@ -175,12 +175,11 @@ void NineChessWindow::initialize()
     // 重置游戏规则
     game->setRule(ruleNo);
     // 规则提示
-    QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
-        .arg(tr(NineChess::RULES[ruleNo].info));
-    ui.tab_Rule->setPlainText(tip_Rule);
+    //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
+    //    .arg(tr(NineChess::RULES[ruleNo].info));
 
     // 关联列表视图和字符串列表模型
-    ui.tab_Manual->setModel(& game->manualListModel);
+    ui.listView->setModel(& game->manualListModel);
 }
 
 void NineChessWindow::actionRules_triggered()
@@ -196,9 +195,8 @@ void NineChessWindow::actionRules_triggered()
     // 重置游戏规则
     game->setRule(ruleNo);
     // 规则提示
-    QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
-        .arg(tr(NineChess::RULES[ruleNo].info));
-    ui.tab_Rule->setPlainText(tip_Rule);
+    //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
+    //    .arg(tr(NineChess::RULES[ruleNo].info));
 }
 
 

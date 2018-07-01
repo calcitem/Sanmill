@@ -16,11 +16,22 @@ class SizeHintListView : public QListView
 {
 public:
     SizeHintListView(QWidget * parent = 0) {}
-    QSize sizeHint() const{
+    QSize sizeHint() const {
         QSize size = QListView::sizeHint();
         // 缺省宽度设为128，这样就不太宽了
         size.setWidth(128);
         return size;
+    }
+
+protected:
+    // 屏蔽掉双击编辑功能
+    void mouseDoubleClickEvent(QMouseEvent *event) {}
+    // 插入新行后自动选中最后一个
+    void rowsInserted(const QModelIndex &parent, int start, int end) {
+        QModelIndex id = model()->index(model()->rowCount()-1, 0);
+        setCurrentIndex(id);
+        update();
+        scrollToBottom();
     }
 };
 
