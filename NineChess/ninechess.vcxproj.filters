@@ -107,9 +107,6 @@
     <ClInclude Include="src\pieceitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sizehintlistview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -253,5 +250,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NineChess.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\sizehintlistview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

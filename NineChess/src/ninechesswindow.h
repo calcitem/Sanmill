@@ -54,10 +54,8 @@ private slots:
     //void on_actionTurnRight_R_triggered();
     //void on_actionTurnLeftt_L_triggered();
     void on_actionInvert_I_toggled(bool arg1);
-    void on_actionBegin_S_triggered();
-    void on_actionPrevious_B_triggered();
-    void on_actionNext_F_triggered();
-    void on_actionEnd_E_triggered();
+    // 前后招的公共槽
+    void on_actionRowChange();
     void on_actionAutoRun_A_toggled(bool arg1);
     void on_actionResign_R_triggered();
     void on_actionLimited_T_triggered();

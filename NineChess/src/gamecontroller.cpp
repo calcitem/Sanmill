@@ -105,6 +105,10 @@ void GameController::gameReset()
         // 将玩家的剩余时间置为限定时间
         time1 = time2 = timeLimit * 60000;
     }
+    // 更新棋谱
+    manualListModel.removeRows(0, manualListModel.rowCount());
+    manualListModel.insertRow(0);
+    manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
     // 发出信号通知主窗口更新LCD显示
     QTime qtime = QTime(0, 0, 0, 0).addMSecs(time1);
     emit time1Changed(qtime.toString("mm:ss.zzz"));
@@ -143,12 +147,6 @@ void GameController::setInvert(bool arg)
 
 void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
-    // 停止计时器
-    if (timeID != 0)
-        killTimer(timeID);
-    // 定时器ID为0
-    timeID = 0;
-
     // 更新规则，原限时和限步不变
     if (ruleNo < 0 || ruleNo >= NineChess::RULENUM)
         return;
@@ -159,36 +157,8 @@ void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimit
     // 设置模型规则，重置游戏
     chess.setData(&NineChess::RULES[ruleNo], stepsLimit, timeLimit);
 
-    // 清除棋子
-    qDeleteAll(pieceList);
-    pieceList.clear();
-    piece = NULL;
-    // 重新绘制棋盘
-    scene.setDiagonal(chess.getRule()->hasObliqueLine);
-
-    // 如果规则不要求计时，则time1和time2表示已用时间
-    if (timeLimit <= 0) {
-        // 将玩家的已用时间清零
-        time1 = time2 = 0;
-    }
-    else
-    {
-        // 将玩家的剩余时间置为限定时间
-        time1 = time2 = timeLimit * 60000;
-    }
-    // 发出信号通知主窗口更新LCD显示
-    QTime qtime = QTime(0, 0, 0, 0).addMSecs(time1);
-    emit time1Changed(qtime.toString("mm:ss.zzz"));
-    emit time2Changed(qtime.toString("mm:ss.zzz"));
-    // 更新棋谱
-    manualListModel.removeRows(0, manualListModel.rowCount());
-    manualListModel.insertRow(0);
-    manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
-    // 发信号更新状态栏
-    message = QString::fromStdString(chess.getTip());
-    emit statusBarChanged(message);
-    // 播放音效
-    playSound(soundNewgame);
+    // 重置游戏
+    gameReset();
 }
 
 void GameController::setEngine1(bool arg)
@@ -342,6 +312,11 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     return result;
+}
+
+// 历史局面
+void GameController::phaseChange(const QModelIndex &index)
+{
 }
 
 // 选子

@@ -11,9 +11,12 @@
 #define SIZEHINTLISTVIEW
 
 #include <QListView>
+#include <QDebug>
 
 class SizeHintListView : public QListView
 {
+    Q_OBJECT
+
 public:
     SizeHintListView(QWidget * parent = 0) {}
     QSize sizeHint() const {
@@ -23,15 +26,26 @@ public:
         return size;
     }
 
+signals:
+    // 需要一个currentChanged信号，但默认没有，需要把这个槽改造成信号
+    void currentChangedSignal(const QModelIndex &current, const QModelIndex &previous);
+
 protected:
     // 屏蔽掉双击编辑功能
     void mouseDoubleClickEvent(QMouseEvent *event) {}
     // 插入新行后自动选中最后一个
     void rowsInserted(const QModelIndex &parent, int start, int end) {
-        QModelIndex id = model()->index(model()->rowCount()-1, 0);
+        // 调用父类函数，为使滚动条更新，否则scrollToBottom不能正确执行。
+        QListView::rowsInserted(parent, start, end);
+        QModelIndex id = model()->index(end, 0);
         setCurrentIndex(id);
-        update();
         scrollToBottom();
+    }
+    // 需要一个currentChanged信号，但默认没有，需要把这个槽改造成信号
+    // activated信号需要按下回车才发出，selectedChanged和clicked信号也不合适
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+        QListView::currentChanged(current, previous);
+        emit currentChangedSignal(current, previous);
     }
 };
 

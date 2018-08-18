@@ -47,9 +47,6 @@ NineChessWindow::NineChessWindow(QWidget *parent)
 
     // 因功能限制，使部分功能不可用
     ui.actionViewText_V->setDisabled(true);
-    ui.actionPrevious_B->setDisabled(true);
-    ui.actionNext_F->setDisabled(true);
-    ui.actionEnd_E->setDisabled(true);
     ui.actionAutoRun_A->setDisabled(true);
     ui.actionEngine_E->setDisabled(true);
     ui.actionInternet_I->setDisabled(true);
@@ -74,6 +71,7 @@ NineChessWindow::NineChessWindow(QWidget *parent)
 
     // 初始化游戏规则菜单
     ui.menu_R->installEventFilter(this);
+
     // 安装一次性定时器，执行初始化
     QTimer::singleShot(0, this, SLOT(initialize()));
 }
@@ -144,10 +142,13 @@ void NineChessWindow::initialize()
         game, SLOT(setSound(bool)));
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
         game, SLOT(setAnimation(bool)));
+    connect(ui.listView, SIGNAL(activated(const QModelIndex &index)),
+        game, SLOT(phaseChange(const QModelIndex &index)));
 
-    // 关联控制器的信号和主窗口控件的槽
-    // 注意，采用信号和槽而非采用在GameController中直接控制NineChessWindow
-    // 是MVC模型中控制器与视图相分离的方式，有利于程序梳理
+    /* 关联控制器的信号和主窗口控件的槽
+       注意，采用信号和槽而非采用在GameController中直接控制NineChessWindow
+       是MVC模型中控制器与视图相分离的方式，有利于程序梳理 */
+
     // 更新LCD1，显示玩家1用时
     connect(game, SIGNAL(time1Changed(QString)),
         ui.lcdNumber_1, SLOT(display(QString)));
@@ -180,6 +181,24 @@ void NineChessWindow::initialize()
 
     // 关联列表视图和字符串列表模型
     ui.listView->setModel(& game->manualListModel);
+    // 因为QListView的rowsInserted在setModel之后才能启动，
+    // 第一次需手动初始化选中listView第一项
+    qDebug() << ui.listView->model();
+    ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
+    // 初始局面、前一步、后一步、最终局面的槽
+    connect(ui.actionBegin_S, &QAction::triggered,
+        this, &NineChessWindow::on_actionRowChange);
+    connect(ui.actionPrevious_B, &QAction::triggered,
+        this, &NineChessWindow::on_actionRowChange);
+    connect(ui.actionNext_F, &QAction::triggered,
+        this, &NineChessWindow::on_actionRowChange);
+    connect(ui.actionEnd_E, &QAction::triggered,
+        this, &NineChessWindow::on_actionRowChange);
+    // 手动在listView里选择招法后更新的槽
+    connect(ui.listView, &SizeHintListView::currentChangedSignal,
+        this, &NineChessWindow::on_actionRowChange);
+    // 更新四个键的状态
+    on_actionRowChange();
 }
 
 void NineChessWindow::actionRules_triggered()
@@ -270,26 +289,48 @@ void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
     game->setInvert(arg1);
 }
 
-void NineChessWindow::on_actionBegin_S_triggered()
+// 前后招的公共槽
+void NineChessWindow::on_actionRowChange()
 {
-    if (game == NULL)
-        return;
-    game->gameReset();
-}
+    QModelIndex index = ui.listView->currentIndex();
+    int row = index.row();
 
-void NineChessWindow::on_actionPrevious_B_triggered()
-{
+    QObject * const obsender = this->sender();
+    if (obsender != NULL) {
+        if (obsender == (QObject *)ui.actionBegin_S) {
+            ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
+        }
+        else if (obsender == (QObject *)ui.actionPrevious_B) {
+            if (row > 0) {
+                ui.listView->setCurrentIndex(ui.listView->model()->index(row - 1, 0));
+            }
+        }
+        else if (obsender == (QObject *)ui.actionNext_F) {
+            if (row < ui.listView->model()->rowCount() - 1) {
+                ui.listView->setCurrentIndex(ui.listView->model()->index(row + 1, 0));
+            }
+        }
+        else if (obsender == (QObject *)ui.actionEnd_E) {
+            ui.listView->setCurrentIndex(ui.listView->model()->index(ui.listView->model()->rowCount() - 1, 0));
+        }
 
-}
+    }
 
-void NineChessWindow::on_actionNext_F_triggered()
-{
-
-}
-
-void NineChessWindow::on_actionEnd_E_triggered()
-{
-
+    index = ui.listView->currentIndex();
+    row = index.row();
+    ui.actionBegin_S->setEnabled(true);
+    ui.actionPrevious_B->setEnabled(true);
+    ui.actionNext_F->setEnabled(true);
+    ui.actionEnd_E->setEnabled(true);
+    if (row <= 0) {
+        ui.actionBegin_S->setEnabled(false);
+        ui.actionPrevious_B->setEnabled(false);
+    }
+    if (row >= ui.listView->model()->rowCount()-1)
+    {
+        ui.actionNext_F->setEnabled(false);
+        ui.actionEnd_E->setEnabled(false);
+    }
 }
 
 void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)

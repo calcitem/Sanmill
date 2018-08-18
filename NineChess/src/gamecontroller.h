@@ -14,6 +14,7 @@
 #include <QList>
 #include <QTextStream>
 #include <QStringListModel>
+#include <QModelIndex>
 #include "gamescene.h"
 #include "ninechess.h"
 
@@ -64,8 +65,10 @@ public slots:
     void setSound(bool arg = true);
     // 播放声音
     void playSound(QString &soundPath);
-    // 槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
+    // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
+    // 历史局面
+    void phaseChange(const QModelIndex &index);
 
 protected:
     bool eventFilter(QObject * watched, QEvent * event);
