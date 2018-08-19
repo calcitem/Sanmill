@@ -1,9 +1,6 @@
 ﻿#if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
 #endif
-#include "ninechesswindow.h"
-#include "gamecontroller.h"
-#include "gamescene.h"
 #include <QDesktopServices>
 #include <QMap>
 #include <QMessageBox>
@@ -19,6 +16,10 @@
 #include <QHelpEvent>
 #include <QToolTip>
 #include <QDebug>
+#include "ninechesswindow.h"
+#include "gamecontroller.h"
+#include "gamescene.h"
+#include "graphicsconst.h"
 
 NineChessWindow::NineChessWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -36,6 +37,9 @@ NineChessWindow::NineChessWindow(QWidget *parent)
 
     // 设置场景
     scene = new GameScene(this);
+    // 设置场景尺寸大小为棋盘大小的1.08倍
+    scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54, BOARD_SIZE*1.08, BOARD_SIZE*1.08);
+
     // 初始化各个控件
 
     // 关联视图和场景
@@ -81,7 +85,6 @@ NineChessWindow::~NineChessWindow()
     if (game != NULL)
         delete game;
     qDeleteAll(ruleActionList);
-    ;
 }
 
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
@@ -142,8 +145,6 @@ void NineChessWindow::initialize()
         game, SLOT(setSound(bool)));
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
         game, SLOT(setAnimation(bool)));
-    connect(ui.listView, SIGNAL(activated(const QModelIndex &index)),
-        game, SLOT(phaseChange(const QModelIndex &index)));
 
     /* 关联控制器的信号和主窗口控件的槽
        注意，采用信号和槽而非采用在GameController中直接控制NineChessWindow
@@ -169,15 +170,12 @@ void NineChessWindow::initialize()
 
     // 默认第2号规则
     ruleNo = 2;
-
     // 设置选中当前规则的菜单项
     ruleActionList.at(ruleNo)->setChecked(true);
-
     // 重置游戏规则
     game->setRule(ruleNo);
-    // 规则提示
-    //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
-    //    .arg(tr(NineChess::RULES[ruleNo].info));
+    // 更新规则显示
+    ruleInfo();
 
     // 关联列表视图和字符串列表模型
     ui.listView->setModel(& game->manualListModel);
@@ -201,11 +199,33 @@ void NineChessWindow::initialize()
     on_actionRowChange();
 }
 
+void NineChessWindow::ruleInfo()
+{
+    int s = game->getStepsLimit();
+    int t = game->getTimeLimit();
+    QString tl(" 不限时");
+    QString sl(" 不限步");
+    if (s > 0)
+        sl = " 限" + QString::number(s) + "步";
+    if (t > 0)
+        tl = " 限时" + QString::number(s) + "分";
+
+    // 规则显示
+    ui.labelRule->setText(tl + sl);
+    // 规则提示
+    ui.labelInfo->setToolTip(QString(NineChess::RULES[ruleNo].name) + "\n" + 
+        NineChess::RULES[ruleNo].info);
+    ui.labelRule->setToolTip(ui.labelInfo->toolTip());
+
+    //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
+    //    .arg(tr(NineChess::RULES[ruleNo].info));
+}
+
 void NineChessWindow::actionRules_triggered()
 {
     // setChecked函数会发出toggled信号，在这里响应toggled信号会陷入死循环
     // 取消其它规则的选择
-    foreach(QAction *action, ruleActionList)
+    for(QAction *action: ruleActionList)
         action->setChecked(false);
     // 选择当前规则
     QAction *action = dynamic_cast<QAction *>(sender());
@@ -213,9 +233,8 @@ void NineChessWindow::actionRules_triggered()
     ruleNo = action->data().toInt();
     // 重置游戏规则
     game->setRule(ruleNo);
-    // 规则提示
-    //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
-    //    .arg(tr(NineChess::RULES[ruleNo].info));
+    // 更新规则显示
+    ruleInfo();
 }
 
 
@@ -292,45 +311,56 @@ void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
 // 前后招的公共槽
 void NineChessWindow::on_actionRowChange()
 {
-    QModelIndex index = ui.listView->currentIndex();
-    int row = index.row();
+    QAbstractItemModel * model = ui.listView->model();
+    int rows = model->rowCount();
+    int currentRow = ui.listView->currentIndex().row();
 
-    QObject * const obsender = this->sender();
+    QObject * const obsender = sender();
     if (obsender != NULL) {
         if (obsender == (QObject *)ui.actionBegin_S) {
-            ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
+            ui.listView->setCurrentIndex(model->index(0, 0));
         }
         else if (obsender == (QObject *)ui.actionPrevious_B) {
-            if (row > 0) {
-                ui.listView->setCurrentIndex(ui.listView->model()->index(row - 1, 0));
+            if (currentRow > 0) {
+                ui.listView->setCurrentIndex(model->index(currentRow - 1, 0));
             }
         }
         else if (obsender == (QObject *)ui.actionNext_F) {
-            if (row < ui.listView->model()->rowCount() - 1) {
-                ui.listView->setCurrentIndex(ui.listView->model()->index(row + 1, 0));
+            if (currentRow < rows - 1) {
+                ui.listView->setCurrentIndex(model->index(currentRow + 1, 0));
             }
         }
         else if (obsender == (QObject *)ui.actionEnd_E) {
-            ui.listView->setCurrentIndex(ui.listView->model()->index(ui.listView->model()->rowCount() - 1, 0));
+            ui.listView->setCurrentIndex(model->index(rows - 1, 0));
         }
-
+        currentRow = ui.listView->currentIndex().row();
     }
 
-    index = ui.listView->currentIndex();
-    row = index.row();
-    ui.actionBegin_S->setEnabled(true);
-    ui.actionPrevious_B->setEnabled(true);
-    ui.actionNext_F->setEnabled(true);
-    ui.actionEnd_E->setEnabled(true);
-    if (row <= 0) {
+    // 更新动作状态
+    if (rows <= 1) {
         ui.actionBegin_S->setEnabled(false);
         ui.actionPrevious_B->setEnabled(false);
-    }
-    if (row >= ui.listView->model()->rowCount()-1)
-    {
         ui.actionNext_F->setEnabled(false);
         ui.actionEnd_E->setEnabled(false);
     }
+    else {
+        if (currentRow <= 0) {
+            ui.actionBegin_S->setEnabled(false);
+            ui.actionPrevious_B->setEnabled(false);
+            ui.actionNext_F->setEnabled(true);
+            ui.actionEnd_E->setEnabled(true);
+        }
+        if (currentRow >= rows - 1)
+        {
+            ui.actionBegin_S->setEnabled(true);
+            ui.actionPrevious_B->setEnabled(true);
+            ui.actionNext_F->setEnabled(false);
+            ui.actionEnd_E->setEnabled(false);
+        }
+    }
+
+    // 更新局面
+    game->phaseChange(currentRow);
 }
 
 void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
@@ -413,6 +443,10 @@ void NineChessWindow::on_actionLimited_T_triggered()
         // 重置游戏规则
         game->setRule(ruleNo, stepLimited, timeLimited);
     }
+
+    // 更新规则显示
+    ruleInfo();
+
     // 删除对话框，子控件会一并删除
     delete dialog;
 }

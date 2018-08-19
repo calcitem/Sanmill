@@ -15,8 +15,9 @@
 #include <QTextStream>
 #include <QStringListModel>
 #include <QModelIndex>
-#include "gamescene.h"
 #include "ninechess.h"
+#include "gamescene.h"
+//#include "sizehintlistview.h"
 
 class PieceItem;
 
@@ -29,6 +30,7 @@ public:
     ~GameController();
     //主窗口菜单栏明细
     const QMap <int, QStringList> getActions();
+    int getRuleNo() { return ruleNo; }
     int getTimeLimit() { return timeLimit; }
     int getStepsLimit() { return stepsLimit; }
     // 文本流
@@ -45,6 +47,8 @@ signals:
     void statusBarChanged(const QString & message);
 
 public slots:
+    // 设置规则
+    void setRule(int ruleNo, int stepLimited = -1, int timeLimited = -1);
     // 游戏开始
     void gameStart();
     // 游戏重置
@@ -53,8 +57,6 @@ public slots:
     void setEditing(bool arg = true);
     // 设置黑白反转状态
     void setInvert(bool arg = true);
-    // 设置规则
-    void setRule(int ruleNo, int stepLimited = -1, int timeLimited = -1);
     // 让电脑执先手
     void setEngine1(bool arg = true);
     // 让电脑执后手
@@ -67,11 +69,12 @@ public slots:
     void playSound(QString &soundPath);
     // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
-    // 历史局面
-    void phaseChange(const QModelIndex &index);
+    // 历史局面及局面改变
+    void phaseChange(int row, bool change = false);
 
 protected:
     bool eventFilter(QObject * watched, QEvent * event);
+    // 定时器
     void timerEvent(QTimerEvent * event);
     // 选子
     PieceItem *choosePiece(QPointF pos);
@@ -83,12 +86,18 @@ protected:
     bool removePiece(QPointF pos);
     // 删除禁止点子
     bool cleanForbidden();
+    // 更新棋局显示
+    bool updateScence(NineChess &chess);
 
 private:
     // 棋对象的数据模型
     NineChess chess;
+    // 棋对象的数据模型（临时）
+    NineChess chessTemp;
     // 棋局的场景类
     GameScene &scene;
+    // 棋谱列表
+    //SizeHintListView &listView;
     // 所有棋子
     QList<PieceItem *> pieceList;
     // 当前棋子
@@ -109,6 +118,8 @@ private:
     bool hasSound;
     // 定时器ID
     int timeID;
+    // 规则变化
+    int ruleNo;
     // 规则限时（分钟）
     int timeLimit;
     // 规则限步数

@@ -34,6 +34,8 @@ private:
     int ruleNo;
     // 文件
     QFile file;
+    // 更新规则标签
+    void ruleInfo();
 
 private slots:
     // 初始化

@@ -130,7 +130,9 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
     this->rule.maxTime = t;
     // 设置步数
     this->step = step;
+
     // 设置状态
+
     // 局面阶段标识
     if (flags & GAME_NOTSTARTED)
         phase = GAME_NOTSTARTED;
@@ -327,9 +329,72 @@ void NineChess::getData(struct Rule &rule, int &step, int &chess, const char *&b
     num_NeedRemove = this->num_NeedRemove;
 }
 
+const char * NineChess::getBoard()
+{
+    return board;
+}
+
 bool NineChess::reset()
 {
-    return setData(&rule);
+    if (phase == GAME_NOTSTARTED && player1_MS == player2_MS == 0)
+        return true;
+
+    // 步数归零
+    step = 0;
+
+    // 局面阶段标识
+    phase = GAME_NOTSTARTED;
+
+    // 轮流状态标识
+    turn = PLAYER1;
+
+    // 动作状态标识
+    action = ACTION_PLACE;
+
+    // 胜负标识
+    winner = NOBODY;
+
+    // 当前棋局（3×8）
+    memset(board, 0, sizeof(board));
+
+    // 盘面子数归零
+    player1_Remain = player2_Remain = 0;
+
+    // 设置玩家盘面剩余子数和未放置子数
+    player1_InHand = player2_InHand = rule.numOfChess;
+
+    // 设置去子状态时的剩余尚待去除子数
+    num_NeedRemove = 0;
+
+    // 清空成三记录
+    millList.clear();
+
+    // 不选中棋子
+    posOfSelected = 0;
+
+    // 用时置零
+    player1_MS = player2_MS = 0;
+
+    // 提示
+    setTip();
+
+    // 计棋谱
+    cmdlist.clear();
+    int i;
+    for (i = 0; i < RULENUM; i++) {
+        if (strcmp(this->rule.name, RULES[i].name) == 0)
+            break;
+    }
+    if (sprintf(cmdline, "r%1u s%03u t%02u", i + 1, rule.maxSteps, rule.maxTime) > 0) {
+        cmdlist.push_back(string(cmdline));
+        return true;
+    }
+    else {
+        cmdline[0] = '\0';
+        return false;
+    }
+
+    return true;
 }
 
 bool NineChess::start()
@@ -362,9 +427,13 @@ int NineChess::cp2pos(int c, int p)
 
 bool NineChess::place(int c, int p, long time_p /* = -1*/)
 {
-    // 如果局面为"未开局"或“结局”，返回false
-    if (phase == GAME_NOTSTARTED || phase == GAME_OVER)
+    // 如果局面为“结局”，返回false
+    if (phase == GAME_OVER)
         return false;
+    // 如果局面为“未开局”，则开具
+    if (phase == GAME_NOTSTARTED)
+        start();
+
     // 如非“落子”状态，返回false
     if (action != ACTION_PLACE)
         return false;

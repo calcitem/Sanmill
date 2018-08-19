@@ -1,4 +1,4 @@
-#include "gamescene.h"
+﻿#include "gamescene.h"
 #include "pieceitem.h"
 #include "boarditem.h"
 #include <QGraphicsItem>
@@ -50,7 +50,7 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 
     // 取消其它棋子的选中状态
-    //foreach (QGraphicsItem * item, selectedItems())
+    //for (QGraphicsItem * item: selectedItems())
     //{
     //    item->setSelected(false);
     //}
@@ -81,12 +81,17 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 }
 
+QPointF GameScene::cp2pos(int c, int p)
+{
+    return board->cp2pos(c, p);
+}
+
 bool GameScene::pos2cp(QPointF pos, int &c, int &p)
 {
     return board->pos2cp(pos, c, p);
 }
 
-void GameScene::setDiagonal(bool arg)
+void GameScene::setDiagonal(bool arg /*= true*/)
 {
     if (board)
         board->setDiagonal(arg);

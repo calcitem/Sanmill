@@ -30,10 +30,14 @@ signals:
     // 需要一个currentChanged信号，但默认没有，需要把这个槽改造成信号
     void currentChangedSignal(const QModelIndex &current, const QModelIndex &previous);
 
-protected:
+protected slots:
     // 屏蔽掉双击编辑功能
     void mouseDoubleClickEvent(QMouseEvent *event) {}
-    // 插入新行后自动选中最后一个
+
+    /* 本来重载rowsInserted函数用于在插入新行后自动选中最后一行，
+    但是，在关联Model的insertRow执行后rowsInserted会被立即执行，
+    此时，Model的setData还未被执行，会选中一个空行。
+    所以不再采用这种方式，而是在控制模块中指定。
     void rowsInserted(const QModelIndex &parent, int start, int end) {
         // 调用父类函数，为使滚动条更新，否则scrollToBottom不能正确执行。
         QListView::rowsInserted(parent, start, end);
@@ -41,6 +45,21 @@ protected:
         setCurrentIndex(id);
         scrollToBottom();
     }
+    */
+
+    // 采用判断最后一个元素是否改变来选中之
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
+        const QVector<int> &roles = QVector<int>()) {
+        QAbstractItemView::dataChanged(topLeft, bottomRight, roles);
+        QModelIndex index = model()->index(model()->rowCount() - 1, 0);
+        if (topLeft == bottomRight) {
+            if (index == bottomRight) {
+                setCurrentIndex(index);
+                scrollToBottom();
+            }
+        }
+    }
+
     // 需要一个currentChanged信号，但默认没有，需要把这个槽改造成信号
     // activated信号需要按下回车才发出，selectedChanged和clicked信号也不合适
     void currentChanged(const QModelIndex &current, const QModelIndex &previous) {

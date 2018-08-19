@@ -243,6 +243,11 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -258,14 +263,14 @@
             <widget class="QLabel" name="label1">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>2</horstretch>
+               <horstretch>3</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="font">
               <font>
                <family>微软雅黑</family>
-               <pointsize>10</pointsize>
+               <pointsize>9</pointsize>
               </font>
              </property>
              <property name="text">
@@ -319,6 +324,11 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -334,14 +344,14 @@
             <widget class="QLabel" name="label2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>2</horstretch>
+               <horstretch>3</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="font">
               <font>
                <family>微软雅黑</family>
-               <pointsize>10</pointsize>
+               <pointsize>9</pointsize>
               </font>
              </property>
              <property name="text">
@@ -378,6 +388,45 @@
             <number>0</number>
            </property>
           </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="labelInfo">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="ninechesswindow.qrc">:/icon/Resources/icon/Help.png</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelRule">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>8</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>AmdtSymbols</family>
+               <pointsize>7</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>rule</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="SizeHintListView" name="listView">

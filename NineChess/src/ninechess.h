@@ -102,6 +102,8 @@ public:
 
     // 获取棋局状态和棋盘数据
     void getData(struct Rule &rule, int &step, int &flags, const char *&boardsource, int &p1_InHand, int &p2_InHand, int &num_NeedRemove);
+    // 获取棋盘数据
+    const char *getBoard();
     // 获取当前规则
     const struct Rule *getRule() { return &rule; }
     // 获取当前步数

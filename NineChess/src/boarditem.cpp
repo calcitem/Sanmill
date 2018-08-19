@@ -109,6 +109,11 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     return nearestPos;
 }
 
+QPointF BoardItem::cp2pos(int c, int p)
+{
+    return position[(c-1)*SEAT+p-1];
+}
+
 bool BoardItem::pos2cp(QPointF pos, int &c, int &p)
 {
     // 寻找最近的落子点

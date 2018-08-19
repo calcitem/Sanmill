@@ -20,6 +20,8 @@ public:
     void setDiagonal(bool arg = true);
     // 返回最近的落子点
     QPointF nearestPosition(QPointF const pos);
+    // 将模型的圈、位转化为落子点坐标
+    QPointF cp2pos(int c, int p);
     // 将落子点坐标转化为模型用的圈、位
     bool pos2cp(QPointF pos, int &c, int &p);
 
