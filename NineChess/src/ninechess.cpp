@@ -290,7 +290,7 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
     millList.clear();
 
     // 不选中棋子
-    posOfSelected = 0;
+    currentPos = 0;
 
     // 用时置零
     player1_MS = player2_MS = 0;
@@ -370,7 +370,7 @@ bool NineChess::reset()
     millList.clear();
 
     // 不选中棋子
-    posOfSelected = 0;
+    currentPos = 0;
 
     // 用时置零
     player1_MS = player2_MS = 0;
@@ -467,7 +467,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u", c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
-        posOfSelected = pos;
+        currentPos = pos;
         step++;
         // 如果决出胜负
         if (win()) {
@@ -475,7 +475,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
             return true;
         }
 
-        n = addMills(posOfSelected);
+        n = addMills(currentPos);
         // 开局阶段未成三
         if (n == 0) {
             // 如果双方都无未放置的棋子
@@ -523,7 +523,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
             (turn == PLAYER2 && (player2_Remain > rule.numAtLest || !rule.canFly))) {
             int i;
             for (i = 0; i < 4; i++) {
-                if (pos == moveTable[posOfSelected][i])
+                if (pos == moveTable[currentPos][i])
                     break;
             }
             // 不在招法表中
@@ -532,14 +532,14 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         }
         // 移子
         player_ms = update(time_p);
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", posOfSelected / SEAT, posOfSelected % SEAT + 1,
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / SEAT, currentPos % SEAT + 1,
             c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
-        board[pos] = board[posOfSelected];
-        board[posOfSelected] = '\x00';
-        posOfSelected = pos;
+        board[pos] = board[currentPos];
+        board[currentPos] = '\x00';
+        currentPos = pos;
         step++;
-        n = addMills(posOfSelected);
+        n = addMills(currentPos);
 
         // 中局阶段未成三
         if (n == 0) {
@@ -607,7 +607,7 @@ bool NineChess::remove(int c, int p, long time_p /* = -1*/)
     player_ms = update(time_p);
     sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
     cmdlist.push_back(string(cmdline));
-    posOfSelected = 0;
+    currentPos = 0;
     num_NeedRemove--;
     step++;
     // 去子完成
@@ -699,7 +699,7 @@ bool NineChess::choose(int c, int p)
             return false;
         }
         // 选子
-        posOfSelected = pos;
+        currentPos = pos;
         // 选子完成，进入落子状态
         action = ACTION_PLACE;
         return true;

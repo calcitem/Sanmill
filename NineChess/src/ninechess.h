@@ -106,6 +106,8 @@ public:
     const char *getBoard();
     // 获取当前规则
     const struct Rule *getRule() { return &rule; }
+    // 获取当前点
+    int getCurrentPos() { return currentPos; }
     // 获取当前步数
     int getStep() { return step; }
     // 获取局面阶段标识
@@ -128,6 +130,10 @@ public:
     const char *getCmdLine() { return cmdline; }
     // 获得棋谱
     const list<string> * getCmdList() { return &cmdlist; }
+    // 获取开局时间
+    timeb getStartTimeb() { return startTimeb; }
+    // 重新设置开局时间
+    void setStartTimeb(timeb stimeb) { startTimeb = stimeb; }
 
     // 玩家1剩余未放置子数
     int getPlayer1_InHand() { return player1_InHand; }
@@ -221,7 +227,7 @@ private:
      */
     char board[(RING + 2)*SEAT];
     // 选中的棋子在board中的位置
-    int posOfSelected;
+    int currentPos;
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
     static const char inBoard[(RING + 2)*SEAT];
     // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外

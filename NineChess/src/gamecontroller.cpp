@@ -7,6 +7,8 @@
 #include <QApplication>
 #include <Qsound>
 #include <QDebug>
+#include <QMessageBox>
+#include <QAbstractButton>
 #include "gamecontroller.h"
 #include "graphicsconst.h"
 #include "boarditem.h"
@@ -16,6 +18,7 @@ GameController::GameController(GameScene &scene, QObject *parent) : QObject(pare
 // 是否浏览过历史纪录
 scene(scene),
 piece(NULL),
+currentRow(-1),
 isEditing(false),
 isInverted(false),
 isEngine1(false),
@@ -70,6 +73,7 @@ const QMap<int, QStringList> GameController::getActions()
 void GameController::gameStart()
 {
     chess.start();
+    chessTemp = chess;
     // 每隔100毫秒调用一次定时器处理函数
     if (timeID == 0) {
         timeID = startTimer(100);
@@ -108,6 +112,7 @@ void GameController::gameReset()
     }
     // 更新棋谱
     manualListModel.removeRows(0, manualListModel.rowCount());
+    currentRow = 0;
     manualListModel.insertRow(0);
     manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
 
@@ -261,14 +266,22 @@ void GameController::timerEvent(QTimerEvent *event)
 // 历史局面
 void GameController::phaseChange(int row, bool change /*= false*/)
 {
+    // 如果row是当前浏览的棋谱行，则直接推出不刷新
+    if (currentRow == row)
+        return;
+    else
+        currentRow = row;
+
     int rows = manualListModel.rowCount();
     QStringList mlist = manualListModel.stringList();
-    qDebug() << "rows: " << rows;
+    qDebug() << "rows:" << rows << " current:" << row;
     for (int i = 0; i <= row; i++)
     {
         qDebug() << mlist.at(i);
         chessTemp.command(mlist.at(i).toStdString().c_str());
     }
+    // 下面这步关键，让悔棋者承担时间损失
+    chessTemp.setStartTimeb(chess.getStartTimeb());
 
     updateScence(chessTemp);
 }
@@ -277,6 +290,33 @@ void GameController::phaseChange(int row, bool change /*= false*/)
 bool GameController::actionPiece(QPointF pos)
 {
     bool result = false;
+
+    // 是否在浏览历史记录
+    if (currentRow != manualListModel.rowCount() - 1)
+    {
+        // 定义新对话框
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setMinimumSize(600, 400);
+        msgBox.setText(tr("当前正在浏览历史局面。"));
+        msgBox.setInformativeText(tr("是否在此局面下重新开始？"));
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Cancel);
+        (msgBox.button(QMessageBox::Ok))->setText(tr("确定"));
+        (msgBox.button(QMessageBox::Cancel))->setText(tr("取消"));
+
+        if (QMessageBox::Ok == msgBox.exec())
+        {
+            chess = chessTemp;
+            manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
+        }
+        else
+        {
+            return result;
+        }
+    }
+
+
     switch (chess.getPhase()) {
     case NineChess::GAME_NOTSTARTED:
         // 如果未开局则开局，这里还要继续判断，不可break
@@ -291,8 +331,8 @@ bool GameController::actionPiece(QPointF pos)
             result = removePiece(pos);
         }
         // 如果完成后进入中局，则删除禁点
-        if (chess.getPhase() == NineChess::GAME_MID && chess.getRule()->hasForbidden)
-            cleanForbidden();
+        //if (chess.getPhase() == NineChess::GAME_MID && chess.getRule()->hasForbidden)
+        //    cleanForbidden();
         break;
 
     case NineChess::GAME_MID:
@@ -319,111 +359,82 @@ bool GameController::actionPiece(QPointF pos)
 
     if (result)
     {
-        int row = manualListModel.rowCount();
-        int c = 0;
+        // 将新增的棋谱行插入到ListModel
+        currentRow = manualListModel.rowCount() - 1;
+        int k = 0;
         // 输出命令行
         for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
-            if (++c <= row)
+            // 跳过已添加的，因标准list容器没有下标
+            if (k++ <= currentRow)
                 continue;
-            manualListModel.insertRow(c - 1);
-            manualListModel.setData(manualListModel.index(c - 1), (*i).c_str());
+            manualListModel.insertRow(++currentRow);
+            manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
         }
         if (chess.whoWin() != NineChess::NOBODY)
             playSound(soundWin);
     }
 
+    updateScence(this->chess);
     return result;
 }
 
 // 选子
-PieceItem *GameController::choosePiece(QPointF pos)
+bool GameController::choosePiece(QPointF pos)
 {
     int c, p;
-    if (!scene.pos2cp(pos, c, p))
-        return false;
-    PieceItem *piece = NULL;
-    QGraphicsItem *item = scene.itemAt(pos, QTransform());
-    if (!item) {
-        scene.clearSelection();
-        this->piece->setSelected(true);
+    if (!scene.pos2cp(pos, c, p)) {
         return false;
     }
+    PieceItem *piece = NULL;
+    QGraphicsItem *item = scene.itemAt(pos, QTransform());
     piece = qgraphicsitem_cast<PieceItem *>(item);
-    if (!piece)
+    if (!piece) {
         return false;
+    }
     if (chess.choose(c, p)) {
-        scene.clearSelection();
-        this->piece = piece;
-        this->piece->setSelected(true);
         // 发信号更新状态栏
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
         // 播放音效
         playSound(soundChoose);
-        return piece;
+        return true;
     }
-    else
-    {
-        scene.clearSelection();
-        if (this->piece)
-            this->piece->setSelected(true);
+    else {
+        return false;
     }
-    return NULL;
 }
 
 // 落下新子
-PieceItem *GameController::placePiece(QPointF pos)
+bool GameController::placePiece(QPointF pos)
 {
     int c, p;
-    if (!scene.pos2cp(pos, c, p))
-        return NULL;
-    PieceItem *newP = NULL;
-    PieceItem::Models md;
-    if (chess.whosTurn() == NineChess::PLAYER1)
-    {
-        md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
-    }
-    else {
-        md = isInverted ? PieceItem::blackPiece : PieceItem::whitePiece;
+    if (!scene.pos2cp(pos, c, p)) {
+        return false;
     }
     if (!chess.place(c, p)) {
-        scene.clearSelection();
-        if (this->piece)
-            this->piece->setSelected(true);
-        return NULL;
+        return false;
     }
-    newP = new PieceItem;
-    newP->setModel(md);
-    newP->setDeleted(false);
-    newP->setPos(pos);
-    newP->setNum(chess.getPieceNum(c, p));
-    // 如果重复三连不可用，则显示棋子序号
-    if (!(chess.getRule()->canRepeated))
-        newP->setShowNum(true);
-    pieceList.append(newP);
-    scene.addItem(newP);
-    scene.clearSelection();
-    this->piece = newP;
-    this->piece->setSelected(true);
     // 发信号更新状态栏
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
     // 播放音效
     playSound(soundDrog);
-    return newP;
+    return true;
 }
 
 // 移动旧子
 bool GameController::movePiece(QPointF pos)
 {
-    if (!piece)
+    if (!piece) {
         return false;
+    }
     int c, p;
-    if (!scene.pos2cp(pos, c, p))
+    if (!scene.pos2cp(pos, c, p)) {
         return false;
+    }
+
     if (chess.place(c, p))
     {
-        piece->setPos(pos);
         // 发信号更新状态栏
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
@@ -431,8 +442,6 @@ bool GameController::movePiece(QPointF pos)
         playSound(soundMove);
         return true;
     }
-    scene.clearSelection();
-    this->piece->setSelected(true);
     return false;
 }
 
@@ -440,42 +449,13 @@ bool GameController::movePiece(QPointF pos)
 bool GameController::removePiece(QPointF pos)
 {
     int c, p;
-    if (!scene.pos2cp(pos, c, p))
+    if (!scene.pos2cp(pos, c, p)) {
         return false;
+    }
     if (!chess.remove(c, p)) {
-        scene.clearSelection();
-        if (this->piece)
-            this->piece->setSelected(true);
         return false;
     }
 
-    PieceItem *piece = NULL;
-    QGraphicsItem *item = scene.itemAt(pos, QTransform());
-    if (!item) {
-        scene.clearSelection();
-        if (this->piece)
-            this->piece->setSelected(true);
-        return false;
-    }
-    piece = qgraphicsitem_cast<PieceItem *>(item);
-    if (!piece) {
-        scene.clearSelection();
-        if (this->piece)
-            this->piece->setSelected(true);
-        return false;
-    }
-    // 如果开局阶段有禁点
-    if (chess.getPhase() == NineChess::GAME_OPENING && chess.getRule()->hasForbidden)
-    {
-        piece->setDeleted();
-    }
-    else
-    {
-        pieceList.removeOne(piece);
-        delete piece;
-        this->piece = NULL;
-    }
-    scene.clearSelection();
     // 发信号更新状态栏
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
@@ -484,6 +464,7 @@ bool GameController::removePiece(QPointF pos)
     return true;
 }
 
+/* 下面的用不到了
 bool GameController::cleanForbidden()
 {
     for (PieceItem *p : pieceList)
@@ -495,6 +476,7 @@ bool GameController::cleanForbidden()
     }
     return true;
 }
+*/
 
 bool GameController::updateScence(NineChess &chess)
 {
@@ -504,9 +486,10 @@ bool GameController::updateScence(NineChess &chess)
     piece = NULL;
 
     const char *board = chess.getBoard();
+    QPointF pos;
 
     for (int i = NineChess::SEAT; i < (NineChess::SEAT)*(NineChess::RING + 1); i++) {
-        QPointF pos = scene.cp2pos(i / NineChess::SEAT, i % NineChess::SEAT + 1);
+        pos = scene.cp2pos(i / NineChess::SEAT, i % NineChess::SEAT + 1);
         if (board[i] & 0x30) {
             PieceItem *newP = NULL;
             PieceItem::Models md;
@@ -534,7 +517,13 @@ bool GameController::updateScence(NineChess &chess)
         }
     }
 
-    scene.clearSelection();
+    int ipos = chess.getCurrentPos();
+    if (ipos) {
+        pos = scene.cp2pos(ipos / NineChess::SEAT, ipos % NineChess::SEAT + 1);
+        piece = qgraphicsitem_cast<PieceItem *> (scene.itemAt(pos, QTransform()));
+        if (piece)
+            piece->setSelected(true);
+    }
 
     return true;
 }

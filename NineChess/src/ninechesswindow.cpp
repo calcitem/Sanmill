@@ -181,7 +181,7 @@ void NineChessWindow::initialize()
     ui.listView->setModel(& game->manualListModel);
     // 因为QListView的rowsInserted在setModel之后才能启动，
     // 第一次需手动初始化选中listView第一项
-    qDebug() << ui.listView->model();
+    //qDebug() << ui.listView->model();
     ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
     // 初始局面、前一步、后一步、最终局面的槽
     connect(ui.actionBegin_S, &QAction::triggered,
@@ -444,11 +444,11 @@ void NineChessWindow::on_actionLimited_T_triggered()
         game->setRule(ruleNo, stepLimited, timeLimited);
     }
 
-    // 更新规则显示
-    ruleInfo();
-
     // 删除对话框，子控件会一并删除
     delete dialog;
+
+    // 更新规则显示
+    ruleInfo();
 }
 
 void NineChessWindow::on_actionLocal_L_triggered()

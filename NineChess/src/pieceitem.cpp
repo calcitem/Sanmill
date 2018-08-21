@@ -19,7 +19,8 @@ showNum(false)
     // 鼠标放在棋子上时显示为伸开的手形
     setCursor(Qt::OpenHandCursor);
     // 只接受左键事件
-    setAcceptedMouseButtons(Qt::LeftButton);
+    //setAcceptedMouseButtons(Qt::LeftButton);
+    setAcceptedMouseButtons(0);
     // 默认模型为没有棋子
     model = noPiece;
     // 棋子尺寸

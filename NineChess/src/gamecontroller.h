@@ -77,16 +77,16 @@ protected:
     // 定时器
     void timerEvent(QTimerEvent * event);
     // 选子
-    PieceItem *choosePiece(QPointF pos);
+    bool choosePiece(QPointF pos);
     // 落下新子
-    PieceItem *placePiece(QPointF pos);
+    bool placePiece(QPointF pos);
     // 移动旧子
     bool movePiece(QPointF pos);
     // 去子
     bool removePiece(QPointF pos);
     // 删除禁止点子
-    bool cleanForbidden();
-    // 更新棋局显示
+    //bool cleanForbidden();
+    // 更新棋局显示，每步后必须执行
     bool updateScence(NineChess &chess);
 
 private:
@@ -96,12 +96,12 @@ private:
     NineChess chessTemp;
     // 棋局的场景类
     GameScene &scene;
-    // 棋谱列表
-    //SizeHintListView &listView;
     // 所有棋子
     QList<PieceItem *> pieceList;
     // 当前棋子
     PieceItem *piece;
+    // 当前浏览的棋谱行
+    int currentRow;
     // 玩家1手棋数、玩家2手棋数、待去棋数
     int player1_InHand, player2_InHand, num_NeedRemove;
     // 是否处于“编辑棋局”状态
