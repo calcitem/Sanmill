@@ -85,6 +85,8 @@ NineChessWindow::~NineChessWindow()
     if (game != NULL)
         delete game;
     qDeleteAll(ruleActionList);
+    if (file.isOpen())
+        file.close();
 }
 
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
@@ -240,38 +242,86 @@ void NineChessWindow::actionRules_triggered()
 
 void NineChessWindow::on_actionNew_N_triggered()
 {
-
+    if (file.isOpen())
+        file.close();
+    game->gameReset();
 }
 
 void NineChessWindow::on_actionOpen_O_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(this, "open", "../", "TXT(*.txt)");
+    QString path = QFileDialog::getOpenFileName(this, tr("打开棋谱文件"), QDir::currentPath(), "TXT(*.txt)");
     if (path.isEmpty() == false)
     {
-        //文件对象  
-        QFile file(path);
-        //打开文件,只读方式打开  
-        bool isok = file.open(QIODevice::ReadOnly);
+        if (file.isOpen())
+            file.close();
+        //文件对象
+        file.setFileName(path);
+        // 不支持1MB以上的文件
+        if (file.size() > 0x100000 )
+        {
+            // 定义新对话框
+            QMessageBox msgBox(QMessageBox::Warning, tr("文件过大"), tr("不支持1MB以上文件"), QMessageBox::Ok);
+            msgBox.exec();
+            return;
+        }
+        //打开文件,只读方式打开
+        bool isok = file.open(QFileDevice::ReadOnly | QFileDevice::Text);
         if (isok = true)
         {
-
-            //读文件  
-            QByteArray array = file.readAll();  
-            qDebug() << array;  
-
+            //读文件
+            QTextStream textStream(&file);
+            QString cmd;
+            while (!textStream.atEnd())
+            {
+                cmd = textStream.readLine();
+                game->command(cmd);
+            }
         }
-        //文件关闭  
-        file.close();
     }
 }
 
 void NineChessWindow::on_actionSave_S_triggered()
 {
-
+    if (file.isOpen())
+    {
+        file.close();
+        //打开文件,只写方式打开
+        bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
+        if (isok = true)
+        {
+            //写文件
+            QTextStream textStream(&file);
+            QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+            for (QString cmd : strlist->stringList())
+                textStream << cmd << endl;
+            file.flush();
+        }
+    }
+    else
+        on_actionSaveAs_A_triggered();
 }
 
 void NineChessWindow::on_actionSaveAs_A_triggered()
 {
+    QString path = QFileDialog::getSaveFileName(this, tr("打开棋谱文件"), QDir::currentPath()+tr("棋谱.txt"), "TXT(*.txt)");
+    if (path.isEmpty() == false)
+    {
+        if (file.isOpen())
+            file.close();
+        //文件对象  
+        file.setFileName(path);
+        //打开文件,只写方式打开
+        bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
+        if (isok = true)
+        {
+            //写文件
+            QTextStream textStream(&file);
+            QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+            for (QString cmd : strlist->stringList())
+                textStream << cmd << endl;
+            file.flush();
+        }
+    }
 
 }
 

@@ -96,6 +96,7 @@ const struct NineChess::Rule NineChess::RULES[RULENUM] = {
 }
 };
 
+// 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
 const char NineChess::inBoard[(RING + 2)*SEAT] = {
         '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00',
         '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff',

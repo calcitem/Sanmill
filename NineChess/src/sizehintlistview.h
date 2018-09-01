@@ -52,11 +52,9 @@ protected slots:
         const QVector<int> &roles = QVector<int>()) {
         QAbstractItemView::dataChanged(topLeft, bottomRight, roles);
         QModelIndex index = model()->index(model()->rowCount() - 1, 0);
-        if (topLeft == bottomRight) {
-            if (index == bottomRight) {
-                setCurrentIndex(index);
-                scrollToBottom();
-            }
+        if (index == bottomRight) {
+            setCurrentIndex(index);
+            scrollToBottom();
         }
     }
 

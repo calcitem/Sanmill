@@ -263,6 +263,32 @@ void GameController::timerEvent(QTimerEvent *event)
     */
 }
 
+bool GameController::command(QString &cmd)
+{
+    if (chess.command(cmd.toStdString().c_str())) {
+        if (chess.getPhase() == NineChess::GAME_NOTSTARTED) {
+            gameReset();
+            gameStart();
+        }
+        updateScence(chess);
+        // 将新增的棋谱行插入到ListModel
+        currentRow = manualListModel.rowCount() - 1;
+        int k = 0;
+        // 输出命令行
+        for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
+            // 跳过已添加的，因标准list容器没有下标
+            if (k++ <= currentRow)
+                continue;
+            manualListModel.insertRow(++currentRow);
+            manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
+        }
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 // 历史局面
 void GameController::phaseChange(int row, bool change /*= false*/)
 {

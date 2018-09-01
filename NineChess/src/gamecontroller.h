@@ -33,8 +33,6 @@ public:
     int getRuleNo() { return ruleNo; }
     int getTimeLimit() { return timeLimit; }
     int getStepsLimit() { return stepsLimit; }
-    // 文本流
-    QTextStream textStream;
     // 棋谱字符串列表模型
     QStringListModel manualListModel;
 
@@ -69,6 +67,8 @@ public slots:
     void playSound(QString &soundPath);
     // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
+    // 棋谱的命令行执行
+    bool command(QString &cmd);
     // 历史局面及局面改变
     void phaseChange(int row, bool change = false);
 
