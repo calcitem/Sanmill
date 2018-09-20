@@ -87,7 +87,7 @@ public:
 
 public:
     NineChess();
-    ~NineChess();
+    virtual ~NineChess();
     // 设置棋局状态和棋盘数据，用于初始化
     bool setData(const struct Rule *rule,
         int s = 0,   // 限制步数
@@ -156,6 +156,8 @@ public:
     bool place(int c, int p, long time_p = -1);
     // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool remove(int c, int p, long time_p = -1);
+	// 认输
+	bool giveup(Player loser);
     // 命令行解析函数
     bool command(const char *cmd);
 

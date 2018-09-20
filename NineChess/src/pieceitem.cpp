@@ -15,12 +15,13 @@ showNum(false)
     );
     // 设置缓存模式
     setCacheMode(DeviceCoordinateCache);
-    //setAcceptHoverEvents(true);
     // 鼠标放在棋子上时显示为伸开的手形
     setCursor(Qt::OpenHandCursor);
     // 只接受左键事件
     //setAcceptedMouseButtons(Qt::LeftButton);
+    // 不接受鼠标事件
     setAcceptedMouseButtons(0);
+    //setAcceptHoverEvents(true);
     // 默认模型为没有棋子
     model = noPiece;
     // 棋子尺寸

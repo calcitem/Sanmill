@@ -708,6 +708,32 @@ bool NineChess::choose(int c, int p)
     return false;
 }
 
+bool NineChess::giveup(Player loser)
+{
+	if (phase == GAME_MID || phase == GAME_OPENING)
+	{
+		if (loser == PLAYER1)
+		{
+			phase = GAME_OVER;
+			winner = PLAYER2;
+			tip = "玩家1投子认负，恭喜玩家2获胜！";
+			sprintf(cmdline, "Player1 give up!");
+			cmdlist.push_back(string(cmdline));
+			return true;
+		}
+		else if (loser == PLAYER2)
+		{
+			phase = GAME_OVER;
+			winner = PLAYER1;
+			tip = "玩家2投子认负，恭喜玩家1获胜！";
+			sprintf(cmdline, "Player2 give up!");
+			cmdlist.push_back(string(cmdline));
+			return true;
+		}
+	}
+	return false;
+}
+
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
 bool NineChess::command(const char *cmd)
 {
@@ -756,6 +782,18 @@ bool NineChess::command(const char *cmd)
         }
         return place(c1, p1, tm);
     }
+
+	// 认输
+	args = sscanf(cmd, "Player%1u give up!", &t);
+	if (args == 1) {
+		if (t == 1) {
+			return giveup(PLAYER1);
+		}
+		else if (t == 2)
+		{
+			return giveup(PLAYER2);
+		}
+	}
 
     return false;
 }
@@ -886,14 +924,26 @@ bool NineChess::win()
     }
     // 如果中局被“闷”
     else if (phase == GAME_MID && action == ACTION_CHOOSE && isAllSurrounded(turn)) {
-        tip = (turn == PLAYER1) ? "玩家1无子可走，" : "玩家2无子可走，";
         // 规则要求被“闷”判负，则对手获胜
         if (rule.isNoWayLose) {
-            winner = (turn == PLAYER1) ? PLAYER2 : PLAYER1;
-            phase = GAME_OVER;
-            sprintf(cmdline, "Surrounded. Player%1d win!", winner == PLAYER1 ? 1 : 2);
-            cmdlist.push_back(string(cmdline));
-            return true;
+			if (turn == PLAYER1)
+			{
+				tip = "玩家1无子可走，恭喜玩家2获胜！";
+				winner = PLAYER2;
+				phase = GAME_OVER;
+				sprintf(cmdline, "Player1 no way to go. Player2 win!");
+				cmdlist.push_back(string(cmdline));
+				return true;
+			}
+			else
+			{
+				tip = "玩家2无子可走，恭喜玩家1获胜！";
+				winner = PLAYER1;
+				phase = GAME_OVER;
+				sprintf(cmdline, "Player2 no way to go. Player1 win!");
+				cmdlist.push_back(string(cmdline));
+				return true;
+			}
         }
         // 否则让棋，由对手走
         else

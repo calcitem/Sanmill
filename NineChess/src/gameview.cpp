@@ -6,9 +6,11 @@ GameView::GameView(QWidget * parent) :
     QGraphicsView(parent)
 {
     Q_UNUSED(parent)
+    /* 不使用下面的方法
     // 初始化缩放因子为1.0
     sx = 1.0;
     sy = 1.0;
+    */
 }
 
 GameView::~GameView()
@@ -29,8 +31,8 @@ void GameView::flip()
      * │0 -1  0│
      * └0  0  1┘
      */
-    // 方法一: 直接在原变换矩阵基础上乘以上面的矩阵
-    // QMatrix只对变换矩阵前两列赋值
+     // 方法一: 直接在原变换矩阵基础上乘以上面的矩阵
+     // QMatrix只对变换矩阵前两列赋值
     setMatrix(matrix() * QMatrix(1, 0, 0, -1, 0, 0));
     /* 方法二: 人工计算好新的变换矩阵后再对场景赋值
      * 这个方法的效率未必高，还需要人工计算
@@ -81,12 +83,12 @@ void GameView::turnLeft()
 
 void GameView::resizeEvent(QResizeEvent * event)
 {
+    /* 不使用下面的形式了
     // 让场景适合视图
-    Q_UNUSED(event)
     if (sceneRect().width() <= 0 || sceneRect().height() <= 0)
         return;
     // 恢复缩放前的大小
-    scale(1/sx, 1/sy);
+    scale(1 / sx, 1 / sy);
     // 设置缩放因子
     sx = width() / sceneRect().width();
     sy = height() / sceneRect().height();
@@ -95,5 +97,9 @@ void GameView::resizeEvent(QResizeEvent * event)
     // 缩放视图适合场景大小
     scale(sx, sy);
     //qDebug() << "scale :" << sx;
+    */
+    // 使用如下形式，更简洁
+    QGraphicsView::resizeEvent(event);
+    fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 

@@ -98,7 +98,7 @@
     <addaction name="actionEnd_E"/>
     <addaction name="actionAutoRun_A"/>
     <addaction name="separator"/>
-    <addaction name="actionResign_R"/>
+    <addaction name="actionGiveUp_G"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_E">
@@ -648,7 +648,7 @@
     <string>自动演示(A)</string>
    </property>
   </action>
-  <action name="actionResign_R">
+  <action name="actionGiveUp_G">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
      <normaloff>:/icon/Resources/icon/BreakpointHS.png</normaloff>:/icon/Resources/icon/BreakpointHS.png</iconset>

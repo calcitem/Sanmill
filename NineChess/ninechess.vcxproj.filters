@@ -107,6 +107,9 @@
     <ClInclude Include="src\pieceitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -236,17 +239,7 @@
     <None Include="Resources\image\white_piece.png">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="History.txt">
-      <Filter>Distribution Files</Filter>
-    </None>
-    <None Include="NineChess.rc">
-      <Filter>Distribution Files</Filter>
-    </None>
-    <None Include="Readme.txt">
-      <Filter>Distribution Files</Filter>
-    </None>
+    <None Include="..\Readme.md" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NineChess.rc" />
@@ -255,5 +248,13 @@
     <QtMoc Include="src\sizehintlistview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\History.txt" />
+    <Text Include="..\Licence.txt" />
+    <Text Include="..\范例棋谱.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="NineChess.ico" />
   </ItemGroup>
 </Project>

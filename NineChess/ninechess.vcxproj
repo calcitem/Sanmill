@@ -209,6 +209,7 @@
     <ClCompile Include="src\pieceitem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\boarditem.h" />
     <QtMoc Include="src\gamecontroller.h">
     </QtMoc>
@@ -262,6 +263,7 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Readme.md" />
     <None Include="Resources\icon\ActualSizeHS.png" />
     <None Include="Resources\icon\Black.png" />
     <None Include="Resources\icon\BreakpointHS.png" />
@@ -302,12 +304,15 @@
     <None Include="Resources\image\white_piece.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="History.txt" />
-    <None Include="NineChess.rc" />
-    <None Include="Readme.txt" />
+    <ResourceCompile Include="NineChess.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="NineChess.rc" />
+    <Text Include="..\History.txt" />
+    <Text Include="..\Licence.txt" />
+    <Text Include="..\范例棋谱.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="NineChess.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

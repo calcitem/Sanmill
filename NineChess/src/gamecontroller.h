@@ -64,9 +64,11 @@ public slots:
     // 是否有落子音效
     void setSound(bool arg = true);
     // 播放声音
-    void playSound(QString &soundPath);
+    void playSound(const QString &soundPath);
     // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
+	// 认输
+	bool giveUp();
     // 棋谱的命令行执行
     bool command(QString &cmd);
     // 历史局面及局面改变
@@ -84,8 +86,6 @@ protected:
     bool movePiece(QPointF pos);
     // 去子
     bool removePiece(QPointF pos);
-    // 删除禁止点子
-    //bool cleanForbidden();
     // 更新棋局显示，每步后必须执行
     bool updateScence(NineChess &chess);
 
@@ -131,15 +131,6 @@ private:
     // 用于主窗口状态栏显示的字符串
     QString message;
 
-    // 各个音效文件路径
-    QString soundNewgame;
-    QString soundChoose;
-    QString soundMove;
-    QString soundDrog;
-    QString soundForbidden;
-    QString soundRemove;
-    QString soundWin;
-    QString soundLoss;
 };
 
 #endif // GAMECONTROLLER_H

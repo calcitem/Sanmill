@@ -1,43 +1,52 @@
 <RCC>
-    <qresource prefix="/image">
-        <file>Resources/image/black_piece.png</file>
-        <file>Resources/image/board.png</file>
-        <file>Resources/image/white_piece.png</file>
-        <file>Resources/image/background.png</file>
-    </qresource>
-    <qresource prefix="/icon">
-        <file>Resources/icon/Black.png</file>
-        <file>Resources/icon/White.png</file>
-        <file>Resources/icon/ActualSizeHS.png</file>
-        <file>Resources/icon/BreakpointHS.png</file>
-        <file>Resources/icon/DocumentHS.png</file>
-        <file>Resources/icon/EditInformationHS.png</file>
-        <file>Resources/icon/EditTableHS.png</file>
-        <file>Resources/icon/Error.png</file>
-        <file>Resources/icon/First.png</file>
-        <file>Resources/icon/FlipHorizontalHS.png</file>
-        <file>Resources/icon/FlipVerticalHS.png</file>
-        <file>Resources/icon/FullScreenHS.png</file>
-        <file>Resources/icon/Help.png</file>
-        <file>Resources/icon/HomeHS.png</file>
-        <file>Resources/icon/Last.png</file>
-        <file>Resources/icon/LeftHS.png</file>
-        <file>Resources/icon/LegendHS.png</file>
-        <file>Resources/icon/NewDocumentHS.png</file>
-        <file>Resources/icon/Next.png</file>
-        <file>Resources/icon/OpenHS.png</file>
-        <file>Resources/icon/Pause.png</file>
-        <file>Resources/icon/Play.png</file>
-        <file>Resources/icon/Previous.png</file>
-        <file>Resources/icon/PrimaryKeyHS.png</file>
-        <file>Resources/icon/Refresh.png</file>
-        <file>Resources/icon/Request.png</file>
-        <file>Resources/icon/OptionsHS.png</file>
-        <file>Resources/icon/Web.png</file>
-        <file>Resources/icon/RestartHS.png</file>
-        <file>Resources/icon/Invert.png</file>
-        <file>Resources/icon/RightHS.png</file>
-        <file>Resources/icon/SaveHS.png</file>
-    </qresource>
-    <qresource prefix="/sound"/>
+  <qresource prefix="/image">
+    <file>Resources/image/black_piece.png</file>
+    <file>Resources/image/board.png</file>
+    <file>Resources/image/white_piece.png</file>
+    <file>Resources/image/background.png</file>
+  </qresource>
+  <qresource prefix="/icon">
+    <file>Resources/icon/Black.png</file>
+    <file>Resources/icon/White.png</file>
+    <file>Resources/icon/ActualSizeHS.png</file>
+    <file>Resources/icon/BreakpointHS.png</file>
+    <file>Resources/icon/DocumentHS.png</file>
+    <file>Resources/icon/EditInformationHS.png</file>
+    <file>Resources/icon/EditTableHS.png</file>
+    <file>Resources/icon/Error.png</file>
+    <file>Resources/icon/First.png</file>
+    <file>Resources/icon/FlipHorizontalHS.png</file>
+    <file>Resources/icon/FlipVerticalHS.png</file>
+    <file>Resources/icon/FullScreenHS.png</file>
+    <file>Resources/icon/Help.png</file>
+    <file>Resources/icon/HomeHS.png</file>
+    <file>Resources/icon/Last.png</file>
+    <file>Resources/icon/LeftHS.png</file>
+    <file>Resources/icon/LegendHS.png</file>
+    <file>Resources/icon/NewDocumentHS.png</file>
+    <file>Resources/icon/Next.png</file>
+    <file>Resources/icon/OpenHS.png</file>
+    <file>Resources/icon/Pause.png</file>
+    <file>Resources/icon/Play.png</file>
+    <file>Resources/icon/Previous.png</file>
+    <file>Resources/icon/PrimaryKeyHS.png</file>
+    <file>Resources/icon/Refresh.png</file>
+    <file>Resources/icon/Request.png</file>
+    <file>Resources/icon/OptionsHS.png</file>
+    <file>Resources/icon/Web.png</file>
+    <file>Resources/icon/RestartHS.png</file>
+    <file>Resources/icon/Invert.png</file>
+    <file>Resources/icon/RightHS.png</file>
+    <file>Resources/icon/SaveHS.png</file>
+  </qresource>
+  <qresource prefix="/sound">
+    <file>Resources/sound/choose.wav</file>
+    <file>Resources/sound/drog.wav</file>
+    <file>Resources/sound/forbidden.wav</file>
+    <file>Resources/sound/loss.wav</file>
+    <file>Resources/sound/move.wav</file>
+    <file>Resources/sound/newgame.wav</file>
+    <file>Resources/sound/remove.wav</file>
+    <file>Resources/sound/win.wav</file>
+  </qresource>
 </RCC>

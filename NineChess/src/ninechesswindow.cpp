@@ -1,6 +1,7 @@
 ﻿#if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
 #endif
+
 #include <QDesktopServices>
 #include <QMap>
 #include <QMessageBox>
@@ -139,7 +140,9 @@ void NineChessWindow::initialize()
     }
 
     // 关联主窗口动作信号和控制器的槽
-    connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
+	connect(ui.actionGiveUp_G, SIGNAL(triggered()),
+		game, SLOT(giveUp()));
+	connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
         game, SLOT(setEngine1(bool)));
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
         game, SLOT(setEngine2(bool)));
@@ -418,10 +421,6 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 
 }
 
-void NineChessWindow::on_actionResign_R_triggered()
-{
-
-}
 
 void NineChessWindow::on_actionLimited_T_triggered()
 {

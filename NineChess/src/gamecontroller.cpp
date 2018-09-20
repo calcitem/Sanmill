@@ -1,11 +1,12 @@
 ﻿#if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
 #endif
+
 #include <QGraphicsView>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QApplication>
-#include <Qsound>
+#include <QSound>
 #include <QDebug>
 #include <QMessageBox>
 #include <QAbstractButton>
@@ -33,16 +34,6 @@ stepsLimit(0)
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
     //scene.setBackgroundBrush(QPixmap(":/image/Resources/image/background.png"));
-    // 初始化音效文件路径
-    QString dir = QCoreApplication::applicationDirPath();
-    soundNewgame = dir + "/sound/newgame.wav";
-    soundChoose = dir + "/sound/choose.wav";
-    soundMove = dir + "/sound/move.wav";
-    soundDrog = dir + "/sound/drog.wav";
-    soundForbidden = dir + "/sound/forbidden.wav";
-    soundRemove = dir + "/sound/remove.wav";
-    soundWin = dir + "/sound/win.wav";
-    soundLoss = dir + "/sound/loss.wav";
 
     gameReset();
     // 安装事件过滤器监视scene的各个事件，由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
@@ -124,7 +115,7 @@ void GameController::gameReset()
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
     // 播放音效
-    playSound(soundNewgame);
+    playSound(":/sound/Resources/sound/newgame.wav");
 }
 
 void GameController::setEditing(bool arg)
@@ -199,10 +190,11 @@ void GameController::setSound(bool arg)
     hasSound = arg;
 }
 
-void GameController::playSound(QString &soundPath)
+void GameController::playSound(const QString &soundPath)
 {
-    if (hasSound)
-        QSound::play(soundPath);
+	if (hasSound) {
+		QSound::play(soundPath);
+	}
 }
 
 bool GameController::eventFilter(QObject * watched, QEvent * event)
@@ -237,7 +229,7 @@ void GameController::timerEvent(QTimerEvent *event)
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
         // 播放音效
-        playSound(soundWin);
+        playSound(":/sound/Resources/sound/win.wav");
     }
     /*
     int ti = time.elapsed();
@@ -396,8 +388,9 @@ bool GameController::actionPiece(QPointF pos)
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
         }
-        if (chess.whoWin() != NineChess::NOBODY)
-            playSound(soundWin);
+        if (chess.whoWin() != NineChess::NOBODY && 
+			(manualListModel.data(manualListModel.index(currentRow-1))).toString().contains("Time over."))
+            playSound(":/sound/Resources/sound/win.wav");
     }
 
     updateScence(this->chess);
@@ -422,7 +415,7 @@ bool GameController::choosePiece(QPointF pos)
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
         // 播放音效
-        playSound(soundChoose);
+        playSound(":/sound/Resources/sound/choose.wav");
         return true;
     }
     else {
@@ -444,7 +437,7 @@ bool GameController::placePiece(QPointF pos)
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
     // 播放音效
-    playSound(soundDrog);
+    playSound(":/sound/Resources/sound/drog.wav");
     return true;
 }
 
@@ -465,7 +458,7 @@ bool GameController::movePiece(QPointF pos)
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
         // 播放音效
-        playSound(soundMove);
+        playSound(":/sound/Resources/sound/move.wav");
         return true;
     }
     return false;
@@ -486,23 +479,35 @@ bool GameController::removePiece(QPointF pos)
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
     // 播放音效
-    playSound(soundRemove);
+    playSound(":/sound/Resources/sound/remove.wav");
     return true;
 }
 
-/* 下面的用不到了
-bool GameController::cleanForbidden()
+bool GameController::giveUp()
 {
-    for (PieceItem *p : pieceList)
-    {
-        if (p->isDeleted()) {
-            pieceList.removeOne(p);
-            delete p;
-        }
-    }
-    return true;
+	bool result = false;
+	if (chess.whosTurn() == NineChess::PLAYER1)
+		result = chess.giveup(NineChess::PLAYER1);
+	else if (chess.whosTurn() == NineChess::PLAYER2)
+		result = chess.giveup(NineChess::PLAYER2);
+	if (result)
+	{
+		// 将新增的棋谱行插入到ListModel
+		currentRow = manualListModel.rowCount() - 1;
+		int k = 0;
+		// 输出命令行
+		for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
+			// 跳过已添加的，因标准list容器没有下标
+			if (k++ <= currentRow)
+				continue;
+			manualListModel.insertRow(++currentRow);
+			manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
+		}
+		if (chess.whoWin() != NineChess::NOBODY)
+			playSound(":/sound/Resources/sound/loss.wav");
+	}
+	return result;
 }
-*/
 
 bool GameController::updateScence(NineChess &chess)
 {

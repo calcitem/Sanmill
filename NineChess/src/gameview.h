@@ -22,8 +22,8 @@ protected:
     void resizeEvent(QResizeEvent * event);
 
 private:
-    // 缩放因子
-    qreal sx, sy;
+    // 缩放因子，代码更新后不使用了
+    // qreal sx, sy;
 };
 
 #endif // GRAPHICSVIEW_H
