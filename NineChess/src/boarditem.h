@@ -29,6 +29,7 @@ public:
     static const int RING = 3;
     // 8位，禁止修改！
     static const int SEAT = 8;
+
 private:
     // 棋盘尺寸
     qreal size;

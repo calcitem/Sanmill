@@ -72,8 +72,6 @@
     <addaction name="actionSave_S"/>
     <addaction name="actionSaveAs_A"/>
     <addaction name="separator"/>
-    <addaction name="actionViewText_V"/>
-    <addaction name="separator"/>
     <addaction name="actionExit_X"/>
    </widget>
    <widget class="QMenu" name="menu_C">
@@ -491,15 +489,6 @@
    </property>
    <property name="text">
     <string>另存为(&amp;A)...</string>
-   </property>
-  </action>
-  <action name="actionViewText_V">
-   <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/EditInformationHS.png</normaloff>:/icon/Resources/icon/EditInformationHS.png</iconset>
-   </property>
-   <property name="text">
-    <string>查看文本棋谱(&amp;V)</string>
    </property>
   </action>
   <action name="actionExit_X">

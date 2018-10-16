@@ -5,7 +5,7 @@
 BoardItem::BoardItem(QGraphicsItem *parent ) : QGraphicsItem(parent),
     size(BOARD_SIZE),
     sizeShadow(5.0),
-    hasObliqueLine(false)
+	hasObliqueLine(false)
 {
     Q_UNUSED(parent)
     // 棋盘中心放在场景中心

@@ -1,13 +1,19 @@
 ﻿#include "gamescene.h"
 #include "pieceitem.h"
 #include "boarditem.h"
+#include "graphicsconst.h"
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QDebug>
 
-GameScene::GameScene(QObject *parent) : QGraphicsScene(parent), board(NULL)
+GameScene::GameScene(QObject *parent) : QGraphicsScene(parent),
+	board(NULL),
+	pos_p1(LINE_INTERVAL * 6, LINE_INTERVAL * 3),
+	pos_p1_g(LINE_INTERVAL* (-6), LINE_INTERVAL * 3),
+	pos_p2(LINE_INTERVAL * (-6), LINE_INTERVAL * (-3)),
+	pos_p2_g(LINE_INTERVAL * 6, LINE_INTERVAL * (-3))
 {
     // 添加棋盘
     board = new BoardItem;

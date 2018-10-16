@@ -48,7 +48,6 @@ private slots:
     void on_actionOpen_O_triggered();
     void on_actionSave_S_triggered();
     void on_actionSaveAs_A_triggered();
-    void on_actionViewText_V_triggered();
     //void on_actionExit_X_triggered();
     void on_actionEdit_E_toggled(bool arg1);
     //void on_actionFlip_F_triggered();

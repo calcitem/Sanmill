@@ -261,7 +261,9 @@ __pycache__/
 *.pyc
 
 
-
+# exe and dll
+*.exe
+*.dll
 
 
 

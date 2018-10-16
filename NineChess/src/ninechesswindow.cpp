@@ -51,14 +51,11 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     ui.gameView->setRenderHint(QPainter::Antialiasing);
 
     // 因功能限制，使部分功能不可用
-    ui.actionViewText_V->setDisabled(true);
-    ui.actionAutoRun_A->setDisabled(true);
     ui.actionEngine_E->setDisabled(true);
     ui.actionInternet_I->setDisabled(true);
     ui.actionEngine1_T->setDisabled(true);
     ui.actionEngine2_R->setDisabled(true);
     ui.actionSetting_O->setDisabled(true);
-    ui.actionAnimation_A->setDisabled(true);
 
     // 关联既有动作信号和主窗口槽
     // 视图上下翻转
@@ -328,11 +325,6 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
 
 }
 
-void NineChessWindow::on_actionViewText_V_triggered()
-{
-
-}
-
 void NineChessWindow::on_actionEdit_E_toggled(bool arg1)
 {
 
@@ -395,6 +387,7 @@ void NineChessWindow::on_actionRowChange()
         ui.actionPrevious_B->setEnabled(false);
         ui.actionNext_F->setEnabled(false);
         ui.actionEnd_E->setEnabled(false);
+		ui.actionAutoRun_A->setEnabled(false);
     }
     else {
         if (currentRow <= 0) {
@@ -402,23 +395,74 @@ void NineChessWindow::on_actionRowChange()
             ui.actionPrevious_B->setEnabled(false);
             ui.actionNext_F->setEnabled(true);
             ui.actionEnd_E->setEnabled(true);
-        }
-        if (currentRow >= rows - 1)
+			ui.actionAutoRun_A->setEnabled(true);
+		}
+        else if (currentRow >= rows - 1)
         {
             ui.actionBegin_S->setEnabled(true);
             ui.actionPrevious_B->setEnabled(true);
             ui.actionNext_F->setEnabled(false);
             ui.actionEnd_E->setEnabled(false);
-        }
+			ui.actionAutoRun_A->setEnabled(false);
+		}
+		else
+		{
+			ui.actionBegin_S->setEnabled(true);
+			ui.actionPrevious_B->setEnabled(true);
+			ui.actionNext_F->setEnabled(true);
+			ui.actionEnd_E->setEnabled(true);
+			ui.actionAutoRun_A->setEnabled(true);
+		}
     }
 
     // 更新局面
     game->phaseChange(currentRow);
 }
 
+// 自动运行
 void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 {
+	int rows = ui.listView->model()->rowCount();
+	int currentRow = ui.listView->currentIndex().row();
 
+	if (rows <= 1)
+		return;
+
+	// 反复执行“下一招”
+	while (currentRow < rows - 1)
+	{
+		if (currentRow < rows - 1)
+		{
+			ui.listView->setCurrentIndex(ui.listView->model()->index(currentRow + 1, 0));
+		}
+		currentRow = ui.listView->currentIndex().row();
+		// 更新动作状态
+		if (currentRow <= 0) {
+			ui.actionBegin_S->setEnabled(false);
+			ui.actionPrevious_B->setEnabled(false);
+			ui.actionNext_F->setEnabled(true);
+			ui.actionEnd_E->setEnabled(true);
+			ui.actionAutoRun_A->setEnabled(true);
+		}
+		else if (currentRow >= rows - 1)
+		{
+			ui.actionBegin_S->setEnabled(true);
+			ui.actionPrevious_B->setEnabled(true);
+			ui.actionNext_F->setEnabled(false);
+			ui.actionEnd_E->setEnabled(false);
+			ui.actionAutoRun_A->setEnabled(false);
+		}
+		else
+		{
+			ui.actionBegin_S->setEnabled(true);
+			ui.actionPrevious_B->setEnabled(true);
+			ui.actionNext_F->setEnabled(true);
+			ui.actionEnd_E->setEnabled(true);
+			ui.actionAutoRun_A->setEnabled(true);
+		}
+		// 更新局面
+		game->phaseChange(currentRow);
+	}
 }
 
 

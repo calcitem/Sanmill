@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QAbstractButton>
+#include <QMap>
 #include "gamecontroller.h"
 #include "graphicsconst.h"
 #include "boarditem.h"
@@ -42,6 +43,10 @@ stepsLimit(0)
 
 GameController::~GameController()
 {
+	// 清除棋子
+	qDeleteAll(pieceList);
+	pieceList.clear();
+	piece = NULL;
 }
 
 const QMap<int, QStringList> GameController::getActions()
@@ -88,6 +93,35 @@ void GameController::gameReset()
     piece = NULL;
     // 重新绘制棋盘
     scene.setDiagonal(chess.getRule()->hasObliqueLine);
+
+	// 绘制所有棋子，放在起始位置，分成2组写，后面好区分
+	for (int i = 0; i < chess.getRule()->numOfChess; i++)
+	{
+		PieceItem::Models md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
+		PieceItem *newP = new PieceItem;
+		newP->setModel(md);
+		newP->setPos(scene.pos_p1);
+		newP->setNum(i + 1);
+		// 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
+		if (!(chess.getRule()->canRepeated))
+			newP->setShowNum(true);
+		pieceList.append(newP);
+		scene.addItem(newP);
+	}
+	for (int i = 0; i < chess.getRule()->numOfChess; i++)
+	{
+		PieceItem::Models md = isInverted ? PieceItem::blackPiece : PieceItem::whitePiece;
+		PieceItem *newP = new PieceItem;
+		newP->setModel(md);
+		newP->setPos(scene.pos_p2);
+		newP->setNum(i + 1);
+		// 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
+		if (!(chess.getRule()->canRepeated))
+			newP->setShowNum(true);
+		pieceList.append(newP);
+		scene.addItem(newP);
+	}
+
 
     // 读取规则限时要求
     timeLimit = chess.getRule()->maxTime;
@@ -511,43 +545,67 @@ bool GameController::giveUp()
 
 bool GameController::updateScence(NineChess &chess)
 {
-    // 清除棋子
-    qDeleteAll(pieceList);
-    pieceList.clear();
-    piece = NULL;
+	const char *board = chess.getBoard();
+	QPointF pos;
+	int key;
+	int n = chess.getRule()->numOfChess * 2;
 
-    const char *board = chess.getBoard();
-    QPointF pos;
+	// 棋子就位
+	for (int i = 0; i < n; i++)
+	{
+		key = (i >= n/2) ? (i + 0x21 -n/2) : (i + 0x11);
+		int j;
+		for (j = NineChess::SEAT; j < (NineChess::SEAT)*(NineChess::RING + 1); j++)
+		{
+			if (board[j] == key)
+			{
+				pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
+				pieceList.at(i)->setPos(pos);
+				break;
+			}
+		}
+		if (j == (NineChess::SEAT)*(NineChess::RING + 1))
+		{
+			pieceList.at(i)->setPos((i % 2) ? scene.pos_p2 : scene.pos_p1);
+		}
+	}
 
-    for (int i = NineChess::SEAT; i < (NineChess::SEAT)*(NineChess::RING + 1); i++) {
-        pos = scene.cp2pos(i / NineChess::SEAT, i % NineChess::SEAT + 1);
-        if (board[i] & 0x30) {
-            PieceItem *newP = NULL;
-            PieceItem::Models md;
-            if (isInverted)
-                md = (board[i] & 0x10) ? PieceItem::whitePiece : PieceItem::blackPiece;
-            else
-                md = (board[i] & 0x10) ? PieceItem::blackPiece : PieceItem::whitePiece;
-            newP = new PieceItem;
-            newP->setModel(md);
-            newP->setPos(pos);
-            newP->setNum(chess.getPieceNum(i / NineChess::SEAT, i % NineChess::SEAT + 1));
-            // 如果重复三连不可用，则显示棋子序号
-            if (!(chess.getRule()->canRepeated))
-                newP->setShowNum(true);
-            pieceList.append(newP);
-            scene.addItem(newP);
-        }
-        else if (board[i] & 0x0F) {
-            PieceItem *newP = NULL;
-            newP = new PieceItem;
-            newP->setDeleted();
-            newP->setPos(pos);
-            pieceList.append(newP);
-            scene.addItem(newP);
-        }
-    }
+	// 添加开局禁子点
+	if (chess.getRule()->hasForbidden && chess.getPhase() == NineChess::GAME_OPENING)
+	{
+		for (int j = NineChess::SEAT; j < (NineChess::SEAT)*(NineChess::RING + 1); j++)
+		{
+			if (board[j] == 0x0F)
+			{
+				pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
+				if (n < pieceList.size())
+				{
+					pieceList.at(n++)->setPos(pos);
+				}
+				else
+				{
+					PieceItem *newP = new PieceItem;
+					newP->setDeleted();
+					newP->setPos(pos);
+					pieceList.append(newP);
+					n++;
+					scene.addItem(newP);
+				}
+			}
+		}
+	}
 
+	// 中局清除禁子点
+	if (chess.getRule()->hasForbidden && chess.getPhase() != NineChess::GAME_OPENING)
+	{
+		while (n < pieceList.size())
+		{
+			delete pieceList.at(n);
+			pieceList.removeAt(n);
+		}
+	}
+
+	// 选中当前棋子
     int ipos = chess.getCurrentPos();
     if (ipos) {
         pos = scene.cp2pos(ipos / NineChess::SEAT, ipos % NineChess::SEAT + 1);
