@@ -1,10 +1,14 @@
 ﻿#ifndef CHESSITEM_H
 #define CHESSITEM_H
-
+#include <QObject>
 #include <QGraphicsItem>
 
-class PieceItem : public QGraphicsItem
+class PieceItem : public QObject, public QGraphicsItem
 {
+    Q_OBJECT
+	// 位置属性
+    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
+
 public:
     explicit PieceItem(QGraphicsItem *parent = 0);
     ~PieceItem();

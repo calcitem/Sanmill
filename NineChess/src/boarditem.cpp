@@ -2,7 +2,7 @@
 #include "graphicsconst.h"
 #include <QPainter>
 
-BoardItem::BoardItem(QGraphicsItem *parent ) : QGraphicsItem(parent),
+BoardItem::BoardItem(QGraphicsItem *parent ) : QGraphicsItem(),
     size(BOARD_SIZE),
     sizeShadow(5.0),
 	hasObliqueLine(false)

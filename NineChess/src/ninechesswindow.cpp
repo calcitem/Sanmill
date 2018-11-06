@@ -16,6 +16,7 @@
 #include <QLabel>
 #include <QHelpEvent>
 #include <QToolTip>
+#include <QElapsedTimer>
 #include <QDebug>
 #include "ninechesswindow.h"
 #include "gamecontroller.h"
@@ -74,8 +75,8 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     // 初始化游戏规则菜单
     ui.menu_R->installEventFilter(this);
 
-    // 安装一次性定时器，执行初始化
-    QTimer::singleShot(0, this, SLOT(initialize()));
+    // 游戏初始化
+    initialize();
 }
 
 NineChessWindow::~NineChessWindow()
@@ -110,14 +111,10 @@ bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
 
 void NineChessWindow::initialize()
 {
-    // 如果游戏已经初始化，则退出
-    if (game != NULL)
-        return;
+	// 开辟一个新的游戏控制器
+	game = new GameController(*scene, this);
 
-    // 开辟一个新的游戏控制器
-    game = new GameController(*scene, this);
-
-    // 添加新菜单栏动作
+	// 添加新菜单栏动作
     QMap <int, QStringList> actions = game->getActions();
     QMap <int, QStringList>::const_iterator i;
     for (i = actions.constBegin(); i != actions.constEnd(); i++) {
@@ -275,7 +272,27 @@ void NineChessWindow::on_actionOpen_O_triggered()
             {
                 cmd = textStream.readLine();
                 game->command(cmd);
-            }
+				// 自动运行前禁用所有控件
+				ui.menuBar->setEnabled(false);
+				ui.mainToolBar->setEnabled(false);
+				ui.dockWidget->setEnabled(false);
+				ui.gameView->setEnabled(false);
+				// 处理自动播放时的动画
+				if (game->isAnimation()) {
+					QElapsedTimer et;
+					et.start();
+					int waitTime = game->getDurationTime() + 50;
+					while (et.elapsed() < waitTime)
+						QCoreApplication::processEvents();
+				}
+				// 自动运行结束后启用所有控件
+				ui.menuBar->setEnabled(true);
+				ui.mainToolBar->setEnabled(true);
+				ui.dockWidget->setEnabled(true);
+				ui.gameView->setEnabled(true);
+				// 取消自动运行按钮的选中状态
+				ui.actionAutoRun_A->setChecked(false);
+			}
         }
     }
 }
@@ -428,6 +445,12 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 	if (rows <= 1)
 		return;
 
+	// 自动运行前禁用所有控件
+	ui.menuBar->setEnabled(false);
+	ui.mainToolBar->setEnabled(false);
+	ui.dockWidget->setEnabled(false);
+	ui.gameView->setEnabled(false);
+
 	// 反复执行“下一招”
 	while (currentRow < rows - 1)
 	{
@@ -460,9 +483,26 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 			ui.actionEnd_E->setEnabled(true);
 			ui.actionAutoRun_A->setEnabled(true);
 		}
+
 		// 更新局面
 		game->phaseChange(currentRow);
+		// 处理自动播放时的动画
+		if (game->isAnimation()) {
+			QElapsedTimer et;
+			et.start();
+			int waitTime = game->getDurationTime() + 50;
+			while (et.elapsed() < waitTime)
+				QCoreApplication::processEvents();
+		}
 	}
+
+	// 自动运行结束后启用所有控件
+	ui.menuBar->setEnabled(true);
+	ui.mainToolBar->setEnabled(true);
+	ui.dockWidget->setEnabled(true);
+	ui.gameView->setEnabled(true);
+	// 取消自动运行按钮的选中状态
+	ui.actionAutoRun_A->setChecked(false);
 }
 
 

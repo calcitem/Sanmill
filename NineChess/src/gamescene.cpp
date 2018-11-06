@@ -10,10 +10,10 @@
 
 GameScene::GameScene(QObject *parent) : QGraphicsScene(parent),
 	board(NULL),
-	pos_p1(LINE_INTERVAL * 6, LINE_INTERVAL * 3),
-	pos_p1_g(LINE_INTERVAL* (-6), LINE_INTERVAL * 3),
-	pos_p2(LINE_INTERVAL * (-6), LINE_INTERVAL * (-3)),
-	pos_p2_g(LINE_INTERVAL * 6, LINE_INTERVAL * (-3))
+	pos_p1(LINE_INTERVAL * 4, LINE_INTERVAL * 6),
+	pos_p1_g(LINE_INTERVAL* (-4), LINE_INTERVAL * 6),
+	pos_p2(LINE_INTERVAL * (-4), LINE_INTERVAL * (-6)),
+	pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL * (-6))
 {
     // 添加棋盘
     board = new BoardItem;

@@ -83,9 +83,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\boarditem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <QtMoc Include="src\gamecontroller.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -104,12 +101,12 @@
     <QtMoc Include="src\ninechesswindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClInclude Include="src\pieceitem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <QtMoc Include="src\pieceitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -256,5 +253,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="NineChess.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\boarditem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -33,6 +33,9 @@ public:
     int getRuleNo() { return ruleNo; }
     int getTimeLimit() { return timeLimit; }
     int getStepsLimit() { return stepsLimit; }
+	bool isAnimation() { return hasAnimation; }
+	void setDurationTime(int i) { durationTime = i; }
+	int getDurationTime() { return durationTime; }
     // 棋谱字符串列表模型
     QStringListModel manualListModel;
 
@@ -99,11 +102,11 @@ private:
     // 所有棋子
     QList<PieceItem *> pieceList;
     // 当前棋子
-    PieceItem *piece;
+    PieceItem *currentPiece;
     // 当前浏览的棋谱行
     int currentRow;
-    // 玩家1手棋数、玩家2手棋数、待去棋数
-    int player1_InHand, player2_InHand, num_NeedRemove;
+    // 玩家1手棋数、玩家2手棋数、待去棋数，没有用到，注释掉
+    //int player1_InHand, player2_InHand, num_NeedRemove;
     // 是否处于“编辑棋局”状态
     bool isEditing;
     // 是否黑白反转
@@ -114,7 +117,9 @@ private:
     bool isEngine2;
     // 是否有落子动画
     bool hasAnimation;
-    // 是否有落子音效
+	// 动画持续时间
+	int durationTime;
+	// 是否有落子音效
     bool hasSound;
     // 定时器ID
     int timeID;

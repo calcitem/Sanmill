@@ -497,9 +497,6 @@
    </property>
   </action>
   <action name="actionEdit_E">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>

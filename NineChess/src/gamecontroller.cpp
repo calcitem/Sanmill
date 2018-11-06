@@ -10,7 +10,8 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QAbstractButton>
-#include <QMap>
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
 #include "gamecontroller.h"
 #include "graphicsconst.h"
 #include "boarditem.h"
@@ -19,13 +20,14 @@
 GameController::GameController(GameScene &scene, QObject *parent) : QObject(parent),
 // 是否浏览过历史纪录
 scene(scene),
-piece(NULL),
+currentPiece(NULL),
 currentRow(-1),
 isEditing(false),
 isInverted(false),
 isEngine1(false),
 isEngine2(false),
 hasAnimation(true),
+durationTime(250),
 hasSound(true),
 timeID(0),
 ruleNo(-1),
@@ -46,7 +48,7 @@ GameController::~GameController()
 	// 清除棋子
 	qDeleteAll(pieceList);
 	pieceList.clear();
-	piece = NULL;
+	currentPiece = NULL;
 }
 
 const QMap<int, QStringList> GameController::getActions()
@@ -90,7 +92,7 @@ void GameController::gameReset()
     // 清除棋子
     qDeleteAll(pieceList);
     pieceList.clear();
-    piece = NULL;
+    currentPiece = NULL;
     // 重新绘制棋盘
     scene.setDiagonal(chess.getRule()->hasObliqueLine);
 
@@ -217,6 +219,11 @@ void GameController::setEngine2(bool arg)
 void GameController::setAnimation(bool arg)
 {
     hasAnimation = arg;
+	// 默认动画时间250ms
+	if (hasAnimation)
+		durationTime = 250;
+	else
+		durationTime = 0;
 }
 
 void GameController::setSound(bool arg)
@@ -478,7 +485,7 @@ bool GameController::placePiece(QPointF pos)
 // 移动旧子
 bool GameController::movePiece(QPointF pos)
 {
-    if (!piece) {
+    if (!currentPiece) {
         return false;
     }
     int c, p;
@@ -547,27 +554,60 @@ bool GameController::updateScence(NineChess &chess)
 {
 	const char *board = chess.getBoard();
 	QPointF pos;
+	// chess类中的棋子代码
 	int key;
+	// 棋子总数
 	int n = chess.getRule()->numOfChess * 2;
 
-	// 棋子就位
-	for (int i = 0; i < n; i++)
+    // 动画组
+    QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup;
+
+    // 棋子就位
+	PieceItem *piece = NULL;
+    for (int i = 0; i < n; i++)
 	{
+		piece = pieceList.at(i);
+		// 将pieceList的下标转换为chess的棋子代号
 		key = (i >= n/2) ? (i + 0x21 -n/2) : (i + 0x11);
 		int j;
+		// 放置棋盘上的棋子
 		for (j = NineChess::SEAT; j < (NineChess::SEAT)*(NineChess::RING + 1); j++)
 		{
 			if (board[j] == key)
 			{
 				pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
-				pieceList.at(i)->setPos(pos);
+				if (piece->pos() != pos) {
+                    QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
+					animation->setDuration(durationTime);
+					animation->setStartValue(piece->pos());
+					animation->setEndValue(pos);
+					animation->setEasingCurve(QEasingCurve::InOutQuad);
+					animationGroup->addAnimation(animation);
+				}
 				break;
 			}
 		}
+
+		// 放置棋盘外的棋子
 		if (j == (NineChess::SEAT)*(NineChess::RING + 1))
 		{
-			pieceList.at(i)->setPos((i % 2) ? scene.pos_p2 : scene.pos_p1);
-		}
+			// 判断是被吃掉的子，还是未安放的子
+			if (key & 0x10) {
+				pos = (key - 0x11 < n / 2 - chess.getPlayer1_InHand()) ? scene.pos_p2_g : scene.pos_p1;
+			}
+			else
+				pos = (key - 0x21 < n / 2 - chess.getPlayer2_InHand()) ? scene.pos_p1_g : scene.pos_p2;
+
+			if (piece->pos() != pos) {
+                QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
+                animation->setDuration(durationTime);
+                animation->setStartValue(piece->pos());
+                animation->setEndValue(pos);
+				animation->setEasingCurve(QEasingCurve::InOutQuad);
+				animationGroup->addAnimation(animation);
+            }
+        }
+		piece->setSelected(false);
 	}
 
 	// 添加开局禁子点
@@ -608,11 +648,12 @@ bool GameController::updateScence(NineChess &chess)
 	// 选中当前棋子
     int ipos = chess.getCurrentPos();
     if (ipos) {
-        pos = scene.cp2pos(ipos / NineChess::SEAT, ipos % NineChess::SEAT + 1);
-        piece = qgraphicsitem_cast<PieceItem *> (scene.itemAt(pos, QTransform()));
-        if (piece)
-            piece->setSelected(true);
+		key = board[chess.getCurrentPos()];
+		currentPiece = pieceList.at(key & 0x10 ? key - 0x11 : key - 0x21 + n/2);
+		currentPiece->setSelected(true);
     }
+
+    animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     return true;
 }
