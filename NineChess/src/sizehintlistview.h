@@ -18,7 +18,7 @@ class SizeHintListView : public QListView
     Q_OBJECT
 
 public:
-    SizeHintListView(QWidget * parent = 0) {}
+    SizeHintListView(QWidget * parent = 0) { Q_UNUSED(parent) }
     QSize sizeHint() const {
         QSize size = QListView::sizeHint();
         // 缺省宽度设为128，这样就不太宽了
@@ -32,7 +32,7 @@ signals:
 
 protected slots:
     // 屏蔽掉双击编辑功能
-    void mouseDoubleClickEvent(QMouseEvent *event) {}
+    void mouseDoubleClickEvent(QMouseEvent *event) { Q_UNUSED(event) }
 
     /* 本来重载rowsInserted函数用于在插入新行后自动选中最后一行，
     但是，在关联Model的insertRow执行后rowsInserted会被立即执行，

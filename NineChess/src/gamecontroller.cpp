@@ -15,7 +15,6 @@
 #include "gamecontroller.h"
 #include "graphicsconst.h"
 #include "boarditem.h"
-#include "pieceitem.h"
 
 GameController::GameController(GameScene &scene, QObject *parent) : QObject(parent),
 // 是否浏览过历史纪录
@@ -245,6 +244,7 @@ bool GameController::eventFilter(QObject * watched, QEvent * event)
 
 void GameController::timerEvent(QTimerEvent *event)
 {
+	Q_UNUSED(event)
     static QTime qt1, qt2;
     // 玩家的已用时间
     chess.getPlayer_TimeMS(time1, time2);
@@ -358,7 +358,7 @@ bool GameController::actionPiece(QPointF pos)
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setMinimumSize(600, 400);
         msgBox.setText(tr("当前正在浏览历史局面。"));
-        msgBox.setInformativeText(tr("是否在此局面下重新开始？"));
+        msgBox.setInformativeText(tr("是否在此局面下重新开始？悔棋者将承担时间损失！"));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
         (msgBox.button(QMessageBox::Ok))->setText(tr("确定"));

@@ -17,9 +17,9 @@
 #include <QModelIndex>
 #include "ninechess.h"
 #include "gamescene.h"
+#include "pieceitem.h"
 //#include "sizehintlistview.h"
 
-class PieceItem;
 
 class GameController : public QObject
 {

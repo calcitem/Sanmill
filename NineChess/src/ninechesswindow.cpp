@@ -16,7 +16,6 @@
 #include <QLabel>
 #include <QHelpEvent>
 #include <QToolTip>
-#include <QElapsedTimer>
 #include <QDebug>
 #include "ninechesswindow.h"
 #include "gamecontroller.h"
@@ -272,26 +271,6 @@ void NineChessWindow::on_actionOpen_O_triggered()
             {
                 cmd = textStream.readLine();
                 game->command(cmd);
-				// 自动运行前禁用所有控件
-				ui.menuBar->setEnabled(false);
-				ui.mainToolBar->setEnabled(false);
-				ui.dockWidget->setEnabled(false);
-				ui.gameView->setEnabled(false);
-				// 处理自动播放时的动画
-				if (game->isAnimation()) {
-					QElapsedTimer et;
-					et.start();
-					int waitTime = game->getDurationTime() + 50;
-					while (et.elapsed() < waitTime)
-						QCoreApplication::processEvents();
-				}
-				// 自动运行结束后启用所有控件
-				ui.menuBar->setEnabled(true);
-				ui.mainToolBar->setEnabled(true);
-				ui.dockWidget->setEnabled(true);
-				ui.gameView->setEnabled(true);
-				// 取消自动运行按钮的选中状态
-				ui.actionAutoRun_A->setChecked(false);
 			}
         }
     }
@@ -344,7 +323,7 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
 
 void NineChessWindow::on_actionEdit_E_toggled(bool arg1)
 {
-
+	Q_UNUSED(arg1)
 }
 
 void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
@@ -434,11 +413,22 @@ void NineChessWindow::on_actionRowChange()
 
     // 更新局面
     game->phaseChange(currentRow);
+	// 处理自动播放时的动画
+	if (game->isAnimation()) {
+		int waitTime = game->getDurationTime() + 50;
+		// 使用QEventLoop进行非阻塞延时，CPU占用低
+		QEventLoop loop;
+		QTimer::singleShot(waitTime, &loop, SLOT(quit()));
+		loop.exec();
+	}
 }
 
 // 自动运行
 void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 {
+	if (!arg1)
+		return;
+
 	int rows = ui.listView->model()->rowCount();
 	int currentRow = ui.listView->currentIndex().row();
 
@@ -488,11 +478,19 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 		game->phaseChange(currentRow);
 		// 处理自动播放时的动画
 		if (game->isAnimation()) {
-			QElapsedTimer et;
-			et.start();
 			int waitTime = game->getDurationTime() + 50;
-			while (et.elapsed() < waitTime)
-				QCoreApplication::processEvents();
+
+			// 不使用processEvents函数进行非阻塞延时，频繁调用占用CPU较多
+			//QElapsedTimer et;
+			//et.start();
+			//while (et.elapsed() < waitTime) {
+			//	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+			//}
+
+			// 使用QEventLoop进行非阻塞延时，CPU占用低
+			QEventLoop loop;
+			QTimer::singleShot(waitTime, &loop, SLOT(quit()));
+			loop.exec();
 		}
 	}
 
@@ -603,7 +601,7 @@ void NineChessWindow::on_actionEngine_E_triggered()
 
 void NineChessWindow::on_actionViewHelp_V_triggered()
 {
-
+	QDesktopServices::openUrl(QUrl("https://blog.csdn.net/liuweilhy/article/details/83832180"));
 }
 
 void NineChessWindow::on_actionWeb_W_triggered()
