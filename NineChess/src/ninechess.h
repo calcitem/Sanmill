@@ -9,6 +9,7 @@
 
 #include <sys/timeb.h>
 #include <string>
+#include <cstring>
 #include <list>
 
 using std::string;

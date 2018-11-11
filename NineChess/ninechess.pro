@@ -13,26 +13,29 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NineChess
 TEMPLATE = app
 
+CONFIG += C++11 \
+    warn_off
 
-SOURCES += src\main.cpp \
-    src\ninechesswindow.cpp \
-    src\pieceitem.cpp \
-    src\gamecontroller.cpp \
-    src\boarditem.cpp \
-    src\gameview.cpp \
-    src\ninechess.cpp \
-    src\gamescene.cpp
+SOURCES += \
+    src/main.cpp \
+    src/boarditem.cpp \
+    src/gamecontroller.cpp \
+    src/gamescene.cpp \
+    src/gameview.cpp \
+    src/ninechess.cpp \
+    src/ninechesswindow.cpp \
+    src/pieceitem.cpp
 
 HEADERS  += \
-    src\ninechesswindow.h \
-    src\pieceitem.h \
-    src\gamecontroller.h \
-    src\graphicsconst.h \
-    src\boarditem.h \
-    src\gameview.h \
-    src\ninechess.h \
-    src\sizehintlistview.h \
-    src\gamescene.h
+    src/boarditem.h \
+    src/gamecontroller.h \
+    src/gamescene.h \
+    src/gameview.h \
+    src/graphicsconst.h \
+    src/ninechess.h \
+    src/ninechesswindow.h \
+    src/pieceitem.h \
+    src/sizehintlistview.h
 
 FORMS    += \
     ninechesswindow.ui
@@ -41,9 +44,9 @@ RESOURCES += \
     ninechesswindow.qrc
 
 DISTFILES += \
-    NineChess.rc \
-    Readme.md \
-    Licence.txt \
-    History.txt
+    ../Readme.md \
+    ../范例棋谱.txt \
+    ../History.txt \
+    ../Licence.txt
 
 RC_FILE += NineChess.rc

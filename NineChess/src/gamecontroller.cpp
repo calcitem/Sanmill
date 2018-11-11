@@ -47,7 +47,7 @@ GameController::~GameController()
 	// 清除棋子
 	qDeleteAll(pieceList);
 	pieceList.clear();
-	currentPiece = NULL;
+    currentPiece = nullptr;
 }
 
 const QMap<int, QStringList> GameController::getActions()
