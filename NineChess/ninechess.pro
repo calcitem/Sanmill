@@ -47,6 +47,7 @@ DISTFILES += \
     ../Readme.md \
     ../范例棋谱.txt \
     ../History.txt \
-    ../Licence.txt
+    ../Licence.txt \
+    NineChess.rc
 
 RC_FILE += NineChess.rc
