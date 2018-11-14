@@ -24,8 +24,8 @@
 
 NineChessWindow::NineChessWindow(QWidget *parent)
     : QMainWindow(parent),
-    scene(NULL),
-    game(NULL),
+    scene(nullptr),
+    game(nullptr),
     ruleNo(0)
 {
     ui.setupUi(this);
@@ -80,7 +80,7 @@ NineChessWindow::NineChessWindow(QWidget *parent)
 
 NineChessWindow::~NineChessWindow()
 {
-    if (game != NULL)
+    if (game != nullptr)
         delete game;
     qDeleteAll(ruleActionList);
     if (file.isOpen())
@@ -115,8 +115,7 @@ void NineChessWindow::initialize()
 
 	// 添加新菜单栏动作
     QMap <int, QStringList> actions = game->getActions();
-    QMap <int, QStringList>::const_iterator i;
-    for (i = actions.constBegin(); i != actions.constEnd(); i++) {
+    for (auto i = actions.constBegin(); i != actions.constEnd(); i++) {
         // qDebug() << i.key() << i.value();
         // QMap的key存放int索引值，value存放规则名称和规则提示
         QAction *ruleAction = new QAction(i.value().at(0), this);
@@ -260,18 +259,29 @@ void NineChessWindow::on_actionOpen_O_triggered()
             msgBox.exec();
             return;
         }
+
         //打开文件,只读方式打开
         bool isok = file.open(QFileDevice::ReadOnly | QFileDevice::Text);
-        if (isok = true)
+        if (isok)
         {
             //读文件
             QTextStream textStream(&file);
             QString cmd;
+            cmd = textStream.readLine();
+            // 读取并显示棋谱时，不必刷新棋局场景
+            if(!(game->command(cmd,false))) {
+                // 定义新对话框
+                QMessageBox msgBox(QMessageBox::Warning, tr("文件错误"), tr("不是正确的棋谱文件"), QMessageBox::Ok);
+                msgBox.exec();
+                return;
+            }
             while (!textStream.atEnd())
             {
                 cmd = textStream.readLine();
-                game->command(cmd);
+                game->command(cmd, false);
 			}
+            // 最后刷新棋局场景
+            game->updateScence();
         }
     }
 }
@@ -283,7 +293,7 @@ void NineChessWindow::on_actionSave_S_triggered()
         file.close();
         //打开文件,只写方式打开
         bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
-        if (isok = true)
+        if (isok)
         {
             //写文件
             QTextStream textStream(&file);
@@ -308,7 +318,7 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
         file.setFileName(path);
         //打开文件,只写方式打开
         bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
-        if (isok = true)
+        if (isok)
         {
             //写文件
             QTextStream textStream(&file);
@@ -357,21 +367,21 @@ void NineChessWindow::on_actionRowChange()
     int currentRow = ui.listView->currentIndex().row();
 
     QObject * const obsender = sender();
-    if (obsender != NULL) {
-        if (obsender == (QObject *)ui.actionBegin_S) {
+    if (obsender != nullptr) {
+        if (obsender == ui.actionBegin_S) {
             ui.listView->setCurrentIndex(model->index(0, 0));
         }
-        else if (obsender == (QObject *)ui.actionPrevious_B) {
+        else if (obsender == ui.actionPrevious_B) {
             if (currentRow > 0) {
                 ui.listView->setCurrentIndex(model->index(currentRow - 1, 0));
             }
         }
-        else if (obsender == (QObject *)ui.actionNext_F) {
+        else if (obsender == ui.actionNext_F) {
             if (currentRow < rows - 1) {
                 ui.listView->setCurrentIndex(model->index(currentRow + 1, 0));
             }
         }
-        else if (obsender == (QObject *)ui.actionEnd_E) {
+        else if (obsender == ui.actionEnd_E) {
             ui.listView->setCurrentIndex(model->index(rows - 1, 0));
         }
         currentRow = ui.listView->currentIndex().row();
@@ -412,9 +422,9 @@ void NineChessWindow::on_actionRowChange()
     }
 
     // 更新局面
-    game->phaseChange(currentRow);
+    bool changed = game->phaseChange(currentRow);
 	// 处理自动播放时的动画
-	if (game->isAnimation()) {
+    if (changed && game->isAnimation()) {
 		int waitTime = game->getDurationTime() + 50;
 		// 使用QEventLoop进行非阻塞延时，CPU占用低
 		QEventLoop loop;
@@ -596,7 +606,7 @@ void NineChessWindow::on_actionInternet_I_triggered()
 
 void NineChessWindow::on_actionEngine_E_triggered()
 {
-
+    // 空着，有时间再做
 }
 
 void NineChessWindow::on_actionViewHelp_V_triggered()

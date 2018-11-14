@@ -95,7 +95,7 @@ public:
         int t = 0,   // 限制时间
         int step = 0,   // 默认起始步数为0
         int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE | NOBODY, // 默认状态
-        const char *boardsource = NULL,   // 默认空棋盘
+        const char *boardsource = nullptr,   // 默认空棋盘
         int p1_InHand = 12,     // 玩家1剩余未放置子数
         int p2_InHand = 12,     // 玩家2剩余未放置子数
         int num_NeedRemove = 0  // 尚待去除的子数

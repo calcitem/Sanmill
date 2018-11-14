@@ -26,7 +26,7 @@ class GameController : public QObject
     Q_OBJECT
 
 public:
-    GameController(GameScene &scene, QObject *parent = 0);
+    GameController(GameScene &scene, QObject *parent = nullptr);
     ~GameController();
     //主窗口菜单栏明细
     const QMap <int, QStringList> getActions();
@@ -73,9 +73,12 @@ public slots:
 	// 认输
 	bool giveUp();
     // 棋谱的命令行执行
-    bool command(QString &cmd);
+    bool command(QString &cmd, bool update = true);
     // 历史局面及局面改变
-    void phaseChange(int row, bool change = false);
+    bool phaseChange(int row);
+    // 更新棋局显示，每步后必须执行
+    bool updateScence();
+    bool updateScence(NineChess &chess);
 
 protected:
     bool eventFilter(QObject * watched, QEvent * event);
@@ -89,8 +92,6 @@ protected:
     bool movePiece(QPointF pos);
     // 去子
     bool removePiece(QPointF pos);
-    // 更新棋局显示，每步后必须执行
-    bool updateScence(NineChess &chess);
 
 private:
     // 棋对象的数据模型

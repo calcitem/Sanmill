@@ -15,7 +15,7 @@ class NineChessWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	NineChessWindow(QWidget *parent = 0);
+    NineChessWindow(QWidget *parent = nullptr);
 	~NineChessWindow();
 
 protected:

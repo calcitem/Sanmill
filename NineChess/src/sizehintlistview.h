@@ -18,7 +18,7 @@ class SizeHintListView : public QListView
     Q_OBJECT
 
 public:
-    SizeHintListView(QWidget * parent = 0) { Q_UNUSED(parent) }
+    SizeHintListView(QWidget * parent = nullptr) { Q_UNUSED(parent) }
     QSize sizeHint() const {
         QSize size = QListView::sizeHint();
         // 缺省宽度设为128，这样就不太宽了

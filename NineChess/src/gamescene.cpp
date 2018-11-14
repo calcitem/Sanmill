@@ -9,7 +9,7 @@
 #include <QDebug>
 
 GameScene::GameScene(QObject *parent) : QGraphicsScene(parent),
-	board(NULL),
+    board(nullptr),
 	pos_p1(LINE_INTERVAL * 4, LINE_INTERVAL * 6),
 	pos_p1_g(LINE_INTERVAL* (-4), LINE_INTERVAL * 6),
 	pos_p2(LINE_INTERVAL * (-4), LINE_INTERVAL * (-6)),
@@ -29,7 +29,7 @@ GameScene::~GameScene()
 
 void GameScene::keyPressEvent(QKeyEvent *keyEvent)
 {
-    // 屏蔽掉Shift和Control按键，事实证明没用，按键事件未必由试图类处理
+    // 屏蔽掉Shift和Control按键，事实证明没用，按键事件未必由视图类处理
     if(keyEvent->key() == Qt::Key_Shift || keyEvent->key() == Qt::Key_Control)
         return;
     QGraphicsScene::keyPressEvent(keyEvent);
@@ -38,16 +38,17 @@ void GameScene::keyPressEvent(QKeyEvent *keyEvent)
 void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     //什么也不做，屏蔽双击事件
+    Q_UNUSED(mouseEvent)
 }
 
 void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+    //什么也不做，屏蔽鼠标按下事件
+    Q_UNUSED(mouseEvent)
+    /*
     // 只处理左键事件
     if(mouseEvent->button() != Qt::LeftButton)
         return;
-    // 调用默认事件处理函数
-    QGraphicsScene::mousePressEvent(mouseEvent);
-
     // 如果不是棋子则结束
     QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
     if (!item || item->type() != PieceItem::Type)
@@ -55,11 +56,9 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         return;
     }
 
-    // 取消其它棋子的选中状态
-    //for (QGraphicsItem * item: selectedItems())
-    //{
-    //    item->setSelected(false);
-    //}
+    // 调用默认事件处理函数
+    //QGraphicsScene::mousePressEvent(mouseEvent);
+    */
 }
 
 void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -67,8 +66,6 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     // 只处理左键事件
     if(mouseEvent->button() != Qt::LeftButton)
         return;
-    // 调用默认事件处理函数
-    QGraphicsScene::mouseReleaseEvent(mouseEvent);
 
     // 如果是棋盘
     QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
@@ -85,6 +82,9 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         // 将当前棋子在场景中的位置发送出去
         emit mouseReleased(item->scenePos());
     }
+
+    // 调用默认事件处理函数
+    //QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 
 QPointF GameScene::cp2pos(int c, int p)

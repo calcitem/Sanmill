@@ -10,12 +10,12 @@ class PieceItem : public QObject, public QGraphicsItem
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 
 public:
-    explicit PieceItem(QGraphicsItem *parent = 0);
+    explicit PieceItem(QGraphicsItem *parent = nullptr);
     ~PieceItem();
 	QRectF boundingRect() const;
 	QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-        QWidget * widget = 0);
+        QWidget * widget = nullptr);
 
     // 用UserType+2表示棋子，用qgraphicsitem_cast()判断是否为PieceItem类的对象
     // 还有一个方式是把类名放在Data的0key位置setData(0, "PieceItem")，然后用data(0)来判断

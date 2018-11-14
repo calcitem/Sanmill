@@ -164,7 +164,7 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
     // 胜负标识
     winner = NOBODY;
     // 当前棋局（3×8）
-    if (boardsource == NULL)
+    if (boardsource == nullptr)
         memset(this->board, 0, sizeof(this->board));
     else
         memcpy(this->board, boardsource, sizeof(this->board));
@@ -315,7 +315,7 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
         return false;
     }
 
-    return true;
+    //return true;
 }
 
 void NineChess::getData(struct Rule &rule, int &step, int &chess, const char *&board,
@@ -688,7 +688,7 @@ bool NineChess::choose(int c, int p)
         return false;
     int pos = cp2pos(c, p);
     // 根据先后手，判断可选子
-    char t;
+    char t ='\0';
     if (turn == PLAYER1)
         t = '\x10';
     else if (turn == PLAYER2)
