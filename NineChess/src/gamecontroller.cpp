@@ -200,19 +200,28 @@ void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimit
 void GameController::setEngine1(bool arg)
 {
     isEngine1 = arg;
-    if (arg)
+    if (arg) {
         qDebug() << "Player1 is computer.";
-    else
+        ai1.setChess(chess);
+        ai1.start();
+    }
+    else {
         qDebug() << "Player1 is not computer.";
+        ai1.stop();
+    }
 }
 
 void GameController::setEngine2(bool arg)
 {
     isEngine2 = arg;
-    if (arg)
+    if (arg) {
         qDebug() << "Player2 is computer.";
-    else
+//        ai2.start();
+    }
+    else {
         qDebug() << "Player2 is not computer.";
+        ai2.stop();
+    }
 }
 
 void GameController::setAnimation(bool arg)

@@ -20,6 +20,7 @@ public:
 
 protected:
     bool eventFilter(QObject * watched, QEvent * event);
+    void closeEvent(QCloseEvent *event);
 
 private:
     // 界面文件

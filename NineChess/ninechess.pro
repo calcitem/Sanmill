@@ -3,7 +3,7 @@
 # Project created by QtCreator 2015-11-03T22:30:34
 #
 #-------------------------------------------------
-QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
+#QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
 
 QT       += core gui \
             multimedia
@@ -24,7 +24,8 @@ SOURCES += \
     src/gameview.cpp \
     src/ninechess.cpp \
     src/ninechesswindow.cpp \
-    src/pieceitem.cpp
+    src/pieceitem.cpp \
+    src/aithread.cpp
 
 HEADERS  += \
     src/boarditem.h \
@@ -35,7 +36,8 @@ HEADERS  += \
     src/ninechess.h \
     src/ninechesswindow.h \
     src/pieceitem.h \
-    src/sizehintlistview.h
+    src/sizehintlistview.h \
+    src/aithread.h
 
 FORMS    += \
     ninechesswindow.ui

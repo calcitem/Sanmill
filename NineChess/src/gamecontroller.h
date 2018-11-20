@@ -18,8 +18,7 @@
 #include "ninechess.h"
 #include "gamescene.h"
 #include "pieceitem.h"
-//#include "sizehintlistview.h"
-
+#include "aithread.h"
 
 class GameController : public QObject
 {
@@ -98,6 +97,8 @@ private:
     NineChess chess;
     // 棋对象的数据模型（临时）
     NineChess chessTemp;
+    // 2个AI的线程
+    AiThread ai1, ai2;
     // 棋局的场景类
     GameScene &scene;
     // 所有棋子
@@ -124,7 +125,7 @@ private:
     bool hasSound;
     // 定时器ID
     int timeID;
-    // 规则变化
+    // 规则号
     int ruleNo;
     // 规则限时（分钟）
     int timeLimit;

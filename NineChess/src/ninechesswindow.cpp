@@ -17,6 +17,7 @@
 #include <QHelpEvent>
 #include <QToolTip>
 #include <QDebug>
+#include <QDesktopWidget>
 #include "ninechesswindow.h"
 #include "gamecontroller.h"
 #include "gamescene.h"
@@ -50,11 +51,9 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     // 视图反锯齿
     ui.gameView->setRenderHint(QPainter::Antialiasing);
 
-    // 因功能限制，使部分功能不可用
+    // 因功能限制，使部分功能不可用，将来再添加
     ui.actionEngine_E->setDisabled(true);
     ui.actionInternet_I->setDisabled(true);
-    ui.actionEngine1_T->setDisabled(true);
-    ui.actionEngine2_R->setDisabled(true);
     ui.actionSetting_O->setDisabled(true);
 
     // 关联既有动作信号和主窗口槽
@@ -74,17 +73,18 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     // 初始化游戏规则菜单
     ui.menu_R->installEventFilter(this);
 
+    // 主窗口居中显示
+    QRect deskTopRect = qApp->desktop()->availableGeometry();
+    int unitw=(deskTopRect.width() - width())/2;
+    int unith=(deskTopRect.height() - height())/2;
+    this->move(unitw,unith);
+
     // 游戏初始化
     initialize();
 }
 
 NineChessWindow::~NineChessWindow()
 {
-    if (game != nullptr)
-        delete game;
-    qDeleteAll(ruleActionList);
-    if (file.isOpen())
-        file.close();
 }
 
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
@@ -108,9 +108,27 @@ bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
     return QMainWindow::eventFilter(watched, event);
 }
 
+void NineChessWindow::closeEvent(QCloseEvent *event)
+{
+    if (file.isOpen())
+        file.close();
+    if (game) {
+        game->disconnect();
+        delete game;
+        game = nullptr;
+    }
+    qDeleteAll(ruleActionList);
+    //qDebug() << "closed";
+    QMainWindow::closeEvent(event);
+}
+
 void NineChessWindow::initialize()
 {
-	// 开辟一个新的游戏控制器
+    // 初始化函数，仅执行一次
+    if (game)
+        return;
+
+    // 开辟一个新的游戏控制器
 	game = new GameController(*scene, this);
 
 	// 添加新菜单栏动作
@@ -175,7 +193,7 @@ void NineChessWindow::initialize()
     ruleInfo();
 
     // 关联列表视图和字符串列表模型
-    ui.listView->setModel(& game->manualListModel);
+    ui.listView->setModel(&(game->manualListModel));
     // 因为QListView的rowsInserted在setModel之后才能启动，
     // 第一次需手动初始化选中listView第一项
     //qDebug() << ui.listView->model();
@@ -627,4 +645,3 @@ void NineChessWindow::on_actionAbout_A_triggered()
     aboutBox.setIcon(QMessageBox::Information);
     aboutBox.exec();
 }
-
