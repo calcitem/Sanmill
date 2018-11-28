@@ -17,37 +17,42 @@
 #include "boarditem.h"
 
 GameController::GameController(GameScene &scene, QObject *parent) : QObject(parent),
-// 是否浏览过历史纪录
-scene(scene),
-currentPiece(nullptr),
-currentRow(-1),
-isEditing(false),
-isInverted(false),
-isEngine1(false),
-isEngine2(false),
-hasAnimation(true),
-durationTime(250),
-hasSound(true),
-timeID(0),
-ruleNo(-1),
-timeLimit(0),
-stepsLimit(0)
+    scene(scene),
+    currentPiece(nullptr),
+    currentRow(-1),
+    isEditing(false),
+    isInverted(false),
+    isEngine1(false),
+    isEngine2(false),
+    hasAnimation(true),
+    durationTime(250),
+    hasSound(true),
+    timeID(0),
+    ruleNo(-1),
+    timeLimit(0),
+    stepsLimit(0)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
-    //scene.setBackgroundBrush(QPixmap(":/image/Resources/image/background.png"));
+    //scene.setBackgroundBrush(QPixmap(":/image/resources/image/background.png"));
 
     gameReset();
+    
+    // 关联AI和控制器的招法命令行
+    connect(&ai1, SIGNAL(command(const QString &, bool)),
+        this, SLOT(command(const QString &, bool)));
+    connect(&ai2, SIGNAL(command(const QString &, bool)),
+        this, SLOT(command(const QString &, bool)));
+
     // 安装事件过滤器监视scene的各个事件，由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
     //scene.installEventFilter(this);
 }
 
 GameController::~GameController()
 {
-	// 清除棋子
-	qDeleteAll(pieceList);
-	pieceList.clear();
-    currentPiece = nullptr;
+    // 停止计时器
+    if (timeID != 0)
+        killTimer(timeID);
 }
 
 const QMap<int, QStringList> GameController::getActions()
@@ -86,7 +91,7 @@ void GameController::gameReset()
     timeID = 0;
     // 重置游戏
     chess.reset();
-    chessTemp.reset();
+    chessTemp = chess;
 
     // 清除棋子
     qDeleteAll(pieceList);
@@ -123,7 +128,6 @@ void GameController::gameReset()
 		scene.addItem(newP);
 	}
 
-
     // 读取规则限时要求
     timeLimit = chess.getRule()->maxTime;
     // 如果规则不要求计时，则time1和time2表示已用时间
@@ -150,7 +154,7 @@ void GameController::gameReset()
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
     // 播放音效
-    playSound(":/sound/Resources/sound/newgame.wav");
+    playSound(":/sound/resources/sound/newgame.wav");
 }
 
 void GameController::setEditing(bool arg)
@@ -202,7 +206,7 @@ void GameController::setEngine1(bool arg)
     isEngine1 = arg;
     if (arg) {
         qDebug() << "Player1 is computer.";
-        ai1.setChess(chess);
+        ai1.setAi(chess);
         ai1.start();
     }
     else {
@@ -214,14 +218,7 @@ void GameController::setEngine1(bool arg)
 void GameController::setEngine2(bool arg)
 {
     isEngine2 = arg;
-    if (arg) {
-        qDebug() << "Player2 is computer.";
-//        ai2.start();
-    }
-    else {
-        qDebug() << "Player2 is not computer.";
-        ai2.stop();
-    }
+
 }
 
 void GameController::setAnimation(bool arg)
@@ -279,9 +276,11 @@ void GameController::timerEvent(QTimerEvent *event)
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
         // 播放音效
-        playSound(":/sound/Resources/sound/win.wav");
+        playSound(":/sound/resources/sound/win.wav");
     }
-    /*
+
+	// 测试用代码
+	/*
     int ti = time.elapsed();
     static QTime t;
     if (ti < 0)
@@ -305,7 +304,7 @@ void GameController::timerEvent(QTimerEvent *event)
     */
 }
 
-bool GameController::command(QString &cmd, bool update /*= true*/)
+bool GameController::command(const QString &cmd, bool update /*= true*/)
 {
     if (chess.command(cmd.toStdString().c_str())) {
         if (chess.getPhase() == NineChess::GAME_NOTSTARTED) {
@@ -379,6 +378,14 @@ bool GameController::actionPiece(QPointF pos)
         {
             chess = chessTemp;
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
+            // 如果再决出胜负后悔棋，则重新启动计时
+            if (chess.whoWin() == NineChess::NOBODY) {
+                // 重新启动计时
+                timeID = startTimer(100);
+                // 发信号更新状态栏
+                message = QString::fromStdString(chess.getTip());
+                emit statusBarChanged(message);
+            }
         }
         else
         {
@@ -414,8 +421,6 @@ bool GameController::actionPiece(QPointF pos)
         else if (chess.getAction() == NineChess::ACTION_PLACE) {
             // 如果移子不成功，尝试重新选子
             result = movePiece(pos);
-            if (!result)
-                result = choosePiece(pos);
         }// 去子
         else if (chess.getAction() == NineChess::ACTION_REMOVE) {
             result = removePiece(pos);
@@ -442,7 +447,7 @@ bool GameController::actionPiece(QPointF pos)
         }
         if (chess.whoWin() != NineChess::NOBODY && 
 			(manualListModel.data(manualListModel.index(currentRow-1))).toString().contains("Time over."))
-            playSound(":/sound/Resources/sound/win.wav");
+            playSound(":/sound/resources/sound/win.wav");
     }
 
     updateScence();
@@ -467,12 +472,12 @@ bool GameController::choosePiece(QPointF pos)
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
         // 播放选子音效
-        playSound(":/sound/Resources/sound/choose.wav");
+        playSound(":/sound/resources/sound/choose.wav");
         return true;
     }
     else {
         // 播放禁止音效
-        playSound(":/sound/Resources/sound/forbidden.wav");
+        playSound(":/sound/resources/sound/forbidden.wav");
         return false;
     }
 }
@@ -486,14 +491,14 @@ bool GameController::placePiece(QPointF pos)
     }
     if (!chess.place(c, p)) {
         // 播放禁止音效
-        playSound(":/sound/Resources/sound/forbidden.wav");
+        playSound(":/sound/resources/sound/forbidden.wav");
         return false;
     }
     // 发信号更新状态栏
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
     // 播放音效
-    playSound(":/sound/Resources/sound/drog.wav");
+    playSound(":/sound/resources/sound/drog.wav");
     return true;
 }
 
@@ -514,12 +519,14 @@ bool GameController::movePiece(QPointF pos)
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
         // 播放音效
-        playSound(":/sound/Resources/sound/move.wav");
+        playSound(":/sound/resources/sound/move.wav");
         return true;
     }
-    // 播放禁止音效
-    playSound(":/sound/Resources/sound/forbidden.wav");
-    return false;
+    // 如果移子不成功，尝试重新选子
+    else
+    {
+        return choosePiece(pos);
+    }
 }
 
 // 去子
@@ -531,7 +538,7 @@ bool GameController::removePiece(QPointF pos)
     }
     if (!chess.remove(c, p)) {
         // 播放禁止音效
-        playSound(":/sound/Resources/sound/forbidden.wav");
+        playSound(":/sound/resources/sound/forbidden.wav");
         return false;
     }
 
@@ -539,7 +546,7 @@ bool GameController::removePiece(QPointF pos)
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
     // 播放音效
-    playSound(":/sound/Resources/sound/remove.wav");
+    playSound(":/sound/resources/sound/remove.wav");
     return true;
 }
 
@@ -564,7 +571,7 @@ bool GameController::giveUp()
 			manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
 		}
 		if (chess.whoWin() != NineChess::NOBODY)
-			playSound(":/sound/Resources/sound/loss.wav");
+            playSound(":/sound/resources/sound/loss.wav");
 	}
 	return result;
 }

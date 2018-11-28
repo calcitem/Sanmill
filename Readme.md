@@ -64,33 +64,44 @@
 ```
  MVC
  ├─Model
- │  └─NineChess：用标准C++写的棋类模型，处理下棋过程
+ │  ├─NineChess:         用标准C++写的棋类模型，处理下棋过程
+ │  └─NineChessAi_ab:    用标准C++写的alpha-beta剪枝算法AI模型，模仿人类下棋
  ├─View
- │  ├─NineChessWindow：从QMainWindow派生的主窗口类，由Qt自动生成
- │  ├─SizeHintListView：从QListView派生的列表框，用于显示棋谱
- │  ├─GameView：从QGraphicsView派生的视图框，用于显示棋局
- │  ├─GameScene：从QGraphicsScene派生的场景类
- │  ├─BoardItem：从QGraphicsItem派生的棋盘图形类
- │  └─PiecedItem：从QGraphicsItem派生的棋子图形类
+ │  ├─NineChessWindow:   从QMainWindow派生的主窗口类，由Qt自动生成
+ │  ├─ManualListView:    从QListView派生的列表框，用于显示棋谱
+ │  ├─GameView:          从QGraphicsView派生的视图框，用于显示棋局
+ │  ├─GameScene:         从QGraphicsScene派生的场景类
+ │  ├─BoardItem:         从QGraphicsItem派生的棋盘图形类
+ │  └─PiecedItem:        从QGraphicsItem派生的棋子图形类
  └─Controller
-    └─GameController：从QObject派生的控制类
+    ├─GameController:    从QObject派生的控制类
+    └─AiThread:          从QThread派生的AI线程类
 ```
 这个程序用到了很多Qt的特性，其模式后期可以扩展到各种棋类游戏。
 
-### 许可协议及更新历史
-详见文末Gitee内的License和History文件。请取用的朋友尊重知识产权。
+### AI算法说明
+相见Wiki目录下的《Alpha-Beta剪枝算法在直棋中的运用》
+
+### 许可协议
+**本项目所有类代码全部原创。**  
+详见文末Gitee项目内的License文件。请取用的朋友尊重知识产权。
+
+### 更新历史
+详见文末Gitee项目内的History文件。
 
 ## 作者声明
-本项目所有类代码全部原创。由于本人非IT科班出身，未经专业培训，也没有现成的QT棋类游戏源码做参考，源码中肯定有很多不合理，不规范之处。望好心的前辈不吝赐教。对于其它初学者，可以参考，相互学习，共同进步。  
+由于本人非IT科班出身，未经专业培训，也没有现成的QT棋类游戏源码做参考，源码中肯定有很多不合理，不规范之处。望好心的前辈不吝赐教。对于同道初学者，可以参考，相互学习，共同进步。  
 多年前上大学那会儿，笔者就打算做这么个程序出来，然而条件比较艰苦：  
-一来没有老师教，课上只学了Ç语言和VB，C ++是笔者自学的，一个人啃晦涩过时的MFC;  
-二来我穷到连个电脑都没有......三嘛，就是贪玩......  
+一来没有老师教，课上只学了Ç语言和VB，C++是笔者自学的，一个人啃晦涩过时的MFC;  
+二来我穷到连个电脑都没有......  
+三嘛，就是贪玩......  
 工作之后有条件了，我又自学了C＃和Qt，但都很肤浅，没深入学，只用来做几个小工具而已。  
+这个项目，我在2013年用标准C++写了个模型类，然后扔了不管；2015年自学Qt写了个简单的界面，又扔了不管；直到2018年5月才重新开始做。  
 如果你发现本程序有什么问题或好的建议，请与本人联系。我的邮箱是：liuweilhy@163.com  
->                                            by liuweilhy 2015年11月6日
+>                                            by liuweilhy 2018年11月26日
 
 ## 项目源码及发行版下载
 + 源码下载（Gitee）：[https://gitee.com/liuweilhy/NineChess](https://gitee.com/liuweilhy/NineChess)
-+ 发行版下载（Gitee）：[https://gitee.com/liuweilhy/NineChess/releases](https://gitee.com/liuweilhy/NineChess/releases)
-+ 如果你没有Gitee账号，可以在本人CSDN资源下载:(链接待补充）
-+ 如果你以上都没有，那么用百度云盘吧:(链接待补充）
++ 发行版下载（Gitee），请选择最新版：[https://gitee.com/liuweilhy/NineChess/releases](https://gitee.com/liuweilhy/NineChess/releases)
++ 如果你没有Gitee账号，可以在本人CSDN资源下载（非最新版）：(链接待补充)
++ 如果你以上都没有，那么用百度云盘（非最新版）：(链接待补充)

@@ -39,7 +39,7 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-image: url(:/image/Resources/image/background.png);</string>
+       <string notr="true">background-image: url(:/image/resources/image/background.png);</string>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>491</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -247,7 +247,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="ninechesswindow.qrc">:/icon/Resources/icon/Black.png</pixmap>
+              <pixmap resource="ninechesswindow.qrc">:/icon/resources/icon/Black.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -328,7 +328,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="ninechesswindow.qrc">:/icon/Resources/icon/White.png</pixmap>
+              <pixmap resource="ninechesswindow.qrc">:/icon/resources/icon/White.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -398,7 +398,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="ninechesswindow.qrc">:/icon/Resources/icon/Help.png</pixmap>
+              <pixmap resource="ninechesswindow.qrc">:/icon/resources/icon/Help.png</pixmap>
              </property>
             </widget>
            </item>
@@ -424,7 +424,7 @@
           </layout>
          </item>
          <item>
-          <widget class="SizeHintListView" name="listView">
+          <widget class="ManualListView" name="listView">
            <property name="font">
             <font>
              <pointsize>7</pointsize>
@@ -443,7 +443,7 @@
   <action name="actionNew_N">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/DocumentHS.png</normaloff>:/icon/Resources/icon/DocumentHS.png</iconset>
+     <normaloff>:/icon/resources/icon/DocumentHS.png</normaloff>:/icon/resources/icon/DocumentHS.png</iconset>
    </property>
    <property name="text">
     <string>新建(&amp;N)</string>
@@ -458,7 +458,7 @@
   <action name="actionOpen_O">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/OpenHS.png</normaloff>:/icon/Resources/icon/OpenHS.png</iconset>
+     <normaloff>:/icon/resources/icon/OpenHS.png</normaloff>:/icon/resources/icon/OpenHS.png</iconset>
    </property>
    <property name="text">
     <string>打开(&amp;O)...</string>
@@ -470,7 +470,7 @@
   <action name="actionSave_S">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/SaveHS.png</normaloff>:/icon/Resources/icon/SaveHS.png</iconset>
+     <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
     <string>保存(&amp;S)</string>
@@ -482,7 +482,7 @@
   <action name="actionSaveAs_A">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/SaveHS.png</normaloff>:/icon/Resources/icon/SaveHS.png</iconset>
+     <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
     <string>另存为(&amp;A)...</string>
@@ -499,7 +499,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/EditTableHS.png</normaloff>:/icon/Resources/icon/EditTableHS.png</iconset>
+     <normaloff>:/icon/resources/icon/EditTableHS.png</normaloff>:/icon/resources/icon/EditTableHS.png</iconset>
    </property>
    <property name="text">
     <string>编辑棋局(&amp;E)</string>
@@ -508,7 +508,7 @@
   <action name="actionFlip_F">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/FlipVerticalHS.png</normaloff>:/icon/Resources/icon/FlipVerticalHS.png</iconset>
+     <normaloff>:/icon/resources/icon/FlipVerticalHS.png</normaloff>:/icon/resources/icon/FlipVerticalHS.png</iconset>
    </property>
    <property name="text">
     <string>上下翻转(&amp;F)</string>
@@ -517,7 +517,7 @@
   <action name="actionMirror_M">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/FlipHorizontalHS.png</normaloff>:/icon/Resources/icon/FlipHorizontalHS.png</iconset>
+     <normaloff>:/icon/resources/icon/FlipHorizontalHS.png</normaloff>:/icon/resources/icon/FlipHorizontalHS.png</iconset>
    </property>
    <property name="text">
     <string>左右翻转(&amp;M)</string>
@@ -526,7 +526,7 @@
   <action name="actionTurnRight_R">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/RightHS.png</normaloff>:/icon/Resources/icon/RightHS.png</iconset>
+     <normaloff>:/icon/resources/icon/RightHS.png</normaloff>:/icon/resources/icon/RightHS.png</iconset>
    </property>
    <property name="text">
     <string>顺时针旋转90°(&amp;R)</string>
@@ -538,7 +538,7 @@
   <action name="actionTurnLeftt_L">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/LeftHS.png</normaloff>:/icon/Resources/icon/LeftHS.png</iconset>
+     <normaloff>:/icon/resources/icon/LeftHS.png</normaloff>:/icon/resources/icon/LeftHS.png</iconset>
    </property>
    <property name="text">
     <string>逆时针旋转90°(&amp;L)</string>
@@ -556,7 +556,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Invert.png</normaloff>:/icon/Resources/icon/Invert.png</iconset>
+     <normaloff>:/icon/resources/icon/Invert.png</normaloff>:/icon/resources/icon/Invert.png</iconset>
    </property>
    <property name="text">
     <string>黑白反转(&amp;B)</string>
@@ -565,7 +565,7 @@
   <action name="actionBegin_S">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/First.png</normaloff>:/icon/Resources/icon/First.png</iconset>
+     <normaloff>:/icon/resources/icon/First.png</normaloff>:/icon/resources/icon/First.png</iconset>
    </property>
    <property name="text">
     <string>初始局面(&amp;S)</string>
@@ -580,7 +580,7 @@
   <action name="actionPrevious_B">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Previous.png</normaloff>:/icon/Resources/icon/Previous.png</iconset>
+     <normaloff>:/icon/resources/icon/Previous.png</normaloff>:/icon/resources/icon/Previous.png</iconset>
    </property>
    <property name="text">
     <string>前一招(&amp;B)</string>
@@ -592,7 +592,7 @@
   <action name="actionNext_F">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Next.png</normaloff>:/icon/Resources/icon/Next.png</iconset>
+     <normaloff>:/icon/resources/icon/Next.png</normaloff>:/icon/resources/icon/Next.png</iconset>
    </property>
    <property name="text">
     <string>后一招(&amp;F)</string>
@@ -607,7 +607,7 @@
   <action name="actionEnd_E">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Last.png</normaloff>:/icon/Resources/icon/Last.png</iconset>
+     <normaloff>:/icon/resources/icon/Last.png</normaloff>:/icon/resources/icon/Last.png</iconset>
    </property>
    <property name="text">
     <string>最后局面(&amp;E)</string>
@@ -622,7 +622,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Play.png</normaloff>:/icon/Resources/icon/Play.png</iconset>
+     <normaloff>:/icon/resources/icon/Play.png</normaloff>:/icon/resources/icon/Play.png</iconset>
    </property>
    <property name="text">
     <string>自动演示(&amp;A)</string>
@@ -634,7 +634,7 @@
   <action name="actionGiveUp_G">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/BreakpointHS.png</normaloff>:/icon/Resources/icon/BreakpointHS.png</iconset>
+     <normaloff>:/icon/resources/icon/BreakpointHS.png</normaloff>:/icon/resources/icon/BreakpointHS.png</iconset>
    </property>
    <property name="text">
     <string>认输(&amp;G)</string>
@@ -660,7 +660,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/FullScreenHS.png</normaloff>:/icon/Resources/icon/FullScreenHS.png</iconset>
+     <normaloff>:/icon/resources/icon/FullScreenHS.png</normaloff>:/icon/resources/icon/FullScreenHS.png</iconset>
    </property>
    <property name="text">
     <string>本机对战(&amp;L)</string>
@@ -678,7 +678,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Web.png</normaloff>:/icon/Resources/icon/Web.png</iconset>
+     <normaloff>:/icon/resources/icon/Web.png</normaloff>:/icon/resources/icon/Web.png</iconset>
    </property>
    <property name="text">
     <string>网络对战(&amp;I)</string>
@@ -690,7 +690,7 @@
   <action name="actionEngine_E">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/OptionsHS.png</normaloff>:/icon/Resources/icon/OptionsHS.png</iconset>
+     <normaloff>:/icon/resources/icon/OptionsHS.png</normaloff>:/icon/resources/icon/OptionsHS.png</iconset>
    </property>
    <property name="text">
     <string>引擎设置(&amp;E)...</string>
@@ -708,7 +708,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Black.png</normaloff>:/icon/Resources/icon/Black.png</iconset>
+     <normaloff>:/icon/resources/icon/Black.png</normaloff>:/icon/resources/icon/Black.png</iconset>
    </property>
    <property name="text">
     <string>电脑执先手(&amp;T)</string>
@@ -723,7 +723,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/White.png</normaloff>:/icon/Resources/icon/White.png</iconset>
+     <normaloff>:/icon/resources/icon/White.png</normaloff>:/icon/resources/icon/White.png</iconset>
    </property>
    <property name="text">
     <string>电脑执后手(&amp;R)</string>
@@ -738,7 +738,7 @@
    </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/PrimaryKeyHS.png</normaloff>:/icon/Resources/icon/PrimaryKeyHS.png</iconset>
+     <normaloff>:/icon/resources/icon/PrimaryKeyHS.png</normaloff>:/icon/resources/icon/PrimaryKeyHS.png</iconset>
    </property>
    <property name="text">
     <string>设置(&amp;O)...</string>
@@ -808,7 +808,7 @@
   <action name="actionViewHelp_V">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/Help.png</normaloff>:/icon/Resources/icon/Help.png</iconset>
+     <normaloff>:/icon/resources/icon/Help.png</normaloff>:/icon/resources/icon/Help.png</iconset>
    </property>
    <property name="text">
     <string>查看帮助(&amp;V)</string>
@@ -820,7 +820,7 @@
   <action name="actionWeb_W">
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
-     <normaloff>:/icon/Resources/icon/HomeHS.png</normaloff>:/icon/Resources/icon/HomeHS.png</iconset>
+     <normaloff>:/icon/resources/icon/HomeHS.png</normaloff>:/icon/resources/icon/HomeHS.png</iconset>
    </property>
    <property name="text">
     <string>作者主页(&amp;W)</string>
@@ -846,9 +846,9 @@
    <header>gameview.h</header>
   </customwidget>
   <customwidget>
-   <class>SizeHintListView</class>
+   <class>ManualListView</class>
    <extends>QListView</extends>
-   <header>sizehintlistview.h</header>
+   <header>manuallistview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

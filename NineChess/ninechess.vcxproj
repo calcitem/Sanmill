@@ -371,17 +371,29 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\aithread.cpp" />
     <ClCompile Include="src\boarditem.cpp" />
     <ClCompile Include="src\gamecontroller.cpp" />
     <ClCompile Include="src\gamescene.cpp" />
     <ClCompile Include="src\gameview.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ninechess.cpp" />
+    <ClCompile Include="src\ninechessai_ab.cpp" />
     <ClCompile Include="src\ninechesswindow.cpp" />
     <ClCompile Include="src\pieceitem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <QtMoc Include="src\aithread.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
+    </QtMoc>
     <ClInclude Include="src\boarditem.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
@@ -419,11 +431,15 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include;release;\include;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\mkspecs\win32-msvc;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtWidgets;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtCore;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtGui;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtANGLE;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtMultimedia;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
     </QtMoc>
     <QtMoc Include="src\pieceitem.h" />
-    <QtMoc Include="src\sizehintlistview.h">
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include;debug;\include;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\mkspecs\win32-msvc;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtWidgets;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtCore;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtGui;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtANGLE;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtMultimedia;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include;debug;\include;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\mkspecs\win32-msvc;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtWidgets;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtCore;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtGui;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtANGLE;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtMultimedia;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include;release;\include;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\mkspecs\win32-msvc;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtWidgets;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtCore;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtGui;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtANGLE;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtMultimedia;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
-      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include;release;\include;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\mkspecs\win32-msvc;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtWidgets;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtCore;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtGui;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtANGLE;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtMultimedia;D:\Qt\Qt5.11.0\5.11.0\msvc2017_64\include\QtNetwork;%(AdditionalIncludeDirectories)</IncludePath>
+    <QtMoc Include="src\manuallistview.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;.;$(QTDIR)\include;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtNetwork</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_WIDGETS_LIB;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_NETWORK_LIB</Define>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -481,6 +497,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="src\ninechessai_ab.h" />
     <ClInclude Include="ui_ninechesswindow.h" />
   </ItemGroup>
   <ItemGroup>
@@ -490,6 +507,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Readme.md" />
+    <None Include="ninechess.pro" />
     <None Include="Resources\icon\ActualSizeHS.png" />
     <None Include="Resources\icon\Black.png" />
     <None Include="Resources\icon\BreakpointHS.png" />

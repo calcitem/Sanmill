@@ -1,4 +1,4 @@
-#include <QDebug>
+﻿#include <QDebug>
 #include "aithread.h"
 
 AiThread::AiThread(QObject *parent) : QThread(parent),
@@ -13,13 +13,21 @@ AiThread::~AiThread()
     wait();
 }
 
+void AiThread::setAi(const NineChess &chess)
+{
+    mutex.lock();
+    this->chess = chess;
+    ai_ab.setChess(chess);
+    mutex.unlock();
+}
+
 void AiThread::run()
 {
     // 测试用数据
     int iTemp = 0;
 
     while (true) {
-        if(isInterruptionRequested())
+        if (isInterruptionRequested())
             return;
         mutex.lock();
         if (waiting_)
@@ -29,15 +37,8 @@ void AiThread::run()
         // 测试用
         qDebug() << "thread running " << iTemp << "ms";
         msleep(250);
-        iTemp+=250;
+        iTemp += 250;
     }
-}
-
-void AiThread::setChess(NineChess &chess)
-{
-    mutex.lock();
-    this->chess = chess;
-    mutex.unlock();
 }
 
 void AiThread::pause()

@@ -1,27 +1,29 @@
-#ifndef AITHREAD_H
+﻿#ifndef AITHREAD_H
 #define AITHREAD_H
 
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
 #include "ninechess.h"
+#include "ninechessai_ab.h"
 
 class AiThread : public QThread
 {
     Q_OBJECT
+
 public:
     explicit AiThread(QObject *parent = nullptr);
     ~AiThread();
 
 signals:
     // 招法信号
-    void command(QString cmdline);
+    void command(const QString &cmdline, bool update = true);
 
 protected:
     void run() override;
 
 public slots:
-    void setChess(NineChess &);
+    void setAi(const NineChess &);
     void pause();
     void resume();
     void stop();
@@ -36,6 +38,8 @@ private:
 
     // 棋类
     NineChess chess;
+    // Alpha-Beta剪枝算法类
+    NineChessAi_ab ai_ab;
 };
 
 #endif // AITHREAD_H

@@ -27,24 +27,27 @@ GameScene::~GameScene()
         delete board;
 }
 
+// 屏蔽掉Shift和Control按键，事实证明没用，按键事件未必由视图类处理
+/*
 void GameScene::keyPressEvent(QKeyEvent *keyEvent)
 {
-    // 屏蔽掉Shift和Control按键，事实证明没用，按键事件未必由视图类处理
     if(keyEvent->key() == Qt::Key_Shift || keyEvent->key() == Qt::Key_Control)
         return;
     QGraphicsScene::keyPressEvent(keyEvent);
 }
+*/
 
 void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    //什么也不做，屏蔽双击事件
-    Q_UNUSED(mouseEvent)
+    //屏蔽双击事件
+    mouseEvent->accept();
 }
+
 
 void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    //什么也不做，屏蔽鼠标按下事件
-    Q_UNUSED(mouseEvent)
+    //屏蔽鼠标按下事件
+    mouseEvent->accept();
     /*
     // 只处理左键事件
     if(mouseEvent->button() != Qt::LeftButton)
@@ -64,8 +67,10 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // 只处理左键事件
-    if(mouseEvent->button() != Qt::LeftButton)
+    if (mouseEvent->button() != Qt::LeftButton) {
+        mouseEvent->accept();
         return;
+    }
 
     // 如果是棋盘
     QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
@@ -82,6 +87,8 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         // 将当前棋子在场景中的位置发送出去
         emit mouseReleased(item->scenePos());
     }
+
+    mouseEvent->accept();
 
     // 调用默认事件处理函数
     //QGraphicsScene::mouseReleaseEvent(mouseEvent);

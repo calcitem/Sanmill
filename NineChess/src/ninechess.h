@@ -16,11 +16,12 @@ using std::string;
 using std::list;
 
 // 棋类（在数据模型内，玩家只分先后手，不分黑白）
+// 注意：NineChess类不是线程安全的！
+// 所以不能跨线程修改NineChess类的静态成员变量，切记！
 class NineChess
 {
 public:
-    // 公有的结构体和枚举，只是类型定义，不是变量！
-    // 规则结构体
+    // 嵌套的规则结构体
     struct Rule
     {
         // 规则名称
@@ -86,9 +87,89 @@ public:
     // 预定义的规则
     static const struct Rule RULES[RULENUM];
 
+    // 嵌套的数据结构体
+    // 单独提出来，是为了ai计算的时候压栈的数据量少
+    struct Data
+    {
+        // 当前步数
+        int step;
+        // 局面阶段标识
+        enum Phases phase;
+        // 轮流状态标识
+        enum Player turn;
+        // 动作状态标识
+        enum Actions action;
+        // 赢家
+        enum Player winner;
+
+        // 玩家1剩余未放置子数
+        int player1_InHand;
+        // 玩家2剩余未放置子数
+        int player2_InHand;
+        // 玩家1盘面剩余子数
+        int player1_Remain;
+        // 玩家1盘面剩余子数
+        int player2_Remain;
+        // 尚待去除的子数
+        int num_NeedRemove;
+
+        /* 棋局，抽象为一个（5×8）的char数组，上下两行留空
+         * 0x00代表无棋子
+         * 0x0F代表禁点
+         * 0x11～0x1C代表先手第1～12子
+         * 0x21～0x2c代表后手第1～12子
+         * 判断棋子是先手的用(board[i] & 0x10)
+         * 判断棋子是后手的用(board[i] & 0x20)
+         */
+        char board[(NineChess::RING + 2)*NineChess::SEAT];
+
+        /* 本打算用如下的结构体来表示“三连”
+        struct Mill {
+            char piece1;    // “三连”中最小的棋子
+            char pos1;      // 最小棋子的位置
+            char piece2;    // 次小的棋子
+            char pos2;      // 次小棋子的位置
+            char piece3;    // 最大的棋子
+            char pos3;      // 最大棋子的位置
+        };
+        但为了提高执行效率改用一个64位整数了，规则如下
+        0x   00     00     00    00    00    00    00    00
+           unused unused piece1 pos1 piece2 pos2 piece3 pos3
+        */
+        // “三连列表”
+        list <long long> millList;
+
+        /* 当前招法，AI会用到，如下表示
+        0x   00    00
+            pos1  pos2
+        开局落子：0x00??，??为棋盘上的位置
+        移子：0x__??，__为移动前的位置，??为移动后的位置
+        去子：0xFF??，??为棋盘上去子点的位置
+        */
+        short move_;
+    };
+
+private:
+    // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
+    static const char inBoard[(RING + 2)*SEAT];
+
+    // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
+    // 这个表跟规则有关，一旦规则改变需要重新修改
+    static char moveTable[(RING + 2)*SEAT][4];
+
+    // 成三表，表示棋盘上各个位置有成三关系的对应位置表
+    // 这个表跟规则有关，一旦规则改变需要重新修改
+    static char millTable[(RING + 2)*SEAT][3][2];
+
 public:
     NineChess();
     virtual ~NineChess();
+    /* 拷贝构造函数
+       其实NineChess类没有指针类型的成员变量，list内的值也是深拷贝
+       所以没有必要写拷贝构造函数了
+    */
+    //explicit NineChess(const NineChess &);
+
     // 设置棋局状态和棋盘数据，用于初始化
     bool setData(const struct Rule *rule,
         int s = 0,   // 限制步数
@@ -110,15 +191,15 @@ public:
     // 获取当前点
     int getCurrentPos() { return currentPos; }
     // 获取当前步数
-    int getStep() { return step; }
+    int getStep() { return data_.step; }
     // 获取局面阶段标识
-    enum Phases getPhase() { return phase; }
+    enum Phases getPhase() { return data_.phase; }
     // 获取轮流状态标识
-    enum Player whosTurn() { return turn; }
+    enum Player whosTurn() { return data_.turn; }
     // 获取动作状态标识
-    enum Actions getAction() { return action; }
+    enum Actions getAction() { return data_.action; }
     // 判断胜负
-    enum Player whoWin() { return winner; }
+    enum Player whoWin() { return data_.winner; }
     // 玩家1和玩家2的用时
     void getPlayer_TimeMS(int &p1_ms, int &p2_ms);
     // 获取棋局的字符提示
@@ -137,15 +218,15 @@ public:
     void setStartTimeb(timeb stimeb) { startTimeb = stimeb; }
 
     // 玩家1剩余未放置子数
-    int getPlayer1_InHand() { return player1_InHand; }
+    int getPlayer1_InHand() { return data_.player1_InHand; }
     // 玩家2剩余未放置子数
-    int getPlayer2_InHand() { return player2_InHand; }
+    int getPlayer2_InHand() { return data_.player2_InHand; }
     // 玩家1盘面剩余子数
-    int getPlayer1_Remain() { return player1_Remain; }
+    int getPlayer1_Remain() { return data_.player1_Remain; }
     // 玩家1盘面剩余子数
-    int getPlayer2_Remain() { return player2_Remain; }
+    int getPlayer2_Remain() { return data_.player2_Remain; }
     // 尚待去除的子数
-    int getNum_NeedRemove() { return num_NeedRemove; }
+    int getNum_NeedRemove() { return data_.num_NeedRemove; }
 
     // 游戏重置
     bool reset();
@@ -189,27 +270,10 @@ protected:
 private:
     // 当前使用的规则
     struct Rule rule;
-    // 当前步数
-    int step;
-    // 局面阶段标识
-    enum Phases phase;
-    // 轮流状态标识
-    enum Player turn;
-    // 动作状态标识
-    enum Actions action;
-    // 赢家
-    enum Player winner;
-
-    // 玩家1剩余未放置子数
-    int player1_InHand;
-    // 玩家2剩余未放置子数
-    int player2_InHand;
-    // 玩家1盘面剩余子数
-    int player1_Remain;
-    // 玩家1盘面剩余子数
-    int player2_Remain;
-    // 尚待去除的子数
-    int num_NeedRemove;
+    // 棋盘数据
+    struct Data data_;
+    // 选中的棋子在board中的位置
+    int currentPos;
 
     // 游戏起始时间
     timeb startTimeb;
@@ -220,40 +284,7 @@ private:
     // 玩家2用时（毫秒）
     long player2_MS;
 
-    /* 棋局，抽象为一个（5×8）的char数组，上下两行留空
-     * 0x00代表无棋子
-     * 0x0F代表禁点
-     * 0x10～(N-1)+0x10代表先手第1～N子
-     * 0x20～(N-1)+0x20代表后手第1～N子
-     * 判断棋子是先手的用(board[i] & 0x10)
-     * 判断棋子是后手的用(board[i] & 0x20)
-     */
-    char board[(RING + 2)*SEAT];
-    // 选中的棋子在board中的位置
-    int currentPos;
-    // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const char inBoard[(RING + 2)*SEAT];
-    // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
-    static char moveTable[(RING + 2)*SEAT][4];
-    // 成三表，表示棋盘上各个位置有成三关系的对应位置表
-    static char millTable[(RING + 2)*SEAT][3][2];
-
-    /* 本打算用如下的结构体来表示“三连”
-    struct Mill {
-        char piece1;    // “三连”中最小的棋子
-        char pos1;      // 最小棋子的位置
-        char piece2;    // 次小的棋子
-        char pos2;      // 次小棋子的位置
-        char piece3;    // 最大的棋子
-        char pos3;      // 最大棋子的位置
-    };
-    但为了提高执行效率改用一个64位整数了，规则如下
-    0x   00     00     00    00    00    00    00    00
-       unused unused piece1 pos1 piece2 pos2 piece3 pos3
-    */
-    // “三连列表”
-    list <long long> millList;
-
+    // 招法命令行用于棋谱的显示和解析
     // 当前招法的命令行指令，即一招棋谱
     char cmdline[32];
     // 棋谱

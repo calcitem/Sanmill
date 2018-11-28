@@ -130,44 +130,44 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
     this->rule.maxSteps = s;
     this->rule.maxTime = t;
     // 设置步数
-    this->step = step;
+    data_.step = step;
 
     // 设置状态
 
     // 局面阶段标识
     if (flags & GAME_NOTSTARTED)
-        phase = GAME_NOTSTARTED;
+        data_.phase = GAME_NOTSTARTED;
     else if (flags & GAME_OPENING)
-        phase = GAME_OPENING;
+        data_.phase = GAME_OPENING;
     else if (flags & GAME_MID)
-        phase = GAME_MID;
+        data_.phase = GAME_MID;
     else if (flags & GAME_OVER)
-        phase = GAME_OVER;
+        data_.phase = GAME_OVER;
     else
         return false;
     // 轮流状态标识
     if (flags & PLAYER1)
-        turn = PLAYER1;
+        data_.turn = PLAYER1;
     else if (flags & PLAYER2)
-        turn = PLAYER2;
+        data_.turn = PLAYER2;
     else
         return false;
     // 动作状态标识
     if (flags & ACTION_CHOOSE)
-        action = ACTION_CHOOSE;
+        data_.action = ACTION_CHOOSE;
     else if (flags & ACTION_PLACE)
-        action = ACTION_PLACE;
+        data_.action = ACTION_PLACE;
     else if (flags & ACTION_REMOVE)
-        action = ACTION_REMOVE;
+        data_.action = ACTION_REMOVE;
     else
         return false;
     // 胜负标识
-    winner = NOBODY;
+    data_.winner = NOBODY;
     // 当前棋局（3×8）
     if (boardsource == nullptr)
-        memset(this->board, 0, sizeof(this->board));
+        memset(data_.board, 0, sizeof(data_.board));
     else
-        memcpy(this->board, boardsource, sizeof(this->board));
+        memcpy(data_.board, boardsource, sizeof(data_.board));
     // 生成招法表
     for (int i = 1; i <= RING; i++)
     {
@@ -257,38 +257,38 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
     }
 
     // 计算盘面子数
-    player1_Remain = player2_Remain = 0;
+    data_.player1_Remain = data_.player2_Remain = 0;
     for (int i = 1; i < RING + 2; i++)
     {
         for (int j = 0; j < SEAT; j++)
         {
-            if (board[i*SEAT + j] & '\x10')
-                player1_Remain++;
-            else if (board[i*SEAT + j] & '\x20') {
-                player2_Remain++;
+            if (data_.board[i*SEAT + j] & '\x10')
+                data_.player1_Remain++;
+            else if (data_.board[i*SEAT + j] & '\x20') {
+                data_.player2_Remain++;
             }
         }
     }
     // 设置玩家盘面剩余子数和未放置子数
-    if (player1_Remain > rule->numOfChess || player2_Remain > rule->numOfChess)
+    if (data_.player1_Remain > rule->numOfChess || data_.player2_Remain > rule->numOfChess)
         return false;
     if (p1_InHand < 0 || p2_InHand < 0)
         return false;
-    player1_InHand = rule->numOfChess - player1_Remain;
-    player2_InHand = rule->numOfChess - player2_Remain;
-    player1_InHand = p1_InHand < player1_InHand ? p1_InHand : player1_InHand;
-    player2_InHand = p2_InHand < player2_InHand ? p2_InHand : player2_InHand;
+    data_.player1_InHand = rule->numOfChess - data_.player1_Remain;
+    data_.player2_InHand = rule->numOfChess - data_.player2_Remain;
+    data_.player1_InHand = p1_InHand < data_.player1_InHand ? p1_InHand : data_.player1_InHand;
+    data_.player2_InHand = p2_InHand < data_.player2_InHand ? p2_InHand : data_.player2_InHand;
 
     // 设置去子状态时的剩余尚待去除子数
     if (flags & ACTION_REMOVE) {
         if (num_NeedRemove >= 0 && num_NeedRemove < 3)
-            this->num_NeedRemove = num_NeedRemove;
+            data_.num_NeedRemove = num_NeedRemove;
     }
     else
-        this->num_NeedRemove = 0;
+        data_.num_NeedRemove = 0;
 
     // 清空成三记录
-    millList.clear();
+    data_.millList.clear();
 
     // 不选中棋子
     currentPos = 0;
@@ -322,53 +322,53 @@ void NineChess::getData(struct Rule &rule, int &step, int &chess, const char *&b
     int &p1_InHand, int &p2_InHand, int &num_NeedRemove)
 {
     rule = this->rule;
-    step = this->step;
-    chess = phase | turn | action | winner;
-    board = this->board;
-    p1_InHand = player1_InHand;
-    p2_InHand = player2_InHand;
-    num_NeedRemove = this->num_NeedRemove;
+    step = data_.step;
+    chess = data_.phase | data_.turn | data_.action | data_.winner;
+    board = data_.board;
+    p1_InHand = data_.player1_InHand;
+    p2_InHand = data_.player2_InHand;
+    num_NeedRemove = data_.num_NeedRemove;
 }
 
 const char * NineChess::getBoard()
 {
-    return board;
+    return data_.board;
 }
 
 bool NineChess::reset()
 {
-    if (phase == GAME_NOTSTARTED && player1_MS == player2_MS == 0)
+    if (data_.phase == GAME_NOTSTARTED && player1_MS == player2_MS == 0)
         return true;
 
     // 步数归零
-    step = 0;
+    data_.step = 0;
 
     // 局面阶段标识
-    phase = GAME_NOTSTARTED;
+    data_.phase = GAME_NOTSTARTED;
 
     // 轮流状态标识
-    turn = PLAYER1;
+    data_.turn = PLAYER1;
 
     // 动作状态标识
-    action = ACTION_PLACE;
+    data_.action = ACTION_PLACE;
 
     // 胜负标识
-    winner = NOBODY;
+    data_.winner = NOBODY;
 
     // 当前棋局（3×8）
-    memset(board, 0, sizeof(board));
+    memset(data_.board, 0, sizeof(data_.board));
 
     // 盘面子数归零
-    player1_Remain = player2_Remain = 0;
+    data_.player1_Remain = data_.player2_Remain = 0;
 
     // 设置玩家盘面剩余子数和未放置子数
-    player1_InHand = player2_InHand = rule.numOfChess;
+    data_.player1_InHand = data_.player2_InHand = rule.numOfChess;
 
     // 设置去子状态时的剩余尚待去除子数
-    num_NeedRemove = 0;
+    data_.num_NeedRemove = 0;
 
     // 清空成三记录
-    millList.clear();
+    data_.millList.clear();
 
     // 不选中棋子
     currentPos = 0;
@@ -401,16 +401,16 @@ bool NineChess::reset()
 bool NineChess::start()
 {
     // 如果游戏已经开始，则返回false
-    if (phase == GAME_OPENING || phase == GAME_MID)
+    if (data_.phase == GAME_OPENING || data_.phase == GAME_MID)
         return false;
 
     // 如果游戏结束，则重置游戏，进入未开始状态
-    if (phase == GAME_OVER)
+    if (data_.phase == GAME_OVER)
         reset();
 
     // 如果游戏处于未开始状态
-    if (phase == GAME_NOTSTARTED) {
-        phase = GAME_OPENING;
+    if (data_.phase == GAME_NOTSTARTED) {
+        data_.phase = GAME_OPENING;
         // 启动计时器
         ftime(&startTimeb);
     }
@@ -429,18 +429,18 @@ int NineChess::cp2pos(int c, int p)
 bool NineChess::place(int c, int p, long time_p /* = -1*/)
 {
     // 如果局面为“结局”，返回false
-    if (phase == GAME_OVER)
+    if (data_.phase == GAME_OVER)
         return false;
     // 如果局面为“未开局”，则开具
-    if (phase == GAME_NOTSTARTED)
+    if (data_.phase == GAME_NOTSTARTED)
         start();
 
     // 如非“落子”状态，返回false
-    if (action != ACTION_PLACE)
+    if (data_.action != ACTION_PLACE)
         return false;
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
     int pos = cp2pos(c, p);
-    if (!inBoard[pos] || board[pos])
+    if (!inBoard[pos] || data_.board[pos])
         return false;
     // 时间的临时变量
     long player_ms = -1;
@@ -448,28 +448,29 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
     // 对于开局落子
     char piece = '\x00';
     int n = 0;
-    if (phase == GAME_OPENING) {
+    if (data_.phase == GAME_OPENING) {
         // 先手下
-        if (turn == PLAYER1)
+        if (data_.turn == PLAYER1)
         {
-            piece = '\x11' + rule.numOfChess - player1_InHand;
-            board[pos] = piece;
-            player1_InHand--;
-            player1_Remain++;
+            piece = '\x11' + rule.numOfChess - data_.player1_InHand;
+            data_.board[pos] = piece;
+            data_.player1_InHand--;
+            data_.player1_Remain++;
         }
         // 后手下
         else
         {
-            piece = '\x21' + rule.numOfChess - player2_InHand;
-            board[pos] = piece;
-            player2_InHand--;
-            player2_Remain++;
+            piece = '\x21' + rule.numOfChess - data_.player2_InHand;
+            data_.board[pos] = piece;
+            data_.player2_InHand--;
+            data_.player2_Remain++;
         }
         player_ms = update(time_p);
+        data_.move_ = pos;
         sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u", c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         currentPos = pos;
-        step++;
+        data_.step++;
         // 如果决出胜负
         if (win()) {
             setTip();
@@ -480,19 +481,19 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         // 开局阶段未成三
         if (n == 0) {
             // 如果双方都无未放置的棋子
-            if (player1_InHand == 0 && player2_InHand == 0) {
+            if (data_.player1_InHand == 0 && data_.player2_InHand == 0) {
                 // 进入中局阶段
-                phase = GAME_MID;
+                data_.phase = GAME_MID;
                 // 进入选子状态
-                action = ACTION_CHOOSE;
+                data_.action = ACTION_CHOOSE;
                 // 清除禁点
                 cleanForbidden();
                 // 设置轮到谁走
                 if (rule.isDefensiveMoveFirst) {
-                    turn = PLAYER2;
+                    data_.turn = PLAYER2;
                 }
                 else {
-                    turn = PLAYER1;
+                    data_.turn = PLAYER1;
                 }
                 // 再决胜负
                 if (win()) {
@@ -509,19 +510,19 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         // 如果成三
         else {
             // 设置去子数目
-            num_NeedRemove = rule.removeMore ? n : 1;
+            data_.num_NeedRemove = rule.removeMore ? n : 1;
             // 进入去子状态
-            action = ACTION_REMOVE;
+            data_.action = ACTION_REMOVE;
         }
         setTip();
         return true;
     }
 
     // 对于中局落子
-    else if (phase == GAME_MID) {
+    else if (data_.phase == GAME_MID) {
         // 如果落子不合法
-        if ((turn == PLAYER1 && (player1_Remain > rule.numAtLest || !rule.canFly)) ||
-            (turn == PLAYER2 && (player2_Remain > rule.numAtLest || !rule.canFly))) {
+        if ((data_.turn == PLAYER1 && (data_.player1_Remain > rule.numAtLest || !rule.canFly)) ||
+            (data_.turn == PLAYER2 && (data_.player2_Remain > rule.numAtLest || !rule.canFly))) {
             int i;
             for (i = 0; i < 4; i++) {
                 if (pos == moveTable[currentPos][i])
@@ -533,19 +534,20 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         }
         // 移子
         player_ms = update(time_p);
+        data_.move_ = (currentPos << 8) | pos;
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / SEAT, currentPos % SEAT + 1,
             c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
-        board[pos] = board[currentPos];
-        board[currentPos] = '\x00';
+        data_.board[pos] = data_.board[currentPos];
+        data_.board[currentPos] = '\x00';
         currentPos = pos;
-        step++;
+        data_.step++;
         n = addMills(currentPos);
 
         // 中局阶段未成三
         if (n == 0) {
             // 进入选子状态
-            action = ACTION_CHOOSE;
+            data_.action = ACTION_CHOOSE;
             // 设置轮到谁走
             changeTurn();
             // 如果决出胜负
@@ -557,9 +559,9 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         // 中局阶段成三
         else {
             // 设置去子数目
-            num_NeedRemove = rule.removeMore ? n : 1;
+            data_.num_NeedRemove = rule.removeMore ? n : 1;
             // 进入去子状态
-            action = ACTION_REMOVE;
+            data_.action = ACTION_REMOVE;
             setTip();
         }
         setTip();
@@ -572,20 +574,20 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 bool NineChess::remove(int c, int p, long time_p /* = -1*/)
 {
     // 如果局面为"未开局"或“结局”，返回false
-    if (phase == GAME_NOTSTARTED || phase == GAME_OVER)
+    if (data_.phase == GAME_NOTSTARTED || data_.phase == GAME_OVER)
         return false;
     // 如非“去子”状态，返回false
-    if (action != ACTION_REMOVE)
+    if (data_.action != ACTION_REMOVE)
         return false;
     // 如果去子完成，返回false
-    if (num_NeedRemove <= 0)
+    if (data_.num_NeedRemove <= 0)
         return false;
     // 时间的临时变量
     long player_ms = -1;
     int pos = cp2pos(c, p);
     // 对手
     enum Player opponent = PLAYER2;
-    if (turn == PLAYER2)
+    if (data_.turn == PLAYER2)
         opponent = PLAYER1;
     // 判断去子不是对手棋
     if (getWhosPiece(c, p) != opponent)
@@ -597,20 +599,21 @@ bool NineChess::remove(int c, int p, long time_p /* = -1*/)
     }
 
     // 去子（设置禁点）
-    if (rule.hasForbidden && phase == GAME_OPENING)
-        board[pos] = '\x0f';
+    if (rule.hasForbidden && data_.phase == GAME_OPENING)
+        data_.board[pos] = '\x0f';
     else // 去子
-        board[pos] = '\x00';
-    if (turn == PLAYER1)
-        player2_Remain--;
-    else if (turn == PLAYER2)
-        player1_Remain--;
+        data_.board[pos] = '\x00';
+    if (data_.turn == PLAYER1)
+        data_.player2_Remain--;
+    else if (data_.turn == PLAYER2)
+        data_.player1_Remain--;
     player_ms = update(time_p);
+    data_.move_ = 0xFF00 | pos;
     sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
     cmdlist.push_back(string(cmdline));
     currentPos = 0;
-    num_NeedRemove--;
-    step++;
+    data_.num_NeedRemove--;
+    data_.step++;
     // 去子完成
 
     // 如果决出胜负
@@ -619,28 +622,28 @@ bool NineChess::remove(int c, int p, long time_p /* = -1*/)
         return true;
     }
     // 还有其余的子要去吗
-    if (num_NeedRemove > 0) {
+    if (data_.num_NeedRemove > 0) {
         // 继续去子
         return true;
     }
     // 所有去子都完成了
     else {
         // 开局阶段
-        if (phase == GAME_OPENING) {
+        if (data_.phase == GAME_OPENING) {
             // 如果双方都无未放置的棋子
-            if (player1_InHand == 0 && player2_InHand == 0) {
+            if (data_.player1_InHand == 0 && data_.player2_InHand == 0) {
                 // 进入中局阶段
-                phase = GAME_MID;
+                data_.phase = GAME_MID;
                 // 进入选子状态
-                action = ACTION_CHOOSE;
+                data_.action = ACTION_CHOOSE;
                 // 清除禁点
                 cleanForbidden();
                 // 设置轮到谁走
                 if (rule.isDefensiveMoveFirst) {
-                    turn = PLAYER2;
+                    data_.turn = PLAYER2;
                 }
                 else {
-                    turn = PLAYER1;
+                    data_.turn = PLAYER1;
                 }
                 // 再决胜负
                 if (win()) {
@@ -651,7 +654,7 @@ bool NineChess::remove(int c, int p, long time_p /* = -1*/)
             // 如果双方还有子
             else {
                 // 进入落子状态
-                action = ACTION_PLACE;
+                data_.action = ACTION_PLACE;
                 // 设置轮到谁走
                 changeTurn();
                 // 如果决出胜负
@@ -664,7 +667,7 @@ bool NineChess::remove(int c, int p, long time_p /* = -1*/)
         // 中局阶段
         else {
             // 进入选子状态
-            action = ACTION_CHOOSE;
+            data_.action = ACTION_CHOOSE;
             // 设置轮到谁走
             changeTurn();
             // 如果决出胜负
@@ -681,20 +684,20 @@ bool NineChess::remove(int c, int p, long time_p /* = -1*/)
 bool NineChess::choose(int c, int p)
 {
     // 如果局面不是"中局”，返回false
-    if (phase != GAME_MID)
+    if (data_.phase != GAME_MID)
         return false;
     // 如非“选子”或“落子”状态，返回false
-    if (action != ACTION_CHOOSE && action != ACTION_PLACE)
+    if (data_.action != ACTION_CHOOSE && data_.action != ACTION_PLACE)
         return false;
     int pos = cp2pos(c, p);
     // 根据先后手，判断可选子
     char t ='\0';
-    if (turn == PLAYER1)
+    if (data_.turn == PLAYER1)
         t = '\x10';
-    else if (turn == PLAYER2)
+    else if (data_.turn == PLAYER2)
         t = '\x20';
     // 判断选子是否可选
-    if (board[pos] & t) {
+    if (data_.board[pos] & t) {
         // 判断pos处的棋子是否被“闷”
         if (isSurrounded(pos)) {
             return false;
@@ -702,7 +705,7 @@ bool NineChess::choose(int c, int p)
         // 选子
         currentPos = pos;
         // 选子完成，进入落子状态
-        action = ACTION_PLACE;
+        data_.action = ACTION_PLACE;
         return true;
     }
     return false;
@@ -710,12 +713,12 @@ bool NineChess::choose(int c, int p)
 
 bool NineChess::giveup(Player loser)
 {
-	if (phase == GAME_MID || phase == GAME_OPENING)
+	if (data_.phase == GAME_MID || data_.phase == GAME_OPENING)
 	{
 		if (loser == PLAYER1)
 		{
-			phase = GAME_OVER;
-			winner = PLAYER2;
+            data_.phase = GAME_OVER;
+            data_.winner = PLAYER2;
 			tip = "玩家1投子认负，恭喜玩家2获胜！";
 			sprintf(cmdline, "Player1 give up!");
 			cmdlist.push_back(string(cmdline));
@@ -723,8 +726,8 @@ bool NineChess::giveup(Player loser)
 		}
 		else if (loser == PLAYER2)
 		{
-			phase = GAME_OVER;
-			winner = PLAYER1;
+            data_.phase = GAME_OVER;
+            data_.winner = PLAYER1;
 			tip = "玩家2投子认负，恭喜玩家1获胜！";
 			sprintf(cmdline, "Player2 give up!");
 			cmdlist.push_back(string(cmdline));
@@ -801,11 +804,11 @@ bool NineChess::command(const char *cmd)
 inline long NineChess::update(long time_p /*= -1*/)
 {
     long ret = -1;
-    long *player_ms = (turn == PLAYER1 ? &player1_MS : &player2_MS);
-    long playerNext_ms = (turn == PLAYER1 ? player2_MS : player1_MS);
+    long *player_ms = (data_.turn == PLAYER1 ? &(player1_MS) : &(player2_MS));
+    long playerNext_ms = (data_.turn == PLAYER1 ? player2_MS : player1_MS);
 
     // 根据局面调整计时器
-    switch (phase)
+    switch (data_.phase)
     {
     case NineChess::GAME_OPENING:
     case NineChess::GAME_MID:
@@ -847,9 +850,9 @@ inline long NineChess::update(long time_p /*= -1*/)
 // 是否分出胜负
 bool NineChess::win()
 {
-    if (phase == GAME_OVER)
+    if (data_.phase == GAME_OVER)
         return true;
-    if (phase == GAME_NOTSTARTED)
+    if (data_.phase == GAME_NOTSTARTED)
         return false;
 
     // 如果有时间限定
@@ -858,8 +861,8 @@ bool NineChess::win()
         // 如果玩家1超时
         if (player1_MS > rule.maxTime * 60000) {
             player1_MS = rule.maxTime * 60000;
-            winner = PLAYER2;
-            phase = GAME_OVER;
+            data_.winner = PLAYER2;
+            data_.phase = GAME_OVER;
             tip = "玩家1超时，恭喜玩家2获胜！";
             sprintf(cmdline, "Time over. Player2 win!");
             cmdlist.push_back(string(cmdline));
@@ -868,8 +871,8 @@ bool NineChess::win()
         // 如果玩家2超时
         else if (player2_MS > rule.maxTime * 60000) {
             player2_MS = rule.maxTime * 60000;
-            winner = PLAYER1;
-            phase = GAME_OVER;
+            data_.winner = PLAYER1;
+            data_.phase = GAME_OVER;
             tip = "玩家2超时，恭喜玩家1获胜！";
             sprintf(cmdline, "Time over. Player1 win!");
             cmdlist.push_back(string(cmdline));
@@ -879,9 +882,9 @@ bool NineChess::win()
 
     // 如果有步数限定
     if (rule.maxSteps > 0) {
-        if (step > rule.maxSteps) {
-            winner = DRAW;
-            phase = GAME_OVER;
+        if (data_.step > rule.maxSteps) {
+            data_.winner = DRAW;
+            data_.phase = GAME_OVER;
             sprintf(cmdline, "Steps over. In draw!");
             cmdlist.push_back(string(cmdline));
             return true;
@@ -889,48 +892,48 @@ bool NineChess::win()
     }
 
     // 如果玩家1子数小于赛点，则玩家2获胜
-    if (player1_Remain + player1_InHand < rule.numAtLest) {
-        winner = PLAYER2;
-        phase = GAME_OVER;
+    if (data_.player1_Remain + data_.player1_InHand < rule.numAtLest) {
+        data_.winner = PLAYER2;
+        data_.phase = GAME_OVER;
         sprintf(cmdline, "Player2 win!");
         cmdlist.push_back(string(cmdline));
         return true;
     }
     // 如果玩家2子数小于赛点，则玩家1获胜
-    else if (player2_Remain + player2_InHand < rule.numAtLest) {
-        winner = PLAYER1;
-        phase = GAME_OVER;
+    else if (data_.player2_Remain + data_.player2_InHand < rule.numAtLest) {
+        data_.winner = PLAYER1;
+        data_.phase = GAME_OVER;
         sprintf(cmdline, "Player1 win!");
         cmdlist.push_back(string(cmdline));
         return true;
     }
     // 如果摆满了，根据规则判断胜负
-    else if (player1_Remain + player2_Remain >= SEAT * RING) {
+    else if (data_.player1_Remain + data_.player2_Remain >= SEAT * RING) {
         if (rule.isFullLose) {
-            winner = PLAYER2;
-            phase = GAME_OVER;
+            data_.winner = PLAYER2;
+            data_.phase = GAME_OVER;
             sprintf(cmdline, "Player2 win!");
             cmdlist.push_back(string(cmdline));
             return true;
         }
         else
         {
-            winner = DRAW;
-            phase = GAME_OVER;
+            data_.winner = DRAW;
+            data_.phase = GAME_OVER;
             sprintf(cmdline, "Full. In draw!");
             cmdlist.push_back(string(cmdline));
             return true;
         }
     }
     // 如果中局被“闷”
-    else if (phase == GAME_MID && action == ACTION_CHOOSE && isAllSurrounded(turn)) {
+    else if (data_.phase == GAME_MID && data_.action == ACTION_CHOOSE && isAllSurrounded(data_.turn)) {
         // 规则要求被“闷”判负，则对手获胜
         if (rule.isNoWayLose) {
-			if (turn == PLAYER1)
+			if (data_.turn == PLAYER1)
 			{
 				tip = "玩家1无子可走，恭喜玩家2获胜！";
-				winner = PLAYER2;
-				phase = GAME_OVER;
+                data_.winner = PLAYER2;
+                data_.phase = GAME_OVER;
 				sprintf(cmdline, "Player1 no way to go. Player2 win!");
 				cmdlist.push_back(string(cmdline));
 				return true;
@@ -938,8 +941,8 @@ bool NineChess::win()
 			else
 			{
 				tip = "玩家2无子可走，恭喜玩家1获胜！";
-				winner = PLAYER1;
-				phase = GAME_OVER;
+                data_.winner = PLAYER1;
+                data_.phase = GAME_OVER;
 				sprintf(cmdline, "Player2 no way to go. Player1 win!");
 				cmdlist.push_back(string(cmdline));
 				return true;
@@ -960,12 +963,12 @@ int NineChess::isInMills(int pos)
 {
     int n = 0;
     int pos1, pos2;
-    char m = board[pos] & '\x30';
+    char m = data_.board[pos] & '\x30';
     for (int i = 0; i < 3; i++)
     {
         pos1 = millTable[pos][i][0];
         pos2 = millTable[pos][i][1];
-        if (m & board[pos1] & board[pos2])
+        if (m & data_.board[pos1] & data_.board[pos2])
             n++;
     }
     return n;
@@ -980,14 +983,14 @@ int NineChess::addMills(int pos)
     long long mill = 0;
     int n = 0;
     int p[3], min, temp;
-    char m = board[pos] & '\x30';
+    char m = data_.board[pos] & '\x30';
     for (int i = 0; i < 3; i++)
     {
         p[0] = pos;
         p[1] = millTable[pos][i][0];
         p[2] = millTable[pos][i][1];
         // 如果成三
-        if (m & board[p[1]] & board[p[2]]) {
+        if (m & data_.board[p[1]] & data_.board[p[2]]) {
             // 排序
             for (int j = 0; j < 2; j++) {
                 min = j;
@@ -1002,11 +1005,11 @@ int NineChess::addMills(int pos)
                 }
             }
             // 成三
-            mill = (((long long)board[p[0]]) << 40)
+            mill = (((long long)(data_.board[p[0]])) << 40)
                 + (((long long)p[0]) << 32)
-                + (((long long)board[p[1]]) << 24)
+                + (((long long)(data_.board[p[1]])) << 24)
                 + (((long long)p[1]) << 16)
-                + (((long long)board[p[2]]) << 8)
+                + (((long long)(data_.board[p[2]])) << 8)
                 + (long long)p[2];
 
             // 如果允许相同三连反复去子
@@ -1019,15 +1022,15 @@ int NineChess::addMills(int pos)
                 // 迭代器
                 list<long long>::iterator itor;
                 // 遍历
-                for (itor = millList.begin(); itor != millList.end(); itor++)
+                for (itor = data_.millList.begin(); itor != data_.millList.end(); itor++)
                 {
                     if (mill == *itor)
                         break;
                 }
                 // 如果没找到历史项
-                if (itor == millList.end()) {
+                if (itor == data_.millList.end()) {
                     n++;
-                    millList.push_back(mill);
+                    data_.millList.push_back(mill);
                 }
             }
         }
@@ -1047,7 +1050,7 @@ bool NineChess::isAllInMills(enum Player player)
 
     for (int i = 1; i <= RING; i++)
         for (int j = 0; j < SEAT; j++) {
-            if (board[i*SEAT + j] & ch) {
+            if (data_.board[i*SEAT + j] & ch) {
                 if (!isInMills(i*SEAT + j)) {
                     return false;
                 }
@@ -1060,13 +1063,13 @@ bool NineChess::isAllInMills(enum Player player)
 bool NineChess::isSurrounded(int pos)
 {
     // 判断pos处的棋子是否被“闷”
-    if ((turn == PLAYER1 && (player1_Remain > rule.numAtLest || !rule.canFly)) ||
-        (turn == PLAYER2 && (player2_Remain > rule.numAtLest || !rule.canFly)))
+    if ((data_.turn == PLAYER1 && (data_.player1_Remain > rule.numAtLest || !rule.canFly)) ||
+        (data_.turn == PLAYER2 && (data_.player2_Remain > rule.numAtLest || !rule.canFly)))
     {
         int i, movePos;
         for (i = 0; i < 4; i++) {
             movePos = moveTable[pos][i];
-            if (movePos && !board[movePos])
+            if (movePos && !data_.board[movePos])
                 break;
         }
         // 被围住
@@ -1086,11 +1089,11 @@ bool NineChess::isAllSurrounded(enum Player ply)
     else if (ply == PLAYER2)
         t &= '\x20';
     // 如果摆满
-    if (player1_Remain + player2_Remain >= SEAT * RING)
+    if (data_.player1_Remain + data_.player2_Remain >= SEAT * RING)
         return true;
     // 判断是否可以飞子
-    if ((turn == PLAYER1 && (player1_Remain <= rule.numAtLest && rule.canFly)) ||
-        (turn == PLAYER2 && (player2_Remain <= rule.numAtLest && rule.canFly)))
+    if ((data_.turn == PLAYER1 && (data_.player1_Remain <= rule.numAtLest && rule.canFly)) ||
+        (data_.turn == PLAYER2 && (data_.player2_Remain <= rule.numAtLest && rule.canFly)))
     {
         return false;
     }
@@ -1100,10 +1103,10 @@ bool NineChess::isAllSurrounded(enum Player ply)
         for (int j = 0; j < SEAT; j++)
         {
             int movePos;
-            if (t & board[i*SEAT + j]) {
+            if (t & data_.board[i*SEAT + j]) {
                 for (int k = 0; k < 4; k++) {
                     movePos = moveTable[i*SEAT + j][k];
-                    if (movePos && !board[movePos])
+                    if (movePos && !data_.board[movePos])
                         return false;
                 }
             }
@@ -1116,70 +1119,70 @@ void NineChess::cleanForbidden()
 {
     for (int i = 1; i <= RING; i++)
         for (int j = 0; j < SEAT; j++) {
-            if (board[i*SEAT + j] == '\x0f')
-                board[i*SEAT + j] = '\x00';
+            if (data_.board[i*SEAT + j] == '\x0f')
+                data_.board[i*SEAT + j] = '\x00';
         }
 }
 
 enum NineChess::Player NineChess::changeTurn()
 {
     // 设置轮到谁走
-    return turn = (turn == PLAYER1) ? PLAYER2 : PLAYER1;
+    return data_.turn = (data_.turn == PLAYER1) ? PLAYER2 : PLAYER1;
 }
 
 void NineChess::setTip()
 {
-    switch (phase)
+    switch (data_.phase)
     {
     case NineChess::GAME_NOTSTARTED:
-        tip = "轮到玩家1落子，剩余" + std::to_string(player1_InHand) + "子";
+        tip = "轮到玩家1落子，剩余" + std::to_string(data_.player1_InHand) + "子";
         break;
     case NineChess::GAME_OPENING:
-        if (action == ACTION_PLACE) {
-            if (turn == PLAYER1) {
-                tip = "轮到玩家1落子，剩余" + std::to_string(player1_InHand) + "子";
+        if (data_.action == ACTION_PLACE) {
+            if (data_.turn == PLAYER1) {
+                tip = "轮到玩家1落子，剩余" + std::to_string(data_.player1_InHand) + "子";
             }
-            else if (turn == PLAYER2) {
-                tip = "轮到玩家2落子，剩余" + std::to_string(player2_InHand) + "子";
+            else if (data_.turn == PLAYER2) {
+                tip = "轮到玩家2落子，剩余" + std::to_string(data_.player2_InHand) + "子";
             }
         }
-        else if (action == ACTION_REMOVE) {
-            if (turn == PLAYER1) {
-                tip = "轮到玩家1去子，需去" + std::to_string(num_NeedRemove) + "子";
+        else if (data_.action == ACTION_REMOVE) {
+            if (data_.turn == PLAYER1) {
+                tip = "轮到玩家1去子，需去" + std::to_string(data_.num_NeedRemove) + "子";
             }
-            else if (turn == PLAYER2) {
-                tip = "轮到玩家2去子，需去" + std::to_string(num_NeedRemove) + "子";
+            else if (data_.turn == PLAYER2) {
+                tip = "轮到玩家2去子，需去" + std::to_string(data_.num_NeedRemove) + "子";
             }
         }
         break;
     case NineChess::GAME_MID:
-        if (action == ACTION_PLACE || action == ACTION_CHOOSE) {
-            if (turn == PLAYER1) {
+        if (data_.action == ACTION_PLACE || data_.action == ACTION_CHOOSE) {
+            if (data_.turn == PLAYER1) {
                 tip = "轮到玩家1选子移动";
             }
-            else if (turn == PLAYER2) {
+            else if (data_.turn == PLAYER2) {
                 tip = "轮到玩家2选子移动";
             }
         }
-        else if (action == ACTION_REMOVE) {
-            if (turn == PLAYER1) {
-                tip = "轮到玩家1去子，需去" + std::to_string(num_NeedRemove) + "子";
+        else if (data_.action == ACTION_REMOVE) {
+            if (data_.turn == PLAYER1) {
+                tip = "轮到玩家1去子，需去" + std::to_string(data_.num_NeedRemove) + "子";
             }
-            else if (turn == PLAYER2) {
-                tip = "轮到玩家2去子，需去" + std::to_string(num_NeedRemove) + "子";
+            else if (data_.turn == PLAYER2) {
+                tip = "轮到玩家2去子，需去" + std::to_string(data_.num_NeedRemove) + "子";
             }
         }
         break;
     case NineChess::GAME_OVER:
-        if (winner == DRAW)
+        if (data_.winner == DRAW)
             tip = "超出限定步数，双方平局";
-        else if (winner == PLAYER1) {
+        else if (data_.winner == PLAYER1) {
             if (tip.find("无子可走") != tip.npos)
                 tip += "恭喜玩家1获胜！";
             else
                 tip = "恭喜玩家1获胜！";
         }
-        else if (winner == PLAYER2) {
+        else if (data_.winner == PLAYER2) {
             if (tip.find("无子可走") != tip.npos)
                 tip += "恭喜玩家2获胜！";
             else
@@ -1194,9 +1197,9 @@ void NineChess::setTip()
 enum NineChess::Player NineChess::getWhosPiece(int c, int p)
 {
     int pos = cp2pos(c, p);
-    if (board[pos] & '\x10')
+    if (data_.board[pos] & '\x10')
         return PLAYER1;
-    else if (board[pos] & '\x20')
+    else if (data_.board[pos] & '\x20')
         return PLAYER2;
     return NOBODY;
 }
@@ -1204,7 +1207,7 @@ enum NineChess::Player NineChess::getWhosPiece(int c, int p)
 int NineChess::getPieceNum(int c, int p)
 {
     int pos = cp2pos(c, p);
-    int n = 0x0f & board[pos];
+    int n = 0x0f & data_.board[pos];
     return n;
 }
 

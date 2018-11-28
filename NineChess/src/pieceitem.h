@@ -6,7 +6,8 @@
 class PieceItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
-	// 位置属性
+    Q_INTERFACES(QGraphicsItem)
+    // 位置属性
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 
 public:
@@ -43,9 +44,9 @@ public:
     void setShowNum(bool show = true) { this->showNum = show; }
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 private:
     // 棋子本质

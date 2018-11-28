@@ -63,10 +63,13 @@ void BoardItem::paint(QPainter *painter,
                       const QStyleOptionGraphicsItem *option,
                       QWidget *widget)
 {
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
+
     // 填充阴影
     painter->fillRect(boundingRect(), QBrush(QColor(64, 64, 64)));
     // 填充图片
-    painter->drawPixmap(-size/2, -size/2, size, size, QPixmap(":/image/Resources/image/board.png"));
+    painter->drawPixmap(-size/2, -size/2, size, size, QPixmap(":/image/resources/image/board.png"));
     // 黑色实线画笔
     QPen pen(QBrush(Qt::black), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
     painter->setPen(pen);

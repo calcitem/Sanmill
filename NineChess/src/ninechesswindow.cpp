@@ -85,6 +85,19 @@ NineChessWindow::NineChessWindow(QWidget *parent)
 
 NineChessWindow::~NineChessWindow()
 {
+    if (game) {
+        game->disconnect();
+        game->deleteLater();
+    }
+    qDeleteAll(ruleActionList);
+}
+
+void NineChessWindow::closeEvent(QCloseEvent *event)
+{
+    if (file.isOpen())
+        file.close();
+    //qDebug() << "closed";
+    QMainWindow::closeEvent(event);
 }
 
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
@@ -106,20 +119,6 @@ bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
     return QMainWindow::eventFilter(watched, event);
-}
-
-void NineChessWindow::closeEvent(QCloseEvent *event)
-{
-    if (file.isOpen())
-        file.close();
-    if (game) {
-        game->disconnect();
-        delete game;
-        game = nullptr;
-    }
-    qDeleteAll(ruleActionList);
-    //qDebug() << "closed";
-    QMainWindow::closeEvent(event);
 }
 
 void NineChessWindow::initialize()
@@ -161,10 +160,7 @@ void NineChessWindow::initialize()
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
         game, SLOT(setAnimation(bool)));
 
-    /* 关联控制器的信号和主窗口控件的槽
-       注意，采用信号和槽而非采用在GameController中直接控制NineChessWindow
-       是MVC模型中控制器与视图相分离的方式，有利于程序梳理 */
-
+    // 关联控制器的信号和主窗口控件的槽
     // 更新LCD1，显示玩家1用时
     connect(game, SIGNAL(time1Changed(QString)),
         ui.lcdNumber_1, SLOT(display(QString)));
@@ -208,7 +204,7 @@ void NineChessWindow::initialize()
     connect(ui.actionEnd_E, &QAction::triggered,
         this, &NineChessWindow::on_actionRowChange);
     // 手动在listView里选择招法后更新的槽
-    connect(ui.listView, &SizeHintListView::currentChangedSignal,
+    connect(ui.listView, &ManualListView::currentChangedSignal,
         this, &NineChessWindow::on_actionRowChange);
     // 更新四个键的状态
     on_actionRowChange();
@@ -238,7 +234,6 @@ void NineChessWindow::ruleInfo()
 
 void NineChessWindow::actionRules_triggered()
 {
-    // setChecked函数会发出toggled信号，在这里响应toggled信号会陷入死循环
     // 取消其它规则的选择
     for(QAction *action: ruleActionList)
         action->setChecked(false);
@@ -246,6 +241,10 @@ void NineChessWindow::actionRules_triggered()
     QAction *action = dynamic_cast<QAction *>(sender());
     action->setChecked(true);
     ruleNo = action->data().toInt();
+
+    // 取消AI设定
+    ui.actionEngine1_T->setChecked(false);
+    ui.actionEngine2_R->setChecked(false);
     // 重置游戏规则
     game->setRule(ruleNo);
     // 更新规则显示
@@ -441,13 +440,20 @@ void NineChessWindow::on_actionRowChange()
 
     // 更新局面
     bool changed = game->phaseChange(currentRow);
-	// 处理自动播放时的动画
+    // 处理自动播放时的动画
     if (changed && game->isAnimation()) {
-		int waitTime = game->getDurationTime() + 50;
-		// 使用QEventLoop进行非阻塞延时，CPU占用低
-		QEventLoop loop;
-		QTimer::singleShot(waitTime, &loop, SLOT(quit()));
-		loop.exec();
+        // 不使用processEvents函数进行非阻塞延时，频繁调用占用CPU较多
+        //QElapsedTimer et;
+        //et.start();
+        //while (et.elapsed() < waitTime) {
+        //	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+        //}
+
+        int waitTime = game->getDurationTime() + 50;
+        // 使用QEventLoop进行非阻塞延时，CPU占用低
+        QEventLoop loop;
+        QTimer::singleShot(waitTime, &loop, SLOT(quit()));
+        loop.exec();
 	}
 }
 
@@ -456,8 +462,8 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 {
 	if (!arg1)
 		return;
-
-	int rows = ui.listView->model()->rowCount();
+    
+    int rows = ui.listView->model()->rowCount();
 	int currentRow = ui.listView->currentIndex().row();
 
 	if (rows <= 1)
@@ -504,22 +510,6 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 
 		// 更新局面
 		game->phaseChange(currentRow);
-		// 处理自动播放时的动画
-		if (game->isAnimation()) {
-			int waitTime = game->getDurationTime() + 50;
-
-			// 不使用processEvents函数进行非阻塞延时，频繁调用占用CPU较多
-			//QElapsedTimer et;
-			//et.start();
-			//while (et.elapsed() < waitTime) {
-			//	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-			//}
-
-			// 使用QEventLoop进行非阻塞延时，CPU占用低
-			QEventLoop loop;
-			QTimer::singleShot(waitTime, &loop, SLOT(quit()));
-			loop.exec();
-		}
 	}
 
 	// 自动运行结束后启用所有控件

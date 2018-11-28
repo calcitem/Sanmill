@@ -50,10 +50,11 @@
       <Extensions>*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Distribution Files">
-      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
-      <Extensions>*</Extensions>
-      <ParseFiles>false</ParseFiles>
+    <Filter Include="Text Files">
+      <UniqueIdentifier>{d3810898-e5d4-49ce-92da-beddffba0697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project Files">
+      <UniqueIdentifier>{16c52ca8-0391-4ad2-919c-4a865ad87e98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +82,12 @@
     <ClCompile Include="src\pieceitem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\aithread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ninechessai_ab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\gamecontroller.h">
@@ -105,6 +112,12 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <QtMoc Include="src\pieceitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\aithread.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\manuallistview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -236,27 +249,40 @@
     <None Include="Resources\image\white_piece.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Readme.md" />
+    <None Include="..\Readme.md">
+      <Filter>Text Files</Filter>
+    </None>
+    <None Include="ninechess.pro">
+      <Filter>Project Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="NineChess.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="src\sizehintlistview.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\History.txt" />
-    <Text Include="..\Licence.txt" />
-    <Text Include="..\范例棋谱.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="NineChess.ico" />
+    <Text Include="..\History.txt">
+      <Filter>Text Files</Filter>
+    </Text>
+    <Text Include="..\Licence.txt">
+      <Filter>Text Files</Filter>
+    </Text>
+    <Text Include="..\范例棋谱.txt">
+      <Filter>Text Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\boarditem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ninechessai_ab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="NineChess.ico">
+      <Filter>Project Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NineChess.rc">
+      <Filter>Project Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

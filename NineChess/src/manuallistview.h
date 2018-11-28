@@ -7,18 +7,20 @@
  * 但调节停靠栏宽度后就不好看了
  */
 
-#ifndef SIZEHINTLISTVIEW
-#define SIZEHINTLISTVIEW
+#ifndef MANUALLISTVIEW
+#define MANUALLISTVIEW
 
 #include <QListView>
 #include <QDebug>
 
-class SizeHintListView : public QListView
+class ManualListView : public QListView
 {
     Q_OBJECT
 
 public:
-    SizeHintListView(QWidget * parent = nullptr) { Q_UNUSED(parent) }
+    ManualListView(QWidget * parent = nullptr) : QListView (parent) {
+        Q_UNUSED(parent)
+    }
     QSize sizeHint() const {
         QSize size = QListView::sizeHint();
         // 缺省宽度设为128，这样就不太宽了
@@ -50,11 +52,16 @@ protected slots:
     // 采用判断最后一个元素是否改变来选中之
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
         const QVector<int> &roles = QVector<int>()) {
-        QAbstractItemView::dataChanged(topLeft, bottomRight, roles);
-        QModelIndex index = model()->index(model()->rowCount() - 1, 0);
-        if (index == bottomRight) {
-            setCurrentIndex(index);
-            scrollToBottom();
+        // 调用父类默认函数
+        QListView::dataChanged(topLeft, bottomRight, roles);
+        // 如果包含model
+        if (model()) {
+            // 判断
+            QModelIndex index = model()->index(model()->rowCount() - 1, 0);
+            if (index == bottomRight) {
+                setCurrentIndex(index);
+                scrollToBottom();
+            }
         }
     }
 
@@ -66,5 +73,4 @@ protected slots:
     }
 };
 
-#endif // SIZEHINTLISTVIEW
-
+#endif // MANUALLISTVIEW

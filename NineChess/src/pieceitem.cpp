@@ -1,6 +1,7 @@
 ﻿#include "pieceitem.h"
 #include "graphicsconst.h"
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 #include <QStyleOption>
 
 PieceItem::PieceItem(QGraphicsItem *parent) : QGraphicsItem(parent),
@@ -63,11 +64,11 @@ void PieceItem::paint(QPainter *painter,
     // 如果模型为黑色，则画黑色棋子
     if (model == blackPiece)
         painter->drawPixmap(-size/2, -size/2, size, size,
-                            QPixmap(":/image/Resources/image/black_piece.png"));
+                            QPixmap(":/image/resources/image/black_piece.png"));
     // 如果模型为白色，则画白色棋子
     else if (model == whitePiece)
         painter->drawPixmap(-size/2, -size/2, size, size,
-                            QPixmap(":/image/Resources/image/white_piece.png"));
+                            QPixmap(":/image/resources/image/white_piece.png"));
  
     // 如果模型要求显示序号
     if (showNum)

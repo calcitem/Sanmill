@@ -72,7 +72,7 @@ public slots:
 	// 认输
 	bool giveUp();
     // 棋谱的命令行执行
-    bool command(QString &cmd, bool update = true);
+    bool command(const QString &cmd, bool update = true);
     // 历史局面及局面改变
     bool phaseChange(int row);
     // 更新棋局显示，每步后必须执行
