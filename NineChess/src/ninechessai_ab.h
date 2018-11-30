@@ -1,22 +1,22 @@
-#ifndef NINECHESSAI_AB
+ï»¿#ifndef NINECHESSAI_AB
 #define NINECHESSAI_AB
 
 #include "ninechess.h"
 #include <list>
 
-// ×¢Òâ£ºNineChessÀà²»ÊÇÏß³Ì°²È«µÄ£¡
-// ËùÒÔ²»ÄÜÔÚaiÀàÖĞĞŞ¸ÄNineChessÀàµÄ¾²Ì¬³ÉÔ±±äÁ¿£¬ÇĞ¼Ç£¡
+// æ³¨æ„ï¼šNineChessç±»ä¸æ˜¯çº¿ç¨‹å®‰å…¨çš„ï¼
+// æ‰€ä»¥ä¸èƒ½åœ¨aiç±»ä¸­ä¿®æ”¹NineChessç±»çš„é™æ€æˆå‘˜å˜é‡ï¼Œåˆ‡è®°ï¼
 
 
 class NineChessAi_ab
 {
 public:
-    // ¶¨ÒåÒ»¸ö½Úµã½á¹¹Ìå
+    // å®šä¹‰ä¸€ä¸ªèŠ‚ç‚¹ç»“æ„ä½“
     struct Node{
-        int value;                     // ½ÚµãµÄÖµ
-        short move_;                   // ÕĞ·¨µÄÃüÁîĞĞÖ¸Áî£¬Í¼ÉÏ±êÊ¾Îª½ÚµãÇ°µÄÁ¬Ïß
-        struct Node * parent;          // ¸¸½Úµã
-        list<struct Node *> children;  // ×Ó½ÚµãÁĞ±í
+        int value;                     // èŠ‚ç‚¹çš„å€¼
+        short move_;                   // æ‹›æ³•çš„å‘½ä»¤è¡ŒæŒ‡ä»¤ï¼Œå›¾ä¸Šæ ‡ç¤ºä¸ºèŠ‚ç‚¹å‰çš„è¿çº¿
+        struct Node * parent;          // çˆ¶èŠ‚ç‚¹
+        list<struct Node *> children;  // å­èŠ‚ç‚¹åˆ—è¡¨
     };
 
 public:
@@ -28,32 +28,44 @@ public:
     void quit() { requiredQuit = true; }
 
 protected:
-    // ½¨Á¢×Ó½Úµã
+    // å»ºç«‹å­èŠ‚ç‚¹
     void buildChildren(Node *node);
-    // ×Ó½ÚµãÅÅĞò
+    // å­èŠ‚ç‚¹æ’åº
     void sortChildren(Node *node);
-    // Çå¿Õ½ÚµãÊ÷
+    // æ¸…ç©ºèŠ‚ç‚¹æ ‘
     void deleteTree(Node *node);
-
-    // ÆÀ¼Ûº¯Êı
+    // è¯„ä»·å‡½æ•°
     int evaluate(Node *node);
-    // Alpha-Beta¼ôÖ¦Ëã·¨
+    // Alpha-Betaå‰ªæç®—æ³•
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
 
+    // å±€é¢é€†åº
+    void reverse(const NineChess *node1, NineChess *node2, int i);
+    // å±€é¢å±‚æ¬¡ç¿»è½¬
+    void turn(const NineChess *node1, NineChess *node2, int i);
+    // å±€é¢æ—‹è½¬
+    void rotate(const NineChess *node1, NineChess *node2, int i);
+    // åˆ¤æ–­æ˜¯å¦åœ¨ç¼“å­˜ä¸­
+    bool isInCache(Node * node, int &value);
+
 private:
-    // Ô­Ê¼Ä£ĞÍ
+    // åŸå§‹æ¨¡å‹
     NineChess chess;
-    // ÑİËãÓÃµÄÄ£ĞÍ
+    // æ¼”ç®—ç”¨çš„æ¨¡å‹
     NineChess chessTemp;
 
-    // ¸ù½Úµã
+    // æ ¹èŠ‚ç‚¹
     Node * rootNode;
+    // å±€é¢æ•°æ®ç¼“å­˜åŒº
+    list<NineChess> dataCache;
+    // å±€é¢æ•°æ®ç¼“å­˜åŒºæœ€å¤§å¤§å°
+    size_t cacheMaxSize;
 
-    // ±êÊ¶£¬ÓÃÓÚÌø³ö¼ôÖ¦Ëã·¨£¬Á¢¼´·µ»Ø
+    // æ ‡è¯†ï¼Œç”¨äºè·³å‡ºå‰ªæç®—æ³•ï¼Œç«‹å³è¿”å›
     bool requiredQuit;
-    // ¼ôÖ¦Ëã·¨µÄ²ãÉî
+    // å‰ªæç®—æ³•çš„å±‚æ·±
     int depth;
-    // ¶¨Òå¼«´óÖµ£¬µÈÓÚ32Î»ÓĞ·ûºÅÕûĞÎÊı×ÖµÄ×î´óÖµ
+    // å®šä¹‰æå¤§å€¼ï¼Œç­‰äº32ä½æœ‰ç¬¦å·æ•´å½¢æ•°å­—çš„æœ€å¤§å€¼
     static const int infinity = 0x7fffffff;
 };
 

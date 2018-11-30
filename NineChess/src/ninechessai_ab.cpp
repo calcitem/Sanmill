@@ -1,10 +1,16 @@
-#include "NineChessAi_ab.h"
+ï»¿#include "ninechessai_ab.h"
+#include <cmath>
+#include <time.h>
 
 NineChessAi_ab::NineChessAi_ab():
 rootNode(nullptr),
 requiredQuit(false),
-depth(5)    // Ä¬ÈÏ5²ãÉî¶È
+depth(3)    // é»˜è®¤3å±‚æ·±åº¦
 {
+    rootNode = new Node;
+    rootNode->value = 0;
+    rootNode->move_ = 0;
+    rootNode->parent = nullptr;
 }
 
 NineChessAi_ab::~NineChessAi_ab()
@@ -14,25 +20,30 @@ NineChessAi_ab::~NineChessAi_ab()
 
 void NineChessAi_ab::buildChildren(Node *node)
 {
+    // åˆ—å‡ºæ‰€æœ‰åˆæ³•çš„ä¸‹ä¸€æ‹›
     ;
 }
 
 void NineChessAi_ab::sortChildren(Node *node)
 {
-    // Õâ¸öº¯Êı¶ÔĞ§ÂÊµÄÓ°ÏìºÜ´ó£¬
-    // ÅÅĞòºÃµÄ»°£¬¼ôÖ¦½ÏÔç£¬½ÚÊ¡Ê±¼ä
-    // µ«²»ÄÜÔÚ´Ëº¯ÊıºÄ·ÑÌ«¶àÊ±¼ä
-    ;
+    // è¿™ä¸ªå‡½æ•°å¯¹æ•ˆç‡çš„å½±å“å¾ˆå¤§ï¼Œæ’åºå¥½çš„è¯ï¼Œå‰ªæè¾ƒæ—©ï¼ŒèŠ‚çœæ—¶é—´ï¼Œä½†ä¸èƒ½åœ¨æ­¤å‡½æ•°è€—è´¹å¤ªå¤šæ—¶é—´
+    // å…ˆèµ‹åˆå€¼ï¼Œåˆå§‹å€¼ä¸ä¼šå½±å“alpha-betaå‰ªæ
+    for (auto i : node->children) {
+        i->value = evaluate(node);
+    }
+    // æ’åº
+    node->children.sort([](Node *n1, Node *n2) { return n1->value > n2->value; });
 }
 
 void NineChessAi_ab::deleteTree(Node *node)
 {
-    if (rootNode) {
-        for (auto i : rootNode->children) {
+    // é€’å½’åˆ é™¤èŠ‚ç‚¹æ ‘
+    if (node) {
+        for (auto i : node->children) {
             deleteTree(i);
         }
-        rootNode->children.clear();
-        delete rootNode;
+        node->children.clear();
+        delete node;
     }
 }
 
@@ -45,63 +56,100 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 
 int NineChessAi_ab::evaluate(Node *node)
 {
-    // ³õÊ¼ÆÀ¹ÀÖµÎª0£¬¶ÔÏÈÊÖÓĞÀûÔòÔö´ó£¬¶ÔºóÊÖÓĞÀûÔò¼õĞ¡
+    // åˆå§‹è¯„ä¼°å€¼ä¸º0ï¼Œå¯¹å…ˆæ‰‹æœ‰åˆ©åˆ™å¢å¤§ï¼Œå¯¹åæ‰‹æœ‰åˆ©åˆ™å‡å°
     int value = 0;
 
 
 
 
-    // ¸³Öµ·µ»Ø
+    // èµ‹å€¼è¿”å›
     node->value = value;
     return value;
 }
 
 int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 {
-    // ÆÀ¼ÛÖµ
+    // è¯„ä»·å€¼
     int value;
     if (!depth || !(node->children.size())) {
         node->value = evaluate(node);
         return node->value;
     }
 
-    // Éú³É×Ó½ÚµãÊ÷
+    // ç”Ÿæˆå­èŠ‚ç‚¹æ ‘
     buildChildren(node);
-    // ÅÅĞò×Ó½ÚµãÊ÷
+    // æ’åºå­èŠ‚ç‚¹æ ‘
     sortChildren(node);
 
-    // ¸ù¾İÑİËãÄ£ĞÍÖ´ĞĞMiniMax¼ìË÷
-    // ¶ÔÏÈÊÖ£¬ËÑË÷Max
+    // æ ¹æ®æ¼”ç®—æ¨¡å‹æ‰§è¡ŒMiniMaxæ£€ç´¢
+    // å¯¹å…ˆæ‰‹ï¼Œæœç´¢Max
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
         for (auto child : node->children) {
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
-            // È¡×î´óÖµ
+            // å–æœ€å¤§å€¼
             if (value > alpha)
                 alpha = value;
-            // ¼ôÖ¦·µ»Ø
+            // å‰ªæè¿”å›
             if (alpha >= beta) {
                 return value;
             }
         }
-        // È¡×î´óÖµ
+        // å–æœ€å¤§å€¼
         node->value = alpha;
     }
-    // ¶ÔºóÊÖ£¬ËÑË÷Min
+    // å¯¹åæ‰‹ï¼Œæœç´¢Min
     else {
         for (auto child : node->children) {
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
-            // È¡×îĞ¡Öµ
+            // å–æœ€å°å€¼
             if (value < beta)
                 beta = value;
-            // ¼ôÖ¦·µ»Ø
+            // å‰ªæè¿”å›
             if (alpha >= beta) {
                 return value;
             }
         }
-        // È¡×îĞ¡Öµ
+        // å–æœ€å°å€¼
         node->value = beta;
     }
-    // ·µ»Ø
+    // è¿”å›
     return node->value;
 }
 
+void NineChessAi_ab::reverse(const NineChess *node1, NineChess *node2, int i)
+{
+
+}
+
+void NineChessAi_ab::turn(const NineChess *node1, NineChess *node2, int i)
+{
+
+}
+
+void NineChessAi_ab::rotate(const NineChess *node1, NineChess *node2, int i)
+{
+
+}
+
+bool NineChessAi_ab::isInCache(Node * node, int &value)
+{
+/*    NineChess tempData;
+    for (int i = 0; i < 2; i++) {
+        reverse(node, &tempData, i);
+        for (int j = 0; j < 6; j++) {
+            turn(node, &tempData, j);
+            int n = chess.rule.hasX ? 8 : 4;
+            for (int k = 0; k < n; k++) {
+                rotate(node, &tempData, k);
+                for (auto i : dataCache) {
+                    if (compare(i, &tempData) == 0) {
+                        value = i.value;
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    */
+    return false;
+}

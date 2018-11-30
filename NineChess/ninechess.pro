@@ -15,6 +15,8 @@ TEMPLATE = app
 CONFIG += C++11 \
     warn_off
 
+INCLUDEPATH += src
+
 SOURCES += \
     src/main.cpp \
     src/boarditem.cpp \
@@ -22,7 +24,7 @@ SOURCES += \
     src/gamescene.cpp \
     src/gameview.cpp \
     src/ninechess.cpp \
-	src/ninechessai_ab.cpp \
+    src/ninechessai_ab.cpp \
     src/ninechesswindow.cpp \
     src/pieceitem.cpp \
     src/aithread.cpp
@@ -34,7 +36,7 @@ HEADERS  += \
     src/gameview.h \
     src/graphicsconst.h \
     src/ninechess.h \
-	src/ninechessai_ab.h \
+    src/ninechessai_ab.h \
     src/ninechesswindow.h \
     src/pieceitem.h \
     src/manuallistview.h \

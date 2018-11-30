@@ -1,7 +1,7 @@
 # 九联棋 NineChess
 ## 古老的游戏
 ### 莫里斯九子棋
-![莫里斯九子棋](./Wiki/莫里斯九子棋.PNG "Optional title")
+![莫里斯九子棋](./screenshot/莫里斯九子棋.PNG "Optional title")
 
 九子棋（Nine Men's Morris）是一个非常古老的智力的游戏。其历史甚至可以追溯到公元前1400多年的古埃及时代。
 
@@ -16,7 +16,7 @@
 + 与莫里斯九子棋类似，但一方仅剩3子时不能飞子。
 
 ### 打三棋（12子棋）
-![12子棋](./Wiki/12子棋.PNG "Optional title")
+![12子棋](./screenshot/12子棋.PNG "Optional title")
 
 1. 双方各12颗子，棋盘有斜线；
 2. 摆棋阶段被提子的位置不能再摆子，直到走棋阶段；
@@ -26,7 +26,7 @@
 6. 其它规则与成三棋基本相同。
 
 ### 九连棋
-![九连棋](./Wiki/九连棋.PNG "Optional title")
+![九连棋](./screenshot/九连棋.PNG "Optional title")
 
 1. 规则与成三棋基本相同，只是它的棋子有序号；
 2. 相同序号、位置的“三连”不能重复提子；
@@ -35,7 +35,7 @@
 
 ## 应用程序说明
 ### 用户界面
-![GUI](./Wiki/GUI.PNG "Optional title")
+![GUI](./screenshot/GUI.PNG "Optional title")
 
 ### 系统支持
 + Windows版支持64位Windows 7、8、10系统，不支持32位系统及Windows XP。
