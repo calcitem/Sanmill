@@ -251,7 +251,6 @@ void NineChessWindow::actionRules_triggered()
     ruleInfo();
 }
 
-
 void NineChessWindow::on_actionNew_N_triggered()
 {
     if (file.isOpen())
@@ -520,7 +519,6 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 	// 取消自动运行按钮的选中状态
 	ui.actionAutoRun_A->setChecked(false);
 }
-
 
 void NineChessWindow::on_actionLimited_T_triggered()
 {

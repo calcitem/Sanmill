@@ -80,7 +80,7 @@ public slots:
     bool updateScence(NineChess &chess);
 
 protected:
-    bool eventFilter(QObject * watched, QEvent * event);
+    //bool eventFilter(QObject * watched, QEvent * event);
     // 定时器
     void timerEvent(QTimerEvent * event);
     // 选子

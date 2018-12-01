@@ -71,7 +71,6 @@ const QMap<int, QStringList> GameController::getActions()
     return actions;
 }
 
-
 void GameController::gameStart()
 {
     chess.start();
@@ -100,11 +99,17 @@ void GameController::gameReset()
     // 重新绘制棋盘
     scene.setDiagonal(chess.getRule()->hasObliqueLine);
 
-	// 绘制所有棋子，放在起始位置，分成2组写，后面好区分
+	// 绘制所有棋子，放在起始位置
+    // 0: 先手第1子； 1：后手第1子
+    // 2：先手嫡2子； 3：后手第2子
+    // ......
+    PieceItem::Models md;
+    PieceItem *newP;
 	for (int i = 0; i < chess.getRule()->numOfChess; i++)
 	{
-		PieceItem::Models md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
-		PieceItem *newP = new PieceItem;
+        // 先手的棋子
+		md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
+		newP = new PieceItem;
 		newP->setModel(md);
 		newP->setPos(scene.pos_p1);
 		newP->setNum(i + 1);
@@ -113,20 +118,19 @@ void GameController::gameReset()
 			newP->setShowNum(true);
 		pieceList.append(newP);
 		scene.addItem(newP);
-	}
-	for (int i = 0; i < chess.getRule()->numOfChess; i++)
-	{
-		PieceItem::Models md = isInverted ? PieceItem::blackPiece : PieceItem::whitePiece;
-		PieceItem *newP = new PieceItem;
-		newP->setModel(md);
-		newP->setPos(scene.pos_p2);
-		newP->setNum(i + 1);
-		// 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-		if (!(chess.getRule()->canRepeated))
-			newP->setShowNum(true);
-		pieceList.append(newP);
-		scene.addItem(newP);
-	}
+
+        // 后手的棋子
+        md = isInverted ? PieceItem::blackPiece : PieceItem::whitePiece;
+        newP = new PieceItem;
+        newP->setModel(md);
+        newP->setPos(scene.pos_p2);
+        newP->setNum(i + 1);
+        // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
+        if (!(chess.getRule()->canRepeated))
+            newP->setShowNum(true);
+        pieceList.append(newP);
+        scene.addItem(newP);
+    }
 
     // 读取规则限时要求
     timeLimit = chess.getRule()->maxTime;
@@ -218,7 +222,8 @@ void GameController::setEngine1(bool arg)
 void GameController::setEngine2(bool arg)
 {
     isEngine2 = arg;
-
+    qDebug() << "size of NineChess::ChessData" << sizeof(NineChess::ChessData);
+    qDebug() << "size of NineChess: " << sizeof(chess);
 }
 
 void GameController::setAnimation(bool arg)
@@ -243,10 +248,10 @@ void GameController::playSound(const QString &soundPath)
 	}
 }
 
-bool GameController::eventFilter(QObject * watched, QEvent * event)
-{
-    return QObject::eventFilter(watched, event);
-}
+//bool GameController::eventFilter(QObject * watched, QEvent * event)
+//{
+//    return QObject::eventFilter(watched, event);
+//}
 
 void GameController::timerEvent(QTimerEvent *event)
 {
@@ -348,7 +353,7 @@ bool GameController::phaseChange(int row)
         qDebug() << mlist.at(i);
         chessTemp.command(mlist.at(i).toStdString().c_str());
     }
-    // 下面这步关键，让悔棋者承担时间损失
+    // 下面这步关键，会让悔棋者承担时间损失
     chessTemp.setStartTimeb(chess.getStartTimeb());
     // 刷新棋局场景
     updateScence(chessTemp);
@@ -583,12 +588,12 @@ bool GameController::updateScence()
 
 bool GameController::updateScence(NineChess &chess)
 {
-	const char *board = chess.getBoard();
-	QPointF pos;
-	// chess类中的棋子代码
-	int key;
-	// 棋子总数
-	int n = chess.getRule()->numOfChess * 2;
+    const char *board = chess.getBoard();
+    QPointF pos;
+    // chess类中的棋子代码
+    int key;
+    // 棋子总数
+    int n = chess.getRule()->numOfChess * 2;
 
     // 动画组
     QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup;
@@ -596,92 +601,100 @@ bool GameController::updateScence(NineChess &chess)
     // 棋子就位
     PieceItem *piece = nullptr;
     for (int i = 0; i < n; i++)
-	{
-		piece = pieceList.at(i);
-		// 将pieceList的下标转换为chess的棋子代号
-		key = (i >= n/2) ? (i + 0x21 -n/2) : (i + 0x11);
-		int j;
-		// 放置棋盘上的棋子
-		for (j = NineChess::SEAT; j < (NineChess::SEAT)*(NineChess::RING + 1); j++)
-		{
-			if (board[j] == key)
-			{
-				pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
-				if (piece->pos() != pos) {
+    {
+        piece = pieceList.at(i);
+        // 将pieceList的下标转换为chess的棋子代号
+        key = (i % 2) ? (i/2 + 0x21) : (i/2 + 0x11);
+        int j;
+        // 遍历棋盘，查找并放置棋盘上的棋子
+        for (j = NineChess::SEAT; j < (NineChess::SEAT)*(NineChess::RING + 1); j++)
+        {
+            if (board[j] == key)
+            {
+                pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
+                if (piece->pos() != pos) {
+                    // 让移动的棋子位于顶层
+                    piece->setZValue(1);
+                    // 棋子移动动画
                     QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
-					animation->setDuration(durationTime);
-					animation->setStartValue(piece->pos());
-					animation->setEndValue(pos);
-					animation->setEasingCurve(QEasingCurve::InOutQuad);
-					animationGroup->addAnimation(animation);
-				}
-				break;
-			}
-		}
+                    animation->setDuration(durationTime);
+                    animation->setStartValue(piece->pos());
+                    animation->setEndValue(pos);
+                    animation->setEasingCurve(QEasingCurve::InOutQuad);
+                    animationGroup->addAnimation(animation);
+                }
+                else
+                {
+                    // 让静止的棋子位于底层
+                    piece->setZValue(0);
+                }
+                break;
+            }
+        }
 
-		// 放置棋盘外的棋子
-		if (j == (NineChess::SEAT)*(NineChess::RING + 1))
-		{
-			// 判断是被吃掉的子，还是未安放的子
-			if (key & 0x10) {
-				pos = (key - 0x11 < n / 2 - chess.getPlayer1_InHand()) ? scene.pos_p2_g : scene.pos_p1;
-			}
-			else
-				pos = (key - 0x21 < n / 2 - chess.getPlayer2_InHand()) ? scene.pos_p1_g : scene.pos_p2;
+        // 如果没有找到，放置棋盘外的棋子
+        if (j == (NineChess::SEAT)*(NineChess::RING + 1))
+        {
+            // 判断是被吃掉的子，还是未安放的子
+            if (key & 0x10) {
+                pos = (key - 0x11 < n / 2 - chess.getPlayer1_InHand()) ? scene.pos_p2_g : scene.pos_p1;
+            }
+            else
+                pos = (key - 0x21 < n / 2 - chess.getPlayer2_InHand()) ? scene.pos_p1_g : scene.pos_p2;
 
-			if (piece->pos() != pos) {
+            if (piece->pos() != pos) {
                 QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
                 animation->setDuration(durationTime);
                 animation->setStartValue(piece->pos());
                 animation->setEndValue(pos);
-				animation->setEasingCurve(QEasingCurve::InOutQuad);
-				animationGroup->addAnimation(animation);
+                animation->setEasingCurve(QEasingCurve::InOutQuad);
+                animationGroup->addAnimation(animation);
             }
         }
-		piece->setSelected(false);
-	}
+        piece->setSelected(false);
+    }
 
-	// 添加开局禁子点
-	if (chess.getRule()->hasForbidden && chess.getPhase() == NineChess::GAME_OPENING)
-	{
-		for (int j = NineChess::SEAT; j < (NineChess::SEAT)*(NineChess::RING + 1); j++)
-		{
-			if (board[j] == 0x0F)
-			{
-				pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
-				if (n < pieceList.size())
-				{
-					pieceList.at(n++)->setPos(pos);
-				}
-				else
-				{
-					PieceItem *newP = new PieceItem;
-					newP->setDeleted();
-					newP->setPos(pos);
-					pieceList.append(newP);
-					n++;
-					scene.addItem(newP);
-				}
-			}
-		}
-	}
+    // 添加开局禁子点
+    if (chess.getRule()->hasForbidden && chess.getPhase() == NineChess::GAME_OPENING)
+    {
+        for (int j = NineChess::SEAT; j < (NineChess::SEAT)*(NineChess::RING + 1); j++)
+        {
+            if (board[j] == 0x0F)
+            {
+                pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
+                if (n < pieceList.size())
+                {
+                    pieceList.at(n++)->setPos(pos);
+                }
+                else
+                {
+                    PieceItem *newP = new PieceItem;
+                    newP->setDeleted();
+                    newP->setPos(pos);
+                    pieceList.append(newP);
+                    n++;
+                    scene.addItem(newP);
+                }
+            }
+        }
+    }
 
-	// 中局清除禁子点
-	if (chess.getRule()->hasForbidden && chess.getPhase() != NineChess::GAME_OPENING)
-	{
-		while (n < pieceList.size())
-		{
-			delete pieceList.at(n);
-			pieceList.removeAt(n);
-		}
-	}
+    // 中局清除禁子点
+    if (chess.getRule()->hasForbidden && chess.getPhase() != NineChess::GAME_OPENING)
+    {
+        while (n < pieceList.size())
+        {
+            delete pieceList.at(n);
+            pieceList.removeAt(n);
+        }
+    }
 
-	// 选中当前棋子
+    // 选中当前棋子
     int ipos = chess.getCurrentPos();
     if (ipos) {
-		key = board[chess.getCurrentPos()];
-		currentPiece = pieceList.at(key & 0x10 ? key - 0x11 : key - 0x21 + n/2);
-		currentPiece->setSelected(true);
+        key = board[chess.getCurrentPos()];
+        currentPiece = pieceList.at(key & 0x10 ? (key - 0x11)*2 : (key - 0x21)*2 + 1);
+        currentPiece->setSelected(true);
     }
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);

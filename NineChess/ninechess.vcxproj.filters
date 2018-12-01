@@ -23,10 +23,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
@@ -40,15 +36,6 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Distribution Files">
-      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
-      <Extensions>*</Extensions>
-      <ParseFiles>false</ParseFiles>
     </Filter>
     <Filter Include="Text Files">
       <UniqueIdentifier>{d3810898-e5d4-49ce-92da-beddffba0697}</UniqueIdentifier>
@@ -56,70 +43,70 @@
     <Filter Include="Project Files">
       <UniqueIdentifier>{16c52ca8-0391-4ad2-919c-4a865ad87e98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{afa4cc20-6ea3-4aee-8211-eca831a215d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control">
+      <UniqueIdentifier>{2dce63cc-311c-4d88-a5a4-7fdc289f99c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{bc588bf0-770b-4800-89b5-64e97e98b22a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\boarditem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\aithread.cpp">
+      <Filter>Control</Filter>
     </ClCompile>
     <ClCompile Include="src\gamecontroller.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Control</Filter>
+    </ClCompile>
+    <ClCompile Include="src\boarditem.cpp">
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="src\gamescene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="src\gameview.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ninechess.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="src\ninechesswindow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="src\pieceitem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>View</Filter>
     </ClCompile>
-    <ClCompile Include="src\aithread.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\ninechess.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="src\ninechessai_ab.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\gamecontroller.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="src\gamescene.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="src\gameview.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClInclude Include="src\graphicsconst.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ninechess.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <QtMoc Include="src\ninechesswindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <ClInclude Include="resource.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <QtMoc Include="src\pieceitem.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="src\aithread.h">
-      <Filter>Header Files</Filter>
+      <Filter>Control</Filter>
     </QtMoc>
-    <QtMoc Include="src\manuallistview.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="src\gamecontroller.h">
+      <Filter>Control</Filter>
     </QtMoc>
+    <QtMoc Include="src\gamescene.h">
+      <Filter>View</Filter>
+    </QtMoc>
+    <ClInclude Include="src\graphicsconst.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ninechess.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ninechessai_ab.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -269,10 +256,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\boarditem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ninechessai_ab.h">
-      <Filter>Header Files</Filter>
+      <Filter>View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -284,5 +268,19 @@
     <ResourceCompile Include="NineChess.rc">
       <Filter>Project Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\gameview.h">
+      <Filter>View</Filter>
+    </QtMoc>
+    <QtMoc Include="src\manuallistview.h">
+      <Filter>View</Filter>
+    </QtMoc>
+    <QtMoc Include="src\pieceitem.h">
+      <Filter>View</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ninechesswindow.h">
+      <Filter>View</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

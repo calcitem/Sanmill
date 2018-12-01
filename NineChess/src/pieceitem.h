@@ -32,6 +32,7 @@ public:
 
     enum Models getModel() { return model; }
     void setModel(enum Models model) { this->model = model; }
+    int getNum() { return num; }
     void setNum(int n) { num = n; }
     bool isDeleted() { return deleted; }
     void setDeleted(bool deleted = true) 
