@@ -1,4 +1,10 @@
-﻿#ifndef NINECHESSAI_AB
+﻿/****************************************************************************
+** by liuweilhy, 2018.11.29
+** Mail: liuweilhy@163.com
+** This file is part of the NineChess game.
+****************************************************************************/
+
+#ifndef NINECHESSAI_AB
 #define NINECHESSAI_AB
 
 #include "ninechess.h"
@@ -6,15 +12,24 @@
 
 // 注意：NineChess类不是线程安全的！
 // 所以不能在ai类中修改NineChess类的静态成员变量，切记！
-
+// 另外，AI类是NineChess类的友元类，可以访问其私有变量
+// 尽量不要使用NineChess的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
 
 class NineChessAi_ab
 {
 public:
+    // 定义哈希表
+    struct Hash{
+        NineChess::ChessData data;
+        uint64_t value;
+        int depth;
+    };
+
     // 定义一个节点结构体
-    struct Node{
+    struct Node {
+        uint64_t hash;                 // 当前局面的哈希值
         int value;                     // 节点的值
-        short move_;                   // 招法的命令行指令，图上标示为节点前的连线
+        int16_t move;                 // 招法的命令行指令，图上标示为节点前的连线
         struct Node * parent;          // 父节点
         list<struct Node *> children;  // 子节点列表
     };
@@ -26,6 +41,10 @@ public:
     void setChess(const NineChess &chess);
     void setDepth(int depth) { this->depth = depth; }
     void quit() { requiredQuit = true; }
+    // Alpha-Beta剪枝算法
+    int alphaBetaPruning(int depth);
+    // 返回最佳走法的命令行
+    const char *bestMove();
 
 protected:
     // 建立子节点
@@ -38,6 +57,8 @@ protected:
     int evaluate(Node *node);
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
+    // 返回招法的命令行
+    const char *move2string(int16_t move);
 
     // 局面逆序
     void reverse(const NineChess *node1, NineChess *node2, int i);
@@ -45,28 +66,36 @@ protected:
     void turn(const NineChess *node1, NineChess *node2, int i);
     // 局面旋转
     void rotate(const NineChess *node1, NineChess *node2, int i);
-    // 判断是否在缓存中
-    bool isInCache(Node * node, int &value);
+
+    // 判断是否在哈希表中
+    bool isInHash(const Node *node);
 
 private:
     // 原始模型
     NineChess chess;
     // 演算用的模型
     NineChess chessTemp;
+    NineChess::ChessData *chessData;
 
     // 根节点
     Node * rootNode;
-    // 局面数据缓存区
-    list<NineChess> dataCache;
-    // 局面数据缓存区最大大小
-    size_t cacheMaxSize;
+    // 局面数据哈希表
+    list<struct  Hash> hashTable;
+    // 哈希表最大大小
+    size_t hashTableMaxSize;
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit;
     // 剪枝算法的层深
     int depth;
     // 定义极大值，等于32位有符号整形数字的最大值
-    static const int infinity = 0x7fffffff;
+    static const int infinity = INT32_MAX;
+
+private:
+    // 棋子价值表
+    char boardScore[(NineChess::RING + 2)*NineChess::SEAT];
+    // 命令行
+    char cmdline[32];
 };
 
 #endif

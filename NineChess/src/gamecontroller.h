@@ -90,7 +90,7 @@ protected:
     // 移动旧子
     bool movePiece(QPointF pos);
     // 去子
-    bool removePiece(QPointF pos);
+    bool capturePiece(QPointF pos);
 
 private:
     // 棋对象的数据模型

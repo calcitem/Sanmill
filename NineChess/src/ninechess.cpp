@@ -3,6 +3,7 @@
 ** Mail: liuweilhy@163.com
 ** This file is part of the NineChess game.
 ****************************************************************************/
+
 #if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
 #endif
@@ -200,8 +201,8 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
             data.action = ACTION_CHOOSE;
         else if (flags & ACTION_PLACE)
             data.action = ACTION_PLACE;
-        else if (flags & ACTION_REMOVE)
-            data.action = ACTION_REMOVE;
+        else if (flags & ACTION_CAPTURE)
+            data.action = ACTION_CAPTURE;
         else
             return false;
 
@@ -236,7 +237,7 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
         data.player2_InHand = p2_InHand < data.player2_InHand ? p2_InHand : data.player2_InHand;
 
         // 设置去子状态时的剩余尚待去除子数
-        if (flags & ACTION_REMOVE) {
+        if (flags & ACTION_CAPTURE) {
             if (num_NeedRemove >= 0 && num_NeedRemove < 3)
                 data.num_NeedRemove = num_NeedRemove;
         }
@@ -398,7 +399,7 @@ bool NineChess::reset()
     winner = NOBODY;
 
     // 当前棋局（3×8）
-    memset(board, 0, sizeof(board));
+    memset(board, 0, sizeof(data.board));
 
     // 盘面子数归零
     data.player1_Remain = data.player2_Remain = 0;
@@ -611,7 +612,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
             // 设置去子数目
             data.num_NeedRemove = rule.removeMore ? n : 1;
             // 进入去子状态
-            data.action = ACTION_REMOVE;
+            data.action = ACTION_CAPTURE;
         }
         setTip();
         return true;
@@ -660,7 +661,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
             // 设置去子数目
             data.num_NeedRemove = rule.removeMore ? n : 1;
             // 进入去子状态
-            data.action = ACTION_REMOVE;
+            data.action = ACTION_CAPTURE;
             setTip();
         }
         setTip();
@@ -670,13 +671,13 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
     return false;
 }
 
-bool NineChess::remove(int c, int p, long time_p /* = -1*/)
+bool NineChess::capture(int c, int p, long time_p /* = -1*/)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (data.phase == GAME_NOTSTARTED || data.phase == GAME_OVER)
         return false;
     // 如非“去子”状态，返回false
-    if (data.action != ACTION_REMOVE)
+    if (data.action != ACTION_CAPTURE)
         return false;
     // 如果去子完成，返回false
     if (data.num_NeedRemove <= 0)
@@ -685,11 +686,9 @@ bool NineChess::remove(int c, int p, long time_p /* = -1*/)
     long player_ms = -1;
     int pos = cp2pos(c, p);
     // 对手
-    enum Players opponent = PLAYER2;
-    if (data.turn == PLAYER2)
-        opponent = PLAYER1;
-    // 判断去子不是对手棋
-    if (getWhosPiece(c, p) != opponent)
+    char opponent = data.turn == PLAYER1 ? 0x20 : 0x10;
+    // 判断去子是不是对手棋
+    if (!(opponent & board[pos]))
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
@@ -810,6 +809,267 @@ bool NineChess::choose(int c, int p)
     return false;
 }
 
+bool NineChess::place(int pos)
+{
+    // 如果局面为“结局”，返回false
+    if (data.phase == GAME_OVER)
+        return false;
+    // 如果局面为“未开局”，则开具
+    if (data.phase == GAME_NOTSTARTED)
+        start();
+
+    // 如非“落子”状态，返回false
+    if (data.action != ACTION_PLACE)
+        return false;
+    // 如果落子位置在棋盘外、已有子点或禁点，返回false
+    if (!inBoard[pos] || board[pos])
+        return false;
+
+    // 对于开局落子
+    char piece = '\x00';
+    int n = 0;
+    if (data.phase == GAME_OPENING) {
+        // 先手下
+        if (data.turn == PLAYER1)
+        {
+            piece = '\x11' + rule.numOfChess - data.player1_InHand;
+            data.player1_InHand--;
+            data.player1_Remain++;
+        }
+        // 后手下
+        else
+        {
+            piece = '\x21' + rule.numOfChess - data.player2_InHand;
+            data.player2_InHand--;
+            data.player2_Remain++;
+        }
+        board[pos] = piece;
+        move_ = pos;
+        currentPos = pos;
+        data.step++;
+        // 如果决出胜负
+        if (win()) {
+            setTip();
+            return true;
+        }
+
+        n = addMills(currentPos);
+        // 开局阶段未成三
+        if (n == 0) {
+            // 如果双方都无未放置的棋子
+            if (data.player1_InHand == 0 && data.player2_InHand == 0) {
+                // 进入中局阶段
+                data.phase = GAME_MID;
+                // 进入选子状态
+                data.action = ACTION_CHOOSE;
+                // 清除禁点
+                cleanForbidden();
+                // 设置轮到谁走
+                if (rule.isDefensiveMoveFirst) {
+                    data.turn = PLAYER2;
+                }
+                else {
+                    data.turn = PLAYER1;
+                }
+
+                // 再决胜负
+                if (win()) {
+                    setTip();
+                    return true;
+                }
+            }
+            // 如果双方还有子
+            else {
+                // 设置轮到谁走
+                changeTurn();
+            }
+        }
+        // 如果成三
+        else {
+            // 设置去子数目
+            data.num_NeedRemove = rule.removeMore ? n : 1;
+            // 进入去子状态
+            data.action = ACTION_CAPTURE;
+        }
+        setTip();
+        return true;
+    }
+
+    // 对于中局落子
+    else if (data.phase == GAME_MID) {
+        // 如果落子不合法
+        if ((data.turn == PLAYER1 && (data.player1_Remain > rule.numAtLest || !rule.canFly)) ||
+            (data.turn == PLAYER2 && (data.player2_Remain > rule.numAtLest || !rule.canFly))) {
+            int i;
+            for (i = 0; i < 4; i++) {
+                if (pos == moveTable[currentPos][i])
+                    break;
+            }
+            // 不在招法表中
+            if (i == 4)
+                return false;
+        }
+        // 移子
+        move_ = currentPos << 8 + pos;
+        board[pos] = board[currentPos];
+        board[currentPos] = '\x00';
+        currentPos = pos;
+        data.step++;
+        n = addMills(currentPos);
+
+        // 中局阶段未成三
+        if (n == 0) {
+            // 进入选子状态
+            data.action = ACTION_CHOOSE;
+            // 设置轮到谁走
+            changeTurn();
+            // 如果决出胜负
+            if (win()) {
+                setTip();
+                return true;
+            }
+        }
+        // 中局阶段成三
+        else {
+            // 设置去子数目
+            data.num_NeedRemove = rule.removeMore ? n : 1;
+            // 进入去子状态
+            data.action = ACTION_CAPTURE;
+            setTip();
+        }
+        setTip();
+        return true;
+    }
+
+    return false;
+}
+
+bool NineChess::capture(int pos)
+{
+    // 如果局面为"未开局"或“结局”，返回false
+    if (data.phase == GAME_NOTSTARTED || data.phase == GAME_OVER)
+        return false;
+    // 如非“去子”状态，返回false
+    if (data.action != ACTION_CAPTURE)
+        return false;
+    // 如果去子完成，返回false
+    if (data.num_NeedRemove <= 0)
+        return false;
+    // 对手
+    char opponent = data.turn == PLAYER1 ? 0x20 : 0x10;
+    // 判断去子是不是对手棋
+    if (!(opponent & board[pos]))
+        return false;
+
+    // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
+    if (isInMills(pos) && !isAllInMills(opponent)) {
+        return false;
+    }
+
+    // 去子（设置禁点）
+    if (rule.hasForbidden && data.phase == GAME_OPENING)
+        board[pos] = '\x0f';
+    else // 去子
+        board[pos] = '\x00';
+    if (data.turn == PLAYER1)
+        data.player2_Remain--;
+    else if (data.turn == PLAYER2)
+        data.player1_Remain--;
+    move_ = -pos;
+    currentPos = 0;
+    data.num_NeedRemove--;
+    data.step++;
+    // 去子完成
+
+    // 如果决出胜负
+    if (win()) {
+        setTip();
+        return true;
+    }
+    // 还有其余的子要去吗
+    if (data.num_NeedRemove > 0) {
+        // 继续去子
+        return true;
+    }
+    // 所有去子都完成了
+    else {
+        // 开局阶段
+        if (data.phase == GAME_OPENING) {
+            // 如果双方都无未放置的棋子
+            if (data.player1_InHand == 0 && data.player2_InHand == 0) {
+                // 进入中局阶段
+                data.phase = GAME_MID;
+                // 进入选子状态
+                data.action = ACTION_CHOOSE;
+                // 清除禁点
+                cleanForbidden();
+                // 设置轮到谁走
+                if (rule.isDefensiveMoveFirst) {
+                    data.turn = PLAYER2;
+                }
+                else {
+                    data.turn = PLAYER1;
+                }
+                // 再决胜负
+                if (win()) {
+                    setTip();
+                    return true;
+                }
+            }
+            // 如果双方还有子
+            else {
+                // 进入落子状态
+                data.action = ACTION_PLACE;
+                // 设置轮到谁走
+                changeTurn();
+                // 如果决出胜负
+                if (win()) {
+                    setTip();
+                    return true;
+                }
+            }
+        }
+        // 中局阶段
+        else {
+            // 进入选子状态
+            data.action = ACTION_CHOOSE;
+            // 设置轮到谁走
+            changeTurn();
+            // 如果决出胜负
+            if (win()) {
+                setTip();
+                return true;
+            }
+        }
+    }
+    setTip();
+    return true;
+}
+
+bool NineChess::choose(int pos)
+{
+    // 如果局面不是"中局”，返回false
+    if (data.phase != GAME_MID)
+        return false;
+    // 如非“选子”或“落子”状态，返回false
+    if (data.action != ACTION_CHOOSE && data.action != ACTION_PLACE)
+        return false;
+    char t = data.turn == PLAYER1 ? 0x10 : 0x20;
+    // 判断选子是否可选
+    if (board[pos] & t) {
+        // 判断pos处的棋子是否被“闷”
+        if (isSurrounded(pos)) {
+            return false;
+        }
+        // 选子
+        currentPos = pos;
+        // 选子完成，进入落子状态
+        data.action = ACTION_PLACE;
+        return true;
+    }
+    return false;
+}
+
 bool NineChess::giveup(Players loser)
 {
 	if (data.phase == GAME_MID || data.phase == GAME_OPENING)
@@ -872,7 +1132,7 @@ bool NineChess::command(const char *cmd)
             if (mm >= 0 && ss >= 0 && mss >= 0)
                 tm = mm * 60000 + ss * 1000 + mss;
         }
-        return remove(c1, p1, tm);
+        return capture(c1, p1, tm);
     }
 
     // 落子
@@ -897,6 +1157,21 @@ bool NineChess::command(const char *cmd)
 		}
 	}
 
+    return false;
+}
+
+bool NineChess::command(int16_t move)
+{
+    if (move < 0) {
+        return capture(-move);
+    }
+    else if (move & 0x00ff) {
+        return place(move & 0x00ff);
+    }
+    else {
+        if (choose(move >> 8))
+            return place(move & 0x00ff);
+    }
     return false;
 }
 
@@ -1079,7 +1354,7 @@ int NineChess::addMills(int pos)
     //0x   00     00     00    00    00    00    00    00
     //   unused unused piece1 pos1 piece2 pos2 piece3 pos3
     //piece1、piece2、piece3按照序号从小到大顺序排放
-    long long mill = 0;
+    uint64_t mill = 0;
     int n = 0;
     int p[3], min, temp;
     char m = board[pos] & '\x30';
@@ -1104,12 +1379,12 @@ int NineChess::addMills(int pos)
                 }
             }
             // 成三
-            mill = (((long long)board[p[0]]) << 40)
-                + (((long long)p[0]) << 32)
-                + (((long long)board[p[1]]) << 24)
-                + (((long long)p[1]) << 16)
-                + (((long long)board[p[2]]) << 8)
-                + (long long)p[2];
+            mill = (((uint64_t)board[p[0]]) << 40)
+                + (((uint64_t)p[0]) << 32)
+                + (((uint64_t)board[p[1]]) << 24)
+                + (((uint64_t)p[1]) << 16)
+                + (((uint64_t)board[p[2]]) << 8)
+                + (uint64_t)p[2];
 
             // 如果允许相同三连反复去子
             if (rule.canRepeated) {
@@ -1119,7 +1394,7 @@ int NineChess::addMills(int pos)
             else
             {
                 // 迭代器
-                list<long long>::iterator itor;
+                list<uint64_t>::iterator itor;
                 // 遍历
                 for (itor = data.millList.begin(); itor != data.millList.end(); itor++)
                 {
@@ -1137,6 +1412,17 @@ int NineChess::addMills(int pos)
     return n;
 }
 
+bool NineChess::isAllInMills(char ch)
+{
+    for (int i = SEAT; i < SEAT * (RING+1); i++)
+        if (board[i] & ch) {
+           if (!isInMills(i)) {
+                return false;
+           }
+        }
+    return true;
+}
+
 bool NineChess::isAllInMills(enum Players player)
 {
     char ch = '\x00';
@@ -1146,15 +1432,7 @@ bool NineChess::isAllInMills(enum Players player)
         ch = '\x20';
     else
         return true;
-    for (int i = 1; i <= RING; i++)
-        for (int j = 0; j < SEAT; j++) {
-            if (board[i*SEAT + j] & ch) {
-                if (!isInMills(i*SEAT + j)) {
-                    return false;
-                }
-            }
-        }
-    return true;
+    return isAllInMills(ch);
 }
 
 // 判断玩家的棋子是否被围
@@ -1178,14 +1456,8 @@ bool NineChess::isSurrounded(int pos)
     return false;
 }
 
-// 判断玩家的棋子是否全部被围
-bool NineChess::isAllSurrounded(enum Players ply)
+bool NineChess::isAllSurrounded(char ch)
 {
-    char t = '\x30';
-    if (ply == PLAYER1)
-        t &= '\x10';
-    else if (ply == PLAYER2)
-        t &= '\x20';
     // 如果摆满
     if (data.player1_Remain + data.player2_Remain >= SEAT * RING)
         return true;
@@ -1196,21 +1468,28 @@ bool NineChess::isAllSurrounded(enum Players ply)
         return false;
     }
     // 查询整个棋盘
-    for (int i = 1; i <= RING; i++)
-    {
-        for (int j = 0; j < SEAT; j++)
-        {
-            int movePos;
-            if (t & board[i*SEAT + j]) {
-                for (int k = 0; k < 4; k++) {
-                    movePos = moveTable[i*SEAT + j][k];
-                    if (movePos && !board[movePos])
-                        return false;
-                }
+    char movePos;
+    for (int i = 1; i < SEAT * (RING + 1); i++) {
+        if (ch & board[i]) {
+            for (int k = 0; k < 4; k++) {
+                movePos = moveTable[i][k];
+                if (movePos && !board[movePos])
+                    return false;
             }
         }
     }
     return true;
+}
+
+// 判断玩家的棋子是否全部被围
+bool NineChess::isAllSurrounded(enum Players ply)
+{
+    char t = '\x30';
+    if (ply == PLAYER1)
+        t &= '\x10';
+    else if (ply == PLAYER2)
+        t &= '\x20';
+    return isAllSurrounded(t);
 }
 
 void NineChess::cleanForbidden()
@@ -1245,7 +1524,7 @@ void NineChess::setTip()
                 tip = "轮到玩家2落子，剩余" + std::to_string(data.player2_InHand) + "子";
             }
         }
-        else if (data.action == ACTION_REMOVE) {
+        else if (data.action == ACTION_CAPTURE) {
             if (data.turn == PLAYER1) {
                 tip = "轮到玩家1去子，需去" + std::to_string(data.num_NeedRemove) + "子";
             }
@@ -1263,7 +1542,7 @@ void NineChess::setTip()
                 tip = "轮到玩家2选子移动";
             }
         }
-        else if (data.action == ACTION_REMOVE) {
+        else if (data.action == ACTION_CAPTURE) {
             if (data.turn == PLAYER1) {
                 tip = "轮到玩家1去子，需去" + std::to_string(data.num_NeedRemove) + "子";
             }

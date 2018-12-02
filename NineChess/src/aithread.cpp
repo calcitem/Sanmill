@@ -16,8 +16,7 @@ AiThread::~AiThread()
 void AiThread::setAi(const NineChess &chess)
 {
     mutex.lock();
-    this->chess = chess;
-    ai_ab.setChess(chess);
+    this->chess = &chess;
     mutex.unlock();
 }
 
@@ -26,13 +25,19 @@ void AiThread::run()
     // 测试用数据
     int iTemp = 0;
 
-    while (true) {
+    forever{
         if (isInterruptionRequested())
             return;
         mutex.lock();
         if (waiting_)
             pauseCondition.wait(&mutex);
         mutex.unlock();
+
+        ai_ab.setChess(*chess);
+        ai_ab.alphaBetaPruning(1);
+        const char * str = ai_ab.bestMove();
+        qDebug() << str;
+        emit command(str);
 
         // 测试用
         qDebug() << "thread running " << iTemp << "ms";

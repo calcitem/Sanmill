@@ -20,6 +20,8 @@ using std::list;
 // 所以不能跨线程修改NineChess类的静态成员变量，切记！
 class NineChess
 {
+    // AI友元类
+    friend class NineChessAi_ab;
 public:
     // 5个静态成员常量
     // 3圈，禁止修改！
@@ -65,7 +67,7 @@ public:
     static const struct Rule RULES[RULENUM];
 
     // 局面阶段标识
-    enum Phases {
+    enum Phases : uint16_t {
         GAME_NOTSTARTED = 0x0001,  // 未开局
         GAME_OPENING    = 0x0002,  // 开局（摆棋）
         GAME_MID        = 0x0004,  // 中局（走棋）
@@ -73,7 +75,7 @@ public:
     };
 
     // 玩家标识,轮流状态,胜负标识
-    enum Players {
+    enum Players : uint16_t {
         PLAYER1 = 0x0010,   // 玩家1
         PLAYER2 = 0x0020,   // 玩家2
         DRAW    = 0x0040,   // 双方和棋
@@ -81,10 +83,10 @@ public:
     };
 
     // 动作状态标识
-    enum Actions {
+    enum Actions : uint16_t {
         ACTION_CHOOSE = 0x0100,   // 选子
         ACTION_PLACE  = 0x0200,   // 落子
-        ACTION_REMOVE = 0x0400    // 提子
+        ACTION_CAPTURE = 0x0400    // 提子
     };
 
     // 棋局结构体，包含当前棋盘数据
@@ -109,15 +111,15 @@ public:
         enum NineChess::Actions action;
 
         // 玩家1剩余未放置子数
-        char player1_InHand;
+        int8_t player1_InHand;
         // 玩家2剩余未放置子数
-        char player2_InHand;
+        int8_t player2_InHand;
         // 玩家1盘面剩余子数
-        char player1_Remain;
+        int8_t player1_Remain;
         // 玩家1盘面剩余子数
-        char player2_Remain;
+        int8_t player2_Remain;
         // 尚待去除的子数
-        char num_NeedRemove;
+        int8_t num_NeedRemove;
 
         /* 本打算用如下的结构体来表示“三连”
         struct Mill {
@@ -133,7 +135,7 @@ public:
            unused unused piece1 pos1 piece2 pos2 piece3 pos3
         */
         // “三连列表”
-        list <long long> millList;
+        list <uint64_t> millList;
     };
 
 private:
@@ -225,20 +227,27 @@ public:
     // 落子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool place(int c, int p, long time_p = -1);
     // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool remove(int c, int p, long time_p = -1);
-	// 认输
+    bool capture(int c, int p, long time_p = -1);
+    // 下面3个函数没有算法无关判断和无关操作
+    bool choose(int pos);
+    bool place(int pos);
+    bool capture(int pos);
+    // 认输
 	bool giveup(Players loser);
     // 命令行解析函数
+    bool command(int16_t move);
     bool command(const char *cmd);
 
 protected:
     // 判断棋盘pos处的棋子处于几个“三连”中
     int isInMills(int pos);
     // 判断玩家的所有棋子是否都处于“三连”状态
+    bool isAllInMills(char ch);
     bool isAllInMills(enum Players);
     // 判断玩家的棋子是否被围
     bool isSurrounded(int pos);
     // 判断玩家的棋子是否全部被围
+    bool isAllSurrounded(char ch);
     bool isAllSurrounded(enum Players);
     // 三连加入列表
     int addMills(int pos);
@@ -285,7 +294,7 @@ private:
     移子：0x__??，__为移动前的位置，??为移动后的位置
     去子：0xFF??，??取位置补码，即为负数
     */
-    short move_;
+    int16_t move_;
 
     // 招法命令行用于棋谱的显示和解析
     // 当前招法的命令行指令，即一招棋谱

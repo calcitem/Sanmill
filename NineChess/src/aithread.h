@@ -36,8 +36,8 @@ private:
     // 等待条件，这里没用到，留着以后扩展用
     QWaitCondition pauseCondition;
 
-    // 棋类
-    NineChess chess;
+    // 主线程棋对象的引用
+    const NineChess *chess;
     // Alpha-Beta剪枝算法类
     NineChessAi_ab ai_ab;
 };

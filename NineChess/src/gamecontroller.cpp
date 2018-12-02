@@ -149,7 +149,6 @@ void GameController::gameReset()
     currentRow = 0;
     manualListModel.insertRow(0);
     manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
-
     // 发出信号通知主窗口更新LCD显示
     QTime qtime = QTime(0, 0, 0, 0).addMSecs(time1);
     emit time1Changed(qtime.toString("mm:ss.zzz"));
@@ -409,12 +408,9 @@ bool GameController::actionPiece(QPointF pos)
         if (chess.getAction() == NineChess::ACTION_PLACE) {
             result = placePiece(pos);
         }// 去子
-        else if (chess.getAction() == NineChess::ACTION_REMOVE) {
-            result = removePiece(pos);
+        else if (chess.getAction() == NineChess::ACTION_CAPTURE) {
+            result = capturePiece(pos);
         }
-        // 如果完成后进入中局，则删除禁点
-        //if (chess.getPhase() == NineChess::GAME_MID && chess.getRule()->hasForbidden)
-        //    cleanForbidden();
         break;
 
     case NineChess::GAME_MID:
@@ -427,8 +423,8 @@ bool GameController::actionPiece(QPointF pos)
             // 如果移子不成功，尝试重新选子
             result = movePiece(pos);
         }// 去子
-        else if (chess.getAction() == NineChess::ACTION_REMOVE) {
-            result = removePiece(pos);
+        else if (chess.getAction() == NineChess::ACTION_CAPTURE) {
+            result = capturePiece(pos);
         }
         break;
 
@@ -502,8 +498,12 @@ bool GameController::placePiece(QPointF pos)
     // 发信号更新状态栏
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
-    // 播放音效
-    playSound(":/sound/resources/sound/drog.wav");
+    // 播放成三音效
+    if (chess.getAction() == NineChess::ACTION_CAPTURE)
+        playSound(":/sound/resources/sound/capture.wav");
+    // 播放落下棋子音效
+    else
+        playSound(":/sound/resources/sound/drog.wav");
     return true;
 }
 
@@ -523,8 +523,12 @@ bool GameController::movePiece(QPointF pos)
         // 发信号更新状态栏
         message = QString::fromStdString(chess.getTip());
         emit statusBarChanged(message);
-        // 播放音效
-        playSound(":/sound/resources/sound/move.wav");
+        // 播放成三音效
+        if (chess.getAction() == NineChess::ACTION_CAPTURE)
+            playSound(":/sound/resources/sound/capture.wav");
+        // 播放移动棋子音效
+        else 
+            playSound(":/sound/resources/sound/move.wav");
         return true;
     }
     // 如果移子不成功，尝试重新选子
@@ -535,13 +539,13 @@ bool GameController::movePiece(QPointF pos)
 }
 
 // 去子
-bool GameController::removePiece(QPointF pos)
+bool GameController::capturePiece(QPointF pos)
 {
     int c, p;
     if (!scene.pos2cp(pos, c, p)) {
         return false;
     }
-    if (!chess.remove(c, p)) {
+    if (!chess.capture(c, p)) {
         // 播放禁止音效
         playSound(":/sound/resources/sound/forbidden.wav");
         return false;
@@ -698,6 +702,26 @@ bool GameController::updateScence(NineChess &chess)
     }
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
+
+    // AI设置
+    if (&chess == &(this->chess)) {
+        // 如果还未决出胜负
+        if (chess.whoWin() == NineChess::NOBODY) {
+            if (chess.whosTurn() == NineChess::PLAYER1) {
+                ai1.resume();
+                ai2.pause();
+            }
+            else {
+                ai1.pause();
+                ai2.resume();
+            }
+        }
+        // 如果已经决出胜负
+        else {
+            ai1.pause();
+            ai1.pause();
+        }
+    }
 
     return true;
 }
