@@ -111,15 +111,15 @@ public:
         enum NineChess::Actions action;
 
         // 玩家1剩余未放置子数
-        int8_t player1_InHand;
+        char player1_InHand;
         // 玩家2剩余未放置子数
-        int8_t player2_InHand;
+        char player2_InHand;
         // 玩家1盘面剩余子数
-        int8_t player1_Remain;
+        char player1_Remain;
         // 玩家1盘面剩余子数
-        int8_t player2_Remain;
+        char player2_Remain;
         // 尚待去除的子数
-        int8_t num_NeedRemove;
+        char num_NeedRemove;
 
         /* 本打算用如下的结构体来表示“三连”
         struct Mill {

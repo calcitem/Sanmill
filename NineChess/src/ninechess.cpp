@@ -633,7 +633,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
                 return false;
         }
         // 移子
-        move_ = currentPos << 8 + pos;
+        move_ = (currentPos << 8) + pos;
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / SEAT, currentPos % SEAT + 1,
             c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
@@ -910,7 +910,7 @@ bool NineChess::place(int pos)
                 return false;
         }
         // 移子
-        move_ = currentPos << 8 + pos;
+        move_ = (currentPos << 8) + pos;
         board[pos] = board[currentPos];
         board[currentPos] = '\x00';
         currentPos = pos;

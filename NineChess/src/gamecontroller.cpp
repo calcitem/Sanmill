@@ -92,6 +92,14 @@ void GameController::gameReset()
     chess.reset();
     chessTemp = chess;
 
+    // 停掉线程
+    ai1.stop();
+    ai1.quit();
+    ai1.wait();
+    ai2.stop();
+    ai2.quit();
+    ai2.wait();
+
     // 清除棋子
     qDeleteAll(pieceList);
     pieceList.clear();
@@ -210,7 +218,10 @@ void GameController::setEngine1(bool arg)
     if (arg) {
         qDebug() << "Player1 is computer.";
         ai1.setAi(chess);
-        ai1.start();
+        if (ai1.isRunning())
+            ai1.resume();
+        else
+            ai1.start();
     }
     else {
         qDebug() << "Player1 is not computer.";
@@ -221,8 +232,18 @@ void GameController::setEngine1(bool arg)
 void GameController::setEngine2(bool arg)
 {
     isEngine2 = arg;
-    qDebug() << "size of NineChess::ChessData" << sizeof(NineChess::ChessData);
-    qDebug() << "size of NineChess: " << sizeof(chess);
+    if (arg) {
+        qDebug() << "Player2 is computer.";
+        ai2.setAi(chess);
+        if (ai2.isRunning())
+            ai2.resume();
+        else
+            ai2.start();
+    }
+    else {
+        qDebug() << "Player2 is not computer.";
+        ai2.stop();
+    }
 }
 
 void GameController::setAnimation(bool arg)
@@ -708,18 +729,20 @@ bool GameController::updateScence(NineChess &chess)
         // 如果还未决出胜负
         if (chess.whoWin() == NineChess::NOBODY) {
             if (chess.whosTurn() == NineChess::PLAYER1) {
-                ai1.resume();
+                if(isEngine1)
+                    ai1.resume();
                 ai2.pause();
             }
             else {
+                if(isEngine2)
+                    ai2.resume();
                 ai1.pause();
-                ai2.resume();
             }
         }
         // 如果已经决出胜负
         else {
-            ai1.pause();
-            ai1.pause();
+            ai1.stop();
+            ai2.stop();
         }
     }
 

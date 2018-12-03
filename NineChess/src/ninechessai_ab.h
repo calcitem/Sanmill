@@ -9,6 +9,9 @@
 
 #include "ninechess.h"
 #include <list>
+#include <stack>
+
+using namespace std;
 
 // 注意：NineChess类不是线程安全的！
 // 所以不能在ai类中修改NineChess类的静态成员变量，切记！
@@ -79,6 +82,8 @@ private:
 
     // 根节点
     Node * rootNode;
+    // 局面数据栈
+    stack<NineChess::ChessData> dataStack;
     // 局面数据哈希表
     list<struct  Hash> hashTable;
     // 哈希表最大大小

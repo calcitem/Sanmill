@@ -34,15 +34,14 @@ void AiThread::run()
         mutex.unlock();
 
         ai_ab.setChess(*chess);
-        ai_ab.alphaBetaPruning(1);
+        ai_ab.alphaBetaPruning(5);
         const char * str = ai_ab.bestMove();
         qDebug() << str;
-        emit command(str);
+        if (strcmp(str, "error!"))
+            emit command(str);
 
         // 测试用
-        qDebug() << "thread running " << iTemp << "ms";
-        msleep(250);
-        iTemp += 250;
+        qDebug() << "thread running " << iTemp++ << "times";
     }
 }
 
@@ -67,10 +66,10 @@ void AiThread::stop()
         return;
 
     mutex.lock();
+    requestInterruption();
     if (waiting_) {
         waiting_ = false;
         pauseCondition.wakeAll();
     }
-    requestInterruption();
     mutex.unlock();
 }
