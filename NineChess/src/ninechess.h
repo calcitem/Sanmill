@@ -173,50 +173,50 @@ public:
     // 获取棋局状态和棋盘数据
     void getData(struct Rule &rule, int &step, int &flags, const char *&boardsource, int &p1_InHand, int &p2_InHand, int &num_NeedRemove);
     // 获取当前规则
-    const struct Rule *getRule() { return &rule; }
+    const struct Rule *getRule() const { return &rule; }
     // 获取棋盘数据
-    const char *getBoard() { return data.board; }
+    const char *getBoard() const { return data.board; }
     // 获取棋子位置(c, p)
     bool getPieceCP(const Players &player, const int &number, int &c, int &p);
     // 获取当前棋子
     bool getCurrentPiece(Players &player, int &number);
     // 获取当前棋子位置点
-    int getCurrentPos() { return currentPos; }
+    int getCurrentPos() const { return currentPos; }
     // 获取当前步数
-    int getStep() { return data.step; }
+    int getStep() const { return data.step; }
     // 获取局面阶段标识
-    enum Phases getPhase() { return data.phase; }
+    enum Phases getPhase() const { return data.phase; }
     // 获取轮流状态标识
-    enum Players whosTurn() { return data.turn; }
+    enum Players whosTurn() const { return data.turn; }
     // 获取动作状态标识
-    enum Actions getAction() { return data.action; }
+    enum Actions getAction() const { return data.action; }
     // 判断胜负
-    enum Players whoWin() { return winner; }
+    enum Players whoWin() const { return winner; }
     // 玩家1和玩家2的用时
     void getPlayer_TimeMS(int &p1_ms, int &p2_ms);
     // 获取棋局的字符提示
-    const string getTip() { return tip; }
+    const string getTip() const { return tip; }
     // 获取位置点棋子的归属人
     enum Players getWhosPiece(int c, int p);
     // 获取当前招法
-    const char *getCmdLine() { return cmdline; }
+    const char *getCmdLine() const { return cmdline; }
     // 获得棋谱
-    const list<string> * getCmdList() { return &cmdlist; }
+    const list<string> * getCmdList() const { return &cmdlist; }
     // 获取开局时间
-    timeb getStartTimeb() { return startTimeb; }
+    timeb getStartTimeb() const { return startTimeb; }
     // 重新设置开局时间
     void setStartTimeb(timeb stimeb) { startTimeb = stimeb; }
 
     // 玩家1剩余未放置子数
-    int getPlayer1_InHand() { return data.player1_InHand; }
+    int getPlayer1_InHand() const { return data.player1_InHand; }
     // 玩家2剩余未放置子数
-    int getPlayer2_InHand() { return data.player2_InHand; }
+    int getPlayer2_InHand() const { return data.player2_InHand; }
     // 玩家1盘面剩余子数
-    int getPlayer1_Remain() { return data.player1_Remain; }
+    int getPlayer1_Remain() const { return data.player1_Remain; }
     // 玩家1盘面剩余子数
-    int getPlayer2_Remain() { return data.player2_Remain; }
+    int getPlayer2_Remain() const { return data.player2_Remain; }
     // 尚待去除的子数
-    int getNum_NeedRemove() { return data.num_NeedRemove; }
+    int getNum_NeedRemove() const { return data.num_NeedRemove; }
 
     // 游戏重置
     bool reset();

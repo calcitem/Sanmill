@@ -30,7 +30,9 @@ GameController::GameController(GameScene &scene, QObject *parent) : QObject(pare
     timeID(0),
     ruleNo(-1),
     timeLimit(0),
-    stepsLimit(0)
+    stepsLimit(0),
+    ai1(1),
+    ai2(2)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
@@ -53,6 +55,11 @@ GameController::~GameController()
     // 停止计时器
     if (timeID != 0)
         killTimer(timeID);
+    // 停掉线程
+    ai1.stop();
+    ai2.stop();
+    ai1.wait();
+    ai2.wait();
 }
 
 const QMap<int, QStringList> GameController::getActions()
@@ -94,11 +101,9 @@ void GameController::gameReset()
 
     // 停掉线程
     ai1.stop();
-    ai1.quit();
-    ai1.wait();
     ai2.stop();
-    ai2.quit();
-    ai2.wait();
+    isEngine1 = false;
+    isEngine2 = false;
 
     // 清除棋子
     qDeleteAll(pieceList);
@@ -331,29 +336,55 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::command(const QString &cmd, bool update /*= true*/)
 {
-    if (chess.command(cmd.toStdString().c_str())) {
-        if (chess.getPhase() == NineChess::GAME_NOTSTARTED) {
-            gameReset();
-            gameStart();
-        }
-        if (update)
-        updateScence(chess);
-        // 将新增的棋谱行插入到ListModel
-        currentRow = manualListModel.rowCount() - 1;
-        int k = 0;
-        // 输出命令行
-        for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
-            // 跳过已添加的，因标准list容器没有下标
-            if (k++ <= currentRow)
-                continue;
-            manualListModel.insertRow(++currentRow);
-            manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
-        }
-        return true;
-    }
-    else {
+    // 防止接收滞后结束的线程发送的指令
+    if (sender() == &ai1 && !isEngine1)
         return false;
+    if (sender() == &ai2 && !isEngine2)
+        return false;
+
+    if (!chess.command(cmd.toStdString().c_str()))
+        return false;
+
+    if (chess.getPhase() == NineChess::GAME_NOTSTARTED) {
+        gameReset();
+        gameStart();
     }
+
+    if (update)
+        updateScence(chess);
+
+    // 将新增的棋谱行插入到ListModel
+    currentRow = manualListModel.rowCount() - 1;
+    int k = 0;
+    // 输出命令行
+    for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
+        // 跳过已添加的，因标准list容器没有下标
+        if (k++ <= currentRow)
+            continue;
+        manualListModel.insertRow(++currentRow);
+        manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
+    }
+
+    // AI设置
+    if (&chess == &(this->chess)) {
+        // 如果还未决出胜负
+        if (chess.whoWin() == NineChess::NOBODY) {
+            if (chess.whosTurn() == NineChess::PLAYER1) {
+                if (isEngine1)
+                    ai1.resume();
+            }
+            else {
+                if (isEngine2)
+                    ai2.resume();
+            }
+        }
+        // 如果已经决出胜负
+        else {
+            ai1.stop();
+            ai2.stop();
+        }
+    }
+    return true;
 }
 
 // 历史局面
@@ -723,28 +754,6 @@ bool GameController::updateScence(NineChess &chess)
     }
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
-
-    // AI设置
-    if (&chess == &(this->chess)) {
-        // 如果还未决出胜负
-        if (chess.whoWin() == NineChess::NOBODY) {
-            if (chess.whosTurn() == NineChess::PLAYER1) {
-                if(isEngine1)
-                    ai1.resume();
-                ai2.pause();
-            }
-            else {
-                if(isEngine2)
-                    ai2.resume();
-                ai1.pause();
-            }
-        }
-        // 如果已经决出胜负
-        else {
-            ai1.stop();
-            ai2.stop();
-        }
-    }
 
     return true;
 }

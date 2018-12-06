@@ -1,9 +1,10 @@
 ﻿#include <QDebug>
 #include "aithread.h"
 
-AiThread::AiThread(QObject *parent) : QThread(parent),
+AiThread::AiThread(int id, QObject *parent) : QThread(parent),
     waiting_(false)
 {
+    this->id = id;
 }
 
 AiThread::~AiThread()
@@ -22,27 +23,46 @@ void AiThread::setAi(const NineChess &chess)
 
 void AiThread::run()
 {
+
     // 测试用数据
     int iTemp = 0;
+    // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
+    int i = 0;
 
-    forever{
-        if (isInterruptionRequested())
-            return;
+    while (!isInterruptionRequested()) {
         mutex.lock();
-        if (waiting_)
-            pauseCondition.wait(&mutex);
-        mutex.unlock();
+        if (chess->whosTurn() == NineChess::PLAYER1)
+            i = 1;
+        else if (chess->whosTurn() == NineChess::PLAYER2)
+            i = 2;
+        else
+            i = 0;
 
-        ai_ab.setChess(*chess);
-        ai_ab.alphaBetaPruning(5);
+        if (i != id || waiting_) {
+            pauseCondition.wait(&mutex);
+            mutex.unlock();
+            continue;
+        }
+        else {
+            ai_ab.setChess(*chess);
+            mutex.unlock();
+        }
+
+        ai_ab.alphaBetaPruning(3);
         const char * str = ai_ab.bestMove();
         qDebug() << str;
         if (strcmp(str, "error!"))
             emit command(str);
+        qDebug() << "Thread" << id << " run " << ++iTemp << "times";
 
-        // 测试用
-        qDebug() << "thread running " << iTemp++ << "times";
+        // 执行完毕后继续判断
+        if (!isInterruptionRequested()) {
+            mutex.lock();
+            pauseCondition.wait(&mutex);
+            mutex.unlock();
+        }
     }
+    qDebug() << "Thread" << id << " quit.";
 }
 
 void AiThread::pause()
@@ -62,14 +82,13 @@ void AiThread::resume()
 
 void AiThread::stop()
 {
-    if(isFinished())
+    if (isFinished() || !isRunning())
         return;
 
+    if(!isInterruptionRequested())
+        requestInterruption();
     mutex.lock();
-    requestInterruption();
-    if (waiting_) {
-        waiting_ = false;
-        pauseCondition.wakeAll();
-    }
+    waiting_ = false;
+    pauseCondition.wakeAll();
     mutex.unlock();
 }

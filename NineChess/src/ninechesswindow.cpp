@@ -27,7 +27,7 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     : QMainWindow(parent),
     scene(nullptr),
     game(nullptr),
-    ruleNo(0)
+    ruleNo(-1)
 {
     ui.setupUi(this);
     //去掉标题栏
@@ -181,7 +181,6 @@ void NineChessWindow::initialize()
 
     // 默认第2号规则
     ruleNo = 2;
-    // 设置选中当前规则的菜单项
     ruleActionList.at(ruleNo)->setChecked(true);
     // 重置游戏规则
     game->setRule(ruleNo);
@@ -232,6 +231,83 @@ void NineChessWindow::ruleInfo()
     //    .arg(tr(NineChess::RULES[ruleNo].info));
 }
 
+void NineChessWindow::on_actionLimited_T_triggered()
+{
+    /* 其实本来可以用设计器做个ui，然后从QDialog派生个自己的对话框
+    * 但我不想再派生新类了，又要多出一个类和两个文件
+    * 还要写与主窗口的接口，费劲
+    * 于是手写QDialog界面
+    */
+    int gStep = game->getStepsLimit();
+    int gTime = game->getTimeLimit();
+
+    // 定义新对话框
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    dialog->setObjectName(QStringLiteral("Dialog"));
+    dialog->setWindowTitle(tr("步数和时间限制"));
+    dialog->resize(256, 108);
+    dialog->setModal(true);
+    // 生成各个控件
+    QFormLayout *formLayout = new QFormLayout(dialog);
+    QLabel *label_step = new QLabel(dialog);
+    QLabel *label_time = new QLabel(dialog);
+    QComboBox *comboBox_step = new QComboBox(dialog);
+    QComboBox *comboBox_time = new QComboBox(dialog);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
+    // 设置各个控件ObjectName，不设也没关系
+    /*formLayout->setObjectName(QStringLiteral("formLayout"));
+    label_step->setObjectName(QStringLiteral("label_step"));
+    label_time->setObjectName(QStringLiteral("label_time"));
+    comboBox_step->setObjectName(QStringLiteral("comboBox_step"));
+    comboBox_time->setObjectName(QStringLiteral("comboBox_time"));
+    buttonBox->setObjectName(QStringLiteral("buttonBox"));*/
+    // 设置各个控件数据
+    label_step->setText(tr("超出限制步数判和："));
+    label_time->setText(tr("任意一方超时判负："));
+    comboBox_step->addItem(tr("无限制"), 0);
+    comboBox_step->addItem(tr("50步"), 50);
+    comboBox_step->addItem(tr("100步"), 100);
+    comboBox_step->addItem(tr("200步"), 200);
+    comboBox_time->addItem(tr("无限制"), 0);
+    comboBox_time->addItem(tr("5分钟"), 5);
+    comboBox_time->addItem(tr("10分钟"), 10);
+    comboBox_time->addItem(tr("20分钟"), 20);
+    comboBox_step->setCurrentIndex(comboBox_step->findData(gStep));
+    comboBox_time->setCurrentIndex(comboBox_time->findData(gTime));
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+    buttonBox->setCenterButtons(true);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("确定"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("取消"));
+    // 布局
+    formLayout->setSpacing(6);
+    formLayout->setContentsMargins(11, 11, 11, 11);
+    formLayout->setWidget(0, QFormLayout::LabelRole, label_step);
+    formLayout->setWidget(0, QFormLayout::FieldRole, comboBox_step);
+    formLayout->setWidget(1, QFormLayout::LabelRole, label_time);
+    formLayout->setWidget(1, QFormLayout::FieldRole, comboBox_time);
+    formLayout->setWidget(2, QFormLayout::SpanningRole, buttonBox);
+    // 关联信号和槽函数
+    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
+    // 收集数据
+    if (dialog->exec() == QDialog::Accepted) {
+        int dStep = comboBox_step->currentData().toInt();
+        int dTime = comboBox_time->currentData().toInt();
+        if (gStep != dStep || gTime != dTime) {
+            // 重置游戏规则
+            game->setRule(ruleNo, dStep, dTime);
+        }
+    }
+
+    // 删除对话框，子控件会一并删除
+    dialog->disconnect();
+    delete dialog;
+
+    // 更新规则显示
+    ruleInfo();
+}
+
 void NineChessWindow::actionRules_triggered()
 {
     // 取消其它规则的选择
@@ -242,9 +318,14 @@ void NineChessWindow::actionRules_triggered()
     action->setChecked(true);
     ruleNo = action->data().toInt();
 
+    // 如果游戏规则没变化，则返回
+    if (ruleNo == game->getRuleNo())
+        return;
+
     // 取消AI设定
     ui.actionEngine1_T->setChecked(false);
     ui.actionEngine2_R->setChecked(false);
+
     // 重置游戏规则
     game->setRule(ruleNo);
     // 更新规则显示
@@ -255,6 +336,10 @@ void NineChessWindow::on_actionNew_N_triggered()
 {
     if (file.isOpen())
         file.close();
+    // 取消AI设定
+    ui.actionEngine1_T->setChecked(false);
+    ui.actionEngine2_R->setChecked(false);
+    // 重置游戏规则
     game->gameReset();
 }
 
@@ -280,7 +365,10 @@ void NineChessWindow::on_actionOpen_O_triggered()
         bool isok = file.open(QFileDevice::ReadOnly | QFileDevice::Text);
         if (isok)
         {
-            //读文件
+            // 取消AI设定
+            ui.actionEngine1_T->setChecked(false);
+            ui.actionEngine2_R->setChecked(false);
+            // 读文件
             QTextStream textStream(&file);
             QString cmd;
             cmd = textStream.readLine();
@@ -518,84 +606,6 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 	ui.gameView->setEnabled(true);
 	// 取消自动运行按钮的选中状态
 	ui.actionAutoRun_A->setChecked(false);
-}
-
-void NineChessWindow::on_actionLimited_T_triggered()
-{
-    /* 其实本来可以用设计器做个ui，然后从QDialog派生个自己的对话框
-    * 但我不想再派生新类了，又要多出一个类和两个文件
-    * 还要写与主窗口的接口，费劲
-    * 于是手写QDialog界面
-    */
-    int stepLimited = game->getStepsLimit();
-    int timeLimited = game->getTimeLimit();
-
-    // 定义新对话框
-    QDialog *dialog = new QDialog(this);
-    dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
-    dialog->setObjectName(QStringLiteral("Dialog"));
-    dialog->setWindowTitle(tr("步数和时间限制"));
-    dialog->resize(256, 108);
-    dialog->setModal(true);
-    // 生成各个控件
-    QFormLayout *formLayout = new QFormLayout(dialog);
-    QLabel *label_step = new QLabel(dialog);
-    QLabel *label_time = new QLabel(dialog);
-    QComboBox *comboBox_step = new QComboBox(dialog);
-    QComboBox *comboBox_time = new QComboBox(dialog);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
-    // 设置各个控件ObjectName，不设也没关系
-    /*formLayout->setObjectName(QStringLiteral("formLayout"));
-    label_step->setObjectName(QStringLiteral("label_step"));
-    label_time->setObjectName(QStringLiteral("label_time"));
-    comboBox_step->setObjectName(QStringLiteral("comboBox_step"));
-    comboBox_time->setObjectName(QStringLiteral("comboBox_time"));
-    buttonBox->setObjectName(QStringLiteral("buttonBox"));*/
-    // 设置各个控件数据
-    label_step->setText(tr("超出限制步数判和："));
-    label_time->setText(tr("任意一方超时判负："));
-    comboBox_step->addItem(tr("无限制"), 0);
-    comboBox_step->addItem(tr("50步"), 50);
-    comboBox_step->addItem(tr("100步"), 100);
-    comboBox_step->addItem(tr("200步"), 200);
-    comboBox_time->addItem(tr("无限制"), 0);
-    comboBox_time->addItem(tr("5分钟"), 5);
-    comboBox_time->addItem(tr("10分钟"), 10);
-    comboBox_time->addItem(tr("20分钟"), 20);
-    comboBox_step->setCurrentIndex(comboBox_step->findData(stepLimited));
-    comboBox_time->setCurrentIndex(comboBox_time->findData(timeLimited));
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
-    buttonBox->setCenterButtons(true);
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("确定"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("取消"));
-    // 布局
-    formLayout->setSpacing(6);
-    formLayout->setContentsMargins(11, 11, 11, 11);
-    formLayout->setWidget(0, QFormLayout::LabelRole, label_step);
-    formLayout->setWidget(0, QFormLayout::FieldRole, comboBox_step);
-    formLayout->setWidget(1, QFormLayout::LabelRole, label_time);
-    formLayout->setWidget(1, QFormLayout::FieldRole, comboBox_time);
-    formLayout->setWidget(2, QFormLayout::SpanningRole, buttonBox);
-    // 关联信号和槽函数
-    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
-    // 收集数据
-    if (dialog->exec() == QDialog::Accepted) {
-        stepLimited = comboBox_step->currentData().toInt();
-        timeLimited = comboBox_time->currentData().toInt();
-        // 选择当前规则
-        QAction *action = dynamic_cast<QAction *>(sender());
-        action->setChecked(true);
-        int ruleNo = action->data().toInt();
-        // 重置游戏规则
-        game->setRule(ruleNo, stepLimited, timeLimited);
-    }
-
-    // 删除对话框，子控件会一并删除
-    delete dialog;
-
-    // 更新规则显示
-    ruleInfo();
 }
 
 void NineChessWindow::on_actionLocal_L_triggered()

@@ -7,6 +7,7 @@
 #include "ninechessai_ab.h"
 #include <cmath>
 #include <time.h>
+#include <qdebug.h>
 
 NineChessAi_ab::NineChessAi_ab():
 rootNode(nullptr),
@@ -125,7 +126,10 @@ void NineChessAi_ab::sortChildren(Node *node)
         i->value = evaluate(node);
     }
     // 排序
-    node->children.sort([](Node *n1, Node *n2) { return n1->value > n2->value; });
+    if(chessTemp.whosTurn() == NineChess::PLAYER1)
+        node->children.sort([](Node *n1, Node *n2) { return n1->value > n2->value; });
+    else
+        node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });
 }
 
 void NineChessAi_ab::deleteTree(Node *node)
@@ -157,21 +161,21 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     {
         // 对于0、2、4、6位（偶数位）
         if (!(j & 1)) {
-            boardScore[1 * NineChess::SEAT + j] = 80;
+            boardScore[1 * NineChess::SEAT + j] = 90;
             boardScore[2 * NineChess::SEAT + j] = 100;
-            boardScore[3 * NineChess::SEAT + j] = 80;
+            boardScore[3 * NineChess::SEAT + j] = 90;
         }
         // 对于有斜线情况下的1、3、5、7位（奇数位）
         else if(chessTemp.rule.hasObliqueLine) {
-            boardScore[1 * NineChess::SEAT + j] = 70;
-            boardScore[2 * NineChess::SEAT + j] = 90;
-            boardScore[3 * NineChess::SEAT + j] = 70;
+            boardScore[1 * NineChess::SEAT + j] = 85;
+            boardScore[2 * NineChess::SEAT + j] = 95;
+            boardScore[3 * NineChess::SEAT + j] = 85;
         }
         // 对于无斜线情况下的1、3、5、7位（奇数位）
         else {
-            boardScore[1 * NineChess::SEAT + j] = 60;
-            boardScore[2 * NineChess::SEAT + j] = 80;
-            boardScore[3 * NineChess::SEAT + j] = 60;
+            boardScore[1 * NineChess::SEAT + j] = 80;
+            boardScore[2 * NineChess::SEAT + j] = 85;
+            boardScore[3 * NineChess::SEAT + j] = 80;
         }
     }
 }
@@ -203,9 +207,9 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-        // 如果形成去子状态，每有一个可去的子，算500分
+        // 如果形成去子状态，每有一个可去的子，算1000分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? chessData->num_NeedRemove * 500 : -chessData->num_NeedRemove * 500;
+            value += (chessData->turn == NineChess::PLAYER1) ? chessData->num_NeedRemove * 1000 : -chessData->num_NeedRemove * 1000;
             break;
         default:
             break;
@@ -253,7 +257,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
         for (auto child : node->children) {
             dataStack.push(chessTemp.data);
-            chessTemp.command(child->move);
+            if(!chessTemp.command(child->move))
+                qDebug() << child->move;
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
             chessTemp.data = dataStack.top();
             dataStack.pop();
@@ -262,6 +267,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
                 alpha = value;
             // 剪枝返回
             if (alpha >= beta) {
+                node->value = alpha;
                 return value;
             }
         }
@@ -272,7 +278,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     else {
         for (auto child : node->children) {
             dataStack.push(chessTemp.data);
-            chessTemp.command(child->move);
+            if(!chessTemp.command(child->move))
+                qDebug() << child->move;
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
             chessTemp.data = dataStack.top();
             dataStack.pop();
@@ -281,6 +288,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
                 beta = value;
             // 剪枝返回
             if (alpha >= beta) {
+                node->value = beta;
                 return value;
             }
         }

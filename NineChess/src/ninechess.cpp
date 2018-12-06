@@ -1165,12 +1165,12 @@ bool NineChess::command(int16_t move)
     if (move < 0) {
         return capture(-move);
     }
-    else if (move & 0x00ff) {
-        return place(move & 0x00ff);
-    }
-    else {
+    else if (move & 0x1f00) {
         if (choose(move >> 8))
             return place(move & 0x00ff);
+    }
+    else {
+        return place(move & 0x00ff);
     }
     return false;
 }

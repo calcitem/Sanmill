@@ -12,7 +12,7 @@ class AiThread : public QThread
     Q_OBJECT
 
 public:
-    explicit AiThread(QObject *parent = nullptr);
+    explicit AiThread(int id, QObject *parent = nullptr);
     ~AiThread();
 
 signals:
@@ -29,6 +29,8 @@ public slots:
     void stop();
 
 private:
+    // 玩家ID
+    int id;
     // 互斥锁
     QMutex mutex;
     // 线程等待标识，这里没用到，留着以后扩展用
