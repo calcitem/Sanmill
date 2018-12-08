@@ -48,7 +48,7 @@ void AiThread::run()
             mutex.unlock();
         }
 
-        ai_ab.alphaBetaPruning(3);
+        ai_ab.alphaBetaPruning(6);
         const char * str = ai_ab.bestMove();
         qDebug() << str;
         if (strcmp(str, "error!"))

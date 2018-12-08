@@ -7,7 +7,6 @@
 #include "ninechessai_ab.h"
 #include <cmath>
 #include <time.h>
-#include <qdebug.h>
 
 NineChessAi_ab::NineChessAi_ab():
 rootNode(nullptr),
@@ -156,28 +155,6 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     rootNode->parent = nullptr;
 
     requiredQuit = false;
-    // 生成棋子价值表
-    for (int j = 0; j < NineChess::SEAT; j++)
-    {
-        // 对于0、2、4、6位（偶数位）
-        if (!(j & 1)) {
-            boardScore[1 * NineChess::SEAT + j] = 90;
-            boardScore[2 * NineChess::SEAT + j] = 100;
-            boardScore[3 * NineChess::SEAT + j] = 90;
-        }
-        // 对于有斜线情况下的1、3、5、7位（奇数位）
-        else if(chessTemp.rule.hasObliqueLine) {
-            boardScore[1 * NineChess::SEAT + j] = 85;
-            boardScore[2 * NineChess::SEAT + j] = 95;
-            boardScore[3 * NineChess::SEAT + j] = 85;
-        }
-        // 对于无斜线情况下的1、3、5、7位（奇数位）
-        else {
-            boardScore[1 * NineChess::SEAT + j] = 80;
-            boardScore[2 * NineChess::SEAT + j] = 85;
-            boardScore[3 * NineChess::SEAT + j] = 80;
-        }
-    }
 }
 
 int NineChessAi_ab::evaluate(Node *node)
@@ -189,27 +166,38 @@ int NineChessAi_ab::evaluate(Node *node)
     case NineChess::GAME_NOTSTARTED:
         break;
 
-    // 开局和中局阶段用同样的评价方法
     case NineChess::GAME_OPENING:
-    case NineChess::GAME_MID:
-        // 按手棋数目计分，每子50分
-        value += (chessData->player1_InHand) * 50 - (chessData->player2_InHand) * 50;
+        // 按手中的棋子计分，不要break;
+        value += chessData->player1_InHand * 50 - chessData->player2_InHand * 50;
         // 按场上棋子计分
-        for (int i = 1*NineChess::SEAT; i < NineChess::SEAT*(NineChess::RING+1); i++) {
-            if (chessData->board[i] & 0x10)
-                value += boardScore[i];
-            else if (chessData->board[i] & 0x20)
-                value -= boardScore[i];
+        value += chessData->player1_Remain * 100 - chessData->player2_Remain * 100;
+        switch (chessData->action)
+        {
+            // 选子和落子使用相同的评价方法
+        case NineChess::ACTION_CHOOSE:
+        case NineChess::ACTION_PLACE:
+            break;
+            // 如果形成去子状态，每有一个可去的子，算100分
+        case NineChess::ACTION_CAPTURE:
+            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 100 : -(chessData->num_NeedRemove) * 100;
+            break;
+        default:
+            break;
         }
+        break;
+
+    case NineChess::GAME_MID:
+        // 按场上棋子计分
+        value += chessData->player1_Remain * 100 - chessData->player2_Remain * 100;
         switch (chessData->action)
         {
         // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-        // 如果形成去子状态，每有一个可去的子，算1000分
+        // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? chessData->num_NeedRemove * 1000 : -chessData->num_NeedRemove * 1000;
+            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 100 : -(chessData->num_NeedRemove) * 100;
             break;
         default:
             break;
@@ -242,6 +230,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 {
     // 评价值
     int value;
+    // 当前节点的MinMax值，最终赋值给节点value，与alpha和Beta不同
+    int minMax;
+
     if (!depth || chessTemp.data.phase == NineChess::GAME_OVER) {
         node->value = evaluate(node);
         return node->value;
@@ -255,45 +246,45 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 根据演算模型执行MiniMax检索
     // 对先手，搜索Max
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
+        minMax = -infinity;
         for (auto child : node->children) {
             dataStack.push(chessTemp.data);
-            if(!chessTemp.command(child->move))
-                qDebug() << child->move;
+            chessTemp.command(child->move);
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
             chessTemp.data = dataStack.top();
             dataStack.pop();
             // 取最大值
+            if (value > minMax)
+                minMax = value;
             if (value > alpha)
                 alpha = value;
             // 剪枝返回
-            if (alpha >= beta) {
-                node->value = alpha;
-                return value;
-            }
+            if (alpha >= beta)
+                break;
         }
         // 取最大值
-        node->value = alpha;
+        node->value = minMax;
     }
     // 对后手，搜索Min
     else {
+        minMax = infinity;
         for (auto child : node->children) {
             dataStack.push(chessTemp.data);
-            if(!chessTemp.command(child->move))
-                qDebug() << child->move;
+            chessTemp.command(child->move);
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
             chessTemp.data = dataStack.top();
             dataStack.pop();
             // 取最小值
+            if (value < minMax)
+                minMax = value;
             if (value < beta)
                 beta = value;
             // 剪枝返回
-            if (alpha >= beta) {
-                node->value = beta;
-                return value;
-            }
+            if (alpha >= beta)
+                break;
         }
         // 取最小值
-        node->value = beta;
+        node->value = minMax;
     }
     // 返回
     return node->value;
@@ -303,18 +294,11 @@ const char *NineChessAi_ab::bestMove()
 {
     if ((rootNode->children).size() == 0)
         return "error!";
-    // 在最好的招法中随机挑一个
-    int16_t moves[12] = {0};
-    int n = 0;
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value)
-            moves[n++] = child->move;
-        if (n >= 12)
-            break;
+            return move2string(child->move);
     }
-    srand((unsigned)time(0));
-    int i = rand() % n;
-    return move2string(moves[i]);
+    return "error!";
 }
 
 const char *NineChessAi_ab::move2string(int16_t move)

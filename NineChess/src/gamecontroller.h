@@ -75,7 +75,7 @@ public slots:
     bool command(const QString &cmd, bool update = true);
     // 历史局面及局面改变
     bool phaseChange(int row);
-    // 更新棋局显示，每步后必须执行
+    // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();
     bool updateScence(NineChess &chess);
 
@@ -83,14 +83,6 @@ protected:
     //bool eventFilter(QObject * watched, QEvent * event);
     // 定时器
     void timerEvent(QTimerEvent * event);
-    // 选子
-    bool choosePiece(QPointF pos);
-    // 落下新子
-    bool placePiece(QPointF pos);
-    // 移动旧子
-    bool movePiece(QPointF pos);
-    // 去子
-    bool capturePiece(QPointF pos);
 
 private:
     // 棋对象的数据模型

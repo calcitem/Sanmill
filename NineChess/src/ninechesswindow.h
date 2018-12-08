@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QStringListModel>
 #include <QFile>
+#include <QTimer>
 #include "ui_ninechesswindow.h"
 
 class GameScene;
@@ -22,27 +23,16 @@ protected:
     bool eventFilter(QObject * watched, QEvent * event);
     void closeEvent(QCloseEvent *event);
 
-private:
-    // 界面文件
-	Ui::NineChessWindowClass ui;
-    // 视图场景
-    GameScene *scene;
-    // 控制器
-    GameController *game;
-    // 动态增加的菜单栏动作列表
-    QList <QAction *> ruleActionList;
-    // 游戏的规则号，涉及菜单项和对话框，所以要有
-    int ruleNo;
-    // 文件
-    QFile file;
-    // 更新规则标签
-    void ruleInfo();
-
 private slots:
     // 初始化
     void initialize();
     // 动态增加的菜单栏动作的槽函数
     void actionRules_triggered();
+    // 更新规则标签
+    void ruleInfo();
+    // 自动运行定时处理函数
+    void onAutoRunTimeOut(QPrivateSignal signal);
+
     // 下面是各动作的槽函数
     // 注释掉的是已在UI管理器或主窗口初始化函数中连接好的
     void on_actionNew_N_triggered();
@@ -74,6 +64,22 @@ private slots:
     void on_actionViewHelp_V_triggered();
     void on_actionWeb_W_triggered();
     void on_actionAbout_A_triggered();
+
+private:
+    // 界面文件
+    Ui::NineChessWindowClass ui;
+    // 视图场景
+    GameScene *scene;
+    // 控制器
+    GameController *game;
+    // 动态增加的菜单栏动作列表
+    QList <QAction *> ruleActionList;
+    // 游戏的规则号，涉及菜单项和对话框，所以要有
+    int ruleNo;
+    // 文件
+    QFile file;
+    // 定时器
+    QTimer autoRunTimer;
 };
 
 #endif // NINECHESSWINDOW_H

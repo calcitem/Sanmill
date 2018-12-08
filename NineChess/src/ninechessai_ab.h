@@ -97,8 +97,6 @@ private:
     static const int infinity = INT32_MAX;
 
 private:
-    // 棋子价值表
-    char boardScore[(NineChess::RING + 2)*NineChess::SEAT];
     // 命令行
     char cmdline[32];
 };

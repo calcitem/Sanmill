@@ -27,7 +27,8 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     : QMainWindow(parent),
     scene(nullptr),
     game(nullptr),
-    ruleNo(-1)
+    ruleNo(-1),
+    autoRunTimer(this)
 {
     ui.setupUi(this);
     //去掉标题栏
@@ -73,10 +74,14 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     // 初始化游戏规则菜单
     ui.menu_R->installEventFilter(this);
 
+    // 关联自动运行定时器
+    connect(&autoRunTimer, SIGNAL(timeout()),
+        this, SLOT(onAutoRunTimeOut()));
+
     // 主窗口居中显示
     QRect deskTopRect = qApp->desktop()->availableGeometry();
-    int unitw=(deskTopRect.width() - width())/2;
-    int unith=(deskTopRect.height() - height())/2;
+    int unitw = (deskTopRect.width() - width())/2;
+    int unith = (deskTopRect.height() - height())/2;
     this->move(unitw,unith);
 
     // 游戏初始化
@@ -96,6 +101,8 @@ void NineChessWindow::closeEvent(QCloseEvent *event)
 {
     if (file.isOpen())
         file.close();
+    // 取消自动运行
+    ui.actionAutoRun_A->setChecked(false);
     //qDebug() << "closed";
     QMainWindow::closeEvent(event);
 }
@@ -310,9 +317,13 @@ void NineChessWindow::on_actionLimited_T_triggered()
 
 void NineChessWindow::actionRules_triggered()
 {
+    // 取消自动运行
+    ui.actionAutoRun_A->setChecked(false);
+
     // 取消其它规则的选择
     for(QAction *action: ruleActionList)
         action->setChecked(false);
+
     // 选择当前规则
     QAction *action = dynamic_cast<QAction *>(sender());
     action->setChecked(true);
@@ -336,6 +347,8 @@ void NineChessWindow::on_actionNew_N_triggered()
 {
     if (file.isOpen())
         file.close();
+    // 取消自动运行
+    ui.actionAutoRun_A->setChecked(false);
     // 取消AI设定
     ui.actionEngine1_T->setChecked(false);
     ui.actionEngine2_R->setChecked(false);
@@ -526,6 +539,10 @@ void NineChessWindow::on_actionRowChange()
     }
 
     // 更新局面
+    game->phaseChange(currentRow);
+
+    /* 下面的代码全部取消，改用QTimer的方式实现
+    // 更新局面
     bool changed = game->phaseChange(currentRow);
     // 处理自动播放时的动画
     if (changed && game->isAnimation()) {
@@ -542,70 +559,77 @@ void NineChessWindow::on_actionRowChange()
         QTimer::singleShot(waitTime, &loop, SLOT(quit()));
         loop.exec();
 	}
+    */
+}
+
+void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
+{
+    int rows = ui.listView->model()->rowCount();
+    int currentRow = ui.listView->currentIndex().row();
+
+    if (rows <= 1) {
+        ui.actionAutoRun_A->setChecked(false);
+        return;
+    }
+
+    // 执行“下一招”
+    if (currentRow < rows - 1)
+    {
+        if (currentRow < rows - 1)
+        {
+            ui.listView->setCurrentIndex(ui.listView->model()->index(currentRow + 1, 0));
+        }
+        currentRow = ui.listView->currentIndex().row();
+        // 更新动作状态
+        if (currentRow <= 0) {
+            ui.actionBegin_S->setEnabled(false);
+            ui.actionPrevious_B->setEnabled(false);
+            ui.actionNext_F->setEnabled(true);
+            ui.actionEnd_E->setEnabled(true);
+            ui.actionAutoRun_A->setEnabled(true);
+        }
+        else if (currentRow >= rows - 1)
+        {
+            ui.actionBegin_S->setEnabled(true);
+            ui.actionPrevious_B->setEnabled(true);
+            ui.actionNext_F->setEnabled(false);
+            ui.actionEnd_E->setEnabled(false);
+            ui.actionAutoRun_A->setEnabled(false);
+        }
+        else
+        {
+            ui.actionBegin_S->setEnabled(true);
+            ui.actionPrevious_B->setEnabled(true);
+            ui.actionNext_F->setEnabled(true);
+            ui.actionEnd_E->setEnabled(true);
+            ui.actionAutoRun_A->setEnabled(true);
+        }
+
+        // 更新局面
+        game->phaseChange(currentRow);
+    }
+    else {
+        ui.actionAutoRun_A->setChecked(false);
+    }
 }
 
 // 自动运行
 void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
 {
-	if (!arg1)
-		return;
-    
-    int rows = ui.listView->model()->rowCount();
-	int currentRow = ui.listView->currentIndex().row();
-
-	if (rows <= 1)
-		return;
-
-	// 自动运行前禁用所有控件
-	ui.menuBar->setEnabled(false);
-	ui.mainToolBar->setEnabled(false);
-	ui.dockWidget->setEnabled(false);
-	ui.gameView->setEnabled(false);
-
-	// 反复执行“下一招”
-	while (currentRow < rows - 1)
-	{
-		if (currentRow < rows - 1)
-		{
-			ui.listView->setCurrentIndex(ui.listView->model()->index(currentRow + 1, 0));
-		}
-		currentRow = ui.listView->currentIndex().row();
-		// 更新动作状态
-		if (currentRow <= 0) {
-			ui.actionBegin_S->setEnabled(false);
-			ui.actionPrevious_B->setEnabled(false);
-			ui.actionNext_F->setEnabled(true);
-			ui.actionEnd_E->setEnabled(true);
-			ui.actionAutoRun_A->setEnabled(true);
-		}
-		else if (currentRow >= rows - 1)
-		{
-			ui.actionBegin_S->setEnabled(true);
-			ui.actionPrevious_B->setEnabled(true);
-			ui.actionNext_F->setEnabled(false);
-			ui.actionEnd_E->setEnabled(false);
-			ui.actionAutoRun_A->setEnabled(false);
-		}
-		else
-		{
-			ui.actionBegin_S->setEnabled(true);
-			ui.actionPrevious_B->setEnabled(true);
-			ui.actionNext_F->setEnabled(true);
-			ui.actionEnd_E->setEnabled(true);
-			ui.actionAutoRun_A->setEnabled(true);
-		}
-
-		// 更新局面
-		game->phaseChange(currentRow);
-	}
-
-	// 自动运行结束后启用所有控件
-	ui.menuBar->setEnabled(true);
-	ui.mainToolBar->setEnabled(true);
-	ui.dockWidget->setEnabled(true);
-	ui.gameView->setEnabled(true);
-	// 取消自动运行按钮的选中状态
-	ui.actionAutoRun_A->setChecked(false);
+    if (arg1) {
+        // 自动运行前禁用控件
+        ui.dockWidget->setEnabled(false);
+        ui.gameView->setEnabled(false);
+        // 启动定时器
+        autoRunTimer.start(game->getDurationTime() + 50);
+    }
+    else {
+        // 关闭定时器
+        autoRunTimer.stop();
+        // 自动运行结束后启用控件
+        ui.dockWidget->setEnabled(true);
+        ui.gameView->setEnabled(true);
+    }
 }
 
 void NineChessWindow::on_actionLocal_L_triggered()
