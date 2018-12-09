@@ -456,6 +456,8 @@ bool GameController::actionPiece(QPointF pos)
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
         }
+
+        // 播放胜利或失败音效
         if (chess.whoWin() != NineChess::NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
             playSound(":/sound/resources/sound/win.wav");
@@ -515,23 +517,25 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
         break;
     }
 
+    // 如果未开局则开局
+    if (chess.getPhase() == NineChess::GAME_NOTSTARTED)
+        gameStart();
+
     if (!chess.command(cmd.toStdString().c_str()))
         return false;
 
-    if (sound == ":/sound/resources/sound/drog.wav" && chess.getAction() == NineChess::ACTION_CAPTURE)
-    {
+    if (sound == ":/sound/resources/sound/drog.wav" && chess.getAction() == NineChess::ACTION_CAPTURE) {
         sound = ":/sound/resources/sound/capture.wav";
-    }
-
-    if (chess.getPhase() == NineChess::GAME_NOTSTARTED) {
-        gameReset();
-        gameStart();
     }
 
     if (update) {
         playSound(sound);
         updateScence(chess);
     }
+
+    // 发信号更新状态栏
+    message = QString::fromStdString(chess.getTip());
+    emit statusBarChanged(message);
 
     // 将新增的棋谱行插入到ListModel
     currentRow = manualListModel.rowCount() - 1;
@@ -544,6 +548,11 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
         manualListModel.insertRow(++currentRow);
         manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
     }
+
+    // 播放胜利或失败音效
+    if (chess.whoWin() != NineChess::NOBODY &&
+        (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
+        playSound(":/sound/resources/sound/win.wav");
 
     // AI设置
     if (&chess == &(this->chess)) {

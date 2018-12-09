@@ -195,9 +195,9 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-        // 如果形成去子状态，每有一个可去的子，算100分
+        // 如果形成去子状态，每有一个可去的子，算102分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 100 : -(chessData->num_NeedRemove) * 100;
+            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 102 : -(chessData->num_NeedRemove) * 102;
             break;
         default:
             break;
@@ -207,9 +207,9 @@ int NineChessAi_ab::evaluate(Node *node)
     // 终局评价最简单
     case NineChess::GAME_OVER:
         if (chessData->player1_Remain < chessTemp.rule.numAtLest)
-            value = -infinity;
+            value = -100000;
         else if (chessData->player2_Remain < chessTemp.rule.numAtLest)
-            value = infinity;
+            value = 100000;
         break;
 
     default:
@@ -235,6 +235,18 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     if (!depth || chessTemp.data.phase == NineChess::GAME_OVER) {
         node->value = evaluate(node);
+        // 搜索到决胜局面
+        if (chessData->phase == NineChess::GAME_OVER)
+            if (node->value > 0)
+                node->value += depth;
+            else
+                node->value -= depth;
+        else {
+            if (chessData->turn == NineChess::PLAYER1)
+                node->value += depth;
+            else
+                node->value -= depth;
+        }
         return node->value;
     }
 
@@ -286,6 +298,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         // 取最小值
         node->value = minMax;
     }
+
+    // 删除“孙子”节点，防止层数较深的时候节点树太大
+    for (auto child : node->children) {
+        for (auto grandChild : child->children)
+            deleteTree(grandChild);
+        child->children.clear();
+    }
+
     // 返回
     return node->value;
 }
