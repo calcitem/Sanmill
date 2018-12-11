@@ -273,6 +273,42 @@ void GameController::playSound(const QString &soundPath)
 	}
 }
 
+
+// 上下翻转
+void GameController::flip()
+{
+    chess.mirror();
+    chess.rotate(180);
+    chessTemp = chess;
+    updateScence();
+}
+
+// 左右镜像
+void GameController::mirror()
+{
+    chess.mirror();
+    chessTemp = chess;
+    updateScence();
+}
+
+// 视图须时针旋转90°
+void GameController::turnRight()
+{
+    chess.rotate(90);
+    chessTemp = chess;
+    updateScence();
+}
+
+// 视图逆时针旋转90°
+void GameController::turnLeft()
+{
+    chess.rotate(270);
+    chessTemp = chess;
+    updateScence();
+}
+
+
+
 //bool GameController::eventFilter(QObject * watched, QEvent * event)
 //{
 //    return QObject::eventFilter(watched, event);

@@ -57,20 +57,6 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     ui.actionInternet_I->setDisabled(true);
     ui.actionSetting_O->setDisabled(true);
 
-    // 关联既有动作信号和主窗口槽
-    // 视图上下翻转
-    connect(ui.actionFlip_F, &QAction::triggered,
-        ui.gameView, &GameView::flip);
-    // 视图左右镜像
-    connect(ui.actionMirror_M, &QAction::triggered,
-        ui.gameView, &GameView::mirror);
-    // 视图须时针旋转90°
-    connect(ui.actionTurnRight_R, &QAction::triggered,
-        ui.gameView, &GameView::turnRight);
-    // 视图逆时针旋转90°
-    connect(ui.actionTurnLeftt_L, &QAction::triggered,
-        ui.gameView, &GameView::turnLeft);
-
     // 初始化游戏规则菜单
     ui.menu_R->installEventFilter(this);
 
@@ -166,6 +152,19 @@ void NineChessWindow::initialize()
         game, SLOT(setSound(bool)));
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
         game, SLOT(setAnimation(bool)));
+
+    // 视图上下翻转
+    connect(ui.actionFlip_F, &QAction::triggered,
+        game, &GameController::flip);
+    // 视图左右镜像
+    connect(ui.actionMirror_M, &QAction::triggered,
+        game, &GameController::mirror);
+    // 视图须时针旋转90°
+    connect(ui.actionTurnRight_R, &QAction::triggered,
+        game, &GameController::turnRight);
+    // 视图逆时针旋转90°
+    connect(ui.actionTurnLeftt_L, &QAction::triggered,
+        game, &GameController::turnLeft);
 
     // 关联控制器的信号和主窗口控件的槽
     // 更新LCD1，显示玩家1用时

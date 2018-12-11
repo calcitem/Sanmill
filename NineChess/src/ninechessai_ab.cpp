@@ -120,9 +120,10 @@ void NineChessAi_ab::buildChildren(Node *node)
 void NineChessAi_ab::sortChildren(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
-    // 先赋初值，初始值不会影响alpha-beta剪枝
+    // 这里我用一个随机排序，使AI不至于每次走招相同
+    srand((unsigned)time(0));
     for (auto i : node->children) {
-        i->value = evaluate(node);
+        i->value = rand();
     }
     // 排序
     if(chessTemp.whosTurn() == NineChess::PLAYER1)

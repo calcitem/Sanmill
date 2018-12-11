@@ -67,6 +67,15 @@ public slots:
     void setSound(bool arg = true);
     // 播放声音
     void playSound(const QString &soundPath);
+    // 上下翻转
+    void flip();
+    // 左右镜像
+    void mirror();
+    // 视图须时针旋转90°
+    void turnRight();
+    // 视图逆时针旋转90°
+    void turnLeft();
+
     // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
 	// 认输

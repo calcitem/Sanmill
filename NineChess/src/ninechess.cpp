@@ -1588,3 +1588,263 @@ void NineChess::getPlayer_TimeMS(int &p1_ms, int &p2_ms)
     p1_ms = player1_MS;
     p2_ms = player2_MS;
 }
+
+void NineChess::mirror(bool cmdChange /*= true*/)
+{
+    char ch;
+    int i, j;
+    for (i = 1; i <= RING; i++) {
+        for (j = 1; j < SEAT / 2; j++) {
+            ch = board[i*SEAT + j];
+            board[i*SEAT + j] = board[(i + 1)*SEAT - j];
+            board[(i + 1)*SEAT - j] = ch;
+        }
+    }
+
+    int16_t p1, p2, p3;
+    if (move_ < 0) {
+        i = (-move_) / SEAT;
+        j = (-move_) % SEAT;
+        j = (SEAT - j) % SEAT;
+        move_ = -(i * SEAT + j);
+    }
+    else {
+        p1 = move_ >> 8;
+        p2 = move_ & 0x00ff;
+        i = p1 / SEAT;
+        j = p1 % SEAT;
+        j = (SEAT - j) % SEAT;
+        p1 = i * SEAT + j;
+        i = p2 / SEAT;
+        j = p2 % SEAT;
+        j = (SEAT - j) % SEAT;
+        p2 = i * SEAT + j;
+        move_ = (p1 << 8) | p2;
+    }
+
+    i = currentPos / SEAT;
+    j = currentPos % SEAT;
+    j = (SEAT - j) % SEAT;
+    currentPos = i * SEAT + j;
+
+    if (rule.canRepeated) {
+        for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
+            p1 = (*mill & 0x000000ff00000000) >> 32;
+            p2 = (*mill & 0x0000000000ff0000) >> 16;
+            p2 = (*mill & 0x00000000000000ff);
+
+            i = p1 / SEAT;
+            j = p1 % SEAT;
+            j = (SEAT - j) % SEAT;
+            p1 = i * SEAT + j;
+
+            i = p2 / SEAT;
+            j = p2 % SEAT;
+            j = (SEAT - j) % SEAT;
+            p2 = i * SEAT + j;
+
+            i = p3 / SEAT;
+            j = p3 % SEAT;
+            j = (SEAT - j) % SEAT;
+            p3 = i * SEAT + j;
+            
+            *mill &= 0xffffff00ff00ff00;
+            *mill |= (p1 << 32) | (p2 << 16) | p3;
+        }
+    }
+
+    // 命令行解析
+    if (cmdChange) {
+        ;
+    }
+}
+
+void NineChess::turn(bool cmdChange /*= true*/)
+{
+    char ch;
+    int i, j;
+    for (i = 0; i < SEAT; i++) {
+        ch = board[SEAT + i];
+        board[SEAT + i] = board[SEAT*RING + i];
+        board[SEAT*RING + i] = ch;
+    }
+
+    int16_t p1, p2, p3;
+
+    if (move_ < 0) {
+        i = (-move_) / SEAT;
+        j = (-move_) % SEAT;
+        if (i == 1)
+            i = RING;
+        else if (i == RING)
+            i = 1;
+        move_ = -(i * SEAT + j);
+    }
+    else {
+        p1 = move_ >> 8;
+        p2 = move_ & 0x00ff;
+        i = p1 / SEAT;
+        j = p1 % SEAT;
+        if (i == 1)
+            i = RING;
+        else if (i == RING)
+            i = 1;
+        p1 = i * SEAT + j;
+        i = p2 / SEAT;
+        j = p2 % SEAT;
+        if (i == 1)
+            i = RING;
+        else if (i == RING)
+            i = 1;
+        p2 = i * SEAT + j;
+        move_ = (p1 << 8) | p2;
+    }
+
+    i = currentPos / SEAT;
+    j = currentPos % SEAT;
+    if (i == 1)
+        i = RING;
+    else if (i == RING)
+        i = 1;
+    currentPos = i * SEAT + j;
+
+    if (rule.canRepeated) {
+        for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
+            p1 = (*mill & 0x000000ff00000000) >> 32;
+            p2 = (*mill & 0x0000000000ff0000) >> 16;
+            p2 = (*mill & 0x00000000000000ff);
+
+            i = p1 / SEAT;
+            j = p1 % SEAT;
+            if (i == 1)
+                i = RING;
+            else if (i == RING)
+                i = 1;
+            p1 = i * SEAT + j;
+
+            i = p2 / SEAT;
+            j = p2 % SEAT;
+            if (i == 1)
+                i = RING;
+            else if (i == RING)
+                i = 1;
+            p2 = i * SEAT + j;
+
+            i = p3 / SEAT;
+            j = p3 % SEAT;
+            if (i == 1)
+                i = RING;
+            else if (i == RING)
+                i = 1;
+            p3 = i * SEAT + j;
+
+            *mill &= 0xffffff00ff00ff00;
+            *mill |= (p1 << 32) | (p2 << 16) | p3;
+        }
+    }
+
+    // 命令行解析
+    if (cmdChange) {
+        ;
+    }
+}
+
+void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
+{
+    // 将degrees转化为0~359之间的数
+    degrees = degrees % 360;
+    if (degrees < 0)
+        degrees += 360;
+
+    if (degrees != 90 || degrees != 180 || degrees != 270)
+        return;
+    else
+        degrees /= 45;
+
+    char ch;
+    int i, j;
+    for (i = 0; i < SEAT; i++) {
+        ch = board[SEAT + i];
+        board[SEAT + i] = board[SEAT*RING + i];
+        board[SEAT*RING + i] = ch;
+    }
+
+    int16_t p1, p2, p3;
+
+    if (move_ < 0) {
+        i = (-move_) / SEAT;
+        j = (-move_) % SEAT;
+        if (i == 1)
+            i = RING;
+        else if (i == RING)
+            i = 1;
+        move_ = -(i * SEAT + j);
+    }
+    else {
+        p1 = move_ >> 8;
+        p2 = move_ & 0x00ff;
+        i = p1 / SEAT;
+        j = p1 % SEAT;
+        if (i == 1)
+            i = RING;
+        else if (i == RING)
+            i = 1;
+        p1 = i * SEAT + j;
+        i = p2 / SEAT;
+        j = p2 % SEAT;
+        if (i == 1)
+            i = RING;
+        else if (i == RING)
+            i = 1;
+        p2 = i * SEAT + j;
+        move_ = (p1 << 8) | p2;
+    }
+
+    i = currentPos / SEAT;
+    j = currentPos % SEAT;
+    if (i == 1)
+        i = RING;
+    else if (i == RING)
+        i = 1;
+    currentPos = i * SEAT + j;
+
+    if (rule.canRepeated) {
+        for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
+            p1 = (*mill & 0x000000ff00000000) >> 32;
+            p2 = (*mill & 0x0000000000ff0000) >> 16;
+            p2 = (*mill & 0x00000000000000ff);
+
+            i = p1 / SEAT;
+            j = p1 % SEAT;
+            if (i == 1)
+                i = RING;
+            else if (i == RING)
+                i = 1;
+            p1 = i * SEAT + j;
+
+            i = p2 / SEAT;
+            j = p2 % SEAT;
+            if (i == 1)
+                i = RING;
+            else if (i == RING)
+                i = 1;
+            p2 = i * SEAT + j;
+
+            i = p3 / SEAT;
+            j = p3 % SEAT;
+            if (i == 1)
+                i = RING;
+            else if (i == RING)
+                i = 1;
+            p3 = i * SEAT + j;
+
+            *mill &= 0xffffff00ff00ff00;
+            *mill |= (p1 << 32) | (p2 << 16) | p3;
+        }
+    }
+
+    // 命令行解析
+    if (cmdChange) {
+        ;
+    }
+}

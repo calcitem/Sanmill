@@ -89,7 +89,7 @@ public:
         ACTION_CAPTURE = 0x0400    // 提子
     };
 
-    // 棋局结构体，包含当前棋盘数据
+    // 棋局结构体，算法相关，包含当前棋盘数据
     // 单独分离出来供AI判断局面用，生成置换表时使用
     struct ChessData {
         // 棋局，抽象为一个（5×8）的char数组，上下两行留空
@@ -222,21 +222,23 @@ public:
     bool reset();
     // 游戏开始
     bool start();
+
     // 选子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool choose(int c, int p);
     // 落子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool place(int c, int p, long time_p = -1);
     // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool capture(int c, int p, long time_p = -1);
-    // 下面3个函数没有算法无关判断和无关操作
-    bool choose(int pos);
-    bool place(int pos);
-    bool capture(int pos);
     // 认输
 	bool giveup(Players loser);
     // 命令行解析函数
-    bool command(int16_t move);
     bool command(const char *cmd);
+    // 局面左右镜像
+    void mirror(bool cmdChange = true);
+    // 局面内外翻转
+    void turn(bool cmdChange = true);
+    // 局面顺时针旋转
+    void rotate(int degrees, bool cmdChange = true);
 
 protected:
     // 判断棋盘pos处的棋子处于几个“三连”中
@@ -265,6 +267,12 @@ protected:
     enum NineChess::Players changeTurn();
     // 设置提示
     void setTip();
+
+    // 下面几个函数没有算法无关判断和无关操作，节约算法时间
+    bool command(int16_t move);
+    bool choose(int pos);
+    bool place(int pos);
+    bool capture(int pos);
 
 private:
     // 当前使用的规则
