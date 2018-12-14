@@ -237,7 +237,7 @@ public:
     void mirror(bool cmdChange = true);
     // 局面内外翻转
     void turn(bool cmdChange = true);
-    // 局面顺时针旋转
+    // 局面逆时针旋转
     void rotate(int degrees, bool cmdChange = true);
 
 protected:

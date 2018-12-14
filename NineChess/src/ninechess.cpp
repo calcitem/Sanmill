@@ -566,7 +566,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         board[pos] = piece;
         move_ = pos;
         player_ms = update(time_p);
-        sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u", c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
+        sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         currentPos = pos;
         data.step++;
@@ -636,7 +636,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         move_ = (currentPos << 8) + pos;
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / SEAT, currentPos % SEAT + 1,
-            c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
+            c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         board[pos] = board[currentPos];
         board[currentPos] = '\x00';
@@ -707,7 +707,7 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
         data.player1_Remain--;
     move_ = -pos;
     player_ms = update(time_p);
-    sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, player_ms / 1000, player_ms % 1000);
+    sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
     cmdlist.push_back(string(cmdline));
     currentPos = 0;
     data.num_NeedRemove--;
@@ -1622,10 +1622,12 @@ void NineChess::mirror(bool cmdChange /*= true*/)
         move_ = (p1 << 8) | p2;
     }
 
-    i = currentPos / SEAT;
-    j = currentPos % SEAT;
-    j = (SEAT - j) % SEAT;
-    currentPos = i * SEAT + j;
+    if (currentPos != 0) {
+        i = currentPos / SEAT;
+        j = currentPos % SEAT;
+        j = (SEAT - j) % SEAT;
+        currentPos = i * SEAT + j;
+    }
 
     if (rule.canRepeated) {
         for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
@@ -1655,7 +1657,56 @@ void NineChess::mirror(bool cmdChange /*= true*/)
 
     // 命令行解析
     if (cmdChange) {
-        ;
+        int c1, p1, c2, p2;
+        int args = 0;
+        int mm = 0, ss = 0, mss = 0;
+        long tm = -1;
+
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+        if (args >= 4) {
+            p1 = (SEAT - p1 + 1) % SEAT;
+            p2 = (SEAT - p2 + 1) % SEAT;
+            cmdline[3] = '1' + (char)p1;
+            cmdline[10] = '1' + (char)p2;
+        }
+        else {
+            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+            if (args >= 2) {
+                p1 = (SEAT - p1 + 1) % SEAT;
+                cmdline[4] = '1' + (char)p1;
+            }
+            else {
+                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                if (args >= 2) {
+                    p1 = (SEAT - p1 + 1) % SEAT;
+                    cmdline[3] = '1' + (char)p1;
+                }
+            }
+        }
+
+        for (auto itor = cmdlist.begin(); itor != cmdlist.end(); itor++) {
+            args = sscanf((*itor).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+            if (args >= 4) {
+                p1 = (SEAT - p1 + 1) % SEAT;
+                p2 = (SEAT - p2 + 1) % SEAT;
+                (*itor)[3] = '1' + (char)p1;
+                (*itor)[10] = '1' + (char)p2;
+            }
+            else {
+                args = sscanf((*itor).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                if (args >= 2) {
+                    p1 = (SEAT - p1 + 1) % SEAT;
+                    (*itor)[4] = '1' + (char)p1;
+                }
+                else {
+                    args = sscanf((*itor).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                    if (args >= 2) {
+                        p1 = (SEAT - p1 + 1) % SEAT;
+                        (*itor)[3] = '1' + (char)p1;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -1700,13 +1751,15 @@ void NineChess::turn(bool cmdChange /*= true*/)
         move_ = (p1 << 8) | p2;
     }
 
-    i = currentPos / SEAT;
-    j = currentPos % SEAT;
-    if (i == 1)
-        i = RING;
-    else if (i == RING)
-        i = 1;
-    currentPos = i * SEAT + j;
+    if (currentPos != 0) {
+        i = currentPos / SEAT;
+        j = currentPos % SEAT;
+        if (i == 1)
+            i = RING;
+        else if (i == RING)
+            i = 1;
+        currentPos = i * SEAT + j;
+    }
 
     if (rule.canRepeated) {
         for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
@@ -1745,7 +1798,80 @@ void NineChess::turn(bool cmdChange /*= true*/)
 
     // 命令行解析
     if (cmdChange) {
-        ;
+        int c1, p1, c2, p2;
+        int args = 0;
+        int mm = 0, ss = 0, mss = 0;
+        long tm = -1;
+
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+        if (args >= 4) {
+            if (c1 == 1)
+                c1 = RING;
+            else if (c1 == RING)
+                c1 = 1;
+            if (c2 == 1)
+                c2 = RING;
+            else if (c2 == RING)
+                c2 = 1;
+            cmdline[1] = '0' + (char)c1;
+            cmdline[8] = '0' + (char)c2;
+        }
+        else {
+            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+            if (args >= 2) {
+                if (c1 == 1)
+                    c1 = RING;
+                else if (c1 == RING)
+                    c1 = 1;
+                cmdline[2] = '0' + (char)c1;
+            }
+            else {
+                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                if (args >= 2) {
+                    if (c1 == 1)
+                        c1 = RING;
+                    else if (c1 == RING)
+                        c1 = 1;
+                    cmdline[1] = '0' + (char)c1;
+                }
+            }
+        }
+
+        for (auto itor = cmdlist.begin(); itor != cmdlist.end(); itor++) {
+            args = sscanf((*itor).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+            if (args >= 4) {
+                if (c1 == 1)
+                    c1 = RING;
+                else if (c1 == RING)
+                    c1 = 1;
+                if (c2 == 1)
+                    c2 = RING;
+                else if (c2 == RING)
+                    c2 = 1;
+                (*itor)[1] = '0' + (char)c1;
+                (*itor)[8] = '0' + (char)c2;
+            }
+            else {
+                args = sscanf((*itor).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                if (args >= 2) {
+                    if (c1 == 1)
+                        c1 = RING;
+                    else if (c1 == RING)
+                        c1 = 1;
+                    (*itor)[2] = '0' + (char)c1;
+                }
+                else {
+                    args = sscanf((*itor).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                    if (args >= 2) {
+                        if (c1 == 1)
+                            c1 = RING;
+                        else if (c1 == RING)
+                            c1 = 1;
+                        (*itor)[1] = '0' + (char)c1;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -1756,28 +1882,53 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
     if (degrees < 0)
         degrees += 360;
 
-    if (degrees != 90 || degrees != 180 || degrees != 270)
+    if (degrees == 0 || degrees % 90)
         return;
     else
         degrees /= 45;
 
-    char ch;
+    char ch1, ch2;
     int i, j;
-    for (i = 0; i < SEAT; i++) {
-        ch = board[SEAT + i];
-        board[SEAT + i] = board[SEAT*RING + i];
-        board[SEAT*RING + i] = ch;
+    if (degrees == 2) {
+        for (i = 1; i <= RING; i++) {
+            ch1 = board[i*SEAT];
+            ch2 = board[i*SEAT + 1];
+            for (j = 0; j < SEAT - 2; j++) {
+                board[i*SEAT + j] = board[i*SEAT + j + 2];
+            }
+            board[i*SEAT + 6] = ch1;
+            board[i*SEAT + 7] = ch2;
+        }
     }
+    else if (degrees == 6) {
+        for (i = 1; i <= RING; i++) {
+            ch1 = board[i*SEAT + 7];
+            ch2 = board[i*SEAT + 6];
+            for (j = SEAT - 1; j >= 2 ; j--) {
+                board[i*SEAT + j] = board[i*SEAT + j - 2];
+            }
+            board[i*SEAT + 1] = ch1;
+            board[i*SEAT] = ch2;
+        }
+    }
+    else if (degrees == 4) {
+        for (i = 1; i <= RING; i++) {
+            for (j = 0; j < SEAT / 2; j++) {
+                ch1 = board[i*SEAT + j];
+                board[i*SEAT + j] = board[i*SEAT + j + 4];
+                board[i*SEAT + j + 4] = ch1;
+            }
+        }
+    }
+    else
+        return;
 
     int16_t p1, p2, p3;
 
     if (move_ < 0) {
         i = (-move_) / SEAT;
         j = (-move_) % SEAT;
-        if (i == 1)
-            i = RING;
-        else if (i == RING)
-            i = 1;
+        j = (j + SEAT - degrees) % SEAT;
         move_ = -(i * SEAT + j);
     }
     else {
@@ -1785,28 +1936,21 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
         p2 = move_ & 0x00ff;
         i = p1 / SEAT;
         j = p1 % SEAT;
-        if (i == 1)
-            i = RING;
-        else if (i == RING)
-            i = 1;
+        j = (j + SEAT - degrees) % SEAT;
         p1 = i * SEAT + j;
         i = p2 / SEAT;
         j = p2 % SEAT;
-        if (i == 1)
-            i = RING;
-        else if (i == RING)
-            i = 1;
+        j = (j + SEAT - degrees) % SEAT;
         p2 = i * SEAT + j;
         move_ = (p1 << 8) | p2;
     }
 
-    i = currentPos / SEAT;
-    j = currentPos % SEAT;
-    if (i == 1)
-        i = RING;
-    else if (i == RING)
-        i = 1;
-    currentPos = i * SEAT + j;
+    if (currentPos != 0) {
+        i = currentPos / SEAT;
+        j = currentPos % SEAT;
+        j = (j + SEAT - degrees) % SEAT;
+        currentPos = i * SEAT + j;
+    }
 
     if (rule.canRepeated) {
         for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
@@ -1816,26 +1960,17 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
 
             i = p1 / SEAT;
             j = p1 % SEAT;
-            if (i == 1)
-                i = RING;
-            else if (i == RING)
-                i = 1;
+            j = (j + SEAT - degrees) % SEAT;
             p1 = i * SEAT + j;
 
             i = p2 / SEAT;
             j = p2 % SEAT;
-            if (i == 1)
-                i = RING;
-            else if (i == RING)
-                i = 1;
+            j = (j + SEAT - degrees) % SEAT;
             p2 = i * SEAT + j;
 
             i = p3 / SEAT;
             j = p3 % SEAT;
-            if (i == 1)
-                i = RING;
-            else if (i == RING)
-                i = 1;
+            j = (j + SEAT - degrees) % SEAT;
             p3 = i * SEAT + j;
 
             *mill &= 0xffffff00ff00ff00;
@@ -1845,6 +1980,55 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
 
     // 命令行解析
     if (cmdChange) {
-        ;
+        int c1, p1, c2, p2;
+        int args = 0;
+        int mm = 0, ss = 0, mss = 0;
+        long tm = -1;
+
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+        if (args >= 4) {
+            p1 = (p1 - 1 + SEAT - degrees) % SEAT;
+            p2 = (p2 - 1 + SEAT - degrees) % SEAT;
+            cmdline[3] = '1' + (char)p1;
+            cmdline[10] = '1' + (char)p2;
+        }
+        else {
+            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+            if (args >= 2) {
+                p1 = (p1 - 1 + SEAT - degrees) % SEAT;
+                cmdline[4] = '1' + (char)p1;
+            }
+            else {
+                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                if (args >= 2) {
+                    p1 = (p1 - 1 + SEAT - degrees) % SEAT;
+                    cmdline[3] = '1' + (char)p1;
+                }
+            }
+        }
+
+        for (auto itor = cmdlist.begin(); itor != cmdlist.end(); itor++) {
+            args = sscanf((*itor).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+            if (args >= 4) {
+                p1 = (p1 - 1 + SEAT - degrees) % SEAT;
+                p2 = (p2 - 1 + SEAT - degrees) % SEAT;
+                (*itor)[3] = '1' + (char)p1;
+                (*itor)[10] = '1' + (char)p2;
+            }
+            else {
+                args = sscanf((*itor).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                if (args >= 2) {
+                    p1 = (p1 - 1 + SEAT - degrees) % SEAT;
+                    (*itor)[4] = '1' + (char)p1;
+                }
+                else {
+                    args = sscanf((*itor).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                    if (args >= 2) {
+                        p1 = (p1 - 1 + SEAT - degrees) % SEAT;
+                        (*itor)[3] = '1' + (char)p1;
+                    }
+                }
+            }
+        }
     }
 }

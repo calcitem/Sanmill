@@ -11,6 +11,7 @@
 #define MANUALLISTVIEW
 
 #include <QListView>
+#include <QMouseEvent>
 #include <QDebug>
 
 class ManualListView : public QListView
@@ -18,7 +19,7 @@ class ManualListView : public QListView
     Q_OBJECT
 
 public:
-    ManualListView(QWidget * parent = nullptr) : QListView (parent) {
+    ManualListView(QWidget * parent = nullptr) : QListView (parent), newEmptyRow(false) {
         Q_UNUSED(parent)
     }
     QSize sizeHint() const {
@@ -34,7 +35,14 @@ signals:
 
 protected slots:
     // 屏蔽掉双击编辑功能
-    void mouseDoubleClickEvent(QMouseEvent *event) { Q_UNUSED(event) }
+    void mouseDoubleClickEvent(QMouseEvent *mouseEvent) {
+        //屏蔽双击事件
+        mouseEvent->accept();
+    }
+
+    void rowsInserted(const QModelIndex &parent, int start, int end) {
+        newEmptyRow = true;
+    }
 
     /* 本来重载rowsInserted函数用于在插入新行后自动选中最后一行，
     但是，在关联Model的insertRow执行后rowsInserted会被立即执行，
@@ -58,9 +66,10 @@ protected slots:
         if (model()) {
             // 判断
             QModelIndex index = model()->index(model()->rowCount() - 1, 0);
-            if (index == bottomRight) {
+            if (index == bottomRight && newEmptyRow) {
                 setCurrentIndex(index);
-                scrollToBottom();
+                QAbstractItemView::scrollToBottom();
+                newEmptyRow = false;
             }
         }
     }
@@ -71,6 +80,10 @@ protected slots:
         QListView::currentChanged(current, previous);
         emit currentChangedSignal(current, previous);
     }
+
+private:
+    // 添加了新空行的标识
+    bool newEmptyRow;
 };
 
 #endif // MANUALLISTVIEW

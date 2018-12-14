@@ -159,9 +159,9 @@ void GameController::gameReset()
     }
     // 更新棋谱
     manualListModel.removeRows(0, manualListModel.rowCount());
-    currentRow = 0;
     manualListModel.insertRow(0);
     manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
+    currentRow = 0;
     // 发出信号通知主窗口更新LCD显示
     QTime qtime = QTime(0, 0, 0, 0).addMSecs(time1);
     emit time1Changed(qtime.toString("mm:ss.zzz"));
@@ -277,34 +277,140 @@ void GameController::playSound(const QString &soundPath)
 // 上下翻转
 void GameController::flip()
 {
+    if (isEngine1) {
+        ai1.stop();
+        ai1.wait();
+    }
+    if (isEngine2) {
+        ai2.stop();
+        ai2.wait();
+    }
+
     chess.mirror();
     chess.rotate(180);
     chessTemp = chess;
-    updateScence();
+    // 更新棋谱
+    int row = 0;
+    for (auto str : *(chess.getCmdList())) {
+        manualListModel.setData(manualListModel.index(row++), str.c_str());
+    }
+    // 刷新显示
+    if (currentRow == row - 1)
+        updateScence();
+    else
+        phaseChange(currentRow, true);
+
+    if (isEngine1) {
+        ai1.setAi(chess);
+        ai1.start();
+    }
+    if (isEngine2) {
+        ai2.setAi(chess);
+        ai2.start();
+    }
 }
 
 // 左右镜像
 void GameController::mirror()
 {
+    if (isEngine1) {
+        ai1.stop();
+        ai1.wait();
+    }
+    if (isEngine2) {
+        ai2.stop();
+        ai2.wait();
+    }
+
     chess.mirror();
     chessTemp = chess;
-    updateScence();
+    // 更新棋谱
+    int row = 0;
+    for (auto str : *(chess.getCmdList())) {
+        manualListModel.setData(manualListModel.index(row++), str.c_str());
+    }
+    qDebug() << "list: " << row;
+    // 刷新显示
+    if (currentRow == row - 1)
+        updateScence();
+    else
+        phaseChange(currentRow, true);
+
+    if (isEngine1) {
+        ai1.setAi(chess);
+        ai1.start();
+    }
+    if (isEngine2) {
+        ai2.setAi(chess);
+        ai2.start();
+    }
 }
 
 // 视图须时针旋转90°
 void GameController::turnRight()
 {
-    chess.rotate(90);
+    if (isEngine1) {
+        ai1.stop();
+        ai1.wait();
+    }
+    if (isEngine2) {
+        ai2.stop();
+        ai2.wait();
+    }
+
+    chess.rotate(-90);
     chessTemp = chess;
-    updateScence();
+    // 更新棋谱
+    int row = 0;
+    for (auto str : *(chess.getCmdList())) {
+        manualListModel.setData(manualListModel.index(row++), str.c_str());
+    }
+    // 刷新显示
+    if (currentRow == row - 1)
+        updateScence();
+    else
+        phaseChange(currentRow, true);
+
+    if (isEngine1) {
+        ai1.setAi(chess);
+        ai1.start();
+    }
+    if (isEngine2) {
+        ai2.setAi(chess);
+        ai2.start();
+    }
 }
 
 // 视图逆时针旋转90°
 void GameController::turnLeft()
 {
-    chess.rotate(270);
+    if (isEngine1) {
+        ai1.stop();
+        ai1.wait();
+    }
+    if (isEngine2) {
+        ai2.stop();
+        ai2.wait();
+    }
+
+    chess.rotate(90);
     chessTemp = chess;
+    // 更新棋谱
+    int row = 0;
+    for (auto str : *(chess.getCmdList())) {
+        manualListModel.setData(manualListModel.index(row++), str.c_str());
+    }
+    // 刷新显示
     updateScence();
+
+    if (isEngine1) {
+        ai1.setAi(chess);
+        ai1.start();
+    }
+    if (isEngine2) {
+        ai2.setAi(chess);
+        ai2.start();
+    }
 }
 
 
@@ -554,8 +660,9 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
     }
 
     // 如果未开局则开局
-    if (chess.getPhase() == NineChess::GAME_NOTSTARTED)
+    if (chess.getPhase() == NineChess::GAME_NOTSTARTED) {
         gameStart();
+    }
 
     if (!chess.command(cmd.toStdString().c_str()))
         return false;
@@ -573,16 +680,27 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
     message = QString::fromStdString(chess.getTip());
     emit statusBarChanged(message);
 
-    // 将新增的棋谱行插入到ListModel
-    currentRow = manualListModel.rowCount() - 1;
-    int k = 0;
-    // 输出命令行
-    for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
-        // 跳过已添加的，因标准list容器没有下标
-        if (k++ <= currentRow)
-            continue;
-        manualListModel.insertRow(++currentRow);
-        manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
+    // 对于新开局
+    if (chess.getCmdList()->size() <= 1) {
+        manualListModel.removeRows(0, manualListModel.rowCount());
+        manualListModel.insertRow(0);
+        manualListModel.setData(manualListModel.index(0), chess.getCmdLine());
+        currentRow = 0;
+    }
+    // 对于当前局
+    else {
+        currentRow = manualListModel.rowCount() - 1;
+        // 跳过已添加行,迭代器不支持+运算符,只能一个个++
+        auto i = (chess.getCmdList()->begin());
+        for (int r = 0; i != (chess.getCmdList())->end(); i++) {
+            if (r++ > currentRow)
+                break;
+        }
+        // 将新增的棋谱行插入到ListModel
+        while (i != chess.getCmdList()->end()) {
+            manualListModel.insertRow(++currentRow);
+            manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());
+        }
     }
 
     // 播放胜利或失败音效
@@ -617,10 +735,10 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
 }
 
 // 浏览历史局面，通过command函数刷新局面显示
-bool GameController::phaseChange(int row)
+bool GameController::phaseChange(int row, bool forceUpdate)
 {
     // 如果row是当前浏览的棋谱行，则不需要刷新
-    if (currentRow == row)
+    if (currentRow == row && !forceUpdate)
         return false;
 
     // 需要刷新
@@ -778,8 +896,11 @@ bool GameController::updateScence(NineChess &chess)
     int ipos = chess.getCurrentPos();
     if (ipos) {
         key = board[chess.getCurrentPos()];
-        currentPiece = pieceList.at(key & 0x10 ? (key - 0x11)*2 : (key - 0x21)*2 + 1);
-        currentPiece->setSelected(true);
+        ipos = key & 0x10 ? (key - 0x11) * 2 : (key - 0x21) * 2 + 1;
+        if (ipos >= 0 && ipos < n) {
+            currentPiece = pieceList.at(ipos);
+            currentPiece->setSelected(true);
+        }
     }
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
