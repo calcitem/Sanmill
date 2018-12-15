@@ -221,7 +221,6 @@ void GameController::setEngine1(bool arg)
 {
     isEngine1 = arg;
     if (arg) {
-        qDebug() << "Player1 is computer.";
         ai1.setAi(chess);
         if (ai1.isRunning())
             ai1.resume();
@@ -229,7 +228,6 @@ void GameController::setEngine1(bool arg)
             ai1.start();
     }
     else {
-        qDebug() << "Player1 is not computer.";
         ai1.stop();
     }
 }
@@ -238,7 +236,6 @@ void GameController::setEngine2(bool arg)
 {
     isEngine2 = arg;
     if (arg) {
-        qDebug() << "Player2 is computer.";
         ai2.setAi(chess);
         if (ai2.isRunning())
             ai2.resume();
@@ -246,7 +243,6 @@ void GameController::setEngine2(bool arg)
             ai2.start();
     }
     else {
-        qDebug() << "Player2 is not computer.";
         ai2.stop();
     }
 }
@@ -272,7 +268,6 @@ void GameController::playSound(const QString &soundPath)
 		QSound::play(soundPath);
 	}
 }
-
 
 // 上下翻转
 void GameController::flip()
@@ -413,13 +408,6 @@ void GameController::turnLeft()
     }
 }
 
-
-
-//bool GameController::eventFilter(QObject * watched, QEvent * event)
-//{
-//    return QObject::eventFilter(watched, event);
-//}
-
 void GameController::timerEvent(QTimerEvent *event)
 {
 	Q_UNUSED(event)
@@ -476,7 +464,7 @@ void GameController::timerEvent(QTimerEvent *event)
     */
 }
 
-// 槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
+// 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
 bool GameController::actionPiece(QPointF pos)
 {
     // 点击非落子点，不执行
@@ -633,7 +621,33 @@ bool GameController::actionPiece(QPointF pos)
     return result;
 }
 
-// 棋谱的命令行执行
+bool GameController::giveUp()
+{
+    bool result = false;
+    if (chess.whosTurn() == NineChess::PLAYER1)
+        result = chess.giveup(NineChess::PLAYER1);
+    else if (chess.whosTurn() == NineChess::PLAYER2)
+        result = chess.giveup(NineChess::PLAYER2);
+    if (result)
+    {
+        // 将新增的棋谱行插入到ListModel
+        currentRow = manualListModel.rowCount() - 1;
+        int k = 0;
+        // 输出命令行
+        for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
+            // 跳过已添加的，因标准list容器没有下标
+            if (k++ <= currentRow)
+                continue;
+            manualListModel.insertRow(++currentRow);
+            manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
+        }
+        if (chess.whoWin() != NineChess::NOBODY)
+            playSound(":/sound/resources/sound/loss.wav");
+    }
+    return result;
+}
+
+// 关键槽函数，棋谱的命令行执行，与actionPiece独立
 bool GameController::command(const QString &cmd, bool update /*= true*/)
 {
     Q_UNUSED(hasSound)
@@ -756,32 +770,6 @@ bool GameController::phaseChange(int row, bool forceUpdate)
     // 刷新棋局场景
     updateScence(chessTemp);
     return true;
-}
-
-bool GameController::giveUp()
-{
-	bool result = false;
-	if (chess.whosTurn() == NineChess::PLAYER1)
-		result = chess.giveup(NineChess::PLAYER1);
-	else if (chess.whosTurn() == NineChess::PLAYER2)
-		result = chess.giveup(NineChess::PLAYER2);
-	if (result)
-	{
-		// 将新增的棋谱行插入到ListModel
-		currentRow = manualListModel.rowCount() - 1;
-		int k = 0;
-		// 输出命令行
-		for (auto i = (chess.getCmdList())->begin(); i != (chess.getCmdList())->end(); ++i) {
-			// 跳过已添加的，因标准list容器没有下标
-			if (k++ <= currentRow)
-				continue;
-			manualListModel.insertRow(++currentRow);
-			manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
-		}
-		if (chess.whoWin() != NineChess::NOBODY)
-            playSound(":/sound/resources/sound/loss.wav");
-	}
-	return result;
 }
 
 bool GameController::updateScence()

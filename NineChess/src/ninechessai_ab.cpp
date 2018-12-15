@@ -149,6 +149,7 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     this->chess = chess;
     chessTemp = chess;
     chessData = &(chessTemp.data);
+    requiredQuit = false;
     deleteTree(rootNode);
     rootNode = new Node;
     rootNode->value = 0;
@@ -234,20 +235,23 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 当前节点的MinMax值，最终赋值给节点value，与alpha和Beta不同
     int minMax;
 
-    if (!depth || chessTemp.data.phase == NineChess::GAME_OVER) {
+    // 搜索到叶子节点（决胜局面）
+    if (chessData->phase == NineChess::GAME_OVER) {
         node->value = evaluate(node);
-        // 搜索到决胜局面
-        if (chessData->phase == NineChess::GAME_OVER)
-            if (node->value > 0)
-                node->value += depth;
-            else
-                node->value -= depth;
-        else {
-            if (chessData->turn == NineChess::PLAYER1)
-                node->value += depth;
-            else
-                node->value -= depth;
-        }
+        if (node->value > 0)
+            node->value += depth;
+        else
+            node->value -= depth;
+        return node->value;
+    }
+
+    // 搜索到第0层或需要退出
+    if (!depth || requiredQuit) {
+        node->value = evaluate(node);
+        if (chessData->turn == NineChess::PLAYER1)
+            node->value += depth;
+        else
+            node->value -= depth;
         return node->value;
     }
 
@@ -256,8 +260,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 排序子节点树
     sortChildren(node);
 
-    // 根据演算模型执行MiniMax检索
-    // 对先手，搜索Max
+    // 根据演算模型执行MiniMax检索，对先手，搜索Max
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
         minMax = -infinity;
         for (auto child : node->children) {
@@ -341,7 +344,6 @@ const char *NineChessAi_ab::move2string(int16_t move)
     }
     return cmdline;
 }
-
 
 void NineChessAi_ab::reverse(const NineChess *node1, NineChess *node2, int i)
 {

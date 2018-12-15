@@ -29,6 +29,8 @@ void AiThread::run()
     // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
     int i = 0;
 
+    qDebug() << "Thread" << id << "start";
+
     while (!isInterruptionRequested()) {
         mutex.lock();
         if (chess->whosTurn() == NineChess::PLAYER1)
@@ -48,12 +50,12 @@ void AiThread::run()
             mutex.unlock();
         }
 
-        ai_ab.alphaBetaPruning(8);
+        ai_ab.alphaBetaPruning(6);
         const char * str = ai_ab.bestMove();
         qDebug() << str;
         if (strcmp(str, "error!"))
             emit command(str);
-        qDebug() << "Thread" << id << " run " << ++iTemp << "times";
+        qDebug() << "Thread" << id << "run" << ++iTemp << "times";
 
         // 执行完毕后继续判断
         if (!isInterruptionRequested()) {
@@ -62,7 +64,7 @@ void AiThread::run()
             mutex.unlock();
         }
     }
-    qDebug() << "Thread" << id << " quit.";
+    qDebug() << "Thread" << id << "quit";
 }
 
 void AiThread::pause()
@@ -89,6 +91,7 @@ void AiThread::stop()
         requestInterruption();
     mutex.lock();
     waiting_ = false;
+    ai_ab.quit();
     pauseCondition.wakeAll();
     mutex.unlock();
 }
