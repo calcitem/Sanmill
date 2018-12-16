@@ -6,6 +6,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QApplication>
+#include <QTimer>
 #include <QSound>
 #include <QDebug>
 #include <QMessageBox>
@@ -247,6 +248,34 @@ void GameController::setEngine2(bool arg)
     }
 }
 
+void GameController::setAiDepthTime(int depth1, int time1, int depth2, int time2)
+{
+    if (isEngine1) {
+        ai1.stop();
+        ai1.wait();
+    }
+    if (isEngine2) {
+        ai2.stop();
+        ai2.wait();
+    }
+
+    ai1.setAi(chess, depth1, time1);
+    ai2.setAi(chess, depth2, time2);
+
+    if (isEngine1) {
+        ai1.start();
+    }
+    if (isEngine2) {
+        ai2.start();
+    }
+}
+
+void GameController::getAiDepthTime(int &depth1, int &time1, int &depth2, int &time2)
+{
+    ai1.getDepthTime(depth1, time1);
+    ai2.getDepthTime(depth2, time2);
+}
+
 void GameController::setAnimation(bool arg)
 {
     hasAnimation = arg;
@@ -295,12 +324,12 @@ void GameController::flip()
     else
         phaseChange(currentRow, true);
 
+    ai1.setAi(chess);
+    ai2.setAi(chess);
     if (isEngine1) {
-        ai1.setAi(chess);
         ai1.start();
     }
     if (isEngine2) {
-        ai2.setAi(chess);
         ai2.start();
     }
 }
@@ -331,12 +360,12 @@ void GameController::mirror()
     else
         phaseChange(currentRow, true);
 
+    ai1.setAi(chess);
+    ai2.setAi(chess);
     if (isEngine1) {
-        ai1.setAi(chess);
         ai1.start();
     }
     if (isEngine2) {
-        ai2.setAi(chess);
         ai2.start();
     }
 }
@@ -366,12 +395,12 @@ void GameController::turnRight()
     else
         phaseChange(currentRow, true);
 
+    ai1.setAi(chess);
+    ai2.setAi(chess);
     if (isEngine1) {
-        ai1.setAi(chess);
         ai1.start();
     }
     if (isEngine2) {
-        ai2.setAi(chess);
         ai2.start();
     }
 }
@@ -398,12 +427,12 @@ void GameController::turnLeft()
     // 刷新显示
     updateScence();
 
+    ai1.setAi(chess);
+    ai2.setAi(chess);
     if (isEngine1) {
-        ai1.setAi(chess);
         ai1.start();
     }
     if (isEngine2) {
-        ai2.setAi(chess);
         ai2.start();
     }
 }
@@ -597,16 +626,18 @@ bool GameController::actionPiece(QPointF pos)
             // 如果还未决出胜负
             if (chess.whoWin() == NineChess::NOBODY) {
                 if (chess.whosTurn() == NineChess::PLAYER1) {
-                    if (isEngine1)
+                    if (isEngine1) {
                         ai1.resume();
+                    }
                     if (isEngine2)
                         ai2.pause();
                 }
                 else {
                     if (isEngine1)
                         ai1.pause();
-                    if (isEngine2)
+                    if (isEngine2) {
                         ai2.resume();
+                    }
                 }
             }
             // 如果已经决出胜负
@@ -727,16 +758,18 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
         // 如果还未决出胜负
         if (chess.whoWin() == NineChess::NOBODY) {
             if (chess.whosTurn() == NineChess::PLAYER1) {
-                if (isEngine1)
+                if (isEngine1) {
                     ai1.resume();
+                }
                 if (isEngine2)
                     ai2.pause();
             }
             else {
                 if (isEngine1)
                     ai1.pause();
-                if (isEngine2)
+                if (isEngine2) {
                     ai2.resume();
+                }
             }
         }
         // 如果已经决出胜负

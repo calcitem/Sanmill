@@ -13,6 +13,10 @@
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QFormLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGroupBox>
+#include <QSpinBox>
 #include <QLabel>
 #include <QHelpEvent>
 #include <QToolTip>
@@ -53,7 +57,6 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     ui.gameView->setRenderHint(QPainter::Antialiasing);
 
     // 因功能限制，使部分功能不可用，将来再添加
-    ui.actionEngine_E->setDisabled(true);
     ui.actionInternet_I->setDisabled(true);
     ui.actionSetting_O->setDisabled(true);
 
@@ -194,7 +197,7 @@ void NineChessWindow::initialize()
     ruleInfo();
 
     // 关联列表视图和字符串列表模型
-    ui.listView->setModel(&(game->manualListModel));
+    ui.listView->setModel(game->getManualListModel());
     // 因为QListView的rowsInserted在setModel之后才能启动，
     // 第一次需手动初始化选中listView第一项
     //qDebug() << ui.listView->model();
@@ -563,6 +566,7 @@ void NineChessWindow::on_actionRowChange()
 
 void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
 {
+    Q_UNUSED(signal)
     int rows = ui.listView->model()->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
@@ -645,7 +649,99 @@ void NineChessWindow::on_actionInternet_I_triggered()
 
 void NineChessWindow::on_actionEngine_E_triggered()
 {
-    // 空着，有时间再做
+    // 定义新对话框
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    dialog->setObjectName(QStringLiteral("Dialog"));
+    dialog->setWindowTitle(tr("AI设置"));
+    dialog->resize(256, 188);
+    dialog->setModal(true);
+
+    // 生成各个控件
+    QVBoxLayout *vLayout = new QVBoxLayout(dialog);
+    QGroupBox *groupBox1 = new QGroupBox(dialog);
+    QGroupBox *groupBox2 = new QGroupBox(dialog);
+
+    QHBoxLayout *hLayout1 = new QHBoxLayout;
+    QLabel *label_depth1 = new QLabel(dialog);
+    QSpinBox *spinBox_depth1 = new QSpinBox(dialog);
+    QLabel *label_time1 = new QLabel(dialog);
+    QSpinBox *spinBox_time1 = new QSpinBox(dialog);
+
+    QHBoxLayout *hLayout2 = new QHBoxLayout;
+    QLabel *label_depth2 = new QLabel(dialog);
+    QSpinBox *spinBox_depth2 = new QSpinBox(dialog);
+    QLabel *label_time2 = new QLabel(dialog);
+    QSpinBox *spinBox_time2 = new QSpinBox(dialog);
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
+
+    // 设置各个控件数据
+    groupBox1->setTitle(tr("玩家1 AI设置"));
+    label_depth1->setText(tr("深度"));
+    spinBox_depth1->setMinimum(1);
+    spinBox_depth1->setMaximum(10);
+    label_time1->setText(tr("限时"));
+    spinBox_time1->setMinimum(1);
+    spinBox_time1->setMaximum(30);
+
+    groupBox2->setTitle(tr("玩家2 AI设置"));
+    label_depth2->setText(tr("深度"));
+    spinBox_depth2->setMinimum(1);
+    spinBox_depth2->setMaximum(10);
+    label_time2->setText(tr("限时"));
+    spinBox_time2->setMinimum(1);
+    spinBox_time2->setMaximum(30);
+
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+    buttonBox->setCenterButtons(true);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("确定"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("取消"));
+
+    // 布局控件
+    vLayout->addWidget(groupBox1);
+    vLayout->addWidget(groupBox2);
+    vLayout->addWidget(buttonBox);
+    groupBox1->setLayout(hLayout1);
+    groupBox2->setLayout(hLayout2);
+    hLayout1->addWidget(label_depth1);
+    hLayout1->addWidget(spinBox_depth1);
+    hLayout1->addWidget(label_time1);
+    hLayout1->addWidget(spinBox_time1);
+    hLayout2->addWidget(label_depth2);
+    hLayout2->addWidget(spinBox_depth2);
+    hLayout2->addWidget(label_time2);
+    hLayout2->addWidget(spinBox_time2);
+
+    // 关联信号和槽函数
+    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    // 目前数据
+    int depth1, depth2, time1, time2;
+    game->getAiDepthTime(depth1, time1, depth2, time2);
+    spinBox_depth1->setValue(depth1);
+    spinBox_depth2->setValue(depth2);
+    spinBox_time1->setValue(time1);
+    spinBox_time2->setValue(time2);
+
+    // 新设数据
+    if (dialog->exec() == QDialog::Accepted) {
+        int depth1_new, depth2_new, time1_new, time2_new;
+        depth1_new = spinBox_depth1->value();
+        depth2_new = spinBox_depth2->value();
+        time1_new = spinBox_time1->value();
+        time2_new = spinBox_time2->value();
+
+        if (depth1 != depth1_new || depth2 != depth2_new || time1 != time1_new || time2 != time2_new) {
+            // 重置AI
+            game->setAiDepthTime(depth1_new, time1_new, depth2_new, time2_new);
+        }
+    }
+
+    // 删除对话框，子控件会一并删除
+    dialog->disconnect();
+    delete dialog;
 }
 
 void NineChessWindow::on_actionViewHelp_V_triggered()

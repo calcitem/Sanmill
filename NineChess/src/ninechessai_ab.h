@@ -42,7 +42,6 @@ public:
     ~NineChessAi_ab();
 
     void setChess(const NineChess &chess);
-    void setDepth(int depth) { this->depth = depth; }
     void quit() { requiredQuit = true; }
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth);
@@ -62,13 +61,6 @@ protected:
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
     // 返回招法的命令行
     const char *move2string(int16_t move);
-
-    // 局面逆序
-    void reverse(const NineChess *node1, NineChess *node2, int i);
-    // 局面层次翻转
-    void turn(const NineChess *node1, NineChess *node2, int i);
-    // 局面旋转
-    void rotate(const NineChess *node1, NineChess *node2, int i);
 
     // 判断是否在哈希表中
     bool isInHash(const Node *node);
@@ -92,7 +84,7 @@ private:
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit;
     // 剪枝算法的层深
-    int depth;
+    //    int depth;
     // 定义极大值，等于32位有符号整形数字的最大值
     static const int infinity = INT32_MAX;
 

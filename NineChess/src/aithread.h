@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QTimer>
 #include "ninechess.h"
 #include "ninechessai_ab.h"
 
@@ -18,14 +19,29 @@ public:
 signals:
     // 招法信号
     void command(const QString &cmdline, bool update = true);
+    // 开始计算的信号
+    void calcStarted();
+    // 计算结束的信号
+    void calcFinished();
 
 protected:
     void run() override;
 
+public:
+    // AI设置
+    void setAi(const NineChess &chess);
+    void setAi(const NineChess &chess, int depth, int time);
+    // 深度和限时
+    void getDepthTime(int &depth, int &time) { depth = aiDepth; time = aiTime; }
+
 public slots:
-    void setAi(const NineChess &);
+    // 强制出招，不退出线程
+    void act();
+    // 线程暂停
     void pause();
+    // 线程继续
     void resume();
+    // 退出线程
     void stop();
 
 private:
@@ -42,6 +58,12 @@ private:
     const NineChess *chess;
     // Alpha-Beta剪枝算法类
     NineChessAi_ab ai_ab;
+    // AI的层数
+    int aiDepth;
+    // AI的限时
+    int aiTime;
+    // 定时器
+    QTimer timer;
 };
 
 #endif // AITHREAD_H

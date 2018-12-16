@@ -41,6 +41,9 @@ protected slots:
     }
 
     void rowsInserted(const QModelIndex &parent, int start, int end) {
+        Q_UNUSED(parent)
+        Q_UNUSED(start)
+        Q_UNUSED(end)
         newEmptyRow = true;
     }
 

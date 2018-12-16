@@ -2,9 +2,17 @@
 #include "aithread.h"
 
 AiThread::AiThread(int id, QObject *parent) : QThread(parent),
-    waiting_(false)
+    waiting_(false),
+    aiDepth(7),
+    aiTime(8)
 {
     this->id = id;
+    // 连接定时器启动，减去118毫秒的返回时间
+    connect(this, &AiThread::calcStarted, this, [=]() {timer.start(aiTime * 1000 - 118); }, Qt::QueuedConnection);
+    // 连接定时器停止
+    connect(this, &AiThread::calcFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
+    // 连接定时器处理函数
+    connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
 }
 
 AiThread::~AiThread()
@@ -18,14 +26,24 @@ void AiThread::setAi(const NineChess &chess)
 {
     mutex.lock();
     this->chess = &chess;
+    ai_ab.setChess(*(this->chess));
+    mutex.unlock();
+}
+
+void AiThread::setAi(const NineChess &chess, int depth, int time)
+{
+    mutex.lock();
+    this->chess = &chess;
+    ai_ab.setChess(chess);
+    aiDepth = depth;
+    aiTime = time;
     mutex.unlock();
 }
 
 void AiThread::run()
 {
-
     // 测试用数据
-    int iTemp = 0;
+//    int iTemp = 0;
     // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
     int i = 0;
 
@@ -45,26 +63,38 @@ void AiThread::run()
             mutex.unlock();
             continue;
         }
-        else {
-            ai_ab.setChess(*chess);
-            mutex.unlock();
-        }
 
-        ai_ab.alphaBetaPruning(6);
+        ai_ab.setChess(*chess);
+        emit calcStarted();
+        mutex.unlock();
+
+        ai_ab.alphaBetaPruning(aiDepth);
         const char * str = ai_ab.bestMove();
         qDebug() << str;
         if (strcmp(str, "error!"))
             emit command(str);
-        qDebug() << "Thread" << id << "run" << ++iTemp << "times";
+//        qDebug() << "Thread" << id << "run" << ++iTemp << "times";
+        emit calcFinished();
 
         // 执行完毕后继续判断
+        mutex.lock();
         if (!isInterruptionRequested()) {
-            mutex.lock();
             pauseCondition.wait(&mutex);
-            mutex.unlock();
         }
+        mutex.unlock();
     }
     qDebug() << "Thread" << id << "quit";
+}
+
+void AiThread::act()
+{
+    if (isFinished() || !isRunning())
+        return;
+
+    mutex.lock();
+    waiting_ = false;
+    ai_ab.quit();
+    mutex.unlock();
 }
 
 void AiThread::pause()
@@ -87,11 +117,12 @@ void AiThread::stop()
     if (isFinished() || !isRunning())
         return;
 
-    if(!isInterruptionRequested())
+    if (!isInterruptionRequested()) {
         requestInterruption();
-    mutex.lock();
-    waiting_ = false;
-    ai_ab.quit();
-    pauseCondition.wakeAll();
-    mutex.unlock();
+        mutex.lock();
+        waiting_ = false;
+        ai_ab.quit();
+        pauseCondition.wakeAll();
+        mutex.unlock();
+    }
 }

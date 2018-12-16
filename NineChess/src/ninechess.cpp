@@ -154,6 +154,7 @@ const NineChess & NineChess::operator=(const NineChess &chess)
     memcpy(cmdline, chess.cmdline, sizeof(cmdline));
     cmdlist = chess.cmdlist;
     tip = chess.tip;
+    return *this;
 }
 
 
@@ -1593,6 +1594,7 @@ void NineChess::mirror(bool cmdChange /*= true*/)
 {
     char ch;
     int i, j;
+
     for (i = 1; i <= RING; i++) {
         for (j = 1; j < SEAT / 2; j++) {
             ch = board[i*SEAT + j];
@@ -1601,7 +1603,8 @@ void NineChess::mirror(bool cmdChange /*= true*/)
         }
     }
 
-    int16_t p1, p2, p3;
+    uint64_t p1, p2, p3;
+
     if (move_ < 0) {
         i = (-move_) / SEAT;
         j = (-move_) % SEAT;
@@ -1611,15 +1614,16 @@ void NineChess::mirror(bool cmdChange /*= true*/)
     else {
         p1 = move_ >> 8;
         p2 = move_ & 0x00ff;
-        i = p1 / SEAT;
-        j = p1 % SEAT;
+        i = (int)p1 / SEAT;
+        j = (int)p1 % SEAT;
         j = (SEAT - j) % SEAT;
         p1 = i * SEAT + j;
-        i = p2 / SEAT;
-        j = p2 % SEAT;
+
+        i = (int)p2 / SEAT;
+        j = (int)p2 % SEAT;
         j = (SEAT - j) % SEAT;
         p2 = i * SEAT + j;
-        move_ = (p1 << 8) | p2;
+        move_ = (int16_t)((p1 << 8) | p2);
     }
 
     if (currentPos != 0) {
@@ -1633,20 +1637,20 @@ void NineChess::mirror(bool cmdChange /*= true*/)
         for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
             p1 = (*mill & 0x000000ff00000000) >> 32;
             p2 = (*mill & 0x0000000000ff0000) >> 16;
-            p2 = (*mill & 0x00000000000000ff);
+            p3 = (*mill & 0x00000000000000ff);
 
-            i = p1 / SEAT;
-            j = p1 % SEAT;
+            i = (int)p1 / SEAT;
+            j = (int)p1 % SEAT;
             j = (SEAT - j) % SEAT;
             p1 = i * SEAT + j;
 
-            i = p2 / SEAT;
-            j = p2 % SEAT;
+            i = (int)p2 / SEAT;
+            j = (int)p2 % SEAT;
             j = (SEAT - j) % SEAT;
             p2 = i * SEAT + j;
 
-            i = p3 / SEAT;
-            j = p3 % SEAT;
+            i = (int)p3 / SEAT;
+            j = (int)p3 % SEAT;
             j = (SEAT - j) % SEAT;
             p3 = i * SEAT + j;
             
@@ -1660,7 +1664,6 @@ void NineChess::mirror(bool cmdChange /*= true*/)
         int c1, p1, c2, p2;
         int args = 0;
         int mm = 0, ss = 0, mss = 0;
-        long tm = -1;
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
         if (args >= 4) {
@@ -1714,13 +1717,14 @@ void NineChess::turn(bool cmdChange /*= true*/)
 {
     char ch;
     int i, j;
+
     for (i = 0; i < SEAT; i++) {
         ch = board[SEAT + i];
         board[SEAT + i] = board[SEAT*RING + i];
         board[SEAT*RING + i] = ch;
     }
 
-    int16_t p1, p2, p3;
+    uint64_t p1, p2, p3;
 
     if (move_ < 0) {
         i = (-move_) / SEAT;
@@ -1734,21 +1738,21 @@ void NineChess::turn(bool cmdChange /*= true*/)
     else {
         p1 = move_ >> 8;
         p2 = move_ & 0x00ff;
-        i = p1 / SEAT;
-        j = p1 % SEAT;
+        i = (int)p1 / SEAT;
+        j = (int)p1 % SEAT;
         if (i == 1)
             i = RING;
         else if (i == RING)
             i = 1;
         p1 = i * SEAT + j;
-        i = p2 / SEAT;
-        j = p2 % SEAT;
+        i = (int)p2 / SEAT;
+        j = (int)p2 % SEAT;
         if (i == 1)
             i = RING;
         else if (i == RING)
             i = 1;
         p2 = i * SEAT + j;
-        move_ = (p1 << 8) | p2;
+        move_ = (int16_t)((p1 << 8) | p2);
     }
 
     if (currentPos != 0) {
@@ -1765,26 +1769,26 @@ void NineChess::turn(bool cmdChange /*= true*/)
         for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
             p1 = (*mill & 0x000000ff00000000) >> 32;
             p2 = (*mill & 0x0000000000ff0000) >> 16;
-            p2 = (*mill & 0x00000000000000ff);
+            p3 = (*mill & 0x00000000000000ff);
 
-            i = p1 / SEAT;
-            j = p1 % SEAT;
+            i = (int)p1 / SEAT;
+            j = (int)p1 % SEAT;
             if (i == 1)
                 i = RING;
             else if (i == RING)
                 i = 1;
             p1 = i * SEAT + j;
 
-            i = p2 / SEAT;
-            j = p2 % SEAT;
+            i = (int)p2 / SEAT;
+            j = (int)p2 % SEAT;
             if (i == 1)
                 i = RING;
             else if (i == RING)
                 i = 1;
             p2 = i * SEAT + j;
 
-            i = p3 / SEAT;
-            j = p3 % SEAT;
+            i = (int)p3 / SEAT;
+            j = (int)p3 % SEAT;
             if (i == 1)
                 i = RING;
             else if (i == RING)
@@ -1801,7 +1805,6 @@ void NineChess::turn(bool cmdChange /*= true*/)
         int c1, p1, c2, p2;
         int args = 0;
         int mm = 0, ss = 0, mss = 0;
-        long tm = -1;
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
         if (args >= 4) {
@@ -1889,6 +1892,7 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
 
     char ch1, ch2;
     int i, j;
+
     if (degrees == 2) {
         for (i = 1; i <= RING; i++) {
             ch1 = board[i*SEAT];
@@ -1923,7 +1927,7 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
     else
         return;
 
-    int16_t p1, p2, p3;
+    uint64_t p1, p2, p3;
 
     if (move_ < 0) {
         i = (-move_) / SEAT;
@@ -1934,15 +1938,15 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
     else {
         p1 = move_ >> 8;
         p2 = move_ & 0x00ff;
-        i = p1 / SEAT;
-        j = p1 % SEAT;
+        i = (int)p1 / SEAT;
+        j = (int)p1 % SEAT;
         j = (j + SEAT - degrees) % SEAT;
         p1 = i * SEAT + j;
-        i = p2 / SEAT;
-        j = p2 % SEAT;
+        i = (int)p2 / SEAT;
+        j = (int)p2 % SEAT;
         j = (j + SEAT - degrees) % SEAT;
         p2 = i * SEAT + j;
-        move_ = (p1 << 8) | p2;
+        move_ = (int16_t)((p1 << 8) | p2);
     }
 
     if (currentPos != 0) {
@@ -1956,20 +1960,20 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
         for (auto mill = data.millList.begin(); mill != data.millList.end(); mill++) {
             p1 = (*mill & 0x000000ff00000000) >> 32;
             p2 = (*mill & 0x0000000000ff0000) >> 16;
-            p2 = (*mill & 0x00000000000000ff);
+            p3 = (*mill & 0x00000000000000ff);
 
-            i = p1 / SEAT;
-            j = p1 % SEAT;
+            i = (int)p1 / SEAT;
+            j = (int)p1 % SEAT;
             j = (j + SEAT - degrees) % SEAT;
             p1 = i * SEAT + j;
 
-            i = p2 / SEAT;
-            j = p2 % SEAT;
+            i = (int)p2 / SEAT;
+            j = (int)p2 % SEAT;
             j = (j + SEAT - degrees) % SEAT;
             p2 = i * SEAT + j;
 
-            i = p3 / SEAT;
-            j = p3 % SEAT;
+            i = (int)p3 / SEAT;
+            j = (int)p3 % SEAT;
             j = (j + SEAT - degrees) % SEAT;
             p3 = i * SEAT + j;
 
@@ -1983,7 +1987,6 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
         int c1, p1, c2, p2;
         int args = 0;
         int mm = 0, ss = 0, mss = 0;
-        long tm = -1;
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
         if (args >= 4) {

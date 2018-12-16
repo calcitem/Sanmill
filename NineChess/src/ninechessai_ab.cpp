@@ -10,8 +10,7 @@
 
 NineChessAi_ab::NineChessAi_ab():
 rootNode(nullptr),
-requiredQuit(false),
-depth(3)    // 默认3层深度
+requiredQuit(false)
 {
     rootNode = new Node;
     rootNode->value = 0;
@@ -343,21 +342,6 @@ const char *NineChessAi_ab::move2string(int16_t move)
         sprintf(cmdline, "(%1u,%1u)", c, p);
     }
     return cmdline;
-}
-
-void NineChessAi_ab::reverse(const NineChess *node1, NineChess *node2, int i)
-{
-
-}
-
-void NineChessAi_ab::turn(const NineChess *node1, NineChess *node2, int i)
-{
-
-}
-
-void NineChessAi_ab::rotate(const NineChess *node1, NineChess *node2, int i)
-{
-
 }
 
 bool NineChessAi_ab::isInHash(const Node *node)

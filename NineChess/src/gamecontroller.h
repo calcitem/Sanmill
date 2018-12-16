@@ -35,8 +35,9 @@ public:
 	bool isAnimation() { return hasAnimation; }
 	void setDurationTime(int i) { durationTime = i; }
 	int getDurationTime() { return durationTime; }
-    // 棋谱字符串列表模型
-    QStringListModel manualListModel;
+    QStringListModel *getManualListModel() { return &manualListModel; }
+    void setAiDepthTime(int depth1, int time1, int depth2, int time2);
+    void getAiDepthTime(int &depth1, int &time1, int &depth2, int &time2);
 
 signals:
     // 玩家1(先手）用时改变的信号
@@ -138,7 +139,8 @@ private:
     int time2;
     // 用于主窗口状态栏显示的字符串
     QString message;
-
+    // 棋谱字符串列表模型
+    QStringListModel manualListModel;
 };
 
 #endif // GAMECONTROLLER_H
