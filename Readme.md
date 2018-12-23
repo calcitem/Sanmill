@@ -103,5 +103,5 @@
 ## 项目源码及发行版下载
 + 源码下载（Gitee）：[https://gitee.com/liuweilhy/NineChess](https://gitee.com/liuweilhy/NineChess)
 + 发行版下载（Gitee），请选择最新版：[https://gitee.com/liuweilhy/NineChess/releases](https://gitee.com/liuweilhy/NineChess/releases)
-+ 如果你没有Gitee账号，可以在本人CSDN资源下载（非最新版）：(链接待补充)
-+ 如果你以上都没有，那么用百度云盘（非最新版）：(链接待补充)
++ 如果你没有Gitee账号，可以在本人CSDN资源下载（非及时更新）：[https://download.csdn.net/download/liuweilhy/10871298](https://download.csdn.net/download/liuweilhy/10871298)
++ 如果你以上都没有，那么用百度云盘（非及时更新）：[https://pan.baidu.com/s/1NZnmAUozbPt9K04fTouxMA](https://pan.baidu.com/s/1NZnmAUozbPt9K04fTouxMA)
