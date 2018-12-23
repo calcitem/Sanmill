@@ -13,8 +13,8 @@ class PieceItem : public QObject, public QGraphicsItem
 public:
     explicit PieceItem(QGraphicsItem *parent = nullptr);
     ~PieceItem();
-	QRectF boundingRect() const;
-	QPainterPath shape() const;
+    QRectF boundingRect() const;
+    QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         QWidget * widget = nullptr);
 
@@ -55,7 +55,7 @@ private:
     // 棋子序号，黑白都从1开始
     int num;
     // 棋子尺寸
-	qreal size;
+    qreal size;
     // 有无删除线
     bool deleted;
     // 显示序号

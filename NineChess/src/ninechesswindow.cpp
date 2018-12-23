@@ -20,6 +20,7 @@
 #include <QLabel>
 #include <QHelpEvent>
 #include <QToolTip>
+#include <QPicture>
 #include <QDebug>
 #include <QDesktopWidget>
 #include "ninechesswindow.h"
@@ -124,9 +125,9 @@ void NineChessWindow::initialize()
         return;
 
     // 开辟一个新的游戏控制器
-	game = new GameController(*scene, this);
+    game = new GameController(*scene, this);
 
-	// 添加新菜单栏动作
+    // 添加新菜单栏动作
     QMap <int, QStringList> actions = game->getActions();
     for (auto i = actions.constBegin(); i != actions.constEnd(); i++) {
         // qDebug() << i.key() << i.value();
@@ -145,9 +146,9 @@ void NineChessWindow::initialize()
     }
 
     // 关联主窗口动作信号和控制器的槽
-	connect(ui.actionGiveUp_G, SIGNAL(triggered()),
-		game, SLOT(giveUp()));
-	connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
+    connect(ui.actionGiveUp_G, SIGNAL(triggered()),
+        game, SLOT(giveUp()));
+    connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
         game, SLOT(setEngine1(bool)));
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
         game, SLOT(setEngine2(bool)));
@@ -398,7 +399,7 @@ void NineChessWindow::on_actionOpen_O_triggered()
             {
                 cmd = textStream.readLine();
                 game->command(cmd, false);
-			}
+            }
             // 最后刷新棋局场景
             game->updateScence();
         }
@@ -452,7 +453,7 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
 
 void NineChessWindow::on_actionEdit_E_toggled(bool arg1)
 {
-	Q_UNUSED(arg1)
+    Q_UNUSED(arg1)
 }
 
 void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
@@ -512,7 +513,7 @@ void NineChessWindow::on_actionRowChange()
         ui.actionPrevious_B->setEnabled(false);
         ui.actionNext_F->setEnabled(false);
         ui.actionEnd_E->setEnabled(false);
-		ui.actionAutoRun_A->setEnabled(false);
+        ui.actionAutoRun_A->setEnabled(false);
     }
     else {
         if (currentRow <= 0) {
@@ -520,24 +521,24 @@ void NineChessWindow::on_actionRowChange()
             ui.actionPrevious_B->setEnabled(false);
             ui.actionNext_F->setEnabled(true);
             ui.actionEnd_E->setEnabled(true);
-			ui.actionAutoRun_A->setEnabled(true);
-		}
+            ui.actionAutoRun_A->setEnabled(true);
+        }
         else if (currentRow >= rows - 1)
         {
             ui.actionBegin_S->setEnabled(true);
             ui.actionPrevious_B->setEnabled(true);
             ui.actionNext_F->setEnabled(false);
             ui.actionEnd_E->setEnabled(false);
-			ui.actionAutoRun_A->setEnabled(false);
-		}
-		else
-		{
-			ui.actionBegin_S->setEnabled(true);
-			ui.actionPrevious_B->setEnabled(true);
-			ui.actionNext_F->setEnabled(true);
-			ui.actionEnd_E->setEnabled(true);
-			ui.actionAutoRun_A->setEnabled(true);
-		}
+            ui.actionAutoRun_A->setEnabled(false);
+        }
+        else
+        {
+            ui.actionBegin_S->setEnabled(true);
+            ui.actionPrevious_B->setEnabled(true);
+            ui.actionNext_F->setEnabled(true);
+            ui.actionEnd_E->setEnabled(true);
+            ui.actionAutoRun_A->setEnabled(true);
+        }
     }
 
     // 更新局面
@@ -552,7 +553,7 @@ void NineChessWindow::on_actionRowChange()
         //QElapsedTimer et;
         //et.start();
         //while (et.elapsed() < waitTime) {
-        //	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+        //    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
         //}
 
         int waitTime = game->getDurationTime() + 50;
@@ -560,7 +561,7 @@ void NineChessWindow::on_actionRowChange()
         QEventLoop loop;
         QTimer::singleShot(waitTime, &loop, SLOT(quit()));
         loop.exec();
-	}
+    }
     */
 }
 
@@ -746,7 +747,7 @@ void NineChessWindow::on_actionEngine_E_triggered()
 
 void NineChessWindow::on_actionViewHelp_V_triggered()
 {
-	QDesktopServices::openUrl(QUrl("https://blog.csdn.net/liuweilhy/article/details/83832180"));
+    QDesktopServices::openUrl(QUrl("https://blog.csdn.net/liuweilhy/article/details/83832180"));
 }
 
 void NineChessWindow::on_actionWeb_W_triggered()
@@ -756,9 +757,45 @@ void NineChessWindow::on_actionWeb_W_triggered()
 
 void NineChessWindow::on_actionAbout_A_triggered()
 {
-    QMessageBox aboutBox;
-    aboutBox.setText(tr("九连棋"));
-    aboutBox.setInformativeText(tr("by liuweilhy"));
-    aboutBox.setIcon(QMessageBox::Information);
-    aboutBox.exec();
+    QDialog * dialog = new QDialog;
+
+    dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    dialog->setObjectName(QStringLiteral("aboutDialog"));
+    dialog->setWindowTitle(tr("九连棋"));
+    dialog->setModal(true);
+    // 生成各个控件
+    QVBoxLayout *vLayout = new QVBoxLayout(dialog);
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    QLabel *label_icon1 = new QLabel(dialog);
+    QLabel *label_icon2 = new QLabel(dialog);
+    QLabel *label_text = new QLabel(dialog);
+    QLabel *label_image = new QLabel(dialog);
+    // 设置各个控件数据
+    label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
+    label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
+    label_icon1->setAlignment(Qt::AlignCenter);
+    label_icon2->setAlignment(Qt::AlignCenter);
+    label_icon1->setFixedSize(32, 32);
+    label_icon2->setFixedSize(32, 32);
+    label_icon1->setScaledContents(true);
+    label_icon2->setScaledContents(true);
+
+    label_text->setText(tr("支持开源，捐助作者，诚接软件开发项目 —— liuweilhy"));
+    label_text->setAlignment(Qt::AlignCenter);
+    label_image->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/donate.png")));
+    label_image->setAlignment(Qt::AlignCenter);
+    label_image->setScaledContents(true);
+
+    // 布局
+    vLayout->addLayout(hLayout);
+    hLayout->addWidget(label_icon1);
+    hLayout->addWidget(label_icon2);
+    hLayout->addWidget(label_text);
+    vLayout->addWidget(label_image);
+    // 运行对话框
+    dialog->exec();
+
+    // 删除对话框
+    dialog->disconnect();
+    delete dialog;
 }

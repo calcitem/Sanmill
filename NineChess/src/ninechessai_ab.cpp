@@ -9,8 +9,8 @@
 #include <time.h>
 
 NineChessAi_ab::NineChessAi_ab():
-rootNode(nullptr),
-requiredQuit(false)
+    rootNode(nullptr),
+    requiredQuit(false)
 {
     rootNode = new Node;
     rootNode->value = 0;
@@ -23,6 +23,10 @@ NineChessAi_ab::~NineChessAi_ab()
     deleteTree(rootNode);
     rootNode = nullptr;
 }
+
+// 静态hashmap初始化
+mutex NineChessAi_ab::mtx;
+unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 
 void NineChessAi_ab::buildChildren(Node *node)
 {
@@ -145,6 +149,14 @@ void NineChessAi_ab::deleteTree(Node *node)
 
 void NineChessAi_ab::setChess(const NineChess &chess)
 {
+    // 如果规则改变，重建hashmap
+    if (strcmp(this->chess.rule.name, chess.rule.name)) {
+        mtx.lock();
+        hashmap.clear();
+        hashmap.reserve(maxHashCount);
+        mtx.unlock();
+    }
+
     this->chess = chess;
     chessTemp = chess;
     chessData = &(chessTemp.data);
@@ -154,8 +166,6 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     rootNode->value = 0;
     rootNode->move = 0;
     rootNode->parent = nullptr;
-
-    requiredQuit = false;
 }
 
 int NineChessAi_ab::evaluate(Node *node)
@@ -196,9 +206,9 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-        // 如果形成去子状态，每有一个可去的子，算102分
+        // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 102 : -(chessData->num_NeedRemove) * 102;
+            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 128 : -(chessData->num_NeedRemove) * 128;
             break;
         default:
             break;
@@ -208,9 +218,9 @@ int NineChessAi_ab::evaluate(Node *node)
     // 终局评价最简单
     case NineChess::GAME_OVER:
         if (chessData->player1_Remain < chessTemp.rule.numAtLest)
-            value = -100000;
+            value = -15000;
         else if (chessData->player2_Remain < chessTemp.rule.numAtLest)
-            value = 100000;
+            value = 15000;
         break;
 
     default:
@@ -218,7 +228,7 @@ int NineChessAi_ab::evaluate(Node *node)
     }
 
     // 赋值返回
-    node->value = value;
+    node->value = (int16_t)value;
     return value;
 }
 
@@ -253,6 +263,25 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             node->value -= depth;
         return node->value;
     }
+
+    // 检索hashmap
+/*    uint64_t hash = chessTemp.chessHash();
+    mtx.lock();
+    auto itor = findHash(hash);
+    if (node != rootNode) {
+        if (itor != hashmap.end()) {
+            if (itor->second.depth >= depth) {
+                node->value = itor->second.value;
+                if (chessData->turn == NineChess::PLAYER1)
+                    node->value += itor->second.depth - depth;
+                else
+                    node->value -= itor->second.depth - depth;
+                mtx.unlock();
+                return node->value;
+            }
+        }
+    }
+    mtx.unlock();*/
 
     // 生成子节点树
     buildChildren(node);
@@ -309,6 +338,24 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         child->children.clear();
     }
 
+/*    // 添加到hashmap
+    mtx.lock();
+    if (itor == hashmap.end()) {
+        HashValue hashValue;
+        hashValue.value = node->value;
+        hashValue.depth = depth;
+        if (hashmap.size() <= maxHashCount)
+            hashmap.insert({hash, hashValue});
+    }
+    // 更新更深层数据
+    else {
+        if (itor->second.depth < depth) {
+            itor->second.value = node->value;
+            itor->second.depth = depth;
+        }
+    }
+    mtx.unlock();*/
+
     // 返回
     return node->value;
 }
@@ -344,26 +391,27 @@ const char *NineChessAi_ab::move2string(int16_t move)
     return cmdline;
 }
 
-bool NineChessAi_ab::isInHash(const Node *node)
+unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::findHash(uint64_t hash)
 {
-    /*
-    NineChess tempData;
+    auto itor = hashmap.find(hash);
+    if (itor != hashmap.end())
+        return itor;
+
+    // 变换局面，查找hash
+    chessTempShift = chessTemp;
     for (int i = 0; i < 2; i++) {
-        reverse(node, &tempData, i);
+        if (i)
+            chessTempShift.mirror(false);
         for (int j = 0; j < 2; j++) {
-            turn(node, &tempData, j);
-            int n = chess.rule.hasX ? 8 : 4;
-            for (int k = 0; k < n; k++) {
-                rotate(node, &tempData, k);
-                for (auto i : dataCache) {
-                    if (compare(i, &tempData) == 0) {
-                        value = i.value;
-                        return true;
-                    }
-                }
+            if (j)
+                chessTempShift.turn(false);
+            for (int k = 0; k < 4; k++) {
+                chessTempShift.rotate(k*90, false);
+                itor = hashmap.find(chessTempShift.chessHash());
+                if (itor != hashmap.end())
+                    return itor;
             }
         }
     }
-    */
-    return false;
+    return itor;
 }

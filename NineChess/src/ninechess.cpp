@@ -124,6 +124,7 @@ NineChess::NineChess(const NineChess &chess)
 {
     rule = chess.rule;
     data = chess.data;
+    step = chess.step;
     board = data.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
@@ -143,6 +144,7 @@ const NineChess & NineChess::operator=(const NineChess &chess)
         return *this;
     rule = chess.rule;
     data = chess.data;
+    step = chess.step;
     board = data.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
@@ -177,7 +179,7 @@ bool NineChess::setData(const struct Rule *rule, int s, int t, int step, int fla
     // 设置棋局数据
     {
         // 设置步数
-        data.step = step;
+        this->step = step;
 
         // 局面阶段标识
         if (flags & GAME_NOTSTARTED)
@@ -373,7 +375,7 @@ void NineChess::getData(struct Rule &rule, int &step, int &flags, const char *&b
     int &p1_InHand, int &p2_InHand, int &num_NeedRemove)
 {
     rule = this->rule;
-    step = data.step;
+    step = this->step;
     flags = data.phase | data.turn | data.action;
     board = board;
     p1_InHand = data.player1_InHand;
@@ -387,7 +389,7 @@ bool NineChess::reset()
         return true;
 
     // 步数归零
-    data.step = 0;
+    step = 0;
 
     // 局面阶段标识
     data.phase = GAME_NOTSTARTED;
@@ -570,7 +572,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         currentPos = pos;
-        data.step++;
+        step++;
         // 如果决出胜负
         if (win()) {
             setTip();
@@ -642,7 +644,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         board[pos] = board[currentPos];
         board[currentPos] = '\x00';
         currentPos = pos;
-        data.step++;
+        step++;
         n = addMills(currentPos);
 
         // 中局阶段未成三
@@ -712,7 +714,7 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     cmdlist.push_back(string(cmdline));
     currentPos = 0;
     data.num_NeedRemove--;
-    data.step++;
+    step++;
     // 去子完成
 
     // 如果决出胜负
@@ -847,10 +849,10 @@ bool NineChess::place(int pos)
         board[pos] = piece;
         move_ = pos;
         currentPos = pos;
-        data.step++;
+        //step++;
         // 如果决出胜负
         if (win()) {
-            setTip();
+            //setTip();
             return true;
         }
 
@@ -875,7 +877,7 @@ bool NineChess::place(int pos)
 
                 // 再决胜负
                 if (win()) {
-                    setTip();
+                    //setTip();
                     return true;
                 }
             }
@@ -915,7 +917,7 @@ bool NineChess::place(int pos)
         board[pos] = board[currentPos];
         board[currentPos] = '\x00';
         currentPos = pos;
-        data.step++;
+        //step++;
         n = addMills(currentPos);
 
         // 中局阶段未成三
@@ -926,7 +928,7 @@ bool NineChess::place(int pos)
             changeTurn();
             // 如果决出胜负
             if (win()) {
-                setTip();
+                //setTip();
                 return true;
             }
         }
@@ -936,9 +938,9 @@ bool NineChess::place(int pos)
             data.num_NeedRemove = rule.removeMore ? n : 1;
             // 进入去子状态
             data.action = ACTION_CAPTURE;
-            setTip();
+            //setTip();
         }
-        setTip();
+        //setTip();
         return true;
     }
 
@@ -979,12 +981,12 @@ bool NineChess::capture(int pos)
     move_ = -pos;
     currentPos = 0;
     data.num_NeedRemove--;
-    data.step++;
+    //step++;
     // 去子完成
 
     // 如果决出胜负
     if (win()) {
-        setTip();
+        //setTip();
         return true;
     }
     // 还有其余的子要去吗
@@ -1013,7 +1015,7 @@ bool NineChess::capture(int pos)
                 }
                 // 再决胜负
                 if (win()) {
-                    setTip();
+                    //setTip();
                     return true;
                 }
             }
@@ -1025,7 +1027,7 @@ bool NineChess::capture(int pos)
                 changeTurn();
                 // 如果决出胜负
                 if (win()) {
-                    setTip();
+                    //setTip();
                     return true;
                 }
             }
@@ -1038,12 +1040,12 @@ bool NineChess::capture(int pos)
             changeTurn();
             // 如果决出胜负
             if (win()) {
-                setTip();
+                //setTip();
                 return true;
             }
         }
     }
-    setTip();
+    //setTip();
     return true;
 }
 
@@ -1071,30 +1073,56 @@ bool NineChess::choose(int pos)
     return false;
 }
 
+// hash函数，对应可重复去子的规则
+uint64_t NineChess::chessHash()
+{
+    /* hash各数据位详解（名为hash，但实际并无冲突，是算法用到的棋局数据的完全表示）
+    57-64位：空白不用，全为0
+    56位：轮流标识，0为先手，1为后手
+    55位：动作标识，落子（选子移动）为0，1为去子
+    7-54位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
+           0b00表示空白，0b01表示先手棋子，0b10表示后手棋子，0b11表示禁点
+    5-6位（共2位）：待去子数，最大为3，用2个二进制位表示即可
+    1-4位：player1的手棋数，不需要player2的（可计算出）
+    */
+    uint64_t hash = 0ull;
+    for (int i = SEAT; i < (RING + 1)*SEAT; i++) {
+        hash |= board[i] & 0x30;
+        hash <<= 2;
+    }
+    if (data.turn == PLAYER2)
+        hash |= 1ull << 55;
+    if (data.action == ACTION_CAPTURE)
+        hash |= 1ull << 54;
+    hash |= (uint64_t)data.num_NeedRemove << 4;
+    hash |= data.player1_InHand;
+    return hash;
+}
+
 bool NineChess::giveup(Players loser)
 {
-	if (data.phase == GAME_MID || data.phase == GAME_OPENING)
-	{
-		if (loser == PLAYER1)
-		{
+    if (data.phase == GAME_MID || data.phase == GAME_OPENING)
+    {
+        if (loser == PLAYER1)
+        {
             data.phase = GAME_OVER;
-			winner = PLAYER2;
-			tip = "玩家1投子认负，恭喜玩家2获胜！";
-			sprintf(cmdline, "Player1 give up!");
-			cmdlist.push_back(string(cmdline));
-			return true;
-		}
-		else if (loser == PLAYER2)
-		{
+            winner = PLAYER2;
+            tip = "玩家1投子认负，恭喜玩家2获胜！";
+            sprintf(cmdline, "Player1 give up!");
+            cmdlist.push_back(string(cmdline));
+            return true;
+        }
+        else if (loser == PLAYER2)
+        {
             data.phase = GAME_OVER;
-			winner = PLAYER1;
-			tip = "玩家2投子认负，恭喜玩家1获胜！";
-			sprintf(cmdline, "Player2 give up!");
-			cmdlist.push_back(string(cmdline));
-			return true;
-		}
-	}
-	return false;
+            winner = PLAYER1;
+            tip = "玩家2投子认负，恭喜玩家1获胜！";
+            sprintf(cmdline, "Player2 give up!");
+            cmdlist.push_back(string(cmdline));
+            return true;
+        }
+    }
+    return false;
 }
 
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
@@ -1146,17 +1174,17 @@ bool NineChess::command(const char *cmd)
         return place(c1, p1, tm);
     }
 
-	// 认输
-	args = sscanf(cmd, "Players%1u give up!", &t);
-	if (args == 1) {
-		if (t == 1) {
-			return giveup(PLAYER1);
-		}
-		else if (t == 2)
-		{
-			return giveup(PLAYER2);
-		}
-	}
+    // 认输
+    args = sscanf(cmd, "Players%1u give up!", &t);
+    if (args == 1) {
+        if (t == 1) {
+            return giveup(PLAYER1);
+        }
+        else if (t == 2)
+        {
+            return giveup(PLAYER2);
+        }
+    }
 
     return false;
 }
@@ -1257,7 +1285,7 @@ bool NineChess::win()
 
     // 如果有步数限定
     if (rule.maxSteps > 0) {
-        if (data.step > rule.maxSteps) {
+        if (step > rule.maxSteps) {
             winner = DRAW;
             data.phase = GAME_OVER;
             sprintf(cmdline, "Steps over. In draw!");
@@ -1304,24 +1332,24 @@ bool NineChess::win()
     else if (data.phase == GAME_MID && data.action == ACTION_CHOOSE && isAllSurrounded(data.turn)) {
         // 规则要求被“闷”判负，则对手获胜
         if (rule.isNoWayLose) {
-			if (data.turn == PLAYER1)
-			{
-				tip = "玩家1无子可走，恭喜玩家2获胜！";
-				winner = PLAYER2;
+            if (data.turn == PLAYER1)
+            {
+                tip = "玩家1无子可走，恭喜玩家2获胜！";
+                winner = PLAYER2;
                 data.phase = GAME_OVER;
-				sprintf(cmdline, "Player1 no way to go. Player2 win!");
-				cmdlist.push_back(string(cmdline));
-				return true;
-			}
-			else
-			{
-				tip = "玩家2无子可走，恭喜玩家1获胜！";
-				winner = PLAYER1;
+                sprintf(cmdline, "Player1 no way to go. Player2 win!");
+                cmdlist.push_back(string(cmdline));
+                return true;
+            }
+            else
+            {
+                tip = "玩家2无子可走，恭喜玩家1获胜！";
+                winner = PLAYER1;
                 data.phase = GAME_OVER;
-				sprintf(cmdline, "Player2 no way to go. Player1 win!");
-				cmdlist.push_back(string(cmdline));
-				return true;
-			}
+                sprintf(cmdline, "Player2 no way to go. Player1 win!");
+                cmdlist.push_back(string(cmdline));
+                return true;
+            }
         }
         // 否则让棋，由对手走
         else

@@ -113,25 +113,25 @@ void GameController::gameReset()
     // 重新绘制棋盘
     scene.setDiagonal(chess.getRule()->hasObliqueLine);
 
-	// 绘制所有棋子，放在起始位置
+    // 绘制所有棋子，放在起始位置
     // 0: 先手第1子； 1：后手第1子
     // 2：先手嫡2子； 3：后手第2子
     // ......
     PieceItem::Models md;
     PieceItem *newP;
-	for (int i = 0; i < chess.getRule()->numOfChess; i++)
-	{
+    for (int i = 0; i < chess.getRule()->numOfChess; i++)
+    {
         // 先手的棋子
-		md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
-		newP = new PieceItem;
-		newP->setModel(md);
-		newP->setPos(scene.pos_p1);
-		newP->setNum(i + 1);
-		// 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-		if (!(chess.getRule()->canRepeated))
-			newP->setShowNum(true);
-		pieceList.append(newP);
-		scene.addItem(newP);
+        md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
+        newP = new PieceItem;
+        newP->setModel(md);
+        newP->setPos(scene.pos_p1);
+        newP->setNum(i + 1);
+        // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
+        if (!(chess.getRule()->canRepeated))
+            newP->setShowNum(true);
+        pieceList.append(newP);
+        scene.addItem(newP);
 
         // 后手的棋子
         md = isInverted ? PieceItem::blackPiece : PieceItem::whitePiece;
@@ -279,11 +279,11 @@ void GameController::getAiDepthTime(int &depth1, int &time1, int &depth2, int &t
 void GameController::setAnimation(bool arg)
 {
     hasAnimation = arg;
-	// 默认动画时间250ms
-	if (hasAnimation)
-		durationTime = 250;
-	else
-		durationTime = 0;
+    // 默认动画时间250ms
+    if (hasAnimation)
+        durationTime = 250;
+    else
+        durationTime = 0;
 }
 
 void GameController::setSound(bool arg)
@@ -293,9 +293,9 @@ void GameController::setSound(bool arg)
 
 void GameController::playSound(const QString &soundPath)
 {
-	if (hasSound) {
-		QSound::play(soundPath);
-	}
+    if (hasSound) {
+        QSound::play(soundPath);
+    }
 }
 
 // 上下翻转
@@ -439,7 +439,7 @@ void GameController::turnLeft()
 
 void GameController::timerEvent(QTimerEvent *event)
 {
-	Q_UNUSED(event)
+    Q_UNUSED(event)
     static QTime qt1, qt2;
     // 玩家的已用时间
     chess.getPlayer_TimeMS(time1, time2);
@@ -468,8 +468,8 @@ void GameController::timerEvent(QTimerEvent *event)
         playSound(":/sound/resources/sound/win.wav");
     }
 
-	// 测试用代码
-	/*
+    // 测试用代码
+    /*
     int ti = time.elapsed();
     static QTime t;
     if (ti < 0)

@@ -101,8 +101,6 @@ public:
            判断棋子是后手的用(board[i] & 0x20) */
         char board[(NineChess::RING + 2)*NineChess::SEAT];
 
-        // 当前步数
-        int step;
         // 局面阶段标识
         enum NineChess::Phases phase;
         // 轮流状态标识
@@ -183,7 +181,7 @@ public:
     // 获取当前棋子位置点
     int getCurrentPos() const { return currentPos; }
     // 获取当前步数
-    int getStep() const { return data.step; }
+    int getStep() const { return step; }
     // 获取局面阶段标识
     enum Phases getPhase() const { return data.phase; }
     // 获取轮流状态标识
@@ -230,7 +228,7 @@ public:
     // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool capture(int c, int p, long time_p = -1);
     // 认输
-	bool giveup(Players loser);
+    bool giveup(Players loser);
     // 命令行解析函数
     bool command(const char *cmd);
     // 局面左右镜像
@@ -273,6 +271,8 @@ protected:
     bool choose(int pos);
     bool place(int pos);
     bool capture(int pos);
+    // hash函数
+    uint64_t chessHash();
 
 private:
     // 当前使用的规则
@@ -286,6 +286,8 @@ private:
     // 胜负标识
     enum Players winner;
 
+    // 当前步数
+    int step;
     // 游戏起始时间
     timeb startTimeb;
     // 当前游戏时间

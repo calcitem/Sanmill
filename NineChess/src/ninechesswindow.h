@@ -13,11 +13,11 @@ class GameController;
 
 class NineChessWindow : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
     NineChessWindow(QWidget *parent = nullptr);
-	~NineChessWindow();
+    ~NineChessWindow();
 
 protected:
     bool eventFilter(QObject * watched, QEvent * event);
@@ -52,7 +52,7 @@ private slots:
     //void on_actionGiveUp_G_triggered();
     void on_actionLimited_T_triggered();
     void on_actionLocal_L_triggered();
-	void on_actionInternet_I_triggered();
+    void on_actionInternet_I_triggered();
     void on_actionEngine_E_triggered();
     //void on_actionEngine1_R_toggled(bool arg1);
     //void on_actionEngine2_T_toggled(bool arg1);

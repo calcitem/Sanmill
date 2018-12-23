@@ -17,10 +17,10 @@ public:
     bool pos2cp(QPointF pos, int &c, int &p);
     // 设置棋盘斜线
     void setDiagonal(bool arg = true);
-	// 玩家1的己方棋盒及对方棋盒位置
-	const QPointF pos_p1, pos_p1_g;
-	// 玩家2的己方棋盒及对方棋盒位置
-	const QPointF pos_p2, pos_p2_g;
+    // 玩家1的己方棋盒及对方棋盒位置
+    const QPointF pos_p1, pos_p1_g;
+    // 玩家2的己方棋盒及对方棋盒位置
+    const QPointF pos_p2, pos_p2_g;
 
 protected:
     //void keyPressEvent(QKeyEvent *keyEvent);

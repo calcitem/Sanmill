@@ -10,6 +10,8 @@
 #include "ninechess.h"
 #include <list>
 #include <stack>
+#include <unordered_map>
+#include <mutex>
 
 using namespace std;
 
@@ -21,18 +23,16 @@ using namespace std;
 class NineChessAi_ab
 {
 public:
-    // 定义哈希表
-    struct Hash{
-        NineChess::ChessData data;
-        uint64_t value;
-        int depth;
+    // 定义哈希表的值
+    struct HashValue{
+        int16_t value;
+        int16_t depth;
     };
 
     // 定义一个节点结构体
     struct Node {
-        uint64_t hash;                 // 当前局面的哈希值
-        int value;                     // 节点的值
-        int16_t move;                 // 招法的命令行指令，图上标示为节点前的连线
+        int16_t value;                     // 节点的值
+        int16_t move;                  // 招法的命令行指令，图上标示为节点前的连线
         struct Node * parent;          // 父节点
         list<struct Node *> children;  // 子节点列表
     };
@@ -61,9 +61,8 @@ protected:
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
     // 返回招法的命令行
     const char *move2string(int16_t move);
-
     // 判断是否在哈希表中
-    bool isInHash(const Node *node);
+    unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator findHash(uint64_t hash);
 
 private:
     // 原始模型
@@ -71,22 +70,26 @@ private:
     // 演算用的模型
     NineChess chessTemp;
     NineChess::ChessData *chessData;
+    // hash计算时，各种转换用的模型
+    NineChess chessTempShift;
 
     // 根节点
     Node * rootNode;
     // 局面数据栈
     stack<NineChess::ChessData> dataStack;
-    // 局面数据哈希表
-    list<struct  Hash> hashTable;
-    // 哈希表最大大小
-    size_t hashTableMaxSize;
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit;
-    // 剪枝算法的层深
-    //    int depth;
-    // 定义极大值，等于32位有符号整形数字的最大值
-    static const int infinity = INT32_MAX;
+
+    // 互斥锁
+    static mutex mtx;
+    // 局面数据哈希表
+    static unordered_map<uint64_t, HashValue> hashmap;
+    // 哈希表的默认大小
+    static const size_t maxHashCount = 1024 * 1024;
+
+    // 定义极大值，等于16位有符号整形数字的最大值
+    static const int infinity = INT16_MAX;
 
 private:
     // 命令行

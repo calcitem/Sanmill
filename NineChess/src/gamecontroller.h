@@ -32,9 +32,9 @@ public:
     int getRuleNo() { return ruleNo; }
     int getTimeLimit() { return timeLimit; }
     int getStepsLimit() { return stepsLimit; }
-	bool isAnimation() { return hasAnimation; }
-	void setDurationTime(int i) { durationTime = i; }
-	int getDurationTime() { return durationTime; }
+    bool isAnimation() { return hasAnimation; }
+    void setDurationTime(int i) { durationTime = i; }
+    int getDurationTime() { return durationTime; }
     QStringListModel *getManualListModel() { return &manualListModel; }
     void setAiDepthTime(int depth1, int time1, int depth2, int time2);
     void getAiDepthTime(int &depth1, int &time1, int &depth2, int &time2);
@@ -79,8 +79,8 @@ public slots:
 
     // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
-	// 认输
-	bool giveUp();
+    // 认输
+    bool giveUp();
     // 棋谱的命令行执行
     bool command(const QString &cmd, bool update = true);
     // 历史局面及局面改变
@@ -121,9 +121,9 @@ private:
     bool isEngine2;
     // 是否有落子动画
     bool hasAnimation;
-	// 动画持续时间
-	int durationTime;
-	// 是否有落子音效
+    // 动画持续时间
+    int durationTime;
+    // 是否有落子音效
     bool hasSound;
     // 定时器ID
     int timeID;

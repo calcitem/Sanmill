@@ -3,8 +3,8 @@
 
 AiThread::AiThread(int id, QObject *parent) : QThread(parent),
     waiting_(false),
-    aiDepth(7),
-    aiTime(8)
+    aiDepth(8),
+    aiTime(10)
 {
     this->id = id;
     // 连接定时器启动，减去118毫秒的返回时间
