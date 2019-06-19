@@ -190,7 +190,7 @@ void NineChessWindow::initialize()
         statusBarlabel, SLOT(setText(QString)));
 
     // 默认第2号规则
-    ruleNo = 2;
+    ruleNo = 1;
     ruleActionList.at(ruleNo)->setChecked(true);
     // 重置游戏规则
     game->setRule(ruleNo);
