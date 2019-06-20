@@ -2,15 +2,15 @@
 #include <QMatrix>
 #include <QDebug>
 
-GameView::GameView(QWidget * parent) :
+GameView::GameView(QWidget *parent) :
     QGraphicsView(parent)
 {
     Q_UNUSED(parent)
-    /* 不使用下面的方法
-    // 初始化缩放因子为1.0
-    sx = 1.0;
-    sy = 1.0;
-    */
+        /* 不使用下面的方法
+        // 初始化缩放因子为1.0
+        sx = 1.0;
+        sy = 1.0;
+        */
 }
 
 GameView::~GameView()
@@ -81,7 +81,7 @@ void GameView::turnLeft()
 }
 
 
-void GameView::resizeEvent(QResizeEvent * event)
+void GameView::resizeEvent(QResizeEvent *event)
 {
     /* 不使用下面的形式了
     // 让场景适合视图

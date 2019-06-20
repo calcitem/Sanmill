@@ -8,12 +8,13 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-GameScene::GameScene(QObject *parent) : QGraphicsScene(parent),
+GameScene::GameScene(QObject *parent) :
+    QGraphicsScene(parent),
     board(nullptr),
     pos_p1(LINE_INTERVAL * 4, LINE_INTERVAL * 6),
-    pos_p1_g(LINE_INTERVAL* (-4), LINE_INTERVAL * 6),
-    pos_p2(LINE_INTERVAL * (-4), LINE_INTERVAL * (-6)),
-    pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL * (-6))
+    pos_p1_g(LINE_INTERVAL *(-4), LINE_INTERVAL * 6),
+    pos_p2(LINE_INTERVAL *(-4), LINE_INTERVAL *(-6)),
+    pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL *(-6))
 {
     // 添加棋盘
     board = new BoardItem;
@@ -23,7 +24,7 @@ GameScene::GameScene(QObject *parent) : QGraphicsScene(parent),
 
 GameScene::~GameScene()
 {
-    if(board)
+    if (board)
         delete board;
 }
 
@@ -74,16 +75,14 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     // 如果是棋盘
     QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
-    if (!item || item->type() == BoardItem::Type)
-    {
+    if (!item || item->type() == BoardItem::Type) {
         QPointF p = mouseEvent->scenePos();
         p = board->nearestPosition(p);
         if (p != QPointF(0, 0))
             // 发送鼠标点最近的落子点
             emit mouseReleased(p);
     }// 如果是棋子
-    else if (item->type() == PieceItem::Type)
-    {
+    else if (item->type() == PieceItem::Type) {
         // 将当前棋子在场景中的位置发送出去
         emit mouseReleased(item->scenePos());
     }

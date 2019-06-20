@@ -29,8 +29,8 @@
 #include "gamescene.h"
 #include "graphicsconst.h"
 
-NineChessWindow::NineChessWindow(QWidget *parent)
-    : QMainWindow(parent),
+NineChessWindow::NineChessWindow(QWidget * parent) :
+    QMainWindow(parent),
     scene(nullptr),
     game(nullptr),
     ruleNo(-1),
@@ -47,7 +47,7 @@ NineChessWindow::NineChessWindow(QWidget *parent)
     // 设置场景
     scene = new GameScene(this);
     // 设置场景尺寸大小为棋盘大小的1.08倍
-    scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54, BOARD_SIZE*1.08, BOARD_SIZE*1.08);
+    scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54, BOARD_SIZE * 1.08, BOARD_SIZE * 1.08);
 
     // 初始化各个控件
 
@@ -67,13 +67,13 @@ NineChessWindow::NineChessWindow(QWidget *parent)
 
     // 关联自动运行定时器
     connect(&autoRunTimer, SIGNAL(timeout()),
-        this, SLOT(onAutoRunTimeOut()));
+            this, SLOT(onAutoRunTimeOut()));
 
     // 主窗口居中显示
     QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
-    int unitw = (deskTopRect.width() - width())/2;
-    int unith = (deskTopRect.height() - height())/2;
-    this->move(unitw,unith);
+    int unitw = (deskTopRect.width() - width()) / 2;
+    int unith = (deskTopRect.height() - height()) / 2;
+    this->move(unitw, unith);
 
     // 游戏初始化
     initialize();
@@ -101,15 +101,12 @@ void NineChessWindow::closeEvent(QCloseEvent *event)
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
 {
     // 重载这个函数只是为了让规则菜单（动态）显示提示
-    if (watched == ui.menu_R)
-    {
-        switch (event->type())
-        {
+    if (watched == ui.menu_R) {
+        switch (event->type()) {
         case QEvent::ToolTip:
-            QHelpEvent * he = dynamic_cast <QHelpEvent *> (event);
+            QHelpEvent *he = dynamic_cast <QHelpEvent *> (event);
             QAction *action = ui.menu_R->actionAt(he->pos());
-            if (action)
-            {
+            if (action) {
                 QToolTip::showText(he->globalPos(), action->toolTip(), this);
                 return true;
             }
@@ -143,52 +140,52 @@ void NineChessWindow::initialize()
         // 添加到“规则”菜单
         ui.menu_R->addAction(ruleAction);
         connect(ruleAction, SIGNAL(triggered()),
-            this, SLOT(actionRules_triggered()));
+                this, SLOT(actionRules_triggered()));
     }
 
     // 关联主窗口动作信号和控制器的槽
     connect(ui.actionGiveUp_G, SIGNAL(triggered()),
-        game, SLOT(giveUp()));
+            game, SLOT(giveUp()));
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
-        game, SLOT(setEngine1(bool)));
+            game, SLOT(setEngine1(bool)));
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
-        game, SLOT(setEngine2(bool)));
+            game, SLOT(setEngine2(bool)));
     connect(ui.actionSound_S, SIGNAL(toggled(bool)),
-        game, SLOT(setSound(bool)));
+            game, SLOT(setSound(bool)));
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
-        game, SLOT(setAnimation(bool)));
+            game, SLOT(setAnimation(bool)));
 
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
-        game, &GameController::flip);
+            game, &GameController::flip);
     // 视图左右镜像
     connect(ui.actionMirror_M, &QAction::triggered,
-        game, &GameController::mirror);
+            game, &GameController::mirror);
     // 视图须时针旋转90°
     connect(ui.actionTurnRight_R, &QAction::triggered,
-        game, &GameController::turnRight);
+            game, &GameController::turnRight);
     // 视图逆时针旋转90°
     connect(ui.actionTurnLeftt_L, &QAction::triggered,
-        game, &GameController::turnLeft);
+            game, &GameController::turnLeft);
 
     // 关联控制器的信号和主窗口控件的槽
     // 更新LCD1，显示玩家1用时
     connect(game, SIGNAL(time1Changed(QString)),
-        ui.lcdNumber_1, SLOT(display(QString)));
+            ui.lcdNumber_1, SLOT(display(QString)));
     // 更新LCD2，显示玩家2用时
     connect(game, SIGNAL(time2Changed(QString)),
-        ui.lcdNumber_2, SLOT(display(QString)));
+            ui.lcdNumber_2, SLOT(display(QString)));
 
     // 关联场景的信号和控制器的槽
     connect(scene, SIGNAL(mouseReleased(QPointF)),
-        game, SLOT(actionPiece(QPointF)));
+            game, SLOT(actionPiece(QPointF)));
 
     // 为状态栏添加一个正常显示的标签
     QLabel *statusBarlabel = new QLabel(this);
     ui.statusBar->addWidget(statusBarlabel);
     // 更新状态栏
     connect(game, SIGNAL(statusBarChanged(QString)),
-        statusBarlabel, SLOT(setText(QString)));
+            statusBarlabel, SLOT(setText(QString)));
 
     // 默认第2号规则
     ruleNo = 1;
@@ -206,16 +203,16 @@ void NineChessWindow::initialize()
     ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
     // 初始局面、前一步、后一步、最终局面的槽
     connect(ui.actionBegin_S, &QAction::triggered,
-        this, &NineChessWindow::on_actionRowChange);
+            this, &NineChessWindow::on_actionRowChange);
     connect(ui.actionPrevious_B, &QAction::triggered,
-        this, &NineChessWindow::on_actionRowChange);
+            this, &NineChessWindow::on_actionRowChange);
     connect(ui.actionNext_F, &QAction::triggered,
-        this, &NineChessWindow::on_actionRowChange);
+            this, &NineChessWindow::on_actionRowChange);
     connect(ui.actionEnd_E, &QAction::triggered,
-        this, &NineChessWindow::on_actionRowChange);
+            this, &NineChessWindow::on_actionRowChange);
     // 手动在listView里选择招法后更新的槽
     connect(ui.listView, &ManualListView::currentChangedSignal,
-        this, &NineChessWindow::on_actionRowChange);
+            this, &NineChessWindow::on_actionRowChange);
     // 更新四个键的状态
     on_actionRowChange();
 }
@@ -234,8 +231,8 @@ void NineChessWindow::ruleInfo()
     // 规则显示
     ui.labelRule->setText(tl + sl);
     // 规则提示
-    ui.labelInfo->setToolTip(QString(NineChess::RULES[ruleNo].name) + "\n" + 
-        NineChess::RULES[ruleNo].info);
+    ui.labelInfo->setToolTip(QString(NineChess::RULES[ruleNo].name) + "\n" +
+                             NineChess::RULES[ruleNo].info);
     ui.labelRule->setToolTip(ui.labelInfo->toolTip());
 
     //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
@@ -325,7 +322,7 @@ void NineChessWindow::actionRules_triggered()
     ui.actionAutoRun_A->setChecked(false);
 
     // 取消其它规则的选择
-    for(QAction *action: ruleActionList)
+    for (QAction *action : ruleActionList)
         action->setChecked(false);
 
     // 选择当前规则
@@ -363,15 +360,13 @@ void NineChessWindow::on_actionNew_N_triggered()
 void NineChessWindow::on_actionOpen_O_triggered()
 {
     QString path = QFileDialog::getOpenFileName(this, tr("打开棋谱文件"), QDir::currentPath(), "TXT(*.txt)");
-    if (path.isEmpty() == false)
-    {
+    if (path.isEmpty() == false) {
         if (file.isOpen())
             file.close();
         //文件对象
         file.setFileName(path);
         // 不支持1MB以上的文件
-        if (file.size() > 0x100000 )
-        {
+        if (file.size() > 0x100000) {
             // 定义新对话框
             QMessageBox msgBox(QMessageBox::Warning, tr("文件过大"), tr("不支持1MB以上文件"), QMessageBox::Ok);
             msgBox.exec();
@@ -380,8 +375,7 @@ void NineChessWindow::on_actionOpen_O_triggered()
 
         //打开文件,只读方式打开
         bool isok = file.open(QFileDevice::ReadOnly | QFileDevice::Text);
-        if (isok)
-        {
+        if (isok) {
             // 取消AI设定
             ui.actionEngine1_T->setChecked(false);
             ui.actionEngine2_R->setChecked(false);
@@ -390,14 +384,13 @@ void NineChessWindow::on_actionOpen_O_triggered()
             QString cmd;
             cmd = textStream.readLine();
             // 读取并显示棋谱时，不必刷新棋局场景
-            if(!(game->command(cmd,false))) {
+            if (!(game->command(cmd, false))) {
                 // 定义新对话框
                 QMessageBox msgBox(QMessageBox::Warning, tr("文件错误"), tr("不是正确的棋谱文件"), QMessageBox::Ok);
                 msgBox.exec();
                 return;
             }
-            while (!textStream.atEnd())
-            {
+            while (!textStream.atEnd()) {
                 cmd = textStream.readLine();
                 game->command(cmd, false);
             }
@@ -409,13 +402,11 @@ void NineChessWindow::on_actionOpen_O_triggered()
 
 void NineChessWindow::on_actionSave_S_triggered()
 {
-    if (file.isOpen())
-    {
+    if (file.isOpen()) {
         file.close();
         //打开文件,只写方式打开
         bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
-        if (isok)
-        {
+        if (isok) {
             //写文件
             QTextStream textStream(&file);
             QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
@@ -423,24 +414,21 @@ void NineChessWindow::on_actionSave_S_triggered()
                 textStream << cmd << endl;
             file.flush();
         }
-    }
-    else
+    } else
         on_actionSaveAs_A_triggered();
 }
 
 void NineChessWindow::on_actionSaveAs_A_triggered()
 {
-    QString path = QFileDialog::getSaveFileName(this, tr("打开棋谱文件"), QDir::currentPath()+tr("棋谱.txt"), "TXT(*.txt)");
-    if (path.isEmpty() == false)
-    {
+    QString path = QFileDialog::getSaveFileName(this, tr("打开棋谱文件"), QDir::currentPath() + tr("棋谱.txt"), "TXT(*.txt)");
+    if (path.isEmpty() == false) {
         if (file.isOpen())
             file.close();
         //文件对象  
         file.setFileName(path);
         //打开文件,只写方式打开
         bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
-        if (isok)
-        {
+        if (isok) {
             //写文件
             QTextStream textStream(&file);
             QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
@@ -460,16 +448,13 @@ void NineChessWindow::on_actionEdit_E_toggled(bool arg1)
 void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
 {
     // 如果黑白反转
-    if (arg1)
-    {
+    if (arg1) {
         // 设置玩家1和玩家2的标识图
         ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/White.png"));
         ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
         ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
         ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
-    }
-    else
-    {
+    } else {
         // 设置玩家1和玩家2的标识图
         ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
         ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/White.png"));
@@ -483,26 +468,23 @@ void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
 // 前后招的公共槽
 void NineChessWindow::on_actionRowChange()
 {
-    QAbstractItemModel * model = ui.listView->model();
+    QAbstractItemModel *model = ui.listView->model();
     int rows = model->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
-    QObject * const obsender = sender();
+    QObject *const obsender = sender();
     if (obsender != nullptr) {
         if (obsender == ui.actionBegin_S) {
             ui.listView->setCurrentIndex(model->index(0, 0));
-        }
-        else if (obsender == ui.actionPrevious_B) {
+        } else if (obsender == ui.actionPrevious_B) {
             if (currentRow > 0) {
                 ui.listView->setCurrentIndex(model->index(currentRow - 1, 0));
             }
-        }
-        else if (obsender == ui.actionNext_F) {
+        } else if (obsender == ui.actionNext_F) {
             if (currentRow < rows - 1) {
                 ui.listView->setCurrentIndex(model->index(currentRow + 1, 0));
             }
-        }
-        else if (obsender == ui.actionEnd_E) {
+        } else if (obsender == ui.actionEnd_E) {
             ui.listView->setCurrentIndex(model->index(rows - 1, 0));
         }
         currentRow = ui.listView->currentIndex().row();
@@ -515,25 +497,20 @@ void NineChessWindow::on_actionRowChange()
         ui.actionNext_F->setEnabled(false);
         ui.actionEnd_E->setEnabled(false);
         ui.actionAutoRun_A->setEnabled(false);
-    }
-    else {
+    } else {
         if (currentRow <= 0) {
             ui.actionBegin_S->setEnabled(false);
             ui.actionPrevious_B->setEnabled(false);
             ui.actionNext_F->setEnabled(true);
             ui.actionEnd_E->setEnabled(true);
             ui.actionAutoRun_A->setEnabled(true);
-        }
-        else if (currentRow >= rows - 1)
-        {
+        } else if (currentRow >= rows - 1) {
             ui.actionBegin_S->setEnabled(true);
             ui.actionPrevious_B->setEnabled(true);
             ui.actionNext_F->setEnabled(false);
             ui.actionEnd_E->setEnabled(false);
             ui.actionAutoRun_A->setEnabled(false);
-        }
-        else
-        {
+        } else {
             ui.actionBegin_S->setEnabled(true);
             ui.actionPrevious_B->setEnabled(true);
             ui.actionNext_F->setEnabled(true);
@@ -569,7 +546,7 @@ void NineChessWindow::on_actionRowChange()
 void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
 {
     Q_UNUSED(signal)
-    int rows = ui.listView->model()->rowCount();
+        int rows = ui.listView->model()->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
     if (rows <= 1) {
@@ -578,10 +555,8 @@ void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
     }
 
     // 执行“下一招”
-    if (currentRow < rows - 1)
-    {
-        if (currentRow < rows - 1)
-        {
+    if (currentRow < rows - 1) {
+        if (currentRow < rows - 1) {
             ui.listView->setCurrentIndex(ui.listView->model()->index(currentRow + 1, 0));
         }
         currentRow = ui.listView->currentIndex().row();
@@ -592,17 +567,13 @@ void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
             ui.actionNext_F->setEnabled(true);
             ui.actionEnd_E->setEnabled(true);
             ui.actionAutoRun_A->setEnabled(true);
-        }
-        else if (currentRow >= rows - 1)
-        {
+        } else if (currentRow >= rows - 1) {
             ui.actionBegin_S->setEnabled(true);
             ui.actionPrevious_B->setEnabled(true);
             ui.actionNext_F->setEnabled(false);
             ui.actionEnd_E->setEnabled(false);
             ui.actionAutoRun_A->setEnabled(false);
-        }
-        else
-        {
+        } else {
             ui.actionBegin_S->setEnabled(true);
             ui.actionPrevious_B->setEnabled(true);
             ui.actionNext_F->setEnabled(true);
@@ -612,8 +583,7 @@ void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
 
         // 更新局面
         game->phaseChange(currentRow);
-    }
-    else {
+    } else {
         ui.actionAutoRun_A->setChecked(false);
     }
 }
@@ -627,8 +597,7 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
         ui.gameView->setEnabled(false);
         // 启动定时器
         autoRunTimer.start(game->getDurationTime() + 50);
-    }
-    else {
+    } else {
         // 关闭定时器
         autoRunTimer.stop();
         // 自动运行结束后启用控件
@@ -758,7 +727,7 @@ void NineChessWindow::on_actionWeb_W_triggered()
 
 void NineChessWindow::on_actionAbout_A_triggered()
 {
-    QDialog * dialog = new QDialog;
+    QDialog *dialog = new QDialog;
 
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("aboutDialog"));

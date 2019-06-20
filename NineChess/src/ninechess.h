@@ -67,31 +67,35 @@ public:
     static const struct Rule RULES[RULENUM];
 
     // 局面阶段标识
-    enum Phases : uint16_t {
+    enum Phases : uint16_t
+    {
         GAME_NOTSTARTED = 0x0001,  // 未开局
-        GAME_OPENING    = 0x0002,  // 开局（摆棋）
-        GAME_MID        = 0x0004,  // 中局（走棋）
-        GAME_OVER       = 0x0008   // 结局
+        GAME_OPENING = 0x0002,  // 开局（摆棋）
+        GAME_MID = 0x0004,  // 中局（走棋）
+        GAME_OVER = 0x0008   // 结局
     };
 
     // 玩家标识,轮流状态,胜负标识
-    enum Players : uint16_t {
+    enum Players : uint16_t
+    {
         PLAYER1 = 0x0010,   // 玩家1
         PLAYER2 = 0x0020,   // 玩家2
-        DRAW    = 0x0040,   // 双方和棋
-        NOBODY  = 0x0080    // 胜负未分
+        DRAW = 0x0040,   // 双方和棋
+        NOBODY = 0x0080    // 胜负未分
     };
 
     // 动作状态标识
-    enum Actions : uint16_t {
+    enum Actions : uint16_t
+    {
         ACTION_CHOOSE = 0x0100,   // 选子
-        ACTION_PLACE  = 0x0200,   // 落子
+        ACTION_PLACE = 0x0200,   // 落子
         ACTION_CAPTURE = 0x0400    // 提子
     };
 
     // 棋局结构体，算法相关，包含当前棋盘数据
     // 单独分离出来供AI判断局面用，生成置换表时使用
-    struct ChessData {
+    struct ChessData
+    {
         // 棋局，抽象为一个（5×8）的char数组，上下两行留空
         /* 0x00代表无棋子
            0x0F代表禁点
@@ -99,7 +103,7 @@ public:
            0x21～0x2c代表后手第1～12子
            判断棋子是先手的用(board[i] & 0x10)
            判断棋子是后手的用(board[i] & 0x20) */
-        int board[(NineChess::RING + 2)*NineChess::SEAT];
+        int board[(NineChess::RING + 2) * NineChess::SEAT];
 
         // 局面阶段标识
         enum NineChess::Phases phase;
@@ -138,15 +142,15 @@ public:
 
 private:
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const char inBoard[(RING + 2)*SEAT];
+    static const char inBoard[(RING + 2) * SEAT];
 
     // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int moveTable[(RING + 2)*SEAT][4];
+    static int moveTable[(RING + 2) * SEAT][4];
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int millTable[(RING + 2)*SEAT][3][2];
+    static int millTable[(RING + 2) * SEAT][3][2];
 
 public:
     explicit NineChess();
@@ -154,67 +158,121 @@ public:
     // 拷贝构造函数
     explicit NineChess(const NineChess &);
     // 运算符重载
-    const NineChess & operator=(const NineChess &);
+    const NineChess &operator=(const NineChess &);
 
     // 设置棋局状态和棋盘数据，用于初始化
     bool setData(const struct Rule *rule,
-        int s = 0,   // 限制步数
-        int t = 0,   // 限制时间
-        int step = 0,   // 默认起始步数为0
-        int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
-        const char *boardsource = nullptr,   // 默认空棋盘
-        int p1_InHand = 12,     // 玩家1剩余未放置子数
-        int p2_InHand = 12,     // 玩家2剩余未放置子数
-        int num_NeedRemove = 0  // 尚待去除的子数
+                 int s = 0,   // 限制步数
+                 int t = 0,   // 限制时间
+                 int step = 0,   // 默认起始步数为0
+                 int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
+                 const char *boardsource = nullptr,   // 默认空棋盘
+                 int p1_InHand = 12,     // 玩家1剩余未放置子数
+                 int p2_InHand = 12,     // 玩家2剩余未放置子数
+                 int num_NeedRemove = 0  // 尚待去除的子数
     );
 
     // 获取棋局状态和棋盘数据
     void getData(struct Rule &rule, int &step, int &flags, int *&boardsource, int &p1_InHand, int &p2_InHand, int &num_NeedRemove);
     // 获取当前规则
-    const struct Rule *getRule() const { return &currentRule; }
+    const struct Rule *getRule() const
+    {
+        return &currentRule;
+    }
     // 获取棋盘数据
-    const int *getBoard() const { return data.board; }
+    const int *getBoard() const
+    {
+        return data.board;
+    }
     // 获取棋子位置(c, p)
     bool getPieceCP(const Players &player, const int &number, int &c, int &p);
     // 获取当前棋子
     bool getCurrentPiece(Players &player, int &number);
     // 获取当前棋子位置点
-    int getCurrentPos() const { return currentPos; }
+    int getCurrentPos() const
+    {
+        return currentPos;
+    }
     // 获取当前步数
-    int getStep() const { return currentStep; }
+    int getStep() const
+    {
+        return currentStep;
+    }
     // 获取局面阶段标识
-    enum Phases getPhase() const { return data.phase; }
+    enum Phases getPhase() const
+    {
+        return data.phase;
+    }
     // 获取轮流状态标识
-    enum Players whosTurn() const { return data.turn; }
+    enum Players whosTurn() const
+    {
+        return data.turn;
+    }
     // 获取动作状态标识
-    enum Actions getAction() const { return data.action; }
+    enum Actions getAction() const
+    {
+        return data.action;
+    }
     // 判断胜负
-    enum Players whoWin() const { return winner; }
+    enum Players whoWin() const
+    {
+        return winner;
+    }
     // 玩家1和玩家2的用时
     void getPlayer_TimeMS(int &p1_ms, int &p2_ms);
     // 获取棋局的字符提示
-    const string getTip() const { return tip; }
+    const string getTip() const
+    {
+        return tip;
+    }
     // 获取位置点棋子的归属人
     enum Players getWhosPiece(int c, int p);
     // 获取当前招法
-    const char *getCmdLine() const { return cmdline; }
+    const char *getCmdLine() const
+    {
+        return cmdline;
+    }
     // 获得棋谱
-    const list<string> * getCmdList() const { return &cmdlist; }
+    const list<string> *getCmdList() const
+    {
+        return &cmdlist;
+    }
     // 获取开局时间
-    timeb getStartTimeb() const { return startTimeb; }
+    timeb getStartTimeb() const
+    {
+        return startTimeb;
+    }
     // 重新设置开局时间
-    void setStartTimeb(timeb stimeb) { startTimeb = stimeb; }
+    void setStartTimeb(timeb stimeb)
+    {
+        startTimeb = stimeb;
+    }
 
     // 玩家1剩余未放置子数
-    int getPlayer1_InHand() const { return data.player1_InHand; }
+    int getPlayer1_InHand() const
+    {
+        return data.player1_InHand;
+    }
     // 玩家2剩余未放置子数
-    int getPlayer2_InHand() const { return data.player2_InHand; }
+    int getPlayer2_InHand() const
+    {
+        return data.player2_InHand;
+    }
     // 玩家1盘面剩余子数
-    int getPlayer1_Remain() const { return data.player1_Remain; }
+    int getPlayer1_Remain() const
+    {
+        return data.player1_Remain;
+    }
     // 玩家1盘面剩余子数
-    int getPlayer2_Remain() const { return data.player2_Remain; }
+    int getPlayer2_Remain() const
+    {
+        return data.player2_Remain;
+    }
     // 尚待去除的子数
-    int getNum_NeedRemove() const { return data.num_NeedRemove; }
+    int getNum_NeedRemove() const
+    {
+        return data.num_NeedRemove;
+    }
 
     // 游戏重置
     bool reset();

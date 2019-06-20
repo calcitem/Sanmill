@@ -10,12 +10,18 @@ public:
     QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-        QWidget * widget = nullptr);
+               QWidget *widget = nullptr);
 
     // 用UserType+1表示棋子，用qgraphicsitem_cast()判断是否为BoardItem类的对象
     // 还有一个方式是把类名放在Data的0key位置setData(0, "BoardItem")，然后用data(0)来判断
-    enum { Type = UserType + 1 };
-    int type() const { return Type; }
+    enum
+    {
+        Type = UserType + 1
+    };
+    int type() const
+    {
+        return Type;
+    }
     // 设置有无斜线
     void setDiagonal(bool arg = true);
     // 返回最近的落子点

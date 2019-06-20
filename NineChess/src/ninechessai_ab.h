@@ -24,16 +24,18 @@ class NineChessAi_ab
 {
 public:
     // 定义哈希表的值
-    struct HashValue{
+    struct HashValue
+    {
         int16_t value;
         int16_t depth;
     };
 
     // 定义一个节点结构体
-    struct Node {
+    struct Node
+    {
         int value;                     // 节点的值
         int move;                      // 招法的命令行指令，图上标示为节点前的连线
-        struct Node * parent;          // 父节点
+        struct Node *parent;          // 父节点
         list<struct Node *> children;  // 子节点列表
     };
 
@@ -42,7 +44,10 @@ public:
     ~NineChessAi_ab();
 
     void setChess(const NineChess &chess);
-    void quit() { requiredQuit = true; }
+    void quit()
+    {
+        requiredQuit = true;
+    }
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth);
     // 返回最佳走法的命令行
@@ -74,7 +79,7 @@ private:
     NineChess chessTempShift;
 
     // 根节点
-    Node * rootNode;
+    Node *rootNode;
     // 局面数据栈
     stack<NineChess::ChessData> dataStack;
 

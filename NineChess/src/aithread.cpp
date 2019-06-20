@@ -1,10 +1,7 @@
 ﻿#include <QDebug>
 #include "aithread.h"
 
-AiThread::AiThread(int id, QObject *parent) : QThread(parent),
-    waiting_(false),
-    aiDepth(8),
-    aiTime(10)
+AiThread::AiThread(int id, QObject *parent) : QThread(parent), waiting_(false), aiDepth(8), aiTime(10)
 {
     this->id = id;
     // 连接定时器启动，减去118毫秒的返回时间
@@ -72,7 +69,7 @@ void AiThread::run()
         mutex.unlock();
 
         ai_ab.alphaBetaPruning(aiDepth);
-        const char * str = ai_ab.bestMove();
+        const char *str = ai_ab.bestMove();
         qDebug() << str;
         if (strcmp(str, "error!"))
             emit command(str);

@@ -9,7 +9,7 @@ class GameView : public QGraphicsView
     Q_OBJECT
 
 public:
-    explicit GameView(QWidget * parent);
+    explicit GameView(QWidget *parent);
     ~GameView();
 
 public slots:
@@ -19,7 +19,7 @@ public slots:
     void turnLeft();
 
 protected:
-    void resizeEvent(QResizeEvent * event);
+    void resizeEvent(QResizeEvent *event);
 
 private:
     // 缩放因子，代码更新后不使用了

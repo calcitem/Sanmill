@@ -29,13 +29,34 @@ public:
     ~GameController();
     //主窗口菜单栏明细
     const QMap <int, QStringList> getActions();
-    int getRuleNo() { return ruleNo_; }
-    int getTimeLimit() { return timeLimit; }
-    int getStepsLimit() { return stepsLimit; }
-    bool isAnimation() { return hasAnimation; }
-    void setDurationTime(int i) { durationTime = i; }
-    int getDurationTime() { return durationTime; }
-    QStringListModel *getManualListModel() { return &manualListModel; }
+    int getRuleNo()
+    {
+        return ruleNo_;
+    }
+    int getTimeLimit()
+    {
+        return timeLimit;
+    }
+    int getStepsLimit()
+    {
+        return stepsLimit;
+    }
+    bool isAnimation()
+    {
+        return hasAnimation;
+    }
+    void setDurationTime(int i)
+    {
+        durationTime = i;
+    }
+    int getDurationTime()
+    {
+        return durationTime;
+    }
+    QStringListModel *getManualListModel()
+    {
+        return &manualListModel;
+    }
     void setAiDepthTime(int depth1, int time1, int depth2, int time2);
     void getAiDepthTime(int &depth1, int &time1, int &depth2, int &time2);
 
@@ -45,7 +66,7 @@ signals:
     // 玩家2(后手）用时改变的信号
     void time2Changed(const QString &time);
     // 通知主窗口更新状态栏的信号
-    void statusBarChanged(const QString & message);
+    void statusBarChanged(const QString &message);
 
 public slots:
     // 设置规则
@@ -92,7 +113,7 @@ public slots:
 protected:
     //bool eventFilter(QObject * watched, QEvent * event);
     // 定时器
-    void timerEvent(QTimerEvent * event);
+    void timerEvent(QTimerEvent *event);
 
 private:
     // 棋对象的数据模型

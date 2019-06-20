@@ -19,10 +19,12 @@ class ManualListView : public QListView
     Q_OBJECT
 
 public:
-    ManualListView(QWidget * parent = nullptr) : QListView (parent), newEmptyRow(false) {
+    ManualListView(QWidget *parent = nullptr) : QListView(parent), newEmptyRow(false)
+    {
         Q_UNUSED(parent)
     }
-    QSize sizeHint() const {
+    QSize sizeHint() const
+    {
         QSize size = QListView::sizeHint();
         // 缺省宽度设为128，这样就不太宽了
         size.setWidth(128);
@@ -35,16 +37,18 @@ signals:
 
 protected slots:
     // 屏蔽掉双击编辑功能
-    void mouseDoubleClickEvent(QMouseEvent *mouseEvent) {
+    void mouseDoubleClickEvent(QMouseEvent *mouseEvent)
+    {
         //屏蔽双击事件
         mouseEvent->accept();
     }
 
-    void rowsInserted(const QModelIndex &parent, int start, int end) {
+    void rowsInserted(const QModelIndex &parent, int start, int end)
+    {
         Q_UNUSED(parent)
-        Q_UNUSED(start)
-        Q_UNUSED(end)
-        newEmptyRow = true;
+            Q_UNUSED(start)
+            Q_UNUSED(end)
+            newEmptyRow = true;
     }
 
     /* 本来重载rowsInserted函数用于在插入新行后自动选中最后一行，
@@ -62,7 +66,8 @@ protected slots:
 
     // 采用判断最后一个元素是否改变来选中之
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
-        const QVector<int> &roles = QVector<int>()) {
+                     const QVector<int> &roles = QVector<int>())
+    {
         // 调用父类默认函数
         QListView::dataChanged(topLeft, bottomRight, roles);
         // 如果包含model
@@ -79,7 +84,8 @@ protected slots:
 
     // 需要一个currentChanged信号，但默认没有，需要把这个槽改造成信号
     // activated信号需要按下回车才发出，selectedChanged和clicked信号也不合适
-    void currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous)
+    {
         QListView::currentChanged(current, previous);
         emit currentChangedSignal(current, previous);
     }

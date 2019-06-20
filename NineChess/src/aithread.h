@@ -32,7 +32,11 @@ public:
     void setAi(const NineChess &chess);
     void setAi(const NineChess &chess, int depth, int time);
     // 深度和限时
-    void getDepthTime(int &depth, int &time) { depth = aiDepth; time = aiTime; }
+    void getDepthTime(int &depth, int &time)
+    {
+        depth = aiDepth;
+        time = aiTime;
+    }
 
 public slots:
     // 强制出招，不退出线程

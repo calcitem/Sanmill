@@ -20,7 +20,7 @@ public:
     ~NineChessWindow();
 
 protected:
-    bool eventFilter(QObject * watched, QEvent * event);
+    bool eventFilter(QObject *watched, QEvent *event);
     void closeEvent(QCloseEvent *event);
 
 private slots:

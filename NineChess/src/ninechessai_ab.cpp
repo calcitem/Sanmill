@@ -8,7 +8,7 @@
 #include <cmath>
 #include <time.h>
 
-NineChessAi_ab::NineChessAi_ab():
+NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
     requiredQuit(false)
 {
@@ -37,15 +37,14 @@ void NineChessAi_ab::buildChildren(Node *node)
     // 临时变量
     char opponent = chessTemp.data.turn == NineChess::PLAYER1 ? 0x20 : 0x10;
     // 列出所有合法的下一招
-    switch (chessTemp.data.action)
-    {
+    switch (chessTemp.data.action) {
     case NineChess::ACTION_CHOOSE:
     case NineChess::ACTION_PLACE:
         // 对于开局落子
         if ((chessTemp.data.phase) & (NineChess::GAME_OPENING | NineChess::GAME_NOTSTARTED)) {
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
+            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
                 if (!chessTemp.board_[i]) {
-                    Node * newNode = new Node;
+                    Node *newNode = new Node;
                     newNode->parent = node;
                     newNode->value = 0;
                     newNode->move = i;
@@ -56,7 +55,7 @@ void NineChessAi_ab::buildChildren(Node *node)
         // 对于中局移子
         else {
             int newPos;
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
+            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
                 if (!chessTemp.choose(i))
                     continue;
                 if ((chessTemp.data.turn == NineChess::PLAYER1 && (chessTemp.data.player1_Remain > chessTemp.currentRule.numAtLest || !chessTemp.currentRule.canFly)) ||
@@ -64,18 +63,17 @@ void NineChessAi_ab::buildChildren(Node *node)
                     for (int j = 0; j < 4; j++) {
                         newPos = chessTemp.moveTable[i][j];
                         if (newPos && !chessTemp.board_[newPos]) {
-                            Node * newNode = new Node;
+                            Node *newNode = new Node;
                             newNode->parent = node;
                             newNode->value = 0;
                             newNode->move = (i << 8) + newPos;
                             node->children.push_back(newNode);
                         }
                     }
-                }
-                else {
-                    for (int j = NineChess::SEAT; j < (NineChess::RING + 1)*NineChess::SEAT; j++) {
+                } else {
+                    for (int j = NineChess::SEAT; j < (NineChess::RING + 1) * NineChess::SEAT; j++) {
                         if (!chessTemp.board_[j]) {
-                            Node * newNode = new Node;
+                            Node *newNode = new Node;
                             newNode->parent = node;
                             newNode->value = 0;
                             newNode->move = (i << 8) + j;
@@ -90,21 +88,20 @@ void NineChessAi_ab::buildChildren(Node *node)
     case NineChess::ACTION_CAPTURE:
         // 全成三的情况
         if (chessTemp.isAllInMills(opponent)) {
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
+            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
                 if (chessTemp.board_[i] & opponent) {
-                    Node * newNode = new Node;
+                    Node *newNode = new Node;
                     newNode->parent = node;
                     newNode->value = 0;
                     newNode->move = -i;
                     node->children.push_back(newNode);
                 }
             }
-        }
-        else {
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
+        } else {
+            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
                 if (chessTemp.board_[i] & opponent) {
                     if (!chessTemp.isInMills(i)) {
-                        Node * newNode = new Node;
+                        Node *newNode = new Node;
                         newNode->parent = node;
                         newNode->value = 0;
                         newNode->move = -i;
@@ -129,7 +126,7 @@ void NineChessAi_ab::sortChildren(Node *node)
         i->value = rand();
     }
     // 排序
-    if(chessTemp.whosTurn() == NineChess::PLAYER1)
+    if (chessTemp.whosTurn() == NineChess::PLAYER1)
         node->children.sort([](Node *n1, Node *n2) { return n1->value > n2->value; });
     else
         node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });
@@ -172,8 +169,7 @@ int NineChessAi_ab::evaluate(Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     int value = 0;
-    switch (chessData->phase)
-    {
+    switch (chessData->phase) {
     case NineChess::GAME_NOTSTARTED:
         break;
 
@@ -182,8 +178,7 @@ int NineChessAi_ab::evaluate(Node *node)
         value += chessData->player1_InHand * 50 - chessData->player2_InHand * 50;
         // 按场上棋子计分
         value += chessData->player1_Remain * 100 - chessData->player2_Remain * 100;
-        switch (chessData->action)
-        {
+        switch (chessData->action) {
             // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
@@ -200,13 +195,12 @@ int NineChessAi_ab::evaluate(Node *node)
     case NineChess::GAME_MID:
         // 按场上棋子计分
         value += chessData->player1_Remain * 100 - chessData->player2_Remain * 100;
-        switch (chessData->action)
-        {
-        // 选子和落子使用相同的评价方法
+        switch (chessData->action) {
+            // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-        // 如果形成去子状态，每有一个可去的子，算128分
+            // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
             value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 128 : -(chessData->num_NeedRemove) * 128;
             break;
@@ -215,7 +209,7 @@ int NineChessAi_ab::evaluate(Node *node)
         }
         break;
 
-    // 终局评价最简单
+        // 终局评价最简单
     case NineChess::GAME_OVER:
         if (chessData->player1_Remain < chessTemp.currentRule.numAtLest)
             value = -15000;
@@ -338,25 +332,25 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         child->children.clear();
     }
 
-/*    // 添加到hashmap
-    mtx.lock();
-    if (itor == hashmap.end()) {
-        HashValue hashValue;
-        hashValue.value = node->value;
-        hashValue.depth = depth;
-        if (hashmap.size() <= maxHashCount)
-            hashmap.insert({hash, hashValue});
-    }
-    // 更新更深层数据
-    else {
-        if (itor->second.depth < depth) {
-            itor->second.value = node->value;
-            itor->second.depth = depth;
+    /*    // 添加到hashmap
+        mtx.lock();
+        if (itor == hashmap.end()) {
+            HashValue hashValue;
+            hashValue.value = node->value;
+            hashValue.depth = depth;
+            if (hashmap.size() <= maxHashCount)
+                hashmap.insert({hash, hashValue});
         }
-    }
-    mtx.unlock();*/
+        // 更新更深层数据
+        else {
+            if (itor->second.depth < depth) {
+                itor->second.value = node->value;
+                itor->second.depth = depth;
+            }
+        }
+        mtx.unlock();*/
 
-    // 返回
+        // 返回
     return node->value;
 }
 
@@ -377,14 +371,12 @@ const char *NineChessAi_ab::move2string(int move)
     if (move < 0) {
         chessTemp.pos2cp(-move, c, p);
         sprintf(cmdline, "-(%1u,%1u)", c, p);
-    }
-    else if (move & 0x7f00) {
+    } else if (move & 0x7f00) {
         int c1, p1;
         chessTemp.pos2cp(move >> 8, c1, p1);
         chessTemp.pos2cp(move & 0x00ff, c, p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);
-    }
-    else {
+    } else {
         chessTemp.pos2cp(move & 0x007f, c, p);
         sprintf(cmdline, "(%1u,%1u)", c, p);
     }
@@ -406,7 +398,7 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
             if (j)
                 chessTempShift.turn(false);
             for (int k = 0; k < 4; k++) {
-                chessTempShift.rotate(k*90, false);
+                chessTempShift.rotate(k * 90, false);
                 itor = hashmap.find(chessTempShift.chessHash());
                 if (itor != hashmap.end())
                     return itor;
