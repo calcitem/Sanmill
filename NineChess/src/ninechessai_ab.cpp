@@ -44,7 +44,7 @@ void NineChessAi_ab::buildChildren(Node *node)
         // 对于开局落子
         if ((chessTemp.data.phase) & (NineChess::GAME_OPENING | NineChess::GAME_NOTSTARTED)) {
             for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
-                if (!chessTemp.board[i]) {
+                if (!chessTemp.board_[i]) {
                     Node * newNode = new Node;
                     newNode->parent = node;
                     newNode->value = 0;
@@ -55,15 +55,15 @@ void NineChessAi_ab::buildChildren(Node *node)
         }
         // 对于中局移子
         else {
-            char newPos;
+            int newPos;
             for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
                 if (!chessTemp.choose(i))
                     continue;
-                if ((chessTemp.data.turn == NineChess::PLAYER1 && (chessTemp.data.player1_Remain > chessTemp.rule.numAtLest || !chessTemp.rule.canFly)) ||
-                    (chessTemp.data.turn == NineChess::PLAYER2 && (chessTemp.data.player2_Remain > chessTemp.rule.numAtLest || !chessTemp.rule.canFly))) {
+                if ((chessTemp.data.turn == NineChess::PLAYER1 && (chessTemp.data.player1_Remain > chessTemp.currentRule.numAtLest || !chessTemp.currentRule.canFly)) ||
+                    (chessTemp.data.turn == NineChess::PLAYER2 && (chessTemp.data.player2_Remain > chessTemp.currentRule.numAtLest || !chessTemp.currentRule.canFly))) {
                     for (int j = 0; j < 4; j++) {
                         newPos = chessTemp.moveTable[i][j];
-                        if (newPos && !chessTemp.board[newPos]) {
+                        if (newPos && !chessTemp.board_[newPos]) {
                             Node * newNode = new Node;
                             newNode->parent = node;
                             newNode->value = 0;
@@ -74,7 +74,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                 }
                 else {
                     for (int j = NineChess::SEAT; j < (NineChess::RING + 1)*NineChess::SEAT; j++) {
-                        if (!chessTemp.board[j]) {
+                        if (!chessTemp.board_[j]) {
                             Node * newNode = new Node;
                             newNode->parent = node;
                             newNode->value = 0;
@@ -91,7 +91,7 @@ void NineChessAi_ab::buildChildren(Node *node)
         // 全成三的情况
         if (chessTemp.isAllInMills(opponent)) {
             for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
-                if (chessTemp.board[i] & opponent) {
+                if (chessTemp.board_[i] & opponent) {
                     Node * newNode = new Node;
                     newNode->parent = node;
                     newNode->value = 0;
@@ -102,7 +102,7 @@ void NineChessAi_ab::buildChildren(Node *node)
         }
         else {
             for (int i = NineChess::SEAT; i < (NineChess::RING + 1)*NineChess::SEAT; i++) {
-                if (chessTemp.board[i] & opponent) {
+                if (chessTemp.board_[i] & opponent) {
                     if (!chessTemp.isInMills(i)) {
                         Node * newNode = new Node;
                         newNode->parent = node;
@@ -150,14 +150,14 @@ void NineChessAi_ab::deleteTree(Node *node)
 void NineChessAi_ab::setChess(const NineChess &chess)
 {
     // 如果规则改变，重建hashmap
-    if (strcmp(this->chess.rule.name, chess.rule.name)) {
+    if (strcmp(this->chess_.currentRule.name, chess.currentRule.name)) {
         mtx.lock();
         hashmap.clear();
         hashmap.reserve(maxHashCount);
         mtx.unlock();
     }
 
-    this->chess = chess;
+    this->chess_ = chess;
     chessTemp = chess;
     chessData = &(chessTemp.data);
     requiredQuit = false;
@@ -217,9 +217,9 @@ int NineChessAi_ab::evaluate(Node *node)
 
     // 终局评价最简单
     case NineChess::GAME_OVER:
-        if (chessData->player1_Remain < chessTemp.rule.numAtLest)
+        if (chessData->player1_Remain < chessTemp.currentRule.numAtLest)
             value = -15000;
-        else if (chessData->player2_Remain < chessTemp.rule.numAtLest)
+        else if (chessData->player2_Remain < chessTemp.currentRule.numAtLest)
             value = 15000;
         break;
 
@@ -371,7 +371,7 @@ const char *NineChessAi_ab::bestMove()
     return "error!";
 }
 
-const char *NineChessAi_ab::move2string(int16_t move)
+const char *NineChessAi_ab::move2string(int move)
 {
     int c, p;
     if (move < 0) {

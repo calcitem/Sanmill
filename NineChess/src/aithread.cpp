@@ -25,15 +25,15 @@ AiThread::~AiThread()
 void AiThread::setAi(const NineChess &chess)
 {
     mutex.lock();
-    this->chess = &chess;
-    ai_ab.setChess(*(this->chess));
+    this->chess_ = &chess;
+    ai_ab.setChess(*(this->chess_));
     mutex.unlock();
 }
 
 void AiThread::setAi(const NineChess &chess, int depth, int time)
 {
     mutex.lock();
-    this->chess = &chess;
+    this->chess_ = &chess;
     ai_ab.setChess(chess);
     aiDepth = depth;
     aiTime = time;
@@ -54,9 +54,9 @@ void AiThread::run()
 
     while (!isInterruptionRequested()) {
         mutex.lock();
-        if (chess->whosTurn() == NineChess::PLAYER1)
+        if (chess_->whosTurn() == NineChess::PLAYER1)
             i = 1;
-        else if (chess->whosTurn() == NineChess::PLAYER2)
+        else if (chess_->whosTurn() == NineChess::PLAYER2)
             i = 2;
         else
             i = 0;
@@ -67,7 +67,7 @@ void AiThread::run()
             continue;
         }
 
-        ai_ab.setChess(*chess);
+        ai_ab.setChess(*chess_);
         emit calcStarted();
         mutex.unlock();
 

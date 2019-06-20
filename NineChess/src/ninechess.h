@@ -99,7 +99,7 @@ public:
            0x21～0x2c代表后手第1～12子
            判断棋子是先手的用(board[i] & 0x10)
            判断棋子是后手的用(board[i] & 0x20) */
-        char board[(NineChess::RING + 2)*NineChess::SEAT];
+        int board[(NineChess::RING + 2)*NineChess::SEAT];
 
         // 局面阶段标识
         enum NineChess::Phases phase;
@@ -109,15 +109,15 @@ public:
         enum NineChess::Actions action;
 
         // 玩家1剩余未放置子数
-        char player1_InHand;
+        int player1_InHand;
         // 玩家2剩余未放置子数
-        char player2_InHand;
+        int player2_InHand;
         // 玩家1盘面剩余子数
-        char player1_Remain;
+        int player1_Remain;
         // 玩家1盘面剩余子数
-        char player2_Remain;
+        int player2_Remain;
         // 尚待去除的子数
-        char num_NeedRemove;
+        int num_NeedRemove;
 
         /* 本打算用如下的结构体来表示“三连”
         struct Mill {
@@ -142,11 +142,11 @@ private:
 
     // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static char moveTable[(RING + 2)*SEAT][4];
+    static int moveTable[(RING + 2)*SEAT][4];
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static char millTable[(RING + 2)*SEAT][3][2];
+    static int millTable[(RING + 2)*SEAT][3][2];
 
 public:
     explicit NineChess();
@@ -169,11 +169,11 @@ public:
     );
 
     // 获取棋局状态和棋盘数据
-    void getData(struct Rule &rule, int &step, int &flags, const char *&boardsource, int &p1_InHand, int &p2_InHand, int &num_NeedRemove);
+    void getData(struct Rule &rule, int &step, int &flags, int *&boardsource, int &p1_InHand, int &p2_InHand, int &num_NeedRemove);
     // 获取当前规则
-    const struct Rule *getRule() const { return &rule; }
+    const struct Rule *getRule() const { return &currentRule; }
     // 获取棋盘数据
-    const char *getBoard() const { return data.board; }
+    const int *getBoard() const { return data.board; }
     // 获取棋子位置(c, p)
     bool getPieceCP(const Players &player, const int &number, int &c, int &p);
     // 获取当前棋子
@@ -181,7 +181,7 @@ public:
     // 获取当前棋子位置点
     int getCurrentPos() const { return currentPos; }
     // 获取当前步数
-    int getStep() const { return step; }
+    int getStep() const { return currentStep; }
     // 获取局面阶段标识
     enum Phases getPhase() const { return data.phase; }
     // 获取轮流状态标识
@@ -267,7 +267,7 @@ protected:
     void setTip();
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
-    bool command(int16_t move);
+    bool command(int move);
     bool choose(int pos);
     bool place(int pos);
     bool capture(int pos);
@@ -276,18 +276,18 @@ protected:
 
 private:
     // 当前使用的规则
-    struct Rule rule;
+    struct Rule currentRule;
     // 棋局数据
     struct ChessData data;
     // 棋局数据中的棋盘数据，单独提出来
-    char *board;
+    int *board_;
     // 选中的棋子在board中的位置
-    char currentPos;
+    int currentPos;
     // 胜负标识
     enum Players winner;
 
     // 当前步数
-    int step;
+    int currentStep;
     // 游戏起始时间
     timeb startTimeb;
     // 当前游戏时间
@@ -304,7 +304,7 @@ private:
     移子：0x__??，__为移动前的位置，??为移动后的位置
     去子：0xFF??，??取位置补码，即为负数
     */
-    int16_t move_;
+    int32_t move_;
 
     // 招法命令行用于棋谱的显示和解析
     // 当前招法的命令行指令，即一招棋谱

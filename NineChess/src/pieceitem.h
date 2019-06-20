@@ -30,16 +30,16 @@ public:
         whitePiece = 0x4,   // 白色棋子
     };
 
-    enum Models getModel() { return model; }
-    void setModel(enum Models model) { this->model = model; }
+    enum Models getModel() { return model_; }
+    void setModel(enum Models model) { this->model_ = model; }
     int getNum() { return num; }
     void setNum(int n) { num = n; }
-    bool isDeleted() { return deleted; }
+    bool isDeleted() { return deleted_; }
     void setDeleted(bool deleted = true) 
     {
-        this->deleted = deleted;
+        this->deleted_ = deleted;
         if (deleted)
-            this->model = noPiece;
+            this->model_ = noPiece;
         update(boundingRect());
     }
     void setShowNum(bool show = true) { this->showNum = show; }
@@ -51,13 +51,13 @@ protected:
 
 private:
     // 棋子本质
-    enum Models model;
+    enum Models model_;
     // 棋子序号，黑白都从1开始
     int num;
     // 棋子尺寸
     qreal size;
     // 有无删除线
-    bool deleted;
+    bool deleted_;
     // 显示序号
     bool showNum;
     // 选中子标识线宽度

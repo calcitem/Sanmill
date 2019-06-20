@@ -6,7 +6,7 @@
 
 PieceItem::PieceItem(QGraphicsItem *parent) : QGraphicsItem(parent),
 num(0),
-deleted(false),
+deleted_(false),
 showNum(false)
 {
     Q_UNUSED(parent)
@@ -24,7 +24,7 @@ showNum(false)
     setAcceptedMouseButtons(0);
     //setAcceptHoverEvents(true);
     // 默认模型为没有棋子
-    model = noPiece;
+    model_ = noPiece;
     // 棋子尺寸
     size = PIECE_SIZE;
     // 选中子标识线宽度
@@ -62,11 +62,11 @@ void PieceItem::paint(QPainter *painter,
 
     // 空模型不画棋子
     // 如果模型为黑色，则画黑色棋子
-    if (model == blackPiece)
+    if (model_ == blackPiece)
         painter->drawPixmap(-size/2, -size/2, size, size,
                             QPixmap(":/image/resources/image/black_piece.png"));
     // 如果模型为白色，则画白色棋子
-    else if (model == whitePiece)
+    else if (model_ == whitePiece)
         painter->drawPixmap(-size/2, -size/2, size, size,
                             QPixmap(":/image/resources/image/white_piece.png"));
  
@@ -76,7 +76,7 @@ void PieceItem::paint(QPainter *painter,
         // 如果模型为黑色，用白色笔画序号
         painter->setPen(QColor(255, 255, 255));
         // 如果模型为白色，用白色笔画序号
-        if (model == whitePiece)
+        if (model_ == whitePiece)
             painter->setPen(QColor(0, 0, 0));
         // 字体
         QFont font;
@@ -105,7 +105,7 @@ void PieceItem::paint(QPainter *painter,
     }
 
     // 如果模型为删除状态，则画上叉号
-    if (deleted)
+    if (deleted_)
     {
         QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);

@@ -29,7 +29,7 @@ public:
     ~GameController();
     //主窗口菜单栏明细
     const QMap <int, QStringList> getActions();
-    int getRuleNo() { return ruleNo; }
+    int getRuleNo() { return ruleNo_; }
     int getTimeLimit() { return timeLimit; }
     int getStepsLimit() { return stepsLimit; }
     bool isAnimation() { return hasAnimation; }
@@ -96,7 +96,7 @@ protected:
 
 private:
     // 棋对象的数据模型
-    NineChess chess;
+    NineChess chess_;
     // 棋对象的数据模型（临时）
     NineChess chessTemp;
     // 2个AI的线程
@@ -128,15 +128,15 @@ private:
     // 定时器ID
     int timeID;
     // 规则号
-    int ruleNo;
+    int ruleNo_;
     // 规则限时（分钟）
     int timeLimit;
     // 规则限步数
     int stepsLimit;
     // 玩家1剩余时间（毫秒）
-    int time1;
+    int remainingTime1;
     // 玩家2剩余时间（毫秒）
-    int time2;
+    int remainingTime2;
     // 用于主窗口状态栏显示的字符串
     QString message;
     // 棋谱字符串列表模型

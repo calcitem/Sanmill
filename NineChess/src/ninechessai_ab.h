@@ -31,8 +31,8 @@ public:
 
     // 定义一个节点结构体
     struct Node {
-        int16_t value;                     // 节点的值
-        int16_t move;                  // 招法的命令行指令，图上标示为节点前的连线
+        int value;                     // 节点的值
+        int move;                      // 招法的命令行指令，图上标示为节点前的连线
         struct Node * parent;          // 父节点
         list<struct Node *> children;  // 子节点列表
     };
@@ -60,13 +60,13 @@ protected:
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
     // 返回招法的命令行
-    const char *move2string(int16_t move);
+    const char *move2string(int move);
     // 判断是否在哈希表中
     unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator findHash(uint64_t hash);
 
 private:
     // 原始模型
-    NineChess chess;
+    NineChess chess_;
     // 演算用的模型
     NineChess chessTemp;
     NineChess::ChessData *chessData;

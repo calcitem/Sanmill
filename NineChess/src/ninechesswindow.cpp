@@ -21,6 +21,7 @@
 #include <QHelpEvent>
 #include <QToolTip>
 #include <QPicture>
+#include <QScreen>
 #include <QDebug>
 #include <QDesktopWidget>
 #include "ninechesswindow.h"
@@ -69,7 +70,7 @@ NineChessWindow::NineChessWindow(QWidget *parent)
         this, SLOT(onAutoRunTimeOut()));
 
     // 主窗口居中显示
-    QRect deskTopRect = qApp->desktop()->availableGeometry();
+    QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
     int unitw = (deskTopRect.width() - width())/2;
     int unith = (deskTopRect.height() - height())/2;
     this->move(unitw,unith);

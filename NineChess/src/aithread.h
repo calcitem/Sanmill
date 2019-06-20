@@ -55,7 +55,7 @@ private:
     QWaitCondition pauseCondition;
 
     // 主线程棋对象的引用
-    const NineChess *chess;
+    const NineChess *chess_;
     // Alpha-Beta剪枝算法类
     NineChessAi_ab ai_ab;
     // AI的层数
