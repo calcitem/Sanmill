@@ -43,7 +43,10 @@ void AiThread::setAi(const NineChess &chess, int depth, int time)
 void AiThread::run()
 {
     // 测试用数据
-//    int iTemp = 0;
+#ifdef DEBUG
+    int iTemp = 0;
+#endif
+
     // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
     int i = 0;
 
@@ -73,7 +76,9 @@ void AiThread::run()
         qDebug() << str;
         if (strcmp(str, "error!"))
             emit command(str);
-//        qDebug() << "Thread" << id << "run" << ++iTemp << "times";
+#ifdef DEBUG
+        qDebug() << "Thread" << id << "run" << ++iTemp << "times";
+#endif
         emit calcFinished();
 
         // 执行完毕后继续判断
