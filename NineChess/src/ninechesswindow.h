@@ -26,10 +26,13 @@ protected:
 private slots:
     // 初始化
     void initialize();
+
     // 动态增加的菜单栏动作的槽函数
     void actionRules_triggered();
+
     // 更新规则标签
     void ruleInfo();
+
     // 自动运行定时处理函数
     void onAutoRunTimeOut(QPrivateSignal signal);
 
@@ -68,16 +71,22 @@ private slots:
 private:
     // 界面文件
     Ui::NineChessWindowClass ui;
+
     // 视图场景
     GameScene *scene;
+
     // 控制器
     GameController *game;
+
     // 动态增加的菜单栏动作列表
     QList <QAction *> ruleActionList;
+
     // 游戏的规则号，涉及菜单项和对话框，所以要有
     int ruleNo;
+
     // 文件
     QFile file;
+
     // 定时器
     QTimer autoRunTimer;
 };

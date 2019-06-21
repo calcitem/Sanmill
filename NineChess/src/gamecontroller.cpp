@@ -57,6 +57,7 @@ GameController::~GameController()
     // 停止计时器
     if (timeID != 0)
         killTimer(timeID);
+
     // 停掉线程
     ai1.stop();
     ai2.stop();
@@ -69,11 +70,11 @@ const QMap<int, QStringList> GameController::getActions()
     // 主窗口更新菜单栏
     // 之所以不用信号和槽的模式，是因为发信号的时候槽还来不及关联
     QMap<int, QStringList> actions;
-    for (int i = 0; i < NineChess::RULENUM; i++) {
+    for (int i = 0; i < NineChess::N_RULES; i++) {
         // QMap的key存放int索引值，value存放规则名称和规则提示
         QStringList strlist;
         strlist.append(tr(NineChess::RULES[i].name));
-        strlist.append(tr(NineChess::RULES[i].info));
+        strlist.append(tr(NineChess::RULES[i].description));
         actions.insert(i, strlist);
     }
     return actions;
@@ -83,6 +84,7 @@ void GameController::gameStart()
 {
     chess_.start();
     chessTemp = chess_;
+
     // 每隔100毫秒调用一次定时器处理函数
     if (timeID == 0) {
         timeID = startTimer(100);
@@ -94,8 +96,10 @@ void GameController::gameReset()
     // 停止计时器
     if (timeID != 0)
         killTimer(timeID);
+
     // 定时器ID为0
     timeID = 0;
+
     // 重置游戏
     chess_.reset();
     chessTemp = chess_;
@@ -110,8 +114,9 @@ void GameController::gameReset()
     qDeleteAll(pieceList);
     pieceList.clear();
     currentPiece = nullptr;
+
     // 重新绘制棋盘
-    scene.setDiagonal(chess_.getRule()->hasObliqueLine);
+    scene.setDiagonal(chess_.getRule()->hasObliqueLines);
 
     // 绘制所有棋子，放在起始位置
     // 0: 先手第1子； 1：后手第1子
@@ -119,16 +124,19 @@ void GameController::gameReset()
     // ......
     PieceItem::Models md;
     PieceItem *newP;
-    for (int i = 0; i < chess_.getRule()->numOfChess; i++) {
+
+    for (int i = 0; i < chess_.getRule()->nTotalPiecesEachSide; i++) {
         // 先手的棋子
         md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
         newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
         newP->setNum(i + 1);
+
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(chess_.getRule()->canRepeated))
+        if (!(chess_.getRule()->allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
+
         pieceList.append(newP);
         scene.addItem(newP);
 
@@ -138,15 +146,18 @@ void GameController::gameReset()
         newP->setModel(md);
         newP->setPos(scene.pos_p2);
         newP->setNum(i + 1);
+
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(chess_.getRule()->canRepeated))
+        if (!(chess_.getRule()->allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
+
         pieceList.append(newP);
         scene.addItem(newP);
     }
 
     // 读取规则限时要求
-    timeLimit = chess_.getRule()->maxTime;
+    timeLimit = chess_.getRule()->maxTimeLedToLose;
+
     // 如果规则不要求计时，则time1和time2表示已用时间
     if (timeLimit <= 0) {
         // 将玩家的已用时间清零
@@ -155,18 +166,22 @@ void GameController::gameReset()
         // 将玩家的剩余时间置为限定时间
         remainingTime1 = remainingTime2 = timeLimit * 60000;
     }
+
     // 更新棋谱
     manualListModel.removeRows(0, manualListModel.rowCount());
     manualListModel.insertRow(0);
     manualListModel.setData(manualListModel.index(0), chess_.getCmdLine());
     currentRow = 0;
+
     // 发出信号通知主窗口更新LCD显示
     QTime qtime = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
     emit time1Changed(qtime.toString("mm:ss.zzz"));
     emit time2Changed(qtime.toString("mm:ss.zzz"));
+
     // 发信号更新状态栏
-    message = QString::fromStdString(chess_.getTip());
+    message = QString::fromStdString(chess_.getTips());
     emit statusBarChanged(message);
+
     // 播放音效
     playSound(":/sound/resources/sound/newgame.wav");
 }
@@ -179,15 +194,18 @@ void GameController::setEditing(bool arg)
 void GameController::setInvert(bool arg)
 {
     isInverted = arg;
+
     // 遍历所有棋子
     for (PieceItem *p : pieceList) {
         if (p) {
             // 黑子变白
             if (p->getModel() == PieceItem::blackPiece)
                 p->setModel(PieceItem::whitePiece);
+
             // 白子变黑
             else if (p->getModel() == PieceItem::whitePiece)
                 p->setModel(PieceItem::blackPiece);
+
             // 刷新棋子显示
             p->update();
         }
@@ -197,7 +215,7 @@ void GameController::setInvert(bool arg)
 void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
     // 更新规则，原限时和限步不变
-    if (ruleNo < 0 || ruleNo >= NineChess::RULENUM)
+    if (ruleNo < 0 || ruleNo >= NineChess::N_RULES)
         return;
     this->ruleNo_ = ruleNo;
 
@@ -206,7 +224,7 @@ void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimit
         timeLimit = timeLimited;
     }
     // 设置模型规则，重置游戏
-    chess_.setData(&NineChess::RULES[ruleNo], stepsLimit, timeLimit);
+    chess_.setContext(&NineChess::RULES[ruleNo], stepsLimit, timeLimit);
     chessTemp = chess_;
 
     // 重置游戏
@@ -272,6 +290,7 @@ void GameController::getAiDepthTime(int &depth1, int &time1, int &depth2, int &t
 void GameController::setAnimation(bool arg)
 {
     hasAnimation = arg;
+
     // 默认动画时间250ms
     if (hasAnimation)
         durationTime = 250;
@@ -306,11 +325,13 @@ void GameController::flip()
     chess_.mirror();
     chess_.rotate(180);
     chessTemp = chess_;
+
     // 更新棋谱
     int row = 0;
     for (auto str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
+
     // 刷新显示
     if (currentRow == row - 1)
         updateScence();
@@ -319,6 +340,7 @@ void GameController::flip()
 
     ai1.setAi(chess_);
     ai2.setAi(chess_);
+
     if (isEngine1) {
         ai1.start();
     }
@@ -341,12 +363,15 @@ void GameController::mirror()
 
     chess_.mirror();
     chessTemp = chess_;
+
     // 更新棋谱
     int row = 0;
     for (auto str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
+
     qDebug() << "list: " << row;
+
     // 刷新显示
     if (currentRow == row - 1)
         updateScence();
@@ -377,11 +402,13 @@ void GameController::turnRight()
 
     chess_.rotate(-90);
     chessTemp = chess_;
+
     // 更新棋谱
     int row = 0;
     for (auto str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
+
     // 刷新显示
     if (currentRow == row - 1)
         updateScence();
@@ -412,11 +439,13 @@ void GameController::turnLeft()
 
     chess_.rotate(90);
     chessTemp = chess_;
+
     // 更新棋谱
     int row = 0;
     for (auto str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
+
     // 刷新显示
     updateScence();
 
@@ -433,34 +462,41 @@ void GameController::turnLeft()
 void GameController::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
-        static QTime qt1, qt2;
+    static QTime qt1, qt2;
+
     // 玩家的已用时间
-    chess_.getPlayer_TimeMS(remainingTime1, remainingTime2);
+    chess_.getElapsedTimeMS(remainingTime1, remainingTime2);
+
     // 如果规则要求计时，则time1和time2表示倒计时
     if (timeLimit > 0) {
         // 玩家的剩余时间
         remainingTime1 = timeLimit * 60000 - remainingTime1;
         remainingTime2 = timeLimit * 60000 - remainingTime2;
     }
+
     qt1 = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
     qt2 = QTime(0, 0, 0, 0).addMSecs(remainingTime2);
     emit time1Changed(qt1.toString("mm:ss.zzz"));
     emit time2Changed(qt2.toString("mm:ss.zzz"));
+
     // 如果胜负已分
     if (chess_.whoWin() != NineChess::NOBODY) {
         // 停止计时
         killTimer(timeID);
+
         // 定时器ID为0
         timeID = 0;
+
         // 发信号更新状态栏
-        message = QString::fromStdString(chess_.getTip());
+        message = QString::fromStdString(chess_.getTips());
         emit statusBarChanged(message);
+
         // 播放音效
         playSound(":/sound/resources/sound/win.wav");
     }
 
     // 测试用代码
-    /*
+#if 0
     int ti = time.elapsed();
     static QTime t;
     if (ti < 0)
@@ -481,7 +517,7 @@ void GameController::timerEvent(QTimerEvent *event)
         //qDebug() << t;
         emit time2Changed(t.toString("hh:mm:ss"));
     }
-    */
+#endif
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -496,6 +532,7 @@ bool GameController::actionPiece(QPointF pos)
     // 电脑走棋时，点击无效
     if (chess_.whosTurn() == NineChess::PLAYER1 && isEngine1)
         return false;
+
     if (chess_.whosTurn() == NineChess::PLAYER2 && isEngine2)
         return false;
 
@@ -515,12 +552,14 @@ bool GameController::actionPiece(QPointF pos)
         if (QMessageBox::Ok == msgBox.exec()) {
             chess_ = chessTemp;
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
+
             // 如果再决出胜负后悔棋，则重新启动计时
             if (chess_.whoWin() == NineChess::NOBODY) {
                 // 重新启动计时
                 timeID = startTimer(100);
+
                 // 发信号更新状态栏
-                message = QString::fromStdString(chess_.getTip());
+                message = QString::fromStdString(chess_.getTips());
                 emit statusBarChanged(message);
             }
         } else
@@ -528,7 +567,7 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     // 如果未开局则开局
-    if (chess_.getPhase() == NineChess::GAME_NOTSTARTED)
+    if (chess_.getStage() == NineChess::GAME_NOTSTARTED)
         gameStart();
 
     // 判断执行选子、落子或去子
@@ -549,6 +588,7 @@ bool GameController::actionPiece(QPointF pos)
             result = true;
             break;
         }
+
         // 如果移子不成功，尝试重新选子，这里不break
 
     case NineChess::ACTION_CHOOSE:
@@ -583,12 +623,13 @@ bool GameController::actionPiece(QPointF pos)
 
     if (result) {
         // 发信号更新状态栏
-        message = QString::fromStdString(chess_.getTip());
+        message = QString::fromStdString(chess_.getTips());
         emit statusBarChanged(message);
 
         // 将新增的棋谱行插入到ListModel
         currentRow = manualListModel.rowCount() - 1;
         int k = 0;
+
         // 输出命令行
         for (auto i = (chess_.getCmdList())->begin(); i != (chess_.getCmdList())->end(); ++i) {
             // 跳过已添加的，因标准list容器没有下标
@@ -684,7 +725,7 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
     }
 
     // 如果未开局则开局
-    if (chess_.getPhase() == NineChess::GAME_NOTSTARTED) {
+    if (chess_.getStage() == NineChess::GAME_NOTSTARTED) {
         gameStart();
     }
 
@@ -701,7 +742,7 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
     }
 
     // 发信号更新状态栏
-    message = QString::fromStdString(chess_.getTip());
+    message = QString::fromStdString(chess_.getTips());
     emit statusBarChanged(message);
 
     // 对于新开局
@@ -771,12 +812,15 @@ bool GameController::phaseChange(int row, bool forceUpdate)
     int rows = manualListModel.rowCount();
     QStringList mlist = manualListModel.stringList();
     qDebug() << "rows:" << rows << " current:" << row;
+
     for (int i = 0; i <= row; i++) {
         qDebug() << mlist.at(i);
         chessTemp.command(mlist.at(i).toStdString().c_str());
     }
+
     // 下面这步关键，会让悔棋者承担时间损失
     chessTemp.setStartTimeb(chess_.getStartTimeb());
+
     // 刷新棋局场景
     updateScence(chessTemp);
     return true;
@@ -791,28 +835,36 @@ bool GameController::updateScence(NineChess &chess)
 {
     const int *board = chess.getBoard();
     QPointF pos;
+
     // chess类中的棋子代码
     int key;
+
     // 棋子总数
-    int n = chess.getRule()->numOfChess * 2;
+    int n = chess.getRule()->nTotalPiecesEachSide * 2;
 
     // 动画组
     QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup;
 
     // 棋子就位
     PieceItem *piece = nullptr;
+
     for (int i = 0; i < n; i++) {
         piece = pieceList.at(i);
+
         // 将pieceList的下标转换为chess的棋子代号
         key = (i % 2) ? (i / 2 + 0x21) : (i / 2 + 0x11);
+
         int j;
+
         // 遍历棋盘，查找并放置棋盘上的棋子
-        for (j = NineChess::SEAT; j < (NineChess::SEAT) * (NineChess::RING + 1); j++) {
+        for (j = NineChess::N_SEATS; j < (NineChess::N_SEATS) * (NineChess::N_RINGS + 1); j++) {
             if (board[j] == key) {
-                pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
+                pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
                 if (piece->pos() != pos) {
+
                     // 让移动的棋子位于顶层
                     piece->setZValue(1);
+
                     // 棋子移动动画
                     QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
@@ -829,12 +881,12 @@ bool GameController::updateScence(NineChess &chess)
         }
 
         // 如果没有找到，放置棋盘外的棋子
-        if (j == (NineChess::SEAT) * (NineChess::RING + 1)) {
+        if (j == (NineChess::N_SEATS) * (NineChess::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & 0x10) {
-                pos = (key - 0x11 < n / 2 - chess.getPlayer1_InHand()) ? scene.pos_p2_g : scene.pos_p1;
+                pos = (key - 0x11 < n / 2 - chess.getPiecesInHandCount_1()) ? scene.pos_p2_g : scene.pos_p1;
             } else
-                pos = (key - 0x21 < n / 2 - chess.getPlayer2_InHand()) ? scene.pos_p1_g : scene.pos_p2;
+                pos = (key - 0x21 < n / 2 - chess.getPiecesInHandCount_2()) ? scene.pos_p1_g : scene.pos_p2;
 
             if (piece->pos() != pos) {
                 QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
@@ -849,10 +901,10 @@ bool GameController::updateScence(NineChess &chess)
     }
 
     // 添加开局禁子点
-    if (chess.getRule()->hasForbidden && chess.getPhase() == NineChess::GAME_OPENING) {
-        for (int j = NineChess::SEAT; j < (NineChess::SEAT) * (NineChess::RING + 1); j++) {
+    if (chess.getRule()->hasForbiddenPoint && chess.getStage() == NineChess::GAME_PLACING) {
+        for (int j = NineChess::N_SEATS; j < (NineChess::N_SEATS) * (NineChess::N_RINGS + 1); j++) {
             if (board[j] == 0x0F) {
-                pos = scene.cp2pos(j / NineChess::SEAT, j % NineChess::SEAT + 1);
+                pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
                 if (n < pieceList.size()) {
                     pieceList.at(n++)->setPos(pos);
                 } else {
@@ -868,7 +920,7 @@ bool GameController::updateScence(NineChess &chess)
     }
 
     // 中局清除禁子点
-    if (chess.getRule()->hasForbidden && chess.getPhase() != NineChess::GAME_OPENING) {
+    if (chess.getRule()->hasForbiddenPoint && chess.getStage() != NineChess::GAME_PLACING) {
         while (n < pieceList.size()) {
             delete pieceList.at(n);
             pieceList.removeAt(n);

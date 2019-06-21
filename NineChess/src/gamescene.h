@@ -11,14 +11,19 @@ class GameScene : public QGraphicsScene
 public:
     explicit GameScene(QObject *parent = nullptr);
     ~GameScene();
+
     // 将模型的圈、位转化为落子点坐标
     QPointF cp2pos(int c, int p);
+
     // 将落子点坐标转化为模型用的圈、位
     bool pos2cp(QPointF pos, int &c, int &p);
+
     // 设置棋盘斜线
     void setDiagonal(bool arg = true);
+
     // 玩家1的己方棋盒及对方棋盒位置
     const QPointF pos_p1, pos_p1_g;
+
     // 玩家2的己方棋盒及对方棋盒位置
     const QPointF pos_p2, pos_p2_g;
 

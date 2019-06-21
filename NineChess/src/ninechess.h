@@ -22,108 +22,134 @@ class NineChess
 {
     // AI友元类
     friend class NineChessAi_ab;
+
 public:
-    // 5个静态成员常量
+    // 静态成员常量
     // 3圈，禁止修改！
-    static const int RING = 3;
+    static const int N_RINGS = 3;
+
     // 8位，禁止修改！
-    static const int SEAT = 8;
+    static const int N_SEATS = 8;
+
     // 预定义的规则数目
-    static const int RULENUM = 4;
+    static const int N_RULES = 4;
 
     // 嵌套的规则结构体
     struct Rule
     {
         // 规则名称
         const char *name;
+
         // 规则介绍
-        const char *info;
+        const char *description;
+
         // 任一方子数，各9子或各12子
-        int numOfChess;
+        int nTotalPiecesEachSide;
+
         // 赛点子数，少于则判负
-        int numAtLest;
+        int nPiecesAtLeast;
+
         // 是否有斜线
-        bool hasObliqueLine;
+        bool hasObliqueLines;
+
         // 是否有禁点（摆棋阶段被提子的点不能再摆子）
-        bool hasForbidden;
+        bool hasForbiddenPoint;
+
         // 是否后摆棋者先行棋
-        bool isDefensiveMoveFirst;
+        bool isDefenderMoveFirst;
+
         // 相同顺序和位置的重复“三连”是否可反复提子
-        bool canRepeated;
+        bool allowRemovePiecesRepeatedly;
+
         // 多个“三连”能否多提子
-        bool removeMore;
+        bool allowRemoveMultiPieces;
+
         // 摆棋满子（闷棋，只有12子棋才出现），是否算先手负，false为和棋
-        bool isFullLose;
+        bool isStartingPlayerLoseWhenBoardFull;
+
         // 走棋阶段不能行动（被“闷”）是否算负，false则轮空（由对手走棋）
-        bool isNoWayLose;
+        bool isLoseWhenNoWay;
+
         // 剩三子时是否可以飞棋
-        bool canFly;
+        bool allowFlyWhenRemainThreePieces;
+
         // 最大步数，超出判和
-        int maxSteps;
+        int maxStepsLedToDraw;
+
         // 包干最长时间（秒），超出判负，为0则不计时
-        int maxTime;
+        int maxTimeLedToLose;
     };
+
     // 预定义的规则
-    static const struct Rule RULES[RULENUM];
+    static const struct Rule RULES[N_RULES];
 
     // 局面阶段标识
-    enum Phases : uint16_t
+    enum GameStage : uint16_t
     {
-        GAME_NOTSTARTED = 0x0001,  // 未开局
-        GAME_OPENING = 0x0002,  // 开局（摆棋）
-        GAME_MID = 0x0004,  // 中局（走棋）
-        GAME_OVER = 0x0008   // 结局
+        GAME_NOTSTARTED = 0x0001,   // 未开局
+        GAME_PLACING = 0x0002,      // 开局（摆棋）
+        GAME_MOVING = 0x0004,       // 中局（走棋）
+        GAME_OVER = 0x0008          // 结局
     };
 
-    // 玩家标识,轮流状态,胜负标识
+    // 玩家标识, 轮流状态, 胜负标识
     enum Players : uint16_t
     {
         PLAYER1 = 0x0010,   // 玩家1
         PLAYER2 = 0x0020,   // 玩家2
-        DRAW = 0x0040,   // 双方和棋
-        NOBODY = 0x0080    // 胜负未分
+        DRAW = 0x0040,      // 双方和棋
+        NOBODY = 0x0080     // 胜负未分
     };
 
     // 动作状态标识
-    enum Actions : uint16_t
+    enum Action : uint16_t
     {
-        ACTION_CHOOSE = 0x0100,   // 选子
-        ACTION_PLACE = 0x0200,   // 落子
+        ACTION_CHOOSE = 0x0100,    // 选子
+        ACTION_PLACE = 0x0200,     // 落子
         ACTION_CAPTURE = 0x0400    // 提子
     };
 
     // 棋局结构体，算法相关，包含当前棋盘数据
     // 单独分离出来供AI判断局面用，生成置换表时使用
-    struct ChessData
+    struct ChessContext
     {
-        // 棋局，抽象为一个（5×8）的char数组，上下两行留空
-        /* 0x00代表无棋子
-           0x0F代表禁点
-           0x11～0x1C代表先手第1～12子
-           0x21～0x2c代表后手第1～12子
-           判断棋子是先手的用(board[i] & 0x10)
-           判断棋子是后手的用(board[i] & 0x20) */
-        int board[(NineChess::RING + 2) * NineChess::SEAT];
+        // 棋局，抽象为一个（5×8）的数组，上下两行留空
+        /*
+            0x00 代表无棋子
+            0x0F 代表禁点
+            0x11～0x1C 代表先手第 1～12 子
+            0x21～0x2C 代表后手第 1～12 子
+            判断棋子是先手的用 (board[i] & 0x10)
+            判断棋子是后手的用 (board[i] & 0x20)
+         */
+        int board[(NineChess::N_RINGS + 2) * NineChess::N_SEATS];
 
         // 局面阶段标识
-        enum NineChess::Phases phase;
+        enum NineChess::GameStage stage;
+
         // 轮流状态标识
         enum NineChess::Players turn;
+
         // 动作状态标识
-        enum NineChess::Actions action;
+        enum NineChess::Action action;
 
         // 玩家1剩余未放置子数
-        int player1_InHand;
-        // 玩家2剩余未放置子数
-        int player2_InHand;
-        // 玩家1盘面剩余子数
-        int player1_Remain;
-        // 玩家1盘面剩余子数
-        int player2_Remain;
-        // 尚待去除的子数
-        int num_NeedRemove;
+        int nPiecesInHand_1;
 
-        /* 本打算用如下的结构体来表示“三连”
+        // 玩家2剩余未放置子数
+        int nPiecesInHand_2;
+
+        // 玩家1盘面剩余子数
+        int nPiecesOnBoard_1;
+
+        // 玩家1盘面剩余子数
+        int nPiecesOnBoard_2;
+
+        // 尚待去除的子数
+        int nPiecesNeedRemove;
+
+        /*
+        本打算用如下的结构体来表示“三连”
         struct Mill {
             char piece1;    // “三连”中最小的棋子
             char pos1;      // 最小棋子的位置
@@ -142,106 +168,124 @@ public:
 
 private:
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const char inBoard[(RING + 2) * SEAT];
+    static const char onBoard[(N_RINGS + 2) * N_SEATS];
 
     // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int moveTable[(RING + 2) * SEAT][4];
+    static int moveTable[(N_RINGS + 2) * N_SEATS][4];
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int millTable[(RING + 2) * SEAT][3][2];
+    static int millTable[(N_RINGS + 2) * N_SEATS][3][2];
 
 public:
     explicit NineChess();
     virtual ~NineChess();
+
     // 拷贝构造函数
     explicit NineChess(const NineChess &);
+
     // 运算符重载
     const NineChess &operator=(const NineChess &);
 
-    // 设置棋局状态和棋盘数据，用于初始化
-    bool setData(const struct Rule *rule,
-                 int s = 0,   // 限制步数
-                 int t = 0,   // 限制时间
-                 int step = 0,   // 默认起始步数为0
+    // 设置棋局状态和棋盘上下文，用于初始化
+    bool setContext(const struct Rule *rule,
+                 int maxStepsLedToDraw = 0,     // 限制步数
+                 int maxTimeLedToLose = 0,      // 限制时间
+                 int initialStep = 0,           // 默认起始步数为0
                  int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
-                 const char *boardsource = nullptr,   // 默认空棋盘
-                 int p1_InHand = 12,     // 玩家1剩余未放置子数
-                 int p2_InHand = 12,     // 玩家2剩余未放置子数
-                 int num_NeedRemove = 0  // 尚待去除的子数
+                 const char *board = nullptr,   // 默认空棋盘
+                 int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
+                 int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
+                 int nPiecesNeedRemove = 0      // 尚待去除的子数
     );
 
-    // 获取棋局状态和棋盘数据
-    void getData(struct Rule &rule, int &step, int &flags, int *&boardsource, int &p1_InHand, int &p2_InHand, int &num_NeedRemove);
+    // 获取棋局状态和棋盘上下文
+    void getContext(struct Rule &rule, int &step, int &flags, int *&board,
+                    int &nPiecesInHand_1, int &p2_nPiecesInHand_2InHand, int &nPiecesNeedRemove);
+
     // 获取当前规则
     const struct Rule *getRule() const
     {
         return &currentRule;
     }
+
     // 获取棋盘数据
     const int *getBoard() const
     {
-        return data.board;
+        return context.board;
     }
     // 获取棋子位置(c, p)
     bool getPieceCP(const Players &player, const int &number, int &c, int &p);
+
     // 获取当前棋子
     bool getCurrentPiece(Players &player, int &number);
+
     // 获取当前棋子位置点
     int getCurrentPos() const
     {
         return currentPos;
     }
+
     // 获取当前步数
     int getStep() const
     {
         return currentStep;
     }
+
     // 获取局面阶段标识
-    enum Phases getPhase() const
+    enum GameStage getStage() const
     {
-        return data.phase;
+        return context.stage;
     }
+
     // 获取轮流状态标识
     enum Players whosTurn() const
     {
-        return data.turn;
+        return context.turn;
     }
+
     // 获取动作状态标识
-    enum Actions getAction() const
+    enum Action getAction() const
     {
-        return data.action;
+        return context.action;
     }
+
     // 判断胜负
     enum Players whoWin() const
     {
         return winner;
     }
     // 玩家1和玩家2的用时
-    void getPlayer_TimeMS(int &p1_ms, int &p2_ms);
+    void getElapsedTimeMS(int &p1_ms, int &p2_ms);
+
     // 获取棋局的字符提示
-    const string getTip() const
+    const string getTips() const
     {
-        return tip;
+        return tips;
     }
+
     // 获取位置点棋子的归属人
     enum Players getWhosPiece(int c, int p);
+
     // 获取当前招法
     const char *getCmdLine() const
     {
         return cmdline;
     }
+
     // 获得棋谱
     const list<string> *getCmdList() const
     {
         return &cmdlist;
     }
+
     // 获取开局时间
     timeb getStartTimeb() const
     {
         return startTimeb;
     }
+
     // 重新设置开局时间
     void setStartTimeb(timeb stimeb)
     {
@@ -249,111 +293,144 @@ public:
     }
 
     // 玩家1剩余未放置子数
-    int getPlayer1_InHand() const
+    int getPiecesInHandCount_1() const
     {
-        return data.player1_InHand;
+        return context.nPiecesInHand_1;
     }
+
     // 玩家2剩余未放置子数
-    int getPlayer2_InHand() const
+    int getPiecesInHandCount_2() const
     {
-        return data.player2_InHand;
+        return context.nPiecesInHand_2;
     }
+
     // 玩家1盘面剩余子数
-    int getPlayer1_Remain() const
+    int getPiecesOnBoardCount_1() const
     {
-        return data.player1_Remain;
+        return context.nPiecesOnBoard_1;
     }
+
     // 玩家1盘面剩余子数
-    int getPlayer2_Remain() const
+    int getPiecesOnBoardCount_2() const
     {
-        return data.player2_Remain;
+        return context.nPiecesOnBoard_2;
     }
+
     // 尚待去除的子数
     int getNum_NeedRemove() const
     {
-        return data.num_NeedRemove;
+        return context.nPiecesNeedRemove;
     }
 
     // 游戏重置
     bool reset();
+
     // 游戏开始
     bool start();
 
     // 选子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool choose(int c, int p);
+
     // 落子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool place(int c, int p, long time_p = -1);
+
     // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
     bool capture(int c, int p, long time_p = -1);
+
     // 认输
     bool giveup(Players loser);
+
     // 命令行解析函数
     bool command(const char *cmd);
+
     // 局面左右镜像
     void mirror(bool cmdChange = true);
+
     // 局面内外翻转
     void turn(bool cmdChange = true);
+
     // 局面逆时针旋转
     void rotate(int degrees, bool cmdChange = true);
 
 protected:
     // 判断棋盘pos处的棋子处于几个“三连”中
     int isInMills(int pos);
+
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(char ch);
     bool isAllInMills(enum Players);
+
     // 判断玩家的棋子是否被围
     bool isSurrounded(int pos);
+
     // 判断玩家的棋子是否全部被围
     bool isAllSurrounded(char ch);
+
     bool isAllSurrounded(enum Players);
+
     // 三连加入列表
     int addMills(int pos);
+
     // 将棋盘下标形式转化为第c圈，第p位，c和p下标都从1开始
     bool pos2cp(const int pos, int &c, int &p);
+
     // 将第c圈，第p位转化为棋盘下标形式，c和p下标都从1开始
     int cp2pos(int c, int p);
+
     // 更新时间和状态，用内联函数以提高效率
     inline long update(long time_p = -1);
+
     // 是否分出胜负
     bool win();
+
     // 清除所有禁点
-    void cleanForbidden();
+    void cleanForbiddenPoints();
+
     // 改变轮流
     enum NineChess::Players changeTurn();
+
     // 设置提示
-    void setTip();
+    void setTips();
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool command(int move);
     bool choose(int pos);
     bool place(int pos);
     bool capture(int pos);
+
     // hash函数
     uint64_t chessHash();
 
 private:
     // 当前使用的规则
     struct Rule currentRule;
-    // 棋局数据
-    struct ChessData data;
+
+    // 棋局上下文
+    struct ChessContext context;
+
     // 棋局数据中的棋盘数据，单独提出来
     int *board_;
+
     // 选中的棋子在board中的位置
     int currentPos;
+
     // 胜负标识
     enum Players winner;
 
     // 当前步数
     int currentStep;
+
     // 游戏起始时间
     timeb startTimeb;
+
     // 当前游戏时间
     timeb currentTimeb;
+
     // 玩家1用时（毫秒）
-    long player1_MS;
+    long elapsedMS_1;
+
     // 玩家2用时（毫秒）
-    long player2_MS;
+    long elapsedMS_2;
 
     /* 当前招法，AI会用到，如下表示
     0x   00    00
@@ -372,7 +449,7 @@ private:
     list <string> cmdlist;
 
     // 当前棋局的字符提示
-    string tip;
+    string tips;
 };
 
 #endif

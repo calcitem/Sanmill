@@ -53,8 +53,10 @@ NineChessWindow::NineChessWindow(QWidget * parent) :
 
     // 关联视图和场景
     ui.gameView->setScene(scene);
+
     // 视图反走样
     ui.gameView->setRenderHint(QPainter::Antialiasing, true);
+
     // 视图反锯齿
     ui.gameView->setRenderHint(QPainter::Antialiasing);
 
@@ -92,6 +94,7 @@ void NineChessWindow::closeEvent(QCloseEvent *event)
 {
     if (file.isOpen())
         file.close();
+
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);
     //qDebug() << "closed";
@@ -133,12 +136,16 @@ void NineChessWindow::initialize()
         QAction *ruleAction = new QAction(i.value().at(0), this);
         ruleAction->setToolTip(i.value().at(1));
         ruleAction->setCheckable(true);
+
         // 索引值放在QAction的Data里
         ruleAction->setData(i.key());
+
         // 添加到动作列表
         ruleActionList.append(ruleAction);
+
         // 添加到“规则”菜单
         ui.menu_R->addAction(ruleAction);
+
         connect(ruleAction, SIGNAL(triggered()),
                 this, SLOT(actionRules_triggered()));
     }
@@ -172,6 +179,7 @@ void NineChessWindow::initialize()
     // 更新LCD1，显示玩家1用时
     connect(game, SIGNAL(time1Changed(QString)),
             ui.lcdNumber_1, SLOT(display(QString)));
+
     // 更新LCD2，显示玩家2用时
     connect(game, SIGNAL(time2Changed(QString)),
             ui.lcdNumber_2, SLOT(display(QString)));
@@ -183,6 +191,7 @@ void NineChessWindow::initialize()
     // 为状态栏添加一个正常显示的标签
     QLabel *statusBarlabel = new QLabel(this);
     ui.statusBar->addWidget(statusBarlabel);
+
     // 更新状态栏
     connect(game, SIGNAL(statusBarChanged(QString)),
             statusBarlabel, SLOT(setText(QString)));
@@ -190,8 +199,10 @@ void NineChessWindow::initialize()
     // 默认第2号规则
     ruleNo = 1;
     ruleActionList.at(ruleNo)->setChecked(true);
+
     // 重置游戏规则
     game->setRule(ruleNo);
+
     // 更新规则显示
     ruleInfo();
 
@@ -232,7 +243,7 @@ void NineChessWindow::ruleInfo()
     ui.labelRule->setText(tl + sl);
     // 规则提示
     ui.labelInfo->setToolTip(QString(NineChess::RULES[ruleNo].name) + "\n" +
-                             NineChess::RULES[ruleNo].info);
+                             NineChess::RULES[ruleNo].description);
     ui.labelRule->setToolTip(ui.labelInfo->toolTip());
 
     //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
@@ -287,6 +298,7 @@ void NineChessWindow::on_actionLimited_T_triggered()
     buttonBox->setCenterButtons(true);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("确定"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("取消"));
+
     // 布局
     formLayout->setSpacing(6);
     formLayout->setContentsMargins(11, 11, 11, 11);
@@ -295,9 +307,11 @@ void NineChessWindow::on_actionLimited_T_triggered()
     formLayout->setWidget(1, QFormLayout::LabelRole, label_time);
     formLayout->setWidget(1, QFormLayout::FieldRole, comboBox_time);
     formLayout->setWidget(2, QFormLayout::SpanningRole, buttonBox);
+
     // 关联信号和槽函数
     connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
+
     // 收集数据
     if (dialog->exec() == QDialog::Accepted) {
         int dStep = comboBox_step->currentData().toInt();
@@ -424,9 +438,11 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
     if (path.isEmpty() == false) {
         if (file.isOpen())
             file.close();
-        //文件对象  
+
+        // 文件对象  
         file.setFileName(path);
-        //打开文件,只写方式打开
+
+        // 打开文件,只写方式打开
         bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
         if (isok) {
             //写文件
@@ -733,6 +749,7 @@ void NineChessWindow::on_actionAbout_A_triggered()
     dialog->setObjectName(QStringLiteral("aboutDialog"));
     dialog->setWindowTitle(tr("九连棋"));
     dialog->setModal(true);
+
     // 生成各个控件
     QVBoxLayout *vLayout = new QVBoxLayout(dialog);
     QHBoxLayout *hLayout = new QHBoxLayout;
@@ -740,6 +757,7 @@ void NineChessWindow::on_actionAbout_A_triggered()
     QLabel *label_icon2 = new QLabel(dialog);
     QLabel *label_text = new QLabel(dialog);
     QLabel *label_image = new QLabel(dialog);
+
     // 设置各个控件数据
     label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
     label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
@@ -762,6 +780,7 @@ void NineChessWindow::on_actionAbout_A_triggered()
     hLayout->addWidget(label_icon2);
     hLayout->addWidget(label_text);
     vLayout->addWidget(label_image);
+
     // 运行对话框
     dialog->exec();
 

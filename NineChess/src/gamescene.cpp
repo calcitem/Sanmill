@@ -81,7 +81,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         if (p != QPointF(0, 0))
             // 发送鼠标点最近的落子点
             emit mouseReleased(p);
-    }// 如果是棋子
+    } // 如果是棋子
     else if (item->type() == PieceItem::Type) {
         // 将当前棋子在场景中的位置发送出去
         emit mouseReleased(item->scenePos());

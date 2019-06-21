@@ -35,14 +35,14 @@ void NineChessAi_ab::buildChildren(Node *node)
         return;
 
     // 临时变量
-    char opponent = chessTemp.data.turn == NineChess::PLAYER1 ? 0x20 : 0x10;
+    char opponent = chessTemp.context.turn == NineChess::PLAYER1 ? 0x20 : 0x10;
     // 列出所有合法的下一招
-    switch (chessTemp.data.action) {
+    switch (chessTemp.context.action) {
     case NineChess::ACTION_CHOOSE:
     case NineChess::ACTION_PLACE:
         // 对于开局落子
-        if ((chessTemp.data.phase) & (NineChess::GAME_OPENING | NineChess::GAME_NOTSTARTED)) {
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
+        if ((chessTemp.context.stage) & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
+            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (!chessTemp.board_[i]) {
                     Node *newNode = new Node;
                     newNode->parent = node;
@@ -55,11 +55,11 @@ void NineChessAi_ab::buildChildren(Node *node)
         // 对于中局移子
         else {
             int newPos;
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
+            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (!chessTemp.choose(i))
                     continue;
-                if ((chessTemp.data.turn == NineChess::PLAYER1 && (chessTemp.data.player1_Remain > chessTemp.currentRule.numAtLest || !chessTemp.currentRule.canFly)) ||
-                    (chessTemp.data.turn == NineChess::PLAYER2 && (chessTemp.data.player2_Remain > chessTemp.currentRule.numAtLest || !chessTemp.currentRule.canFly))) {
+                if ((chessTemp.context.turn == NineChess::PLAYER1 && (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
+                    (chessTemp.context.turn == NineChess::PLAYER2 && (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
                     for (int j = 0; j < 4; j++) {
                         newPos = chessTemp.moveTable[i][j];
                         if (newPos && !chessTemp.board_[newPos]) {
@@ -71,7 +71,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                         }
                     }
                 } else {
-                    for (int j = NineChess::SEAT; j < (NineChess::RING + 1) * NineChess::SEAT; j++) {
+                    for (int j = NineChess::N_SEATS; j < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; j++) {
                         if (!chessTemp.board_[j]) {
                             Node *newNode = new Node;
                             newNode->parent = node;
@@ -88,7 +88,7 @@ void NineChessAi_ab::buildChildren(Node *node)
     case NineChess::ACTION_CAPTURE:
         // 全成三的情况
         if (chessTemp.isAllInMills(opponent)) {
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
+            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (chessTemp.board_[i] & opponent) {
                     Node *newNode = new Node;
                     newNode->parent = node;
@@ -98,7 +98,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                 }
             }
         } else {
-            for (int i = NineChess::SEAT; i < (NineChess::RING + 1) * NineChess::SEAT; i++) {
+            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (chessTemp.board_[i] & opponent) {
                     if (!chessTemp.isInMills(i)) {
                         Node *newNode = new Node;
@@ -156,7 +156,7 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 
     this->chess_ = chess;
     chessTemp = chess;
-    chessData = &(chessTemp.data);
+    chessData = &(chessTemp.context);
     requiredQuit = false;
     deleteTree(rootNode);
     rootNode = new Node;
@@ -169,15 +169,15 @@ int NineChessAi_ab::evaluate(Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     int value = 0;
-    switch (chessData->phase) {
+    switch (chessData->stage) {
     case NineChess::GAME_NOTSTARTED:
         break;
 
-    case NineChess::GAME_OPENING:
+    case NineChess::GAME_PLACING:
         // 按手中的棋子计分，不要break;
-        value += chessData->player1_InHand * 50 - chessData->player2_InHand * 50;
+        value += chessData->nPiecesInHand_1 * 50 - chessData->nPiecesInHand_2 * 50;
         // 按场上棋子计分
-        value += chessData->player1_Remain * 100 - chessData->player2_Remain * 100;
+        value += chessData->nPiecesOnBoard_1 * 100 - chessData->nPiecesOnBoard_2 * 100;
         switch (chessData->action) {
             // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
@@ -185,16 +185,16 @@ int NineChessAi_ab::evaluate(Node *node)
             break;
             // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 100 : -(chessData->num_NeedRemove) * 100;
+            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->nPiecesNeedRemove) * 100 : -(chessData->nPiecesNeedRemove) * 100;
             break;
         default:
             break;
         }
         break;
 
-    case NineChess::GAME_MID:
+    case NineChess::GAME_MOVING:
         // 按场上棋子计分
-        value += chessData->player1_Remain * 100 - chessData->player2_Remain * 100;
+        value += chessData->nPiecesOnBoard_1 * 100 - chessData->nPiecesOnBoard_2 * 100;
         switch (chessData->action) {
             // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
@@ -202,7 +202,7 @@ int NineChessAi_ab::evaluate(Node *node)
             break;
             // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->num_NeedRemove) * 128 : -(chessData->num_NeedRemove) * 128;
+            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->nPiecesNeedRemove) * 128 : -(chessData->nPiecesNeedRemove) * 128;
             break;
         default:
             break;
@@ -211,9 +211,9 @@ int NineChessAi_ab::evaluate(Node *node)
 
         // 终局评价最简单
     case NineChess::GAME_OVER:
-        if (chessData->player1_Remain < chessTemp.currentRule.numAtLest)
+        if (chessData->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
             value = -15000;
-        else if (chessData->player2_Remain < chessTemp.currentRule.numAtLest)
+        else if (chessData->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
             value = 15000;
         break;
 
@@ -239,7 +239,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     int minMax;
 
     // 搜索到叶子节点（决胜局面）
-    if (chessData->phase == NineChess::GAME_OVER) {
+    if (chessData->stage == NineChess::GAME_OVER) {
         node->value = evaluate(node);
         if (node->value > 0)
             node->value += depth;
@@ -286,10 +286,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
         minMax = -infinity;
         for (auto child : node->children) {
-            dataStack.push(chessTemp.data);
+            dataStack.push(chessTemp.context);
             chessTemp.command(child->move);
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
-            chessTemp.data = dataStack.top();
+            chessTemp.context = dataStack.top();
             dataStack.pop();
             // 取最大值
             if (value > minMax)
@@ -307,10 +307,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     else {
         minMax = infinity;
         for (auto child : node->children) {
-            dataStack.push(chessTemp.data);
+            dataStack.push(chessTemp.context);
             chessTemp.command(child->move);
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
-            chessTemp.data = dataStack.top();
+            chessTemp.context = dataStack.top();
             dataStack.pop();
             // 取最小值
             if (value < minMax)

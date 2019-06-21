@@ -65,19 +65,24 @@ void BoardItem::paint(QPainter *painter,
     Q_UNUSED(option)
         Q_UNUSED(widget)
 
-        // 填充阴影
-        painter->fillRect(boundingRect(), QBrush(QColor(64, 64, 64)));
+    // 填充阴影
+    painter->fillRect(boundingRect(), QBrush(QColor(64, 64, 64)));
+
     // 填充图片
     painter->drawPixmap(-size / 2, -size / 2, size, size, QPixmap(":/image/resources/image/board.png"));
+
     // 黑色实线画笔
     QPen pen(QBrush(Qt::black), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
     painter->setPen(pen);
+
     // 空画刷
     painter->setBrush(Qt::NoBrush);
+
     for (int i = 0; i < RING; i++) {
         // 画3个方框
         painter->drawPolygon(position + i * SEAT, SEAT);
     }
+
     // 画4条纵横线
     painter->drawLine(position[0], position[(RING - 1) * SEAT]);
     painter->drawLine(position[2], position[(RING - 1) * SEAT + 2]);
@@ -96,6 +101,7 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
 {
     // 初始最近点设为(0,0)点
     QPointF nearestPos = QPointF(0, 0);
+
     // 寻找最近的落子点
     for (int i = 0; i < RING * SEAT; i++) {
         // 如果鼠标点距离落子点在棋子半径内
@@ -123,5 +129,6 @@ bool BoardItem::pos2cp(QPointF pos, int &c, int &p)
             return true;
         }
     }
+
     return false;
 }

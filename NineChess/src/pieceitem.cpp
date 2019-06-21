@@ -17,23 +17,32 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
         );
     // 设置缓存模式
     setCacheMode(DeviceCoordinateCache);
+
     // 鼠标放在棋子上时显示为伸开的手形
     setCursor(Qt::OpenHandCursor);
+
     // 只接受左键事件
     //setAcceptedMouseButtons(Qt::LeftButton);
+
     // 不接受鼠标事件
     setAcceptedMouseButtons(0);
     //setAcceptHoverEvents(true);
+
     // 默认模型为没有棋子
     model_ = noPiece;
+
     // 棋子尺寸
     size = PIECE_SIZE;
+
     // 选中子标识线宽度
     chooseLineWeight = LINE_WEIGHT;
+
     // 删除线宽度
     removeLineWeight = LINE_WEIGHT * 5;
+
     // 选中线为黄色
     chooseLineColor = Qt::darkYellow;
+
     // 删除线为橘红色
     removeLineColor = QColor(0xff, 0x75, 0);
 }
@@ -66,7 +75,7 @@ void PieceItem::paint(QPainter *painter,
         if (model_ == blackPiece)
             painter->drawPixmap(-size / 2, -size / 2, size, size,
                                 QPixmap(":/image/resources/image/black_piece.png"));
-    // 如果模型为白色，则画白色棋子
+        // 如果模型为白色，则画白色棋子
         else if (model_ == whitePiece)
             painter->drawPixmap(-size / 2, -size / 2, size, size,
                                 QPixmap(":/image/resources/image/white_piece.png"));
@@ -75,14 +84,17 @@ void PieceItem::paint(QPainter *painter,
     if (showNum) {
         // 如果模型为黑色，用白色笔画序号
         painter->setPen(QColor(255, 255, 255));
+
         // 如果模型为白色，用白色笔画序号
         if (model_ == whitePiece)
             painter->setPen(QColor(0, 0, 0));
+
         // 字体
         QFont font;
         font.setFamily("Arial");
         font.setPointSize(size / 3);
         painter->setFont(font);
+
         // 画序号，默认中间位置偏下，需微调
         painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12), Qt::AlignCenter, QString::number(num));
 

@@ -26,8 +26,10 @@ public:
     QSize sizeHint() const
     {
         QSize size = QListView::sizeHint();
+
         // 缺省宽度设为128，这样就不太宽了
         size.setWidth(128);
+
         return size;
     }
 
@@ -70,6 +72,7 @@ protected slots:
     {
         // 调用父类默认函数
         QListView::dataChanged(topLeft, bottomRight, roles);
+
         // 如果包含model
         if (model()) {
             // 判断

@@ -77,20 +77,28 @@ protected:
 private:
     // 棋子本质
     enum Models model_;
+
     // 棋子序号，黑白都从1开始
     int num;
+
     // 棋子尺寸
     qreal size;
+
     // 有无删除线
     bool deleted_;
+
     // 显示序号
     bool showNum;
+
     // 选中子标识线宽度
     qreal chooseLineWeight;
+
     // 删除线宽度
     qreal removeLineWeight;
+
     // 选中线颜色
     QColor chooseLineColor;
+
     // 删除线颜色
     QColor removeLineColor;
 };

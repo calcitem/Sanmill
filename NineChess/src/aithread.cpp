@@ -4,10 +4,13 @@
 AiThread::AiThread(int id, QObject *parent) : QThread(parent), waiting_(false), aiDepth(8), aiTime(10)
 {
     this->id = id;
+
     // 连接定时器启动，减去118毫秒的返回时间
     connect(this, &AiThread::calcStarted, this, [=]() {timer.start(aiTime * 1000 - 118); }, Qt::QueuedConnection);
+
     // 连接定时器停止
     connect(this, &AiThread::calcFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
+
     // 连接定时器处理函数
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
 }

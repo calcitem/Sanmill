@@ -35,7 +35,7 @@ public:
     {
         int value;                     // 节点的值
         int move;                      // 招法的命令行指令，图上标示为节点前的连线
-        struct Node *parent;          // 父节点
+        struct Node *parent;           // 父节点
         list<struct Node *> children;  // 子节点列表
     };
 
@@ -44,44 +44,55 @@ public:
     ~NineChessAi_ab();
 
     void setChess(const NineChess &chess);
+
     void quit()
     {
         requiredQuit = true;
     }
+
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth);
+
     // 返回最佳走法的命令行
     const char *bestMove();
 
 protected:
     // 建立子节点
     void buildChildren(Node *node);
+
     // 子节点排序
     void sortChildren(Node *node);
+
     // 清空节点树
     void deleteTree(Node *node);
+
     // 评价函数
     int evaluate(Node *node);
+
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
+
     // 返回招法的命令行
     const char *move2string(int move);
+
     // 判断是否在哈希表中
     unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator findHash(uint64_t hash);
 
 private:
     // 原始模型
     NineChess chess_;
+
     // 演算用的模型
     NineChess chessTemp;
-    NineChess::ChessData *chessData;
+
+    NineChess::ChessContext *chessData;
     // hash计算时，各种转换用的模型
     NineChess chessTempShift;
 
     // 根节点
     Node *rootNode;
     // 局面数据栈
-    stack<NineChess::ChessData> dataStack;
+    stack<NineChess::ChessContext> dataStack;
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit;
