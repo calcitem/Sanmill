@@ -88,12 +88,28 @@ void BoardItem::paint(QPainter *painter,
     painter->drawLine(position[2], position[(RING - 1) * SEAT + 2]);
     painter->drawLine(position[4], position[(RING - 1) * SEAT + 4]);
     painter->drawLine(position[6], position[(RING - 1) * SEAT + 6]);
+
     if (hasObliqueLine) {
         // 画4条斜线
         painter->drawLine(position[1], position[(RING - 1) * SEAT + 1]);
         painter->drawLine(position[3], position[(RING - 1) * SEAT + 3]);
         painter->drawLine(position[5], position[(RING - 1) * SEAT + 5]);
         painter->drawLine(position[7], position[(RING - 1) * SEAT + 7]);
+    }
+
+    // 画 Seat 编号
+    QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    painter->setPen(fontPen);
+    QFont font;
+    font.setPointSize(4);
+    font.setFamily("Arial");    
+    font.setLetterSpacing(QFont::AbsoluteSpacing, 0);    
+    painter->setFont(font);
+
+    for (int i = 0; i < 8; i++) {
+        char cSeat = '1' + i;
+        QString strSeat(cSeat);        
+        painter->drawText(position[(RING - 1) * SEAT + i], strSeat);
     }
 }
 
