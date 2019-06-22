@@ -305,9 +305,11 @@ void GameController::setSound(bool arg)
 
 void GameController::playSound(const QString &soundPath)
 {
+#ifdef PLAY_SOUND
     if (hasSound) {
         QSound::play(soundPath);
     }
+#endif /* PLAY_SOUND */
 }
 
 // 上下翻转
