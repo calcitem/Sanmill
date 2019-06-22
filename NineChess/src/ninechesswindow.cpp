@@ -667,18 +667,18 @@ void NineChessWindow::on_actionEngine_E_triggered()
     groupBox1->setTitle(tr("玩家1 AI设置"));
     label_depth1->setText(tr("深度"));
     spinBox_depth1->setMinimum(1);
-    spinBox_depth1->setMaximum(10);
+    spinBox_depth1->setMaximum(99);
     label_time1->setText(tr("限时"));
     spinBox_time1->setMinimum(1);
-    spinBox_time1->setMaximum(30);
+    spinBox_time1->setMaximum(3600);
 
     groupBox2->setTitle(tr("玩家2 AI设置"));
     label_depth2->setText(tr("深度"));
     spinBox_depth2->setMinimum(1);
-    spinBox_depth2->setMaximum(10);
+    spinBox_depth2->setMaximum(99);
     label_time2->setText(tr("限时"));
     spinBox_time2->setMinimum(1);
-    spinBox_time2->setMaximum(30);
+    spinBox_time2->setMaximum(3600);
 
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
