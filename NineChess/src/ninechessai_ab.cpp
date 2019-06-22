@@ -160,7 +160,7 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 
     this->chess_ = chess;
     chessTemp = chess;
-    chessData = &(chessTemp.context);
+    chessContext = &(chessTemp.context);
     requiredQuit = false;
     deleteTree(rootNode);
     rootNode = new Node;
@@ -173,25 +173,26 @@ int NineChessAi_ab::evaluate(Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     int value = 0;
-    switch (chessData->stage) {
+    switch (chessContext->stage) {
     case NineChess::GAME_NOTSTARTED:
         break;
 
     case NineChess::GAME_PLACING:
         // 按手中的棋子计分，不要break;
-        value += chessData->nPiecesInHand_1 * 50 - chessData->nPiecesInHand_2 * 50;
+        value += (chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2) * 50;
 
         // 按场上棋子计分
-        value += chessData->nPiecesOnBoard_1 * 100 - chessData->nPiecesOnBoard_2 * 100;
+        value += (chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2) * 100;
 
-        switch (chessData->action) {
-            // 选子和落子使用相同的评价方法
+        switch (chessContext->action) {
+        // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-            // 如果形成去子状态，每有一个可去的子，算100分
+
+        // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->nPiecesNeedRemove) * 100 : -(chessData->nPiecesNeedRemove) * 100;
+            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 100 : -(chessContext->nPiecesNeedRemove) * 100;
             break;
         default:
             break;
@@ -201,16 +202,17 @@ int NineChessAi_ab::evaluate(Node *node)
 
     case NineChess::GAME_MOVING:
         // 按场上棋子计分
-        value += chessData->nPiecesOnBoard_1 * 100 - chessData->nPiecesOnBoard_2 * 100;
+        value += chessContext->nPiecesOnBoard_1 * 100 - chessContext->nPiecesOnBoard_2 * 100;
 
-        switch (chessData->action) {
-            // 选子和落子使用相同的评价方法
+        switch (chessContext->action) {
+         // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
+
         // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
-            value += (chessData->turn == NineChess::PLAYER1) ? (chessData->nPiecesNeedRemove) * 128 : -(chessData->nPiecesNeedRemove) * 128;
+            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 128 : -(chessContext->nPiecesNeedRemove) * 128;
             break;
         default:
             break;
@@ -220,9 +222,9 @@ int NineChessAi_ab::evaluate(Node *node)
 
     // 终局评价最简单
     case NineChess::GAME_OVER:
-        if (chessData->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
+        if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
             value = -15000;
-        else if (chessData->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
+        else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
             value = 15000;
         break;
 
@@ -248,7 +250,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     int minMax;
 
     // 搜索到叶子节点（决胜局面）
-    if (chessData->stage == NineChess::GAME_OVER) {
+    if (chessContext->stage == NineChess::GAME_OVER) {
         node->value = evaluate(node);
         if (node->value > 0)
             node->value += depth;
@@ -260,7 +262,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
         node->value = evaluate(node);
-        if (chessData->turn == NineChess::PLAYER1)
+        if (chessContext->turn == NineChess::PLAYER1)
             node->value += depth;
         else
             node->value -= depth;

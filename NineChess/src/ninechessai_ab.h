@@ -85,12 +85,14 @@ private:
     // 演算用的模型
     NineChess chessTemp;
 
-    NineChess::ChessContext *chessData;
+    NineChess::ChessContext *chessContext;
+
     // hash计算时，各种转换用的模型
     NineChess chessTempShift;
 
     // 根节点
     Node *rootNode;
+
     // 局面数据栈
     stack<NineChess::ChessContext> dataStack;
 
@@ -99,8 +101,10 @@ private:
 
     // 互斥锁
     static mutex mtx;
+
     // 局面数据哈希表
     static unordered_map<uint64_t, HashValue> hashmap;
+
     // 哈希表的默认大小
     static const size_t maxHashCount = 1024 * 1024;
 
