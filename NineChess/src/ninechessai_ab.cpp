@@ -7,6 +7,7 @@
 #include "ninechessai_ab.h"
 #include <cmath>
 #include <time.h>
+#include <Qdebug>
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
@@ -369,10 +370,33 @@ const char *NineChessAi_ab::bestMove()
 {
     if ((rootNode->children).size() == 0)
         return "error!";
+
+    qDebug() << "31 ----- 24 ----- 25";
+    qDebug() << "| \       |       / |";
+    qDebug() << "|  23 -- 16 -- 17  |";
+    qDebug() << "|  | \    |   /  |  |";
+    qDebug() << "|  |  15 08 09  |  |";
+    qDebug() << "30-22-14    10-18-26";
+    qDebug() << "|  |  13 12 11  |  |";
+    qDebug() << "|  | /    |   \  |  |";
+    qDebug() << "|  21 -- 20 -- 19  |";
+    qDebug() << "| /       |      \  |";
+    qDebug() << "29 ----- 28 ----- 27";
+    qDebug() << "";
+
+    string moves = "";
+    for (auto child : rootNode->children) {
+        if (child->value == rootNode->value)
+            qDebug() << child->move << ":" << child->value << "(*)";
+        else
+            qDebug() << child->move << ":" << child->value;
+    }
+
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value)
             return move2string(child->move);
     }
+
     return "error!";
 }
 
