@@ -192,7 +192,7 @@ int NineChessAi_ab::evaluate(Node *node)
 
         // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 100 : -(chessContext->nPiecesNeedRemove) * 100;
+            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 1000 : -(chessContext->nPiecesNeedRemove) * 1000;
             break;
         default:
             break;
