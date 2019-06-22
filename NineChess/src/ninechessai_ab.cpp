@@ -387,9 +387,9 @@ const char *NineChessAi_ab::bestMove()
     string moves = "";
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value)
-            qDebug() << child->move << ":" << child->value << "(*)";
+            qDebug() << "[" << child->move << "] " << move2string(child->move) << " : " << child->value << "*";
         else
-            qDebug() << child->move << ":" << child->value;
+            qDebug() << "[" << child->move << "] " << move2string(child->move) << " : " << child->value;
     }
 
     for (auto child : rootNode->children) {

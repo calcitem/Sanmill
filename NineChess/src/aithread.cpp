@@ -73,7 +73,7 @@ void AiThread::run()
 
         ai_ab.alphaBetaPruning(aiDepth);
         const char *str = ai_ab.bestMove();
-        qDebug() << "Computer:" << str;
+        qDebug() << "Computer:" << str << "\n";
         if (strcmp(str, "error!"))
             emit command(str);
 #ifdef DEBUG
