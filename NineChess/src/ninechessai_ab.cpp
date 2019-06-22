@@ -120,11 +120,15 @@ void NineChessAi_ab::buildChildren(Node *node)
 void NineChessAi_ab::sortChildren(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
+
+#ifdef AB_RANDOM_SORT_CHILDREN
     // 这里我用一个随机排序，使AI不至于每次走招相同
     srand((unsigned)time(0));
     for (auto i : node->children) {
         i->value = rand();
     }
+#endif /* AB_RANDOM_SORT_CHILDREN */
+
     // 排序
     if (chessTemp.whosTurn() == NineChess::PLAYER1)
         node->children.sort([](Node *n1, Node *n2) { return n1->value > n2->value; });
@@ -176,8 +180,10 @@ int NineChessAi_ab::evaluate(Node *node)
     case NineChess::GAME_PLACING:
         // 按手中的棋子计分，不要break;
         value += chessData->nPiecesInHand_1 * 50 - chessData->nPiecesInHand_2 * 50;
+
         // 按场上棋子计分
         value += chessData->nPiecesOnBoard_1 * 100 - chessData->nPiecesOnBoard_2 * 100;
+
         switch (chessData->action) {
             // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
@@ -190,26 +196,29 @@ int NineChessAi_ab::evaluate(Node *node)
         default:
             break;
         }
+
         break;
 
     case NineChess::GAME_MOVING:
         // 按场上棋子计分
         value += chessData->nPiecesOnBoard_1 * 100 - chessData->nPiecesOnBoard_2 * 100;
+
         switch (chessData->action) {
             // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-            // 如果形成去子状态，每有一个可去的子，算128分
+        // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
             value += (chessData->turn == NineChess::PLAYER1) ? (chessData->nPiecesNeedRemove) * 128 : -(chessData->nPiecesNeedRemove) * 128;
             break;
         default:
             break;
         }
+
         break;
 
-        // 终局评价最简单
+    // 终局评价最简单
     case NineChess::GAME_OVER:
         if (chessData->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
             value = -15000;
