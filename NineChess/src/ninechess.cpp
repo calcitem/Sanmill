@@ -31,6 +31,7 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
     false,      // 先摆棋者先行棋
     true,       // 可以重复成三
     false,      // 多个“三连”只能提一子
+    false,      // 不能提对手的“三连”子，除非无子可提；
     true,       // 摆棋满子（闷棋，只有12子棋才出现）算先手负
     true,       // 走棋阶段不能行动（被“闷”）算负
     false,      // 剩三子时不可以飞棋
@@ -53,6 +54,7 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
     true,       // 后摆棋者先行棋
     true,       // 可以重复成三
     false,      // 多个“三连”只能提一子
+    true,       // 可以提对手的“三连”子
     true,       // 摆棋满子（闷棋，只有12子棋才出现）算先手负
     true,       // 走棋阶段不能行动（被“闷”）算负
     false,      // 剩三子时不可以飞棋
@@ -73,6 +75,7 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
     false,      // 先摆棋者先行棋
     false,      // 不可以重复成三
     true,       // 出现几个“三连”就可以提几个子
+    false,      // 不能提对手的“三连”子，除非无子可提；
     true,       // 摆棋满子（闷棋，只有12子棋才出现）算先手负
     false,      // 走棋阶段不能行动（被“闷”），则由对手继续走棋
     false,      // 剩三子时不可以飞棋
@@ -90,6 +93,7 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
     false,      // 先摆棋者先行棋
     true,       // 可以重复成三
     false,      // 多个“三连”只能提一子
+    false,      // 不能提对手的“三连”子，除非无子可提；
     true,       // 摆棋满子（闷棋，只有12子棋才出现）算先手负
     true,       // 走棋阶段不能行动（被“闷”）算负
     true,       // 剩三子时可以飞棋
@@ -731,7 +735,8 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
-    if (isInMills(pos) && !isAllInMills(opponent)) {
+    if (currentRule.allowRemoveMill == false &&
+        isInMills(pos) && !isAllInMills(opponent)) {
         return false;
     }
 
@@ -1034,7 +1039,8 @@ bool NineChess::capture(int pos)
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
-    if (isInMills(pos) && !isAllInMills(opponent)) {
+    if (currentRule.allowRemoveMill == false &&
+        isInMills(pos) && !isAllInMills(opponent)) {
         return false;
     }
 

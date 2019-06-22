@@ -64,6 +64,9 @@ public:
         // 多个“三连”能否多提子
         bool allowRemoveMultiPieces;
 
+        // 能否提“三连”的子
+        bool allowRemoveMill;
+
         // 摆棋满子（闷棋，只有12子棋才出现），是否算先手负，false为和棋
         bool isStartingPlayerLoseWhenBoardFull;
 
