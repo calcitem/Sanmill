@@ -859,7 +859,7 @@ bool GameController::updateScence(NineChess &chess)
         int j;
 
         // 遍历棋盘，查找并放置棋盘上的棋子
-        for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
+        for (j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
             if (board[j] == key) {
                 pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
                 if (piece->pos() != pos) {
