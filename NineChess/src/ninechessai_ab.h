@@ -66,6 +66,9 @@ protected:
     // 清空节点树
     void deleteTree(Node *node);
 
+    // 增加新节点
+    void addNode(Node* parent, int value, int move);
+
     // 评价函数
     int evaluate(Node *node);
 

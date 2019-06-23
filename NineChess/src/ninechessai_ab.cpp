@@ -25,6 +25,15 @@ NineChessAi_ab::~NineChessAi_ab()
     rootNode = nullptr;
 }
 
+void NineChessAi_ab::addNode(Node *parent, int value, int move)
+{
+    Node *newNode = new Node;
+    newNode->parent = parent;
+    newNode->value = value;
+    newNode->move = move;
+    parent->children.push_back(newNode);
+}
+
 // 静态hashmap初始化
 mutex NineChessAi_ab::mtx;
 unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
@@ -46,11 +55,7 @@ void NineChessAi_ab::buildChildren(Node *node)
         if ((chessTemp.context.stage) & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
             for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (!chessTemp.board_[i]) {
-                    Node *newNode = new Node;
-                    newNode->parent = node;
-                    newNode->value = 0;
-                    newNode->move = i;
-                    node->children.push_back(newNode);
+                    addNode(node, 0, i);
                 }
             }
         }
@@ -67,21 +72,13 @@ void NineChessAi_ab::buildChildren(Node *node)
                     for (int j = 0; j < 4; j++) {
                         newPos = chessTemp.moveTable[i][j];
                         if (newPos && !chessTemp.board_[newPos]) {
-                            Node *newNode = new Node;
-                            newNode->parent = node;
-                            newNode->value = 0;
-                            newNode->move = (i << 8) + newPos;
-                            node->children.push_back(newNode);
+                            addNode(node, 0, (i << 8) + newPos);
                         }
                     }
                 } else {
                     for (int j = NineChess::N_SEATS; j < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; j++) {
                         if (!chessTemp.board_[j]) {
-                            Node *newNode = new Node;
-                            newNode->parent = node;
-                            newNode->value = 0;
-                            newNode->move = (i << 8) + j;
-                            node->children.push_back(newNode);
+                            addNode(node, 0, (i << 8) + j);
                         }
                     }
                 }
@@ -94,22 +91,14 @@ void NineChessAi_ab::buildChildren(Node *node)
         if (chessTemp.isAllInMills(opponent)) {
             for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (chessTemp.board_[i] & opponent) {
-                    Node *newNode = new Node;
-                    newNode->parent = node;
-                    newNode->value = 0;
-                    newNode->move = -i;
-                    node->children.push_back(newNode);
+                    addNode(node, 0, -i);
                 }
             }
         } else if (!chessTemp.isAllInMills(opponent)) {
             for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (chessTemp.board_[i] & opponent) {
                     if (!chessTemp.isInMills(i)) {
-                        Node *newNode = new Node;
-                        newNode->parent = node;
-                        newNode->value = 0;
-                        newNode->move = -i;
-                        node->children.push_back(newNode);
+                        addNode(node, 0, -i);
                     }
                 }
             }
