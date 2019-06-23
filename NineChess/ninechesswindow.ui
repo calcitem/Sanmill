@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>491</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -806,6 +806,9 @@
    </property>
   </action>
   <action name="actionViewHelp_V">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
      <normaloff>:/icon/resources/icon/Help.png</normaloff>:/icon/resources/icon/Help.png</iconset>
@@ -818,6 +821,9 @@
    </property>
   </action>
   <action name="actionWeb_W">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="ninechesswindow.qrc">
      <normaloff>:/icon/resources/icon/HomeHS.png</normaloff>:/icon/resources/icon/HomeHS.png</iconset>
@@ -830,6 +836,9 @@
    </property>
   </action>
   <action name="actionAbout_A">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>关于(&amp;A)...</string>
    </property>

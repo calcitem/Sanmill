@@ -495,7 +495,7 @@ void GameController::timerEvent(QTimerEvent *event)
         emit statusBarChanged(message);
 
         // 播放音效
-        playSound(":/sound/resources/sound/win.wav");
+        //playSound(":/sound/resources/sound/win.wav");
     }
 
     // 测试用代码
