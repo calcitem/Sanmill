@@ -47,7 +47,7 @@ void AiThread::run()
     int iTemp = 0;
 #endif
 
-    // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
+    // 设一个标识，1号线程只管玩家1即黑方，2号线程只管玩家2即白方
     int i = 0;
 
     qDebug() << "Thread" << id << "start";

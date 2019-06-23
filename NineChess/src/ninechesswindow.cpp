@@ -190,6 +190,9 @@ void NineChessWindow::initialize()
 
     // 为状态栏添加一个正常显示的标签
     QLabel *statusBarlabel = new QLabel(this);
+    QFont statusBarFont;
+    statusBarFont.setPointSize(16);
+    statusBarlabel->setFont(statusBarFont);
     ui.statusBar->addWidget(statusBarlabel);
 
     // 更新状态栏
@@ -664,7 +667,7 @@ void NineChessWindow::on_actionEngine_E_triggered()
     QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
 
     // 设置各个控件数据
-    groupBox1->setTitle(tr("玩家1 AI设置"));
+    groupBox1->setTitle(tr("黑方(玩家1) AI设置"));
     label_depth1->setText(tr("深度"));
     spinBox_depth1->setMinimum(1);
     spinBox_depth1->setMaximum(99);
@@ -672,7 +675,7 @@ void NineChessWindow::on_actionEngine_E_triggered()
     spinBox_time1->setMinimum(1);
     spinBox_time1->setMaximum(3600);
 
-    groupBox2->setTitle(tr("玩家2 AI设置"));
+    groupBox2->setTitle(tr("白方(玩家2) AI设置"));
     label_depth2->setText(tr("深度"));
     spinBox_depth2->setMinimum(1);
     spinBox_depth2->setMaximum(99);

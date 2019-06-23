@@ -27,7 +27,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     isEngine1(false),
     isEngine2(false),
     hasAnimation(true),
-    durationTime(250),
+    durationTime(500),
     hasSound(true),
     timeID(0),
     ruleNo_(-1),
@@ -291,9 +291,9 @@ void GameController::setAnimation(bool arg)
 {
     hasAnimation = arg;
 
-    // 默认动画时间250ms
+    // 默认动画时间500ms
     if (hasAnimation)
-        durationTime = 250;
+        durationTime = 500;
     else
         durationTime = 0;
 }
@@ -495,7 +495,7 @@ void GameController::timerEvent(QTimerEvent *event)
         emit statusBarChanged(message);
 
         // 播放音效
-        //playSound(":/sound/resources/sound/win.wav");
+        playSound(":/sound/resources/sound/win.wav");
     }
 
     // 测试用代码
