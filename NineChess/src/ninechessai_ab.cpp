@@ -246,6 +246,13 @@ int NineChessAi_ab::evaluate(Node *node)
 
 int NineChessAi_ab::alphaBetaPruning(int depth)
 {
+    // 走棋阶段将深度调整为 10
+    if ((chessTemp.context.stage) & (NineChess::GAME_MOVING)) {
+        depth = 10;
+    }
+
+    qDebug() << "Depth:" << depth;
+
     return alphaBetaPruning(depth, -infinity, infinity, rootNode);
 }
 
