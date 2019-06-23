@@ -31,8 +31,19 @@ public:
     // 8位，禁止修改！
     static const int N_SEATS = 8;
 
+    // 遍历棋盘点所用的起始位置，即 [8, 32)
+    static const int POS_BEGIN = N_SEATS;
+    static const int POS_END = ((N_RINGS + 1) * N_SEATS);
+
     // 预定义的规则数目
     static const int N_RULES = 4;
+
+    // 定义 move
+    typedef int move_t;
+
+    // 位置迭代器
+    // typedef typename std::vector<move_t>::iterator posIterator;
+    // typedef typename std::vector<move_t>::const_iterator constPosIterator;
 
     // 嵌套的规则结构体
     struct Rule

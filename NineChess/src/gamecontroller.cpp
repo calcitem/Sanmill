@@ -859,7 +859,7 @@ bool GameController::updateScence(NineChess &chess)
         int j;
 
         // 遍历棋盘，查找并放置棋盘上的棋子
-        for (j = NineChess::N_SEATS; j < (NineChess::N_SEATS) * (NineChess::N_RINGS + 1); j++) {
+        for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
             if (board[j] == key) {
                 pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
                 if (piece->pos() != pos) {
@@ -904,7 +904,7 @@ bool GameController::updateScence(NineChess &chess)
 
     // 添加开局禁子点
     if (chess.getRule()->hasForbiddenPoint && chess.getStage() == NineChess::GAME_PLACING) {
-        for (int j = NineChess::N_SEATS; j < (NineChess::N_SEATS) * (NineChess::N_RINGS + 1); j++) {
+        for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
             if (board[j] == 0x0F) {
                 pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
                 if (n < pieceList.size()) {

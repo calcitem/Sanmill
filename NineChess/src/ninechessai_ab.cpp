@@ -53,7 +53,7 @@ void NineChessAi_ab::buildChildren(Node *node)
     case NineChess::ACTION_PLACE:
         // 对于开局落子
         if ((chessTemp.context.stage) & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
-            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
+            for (int i = NineChess::POS_BEGIN; i < NineChess::POS_END; i++) {
                 if (!chessTemp.board_[i]) {
                     addNode(node, 0, i);
                 }
@@ -62,7 +62,7 @@ void NineChessAi_ab::buildChildren(Node *node)
         // 对于中局移子
         else {
             int newPos;
-            for (int oldPos = NineChess::N_SEATS; oldPos < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; oldPos++) {
+            for (int oldPos = NineChess::POS_BEGIN; oldPos < NineChess::POS_END; oldPos++) {
                 if (!chessTemp.choose(oldPos))
                     continue;
                 if ((chessTemp.context.turn == NineChess::PLAYER1 &&
@@ -76,7 +76,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                         }
                     }
                 } else {
-                    for (int j = NineChess::N_SEATS; j < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; j++) {
+                    for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
                         if (!chessTemp.board_[j]) {
                             addNode(node, 0, (oldPos << 8) + j);
                         }
@@ -89,13 +89,13 @@ void NineChessAi_ab::buildChildren(Node *node)
     case NineChess::ACTION_CAPTURE:
         // 全成三的情况
         if (chessTemp.isAllInMills(opponent)) {
-            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
+            for (int i = NineChess::POS_BEGIN; i < NineChess::POS_END; i++) {
                 if (chessTemp.board_[i] & opponent) {
                     addNode(node, 0, -i);
                 }
             }
         } else if (!chessTemp.isAllInMills(opponent)) {
-            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
+            for (int i = NineChess::POS_BEGIN; i < NineChess::POS_END; i++) {
                 if (chessTemp.board_[i] & opponent) {
                     if (!chessTemp.isInMills(i)) {
                         addNode(node, 0, -i);
