@@ -240,6 +240,7 @@ public:
     {
         return context.board;
     }
+
     // 获取棋子位置(c, p)
     bool getPieceCP(const Player &player, const int &number, int &c, int &p);
 

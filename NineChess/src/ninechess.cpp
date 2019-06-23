@@ -119,8 +119,9 @@ int NineChess::millTable[(N_RINGS + 2) * N_SEATS][N_DIRECTIONS][N_RINGS - 1] = {
 
 NineChess::NineChess()
 {
-    // 单独提出board，免得每次都写data.board;
+    // 单独提出 board，免得每次都写 context.board;
     board_ = context.board;
+
     // 默认选择第1号规则，即“打三棋”
     setContext(&RULES[1]);
 }
