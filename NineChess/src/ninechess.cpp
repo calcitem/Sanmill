@@ -287,13 +287,15 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
                     moveTable[r * N_SEATS + s][3] = (r + 1) * N_SEATS + s;
                 }
             }
+#if 0
             // 对于无斜线情况下的1、3、5、7位（奇数位），则都设为棋盘外点（默认'\x00'）
-            //else {
-            //    // 向内走一步的位置设为随便棋盘外一点
-            //    moveTable[i*SEAT+j][2] = '\x00';
-            //    // 向外走一步的位置设为随便棋盘外一点
-            //    moveTable[i*SEAT+j][3] = '\x00';
-            //}
+            else {
+                // 向内走一步的位置设为随便棋盘外一点
+                moveTable[i*SEAT+j][2] = '\x00';
+                // 向外走一步的位置设为随便棋盘外一点
+                moveTable[i*SEAT+j][3] = '\x00';
+            }
+#endif
         }
     }
 
@@ -366,11 +368,13 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
 
     // 计棋谱
     cmdlist.clear();
+
     int r;
     for (r = 0; r < N_RULES; r++) {
         if (strcmp(this->currentRule.name, RULES[r].name) == 0)
             break;
     }
+
     if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, maxStepsLedToDraw, maxTimeLedToLose) > 0) {
         cmdlist.push_back(string(cmdline));
         return true;
