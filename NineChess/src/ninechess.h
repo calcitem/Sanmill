@@ -192,6 +192,12 @@ private:
     // 这个表跟规则有关，一旦规则改变需要重新修改
     static int millTable[(N_RINGS + 2) * N_SEATS][3][2];
 
+    // 生成招法表
+    void createMoveTable();
+
+    // 生成成三表
+    void createMillTable();
+
 public:
     explicit NineChess();
     virtual ~NineChess();
