@@ -62,23 +62,23 @@ void NineChessAi_ab::buildChildren(Node *node)
         // 对于中局移子
         else {
             int newPos;
-            for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
-                if (!chessTemp.choose(i))
+            for (int oldPos = NineChess::N_SEATS; oldPos < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; oldPos++) {
+                if (!chessTemp.choose(oldPos))
                     continue;
                 if ((chessTemp.context.turn == NineChess::PLAYER1 &&
                     (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
                     (chessTemp.context.turn == NineChess::PLAYER2 &&
                     (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
                     for (int j = 0; j < 4; j++) {
-                        newPos = chessTemp.moveTable[i][j];
+                        newPos = chessTemp.moveTable[oldPos][j];
                         if (newPos && !chessTemp.board_[newPos]) {
-                            addNode(node, 0, (i << 8) + newPos);
+                            addNode(node, 0, (oldPos << 8) + newPos);
                         }
                     }
                 } else {
                     for (int j = NineChess::N_SEATS; j < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; j++) {
                         if (!chessTemp.board_[j]) {
-                            addNode(node, 0, (i << 8) + j);
+                            addNode(node, 0, (oldPos << 8) + j);
                         }
                     }
                 }
