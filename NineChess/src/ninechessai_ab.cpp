@@ -127,7 +127,7 @@ void NineChessAi_ab::buildChildren(Node *node)
 void NineChessAi_ab::sortChildren(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
-
+#define AB_RANDOM_SORT_CHILDREN
 #ifdef AB_RANDOM_SORT_CHILDREN
     // 这里我用一个随机排序，使AI不至于每次走招相同
     srand((unsigned)time(0));

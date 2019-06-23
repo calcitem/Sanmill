@@ -71,9 +71,13 @@ void AiThread::run()
         emit calcStarted();
         mutex.unlock();
 
+//          if ((chess_.getContext()) & (NineChess::GAME_MOVING)) {
+//              setAi(*chess_, 12, 99);
+//          }
+
         ai_ab.alphaBetaPruning(aiDepth);
         const char *str = ai_ab.bestMove();
-        qDebug() << "Computer:" << str << "\n";
+        qDebug() << "Depth:" << aiDepth << "  Computer:" << str << "\n";
         if (strcmp(str, "error!"))
             emit command(str);
 #ifdef DEBUG
