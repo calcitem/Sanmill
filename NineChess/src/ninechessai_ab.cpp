@@ -101,7 +101,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                     node->children.push_back(newNode);
                 }
             }
-        } else {
+        } else if (!chessTemp.isAllInMills(opponent)) {
             for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (chessTemp.board_[i] & opponent) {
                     if (!chessTemp.isInMills(i)) {
@@ -389,15 +389,15 @@ const char *NineChessAi_ab::bestMove()
         return "error!";
 
     qDebug() << "31 ----- 24 ----- 25";
-    qDebug() << "| \       |       / |";
+    qDebug() << "| \\       |      / |";
     qDebug() << "|  23 -- 16 -- 17  |";
-    qDebug() << "|  | \    |   /  |  |";
-    qDebug() << "|  |  15 08 09  |  |";
+    qDebug() << "|  | \\    |   / |  |";
+    qDebug() << "|  |  15-08-09  |  |";
     qDebug() << "30-22-14    10-18-26";
-    qDebug() << "|  |  13 12 11  |  |";
-    qDebug() << "|  | /    |   \  |  |";
+    qDebug() << "|  |  13-12-11  |  |";
+    qDebug() << "|  | /    |   \\ |  |";
     qDebug() << "|  21 -- 20 -- 19  |";
-    qDebug() << "| /       |      \  |";
+    qDebug() << "| /       |      \\ |";
     qDebug() << "29 ----- 28 ----- 27";
     qDebug() << "";
 
