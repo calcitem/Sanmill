@@ -31,6 +31,9 @@ public:
     // 8位，禁止修改！
     static const int N_SEATS = 8;
 
+    // 横直斜2个方向，禁止修改！
+    static const int N_DIRECTIONS = 3;
+
     // 遍历棋盘点所用的起始位置，即 [8, 32)
     static const int POS_BEGIN = N_SEATS;
     static const int POS_END = ((N_RINGS + 1) * N_SEATS);

@@ -115,14 +115,14 @@ const int NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
 int NineChess::moveTable[(N_RINGS + 2) * N_SEATS][4] = { 0 };
 
 // 成三表
-int NineChess::millTable[(N_RINGS + 2) * N_SEATS][3][2] = { 0 };
+int NineChess::millTable[(N_RINGS + 2) * N_SEATS][N_DIRECTIONS][N_RINGS - 1] = { 0 };
 
 NineChess::NineChess()
 {
     // 单独提出board，免得每次都写data.board;
     board_ = context.board;
-    // 默认选择第0号规则，即“成三棋”
-    setContext(&RULES[0]);
+    // 默认选择第1号规则，即“打三棋”
+    setContext(&RULES[1]);
 }
 
 NineChess::NineChess(const NineChess &chess)
@@ -203,60 +203,74 @@ void NineChess::createMoveTable()
 
 void NineChess::createMillTable()
 {
-    for (int s = 0; s < N_SEATS; s++) {
+    for (int i = 0; i < N_SEATS; i++) {
         // 内外方向的“成三”
         // 如果是0、2、4、6位（偶数位）或是有斜线
-        if (!(s & 1) || this->currentRule.hasObliqueLines) {
-            millTable[1 * N_SEATS + s][0][0] = 2 * N_SEATS + s;
-            millTable[1 * N_SEATS + s][0][1] = 3 * N_SEATS + s;
-            millTable[2 * N_SEATS + s][0][0] = 1 * N_SEATS + s;
-            millTable[2 * N_SEATS + s][0][1] = 3 * N_SEATS + s;
-            millTable[3 * N_SEATS + s][0][0] = 1 * N_SEATS + s;
-            millTable[3 * N_SEATS + s][0][1] = 2 * N_SEATS + s;
+        if (!(i & 1) || this->currentRule.hasObliqueLines) {
+            millTable[1 * N_SEATS + i][0][0] = 2 * N_SEATS + i;
+            millTable[1 * N_SEATS + i][0][1] = 3 * N_SEATS + i;
+
+            millTable[2 * N_SEATS + i][0][0] = 1 * N_SEATS + i;
+            millTable[2 * N_SEATS + i][0][1] = 3 * N_SEATS + i;
+
+            millTable[3 * N_SEATS + i][0][0] = 1 * N_SEATS + i;
+            millTable[3 * N_SEATS + i][0][1] = 2 * N_SEATS + i;
         }
         // 对于无斜线情况下的1、3、5、7位（奇数位）
         else {
             // 置空该组“成三”
-            millTable[1 * N_SEATS + s][0][0] = 0;
-            millTable[1 * N_SEATS + s][0][1] = 0;
-            millTable[2 * N_SEATS + s][0][0] = 0;
-            millTable[2 * N_SEATS + s][0][1] = 0;
-            millTable[3 * N_SEATS + s][0][0] = 0;
-            millTable[3 * N_SEATS + s][0][1] = 0;
+            millTable[1 * N_SEATS + i][0][0] = 0;
+            millTable[1 * N_SEATS + i][0][1] = 0;
+
+            millTable[2 * N_SEATS + i][0][0] = 0;
+            millTable[2 * N_SEATS + i][0][1] = 0;
+
+            millTable[3 * N_SEATS + i][0][0] = 0;
+            millTable[3 * N_SEATS + i][0][1] = 0;
         }
+
         // 当前圈上的“成三”
         // 如果是0、2、4、6位
-        if (!(s & 1)) {
-            millTable[1 * N_SEATS + s][1][0] = 1 * N_SEATS + (s + 1) % N_SEATS;
-            millTable[1 * N_SEATS + s][1][1] = 1 * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
-            millTable[2 * N_SEATS + s][1][0] = 2 * N_SEATS + (s + 1) % N_SEATS;
-            millTable[2 * N_SEATS + s][1][1] = 2 * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
-            millTable[3 * N_SEATS + s][1][0] = 3 * N_SEATS + (s + 1) % N_SEATS;
-            millTable[3 * N_SEATS + s][1][1] = 3 * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
+        if (!(i & 1)) {
+            millTable[1 * N_SEATS + i][1][0] = 1 * N_SEATS + (i + 1) % N_SEATS;
+            millTable[1 * N_SEATS + i][1][1] = 1 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
+
+            millTable[2 * N_SEATS + i][1][0] = 2 * N_SEATS + (i + 1) % N_SEATS;
+            millTable[2 * N_SEATS + i][1][1] = 2 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
+
+            millTable[3 * N_SEATS + i][1][0] = 3 * N_SEATS + (i + 1) % N_SEATS;
+            millTable[3 * N_SEATS + i][1][1] = 3 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
             // 置空另一组“成三”
-            millTable[1 * N_SEATS + s][2][0] = 0;
-            millTable[1 * N_SEATS + s][2][1] = 0;
-            millTable[2 * N_SEATS + s][2][0] = 0;
-            millTable[2 * N_SEATS + s][2][1] = 0;
-            millTable[3 * N_SEATS + s][2][0] = 0;
-            millTable[3 * N_SEATS + s][2][1] = 0;
+            millTable[1 * N_SEATS + i][2][0] = 0;
+            millTable[1 * N_SEATS + i][2][1] = 0;
+
+            millTable[2 * N_SEATS + i][2][0] = 0;
+            millTable[2 * N_SEATS + i][2][1] = 0;
+
+            millTable[3 * N_SEATS + i][2][0] = 0;
+            millTable[3 * N_SEATS + i][2][1] = 0;
         }
         // 对于1、3、5、7位（奇数位）
         else {
             // 当前圈上逆时针的“成三”
-            millTable[1 * N_SEATS + s][1][0] = 1 * N_SEATS + (s + N_SEATS - 2) % N_SEATS;
-            millTable[1 * N_SEATS + s][1][1] = 1 * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
-            millTable[2 * N_SEATS + s][1][0] = 2 * N_SEATS + (s + N_SEATS - 2) % N_SEATS;
-            millTable[2 * N_SEATS + s][1][1] = 2 * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
-            millTable[3 * N_SEATS + s][1][0] = 3 * N_SEATS + (s + N_SEATS - 2) % N_SEATS;
-            millTable[3 * N_SEATS + s][1][1] = 3 * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
+            millTable[1 * N_SEATS + i][1][0] = 1 * N_SEATS + (i + N_SEATS - 2) % N_SEATS;
+            millTable[1 * N_SEATS + i][1][1] = 1 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
+
+            millTable[2 * N_SEATS + i][1][0] = 2 * N_SEATS + (i + N_SEATS - 2) % N_SEATS;
+            millTable[2 * N_SEATS + i][1][1] = 2 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
+
+            millTable[3 * N_SEATS + i][1][0] = 3 * N_SEATS + (i + N_SEATS - 2) % N_SEATS;
+            millTable[3 * N_SEATS + i][1][1] = 3 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
+
             // 当前圈上顺时针的“成三”
-            millTable[1 * N_SEATS + s][2][0] = 1 * N_SEATS + (s + 1) % N_SEATS;
-            millTable[1 * N_SEATS + s][2][1] = 1 * N_SEATS + (s + 2) % N_SEATS;
-            millTable[2 * N_SEATS + s][2][0] = 2 * N_SEATS + (s + 1) % N_SEATS;
-            millTable[2 * N_SEATS + s][2][1] = 2 * N_SEATS + (s + 2) % N_SEATS;
-            millTable[3 * N_SEATS + s][2][0] = 3 * N_SEATS + (s + 1) % N_SEATS;
-            millTable[3 * N_SEATS + s][2][1] = 3 * N_SEATS + (s + 2) % N_SEATS;
+            millTable[1 * N_SEATS + i][2][0] = 1 * N_SEATS + (i + 1) % N_SEATS;
+            millTable[1 * N_SEATS + i][2][1] = 1 * N_SEATS + (i + 2) % N_SEATS;
+
+            millTable[2 * N_SEATS + i][2][0] = 2 * N_SEATS + (i + 1) % N_SEATS;
+            millTable[2 * N_SEATS + i][2][1] = 2 * N_SEATS + (i + 2) % N_SEATS;
+
+            millTable[3 * N_SEATS + i][2][0] = 3 * N_SEATS + (i + 1) % N_SEATS;
+            millTable[3 * N_SEATS + i][2][1] = 3 * N_SEATS + (i + 2) % N_SEATS;
         }
     }
 }
