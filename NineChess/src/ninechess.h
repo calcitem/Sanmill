@@ -252,6 +252,12 @@ public:
         return currentPos;
     }
 
+    // 判断位置点是否为星位 (星位是经常会先占的位置)
+    static bool isStartPoint(int pos)
+    {
+        return (pos == 17 || pos == 19 || pos == 21 || pos == 23);
+    }
+
     // 获取当前步数
     int getStep() const
     {
@@ -281,6 +287,7 @@ public:
     {
         return winner;
     }
+
     // 玩家1和玩家2的用时
     void getElapsedTimeMS(int &p1_ms, int &p2_ms);
 

@@ -61,7 +61,14 @@ void NineChessAi_ab::buildChildren(Node *node)
         if ((chessTemp.context.stage) & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
             for (int i = NineChess::POS_BEGIN; i < NineChess::POS_END; i++) {
                 if (!chessTemp.board_[i]) {
-                    addNode(node, 0, i);
+                    if (node == rootNode && chessTemp.context.stage == NineChess::GAME_NOTSTARTED) {
+                        // 若为先手，则抢占星位
+                        if (NineChess::isStartPoint(i)) {
+                            addNode(node, INT32_MAX, i);
+                        }
+                    } else {
+                        addNode(node, 0, i);
+                    }
                 }
             }
         }
