@@ -11,7 +11,8 @@
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
-    requiredQuit(false)
+    requiredQuit(false),
+    nodeCount(0)
 {
     buildRoot();
 }
@@ -256,6 +257,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 当前节点的MinMax值，最终赋值给节点value，与alpha和Beta不同
     int minMax;
 
+    // 统计遍历次数
+    nodeCount++;
+
     // 搜索到叶子节点（决胜局面）
     if (chessContext->stage == NineChess::GAME_OVER) {
         node->value = evaluate(node);
@@ -273,6 +277,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             node->value += depth;
         else
             node->value -= depth;
+ 
         return node->value;
     }
 
@@ -412,8 +417,11 @@ const char *NineChessAi_ab::bestMove()
     }
 
     for (auto child : rootNode->children) {
-        if (child->value == rootNode->value)
+        if (child->value == rootNode->value) {
+            qDebug() << "count: " << nodeCount;
+            nodeCount = 0;
             return move2string(child->move);
+        }
     }
 
     return "error!";

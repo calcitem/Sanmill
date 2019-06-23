@@ -12,6 +12,7 @@
 #include <stack>
 #include <unordered_map>
 #include <mutex>
+#include <Qdebug>
 
 using namespace std;
 
@@ -47,6 +48,7 @@ public:
 
     void quit()
     {
+        qDebug() << "Timeout\n";
         requiredQuit = true;
     }
 
@@ -98,6 +100,9 @@ private:
 
     // 根节点
     Node *rootNode;
+
+    // 遍历过的节点个数;
+    size_t nodeCount;
 
     // 局面数据栈
     stack<NineChess::ChessContext> dataStack;
