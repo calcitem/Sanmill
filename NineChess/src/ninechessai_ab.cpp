@@ -37,6 +37,7 @@ void NineChessAi_ab::buildChildren(Node *node)
 
     // 临时变量
     char opponent = chessTemp.context.turn == NineChess::PLAYER1 ? 0x20 : 0x10;
+
     // 列出所有合法的下一招
     switch (chessTemp.context.action) {
     case NineChess::ACTION_CHOOSE:
@@ -59,8 +60,10 @@ void NineChessAi_ab::buildChildren(Node *node)
             for (int i = NineChess::N_SEATS; i < (NineChess::N_RINGS + 1) * NineChess::N_SEATS; i++) {
                 if (!chessTemp.choose(i))
                     continue;
-                if ((chessTemp.context.turn == NineChess::PLAYER1 && (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
-                    (chessTemp.context.turn == NineChess::PLAYER2 && (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
+                if ((chessTemp.context.turn == NineChess::PLAYER1 &&
+                    (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
+                    (chessTemp.context.turn == NineChess::PLAYER2 &&
+                    (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
                     for (int j = 0; j < 4; j++) {
                         newPos = chessTemp.moveTable[i][j];
                         if (newPos && !chessTemp.board_[newPos]) {
@@ -247,6 +250,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 {
     // 评价值
     int value;
+
     // 当前节点的MinMax值，最终赋值给节点value，与alpha和Beta不同
     int minMax;
 
@@ -270,8 +274,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         return node->value;
     }
 
+#if 0
     // 检索hashmap
-/*    uint64_t hash = chessTemp.chessHash();
+    uint64_t hash = chessTemp.chessHash();
     mtx.lock();
     auto itor = findHash(hash);
     if (node != rootNode) {
@@ -287,14 +292,16 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             }
         }
     }
-    mtx.unlock();*/
+    mtx.unlock();
+#endif
 
     // 生成子节点树
     buildChildren(node);
+
     // 排序子节点树
     sortChildren(node);
 
-    // 根据演算模型执行MiniMax检索，对先手，搜索Max
+    // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
         minMax = -infinity;
         for (auto child : node->children) {
@@ -303,15 +310,19 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
             chessTemp.context = dataStack.top();
             dataStack.pop();
+
             // 取最大值
             if (value > minMax)
                 minMax = value;
+
             if (value > alpha)
                 alpha = value;
+
             // 剪枝返回
             if (alpha >= beta)
                 break;
         }
+
         // 取最大值
         node->value = minMax;
     }
@@ -324,15 +335,19 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             value = alphaBetaPruning(depth - 1, alpha, beta, child);
             chessTemp.context = dataStack.top();
             dataStack.pop();
+
             // 取最小值
             if (value < minMax)
                 minMax = value;
+
             if (value < beta)
                 beta = value;
+
             // 剪枝返回
             if (alpha >= beta)
                 break;
         }
+
         // 取最小值
         node->value = minMax;
     }
@@ -344,7 +359,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         child->children.clear();
     }
 
-    /*    // 添加到hashmap
+#if 0
+        // 添加到hashmap
         mtx.lock();
         if (itor == hashmap.end()) {
             HashValue hashValue;
@@ -360,9 +376,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
                 itor->second.depth = depth;
             }
         }
-        mtx.unlock();*/
+        mtx.unlock();
+#endif
 
-        // 返回
+    // 返回
     return node->value;
 }
 

@@ -103,12 +103,12 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
 };
 
 // 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
-const char NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
-        '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00',
-        '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff',
-        '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff',
-        '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff', '\xff',
-        '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00'
+const int NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 // 招法表
@@ -1449,14 +1449,15 @@ int NineChess::isInMills(int pos)
 
 int NineChess::addMills(int pos)
 {
-    //成三用一个64位整数了，规则如下
-    //0x   00     00     00    00    00    00    00    00
-    //   unused unused piece1 pos1 piece2 pos2 piece3 pos3
-    //piece1、piece2、piece3按照序号从小到大顺序排放
+    // 成三用一个64位整数了，规则如下
+    // 0x   00     00     00    00    00    00    00    00
+    //    unused unused piece1 pos1 piece2 pos2 piece3 pos3
+    // piece1、piece2、piece3按照序号从小到大顺序排放
     uint64_t mill = 0;
     int n = 0;
     int p[3], min, temp;
     char m = board_[pos] & '\x30';
+
     for (int i = 0; i < 3; i++) {
         p[0] = pos;
         p[1] = millTable[pos][i][0];
@@ -1464,6 +1465,7 @@ int NineChess::addMills(int pos)
 
         // 如果成三
         if (m & board_[p[1]] & board_[p[2]]) {
+
             // 排序
             for (int j = 0; j < 2; j++) {
                 min = j;
@@ -1477,6 +1479,7 @@ int NineChess::addMills(int pos)
                     p[j] = temp;
                 }
             }
+
             // 成三
             mill = (((uint64_t)board_[p[0]]) << 40)
                 + (((uint64_t)p[0]) << 32)
@@ -1489,6 +1492,7 @@ int NineChess::addMills(int pos)
             if (currentRule.allowRemovePiecesRepeatedly) {
                 n++;
             }
+
             // 如果不允许相同三连反复去子
             else {
                 // 迭代器

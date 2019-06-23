@@ -171,7 +171,7 @@ public:
 
 private:
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const char onBoard[(N_RINGS + 2) * N_SEATS];
+    static const int onBoard[(N_RINGS + 2) * N_SEATS];
 
     // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
     // 这个表跟规则有关，一旦规则改变需要重新修改

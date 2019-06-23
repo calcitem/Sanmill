@@ -109,7 +109,7 @@ private:
     static const size_t maxHashCount = 1024 * 1024;
 
     // 定义极大值，等于16位有符号整形数字的最大值
-    static const int infinity = INT16_MAX;
+    static const int infinity = INT32_MAX;
 
 private:
     // 命令行
