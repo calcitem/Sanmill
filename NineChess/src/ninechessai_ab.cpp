@@ -13,16 +13,21 @@ NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
     requiredQuit(false)
 {
-    rootNode = new Node;
-    rootNode->value = 0;
-    rootNode->move = 0;
-    rootNode->parent = nullptr;
+    buildRoot();
 }
 
 NineChessAi_ab::~NineChessAi_ab()
 {
     deleteTree(rootNode);
     rootNode = nullptr;
+}
+
+void NineChessAi_ab::buildRoot()
+{
+    rootNode = new Node;
+    rootNode->value = 0;
+    rootNode->move = 0;
+    rootNode->parent = nullptr;
 }
 
 void NineChessAi_ab::addNode(Node *parent, int value, int move)
@@ -41,11 +46,12 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 void NineChessAi_ab::buildChildren(Node *node)
 {
     // 如果有子节点，则返回，避免重复建立
-    if (node->children.size())
+    if (node->children.size()) {
         return;
+    }
 
     // 临时变量
-    char opponent = chessTemp.context.turn == NineChess::PLAYER1 ? 0x20 : 0x10;
+    NineChess::Player opponent = NineChess::getOpponent(chessTemp.context.turn);
 
     // 列出所有合法的下一招
     switch (chessTemp.context.action) {

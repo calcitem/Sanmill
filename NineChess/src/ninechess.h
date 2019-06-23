@@ -110,13 +110,15 @@ public:
     };
 
     // 玩家标识, 轮流状态, 胜负标识
-    enum Players : uint16_t
+    enum Player : uint16_t
     {
         PLAYER1 = 0x0010,   // 玩家1
         PLAYER2 = 0x0020,   // 玩家2
         DRAW = 0x0040,      // 双方和棋
         NOBODY = 0x0080     // 胜负未分
     };
+
+    static Player getOpponent(enum Player player);
 
     // 动作状态标识
     enum Action : uint16_t
@@ -145,7 +147,7 @@ public:
         enum NineChess::GameStage stage;
 
         // 轮流状态标识
-        enum NineChess::Players turn;
+        enum NineChess::Player turn;
 
         // 动作状态标识
         enum NineChess::Action action;
@@ -239,10 +241,10 @@ public:
         return context.board;
     }
     // 获取棋子位置(c, p)
-    bool getPieceCP(const Players &player, const int &number, int &c, int &p);
+    bool getPieceCP(const Player &player, const int &number, int &c, int &p);
 
     // 获取当前棋子
-    bool getCurrentPiece(Players &player, int &number);
+    bool getCurrentPiece(Player &player, int &number);
 
     // 获取当前棋子位置点
     int getCurrentPos() const
@@ -263,7 +265,7 @@ public:
     }
 
     // 获取轮流状态标识
-    enum Players whosTurn() const
+    enum Player whosTurn() const
     {
         return context.turn;
     }
@@ -275,7 +277,7 @@ public:
     }
 
     // 判断胜负
-    enum Players whoWin() const
+    enum Player whoWin() const
     {
         return winner;
     }
@@ -289,7 +291,7 @@ public:
     }
 
     // 获取位置点棋子的归属人
-    enum Players getWhosPiece(int c, int p);
+    enum Player getWhosPiece(int c, int p);
 
     // 获取当前招法
     const char *getCmdLine() const
@@ -361,7 +363,7 @@ public:
     bool capture(int c, int p, long time_p = -1);
 
     // 认输
-    bool giveup(Players loser);
+    bool giveup(Player loser);
 
     // 命令行解析函数
     bool command(const char *cmd);
@@ -381,7 +383,7 @@ protected:
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(char ch);
-    bool isAllInMills(enum Players);
+    bool isAllInMills(enum Player);
 
     // 判断玩家的棋子是否被围
     bool isSurrounded(int pos);
@@ -389,7 +391,7 @@ protected:
     // 判断玩家的棋子是否全部被围
     bool isAllSurrounded(char ch);
 
-    bool isAllSurrounded(enum Players);
+    bool isAllSurrounded(enum Player);
 
     // 三连加入列表
     int addMills(int pos);
@@ -410,7 +412,7 @@ protected:
     void cleanForbiddenPoints();
 
     // 改变轮流
-    enum NineChess::Players changeTurn();
+    enum NineChess::Player changeTurn();
 
     // 设置提示
     void setTips();
@@ -438,7 +440,7 @@ private:
     int currentPos;
 
     // 胜负标识
-    enum Players winner;
+    enum Player winner;
 
     // 当前步数
     int currentStep;

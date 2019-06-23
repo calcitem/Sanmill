@@ -169,6 +169,24 @@ NineChess::~NineChess()
 {
 }
 
+NineChess::Player NineChess::getOpponent(NineChess::Player player)
+{
+    switch (player)
+    {
+    case PLAYER1:
+        return PLAYER2;
+        break;
+    case PLAYER2:
+        return PLAYER1;
+        break;
+    default:
+        return NOBODY;
+        break;
+    }
+
+    return NOBODY;
+}
+
 void NineChess::createMoveTable()
 {
     for (int r = 1; r <= N_RINGS; r++) {
@@ -509,7 +527,7 @@ bool NineChess::start()
     }
 }
 
-bool NineChess::getPieceCP(const Players &player, const int &number, int &c, int &p)
+bool NineChess::getPieceCP(const Player &player, const int &number, int &c, int &p)
 {
     int piece;
 
@@ -536,7 +554,7 @@ bool NineChess::getPieceCP(const Players &player, const int &number, int &c, int
 }
 
 // 获取当前棋子
-bool NineChess::getCurrentPiece(Players &player, int &number)
+bool NineChess::getCurrentPiece(Player &player, int &number)
 {
     if (!onBoard[currentPos])
         return false;
@@ -1219,7 +1237,7 @@ uint64_t NineChess::chessHash()
     return hash;
 }
 
-bool NineChess::giveup(Players loser)
+bool NineChess::giveup(Player loser)
 {
     if (context.stage == GAME_MOVING || context.stage == GAME_PLACING) {
         if (loser == PLAYER1) {
@@ -1554,7 +1572,7 @@ bool NineChess::isAllInMills(char ch)
     return true;
 }
 
-bool NineChess::isAllInMills(enum Players player)
+bool NineChess::isAllInMills(enum Player player)
 {
     char ch = '\x00';
 
@@ -1618,7 +1636,7 @@ bool NineChess::isAllSurrounded(char ch)
 }
 
 // 判断玩家的棋子是否全部被围
-bool NineChess::isAllSurrounded(enum Players ply)
+bool NineChess::isAllSurrounded(enum Player ply)
 {
     char t = '\x30';
     if (ply == PLAYER1)
@@ -1637,7 +1655,7 @@ void NineChess::cleanForbiddenPoints()
         }
 }
 
-enum NineChess::Players NineChess::changeTurn()
+enum NineChess::Player NineChess::changeTurn()
 {
     // 设置轮到谁走
     context.turn = (context.turn == PLAYER1) ? PLAYER2 : PLAYER1;
@@ -1700,7 +1718,7 @@ void NineChess::setTips()
     }
 }
 
-enum NineChess::Players NineChess::getWhosPiece(int c, int p)
+enum NineChess::Player NineChess::getWhosPiece(int c, int p)
 {
     int pos = cp2pos(c, p);
     if (board_[pos] & '\x10')
