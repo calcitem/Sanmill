@@ -229,10 +229,23 @@ int NineChessAi_ab::evaluate(Node *node)
 
     // 终局评价最简单
     case NineChess::GAME_OVER:
+        // 闷棋判断
+        if (chessContext->nPiecesOnBoard_1 + chessContext->nPiecesOnBoard_2 >=
+            NineChess::N_SEATS * NineChess::N_RINGS) {
+            if (chessTemp.currentRule.isStartingPlayerLoseWhenBoardFull) {
+                // winner = PLAYER2;
+                value -= 10000;
+            }
+            else {
+                value = 0;
+            }
+        }
+
+        // 剩余棋子个数判断
         if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
-            value = -15000;
+            value -= -15000;
         else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
-            value = 15000;
+            value += 15000;
         break;
 
     default:
