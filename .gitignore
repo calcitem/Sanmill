@@ -322,3 +322,6 @@ CMakeLists.txt.user*
 # markdown temp files
 *.md.Html
 *.md.Htm
+
+# Text files
+*.txt
