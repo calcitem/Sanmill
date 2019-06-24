@@ -70,6 +70,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                     } else {
                         addNode(node, 0, i);
                     }
+
                 }
             }
         }
@@ -180,16 +181,44 @@ int NineChessAi_ab::evaluate(Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     int value = 0;
+
+    // 根据位置设置分数
+    switch (node->move) {
+    case 17:
+    case 19:
+    case 21:
+    case 23:
+        value += 5;
+        break;
+    case 25:
+    case 27:
+    case 29:
+    case 31:
+    case 9:
+    case 11:
+    case 13:
+    case 15:
+        value += 2;
+        break;
+    case 16:
+    case 18:
+    case 20:
+    case  22:
+        value += 1;
+    defualt:
+        break;
+    }
+
     switch (chessContext->stage) {
     case NineChess::GAME_NOTSTARTED:
         break;
 
     case NineChess::GAME_PLACING:
         // 按手中的棋子计分，不要break;
-        value += (chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2) * 50;
+        value += (chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2) * 10;
 
         // 按场上棋子计分
-        value += (chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2) * 100;
+        value += (chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2) * 20;
 
         switch (chessContext->action) {
         // 选子和落子使用相同的评价方法
@@ -197,9 +226,9 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_PLACE:
             break;
 
-        // 如果形成去子状态，每有一个可去的子，算100分
+        // 如果形成去子状态，每有一个可去的子，算20分
         case NineChess::ACTION_CAPTURE:
-            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 100 : -(chessContext->nPiecesNeedRemove) * 100;
+            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 20 : -(chessContext->nPiecesNeedRemove) * 20;
             break;
         default:
             break;
@@ -209,7 +238,7 @@ int NineChessAi_ab::evaluate(Node *node)
 
     case NineChess::GAME_MOVING:
         // 按场上棋子计分
-        value += chessContext->nPiecesOnBoard_1 * 100 - chessContext->nPiecesOnBoard_2 * 100;
+        value += chessContext->nPiecesOnBoard_1 * 20 - chessContext->nPiecesOnBoard_2 * 20;
 
         switch (chessContext->action) {
          // 选子和落子使用相同的评价方法
@@ -217,9 +246,9 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_PLACE:
             break;
 
-        // 如果形成去子状态，每有一个可去的子，算128分
+        // 如果形成去子状态，每有一个可去的子，算25分
         case NineChess::ACTION_CAPTURE:
-            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 128 : -(chessContext->nPiecesNeedRemove) * 128;
+            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 25 : -(chessContext->nPiecesNeedRemove) * 25;
             break;
         default:
             break;
@@ -229,23 +258,36 @@ int NineChessAi_ab::evaluate(Node *node)
 
     // 终局评价最简单
     case NineChess::GAME_OVER:
-        // 闷棋判断
+        // 布局阶段闷棋判断
         if (chessContext->nPiecesOnBoard_1 + chessContext->nPiecesOnBoard_2 >=
             NineChess::N_SEATS * NineChess::N_RINGS) {
             if (chessTemp.currentRule.isStartingPlayerLoseWhenBoardFull) {
                 // winner = PLAYER2;
-                value -= 10000;
+                value -= 1000;
             }
             else {
                 value = 0;
             }
         }
 
+        // 走棋阶段被闷判断
+        if (chessContext->action == NineChess::ACTION_CHOOSE && chessTemp.isAllSurrounded(chessContext->turn)) {
+            // 规则要求被“闷”判负，则对手获胜
+            if (chessTemp.currentRule.isLoseWhenNoWay) {
+                if (chessContext->turn == NineChess::PLAYER1) {
+                    value -= 1000;
+                }
+                else {
+                    value += 1000;
+                }
+            }
+        }
+
         // 剩余棋子个数判断
         if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
-            value -= -15000;
+            value -= -1000;
         else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
-            value += 15000;
+            value += 1000;
         break;
 
     default:
