@@ -188,7 +188,7 @@ int NineChessAi_ab::evaluate(Node *node)
     case 19:
     case 21:
     case 23:
-        value += 5;
+        value += 10;
         break;
     case 25:
     case 27:
@@ -198,14 +198,15 @@ int NineChessAi_ab::evaluate(Node *node)
     case 11:
     case 13:
     case 15:
-        value += 2;
+        value += 5;
         break;
     case 16:
     case 18:
     case 20:
     case  22:
         value += 1;
-    defualt:
+        break;
+    default:
         break;
     }
 
@@ -215,20 +216,19 @@ int NineChessAi_ab::evaluate(Node *node)
 
     case NineChess::GAME_PLACING:
         // 按手中的棋子计分，不要break;
-        value += (chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2) * 10;
+        value += (chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2) * 50;
 
         // 按场上棋子计分
-        value += (chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2) * 20;
+        value += (chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2) * 100;
 
         switch (chessContext->action) {
         // 选子和落子使用相同的评价方法
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
-
-        // 如果形成去子状态，每有一个可去的子，算20分
+        // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 20 : -(chessContext->nPiecesNeedRemove) * 20;
+            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 100 : -(chessContext->nPiecesNeedRemove) * 100;
             break;
         default:
             break;
@@ -238,7 +238,7 @@ int NineChessAi_ab::evaluate(Node *node)
 
     case NineChess::GAME_MOVING:
         // 按场上棋子计分
-        value += chessContext->nPiecesOnBoard_1 * 20 - chessContext->nPiecesOnBoard_2 * 20;
+        value += chessContext->nPiecesOnBoard_1 * 100 - chessContext->nPiecesOnBoard_2 * 100;
 
         switch (chessContext->action) {
          // 选子和落子使用相同的评价方法
@@ -246,9 +246,9 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_PLACE:
             break;
 
-        // 如果形成去子状态，每有一个可去的子，算25分
+            // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
-            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 25 : -(chessContext->nPiecesNeedRemove) * 25;
+            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 128 : -(chessContext->nPiecesNeedRemove) * 128;
             break;
         default:
             break;
@@ -263,7 +263,7 @@ int NineChessAi_ab::evaluate(Node *node)
             NineChess::N_SEATS * NineChess::N_RINGS) {
             if (chessTemp.currentRule.isStartingPlayerLoseWhenBoardFull) {
                 // winner = PLAYER2;
-                value -= 1000;
+                value -= 10000;
             }
             else {
                 value = 0;
@@ -275,19 +275,19 @@ int NineChessAi_ab::evaluate(Node *node)
             // 规则要求被“闷”判负，则对手获胜
             if (chessTemp.currentRule.isLoseWhenNoWay) {
                 if (chessContext->turn == NineChess::PLAYER1) {
-                    value -= 1000;
+                    value -= 10000;
                 }
                 else {
-                    value += 1000;
+                    value += 10000;
                 }
             }
         }
 
         // 剩余棋子个数判断
         if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
-            value -= -1000;
+            value -= -10000;
         else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
-            value += 1000;
+            value += 10000;
         break;
 
     default:
