@@ -37,6 +37,9 @@ void NineChessAi_ab::addNode(Node *parent, int value, int move)
     newNode->parent = parent;
     newNode->value = value;
     newNode->move = move;
+    newNode->root = rootNode;
+    newNode->stage = chessTemp.context.stage;
+    newNode->action = chessTemp.context.action;
     parent->children.push_back(newNode);
 }
 
@@ -175,6 +178,10 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     rootNode->value = 0;
     rootNode->move = 0;
     rootNode->parent = nullptr;
+    rootNode->action = NineChess::ACTION_NONE;
+    rootNode->stage = NineChess::GAME_NONE;
+    rootNode->root = rootNode;
+
 }
 
 int NineChessAi_ab::evaluate(Node *node)
@@ -209,6 +216,9 @@ int NineChessAi_ab::evaluate(Node *node)
     default:
         break;
     }
+
+    node->stage = chessContext->stage;
+    node->action = chessContext->action;
 
     switch (chessContext->stage) {
     case NineChess::GAME_NOTSTARTED:
@@ -321,6 +331,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 统计遍历次数
     nodeCount++;
+
+    // 记录深度
+    node->depth = depth;
+
+    // 记录根节点
+    node->root = rootNode;
 
     // 搜索到叶子节点（决胜局面）
     if (chessContext->stage == NineChess::GAME_OVER) {

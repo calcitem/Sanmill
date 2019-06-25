@@ -103,6 +103,7 @@ public:
     // 局面阶段标识
     enum GameStage : uint16_t
     {
+        GAME_NONE = 0x0000,
         GAME_NOTSTARTED = 0x0001,   // 未开局
         GAME_PLACING = 0x0002,      // 开局（摆棋）
         GAME_MOVING = 0x0004,       // 中局（走棋）
@@ -123,6 +124,7 @@ public:
     // 动作状态标识
     enum Action : uint16_t
     {
+        ACTION_NONE =  0x0000,
         ACTION_CHOOSE = 0x0100,    // 选子
         ACTION_PLACE = 0x0200,     // 落子
         ACTION_CAPTURE = 0x0400    // 提子

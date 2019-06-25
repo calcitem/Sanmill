@@ -38,6 +38,10 @@ public:
         int move;                      // 招法的命令行指令，图上标示为节点前的连线
         struct Node *parent;           // 父节点
         list<struct Node *> children;  // 子节点列表
+        struct Node *root;
+        NineChess::GameStage stage;
+        NineChess::Action action;
+        int depth;
     };
 
 public:
