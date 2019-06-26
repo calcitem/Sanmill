@@ -40,6 +40,25 @@ void NineChessAi_ab::addNode(Node *parent, int value, int move)
     newNode->root = rootNode;
     newNode->stage = chessTemp.context.stage;
     newNode->action = chessTemp.context.action;
+
+    int c, p;
+    char cmd[32] = { 0 };
+
+    if (move < 0) {
+        chessTemp.pos2cp(-move, c, p);
+        sprintf(cmd, "-(%1u,%1u)", c, p);
+    } else if (move & 0x7f00) {
+        int c1, p1;
+        chessTemp.pos2cp(move >> 8, c1, p1);
+        chessTemp.pos2cp(move & 0x00ff, c, p);
+        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);
+    } else {
+        chessTemp.pos2cp(move & 0x007f, c, p);
+        sprintf(cmd, "(%1u,%1u)", c, p);
+    }
+
+    newNode->cmd = cmd;
+
     parent->children.push_back(newNode);
 }
 

@@ -12,6 +12,7 @@
 #include <stack>
 #include <unordered_map>
 #include <mutex>
+#include <string>
 #include <Qdebug>
 
 using namespace std;
@@ -42,6 +43,7 @@ public:
         NineChess::GameStage stage;
         NineChess::Action action;
         int depth;
+        string cmd;
     };
 
 public:
