@@ -438,11 +438,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
+//#define DEBUG_AB_TREE
+#ifndef DEBUG_AB_TREE
     for (auto child : node->children) {
         for (auto grandChild : child->children)
             deleteTree(grandChild);
         child->children.clear();
     }
+#endif
 
 #if 0
         // 添加到hashmap
