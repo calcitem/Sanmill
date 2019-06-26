@@ -314,7 +314,7 @@ int NineChessAi_ab::evaluate(Node *node)
 
         // 剩余棋子个数判断
         if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
-            value -= -10000;
+            value -= 10000;
         else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
             value += 10000;
         break;
