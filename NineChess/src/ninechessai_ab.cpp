@@ -208,13 +208,16 @@ int NineChessAi_ab::evaluate(Node *node)
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     int value = 0;
 
+#if 0
+    int loc_value = 0;
+
     // 根据位置设置分数
     switch (node->move) {
     case 17:
     case 19:
     case 21:
     case 23:
-        value += 10;
+        loc_value = 10;
         break;
     case 25:
     case 27:
@@ -224,17 +227,24 @@ int NineChessAi_ab::evaluate(Node *node)
     case 11:
     case 13:
     case 15:
-        value += 5;
+        loc_value = 5;
         break;
     case 16:
     case 18:
     case 20:
     case  22:
-        value += 1;
+        loc_value = 1;
         break;
     default:
         break;
     }
+
+    if (chessContext->turn == NineChess::PLAYER1) {
+        value += loc_value;
+    } else {
+        value -= loc_value;
+    }
+#endif
 
     node->stage = chessContext->stage;
     node->action = chessContext->action;
