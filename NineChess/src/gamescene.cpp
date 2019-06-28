@@ -29,14 +29,14 @@ GameScene::~GameScene()
 }
 
 // 屏蔽掉Shift和Control按键，事实证明没用，按键事件未必由视图类处理
-/*
+#if 0
 void GameScene::keyPressEvent(QKeyEvent *keyEvent)
 {
     if(keyEvent->key() == Qt::Key_Shift || keyEvent->key() == Qt::Key_Control)
         return;
     QGraphicsScene::keyPressEvent(keyEvent);
 }
-*/
+#endif
 
 void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
@@ -47,9 +47,10 @@ void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    //屏蔽鼠标按下事件
+    // 屏蔽鼠标按下事件
     mouseEvent->accept();
-    /*
+
+#if 0
     // 只处理左键事件
     if(mouseEvent->button() != Qt::LeftButton)
         return;
@@ -62,7 +63,7 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     // 调用默认事件处理函数
     //QGraphicsScene::mousePressEvent(mouseEvent);
-    */
+#endif
 }
 
 void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)

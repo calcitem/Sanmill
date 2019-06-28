@@ -10,8 +10,11 @@ class BoardItem : public QGraphicsItem
 public:
     explicit BoardItem(QGraphicsItem *parent = nullptr);
     ~BoardItem();
+
     QRectF boundingRect() const;
+
     QPainterPath shape() const;
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr);
 
@@ -40,10 +43,10 @@ public:
     bool pos2cp(QPointF pos, int &c, int &p);
 
     // 3圈，禁止修改！
-    static const int RING = 3;
+    static const uint8_t N_RINGS = 3;
 
     // 8位，禁止修改！
-    static const int SEAT = 8;
+    static const uint8_t N_SEATS = 8;
 
 private:
     // 棋盘尺寸
@@ -53,7 +56,7 @@ private:
     qreal sizeShadow;
 
     // 24个落子点
-    QPointF position[RING * SEAT];
+    QPointF position[N_RINGS * N_SEATS];
 
     // 是否有斜线
     bool hasObliqueLine;

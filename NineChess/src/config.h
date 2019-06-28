@@ -11,6 +11,9 @@
 //#define AB_RANDOM_SORT_CHILDREN
 
 // 调试博弈树 (耗费大量内存)
-#define DEBUG_AB_TREE
+//#define DEBUG_AB_TREE
+
+// 绘制 SEAT 编号
+#define DRAW_SEAT_NUMBER
 
 #endif // CONFIG_H

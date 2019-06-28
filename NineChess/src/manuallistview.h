@@ -1,4 +1,5 @@
-﻿/* QListView派生类
+﻿/* 
+ * QListView派生类
  * 之所以要派生这个类，重载sizeHint函数
  * 只是为了让停靠栏（父窗口）在初始时不至于过宽难看
  * QDockWidget没有很好的控制初始大小的方法，resize函数没效果
@@ -25,6 +26,7 @@ public:
     {
         Q_UNUSED(parent)
     }
+
     QSize sizeHint() const
     {
         QSize size = QListView::sizeHint();
@@ -55,10 +57,11 @@ protected slots:
             newEmptyRow = true;
     }
 
+#if 0
     /* 本来重载rowsInserted函数用于在插入新行后自动选中最后一行，
     但是，在关联Model的insertRow执行后rowsInserted会被立即执行，
     此时，Model的setData还未被执行，会选中一个空行。
-    所以不再采用这种方式，而是在控制模块中指定。
+    所以不再采用这种方式，而是在控制模块中指定。*/
     void rowsInserted(const QModelIndex &parent, int start, int end) {
         // 调用父类函数，为使滚动条更新，否则scrollToBottom不能正确执行。
         QListView::rowsInserted(parent, start, end);
@@ -66,7 +69,7 @@ protected slots:
         setCurrentIndex(id);
         scrollToBottom();
     }
-    */
+#endif
 
     // 采用判断最后一个元素是否改变来选中之
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,

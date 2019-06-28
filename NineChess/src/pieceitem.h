@@ -10,6 +10,7 @@ class PieceItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
         Q_INTERFACES(QGraphicsItem)
+
         // 位置属性
         Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 
@@ -27,6 +28,7 @@ public:
     {
         Type = UserType + 2
     };
+
     int type() const
     {
         return Type;
@@ -44,22 +46,27 @@ public:
     {
         return model_;
     }
+
     void setModel(enum Models model)
     {
         this->model_ = model;
     }
+
     int getNum()
     {
         return num;
     }
+
     void setNum(int n)
     {
         num = n;
     }
+
     bool isDeleted()
     {
         return deleted_;
     }
+
     void setDeleted(bool deleted = true)
     {
         this->deleted_ = deleted;
@@ -67,6 +74,7 @@ public:
             this->model_ = noPiece;
         update(boundingRect());
     }
+
     void setShowNum(bool show = true)
     {
         this->showNum = show;

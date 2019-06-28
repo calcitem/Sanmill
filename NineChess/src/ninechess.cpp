@@ -194,14 +194,17 @@ void NineChess::createMoveTable()
         for (int s = 0; s < N_SEATS; s++) {
             // 顺时针走一步的位置
             moveTable[r * N_SEATS + s][0] = r * N_SEATS + (s + 1) % N_SEATS;
+
             // 逆时针走一步的位置
             moveTable[r * N_SEATS + s][1] = r * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
+
             // 如果是 0、2、4、6位（偶数位）或是有斜线
             if (!(s & 1) || this->currentRule.hasObliqueLines) {
                 if (r > 1) {
                     // 向内走一步的位置
                     moveTable[r * N_SEATS + s][2] = (r - 1) * N_SEATS + s;
                 }
+
                 if (r < N_RINGS) {
                     // 向外走一步的位置
                     moveTable[r * N_SEATS + s][3] = (r + 1) * N_SEATS + s;
@@ -1210,15 +1213,15 @@ bool NineChess::choose(int pos)
 uint64_t NineChess::chessHash()
 {
     /* 
-    hash各数据位详解（名为hash，但实际并无冲突，是算法用到的棋局数据的完全表示）
-    57-64位：空白不用，全为0
-    56位：轮流标识，0为先手，1为后手
-    55位：动作标识，落子（选子移动）为0，1为去子
-    7-54位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
-           0b00表示空白，0b01表示先手棋子，0b10表示后手棋子，0b11表示禁点
-    5-6位（共2位）：待去子数，最大为3，用2个二进制位表示即可
-    1-4位：player1的手棋数，不需要player2的（可计算出）
-    */
+     * hash各数据位详解（名为hash，但实际并无冲突，是算法用到的棋局数据的完全表示）
+     * 57-64位：空白不用，全为0
+     * 56位：轮流标识，0为先手，1为后手
+     * 55位：动作标识，落子（选子移动）为0，1为去子
+     * 7-54位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
+     *        0b00表示空白，0b01表示先手棋子，0b10表示后手棋子，0b11表示禁点
+     * 5-6位（共2位）：待去子数，最大为3，用2个二进制位表示即可
+     * 1-4位：player1的手棋数，不需要player2的（可计算出）
+     */
     uint64_t hash = 0ull;
 
     for (int i = N_SEATS; i < (N_RINGS + 1) * N_SEATS; i++) {
@@ -1332,6 +1335,7 @@ bool NineChess::command(int move)
     } else {
         return place(move & 0x00ff);
     }
+
     return false;
 }
 
@@ -1346,6 +1350,7 @@ inline long NineChess::update(long time_p /*= -1*/)
     case NineChess::GAME_PLACING:
     case NineChess::GAME_MOVING:
         ftime(&currentTimeb);
+
         // 更新时间
         if (time_p >= *player_ms) {
             *player_ms = ret = time_p;
@@ -1361,14 +1366,19 @@ inline long NineChess::update(long time_p /*= -1*/)
             *player_ms = ret = (long)(currentTimeb.time - startTimeb.time) * 1000
                 + (currentTimeb.millitm - startTimeb.millitm) - playerNext_ms;
         }
+
         // 有限时要求则判断胜负
         if (currentRule.maxTimeLedToLose > 0)
             win();
+
         return ret;
+
     case NineChess::GAME_NOTSTARTED:
         return ret;
+
     case NineChess::GAME_OVER:
         return ret;
+
     default:
         return ret;
     }
@@ -1640,20 +1650,23 @@ bool NineChess::isAllSurrounded(char ch)
 bool NineChess::isAllSurrounded(enum Player ply)
 {
     char t = '\x30';
+
     if (ply == PLAYER1)
         t &= '\x10';
     else if (ply == PLAYER2)
         t &= '\x20';
+
     return isAllSurrounded(t);
 }
 
 void NineChess::cleanForbiddenPoints()
 {
-    for (int i = 1; i <= N_RINGS; i++)
+    for (int i = 1; i <= N_RINGS; i++) {
         for (int j = 0; j < N_SEATS; j++) {
             if (board_[i * N_SEATS + j] == '\x0f')
                 board_[i * N_SEATS + j] = '\x00';
         }
+    }
 }
 
 enum NineChess::Player NineChess::changeTurn()
@@ -1669,6 +1682,7 @@ void NineChess::setTips()
     case NineChess::GAME_NOTSTARTED:
         tips = "轮到黑方落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
         break;
+
     case NineChess::GAME_PLACING:
         if (context.action == ACTION_PLACE) {
             if (context.turn == PLAYER1) {
@@ -1684,6 +1698,7 @@ void NineChess::setTips()
             }
         }
         break;
+
     case NineChess::GAME_MOVING:
         if (context.action == ACTION_PLACE || context.action == ACTION_CHOOSE) {
             if (context.turn == PLAYER1) {
@@ -1699,6 +1714,7 @@ void NineChess::setTips()
             }
         }
         break;
+
     case NineChess::GAME_OVER:
         if (winner == DRAW)
             tips = "超出限定步数，双方平局";
@@ -1714,6 +1730,7 @@ void NineChess::setTips()
                 tips = "白方获胜！";
         }
         break;
+
     default:
         break;
     }
@@ -1956,7 +1973,9 @@ void NineChess::turn(bool cmdChange /*= true*/)
         int args = 0;
         int mm = 0, ss = 0, mss = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u",
+                        &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+
         if (args >= 4) {
             if (c1 == 1)
                 c1 = N_RINGS;
@@ -1989,7 +2008,10 @@ void NineChess::turn(bool cmdChange /*= true*/)
         }
 
         for (auto itor = cmdlist.begin(); itor != cmdlist.end(); itor++) {
-            args = sscanf((*itor).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+            args = sscanf((*itor).c_str(),
+                            "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u",
+                            &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+
             if (args >= 4) {
                 if (c1 == 1)
                     c1 = N_RINGS;
@@ -2028,6 +2050,7 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
 {
     // 将degrees转化为0~359之间的数
     degrees = degrees % 360;
+
     if (degrees < 0)
         degrees += 360;
 

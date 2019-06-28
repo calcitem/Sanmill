@@ -24,6 +24,7 @@
 #include <QScreen>
 #include <QDebug>
 #include <QDesktopWidget>
+
 #include "ninechesswindow.h"
 #include "gamecontroller.h"
 #include "gamescene.h"
@@ -37,17 +38,22 @@ NineChessWindow::NineChessWindow(QWidget * parent) :
     autoRunTimer(this)
 {
     ui.setupUi(this);
-    //去掉标题栏
+
+    // 去掉标题栏
     //setWindowFlags(Qt::FramelessWindowHint);
-    //设置透明(窗体标题栏不透明,背景透明，如果不去掉标题栏，背景就变为黑色)
+
+    // 设置透明(窗体标题栏不透明,背景透明，如果不去掉标题栏，背景就变为黑色)
     //setAttribute(Qt::WA_TranslucentBackground);
-    //设置全体透明度系数
+
+    // 设置全体透明度系数
     //setWindowOpacity(0.7);
 
     // 设置场景
     scene = new GameScene(this);
+
     // 设置场景尺寸大小为棋盘大小的1.08倍
-    scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54, BOARD_SIZE * 1.08, BOARD_SIZE * 1.08);
+    scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54,
+                        BOARD_SIZE * 1.08, BOARD_SIZE * 1.08);
 
     // 初始化各个控件
 
@@ -87,6 +93,7 @@ NineChessWindow::~NineChessWindow()
         game->disconnect();
         game->deleteLater();
     }
+
     qDeleteAll(ruleActionList);
 }
 
@@ -97,7 +104,9 @@ void NineChessWindow::closeEvent(QCloseEvent *event)
 
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);
+
     //qDebug() << "closed";
+
     QMainWindow::closeEvent(event);
 }
 
@@ -116,6 +125,7 @@ bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
             break;
         }
     }
+
     return QMainWindow::eventFilter(watched, event);
 }
 
@@ -130,6 +140,7 @@ void NineChessWindow::initialize()
 
     // 添加新菜单栏动作
     QMap <int, QStringList> actions = game->getActions();
+
     for (auto i = actions.constBegin(); i != actions.constEnd(); i++) {
         // qDebug() << i.key() << i.value();
         // QMap的key存放int索引值，value存放规则名称和规则提示
@@ -151,31 +162,40 @@ void NineChessWindow::initialize()
     }
 
     // 关联主窗口动作信号和控制器的槽
+
     connect(ui.actionGiveUp_G, SIGNAL(triggered()),
             game, SLOT(giveUp()));
+
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
             game, SLOT(setEngine1(bool)));
+
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
             game, SLOT(setEngine2(bool)));
+
     connect(ui.actionSound_S, SIGNAL(toggled(bool)),
             game, SLOT(setSound(bool)));
+
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             game, SLOT(setAnimation(bool)));
 
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
             game, &GameController::flip);
+
     // 视图左右镜像
     connect(ui.actionMirror_M, &QAction::triggered,
             game, &GameController::mirror);
+
     // 视图须时针旋转90°
     connect(ui.actionTurnRight_R, &QAction::triggered,
             game, &GameController::turnRight);
+
     // 视图逆时针旋转90°
     connect(ui.actionTurnLeftt_L, &QAction::triggered,
             game, &GameController::turnLeft);
 
     // 关联控制器的信号和主窗口控件的槽
+
     // 更新LCD1，显示玩家1用时
     connect(game, SIGNAL(time1Changed(QString)),
             ui.lcdNumber_1, SLOT(display(QString)));
@@ -211,22 +231,30 @@ void NineChessWindow::initialize()
 
     // 关联列表视图和字符串列表模型
     ui.listView->setModel(game->getManualListModel());
+
     // 因为QListView的rowsInserted在setModel之后才能启动，
     // 第一次需手动初始化选中listView第一项
     //qDebug() << ui.listView->model();
     ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
+
     // 初始局面、前一步、后一步、最终局面的槽
+
     connect(ui.actionBegin_S, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
+
     connect(ui.actionPrevious_B, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
+
     connect(ui.actionNext_F, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
+
     connect(ui.actionEnd_E, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
+
     // 手动在listView里选择招法后更新的槽
     connect(ui.listView, &ManualListView::currentChangedSignal,
             this, &NineChessWindow::on_actionRowChange);
+
     // 更新四个键的状态
     on_actionRowChange();
 }
@@ -235,8 +263,10 @@ void NineChessWindow::ruleInfo()
 {
     int s = game->getStepsLimit();
     int t = game->getTimeLimit();
+
     QString tl(" 不限时");
     QString sl(" 不限步");
+
     if (s > 0)
         sl = " 限" + QString::number(s) + "步";
     if (t > 0)
@@ -244,22 +274,27 @@ void NineChessWindow::ruleInfo()
 
     // 规则显示
     ui.labelRule->setText(tl + sl);
+
     // 规则提示
     ui.labelInfo->setToolTip(QString(NineChess::RULES[ruleNo].name) + "\n" +
                              NineChess::RULES[ruleNo].description);
+
     ui.labelRule->setToolTip(ui.labelInfo->toolTip());
 
-    //QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
-    //    .arg(tr(NineChess::RULES[ruleNo].info));
+#if 0
+    QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
+        .arg(tr(NineChess::RULES[ruleNo].info));
+#endif
 }
 
 void NineChessWindow::on_actionLimited_T_triggered()
 {
-    /* 其实本来可以用设计器做个ui，然后从QDialog派生个自己的对话框
-    * 但我不想再派生新类了，又要多出一个类和两个文件
-    * 还要写与主窗口的接口，费劲
-    * 于是手写QDialog界面
-    */
+    /* 
+     * 其实本来可以用设计器做个ui，然后从QDialog派生个自己的对话框
+     * 但我不想再派生新类了，又要多出一个类和两个文件
+     * 还要写与主窗口的接口，费劲
+     * 于是手写QDialog界面
+     */
     int gStep = game->getStepsLimit();
     int gTime = game->getTimeLimit();
 
@@ -270,6 +305,7 @@ void NineChessWindow::on_actionLimited_T_triggered()
     dialog->setWindowTitle(tr("步数和时间限制"));
     dialog->resize(256, 108);
     dialog->setModal(true);
+
     // 生成各个控件
     QFormLayout *formLayout = new QFormLayout(dialog);
     QLabel *label_step = new QLabel(dialog);
@@ -277,13 +313,15 @@ void NineChessWindow::on_actionLimited_T_triggered()
     QComboBox *comboBox_step = new QComboBox(dialog);
     QComboBox *comboBox_time = new QComboBox(dialog);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
+#if 0
     // 设置各个控件ObjectName，不设也没关系
-    /*formLayout->setObjectName(QStringLiteral("formLayout"));
+    formLayout->setObjectName(QStringLiteral("formLayout"));
     label_step->setObjectName(QStringLiteral("label_step"));
     label_time->setObjectName(QStringLiteral("label_time"));
     comboBox_step->setObjectName(QStringLiteral("comboBox_step"));
     comboBox_time->setObjectName(QStringLiteral("comboBox_time"));
-    buttonBox->setObjectName(QStringLiteral("buttonBox"));*/
+    buttonBox->setObjectName(QStringLiteral("buttonBox"));
+#endif
     // 设置各个控件数据
     label_step->setText(tr("超出限制步数判和："));
     label_time->setText(tr("任意一方超时判负："));
@@ -357,6 +395,7 @@ void NineChessWindow::actionRules_triggered()
 
     // 重置游戏规则
     game->setRule(ruleNo);
+
     // 更新规则显示
     ruleInfo();
 }
@@ -365,11 +404,14 @@ void NineChessWindow::on_actionNew_N_triggered()
 {
     if (file.isOpen())
         file.close();
+
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);
+
     // 取消AI设定
     ui.actionEngine1_T->setChecked(false);
     ui.actionEngine2_R->setChecked(false);
+
     // 重置游戏规则
     game->gameReset();
 }
@@ -380,26 +422,32 @@ void NineChessWindow::on_actionOpen_O_triggered()
     if (path.isEmpty() == false) {
         if (file.isOpen())
             file.close();
-        //文件对象
+
+        // 文件对象
         file.setFileName(path);
+
         // 不支持1MB以上的文件
         if (file.size() > 0x100000) {
             // 定义新对话框
-            QMessageBox msgBox(QMessageBox::Warning, tr("文件过大"), tr("不支持1MB以上文件"), QMessageBox::Ok);
+            QMessageBox msgBox(QMessageBox::Warning, 
+                tr("文件过大"), tr("不支持1MB以上文件"), QMessageBox::Ok);
             msgBox.exec();
             return;
         }
 
-        //打开文件,只读方式打开
+        // 打开文件,只读方式打开
         bool isok = file.open(QFileDevice::ReadOnly | QFileDevice::Text);
+
         if (isok) {
             // 取消AI设定
             ui.actionEngine1_T->setChecked(false);
             ui.actionEngine2_R->setChecked(false);
+
             // 读文件
             QTextStream textStream(&file);
             QString cmd;
             cmd = textStream.readLine();
+
             // 读取并显示棋谱时，不必刷新棋局场景
             if (!(game->command(cmd, false))) {
                 // 定义新对话框
@@ -407,10 +455,12 @@ void NineChessWindow::on_actionOpen_O_triggered()
                 msgBox.exec();
                 return;
             }
+
             while (!textStream.atEnd()) {
                 cmd = textStream.readLine();
                 game->command(cmd, false);
             }
+
             // 最后刷新棋局场景
             game->updateScence();
         }
@@ -421,23 +471,28 @@ void NineChessWindow::on_actionSave_S_triggered()
 {
     if (file.isOpen()) {
         file.close();
-        //打开文件,只写方式打开
+
+        // 打开文件,只写方式打开
         bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
+
         if (isok) {
-            //写文件
+            // 写文件
             QTextStream textStream(&file);
             QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
             for (QString cmd : strlist->stringList())
                 textStream << cmd << endl;
             file.flush();
         }
-    } else
+    } else {
         on_actionSaveAs_A_triggered();
+    }
 }
 
 void NineChessWindow::on_actionSaveAs_A_triggered()
 {
-    QString path = QFileDialog::getSaveFileName(this, tr("打开棋谱文件"), QDir::currentPath() + tr("棋谱.txt"), "TXT(*.txt)");
+    QString path = QFileDialog::getSaveFileName(this, 
+        tr("打开棋谱文件"), QDir::currentPath() + tr("棋谱.txt"), "TXT(*.txt)");
+
     if (path.isEmpty() == false) {
         if (file.isOpen())
             file.close();
@@ -447,8 +502,9 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
 
         // 打开文件,只写方式打开
         bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
+
         if (isok) {
-            //写文件
+            // 写文件
             QTextStream textStream(&file);
             QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
             for (QString cmd : strlist->stringList())
@@ -456,7 +512,6 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
             file.flush();
         }
     }
-
 }
 
 void NineChessWindow::on_actionEdit_E_toggled(bool arg1)
@@ -480,6 +535,7 @@ void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
         ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
         ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
     }
+
     // 让控制器改变棋子颜色
     game->setInvert(arg1);
 }
@@ -506,6 +562,7 @@ void NineChessWindow::on_actionRowChange()
         } else if (obsender == ui.actionEnd_E) {
             ui.listView->setCurrentIndex(model->index(rows - 1, 0));
         }
+
         currentRow = ui.listView->currentIndex().row();
     }
 
@@ -541,7 +598,8 @@ void NineChessWindow::on_actionRowChange()
     // 更新局面
     game->phaseChange(currentRow);
 
-    /* 下面的代码全部取消，改用QTimer的方式实现
+#if 0
+    // 下面的代码全部取消，改用QTimer的方式实现
     // 更新局面
     bool changed = game->phaseChange(currentRow);
     // 处理自动播放时的动画
@@ -559,7 +617,7 @@ void NineChessWindow::on_actionRowChange()
         QTimer::singleShot(waitTime, &loop, SLOT(quit()));
         loop.exec();
     }
-    */
+#endif // 0
 }
 
 void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
@@ -578,7 +636,9 @@ void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
         if (currentRow < rows - 1) {
             ui.listView->setCurrentIndex(ui.listView->model()->index(currentRow + 1, 0));
         }
+
         currentRow = ui.listView->currentIndex().row();
+
         // 更新动作状态
         if (currentRow <= 0) {
             ui.actionBegin_S->setEnabled(false);
@@ -614,11 +674,13 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
         // 自动运行前禁用控件
         ui.dockWidget->setEnabled(false);
         ui.gameView->setEnabled(false);
+
         // 启动定时器
         autoRunTimer.start(game->getDurationTime() + 50);
     } else {
         // 关闭定时器
         autoRunTimer.stop();
+
         // 自动运行结束后启用控件
         ui.dockWidget->setEnabled(true);
         ui.gameView->setEnabled(true);
@@ -723,7 +785,10 @@ void NineChessWindow::on_actionEngine_E_triggered()
         time1_new = spinBox_time1->value();
         time2_new = spinBox_time2->value();
 
-        if (depth1 != depth1_new || depth2 != depth2_new || time1 != time1_new || time2 != time2_new) {
+        if (depth1 != depth1_new ||
+            depth2 != depth2_new ||
+            time1 != time1_new ||
+            time2 != time2_new) {
             // 重置AI
             game->setAiDepthTime(depth1_new, time1_new, depth2_new, time2_new);
         }
@@ -750,7 +815,7 @@ void NineChessWindow::on_actionAbout_A_triggered()
 
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("aboutDialog"));
-    dialog->setWindowTitle(tr("九连棋"));
+    dialog->setWindowTitle(tr("三棋"));
     dialog->setModal(true);
 
     // 生成各个控件
@@ -771,7 +836,7 @@ void NineChessWindow::on_actionAbout_A_triggered()
     label_icon1->setScaledContents(true);
     label_icon2->setScaledContents(true);
 
-    label_text->setText(tr("支持开源，捐助作者，诚接软件开发项目 —— liuweilhy"));
+    label_text->setText(tr("Donate"));
     label_text->setAlignment(Qt::AlignCenter);
     label_image->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/donate.png")));
     label_image->setAlignment(Qt::AlignCenter);

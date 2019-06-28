@@ -171,7 +171,7 @@ public:
         // 尚待去除的子数
         int nPiecesNeedRemove;
 
-        /*
+#if 0        
         本打算用如下的结构体来表示“三连”
         struct Mill {
             char piece1;    // “三连”中最小的棋子
@@ -184,7 +184,8 @@ public:
         但为了提高执行效率改用一个64位整数了，规则如下
         0x   00     00     00    00    00    00    00    00
            unused unused piece1 pos1 piece2 pos2 piece3 pos3
-        */
+#endif
+
         // “三连列表”
         list <uint64_t> millList;
     };

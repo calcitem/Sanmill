@@ -31,9 +31,11 @@ void GameView::flip()
      * │0 -1  0│
      * └0  0  1┘
      */
+
      // 方法一: 直接在原变换矩阵基础上乘以上面的矩阵
      // QMatrix只对变换矩阵前两列赋值
     setMatrix(matrix() * QMatrix(1, 0, 0, -1, 0, 0));
+
     /* 方法二: 人工计算好新的变换矩阵后再对场景赋值
      * 这个方法的效率未必高，还需要人工计算
     QMatrix mt = matrix();
@@ -98,6 +100,7 @@ void GameView::resizeEvent(QResizeEvent *event)
     scale(sx, sy);
     //qDebug() << "scale :" << sx;
     */
+
     // 使用如下形式，更简洁
     QGraphicsView::resizeEvent(event);
     fitInView(sceneRect(), Qt::KeepAspectRatio);

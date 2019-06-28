@@ -54,6 +54,7 @@ void AiThread::run()
 
     while (!isInterruptionRequested()) {
         mutex.lock();
+
         if (chess_->whosTurn() == NineChess::PLAYER1)
             i = 1;
         else if (chess_->whosTurn() == NineChess::PLAYER2)
@@ -74,11 +75,14 @@ void AiThread::run()
         ai_ab.alphaBetaPruning(aiDepth);
         const char *str = ai_ab.bestMove();
         qDebug() << "Computer:" << str << "\n";
+
         if (strcmp(str, "error!"))
             emit command(str);
+
 #ifdef DEBUG
         qDebug() << "Thread" << id << "run" << ++iTemp << "times";
 #endif
+
         emit calcFinished();
 
         // 执行完毕后继续判断
