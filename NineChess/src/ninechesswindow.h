@@ -6,7 +6,9 @@
 #include <QStringListModel>
 #include <QFile>
 #include <QTimer>
+
 #include "ui_ninechesswindow.h"
+#include "config.h"
 
 class GameScene;
 class GameController;

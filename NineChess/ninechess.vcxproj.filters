@@ -107,6 +107,9 @@
     <ClInclude Include="src\ninechessai_ab.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="src\config.h">
+      <Filter>Control</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">

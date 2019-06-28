@@ -1,6 +1,9 @@
 ﻿#ifndef BOARDITEM_H
 #define BOARDITEM_H
+
 #include <QGraphicsItem>
+
+#include "config.h"
 
 class BoardItem : public QGraphicsItem
 {

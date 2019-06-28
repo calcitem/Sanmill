@@ -305,7 +305,6 @@ void GameController::setSound(bool arg)
 
 void GameController::playSound(const QString &soundPath)
 {
-#define PLAY_SOUND
 #ifdef PLAY_SOUND
     if (hasSound) {
         QSound::play(soundPath);

@@ -14,6 +14,8 @@
 #include <QMouseEvent>
 #include <QDebug>
 
+#include "config.h"
+
 class ManualListView : public QListView
 {
     Q_OBJECT

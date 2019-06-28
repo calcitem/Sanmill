@@ -3,6 +3,8 @@
 
 #include <QGraphicsScene>
 
+#include "config.h"
+
 class BoardItem;
 
 class GameScene : public QGraphicsScene

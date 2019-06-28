@@ -7,13 +7,14 @@
 #ifndef NINECHESSAI_AB
 #define NINECHESSAI_AB
 
-#include "ninechess.h"
 #include <list>
 #include <stack>
 #include <unordered_map>
 #include <mutex>
 #include <string>
 #include <Qdebug>
+
+#include "ninechess.h"
 
 using namespace std;
 

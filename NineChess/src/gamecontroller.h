@@ -15,6 +15,7 @@
 #include <QTextStream>
 #include <QStringListModel>
 #include <QModelIndex>
+
 #include "ninechess.h"
 #include "gamescene.h"
 #include "pieceitem.h"

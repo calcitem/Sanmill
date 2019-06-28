@@ -1,7 +1,10 @@
 ﻿#ifndef CHESSITEM_H
 #define CHESSITEM_H
+
 #include <QObject>
 #include <QGraphicsItem>
+
+#include "config.h"
 
 class PieceItem : public QObject, public QGraphicsItem
 {

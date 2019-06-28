@@ -4,6 +4,8 @@
 
 #include <QGraphicsView>
 
+#include "config.h"
+
 class GameView : public QGraphicsView
 {
     Q_OBJECT

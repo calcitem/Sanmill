@@ -12,6 +12,8 @@
 #include <cstring>
 #include <list>
 
+#include "config.h"
+
 using std::string;
 using std::list;
 
