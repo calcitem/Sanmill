@@ -342,7 +342,7 @@ void GameController::flip()
     if (currentRow == row - 1)
         updateScence();
     else
-        phaseChange(currentRow, true);
+        stageChange(currentRow, true);
 
     ai1.setAi(chess_);
     ai2.setAi(chess_);
@@ -350,6 +350,7 @@ void GameController::flip()
     if (isEngine1) {
         ai1.start();
     }
+
     if (isEngine2) {
         ai2.start();
     }
@@ -383,7 +384,7 @@ void GameController::mirror()
     if (currentRow == row - 1)
         updateScence();
     else
-        phaseChange(currentRow, true);
+        stageChange(currentRow, true);
 
     ai1.setAi(chess_);
     ai2.setAi(chess_);
@@ -423,7 +424,7 @@ void GameController::turnRight()
     if (currentRow == row - 1)
         updateScence();
     else
-        phaseChange(currentRow, true);
+        stageChange(currentRow, true);
 
     ai1.setAi(chess_);
     ai2.setAi(chess_);
@@ -819,7 +820,7 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
 }
 
 // 浏览历史局面，通过command函数刷新局面显示
-bool GameController::phaseChange(int row, bool forceUpdate)
+bool GameController::stageChange(int row, bool forceUpdate)
 {
     // 如果row是当前浏览的棋谱行，则不需要刷新
     if (currentRow == row && !forceUpdate)
@@ -841,6 +842,7 @@ bool GameController::phaseChange(int row, bool forceUpdate)
 
     // 刷新棋局场景
     updateScence(chessTemp);
+
     return true;
 }
 
@@ -902,9 +904,12 @@ bool GameController::updateScence(NineChess &chess)
         if (j == (NineChess::N_SEATS) * (NineChess::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & 0x10) {
-                pos = (key - 0x11 < n / 2 - chess.getPiecesInHandCount_1()) ? scene.pos_p2_g : scene.pos_p1;
-            } else
-                pos = (key - 0x21 < n / 2 - chess.getPiecesInHandCount_2()) ? scene.pos_p1_g : scene.pos_p2;
+                pos = (key - 0x11 < n / 2 - chess.getPiecesInHandCount_1()) ?
+                        scene.pos_p2_g : scene.pos_p1;
+            } else {
+                pos = (key - 0x21 < n / 2 - chess.getPiecesInHandCount_2()) ?
+                        scene.pos_p1_g : scene.pos_p2;
+            }
 
             if (piece->pos() != pos) {
                 QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
@@ -915,10 +920,11 @@ bool GameController::updateScence(NineChess &chess)
                 animationGroup->addAnimation(animation);
             }
         }
+
         piece->setSelected(false);
     }
 
-    // 添加开局禁子点
+    // 添加摆棋阶段禁子点
     if (chess.getRule()->hasForbiddenPoint && chess.getStage() == NineChess::GAME_PLACING) {
         for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
             if (board[j] == 0x0F) {
@@ -937,7 +943,7 @@ bool GameController::updateScence(NineChess &chess)
         }
     }
 
-    // 中局清除禁子点
+    // 走棋阶段清除禁子点
     if (chess.getRule()->hasForbiddenPoint && chess.getStage() != NineChess::GAME_PLACING) {
         while (n < pieceList.size()) {
             delete pieceList.at(n);

@@ -70,20 +70,27 @@ void PieceItem::paint(QPainter *painter,
     Q_UNUSED(option)
         Q_UNUSED(widget)
 
-        // 空模型不画棋子
+    // 空模型不画棋子
+
+    switch (model_) {
+    case blackPiece:
         // 如果模型为黑色，则画黑色棋子
-        if (model_ == blackPiece)
-            painter->drawPixmap(-size / 2, -size / 2, size, size,
-                                QPixmap(":/image/resources/image/black_piece.png"));
+        painter->drawPixmap(-size / 2, -size / 2, size, size,
+            QPixmap(":/image/resources/image/black_piece.png"));
+        break;
+
+    case whitePiece:
         // 如果模型为白色，则画白色棋子
-        else if (model_ == whitePiece)
-            painter->drawPixmap(-size / 2, -size / 2, size, size,
-                                QPixmap(":/image/resources/image/white_piece.png"));
+        painter->drawPixmap(-size / 2, -size / 2, size, size,
+            QPixmap(":/image/resources/image/white_piece.png"));
+        break;
+    }
 
     // 如果模型要求显示序号
     if (showNum) {
         // 如果模型为黑色，用白色笔画序号
-        painter->setPen(QColor(255, 255, 255));
+        if (model_ == blackPiece)
+            painter->setPen(QColor(255, 255, 255));
 
         // 如果模型为白色，用白色笔画序号
         if (model_ == whitePiece)
@@ -96,7 +103,8 @@ void PieceItem::paint(QPainter *painter,
         painter->setFont(font);
 
         // 画序号，默认中间位置偏下，需微调
-        painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12), Qt::AlignCenter, QString::number(num));
+        painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12),
+                            Qt::AlignCenter, QString::number(num));
 
     }
 

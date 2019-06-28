@@ -1,12 +1,13 @@
-﻿#include "gamescene.h"
-#include "pieceitem.h"
-#include "boarditem.h"
-#include "graphicsconst.h"
-#include <QGraphicsItem>
+﻿#include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QDebug>
+
+#include "gamescene.h"
+#include "pieceitem.h"
+#include "boarditem.h"
+#include "graphicsconst.h"
 
 GameScene::GameScene(QObject *parent) :
     QGraphicsScene(parent),
@@ -76,6 +77,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     // 如果是棋盘
     QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
+
     if (!item || item->type() == BoardItem::Type) {
         QPointF p = mouseEvent->scenePos();
         p = board->nearestPosition(p);

@@ -135,7 +135,7 @@ public slots:
     bool command(const QString &cmd, bool update = true);
 
     // 历史局面及局面改变
-    bool phaseChange(int row, bool forceUpdate = false);
+    bool stageChange(int row, bool forceUpdate = false);
 
     // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();

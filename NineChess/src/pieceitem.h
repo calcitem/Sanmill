@@ -16,9 +16,13 @@ class PieceItem : public QObject, public QGraphicsItem
 
 public:
     explicit PieceItem(QGraphicsItem *parent = nullptr);
+
     ~PieceItem();
+
     QRectF boundingRect() const;
+
     QPainterPath shape() const;
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr);
 
@@ -70,8 +74,10 @@ public:
     void setDeleted(bool deleted = true)
     {
         this->deleted_ = deleted;
+
         if (deleted)
             this->model_ = noPiece;
+
         update(boundingRect());
     }
 

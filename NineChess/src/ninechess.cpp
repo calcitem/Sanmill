@@ -148,6 +148,7 @@ const NineChess &NineChess::operator=(const NineChess &chess)
 {
     if (this == &chess)
         return *this;
+
     currentRule = chess.currentRule;
     context = chess.context;
     currentStep = chess.currentStep;
@@ -512,14 +513,14 @@ bool NineChess::reset()
 bool NineChess::start()
 {
     switch (context.stage) {
-        // 如果游戏已经开始，则返回false
+    // 如果游戏已经开始，则返回false
     case GAME_PLACING:
     case GAME_MOVING:
         return false;
-        // 如果游戏结束，则重置游戏，进入未开始状态
+    // 如果游戏结束，则重置游戏，进入未开始状态
     case GAME_OVER:
         reset();   // 这里不要break;
-   // 如果游戏处于未开始状态
+    // 如果游戏处于未开始状态
     case GAME_NOTSTARTED:
         // 启动计时器
         ftime(&startTimeb);
@@ -610,6 +611,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
     int pos = cp2pos(c, p);
+
     if (!onBoard[pos] || board_[pos])
         return false;
 
@@ -704,13 +706,14 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
             (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
             (context.turn == PLAYER2 &&
             (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
+
             int i;
             for (i = 0; i < 4; i++) {
                 if (pos == moveTable[currentPos][i])
                     break;
             }
-            // 不在招法表中
 
+            // 不在招法表中
             if (i == 4)
                 return false;
         }
@@ -1116,6 +1119,7 @@ bool NineChess::capture(int pos)
         //setTip();
         return true;
     }
+
     // 还有其余的子要去吗
     if (context.nPiecesNeedRemove > 0) {
         // 继续去子
@@ -1175,6 +1179,7 @@ bool NineChess::capture(int pos)
             }
         }
     }
+
     //setTip();
     return true;
 }
@@ -1206,6 +1211,7 @@ bool NineChess::choose(int pos)
 
         return true;
     }
+
     return false;
 }
 
@@ -1260,6 +1266,7 @@ bool NineChess::giveup(Player loser)
             return true;
         }
     }
+
     return false;
 }
 
@@ -1569,17 +1576,20 @@ int NineChess::addMills(int pos)
             }
         }
     }
+
     return n;
 }
 
 bool NineChess::isAllInMills(char ch)
 {
-    for (int i = N_SEATS; i < N_SEATS * (N_RINGS + 1); i++)
+    for (int i = POS_BEGIN; i < POS_END; i++) {
         if (board_[i] & ch) {
             if (!isInMills(i)) {
                 return false;
             }
         }
+    }
+
     return true;
 }
 
@@ -1626,8 +1636,10 @@ bool NineChess::isAllSurrounded(char ch)
         return true;
 
     // 判断是否可以飞子
-    if ((context.turn == PLAYER1 && (context.nPiecesOnBoard_1 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces)) ||
-        (context.turn == PLAYER2 && (context.nPiecesOnBoard_2 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces))) {
+    if ((context.turn == PLAYER1 &&
+        (context.nPiecesOnBoard_1 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces)) ||
+        (context.turn == PLAYER2 &&
+        (context.nPiecesOnBoard_2 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces))) {
         return false;
     }
 

@@ -85,7 +85,8 @@ void GameView::turnLeft()
 
 void GameView::resizeEvent(QResizeEvent *event)
 {
-    /* 不使用下面的形式了
+#if 0
+    // 不使用下面的形式了
     // 让场景适合视图
     if (sceneRect().width() <= 0 || sceneRect().height() <= 0)
         return;
@@ -99,7 +100,7 @@ void GameView::resizeEvent(QResizeEvent *event)
     // 缩放视图适合场景大小
     scale(sx, sy);
     //qDebug() << "scale :" << sx;
-    */
+#endif
 
     // 使用如下形式，更简洁
     QGraphicsView::resizeEvent(event);
