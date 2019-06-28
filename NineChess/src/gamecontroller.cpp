@@ -860,7 +860,7 @@ bool GameController::updateScence(NineChess &chess)
     int key;
 
     // 棋子总数
-    int n = chess.getRule()->nTotalPiecesEachSide * 2;
+    int nTotalPieces = chess.getRule()->nTotalPiecesEachSide * 2;
 
     // 动画组
     QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup;
@@ -868,7 +868,7 @@ bool GameController::updateScence(NineChess &chess)
     // 棋子就位
     PieceItem *piece = nullptr;
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < nTotalPieces; i++) {
         piece = pieceList.at(i);
 
         // 将pieceList的下标转换为chess的棋子代号
@@ -904,10 +904,10 @@ bool GameController::updateScence(NineChess &chess)
         if (j == (NineChess::N_SEATS) * (NineChess::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & 0x10) {
-                pos = (key - 0x11 < n / 2 - chess.getPiecesInHandCount_1()) ?
+                pos = (key - 0x11 < nTotalPieces / 2 - chess.getPiecesInHandCount_1()) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
-                pos = (key - 0x21 < n / 2 - chess.getPiecesInHandCount_2()) ?
+                pos = (key - 0x21 < nTotalPieces / 2 - chess.getPiecesInHandCount_2()) ?
                         scene.pos_p1_g : scene.pos_p2;
             }
 
@@ -929,14 +929,14 @@ bool GameController::updateScence(NineChess &chess)
         for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
             if (board[j] == 0x0F) {
                 pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
-                if (n < pieceList.size()) {
-                    pieceList.at(n++)->setPos(pos);
+                if (nTotalPieces < pieceList.size()) {
+                    pieceList.at(nTotalPieces++)->setPos(pos);
                 } else {
                     PieceItem *newP = new PieceItem;
                     newP->setDeleted();
                     newP->setPos(pos);
                     pieceList.append(newP);
-                    n++;
+                    nTotalPieces++;
                     scene.addItem(newP);
                 }
             }
@@ -945,9 +945,9 @@ bool GameController::updateScence(NineChess &chess)
 
     // 走棋阶段清除禁子点
     if (chess.getRule()->hasForbiddenPoint && chess.getStage() != NineChess::GAME_PLACING) {
-        while (n < pieceList.size()) {
-            delete pieceList.at(n);
-            pieceList.removeAt(n);
+        while (nTotalPieces < pieceList.size()) {
+            delete pieceList.at(nTotalPieces);
+            pieceList.removeAt(nTotalPieces);
         }
     }
 
@@ -956,7 +956,7 @@ bool GameController::updateScence(NineChess &chess)
     if (ipos) {
         key = board[chess.getCurrentPos()];
         ipos = key & 0x10 ? (key - 0x11) * 2 : (key - 0x21) * 2 + 1;
-        if (ipos >= 0 && ipos < n) {
+        if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(ipos);
             currentPiece->setSelected(true);
         }

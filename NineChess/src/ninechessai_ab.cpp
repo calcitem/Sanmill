@@ -339,7 +339,11 @@ int NineChessAi_ab::evaluate(Node *node)
 
 int NineChessAi_ab::alphaBetaPruning(int depth)
 {
+#ifdef GAME_PLACING_DYNAMIC_DEPTH
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
+#ifdef GAME_PLACING_FIXED_DEPTH
+        depth = GAME_PLACING_FIXED_DEPTH;
+#else
         switch (chessTemp.getPiecesInHandCount_1())
         {
         case 12:
@@ -383,12 +387,16 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
             depth = 7;
             break;
         }
+#endif /* GAME_PLACING_FIXED_DEPTH */
     }
+#endif /* GAME_PLACING_DYNAMIC_DEPTH */
 
-    // 走棋阶段将深度调整为 10
+#ifdef GAME_MOVING_FIXED_DEPTH    
+    // 走棋阶段将深度调整
     if ((chessTemp.context.stage) & (NineChess::GAME_MOVING)) {
-        depth = 10;
+        depth = GAME_MOVING_FIXED_DEPTH;
     }
+#endif /* GAME_MOVING_FIXED_DEPTH */
 
     qDebug() << "Depth:" << depth;
 
