@@ -437,15 +437,15 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 检索hashmap
     uint64_t hash = chessTemp.chessHash();
     mtx.lock();
-    auto itor = findHash(hash);
+    auto iter = findHash(hash);
     if (node != rootNode) {
-        if (itor != hashmap.end()) {
-            if (itor->second.depth >= depth) {
-                node->value = itor->second.value;
+        if (iter != hashmap.end()) {
+            if (iter->second.depth >= depth) {
+                node->value = iter->second.value;
                 if (chessData->turn == NineChess::PLAYER1)
-                    node->value += itor->second.depth - depth;
+                    node->value += iter->second.depth - depth;
                 else
-                    node->value -= itor->second.depth - depth;
+                    node->value -= iter->second.depth - depth;
                 mtx.unlock();
                 return node->value;
             }
@@ -523,7 +523,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #if 0
         // 添加到hashmap
         mtx.lock();
-        if (itor == hashmap.end()) {
+        if (iter == hashmap.end()) {
             HashValue hashValue;
             hashValue.value = node->value;
             hashValue.depth = depth;
@@ -532,9 +532,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         }
         // 更新更深层数据
         else {
-            if (itor->second.depth < depth) {
-                itor->second.value = node->value;
-                itor->second.depth = depth;
+            if (iter->second.depth < depth) {
+                iter->second.value = node->value;
+                iter->second.depth = depth;
             }
         }
         mtx.unlock();
@@ -601,9 +601,9 @@ const char *NineChessAi_ab::move2string(int move)
 
 unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::findHash(uint64_t hash)
 {
-    auto itor = hashmap.find(hash);
-    if (itor != hashmap.end())
-        return itor;
+    auto iter = hashmap.find(hash);
+    if (iter != hashmap.end())
+        return iter;
 
     // 变换局面，查找hash
     chessTempShift = chessTemp;
@@ -615,11 +615,11 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
                 chessTempShift.turn(false);
             for (int k = 0; k < 4; k++) {
                 chessTempShift.rotate(k * 90, false);
-                itor = hashmap.find(chessTempShift.chessHash());
-                if (itor != hashmap.end())
-                    return itor;
+                iter = hashmap.find(chessTempShift.chessHash());
+                if (iter != hashmap.end())
+                    return iter;
             }
         }
     }
-    return itor;
+    return iter;
 }

@@ -1553,16 +1553,16 @@ int NineChess::addMills(int pos)
             // 如果不允许相同三连反复去子
             else {
                 // 迭代器
-                list<uint64_t>::iterator itor;
+                list<uint64_t>::iterator iter;
 
                 // 遍历
-                for (itor = context.millList.begin(); itor != context.millList.end(); itor++) {
-                    if (mill == *itor)
+                for (iter = context.millList.begin(); iter != context.millList.end(); iter++) {
+                    if (mill == *iter)
                         break;
                 }
 
                 // 如果没找到历史项
-                if (itor == context.millList.end()) {
+                if (iter == context.millList.end()) {
                     n++;
                     context.millList.push_back(mill);
                 }
@@ -1847,23 +1847,23 @@ void NineChess::mirror(bool cmdChange /*= true*/)
             }
         }
 
-        for (auto itor = cmdlist.begin(); itor != cmdlist.end(); itor++) {
-            args = sscanf((*itor).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+        for (auto iter = cmdlist.begin(); iter != cmdlist.end(); iter++) {
+            args = sscanf((*iter).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
             if (args >= 4) {
                 p1 = (N_SEATS - p1 + 1) % N_SEATS;
                 p2 = (N_SEATS - p2 + 1) % N_SEATS;
-                (*itor)[3] = '1' + (char)p1;
-                (*itor)[10] = '1' + (char)p2;
+                (*iter)[3] = '1' + (char)p1;
+                (*iter)[10] = '1' + (char)p2;
             } else {
-                args = sscanf((*itor).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                args = sscanf((*iter).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
                     p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                    (*itor)[4] = '1' + (char)p1;
+                    (*iter)[4] = '1' + (char)p1;
                 } else {
-                    args = sscanf((*itor).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                    args = sscanf((*iter).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                     if (args >= 2) {
                         p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                        (*itor)[3] = '1' + (char)p1;
+                        (*iter)[3] = '1' + (char)p1;
                     }
                 }
             }
@@ -2007,8 +2007,8 @@ void NineChess::turn(bool cmdChange /*= true*/)
             }
         }
 
-        for (auto itor = cmdlist.begin(); itor != cmdlist.end(); itor++) {
-            args = sscanf((*itor).c_str(),
+        for (auto iter = cmdlist.begin(); iter != cmdlist.end(); iter++) {
+            args = sscanf((*iter).c_str(),
                             "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u",
                             &c1, &p1, &c2, &p2, &mm, &ss, &mss);
 
@@ -2021,24 +2021,24 @@ void NineChess::turn(bool cmdChange /*= true*/)
                     c2 = N_RINGS;
                 else if (c2 == N_RINGS)
                     c2 = 1;
-                (*itor)[1] = '0' + (char)c1;
-                (*itor)[8] = '0' + (char)c2;
+                (*iter)[1] = '0' + (char)c1;
+                (*iter)[8] = '0' + (char)c2;
             } else {
-                args = sscanf((*itor).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                args = sscanf((*iter).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
                     if (c1 == 1)
                         c1 = N_RINGS;
                     else if (c1 == N_RINGS)
                         c1 = 1;
-                    (*itor)[2] = '0' + (char)c1;
+                    (*iter)[2] = '0' + (char)c1;
                 } else {
-                    args = sscanf((*itor).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                    args = sscanf((*iter).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                     if (args >= 2) {
                         if (c1 == 1)
                             c1 = N_RINGS;
                         else if (c1 == N_RINGS)
                             c1 = 1;
-                        (*itor)[1] = '0' + (char)c1;
+                        (*iter)[1] = '0' + (char)c1;
                     }
                 }
             }
@@ -2173,23 +2173,23 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
             }
         }
 
-        for (auto itor = cmdlist.begin(); itor != cmdlist.end(); itor++) {
-            args = sscanf((*itor).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
+        for (auto iter = cmdlist.begin(); iter != cmdlist.end(); iter++) {
+            args = sscanf((*iter).c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &c2, &p2, &mm, &ss, &mss);
             if (args >= 4) {
                 p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
                 p2 = (p2 - 1 + N_SEATS - degrees) % N_SEATS;
-                (*itor)[3] = '1' + (char)p1;
-                (*itor)[10] = '1' + (char)p2;
+                (*iter)[3] = '1' + (char)p1;
+                (*iter)[10] = '1' + (char)p2;
             } else {
-                args = sscanf((*itor).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                args = sscanf((*iter).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
                     p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                    (*itor)[4] = '1' + (char)p1;
+                    (*iter)[4] = '1' + (char)p1;
                 } else {
-                    args = sscanf((*itor).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
+                    args = sscanf((*iter).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                     if (args >= 2) {
                         p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                        (*itor)[3] = '1' + (char)p1;
+                        (*iter)[3] = '1' + (char)p1;
                     }
                 }
             }
