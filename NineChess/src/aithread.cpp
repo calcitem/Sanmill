@@ -1,7 +1,7 @@
 ﻿#include <QDebug>
 #include "aithread.h"
 
-AiThread::AiThread(int id, QObject *parent) : QThread(parent), waiting_(false), aiDepth(7), aiTime(99)
+AiThread::AiThread(int id, QObject *parent) : QThread(parent), waiting_(false), aiDepth(2), aiTime(99)
 {
     this->id = id;
 
