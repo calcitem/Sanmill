@@ -257,6 +257,13 @@ void NineChessWindow::initialize()
 
     // 更新四个键的状态
     on_actionRowChange();
+
+    // 窗口最大化
+#ifdef SHOW_MAXIMIZED_ON_LOAD
+    showMaximized();
+    QWidget::setWindowFlags(Qt::WindowMaximizeButtonHint |
+                            Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
+#endif // SHOW_MAXIMIZED_ON_LOAD
 }
 
 void NineChessWindow::ruleInfo()
