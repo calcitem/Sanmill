@@ -41,10 +41,17 @@ public:
         struct Node *parent;           // 父节点
         list<struct Node *> children;  // 子节点列表
 #ifdef DEBUG_AB_TREE
-        struct Node *root;
-        NineChess::GameStage stage;
+        size_t id;                // 结点编号
+        struct Node *root;              // 根节点
+        bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
+        enum NineChess::Player player;  // 此招是谁下的
+        NineChess::GameStage stage;     // 摆棋阶段还是走棋阶段
         NineChess::Action action;
         int depth;
+        int alpha;
+        int beta;
+        int minMax;
+        bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         string cmd;
 #endif /* DEBUG_AB_TREE */
     };
@@ -129,7 +136,7 @@ private:
     static const size_t maxHashCount = 1024 * 1024;
 
     // 定义极大值，等于16位有符号整形数字的最大值
-    static const int infinity = INT32_MAX;
+    static const int INF_VALUE = INT32_MAX;
 
 private:
     // 命令行

@@ -76,35 +76,37 @@ void NineChessAi_ab::buildChildren(Node *node)
         return;
     }
 
-    // 临时变量
+    // 对手
     NineChess::Player opponent = NineChess::getOpponent(chessTemp.context.turn);
 
     // 列出所有合法的下一招
     switch (chessTemp.context.action) {
     case NineChess::ACTION_CHOOSE:
     case NineChess::ACTION_PLACE:
-        // 对于开局落子
-        if ((chessTemp.context.stage) & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
-            for (int i = NineChess::POS_BEGIN; i < NineChess::POS_END; i++) {
-                if (!chessTemp.board_[i]) {
+        // 对于摆子阶段
+        if (chessTemp.context.stage & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
+            for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
+                if (!chessTemp.board_[pos]) {
                     if (node == rootNode && chessTemp.context.stage == NineChess::GAME_NOTSTARTED) {
                         // 若为先手，则抢占星位
-                        if (NineChess::isStartPoint(i)) {
-                            addNode(node, INT32_MAX, i);
+                        if (NineChess::isStartPoint(pos)) {
+                            addNode(node, INF_VALUE, pos);
                         }
                     } else {
-                        addNode(node, 0, i);
+                        addNode(node, 0, pos);
                     }
-
                 }
             }
-        }
-        // 对于中局移子
-        else {
+            break;
+        } 
+        
+        // 对于移子阶段
+        if (chessTemp.context.stage & NineChess::GAME_MOVING) {
             int newPos;
             for (int oldPos = NineChess::POS_BEGIN; oldPos < NineChess::POS_END; oldPos++) {
                 if (!chessTemp.choose(oldPos))
                     continue;
+
                 if ((chessTemp.context.turn == NineChess::PLAYER1 &&
                     (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
                     (chessTemp.context.turn == NineChess::PLAYER2 &&
@@ -112,7 +114,8 @@ void NineChessAi_ab::buildChildren(Node *node)
                     for (int j = 0; j < 4; j++) {
                         newPos = chessTemp.moveTable[oldPos][j];
                         if (newPos && !chessTemp.board_[newPos]) {
-                            addNode(node, 0, (oldPos << 8) + newPos);
+                            int move = (oldPos << 8) + newPos;
+                            addNode(node, 0, move);
                         }
                     }
                 } else {
@@ -406,7 +409,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 
     qDebug() << "Depth:" << depth;
 
-    return alphaBetaPruning(depth, -infinity, infinity, rootNode);
+    return alphaBetaPruning(depth, -INF_VALUE, INF_VALUE, rootNode);
+    // 生成了 Alpha-Beta 树
 }
 
 int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
@@ -417,24 +421,32 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 当前节点的MinMax值，最终赋值给节点value，与alpha和Beta不同
     int minMax;
 
-    // 统计遍历次数
-    nodeCount++;
-
 #ifdef DEBUG_AB_TREE
-    // 记录深度
     node->depth = depth;
-
-    // 记录根节点
     node->root = rootNode;
+    node->id = nodeCount;
+    node->player = chessContext->turn;
+    // 初始化
+    node->isLeaf = false;
+    node->isTimeout = false;
 #endif
+
+    // 遍历总次数增加
+    nodeCount++;
 
     // 搜索到叶子节点（决胜局面）
     if (chessContext->stage == NineChess::GAME_OVER) {
         node->value = evaluate(node);
+        
         if (node->value > 0)
             node->value += depth;
         else
             node->value -= depth;
+
+#ifdef DEBUG_AB_TREE
+        node->isLeaf = true;
+#endif
+
         return node->value;
     }
 
@@ -445,7 +457,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             node->value += depth;
         else
             node->value -= depth;
- 
+
+#ifdef DEBUG_AB_TREE
+        if (requiredQuit) {
+            node->isTimeout = true;
+        }
+#endif 
         return node->value;
     }
 
@@ -478,7 +495,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        minMax = -infinity;
+        minMax = -INF_VALUE;
         for (auto child : node->children) {
             dataStack.push(chessTemp.context);
             chessTemp.command(child->move);
@@ -503,7 +520,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
     // 对后手，搜索Min
     else {
-        minMax = infinity;
+        minMax = INF_VALUE;
         for (auto child : node->children) {
             dataStack.push(chessTemp.context);
             chessTemp.command(child->move);
