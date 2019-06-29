@@ -258,6 +258,8 @@ void NineChessWindow::initialize()
     // 更新四个键的状态
     on_actionRowChange();
 
+    this->resize(QSize(1440, 1440));
+
     // 窗口最大化
 #ifdef SHOW_MAXIMIZED_ON_LOAD
     showMaximized();
