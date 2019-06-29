@@ -912,12 +912,18 @@ bool GameController::updateScence(NineChess &chess)
             }
 
             if (piece->pos() != pos) {
-                QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
-                animation->setDuration(durationTime);
-                animation->setStartValue(piece->pos());
-                animation->setEndValue(pos);
-                animation->setEasingCurve(QEasingCurve::InOutQuad);
-                animationGroup->addAnimation(animation);
+#ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
+                if (chess.getStage() == NineChess::GAME_MOVING) {
+#endif
+                    QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
+                    animation->setDuration(durationTime);
+                    animation->setStartValue(piece->pos());
+                    animation->setEndValue(pos);
+                    animation->setEasingCurve(QEasingCurve::InOutQuad);
+                    animationGroup->addAnimation(animation);
+#ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
+                }
+#endif
             }
         }
 
