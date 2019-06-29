@@ -313,6 +313,8 @@ void GameController::playSound(const QString &soundPath)
     if (hasSound) {
         QSound::play(soundPath);
     }
+#else
+    soundPath;  // 为消除变量未使用过的警告
 #endif /* PLAY_SOUND */
 }
 
