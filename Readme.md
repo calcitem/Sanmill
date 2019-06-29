@@ -57,8 +57,8 @@
 
 ## 源码说明
 ### 软件构架
-+ GUI框架：Qt5.11，QT5大版本下均可通用。
-+ 编译器：MSVC2017，MSVC2013及以上版本可用。
++ GUI框架：Qt5.13，QT5大版本下均可通用。
++ 编译器：VC2019 版本可用。
 + 源文件编码：所有头文件（* .h）中和源文件（*的.cpp）采用UTF-8 + BOM编码格式的.pro文件等采用UTF-8无BOM编码。
 + 本程序采用MVC（模型 - 视图 - 控制器）设计规范，对应类如下：
 ```
@@ -84,24 +84,7 @@
 
 ### 许可协议
 **本项目所有类代码全部原创。**  
-详见文末Gitee项目内的License文件。请取用的朋友尊重知识产权。
+详见项目内的License文件。请取用的朋友尊重知识产权。
 
 ### 更新历史
-详见文末Gitee项目内的History文件。
-
-## 作者声明
-由于本人非IT科班出身，未经专业培训，也没有现成的QT棋类游戏源码做参考，源码中肯定有很多不合理，不规范之处。望好心的前辈不吝赐教。对于同道初学者，可以参考，相互学习，共同进步。  
-多年前上大学那会儿，笔者就打算做这么个程序出来，然而条件比较艰苦：  
-一来没有老师教，课上只学了Ç语言和VB，C++是笔者自学的，一个人啃晦涩过时的MFC;  
-二来我穷到连个电脑都没有......  
-三嘛，就是贪玩......  
-工作之后有条件了，我又自学了C＃和Qt，但都很肤浅，没深入学，只用来做几个小工具而已。  
-这个项目，我在2013年用标准C++写了个模型类，然后扔了不管；2015年自学Qt写了个简单的界面，又扔了不管；直到2018年5月才重新开始做。  
-如果你发现本程序有什么问题或好的建议，请与本人联系。我的邮箱是：liuweilhy@163.com  
->                                            by liuweilhy 2018年11月26日
-
-## 项目源码及发行版下载
-+ 源码下载（Gitee）：[https://gitee.com/liuweilhy/NineChess](https://gitee.com/liuweilhy/NineChess)
-+ 发行版下载（Gitee），请选择最新版：[https://gitee.com/liuweilhy/NineChess/releases](https://gitee.com/liuweilhy/NineChess/releases)
-+ 如果你没有Gitee账号，可以在本人CSDN资源下载（非及时更新）：[https://download.csdn.net/download/liuweilhy/10871298](https://download.csdn.net/download/liuweilhy/10871298)
-+ 如果你以上都没有，那么用百度云盘（非及时更新）：[https://pan.baidu.com/s/1NZnmAUozbPt9K04fTouxMA](https://pan.baidu.com/s/1NZnmAUozbPt9K04fTouxMA)
+详见项目内的History文件。
