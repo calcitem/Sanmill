@@ -36,23 +36,24 @@ public:
     // 定义一个节点结构体
     struct Node
     {
-        int value;                     // 节点的值
+
         int move;                      // 招法的命令行指令，图上标示为节点前的连线
-        struct Node *parent;           // 父节点
-        list<struct Node *> children;  // 子节点列表
+        int value;                     // 节点的值
+        list<struct Node*> children;  // 子节点列表
 #ifdef DEBUG_AB_TREE
-        size_t id;                // 结点编号
-        struct Node *root;              // 根节点
-        bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
+        string cmd;
         enum NineChess::Player player;  // 此招是谁下的
-        NineChess::GameStage stage;     // 摆棋阶段还是走棋阶段
-        NineChess::Action action;
         int depth;
+        size_t id;                // 结点编号
         int alpha;
         int beta;
         int minMax;
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
-        string cmd;
+        bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
+        NineChess::GameStage stage;     // 摆棋阶段还是走棋阶段
+        NineChess::Action action;
+        struct Node* parent;           // 父节点
+        struct Node* root;              // 根节点
 #endif /* DEBUG_AB_TREE */
     };
 
