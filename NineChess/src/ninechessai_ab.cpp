@@ -147,7 +147,7 @@ void NineChessAi_ab::buildChildren(Node *node)
             // 不是全成三的情况
             for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
                 if (chessTemp.board_[pos] & opponent) {
-                    if (!chessTemp.isInMills(pos)) {
+                    if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
                         addNode(node, 0, -pos);
                     }
                 }
