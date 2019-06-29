@@ -867,9 +867,12 @@ bool GameController::updateScence(NineChess &chess)
 
     // 棋子就位
     PieceItem *piece = nullptr;
+    PieceItem *deletedPiece = nullptr;
 
     for (int i = 0; i < nTotalPieces; i++) {
         piece = pieceList.at(i);
+
+        piece->setSelected(false);
 
         // 将pieceList的下标转换为chess的棋子代号
         key = (i % 2) ? (i / 2 + 0x21) : (i / 2 + 0x11);
@@ -912,6 +915,9 @@ bool GameController::updateScence(NineChess &chess)
             }
 
             if (piece->pos() != pos) {
+                // 为了对最近移除的棋子置为选择状态作准备
+                deletedPiece = piece;
+
 #ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
                 if (chess.getStage() == NineChess::GAME_MOVING) {
 #endif
@@ -966,6 +972,11 @@ bool GameController::updateScence(NineChess &chess)
             currentPiece = pieceList.at(ipos);
             currentPiece->setSelected(true);
         }
+    }
+
+    // 对最近移除的棋子置为选择状态
+    if (deletedPiece) {
+        deletedPiece->setSelected(true);
     }
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
