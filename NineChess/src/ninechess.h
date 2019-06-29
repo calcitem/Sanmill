@@ -33,8 +33,19 @@ public:
     // 8位，禁止修改！
     static const int N_SEATS = 8;
 
-    // 横直斜2个方向，禁止修改！
+    // 横直斜3个方向，禁止修改！
     static const int N_DIRECTIONS = 3;
+
+    // 移动方向，包括顺时针、逆时针、向内、向外4个方向
+    enum MoveDirection
+    {
+        MOVE_DIRECTION_CLOCKWISE = 0,       // 顺时针
+        MOVE_DIRECTION_ANTICLOCKWISE = 1,   // 逆时针
+        MOVE_DIRECTION_INWARD = 2,          // 向内
+        MOVE_DIRECTION_OUTWARD = 3,         // 向外
+        MOVE_DIRECTION_FLY = 4,             // 飞子
+        N_MOVE_DIRECTIONS = 4               // 移动方向数
+    };
 
     // 遍历棋盘点所用的起始位置，即 [8, 32)
     static const int POS_BEGIN = N_SEATS;
@@ -196,7 +207,7 @@ private:
 
     // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int moveTable[(N_RINGS + 2) * N_SEATS][4];
+    static int moveTable[(N_RINGS + 2) * N_SEATS][N_MOVE_DIRECTIONS];
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改

@@ -81,6 +81,7 @@ void NineChessAi_ab::buildChildren(Node *node)
 
     // 列出所有合法的下一招
     switch (chessTemp.context.action) {
+    // 对于选子和落子动作
     case NineChess::ACTION_CHOOSE:
     case NineChess::ACTION_PLACE:
         // 对于摆子阶段
@@ -111,37 +112,43 @@ void NineChessAi_ab::buildChildren(Node *node)
                     (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
                     (chessTemp.context.turn == NineChess::PLAYER2 &&
                     (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
-                    for (int j = 0; j < 4; j++) {
-                        newPos = chessTemp.moveTable[oldPos][j];
+                    // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在招法表中
+                    for (int moveDirection = NineChess::MOVE_DIRECTION_CLOCKWISE; moveDirection <= NineChess::MOVE_DIRECTION_OUTWARD; moveDirection++) {
+                        // 对于原有位置，遍历四个方向的招法，如果棋盘上为空位就加到结点列表中
+                        newPos = chessTemp.moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
                             addNode(node, 0, move);
                         }
                     }
                 } else {
-                    for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
-                        if (!chessTemp.board_[j]) {
-                            addNode(node, 0, (oldPos << 8) + j);
+                    // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在招法表中，是空位就行
+                    for (newPos = NineChess::POS_BEGIN; newPos < NineChess::POS_END; newPos++) {
+                        if (!chessTemp.board_[newPos]) {
+                            int move = (oldPos << 8) + newPos;
+                            addNode(node, 0, move);
                         }
                     }
                 }
             }
         }
         break;
-
-    case NineChess::ACTION_CAPTURE:
-        // 全成三的情况
+    
+    // 对于吃子动作
+    case NineChess::ACTION_CAPTURE:        
         if (chessTemp.isAllInMills(opponent)) {
-            for (int i = NineChess::POS_BEGIN; i < NineChess::POS_END; i++) {
-                if (chessTemp.board_[i] & opponent) {
-                    addNode(node, 0, -i);
+            // 全成三的情况
+            for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
+                if (chessTemp.board_[pos] & opponent) {
+                    addNode(node, 0, -pos);
                 }
             }
-        } else if (!chessTemp.isAllInMills(opponent)) {
-            for (int i = NineChess::POS_BEGIN; i < NineChess::POS_END; i++) {
-                if (chessTemp.board_[i] & opponent) {
-                    if (!chessTemp.isInMills(i)) {
-                        addNode(node, 0, -i);
+        } else {
+            // 不是全成三的情况
+            for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
+                if (chessTemp.board_[pos] & opponent) {
+                    if (!chessTemp.isInMills(pos)) {
+                        addNode(node, 0, -pos);
                     }
                 }
             }

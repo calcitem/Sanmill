@@ -112,7 +112,7 @@ const int NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
 };
 
 // 招法表
-int NineChess::moveTable[(N_RINGS + 2) * N_SEATS][4] = { 0 };
+int NineChess::moveTable[(N_RINGS + 2) * N_SEATS][N_MOVE_DIRECTIONS] = { 0 };
 
 // 成三表
 int NineChess::millTable[(N_RINGS + 2) * N_SEATS][N_DIRECTIONS][N_RINGS - 1] = { 0 };
@@ -194,21 +194,21 @@ void NineChess::createMoveTable()
     for (int r = 1; r <= N_RINGS; r++) {
         for (int s = 0; s < N_SEATS; s++) {
             // 顺时针走一步的位置
-            moveTable[r * N_SEATS + s][0] = r * N_SEATS + (s + 1) % N_SEATS;
+            moveTable[r * N_SEATS + s][MOVE_DIRECTION_CLOCKWISE] = r * N_SEATS + (s + 1) % N_SEATS;
 
             // 逆时针走一步的位置
-            moveTable[r * N_SEATS + s][1] = r * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
+            moveTable[r * N_SEATS + s][MOVE_DIRECTION_ANTICLOCKWISE] = r * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
 
             // 如果是 0、2、4、6位（偶数位）或是有斜线
             if (!(s & 1) || this->currentRule.hasObliqueLines) {
                 if (r > 1) {
                     // 向内走一步的位置
-                    moveTable[r * N_SEATS + s][2] = (r - 1) * N_SEATS + s;
+                    moveTable[r * N_SEATS + s][MOVE_DIRECTION_INWARD] = (r - 1) * N_SEATS + s;
                 }
 
                 if (r < N_RINGS) {
                     // 向外走一步的位置
-                    moveTable[r * N_SEATS + s][3] = (r + 1) * N_SEATS + s;
+                    moveTable[r * N_SEATS + s][MOVE_DIRECTION_OUTWARD] = (r + 1) * N_SEATS + s;
                 }
             }
 #if 0
