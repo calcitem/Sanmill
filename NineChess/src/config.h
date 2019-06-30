@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND
@@ -9,11 +9,11 @@
 #endif
 
 #ifndef DEBUG
-#define AB_RANDOM_SORT_CHILDREN
+//#define AB_RANDOM_SORT_CHILDREN
 #endif
 
 #ifdef DEBUG
-#define GAME_PLACING_FIXED_DEPTH  3
+#define GAME_PLACING_FIXED_DEPTH  4
 #endif
 
 #ifdef DEBUG

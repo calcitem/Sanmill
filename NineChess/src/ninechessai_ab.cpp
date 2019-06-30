@@ -26,16 +26,17 @@ NineChessAi_ab::~NineChessAi_ab()
 
 void NineChessAi_ab::buildRoot()
 {
-    rootNode = addNode(nullptr, 0, 0);
+    rootNode = addNode(nullptr, 0, 0, NineChess::NOBODY);
 }
 
-struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move)
+struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move, enum NineChess::Player player)
 {
     Node *newNode = new Node;
     newNode->parent = parent;
     newNode->value = value;
     newNode->move = move;
 #ifdef DEBUG_AB_TREE
+    newNode->player = player;
     newNode->root = rootNode;
     newNode->stage = chessTemp.context.stage;
     newNode->action = chessTemp.context.action;
@@ -99,10 +100,10 @@ void NineChessAi_ab::buildChildren(Node *node)
                     if (node == rootNode && chessTemp.context.stage == NineChess::GAME_NOTSTARTED) {
                         // 若为先手，则抢占星位
                         if (NineChess::isStartPoint(pos)) {
-                            addNode(node, INF_VALUE, pos);
+                            addNode(node, INF_VALUE, pos, chessTemp.context.turn);
                         }
                     } else {
-                        addNode(node, 0, pos);
+                        addNode(node, 0, pos, chessTemp.context.turn);
                     }
                 }
             }
@@ -126,7 +127,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                         newPos = chessTemp.moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
-                            addNode(node, 0, move);
+                            addNode(node, 0, move, chessTemp.context.turn);
                         }
                     }
                 } else {
@@ -134,7 +135,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                     for (newPos = NineChess::POS_BEGIN; newPos < NineChess::POS_END; newPos++) {
                         if (!chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
-                            addNode(node, 0, move);
+                            addNode(node, 0, move, chessTemp.context.turn);
                         }
                     }
                 }
@@ -148,7 +149,7 @@ void NineChessAi_ab::buildChildren(Node *node)
             // 全成三的情况
             for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
                 if (chessTemp.board_[pos] & opponent) {
-                    addNode(node, 0, -pos);
+                    addNode(node, 0, -pos, chessTemp.context.turn);
                 }
             }
         } else {
@@ -156,7 +157,7 @@ void NineChessAi_ab::buildChildren(Node *node)
             for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
                 if (chessTemp.board_[pos] & opponent) {
                     if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
-                        addNode(node, 0, -pos);
+                        addNode(node, 0, -pos, chessTemp.context.turn);
                     }
                 }
             }
@@ -307,6 +308,9 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_CAPTURE:
             nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * 100;
+#ifdef DEBUG_AB_TREE
+            node->nPiecesNeedRemove = nPiecesNeedRemove;
+#endif
             break;
         default:
             break;
@@ -428,6 +432,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 {
     int d = changeDepth(depth);
 
+    // 深化迭代
+    for (int i = 2; i < d; i++) {
+        alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
+    }
+
     return alphaBetaPruning(d, -INF_VALUE, INF_VALUE, rootNode);
     // 生成了 Alpha-Beta 树
 }
@@ -444,7 +453,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     node->depth = depth;
     node->root = rootNode;
     node->id = nodeCount;
-    node->player = chessContext->turn;
+    // node->player = chessContext->turn;
     // 初始化
     node->isLeaf = false;
     node->isTimeout = false;
@@ -510,7 +519,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     buildChildren(node);
 
     // 排序子节点树
-    sortChildren(node);
+    //sortChildren(node);
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
@@ -574,6 +583,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         }
         mtx.unlock();
 #endif
+
+    // 排序子节点树
+    sortChildren(node);
 
     // 返回
     return node->value;

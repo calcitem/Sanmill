@@ -72,7 +72,7 @@ void AiThread::run()
         emit calcStarted();
         mutex.unlock();
 
-        ai_ab.alphaBetaPruning(aiDepth);
+        ai_ab.alphaBetaPruning(aiDepth);    // 顶层调用 alphaBetaPruning(aiDepth)
         const char *str = ai_ab.bestMove();
         qDebug() << "Computer:" << str << "\n";
 
