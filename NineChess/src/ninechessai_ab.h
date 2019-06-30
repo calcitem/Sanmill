@@ -44,7 +44,8 @@ public:
         string cmd;
         enum NineChess::Player player;  // 此招是谁下的
         int depth;
-        size_t id;                // 结点编号
+        bool evaluated;                 // 是否评估过局面
+        size_t id;                      // 结点编号
         int alpha;
         int beta;
         int minMax;
@@ -121,8 +122,11 @@ private:
     // 根节点
     Node *rootNode;
 
-    // 遍历过的节点个数;
+    // 结点个数;
     size_t nodeCount;
+
+    // 评估过的结点个数
+    size_t evaluatedNodeCount;
 
     // 局面数据栈
     stack<NineChess::ChessContext> dataStack;

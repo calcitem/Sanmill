@@ -12,7 +12,8 @@
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
     requiredQuit(false),
-    nodeCount(0)
+    nodeCount(0),
+    evaluatedNodeCount(0)
 {
     buildRoot();
 }
@@ -41,9 +42,12 @@ void NineChessAi_ab::addNode(Node *parent, int value, int move)
     newNode->root = rootNode;
     newNode->stage = chessTemp.context.stage;
     newNode->action = chessTemp.context.action;
+    newNode->evaluated = false;
     newNode->nPiecesInHandDiff = INT_MAX;
     newNode->nPiecesOnBoardDiff = INT_MAX;
     newNode->nPiecesNeedRemove = INT_MAX;
+    newNode->alpha = -INF_VALUE;
+    newNode->beta = INF_VALUE;
     newNode->result = 0;
 #endif
     int c, p;
@@ -229,6 +233,8 @@ int NineChessAi_ab::evaluate(Node *node)
     int nPiecesOnBoardDiff = INT_MAX;
     int nPiecesNeedRemove = 0;
 
+    evaluatedNodeCount++;
+
 #if 0
     int loc_value = 0;
 
@@ -270,6 +276,7 @@ int NineChessAi_ab::evaluate(Node *node)
 #ifdef DEBUG_AB_TREE
     node->stage = chessContext->stage;
     node->action = chessContext->action;
+    node->evaluated = true;
 #endif
 
     switch (chessContext->stage) {
@@ -634,8 +641,9 @@ const char *NineChessAi_ab::bestMove()
 
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value) {
-            qDebug() << "count: " << nodeCount;
+            qDebug() << "Evaluated: " << evaluatedNodeCount << "/" << nodeCount << " = " << evaluatedNodeCount * 100 / nodeCount << "%";
             nodeCount = 0;
+            evaluatedNodeCount = 0;
             return move2string(child->move);
         }
     }
