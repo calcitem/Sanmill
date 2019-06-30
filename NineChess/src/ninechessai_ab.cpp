@@ -36,6 +36,14 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->parent = parent;
     newNode->value = value;
     newNode->move = move;
+       
+    nodeCount++;
+    newNode->id = nodeCount;
+
+    unsigned int time0 = (unsigned)time(0);
+    srand(time0 * (unsigned int)nodeCount);
+    newNode->rand = rand();
+
 #ifdef DEBUG_AB_TREE
     newNode->player = player;
     newNode->root = rootNode;
@@ -173,19 +181,20 @@ void NineChessAi_ab::buildChildren(Node *node)
 void NineChessAi_ab::sortChildren(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
-#ifdef AB_RANDOM_SORT_CHILDREN
-    // 这里我用一个随机排序，使AI不至于每次走招相同
-    srand((unsigned)time(0));
-    for (auto i : node->children) {
-        i->value = rand();
-    }
-#endif /* AB_RANDOM_SORT_CHILDREN */
 
-    // 排序
-    if (chessTemp.whosTurn() == NineChess::PLAYER1)
-        node->children.sort([](Node *n1, Node *n2) { return n1->value > n2->value; });
-    else
-        node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });
+#ifdef AB_RANDOM_SORT_CHILDREN
+    if (chessTemp.whosTurn() == NineChess::PLAYER1) {
+        node->children.sort([](Node* n1, Node* n2) {return n1->value > n2->value? true : (n1->value == n2->value ? (n1->rand > n2->rand) : false); });
+    } else {
+        node->children.sort([](Node* n1, Node* n2) { return n1->value < n2->value? true : (n1->value == n2->value ? (n1->rand < n2->rand) : false) ;});
+    }
+#else
+    if (chessTemp.whosTurn() == NineChess::PLAYER1) {
+        node->children.sort([](Node* n1, Node* n2) {return n1->value > n2->value;});
+    } else {
+        node->children.sort([](Node* n1, Node* n2) { return n1->value < n2->value;});
+    }
+#endif
 }
 
 void NineChessAi_ab::deleteTree(Node *node)
@@ -467,15 +476,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
     node->root = rootNode;
-    node->id = nodeCount;
     // node->player = chessContext->turn;
     // 初始化
     node->isLeaf = false;
     node->isTimeout = false;
 #endif
-
-    // 遍历总次数增加
-    nodeCount++;
 
     // 搜索到叶子节点（决胜局面）
     if (chessContext->stage == NineChess::GAME_OVER) {

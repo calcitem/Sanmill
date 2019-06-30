@@ -40,12 +40,13 @@ public:
         int value;                     // 节点的值
         list<struct Node*> children;  // 子节点列表
         struct Node* parent;           // 父节点
+        size_t id;                      // 结点编号
+        int rand;                       // 随机数，对于 value 一致的结点随机排序用
 #ifdef DEBUG_AB_TREE
         string cmd;
         enum NineChess::Player player;  // 此招是谁下的
         int depth;
         bool evaluated;                 // 是否评估过局面
-        size_t id;                      // 结点编号
         int alpha;
         int beta;
         int minMax;

@@ -9,7 +9,7 @@
 #endif
 
 #ifndef DEBUG
-//#define AB_RANDOM_SORT_CHILDREN
+#define AB_RANDOM_SORT_CHILDREN
 #endif
 
 #ifdef DEBUG
