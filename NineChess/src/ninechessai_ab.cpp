@@ -399,70 +399,36 @@ int NineChessAi_ab::evaluate(Node *node)
     return value;
 }
 
-int NineChessAi_ab::alphaBetaPruning(int depth)
+int NineChessAi_ab::changeDepth(int originalDepth)
 {
-#ifdef GAME_PLACING_DYNAMIC_DEPTH
+    int newDepth = originalDepth;
+
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
-#ifdef GAME_PLACING_FIXED_DEPTH
-        depth = GAME_PLACING_FIXED_DEPTH;
-#else
-        switch (chessTemp.getPiecesInHandCount_1())
-        {
-        case 12:
-            depth = 1;
-            break;
-        case 11:
-            depth = 7;
-            break;
-        case 10:
-            depth = 8;
-            break;
-        case 9:
-            depth = 9;
-            break;
-        case 8:
-        case 7:
-            depth = 9;
-            break;
-        case 6:
-            depth = 9;
-            break;
-        case  5:
-            depth = 11;
-            break;
-        case 4:
-            depth = 12;
-            break;
-        case 3:
-            depth = 12;
-            break;
-        case 2:
-            depth = 12;
-            break;
-        case 1:
-            depth = 12;
-            break;
-        case 0:
-            depth = 2;
-            break;
-        default:
-            depth = 7;
-            break;
-        }
-#endif /* GAME_PLACING_FIXED_DEPTH */
+#ifdef GAME_PLACING_DYNAMIC_DEPTH
+        int depthTable[] = { 2, 12, 12, 12, 12, 11, 9, 9, 9, 9, 8, 7, 1 };
+        newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
+#elif defined GAME_PLACING_FIXED_DEPTH
+        newDepth = GAME_PLACING_FIXED_DEPTH;
+#endif
     }
-#endif /* GAME_PLACING_DYNAMIC_DEPTH */
 
 #ifdef GAME_MOVING_FIXED_DEPTH    
     // 走棋阶段将深度调整
     if ((chessTemp.context.stage) & (NineChess::GAME_MOVING)) {
-        depth = GAME_MOVING_FIXED_DEPTH;
+        newDepth = GAME_MOVING_FIXED_DEPTH;
     }
 #endif /* GAME_MOVING_FIXED_DEPTH */
 
-    qDebug() << "Depth:" << depth;
+    qDebug() << "Depth:" << newDepth;
 
-    return alphaBetaPruning(depth, -INF_VALUE, INF_VALUE, rootNode);
+    return newDepth;
+}
+
+int NineChessAi_ab::alphaBetaPruning(int depth)
+{
+    int d = changeDepth(depth);
+
+    return alphaBetaPruning(d, -INF_VALUE, INF_VALUE, rootNode);
     // 生成了 Alpha-Beta 树
 }
 

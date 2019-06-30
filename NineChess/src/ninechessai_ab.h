@@ -104,6 +104,9 @@ protected:
     // 返回招法的命令行
     const char *move2string(int move);
 
+    // 篡改深度
+    int changeDepth(int originalDepth);
+
     // 判断是否在哈希表中
     unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator findHash(uint64_t hash);
 
