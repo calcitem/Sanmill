@@ -309,13 +309,13 @@ void GameController::setSound(bool arg)
 
 void GameController::playSound(const QString &soundPath)
 {
-#ifdef PLAY_SOUND
+#ifndef DONOT_PLAY_SOUND
     if (hasSound) {
         QSound::play(soundPath);
     }
 #else
     soundPath;  // 为消除变量未使用过的警告
-#endif /* PLAY_SOUND */
+#endif /* ! DONOT_PLAY_SOUND */
 }
 
 // 上下翻转
@@ -507,8 +507,13 @@ void GameController::timerEvent(QTimerEvent *event)
         message = QString::fromStdString(chess_.getTips());
         emit statusBarChanged(message);
 
+        // 弹框
+        QMessageBox::about(NULL, "游戏结果", message);
+
         // 播放音效
+#ifndef DONOT_PLAY_WIN_SOUND
         playSound(":/sound/resources/sound/win.wav");
+#endif
     }
 
     // 测试用代码
@@ -657,9 +662,11 @@ bool GameController::actionPiece(QPointF pos)
         }
 
         // 播放胜利或失败音效
+#ifndef DONOT_PLAY_WIN_SOUND
         if (chess_.whoWin() != NineChess::NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
             playSound(":/sound/resources/sound/win.wav");
+#endif
 
         // AI设置
         if (&chess_ == &(this->chess_)) {
@@ -683,6 +690,10 @@ bool GameController::actionPiece(QPointF pos)
             else {
                 ai1.stop();
                 ai2.stop();
+
+                // 弹框
+                message = QString::fromStdString(chess_.getTips());
+                QMessageBox::about(NULL, "游戏结果", message);
             }
         }
     }
@@ -790,9 +801,11 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
     }
 
     // 播放胜利或失败音效
+#ifndef DONOT_PLAY_WIN_SOUND
     if (chess_.whoWin() != NineChess::NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
         playSound(":/sound/resources/sound/win.wav");
+#endif
 
     // AI设置
     if (&chess_ == &(this->chess_)) {
@@ -816,6 +829,10 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
         else {
             ai1.stop();
             ai2.stop();
+
+            // 弹框
+            message = QString::fromStdString(chess_.getTips());
+            QMessageBox::about(NULL, "游戏结果", message);
         }
     }
     return true;
