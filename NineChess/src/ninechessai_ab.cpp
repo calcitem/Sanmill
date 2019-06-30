@@ -539,56 +539,39 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 排序子节点树
     sortChildren(node);
 
-    // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max
-    if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        minMax = -INF_VALUE;
-        for (auto child : node->children) {
-            dataStack.push(chessTemp.context);
-            chessTemp.command(child->move);
-            value = alphaBetaPruning(depth - 1, alpha, beta, child);
-            chessTemp.context = dataStack.top();
-            dataStack.pop();
+    // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
+    minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
+
+    for (auto child : node->children) {
+        dataStack.push(chessTemp.context);
+        chessTemp.command(child->move);
+        value = alphaBetaPruning(depth - 1, alpha, beta, child);
+        chessTemp.context = dataStack.top();
+        dataStack.pop();
+
+        if (chessTemp.whosTurn() == NineChess::PLAYER1) {
             // 取最大值
-            if (value > minMax)
-                minMax = value;
-
-            if (value > alpha)
-                alpha = value;
-
-            // 剪枝返回
-            if (alpha >= beta)
-                break;
-        }
-
-        // 取最大值
-        node->value = minMax;
-    }
-    // 对后手，搜索Min
-    else {
-        minMax = INF_VALUE;
-        for (auto child : node->children) {
-            dataStack.push(chessTemp.context);
-            chessTemp.command(child->move);
-            value = alphaBetaPruning(depth - 1, alpha, beta, child);
-            chessTemp.context = dataStack.top();
-            dataStack.pop();
-
+            minMax = std::max(value, minMax);
+            alpha = std::max(value, alpha);
+        } else {
             // 取最小值
-            if (value < minMax)
-                minMax = value;
-
-            if (value < beta)
-                beta = value;
-
-            // 剪枝返回
-            if (alpha >= beta)
-                break;
+            minMax = std::min(value, minMax);
+            beta = std::min(value, beta);
         }
 
-        // 取最小值
-        node->value = minMax;
+        // 剪枝返回
+        if (alpha >= beta)
+            break;
     }
+
+    node->value = minMax;
+
+#ifdef DEBUG_AB_TREE
+    node->alpha = alpha;
+    node->beta = beta;
+    node->minMax = minMax;
+#endif 
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
 #ifndef DEBUG_AB_TREE
