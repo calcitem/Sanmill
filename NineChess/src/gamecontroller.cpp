@@ -508,7 +508,7 @@ void GameController::timerEvent(QTimerEvent *event)
         emit statusBarChanged(message);
 
         // 弹框
-        QMessageBox::about(NULL, "游戏结果", message);
+        //QMessageBox::about(NULL, "游戏结果", message);
 
         // 播放音效
 #ifndef DONOT_PLAY_WIN_SOUND
@@ -692,8 +692,8 @@ bool GameController::actionPiece(QPointF pos)
                 ai2.stop();
 
                 // 弹框
-                message = QString::fromStdString(chess_.getTips());
-                QMessageBox::about(NULL, "游戏结果", message);
+                //message = QString::fromStdString(chess_.getTips());
+                //QMessageBox::about(NULL, "游戏结果", message);
             }
         }
     }
@@ -831,8 +831,8 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
             ai2.stop();
 
             // 弹框
-            message = QString::fromStdString(chess_.getTips());
-            QMessageBox::about(NULL, "游戏结果", message);
+            //message = QString::fromStdString(chess_.getTips());
+            //QMessageBox::about(NULL, "游戏结果", message);
         }
     }
     return true;
