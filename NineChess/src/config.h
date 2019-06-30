@@ -1,19 +1,15 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEBUG
-
-#ifndef DEBUG
-#define PLAY_SOUND
-#endif
+//#define DEBUG
 
 #ifdef DEBUG
-#define AB_RANDOM_SORT_CHILDREN
+//#define DONOT_PLAY_SOUND
 #define DEBUG_AB_TREE
-#define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 
 #ifndef DEBUG
+#define AB_RANDOM_SORT_CHILDREN
 #define GAME_PLACING_DYNAMIC_DEPTH
 #endif
 
@@ -31,8 +27,12 @@
 #define DRAW_SEAT_NUMBER
 #endif
 
+#define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
+
+// #define DONOT_PLAY_WIN_SOUND
+
 // 摆棋阶段在叉下面显示被吃的子
-#define GAME_PLACING_SHOW_CAPTURED_PIECES
+//#define GAME_PLACING_SHOW_CAPTURED_PIECES
 
 // 启动时窗口最大化
 //#define SHOW_MAXIMIZED_ON_LOAD
