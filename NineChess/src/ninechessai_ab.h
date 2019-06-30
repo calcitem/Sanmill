@@ -51,7 +51,11 @@ public:
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
         NineChess::GameStage stage;     // 摆棋阶段还是走棋阶段
-        NineChess::Action action;
+        NineChess::Action action;       // 动作状态
+        int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
+        int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
+        int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
+        int result;                     // 终局结果，-1为负，0为未到终局，1为胜，走棋阶段被闷棋则为 -2/2，布局阶段闷棋为 -3
         struct Node* root;              // 根节点
 #endif /* DEBUG_AB_TREE */
     };

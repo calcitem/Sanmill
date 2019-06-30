@@ -1,10 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
-//#define DONOT_PLAY_SOUND
+#define DONOT_PLAY_SOUND
 #define DEBUG_AB_TREE
 #endif
 

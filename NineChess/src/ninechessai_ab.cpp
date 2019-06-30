@@ -41,6 +41,10 @@ void NineChessAi_ab::addNode(Node *parent, int value, int move)
     newNode->root = rootNode;
     newNode->stage = chessTemp.context.stage;
     newNode->action = chessTemp.context.action;
+    newNode->nPiecesInHandDiff = INT_MAX;
+    newNode->nPiecesOnBoardDiff = INT_MAX;
+    newNode->nPiecesNeedRemove = INT_MAX;
+    newNode->result = 0;
 #endif
     int c, p;
     char cmd[32] = { 0 };
@@ -221,6 +225,10 @@ int NineChessAi_ab::evaluate(Node *node)
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     int value = 0;
 
+    int nPiecesInHandDiff = INT_MAX;
+    int nPiecesOnBoardDiff = INT_MAX;
+    int nPiecesNeedRemove = 0;
+
 #if 0
     int loc_value = 0;
 
@@ -270,10 +278,18 @@ int NineChessAi_ab::evaluate(Node *node)
 
     case NineChess::GAME_PLACING:
         // 按手中的棋子计分，不要break;
-        value += (chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2) * 50;
+        nPiecesInHandDiff = chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2;
+        value += nPiecesInHandDiff * 50;
+#ifdef DEBUG_AB_TREE
+        node->nPiecesInHandDiff = nPiecesInHandDiff;
+#endif
 
         // 按场上棋子计分
-        value += (chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2) * 100;
+        nPiecesOnBoardDiff = chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2;
+        value += nPiecesOnBoardDiff * 100;
+#ifdef DEBUG_AB_TREE
+        node->nPiecesOnBoardDiff = nPiecesOnBoardDiff;
+#endif
 
         switch (chessContext->action) {
         // 选子和落子使用相同的评价方法
@@ -282,7 +298,8 @@ int NineChessAi_ab::evaluate(Node *node)
             break;
         // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 100 : -(chessContext->nPiecesNeedRemove) * 100;
+            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
+            value += nPiecesNeedRemove * 100;
             break;
         default:
             break;
@@ -302,7 +319,11 @@ int NineChessAi_ab::evaluate(Node *node)
 
             // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
-            value += (chessContext->turn == NineChess::PLAYER1) ? (chessContext->nPiecesNeedRemove) * 128 : -(chessContext->nPiecesNeedRemove) * 128;
+            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
+            value += nPiecesNeedRemove * 128;
+#ifdef DEBUG_AB_TREE
+            node->nPiecesNeedRemove = nPiecesNeedRemove;
+#endif
             break;
         default:
             break;
@@ -318,6 +339,9 @@ int NineChessAi_ab::evaluate(Node *node)
             if (chessTemp.currentRule.isStartingPlayerLoseWhenBoardFull) {
                 // winner = PLAYER2;
                 value -= 10000;
+#ifdef DEBUG_AB_TREE
+                node->result = -3;
+#endif
             }
             else {
                 value = 0;
@@ -330,18 +354,33 @@ int NineChessAi_ab::evaluate(Node *node)
             if (chessTemp.currentRule.isLoseWhenNoWay) {
                 if (chessContext->turn == NineChess::PLAYER1) {
                     value -= 10000;
+#ifdef DEBUG_AB_TREE
+                    node->result = -2;
+#endif
                 }
                 else {
                     value += 10000;
+#ifdef DEBUG_AB_TREE
+                    node->result = 2;
+#endif
                 }
             }
         }
 
         // 剩余棋子个数判断
-        if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast)
+        if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast) {
             value -= 10000;
-        else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast)
+#ifdef DEBUG_AB_TREE
+            node->result = -1;
+#endif
+        }
+        else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast) {
             value += 10000;
+#ifdef DEBUG_AB_TREE
+            node->result = 1;
+#endif
+        }
+            
         break;
 
     default:
