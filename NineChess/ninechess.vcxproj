@@ -554,7 +554,7 @@
   <ItemGroup>
     <Text Include="..\History.txt" />
     <Text Include="..\Licence.txt" />
-    <Text Include="..\范例棋谱.txt" />
+    <Text Include="..\Sample.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="NineChess.ico" />

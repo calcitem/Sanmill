@@ -51,7 +51,7 @@ RESOURCES += \
 DISTFILES += \
     NineChess.rc \
     ../Readme.md \
-    ../范例棋谱.txt \
+    ../Sample.txt \
     ../History.txt \
     ../Licence.txt
 

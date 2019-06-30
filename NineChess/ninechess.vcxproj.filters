@@ -253,7 +253,7 @@
     <Text Include="..\Licence.txt">
       <Filter>Text Files</Filter>
     </Text>
-    <Text Include="..\范例棋谱.txt">
+    <Text Include="..\Sample.txt">
       <Filter>Text Files</Filter>
     </Text>
   </ItemGroup>
