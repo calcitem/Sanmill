@@ -8,6 +8,7 @@
 #include <cmath>
 #include <time.h>
 #include <Qdebug>
+#include <QTime>
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
@@ -430,15 +431,29 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 
 int NineChessAi_ab::alphaBetaPruning(int depth)
 {
+    QTime time;
+    int value = 0;
+
     int d = changeDepth(depth);
 
+    time.start();
+
+#ifdef IDS_SUPPORT
     // 深化迭代
     for (int i = 2; i < d; i++) {
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
 
-    return alphaBetaPruning(d, -INF_VALUE, INF_VALUE, rootNode);
+    qDebug() << "IDS Time: " << time.elapsed() / 1000.0 << "s";
+#endif /* IDS_SUPPORT */
+
+    value = alphaBetaPruning(d, -INF_VALUE, INF_VALUE, rootNode);
+
+    qDebug() << "Total Time: " << time.elapsed() / 1000.0 << "s\n";
+
     // 生成了 Alpha-Beta 树
+
+    return value;
 }
 
 int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
