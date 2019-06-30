@@ -1253,14 +1253,14 @@ bool NineChess::giveup(Player loser)
         if (loser == PLAYER1) {
             context.stage = GAME_OVER;
             winner = PLAYER2;
-            tips = "黑方投子认负，白方获胜！";
+            tips = "玩家1投子认负，玩家2获胜！";
             sprintf(cmdline, "Player1 give up!");
             cmdlist.push_back(string(cmdline));
             return true;
         } else if (loser == PLAYER2) {
             context.stage = GAME_OVER;
             winner = PLAYER1;
-            tips = "白方投子认负，黑方获胜！";
+            tips = "玩家2投子认负，玩家1获胜！";
             sprintf(cmdline, "Player2 give up!");
             cmdlist.push_back(string(cmdline));
             return true;
@@ -1407,7 +1407,7 @@ bool NineChess::win()
             elapsedMS_1 = currentRule.maxTimeLedToLose * 60000;
             winner = PLAYER2;
             context.stage = GAME_OVER;
-            tips = "黑方超时，白方获胜！";
+            tips = "玩家1超时，玩家2获胜！";
             sprintf(cmdline, "Time over. Player2 win!");
             cmdlist.push_back(string(cmdline));
             return true;
@@ -1417,7 +1417,7 @@ bool NineChess::win()
             elapsedMS_2 = currentRule.maxTimeLedToLose * 60000;
             winner = PLAYER1;
             context.stage = GAME_OVER;
-            tips = "白方超时，黑方获胜！";
+            tips = "玩家2超时，玩家1获胜！";
             sprintf(cmdline, "Time over. Player1 win!");
             cmdlist.push_back(string(cmdline));
             return true;
@@ -1472,14 +1472,14 @@ bool NineChess::win()
         // 规则要求被“闷”判负，则对手获胜
         if (currentRule.isLoseWhenNoWay) {
             if (context.turn == PLAYER1) {
-                tips = "黑方无子可走，白方获胜！";
+                tips = "玩家1无子可走，玩家2获胜！";
                 winner = PLAYER2;
                 context.stage = GAME_OVER;
                 sprintf(cmdline, "Player1 no way to go. Player2 win!");
                 cmdlist.push_back(string(cmdline));
                 return true;
             } else {
-                tips = "白方无子可走，黑方获胜！";
+                tips = "玩家2无子可走，玩家1获胜！";
                 winner = PLAYER1;
                 context.stage = GAME_OVER;
                 sprintf(cmdline, "Player2 no way to go. Player1 win!");
@@ -1692,21 +1692,21 @@ void NineChess::setTips()
 {
     switch (context.stage) {
     case NineChess::GAME_NOTSTARTED:
-        tips = "轮到黑方落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
+        tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
         break;
 
     case NineChess::GAME_PLACING:
         if (context.action == ACTION_PLACE) {
             if (context.turn == PLAYER1) {
-                tips = "轮到黑方落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
+                tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
             } else if (context.turn == PLAYER2) {
-                tips = "轮到白方落子，剩余" + std::to_string(context.nPiecesInHand_2) + "子";
+                tips = "轮到玩家2落子，剩余" + std::to_string(context.nPiecesInHand_2) + "子";
             }
         } else if (context.action == ACTION_CAPTURE) {
             if (context.turn == PLAYER1) {
-                tips = "成三！轮到黑方去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
+                tips = "成三！轮到玩家1去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
             } else if (context.turn == PLAYER2) {
-                tips = "成三！轮到白方去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
+                tips = "成三！轮到玩家2去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
             }
         }
         break;
@@ -1714,15 +1714,15 @@ void NineChess::setTips()
     case NineChess::GAME_MOVING:
         if (context.action == ACTION_PLACE || context.action == ACTION_CHOOSE) {
             if (context.turn == PLAYER1) {
-                tips = "轮到黑方选子移动";
+                tips = "轮到玩家1选子移动";
             } else if (context.turn == PLAYER2) {
-                tips = "轮到白方选子移动";
+                tips = "轮到玩家2选子移动";
             }
         } else if (context.action == ACTION_CAPTURE) {
             if (context.turn == PLAYER1) {
-                tips = "成三！轮到黑方去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
+                tips = "成三！轮到玩家1去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
             } else if (context.turn == PLAYER2) {
-                tips = "成三！轮到白方去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
+                tips = "成三！轮到玩家2去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
             }
         }
         break;
@@ -1732,14 +1732,14 @@ void NineChess::setTips()
             tips = "超出限定步数，双方平局";
         else if (winner == PLAYER1) {
             if (tips.find("无子可走") != tips.npos)
-                tips += "黑方获胜！";
+                tips += "玩家1获胜！";
             else
-                tips = "黑方获胜！";
+                tips = "玩家1获胜！";
         } else if (winner == PLAYER2) {
             if (tips.find("无子可走") != tips.npos)
-                tips += "白方获胜！";
+                tips += "玩家2获胜！";
             else
-                tips = "白方获胜！";
+                tips = "玩家2获胜！";
         }
         break;
 

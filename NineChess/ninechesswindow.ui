@@ -269,7 +269,7 @@
               </font>
              </property>
              <property name="text">
-              <string>黑方 (先手)</string>
+              <string>玩家1 (先手)</string>
              </property>
             </widget>
            </item>
@@ -350,7 +350,7 @@
               </font>
              </property>
              <property name="text">
-              <string>白方 (后手)</string>
+              <string>玩家2 (后手)</string>
              </property>
             </widget>
            </item>
