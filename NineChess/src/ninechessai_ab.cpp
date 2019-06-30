@@ -528,7 +528,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         if (iter != hashmap.end()) {
             if (iter->second.depth >= depth) {
                 node->value = iter->second.value;
-                if (chessData->turn == NineChess::PLAYER1)
+                if (chessContext->turn == NineChess::PLAYER1)
                     node->value += iter->second.depth - depth;
                 else
                     node->value -= iter->second.depth - depth;
@@ -551,11 +551,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
 
     for (auto child : node->children) {
-        dataStack.push(chessTemp.context);
+        contextStack.push(chessTemp.context);
         chessTemp.command(child->move);
         value = alphaBetaPruning(depth - 1, alpha, beta, child);
-        chessTemp.context = dataStack.top();
-        dataStack.pop();
+        chessTemp.context = contextStack.top();
+        contextStack.pop();
 
         if (chessTemp.whosTurn() == NineChess::PLAYER1) {
             // 取最大值

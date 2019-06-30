@@ -129,7 +129,7 @@ private:
     size_t evaluatedNodeCount;
 
     // 局面数据栈
-    stack<NineChess::ChessContext> dataStack;
+    stack<NineChess::ChessContext> contextStack;
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit;
