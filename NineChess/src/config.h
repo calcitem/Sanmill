@@ -10,7 +10,6 @@
 
 #ifndef DEBUG
 #define AB_RANDOM_SORT_CHILDREN
-#define GAME_PLACING_DYNAMIC_DEPTH
 #endif
 
 #ifdef DEBUG
@@ -22,6 +21,8 @@
 #else
 #define GAME_MOVING_FIXED_DEPTH  10
 #endif
+
+#define GAME_PLACING_DYNAMIC_DEPTH
 
 #ifdef DEBUG
 #define DRAW_SEAT_NUMBER
