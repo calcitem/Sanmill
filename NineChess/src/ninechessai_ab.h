@@ -93,7 +93,7 @@ protected:
     void buildRoot();
 
     // 增加新节点
-    void addNode(Node* parent, int value, NineChess::move_t move);
+    struct Node *addNode(Node *parent, int value, NineChess::move_t move);
 
     // 评价函数
     int evaluate(Node *node);

@@ -26,13 +26,10 @@ NineChessAi_ab::~NineChessAi_ab()
 
 void NineChessAi_ab::buildRoot()
 {
-    rootNode = new Node;
-    rootNode->value = 0;
-    rootNode->move = 0;
-    rootNode->parent = nullptr;
+    rootNode = addNode(nullptr, 0, 0);
 }
 
-void NineChessAi_ab::addNode(Node *parent, int value, int move)
+struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move)
 {
     Node *newNode = new Node;
     newNode->parent = parent;
@@ -70,7 +67,10 @@ void NineChessAi_ab::addNode(Node *parent, int value, int move)
     newNode->cmd = cmd;
 #endif
 
-    parent->children.push_back(newNode);
+    if (parent)
+        parent->children.push_back(newNode);
+
+    return newNode;
 }
 
 // 静态hashmap初始化
