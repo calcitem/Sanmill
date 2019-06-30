@@ -501,9 +501,10 @@ void NineChessWindow::on_actionSave_S_triggered()
 void NineChessWindow::on_actionSaveAs_A_triggered()
 {
     QString path = QFileDialog::getSaveFileName(this, 
-        tr("打开棋谱文件"), QDir::currentPath() + tr("棋谱.txt"), "TXT(*.txt)");
+        tr("打开棋谱文件"),
+        QDir::currentPath() + tr("棋谱_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".txt", "TXT(*.txt)");
 
-    if (path.isEmpty() == false) {
+        if (path.isEmpty() == false) {
         if (file.isOpen())
             file.close();
 
