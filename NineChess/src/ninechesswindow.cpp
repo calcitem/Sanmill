@@ -415,6 +415,27 @@ void NineChessWindow::on_actionNew_N_triggered()
     if (file.isOpen())
         file.close();
 
+#ifdef SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
+    QString path = QDir::currentPath() + "/" + tr("book_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".log";
+    QStringListModel* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
+
+    if (path.isEmpty() == false && strlist->stringList().size() > 18) {
+        // 文件对象  
+        file.setFileName(path);
+
+        // 打开文件,只写方式打开
+        bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
+
+        if (isok) {
+            // 写文件
+            QTextStream textStream(&file);            
+            for (QString cmd : strlist->stringList())
+                textStream << cmd << endl;
+            file.flush();
+        }
+    }
+#endif /* SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED */
+
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);
 
@@ -500,11 +521,11 @@ void NineChessWindow::on_actionSave_S_triggered()
 
 void NineChessWindow::on_actionSaveAs_A_triggered()
 {
-    QString path = QFileDialog::getSaveFileName(this, 
+    QString path = QFileDialog::getSaveFileName(this,
         tr("打开棋谱文件"),
         QDir::currentPath() + tr("棋谱_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".txt", "TXT(*.txt)");
 
-        if (path.isEmpty() == false) {
+    if (path.isEmpty() == false) {
         if (file.isOpen())
             file.close();
 
@@ -517,7 +538,7 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
         if (isok) {
             // 写文件
             QTextStream textStream(&file);
-            QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+            QStringListModel* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
             for (QString cmd : strlist->stringList())
                 textStream << cmd << endl;
             file.flush();

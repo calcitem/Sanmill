@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#define DEBUG
+#define DEBUG
 
 #ifndef DEBUG
 #define PLAY_SOUND
@@ -9,10 +9,8 @@
 
 #ifdef DEBUG
 #define AB_RANDOM_SORT_CHILDREN
-#endif
-
-#ifdef DEBUG
 #define DEBUG_AB_TREE
+#define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 
 #ifndef DEBUG
