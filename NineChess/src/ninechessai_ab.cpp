@@ -419,7 +419,7 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
-        int depthTable[] = { 2, 12, 12, 12, 12, 11, 9, 9, 9, 9, 8, 7, 1 };
+        int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
         newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
 #elif defined GAME_PLACING_FIXED_DEPTH
         newDepth = GAME_PLACING_FIXED_DEPTH;
