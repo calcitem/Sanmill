@@ -419,11 +419,15 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
+#ifdef DEAL_WITH_HORIZON_EFFECT
+        int depthTable[] = { 2,  6,  6,  6,  6,  6,  6, 6, 6, 6, 6, 6, 1 };        
+#else
         int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
+#endif // DEAL_WITH_HORIZON_EFFECT
         newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
 #elif defined GAME_PLACING_FIXED_DEPTH
         newDepth = GAME_PLACING_FIXED_DEPTH;
-#endif
+#endif // GAME_PLACING_DYNAMIC_DEPTH
     }
 
 #ifdef GAME_MOVING_FIXED_DEPTH    
@@ -472,6 +476,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 当前节点的MinMax值，最终赋值给节点value，与alpha和Beta不同
     int minMax;
+
+    // 临时增加的深度
+    int epsilon = 0;
 
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
@@ -548,7 +555,18 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     for (auto child : node->children) {
         contextStack.push(chessTemp.context);
         chessTemp.command(child->move);
-        value = alphaBetaPruning(depth - 1, alpha, beta, child);
+
+#ifdef DEAL_WITH_HORIZON_EFFECT
+        // 若遇到吃子，则搜索深度加一层
+        if (child->move < 0) {
+            epsilon = 1;
+        }
+        else {
+            epsilon = 0;
+        }
+#endif
+
+        value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
         chessTemp.context = contextStack.top();
         contextStack.pop();
 

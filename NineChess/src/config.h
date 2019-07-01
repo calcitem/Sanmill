@@ -3,6 +3,8 @@
 
 //#define DEBUG
 
+#define DEAL_WITH_HORIZON_EFFECT
+
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND
 #define DEBUG_AB_TREE
@@ -18,11 +20,17 @@
 
 #ifdef DEBUG
 #define GAME_MOVING_FIXED_DEPTH  3
-#else
+#else // DEBUG
+#ifdef DEAL_WITH_HORIZON_EFFECT
+#define GAME_MOVING_FIXED_DEPTH 4
+#else // DEAL_WITH_HORIZON_EFFECT
 #define GAME_MOVING_FIXED_DEPTH  10
-#endif
+#endif // DEAL_WITH_HORIZON_EFFECT
+#endif // DEBUG
 
+#ifndef DEBUG
 #define GAME_PLACING_DYNAMIC_DEPTH
+#endif
 
 #ifdef DEBUG
 #define DRAW_SEAT_NUMBER
