@@ -184,9 +184,29 @@ void NineChessAi_ab::sortChildren(Node *node)
 
 #ifdef AB_RANDOM_SORT_CHILDREN
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        node->children.sort([](Node* n1, Node* n2) {return n1->value > n2->value? true : (n1->value == n2->value ? (n1->rand > n2->rand) : false); });
+        node->children.sort([](Node* n1, Node* n2) {
+            bool ret = false;
+            if (n1->value > n2->value) {
+                ret = true;
+            } else if (n1->value < n2->value) {
+                ret = false;
+            } else if (n1->value == n2->value) {
+                ret = n1->rand < n2->rand;
+            }            
+            return ret;
+            });
     } else {
-        node->children.sort([](Node* n1, Node* n2) { return n1->value < n2->value? true : (n1->value == n2->value ? (n1->rand < n2->rand) : false) ;});
+        node->children.sort([](Node* n1, Node* n2) {
+            bool ret = false;
+            if (n1->value < n2->value) {
+                ret = true;
+            } else if (n1->value > n2->value) {
+                ret = false;
+            } else if (n1->value == n2->value) {
+                ret = n1->rand < n2->rand;
+            }
+            return ret;
+    });
     }
 #else
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
