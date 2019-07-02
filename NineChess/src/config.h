@@ -3,7 +3,7 @@
 
 //#define DEBUG
 
-#define DEAL_WITH_HORIZON_EFFECT
+//#define DEAL_WITH_HORIZON_EFFECT
 
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND
@@ -13,6 +13,9 @@
 #ifndef DEBUG
 //#define AB_RANDOM_SORT_CHILDREN
 #endif
+
+#define AB_RANDOM_SORT_CHILDREN
+#define DONOT_PLAY_SOUND
 
 #ifdef DEBUG
 #define GAME_PLACING_FIXED_DEPTH  4

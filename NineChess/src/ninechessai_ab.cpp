@@ -40,9 +40,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     nodeCount++;
     newNode->id = nodeCount;
 
-    unsigned int time0 = (unsigned)time(0);
-    srand(time0 * (unsigned int)nodeCount);
-    newNode->rand = rand();
+    newNode->rand = rand() % 24;
 
 #ifdef DEBUG_AB_TREE
     newNode->player = player;
@@ -464,12 +462,15 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 
 int NineChessAi_ab::alphaBetaPruning(int depth)
 {
-    QTime time;
+    QTime time1;
     int value = 0;
 
-    int d = changeDepth(depth);
+    int d = changeDepth(depth);    
 
-    time.start();
+    unsigned int time0 = (unsigned)time(0);
+    srand(time0);
+
+    time1.start();
 
 #ifdef IDS_SUPPORT
     // 深化迭代
@@ -477,12 +478,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
 
-    qDebug() << "IDS Time: " << time.elapsed() / 1000.0 << "s";
+    qDebug() << "IDS Time: " << time1.elapsed() / 1000.0 << "s";
 #endif /* IDS_SUPPORT */
 
     value = alphaBetaPruning(d, -INF_VALUE, INF_VALUE, rootNode);
 
-    qDebug() << "Total Time: " << time.elapsed() / 1000.0 << "s\n";
+    qDebug() << "Total Time: " << time1.elapsed() / 1000.0 << "s\n";
 
     // 生成了 Alpha-Beta 树
 
