@@ -420,7 +420,7 @@ int NineChessAi_ab::changeDepth(int originalDepth)
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
-        int depthTable[] = { 2,  6,  6,  6,  6,  6,  6, 6, 6, 6, 6, 6, 1 };        
+        int depthTable[] = { 2, 10, 10, 10, 10,  9,  9, 8, 7, 7, 7, 7, 1 };
 #else
         int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
 #endif // DEAL_WITH_HORIZON_EFFECT
