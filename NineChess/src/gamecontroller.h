@@ -210,6 +210,12 @@ private:
     // 玩家2剩余时间（毫秒）
     int remainingTime2;
 
+    // 玩家1赢盘数
+    int score1;
+
+    // 玩家2赢盘数
+    int score2;
+
     // 用于主窗口状态栏显示的字符串
     QString message;
 

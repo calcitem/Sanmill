@@ -34,7 +34,9 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     timeLimit(0),
     stepsLimit(0),
     ai1(1),
-    ai2(2)
+    ai2(2),
+    score1(-2),
+    score2(-2)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
@@ -113,6 +115,20 @@ void GameController::gameReset()
     isEngine1 = false;
     isEngine2 = false;
 
+    // 询问是否认输
+    if (score1 < 0 || score2 < 0) {
+        score1++;
+        score2++;
+    } else {
+        QMessageBox giveupMessageBox(QMessageBox::Warning, "Information", "认输吗?", QMessageBox::Yes | QMessageBox::No, NULL);
+        if (giveupMessageBox.exec() == QMessageBox::Yes) {
+            score2++;
+        }
+    }
+
+    emit time1Changed(QString::number(score1, 10));
+    emit time2Changed(QString::number(score2, 10));
+
     // 清除棋子
     qDeleteAll(pieceList);
     pieceList.clear();
@@ -177,9 +193,9 @@ void GameController::gameReset()
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
-    QTime qtime = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
-    emit time1Changed(qtime.toString("mm:ss.zzz"));
-    emit time2Changed(qtime.toString("mm:ss.zzz"));
+    //QTime qtime = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
+    //emit time1Changed(qtime.toString("mm:ss.zzz"));
+    //emit time2Changed(qtime.toString("mm:ss.zzz"));
 
     // 发信号更新状态栏
     message = QString::fromStdString(chess_.getTips());
@@ -489,11 +505,11 @@ void GameController::timerEvent(QTimerEvent *event)
         remainingTime2 = timeLimit * 60000 - remainingTime2;
     }
 
-    qt1 = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
-    qt2 = QTime(0, 0, 0, 0).addMSecs(remainingTime2);
+    //qt1 = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
+    //qt2 = QTime(0, 0, 0, 0).addMSecs(remainingTime2);
 
-    emit time1Changed(qt1.toString("mm:ss.zzz"));
-    emit time2Changed(qt2.toString("mm:ss.zzz"));
+    //emit time1Changed(qt1.toString("mm:ss.zzz"));
+    //emit time2Changed(qt2.toString("mm:ss.zzz"));
 
     // 如果胜负已分
     if (chess_.whoWin() != NineChess::NOBODY) {
@@ -509,6 +525,15 @@ void GameController::timerEvent(QTimerEvent *event)
 
         // 弹框
         //QMessageBox::about(NULL, "游戏结果", message);
+
+        if (chess_.whoWin() == NineChess::PLAYER1) {
+            score1++;
+        } else if (chess_.whoWin() == NineChess::PLAYER2) {
+            score2++;
+        }
+
+        emit time1Changed(QString::number(score1, 10));
+        emit time2Changed(QString::number(score2, 10));
 
         // 播放音效
 #ifndef DONOT_PLAY_WIN_SOUND
