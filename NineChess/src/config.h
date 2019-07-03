@@ -5,6 +5,8 @@
 
 //#define DEAL_WITH_HORIZON_EFFECT
 
+#define RANDOM_BEST_MOVE
+
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND
 #define DEBUG_AB_TREE
@@ -14,8 +16,7 @@
 //#define AB_RANDOM_SORT_CHILDREN
 #endif
 
-#define AB_RANDOM_SORT_CHILDREN
-#define DONOT_PLAY_SOUND
+//#define DONOT_PLAY_SOUND
 
 #ifdef DEBUG
 #define GAME_PLACING_FIXED_DEPTH  4

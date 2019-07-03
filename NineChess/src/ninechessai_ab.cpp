@@ -650,8 +650,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     return node->value;
 }
 
-const char *NineChessAi_ab::bestMove()
+const char* NineChessAi_ab::bestMove()
 {
+    vector<Node*> bestMoves;
+    size_t retIndex = 0;
+    size_t bestMovesSize = 0;
+
     if ((rootNode->children).size() == 0)
         return "error!";
 
@@ -668,25 +672,47 @@ const char *NineChessAi_ab::bestMove()
     qDebug() << "29 ----- 28 ----- 27";
     qDebug() << "";
 
+    int i = 0;
     string moves = "";
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value)
-            qDebug() << "[" << child->move << "] " << move2string(child->move) << " : " << child->value << "*";
+            qDebug("[%.2d] %d\t%s\t%d *", i, child->move, move2string(child->move), child->value);
         else
-            qDebug() << "[" << child->move << "] " << move2string(child->move) << " : " << child->value;
+            qDebug("[%.2d] %d\t%s\t%d", i, child->move, move2string(child->move), child->value);
+
+        i++;
     }
 
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value) {
-            qDebug() << "Evaluated: " << evaluatedNodeCount << "/" << nodeCount << " = " << evaluatedNodeCount * 100 / nodeCount << "%";
-            nodeCount = 0;
-            evaluatedNodeCount = 0;
-            return move2string(child->move);
+            bestMoves.push_back(child);
         }
     }
 
-    return "error!";
+    qDebug() << "Evaluated: " << evaluatedNodeCount << "/" << nodeCount << " = "
+        << evaluatedNodeCount * 100 / nodeCount << "%";
+    nodeCount = 0;
+    evaluatedNodeCount = 0;
+
+    bestMovesSize = bestMoves.size();
+
+    if (bestMovesSize == 0) {
+        return "error!";
+    }
+
+#ifdef RANDOM_BEST_MOVE
+    time_t time0 = time(0);
+    retIndex = bestMovesSize > 1 ? time0 % 2 : 0;
+#else
+    retIndex = 0;
+#endif
+
+    qDebug() << "Return" << retIndex << "of" << bestMovesSize << "results" << "(" << time0 << ")";
+
+    return move2string(bestMoves[retIndex]->move);
 }
+
+    
 
 const char *NineChessAi_ab::move2string(int move)
 {
