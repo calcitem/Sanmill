@@ -440,7 +440,8 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 #ifdef DEAL_WITH_HORIZON_EFFECT
         int depthTable[] = { 2, 10, 10, 10, 10,  9,  9, 8, 7, 7, 7, 7, 1 };
 #else
-        int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
+        //int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
+        int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 9, 9, 8, 7, 1 };
 #endif // DEAL_WITH_HORIZON_EFFECT
         newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
 #elif defined GAME_PLACING_FIXED_DEPTH
@@ -703,7 +704,7 @@ const char* NineChessAi_ab::bestMove()
 #ifdef RANDOM_BEST_MOVE
     time_t time0 = time(0);
 
-    if (time0 % 5 == 0) {       
+    if (time0 % 10 == 0) {       
         retIndex = bestMovesSize > 1 ? 1 : 0;
     }
 #else
