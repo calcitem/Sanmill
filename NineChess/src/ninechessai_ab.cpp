@@ -702,7 +702,10 @@ const char* NineChessAi_ab::bestMove()
 
 #ifdef RANDOM_BEST_MOVE
     time_t time0 = time(0);
-    retIndex = bestMovesSize > 1 ? time0 % 2 : 0;
+
+    if (time0 % 5 == 0) {       
+        retIndex = bestMovesSize > 1 ? 1 : 0;
+    }
 #else
     retIndex = 0;
 #endif
