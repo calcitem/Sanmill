@@ -42,6 +42,9 @@ public:
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
         int rand;                       // 随机数，对于 value 一致的结点随机排序用
+#ifdef HASH_MAP_ENABLE
+        uint64_t hash;
+#endif
 #ifdef DEBUG_AB_TREE
         string cmd;
         enum NineChess::Player player;  // 此招是谁下的
@@ -132,6 +135,9 @@ private:
     // 评估过的结点个数
     size_t evaluatedNodeCount;
 
+    // Hash 命中次数
+    size_t hashHitCount;
+
     // 局面数据栈
     stack<NineChess::ChessContext> contextStack;
 
@@ -139,7 +145,7 @@ private:
     bool requiredQuit;
 
     // 互斥锁
-    static mutex mtx;
+    static mutex hashMapMutex;
 
     // 局面数据哈希表
     static unordered_map<uint64_t, HashValue> hashmap;

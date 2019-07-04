@@ -14,7 +14,8 @@ NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
     requiredQuit(false),
     nodeCount(0),
-    evaluatedNodeCount(0)
+    evaluatedNodeCount(0),
+    hashHitCount(0)
 {
     buildRoot();
 }
@@ -82,7 +83,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 }
 
 // 静态hashmap初始化
-mutex NineChessAi_ab::mtx;
+mutex NineChessAi_ab::hashMapMutex;
 unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 
 void NineChessAi_ab::buildChildren(Node *node)
@@ -231,10 +232,10 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 {
     // 如果规则改变，重建hashmap
     if (strcmp(this->chess_.currentRule.name, chess.currentRule.name)) {
-        mtx.lock();
+        hashMapMutex.lock();
         hashmap.clear();
         hashmap.reserve(maxHashCount);
-        mtx.unlock();
+        hashMapMutex.unlock();
     }
 
     this->chess_ = chess;
@@ -543,26 +544,33 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         return node->value;
     }
 
-#if 0
+#ifdef HASH_MAP_ENABLE
     // 检索hashmap
     uint64_t hash = chessTemp.chessHash();
-    mtx.lock();
+    node->hash = hash;
+
+    hashMapMutex.lock();
+
     auto iter = findHash(hash);
-    if (node != rootNode) {
-        if (iter != hashmap.end()) {
-            if (iter->second.depth >= depth) {
-                node->value = iter->second.value;
-                if (chessContext->turn == NineChess::PLAYER1)
-                    node->value += iter->second.depth - depth;
-                else
-                    node->value -= iter->second.depth - depth;
-                mtx.unlock();
-                return node->value;
-            }
-        }
+
+    if (node != rootNode &&
+        iter != hashmap.end() &&
+        iter->second.depth >= depth) {
+        node->value = iter->second.value;
+
+        if (chessContext->turn == NineChess::PLAYER1)
+            node->value += iter->second.depth - depth;
+        else
+            node->value -= iter->second.depth - depth;
+
+        hashMapMutex.unlock();
+        hashHitCount++;
+
+        return node->value;
     }
-    mtx.unlock();
-#endif
+
+    hashMapMutex.unlock();
+#endif /* HASH_MAP_ENABLE */
 
     // 生成子节点树
     buildChildren(node);
@@ -624,24 +632,24 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
 #endif
 
-#if 0
-        // 添加到hashmap
-        mtx.lock();
-        if (iter == hashmap.end()) {
-            HashValue hashValue;
-            hashValue.value = node->value;
-            hashValue.depth = depth;
-            if (hashmap.size() <= maxHashCount)
-                hashmap.insert({hash, hashValue});
+#ifdef HASH_MAP_ENABLE
+    // 添加到hashmap
+    hashMapMutex.lock();
+    if (iter == hashmap.end()) {
+        HashValue hashValue;
+        hashValue.value = node->value;
+        hashValue.depth = depth;
+        if (hashmap.size() <= maxHashCount)
+            hashmap.insert({hash, hashValue});
+    }
+    // 更新更深层数据
+    else {
+        if (iter->second.depth < depth) {
+            iter->second.value = node->value;
+            iter->second.depth = depth;
         }
-        // 更新更深层数据
-        else {
-            if (iter->second.depth < depth) {
-                iter->second.value = node->value;
-                iter->second.depth = depth;
-            }
-        }
-        mtx.unlock();
+    }
+    hashMapMutex.unlock();
 #endif
 
     // 排序子节点树
@@ -715,6 +723,10 @@ const char* NineChessAi_ab::bestMove()
     qDebug() << "Return" << retIndex << "of" << bestMovesSize << "results" << "(" << time0 << ")";
 #endif
 
+#ifdef HASH_MAP_ENABLE
+    qDebug() << "Hash hit count:" << hashHitCount;
+#endif
+
     return move2string(bestMoves[retIndex]->move);
 }
 
@@ -749,6 +761,7 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
     for (int i = 0; i < 2; i++) {
         if (i)
             chessTempShift.mirror(false);
+
         for (int j = 0; j < 2; j++) {
             if (j)
                 chessTempShift.turn(false);

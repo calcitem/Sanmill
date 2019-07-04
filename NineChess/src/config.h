@@ -5,7 +5,9 @@
 
 //#define DEAL_WITH_HORIZON_EFFECT
 
-#define RANDOM_BEST_MOVE
+//#define RANDOM_BEST_MOVE
+
+#define HASH_MAP_ENABLE
 
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND

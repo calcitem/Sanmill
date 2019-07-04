@@ -1230,7 +1230,7 @@ uint64_t NineChess::chessHash()
      */
     uint64_t hash = 0ull;
 
-    for (int i = N_SEATS; i < (N_RINGS + 1) * N_SEATS; i++) {
+    for (int i = POS_BEGIN; i < POS_END; i++) {
         hash |= board_[i] & 0x30;
         hash <<= 2;
     }
