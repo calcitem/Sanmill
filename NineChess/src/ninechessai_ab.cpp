@@ -711,7 +711,9 @@ const char* NineChessAi_ab::bestMove()
     retIndex = 0;
 #endif
 
+#ifdef RANDOM_BEST_MOVE
     qDebug() << "Return" << retIndex << "of" << bestMovesSize << "results" << "(" << time0 << ")";
+#endif
 
     return move2string(bestMoves[retIndex]->move);
 }
