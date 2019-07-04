@@ -105,6 +105,23 @@ void GameController::gameReset()
     // 定时器ID为0
     timeID = 0;
 
+    // 棋未下完，则算对手得分
+    if (score1 < 0 || score2 < 0) {
+        score1++;
+        score2++;
+    }
+    else {
+        if (chess_.getStage() == NineChess::GAME_MOVING &&
+            chess_.whoWin() == NineChess::NOBODY)
+        {
+            // TODO: 修改成电脑得分
+            score2++;
+        }
+    }
+
+    emit time1Changed(QString::number(score1, 10));
+    emit time2Changed(QString::number(score2, 10));
+
     // 重置游戏
     chess_.reset();
     chessTemp = chess_;
@@ -114,20 +131,6 @@ void GameController::gameReset()
     ai2.stop();
     isEngine1 = false;
     isEngine2 = false;
-
-    // 询问是否认输
-    if (score1 < 0 || score2 < 0) {
-        score1++;
-        score2++;
-    } else {
-        QMessageBox giveupMessageBox(QMessageBox::Warning, "Information", "认输吗?", QMessageBox::Yes | QMessageBox::No, NULL);
-        if (giveupMessageBox.exec() == QMessageBox::Yes) {
-            score2++;
-        }
-    }
-
-    emit time1Changed(QString::number(score1, 10));
-    emit time2Changed(QString::number(score2, 10));
 
     // 清除棋子
     qDeleteAll(pieceList);
