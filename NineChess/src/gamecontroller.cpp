@@ -114,8 +114,7 @@ void GameController::gameReset()
         if (chess_.getStage() == NineChess::GAME_MOVING &&
             chess_.whoWin() == NineChess::NOBODY)
         {
-            // TODO: 修改成电脑得分
-            score2++;
+            giveUp();
         }
     }
 
@@ -733,10 +732,16 @@ bool GameController::actionPiece(QPointF pos)
 bool GameController::giveUp()
 {
     bool result = false;
-    if (chess_.whosTurn() == NineChess::PLAYER1)
+
+    if (chess_.whosTurn() == NineChess::PLAYER1) {
         result = chess_.giveup(NineChess::PLAYER1);
-    else if (chess_.whosTurn() == NineChess::PLAYER2)
+        score2++;
+    }
+    else if (chess_.whosTurn() == NineChess::PLAYER2) {
         result = chess_.giveup(NineChess::PLAYER2);
+        score1++;
+    }
+        
     if (result) {
         // 将新增的棋谱行插入到ListModel
         currentRow = manualListModel.rowCount() - 1;
