@@ -7,7 +7,7 @@
 
 //#define RANDOM_BEST_MOVE
 
-#define HASH_MAP_ENABLE
+//#define HASH_MAP_ENABLE
 
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND
