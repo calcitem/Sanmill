@@ -703,16 +703,19 @@ const char* NineChessAi_ab::bestMove()
         }
     }
 
+    bestMovesSize = bestMoves.size();
+
+    if (bestMovesSize == 0) {
+        qDebug() << "Not any child value is equal to root value";
+        for (auto child : rootNode->children) {
+            bestMoves.push_back(child);
+        }
+    }
+
     qDebug() << "Evaluated: " << evaluatedNodeCount << "/" << nodeCount << " = "
         << evaluatedNodeCount * 100 / nodeCount << "%";
     nodeCount = 0;
     evaluatedNodeCount = 0;
-
-    bestMovesSize = bestMoves.size();
-
-    if (bestMovesSize == 0) {
-        return "error!";
-    }
 
 #ifdef RANDOM_BEST_MOVE
     time_t time0 = time(0);
