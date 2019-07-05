@@ -83,6 +83,9 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
+    // 清空哈希表
+    void clearHashMap();
+
 protected:
     // 建立子节点
     void buildChildren(Node *node);

@@ -27,6 +27,9 @@ void AiThread::setAi(const NineChess &chess)
     mutex.lock();
     this->chess_ = &chess;
     ai_ab.setChess(*(this->chess_));
+
+    ai_ab.clearHashMap();
+
     mutex.unlock();
 }
 

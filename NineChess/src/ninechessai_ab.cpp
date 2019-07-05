@@ -26,6 +26,14 @@ NineChessAi_ab::~NineChessAi_ab()
     rootNode = nullptr;
 }
 
+void NineChessAi_ab::clearHashMap()
+{
+    hashMapMutex.lock();
+    hashmap.clear();
+    hashmap.reserve(maxHashCount);
+    hashMapMutex.unlock();
+}
+
 void NineChessAi_ab::buildRoot()
 {
     rootNode = addNode(nullptr, 0, 0, NineChess::NOBODY);
@@ -232,10 +240,7 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 {
     // 如果规则改变，重建hashmap
     if (strcmp(this->chess_.currentRule.name, chess.currentRule.name)) {
-        hashMapMutex.lock();
-        hashmap.clear();
-        hashmap.reserve(maxHashCount);
-        hashMapMutex.unlock();
+        clearHashMap();
     }
 
     this->chess_ = chess;
@@ -467,13 +472,13 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     QTime time1;
     int value = 0;
 
-    int d = changeDepth(depth);    
+    int d = changeDepth(depth);
 
     unsigned int time0 = (unsigned)time(0);
     srand(time0);
 
     time1.start();
-
+    
 #ifdef IDS_SUPPORT
     // 深化迭代
     for (int i = 2; i < d; i++) {
