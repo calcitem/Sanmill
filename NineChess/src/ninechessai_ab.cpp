@@ -444,7 +444,8 @@ int NineChessAi_ab::changeDepth(int originalDepth)
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
-        int depthTable[] = { 2, 10, 10, 10, 10,  9,  9, 8, 7, 7, 7, 7, 1 };
+        //int depthTable[] = { 2, 11, 11, 11, 11,  10,  9, 8, 8, 8, 7, 7, 1 };
+        int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 9, 9, 8, 7, 1 };
 #else
         //int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
         int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 9, 9, 8, 7, 1 };
@@ -592,6 +593,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
 
+    int index = 0;
+
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
         contextStack.push(chessTemp.context);
@@ -600,14 +603,16 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         chessTemp.command(child->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
+        index++;
         // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
-        if (child->move < 0) {
+        if (index == 1 && child->move < 0) {
             epsilon = 1;
         }
         else {
             epsilon = 0;
         }
 #endif
+
         // 递归 Alpha-Beta 剪枝
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
