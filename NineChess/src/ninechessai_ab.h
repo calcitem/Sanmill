@@ -36,7 +36,7 @@ public:
     // 定义一个节点结构体
     struct Node
     {
-        int move;                      // 招法的命令行指令，图上标示为节点前的连线
+        int move;                      // 着法的命令行指令，图上标示为节点前的连线
         int value;                     // 节点的值
         list<struct Node*> children;  // 子节点列表
         struct Node* parent;           // 父节点
@@ -107,7 +107,7 @@ protected:
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
 
-    // 返回招法的命令行
+    // 返回着法的命令行
     const char *move2string(int move);
 
     // 篡改深度

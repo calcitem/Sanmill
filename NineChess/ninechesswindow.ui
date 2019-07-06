@@ -85,7 +85,7 @@
    </widget>
    <widget class="QMenu" name="menu_M">
     <property name="title">
-     <string>招法(&amp;M)</string>
+     <string>着法(&amp;M)</string>
     </property>
     <addaction name="actionBegin_S"/>
     <addaction name="actionPrevious_B"/>

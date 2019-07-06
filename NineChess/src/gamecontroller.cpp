@@ -44,7 +44,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
 
     gameReset();
 
-    // 关联AI和控制器的招法命令行
+    // 关联AI和控制器的着法命令行
     connect(&ai1, SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
     connect(&ai2, SIGNAL(command(const QString &, bool)),

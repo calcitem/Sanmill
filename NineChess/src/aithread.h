@@ -17,7 +17,7 @@ public:
     ~AiThread();
 
 signals:
-    // 招法信号
+    // 着法信号
     void command(const QString &cmdline, bool update = true);
 
     // 开始计算的信号

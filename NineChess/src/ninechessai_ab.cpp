@@ -137,9 +137,9 @@ void NineChessAi_ab::buildChildren(Node *node)
                     (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
                     (chessTemp.context.turn == NineChess::PLAYER2 &&
                     (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
-                    // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在招法表中
+                    // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int moveDirection = NineChess::MOVE_DIRECTION_CLOCKWISE; moveDirection <= NineChess::MOVE_DIRECTION_OUTWARD; moveDirection++) {
-                        // 对于原有位置，遍历四个方向的招法，如果棋盘上为空位就加到结点列表中
+                        // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newPos = chessTemp.moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
@@ -147,7 +147,7 @@ void NineChessAi_ab::buildChildren(Node *node)
                         }
                     }
                 } else {
-                    // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在招法表中，是空位就行
+                    // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newPos = NineChess::POS_BEGIN; newPos < NineChess::POS_END; newPos++) {
                         if (!chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
@@ -488,7 +488,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     qDebug() << "IDS Time: " << time1.elapsed() / 1000.0 << "s";
 #endif /* IDS_SUPPORT */
 
-    value = alphaBetaPruning(d, -INF_VALUE, INF_VALUE, rootNode);
+    value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);
 
     qDebug() << "Total Time: " << time1.elapsed() / 1000.0 << "s\n";
 
@@ -582,7 +582,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     hashMapMutex.unlock();
 #endif /* HASH_MAP_ENABLE */
 
-    // 生成子节点树
+    // 生成子节点树，即生成每个合理的着法
     buildChildren(node);
 
     // 排序子节点树
@@ -593,10 +593,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
 
     for (auto child : node->children) {
-        // 上下文入栈保存
+        // 上下文入栈保存，以便后续撤销着法
         contextStack.push(chessTemp.context);
 
-        // 替换为演算用的招法
+        // 执行着法
         chessTemp.command(child->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
@@ -611,31 +611,37 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         // 递归 Alpha-Beta 剪枝
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
-        // 上下文弹出栈
+        // 上下文弹出栈，撤销着法
         chessTemp.context = contextStack.top();
         contextStack.pop();
 
         if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-            // 为走棋一方的层
+            // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
             minMax = std::max(value, minMax);
 
-            // alpha 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
+            // α 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
+            // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
             alpha = std::max(value, alpha);
         } else {
-            // 为走棋方的对手一方的层
+            // 为走棋方的对手一方的层, 局面对对手一方来说是以 β 为评价
 
             // 取最小值
             minMax = std::min(value, minMax);
 
-            // beta 表示对手目前的劣势，这是对手所能承受的最坏结果
-            // beta 值越大，表示对手劣势越明显
-            // 如果当前结点返回 beta 或比 beta 更好的值，作为父结点的对方就绝对不会选择这种策略
+            // β 表示对手目前的劣势，这是对手所能承受的最坏结果
+            // β 值越大，表示对手劣势越明显
+            // 在对手看来，他总是会找到一个对策不比 β 更坏的
+            // 如果当前结点返回 β 或比 β 更好的值，作为父结点的对方就绝对不会选择这种策略，
+            // 如果搜索过程中返回 β 或比 β 更好的值，那就够好的了，走棋的一方就没有机会使用这种策略了。
+            // 如果某个着法的结果大于或等于 β，那么整个结点就作废了，因为对手不希望走到这个局面，而它有别的着法可以避免到达这个局面。
+            // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
             beta = std::min(value, beta);
         }
 
-        // 剪枝返回
+        // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
+        // 否则剪枝返回
         if (alpha >= beta)
             break;
     }

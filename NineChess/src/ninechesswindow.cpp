@@ -251,7 +251,7 @@ void NineChessWindow::initialize()
     connect(ui.actionEnd_E, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
 
-    // 手动在listView里选择招法后更新的槽
+    // 手动在listView里选择着法后更新的槽
     connect(ui.listView, &ManualListView::currentChangedSignal,
             this, &NineChessWindow::on_actionRowChange);
 

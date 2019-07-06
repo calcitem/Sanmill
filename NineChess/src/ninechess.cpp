@@ -111,7 +111,7 @@ const int NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-// 招法表
+// 着法表
 int NineChess::moveTable[(N_RINGS + 2) * N_SEATS][N_MOVE_DIRECTIONS] = { 0 };
 
 // 成三表
@@ -398,7 +398,7 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
     // 胜负标识
     winner = NOBODY;
 
-    // 生成招法表
+    // 生成着法表
     createMoveTable();
 
     // 生成成三表
@@ -713,7 +713,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
                     break;
             }
 
-            // 不在招法表中
+            // 不在着法表中
             if (i == 4)
                 return false;
         }
@@ -1027,7 +1027,7 @@ bool NineChess::place(int pos)
                 if (pos == moveTable[currentPos][i])
                     break;
             }
-            // 不在招法表中
+            // 不在着法表中
             if (i == 4)
                 return false;
         }

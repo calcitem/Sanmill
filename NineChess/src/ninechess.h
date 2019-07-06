@@ -205,7 +205,7 @@ private:
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
     static const int onBoard[(N_RINGS + 2) * N_SEATS];
 
-    // 招法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
+    // 着法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
     // 这个表跟规则有关，一旦规则改变需要重新修改
     static int moveTable[(N_RINGS + 2) * N_SEATS][N_MOVE_DIRECTIONS];
 
@@ -213,7 +213,7 @@ private:
     // 这个表跟规则有关，一旦规则改变需要重新修改
     static int millTable[(N_RINGS + 2) * N_SEATS][3][2];
 
-    // 生成招法表
+    // 生成着法表
     void createMoveTable();
 
     // 生成成三表
@@ -317,7 +317,7 @@ public:
     // 获取位置点棋子的归属人
     enum Player getWhosPiece(int c, int p);
 
-    // 获取当前招法
+    // 获取当前着法
     const char *getCmdLine() const
     {
         return cmdline;
@@ -481,7 +481,7 @@ private:
     // 玩家2用时（毫秒）
     long elapsedMS_2;
 
-    /* 当前招法，AI会用到，如下表示
+    /* 当前着法，AI会用到，如下表示
     0x   00    00
         pos1  pos2
     开局落子：0x00??，??为棋盘上的位置
@@ -503,8 +503,8 @@ private:
      */
     int32_t move_;
 
-    // 招法命令行用于棋谱的显示和解析
-    // 当前招法的命令行指令，即一招棋谱
+    // 着法命令行用于棋谱的显示和解析
+    // 当前着法的命令行指令，即一招棋谱
     char cmdline[32];
 
     // 棋谱
