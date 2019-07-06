@@ -36,6 +36,9 @@ public:
     // 横直斜3个方向，禁止修改！
     static const int N_DIRECTIONS = 3;
 
+    // 棋盘点的个数：40
+    static const int N_POINTS = (NineChess::N_RINGS + 2) * NineChess::N_SEATS;
+
     // 移动方向，包括顺时针、逆时针、向内、向外4个方向
     enum MoveDirection
     {
@@ -123,6 +126,14 @@ public:
         GAME_OVER = 0x0008          // 结局
     };
 
+    uint64_t rand64(void) {
+        return rand() ^ 
+            ((uint64_t)rand() << 15) ^
+            ((uint64_t)rand() << 30) ^ 
+            ((uint64_t)rand() << 45) ^ 
+            ((uint64_t)rand() << 60);
+    }
+
     // 玩家标识, 轮流状态, 胜负标识
     enum Player : uint16_t
     {
@@ -143,6 +154,16 @@ public:
         ACTION_CAPTURE = 0x0400    // 提子
     };
 
+    // 棋盘点上棋子的类型
+    enum PointType : uint16_t
+    {
+        POINT_TYPE_EMPTY = 0,   // 没有棋子
+        POINT_TYPE_PLAYER1 = 1,    // 先手的子
+        POINT_TYPE_PLAYER2 = 2,     // 后手的子
+        POINT_TYPE_FORBIDDEN = 3,    // 禁点
+        POINT_TYPE_COUNT = 4
+    };
+
     // 棋局结构体，算法相关，包含当前棋盘数据
     // 单独分离出来供AI判断局面用，生成置换表时使用
     struct ChessContext
@@ -156,7 +177,13 @@ public:
             判断棋子是先手的用 (board[i] & 0x10)
             判断棋子是后手的用 (board[i] & 0x20)
          */
-        int board[(NineChess::N_RINGS + 2) * NineChess::N_SEATS];
+        int board[N_POINTS];
+
+        // 局面哈希值
+        uint64_t hash;
+
+        // Zobrist 数组
+        //uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
 
         // 局面阶段标识
         enum NineChess::GameStage stage;
@@ -219,6 +246,9 @@ private:
     // 生成成三表
     void createMillTable();
 
+    // 创建哈希值
+    void constructHash();
+
 public:
     explicit NineChess();
     virtual ~NineChess();
@@ -238,12 +268,14 @@ public:
                  const char *board = nullptr,   // 默认空棋盘
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
-                 int nPiecesNeedRemove = 0      // 尚待去除的子数
+                 int nPiecesNeedRemove = 0,      // 尚待去除的子数
+                 uint64_t hash = 0ull            // Hash 为0
     );
 
     // 获取棋局状态和棋盘上下文
     void getContext(struct Rule &rule, int &step, int &flags, int *&board,
-                    int &nPiecesInHand_1, int &p2_nPiecesInHand_2InHand, int &nPiecesNeedRemove);
+                    int &nPiecesInHand_1, int &p2_nPiecesInHand_2InHand, int &nPiecesNeedRemove,
+                    uint64_t &hash);
 
     // 获取当前规则
     const struct Rule *getRule() const
@@ -448,7 +480,8 @@ protected:
     bool capture(int pos);
 
     // hash函数
-    uint64_t chessHash();
+    uint64_t getHash();
+    uint64_t updateHash(int pos);
 
 private:
     // 当前使用的规则
@@ -457,8 +490,11 @@ private:
     // 棋局上下文
     struct ChessContext context;
 
-    // 棋局数据中的棋盘数据，单独提出来
+    // 棋局上下文中的棋盘数据，单独提出来
     int *board_;
+
+    // 棋局哈希值
+    // uint64_t hash;
 
     // 选中的棋子在board中的位置
     int currentPos;

@@ -1,13 +1,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#define DEBUG
+#define DEBUG
 
-#define DEAL_WITH_HORIZON_EFFECT
+//#define DEAL_WITH_HORIZON_EFFECT
 
 //#define RANDOM_BEST_MOVE
 
-//#define HASH_MAP_ENABLE
+#define HASH_MAP_ENABLE
 
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND

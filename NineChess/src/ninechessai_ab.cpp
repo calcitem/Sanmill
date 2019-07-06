@@ -447,8 +447,8 @@ int NineChessAi_ab::changeDepth(int originalDepth)
         //int depthTable[] = { 2, 11, 11, 11, 11,  10,  9, 8, 8, 8, 7, 7, 1 };
         int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 9, 9, 8, 7, 1 };
 #else
-        //int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
-        int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 9, 9, 8, 7, 1 };
+        int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
+        //int depthTable[] = { 2, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 1 };
 #endif // DEAL_WITH_HORIZON_EFFECT
         newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
 #elif defined GAME_PLACING_FIXED_DEPTH
@@ -516,6 +516,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 初始化
     node->isLeaf = false;
     node->isTimeout = false;
+    node->isHash = false;
 #endif
 
     // 搜索到叶子节点（决胜局面）
@@ -557,7 +558,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
-    uint64_t hash = chessTemp.chessHash();
+    uint64_t hash = chessTemp.getHash();
     node->hash = hash;
 
     hashMapMutex.lock();
@@ -567,6 +568,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     if (node != rootNode &&
         iter != hashmap.end() &&
         iter->second.depth >= depth) {
+#ifdef DEBUG_AB_TREE
+        node->isHash = true;
+#endif
+
+        // TODO: 处理 Alpha/Beta 确切值
         node->value = iter->second.value;
 
         if (chessContext->turn == NineChess::PLAYER1)
@@ -791,6 +797,7 @@ const char *NineChessAi_ab::move2string(int move)
 unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::findHash(uint64_t hash)
 {
     auto iter = hashmap.find(hash);
+
     if (iter != hashmap.end())
         return iter;
 
@@ -805,7 +812,7 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
                 chessTempShift.turn(false);
             for (int k = 0; k < 4; k++) {
                 chessTempShift.rotate(k * 90, false);
-                iter = hashmap.find(chessTempShift.chessHash());
+                iter = hashmap.find(chessTempShift.getHash());
                 if (iter != hashmap.end())
                     return iter;
             }

@@ -112,15 +112,20 @@ const int NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
 };
 
 // 着法表
-int NineChess::moveTable[(N_RINGS + 2) * N_SEATS][N_MOVE_DIRECTIONS] = { 0 };
+int NineChess::moveTable[N_POINTS][N_MOVE_DIRECTIONS] = { 0 };
 
 // 成三表
-int NineChess::millTable[(N_RINGS + 2) * N_SEATS][N_DIRECTIONS][N_RINGS - 1] = { 0 };
+int NineChess::millTable[N_POINTS][N_DIRECTIONS][N_RINGS - 1] = { 0 };
 
 NineChess::NineChess()
 {
-    // 单独提出 board，免得每次都写 context.board;
+    // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board;
+    //hash_ = &context.hash;
+    //zobrist_ = &context.zobrist;
+
+    // 创建哈希数据
+    constructHash();
 
     // 默认选择第1号规则，即“打三棋”
     setContext(&RULES[1]);
@@ -169,6 +174,24 @@ const NineChess &NineChess::operator=(const NineChess &chess)
 
 NineChess::~NineChess()
 {
+}
+
+void NineChess::constructHash()
+{
+    context.hash = 0;
+
+#if 0
+    gameMovingHash = rand64();
+    player2sTurnHash = rand64();
+
+    uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
+
+    for (int p = 0; p < N_POINTS; p++) {
+        for (int t = NineChess::POINT_TYPE_EMPTY; t <= NineChess::POINT_TYPE_FORBIDDEN; t++) {
+            zobrist[p][t] = rand64();
+        }
+    }
+#endif
 }
 
 NineChess::Player NineChess::getOpponent(NineChess::Player player)
@@ -301,7 +324,7 @@ void NineChess::createMillTable()
 // 设置棋局状态和棋盘数据，用于初始化
 bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int maxTimeLedToLose,
                         int initialStep, int flags, const char *board,
-                        int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
+                        int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove, uint64_t hash)
 {
     // 有效性判断
     if (maxStepsLedToDraw < 0 || maxTimeLedToLose < 0 || initialStep < 0 ||
@@ -320,24 +343,39 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         this->currentStep = initialStep;
 
         // 局面阶段标识
-        if (flags & GAME_NOTSTARTED)
+        if (flags & GAME_NOTSTARTED) {
             context.stage = GAME_NOTSTARTED;
-        else if (flags & GAME_PLACING)
+        }
+        else if (flags & GAME_PLACING) {
             context.stage = GAME_PLACING;
-        else if (flags & GAME_MOVING)
+        }
+        else if (flags & GAME_MOVING) {
             context.stage = GAME_MOVING;
-        else if (flags & GAME_OVER)
+            //context.hash ^=  // TODO
+        }
+        else if (flags & GAME_OVER) {
             context.stage = GAME_OVER;
-        else
+        }
+        else {
             return false;
+        }
 
         // 轮流状态标识
-        if (flags & PLAYER1)
+        if (flags & PLAYER1) {
+//             if (context.turn == PLAYER2) {
+//                 context.hash ^= player2sTurnHash;
+//             }
             context.turn = PLAYER1;
-        else if (flags & PLAYER2)
+        }
+        else if (flags & PLAYER2) {
+//             if (context.turn == PLAYER1) {
+//                 context.hash ^= player2sTurnHash;
+//             }
             context.turn = PLAYER2;
-        else
+        }
+        else {
             return false;
+        }
 
         // 动作状态标识
         if (flags & ACTION_CHOOSE)
@@ -352,19 +390,37 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         // 当前棋局（3×8）
         if (board == nullptr) {
             memset(context.board, 0, sizeof(context.board));
+            context.hash = 0;
         } else {
             memcpy(context.board, board, sizeof(context.board));
+            context.hash = hash;
         }            
 
         // 计算盘面子数
+        // 棋局，抽象为一个（5×8）的数组，上下两行留空
+        /*
+            0x00 代表无棋子
+            0x0F 代表禁点
+            0x11～0x1C 代表先手第 1～12 子
+            0x21～0x2C 代表后手第 1～12 子
+            判断棋子是先手的用 (board[i] & 0x10)
+            判断棋子是后手的用 (board[i] & 0x20)
+         */
         context.nPiecesOnBoard_1 = context.nPiecesOnBoard_2 = 0;
         for (int r = 1; r < N_RINGS + 2; r++) {
             for (int s = 0; s < N_SEATS; s++) {
-                if (context.board[r * N_SEATS + s] & '\x10')
+                int pos = r * N_SEATS + s;
+                if (context.board[pos] & '\x10') {
                     context.nPiecesOnBoard_1++;
-                else if (context.board[r * N_SEATS + s] & '\x20') {
+                }
+                else if (context.board[pos] & '\x20') {
                     context.nPiecesOnBoard_2++;
                 }
+                else if (context.board[pos] & '\x0F') {
+                    // 不计算盘面子数
+                }
+
+                //updateHash(pos);
             }
         }
 
@@ -434,7 +490,8 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
 }
 
 void NineChess::getContext(struct Rule &rule, int &step, int &flags,
-                           int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &num_NeedRemove)
+                           int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &num_NeedRemove,
+                           uint64_t &hash)
 {
     rule = this->currentRule;
     step = this->currentStep;
@@ -443,6 +500,7 @@ void NineChess::getContext(struct Rule &rule, int &step, int &flags,
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
     num_NeedRemove = context.nPiecesNeedRemove;
+    hash = context.hash;
 }
 
 bool NineChess::reset()
@@ -485,6 +543,9 @@ bool NineChess::reset()
 
     // 用时置零
     elapsedMS_1 = elapsedMS_2 = 0;
+
+    // 哈希归零
+    context.hash = 0;
 
     // 提示
     setTips();
@@ -548,7 +609,7 @@ bool NineChess::getPieceCP(const Player &player, const int &number, int &c, int 
     else
         return false;
 
-    for (int i = N_SEATS; i < N_SEATS * (N_RINGS + 1); i++) {
+    for (int i = POS_BEGIN; i < POS_END; i++) {
         if (board_[i] == piece) {
             pos2cp(i, c, p);
             return true;
@@ -578,7 +639,7 @@ bool NineChess::getCurrentPiece(Player &player, int &number)
 
 bool NineChess::pos2cp(const int pos, int &c, int &p)
 {
-    if (pos < N_SEATS || pos >= N_SEATS * (N_RINGS + 1))
+    if (pos < POS_BEGIN || POS_END <= pos)
         return false;
 
     c = pos / N_SEATS;
@@ -608,10 +669,11 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
     // 如非“落子”状态，返回false
     if (context.action != ACTION_PLACE)
         return false;
-
-    // 如果落子位置在棋盘外、已有子点或禁点，返回false
+    
+    // 转换为 pos
     int pos = cp2pos(c, p);
 
+    // 如果落子位置在棋盘外、已有子点或禁点，返回false
     if (!onBoard[pos] || board_[pos])
         return false;
 
@@ -637,6 +699,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         }
 
         board_[pos] = piece;
+        updateHash(pos);
         move_ = pos;
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u",
@@ -725,7 +788,9 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
                 c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         board_[pos] = board_[currentPos];
+        updateHash(pos);
         board_[currentPos] = '\x00';
+        updateHash(currentPos);
         currentPos = pos;
         currentStep++;
         n = addMills(currentPos);
@@ -811,6 +876,7 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     currentPos = 0;
     context.nPiecesNeedRemove--;
     currentStep++;
+    updateHash(pos);
     // 去子完成
 
     // 如果决出胜负
@@ -937,6 +1003,7 @@ bool NineChess::place(int pos)
     // 如非“落子”状态，返回false
     if (context.action != ACTION_PLACE)
         return false;
+
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
     if (!onBoard[pos] || board_[pos])
         return false;
@@ -959,6 +1026,7 @@ bool NineChess::place(int pos)
         }
 
         board_[pos] = piece;
+        updateHash(pos);
         move_ = pos;
         currentPos = pos;
         //step++;
@@ -1034,7 +1102,9 @@ bool NineChess::place(int pos)
         // 移子
         move_ = (currentPos << 8) + pos;
         board_[pos] = board_[currentPos];
+        updateHash(pos);
         board_[currentPos] = '\x00';
+        updateHash(currentPos);
         currentPos = pos;
         //step++;
         n = addMills(currentPos);
@@ -1111,6 +1181,7 @@ bool NineChess::capture(int pos)
     move_ = -pos;
     currentPos = 0;
     context.nPiecesNeedRemove--;
+    updateHash(pos);
     //step++;
     // 去子完成
 
@@ -1215,36 +1286,47 @@ bool NineChess::choose(int pos)
     return false;
 }
 
+uint64_t NineChess::getHash()
+{
+    return context.hash;
+}
+
 // hash函数，对应可重复去子的规则
-uint64_t NineChess::chessHash()
+uint64_t NineChess::updateHash(int pos)
 {
     /* 
      * hash各数据位详解（名为hash，但实际并无冲突，是算法用到的棋局数据的完全表示）
-     * 57-64位：空白不用，全为0
-     * 56位：轮流标识，0为先手，1为后手
-     * 55位：动作标识，落子（选子移动）为0，1为去子
-     * 7-54位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
+     * 56-63位：空白不用，全为0
+     * 55位：轮流标识，0为先手，1为后手
+     * 54位：动作标识，落子（选子移动）为0，1为去子
+     * 6-53位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
      *        0b00表示空白，0b01表示先手棋子，0b10表示后手棋子，0b11表示禁点
-     * 5-6位（共2位）：待去子数，最大为3，用2个二进制位表示即可
-     * 1-4位：player1的手棋数，不需要player2的（可计算出）
-     */
+     * 4-5位（共2位）：待去子数，最大为3，用2个二进制位表示即可
+     * 0-3位：player1的手棋数，不需要player2的（可计算出）
+     */   
+
+#if 0
     uint64_t hash = 0ull;
 
     for (int i = POS_BEGIN; i < POS_END; i++) {
         hash |= board_[i] & 0x30;
         hash <<= 2;
     }
+#endif
+
+    uint64_t temp = board_[pos] & 0x30 >> 4;
+    context.hash |= (temp) << ((pos - 8) * 2 + 6);
 
     if (context.turn == PLAYER2)
-        hash |= 1ull << 55;
+        context.hash |= 1ull << 55;
 
     if (context.action == ACTION_CAPTURE)
-        hash |= 1ull << 54;
+        context.hash |= 1ull << 54;
 
-    hash |= (uint64_t)context.nPiecesNeedRemove << 4;
-    hash |= context.nPiecesInHand_1;
+    context.hash |= (uint64_t)context.nPiecesNeedRemove << 4;
+    context.hash |= context.nPiecesInHand_1;
 
-    return hash;
+    return context.hash;
 }
 
 bool NineChess::giveup(Player loser)
@@ -1673,10 +1755,15 @@ bool NineChess::isAllSurrounded(enum Player ply)
 
 void NineChess::cleanForbiddenPoints()
 {
+    int pos = 0;
+
     for (int i = 1; i <= N_RINGS; i++) {
         for (int j = 0; j < N_SEATS; j++) {
-            if (board_[i * N_SEATS + j] == '\x0f')
-                board_[i * N_SEATS + j] = '\x00';
+            pos = i * N_SEATS + j;
+            if (board_[pos] == '\x0f') {
+                board_[pos] = '\x00';
+                updateHash(pos);
+            }
         }
     }
 }
@@ -1774,7 +1861,9 @@ void NineChess::mirror(bool cmdChange /*= true*/)
         for (j = 1; j < N_SEATS / 2; j++) {
             ch = board_[i * N_SEATS + j];
             board_[i * N_SEATS + j] = board_[(i + 1) * N_SEATS - j];
+            //updateHash(i * N_SEATS + j);
             board_[(i + 1) * N_SEATS - j] = ch;
+            //updateHash((i + 1) * N_SEATS - j);
         }
     }
 
@@ -1891,7 +1980,9 @@ void NineChess::turn(bool cmdChange /*= true*/)
     for (i = 0; i < N_SEATS; i++) {
         ch = board_[N_SEATS + i];
         board_[N_SEATS + i] = board_[N_SEATS * N_RINGS + i];
+        //updateHash(N_SEATS + i);
         board_[N_SEATS * N_RINGS + i] = ch;
+        //updateHash(N_SEATS * N_RINGS + i);
     }
 
     uint64_t llp1, llp2, llp3;
@@ -2080,9 +2171,12 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
             ch2 = board_[i * N_SEATS + 1];
             for (j = 0; j < N_SEATS - 2; j++) {
                 board_[i * N_SEATS + j] = board_[i * N_SEATS + j + 2];
+                //updateHash(i * N_SEATS + j);
             }
             board_[i * N_SEATS + 6] = ch1;
+            //updateHash(i * N_SEATS + 6);
             board_[i * N_SEATS + 7] = ch2;
+            //updateHash(i * N_SEATS + 7);
         }
     } else if (degrees == 6) {
         for (i = 1; i <= N_RINGS; i++) {
@@ -2090,16 +2184,21 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
             ch2 = board_[i * N_SEATS + 6];
             for (j = N_SEATS - 1; j >= 2; j--) {
                 board_[i * N_SEATS + j] = board_[i * N_SEATS + j - 2];
+                //updateHash(i * N_SEATS + j);
             }
             board_[i * N_SEATS + 1] = ch1;
+            //updateHash(i * N_SEATS + 1);
             board_[i * N_SEATS] = ch2;
+            //updateHash(i * N_SEATS);
         }
     } else if (degrees == 4) {
         for (i = 1; i <= N_RINGS; i++) {
             for (j = 0; j < N_SEATS / 2; j++) {
                 ch1 = board_[i * N_SEATS + j];
                 board_[i * N_SEATS + j] = board_[i * N_SEATS + j + 4];
+                //updateHash(i * N_SEATS + j);
                 board_[i * N_SEATS + j + 4] = ch1;
+                //updateHash(i * N_SEATS + j + 4);
             }
         }
     } else
