@@ -502,10 +502,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 评价值
     int value;
 
-    // 当前节点的MinMax值，最终赋值给节点value，与alpha和Beta不同
+    // 当前节点的 MinMax 值，最终赋值给节点 value，与 alpha 和 Beta 不同
     int minMax;
 
-    // 临时增加的深度
+    // 临时增加的深度，克服水平线效应用
     int epsilon = 0;
 
 #ifdef DEBUG_AB_TREE
@@ -519,8 +519,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 搜索到叶子节点（决胜局面）
     if (chessContext->stage == NineChess::GAME_OVER) {
+        // 局面评估
         node->value = evaluate(node);
         
+        // 为争取速胜，value 值 +- 深度
         if (node->value > 0)
             node->value += depth;
         else
@@ -535,7 +537,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
+        // 局面评估
         node->value = evaluate(node);
+
+        // 为争取速胜，value 值 +- 深度
         if (chessContext->turn == NineChess::PLAYER1)
             node->value += depth;
         else
@@ -550,7 +555,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
 
 #ifdef HASH_MAP_ENABLE
-    // 检索hashmap
+    // 检索 hashmap
     uint64_t hash = chessTemp.chessHash();
     node->hash = hash;
 
@@ -588,11 +593,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
 
     for (auto child : node->children) {
+        // 上下文入栈保存
         contextStack.push(chessTemp.context);
+
+        // 替换为演算用的招法
         chessTemp.command(child->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
-        // 若遇到吃子，则搜索深度加一层
+        // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
         if (child->move < 0) {
             epsilon = 1;
         }
@@ -600,18 +608,30 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             epsilon = 0;
         }
 #endif
-
+        // 递归 Alpha-Beta 剪枝
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
+
+        // 上下文弹出栈
         chessTemp.context = contextStack.top();
         contextStack.pop();
 
         if (chessTemp.whosTurn() == NineChess::PLAYER1) {
+            // 为走棋一方的层
+
             // 取最大值
             minMax = std::max(value, minMax);
+
+            // alpha 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
             alpha = std::max(value, alpha);
         } else {
+            // 为走棋方的对手一方的层
+
             // 取最小值
             minMax = std::min(value, minMax);
+
+            // beta 表示对手目前的劣势，这是对手所能承受的最坏结果
+            // beta 值越大，表示对手劣势越明显
+            // 如果当前结点返回 beta 或比 beta 更好的值，作为父结点的对方就绝对不会选择这种策略
             beta = std::min(value, beta);
         }
 
@@ -625,7 +645,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifdef DEBUG_AB_TREE
     node->alpha = alpha;
     node->beta = beta;
-    node->minMax = minMax;
 #endif 
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
