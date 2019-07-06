@@ -94,7 +94,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 mutex NineChessAi_ab::hashMapMutex;
 unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 
-void NineChessAi_ab::buildChildren(Node *node)
+void NineChessAi_ab::generateLegalMoves(Node *node)
 {
     // 如果有子节点，则返回，避免重复建立
     if (node->children.size()) {
@@ -185,7 +185,7 @@ void NineChessAi_ab::buildChildren(Node *node)
     }
 }
 
-void NineChessAi_ab::sortChildren(Node *node)
+void NineChessAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
@@ -583,7 +583,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif /* HASH_MAP_ENABLE */
 
     // 生成子节点树，即生成每个合理的着法
-    buildChildren(node);
+    generateLegalMoves(node);
 
     // 排序子节点树
     //sortChildren(node);
@@ -683,7 +683,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
 
     // 排序子节点树
-    sortChildren(node);
+    sortLegalMoves(node);
 
     // 返回
     return node->value;

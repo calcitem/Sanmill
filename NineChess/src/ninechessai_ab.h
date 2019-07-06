@@ -86,11 +86,11 @@ public:
     void clearHashMap();
 
 protected:
-    // 建立子节点
-    void buildChildren(Node *node);
+    // 生成所有合法的着法并建立子节点
+    void generateLegalMoves(Node *node);
 
-    // 子节点排序
-    void sortChildren(Node *node);
+    // 对合法的着法降序排序
+    void sortLegalMoves(Node *node);
 
     // 清空节点树
     void deleteTree(Node *node);
