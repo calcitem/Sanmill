@@ -49,7 +49,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     nodeCount++;
     newNode->id = nodeCount;
 
-    newNode->rand = rand() % 24; // (1%)
+    //newNode->rand = rand() % 24; // (1%)
 
     newNode->pruned = false;
 
