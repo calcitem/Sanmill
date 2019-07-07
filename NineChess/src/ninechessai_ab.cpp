@@ -571,8 +571,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         node->isLeaf = true;
 #endif
 
+#ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
         recordHash(hash, depth, node->value, hashfEXACT);
+#endif
 
         return node->value;
     }
@@ -594,8 +596,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         }
 #endif 
 
+#ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
         recordHash(hash, depth, node->value, hashfEXACT);
+#endif
 
         return node->value;
     }
@@ -699,8 +703,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     else {
         hashMapMutex.lock();
         if (iter->second.depth < depth) {
-            iter->second.value = node->value;
-            iter->second.depth = depth;
+            //iter->second.value = node->value;
+            //iter->second.depth = depth;
         }
         hashMapMutex.unlock();
     }
