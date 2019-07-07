@@ -51,6 +51,8 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 
     newNode->rand = rand() % 24;
 
+    newNode->pruned = false;
+
 #ifdef DEBUG_AB_TREE
     newNode->player = player;
     newNode->root = rootNode;
@@ -65,7 +67,6 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->result = 0;
     newNode->isHash = false;
     newNode->visited = false;
-    newNode->pruned = false;
 #endif
     int c, p;
     char cmd[32] = { 0 };
@@ -99,6 +100,26 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 
 void NineChessAi_ab::generateLegalMoves(Node *node)
 {
+    const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
+    int pos = 0;
+
+#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+    int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
+        17, 19, 21, 23, // 星位
+        25, 27, 29, 31, // 外圈四个顶点
+         9, 11, 13, 15, // 内圈四个顶点
+        16, 18, 20, 22, // 中圈十字架
+        24, 26, 28, 30, // 外圈十字架
+         8, 10, 12, 14, // 中圈十字架
+    };
+#else
+    int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
+        8, 9, 10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23,
+        24, 25, 26, 27, 28, 29, 30, 31,
+    };
+#endif
+
     // 如果有子节点，则返回，避免重复建立
     if (node->children.size()) {
         return;
@@ -114,7 +135,8 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     case NineChess::ACTION_PLACE:
         // 对于摆子阶段
         if (chessTemp.context.stage & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
-            for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
+            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
+                pos = movePriorityTable[i];
                 if (!chessTemp.board_[pos]) {
                     if (node == rootNode && chessTemp.context.stage == NineChess::GAME_NOTSTARTED) {
                         // 若为先手，则抢占星位
@@ -131,8 +153,14 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
         
         // 对于移子阶段
         if (chessTemp.context.stage & NineChess::GAME_MOVING) {
-            int newPos;
-            for (int oldPos = NineChess::POS_BEGIN; oldPos < NineChess::POS_END; oldPos++) {
+            int newPos, oldPos;
+#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+            // 尽量从位置理论上较差的位置向位置较好的地方移动
+            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+#else
+            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
+#endif // MOVE_PRIORITY_TABLE_SUPPORT
+                oldPos = movePriorityTable[i];
                 if (!chessTemp.choose(oldPos))
                     continue;
 
@@ -166,14 +194,16 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     case NineChess::ACTION_CAPTURE:        
         if (chessTemp.isAllInMills(opponent)) {
             // 全成三的情况
-            for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
+            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
+                pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
                     addNode(node, 0, -pos, chessTemp.context.turn);
                 }
             }
         } else {
             // 不是全成三的情况
-            for (int pos = NineChess::POS_BEGIN; pos < NineChess::POS_END; pos++) {
+            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
+                pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
                     if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
                         addNode(node, 0, -pos, chessTemp.context.turn);
@@ -256,6 +286,7 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     rootNode->value = 0;
     rootNode->move = 0;
     rootNode->parent = nullptr;
+    rootNode->pruned = false;
 #ifdef DEBUG_AB_TREE
     rootNode->action = NineChess::ACTION_NONE;
     rootNode->stage = NineChess::GAME_NONE;
@@ -680,10 +711,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
         // 否则剪枝返回
         if (alpha >= beta) {
-#ifdef DEBUG_AB_TREE
             node->pruned = true;
             break;
-#endif // DEBUG_AB_TREE
         }            
     }
 

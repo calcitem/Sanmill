@@ -54,6 +54,7 @@ public:
         int rand;                       // 随机数，对于 value 一致的结点随机排序用
         uint64_t hash;
         bool isHash;                    //  是否从 Hash 读取
+        bool pruned;                    // 是否在此处剪枝
 #ifdef DEBUG_AB_TREE
         string cmd;
         enum NineChess::Player player;  // 此招是谁下的
@@ -64,7 +65,6 @@ public:
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
         bool visited;                   // 是否在遍历时访问过
-        bool pruned;                    // 是否在此处剪枝
         NineChess::GameStage stage;     // 摆棋阶段还是走棋阶段
         NineChess::Action action;       // 动作状态
         int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
