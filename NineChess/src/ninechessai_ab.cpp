@@ -45,7 +45,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->parent = parent;
     newNode->value = value;
     newNode->move = move;
-       
+    
     nodeCount++;
     newNode->id = nodeCount;
 
@@ -87,8 +87,9 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->cmd = cmd;
 #endif
 
-    if (parent)
+    if (parent) {
         parent->children.push_back(newNode); // (7%)
+    }
 
     return newNode;
 }
@@ -749,13 +750,13 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif 
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
-#ifndef DEBUG_AB_TREE
+#ifndef DONOT_DELETE_TREE
     for (auto child : node->children) {
         for (auto grandChild : child->children)
             deleteTree(grandChild); // (9%)
         child->children.clear();    // (3%)
     }
-#endif
+#endif // DONOT_DELETE_TREE
 
 #ifdef HASH_MAP_ENABLE
     if (iter == hashmap.end()) {

@@ -9,6 +9,8 @@
 
 //#define HASH_MAP_ENABLE
 
+#define DONOT_DELETE_TREE
+
 #define MOVE_PRIORITY_TABLE_SUPPORT
 
 #ifdef DEBUG
