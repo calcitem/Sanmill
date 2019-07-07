@@ -40,7 +40,7 @@ public:
     {
         int16_t value;
         int16_t depth;
-        enum hashType type;
+        enum HashType type;
     };
 
     // 定义一个节点结构体

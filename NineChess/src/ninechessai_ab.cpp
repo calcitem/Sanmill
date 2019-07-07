@@ -509,6 +509,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 临时增加的深度，克服水平线效应用
     int epsilon = 0;
 
+    // 哈希类型
+    enum HashType hashf = hashfALPHA;
+
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
     node->root = rootNode;
@@ -682,7 +685,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifdef HASH_MAP_ENABLE
     if (iter == hashmap.end()) {
         // 添加到hashmap
-        recordHash(hash, depth, node->value, hashfEMPTY);
+        recordHash(hash, depth, node->value, hashf);
     }
     // 更新更深层数据
     else {
@@ -708,8 +711,11 @@ int NineChessAi_ab::recordHash(uint64_t hash, int16_t depth, int value, enum Has
     hashMapMutex.lock();
 
     HashValue hashValue;
+    
     hashValue.value = value;
     hashValue.depth = depth;
+    hashValue.type = type;
+
     if (hashmap.size() <= maxHashCount)
         hashmap.insert({ hash, hashValue });
 
