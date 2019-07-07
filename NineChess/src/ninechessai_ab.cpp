@@ -41,7 +41,7 @@ void NineChessAi_ab::buildRoot()
 
 struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move, enum NineChess::Player player)
 {
-    Node *newNode = new Node;
+    Node *newNode = new Node;   // (10%)
     newNode->parent = parent;
     newNode->value = value;
     newNode->move = move;
@@ -49,7 +49,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     nodeCount++;
     newNode->id = nodeCount;
 
-    newNode->rand = rand() % 24;
+    newNode->rand = rand() % 24; // (1%)
 
     newNode->pruned = false;
 
@@ -67,29 +67,28 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->result = 0;
     newNode->isHash = false;
     newNode->visited = false;
-#endif
+
     int c, p;
     char cmd[32] = { 0 };
 
     if (move < 0) {
         chessTemp.pos2cp(-move, c, p);
-        sprintf(cmd, "-(%1u,%1u)", c, p);
+        sprintf(cmd, "-(%1u,%1u)", c, p);   // (3%)
     } else if (move & 0x7f00) {
         int c1, p1;
         chessTemp.pos2cp(move >> 8, c1, p1);
         chessTemp.pos2cp(move & 0x00ff, c, p);
-        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);
+        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);     // (7%)
     } else {
         chessTemp.pos2cp(move & 0x007f, c, p);
-        sprintf(cmd, "(%1u,%1u)", c, p);
+        sprintf(cmd, "(%1u,%1u)", c, p);    // (12%)
     }
 
-#ifdef DEBUG_AB_TREE
     newNode->cmd = cmd;
 #endif
 
     if (parent)
-        parent->children.push_back(newNode);
+        parent->children.push_back(newNode); // (7%)
 
     return newNode;
 }
@@ -144,7 +143,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
                             addNode(node, INF_VALUE, pos, chessTemp.context.turn);
                         }
                     } else {
-                        addNode(node, 0, pos, chessTemp.context.turn);
+                        addNode(node, 0, pos, chessTemp.context.turn);  // (24%)
                     }
                 }
             }
@@ -174,7 +173,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
                         newPos = chessTemp.moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
-                            addNode(node, 0, move, chessTemp.context.turn);
+                            addNode(node, 0, move, chessTemp.context.turn); // (12%)
                         }
                     }
                 } else {
@@ -206,7 +205,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
                 pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
                     if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
-                        addNode(node, 0, -pos, chessTemp.context.turn);
+                        addNode(node, 0, -pos, chessTemp.context.turn); // (6%)
                     }
                 }
             }
@@ -251,9 +250,9 @@ void NineChessAi_ab::sortLegalMoves(Node *node)
 #else
 
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        node->children.sort([](Node *n1, Node *n2) {return n1->value > n2->value; });
+        node->children.sort([](Node *n1, Node *n2) {return n1->value > n2->value; });   // (6%)
     } else {
-        node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });
+        node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });  // (6%)
     }
 
 #if 0
@@ -670,7 +669,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
 
     // 生成子节点树，即生成每个合理的着法
-    generateLegalMoves(node);
+    generateLegalMoves(node);   // (43%)
 
     // 排序子节点树
     //sortChildren(node);
@@ -681,10 +680,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
-        contextStack.push(chessTemp.context);
+        contextStack.push(chessTemp.context);   // (7%)
 
         // 执行着法
-        chessTemp.command(child->move);
+        chessTemp.command(child->move);     // (13%)
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
         // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
@@ -697,10 +696,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
 
         // 递归 Alpha-Beta 剪枝
-        value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
+        value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);  // (98%)
 
         // 上下文弹出栈，撤销着法
-        chessTemp.context = contextStack.top();
+        chessTemp.context = contextStack.top(); // (5%)
         contextStack.pop();
 
         if (chessTemp.whosTurn() == NineChess::PLAYER1) {
@@ -753,8 +752,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifndef DEBUG_AB_TREE
     for (auto child : node->children) {
         for (auto grandChild : child->children)
-            deleteTree(grandChild);
-        child->children.clear();
+            deleteTree(grandChild); // (9%)
+        child->children.clear();    // (3%)
     }
 #endif
 
@@ -775,7 +774,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
 
     // 排序子节点树
-    sortLegalMoves(node);
+    sortLegalMoves(node);   // (13%)
 
     // 返回
     return node->value;
