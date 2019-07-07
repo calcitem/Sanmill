@@ -26,11 +26,21 @@ using namespace std;
 class NineChessAi_ab
 {
 public:
+    // 定义哈希值的类型
+    enum hashType : int16_t
+    {
+        hashfEMPTY = 0,
+        hashfALPHA = 1,
+        hashfBETA = 2,
+        hashfEXACT = 3
+    };
+
     // 定义哈希表的值
     struct HashValue
     {
         int16_t value;
         int16_t depth;
+        enum hashType type;
     };
 
     // 定义一个节点结构体
@@ -156,8 +166,11 @@ private:
     // 哈希表的默认大小
     static const size_t maxHashCount = 1024 * 1024;
 
-    // 定义极大值，等于16位有符号整形数字的最大值
-    static const int INF_VALUE = INT32_MAX;
+    // 定义极大值
+    static const int INF_VALUE = 0x1 << 30;
+
+    // 定义未知值
+    static const int UNKNOWN_VALUE = INT32_MAX;
 
 private:
     // 命令行

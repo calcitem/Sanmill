@@ -517,44 +517,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     node->isLeaf = false;
     node->isTimeout = false;
     node->isHash = false;
+    node->hash = 0;
 #endif
-
-    // 搜索到叶子节点（决胜局面）
-    if (chessContext->stage == NineChess::GAME_OVER) {
-        // 局面评估
-        node->value = evaluate(node);
-        
-        // 为争取速胜，value 值 +- 深度
-        if (node->value > 0)
-            node->value += depth;
-        else
-            node->value -= depth;
-
-#ifdef DEBUG_AB_TREE
-        node->isLeaf = true;
-#endif
-
-        return node->value;
-    }
-
-    // 搜索到第0层或需要退出
-    if (!depth || requiredQuit) {
-        // 局面评估
-        node->value = evaluate(node);
-
-        // 为争取速胜，value 值 +- 深度
-        if (chessContext->turn == NineChess::PLAYER1)
-            node->value += depth;
-        else
-            node->value -= depth;
-
-#ifdef DEBUG_AB_TREE
-        if (requiredQuit) {
-            node->isTimeout = true;
-        }
-#endif 
-        return node->value;
-    }
 
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
@@ -588,6 +552,48 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     hashMapMutex.unlock();
 #endif /* HASH_MAP_ENABLE */
+
+    // 搜索到叶子节点（决胜局面）
+    if (chessContext->stage == NineChess::GAME_OVER) {
+        // 局面评估
+        node->value = evaluate(node);
+        
+        // 为争取速胜，value 值 +- 深度
+        if (node->value > 0)
+            node->value += depth;
+        else
+            node->value -= depth;
+
+#ifdef DEBUG_AB_TREE
+        node->isLeaf = true;
+#endif
+
+        // TODO: RecordHash
+
+        return node->value;
+    }
+
+    // 搜索到第0层或需要退出
+    if (!depth || requiredQuit) {
+        // 局面评估
+        node->value = evaluate(node);
+
+        // 为争取速胜，value 值 +- 深度
+        if (chessContext->turn == NineChess::PLAYER1)
+            node->value += depth;
+        else
+            node->value -= depth;
+
+#ifdef DEBUG_AB_TREE
+        if (requiredQuit) {
+            node->isTimeout = true;
+        }
+#endif 
+
+        // TODO: RecordHash
+
+        return node->value;
+    }
 
     // 生成子节点树，即生成每个合理的着法
     generateLegalMoves(node);
@@ -818,5 +824,6 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
             }
         }
     }
+
     return iter;
 }

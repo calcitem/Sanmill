@@ -42,7 +42,7 @@
 #define DRAW_SEAT_NUMBER
 #endif
 
-#define IDS_SUPPORT
+//#define IDS_SUPPORT
 
 #define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
 
