@@ -571,7 +571,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         node->isLeaf = true;
 #endif
 
-        // TODO: RecordHash
+        // 记录确切的哈希值
+        recordHash(hash, depth, node->value, hashfEXACT);
 
         return node->value;
     }
@@ -593,7 +594,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         }
 #endif 
 
-        // TODO: RecordHash
+        // 记录确切的哈希值
+        recordHash(hash, depth, node->value, hashfEXACT);
 
         return node->value;
     }
@@ -644,7 +646,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // α 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
             // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
             alpha = std::max(value, alpha);
+
+            hashf = hashfALPHA; // ????
+
         } else {
+
             // 为走棋方的对手一方的层, 局面对对手一方来说是以 β 为评价
 
             // 取最小值
@@ -658,6 +664,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // 如果某个着法的结果大于或等于 β，那么整个结点就作废了，因为对手不希望走到这个局面，而它有别的着法可以避免到达这个局面。
             // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
             beta = std::min(value, beta);
+
+            hashf = hashfBETA; // ????
         }
 
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
