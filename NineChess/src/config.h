@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEBUG
+//#define DEBUG
 
 //#define DEAL_WITH_HORIZON_EFFECT
 
@@ -42,7 +42,7 @@
 #define DRAW_SEAT_NUMBER
 #endif
 
-//#define IDS_SUPPORT
+#define IDS_SUPPORT
 
 #define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
 

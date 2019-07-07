@@ -63,6 +63,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->alpha = -INF_VALUE;
     newNode->beta = INF_VALUE;
     newNode->result = 0;
+    newNode->isHash = false;
 #endif
     int c, p;
     char cmd[32] = { 0 };
@@ -701,12 +702,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
     // 更新更深层数据
     else {
-        hashMapMutex.lock();
-        if (iter->second.depth < depth) {
+        //hashMapMutex.lock();
+        //if (iter->second.depth < depth) {
             //iter->second.value = node->value;
             //iter->second.depth = depth;
-        }
-        hashMapMutex.unlock();
+        //}
+        //hashMapMutex.unlock();
     }
 #endif
 
@@ -763,9 +764,9 @@ const char* NineChessAi_ab::bestMove()
     string moves = "";
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value)
-            qDebug("[%.2d] %d\t%s\t%d *", i, child->move, move2string(child->move), child->value);
+            qDebug("[%.2d] %d\t%s\t%d H%d *", i, child->move, move2string(child->move), child->value, child->isHash);
         else
-            qDebug("[%.2d] %d\t%s\t%d", i, child->move, move2string(child->move), child->value);
+            qDebug("[%.2d] %d\t%s\t%d H%d", i, child->move, move2string(child->move), child->value, child->isHash);
 
         i++;
     }
@@ -835,6 +836,7 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
 {
     auto iter = hashmap.find(hash);
 
+#if 0
     if (iter != hashmap.end())
         return iter;
 
@@ -855,6 +857,7 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
             }
         }
     }
+#endif
 
     return iter;
 }
