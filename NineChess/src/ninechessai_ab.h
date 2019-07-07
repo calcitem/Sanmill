@@ -27,7 +27,7 @@ class NineChessAi_ab
 {
 public:
     // 定义哈希值的类型
-    enum hashType : int16_t
+    enum HashType : int16_t
     {
         hashfEMPTY = 0,
         hashfALPHA = 1,
@@ -111,6 +111,9 @@ protected:
 
     // 增加新节点
     struct Node *addNode(Node *parent, int value, NineChess::move_t move, enum NineChess::Player player);
+
+    // 插入哈希表
+    int recordHash(uint64_t hash, int16_t depth, int value, enum HashType type);
 
     // 评价函数
     int evaluate(Node *node);

@@ -680,23 +680,19 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
 
 #ifdef HASH_MAP_ENABLE
-    // 添加到hashmap
-    hashMapMutex.lock();
     if (iter == hashmap.end()) {
-        HashValue hashValue;
-        hashValue.value = node->value;
-        hashValue.depth = depth;
-        if (hashmap.size() <= maxHashCount)
-            hashmap.insert({hash, hashValue});
+        // 添加到hashmap
+        recordHash(hash, depth, node->value, hashfEMPTY);
     }
     // 更新更深层数据
     else {
+        hashMapMutex.lock();
         if (iter->second.depth < depth) {
             iter->second.value = node->value;
             iter->second.depth = depth;
         }
+        hashMapMutex.unlock();
     }
-    hashMapMutex.unlock();
 #endif
 
     // 排序子节点树
@@ -704,6 +700,23 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 返回
     return node->value;
+}
+
+int NineChessAi_ab::recordHash(uint64_t hash, int16_t depth, int value, enum HashType type)
+{
+#ifdef HASH_MAP_ENABLE
+    hashMapMutex.lock();
+
+    HashValue hashValue;
+    hashValue.value = value;
+    hashValue.depth = depth;
+    if (hashmap.size() <= maxHashCount)
+        hashmap.insert({ hash, hashValue });
+
+    hashMapMutex.unlock();
+#endif // HASH_MAP_ENABLE
+
+    return 0;
 }
 
 const char* NineChessAi_ab::bestMove()
