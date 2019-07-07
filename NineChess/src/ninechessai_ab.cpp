@@ -251,10 +251,39 @@ void NineChessAi_ab::sortLegalMoves(Node *node)
 #else
 
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        node->children.sort([](Node* n1, Node* n2) {return n1->value > n2->value;});
+        node->children.sort([](Node *n1, Node *n2) {return n1->value > n2->value; });
     } else {
-        node->children.sort([](Node* n1, Node* n2) { return n1->value < n2->value;});
+        node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });
     }
+
+#if 0
+    if (chessTemp.whosTurn() == NineChess::PLAYER1) {
+        node->children.sort([](Node *n1, Node *n2) {
+            bool ret = false;
+            if (n1->value > n2->value) {
+                ret = true;
+            } else if (n1->value < n2->value) {
+                ret = false;
+            } else if (n1->value == n2->value) {
+                ret = n1->pruned < n2->pruned;
+            }
+            return ret;
+                            });
+    } else {
+        node->children.sort([](Node *n1, Node *n2) {
+            bool ret = false;
+            if (n1->value < n2->value) {
+                ret = true;
+            } else if (n1->value > n2->value) {
+                ret = false;
+            } else if (n1->value == n2->value) {
+                ret = n1->pruned > n2->pruned;
+            }
+            return ret;
+                            });
+    }
+#endif
+
 #endif
 }
 
