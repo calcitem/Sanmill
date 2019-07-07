@@ -1,13 +1,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#define DEBUG
+#define DEBUG
 
 //#define DEAL_WITH_HORIZON_EFFECT
 
 //#define RANDOM_BEST_MOVE
 
-#define HASH_MAP_ENABLE
+//#define HASH_MAP_ENABLE
 
 #ifdef DEBUG
 #define DONOT_PLAY_SOUND
@@ -21,7 +21,7 @@
 //#define DONOT_PLAY_SOUND
 
 #ifdef DEBUG
-#define GAME_PLACING_FIXED_DEPTH  4
+#define GAME_PLACING_FIXED_DEPTH  5
 #endif
 
 #ifdef DEBUG
@@ -42,7 +42,7 @@
 #define DRAW_SEAT_NUMBER
 #endif
 
-#define IDS_SUPPORT
+//#define IDS_SUPPORT
 
 #define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
 

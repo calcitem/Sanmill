@@ -63,7 +63,8 @@ public:
         int beta;                       // 表示对手目前的劣势，这是对手所能承受的最坏结果，Beta 值越大，表示对手劣势越明显，如果当前结点返回  Beta 或比 Beta 更好的值，作为父结点的对方就绝对不会选择这种策略 
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
-
+        bool visited;                   // 是否在遍历时访问过
+        bool pruned;                    // 是否在此处剪枝
         NineChess::GameStage stage;     // 摆棋阶段还是走棋阶段
         NineChess::Action action;       // 动作状态
         int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值

@@ -64,6 +64,8 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->beta = INF_VALUE;
     newNode->result = 0;
     newNode->isHash = false;
+    newNode->visited = false;
+    newNode->pruned = false;
 #endif
     int c, p;
     char cmd[32] = { 0 };
@@ -217,6 +219,7 @@ void NineChessAi_ab::sortLegalMoves(Node *node)
     });
     }
 #else
+
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
         node->children.sort([](Node* n1, Node* n2) {return n1->value > n2->value;});
     } else {
@@ -521,6 +524,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     node->isLeaf = false;
     node->isTimeout = false;
     node->isHash = false;
+    node->visited = true;
     node->hash = 0;
 #endif
 
@@ -675,8 +679,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
         // 否则剪枝返回
-        if (alpha >= beta)
+        if (alpha >= beta) {
+#ifdef DEBUG_AB_TREE
+            node->pruned = true;
             break;
+#endif // DEBUG_AB_TREE
+        }            
     }
 
     node->value = minMax;
@@ -762,11 +770,12 @@ const char* NineChessAi_ab::bestMove()
 
     int i = 0;
     string moves = "";
+
     for (auto child : rootNode->children) {
-        if (child->value == rootNode->value)
-            qDebug("[%.2d] %d\t%s\t%d H%d *", i, child->move, move2string(child->move), child->value, child->isHash);
+        if (child->value == rootNode->value && !child->pruned)
+            qDebug("[%.2d] %d\t%s\t%d *", i, child->move, move2string(child->move), child->value);
         else
-            qDebug("[%.2d] %d\t%s\t%d H%d", i, child->move, move2string(child->move), child->value, child->isHash);
+            qDebug("[%.2d] %d\t%s\t%d", i, child->move, move2string(child->move), child->value);
 
         i++;
     }
