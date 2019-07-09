@@ -102,13 +102,10 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 mutex NineChessAi_ab::hashMapMutex;
 unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 
-void NineChessAi_ab::generateLegalMoves(Node *node)
-{
-    const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
-    int pos = 0;
-
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
+void NineChessAi_ab::shuffleMovePriorityTable()
+{
     array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 星位
     array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
     array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
@@ -121,14 +118,12 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     std::shuffle(movePriorityTable2.begin(), movePriorityTable2.end(), std::default_random_engine(seed));
     std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
 
-    array<int, 24> movePriorityTable;
-
     for (int i = 0; i < 4; i++) {
-        movePriorityTable[i +  0] = movePriorityTable0[i];
+        movePriorityTable[i + 0] = movePriorityTable0[i];
     }
 
     for (int i = 0; i < 8; i++) {
-        movePriorityTable[i +  4] = movePriorityTable1[i];
+        movePriorityTable[i + 4] = movePriorityTable1[i];
     }
 
     for (int i = 0; i < 4; i++) {
@@ -138,6 +133,18 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     for (int i = 0; i < 8; i++) {
         movePriorityTable[i + 16] = movePriorityTable3[i];
     }
+}
+#endif // #ifdef RANDOM_MOVE
+#endif // MOVE_PRIORITY_TABLE_SUPPORT
+
+void NineChessAi_ab::generateLegalMoves(Node *node)
+{
+    const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
+    int pos = 0;
+
+#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+#ifdef RANDOM_MOVE
+   
 #else // RANDOM_MOVE
     int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
         17, 19, 21, 23, // 星位
@@ -579,6 +586,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     srand(time0);
 
     time1.start();
+
+#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+#ifdef RANDOM_MOVE
+    shuffleMovePriorityTable();
+#endif
+#endif
     
 #ifdef IDS_SUPPORT
     // 深化迭代

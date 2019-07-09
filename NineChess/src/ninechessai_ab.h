@@ -13,6 +13,7 @@
 #include <mutex>
 #include <string>
 #include <Qdebug>
+#include <array>
 
 #include "ninechess.h"
 
@@ -127,6 +128,13 @@ protected:
     // 篡改深度
     int changeDepth(int originalDepth);
 
+    // 随机打乱着法搜索顺序
+#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+#ifdef RANDOM_MOVE
+    void shuffleMovePriorityTable();
+#endif
+#endif
+
     // 判断是否在哈希表中
     unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator findHash(uint64_t hash);
 
@@ -165,6 +173,10 @@ private:
 
     // 局面数据哈希表
     static unordered_map<uint64_t, HashValue> hashmap;
+
+#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+    array<int, NineChess::N_RINGS *NineChess::N_SEATS> movePriorityTable;
+#endif // MOVE_PRIORITY_TABLE_SUPPORT
 
     // 哈希表的默认大小
     static const size_t maxHashCount = 1024 * 1024;
