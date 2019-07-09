@@ -3,6 +3,8 @@
 
 //#define DEBUG
 
+#define RANDOM_MOVE
+
 #define DEAL_WITH_HORIZON_EFFECT
 
 //#define RANDOM_BEST_MOVE

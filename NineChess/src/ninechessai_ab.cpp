@@ -9,6 +9,10 @@
 #include <time.h>
 #include <Qdebug>
 #include <QTime>
+#include <array>
+#include <random>
+#include <chrono> 
+
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
@@ -104,6 +108,37 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     int pos = 0;
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
+#ifdef RANDOM_MOVE
+    array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 星位
+    array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
+    array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
+    array<int, 8> movePriorityTable3 = { 24, 26, 28, 30, 8, 10, 12, 14 }; // 外圈和中圈十字架
+
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+    std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
+    std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
+    std::shuffle(movePriorityTable2.begin(), movePriorityTable2.end(), std::default_random_engine(seed));
+    std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
+
+    array<int, 24> movePriorityTable;
+
+    for (int i = 0; i < 4; i++) {
+        movePriorityTable[i +  0] = movePriorityTable0[i];
+    }
+
+    for (int i = 0; i < 8; i++) {
+        movePriorityTable[i +  4] = movePriorityTable1[i];
+    }
+
+    for (int i = 0; i < 4; i++) {
+        movePriorityTable[i + 12] = movePriorityTable2[i];
+    }
+
+    for (int i = 0; i < 8; i++) {
+        movePriorityTable[i + 16] = movePriorityTable3[i];
+    }
+#else // RANDOM_MOVE
     int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
         17, 19, 21, 23, // 星位
         25, 27, 29, 31, // 外圈四个顶点
@@ -112,6 +147,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
         24, 26, 28, 30, // 外圈十字架
          8, 10, 12, 14, // 中圈十字架
     };
+#endif // RANDOM_MOVE
 #else
     int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
         8, 9, 10, 11, 12, 13, 14, 15,
