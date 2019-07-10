@@ -106,10 +106,11 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 #ifdef RANDOM_MOVE
 void NineChessAi_ab::shuffleMovePriorityTable()
 {
-    array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 星位
+    array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 中圈四个顶点 (星位)
     array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
     array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
-    array<int, 8> movePriorityTable3 = { 24, 26, 28, 30, 8, 10, 12, 14 }; // 外圈和中圈十字架
+    array<int, 4> movePriorityTable3 = { 8, 10, 12, 14 }; // 内圈十字架
+    array<int, 4> movePriorityTable4 = { 24, 26, 28, 30 }; // 外圈十字架
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 
@@ -117,6 +118,7 @@ void NineChessAi_ab::shuffleMovePriorityTable()
     std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
     std::shuffle(movePriorityTable2.begin(), movePriorityTable2.end(), std::default_random_engine(seed));
     std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
+    std::shuffle(movePriorityTable4.begin(), movePriorityTable4.end(), std::default_random_engine(seed));
 
     for (int i = 0; i < 4; i++) {
         movePriorityTable[i + 0] = movePriorityTable0[i];
@@ -130,8 +132,12 @@ void NineChessAi_ab::shuffleMovePriorityTable()
         movePriorityTable[i + 12] = movePriorityTable2[i];
     }
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 4; i++) {
         movePriorityTable[i + 16] = movePriorityTable3[i];
+    }
+
+    for (int i = 0; i < 4; i++) {
+        movePriorityTable[i + 20] = movePriorityTable4[i];
     }
 }
 #endif // #ifdef RANDOM_MOVE
