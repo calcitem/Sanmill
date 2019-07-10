@@ -416,7 +416,7 @@ void NineChessWindow::on_actionNew_N_triggered()
         file.close();
 
 #ifdef SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
-    QString path = QDir::currentPath() + "/" + tr("book_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".log";
+    QString path = QDir::currentPath() + "/" + tr("book_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".txt";
     QStringListModel* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
 
     if (path.isEmpty() == false && strlist->stringList().size() > 18) {
