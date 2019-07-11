@@ -243,7 +243,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     case NineChess::ACTION_CAPTURE:        
         if (chessTemp.isAllInMills(opponent)) {
             // 全成三的情况
-            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
+            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
                     addNode(node, 0, -pos, chessTemp.context.turn);
@@ -251,7 +251,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
             }
         } else {
             // 不是全成三的情况
-            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
+            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
                     if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
