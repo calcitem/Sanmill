@@ -31,6 +31,7 @@ SOURCES += \
 
 HEADERS  += \
     src/boarditem.h \
+    src/config.h \
     src/gamecontroller.h \
     src/gamescene.h \
     src/gameview.h \
