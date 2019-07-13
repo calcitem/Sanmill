@@ -1,7 +1,12 @@
 ﻿#include <QDebug>
 #include "aithread.h"
 
-AiThread::AiThread(int id, QObject *parent) : QThread(parent), waiting_(false), aiDepth(2), aiTime(120)
+AiThread::AiThread(int id, QObject *parent) : 
+    QThread(parent), 
+    chess_(nullptr),
+    waiting_(false), 
+    aiDepth(2), 
+    aiTime(120)
 {
     this->id = id;
 
@@ -25,6 +30,7 @@ AiThread::~AiThread()
 void AiThread::setAi(const NineChess &chess)
 {
     mutex.lock();
+
     this->chess_ = &chess;
     ai_ab.setChess(*(this->chess_));
 
