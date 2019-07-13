@@ -625,12 +625,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
-    uint64_t hash = chessTemp.getHash();
-    node->hash = hash;
+    uint64_t hashCheckCode = chessTemp.getHashCheckCode();
+    node->hash = hashCheckCode;
 
     hashMapMutex.lock();
 
-    auto iter = findHash(hash);
+    auto iter = findHash(hashCheckCode);
 
     if (node != rootNode &&
         iter != hashmap.end() &&
@@ -673,7 +673,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
-        recordHash(hash, depth, node->value, hashfEXACT);
+        recordHash(hashCheckCode, depth, node->value, hashfEXACT);
 #endif
 
         return node->value;
@@ -698,7 +698,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
-        recordHash(hash, depth, node->value, hashfEXACT);
+        recordHash(hashCheckCode, depth, node->value, hashfEXACT);
 #endif
 
         return node->value;
@@ -796,7 +796,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifdef HASH_MAP_ENABLE
     if (iter == hashmap.end()) {
         // 添加到hashmap
-        recordHash(hash, depth, node->value, hashf);
+        recordHash(hashCheckCode, depth, node->value, hashf);
     }
     // 更新更深层数据
     else {
