@@ -47,9 +47,10 @@ public:
     // 定义一个节点结构体
     struct Node
     {
+    public:
         int move;                      // 着法的命令行指令，图上标示为节点前的连线
         int value;                     // 节点的值
-        list<struct Node*> children;  // 子节点列表
+        vector<struct Node*> children;  // 子节点列表
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
         int rand;                       // 随机数，对于 value 一致的结点随机排序用
@@ -74,6 +75,23 @@ public:
         int result;                     // 终局结果，-1为负，0为未到终局，1为胜，走棋阶段被闷棋则为 -2/2，布局阶段闷棋为 -3
         struct Node* root;              // 根节点
 #endif /* DEBUG_AB_TREE */
+
+#if 0
+        bool operator < (const Node &another) const
+        {
+            return this->value < another.value;
+        }
+
+        bool operator > (const Node &another) const
+        {
+            return this->value > another.value;
+        }
+
+        bool operator == (const Node &another) const
+        {
+            return this->value == another.value;
+        }
+#endif
     };
 
 public:
@@ -96,6 +114,10 @@ public:
 
     // 清空哈希表
     void clearHashMap();
+
+    // 比较函数
+    static bool nodeLess(const Node *first, const Node *second);
+    static bool nodeGreater(const Node *first, const Node *second);
 
 protected:
     // 生成所有合法的着法并建立子节点

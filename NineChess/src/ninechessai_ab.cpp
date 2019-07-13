@@ -11,7 +11,8 @@
 #include <QTime>
 #include <array>
 #include <random>
-#include <chrono> 
+#include <chrono>
+#include <algorithm>
 
 
 NineChessAi_ab::NineChessAi_ab() :
@@ -267,6 +268,16 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     }
 }
 
+bool NineChessAi_ab::nodeLess(const Node *first, const Node *second)
+{
+    return first->value < second->value;
+}
+
+bool NineChessAi_ab::nodeGreater(const Node *first, const Node *second)
+{
+    return first->value > second->value;
+}
+
 void NineChessAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
@@ -300,9 +311,11 @@ void NineChessAi_ab::sortLegalMoves(Node *node)
 #else
 
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        node->children.sort([](Node *n1, Node *n2) {return n1->value > n2->value; });   // (6%)
+        //node->children.sort([](Node *n1, Node *n2) {return n1->value > n2->value; });   // (6%)
+        std::stable_sort(node->children.begin(), node->children.end(), nodeGreater);
     } else {
-        node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });  // (6%)
+        //node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });  // (6%)
+        std::stable_sort(node->children.begin(), node->children.end(), nodeLess);
     }
 
 #if 0
