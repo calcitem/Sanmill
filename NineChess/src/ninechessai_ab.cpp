@@ -398,44 +398,6 @@ int NineChessAi_ab::evaluate(Node *node)
 
     evaluatedNodeCount++;
 
-#if 0
-    int loc_value = 0;
-
-    // 根据位置设置分数
-    switch (node->move) {
-    case 17:
-    case 19:
-    case 21:
-    case 23:
-        loc_value = 10;
-        break;
-    case 25:
-    case 27:
-    case 29:
-    case 31:
-    case 9:
-    case 11:
-    case 13:
-    case 15:
-        loc_value = 5;
-        break;
-    case 16:
-    case 18:
-    case 20:
-    case  22:
-        loc_value = 1;
-        break;
-    default:
-        break;
-    }
-
-    if (chessContext->turn == NineChess::PLAYER1) {
-        value += loc_value;
-    } else {
-        value -= loc_value;
-    }
-#endif
-
 #ifdef DEBUG_AB_TREE
     node->stage = chessContext->stage;
     node->action = chessContext->action;
@@ -466,9 +428,11 @@ int NineChessAi_ab::evaluate(Node *node)
         case NineChess::ACTION_CHOOSE:
         case NineChess::ACTION_PLACE:
             break;
+
         // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
+            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? 
+                chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * 100;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
@@ -492,7 +456,8 @@ int NineChessAi_ab::evaluate(Node *node)
 
             // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
+            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? 
+                chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * 128;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
