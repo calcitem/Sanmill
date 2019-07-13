@@ -179,8 +179,8 @@ public:
          */
         int board[N_POINTS];
 
-        // 局面哈希值
-        uint64_t hash;
+        // 局面哈希的校验码，校验码相同 才能认为是同一局面
+        uint64_t hashCheckCode;
 
         // Zobrist 数组
         //uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
@@ -269,7 +269,7 @@ public:
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
                  int nPiecesNeedRemove = 0,      // 尚待去除的子数
-                 uint64_t hash = 0ull            // Hash 为0
+                 uint64_t hashCheckCode = 0ull            // Hash 为0
     );
 
     // 获取棋局状态和棋盘上下文
@@ -479,9 +479,9 @@ protected:
     bool place(int pos);
     bool capture(int pos);
 
-    // hash函数
-    uint64_t getHash();
-    uint64_t updateHash(int pos);
+    // hash校验值相关
+    uint64_t getHashCheckCode();
+    uint64_t updateHashCheckCode(int pos);
 
 private:
     // 当前使用的规则

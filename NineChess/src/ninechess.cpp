@@ -178,7 +178,7 @@ NineChess::~NineChess()
 
 void NineChess::constructHash()
 {
-    context.hash = 0;
+    context.hashCheckCode = 0;
 
 #if 0
     gameMovingHash = rand64();
@@ -324,7 +324,7 @@ void NineChess::createMillTable()
 // 设置棋局状态和棋盘数据，用于初始化
 bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int maxTimeLedToLose,
                         int initialStep, int flags, const char *board,
-                        int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove, uint64_t hash)
+                        int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove, uint64_t hashCheckCode)
 {
     // 有效性判断
     if (maxStepsLedToDraw < 0 || maxTimeLedToLose < 0 || initialStep < 0 ||
@@ -390,10 +390,10 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         // 当前棋局（3×8）
         if (board == nullptr) {
             memset(context.board, 0, sizeof(context.board));
-            context.hash = 0;
+            context.hashCheckCode = 0;
         } else {
             memcpy(context.board, board, sizeof(context.board));
-            context.hash = hash;
+            context.hashCheckCode = hashCheckCode;
         }            
 
         // 计算盘面子数
@@ -491,7 +491,7 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
 
 void NineChess::getContext(struct Rule &rule, int &step, int &flags,
                            int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &num_NeedRemove,
-                           uint64_t &hash)
+                           uint64_t &hashCheckCode)
 {
     rule = this->currentRule;
     step = this->currentStep;
@@ -500,7 +500,7 @@ void NineChess::getContext(struct Rule &rule, int &step, int &flags,
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
     num_NeedRemove = context.nPiecesNeedRemove;
-    hash = context.hash;
+    hashCheckCode = context.hashCheckCode;
 }
 
 bool NineChess::reset()
@@ -544,8 +544,8 @@ bool NineChess::reset()
     // 用时置零
     elapsedMS_1 = elapsedMS_2 = 0;
 
-    // 哈希归零
-    context.hash = 0;
+    // 哈希校验码归零
+    context.hashCheckCode = 0;
 
     // 提示
     setTips();
@@ -699,7 +699,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         }
 
         board_[pos] = piece;
-        updateHash(pos);
+        updateHashCheckCode(pos);
         move_ = pos;
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u",
@@ -788,9 +788,9 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
                 c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         board_[pos] = board_[currentPos];
-        updateHash(pos);
+        updateHashCheckCode(pos);
         board_[currentPos] = '\x00';
-        updateHash(currentPos);
+        updateHashCheckCode(currentPos);
         currentPos = pos;
         currentStep++;
         n = addMills(currentPos);
@@ -876,7 +876,7 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     currentPos = 0;
     context.nPiecesNeedRemove--;
     currentStep++;
-    updateHash(pos);
+    updateHashCheckCode(pos);
     // 去子完成
 
     // 如果决出胜负
@@ -1026,7 +1026,7 @@ bool NineChess::place(int pos)
         }
 
         board_[pos] = piece;
-        updateHash(pos);
+        updateHashCheckCode(pos);
         move_ = pos;
         currentPos = pos;
         //step++;
@@ -1102,9 +1102,9 @@ bool NineChess::place(int pos)
         // 移子
         move_ = (currentPos << 8) + pos;
         board_[pos] = board_[currentPos];
-        updateHash(pos);
+        updateHashCheckCode(pos);
         board_[currentPos] = '\x00';
-        updateHash(currentPos);
+        updateHashCheckCode(currentPos);
         currentPos = pos;
         //step++;
         n = addMills(currentPos);
@@ -1181,7 +1181,7 @@ bool NineChess::capture(int pos)
     move_ = -pos;
     currentPos = 0;
     context.nPiecesNeedRemove--;
-    updateHash(pos);
+    updateHashCheckCode(pos);
     //step++;
     // 去子完成
 
@@ -1286,16 +1286,16 @@ bool NineChess::choose(int pos)
     return false;
 }
 
-uint64_t NineChess::getHash()
+uint64_t NineChess::getHashCheckCode()
 {
-    return context.hash;
+    return context.hashCheckCode;
 }
 
 // hash函数，对应可重复去子的规则
-uint64_t NineChess::updateHash(int pos)
+uint64_t NineChess::updateHashCheckCode(int pos)
 {
     /* 
-     * hash各数据位详解（名为hash，但实际并无冲突，是算法用到的棋局数据的完全表示）
+     * hash校验码各数据位详解（并无冲突，是算法用到的棋局数据的完全表示）
      * 56-63位：空白不用，全为0
      * 55位：轮流标识，0为先手，1为后手
      * 54位：动作标识，落子（选子移动）为0，1为去子
@@ -1315,18 +1315,18 @@ uint64_t NineChess::updateHash(int pos)
 #endif
 
     uint64_t temp = board_[pos] & 0x30 >> 4;
-    context.hash |= (temp) << ((pos - 8) * 2 + 6);
+    context.hashCheckCode |= (temp) << ((pos - 8) * 2 + 6);
 
     if (context.turn == PLAYER2)
-        context.hash |= 1ull << 55;
+        context.hashCheckCode |= 1ull << 55;
 
     if (context.action == ACTION_CAPTURE)
-        context.hash |= 1ull << 54;
+        context.hashCheckCode |= 1ull << 54;
 
-    context.hash |= (uint64_t)context.nPiecesNeedRemove << 4;
-    context.hash |= context.nPiecesInHand_1;
+    context.hashCheckCode |= (uint64_t)context.nPiecesNeedRemove << 4;
+    context.hashCheckCode |= context.nPiecesInHand_1;
 
-    return context.hash;
+    return context.hashCheckCode;
 }
 
 bool NineChess::giveup(Player loser)
@@ -1762,7 +1762,7 @@ void NineChess::cleanForbiddenPoints()
             pos = i * N_SEATS + j;
             if (board_[pos] == '\x0f') {
                 board_[pos] = '\x00';
-                updateHash(pos);
+                updateHashCheckCode(pos);
             }
         }
     }
