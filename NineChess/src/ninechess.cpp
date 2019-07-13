@@ -1079,7 +1079,7 @@ bool NineChess::place(int pos)
             // 进入去子状态
             context.action = ACTION_CAPTURE;
         }
-        setTips();
+        //setTips(); // 非常影响性能
         return true;
     }
 
