@@ -2,55 +2,87 @@
 #define HASHMAP_H
 
 #include <limits>
+#include <memory>
+#include <mutex>
 #include <qDebug>
 
 template <typename T>
 class HashMap
 {
 public:
-    HashMap();
-    HashMap(size_t capacity);
-    ~HashMap();
+    //HashMap(size_t capacity, size_t size, T* pool);
+    //~HashMap();
+    HashMap() = default;
 
-    enum FindResult
+    static HashMap *getInstance()
     {
-        HASHMAP_NOTFOUND = INT32_MAX,
-    };
+#if 0
+        static std::once_flag s_flag;
+        std::call_once(s_flag, [&]() {
+            instance.reset(new HashMap);
+        });
+#endif
+        if (instance)
 
-    T& at(uint64_t i);
+        return *instance;
+    }
 
+    static void lock()
+    {
+        hashMapMutex.lock();
+    }
+
+    static void unlock()
+    {
+        hashMapMutex.unlock();
+    }
+
+    static T& at(uint64_t i);
+
+#if 0
     T& operator[](uint64_t hash)
     {
         uint64_t addr = hashToAddr(hash);
         
         return pool[addr];
     }
+#endif
 
-    uint64_t hashToAddr(uint64_t hash);
+    static uint64_t hashToAddr(uint64_t hash);
 
-    T &find(uint64_t hash)
+    static char* find(uint64_t hash)
     {
-        uint64_t addr = hashToAddr(hash);
+       // uint64_t addr = hashToAddr(hash);
 
-        return pool[addr];
+        return pool[hash <<32 >>32];
     }
 
-    size_t getSize();
-    size_t getCapacity();
+    static size_t getSize();
+    static size_t getCapacity();
 
-    void clear();
+    static void clear();
 
-    void insert(uint64_t hash, const T &hashValue);
+    static void insert(uint64_t hash, T &hashValue);
 
-    bool construct();
+    static bool construct();
 
-private:
-    size_t capacity;
-    size_t size;
+public:
+    static const  uint64_t capacity;
+    static uint64_t size;
 
-    T *pool;   
+    static char *pool;
 
+    static std::mutex hashMapMutex;
+    
+    //static std::auto_ptr<HashMap<T>> instance;
+    static HashMap<T>* instance;
+public:
+    // 防止外部构造。
+    //HashMap() = default;
+    // 防止拷贝和赋值。
+    HashMap &operator=(const HashMap &) = delete; HashMap(const HashMap &another) = delete;
 };
+
 
 
 #endif // HASHMAP_H

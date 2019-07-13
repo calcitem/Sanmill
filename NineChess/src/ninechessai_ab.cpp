@@ -13,18 +13,26 @@
 #include <algorithm>
 
 #include "ninechessai_ab.h"
+#include "hashmap.h"
+
+#ifdef HASH_MAP_ENABLE
+static std::unique_ptr<HashMap<NineChessAi_ab::HashValue>> instance;
+#endif
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
     requiredQuit(false),
     nodeCount(0),
-    evaluatedNodeCount(0),
-    hashHitCount(0)
+#ifdef HASH_MAP_ENABLE
+    hashHitCount(0),
+    //hashmap(HashMap<HashValue>::getInstance()),
+#endif
+    evaluatedNodeCount(0)
 {
     buildRoot();
 
 #ifdef HASH_MAP_ENABLE
-    hashMap.construct(); // TODO
+    //hashmap = HashMap<HashValue>::getInstance();
 #endif
 }
 
@@ -99,7 +107,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 // 静态hashmap初始化
 //mutex NineChessAi_ab::hashMapMutex;
 //HashMap<NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
-
+//std::unique_ptr<HashMap<NineChessAi_ab::HashValue>> HashMap::instance;
 
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
@@ -636,9 +644,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     uint64_t hash = chessTemp.getHash();
     node->hash = hash;
 
-    hashMapMutex.lock();
+    //hashMapMutex.lock();
 
-    HashValue hashValue = findHash(hash);
+    HashValue hashValue;// = NineChessAi_ab::findHash(hash_);
 
     if (node != rootNode &&
         hashValue.hash == hash &&
@@ -655,13 +663,13 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         else
             node->value -= hashValue.depth - depth;
 
-        hashMapMutex.unlock();
+        //hashMapMutex::unlock();
         hashHitCount++;
 
         return node->value;
     }
 
-    hashMapMutex.unlock();
+    //hashMapMutex.unlock();
 #endif /* HASH_MAP_ENABLE */
 
     // 搜索到叶子节点（决胜局面）
@@ -831,12 +839,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
     // 更新更深层数据
     else {
-        hashMapMutex.lock();
+        //hashMapMutex.lock();
         if (hashValue.depth < depth) {
             hashValue.value = node->value;
             hashValue.depth = depth;
         }
-        hashMapMutex.unlock();
+        //hashMapMutex.unlock();
     }
 #endif
 
@@ -848,12 +856,13 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 }
 
 #ifdef HASH_MAP_ENABLE
-int NineChessAi_ab::recordHash(const HashValue &hashValue)
+int NineChessAi_ab::recordHash(HashValue &hashValue)
 {
 #ifdef HASH_MAP_ENABLE
-    hashMapMutex.lock();
-    hashMap.insert(hashValue.hash, hashValue);
-    hashMapMutex.unlock();
+    //hashMapMutex.lock();
+    //HashMap<HashValue>::insert(hashValue.hash, hashValue);
+   
+    //hashMapMutex.unlock();
 #endif // HASH_MAP_ENABLE
 
     return 0;
@@ -956,9 +965,10 @@ const char *NineChessAi_ab::move2string(int move)
 }
 
 #ifdef HASH_MAP_ENABLE
+#if  0
 NineChessAi_ab::HashValue NineChessAi_ab::findHash(uint64_t hash)
 {
-    NineChessAi_ab::HashValue hashValue = hashMap.find(hash);
+   // NineChessAi_ab::HashValue hashValue = hashmap.find(hash);
 
     // TODO: 变换局面
 #if 0
@@ -984,13 +994,14 @@ NineChessAi_ab::HashValue NineChessAi_ab::findHash(uint64_t hash)
     }
 #endif
 
-    return hashValue;
+    return 0;
 }
+#endif 
 
 void NineChessAi_ab::clearHashMap()
 {
-    hashMapMutex.lock();
-    hashMap.clear();
-    hashMapMutex.unlock();
+    //hashMapMutex.lock();
+    //hashMap.clear();
+    //hashMapMutex.unlock();
 }
 #endif /* HASH_MAP_ENABLE */

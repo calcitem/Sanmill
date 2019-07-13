@@ -1,48 +1,37 @@
 #include "hashmap.h"
 
-template <typename T>
-HashMap<T>::HashMap():
-    capacity(0),
-    size(0),
-    pool(nullptr)
-{
-    this->capacity = 0x20000000; // TODO
-}
 
-template <typename T>
-HashMap<T>::HashMap(size_t capacity)
-{
-    this->capacity = capacity;
-    this->size = 0;
-    construct();
-}
+// template <typename T>
+// HashMap<T>(uint64_t capacity, uint64_t size, T *pool)
+// {
+//     this->capacity = capacity;
+//     size = size;
+//     //HashMap<T>::construct();
+// }
 
-template <typename T>
-HashMap<T>::~HashMap()
-{
-    clear();
-}
 
 template <typename T>
 bool HashMap<T>::construct()
 {
-    pool = new T[capacity];
+    HashMap<T>::pool = new T[capacity];
 
-    if (pool ==  nullptr) {
+    if (HashMap<T>::pool ==  nullptr) {
         return false;
     }
 
     return true;
 }
 
+
+
 template <typename T>
 T& HashMap<T>::at(uint64_t i)
 {
     if (i >= capacity) {
         qDebug() << "Error";
-        return pool[0];
+        return HashMap<T>::pool[0];
     }
-    return pool[i];
+    return HashMap<T>::pool[i];
 }
 
 template <typename T>
@@ -52,7 +41,7 @@ size_t HashMap<T>::getSize()
 }
 
 template <typename T>
-size_t HashMap<T>::getCapacity()
+uint64_t HashMap<T>::getCapacity()
 {
     return capacity;
 }
@@ -64,7 +53,7 @@ uint64_t HashMap<T>::hashToAddr(uint64_t hash)
 }
 
 template <typename T>
-void HashMap<T>::insert(uint64_t hash, const T &hashValue)
+void HashMap<T>::insert(uint64_t hash, T &hashValue)
 {
     uint64_t addr = hashToAddr(hash);
 
@@ -77,4 +66,7 @@ void HashMap<T>::clear()
     delete[] pool;
     pool = nullptr;
 }
+
+template <typename T>
+HashMap<T>* HashMap<T>::instance = new HashMap<T>(capacity = 1024, size =  0);
 

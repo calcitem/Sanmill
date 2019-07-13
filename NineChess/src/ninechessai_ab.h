@@ -29,7 +29,7 @@ class NineChessAi_ab
 public:
 #ifdef HASH_MAP_ENABLE
     // 定义哈希值的类型
-    enum HashType : int16_t
+    enum HashType
     {
         hashfEMPTY = 0,
         hashfALPHA = 1,
@@ -129,11 +129,6 @@ public:
     static bool nodeLess(const Node *first, const Node *second);
     static bool nodeGreater(const Node *first, const Node *second);
 
-#ifdef HASH_MAP_ENABLE
-    static std::mutex hashMapMutex;
-    static HashMap<HashValue> hashMap;
-#endif
-
 protected:
     // 生成所有合法的着法并建立子节点
     void generateLegalMoves(Node *node);
@@ -152,7 +147,7 @@ protected:
 
 #ifdef HASH_MAP_ENABLE
     // 插入哈希表
-    int recordHash(const HashValue &hashValue);
+    int recordHash(HashValue &hashValue);
 #endif
 
     // 评价函数
@@ -213,9 +208,6 @@ private:
     array<int, NineChess::N_RINGS *NineChess::N_SEATS> movePriorityTable;
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
-    // 哈希表的默认大小
-    static const size_t maxHashCount = 1024 * 1024;
-
     // 定义极大值
     static const int INF_VALUE = 0x1 << 30;
 
@@ -225,6 +217,10 @@ private:
 private:
     // 命令行
     char cmdline[32];
+
+#ifdef HASH_MAP_ENABLE
+    HashMap<struct HashValue> hashmap;
+#endif
 };
 
 #endif
