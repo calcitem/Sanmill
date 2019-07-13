@@ -9,13 +9,13 @@
 
 #include <list>
 #include <stack>
-#include <unordered_map>
 #include <mutex>
 #include <string>
 #include <Qdebug>
 #include <array>
 
 #include "ninechess.h"
+#include "hashmap.h"
 
 using namespace std;
 
@@ -39,8 +39,11 @@ public:
     // 定义哈希表的值
     struct HashValue
     {
-        int16_t value;
-        int16_t depth;
+        int value;
+        int depth;
+        int alpha;
+        int beta;
+        uint64_t hash;
         enum HashType type;
     };
 
@@ -55,6 +58,7 @@ public:
         size_t id;                      // 结点编号
         int rand;                       // 随机数，对于 value 一致的结点随机排序用
         uint64_t hash;
+        uint64_t hashCheckCode;
         bool isHash;                    //  是否从 Hash 读取
         bool pruned;                    // 是否在此处剪枝
 #ifdef DEBUG_AB_TREE
@@ -136,7 +140,7 @@ protected:
     struct Node *addNode(Node *parent, int value, NineChess::move_t move, enum NineChess::Player player);
 
     // 插入哈希表
-    int recordHash(uint64_t hash, int16_t depth, int value, enum HashType type);
+    int recordHash(const HashValue &hashValue);
 
     // 评价函数
     int evaluate(Node *node);
@@ -157,8 +161,8 @@ protected:
 #endif
 #endif
 
-    // 判断是否在哈希表中
-    unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator findHash(uint64_t hash);
+    // 查找哈希表
+    HashValue findHash(uint64_t hash);
 
 private:
     // 原始模型
@@ -190,12 +194,6 @@ private:
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit;
 
-    // 互斥锁
-    static mutex hashMapMutex;
-
-    // 局面数据哈希表
-    static unordered_map<uint64_t, HashValue> hashmap;
-
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
     array<int, NineChess::N_RINGS *NineChess::N_SEATS> movePriorityTable;
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
@@ -213,5 +211,8 @@ private:
     // 命令行
     char cmdline[32];
 };
+
+extern mutex hashMapMutex;
+extern HashMap<NineChessAi_ab::HashValue> hashmap;
 
 #endif

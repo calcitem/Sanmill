@@ -182,8 +182,23 @@ public:
         // 局面哈希的校验码，校验码相同 才能认为是同一局面
         uint64_t hashCheckCode;
 
+        // 局面的哈希值
+        uint64_t hash;
+
+        // 哈希表中的地址, 为 hash 的后 16 位
+        uint16_t hashAddr;
+
+        // 标记处于走子阶段的哈希
+        uint16_t gameMovingHash;
+
+        // 吃子动作的哈希
+        uint16_t actionCaptureHash;
+
+        // 标记轮到玩家2行棋的哈希
+        uint16_t player2sTurnHash;
+
         // Zobrist 数组
-        //uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
+        uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
 
         // 局面阶段标识
         enum NineChess::GameStage stage;
@@ -269,13 +284,14 @@ public:
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
                  int nPiecesNeedRemove = 0,      // 尚待去除的子数
-                 uint64_t hashCheckCode = 0ull            // Hash 为0
+                 uint64_t hash = 0ull,              // 哈希值
+                 uint64_t hashCheckCode = 0ull  // 哈希校验码
     );
 
     // 获取棋局状态和棋盘上下文
     void getContext(struct Rule &rule, int &step, int &flags, int *&board,
                     int &nPiecesInHand_1, int &p2_nPiecesInHand_2InHand, int &nPiecesNeedRemove,
-                    uint64_t &hash);
+                    uint64_t &hash, uint64_t &hashCheckCode);
 
     // 获取当前规则
     const struct Rule *getRule() const
@@ -479,9 +495,10 @@ protected:
     bool place(int pos);
     bool capture(int pos);
 
-    // hash校验值相关
+    // hash相关
+    uint64_t getHash();
     uint64_t getHashCheckCode();
-    uint64_t updateHashCheckCode(int pos);
+    uint64_t updateHash(int pos);
 
 private:
     // 当前使用的规则

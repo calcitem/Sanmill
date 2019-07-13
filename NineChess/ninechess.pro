@@ -18,6 +18,7 @@ CONFIG += C++11 \
 INCLUDEPATH += src
 
 SOURCES += \
+    src/hashmap.cpp \
     src/main.cpp \
     src/boarditem.cpp \
     src/gamecontroller.cpp \
@@ -36,6 +37,7 @@ HEADERS  += \
     src/gamescene.h \
     src/gameview.h \
     src/graphicsconst.h \
+    src/hashmap.h \
     src/ninechess.h \
     src/ninechessai_ab.h \
     src/ninechesswindow.h \

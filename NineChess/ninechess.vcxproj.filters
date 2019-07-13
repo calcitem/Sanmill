@@ -84,6 +84,9 @@
     <ClCompile Include="src\ninechessai_ab.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="src\hashmap.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="src\config.h">
       <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hashmap.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

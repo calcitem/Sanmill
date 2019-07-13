@@ -3,8 +3,6 @@
 ** Mail: liuweilhy@163.com
 ** This file is part of the NineChess game.
 ****************************************************************************/
-
-#include "ninechessai_ab.h"
 #include <cmath>
 #include <time.h>
 #include <Qdebug>
@@ -14,6 +12,7 @@
 #include <chrono>
 #include <algorithm>
 
+#include "ninechessai_ab.h"
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
@@ -29,14 +28,6 @@ NineChessAi_ab::~NineChessAi_ab()
 {
     deleteTree(rootNode);
     rootNode = nullptr;
-}
-
-void NineChessAi_ab::clearHashMap()
-{
-    hashMapMutex.lock();
-    hashmap.clear();
-    hashmap.reserve(maxHashCount);
-    hashMapMutex.unlock();
 }
 
 void NineChessAi_ab::buildRoot()
@@ -100,8 +91,11 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 }
 
 // 静态hashmap初始化
-mutex NineChessAi_ab::hashMapMutex;
-unordered_map<uint64_t, NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
+//mutex NineChessAi_ab::hashMapMutex;
+//HashMap<NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
+
+mutex hashMapMutex;
+HashMap<NineChessAi_ab::HashValue> hashmap;
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
@@ -626,26 +620,29 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
     uint64_t hashCheckCode = chessTemp.getHashCheckCode();
-    node->hash = hashCheckCode;
+    node->hashCheckCode = hashCheckCode;
+
+    uint64_t hash = chessTemp.getHash();
+    node->hash = hash;
 
     hashMapMutex.lock();
 
-    auto iter = findHash(hashCheckCode);
+    HashValue hashValue = findHash(hash);
 
     if (node != rootNode &&
-        iter != hashmap.end() &&
-        iter->second.depth >= depth) {
+        hashValue.hash == hash &&
+        hashValue.depth >= depth) {
 #ifdef DEBUG_AB_TREE
         node->isHash = true;
 #endif
 
         // TODO: 处理 Alpha/Beta 确切值
-        node->value = iter->second.value;
+        node->value = hashValue.value;
 
         if (chessContext->turn == NineChess::PLAYER1)
-            node->value += iter->second.depth - depth;
+            node->value += hashValue.depth - depth;
         else
-            node->value -= iter->second.depth - depth;
+            node->value -= hashValue.depth - depth;
 
         hashMapMutex.unlock();
         hashHitCount++;
@@ -673,7 +670,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
-        recordHash(hashCheckCode, depth, node->value, hashfEXACT);
+        HashValue newHashValue;
+        newHashValue.alpha = alpha;
+        newHashValue.beta = beta;
+        newHashValue.depth = depth;
+        newHashValue.type = hashfEXACT;
+        newHashValue.hash = hash;
+        newHashValue.value = node->value;
+        recordHash(newHashValue);
 #endif
 
         return node->value;
@@ -698,7 +702,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
-        recordHash(hashCheckCode, depth, node->value, hashfEXACT);
+        HashValue newHashValue;
+        newHashValue.alpha = alpha;
+        newHashValue.beta = beta;
+        newHashValue.depth = depth;
+        newHashValue.type = hashfEXACT;
+        newHashValue.hash = hash;
+        newHashValue.value = node->value;
+        recordHash(newHashValue);
 #endif
 
         return node->value;
@@ -794,18 +805,25 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif // DONOT_DELETE_TREE
 
 #ifdef HASH_MAP_ENABLE
-    if (iter == hashmap.end()) {
+    if (hashValue.hash != hash) {
         // 添加到hashmap
-        recordHash(hashCheckCode, depth, node->value, hashf);
+        HashValue newHashValue;
+        newHashValue.alpha = alpha;
+        newHashValue.beta = beta;
+        newHashValue.depth = depth;
+        newHashValue.type = hashf;
+        newHashValue.hash = hash;
+        newHashValue.value = node->value;
+        recordHash(newHashValue);
     }
     // 更新更深层数据
     else {
-        //hashMapMutex.lock();
-        //if (iter->second.depth < depth) {
-            //iter->second.value = node->value;
-            //iter->second.depth = depth;
-        //}
-        //hashMapMutex.unlock();
+        hashMapMutex.lock();
+        if (hashValue.depth < depth) {
+            hashValue.value = node->value;
+            hashValue.depth = depth;
+        }
+        hashMapMutex.unlock();
     }
 #endif
 
@@ -816,20 +834,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     return node->value;
 }
 
-int NineChessAi_ab::recordHash(uint64_t hash, int16_t depth, int value, enum HashType type)
+int NineChessAi_ab::recordHash(const HashValue &hashValue)
 {
 #ifdef HASH_MAP_ENABLE
     hashMapMutex.lock();
-
-    HashValue hashValue;
-    
-    hashValue.value = value;
-    hashValue.depth = depth;
-    hashValue.type = type;
-
-    if (hashmap.size() <= maxHashCount)
-        hashmap.insert({ hash, hashValue });
-
+    hashmap.insert(hashValue.hash, hashValue);
     hashMapMutex.unlock();
 #endif // HASH_MAP_ENABLE
 
@@ -931,10 +940,11 @@ const char *NineChessAi_ab::move2string(int move)
     return cmdline;
 }
 
-unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::findHash(uint64_t hash)
+NineChessAi_ab::HashValue NineChessAi_ab::findHash(uint64_t hash)
 {
-    auto iter = hashmap.find(hash);
+    NineChessAi_ab::HashValue hashValue = hashmap.find(hash);
 
+    // TODO: 变换局面
 #if 0
     if (iter != hashmap.end())
         return iter;
@@ -958,5 +968,12 @@ unordered_map<uint64_t, NineChessAi_ab::HashValue>::iterator NineChessAi_ab::fin
     }
 #endif
 
-    return iter;
+    return hashValue;
+}
+
+void NineChessAi_ab::clearHashMap()
+{
+    hashMapMutex.lock();
+    hashmap.clear();
+    hashMapMutex.unlock();
 }
