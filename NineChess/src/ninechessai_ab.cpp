@@ -149,6 +149,8 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
     int pos = 0;
 
+    node->children.reserve(48);
+
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
    
