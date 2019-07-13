@@ -582,7 +582,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     
 #ifdef IDS_SUPPORT
     // 深化迭代
-    for (int i = 2; i < d; i++) {
+    for (int i = 2; i < d; i += 2) {
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
 
