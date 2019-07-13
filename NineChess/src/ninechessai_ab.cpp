@@ -22,6 +22,10 @@ NineChessAi_ab::NineChessAi_ab() :
     hashHitCount(0)
 {
     buildRoot();
+
+#ifdef HASH_MAP_ENABLE
+    hashMap.construct(); // TODO
+#endif
 }
 
 NineChessAi_ab::~NineChessAi_ab()
@@ -61,7 +65,9 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->alpha = -INF_VALUE;
     newNode->beta = INF_VALUE;
     newNode->result = 0;
+#ifdef HASH_MAP_ENABLE
     newNode->isHash = false;
+#endif
     newNode->visited = false;
 
     int c, p;
@@ -94,8 +100,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 //mutex NineChessAi_ab::hashMapMutex;
 //HashMap<NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
 
-mutex hashMapMutex;
-HashMap<NineChessAi_ab::HashValue> hashmap;
+
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
@@ -359,10 +364,12 @@ void NineChessAi_ab::deleteTree(Node *node)
 
 void NineChessAi_ab::setChess(const NineChess &chess)
 {
+#ifdef HASH_MAP_ENABLE
     // 如果规则改变，重建hashmap
     if (strcmp(this->chess_.currentRule.name, chess.currentRule.name)) {
         clearHashMap();
     }
+#endif
 
     this->chess_ = chess;
     chessTemp = chess;
@@ -602,8 +609,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 临时增加的深度，克服水平线效应用
     int epsilon = 0;
 
+#ifdef HASH_MAP_ENABLE
     // 哈希类型
     enum HashType hashf = hashfALPHA;
+#endif
 
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
@@ -612,10 +621,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 初始化
     node->isLeaf = false;
     node->isTimeout = false;
-    node->isHash = false;
     node->visited = true;
+#ifdef HASH_MAP_ENABLE
+    node->isHash = false;
     node->hash = 0;
-#endif
+#endif // HASH_MAP_ENABLE
+#endif // DEBUG_AB_TREE
 
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
@@ -758,8 +769,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // α 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
             // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
             alpha = std::max(value, alpha);
-
+#ifdef HASH_MAP_ENABLE
             hashf = hashfALPHA; // ????
+#endif
 
         } else {
 
@@ -776,8 +788,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // 如果某个着法的结果大于或等于 β，那么整个结点就作废了，因为对手不希望走到这个局面，而它有别的着法可以避免到达这个局面。
             // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
             beta = std::min(value, beta);
-
+#ifdef HASH_MAP_ENABLE
             hashf = hashfBETA; // ????
+#endif
         }
 
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
@@ -834,16 +847,18 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     return node->value;
 }
 
+#ifdef HASH_MAP_ENABLE
 int NineChessAi_ab::recordHash(const HashValue &hashValue)
 {
 #ifdef HASH_MAP_ENABLE
     hashMapMutex.lock();
-    hashmap.insert(hashValue.hash, hashValue);
+    hashMap.insert(hashValue.hash, hashValue);
     hashMapMutex.unlock();
 #endif // HASH_MAP_ENABLE
 
     return 0;
 }
+#endif
 
 const char* NineChessAi_ab::bestMove()
 {
@@ -940,9 +955,10 @@ const char *NineChessAi_ab::move2string(int move)
     return cmdline;
 }
 
+#ifdef HASH_MAP_ENABLE
 NineChessAi_ab::HashValue NineChessAi_ab::findHash(uint64_t hash)
 {
-    NineChessAi_ab::HashValue hashValue = hashmap.find(hash);
+    NineChessAi_ab::HashValue hashValue = hashMap.find(hash);
 
     // TODO: 变换局面
 #if 0
@@ -974,6 +990,7 @@ NineChessAi_ab::HashValue NineChessAi_ab::findHash(uint64_t hash)
 void NineChessAi_ab::clearHashMap()
 {
     hashMapMutex.lock();
-    hashmap.clear();
+    hashMap.clear();
     hashMapMutex.unlock();
 }
+#endif /* HASH_MAP_ENABLE */

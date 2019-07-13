@@ -27,6 +27,7 @@ using namespace std;
 class NineChessAi_ab
 {
 public:
+#ifdef HASH_MAP_ENABLE
     // 定义哈希值的类型
     enum HashType : int16_t
     {
@@ -46,6 +47,7 @@ public:
         uint64_t hash;
         enum HashType type;
     };
+#endif /* HASH_MAP_ENABLE */
 
     // 定义一个节点结构体
     struct Node
@@ -57,9 +59,11 @@ public:
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
         int rand;                       // 随机数，对于 value 一致的结点随机排序用
+#ifdef HASH_MAP_ENABLE
         uint64_t hash;
         uint64_t hashCheckCode;
         bool isHash;                    //  是否从 Hash 读取
+#endif /* HASH_MAP_ENABLE */
         bool pruned;                    // 是否在此处剪枝
 #ifdef DEBUG_AB_TREE
         string cmd;
@@ -116,12 +120,19 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
+#ifdef HASH_MAP_ENABLE
     // 清空哈希表
     void clearHashMap();
+#endif
 
     // 比较函数
     static bool nodeLess(const Node *first, const Node *second);
     static bool nodeGreater(const Node *first, const Node *second);
+
+#ifdef HASH_MAP_ENABLE
+    static std::mutex hashMapMutex;
+    static HashMap<HashValue> hashMap;
+#endif
 
 protected:
     // 生成所有合法的着法并建立子节点
@@ -139,8 +150,10 @@ protected:
     // 增加新节点
     struct Node *addNode(Node *parent, int value, NineChess::move_t move, enum NineChess::Player player);
 
+#ifdef HASH_MAP_ENABLE
     // 插入哈希表
     int recordHash(const HashValue &hashValue);
+#endif
 
     // 评价函数
     int evaluate(Node *node);
@@ -161,8 +174,10 @@ protected:
 #endif
 #endif
 
+#ifdef HASH_MAP_ENABLE
     // 查找哈希表
     HashValue findHash(uint64_t hash);
+#endif
 
 private:
     // 原始模型
@@ -211,8 +226,5 @@ private:
     // 命令行
     char cmdline[32];
 };
-
-extern mutex hashMapMutex;
-extern HashMap<NineChessAi_ab::HashValue> hashmap;
 
 #endif

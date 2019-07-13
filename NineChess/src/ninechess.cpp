@@ -121,11 +121,14 @@ NineChess::NineChess()
 {
     // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board;
+
+#ifdef HASH_MAP_ENABLE
     //hash_ = &context.hash;
     //zobrist_ = &context.zobrist;
 
     // 创建哈希数据
     constructHash();
+#endif
 
     // 默认选择第1号规则，即“打三棋”
     setContext(&RULES[1]);
@@ -176,6 +179,7 @@ NineChess::~NineChess()
 {
 }
 
+#ifdef HASH_MAP_ENABLE
 void NineChess::constructHash()
 {
     context.hash = 0ull;
@@ -193,6 +197,7 @@ void NineChess::constructHash()
         }
     }
 }
+#endif /* HASH_MAP_ENABLE */
 
 NineChess::Player NineChess::getOpponent(NineChess::Player player)
 {
@@ -324,8 +329,7 @@ void NineChess::createMillTable()
 // 设置棋局状态和棋盘数据，用于初始化
 bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int maxTimeLedToLose,
                         int initialStep, int flags, const char *board,
-                        int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove,
-                        uint64_t hash, uint64_t hashCheckCode)
+                        int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
     // 有效性判断
     if (maxStepsLedToDraw < 0 || maxTimeLedToLose < 0 || initialStep < 0 ||
@@ -391,12 +395,16 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         // 当前棋局（3×8）
         if (board == nullptr) {
             memset(context.board, 0, sizeof(context.board));
+#ifdef HASH_MAP_ENABLE
             context.hash = 0ull;
             context.hashCheckCode = 0ull;
+#endif
         } else {
             memcpy(context.board, board, sizeof(context.board));
+#ifdef HASH_MAP_ENABLE
             context.hash = hash;
             context.hashCheckCode = hashCheckCode;
+#endif
         }            
 
         // 计算盘面子数
@@ -493,8 +501,7 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
 }
 
 void NineChess::getContext(struct Rule &rule, int &step, int &flags,
-                           int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &num_NeedRemove,
-                           uint64_t &hash, uint64_t &hashCheckCode)
+                           int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &num_NeedRemove)
 {
     rule = this->currentRule;
     step = this->currentStep;
@@ -503,7 +510,9 @@ void NineChess::getContext(struct Rule &rule, int &step, int &flags,
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
     num_NeedRemove = context.nPiecesNeedRemove;
-    hashCheckCode = context.hashCheckCode;
+#ifdef HASH_MAP_ENABLE
+    hash = context.hash;
+#endif
 }
 
 bool NineChess::reset()
@@ -547,9 +556,11 @@ bool NineChess::reset()
     // 用时置零
     elapsedMS_1 = elapsedMS_2 = 0;
 
+#ifdef HASH_MAP_ENABLE
     // 哈希以及哈希校验码归零
     context.hash = 0;
     context.hashCheckCode = 0;
+#endif
 
     // 提示
     setTips();
@@ -703,7 +714,9 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         }
 
         board_[pos] = piece;
+#ifdef HASH_MAP_ENABLE
         updateHash(pos);
+#endif
         move_ = pos;
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u",
@@ -792,9 +805,13 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
                 c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         board_[pos] = board_[currentPos];
+#ifdef HASH_MAP_ENABLE
         updateHash(pos);
+#endif
         board_[currentPos] = '\x00';
+#ifdef HASH_MAP_ENABLE
         updateHash(currentPos);
+#endif
         currentPos = pos;
         currentStep++;
         n = addMills(currentPos);
@@ -880,7 +897,9 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     currentPos = 0;
     context.nPiecesNeedRemove--;
     currentStep++;
+#ifdef HASH_MAP_ENABLE
     updateHash(pos);
+#endif
     // 去子完成
 
     // 如果决出胜负
@@ -1030,7 +1049,9 @@ bool NineChess::place(int pos)
         }
 
         board_[pos] = piece;
+#ifdef HASH_MAP_ENABLE
         updateHash(pos);
+#endif
         move_ = pos;
         currentPos = pos;
         //step++;
@@ -1106,9 +1127,13 @@ bool NineChess::place(int pos)
         // 移子
         move_ = (currentPos << 8) + pos;
         board_[pos] = board_[currentPos];
+#ifdef HASH_MAP_ENABLE
         updateHash(pos);
+#endif
         board_[currentPos] = '\x00';
+#ifdef HASH_MAP_ENABLE
         updateHash(currentPos);
+#endif
         currentPos = pos;
         //step++;
         n = addMills(currentPos);
@@ -1185,7 +1210,9 @@ bool NineChess::capture(int pos)
     move_ = -pos;
     currentPos = 0;
     context.nPiecesNeedRemove--;
+#ifdef HASH_MAP_ENABLE
     updateHash(pos);
+#endif
     //step++;
     // 去子完成
 
@@ -1290,6 +1317,8 @@ bool NineChess::choose(int pos)
     return false;
 }
 
+#ifdef HASH_MAP_ENABLE
+
 uint64_t NineChess::getHash()
 {
     return context.hash;
@@ -1341,6 +1370,7 @@ uint64_t NineChess::updateHash(int pos)
 
     return context.hashCheckCode; // TODO: 返回什么
 }
+#endif /* HASH_MAP_ENABLE */
 
 bool NineChess::giveup(Player loser)
 {
@@ -1775,7 +1805,9 @@ void NineChess::cleanForbiddenPoints()
             pos = i * N_SEATS + j;
             if (board_[pos] == '\x0f') {
                 board_[pos] = '\x00';
+#ifdef HASH_MAP_ENABLE
                 updateHash(pos);
+#endif
             }
         }
     }

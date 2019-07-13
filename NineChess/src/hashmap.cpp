@@ -39,7 +39,7 @@ template <typename T>
 T& HashMap<T>::at(uint64_t i)
 {
     if (i >= capacity) {
-        qDebug() << "索引超过最大值";
+        qDebug() << "Error";
         return pool[0];
     }
     return pool[i];

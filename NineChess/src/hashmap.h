@@ -1,4 +1,5 @@
 #ifndef HASHMAP_H
+#define HASHMAP_H
 
 #include <limits>
 #include <qDebug>
@@ -25,6 +26,8 @@ public:
         return pool[addr];
     }
 
+    uint64_t hashToAddr(uint64_t hash);
+
     T &find(uint64_t hash)
     {
         uint64_t addr = hashToAddr(hash);
@@ -39,16 +42,14 @@ public:
 
     void insert(uint64_t hash, const T &hashValue);
 
-protected:
+    bool construct();
+
 private:
     size_t capacity;
     size_t size;
 
-    T *pool;
+    T *pool;   
 
-    bool construct();
-    
-    uint64_t hashToAddr(uint64_t hash);
 };
 
 
