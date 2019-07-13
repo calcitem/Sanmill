@@ -402,8 +402,8 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         } else {
             memcpy(context.board, board, sizeof(context.board));
 #ifdef HASH_MAP_ENABLE
-            context.hash = hash;
-            context.hashCheckCode = hashCheckCode;
+            //context.hash = hash;
+            //context.hashCheckCode = hashCheckCode;
 #endif
         }            
 
@@ -511,7 +511,7 @@ void NineChess::getContext(struct Rule &rule, int &step, int &flags,
     nPiecesInHand_2 = context.nPiecesInHand_2;
     num_NeedRemove = context.nPiecesNeedRemove;
 #ifdef HASH_MAP_ENABLE
-    hash = context.hash;
+    //hash = context.hash;
 #endif
 }
 
