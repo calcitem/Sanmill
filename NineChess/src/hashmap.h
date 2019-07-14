@@ -7,6 +7,8 @@
 #include <mutex> 
 #include "HashNode.h" 
 
+#define HASH_KEY_DISABLE
+
 constexpr size_t HASH_SIZE_DEFAULT = 1031; // A prime number as hash size gives a better distribution of values in buckets
 namespace CTSL //Concurrent Thread Safe Library
 {
@@ -18,7 +20,12 @@ namespace CTSL //Concurrent Thread Safe Library
     //Each hash bucket is implemented as singly linked list with the head as a dummy node created 
     //during the creation of the bucket. All the hash buckets are created during the construction of the map.
     //Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the hash map
+#ifdef HASH_KEY_DISABLE
+    #define hashFn uint64_t
+    template <typename K, typename V>
+#else
     template <typename K, typename V, typename F = std::hash<K> >
+#endif
     class HashMap
     {
         public:
@@ -72,7 +79,10 @@ namespace CTSL //Concurrent Thread Safe Library
 
         private:
             HashBucket<K, V> * hashTable;
+#ifdef HASH_KEY_DISABLE
+#else
             F hashFn;
+#endif
             const size_t hashSize;
     };
 }
