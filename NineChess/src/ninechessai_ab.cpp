@@ -675,19 +675,36 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     //hashMapMutex.lock();
 
     // 从地址里一定可以读取出东西，found 恒定为 true?
-    bool found = findHash(hash, hashValue);
+    //bool found = findHash(hash, hashValue);
+    int probeVal = probeHash(hash, depth, alpha, beta);
 
+    if (node != rootNode && probeVal != INT32_MIN) {
+        hashHitCount++;
+        node->isHash = true;
+        node->value = probeVal;
+
+//         // TODO: 有必要?
+//         if (chessContext->turn == NineChess::PLAYER1)
+//             node->value += hashValue.depth - depth;
+//         else
+//             node->value -= hashValue.depth - depth;
+
+        return node->value;
+    }
+
+#if 0
     if (node != rootNode &&
         hashValue.hash == hash &&   // 校验放在这里?
         hashValue.depth >= depth) { // 大于还是大于或等于?
 #ifdef DEBUG_AB_TREE
         node->isHash = true;
 #endif
-
         // TODO: 处理 Alpha/Beta 确切值
         if (hashValue.type == hashfEXACT) {
             hashHitCount++;
-            node->value = hashValue.value;               
+            node->value = hashValue.value;
+            alpha = hashValue.alpha;
+            beta = hashValue.beta;
 
             // Why? 对 depth 的调整放在这里合适?
             if (chessContext->turn == NineChess::PLAYER1)
@@ -699,7 +716,25 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
             return node->value;
         }
+
+        if (hashValue.type == hashfALPHA) {
+            alpha = hashValue.alpha;
+        }
+
+        if (hashValue.type == hashfBETA) {
+            beta = hashValue.beta;
+        }
+
+        minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
+
+
+
+        if (alpha >= beta) {
+            node->value = hashValue.value;
+            return node->value;
+        }
     }
+#endif
 
     //hashMapMutex.unlock();
 #endif /* HASH_MAP_ENABLE */
@@ -951,11 +986,43 @@ const char *NineChessAi_ab::move2string(int move)
 }
 
 #ifdef HASH_MAP_ENABLE
+int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta)
+{
+    HashValue hashValue;
+    
+    if (hashmap.find(hash, hashValue) == false) {
+        return INT32_MIN;
+    }
+
+    if (depth > hashValue.depth) {
+        return INT32_MIN;
+    }
+
+    if (hashValue.type == hashfEXACT) {
+        return hashValue.value;
+    }
+    if ((hashValue.type == hashfALPHA) && (hashValue.value <= alpha)) {
+        //return alpha;
+        return hashValue.value;
+    }
+    if ((hashValue.type == hashfBETA) && (hashValue.value >= beta)) {
+        //return beta;
+        return hashValue.value;
+    }
+
+    return INT32_MIN;
+}
+
 bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 {
+    bool ret = false;
 
+    ret = hashmap.find(hash, hashValue);
 
-   return hashmap.find(hash, hashValue);
+    if (ret == false)
+        return false;
+
+    return ret;
 
     // TODO: 变换局面
 #if 0
