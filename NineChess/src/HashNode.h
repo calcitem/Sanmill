@@ -32,6 +32,7 @@ namespace CTSL  //Concurrent Thread Safe Library
             const K& getKey() const {return key;}
             void setValue(V value_) {value = value_;}
             const V& getValue() const {return value;}
+            void setKey(K key_) {key = key_;}
 
 #ifndef DISABLE_HASHBUCKET
             HashNode *next; //Pointer to the next node in the same bucket

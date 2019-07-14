@@ -7,6 +7,8 @@
 #include <mutex> 
 #include "HashNode.h" 
 
+#include "config.h"
+
 #define HASH_KEY_DISABLE
 
 constexpr size_t HASH_SIZE_DEFAULT = 1031; // A prime number as hash size gives a better distribution of values in buckets
@@ -31,7 +33,12 @@ namespace CTSL //Concurrent Thread Safe Library
         public:
             HashMap(size_t hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
             {
+#ifdef DISABLE_HASHBUCKET
+                hashTable = new HashNode<K, V>[hashSize]; //create the hash table as an array of hash nodes
+                memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
+#else
                 hashTable = new HashBucket<K, V>[hashSize]; //create the hash table as an array of hash buckets
+#endif
             }
 
             ~HashMap()
@@ -50,7 +57,19 @@ namespace CTSL //Concurrent Thread Safe Library
             bool find(const K &key, V &value) const 
             {
                 size_t hashValue = hashFn(key) & (hashSize - 1) ;
+#ifdef DISABLE_HASHBUCKET
+                // A shared mutex is used to enable multiple concurrent reads
+                std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+
+                if (hashTable[hashValue].getKey() == key) {
+                    value = hashTable[hashValue].getValue();
+                    return true;
+                }
+
+                return false; 
+#else
                 return hashTable[hashValue].find(key, value);
+#endif
             }
 
             //Function to insert into the hash map.
@@ -58,16 +77,27 @@ namespace CTSL //Concurrent Thread Safe Library
             void insert(const K &key, const V &value) 
             {
                 size_t hashValue = hashFn(key) & (hashSize - 1);
+#ifdef DISABLE_HASHBUCKET
+                std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+                hashTable[hashValue].setKey(key);
+                hashTable[hashValue].setValue(value);
+#else
                 hashTable[hashValue].insert(key, value);
+#endif
             }
 
             //Function to remove an entry from the bucket, if found
             void erase(const K &key) 
             {
                 size_t hashValue = hashFn(key) & (hashSize - 1);
+#ifdef DISABLE_HASHBUCKET
+                // std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+#else
                 hashTable[hashValue].erase(key);
+#endif
             }   
 
+#ifndef DISABLE_HASHBUCKET
             //Function to clean up the hasp map, i.e., remove all entries from it
             void clear()
             {
@@ -75,15 +105,23 @@ namespace CTSL //Concurrent Thread Safe Library
                 {
                     (hashTable[i]).clear();
                 }
-            }   
+            }  
+#endif
 
         private:
+#ifdef DISABLE_HASHBUCKET
+            HashNode<K, V> *hashTable;
+#else
             HashBucket<K, V> * hashTable;
+#endif
 #ifdef HASH_KEY_DISABLE
 #else
             F hashFn;
 #endif
             const size_t hashSize;
+#ifdef DISABLE_HASHBUCKET
+            mutable std::shared_timed_mutex mutex_;
+#endif
     };
 }
 #endif
