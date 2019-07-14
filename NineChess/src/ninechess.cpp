@@ -183,7 +183,6 @@ NineChess::~NineChess()
 void NineChess::constructHash()
 {
     context.hash = 0ull;
-    context.hashCheckCode = 0ull;
 
     context.gameMovingHash = rand64();
     context.actionCaptureHash = rand64();
@@ -397,7 +396,6 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
             memset(context.board, 0, sizeof(context.board));
 #ifdef HASH_MAP_ENABLE
             context.hash = 0ull;
-            context.hashCheckCode = 0ull;
 #endif
         } else {
             memcpy(context.board, board, sizeof(context.board));
@@ -557,9 +555,8 @@ bool NineChess::reset()
     elapsedMS_1 = elapsedMS_2 = 0;
 
 #ifdef HASH_MAP_ENABLE
-    // 哈希以及哈希校验码归零
+    // 哈希归零
     context.hash = 0;
-    context.hashCheckCode = 0;
 #endif
 
     // 提示
@@ -1324,14 +1321,10 @@ uint64_t NineChess::getHash()
     return context.hash;
 }
 
-uint64_t NineChess::getHashCheckCode()
-{
-    return context.hashCheckCode;
-}
-
 // hash函数，对应可重复去子的规则
 uint64_t NineChess::updateHash(int pos)
 {
+#if 0
     /* 
      * hashCheckCode 各数据位详解（并无冲突，是算法用到的棋局数据的完全表示）
      * 56-63位：空白不用，全为0
@@ -1342,33 +1335,33 @@ uint64_t NineChess::updateHash(int pos)
      * 4-5位（共2位）：待去子数，最大为3，用2个二进制位表示即可
      * 0-3位：player1的手棋数，不需要player2的（可计算出）
      */   
+#endif
 
     uint64_t hash = 0ull;
 
-    // TODO: 本函数效率低下，啥时调用?
     for (int i = POS_BEGIN; i < POS_END; i++) {
         // hash ^= context.zobrist[i][pointType]; // TODO: 待完善
     }
 
     uint64_t temp = board_[pos] & 0x30 >> 4;
-    context.hashCheckCode |= (temp) << ((pos - 8) * 2 + 6);
+    //context.hashCheckCode |= (temp) << ((pos - 8) * 2 + 6);
     // TODO: context.hash = 
 
     if (context.turn == PLAYER2) {
-        context.hashCheckCode |= 1ull << 55;
+        //context.hashCheckCode |= 1ull << 55;
         context.hash ^= context.player2sTurnHash;
     }        
 
     if (context.action == ACTION_CAPTURE) {
-        context.hashCheckCode |= 1ull << 54;
+        //context.hashCheckCode |= 1ull << 54;
         context.hash ^= context.actionCaptureHash;
     }
 
-    context.hashCheckCode |= (uint64_t)context.nPiecesNeedRemove << 4;
-    context.hashCheckCode |= context.nPiecesInHand_1;
+    //context.hashCheckCode |= (uint64_t)context.nPiecesNeedRemove << 4;
+    //context.hashCheckCode |= context.nPiecesInHand_1;
     // TODO: hash 应该 不需要
 
-    return context.hashCheckCode; // TODO: 返回什么
+    return context.hash; // TODO: 返回什么
 }
 #endif /* HASH_MAP_ENABLE */
 

@@ -13,10 +13,12 @@
 #include <algorithm>
 
 #include "ninechessai_ab.h"
-#include "hashmap.h"
+#include "hashMap.h"
+
+using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
-static std::unique_ptr<HashMap<NineChessAi_ab::HashValue>> instance;
+HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap;
 #endif
 
 NineChessAi_ab::NineChessAi_ab() :
@@ -638,9 +640,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
-    uint64_t hashCheckCode = chessTemp.getHashCheckCode();
-    node->hashCheckCode = hashCheckCode;
-
     uint64_t hash = chessTemp.getHash();
     node->hash = hash;
 
@@ -856,12 +855,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 }
 
 #ifdef HASH_MAP_ENABLE
-int NineChessAi_ab::recordHash(HashValue &hashValue)
+int NineChessAi_ab::recordHash(const HashValue &hashValue)
 {
 #ifdef HASH_MAP_ENABLE
     //hashMapMutex.lock();
     //HashMap<HashValue>::insert(hashValue.hash, hashValue);
-   
+    hashmap.insert(hashValue.hash, hashValue);
     //hashMapMutex.unlock();
 #endif // HASH_MAP_ENABLE
 

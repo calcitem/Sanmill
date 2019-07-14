@@ -79,6 +79,7 @@ void HashBucket<K, V>::erase(const K &key)
     }
 }
 
+#if 0
 // Function to clear the bucket
 template <typename K, typename V>
 void HashBucket<K, V>::clear()
@@ -94,6 +95,7 @@ void HashBucket<K, V>::clear()
     }
     head = nullptr;
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

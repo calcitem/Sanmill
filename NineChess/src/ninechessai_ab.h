@@ -15,9 +15,10 @@
 #include <array>
 
 #include "ninechess.h"
-#include "hashmap.h"
+#include "hashMap.h"
 
 using namespace std;
+using namespace CTSL;
 
 // 注意：NineChess类不是线程安全的！
 // 所以不能在ai类中修改NineChess类的静态成员变量，切记！
@@ -61,7 +62,6 @@ public:
         int rand;                       // 随机数，对于 value 一致的结点随机排序用
 #ifdef HASH_MAP_ENABLE
         uint64_t hash;
-        uint64_t hashCheckCode;
         bool isHash;                    //  是否从 Hash 读取
 #endif /* HASH_MAP_ENABLE */
         bool pruned;                    // 是否在此处剪枝
@@ -145,11 +145,6 @@ protected:
     // 增加新节点
     struct Node *addNode(Node *parent, int value, NineChess::move_t move, enum NineChess::Player player);
 
-#ifdef HASH_MAP_ENABLE
-    // 插入哈希表
-    int recordHash(HashValue &hashValue);
-#endif
-
     // 评价函数
     int evaluate(Node *node);
 
@@ -172,6 +167,9 @@ protected:
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
     HashValue findHash(uint64_t hash);
+
+    // 插入哈希表
+    int recordHash(const HashValue &hashValue);
 #endif
 
 private:
@@ -219,7 +217,7 @@ private:
     char cmdline[32];
 
 #ifdef HASH_MAP_ENABLE
-    HashMap<struct HashValue> hashmap;
+    //HashMap<struct HashValue> hashmap;
 #endif
 };
 

@@ -180,14 +180,8 @@ public:
         int board[N_POINTS];
 
 #ifdef HASH_MAP_ENABLE
-        // 局面哈希的校验码（过时）
-        uint64_t hashCheckCode;
-
         // 局面的哈希值
         uint64_t hash;
-
-        // 哈希表中的地址, 为 hash 的后 16 位
-        uint16_t hashAddr;
 
         // 标记处于走子阶段的哈希
         uint64_t gameMovingHash;
@@ -497,7 +491,6 @@ protected:
 #ifdef HASH_MAP_ENABLE
     // hash相关
     uint64_t getHash();
-    uint64_t getHashCheckCode();
     uint64_t updateHash(int pos);
 #endif /* HASH_MAP_ENABLE */
 

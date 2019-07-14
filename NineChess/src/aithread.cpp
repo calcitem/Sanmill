@@ -35,7 +35,7 @@ void AiThread::setAi(const NineChess &chess)
     ai_ab.setChess(*(this->chess_));
 
 #ifdef HASH_MAP_ENABLE
-    ai_ab.clearHashMap();
+    //ai_ab.clearHashMap();
 #endif
 
     mutex.unlock();

@@ -37,7 +37,7 @@ HEADERS  += \
     src/gamescene.h \
     src/gameview.h \
     src/graphicsconst.h \
-    src/hashmap.h \
+    src/hashMap.h \
     src/ninechess.h \
     src/ninechessai_ab.h \
     src/ninechesswindow.h \
