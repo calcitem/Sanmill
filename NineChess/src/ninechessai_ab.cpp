@@ -544,7 +544,12 @@ int NineChessAi_ab::changeDepth(int originalDepth)
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
+#ifdef HASH_MAP_ENABLE
+        //int depthTable[] = { 8, 10, 12, 12, 12, 12,  12, 12, 12, 10, 8, 8, 1 };
         int depthTable[] = { 2, 11, 11, 11, 11, 10,  9, 8, 8, 8, 7, 7, 1 };
+#else
+        int depthTable[] = { 2, 11, 11, 11, 11, 10,  9, 8, 8, 8, 7, 7, 1 };
+#endif // HASH_MAP_ENABLE
           //int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 9, 8, 8, 7, 1 };
 #else
         //int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };

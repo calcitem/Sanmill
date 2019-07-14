@@ -1,15 +1,15 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEBUG
+//#define DEBUG
 
 //#define RANDOM_MOVE
 
-//#define DEAL_WITH_HORIZON_EFFECT
+#define DEAL_WITH_HORIZON_EFFECT
 
-//#define RANDOM_BEST_MOVE
+#define IDS_SUPPORT
 
-#define HASH_MAP_ENABLE
+//#define HASH_MAP_ENABLE
 
 //#define DONOT_DELETE_TREE
 
@@ -34,7 +34,11 @@
 #define GAME_MOVING_FIXED_DEPTH  3
 #else // DEBUG
 #ifdef DEAL_WITH_HORIZON_EFFECT
+#ifdef HASH_MAP_ENABLE
 #define GAME_MOVING_FIXED_DEPTH 9
+#else
+#define GAME_MOVING_FIXED_DEPTH 9
+#endif // HASH_MAP_ENABLE
 #else // DEAL_WITH_HORIZON_EFFECT
 #define GAME_MOVING_FIXED_DEPTH  10
 #endif // DEAL_WITH_HORIZON_EFFECT
@@ -48,8 +52,6 @@
 #define DRAW_SEAT_NUMBER
 #endif
 
-//#define IDS_SUPPORT
-
 #define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
 
 // #define DONOT_PLAY_WIN_SOUND
@@ -59,5 +61,10 @@
 
 // 启动时窗口最大化
 //#define SHOW_MAXIMIZED_ON_LOAD
+
+// 不使用哈希桶
+#define DISABLE_HASHBUCKET
+
+//#define RANDOM_BEST_MOVE
 
 #endif // CONFIG_H
