@@ -166,7 +166,7 @@ protected:
 
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
-    HashValue findHash(uint64_t hash);
+    bool findHash(uint64_t hash, HashValue &hashValue);
 
     // 插入哈希表
     int recordHash(const HashValue &hashValue);

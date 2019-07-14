@@ -18,7 +18,7 @@
 using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
-HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap;
+HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(65536);
 #endif
 
 NineChessAi_ab::NineChessAi_ab() :
@@ -854,20 +854,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     return node->value;
 }
 
-#ifdef HASH_MAP_ENABLE
-int NineChessAi_ab::recordHash(const HashValue &hashValue)
-{
-#ifdef HASH_MAP_ENABLE
-    //hashMapMutex.lock();
-    //HashMap<HashValue>::insert(hashValue.hash, hashValue);
-    hashmap.insert(hashValue.hash, hashValue);
-    //hashMapMutex.unlock();
-#endif // HASH_MAP_ENABLE
-
-    return 0;
-}
-#endif
-
 const char* NineChessAi_ab::bestMove()
 {
     vector<Node*> bestMoves;
@@ -964,10 +950,11 @@ const char *NineChessAi_ab::move2string(int move)
 }
 
 #ifdef HASH_MAP_ENABLE
-#if  0
-NineChessAi_ab::HashValue NineChessAi_ab::findHash(uint64_t hash)
+bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 {
-   // NineChessAi_ab::HashValue hashValue = hashmap.find(hash);
+
+
+   return hashmap.find(hash, hashValue);
 
     // TODO: 变换局面
 #if 0
@@ -992,10 +979,19 @@ NineChessAi_ab::HashValue NineChessAi_ab::findHash(uint64_t hash)
         }
     }
 #endif
+}
+
+int NineChessAi_ab::recordHash(const HashValue &hashValue)
+{
+#ifdef HASH_MAP_ENABLE
+    //hashMapMutex.lock();
+    //HashMap<HashValue>::insert(hashValue.hash, hashValue);
+    hashmap.insert(hashValue.hash, hashValue);
+    //hashMapMutex.unlock();
+#endif // HASH_MAP_ENABLE
 
     return 0;
 }
-#endif 
 
 void NineChessAi_ab::clearHashMap()
 {
