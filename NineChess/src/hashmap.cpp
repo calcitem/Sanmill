@@ -1,72 +1,135 @@
 #include "hashmap.h"
 
+using namespace CTSL;
 
-// template <typename T>
-// HashMap<T>(uint64_t capacity, uint64_t size, T *pool)
-// {
-//     this->capacity = capacity;
-//     size = size;
-//     //HashMap<T>::construct();
-// }
-
-
-template <typename T>
-bool HashMap<T>::construct()
+namespace CTSL //Concurrent Thread Safe Library
 {
-    HashMap<T>::pool = new T[capacity];
+// Function to find an entry in the bucket matching the key
+// If key is found, the corresponding value is copied into the parameter "value" and function returns true.
+// If key is not found, function returns false
+template <typename K, typename V>
+bool HashBucket<K, V>::find(const K &key, V &value) const
+{
+    // A shared mutex is used to enable mutiple concurrent reads
+    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+    HashNode<K, V> *node = head;
 
-    if (HashMap<T>::pool ==  nullptr) {
-        return false;
+    while (node != nullptr) {
+        if (node->getKey() == key) {
+            value = node->getValue();
+            return true;
+        }
+        node = node->next;
+    }
+    return false;
+}
+
+// Function to insert into the bucket
+// If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair
+template <typename K, typename V>
+void HashBucket<K, V>::insert(const K &key, const V &value)
+{
+    // Exclusive lock to enable single write in the bucket
+    std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+    HashNode<K, V> *prev = nullptr;
+    HashNode<K, V> *node = head;
+
+    while (node != nullptr && node->getKey() != key) {
+        prev = node;
+        node = node->next;
     }
 
-    return true;
-}
-
-
-
-template <typename T>
-T& HashMap<T>::at(uint64_t i)
-{
-    if (i >= capacity) {
-        qDebug() << "Error";
-        return HashMap<T>::pool[0];
+    if (nullptr == node) // New entry, create a node and add to bucket
+    {
+        if (nullptr == head) {
+            head = new HashNode<K, V>(key, value);
+        } else {
+            prev->next = new HashNode<K, V>(key, value);
+        }
+    } else {
+        node->setValue(value); // Key found in bucket, update the value
     }
-    return HashMap<T>::pool[i];
 }
 
-template <typename T>
-size_t HashMap<T>::getSize()
+// Function to remove an entry from the bucket, if found
+template <typename K, typename V>
+void HashBucket<K, V>::erase(const K &key)
 {
-    return size;
+    // Exclusive lock to enable single write in the bucket
+    std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+    HashNode<K, V> *prev = nullptr;
+    HashNode<K, V> *node = head;
+
+    while (node != nullptr && node->getKey() != key) {
+        prev = node;
+        node = node->next;
+    }
+
+    if (nullptr == node) //Key not found, nothing to be done
+    {
+        return;
+    } else  //Remove the node from the bucket
+    {
+        if (head == node) {
+            head = node->next;
+        } else {
+            prev->next = node->next;
+        }
+        delete node; //Free up the memory
+    }
 }
 
-template <typename T>
-uint64_t HashMap<T>::getCapacity()
+// Function to clear the bucket
+template <typename K, typename V>
+void HashBucket<K, V>::clear()
 {
-    return capacity;
+    // Exclusive lock to enable single write in the bucket
+    std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+    HashNode<K, V> *prev = nullptr;
+    HashNode<K, V> *node = head;
+    while (node != nullptr) {
+        prev = node;
+        node = node->next;
+        delete prev;
+    }
+    head = nullptr;
 }
 
-template <typename T>
-uint64_t HashMap<T>::hashToAddr(uint64_t hash)
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Function to find an entry in the hash map matching the key.
+// If key is found, the corresponding value is copied into the parameter "value" and function returns true.
+// If key is not found, function returns false.
+template <typename K, typename V, typename F>
+bool HashMap<K, V, F>::find(const K &key, V &value) const
 {
-    return hash << 32 >> 32;
+    size_t hashValue = hashFn(key) % hashSize;
+    return hashTable[hashValue].find(key, value);
 }
 
-template <typename T>
-void HashMap<T>::insert(uint64_t hash, T &hashValue)
+// Function to insert into the hash map.
+// If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::insert(const K &key, const V &value)
 {
-    uint64_t addr = hashToAddr(hash);
-
-    pool[addr] = hashValue;
+    size_t hashValue = hashFn(key) % hashSize;
+    hashTable[hashValue].insert(key, value);
 }
 
-template <typename T>
-void HashMap<T>::clear()
+// Function to remove an entry from the bucket, if found
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::erase(const K &key)
 {
-    delete[] pool;
-    pool = nullptr;
+    size_t hashValue = hashFn(key) % hashSize;
+    hashTable[hashValue].erase(key);
 }
 
-template <typename T>
-HashMap<T>* HashMap<T>::instance = new HashMap<T>(capacity = 1024, size =  0);
-
+// Function to clean up the hasp map, i.e., remove all entries from it
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::clear()
+{
+    for (size_t i = 0; i < hashSize; i++) {
+        (hashTable[i]).clear();
+    }
+}
+}
