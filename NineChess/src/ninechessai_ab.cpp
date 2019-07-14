@@ -996,7 +996,7 @@ int NineChessAi_ab::recordHash(const HashValue &hashValue)
 void NineChessAi_ab::clearHashMap()
 {
     //hashMapMutex.lock();
-    //hashMap.clear();
+    hashmap.clear();
     //hashMapMutex.unlock();
 }
 #endif /* HASH_MAP_ENABLE */

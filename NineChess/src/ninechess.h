@@ -134,6 +134,11 @@ public:
             ((uint64_t)rand() << 60);
     }
 
+    uint64_t rand56(void)
+    {
+        return rand64() << 8; 
+    }
+
     // 玩家标识, 轮流状态, 胜负标识
     enum Player : uint16_t
     {
@@ -491,7 +496,7 @@ protected:
 #ifdef HASH_MAP_ENABLE
     // hash相关
     uint64_t getHash();
-    uint64_t updateHash(int pos);
+    uint64_t NineChess::updateHash(int pos);
 #endif /* HASH_MAP_ENABLE */
 
 private:

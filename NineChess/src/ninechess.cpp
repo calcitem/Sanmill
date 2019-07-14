@@ -179,25 +179,6 @@ NineChess::~NineChess()
 {
 }
 
-#ifdef HASH_MAP_ENABLE
-void NineChess::constructHash()
-{
-    context.hash = 0ull;
-
-    context.gameMovingHash = rand64();
-    context.actionCaptureHash = rand64();
-    context.player2sTurnHash = rand64();
-
-    uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
-
-    for (int p = 0; p < N_POINTS; p++) {
-        for (int t = NineChess::POINT_TYPE_EMPTY; t <= NineChess::POINT_TYPE_FORBIDDEN; t++) {
-            zobrist[p][t] = rand64();
-        }
-    }
-}
-#endif /* HASH_MAP_ENABLE */
-
 NineChess::Player NineChess::getOpponent(NineChess::Player player)
 {
     switch (player)
@@ -1314,57 +1295,6 @@ bool NineChess::choose(int pos)
     return false;
 }
 
-#ifdef HASH_MAP_ENABLE
-
-uint64_t NineChess::getHash()
-{
-    return context.hash;
-}
-
-// hash函数，对应可重复去子的规则
-uint64_t NineChess::updateHash(int pos)
-{
-#if 0
-    /* 
-     * hashCheckCode 各数据位详解（并无冲突，是算法用到的棋局数据的完全表示）
-     * 56-63位：空白不用，全为0
-     * 55位：轮流标识，0为先手，1为后手
-     * 54位：动作标识，落子（选子移动）为0，1为去子
-     * 6-53位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
-     *        0b00表示空白，0b01表示先手棋子，0b10表示后手棋子，0b11表示禁点
-     * 4-5位（共2位）：待去子数，最大为3，用2个二进制位表示即可
-     * 0-3位：player1的手棋数，不需要player2的（可计算出）
-     */   
-#endif
-
-    uint64_t hash = 0ull;
-
-    for (int i = POS_BEGIN; i < POS_END; i++) {
-        // hash ^= context.zobrist[i][pointType]; // TODO: 待完善
-    }
-
-    uint64_t temp = board_[pos] & 0x30 >> 4;
-    //context.hashCheckCode |= (temp) << ((pos - 8) * 2 + 6);
-    // TODO: context.hash = 
-
-    if (context.turn == PLAYER2) {
-        //context.hashCheckCode |= 1ull << 55;
-        context.hash ^= context.player2sTurnHash;
-    }        
-
-    if (context.action == ACTION_CAPTURE) {
-        //context.hashCheckCode |= 1ull << 54;
-        context.hash ^= context.actionCaptureHash;
-    }
-
-    //context.hashCheckCode |= (uint64_t)context.nPiecesNeedRemove << 4;
-    //context.hashCheckCode |= context.nPiecesInHand_1;
-    // TODO: hash 应该 不需要
-
-    return context.hash; // TODO: 返回什么
-}
-#endif /* HASH_MAP_ENABLE */
-
 bool NineChess::giveup(Player loser)
 {
     if (context.stage == GAME_MOVING || context.stage == GAME_PLACING) {
@@ -2345,3 +2275,94 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
         }
     }
 }
+
+#ifdef HASH_MAP_ENABLE
+
+#if 0
+/*
+ * 原始版本 hash 各数据位详解（名为 hash 但实际并无冲突，是算法用到的棋局数据的完全表示）[因效率问题废弃]
+ * 56-63位：空白不用，全为0
+ * 55位：轮流标识，0为先手，1为后手
+ * 54位：动作标识，落子（选子移动）为0，1为去子
+ * 6-53位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
+ *        0b00表示空白，0b01表示先手棋子，0b10表示后手棋子，0b11表示禁点
+ * 4-5位（共2位）：待去子数，最大为3，用2个二进制位表示即可
+ * 0-3位：player1的手棋数，不需要player2的（可计算出）
+ */
+#endif
+
+/*
+ * 新版本 hash 各数据位详解
+ * 8-63位 (共56位): zobrist 值
+ * TODO: 低8位浪费了哈希空间，待后续优化
+ * 4-7位 (共4位)：player1的手棋数，不需要player2的（可计算出）, 走子阶段置为全1即为全15
+ * 2-3位（共2位）：待去子数，最大为3，用2个二进制位表示即可
+ * 1位: 动作标识，落子（选子移动）为0，1为去子
+ * 0位：轮流标识，0为先手，1为后手
+ */
+
+void NineChess::constructHash()
+{
+    context.hash = 0ull;
+
+    //context.gameMovingHash = rand64();
+    //context.actionCaptureHash = rand64();
+    //context.player2sTurnHash = rand64();
+
+    uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
+
+    // 预留末8位后续填充局面特征标志
+    for (int p = 0; p < N_POINTS; p++) {
+        for (int t = NineChess::POINT_TYPE_EMPTY; t <= NineChess::POINT_TYPE_FORBIDDEN; t++) {
+            zobrist[p][t] = rand56();
+        }
+    }
+}
+
+uint64_t NineChess::getHash()
+{
+    return context.hash;
+}
+
+// hash函数，对应可重复去子的规则
+uint64_t NineChess::updateHash(int pos)
+{
+#if 0
+    // 这里不做
+    for (int i = POS_BEGIN; i < POS_END; i++) {
+        hash ^= context.zobrist[i][pointType];
+    }
+#endif
+
+    // PieceType is board_[pos]
+
+    // 0b00表示空白，0b01=1 表示先手棋子，0b10=2 表示后手棋子，0b11=3 表示禁点
+    int pointType = board_[pos] & 0x30 >> 4;
+
+    //context.hashCheckCode |= (temp) << ((pos - 8) * 2 + 6);
+    // TODO: context.hash = 
+
+    // 清除或者放置棋子
+    context.hash ^= context.zobrist[pos][pointType];
+
+    // 清除标记位
+    context.hash &= ~0xFF;
+
+    // 置位
+
+    if (context.turn == PLAYER2) {
+        context.hash |= 1ULL;
+    }
+
+    if (context.action == ACTION_CAPTURE) {
+        context.hash |= 1ULL << 1;
+    }
+
+    // TODO: 是否真的需要这几位?
+    context.hash |= (uint64_t)context.nPiecesNeedRemove << 4;
+    context.hash |= (uint64_t)context.nPiecesInHand_1;
+
+    return context.hash;
+}
+#endif /* HASH_MAP_ENABLE */
+
