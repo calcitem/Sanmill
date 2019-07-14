@@ -18,7 +18,7 @@
 using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
-HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(65536);
+HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(1024);
 #endif
 
 NineChessAi_ab::NineChessAi_ab() :
@@ -26,16 +26,16 @@ NineChessAi_ab::NineChessAi_ab() :
     requiredQuit(false),
     nodeCount(0),
 #ifdef HASH_MAP_ENABLE
+    hashEntryCount(0),
     hashHitCount(0),
-    //hashmap(HashMap<HashValue>::getInstance()),
+    hashInsertNewCount(0),
+    hashAddrHitCount(0),
+    hashReplaceCozDepthCount(0),
+    hashReplaceCozHashCount(0),
 #endif
     evaluatedNodeCount(0)
 {
     buildRoot();
-
-#ifdef HASH_MAP_ENABLE
-    //hashmap = HashMap<HashValue>::getInstance();
-#endif
 }
 
 NineChessAi_ab::~NineChessAi_ab()
@@ -52,6 +52,7 @@ void NineChessAi_ab::buildRoot()
 struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move, enum NineChess::Player player)
 {
     Node *newNode = new Node;   // (10%)
+
     newNode->parent = parent;
     newNode->value = value;
     newNode->move = move;
@@ -59,9 +60,12 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     nodeCount++;
     newNode->id = nodeCount;
 
-    //newNode->rand = rand() % 24; // (1%)
-
     newNode->pruned = false;
+
+#ifdef HASH_MAP_ENABLE
+    newNode->hash = 0;
+    newNode->isHash = false;
+#endif
 
 #ifdef DEBUG_AB_TREE
     newNode->player = player;
@@ -75,9 +79,6 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     newNode->alpha = -INF_VALUE;
     newNode->beta = INF_VALUE;
     newNode->result = 0;
-#ifdef HASH_MAP_ENABLE
-    newNode->isHash = false;
-#endif
     newNode->visited = false;
 
     int c, p;
@@ -97,7 +98,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
     }
 
     newNode->cmd = cmd;
-#endif
+#endif // DEBUG_AB_TREE
 
     if (parent) {
         parent->children.push_back(newNode); // (7%)
@@ -105,12 +106,6 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 
     return newNode;
 }
-
-// 静态hashmap初始化
-//mutex NineChessAi_ab::hashMapMutex;
-//HashMap<NineChessAi_ab::HashValue> NineChessAi_ab::hashmap;
-//std::unique_ptr<HashMap<NineChessAi_ab::HashValue>> HashMap::instance;
-
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
@@ -158,7 +153,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
     const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
     int pos = 0;
 
-    node->children.reserve(48);
+    node->children.reserve(48); // 余量空间 (2%)
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
@@ -173,13 +168,13 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
          8, 10, 12, 14, // 中圈十字架
     };
 #endif // RANDOM_MOVE
-#else
+#else // MOVE_PRIORITY_TABLE_SUPPORT
     int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
         8, 9, 10, 11, 12, 13, 14, 15,
         16, 17, 18, 19, 20, 21, 22, 23,
         24, 25, 26, 27, 28, 29, 30, 31,
     };
-#endif
+#endif // MOVE_PRIORITY_TABLE_SUPPORT
 
     // 如果有子节点，则返回，避免重复建立
     if (node->children.size()) {

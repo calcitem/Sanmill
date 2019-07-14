@@ -59,12 +59,11 @@ public:
         vector<struct Node*> children;  // 子节点列表
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
-        int rand;                       // 随机数，对于 value 一致的结点随机排序用
+        bool pruned;                    // 是否在此处剪枝
 #ifdef HASH_MAP_ENABLE
-        uint64_t hash;
+        uint64_t hash;                  //  哈希值
         bool isHash;                    //  是否从 Hash 读取
 #endif /* HASH_MAP_ENABLE */
-        bool pruned;                    // 是否在此处剪枝
 #ifdef DEBUG_AB_TREE
         string cmd;
         enum NineChess::Player player;  // 此招是谁下的
@@ -193,8 +192,15 @@ private:
     // 评估过的结点个数
     size_t evaluatedNodeCount;
 
-    // Hash 命中次数
+#ifdef HASH_MAP_ENABLE
+    // Hash 统计数据
+    size_t hashEntryCount;
     size_t hashHitCount;
+    size_t hashInsertNewCount;
+    size_t hashAddrHitCount;
+    size_t hashReplaceCozDepthCount;
+    size_t hashReplaceCozHashCount;
+#endif
 
     // 局面数据栈
     stack<NineChess::ChessContext> contextStack;

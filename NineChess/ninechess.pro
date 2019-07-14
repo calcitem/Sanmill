@@ -18,7 +18,6 @@ CONFIG += C++11 \
 INCLUDEPATH += src
 
 SOURCES += \
-    src/hashmap.cpp \
     src/main.cpp \
     src/boarditem.cpp \
     src/gamecontroller.cpp \
@@ -31,6 +30,7 @@ SOURCES += \
     src/aithread.cpp
 
 HEADERS  += \
+    src/HashNode.h \
     src/boarditem.h \
     src/config.h \
     src/gamecontroller.h \

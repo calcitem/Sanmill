@@ -692,6 +692,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         }
 
         board_[pos] = piece;
+
 #ifdef HASH_MAP_ENABLE
         updateHash(pos);
 #endif
@@ -788,7 +789,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 #endif
         board_[currentPos] = '\x00';
 #ifdef HASH_MAP_ENABLE
-        updateHash(currentPos);
+        revertHash(currentPos);
 #endif
         currentPos = pos;
         currentStep++;
@@ -858,10 +859,20 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     }
 
     // 去子（设置禁点）
-    if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING)
+    if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
+#ifdef HASH_MAP_ENABLE
+        revertHash(pos);
+#endif
         board_[pos] = '\x0f';
-    else // 去子
+#ifdef HASH_MAP_ENABLE
+        updateHash(pos);
+#endif
+    } else { // 去子
+#ifdef HASH_MAP_ENABLE
+        revertHash(pos);
+#endif
         board_[pos] = '\x00';
+    }
 
     if (context.turn == PLAYER1)
         context.nPiecesOnBoard_2--;
@@ -875,9 +886,6 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     currentPos = 0;
     context.nPiecesNeedRemove--;
     currentStep++;
-#ifdef HASH_MAP_ENABLE
-    updateHash(pos);
-#endif
     // 去子完成
 
     // 如果决出胜负
@@ -1027,6 +1035,7 @@ bool NineChess::place(int pos)
         }
 
         board_[pos] = piece;
+
 #ifdef HASH_MAP_ENABLE
         updateHash(pos);
 #endif
@@ -1110,7 +1119,7 @@ bool NineChess::place(int pos)
 #endif
         board_[currentPos] = '\x00';
 #ifdef HASH_MAP_ENABLE
-        updateHash(currentPos);
+        revertHash(currentPos);
 #endif
         currentPos = pos;
         //step++;
@@ -1174,11 +1183,20 @@ bool NineChess::capture(int pos)
         return false;
     }
 
-    // 去子（设置禁点）
-    if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING)
+    if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
+#ifdef HASH_MAP_ENABLE
+        revertHash(pos);
+#endif
         board_[pos] = '\x0f';
-    else // 去子
+#ifdef HASH_MAP_ENABLE
+        updateHash(pos);
+#endif
+    } else { // 去子
+#ifdef HASH_MAP_ENABLE
+        revertHash(pos);
+#endif
         board_[pos] = '\x00';
+    }
 
     if (context.turn == PLAYER1)
         context.nPiecesOnBoard_2--;
@@ -1727,10 +1745,10 @@ void NineChess::cleanForbiddenPoints()
         for (int j = 0; j < N_SEATS; j++) {
             pos = i * N_SEATS + j;
             if (board_[pos] == '\x0f') {
-                board_[pos] = '\x00';
 #ifdef HASH_MAP_ENABLE
-                updateHash(pos);
+                revertHash(pos);
 #endif
+                board_[pos] = '\x00';
             }
         }
     }
@@ -2324,7 +2342,8 @@ uint64_t NineChess::getHash()
     return context.hash;
 }
 
-// hash函数，对应可重复去子的规则
+
+
 uint64_t NineChess::updateHash(int pos)
 {
 #if 0
@@ -2345,6 +2364,16 @@ uint64_t NineChess::updateHash(int pos)
     // 清除或者放置棋子
     context.hash ^= context.zobrist[pos][pointType];
 
+    return context.hash;
+}
+
+uint64_t NineChess::revertHash(int pos)
+{
+    return updateHash(pos);
+}
+
+uint64_t NineChess::updateHashMisc()
+{
     // 清除标记位
     context.hash &= ~0xFF;
 

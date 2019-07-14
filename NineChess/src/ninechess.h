@@ -496,7 +496,9 @@ protected:
 #ifdef HASH_MAP_ENABLE
     // hash相关
     uint64_t getHash();
-    uint64_t NineChess::updateHash(int pos);
+    uint64_t revertHash(int pos);
+    uint64_t updateHash(int pos);
+    uint64_t updateHashMisc();
 #endif /* HASH_MAP_ENABLE */
 
 private:
