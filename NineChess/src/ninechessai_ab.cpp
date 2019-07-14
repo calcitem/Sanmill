@@ -1003,11 +1003,11 @@ int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta)
     }
     if ((hashValue.type == hashfALPHA) && (hashValue.value <= alpha)) {
         //return alpha;
-        return hashValue.value;
+        //return hashValue.value;
     }
     if ((hashValue.type == hashfBETA) && (hashValue.value >= beta)) {
         //return beta;
-        return hashValue.value;
+        //return hashValue.value;
     }
 
     return INT32_MIN;
