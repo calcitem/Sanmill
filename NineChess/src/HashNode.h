@@ -1,6 +1,8 @@
 #ifndef HASH_NODE_H_
 #define HASH_NODE_H_
 
+#include "config.h"
+
 #include <shared_mutex>
 namespace CTSL  //Concurrent Thread Safe Library
 {
@@ -48,10 +50,19 @@ namespace CTSL  //Concurrent Thread Safe Library
             //If key is not found, function returns false
             bool find(const K &key, V &value) const
             {
-                // A shared mutex is used to enable mutiple concurrent reads
+                // A shared mutex is used to enable multiple concurrent reads
                 std::shared_lock<std::shared_timed_mutex> lock(mutex_); 
                 HashNode<K, V> * node = head;
+#ifdef  DISABLE_HASHBUCKET
+                if (node == nullptr) {
+                    return false;
+                }
 
+                if (node->getKey() == key) {
+                    value = node->getValue();
+                    return true;
+                }
+#else // DISABLE_HASHBUCKET
                 while (node != nullptr)
                 {
                     if (node->getKey() == key)
@@ -61,6 +72,7 @@ namespace CTSL  //Concurrent Thread Safe Library
                     }
                     node = node->next;
                 }
+#endif //  DISABLE_HASHBUCKET
                 return false;
             }
 
@@ -70,6 +82,15 @@ namespace CTSL  //Concurrent Thread Safe Library
             {
                 //Exclusive lock to enable single write in the bucket
                 std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+#ifdef  DISABLE_HASHBUCKET
+                if (head == nullptr)
+                {
+                    head = new HashNode<K, V>(key, value);
+                    return;
+                }
+
+                head->setValue(value);
+#else // DISABLE_HASHBUCKET
                 HashNode<K, V> * prev = nullptr;
                 HashNode<K, V> * node = head;
 
@@ -94,7 +115,7 @@ namespace CTSL  //Concurrent Thread Safe Library
                 {
                     node->setValue(value); //Key found in bucket, update the value
                 }
-        
+#endif // DISABLE_HASHBUCKET        
             }
 
             //Function to remove an entry from the bucket, if found
@@ -102,8 +123,20 @@ namespace CTSL  //Concurrent Thread Safe Library
             {
                 //Exclusive lock to enable single write in the bucket
                 std::unique_lock<std::shared_timed_mutex> lock(mutex_);
-                HashNode<K, V> *prev  = nullptr;
-                HashNode<K, V> * node = head;
+
+#ifdef  DISABLE_HASHBUCKET
+                if (head  == nullptr) //Key not found, nothing to be done
+                {
+                    return;
+                }
+
+                if (head->getKey() == key) {
+                    delete head;
+                    head = nullptr;
+                }
+#else  // DISABLE_HASHBUCKET
+                HashNode<K, V> *prev = nullptr;
+                HashNode<K, V> *node = head;
 
                 while (node != nullptr && node->getKey() != key)
                 {
@@ -117,7 +150,7 @@ namespace CTSL  //Concurrent Thread Safe Library
                 }
                 else  //Remove the node from the bucket
                 {
-                    if(head == node)
+                    if (head == node)
                     {
                         head = node->next;
                     }
@@ -127,6 +160,7 @@ namespace CTSL  //Concurrent Thread Safe Library
                     }
                     delete node; //Free up the memory
                 }
+#endif // DISABLE_HASHBUCKET
             }
 
             //Function to clear the bucket
@@ -134,6 +168,12 @@ namespace CTSL  //Concurrent Thread Safe Library
             {
                 //Exclusive lock to enable single write in the bucket
                 std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+#ifdef  DISABLE_HASHBUCKET
+                if (head != nullptr)
+                {
+                    delete head;
+                }                
+#else // DISABLE_HASHBUCKET
                 HashNode<K, V> * prev = nullptr;
                 HashNode<K, V> * node = head;
                 while(node != nullptr)
@@ -142,6 +182,7 @@ namespace CTSL  //Concurrent Thread Safe Library
                     node = node->next;
                     delete prev;
                 }
+#endif // DISABLE_HASHBUCKET
                 head = nullptr;
             }
 
