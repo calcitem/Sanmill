@@ -18,7 +18,8 @@
 using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
-HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(1024 * 1024 * 16);
+static constexpr int hashsize = 0x1000000; // 16M
+HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(hashsize);
 #endif
 
 NineChessAi_ab::NineChessAi_ab() :

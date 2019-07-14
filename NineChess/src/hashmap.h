@@ -42,7 +42,7 @@ namespace CTSL //Concurrent Thread Safe Library
             //If key is not found, function returns false.
             bool find(const K &key, V &value) const 
             {
-                size_t hashValue = hashFn(key) % hashSize ;
+                size_t hashValue = hashFn(key) & (hashSize - 1) ;
                 return hashTable[hashValue].find(key, value);
             }
 
@@ -50,14 +50,14 @@ namespace CTSL //Concurrent Thread Safe Library
             //If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
             void insert(const K &key, const V &value) 
             {
-                size_t hashValue = hashFn(key) % hashSize ;
+                size_t hashValue = hashFn(key) & (hashSize - 1);
                 hashTable[hashValue].insert(key, value);
             }
 
             //Function to remove an entry from the bucket, if found
             void erase(const K &key) 
             {
-                size_t hashValue = hashFn(key) % hashSize ;
+                size_t hashValue = hashFn(key) & (hashSize - 1);
                 hashTable[hashValue].erase(key);
             }   
 
