@@ -169,6 +169,7 @@ protected:
 
     // 插入哈希表
     int recordHash(const HashValue &hashValue);
+    int NineChessAi_ab::recordHash(int value, int alpha, int beta, int depth, HashType type, uint64_t hash);
 #endif
 
 private:

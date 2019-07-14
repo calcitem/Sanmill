@@ -2327,18 +2327,20 @@ void NineChess::constructHash()
     //context.actionCaptureHash = rand64();
     //context.player2sTurnHash = rand64();
 
-    uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
+    //uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
 
     // 预留末8位后续填充局面特征标志
     for (int p = 0; p < N_POINTS; p++) {
         for (int t = NineChess::POINT_TYPE_EMPTY; t <= NineChess::POINT_TYPE_FORBIDDEN; t++) {
-            zobrist[p][t] = rand56();
+            context.zobrist[p][t] = rand56();
         }
     }
 }
 
 uint64_t NineChess::getHash()
 {
+    updateHashMisc(); // 放在此处合适?
+
     return context.hash;
 }
 
@@ -2356,7 +2358,7 @@ uint64_t NineChess::updateHash(int pos)
     // PieceType is board_[pos]
 
     // 0b00表示空白，0b01=1 表示先手棋子，0b10=2 表示后手棋子，0b11=3 表示禁点
-    int pointType = board_[pos] & 0x30 >> 4;
+    int pointType = (board_[pos] & 0x30) >> 4;
 
     //context.hashCheckCode |= (temp) << ((pos - 8) * 2 + 6);
     // TODO: context.hash = 
@@ -2388,8 +2390,8 @@ uint64_t NineChess::updateHashMisc()
     }
 
     // TODO: 是否真的需要这几位?
-    context.hash |= (uint64_t)context.nPiecesNeedRemove << 4;
-    context.hash |= (uint64_t)context.nPiecesInHand_1;
+    context.hash |= (uint64_t)context.nPiecesNeedRemove << 2;
+    context.hash |= (uint64_t)context.nPiecesInHand_1 << 4;
 
     return context.hash;
 }
