@@ -808,7 +808,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
             alpha = std::max(value, alpha);
 #ifdef HASH_MAP_ENABLE
-            hashf = hashfALPHA; // ????
+           hashf = hashfEXACT; // ????
 #endif
 
         } else {
@@ -827,7 +827,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
             beta = std::min(value, beta);
 #ifdef HASH_MAP_ENABLE
-            hashf = hashfBETA; // ????
+            hashf = hashfEXACT; // ????
 #endif
         }
 
@@ -835,6 +835,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         // 否则剪枝返回
         if (alpha >= beta) {
             node->pruned = true;
+            hashf = hashfBETA; // ????
             break;
         }            
     }
@@ -856,8 +857,13 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif // DONOT_DELETE_TREE
 
 #ifdef HASH_MAP_ENABLE
-    // 记录不确切的哈希值
-    recordHash(node->value, alpha, beta, depth, hashf, hash);
+    // 记录哈希值 ???
+    if (hashf == hashfALPHA)
+        recordHash(alpha, alpha, beta, depth, hashf, hash);
+    else if (hashf == hashfBETA)
+        recordHash(beta, alpha, beta, depth, hashf, hash);
+    else if (hashf == hashfEXACT)
+        recordHash(node->value, alpha, beta, depth, hashf, hash);
 
 #if 0
     if (hashValue.hash != hash) {
@@ -1002,11 +1008,11 @@ int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta)
         return hashValue.value;
     }
     if ((hashValue.type == hashfALPHA) && (hashValue.value <= alpha)) {
-        //return alpha;
+        return alpha;
         //return hashValue.value;
     }
     if ((hashValue.type == hashfBETA) && (hashValue.value >= beta)) {
-        //return beta;
+        return beta;
         //return hashValue.value;
     }
 
