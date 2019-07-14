@@ -647,7 +647,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif // HASH_MAP_ENABLE
 #endif // DEBUG_AB_TREE
 
-    // 搜索到叶子节点（决胜局面）
+    // 搜索到叶子节点（决胜局面） TODO: 是否应该先检索哈希?
     if (chessContext->stage == NineChess::GAME_OVER) {
         // 局面评估
         node->value = evaluate(node);
@@ -685,18 +685,20 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
 
         // TODO: 处理 Alpha/Beta 确切值
-        node->value = hashValue.value;
+        if (hashValue.type == hashfEXACT) {
+            hashHitCount++;
+            node->value = hashValue.value;               
 
-        // Why? 对 depth 的调整放在这里合适?
-        if (chessContext->turn == NineChess::PLAYER1)
-            node->value += hashValue.depth - depth;
-        else
-            node->value -= hashValue.depth - depth;
+            // Why? 对 depth 的调整放在这里合适?
+            if (chessContext->turn == NineChess::PLAYER1)
+                node->value += hashValue.depth - depth;
+            else
+                node->value -= hashValue.depth - depth;
 
-        //hashMapMutex::unlock();
-        hashHitCount++;
+            //hashMapMutex::unlock();       
 
-        return node->value;
+            return node->value;
+        }
     }
 
     //hashMapMutex.unlock();
