@@ -11,20 +11,31 @@ namespace CTSL  //Concurrent Thread Safe Library
     class HashNode
     {
         public:
-            HashNode() : next(nullptr)
+            HashNode() 
+#ifndef DISABLE_HASHBUCKET
+                : next(nullptr)
+#endif
             {}
-            HashNode(K key_, V value_) : next(nullptr), key(key_), value(value_)
+            HashNode(K key_, V value_) : 
+#ifndef DISABLE_HASHBUCKET
+                next(nullptr), 
+#endif
+                key(key_), value(value_)
             {}
             ~HashNode() 
             {
+#ifndef DISABLE_HASHBUCKET
                 next = nullptr;
+#endif
             }
 
             const K& getKey() const {return key;}
             void setValue(V value_) {value = value_;}
             const V& getValue() const {return value;}
 
+#ifndef DISABLE_HASHBUCKET
             HashNode *next; //Pointer to the next node in the same bucket
+#endif
         private:
             K key;   //the hash key
             V value; //the value corresponding to the key
