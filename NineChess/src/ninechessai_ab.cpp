@@ -18,7 +18,7 @@
 using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
-static constexpr int hashsize = 0x1000000; // 16M
+static constexpr int hashsize = 0x8000000; // 128M
 HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(hashsize);
 #endif
 
@@ -622,6 +622,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 哈希类型
     enum HashType hashf = hashfALPHA;
+
+    // 获取哈希值
+    uint64_t hash = chessTemp.getHash();
+    node->hash = hash;
 #endif
 
 #ifdef DEBUG_AB_TREE
@@ -638,15 +642,35 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif // HASH_MAP_ENABLE
 #endif // DEBUG_AB_TREE
 
+    // 搜索到叶子节点（决胜局面）
+    if (chessContext->stage == NineChess::GAME_OVER) {
+        // 局面评估
+        node->value = evaluate(node);
+        
+        // 为争取速胜，value 值 +- 深度
+        if (node->value > 0)
+            node->value += depth;
+        else
+            node->value -= depth;
+
+#ifdef DEBUG_AB_TREE
+        node->isLeaf = true;
+#endif
+
+#ifdef HASH_MAP_ENABLE
+        // 记录确切的哈希值
+        recordHash(node->value, alpha, beta, depth, hashfEXACT, hash);
+#endif
+
+        return node->value;
+    }
+
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
-    uint64_t hash = chessTemp.getHash();
-    node->hash = hash;
-
     //hashMapMutex.lock();
 
     // 从地址里一定可以读取出东西，found 恒定为 true?
-    bool found = findHash(hash, hashValue); 
+    bool found = findHash(hash, hashValue);
 
     if (node != rootNode &&
         hashValue.hash == hash &&   // 校验放在这里?
@@ -672,29 +696,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     //hashMapMutex.unlock();
 #endif /* HASH_MAP_ENABLE */
-
-    // 搜索到叶子节点（决胜局面）
-    if (chessContext->stage == NineChess::GAME_OVER) {
-        // 局面评估
-        node->value = evaluate(node);
-        
-        // 为争取速胜，value 值 +- 深度
-        if (node->value > 0)
-            node->value += depth;
-        else
-            node->value -= depth;
-
-#ifdef DEBUG_AB_TREE
-        node->isLeaf = true;
-#endif
-
-#ifdef HASH_MAP_ENABLE
-        // 记录确切的哈希值
-        recordHash(node->value, alpha, beta, depth, hashfEXACT, hash);
-#endif
-
-        return node->value;
-    }
 
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
