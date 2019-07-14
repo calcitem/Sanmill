@@ -35,7 +35,8 @@ void AiThread::setAi(const NineChess &chess)
     ai_ab.setChess(*(this->chess_));
 
 #ifdef HASH_MAP_ENABLE
-    //ai_ab.clearHashMap();
+    // TODO: 下第二盘时不明原因变慢，临时方案为清除哈希表
+    ai_ab.clearHashMap();
 #endif
 
     mutex.unlock();

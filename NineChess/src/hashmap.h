@@ -97,16 +97,19 @@ namespace CTSL //Concurrent Thread Safe Library
 #endif
             }   
 
-#ifndef DISABLE_HASHBUCKET
+
             //Function to clean up the hasp map, i.e., remove all entries from it
             void clear()
             {
+#ifdef DISABLE_HASHBUCKET
+                memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
+#else
                 for(size_t i = 0; i < hashSize; i++)
                 {
                     (hashTable[i]).clear();
                 }
-            }  
 #endif
+            } 
 
         private:
 #ifdef DISABLE_HASHBUCKET
