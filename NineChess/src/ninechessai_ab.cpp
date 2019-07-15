@@ -594,12 +594,18 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 #ifdef IDS_SUPPORT
     // 深化迭代
     for (int i = 2; i < d; i += 2) {
+#ifdef HASH_MAP_ENABLE
+        clearHashMap();
+#endif
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
 
     qDebug() << "IDS Time: " << time1.elapsed() / 1000.0 << "s";
 #endif /* IDS_SUPPORT */
 
+#ifdef HASH_MAP_ENABLE
+    clearHashMap();
+#endif
     value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);
 
     qDebug() << "Total Time: " << time1.elapsed() / 1000.0 << "s\n";
@@ -835,7 +841,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         // 否则剪枝返回
         if (alpha >= beta) {
             node->pruned = true;
+#ifdef HASH_MAP_ENABLE
             hashf = hashfBETA; // ????
+#endif
             break;
         }            
     }
