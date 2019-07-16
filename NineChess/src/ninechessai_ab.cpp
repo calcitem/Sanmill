@@ -607,7 +607,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
             openingBook.push_back(chess_.getHash());
         } else {
             // 暂时在此处清空开局库
-            clearBookHashMap();
+            openingBook.clear();
         }
     }
 #endif
@@ -652,6 +652,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 临时增加的深度，克服水平线效应用
     int epsilon = 0;
+
+#ifdef BOOK_LEARNING
+    bool hitBook = false;   // 是否在开局库中出现过
+#endif
 
 #ifdef HASH_MAP_ENABLE
     // 哈希值
@@ -711,10 +715,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 检索开局库
     HashValue hashValue;
 
-    if (chessContext->turn == NineChess::PLAYER1 &&
-        findBookHash(hash, hashValue)) {
-        // 对走棋一方扣分
-        node->value--;
+    if(findBookHash(hash, hashValue)) {
+        if (chessContext->turn == NineChess::PLAYER2) {
+            // 是否需对后手扣分
+            hitBook = true;
+        }
     }
 #endif
 
@@ -939,6 +944,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 排序子节点树
     sortLegalMoves(node);   // (13%)
+
+#ifdef BOOK_LEARNING
+    if (hitBook) {
+        node->value++;
+    }
+#endif
 
     // 返回
     return node->value;
