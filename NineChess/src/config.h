@@ -9,7 +9,9 @@
 
 #define IDS_SUPPORT
 
-#define HASH_MAP_ENABLE
+//#define HASH_MAP_ENABLE
+
+#define BOOK_LEARNING
 
 //#define DONOT_DELETE_TREE
 
