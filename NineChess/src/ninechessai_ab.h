@@ -37,7 +37,9 @@ public:
         hashfBETA = 2,
         hashfEXACT = 3
     };
+#endif
 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     // 定义哈希表的值
     struct HashValue
     {
@@ -60,8 +62,10 @@ public:
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
         bool pruned;                    // 是否在此处剪枝
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
         uint64_t hash;                  //  哈希值
+#endif
+#ifdef HASH_MAP_ENABLE
         bool isHash;                    //  是否从 Hash 读取
 #endif /* HASH_MAP_ENABLE */
 #ifdef DEBUG_AB_TREE
@@ -119,7 +123,7 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     // 清空哈希表
     void clearHashMap();
 #endif
@@ -170,8 +174,14 @@ protected:
 
     // 插入哈希表
     int recordHash(const HashValue &hashValue);
-    int NineChessAi_ab::recordHash(int value, int alpha, int beta, int depth, HashType type, uint64_t hash);
-#endif
+    int recordHash(int value, int alpha, int beta, int depth, HashType type, uint64_t hash);
+#endif // HASH_MAP_ENABLE
+
+#ifdef BOOK_LEARNING
+    bool findBookHash(uint64_t hash, HashValue &hashValue);
+    int recordBookHash(const HashValue &hashValue);
+    void clearBookHashMap();
+#endif // BOOK_LEARNING
 
 private:
     // 原始模型

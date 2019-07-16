@@ -20,7 +20,12 @@ using namespace CTSL;
 #ifdef HASH_MAP_ENABLE
 static constexpr int hashsize = 0x8000000; // 128M
 HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(hashsize);
-#endif
+#endif // HASH_MAP_ENABLE
+
+#ifdef BOOK_LEARNING
+static constexpr int bookHashsize = 0x8000000; // 128M
+HashMap<uint64_t, NineChessAi_ab::HashValue> bookHashMap(bookHashsize);
+#endif // BOOK_LEARNING
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
@@ -63,8 +68,11 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 
     newNode->pruned = false;
 
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     newNode->hash = 0;
+#endif
+
+#ifdef HASH_MAP_ENABLE
     newNode->isHash = false;
 #endif
 
@@ -370,12 +378,16 @@ void NineChessAi_ab::deleteTree(Node *node)
 
 void NineChessAi_ab::setChess(const NineChess &chess)
 {
-#ifdef HASH_MAP_ENABLE
     // 如果规则改变，重建hashmap
     if (strcmp(this->chess_.currentRule.name, chess.currentRule.name)) {
+#ifdef HASH_MAP_ENABLE
         clearHashMap();
+#endif // HASH_MAP_ENABLE
+
+#ifdef BOOK_LEARNING
+        clearBookHashMap();
+#endif // BOOK_LEARNING
     }
-#endif
 
     this->chess_ = chess;
     chessTemp = chess;
@@ -633,7 +645,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 哈希类型
     enum HashType hashf = hashfALPHA;
+#endif
 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     // 获取哈希值
     uint64_t hash = chessTemp.getHash();
     node->hash = hash;
@@ -649,6 +663,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     node->visited = true;
 #ifdef HASH_MAP_ENABLE
     node->isHash = false;
+#endif
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     node->hash = 0;
 #endif // HASH_MAP_ENABLE
 #endif // DEBUG_AB_TREE
@@ -732,8 +748,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         }
 
         minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
-
-
 
         if (alpha >= beta) {
             node->value = hashValue.value;
@@ -1043,7 +1057,7 @@ bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
     if (iter != hashmap.end())
         return iter;
 
-    // 变换局面，查找hash
+    // 变换局面，查找hash (废弃)
     chessTempShift = chessTemp;
     for (int i = 0; i < 2; i++) {
         if (i)
@@ -1062,6 +1076,10 @@ bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
     }
 #endif
 }
+
+#endif
+
+#ifdef HASH_MAP_ENABLE
 
 int NineChessAi_ab::recordHash(const HashValue &hashValue)
 {
@@ -1099,3 +1117,27 @@ void NineChessAi_ab::clearHashMap()
     //hashMapMutex.unlock();
 }
 #endif /* HASH_MAP_ENABLE */
+
+#ifdef BOOK_LEARNING
+
+bool NineChessAi_ab::findBookHash(uint64_t hash, HashValue &hashValue)
+{
+    return bookHashMap.find(hash, hashValue);
+}
+
+int NineChessAi_ab::recordBookHash(const HashValue &hashValue)
+{
+    //hashMapMutex.lock();
+    bookHashMap.insert(hashValue.hash, hashValue);
+    //hashMapMutex.unlock();
+
+    return 0;
+}
+
+void NineChessAi_ab::clearBookHashMap()
+{
+    //hashMapMutex.lock();
+    bookHashMap.clear();
+    //hashMapMutex.unlock();
+}
+#endif // BOOK_LEARNING

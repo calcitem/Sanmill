@@ -184,7 +184,7 @@ public:
          */
         int board[N_POINTS];
 
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
         // 局面的哈希值
         uint64_t hash;
 
@@ -493,7 +493,7 @@ protected:
     bool place(int pos);
     bool capture(int pos);
 
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     // hash相关
     uint64_t getHash();
     uint64_t revertHash(int pos);
