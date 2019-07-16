@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include "ninechess.h"
+#include "ninechessai_ab.h"
 
 // 对静态常量数组的定义要放在类外，不要放在头文件
 // 预定义的4套规则
@@ -1514,6 +1515,9 @@ bool NineChess::win()
         context.stage = GAME_OVER;
         sprintf(cmdline, "Player1 win!");
         cmdlist.push_back(string(cmdline));
+#ifdef BOOK_LEARNING
+        NineChessAi_ab::recordOpeningBookToHashMap();  // 暂时只对后手的失败记录到开局库
+#endif /* BOOK_LEARNING */
         return true;
     }
     // 如果摆满了，根据规则判断胜负
@@ -1549,6 +1553,9 @@ bool NineChess::win()
                 context.stage = GAME_OVER;
                 sprintf(cmdline, "Player2 no way to go. Player1 win!");
                 cmdlist.push_back(string(cmdline));
+#ifdef BOOK_LEARNING
+                NineChessAi_ab::recordOpeningBookToHashMap();  // 暂时只对后手的失败记录到开局库
+#endif /* BOOK_LEARNING */
                 return true;
             }
         }

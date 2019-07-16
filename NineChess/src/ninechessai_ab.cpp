@@ -25,6 +25,7 @@ HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(hashsize);
 #ifdef BOOK_LEARNING
 static constexpr int bookHashsize = 0x8000000; // 128M
 HashMap<uint64_t, NineChessAi_ab::HashValue> bookHashMap(bookHashsize);
+vector<uint64_t> openingBook;
 #endif // BOOK_LEARNING
 
 NineChessAi_ab::NineChessAi_ab() :
@@ -385,7 +386,8 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 #endif // HASH_MAP_ENABLE
 
 #ifdef BOOK_LEARNING
-        clearBookHashMap();
+        //clearBookHashMap();
+        //openingBook.clear();
 #endif // BOOK_LEARNING
     }
 
@@ -597,6 +599,19 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 
     time1.start();
 
+#ifdef BOOK_LEARNING
+    if (chess_.getStage() == NineChess::GAME_PLACING)
+    {
+        if (chess_.context.nPiecesInHand_1 < 8) {
+            // 不是一开始就记录到开局库
+            openingBook.push_back(chess_.getHash());
+        } else {
+            // 暂时在此处清空开局库
+            clearBookHashMap();
+        }
+    }
+#endif
+
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
     shuffleMovePriorityTable();
@@ -691,6 +706,17 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
         return node->value;
     }
+
+#ifdef BOOK_LEARNING
+    // 检索开局库
+    HashValue hashValue;
+
+    if (chessContext->turn == NineChess::PLAYER1 &&
+        findBookHash(hash, hashValue)) {
+        // 对走棋一方扣分
+        node->value--;
+    }
+#endif
 
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
@@ -1139,5 +1165,24 @@ void NineChessAi_ab::clearBookHashMap()
     //hashMapMutex.lock();
     bookHashMap.clear();
     //hashMapMutex.unlock();
+}
+
+void NineChessAi_ab::recordOpeningBookToHashMap()
+{
+    HashValue hashValue;
+
+    for (auto iter = openingBook.begin(); iter != openingBook.end(); ++iter)
+    {
+#if 0
+        if (findBookHash(*iter, hashValue))
+        {
+        }
+#endif
+        memset(&hashValue, 0, sizeof(HashValue));
+        hashValue.hash = *iter;
+        recordBookHash(hashValue);  // 暂时使用直接覆盖策略
+    }
+
+    openingBook.clear();
 }
 #endif // BOOK_LEARNING

@@ -47,6 +47,7 @@ public:
         int depth;
         int alpha;
         int beta;
+        //int power;
         uint64_t hash;
         enum HashType type;
     };
@@ -132,6 +133,13 @@ public:
     static bool nodeLess(const Node *first, const Node *second);
     static bool nodeGreater(const Node *first, const Node *second);
 
+#ifdef BOOK_LEARNING
+    bool findBookHash(uint64_t hash, HashValue &hashValue);
+    static int recordBookHash(const HashValue &hashValue);
+    void clearBookHashMap();
+    static void recordOpeningBookToHashMap();
+#endif // BOOK_LEARNING
+
 protected:
     // 生成所有合法的着法并建立子节点
     void generateLegalMoves(Node *node);
@@ -176,12 +184,6 @@ protected:
     int recordHash(const HashValue &hashValue);
     int recordHash(int value, int alpha, int beta, int depth, HashType type, uint64_t hash);
 #endif // HASH_MAP_ENABLE
-
-#ifdef BOOK_LEARNING
-    bool findBookHash(uint64_t hash, HashValue &hashValue);
-    int recordBookHash(const HashValue &hashValue);
-    void clearBookHashMap();
-#endif // BOOK_LEARNING
 
 private:
     // 原始模型
