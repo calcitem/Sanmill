@@ -28,28 +28,6 @@ using namespace CTSL;
 class NineChessAi_ab
 {
 public:
-#ifdef HASH_MAP_ENABLE
-    // 定义哈希值的类型
-    enum HashType
-    {
-        hashfEMPTY = 0,
-        hashfALPHA = 1,
-        hashfBETA = 2,
-        hashfEXACT = 3
-    };
-
-    // 定义哈希表的值
-    struct HashValue
-    {
-        int value;
-        int depth;
-        int alpha;
-        int beta;
-        uint64_t hash;
-        enum HashType type;
-    };
-#endif /* HASH_MAP_ENABLE */
-
     // 定义一个节点结构体
     struct Node
     {
@@ -100,6 +78,27 @@ public:
         }
 #endif
     };
+
+#ifdef HASH_MAP_ENABLE
+    // 定义哈希值的类型
+    enum HashType
+    {
+        hashfEMPTY = 0,
+        hashfALPHA = 1, // 结点的值最多是 value
+        hashfBETA = 2,  // 结点的值至少是 value
+        hashfEXACT = 3  // 结点值 value 是准确值
+    };
+
+    // 定义哈希表的值
+    struct HashValue
+    {
+        int value;
+        int depth;
+        uint64_t hash;
+        enum HashType type;
+        Node *bestChild;
+    };
+#endif /* HASH_MAP_ENABLE */
 
 public:
     NineChessAi_ab();
@@ -170,7 +169,7 @@ protected:
 
     // 插入哈希表
     int recordHash(const HashValue &hashValue);
-    int NineChessAi_ab::recordHash(int value, int alpha, int beta, int depth, HashType type, uint64_t hash);
+    int recordHash(int value, int depth, HashType type, uint64_t hash);
 #endif
 
 private:

@@ -604,7 +604,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 #endif /* IDS_SUPPORT */
 
 #ifdef HASH_MAP_ENABLE
-    clearHashMap();
+    clearHashMap();  // 每次走子前清空哈希表
 #endif
     value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);
 
@@ -632,51 +632,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     memset(&hashValue, 0, sizeof(hashValue));
 
     // 哈希类型
-    enum HashType hashf = hashfALPHA;
+    enum HashType hashf = hashfEXACT;
 
     // 获取哈希值
     uint64_t hash = chessTemp.getHash();
     node->hash = hash;
-#endif
 
-#ifdef DEBUG_AB_TREE
-    node->depth = depth;
-    node->root = rootNode;
-    // node->player = chessContext->turn;
-    // 初始化
-    node->isLeaf = false;
-    node->isTimeout = false;
-    node->visited = true;
-#ifdef HASH_MAP_ENABLE
-    node->isHash = false;
-    node->hash = 0;
-#endif // HASH_MAP_ENABLE
-#endif // DEBUG_AB_TREE
-
-    // 搜索到叶子节点（决胜局面） TODO: 是否应该先检索哈希?
-    if (chessContext->stage == NineChess::GAME_OVER) {
-        // 局面评估
-        node->value = evaluate(node);
-        
-        // 为争取速胜，value 值 +- 深度
-        if (node->value > 0)
-            node->value += depth;
-        else
-            node->value -= depth;
-
-#ifdef DEBUG_AB_TREE
-        node->isLeaf = true;
-#endif
-
-#ifdef HASH_MAP_ENABLE
-        // 记录确切的哈希值
-        recordHash(node->value, alpha, beta, depth, hashfEXACT, hash);
-#endif
-
-        return node->value;
-    }
-
-#ifdef HASH_MAP_ENABLE
     // 检索 hashmap
     //hashMapMutex.lock();
 
@@ -689,14 +650,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         node->isHash = true;
         node->value = probeVal;
 
-//         // TODO: 有必要?
-//         if (chessContext->turn == NineChess::PLAYER1)
-//             node->value += hashValue.depth - depth;
-//         else
-//             node->value -= hashValue.depth - depth;
+        //         // TODO: 有必要?
+        //         if (chessContext->turn == NineChess::PLAYER1)
+        //             node->value += hashValue.depth - depth;
+        //         else
+        //             node->value -= hashValue.depth - depth;
 
         return node->value;
-    }
+}
 
 #if 0
     if (node != rootNode &&
@@ -745,6 +706,43 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     //hashMapMutex.unlock();
 #endif /* HASH_MAP_ENABLE */
 
+#ifdef DEBUG_AB_TREE
+    node->depth = depth;
+    node->root = rootNode;
+    // node->player = chessContext->turn;
+    // 初始化
+    node->isLeaf = false;
+    node->isTimeout = false;
+    node->visited = true;
+#ifdef HASH_MAP_ENABLE
+    node->isHash = false;
+    node->hash = 0;
+#endif // HASH_MAP_ENABLE
+#endif // DEBUG_AB_TREE
+
+    // 搜索到叶子节点（决胜局面） TODO: 是否应该先检索哈希?
+    if (chessContext->stage == NineChess::GAME_OVER) {
+        // 局面评估
+        node->value = evaluate(node);
+        
+        // 为争取速胜，value 值 +- 深度
+        if (node->value > 0)
+            node->value += depth;
+        else
+            node->value -= depth;
+
+#ifdef DEBUG_AB_TREE
+        node->isLeaf = true;
+#endif
+
+#ifdef HASH_MAP_ENABLE
+        // 记录确切的哈希值
+        recordHash(node->value, depth, hashfEXACT, hash);
+#endif
+
+        return node->value;
+    }
+
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
         // 局面评估
@@ -764,7 +762,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
-        recordHash(node->value, alpha, beta, depth, hashfEXACT, hash);
+        recordHash(node->value, depth, hashfEXACT, hash);
 #endif
 
         return node->value;
@@ -798,7 +796,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
 
         // 递归 Alpha-Beta 剪枝
-        value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);  // (98%)
+        value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
         // 上下文弹出栈，撤销着法
         chessTemp.context = contextStack.top(); // (5%)
@@ -812,10 +810,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
             // α 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
             // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
-            alpha = std::max(value, alpha);
+            //alpha = std::max(value, alpha);
+
+            if (value > alpha) {
 #ifdef HASH_MAP_ENABLE
-            hashf = hashfALPHA; // ????
+                hashf = hashfALPHA; // ????
 #endif
+                alpha = value;
+            }
 
         } else {
 
@@ -832,9 +834,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // 如果某个着法的结果大于或等于 β，那么整个结点就作废了，因为对手不希望走到这个局面，而它有别的着法可以避免到达这个局面。
             // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
             beta = std::min(value, beta);
+
+            if (value < beta)
+            {
 #ifdef HASH_MAP_ENABLE
-            hashf = hashfBETA; // ????
+                hashf = hashfBETA; // ????
 #endif
+                beta = value;
+            }
         }
 
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
@@ -843,13 +850,13 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             node->pruned = true;
 
 #ifdef HASH_MAP_ENABLE
-            hashf = hashfBETA; // ????
+            //hashf = hashfBETA; // ????
 #endif
             break;
         }            
     }
 
-    node->value = minMax;
+    node->value = minMax; 
 
 #ifdef DEBUG_AB_TREE
     node->alpha = alpha;
@@ -867,7 +874,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
     // 记录不确切的哈希值
-    recordHash(node->value, alpha, beta, depth, hashf, hash);
+    recordHash(node->value, depth, hashf, hash);
 
 #if 0
     if (hashValue.hash != hash) {
@@ -1000,29 +1007,32 @@ const char *NineChessAi_ab::move2string(int move)
 #ifdef HASH_MAP_ENABLE
 int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta)
 {
+    const int valUNKNOWN = INT32_MIN;
     HashValue hashValue;
     
     if (hashmap.find(hash, hashValue) == false) {
-        return INT32_MIN;
+        return valUNKNOWN;
     }
 
     if (depth > hashValue.depth) {
-        return INT32_MIN;
+        goto out;
     }
 
     if (hashValue.type == hashfEXACT) {
         return hashValue.value;
     }
-    if ((hashValue.type == hashfALPHA) && (hashValue.value <= alpha)) {
-        //return alpha;
-        //return hashValue.value;
+    if ((hashValue.type == hashfALPHA) && // 最多是 hashValue.value
+        (hashValue.value <= alpha)) {
+        return alpha;
     }
-    if ((hashValue.type == hashfBETA) && (hashValue.value >= beta)) {
-        //return beta;
-        //return hashValue.value;
+    if ((hashValue.type == hashfBETA) && // 至少是 hashValue.value
+        (hashValue.value >= beta)) {
+        return beta;
     }
 
-    return INT32_MIN;
+out:
+    //rememberBestMove();
+    return valUNKNOWN;
 }
 
 bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
@@ -1071,17 +1081,16 @@ int NineChessAi_ab::recordHash(const HashValue &hashValue)
     return 0;
 }
 
-int NineChessAi_ab::recordHash(int value, int alpha, int beta, int depth, HashType type, uint64_t hash)
+int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t hash)
 {
 
     //hashMapMutex.lock();
     HashValue hashValue;
     hashValue.value = value;
-    hashValue.alpha = alpha;
-    hashValue.beta = beta;
     hashValue.depth = depth;
     hashValue.type = type;
     hashValue.hash = hash;
+    //hashValue.bestChild = getBestChild();
 
     hashmap.insert(hashValue.hash, hashValue);
     
