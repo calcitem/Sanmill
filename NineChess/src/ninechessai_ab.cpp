@@ -893,8 +893,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
 #endif /* HASH_MAP_ENABLE */
 
+#ifdef IDS_SUPPORT
     // 排序子节点树
     sortLegalMoves(node);   // (13%)
+#endif // IDS_SUPPORT
 
     // 返回
     return node->value;
