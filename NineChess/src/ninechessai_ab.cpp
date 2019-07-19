@@ -47,10 +47,10 @@ NineChessAi_ab::~NineChessAi_ab()
 
 void NineChessAi_ab::buildRoot()
 {
-    rootNode = addNode(nullptr, 0, 0, NineChess::NOBODY);
+    rootNode = addNode(nullptr, 0, 0, 0, NineChess::NOBODY);
 }
 
-struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move, enum NineChess::Player player)
+struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move, int bestMove, enum NineChess::Player player)
 {
     Node *newNode = new Node;   // (10%)
 
@@ -105,6 +105,11 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
         parent->children.push_back(newNode); // (7%)
     }
 
+    // 把哈希得到的最优着法换到首位
+    if (bestMove != 0 && move == bestMove) {
+        std::swap(parent->children[0], parent->children[parent->children.size() - 1]);
+    }
+
     return newNode;
 }
 
@@ -149,7 +154,7 @@ void NineChessAi_ab::shuffleMovePriorityTable()
 #endif // #ifdef RANDOM_MOVE
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
-void NineChessAi_ab::generateLegalMoves(Node *node)
+void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
     int pos = 0;
@@ -198,10 +203,10 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
                     if (node == rootNode && chessTemp.context.stage == NineChess::GAME_NOTSTARTED) {
                         // 若为先手，则抢占星位
                         if (NineChess::isStartPoint(pos)) {
-                            addNode(node, INF_VALUE, pos, chessTemp.context.turn);
+                            addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
                         }
                     } else {
-                        addNode(node, 0, pos, chessTemp.context.turn);  // (24%)
+                        addNode(node, 0, pos, bestMove, chessTemp.context.turn);  // (24%)
                     }
                 }
             }
@@ -231,7 +236,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
                         newPos = chessTemp.moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
-                            addNode(node, 0, move, chessTemp.context.turn); // (12%)
+                            addNode(node, 0, move, bestMove, chessTemp.context.turn); // (12%)
                         }
                     }
                 } else {
@@ -239,7 +244,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
                     for (newPos = NineChess::POS_BEGIN; newPos < NineChess::POS_END; newPos++) {
                         if (!chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
-                            addNode(node, 0, move, chessTemp.context.turn);
+                            addNode(node, 0, move, bestMove, chessTemp.context.turn);
                         }
                     }
                 }
@@ -254,7 +259,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
-                    addNode(node, 0, -pos, chessTemp.context.turn);
+                    addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
                 }
             }
         } else {
@@ -263,7 +268,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
                 pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
                     if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
-                        addNode(node, 0, -pos, chessTemp.context.turn); // (6%)
+                        addNode(node, 0, -pos, bestMove, chessTemp.context.turn); // (6%)
                     }
                 }
             }
@@ -277,12 +282,26 @@ void NineChessAi_ab::generateLegalMoves(Node *node)
 
 bool NineChessAi_ab::nodeLess(const Node *first, const Node *second)
 {
-    return first->value < second->value;
+    if (first->value < second->value) {
+        return true;
+    } else if ((first->value == second->value) &&
+        (first->pruned == false && second->pruned == true)) {
+        return true;
+    }
+
+    return false;
 }
 
 bool NineChessAi_ab::nodeGreater(const Node *first, const Node *second)
 {
-    return first->value > second->value;
+    if (first->value > second->value) {
+        return true;
+    } else if ((first->value == second->value) &&
+        (first->pruned == false && second->pruned == true)) {
+        return true;
+    }
+
+    return false;
 }
 
 void NineChessAi_ab::sortLegalMoves(Node *node)
@@ -626,6 +645,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 临时增加的深度，克服水平线效应用
     int epsilon = 0;
 
+    // 子节点的最优着法
+    int bestMove = 0;
+
 #ifdef HASH_MAP_ENABLE
     // 哈希值
     HashValue hashValue;
@@ -643,7 +665,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 从地址里一定可以读取出东西，found 恒定为 true?
     //bool found = findHash(hash, hashValue);
-    int probeVal = probeHash(hash, depth, alpha, beta);
+    int probeVal = probeHash(hash, depth, alpha, beta, bestMove);
 
     if (node != rootNode && probeVal != INT32_MIN) {
         hashHitCount++;
@@ -737,7 +759,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
-        recordHash(node->value, depth, hashfEXACT, hash);
+        recordHash(node->value, depth, hashfEXACT, hash, 0);
 #endif
 
         return node->value;
@@ -762,14 +784,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
-        recordHash(node->value, depth, hashfEXACT, hash);
+        recordHash(node->value, depth, hashfEXACT, hash, 0);
 #endif
 
         return node->value;
     }
 
     // 生成子节点树，即生成每个合理的着法
-    generateLegalMoves(node);   // (43%)
+    generateLegalMoves(node, bestMove);   // (43%)
 
     // 排序子节点树
     //sortChildren(node);
@@ -872,9 +894,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
 #endif // DONOT_DELETE_TREE
 
+#ifdef IDS_SUPPORT
+    // 排序子节点树
+    sortLegalMoves(node);   // (13%)
+#endif // IDS_SUPPORT
+
 #ifdef HASH_MAP_ENABLE
-    // 记录不确切的哈希值
-    recordHash(node->value, depth, hashf, hash);
+// 记录不一定确切的哈希值
+    recordHash(node->value, depth, hashf, hash, node->children[0]->move);
 
 #if 0
     if (hashValue.hash != hash) {
@@ -899,11 +926,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
 #endif
 #endif /* HASH_MAP_ENABLE */
-
-#ifdef IDS_SUPPORT
-    // 排序子节点树
-    sortLegalMoves(node);   // (13%)
-#endif // IDS_SUPPORT
 
     // 返回
     return node->value;
@@ -1005,7 +1027,7 @@ const char *NineChessAi_ab::move2string(int move)
 }
 
 #ifdef HASH_MAP_ENABLE
-int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta)
+int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta, int &bestMove)
 {
     const int valUNKNOWN = INT32_MIN;
     HashValue hashValue;
@@ -1031,7 +1053,7 @@ int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta)
     }
 
 out:
-    //rememberBestMove();
+    bestMove = hashValue.bestMove;
     return valUNKNOWN;
 }
 
@@ -1081,7 +1103,7 @@ int NineChessAi_ab::recordHash(const HashValue &hashValue)
     return 0;
 }
 
-int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t hash)
+int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove)
 {
     // 同样深度或更深时替换
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
@@ -1103,7 +1125,7 @@ int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t has
     hashValue.depth = depth;
     hashValue.type = type;
     hashValue.hash = hash;
-    //hashValue.best = bestMove();
+    hashValue.bestMove = bestMove;
 
     hashmap.insert(hashValue.hash, hashValue);
     

@@ -96,7 +96,7 @@ public:
         int depth;
         uint64_t hash;
         enum HashType type;
-        Node *bestChild;
+        int bestMove;
     };
 #endif /* HASH_MAP_ENABLE */
 
@@ -129,7 +129,7 @@ public:
 
 protected:
     // 生成所有合法的着法并建立子节点
-    void generateLegalMoves(Node *node);
+    void generateLegalMoves(Node *node, int bestMove);
 
     // 对合法的着法降序排序
     void sortLegalMoves(Node *node);
@@ -141,7 +141,7 @@ protected:
     void buildRoot();
 
     // 增加新节点
-    struct Node *addNode(Node *parent, int value, NineChess::move_t move, enum NineChess::Player player);
+    struct Node *addNode(Node *parent, int value, NineChess::move_t move, int bestMove, enum NineChess::Player player);
 
     // 评价函数
     int evaluate(Node *node);
@@ -165,11 +165,11 @@ protected:
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
     bool findHash(uint64_t hash, HashValue &hashValue);
-    int probeHash(uint64_t hash, int depth, int alpha, int beta);
+    int probeHash(uint64_t hash, int depth, int alpha, int beta, int &bestMove);
 
     // 插入哈希表
     int recordHash(const HashValue &hashValue);
-    int recordHash(int value, int depth, HashType type, uint64_t hash);
+    int recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove);
 #endif
 
 private:
