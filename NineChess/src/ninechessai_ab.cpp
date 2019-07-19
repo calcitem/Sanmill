@@ -1083,14 +1083,27 @@ int NineChessAi_ab::recordHash(const HashValue &hashValue)
 
 int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t hash)
 {
+    // 同样深度或更深时替换
+    // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
 
     //hashMapMutex.lock();
     HashValue hashValue;
+    memset(&hashValue, 0, sizeof(HashValue));    
+
+    if (findHash(hash, hashValue) && 
+        hashValue.type != hashfEMPTY &&
+        hashValue.depth > depth) {
+#ifdef DEBUG
+        qDebug() << "Skip recordHash coz depth";
+#endif
+        return -1;
+    }
+
     hashValue.value = value;
     hashValue.depth = depth;
     hashValue.type = type;
     hashValue.hash = hash;
-    //hashValue.bestChild = getBestChild();
+    //hashValue.best = bestMove();
 
     hashmap.insert(hashValue.hash, hashValue);
     
