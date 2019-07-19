@@ -3,13 +3,13 @@
 
 //#define DEBUG
 
-//#define RANDOM_MOVE
+#define RANDOM_MOVE
 
 #define DEAL_WITH_HORIZON_EFFECT
 
 #define IDS_SUPPORT
 
-//#define HASH_MAP_ENABLE
+#define HASH_MAP_ENABLE
 
 //#define DONOT_DELETE_TREE
 
@@ -27,7 +27,7 @@
 //#define DONOT_PLAY_SOUND
 
 #ifdef DEBUG
-#define GAME_PLACING_FIXED_DEPTH  4
+#define GAME_PLACING_FIXED_DEPTH  3
 #endif
 
 #ifdef DEBUG

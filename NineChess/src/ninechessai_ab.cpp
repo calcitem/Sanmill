@@ -632,7 +632,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     memset(&hashValue, 0, sizeof(hashValue));
 
     // 哈希类型
-    enum HashType hashf = hashfEXACT;
+    enum HashType hashf = hashfALPHA;
 
     // 获取哈希值
     uint64_t hash = chessTemp.getHash();
@@ -814,7 +814,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
             if (value > alpha) {
 #ifdef HASH_MAP_ENABLE
-                hashf = hashfALPHA; // ????
+                hashf = hashfEXACT; // ????
 #endif
                 alpha = value;
             }
