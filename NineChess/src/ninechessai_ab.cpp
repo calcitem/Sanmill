@@ -928,11 +928,10 @@ const char* NineChessAi_ab::bestMove()
     return move2string(bestMoves[0]->move);
 }
 
-
-
 const char *NineChessAi_ab::move2string(int move)
 {
     int c, p;
+
     if (move < 0) {
         chessTemp.pos2cp(-move, c, p);
         sprintf(cmdline, "-(%1u,%1u)", c, p);
@@ -945,6 +944,7 @@ const char *NineChessAi_ab::move2string(int move)
         chessTemp.pos2cp(move & 0x007f, c, p);
         sprintf(cmdline, "(%1u,%1u)", c, p);
     }
+
     return cmdline;
 }
 
@@ -983,14 +983,7 @@ out:
 
 bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 {
-    bool ret = false;
-
-    ret = hashmap.find(hash, hashValue);
-
-    if (ret == false)
-        return false;
-
-    return ret;
+    return hashmap.find(hash, hashValue);
 
     // TODO: 变换局面
 #if 0
@@ -1017,9 +1010,6 @@ bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 #endif
 }
 
-#endif
-
-#ifdef HASH_MAP_ENABLE
 int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove)
 {
     // 同样深度或更深时替换
