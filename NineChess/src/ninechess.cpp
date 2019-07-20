@@ -133,6 +133,9 @@ NineChess::NineChess()
 
     // 默认选择第1号规则，即“打三棋”
     setContext(&RULES[1]);
+
+    // 比分归零
+    score_1 = score_2 = 0;
 }
 
 NineChess::NineChess(const NineChess &chess)
@@ -1771,7 +1774,8 @@ void NineChess::setTips()
 {
     switch (context.stage) {
     case NineChess::GAME_NOTSTARTED:
-        tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
+        tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子" +
+            "  比分 " + to_string(score_1) + " : " + to_string(score_2);
         break;
 
     case NineChess::GAME_PLACING:
@@ -1810,15 +1814,17 @@ void NineChess::setTips()
         if (winner == DRAW)
             tips = "超出限定步数，双方平局";
         else if (winner == PLAYER1) {
+            score_1++;
             if (tips.find("无子可走") != tips.npos)
-                tips += "玩家1获胜！";
+                tips += "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
             else
-                tips = "玩家1获胜！";
+                tips = "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
         } else if (winner == PLAYER2) {
+            score_2++;
             if (tips.find("无子可走") != tips.npos)
-                tips += "玩家2获胜！";
+                tips += "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
             else
-                tips = "玩家2获胜！";
+                tips = "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
         }
         break;
 

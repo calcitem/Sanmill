@@ -64,6 +64,10 @@ public:
     // typedef typename std::vector<move_t>::iterator posIterator;
     // typedef typename std::vector<move_t>::const_iterator constPosIterator;
 
+    // 赢盘数
+    int score_1;
+    int score_2;
+
     // 嵌套的规则结构体
     struct Rule
     {

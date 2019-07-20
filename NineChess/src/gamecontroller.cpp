@@ -736,10 +736,12 @@ bool GameController::giveUp()
     if (chess_.whosTurn() == NineChess::PLAYER1) {
         result = chess_.giveup(NineChess::PLAYER1);
         score2++;
+        chess_.score_2++;
     }
     else if (chess_.whosTurn() == NineChess::PLAYER2) {
         result = chess_.giveup(NineChess::PLAYER2);
         score1++;
+        chess_.score_2++;
     }
         
     if (result) {
