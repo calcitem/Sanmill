@@ -11,6 +11,8 @@
 
 #define HASH_MAP_ENABLE
 
+//#define BOOK_LEARNING
+
 //#define DONOT_DELETE_TREE
 
 #define MOVE_PRIORITY_TABLE_SUPPORT

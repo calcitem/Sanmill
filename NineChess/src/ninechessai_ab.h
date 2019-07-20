@@ -38,8 +38,10 @@ public:
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
         bool pruned;                    // 是否在此处剪枝
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
         uint64_t hash;                  //  哈希值
+#endif
+#ifdef HASH_MAP_ENABLE
         bool isHash;                    //  是否从 Hash 读取
 #endif /* HASH_MAP_ENABLE */
 #ifdef DEBUG_AB_TREE
@@ -79,7 +81,7 @@ public:
 #endif
     };
 
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     // 定义哈希值的类型
     enum HashType
     {
@@ -98,7 +100,7 @@ public:
         enum HashType type;
         int bestMove;
     };
-#endif /* HASH_MAP_ENABLE */
+#endif
 
 public:
     NineChessAi_ab();
@@ -118,7 +120,7 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
-#ifdef HASH_MAP_ENABLE
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
     // 清空哈希表
     void clearHashMap();
 #endif
@@ -126,6 +128,13 @@ public:
     // 比较函数
     static bool nodeLess(const Node *first, const Node *second);
     static bool nodeGreater(const Node *first, const Node *second);
+
+#ifdef BOOK_LEARNING
+    bool findBookHash(uint64_t hash, HashValue &hashValue);
+    static int recordBookHash(const HashValue &hashValue);
+    void clearBookHashMap();
+    static void recordOpeningBookToHashMap();
+#endif // BOOK_LEARNING
 
 protected:
     // 生成所有合法的着法并建立子节点
@@ -170,7 +179,7 @@ protected:
     // 插入哈希表
     int recordHash(const HashValue &hashValue);
     int recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove);
-#endif
+#endif  // HASH_MAP_ENABLE
 
 private:
     // 原始模型
