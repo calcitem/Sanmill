@@ -219,13 +219,13 @@ void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
             for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
                 pos = movePriorityTable[i];
                 if (!chessTemp.board_[pos]) {
-                    if (node == rootNode && chessTemp.context.stage == NineChess::GAME_NOTSTARTED) {
+                    if (chessTemp.context.stage != NineChess::GAME_NOTSTARTED || node != rootNode) {
+                        addNode(node, 0, pos, bestMove, chessTemp.context.turn);
+                    } else {
                         // 若为先手，则抢占星位
                         if (NineChess::isStartPoint(pos)) {
                             addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
                         }
-                    } else {
-                        addNode(node, 0, pos, bestMove, chessTemp.context.turn);
                     }
                 }
             }
@@ -660,7 +660,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     int probeVal = probeHash(hash, depth, alpha, beta, bestMove, type);
 
-    if (node != rootNode && probeVal != INT32_MIN) {
+    if (probeVal != INT32_MIN && node != rootNode) {
         hashHitCount++;
         node->isHash = true;
         node->value = probeVal;
@@ -746,7 +746,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     }
 
     // 生成子节点树，即生成每个合理的着法
-    generateLegalMoves(node, bestMove);   // (43%)
+    generateLegalMoves(node, bestMove);
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
