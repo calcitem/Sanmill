@@ -1775,7 +1775,7 @@ void NineChess::setTips()
     switch (context.stage) {
     case NineChess::GAME_NOTSTARTED:
         tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子" +
-            "  比分 " + to_string(score_1) + " : " + to_string(score_2);
+            "  比分 " + to_string(score_1) + ":" + to_string(score_2);
         break;
 
     case NineChess::GAME_PLACING:
