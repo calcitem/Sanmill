@@ -18,7 +18,7 @@
 using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
-static constexpr int hashsize = 0x8000000; // 128M
+static constexpr int hashsize = 0x4000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
 HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(hashsize);
 #endif // HASH_MAP_ENABLE
 
