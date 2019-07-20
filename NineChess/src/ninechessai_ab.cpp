@@ -102,13 +102,18 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 #endif // DEBUG_AB_TREE
 
     if (parent) {
-        parent->children.push_back(newNode); // (7%)
+        if (bestMove != 0 && move == bestMove) {
+            // 把哈希得到的最优着法换到首位
+            parent->children.insert(parent->children.begin(), newNode);
+        } else {
+            parent->children.push_back(newNode); // (7%)
+        }
     }
 
-    // 把哈希得到的最优着法换到首位
-    if (bestMove != 0 && move == bestMove) {
-        std::swap(parent->children[0], parent->children[parent->children.size() - 1]);
-    }
+    
+//     if (bestMove != 0 && move == bestMove) {
+//         std::swap(parent->children[0], parent->children[parent->children.size() - 1]);
+//     }
 
     return newNode;
 }
