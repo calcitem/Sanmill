@@ -123,7 +123,7 @@ NineChess::NineChess()
     // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board;
 
- #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))  
+ #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     //hash_ = &context.hash;
     //zobrist_ = &context.zobrist;
 
@@ -376,15 +376,15 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         // 当前棋局（3×8）
         if (board == nullptr) {
             memset(context.board, 0, sizeof(context.board));
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
             context.hash = 0ull;
 #endif
         } else {
             memcpy(context.board, board, sizeof(context.board));
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
             //context.hash = hash;
 #endif
-        }            
+        }
 
         // 计算盘面子数
         // 棋局，抽象为一个（5×8）的数组，上下两行留空
@@ -419,11 +419,11 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
             context.nPiecesOnBoard_2 > rule->nTotalPiecesEachSide) {
             return false;
         }
-            
+
         if (nPiecesInHand_1 < 0 || nPiecesInHand_2 < 0) {
             return false;
         }
-            
+
         context.nPiecesInHand_1 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_1;
         context.nPiecesInHand_2 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_2;
         context.nPiecesInHand_1 = std::min(nPiecesInHand_1, context.nPiecesInHand_1);
@@ -489,7 +489,7 @@ void NineChess::getContext(struct Rule &rule, int &step, int &flags,
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
     num_NeedRemove = context.nPiecesNeedRemove;
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     //hash = context.hash;
 #endif
 }
@@ -535,7 +535,7 @@ bool NineChess::reset()
     // 用时置零
     elapsedMS_1 = elapsedMS_2 = 0;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 哈希归零
     context.hash = 0;
 #endif
@@ -662,7 +662,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
     // 如非“落子”状态，返回false
     if (context.action != ACTION_PLACE)
         return false;
-    
+
     // 转换为 pos
     int pos = cp2pos(c, p);
 
@@ -693,7 +693,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 
         board_[pos] = piece;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         updateHash(pos);
 #endif
         move_ = pos;
@@ -703,7 +703,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         cmdlist.push_back(string(cmdline));
         currentPos = pos;
         currentStep++;
-        
+
         // 如果决出胜负
         if (win()) {
             setTips();
@@ -784,11 +784,11 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
                 c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
         board_[pos] = board_[currentPos];
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         updateHash(pos);
 #endif
         board_[currentPos] = '\x00';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         revertHash(currentPos);
 #endif
         currentPos = pos;
@@ -860,15 +860,15 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
 
     // 去子（设置禁点）
     if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         revertHash(pos);
 #endif
         board_[pos] = '\x0f';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         updateHash(pos);
 #endif
     } else { // 去子
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         revertHash(pos);
 #endif
         board_[pos] = '\x00';
@@ -1036,7 +1036,7 @@ bool NineChess::place(int pos)
 
         board_[pos] = piece;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         updateHash(pos);
 #endif
         move_ = pos;
@@ -1114,11 +1114,11 @@ bool NineChess::place(int pos)
         // 移子
         move_ = (currentPos << 8) + pos;
         board_[pos] = board_[currentPos];
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         updateHash(pos);
 #endif
         board_[currentPos] = '\x00';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         revertHash(currentPos);
 #endif
         currentPos = pos;
@@ -1184,15 +1184,15 @@ bool NineChess::capture(int pos)
     }
 
     if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         revertHash(pos);
 #endif
         board_[pos] = '\x0f';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         updateHash(pos);
 #endif
     } else { // 去子
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         revertHash(pos);
 #endif
         board_[pos] = '\x00';
@@ -1206,7 +1206,7 @@ bool NineChess::capture(int pos)
     move_ = -pos;
     currentPos = 0;
     context.nPiecesNeedRemove--;
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     updateHash(pos);
 #endif
     //step++;
@@ -1751,7 +1751,7 @@ void NineChess::cleanForbiddenPoints()
         for (int j = 0; j < N_SEATS; j++) {
             pos = i * N_SEATS + j;
             if (board_[pos] == '\x0f') {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
                 revertHash(pos);
 #endif
                 board_[pos] = '\x00';
@@ -2300,7 +2300,7 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
     }
 }
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
 
 #if 0
 /*
@@ -2345,29 +2345,18 @@ void NineChess::constructHash()
 
 uint64_t NineChess::getHash()
 {
-    updateHashMisc(); // 放在此处合适?
+    // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
+    updateHashMisc();
 
     return context.hash;
 }
 
-
-
 uint64_t NineChess::updateHash(int pos)
 {
-#if 0
-    // 这里不做
-    for (int i = POS_BEGIN; i < POS_END; i++) {
-        hash ^= context.zobrist[i][pointType];
-    }
-#endif
-
     // PieceType is board_[pos]
 
-    // 0b00表示空白，0b01=1 表示先手棋子，0b10=2 表示后手棋子，0b11=3 表示禁点
+    // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
     int pointType = (board_[pos] & 0x30) >> 4;
-
-    //context.hashCheckCode |= (temp) << ((pos - 8) * 2 + 6);
-    // TODO: context.hash = 
 
     // 清除或者放置棋子
     context.hash ^= context.zobrist[pos][pointType];
@@ -2395,9 +2384,8 @@ uint64_t NineChess::updateHashMisc()
         context.hash |= 1ULL << 1;
     }
 
-    // TODO: 是否真的需要这几位?
     context.hash |= (uint64_t)context.nPiecesNeedRemove << 2;
-    context.hash |= (uint64_t)context.nPiecesInHand_1 << 4;
+    context.hash |= (uint64_t)context.nPiecesInHand_1 << 4;     // TODO: 或许换 game.stage 也可以？
 
     return context.hash;
 }

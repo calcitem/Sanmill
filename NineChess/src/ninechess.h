@@ -127,16 +127,16 @@ public:
     };
 
     uint64_t rand64(void) {
-        return rand() ^ 
+        return rand() ^
             ((uint64_t)rand() << 15) ^
-            ((uint64_t)rand() << 30) ^ 
-            ((uint64_t)rand() << 45) ^ 
+            ((uint64_t)rand() << 30) ^
+            ((uint64_t)rand() << 45) ^
             ((uint64_t)rand() << 60);
     }
 
     uint64_t rand56(void)
     {
-        return rand64() << 8; 
+        return rand64() << 8;
     }
 
     // 玩家标识, 轮流状态, 胜负标识
@@ -184,7 +184,7 @@ public:
          */
         int board[N_POINTS];
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         // 局面的哈希值
         uint64_t hash;
 
@@ -225,7 +225,7 @@ public:
         // 尚待去除的子数
         int nPiecesNeedRemove;
 
-#if 0        
+#if 0
         本打算用如下的结构体来表示“三连”
         struct Mill {
             char piece1;    // “三连”中最小的棋子
@@ -493,13 +493,13 @@ protected:
     bool place(int pos);
     bool capture(int pos);
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // hash相关
     uint64_t getHash();
     uint64_t revertHash(int pos);
     uint64_t updateHash(int pos);
     uint64_t updateHashMisc();
-#endif /* HASH_MAP_ENABLE */
+#endif
 
 private:
     // 当前使用的规则

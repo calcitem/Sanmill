@@ -1,11 +1,11 @@
 #ifndef HASH_MAP_H_
 #define HASH_MAP_H_
 
-#include <cstdint> 
-#include <iostream> 
+#include <cstdint>
+#include <iostream>
 #include <functional>
-#include <mutex> 
-#include "HashNode.h" 
+#include <mutex>
+#include "HashNode.h"
 
 #include "config.h"
 
@@ -19,7 +19,7 @@ namespace CTSL //Concurrent Thread Safe Library
     //By default, the std::hash function will be used
     //If the hash size is not provided, then a defult size of 1031 will be used
     //The hash table itself consists of an array of hash buckets.
-    //Each hash bucket is implemented as singly linked list with the head as a dummy node created 
+    //Each hash bucket is implemented as singly linked list with the head as a dummy node created
     //during the creation of the bucket. All the hash buckets are created during the construction of the map.
     //Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the hash map
 #ifdef HASH_KEY_DISABLE
@@ -48,13 +48,13 @@ namespace CTSL //Concurrent Thread Safe Library
             //Copy and Move of the HashMap are not supported at this moment
             HashMap(const HashMap&) = delete;
             HashMap(HashMap&&) = delete;
-            HashMap& operator=(const HashMap&) = delete;  
+            HashMap& operator=(const HashMap&) = delete;
             HashMap& operator=(HashMap&&) = delete;
-        
+
             //Function to find an entry in the hash map matching the key.
             //If key is found, the corresponding value is copied into the parameter "value" and function returns true.
             //If key is not found, function returns false.
-            bool find(const K &key, V &value) const 
+            bool find(const K &key, V &value) const
             {
                 size_t hashValue = hashFn(key) & (hashSize - 1) ;
 #ifdef DISABLE_HASHBUCKET
@@ -66,7 +66,7 @@ namespace CTSL //Concurrent Thread Safe Library
                     return true;
                 }
 
-                return false; 
+                return false;
 #else
                 return hashTable[hashValue].find(key, value);
 #endif
@@ -74,7 +74,7 @@ namespace CTSL //Concurrent Thread Safe Library
 
             //Function to insert into the hash map.
             //If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
-            void insert(const K &key, const V &value) 
+            void insert(const K &key, const V &value)
             {
                 size_t hashValue = hashFn(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
@@ -87,7 +87,7 @@ namespace CTSL //Concurrent Thread Safe Library
             }
 
             //Function to remove an entry from the bucket, if found
-            void erase(const K &key) 
+            void erase(const K &key)
             {
                 size_t hashValue = hashFn(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
@@ -95,7 +95,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #else
                 hashTable[hashValue].erase(key);
 #endif
-            }   
+            }
 
 
             //Function to clean up the hasp map, i.e., remove all entries from it
@@ -109,7 +109,7 @@ namespace CTSL //Concurrent Thread Safe Library
                     (hashTable[i]).clear();
                 }
 #endif
-            } 
+            }
 
         private:
 #ifdef DISABLE_HASHBUCKET

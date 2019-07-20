@@ -104,13 +104,13 @@ void BoardItem::paint(QPainter *painter,
     painter->setPen(fontPen);
     QFont font;
     font.setPointSize(4);
-    font.setFamily("Arial");    
-    font.setLetterSpacing(QFont::AbsoluteSpacing, 0);    
+    font.setFamily("Arial");
+    font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     painter->setFont(font);
 
     for (int i = 0; i < 8; i++) {
         char cSeat = '1' + i;
-        QString strSeat(cSeat);        
+        QString strSeat(cSeat);
         painter->drawText(position[(N_RINGS - 1) * N_SEATS + i], strSeat);
     }
 #endif // DRAW_SEAT_NUMBER

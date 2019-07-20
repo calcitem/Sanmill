@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#define DEBUG
+//#define DEBUG_MODE
 
 #define RANDOM_MOVE
 
@@ -17,22 +17,18 @@
 
 #define MOVE_PRIORITY_TABLE_SUPPORT
 
-#ifdef DEBUG
+#ifdef DEBUG_MODE
 #define DONOT_PLAY_SOUND
 #define DEBUG_AB_TREE
 #endif
 
-#ifndef DEBUG
-//#define AB_RANDOM_SORT_CHILDREN
-#endif
-
 //#define DONOT_PLAY_SOUND
 
-#ifdef DEBUG
+#ifdef DEBUG_MODE
 #define GAME_PLACING_FIXED_DEPTH  3
 #endif
 
-#ifdef DEBUG
+#ifdef DEBUG_MODE
 #define GAME_MOVING_FIXED_DEPTH  3
 #else // DEBUG
 #ifdef DEAL_WITH_HORIZON_EFFECT
@@ -46,11 +42,11 @@
 #endif // DEAL_WITH_HORIZON_EFFECT
 #endif // DEBUG
 
-#ifndef DEBUG
+#ifndef DEBUG_MODE
 #define GAME_PLACING_DYNAMIC_DEPTH
 #endif
 
-#ifdef DEBUG
+#ifdef DEBUG_MODE
 #define DRAW_SEAT_NUMBER
 #endif
 
@@ -66,7 +62,5 @@
 
 // 不使用哈希桶
 #define DISABLE_HASHBUCKET
-
-//#define RANDOM_BEST_MOVE
 
 #endif // CONFIG_H

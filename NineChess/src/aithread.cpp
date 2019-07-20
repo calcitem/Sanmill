@@ -1,11 +1,11 @@
 ﻿#include <QDebug>
 #include "aithread.h"
 
-AiThread::AiThread(int id, QObject *parent) : 
-    QThread(parent), 
+AiThread::AiThread(int id, QObject *parent) :
+    QThread(parent),
     chess_(nullptr),
-    waiting_(false), 
-    aiDepth(2), 
+    waiting_(false),
+    aiDepth(2),
     aiTime(120)
 {
     this->id = id;
@@ -35,7 +35,7 @@ void AiThread::setAi(const NineChess &chess)
     ai_ab.setChess(*(this->chess_));
 
 #ifdef HASH_MAP_ENABLE
-    // TODO: 下第二盘时不明原因变慢，临时方案为清除哈希表
+    // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
     ai_ab.clearHashMap();
 #endif
 
@@ -55,7 +55,7 @@ void AiThread::setAi(const NineChess &chess, int depth, int time)
 void AiThread::run()
 {
     // 测试用数据
-#ifdef DEBUG
+#ifdef DEBUG_MODE
     int iTemp = 0;
 #endif
 
@@ -84,14 +84,14 @@ void AiThread::run()
         emit calcStarted();
         mutex.unlock();
 
-        ai_ab.alphaBetaPruning(aiDepth);    // 顶层调用 alphaBetaPruning(aiDepth)
+        ai_ab.alphaBetaPruning(aiDepth);    // 顶层调用ab剪枝
         const char *str = ai_ab.bestMove();
         qDebug() << "Computer:" << str << "\n";
 
         if (strcmp(str, "error!"))
             emit command(str);
 
-#ifdef DEBUG
+#ifdef DEBUG_MODE
         qDebug() << "Thread" << id << "run" << ++iTemp << "times";
 #endif
 

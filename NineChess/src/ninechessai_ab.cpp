@@ -56,20 +56,28 @@ void NineChessAi_ab::buildRoot()
     rootNode = addNode(nullptr, 0, 0, 0, NineChess::NOBODY);
 }
 
-struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, int move, int bestMove, enum NineChess::Player player)
+struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
+    Node *parent,
+    int value,
+    int move,
+    int bestMove,
+    enum NineChess::Player player
+)
 {
-    Node *newNode = new Node;   // (10%)
+    Node *newNode = new Node;
 
     newNode->parent = parent;
     newNode->value = value;
     newNode->move = move;
-    
+
     nodeCount++;
     newNode->id = nodeCount;
 
     newNode->pruned = false;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+    player = player; // Remove warning
+
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     newNode->hash = 0;
 #endif
 
@@ -96,33 +104,29 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(Node *parent, int value, in
 
     if (move < 0) {
         chessTemp.pos2cp(-move, c, p);
-        sprintf(cmd, "-(%1u,%1u)", c, p);   // (3%)
+        sprintf(cmd, "-(%1u,%1u)", c, p);
     } else if (move & 0x7f00) {
         int c1, p1;
         chessTemp.pos2cp(move >> 8, c1, p1);
         chessTemp.pos2cp(move & 0x00ff, c, p);
-        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);     // (7%)
+        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);
     } else {
         chessTemp.pos2cp(move & 0x007f, c, p);
-        sprintf(cmd, "(%1u,%1u)", c, p);    // (12%)
+        sprintf(cmd, "(%1u,%1u)", c, p);
     }
 
     newNode->cmd = cmd;
 #endif // DEBUG_AB_TREE
 
     if (parent) {
-        if (bestMove != 0 && move == bestMove) {
-            // 把哈希得到的最优着法换到首位
-            parent->children.insert(parent->children.begin(), newNode);
+        // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
+        if (bestMove == 0 || move != bestMove) {
+            parent->children.push_back(newNode);
         } else {
-            parent->children.push_back(newNode); // (7%)
+            // 如果启用了置换表并且不是叶子结点，把哈希得到的最优着法换到首位
+            parent->children.insert(parent->children.begin(), newNode);
         }
     }
-
-    
-//     if (bestMove != 0 && move == bestMove) {
-//         std::swap(parent->children[0], parent->children[parent->children.size() - 1]);
-//     }
 
     return newNode;
 }
@@ -173,11 +177,12 @@ void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
     const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
     int pos = 0;
 
-    node->children.reserve(48); // 余量空间 (2%)
+    // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
+    node->children.reserve(48);
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
-   
+
 #else // RANDOM_MOVE
     int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
         17, 19, 21, 23, // 星位
@@ -220,13 +225,13 @@ void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
                             addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
                         }
                     } else {
-                        addNode(node, 0, pos, bestMove, chessTemp.context.turn);  // (24%)
+                        addNode(node, 0, pos, bestMove, chessTemp.context.turn);
                     }
                 }
             }
             break;
-        } 
-        
+        }
+
         // 对于移子阶段
         if (chessTemp.context.stage & NineChess::GAME_MOVING) {
             int newPos, oldPos;
@@ -265,9 +270,9 @@ void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
             }
         }
         break;
-    
+
     // 对于吃子动作
-    case NineChess::ACTION_CAPTURE:        
+    case NineChess::ACTION_CAPTURE:
         if (chessTemp.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
@@ -282,7 +287,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
                 pos = movePriorityTable[i];
                 if (chessTemp.board_[pos] & opponent) {
                     if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
-                        addNode(node, 0, -pos, bestMove, chessTemp.context.turn); // (6%)
+                        addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
                     }
                 }
             }
@@ -322,71 +327,11 @@ void NineChessAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-#ifdef AB_RANDOM_SORT_CHILDREN
     if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        node->children.sort([](Node* n1, Node* n2) {
-            bool ret = false;
-            if (n1->value > n2->value) {
-                ret = true;
-            } else if (n1->value < n2->value) {
-                ret = false;
-            } else if (n1->value == n2->value) {
-                ret = n1->rand < n2->rand;
-            }            
-            return ret;
-            });
-    } else {
-        node->children.sort([](Node* n1, Node* n2) {
-            bool ret = false;
-            if (n1->value < n2->value) {
-                ret = true;
-            } else if (n1->value > n2->value) {
-                ret = false;
-            } else if (n1->value == n2->value) {
-                ret = n1->rand < n2->rand;
-            }
-            return ret;
-    });
-    }
-#else
-
-    if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        //node->children.sort([](Node *n1, Node *n2) {return n1->value > n2->value; });   // (6%)
         std::stable_sort(node->children.begin(), node->children.end(), nodeGreater);
     } else {
-        //node->children.sort([](Node *n1, Node *n2) { return n1->value < n2->value; });  // (6%)
         std::stable_sort(node->children.begin(), node->children.end(), nodeLess);
     }
-
-#if 0
-    if (chessTemp.whosTurn() == NineChess::PLAYER1) {
-        node->children.sort([](Node *n1, Node *n2) {
-            bool ret = false;
-            if (n1->value > n2->value) {
-                ret = true;
-            } else if (n1->value < n2->value) {
-                ret = false;
-            } else if (n1->value == n2->value) {
-                ret = n1->pruned < n2->pruned;
-            }
-            return ret;
-                            });
-    } else {
-        node->children.sort([](Node *n1, Node *n2) {
-            bool ret = false;
-            if (n1->value < n2->value) {
-                ret = true;
-            } else if (n1->value > n2->value) {
-                ret = false;
-            } else if (n1->value == n2->value) {
-                ret = n1->pruned > n2->pruned;
-            }
-            return ret;
-                            });
-    }
-#endif
-
-#endif
 }
 
 void NineChessAi_ab::deleteTree(Node *node)
@@ -410,6 +355,7 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 #endif // HASH_MAP_ENABLE
 
 #ifdef BOOK_LEARNING
+        // TODO: 规则改变时清空学习表
         //clearBookHashMap();
         //openingBook.clear();
 #endif // BOOK_LEARNING
@@ -476,7 +422,7 @@ int NineChessAi_ab::evaluate(Node *node)
 
         // 如果形成去子状态，每有一个可去的子，算100分
         case NineChess::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? 
+            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ?
                 chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * 100;
 #ifdef DEBUG_AB_TREE
@@ -501,7 +447,7 @@ int NineChessAi_ab::evaluate(Node *node)
 
             // 如果形成去子状态，每有一个可去的子，算128分
         case NineChess::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ? 
+            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ?
                 chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * 128;
 #ifdef DEBUG_AB_TREE
@@ -563,7 +509,7 @@ int NineChessAi_ab::evaluate(Node *node)
             node->result = 1;
 #endif
         }
-            
+
         break;
 
     default:
@@ -583,15 +529,11 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
 #ifdef HASH_MAP_ENABLE
-        int depthTable[] =   { 8, 12, 12, 13, 13, 12,  11, 10, 10, 9, 9, 8, 1 };
-        //int depthTable[] = { 2, 11, 11, 11, 11, 10,    9, 8, 8,   8, 7, 7, 1 };
-#else
+        int depthTable[] = { 8, 12, 12, 13, 13, 12,  11, 10, 10, 9, 9, 8, 1 };
+#else // HASH_MAP_ENABLE
         int depthTable[] = { 2, 11, 11, 11, 11, 10,  9, 8, 8, 8, 7, 7, 1 };
-        //int depthTable[] = { 8, 12, 12, 13, 13, 12,  11, 10, 10, 9, 9, 9, 1 };
 #endif // HASH_MAP_ENABLE
-          //int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 9, 8, 8, 7, 1 };
-#else
-        //int depthTable[] = { 2, 12, 12, 12, 12, 11, 10, 9, 8, 8, 8, 7, 1 };
+#else // DEAL_WITH_HORIZON_EFFECT
           int depthTable[] = { 2, 13, 13, 13, 12, 11, 10, 9, 9, 8, 8, 7, 1 };
 #endif // DEAL_WITH_HORIZON_EFFECT
         newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
@@ -600,7 +542,7 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 #endif // GAME_PLACING_DYNAMIC_DEPTH
     }
 
-#ifdef GAME_MOVING_FIXED_DEPTH    
+#ifdef GAME_MOVING_FIXED_DEPTH
     // 走棋阶段将深度调整
     if ((chessTemp.context.stage) & (NineChess::GAME_MOVING)) {
         newDepth = GAME_MOVING_FIXED_DEPTH;
@@ -628,7 +570,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     if (chess_.getStage() == NineChess::GAME_PLACING)
     {
         if (chess_.context.nPiecesInHand_1 < 8) {
-            // 不是一开始就记录到开局库
+            // 不是一开始就记录到开局库, 几着之后再记录
             openingBook.push_back(chess_.getHash());
         } else {
             // 暂时在此处清空开局库
@@ -640,14 +582,14 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
     shuffleMovePriorityTable();
-#endif
-#endif
-    
+#endif // RANDOM_MOVE
+#endif // MOVE_PRIORITY_TABLE_SUPPORT
+
 #ifdef IDS_SUPPORT
     // 深化迭代
     for (int i = 2; i < d; i += 2) {
 #ifdef HASH_MAP_ENABLE
-        clearHashMap();
+        clearHashMap();   // 每次走子前清空哈希表
 #endif
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
@@ -658,6 +600,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 #ifdef HASH_MAP_ENABLE
     clearHashMap();  // 每次走子前清空哈希表
 #endif
+
     value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);
 
     qDebug() << "Total Time: " << time1.elapsed() / 1000.0 << "s\n";
@@ -686,7 +629,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     bool hitBook = false;
 #endif
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 哈希值
     HashValue hashValue;
     memset(&hashValue, 0, sizeof(hashValue));
@@ -703,7 +646,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 检索开局库
     if (findBookHash(hash, hashValue)) {
         if (chessContext->turn == NineChess::PLAYER2) {
-            // 是否需对后手扣分
+            // 是否需对后手扣分 // TODO: 先后手都处理
             hitBook = true;
         }
     }
@@ -712,9 +655,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
     //hashMapMutex.lock();
-
-    // 从地址里一定可以读取出东西，found 恒定为 true?
-    //bool found = findHash(hash, hashValue);
 
     HashType type = hashfEMPTY;
 
@@ -726,59 +666,19 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         node->value = probeVal;
 
         if (type != hashfEXACT && type != hashfEMPTY) {
-            node->pruned = true;
+            node->pruned = true;    // TODO: 是否有用?
         }
 
-        //         // TODO: 有必要?
-        //         if (chessContext->turn == NineChess::PLAYER1)
-        //             node->value += hashValue.depth - depth;
-        //         else
-        //             node->value -= hashValue.depth - depth;
+#if 0
+        // TODO: 有必要针对深度微调 value?
+        if (chessContext->turn == NineChess::PLAYER1)
+            node->value += hashValue.depth - depth;
+        else
+            node->value -= hashValue.depth - depth;
+#endif
 
         return node->value;
 }
-
-#if 0
-    if (node != rootNode &&
-        hashValue.hash == hash &&   // 校验放在这里?
-        hashValue.depth >= depth) { // 大于还是大于或等于?
-#ifdef DEBUG_AB_TREE
-        node->isHash = true;
-#endif
-        // TODO: 处理 Alpha/Beta 确切值
-        if (hashValue.type == hashfEXACT) {
-            hashHitCount++;
-            node->value = hashValue.value;
-            alpha = hashValue.alpha;
-            beta = hashValue.beta;
-
-            // Why? 对 depth 的调整放在这里合适?
-            if (chessContext->turn == NineChess::PLAYER1)
-                node->value += hashValue.depth - depth;
-            else
-                node->value -= hashValue.depth - depth;
-
-            //hashMapMutex::unlock();       
-
-            return node->value;
-        }
-
-        if (hashValue.type == hashfALPHA) {
-            alpha = hashValue.alpha;
-        }
-
-        if (hashValue.type == hashfBETA) {
-            beta = hashValue.beta;
-        }
-
-        minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
-
-        if (alpha >= beta) {
-            node->value = hashValue.value;
-            return node->value;
-        }
-    }
-#endif
 
     //hashMapMutex.unlock();
 #endif /* HASH_MAP_ENABLE */
@@ -797,11 +697,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif // HASH_MAP_ENABLE
 #endif // DEBUG_AB_TREE
 
-    // 搜索到叶子节点（决胜局面） TODO: 是否应该先检索哈希?
+    // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
     if (chessContext->stage == NineChess::GAME_OVER) {
         // 局面评估
         node->value = evaluate(node);
-        
+
         // 为争取速胜，value 值 +- 深度
         if (node->value > 0)
             node->value += depth;
@@ -835,7 +735,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         if (requiredQuit) {
             node->isTimeout = true;
         }
-#endif 
+#endif
 
 #ifdef HASH_MAP_ENABLE
         // 记录确切的哈希值
@@ -848,19 +748,16 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 生成子节点树，即生成每个合理的着法
     generateLegalMoves(node, bestMove);   // (43%)
 
-    // 排序子节点树
-    //sortChildren(node);
-
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
     minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
-        contextStack.push(chessTemp.context);   // (7%)
+        contextStack.push(chessTemp.context);
 
         // 执行着法
-        chessTemp.command(child->move);     // (13%)
+        chessTemp.command(child->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
         // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
@@ -870,13 +767,13 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         else {
             epsilon = 0;
         }
-#endif
+#endif // DEAL_WITH_HORIZON_EFFECT
 
         // 递归 Alpha-Beta 剪枝
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
         // 上下文弹出栈，撤销着法
-        chessTemp.context = contextStack.top(); // (5%)
+        chessTemp.context = contextStack.top();
         contextStack.pop();
 
         if (chessTemp.whosTurn() == NineChess::PLAYER1) {
@@ -887,11 +784,10 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
             // α 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
             // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
-            //alpha = std::max(value, alpha);
 
             if (value > alpha) {
 #ifdef HASH_MAP_ENABLE
-                hashf = hashfEXACT; // ????
+                hashf = hashfEXACT;
 #endif
                 alpha = value;
             }
@@ -910,12 +806,16 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // 如果搜索过程中返回 β 或比 β 更好的值，那就够好的了，走棋的一方就没有机会使用这种策略了。
             // 如果某个着法的结果大于或等于 β，那么整个结点就作废了，因为对手不希望走到这个局面，而它有别的着法可以避免到达这个局面。
             // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
+
+            // TODO: 本意是要删掉这句，忘了删，结果反而棋力没有明显问题，待查
+            // 如果删掉这句，三有时不会堵并且计算效率较低
+            // 有了这句之后，hashf 不可能等于 hashfBETA
             beta = std::min(value, beta);
 
             if (value < beta)
             {
 #ifdef HASH_MAP_ENABLE
-                hashf = hashfBETA; // ????
+                hashf = hashfBETA;
 #endif
                 beta = value;
             }
@@ -926,19 +826,16 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         if (alpha >= beta) {
             node->pruned = true;
 
-#ifdef HASH_MAP_ENABLE
-            //hashf = hashfBETA; // ????
-#endif
             break;
-        }            
+        }
     }
 
-    node->value = minMax; 
+    node->value = minMax;
 
 #ifdef DEBUG_AB_TREE
     node->alpha = alpha;
     node->beta = beta;
-#endif 
+#endif
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
 #ifndef DONOT_DELETE_TREE
@@ -951,35 +848,12 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef IDS_SUPPORT
     // 排序子节点树
-    sortLegalMoves(node);   // (13%)
+    sortLegalMoves(node);
 #endif // IDS_SUPPORT
 
 #ifdef HASH_MAP_ENABLE
-// 记录不一定确切的哈希值
+    // 记录不一定确切的哈希值
     recordHash(node->value, depth, hashf, hash, node->children[0]->move);
-
-#if 0
-    if (hashValue.hash != hash) {
-        // 添加到hashmap
-        HashValue newHashValue;
-        newHashValue.alpha = alpha;
-        newHashValue.beta = beta;
-        newHashValue.depth = depth;
-        newHashValue.type = hashf;
-        newHashValue.hash = hash;
-        newHashValue.value = node->value;
-        recordHash(newHashValue);
-    }
-    // 更新更深层数据
-    else {
-        //hashMapMutex.lock();
-        if (hashValue.depth < depth) {
-            hashValue.value = node->value;
-            hashValue.depth = depth;
-        }
-        //hashMapMutex.unlock();
-    }
-#endif
 #endif /* HASH_MAP_ENABLE */
 
 #ifdef BOOK_LEARNING
@@ -995,7 +869,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 const char* NineChessAi_ab::bestMove()
 {
     vector<Node*> bestMoves;
-    size_t retIndex = 0;
     size_t bestMovesSize = 0;
 
     if ((rootNode->children).size() == 0)
@@ -1046,28 +919,14 @@ const char* NineChessAi_ab::bestMove()
     nodeCount = 0;
     evaluatedNodeCount = 0;
 
-#ifdef RANDOM_BEST_MOVE
-    time_t time0 = time(0);
-
-    if (time0 % 10 == 0) {       
-        retIndex = bestMovesSize > 1 ? 1 : 0;
-    }
-#else
-    retIndex = 0;
-#endif
-
-#ifdef RANDOM_BEST_MOVE
-    qDebug() << "Return" << retIndex << "of" << bestMovesSize << "results" << "(" << time0 << ")";
-#endif
-
 #ifdef HASH_MAP_ENABLE
     qDebug() << "Hash hit count:" << hashHitCount;
 #endif
 
-    return move2string(bestMoves[retIndex]->move);
+    return move2string(bestMoves[0]->move);
 }
 
-    
+
 
 const char *NineChessAi_ab::move2string(int move)
 {
@@ -1092,7 +951,7 @@ int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta, int
 {
     const int valUNKNOWN = INT32_MIN;
     HashValue hashValue;
-    
+
     if (hashmap.find(hash, hashValue) == false) {
         return valUNKNOWN;
     }
@@ -1163,7 +1022,6 @@ bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 int NineChessAi_ab::recordHash(const HashValue &hashValue)
 {
     //hashMapMutex.lock();
-    //HashMap<HashValue>::insert(hashValue.hash, hashValue);
     hashmap.insert(hashValue.hash, hashValue);
     //hashMapMutex.unlock();
 
@@ -1177,12 +1035,12 @@ int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t has
 
     //hashMapMutex.lock();
     HashValue hashValue;
-    memset(&hashValue, 0, sizeof(HashValue));    
+    memset(&hashValue, 0, sizeof(HashValue));
 
-    if (findHash(hash, hashValue) && 
+    if (findHash(hash, hashValue) &&
         hashValue.type != hashfEMPTY &&
         hashValue.depth > depth) {
-#ifdef DEBUG
+#ifdef DEBUG_MODE
         qDebug() << "Skip recordHash coz depth";
 #endif
         return -1;
@@ -1195,7 +1053,7 @@ int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t has
     hashValue.bestMove = bestMove;
 
     hashmap.insert(hashValue.hash, hashValue);
-    
+
     //hashMapMutex.unlock();
 
     return 0;

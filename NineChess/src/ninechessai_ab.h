@@ -38,7 +38,7 @@ public:
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
         bool pruned;                    // 是否在此处剪枝
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
         uint64_t hash;                  //  哈希值
 #endif
 #ifdef HASH_MAP_ENABLE
@@ -50,7 +50,7 @@ public:
         int depth;                      // 深度
         bool evaluated;                 // 是否评估过局面
         int alpha;                      // 当前搜索结点走棋方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义。当函数递归时 Alpha 和 Beta 不但取负数而且要交换位置
-        int beta;                       // 表示对手目前的劣势，这是对手所能承受的最坏结果，Beta 值越大，表示对手劣势越明显，如果当前结点返回  Beta 或比 Beta 更好的值，作为父结点的对方就绝对不会选择这种策略 
+        int beta;                       // 表示对手目前的劣势，这是对手所能承受的最坏结果，Beta 值越大，表示对手劣势越明显，如果当前结点返回  Beta 或比 Beta 更好的值，作为父结点的对方就绝对不会选择这种策略
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
         bool visited;                   // 是否在遍历时访问过
@@ -62,26 +62,9 @@ public:
         int result;                     // 终局结果，-1为负，0为未到终局，1为胜，走棋阶段被闷棋则为 -2/2，布局阶段闷棋为 -3
         struct Node* root;              // 根节点
 #endif /* DEBUG_AB_TREE */
-
-#if 0
-        bool operator < (const Node &another) const
-        {
-            return this->value < another.value;
-        }
-
-        bool operator > (const Node &another) const
-        {
-            return this->value > another.value;
-        }
-
-        bool operator == (const Node &another) const
-        {
-            return this->value == another.value;
-        }
-#endif
     };
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 定义哈希值的类型
     enum HashType
     {
@@ -120,7 +103,7 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)) 
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 清空哈希表
     void clearHashMap();
 #endif
@@ -190,7 +173,7 @@ private:
 
     NineChess::ChessContext *chessContext;
 
-    // hash计算时，各种转换用的模型
+    // hash 计算时，各种转换用的模型
     NineChess chessTempShift;
 
     // 根节点
@@ -231,10 +214,6 @@ private:
 private:
     // 命令行
     char cmdline[32];
-
-#ifdef HASH_MAP_ENABLE
-    //HashMap<struct HashValue> hashmap;
-#endif
 };
 
 #endif
