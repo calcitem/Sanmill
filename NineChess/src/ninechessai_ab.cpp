@@ -178,7 +178,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
     int pos = 0;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
-    node->children.reserve(48);
+    node->children.reserve(24);
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
