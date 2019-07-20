@@ -79,7 +79,6 @@ public:
     {
         int value;
         int depth;
-        uint64_t hash;
         enum HashType type;
         int bestMove;
     };
@@ -160,7 +159,6 @@ protected:
     int probeHash(uint64_t hash, int depth, int alpha, int beta, int &bestMove, HashType &type);
 
     // 插入哈希表
-    int recordHash(const HashValue &hashValue);
     int recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove);
 #endif  // HASH_MAP_ENABLE
 

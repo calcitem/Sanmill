@@ -808,10 +808,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
             // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
 
             // TODO: 本意是要删掉这句，忘了删，结果反而棋力没有明显问题，待查
-            // 如果删掉这句，三有时不会堵并且计算效率较低
+            // 如果删掉这句，启用下面这段代码，则三有时不会堵并且计算效率较低
             // 有了这句之后，hashf 不可能等于 hashfBETA
             beta = std::min(value, beta);
 
+#if 0
             if (value < beta)
             {
 #ifdef HASH_MAP_ENABLE
@@ -819,6 +820,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
                 beta = value;
             }
+#endif
         }
 
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
@@ -1018,16 +1020,6 @@ bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 #endif
 
 #ifdef HASH_MAP_ENABLE
-
-int NineChessAi_ab::recordHash(const HashValue &hashValue)
-{
-    //hashMapMutex.lock();
-    hashmap.insert(hashValue.hash, hashValue);
-    //hashMapMutex.unlock();
-
-    return 0;
-}
-
 int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove)
 {
     // 同样深度或更深时替换
@@ -1049,10 +1041,9 @@ int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t has
     hashValue.value = value;
     hashValue.depth = depth;
     hashValue.type = type;
-    hashValue.hash = hash;
     hashValue.bestMove = bestMove;
 
-    hashmap.insert(hashValue.hash, hashValue);
+    hashmap.insert(hash, hashValue);
 
     //hashMapMutex.unlock();
 
