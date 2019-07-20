@@ -670,12 +670,19 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 从地址里一定可以读取出东西，found 恒定为 true?
     //bool found = findHash(hash, hashValue);
-    int probeVal = probeHash(hash, depth, alpha, beta, bestMove);
+
+    HashType type = hashfEMPTY;
+
+    int probeVal = probeHash(hash, depth, alpha, beta, bestMove, type);
 
     if (node != rootNode && probeVal != INT32_MIN) {
         hashHitCount++;
         node->isHash = true;
         node->value = probeVal;
+
+        if (type != hashfEXACT && type != hashfEMPTY) {
+            node->pruned = true;
+        }
 
         //         // TODO: 有必要?
         //         if (chessContext->turn == NineChess::PLAYER1)
@@ -1032,7 +1039,7 @@ const char *NineChessAi_ab::move2string(int move)
 }
 
 #ifdef HASH_MAP_ENABLE
-int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta, int &bestMove)
+int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta, int &bestMove, HashType &type)
 {
     const int valUNKNOWN = INT32_MIN;
     HashValue hashValue;
@@ -1044,6 +1051,8 @@ int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta, int
     if (depth > hashValue.depth) {
         goto out;
     }
+
+    type = hashValue.type;
 
     if (hashValue.type == hashfEXACT) {
         return hashValue.value;
