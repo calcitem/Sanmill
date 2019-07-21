@@ -1059,10 +1059,10 @@ bool NineChessAi_ab::findBookHash(uint64_t hash, HashValue &hashValue)
     return bookHashMap.find(hash, hashValue);
 }
 
-int NineChessAi_ab::recordBookHash(const HashValue &hashValue)
+int NineChessAi_ab::recordBookHash(uint64_t hash, const HashValue &hashValue)
 {
     //hashMapMutex.lock();
-    bookHashMap.insert(hashValue.hash, hashValue);
+    bookHashMap.insert(hash, hashValue);
     //hashMapMutex.unlock();
 
     return 0;
@@ -1078,6 +1078,7 @@ void NineChessAi_ab::clearBookHashMap()
 void NineChessAi_ab::recordOpeningBookToHashMap()
 {
     HashValue hashValue;
+    uint64_t hash = 0;
 
     for (auto iter = openingBook.begin(); iter != openingBook.end(); ++iter)
     {
@@ -1087,8 +1088,8 @@ void NineChessAi_ab::recordOpeningBookToHashMap()
         }
 #endif
         memset(&hashValue, 0, sizeof(HashValue));
-        hashValue.hash = *iter;
-        recordBookHash(hashValue);  // 暂时使用直接覆盖策略
+        hash = *iter;
+        recordBookHash(hash, hashValue);  // 暂时使用直接覆盖策略
     }
 
     openingBook.clear();

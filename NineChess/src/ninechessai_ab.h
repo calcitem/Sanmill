@@ -113,7 +113,7 @@ public:
 
 #ifdef BOOK_LEARNING
     bool findBookHash(uint64_t hash, HashValue &hashValue);
-    static int recordBookHash(const HashValue &hashValue);
+    static int recordBookHash(uint64_t hash, const HashValue &hashValue);
     void clearBookHashMap();
     static void recordOpeningBookToHashMap();
 #endif // BOOK_LEARNING
