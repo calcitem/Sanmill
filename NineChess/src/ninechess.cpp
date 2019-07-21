@@ -132,6 +132,11 @@ NineChess::NineChess()
     constructHash();
 #endif
 
+#ifdef BOOK_LEARNING
+    // TODO: 开局库文件被加载了多次
+    NineChessAi_ab::loadOpeningBookFileToHashMap();
+#endif
+
     // 默认选择第1号规则，即“打三棋”
     setContext(&RULES[1]);
 

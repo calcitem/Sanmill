@@ -1096,4 +1096,18 @@ void NineChessAi_ab::recordOpeningBookToHashMap()
 
     openingBook.clear();
 }
+
+void NineChessAi_ab::recordOpeningBookHashMapToFile()
+{
+    const QString bookFileName = "opening-book.txt";
+    qDebug() << "Dump Opening Book to file...";
+    bookHashMap.dump(bookFileName);
+}
+
+void NineChessAi_ab::loadOpeningBookFileToHashMap()
+{
+    const QString bookFileName = "opening-book.txt";
+    qDebug() << "Loading Opening Book from file...";
+    bookHashMap.load(bookFileName);
+}
 #endif // BOOK_LEARNING

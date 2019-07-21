@@ -116,6 +116,8 @@ public:
     static int recordBookHash(uint64_t hash, const HashValue &hashValue);
     void clearBookHashMap();
     static void recordOpeningBookToHashMap();
+    static void recordOpeningBookHashMapToFile();
+    static void loadOpeningBookFileToHashMap();
 #endif // BOOK_LEARNING
 
 protected:

@@ -66,6 +66,10 @@ GameController::~GameController()
     ai2.stop();
     ai1.wait();
     ai2.wait();
+
+#ifdef BOOK_LEARNING
+    NineChessAi_ab::recordOpeningBookHashMapToFile();
+#endif /* BOOK_LEARNING */
 }
 
 const QMap<int, QStringList> GameController::getActions()
