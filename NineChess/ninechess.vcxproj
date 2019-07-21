@@ -503,6 +503,7 @@
       </AdditionalInputs>
     </CustomBuild>
     <ClInclude Include="src\ninechessai_ab.h" />
+    <ClInclude Include="src\zobrist.h" />
     <ClInclude Include="ui_ninechesswindow.h" />
   </ItemGroup>
   <ItemGroup>

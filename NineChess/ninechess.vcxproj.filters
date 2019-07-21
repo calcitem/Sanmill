@@ -116,6 +116,9 @@
     <ClInclude Include="src\HashMap.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="src\zobrist.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">

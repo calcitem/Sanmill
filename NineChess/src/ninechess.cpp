@@ -11,6 +11,7 @@
 #include <algorithm>
 #include "ninechess.h"
 #include "ninechessai_ab.h"
+#include <QDebug>
 
 // 对静态常量数组的定义要放在类外，不要放在头文件
 // 预定义的4套规则
@@ -2335,18 +2336,20 @@ void NineChess::constructHash()
 {
     context.hash = 0ull;
 
-    //context.gameMovingHash = rand64();
-    //context.actionCaptureHash = rand64();
-    //context.player2sTurnHash = rand64();
+#include "zobrist.h"
+    memcpy(context.zobrist, zobrist0, sizeof(uint64_t) * NineChess::N_POINTS * NineChess::POINT_TYPE_COUNT);
 
-    //uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
-
+#if 0
     // 预留末8位后续填充局面特征标志
     for (int p = 0; p < N_POINTS; p++) {
+        //qDebug("{\n");
         for (int t = NineChess::POINT_TYPE_EMPTY; t <= NineChess::POINT_TYPE_FORBIDDEN; t++) {
             context.zobrist[p][t] = rand56();
+            //qDebug("%llX, ", context.zobrist[p][t]);
         }
-    }
+        //qDebug("},\n");
+    }      
+#endif
 }
 
 uint64_t NineChess::getHash()

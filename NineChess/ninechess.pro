@@ -43,7 +43,8 @@ HEADERS  += \
     src/ninechesswindow.h \
     src/pieceitem.h \
     src/manuallistview.h \
-    src/aithread.h
+    src/aithread.h \
+    src/zobrist.h
 
 FORMS    += \
     ninechesswindow.ui
