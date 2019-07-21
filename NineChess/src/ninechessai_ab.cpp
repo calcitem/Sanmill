@@ -573,8 +573,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 #ifdef BOOK_LEARNING
     if (chess_.getStage() == NineChess::GAME_PLACING)
     {
-        if (chess_.context.nPiecesInHand_1 == 0) {
-            // 只记录摆棋阶段最后一着的局面
+        if (chess_.context.nPiecesInHand_1 <= 10) {
+            // 开局库只记录摆棋阶段最后的局面
             openingBook.push_back(chess_.getHash());
         } else {
             // 暂时在此处清空开局库
@@ -628,11 +628,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 子节点的最优着法
     int bestMove = 0;
 
-#ifdef BOOK_LEARNING
-    // 是否在开局库中出现过
-    bool hitBook = false;
-#endif
-
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 哈希值
     HashValue hashValue;
@@ -645,16 +640,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     uint64_t hash = chessTemp.getHash();
     node->hash = hash;
 #endif
-
-#ifdef BOOK_LEARNING
-    // 检索开局库
-    if (chessContext->stage == NineChess::GAME_PLACING &&  findBookHash(hash, hashValue)) {
-        if (chessContext->turn == NineChess::PLAYER2) {
-            // 是否需对后手扣分 // TODO: 先后手都处理
-            hitBook = true;
-        }
-    }
-#endif /* BOOK_LEARNING */
 
 #ifdef HASH_MAP_ENABLE
     // 检索 hashmap
@@ -738,6 +723,17 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #ifdef DEBUG_AB_TREE
         if (requiredQuit) {
             node->isTimeout = true;
+        }
+#endif
+
+#ifdef BOOK_LEARNING
+        // 检索开局库
+        if (chessContext->stage == NineChess::GAME_PLACING && findBookHash(hash, hashValue)) {
+            if (chessContext->turn == NineChess::PLAYER2) {
+                // 是否需对后手扣分 // TODO: 先后手都处理
+                node->value += 1;
+                // qDebug() << ">>>>>>>>>>>>>>> New soccer = " << node->value;
+            }
         }
 #endif
 
@@ -861,12 +857,6 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
     // 记录不一定确切的哈希值
     recordHash(node->value, depth, hashf, hash, node->children[0]->move);
 #endif /* HASH_MAP_ENABLE */
-
-#ifdef BOOK_LEARNING
-    if (hitBook) {
-        node->value++;
-    }
-#endif
 
     // 返回
     return node->value;
