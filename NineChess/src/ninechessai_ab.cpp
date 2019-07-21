@@ -648,7 +648,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
 #ifdef BOOK_LEARNING
     // 检索开局库
-    if (findBookHash(hash, hashValue)) {
+    if (chessContext->stage == NineChess::GAME_PLACING &&  findBookHash(hash, hashValue)) {
         if (chessContext->turn == NineChess::PLAYER2) {
             // 是否需对后手扣分 // TODO: 先后手都处理
             hitBook = true;
