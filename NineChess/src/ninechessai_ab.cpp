@@ -23,7 +23,7 @@ HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(hashsize);
 #endif // HASH_MAP_ENABLE
 
 #ifdef BOOK_LEARNING
-static constexpr int bookHashsize = 0x8000000; // 128M
+static constexpr int bookHashsize = 0x1000000; // 16M
 HashMap<uint64_t, NineChessAi_ab::HashValue> bookHashMap(bookHashsize);
 vector<uint64_t> openingBook;
 #endif // BOOK_LEARNING
@@ -573,8 +573,8 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 #ifdef BOOK_LEARNING
     if (chess_.getStage() == NineChess::GAME_PLACING)
     {
-        if (chess_.context.nPiecesInHand_1 < 8) {
-            // 不是一开始就记录到开局库, 几着之后再记录
+        if (chess_.context.nPiecesInHand_1 == 0) {
+            // 只记录摆棋阶段最后一着的局面
             openingBook.push_back(chess_.getHash());
         } else {
             // 暂时在此处清空开局库
@@ -1091,6 +1091,8 @@ void NineChessAi_ab::recordOpeningBookToHashMap()
         hash = *iter;
         recordBookHash(hash, hashValue);  // 暂时使用直接覆盖策略
     }
+
+    //qDebug("Record %d items to Opening Book\n", openingBook.size());
 
     openingBook.clear();
 }
