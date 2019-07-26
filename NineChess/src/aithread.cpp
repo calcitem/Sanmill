@@ -84,12 +84,16 @@ void AiThread::run()
         emit calcStarted();
         mutex.unlock();
 
-        ai_ab.alphaBetaPruning(aiDepth);    // 顶层调用ab剪枝
-        const char *str = ai_ab.bestMove();
-        qDebug() << "Computer:" << str << "\n";
-
-        if (strcmp(str, "error!"))
+        if (ai_ab.alphaBetaPruning(aiDepth) == 3) {
+            qDebug() << "Draw\n";
+            const char *str = "draw";
             emit command(str);
+        } else {
+            const char *str = ai_ab.bestMove();
+            qDebug() << "Computer:" << str << "\n";
+            if (strcmp(str, "error!"))
+                emit command(str);
+        }
 
 #ifdef DEBUG_MODE
         qDebug() << "Thread" << id << "run" << ++iTemp << "times";

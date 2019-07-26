@@ -870,8 +870,8 @@ bool GameController::command(const QString &cmd, bool update /*= true*/)
             ai2.stop();
 
             // 弹框
-            //message = QString::fromStdString(chess_.getTips());
-            //QMessageBox::about(NULL, "游戏结果", message);
+            message = QString::fromStdString(chess_.getTips());
+            QMessageBox::about(NULL, "游戏结果", message);
         }
     }
     return true;

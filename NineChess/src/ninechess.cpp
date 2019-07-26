@@ -124,7 +124,7 @@ NineChess::NineChess()
     // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board;
 
- #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+ #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     //hash_ = &context.hash;
     //zobrist_ = &context.zobrist;
 
@@ -141,7 +141,7 @@ NineChess::NineChess()
     setContext(&RULES[1]);
 
     // 比分归零
-    score_1 = score_2 = 0;
+    score_1 = score_2 = score_draw = 0;
 }
 
 NineChess::NineChess(const NineChess &chess)
@@ -385,14 +385,11 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         // 当前棋局（3×8）
         if (board == nullptr) {
             memset(context.board, 0, sizeof(context.board));
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
             context.hash = 0ull;
 #endif
         } else {
             memcpy(context.board, board, sizeof(context.board));
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
-            //context.hash = hash;
-#endif
         }
 
         // 计算盘面子数
@@ -498,9 +495,6 @@ void NineChess::getContext(struct Rule &rule, int &step, int &flags,
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
     num_NeedRemove = context.nPiecesNeedRemove;
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
-    //hash = context.hash;
-#endif
 }
 
 bool NineChess::reset()
@@ -544,7 +538,7 @@ bool NineChess::reset()
     // 用时置零
     elapsedMS_1 = elapsedMS_2 = 0;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // 哈希归零
     context.hash = 0;
 #endif
@@ -702,7 +696,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 
         board_[pos] = piece;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
         move_ = pos;
@@ -797,7 +791,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         updateHash(pos);
 #endif
         board_[currentPos] = '\x00';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(currentPos);
 #endif
         currentPos = pos;
@@ -873,11 +867,11 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
         revertHash(pos);
 #endif
         board_[pos] = '\x0f';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
     } else { // 去子
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
 #endif
         board_[pos] = '\x00';
@@ -1045,7 +1039,7 @@ bool NineChess::place(int pos)
 
         board_[pos] = piece;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
         move_ = pos;
@@ -1123,11 +1117,11 @@ bool NineChess::place(int pos)
         // 移子
         move_ = (currentPos << 8) + pos;
         board_[pos] = board_[currentPos];
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
         board_[currentPos] = '\x00';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(currentPos);
 #endif
         currentPos = pos;
@@ -1193,15 +1187,15 @@ bool NineChess::capture(int pos)
     }
 
     if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
 #endif
         board_[pos] = '\x0f';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
     } else { // 去子
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
 #endif
         board_[pos] = '\x00';
@@ -1215,7 +1209,7 @@ bool NineChess::capture(int pos)
     move_ = -pos;
     currentPos = 0;
     context.nPiecesNeedRemove--;
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     updateHash(pos);
 #endif
     //step++;
@@ -1328,14 +1322,14 @@ bool NineChess::giveup(Player loser)
         if (loser == PLAYER1) {
             context.stage = GAME_OVER;
             winner = PLAYER2;
-            tips = "玩家1投子认负，玩家2获胜！";
+            tips = "玩家1投子认负。";
             sprintf(cmdline, "Player1 give up!");
             cmdlist.push_back(string(cmdline));
             return true;
         } else if (loser == PLAYER2) {
             context.stage = GAME_OVER;
             winner = PLAYER1;
-            tips = "玩家2投子认负，玩家1获胜！";
+            tips = "玩家2投子认负。";
             sprintf(cmdline, "Player2 give up!");
             cmdlist.push_back(string(cmdline));
             return true;
@@ -1404,6 +1398,21 @@ bool NineChess::command(const char *cmd)
         }
     }
 
+#ifdef THREEFOLD_REPETITION
+    if (!strcmp(cmd, "Threefold Repetition. Draw!")) {
+        return true;
+    }
+    if (!strcmp(cmd, "draw")) {
+        context.stage = GAME_OVER;
+        winner = DRAW;
+        score_draw++;
+        tips = "三次重复局面判和。";
+        sprintf(cmdline, "Threefold Repetition. Draw!");
+        cmdlist.push_back(string(cmdline));
+        return true;
+    }
+#endif
+
     return false;
 }
 
@@ -1469,6 +1478,12 @@ inline long NineChess::update(long time_p /*= -1*/)
 // 是否分出胜负
 bool NineChess::win()
 {
+    return win(false);
+}
+
+// 是否分出胜负
+bool NineChess::win(bool forceDraw)
+{
     if (context.stage == GAME_OVER)
         return true;
     if (context.stage == GAME_NOTSTARTED)
@@ -1482,7 +1497,7 @@ bool NineChess::win()
             elapsedMS_1 = currentRule.maxTimeLedToLose * 60000;
             winner = PLAYER2;
             context.stage = GAME_OVER;
-            tips = "玩家1超时，玩家2获胜！";
+            tips = "玩家1超时判负。";
             sprintf(cmdline, "Time over. Player2 win!");
             cmdlist.push_back(string(cmdline));
             return true;
@@ -1492,7 +1507,7 @@ bool NineChess::win()
             elapsedMS_2 = currentRule.maxTimeLedToLose * 60000;
             winner = PLAYER1;
             context.stage = GAME_OVER;
-            tips = "玩家2超时，玩家1获胜！";
+            tips = "玩家2超时判负。";
             sprintf(cmdline, "Time over. Player1 win!");
             cmdlist.push_back(string(cmdline));
             return true;
@@ -1550,14 +1565,14 @@ bool NineChess::win()
         // 规则要求被“闷”判负，则对手获胜
         if (currentRule.isLoseWhenNoWay) {
             if (context.turn == PLAYER1) {
-                tips = "玩家1无子可走，玩家2获胜！";
+                tips = "玩家1无子可走被闷。";
                 winner = PLAYER2;
                 context.stage = GAME_OVER;
                 sprintf(cmdline, "Player1 no way to go. Player2 win!");
                 cmdlist.push_back(string(cmdline));
                 return true;
             } else {
-                tips = "玩家2无子可走，玩家1获胜！";
+                tips = "玩家2无子可走被闷。";
                 winner = PLAYER1;
                 context.stage = GAME_OVER;
                 sprintf(cmdline, "Player2 no way to go. Player1 win!");
@@ -1568,12 +1583,23 @@ bool NineChess::win()
                 return true;
             }
         }
-        // 否则让棋，由对手走
-        else {
+        else {  // 否则让棋，由对手走            
             changeTurn();
-            return false;
+            return false;           
         }
     }
+
+#ifdef THREEFOLD_REPETITION
+    if (forceDraw)
+    {
+        tips = "重复三次局面和棋！";
+        winner = DRAW;
+        context.stage = GAME_OVER;
+        sprintf(cmdline, "Threefold Repetition. Draw!");
+        cmdlist.push_back(string(cmdline));
+        return true;
+    }
+#endif
 
     return false;
 }
@@ -1760,7 +1786,7 @@ void NineChess::cleanForbiddenPoints()
         for (int j = 0; j < N_SEATS; j++) {
             pos = i * N_SEATS + j;
             if (board_[pos] == '\x0f') {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
                 revertHash(pos);
 #endif
                 board_[pos] = '\x00';
@@ -1781,7 +1807,7 @@ void NineChess::setTips()
     switch (context.stage) {
     case NineChess::GAME_NOTSTARTED:
         tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子" +
-            "  比分 " + to_string(score_1) + ":" + to_string(score_2);
+            "  比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         break;
 
     case NineChess::GAME_PLACING:
@@ -1817,20 +1843,22 @@ void NineChess::setTips()
         break;
 
     case NineChess::GAME_OVER:
-        if (winner == DRAW)
-            tips = "超出限定步数，双方平局";
+        if (winner == DRAW) {
+            tips = "双方平局";
+            score_draw++;
+        }            
         else if (winner == PLAYER1) {
             score_1++;
             if (tips.find("无子可走") != tips.npos)
-                tips += "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
+                tips += "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
             else
-                tips = "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
+                tips = "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         } else if (winner == PLAYER2) {
             score_2++;
             if (tips.find("无子可走") != tips.npos)
-                tips += "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
+                tips += "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
             else
-                tips = "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2);
+                tips = "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         }
         break;
 
@@ -2312,7 +2340,7 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
     }
 }
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
 
 #if 0
 /*
@@ -2403,5 +2431,5 @@ uint64_t NineChess::updateHashMisc()
 
     return context.hash;
 }
-#endif /* HASH_MAP_ENABLE */
+#endif /* HASH_MAP_ENABLE etc. */
 

@@ -38,7 +38,7 @@ public:
         struct Node* parent;           // 父节点
         size_t id;                      // 结点编号
         bool pruned;                    // 是否在此处剪枝
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
         uint64_t hash;                  //  哈希值
 #endif
 #ifdef HASH_MAP_ENABLE

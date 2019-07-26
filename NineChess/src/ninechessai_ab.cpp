@@ -28,6 +28,10 @@ HashMap<uint64_t, NineChessAi_ab::HashValue> bookHashMap(bookHashsize);
 vector<uint64_t> openingBook;
 #endif // BOOK_LEARNING
 
+#ifdef THREEFOLD_REPETITION
+vector<uint64_t> positions;
+#endif
+
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
     requiredQuit(false),
@@ -77,7 +81,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
 
     player = player; // Remove warning
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     newNode->hash = 0;
 #endif
 
@@ -359,6 +363,10 @@ void NineChessAi_ab::setChess(const NineChess &chess)
         //clearBookHashMap();
         //openingBook.clear();
 #endif // BOOK_LEARNING
+
+#ifdef THREEFOLD_REPETITION
+        positions.clear();
+#endif
     }
 
     this->chess_ = chess;
@@ -583,6 +591,28 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     }
 #endif
 
+#ifdef THREEFOLD_REPETITION
+    static int nRepetition = 0;
+
+    if (chess_.getStage() == NineChess::GAME_MOVING) {
+        uint64_t hash = chess_.getHash();
+        
+        if (std::find(positions.begin(), positions.end(), hash) != positions.end()) {
+            nRepetition++;
+            if (nRepetition == 3) {
+                nRepetition = 0;
+                return 3;
+            }
+        } else {
+            positions.push_back(hash);
+        }
+    }
+
+    if (chess_.getStage() == NineChess::GAME_PLACING) {
+        positions.clear();
+    }
+#endif
+
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
     shuffleMovePriorityTable();
@@ -611,7 +641,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 
     // 生成了 Alpha-Beta 树
 
-    return value;
+    return 0;
 }
 
 int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)

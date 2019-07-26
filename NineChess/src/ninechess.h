@@ -67,6 +67,7 @@ public:
     // 赢盘数
     int score_1;
     int score_2;
+    int score_draw;
 
     // 嵌套的规则结构体
     struct Rule
@@ -188,7 +189,7 @@ public:
          */
         int board[N_POINTS];
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         // 局面的哈希值
         uint64_t hash;
 
@@ -481,6 +482,7 @@ protected:
 
     // 是否分出胜负
     bool win();
+    bool win(bool forceDraw);
 
     // 清除所有禁点
     void cleanForbiddenPoints();
@@ -497,7 +499,7 @@ protected:
     bool place(int pos);
     bool capture(int pos);
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // hash相关
     uint64_t getHash();
     uint64_t revertHash(int pos);
