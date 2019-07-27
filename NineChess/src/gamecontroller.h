@@ -1,4 +1,25 @@
-﻿/* 这个类处理场景对象QGraphicsScene
+﻿/*****************************************************************************
+ * Copyright (C) 2018-2019 NineChess authors
+ *
+ * Authors: liuweilhy <liuweilhy@163.com>
+ *          Calcitem <calcitem@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ *****************************************************************************/
+
+/* 这个类处理场景对象QGraphicsScene
  * 它是本程序MVC模型中唯一的控制模块
  * 它不对主窗口中的控件做任何操作，只向主窗口发出信号
  * 本来可以重载QGraphicsScene实现它，还能省去写事件过滤器的麻烦

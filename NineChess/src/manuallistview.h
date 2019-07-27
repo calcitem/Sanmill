@@ -1,4 +1,25 @@
-﻿/* 
+﻿/*****************************************************************************
+ * Copyright (C) 2018-2019 NineChess authors
+ *
+ * Authors: liuweilhy <liuweilhy@163.com>
+ *          Calcitem <calcitem@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ *****************************************************************************/
+
+/* 
  * QListView派生类
  * 之所以要派生这个类，重载sizeHint函数
  * 只是为了让停靠栏（父窗口）在初始时不至于过宽难看
