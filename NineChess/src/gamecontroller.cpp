@@ -32,7 +32,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     timeID(0),
     ruleNo_(-1),
     timeLimit(0),
-    stepsLimit(0),
+    stepsLimit(50),
     ai1(1),
     ai2(2),
     score1(-2),

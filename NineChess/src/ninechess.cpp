@@ -60,7 +60,7 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
     true,       // 摆棋满子（闷棋，只有12子棋才出现）算先手负
     true,       // 走棋阶段不能行动（被“闷”）算负
     false,      // 剩三子时不可以飞棋
-    0,          // 不计步数
+    50,          // 不计步数
     0           // 不计时
 },
 {
@@ -1844,8 +1844,8 @@ void NineChess::setTips()
 
     case NineChess::GAME_OVER:
         if (winner == DRAW) {
-            tips = "双方平局";
             score_draw++;
+            tips = "双方平局！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);            
         }            
         else if (winner == PLAYER1) {
             score_1++;
