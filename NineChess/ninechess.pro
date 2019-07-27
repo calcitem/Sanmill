@@ -18,6 +18,7 @@ CONFIG += C++11 \
 INCLUDEPATH += src
 
 SOURCES += \
+    src/client.cpp \
     src/main.cpp \
     src/boarditem.cpp \
     src/gamecontroller.cpp \
@@ -27,11 +28,13 @@ SOURCES += \
     src/ninechessai_ab.cpp \
     src/ninechesswindow.cpp \
     src/pieceitem.cpp \
-    src/aithread.cpp
+    src/aithread.cpp \
+    src/server.cpp
 
 HEADERS  += \
     src/HashNode.h \
     src/boarditem.h \
+    src/client.h \
     src/config.h \
     src/gamecontroller.h \
     src/gamescene.h \
@@ -44,6 +47,7 @@ HEADERS  += \
     src/pieceitem.h \
     src/manuallistview.h \
     src/aithread.h \
+    src/server.h \
     src/zobrist.h
 
 FORMS    += \

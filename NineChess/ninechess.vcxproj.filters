@@ -84,6 +84,12 @@
     <ClCompile Include="src\ninechessai_ab.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="src\client.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
+    <ClCompile Include="src\server.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -293,6 +299,12 @@
     </QtMoc>
     <QtMoc Include="src\ninechesswindow.h">
       <Filter>View</Filter>
+    </QtMoc>
+    <QtMoc Include="src\client.h">
+      <Filter>Control</Filter>
+    </QtMoc>
+    <QtMoc Include="src\server.h">
+      <Filter>Control</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
