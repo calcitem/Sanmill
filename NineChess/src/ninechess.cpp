@@ -149,6 +149,7 @@ NineChess::NineChess(const NineChess &chess)
     currentRule = chess.currentRule;
     context = chess.context;
     currentStep = chess.currentStep;
+    moveStep = chess.moveStep;
     board_ = context.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
@@ -170,6 +171,7 @@ const NineChess &NineChess::operator=(const NineChess &chess)
     currentRule = chess.currentRule;
     context = chess.context;
     currentStep = chess.currentStep;
+    moveStep = chess.moveStep;
     board_ = context.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
@@ -336,6 +338,7 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
     {
         // 设置步数
         this->currentStep = initialStep;
+        this->moveStep = initialStep;
 
         // 局面阶段标识
         if (flags & GAME_NOTSTARTED) {
@@ -504,6 +507,7 @@ bool NineChess::reset()
 
     // 步数归零
     currentStep = 0;
+    moveStep = 0;
 
     // 局面阶段标识
     context.stage = GAME_NOTSTARTED;
@@ -796,6 +800,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 #endif
         currentPos = pos;
         currentStep++;
+        moveStep++;
         n = addMills(currentPos);
 
         // 中局阶段未成三
@@ -889,6 +894,7 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     currentPos = 0;
     context.nPiecesNeedRemove--;
     currentStep++;
+    moveStep = 0;
     // 去子完成
 
     // 如果决出胜负
@@ -1516,7 +1522,7 @@ bool NineChess::win(bool forceDraw)
 
     // 如果有步数限定
     if (currentRule.maxStepsLedToDraw > 0) {
-        if (currentStep > currentRule.maxStepsLedToDraw) {
+        if (moveStep > currentRule.maxStepsLedToDraw) {
             winner = DRAW;
             context.stage = GAME_OVER;
             sprintf(cmdline, "Steps over. In draw!");

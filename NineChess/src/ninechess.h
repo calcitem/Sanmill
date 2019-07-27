@@ -332,6 +332,12 @@ public:
         return currentStep;
     }
 
+    // 获取从上次吃子开始经历的移动步数
+    int getMoveStep() const
+    {
+        return moveStep;
+    }
+
     // 获取局面阶段标识
     enum GameStage getStage() const
     {
@@ -528,6 +534,9 @@ private:
 
     // 当前步数
     int currentStep;
+
+    // 从走子阶段开始或上次吃子起的步数
+    int moveStep;
 
     // 游戏起始时间
     timeb startTimeb;
