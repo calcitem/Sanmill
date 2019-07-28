@@ -37,6 +37,8 @@
 #include "gamecontroller.h"
 #include "graphicsconst.h"
 #include "boarditem.h"
+#include "server.h"
+#include "client.h"
 
 GameController::GameController(GameScene & scene, QObject * parent) :
     QObject(parent),
@@ -74,6 +76,10 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     // 安装事件过滤器监视scene的各个事件，
     // 由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
     //scene.installEventFilter(this);
+
+    // 网络
+    server = new Server();
+    client = new Client();
 }
 
 GameController::~GameController()
@@ -87,6 +93,10 @@ GameController::~GameController()
     ai2.stop();
     ai1.wait();
     ai2.wait();
+
+    // 网络相关
+    delete server;
+    delete client;
 
 #ifdef BOOK_LEARNING
     NineChessAi_ab::recordOpeningBookHashMapToFile();
@@ -790,7 +800,7 @@ bool GameController::giveUp()
 }
 
 // 关键槽函数，棋谱的命令行执行，与actionPiece独立
-bool GameController::command(const QString &cmd, bool update /*= true*/)
+bool GameController::command(const QString &cmd, bool update /* = true */)
 {
     Q_UNUSED(hasSound)
 
@@ -1061,4 +1071,10 @@ bool GameController::updateScence(NineChess &chess)
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     return true;
+}
+
+void GameController::showNetworkWindow()
+{
+    server->show();
+    client->show();
 }

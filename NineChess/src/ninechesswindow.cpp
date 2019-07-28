@@ -118,9 +118,6 @@ NineChessWindow::~NineChessWindow()
     }
 
     qDeleteAll(ruleActionList);
-
-    delete server;
-    delete client;
 }
 
 void NineChessWindow::closeEvent(QCloseEvent *event)
@@ -293,10 +290,6 @@ void NineChessWindow::initialize()
     QWidget::setWindowFlags(Qt::WindowMaximizeButtonHint |
                             Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
 #endif // SHOW_MAXIMIZED_ON_LOAD
-
-    // 网络
-    server = new Server();
-    client = new Client();
 }
 
 void NineChessWindow::ruleInfo()
@@ -760,9 +753,7 @@ void NineChessWindow::on_actionInternet_I_triggered()
     ui.actionLocal_L->setChecked(false);
     ui.actionInternet_I->setChecked(true);
 
-
-    server->show();
-    client->show();
+    game->showNetworkWindow();
 }
 
 void NineChessWindow::on_actionEngine_E_triggered()

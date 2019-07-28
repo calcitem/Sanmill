@@ -144,6 +144,10 @@ void Server::sessionOpened()
                          .arg(ipAddress).arg(tcpServer->serverPort()));
 }
 
+void Server::setAction(QString action)
+{
+    this->action = action;
+}
 
 void Server::sendAction()
 {
@@ -151,7 +155,7 @@ void Server::sendAction()
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_10);
 
-    out << actions[QRandomGenerator::global()->bounded(actions.size())];
+    out << action;
 
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
 

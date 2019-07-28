@@ -115,10 +115,6 @@ private:
 
     // 定时器
     QTimer autoRunTimer;
-
-    // 网络
-    Server *server;
-    Client *client;
 };
 
 #endif // NINECHESSWINDOW_H

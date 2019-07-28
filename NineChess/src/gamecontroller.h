@@ -41,6 +41,8 @@
 #include "gamescene.h"
 #include "pieceitem.h"
 #include "aithread.h"
+#include "server.h"
+#include "client.h"
 
 class GameController : public QObject
 {
@@ -162,6 +164,9 @@ public slots:
     bool updateScence();
     bool updateScence(NineChess &chess);
 
+    // 显示网络配置窗口
+    void showNetworkWindow();
+
 protected:
     //bool eventFilter(QObject * watched, QEvent * event);
     // 定时器
@@ -242,6 +247,10 @@ private:
 
     // 棋谱字符串列表模型
     QStringListModel manualListModel;
+
+    // 网络
+    Server *server;
+    Client *client;
 };
 
 #endif // GAMECONTROLLER_H

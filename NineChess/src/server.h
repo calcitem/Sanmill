@@ -40,12 +40,14 @@ public:
 
 private slots:
     void sessionOpened();
+    void setAction(QString action);
     void sendAction();
 
 private:
     QLabel *statusLabel = nullptr;
     QTcpServer *tcpServer = nullptr;
     QVector<QString> actions;
+    QString action;
     QNetworkSession *networkSession = nullptr;
 };
 
