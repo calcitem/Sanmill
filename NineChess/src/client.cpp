@@ -1,68 +1,37 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** BSD License Usage
-** Alternatively, you may use this file under the terms of the BSD license
-** as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+/*****************************************************************************
+ * Copyright (C) 2019 NineChess authors
+ *
+ * Authors: Calcitem <calcitem@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ *****************************************************************************/
 
 #include <QtWidgets>
 #include <QtNetwork>
 
 #include "client.h"
 
-//! [0]
 Client::Client(QWidget *parent)
     : QDialog(parent)
     , hostCombo(new QComboBox)
     , portLineEdit(new QLineEdit)
-    , getFortuneButton(new QPushButton(tr("Get Fortune")))
+    , getActionButton(new QPushButton(tr("Get Action")))
     , tcpSocket(new QTcpSocket(this))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-//! [0]
+
     hostCombo->setEditable(true);
     // find out name of this machine
     QString name = QHostInfo::localHostName();
@@ -72,15 +41,19 @@ Client::Client(QWidget *parent)
         if (!domain.isEmpty())
             hostCombo->addItem(name + QChar('.') + domain);
     }
+
     if (name != QLatin1String("localhost"))
         hostCombo->addItem(QString("localhost"));
+
     // find out IP addresses of this machine
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
+
     // add non-localhost addresses
     for (int i = 0; i < ipAddressesList.size(); ++i) {
         if (!ipAddressesList.at(i).isLoopback())
             hostCombo->addItem(ipAddressesList.at(i).toString());
     }
+
     // add localhost addresses
     for (int i = 0; i < ipAddressesList.size(); ++i) {
         if (ipAddressesList.at(i).isLoopback())
@@ -94,37 +67,31 @@ Client::Client(QWidget *parent)
     auto portLabel = new QLabel(tr("S&erver port:"));
     portLabel->setBuddy(portLineEdit);
 
-    statusLabel = new QLabel(tr("This examples requires that you run the "
-                                "Fortune Server example as well."));
+    statusLabel = new QLabel(tr("This Client requires that you run the "
+                                "Server as well."));
 
-    getFortuneButton->setDefault(true);
-    getFortuneButton->setEnabled(false);
+    getActionButton->setDefault(true);
+    getActionButton->setEnabled(false);
 
     auto quitButton = new QPushButton(tr("Quit"));
 
     auto buttonBox = new QDialogButtonBox;
-    buttonBox->addButton(getFortuneButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(getActionButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(quitButton, QDialogButtonBox::RejectRole);
 
-//! [1]
     in.setDevice(tcpSocket);
     in.setVersion(QDataStream::Qt_4_0);
-//! [1]
 
     connect(hostCombo, &QComboBox::editTextChanged,
-            this, &Client::enableGetFortuneButton);
+            this, &Client::enableGetActionButton);
     connect(portLineEdit, &QLineEdit::textChanged,
-            this, &Client::enableGetFortuneButton);
-    connect(getFortuneButton, &QAbstractButton::clicked,
-            this, &Client::requestNewFortune);
+            this, &Client::enableGetActionButton);
+    connect(getActionButton, &QAbstractButton::clicked,
+            this, &Client::requestNewAction);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
-//! [2] //! [3]
-    connect(tcpSocket, &QIODevice::readyRead, this, &Client::readFortune);
-//! [2] //! [4]
+    connect(tcpSocket, &QIODevice::readyRead, this, &Client::readAction);
     connect(tcpSocket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
-//! [3]
             this, &Client::displayError);
-//! [4]
 
     QGridLayout *mainLayout = nullptr;
     if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
@@ -141,6 +108,7 @@ Client::Client(QWidget *parent)
     } else {
         mainLayout = new QGridLayout(this);
     }
+
     mainLayout->addWidget(hostLabel, 0, 0);
     mainLayout->addWidget(hostCombo, 0, 1);
     mainLayout->addWidget(portLabel, 1, 0);
@@ -152,6 +120,7 @@ Client::Client(QWidget *parent)
     portLineEdit->setFocus();
 
     QNetworkConfigurationManager manager;
+
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
         // Get saved network configuration
         QSettings settings(QSettings::UserScope, QLatin1String("QtProject"));
@@ -169,79 +138,69 @@ Client::Client(QWidget *parent)
         networkSession = new QNetworkSession(config, this);
         connect(networkSession, &QNetworkSession::opened, this, &Client::sessionOpened);
 
-        getFortuneButton->setEnabled(false);
+        getActionButton->setEnabled(false);
         statusLabel->setText(tr("Opening network session."));
         networkSession->open();
     }
-//! [5]
 }
-//! [5]
 
-//! [6]
-void Client::requestNewFortune()
+void Client::requestNewAction()
 {
-    getFortuneButton->setEnabled(false);
+    getActionButton->setEnabled(false);
     tcpSocket->abort();
-//! [7]
     tcpSocket->connectToHost(hostCombo->currentText(),
                              portLineEdit->text().toInt());
-//! [7]
 }
-//! [6]
 
-//! [8]
-void Client::readFortune()
+void Client::readAction()
 {
     in.startTransaction();
 
-    QString nextFortune;
-    in >> nextFortune;
+    QString nextAction;
+    in >> nextAction;
 
     if (!in.commitTransaction())
         return;
 
-    if (nextFortune == currentFortune) {
-        QTimer::singleShot(0, this, &Client::requestNewFortune);
+    if (nextAction == currentAction) {
+        QTimer::singleShot(0, this, &Client::requestNewAction);
         return;
     }
 
-    currentFortune = nextFortune;
-    statusLabel->setText(currentFortune);
-    getFortuneButton->setEnabled(true);
+    currentAction = nextAction;
+    statusLabel->setText(currentAction);
+    getActionButton->setEnabled(true);
 }
-//! [8]
 
-//! [13]
 void Client::displayError(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
         break;
     case QAbstractSocket::HostNotFoundError:
-        QMessageBox::information(this, tr("Fortune Client"),
+        QMessageBox::information(this, tr("Client"),
                                  tr("The host was not found. Please check the "
                                     "host name and port settings."));
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        QMessageBox::information(this, tr("Fortune Client"),
+        QMessageBox::information(this, tr("Client"),
                                  tr("The connection was refused by the peer. "
-                                    "Make sure the fortune server is running, "
+                                    "Make sure the server is running, "
                                     "and check that the host name and port "
                                     "settings are correct."));
         break;
     default:
-        QMessageBox::information(this, tr("Fortune Client"),
+        QMessageBox::information(this, tr("Client"),
                                  tr("The following error occurred: %1.")
                                  .arg(tcpSocket->errorString()));
     }
 
-    getFortuneButton->setEnabled(true);
+    getActionButton->setEnabled(true);
 }
-//! [13]
 
-void Client::enableGetFortuneButton()
+void Client::enableGetActionButton()
 {
-    getFortuneButton->setEnabled((!networkSession || networkSession->isOpen()) &&
+    getActionButton->setEnabled((!networkSession || networkSession->isOpen()) &&
                                  !hostCombo->currentText().isEmpty() &&
                                  !portLineEdit->text().isEmpty());
 
@@ -262,9 +221,9 @@ void Client::sessionOpened()
     settings.setValue(QLatin1String("DefaultNetworkConfiguration"), id);
     settings.endGroup();
 
-    statusLabel->setText(tr("This examples requires that you run the "
-                            "Fortune Server example as well."));
+    statusLabel->setText(tr("This Client requires that you run the "
+                            "Server as well."));
 
-    enableGetFortuneButton();
+    enableGetActionButton();
 }
 
