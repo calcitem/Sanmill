@@ -31,6 +31,9 @@
 #include "ui_ninechesswindow.h"
 #include "config.h"
 
+#include "server.h"
+#include "client.h"
+
 class GameScene;
 class GameController;
 
@@ -112,6 +115,10 @@ private:
 
     // 定时器
     QTimer autoRunTimer;
+
+    // 网络
+    Server *server;
+    Client *client;
 };
 
 #endif // NINECHESSWINDOW_H

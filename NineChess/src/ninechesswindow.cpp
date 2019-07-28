@@ -50,6 +50,8 @@
 #include "gamecontroller.h"
 #include "gamescene.h"
 #include "graphicsconst.h"
+#include "server.h"
+#include "client.h"
 
 NineChessWindow::NineChessWindow(QWidget * parent) :
     QMainWindow(parent),
@@ -88,7 +90,7 @@ NineChessWindow::NineChessWindow(QWidget * parent) :
     ui.gameView->setRenderHint(QPainter::Antialiasing);
 
     // 因功能限制，使部分功能不可用，将来再添加
-    ui.actionInternet_I->setDisabled(true);
+    ui.actionInternet_I->setDisabled(false);
     ui.actionSetting_O->setDisabled(true);
 
     // 初始化游戏规则菜单
@@ -116,6 +118,9 @@ NineChessWindow::~NineChessWindow()
     }
 
     qDeleteAll(ruleActionList);
+
+    delete server;
+    delete client;
 }
 
 void NineChessWindow::closeEvent(QCloseEvent *event)
@@ -288,6 +293,10 @@ void NineChessWindow::initialize()
     QWidget::setWindowFlags(Qt::WindowMaximizeButtonHint |
                             Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
 #endif // SHOW_MAXIMIZED_ON_LOAD
+
+    // 网络
+    server = new Server();
+    client = new Client();
 }
 
 void NineChessWindow::ruleInfo()
@@ -750,6 +759,10 @@ void NineChessWindow::on_actionInternet_I_triggered()
 {
     ui.actionLocal_L->setChecked(false);
     ui.actionInternet_I->setChecked(true);
+
+
+    server->show();
+    client->show();
 }
 
 void NineChessWindow::on_actionEngine_E_triggered()
