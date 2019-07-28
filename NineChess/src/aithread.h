@@ -28,6 +28,8 @@
 #include <QTimer>
 #include "ninechess.h"
 #include "ninechessai_ab.h"
+#include "server.h"
+#include "client.h"
 
 class AiThread : public QThread
 {
@@ -54,6 +56,17 @@ public:
     // AI设置
     void setAi(const NineChess &chess);
     void setAi(const NineChess &chess, int depth, int time);
+
+    // 网络
+    Server *getServer()
+    {
+        return server;
+    }
+
+    Client *getClient()
+    {
+        return client;
+    }
 
     // 深度和限时
     void getDepthTime(int &depth, int &time)
@@ -102,6 +115,10 @@ private:
 
     // 定时器
     QTimer timer;
+
+    // 网络
+    Server *server;
+    Client *client;
 };
 
 #endif // AITHREAD_H

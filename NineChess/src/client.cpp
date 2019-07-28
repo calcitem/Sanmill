@@ -23,7 +23,7 @@
 
 #include "client.h"
 
-Client::Client(QWidget *parent)
+Client::Client(QWidget *parent, uint16_t port)
     : QDialog(parent)
     , hostCombo(new QComboBox)
     , portLineEdit(new QLineEdit)
@@ -92,7 +92,7 @@ Client::Client(QWidget *parent)
 
     setWindowTitle(QGuiApplication::applicationDisplayName());
     portLineEdit->setFocus();
-    portLineEdit->setText("33333");
+    portLineEdit->setText(QString::number(port));
 
     QNetworkConfigurationManager manager;
 

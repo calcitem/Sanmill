@@ -247,10 +247,6 @@ private:
 
     // 棋谱字符串列表模型
     QStringListModel manualListModel;
-
-    // 网络
-    Server *server;
-    Client *client;
 };
 
 #endif // GAMECONTROLLER_H

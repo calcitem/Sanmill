@@ -39,7 +39,7 @@ class Client : public QDialog
     Q_OBJECT
 
 public:
-    explicit Client(QWidget *parent = nullptr);
+    explicit Client(QWidget *parent = nullptr, uint16_t port = 33333);
 
 private slots:
     void requestNewAction();
@@ -47,6 +47,14 @@ private slots:
     void displayError(QAbstractSocket::SocketError socketError);
     void enableGetActionButton();
     void sessionOpened();
+    void setPort(uint16_t port)
+    {
+        this->port = port;
+    }
+    uint16_t getPort()
+    {
+        return port;
+    }
 
 private:
     QComboBox *hostCombo = nullptr;
@@ -59,6 +67,8 @@ private:
     QString currentAction;
 
     QNetworkSession *networkSession = nullptr;
+
+    uint16_t port;
 };
 
 #endif // CLIENT_H

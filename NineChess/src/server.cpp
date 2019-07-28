@@ -24,12 +24,14 @@
 
 #include "server.h"
 
-Server::Server(QWidget *parent)
+Server::Server(QWidget *parent, uint16_t port)
     : QDialog(parent)
     , statusLabel(new QLabel)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     statusLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
+
+    this->port = port;
 
     QNetworkConfigurationManager manager;
 
@@ -108,7 +110,7 @@ void Server::sessionOpened()
 
     tcpServer = new QTcpServer(this);
 
-    if (!tcpServer->listen(QHostAddress::LocalHost, 33333)) {
+    if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
         QMessageBox::critical(this, tr("Server"),
                               tr("Unable to start the server: %1.")
                               .arg(tcpServer->errorString()));

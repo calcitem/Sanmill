@@ -75,11 +75,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
 
     // 安装事件过滤器监视scene的各个事件，
     // 由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
-    //scene.installEventFilter(this);
-
-    // 网络
-    server = new Server();
-    client = new Client();
+    //scene.installEventFilter(this);    
 }
 
 GameController::~GameController()
@@ -93,10 +89,6 @@ GameController::~GameController()
     ai2.stop();
     ai1.wait();
     ai2.wait();
-
-    // 网络相关
-    delete server;
-    delete client;
 
 #ifdef BOOK_LEARNING
     NineChessAi_ab::recordOpeningBookHashMapToFile();
@@ -907,7 +899,12 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 网络: 将着法放到服务器的发送列表中
-    this->server->setAction(cmd);
+    if (isEngine1)
+    {
+        ai1.getServer()->setAction(cmd);
+    } else if (isEngine2) {
+        ai1.getServer()->setAction(cmd);
+    }
 
     return true;
 }
@@ -1079,6 +1076,9 @@ bool GameController::updateScence(NineChess &chess)
 
 void GameController::showNetworkWindow()
 {
-    server->show();
-    client->show();
+    ai1.getServer()->show();
+    ai1.getClient()->show();
+
+    ai2.getServer()->show();
+    ai2.getClient()->show();
 }

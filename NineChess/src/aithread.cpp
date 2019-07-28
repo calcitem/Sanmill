@@ -39,10 +39,18 @@ AiThread::AiThread(int id, QObject *parent) :
 
     // 连接定时器处理函数
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
+
+    // 网络
+    server = new Server(nullptr, 30000 + id);
+    client = new Client(nullptr, id == 1? 30002 : 30001);
 }
 
 AiThread::~AiThread()
 {
+    // 网络相关
+    delete server;
+    delete client;
+
     stop();
     quit();
     wait();

@@ -36,8 +36,16 @@ class Server : public QDialog
     Q_OBJECT
 
 public:
-    explicit Server(QWidget *parent = nullptr);
+    explicit Server(QWidget *parent = nullptr, uint16_t port = 33333);
     void setAction(const QString &action);
+    void setPort(uint16_t port)
+    {
+        this->port = port;
+    }
+    uint16_t getPort()
+    {
+        return port;
+    }
 
 private slots:
     void sessionOpened();
@@ -49,6 +57,7 @@ private:
     QVector<QString> actions;
     QString action;
     QNetworkSession *networkSession = nullptr;
+    uint16_t port;
 };
 
 #endif // SERVER_H
