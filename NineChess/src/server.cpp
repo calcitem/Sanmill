@@ -32,6 +32,7 @@ Server::Server(QWidget *parent)
     statusLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
     QNetworkConfigurationManager manager;
+
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
         // Get saved network configuration
         QSettings settings(QSettings::UserScope, QLatin1String("QtProject"));
@@ -101,6 +102,7 @@ void Server::sessionOpened()
     if (networkSession) {
         QNetworkConfiguration config = networkSession->configuration();
         QString id;
+
         if (config.type() == QNetworkConfiguration::UserChoice)
             id = networkSession->sessionProperty(QLatin1String("UserChoiceConfiguration")).toString();
         else
@@ -113,7 +115,8 @@ void Server::sessionOpened()
     }
 
     tcpServer = new QTcpServer(this);
-    if (!tcpServer->listen()) {
+
+    if (!tcpServer->listen(QHostAddress::LocalHost, 33333)) {
         QMessageBox::critical(this, tr("Server"),
                               tr("Unable to start the server: %1.")
                               .arg(tcpServer->errorString()));
@@ -136,6 +139,7 @@ void Server::sessionOpened()
     // if we did not find one, use IPv4 localhost
     if (ipAddress.isEmpty())
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
+
     statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2")
                          .arg(ipAddress).arg(tcpServer->serverPort()));
 }
@@ -150,6 +154,7 @@ void Server::sendAction()
     out << actions[QRandomGenerator::global()->bounded(actions.size())];
 
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
+
     connect(clientConnection, &QAbstractSocket::disconnected,
             clientConnection, &QObject::deleteLater);
 
