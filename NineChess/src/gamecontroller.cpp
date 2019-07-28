@@ -902,8 +902,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     if (isEngine1)
     {
         ai1.getServer()->setAction(cmd);
+        qDebug() << "AI(1) set Action: " << cmd;
     } else if (isEngine2) {
-        ai1.getServer()->setAction(cmd);
+        ai2.getServer()->setAction(cmd);
+        qDebug() << "AI(2) set Action: " << cmd;
     }
 
     return true;

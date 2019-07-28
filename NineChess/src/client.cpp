@@ -129,13 +129,8 @@ void Client::requestNewAction()
 
 void Client::readAction()
 {
-    in.startTransaction();
-
     QString nextAction;
     in >> nextAction;
-
-    if (!in.commitTransaction())
-        return;
 
     if (nextAction == currentAction) {
         QTimer::singleShot(0, this, &Client::requestNewAction);
@@ -145,6 +140,8 @@ void Client::readAction()
     currentAction = nextAction;
     statusLabel->setText(currentAction);
     getActionButton->setEnabled(true);
+
+    QTimer::singleShot(100, this, &Client::requestNewAction);
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
