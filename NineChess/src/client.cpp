@@ -22,6 +22,7 @@
 #include <QtNetwork>
 
 #include "client.h"
+#include "aithread.h"
 
 Client::Client(QWidget *parent, uint16_t port)
     : QDialog(parent)
@@ -139,6 +140,8 @@ void Client::readAction()
 
     currentAction = nextAction;
     statusLabel->setText(currentAction);
+    // ·¢ÐÅºÅ
+    emit command(currentAction);
     getActionButton->setEnabled(true);
 
     QTimer::singleShot(100, this, &Client::requestNewAction);

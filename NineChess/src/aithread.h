@@ -57,7 +57,6 @@ public:
     void setAi(const NineChess &chess);
     void setAi(const NineChess &chess, int depth, int time);
 
-    // 网络
     Server *getServer()
     {
         return server;

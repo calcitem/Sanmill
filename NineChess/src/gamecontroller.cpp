@@ -73,6 +73,10 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     connect(&ai2, SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
 
+    // 关联AI和网络类的着法命令行
+    connect(ai1.getClient(), SIGNAL(command(const QString &, bool)),
+            this, SLOT(command(const QString &, bool)));
+
     // 安装事件过滤器监视scene的各个事件，
     // 由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
     //scene.installEventFilter(this);    

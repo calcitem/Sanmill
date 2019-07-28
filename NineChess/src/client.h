@@ -41,6 +41,9 @@ class Client : public QDialog
 public:
     explicit Client(QWidget *parent = nullptr, uint16_t port = 33333);
 
+signals:
+    void command(const QString &cmd, bool update = true);
+
 private slots:
     void requestNewAction();
     void readAction();
