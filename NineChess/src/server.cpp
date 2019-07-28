@@ -56,14 +56,6 @@ Server::Server(QWidget *parent)
         sessionOpened();
     }
 
-    actions << tr("Move")
-             << tr("Place")
-             << tr("Capture")
-             << tr("Giveup")
-             << tr("Hello")
-             << tr("Quit")
-             << tr("Draw");
-
     auto quitButton = new QPushButton(tr("Quit"));
     quitButton->setAutoDefault(false);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
@@ -144,7 +136,7 @@ void Server::sessionOpened()
                          .arg(ipAddress).arg(tcpServer->serverPort()));
 }
 
-void Server::setAction(QString action)
+void Server::setAction(const QString &action)
 {
     this->action = action;
 }

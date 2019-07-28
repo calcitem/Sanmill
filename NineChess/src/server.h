@@ -37,10 +37,10 @@ class Server : public QDialog
 
 public:
     explicit Server(QWidget *parent = nullptr);
+    void setAction(const QString &action);
 
 private slots:
     void sessionOpened();
-    void setAction(QString action);
     void sendAction();
 
 private:

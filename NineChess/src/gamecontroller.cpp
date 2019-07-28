@@ -905,6 +905,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
             QMessageBox::about(NULL, "游戏结果", message);
         }
     }
+
+    // 网络: 将着法放到服务器的发送列表中
+    this->server->setAction(cmd);
+
     return true;
 }
 
