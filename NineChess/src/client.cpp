@@ -144,7 +144,7 @@ void Client::readAction()
     emit command(currentAction);
     getActionButton->setEnabled(true);
 
-    QTimer::singleShot(100, this, &Client::requestNewAction);
+    QTimer::singleShot(10, this, &Client::requestNewAction);
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
