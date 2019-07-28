@@ -902,10 +902,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     if (isEngine1)
     {
         ai1.getServer()->setAction(cmd);
-        qDebug() << "AI(1) set Action: " << cmd;
+        qDebug() << "isEngine1: AI(1) set Action: " << cmd;
     } else if (isEngine2) {
-        ai2.getServer()->setAction(cmd);
-        qDebug() << "AI(2) set Action: " << cmd;
+        ai1.getServer()->setAction(cmd);    // 注意: 同样是AI1
+        qDebug() << "isEngine2: AI(1) set Action: " << cmd;
     }
 
     return true;
@@ -1080,7 +1080,4 @@ void GameController::showNetworkWindow()
 {
     ai1.getServer()->show();
     ai1.getClient()->show();
-
-    ai2.getServer()->show();
-    ai2.getClient()->show();
 }

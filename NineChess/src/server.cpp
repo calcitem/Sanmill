@@ -111,11 +111,19 @@ void Server::sessionOpened()
     tcpServer = new QTcpServer(this);
 
     if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
-        QMessageBox::critical(this, tr("Server"),
-                              tr("Unable to start the server: %1.")
-                              .arg(tcpServer->errorString()));
-        close();
-        return;
+        port++;
+        if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
+            QMessageBox::critical(this, tr("Server"),
+                                  tr("Unable to start the server: %1.")
+                                  .arg(tcpServer->errorString()));
+            close();
+            return;
+        } else {
+            QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
+        }
+    }
+    else {
+        QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
     }
 
     QString ipAddress;
@@ -159,4 +167,3 @@ void Server::sendAction()
     clientConnection->write(block);
     clientConnection->disconnectFromHost();
 }
-

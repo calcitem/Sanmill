@@ -41,15 +41,19 @@ AiThread::AiThread(int id, QObject *parent) :
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
 
     // 网络
-    server = new Server(nullptr, 30000 + id);
-    client = new Client(nullptr, id == 1? 30002 : 30001);
+    if (id == 1)
+    {
+        server = new Server(nullptr, 30001);
+        uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
+        client = new Client(nullptr, clientPort);
+    }
 }
 
 AiThread::~AiThread()
 {
     // 网络相关
-    delete server;
-    delete client;
+    //delete server;
+    //delete client;
 
     stop();
     quit();
