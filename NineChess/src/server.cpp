@@ -119,13 +119,13 @@ void Server::sessionOpened()
             close();
             return;
         } else {
-#ifdef DEBUG_MODE
+#ifdef MESSAGEBOX_ENABLE
             QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
         }
     }
     else {
-#ifdef DEBUG_MODE
+#ifdef MESSAGEBOX_ENABLE
         QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
     }

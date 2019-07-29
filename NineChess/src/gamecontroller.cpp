@@ -896,9 +896,11 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
             ai1.stop();
             ai2.stop();
 
+#ifdef MESSAGEBOX_ENABLE
             // 弹框
             message = QString::fromStdString(chess_.getTips());
             QMessageBox::about(NULL, "游戏结果", message);
+#endif
         }
     }
 
