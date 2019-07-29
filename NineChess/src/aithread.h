@@ -87,9 +87,15 @@ public slots:
     // 退出线程
     void stop();
 
+    // 发射着法信号
+    void emitCommand();
+
 private:
     // 玩家ID
     int id;
+
+    // 发射的指令
+    const char* strCommand;
 
     // 互斥锁
     QMutex mutex;

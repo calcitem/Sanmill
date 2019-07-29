@@ -20,6 +20,7 @@
  *****************************************************************************/
 
 #include <QDebug>
+#include <QTimer>
 #include "aithread.h"
 
 AiThread::AiThread(int id, QObject *parent) :
@@ -85,6 +86,11 @@ void AiThread::setAi(const NineChess &chess, int depth, int time)
     mutex.unlock();
 }
 
+void AiThread::emitCommand()
+{
+    emit command(strCommand);
+}
+
 void AiThread::run()
 {
     // 测试用数据
@@ -119,13 +125,13 @@ void AiThread::run()
 
         if (ai_ab.alphaBetaPruning(aiDepth) == 3) {
             qDebug() << "Draw\n";
-            const char *str = "draw";
-            emit command(str);
+            strCommand = "draw";
+            QTimer::singleShot(100, this, &AiThread::emitCommand);
         } else {
-            const char *str = ai_ab.bestMove();
-            qDebug() << "Computer:" << str << "\n";
-            if (strcmp(str, "error!"))
-                emit command(str);
+            strCommand = ai_ab.bestMove();
+            qDebug() << "Computer:" << strCommand << "\n";
+            if (strcmp(strCommand, "error!"))
+                QTimer::singleShot(100, this, &AiThread::emitCommand);
         }
 
 #ifdef DEBUG_MODE
