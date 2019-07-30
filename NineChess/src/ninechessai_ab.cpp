@@ -559,9 +559,13 @@ int NineChessAi_ab::changeDepth(int originalDepth)
 #endif // HASH_MAP_ENABLE
 #else // DEAL_WITH_HORIZON_EFFECT
 #ifdef HASH_MAP_ENABLE
-        int depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 15, 12, 10, 9, 7, 1 };
+#ifdef RAPID_CHESS
+        int depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
 #else
-        int depthTable[] = { 2, 13, 13, 13, 12, 11, 10, 9, 9, 8, 8, 7, 1 };
+        int depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 15, 12, 10, 9, 7, 1 };
+#endif  // RAPID_CHESS
+#else // HASH_MAP_ENABLE
+        int depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
 #endif
 #endif // DEAL_WITH_HORIZON_EFFECT
         newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];

@@ -31,6 +31,8 @@
 
 #define HASH_MAP_ENABLE
 
+#define RAPID_CHESS
+
 //#define BOOK_LEARNING
 
 #define THREEFOLD_REPETITION
