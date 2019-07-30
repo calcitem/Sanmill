@@ -235,7 +235,7 @@ void GameController::gameReset()
     emit statusBarChanged(message);
 
     // 播放音效
-    playSound(":/sound/resources/sound/newgame.wav");
+    //playSound(":/sound/resources/sound/newgame.wav");
 }
 
 void GameController::setEditing(bool arg)
