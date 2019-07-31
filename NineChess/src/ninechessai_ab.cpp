@@ -84,7 +84,11 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     enum NineChess::Player player
 )
 {
+#ifdef MEMORY_POOL
+    Node *newNode = pool.newElement();
+#else
     Node *newNode = new Node;
+#endif
 
     newNode->parent = parent;
     newNode->value = value;
@@ -362,7 +366,11 @@ void NineChessAi_ab::deleteTree(Node *node)
             deleteTree(i);
         }
         node->children.clear();
-        delete node;
+#ifdef MEMORY_POOL
+        pool.deleteElement(node);
+#else
+        delete(node);
+#endif  
     }
 }
 

@@ -125,6 +125,9 @@
     <ClInclude Include="src\zobrist.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="src\MemoryPool.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -259,6 +262,9 @@
     </None>
     <None Include="ninechess.pro">
       <Filter>Project Files</Filter>
+    </None>
+    <None Include="src\MemoryPool.tcc">
+      <Filter>Model</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

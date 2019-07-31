@@ -32,6 +32,10 @@
 #include "ninechess.h"
 #include "hashMap.h"
 
+#ifdef MEMORY_POOL
+#include "MemoryPool.h"
+#endif
+
 using namespace std;
 using namespace CTSL;
 
@@ -97,6 +101,10 @@ public:
         enum HashType type;
         int bestMove;
     };
+#endif
+
+#ifdef MEMORY_POOL
+    MemoryPool<Node> pool;
 #endif
 
 public:

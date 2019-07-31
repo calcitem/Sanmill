@@ -31,6 +31,8 @@
 
 #define HASH_MAP_ENABLE
 
+#define MEMORY_POOL
+
 //#define RAPID_CHESS
 
 //#define BOOK_LEARNING

@@ -33,6 +33,8 @@ SOURCES += \
 
 HEADERS  += \
     src/HashNode.h \
+    src/MemoryPool.h \
+    src/MemoryPool.tcc \
     src/boarditem.h \
     src/client.h \
     src/config.h \
