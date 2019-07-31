@@ -22,8 +22,14 @@
 #ifndef NINECHESSAI_AB
 #define NINECHESSAI_AB
 
+#include "config.h"
+
 #include <list>
+//#ifdef MEMORY_POOL
+//#include "StackAlloc.h"
+//#else
 #include <stack>
+//#endif
 #include <mutex>
 #include <string>
 #include <Qdebug>
@@ -219,7 +225,11 @@ private:
 #endif
 
     // 局面数据栈
+//#ifdef MEMORY_POOL
+//    StackAlloc<NineChess::ChessContext, MemoryPool<NineChess::ChessContext> > contextStack;
+//#else
     stack<NineChess::ChessContext> contextStack;
+//#endif
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit;
