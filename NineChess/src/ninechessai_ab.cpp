@@ -21,7 +21,7 @@
 
 #include <cmath>
 #include <time.h>
-#include <Qdebug>
+#include <QDebug>
 #include <QTime>
 #include <array>
 #include <random>
@@ -29,7 +29,7 @@
 #include <algorithm>
 
 #include "ninechessai_ab.h"
-#include "hashMap.h"
+#include "HashMap.h"
 
 using namespace CTSL;
 
@@ -50,8 +50,8 @@ vector<uint64_t> positions;
 
 NineChessAi_ab::NineChessAi_ab() :
     rootNode(nullptr),
-    requiredQuit(false),
     nodeCount(0),
+    evaluatedNodeCount(0),
 #ifdef HASH_MAP_ENABLE
     hashEntryCount(0),
     hashHitCount(0),
@@ -60,7 +60,7 @@ NineChessAi_ab::NineChessAi_ab() :
     hashReplaceCozDepthCount(0),
     hashReplaceCozHashCount(0),
 #endif
-    evaluatedNodeCount(0)
+    requiredQuit(false)
 {
     buildRoot();
 }
@@ -619,7 +619,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 
     int d = changeDepth(depth);
 
-    unsigned int time0 = (unsigned)time(0);
+    unsigned int time0 = (unsigned)time(nullptr);
     srand(time0);
 
     time1.start();
