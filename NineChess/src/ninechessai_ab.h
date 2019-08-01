@@ -61,7 +61,9 @@ public:
         int value;                     // 节点的值
         vector<struct Node*> children;  // 子节点列表
         struct Node* parent;           // 父节点
+#ifdef SORT_CONSIDER_PRUNED
         bool pruned;                    // 是否在此处剪枝
+#endif
 #ifdef DEBUG_AB_TREE
         size_t id;                      // 结点编号
         string cmd;

@@ -99,7 +99,9 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     newNode->id = nodeCount;
 #endif
 
+#ifdef SORT_CONSIDER_PRUNED
     newNode->pruned = false;
+#endif
 
     player = player; // Remove warning
 
@@ -331,6 +333,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
 
 bool NineChessAi_ab::nodeLess(const Node *first, const Node *second)
 {
+#ifdef SORT_CONSIDER_PRUNED
     if (first->value < second->value) {
         return true;
     } else if ((first->value == second->value) &&
@@ -339,10 +342,14 @@ bool NineChessAi_ab::nodeLess(const Node *first, const Node *second)
     }
 
     return false;
+#else
+    return first->value < second->value;
+#endif
 }
 
 bool NineChessAi_ab::nodeGreater(const Node *first, const Node *second)
 {
+#ifdef SORT_CONSIDER_PRUNED
     if (first->value > second->value) {
         return true;
     } else if ((first->value == second->value) &&
@@ -351,6 +358,9 @@ bool NineChessAi_ab::nodeGreater(const Node *first, const Node *second)
     }
 
     return false;
+#else
+    return first->value > second->value;
+#endif
 }
 
 void NineChessAi_ab::sortLegalMoves(Node *node)
@@ -408,7 +418,9 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     rootNode->value = 0;
     rootNode->move = 0;
     rootNode->parent = nullptr;
+#ifdef SORT_CONSIDER_PRUNED
     rootNode->pruned = false;
+#endif
 #ifdef DEBUG_AB_TREE
     rootNode->action = NineChess::ACTION_NONE;
     rootNode->stage = NineChess::GAME_NONE;
@@ -722,9 +734,11 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 #endif
         node->value = probeVal;
 
+#ifdef SORT_CONSIDER_PRUNED
         if (type != hashfEXACT && type != hashfEMPTY) {
             node->pruned = true;    // TODO: 是否有用?
         }
+#endif
 
 #if 0
         // TODO: 有必要针对深度微调 value?
@@ -894,8 +908,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
         // 否则剪枝返回
         if (alpha >= beta) {
+#ifdef SORT_CONSIDER_PRUNED
             node->pruned = true;
-
+#endif
             break;
         }
     }
@@ -955,7 +970,11 @@ const char* NineChessAi_ab::bestMove()
     string moves = "";
 
     for (auto child : rootNode->children) {
-        if (child->value == rootNode->value && !child->pruned)
+        if (child->value == rootNode->value
+#ifdef SORT_CONSIDER_PRUNED
+            && !child->pruned
+#endif
+            )
             qDebug("[%.2d] %d\t%s\t%d *", i, child->move, move2string(child->move), child->value);
         else
             qDebug("[%.2d] %d\t%s\t%d", i, child->move, move2string(child->move), child->value);
@@ -986,6 +1005,7 @@ const char* NineChessAi_ab::bestMove()
 #ifdef HASH_MAP_ENABLE
     qDebug() << "Hash hit count:" << hashHitCount;
 #endif
+    //qDebug() << "sizeof(Node) = " << sizeof(Node);
 
     return move2string(bestMoves[0]->move);
 }
