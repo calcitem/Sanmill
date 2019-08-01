@@ -95,18 +95,24 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     newNode->move = move;
 
     nodeCount++;
+#ifdef DEBUG_AB_TREE
     newNode->id = nodeCount;
+#endif
 
     newNode->pruned = false;
 
     player = player; // Remove warning
 
+#ifdef DEBUG_AB_TREE
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     newNode->hash = 0;
 #endif
+#endif
 
+#ifdef DEBUG_AB_TREE
 #ifdef HASH_MAP_ENABLE
     newNode->isHash = false;
+#endif
 #endif
 
 #ifdef DEBUG_AB_TREE
@@ -696,7 +702,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     // 获取哈希值
     uint64_t hash = chessTemp.getHash();
+#ifdef DEBUG_AB_TREE
     node->hash = hash;
+#endif
 #endif
 
 #ifdef HASH_MAP_ENABLE
@@ -709,7 +717,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     if (probeVal != INT32_MIN && node != rootNode) {
         hashHitCount++;
+#ifdef DEBUG_AB_TREE
         node->isHash = true;
+#endif
         node->value = probeVal;
 
         if (type != hashfEXACT && type != hashfEMPTY) {

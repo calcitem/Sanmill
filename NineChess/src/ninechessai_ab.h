@@ -61,15 +61,9 @@ public:
         int value;                     // 节点的值
         vector<struct Node*> children;  // 子节点列表
         struct Node* parent;           // 父节点
-        size_t id;                      // 结点编号
         bool pruned;                    // 是否在此处剪枝
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
-        uint64_t hash;                  //  哈希值
-#endif
-#ifdef HASH_MAP_ENABLE
-        bool isHash;                    //  是否从 Hash 读取
-#endif /* HASH_MAP_ENABLE */
 #ifdef DEBUG_AB_TREE
+        size_t id;                      // 结点编号
         string cmd;
         enum NineChess::Player player;  // 此招是谁下的
         int depth;                      // 深度
@@ -86,6 +80,12 @@ public:
         int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
         int result;                     // 终局结果，-1为负，0为未到终局，1为胜，走棋阶段被闷棋则为 -2/2，布局阶段闷棋为 -3
         struct Node* root;              // 根节点
+#ifdef HASH_MAP_ENABLE
+        bool isHash;                    //  是否从 Hash 读取
+#endif /* HASH_MAP_ENABLE */
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
+        uint64_t hash;                  //  哈希值
+#endif
 #endif /* DEBUG_AB_TREE */
     };
 
