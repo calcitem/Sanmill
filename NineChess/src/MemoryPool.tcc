@@ -39,11 +39,11 @@ const noexcept
 template <typename T, size_t BlockSize>
 MemoryPool<T, BlockSize>::MemoryPool()
 noexcept
+:   currentBlock_(nullptr)
+,   currentSlot_(nullptr)
+,   lastSlot_(nullptr)
+,   freeSlots_(nullptr)
 {
-  currentBlock_ = nullptr;
-  currentSlot_ = nullptr;
-  lastSlot_ = nullptr;
-  freeSlots_ = nullptr;
 }
 
 
@@ -59,12 +59,12 @@ MemoryPool()
 template <typename T, size_t BlockSize>
 MemoryPool<T, BlockSize>::MemoryPool(MemoryPool&& memoryPool)
 noexcept
+:   currentBlock_(memoryPool.currentBlock_)
+,   currentSlot_(memoryPool.currentSlot_)
+,   lastSlot_(memoryPool.lastSlot_)
+,   freeSlots_(memoryPool.freeSlots)
 {
-  currentBlock_ = memoryPool.currentBlock_;
   memoryPool.currentBlock_ = nullptr;
-  currentSlot_ = memoryPool.currentSlot_;
-  lastSlot_ = memoryPool.lastSlot_;
-  freeSlots_ = memoryPool.freeSlots_;
 }
 
 
@@ -133,16 +133,14 @@ void
 MemoryPool<T, BlockSize>::allocateBlock()
 {
   // Allocate space for the new block and store a pointer to the previous one
-  data_pointer_ newBlock = reinterpret_cast<data_pointer_>
-                           (operator new(BlockSize));
+  data_pointer_ newBlock = reinterpret_cast<data_pointer_>(operator new(BlockSize));
   reinterpret_cast<slot_pointer_>(newBlock)->next = currentBlock_;
   currentBlock_ = reinterpret_cast<slot_pointer_>(newBlock);
-  // Pad block body to staisfy the alignment requirements for elements
+  // Pad block body to satisfy the alignment requirements for elements
   data_pointer_ body = newBlock + sizeof(slot_pointer_);
   size_type bodyPadding = padPointer(body, alignof(slot_type_));
   currentSlot_ = reinterpret_cast<slot_pointer_>(body + bodyPadding);
-  lastSlot_ = reinterpret_cast<slot_pointer_>
-              (newBlock + BlockSize - sizeof(slot_type_) + 1);
+  lastSlot_ = reinterpret_cast<slot_pointer_>(newBlock + BlockSize - sizeof(slot_type_) + 1);
 }
 
 
