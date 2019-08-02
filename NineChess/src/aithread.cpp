@@ -70,7 +70,9 @@ void AiThread::setAi(const NineChess &chess)
 
 #ifdef HASH_MAP_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
+#ifdef CLEAR_HASH_MAP
     ai_ab.clearHashMap();
+#endif
 #endif
 
     mutex.unlock();

@@ -669,7 +669,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     // 深化迭代
     for (int i = 2; i < d; i += 2) {
 #ifdef HASH_MAP_ENABLE
+#ifdef CLEAR_HASH_MAP
         clearHashMap();   // 每次走子前清空哈希表
+#endif
 #endif
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
@@ -678,7 +680,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 #endif /* IDS_SUPPORT */
 
 #ifdef HASH_MAP_ENABLE
+#ifdef CLEAR_HASH_MAP
     clearHashMap();  // 每次走子前清空哈希表
+#endif
 #endif
 
     value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);

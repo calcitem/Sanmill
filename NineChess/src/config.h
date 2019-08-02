@@ -30,6 +30,7 @@
 #define IDS_SUPPORT
 
 #define HASH_MAP_ENABLE
+//#define CLEAR_HASH_MAP
 
 #define MEMORY_POOL
 
