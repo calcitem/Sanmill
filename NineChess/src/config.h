@@ -25,6 +25,8 @@
 
 #define RANDOM_MOVE
 
+#define MILL_FIRST
+
 //#define DEAL_WITH_HORIZON_EFFECT
 
 #define IDS_SUPPORT

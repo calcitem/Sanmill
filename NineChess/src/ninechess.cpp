@@ -1625,11 +1625,11 @@ bool NineChess::win(bool forceDraw)
     return false;
 }
 
-int NineChess::isInMills(int pos)
+int NineChess::isInMills(int pos, bool test)
 {
     int n = 0;
     int pos1, pos2;
-    char m = board_[pos] & '\x30';
+    char m = test? INT32_MAX : board_[pos] & '\x30';
     for (int i = 0; i < 3; i++) {
         pos1 = millTable[pos][i][0];
         pos2 = millTable[pos][i][1];

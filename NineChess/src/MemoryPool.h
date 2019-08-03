@@ -75,7 +75,7 @@ class MemoryPool
   private:
     union Slot_ {
       value_type element;
-      Slot_* next;
+      union Slot_* next;
     };
 
     typedef char* data_pointer_;

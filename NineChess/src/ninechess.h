@@ -475,7 +475,7 @@ public:
 
 protected:
     // 判断棋盘pos处的棋子处于几个“三连”中
-    int isInMills(int pos);
+    int isInMills(int pos, bool test = false);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(char ch);

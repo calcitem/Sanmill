@@ -153,7 +153,16 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     if (parent) {
         // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
         if (bestMove == 0 || move != bestMove) {
+#ifdef MILL_FIRST
+            // 优先成三
+            if (chessTemp.getStage() == NineChess::GAME_PLACING && move > 0 && chessTemp.isInMills(move, true)) {
+                parent->children.insert(parent->children.begin(), newNode);
+            } else {
+                parent->children.push_back(newNode);
+            }
+#else
             parent->children.push_back(newNode);
+#endif
         } else {
             // 如果启用了置换表并且不是叶子结点，把哈希得到的最优着法换到首位
             parent->children.insert(parent->children.begin(), newNode);
