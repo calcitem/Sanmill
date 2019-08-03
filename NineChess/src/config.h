@@ -94,6 +94,9 @@
 // 启动时窗口最大化
 //#define SHOW_MAXIMIZED_ON_LOAD
 
+
+//#define LCD_SHOW_SCORE_INSTEAD_OF_TIME
+
 // 不使用哈希桶
 #define DISABLE_HASHBUCKET
 
