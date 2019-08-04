@@ -875,7 +875,15 @@ bool NineChess::place(int c, int p, long time_p)
     return place(pos, time_p, true);
 }
 
-bool NineChess::capture(int c, int p, long time_p /* = -1*/)
+bool NineChess::capture(int c, int p, long time_p)
+{
+    // 转换为 pos
+    int pos = cp2pos(c, p);
+
+    return capture(pos, time_p, true);
+}
+
+bool NineChess::capture(int pos, long time_p, bool cp)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (context.stage == GAME_NOTSTARTED || context.stage == GAME_OVER)
@@ -889,9 +897,13 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     if (context.nPiecesNeedRemove <= 0)
         return false;
 
+    // 格式转换
+    int c = 0;
+    int p = 0;
+    pos2cp(pos, c, p);
+
     // 时间的临时变量
     long player_ms = -1;
-    int pos = cp2pos(c, p);
 
     // 对手
     char opponent = context.turn == PLAYER1 ? 0x20 : 0x10;
@@ -908,135 +920,6 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
 
     // 去子（设置禁点）
     if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
-        revertHash(pos);
-#endif
-        board_[pos] = '\x0f';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-        updateHash(pos);
-#endif
-    } else { // 去子
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-        revertHash(pos);
-#endif
-        board_[pos] = '\x00';
-    }
-
-    if (context.turn == PLAYER1)
-        context.nPiecesOnBoard_2--;
-    else if (context.turn == PLAYER2)
-        context.nPiecesOnBoard_1--;
-
-    move_ = -pos;
-    player_ms = update(time_p);
-    sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
-    cmdlist.push_back(string(cmdline));
-    currentPos = 0;
-    context.nPiecesNeedRemove--;
-    currentStep++;
-    moveStep = 0;
-    // 去子完成
-
-    // 如果决出胜负
-    if (win()) {
-        setTips();
-        return true;
-    }
-
-    // 还有其余的子要去吗
-    if (context.nPiecesNeedRemove > 0) {
-        // 继续去子
-        return true;
-    }
-    // 所有去子都完成了
-    else {
-        // 开局阶段
-        if (context.stage == GAME_PLACING) {
-            // 如果双方都无未放置的棋子
-            if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
-
-                // 进入中局阶段
-                context.stage = GAME_MOVING;
-
-                // 进入选子状态
-                context.action = ACTION_CHOOSE;
-
-                // 清除禁点
-                cleanForbiddenPoints();
-
-                // 设置轮到谁走
-                if (currentRule.isDefenderMoveFirst) {
-                    context.turn = PLAYER2;
-                } else {
-                    context.turn = PLAYER1;
-                }
-
-                // 再决胜负
-                if (win()) {
-                    setTips();
-                    return true;
-                }
-            }
-            // 如果双方还有子
-            else {
-                // 进入落子状态
-                context.action = ACTION_PLACE;
-                // 设置轮到谁走
-                changeTurn();
-                // 如果决出胜负
-                if (win()) {
-                    setTips();
-                    return true;
-                }
-            }
-        }
-        // 中局阶段
-        else {
-            // 进入选子状态
-            context.action = ACTION_CHOOSE;
-            // 设置轮到谁走
-            changeTurn();
-            // 如果决出胜负
-            if (win()) {
-                setTips();
-                return true;
-            }
-        }
-    }
-
-    setTips();
-
-    return true;
-}
-
-bool NineChess::capture(int pos)
-{
-    // 如果局面为"未开局"或“结局”，返回false
-    if (context.stage == GAME_NOTSTARTED || context.stage == GAME_OVER)
-        return false;
-
-    // 如非“去子”状态，返回false
-    if (context.action != ACTION_CAPTURE)
-        return false;
-
-    // 如果去子完成，返回false
-    if (context.nPiecesNeedRemove <= 0)
-        return false;
-
-    // 对手
-    char opponent = context.turn == PLAYER1 ? 0x20 : 0x10;
-
-    // 判断去子是不是对手棋
-    if (!(opponent & board_[pos]))
-        return false;
-
-    // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
-    if (currentRule.allowRemoveMill == false &&
-        isInMills(pos) && !isAllInMills(opponent)) {
-        return false;
-    }
-
-    if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
 #endif
@@ -1057,17 +940,26 @@ bool NineChess::capture(int pos)
         context.nPiecesOnBoard_1--;
 
     move_ = -pos;
+    if (cp == true) {
+        player_ms = update(time_p);
+        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
+        cmdlist.push_back(string(cmdline));
+        currentStep++;
+        moveStep = 0;
+    }
     currentPos = 0;
     context.nPiecesNeedRemove--;
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     updateHash(pos);
 #endif
-    //step++;
+
     // 去子完成
 
     // 如果决出胜负
     if (win()) {
-        //setTip();
+        if (cp == true) {
+            setTips();
+        }
         return true;
     }
 
@@ -1082,6 +974,7 @@ bool NineChess::capture(int pos)
         if (context.stage == GAME_PLACING) {
             // 如果双方都无未放置的棋子
             if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
+
                 // 进入中局阶段
                 context.stage = GAME_MOVING;
 
@@ -1100,7 +993,9 @@ bool NineChess::capture(int pos)
 
                 // 再决胜负
                 if (win()) {
-                    //setTip();
+                    if (cp == true) {
+                        setTips();
+                    }
                     return true;
                 }
             }
@@ -1112,7 +1007,9 @@ bool NineChess::capture(int pos)
                 changeTurn();
                 // 如果决出胜负
                 if (win()) {
-                    //setTip();
+                    if (cp == true) {
+                        setTips();
+                    }
                     return true;
                 }
             }
@@ -1125,13 +1022,17 @@ bool NineChess::capture(int pos)
             changeTurn();
             // 如果决出胜负
             if (win()) {
-                //setTip();
+                if (cp == true) {
+                    setTips();
+                }
                 return true;
             }
         }
     }
 
-    //setTip();
+    if (cp == true) {
+        setTips();
+    }
     return true;
 }
 

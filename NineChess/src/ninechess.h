@@ -518,7 +518,7 @@ protected:
     bool command(int move);
     bool choose(int pos);
     bool place(int pos, long time_p = -1, bool cp = false);
-    bool capture(int pos);
+    bool capture(int pos, long time_p = -1, bool cp = false);
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // hash相关
