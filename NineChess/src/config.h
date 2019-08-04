@@ -25,7 +25,7 @@
 
 #define RANDOM_MOVE
 
-#define MILL_FIRST
+//#define MILL_FIRST
 
 //#define DEAL_WITH_HORIZON_EFFECT
 
