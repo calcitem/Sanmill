@@ -652,15 +652,12 @@ bool NineChess::getCurrentPiece(Player &player, int &number)
     return true;
 }
 
-bool NineChess::pos2cp(const int pos, int &c, int &p)
+void NineChess::pos2cp(const int pos, int &c, int &p)
 {
-    if (pos < POS_BEGIN || POS_END <= pos)
-        return false;
-
-    c = pos / N_SEATS;
-    p = pos % N_SEATS + 1;
-
-    return true;
+    //c = pos / N_SEATS;
+    //p = pos % N_SEATS + 1;
+    c = pos >> 3;
+    p = (pos & 0x07) + 1;
 }
 
 int NineChess::cp2pos(int c, int p)

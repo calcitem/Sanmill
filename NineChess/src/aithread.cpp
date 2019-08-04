@@ -128,12 +128,12 @@ void AiThread::run()
         if (ai_ab.alphaBetaPruning(aiDepth) == 3) {
             qDebug() << "Draw\n";
             strCommand = "draw";
-            QTimer::singleShot(500, this, &AiThread::emitCommand);
+            QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
         } else {
             strCommand = ai_ab.bestMove();
             qDebug() << "Computer:" << strCommand << "\n";
             if (strcmp(strCommand, "error!"))
-                QTimer::singleShot(500, this, &AiThread::emitCommand);
+                QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
         }
 
 #ifdef DEBUG_MODE

@@ -22,8 +22,15 @@
 #define CONFIG_H
 
 //#define DEBUG_MODE
+//#define DEBUG_MODE_A
 
+#ifdef DEBUG_MODE_A
+#define EMIT_COMMAND_DELAY (0)
+#define DONOT_PLAY_SOUND
+#else
 #define RANDOM_MOVE
+#define EMIT_COMMAND_DELAY (500)
+#endif
 
 #define EVALUATE_ENABLE
 

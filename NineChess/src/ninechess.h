@@ -493,7 +493,7 @@ protected:
     int addMills(int pos);
 
     // 将棋盘下标形式转化为第c圈，第p位，c和p下标都从1开始
-    bool pos2cp(const int pos, int &c, int &p);
+    void pos2cp(const int pos, int &c, int &p);
 
     // 将第c圈，第p位转化为棋盘下标形式，c和p下标都从1开始
     int cp2pos(int c, int p);
