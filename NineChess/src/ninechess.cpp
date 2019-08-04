@@ -1036,45 +1036,6 @@ bool NineChess::capture(int pos, long time_p, bool cp)
     return true;
 }
 
-bool NineChess::choose(int c, int p)
-{
-    // 如果局面不是"中局”，返回false
-    if (context.stage != GAME_MOVING)
-        return false;
-
-    // 如非“选子”或“落子”状态，返回false
-    if (context.action != ACTION_CHOOSE && context.action != ACTION_PLACE)
-        return false;
-
-    int pos = cp2pos(c, p);
-
-    // 根据先后手，判断可选子
-    char t = '\0';
-
-    if (context.turn == PLAYER1)
-        t = '\x10';
-    else if (context.turn == PLAYER2)
-        t = '\x20';
-
-    // 判断选子是否可选
-    if (board_[pos] & t) {
-        // 判断pos处的棋子是否被“闷”
-        if (isSurrounded(pos)) {
-            return false;
-        }
-
-        // 选子
-        currentPos = pos;
-
-        // 选子完成，进入落子状态
-        context.action = ACTION_PLACE;
-
-        return true;
-    }
-
-    return false;
-}
-
 bool NineChess::choose(int pos)
 {
     // 如果局面不是"中局”，返回false
@@ -1104,6 +1065,11 @@ bool NineChess::choose(int pos)
     }
 
     return false;
+}
+
+bool NineChess::choose(int c, int p)
+{
+    return choose(cp2pos(c, p));
 }
 
 bool NineChess::giveup(Player loser)
