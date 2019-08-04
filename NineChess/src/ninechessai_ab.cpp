@@ -437,6 +437,59 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 #endif
 }
 
+// 评估子力
+#ifdef EVALUATE_ENABLE
+
+#ifdef EVALUATE_MATERIAL
+int NineChessAi_ab::evaluateMaterial(Node *node)
+{
+    return 0;
+}
+#endif
+
+#ifdef EVALUATE_SPACE
+int NineChessAi_ab::evaluateSpace(Node *node)
+{
+    return 0;
+}
+#endif
+
+#ifdef EVALUATE_MOBILITY
+int NineChessAi_ab::evaluateMobility(Node *node)
+{
+    return 0;
+}
+#endif
+
+#ifdef EVALUATE_TEMPO
+int NineChessAi_ab::evaluateTempo(Node *node)
+{
+    return 0;
+}
+#endif
+
+#ifdef EVALUATE_THREAT
+int NineChessAi_ab::evaluateThreat(Node *node)
+{
+    return 0;
+}
+#endif
+
+#ifdef EVALUATE_SHAPE
+int NineChessAi_ab::evaluateShape(Node *node)
+{
+    return 0;
+}
+#endif
+
+#ifdef EVALUATE_MOTIF
+int NineChessAi_ab::evaluateMotif(Node *node)
+{
+    return 0;
+}
+#endif
+#endif /* EVALUATE_ENABLE */
+
 int NineChessAi_ab::evaluate(Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小

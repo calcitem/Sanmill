@@ -169,6 +169,29 @@ protected:
 
     // 评价函数
     int evaluate(Node *node);
+#ifdef EVALUATE_ENABLE
+#ifdef EVALUATE_MATERIAL
+    int evaluateMaterial(Node *node);
+#endif
+#ifdef EVALUATE_SPACE
+    int evaluateSpace(Node *node);
+#endif
+#ifdef EVALUATE_MOBILITY
+    int evaluateMobility(Node *node);
+#endif
+#ifdef EVALUATE_TEMPO
+    int evaluateTempo(Node *node);
+#endif
+#ifdef EVALUATE_THREAT
+    int evaluateThreat(Node *node);
+#endif
+#ifdef EVALUATE_SHAPE
+    int evaluateShape(Node *node);
+#endif
+#ifdef EVALUATE_MOTIF
+    int evaluateMotif(Node *node);
+#endif
+#endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
     int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
