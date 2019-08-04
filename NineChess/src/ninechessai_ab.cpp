@@ -217,9 +217,39 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
     int pos = 0;
+    size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
-    node->children.reserve(24);
+    switch (chessTemp.getStage()) {
+    case NineChess::GAME_PLACING:
+        if (chessTemp.getAction() == NineChess::ACTION_CAPTURE) {
+            if (chessTemp.whosTurn() == NineChess::PLAYER1)
+                newCapacity = chessTemp.getPiecesOnBoardCount_2();
+            else
+                newCapacity = chessTemp.getPiecesOnBoardCount_1();
+        } else {
+            newCapacity = chessTemp.getPiecesInHandCount_1() + chessTemp.getPiecesInHandCount_2();
+        }
+        break;
+    case NineChess::GAME_MOVING:
+        if (chessTemp.getAction() == NineChess::ACTION_CAPTURE) {
+            if (chessTemp.whosTurn() == NineChess::PLAYER1)
+                newCapacity = chessTemp.getPiecesOnBoardCount_2();
+            else
+                newCapacity = chessTemp.getPiecesOnBoardCount_1();
+        } else {
+            newCapacity = 6;
+        }
+        break;
+    case NineChess::GAME_NOTSTARTED:
+        newCapacity = 24;
+        break;
+    default:
+        newCapacity = 24;
+        break;
+    };
+
+    node->children.reserve(newCapacity + 2 /* TODO: 未细调故再多留余量2 */);
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
