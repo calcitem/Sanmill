@@ -517,7 +517,7 @@ protected:
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool command(int move);
     bool choose(int pos);
-    bool place(int pos);
+    bool place(int pos, long time_p = -1, bool cp = false);
     bool capture(int pos);
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))

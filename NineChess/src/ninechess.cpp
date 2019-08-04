@@ -668,7 +668,7 @@ int NineChess::cp2pos(int c, int p)
     return c * N_SEATS + p - 1;
 }
 
-bool NineChess::place(int c, int p, long time_p /* = -1*/)
+bool NineChess::place(int pos, long time_p, bool cp)
 {
     // 如果局面为“结局”，返回false
     if (context.stage == GAME_OVER)
@@ -682,12 +682,14 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
     if (context.action != ACTION_PLACE)
         return false;
 
-    // 转换为 pos
-    int pos = cp2pos(c, p);
-
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
     if (!onBoard[pos] || board_[pos])
         return false;
+
+    // 格式转换
+    int c = 0;
+    int p = 0;
+    pos2cp(pos, c, p);
 
     // 时间的临时变量
     long player_ms = -1;
@@ -716,16 +718,22 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         updateHash(pos);
 #endif
         move_ = pos;
-        player_ms = update(time_p);
-        sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u",
-                c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
-        cmdlist.push_back(string(cmdline));
+
+        if (cp == true) {
+            player_ms = update(time_p);
+            sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u",
+                    c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
+            cmdlist.push_back(string(cmdline));
+            currentStep++;
+        }
+
         currentPos = pos;
-        currentStep++;
 
         // 如果决出胜负
         if (win()) {
-            setTips();
+            if (cp == true) {
+                setTips();
+            }
             return true;
         }
 
@@ -753,7 +761,9 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 
                 // 再决胜负
                 if (win()) {
-                    setTips();
+                    if (cp == true) {
+                        setTips();
+                    }
                     return true;
                 }
             }
@@ -772,7 +782,9 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
             context.action = ACTION_CAPTURE;
         }
 
-        setTips();
+        if (cp == true) {
+            setTips();
+        }
 
         return true;
     }
@@ -782,7 +794,7 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         // 如果落子不合法
         if ((context.turn == PLAYER1 &&
             (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
-            (context.turn == PLAYER2 &&
+             (context.turn == PLAYER2 &&
             (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
 
             int i;
@@ -798,12 +810,16 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 
         // 移子
         move_ = (currentPos << 8) + pos;
-        player_ms = update(time_p);
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / N_SEATS, currentPos % N_SEATS + 1,
-                c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
-        cmdlist.push_back(string(cmdline));
+        if (cp == true) {
+            player_ms = update(time_p);
+            sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / N_SEATS, currentPos % N_SEATS + 1,
+                    c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
+            cmdlist.push_back(string(cmdline));
+            currentStep++;
+            moveStep++;
+        }
         board_[pos] = board_[currentPos];
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
         board_[currentPos] = '\x00';
@@ -811,8 +827,6 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
         revertHash(currentPos);
 #endif
         currentPos = pos;
-        currentStep++;
-        moveStep++;
         n = addMills(currentPos);
 
         // 中局阶段未成三
@@ -825,7 +839,9 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 
             // 如果决出胜负
             if (win()) {
-                setTips();
+                if (cp == true) {
+                    setTips();
+                }
                 return true;
             }
         }
@@ -836,15 +852,27 @@ bool NineChess::place(int c, int p, long time_p /* = -1*/)
 
             // 进入去子状态
             context.action = ACTION_CAPTURE;
-            setTips();
+            if (cp == true) {
+                setTips();
+            }
         }
 
-        setTips();
+        if (cp == true) {
+            setTips();
+        }
 
         return true;
     }
 
     return false;
+}
+
+bool NineChess::place(int c, int p, long time_p)
+{
+    // 转换为 pos
+    int pos = cp2pos(c, p);
+
+    return place(pos, time_p, true);
 }
 
 bool NineChess::capture(int c, int p, long time_p /* = -1*/)
@@ -981,202 +1009,6 @@ bool NineChess::capture(int c, int p, long time_p /* = -1*/)
     return true;
 }
 
-bool NineChess::choose(int c, int p)
-{
-    // 如果局面不是"中局”，返回false
-    if (context.stage != GAME_MOVING)
-        return false;
-
-    // 如非“选子”或“落子”状态，返回false
-    if (context.action != ACTION_CHOOSE && context.action != ACTION_PLACE)
-        return false;
-
-    int pos = cp2pos(c, p);
-
-    // 根据先后手，判断可选子
-    char t = '\0';
-
-    if (context.turn == PLAYER1)
-        t = '\x10';
-    else if (context.turn == PLAYER2)
-        t = '\x20';
-
-    // 判断选子是否可选
-    if (board_[pos] & t) {
-        // 判断pos处的棋子是否被“闷”
-        if (isSurrounded(pos)) {
-            return false;
-        }
-
-        // 选子
-        currentPos = pos;
-
-        // 选子完成，进入落子状态
-        context.action = ACTION_PLACE;
-
-        return true;
-    }
-
-    return false;
-}
-
-bool NineChess::place(int pos)
-{
-    // 如果局面为“结局”，返回false
-    if (context.stage == GAME_OVER)
-        return false;
-
-    // 如果局面为“未开局”，则开局
-    if (context.stage == GAME_NOTSTARTED)
-        start();
-
-    // 如非“落子”状态，返回false
-    if (context.action != ACTION_PLACE)
-        return false;
-
-    // 如果落子位置在棋盘外、已有子点或禁点，返回false
-    if (!onBoard[pos] || board_[pos])
-        return false;
-
-    // 对于开局落子
-    int piece = '\x00';
-    int n = 0;
-    if (context.stage == GAME_PLACING) {
-        // 先手下
-        if (context.turn == PLAYER1) {
-            piece = '\x11' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand_1;
-            context.nPiecesInHand_1--;
-            context.nPiecesOnBoard_1++;
-        }
-        // 后手下
-        else {
-            piece = '\x21' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand_2;
-            context.nPiecesInHand_2--;
-            context.nPiecesOnBoard_2++;
-        }
-
-        board_[pos] = piece;
-
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-        updateHash(pos);
-#endif
-        move_ = pos;
-        currentPos = pos;
-        //step++;
-
-        // 如果决出胜负
-        if (win()) {
-            //setTip();
-            return true;
-        }
-
-        n = addMills(currentPos);
-
-        // 开局阶段未成三
-        if (n == 0) {
-            // 如果双方都无未放置的棋子
-            if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
-
-                // 进入中局阶段
-                context.stage = GAME_MOVING;
-
-                // 进入选子状态
-                context.action = ACTION_CHOOSE;
-
-                // 清除禁点
-                cleanForbiddenPoints();
-
-                // 设置轮到谁走
-                if (currentRule.isDefenderMoveFirst) {
-                    context.turn = PLAYER2;
-                } else {
-                    context.turn = PLAYER1;
-                }
-
-                // 再决胜负
-                if (win()) {
-                    //setTip();
-                    return true;
-                }
-            }
-            // 如果双方还有子
-            else {
-                // 设置轮到谁走
-                changeTurn();
-            }
-        }
-        // 如果成三
-        else {
-            // 设置去子数目
-            context.nPiecesNeedRemove = currentRule.allowRemoveMultiPieces ? n : 1;
-            // 进入去子状态
-            context.action = ACTION_CAPTURE;
-        }
-        //setTips(); // 非常影响性能
-        return true;
-    }
-
-    // 对于中局落子
-    else if (context.stage == GAME_MOVING) {
-        // 如果落子不合法
-        if ((context.turn == PLAYER1 &&
-            (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
-            (context.turn == PLAYER2 &&
-            (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
-            int i;
-            for (i = 0; i < 4; i++) {
-                if (pos == moveTable[currentPos][i])
-                    break;
-            }
-            // 不在着法表中
-            if (i == 4)
-                return false;
-        }
-        // 移子
-        move_ = (currentPos << 8) + pos;
-        board_[pos] = board_[currentPos];
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-        updateHash(pos);
-#endif
-        board_[currentPos] = '\x00';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-        revertHash(currentPos);
-#endif
-        currentPos = pos;
-        //step++;
-        n = addMills(currentPos);
-
-        // 中局阶段未成三
-        if (n == 0) {
-            // 进入选子状态
-            context.action = ACTION_CHOOSE;
-
-            // 设置轮到谁走
-            changeTurn();
-
-            // 如果决出胜负
-            if (win()) {
-                //setTip();
-                return true;
-            }
-        }
-        // 中局阶段成三
-        else {
-            // 设置去子数目
-            context.nPiecesNeedRemove = currentRule.allowRemoveMultiPieces ? n : 1;
-
-            // 进入去子状态
-            context.action = ACTION_CAPTURE;
-            //setTip();
-        }
-
-        //setTip();
-        return true;
-    }
-
-    return false;
-}
-
 bool NineChess::capture(int pos)
 {
     // 如果局面为"未开局"或“结局”，返回false
@@ -1301,6 +1133,45 @@ bool NineChess::capture(int pos)
 
     //setTip();
     return true;
+}
+
+bool NineChess::choose(int c, int p)
+{
+    // 如果局面不是"中局”，返回false
+    if (context.stage != GAME_MOVING)
+        return false;
+
+    // 如非“选子”或“落子”状态，返回false
+    if (context.action != ACTION_CHOOSE && context.action != ACTION_PLACE)
+        return false;
+
+    int pos = cp2pos(c, p);
+
+    // 根据先后手，判断可选子
+    char t = '\0';
+
+    if (context.turn == PLAYER1)
+        t = '\x10';
+    else if (context.turn == PLAYER2)
+        t = '\x20';
+
+    // 判断选子是否可选
+    if (board_[pos] & t) {
+        // 判断pos处的棋子是否被“闷”
+        if (isSurrounded(pos)) {
+            return false;
+        }
+
+        // 选子
+        currentPos = pos;
+
+        // 选子完成，进入落子状态
+        context.action = ACTION_PLACE;
+
+        return true;
+    }
+
+    return false;
 }
 
 bool NineChess::choose(int pos)
