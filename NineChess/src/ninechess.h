@@ -72,8 +72,9 @@ public:
     // 预定义的规则数目
     static const int N_RULES = 4;
 
-    // 定义 move
-    typedef int move_t;
+    // 定义类型
+    typedef int32_t move_t;
+
 
     // 位置迭代器
     // typedef typename std::vector<move_t>::iterator posIterator;

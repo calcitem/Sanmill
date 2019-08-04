@@ -78,9 +78,9 @@ void NineChessAi_ab::buildRoot()
 
 struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     Node *parent,
-    int value,
-    int move,
-    int bestMove,
+    value_t value,
+    move_t move,
+    move_t bestMove,
     enum NineChess::Player player
 )
 {
@@ -213,7 +213,7 @@ void NineChessAi_ab::shuffleMovePriorityTable()
 #endif // #ifdef RANDOM_MOVE
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
-void NineChessAi_ab::generateLegalMoves(Node *node, int bestMove)
+void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
     int pos = 0;
@@ -493,7 +493,7 @@ int NineChessAi_ab::evaluateMotif(Node *node)
 int NineChessAi_ab::evaluate(Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
-    int value = 0;
+    value_t value = 0;
 
     int nPiecesInHandDiff = INT_MAX;
     int nPiecesOnBoardDiff = INT_MAX;
@@ -629,31 +629,31 @@ int NineChessAi_ab::evaluate(Node *node)
     }
 
     // 赋值返回
-    node->value = (int16_t)value;
+    node->value = value;
     return value;
 }
 
-int NineChessAi_ab::changeDepth(int originalDepth)
+NineChessAi_ab::depth_t NineChessAi_ab::changeDepth(depth_t originalDepth)
 {
-    int newDepth = originalDepth;
+    depth_t newDepth = originalDepth;
 
     if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
 #ifdef HASH_MAP_ENABLE
-        int depthTable[] = { 4, 11, 12, 13, 14, 14,  14, 12, 11, 10, 6, 6, 1 };
+        depth_t depthTable[] = { 4, 11, 12, 13, 14, 14,  14, 12, 11, 10, 6, 6, 1 };
 #else // HASH_MAP_ENABLE
-        int depthTable[] = { 2, 11, 11, 11, 11, 10,   9,  8,  8, 8, 7, 7, 1 };
+        depth_t depthTable[] = { 2, 11, 11, 11, 11, 10,   9,  8,  8, 8, 7, 7, 1 };
 #endif // HASH_MAP_ENABLE
 #else // DEAL_WITH_HORIZON_EFFECT
 #ifdef HASH_MAP_ENABLE
 #ifdef RAPID_CHESS
-        int depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
+        depth_t depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
 #else
-        int depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 15, 12, 10, 9, 7, 1 };
+        depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 15, 12, 10, 9, 7, 1 };
 #endif  // RAPID_CHESS
 #else // HASH_MAP_ENABLE
-        int depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
+        depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
 #endif
 #endif // DEAL_WITH_HORIZON_EFFECT
         newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
@@ -674,12 +674,12 @@ int NineChessAi_ab::changeDepth(int originalDepth)
     return newDepth;
 }
 
-int NineChessAi_ab::alphaBetaPruning(int depth)
+int NineChessAi_ab::alphaBetaPruning(depth_t depth)
 {
     QTime time1;
-    int value = 0;
+    value_t value = 0;
 
-    int d = changeDepth(depth);
+    depth_t d = changeDepth(depth);
 
     unsigned int time0 = (unsigned)time(nullptr);
     srand(time0);
@@ -729,7 +729,7 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
 
 #ifdef IDS_SUPPORT
     // 深化迭代
-    for (int i = 2; i < d; i += 2) {
+    for (depth_t i = 2; i < d; i += 2) {
 #ifdef HASH_MAP_ENABLE
 #ifdef CLEAR_HASH_MAP
         clearHashMap();   // 每次走子前清空哈希表
@@ -756,19 +756,19 @@ int NineChessAi_ab::alphaBetaPruning(int depth)
     return 0;
 }
 
-int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
+int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node)
 {
     // 评价值
-    int value;
+    value_t value;
 
     // 当前节点的 MinMax 值，最终赋值给节点 value，与 alpha 和 Beta 不同
-    int minMax;
+    value_t minMax;
 
     // 临时增加的深度，克服水平线效应用
     int epsilon = 0;
 
     // 子节点的最优着法
-    int bestMove = 0;
+    move_t bestMove = 0;
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 哈希值
@@ -791,9 +791,9 @@ int NineChessAi_ab::alphaBetaPruning(int depth, int alpha, int beta, Node *node)
 
     HashType type = hashfEMPTY;
 
-    int probeVal = probeHash(hash, depth, alpha, beta, bestMove, type);
+    value_t probeVal = probeHash(hash, depth, alpha, beta, bestMove, type);
 
-    if (probeVal != INT32_MIN && node != rootNode) {
+    if (probeVal != INT16_MIN /* TODO: valUNKOWN */  && node != rootNode) {
         hashHitCount++;
 #ifdef DEBUG_AB_TREE
         node->isHash = true;
@@ -1076,7 +1076,7 @@ const char* NineChessAi_ab::bestMove()
     return move2string(bestMoves[0]->move);
 }
 
-const char *NineChessAi_ab::move2string(int move)
+const char *NineChessAi_ab::move2string(move_t move)
 {
     int c, p;
 
@@ -1097,9 +1097,11 @@ const char *NineChessAi_ab::move2string(int move)
 }
 
 #ifdef HASH_MAP_ENABLE
-int NineChessAi_ab::probeHash(uint64_t hash, int depth, int alpha, int beta, int &bestMove, HashType &type)
+NineChessAi_ab::value_t NineChessAi_ab::probeHash(uint64_t hash,
+                                                  depth_t depth, value_t alpha, value_t beta,
+                                                  move_t &bestMove, HashType &type)
 {
-    const int valUNKNOWN = INT32_MIN;
+    const value_t valUNKNOWN = INT16_MIN;
     HashValue hashValue;
 
     if (hashmap.find(hash, hashValue) == false) {
@@ -1158,7 +1160,7 @@ bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 #endif
 }
 
-int NineChessAi_ab::recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove)
+int NineChessAi_ab::recordHash(value_t value, depth_t depth, HashType type, uint64_t hash, move_t bestMove)
 {
     // 同样深度或更深时替换
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY

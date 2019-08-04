@@ -53,14 +53,19 @@ using namespace CTSL;
 class NineChessAi_ab
 {
 public:
+    // 定义类型
+    typedef uint8_t depth_t;
+    typedef int16_t value_t;
+    typedef NineChess::move_t move_t;
+
     // 定义一个节点结构体
     struct Node
     {
     public:
-        int move;                      // 着法的命令行指令，图上标示为节点前的连线
-        int value;                     // 节点的值
+        move_t move;                  // 着法的命令行指令，图上标示为节点前的连线
+        value_t value;                 // 节点的值
         vector<struct Node*> children;  // 子节点列表
-        struct Node* parent;           // 父节点
+        struct Node* parent;            // 父节点
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned;                    // 是否在此处剪枝
 #endif
@@ -93,7 +98,7 @@ public:
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 定义哈希值的类型
-    enum HashType
+    enum HashType : uint8_t
     {
         hashfEMPTY = 0,
         hashfALPHA = 1, // 结点的值最多是 value
@@ -104,10 +109,10 @@ public:
     // 定义哈希表的值
     struct HashValue
     {
-        int value;
-        int depth;
+        value_t value;
+        depth_t depth;
         enum HashType type;
-        int bestMove;
+        move_t bestMove;
     };
 #endif
 
@@ -128,7 +133,7 @@ public:
     }
 
     // Alpha-Beta剪枝算法
-    int alphaBetaPruning(int depth);
+    int alphaBetaPruning(depth_t depth);
 
     // 返回最佳走法的命令行
     const char *bestMove();
@@ -153,7 +158,7 @@ public:
 
 protected:
     // 生成所有合法的着法并建立子节点
-    void generateLegalMoves(Node *node, int bestMove);
+    void generateLegalMoves(Node *node, move_t bestMove);
 
     // 对合法的着法降序排序
     void sortLegalMoves(Node *node);
@@ -165,7 +170,9 @@ protected:
     void buildRoot();
 
     // 增加新节点
-    struct Node *addNode(Node *parent, int value, NineChess::move_t move, int bestMove, enum NineChess::Player player);
+    struct Node *addNode(Node *parent, value_t value,
+                         move_t move, move_t bestMove,
+                         enum NineChess::Player player);
 
     // 评价函数
     int evaluate(Node *node);
@@ -194,13 +201,13 @@ protected:
 #endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
-    int alphaBetaPruning(int depth, int alpha, int beta, Node *node);
+    int alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
 
     // 返回着法的命令行
-    const char *move2string(int move);
+    const char *move2string(move_t move);
 
     // 篡改深度
-    int changeDepth(int originalDepth);
+    depth_t changeDepth(depth_t originalDepth);
 
     // 随机打乱着法搜索顺序
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
@@ -212,10 +219,10 @@ protected:
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
     bool findHash(uint64_t hash, HashValue &hashValue);
-    int probeHash(uint64_t hash, int depth, int alpha, int beta, int &bestMove, HashType &type);
+    value_t probeHash(uint64_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
 
     // 插入哈希表
-    int recordHash(int value, int depth, HashType type, uint64_t hash, int bestMove);
+    int recordHash(value_t value, depth_t depth, HashType type, uint64_t hash, move_t bestMove);
 #endif  // HASH_MAP_ENABLE
 
 private:
@@ -264,10 +271,7 @@ private:
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
     // 定义极大值
-    static const int INF_VALUE = 0x1 << 30;
-
-    // 定义未知值
-    static const int UNKNOWN_VALUE = INT32_MAX;
+    static const value_t INF_VALUE = 0x1 << 14;
 
 private:
     // 命令行
