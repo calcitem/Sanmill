@@ -947,6 +947,11 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
         }
 #endif // DEAL_WITH_HORIZON_EFFECT
 
+#ifdef DEEPER_IF_ONLY_ONE_LEGAL_MOVE
+        if (node->children.size() == 1)
+            epsilon++;
+#endif /* DEEPER_IF_ONLY_ONE_LEGAL_MOVE */
+
         // 递归 Alpha-Beta 剪枝
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 

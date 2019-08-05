@@ -50,6 +50,8 @@
 
 #define IDS_SUPPORT
 
+//define DEEPER_IF_ONLY_ONE_LEGAL_MOVE
+
 #define HASH_MAP_ENABLE
 #define CLEAR_HASH_MAP
 
