@@ -680,7 +680,7 @@ NineChessAi_ab::depth_t NineChessAi_ab::changeDepth(depth_t originalDepth)
 #ifdef RAPID_CHESS
         depth_t depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
 #else
-        depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 15, 12, 10, 9, 7, 1 };
+        depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 12, 11, 10, 9, 7, 1 };
 #endif  // RAPID_CHESS
 #else // HASH_MAP_ENABLE
         depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
