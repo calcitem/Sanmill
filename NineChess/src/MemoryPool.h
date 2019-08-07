@@ -76,6 +76,8 @@ class MemoryPool
     union Slot_ {
       value_type element;
       union Slot_* next;
+    public:
+        ~Slot_();
     };
 
     typedef char* data_pointer_;
