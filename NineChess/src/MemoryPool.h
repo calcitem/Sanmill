@@ -61,8 +61,8 @@ class MemoryPool
     const_pointer address(const_reference x) const noexcept;
 
     // Can only allocate one object at a time. n and hint are ignored
-    pointer allocate(size_type n = 1, const_pointer hint = 0);
-    void deallocate(pointer p, size_type n = 1);
+    pointer allocate();
+    void deallocate(pointer p);
 
     size_type max_size() const noexcept;
 

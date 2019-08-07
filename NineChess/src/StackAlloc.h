@@ -61,7 +61,7 @@ class StackAlloc
       {
         Node* tmp = curr->prev;
         allocator_.destroy(curr);
-        allocator_.deallocate(curr, 1);
+        allocator_.deallocate(curr);
         curr = tmp;
       }
       head_ = 0;
@@ -69,7 +69,7 @@ class StackAlloc
 
     /** Put an element on the top of the stack */
     void push(T element) {
-      Node* newNode = allocator_.allocate(1);
+      Node* newNode = allocator_.allocate();
       allocator_.construct(newNode, Node());
       newNode->data = element;
       newNode->prev = head_;
@@ -81,7 +81,7 @@ class StackAlloc
       T result = head_->data;
       Node* tmp = head_->prev;
       allocator_.destroy(head_);
-      allocator_.deallocate(head_, 1);
+      allocator_.deallocate(head_);
       head_ = tmp;
       return result;
     }
