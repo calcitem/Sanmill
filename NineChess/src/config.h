@@ -29,7 +29,7 @@
 #define DONOT_PLAY_SOUND
 #else
 #define RANDOM_MOVE
-#define EMIT_COMMAND_DELAY (500)
+#define EMIT_COMMAND_DELAY (0)
 #endif
 
 #define EVALUATE_ENABLE
