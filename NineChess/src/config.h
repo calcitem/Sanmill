@@ -32,7 +32,7 @@
 #define EMIT_COMMAND_DELAY (0)
 #endif
 
-#define EVALUATE_ENABLE
+//#define EVALUATE_ENABLE
 
 #ifdef EVALUATE_ENABLE
 #define EVALUATE_MATERIAL
