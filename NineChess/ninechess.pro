@@ -67,3 +67,10 @@ DISTFILES += \
     ../Licence.txt
 
 RC_FILE += NineChess.rc
+
+# With C++14 support
+greaterThan(QT_MAJOR_VERSION, 4) {
+CONFIG += c++14
+} else {
+QMAKE_CXXFLAGS += -std=c++0x
+}
