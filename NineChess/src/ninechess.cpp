@@ -1183,12 +1183,13 @@ inline long NineChess::update(long time_p /*= -1*/)
     if (time_p >= *player_ms) {
         *player_ms = ret = time_p;
         long t = elapsedMS_1 + elapsedMS_2;
-        if (t % 1000 <= currentTimeb.millitm) {
-            startTimeb.time = currentTimeb.time - (t / 1000);
-            startTimeb.millitm = currentTimeb.millitm - (t % 1000);
-        } else {
-            startTimeb.time = currentTimeb.time - (t / 1000) - 1;
-            startTimeb.millitm = currentTimeb.millitm + 1000 - (t % 1000);
+
+        startTimeb.time = currentTimeb.time - (t / 1000);
+        startTimeb.millitm = currentTimeb.millitm - (t % 1000);
+
+        if (t % 1000 > currentTimeb.millitm) {
+            startTimeb.time--;
+            startTimeb.millitm += 1000;
         }
     } else {
         *player_ms = ret = static_cast<long>(currentTimeb.time - startTimeb.time) * 1000
@@ -1212,45 +1213,46 @@ bool NineChess::win()
 // 是否分出胜负
 bool NineChess::win(bool forceDraw)
 {
-    if (context.stage == GAME_OVER)
+    if (context.stage == GAME_OVER) {
         return true;
-    if (context.stage == GAME_NOTSTARTED)
+    }
+
+    if (context.stage == GAME_NOTSTARTED) {
         return false;
+    }
 
     // 如果有时间限定
     if (currentRule.maxTimeLedToLose > 0) {
+        context.stage = GAME_OVER;
+
         // 这里不能update更新时间，否则会形成循环嵌套
         // 如果玩家1超时
         if (elapsedMS_1 > currentRule.maxTimeLedToLose * 60000) {
             elapsedMS_1 = currentRule.maxTimeLedToLose * 60000;
             winner = PLAYER2;
-            context.stage = GAME_OVER;
             tips = "玩家1超时判负。";
             sprintf(cmdline, "Time over. Player2 win!");
-            cmdlist.push_back(string(cmdline));
-            return true;
         }
         // 如果玩家2超时
         else if (elapsedMS_2 > currentRule.maxTimeLedToLose * 60000) {
             elapsedMS_2 = currentRule.maxTimeLedToLose * 60000;
             winner = PLAYER1;
-            context.stage = GAME_OVER;
             tips = "玩家2超时判负。";
             sprintf(cmdline, "Time over. Player1 win!");
-            cmdlist.push_back(string(cmdline));
-            return true;
         }
+
+        cmdlist.push_back(string(cmdline));
+        return true;
     }
 
     // 如果有步数限定
-    if (currentRule.maxStepsLedToDraw > 0) {
-        if (moveStep > currentRule.maxStepsLedToDraw) {
-            winner = DRAW;
-            context.stage = GAME_OVER;
-            sprintf(cmdline, "Steps over. In draw!");
-            cmdlist.push_back(string(cmdline));
-            return true;
-        }
+    if (currentRule.maxStepsLedToDraw > 0 &&
+        moveStep > currentRule.maxStepsLedToDraw) {
+        winner = DRAW;
+        context.stage = GAME_OVER;
+        sprintf(cmdline, "Steps over. In draw!");
+        cmdlist.push_back(string(cmdline));
+        return true;
     }
 
     // 如果玩家1子数小于赛点，则玩家2获胜
@@ -1274,42 +1276,41 @@ bool NineChess::win(bool forceDraw)
     }
     // 如果摆满了，根据规则判断胜负
     else if (context.nPiecesOnBoard_1 + context.nPiecesOnBoard_2 >= N_SEATS * N_RINGS) {
+        context.stage = GAME_OVER;
+
         if (currentRule.isStartingPlayerLoseWhenBoardFull) {
             winner = PLAYER2;
-            context.stage = GAME_OVER;
             sprintf(cmdline, "Player2 win!");
-            cmdlist.push_back(string(cmdline));
-            return true;
         } else {
-            winner = DRAW;
-            context.stage = GAME_OVER;
+            winner = DRAW;  
             sprintf(cmdline, "Full. In draw!");
-            cmdlist.push_back(string(cmdline));
-            return true;
         }
+
+        cmdlist.push_back(string(cmdline));
+        return true;
     }
     // 如果中局被“闷”
     else if (context.stage == GAME_MOVING && context.action == ACTION_CHOOSE && isAllSurrounded(context.turn)) {
         // 规则要求被“闷”判负，则对手获胜
+        context.stage = GAME_OVER;
+
         if (currentRule.isLoseWhenNoWay) {
             if (context.turn == PLAYER1) {
                 tips = "玩家1无子可走被闷。";
                 winner = PLAYER2;
-                context.stage = GAME_OVER;
                 sprintf(cmdline, "Player1 no way to go. Player2 win!");
                 cmdlist.push_back(string(cmdline));
-                return true;
             } else {
                 tips = "玩家2无子可走被闷。";
                 winner = PLAYER1;
-                context.stage = GAME_OVER;
                 sprintf(cmdline, "Player2 no way to go. Player1 win!");
                 cmdlist.push_back(string(cmdline));
 #ifdef BOOK_LEARNING
                 NineChessAi_ab::recordOpeningBookToHashMap();  // 暂时只对后手的失败记录到开局库
 #endif /* BOOK_LEARNING */
-                return true;
             }
+
+            return true;
         }
         else {  // 否则让棋，由对手走            
             changeTurn();
@@ -1337,12 +1338,14 @@ int NineChess::isInMills(int pos, bool test)
     int n = 0;
     int pos1, pos2;
     int m = test? INT32_MAX : board_[pos] & '\x30';
+
     for (int i = 0; i < 3; i++) {
         pos1 = millTable[pos][i][0];
         pos2 = millTable[pos][i][1];
         if (m & board_[pos1] & board_[pos2])
             n++;
     }
+
     return n;
 }
 
