@@ -1172,42 +1172,35 @@ inline long NineChess::update(long time_p /*= -1*/)
     long playerNext_ms = (context.turn == PLAYER1 ? elapsedMS_2 : elapsedMS_1);
 
     // 根据局面调整计时器
-    switch (context.stage) {
-    case NineChess::GAME_PLACING:
-    case NineChess::GAME_MOVING:
-        ftime(&currentTimeb);
 
-        // 更新时间
-        if (time_p >= *player_ms) {
-            *player_ms = ret = time_p;
-            long t = elapsedMS_1 + elapsedMS_2;
-            if (t % 1000 <= currentTimeb.millitm) {
-                startTimeb.time = currentTimeb.time - (t / 1000);
-                startTimeb.millitm = currentTimeb.millitm - (t % 1000);
-            } else {
-                startTimeb.time = currentTimeb.time - (t / 1000) - 1;
-                startTimeb.millitm = currentTimeb.millitm + 1000 - (t % 1000);
-            }
-        } else {
-            *player_ms = ret = static_cast<long>(currentTimeb.time - startTimeb.time) * 1000
-                + (currentTimeb.millitm - startTimeb.millitm) - playerNext_ms;
-        }
-
-        // 有限时要求则判断胜负
-        if (currentRule.maxTimeLedToLose > 0)
-            win();
-
-        return ret;
-
-    case NineChess::GAME_NOTSTARTED:
-        return ret;
-
-    case NineChess::GAME_OVER:
-        return ret;
-
-    default:
-        return ret;
+    if (!(context.stage == GAME_PLACING || context.stage == GAME_MOVING)) {
+        return -1;
     }
+
+    ftime(&currentTimeb);
+
+    // 更新时间
+    if (time_p >= *player_ms) {
+        *player_ms = ret = time_p;
+        long t = elapsedMS_1 + elapsedMS_2;
+        if (t % 1000 <= currentTimeb.millitm) {
+            startTimeb.time = currentTimeb.time - (t / 1000);
+            startTimeb.millitm = currentTimeb.millitm - (t % 1000);
+        } else {
+            startTimeb.time = currentTimeb.time - (t / 1000) - 1;
+            startTimeb.millitm = currentTimeb.millitm + 1000 - (t % 1000);
+        }
+    } else {
+        *player_ms = ret = static_cast<long>(currentTimeb.time - startTimeb.time) * 1000
+            + (currentTimeb.millitm - startTimeb.millitm) - playerNext_ms;
+    }
+
+    // 有限时要求则判断胜负
+    if (currentRule.maxTimeLedToLose > 0) {
+        win();
+    }
+
+    return ret;
 }
 
 // 是否分出胜负
