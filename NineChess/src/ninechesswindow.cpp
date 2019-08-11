@@ -856,12 +856,12 @@ void NineChessWindow::on_actionEngine_E_triggered()
 
 void NineChessWindow::on_actionViewHelp_V_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://blog.csdn.net/liuweilhy/article/details/83832180"));
+    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/NineChess"));
 }
 
 void NineChessWindow::on_actionWeb_W_triggered()
 {
-    QDesktopServices::openUrl(QUrl("http://hy-tech.top"));
+    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/NineChess/blob/master/Licence.txt"));
 }
 
 void NineChessWindow::on_actionAbout_A_triggered()
