@@ -1365,53 +1365,60 @@ int NineChess::addMills(int pos)
         p[1] = millTable[pos][i][0];
         p[2] = millTable[pos][i][1];
 
+        // 如果没有成三
+        if (!(m & board_[p[1]] & board_[p[2]])) {
+            continue;
+        }
+
         // 如果成三
-        if (m & board_[p[1]] & board_[p[2]]) {
 
-            // 排序
-            for (int j = 0; j < 2; j++) {
-                min = j;
-                for (int k = j + 1; k < 3; k++) {
-                    if (p[min] > p[k])
-                        min = k;
-                }
-                if (min != j) {
-                    temp = p[min];
-                    p[min] = p[j];
-                    p[j] = temp;
-                }
+        // 排序
+        for (int j = 0; j < 2; j++) {
+            min = j;
+
+            for (int k = j + 1; k < 3; k++) {
+                if (p[min] > p[k])
+                    min = k;
             }
 
-            // 成三
-            mill = (static_cast<uint64_t>(board_[p[0]]) << 40)
-                 + (static_cast<uint64_t>(p[0]) << 32)
-                 + (static_cast<uint64_t>(board_[p[1]]) << 24)
-                 + (static_cast<uint64_t>(p[1]) << 16)
-                 + (static_cast<uint64_t>(board_[p[2]]) << 8)
-                 +  static_cast<uint64_t>(p[2]);
-
-            // 如果允许相同三连反复去子
-            if (currentRule.allowRemovePiecesRepeatedly) {
-                n++;
+            if (min == j) {
+                continue;
             }
 
-            // 如果不允许相同三连反复去子
-            else {
-                // 迭代器
-                list<uint64_t>::iterator iter;
+            temp = p[min];
+            p[min] = p[j];
+            p[j] = temp;
+        }
 
-                // 遍历
-                for (iter = context.millList.begin(); iter != context.millList.end(); iter++) {
-                    if (mill == *iter)
-                        break;
-                }
+        // 成三
+        mill = (static_cast<uint64_t>(board_[p[0]]) << 40)
+                + (static_cast<uint64_t>(p[0]) << 32)
+                + (static_cast<uint64_t>(board_[p[1]]) << 24)
+                + (static_cast<uint64_t>(p[1]) << 16)
+                + (static_cast<uint64_t>(board_[p[2]]) << 8)
+                +  static_cast<uint64_t>(p[2]);
 
-                // 如果没找到历史项
-                if (iter == context.millList.end()) {
-                    n++;
-                    context.millList.push_back(mill);
-                }
-            }
+        // 如果允许相同三连反复去子
+        if (currentRule.allowRemovePiecesRepeatedly) {
+            n++;
+            continue;
+        }
+
+        // 如果不允许相同三连反复去子
+
+        // 迭代器
+        list<uint64_t>::iterator iter;
+
+        // 遍历
+        for (iter = context.millList.begin(); iter != context.millList.end(); iter++) {
+            if (mill == *iter)
+                break;
+        }
+
+        // 如果没找到历史项
+        if (iter == context.millList.end()) {
+            n++;
+            context.millList.push_back(mill);
         }
     }
 
@@ -1484,12 +1491,14 @@ bool NineChess::isAllSurrounded(char ch)
     // 查询整个棋盘
     int movePos;
     for (int i = 1; i < N_SEATS * (N_RINGS + 1); i++) {
-        if (ch & board_[i]) {
-            for (int k = 0; k < 4; k++) {
-                movePos = moveTable[i][k];
-                if (movePos && !board_[movePos])
-                    return false;
-            }
+        if (!(ch & board_[i])) {
+            continue;
+        }
+
+        for (int d = 0; d < N_MOVE_DIRECTIONS; d++) {
+            movePos = moveTable[i][d];
+            if (movePos && !board_[movePos])
+                return false;
         }
     }
 
@@ -1513,9 +1522,10 @@ void NineChess::cleanForbiddenPoints()
 {
     int pos = 0;
 
-    for (int i = 1; i <= N_RINGS; i++) {
-        for (int j = 0; j < N_SEATS; j++) {
-            pos = i * N_SEATS + j;
+    for (int r = 1; r <= N_RINGS; r++) {
+        for (int s = 0; s < N_SEATS; s++) {
+            pos = r * N_SEATS + s;
+
             if (board_[pos] == '\x0f') {
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
                 revertHash(pos);
@@ -1530,6 +1540,7 @@ enum NineChess::Player NineChess::changeTurn()
 {
     // 设置轮到谁走
     context.turn = (context.turn == PLAYER1) ? PLAYER2 : PLAYER1;
+
     return context.turn;
 }
 
@@ -1601,16 +1612,19 @@ void NineChess::setTips()
 enum NineChess::Player NineChess::getWhosPiece(int c, int p)
 {
     int pos = cp2pos(c, p);
+
     if (board_[pos] & '\x10')
         return PLAYER1;
     else if (board_[pos] & '\x20')
         return PLAYER2;
+
     return NOBODY;
 }
 
 void NineChess::getElapsedTimeMS(long &p1_ms, long &p2_ms)
 {
     update();
+
     p1_ms = elapsedMS_1;
     p2_ms = elapsedMS_2;
 }
