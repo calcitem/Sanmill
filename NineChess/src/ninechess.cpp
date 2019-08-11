@@ -1190,7 +1190,7 @@ inline long NineChess::update(long time_p /*= -1*/)
                 startTimeb.millitm = currentTimeb.millitm + 1000 - (t % 1000);
             }
         } else {
-            *player_ms = ret = (long)(currentTimeb.time - startTimeb.time) * 1000
+            *player_ms = ret = static_cast<long>(currentTimeb.time - startTimeb.time) * 1000
                 + (currentTimeb.millitm - startTimeb.millitm) - playerNext_ms;
         }
 
@@ -1388,12 +1388,12 @@ int NineChess::addMills(int pos)
             }
 
             // 成三
-            mill = (((uint64_t)board_[p[0]]) << 40)
-                + (((uint64_t)p[0]) << 32)
-                + (((uint64_t)board_[p[1]]) << 24)
-                + (((uint64_t)p[1]) << 16)
-                + (((uint64_t)board_[p[2]]) << 8)
-                + (uint64_t)p[2];
+            mill = (static_cast<uint64_t>(board_[p[0]]) << 40)
+                 + (static_cast<uint64_t>(p[0]) << 32)
+                 + (static_cast<uint64_t>(board_[p[1]]) << 24)
+                 + (static_cast<uint64_t>(p[1]) << 16)
+                 + (static_cast<uint64_t>(board_[p[2]]) << 8)
+                 +  static_cast<uint64_t>(p[2]);
 
             // 如果允许相同三连反复去子
             if (currentRule.allowRemovePiecesRepeatedly) {
@@ -1645,16 +1645,16 @@ void NineChess::mirror(bool cmdChange /*= true*/)
     } else {
         llp1 = move_ >> 8;
         llp2 = move_ & 0x00ff;
-        i = (int)llp1 / N_SEATS;
-        j = (int)llp1 % N_SEATS;
+        i = static_cast<int>(llp1) / N_SEATS;
+        j = static_cast<int>(llp1) % N_SEATS;
         j = (N_SEATS - j) % N_SEATS;
         llp1 = i * N_SEATS + j;
 
-        i = (int)llp2 / N_SEATS;
-        j = (int)llp2 % N_SEATS;
+        i = static_cast<int>(llp2) / N_SEATS;
+        j = static_cast<int>(llp2) % N_SEATS;
         j = (N_SEATS - j) % N_SEATS;
         llp2 = i * N_SEATS + j;
-        move_ = (int16_t)((llp1 << 8) | llp2);
+        move_ = static_cast<int16_t>(((llp1 << 8) | llp2));
     }
 
     if (currentPos != 0) {
@@ -1670,18 +1670,18 @@ void NineChess::mirror(bool cmdChange /*= true*/)
             llp2 = (*mill & 0x0000000000ff0000) >> 16;
             llp3 = (*mill & 0x00000000000000ff);
 
-            i = (int)llp1 / N_SEATS;
-            j = (int)llp1 % N_SEATS;
+            i = static_cast<int>(llp1) / N_SEATS;
+            j = static_cast<int>(llp1) % N_SEATS;
             j = (N_SEATS - j) % N_SEATS;
             llp1 = i * N_SEATS + j;
 
-            i = (int)llp2 / N_SEATS;
-            j = (int)llp2 % N_SEATS;
+            i = static_cast<int>(llp2) / N_SEATS;
+            j = static_cast<int>(llp2) % N_SEATS;
             j = (N_SEATS - j) % N_SEATS;
             llp2 = i * N_SEATS + j;
 
-            i = (int)llp3 / N_SEATS;
-            j = (int)llp3 % N_SEATS;
+            i = static_cast<int>(llp3) / N_SEATS;
+            j = static_cast<int>(llp3) % N_SEATS;
             j = (N_SEATS - j) % N_SEATS;
             llp3 = i * N_SEATS + j;
 
@@ -1700,18 +1700,18 @@ void NineChess::mirror(bool cmdChange /*= true*/)
         if (args >= 4) {
             p1 = (N_SEATS - p1 + 1) % N_SEATS;
             p2 = (N_SEATS - p2 + 1) % N_SEATS;
-            cmdline[3] = '1' + (char)p1;
-            cmdline[10] = '1' + (char)p2;
+            cmdline[3] = '1' + static_cast<char>(p1);
+            cmdline[10] = '1' + static_cast<char>(p2);
         } else {
             args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
             if (args >= 2) {
                 p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                cmdline[4] = '1' + (char)p1;
+                cmdline[4] = '1' + static_cast<char>(p1);
             } else {
                 args = sscanf(cmdline, "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
                     p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                    cmdline[3] = '1' + (char)p1;
+                    cmdline[3] = '1' + static_cast<char>(p1);
                 }
             }
         }
@@ -1721,18 +1721,18 @@ void NineChess::mirror(bool cmdChange /*= true*/)
             if (args >= 4) {
                 p1 = (N_SEATS - p1 + 1) % N_SEATS;
                 p2 = (N_SEATS - p2 + 1) % N_SEATS;
-                (*iter)[3] = '1' + (char)p1;
-                (*iter)[10] = '1' + (char)p2;
+                (*iter)[3] = '1' + static_cast<char>(p1);
+                (*iter)[10] = '1' + static_cast<char>(p2);
             } else {
                 args = sscanf((*iter).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
                     p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                    (*iter)[4] = '1' + (char)p1;
+                    (*iter)[4] = '1' + static_cast<char>(p1);
                 } else {
                     args = sscanf((*iter).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                     if (args >= 2) {
                         p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                        (*iter)[3] = '1' + (char)p1;
+                        (*iter)[3] = '1' + static_cast<char>(p1);
                     }
                 }
             }
@@ -1768,8 +1768,8 @@ void NineChess::turn(bool cmdChange /*= true*/)
     } else {
         llp1 = move_ >> 8;
         llp2 = move_ & 0x00ff;
-        i = (int)llp1 / N_SEATS;
-        j = (int)llp1 % N_SEATS;
+        i = static_cast<int>(llp1) / N_SEATS;
+        j = static_cast<int>(llp1) % N_SEATS;
 
         if (i == 1)
             i = N_RINGS;
@@ -1777,8 +1777,8 @@ void NineChess::turn(bool cmdChange /*= true*/)
             i = 1;
 
         llp1 = i * N_SEATS + j;
-        i = (int)llp2 / N_SEATS;
-        j = (int)llp2 % N_SEATS;
+        i = static_cast<int>(llp2) / N_SEATS;
+        j = static_cast<int>(llp2) % N_SEATS;
 
         if (i == 1)
             i = N_RINGS;
@@ -1786,7 +1786,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
             i = 1;
 
         llp2 = i * N_SEATS + j;
-        move_ = (int16_t)((llp1 << 8) | llp2);
+        move_ = static_cast<int16_t>(((llp1 << 8) | llp2));
     }
 
     if (currentPos != 0) {
@@ -1805,16 +1805,16 @@ void NineChess::turn(bool cmdChange /*= true*/)
             llp2 = (*mill & 0x0000000000ff0000) >> 16;
             llp3 = (*mill & 0x00000000000000ff);
 
-            i = (int)llp1 / N_SEATS;
-            j = (int)llp1 % N_SEATS;
+            i = static_cast<int>(llp1) / N_SEATS;
+            j = static_cast<int>(llp1) % N_SEATS;
             if (i == 1)
                 i = N_RINGS;
             else if (i == N_RINGS)
                 i = 1;
             llp1 = i * N_SEATS + j;
 
-            i = (int)llp2 / N_SEATS;
-            j = (int)llp2 % N_SEATS;
+            i = static_cast<int>(llp2) / N_SEATS;
+            j = static_cast<int>(llp2) % N_SEATS;
 
             if (i == 1)
                 i = N_RINGS;
@@ -1823,8 +1823,8 @@ void NineChess::turn(bool cmdChange /*= true*/)
 
             llp2 = i * N_SEATS + j;
 
-            i = (int)llp3 / N_SEATS;
-            j = (int)llp3 % N_SEATS;
+            i = static_cast<int>(llp3) / N_SEATS;
+            j = static_cast<int>(llp3) % N_SEATS;
 
             if (i == 1)
                 i = N_RINGS;
@@ -1856,8 +1856,8 @@ void NineChess::turn(bool cmdChange /*= true*/)
                 c2 = N_RINGS;
             else if (c2 == N_RINGS)
                 c2 = 1;
-            cmdline[1] = '0' + (char)c1;
-            cmdline[8] = '0' + (char)c2;
+            cmdline[1] = '0' + static_cast<char>(c1);
+            cmdline[8] = '0' + static_cast<char>(c2);
         } else {
             args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
             if (args >= 2) {
@@ -1865,7 +1865,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
                     c1 = N_RINGS;
                 else if (c1 == N_RINGS)
                     c1 = 1;
-                cmdline[2] = '0' + (char)c1;
+                cmdline[2] = '0' + static_cast<char>(c1);
             } else {
                 args = sscanf(cmdline, "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
@@ -1873,7 +1873,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
                         c1 = N_RINGS;
                     else if (c1 == N_RINGS)
                         c1 = 1;
-                    cmdline[1] = '0' + (char)c1;
+                    cmdline[1] = '0' + static_cast<char>(c1);
                 }
             }
         }
@@ -1892,8 +1892,8 @@ void NineChess::turn(bool cmdChange /*= true*/)
                     c2 = N_RINGS;
                 else if (c2 == N_RINGS)
                     c2 = 1;
-                (*iter)[1] = '0' + (char)c1;
-                (*iter)[8] = '0' + (char)c2;
+                (*iter)[1] = '0' + static_cast<char>(c1);
+                (*iter)[8] = '0' + static_cast<char>(c2);
             } else {
                 args = sscanf((*iter).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
@@ -1901,7 +1901,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
                         c1 = N_RINGS;
                     else if (c1 == N_RINGS)
                         c1 = 1;
-                    (*iter)[2] = '0' + (char)c1;
+                    (*iter)[2] = '0' + static_cast<char>(c1);
                 } else {
                     args = sscanf((*iter).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                     if (args >= 2) {
@@ -1909,7 +1909,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
                             c1 = N_RINGS;
                         else if (c1 == N_RINGS)
                             c1 = 1;
-                        (*iter)[1] = '0' + (char)c1;
+                        (*iter)[1] = '0' + static_cast<char>(c1);
                     }
                 }
             }
@@ -1982,15 +1982,15 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
     } else {
         llp1 = move_ >> 8;
         llp2 = move_ & 0x00ff;
-        i = (int)llp1 / N_SEATS;
-        j = (int)llp1 % N_SEATS;
+        i = static_cast<int>(llp1) / N_SEATS;
+        j = static_cast<int>(llp1) % N_SEATS;
         j = (j + N_SEATS - degrees) % N_SEATS;
         llp1 = i * N_SEATS + j;
-        i = (int)llp2 / N_SEATS;
-        j = (int)llp2 % N_SEATS;
+        i = static_cast<int>(llp2) / N_SEATS;
+        j = static_cast<int>(llp2) % N_SEATS;
         j = (j + N_SEATS - degrees) % N_SEATS;
         llp2 = i * N_SEATS + j;
-        move_ = (int16_t)((llp1 << 8) | llp2);
+        move_ = static_cast<int16_t>(((llp1 << 8) | llp2));
     }
 
     if (currentPos != 0) {
@@ -2006,18 +2006,18 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
             llp2 = (*mill & 0x0000000000ff0000) >> 16;
             llp3 = (*mill & 0x00000000000000ff);
 
-            i = (int)llp1 / N_SEATS;
-            j = (int)llp1 % N_SEATS;
+            i = static_cast<int>(llp1) / N_SEATS;
+            j = static_cast<int>(llp1) % N_SEATS;
             j = (j + N_SEATS - degrees) % N_SEATS;
             llp1 = i * N_SEATS + j;
 
-            i = (int)llp2 / N_SEATS;
-            j = (int)llp2 % N_SEATS;
+            i = static_cast<int>(llp2) / N_SEATS;
+            j = static_cast<int>(llp2) % N_SEATS;
             j = (j + N_SEATS - degrees) % N_SEATS;
             llp2 = i * N_SEATS + j;
 
-            i = (int)llp3 / N_SEATS;
-            j = (int)llp3 % N_SEATS;
+            i = static_cast<int>(llp3) / N_SEATS;
+            j = static_cast<int>(llp3) % N_SEATS;
             j = (j + N_SEATS - degrees) % N_SEATS;
             llp3 = i * N_SEATS + j;
 
@@ -2036,18 +2036,18 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
         if (args >= 4) {
             p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
             p2 = (p2 - 1 + N_SEATS - degrees) % N_SEATS;
-            cmdline[3] = '1' + (char)p1;
-            cmdline[10] = '1' + (char)p2;
+            cmdline[3] = '1' + static_cast<char>(p1);
+            cmdline[10] = '1' + static_cast<char>(p2);
         } else {
             args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
             if (args >= 2) {
                 p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                cmdline[4] = '1' + (char)p1;
+                cmdline[4] = '1' + static_cast<char>(p1);
             } else {
                 args = sscanf(cmdline, "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
                     p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                    cmdline[3] = '1' + (char)p1;
+                    cmdline[3] = '1' + static_cast<char>(p1);
                 }
             }
         }
@@ -2057,18 +2057,18 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
             if (args >= 4) {
                 p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
                 p2 = (p2 - 1 + N_SEATS - degrees) % N_SEATS;
-                (*iter)[3] = '1' + (char)p1;
-                (*iter)[10] = '1' + (char)p2;
+                (*iter)[3] = '1' + static_cast<char>(p1);
+                (*iter)[10] = '1' + static_cast<char>(p2);
             } else {
                 args = sscanf((*iter).c_str(), "-(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                 if (args >= 2) {
                     p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                    (*iter)[4] = '1' + (char)p1;
+                    (*iter)[4] = '1' + static_cast<char>(p1);
                 } else {
                     args = sscanf((*iter).c_str(), "(%1u,%1u) %2u:%2u.%3u", &c1, &p1, &mm, &ss, &mss);
                     if (args >= 2) {
                         p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                        (*iter)[3] = '1' + (char)p1;
+                        (*iter)[3] = '1' + static_cast<char>(p1);
                     }
                 }
             }
@@ -2162,8 +2162,8 @@ uint64_t NineChess::updateHashMisc()
         context.hash |= 1ULL << 1;
     }
 
-    context.hash |= (uint64_t)context.nPiecesNeedRemove << 2;
-    context.hash |= (uint64_t)context.nPiecesInHand_1 << 4;     // TODO: 或许换 game.stage 也可以？
+    context.hash |= static_cast<uint64_t>(context.nPiecesNeedRemove) << 2;
+    context.hash |= static_cast<uint64_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 game.stage 也可以？
 
     return context.hash;
 }
