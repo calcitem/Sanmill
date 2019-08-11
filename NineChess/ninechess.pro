@@ -16,6 +16,7 @@ CONFIG += C++11 \
     warn_off
 
 INCLUDEPATH += src
+INCLUDEPATH += include
 
 SOURCES += \
     src/client.cpp \
@@ -32,13 +33,13 @@ SOURCES += \
     src/server.cpp
 
 HEADERS  += \
+    include/config.h \
     src/HashNode.h \
     src/MemoryPool.h \
     src/MemoryPool.tcc \
     src/StackAlloc.h \
     src/boarditem.h \
     src/client.h \
-    src/config.h \
     src/gamecontroller.h \
     src/gamescene.h \
     src/gameview.h \
