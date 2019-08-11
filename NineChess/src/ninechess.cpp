@@ -1051,25 +1051,27 @@ bool NineChess::choose(int c, int p)
 
 bool NineChess::giveup(Player loser)
 {
-    if (context.stage == GAME_MOVING || context.stage == GAME_PLACING) {
-        if (loser == PLAYER1) {
-            context.stage = GAME_OVER;
-            winner = PLAYER2;
-            tips = "玩家1投子认负。";
-            sprintf(cmdline, "Player1 give up!");
-            cmdlist.push_back(string(cmdline));
-            return true;
-        } else if (loser == PLAYER2) {
-            context.stage = GAME_OVER;
-            winner = PLAYER1;
-            tips = "玩家2投子认负。";
-            sprintf(cmdline, "Player2 give up!");
-            cmdlist.push_back(string(cmdline));
-            return true;
-        }
+    if (context.stage == GAME_NOTSTARTED ||
+        context.stage == GAME_OVER ||
+        context.stage == GAME_NONE) {
+        return false;
     }
 
-    return false;
+    context.stage = GAME_OVER;
+
+    if (loser == PLAYER1) {
+        winner = PLAYER2;
+        tips = "玩家1投子认负。";
+        sprintf(cmdline, "Player1 give up!");
+    } else if (loser == PLAYER2) { 
+        winner = PLAYER1;
+        tips = "玩家2投子认负。";
+        sprintf(cmdline, "Player2 give up!");
+    }
+
+    cmdlist.push_back(string(cmdline));
+
+    return true;
 }
 
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
