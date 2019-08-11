@@ -208,12 +208,9 @@ NineChess::Player NineChess::getOpponent(NineChess::Player player)
     {
     case PLAYER1:
         return PLAYER2;
-        break;
     case PLAYER2:
         return PLAYER1;
-        break;
     default:
-        return NOBODY;
         break;
     }
 
