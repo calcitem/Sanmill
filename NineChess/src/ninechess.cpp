@@ -19,10 +19,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#if _MSC_VER >= 1600
-#pragma execution_character_set("utf-8")
-#endif
-
 #include <algorithm>
 #include "ninechess.h"
 #include "ninechessai_ab.h"
@@ -129,10 +125,10 @@ const int NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
 };
 
 // 着法表
-int NineChess::moveTable[N_POINTS][N_MOVE_DIRECTIONS] = { 0 };
+int NineChess::moveTable[N_POINTS][N_MOVE_DIRECTIONS] = {{0}};
 
 // 成三表
-int NineChess::millTable[N_POINTS][N_DIRECTIONS][N_RINGS - 1] = { 0 };
+int NineChess::millTable[N_POINTS][N_DIRECTIONS][N_RINGS - 1] = {{{0}}};
 
 NineChess::NineChess()
 {
@@ -1364,7 +1360,7 @@ int NineChess::isInMills(int pos, bool test)
 {
     int n = 0;
     int pos1, pos2;
-    char m = test? INT32_MAX : board_[pos] & '\x30';
+    int m = test? INT32_MAX : board_[pos] & '\x30';
     for (int i = 0; i < 3; i++) {
         pos1 = millTable[pos][i][0];
         pos2 = millTable[pos][i][1];
@@ -1633,7 +1629,7 @@ enum NineChess::Player NineChess::getWhosPiece(int c, int p)
     return NOBODY;
 }
 
-void NineChess::getElapsedTimeMS(int &p1_ms, int &p2_ms)
+void NineChess::getElapsedTimeMS(long &p1_ms, long &p2_ms)
 {
     update();
     p1_ms = elapsedMS_1;

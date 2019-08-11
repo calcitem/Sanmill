@@ -54,10 +54,10 @@ private slots:
 private:
     QLabel *statusLabel = nullptr;
     QTcpServer *tcpServer = nullptr;
-    QVector<QString> actions;
-    QString action;
     QNetworkSession *networkSession = nullptr;
     uint16_t port;
+    QVector<QString> actions;
+    QString action;
 };
 
 #endif // SERVER_H

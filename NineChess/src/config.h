@@ -21,6 +21,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
 //#define DEBUG_MODE
 //#define DEBUG_MODE_A
 

@@ -125,7 +125,7 @@ void Client::requestNewAction()
     getActionButton->setEnabled(false);
     tcpSocket->abort();
     tcpSocket->connectToHost(hostCombo->currentText(),
-                             portLineEdit->text().toInt());
+                             portLineEdit->text().toUShort());
 }
 
 void Client::readAction()
@@ -140,7 +140,6 @@ void Client::readAction()
 
     currentAction = nextAction;
     statusLabel->setText(currentAction);
-    // ·¢ĞÅºÅ
     emit command(currentAction);
     getActionButton->setEnabled(true);
 

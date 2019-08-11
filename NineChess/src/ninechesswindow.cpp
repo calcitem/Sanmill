@@ -19,10 +19,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#if _MSC_VER >= 1600
-#pragma execution_character_set("utf-8")
-#endif
-
 #include <QDesktopServices>
 #include <QMap>
 #include <QMessageBox>
@@ -827,7 +823,8 @@ void NineChessWindow::on_actionEngine_E_triggered()
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     // 目前数据
-    int depth1, depth2, time1, time2;
+    NineChessAi_ab::depth_t depth1, depth2;
+    int time1, time2;
     game->getAiDepthTime(depth1, time1, depth2, time2);
     spinBox_depth1->setValue(depth1);
     spinBox_depth2->setValue(depth2);
@@ -836,7 +833,8 @@ void NineChessWindow::on_actionEngine_E_triggered()
 
     // 新设数据
     if (dialog->exec() == QDialog::Accepted) {
-        int depth1_new, depth2_new, time1_new, time2_new;
+        NineChessAi_ab::depth_t depth1_new, depth2_new;
+        int time1_new, time2_new;
         depth1_new = spinBox_depth1->value();
         depth2_new = spinBox_depth2->value();
         time1_new = spinBox_time1->value();

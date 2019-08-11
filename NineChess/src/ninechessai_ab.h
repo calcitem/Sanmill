@@ -32,11 +32,11 @@
 //#endif
 #include <mutex>
 #include <string>
-#include <Qdebug>
+#include <QDebug>
 #include <array>
 
 #include "ninechess.h"
-#include "hashMap.h"
+#include "hashmap.h"
 
 #ifdef MEMORY_POOL
 #include "MemoryPool.h"
@@ -62,13 +62,14 @@ public:
     struct Node
     {
     public:
-        move_t move;                  // 着法的命令行指令，图上标示为节点前的连线
-        value_t value;                 // 节点的值
         vector<struct Node*> children;  // 子节点列表
         struct Node* parent;            // 父节点
+        move_t move;                  // 着法的命令行指令，图上标示为节点前的连线
+        value_t value;                 // 节点的值
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned;                    // 是否在此处剪枝
 #endif
+
 #ifdef DEBUG_AB_TREE
         size_t id;                      // 结点编号
         string cmd;
@@ -277,5 +278,13 @@ private:
     // 命令行
     char cmdline[32];
 };
+
+#ifdef HASH_MAP_ENABLE
+extern HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap;
+#endif /* #ifdef HASH_MAP_ENABLE */
+
+#ifdef THREEFOLD_REPETITION
+extern vector<uint64_t> positions;
+#endif
 
 #endif

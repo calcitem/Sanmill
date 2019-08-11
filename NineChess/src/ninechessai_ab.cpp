@@ -29,7 +29,7 @@
 #include <algorithm>
 
 #include "ninechessai_ab.h"
-#include "HashMap.h"
+#include "hashmap.h"
 
 using namespace CTSL;
 
@@ -103,7 +103,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     newNode->pruned = false;
 #endif
 
-    player = player; // Remove warning
+    //player = player; // Remove warning
 
 #ifdef DEBUG_AB_TREE
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
@@ -190,23 +190,23 @@ void NineChessAi_ab::shuffleMovePriorityTable()
     std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
     std::shuffle(movePriorityTable4.begin(), movePriorityTable4.end(), std::default_random_engine(seed));
 
-    for (int i = 0; i < 4; i++) {
+    for (size_t i = 0; i < 4; i++) {
         movePriorityTable[i + 0] = movePriorityTable0[i];
     }
 
-    for (int i = 0; i < 8; i++) {
+    for (size_t i = 0; i < 8; i++) {
         movePriorityTable[i + 4] = movePriorityTable1[i];
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (size_t i = 0; i < 4; i++) {
         movePriorityTable[i + 12] = movePriorityTable2[i];
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (size_t i = 0; i < 4; i++) {
         movePriorityTable[i + 16] = movePriorityTable3[i];
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (size_t i = 0; i < 4; i++) {
         movePriorityTable[i + 20] = movePriorityTable4[i];
     }
 }
@@ -217,7 +217,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
     int pos = 0;
-    size_t newCapacity = 24;
+    int newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
     switch (chessTemp.getStage()) {

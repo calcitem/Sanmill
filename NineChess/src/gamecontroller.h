@@ -90,8 +90,8 @@ public:
         return &manualListModel;
     }
 
-    void setAiDepthTime(int depth1, int time1, int depth2, int time2);
-    void getAiDepthTime(int &depth1, int &time1, int &depth2, int &time2);
+    void setAiDepthTime(NineChessAi_ab::depth_t depth1, int time1, NineChessAi_ab::depth_t depth2, int time2);
+    void getAiDepthTime(NineChessAi_ab::depth_t &depth1, int &time1, NineChessAi_ab::depth_t &depth2, int &time2);
 
 signals:
 
@@ -231,10 +231,10 @@ private:
     int stepsLimit;
 
     // 玩家1剩余时间（毫秒）
-    int remainingTime1;
+    long remainingTime1;
 
     // 玩家2剩余时间（毫秒）
-    int remainingTime2;
+    long remainingTime2;
 
     // 玩家1赢盘数
     int score1;

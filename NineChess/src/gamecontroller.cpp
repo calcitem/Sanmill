@@ -19,10 +19,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#if _MSC_VER >= 1600
-#pragma execution_character_set("utf-8")
-#endif
-
 #include <QGraphicsView>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -42,6 +38,8 @@
 
 GameController::GameController(GameScene & scene, QObject * parent) :
     QObject(parent),
+    ai1(1),
+    ai2(2),
     scene(scene),
     currentPiece(nullptr),
     currentRow(-1),
@@ -56,8 +54,6 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     ruleNo_(-1),
     timeLimit(0),
     stepsLimit(50),
-    ai1(1),
-    ai2(2),
     score1(-2),
     score2(-2)
 {
@@ -316,7 +312,7 @@ void GameController::setEngine2(bool arg)
     }
 }
 
-void GameController::setAiDepthTime(int depth1, int time1, int depth2, int time2)
+void GameController::setAiDepthTime(NineChessAi_ab::depth_t depth1, int time1, NineChessAi_ab::depth_t depth2, int time2)
 {
     if (isEngine1) {
         ai1.stop();
@@ -338,7 +334,7 @@ void GameController::setAiDepthTime(int depth1, int time1, int depth2, int time2
     }
 }
 
-void GameController::getAiDepthTime(int &depth1, int &time1, int &depth2, int &time2)
+void GameController::getAiDepthTime(NineChessAi_ab::depth_t &depth1, int &time1, NineChessAi_ab::depth_t &depth2, int &time2)
 {
     ai1.getDepthTime(depth1, time1);
     ai2.getDepthTime(depth2, time2);

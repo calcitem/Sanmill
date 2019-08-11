@@ -75,7 +75,6 @@ public:
     // 定义类型
     typedef int32_t move_t;
 
-
     // 位置迭代器
     // typedef typename std::vector<move_t>::iterator posIterator;
     // typedef typename std::vector<move_t>::const_iterator constPosIterator;
@@ -148,7 +147,7 @@ public:
     };
 
     uint64_t rand64(void) {
-        return rand() ^
+        return (uint64_t)rand() ^
             ((uint64_t)rand() << 15) ^
             ((uint64_t)rand() << 30) ^
             ((uint64_t)rand() << 45) ^
@@ -379,7 +378,7 @@ public:
     }
 
     // 玩家1和玩家2的用时
-    void getElapsedTimeMS(int &p1_ms, int &p2_ms);
+    void getElapsedTimeMS(long &p1_ms, long &p2_ms);
 
     // 获取棋局的字符提示
     const string getTips() const

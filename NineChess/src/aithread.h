@@ -37,7 +37,7 @@ class AiThread : public QThread
 
 public:
     explicit AiThread(int id, QObject *parent = nullptr);
-    ~AiThread();
+    ~AiThread() override;
 
 signals:
     // 着法信号
@@ -55,7 +55,7 @@ protected:
 public:
     // AI设置
     void setAi(const NineChess &chess);
-    void setAi(const NineChess &chess, int depth, int time);
+    void setAi(const NineChess &chess, NineChessAi_ab::depth_t depth, int time);
 
     Server *getServer()
     {
@@ -68,7 +68,7 @@ public:
     }
 
     // 深度和限时
-    void getDepthTime(int &depth, int &time)
+    void getDepthTime(NineChessAi_ab::depth_t &depth, int &time)
     {
         depth = aiDepth;
         time = aiTime;
@@ -113,7 +113,7 @@ private:
     NineChessAi_ab ai_ab;
 
     // AI的层数
-    int aiDepth;
+    NineChessAi_ab::depth_t aiDepth;
 
     // AI的限时
     int aiTime;

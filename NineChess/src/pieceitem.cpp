@@ -46,7 +46,7 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
     //setAcceptedMouseButtons(Qt::LeftButton);
 
     // 不接受鼠标事件
-    setAcceptedMouseButtons(0);
+    setAcceptedMouseButtons(nullptr);
     //setAcceptHoverEvents(true);
 
     // 默认模型为没有棋子
@@ -104,6 +104,8 @@ void PieceItem::paint(QPainter *painter,
         // 如果模型为白色，则画白色棋子
         painter->drawPixmap(-size / 2, -size / 2, size, size,
             QPixmap(":/image/resources/image/white_piece.png"));
+        break;
+    default:
         break;
     }
 

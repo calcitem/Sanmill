@@ -25,8 +25,8 @@
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
-    chess_(nullptr),
     waiting_(false),
+    chess_(nullptr),
     aiDepth(2),
     aiTime(120)
 {
@@ -78,7 +78,7 @@ void AiThread::setAi(const NineChess &chess)
     mutex.unlock();
 }
 
-void AiThread::setAi(const NineChess &chess, int depth, int time)
+void AiThread::setAi(const NineChess &chess, NineChessAi_ab::depth_t depth, int time)
 {
     mutex.lock();
     this->chess_ = &chess;

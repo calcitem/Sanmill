@@ -91,10 +91,10 @@ namespace CTSL //Concurrent Thread Safe Library
             //Function to remove an entry from the bucket, if found
             void erase(const K &key)
             {
-                size_t hashValue = hashFn(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
                 // std::unique_lock<std::shared_timed_mutex> lock(mutex_);
 #else
+                size_t hashValue = hashFn(key) & (hashSize - 1);
                 hashTable[hashValue].erase(key);
 #endif
             }
