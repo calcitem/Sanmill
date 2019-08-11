@@ -727,10 +727,7 @@ bool NineChess::place(int pos, long time_p, bool cp)
 
         // 如果决出胜负
         if (win()) {
-            if (cp == true) {
-                setTips();
-            }
-            return true;
+            goto out;
         }
 
         n = addMills(currentPos);
@@ -757,10 +754,7 @@ bool NineChess::place(int pos, long time_p, bool cp)
 
                 // 再决胜负
                 if (win()) {
-                    if (cp == true) {
-                        setTips();
-                    }
-                    return true;
+                    goto out;
                 }
             }
             // 如果双方还有子
@@ -778,89 +772,83 @@ bool NineChess::place(int pos, long time_p, bool cp)
             context.action = ACTION_CAPTURE;
         }
 
-        if (cp == true) {
-            setTips();
-        }
-
-        return true;
+        goto out;
     }
 
-    // 对于中局落子
-    else if (context.stage == GAME_MOVING) {
-        // 如果落子不合法
-        if ((context.turn == PLAYER1 &&
-            (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
-             (context.turn == PLAYER2 &&
-            (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
+    // 对于中局落子 (ontext.stage == GAME_MOVING)
 
-            int i;
-            for (i = 0; i < 4; i++) {
-                if (pos == moveTable[currentPos][i])
-                    break;
-            }
+    // 如果落子不合法
+    if ((context.turn == PLAYER1 &&
+         (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
+        (context.turn == PLAYER2 &&
+         (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
 
-            // 不在着法表中
-            if (i == 4)
-                return false;
+        int i;
+        for (i = 0; i < 4; i++) {
+            if (pos == moveTable[currentPos][i])
+                break;
         }
 
-        // 移子
-        move_ = (currentPos << 8) + pos;
-        if (cp == true) {
-            player_ms = update(time_p);
-            sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / N_SEATS, currentPos % N_SEATS + 1,
-                    c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
-            cmdlist.push_back(string(cmdline));
-            currentStep++;
-            moveStep++;
+        // 不在着法表中
+        if (i == 4) {
+            return false;
         }
-        board_[pos] = board_[currentPos];
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-        updateHash(pos);
-#endif
-        board_[currentPos] = '\x00';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-        revertHash(currentPos);
-#endif
-        currentPos = pos;
-        n = addMills(currentPos);
-
-        // 中局阶段未成三
-        if (n == 0) {
-            // 进入选子状态
-            context.action = ACTION_CHOOSE;
-
-            // 设置轮到谁走
-            changeTurn();
-
-            // 如果决出胜负
-            if (win()) {
-                if (cp == true) {
-                    setTips();
-                }
-                return true;
-            }
-        }
-        // 中局阶段成三
-        else {
-            // 设置去子数目
-            context.nPiecesNeedRemove = currentRule.allowRemoveMultiPieces ? n : 1;
-
-            // 进入去子状态
-            context.action = ACTION_CAPTURE;
-            if (cp == true) {
-                setTips();
-            }
-        }
-
-        if (cp == true) {
-            setTips();
-        }
-
-        return true;
     }
 
-    return false;
+    // 移子
+    move_ = (currentPos << 8) + pos;
+    if (cp == true) {
+        player_ms = update(time_p);
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / N_SEATS, currentPos % N_SEATS + 1,
+                c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
+        cmdlist.push_back(string(cmdline));
+        currentStep++;
+        moveStep++;
+    }
+
+    board_[pos] = board_[currentPos];
+
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+    updateHash(pos);
+#endif
+
+    board_[currentPos] = '\x00';
+
+#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+    revertHash(currentPos);
+#endif
+
+    currentPos = pos;
+    n = addMills(currentPos);
+
+    // 中局阶段未成三
+    if (n == 0) {
+        // 进入选子状态
+        context.action = ACTION_CHOOSE;
+
+        // 设置轮到谁走
+        changeTurn();
+
+        // 如果决出胜负
+        if (win()) {
+            goto out;
+        }
+    }
+    // 中局阶段成三
+    else {
+        // 设置去子数目
+        context.nPiecesNeedRemove = currentRule.allowRemoveMultiPieces ? n : 1;
+
+        // 进入去子状态
+        context.action = ACTION_CAPTURE;
+    }
+
+out:
+    if (cp == true) {
+        setTips();
+    }
+
+    return true;
 }
 
 bool NineChess::place(int c, int p, long time_p)
