@@ -936,6 +936,7 @@ bool NineChess::capture(int pos, long time_p, bool cp)
         context.nPiecesOnBoard_1--;
 
     move_ = -pos;
+
     if (cp == true) {
         player_ms = update(time_p);
         sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
@@ -943,6 +944,7 @@ bool NineChess::capture(int pos, long time_p, bool cp)
         currentStep++;
         moveStep = 0;
     }
+
     currentPos = 0;
     context.nPiecesNeedRemove--;
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
@@ -953,10 +955,7 @@ bool NineChess::capture(int pos, long time_p, bool cp)
 
     // 如果决出胜负
     if (win()) {
-        if (cp == true) {
-            setTips();
-        }
-        return true;
+        goto out;
     }
 
     // 还有其余的子要去吗
@@ -964,71 +963,68 @@ bool NineChess::capture(int pos, long time_p, bool cp)
         // 继续去子
         return true;
     }
+
     // 所有去子都完成了
-    else {
-        // 开局阶段
-        if (context.stage == GAME_PLACING) {
-            // 如果双方都无未放置的棋子
-            if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
 
-                // 进入中局阶段
-                context.stage = GAME_MOVING;
+    // 开局阶段
+    if (context.stage == GAME_PLACING) {
+        // 如果双方都无未放置的棋子
+        if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
 
-                // 进入选子状态
-                context.action = ACTION_CHOOSE;
+            // 进入中局阶段
+            context.stage = GAME_MOVING;
 
-                // 清除禁点
-                cleanForbiddenPoints();
-
-                // 设置轮到谁走
-                if (currentRule.isDefenderMoveFirst) {
-                    context.turn = PLAYER2;
-                } else {
-                    context.turn = PLAYER1;
-                }
-
-                // 再决胜负
-                if (win()) {
-                    if (cp == true) {
-                        setTips();
-                    }
-                    return true;
-                }
-            }
-            // 如果双方还有子
-            else {
-                // 进入落子状态
-                context.action = ACTION_PLACE;
-                // 设置轮到谁走
-                changeTurn();
-                // 如果决出胜负
-                if (win()) {
-                    if (cp == true) {
-                        setTips();
-                    }
-                    return true;
-                }
-            }
-        }
-        // 中局阶段
-        else {
             // 进入选子状态
             context.action = ACTION_CHOOSE;
+
+            // 清除禁点
+            cleanForbiddenPoints();
+
+            // 设置轮到谁走
+            if (currentRule.isDefenderMoveFirst) {
+                context.turn = PLAYER2;
+            } else {
+                context.turn = PLAYER1;
+            }
+
+            // 再决胜负
+            if (win()) {
+                goto out;
+            }
+        }
+        // 如果双方还有子
+        else {
+            // 进入落子状态
+            context.action = ACTION_PLACE;
+
             // 设置轮到谁走
             changeTurn();
+
             // 如果决出胜负
             if (win()) {
-                if (cp == true) {
-                    setTips();
-                }
-                return true;
+                goto out;
             }
         }
     }
+    // 中局阶段
+    else {
+        // 进入选子状态
+        context.action = ACTION_CHOOSE;
 
+        // 设置轮到谁走
+        changeTurn();
+
+        // 如果决出胜负
+        if (win()) {
+            goto out;
+        }
+    }
+
+out:
     if (cp == true) {
         setTips();
     }
+
     return true;
 }
 
