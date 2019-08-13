@@ -397,7 +397,7 @@ bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int m
         if (board == nullptr) {
             memset(context.board, 0, sizeof(context.board));
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-            context.hash = 0ull;
+            context.hash = 0;
 #endif
         } else {
             memcpy(context.board, board, sizeof(context.board));
@@ -1137,6 +1137,7 @@ bool NineChess::command(const char *cmd)
     if (!strcmp(cmd, "Threefold Repetition. Draw!")) {
         return true;
     }
+
     if (!strcmp(cmd, "draw")) {
         context.stage = GAME_OVER;
         winner = DRAW;
@@ -2093,10 +2094,10 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
 
 void NineChess::constructHash()
 {
-    context.hash = 0ull;
+    context.hash = 0;
 
 #include "zobrist.h"
-    memcpy(context.zobrist, zobrist0, sizeof(uint64_t) * NineChess::N_POINTS * NineChess::POINT_TYPE_COUNT);
+    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * NineChess::N_POINTS * NineChess::POINT_TYPE_COUNT);
 
 #if 0
     // 预留末8位后续填充局面特征标志
@@ -2111,7 +2112,7 @@ void NineChess::constructHash()
 #endif
 }
 
-uint64_t NineChess::getHash()
+NineChess::hash_t NineChess::getHash()
 {
     // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
     updateHashMisc();
@@ -2119,7 +2120,7 @@ uint64_t NineChess::getHash()
     return context.hash;
 }
 
-uint64_t NineChess::updateHash(int pos)
+NineChess::hash_t NineChess::updateHash(int pos)
 {
     // PieceType is board_[pos]
 
@@ -2132,12 +2133,12 @@ uint64_t NineChess::updateHash(int pos)
     return context.hash;
 }
 
-uint64_t NineChess::revertHash(int pos)
+NineChess::hash_t NineChess::revertHash(int pos)
 {
     return updateHash(pos);
 }
 
-uint64_t NineChess::updateHashMisc()
+NineChess::hash_t NineChess::updateHashMisc()
 {
     // 清除标记位
     context.hash &= ~0xFF;
@@ -2145,15 +2146,15 @@ uint64_t NineChess::updateHashMisc()
     // 置位
 
     if (context.turn == PLAYER2) {
-        context.hash |= 1ULL;
+        context.hash |= 1U;
     }
 
     if (context.action == ACTION_CAPTURE) {
-        context.hash |= 1ULL << 1;
+        context.hash |= 1U << 1;
     }
 
-    context.hash |= static_cast<uint64_t>(context.nPiecesNeedRemove) << 2;
-    context.hash |= static_cast<uint64_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 game.stage 也可以？
+    context.hash |= static_cast<NineChess::hash_t>(context.nPiecesNeedRemove) << 2;
+    context.hash |= static_cast<NineChess::hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 game.stage 也可以？
 
     return context.hash;
 }

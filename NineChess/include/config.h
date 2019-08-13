@@ -59,6 +59,10 @@
 #define HASH_MAP_ENABLE
 #define CLEAR_HASH_MAP
 
+#ifdef HASH_MAP_ENABLE
+#define HASH_MAP_CUTDOWN
+#endif /* HASH_MAP_ENABLE */
+
 #define MEMORY_POOL
 
 //#define RAPID_CHESS

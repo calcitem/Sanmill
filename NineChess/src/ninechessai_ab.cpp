@@ -35,17 +35,17 @@ using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
 static constexpr int hashsize = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
-HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap(hashsize);
+HashMap<NineChess::hash_t, NineChessAi_ab::HashValue> hashmap(hashsize);
 #endif // HASH_MAP_ENABLE
 
 #ifdef BOOK_LEARNING
 static constexpr int bookHashsize = 0x1000000; // 16M
-HashMap<uint64_t, NineChessAi_ab::HashValue> bookHashMap(bookHashsize);
-vector<uint64_t> openingBook;
+HashMap<NineChess::hash_t, NineChessAi_ab::HashValue> bookHashMap(bookHashsize);
+vector<NineChess::hash_t> openingBook;
 #endif // BOOK_LEARNING
 
 #ifdef THREEFOLD_REPETITION
-vector<uint64_t> positions;
+vector<NineChess::hash_t> positions;
 #endif
 
 NineChessAi_ab::NineChessAi_ab() :
@@ -733,7 +733,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth)
     static int nRepetition = 0;
 
     if (chess_.getStage() == NineChess::GAME_MOVING) {
-        uint64_t hash = chess_.getHash();
+        NineChess::hash_t hash = chess_.getHash();
         
         if (std::find(positions.begin(), positions.end(), hash) != positions.end()) {
             nRepetition++;
@@ -809,7 +809,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
     enum HashType hashf = hashfALPHA;
 
     // 获取哈希值
-    uint64_t hash = chessTemp.getHash();
+    NineChess::hash_t hash = chessTemp.getHash();
 #ifdef DEBUG_AB_TREE
     node->hash = hash;
 #endif
@@ -1132,7 +1132,7 @@ const char *NineChessAi_ab::move2string(move_t move)
 }
 
 #ifdef HASH_MAP_ENABLE
-NineChessAi_ab::value_t NineChessAi_ab::probeHash(uint64_t hash,
+NineChessAi_ab::value_t NineChessAi_ab::probeHash(NineChess::hash_t hash,
                                                   depth_t depth, value_t alpha, value_t beta,
                                                   move_t &bestMove, HashType &type)
 {
@@ -1166,7 +1166,7 @@ out:
     return valUNKNOWN;
 }
 
-bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
+bool NineChessAi_ab::findHash(NineChess::hash_t hash, HashValue &hashValue)
 {
     return hashmap.find(hash, hashValue);
 
@@ -1195,7 +1195,7 @@ bool NineChessAi_ab::findHash(uint64_t hash, HashValue &hashValue)
 #endif
 }
 
-int NineChessAi_ab::recordHash(value_t value, depth_t depth, HashType type, uint64_t hash, move_t bestMove)
+int NineChessAi_ab::recordHash(value_t value, depth_t depth, HashType type, NineChess::hash_t hash, move_t bestMove)
 {
     // 同样深度或更深时替换
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
@@ -1235,12 +1235,12 @@ void NineChessAi_ab::clearHashMap()
 
 #ifdef BOOK_LEARNING
 
-bool NineChessAi_ab::findBookHash(uint64_t hash, HashValue &hashValue)
+bool NineChessAi_ab::findBookHash(NineChess::hash_t hash, HashValue &hashValue)
 {
     return bookHashMap.find(hash, hashValue);
 }
 
-int NineChessAi_ab::recordBookHash(uint64_t hash, const HashValue &hashValue)
+int NineChessAi_ab::recordBookHash(NineChess::hash_t hash, const HashValue &hashValue)
 {
     //hashMapMutex.lock();
     bookHashMap.insert(hash, hashValue);
@@ -1259,7 +1259,7 @@ void NineChessAi_ab::clearBookHashMap()
 void NineChessAi_ab::recordOpeningBookToHashMap()
 {
     HashValue hashValue;
-    uint64_t hash = 0;
+    NineChess::hash_t hash = 0;
 
     for (auto iter = openingBook.begin(); iter != openingBook.end(); ++iter)
     {

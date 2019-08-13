@@ -75,6 +75,12 @@ public:
     // 定义类型
     typedef int32_t move_t;
 
+#ifdef HASH_MAP_CUTDOWN
+    typedef uint32_t hash_t;
+#else
+    typedef uint64_t hash_t;
+#endif /* HASH_MAP_CUTDOWN */
+
     // 位置迭代器
     // typedef typename std::vector<move_t>::iterator posIterator;
     // typedef typename std::vector<move_t>::const_iterator constPosIterator;
@@ -206,19 +212,19 @@ public:
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         // 局面的哈希值
-        uint64_t hash;
+        hash_t hash;
 
         // 标记处于走子阶段的哈希
-        uint64_t gameMovingHash;
+        hash_t gameMovingHash;
 
         // 吃子动作的哈希
-        uint64_t actionCaptureHash;
+        hash_t actionCaptureHash;
 
         // 标记轮到玩家2行棋的哈希
-        uint64_t player2sTurnHash;
+        hash_t player2sTurnHash;
 
         // Zobrist 数组
-        uint64_t zobrist[N_POINTS][POINT_TYPE_COUNT];
+        hash_t zobrist[N_POINTS][POINT_TYPE_COUNT];
 #endif /* HASH_MAP_ENABLE */
 
         // 局面阶段标识
@@ -522,10 +528,10 @@ protected:
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // hash相关
-    uint64_t getHash();
-    uint64_t revertHash(int pos);
-    uint64_t updateHash(int pos);
-    uint64_t updateHashMisc();
+    hash_t getHash();
+    hash_t revertHash(int pos);
+    hash_t updateHash(int pos);
+    hash_t updateHashMisc();
 #endif
 
 private:

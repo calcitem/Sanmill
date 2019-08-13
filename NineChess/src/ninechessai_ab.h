@@ -92,7 +92,7 @@ public:
         bool isHash;                    //  是否从 Hash 读取
 #endif /* HASH_MAP_ENABLE */
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
-        uint64_t hash;                  //  哈希值
+        NineChess::hash_t hash;                  //  哈希值
 #endif
 #endif /* DEBUG_AB_TREE */
     };
@@ -149,8 +149,8 @@ public:
     static bool nodeGreater(const Node *first, const Node *second);
 
 #ifdef BOOK_LEARNING
-    bool findBookHash(uint64_t hash, HashValue &hashValue);
-    static int recordBookHash(uint64_t hash, const HashValue &hashValue);
+    bool findBookHash(NineChess::hash_t hash, HashValue &hashValue);
+    static int recordBookHash(NineChess::hash_t hash, const HashValue &hashValue);
     void clearBookHashMap();
     static void recordOpeningBookToHashMap();
     static void recordOpeningBookHashMapToFile();
@@ -219,11 +219,11 @@ protected:
 
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
-    bool findHash(uint64_t hash, HashValue &hashValue);
-    value_t probeHash(uint64_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
+    bool findHash(NineChess::hash_t hash, HashValue &hashValue);
+    value_t probeHash(NineChess::hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
 
     // 插入哈希表
-    int recordHash(value_t value, depth_t depth, HashType type, uint64_t hash, move_t bestMove);
+    int recordHash(value_t value, depth_t depth, HashType type, NineChess::hash_t hash, move_t bestMove);
 #endif  // HASH_MAP_ENABLE
 
 private:
@@ -280,11 +280,11 @@ private:
 };
 
 #ifdef HASH_MAP_ENABLE
-extern HashMap<uint64_t, NineChessAi_ab::HashValue> hashmap;
+extern HashMap<NineChess::hash_t, NineChessAi_ab::HashValue> hashmap;
 #endif /* #ifdef HASH_MAP_ENABLE */
 
 #ifdef THREEFOLD_REPETITION
-extern vector<uint64_t> positions;
+extern vector<NineChess::hash_t> positions;
 #endif
 
 #endif
