@@ -294,7 +294,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
                         addNode(node, 0, pos, bestMove, chessTemp.context.turn);
                     } else {
                         // 若为先手，则抢占星位
-                        if (NineChess::isStartPoint(pos)) {
+                        if (NineChess::isStarPoint(pos)) {
                             addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
                         }
                     }

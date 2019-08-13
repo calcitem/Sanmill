@@ -342,7 +342,7 @@ public:
     }
 
     // 判断位置点是否为星位 (星位是经常会先占的位置)
-    static bool isStartPoint(int pos)
+    static bool isStarPoint(int pos)
     {
         return (pos == 17 || pos == 19 || pos == 21 || pos == 23);
     }
