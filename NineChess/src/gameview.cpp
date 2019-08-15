@@ -19,9 +19,10 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#include "gameview.h"
 #include <QMatrix>
 #include <QDebug>
+
+#include "gameview.h"
 
 GameView::GameView(QWidget *parent) :
     QGraphicsView(parent)

@@ -289,14 +289,17 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
         if (chessTemp.context.stage & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
             for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
                 pos = movePriorityTable[i];
-                if (!chessTemp.board_[pos]) {
-                    if (chessTemp.context.stage != NineChess::GAME_NOTSTARTED || node != rootNode) {
-                        addNode(node, 0, pos, bestMove, chessTemp.context.turn);
-                    } else {
-                        // 若为先手，则抢占星位
-                        if (NineChess::isStarPoint(pos)) {
-                            addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
-                        }
+
+                if (chessTemp.board_[pos]) {
+                    continue;
+                }
+
+                if (chessTemp.context.stage != NineChess::GAME_NOTSTARTED || node != rootNode) {
+                    addNode(node, 0, pos, bestMove, chessTemp.context.turn);
+                } else {
+                    // 若为先手，则抢占星位
+                    if (NineChess::isStarPoint(pos)) {
+                        addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
                     }
                 }
             }
@@ -313,8 +316,10 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
             for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
                 oldPos = movePriorityTable[i];
-                if (!chessTemp.choose(oldPos))
+
+                if (!chessTemp.choose(oldPos)) {
                     continue;
+                }
 
                 if ((chessTemp.context.turn == NineChess::PLAYER1 &&
                     (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
@@ -352,14 +357,15 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
                     addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
                 }
             }
-        } else {
-            // 不是全成三的情况
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                pos = movePriorityTable[i];
-                if (chessTemp.board_[pos] & opponent) {
-                    if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
-                        addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
-                    }
+            break;
+        }
+
+        // 不是全成三的情况
+        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+            pos = movePriorityTable[i];
+            if (chessTemp.board_[pos] & opponent) {
+                if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
+                    addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
                 }
             }
         }
@@ -416,17 +422,21 @@ void NineChessAi_ab::sortLegalMoves(Node *node)
 void NineChessAi_ab::deleteTree(Node *node)
 {
     // 递归删除节点树
-    if (node) {
-        for (auto i : node->children) {
-            deleteTree(i);
-        }
-        node->children.clear();
-#ifdef MEMORY_POOL
-        pool.deleteElement(node);
-#else
-        delete(node);
-#endif  
+    if (node == nullptr) {
+        return;
     }
+
+    for (auto i : node->children) {
+        deleteTree(i);
+    }
+
+    node->children.clear();
+
+#ifdef MEMORY_POOL
+    pool.deleteElement(node);
+#else
+    delete(node);
+#endif  
 }
 
 void NineChessAi_ab::setChess(const NineChess &chess)
@@ -613,29 +623,27 @@ int NineChessAi_ab::evaluate(Node *node)
 #ifdef DEBUG_AB_TREE
                 node->result = -3;
 #endif
-            }
-            else {
+            } else {
                 value = 0;
             }
         }
 
         // 走棋阶段被闷判断
-        if (chessContext->action == NineChess::ACTION_CHOOSE && chessTemp.isAllSurrounded(chessContext->turn)) {
-            // 规则要求被“闷”判负，则对手获胜
-            if (chessTemp.currentRule.isLoseWhenNoWay) {
+        if (chessContext->action == NineChess::ACTION_CHOOSE &&
+            chessTemp.isAllSurrounded(chessContext->turn) &&
+            chessTemp.currentRule.isLoseWhenNoWay) {
+            // 规则要求被“闷”判负，则对手获胜  
                 if (chessContext->turn == NineChess::PLAYER1) {
                     value -= 10000;
 #ifdef DEBUG_AB_TREE
                     node->result = -2;
 #endif
-                }
-                else {
+                } else {
                     value += 10000;
 #ifdef DEBUG_AB_TREE
                     node->result = 2;
 #endif
                 }
-            }
         }
 
         // 剩余棋子个数判断
@@ -644,8 +652,7 @@ int NineChessAi_ab::evaluate(Node *node)
 #ifdef DEBUG_AB_TREE
             node->result = -1;
 #endif
-        }
-        else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast) {
+        } else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast) {
             value += 10000;
 #ifdef DEBUG_AB_TREE
             node->result = 1;
@@ -749,7 +756,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth)
     if (chess_.getStage() == NineChess::GAME_PLACING) {
         positions.clear();
     }
-#endif
+#endif // THREEFOLD_REPETITION
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
@@ -870,10 +877,11 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
         node->value = evaluate(node);
 
         // 为争取速胜，value 值 +- 深度
-        if (node->value > 0)
+        if (node->value > 0) {
             node->value += depth;
-        else
+        } else {
             node->value -= depth;
+        }
 
 #ifdef DEBUG_AB_TREE
         node->isLeaf = true;
@@ -893,10 +901,11 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
         node->value = evaluate(node);
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        if (chessContext->turn == NineChess::PLAYER1)
+        if (chessContext->turn == NineChess::PLAYER1) {
             node->value += depth;
-        else
+        } else {
             node->value -= depth;
+        }
 
 #ifdef DEBUG_AB_TREE
         if (requiredQuit) {
@@ -996,8 +1005,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
             beta = std::min(value, beta);
 
 #if 0
-            if (value < beta)
-            {
+            if (value < beta) {
 #ifdef HASH_MAP_ENABLE
                 hashf = hashfBETA;
 #endif
@@ -1026,9 +1034,10 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
     // 删除“孙子”节点，防止层数较深的时候节点树太大
 #ifndef DONOT_DELETE_TREE
     for (auto child : node->children) {
-        for (auto grandChild : child->children)
-            deleteTree(grandChild); // (9%)
-        child->children.clear();    // (3%)
+        for (auto grandChild : child->children) {
+            deleteTree(grandChild);
+        }
+        child->children.clear();
     }
 #endif // DONOT_DELETE_TREE
 
@@ -1051,8 +1060,9 @@ const char* NineChessAi_ab::bestMove()
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
 
-    if ((rootNode->children).size() == 0)
+    if ((rootNode->children).size() == 0) {
         return "error!";
+    }
 
     qDebug() << "31 ----- 24 ----- 25";
     qDebug() << "| \\       |      / |";
@@ -1075,10 +1085,11 @@ const char* NineChessAi_ab::bestMove()
 #ifdef SORT_CONSIDER_PRUNED
             && !child->pruned
 #endif
-            )
+            ) {
             qDebug("[%.2d] %d\t%s\t%d *", i, child->move, move2string(child->move), child->value);
-        else
+        } else {
             qDebug("[%.2d] %d\t%s\t%d", i, child->move, move2string(child->move), child->value);
+        }
 
         i++;
     }
@@ -1152,10 +1163,12 @@ NineChessAi_ab::value_t NineChessAi_ab::probeHash(NineChess::hash_t hash,
     if (hashValue.type == hashfEXACT) {
         return hashValue.value;
     }
+
     if ((hashValue.type == hashfALPHA) && // 最多是 hashValue.value
         (hashValue.value <= alpha)) {
         return alpha;
     }
+
     if ((hashValue.type == hashfBETA) && // 至少是 hashValue.value
         (hashValue.value >= beta)) {
         return beta;
@@ -1175,7 +1188,7 @@ bool NineChessAi_ab::findHash(NineChess::hash_t hash, HashValue &hashValue)
     if (iter != hashmap.end())
         return iter;
 
-    // 变换局面，查找hash (废弃)
+    // 变换局面，查找 hash (废弃)
     chessTempShift = chessTemp;
     for (int i = 0; i < 2; i++) {
         if (i)

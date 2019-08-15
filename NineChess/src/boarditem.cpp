@@ -34,26 +34,34 @@ BoardItem::BoardItem(QGraphicsItem *parent) : QGraphicsItem(),
         setPos(0, 0);
 
     // 初始化24个落子点
-    for (int i = 0; i < N_RINGS; i++) {
+    for (int r = 0; r < N_RINGS; r++) {
         // 内圈的12点钟方向为第一个位置，按顺时针方向排序
         // 然后是中圈和外圈
-        qreal a = (i + 1) * LINE_INTERVAL;
-        position[i * N_SEATS + 0].rx() = 0;
-        position[i * N_SEATS + 0].ry() = -a;
-        position[i * N_SEATS + 1].rx() = a;
-        position[i * N_SEATS + 1].ry() = -a;
-        position[i * N_SEATS + 2].rx() = a;
-        position[i * N_SEATS + 2].ry() = 0;
-        position[i * N_SEATS + 3].rx() = a;
-        position[i * N_SEATS + 3].ry() = a;
-        position[i * N_SEATS + 4].rx() = 0;
-        position[i * N_SEATS + 4].ry() = a;
-        position[i * N_SEATS + 5].rx() = -a;
-        position[i * N_SEATS + 5].ry() = a;
-        position[i * N_SEATS + 6].rx() = -a;
-        position[i * N_SEATS + 6].ry() = 0;
-        position[i * N_SEATS + 7].rx() = -a;
-        position[i * N_SEATS + 7].ry() = -a;
+        qreal a = (r + 1) * LINE_INTERVAL;
+
+        position[r * N_SEATS + 0].rx() = 0;
+        position[r * N_SEATS + 0].ry() = -a;
+
+        position[r * N_SEATS + 1].rx() = a;
+        position[r * N_SEATS + 1].ry() = -a;
+
+        position[r * N_SEATS + 2].rx() = a;
+        position[r * N_SEATS + 2].ry() = 0;
+
+        position[r * N_SEATS + 3].rx() = a;
+        position[r * N_SEATS + 3].ry() = a;
+
+        position[r * N_SEATS + 4].rx() = 0;
+        position[r * N_SEATS + 4].ry() = a;
+
+        position[r * N_SEATS + 5].rx() = -a;
+        position[r * N_SEATS + 5].ry() = a;
+
+        position[r * N_SEATS + 6].rx() = -a;
+        position[r * N_SEATS + 6].ry() = 0;
+
+        position[r * N_SEATS + 7].rx() = -a;
+        position[r * N_SEATS + 7].ry() = -a;
     }
 }
 
@@ -70,6 +78,7 @@ QPainterPath BoardItem::shape() const
 {
     QPainterPath path;
     path.addRect(boundingRect());
+
     return path;
 }
 
@@ -106,17 +115,15 @@ void BoardItem::paint(QPainter *painter,
     }
 
     // 画4条纵横线
-    painter->drawLine(position[0], position[(N_RINGS - 1) * N_SEATS]);
-    painter->drawLine(position[2], position[(N_RINGS - 1) * N_SEATS + 2]);
-    painter->drawLine(position[4], position[(N_RINGS - 1) * N_SEATS + 4]);
-    painter->drawLine(position[6], position[(N_RINGS - 1) * N_SEATS + 6]);
+    for (int i = 0; i  < N_SEATS; i += 2) {
+        painter->drawLine(position[i], position[(N_RINGS - 1) * N_SEATS + i]);
+    }
 
     if (hasObliqueLine) {
         // 画4条斜线
-        painter->drawLine(position[1], position[(N_RINGS - 1) * N_SEATS + 1]);
-        painter->drawLine(position[3], position[(N_RINGS - 1) * N_SEATS + 3]);
-        painter->drawLine(position[5], position[(N_RINGS - 1) * N_SEATS + 5]);
-        painter->drawLine(position[7], position[(N_RINGS - 1) * N_SEATS + 7]);
+        for (int i = 1; i  < N_SEATS; i += 2) {
+            painter->drawLine(position[i], position[(N_RINGS - 1) * N_SEATS + i]);
+        }
     }
 
 #ifdef DRAW_SEAT_NUMBER
@@ -129,7 +136,7 @@ void BoardItem::paint(QPainter *painter,
     font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     painter->setFont(font);
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < N_SEATS; i++) {
         char cSeat = '1' + i;
         QString strSeat(cSeat);
         painter->drawText(position[(N_RINGS - 1) * N_SEATS + i], strSeat);
@@ -150,6 +157,7 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
             break;
         }
     }
+
     return nearestPos;
 }
 

@@ -19,9 +19,10 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#include "ninechesswindow.h"
 #include <QtWidgets/QApplication>
 #include <QDesktopWidget>
+
+#include "ninechesswindow.h"
 
 int main(int argc, char *argv[])
 {

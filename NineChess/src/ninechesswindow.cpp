@@ -443,9 +443,7 @@ void NineChessWindow::on_actionNew_N_triggered()
         file.setFileName(path);
 
         // 打开文件,只写方式打开
-        bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
-
-        if (isok) {
+        if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             // 写文件
             QTextStream textStream(&file);            
             for (QString cmd : strlist->stringList())
@@ -469,52 +467,56 @@ void NineChessWindow::on_actionNew_N_triggered()
 void NineChessWindow::on_actionOpen_O_triggered()
 {
     QString path = QFileDialog::getOpenFileName(this, tr("打开棋谱文件"), QDir::currentPath(), "TXT(*.txt)");
-    if (path.isEmpty() == false) {
-        if (file.isOpen())
-            file.close();
 
-        // 文件对象
-        file.setFileName(path);
-
-        // 不支持1MB以上的文件
-        if (file.size() > 0x100000) {
-            // 定义新对话框
-            QMessageBox msgBox(QMessageBox::Warning, 
-                tr("文件过大"), tr("不支持1MB以上文件"), QMessageBox::Ok);
-            msgBox.exec();
-            return;
-        }
-
-        // 打开文件,只读方式打开
-        bool isok = file.open(QFileDevice::ReadOnly | QFileDevice::Text);
-
-        if (isok) {
-            // 取消AI设定
-            ui.actionEngine1_T->setChecked(false);
-            ui.actionEngine2_R->setChecked(false);
-
-            // 读文件
-            QTextStream textStream(&file);
-            QString cmd;
-            cmd = textStream.readLine();
-
-            // 读取并显示棋谱时，不必刷新棋局场景
-            if (!(game->command(cmd, false))) {
-                // 定义新对话框
-                QMessageBox msgBox(QMessageBox::Warning, tr("文件错误"), tr("不是正确的棋谱文件"), QMessageBox::Ok);
-                msgBox.exec();
-                return;
-            }
-
-            while (!textStream.atEnd()) {
-                cmd = textStream.readLine();
-                game->command(cmd, false);
-            }
-
-            // 最后刷新棋局场景
-            game->updateScence();
-        }
+    if (path.isEmpty()) {
+        return;
     }
+
+    if (file.isOpen()) {
+        file.close();
+    }
+
+    // 文件对象
+    file.setFileName(path);
+
+    // 不支持 1MB 以上的文件
+    if (file.size() > 0x100000) {
+        // 定义新对话框
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("文件过大"), tr("不支持 1MB 以上文件"), QMessageBox::Ok);
+        msgBox.exec();
+        return;
+    }
+
+    // 打开文件,只读方式打开
+    if (!(file.open(QFileDevice::ReadOnly | QFileDevice::Text))) {
+        return;
+    }
+
+    // 取消AI设定
+    ui.actionEngine1_T->setChecked(false);
+    ui.actionEngine2_R->setChecked(false);
+
+    // 读文件
+    QTextStream textStream(&file);
+    QString cmd;
+    cmd = textStream.readLine();
+
+    // 读取并显示棋谱时，不必刷新棋局场景
+    if (!(game->command(cmd, false))) {
+        // 定义新对话框
+        QMessageBox msgBox(QMessageBox::Warning, tr("文件错误"), tr("不是正确的棋谱文件"), QMessageBox::Ok);
+        msgBox.exec();
+        return;
+    }
+
+    while (!textStream.atEnd()) {
+        cmd = textStream.readLine();
+        game->command(cmd, false);
+    }
+
+    // 最后刷新棋局场景
+    game->updateScence();
 }
 
 void NineChessWindow::on_actionSave_S_triggered()
@@ -523,9 +525,7 @@ void NineChessWindow::on_actionSave_S_triggered()
         file.close();
 
         // 打开文件,只写方式打开
-        bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
-
-        if (isok) {
+        if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             // 写文件
             QTextStream textStream(&file);
             QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
@@ -533,9 +533,11 @@ void NineChessWindow::on_actionSave_S_triggered()
                 textStream << cmd << endl;
             file.flush();
         }
-    } else {
-        on_actionSaveAs_A_triggered();
+
+        return;
     }
+
+    on_actionSaveAs_A_triggered();
 }
 
 void NineChessWindow::on_actionSaveAs_A_triggered()
@@ -544,25 +546,31 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
         tr("打开棋谱文件"),
         QDir::currentPath() + tr("棋谱_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".txt", "TXT(*.txt)");
 
-    if (path.isEmpty() == false) {
-        if (file.isOpen())
-            file.close();
-
-        // 文件对象  
-        file.setFileName(path);
-
-        // 打开文件,只写方式打开
-        bool isok = file.open(QFileDevice::WriteOnly | QFileDevice::Text);
-
-        if (isok) {
-            // 写文件
-            QTextStream textStream(&file);
-            QStringListModel* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
-            for (QString cmd : strlist->stringList())
-                textStream << cmd << endl;
-            file.flush();
-        }
+    if (path.isEmpty()) {
+        return;
     }
+
+    if (file.isOpen()) {
+        file.close();
+    }
+
+    // 文件对象
+    file.setFileName(path);
+
+    // 打开文件,只写方式打开
+    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
+        return;
+    }
+
+    // 写文件
+    QTextStream textStream(&file);
+    QStringListModel* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
+
+    for (QString cmd : strlist->stringList()) {
+        textStream << cmd << endl;
+    }
+
+    file.flush();
 }
 
 void NineChessWindow::on_actionEdit_E_toggled(bool arg1)
@@ -599,6 +607,7 @@ void NineChessWindow::on_actionRowChange()
     int currentRow = ui.listView->currentIndex().row();
 
     QObject *const obsender = sender();
+
     if (obsender != nullptr) {
         if (obsender == ui.actionBegin_S) {
             ui.listView->setCurrentIndex(model->index(0, 0));
@@ -683,39 +692,40 @@ void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
     }
 
     // 执行“下一招”
-    if (currentRow < rows - 1) {
-        if (currentRow < rows - 1) {
-            ui.listView->setCurrentIndex(ui.listView->model()->index(currentRow + 1, 0));
-        }
-
-        currentRow = ui.listView->currentIndex().row();
-
-        // 更新动作状态
-        if (currentRow <= 0) {
-            ui.actionBegin_S->setEnabled(false);
-            ui.actionPrevious_B->setEnabled(false);
-            ui.actionNext_F->setEnabled(true);
-            ui.actionEnd_E->setEnabled(true);
-            ui.actionAutoRun_A->setEnabled(true);
-        } else if (currentRow >= rows - 1) {
-            ui.actionBegin_S->setEnabled(true);
-            ui.actionPrevious_B->setEnabled(true);
-            ui.actionNext_F->setEnabled(false);
-            ui.actionEnd_E->setEnabled(false);
-            ui.actionAutoRun_A->setEnabled(false);
-        } else {
-            ui.actionBegin_S->setEnabled(true);
-            ui.actionPrevious_B->setEnabled(true);
-            ui.actionNext_F->setEnabled(true);
-            ui.actionEnd_E->setEnabled(true);
-            ui.actionAutoRun_A->setEnabled(true);
-        }
-
-        // 更新局面
-        game->stageChange(currentRow);
-    } else {
+    if (currentRow >= rows - 1) {
         ui.actionAutoRun_A->setChecked(false);
+        return;
     }
+
+    if (currentRow < rows - 1) {
+        ui.listView->setCurrentIndex(ui.listView->model()->index(currentRow + 1, 0));
+    }
+
+    currentRow = ui.listView->currentIndex().row();
+
+    // 更新动作状态
+    if (currentRow <= 0) {
+        ui.actionBegin_S->setEnabled(false);
+        ui.actionPrevious_B->setEnabled(false);
+        ui.actionNext_F->setEnabled(true);
+        ui.actionEnd_E->setEnabled(true);
+        ui.actionAutoRun_A->setEnabled(true);
+    } else if (currentRow >= rows - 1) {
+        ui.actionBegin_S->setEnabled(true);
+        ui.actionPrevious_B->setEnabled(true);
+        ui.actionNext_F->setEnabled(false);
+        ui.actionEnd_E->setEnabled(false);
+        ui.actionAutoRun_A->setEnabled(false);
+    } else {
+        ui.actionBegin_S->setEnabled(true);
+        ui.actionPrevious_B->setEnabled(true);
+        ui.actionNext_F->setEnabled(true);
+        ui.actionEnd_E->setEnabled(true);
+        ui.actionAutoRun_A->setEnabled(true);
+    }
+
+    // 更新局面
+    game->stageChange(currentRow);
 }
 
 // 自动运行

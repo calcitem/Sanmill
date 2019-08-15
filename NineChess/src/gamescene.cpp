@@ -129,6 +129,7 @@ bool GameScene::pos2cp(QPointF pos, int &c, int &p)
 
 void GameScene::setDiagonal(bool arg /*= true*/)
 {
-    if (board)
+    if (board) {
         board->setDiagonal(arg);
+    }
 }

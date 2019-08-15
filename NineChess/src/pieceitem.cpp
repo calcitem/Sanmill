@@ -36,6 +36,7 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
         setFlags(ItemIsSelectable
                  // | ItemIsMovable
         );
+
     // 设置缓存模式
     setCacheMode(DeviceCoordinateCache);
 
@@ -136,6 +137,7 @@ void PieceItem::paint(QPainter *painter,
         QPen pen(chooseLineColor, chooseLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
         int xy = (size - chooseLineWeight) / 2;
+
         painter->drawLine(-xy, -xy, -xy, -xy / 2);
         painter->drawLine(-xy, -xy, -xy / 2, -xy);
         painter->drawLine(xy, -xy, xy, -xy / 2);
@@ -150,6 +152,7 @@ void PieceItem::paint(QPainter *painter,
     if (deleted_) {
         QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
+
         painter->drawLine(-size / 3, -size / 3, size / 3, size / 3);
         painter->drawLine(size / 3, -size / 3, -size / 3, size / 3);
     }

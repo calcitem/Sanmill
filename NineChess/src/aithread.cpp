@@ -19,8 +19,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#include <QDebug>
 #include <QTimer>
+#include <QDebug>
+
 #include "aithread.h"
 
 AiThread::AiThread(int id, QObject *parent) :
@@ -42,8 +43,7 @@ AiThread::AiThread(int id, QObject *parent) :
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
 
     // 网络
-    if (id == 1)
-    {
+    if (id == 1) {
         server = new Server(nullptr, 30001);
         uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
         client = new Client(nullptr, clientPort);
@@ -126,6 +126,7 @@ void AiThread::run()
         mutex.unlock();
 
         if (ai_ab.alphaBetaPruning(aiDepth) == 3) {
+            // 三次重复局面和
             qDebug() << "Draw\n";
             strCommand = "draw";
             QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
@@ -149,6 +150,7 @@ void AiThread::run()
         }
         mutex.unlock();
     }
+
     qDebug() << "Thread" << id << "quit";
 }
 
