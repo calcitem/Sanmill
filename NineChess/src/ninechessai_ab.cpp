@@ -463,7 +463,11 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     chessContext = &(chessTemp.context);
     requiredQuit = false;
     deleteTree(rootNode);
+#ifdef MEMORY_POOL
+    rootNode = pool.newElement();
+#else
     rootNode = new Node;
+#endif
     rootNode->value = 0;
     rootNode->move = 0;
     rootNode->parent = nullptr;
