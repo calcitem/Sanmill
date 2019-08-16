@@ -72,6 +72,8 @@ RC_FILE += NineChess.rc
 # With C++17 support
 greaterThan(QT_MAJOR_VERSION, 4) {
 CONFIG += c++17
+#QMAKE_CXXFLAGS += -O0 -g3 -fsanitize=leak -fno-omit-frame-pointer
+#QMAKE_LFLAGS += -fsanitize=leak
 } else {
 QMAKE_CXXFLAGS += -std=c++0x
 }
