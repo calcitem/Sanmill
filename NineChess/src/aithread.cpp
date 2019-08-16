@@ -44,7 +44,7 @@ AiThread::AiThread(int id, QObject *parent) :
 
     // 网络
     if (id == 1) {
-        server = new Server(nullptr, 30001);
+        server = new Server(nullptr, 30001);    // TODO: WARNING: ThreadSanitizer: data race
         uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
         client = new Client(nullptr, clientPort);
     }
