@@ -36,6 +36,8 @@
 #define EMIT_COMMAND_DELAY (0)
 #endif
 
+//#define AOTO_RESTART_GAME
+
 //#define EVALUATE_ENABLE
 
 #ifdef EVALUATE_ENABLE

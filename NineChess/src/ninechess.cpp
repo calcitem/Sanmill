@@ -1603,6 +1603,11 @@ void NineChess::setTips()
             else
                 tips = "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         }
+
+#ifdef AOTO_RESTART_GAME
+        start();
+#endif
+
         break;
 
     default:
