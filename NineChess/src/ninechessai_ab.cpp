@@ -71,6 +71,47 @@ NineChessAi_ab::~NineChessAi_ab()
     rootNode = nullptr;
 }
 
+NineChessAi_ab::depth_t NineChessAi_ab::changeDepth(depth_t originalDepth)
+{
+    depth_t newDepth = originalDepth;
+
+    if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
+#ifdef GAME_PLACING_DYNAMIC_DEPTH
+#ifdef DEAL_WITH_HORIZON_EFFECT
+#ifdef HASH_MAP_ENABLE
+        depth_t depthTable[] = { 4, 11, 12, 13, 14, 14,  14, 12, 11, 10, 6, 6, 1 };
+#else // HASH_MAP_ENABLE
+        depth_t depthTable[] = { 2, 11, 11, 11, 11, 10,   9,  8,  8, 8, 7, 7, 1 };
+#endif // HASH_MAP_ENABLE
+#else // DEAL_WITH_HORIZON_EFFECT
+#ifdef HASH_MAP_ENABLE
+#ifdef RAPID_CHESS
+        depth_t depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
+#else
+        depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 12, 12, 12, 9, 7, 1 };
+#endif  // RAPID_CHESS
+#else // HASH_MAP_ENABLE
+        depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
+#endif
+#endif // DEAL_WITH_HORIZON_EFFECT
+        newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
+#elif defined GAME_PLACING_FIXED_DEPTH
+        newDepth = GAME_PLACING_FIXED_DEPTH;
+#endif // GAME_PLACING_DYNAMIC_DEPTH
+    }
+
+#ifdef GAME_MOVING_FIXED_DEPTH
+    // 走棋阶段将深度调整
+    if ((chessTemp.context.stage) & (NineChess::GAME_MOVING)) {
+        newDepth = GAME_MOVING_FIXED_DEPTH;
+    }
+#endif /* GAME_MOVING_FIXED_DEPTH */
+
+    qDebug() << "Depth:" << newDepth;
+
+    return newDepth;
+}
+
 void NineChessAi_ab::buildRoot()
 {
     rootNode = addNode(nullptr, 0, 0, 0, NineChess::NOBODY);
@@ -672,47 +713,6 @@ int NineChessAi_ab::evaluate(Node *node)
     // 赋值返回
     node->value = value;
     return value;
-}
-
-NineChessAi_ab::depth_t NineChessAi_ab::changeDepth(depth_t originalDepth)
-{
-    depth_t newDepth = originalDepth;
-
-    if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
-#ifdef GAME_PLACING_DYNAMIC_DEPTH
-#ifdef DEAL_WITH_HORIZON_EFFECT
-#ifdef HASH_MAP_ENABLE
-        depth_t depthTable[] = { 4, 11, 12, 13, 14, 14,  14, 12, 11, 10, 6, 6, 1 };
-#else // HASH_MAP_ENABLE
-        depth_t depthTable[] = { 2, 11, 11, 11, 11, 10,   9,  8,  8, 8, 7, 7, 1 };
-#endif // HASH_MAP_ENABLE
-#else // DEAL_WITH_HORIZON_EFFECT
-#ifdef HASH_MAP_ENABLE
-#ifdef RAPID_CHESS
-        depth_t depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
-#else
-        depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 12, 12, 12, 9, 7, 1 };
-#endif  // RAPID_CHESS
-#else // HASH_MAP_ENABLE
-        depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
-#endif
-#endif // DEAL_WITH_HORIZON_EFFECT
-        newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
-#elif defined GAME_PLACING_FIXED_DEPTH
-        newDepth = GAME_PLACING_FIXED_DEPTH;
-#endif // GAME_PLACING_DYNAMIC_DEPTH
-    }
-
-#ifdef GAME_MOVING_FIXED_DEPTH
-    // 走棋阶段将深度调整
-    if ((chessTemp.context.stage) & (NineChess::GAME_MOVING)) {
-        newDepth = GAME_MOVING_FIXED_DEPTH;
-    }
-#endif /* GAME_MOVING_FIXED_DEPTH */
-
-    qDebug() << "Depth:" << newDepth;
-
-    return newDepth;
 }
 
 int NineChessAi_ab::alphaBetaPruning(depth_t depth)
