@@ -144,8 +144,6 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     newNode->pruned = false;
 #endif
 
-    //player = player; // Remove warning
-
 #ifdef DEBUG_AB_TREE
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     newNode->hash = 0;
@@ -158,8 +156,9 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
 #endif
 #endif
 
-#ifdef DEBUG_AB_TREE
     newNode->player = player;
+
+#ifdef DEBUG_AB_TREE
     newNode->root = rootNode;
     newNode->stage = chessTemp.context.stage;
     newNode->action = chessTemp.context.action;

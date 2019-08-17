@@ -66,6 +66,7 @@ public:
         struct Node* parent;            // 父节点
         move_t move;                  // 着法的命令行指令，图上标示为节点前的连线
         value_t value;                 // 节点的值
+        enum NineChess::Player player;  // 此着是谁下的 (目前仅调试用)
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned;                    // 是否在此处剪枝
 #endif
@@ -73,7 +74,6 @@ public:
 #ifdef DEBUG_AB_TREE
         size_t id;                      // 结点编号
         string cmd;
-        enum NineChess::Player player;  // 此招是谁下的
         int depth;                      // 深度
         bool evaluated;                 // 是否评估过局面
         int alpha;                      // 当前搜索结点走棋方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义。当函数递归时 Alpha 和 Beta 不但取负数而且要交换位置
