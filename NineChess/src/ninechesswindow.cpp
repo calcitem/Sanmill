@@ -454,14 +454,21 @@ void NineChessWindow::on_actionNew_N_triggered()
 #endif /* SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED */
 
     // 取消自动运行
-    ui.actionAutoRun_A->setChecked(false);
-
-    // 取消AI设定
-    ui.actionEngine1_T->setChecked(false);
-    ui.actionEngine2_R->setChecked(false);
+    ui.actionAutoRun_A->setChecked(false);    
 
     // 重置游戏规则
     game->gameReset();
+
+    // 重设AI设定
+    if (ui.actionEngine2_R->isChecked()) {
+        ui.actionEngine2_R->setChecked(false);
+        ui.actionEngine2_R->setChecked(true);
+    }
+
+    if (ui.actionEngine1_T->isChecked()) {
+        ui.actionEngine1_T->setChecked(false);
+        ui.actionEngine1_T->setChecked(true);
+    }
 }
 
 void NineChessWindow::on_actionOpen_O_triggered()
