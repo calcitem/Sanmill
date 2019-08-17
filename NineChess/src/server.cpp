@@ -152,7 +152,7 @@ void Server::sessionOpened()
 
 void Server::setAction(const QString &action)
 {
-    this->action = action;
+    actions.push(action);
 }
 
 void Server::sendAction()
@@ -161,6 +161,10 @@ void Server::sendAction()
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_10);
 
+    if (!actions.empty()) {
+        action = actions.front();
+    }
+    
     out << action;
 
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
@@ -170,4 +174,8 @@ void Server::sendAction()
 
     clientConnection->write(block);
     clientConnection->disconnectFromHost();
+
+    if (!actions.empty()) {
+        actions.pop();
+    }
 }

@@ -24,6 +24,7 @@
 #include <QDialog>
 #include <QString>
 #include <QVector>
+#include <queue>
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -56,7 +57,7 @@ private:
     QTcpServer *tcpServer = nullptr;
     QNetworkSession *networkSession = nullptr;
     uint16_t port;
-    QVector<QString> actions;
+    std::queue<QString> actions;
     QString action;
 };
 
