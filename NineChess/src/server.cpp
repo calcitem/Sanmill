@@ -58,7 +58,7 @@ Server::Server(QWidget *parent, uint16_t port)
         sessionOpened();
     }
 
-    auto quitButton = new QPushButton(tr("Quit"));
+    auto quitButton = new QPushButton(tr("Close"));
     quitButton->setAutoDefault(false);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
     connect(tcpServer, &QTcpServer::newConnection, this, &Server::sendAction);

@@ -28,7 +28,7 @@ Client::Client(QWidget *parent, uint16_t port)
     : QDialog(parent)
     , hostCombo(new QComboBox)
     , portLineEdit(new QLineEdit)
-    , getActionButton(new QPushButton(tr("Get Action")))
+    , getActionButton(new QPushButton(tr("Connect")))
     , tcpSocket(new QTcpSocket(this))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -48,7 +48,7 @@ Client::Client(QWidget *parent, uint16_t port)
     getActionButton->setDefault(true);
     getActionButton->setEnabled(false);
 
-    auto quitButton = new QPushButton(tr("Quit"));
+    auto quitButton = new QPushButton(tr("Close"));
 
     auto buttonBox = new QDialogButtonBox;
     buttonBox->addButton(getActionButton, QDialogButtonBox::ActionRole);
