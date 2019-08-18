@@ -536,7 +536,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Readme.md" />
-    <None Include="git_version.h.template" />
+    <None Include="include\version.h.template" />
     <None Include="ninechess.pro" />
     <None Include="Resources\icon\ActualSizeHS.png" />
     <None Include="Resources\icon\Black.png" />

@@ -272,7 +272,7 @@
     <None Include="src\MemoryPool.tcc">
       <Filter>Model</Filter>
     </None>
-    <None Include="git_version.h.template">
+    <None Include="include\version.h.template">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

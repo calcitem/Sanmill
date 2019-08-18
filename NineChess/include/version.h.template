@@ -1,0 +1,12 @@
+/****************************************************************************
+ * Created by: version.sh
+ *
+ * WARNING! All changes made in this file will be lost!
+ ****************************************************************************/
+
+#ifndef VERSION_H
+#define VERSION_H
+
+static const char *versionNumber = "$FULL_VERSION";
+
+#endif /*  VERSION_H */

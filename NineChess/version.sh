@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VERSION_H=include/git_version.h
-TEMPLATE_FILE=git_version.h.template
+VERSION_H=include/version.h
+TEMPLATE_FILE=include/version.h.template
 GIT_BRANCH=master
 
 rm -f $VERSION_H
@@ -28,6 +28,8 @@ fi
 rm -f config.git-hash
 
 cat $TEMPLATE_FILE | sed "s/\$FULL_VERSION/$GIT_VERSION/g" > $VERSION_H
+
+git update-index --assume-unchanged $VERSION_H
 
 echo "Generated $VERSION_H"
 echo

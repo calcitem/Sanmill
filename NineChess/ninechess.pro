@@ -35,6 +35,7 @@ SOURCES += \
 HEADERS  += \
     include/config.h \
     include/version.h \
+    include/version.h.template \
     src/HashNode.h \
     src/MemoryPool.h \
     src/MemoryPool.tcc \
@@ -66,7 +67,8 @@ DISTFILES += \
     ../Readme.md \
     ../Sample.txt \
     ../History.txt \
-    ../Licence.txt
+    ../Licence.txt \
+    version.sh
 
 RC_FILE += NineChess.rc
 
