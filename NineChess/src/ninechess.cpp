@@ -1145,6 +1145,9 @@ bool NineChess::command(const char *cmd)
         tips = "三次重复局面判和。";
         sprintf(cmdline, "Threefold Repetition. Draw!");
         cmdlist.push_back(string(cmdline));
+#ifdef AOTO_RESTART_GAME
+        start();    // TODO: 待转移到更合适的位置
+#endif
         return true;
     }
 #endif
@@ -1605,7 +1608,7 @@ void NineChess::setTips()
         }
 
 #ifdef AOTO_RESTART_GAME
-        start();
+        start();    // TODO: 待转移到更合适的位置
 #endif
 
         break;
