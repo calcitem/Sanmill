@@ -769,7 +769,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth)
 
 #ifdef IDS_SUPPORT
     // 深化迭代
-    for (depth_t i = 2; i < d; i += 2) {
+    for (depth_t i = 2; i < d; i += 1) {
 #ifdef HASH_MAP_ENABLE
 #ifdef CLEAR_HASH_MAP
         clearHashMap();   // 每次走子前清空哈希表
