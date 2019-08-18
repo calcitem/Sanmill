@@ -248,6 +248,7 @@ private:
     size_t evaluatedNodeCount;
 
 #ifdef HASH_MAP_ENABLE
+#ifdef HASH_MAP_DEBUG
     // Hash 统计数据
     size_t hashEntryCount;
     size_t hashHitCount;
@@ -255,6 +256,7 @@ private:
     size_t hashAddrHitCount;
     size_t hashReplaceCozDepthCount;
     size_t hashReplaceCozHashCount;
+#endif
 #endif
 
     // 局面数据栈

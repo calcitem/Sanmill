@@ -59,11 +59,12 @@
 //define DEEPER_IF_ONLY_ONE_LEGAL_MOVE
 
 #define HASH_MAP_ENABLE
-#define CLEAR_HASH_MAP
 
 #ifdef HASH_MAP_ENABLE
+#define CLEAR_HASH_MAP
 #define HASH_MAP_CUTDOWN
-#endif /* HASH_MAP_ENABLE */
+//#define HASH_MAP_DEBUG
+#endif
 
 #define MEMORY_POOL
 

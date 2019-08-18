@@ -53,12 +53,14 @@ NineChessAi_ab::NineChessAi_ab() :
     nodeCount(0),
     evaluatedNodeCount(0),
 #ifdef HASH_MAP_ENABLE
+#ifdef HASH_MAP_DEBUG
     hashEntryCount(0),
     hashHitCount(0),
     hashInsertNewCount(0),
     hashAddrHitCount(0),
     hashReplaceCozDepthCount(0),
     hashReplaceCozHashCount(0),
+#endif
 #endif
     requiredQuit(false)
 {
@@ -834,7 +836,9 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
     value_t probeVal = probeHash(hash, depth, alpha, beta, bestMove, type);
 
     if (probeVal != INT16_MIN /* TODO: valUNKOWN */  && node != rootNode) {
+#ifdef HASH_MAP_DEBUG
         hashHitCount++;
+#endif
 #ifdef DEBUG_AB_TREE
         node->isHash = true;
 #endif
@@ -1118,7 +1122,9 @@ const char* NineChessAi_ab::bestMove()
     evaluatedNodeCount = 0;
 
 #ifdef HASH_MAP_ENABLE
+#ifdef HASH_MAP_DEBUG
     qDebug() << "Hash hit count:" << hashHitCount;
+#endif
 #endif
     //qDebug() << "sizeof(Node) = " << sizeof(Node);
 
