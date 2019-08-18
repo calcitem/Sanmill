@@ -95,6 +95,15 @@ public:
 
 signals:
 
+    // 玩家1(先手）赢盘数改变的信号
+    void score1Changed(const QString &score);
+
+    // 玩家2(后手）赢盘 数改变的信号
+    void score2Changed(const QString &score);
+
+    // 和棋数改变的信号
+    void scoreDrawChanged(const QString &score);
+
     // 玩家1(先手）用时改变的信号
     void time1Changed(const QString &time);
 
@@ -235,12 +244,6 @@ private:
 
     // 玩家2剩余时间（毫秒）
     long remainingTime2;
-
-    // 玩家1赢盘数
-    int score1;
-
-    // 玩家2赢盘数
-    int score2;
 
     // 用于主窗口状态栏显示的字符串
     QString message;

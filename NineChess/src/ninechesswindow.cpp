@@ -216,6 +216,18 @@ void NineChessWindow::initialize()
 
     // 关联控制器的信号和主窗口控件的槽
 
+    // 更新LCD，显示玩家1赢盘数
+    connect(game, SIGNAL(score1Changed(QString)),
+            ui.scoreLcdNumber_1, SLOT(display(QString)));
+
+    // 更新LCD，显示玩家2赢盘数
+    connect(game, SIGNAL(score2Changed(QString)),
+            ui.scoreLcdNumber_2, SLOT(display(QString)));
+
+    // 更新LCD，显示和棋数
+    connect(game, SIGNAL(scoreDrawChanged(QString)),
+            ui.scoreLcdNumber_draw, SLOT(display(QString)));
+
     // 更新LCD1，显示玩家1用时
     connect(game, SIGNAL(time1Changed(QString)),
             ui.lcdNumber_1, SLOT(display(QString)));

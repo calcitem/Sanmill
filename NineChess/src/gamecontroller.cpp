@@ -53,9 +53,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     timeID(0),
     ruleNo_(-1),
     timeLimit(0),
-    stepsLimit(50),
-    score1(-2),
-    score2(-2)
+    stepsLimit(50)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
@@ -133,16 +131,9 @@ void GameController::gameReset()
     timeID = 0;
 
     // 棋未下完，则算对手得分
-    if (score1 < 0 || score2 < 0) {
-        score1++;
-        score2++;
-    }
-    else {
-        if (chess_.getStage() == NineChess::GAME_MOVING &&
-            chess_.whoWin() == NineChess::NOBODY)
-        {
-            giveUp();
-        }
+    if (chess_.getStage() == NineChess::GAME_MOVING &&
+        chess_.whoWin() == NineChess::NOBODY) {
+        giveUp();
     }
 
 #ifdef LCD_SHOW_SCORE_INSTEAD_OF_TIME
@@ -233,6 +224,11 @@ void GameController::gameReset()
     // 发信号更新状态栏
     message = QString::fromStdString(chess_.getTips());
     emit statusBarChanged(message);
+
+    // 更新比分 LCD 显示
+    emit score1Changed(QString::number(chess_.score_1, 10));
+    emit score2Changed(QString::number(chess_.score_2, 10));
+    emit scoreDrawChanged(QString::number(chess_.score_draw, 10));
 
     // 播放音效
     //playSound(":/sound/resources/sound/newgame.wav");
@@ -561,12 +557,6 @@ void GameController::timerEvent(QTimerEvent *event)
         // 弹框
         //QMessageBox::about(NULL, "游戏结果", message);
 
-        if (chess_.whoWin() == NineChess::PLAYER1) {
-            score1++;
-        } else if (chess_.whoWin() == NineChess::PLAYER2) {
-            score2++;
-        }
-
 #ifdef LCD_SHOW_SCORE_INSTEAD_OF_TIME
         emit time1Changed(QString::number(score1, 10));
         emit time2Changed(QString::number(score2, 10));
@@ -770,13 +760,11 @@ bool GameController::giveUp()
 
     if (chess_.whosTurn() == NineChess::PLAYER1) {
         result = chess_.giveup(NineChess::PLAYER1);
-        score2++;
         chess_.score_2++;
     }
     else if (chess_.whosTurn() == NineChess::PLAYER2) {
         result = chess_.giveup(NineChess::PLAYER2);
-        score1++;
-        chess_.score_2++;
+        chess_.score_1++;
     }
         
     if (result) {
@@ -1082,6 +1070,11 @@ bool GameController::updateScence(NineChess &chess)
     }
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
+
+    // 更新比分 LCD 显示
+    emit score1Changed(QString::number(chess.score_1, 10));
+    emit score2Changed(QString::number(chess.score_2, 10));
+    emit scoreDrawChanged(QString::number(chess.score_draw, 10));
 
     return true;
 }
