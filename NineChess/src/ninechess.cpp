@@ -722,11 +722,6 @@ bool NineChess::place(int pos, long time_p, bool cp)
 
         currentPos = pos;
 
-        // 如果决出胜负
-        if (win()) {
-            goto out;
-        }
-
         n = addMills(currentPos);
 
         // 开局阶段未成三
@@ -769,6 +764,11 @@ bool NineChess::place(int pos, long time_p, bool cp)
             context.action = ACTION_CAPTURE;
         }
 
+        goto out;
+    }
+
+    // 如果决出胜负
+    if (win()) {
         goto out;
     }
 
