@@ -136,11 +136,6 @@ void GameController::gameReset()
         giveUp();
     }
 
-#ifdef LCD_SHOW_SCORE_INSTEAD_OF_TIME
-    emit time1Changed(QString::number(score1, 10));
-    emit time2Changed(QString::number(score2, 10));
-#endif /* LCD_SHOW_SCORE_INSTEAD_OF_TIME */
-
     // 重置游戏
     chess_.reset();
     chessTemp = chess_;
@@ -215,11 +210,9 @@ void GameController::gameReset()
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
-#ifndef LCD_SHOW_SCORE_INSTEAD_OF_TIME
     QTime qtime = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
     emit time1Changed(qtime.toString("mm:ss.zzz"));
     emit time2Changed(qtime.toString("mm:ss.zzz"));
-#endif /* ! LCD_SHOW_SCORE_INSTEAD_OF_TIME */
 
     // 发信号更新状态栏
     message = QString::fromStdString(chess_.getTips());
@@ -534,13 +527,11 @@ void GameController::timerEvent(QTimerEvent *event)
         remainingTime2 = timeLimit * 60000 - remainingTime2;
     }
 
-#ifndef LCD_SHOW_SCORE_INSTEAD_OF_TIME
     qt1 = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
     qt2 = QTime(0, 0, 0, 0).addMSecs(remainingTime2);
 
     emit time1Changed(qt1.toString("mm:ss.zzz"));
     emit time2Changed(qt2.toString("mm:ss.zzz"));
-#endif /* ! LCD_SHOW_SCORE_INSTEAD_OF_TIME */
 
     // 如果胜负已分
     if (chess_.whoWin() != NineChess::NOBODY) {
@@ -556,11 +547,6 @@ void GameController::timerEvent(QTimerEvent *event)
 
         // 弹框
         //QMessageBox::about(NULL, "游戏结果", message);
-
-#ifdef LCD_SHOW_SCORE_INSTEAD_OF_TIME
-        emit time1Changed(QString::number(score1, 10));
-        emit time2Changed(QString::number(score2, 10));
-#endif /* LCD_SHOW_SCORE_INSTEAD_OF_TIME */
 
         // 播放音效
 #ifndef DONOT_PLAY_WIN_SOUND
