@@ -134,4 +134,8 @@
 // 不使用哈希桶
 #define DISABLE_HASHBUCKET
 
+#ifdef WIN32
+#define sscanf sscanf_s
+#endif
+
 #endif // CONFIG_H
