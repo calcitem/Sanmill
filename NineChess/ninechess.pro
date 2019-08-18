@@ -34,6 +34,7 @@ SOURCES += \
 
 HEADERS  += \
     include/config.h \
+    include/version.h \
     src/HashNode.h \
     src/MemoryPool.h \
     src/MemoryPool.tcc \

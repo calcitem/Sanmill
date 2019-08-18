@@ -48,6 +48,7 @@
 #include "graphicsconst.h"
 #include "server.h"
 #include "client.h"
+#include "version.h"
 
 NineChessWindow::NineChessWindow(QWidget * parent) :
     QMainWindow(parent),
@@ -893,32 +894,44 @@ void NineChessWindow::on_actionAbout_A_triggered()
     // 生成各个控件
     QVBoxLayout *vLayout = new QVBoxLayout(dialog);
     QHBoxLayout *hLayout = new QHBoxLayout;
-    QLabel *label_icon1 = new QLabel(dialog);
-    QLabel *label_icon2 = new QLabel(dialog);
+    //QLabel *label_icon1 = new QLabel(dialog);
+    //QLabel *label_icon2 = new QLabel(dialog);
+    QLabel *date_text = new QLabel(dialog);
+    QLabel *version_text = new QLabel(dialog);
+    QLabel *donate_text = new QLabel(dialog);
     QLabel *label_text = new QLabel(dialog);
     QLabel *label_image = new QLabel(dialog);
 
     // 设置各个控件数据
-    label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
-    label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
-    label_icon1->setAlignment(Qt::AlignCenter);
-    label_icon2->setAlignment(Qt::AlignCenter);
-    label_icon1->setFixedSize(32, 32);
-    label_icon2->setFixedSize(32, 32);
-    label_icon1->setScaledContents(true);
-    label_icon2->setScaledContents(true);
+    //label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
+    //label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
+    //label_icon1->setAlignment(Qt::AlignCenter);
+    //label_icon2->setAlignment(Qt::AlignCenter);
+    //label_icon1->setFixedSize(32, 32);
+    //label_icon2->setFixedSize(32, 32);
+    //label_icon1->setScaledContents(true);
+    //label_icon2->setScaledContents(true);
 
-    label_text->setText(tr("Donate"));
-    label_text->setAlignment(Qt::AlignCenter);
+    date_text->setText(__DATE__);
+    version_text->setText(tr("Version:"));
+    label_text->setAlignment(Qt::AlignLeft);
+    label_text->setText(versionNumber);
+    label_text->setAlignment(Qt::AlignLeft);
+    donate_text->setText("Donate");
+    donate_text->setAlignment(Qt::AlignCenter);
+
     label_image->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/donate.png")));
     label_image->setAlignment(Qt::AlignCenter);
     label_image->setScaledContents(true);
 
     // 布局
     vLayout->addLayout(hLayout);
-    hLayout->addWidget(label_icon1);
-    hLayout->addWidget(label_icon2);
+    //hLayout->addWidget(label_icon1);
+    //hLayout->addWidget(label_icon2);
+    hLayout->addWidget(version_text);
     hLayout->addWidget(label_text);
+    vLayout->addWidget(date_text);
+    vLayout->addWidget(donate_text);
     vLayout->addWidget(label_image);
 
     // 运行对话框

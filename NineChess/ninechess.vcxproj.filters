@@ -131,6 +131,9 @@
     <ClInclude Include="include\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -268,6 +271,9 @@
     </None>
     <None Include="src\MemoryPool.tcc">
       <Filter>Model</Filter>
+    </None>
+    <None Include="git_version.h.template">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
