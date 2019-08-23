@@ -29,7 +29,7 @@ AiThread::AiThread(int id, QObject *parent) :
     waiting_(false),
     chess_(nullptr),
     aiDepth(2),
-    aiTime(120)
+    aiTime(3600)
 {
     this->id = id;
 
