@@ -347,12 +347,14 @@ void GameController::setSound(bool arg)
 
 void GameController::playSound(const QString &soundPath)
 {
+    if (soundPath == "") {
+        return;
+    }
+
 #ifndef DONOT_PLAY_SOUND
     if (hasSound) {
         QSound::play(soundPath);
     }
-#else
-    soundPath;  // 为消除变量未使用过的警告
 #endif /* ! DONOT_PLAY_SOUND */
 }
 
@@ -637,7 +639,7 @@ bool GameController::actionPiece(QPointF pos)
 
     switch (chess_.getAction()) {
     case NineChess::ACTION_PLACE:
-        if (chess_.place(c, p)) {
+        if (chess_._place(c, p)) {
             if (chess_.getAction() == NineChess::ACTION_CAPTURE) {
                 // 播放成三音效
                 playSound(":/sound/resources/sound/capture.wav");
@@ -650,6 +652,7 @@ bool GameController::actionPiece(QPointF pos)
         }
 
      // 如果移子不成功，尝试重新选子，这里不break
+        [[fallthrough]];
 
     case NineChess::ACTION_CHOOSE:
         piece = qgraphicsitem_cast<PieceItem *>(item);
@@ -666,7 +669,7 @@ bool GameController::actionPiece(QPointF pos)
         break;
 
     case NineChess::ACTION_CAPTURE:
-        if (chess_.capture(c, p)) {
+        if (chess_._capture(c, p)) {
             // 播放音效
             playSound(":/sound/resources/sound/remove.wav");
             result = true;

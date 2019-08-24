@@ -74,6 +74,7 @@ public:
 
     // 定义类型
     typedef int32_t move_t;
+    typedef uint16_t step_t;
 
 #ifdef HASH_MAP_CUTDOWN
     typedef uint32_t hash_t;
@@ -133,7 +134,7 @@ public:
         bool allowFlyWhenRemainThreePieces;
 
         // 最大步数，超出判和
-        int maxStepsLedToDraw;
+        step_t maxStepsLedToDraw;
 
         // 包干最长时间（秒），超出判负，为0则不计时
         int maxTimeLedToLose;
@@ -303,9 +304,9 @@ public:
 
     // 设置棋局状态和棋盘上下文，用于初始化
     bool setContext(const struct Rule *rule,
-                 int maxStepsLedToDraw = 0,     // 限制步数
+                 step_t maxStepsLedToDraw = 0,     // 限制步数
                  int maxTimeLedToLose = 0,      // 限制时间
-                 int initialStep = 0,           // 默认起始步数为0
+                 step_t initialStep = 0,           // 默认起始步数为0
                  int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
                  const char *board = nullptr,   // 默认空棋盘
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
@@ -384,7 +385,7 @@ public:
     }
 
     // 玩家1和玩家2的用时
-    void getElapsedTimeMS(long &p1_ms, long &p2_ms);
+    void getElapsedTimeMS(int &p1_ms, int &p2_ms);
 
     // 获取棋局的字符提示
     const string getTips() const
@@ -459,10 +460,10 @@ public:
     bool choose(int c, int p);
 
     // 落子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool place(int c, int p, long time_p = -1);
+    bool _place(int c, int p, int time_p = -1);
 
     // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool capture(int c, int p, long time_p = -1);
+    bool _capture(int c, int p, int time_p = -1);
 
     // 认输
     bool giveup(Player loser);
@@ -505,7 +506,7 @@ protected:
     int cp2pos(int c, int p);
 
     // 更新时间和状态，用内联函数以提高效率
-    inline long update(long time_p = -1);
+    inline int update(int time_p = -1);
 
     // 是否分出胜负
     bool win();
@@ -523,8 +524,8 @@ protected:
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool command(int move);
     bool choose(int pos);
-    bool place(int pos, long time_p = -1, bool cp = false);
-    bool capture(int pos, long time_p = -1, bool cp = false);
+    bool place(int pos, int time_p = -1, int8_t cp = 0);
+    bool capture(int pos, int time_p = -1, int8_t cp = 0);
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // hash相关
@@ -566,10 +567,10 @@ private:
     timeb currentTimeb;
 
     // 玩家1用时（毫秒）
-    long elapsedMS_1;
+    int elapsedMS_1;
 
     // 玩家2用时（毫秒）
-    long elapsedMS_2;
+    int elapsedMS_2;
 
     /* 当前着法，AI会用到，如下表示
     0x   00    00

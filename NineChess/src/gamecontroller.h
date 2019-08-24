@@ -240,10 +240,10 @@ private:
     int stepsLimit;
 
     // 玩家1剩余时间（毫秒）
-    long remainingTime1;
+    int remainingTime1;
 
     // 玩家2剩余时间（毫秒）
-    long remainingTime2;
+    int remainingTime2;
 
     // 用于主窗口状态栏显示的字符串
     QString message;

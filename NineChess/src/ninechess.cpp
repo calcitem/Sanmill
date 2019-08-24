@@ -327,13 +327,12 @@ void NineChess::createMillTable()
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool NineChess::setContext(const struct Rule *rule, int maxStepsLedToDraw, int maxTimeLedToLose,
-                        int initialStep, int flags, const char *board,
+bool NineChess::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
+                        step_t initialStep, int flags, const char *board,
                         int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
     // 有效性判断
-    if (maxStepsLedToDraw < 0 || maxTimeLedToLose < 0 || initialStep < 0 ||
-        nPiecesInHand_1 < 0 || nPiecesInHand_2 < 0 || nPiecesNeedRemove < 0) {
+    if (maxTimeLedToLose < 0) {
         return false;
     }
 
@@ -571,12 +570,11 @@ bool NineChess::reset()
     if (sprintf(cmdline, "r%1u s%03u t%02u", i + 1, currentRule.maxStepsLedToDraw, currentRule.maxTimeLedToLose) > 0) {
         cmdlist.push_back(string(cmdline));
         return true;
-    } else {
-        cmdline[0] = '\0';
-        return false;
     }
 
-    return true;
+    cmdline[0] = '\0';
+
+    return false;
 }
 
 bool NineChess::start()
@@ -588,7 +586,8 @@ bool NineChess::start()
         return false;
     // 如果游戏结束，则重置游戏，进入未开始状态
     case GAME_OVER:
-        reset();   // 这里不要break;
+        reset();
+        [[fallthrough]];
     // 如果游戏处于未开始状态
     case GAME_NOTSTARTED:
         // 启动计时器
@@ -661,7 +660,7 @@ int NineChess::cp2pos(int c, int p)
     return c * N_SEATS + p - 1;
 }
 
-bool NineChess::place(int pos, long time_p, bool cp)
+bool NineChess::place(int pos, int time_p, int8_t cp)
 {
     // 如果局面为“结局”，返回false
     if (context.stage == GAME_OVER)
@@ -685,7 +684,7 @@ bool NineChess::place(int pos, long time_p, bool cp)
     pos2cp(pos, c, p);
 
     // 时间的临时变量
-    long player_ms = -1;
+    int player_ms = -1;
 
     // 对于开局落子
     int piece = '\x00';
@@ -712,7 +711,7 @@ bool NineChess::place(int pos, long time_p, bool cp)
 #endif
         move_ = pos;
 
-        if (cp == true) {
+        if (cp) {
             player_ms = update(time_p);
             sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u",
                     c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
@@ -794,7 +793,7 @@ bool NineChess::place(int pos, long time_p, bool cp)
 
     // 移子
     move_ = (currentPos << 8) + pos;
-    if (cp == true) {
+    if (cp) {
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / N_SEATS, currentPos % N_SEATS + 1,
                 c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
@@ -841,14 +840,14 @@ bool NineChess::place(int pos, long time_p, bool cp)
     }
 
 out:
-    if (cp == true) {
+    if (cp) {
         setTips();
     }
 
     return true;
 }
 
-bool NineChess::place(int c, int p, long time_p)
+bool NineChess::_place(int c, int p, int time_p)
 {
     // 转换为 pos
     int pos = cp2pos(c, p);
@@ -856,15 +855,15 @@ bool NineChess::place(int c, int p, long time_p)
     return place(pos, time_p, true);
 }
 
-bool NineChess::capture(int c, int p, long time_p)
+bool NineChess::_capture(int c, int p, int time_p)
 {
     // 转换为 pos
     int pos = cp2pos(c, p);
 
-    return capture(pos, time_p, true);
+    return capture(pos, time_p, 1);
 }
 
-bool NineChess::capture(int pos, long time_p, bool cp)
+bool NineChess::capture(int pos, int time_p, int8_t cp)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (context.stage == GAME_NOTSTARTED || context.stage == GAME_OVER)
@@ -884,7 +883,7 @@ bool NineChess::capture(int pos, long time_p, bool cp)
     pos2cp(pos, c, p);
 
     // 时间的临时变量
-    long player_ms = -1;
+    int player_ms = -1;
 
     // 对手
     char opponent = context.turn == PLAYER1 ? 0x20 : 0x10;
@@ -922,7 +921,7 @@ bool NineChess::capture(int pos, long time_p, bool cp)
 
     move_ = -pos;
 
-    if (cp == true) {
+    if (cp) {
         player_ms = update(time_p);
         sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
         cmdlist.push_back(string(cmdline));
@@ -1006,7 +1005,7 @@ bool NineChess::capture(int pos, long time_p, bool cp)
     }
 
 out:
-    if (cp == true) {
+    if (cp) {
         setTips();
     }
 
@@ -1077,16 +1076,19 @@ bool NineChess::giveup(Player loser)
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
 bool NineChess::command(const char *cmd)
 {
-    int r, s, t;
+    int r, t;
+    step_t s;
     int c1, p1, c2, p2;
     int args = 0;
     int mm = 0, ss = 0, mss = 0;
-    long tm = -1;
+    int tm = -1;
 
     // 设置规则
-    if (sscanf(cmd, "r%1u s%3u t%2u", &r, &s, &t) == 3) {
-        if (r <= 0 || r > N_RULES)
+    if (sscanf(cmd, "r%1u s%3hd t%2u", &r, &s, &t) == 3) {
+        if (r <= 0 || r > N_RULES) {
             return false;
+        }
+
         return setContext(&NineChess::RULES[r - 1], s, t);
     }
 
@@ -1098,7 +1100,7 @@ bool NineChess::command(const char *cmd)
                 tm = mm * 60000 + ss * 1000 + mss;
         }
         if (choose(c1, p1))
-            return place(c2, p2, tm);
+            return _place(c2, p2, tm);
         else
             return false;
     }
@@ -1110,7 +1112,7 @@ bool NineChess::command(const char *cmd)
             if (mm >= 0 && ss >= 0 && mss >= 0)
                 tm = mm * 60000 + ss * 1000 + mss;
         }
-        return capture(c1, p1, tm);
+        return _capture(c1, p1, tm);
     }
 
     // 落子
@@ -1120,7 +1122,7 @@ bool NineChess::command(const char *cmd)
             if (mm >= 0 && ss >= 0 && mss >= 0)
                 tm = mm * 60000 + ss * 1000 + mss;
         }
-        return place(c1, p1, tm);
+        return _place(c1, p1, tm);
     }
 
     // 认输
@@ -1169,11 +1171,11 @@ bool NineChess::command(int move)
     return false;
 }
 
-inline long NineChess::update(long time_p /*= -1*/)
+inline int NineChess::update(int time_p /*= -1*/)
 {
-    long ret = -1;
-    long *player_ms = (context.turn == PLAYER1 ? &elapsedMS_1 : &elapsedMS_2);
-    long playerNext_ms = (context.turn == PLAYER1 ? elapsedMS_2 : elapsedMS_1);
+    int ret = -1;
+    int *player_ms = (context.turn == PLAYER1 ? &elapsedMS_1 : &elapsedMS_2);
+    int playerNext_ms = (context.turn == PLAYER1 ? elapsedMS_2 : elapsedMS_1);
 
     // 根据局面调整计时器
 
@@ -1186,7 +1188,7 @@ inline long NineChess::update(long time_p /*= -1*/)
     // 更新时间
     if (time_p >= *player_ms) {
         *player_ms = ret = time_p;
-        long t = elapsedMS_1 + elapsedMS_2;
+        int t = elapsedMS_1 + elapsedMS_2;
 
         startTimeb.time = currentTimeb.time - (t / 1000);
         startTimeb.millitm = currentTimeb.millitm - (t % 1000);
@@ -1196,7 +1198,7 @@ inline long NineChess::update(long time_p /*= -1*/)
             startTimeb.millitm += 1000;
         }
     } else {
-        *player_ms = ret = static_cast<long>(currentTimeb.time - startTimeb.time) * 1000
+        *player_ms = ret = static_cast<int>(currentTimeb.time - startTimeb.time) * 1000
             + (currentTimeb.millitm - startTimeb.millitm) - playerNext_ms;
     }
 
@@ -1630,7 +1632,7 @@ enum NineChess::Player NineChess::getWhosPiece(int c, int p)
     return NOBODY;
 }
 
-void NineChess::getElapsedTimeMS(long &p1_ms, long &p2_ms)
+void NineChess::getElapsedTimeMS(int &p1_ms, int &p2_ms)
 {
     update();
 
@@ -1662,14 +1664,14 @@ void NineChess::mirror(bool cmdChange /*= true*/)
         s = (N_SEATS - s) % N_SEATS;
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = move_ >> 8;
+        llp[0] = static_cast<uint64_t>(move_ >> 8);
         llp[1] = move_ & 0x00ff;
 
         for (i = 0; i < 2; i++) {
             r = static_cast<int>(llp[i]) / N_SEATS;
             s = static_cast<int>(llp[i]) % N_SEATS;
             s = (N_SEATS - s) % N_SEATS;
-            llp[i] = r * N_SEATS + s;
+            llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
         }
 
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
@@ -1692,7 +1694,7 @@ void NineChess::mirror(bool cmdChange /*= true*/)
                 r = static_cast<int>(llp[i]) / N_SEATS;
                 s = static_cast<int>(llp[i]) % N_SEATS;
                 s = (N_SEATS - s) % N_SEATS;
-                llp[i] = r * N_SEATS + s;
+                llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
             }
 
             *mill &= 0xffffff00ff00ff00;
@@ -1777,7 +1779,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
 
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = move_ >> 8;
+        llp[0] = static_cast<uint64_t>(move_ >> 8);
         llp[1] = move_ & 0x00ff;
 
         for (i = 0; i < 2; i++) {
@@ -1789,7 +1791,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
             else if (r == N_RINGS)
                 r = 1;
 
-            llp[i] = r * N_SEATS + s;
+            llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
         }
 
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
@@ -1822,7 +1824,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
                 else if (r == N_RINGS)
                     r = 1;
 
-                llp[i] = r * N_SEATS + s;
+                llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
             }
 
             *mill &= 0xffffff00ff00ff00;
@@ -1983,16 +1985,16 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
         s = (s + N_SEATS - degrees) % N_SEATS;
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = move_ >> 8;
+        llp[0] = static_cast<uint64_t>(move_ >> 8);
         llp[1] = move_ & 0x00ff;
         r = static_cast<int>(llp[0]) / N_SEATS;
         s = static_cast<int>(llp[0]) % N_SEATS;
         s = (s + N_SEATS - degrees) % N_SEATS;
-        llp[0] = r * N_SEATS + s;
+        llp[0] = static_cast<uint64_t>(r * N_SEATS + s);
         r = static_cast<int>(llp[1]) / N_SEATS;
         s = static_cast<int>(llp[1]) % N_SEATS;
         s = (s + N_SEATS - degrees) % N_SEATS;
-        llp[1] = r * N_SEATS + s;
+        llp[1] = static_cast<uint64_t>(r * N_SEATS + s);
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
@@ -2013,7 +2015,7 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
                 r = static_cast<int>(llp[i]) / N_SEATS;
                 s = static_cast<int>(llp[i]) % N_SEATS;
                 s = (s + N_SEATS - degrees) % N_SEATS;
-                llp[i] = r * N_SEATS + s;
+                llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
             }
 
             *mill &= 0xffffff00ff00ff00;
@@ -2149,7 +2151,7 @@ NineChess::hash_t NineChess::revertHash(int pos)
 NineChess::hash_t NineChess::updateHashMisc()
 {
     // 清除标记位
-    context.hash &= ~0xFF;
+    context.hash &= static_cast<hash_t>(~0xFF);
 
     // 置位
 
