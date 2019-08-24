@@ -757,7 +757,7 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
         ui.gameView->setEnabled(false);
 
         // 启动定时器
-        autoRunTimer.start(game->getDurationTime() + 50);
+        autoRunTimer.start(game->getDurationTime() * 10 + 50);
     } else {
         // 关闭定时器
         autoRunTimer.stop();
