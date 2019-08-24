@@ -12,8 +12,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NineChess
 TEMPLATE = app
 
-CONFIG += C++11 \
-    warn_off
+CONFIG += warn_off
 
 INCLUDEPATH += src
 INCLUDEPATH += include
