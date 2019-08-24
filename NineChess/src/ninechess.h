@@ -595,7 +595,7 @@ private:
 
     // 着法命令行用于棋谱的显示和解析
     // 当前着法的命令行指令，即一招棋谱
-    char cmdline[32];
+    char cmdline[64];
 
     // 棋谱
     list <string> cmdlist;

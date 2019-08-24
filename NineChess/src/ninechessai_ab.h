@@ -278,7 +278,7 @@ private:
 
 private:
     // 命令行
-    char cmdline[32];
+    char cmdline[64];
 };
 
 #ifdef HASH_MAP_ENABLE
