@@ -253,14 +253,14 @@ void GameController::setInvert(bool arg)
     }
 }
 
-void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
+void GameController::setRule(int ruleNo, NineChess::step_t stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
     // 更新规则，原限时和限步不变
     if (ruleNo < 0 || ruleNo >= NineChess::N_RULES)
         return;
     this->ruleNo_ = ruleNo;
 
-    if (stepLimited != -1 && timeLimited != -1) {
+    if (stepLimited != UINT16_MAX && timeLimited != -1) {
         stepsLimit = stepLimited;
         timeLimit = timeLimited;
     }

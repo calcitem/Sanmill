@@ -116,7 +116,7 @@ signals:
 public slots:
 
     // 设置规则
-    void setRule(int ruleNo, int stepLimited = -1, int timeLimited = -1);
+    void setRule(int ruleNo, NineChess::step_t stepLimited = UINT16_MAX, int timeLimited = -1);
 
     // 游戏开始
     void gameStart();
@@ -237,7 +237,7 @@ private:
     int timeLimit;
 
     // 规则限步数
-    int stepsLimit;
+    NineChess::step_t stepsLimit;
 
     // 玩家1剩余时间（毫秒）
     int remainingTime1;

@@ -133,16 +133,13 @@ void NineChessWindow::closeEvent(QCloseEvent *event)
 bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
 {
     // 重载这个函数只是为了让规则菜单（动态）显示提示
-    if (watched == ui.menu_R) {
-        switch (event->type()) {
-        case QEvent::ToolTip:
-            QHelpEvent *he = dynamic_cast <QHelpEvent *> (event);
-            QAction *action = ui.menu_R->actionAt(he->pos());
-            if (action) {
-                QToolTip::showText(he->globalPos(), action->toolTip(), this);
-                return true;
-            }
-            break;
+    if (watched == ui.menu_R &&
+        event->type() == QEvent::ToolTip) {
+        QHelpEvent *he = dynamic_cast <QHelpEvent *> (event);
+        QAction *action = ui.menu_R->actionAt(he->pos());
+        if (action) {
+            QToolTip::showText(he->globalPos(), action->toolTip(), this);
+            return true;
         }
     }
 
@@ -401,7 +398,7 @@ void NineChessWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             // 重置游戏规则
-            game->setRule(ruleNo, dStep, dTime);
+            game->setRule(ruleNo, static_cast<NineChess::step_t>(dStep), dTime);
         }
     }
 
@@ -865,8 +862,10 @@ void NineChessWindow::on_actionEngine_E_triggered()
     if (dialog->exec() == QDialog::Accepted) {
         NineChessAi_ab::depth_t depth1_new, depth2_new;
         int time1_new, time2_new;
-        depth1_new = spinBox_depth1->value();
-        depth2_new = spinBox_depth2->value();
+
+        depth1_new = static_cast<NineChessAi_ab::depth_t>(spinBox_depth1->value());
+        depth2_new = static_cast<NineChessAi_ab::depth_t>(spinBox_depth2->value());
+
         time1_new = spinBox_time1->value();
         time2_new = spinBox_time2->value();
 
@@ -924,11 +923,10 @@ void NineChessWindow::on_actionAbout_A_triggered()
     //label_icon1->setScaledContents(true);
     //label_icon2->setScaledContents(true);
 
-    date_text->setText(__DATE__);
-    version_text->setText(tr("Version:"));
-    label_text->setAlignment(Qt::AlignLeft);
-    label_text->setText(versionNumber);
-    label_text->setAlignment(Qt::AlignLeft);
+    //date_text->setText(__DATE__);
+    version_text->setText(tr("Version: ") + versionNumber);
+    version_text->setAlignment(Qt::AlignLeft);
+
     donate_text->setText("Donate");
     donate_text->setAlignment(Qt::AlignCenter);
 

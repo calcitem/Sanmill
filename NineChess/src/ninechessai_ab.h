@@ -176,33 +176,33 @@ protected:
                          enum NineChess::Player player);
 
     // 评价函数
-    int evaluate(Node *node);
+    value_t evaluate(Node *node);
 #ifdef EVALUATE_ENABLE
 #ifdef EVALUATE_MATERIAL
-    int evaluateMaterial(Node *node);
+    value_t evaluateMaterial(Node *node);
 #endif
 #ifdef EVALUATE_SPACE
-    int evaluateSpace(Node *node);
+    value_t evaluateSpace(Node *node);
 #endif
 #ifdef EVALUATE_MOBILITY
-    int evaluateMobility(Node *node);
+    value_t evaluateMobility(Node *node);
 #endif
 #ifdef EVALUATE_TEMPO
-    int evaluateTempo(Node *node);
+    value_t evaluateTempo(Node *node);
 #endif
 #ifdef EVALUATE_THREAT
-    int evaluateThreat(Node *node);
+    value_t evaluateThreat(Node *node);
 #endif
 #ifdef EVALUATE_SHAPE
-    int evaluateShape(Node *node);
+    value_t evaluateShape(Node *node);
 #endif
 #ifdef EVALUATE_MOTIF
-    int evaluateMotif(Node *node);
+    value_t evaluateMotif(Node *node);
 #endif
 #endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
-    int alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
+    NineChessAi_ab::value_t alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
 
     // 返回着法的命令行
     const char *move2string(move_t move);

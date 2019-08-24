@@ -120,7 +120,7 @@ private:
     int num;
 
     // 棋子尺寸
-    qreal size;
+    int size;
 
     // 有无删除线
     bool deleted_;
@@ -129,10 +129,10 @@ private:
     bool showNum;
 
     // 选中子标识线宽度
-    qreal chooseLineWeight;
+    int chooseLineWeight;
 
     // 删除线宽度
-    qreal removeLineWeight;
+    int removeLineWeight;
 
     // 选中线颜色
     QColor chooseLineColor;

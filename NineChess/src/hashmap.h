@@ -89,7 +89,11 @@ namespace CTSL //Concurrent Thread Safe Library
             }
 
             //Function to remove an entry from the bucket, if found
-            void erase(const K &key)
+            void erase(
+#ifndef DISABLE_HASHBUCKET
+                const K &key
+#endif
+                )
             {
 #ifdef DISABLE_HASHBUCKET
                 // std::unique_lock<std::shared_timed_mutex> lock(mutex_);
@@ -119,7 +123,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #ifdef DISABLE_HASHBUCKET
                 QFile file(filename);
                 file.open(QIODevice::WriteOnly);
-                file.write((char *)hashTable, sizeof(HashNode<K, V>) * hashSize);
+                file.write(static_cast<char *>(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 #endif
             }
@@ -130,7 +134,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #ifdef DISABLE_HASHBUCKET
                 QFile file(filename);
                 file.open(QIODevice::ReadOnly);
-                file.read((char *)hashTable, sizeof(HashNode<K, V>) * hashSize);
+                file.read(static_cast<char *>(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 #endif
             }

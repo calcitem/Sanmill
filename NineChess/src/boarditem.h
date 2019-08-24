@@ -71,10 +71,10 @@ public:
 
 private:
     // 棋盘尺寸
-    qreal size;
+    int size;
 
     // 影子尺寸
-    qreal sizeShadow;
+    int sizeShadow;
 
     // 24个落子点
     QPointF position[N_RINGS * N_SEATS];

@@ -37,7 +37,7 @@ BoardItem::BoardItem(QGraphicsItem *parent) : QGraphicsItem(),
     for (int r = 0; r < N_RINGS; r++) {
         // 内圈的12点钟方向为第一个位置，按顺时针方向排序
         // 然后是中圈和外圈
-        qreal a = (r + 1) * LINE_INTERVAL;
+        int a = (r + 1) * LINE_INTERVAL;
 
         position[r * N_SEATS + 0].rx() = 0;
         position[r * N_SEATS + 0].ry() = -a;
