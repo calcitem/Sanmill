@@ -30,7 +30,7 @@ inline typename MemoryPool<T, BlockSize>::size_type
 MemoryPool<T, BlockSize>::padPointer(data_pointer_ p, size_type align)
 const noexcept
 {
-  uintptr_t result = reinterpret_cast<uintptr_t>(p);
+  auto result = reinterpret_cast<uintptr_t>(p);
   return ((align - result) % align);
 }
 
@@ -49,7 +49,7 @@ noexcept
 
 
 template <typename T, size_t BlockSize>
-MemoryPool<T, BlockSize>::MemoryPool(const MemoryPool& memoryPool)
+MemoryPool<T, BlockSize>::MemoryPool(const MemoryPool& /* memoryPool */)
 noexcept :
 MemoryPool()
 {}
@@ -70,7 +70,7 @@ noexcept
 
 template <typename T, size_t BlockSize>
 template<class U>
-MemoryPool<T, BlockSize>::MemoryPool(const MemoryPool<U>& memoryPool)
+MemoryPool<T, BlockSize>::MemoryPool(const MemoryPool<U>& /* memoryPool */)
 noexcept :
 MemoryPool()
 {}
@@ -133,7 +133,7 @@ void
 MemoryPool<T, BlockSize>::allocateBlock()
 {
   // Allocate space for the new block and store a pointer to the previous one
-  data_pointer_ newBlock = reinterpret_cast<data_pointer_>(operator new(BlockSize));
+  auto newBlock = reinterpret_cast<data_pointer_>(operator new(BlockSize));
   reinterpret_cast<slot_pointer_>(newBlock)->next = currentBlock_;
   currentBlock_ = reinterpret_cast<slot_pointer_>(newBlock);
   // Pad block body to satisfy the alignment requirements for elements
@@ -150,15 +150,14 @@ inline typename MemoryPool<T, BlockSize>::pointer
 MemoryPool<T, BlockSize>::allocate()
 {
   if (freeSlots_ != nullptr) {
-    pointer result = reinterpret_cast<pointer>(freeSlots_);
+    auto result = reinterpret_cast<pointer>(freeSlots_);
     freeSlots_ = freeSlots_->next;
     return result;
   }
-  else {
-    if (currentSlot_ >= lastSlot_)
-      allocateBlock();
-    return reinterpret_cast<pointer>(currentSlot_++);
-  }
+
+  if (currentSlot_ >= lastSlot_)
+    allocateBlock();
+  return reinterpret_cast<pointer>(currentSlot_++);
 }
 
 

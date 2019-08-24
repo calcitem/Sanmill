@@ -31,5 +31,5 @@ int main(int argc, char *argv[])
     w.show();
     w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
 
-    return a.exec();
+    return QApplication::exec();
 }

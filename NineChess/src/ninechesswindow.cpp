@@ -52,9 +52,6 @@
 
 NineChessWindow::NineChessWindow(QWidget * parent) :
     QMainWindow(parent),
-    scene(nullptr),
-    game(nullptr),
-    ruleNo(-1),
     autoRunTimer(this)
 {
     ui.setupUi(this);
@@ -135,7 +132,7 @@ bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
     // 重载这个函数只是为了让规则菜单（动态）显示提示
     if (watched == ui.menu_R &&
         event->type() == QEvent::ToolTip) {
-        QHelpEvent *he = dynamic_cast <QHelpEvent *> (event);
+        auto *he = dynamic_cast <QHelpEvent *> (event);
         QAction *action = ui.menu_R->actionAt(he->pos());
         if (action) {
             QToolTip::showText(he->globalPos(), action->toolTip(), this);
@@ -161,7 +158,7 @@ void NineChessWindow::initialize()
     for (auto i = actions.constBegin(); i != actions.constEnd(); i++) {
         // qDebug() << i.key() << i.value();
         // QMap的key存放int索引值，value存放规则名称和规则提示
-        QAction *ruleAction = new QAction(i.value().at(0), this);
+        auto *ruleAction = new QAction(i.value().at(0), this);
         ruleAction->setToolTip(i.value().at(1));
         ruleAction->setCheckable(true);
 
@@ -238,7 +235,7 @@ void NineChessWindow::initialize()
             game, SLOT(actionPiece(QPointF)));
 
     // 为状态栏添加一个正常显示的标签
-    QLabel *statusBarlabel = new QLabel(this);
+    auto *statusBarlabel = new QLabel(this);
     QFont statusBarFont;
     statusBarFont.setPointSize(16);
     statusBarlabel->setFont(statusBarFont);
@@ -338,7 +335,7 @@ void NineChessWindow::on_actionLimited_T_triggered()
     int gTime = game->getTimeLimit();
 
     // 定义新对话框
-    QDialog *dialog = new QDialog(this);
+    auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
     dialog->setWindowTitle(tr("步数和时间限制"));
@@ -346,12 +343,12 @@ void NineChessWindow::on_actionLimited_T_triggered()
     dialog->setModal(true);
 
     // 生成各个控件
-    QFormLayout *formLayout = new QFormLayout(dialog);
-    QLabel *label_step = new QLabel(dialog);
-    QLabel *label_time = new QLabel(dialog);
-    QComboBox *comboBox_step = new QComboBox(dialog);
-    QComboBox *comboBox_time = new QComboBox(dialog);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
+    auto *formLayout = new QFormLayout(dialog);
+    auto *label_step = new QLabel(dialog);
+    auto *label_time = new QLabel(dialog);
+    auto *comboBox_step = new QComboBox(dialog);
+    auto *comboBox_time = new QComboBox(dialog);
+    auto *buttonBox = new QDialogButtonBox(dialog);
 #if 0
     // 设置各个控件ObjectName，不设也没关系
     formLayout->setObjectName(QStringLiteral("formLayout"));
@@ -420,7 +417,7 @@ void NineChessWindow::actionRules_triggered()
         action->setChecked(false);
 
     // 选择当前规则
-    QAction *action = dynamic_cast<QAction *>(sender());
+    auto *action = dynamic_cast<QAction *>(sender());
     action->setChecked(true);
     ruleNo = action->data().toInt();
 
@@ -445,18 +442,18 @@ void NineChessWindow::on_actionNew_N_triggered()
         file.close();
 
 #ifdef SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
-    QString path = QDir::currentPath() + "/" + tr("book_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".txt";
-    QStringListModel* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
+    QString path = QDir::currentPath() + "/" + tr("book_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t()) + ".txt";
+    auto *strlist = qobject_cast<QStringListModel*>(ui.listView->model());
 
-    if (path.isEmpty() == false && strlist->stringList().size() > 18) {
+    if (!path.isEmpty() && strlist->stringList().size() > 18) {
         // 文件对象  
         file.setFileName(path);
 
         // 打开文件,只写方式打开
         if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             // 写文件
-            QTextStream textStream(&file);            
-            for (QString cmd : strlist->stringList())
+            QTextStream textStream(&file);
+            for (const QString &cmd : strlist->stringList())
                 textStream << cmd << endl;
             file.flush();
         }
@@ -545,8 +542,8 @@ void NineChessWindow::on_actionSave_S_triggered()
         if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             // 写文件
             QTextStream textStream(&file);
-            QStringListModel *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
-            for (QString cmd : strlist->stringList())
+            auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+            for (const QString &cmd : strlist->stringList())
                 textStream << cmd << endl;
             file.flush();
         }
@@ -561,7 +558,7 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
 {
     QString path = QFileDialog::getSaveFileName(this,
         tr("打开棋谱文件"),
-        QDir::currentPath() + tr("棋谱_") + QString::number(QDateTime::currentDateTime().toTime_t()) + ".txt", "TXT(*.txt)");
+        QDir::currentPath() + tr("棋谱_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t())+ ".txt", "TXT(*.txt)");
 
     if (path.isEmpty()) {
         return;
@@ -581,9 +578,9 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
 
     // 写文件
     QTextStream textStream(&file);
-    QStringListModel* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
+    auto *strlist = qobject_cast<QStringListModel*>(ui.listView->model());
 
-    for (QString cmd : strlist->stringList()) {
+    for (const QString &cmd : strlist->stringList()) {
         textStream << cmd << endl;
     }
 
@@ -782,7 +779,7 @@ void NineChessWindow::on_actionInternet_I_triggered()
 void NineChessWindow::on_actionEngine_E_triggered()
 {
     // 定义新对话框
-    QDialog *dialog = new QDialog(this);
+    auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
     dialog->setWindowTitle(tr("AI设置"));
@@ -790,23 +787,23 @@ void NineChessWindow::on_actionEngine_E_triggered()
     dialog->setModal(true);
 
     // 生成各个控件
-    QVBoxLayout *vLayout = new QVBoxLayout(dialog);
-    QGroupBox *groupBox1 = new QGroupBox(dialog);
-    QGroupBox *groupBox2 = new QGroupBox(dialog);
+    auto *vLayout = new QVBoxLayout(dialog);
+    auto *groupBox1 = new QGroupBox(dialog);
+    auto *groupBox2 = new QGroupBox(dialog);
 
-    QHBoxLayout *hLayout1 = new QHBoxLayout;
-    QLabel *label_depth1 = new QLabel(dialog);
-    QSpinBox *spinBox_depth1 = new QSpinBox(dialog);
-    QLabel *label_time1 = new QLabel(dialog);
-    QSpinBox *spinBox_time1 = new QSpinBox(dialog);
+    auto *hLayout1 = new QHBoxLayout;
+    auto *label_depth1 = new QLabel(dialog);
+    auto *spinBox_depth1 = new QSpinBox(dialog);
+    auto *label_time1 = new QLabel(dialog);
+    auto *spinBox_time1 = new QSpinBox(dialog);
 
-    QHBoxLayout *hLayout2 = new QHBoxLayout;
-    QLabel *label_depth2 = new QLabel(dialog);
-    QSpinBox *spinBox_depth2 = new QSpinBox(dialog);
-    QLabel *label_time2 = new QLabel(dialog);
-    QSpinBox *spinBox_time2 = new QSpinBox(dialog);
+    auto *hLayout2 = new QHBoxLayout;
+    auto *label_depth2 = new QLabel(dialog);
+    auto *spinBox_depth2 = new QSpinBox(dialog);
+    auto *label_time2 = new QLabel(dialog);
+    auto *spinBox_time2 = new QSpinBox(dialog);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
+    auto *buttonBox = new QDialogButtonBox(dialog);
 
     // 设置各个控件数据
     groupBox1->setTitle(tr("玩家1 AI设置"));
@@ -895,7 +892,7 @@ void NineChessWindow::on_actionWeb_W_triggered()
 
 void NineChessWindow::on_actionAbout_A_triggered()
 {
-    QDialog *dialog = new QDialog;
+    auto *dialog = new QDialog;
 
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("aboutDialog"));
@@ -903,15 +900,15 @@ void NineChessWindow::on_actionAbout_A_triggered()
     dialog->setModal(true);
 
     // 生成各个控件
-    QVBoxLayout *vLayout = new QVBoxLayout(dialog);
-    QHBoxLayout *hLayout = new QHBoxLayout;
+    auto *vLayout = new QVBoxLayout(dialog);
+    auto *hLayout = new QHBoxLayout;
     //QLabel *label_icon1 = new QLabel(dialog);
     //QLabel *label_icon2 = new QLabel(dialog);
-    QLabel *date_text = new QLabel(dialog);
-    QLabel *version_text = new QLabel(dialog);
-    QLabel *donate_text = new QLabel(dialog);
-    QLabel *label_text = new QLabel(dialog);
-    QLabel *label_image = new QLabel(dialog);
+    auto *date_text = new QLabel(dialog);
+    auto *version_text = new QLabel(dialog);
+    auto *donate_text = new QLabel(dialog);
+    auto *label_text = new QLabel(dialog);
+    auto *label_image = new QLabel(dialog);
 
     // 设置各个控件数据
     //label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));

@@ -32,19 +32,19 @@ class MemoryPool
 {
   public:
     /* Member types */
-    typedef T               value_type;
-    typedef T*              pointer;
-    typedef T&              reference;
-    typedef const T*        const_pointer;
-    typedef const T&        const_reference;
-    typedef size_t          size_type;
-    typedef ptrdiff_t       difference_type;
-    typedef std::false_type propagate_on_container_copy_assignment;
-    typedef std::true_type  propagate_on_container_move_assignment;
-    typedef std::true_type  propagate_on_container_swap;
+    using value_type = T;
+    using pointer = T *;
+    using reference = T &;
+    using const_pointer = const T *;
+    using const_reference = const T &;
+    using size_type = size_t;
+    using difference_type = ptrdiff_t;
+    using propagate_on_container_copy_assignment = std::false_type;
+    using propagate_on_container_move_assignment = std::true_type;
+    using propagate_on_container_swap = std::true_type;
 
     template <typename U> struct rebind {
-      typedef MemoryPool<U> other;
+      using other = MemoryPool<U>;
     };
 
     /* Member functions */
@@ -81,9 +81,9 @@ class MemoryPool
         ~Slot_();
     };
 
-    typedef char* data_pointer_;
-    typedef Slot_ slot_type_;
-    typedef Slot_* slot_pointer_;
+    using data_pointer_ = char*;
+    using slot_type_ = Slot_;
+    using slot_pointer_ = Slot_ *;
 
     slot_pointer_ currentBlock_;
     slot_pointer_ currentSlot_;

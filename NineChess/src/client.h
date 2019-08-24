@@ -71,7 +71,7 @@ private:
 
     QNetworkSession *networkSession = nullptr;
 
-    uint16_t port;
+    uint16_t port {};
 };
 
 #endif // CLIENT_H

@@ -33,7 +33,7 @@ class GameView : public QGraphicsView
 
 public:
     explicit GameView(QWidget *parent);
-    ~GameView();
+    ~GameView() override;
 
 public slots:
     void flip();
@@ -42,7 +42,7 @@ public slots:
     void turnLeft();
 
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     // 缩放因子，代码更新后不使用了

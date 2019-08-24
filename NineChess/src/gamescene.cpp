@@ -35,8 +35,7 @@ GameScene::GameScene(QObject *parent) :
     pos_p1(LINE_INTERVAL * 4, LINE_INTERVAL * 6),
     pos_p1_g(LINE_INTERVAL *(-4), LINE_INTERVAL * 6),
     pos_p2(LINE_INTERVAL *(-4), LINE_INTERVAL *(-6)),
-    pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL *(-6)),
-    board(nullptr)
+    pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL *(-6))
 {
     // 添加棋盘
     board = new BoardItem;
@@ -46,8 +45,7 @@ GameScene::GameScene(QObject *parent) :
 
 GameScene::~GameScene()
 {
-    if (board)
-        delete board;
+    delete board;
 }
 
 // 屏蔽掉Shift和Control按键，事实证明没用，按键事件未必由视图类处理

@@ -33,7 +33,7 @@ class GameScene : public QGraphicsScene
     Q_OBJECT
 public:
     explicit GameScene(QObject *parent = nullptr);
-    ~GameScene();
+    ~GameScene() override;
 
     // 将模型的圈、位转化为落子点坐标
     QPointF cp2pos(int c, int p);
@@ -52,9 +52,9 @@ public:
 
 protected:
     //void keyPressEvent(QKeyEvent *keyEvent);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 signals:
     void mouseReleased(QPointF);
@@ -63,7 +63,7 @@ public slots:
 
 private:
     // 棋盘对象
-    BoardItem *board;
+    BoardItem *board {nullptr};
 
 };
 

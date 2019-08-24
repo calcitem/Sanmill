@@ -20,7 +20,6 @@
  *****************************************************************************/
 
 #include <cmath>
-#include <time.h>
 #include <QDebug>
 #include <QTime>
 #include <array>
@@ -48,21 +47,7 @@ vector<NineChess::hash_t> openingBook;
 vector<NineChess::hash_t> positions;
 #endif
 
-NineChessAi_ab::NineChessAi_ab() :
-    rootNode(nullptr),
-    nodeCount(0),
-    evaluatedNodeCount(0),
-#ifdef HASH_MAP_ENABLE
-#ifdef HASH_MAP_DEBUG
-    hashEntryCount(0),
-    hashHitCount(0),
-    hashInsertNewCount(0),
-    hashAddrHitCount(0),
-    hashReplaceCozDepthCount(0),
-    hashReplaceCozHashCount(0),
-#endif
-#endif
-    requiredQuit(false)
+NineChessAi_ab::NineChessAi_ab()
 {
     buildRoot();
 }
@@ -310,7 +295,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
     // 如果有子节点，则返回，避免重复建立
-    if (node->children.size()) {
+    if (!node->children.empty()) {
         return;
     }
 
@@ -324,8 +309,8 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
     case NineChess::ACTION_PLACE:
         // 对于摆子阶段
         if (chessTemp.context.stage & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
-            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
-                pos = movePriorityTable[i];
+            for (int i : movePriorityTable) {
+                pos = i;
 
                 if (chessTemp.board_[pos]) {
                     continue;
@@ -365,7 +350,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int moveDirection = NineChess::MOVE_DIRECTION_CLOCKWISE; moveDirection <= NineChess::MOVE_DIRECTION_OUTWARD; moveDirection++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newPos = chessTemp.moveTable[oldPos][moveDirection];
+                        newPos = NineChess::moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
                             addNode(node, 0, move, bestMove, chessTemp.context.turn); // (12%)
@@ -418,8 +403,10 @@ bool NineChessAi_ab::nodeLess(const Node *first, const Node *second)
 #ifdef SORT_CONSIDER_PRUNED
     if (first->value < second->value) {
         return true;
-    } else if ((first->value == second->value) &&
-        (first->pruned == false && second->pruned == true)) {
+    }
+
+    if ((first->value == second->value) &&
+        (!first->pruned&& second->pruned)) {
         return true;
     }
 
@@ -434,8 +421,10 @@ bool NineChessAi_ab::nodeGreater(const Node *first, const Node *second)
 #ifdef SORT_CONSIDER_PRUNED
     if (first->value > second->value) {
         return true;
-    } else if ((first->value == second->value) &&
-        (first->pruned == false && second->pruned == true)) {
+    }
+
+    if ((first->value == second->value) &&
+        (!first->pruned && second->pruned)) {
         return true;
     }
 
@@ -479,7 +468,7 @@ void NineChessAi_ab::deleteTree(Node *node)
 void NineChessAi_ab::setChess(const NineChess &chess)
 {
     // 如果规则改变，重建hashmap
-    if (strcmp(this->chess_.currentRule.name, chess.currentRule.name)) {
+    if (strcmp(this->chess_.currentRule.name, chess.currentRule.name) != 0) {
 #ifdef HASH_MAP_ENABLE
         clearHashMap();
 #endif // HASH_MAP_ENABLE
@@ -809,7 +798,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
     // 哈希值
-    HashValue hashValue;
+    HashValue hashValue {};
     memset(&hashValue, 0, sizeof(hashValue));
 
     // 哈希类型
@@ -1063,7 +1052,7 @@ const char* NineChessAi_ab::bestMove()
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
 
-    if ((rootNode->children).size() == 0) {
+    if ((rootNode->children).empty()) {
         return "error!";
     }
 
@@ -1081,7 +1070,7 @@ const char* NineChessAi_ab::bestMove()
     qDebug() << "";
 
     int i = 0;
-    string moves = "";
+    string moves = "moves";
 
     for (auto child : rootNode->children) {
         if (child->value == rootNode->value
@@ -1153,9 +1142,9 @@ NineChessAi_ab::value_t NineChessAi_ab::probeHash(NineChess::hash_t hash,
                                                   move_t &bestMove, HashType &type)
 {
     const value_t valUNKNOWN = INT16_MIN;
-    HashValue hashValue;
+    HashValue hashValue {};
 
-    if (hashmap.find(hash, hashValue) == false) {
+    if (!hashmap.find(hash, hashValue)) {
         return valUNKNOWN;
     }
 
@@ -1219,7 +1208,7 @@ int NineChessAi_ab::recordHash(value_t value, depth_t depth, HashType type, Nine
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
 
     //hashMapMutex.lock();
-    HashValue hashValue;
+    HashValue hashValue  {};
     memset(&hashValue, 0, sizeof(HashValue));
 
     if (findHash(hash, hashValue) &&

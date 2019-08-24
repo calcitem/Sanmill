@@ -35,9 +35,7 @@ GameView::GameView(QWidget *parent) :
         */
 }
 
-GameView::~GameView()
-{
-}
+GameView::~GameView() = default;
 
 void GameView::flip()
 {

@@ -133,7 +133,7 @@ void AiThread::run()
         } else {
             strCommand = ai_ab.bestMove();
             qDebug() << "Computer:" << strCommand << "\n";
-            if (strcmp(strCommand, "error!"))
+            if (strcmp(strCommand, "error!") != 0)
                 QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
         }
 

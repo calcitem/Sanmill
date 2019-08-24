@@ -54,21 +54,21 @@ class NineChessAi_ab
 {
 public:
     // 定义类型
-    typedef uint8_t depth_t;
-    typedef int16_t value_t;
-    typedef NineChess::move_t move_t;
+    using depth_t = uint8_t;
+    using value_t = int16_t;
+    using move_t = NineChess::move_t;
 
     // 定义一个节点结构体
     struct Node
     {
     public:
         vector<struct Node*> children;  // 子节点列表
-        struct Node* parent;            // 父节点
-        move_t move;                  // 着法的命令行指令，图上标示为节点前的连线
-        value_t value;                 // 节点的值
+        struct Node* parent {};            // 父节点
+        move_t move {};                  // 着法的命令行指令，图上标示为节点前的连线
+        value_t value {};                 // 节点的值
         enum NineChess::Player player;  // 此着是谁下的 (目前仅调试用)
 #ifdef SORT_CONSIDER_PRUNED
-        bool pruned;                    // 是否在此处剪枝
+        bool pruned {};                    // 是否在此处剪枝
 #endif
 
 #ifdef DEBUG_AB_TREE
@@ -233,19 +233,19 @@ private:
     // 演算用的模型
     NineChess chessTemp;
 
-    NineChess::ChessContext *chessContext;
+    NineChess::ChessContext *chessContext {};
 
     // hash 计算时，各种转换用的模型
     NineChess chessTempShift;
 
     // 根节点
-    Node *rootNode;
+    Node *rootNode {nullptr};
 
     // 结点个数;
-    size_t nodeCount;
+    size_t nodeCount {0};
 
     // 评估过的结点个数
-    size_t evaluatedNodeCount;
+    size_t evaluatedNodeCount {0};
 
 #ifdef HASH_MAP_ENABLE
 #ifdef HASH_MAP_DEBUG
@@ -267,10 +267,10 @@ private:
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回
-    bool requiredQuit;
+    bool requiredQuit {false};
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
-    array<int, NineChess::N_RINGS *NineChess::N_SEATS> movePriorityTable;
+    array<int, NineChess::N_RINGS *NineChess::N_SEATS> movePriorityTable {};
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
     // 定义极大值
@@ -278,7 +278,7 @@ private:
 
 private:
     // 命令行
-    char cmdline[64];
+    char cmdline[64] {};
 };
 
 #ifdef HASH_MAP_ENABLE

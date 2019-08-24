@@ -38,14 +38,14 @@ class PieceItem : public QObject, public QGraphicsItem
 public:
     explicit PieceItem(QGraphicsItem *parent = nullptr);
 
-    ~PieceItem();
+    ~PieceItem() override;
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
-    QPainterPath shape() const;
+    QPainterPath shape() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget = nullptr);
+               QWidget *widget = nullptr) override;
 
     // 用UserType+2表示棋子，用qgraphicsitem_cast()判断是否为PieceItem类的对象
     // 还有一个方式是把类名放在Data的0key位置setData(0, "PieceItem")，然后用data(0)来判断
@@ -54,7 +54,7 @@ public:
         Type = UserType + 2
     };
 
-    int type() const
+    int type() const override
     {
         return Type;
     }
@@ -108,25 +108,25 @@ public:
     }
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 private:
     // 棋子本质
     enum Models model_;
 
     // 棋子序号，黑白都从1开始
-    int num;
+    int num = 1;
 
     // 棋子尺寸
     int size;
 
     // 有无删除线
-    bool deleted_;
+    bool deleted_ {false};
 
     // 显示序号
-    bool showNum;
+    bool showNum {false};
 
     // 选中子标识线宽度
     int chooseLineWeight;

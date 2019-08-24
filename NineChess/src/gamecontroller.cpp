@@ -376,7 +376,7 @@ void GameController::flip()
 
     // 更新棋谱
     int row = 0;
-    for (auto str : *(chess_.getCmdList())) {
+    for (const auto &str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -416,7 +416,7 @@ void GameController::mirror()
     // 更新棋谱
     int row = 0;
 
-    for (auto str : *(chess_.getCmdList())) {
+    for (const auto &str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -458,7 +458,7 @@ void GameController::turnRight()
     // 更新棋谱
     int row = 0;
 
-    for (auto str : *(chess_.getCmdList())) {
+    for (const auto &str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -497,7 +497,7 @@ void GameController::turnLeft()
 
     // 更新棋谱
     int row = 0;
-    for (auto str : *(chess_.getCmdList())) {
+    for (const auto &str : *(chess_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -693,13 +693,13 @@ bool GameController::actionPiece(QPointF pos)
         currentRow = manualListModel.rowCount() - 1;
         int k = 0;
 
-        // 输出命令行
-        for (auto i = (chess_.getCmdList())->begin(); i != (chess_.getCmdList())->end(); ++i) {
+        // 输出命令行        
+        for (const auto & i : *(chess_.getCmdList())) {
             // 跳过已添加的，因标准list容器没有下标
             if (k++ <= currentRow)
                 continue;
             manualListModel.insertRow(++currentRow);
-            manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
+            manualListModel.setData(manualListModel.index(currentRow), i.c_str());
         }
 
         // 播放胜利或失败音效
@@ -762,12 +762,12 @@ bool GameController::giveUp()
         int k = 0;
 
         // 输出命令行
-        for (auto i = (chess_.getCmdList())->begin(); i != (chess_.getCmdList())->end(); ++i) {
+        for (const auto & i : *(chess_.getCmdList())) {
             // 跳过已添加的，因标准list容器没有下标
             if (k++ <= currentRow)
                 continue;
             manualListModel.insertRow(++currentRow);
-            manualListModel.setData(manualListModel.index(currentRow), (*i).c_str());
+            manualListModel.setData(manualListModel.index(currentRow), i.c_str());
         }
         if (chess_.whoWin() != NineChess::NOBODY)
             playSound(":/sound/resources/sound/loss.wav");
@@ -942,7 +942,7 @@ bool GameController::updateScence(NineChess &chess)
     int nTotalPieces = chess.getRule()->nTotalPiecesEachSide * 2;
 
     // 动画组
-    QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup;
+    auto *animationGroup = new QParallelAnimationGroup;
 
     // 棋子就位
     PieceItem *piece = nullptr;
@@ -1023,7 +1023,7 @@ bool GameController::updateScence(NineChess &chess)
                 if (nTotalPieces < pieceList.size()) {
                     pieceList.at(nTotalPieces++)->setPos(pos);
                 } else {
-                    PieceItem *newP = new PieceItem;
+                    auto *newP = new PieceItem;
                     newP->setDeleted();
                     newP->setPos(pos);
                     pieceList.append(newP);

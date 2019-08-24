@@ -15,7 +15,7 @@ namespace CTSL  //Concurrent Thread Safe Library
 #ifndef DISABLE_HASHBUCKET
                 : next(nullptr)
 #endif
-            {}
+                = default;
             HashNode(K key_, V value_) :
 #ifndef DISABLE_HASHBUCKET
                 next(nullptr),

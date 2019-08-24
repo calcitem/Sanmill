@@ -43,11 +43,11 @@ class NineChessWindow : public QMainWindow
 
 public:
     NineChessWindow(QWidget *parent = nullptr);
-    ~NineChessWindow();
+    ~NineChessWindow() override;
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event);
-    void closeEvent(QCloseEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     // 初始化
@@ -96,19 +96,19 @@ private slots:
 
 private:
     // 界面文件
-    Ui::NineChessWindowClass ui;
+    Ui::NineChessWindowClass ui {};
 
     // 视图场景
-    GameScene *scene;
+    GameScene *scene {nullptr};
 
     // 控制器
-    GameController *game;
+    GameController *game {nullptr};
 
     // 动态增加的菜单栏动作列表
     QList <QAction *> ruleActionList;
 
     // 游戏的规则号，涉及菜单项和对话框，所以要有
-    int ruleNo;
+    int ruleNo {-1};
 
     // 文件
     QFile file;

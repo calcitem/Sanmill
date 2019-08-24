@@ -118,11 +118,11 @@ void Server::sessionOpened()
                                   .arg(tcpServer->errorString()));
             close();
             return;
-        } else {
-#ifdef MESSAGEBOX_ENABLE
-            QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
-#endif
         }
+
+#ifdef MESSAGEBOX_ENABLE
+        QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
+#endif
     }
     else {
 #ifdef MESSAGEBOX_ENABLE
@@ -134,10 +134,10 @@ void Server::sessionOpened()
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
 
     // use the first non-localhost IPv4 address
-    for (int i = 0; i < ipAddressesList.size(); ++i) {
-        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
-            ipAddressesList.at(i).toIPv4Address()) {
-            ipAddress = ipAddressesList.at(i).toString();
+    for (const auto &ip : ipAddressesList) {
+        if (ip != QHostAddress::LocalHost &&
+            ip.toIPv4Address()) {
+            ipAddress = ip.toString();
             break;
         }
     }

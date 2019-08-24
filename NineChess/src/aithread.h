@@ -95,7 +95,7 @@ private:
     int id;
 
     // 发射的指令
-    const char* strCommand;
+    const char* strCommand {};
 
     // 互斥锁
     QMutex mutex;

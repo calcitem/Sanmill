@@ -27,9 +27,7 @@
 
 PieceItem::PieceItem(QGraphicsItem *parent) :
     QGraphicsItem(parent),
-    num(0),
-    deleted_(false),
-    showNum(false)
+    num(0)
 {
     Q_UNUSED(parent)
         // 允许选择和移动
@@ -69,9 +67,7 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
     removeLineColor = QColor(0xff, 0x75, 0);
 }
 
-PieceItem::~PieceItem()
-{
-}
+PieceItem::~PieceItem() = default;
 
 QRectF PieceItem::boundingRect() const
 {

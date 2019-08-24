@@ -50,7 +50,7 @@ class GameController : public QObject
 
 public:
     GameController(GameScene &scene, QObject *parent = nullptr);
-    ~GameController();
+    ~GameController() override;
 
     //主窗口菜单栏明细
     const QMap <int, QStringList> getActions();
@@ -179,7 +179,7 @@ public slots:
 protected:
     //bool eventFilter(QObject * watched, QEvent * event);
     // 定时器
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     // 棋对象的数据模型

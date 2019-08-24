@@ -30,14 +30,14 @@ class BoardItem : public QGraphicsItem
 {
 public:
     explicit BoardItem(QGraphicsItem *parent = nullptr);
-    ~BoardItem();
+    ~BoardItem() override;
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
-    QPainterPath shape() const;
+    QPainterPath shape() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget = nullptr);
+               QWidget *widget = nullptr) override;
 
     // 用UserType+1表示棋子，用qgraphicsitem_cast()判断是否为BoardItem类的对象
     // 还有一个方式是把类名放在Data的0key位置setData(0, "BoardItem")，然后用data(0)来判断
@@ -46,7 +46,7 @@ public:
         Type = UserType + 1
     };
 
-    int type() const
+    int type() const override
     {
         return Type;
     }
@@ -55,7 +55,7 @@ public:
     void setDiagonal(bool arg = true);
 
     // 返回最近的落子点
-    QPointF nearestPosition(QPointF const pos);
+    QPointF nearestPosition(QPointF pos);
 
     // 将模型的圈、位转化为落子点坐标
     QPointF cp2pos(int c, int p);
@@ -74,13 +74,13 @@ private:
     int size;
 
     // 影子尺寸
-    int sizeShadow;
+    int sizeShadow {5};
 
     // 24个落子点
     QPointF position[N_RINGS * N_SEATS];
 
     // 是否有斜线
-    bool hasObliqueLine;
+    bool hasObliqueLine {false};
 };
 
 #endif // BOARDITEM_H

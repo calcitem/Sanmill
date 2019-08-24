@@ -23,10 +23,8 @@
 #include "graphicsconst.h"
 #include <QPainter>
 
-BoardItem::BoardItem(QGraphicsItem *parent) : QGraphicsItem(),
-    size(BOARD_SIZE),
-    sizeShadow(5.0),
-    hasObliqueLine(false)
+BoardItem::BoardItem(QGraphicsItem *parent) :
+    size(BOARD_SIZE)
 {
     Q_UNUSED(parent)
 
@@ -65,9 +63,7 @@ BoardItem::BoardItem(QGraphicsItem *parent) : QGraphicsItem(),
     }
 }
 
-BoardItem::~BoardItem()
-{
-}
+BoardItem::~BoardItem() = default;
 
 QRectF BoardItem::boundingRect() const
 {
@@ -150,10 +146,10 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     QPointF nearestPos = QPointF(0, 0);
 
     // 寻找最近的落子点
-    for (int i = 0; i < N_RINGS * N_SEATS; i++) {
+    for (auto i : position) {
         // 如果鼠标点距离落子点在棋子半径内
-        if (QLineF(pos, position[i]).length() < PIECE_SIZE / 2) {
-            nearestPos = position[i];
+        if (QLineF(pos, i).length() < PIECE_SIZE / 2) {
+            nearestPos = i;
             break;
         }
     }

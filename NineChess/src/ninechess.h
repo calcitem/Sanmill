@@ -73,13 +73,13 @@ public:
     static const int N_RULES = 4;
 
     // 定义类型
-    typedef int32_t move_t;
-    typedef uint16_t step_t;
+    using move_t = int32_t;
+    using step_t = uint16_t;
 
 #ifdef HASH_MAP_CUTDOWN
-    typedef uint32_t hash_t;
+    using hash_t = uint32_t;
 #else
-    typedef uint64_t hash_t;
+    using hash_t = uint64_t;
 #endif /* HASH_MAP_CUTDOWN */
 
     // 位置迭代器
@@ -87,9 +87,9 @@ public:
     // typedef typename std::vector<move_t>::const_iterator constPosIterator;
 
     // 赢盘数
-    int score_1;
-    int score_2;
-    int score_draw;
+    int score_1 {};
+    int score_2 {};
+    int score_draw {};
 
     // 嵌套的规则结构体
     struct Rule
@@ -153,7 +153,7 @@ public:
         GAME_OVER = 0x0008          // 结局
     };
 
-    uint64_t rand64(void) {
+    uint64_t rand64() {
         return static_cast<uint64_t>(rand()) ^
                 (static_cast<uint64_t>(rand()) << 15) ^
                 (static_cast<uint64_t>(rand()) << 30) ^
@@ -161,7 +161,7 @@ public:
                 (static_cast<uint64_t>(rand()) << 60);
     }
 
-    uint64_t rand56(void)
+    uint64_t rand56()
     {
         return rand64() << 8;
     }
@@ -209,23 +209,23 @@ public:
             判断棋子是先手的用 (board[i] & 0x10)
             判断棋子是后手的用 (board[i] & 0x20)
          */
-        int board[N_POINTS];
+        int board[N_POINTS] {};
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         // 局面的哈希值
-        hash_t hash;
+        hash_t hash {};
 
         // 标记处于走子阶段的哈希
-        hash_t gameMovingHash;
+        hash_t gameMovingHash {};
 
         // 吃子动作的哈希
-        hash_t actionCaptureHash;
+        hash_t actionCaptureHash {};
 
         // 标记轮到玩家2行棋的哈希
-        hash_t player2sTurnHash;
+        hash_t player2sTurnHash {};
 
         // Zobrist 数组
-        hash_t zobrist[N_POINTS][POINT_TYPE_COUNT];
+        hash_t zobrist[N_POINTS][POINT_TYPE_COUNT] {};
 #endif /* HASH_MAP_ENABLE */
 
         // 局面阶段标识
@@ -238,19 +238,19 @@ public:
         enum NineChess::Action action;
 
         // 玩家1剩余未放置子数
-        int nPiecesInHand_1;
+        int nPiecesInHand_1 {};
 
         // 玩家2剩余未放置子数
-        int nPiecesInHand_2;
+        int nPiecesInHand_2 {};
 
         // 玩家1盘面剩余子数
-        int nPiecesOnBoard_1;
+        int nPiecesOnBoard_1 {};
 
         // 玩家1盘面剩余子数
-        int nPiecesOnBoard_2;
+        int nPiecesOnBoard_2 {};
 
         // 尚待去除的子数
-        int nPiecesNeedRemove;
+        int nPiecesNeedRemove {};
 
 #if 0
         本打算用如下的结构体来表示“三连”
@@ -300,7 +300,7 @@ public:
     explicit NineChess(const NineChess &);
 
     // 运算符重载
-    const NineChess &operator=(const NineChess &);
+    NineChess &operator=(const NineChess &);
 
     // 设置棋局状态和棋盘上下文，用于初始化
     bool setContext(const struct Rule *rule,
@@ -315,8 +315,8 @@ public:
     );
 
     // 获取棋局状态和棋盘上下文
-    void getContext(struct Rule &rule, int &step, int &flags, int *&board,
-                    int &nPiecesInHand_1, int &p2_nPiecesInHand_2InHand, int &nPiecesNeedRemove);
+    void getContext(struct Rule &rule, step_t &step, int &flags, int *&board,
+                    int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove);
 
     // 获取当前规则
     const struct Rule *getRule() const
@@ -500,7 +500,7 @@ protected:
     int addMills(int pos);
 
     // 将棋盘下标形式转化为第c圈，第p位，c和p下标都从1开始
-    void pos2cp(const int pos, int &c, int &p);
+    void pos2cp(int pos, int &c, int &p);
 
     // 将第c圈，第p位转化为棋盘下标形式，c和p下标都从1开始
     int cp2pos(int c, int p);
@@ -537,7 +537,7 @@ protected:
 
 private:
     // 当前使用的规则
-    struct Rule currentRule;
+    struct Rule currentRule {};
 
     // 棋局上下文
     struct ChessContext context;
@@ -549,28 +549,28 @@ private:
     // uint64_t hash;
 
     // 选中的棋子在board中的位置
-    int currentPos;
+    int currentPos {};
 
     // 胜负标识
     enum Player winner;
 
     // 当前步数
-    int currentStep;
+    step_t currentStep {};
 
     // 从走子阶段开始或上次吃子起的步数
-    int moveStep;
+    int moveStep {};
 
     // 游戏起始时间
-    timeb startTimeb;
+    timeb startTimeb {};
 
     // 当前游戏时间
-    timeb currentTimeb;
+    timeb currentTimeb {};
 
     // 玩家1用时（毫秒）
-    int elapsedMS_1;
+    int elapsedMS_1 {};
 
     // 玩家2用时（毫秒）
-    int elapsedMS_2;
+    int elapsedMS_2 {};
 
     /* 当前着法，AI会用到，如下表示
     0x   00    00
@@ -592,11 +592,11 @@ private:
     | /       |     \  |
     29 ----- 28 ----- 27
      */
-    int32_t move_;
+    int32_t move_ {};
 
     // 着法命令行用于棋谱的显示和解析
     // 当前着法的命令行指令，即一招棋谱
-    char cmdline[64];
+    char cmdline[64] {};
 
     // 棋谱
     list <string> cmdlist;
