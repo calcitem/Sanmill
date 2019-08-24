@@ -38,6 +38,8 @@
 
 //#define AOTO_RESTART_GAME
 
+//#define MIN_MAX_ONLY
+
 //#define EVALUATE_ENABLE
 
 #ifdef EVALUATE_ENABLE

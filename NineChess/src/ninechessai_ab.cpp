@@ -1015,7 +1015,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
             }
 #endif
         }
-
+#ifndef MIN_MAX_ONLY
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
         // 否则剪枝返回
         if (alpha >= beta) {
@@ -1024,6 +1024,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta,
 #endif
             break;
         }
+#endif /* !MIN_MAX_ONLY */
     }
 
     node->value = minMax;
