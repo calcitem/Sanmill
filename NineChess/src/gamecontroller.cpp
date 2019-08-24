@@ -211,8 +211,8 @@ void GameController::gameReset()
 
     // 发出信号通知主窗口更新LCD显示
     QTime qtime = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
-    emit time1Changed(qtime.toString("mm:ss.zzz"));
-    emit time2Changed(qtime.toString("mm:ss.zzz"));
+    emit time1Changed(qtime.toString("hh:mm:ss"));
+    emit time2Changed(qtime.toString("hh:mm:ss"));
 
     // 发信号更新状态栏
     message = QString::fromStdString(chess_.getTips());
@@ -530,8 +530,8 @@ void GameController::timerEvent(QTimerEvent *event)
     qt1 = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
     qt2 = QTime(0, 0, 0, 0).addMSecs(remainingTime2);
 
-    emit time1Changed(qt1.toString("mm:ss.zzz"));
-    emit time2Changed(qt2.toString("mm:ss.zzz"));
+    emit time1Changed(qt1.toString("hh:mm:ss"));
+    emit time2Changed(qt2.toString("hh:mm:ss"));
 
     // 如果胜负已分
     if (chess_.whoWin() != NineChess::NOBODY) {
