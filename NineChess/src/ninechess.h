@@ -235,7 +235,7 @@ public:
         enum NineChess::Player turn;
 
         // 动作状态标识
-        enum NineChess::Action action;
+        enum NineChess::Action action {};
 
         // 玩家1剩余未放置子数
         int nPiecesInHand_1 {};

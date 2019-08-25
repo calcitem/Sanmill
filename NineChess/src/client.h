@@ -52,11 +52,11 @@ private slots:
     void sessionOpened();
     void setPort(uint16_t port)
     {
-        this->port = port;
+        this->port_ = port;
     }
     uint16_t getPort()
     {
-        return port;
+        return port_;
     }
 
 private:
@@ -71,7 +71,7 @@ private:
 
     QNetworkSession *networkSession = nullptr;
 
-    uint16_t port {};
+    uint16_t port_ {};
 };
 
 #endif // CLIENT_H

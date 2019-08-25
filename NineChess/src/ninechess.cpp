@@ -1679,7 +1679,7 @@ void NineChess::mirror(bool cmdChange /*= true*/)
             r = static_cast<int>(llp[i]) / N_SEATS;
             s = static_cast<int>(llp[i]) % N_SEATS;
             s = (N_SEATS - s) % N_SEATS;
-            llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
+            llp[i] = (static_cast<uint64_t>(r) * N_SEATS + s);
         }
 
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));

@@ -41,11 +41,11 @@ public:
     void setAction(const QString &action);
     void setPort(uint16_t port)
     {
-        this->port = port;
+        this->port_ = port;
     }
     uint16_t getPort()
     {
-        return port;
+        return port_;
     }
 
 private slots:
@@ -56,9 +56,9 @@ private:
     QLabel *statusLabel = nullptr;
     QTcpServer *tcpServer = nullptr;
     QNetworkSession *networkSession = nullptr;
-    uint16_t port;
+    uint16_t port_;
     std::queue<QString> actions;
-    QString action;
+    QString action_;
 };
 
 #endif // SERVER_H

@@ -136,6 +136,7 @@
 
 #ifdef WIN32
 #define sscanf sscanf_s
+#define sprintf sprintf_s
 #endif
 
 #endif // CONFIG_H
