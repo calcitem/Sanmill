@@ -209,7 +209,7 @@ void NineChessAi_ab::shuffleMovePriorityTable()
     array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
     array<int, 8> movePriorityTable3 = { 8, 10, 12, 14, 24, 26, 28, 30 }; // 内外圈十字架
 
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    uint32_t seed = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count());
 
     std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
     std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
