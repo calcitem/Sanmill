@@ -100,6 +100,14 @@ NineChessWindow::NineChessWindow(QWidget * parent) :
     int unith = (deskTopRect.height() - height()) / 2;
     this->move(unitw, unith);
 
+#ifdef MOBILE_APP_UI
+    // 隐藏菜单栏、工具栏、状态栏等
+    ui.menuBar->setVisible(false);
+    ui.mainToolBar->setVisible(false);
+    ui.dockWidget->setVisible(false);
+    ui.statusBar->setVisible(false);
+#endif
+
     // 游戏初始化
     initialize();
 }
