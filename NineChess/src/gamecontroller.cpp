@@ -58,6 +58,9 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
     //scene.setBackgroundBrush(QPixmap(":/image/resources/image/background.png"));
+#ifdef MOBILE_APP_UI
+    scene.setBackgroundBrush(QColor(239, 239, 239));
+#endif /* MOBILE_APP_UI */
 
     gameReset();
 

@@ -92,14 +92,26 @@ void BoardItem::paint(QPainter *painter,
     Q_UNUSED(widget)
 
     // 填充阴影
+#ifndef MOBILE_APP_UI
     painter->fillRect(boundingRect(), QBrush(QColor(64, 64, 64)));
+#endif /* ! MOBILE_APP_UI */
 
     // 填充图片
+#ifdef MOBILE_APP_UI
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(QColor(239, 239, 239));
+    painter->drawRect(-size / 2, -size / 2, size, size);
+#else
     painter->drawPixmap(-size / 2, -size / 2, size, size,
                         QPixmap(":/image/resources/image/board.png"));
+#endif /* MOBILE_APP_UI */
 
     // 黑色实线画笔
+#ifdef  MOBILE_APP_UI
+    QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+#else
     QPen pen(QBrush(Qt::black), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+#endif
     painter->setPen(pen);
 
     // 空画刷

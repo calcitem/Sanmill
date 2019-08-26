@@ -61,7 +61,11 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
     removeLineWeight = LINE_WEIGHT * 5;
 
     // 选中线为黄色
+#ifdef MOBILE_APP_UI
+    chooseLineColor = Qt::gray;
+#else
     chooseLineColor = Qt::darkYellow;
+#endif /* MOBILE_APP_UI */
 
     // 删除线为橘红色
     removeLineColor = QColor(0xff, 0x75, 0);
@@ -93,14 +97,26 @@ void PieceItem::paint(QPainter *painter,
     switch (model_) {
     case blackPiece:
         // 如果模型为黑色，则画黑色棋子
+#ifdef MOBILE_APP_UI
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QColor(0, 93, 172));
+        painter->drawEllipse(-size / 2, -size / 2, size, size);
+#else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
             QPixmap(":/image/resources/image/black_piece.png"));
+#endif /* MOBILE_APP_UI */
         break;
 
     case whitePiece:
         // 如果模型为白色，则画白色棋子
+#ifdef MOBILE_APP_UI
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QColor(231, 36, 46));
+        painter->drawEllipse(-size / 2, -size / 2, size, size);
+#else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
             QPixmap(":/image/resources/image/white_piece.png"));
+#endif /* MOBILE_APP_UI */
         break;
     default:
         break;

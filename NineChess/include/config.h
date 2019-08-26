@@ -25,6 +25,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
+//#define MOBILE_APP_UI
+
 //#define DEBUG_MODE
 //#define DEBUG_MODE_A
 
