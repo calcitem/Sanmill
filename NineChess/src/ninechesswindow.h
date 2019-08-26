@@ -28,8 +28,13 @@
 #include <QFile>
 #include <QTimer>
 
-#include "ui_ninechesswindow.h"
 #include "config.h"
+
+#ifdef MOBILE_APP_UI
+#include "ui_millwindow.h"
+#else
+#include "ui_ninechesswindow.h"
+#endif
 
 #include "server.h"
 #include "client.h"
