@@ -53,6 +53,11 @@ public:
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
+#ifdef MOBILE_APP_UI
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+#endif /* MOBILE_APP_UI */
 
 private slots:
     // 初始化
@@ -120,6 +125,12 @@ private:
 
     // 定时器
     QTimer autoRunTimer;
+
+#ifdef MOBILE_APP_UI
+    bool m_move {false};
+    QPoint m_startPoint;
+    QPoint m_windowPoint;
+#endif
 };
 
 #endif // NINECHESSWINDOW_H

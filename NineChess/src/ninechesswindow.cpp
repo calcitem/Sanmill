@@ -956,3 +956,29 @@ void NineChessWindow::on_actionAbout_A_triggered()
     dialog->disconnect();
     delete dialog;
 }
+
+#ifdef MOBILE_APP_UI
+void NineChessWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_move = true;
+        m_startPoint = event->globalPos();
+        m_windowPoint = this->frameGeometry().topLeft();
+    }
+}
+
+void NineChessWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (event->buttons() & Qt::LeftButton) {
+        QPoint relativePos = event->globalPos() - m_startPoint;
+        this->move(m_windowPoint + relativePos );
+    }
+}
+
+void NineChessWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_move = false;
+    }
+}
+#endif /* MOBILE_APP_UI */
