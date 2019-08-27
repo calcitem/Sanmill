@@ -77,8 +77,11 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 127);</string>
+        </property>
         <property name="text">
-         <string> 新局</string>
+         <string>新局</string>
         </property>
         <property name="icon">
          <iconset resource="ninechesswindow.qrc">
@@ -103,6 +106,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 127);</string>
+        </property>
         <property name="text">
          <string>认输</string>
         </property>
@@ -126,6 +132,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 127);</string>
+        </property>
         <property name="text">
          <string>悔棋</string>
         </property>
@@ -147,10 +156,15 @@
          <font>
           <family>黑体</family>
           <pointsize>12</pointsize>
+          <strikeout>false</strikeout>
+          <stylestrategy>PreferDefault</stylestrategy>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 127);</string>
+        </property>
         <property name="text">
-         <string> 提示</string>
+         <string>提示</string>
         </property>
         <property name="icon">
          <iconset resource="ninechesswindow.qrc">
