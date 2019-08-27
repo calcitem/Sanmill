@@ -39,6 +39,22 @@
         <file>resources/icon/Invert.png</file>
         <file>resources/icon/RightHS.png</file>
         <file>resources/icon/SaveHS.png</file>
+        <file>resources/icon/ic_account_child_black_48dp.png</file>
+        <file>resources/icon/ic_desktop_windows_black_48dp.png</file>
+        <file>resources/icon/ic_flag_black_48dp.png</file>
+        <file>resources/icon/ic_fullscreen_black_48dp.png</file>
+        <file>resources/icon/ic_insert_emoticon_black_48dp.png</file>
+        <file>resources/icon/ic_laptop_windows_black_48dp.png</file>
+        <file>resources/icon/ic_lens_black_48dp.png</file>
+        <file>resources/icon/ic_menu_black_48dp.png</file>
+        <file>resources/icon/ic_more_vert_black_48dp.png</file>
+        <file>resources/icon/ic_panorama_fisheye_black_48dp.png</file>
+        <file>resources/icon/ic_people_outline_black_48dp.png</file>
+        <file>resources/icon/ic_radio_button_on_black_48dp.png</file>
+        <file>resources/icon/ic_remove_circle_outline_black_48dp.png</file>
+        <file>resources/icon/ic_reply_black_48dp.png</file>
+        <file>resources/icon/ic_undo_black_48dp.png</file>
+        <file>resources/icon/ic_visibility_black_48dp.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>resources/sound/choose.wav</file>

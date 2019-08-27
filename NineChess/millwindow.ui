@@ -71,8 +71,24 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="pushButton_newGame">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>新局</string>
+         <string> 新局</string>
+        </property>
+        <property name="icon">
+         <iconset resource="ninechesswindow.qrc">
+          <normaloff>:/icon/resources/icon/ic_radio_button_on_black_48dp.png</normaloff>:/icon/resources/icon/ic_radio_button_on_black_48dp.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
         <property name="flat">
          <bool>false</bool>
@@ -81,22 +97,70 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_giveUp">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>认输</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_hint">
-        <property name="text">
-         <string>提示</string>
+        <property name="icon">
+         <iconset resource="ninechesswindow.qrc">
+          <normaloff>:/icon/resources/icon/ic_flag_black_48dp.png</normaloff>:/icon/resources/icon/ic_flag_black_48dp.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_retractMove">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>悔棋</string>
+        </property>
+        <property name="icon">
+         <iconset resource="ninechesswindow.qrc">
+          <normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_hint">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string> 提示</string>
+        </property>
+        <property name="icon">
+         <iconset resource="ninechesswindow.qrc">
+          <normaloff>:/icon/resources/icon/ic_visibility_black_48dp.png</normaloff>:/icon/resources/icon/ic_visibility_black_48dp.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
