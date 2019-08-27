@@ -305,8 +305,26 @@ void NineChessWindow::initialize()
     // 更新四个键的状态
     on_actionRowChange();
 
+    // 设置窗体大小
+#ifdef MOBILE_APP_UI
+#if 0
+    const int screen_iPhone_XS_Max[] = {1242, 2688};
+    const int screen_iPhone_XS[] = {1125, 2436};
+    const int screen_iPhone_XR[] = {828, 1792};
+    const int screen_iPhone_X[] = {1125, 2436};
+    const int screen_iPhone_8_Plus[] = {1242, 2208};
+    const int screen_iPhone_8[] = {750, 1334};
+    const int screen_iPhone_7_Plus[] = {1242, 2208};
+    const int screen_iPhone_7[] = {750, 1334};
+    const int screen_iPhone_6s_Plus[] = {1242, 2208};
+    const int screen_iPhone_6s[] = {750, 1334};
+#endif
+    const int screen_iPhone_SE[] = {640, 1136};
+    this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
+#else /* MOBILE_APP_UI */
     int h = QApplication::desktop()->height();
     this->resize(QSize(h * 3/4, h * 3/4));
+#endif /* MOBILE_APP_UI */
 
     // 窗口最大化
 #ifdef SHOW_MAXIMIZED_ON_LOAD
