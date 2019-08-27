@@ -311,6 +311,8 @@ void NineChessWindow::initialize()
     ui.pushButton_option->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(ui.pushButton_option, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ctxMenu(const QPoint &)));
 #endif /* MOBILE_APP_UI */
+
+    ui.actionEngine2_R->setChecked(true);
 }
 
 #ifdef MOBILE_APP_UI
