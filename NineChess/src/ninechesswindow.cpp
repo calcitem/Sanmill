@@ -279,6 +279,11 @@ void NineChessWindow::initialize()
     connect(ui.actionPrevious_B, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
 
+#ifdef MOBILE_APP_UI
+    connect(ui.pushButton_retractMove, &QPushButton::released,
+            this, &NineChessWindow::on_actionRowChange);
+#endif
+
     connect(ui.actionNext_F, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
 
@@ -633,7 +638,11 @@ void NineChessWindow::on_actionRowChange()
     if (obsender != nullptr) {
         if (obsender == ui.actionBegin_S) {
             ui.listView->setCurrentIndex(model->index(0, 0));
-        } else if (obsender == ui.actionPrevious_B) {
+        } else if (obsender == ui.actionPrevious_B
+#ifdef MOBILE_APP_UI
+                   || obsender == ui.pushButton_retractMove
+#endif /* MOBILE_APP_UI */
+                   ) {
             if (currentRow > 0) {
                 ui.listView->setCurrentIndex(model->index(currentRow - 1, 0));
             }

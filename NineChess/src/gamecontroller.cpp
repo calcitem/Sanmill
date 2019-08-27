@@ -602,6 +602,7 @@ bool GameController::actionPiece(QPointF pos)
 
     // 在浏览历史记录时点击棋盘，则认为是悔棋
     if (currentRow != manualListModel.rowCount() - 1) {
+#ifndef MOBILE_APP_UI
         // 定义新对话框
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Question);
@@ -614,6 +615,7 @@ bool GameController::actionPiece(QPointF pos)
         (msgBox.button(QMessageBox::Cancel))->setText(tr("取消"));
 
         if (QMessageBox::Ok == msgBox.exec()) {
+#endif /* !MOBILE_APP_UI */
             chess_ = chessTemp;
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
 
@@ -626,9 +628,12 @@ bool GameController::actionPiece(QPointF pos)
                 // 发信号更新状态栏
                 message = QString::fromStdString(chess_.getTips());
                 emit statusBarChanged(message);
+#ifndef MOBILE_APP_UI
             }
-        } else
+        } else {
             return false;
+#endif /* !MOBILE_APP_UI */
+        }
     }
 
     // 如果未开局则开局
