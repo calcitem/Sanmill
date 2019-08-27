@@ -123,7 +123,9 @@
 #define DRAW_SEAT_NUMBER
 #endif
 
+#ifndef MOBILE_APP_UI
 #define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
+#endif
 
 // #define DONOT_PLAY_WIN_SOUND
 
