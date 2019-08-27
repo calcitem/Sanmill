@@ -188,6 +188,11 @@ void NineChessWindow::initialize()
     connect(ui.actionGiveUp_G, SIGNAL(triggered()),
             game, SLOT(giveUp()));
 
+#ifdef MOBILE_APP_UI
+    connect(ui.pushButton_giveUp, SIGNAL(released()),
+            game, SLOT(giveUp()));
+#endif
+
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
             game, SLOT(setEngine1(bool)));
 
@@ -282,7 +287,10 @@ void NineChessWindow::initialize()
 #ifdef MOBILE_APP_UI
     connect(ui.pushButton_retractMove, &QPushButton::released,
             this, &NineChessWindow::on_actionRowChange);
-#endif
+
+    connect(ui.pushButton_newGame, &QPushButton::released,
+            this, &NineChessWindow::on_actionNew_N_triggered);
+#endif /* MOBILE_APP_UI */
 
     connect(ui.actionNext_F, &QAction::triggered,
             this, &NineChessWindow::on_actionRowChange);
