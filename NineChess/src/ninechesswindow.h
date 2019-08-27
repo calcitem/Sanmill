@@ -63,6 +63,11 @@ private slots:
     // 初始化
     void initialize();
 
+#ifdef MOBILE_APP_UI
+    // 上下文菜单
+    void ctxMenu(const QPoint &pos);
+#endif /* MOBILE_APP_UI */
+
     // 动态增加的菜单栏动作的槽函数
     void actionRules_triggered();
 

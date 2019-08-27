@@ -306,7 +306,21 @@ void NineChessWindow::initialize()
     QWidget::setWindowFlags(Qt::WindowMaximizeButtonHint |
                             Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
 #endif // SHOW_MAXIMIZED_ON_LOAD
+
+#ifdef MOBILE_APP_UI
+    ui.pushButton_option->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui.pushButton_option, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ctxMenu(const QPoint &)));
+#endif /* MOBILE_APP_UI */
 }
+
+#ifdef MOBILE_APP_UI
+void NineChessWindow::ctxMenu(const QPoint &pos)
+{
+    QMenu *menu = new QMenu;
+    menu->addAction(tr("Test Item"), this, SLOT(on_actionNew_N_triggered()));
+    menu->exec(ui.pushButton_option->mapToGlobal(pos));
+}
+#endif /* MOBILE_APP_UI */
 
 void NineChessWindow::ruleInfo()
 {
