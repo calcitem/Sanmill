@@ -25,6 +25,45 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <widget class="QPushButton" name="pushButton_back">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ninechesswindow.qrc">
+          <normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_option">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ninechesswindow.qrc">
+          <normaloff>:/icon/resources/icon/ic_menu_black_48dp.png</normaloff>:/icon/resources/icon/ic_menu_black_48dp.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QLabel" name="label_2">
