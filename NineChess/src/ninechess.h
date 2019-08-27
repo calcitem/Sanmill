@@ -22,7 +22,7 @@
 #ifndef NINECHESS
 #define NINECHESS
 
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 #include <string>
 #include <cstring>
 #include <list>
@@ -385,7 +385,7 @@ public:
     }
 
     // 玩家1和玩家2的用时
-    void getElapsedTimeMS(int &p1_ms, int &p2_ms);
+    void getElapsedTimeMS(time_t &p1_ms, time_t &p2_ms);
 
     // 获取棋局的字符提示
     const string getTips() const
@@ -409,13 +409,13 @@ public:
     }
 
     // 获取开局时间
-    timeb getStartTimeb() const
+    time_t getStartTimeb() const
     {
         return startTimeb;
     }
 
     // 重新设置开局时间
-    void setStartTimeb(timeb stimeb)
+    void setStartTimeb(int stimeb)
     {
         startTimeb = stimeb;
     }
@@ -561,16 +561,16 @@ private:
     int moveStep {};
 
     // 游戏起始时间
-    timeb startTimeb {};
+    time_t startTimeb {};
 
     // 当前游戏时间
-    timeb currentTimeb {};
+    time_t currentTimeb {};
 
-    // 玩家1用时（毫秒）
-    int elapsedMS_1 {};
+    // 玩家1用时（秒）
+    time_t elapsedMS_1 {};
 
-    // 玩家2用时（毫秒）
-    int elapsedMS_2 {};
+    // 玩家2用时（秒）
+    time_t elapsedMS_2 {};
 
     /* 当前着法，AI会用到，如下表示
     0x   00    00

@@ -587,7 +587,7 @@ bool NineChess::start()
     // 如果游戏处于未开始状态
     case GAME_NOTSTARTED:
         // 启动计时器
-        ftime(&startTimeb);
+        startTimeb = time(NULL);
         // 进入开局状态
         context.stage = GAME_PLACING;
         return true;
@@ -710,7 +710,7 @@ bool NineChess::place(int pos, int time_p, int8_t cp)
         if (cp) {
             player_ms = update(time_p);
             sprintf(cmdline, "(%1u,%1u) %02u:%02u.%03u",
-                    c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
+                    c, p, player_ms / 60, (player_ms % 60), 0);
             cmdlist.emplace_back(string(cmdline));
             currentStep++;
         }
@@ -792,7 +792,7 @@ bool NineChess::place(int pos, int time_p, int8_t cp)
     if (cp) {
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u.%03u", currentPos / N_SEATS, currentPos % N_SEATS + 1,
-                c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
+                c, p, player_ms / 60, (player_ms % 60), 0);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep++;
@@ -919,7 +919,7 @@ bool NineChess::capture(int pos, int time_p, int8_t cp)
 
     if (cp) {
         player_ms = update(time_p);
-        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60000, (player_ms % 60000) / 1000, player_ms % 1000);
+        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u.%03u", c, p, player_ms / 60, (player_ms % 60), 0);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep = 0;
@@ -1094,7 +1094,7 @@ bool NineChess::command(const char *cmd)
     if (args >= 4) {
         if (args == 7) {
             if (mm >= 0 && ss >= 0 && mss >= 0)
-                tm = mm * 60000 + ss * 1000 + mss;
+                tm = mm * 60 + ss * mss;
         }
 
         if (choose(c1, p1)) {
@@ -1109,7 +1109,7 @@ bool NineChess::command(const char *cmd)
     if (args >= 2) {
         if (args == 5) {
             if (mm >= 0 && ss >= 0 && mss >= 0)
-                tm = mm * 60000 + ss * 1000 + mss;
+                tm = mm * 60 + ss + mss;
         }
         return _capture(c1, p1, tm);
     }
@@ -1119,7 +1119,7 @@ bool NineChess::command(const char *cmd)
     if (args >= 2) {
         if (args == 5) {
             if (mm >= 0 && ss >= 0 && mss >= 0)
-                tm = mm * 60000 + ss * 1000 + mss;
+                tm = mm * 60 + ss + mss;
         }
         return _place(c1, p1, tm);
     }
@@ -1178,8 +1178,8 @@ bool NineChess::command(int move)
 inline int NineChess::update(int time_p /*= -1*/)
 {
     int ret = -1;
-    int *player_ms = (context.turn == PLAYER1 ? &elapsedMS_1 : &elapsedMS_2);
-    int playerNext_ms = (context.turn == PLAYER1 ? elapsedMS_2 : elapsedMS_1);
+    time_t *player_ms = (context.turn == PLAYER1 ? &elapsedMS_1 : &elapsedMS_2);
+    time_t playerNext_ms = (context.turn == PLAYER1 ? elapsedMS_2 : elapsedMS_1);
 
     // 根据局面调整计时器
 
@@ -1187,24 +1187,27 @@ inline int NineChess::update(int time_p /*= -1*/)
         return -1;
     }
 
-    ftime(&currentTimeb);
+#if 1
+    currentTimeb = time(NULL);
 
     // 更新时间
     if (time_p >= *player_ms) {
         *player_ms = ret = time_p;
-        int t = elapsedMS_1 + elapsedMS_2;
+        time_t t = elapsedMS_1 + elapsedMS_2;
 
-        startTimeb.time = currentTimeb.time - (t / 1000);
+        startTimeb = currentTimeb - t;
+#if 0
         startTimeb.millitm = currentTimeb.millitm - (t % 1000);
 
         if (t % 1000 > currentTimeb.millitm) {
             startTimeb.time--;
             startTimeb.millitm += 1000;
         }
+#endif
     } else {
-        *player_ms = ret = static_cast<int>(currentTimeb.time - startTimeb.time) * 1000
-            + (currentTimeb.millitm - startTimeb.millitm) - playerNext_ms;
+        *player_ms = ret = currentTimeb - startTimeb - playerNext_ms;
     }
+#endif
 
     // 有限时要求则判断胜负
     if (currentRule.maxTimeLedToLose > 0) {
@@ -1237,15 +1240,15 @@ bool NineChess::win(bool forceDraw)
 
         // 这里不能update更新时间，否则会形成循环嵌套
         // 如果玩家1超时
-        if (elapsedMS_1 > currentRule.maxTimeLedToLose * 60000) {
-            elapsedMS_1 = currentRule.maxTimeLedToLose * 60000;
+        if (elapsedMS_1 > currentRule.maxTimeLedToLose * 60) {
+            elapsedMS_1 = currentRule.maxTimeLedToLose * 60;
             winner = PLAYER2;
             tips = "玩家1超时判负。";
             sprintf(cmdline, "Time over. Player2 win!");
         }
         // 如果玩家2超时
-        else if (elapsedMS_2 > currentRule.maxTimeLedToLose * 60000) {
-            elapsedMS_2 = currentRule.maxTimeLedToLose * 60000;
+        else if (elapsedMS_2 > currentRule.maxTimeLedToLose * 60) {
+            elapsedMS_2 = currentRule.maxTimeLedToLose * 60;
             winner = PLAYER1;
             tips = "玩家2超时判负。";
             sprintf(cmdline, "Time over. Player1 win!");
@@ -1640,7 +1643,7 @@ enum NineChess::Player NineChess::getWhosPiece(int c, int p)
     return NOBODY;
 }
 
-void NineChess::getElapsedTimeMS(int &p1_ms, int &p2_ms)
+void NineChess::getElapsedTimeMS(time_t &p1_ms, time_t &p2_ms)
 {
     update();
 

@@ -203,7 +203,7 @@ void GameController::gameReset()
         remainingTime1 = remainingTime2 = 0;
     } else {
         // 将玩家的剩余时间置为限定时间
-        remainingTime1 = remainingTime2 = timeLimit * 60000;
+        remainingTime1 = remainingTime2 = timeLimit * 60;
     }
 
     // 更新棋谱
@@ -213,7 +213,7 @@ void GameController::gameReset()
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
-    QTime qtime = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
+    QTime qtime = QTime(0, 0, 0, 0).addSecs(remainingTime1);
     emit time1Changed(qtime.toString("hh:mm:ss"));
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
@@ -528,12 +528,12 @@ void GameController::timerEvent(QTimerEvent *event)
     // 如果规则要求计时，则time1和time2表示倒计时
     if (timeLimit > 0) {
         // 玩家的剩余时间
-        remainingTime1 = timeLimit * 60000 - remainingTime1;
-        remainingTime2 = timeLimit * 60000 - remainingTime2;
+        remainingTime1 = timeLimit * 60 - remainingTime1;
+        remainingTime2 = timeLimit * 60 - remainingTime2;
     }
 
-    qt1 = QTime(0, 0, 0, 0).addMSecs(remainingTime1);
-    qt2 = QTime(0, 0, 0, 0).addMSecs(remainingTime2);
+    qt1 = QTime(0, 0, 0, 0).addSecs(remainingTime1);
+    qt2 = QTime(0, 0, 0, 0).addSecs(remainingTime2);
 
     emit time1Changed(qt1.toString("hh:mm:ss"));
     emit time2Changed(qt2.toString("hh:mm:ss"));

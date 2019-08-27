@@ -239,11 +239,11 @@ private:
     // 规则限步数
     NineChess::step_t stepsLimit;
 
-    // 玩家1剩余时间（毫秒）
-    int remainingTime1;
+    // 玩家1剩余时间（秒）
+    time_t remainingTime1;
 
-    // 玩家2剩余时间（毫秒）
-    int remainingTime2;
+    // 玩家2剩余时间（秒）
+    time_t remainingTime2;
 
     // 用于主窗口状态栏显示的字符串
     QString message;
