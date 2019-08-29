@@ -23,7 +23,14 @@
 #ifndef GRAPHICSCONST
 #define GRAPHICSCONST
 
+#include "config.h"
+
+#ifdef MOBILE_APP_UI
 const short BOARD_SIZE = 500;     // 棋盘大小
+#else
+const short BOARD_SIZE = 600;     // 棋盘大小
+#endif /* MOBILE_APP_UI */
+
 const short BOARD_MINISIZE = 150; // 最小宽高，即1/4大小
 const short PIECE_SIZE = 56;      // 棋子大小
 const short LINE_INTERVAL = 72;   // 线间距
