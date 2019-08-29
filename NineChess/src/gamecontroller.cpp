@@ -523,7 +523,7 @@ void GameController::timerEvent(QTimerEvent *event)
     static QTime qt1, qt2;
 
     // 玩家的已用时间
-    chess_.getElapsedTimeMS(remainingTime1, remainingTime2);
+    chess_.getElapsedTime(remainingTime1, remainingTime2);
 
     // 如果规则要求计时，则time1和time2表示倒计时
     if (timeLimit > 0) {
@@ -925,7 +925,7 @@ bool GameController::stageChange(int row, bool forceUpdate)
     }
 
     // 下面这步关键，会让悔棋者承担时间损失
-    chessTemp.setStartTimeb(chess_.getStartTimeb());
+    chessTemp.setStartTime(chess_.getStartTimeb());
 
     // 刷新棋局场景
     updateScence(chessTemp);

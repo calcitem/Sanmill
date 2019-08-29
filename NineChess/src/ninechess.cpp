@@ -164,10 +164,10 @@ NineChess::NineChess(const NineChess &chess)
     board_ = context.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
-    startTimeb = chess.startTimeb;
-    currentTimeb = chess.currentTimeb;
-    elapsedMS_1 = chess.elapsedMS_1;
-    elapsedMS_2 = chess.elapsedMS_2;
+    startTime = chess.startTime;
+    currentTime = chess.currentTime;
+    elapsedSeconds_1 = chess.elapsedSeconds_1;
+    elapsedSeconds_2 = chess.elapsedSeconds_2;
     move_ = chess.move_;
     memcpy(cmdline, chess.cmdline, sizeof(cmdline));
     cmdlist = chess.cmdlist;
@@ -186,10 +186,10 @@ NineChess &NineChess::operator=(const NineChess &chess)
     board_ = context.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
-    startTimeb = chess.startTimeb;
-    currentTimeb = chess.currentTimeb;
-    elapsedMS_1 = chess.elapsedMS_1;
-    elapsedMS_2 = chess.elapsedMS_2;
+    startTime = chess.startTime;
+    currentTime = chess.currentTime;
+    elapsedSeconds_1 = chess.elapsedSeconds_1;
+    elapsedSeconds_2 = chess.elapsedSeconds_2;
     move_ = chess.move_;
     memcpy(cmdline, chess.cmdline, sizeof(cmdline));
     cmdlist = chess.cmdlist;
@@ -468,7 +468,7 @@ bool NineChess::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, in
     currentPos = 0;
 
     // 用时置零
-    elapsedMS_1 = elapsedMS_2 = 0;
+    elapsedSeconds_1 = elapsedSeconds_2 = 0;
 
     // 提示
     setTips();
@@ -505,7 +505,7 @@ void NineChess::getContext(struct Rule &rule, step_t &step, int &flags,
 
 bool NineChess::reset()
 {
-    if (context.stage == GAME_NOTSTARTED && elapsedMS_1 == elapsedMS_2 == 0)
+    if (context.stage == GAME_NOTSTARTED && elapsedSeconds_1 == elapsedSeconds_2 == 0)
         return true;
 
     // 步数归零
@@ -543,7 +543,7 @@ bool NineChess::reset()
     currentPos = 0;
 
     // 用时置零
-    elapsedMS_1 = elapsedMS_2 = 0;
+    elapsedSeconds_1 = elapsedSeconds_2 = 0;
 
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // 哈希归零
@@ -587,7 +587,7 @@ bool NineChess::start()
     // 如果游戏处于未开始状态
     case GAME_NOTSTARTED:
         // 启动计时器
-        startTimeb = time(NULL);
+        startTime = time(NULL);
         // 进入开局状态
         context.stage = GAME_PLACING;
         return true;
@@ -1178,8 +1178,8 @@ bool NineChess::command(int move)
 inline int NineChess::update(int time_p /*= -1*/)
 {
     int ret = -1;
-    time_t *player_ms = (context.turn == PLAYER1 ? &elapsedMS_1 : &elapsedMS_2);
-    time_t playerNext_ms = (context.turn == PLAYER1 ? elapsedMS_2 : elapsedMS_1);
+    time_t *player_ms = (context.turn == PLAYER1 ? &elapsedSeconds_1 : &elapsedSeconds_2);
+    time_t playerNext_ms = (context.turn == PLAYER1 ? elapsedSeconds_2 : elapsedSeconds_1);
 
     // 根据局面调整计时器
 
@@ -1187,27 +1187,15 @@ inline int NineChess::update(int time_p /*= -1*/)
         return -1;
     }
 
-#if 1
-    currentTimeb = time(NULL);
+    currentTime = time(NULL);
 
     // 更新时间
     if (time_p >= *player_ms) {
         *player_ms = ret = time_p;
-        time_t t = elapsedMS_1 + elapsedMS_2;
-
-        startTimeb = currentTimeb - t;
-#if 0
-        startTimeb.millitm = currentTimeb.millitm - (t % 1000);
-
-        if (t % 1000 > currentTimeb.millitm) {
-            startTimeb.time--;
-            startTimeb.millitm += 1000;
-        }
-#endif
+        startTime = currentTime - (elapsedSeconds_1 + elapsedSeconds_2);
     } else {
-        *player_ms = ret = currentTimeb - startTimeb - playerNext_ms;
+        *player_ms = ret = currentTime - startTime - playerNext_ms;
     }
-#endif
 
     // 有限时要求则判断胜负
     if (currentRule.maxTimeLedToLose > 0) {
@@ -1240,15 +1228,15 @@ bool NineChess::win(bool forceDraw)
 
         // 这里不能update更新时间，否则会形成循环嵌套
         // 如果玩家1超时
-        if (elapsedMS_1 > currentRule.maxTimeLedToLose * 60) {
-            elapsedMS_1 = currentRule.maxTimeLedToLose * 60;
+        if (elapsedSeconds_1 > currentRule.maxTimeLedToLose * 60) {
+            elapsedSeconds_1 = currentRule.maxTimeLedToLose * 60;
             winner = PLAYER2;
             tips = "玩家1超时判负。";
             sprintf(cmdline, "Time over. Player2 win!");
         }
         // 如果玩家2超时
-        else if (elapsedMS_2 > currentRule.maxTimeLedToLose * 60) {
-            elapsedMS_2 = currentRule.maxTimeLedToLose * 60;
+        else if (elapsedSeconds_2 > currentRule.maxTimeLedToLose * 60) {
+            elapsedSeconds_2 = currentRule.maxTimeLedToLose * 60;
             winner = PLAYER1;
             tips = "玩家2超时判负。";
             sprintf(cmdline, "Time over. Player1 win!");
@@ -1643,12 +1631,12 @@ enum NineChess::Player NineChess::getWhosPiece(int c, int p)
     return NOBODY;
 }
 
-void NineChess::getElapsedTimeMS(time_t &p1_ms, time_t &p2_ms)
+void NineChess::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
 {
     update();
 
-    p1_ms = elapsedMS_1;
-    p2_ms = elapsedMS_2;
+    p1_ms = elapsedSeconds_1;
+    p2_ms = elapsedSeconds_2;
 }
 
 void NineChess::mirror(bool cmdChange /*= true*/)
