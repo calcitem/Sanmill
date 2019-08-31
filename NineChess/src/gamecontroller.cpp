@@ -594,8 +594,8 @@ bool GameController::isAIsTurn()
 bool GameController::actionPiece(QPointF pos)
 {
     // 点击非落子点，不执行
-    int c, p;
-    if (!scene.pos2cp(pos, c, p)) {
+    int r, s;
+    if (!scene.pos2rs(pos, r, s)) {
         return false;
     }
 
@@ -651,7 +651,7 @@ bool GameController::actionPiece(QPointF pos)
 
     switch (chess_.getAction()) {
     case NineChess::ACTION_PLACE:
-        if (chess_._place(c, p)) {
+        if (chess_._place(r, s)) {
             if (chess_.getAction() == NineChess::ACTION_CAPTURE) {
                 // 播放成三音效
                 playSound(":/sound/resources/sound/capture.wav");
@@ -670,7 +670,7 @@ bool GameController::actionPiece(QPointF pos)
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (chess_.choose(c, p)) {
+        if (chess_.choose(r, s)) {
             // 播放选子音效
             playSound(":/sound/resources/sound/choose.wav");
             result = true;
@@ -681,7 +681,7 @@ bool GameController::actionPiece(QPointF pos)
         break;
 
     case NineChess::ACTION_CAPTURE:
-        if (chess_._capture(c, p)) {
+        if (chess_._capture(r, s)) {
             // 播放音效
             playSound(":/sound/resources/sound/remove.wav");
             result = true;
@@ -973,7 +973,7 @@ bool GameController::updateScence(NineChess &chess)
         // 遍历棋盘，查找并放置棋盘上的棋子
         for (j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
             if (board[j] == key) {
-                pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
+                pos = scene.rs2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
                 if (piece->pos() != pos) {
 
                     // 让移动的棋子位于顶层
@@ -1031,7 +1031,7 @@ bool GameController::updateScence(NineChess &chess)
     if (chess.getRule()->hasForbiddenPoint && chess.getStage() == NineChess::GAME_PLACING) {
         for (int j = NineChess::POS_BEGIN; j < NineChess::POS_END; j++) {
             if (board[j] == 0x0F) {
-                pos = scene.cp2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
+                pos = scene.rs2pos(j / NineChess::N_SEATS, j % NineChess::N_SEATS + 1);
                 if (nTotalPieces < pieceList.size()) {
                     pieceList.at(nTotalPieces++)->setPos(pos);
                 } else {

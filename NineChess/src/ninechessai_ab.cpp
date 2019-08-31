@@ -159,20 +159,20 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
     newNode->result = 0;
     newNode->visited = false;
 
-    int c, p;
+    int r, s;
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        chessTemp.pos2cp(-move, c, p);
-        sprintf(cmd, "-(%1u,%1u)", c, p);
+        chessTemp.pos2rs(-move, r, s);
+        sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
-        int c1, p1;
-        chessTemp.pos2cp(move >> 8, c1, p1);
-        chessTemp.pos2cp(move & 0x00ff, c, p);
-        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);
+        int r1, s1;
+        chessTemp.pos2rs(move >> 8, r1, s1);
+        chessTemp.pos2rs(move & 0x00ff, r, s);
+        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        chessTemp.pos2cp(move & 0x007f, c, p);
-        sprintf(cmd, "(%1u,%1u)", c, p);
+        chessTemp.pos2rs(move & 0x007f, r, s);
+        sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
     newNode->cmd = cmd;
@@ -1122,19 +1122,19 @@ const char* NineChessAi_ab::bestMove()
 
 const char *NineChessAi_ab::move2string(move_t move)
 {
-    int c, p;
+    int r, s;
 
     if (move < 0) {
-        chessTemp.pos2cp(-move, c, p);
-        sprintf(cmdline, "-(%1u,%1u)", c, p);
+        chessTemp.pos2rs(-move, r, s);
+        sprintf(cmdline, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
-        int c1, p1;
-        chessTemp.pos2cp(move >> 8, c1, p1);
-        chessTemp.pos2cp(move & 0x00ff, c, p);
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", c1, p1, c, p);
+        int r1, s1;
+        chessTemp.pos2rs(move >> 8, r1, s1);
+        chessTemp.pos2rs(move & 0x00ff, r, s);
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        chessTemp.pos2cp(move & 0x007f, c, p);
-        sprintf(cmdline, "(%1u,%1u)", c, p);
+        chessTemp.pos2rs(move & 0x007f, r, s);
+        sprintf(cmdline, "(%1u,%1u)", r, s);
     }
 
     return cmdline;

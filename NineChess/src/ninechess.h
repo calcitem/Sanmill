@@ -331,8 +331,8 @@ public:
         return context.board;
     }
 
-    // 获取棋子位置(c, p)
-    bool getPieceCP(const Player &player, const int &number, int &c, int &p);
+    // 获取棋子位置(r, s)
+    bool getPieceRS(const Player &player, const int &number, int &r, int &s);
 
     // 获取当前棋子
     bool getCurrentPiece(Player &player, int &number);
@@ -395,7 +395,7 @@ public:
     }
 
     // 获取位置点棋子的归属人
-    enum Player getWhosPiece(int c, int p);
+    enum Player getWhosPiece(int r, int s);
 
     // 获取当前着法
     const char *getCmdLine() const
@@ -457,14 +457,14 @@ public:
     // 游戏开始
     bool start();
 
-    // 选子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool choose(int c, int p);
+    // 选子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
+    bool choose(int r, int s);
 
-    // 落子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool _place(int c, int p, int time_p = -1);
+    // 落子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
+    bool _place(int r, int s, int time_p = -1);
 
-    // 去子，在第c圈第p个位置，为迎合日常，c和p下标都从1开始
-    bool _capture(int c, int p, int time_p = -1);
+    // 去子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
+    bool _capture(int r, int s, int time_p = -1);
 
     // 认输
     bool giveup(Player loser);
@@ -500,11 +500,11 @@ protected:
     // 三连加入列表
     int addMills(int pos);
 
-    // 将棋盘下标形式转化为第c圈，第p位，c和p下标都从1开始
-    void pos2cp(int pos, int &c, int &p);
+    // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
+    void pos2rs(int pos, int &r, int &s);
 
-    // 将第c圈，第p位转化为棋盘下标形式，c和p下标都从1开始
-    int cp2pos(int c, int p);
+    // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
+    int rs2Pos(int r, int s);
 
     // 更新时间和状态，用内联函数以提高效率
     inline int update(int time_p = -1);

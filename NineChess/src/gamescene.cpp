@@ -115,14 +115,14 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     //QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 
-QPointF GameScene::cp2pos(int c, int p)
+QPointF GameScene::rs2pos(int r, int s)
 {
-    return board->cp2pos(c, p);
+    return board->rs2pos(r, s);
 }
 
-bool GameScene::pos2cp(QPointF pos, int &c, int &p)
+bool GameScene::pos2rs(QPointF pos, int &r, int &s)
 {
-    return board->pos2cp(pos, c, p);
+    return board->pos2rs(pos, r, s);
 }
 
 void GameScene::setDiagonal(bool arg /*= true*/)

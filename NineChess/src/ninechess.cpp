@@ -212,22 +212,24 @@ void NineChess::createMoveTable()
 {
     for (int r = 1; r <= N_RINGS; r++) {
         for (int s = 0; s < N_SEATS; s++) {
+            int p = r * N_SEATS + s;
+
             // 顺时针走一步的位置
-            moveTable[r * N_SEATS + s][MOVE_DIRECTION_CLOCKWISE] = r * N_SEATS + (s + 1) % N_SEATS;
+            moveTable[p][MOVE_DIRECTION_CLOCKWISE] = r * N_SEATS + (s + 1) % N_SEATS;
 
             // 逆时针走一步的位置
-            moveTable[r * N_SEATS + s][MOVE_DIRECTION_ANTICLOCKWISE] = r * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
+            moveTable[p][MOVE_DIRECTION_ANTICLOCKWISE] = r * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
 
             // 如果是 0、2、4、6位（偶数位）或是有斜线
             if (!(s & 1) || this->currentRule.hasObliqueLines) {
                 if (r > 1) {
                     // 向内走一步的位置
-                    moveTable[r * N_SEATS + s][MOVE_DIRECTION_INWARD] = (r - 1) * N_SEATS + s;
+                    moveTable[p][MOVE_DIRECTION_INWARD] = (r - 1) * N_SEATS + s;
                 }
 
                 if (r < N_RINGS) {
                     // 向外走一步的位置
-                    moveTable[r * N_SEATS + s][MOVE_DIRECTION_OUTWARD] = (r + 1) * N_SEATS + s;
+                    moveTable[p][MOVE_DIRECTION_OUTWARD] = (r + 1) * N_SEATS + s;
                 }
             }
 #if 0
@@ -578,7 +580,7 @@ bool NineChess::start()
 }
 
 // Unused
-bool NineChess::getPieceCP(const Player &player, const int &number, int &c, int &p)
+bool NineChess::getPieceRS(const Player &player, const int &number, int &r, int &s)
 {
     int piece;
 
@@ -597,7 +599,7 @@ bool NineChess::getPieceCP(const Player &player, const int &number, int &c, int 
 
     for (int i = POS_BEGIN; i < POS_END; i++) {
         if (board_[i] == piece) {
-            pos2cp(i, c, p);
+            pos2rs(i, r, s);
             return true;
         }
     }
@@ -626,23 +628,23 @@ bool NineChess::getCurrentPiece(Player &player, int &number)
     return true;
 }
 
-void NineChess::pos2cp(const int pos, int &c, int &p)
+void NineChess::pos2rs(const int pos, int &r, int &s)
 {
-    //c = pos / N_SEATS;
-    //p = pos % N_SEATS + 1;
-    c = pos >> 3;
-    p = (pos & 0x07) + 1;
+    //r = pos / N_SEATS;
+    //s = pos % N_SEATS + 1;
+    r = pos >> 3;
+    s = (pos & 0x07) + 1;
 }
 
-int NineChess::cp2pos(int c, int p)
+int NineChess::rs2Pos(int r, int s)
 {
-    if (c < 1 || c > N_RINGS || p < 1 || p > N_SEATS)
+    if (r < 1 || r > N_RINGS || s < 1 || s > N_SEATS)
         return 0;
 
-    return c * N_SEATS + p - 1;
+    return r * N_SEATS + s - 1;
 }
 
-bool NineChess::place(int pos, int time_p, int8_t cp)
+bool NineChess::place(int pos, int time_p, int8_t rs)
 {
     // 如果局面为“结局”，返回false
     if (context.stage == GAME_OVER)
@@ -661,9 +663,9 @@ bool NineChess::place(int pos, int time_p, int8_t cp)
         return false;
 
     // 格式转换
-    int c = 0;
-    int p = 0;
-    pos2cp(pos, c, p);
+    int r = 0;
+    int s = 0;
+    pos2rs(pos, r, s);
 
     // 时间的临时变量
     int player_ms = -1;
@@ -693,10 +695,10 @@ bool NineChess::place(int pos, int time_p, int8_t cp)
 #endif
         move_ = pos;
 
-        if (cp) {
+        if (rs) {
             player_ms = update(time_p);
             sprintf(cmdline, "(%1u,%1u) %02u:%02u",
-                    c, p, player_ms / 60, player_ms % 60);
+                    r, s, player_ms / 60, player_ms % 60);
             cmdlist.emplace_back(string(cmdline));
             currentStep++;
         }
@@ -775,10 +777,10 @@ bool NineChess::place(int pos, int time_p, int8_t cp)
 
     // 移子
     move_ = (currentPos << 8) + pos;
-    if (cp) {
+    if (rs) {
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentPos / N_SEATS, currentPos % N_SEATS + 1,
-                c, p, player_ms / 60, player_ms % 60);
+                r, s, player_ms / 60, player_ms % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep++;
@@ -822,25 +824,25 @@ bool NineChess::place(int pos, int time_p, int8_t cp)
     }
 
 out:
-    if (cp) {
+    if (rs) {
         setTips();
     }
 
     return true;
 }
 
-bool NineChess::_place(int c, int p, int time_p)
+bool NineChess::_place(int r, int s, int time_p)
 {
     // 转换为 pos
-    int pos = cp2pos(c, p);
+    int pos = rs2Pos(r, s);
 
     return place(pos, time_p, true);
 }
 
-bool NineChess::_capture(int c, int p, int time_p)
+bool NineChess::_capture(int r, int s, int time_p)
 {
     // 转换为 pos
-    int pos = cp2pos(c, p);
+    int pos = rs2Pos(r, s);
 
     return capture(pos, time_p, 1);
 }
@@ -860,9 +862,9 @@ bool NineChess::capture(int pos, int time_p, int8_t cp)
         return false;
 
     // 格式转换
-    int c = 0;
-    int p = 0;
-    pos2cp(pos, c, p);
+    int r = 0;
+    int s = 0;
+    pos2rs(pos, r, s);
 
     // 时间的临时变量
     int player_ms = -1;
@@ -905,7 +907,7 @@ bool NineChess::capture(int pos, int time_p, int8_t cp)
 
     if (cp) {
         player_ms = update(time_p);
-        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", c, p, player_ms / 60, player_ms % 60);
+        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", r, s, player_ms / 60, player_ms % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep = 0;
@@ -1025,9 +1027,9 @@ bool NineChess::choose(int pos)
     return false;
 }
 
-bool NineChess::choose(int c, int p)
+bool NineChess::choose(int r, int s)
 {
-    return choose(cp2pos(c, p));
+    return choose(rs2Pos(r, s));
 }
 
 bool NineChess::giveup(Player loser)
@@ -1060,7 +1062,7 @@ bool NineChess::command(const char *cmd)
 {
     int r, t;
     step_t s;
-    int c1, p1, c2, p2;
+    int r1, s1, r2, s2;
     int args = 0;
     int mm = 0, ss = 0;
     int tm = -1;
@@ -1075,7 +1077,7 @@ bool NineChess::command(const char *cmd)
     }
 
     // 选子移动
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &c1, &p1, &c2, &p2, &mm, &ss);
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
 
     if (args >= 4) {
         if (args == 7) {
@@ -1083,31 +1085,31 @@ bool NineChess::command(const char *cmd)
                 tm = mm * 60 + ss;
         }
 
-        if (choose(c1, p1)) {
-            return _place(c2, p2, tm);
+        if (choose(r1, s1)) {
+            return _place(r2, s2, tm);
         }
 
         return false;
     }
 
     // 去子
-    args = sscanf(cmd, "-(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+    args = sscanf(cmd, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
     if (args >= 2) {
         if (args == 5) {
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _capture(c1, p1, tm);
+        return _capture(r1, s1, tm);
     }
 
     // 落子
-    args = sscanf(cmd, "(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+    args = sscanf(cmd, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
     if (args >= 2) {
         if (args == 5) {
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _place(c1, p1, tm);
+        return _place(r1, s1, tm);
     }
 
     // 认输
@@ -1604,9 +1606,9 @@ void NineChess::setTips()
     }
 }
 
-enum NineChess::Player NineChess::getWhosPiece(int c, int p)
+enum NineChess::Player NineChess::getWhosPiece(int r, int s)
 {
-    int pos = cp2pos(c, p);
+    int pos = rs2Pos(r, s);
 
     if (board_[pos] & '\x10')
         return PLAYER1;
@@ -1689,47 +1691,47 @@ void NineChess::mirror(bool cmdChange /*= true*/)
 
     // 命令行解析
     if (cmdChange) {
-        int c1, p1, c2, p2;
+        int r1, s1, r2, s2;
         int args = 0;
         int mm = 0, ss = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &c1, &p1, &c2, &p2, &mm, &ss);
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
         if (args >= 4) {
-            p1 = (N_SEATS - p1 + 1) % N_SEATS;
-            p2 = (N_SEATS - p2 + 1) % N_SEATS;
-            cmdline[3] = '1' + static_cast<char>(p1);
-            cmdline[10] = '1' + static_cast<char>(p2);
+            s1 = (N_SEATS - s1 + 1) % N_SEATS;
+            s2 = (N_SEATS - s2 + 1) % N_SEATS;
+            cmdline[3] = '1' + static_cast<char>(s1);
+            cmdline[10] = '1' + static_cast<char>(s2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
             if (args >= 2) {
-                p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                cmdline[4] = '1' + static_cast<char>(p1);
+                s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                cmdline[4] = '1' + static_cast<char>(s1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
-                    p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                    cmdline[3] = '1' + static_cast<char>(p1);
+                    s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                    cmdline[3] = '1' + static_cast<char>(s1);
                 }
             }
         }
 
         for (auto & iter : cmdlist) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &c1, &p1, &c2, &p2, &mm, &ss);
+            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
             if (args >= 4) {
-                p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                p2 = (N_SEATS - p2 + 1) % N_SEATS;
-                iter[3] = '1' + static_cast<char>(p1);
-                iter[10] = '1' + static_cast<char>(p2);
+                s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                s2 = (N_SEATS - s2 + 1) % N_SEATS;
+                iter[3] = '1' + static_cast<char>(s1);
+                iter[10] = '1' + static_cast<char>(s2);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
-                    p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                    iter[4] = '1' + static_cast<char>(p1);
+                    s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                    iter[4] = '1' + static_cast<char>(s1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                     if (args >= 2) {
-                        p1 = (N_SEATS - p1 + 1) % N_SEATS;
-                        iter[3] = '1' + static_cast<char>(p1);
+                        s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                        iter[3] = '1' + static_cast<char>(s1);
                     }
                 }
             }
@@ -1819,42 +1821,42 @@ void NineChess::turn(bool cmdChange /*= true*/)
 
     // 命令行解析
     if (cmdChange) {
-        int c1, p1, c2, p2;
+        int r1, s1, r2, s2;
         int args = 0;
         int mm = 0, ss = 0;
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u",
-                        &c1, &p1, &c2, &p2, &mm, &ss);
+                        &r1, &s1, &r2, &s2, &mm, &ss);
 
         if (args >= 4) {
-            if (c1 == 1)
-                c1 = N_RINGS;
-            else if (c1 == N_RINGS)
-                c1 = 1;
+            if (r1 == 1)
+                r1 = N_RINGS;
+            else if (r1 == N_RINGS)
+                r1 = 1;
 
-            if (c2 == 1)
-                c2 = N_RINGS;
-            else if (c2 == N_RINGS)
-                c2 = 1;
+            if (r2 == 1)
+                r2 = N_RINGS;
+            else if (r2 == N_RINGS)
+                r2 = 1;
 
-            cmdline[1] = '0' + static_cast<char>(c1);
-            cmdline[8] = '0' + static_cast<char>(c2);
+            cmdline[1] = '0' + static_cast<char>(r1);
+            cmdline[8] = '0' + static_cast<char>(r2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
             if (args >= 2) {
-                if (c1 == 1)
-                    c1 = N_RINGS;
-                else if (c1 == N_RINGS)
-                    c1 = 1;
-                cmdline[2] = '0' + static_cast<char>(c1);
+                if (r1 == 1)
+                    r1 = N_RINGS;
+                else if (r1 == N_RINGS)
+                    r1 = 1;
+                cmdline[2] = '0' + static_cast<char>(r1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
-                    if (c1 == 1)
-                        c1 = N_RINGS;
-                    else if (c1 == N_RINGS)
-                        c1 = 1;
-                    cmdline[1] = '0' + static_cast<char>(c1);
+                    if (r1 == 1)
+                        r1 = N_RINGS;
+                    else if (r1 == N_RINGS)
+                        r1 = 1;
+                    cmdline[1] = '0' + static_cast<char>(r1);
                 }
             }
         }
@@ -1862,39 +1864,39 @@ void NineChess::turn(bool cmdChange /*= true*/)
         for (auto & iter : cmdlist) {
             args = sscanf(iter.c_str(),
                             "(%1u,%1u)->(%1u,%1u) %2u:%2u",
-                            &c1, &p1, &c2, &p2, &mm, &ss);
+                            &r1, &s1, &r2, &s2, &mm, &ss);
 
             if (args >= 4) {
-                if (c1 == 1)
-                    c1 = N_RINGS;
-                else if (c1 == N_RINGS)
-                    c1 = 1;
+                if (r1 == 1)
+                    r1 = N_RINGS;
+                else if (r1 == N_RINGS)
+                    r1 = 1;
 
-                if (c2 == 1)
-                    c2 = N_RINGS;
-                else if (c2 == N_RINGS)
-                    c2 = 1;
+                if (r2 == 1)
+                    r2 = N_RINGS;
+                else if (r2 == N_RINGS)
+                    r2 = 1;
 
-                iter[1] = '0' + static_cast<char>(c1);
-                iter[8] = '0' + static_cast<char>(c2);
+                iter[1] = '0' + static_cast<char>(r1);
+                iter[8] = '0' + static_cast<char>(r2);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
-                    if (c1 == 1)
-                        c1 = N_RINGS;
-                    else if (c1 == N_RINGS)
-                        c1 = 1;
+                    if (r1 == 1)
+                        r1 = N_RINGS;
+                    else if (r1 == N_RINGS)
+                        r1 = 1;
 
-                    iter[2] = '0' + static_cast<char>(c1);
+                    iter[2] = '0' + static_cast<char>(r1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                     if (args >= 2) {
-                        if (c1 == 1)
-                            c1 = N_RINGS;
-                        else if (c1 == N_RINGS)
-                            c1 = 1;
+                        if (r1 == 1)
+                            r1 = N_RINGS;
+                        else if (r1 == N_RINGS)
+                            r1 = 1;
 
-                        iter[1] = '0' + static_cast<char>(c1);
+                        iter[1] = '0' + static_cast<char>(r1);
                     }
                 }
             }
@@ -2010,51 +2012,51 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
 
     // 命令行解析
     if (cmdChange) {
-        int c1, p1, c2, p2;
+        int r1, s1, r2, s2;
         int args = 0;
         int mm = 0, ss = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &c1, &p1, &c2, &p2, &mm, &ss);
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
         if (args >= 4) {
-            p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-            p2 = (p2 - 1 + N_SEATS - degrees) % N_SEATS;
-            cmdline[3] = '1' + static_cast<char>(p1);
-            cmdline[10] = '1' + static_cast<char>(p2);
+            s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+            s2 = (s2 - 1 + N_SEATS - degrees) % N_SEATS;
+            cmdline[3] = '1' + static_cast<char>(s1);
+            cmdline[10] = '1' + static_cast<char>(s2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
 
             if (args >= 2) {
-                p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                cmdline[4] = '1' + static_cast<char>(p1);
+                s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                cmdline[4] = '1' + static_cast<char>(s1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
 
                 if (args >= 2) {
-                    p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                    cmdline[3] = '1' + static_cast<char>(p1);
+                    s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                    cmdline[3] = '1' + static_cast<char>(s1);
                 }
             }
         }
 
         for (auto &iter : cmdlist) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &c1, &p1, &c2, &p2, &mm, &ss);
+            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
 
             if (args >= 4) {
-                p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                p2 = (p2 - 1 + N_SEATS - degrees) % N_SEATS;
-                iter[3] = '1' + static_cast<char>(p1);
-                iter[10] = '1' + static_cast<char>(p2);
+                s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                s2 = (s2 - 1 + N_SEATS - degrees) % N_SEATS;
+                iter[3] = '1' + static_cast<char>(s1);
+                iter[10] = '1' + static_cast<char>(s2);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
 
                 if (args >= 2) {
-                    p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                    iter[4] = '1' + static_cast<char>(p1);
+                    s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                    iter[4] = '1' + static_cast<char>(s1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &c1, &p1, &mm, &ss);
+                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                     if (args >= 2) {
-                        p1 = (p1 - 1 + N_SEATS - degrees) % N_SEATS;
-                        iter[3] = '1' + static_cast<char>(p1);
+                        s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                        iter[3] = '1' + static_cast<char>(s1);
                     }
                 }
             }
