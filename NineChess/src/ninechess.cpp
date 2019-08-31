@@ -116,7 +116,7 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
 };
 
 // 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
-const int NineChess::onBoard[(N_RINGS + 2) * N_SEATS] = {
+const int NineChess::onBoard[N_POINTS] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -136,9 +136,6 @@ NineChess::NineChess()
     board_ = context.board;
 
  #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-    //hash_ = &context.hash;
-    //zobrist_ = &context.zobrist;
-
     // 创建哈希数据
     constructHash();
 #endif
@@ -156,25 +153,11 @@ NineChess::NineChess()
 }
 
 NineChess::NineChess(const NineChess &chess)
-{
-    currentRule = chess.currentRule;
-    context = chess.context;
-    currentStep = chess.currentStep;
-    moveStep = chess.moveStep;
-    board_ = context.board;
-    currentPos = chess.currentPos;
-    winner = chess.winner;
-    startTime = chess.startTime;
-    currentTime = chess.currentTime;
-    elapsedSeconds_1 = chess.elapsedSeconds_1;
-    elapsedSeconds_2 = chess.elapsedSeconds_2;
-    move_ = chess.move_;
-    memcpy(cmdline, chess.cmdline, sizeof(cmdline));
-    cmdlist = chess.cmdlist;
-    tips = chess.tips;
+{  
+    *this = chess;
 }
 
-NineChess &NineChess::operator=(const NineChess &chess)
+NineChess &NineChess::operator = (const NineChess &chess)
 {
     if (this == &chess)
         return *this;

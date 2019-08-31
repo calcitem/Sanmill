@@ -272,15 +272,15 @@ public:
 
 private:
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const int onBoard[(N_RINGS + 2) * N_SEATS];
+    static const int onBoard[N_POINTS];
 
     // 着法表，每个位置有最多4种走法：顺时针、逆时针、向内、向外
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int moveTable[(N_RINGS + 2) * N_SEATS][N_MOVE_DIRECTIONS];
+    static int moveTable[N_POINTS][N_MOVE_DIRECTIONS];
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int millTable[(N_RINGS + 2) * N_SEATS][3][2];
+    static int millTable[N_POINTS][N_DIRECTIONS][N_RINGS - 1];
 
     // 生成着法表
     void createMoveTable();
