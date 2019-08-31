@@ -45,8 +45,8 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     currentRow(-1),
     isEditing(false),
     isInverted(false),
-    isEngine1(false),
-    isEngine2(false),
+    isAiPlayer1(false),
+    isAiPlayer2(false),
     hasAnimation(true),
     durationTime(500),
     hasSound(true),
@@ -146,8 +146,8 @@ void GameController::gameReset()
     // 停掉线程
     ai1.stop();
     ai2.stop();
-    isEngine1 = false;
-    isEngine2 = false;
+    isAiPlayer1 = false;
+    isAiPlayer2 = false;
 
     // 清除棋子
     qDeleteAll(pieceList);
@@ -278,7 +278,7 @@ void GameController::setRule(int ruleNo, NineChess::step_t stepLimited /*= -1*/,
 
 void GameController::setEngine1(bool arg)
 {
-    isEngine1 = arg;
+    isAiPlayer1 = arg;
     if (arg) {
         ai1.setAi(chess_);
         if (ai1.isRunning())
@@ -292,7 +292,7 @@ void GameController::setEngine1(bool arg)
 
 void GameController::setEngine2(bool arg)
 {
-    isEngine2 = arg;
+    isAiPlayer2 = arg;
     if (arg) {
         ai2.setAi(chess_);
         if (ai2.isRunning())
@@ -306,11 +306,11 @@ void GameController::setEngine2(bool arg)
 
 void GameController::setAiDepthTime(NineChessAi_ab::depth_t depth1, int time1, NineChessAi_ab::depth_t depth2, int time2)
 {
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.stop();
         ai2.wait();
     }
@@ -318,10 +318,10 @@ void GameController::setAiDepthTime(NineChessAi_ab::depth_t depth1, int time1, N
     ai1.setAi(chess_, depth1, time1);
     ai2.setAi(chess_, depth2, time2);
 
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.start();
     }
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.start();
     }
 }
@@ -364,11 +364,11 @@ void GameController::playSound(const QString &soundPath)
 // 上下翻转
 void GameController::flip()
 {
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.stop();
         ai2.wait();
     }
@@ -392,11 +392,11 @@ void GameController::flip()
     ai1.setAi(chess_);
     ai2.setAi(chess_);
 
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.start();
     }
 
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.start();
     }
 }
@@ -404,11 +404,11 @@ void GameController::flip()
 // 左右镜像
 void GameController::mirror()
 {
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.stop();
         ai2.wait();
     }
@@ -434,11 +434,11 @@ void GameController::mirror()
     ai1.setAi(chess_);
     ai2.setAi(chess_);
 
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.start();
     }
 
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.start();
     }
 }
@@ -446,11 +446,11 @@ void GameController::mirror()
 // 视图须时针旋转90°
 void GameController::turnRight()
 {
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.stop();
         ai2.wait();
     }
@@ -474,11 +474,11 @@ void GameController::turnRight()
     ai1.setAi(chess_);
     ai2.setAi(chess_);
 
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.start();
     }
 
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.start();
     }
 }
@@ -486,11 +486,11 @@ void GameController::turnRight()
 // 视图逆时针旋转90°
 void GameController::turnLeft()
 {
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.stop();
         ai2.wait();
     }
@@ -509,10 +509,10 @@ void GameController::turnLeft()
 
     ai1.setAi(chess_);
     ai2.setAi(chess_);
-    if (isEngine1) {
+    if (isAiPlayer1) {
         ai1.start();
     }
-    if (isEngine2) {
+    if (isAiPlayer2) {
         ai2.start();
     }
 }
@@ -584,6 +584,12 @@ void GameController::timerEvent(QTimerEvent *event)
 #endif
 }
 
+bool GameController::isAIsTurn()
+{
+    return ((chess_.whosTurn() == NineChess::PLAYER1 && isAiPlayer1) ||
+            (chess_.whosTurn() == NineChess::PLAYER2 && isAiPlayer2));
+}
+
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
 bool GameController::actionPiece(QPointF pos)
 {
@@ -594,11 +600,9 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     // 电脑走棋时，点击无效
-    if (chess_.whosTurn() == NineChess::PLAYER1 && isEngine1)
+    if (isAIsTurn()) {
         return false;
-
-    if (chess_.whosTurn() == NineChess::PLAYER2 && isEngine2)
-        return false;
+    }
 
     // 在浏览历史记录时点击棋盘，则认为是悔棋
     if (currentRow != manualListModel.rowCount() - 1) {
@@ -722,15 +726,15 @@ bool GameController::actionPiece(QPointF pos)
             // 如果还未决出胜负
             if (chess_.whoWin() == NineChess::NOBODY) {
                 if (chess_.whosTurn() == NineChess::PLAYER1) {
-                    if (isEngine1) {
+                    if (isAiPlayer1) {
                         ai1.resume();
                     }
-                    if (isEngine2)
+                    if (isAiPlayer2)
                         ai2.pause();
                 } else {
-                    if (isEngine1)
+                    if (isAiPlayer1)
                         ai1.pause();
-                    if (isEngine2) {
+                    if (isAiPlayer2) {
                         ai2.resume();
                     }
                 }
@@ -790,10 +794,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     Q_UNUSED(hasSound)
 
     // 防止接收滞后结束的线程发送的指令
-    if (sender() == &ai1 && !isEngine1)
+    if (sender() == &ai1 && !isAiPlayer1)
         return false;
 
-    if (sender() == &ai2 && !isEngine2)
+    if (sender() == &ai2 && !isAiPlayer2)
         return false;
 
     // 声音
@@ -867,15 +871,15 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         // 如果还未决出胜负
         if (chess_.whoWin() == NineChess::NOBODY) {
             if (chess_.whosTurn() == NineChess::PLAYER1) {
-                if (isEngine1) {
+                if (isAiPlayer1) {
                     ai1.resume();
                 }
-                if (isEngine2)
+                if (isAiPlayer2)
                     ai2.pause();
             } else {
-                if (isEngine1)
+                if (isAiPlayer1)
                     ai1.pause();
-                if (isEngine2) {
+                if (isAiPlayer2) {
                     ai2.resume();
                 }
             }
@@ -894,11 +898,11 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 网络: 将着法放到服务器的发送列表中
-    if (isEngine1)
+    if (isAiPlayer1)
     {
         ai1.getServer()->setAction(cmd);
         qDebug() << "isEngine1: AI(1) set Action: " << cmd;
-    } else if (isEngine2) {
+    } else if (isAiPlayer2) {
         ai1.getServer()->setAction(cmd);    // 注意: 同样是AI1
         qDebug() << "isEngine2: AI(1) set Action: " << cmd;
     }

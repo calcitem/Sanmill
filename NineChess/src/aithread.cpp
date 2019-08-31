@@ -108,12 +108,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        if (chess_->whosTurn() == NineChess::PLAYER1)
-            i = 1;
-        else if (chess_->whosTurn() == NineChess::PLAYER2)
-            i = 2;
-        else
-            i = 0;
+        i = NineChess::playerToId(chess_->whosTurn());
 
         if (i != id || waiting_) {
             pauseCondition.wait(&mutex);

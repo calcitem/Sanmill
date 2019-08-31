@@ -157,6 +157,8 @@ public slots:
     // 视图逆时针旋转90°
     void turnLeft();
 
+    bool isAIsTurn();
+
     // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
 
@@ -213,10 +215,10 @@ private:
     bool isInverted;
 
     // 是否电脑执先手
-    bool isEngine1;
+    bool isAiPlayer1;
 
     // 是否电脑执后手
-    bool isEngine2;
+    bool isAiPlayer2;
 
     // 是否有落子动画
     bool hasAnimation;

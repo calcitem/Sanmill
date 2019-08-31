@@ -152,6 +152,8 @@ NineChess::NineChess()
     score_1 = score_2 = score_draw = 0;
 }
 
+NineChess::~NineChess() = default;
+
 NineChess::NineChess(const NineChess &chess)
 {  
     *this = chess;
@@ -177,11 +179,19 @@ NineChess &NineChess::operator = (const NineChess &chess)
     memcpy(cmdline, chess.cmdline, sizeof(cmdline));
     cmdlist = chess.cmdlist;
     tips = chess.tips;
+
     return *this;
 }
 
+int NineChess::playerToId(enum Player player)
+{
+    if (player == NineChess::PLAYER1)
+        return 1;
+    else if (player == NineChess::PLAYER2)
+        return 2;
 
-NineChess::~NineChess() = default;
+    return 0;
+}
 
 NineChess::Player NineChess::getOpponent(NineChess::Player player)
 {
@@ -323,120 +333,105 @@ bool NineChess::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, in
     this->currentRule.maxTimeLedToLose = maxTimeLedToLose;
 
     // 设置棋局数据
-    {
-        // 设置步数
-        this->currentStep = initialStep;
-        this->moveStep = initialStep;
 
-        // 局面阶段标识
-        if (flags & GAME_NOTSTARTED) {
-            context.stage = GAME_NOTSTARTED;
-        }
-        else if (flags & GAME_PLACING) {
-            context.stage = GAME_PLACING;
-        }
-        else if (flags & GAME_MOVING) {
-            context.stage = GAME_MOVING;
-            //context.hash ^=  // TODO
-        }
-        else if (flags & GAME_OVER) {
-            context.stage = GAME_OVER;
-        }
-        else {
-            return false;
-        }
+    // 设置步数
+    this->currentStep = initialStep;
+    this->moveStep = initialStep;
 
-        // 轮流状态标识
-        if (flags & PLAYER1) {
-//             if (context.turn == PLAYER2) {
-//                 context.hash ^= player2sTurnHash;
-//             }
-            context.turn = PLAYER1;
-        }
-        else if (flags & PLAYER2) {
-//             if (context.turn == PLAYER1) {
-//                 context.hash ^= player2sTurnHash;
-//             }
-            context.turn = PLAYER2;
-        }
-        else {
-            return false;
-        }
+    // 局面阶段标识
+    if (flags & GAME_NOTSTARTED) {
+        context.stage = GAME_NOTSTARTED;
+    } else if (flags & GAME_PLACING) {
+        context.stage = GAME_PLACING;
+    } else if (flags & GAME_MOVING) {
+        context.stage = GAME_MOVING;
+    } else if (flags & GAME_OVER) {
+        context.stage = GAME_OVER;
+    } else {
+        return false;
+    }
 
-        // 动作状态标识
-        if (flags & ACTION_CHOOSE)
-            context.action = ACTION_CHOOSE;
-        else if (flags & ACTION_PLACE)
-            context.action = ACTION_PLACE;
-        else if (flags & ACTION_CAPTURE)
-            context.action = ACTION_CAPTURE;
-        else
-            return false;
+    // 轮流状态标识
+    if (flags & PLAYER1) {
+        context.turn = PLAYER1;
+    } else if (flags & PLAYER2) {
+        context.turn = PLAYER2;
+    } else {
+        return false;
+    }
 
-        // 当前棋局（3×8）
-        if (board == nullptr) {
-            memset(context.board, 0, sizeof(context.board));
+    // 动作状态标识
+    if (flags & ACTION_CHOOSE) {
+        context.action = ACTION_CHOOSE;
+    } else if (flags & ACTION_PLACE) {
+        context.action = ACTION_PLACE;
+    } else if (flags & ACTION_CAPTURE) {
+        context.action = ACTION_CAPTURE;
+    } else {
+        return false;
+    }
+
+    // 当前棋局（3×8）
+    if (board == nullptr) {
+        memset(context.board, 0, sizeof(context.board));
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-            context.hash = 0;
+        context.hash = 0;
 #endif
-        } else {
-            memcpy(context.board, board, sizeof(context.board));
-        }
+    } else {
+        memcpy(context.board, board, sizeof(context.board));
+    }
 
-        // 计算盘面子数
-        // 棋局，抽象为一个（5×8）的数组，上下两行留空
-        /*
-            0x00 代表无棋子
-            0x0F 代表禁点
-            0x11～0x1C 代表先手第 1～12 子
-            0x21～0x2C 代表后手第 1～12 子
-            判断棋子是先手的用 (board[i] & 0x10)
-            判断棋子是后手的用 (board[i] & 0x20)
-         */
-        context.nPiecesOnBoard_1 = context.nPiecesOnBoard_2 = 0;
-        for (int r = 1; r < N_RINGS + 2; r++) {
-            for (int s = 0; s < N_SEATS; s++) {
-                int pos = r * N_SEATS + s;
-                if (context.board[pos] & '\x10') {
-                    context.nPiecesOnBoard_1++;
-                }
-                else if (context.board[pos] & '\x20') {
-                    context.nPiecesOnBoard_2++;
-                }
-                else if (context.board[pos] & '\x0F') {
-                    // 不计算盘面子数
-                }
+    // 计算盘面子数
+    // 棋局，抽象为一个（5×8）的数组，上下两行留空
+    /*
+        0x00 代表无棋子
+        0x0F 代表禁点
+        0x11～0x1C 代表先手第 1～12 子
+        0x21～0x2C 代表后手第 1～12 子
+        判断棋子是先手的用 (board[i] & 0x10)
+        判断棋子是后手的用 (board[i] & 0x20)
+     */
+    context.nPiecesOnBoard_1 = context.nPiecesOnBoard_2 = 0;
 
-                //updateHash(pos);
+    for (int r = 1; r < N_RINGS + 2; r++) {
+        for (int s = 0; s < N_SEATS; s++) {
+            int pos = r * N_SEATS + s;
+            if (context.board[pos] & 0x10) {
+                context.nPiecesOnBoard_1++;
+            } else if (context.board[pos] & 0x20) {
+                context.nPiecesOnBoard_2++;
+            } else if (context.board[pos] & 0x0F) {
+                // 不计算盘面子数
             }
         }
-
-        // 设置玩家盘面剩余子数和未放置子数
-        if (context.nPiecesOnBoard_1 > rule->nTotalPiecesEachSide ||
-            context.nPiecesOnBoard_2 > rule->nTotalPiecesEachSide) {
-            return false;
-        }
-
-        if (nPiecesInHand_1 < 0 || nPiecesInHand_2 < 0) {
-            return false;
-        }
-
-        context.nPiecesInHand_1 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_1;
-        context.nPiecesInHand_2 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_2;
-        context.nPiecesInHand_1 = std::min(nPiecesInHand_1, context.nPiecesInHand_1);
-        context.nPiecesInHand_2 = std::min(nPiecesInHand_2, context.nPiecesInHand_2);
-
-        // 设置去子状态时的剩余尚待去除子数
-        if (flags & ACTION_CAPTURE) {
-            if (0 <= nPiecesNeedRemove && nPiecesNeedRemove < 3)
-                context.nPiecesNeedRemove = nPiecesNeedRemove;
-        } else {
-            context.nPiecesNeedRemove = 0;
-        }
-
-        // 清空成三记录
-        context.millList.clear();
     }
+
+    // 设置玩家盘面剩余子数和未放置子数
+    if (context.nPiecesOnBoard_1 > rule->nTotalPiecesEachSide ||
+        context.nPiecesOnBoard_2 > rule->nTotalPiecesEachSide) {
+        return false;
+    }
+
+    if (nPiecesInHand_1 < 0 || nPiecesInHand_2 < 0) {
+        return false;
+    }
+
+    context.nPiecesInHand_1 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_1;
+    context.nPiecesInHand_2 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_2;
+    context.nPiecesInHand_1 = std::min(nPiecesInHand_1, context.nPiecesInHand_1);
+    context.nPiecesInHand_2 = std::min(nPiecesInHand_2, context.nPiecesInHand_2);
+
+    // 设置去子状态时的剩余尚待去除子数
+    if (flags & ACTION_CAPTURE) {
+        if (0 <= nPiecesNeedRemove && nPiecesNeedRemove < 3) {
+            context.nPiecesNeedRemove = nPiecesNeedRemove;
+        }
+    } else {
+        context.nPiecesNeedRemove = 0;
+    }
+
+    // 清空成三记录
+    context.millList.clear();
 
     // 胜负标识
     winner = NOBODY;
@@ -480,7 +475,7 @@ void NineChess::getContext(struct Rule &rule, step_t &step, int &flags,
     rule = this->currentRule;
     step = this->currentStep;
     flags = context.stage | context.turn | context.action;
-    this->board_ = board;
+    board_ = board;
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
     nPiecesNeedRemove = context.nPiecesNeedRemove;
@@ -488,8 +483,10 @@ void NineChess::getContext(struct Rule &rule, step_t &step, int &flags,
 
 bool NineChess::reset()
 {
-    if (context.stage == GAME_NOTSTARTED && elapsedSeconds_1 == elapsedSeconds_2 == 0)
+    if (context.stage == GAME_NOTSTARTED &&
+        elapsedSeconds_1 == elapsedSeconds_2 == 0) {
         return true;
+    }
 
     // 步数归零
     currentStep = 0;
@@ -546,7 +543,8 @@ bool NineChess::reset()
             break;
     }
 
-    if (sprintf(cmdline, "r%1u s%03u t%02u", i + 1, currentRule.maxStepsLedToDraw, currentRule.maxTimeLedToLose) > 0) {
+    if (sprintf(cmdline, "r%1u s%03u t%02u",
+                i + 1, currentRule.maxStepsLedToDraw, currentRule.maxTimeLedToLose) > 0) {
         cmdlist.emplace_back(string(cmdline));
         return true;
     }
@@ -579,16 +577,18 @@ bool NineChess::start()
     }
 }
 
+// Unused
 bool NineChess::getPieceCP(const Player &player, const int &number, int &c, int &p)
 {
     int piece;
 
-    if (player == PLAYER1)
+    if (player == PLAYER1) {
         piece = 0x10;
-    else if (player == PLAYER2)
+    } else if (player == PLAYER2) {
         piece = 0x20;
-    else
+    } else {
         return false;
+    }
 
     if (number > 0 && number <= currentRule.nTotalPiecesEachSide)
         piece &= number;
@@ -611,14 +611,17 @@ bool NineChess::getCurrentPiece(Player &player, int &number)
     if (!onBoard[currentPos])
         return false;
 
-    if (board_[currentPos] & 0x10) {
+    int p = board_[currentPos];
+
+    if (p & 0x10) {
         player = PLAYER1;
-        number = board_[currentPos] - 0x10;
-    } else if (board_[currentPos] & 0x20) {
+        number = p - 0x10;
+    } else if (p & 0x20) {
         player = PLAYER2;
-        number = board_[currentPos] - 0x20;
-    } else
+        number = p - 0x20;
+    } else {
         return false;
+    }
 
     return true;
 }
@@ -1427,12 +1430,12 @@ bool NineChess::isAllInMills(char ch)
 
 bool NineChess::isAllInMills(enum Player player)
 {
-    char ch = '\x00';
+    char ch = 0x00;
 
     if (player == PLAYER1)
-        ch = '\x10';
+        ch = 0x10;
     else if (player == PLAYER2)
-        ch = '\x20';
+        ch = 0x20;
     else
         return true;
 

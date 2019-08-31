@@ -166,13 +166,15 @@ public:
     }
 
     // 玩家标识, 轮流状态, 胜负标识
-    enum Player : uint16_t
+    enum Player : uint8_t
     {
-        PLAYER1 = 0x0010,   // 玩家1
-        PLAYER2 = 0x0020,   // 玩家2
-        DRAW = 0x0040,      // 双方和棋
-        NOBODY = 0x0080     // 胜负未分
+        PLAYER1 = 0x10,   // 玩家1
+        PLAYER2 = 0x20,   // 玩家2
+        DRAW = 0x40,      // 双方和棋
+        NOBODY = 0x80     // 胜负未分
     };
+
+    static int playerToId(enum Player player);
 
     static Player getOpponent(enum Player player);
 
