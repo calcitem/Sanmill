@@ -1113,6 +1113,10 @@ const char* NineChessAi_ab::bestMove()
 #endif
     //qDebug() << "sizeof(Node) = " << sizeof(Node);
 
+    if (bestMoves.empty()) {
+        return nullptr;
+    }
+
     return move2string(bestMoves[0]->move);
 }
 
