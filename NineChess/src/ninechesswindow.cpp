@@ -983,13 +983,6 @@ void NineChessWindow::on_actionAbout_A_triggered()
     version_text->setText(tr("Version: ") + versionNumber);
     version_text->setAlignment(Qt::AlignLeft);
 
-    donate_text->setText("Donate");
-    donate_text->setAlignment(Qt::AlignCenter);
-
-    label_image->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/donate.png")));
-    label_image->setAlignment(Qt::AlignCenter);
-    label_image->setScaledContents(true);
-
     // 布局
     vLayout->addLayout(hLayout);
     //hLayout->addWidget(label_icon1);

@@ -2,7 +2,6 @@
     <qresource prefix="/image">
         <file>resources/image/black_piece.png</file>
         <file>resources/image/board.png</file>
-        <file>resources/image/donate.png</file>
         <file>resources/image/white_piece.png</file>
         <file>resources/image/background.png</file>
     </qresource>
