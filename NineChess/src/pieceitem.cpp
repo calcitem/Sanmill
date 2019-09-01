@@ -67,8 +67,9 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
     chooseLineColor = Qt::darkYellow;
 #endif /* MOBILE_APP_UI */
 
-    // 删除线为橘红色
-    removeLineColor = QColor(0xff, 0x75, 0);
+    // 删除线颜色
+    removeLineColor = QColor(227, 23, 13);
+    removeLineColor.setAlphaF(0.9);
 }
 
 PieceItem::~PieceItem() = default;

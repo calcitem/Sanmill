@@ -93,7 +93,9 @@ void BoardItem::paint(QPainter *painter,
 
     // 填充阴影
 #ifndef MOBILE_APP_UI
-    painter->fillRect(boundingRect(), QBrush(QColor(64, 64, 64)));
+    QColor shadowColor(128, 42, 42);
+    shadowColor.setAlphaF(0.3);
+    painter->fillRect(boundingRect(), QBrush(shadowColor));
 #endif /* ! MOBILE_APP_UI */
 
     // 填充图片
@@ -106,11 +108,11 @@ void BoardItem::paint(QPainter *painter,
                         QPixmap(":/image/resources/image/board.png"));
 #endif /* MOBILE_APP_UI */
 
-    // 黑色实线画笔
+    // 实线画笔
 #ifdef  MOBILE_APP_UI
     QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
 #else
-    QPen pen(QBrush(Qt::black), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
 #endif
     painter->setPen(pen);
 
