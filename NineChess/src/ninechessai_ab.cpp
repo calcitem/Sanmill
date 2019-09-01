@@ -511,49 +511,49 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 #ifdef EVALUATE_ENABLE
 
 #ifdef EVALUATE_MATERIAL
-int NineChessAi_ab::evaluateMaterial(Node *node)
+NineChessAi_ab::value_t NineChessAi_ab::evaluateMaterial(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_SPACE
-int NineChessAi_ab::evaluateSpace(Node *node)
+NineChessAi_ab::value_t NineChessAi_ab::evaluateSpace(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_MOBILITY
-int NineChessAi_ab::evaluateMobility(Node *node)
+NineChessAi_ab::value_t NineChessAi_ab::evaluateMobility(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_TEMPO
-int NineChessAi_ab::evaluateTempo(Node *node)
+NineChessAi_ab::value_t NineChessAi_ab::evaluateTempo(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_THREAT
-int NineChessAi_ab::evaluateThreat(Node *node)
+NineChessAi_ab::value_t NineChessAi_ab::evaluateThreat(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_SHAPE
-int NineChessAi_ab::evaluateShape(Node *node)
+NineChessAi_ab::value_t NineChessAi_ab::evaluateShape(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_MOTIF
-int NineChessAi_ab::evaluateMotif(Node *node)
+NineChessAi_ab::value_t NineChessAi_ab::evaluateMotif(Node *node)
 {
     return 0;
 }
@@ -620,6 +620,11 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
     case NineChess::GAME_MOVING:
         // 按场上棋子计分
         value += chessContext->nPiecesOnBoard_1 * 100 - chessContext->nPiecesOnBoard_2 * 100;
+
+#ifdef EVALUATE_MOBILITY
+        // 按棋子活动能力计分
+        value += chessTemp.getMobilityDiff(false) * 10;
+#endif  /* EVALUATE_MOBILITY */
 
         switch (chessContext->action) {
          // 选子和落子使用相同的评价方法

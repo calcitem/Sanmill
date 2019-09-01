@@ -451,6 +451,9 @@ public:
         return context.nPiecesNeedRemove;
     }
 
+    // 计算玩家1和玩家2的棋子活动能力之差
+    int getMobilityDiff(bool includeFobidden);
+
     // 游戏重置
     bool reset();
 
@@ -488,6 +491,9 @@ protected:
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(char ch);
     bool isAllInMills(enum Player);
+
+    // 判断玩家的棋子周围有几个空位
+    int getSurroundedEmptyPosCount(int pos, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
     bool isSurrounded(int pos);

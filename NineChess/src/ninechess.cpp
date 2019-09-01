@@ -210,6 +210,109 @@ NineChess::Player NineChess::getOpponent(NineChess::Player player)
 
 void NineChess::createMoveTable()
 {
+#ifdef CONST_MOVE_TABLE
+    const int moveTable_noObliqueLine[NineChess::N_POINTS][NineChess::N_POINTS] = {
+        /*  0 */ {0, 0, 0, 0},
+        /*  1 */ {0, 0, 0, 0},
+        /*  2 */ {0, 0, 0, 0},
+        /*  3 */ {0, 0, 0, 0},
+        /*  4 */ {0, 0, 0, 0},
+        /*  5 */ {0, 0, 0, 0},
+        /*  6 */ {0, 0, 0, 0},
+        /*  7 */ {0, 0, 0, 0},
+
+        /*  8 */ {9, 15, 16, 0},
+        /*  9 */ {8, 10, 0, 0},
+        /* 10 */ {9, 11, 18, 0},
+        /* 11 */ {10, 12, 0, 0},
+        /* 12 */ {11, 13, 20, 0},
+        /* 13 */ {12, 14, 0, 0},
+        /* 14 */ {13, 15, 22, 0},
+        /* 15 */ {8, 14, 0, 0},
+
+        /* 16 */ {8, 17, 23, 24},
+        /* 17 */ {16, 18, 0, 0},
+        /* 18 */ {10, 17, 19, 26},
+        /* 19 */ {18, 20, 0, 0},
+        /* 20 */ {12, 19, 21, 28},
+        /* 21 */ {20, 22, 0, 0},
+        /* 22 */ {14, 21, 23, 30},
+        /* 23 */ {16, 22, 0, 0},
+
+        /* 24 */ {16, 25, 31, 0},
+        /* 25 */ {24, 26, 0, 0},
+        /* 26 */ {18, 25, 27, 0},
+        /* 27 */ {26, 28, 0, 0},
+        /* 28 */ {20, 27, 29, 0},
+        /* 29 */ {28, 30, 0, 0},
+        /* 30 */ {22, 29, 31, 0},
+        /* 31 */ {24, 30, 0, 0},
+
+        /* 32 */ {0, 0, 0, 0},
+        /* 33 */ {0, 0, 0, 0},
+        /* 34 */ {0, 0, 0, 0},
+        /* 35 */ {0, 0, 0, 0},
+        /* 36 */ {0, 0, 0, 0},
+        /* 37 */ {0, 0, 0, 0},
+        /* 38 */ {0, 0, 0, 0},
+        /* 39 */ {0, 0, 0, 0},
+    };
+
+    const int moveTable_obliqueLine[NineChess::N_POINTS][NineChess::N_POINTS] = {
+        /*  0 */ {0, 0, 0, 0},
+        /*  1 */ {0, 0, 0, 0},
+        /*  2 */ {0, 0, 0, 0},
+        /*  3 */ {0, 0, 0, 0},
+        /*  4 */ {0, 0, 0, 0},
+        /*  5 */ {0, 0, 0, 0},
+        /*  6 */ {0, 0, 0, 0},
+        /*  7 */ {0, 0, 0, 0},
+
+        /*  8 */ {9, 15, 16, 0},
+        /*  9 */ {8, 10, 17, 0},
+        /* 10 */ {9, 11, 18, 0},
+        /* 11 */ {10, 12, 19, 0},
+        /* 12 */ {11, 13, 20, 0},
+        /* 13 */ {12, 14, 21, 0},
+        /* 14 */ {13, 15, 22, 0},
+        /* 15 */ {8, 14, 23, 0},
+
+        /* 16 */ {8, 17, 23, 24},
+        /* 17 */ {9, 16, 18, 25},
+        /* 18 */ {10, 17, 19, 26},
+        /* 19 */ {11, 18, 20, 27},
+        /* 20 */ {12, 19, 21, 28},
+        /* 21 */ {13, 20, 22, 29},
+        /* 22 */ {14, 21, 23, 30},
+        /* 23 */ {15, 16, 22, 31},
+
+        /* 24 */ {16, 25, 31, 0},
+        /* 25 */ {17, 24, 26, 0},
+        /* 26 */ {18, 25, 27, 0},
+        /* 27 */ {19, 26, 28, 0},
+        /* 28 */ {20, 27, 29, 0},
+        /* 29 */ {21, 28, 30, 0},
+        /* 30 */ {22, 29, 31, 0},
+        /* 31 */ {23, 24, 30, 0},
+
+        /* 32 */ {0, 0, 0, 0},
+        /* 33 */ {0, 0, 0, 0},
+        /* 34 */ {0, 0, 0, 0},
+        /* 35 */ {0, 0, 0, 0},
+        /* 36 */ {0, 0, 0, 0},
+        /* 37 */ {0, 0, 0, 0},
+        /* 38 */ {0, 0, 0, 0},
+        /* 39 */ {0, 0, 0, 0},
+    };
+
+    if (currentRule.hasObliqueLines) {
+        memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
+    } else {
+        memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
+    }
+
+#else /* CONST_MOVE_TABLE */
+
     for (int r = 1; r <= N_RINGS; r++) {
         for (int s = 0; s < N_SEATS; s++) {
             int p = r * N_SEATS + s;
@@ -243,6 +346,7 @@ void NineChess::createMoveTable()
 #endif
         }
     }
+#endif /* CONST_MOVE_TABLE */
 }
 
 void NineChess::createMillTable()
@@ -1442,6 +1546,54 @@ bool NineChess::isAllInMills(enum Player player)
         return true;
 
     return isAllInMills(ch);
+}
+
+// 判断玩家的棋子周围有几个空位
+int NineChess::getSurroundedEmptyPosCount(int pos, bool includeFobidden)
+{
+    int count = 0;
+
+    if ((context.turn == PLAYER1 &&
+        (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
+         (context.turn == PLAYER2 &&
+        (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
+        int d, movePos;
+        for (d = 0; d < N_MOVE_DIRECTIONS; d++) {
+            movePos = moveTable[pos][d];
+            if (movePos) {
+                if (board_[movePos] == 0x00 ||
+                    (includeFobidden && board_[movePos] == 0x0F)) {
+                    count++;
+                }
+            }
+        }
+    }
+
+    return count;
+}
+
+// 计算玩家1和玩家2的棋子活动能力之差
+int NineChess::getMobilityDiff(bool includeFobidden)
+{
+    int *board = context.board;
+    int mobility1 = 0;
+    int mobility2 = 0;
+    int diff = 0;
+    int n = 0;
+
+    for (int i = POS_BEGIN; i < POS_END; i++) {
+        n = getSurroundedEmptyPosCount(i, includeFobidden);
+
+        if (board[i] & 0x10) {
+            mobility1 += n;
+        } else if (board[i] & 0x20) {
+            mobility2 += n;
+        }
+    }
+
+    diff = mobility1 - mobility2;
+
+    return diff;
 }
 
 // 判断玩家的棋子是否被围
