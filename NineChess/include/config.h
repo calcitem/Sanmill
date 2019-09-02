@@ -42,7 +42,7 @@
 
 //#define MIN_MAX_ONLY
 
-#define EVALUATE_ENABLE
+//#define EVALUATE_ENABLE
 
 #ifdef EVALUATE_ENABLE
 //#define EVALUATE_MATERIAL
