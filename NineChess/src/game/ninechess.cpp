@@ -21,7 +21,7 @@
 
 #include <algorithm>
 #include "ninechess.h"
-#include "ninechessai_ab.h"
+#include "search.h"
 #include <QDebug>
 
 // 对静态常量数组的定义要放在类外，不要放在头文件

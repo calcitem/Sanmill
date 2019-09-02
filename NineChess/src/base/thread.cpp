@@ -22,7 +22,7 @@
 #include <QTimer>
 #include <QDebug>
 
-#include "aithread.h"
+#include "thread.h"
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),

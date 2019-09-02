@@ -27,7 +27,7 @@
 #include <QWaitCondition>
 #include <QTimer>
 #include "ninechess.h"
-#include "ninechessai_ab.h"
+#include "search.h"
 #include "server.h"
 #include "client.h"
 

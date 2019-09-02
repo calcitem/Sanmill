@@ -27,7 +27,7 @@
 #include <chrono>
 #include <algorithm>
 
-#include "ninechessai_ab.h"
+#include "search.h"
 #include "hashmap.h"
 
 using namespace CTSL;

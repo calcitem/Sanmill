@@ -40,7 +40,7 @@
 #include "ninechess.h"
 #include "gamescene.h"
 #include "pieceitem.h"
-#include "aithread.h"
+#include "thread.h"
 #include "server.h"
 #include "client.h"
 
