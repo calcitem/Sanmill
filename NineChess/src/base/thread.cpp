@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -61,7 +61,7 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const NineChess &chess)
+void AiThread::setAi(const MillGame &chess)
 {
     mutex.lock();
 
@@ -78,7 +78,7 @@ void AiThread::setAi(const NineChess &chess)
     mutex.unlock();
 }
 
-void AiThread::setAi(const NineChess &chess, NineChessAi_ab::depth_t depth, int time)
+void AiThread::setAi(const MillGame &chess, MillGameAi_ab::depth_t depth, int time)
 {
     mutex.lock();
     this->chess_ = &chess;
@@ -108,7 +108,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = NineChess::playerToId(chess_->whosTurn());
+        i = MillGame::playerToId(chess_->whosTurn());
 
         if (i != id || waiting_) {
             pauseCondition.wait(&mutex);

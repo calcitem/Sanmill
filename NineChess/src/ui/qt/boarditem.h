@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>

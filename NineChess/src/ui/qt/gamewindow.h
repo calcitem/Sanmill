@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -19,8 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#ifndef NINECHESSWINDOW_H
-#define NINECHESSWINDOW_H
+#ifndef GAMEWINDOW_H
+#define GAMEWINDOW_H
 
 #include <QtWidgets/QMainWindow>
 #include <QTextStream>
@@ -33,7 +33,7 @@
 #ifdef MOBILE_APP_UI
 #include "ui_millwindow.h"
 #else
-#include "ui_ninechesswindow.h"
+#include "ui_gamewindow.h"
 #endif
 
 #include "server.h"
@@ -42,13 +42,13 @@
 class GameScene;
 class GameController;
 
-class NineChessWindow : public QMainWindow
+class MillGameWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    NineChessWindow(QWidget *parent = nullptr);
-    ~NineChessWindow() override;
+    MillGameWindow(QWidget *parent = nullptr);
+    ~MillGameWindow() override;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -111,7 +111,7 @@ private slots:
 
 private:
     // 界面文件
-    Ui::NineChessWindowClass ui {};
+    Ui::MillGameWindowClass ui {};
 
     // 视图场景
     GameScene *scene {nullptr};
@@ -138,4 +138,4 @@ private:
 #endif
 };
 
-#endif // NINECHESSWINDOW_H
+#endif // GAMEWINDOW_H

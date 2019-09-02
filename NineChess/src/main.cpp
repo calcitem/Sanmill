@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -22,12 +22,12 @@
 #include <QtWidgets/QApplication>
 #include <QDesktopWidget>
 
-#include "ninechesswindow.h"
+#include "gamewindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    NineChessWindow w;
+    MillGameWindow w;
     w.show();
     w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
 

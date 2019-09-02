@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) 2019 NineChess authors
+ * Copyright (C) 2019 MillGame authors
  *
  * Authors: Calcitem <calcitem@outlook.com>
  *
@@ -20,9 +20,9 @@
 
 #include <cstdint>
 
-#include "ninechess.h"
+#include "millgame.h"
 
-static const NineChess::hash_t zobrist0[NineChess::N_POINTS][NineChess::POINT_TYPE_COUNT] = {
+static const MillGame::hash_t zobrist0[MillGame::N_POINTS][MillGame::POINT_TYPE_COUNT] = {
 #ifdef HASH_MAP_CUTDOWN
     {0x4E421A00, 0x3962FF00, 0x6DB6EE00, 0x219AE100},
     {0x1F3DE200, 0xD9AACB00, 0xD5173300, 0xD3F9EA00},

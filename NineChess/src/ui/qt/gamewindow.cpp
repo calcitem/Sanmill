@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -42,7 +42,7 @@
 #include <QDebug>
 #include <QDesktopWidget>
 
-#include "ninechesswindow.h"
+#include "gamewindow.h"
 #include "gamecontroller.h"
 #include "gamescene.h"
 #include "graphicsconst.h"
@@ -50,7 +50,7 @@
 #include "client.h"
 #include "version.h"
 
-NineChessWindow::NineChessWindow(QWidget * parent) :
+MillGameWindow::MillGameWindow(QWidget * parent) :
     QMainWindow(parent),
     autoRunTimer(this)
 {
@@ -112,7 +112,7 @@ NineChessWindow::NineChessWindow(QWidget * parent) :
     initialize();
 }
 
-NineChessWindow::~NineChessWindow()
+MillGameWindow::~MillGameWindow()
 {
     if (game) {
         game->disconnect();
@@ -122,7 +122,7 @@ NineChessWindow::~NineChessWindow()
     qDeleteAll(ruleActionList);
 }
 
-void NineChessWindow::closeEvent(QCloseEvent *event)
+void MillGameWindow::closeEvent(QCloseEvent *event)
 {
     if (file.isOpen())
         file.close();
@@ -135,7 +135,7 @@ void NineChessWindow::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
-bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
+bool MillGameWindow::eventFilter(QObject *watched, QEvent *event)
 {
     // 重载这个函数只是为了让规则菜单（动态）显示提示
     if (watched == ui.menu_R &&
@@ -151,7 +151,7 @@ bool NineChessWindow::eventFilter(QObject *watched, QEvent *event)
     return QMainWindow::eventFilter(watched, event);
 }
 
-void NineChessWindow::initialize()
+void MillGameWindow::initialize()
 {
     // 初始化函数，仅执行一次
     if (game)
@@ -279,28 +279,28 @@ void NineChessWindow::initialize()
     // 初始局面、前一步、后一步、最终局面的槽
 
     connect(ui.actionBegin_S, &QAction::triggered,
-            this, &NineChessWindow::on_actionRowChange);
+            this, &MillGameWindow::on_actionRowChange);
 
     connect(ui.actionPrevious_B, &QAction::triggered,
-            this, &NineChessWindow::on_actionRowChange);
+            this, &MillGameWindow::on_actionRowChange);
 
 #ifdef MOBILE_APP_UI
     connect(ui.pushButton_retractMove, &QPushButton::released,
-            this, &NineChessWindow::on_actionRowChange);
+            this, &MillGameWindow::on_actionRowChange);
 
     connect(ui.pushButton_newGame, &QPushButton::released,
-            this, &NineChessWindow::on_actionNew_N_triggered);
+            this, &MillGameWindow::on_actionNew_N_triggered);
 #endif /* MOBILE_APP_UI */
 
     connect(ui.actionNext_F, &QAction::triggered,
-            this, &NineChessWindow::on_actionRowChange);
+            this, &MillGameWindow::on_actionRowChange);
 
     connect(ui.actionEnd_E, &QAction::triggered,
-            this, &NineChessWindow::on_actionRowChange);
+            this, &MillGameWindow::on_actionRowChange);
 
     // 手动在listView里选择着法后更新的槽
     connect(ui.listView, &ManualListView::currentChangedSignal,
-            this, &NineChessWindow::on_actionRowChange);
+            this, &MillGameWindow::on_actionRowChange);
 
     // 更新四个键的状态
     on_actionRowChange();
@@ -342,7 +342,7 @@ void NineChessWindow::initialize()
 }
 
 #ifdef MOBILE_APP_UI
-void NineChessWindow::ctxMenu(const QPoint &pos)
+void MillGameWindow::ctxMenu(const QPoint &pos)
 {
     QMenu *menu = new QMenu;
     menu->addAction(tr("Test Item"), this, SLOT(on_actionNew_N_triggered()));
@@ -350,7 +350,7 @@ void NineChessWindow::ctxMenu(const QPoint &pos)
 }
 #endif /* MOBILE_APP_UI */
 
-void NineChessWindow::ruleInfo()
+void MillGameWindow::ruleInfo()
 {
     int s = game->getStepsLimit();
     int t = game->getTimeLimit();
@@ -367,18 +367,18 @@ void NineChessWindow::ruleInfo()
     ui.labelRule->setText(tl + sl);
 
     // 规则提示
-    ui.labelInfo->setToolTip(QString(NineChess::RULES[ruleNo].name) + "\n" +
-                             NineChess::RULES[ruleNo].description);
+    ui.labelInfo->setToolTip(QString(MillGame::RULES[ruleNo].name) + "\n" +
+                             MillGame::RULES[ruleNo].description);
 
     ui.labelRule->setToolTip(ui.labelInfo->toolTip());
 
 #if 0
-    QString tip_Rule = QString("%1\n%2").arg(tr(NineChess::RULES[ruleNo].name))
-        .arg(tr(NineChess::RULES[ruleNo].info));
+    QString tip_Rule = QString("%1\n%2").arg(tr(MillGame::RULES[ruleNo].name))
+        .arg(tr(MillGame::RULES[ruleNo].info));
 #endif
 }
 
-void NineChessWindow::on_actionLimited_T_triggered()
+void MillGameWindow::on_actionLimited_T_triggered()
 {
     /* 
      * 其实本来可以用设计器做个ui，然后从QDialog派生个自己的对话框
@@ -450,7 +450,7 @@ void NineChessWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             // 重置游戏规则
-            game->setRule(ruleNo, static_cast<NineChess::step_t>(dStep), dTime);
+            game->setRule(ruleNo, static_cast<MillGame::step_t>(dStep), dTime);
         }
     }
 
@@ -462,7 +462,7 @@ void NineChessWindow::on_actionLimited_T_triggered()
     ruleInfo();
 }
 
-void NineChessWindow::actionRules_triggered()
+void MillGameWindow::actionRules_triggered()
 {
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);
@@ -491,7 +491,7 @@ void NineChessWindow::actionRules_triggered()
     ruleInfo();
 }
 
-void NineChessWindow::on_actionNew_N_triggered()
+void MillGameWindow::on_actionNew_N_triggered()
 {
     if (file.isOpen())
         file.close();
@@ -533,7 +533,7 @@ void NineChessWindow::on_actionNew_N_triggered()
     }
 }
 
-void NineChessWindow::on_actionOpen_O_triggered()
+void MillGameWindow::on_actionOpen_O_triggered()
 {
     QString path = QFileDialog::getOpenFileName(this, tr("打开棋谱文件"), QDir::currentPath(), "TXT(*.txt)");
 
@@ -588,7 +588,7 @@ void NineChessWindow::on_actionOpen_O_triggered()
     game->updateScence();
 }
 
-void NineChessWindow::on_actionSave_S_triggered()
+void MillGameWindow::on_actionSave_S_triggered()
 {
     if (file.isOpen()) {
         file.close();
@@ -609,7 +609,7 @@ void NineChessWindow::on_actionSave_S_triggered()
     on_actionSaveAs_A_triggered();
 }
 
-void NineChessWindow::on_actionSaveAs_A_triggered()
+void MillGameWindow::on_actionSaveAs_A_triggered()
 {
     QString path = QFileDialog::getSaveFileName(this,
         tr("打开棋谱文件"),
@@ -642,12 +642,12 @@ void NineChessWindow::on_actionSaveAs_A_triggered()
     file.flush();
 }
 
-void NineChessWindow::on_actionEdit_E_toggled(bool arg1)
+void MillGameWindow::on_actionEdit_E_toggled(bool arg1)
 {
     Q_UNUSED(arg1)
 }
 
-void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
+void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
 {
     // 如果黑白反转
     if (arg1) {
@@ -669,7 +669,7 @@ void NineChessWindow::on_actionInvert_I_toggled(bool arg1)
 }
 
 // 前后招的公共槽
-void NineChessWindow::on_actionRowChange()
+void MillGameWindow::on_actionRowChange()
 {
     QAbstractItemModel *model = ui.listView->model();
     int rows = model->rowCount();
@@ -753,7 +753,7 @@ void NineChessWindow::on_actionRowChange()
 #endif // 0
 }
 
-void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
+void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
 {
     Q_UNUSED(signal)
         int rows = ui.listView->model()->rowCount();
@@ -802,7 +802,7 @@ void NineChessWindow::onAutoRunTimeOut(QPrivateSignal signal)
 }
 
 // 自动运行
-void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
+void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)
 {
     if (arg1) {
         // 自动运行前禁用控件
@@ -821,13 +821,13 @@ void NineChessWindow::on_actionAutoRun_A_toggled(bool arg1)
     }
 }
 
-void NineChessWindow::on_actionLocal_L_triggered()
+void MillGameWindow::on_actionLocal_L_triggered()
 {
     ui.actionLocal_L->setChecked(true);
     ui.actionInternet_I->setChecked(false);
 }
 
-void NineChessWindow::on_actionInternet_I_triggered()
+void MillGameWindow::on_actionInternet_I_triggered()
 {
     ui.actionLocal_L->setChecked(false);
     ui.actionInternet_I->setChecked(true);
@@ -835,7 +835,7 @@ void NineChessWindow::on_actionInternet_I_triggered()
     game->showNetworkWindow();
 }
 
-void NineChessWindow::on_actionEngine_E_triggered()
+void MillGameWindow::on_actionEngine_E_triggered()
 {
     // 定义新对话框
     auto *dialog = new QDialog(this);
@@ -906,7 +906,7 @@ void NineChessWindow::on_actionEngine_E_triggered()
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     // 目前数据
-    NineChessAi_ab::depth_t depth1, depth2;
+    MillGameAi_ab::depth_t depth1, depth2;
     int time1, time2;
     game->getAiDepthTime(depth1, time1, depth2, time2);
     spinBox_depth1->setValue(depth1);
@@ -916,11 +916,11 @@ void NineChessWindow::on_actionEngine_E_triggered()
 
     // 新设数据
     if (dialog->exec() == QDialog::Accepted) {
-        NineChessAi_ab::depth_t depth1_new, depth2_new;
+        MillGameAi_ab::depth_t depth1_new, depth2_new;
         int time1_new, time2_new;
 
-        depth1_new = static_cast<NineChessAi_ab::depth_t>(spinBox_depth1->value());
-        depth2_new = static_cast<NineChessAi_ab::depth_t>(spinBox_depth2->value());
+        depth1_new = static_cast<MillGameAi_ab::depth_t>(spinBox_depth1->value());
+        depth2_new = static_cast<MillGameAi_ab::depth_t>(spinBox_depth2->value());
 
         time1_new = spinBox_time1->value();
         time2_new = spinBox_time2->value();
@@ -939,17 +939,17 @@ void NineChessWindow::on_actionEngine_E_triggered()
     delete dialog;
 }
 
-void NineChessWindow::on_actionViewHelp_V_triggered()
+void MillGameWindow::on_actionViewHelp_V_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/NineChess"));
+    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/MillGame"));
 }
 
-void NineChessWindow::on_actionWeb_W_triggered()
+void MillGameWindow::on_actionWeb_W_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/NineChess/blob/master/Licence.txt"));
+    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/MillGame/blob/master/Licence.txt"));
 }
 
-void NineChessWindow::on_actionAbout_A_triggered()
+void MillGameWindow::on_actionAbout_A_triggered()
 {
     auto *dialog = new QDialog;
 
@@ -1002,7 +1002,7 @@ void NineChessWindow::on_actionAbout_A_triggered()
 }
 
 #ifdef MOBILE_APP_UI
-void NineChessWindow::mousePressEvent(QMouseEvent *event)
+void MillGameWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_move = true;
@@ -1011,7 +1011,7 @@ void NineChessWindow::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void NineChessWindow::mouseMoveEvent(QMouseEvent *event)
+void MillGameWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() & Qt::LeftButton) {
         QPoint relativePos = event->globalPos() - m_startPoint;
@@ -1019,7 +1019,7 @@ void NineChessWindow::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-void NineChessWindow::mouseReleaseEvent(QMouseEvent *event)
+void MillGameWindow::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         m_move = false;

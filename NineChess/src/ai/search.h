@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -19,8 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#ifndef NINECHESSAI_AB
-#define NINECHESSAI_AB
+#ifndef MILLGAMEAI_AB
+#define MILLGAMEAI_AB
 
 #include "config.h"
 
@@ -35,7 +35,7 @@
 #include <QDebug>
 #include <array>
 
-#include "ninechess.h"
+#include "millgame.h"
 #include "hashmap.h"
 
 #ifdef MEMORY_POOL
@@ -45,18 +45,18 @@
 using namespace std;
 using namespace CTSL;
 
-// 注意：NineChess类不是线程安全的！
-// 所以不能在ai类中修改NineChess类的静态成员变量，切记！
-// 另外，AI类是NineChess类的友元类，可以访问其私有变量
-// 尽量不要使用NineChess的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
+// 注意：MillGame类不是线程安全的！
+// 所以不能在ai类中修改MillGame类的静态成员变量，切记！
+// 另外，AI类是MillGame类的友元类，可以访问其私有变量
+// 尽量不要使用MillGame的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
 
-class NineChessAi_ab
+class MillGameAi_ab
 {
 public:
     // 定义类型
     using depth_t = uint8_t;
     using value_t = int16_t;
-    using move_t = NineChess::move_t;
+    using move_t = MillGame::move_t;
 
     // 定义一个节点结构体
     struct Node
@@ -66,7 +66,7 @@ public:
         struct Node* parent {};            // 父节点
         move_t move {};                  // 着法的命令行指令，图上标示为节点前的连线
         value_t value {};                 // 节点的值
-        enum NineChess::Player player;  // 此着是谁下的 (目前仅调试用)
+        enum MillGame::Player player;  // 此着是谁下的 (目前仅调试用)
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned {};                    // 是否在此处剪枝
 #endif
@@ -81,8 +81,8 @@ public:
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
         bool visited;                   // 是否在遍历时访问过
-        NineChess::GameStage stage;     // 摆棋阶段还是走棋阶段
-        NineChess::Action action;       // 动作状态
+        MillGame::GameStage stage;     // 摆棋阶段还是走棋阶段
+        MillGame::Action action;       // 动作状态
         int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
         int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
         int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
@@ -92,7 +92,7 @@ public:
         bool isHash;                    //  是否从 Hash 读取
 #endif /* HASH_MAP_ENABLE */
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
-        NineChess::hash_t hash;                  //  哈希值
+        MillGame::hash_t hash;                  //  哈希值
 #endif
 #endif /* DEBUG_AB_TREE */
     };
@@ -122,10 +122,10 @@ public:
 #endif
 
 public:
-    NineChessAi_ab();
-    ~NineChessAi_ab();
+    MillGameAi_ab();
+    ~MillGameAi_ab();
 
-    void setChess(const NineChess &chess);
+    void setChess(const MillGame &chess);
 
     void quit()
     {
@@ -149,8 +149,8 @@ public:
     static bool nodeGreater(const Node *first, const Node *second);
 
 #ifdef BOOK_LEARNING
-    bool findBookHash(NineChess::hash_t hash, HashValue &hashValue);
-    static int recordBookHash(NineChess::hash_t hash, const HashValue &hashValue);
+    bool findBookHash(MillGame::hash_t hash, HashValue &hashValue);
+    static int recordBookHash(MillGame::hash_t hash, const HashValue &hashValue);
     void clearBookHashMap();
     static void recordOpeningBookToHashMap();
     static void recordOpeningBookHashMapToFile();
@@ -173,7 +173,7 @@ protected:
     // 增加新节点
     struct Node *addNode(Node *parent, value_t value,
                          move_t move, move_t bestMove,
-                         enum NineChess::Player player);
+                         enum MillGame::Player player);
 
     // 评价函数
     value_t evaluate(Node *node);
@@ -202,7 +202,7 @@ protected:
 #endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
-    NineChessAi_ab::value_t alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
+    MillGameAi_ab::value_t alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
 
     // 返回着法的命令行
     const char *move2string(move_t move);
@@ -219,24 +219,24 @@ protected:
 
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
-    bool findHash(NineChess::hash_t hash, HashValue &hashValue);
-    value_t probeHash(NineChess::hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
+    bool findHash(MillGame::hash_t hash, HashValue &hashValue);
+    value_t probeHash(MillGame::hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
 
     // 插入哈希表
-    int recordHash(value_t value, depth_t depth, HashType type, NineChess::hash_t hash, move_t bestMove);
+    int recordHash(value_t value, depth_t depth, HashType type, MillGame::hash_t hash, move_t bestMove);
 #endif  // HASH_MAP_ENABLE
 
 private:
     // 原始模型
-    NineChess chess_;
+    MillGame chess_;
 
     // 演算用的模型
-    NineChess chessTemp;
+    MillGame chessTemp;
 
-    NineChess::ChessContext *chessContext {};
+    MillGame::ChessContext *chessContext {};
 
     // hash 计算时，各种转换用的模型
-    NineChess chessTempShift;
+    MillGame chessTempShift;
 
     // 根节点
     Node *rootNode {nullptr};
@@ -261,16 +261,16 @@ private:
 
     // 局面数据栈
 //#ifdef MEMORY_POOL
-//    StackAlloc<NineChess::ChessContext, MemoryPool<NineChess::ChessContext> > contextStack;
+//    StackAlloc<MillGame::ChessContext, MemoryPool<MillGame::ChessContext> > contextStack;
 //#else
-    stack<NineChess::ChessContext> contextStack;
+    stack<MillGame::ChessContext> contextStack;
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
-    array<int, NineChess::N_RINGS *NineChess::N_SEATS> movePriorityTable {};
+    array<int, MillGame::N_RINGS *MillGame::N_SEATS> movePriorityTable {};
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
     // 定义极大值
@@ -282,11 +282,11 @@ private:
 };
 
 #ifdef HASH_MAP_ENABLE
-extern HashMap<NineChess::hash_t, NineChessAi_ab::HashValue> hashmap;
+extern HashMap<MillGame::hash_t, MillGameAi_ab::HashValue> hashmap;
 #endif /* #ifdef HASH_MAP_ENABLE */
 
 #ifdef THREEFOLD_REPETITION
-extern vector<NineChess::hash_t> positions;
+extern vector<MillGame::hash_t> positions;
 #endif
 
 #endif

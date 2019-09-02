@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>NineChessWindowClass</class>
- <widget class="QMainWindow" name="NineChessWindowClass">
+ <class>MillGameWindowClass</class>
+ <widget class="QMainWindow" name="MillGameWindowClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -247,7 +247,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="ninechesswindow.qrc">:/icon/resources/icon/Black.png</pixmap>
+              <pixmap resource="millgamewindow.qrc">:/icon/resources/icon/Black.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -328,7 +328,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="ninechesswindow.qrc">:/icon/resources/icon/White.png</pixmap>
+              <pixmap resource="millgamewindow.qrc">:/icon/resources/icon/White.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -471,7 +471,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="ninechesswindow.qrc">:/icon/resources/icon/Help.png</pixmap>
+              <pixmap resource="millgamewindow.qrc">:/icon/resources/icon/Help.png</pixmap>
              </property>
             </widget>
            </item>
@@ -515,7 +515,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_N">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/DocumentHS.png</normaloff>:/icon/resources/icon/DocumentHS.png</iconset>
    </property>
    <property name="text">
@@ -530,7 +530,7 @@
   </action>
   <action name="actionOpen_O">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/OpenHS.png</normaloff>:/icon/resources/icon/OpenHS.png</iconset>
    </property>
    <property name="text">
@@ -542,7 +542,7 @@
   </action>
   <action name="actionSave_S">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
@@ -554,7 +554,7 @@
   </action>
   <action name="actionSaveAs_A">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
@@ -571,7 +571,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/EditTableHS.png</normaloff>:/icon/resources/icon/EditTableHS.png</iconset>
    </property>
    <property name="text">
@@ -580,7 +580,7 @@
   </action>
   <action name="actionFlip_F">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/FlipVerticalHS.png</normaloff>:/icon/resources/icon/FlipVerticalHS.png</iconset>
    </property>
    <property name="text">
@@ -589,7 +589,7 @@
   </action>
   <action name="actionMirror_M">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/FlipHorizontalHS.png</normaloff>:/icon/resources/icon/FlipHorizontalHS.png</iconset>
    </property>
    <property name="text">
@@ -598,7 +598,7 @@
   </action>
   <action name="actionTurnRight_R">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/RightHS.png</normaloff>:/icon/resources/icon/RightHS.png</iconset>
    </property>
    <property name="text">
@@ -610,7 +610,7 @@
   </action>
   <action name="actionTurnLeftt_L">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/LeftHS.png</normaloff>:/icon/resources/icon/LeftHS.png</iconset>
    </property>
    <property name="text">
@@ -628,7 +628,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Invert.png</normaloff>:/icon/resources/icon/Invert.png</iconset>
    </property>
    <property name="text">
@@ -637,7 +637,7 @@
   </action>
   <action name="actionBegin_S">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/First.png</normaloff>:/icon/resources/icon/First.png</iconset>
    </property>
    <property name="text">
@@ -652,7 +652,7 @@
   </action>
   <action name="actionPrevious_B">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Previous.png</normaloff>:/icon/resources/icon/Previous.png</iconset>
    </property>
    <property name="text">
@@ -664,7 +664,7 @@
   </action>
   <action name="actionNext_F">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Next.png</normaloff>:/icon/resources/icon/Next.png</iconset>
    </property>
    <property name="text">
@@ -679,7 +679,7 @@
   </action>
   <action name="actionEnd_E">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Last.png</normaloff>:/icon/resources/icon/Last.png</iconset>
    </property>
    <property name="text">
@@ -694,7 +694,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Play.png</normaloff>:/icon/resources/icon/Play.png</iconset>
    </property>
    <property name="text">
@@ -706,7 +706,7 @@
   </action>
   <action name="actionGiveUp_G">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/BreakpointHS.png</normaloff>:/icon/resources/icon/BreakpointHS.png</iconset>
    </property>
    <property name="text">
@@ -732,7 +732,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/FullScreenHS.png</normaloff>:/icon/resources/icon/FullScreenHS.png</iconset>
    </property>
    <property name="text">
@@ -750,7 +750,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Web.png</normaloff>:/icon/resources/icon/Web.png</iconset>
    </property>
    <property name="text">
@@ -762,7 +762,7 @@
   </action>
   <action name="actionEngine_E">
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/OptionsHS.png</normaloff>:/icon/resources/icon/OptionsHS.png</iconset>
    </property>
    <property name="text">
@@ -780,7 +780,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Black.png</normaloff>:/icon/resources/icon/Black.png</iconset>
    </property>
    <property name="text">
@@ -795,7 +795,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/White.png</normaloff>:/icon/resources/icon/White.png</iconset>
    </property>
    <property name="text">
@@ -810,7 +810,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/PrimaryKeyHS.png</normaloff>:/icon/resources/icon/PrimaryKeyHS.png</iconset>
    </property>
    <property name="text">
@@ -883,7 +883,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/Help.png</normaloff>:/icon/resources/icon/Help.png</iconset>
    </property>
    <property name="text">
@@ -898,7 +898,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="ninechesswindow.qrc">
+    <iconset resource="millgamewindow.qrc">
      <normaloff>:/icon/resources/icon/HomeHS.png</normaloff>:/icon/resources/icon/HomeHS.png</iconset>
    </property>
    <property name="text">
@@ -934,7 +934,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="ninechesswindow.qrc"/>
+  <include location="millgamewindow.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -972,7 +972,7 @@
   <connection>
    <sender>actionExit_X</sender>
    <signal>triggered()</signal>
-   <receiver>NineChessWindowClass</receiver>
+   <receiver>MillGameWindowClass</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

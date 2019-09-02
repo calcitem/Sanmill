@@ -9,7 +9,7 @@ QT       += core gui \
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = NineChess
+TARGET = MillGame
 TEMPLATE = app
 
 CONFIG += warn_off
@@ -21,11 +21,11 @@ INCLUDEPATH += src/game
 INCLUDEPATH += src/ui/qt
 
 SOURCES += \
+    src/game/millgame.cpp \
     src/main.cpp \
     src/base/thread.cpp \
     src/ai/search.cpp \
-    src/game/ninechess.cpp \
-    src/ui/qt/ninechesswindow.cpp \
+    src/ui/qt/gamewindow.cpp \
     src/ui/qt/pieceitem.cpp \
     src/ui/qt/server.cpp \
     src/ui/qt/boarditem.cpp \
@@ -46,29 +46,29 @@ HEADERS  += \
     src/base/thread.h \
     src/ai/search.h \
     src/ai/zobrist.h \
-    src/game/ninechess.h \
+    src/game/millgame.h \
     src/ui/qt/client.h \
     src/ui/qt/gamecontroller.h \
     src/ui/qt/gamescene.h \
     src/ui/qt/gameview.h \
+    src/ui/qt/gamewindow.h \
     src/ui/qt/graphicsconst.h \
-    src/ui/qt/ninechesswindow.h \
     src/ui/qt/pieceitem.h \
     src/ui/qt/manuallistview.h \
     src/ui/qt/server.h \
     src/ui/qt/boarditem.h
 
 FORMS    += \
-    ninechesswindow.ui
+    gamewindow.ui
 
 RESOURCES += \
-    ninechesswindow.qrc
+    gamewindow.qrc
 
 DISTFILES += \
-    NineChess.rc \
+    MillGame.rc \
     version.sh
 
-RC_FILE += NineChess.rc
+RC_FILE += millgame.rc
 
 # With C++17 support
 greaterThan(QT_MAJOR_VERSION, 4) {

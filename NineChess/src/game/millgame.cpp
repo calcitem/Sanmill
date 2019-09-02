@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -20,13 +20,13 @@
  *****************************************************************************/
 
 #include <algorithm>
-#include "ninechess.h"
+#include "millgame.h"
 #include "search.h"
 #include <QDebug>
 
 // 对静态常量数组的定义要放在类外，不要放在头文件
 // 预定义的4套规则
-const struct NineChess::Rule NineChess::RULES[N_RULES] = {
+const struct MillGame::Rule MillGame::RULES[N_RULES] = {
 {
     "成三棋",   // 成三棋
     // 规则说明
@@ -116,7 +116,7 @@ const struct NineChess::Rule NineChess::RULES[N_RULES] = {
 };
 
 // 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
-const int NineChess::onBoard[N_POINTS] = {
+const int MillGame::onBoard[N_POINTS] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -125,12 +125,12 @@ const int NineChess::onBoard[N_POINTS] = {
 };
 
 // 着法表
-int NineChess::moveTable[N_POINTS][N_MOVE_DIRECTIONS] = {{0}};
+int MillGame::moveTable[N_POINTS][N_MOVE_DIRECTIONS] = {{0}};
 
 // 成三表
-int NineChess::millTable[N_POINTS][N_DIRECTIONS][N_RINGS - 1] = {{{0}}};
+int MillGame::millTable[N_POINTS][N_DIRECTIONS][N_RINGS - 1] = {{{0}}};
 
-NineChess::NineChess()
+MillGame::MillGame()
 {
     // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board;
@@ -142,7 +142,7 @@ NineChess::NineChess()
 
 #ifdef BOOK_LEARNING
     // TODO: 开局库文件被加载了多次
-    NineChessAi_ab::loadOpeningBookFileToHashMap();
+    MillGameAi_ab::loadOpeningBookFileToHashMap();
 #endif
 
     // 默认选择第1号规则，即“打三棋”
@@ -152,14 +152,14 @@ NineChess::NineChess()
     score_1 = score_2 = score_draw = 0;
 }
 
-NineChess::~NineChess() = default;
+MillGame::~MillGame() = default;
 
-NineChess::NineChess(const NineChess &chess)
+MillGame::MillGame(const MillGame &chess)
 {  
     *this = chess;
 }
 
-NineChess &NineChess::operator = (const NineChess &chess)
+MillGame &MillGame::operator = (const MillGame &chess)
 {
     if (this == &chess)
         return *this;
@@ -183,17 +183,17 @@ NineChess &NineChess::operator = (const NineChess &chess)
     return *this;
 }
 
-int NineChess::playerToId(enum Player player)
+int MillGame::playerToId(enum Player player)
 {
-    if (player == NineChess::PLAYER1)
+    if (player == MillGame::PLAYER1)
         return 1;
-    else if (player == NineChess::PLAYER2)
+    else if (player == MillGame::PLAYER2)
         return 2;
 
     return 0;
 }
 
-NineChess::Player NineChess::getOpponent(NineChess::Player player)
+MillGame::Player MillGame::getOpponent(MillGame::Player player)
 {
     switch (player)
     {
@@ -208,10 +208,10 @@ NineChess::Player NineChess::getOpponent(NineChess::Player player)
     return NOBODY;
 }
 
-void NineChess::createMoveTable()
+void MillGame::createMoveTable()
 {
 #ifdef CONST_MOVE_TABLE
-    const int moveTable_noObliqueLine[NineChess::N_POINTS][NineChess::N_POINTS] = {
+    const int moveTable_noObliqueLine[MillGame::N_POINTS][MillGame::N_POINTS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -258,7 +258,7 @@ void NineChess::createMoveTable()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable_obliqueLine[NineChess::N_POINTS][NineChess::N_POINTS] = {
+    const int moveTable_obliqueLine[MillGame::N_POINTS][MillGame::N_POINTS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -349,7 +349,7 @@ void NineChess::createMoveTable()
 #endif /* CONST_MOVE_TABLE */
 }
 
-void NineChess::createMillTable()
+void MillGame::createMillTable()
 {
     for (int i = 0; i < N_SEATS; i++) {
         // 内外方向的“成三”
@@ -424,7 +424,7 @@ void NineChess::createMillTable()
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool NineChess::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
+bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
                         step_t initialStep, int flags, const char *board,
                         int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
@@ -575,7 +575,7 @@ bool NineChess::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, in
     return false;
 }
 
-void NineChess::getContext(struct Rule &rule, step_t &step, int &flags,
+void MillGame::getContext(struct Rule &rule, step_t &step, int &flags,
                            int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove)
 {
     rule = this->currentRule;
@@ -587,7 +587,7 @@ void NineChess::getContext(struct Rule &rule, step_t &step, int &flags,
     nPiecesNeedRemove = context.nPiecesNeedRemove;
 }
 
-bool NineChess::reset()
+bool MillGame::reset()
 {
     if (context.stage == GAME_NOTSTARTED &&
         elapsedSeconds_1 == elapsedSeconds_2 == 0) {
@@ -660,7 +660,7 @@ bool NineChess::reset()
     return false;
 }
 
-bool NineChess::start()
+bool MillGame::start()
 {
     switch (context.stage) {
     // 如果游戏已经开始，则返回false
@@ -684,7 +684,7 @@ bool NineChess::start()
 }
 
 // Unused
-bool NineChess::getPieceRS(const Player &player, const int &number, int &r, int &s)
+bool MillGame::getPieceRS(const Player &player, const int &number, int &r, int &s)
 {
     int piece;
 
@@ -712,7 +712,7 @@ bool NineChess::getPieceRS(const Player &player, const int &number, int &r, int 
 }
 
 // 获取当前棋子
-bool NineChess::getCurrentPiece(Player &player, int &number)
+bool MillGame::getCurrentPiece(Player &player, int &number)
 {
     if (!onBoard[currentPos])
         return false;
@@ -732,7 +732,7 @@ bool NineChess::getCurrentPiece(Player &player, int &number)
     return true;
 }
 
-void NineChess::pos2rs(const int pos, int &r, int &s)
+void MillGame::pos2rs(const int pos, int &r, int &s)
 {
     //r = pos / N_SEATS;
     //s = pos % N_SEATS + 1;
@@ -740,7 +740,7 @@ void NineChess::pos2rs(const int pos, int &r, int &s)
     s = (pos & 0x07) + 1;
 }
 
-int NineChess::rs2Pos(int r, int s)
+int MillGame::rs2Pos(int r, int s)
 {
     if (r < 1 || r > N_RINGS || s < 1 || s > N_SEATS)
         return 0;
@@ -748,7 +748,7 @@ int NineChess::rs2Pos(int r, int s)
     return r * N_SEATS + s - 1;
 }
 
-bool NineChess::place(int pos, int time_p, int8_t rs)
+bool MillGame::place(int pos, int time_p, int8_t rs)
 {
     // 如果局面为“结局”，返回false
     if (context.stage == GAME_OVER)
@@ -935,7 +935,7 @@ out:
     return true;
 }
 
-bool NineChess::_place(int r, int s, int time_p)
+bool MillGame::_place(int r, int s, int time_p)
 {
     // 转换为 pos
     int pos = rs2Pos(r, s);
@@ -943,7 +943,7 @@ bool NineChess::_place(int r, int s, int time_p)
     return place(pos, time_p, true);
 }
 
-bool NineChess::_capture(int r, int s, int time_p)
+bool MillGame::_capture(int r, int s, int time_p)
 {
     // 转换为 pos
     int pos = rs2Pos(r, s);
@@ -951,7 +951,7 @@ bool NineChess::_capture(int r, int s, int time_p)
     return capture(pos, time_p, 1);
 }
 
-bool NineChess::capture(int pos, int time_p, int8_t cp)
+bool MillGame::capture(int pos, int time_p, int8_t cp)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (context.stage == GAME_NOTSTARTED || context.stage == GAME_OVER)
@@ -1100,7 +1100,7 @@ out:
     return true;
 }
 
-bool NineChess::choose(int pos)
+bool MillGame::choose(int pos)
 {
     // 如果局面不是"中局”，返回false
     if (context.stage != GAME_MOVING)
@@ -1131,12 +1131,12 @@ bool NineChess::choose(int pos)
     return false;
 }
 
-bool NineChess::choose(int r, int s)
+bool MillGame::choose(int r, int s)
 {
     return choose(rs2Pos(r, s));
 }
 
-bool NineChess::giveup(Player loser)
+bool MillGame::giveup(Player loser)
 {
     if (context.stage == GAME_NOTSTARTED ||
         context.stage == GAME_OVER ||
@@ -1162,7 +1162,7 @@ bool NineChess::giveup(Player loser)
 }
 
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
-bool NineChess::command(const char *cmd)
+bool MillGame::command(const char *cmd)
 {
     int r, t;
     step_t s;
@@ -1177,7 +1177,7 @@ bool NineChess::command(const char *cmd)
             return false;
         }
 
-        return setContext(&NineChess::RULES[r - 1], s, t);
+        return setContext(&MillGame::RULES[r - 1], s, t);
     }
 
     // 选子移动
@@ -1250,7 +1250,7 @@ bool NineChess::command(const char *cmd)
     return false;
 }
 
-bool NineChess::command(int move)
+bool MillGame::command(int move)
 {
     if (move < 0) {
         return capture(-move);
@@ -1267,7 +1267,7 @@ bool NineChess::command(int move)
     return false;
 }
 
-inline int NineChess::update(int time_p /*= -1*/)
+inline int MillGame::update(int time_p /*= -1*/)
 {
     int ret = -1;
     time_t *player_ms = (context.turn == PLAYER1 ? &elapsedSeconds_1 : &elapsedSeconds_2);
@@ -1298,13 +1298,13 @@ inline int NineChess::update(int time_p /*= -1*/)
 }
 
 // 是否分出胜负
-bool NineChess::win()
+bool MillGame::win()
 {
     return win(false);
 }
 
 // 是否分出胜负
-bool NineChess::win(bool forceDraw)
+bool MillGame::win(bool forceDraw)
 {
     if (context.stage == GAME_OVER) {
         return true;
@@ -1364,7 +1364,7 @@ bool NineChess::win(bool forceDraw)
         sprintf(cmdline, "Player1 win!");
         cmdlist.emplace_back(string(cmdline));
 #ifdef BOOK_LEARNING
-        NineChessAi_ab::recordOpeningBookToHashMap();  // 暂时只对后手的失败记录到开局库
+        MillGameAi_ab::recordOpeningBookToHashMap();  // 暂时只对后手的失败记录到开局库
 #endif /* BOOK_LEARNING */
         return true;
     }
@@ -1402,7 +1402,7 @@ bool NineChess::win(bool forceDraw)
                 sprintf(cmdline, "Player2 no way to go. Player1 win!");
                 cmdlist.emplace_back(string(cmdline));
 #ifdef BOOK_LEARNING
-                NineChessAi_ab::recordOpeningBookToHashMap();  // 暂时只对后手的失败记录到开局库
+                MillGameAi_ab::recordOpeningBookToHashMap();  // 暂时只对后手的失败记录到开局库
 #endif /* BOOK_LEARNING */
             }
 
@@ -1429,7 +1429,7 @@ bool NineChess::win(bool forceDraw)
     return false;
 }
 
-int NineChess::isInMills(int pos, bool test)
+int MillGame::isInMills(int pos, bool test)
 {
     int n = 0;
     int pos1, pos2;
@@ -1445,7 +1445,7 @@ int NineChess::isInMills(int pos, bool test)
     return n;
 }
 
-int NineChess::addMills(int pos)
+int MillGame::addMills(int pos)
 {
     // 成三用一个64位整数了，规则如下
     // 0x   00     00     00    00    00    00    00    00
@@ -1521,7 +1521,7 @@ int NineChess::addMills(int pos)
     return n;
 }
 
-bool NineChess::isAllInMills(char ch)
+bool MillGame::isAllInMills(char ch)
 {
     for (int i = POS_BEGIN; i < POS_END; i++) {
         if (board_[i] & ch) {
@@ -1534,7 +1534,7 @@ bool NineChess::isAllInMills(char ch)
     return true;
 }
 
-bool NineChess::isAllInMills(enum Player player)
+bool MillGame::isAllInMills(enum Player player)
 {
     char ch = 0x00;
 
@@ -1549,7 +1549,7 @@ bool NineChess::isAllInMills(enum Player player)
 }
 
 // 判断玩家的棋子周围有几个空位
-int NineChess::getSurroundedEmptyPosCount(int pos, bool includeFobidden)
+int MillGame::getSurroundedEmptyPosCount(int pos, bool includeFobidden)
 {
     int count = 0;
 
@@ -1573,7 +1573,7 @@ int NineChess::getSurroundedEmptyPosCount(int pos, bool includeFobidden)
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int NineChess::getMobilityDiff(bool includeFobidden)
+int MillGame::getMobilityDiff(bool includeFobidden)
 {
     int *board = context.board;
     int mobility1 = 0;
@@ -1597,7 +1597,7 @@ int NineChess::getMobilityDiff(bool includeFobidden)
 }
 
 // 判断玩家的棋子是否被围
-bool NineChess::isSurrounded(int pos)
+bool MillGame::isSurrounded(int pos)
 {
     // 判断pos处的棋子是否被“闷”
     if ((context.turn == PLAYER1 &&
@@ -1618,7 +1618,7 @@ bool NineChess::isSurrounded(int pos)
     return false;
 }
 
-bool NineChess::isAllSurrounded(char ch)
+bool MillGame::isAllSurrounded(char ch)
 {
     // 如果摆满
     if (context.nPiecesOnBoard_1 + context.nPiecesOnBoard_2 >= N_SEATS * N_RINGS)
@@ -1650,7 +1650,7 @@ bool NineChess::isAllSurrounded(char ch)
 }
 
 // 判断玩家的棋子是否全部被围
-bool NineChess::isAllSurrounded(enum Player ply)
+bool MillGame::isAllSurrounded(enum Player ply)
 {
     char t = '\x30';
 
@@ -1662,7 +1662,7 @@ bool NineChess::isAllSurrounded(enum Player ply)
     return isAllSurrounded(t);
 }
 
-void NineChess::cleanForbiddenPoints()
+void MillGame::cleanForbiddenPoints()
 {
     int pos = 0;
 
@@ -1680,7 +1680,7 @@ void NineChess::cleanForbiddenPoints()
     }
 }
 
-enum NineChess::Player NineChess::changeTurn()
+enum MillGame::Player MillGame::changeTurn()
 {
     // 设置轮到谁走
     context.turn = (context.turn == PLAYER1) ? PLAYER2 : PLAYER1;
@@ -1688,15 +1688,15 @@ enum NineChess::Player NineChess::changeTurn()
     return context.turn;
 }
 
-void NineChess::setTips()
+void MillGame::setTips()
 {
     switch (context.stage) {
-    case NineChess::GAME_NOTSTARTED:
+    case MillGame::GAME_NOTSTARTED:
         tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子" +
             "  比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         break;
 
-    case NineChess::GAME_PLACING:
+    case MillGame::GAME_PLACING:
         if (context.action == ACTION_PLACE) {
             if (context.turn == PLAYER1) {
                 tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
@@ -1712,7 +1712,7 @@ void NineChess::setTips()
         }
         break;
 
-    case NineChess::GAME_MOVING:
+    case MillGame::GAME_MOVING:
         if (context.action == ACTION_PLACE || context.action == ACTION_CHOOSE) {
             if (context.turn == PLAYER1) {
                 tips = "轮到玩家1选子移动";
@@ -1728,7 +1728,7 @@ void NineChess::setTips()
         }
         break;
 
-    case NineChess::GAME_OVER:
+    case MillGame::GAME_OVER:
         if (winner == DRAW) {
             score_draw++;
             tips = "双方平局！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);            
@@ -1758,7 +1758,7 @@ void NineChess::setTips()
     }
 }
 
-enum NineChess::Player NineChess::getWhosPiece(int r, int s)
+enum MillGame::Player MillGame::getWhosPiece(int r, int s)
 {
     int pos = rs2Pos(r, s);
 
@@ -1771,7 +1771,7 @@ enum NineChess::Player NineChess::getWhosPiece(int r, int s)
     return NOBODY;
 }
 
-void NineChess::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
+void MillGame::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
 {
     update();
 
@@ -1779,7 +1779,7 @@ void NineChess::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
     p2_ms = elapsedSeconds_2;
 }
 
-void NineChess::mirror(bool cmdChange /*= true*/)
+void MillGame::mirror(bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -1891,7 +1891,7 @@ void NineChess::mirror(bool cmdChange /*= true*/)
     }
 }
 
-void NineChess::turn(bool cmdChange /*= true*/)
+void MillGame::turn(bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -2056,7 +2056,7 @@ void NineChess::turn(bool cmdChange /*= true*/)
     }
 }
 
-void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
+void MillGame::rotate(int degrees, bool cmdChange /*= true*/)
 {
     // 将degrees转化为0~359之间的数
     degrees = degrees % 360;
@@ -2241,18 +2241,18 @@ void NineChess::rotate(int degrees, bool cmdChange /*= true*/)
  * 0位：轮流标识，0为先手，1为后手
  */
 
-void NineChess::constructHash()
+void MillGame::constructHash()
 {
     context.hash = 0;
 
 #include "zobrist.h"
-    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * NineChess::N_POINTS * NineChess::POINT_TYPE_COUNT);
+    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * MillGame::N_POINTS * MillGame::POINT_TYPE_COUNT);
 
 #if 0
     // 预留末8位后续填充局面特征标志
     for (int p = 0; p < N_POINTS; p++) {
         //qDebug("{\n");
-        for (int t = NineChess::POINT_TYPE_EMPTY; t <= NineChess::POINT_TYPE_FORBIDDEN; t++) {
+        for (int t = MillGame::POINT_TYPE_EMPTY; t <= MillGame::POINT_TYPE_FORBIDDEN; t++) {
             context.zobrist[p][t] = rand56();
             //qDebug("%llX, ", context.zobrist[p][t]);
         }
@@ -2261,7 +2261,7 @@ void NineChess::constructHash()
 #endif
 }
 
-NineChess::hash_t NineChess::getHash()
+MillGame::hash_t MillGame::getHash()
 {
     // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
     updateHashMisc();
@@ -2269,7 +2269,7 @@ NineChess::hash_t NineChess::getHash()
     return context.hash;
 }
 
-NineChess::hash_t NineChess::updateHash(int pos)
+MillGame::hash_t MillGame::updateHash(int pos)
 {
     // PieceType is board_[pos]
 
@@ -2282,12 +2282,12 @@ NineChess::hash_t NineChess::updateHash(int pos)
     return context.hash;
 }
 
-NineChess::hash_t NineChess::revertHash(int pos)
+MillGame::hash_t MillGame::revertHash(int pos)
 {
     return updateHash(pos);
 }
 
-NineChess::hash_t NineChess::updateHashMisc()
+MillGame::hash_t MillGame::updateHashMisc()
 {
     // 清除标记位
     context.hash &= static_cast<hash_t>(~0xFF);
@@ -2302,8 +2302,8 @@ NineChess::hash_t NineChess::updateHashMisc()
         context.hash |= 1U << 1;
     }
 
-    context.hash |= static_cast<NineChess::hash_t>(context.nPiecesNeedRemove) << 2;
-    context.hash |= static_cast<NineChess::hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 game.stage 也可以？
+    context.hash |= static_cast<MillGame::hash_t>(context.nPiecesNeedRemove) << 2;
+    context.hash |= static_cast<MillGame::hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 game.stage 也可以？
 
     return context.hash;
 }

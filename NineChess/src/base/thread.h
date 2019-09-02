@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -26,7 +26,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QTimer>
-#include "ninechess.h"
+#include "millgame.h"
 #include "search.h"
 #include "server.h"
 #include "client.h"
@@ -54,8 +54,8 @@ protected:
 
 public:
     // AI设置
-    void setAi(const NineChess &chess);
-    void setAi(const NineChess &chess, NineChessAi_ab::depth_t depth, int time);
+    void setAi(const MillGame &chess);
+    void setAi(const MillGame &chess, MillGameAi_ab::depth_t depth, int time);
 
     Server *getServer()
     {
@@ -68,7 +68,7 @@ public:
     }
 
     // 深度和限时
-    void getDepthTime(NineChessAi_ab::depth_t &depth, int &time)
+    void getDepthTime(MillGameAi_ab::depth_t &depth, int &time)
     {
         depth = aiDepth;
         time = aiTime;
@@ -107,13 +107,13 @@ private:
     QWaitCondition pauseCondition;
 
     // 主线程棋对象的引用
-    const NineChess *chess_;
+    const MillGame *chess_;
 
     // Alpha-Beta剪枝算法类
-    NineChessAi_ab ai_ab;
+    MillGameAi_ab ai_ab;
 
     // AI的层数
-    NineChessAi_ab::depth_t aiDepth;
+    MillGameAi_ab::depth_t aiDepth;
 
     // AI的限时
     int aiTime;

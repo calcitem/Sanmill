@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -37,7 +37,7 @@
 #include <QStringListModel>
 #include <QModelIndex>
 
-#include "ninechess.h"
+#include "millgame.h"
 #include "gamescene.h"
 #include "pieceitem.h"
 #include "thread.h"
@@ -90,8 +90,8 @@ public:
         return &manualListModel;
     }
 
-    void setAiDepthTime(NineChessAi_ab::depth_t depth1, int time1, NineChessAi_ab::depth_t depth2, int time2);
-    void getAiDepthTime(NineChessAi_ab::depth_t &depth1, int &time1, NineChessAi_ab::depth_t &depth2, int &time2);
+    void setAiDepthTime(MillGameAi_ab::depth_t depth1, int time1, MillGameAi_ab::depth_t depth2, int time2);
+    void getAiDepthTime(MillGameAi_ab::depth_t &depth1, int &time1, MillGameAi_ab::depth_t &depth2, int &time2);
 
 signals:
 
@@ -116,7 +116,7 @@ signals:
 public slots:
 
     // 设置规则
-    void setRule(int ruleNo, NineChess::step_t stepLimited = UINT16_MAX, int timeLimited = -1);
+    void setRule(int ruleNo, MillGame::step_t stepLimited = UINT16_MAX, int timeLimited = -1);
 
     // 游戏开始
     void gameStart();
@@ -173,7 +173,7 @@ public slots:
 
     // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();
-    bool updateScence(NineChess &chess);
+    bool updateScence(MillGame &chess);
 
     // 显示网络配置窗口
     void showNetworkWindow();
@@ -185,10 +185,10 @@ protected:
 
 private:
     // 棋对象的数据模型
-    NineChess chess_;
+    MillGame chess_;
 
     // 棋对象的数据模型（临时）
-    NineChess chessTemp;
+    MillGame chessTemp;
 
     // 2个AI的线程
     AiThread ai1, ai2;
@@ -239,7 +239,7 @@ private:
     int timeLimit;
 
     // 规则限步数
-    NineChess::step_t stepsLimit;
+    MillGame::step_t stepsLimit;
 
     // 玩家1剩余时间（秒）
     time_t remainingTime1;

@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -34,35 +34,35 @@ using namespace CTSL;
 
 #ifdef HASH_MAP_ENABLE
 static constexpr int hashsize = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
-HashMap<NineChess::hash_t, NineChessAi_ab::HashValue> hashmap(hashsize);
+HashMap<MillGame::hash_t, MillGameAi_ab::HashValue> hashmap(hashsize);
 #endif // HASH_MAP_ENABLE
 
 #ifdef BOOK_LEARNING
 static constexpr int bookHashsize = 0x1000000; // 16M
-HashMap<NineChess::hash_t, NineChessAi_ab::HashValue> bookHashMap(bookHashsize);
-vector<NineChess::hash_t> openingBook;
+HashMap<MillGame::hash_t, MillGameAi_ab::HashValue> bookHashMap(bookHashsize);
+vector<MillGame::hash_t> openingBook;
 #endif // BOOK_LEARNING
 
 #ifdef THREEFOLD_REPETITION
-vector<NineChess::hash_t> positions;
+vector<MillGame::hash_t> positions;
 #endif
 
-NineChessAi_ab::NineChessAi_ab()
+MillGameAi_ab::MillGameAi_ab()
 {
     buildRoot();
 }
 
-NineChessAi_ab::~NineChessAi_ab()
+MillGameAi_ab::~MillGameAi_ab()
 {
     deleteTree(rootNode);
     rootNode = nullptr;
 }
 
-NineChessAi_ab::depth_t NineChessAi_ab::changeDepth(depth_t originalDepth)
+MillGameAi_ab::depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 {
     depth_t newDepth = originalDepth;
 
-    if ((chessTemp.context.stage) & (NineChess::GAME_PLACING)) {
+    if ((chessTemp.context.stage) & (MillGame::GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
 #ifdef HASH_MAP_ENABLE
@@ -90,7 +90,7 @@ NineChessAi_ab::depth_t NineChessAi_ab::changeDepth(depth_t originalDepth)
 
 #ifdef GAME_MOVING_FIXED_DEPTH
     // 走棋阶段将深度调整
-    if ((chessTemp.context.stage) & (NineChess::GAME_MOVING)) {
+    if ((chessTemp.context.stage) & (MillGame::GAME_MOVING)) {
         newDepth = GAME_MOVING_FIXED_DEPTH;
     }
 #endif /* GAME_MOVING_FIXED_DEPTH */
@@ -100,17 +100,17 @@ NineChessAi_ab::depth_t NineChessAi_ab::changeDepth(depth_t originalDepth)
     return newDepth;
 }
 
-void NineChessAi_ab::buildRoot()
+void MillGameAi_ab::buildRoot()
 {
-    rootNode = addNode(nullptr, 0, 0, 0, NineChess::NOBODY);
+    rootNode = addNode(nullptr, 0, 0, 0, MillGame::NOBODY);
 }
 
-struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
+struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     Node *parent,
     value_t value,
     move_t move,
     move_t bestMove,
-    enum NineChess::Player player
+    enum MillGame::Player player
 )
 {
 #ifdef MEMORY_POOL
@@ -183,7 +183,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
             // 优先成三
-            if (chessTemp.getStage() == NineChess::GAME_PLACING && move > 0 && chessTemp.isInMills(move, true)) {
+            if (chessTemp.getStage() == MillGame::GAME_PLACING && move > 0 && chessTemp.isInMills(move, true)) {
                 parent->children.insert(parent->children.begin(), newNode);
             } else {
                 parent->children.push_back(newNode);
@@ -202,7 +202,7 @@ struct NineChessAi_ab::Node *NineChessAi_ab::addNode(
 
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
 #ifdef RANDOM_MOVE
-void NineChessAi_ab::shuffleMovePriorityTable()
+void MillGameAi_ab::shuffleMovePriorityTable()
 {
     array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 中圈四个顶点 (星位)
     array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
@@ -235,17 +235,17 @@ void NineChessAi_ab::shuffleMovePriorityTable()
 #endif // #ifdef RANDOM_MOVE
 #endif // MOVE_PRIORITY_TABLE_SUPPORT
 
-void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
+void MillGameAi_ab::generateLegalMoves(Node *node, move_t bestMove)
 {
-    const int MOVE_PRIORITY_TABLE_SIZE = NineChess::N_RINGS * NineChess::N_SEATS;
+    const int MOVE_PRIORITY_TABLE_SIZE = MillGame::N_RINGS * MillGame::N_SEATS;
     int pos = 0;
     size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
     switch (chessTemp.getStage()) {
-    case NineChess::GAME_PLACING:
-        if (chessTemp.getAction() == NineChess::ACTION_CAPTURE) {
-            if (chessTemp.whosTurn() == NineChess::PLAYER1)
+    case MillGame::GAME_PLACING:
+        if (chessTemp.getAction() == MillGame::ACTION_CAPTURE) {
+            if (chessTemp.whosTurn() == MillGame::PLAYER1)
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_2());
             else
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_1());
@@ -253,9 +253,9 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
             newCapacity = static_cast<size_t>(chessTemp.getPiecesInHandCount_1() + chessTemp.getPiecesInHandCount_2());
         }
         break;
-    case NineChess::GAME_MOVING:
-        if (chessTemp.getAction() == NineChess::ACTION_CAPTURE) {
-            if (chessTemp.whosTurn() == NineChess::PLAYER1)
+    case MillGame::GAME_MOVING:
+        if (chessTemp.getAction() == MillGame::ACTION_CAPTURE) {
+            if (chessTemp.whosTurn() == MillGame::PLAYER1)
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_2());
             else
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_1());
@@ -263,7 +263,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
             newCapacity = 6;
         }
         break;
-    case NineChess::GAME_NOTSTARTED:
+    case MillGame::GAME_NOTSTARTED:
         newCapacity = 24;
         break;
     default:
@@ -300,15 +300,15 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
     }
 
     // 对手
-    NineChess::Player opponent = NineChess::getOpponent(chessTemp.context.turn);
+    MillGame::Player opponent = MillGame::getOpponent(chessTemp.context.turn);
 
     // 列出所有合法的下一招
     switch (chessTemp.context.action) {
     // 对于选子和落子动作
-    case NineChess::ACTION_CHOOSE:
-    case NineChess::ACTION_PLACE:
+    case MillGame::ACTION_CHOOSE:
+    case MillGame::ACTION_PLACE:
         // 对于摆子阶段
-        if (chessTemp.context.stage & (NineChess::GAME_PLACING | NineChess::GAME_NOTSTARTED)) {
+        if (chessTemp.context.stage & (MillGame::GAME_PLACING | MillGame::GAME_NOTSTARTED)) {
             for (int i : movePriorityTable) {
                 pos = i;
 
@@ -316,11 +316,11 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
                     continue;
                 }
 
-                if (chessTemp.context.stage != NineChess::GAME_NOTSTARTED || node != rootNode) {
+                if (chessTemp.context.stage != MillGame::GAME_NOTSTARTED || node != rootNode) {
                     addNode(node, 0, pos, bestMove, chessTemp.context.turn);
                 } else {
                     // 若为先手，则抢占星位
-                    if (NineChess::isStarPoint(pos)) {
+                    if (MillGame::isStarPoint(pos)) {
                         addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
                     }
                 }
@@ -329,7 +329,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
         }
 
         // 对于移子阶段
-        if (chessTemp.context.stage & NineChess::GAME_MOVING) {
+        if (chessTemp.context.stage & MillGame::GAME_MOVING) {
             int newPos, oldPos;
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
             // 尽量从位置理论上较差的位置向位置较好的地方移动
@@ -343,14 +343,14 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
                     continue;
                 }
 
-                if ((chessTemp.context.turn == NineChess::PLAYER1 &&
+                if ((chessTemp.context.turn == MillGame::PLAYER1 &&
                     (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
-                    (chessTemp.context.turn == NineChess::PLAYER2 &&
+                    (chessTemp.context.turn == MillGame::PLAYER2 &&
                     (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
-                    for (int moveDirection = NineChess::MOVE_DIRECTION_CLOCKWISE; moveDirection <= NineChess::MOVE_DIRECTION_OUTWARD; moveDirection++) {
+                    for (int moveDirection = MillGame::MOVE_DIRECTION_CLOCKWISE; moveDirection <= MillGame::MOVE_DIRECTION_OUTWARD; moveDirection++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newPos = NineChess::moveTable[oldPos][moveDirection];
+                        newPos = MillGame::moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
                             addNode(node, 0, move, bestMove, chessTemp.context.turn); // (12%)
@@ -358,7 +358,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
                     }
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
-                    for (newPos = NineChess::POS_BEGIN; newPos < NineChess::POS_END; newPos++) {
+                    for (newPos = MillGame::POS_BEGIN; newPos < MillGame::POS_END; newPos++) {
                         if (!chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
                             addNode(node, 0, move, bestMove, chessTemp.context.turn);
@@ -370,7 +370,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
         break;
 
     // 对于吃子动作
-    case NineChess::ACTION_CAPTURE:
+    case MillGame::ACTION_CAPTURE:
         if (chessTemp.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
@@ -398,7 +398,7 @@ void NineChessAi_ab::generateLegalMoves(Node *node, move_t bestMove)
     }
 }
 
-bool NineChessAi_ab::nodeLess(const Node *first, const Node *second)
+bool MillGameAi_ab::nodeLess(const Node *first, const Node *second)
 {
 #ifdef SORT_CONSIDER_PRUNED
     if (first->value < second->value) {
@@ -416,7 +416,7 @@ bool NineChessAi_ab::nodeLess(const Node *first, const Node *second)
 #endif
 }
 
-bool NineChessAi_ab::nodeGreater(const Node *first, const Node *second)
+bool MillGameAi_ab::nodeGreater(const Node *first, const Node *second)
 {
 #ifdef SORT_CONSIDER_PRUNED
     if (first->value > second->value) {
@@ -434,18 +434,18 @@ bool NineChessAi_ab::nodeGreater(const Node *first, const Node *second)
 #endif
 }
 
-void NineChessAi_ab::sortLegalMoves(Node *node)
+void MillGameAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    if (chessTemp.whosTurn() == NineChess::PLAYER1) {
+    if (chessTemp.whosTurn() == MillGame::PLAYER1) {
         std::stable_sort(node->children.begin(), node->children.end(), nodeGreater);
     } else {
         std::stable_sort(node->children.begin(), node->children.end(), nodeLess);
     }
 }
 
-void NineChessAi_ab::deleteTree(Node *node)
+void MillGameAi_ab::deleteTree(Node *node)
 {
     // 递归删除节点树
     if (node == nullptr) {
@@ -465,7 +465,7 @@ void NineChessAi_ab::deleteTree(Node *node)
 #endif  
 }
 
-void NineChessAi_ab::setChess(const NineChess &chess)
+void MillGameAi_ab::setChess(const MillGame &chess)
 {
     // 如果规则改变，重建hashmap
     if (strcmp(this->chess_.currentRule.name, chess.currentRule.name) != 0) {
@@ -501,8 +501,8 @@ void NineChessAi_ab::setChess(const NineChess &chess)
     rootNode->pruned = false;
 #endif
 #ifdef DEBUG_AB_TREE
-    rootNode->action = NineChess::ACTION_NONE;
-    rootNode->stage = NineChess::GAME_NONE;
+    rootNode->action = MillGame::ACTION_NONE;
+    rootNode->stage = MillGame::GAME_NONE;
     rootNode->root = rootNode;
 #endif
 }
@@ -511,56 +511,56 @@ void NineChessAi_ab::setChess(const NineChess &chess)
 #ifdef EVALUATE_ENABLE
 
 #ifdef EVALUATE_MATERIAL
-NineChessAi_ab::value_t NineChessAi_ab::evaluateMaterial(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluateMaterial(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_SPACE
-NineChessAi_ab::value_t NineChessAi_ab::evaluateSpace(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluateSpace(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_MOBILITY
-NineChessAi_ab::value_t NineChessAi_ab::evaluateMobility(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluateMobility(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_TEMPO
-NineChessAi_ab::value_t NineChessAi_ab::evaluateTempo(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluateTempo(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_THREAT
-NineChessAi_ab::value_t NineChessAi_ab::evaluateThreat(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluateThreat(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_SHAPE
-NineChessAi_ab::value_t NineChessAi_ab::evaluateShape(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluateShape(Node *node)
 {
     return 0;
 }
 #endif
 
 #ifdef EVALUATE_MOTIF
-NineChessAi_ab::value_t NineChessAi_ab::evaluateMotif(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluateMotif(Node *node)
 {
     return 0;
 }
 #endif
 #endif /* EVALUATE_ENABLE */
 
-NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::evaluate(Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = 0;
@@ -578,10 +578,10 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
 #endif
 
     switch (chessContext->stage) {
-    case NineChess::GAME_NOTSTARTED:
+    case MillGame::GAME_NOTSTARTED:
         break;
 
-    case NineChess::GAME_PLACING:
+    case MillGame::GAME_PLACING:
         // 按手中的棋子计分，不要break;
         nPiecesInHandDiff = chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2;
         value += nPiecesInHandDiff * 50;
@@ -598,13 +598,13 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
 
         switch (chessContext->action) {
         // 选子和落子使用相同的评价方法
-        case NineChess::ACTION_CHOOSE:
-        case NineChess::ACTION_PLACE:
+        case MillGame::ACTION_CHOOSE:
+        case MillGame::ACTION_PLACE:
             break;
 
         // 如果形成去子状态，每有一个可去的子，算100分
-        case NineChess::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ?
+        case MillGame::ACTION_CAPTURE:
+            nPiecesNeedRemove = (chessContext->turn == MillGame::PLAYER1) ?
                 chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * 100;
 #ifdef DEBUG_AB_TREE
@@ -617,7 +617,7 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
 
         break;
 
-    case NineChess::GAME_MOVING:
+    case MillGame::GAME_MOVING:
         // 按场上棋子计分
         value += chessContext->nPiecesOnBoard_1 * 100 - chessContext->nPiecesOnBoard_2 * 100;
 
@@ -628,13 +628,13 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
 
         switch (chessContext->action) {
          // 选子和落子使用相同的评价方法
-        case NineChess::ACTION_CHOOSE:
-        case NineChess::ACTION_PLACE:
+        case MillGame::ACTION_CHOOSE:
+        case MillGame::ACTION_PLACE:
             break;
 
             // 如果形成去子状态，每有一个可去的子，算128分
-        case NineChess::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == NineChess::PLAYER1) ?
+        case MillGame::ACTION_CAPTURE:
+            nPiecesNeedRemove = (chessContext->turn == MillGame::PLAYER1) ?
                 chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * 128;
 #ifdef DEBUG_AB_TREE
@@ -648,10 +648,10 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
         break;
 
     // 终局评价最简单
-    case NineChess::GAME_OVER:
+    case MillGame::GAME_OVER:
         // 布局阶段闷棋判断
         if (chessContext->nPiecesOnBoard_1 + chessContext->nPiecesOnBoard_2 >=
-            NineChess::N_SEATS * NineChess::N_RINGS) {
+            MillGame::N_SEATS * MillGame::N_RINGS) {
             if (chessTemp.currentRule.isStartingPlayerLoseWhenBoardFull) {
                 // winner = PLAYER2;
                 value -= 10000;
@@ -664,11 +664,11 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
         }
 
         // 走棋阶段被闷判断
-        if (chessContext->action == NineChess::ACTION_CHOOSE &&
+        if (chessContext->action == MillGame::ACTION_CHOOSE &&
             chessTemp.isAllSurrounded(chessContext->turn) &&
             chessTemp.currentRule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-                if (chessContext->turn == NineChess::PLAYER1) {
+                if (chessContext->turn == MillGame::PLAYER1) {
                     value -= 10000;
 #ifdef DEBUG_AB_TREE
                     node->result = -2;
@@ -705,7 +705,7 @@ NineChessAi_ab::value_t NineChessAi_ab::evaluate(Node *node)
     return value;
 }
 
-int NineChessAi_ab::alphaBetaPruning(depth_t depth)
+int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 {
     QTime time1;
     value_t value = 0;
@@ -718,7 +718,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth)
     time1.start();
 
 #ifdef BOOK_LEARNING
-    if (chess_.getStage() == NineChess::GAME_PLACING)
+    if (chess_.getStage() == MillGame::GAME_PLACING)
     {
         if (chess_.context.nPiecesInHand_1 <= 10) {
             // 开局库只记录摆棋阶段最后的局面
@@ -733,8 +733,8 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (chess_.getStage() == NineChess::GAME_MOVING) {
-        NineChess::hash_t hash = chess_.getHash();
+    if (chess_.getStage() == MillGame::GAME_MOVING) {
+        MillGame::hash_t hash = chess_.getHash();
         
         if (std::find(positions.begin(), positions.end(), hash) != positions.end()) {
             nRepetition++;
@@ -747,7 +747,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth)
         }
     }
 
-    if (chess_.getStage() == NineChess::GAME_PLACING) {
+    if (chess_.getStage() == MillGame::GAME_PLACING) {
         positions.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -787,7 +787,7 @@ int NineChessAi_ab::alphaBetaPruning(depth_t depth)
     return 0;
 }
 
-NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node)
+MillGameAi_ab::value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node)
 {
     // 评价值
     value_t value;
@@ -810,7 +810,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
     enum HashType hashf = hashfALPHA;
 
     // 获取哈希值
-    NineChess::hash_t hash = chessTemp.getHash();
+    MillGame::hash_t hash = chessTemp.getHash();
 #ifdef DEBUG_AB_TREE
     node->hash = hash;
 #endif
@@ -841,7 +841,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
 
 #if 0
         // TODO: 有必要针对深度微调 value?
-        if (chessContext->turn == NineChess::PLAYER1)
+        if (chessContext->turn == MillGame::PLAYER1)
             node->value += hashValue.depth - depth;
         else
             node->value -= hashValue.depth - depth;
@@ -868,7 +868,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
 #endif // DEBUG_AB_TREE
 
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-    if (chessContext->stage == NineChess::GAME_OVER) {
+    if (chessContext->stage == MillGame::GAME_OVER) {
         // 局面评估
         node->value = evaluate(node);
 
@@ -897,7 +897,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
         node->value = evaluate(node);
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        if (chessContext->turn == NineChess::PLAYER1) {
+        if (chessContext->turn == MillGame::PLAYER1) {
             node->value += depth;
         } else {
             node->value -= depth;
@@ -911,8 +911,8 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
 
 #ifdef BOOK_LEARNING
         // 检索开局库
-        if (chessContext->stage == NineChess::GAME_PLACING && findBookHash(hash, hashValue)) {
-            if (chessContext->turn == NineChess::PLAYER2) {
+        if (chessContext->stage == MillGame::GAME_PLACING && findBookHash(hash, hashValue)) {
+            if (chessContext->turn == MillGame::PLAYER2) {
                 // 是否需对后手扣分 // TODO: 先后手都处理
                 node->value += 1;
                 // qDebug() << ">>>>>>>>>>>>>>> New soccer = " << node->value;
@@ -933,7 +933,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = chessTemp.whosTurn() == NineChess::PLAYER1 ? -INF_VALUE : INF_VALUE;
+    minMax = chessTemp.whosTurn() == MillGame::PLAYER1 ? -INF_VALUE : INF_VALUE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
@@ -964,7 +964,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
         chessTemp.context = contextStack.top();
         contextStack.pop();
 
-        if (chessTemp.whosTurn() == NineChess::PLAYER1) {
+        if (chessTemp.whosTurn() == MillGame::PLAYER1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -1052,7 +1052,7 @@ NineChessAi_ab::value_t NineChessAi_ab::alphaBetaPruning(depth_t depth, value_t 
     return node->value;
 }
 
-const char* NineChessAi_ab::bestMove()
+const char* MillGameAi_ab::bestMove()
 {
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
@@ -1125,7 +1125,7 @@ const char* NineChessAi_ab::bestMove()
     return move2string(bestMoves[0]->move);
 }
 
-const char *NineChessAi_ab::move2string(move_t move)
+const char *MillGameAi_ab::move2string(move_t move)
 {
     int r, s;
 
@@ -1146,7 +1146,7 @@ const char *NineChessAi_ab::move2string(move_t move)
 }
 
 #ifdef HASH_MAP_ENABLE
-NineChessAi_ab::value_t NineChessAi_ab::probeHash(NineChess::hash_t hash,
+MillGameAi_ab::value_t MillGameAi_ab::probeHash(MillGame::hash_t hash,
                                                   depth_t depth, value_t alpha, value_t beta,
                                                   move_t &bestMove, HashType &type)
 {
@@ -1182,7 +1182,7 @@ out:
     return valUNKNOWN;
 }
 
-bool NineChessAi_ab::findHash(NineChess::hash_t hash, HashValue &hashValue)
+bool MillGameAi_ab::findHash(MillGame::hash_t hash, HashValue &hashValue)
 {
     return hashmap.find(hash, hashValue);
 
@@ -1211,7 +1211,7 @@ bool NineChessAi_ab::findHash(NineChess::hash_t hash, HashValue &hashValue)
 #endif
 }
 
-int NineChessAi_ab::recordHash(value_t value, depth_t depth, HashType type, NineChess::hash_t hash, move_t bestMove)
+int MillGameAi_ab::recordHash(value_t value, depth_t depth, HashType type, MillGame::hash_t hash, move_t bestMove)
 {
     // 同样深度或更深时替换
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
@@ -1241,7 +1241,7 @@ int NineChessAi_ab::recordHash(value_t value, depth_t depth, HashType type, Nine
     return 0;
 }
 
-void NineChessAi_ab::clearHashMap()
+void MillGameAi_ab::clearHashMap()
 {
     //hashMapMutex.lock();
     hashmap.clear();
@@ -1251,12 +1251,12 @@ void NineChessAi_ab::clearHashMap()
 
 #ifdef BOOK_LEARNING
 
-bool NineChessAi_ab::findBookHash(NineChess::hash_t hash, HashValue &hashValue)
+bool MillGameAi_ab::findBookHash(MillGame::hash_t hash, HashValue &hashValue)
 {
     return bookHashMap.find(hash, hashValue);
 }
 
-int NineChessAi_ab::recordBookHash(NineChess::hash_t hash, const HashValue &hashValue)
+int MillGameAi_ab::recordBookHash(MillGame::hash_t hash, const HashValue &hashValue)
 {
     //hashMapMutex.lock();
     bookHashMap.insert(hash, hashValue);
@@ -1265,17 +1265,17 @@ int NineChessAi_ab::recordBookHash(NineChess::hash_t hash, const HashValue &hash
     return 0;
 }
 
-void NineChessAi_ab::clearBookHashMap()
+void MillGameAi_ab::clearBookHashMap()
 {
     //hashMapMutex.lock();
     bookHashMap.clear();
     //hashMapMutex.unlock();
 }
 
-void NineChessAi_ab::recordOpeningBookToHashMap()
+void MillGameAi_ab::recordOpeningBookToHashMap()
 {
     HashValue hashValue;
-    NineChess::hash_t hash = 0;
+    MillGame::hash_t hash = 0;
 
     for (auto iter = openingBook.begin(); iter != openingBook.end(); ++iter)
     {
@@ -1294,14 +1294,14 @@ void NineChessAi_ab::recordOpeningBookToHashMap()
     openingBook.clear();
 }
 
-void NineChessAi_ab::recordOpeningBookHashMapToFile()
+void MillGameAi_ab::recordOpeningBookHashMapToFile()
 {
     const QString bookFileName = "opening-book.txt";
     qDebug() << "Dump Opening Book to file...";
     bookHashMap.dump(bookFileName);
 }
 
-void NineChessAi_ab::loadOpeningBookFileToHashMap()
+void MillGameAi_ab::loadOpeningBookFileToHashMap()
 {
     const QString bookFileName = "opening-book.txt";
     qDebug() << "Loading Opening Book from file...";

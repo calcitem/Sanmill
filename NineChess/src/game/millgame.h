@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
- * Copyright (C) 2018-2019 NineChess authors
+ * Copyright (C) 2018-2019 MillGame authors
  *
  * Authors: liuweilhy <liuweilhy@163.com>
  *          Calcitem <calcitem@outlook.com>
@@ -19,8 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#ifndef NINECHESS
-#define NINECHESS
+#ifndef MILLGAME_H
+#define MILLGAME_H
 
 #include <string>
 #include <cstring>
@@ -32,12 +32,12 @@ using std::string;
 using std::list;
 
 // 棋类（在数据模型内，玩家只分先后手，不分黑白）
-// 注意：NineChess类不是线程安全的！
-// 所以不能跨线程修改NineChess类的静态成员变量，切记！
-class NineChess
+// 注意：MillGame类不是线程安全的！
+// 所以不能跨线程修改MillGame类的静态成员变量，切记！
+class MillGame
 {
     // AI友元类
-    friend class NineChessAi_ab;
+    friend class MillGameAi_ab;
 
 public:
     // 静态成员常量
@@ -51,7 +51,7 @@ public:
     static const int N_DIRECTIONS = 3;
 
     // 棋盘点的个数：40
-    static const int N_POINTS = (NineChess::N_RINGS + 2) * NineChess::N_SEATS;
+    static const int N_POINTS = (MillGame::N_RINGS + 2) * MillGame::N_SEATS;
 
     // 移动方向，包括顺时针、逆时针、向内、向外4个方向
     enum MoveDirection
@@ -230,13 +230,13 @@ public:
 #endif /* HASH_MAP_ENABLE */
 
         // 局面阶段标识
-        enum NineChess::GameStage stage;
+        enum MillGame::GameStage stage;
 
         // 轮流状态标识
-        enum NineChess::Player turn;
+        enum MillGame::Player turn;
 
         // 动作状态标识
-        enum NineChess::Action action {};
+        enum MillGame::Action action {};
 
         // 玩家1剩余未放置子数
         int nPiecesInHand_1 {};
@@ -294,14 +294,14 @@ private:
     void constructHash();
 
 public:
-    explicit NineChess();
-    virtual ~NineChess();
+    explicit MillGame();
+    virtual ~MillGame();
 
     // 拷贝构造函数
-    explicit NineChess(const NineChess &);
+    explicit MillGame(const MillGame &);
 
     // 运算符重载
-    NineChess &operator=(const NineChess &);
+    MillGame &operator=(const MillGame &);
 
     // 设置棋局状态和棋盘上下文，用于初始化
     bool setContext(const struct Rule *rule,
@@ -523,7 +523,7 @@ protected:
     void cleanForbiddenPoints();
 
     // 改变轮流
-    enum NineChess::Player changeTurn();
+    enum MillGame::Player changeTurn();
 
     // 设置提示
     void setTips();
@@ -612,4 +612,4 @@ private:
     string tips;
 };
 
-#endif
+#endif /* MILLGAME_H */
