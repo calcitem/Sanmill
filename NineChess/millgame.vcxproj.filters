@@ -43,95 +43,42 @@
     <Filter Include="Project Files">
       <UniqueIdentifier>{16c52ca8-0391-4ad2-919c-4a865ad87e98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="View">
-      <UniqueIdentifier>{afa4cc20-6ea3-4aee-8211-eca831a215d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Control">
-      <UniqueIdentifier>{2dce63cc-311c-4d88-a5a4-7fdc289f99c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{bc588bf0-770b-4800-89b5-64e97e98b22a}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\aithread.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gamecontroller.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="src\boarditem.cpp">
-      <Filter>View</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gamescene.cpp">
-      <Filter>View</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gameview.cpp">
-      <Filter>View</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>View</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ninechesswindow.cpp">
-      <Filter>View</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pieceitem.cpp">
-      <Filter>View</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ninechess.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ninechessai_ab.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="src\server.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <QtMoc Include="src\aithread.h">
-      <Filter>Control</Filter>
-    </QtMoc>
-    <QtMoc Include="src\gamecontroller.h">
-      <Filter>Control</Filter>
-    </QtMoc>
-    <QtMoc Include="src\gamescene.h">
-      <Filter>View</Filter>
-    </QtMoc>
-    <ClInclude Include="src\graphicsconst.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ninechess.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ninechessai_ab.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\HashNode.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\HashMap.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\zobrist.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MemoryPool.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="src\StackAlloc.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="include\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ai\search.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ai\zobrist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\hashmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\HashNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\MemoryPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\stackalloc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\millgame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\qt\boarditem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\qt\graphicsconst.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -142,14 +89,6 @@
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    <ClInclude Include="ui_ninechesswindow.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="ninechesswindow.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon\ActualSizeHS.png">
@@ -257,23 +196,20 @@
     <None Include="Resources\image\board.png">
       <Filter>Resource Files</Filter>
     </None>
-    <QtRcc Include="ninechesswindow.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
     <None Include="Resources\image\white_piece.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Readme.md">
       <Filter>Text Files</Filter>
     </None>
-    <None Include="ninechess.pro">
-      <Filter>Project Files</Filter>
-    </None>
-    <None Include="src\MemoryPool.tcc">
-      <Filter>Model</Filter>
-    </None>
     <None Include="include\version.h.template">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="src\base\MemoryPool.tcc">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="millgame.pro">
+      <Filter>Project Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -288,38 +224,170 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\boarditem.h">
-      <Filter>View</Filter>
-    </ClInclude>
+    <QtMoc Include="src\base\thread.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\client.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\gamecontroller.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\gamescene.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\gameview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\gamewindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\manuallistview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\pieceitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\server.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="NineChess.ico">
-      <Filter>Project Files</Filter>
-    </Image>
+    <ClCompile Include="src\ui\qt\boarditem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gamecontroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gamescene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gameview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gamewindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\pieceitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\millgame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ai\search.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="NineChess.rc">
+    <ResourceCompile Include="millgame.rc">
       <Filter>Project Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\gameview.h">
-      <Filter>View</Filter>
-    </QtMoc>
-    <QtMoc Include="src\manuallistview.h">
-      <Filter>View</Filter>
-    </QtMoc>
-    <QtMoc Include="src\pieceitem.h">
-      <Filter>View</Filter>
-    </QtMoc>
-    <QtMoc Include="src\ninechesswindow.h">
-      <Filter>View</Filter>
-    </QtMoc>
-    <QtMoc Include="src\client.h">
-      <Filter>Control</Filter>
-    </QtMoc>
-    <QtMoc Include="src\server.h">
-      <Filter>Control</Filter>
-    </QtMoc>
+    <Image Include="millgame.ico">
+      <Filter>Project Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_account_child_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_desktop_windows_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_flag_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_fullscreen_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_insert_emoticon_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_laptop_windows_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_lens_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_menu_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_more_vert_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_panorama_fisheye_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_people_outline_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_radio_button_on_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_remove_circle_outline_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_reply_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_undo_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\icon\ic_visibility_black_48dp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="resources\sound\choose.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\drog.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\forbidden.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\loss.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\move.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\newgame.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\remove.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\win.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\warning.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\capture.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="gamewindow.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="gamewindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>
