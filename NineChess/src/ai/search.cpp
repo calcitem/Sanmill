@@ -332,7 +332,7 @@ void MillGameAi_ab::generateLegalMoves(Node *node, move_t bestMove)
         if (chessTemp.context.stage & MillGame::GAME_MOVING) {
             int newPos, oldPos;
 #ifdef MOVE_PRIORITY_TABLE_SUPPORT
-            // 尽量从位置理论上较差的位置向位置较好的地方移动
+            // 尽量走理论上较差的位置的棋子
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
 #else
             for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
