@@ -70,6 +70,9 @@ DISTFILES += \
 
 RC_FILE += millgame.rc
 
+# Mobile App support
+#DEFINES += MOBILE_APP_UI
+
 # With C++17 support
 greaterThan(QT_MAJOR_VERSION, 4) {
 CONFIG += c++17

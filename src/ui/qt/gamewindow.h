@@ -30,11 +30,7 @@
 
 #include "config.h"
 
-#ifdef MOBILE_APP_UI
-#include "ui_millwindow.h"
-#else
 #include "ui_gamewindow.h"
-#endif
 
 #include "server.h"
 #include "client.h"

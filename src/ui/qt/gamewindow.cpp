@@ -324,6 +324,15 @@ void MillGameWindow::initialize()
 #else /* MOBILE_APP_UI */
     int h = QApplication::desktop()->height();
     this->resize(QSize(h * 3/4, h * 3/4));
+
+    ui.pushButton_back->setVisible(false);
+    ui.pushButton_option->setVisible(false);
+    ui.label_2->setVisible(false);
+    ui.label->setVisible(false);
+    ui.pushButton_newGame->setVisible(false);
+    ui.pushButton_giveUp->setVisible(false);
+    ui.pushButton_retractMove->setVisible(false);
+    ui.pushButton_hint->setVisible(false);
 #endif /* MOBILE_APP_UI */
 
     // 窗口最大化
