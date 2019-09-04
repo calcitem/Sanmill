@@ -43,6 +43,18 @@
     <Filter Include="Project Files">
       <UniqueIdentifier>{16c52ca8-0391-4ad2-919c-4a865ad87e98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ai">
+      <UniqueIdentifier>{d56e01a7-0384-4d80-8a77-d84d0b5f833f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{b46f9543-9c34-4458-bc3b-29223bfd7fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{6580c956-6aa7-472b-a665-9e36fe68b3f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base">
+      <UniqueIdentifier>{c5349658-6cbb-4076-8529-29de7092f9d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -54,32 +66,32 @@
     <ClInclude Include="include\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ai\search.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\ai\zobrist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\hashmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\HashNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\MemoryPool.h">
-      <Filter>Header Files</Filter>
+      <Filter>ai</Filter>
     </ClInclude>
     <ClInclude Include="src\base\stackalloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\millgame.h">
-      <Filter>Header Files</Filter>
+      <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\qt\boarditem.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\qt\graphicsconst.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\millgame.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\MemoryPool.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\HashNode.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\hashmap.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ai\search.h">
+      <Filter>ai</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -205,11 +217,11 @@
     <None Include="include\version.h.template">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="src\base\MemoryPool.tcc">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="millgame.pro">
       <Filter>Project Files</Filter>
+    </None>
+    <None Include="src\base\MemoryPool.tcc">
+      <Filter>base</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -224,70 +236,70 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\base\thread.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="src\ui\qt\client.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="src\ui\qt\gamecontroller.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\gamescene.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\client.h">
+      <Filter>ui</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\gameview.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\gamewindow.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\manuallistview.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\pieceitem.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\server.h">
-      <Filter>Header Files</Filter>
+      <Filter>ui</Filter>
+    </QtMoc>
+    <QtMoc Include="src\base\thread.h">
+      <Filter>base</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ui\qt\boarditem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\qt\client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\qt\gamecontroller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\qt\gamescene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\qt\gameview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\qt\gamewindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\qt\pieceitem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\qt\server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\millgame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ai\search.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\base\thread.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\ui\qt\server.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\pieceitem.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gamewindow.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gameview.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gamescene.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\gamecontroller.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\boarditem.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\client.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\millgame.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ai\search.cpp">
+      <Filter>ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
