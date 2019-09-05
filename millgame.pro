@@ -81,3 +81,7 @@ CONFIG += c++17
 } else {
 QMAKE_CXXFLAGS += -std=c++0x
 }
+
+*msvc* {
+    QMAKE_CXXFLAGS += /MP
+}
