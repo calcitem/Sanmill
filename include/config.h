@@ -38,8 +38,6 @@
 #define EMIT_COMMAND_DELAY (0)
 #endif
 
-//#define AOTO_RESTART_GAME
-
 //#define MIN_MAX_ONLY
 
 //#define EVALUATE_ENABLE

@@ -50,6 +50,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     hasAnimation(true),
     durationTime(500),
     hasSound(true),
+    isAutoRestart(false),
     timeID(0),
     ruleNo_(-1),
     timeLimit(0),
@@ -144,10 +145,12 @@ void GameController::gameReset()
     chessTemp = chess_;
 
     // 停掉线程
-    ai1.stop();
-    ai2.stop();
-    isAiPlayer1 = false;
-    isAiPlayer2 = false;
+    if (!isAutoRestart) {
+        ai1.stop();
+        ai2.stop();
+        isAiPlayer1 = false;
+        isAiPlayer2 = false;
+    }
 
     // 清除棋子
     qDeleteAll(pieceList);
@@ -359,6 +362,11 @@ void GameController::playSound(const QString &soundPath)
         QSound::play(soundPath);
     }
 #endif /* ! DONOT_PLAY_SOUND */
+}
+
+void GameController::setAutoRestart(bool arg)
+{
+    isAutoRestart = arg;
 }
 
 // 上下翻转
@@ -862,8 +870,9 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
     if (chess_.whoWin() != MillGame::NOBODY &&
-        (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
+        (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
         playSound(":/sound/resources/sound/win.wav");
+    }
 #endif
 
     // AI设置
@@ -885,9 +894,21 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
             }
         }
         // 如果已经决出胜负
-        else {
-            ai1.stop();
-            ai2.stop();
+        else {           
+                ai1.stop();
+                ai2.stop();
+
+                if (isAutoRestart) {
+                    gameReset();
+                    gameStart();
+
+                    if (isAiPlayer1) {
+                        setEngine1(true);
+                    }
+                    if (isAiPlayer2) {
+                        setEngine2(true);
+                    }
+                }
 
 #ifdef MESSAGEBOX_ENABLE
             // 弹框

@@ -145,6 +145,9 @@ public slots:
     // 播放声音
     void playSound(const QString &soundPath);
 
+    // 是否自动开局
+    void setAutoRestart(bool arg = false);
+
     // 上下翻转
     void flip();
 
@@ -228,6 +231,9 @@ private:
 
     // 是否有落子音效
     bool hasSound;
+
+    // 是否棋局结束后自动重新开局
+    bool isAutoRestart;
 
     // 定时器ID
     int timeID;

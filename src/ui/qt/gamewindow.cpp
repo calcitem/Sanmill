@@ -199,11 +199,15 @@ void MillGameWindow::initialize()
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
             game, SLOT(setEngine2(bool)));
 
-    connect(ui.actionSound_S, SIGNAL(toggled(bool)),
+    connect(ui.
+            actionSound_S, SIGNAL(toggled(bool)),
             game, SLOT(setSound(bool)));
 
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             game, SLOT(setAnimation(bool)));
+
+    connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
+            game, SLOT(setAutoRestart(bool)));
 
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,

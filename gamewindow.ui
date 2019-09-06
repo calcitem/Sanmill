@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>491</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -276,6 +276,7 @@
     <addaction name="separator"/>
     <addaction name="actionEngine1_T"/>
     <addaction name="actionEngine2_R"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_O">
     <property name="title">
@@ -286,8 +287,11 @@
     <addaction name="actionToolBar_T"/>
     <addaction name="actionDockBar_D"/>
     <addaction name="actionMusic_M"/>
+    <addaction name="separator"/>
     <addaction name="actionSound_S"/>
     <addaction name="actionAnimation_A"/>
+    <addaction name="separator"/>
+    <addaction name="actionAutoRestart_A"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -1087,6 +1091,14 @@
    </property>
    <property name="toolTip">
     <string>关于(A)</string>
+   </property>
+  </action>
+  <action name="actionAutoRestart_A">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>自动重新开局(&amp;A)</string>
    </property>
   </action>
  </widget>

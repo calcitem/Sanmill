@@ -101,6 +101,7 @@ private slots:
     //void on_actionDockBar_D_toggled(bool arg1);
     //void on_actionSound_S_toggled(bool arg1);
     //void on_actionAnimation_A_toggled(bool arg1);
+    //void on_actionAutoRestart_A_triggered();
     void on_actionViewHelp_V_triggered();
     void on_actionWeb_W_triggered();
     void on_actionAbout_A_triggered();

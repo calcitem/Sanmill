@@ -1479,9 +1479,6 @@ bool MillGame::command(const char *cmd)
         tips = "三次重复局面判和。";
         sprintf(cmdline, "Threefold Repetition. Draw!");
         cmdlist.emplace_back(string(cmdline));
-#ifdef AOTO_RESTART_GAME
-        start();    // TODO: 待转移到更合适的位置
-#endif
         return true;
     }
 #endif
@@ -1985,10 +1982,6 @@ void MillGame::setTips()
             else
                 tips = "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         }
-
-#ifdef AOTO_RESTART_GAME
-        start();    // TODO: 待转移到更合适的位置
-#endif
 
         break;
 
