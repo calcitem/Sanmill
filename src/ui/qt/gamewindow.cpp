@@ -39,7 +39,6 @@
 #include <QToolTip>
 #include <QPicture>
 #include <QScreen>
-#include <QDebug>
 #include <QDesktopWidget>
 
 #include "gamewindow.h"
@@ -130,7 +129,7 @@ void MillGameWindow::closeEvent(QCloseEvent *event)
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);
 
-    //qDebug() << "closed";
+    loggerDebug("closed\n");
 
     QMainWindow::closeEvent(event);
 }
@@ -164,7 +163,6 @@ void MillGameWindow::initialize()
     QMap <int, QStringList> actions = game->getActions();
 
     for (auto i = actions.constBegin(); i != actions.constEnd(); i++) {
-        // qDebug() << i.key() << i.value();
         // QMap的key存放int索引值，value存放规则名称和规则提示
         auto *ruleAction = new QAction(i.value().at(0), this);
         ruleAction->setToolTip(i.value().at(1));
@@ -280,7 +278,6 @@ void MillGameWindow::initialize()
 
     // 因为QListView的rowsInserted在setModel之后才能启动，
     // 第一次需手动初始化选中listView第一项
-    //qDebug() << ui.listView->model();
     ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
 
     // 初始局面、前一步、后一步、最终局面的槽

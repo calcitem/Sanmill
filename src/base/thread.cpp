@@ -20,8 +20,6 @@
  *****************************************************************************/
 
 #include <QTimer>
-#include <QDebug>
-
 #include "thread.h"
 
 AiThread::AiThread(int id, QObject *parent) :
@@ -103,7 +101,7 @@ void AiThread::run()
     // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
     int i = 0;
 
-    qDebug() << "Thread" << id << "start";
+    loggerDebug("Thread %d start\n", id);
 
     while (!isInterruptionRequested()) {
         mutex.lock();
@@ -122,20 +120,16 @@ void AiThread::run()
 
         if (ai_ab.alphaBetaPruning(aiDepth) == 3) {
             // 三次重复局面和
-            qDebug() << "Draw\n";
+            loggerDebug("Draw\n\n");
             strCommand = "draw";
             QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
         } else {
             strCommand = ai_ab.bestMove();
             if (strCommand && strcmp(strCommand, "error!") != 0) {
-                qDebug() << "Computer:" << strCommand << "\n";
+                loggerDebug("Computer: %s\n\n", strCommand);
                 QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
             }
         }
-
-#ifdef DEBUG_MODE
-        qDebug() << "Thread" << id << "run" << ++iTemp << "times";
-#endif
 
         emit calcFinished();
 
@@ -147,7 +141,7 @@ void AiThread::run()
         mutex.unlock();
     }
 
-    qDebug() << "Thread" << id << "quit";
+    loggerDebug("Thread %d quit\n", id);
 }
 
 void AiThread::act()

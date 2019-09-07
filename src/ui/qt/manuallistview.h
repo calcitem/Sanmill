@@ -34,7 +34,6 @@
 
 #include <QListView>
 #include <QMouseEvent>
-#include <QDebug>
 
 #include "config.h"
 

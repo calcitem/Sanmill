@@ -93,6 +93,9 @@
     <ClInclude Include="src\ai\search.h">
       <Filter>ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\base\debug.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">

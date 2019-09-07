@@ -32,7 +32,6 @@
 //#endif
 #include <mutex>
 #include <string>
-#include <QDebug>
 #include <array>
 
 #include "millgame.h"
@@ -129,7 +128,7 @@ public:
 
     void quit()
     {
-        qDebug() << "Timeout\n";
+        loggerDebug("Timeout\n");
         requiredQuit = true;
     }
 

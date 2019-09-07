@@ -13,6 +13,7 @@ TARGET = MillGame
 TEMPLATE = app
 
 CONFIG += warn_off
+CONFIG += console
 
 INCLUDEPATH += include
 INCLUDEPATH += src/base
@@ -39,6 +40,7 @@ HEADERS  += \
     include/version.h \
     include/version.h.template \
     src/base/HashNode.h \
+    src/base/debug.h \
     src/base/hashMap.h \
     src/base/MemoryPool.h \
     src/base/MemoryPool.tcc \

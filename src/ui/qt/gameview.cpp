@@ -20,7 +20,6 @@
  *****************************************************************************/
 
 #include <QMatrix>
-#include <QDebug>
 
 #include "gameview.h"
 
@@ -119,7 +118,6 @@ void GameView::resizeEvent(QResizeEvent *event)
     sy = sx;
     // 缩放视图适合场景大小
     scale(sx, sy);
-    //qDebug() << "scale :" << sx;
 #endif
 
     // 使用如下形式，更简洁

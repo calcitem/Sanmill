@@ -25,7 +25,6 @@
 #include <QApplication>
 #include <QTimer>
 #include <QSound>
-#include <QDebug>
 #include <QMessageBox>
 #include <QAbstractButton>
 #include <QPropertyAnimation>
@@ -443,7 +442,7 @@ void GameController::mirror()
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
-    qDebug() << "list: " << row;
+    loggerDebug("list: %d\n", row);
 
     // 刷新显示
     if (currentRow == row - 1)
@@ -590,7 +589,6 @@ void GameController::timerEvent(QTimerEvent *event)
         time1 = ti - time2;
         // 用于显示时间的临时变量，多出的50毫秒用于消除计时器误差产生的跳动
         t = QTime(0, 0, 0, 50).addMSecs(time1);
-        //qDebug() << t;
         emit time1Changed(t.toString("hh:mm:ss"));
     }
     else if (timeWhos == 2)
@@ -598,7 +596,6 @@ void GameController::timerEvent(QTimerEvent *event)
         time2 = ti - time1;
         // 用于显示时间的临时变量，多出的50毫秒用于消除计时器误差产生的跳动
         t = QTime(0, 0, 0, 50).addMSecs(time2);
-        //qDebug() << t;
         emit time2Changed(t.toString("hh:mm:ss"));
     }
 #endif
@@ -934,10 +931,8 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     if (isAiPlayer1)
     {
         ai1.getServer()->setAction(cmd);
-        qDebug() << "isEngine1: AI(1) set Action: " << cmd;
     } else if (isAiPlayer2) {
         ai1.getServer()->setAction(cmd);    // 注意: 同样是AI1
-        qDebug() << "isEngine2: AI(1) set Action: " << cmd;
     }
 
     return true;
@@ -954,10 +949,11 @@ bool GameController::stageChange(int row, bool forceUpdate)
     currentRow = row;
     int rows = manualListModel.rowCount();
     QStringList mlist = manualListModel.stringList();
-    qDebug() << "rows:" << rows << " current:" << row;
+
+    loggerDebug("rows: %d current: %d\n", rows, row);
 
     for (int i = 0; i <= row; i++) {
-        qDebug() << mlist.at(i);
+        loggerDebug("%s\n", mlist.at(i).toStdString().c_str());
         chessTemp.command(mlist.at(i).toStdString().c_str());
     }
 

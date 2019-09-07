@@ -325,3 +325,6 @@ CMakeLists.txt.user*
 
 # Text files
 *.txt
+
+# Other files
+user*

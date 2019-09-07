@@ -23,7 +23,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
-#include <QDebug>
 
 #include "gamescene.h"
 #include "pieceitem.h"

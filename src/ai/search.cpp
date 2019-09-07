@@ -20,7 +20,6 @@
  *****************************************************************************/
 
 #include <cmath>
-#include <QDebug>
 #include <QTime>
 #include <array>
 #include <random>
@@ -95,7 +94,7 @@ MillGameAi_ab::depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
     }
 #endif /* GAME_MOVING_FIXED_DEPTH */
 
-    qDebug() << "Depth:" << newDepth;
+    loggerDebug("Depth: %d\n", newDepth);
 
     return newDepth;
 }
@@ -740,7 +739,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
 
-    qDebug() << "IDS Time: " << time1.elapsed() / 1000.0 << "s";
+    loggerDebug("IDS Time: %0.3fs\n", time1.elapsed() / 1000.0);
 #endif /* IDS_SUPPORT */
 
 #ifdef HASH_MAP_ENABLE
@@ -751,7 +750,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 
     value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);
 
-    qDebug() << "Total Time: " << time1.elapsed() / 1000.0 << "s\n";
+    loggerDebug("Total Time: %0.3fs\n", time1.elapsed() / 1000.0);
 
     // 生成了 Alpha-Beta 树
 
@@ -886,7 +885,6 @@ MillGameAi_ab::value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t al
             if (chessContext->turn == MillGame::PLAYER2) {
                 // 是否需对后手扣分 // TODO: 先后手都处理
                 node->value += 1;
-                // qDebug() << ">>>>>>>>>>>>>>> New soccer = " << node->value;
             }
         }
 #endif
@@ -1032,18 +1030,19 @@ const char* MillGameAi_ab::bestMove()
         return "error!";
     }
 
-    qDebug() << "31 ----- 24 ----- 25";
-    qDebug() << "| \\       |      / |";
-    qDebug() << "|  23 -- 16 -- 17  |";
-    qDebug() << "|  | \\    |   / |  |";
-    qDebug() << "|  |  15-08-09  |  |";
-    qDebug() << "30-22-14    10-18-26";
-    qDebug() << "|  |  13-12-11  |  |";
-    qDebug() << "|  | /    |   \\ |  |";
-    qDebug() << "|  21 -- 20 -- 19  |";
-    qDebug() << "| /       |      \\ |";
-    qDebug() << "29 ----- 28 ----- 27";
-    qDebug() << "";
+    loggerDebug("\n");
+    loggerDebug("31 ----- 24 ----- 25\n");
+    loggerDebug("| \\       |      / |\n");
+    loggerDebug("|  23 -- 16 -- 17  |\n");
+    loggerDebug("|  | \\    |   / |  |\n");
+    loggerDebug("|  |  15-08-09  |  |\n");
+    loggerDebug("30-22-14    10-18-26\n");
+    loggerDebug("|  |  13-12-11  |  |\n");
+    loggerDebug("|  | /    |   \\ |  |\n");
+    loggerDebug("|  21 -- 20 -- 19  |\n");
+    loggerDebug("| /       |      \\ |\n");
+    loggerDebug("29 ----- 28 ----- 27\n");
+    loggerDebug("\n");
 
     int i = 0;
     string moves = "moves";
@@ -1054,9 +1053,9 @@ const char* MillGameAi_ab::bestMove()
             && !child->pruned
 #endif
             ) {
-            qDebug("[%.2d] %d\t%s\t%d *", i, child->move, move2string(child->move), child->value);
+            loggerDebug("[%.2d] %d\t%s\t%d *\n", i, child->move, move2string(child->move), child->value);
         } else {
-            qDebug("[%.2d] %d\t%s\t%d", i, child->move, move2string(child->move), child->value);
+            loggerDebug("[%.2d] %d\t%s\t%d\n", i, child->move, move2string(child->move), child->value);
         }
 
         i++;
@@ -1071,23 +1070,22 @@ const char* MillGameAi_ab::bestMove()
     bestMovesSize = bestMoves.size();
 
     if (bestMovesSize == 0) {
-        qDebug() << "Not any child value is equal to root value";
+        loggerDebug("Not any child value is equal to root value\n");
         for (auto child : rootNode->children) {
             bestMoves.push_back(child);
         }
     }
 
-    qDebug() << "Evaluated: " << evaluatedNodeCount << "/" << nodeCount << " = "
-        << evaluatedNodeCount * 100 / nodeCount << "%";
+    loggerDebug("Evaluated: %llu / %llu = %llu%%\n", evaluatedNodeCount, nodeCount, evaluatedNodeCount * 100 / nodeCount);
+
     nodeCount = 0;
     evaluatedNodeCount = 0;
 
 #ifdef HASH_MAP_ENABLE
 #ifdef HASH_MAP_DEBUG
-    qDebug() << "Hash hit count:" << hashHitCount;
+    loggerDebug(""Hash hit count: %llu\n", hashHitCount);
 #endif
 #endif
-    //qDebug() << "sizeof(Node) = " << sizeof(Node);
 
     if (bestMoves.empty()) {
         return nullptr;
@@ -1194,9 +1192,6 @@ int MillGameAi_ab::recordHash(value_t value, depth_t depth, HashType type, MillG
     if (findHash(hash, hashValue) &&
         hashValue.type != hashfEMPTY &&
         hashValue.depth > depth) {
-#ifdef DEBUG_MODE
-        qDebug() << "Skip recordHash coz depth";
-#endif
         return -1;
     }
 
@@ -1260,22 +1255,18 @@ void MillGameAi_ab::recordOpeningBookToHashMap()
         recordBookHash(hash, hashValue);  // 暂时使用直接覆盖策略
     }
 
-    //qDebug("Record %d items to Opening Book\n", openingBook.size());
-
     openingBook.clear();
 }
 
 void MillGameAi_ab::recordOpeningBookHashMapToFile()
 {
     const QString bookFileName = "opening-book.txt";
-    qDebug() << "Dump Opening Book to file...";
     bookHashMap.dump(bookFileName);
 }
 
 void MillGameAi_ab::loadOpeningBookFileToHashMap()
 {
     const QString bookFileName = "opening-book.txt";
-    qDebug() << "Loading Opening Book from file...";
     bookHashMap.load(bookFileName);
 }
 #endif // BOOK_LEARNING

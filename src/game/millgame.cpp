@@ -22,7 +22,6 @@
 #include <algorithm>
 #include "millgame.h"
 #include "search.h"
-#include <QDebug>
 
 // 对静态常量数组的定义要放在类外，不要放在头文件
 // 预定义的4套规则
@@ -448,17 +447,17 @@ void MillGame::createMoveTable()
 #if 0
     int sum =  0;
     for (int i = 0; i < N_POINTS; i++) {
-        printf("/* %d */ {", i);
+        loggerDebug("/* %d */ {", i);
         for (int j = 0; j < N_MOVE_DIRECTIONS; j++) {
             if (j == N_MOVE_DIRECTIONS - 1)
-                printf("%d", moveTable[i][j]);
+                loggerDebug("%d", moveTable[i][j]);
             else
-                printf("%d, ", moveTable[i][j]);
+                loggerDebug("%d, ", moveTable[i][j]);
             sum += moveTable[i][j];
         }
-        printf("},\n");
+        loggerDebug("},\n");
     }
-    qDebug() << "sum = " << sum;
+    loggerDebug("sum = %d\n");
 #endif
 }
 
@@ -2493,12 +2492,12 @@ void MillGame::constructHash()
 #if 0
     // 预留末8位后续填充局面特征标志
     for (int p = 0; p < N_POINTS; p++) {
-        //qDebug("{\n");
+        //loggerDebug("{\n");
         for (int t = MillGame::POINT_TYPE_EMPTY; t <= MillGame::POINT_TYPE_FORBIDDEN; t++) {
             context.zobrist[p][t] = rand56();
-            //qDebug("%llX, ", context.zobrist[p][t]);
+            //loggerDebug("%llX, ", context.zobrist[p][t]);
         }
-        //qDebug("},\n");
+        //loggerDebug("},\n");
     }      
 #endif
 }

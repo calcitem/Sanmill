@@ -443,6 +443,7 @@
     </CustomBuild>
     <ClInclude Include="src\ai\search.h" />
     <ClInclude Include="src\ai\zobrist.h" />
+    <ClInclude Include="src\base\debug.h" />
     <ClInclude Include="src\base\hashmap.h" />
     <ClInclude Include="src\base\HashNode.h" />
     <ClInclude Include="src\base\MemoryPool.h" />
