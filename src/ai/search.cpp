@@ -20,7 +20,6 @@
  *****************************************************************************/
 
 #include <cmath>
-#include <QTime>
 #include <array>
 #include <random>
 #include <chrono>
@@ -680,7 +679,6 @@ MillGameAi_ab::value_t MillGameAi_ab::evaluate(Node *node)
 
 int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 {
-    QTime time1;
     value_t value = 0;
 
     depth_t d = changeDepth(depth);
@@ -688,7 +686,8 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
     time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
 
-    time1.start();
+    chrono::steady_clock::time_point timeStart = chrono::steady_clock::now();
+    chrono::steady_clock::time_point timeEnd;
 
 #ifdef BOOK_LEARNING
     if (chess_.getStage() == MillGame::GAME_PLACING)
@@ -739,7 +738,8 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
     }
 
-    loggerDebug("IDS Time: %0.3fs\n", time1.elapsed() / 1000.0);
+    timeEnd = chrono::steady_clock::now();
+    loggerDebug("IDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif /* IDS_SUPPORT */
 
 #ifdef HASH_MAP_ENABLE
@@ -750,7 +750,8 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 
     value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);
 
-    loggerDebug("Total Time: %0.3fs\n", time1.elapsed() / 1000.0);
+    timeEnd = chrono::steady_clock::now();
+    loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 
     // 生成了 Alpha-Beta 树
 
