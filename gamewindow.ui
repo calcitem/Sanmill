@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>491</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -587,7 +587,7 @@
             <bool>false</bool>
            </property>
            <property name="digitCount">
-            <number>2</number>
+            <number>3</number>
            </property>
            <property name="value" stdset="0">
             <double>0.000000000000000</double>
@@ -609,7 +609,7 @@
             <enum>QFrame::Raised</enum>
            </property>
            <property name="digitCount">
-            <number>2</number>
+            <number>3</number>
            </property>
            <property name="mode">
             <enum>QLCDNumber::Dec</enum>
@@ -628,7 +628,7 @@
             <bool>false</bool>
            </property>
            <property name="digitCount">
-            <number>2</number>
+            <number>3</number>
            </property>
           </widget>
          </item>
