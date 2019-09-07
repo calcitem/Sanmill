@@ -493,7 +493,6 @@ public:
     // 局面逆时针旋转
     void rotate(int degrees, bool cmdChange = true);
 
-protected:
     // 判断棋盘pos处的棋子处于几个“三连”中
     int isInMills(int pos, bool test = false);
 

@@ -26,6 +26,7 @@
 #include <algorithm>
 
 #include "search.h"
+#include "evaluate.h"
 #include "hashmap.h"
 
 using namespace CTSL;
@@ -479,204 +480,6 @@ void MillGameAi_ab::setChess(const MillGame &chess)
 #endif
 }
 
-// 评估子力
-#ifdef EVALUATE_ENABLE
-
-#ifdef EVALUATE_MATERIAL
-MillGameAi_ab::value_t MillGameAi_ab::evaluateMaterial(Node *node)
-{
-    return 0;
-}
-#endif
-
-#ifdef EVALUATE_SPACE
-MillGameAi_ab::value_t MillGameAi_ab::evaluateSpace(Node *node)
-{
-    return 0;
-}
-#endif
-
-#ifdef EVALUATE_MOBILITY
-MillGameAi_ab::value_t MillGameAi_ab::evaluateMobility(Node *node)
-{
-    return 0;
-}
-#endif
-
-#ifdef EVALUATE_TEMPO
-MillGameAi_ab::value_t MillGameAi_ab::evaluateTempo(Node *node)
-{
-    return 0;
-}
-#endif
-
-#ifdef EVALUATE_THREAT
-MillGameAi_ab::value_t MillGameAi_ab::evaluateThreat(Node *node)
-{
-    return 0;
-}
-#endif
-
-#ifdef EVALUATE_SHAPE
-MillGameAi_ab::value_t MillGameAi_ab::evaluateShape(Node *node)
-{
-    return 0;
-}
-#endif
-
-#ifdef EVALUATE_MOTIF
-MillGameAi_ab::value_t MillGameAi_ab::evaluateMotif(Node *node)
-{
-    return 0;
-}
-#endif
-#endif /* EVALUATE_ENABLE */
-
-MillGameAi_ab::value_t MillGameAi_ab::evaluate(Node *node)
-{
-    // 初始评估值为0，对先手有利则增大，对后手有利则减小
-    value_t value = 0;
-
-    int nPiecesInHandDiff = INT_MAX;
-    int nPiecesOnBoardDiff = INT_MAX;
-    int nPiecesNeedRemove = 0;
-
-    evaluatedNodeCount++;
-
-#ifdef DEBUG_AB_TREE
-    node->stage = chessContext->stage;
-    node->action = chessContext->action;
-    node->evaluated = true;
-#endif
-
-    switch (chessContext->stage) {
-    case MillGame::GAME_NOTSTARTED:
-        break;
-
-    case MillGame::GAME_PLACING:
-        // 按手中的棋子计分，不要break;
-        nPiecesInHandDiff = chessContext->nPiecesInHand_1 - chessContext->nPiecesInHand_2;
-        value += nPiecesInHandDiff * 50;
-#ifdef DEBUG_AB_TREE
-        node->nPiecesInHandDiff = nPiecesInHandDiff;
-#endif
-
-        // 按场上棋子计分
-        nPiecesOnBoardDiff = chessContext->nPiecesOnBoard_1 - chessContext->nPiecesOnBoard_2;
-        value += nPiecesOnBoardDiff * 100;
-#ifdef DEBUG_AB_TREE
-        node->nPiecesOnBoardDiff = nPiecesOnBoardDiff;
-#endif
-
-        switch (chessContext->action) {
-        // 选子和落子使用相同的评价方法
-        case MillGame::ACTION_CHOOSE:
-        case MillGame::ACTION_PLACE:
-            break;
-
-        // 如果形成去子状态，每有一个可去的子，算100分
-        case MillGame::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == MillGame::PLAYER1) ?
-                chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
-            value += nPiecesNeedRemove * 100;
-#ifdef DEBUG_AB_TREE
-            node->nPiecesNeedRemove = nPiecesNeedRemove;
-#endif
-            break;
-        default:
-            break;
-        }
-
-        break;
-
-    case MillGame::GAME_MOVING:
-        // 按场上棋子计分
-        value += chessContext->nPiecesOnBoard_1 * 100 - chessContext->nPiecesOnBoard_2 * 100;
-
-#ifdef EVALUATE_MOBILITY
-        // 按棋子活动能力计分
-        value += chessTemp.getMobilityDiff(false) * 10;
-#endif  /* EVALUATE_MOBILITY */
-
-        switch (chessContext->action) {
-         // 选子和落子使用相同的评价方法
-        case MillGame::ACTION_CHOOSE:
-        case MillGame::ACTION_PLACE:
-            break;
-
-            // 如果形成去子状态，每有一个可去的子，算128分
-        case MillGame::ACTION_CAPTURE:
-            nPiecesNeedRemove = (chessContext->turn == MillGame::PLAYER1) ?
-                chessContext->nPiecesNeedRemove : -(chessContext->nPiecesNeedRemove);
-            value += nPiecesNeedRemove * 128;
-#ifdef DEBUG_AB_TREE
-            node->nPiecesNeedRemove = nPiecesNeedRemove;
-#endif
-            break;
-        default:
-            break;
-        }
-
-        break;
-
-    // 终局评价最简单
-    case MillGame::GAME_OVER:
-        // 布局阶段闷棋判断
-        if (chessContext->nPiecesOnBoard_1 + chessContext->nPiecesOnBoard_2 >=
-            MillGame::N_SEATS * MillGame::N_RINGS) {
-            if (chessTemp.currentRule.isStartingPlayerLoseWhenBoardFull) {
-                // winner = PLAYER2;
-                value -= 10000;
-#ifdef DEBUG_AB_TREE
-                node->result = -3;
-#endif
-            } else {
-                value = 0;
-            }
-        }
-
-        // 走棋阶段被闷判断
-        if (chessContext->action == MillGame::ACTION_CHOOSE &&
-            chessTemp.isAllSurrounded(chessContext->turn) &&
-            chessTemp.currentRule.isLoseWhenNoWay) {
-            // 规则要求被“闷”判负，则对手获胜  
-                if (chessContext->turn == MillGame::PLAYER1) {
-                    value -= 10000;
-#ifdef DEBUG_AB_TREE
-                    node->result = -2;
-#endif
-                } else {
-                    value += 10000;
-#ifdef DEBUG_AB_TREE
-                    node->result = 2;
-#endif
-                }
-        }
-
-        // 剩余棋子个数判断
-        if (chessContext->nPiecesOnBoard_1 < chessTemp.currentRule.nPiecesAtLeast) {
-            value -= 10000;
-#ifdef DEBUG_AB_TREE
-            node->result = -1;
-#endif
-        } else if (chessContext->nPiecesOnBoard_2 < chessTemp.currentRule.nPiecesAtLeast) {
-            value += 10000;
-#ifdef DEBUG_AB_TREE
-            node->result = 1;
-#endif
-        }
-
-        break;
-
-    default:
-        break;
-    }
-
-    // 赋值返回
-    node->value = value;
-    return value;
-}
-
 int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 {
     value_t value = 0;
@@ -841,7 +644,8 @@ MillGameAi_ab::value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t al
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
     if (chessContext->stage == MillGame::GAME_OVER) {
         // 局面评估
-        node->value = evaluate(node);
+        node->value = Evaluation::getValue(chessTemp, chessContext, node);
+        evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度
         if (node->value > 0) {
@@ -865,7 +669,8 @@ MillGameAi_ab::value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t al
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
         // 局面评估
-        node->value = evaluate(node);
+        node->value = Evaluation::getValue(chessTemp, chessContext, node);
+        evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
         if (chessContext->turn == MillGame::PLAYER1) {
