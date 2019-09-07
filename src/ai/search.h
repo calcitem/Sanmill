@@ -211,11 +211,7 @@ protected:
     depth_t changeDepth(depth_t originalDepth);
 
     // 随机打乱着法搜索顺序
-#ifdef MOVE_PRIORITY_TABLE_SUPPORT
-#ifdef RANDOM_MOVE
     void shuffleMovePriorityTable();
-#endif
-#endif
 
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
@@ -269,9 +265,12 @@ private:
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
 
-#ifdef MOVE_PRIORITY_TABLE_SUPPORT
-    array<int, MillGame::N_RINGS *MillGame::N_SEATS> movePriorityTable {};
-#endif // MOVE_PRIORITY_TABLE_SUPPORT
+    // 着法顺序表, 后续会被打乱
+    array<int, MillGame::N_RINGS *MillGame::N_SEATS> movePriorityTable {
+        8, 9, 10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23,
+        24, 25, 26, 27, 28, 29, 30, 31,
+    };
 
     // 定义极大值
     static const value_t INF_VALUE = 0x1 << 14;

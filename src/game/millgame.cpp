@@ -168,6 +168,7 @@ MillGame &MillGame::operator = (const MillGame &chess)
     context = chess.context;
     currentStep = chess.currentStep;
     moveStep = chess.moveStep;
+    randomMove_ = chess.randomMove_;
     board_ = context.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
@@ -211,7 +212,7 @@ MillGame::Player MillGame::getOpponent(MillGame::Player player)
 void MillGame::createMoveTable()
 {
 #ifdef CONST_MOVE_TABLE
-#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+#if 1
     const int moveTable_obliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
@@ -399,7 +400,7 @@ void MillGame::createMoveTable()
         /* 38 */ {0, 0, 0, 0},
         /* 39 */ {0, 0, 0, 0},
     };
-#endif /* MOVE_PRIORITY_TABLE_SUPPORT */
+#endif
 
     if (currentRule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
@@ -662,10 +663,19 @@ void MillGame::createMillTable()
 #endif
 }
 
+// 设置配置
+bool MillGame::configure(bool randomMove)
+{
+    // 设置是否随机走子
+    this->randomMove_ = randomMove;
+
+    return true;
+}
+
 // 设置棋局状态和棋盘数据，用于初始化
 bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
-                        step_t initialStep, int flags, const char *board,
-                        int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
+                          step_t initialStep, int flags, const char *board,
+                          int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
     // 有效性判断
     if (maxTimeLedToLose < 0) {

@@ -54,7 +54,8 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     timeID(0),
     ruleNo_(-1),
     timeLimit(0),
-    stepsLimit(50)
+    stepsLimit(50),
+    randomMove_(true)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
@@ -116,6 +117,7 @@ const QMap<int, QStringList> GameController::getActions()
 
 void GameController::gameStart()
 {
+    chess_.configure(randomMove_);
     chess_.start();
     chessTemp = chess_;
 
@@ -141,6 +143,7 @@ void GameController::gameReset()
     }
 
     // 重置游戏
+    chess_.configure(randomMove_);
     chess_.reset();
     chessTemp = chess_;
 
@@ -281,6 +284,8 @@ void GameController::setRule(int ruleNo, MillGame::step_t stepLimited /*= -1*/, 
 
 void GameController::setEngine1(bool arg)
 {
+    chess_.configure(randomMove_);
+
     isAiPlayer1 = arg;
     if (arg) {
         ai1.setAi(chess_);
@@ -295,6 +300,8 @@ void GameController::setEngine1(bool arg)
 
 void GameController::setEngine2(bool arg)
 {
+    chess_.configure(randomMove_);
+
     isAiPlayer2 = arg;
     if (arg) {
         ai2.setAi(chess_);
@@ -367,6 +374,11 @@ void GameController::playSound(const QString &soundPath)
 void GameController::setAutoRestart(bool arg)
 {
     isAutoRestart = arg;
+}
+
+void GameController::setRandomMove(bool arg)
+{
+    randomMove_ = arg;
 }
 
 // 上下翻转

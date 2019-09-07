@@ -70,6 +70,11 @@ public:
         return stepsLimit;
     }
 
+    bool getRandomMove()
+    {
+        return randomMove_;
+    }
+
     bool isAnimation()
     {
         return hasAnimation;
@@ -147,6 +152,9 @@ public slots:
 
     // 是否自动开局
     void setAutoRestart(bool arg = false);
+
+    // AI 是否随机走子
+    void setRandomMove(bool arg);
 
     // 上下翻转
     void flip();
@@ -234,6 +242,9 @@ private:
 
     // 是否棋局结束后自动重新开局
     bool isAutoRestart;
+
+    // AI 是否随机走子
+    bool randomMove_;
 
     // 定时器ID
     int timeID;

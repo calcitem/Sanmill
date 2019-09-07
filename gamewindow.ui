@@ -292,6 +292,7 @@
     <addaction name="actionAnimation_A"/>
     <addaction name="separator"/>
     <addaction name="actionAutoRestart_A"/>
+    <addaction name="actionRandomMove_R"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -1099,6 +1100,17 @@
    </property>
    <property name="text">
     <string>自动重新开局(&amp;A)</string>
+   </property>
+  </action>
+  <action name="actionRandomMove_R">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>电脑着法随机(&amp;R)</string>
    </property>
   </action>
  </widget>

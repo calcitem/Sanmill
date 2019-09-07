@@ -200,21 +200,21 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     return newNode;
 }
 
-#ifdef MOVE_PRIORITY_TABLE_SUPPORT
-#ifdef RANDOM_MOVE
 void MillGameAi_ab::shuffleMovePriorityTable()
 {
     array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 中圈四个顶点 (星位)
     array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
     array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
-    array<int, 8> movePriorityTable3 = { 8, 10, 12, 14, 24, 26, 28, 30 }; // 内外圈十字架
+    array<int, 8> movePriorityTable3 = { 24, 26, 28, 30, 8, 10, 12, 14 }; // 外内圈十字架
 
-    uint32_t seed = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count());
+    if (chess_.getRandomMove() == true) {
+        uint32_t seed = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count());
 
-    std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
-    std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
-    std::shuffle(movePriorityTable2.begin(), movePriorityTable2.end(), std::default_random_engine(seed));
-    std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityTable2.begin(), movePriorityTable2.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
+    }
 
     for (size_t i = 0; i < 4; i++) {
         movePriorityTable[i + 0] = movePriorityTable0[i];
@@ -232,8 +232,6 @@ void MillGameAi_ab::shuffleMovePriorityTable()
         movePriorityTable[i + 16] = movePriorityTable3[i];
     }
 }
-#endif // #ifdef RANDOM_MOVE
-#endif // MOVE_PRIORITY_TABLE_SUPPORT
 
 void MillGameAi_ab::generateLegalMoves(Node *node, move_t bestMove)
 {
@@ -273,27 +271,6 @@ void MillGameAi_ab::generateLegalMoves(Node *node, move_t bestMove)
 
     node->children.reserve(newCapacity + 2 /* TODO: 未细调故再多留余量2 */);
 
-#ifdef MOVE_PRIORITY_TABLE_SUPPORT
-#ifdef RANDOM_MOVE
-
-#else // RANDOM_MOVE
-    int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
-        17, 19, 21, 23, // 星位
-        25, 27, 29, 31, // 外圈四个顶点
-         9, 11, 13, 15, // 内圈四个顶点
-        16, 18, 20, 22, // 中圈十字架
-        24, 26, 28, 30, // 外圈十字架
-         8, 10, 12, 14, // 中圈十字架
-    };
-#endif // RANDOM_MOVE
-#else // MOVE_PRIORITY_TABLE_SUPPORT
-    int movePriorityTable[MOVE_PRIORITY_TABLE_SIZE] = {
-        8, 9, 10, 11, 12, 13, 14, 15,
-        16, 17, 18, 19, 20, 21, 22, 23,
-        24, 25, 26, 27, 28, 29, 30, 31,
-    };
-#endif // MOVE_PRIORITY_TABLE_SUPPORT
-
     // 如果有子节点，则返回，避免重复建立
     if (!node->children.empty()) {
         return;
@@ -331,12 +308,9 @@ void MillGameAi_ab::generateLegalMoves(Node *node, move_t bestMove)
         // 对于移子阶段
         if (chessTemp.context.stage & MillGame::GAME_MOVING) {
             int newPos, oldPos;
-#ifdef MOVE_PRIORITY_TABLE_SUPPORT
+
             // 尽量走理论上较差的位置的棋子
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-#else
-            for (int i = 0; i < MOVE_PRIORITY_TABLE_SIZE; i++) {
-#endif // MOVE_PRIORITY_TABLE_SUPPORT
                 oldPos = movePriorityTable[i];
 
                 if (!chessTemp.choose(oldPos)) {
@@ -752,11 +726,8 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
     }
 #endif // THREEFOLD_REPETITION
 
-#ifdef MOVE_PRIORITY_TABLE_SUPPORT
-#ifdef RANDOM_MOVE
-    shuffleMovePriorityTable();
-#endif // RANDOM_MOVE
-#endif // MOVE_PRIORITY_TABLE_SUPPORT
+    // 随机打乱着法顺序
+    shuffleMovePriorityTable();   
 
 #ifdef IDS_SUPPORT
     // 深化迭代

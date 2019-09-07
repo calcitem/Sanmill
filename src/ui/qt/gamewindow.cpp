@@ -209,6 +209,9 @@ void MillGameWindow::initialize()
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
             game, SLOT(setAutoRestart(bool)));
 
+    connect(ui.actionRandomMove_R, SIGNAL(toggled(bool)),
+            game, SLOT(setRandomMove(bool)));
+
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
             game, &GameController::flip);
