@@ -89,26 +89,6 @@ public:
 #endif /* DEBUG_AB_TREE */
     };
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
-    // 定义哈希值的类型
-    enum HashType : uint8_t
-    {
-        hashfEMPTY = 0,
-        hashfALPHA = 1, // 结点的值最多是 value
-        hashfBETA = 2,  // 结点的值至少是 value
-        hashfEXACT = 3  // 结点值 value 是准确值
-    };
-
-    // 定义哈希表的值
-    struct HashValue
-    {
-        value_t value;
-        depth_t depth;
-        enum HashType type;
-        move_t bestMove;
-    };
-#endif
-
 #ifdef MEMORY_POOL
     MemoryPool<Node> pool;
 #endif
@@ -203,15 +183,6 @@ protected:
     // 篡改深度
     depth_t changeDepth(depth_t originalDepth);
        
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    // 查找哈希表
-    bool findHash(hash_t hash, HashValue &hashValue);
-    value_t probeHash(hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
-
-    // 插入哈希表
-    int recordHash(value_t value, depth_t depth, HashType type, hash_t hash, move_t bestMove);
-#endif  // TRANSPOSITION_TABLE_ENABLE
-
 private:
     // 原始模型
     MillGame game_;

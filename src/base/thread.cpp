@@ -21,6 +21,7 @@
 
 #include <QTimer>
 #include "thread.h"
+#include "tt.h"
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
@@ -69,7 +70,7 @@ void AiThread::setAi(const MillGame &game)
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    ai_ab.clearTranspositionTable();
+    TranspositionTable::clearTranspositionTable();
 #endif
 #endif
 
