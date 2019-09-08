@@ -29,10 +29,8 @@ MillGame::MillGame()
     // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board.board_;
 
- #if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // 创建哈希数据
     constructHash();
-#endif
 
 #ifdef BOOK_LEARNING
     // TODO: 开局库文件被加载了多次
@@ -173,9 +171,7 @@ bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     // 当前棋局（3×8）
     if (board == nullptr) {
         memset(context.board.board_, 0, sizeof(context.board.board_));
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         context.hash = 0;
-#endif
     } else {
         memcpy(context.board.board_, board, sizeof(context.board.board_));
     }
@@ -328,10 +324,8 @@ bool MillGame::reset()
     // 用时置零
     elapsedSeconds_1 = elapsedSeconds_2 = 0;
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // 哈希归零
     context.hash = 0;
-#endif
 
     // 提示
     setTips();
@@ -426,9 +420,8 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
 
         board_[pos] = piece;
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
-#endif
+
         move_ = pos;
 
         if (rs) {
@@ -524,15 +517,11 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
 
     board_[pos] = board_[currentPos];
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     updateHash(pos);
-#endif
 
     board_[currentPos] = '\x00';
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     revertHash(currentPos);
-#endif
 
     currentPos = pos;
     n = context.board.addMills(currentRule, currentPos);
@@ -620,17 +609,11 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
 
     // 去子（设置禁点）
     if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
-#endif
         board_[pos] = '\x0f';
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
-#endif
     } else { // 去子
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
-#endif
         board_[pos] = '\x00';
     }
 
@@ -651,9 +634,7 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
 
     currentPos = 0;
     context.nPiecesNeedRemove--;
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     updateHash(pos);
-#endif
 
     // 去子完成
 
@@ -876,7 +857,7 @@ bool MillGame::command(const char *cmd)
         cmdlist.emplace_back(string(cmdline));
         return true;
     }
-#endif
+#endif /* THREEFOLD_REPETITION */
 
     return false;
 }
@@ -1093,9 +1074,7 @@ void MillGame::cleanForbiddenPoints()
             pos = r * Board::N_SEATS + s;
 
             if (board_[pos] == '\x0f') {
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
                 revertHash(pos);
-#endif
                 board_[pos] = '\x00';
             }
         }
@@ -1184,23 +1163,8 @@ void MillGame::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
     p2_ms = elapsedSeconds_2;
 }
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
-
-#if 0
 /*
- * 原始版本 hash 各数据位详解（名为 hash 但实际并无冲突，是算法用到的棋局数据的完全表示）[因效率问题废弃]
- * 56-63位：空白不用，全为0
- * 55位：轮流标识，0为先手，1为后手
- * 54位：动作标识，落子（选子移动）为0，1为去子
- * 6-53位（共48位）：从棋盘第一个位置点到最后一个位置点的棋子，每个点用2个二进制位表示，共24个位置点，即48位。
- *        0b00表示空白，0b01表示先手棋子，0b10表示后手棋子，0b11表示禁点
- * 4-5位（共2位）：待去子数，最大为3，用2个二进制位表示即可
- * 0-3位：player1的手棋数，不需要player2的（可计算出）
- */
-#endif
-
-/*
- * 新版本 hash 各数据位详解
+ * hash 各数据位详解
  * 8-63位 (共56位): zobrist 值
  * TODO: 低8位浪费了哈希空间，待后续优化
  * 4-7位 (共4位)：player1的手棋数，不需要player2的（可计算出）, 走子阶段置为全1即为全15
@@ -1215,18 +1179,6 @@ void MillGame::constructHash()
 
 #include "zobrist.h"
     memcpy(context.zobrist, zobrist0, sizeof(hash_t) * Board::N_POINTS * POINT_TYPE_COUNT);
-
-#if 0
-    // 预留末8位后续填充局面特征标志
-    for (int p = 0; p < N_POINTS; p++) {
-        //loggerDebug("{\n");
-        for (int t = MillGame::POINT_TYPE_EMPTY; t <= MillGame::POINT_TYPE_FORBIDDEN; t++) {
-            context.zobrist[p][t] = rand56();
-            //loggerDebug("%llX, ", context.zobrist[p][t]);
-        }
-        //loggerDebug("},\n");
-    }      
-#endif
 }
 
 hash_t MillGame::getHash()
@@ -1275,4 +1227,4 @@ hash_t MillGame::updateHashMisc()
 
     return context.hash;
 }
-#endif /* TRANSPOSITION_TABLE_ENABLE etc. */
+

@@ -43,9 +43,8 @@ HashMap<hash_t, MillGameAi_ab::HashValue> bookHashMap(bookHashsize);
 vector<hash_t> openingBook;
 #endif // BOOK_LEARNING
 
-#ifdef THREEFOLD_REPETITION
+// 用于检测重复局面
 vector<hash_t> positions;
-#endif
 
 MillGameAi_ab::MillGameAi_ab()
 {
@@ -133,9 +132,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
 #endif
 
 #ifdef DEBUG_AB_TREE
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     newNode->hash = 0;
-#endif
 #endif
 
 #ifdef DEBUG_AB_TREE
@@ -281,9 +278,7 @@ void MillGameAi_ab::setGame(const MillGame &game)
         //openingBook.clear();
 #endif // BOOK_LEARNING
 
-#ifdef THREEFOLD_REPETITION
         positions.clear();
-#endif
     }
 
     this->game_ = game;

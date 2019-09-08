@@ -85,9 +85,7 @@ public:
 #ifdef TRANSPOSITION_TABLE_ENABLE
         bool isHash;                    //  是否从 Hash 读取
 #endif /* TRANSPOSITION_TABLE_ENABLE */
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
         hash_t hash;                  //  哈希值
-#endif
 #endif /* DEBUG_AB_TREE */
     };
 
