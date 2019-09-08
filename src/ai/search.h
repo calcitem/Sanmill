@@ -156,10 +156,16 @@ public:
     static void loadOpeningBookFileToHashMap();
 #endif // BOOK_LEARNING
 
-protected:
-    // 生成所有合法的着法并建立子节点
-    void generateLegalMoves(Node *node, move_t bestMove);
+public: /* TODO: Move to private or protected */
+    // 增加新节点
+    struct Node *addNode(Node *parent, value_t value,
+                         move_t move, move_t bestMove,
+                         enum MillGame::Player player);
 
+    // 定义极大值
+    static const value_t INF_VALUE = 0x1 << 14;
+
+protected:
     // 对合法的着法降序排序
     void sortLegalMoves(Node *node);
 
@@ -168,11 +174,6 @@ protected:
 
     // 构造根节点
     void buildRoot();
-
-    // 增加新节点
-    struct Node *addNode(Node *parent, value_t value,
-                         move_t move, move_t bestMove,
-                         enum MillGame::Player player);
 
     // 评价函数
     value_t evaluate(Node *node);
@@ -208,10 +209,7 @@ protected:
 
     // 篡改深度
     depth_t changeDepth(depth_t originalDepth);
-
-    // 随机打乱着法搜索顺序
-    void shuffleMovePriorityTable();
-
+       
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
     bool findHash(MillGame::hash_t hash, HashValue &hashValue);
@@ -263,16 +261,6 @@ private:
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
-
-    // 着法顺序表, 后续会被打乱
-    array<int, MillGame::N_RINGS *MillGame::N_SEATS> movePriorityTable {
-        8, 9, 10, 11, 12, 13, 14, 15,
-        16, 17, 18, 19, 20, 21, 22, 23,
-        24, 25, 26, 27, 28, 29, 30, 31,
-    };
-
-    // 定义极大值
-    static const value_t INF_VALUE = 0x1 << 14;
 
 private:
     // 命令行

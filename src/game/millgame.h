@@ -556,16 +556,19 @@ public:
     hash_t updateHashMisc();
 #endif
 
-private:
-    // 当前使用的规则
-    struct Rule currentRule {};
-
+public: /* TODO: move to private */
     // 棋局上下文
     struct ChessContext context;
+
+    // 当前使用的规则
+    struct Rule currentRule
+    {
+    };
 
     // 棋局上下文中的棋盘数据，单独提出来
     int *board_;
 
+private:
     // 棋局哈希值
     // uint64_t hash;
 

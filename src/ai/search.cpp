@@ -21,12 +21,12 @@
 
 #include <cmath>
 #include <array>
-#include <random>
 #include <chrono>
 #include <algorithm>
 
 #include "search.h"
 #include "evaluate.h"
+#include "movegen.h"
 #include "hashmap.h"
 
 using namespace CTSL;
@@ -199,178 +199,6 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     return newNode;
 }
 
-void MillGameAi_ab::shuffleMovePriorityTable()
-{
-    array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 中圈四个顶点 (星位)
-    array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
-    array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
-    array<int, 8> movePriorityTable3 = { 24, 26, 28, 30, 8, 10, 12, 14 }; // 外内圈十字架
-
-    if (chess_.getRandomMove() == true) {
-        uint32_t seed = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count());
-
-        std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityTable2.begin(), movePriorityTable2.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
-    }
-
-    for (size_t i = 0; i < 4; i++) {
-        movePriorityTable[i + 0] = movePriorityTable0[i];
-    }
-
-    for (size_t i = 0; i < 8; i++) {
-        movePriorityTable[i + 4] = movePriorityTable1[i];
-    }
-
-    for (size_t i = 0; i < 4; i++) {
-        movePriorityTable[i + 12] = movePriorityTable2[i];
-    }
-
-    for (size_t i = 0; i < 8; i++) {
-        movePriorityTable[i + 16] = movePriorityTable3[i];
-    }
-}
-
-void MillGameAi_ab::generateLegalMoves(Node *node, move_t bestMove)
-{
-    const int MOVE_PRIORITY_TABLE_SIZE = MillGame::N_RINGS * MillGame::N_SEATS;
-    int pos = 0;
-    size_t newCapacity = 24;
-
-    // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
-    switch (chessTemp.getStage()) {
-    case MillGame::GAME_PLACING:
-        if (chessTemp.getAction() == MillGame::ACTION_CAPTURE) {
-            if (chessTemp.whosTurn() == MillGame::PLAYER1)
-                newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_2());
-            else
-                newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_1());
-        } else {
-            newCapacity = static_cast<size_t>(chessTemp.getPiecesInHandCount_1() + chessTemp.getPiecesInHandCount_2());
-        }
-        break;
-    case MillGame::GAME_MOVING:
-        if (chessTemp.getAction() == MillGame::ACTION_CAPTURE) {
-            if (chessTemp.whosTurn() == MillGame::PLAYER1)
-                newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_2());
-            else
-                newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_1());
-        } else {
-            newCapacity = 6;
-        }
-        break;
-    case MillGame::GAME_NOTSTARTED:
-        newCapacity = 24;
-        break;
-    default:
-        newCapacity = 24;
-        break;
-    };
-
-    node->children.reserve(newCapacity + 2 /* TODO: 未细调故再多留余量2 */);
-
-    // 如果有子节点，则返回，避免重复建立
-    if (!node->children.empty()) {
-        return;
-    }
-
-    // 对手
-    MillGame::Player opponent = MillGame::getOpponent(chessTemp.context.turn);
-
-    // 列出所有合法的下一招
-    switch (chessTemp.context.action) {
-    // 对于选子和落子动作
-    case MillGame::ACTION_CHOOSE:
-    case MillGame::ACTION_PLACE:
-        // 对于摆子阶段
-        if (chessTemp.context.stage & (MillGame::GAME_PLACING | MillGame::GAME_NOTSTARTED)) {
-            for (int i : movePriorityTable) {
-                pos = i;
-
-                if (chessTemp.board_[pos]) {
-                    continue;
-                }
-
-                if (chessTemp.context.stage != MillGame::GAME_NOTSTARTED || node != rootNode) {
-                    addNode(node, 0, pos, bestMove, chessTemp.context.turn);
-                } else {
-                    // 若为先手，则抢占星位
-                    if (MillGame::isStarPoint(pos)) {
-                        addNode(node, INF_VALUE, pos, bestMove, chessTemp.context.turn);
-                    }
-                }
-            }
-            break;
-        }
-
-        // 对于移子阶段
-        if (chessTemp.context.stage & MillGame::GAME_MOVING) {
-            int newPos, oldPos;
-
-            // 尽量走理论上较差的位置的棋子
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldPos = movePriorityTable[i];
-
-                if (!chessTemp.choose(oldPos)) {
-                    continue;
-                }
-
-                if ((chessTemp.context.turn == MillGame::PLAYER1 &&
-                    (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
-                    (chessTemp.context.turn == MillGame::PLAYER2 &&
-                    (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
-                    // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
-                    for (int moveDirection = MillGame::MOVE_DIRECTION_CLOCKWISE; moveDirection <= MillGame::MOVE_DIRECTION_OUTWARD; moveDirection++) {
-                        // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newPos = MillGame::moveTable[oldPos][moveDirection];
-                        if (newPos && !chessTemp.board_[newPos]) {
-                            int move = (oldPos << 8) + newPos;
-                            addNode(node, 0, move, bestMove, chessTemp.context.turn); // (12%)
-                        }
-                    }
-                } else {
-                    // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
-                    for (newPos = MillGame::POS_BEGIN; newPos < MillGame::POS_END; newPos++) {
-                        if (!chessTemp.board_[newPos]) {
-                            int move = (oldPos << 8) + newPos;
-                            addNode(node, 0, move, bestMove, chessTemp.context.turn);
-                        }
-                    }
-                }
-            }
-        }
-        break;
-
-    // 对于吃子动作
-    case MillGame::ACTION_CAPTURE:
-        if (chessTemp.isAllInMills(opponent)) {
-            // 全成三的情况
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                pos = movePriorityTable[i];
-                if (chessTemp.board_[pos] & opponent) {
-                    addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
-                }
-            }
-            break;
-        }
-
-        // 不是全成三的情况
-        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            pos = movePriorityTable[i];
-            if (chessTemp.board_[pos] & opponent) {
-                if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
-                    addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
-                }
-            }
-        }
-        break;
-
-    default:
-        break;
-    }
-}
-
 bool MillGameAi_ab::nodeLess(const Node *first, const Node *second)
 {
 #ifdef SORT_CONSIDER_PRUNED
@@ -528,7 +356,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #endif // THREEFOLD_REPETITION
 
     // 随机打乱着法顺序
-    shuffleMovePriorityTable();   
+    MoveList::shuffleMovePriorityTable(chess_);   
 
 #ifdef IDS_SUPPORT
     // 深化迭代
@@ -704,7 +532,7 @@ MillGameAi_ab::value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t al
     }
 
     // 生成子节点树，即生成每个合理的着法
-    generateLegalMoves(node, bestMove);
+    MoveList::generateLegalMoves(*this, chessTemp, node, rootNode, bestMove);
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 

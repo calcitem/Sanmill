@@ -22,6 +22,7 @@
 #include <algorithm>
 #include "millgame.h"
 #include "search.h"
+#include "movegen.h"
 
 // 对静态常量数组的定义要放在类外，不要放在头文件
 // 预定义的4套规则
@@ -123,9 +124,6 @@ const int MillGame::onBoard[N_POINTS] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-// 着法表
-int MillGame::moveTable[N_POINTS][N_MOVE_DIRECTIONS] = {{0}};
-
 // 成三表
 int MillGame::millTable[N_POINTS][N_DIRECTIONS][N_RINGS - 1] = {{{0}}};
 
@@ -207,259 +205,6 @@ MillGame::Player MillGame::getOpponent(MillGame::Player player)
     }
 
     return NOBODY;
-}
-
-void MillGame::createMoveTable()
-{
-#ifdef CONST_MOVE_TABLE
-#if 1
-    const int moveTable_obliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
-        /*  0 */ {0, 0, 0, 0},
-        /*  1 */ {0, 0, 0, 0},
-        /*  2 */ {0, 0, 0, 0},
-        /*  3 */ {0, 0, 0, 0},
-        /*  4 */ {0, 0, 0, 0},
-        /*  5 */ {0, 0, 0, 0},
-        /*  6 */ {0, 0, 0, 0},
-        /*  7 */ {0, 0, 0, 0},
-
-        /*  8 */ {9, 15, 16, 0},
-        /*  9 */ {17, 8, 10, 0},
-        /* 10 */ {9, 11, 18, 0},
-        /* 11 */ {19, 10, 12, 0},
-        /* 12 */ {11, 13, 20, 0},
-        /* 13 */ {21, 12, 14, 0},
-        /* 14 */ {13, 15, 22, 0},
-        /* 15 */ {23, 8, 14, 0},
-
-        /* 16 */ {17, 23, 8, 24},
-        /* 17 */ {9, 25, 16, 18},
-        /* 18 */ {17, 19, 10, 26},
-        /* 19 */ {11, 27, 18, 20},
-        /* 20 */ {19, 21, 12, 28},
-        /* 21 */ {13, 29, 20, 22},
-        /* 22 */ {21, 23, 14, 30},
-        /* 23 */ {15, 31, 16, 22},
-
-        /* 24 */ {25, 31, 16, 0},
-        /* 25 */ {17, 24, 26, 0},
-        /* 26 */ {25, 27, 18, 0},
-        /* 27 */ {19, 26, 28, 0},
-        /* 28 */ {27, 29, 20, 0},
-        /* 29 */ {21, 28, 30, 0},
-        /* 30 */ {29, 31, 22, 0},
-        /* 31 */ {23, 24, 30, 0},
-
-        /* 32 */ {0, 0, 0, 0},
-        /* 33 */ {0, 0, 0, 0},
-        /* 34 */ {0, 0, 0, 0},
-        /* 35 */ {0, 0, 0, 0},
-        /* 36 */ {0, 0, 0, 0},
-        /* 37 */ {0, 0, 0, 0},
-        /* 38 */ {0, 0, 0, 0},
-        /* 39 */ {0, 0, 0, 0},
-    };
-
-    const int moveTable_noObliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
-        /*  0 */ {0, 0, 0, 0},
-        /*  1 */ {0, 0, 0, 0},
-        /*  2 */ {0, 0, 0, 0},
-        /*  3 */ {0, 0, 0, 0},
-        /*  4 */ {0, 0, 0, 0},
-        /*  5 */ {0, 0, 0, 0},
-        /*  6 */ {0, 0, 0, 0},
-        /*  7 */ {0, 0, 0, 0},
-
-        /*  8 */ {16, 9, 15, 0},
-        /*  9 */ {10, 8, 0, 0},
-        /* 10 */ {18, 11, 9, 0},
-        /* 11 */ {12, 10, 0, 0},
-        /* 12 */ {20, 13, 11, 0},
-        /* 13 */ {14, 12, 0, 0},
-        /* 14 */ {22, 15, 13, 0},
-        /* 15 */ {8, 14, 0, 0},
-
-        /* 16 */ {8, 24, 17, 23},
-        /* 17 */ {18, 16, 0, 0},
-        /* 18 */ {10, 26, 19, 17},
-        /* 19 */ {20, 18, 0, 0},
-        /* 20 */ {12, 28, 21, 19},
-        /* 21 */ {22, 20, 0, 0},
-        /* 22 */ {14, 30, 23, 21},
-        /* 23 */ {16, 22, 0, 0},
-
-        /* 24 */ {16, 25, 31, 0},
-        /* 25 */ {26, 24, 0, 0},
-        /* 26 */ {18, 27, 25, 0},
-        /* 27 */ {28, 26, 0, 0},
-        /* 28 */ {20, 29, 27, 0},
-        /* 29 */ {30, 28, 0, 0},
-        /* 30 */ {22, 31, 29, 0},
-        /* 31 */ {24, 30, 0, 0},
-
-        /* 32 */ {0, 0, 0, 0},
-        /* 33 */ {0, 0, 0, 0},
-        /* 34 */ {0, 0, 0, 0},
-        /* 35 */ {0, 0, 0, 0},
-        /* 36 */ {0, 0, 0, 0},
-        /* 37 */ {0, 0, 0, 0},
-        /* 38 */ {0, 0, 0, 0},
-        /* 39 */ {0, 0, 0, 0},
-    };
-#else
-    const int moveTable_obliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-
-        {9, 15, 0, 16},
-        {10, 8, 0, 17},
-        {11, 9, 0, 18},
-        {12, 10, 0, 19},
-        {13, 11, 0, 20},
-        {14, 12, 0, 21},
-        {15, 13, 0, 22},
-        {8, 14, 0, 23},
-
-        {17, 23, 8, 24},
-        {18, 16, 9, 25},
-        {19, 17, 10, 26},
-        {20, 18, 11, 27},
-        {21, 19, 12, 28},
-        {22, 20, 13, 29},
-        {23, 21, 14, 30},
-        {16, 22, 15, 31},
-
-        {25, 31, 16, 0},
-        {26, 24, 17, 0},
-        {27, 25, 18, 0},
-        {28, 26, 19, 0},
-        {29, 27, 20, 0},
-        {30, 28, 21, 0},
-        {31, 29, 22, 0},
-        {24, 30, 23, 0},
-
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-
-    const int moveTable_noObliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
-        /*  0 */ {0, 0, 0, 0},
-        /*  1 */ {0, 0, 0, 0},
-        /*  2 */ {0, 0, 0, 0},
-        /*  3 */ {0, 0, 0, 0},
-        /*  4 */ {0, 0, 0, 0},
-        /*  5 */ {0, 0, 0, 0},
-        /*  6 */ {0, 0, 0, 0},
-        /*  7 */ {0, 0, 0, 0},
-
-        /*  8 */ {9, 15, 0, 16},
-        /*  9 */ {10, 8, 0, 0},
-        /* 10 */ {11, 9, 0, 18},
-        /* 11 */ {12, 10, 0, 0},
-        /* 12 */ {13, 11, 0, 20},
-        /* 13 */ {14, 12, 0, 0},
-        /* 14 */ {15, 13, 0, 22},
-        /* 15 */ {8, 14, 0, 0},
-
-        /* 16 */ {17, 23, 8, 24},
-        /* 17 */ {18, 16, 0, 0},
-        /* 18 */ {19, 17, 10, 26},
-        /* 19 */ {20, 18, 0, 0},
-        /* 20 */ {21, 19, 12, 28},
-        /* 21 */ {22, 20, 0, 0},
-        /* 22 */ {23, 21, 14, 30},
-        /* 23 */ {16, 22, 0, 0},
-
-        /* 24 */ {25, 31, 16, 0},
-        /* 25 */ {26, 24, 0, 0},
-        /* 26 */ {27, 25, 18, 0},
-        /* 27 */ {28, 26, 0, 0},
-        /* 28 */ {29, 27, 20, 0},
-        /* 29 */ {30, 28, 0, 0},
-        /* 30 */ {31, 29, 22, 0},
-        /* 31 */ {24, 30, 0, 0},
-
-        /* 32 */ {0, 0, 0, 0},
-        /* 33 */ {0, 0, 0, 0},
-        /* 34 */ {0, 0, 0, 0},
-        /* 35 */ {0, 0, 0, 0},
-        /* 36 */ {0, 0, 0, 0},
-        /* 37 */ {0, 0, 0, 0},
-        /* 38 */ {0, 0, 0, 0},
-        /* 39 */ {0, 0, 0, 0},
-    };
-#endif
-
-    if (currentRule.hasObliqueLines) {
-        memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
-    } else {
-        memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
-    }
-
-#else /* CONST_MOVE_TABLE */
-
-    for (int r = 1; r <= N_RINGS; r++) {
-        for (int s = 0; s < N_SEATS; s++) {
-            int p = r * N_SEATS + s;
-
-            // 顺时针走一步的位置
-            moveTable[p][MOVE_DIRECTION_CLOCKWISE] = r * N_SEATS + (s + 1) % N_SEATS;
-
-            // 逆时针走一步的位置
-            moveTable[p][MOVE_DIRECTION_ANTICLOCKWISE] = r * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
-
-            // 如果是 0、2、4、6位（偶数位）或是有斜线
-            if (!(s & 1) || this->currentRule.hasObliqueLines) {
-                if (r > 1) {
-                    // 向内走一步的位置
-                    moveTable[p][MOVE_DIRECTION_INWARD] = (r - 1) * N_SEATS + s;
-                }
-
-                if (r < N_RINGS) {
-                    // 向外走一步的位置
-                    moveTable[p][MOVE_DIRECTION_OUTWARD] = (r + 1) * N_SEATS + s;
-                }
-            }
-#if 0
-            // 对于无斜线情况下的1、3、5、7位（奇数位），则都设为棋盘外点（默认'\x00'）
-            else {
-                // 向内走一步的位置设为随便棋盘外一点
-                moveTable[i * SEAT + j][2] = '\x00';
-                // 向外走一步的位置设为随便棋盘外一点
-                moveTable[i * SEAT + j][3] = '\x00';
-            }
-#endif
-        }
-    }
-#endif /* CONST_MOVE_TABLE */
-
-#if 0
-    int sum =  0;
-    for (int i = 0; i < N_POINTS; i++) {
-        loggerDebug("/* %d */ {", i);
-        for (int j = 0; j < N_MOVE_DIRECTIONS; j++) {
-            if (j == N_MOVE_DIRECTIONS - 1)
-                loggerDebug("%d", moveTable[i][j]);
-            else
-                loggerDebug("%d, ", moveTable[i][j]);
-            sum += moveTable[i][j];
-        }
-        loggerDebug("},\n");
-    }
-    loggerDebug("sum = %d\n");
-#endif
 }
 
 void MillGame::createMillTable()
@@ -795,7 +540,7 @@ bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     winner = NOBODY;
 
     // 生成着法表
-    createMoveTable();
+    MoveList::createMoveTable(*this);
 
     // 生成成三表
     createMillTable();
@@ -1121,7 +866,7 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
 
         int i;
         for (i = 0; i < 4; i++) {
-            if (pos == moveTable[currentPos][i])
+            if (pos == MoveList::moveTable[currentPos][i])
                 break;
         }
 
@@ -1810,7 +1555,7 @@ int MillGame::getSurroundedEmptyPosCount(int pos, bool includeFobidden)
         (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
         int d, movePos;
         for (d = 0; d < N_MOVE_DIRECTIONS; d++) {
-            movePos = moveTable[pos][d];
+            movePos = MoveList::moveTable[pos][d];
             if (movePos) {
                 if (board_[movePos] == 0x00 ||
                     (includeFobidden && board_[movePos] == 0x0F)) {
@@ -1857,7 +1602,7 @@ bool MillGame::isSurrounded(int pos)
         (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
         int i, movePos;
         for (i = 0; i < 4; i++) {
-            movePos = moveTable[pos][i];
+            movePos = MoveList::moveTable[pos][i];
             if (movePos && !board_[movePos])
                 break;
         }
@@ -1891,7 +1636,7 @@ bool MillGame::isAllSurrounded(char ch)
         }
 
         for (int d = 0; d < N_MOVE_DIRECTIONS; d++) {
-            movePos = moveTable[i][d];
+            movePos = MoveList::moveTable[i][d];
             if (movePos && !board_[movePos])
                 return false;
         }

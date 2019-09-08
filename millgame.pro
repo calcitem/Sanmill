@@ -23,6 +23,7 @@ INCLUDEPATH += src/ui/qt
 
 SOURCES += \
     src/ai/evaluate.cpp \
+    src/ai/movegen.cpp \
     src/game/millgame.cpp \
     src/main.cpp \
     src/base/thread.cpp \
@@ -41,6 +42,7 @@ HEADERS  += \
     include/version.h \
     include/version.h.template \
     src/ai/evaluate.h \
+    src/ai/movegen.h \
     src/base/HashNode.h \
     src/base/debug.h \
     src/base/hashMap.h \

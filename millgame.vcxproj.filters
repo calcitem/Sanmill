@@ -99,6 +99,9 @@
     <ClInclude Include="src\ai\evaluate.h">
       <Filter>ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\ai\movegen.h">
+      <Filter>ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -308,6 +311,9 @@
       <Filter>ai</Filter>
     </ClCompile>
     <ClCompile Include="src\ai\evaluate.cpp">
+      <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ai\movegen.cpp">
       <Filter>ai</Filter>
     </ClCompile>
   </ItemGroup>
