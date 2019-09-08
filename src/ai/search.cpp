@@ -28,14 +28,10 @@
 #include "evaluate.h"
 #include "movegen.h"
 #include "hashmap.h"
+#include "tt.h"
 #include "types.h"
 
 using namespace CTSL;
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-static constexpr int TRANSPOSITION_TABLE_SIZE = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
-HashMap<hash_t, MillGameAi_ab::HashValue> transpositionTable(TRANSPOSITION_TABLE_SIZE);
-#endif // TRANSPOSITION_TABLE_ENABLE
 
 #ifdef BOOK_LEARNING
 static constexpr int bookHashsize = 0x1000000; // 16M

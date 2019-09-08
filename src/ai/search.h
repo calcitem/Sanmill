@@ -260,9 +260,7 @@ private:
     char cmdline[64] {};
 };
 
-#ifdef TRANSPOSITION_TABLE_ENABLE
-extern HashMap<hash_t, MillGameAi_ab::HashValue> transpositionTable;
-#endif /* TRANSPOSITION_TABLE_ENABLE */
+#include "tt.h"
 
 #ifdef THREEFOLD_REPETITION
 extern vector<hash_t> positions;
