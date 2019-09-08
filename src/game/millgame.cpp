@@ -48,33 +48,33 @@ MillGame::MillGame()
 
 MillGame::~MillGame() = default;
 
-MillGame::MillGame(const MillGame &chess)
+MillGame::MillGame(const MillGame &game)
 {  
-    *this = chess;
+    *this = game;
 }
 
-MillGame &MillGame::operator= (const MillGame &chess)
+MillGame &MillGame::operator= (const MillGame &game)
 {
-    if (this == &chess)
+    if (this == &game)
         return *this;
 
-    currentRule = chess.currentRule;
-    context = chess.context;
-    currentStep = chess.currentStep;
-    moveStep = chess.moveStep;
-    randomMove_ = chess.randomMove_;
-    giveUpIfMostLose_ = chess.giveUpIfMostLose_;
+    currentRule = game.currentRule;
+    context = game.context;
+    currentStep = game.currentStep;
+    moveStep = game.moveStep;
+    randomMove_ = game.randomMove_;
+    giveUpIfMostLose_ = game.giveUpIfMostLose_;
     board_ = context.board.board_;
-    currentPos = chess.currentPos;
-    winner = chess.winner;
-    startTime = chess.startTime;
-    currentTime = chess.currentTime;
-    elapsedSeconds_1 = chess.elapsedSeconds_1;
-    elapsedSeconds_2 = chess.elapsedSeconds_2;
-    move_ = chess.move_;
-    memcpy(cmdline, chess.cmdline, sizeof(cmdline));
-    cmdlist = chess.cmdlist;
-    tips = chess.tips;
+    currentPos = game.currentPos;
+    winner = game.winner;
+    startTime = game.startTime;
+    currentTime = game.currentTime;
+    elapsedSeconds_1 = game.elapsedSeconds_1;
+    elapsedSeconds_2 = game.elapsedSeconds_2;
+    move_ = game.move_;
+    memcpy(cmdline, game.cmdline, sizeof(cmdline));
+    cmdlist = game.cmdlist;
+    tips = game.tips;
 
     return *this;
 }

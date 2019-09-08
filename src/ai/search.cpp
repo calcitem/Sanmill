@@ -62,7 +62,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 {
     depth_t newDepth = originalDepth;
 
-    if ((chessTemp.context.stage) & (GAME_PLACING)) {
+    if ((gameTemp.context.stage) & (GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
 #ifdef HASH_MAP_ENABLE
@@ -72,17 +72,17 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 #endif // HASH_MAP_ENABLE
 #else // DEAL_WITH_HORIZON_EFFECT
 #ifdef HASH_MAP_ENABLE
-#ifdef RAPID_CHESS
+#ifdef RAPID_GAME
         depth_t depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
 #else
         depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 14, 13, 12, 9, 7, 1 };
       //depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 12, 12, 12, 9, 7, 1 };
-#endif  // RAPID_CHESS
+#endif  // RAPID_GAME
 #else // HASH_MAP_ENABLE
         depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
 #endif
 #endif // DEAL_WITH_HORIZON_EFFECT
-        newDepth = depthTable[chessTemp.getPiecesInHandCount_1()];
+        newDepth = depthTable[gameTemp.getPiecesInHandCount_1()];
 #elif defined GAME_PLACING_FIXED_DEPTH
         newDepth = GAME_PLACING_FIXED_DEPTH;
 #endif // GAME_PLACING_DYNAMIC_DEPTH
@@ -90,7 +90,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 
 #ifdef GAME_MOVING_FIXED_DEPTH
     // 走棋阶段将深度调整
-    if ((chessTemp.context.stage) & (GAME_MOVING)) {
+    if ((gameTemp.context.stage) & (GAME_MOVING)) {
         newDepth = GAME_MOVING_FIXED_DEPTH;
     }
 #endif /* GAME_MOVING_FIXED_DEPTH */
@@ -148,8 +148,8 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
 
 #ifdef DEBUG_AB_TREE
     newNode->root = rootNode;
-    newNode->stage = chessTemp.context.stage;
-    newNode->action = chessTemp.context.action;
+    newNode->stage = gameTemp.context.stage;
+    newNode->action = gameTemp.context.action;
     newNode->evaluated = false;
     newNode->nPiecesInHandDiff = INT_MAX;
     newNode->nPiecesOnBoardDiff = INT_MAX;
@@ -163,15 +163,15 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        chessTemp.context.board.pos2rs(-move, r, s);
+        gameTemp.context.board.pos2rs(-move, r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        chessTemp.context.board.pos2rs(move >> 8, r1, s1);
-        chessTemp.context.board.pos2rs(move & 0x00ff, r, s);
+        gameTemp.context.board.pos2rs(move >> 8, r1, s1);
+        gameTemp.context.board.pos2rs(move & 0x00ff, r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        chessTemp.context.board.pos2rs(move & 0x007f, r, s);
+        gameTemp.context.board.pos2rs(move & 0x007f, r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
@@ -183,7 +183,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
             // 优先成三
-            if (chessTemp.getStage() == GAME_PLACING && move > 0 && chessTemp.context.board.isInMills(move, true)) {
+            if (gameTemp.getStage() == GAME_PLACING && move > 0 && gameTemp.context.board.isInMills(move, true)) {
                 parent->children.insert(parent->children.begin(), newNode);
             } else {
                 parent->children.push_back(newNode);
@@ -240,7 +240,7 @@ void MillGameAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    if (chessTemp.whosTurn() == PLAYER1) {
+    if (gameTemp.whosTurn() == PLAYER1) {
         std::stable_sort(node->children.begin(), node->children.end(), nodeGreater);
     } else {
         std::stable_sort(node->children.begin(), node->children.end(), nodeLess);
@@ -267,10 +267,10 @@ void MillGameAi_ab::deleteTree(Node *node)
 #endif  
 }
 
-void MillGameAi_ab::setChess(const MillGame &chess)
+void MillGameAi_ab::setGame(const MillGame &game)
 {
     // 如果规则改变，重建hashmap
-    if (strcmp(this->chess_.currentRule.name, chess.currentRule.name) != 0) {
+    if (strcmp(this->game_.currentRule.name, game.currentRule.name) != 0) {
 #ifdef HASH_MAP_ENABLE
         clearHashMap();
 #endif // HASH_MAP_ENABLE
@@ -286,9 +286,9 @@ void MillGameAi_ab::setChess(const MillGame &chess)
 #endif
     }
 
-    this->chess_ = chess;
-    chessTemp = chess;
-    chessContext = &(chessTemp.context);
+    this->game_ = game;
+    gameTemp = game;
+    gameContext = &(gameTemp.context);
     requiredQuit = false;
     deleteTree(rootNode);
 #ifdef MEMORY_POOL
@@ -322,11 +322,11 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
     chrono::steady_clock::time_point timeEnd;
 
 #ifdef BOOK_LEARNING
-    if (chess_.getStage() == GAME_PLACING)
+    if (game_.getStage() == GAME_PLACING)
     {
-        if (chess_.context.nPiecesInHand_1 <= 10) {
+        if (game_.context.nPiecesInHand_1 <= 10) {
             // 开局库只记录摆棋阶段最后的局面
-            openingBook.push_back(chess_.getHash());
+            openingBook.push_back(game_.getHash());
         } else {
             // 暂时在此处清空开局库
             openingBook.clear();
@@ -337,8 +337,8 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (chess_.getStage() == GAME_MOVING) {
-        hash_t hash = chess_.getHash();
+    if (game_.getStage() == GAME_MOVING) {
+        hash_t hash = game_.getHash();
         
         if (std::find(positions.begin(), positions.end(), hash) != positions.end()) {
             nRepetition++;
@@ -351,13 +351,13 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
         }
     }
 
-    if (chess_.getStage() == GAME_PLACING) {
+    if (game_.getStage() == GAME_PLACING) {
         positions.clear();
     }
 #endif // THREEFOLD_REPETITION
 
     // 随机打乱着法顺序
-    MoveList::shuffleMovePriorityTable(chess_);   
+    MoveList::shuffleMovePriorityTable(game_);   
 
 #ifdef IDS_SUPPORT
     // 深化迭代
@@ -413,7 +413,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     enum HashType hashf = hashfALPHA;
 
     // 获取哈希值
-    hash_t hash = chessTemp.getHash();
+    hash_t hash = gameTemp.getHash();
 #ifdef DEBUG_AB_TREE
     node->hash = hash;
 #endif
@@ -444,7 +444,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #if 0
         // TODO: 有必要针对深度微调 value?
-        if (chessContext->turn == PLAYER1)
+        if (gameContext->turn == PLAYER1)
             node->value += hashValue.depth - depth;
         else
             node->value -= hashValue.depth - depth;
@@ -459,7 +459,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
     node->root = rootNode;
-    // node->player = chessContext->turn;
+    // node->player = gameContext->turn;
     // 初始化
     node->isLeaf = false;
     node->isTimeout = false;
@@ -471,9 +471,9 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #endif // DEBUG_AB_TREE
 
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-    if (chessContext->stage == GAME_OVER) {
+    if (gameContext->stage == GAME_OVER) {
         // 局面评估
-        node->value = Evaluation::getValue(chessTemp, chessContext, node);
+        node->value = Evaluation::getValue(gameTemp, gameContext, node);
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度
@@ -498,11 +498,11 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
         // 局面评估
-        node->value = Evaluation::getValue(chessTemp, chessContext, node);
+        node->value = Evaluation::getValue(gameTemp, gameContext, node);
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        if (chessContext->turn == PLAYER1) {
+        if (gameContext->turn == PLAYER1) {
             node->value += depth;
         } else {
             node->value -= depth;
@@ -516,8 +516,8 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #ifdef BOOK_LEARNING
         // 检索开局库
-        if (chessContext->stage == GAME_PLACING && findBookHash(hash, hashValue)) {
-            if (chessContext->turn == PLAYER2) {
+        if (gameContext->stage == GAME_PLACING && findBookHash(hash, hashValue)) {
+            if (gameContext->turn == PLAYER2) {
                 // 是否需对后手扣分 // TODO: 先后手都处理
                 node->value += 1;
             }
@@ -533,18 +533,18 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     }
 
     // 生成子节点树，即生成每个合理的着法
-    MoveList::generateLegalMoves(*this, chessTemp, node, rootNode, bestMove);
+    MoveList::generateLegalMoves(*this, gameTemp, node, rootNode, bestMove);
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = chessTemp.whosTurn() == PLAYER1 ? -INF_VALUE : INF_VALUE;
+    minMax = gameTemp.whosTurn() == PLAYER1 ? -INF_VALUE : INF_VALUE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
-        contextStack.push(chessTemp.context);
+        contextStack.push(gameTemp.context);
 
         // 执行着法
-        chessTemp.command(child->move);
+        gameTemp.command(child->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
         // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
@@ -565,10 +565,10 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
         // 上下文弹出栈，撤销着法
-        chessTemp.context = contextStack.top();
+        gameTemp.context = contextStack.top();
         contextStack.pop();
 
-        if (chessTemp.whosTurn() == PLAYER1) {
+        if (gameTemp.whosTurn() == PLAYER1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -699,7 +699,7 @@ const char* MillGameAi_ab::bestMove()
 
     // 检查是否必败
 
-    Player whosTurn = chess_.whosTurn();
+    Player whosTurn = game_.whosTurn();
 
     for (auto child : rootNode->children) {
         // TODO: 使用常量代替
@@ -759,15 +759,15 @@ const char *MillGameAi_ab::move2string(move_t move)
     int r, s;
 
     if (move < 0) {
-        chessTemp.context.board.pos2rs(-move, r, s);
+        gameTemp.context.board.pos2rs(-move, r, s);
         sprintf(cmdline, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        chessTemp.context.board.pos2rs(move >> 8, r1, s1);
-        chessTemp.context.board.pos2rs(move & 0x00ff, r, s);
+        gameTemp.context.board.pos2rs(move >> 8, r1, s1);
+        gameTemp.context.board.pos2rs(move & 0x00ff, r, s);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        chessTemp.context.board.pos2rs(move & 0x007f, r, s);
+        gameTemp.context.board.pos2rs(move & 0x007f, r, s);
         sprintf(cmdline, "(%1u,%1u)", r, s);
     }
 
@@ -821,17 +821,17 @@ bool MillGameAi_ab::findHash(hash_t hash, HashValue &hashValue)
         return iter;
 
     // 变换局面，查找 hash (废弃)
-    chessTempShift = chessTemp;
+    gameTempShift = gameTemp;
     for (int i = 0; i < 2; i++) {
         if (i)
-            chessTempShift.mirror(false);
+            gameTempShift.mirror(false);
 
         for (int j = 0; j < 2; j++) {
             if (j)
-                chessTempShift.turn(false);
+                gameTempShift.turn(false);
             for (int k = 0; k < 4; k++) {
-                chessTempShift.rotate(k * 90, false);
-                iter = hashmap.find(chessTempShift.getHash());
+                gameTempShift.rotate(k * 90, false);
+                iter = hashmap.find(gameTempShift.getHash());
                 if (iter != hashmap.end())
                     return iter;
             }

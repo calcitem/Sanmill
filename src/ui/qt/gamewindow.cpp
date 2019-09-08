@@ -512,7 +512,7 @@ void MillGameWindow::on_actionNew_N_triggered()
     if (file.isOpen())
         file.close();
 
-#ifdef SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
+#ifdef SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
     QString path = QDir::currentPath() + "/" + tr("book_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t()) + ".txt";
     auto *strlist = qobject_cast<QStringListModel*>(ui.listView->model());
 
@@ -529,7 +529,7 @@ void MillGameWindow::on_actionNew_N_triggered()
             file.flush();
         }
     }
-#endif /* SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED */
+#endif /* SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED */
 
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);    

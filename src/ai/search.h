@@ -119,7 +119,7 @@ public:
     MillGameAi_ab();
     ~MillGameAi_ab();
 
-    void setChess(const MillGame &chess);
+    void setGame(const MillGame &game);
 
     void quit()
     {
@@ -216,15 +216,15 @@ protected:
 
 private:
     // 原始模型
-    MillGame chess_;
+    MillGame game_;
 
     // 演算用的模型
-    MillGame chessTemp;
+    MillGame gameTemp;
 
-    ChessContext *chessContext {};
+    GameContext *gameContext {};
 
     // hash 计算时，各种转换用的模型
-    MillGame chessTempShift;
+    MillGame gameTempShift;
 
     // 根节点
     Node *rootNode {nullptr};
@@ -249,9 +249,9 @@ private:
 
     // 局面数据栈
 //#ifdef MEMORY_POOL
-//    StackAlloc<MillGame::ChessContext, MemoryPool<MillGame::ChessContext> > contextStack;
+//    StackAlloc<MillGame::GameContext, MemoryPool<MillGame::GameContext> > contextStack;
 //#else
-    stack<ChessContext> contextStack;
+    stack<GameContext> contextStack;
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回

@@ -25,7 +25,7 @@
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
     waiting_(false),
-    chess_(nullptr),
+    game_(nullptr),
     aiDepth(2),
     aiTime(3600)
 {
@@ -59,12 +59,12 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const MillGame &chess)
+void AiThread::setAi(const MillGame &game)
 {
     mutex.lock();
 
-    this->chess_ = &chess;
-    ai_ab.setChess(*(this->chess_));
+    this->game_ = &game;
+    ai_ab.setGame(*(this->game_));
 
 #ifdef HASH_MAP_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
@@ -76,11 +76,11 @@ void AiThread::setAi(const MillGame &chess)
     mutex.unlock();
 }
 
-void AiThread::setAi(const MillGame &chess, depth_t depth, int time)
+void AiThread::setAi(const MillGame &game, depth_t depth, int time)
 {
     mutex.lock();
-    this->chess_ = &chess;
-    ai_ab.setChess(chess);
+    this->game_ = &game;
+    ai_ab.setGame(game);
     aiDepth = depth;
     aiTime = time;
     mutex.unlock();
@@ -106,7 +106,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = MillGame::playerToId(chess_->whosTurn());
+        i = MillGame::playerToId(game_->whosTurn());
 
         if (i != id || waiting_) {
             pauseCondition.wait(&mutex);
@@ -114,7 +114,7 @@ void AiThread::run()
             continue;
         }
 
-        ai_ab.setChess(*chess_);
+        ai_ab.setGame(*game_);
         emit calcStarted();
         mutex.unlock();
 

@@ -36,7 +36,7 @@ using namespace std;
 
 // 棋局结构体，算法相关，包含当前棋盘数据
 // 单独分离出来供AI判断局面用，生成置换表时使用
-class ChessContext
+class GameContext
 {
 public:
     Board board;
@@ -332,7 +332,7 @@ public:
 
 public: /* TODO: move to private */
     // 棋局上下文
-    ChessContext context;
+    GameContext context;
 
     // 当前使用的规则
     struct Rule currentRule

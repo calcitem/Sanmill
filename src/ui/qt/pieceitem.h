@@ -19,8 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#ifndef CHESSITEM_H
-#define CHESSITEM_H
+#ifndef GAMEITEM_H
+#define GAMEITEM_H
 
 #include <QObject>
 #include <QGraphicsItem>
@@ -141,4 +141,4 @@ private:
     QColor removeLineColor;
 };
 
-#endif // CHESSITEM_H
+#endif // GAMEITEM_H

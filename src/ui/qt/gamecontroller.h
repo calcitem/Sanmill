@@ -192,7 +192,7 @@ public slots:
 
     // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();
-    bool updateScence(MillGame &chess);
+    bool updateScence(MillGame &game);
 
     // 显示网络配置窗口
     void showNetworkWindow();
@@ -204,10 +204,10 @@ protected:
 
 private:
     // 棋对象的数据模型
-    MillGame chess_;
+    MillGame game_;
 
     // 棋对象的数据模型（临时）
-    MillGame chessTemp;
+    MillGame gameTemp;
 
     // 2个AI的线程
     AiThread ai1, ai2;

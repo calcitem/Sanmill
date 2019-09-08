@@ -75,7 +75,7 @@
 
 #define MEMORY_POOL
 
-//#define RAPID_CHESS
+//#define RAPID_GAME
 
 //#define BOOK_LEARNING
 
@@ -125,7 +125,7 @@
 #endif
 
 #ifndef MOBILE_APP_UI
-#define SAVE_CHESSBOOK_WHEN_ACTION_NEW_TRIGGERED
+#define SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 
 // #define DONOT_PLAY_WIN_SOUND

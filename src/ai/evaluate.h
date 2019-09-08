@@ -13,7 +13,7 @@ public:
 
     Evaluation &operator=(const Evaluation &) = delete;
 
-    static value_t getValue(MillGame &chessTemp, ChessContext *chessContext, MillGameAi_ab::Node *node);
+    static value_t getValue(MillGame &gameTemp, GameContext *gameContext, MillGameAi_ab::Node *node);
 
     // ÆÀ¹À×ÓÁ¦
 #ifdef EVALUATE_ENABLE
