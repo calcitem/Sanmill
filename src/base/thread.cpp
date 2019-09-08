@@ -76,7 +76,7 @@ void AiThread::setAi(const MillGame &chess)
     mutex.unlock();
 }
 
-void AiThread::setAi(const MillGame &chess, MillGameAi_ab::depth_t depth, int time)
+void AiThread::setAi(const MillGame &chess, depth_t depth, int time)
 {
     mutex.lock();
     this->chess_ = &chess;

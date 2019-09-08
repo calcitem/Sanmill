@@ -22,7 +22,7 @@
 
 #include "millgame.h"
 
-static const MillGame::hash_t zobrist0[MillGame::N_POINTS][MillGame::POINT_TYPE_COUNT] = {
+static const hash_t zobrist0[Board::N_POINTS][POINT_TYPE_COUNT] = {
 #ifdef HASH_MAP_CUTDOWN
     {0x4E421A00, 0x3962FF00, 0x6DB6EE00, 0x219AE100},
     {0x1F3DE200, 0xD9AACB00, 0xD5173300, 0xD3F9EA00},

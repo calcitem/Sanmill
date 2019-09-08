@@ -104,11 +104,11 @@ const QMap<int, QStringList> GameController::getActions()
     // 之所以不用信号和槽的模式，是因为发信号的时候槽还来不及关联
     QMap<int, QStringList> actions;
 
-    for (int i = 0; i < MillGame::N_RULES; i++) {
+    for (int i = 0; i < N_RULES; i++) {
         // QMap的key存放int索引值，value存放规则名称和规则提示
         QStringList strlist;
-        strlist.append(tr(MillGame::RULES[i].name));
-        strlist.append(tr(MillGame::RULES[i].description));
+        strlist.append(tr(RULES[i].name));
+        strlist.append(tr(RULES[i].description));
         actions.insert(i, strlist);
     }
 
@@ -137,8 +137,8 @@ void GameController::gameReset()
     timeID = 0;
 
     // 棋未下完，则算对手得分
-    if (chess_.getStage() == MillGame::GAME_MOVING &&
-        chess_.whoWin() == MillGame::NOBODY) {
+    if (chess_.getStage() == GAME_MOVING &&
+        chess_.whoWin() == PLAYER_NOBODY) {
         giveUp();
     }
 
@@ -262,10 +262,10 @@ void GameController::setInvert(bool arg)
     }
 }
 
-void GameController::setRule(int ruleNo, MillGame::step_t stepLimited /*= -1*/, int timeLimited /*= -1*/)
+void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
     // 更新规则，原限时和限步不变
-    if (ruleNo < 0 || ruleNo >= MillGame::N_RULES)
+    if (ruleNo < 0 || ruleNo >= N_RULES)
         return;
     this->ruleNo_ = ruleNo;
 
@@ -275,7 +275,7 @@ void GameController::setRule(int ruleNo, MillGame::step_t stepLimited /*= -1*/, 
     }
 
     // 设置模型规则，重置游戏
-    chess_.setContext(&MillGame::RULES[ruleNo], stepsLimit, timeLimit);
+    chess_.setContext(&RULES[ruleNo], stepsLimit, timeLimit);
     chessTemp = chess_;
 
     // 重置游戏
@@ -314,7 +314,7 @@ void GameController::setEngine2(bool arg)
     }
 }
 
-void GameController::setAiDepthTime(MillGameAi_ab::depth_t depth1, int time1, MillGameAi_ab::depth_t depth2, int time2)
+void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2)
 {
     if (isAiPlayer1) {
         ai1.stop();
@@ -336,7 +336,7 @@ void GameController::setAiDepthTime(MillGameAi_ab::depth_t depth1, int time1, Mi
     }
 }
 
-void GameController::getAiDepthTime(MillGameAi_ab::depth_t &depth1, int &time1, MillGameAi_ab::depth_t &depth2, int &time2)
+void GameController::getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2)
 {
     ai1.getDepthTime(depth1, time1);
     ai2.getDepthTime(depth2, time2);
@@ -398,8 +398,8 @@ void GameController::flip()
         ai2.wait();
     }
 
-    chess_.mirror();
-    chess_.rotate(180);
+    chess_.context.board.mirror(chess_.cmdlist, chess_.cmdline, chess_.move_, chess_.currentRule, chess_.currentPos);
+    chess_.context.board.rotate(180, chess_.cmdlist, chess_.cmdline, chess_.move_, chess_.currentRule, chess_.currentPos);
     chessTemp = chess_;
 
     // 更新棋谱
@@ -438,7 +438,7 @@ void GameController::mirror()
         ai2.wait();
     }
 
-    chess_.mirror();
+    chess_.context.board.mirror(chess_.cmdlist, chess_.cmdline, chess_.move_, chess_.currentRule, chess_.currentPos);
     chessTemp = chess_;
 
     // 更新棋谱
@@ -480,7 +480,7 @@ void GameController::turnRight()
         ai2.wait();
     }
 
-    chess_.rotate(-90);
+    chess_.context.board.rotate(-90, chess_.cmdlist, chess_.cmdline, chess_.move_, chess_.currentRule, chess_.currentPos);
     chessTemp = chess_;
 
     // 更新棋谱
@@ -520,7 +520,7 @@ void GameController::turnLeft()
         ai2.wait();
     }
 
-    chess_.rotate(90);
+    chess_.context.board.rotate(90, chess_.cmdlist, chess_.cmdline, chess_.move_, chess_.currentRule, chess_.currentPos);
     chessTemp = chess_;
 
     // 更新棋谱
@@ -564,7 +564,7 @@ void GameController::timerEvent(QTimerEvent *event)
     emit time2Changed(qt2.toString("hh:mm:ss"));
 
     // 如果胜负已分
-    if (chess_.whoWin() != MillGame::NOBODY) {
+    if (chess_.whoWin() != PLAYER_NOBODY) {
         // 停止计时
         killTimer(timeID);
 
@@ -609,8 +609,8 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::isAIsTurn()
 {
-    return ((chess_.whosTurn() == MillGame::PLAYER1 && isAiPlayer1) ||
-            (chess_.whosTurn() == MillGame::PLAYER2 && isAiPlayer2));
+    return ((chess_.whosTurn() == PLAYER1 && isAiPlayer1) ||
+            (chess_.whosTurn() == PLAYER2 && isAiPlayer2));
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -647,7 +647,7 @@ bool GameController::actionPiece(QPointF pos)
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
 
             // 如果再决出胜负后悔棋，则重新启动计时
-            if (chess_.whoWin() == MillGame::NOBODY) {
+            if (chess_.whoWin() == PLAYER_NOBODY) {
 
                 // 重新启动计时
                 timeID = startTimer(100);
@@ -664,7 +664,7 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     // 如果未开局则开局
-    if (chess_.getStage() == MillGame::GAME_NOTSTARTED)
+    if (chess_.getStage() == GAME_NOTSTARTED)
         gameStart();
 
     // 判断执行选子、落子或去子
@@ -673,9 +673,9 @@ bool GameController::actionPiece(QPointF pos)
     QGraphicsItem *item = scene.itemAt(pos, QTransform());
 
     switch (chess_.getAction()) {
-    case MillGame::ACTION_PLACE:
+    case ACTION_PLACE:
         if (chess_._place(r, s)) {
-            if (chess_.getAction() == MillGame::ACTION_CAPTURE) {
+            if (chess_.getAction() == ACTION_CAPTURE) {
                 // 播放成三音效
                 playSound(":/sound/resources/sound/capture.wav");
             } else {
@@ -689,7 +689,7 @@ bool GameController::actionPiece(QPointF pos)
      // 如果移子不成功，尝试重新选子，这里不break
         [[fallthrough]];
 
-    case MillGame::ACTION_CHOOSE:
+    case ACTION_CHOOSE:
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
@@ -703,7 +703,7 @@ bool GameController::actionPiece(QPointF pos)
         }
         break;
 
-    case MillGame::ACTION_CAPTURE:
+    case ACTION_CAPTURE:
         if (chess_._capture(r, s)) {
             // 播放音效
             playSound(":/sound/resources/sound/remove.wav");
@@ -739,7 +739,7 @@ bool GameController::actionPiece(QPointF pos)
 
         // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-        if (chess_.whoWin() != MillGame::NOBODY &&
+        if (chess_.whoWin() != PLAYER_NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
             playSound(":/sound/resources/sound/win.wav");
 #endif
@@ -747,8 +747,8 @@ bool GameController::actionPiece(QPointF pos)
         // AI设置
         if (&chess_ == &(this->chess_)) {
             // 如果还未决出胜负
-            if (chess_.whoWin() == MillGame::NOBODY) {
-                if (chess_.whosTurn() == MillGame::PLAYER1) {
+            if (chess_.whoWin() == PLAYER_NOBODY) {
+                if (chess_.whosTurn() == PLAYER1) {
                     if (isAiPlayer1) {
                         ai1.resume();
                     }
@@ -782,11 +782,11 @@ bool GameController::giveUp()
 {
     bool result = false;
 
-    if (chess_.whosTurn() == MillGame::PLAYER1) {
-        result = chess_.giveup(MillGame::PLAYER1);
+    if (chess_.whosTurn() == PLAYER1) {
+        result = chess_.giveup(PLAYER1);
     }
-    else if (chess_.whosTurn() == MillGame::PLAYER2) {
-        result = chess_.giveup(MillGame::PLAYER2);
+    else if (chess_.whosTurn() == PLAYER2) {
+        result = chess_.giveup(PLAYER2);
     }
         
     if (result) {
@@ -802,7 +802,7 @@ bool GameController::giveUp()
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), i.c_str());
         }
-        if (chess_.whoWin() != MillGame::NOBODY)
+        if (chess_.whoWin() != PLAYER_NOBODY)
             playSound(":/sound/resources/sound/loss.wav");
     }
 
@@ -825,11 +825,11 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     QString sound;
 
     switch (chess_.getAction()) {
-    case MillGame::ACTION_CHOOSE:
-    case MillGame::ACTION_PLACE:
+    case ACTION_CHOOSE:
+    case ACTION_PLACE:
         sound = ":/sound/resources/sound/drog.wav";
         break;
-    case MillGame::ACTION_CAPTURE:
+    case ACTION_CAPTURE:
         sound = ":/sound/resources/sound/remove.wav";
         break;
     default:
@@ -837,14 +837,14 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 如果未开局则开局
-    if (chess_.getStage() == MillGame::GAME_NOTSTARTED) {
+    if (chess_.getStage() == GAME_NOTSTARTED) {
         gameStart();
     }
 
     if (!chess_.command(cmd.toStdString().c_str()))
         return false;
 
-    if (sound == ":/sound/resources/sound/drog.wav" && chess_.getAction() == MillGame::ACTION_CAPTURE) {
+    if (sound == ":/sound/resources/sound/drog.wav" && chess_.getAction() == ACTION_CAPTURE) {
         sound = ":/sound/resources/sound/capture.wav";
     }
 
@@ -882,7 +882,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-    if (chess_.whoWin() != MillGame::NOBODY &&
+    if (chess_.whoWin() != PLAYER_NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
         playSound(":/sound/resources/sound/win.wav");
     }
@@ -891,8 +891,8 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     // AI设置
     if (&chess_ == &(this->chess_)) {
         // 如果还未决出胜负
-        if (chess_.whoWin() == MillGame::NOBODY) {
-            if (chess_.whosTurn() == MillGame::PLAYER1) {
+        if (chess_.whoWin() == PLAYER_NOBODY) {
+            if (chess_.whosTurn() == PLAYER1) {
                 if (isAiPlayer1) {
                     ai1.resume();
                 }
@@ -1004,9 +1004,9 @@ bool GameController::updateScence(MillGame &chess)
         int j;
 
         // 遍历棋盘，查找并放置棋盘上的棋子
-        for (j = MillGame::POS_BEGIN; j < MillGame::POS_END; j++) {
+        for (j = Board::POS_BEGIN; j < Board::POS_END; j++) {
             if (board[j] == key) {
-                pos = scene.rs2pos(j / MillGame::N_SEATS, j % MillGame::N_SEATS + 1);
+                pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
                 if (piece->pos() != pos) {
 
                     // 让移动的棋子位于顶层
@@ -1028,7 +1028,7 @@ bool GameController::updateScence(MillGame &chess)
         }
 
         // 如果没有找到，放置棋盘外的棋子
-        if (j == (MillGame::N_SEATS) * (MillGame::N_RINGS + 1)) {
+        if (j == (Board::N_SEATS) * (Board::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & 0x10) {
                 pos = (key - 0x11 < nTotalPieces / 2 - chess.getPiecesInHandCount_1()) ?
@@ -1043,7 +1043,7 @@ bool GameController::updateScence(MillGame &chess)
                 deletedPiece = piece;
 
 #ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
-                if (chess.getStage() == MillGame::GAME_MOVING) {
+                if (chess.getStage() == GAME_MOVING) {
 #endif
                     QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
@@ -1061,10 +1061,10 @@ bool GameController::updateScence(MillGame &chess)
     }
 
     // 添加摆棋阶段禁子点
-    if (chess.getRule()->hasForbiddenPoint && chess.getStage() == MillGame::GAME_PLACING) {
-        for (int j = MillGame::POS_BEGIN; j < MillGame::POS_END; j++) {
+    if (chess.getRule()->hasForbiddenPoint && chess.getStage() == GAME_PLACING) {
+        for (int j = Board::POS_BEGIN; j < Board::POS_END; j++) {
             if (board[j] == 0x0F) {
-                pos = scene.rs2pos(j / MillGame::N_SEATS, j % MillGame::N_SEATS + 1);
+                pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
                 if (nTotalPieces < pieceList.size()) {
                     pieceList.at(nTotalPieces++)->setPos(pos);
                 } else {
@@ -1080,7 +1080,7 @@ bool GameController::updateScence(MillGame &chess)
     }
 
     // 走棋阶段清除禁子点
-    if (chess.getRule()->hasForbiddenPoint && chess.getStage() != MillGame::GAME_PLACING) {
+    if (chess.getRule()->hasForbiddenPoint && chess.getStage() != GAME_PLACING) {
         while (nTotalPieces < pieceList.size()) {
             delete pieceList.at(nTotalPieces);
             pieceList.removeAt(nTotalPieces);

@@ -24,7 +24,9 @@ INCLUDEPATH += src/ui/qt
 SOURCES += \
     src/ai/evaluate.cpp \
     src/ai/movegen.cpp \
+    src/game/board.cpp \
     src/game/millgame.cpp \
+    src/game/rule.cpp \
     src/main.cpp \
     src/base/thread.cpp \
     src/ai/search.cpp \
@@ -52,7 +54,10 @@ HEADERS  += \
     src/base/thread.h \
     src/ai/search.h \
     src/ai/zobrist.h \
+    src/game/board.h \
     src/game/millgame.h \
+    src/game/rule.h \
+    src/game/types.h \
     src/ui/qt/client.h \
     src/ui/qt/gamecontroller.h \
     src/ui/qt/gamescene.h \

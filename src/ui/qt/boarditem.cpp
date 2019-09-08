@@ -136,7 +136,7 @@ void BoardItem::paint(QPainter *painter,
         }
     }
 
-#ifdef DRAW_SEAT_NUMBER
+#ifdef PLAYER_DRAW_SEAT_NUMBER
     // 画 Seat 编号
     QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
     painter->setPen(fontPen);
@@ -151,7 +151,7 @@ void BoardItem::paint(QPainter *painter,
         QString strSeat(cSeat);
         painter->drawText(position[(N_RINGS - 1) * N_SEATS + i], strSeat);
     }
-#endif // DRAW_SEAT_NUMBER
+#endif // PLAYER_DRAW_SEAT_NUMBER
 }
 
 QPointF BoardItem::nearestPosition(QPointF const pos)

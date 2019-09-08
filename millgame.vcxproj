@@ -451,7 +451,10 @@
     <ClInclude Include="src\base\MemoryPool.h" />
     <ClInclude Include="src\base\stackalloc.h" />
     <QtMoc Include="src\base\thread.h" />
+    <ClInclude Include="src\game\board.h" />
     <ClInclude Include="src\game\millgame.h" />
+    <ClInclude Include="src\game\rule.h" />
+    <ClInclude Include="src\game\types.h" />
     <ClInclude Include="src\ui\qt\boarditem.h" />
     <QtMoc Include="src\ui\qt\client.h" />
     <QtMoc Include="src\ui\qt\gamecontroller.h" />
@@ -696,7 +699,9 @@
     <ClCompile Include="src\ai\movegen.cpp" />
     <ClCompile Include="src\ai\search.cpp" />
     <ClCompile Include="src\base\thread.cpp" />
+    <ClCompile Include="src\game\board.cpp" />
     <ClCompile Include="src\game\millgame.cpp" />
+    <ClCompile Include="src\game\rule.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ui\qt\boarditem.cpp" />
     <ClCompile Include="src\ui\qt\client.cpp" />

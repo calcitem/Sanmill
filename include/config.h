@@ -121,7 +121,7 @@
 #endif
 
 #ifdef DEBUG_MODE
-#define DRAW_SEAT_NUMBER
+#define PLAYER_DRAW_SEAT_NUMBER
 #endif
 
 #ifndef MOBILE_APP_UI

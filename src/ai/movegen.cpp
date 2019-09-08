@@ -6,15 +6,15 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
                                   MillGameAi_ab::Node *node, MillGameAi_ab::Node *rootNode,
                                   move_t bestMove)
 {
-    const int MOVE_PRIORITY_TABLE_SIZE = MillGame::N_RINGS * MillGame::N_SEATS;
+    const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
     int pos = 0;
     size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
     switch (chessTemp.getStage()) {
-    case MillGame::GAME_PLACING:
-        if (chessTemp.getAction() == MillGame::ACTION_CAPTURE) {
-            if (chessTemp.whosTurn() == MillGame::PLAYER1)
+    case GAME_PLACING:
+        if (chessTemp.getAction() == ACTION_CAPTURE) {
+            if (chessTemp.whosTurn() == PLAYER1)
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_2());
             else
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_1());
@@ -22,9 +22,9 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
             newCapacity = static_cast<size_t>(chessTemp.getPiecesInHandCount_1() + chessTemp.getPiecesInHandCount_2());
         }
         break;
-    case MillGame::GAME_MOVING:
-        if (chessTemp.getAction() == MillGame::ACTION_CAPTURE) {
-            if (chessTemp.whosTurn() == MillGame::PLAYER1)
+    case GAME_MOVING:
+        if (chessTemp.getAction() == ACTION_CAPTURE) {
+            if (chessTemp.whosTurn() == PLAYER1)
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_2());
             else
                 newCapacity = static_cast<size_t>(chessTemp.getPiecesOnBoardCount_1());
@@ -32,7 +32,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
             newCapacity = 6;
         }
         break;
-    case MillGame::GAME_NOTSTARTED:
+    case GAME_NOTSTARTED:
         newCapacity = 24;
         break;
     default:
@@ -48,15 +48,15 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
     }
 
     // 对手
-    MillGame::Player opponent = MillGame::getOpponent(chessTemp.context.turn);
+    Player opponent = MillGame::getOpponent(chessTemp.context.turn);
 
     // 列出所有合法的下一招
     switch (chessTemp.context.action) {
         // 对于选子和落子动作
-    case MillGame::ACTION_CHOOSE:
-    case MillGame::ACTION_PLACE:
+    case ACTION_CHOOSE:
+    case ACTION_PLACE:
         // 对于摆子阶段
-        if (chessTemp.context.stage & (MillGame::GAME_PLACING | MillGame::GAME_NOTSTARTED)) {
+        if (chessTemp.context.stage & (GAME_PLACING | GAME_NOTSTARTED)) {
             for (int i : movePriorityTable) {
                 pos = i;
 
@@ -64,7 +64,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
                     continue;
                 }
 
-                if (chessTemp.context.stage != MillGame::GAME_NOTSTARTED || node != rootNode) {
+                if (chessTemp.context.stage != GAME_NOTSTARTED || node != rootNode) {
                     ai_ab.addNode(node, 0, pos, bestMove, chessTemp.context.turn);
                 } else {
                     // 若为先手，则抢占星位
@@ -77,7 +77,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
         }
 
         // 对于移子阶段
-        if (chessTemp.context.stage & MillGame::GAME_MOVING) {
+        if (chessTemp.context.stage & GAME_MOVING) {
             int newPos, oldPos;
 
             // 尽量走理论上较差的位置的棋子
@@ -88,12 +88,12 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
                     continue;
                 }
 
-                if ((chessTemp.context.turn == MillGame::PLAYER1 &&
+                if ((chessTemp.context.turn == PLAYER1 &&
                     (chessTemp.context.nPiecesOnBoard_1 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
-                     (chessTemp.context.turn == MillGame::PLAYER2 &&
+                     (chessTemp.context.turn == PLAYER2 &&
                     (chessTemp.context.nPiecesOnBoard_2 > chessTemp.currentRule.nPiecesAtLeast || !chessTemp.currentRule.allowFlyWhenRemainThreePieces))) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
-                    for (int moveDirection = MillGame::MOVE_DIRECTION_CLOCKWISE; moveDirection <= MillGame::MOVE_DIRECTION_OUTWARD; moveDirection++) {
+                    for (int moveDirection = MOVE_DIRECTION_CLOCKWISE; moveDirection <= MOVE_DIRECTION_OUTWARD; moveDirection++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newPos = moveTable[oldPos][moveDirection];
                         if (newPos && !chessTemp.board_[newPos]) {
@@ -103,7 +103,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
                     }
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
-                    for (newPos = MillGame::POS_BEGIN; newPos < MillGame::POS_END; newPos++) {
+                    for (newPos = Board::POS_BEGIN; newPos < Board::POS_END; newPos++) {
                         if (!chessTemp.board_[newPos]) {
                             int move = (oldPos << 8) + newPos;
                             ai_ab.addNode(node, 0, move, bestMove, chessTemp.context.turn);
@@ -115,8 +115,8 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
         break;
 
         // 对于吃子动作
-    case MillGame::ACTION_CAPTURE:
-        if (chessTemp.isAllInMills(opponent)) {
+    case ACTION_CAPTURE:
+        if (chessTemp.context.board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 pos = movePriorityTable[i];
@@ -131,7 +131,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &chessTemp,
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             pos = movePriorityTable[i];
             if (chessTemp.board_[pos] & opponent) {
-                if (chessTemp.getRule()->allowRemoveMill || !chessTemp.isInMills(pos)) {
+                if (chessTemp.getRule()->allowRemoveMill || !chessTemp.context.board.isInMills(pos)) {
                     ai_ab.addNode(node, 0, -pos, bestMove, chessTemp.context.turn);
                 }
             }
@@ -147,7 +147,7 @@ void MoveList::createMoveTable(MillGame &chess)
 {
 #ifdef CONST_MOVE_TABLE
 #if 1
-    const int moveTable_obliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
+    const int moveTable_obliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -194,7 +194,7 @@ void MoveList::createMoveTable(MillGame &chess)
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable_noObliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
+    const int moveTable_noObliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -241,7 +241,7 @@ void MoveList::createMoveTable(MillGame &chess)
         /* 39 */ {0, 0, 0, 0},
     };
 #else
-    const int moveTable_obliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
+    const int moveTable_obliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
@@ -288,7 +288,7 @@ void MoveList::createMoveTable(MillGame &chess)
         {0, 0, 0, 0}
     };
 
-    const int moveTable_noObliqueLine[MillGame::N_POINTS][MillGame::N_MOVE_DIRECTIONS] = {
+    const int moveTable_noObliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},

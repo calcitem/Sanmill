@@ -383,14 +383,14 @@ void MillGameWindow::ruleInfo()
     ui.labelRule->setText(tl + sl);
 
     // 规则提示
-    ui.labelInfo->setToolTip(QString(MillGame::RULES[ruleNo].name) + "\n" +
-                             MillGame::RULES[ruleNo].description);
+    ui.labelInfo->setToolTip(QString(RULES[ruleNo].name) + "\n" +
+                             RULES[ruleNo].description);
 
     ui.labelRule->setToolTip(ui.labelInfo->toolTip());
 
 #if 0
-    QString tip_Rule = QString("%1\n%2").arg(tr(MillGame::RULES[ruleNo].name))
-        .arg(tr(MillGame::RULES[ruleNo].info));
+    QString tip_Rule = QString("%1\n%2").arg(tr(RULES[ruleNo].name))
+        .arg(tr(RULES[ruleNo].info));
 #endif
 }
 
@@ -466,7 +466,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             // 重置游戏规则
-            game->setRule(ruleNo, static_cast<MillGame::step_t>(dStep), dTime);
+            game->setRule(ruleNo, static_cast<step_t>(dStep), dTime);
         }
     }
 
@@ -922,7 +922,7 @@ void MillGameWindow::on_actionEngine_E_triggered()
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     // 目前数据
-    MillGameAi_ab::depth_t depth1, depth2;
+    depth_t depth1, depth2;
     int time1, time2;
     game->getAiDepthTime(depth1, time1, depth2, time2);
     spinBox_depth1->setValue(depth1);
@@ -932,11 +932,11 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
     // 新设数据
     if (dialog->exec() == QDialog::Accepted) {
-        MillGameAi_ab::depth_t depth1_new, depth2_new;
+        depth_t depth1_new, depth2_new;
         int time1_new, time2_new;
 
-        depth1_new = static_cast<MillGameAi_ab::depth_t>(spinBox_depth1->value());
-        depth2_new = static_cast<MillGameAi_ab::depth_t>(spinBox_depth2->value());
+        depth1_new = static_cast<depth_t>(spinBox_depth1->value());
+        depth2_new = static_cast<depth_t>(spinBox_depth2->value());
 
         time1_new = spinBox_time1->value();
         time2_new = spinBox_time2->value();

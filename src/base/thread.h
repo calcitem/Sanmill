@@ -55,7 +55,7 @@ protected:
 public:
     // AI设置
     void setAi(const MillGame &chess);
-    void setAi(const MillGame &chess, MillGameAi_ab::depth_t depth, int time);
+    void setAi(const MillGame &chess, depth_t depth, int time);
 
     Server *getServer()
     {
@@ -68,7 +68,7 @@ public:
     }
 
     // 深度和限时
-    void getDepthTime(MillGameAi_ab::depth_t &depth, int &time)
+    void getDepthTime(depth_t &depth, int &time)
     {
         depth = aiDepth;
         time = aiTime;
@@ -113,7 +113,7 @@ private:
     MillGameAi_ab ai_ab;
 
     // AI的层数
-    MillGameAi_ab::depth_t aiDepth;
+    depth_t aiDepth;
 
     // AI的限时
     int aiTime;

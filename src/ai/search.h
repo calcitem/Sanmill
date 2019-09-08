@@ -52,11 +52,6 @@ using namespace CTSL;
 class MillGameAi_ab
 {
 public:
-    // 定义类型
-    using depth_t = uint8_t;
-    using value_t = int16_t;
-    using move_t = MillGame::move_t;
-
     // 定义一个节点结构体
     struct Node
     {
@@ -65,7 +60,7 @@ public:
         struct Node* parent {};            // 父节点
         move_t move {};                  // 着法的命令行指令，图上标示为节点前的连线
         value_t value {};                 // 节点的值
-        enum MillGame::Player player;  // 此着是谁下的 (目前仅调试用)
+        enum Player player;  // 此着是谁下的 (目前仅调试用)
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned {};                    // 是否在此处剪枝
 #endif
@@ -80,8 +75,8 @@ public:
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
         bool visited;                   // 是否在遍历时访问过
-        MillGame::GameStage stage;     // 摆棋阶段还是走棋阶段
-        MillGame::Action action;       // 动作状态
+        GameStage stage;     // 摆棋阶段还是走棋阶段
+        Action action;       // 动作状态
         int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
         int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
         int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
@@ -91,7 +86,7 @@ public:
         bool isHash;                    //  是否从 Hash 读取
 #endif /* HASH_MAP_ENABLE */
 #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
-        MillGame::hash_t hash;                  //  哈希值
+        hash_t hash;                  //  哈希值
 #endif
 #endif /* DEBUG_AB_TREE */
     };
@@ -148,8 +143,8 @@ public:
     static bool nodeGreater(const Node *first, const Node *second);
 
 #ifdef BOOK_LEARNING
-    bool findBookHash(MillGame::hash_t hash, HashValue &hashValue);
-    static int recordBookHash(MillGame::hash_t hash, const HashValue &hashValue);
+    bool findBookHash(hash_t hash, HashValue &hashValue);
+    static int recordBookHash(hash_t hash, const HashValue &hashValue);
     void clearBookHashMap();
     static void recordOpeningBookToHashMap();
     static void recordOpeningBookHashMapToFile();
@@ -160,7 +155,7 @@ public: /* TODO: Move to private or protected */
     // 增加新节点
     struct Node *addNode(Node *parent, value_t value,
                          move_t move, move_t bestMove,
-                         enum MillGame::Player player);
+                         enum Player player);
 
     // 定义极大值
     static const value_t INF_VALUE = 0x1 << 14;
@@ -202,7 +197,7 @@ protected:
 #endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
-    MillGameAi_ab::value_t alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
+    value_t alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
 
     // 返回着法的命令行
     const char *move2string(move_t move);
@@ -212,11 +207,11 @@ protected:
        
 #ifdef HASH_MAP_ENABLE
     // 查找哈希表
-    bool findHash(MillGame::hash_t hash, HashValue &hashValue);
-    value_t probeHash(MillGame::hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
+    bool findHash(hash_t hash, HashValue &hashValue);
+    value_t probeHash(hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
 
     // 插入哈希表
-    int recordHash(value_t value, depth_t depth, HashType type, MillGame::hash_t hash, move_t bestMove);
+    int recordHash(value_t value, depth_t depth, HashType type, hash_t hash, move_t bestMove);
 #endif  // HASH_MAP_ENABLE
 
 private:
@@ -226,7 +221,7 @@ private:
     // 演算用的模型
     MillGame chessTemp;
 
-    MillGame::ChessContext *chessContext {};
+    ChessContext *chessContext {};
 
     // hash 计算时，各种转换用的模型
     MillGame chessTempShift;
@@ -256,7 +251,7 @@ private:
 //#ifdef MEMORY_POOL
 //    StackAlloc<MillGame::ChessContext, MemoryPool<MillGame::ChessContext> > contextStack;
 //#else
-    stack<MillGame::ChessContext> contextStack;
+    stack<ChessContext> contextStack;
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回
@@ -268,11 +263,11 @@ private:
 };
 
 #ifdef HASH_MAP_ENABLE
-extern HashMap<MillGame::hash_t, MillGameAi_ab::HashValue> hashmap;
+extern HashMap<hash_t, MillGameAi_ab::HashValue> hashmap;
 #endif /* #ifdef HASH_MAP_ENABLE */
 
 #ifdef THREEFOLD_REPETITION
-extern vector<MillGame::hash_t> positions;
+extern vector<hash_t> positions;
 #endif
 
 #endif

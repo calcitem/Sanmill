@@ -123,7 +123,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #ifdef DISABLE_HASHBUCKET
                 QFile file(filename);
                 file.open(QIODevice::WriteOnly);
-                file.write(static_cast<char *>(hashTable), sizeof(HashNode<K, V>) * hashSize);
+                file.write((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 #endif
             }
@@ -134,7 +134,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #ifdef DISABLE_HASHBUCKET
                 QFile file(filename);
                 file.open(QIODevice::ReadOnly);
-                file.read(static_cast<char *>(hashTable), sizeof(HashNode<K, V>) * hashSize);
+                file.read((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 #endif
             }

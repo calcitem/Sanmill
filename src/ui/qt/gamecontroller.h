@@ -100,8 +100,8 @@ public:
         return &manualListModel;
     }
 
-    void setAiDepthTime(MillGameAi_ab::depth_t depth1, int time1, MillGameAi_ab::depth_t depth2, int time2);
-    void getAiDepthTime(MillGameAi_ab::depth_t &depth1, int &time1, MillGameAi_ab::depth_t &depth2, int &time2);
+    void setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2);
+    void getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2);
 
 signals:
 
@@ -126,7 +126,7 @@ signals:
 public slots:
 
     // 设置规则
-    void setRule(int ruleNo, MillGame::step_t stepLimited = UINT16_MAX, int timeLimited = -1);
+    void setRule(int ruleNo, step_t stepLimited = UINT16_MAX, int timeLimited = -1);
 
     // 游戏开始
     void gameStart();
@@ -267,7 +267,7 @@ private:
     int timeLimit;
 
     // 规则限步数
-    MillGame::step_t stepsLimit;
+    step_t stepsLimit;
 
     // 玩家1剩余时间（秒）
     time_t remainingTime1;
