@@ -204,6 +204,9 @@ void MillGameWindow::initialize()
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             game, SLOT(setAnimation(bool)));
 
+    connect(ui.actionGiveUpIfMostLose_G, SIGNAL(toggled(bool)),
+            game, SLOT(setGiveUpIfMostLose(bool)));
+
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
             game, SLOT(setAutoRestart(bool)));
 

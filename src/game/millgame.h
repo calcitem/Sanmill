@@ -304,7 +304,7 @@ public:
     MillGame &operator=(const MillGame &);
 
     // 设置配置
-    bool configure(bool randomMove);
+    bool configure(bool giveUpIfMostLose, bool randomMove);
 
     // 设置棋局状态和棋盘上下文，用于初始化
     bool setContext(const struct Rule *rule,
@@ -362,6 +362,12 @@ public:
     int getMoveStep() const
     {
         return moveStep;
+    } 
+
+    // 获取是否必败时认输
+    bool getGiveUpIfMostLose() const
+    {
+        return giveUpIfMostLose_;
     }
 
     // 获取 AI 是否随机走子
@@ -574,6 +580,9 @@ private:
 
     // 从走子阶段开始或上次吃子起的步数
     int moveStep {};
+
+    // 是否必败时认输
+    bool giveUpIfMostLose_ {true};
 
     // AI 是否随机走子
     bool randomMove_ {true};

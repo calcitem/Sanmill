@@ -54,6 +54,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     ruleNo_(-1),
     timeLimit(0),
     stepsLimit(50),
+    giveUpIfMostLose_(true),
     randomMove_(true)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
@@ -116,7 +117,7 @@ const QMap<int, QStringList> GameController::getActions()
 
 void GameController::gameStart()
 {
-    chess_.configure(randomMove_);
+    chess_.configure(giveUpIfMostLose_, randomMove_);
     chess_.start();
     chessTemp = chess_;
 
@@ -142,7 +143,7 @@ void GameController::gameReset()
     }
 
     // 重置游戏
-    chess_.configure(randomMove_);
+    chess_.configure(giveUpIfMostLose_, randomMove_);
     chess_.reset();
     chessTemp = chess_;
 
@@ -283,7 +284,7 @@ void GameController::setRule(int ruleNo, MillGame::step_t stepLimited /*= -1*/, 
 
 void GameController::setEngine1(bool arg)
 {
-    chess_.configure(randomMove_);
+    chess_.configure(giveUpIfMostLose_, randomMove_);
 
     isAiPlayer1 = arg;
     if (arg) {
@@ -299,7 +300,7 @@ void GameController::setEngine1(bool arg)
 
 void GameController::setEngine2(bool arg)
 {
-    chess_.configure(randomMove_);
+    chess_.configure(giveUpIfMostLose_, randomMove_);
 
     isAiPlayer2 = arg;
     if (arg) {
@@ -368,6 +369,11 @@ void GameController::playSound(const QString &soundPath)
         QSound::play(soundPath);
     }
 #endif /* ! DONOT_PLAY_SOUND */
+}
+
+void GameController::setGiveUpIfMostLose(bool arg)
+{
+    giveUpIfMostLose_ = arg;
 }
 
 void GameController::setAutoRestart(bool arg)
@@ -778,11 +784,9 @@ bool GameController::giveUp()
 
     if (chess_.whosTurn() == MillGame::PLAYER1) {
         result = chess_.giveup(MillGame::PLAYER1);
-        chess_.score_2++;
     }
     else if (chess_.whosTurn() == MillGame::PLAYER2) {
         result = chess_.giveup(MillGame::PLAYER2);
-        chess_.score_1++;
     }
         
     if (result) {

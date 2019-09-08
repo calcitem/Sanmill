@@ -168,6 +168,7 @@ MillGame &MillGame::operator = (const MillGame &chess)
     currentStep = chess.currentStep;
     moveStep = chess.moveStep;
     randomMove_ = chess.randomMove_;
+    giveUpIfMostLose_ = chess.giveUpIfMostLose_;
     board_ = context.board;
     currentPos = chess.currentPos;
     winner = chess.winner;
@@ -663,8 +664,11 @@ void MillGame::createMillTable()
 }
 
 // 设置配置
-bool MillGame::configure(bool randomMove)
+bool MillGame::configure(bool giveUpIfMostLose, bool randomMove)
 {
+    // 设置是否必败时认输
+    this->giveUpIfMostLose_ = giveUpIfMostLose;
+
     // 设置是否随机走子
     this->randomMove_ = randomMove;
 
@@ -1398,10 +1402,12 @@ bool MillGame::giveup(Player loser)
         winner = PLAYER2;
         tips = "玩家1投子认负。";
         sprintf(cmdline, "Player1 give up!");
+        score_2++;
     } else if (loser == PLAYER2) { 
         winner = PLAYER1;
         tips = "玩家2投子认负。";
         sprintf(cmdline, "Player2 give up!");
+        score_1++;
     }
 
     cmdlist.emplace_back(string(cmdline));
@@ -1465,7 +1471,7 @@ bool MillGame::command(const char *cmd)
     }
 
     // 认输
-    args = sscanf(cmd, "Players%1u give up!", &t);
+    args = sscanf(cmd, "Player%1u give up!", &t);
 
     if (args == 1) {
         if (t == 1) {

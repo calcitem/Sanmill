@@ -831,6 +831,7 @@ const char* MillGameAi_ab::bestMove()
 {
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
+    bool isMostLose = true; // 是否必败
 
     if ((rootNode->children).empty()) {
         return "error!";
@@ -865,6 +866,30 @@ const char* MillGameAi_ab::bestMove()
         }
 
         i++;
+    }
+
+    // 检查是否必败
+
+    MillGame::Player whosTurn = chess_.whosTurn();
+
+    for (auto child : rootNode->children) {
+        // TODO: 使用常量代替
+        if (whosTurn == MillGame::PLAYER1 && child->value > -10000 ||
+            whosTurn == MillGame::PLAYER2 && child->value < 10000) {
+            isMostLose = false;
+            break;
+        }
+    }
+
+    // 自动认输
+    if (isMostLose) {
+        if (whosTurn == MillGame::PLAYER1) {
+            sprintf(cmdline, "Player1 give up!");
+        } else if (whosTurn == MillGame::PLAYER2) {
+            sprintf(cmdline, "Player2 give up!");
+        }
+
+        return cmdline;
     }
 
     for (auto child : rootNode->children) {

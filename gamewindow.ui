@@ -291,6 +291,7 @@
     <addaction name="actionSound_S"/>
     <addaction name="actionAnimation_A"/>
     <addaction name="separator"/>
+    <addaction name="actionGiveUpIfMostLose_G"/>
     <addaction name="actionAutoRestart_A"/>
     <addaction name="actionRandomMove_R"/>
    </widget>
@@ -1111,6 +1112,17 @@
    </property>
    <property name="text">
     <string>电脑着法随机(&amp;R)</string>
+   </property>
+  </action>
+  <action name="actionGiveUpIfMostLose_G">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>必败时认输(&amp;G)</string>
    </property>
   </action>
  </widget>
