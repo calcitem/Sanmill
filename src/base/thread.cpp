@@ -66,10 +66,10 @@ void AiThread::setAi(const MillGame &game)
     this->game_ = &game;
     ai_ab.setGame(*(this->game_));
 
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
-#ifdef CLEAR_HASH_MAP
-    ai_ab.clearHashMap();
+#ifdef CLEAR_TRANSPOSITION_TABLE
+    ai_ab.clearTranspositionTable();
 #endif
 #endif
 

@@ -32,10 +32,10 @@
 
 using namespace CTSL;
 
-#ifdef HASH_MAP_ENABLE
-static constexpr int hashsize = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
-HashMap<hash_t, MillGameAi_ab::HashValue> hashmap(hashsize);
-#endif // HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
+static constexpr int TRANSPOSITION_TABLE_SIZE = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
+HashMap<hash_t, MillGameAi_ab::HashValue> transpositionTable(TRANSPOSITION_TABLE_SIZE);
+#endif // TRANSPOSITION_TABLE_ENABLE
 
 #ifdef BOOK_LEARNING
 static constexpr int bookHashsize = 0x1000000; // 16M
@@ -65,20 +65,20 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
     if ((gameTemp.context.stage) & (GAME_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
         depth_t depthTable[] = { 4, 11, 12, 13, 14, 14,  14, 12, 11, 10, 6, 6, 1 };
-#else // HASH_MAP_ENABLE
+#else // TRANSPOSITION_TABLE_ENABLE
         depth_t depthTable[] = { 2, 11, 11, 11, 11, 10,   9,  8,  8, 8, 7, 7, 1 };
-#endif // HASH_MAP_ENABLE
+#endif // TRANSPOSITION_TABLE_ENABLE
 #else // DEAL_WITH_HORIZON_EFFECT
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef RAPID_GAME
         depth_t depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
 #else
         depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 14, 13, 12, 9, 7, 1 };
       //depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 12, 12, 12, 9, 7, 1 };
 #endif  // RAPID_GAME
-#else // HASH_MAP_ENABLE
+#else // TRANSPOSITION_TABLE_ENABLE
         depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
 #endif
 #endif // DEAL_WITH_HORIZON_EFFECT
@@ -133,13 +133,13 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
 #endif
 
 #ifdef DEBUG_AB_TREE
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     newNode->hash = 0;
 #endif
 #endif
 
 #ifdef DEBUG_AB_TREE
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
     newNode->isHash = false;
 #endif
 #endif
@@ -271,9 +271,9 @@ void MillGameAi_ab::setGame(const MillGame &game)
 {
     // 如果规则改变，重建hashmap
     if (strcmp(this->game_.currentRule.name, game.currentRule.name) != 0) {
-#ifdef HASH_MAP_ENABLE
-        clearHashMap();
-#endif // HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        clearTranspositionTable();
+#endif // TRANSPOSITION_TABLE_ENABLE
 
 #ifdef BOOK_LEARNING
         // TODO: 规则改变时清空学习表
@@ -362,9 +362,9 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #ifdef IDS_SUPPORT
     // 深化迭代
     for (depth_t i = 2; i < d; i += 1) {
-#ifdef HASH_MAP_ENABLE
-#ifdef CLEAR_HASH_MAP
-        clearHashMap();   // 每次走子前清空哈希表
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef CLEAR_TRANSPOSITION_TABLE
+        clearTranspositionTable();   // 每次走子前清空哈希表
 #endif
 #endif
         alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
@@ -374,9 +374,9 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
     loggerDebug("IDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif /* IDS_SUPPORT */
 
-#ifdef HASH_MAP_ENABLE
-#ifdef CLEAR_HASH_MAP
-    clearHashMap();  // 每次走子前清空哈希表
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef CLEAR_TRANSPOSITION_TABLE
+    clearTranspositionTable();  // 每次走子前清空哈希表
 #endif
 #endif
 
@@ -404,7 +404,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     // 子节点的最优着法
     move_t bestMove = 0;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
     // 哈希值
     HashValue hashValue {};
     memset(&hashValue, 0, sizeof(hashValue));
@@ -419,16 +419,13 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #endif
 #endif
 
-#ifdef HASH_MAP_ENABLE
-    // 检索 hashmap
-    //hashMapMutex.lock();
-
+#ifdef TRANSPOSITION_TABLE_ENABLE
     HashType type = hashfEMPTY;
 
     value_t probeVal = probeHash(hash, depth, alpha, beta, bestMove, type);
 
     if (probeVal != INT16_MIN /* TODO: valUNKOWN */  && node != rootNode) {
-#ifdef HASH_MAP_DEBUG
+#ifdef TRANSPOSITION_TABLE_DEBUG
         hashHitCount++;
 #endif
 #ifdef DEBUG_AB_TREE
@@ -454,7 +451,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 }
 
     //hashMapMutex.unlock();
-#endif /* HASH_MAP_ENABLE */
+#endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
@@ -464,10 +461,10 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     node->isLeaf = false;
     node->isTimeout = false;
     node->visited = true;
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
     node->isHash = false;
     node->hash = 0;
-#endif // HASH_MAP_ENABLE
+#endif // TRANSPOSITION_TABLE_ENABLE
 #endif // DEBUG_AB_TREE
 
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
@@ -487,7 +484,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         node->isLeaf = true;
 #endif
 
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
         recordHash(node->value, depth, hashfEXACT, hash, 0);
 #endif
@@ -524,7 +521,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         }
 #endif
 
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
         recordHash(node->value, depth, hashfEXACT, hash, 0);
 #endif
@@ -578,7 +575,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
             // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
 
             if (value > alpha) {
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
                 hashf = hashfEXACT;
 #endif
                 alpha = value;
@@ -606,7 +603,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #if 0
             if (value < beta) {
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
                 hashf = hashfBETA;
 #endif
                 beta = value;
@@ -647,10 +644,10 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     sortLegalMoves(node);
 #endif // IDS_SUPPORT
 
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值
     recordHash(node->value, depth, hashf, hash, node->children[0]->move);
-#endif /* HASH_MAP_ENABLE */
+#endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // 返回
     return node->value;
@@ -741,8 +738,8 @@ const char* MillGameAi_ab::bestMove()
     nodeCount = 0;
     evaluatedNodeCount = 0;
 
-#ifdef HASH_MAP_ENABLE
-#ifdef HASH_MAP_DEBUG
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef TRANSPOSITION_TABLE_DEBUG
     loggerDebug(""Hash hit count: %llu\n", hashHitCount);
 #endif
 #endif
@@ -774,15 +771,15 @@ const char *MillGameAi_ab::move2string(move_t move)
     return cmdline;
 }
 
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
 value_t MillGameAi_ab::probeHash(hash_t hash,
-                                                  depth_t depth, value_t alpha, value_t beta,
-                                                  move_t &bestMove, HashType &type)
+                                 depth_t depth, value_t alpha, value_t beta,
+                                 move_t &bestMove, HashType &type)
 {
     const value_t valUNKNOWN = INT16_MIN;
     HashValue hashValue {};
 
-    if (!hashmap.find(hash, hashValue)) {
+    if (!transpositionTable.find(hash, hashValue)) {
         return valUNKNOWN;
     }
 
@@ -813,7 +810,7 @@ out:
 
 bool MillGameAi_ab::findHash(hash_t hash, HashValue &hashValue)
 {
-    return hashmap.find(hash, hashValue);
+    return transpositionTable.find(hash, hashValue);
 
     // TODO: 变换局面
 #if 0
@@ -860,20 +857,20 @@ int MillGameAi_ab::recordHash(value_t value, depth_t depth, HashType type, hash_
     hashValue.type = type;
     hashValue.bestMove = bestMove;
 
-    hashmap.insert(hash, hashValue);
+    transpositionTable.insert(hash, hashValue);
 
     //hashMapMutex.unlock();
 
     return 0;
 }
 
-void MillGameAi_ab::clearHashMap()
+void MillGameAi_ab::clearTranspositionTable()
 {
     //hashMapMutex.lock();
-    hashmap.clear();
+    transpositionTable.clear();
     //hashMapMutex.unlock();
 }
-#endif /* HASH_MAP_ENABLE */
+#endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #ifdef BOOK_LEARNING
 

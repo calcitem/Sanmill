@@ -29,7 +29,7 @@ MillGame::MillGame()
     // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board.board_;
 
- #if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+ #if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // 创建哈希数据
     constructHash();
 #endif
@@ -173,7 +173,7 @@ bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     // 当前棋局（3×8）
     if (board == nullptr) {
         memset(context.board.board_, 0, sizeof(context.board.board_));
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         context.hash = 0;
 #endif
     } else {
@@ -328,7 +328,7 @@ bool MillGame::reset()
     // 用时置零
     elapsedSeconds_1 = elapsedSeconds_2 = 0;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // 哈希归零
     context.hash = 0;
 #endif
@@ -426,7 +426,7 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
 
         board_[pos] = piece;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
         move_ = pos;
@@ -524,13 +524,13 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
 
     board_[pos] = board_[currentPos];
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     updateHash(pos);
 #endif
 
     board_[currentPos] = '\x00';
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     revertHash(currentPos);
 #endif
 
@@ -620,15 +620,15 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
 
     // 去子（设置禁点）
     if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
 #endif
         board_[pos] = '\x0f';
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         updateHash(pos);
 #endif
     } else { // 去子
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
         revertHash(pos);
 #endif
         board_[pos] = '\x00';
@@ -651,7 +651,7 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
 
     currentPos = 0;
     context.nPiecesNeedRemove--;
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     updateHash(pos);
 #endif
 
@@ -1093,7 +1093,7 @@ void MillGame::cleanForbiddenPoints()
             pos = r * Board::N_SEATS + s;
 
             if (board_[pos] == '\x0f') {
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
                 revertHash(pos);
 #endif
                 board_[pos] = '\x00';
@@ -1184,7 +1184,7 @@ void MillGame::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
     p2_ms = elapsedSeconds_2;
 }
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
 
 #if 0
 /*
@@ -1275,4 +1275,4 @@ hash_t MillGame::updateHashMisc()
 
     return context.hash;
 }
-#endif /* HASH_MAP_ENABLE etc. */
+#endif /* TRANSPOSITION_TABLE_ENABLE etc. */

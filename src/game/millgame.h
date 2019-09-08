@@ -41,13 +41,13 @@ class GameContext
 public:
     Board board;
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // 局面的哈希值
     hash_t hash{};
 
     // Zobrist 数组
     hash_t zobrist[Board::N_POINTS][POINT_TYPE_COUNT]{};
-#endif /* HASH_MAP_ENABLE */
+#endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // 局面阶段标识
     enum GameStage stage;
@@ -322,7 +322,7 @@ public:
     bool place(int pos, int time_p = -1, int8_t cp = 0);
     bool capture(int pos, int time_p = -1, int8_t cp = 0);
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING) || (defined THREEFOLD_REPETITION))
     // hash相关
     hash_t getHash();
     hash_t revertHash(int pos);

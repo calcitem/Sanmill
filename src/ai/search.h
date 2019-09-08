@@ -82,16 +82,16 @@ public:
         int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
         int result;                     // 终局结果，-1为负，0为未到终局，1为胜，走棋阶段被闷棋则为 -2/2，布局阶段闷棋为 -3
         struct Node* root;              // 根节点
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
         bool isHash;                    //  是否从 Hash 读取
-#endif /* HASH_MAP_ENABLE */
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
+#endif /* TRANSPOSITION_TABLE_ENABLE */
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING)  || (defined THREEFOLD_REPETITION))
         hash_t hash;                  //  哈希值
 #endif
 #endif /* DEBUG_AB_TREE */
     };
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
     // 定义哈希值的类型
     enum HashType : uint8_t
     {
@@ -133,9 +133,9 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
-#if ((defined HASH_MAP_ENABLE) || (defined BOOK_LEARNING))
+#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
     // 清空哈希表
-    void clearHashMap();
+    void clearTranspositionTable();
 #endif
 
     // 比较函数
@@ -205,14 +205,14 @@ protected:
     // 篡改深度
     depth_t changeDepth(depth_t originalDepth);
        
-#ifdef HASH_MAP_ENABLE
+#ifdef TRANSPOSITION_TABLE_ENABLE
     // 查找哈希表
     bool findHash(hash_t hash, HashValue &hashValue);
     value_t probeHash(hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
 
     // 插入哈希表
     int recordHash(value_t value, depth_t depth, HashType type, hash_t hash, move_t bestMove);
-#endif  // HASH_MAP_ENABLE
+#endif  // TRANSPOSITION_TABLE_ENABLE
 
 private:
     // 原始模型
@@ -235,8 +235,8 @@ private:
     // 评估过的结点个数
     size_t evaluatedNodeCount {0};
 
-#ifdef HASH_MAP_ENABLE
-#ifdef HASH_MAP_DEBUG
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef TRANSPOSITION_TABLE_DEBUG
     // Hash 统计数据
     size_t hashEntryCount;
     size_t hashHitCount;
@@ -262,9 +262,9 @@ private:
     char cmdline[64] {};
 };
 
-#ifdef HASH_MAP_ENABLE
-extern HashMap<hash_t, MillGameAi_ab::HashValue> hashmap;
-#endif /* #ifdef HASH_MAP_ENABLE */
+#ifdef TRANSPOSITION_TABLE_ENABLE
+extern HashMap<hash_t, MillGameAi_ab::HashValue> transpositionTable;
+#endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #ifdef THREEFOLD_REPETITION
 extern vector<hash_t> positions;

@@ -29,11 +29,11 @@ using step_t = uint16_t;
 using value_t = int16_t;
 using depth_t = uint8_t;
 
-#ifdef HASH_MAP_CUTDOWN
+#ifdef TRANSPOSITION_TABLE_CUTDOWN
 using hash_t = uint32_t;
 #else
 using hash_t = uint64_t;
-#endif /* HASH_MAP_CUTDOWN */
+#endif /* TRANSPOSITION_TABLE_CUTDOWN */
 
 // 移动方向，包括顺时针、逆时针、向内、向外4个方向
 enum MoveDirection
