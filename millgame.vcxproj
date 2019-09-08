@@ -467,7 +467,6 @@
     <QtMoc Include="src\ui\qt\server.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Readme.md" />
     <None Include="include\version.h.template" />
     <None Include="millgame.pro" />
     <None Include="Resources\icon\ActualSizeHS.png">
@@ -688,11 +687,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\History.txt" />
-    <Text Include="..\Licence.txt" />
-    <Text Include="..\Sample.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ai\evaluate.cpp" />

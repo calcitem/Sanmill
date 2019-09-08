@@ -67,7 +67,6 @@ Board &Board::operator= (const Board &other)
 
 void Board::createMillTable(const Rule &currentRule)
 {
-#ifdef CONST_MILL_TABLE
     const int millTable_noObliqueLine[Board::N_POINTS][Board::N_DIRECTIONS][2] = {
         /* 0 */ {{0, 0}, {0, 0}, {0, 0}},
         /* 1 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -167,103 +166,30 @@ void Board::createMillTable(const Rule &currentRule)
     } else {
         memcpy(millTable, millTable_noObliqueLine, sizeof(millTable));
     }
-#else /* CONST_MILL_TABLE */
-    for (int i = 0; i < N_SEATS; i++) {
-        // 内外方向的“成三”
-        // 如果是0、2、4、6位（偶数位）或是有斜线
-        if (!(i & 1) || this->currentRule.hasObliqueLines) {
-            millTable[1 * N_SEATS + i][0][0] = 2 * N_SEATS + i;
-            millTable[1 * N_SEATS + i][0][1] = 3 * N_SEATS + i;
 
-            millTable[2 * N_SEATS + i][0][0] = 1 * N_SEATS + i;
-            millTable[2 * N_SEATS + i][0][1] = 3 * N_SEATS + i;
-
-            millTable[3 * N_SEATS + i][0][0] = 1 * N_SEATS + i;
-            millTable[3 * N_SEATS + i][0][1] = 2 * N_SEATS + i;
-        }
-        // 对于无斜线情况下的1、3、5、7位（奇数位）
-        else {
-            // 置空该组“成三”
-            millTable[1 * N_SEATS + i][0][0] = 0;
-            millTable[1 * N_SEATS + i][0][1] = 0;
-
-            millTable[2 * N_SEATS + i][0][0] = 0;
-            millTable[2 * N_SEATS + i][0][1] = 0;
-
-            millTable[3 * N_SEATS + i][0][0] = 0;
-            millTable[3 * N_SEATS + i][0][1] = 0;
-        }
-
-        // 当前圈上的“成三”
-        // 如果是0、2、4、6位
-        if (!(i & 1)) {
-            millTable[1 * N_SEATS + i][1][0] = 1 * N_SEATS + (i + 1) % N_SEATS;
-            millTable[1 * N_SEATS + i][1][1] = 1 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
-
-            millTable[2 * N_SEATS + i][1][0] = 2 * N_SEATS + (i + 1) % N_SEATS;
-            millTable[2 * N_SEATS + i][1][1] = 2 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
-
-            millTable[3 * N_SEATS + i][1][0] = 3 * N_SEATS + (i + 1) % N_SEATS;
-            millTable[3 * N_SEATS + i][1][1] = 3 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
-            // 置空另一组“成三”
-            millTable[1 * N_SEATS + i][2][0] = 0;
-            millTable[1 * N_SEATS + i][2][1] = 0;
-
-            millTable[2 * N_SEATS + i][2][0] = 0;
-            millTable[2 * N_SEATS + i][2][1] = 0;
-
-            millTable[3 * N_SEATS + i][2][0] = 0;
-            millTable[3 * N_SEATS + i][2][1] = 0;
-        }
-        // 对于1、3、5、7位（奇数位）
-        else {
-            // 当前圈上逆时针的“成三”
-            millTable[1 * N_SEATS + i][1][0] = 1 * N_SEATS + (i + N_SEATS - 2) % N_SEATS;
-            millTable[1 * N_SEATS + i][1][1] = 1 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
-
-            millTable[2 * N_SEATS + i][1][0] = 2 * N_SEATS + (i + N_SEATS - 2) % N_SEATS;
-            millTable[2 * N_SEATS + i][1][1] = 2 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
-
-            millTable[3 * N_SEATS + i][1][0] = 3 * N_SEATS + (i + N_SEATS - 2) % N_SEATS;
-            millTable[3 * N_SEATS + i][1][1] = 3 * N_SEATS + (i + N_SEATS - 1) % N_SEATS;
-
-            // 当前圈上顺时针的“成三”
-            millTable[1 * N_SEATS + i][2][0] = 1 * N_SEATS + (i + 1) % N_SEATS;
-            millTable[1 * N_SEATS + i][2][1] = 1 * N_SEATS + (i + 2) % N_SEATS;
-
-            millTable[2 * N_SEATS + i][2][0] = 2 * N_SEATS + (i + 1) % N_SEATS;
-            millTable[2 * N_SEATS + i][2][1] = 2 * N_SEATS + (i + 2) % N_SEATS;
-
-            millTable[3 * N_SEATS + i][2][0] = 3 * N_SEATS + (i + 1) % N_SEATS;
-            millTable[3 * N_SEATS + i][2][1] = 3 * N_SEATS + (i + 2) % N_SEATS;
-        }
-    }
-#endif /* CONST_MILL_TABLE */
-
-#if 0
+#ifdef DEBUG_MODE
     for (int i = 0; i < N_POINTS; i++) {
-        printf("/* %d */ {", i);
+        loggerDebug("/* %d */ {", i);
         for (int j = 0; j < N_DIRECTIONS; j++) {
-            printf("{");
+            loggerDebug("{");
             for (int k = 0; k < 2; k++) {
                 if (k == 0) {
-                    printf("%d, ", millTable[i][j][k]);
+                    loggerDebug("%d, ", millTable[i][j][k]);
                 } else {
-                    printf("%d", millTable[i][j][k]);
+                    loggerDebug("%d", millTable[i][j][k]);
                 }
 
             }
             if (j == 2)
-                printf("}");
+                loggerDebug("}");
             else
-                printf("}, ");
+                loggerDebug("}, ");
         }
-        printf("},\n");
+        loggerDebug("},\n");
     }
 
-    printf("======== millTable End =========\n");
-
-#endif
+    loggerDebug("======== millTable End =========\n");
+#endif /* DEBUG_MODE */
 }
 
 void Board::pos2rs(const int pos, int &r, int &s)

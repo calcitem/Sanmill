@@ -56,9 +56,6 @@
 
 //#define MILL_FIRST
 
-#define CONST_MOVE_TABLE
-#define CONST_MILL_TABLE
-
 //#define DEAL_WITH_HORIZON_EFFECT
 
 #define IDS_SUPPORT

@@ -1,4 +1,25 @@
-﻿#include <random>
+﻿/*****************************************************************************
+ * Copyright (C) 2018-2019 MillGame authors
+ *
+ * Authors: liuweilhy <liuweilhy@163.com>
+ *          Calcitem <calcitem@outlook.com>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ *****************************************************************************/
+
+#include <random>
 
 #include "movegen.h"
 
@@ -145,7 +166,6 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
 
 void MoveList::createMoveTable(MillGame &game)
 {
-#ifdef CONST_MOVE_TABLE
 #if 1
     const int moveTable_obliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
@@ -342,46 +362,9 @@ void MoveList::createMoveTable(MillGame &game)
         memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
     }
 
-#else /* CONST_MOVE_TABLE */
-
-    for (int r = 1; r <= N_RINGS; r++) {
-        for (int s = 0; s < N_SEATS; s++) {
-            int p = r * N_SEATS + s;
-
-            // 顺时针走一步的位置
-            moveTable[p][MOVE_DIRECTION_CLOCKWISE] = r * N_SEATS + (s + 1) % N_SEATS;
-
-            // 逆时针走一步的位置
-            moveTable[p][MOVE_DIRECTION_ANTICLOCKWISE] = r * N_SEATS + (s + N_SEATS - 1) % N_SEATS;
-
-            // 如果是 0、2、4、6位（偶数位）或是有斜线
-            if (!(s & 1) || this->currentRule.hasObliqueLines) {
-                if (r > 1) {
-                    // 向内走一步的位置
-                    moveTable[p][MOVE_DIRECTION_INWARD] = (r - 1) * N_SEATS + s;
-                }
-
-                if (r < N_RINGS) {
-                    // 向外走一步的位置
-                    moveTable[p][MOVE_DIRECTION_OUTWARD] = (r + 1) * N_SEATS + s;
-                }
-            }
-#if 0
-            // 对于无斜线情况下的1、3、5、7位（奇数位），则都设为棋盘外点（默认'\x00'）
-            else {
-                // 向内走一步的位置设为随便棋盘外一点
-                moveTable[i * SEAT + j][2] = '\x00';
-                // 向外走一步的位置设为随便棋盘外一点
-                moveTable[i * SEAT + j][3] = '\x00';
-            }
-#endif
-        }
-    }
-#endif /* CONST_MOVE_TABLE */
-
-#if 0
+#ifdef DEBUG_MODE
     int sum = 0;
-    for (int i = 0; i < N_POINTS; i++) {
+    for (int i = 0; i < Board::N_POINTS; i++) {
         loggerDebug("/* %d */ {", i);
         for (int j = 0; j < N_MOVE_DIRECTIONS; j++) {
             if (j == N_MOVE_DIRECTIONS - 1)
@@ -392,7 +375,7 @@ void MoveList::createMoveTable(MillGame &game)
         }
         loggerDebug("},\n");
     }
-    loggerDebug("sum = %d\n");
+    loggerDebug("sum = %d\n", sum);
 #endif
 }
 

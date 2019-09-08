@@ -37,9 +37,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Text Files">
-      <UniqueIdentifier>{d3810898-e5d4-49ce-92da-beddffba0697}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Project Files">
       <UniqueIdentifier>{16c52ca8-0391-4ad2-919c-4a865ad87e98}</UniqueIdentifier>
     </Filter>
@@ -229,9 +226,6 @@
     <None Include="Resources\image\white_piece.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Readme.md">
-      <Filter>Text Files</Filter>
-    </None>
     <None Include="include\version.h.template">
       <Filter>Header Files</Filter>
     </None>
@@ -241,17 +235,6 @@
     <None Include="src\base\MemoryPool.tcc">
       <Filter>base</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\History.txt">
-      <Filter>Text Files</Filter>
-    </Text>
-    <Text Include="..\Licence.txt">
-      <Filter>Text Files</Filter>
-    </Text>
-    <Text Include="..\Sample.txt">
-      <Filter>Text Files</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\ui\qt\gamecontroller.h">
