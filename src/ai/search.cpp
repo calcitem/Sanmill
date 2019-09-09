@@ -39,7 +39,7 @@ HashMap<hash_t, MillGameAi_ab::HashValue> bookHashMap(bookHashsize);
 vector<hash_t> openingBook;
 #endif // BOOK_LEARNING
 
-// 用于检测重复局面
+// 用于检测重复局面 (Position)
 vector<hash_t> positions;
 
 MillGameAi_ab::MillGameAi_ab()
@@ -156,15 +156,15 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        gameTemp.context.board.pos2rs(-move, r, s);
+        gameTemp.context.board.locationToPolar(-move, r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        gameTemp.context.board.pos2rs(move >> 8, r1, s1);
-        gameTemp.context.board.pos2rs(move & 0x00ff, r, s);
+        gameTemp.context.board.locationToPolar(move >> 8, r1, s1);
+        gameTemp.context.board.locationToPolar(move & 0x00ff, r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        gameTemp.context.board.pos2rs(move & 0x007f, r, s);
+        gameTemp.context.board.locationToPolar(move & 0x007f, r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
@@ -747,15 +747,15 @@ const char *MillGameAi_ab::move2string(move_t move)
     int r, s;
 
     if (move < 0) {
-        gameTemp.context.board.pos2rs(-move, r, s);
+        gameTemp.context.board.locationToPolar(-move, r, s);
         sprintf(cmdline, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        gameTemp.context.board.pos2rs(move >> 8, r1, s1);
-        gameTemp.context.board.pos2rs(move & 0x00ff, r, s);
+        gameTemp.context.board.locationToPolar(move >> 8, r1, s1);
+        gameTemp.context.board.locationToPolar(move & 0x00ff, r, s);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        gameTemp.context.board.pos2rs(move & 0x007f, r, s);
+        gameTemp.context.board.locationToPolar(move & 0x007f, r, s);
         sprintf(cmdline, "(%1u,%1u)", r, s);
     }
 

@@ -45,7 +45,7 @@ public:
     hash_t hash{};
 
     // Zobrist 数组
-    hash_t zobrist[Board::N_POINTS][POINT_TYPE_COUNT]{};
+    hash_t zobrist[Board::N_LOCATIONS][POINT_TYPE_COUNT]{};
 
     // 局面阶段标识
     enum GameStage stage;
@@ -148,19 +148,19 @@ public:
     // 获取棋盘数据
     const int *getBoard() const
     {
-        return context.board.board_;
+        return context.board.locations;
     }
 
     // 获取当前棋子位置点
-    int getCurrentPos() const
+    int getCurrentLocation() const
     {
-        return currentPos;
+        return currentLocation;
     }
 
     // 判断位置点是否为星位 (星位是经常会先占的位置)
-    static bool isStarPoint(int pos)
+    static bool isStarPoint(int location)
     {
-        return (pos == 17 || pos == 19 || pos == 21 || pos == 23);
+        return (location == 17 || location == 19 || location == 21 || location == 23);
     }
 
     // 获取当前步数
@@ -316,14 +316,14 @@ public:
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool command(int move);
-    bool choose(int pos);
-    bool place(int pos, int time_p = -1, int8_t cp = 0);
-    bool capture(int pos, int time_p = -1, int8_t cp = 0);
+    bool choose(int location);
+    bool place(int location, int time_p = -1, int8_t cp = 0);
+    bool capture(int location, int time_p = -1, int8_t cp = 0);
 
     // hash 相关
     hash_t getHash();
-    hash_t revertHash(int pos);
-    hash_t updateHash(int pos);
+    hash_t revertHash(int location);
+    hash_t updateHash(int location);
     hash_t updateHashMisc();
 
 public: /* TODO: move to private */
@@ -347,7 +347,7 @@ public: /* TODO: move to private */
     /* 
         当前着法，AI会用到，如下表示
         0x   00    00
-            pos1  pos2
+            location1  location2
         开局落子：0x00??，??为棋盘上的位置
         移子：0x__??，__为移动前的位置，??为移动后的位置
         去子：0xFF??，??取位置补码，即为负数
@@ -367,7 +367,7 @@ public: /* TODO: move to private */
     int32_t move_{};
 
     // 选中的棋子在board中的位置
-    int currentPos{};
+    int currentLocation{};
 
 private:
     // 棋局哈希值

@@ -28,7 +28,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
                                   move_t bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
-    int pos = 0;
+    int location = 0;
     size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
@@ -79,18 +79,18 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
         // 对于摆子阶段
         if (gameTemp.context.stage & (GAME_PLACING | GAME_NOTSTARTED)) {
             for (int i : movePriorityTable) {
-                pos = i;
+                location = i;
 
-                if (gameTemp.board_[pos]) {
+                if (gameTemp.board_[location]) {
                     continue;
                 }
 
                 if (gameTemp.context.stage != GAME_NOTSTARTED || node != rootNode) {
-                    ai_ab.addNode(node, 0, pos, bestMove, gameTemp.context.turn);
+                    ai_ab.addNode(node, 0, location, bestMove, gameTemp.context.turn);
                 } else {
                     // 若为先手，则抢占星位
-                    if (MillGame::isStarPoint(pos)) {
-                        ai_ab.addNode(node, MillGameAi_ab::INF_VALUE, pos, bestMove, gameTemp.context.turn);
+                    if (MillGame::isStarPoint(location)) {
+                        ai_ab.addNode(node, MillGameAi_ab::INF_VALUE, location, bestMove, gameTemp.context.turn);
                     }
                 }
             }
@@ -99,13 +99,13 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
 
         // 对于移子阶段
         if (gameTemp.context.stage & GAME_MOVING) {
-            int newPos, oldPos;
+            int newLocation, oldLocation;
 
             // 尽量走理论上较差的位置的棋子
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldPos = movePriorityTable[i];
+                oldLocation = movePriorityTable[i];
 
-                if (!gameTemp.choose(oldPos)) {
+                if (!gameTemp.choose(oldLocation)) {
                     continue;
                 }
 
@@ -116,17 +116,17 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int moveDirection = MOVE_DIRECTION_CLOCKWISE; moveDirection <= MOVE_DIRECTION_OUTWARD; moveDirection++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newPos = moveTable[oldPos][moveDirection];
-                        if (newPos && !gameTemp.board_[newPos]) {
-                            int move = (oldPos << 8) + newPos;
+                        newLocation = moveTable[oldLocation][moveDirection];
+                        if (newLocation && !gameTemp.board_[newLocation]) {
+                            int move = (oldLocation << 8) + newLocation;
                             ai_ab.addNode(node, 0, move, bestMove, gameTemp.context.turn); // (12%)
                         }
                     }
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
-                    for (newPos = Board::POS_BEGIN; newPos < Board::POS_END; newPos++) {
-                        if (!gameTemp.board_[newPos]) {
-                            int move = (oldPos << 8) + newPos;
+                    for (newLocation = Board::LOCATION_BEGIN; newLocation < Board::LOCATION_END; newLocation++) {
+                        if (!gameTemp.board_[newLocation]) {
+                            int move = (oldLocation << 8) + newLocation;
                             ai_ab.addNode(node, 0, move, bestMove, gameTemp.context.turn);
                         }
                     }
@@ -140,9 +140,9 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
         if (gameTemp.context.board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                pos = movePriorityTable[i];
-                if (gameTemp.board_[pos] & opponent) {
-                    ai_ab.addNode(node, 0, -pos, bestMove, gameTemp.context.turn);
+                location = movePriorityTable[i];
+                if (gameTemp.board_[location] & opponent) {
+                    ai_ab.addNode(node, 0, -location, bestMove, gameTemp.context.turn);
                 }
             }
             break;
@@ -150,10 +150,10 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
 
         // 不是全成三的情况
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            pos = movePriorityTable[i];
-            if (gameTemp.board_[pos] & opponent) {
-                if (gameTemp.getRule()->allowRemoveMill || !gameTemp.context.board.isInMills(pos)) {
-                    ai_ab.addNode(node, 0, -pos, bestMove, gameTemp.context.turn);
+            location = movePriorityTable[i];
+            if (gameTemp.board_[location] & opponent) {
+                if (gameTemp.getRule()->allowRemoveMill || !gameTemp.context.board.inHowManyMills(location)) {
+                    ai_ab.addNode(node, 0, -location, bestMove, gameTemp.context.turn);
                 }
             }
         }
@@ -167,7 +167,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
 void MoveList::createMoveTable(MillGame &game)
 {
 #if 1
-    const int moveTable_obliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_obliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -214,7 +214,7 @@ void MoveList::createMoveTable(MillGame &game)
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable_noObliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_noObliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -261,7 +261,7 @@ void MoveList::createMoveTable(MillGame &game)
         /* 39 */ {0, 0, 0, 0},
     };
 #else
-    const int moveTable_obliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_obliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
@@ -308,7 +308,7 @@ void MoveList::createMoveTable(MillGame &game)
         {0, 0, 0, 0}
     };
 
-    const int moveTable_noObliqueLine[Board::N_POINTS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_noObliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -364,7 +364,7 @@ void MoveList::createMoveTable(MillGame &game)
 
 #ifdef DEBUG_MODE
     int sum = 0;
-    for (int i = 0; i < Board::N_POINTS; i++) {
+    for (int i = 0; i < Board::N_LOCATIONS; i++) {
         loggerDebug("/* %d */ {", i);
         for (int j = 0; j < N_MOVE_DIRECTIONS; j++) {
             if (j == N_MOVE_DIRECTIONS - 1)

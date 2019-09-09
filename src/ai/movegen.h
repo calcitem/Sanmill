@@ -45,7 +45,7 @@ public:
     static void shuffleMovePriorityTable(MillGame &game);
 
     // 着法表 // TODO: Move to private
-    inline static int moveTable[Board::N_POINTS][N_MOVE_DIRECTIONS] = { {0} };
+    inline static int moveTable[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = { {0} };
 
 private:
     // 着法顺序表, 后续会被打乱

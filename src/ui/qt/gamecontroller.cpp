@@ -398,8 +398,8 @@ void GameController::flip()
         ai2.wait();
     }
 
-    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentPos);
-    game_.context.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentPos);
+    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.context.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     gameTemp = game_;
 
     // 更新棋谱
@@ -438,7 +438,7 @@ void GameController::mirror()
         ai2.wait();
     }
 
-    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentPos);
+    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     gameTemp = game_;
 
     // 更新棋谱
@@ -480,7 +480,7 @@ void GameController::turnRight()
         ai2.wait();
     }
 
-    game_.context.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentPos);
+    game_.context.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     gameTemp = game_;
 
     // 更新棋谱
@@ -520,7 +520,7 @@ void GameController::turnLeft()
         ai2.wait();
     }
 
-    game_.context.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentPos);
+    game_.context.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     gameTemp = game_;
 
     // 更新棋谱
@@ -1004,7 +1004,7 @@ bool GameController::updateScence(MillGame &game)
         int j;
 
         // 遍历棋盘，查找并放置棋盘上的棋子
-        for (j = Board::POS_BEGIN; j < Board::POS_END; j++) {
+        for (j = Board::LOCATION_BEGIN; j < Board::LOCATION_END; j++) {
             if (board[j] == key) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
                 if (piece->pos() != pos) {
@@ -1062,7 +1062,7 @@ bool GameController::updateScence(MillGame &game)
 
     // 添加摆棋阶段禁子点
     if (game.getRule()->hasForbiddenPoint && game.getStage() == GAME_PLACING) {
-        for (int j = Board::POS_BEGIN; j < Board::POS_END; j++) {
+        for (int j = Board::LOCATION_BEGIN; j < Board::LOCATION_END; j++) {
             if (board[j] == 0x0F) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
                 if (nTotalPieces < pieceList.size()) {
@@ -1088,9 +1088,9 @@ bool GameController::updateScence(MillGame &game)
     }
 
     // 选中当前棋子
-    int ipos = game.getCurrentPos();
+    int ipos = game.getCurrentLocation();
     if (ipos) {
-        key = board[game.getCurrentPos()];
+        key = board[game.getCurrentLocation()];
         ipos = key & 0x10 ? (key - 0x11) * 2 : (key - 0x21) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(ipos);

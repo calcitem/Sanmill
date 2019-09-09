@@ -27,7 +27,7 @@
 MillGame::MillGame()
 {
     // 单独提出 board 等数据，免得每次都写 context.board;
-    board_ = context.board.board_;
+    board_ = context.board.locations;
 
     // 创建哈希数据
     constructHash();
@@ -62,8 +62,8 @@ MillGame &MillGame::operator= (const MillGame &game)
     moveStep = game.moveStep;
     randomMove_ = game.randomMove_;
     giveUpIfMostLose_ = game.giveUpIfMostLose_;
-    board_ = context.board.board_;
-    currentPos = game.currentPos;
+    board_ = context.board.locations;
+    currentLocation = game.currentLocation;
     winner = game.winner;
     startTime = game.startTime;
     currentTime = game.currentTime;
@@ -170,10 +170,10 @@ bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
 
     // 当前棋局（3×8）
     if (board == nullptr) {
-        memset(context.board.board_, 0, sizeof(context.board.board_));
+        memset(context.board.locations, 0, sizeof(context.board.locations));
         context.hash = 0;
     } else {
-        memcpy(context.board.board_, board, sizeof(context.board.board_));
+        memcpy(context.board.locations, board, sizeof(context.board.locations));
     }
 
     // 计算盘面子数
@@ -190,12 +190,12 @@ bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
 
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
-            int pos = r * Board::N_SEATS + s;
-            if (context.board.board_[pos] & 0x10) {
+            int location = r * Board::N_SEATS + s;
+            if (context.board.locations[location] & 0x10) {
                 context.nPiecesOnBoard_1++;
-            } else if (context.board.board_[pos] & 0x20) {
+            } else if (context.board.locations[location] & 0x20) {
                 context.nPiecesOnBoard_2++;
-            } else if (context.board.board_[pos] & 0x0F) {
+            } else if (context.board.locations[location] & 0x0F) {
                 // 不计算盘面子数
             }
         }
@@ -240,7 +240,7 @@ bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     context.board.createMillTable(currentRule);
 
     // 不选中棋子
-    currentPos = 0;
+    currentLocation = 0;
 
     // 用时置零
     elapsedSeconds_1 = elapsedSeconds_2 = 0;
@@ -319,7 +319,7 @@ bool MillGame::reset()
     }    
 
     // 不选中棋子
-    currentPos = 0;
+    currentLocation = 0;
 
     // 用时置零
     elapsedSeconds_1 = elapsedSeconds_2 = 0;
@@ -374,7 +374,7 @@ bool MillGame::start()
     }
 }
 
-bool MillGame::place(int pos, int time_p, int8_t rs)
+bool MillGame::place(int location, int time_p, int8_t rs)
 {
     // 如果局面为“结局”，返回false
     if (context.stage == GAME_OVER)
@@ -389,13 +389,13 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
         return false;
 
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
-    if (!context.board.onBoard[pos] || board_[pos])
+    if (!context.board.onBoard[location] || board_[location])
         return false;
 
     // 格式转换
     int r = 0;
     int s = 0;
-    context.board.pos2rs(pos, r, s);
+    context.board.locationToPolar(location, r, s);
 
     // 时间的临时变量
     int player_ms = -1;
@@ -418,11 +418,11 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
             context.nPiecesOnBoard_2++;
         }
 
-        board_[pos] = piece;
+        board_[location] = piece;
 
-        updateHash(pos);
+        updateHash(location);
 
-        move_ = pos;
+        move_ = location;
 
         if (rs) {
             player_ms = update(time_p);
@@ -432,9 +432,9 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
             currentStep++;
         }
 
-        currentPos = pos;
+        currentLocation = location;
 
-        n = context.board.addMills(currentRule, currentPos);
+        n = context.board.addMills(currentRule, currentLocation);
 
         // 开局阶段未成三
         if (n == 0) {
@@ -494,7 +494,7 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
 
         int i;
         for (i = 0; i < 4; i++) {
-            if (pos == MoveList::moveTable[currentPos][i])
+            if (location == MoveList::moveTable[currentLocation][i])
                 break;
         }
 
@@ -505,26 +505,26 @@ bool MillGame::place(int pos, int time_p, int8_t rs)
     }
 
     // 移子
-    move_ = (currentPos << 8) + pos;
+    move_ = (currentLocation << 8) + location;
     if (rs) {
         player_ms = update(time_p);
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentPos / Board::N_SEATS, currentPos % Board::N_SEATS + 1,
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentLocation / Board::N_SEATS, currentLocation % Board::N_SEATS + 1,
                 r, s, player_ms / 60, player_ms % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep++;
     }
 
-    board_[pos] = board_[currentPos];
+    board_[location] = board_[currentLocation];
 
-    updateHash(pos);
+    updateHash(location);
 
-    board_[currentPos] = '\x00';
+    board_[currentLocation] = '\x00';
 
-    revertHash(currentPos);
+    revertHash(currentLocation);
 
-    currentPos = pos;
-    n = context.board.addMills(currentRule, currentPos);
+    currentLocation = location;
+    n = context.board.addMills(currentRule, currentLocation);
 
     // 中局阶段未成三
     if (n == 0) {
@@ -558,21 +558,21 @@ out:
 
 bool MillGame::_place(int r, int s, int time_p)
 {
-    // 转换为 pos
-    int pos = context.board.rs2Pos(r, s);
+    // 转换为 location
+    int location = context.board.polarToLocation(r, s);
 
-    return place(pos, time_p, true);
+    return place(location, time_p, true);
 }
 
 bool MillGame::_capture(int r, int s, int time_p)
 {
-    // 转换为 pos
-    int pos = context.board.rs2Pos(r, s);
+    // 转换为 location
+    int location = context.board.polarToLocation(r, s);
 
-    return capture(pos, time_p, 1);
+    return capture(location, time_p, 1);
 }
 
-bool MillGame::capture(int pos, int time_p, int8_t cp)
+bool MillGame::capture(int location, int time_p, int8_t cp)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (context.stage == GAME_NOTSTARTED || context.stage == GAME_OVER)
@@ -589,7 +589,7 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
     // 格式转换
     int r = 0;
     int s = 0;
-    context.board.pos2rs(pos, r, s);
+    context.board.locationToPolar(location, r, s);
 
     // 时间的临时变量
     int player_ms = -1;
@@ -598,23 +598,24 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
     char opponent = context.turn == PLAYER1 ? 0x20 : 0x10;
 
     // 判断去子是不是对手棋
-    if (!(opponent & board_[pos]))
+    if (!(opponent & board_[location]))
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
     if (!currentRule.allowRemoveMill &&
-        context.board.isInMills(pos) && !context.board.isAllInMills(opponent)) {
+        context.board.inHowManyMills(location) &&
+        !context.board.isAllInMills(opponent)) {
         return false;
     }
 
     // 去子（设置禁点）
     if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
-        revertHash(pos);
-        board_[pos] = '\x0f';
-        updateHash(pos);
+        revertHash(location);
+        board_[location] = '\x0f';
+        updateHash(location);
     } else { // 去子
-        revertHash(pos);
-        board_[pos] = '\x00';
+        revertHash(location);
+        board_[location] = '\x00';
     }
 
     if (context.turn == PLAYER1)
@@ -622,7 +623,7 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
     else if (context.turn == PLAYER2)
         context.nPiecesOnBoard_1--;
 
-    move_ = -pos;
+    move_ = -location;
 
     if (cp) {
         player_ms = update(time_p);
@@ -632,9 +633,9 @@ bool MillGame::capture(int pos, int time_p, int8_t cp)
         moveStep = 0;
     }
 
-    currentPos = 0;
+    currentLocation = 0;
     context.nPiecesNeedRemove--;
-    updateHash(pos);
+    updateHash(location);
 
     // 去子完成
 
@@ -713,7 +714,7 @@ out:
     return true;
 }
 
-bool MillGame::choose(int pos)
+bool MillGame::choose(int location)
 {
     // 如果局面不是"中局”，返回false
     if (context.stage != GAME_MOVING)
@@ -726,14 +727,14 @@ bool MillGame::choose(int pos)
     char t = context.turn == PLAYER1 ? 0x10 : 0x20;
 
     // 判断选子是否可选
-    if (board_[pos] & t) {
-        // 判断pos处的棋子是否被“闷”
-        if (context.board.isSurrounded(context.turn, currentRule, context.nPiecesOnBoard_1, context.nPiecesOnBoard_2, pos)) {
+    if (board_[location] & t) {
+        // 判断location处的棋子是否被“闷”
+        if (context.board.isSurrounded(context.turn, currentRule, context.nPiecesOnBoard_1, context.nPiecesOnBoard_2, location)) {
             return false;
         }
 
         // 选子
-        currentPos = pos;
+        currentLocation = location;
 
         // 选子完成，进入落子状态
         context.action = ACTION_PLACE;
@@ -746,7 +747,7 @@ bool MillGame::choose(int pos)
 
 bool MillGame::choose(int r, int s)
 {
-    return choose(context.board.rs2Pos(r, s));
+    return choose(context.board.polarToLocation(r, s));
 }
 
 bool MillGame::giveup(Player loser)
@@ -1044,14 +1045,14 @@ bool MillGame::win(bool forceDraw)
 // 计算玩家1和玩家2的棋子活动能力之差
 int MillGame::getMobilityDiff(enum Player turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
 {
-    int *board = context.board.board_;
+    int *board = context.board.locations;
     int mobility1 = 0;
     int mobility2 = 0;
     int diff = 0;
     int n = 0;
 
-    for (int i = Board::POS_BEGIN; i < Board::POS_END; i++) {
-        n = context.board.getSurroundedEmptyPosCount(turn, rule, nPiecesOnBoard_1, nPiecesOnBoard_2, i, includeFobidden);
+    for (int i = Board::LOCATION_BEGIN; i < Board::LOCATION_END; i++) {
+        n = context.board.getSurroundedEmptyLocationCount(turn, rule, nPiecesOnBoard_1, nPiecesOnBoard_2, i, includeFobidden);
 
         if (board[i] & 0x10) {
             mobility1 += n;
@@ -1067,15 +1068,15 @@ int MillGame::getMobilityDiff(enum Player turn, const Rule &rule, int nPiecesOnB
 
 void MillGame::cleanForbiddenPoints()
 {
-    int pos = 0;
+    int location = 0;
 
     for (int r = 1; r <= Board::N_RINGS; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
-            pos = r * Board::N_SEATS + s;
+            location = r * Board::N_SEATS + s;
 
-            if (board_[pos] == '\x0f') {
-                revertHash(pos);
-                board_[pos] = '\x00';
+            if (board_[location] == '\x0f') {
+                revertHash(location);
+                board_[location] = '\x00';
             }
         }
     }
@@ -1178,7 +1179,7 @@ void MillGame::constructHash()
     context.hash = 0;
 
 #include "zobrist.h"
-    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * Board::N_POINTS * POINT_TYPE_COUNT);
+    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * Board::N_LOCATIONS * POINT_TYPE_COUNT);
 }
 
 hash_t MillGame::getHash()
@@ -1189,22 +1190,22 @@ hash_t MillGame::getHash()
     return context.hash;
 }
 
-hash_t MillGame::updateHash(int pos)
+hash_t MillGame::updateHash(int location)
 {
-    // PieceType is board_[pos]
+    // PieceType is board_[location]
 
     // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
-    int pointType = (board_[pos] & 0x30) >> 4;
+    int pointType = (board_[location] & 0x30) >> 4;
 
     // 清除或者放置棋子
-    context.hash ^= context.zobrist[pos][pointType];
+    context.hash ^= context.zobrist[location][pointType];
 
     return context.hash;
 }
 
-hash_t MillGame::revertHash(int pos)
+hash_t MillGame::revertHash(int location)
 {
-    return updateHash(pos);
+    return updateHash(location);
 }
 
 hash_t MillGame::updateHashMisc()
