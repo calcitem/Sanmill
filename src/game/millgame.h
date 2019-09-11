@@ -383,7 +383,7 @@ private:
     int moveStep {};
 
     // 是否必败时认输
-    bool giveUpIfMostLose_ {true};
+    bool giveUpIfMostLose_ {false};
 
     // AI 是否随机走子
     bool randomMove_ {true};

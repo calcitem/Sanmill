@@ -648,7 +648,6 @@ const char* MillGameAi_ab::bestMove()
 {
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
-    bool isMostLose = true; // 是否必败
 
     if ((rootNode->children).empty()) {
         return "error!";
@@ -687,26 +686,30 @@ const char* MillGameAi_ab::bestMove()
 
     // 检查是否必败
 
-    Player whosTurn = game_.whosTurn();
+    if (game_.getGiveUpIfMostLose() == true) {
+        bool isMostLose = true; // 是否必败
 
-    for (auto child : rootNode->children) {
-        // TODO: 使用常量代替
-        if ((whosTurn == PLAYER1 && child->value > -10000) ||
-            (whosTurn == PLAYER2 && child->value < 10000)) {
-            isMostLose = false;
-            break;
-        }
-    }
+        Player whosTurn = game_.whosTurn();
 
-    // 自动认输
-    if (isMostLose) {
-        if (whosTurn == PLAYER1) {
-            sprintf(cmdline, "Player1 give up!");
-        } else if (whosTurn == PLAYER2) {
-            sprintf(cmdline, "Player2 give up!");
+        for (auto child : rootNode->children) {
+            // TODO: 使用常量代替
+            if ((whosTurn == PLAYER1 && child->value > -10000) ||
+                (whosTurn == PLAYER2 && child->value < 10000)) {
+                isMostLose = false;
+                break;
+            }
         }
 
-        return cmdline;
+        // 自动认输
+        if (isMostLose) {
+            if (whosTurn == PLAYER1) {
+                sprintf(cmdline, "Player1 give up!");
+            } else if (whosTurn == PLAYER2) {
+                sprintf(cmdline, "Player2 give up!");
+            }
+
+            return cmdline;
+        }
     }
 
     for (auto child : rootNode->children) {

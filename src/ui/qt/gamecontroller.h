@@ -249,7 +249,7 @@ private:
     bool hasSound;
 
     // 是否必败时认输
-    bool giveUpIfMostLose_;
+    bool giveUpIfMostLose_ {false};
 
     // 是否棋局结束后自动重新开局
     bool isAutoRestart;

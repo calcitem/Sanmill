@@ -54,7 +54,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     ruleNo_(-1),
     timeLimit(0),
     stepsLimit(50),
-    giveUpIfMostLose_(true),
+    giveUpIfMostLose_(false),
     randomMove_(true)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
