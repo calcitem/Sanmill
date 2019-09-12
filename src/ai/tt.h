@@ -3,7 +3,7 @@
 
 #include "config.h"
 #include "types.h"
-#include "millgame.h"
+#include "position.h"
 #include "search.h"
 #include "hashmap.h"
 

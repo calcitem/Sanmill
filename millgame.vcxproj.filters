@@ -75,9 +75,6 @@
     <ClInclude Include="src\ui\qt\graphicsconst.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\millgame.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="src\base\MemoryPool.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -110,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="src\ai\tt.h">
       <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\position.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -299,9 +299,6 @@
     <ClCompile Include="src\ui\qt\client.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\millgame.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
     <ClCompile Include="src\ai\search.cpp">
       <Filter>ai</Filter>
     </ClCompile>
@@ -319,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="src\ai\tt.cpp">
       <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\position.cpp">
+      <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

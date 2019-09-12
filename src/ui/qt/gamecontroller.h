@@ -37,7 +37,7 @@
 #include <QStringListModel>
 #include <QModelIndex>
 
-#include "millgame.h"
+#include "position.h"
 #include "gamescene.h"
 #include "pieceitem.h"
 #include "thread.h"

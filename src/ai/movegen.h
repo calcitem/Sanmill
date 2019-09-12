@@ -23,7 +23,7 @@
 #define MOVEGEN_H
 
 #include "config.h"
-#include "millgame.h"
+#include "position.h"
 #include "search.h"
 
 class MoveList

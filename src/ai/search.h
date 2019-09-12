@@ -34,7 +34,7 @@
 #include <string>
 #include <array>
 
-#include "millgame.h"
+#include "position.h"
 #include "hashmap.h"
 
 #ifdef MEMORY_POOL

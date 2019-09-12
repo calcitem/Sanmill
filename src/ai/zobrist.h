@@ -20,7 +20,7 @@
 
 #include <cstdint>
 
-#include "millgame.h"
+#include "position.h"
 
 static const hash_t zobrist0[Board::N_LOCATIONS][POINT_TYPE_COUNT] = {
 #ifdef TRANSPOSITION_TABLE_CUTDOWN

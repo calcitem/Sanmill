@@ -20,7 +20,7 @@
  *****************************************************************************/
 
 #include <algorithm>
-#include "millgame.h"
+#include "position.h"
 #include "search.h"
 #include "movegen.h"
 

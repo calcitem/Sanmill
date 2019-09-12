@@ -26,7 +26,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QTimer>
-#include "millgame.h"
+#include "position.h"
 #include "search.h"
 #include "server.h"
 #include "client.h"
