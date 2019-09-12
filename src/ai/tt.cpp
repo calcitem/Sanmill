@@ -8,11 +8,10 @@ value_t TranspositionTable::probeHash(hash_t hash,
                                  depth_t depth, value_t alpha, value_t beta,
                                  move_t &bestMove, HashType &type)
 {
-    const value_t valUNKNOWN = INT16_MIN;
     HashValue hashValue{};
 
     if (!transpositionTable.find(hash, hashValue)) {
-        return valUNKNOWN;
+        return VALUE_UNKNOWN;
     }
 
     if (depth > hashValue.depth) {
@@ -37,7 +36,7 @@ value_t TranspositionTable::probeHash(hash_t hash,
 
 out:
     bestMove = hashValue.bestMove;
-    return valUNKNOWN;
+    return VALUE_UNKNOWN;
 }
 
 bool TranspositionTable::findHash(hash_t hash, TranspositionTable::HashValue &hashValue)

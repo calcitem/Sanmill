@@ -97,7 +97,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 
 void MillGameAi_ab::buildRoot()
 {
-    rootNode = addNode(nullptr, 0, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
+    rootNode = addNode(nullptr, VALUE_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
 }
 
 struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
@@ -147,8 +147,8 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     newNode->nPiecesInHandDiff = INT_MAX;
     newNode->nPiecesOnBoardDiff = INT_MAX;
     newNode->nPiecesNeedRemove = INT_MAX;
-    newNode->alpha = -INF_VALUE;
-    newNode->beta = INF_VALUE;
+    newNode->alpha = -VALUE_INFINITE;
+    newNode->beta = VALUE_INFINITE;
     newNode->result = 0;
     newNode->visited = false;
 
@@ -287,7 +287,7 @@ void MillGameAi_ab::setPosition(const Position &position)
 #else
     rootNode = new Node;
 #endif
-    rootNode->value = 0;
+    rootNode->value = VALUE_ZERO;
     rootNode->move = MOVE_NONE;
     rootNode->parent = nullptr;
 #ifdef SORT_CONSIDER_PRUNED
@@ -302,7 +302,7 @@ void MillGameAi_ab::setPosition(const Position &position)
 
 int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 {
-    value_t value = 0;
+    value_t value = VALUE_ZERO;
 
     depth_t d = changeDepth(depth);
 
@@ -358,7 +358,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
         TranspositionTable::clearTranspositionTable();   // 每次走子前清空哈希表
 #endif
 #endif
-        alphaBetaPruning(i, -INF_VALUE, INF_VALUE, rootNode);
+        alphaBetaPruning(i, (value_t)-VALUE_INFINITE, VALUE_INFINITE, rootNode);
     }
 
     timeEnd = chrono::steady_clock::now();
@@ -371,7 +371,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #endif
 #endif
 
-    value = alphaBetaPruning(d, -INF_VALUE /* alpha */, INF_VALUE /* beta */, rootNode);
+    value = alphaBetaPruning(d, value_t(-VALUE_INFINITE) /* alpha */, VALUE_INFINITE /* beta */, rootNode);
 
     timeEnd = chrono::steady_clock::now();
     loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
@@ -466,9 +466,9 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
         // 为争取速胜，value 值 +- 深度
         if (node->value > 0) {
-            node->value += depth;
+            node->value = value_t(node->value + depth);
         } else {
-            node->value -= depth;
+            node->value = value_t(node->value - depth);
         }
 
 #ifdef DEBUG_AB_TREE
@@ -491,9 +491,9 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
         if (positionContext->turn == PLAYER1) {
-            node->value += depth;
+            node->value = (value_t)(node->value + depth);
         } else {
-            node->value -= depth;
+            node->value = (value_t)(node->value - depth);
         }
 
 #ifdef DEBUG_AB_TREE
@@ -525,7 +525,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = dummyPosition.whosTurn() == PLAYER1 ? -INF_VALUE : INF_VALUE;
+    minMax = dummyPosition.whosTurn() == PLAYER1 ? (value_t)-VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法

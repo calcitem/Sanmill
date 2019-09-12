@@ -86,11 +86,11 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                 }
 
                 if (dummyPosition.context.phase != PHASE_NOTSTARTED || node != rootNode) {
-                    ai_ab.addNode(node, 0, (move_t)location, bestMove, dummyPosition.context.turn);
+                    ai_ab.addNode(node, VALUE_ZERO, (move_t)location, bestMove, dummyPosition.context.turn);
                 } else {
                     // 若为先手，则抢占星位
                     if (Position::isStarPoint(location)) {
-                        ai_ab.addNode(node, MillGameAi_ab::INF_VALUE, (move_t)location, bestMove, dummyPosition.context.turn);
+                        ai_ab.addNode(node, VALUE_INFINITE, (move_t)location, bestMove, dummyPosition.context.turn);
                     }
                 }
             }
@@ -119,7 +119,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                         newLocation = moveTable[oldLocation][moveDirection];
                         if (newLocation && !dummyPosition.board_[newLocation]) {
                             move_t move = move_t((oldLocation << 8) + newLocation);
-                            ai_ab.addNode(node, 0, move, bestMove, dummyPosition.context.turn); // (12%)
+                            ai_ab.addNode(node, VALUE_ZERO, move, bestMove, dummyPosition.context.turn); // (12%)
                         }
                     }
                 } else {
@@ -127,7 +127,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                     for (newLocation = Board::LOCATION_BEGIN; newLocation < Board::LOCATION_END; newLocation++) {
                         if (!dummyPosition.board_[newLocation]) {
                             move_t move = move_t((oldLocation << 8) + newLocation);
-                            ai_ab.addNode(node, 0, move, bestMove, dummyPosition.context.turn);
+                            ai_ab.addNode(node, VALUE_ZERO, move, bestMove, dummyPosition.context.turn);
                         }
                     }
                 }
@@ -142,7 +142,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 location = movePriorityTable[i];
                 if (dummyPosition.board_[location] & opponent) {
-                    ai_ab.addNode(node, 0, (move_t)-location, bestMove, dummyPosition.context.turn);
+                    ai_ab.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, dummyPosition.context.turn);
                 }
             }
             break;
@@ -153,7 +153,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             location = movePriorityTable[i];
             if (dummyPosition.board_[location] & opponent) {
                 if (dummyPosition.getRule()->allowRemoveMill || !dummyPosition.context.board.inHowManyMills(location)) {
-                    ai_ab.addNode(node, 0, (move_t)-location, bestMove, dummyPosition.context.turn);
+                    ai_ab.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, dummyPosition.context.turn);
                 }
             }
         }

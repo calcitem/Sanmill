@@ -25,7 +25,7 @@
 #include "config.h"
 
 using step_t = uint16_t;
-using value_t = int16_t;
+
 using depth_t = uint8_t;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
@@ -79,6 +79,21 @@ enum phase_t : uint16_t
     PHASE_MOVING = 1 << 2,      // 中局（走棋）
     PHASE_GAMEOVER = 1 << 3     // 结局
 };
+
+enum value_t : int16_t
+{
+    VALUE_ZERO = 0,
+    VALUE_DRAW = 0,
+    VALUE_WIN = 10000,
+    VALUE_INFINITE = 32001,
+    VALUE_UNKNOWN = INT16_MIN,
+
+    VALUE_EACH_PIECE_INHAND = 50,
+    VALUE_EACH_PIECE_ONBOARD = 100,
+    VALUE_EACH_PIECE_NEEDREMOVE = 100,
+    VALUE_EACH_PIECE_NEEDREMOVE_2 = 128,
+};
+
 
 // 动作状态标识
 enum action_t : uint16_t

@@ -135,9 +135,6 @@ public: /* TODO: Move to private or protected */
                          move_t move, move_t bestMove,
                          enum Player player);
 
-    // 定义极大值
-    static const value_t INF_VALUE = 0x1 << 14;
-
 protected:
     // 对合法的着法降序排序
     void sortLegalMoves(Node *node);
