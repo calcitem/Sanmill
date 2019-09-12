@@ -117,9 +117,9 @@ const QMap<int, QStringList> GameController::getActions()
 
 void GameController::gameStart()
 {
-    game_.configure(giveUpIfMostLose_, randomMove_);
-    game_.start();
-    gameTemp = game_;
+    position_.configure(giveUpIfMostLose_, randomMove_);
+    position_.start();
+    dummyPosition = position_;
 
     // 每隔100毫秒调用一次定时器处理函数
     if (timeID == 0) {
@@ -137,15 +137,15 @@ void GameController::gameReset()
     timeID = 0;
 
     // 棋未下完，则算对手得分
-    if (game_.getStage() == GAME_MOVING &&
-        game_.whoWin() == PLAYER_NOBODY) {
+    if (position_.getStage() == GAME_MOVING &&
+        position_.whoWin() == PLAYER_NOBODY) {
         giveUp();
     }
 
     // 重置游戏
-    game_.configure(giveUpIfMostLose_, randomMove_);
-    game_.reset();
-    gameTemp = game_;
+    position_.configure(giveUpIfMostLose_, randomMove_);
+    position_.reset();
+    dummyPosition = position_;
 
     // 停掉线程
     if (!isAutoRestart) {
@@ -161,7 +161,7 @@ void GameController::gameReset()
     currentPiece = nullptr;
 
     // 重新绘制棋盘
-    scene.setDiagonal(game_.getRule()->hasObliqueLines);
+    scene.setDiagonal(position_.getRule()->hasObliqueLines);
 
     // 绘制所有棋子，放在起始位置
     // 0: 先手第1子； 1：后手第1子
@@ -170,7 +170,7 @@ void GameController::gameReset()
     PieceItem::Models md;
     PieceItem *newP;
 
-    for (int i = 0; i < game_.getRule()->nTotalPiecesEachSide; i++) {
+    for (int i = 0; i < position_.getRule()->nTotalPiecesEachSide; i++) {
         // 先手的棋子
         md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
         newP = new PieceItem;
@@ -179,7 +179,7 @@ void GameController::gameReset()
         newP->setNum(i + 1);
 
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(game_.getRule()->allowRemovePiecesRepeatedly))
+        if (!(position_.getRule()->allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
 
         pieceList.append(newP);
@@ -193,7 +193,7 @@ void GameController::gameReset()
         newP->setNum(i + 1);
 
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(game_.getRule()->allowRemovePiecesRepeatedly))
+        if (!(position_.getRule()->allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
 
         pieceList.append(newP);
@@ -201,7 +201,7 @@ void GameController::gameReset()
     }
 
     // 读取规则限时要求
-    timeLimit = game_.getRule()->maxTimeLedToLose;
+    timeLimit = position_.getRule()->maxTimeLedToLose;
 
     // 如果规则不要求计时，则time1和time2表示已用时间
     if (timeLimit <= 0) {
@@ -215,7 +215,7 @@ void GameController::gameReset()
     // 更新棋谱
     manualListModel.removeRows(0, manualListModel.rowCount());
     manualListModel.insertRow(0);
-    manualListModel.setData(manualListModel.index(0), game_.getCmdLine());
+    manualListModel.setData(manualListModel.index(0), position_.getCmdLine());
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
@@ -224,13 +224,13 @@ void GameController::gameReset()
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
     // 发信号更新状态栏
-    message = QString::fromStdString(game_.getTips());
+    message = QString::fromStdString(position_.getTips());
     emit statusBarChanged(message);
 
     // 更新比分 LCD 显示
-    emit score1Changed(QString::number(game_.score_1, 10));
-    emit score2Changed(QString::number(game_.score_2, 10));
-    emit scoreDrawChanged(QString::number(game_.score_draw, 10));
+    emit score1Changed(QString::number(position_.score_1, 10));
+    emit score2Changed(QString::number(position_.score_2, 10));
+    emit scoreDrawChanged(QString::number(position_.score_draw, 10));
 
     // 播放音效
     //playSound(":/sound/resources/sound/newgame.wav");
@@ -275,8 +275,8 @@ void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLi
     }
 
     // 设置模型规则，重置游戏
-    game_.setContext(&RULES[ruleNo], stepsLimit, timeLimit);
-    gameTemp = game_;
+    position_.setContext(&RULES[ruleNo], stepsLimit, timeLimit);
+    dummyPosition = position_;
 
     // 重置游戏
     gameReset();
@@ -284,11 +284,11 @@ void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLi
 
 void GameController::setEngine1(bool arg)
 {
-    game_.configure(giveUpIfMostLose_, randomMove_);
+    position_.configure(giveUpIfMostLose_, randomMove_);
 
     isAiPlayer1 = arg;
     if (arg) {
-        ai1.setAi(game_);
+        ai1.setAi(position_);
         if (ai1.isRunning())
             ai1.resume();
         else
@@ -300,11 +300,11 @@ void GameController::setEngine1(bool arg)
 
 void GameController::setEngine2(bool arg)
 {
-    game_.configure(giveUpIfMostLose_, randomMove_);
+    position_.configure(giveUpIfMostLose_, randomMove_);
 
     isAiPlayer2 = arg;
     if (arg) {
-        ai2.setAi(game_);
+        ai2.setAi(position_);
         if (ai2.isRunning())
             ai2.resume();
         else
@@ -325,8 +325,8 @@ void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, i
         ai2.wait();
     }
 
-    ai1.setAi(game_, depth1, time1);
-    ai2.setAi(game_, depth2, time2);
+    ai1.setAi(position_, depth1, time1);
+    ai2.setAi(position_, depth2, time2);
 
     if (isAiPlayer1) {
         ai1.start();
@@ -398,13 +398,13 @@ void GameController::flip()
         ai2.wait();
     }
 
-    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    game_.context.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    gameTemp = game_;
+    position_.context.board.mirror(position_.cmdlist, position_.cmdline, position_.move_, position_.currentRule, position_.currentLocation);
+    position_.context.board.rotate(180, position_.cmdlist, position_.cmdline, position_.move_, position_.currentRule, position_.currentLocation);
+    dummyPosition = position_;
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(game_.getCmdList())) {
+    for (const auto &str : *(position_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -414,8 +414,8 @@ void GameController::flip()
     else
         stageChange(currentRow, true);
 
-    ai1.setAi(game_);
-    ai2.setAi(game_);
+    ai1.setAi(position_);
+    ai2.setAi(position_);
 
     if (isAiPlayer1) {
         ai1.start();
@@ -438,13 +438,13 @@ void GameController::mirror()
         ai2.wait();
     }
 
-    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    gameTemp = game_;
+    position_.context.board.mirror(position_.cmdlist, position_.cmdline, position_.move_, position_.currentRule, position_.currentLocation);
+    dummyPosition = position_;
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(game_.getCmdList())) {
+    for (const auto &str : *(position_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -456,8 +456,8 @@ void GameController::mirror()
     else
         stageChange(currentRow, true);
 
-    ai1.setAi(game_);
-    ai2.setAi(game_);
+    ai1.setAi(position_);
+    ai2.setAi(position_);
 
     if (isAiPlayer1) {
         ai1.start();
@@ -480,13 +480,13 @@ void GameController::turnRight()
         ai2.wait();
     }
 
-    game_.context.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    gameTemp = game_;
+    position_.context.board.rotate(-90, position_.cmdlist, position_.cmdline, position_.move_, position_.currentRule, position_.currentLocation);
+    dummyPosition = position_;
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(game_.getCmdList())) {
+    for (const auto &str : *(position_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -496,8 +496,8 @@ void GameController::turnRight()
     else
         stageChange(currentRow, true);
 
-    ai1.setAi(game_);
-    ai2.setAi(game_);
+    ai1.setAi(position_);
+    ai2.setAi(position_);
 
     if (isAiPlayer1) {
         ai1.start();
@@ -520,20 +520,20 @@ void GameController::turnLeft()
         ai2.wait();
     }
 
-    game_.context.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    gameTemp = game_;
+    position_.context.board.rotate(90, position_.cmdlist, position_.cmdline, position_.move_, position_.currentRule, position_.currentLocation);
+    dummyPosition = position_;
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(game_.getCmdList())) {
+    for (const auto &str : *(position_.getCmdList())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
     // 刷新显示
     updateScence();
 
-    ai1.setAi(game_);
-    ai2.setAi(game_);
+    ai1.setAi(position_);
+    ai2.setAi(position_);
     if (isAiPlayer1) {
         ai1.start();
     }
@@ -548,7 +548,7 @@ void GameController::timerEvent(QTimerEvent *event)
     static QTime qt1, qt2;
 
     // 玩家的已用时间
-    game_.getElapsedTime(remainingTime1, remainingTime2);
+    position_.getElapsedTime(remainingTime1, remainingTime2);
 
     // 如果规则要求计时，则time1和time2表示倒计时
     if (timeLimit > 0) {
@@ -564,7 +564,7 @@ void GameController::timerEvent(QTimerEvent *event)
     emit time2Changed(qt2.toString("hh:mm:ss"));
 
     // 如果胜负已分
-    if (game_.whoWin() != PLAYER_NOBODY) {
+    if (position_.whoWin() != PLAYER_NOBODY) {
         // 停止计时
         killTimer(timeID);
 
@@ -572,7 +572,7 @@ void GameController::timerEvent(QTimerEvent *event)
         timeID = 0;
 
         // 发信号更新状态栏
-        message = QString::fromStdString(game_.getTips());
+        message = QString::fromStdString(position_.getTips());
         emit statusBarChanged(message);
 
         // 弹框
@@ -609,8 +609,8 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::isAIsTurn()
 {
-    return ((game_.whosTurn() == PLAYER1 && isAiPlayer1) ||
-            (game_.whosTurn() == PLAYER2 && isAiPlayer2));
+    return ((position_.whosTurn() == PLAYER1 && isAiPlayer1) ||
+            (position_.whosTurn() == PLAYER2 && isAiPlayer2));
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -643,17 +643,17 @@ bool GameController::actionPiece(QPointF pos)
 
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !MOBILE_APP_UI */
-            game_ = gameTemp;
+            position_ = dummyPosition;
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
 
             // 如果再决出胜负后悔棋，则重新启动计时
-            if (game_.whoWin() == PLAYER_NOBODY) {
+            if (position_.whoWin() == PLAYER_NOBODY) {
 
                 // 重新启动计时
                 timeID = startTimer(100);
 
                 // 发信号更新状态栏
-                message = QString::fromStdString(game_.getTips());
+                message = QString::fromStdString(position_.getTips());
                 emit statusBarChanged(message);
 #ifndef MOBILE_APP_UI
             }
@@ -664,7 +664,7 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     // 如果未开局则开局
-    if (game_.getStage() == GAME_NOTSTARTED)
+    if (position_.getStage() == GAME_NOTSTARTED)
         gameStart();
 
     // 判断执行选子、落子或去子
@@ -672,10 +672,10 @@ bool GameController::actionPiece(QPointF pos)
     PieceItem *piece = nullptr;
     QGraphicsItem *item = scene.itemAt(pos, QTransform());
 
-    switch (game_.getAction()) {
+    switch (position_.getAction()) {
     case ACTION_PLACE:
-        if (game_._place(r, s)) {
-            if (game_.getAction() == ACTION_CAPTURE) {
+        if (position_._place(r, s)) {
+            if (position_.getAction() == ACTION_CAPTURE) {
                 // 播放成三音效
                 playSound(":/sound/resources/sound/capture.wav");
             } else {
@@ -693,7 +693,7 @@ bool GameController::actionPiece(QPointF pos)
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (game_.choose(r, s)) {
+        if (position_.choose(r, s)) {
             // 播放选子音效
             playSound(":/sound/resources/sound/choose.wav");
             result = true;
@@ -704,7 +704,7 @@ bool GameController::actionPiece(QPointF pos)
         break;
 
     case ACTION_CAPTURE:
-        if (game_._capture(r, s)) {
+        if (position_._capture(r, s)) {
             // 播放音效
             playSound(":/sound/resources/sound/remove.wav");
             result = true;
@@ -721,7 +721,7 @@ bool GameController::actionPiece(QPointF pos)
 
     if (result) {
         // 发信号更新状态栏
-        message = QString::fromStdString(game_.getTips());
+        message = QString::fromStdString(position_.getTips());
         emit statusBarChanged(message);
 
         // 将新增的棋谱行插入到ListModel
@@ -729,7 +729,7 @@ bool GameController::actionPiece(QPointF pos)
         int k = 0;
 
         // 输出命令行        
-        for (const auto & i : *(game_.getCmdList())) {
+        for (const auto & i : *(position_.getCmdList())) {
             // 跳过已添加的，因标准list容器没有下标
             if (k++ <= currentRow)
                 continue;
@@ -739,16 +739,16 @@ bool GameController::actionPiece(QPointF pos)
 
         // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-        if (game_.whoWin() != PLAYER_NOBODY &&
+        if (position_.whoWin() != PLAYER_NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
             playSound(":/sound/resources/sound/win.wav");
 #endif
 
         // AI设置
-        if (&game_ == &(this->game_)) {
+        if (&position_ == &(this->position_)) {
             // 如果还未决出胜负
-            if (game_.whoWin() == PLAYER_NOBODY) {
-                if (game_.whosTurn() == PLAYER1) {
+            if (position_.whoWin() == PLAYER_NOBODY) {
+                if (position_.whosTurn() == PLAYER1) {
                     if (isAiPlayer1) {
                         ai1.resume();
                     }
@@ -768,7 +768,7 @@ bool GameController::actionPiece(QPointF pos)
                 ai2.stop();
 
                 // 弹框
-                //message = QString::fromStdString(game_.getTips());
+                //message = QString::fromStdString(position_.getTips());
                 //QMessageBox::about(NULL, "游戏结果", message);
             }
         }
@@ -782,11 +782,11 @@ bool GameController::giveUp()
 {
     bool result = false;
 
-    if (game_.whosTurn() == PLAYER1) {
-        result = game_.giveup(PLAYER1);
+    if (position_.whosTurn() == PLAYER1) {
+        result = position_.giveup(PLAYER1);
     }
-    else if (game_.whosTurn() == PLAYER2) {
-        result = game_.giveup(PLAYER2);
+    else if (position_.whosTurn() == PLAYER2) {
+        result = position_.giveup(PLAYER2);
     }
         
     if (result) {
@@ -795,14 +795,14 @@ bool GameController::giveUp()
         int k = 0;
 
         // 输出命令行
-        for (const auto & i : *(game_.getCmdList())) {
+        for (const auto & i : *(position_.getCmdList())) {
             // 跳过已添加的，因标准list容器没有下标
             if (k++ <= currentRow)
                 continue;
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), i.c_str());
         }
-        if (game_.whoWin() != PLAYER_NOBODY)
+        if (position_.whoWin() != PLAYER_NOBODY)
             playSound(":/sound/resources/sound/loss.wav");
     }
 
@@ -824,7 +824,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     // 声音
     QString sound;
 
-    switch (game_.getAction()) {
+    switch (position_.getAction()) {
     case ACTION_CHOOSE:
     case ACTION_PLACE:
         sound = ":/sound/resources/sound/drog.wav";
@@ -837,44 +837,44 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 如果未开局则开局
-    if (game_.getStage() == GAME_NOTSTARTED) {
+    if (position_.getStage() == GAME_NOTSTARTED) {
         gameStart();
     }
 
-    if (!game_.command(cmd.toStdString().c_str()))
+    if (!position_.command(cmd.toStdString().c_str()))
         return false;
 
-    if (sound == ":/sound/resources/sound/drog.wav" && game_.getAction() == ACTION_CAPTURE) {
+    if (sound == ":/sound/resources/sound/drog.wav" && position_.getAction() == ACTION_CAPTURE) {
         sound = ":/sound/resources/sound/capture.wav";
     }
 
     if (update) {
         playSound(sound);
-        updateScence(game_);
+        updateScence(position_);
     }
 
     // 发信号更新状态栏
-    message = QString::fromStdString(game_.getTips());
+    message = QString::fromStdString(position_.getTips());
     emit statusBarChanged(message);
 
     // 对于新开局
-    if (game_.getCmdList()->size() <= 1) {
+    if (position_.getCmdList()->size() <= 1) {
         manualListModel.removeRows(0, manualListModel.rowCount());
         manualListModel.insertRow(0);
-        manualListModel.setData(manualListModel.index(0), game_.getCmdLine());
+        manualListModel.setData(manualListModel.index(0), position_.getCmdLine());
         currentRow = 0;
     }
     // 对于当前局
     else {
         currentRow = manualListModel.rowCount() - 1;
         // 跳过已添加行,迭代器不支持+运算符,只能一个个++
-        auto i = (game_.getCmdList()->begin());
-        for (int r = 0; i != (game_.getCmdList())->end(); i++) {
+        auto i = (position_.getCmdList()->begin());
+        for (int r = 0; i != (position_.getCmdList())->end(); i++) {
             if (r++ > currentRow)
                 break;
         }
         // 将新增的棋谱行插入到ListModel
-        while (i != game_.getCmdList()->end()) {
+        while (i != position_.getCmdList()->end()) {
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());
         }
@@ -882,17 +882,17 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-    if (game_.whoWin() != PLAYER_NOBODY &&
+    if (position_.whoWin() != PLAYER_NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
         playSound(":/sound/resources/sound/win.wav");
     }
 #endif
 
     // AI设置
-    if (&game_ == &(this->game_)) {
+    if (&position_ == &(this->position_)) {
         // 如果还未决出胜负
-        if (game_.whoWin() == PLAYER_NOBODY) {
-            if (game_.whosTurn() == PLAYER1) {
+        if (position_.whoWin() == PLAYER_NOBODY) {
+            if (position_.whosTurn() == PLAYER1) {
                 if (isAiPlayer1) {
                     ai1.resume();
                 }
@@ -925,7 +925,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
 #ifdef MESSAGEBOX_ENABLE
             // 弹框
-            message = QString::fromStdString(game_.getTips());
+            message = QString::fromStdString(position_.getTips());
             QMessageBox::about(NULL, "游戏结果", message);
 #endif
         }
@@ -958,24 +958,24 @@ bool GameController::stageChange(int row, bool forceUpdate)
 
     for (int i = 0; i <= row; i++) {
         loggerDebug("%s\n", mlist.at(i).toStdString().c_str());
-        gameTemp.command(mlist.at(i).toStdString().c_str());
+        dummyPosition.command(mlist.at(i).toStdString().c_str());
     }
 
     // 下面这步关键，会让悔棋者承担时间损失
-    gameTemp.setStartTime(game_.getStartTimeb());
+    dummyPosition.setStartTime(position_.getStartTimeb());
 
     // 刷新棋局场景
-    updateScence(gameTemp);
+    updateScence(dummyPosition);
 
     return true;
 }
 
 bool GameController::updateScence()
 {
-    return updateScence(game_);
+    return updateScence(position_);
 }
 
-bool GameController::updateScence(MillGame &game)
+bool GameController::updateScence(Position &game)
 {
     const int *board = game.getBoard();
     QPointF pos;

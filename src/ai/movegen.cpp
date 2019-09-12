@@ -23,7 +23,7 @@
 
 #include "movegen.h"
 
-void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
+void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                                   MillGameAi_ab::Node *node, MillGameAi_ab::Node *rootNode,
                                   move_t bestMove)
 {
@@ -32,23 +32,23 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
     size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
-    switch (gameTemp.getStage()) {
+    switch (dummyPosition.getStage()) {
     case GAME_PLACING:
-        if (gameTemp.getAction() == ACTION_CAPTURE) {
-            if (gameTemp.whosTurn() == PLAYER1)
-                newCapacity = static_cast<size_t>(gameTemp.getPiecesOnBoardCount_2());
+        if (dummyPosition.getAction() == ACTION_CAPTURE) {
+            if (dummyPosition.whosTurn() == PLAYER1)
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
             else
-                newCapacity = static_cast<size_t>(gameTemp.getPiecesOnBoardCount_1());
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_1());
         } else {
-            newCapacity = static_cast<size_t>(gameTemp.getPiecesInHandCount_1() + gameTemp.getPiecesInHandCount_2());
+            newCapacity = static_cast<size_t>(dummyPosition.getPiecesInHandCount_1() + dummyPosition.getPiecesInHandCount_2());
         }
         break;
     case GAME_MOVING:
-        if (gameTemp.getAction() == ACTION_CAPTURE) {
-            if (gameTemp.whosTurn() == PLAYER1)
-                newCapacity = static_cast<size_t>(gameTemp.getPiecesOnBoardCount_2());
+        if (dummyPosition.getAction() == ACTION_CAPTURE) {
+            if (dummyPosition.whosTurn() == PLAYER1)
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
             else
-                newCapacity = static_cast<size_t>(gameTemp.getPiecesOnBoardCount_1());
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_1());
         } else {
             newCapacity = 6;
         }
@@ -69,28 +69,28 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
     }
 
     // 对手
-    Player opponent = MillGame::getOpponent(gameTemp.context.turn);
+    Player opponent = Position::getOpponent(dummyPosition.context.turn);
 
     // 列出所有合法的下一招
-    switch (gameTemp.context.action) {
+    switch (dummyPosition.context.action) {
         // 对于选子和落子动作
     case ACTION_CHOOSE:
     case ACTION_PLACE:
         // 对于摆子阶段
-        if (gameTemp.context.stage & (GAME_PLACING | GAME_NOTSTARTED)) {
+        if (dummyPosition.context.stage & (GAME_PLACING | GAME_NOTSTARTED)) {
             for (int i : movePriorityTable) {
                 location = i;
 
-                if (gameTemp.board_[location]) {
+                if (dummyPosition.board_[location]) {
                     continue;
                 }
 
-                if (gameTemp.context.stage != GAME_NOTSTARTED || node != rootNode) {
-                    ai_ab.addNode(node, 0, location, bestMove, gameTemp.context.turn);
+                if (dummyPosition.context.stage != GAME_NOTSTARTED || node != rootNode) {
+                    ai_ab.addNode(node, 0, location, bestMove, dummyPosition.context.turn);
                 } else {
                     // 若为先手，则抢占星位
-                    if (MillGame::isStarPoint(location)) {
-                        ai_ab.addNode(node, MillGameAi_ab::INF_VALUE, location, bestMove, gameTemp.context.turn);
+                    if (Position::isStarPoint(location)) {
+                        ai_ab.addNode(node, MillGameAi_ab::INF_VALUE, location, bestMove, dummyPosition.context.turn);
                     }
                 }
             }
@@ -98,36 +98,36 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
         }
 
         // 对于移子阶段
-        if (gameTemp.context.stage & GAME_MOVING) {
+        if (dummyPosition.context.stage & GAME_MOVING) {
             int newLocation, oldLocation;
 
             // 尽量走理论上较差的位置的棋子
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 oldLocation = movePriorityTable[i];
 
-                if (!gameTemp.choose(oldLocation)) {
+                if (!dummyPosition.choose(oldLocation)) {
                     continue;
                 }
 
-                if ((gameTemp.context.turn == PLAYER1 &&
-                    (gameTemp.context.nPiecesOnBoard_1 > gameTemp.currentRule.nPiecesAtLeast || !gameTemp.currentRule.allowFlyWhenRemainThreePieces)) ||
-                     (gameTemp.context.turn == PLAYER2 &&
-                    (gameTemp.context.nPiecesOnBoard_2 > gameTemp.currentRule.nPiecesAtLeast || !gameTemp.currentRule.allowFlyWhenRemainThreePieces))) {
+                if ((dummyPosition.context.turn == PLAYER1 &&
+                    (dummyPosition.context.nPiecesOnBoard_1 > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces)) ||
+                     (dummyPosition.context.turn == PLAYER2 &&
+                    (dummyPosition.context.nPiecesOnBoard_2 > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces))) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int moveDirection = MOVE_DIRECTION_CLOCKWISE; moveDirection <= MOVE_DIRECTION_OUTWARD; moveDirection++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newLocation = moveTable[oldLocation][moveDirection];
-                        if (newLocation && !gameTemp.board_[newLocation]) {
+                        if (newLocation && !dummyPosition.board_[newLocation]) {
                             int move = (oldLocation << 8) + newLocation;
-                            ai_ab.addNode(node, 0, move, bestMove, gameTemp.context.turn); // (12%)
+                            ai_ab.addNode(node, 0, move, bestMove, dummyPosition.context.turn); // (12%)
                         }
                     }
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newLocation = Board::LOCATION_BEGIN; newLocation < Board::LOCATION_END; newLocation++) {
-                        if (!gameTemp.board_[newLocation]) {
+                        if (!dummyPosition.board_[newLocation]) {
                             int move = (oldLocation << 8) + newLocation;
-                            ai_ab.addNode(node, 0, move, bestMove, gameTemp.context.turn);
+                            ai_ab.addNode(node, 0, move, bestMove, dummyPosition.context.turn);
                         }
                     }
                 }
@@ -137,12 +137,12 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
 
         // 对于吃子动作
     case ACTION_CAPTURE:
-        if (gameTemp.context.board.isAllInMills(opponent)) {
+        if (dummyPosition.context.board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 location = movePriorityTable[i];
-                if (gameTemp.board_[location] & opponent) {
-                    ai_ab.addNode(node, 0, -location, bestMove, gameTemp.context.turn);
+                if (dummyPosition.board_[location] & opponent) {
+                    ai_ab.addNode(node, 0, -location, bestMove, dummyPosition.context.turn);
                 }
             }
             break;
@@ -151,9 +151,9 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
         // 不是全成三的情况
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             location = movePriorityTable[i];
-            if (gameTemp.board_[location] & opponent) {
-                if (gameTemp.getRule()->allowRemoveMill || !gameTemp.context.board.inHowManyMills(location)) {
-                    ai_ab.addNode(node, 0, -location, bestMove, gameTemp.context.turn);
+            if (dummyPosition.board_[location] & opponent) {
+                if (dummyPosition.getRule()->allowRemoveMill || !dummyPosition.context.board.inHowManyMills(location)) {
+                    ai_ab.addNode(node, 0, -location, bestMove, dummyPosition.context.turn);
                 }
             }
         }
@@ -164,7 +164,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, MillGame &gameTemp,
     }
 }
 
-void MoveList::createMoveTable(MillGame &game)
+void MoveList::createMoveTable(Position &position)
 {
 #if 1
     const int moveTable_obliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
@@ -356,7 +356,7 @@ void MoveList::createMoveTable(MillGame &game)
     };
 #endif
 
-    if (game.currentRule.hasObliqueLines) {
+    if (position.currentRule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
     } else {
         memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
@@ -379,14 +379,14 @@ void MoveList::createMoveTable(MillGame &game)
 #endif
 }
 
-void MoveList::shuffleMovePriorityTable(MillGame & game)
+void MoveList::shuffleMovePriorityTable(Position &position)
 {
     array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 中圈四个顶点 (星位)
     array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
     array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
     array<int, 8> movePriorityTable3 = { 24, 26, 28, 30, 8, 10, 12, 14 }; // 外内圈十字架
 
-    if (game.getRandomMove() == true) {
+    if (position.getRandomMove() == true) {
         uint32_t seed = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count());
 
         std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));

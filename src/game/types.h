@@ -66,7 +66,7 @@ enum Player : uint8_t
 };
 
 // 局面阶段标识
-enum GameStage : uint16_t
+enum PositionStage : uint16_t
 {
     GAME_NONE = 0x0000,
     GAME_NOTSTARTED = 0x0001,   // 未开局

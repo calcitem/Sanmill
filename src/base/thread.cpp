@@ -26,7 +26,7 @@
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
     waiting_(false),
-    game_(nullptr),
+    position_(nullptr),
     aiDepth(2),
     aiTime(3600)
 {
@@ -60,12 +60,12 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const MillGame &game)
+void AiThread::setAi(const Position &position)
 {
     mutex.lock();
 
-    this->game_ = &game;
-    ai_ab.setGame(*(this->game_));
+    this->position_ = &position;
+    ai_ab.setPosition(*(this->position_));
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
@@ -77,11 +77,11 @@ void AiThread::setAi(const MillGame &game)
     mutex.unlock();
 }
 
-void AiThread::setAi(const MillGame &game, depth_t depth, int time)
+void AiThread::setAi(const Position &position, depth_t depth, int time)
 {
     mutex.lock();
-    this->game_ = &game;
-    ai_ab.setGame(game);
+    this->position_ = &position;
+    ai_ab.setPosition(position);
     aiDepth = depth;
     aiTime = time;
     mutex.unlock();
@@ -107,7 +107,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = MillGame::playerToId(game_->whosTurn());
+        i = Position::playerToId(position_->whosTurn());
 
         if (i != id || waiting_) {
             pauseCondition.wait(&mutex);
@@ -115,7 +115,7 @@ void AiThread::run()
             continue;
         }
 
-        ai_ab.setGame(*game_);
+        ai_ab.setPosition(*position_);
         emit calcStarted();
         mutex.unlock();
 

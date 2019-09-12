@@ -24,7 +24,7 @@
 #include "search.h"
 #include "movegen.h"
 
-MillGame::MillGame()
+Position::Position()
 {
     // 单独提出 board 等数据，免得每次都写 context.board;
     board_ = context.board.locations;
@@ -44,40 +44,40 @@ MillGame::MillGame()
     score_1 = score_2 = score_draw = 0;
 }
 
-MillGame::~MillGame() = default;
+Position::~Position() = default;
 
-MillGame::MillGame(const MillGame &game)
+Position::Position(const Position &position)
 {  
-    *this = game;
+    *this = position;
 }
 
-MillGame &MillGame::operator= (const MillGame &game)
+Position &Position::operator= (const Position &position)
 {
-    if (this == &game)
+    if (this == &position)
         return *this;
 
-    currentRule = game.currentRule;
-    context = game.context;
-    currentStep = game.currentStep;
-    moveStep = game.moveStep;
-    randomMove_ = game.randomMove_;
-    giveUpIfMostLose_ = game.giveUpIfMostLose_;
+    currentRule = position.currentRule;
+    context = position.context;
+    currentStep = position.currentStep;
+    moveStep = position.moveStep;
+    randomMove_ = position.randomMove_;
+    giveUpIfMostLose_ = position.giveUpIfMostLose_;
     board_ = context.board.locations;
-    currentLocation = game.currentLocation;
-    winner = game.winner;
-    startTime = game.startTime;
-    currentTime = game.currentTime;
-    elapsedSeconds_1 = game.elapsedSeconds_1;
-    elapsedSeconds_2 = game.elapsedSeconds_2;
-    move_ = game.move_;
-    memcpy(cmdline, game.cmdline, sizeof(cmdline));
-    cmdlist = game.cmdlist;
-    tips = game.tips;
+    currentLocation = position.currentLocation;
+    winner = position.winner;
+    startTime = position.startTime;
+    currentTime = position.currentTime;
+    elapsedSeconds_1 = position.elapsedSeconds_1;
+    elapsedSeconds_2 = position.elapsedSeconds_2;
+    move_ = position.move_;
+    memcpy(cmdline, position.cmdline, sizeof(cmdline));
+    cmdlist = position.cmdlist;
+    tips = position.tips;
 
     return *this;
 }
 
-int MillGame::playerToId(enum Player player)
+int Position::playerToId(enum Player player)
 {
     if (player == PLAYER1)
         return 1;
@@ -87,7 +87,7 @@ int MillGame::playerToId(enum Player player)
     return 0;
 }
 
-Player MillGame::getOpponent(Player player)
+Player Position::getOpponent(Player player)
 {
     switch (player)
     {
@@ -103,7 +103,7 @@ Player MillGame::getOpponent(Player player)
 }
 
 // 设置配置
-bool MillGame::configure(bool giveUpIfMostLose, bool randomMove)
+bool Position::configure(bool giveUpIfMostLose, bool randomMove)
 {
     // 设置是否必败时认输
     this->giveUpIfMostLose_ = giveUpIfMostLose;
@@ -115,7 +115,7 @@ bool MillGame::configure(bool giveUpIfMostLose, bool randomMove)
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
+bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
                           step_t initialStep, int flags, const char *board,
                           int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
@@ -266,7 +266,7 @@ bool MillGame::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     return false;
 }
 
-void MillGame::getContext(struct Rule &rule, step_t &step, int &flags,
+void Position::getContext(struct Rule &rule, step_t &step, int &flags,
                            int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove)
 {
     rule = this->currentRule;
@@ -278,7 +278,7 @@ void MillGame::getContext(struct Rule &rule, step_t &step, int &flags,
     nPiecesNeedRemove = context.nPiecesNeedRemove;
 }
 
-bool MillGame::reset()
+bool Position::reset()
 {
     if (context.stage == GAME_NOTSTARTED &&
         elapsedSeconds_1 == elapsedSeconds_2 == 0) {
@@ -351,7 +351,7 @@ bool MillGame::reset()
     return false;
 }
 
-bool MillGame::start()
+bool Position::start()
 {
     switch (context.stage) {
     // 如果游戏已经开始，则返回false
@@ -374,7 +374,7 @@ bool MillGame::start()
     }
 }
 
-bool MillGame::place(int location, int time_p, int8_t rs)
+bool Position::place(int location, int time_p, int8_t rs)
 {
     // 如果局面为“结局”，返回false
     if (context.stage == GAME_OVER)
@@ -556,7 +556,7 @@ out:
     return true;
 }
 
-bool MillGame::_place(int r, int s, int time_p)
+bool Position::_place(int r, int s, int time_p)
 {
     // 转换为 location
     int location = context.board.polarToLocation(r, s);
@@ -564,7 +564,7 @@ bool MillGame::_place(int r, int s, int time_p)
     return place(location, time_p, true);
 }
 
-bool MillGame::_capture(int r, int s, int time_p)
+bool Position::_capture(int r, int s, int time_p)
 {
     // 转换为 location
     int location = context.board.polarToLocation(r, s);
@@ -572,7 +572,7 @@ bool MillGame::_capture(int r, int s, int time_p)
     return capture(location, time_p, 1);
 }
 
-bool MillGame::capture(int location, int time_p, int8_t cp)
+bool Position::capture(int location, int time_p, int8_t cp)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (context.stage == GAME_NOTSTARTED || context.stage == GAME_OVER)
@@ -714,7 +714,7 @@ out:
     return true;
 }
 
-bool MillGame::choose(int location)
+bool Position::choose(int location)
 {
     // 如果局面不是"中局”，返回false
     if (context.stage != GAME_MOVING)
@@ -745,12 +745,12 @@ bool MillGame::choose(int location)
     return false;
 }
 
-bool MillGame::choose(int r, int s)
+bool Position::choose(int r, int s)
 {
     return choose(context.board.polarToLocation(r, s));
 }
 
-bool MillGame::giveup(Player loser)
+bool Position::giveup(Player loser)
 {
     if (context.stage == GAME_NOTSTARTED ||
         context.stage == GAME_OVER ||
@@ -778,7 +778,7 @@ bool MillGame::giveup(Player loser)
 }
 
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
-bool MillGame::command(const char *cmd)
+bool Position::command(const char *cmd)
 {
     int r, t;
     step_t s;
@@ -863,7 +863,7 @@ bool MillGame::command(const char *cmd)
     return false;
 }
 
-bool MillGame::command(int move)
+bool Position::command(int move)
 {
     if (move < 0) {
         return capture(-move);
@@ -880,7 +880,7 @@ bool MillGame::command(int move)
     return false;
 }
 
-inline int MillGame::update(int time_p /*= -1*/)
+inline int Position::update(int time_p /*= -1*/)
 {
     int ret = -1;
     time_t *player_ms = (context.turn == PLAYER1 ? &elapsedSeconds_1 : &elapsedSeconds_2);
@@ -911,13 +911,13 @@ inline int MillGame::update(int time_p /*= -1*/)
 }
 
 // 是否分出胜负
-bool MillGame::win()
+bool Position::win()
 {
     return win(false);
 }
 
 // 是否分出胜负
-bool MillGame::win(bool forceDraw)
+bool Position::win(bool forceDraw)
 {
     if (context.stage == GAME_OVER) {
         return true;
@@ -1043,7 +1043,7 @@ bool MillGame::win(bool forceDraw)
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int MillGame::getMobilityDiff(enum Player turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
+int Position::getMobilityDiff(enum Player turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
 {
     int *board = context.board.locations;
     int mobility1 = 0;
@@ -1066,7 +1066,7 @@ int MillGame::getMobilityDiff(enum Player turn, const Rule &rule, int nPiecesOnB
     return diff;
 }
 
-void MillGame::cleanForbiddenPoints()
+void Position::cleanForbiddenPoints()
 {
     int location = 0;
 
@@ -1082,7 +1082,7 @@ void MillGame::cleanForbiddenPoints()
     }
 }
 
-enum Player MillGame::changeTurn()
+enum Player Position::changeTurn()
 {
     // 设置轮到谁走
     context.turn = (context.turn == PLAYER1) ? PLAYER2 : PLAYER1;
@@ -1090,7 +1090,7 @@ enum Player MillGame::changeTurn()
     return context.turn;
 }
 
-void MillGame::setTips()
+void Position::setTips()
 {
     switch (context.stage) {
     case GAME_NOTSTARTED:
@@ -1156,7 +1156,7 @@ void MillGame::setTips()
     }
 }
 
-void MillGame::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
+void Position::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
 {
     update();
 
@@ -1174,7 +1174,7 @@ void MillGame::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
  * 0位：轮流标识，0为先手，1为后手
  */
 
-void MillGame::constructHash()
+void Position::constructHash()
 {
     context.hash = 0;
 
@@ -1182,7 +1182,7 @@ void MillGame::constructHash()
     memcpy(context.zobrist, zobrist0, sizeof(hash_t) * Board::N_LOCATIONS * POINT_TYPE_COUNT);
 }
 
-hash_t MillGame::getHash()
+hash_t Position::getHash()
 {
     // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
     updateHashMisc();
@@ -1190,7 +1190,7 @@ hash_t MillGame::getHash()
     return context.hash;
 }
 
-hash_t MillGame::updateHash(int location)
+hash_t Position::updateHash(int location)
 {
     // PieceType is board_[location]
 
@@ -1203,12 +1203,12 @@ hash_t MillGame::updateHash(int location)
     return context.hash;
 }
 
-hash_t MillGame::revertHash(int location)
+hash_t Position::revertHash(int location)
 {
     return updateHash(location);
 }
 
-hash_t MillGame::updateHashMisc()
+hash_t Position::updateHashMisc()
 {
     // 清除标记位
     context.hash &= static_cast<hash_t>(~0xFF);
@@ -1224,7 +1224,7 @@ hash_t MillGame::updateHashMisc()
     }
 
     context.hash |= static_cast<hash_t>(context.nPiecesNeedRemove) << 2;
-    context.hash |= static_cast<hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 game.stage 也可以？
+    context.hash |= static_cast<hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 position.stage 也可以？
 
     return context.hash;
 }

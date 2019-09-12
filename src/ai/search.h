@@ -75,7 +75,7 @@ public:
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
         bool visited;                   // 是否在遍历时访问过
-        GameStage stage;     // 摆棋阶段还是走棋阶段
+        PositionStage stage;     // 摆棋阶段还是走棋阶段
         Action action;       // 动作状态
         int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
         int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
@@ -97,7 +97,7 @@ public:
     MillGameAi_ab();
     ~MillGameAi_ab();
 
-    void setGame(const MillGame &game);
+    void setPosition(const Position &position);
 
     void quit()
     {
@@ -185,15 +185,15 @@ protected:
        
 private:
     // 原始模型
-    MillGame game_;
+    Position position_;
 
     // 演算用的模型
-    MillGame gameTemp;
+    Position dummyPosition;
 
-    GameContext *gameContext {};
+    PositionContext *positionContext {};
 
     // hash 计算时，各种转换用的模型
-    MillGame gameTempShift;
+    Position dummyPositionShift;
 
     // 根节点
     Node *rootNode {nullptr};
@@ -218,9 +218,9 @@ private:
 
     // 局面数据栈
 //#ifdef MEMORY_POOL
-//    StackAlloc<MillGame::GameContext, MemoryPool<MillGame::GameContext> > contextStack;
+//    StackAlloc<MillGame::PositionContext, MemoryPool<MillGame::PositionContext> > contextStack;
 //#else
-    stack<GameContext> contextStack;
+    stack<PositionContext> contextStack;
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回

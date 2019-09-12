@@ -54,8 +54,8 @@ protected:
 
 public:
     // AI设置
-    void setAi(const MillGame &game);
-    void setAi(const MillGame &game, depth_t depth, int time);
+    void setAi(const Position &position);
+    void setAi(const Position &position, depth_t depth, int time);
 
     Server *getServer()
     {
@@ -107,7 +107,7 @@ private:
     QWaitCondition pauseCondition;
 
     // 主线程棋对象的引用
-    const MillGame *game_;
+    const Position *position_;
 
     // Alpha-Beta剪枝算法类
     MillGameAi_ab ai_ab;

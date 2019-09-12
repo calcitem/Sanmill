@@ -19,8 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#ifndef MILLGAME_H
-#define MILLGAME_H
+#ifndef POSITION_H
+#define POSITION_H
 
 #include <string>
 #include <cstring>
@@ -36,7 +36,7 @@ using namespace std;
 
 // 棋局结构体，算法相关，包含当前棋盘数据
 // 单独分离出来供AI判断局面用，生成置换表时使用
-class GameContext
+class PositionContext
 {
 public:
     Board board;
@@ -48,7 +48,7 @@ public:
     hash_t zobrist[Board::N_LOCATIONS][POINT_TYPE_COUNT]{};
 
     // 局面阶段标识
-    enum GameStage stage;
+    enum PositionStage stage;
 
     // 轮流状态标识
     enum Player turn;
@@ -75,9 +75,9 @@ public:
 };
 
 // 棋类（在数据模型内，玩家只分先后手，不分黑白）
-// 注意：MillGame类不是线程安全的！
-// 所以不能跨线程修改MillGame类的静态成员变量，切记！
-class MillGame
+// 注意：Position 类不是线程安全的！
+// 所以不能跨线程修改 Position 类的静态成员变量，切记！
+class Position
 {
     // AI友元类
     friend class MillGameAi_ab;
@@ -111,14 +111,14 @@ private:
     void constructHash();
 
 public:
-    explicit MillGame();
-    virtual ~MillGame();
+    explicit Position();
+    virtual ~Position();
 
     // 拷贝构造函数
-    explicit MillGame(const MillGame &);
+    explicit Position(const Position &);
 
     // 运算符重载
-    MillGame &operator=(const MillGame &);
+    Position &operator=(const Position &);
 
     // 设置配置
     bool configure(bool giveUpIfMostLose, bool randomMove);
@@ -188,7 +188,7 @@ public:
     }
 
     // 获取局面阶段标识
-    enum GameStage getStage() const
+    enum PositionStage getStage() const
     {
         return context.stage;
     }
@@ -328,7 +328,7 @@ public:
 
 public: /* TODO: move to private */
     // 棋局上下文
-    GameContext context;
+    PositionContext context;
 
     // 当前使用的规则
     struct Rule currentRule
@@ -404,4 +404,4 @@ private:
     string tips;
 };
 
-#endif /* MILLGAME_H */
+#endif /* POSITION_H */
