@@ -32,8 +32,8 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
-    switch (dummyPosition.getStage()) {
-    case GAME_PLACING:
+    switch (dummyPosition.getPhase()) {
+    case PHASE_PLACING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
             if (dummyPosition.whosTurn() == PLAYER1)
                 newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
@@ -43,7 +43,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             newCapacity = static_cast<size_t>(dummyPosition.getPiecesInHandCount_1() + dummyPosition.getPiecesInHandCount_2());
         }
         break;
-    case GAME_MOVING:
+    case PHASE_MOVING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
             if (dummyPosition.whosTurn() == PLAYER1)
                 newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
@@ -53,7 +53,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             newCapacity = 6;
         }
         break;
-    case GAME_NOTSTARTED:
+    case PHASE_NOTSTARTED:
         newCapacity = 24;
         break;
     default:
@@ -77,7 +77,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     case ACTION_CHOOSE:
     case ACTION_PLACE:
         // 对于摆子阶段
-        if (dummyPosition.context.stage & (GAME_PLACING | GAME_NOTSTARTED)) {
+        if (dummyPosition.context.phase & (PHASE_PLACING | PHASE_NOTSTARTED)) {
             for (move_t i : movePriorityTable) {
                 location = i;
 
@@ -85,7 +85,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                     continue;
                 }
 
-                if (dummyPosition.context.stage != GAME_NOTSTARTED || node != rootNode) {
+                if (dummyPosition.context.phase != PHASE_NOTSTARTED || node != rootNode) {
                     ai_ab.addNode(node, 0, (move_t)location, bestMove, dummyPosition.context.turn);
                 } else {
                     // 若为先手，则抢占星位
@@ -98,7 +98,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
         }
 
         // 对于移子阶段
-        if (dummyPosition.context.stage & GAME_MOVING) {
+        if (dummyPosition.context.phase & PHASE_MOVING) {
             int newLocation, oldLocation;
 
             // 尽量走理论上较差的位置的棋子

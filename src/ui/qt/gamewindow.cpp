@@ -745,12 +745,12 @@ void MillGameWindow::on_actionRowChange()
     }
 
     // 更新局面
-    game->stageChange(currentRow);
+    game->phaseChange(currentRow);
 
 #if 0
     // 下面的代码全部取消，改用QTimer的方式实现
     // 更新局面
-    bool changed = game->stageChange(currentRow);
+    bool changed = game->phaseChange(currentRow);
     // 处理自动播放时的动画
     if (changed && game->isAnimation()) {
         // 不使用processEvents函数进行非阻塞延时，频繁调用占用CPU较多
@@ -814,7 +814,7 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
     }
 
     // 更新局面
-    game->stageChange(currentRow);
+    game->phaseChange(currentRow);
 }
 
 // 自动运行

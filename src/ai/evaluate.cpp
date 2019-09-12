@@ -31,16 +31,16 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
     int nPiecesNeedRemove = 0;
 
 #ifdef DEBUG_AB_TREE
-    node->stage = positionContext->stage;
+    node->phase = positionContext->phase;
     node->action = positionContext->action;
     node->evaluated = true;
 #endif
 
-    switch (positionContext->stage) {
-    case GAME_NOTSTARTED:
+    switch (positionContext->phase) {
+    case PHASE_NOTSTARTED:
         break;
 
-    case GAME_PLACING:
+    case PHASE_PLACING:
         // 按手中的棋子计分，不要break;
         nPiecesInHandDiff = positionContext->nPiecesInHand_1 - positionContext->nPiecesInHand_2;
         value += nPiecesInHandDiff * 50;
@@ -76,7 +76,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
         break;
 
-    case GAME_MOVING:
+    case PHASE_MOVING:
         // 按场上棋子计分
         value += positionContext->nPiecesOnBoard_1 * 100 - positionContext->nPiecesOnBoard_2 * 100;
 
@@ -107,7 +107,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
         break;
 
         // 终局评价最简单
-    case GAME_OVER:
+    case PHASE_GAMEOVER:
         // 布局阶段闷棋判断
         if (positionContext->nPiecesOnBoard_1 + positionContext->nPiecesOnBoard_2 >=
             Board::N_SEATS * Board::N_RINGS) {

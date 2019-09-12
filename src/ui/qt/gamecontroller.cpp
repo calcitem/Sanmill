@@ -137,7 +137,7 @@ void GameController::gameReset()
     timeID = 0;
 
     // 棋未下完，则算对手得分
-    if (position_.getStage() == GAME_MOVING &&
+    if (position_.getPhase() == PHASE_MOVING &&
         position_.whoWin() == PLAYER_NOBODY) {
         giveUp();
     }
@@ -412,7 +412,7 @@ void GameController::flip()
     if (currentRow == row - 1)
         updateScence();
     else
-        stageChange(currentRow, true);
+        phaseChange(currentRow, true);
 
     ai1.setAi(position_);
     ai2.setAi(position_);
@@ -454,7 +454,7 @@ void GameController::mirror()
     if (currentRow == row - 1)
         updateScence();
     else
-        stageChange(currentRow, true);
+        phaseChange(currentRow, true);
 
     ai1.setAi(position_);
     ai2.setAi(position_);
@@ -494,7 +494,7 @@ void GameController::turnRight()
     if (currentRow == row - 1)
         updateScence();
     else
-        stageChange(currentRow, true);
+        phaseChange(currentRow, true);
 
     ai1.setAi(position_);
     ai2.setAi(position_);
@@ -664,7 +664,7 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     // 如果未开局则开局
-    if (position_.getStage() == GAME_NOTSTARTED)
+    if (position_.getPhase() == PHASE_NOTSTARTED)
         gameStart();
 
     // 判断执行选子、落子或去子
@@ -837,7 +837,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 如果未开局则开局
-    if (position_.getStage() == GAME_NOTSTARTED) {
+    if (position_.getPhase() == PHASE_NOTSTARTED) {
         gameStart();
     }
 
@@ -943,7 +943,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 }
 
 // 浏览历史局面，通过command函数刷新局面显示
-bool GameController::stageChange(int row, bool forceUpdate)
+bool GameController::phaseChange(int row, bool forceUpdate)
 {
     // 如果row是当前浏览的棋谱行，则不需要刷新
     if (currentRow == row && !forceUpdate)
@@ -1043,7 +1043,7 @@ bool GameController::updateScence(Position &game)
                 deletedPiece = piece;
 
 #ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
-                if (game.getStage() == GAME_MOVING) {
+                if (game.getPhase() == GAME_MOVING) {
 #endif
                     QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
@@ -1061,7 +1061,7 @@ bool GameController::updateScence(Position &game)
     }
 
     // 添加摆棋阶段禁子点
-    if (game.getRule()->hasForbiddenPoint && game.getStage() == GAME_PLACING) {
+    if (game.getRule()->hasForbiddenPoint && game.getPhase() == PHASE_PLACING) {
         for (int j = Board::LOCATION_BEGIN; j < Board::LOCATION_END; j++) {
             if (board[j] == 0x0F) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
@@ -1080,7 +1080,7 @@ bool GameController::updateScence(Position &game)
     }
 
     // 走棋阶段清除禁子点
-    if (game.getRule()->hasForbiddenPoint && game.getStage() != GAME_PLACING) {
+    if (game.getRule()->hasForbiddenPoint && game.getPhase() != PHASE_PLACING) {
         while (nTotalPieces < pieceList.size()) {
             delete pieceList.at(nTotalPieces);
             pieceList.removeAt(nTotalPieces);

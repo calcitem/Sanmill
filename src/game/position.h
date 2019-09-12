@@ -48,13 +48,13 @@ public:
     hash_t zobrist[Board::N_LOCATIONS][POINT_TYPE_COUNT]{};
 
     // 局面阶段标识
-    enum PositionStage stage;
+    enum phase_t phase;
 
     // 轮流状态标识
     enum Player turn;
 
     // 动作状态标识
-    enum Action action
+    enum action_t action
     {
     };
 
@@ -128,7 +128,7 @@ public:
                  step_t maxStepsLedToDraw = 0,     // 限制步数
                  int maxTimeLedToLose = 0,      // 限制时间
                  step_t initialStep = 0,           // 默认起始步数为0
-                 int flags = GAME_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
+                 int flags = PHASE_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
                  const char *board = nullptr,   // 默认空棋盘
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
@@ -188,9 +188,9 @@ public:
     }
 
     // 获取局面阶段标识
-    enum PositionStage getStage() const
+    enum phase_t getPhase() const
     {
-        return context.stage;
+        return context.phase;
     }
 
     // 获取轮流状态标识
@@ -200,7 +200,7 @@ public:
     }
 
     // 获取动作状态标识
-    enum Action getAction() const
+    enum action_t getAction() const
     {
         return context.action;
     }

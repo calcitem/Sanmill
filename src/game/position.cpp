@@ -136,14 +136,14 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     this->moveStep = initialStep;
 
     // 局面阶段标识
-    if (flags & GAME_NOTSTARTED) {
-        context.stage = GAME_NOTSTARTED;
-    } else if (flags & GAME_PLACING) {
-        context.stage = GAME_PLACING;
-    } else if (flags & GAME_MOVING) {
-        context.stage = GAME_MOVING;
-    } else if (flags & GAME_OVER) {
-        context.stage = GAME_OVER;
+    if (flags & PHASE_NOTSTARTED) {
+        context.phase = PHASE_NOTSTARTED;
+    } else if (flags & PHASE_PLACING) {
+        context.phase = PHASE_PLACING;
+    } else if (flags & PHASE_MOVING) {
+        context.phase = PHASE_MOVING;
+    } else if (flags & PHASE_GAMEOVER) {
+        context.phase = PHASE_GAMEOVER;
     } else {
         return false;
     }
@@ -271,7 +271,7 @@ void Position::getContext(struct Rule &rule, step_t &step, int &flags,
 {
     rule = this->currentRule;
     step = this->currentStep;
-    flags = context.stage | context.turn | context.action;
+    flags = context.phase | context.turn | context.action;
     board_ = board;
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
@@ -280,7 +280,7 @@ void Position::getContext(struct Rule &rule, step_t &step, int &flags,
 
 bool Position::reset()
 {
-    if (context.stage == GAME_NOTSTARTED &&
+    if (context.phase == PHASE_NOTSTARTED &&
         elapsedSeconds_1 == elapsedSeconds_2 == 0) {
         return true;
     }
@@ -290,7 +290,7 @@ bool Position::reset()
     moveStep = 0;
 
     // 局面阶段标识
-    context.stage = GAME_NOTSTARTED;
+    context.phase = PHASE_NOTSTARTED;
 
     // 轮流状态标识
     context.turn = PLAYER1;
@@ -353,21 +353,21 @@ bool Position::reset()
 
 bool Position::start()
 {
-    switch (context.stage) {
+    switch (context.phase) {
     // 如果游戏已经开始，则返回false
-    case GAME_PLACING:
-    case GAME_MOVING:
+    case PHASE_PLACING:
+    case PHASE_MOVING:
         return false;
     // 如果游戏结束，则重置游戏，进入未开始状态
-    case GAME_OVER:
+    case PHASE_GAMEOVER:
         reset();
         [[fallthrough]];
     // 如果游戏处于未开始状态
-    case GAME_NOTSTARTED:
+    case PHASE_NOTSTARTED:
         // 启动计时器
         startTime = time(NULL);
         // 进入开局状态
-        context.stage = GAME_PLACING;
+        context.phase = PHASE_PLACING;
         return true;
     default:
         return false;
@@ -377,11 +377,11 @@ bool Position::start()
 bool Position::place(int location, int time_p, int8_t rs)
 {
     // 如果局面为“结局”，返回false
-    if (context.stage == GAME_OVER)
+    if (context.phase == PHASE_GAMEOVER)
         return false;
 
     // 如果局面为“未开局”，则开局
-    if (context.stage == GAME_NOTSTARTED)
+    if (context.phase == PHASE_NOTSTARTED)
         start();
 
     // 如非“落子”状态，返回false
@@ -404,7 +404,7 @@ bool Position::place(int location, int time_p, int8_t rs)
     int piece = '\x00';
     int n = 0;
 
-    if (context.stage == GAME_PLACING) {
+    if (context.phase == PHASE_PLACING) {
         // 先手下
         if (context.turn == PLAYER1) {
             piece = '\x11' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand_1;
@@ -441,7 +441,7 @@ bool Position::place(int location, int time_p, int8_t rs)
             // 如果双方都无未放置的棋子
             if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
                 // 进入中局阶段
-                context.stage = GAME_MOVING;
+                context.phase = PHASE_MOVING;
 
                 // 进入选子状态
                 context.action = ACTION_CHOOSE;
@@ -484,7 +484,7 @@ bool Position::place(int location, int time_p, int8_t rs)
         goto out;
     }
 
-    // 对于中局落子 (ontext.stage == GAME_MOVING)
+    // 对于中局落子 (ontext.phase == GAME_MOVING)
 
     // 如果落子不合法
     if ((context.turn == PLAYER1 &&
@@ -575,7 +575,7 @@ bool Position::_capture(int r, int s, int time_p)
 bool Position::capture(int location, int time_p, int8_t cp)
 {
     // 如果局面为"未开局"或“结局”，返回false
-    if (context.stage == GAME_NOTSTARTED || context.stage == GAME_OVER)
+    if (context.phase == PHASE_NOTSTARTED || context.phase == PHASE_GAMEOVER)
         return false;
 
     // 如非“去子”状态，返回false
@@ -609,7 +609,7 @@ bool Position::capture(int location, int time_p, int8_t cp)
     }
 
     // 去子（设置禁点）
-    if (currentRule.hasForbiddenPoint && context.stage == GAME_PLACING) {
+    if (currentRule.hasForbiddenPoint && context.phase == PHASE_PLACING) {
         revertHash(location);
         board_[location] = '\x0f';
         updateHash(location);
@@ -653,12 +653,12 @@ bool Position::capture(int location, int time_p, int8_t cp)
     // 所有去子都完成了
 
     // 开局阶段
-    if (context.stage == GAME_PLACING) {
+    if (context.phase == PHASE_PLACING) {
         // 如果双方都无未放置的棋子
         if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
 
             // 进入中局阶段
-            context.stage = GAME_MOVING;
+            context.phase = PHASE_MOVING;
 
             // 进入选子状态
             context.action = ACTION_CHOOSE;
@@ -717,7 +717,7 @@ out:
 bool Position::choose(int location)
 {
     // 如果局面不是"中局”，返回false
-    if (context.stage != GAME_MOVING)
+    if (context.phase != PHASE_MOVING)
         return false;
 
     // 如非“选子”或“落子”状态，返回false
@@ -752,13 +752,13 @@ bool Position::choose(int r, int s)
 
 bool Position::giveup(Player loser)
 {
-    if (context.stage == GAME_NOTSTARTED ||
-        context.stage == GAME_OVER ||
-        context.stage == GAME_NONE) {
+    if (context.phase == PHASE_NOTSTARTED ||
+        context.phase == PHASE_GAMEOVER ||
+        context.phase == PHASE_NONE) {
         return false;
     }
 
-    context.stage = GAME_OVER;
+    context.phase = PHASE_GAMEOVER;
 
     if (loser == PLAYER1) {
         winner = PLAYER2;
@@ -850,7 +850,7 @@ bool Position::command(const char *cmd)
     }
 
     if (!strcmp(cmd, "draw")) {
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
         winner = PLAYER_DRAW;
         score_draw++;
         tips = "三次重复局面判和。";
@@ -888,7 +888,7 @@ inline int Position::update(int time_p /*= -1*/)
 
     // 根据局面调整计时器
 
-    if (!(context.stage == GAME_PLACING || context.stage == GAME_MOVING)) {
+    if (!(context.phase == PHASE_PLACING || context.phase == PHASE_MOVING)) {
         return -1;
     }
 
@@ -919,17 +919,17 @@ bool Position::win()
 // 是否分出胜负
 bool Position::win(bool forceDraw)
 {
-    if (context.stage == GAME_OVER) {
+    if (context.phase == PHASE_GAMEOVER) {
         return true;
     }
 
-    if (context.stage == GAME_NOTSTARTED) {
+    if (context.phase == PHASE_NOTSTARTED) {
         return false;
     }
 
     // 如果有时间限定
     if (currentRule.maxTimeLedToLose > 0) {
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
 
         // 这里不能update更新时间，否则会形成循环嵌套
         // 如果玩家1超时
@@ -955,7 +955,7 @@ bool Position::win(bool forceDraw)
     if (currentRule.maxStepsLedToDraw > 0 &&
         moveStep > currentRule.maxStepsLedToDraw) {
         winner = PLAYER_DRAW;
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Steps over. In draw!");
         cmdlist.emplace_back(string(cmdline));
         return true;
@@ -964,7 +964,7 @@ bool Position::win(bool forceDraw)
     // 如果玩家1子数小于赛点，则玩家2获胜
     if (context.nPiecesOnBoard_1 + context.nPiecesInHand_1 < currentRule.nPiecesAtLeast) {
         winner = PLAYER2;
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player2 win!");
         cmdlist.emplace_back(string(cmdline));
         return true;
@@ -973,7 +973,7 @@ bool Position::win(bool forceDraw)
     // 如果玩家2子数小于赛点，则玩家1获胜
     if (context.nPiecesOnBoard_2 + context.nPiecesInHand_2 < currentRule.nPiecesAtLeast) {
         winner = PLAYER1;
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player1 win!");
         cmdlist.emplace_back(string(cmdline));
 #ifdef BOOK_LEARNING
@@ -984,7 +984,7 @@ bool Position::win(bool forceDraw)
 
     // 如果摆满了，根据规则判断胜负
     if (context.nPiecesOnBoard_1 + context.nPiecesOnBoard_2 >= Board::N_SEATS * Board::N_RINGS) {
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
 
         if (currentRule.isStartingPlayerLoseWhenBoardFull) {
             winner = PLAYER2;
@@ -999,9 +999,9 @@ bool Position::win(bool forceDraw)
     }
 
     // 如果中局被“闷”
-    if (context.stage == GAME_MOVING && context.action == ACTION_CHOOSE && context.board.isAllSurrounded(context.turn, currentRule, context.nPiecesOnBoard_1, context.nPiecesOnBoard_2, context.turn)) {
+    if (context.phase == PHASE_MOVING && context.action == ACTION_CHOOSE && context.board.isAllSurrounded(context.turn, currentRule, context.nPiecesOnBoard_1, context.nPiecesOnBoard_2, context.turn)) {
         // 规则要求被“闷”判负，则对手获胜
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
 
         if (currentRule.isLoseWhenNoWay) {
             if (context.turn == PLAYER1) {
@@ -1032,7 +1032,7 @@ bool Position::win(bool forceDraw)
     {
         tips = "重复三次局面和棋！";
         winner = PLAYER_DRAW;
-        context.stage = GAME_OVER;
+        context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Threefold Repetition. Draw!");
         cmdlist.emplace_back(string(cmdline));
         return true;
@@ -1092,13 +1092,13 @@ enum Player Position::changeTurn()
 
 void Position::setTips()
 {
-    switch (context.stage) {
-    case GAME_NOTSTARTED:
+    switch (context.phase) {
+    case PHASE_NOTSTARTED:
         tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子" +
             "  比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         break;
 
-    case GAME_PLACING:
+    case PHASE_PLACING:
         if (context.action == ACTION_PLACE) {
             if (context.turn == PLAYER1) {
                 tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
@@ -1114,7 +1114,7 @@ void Position::setTips()
         }
         break;
 
-    case GAME_MOVING:
+    case PHASE_MOVING:
         if (context.action == ACTION_PLACE || context.action == ACTION_CHOOSE) {
             if (context.turn == PLAYER1) {
                 tips = "轮到玩家1选子移动";
@@ -1130,7 +1130,7 @@ void Position::setTips()
         }
         break;
 
-    case GAME_OVER:
+    case PHASE_GAMEOVER:
         if (winner == PLAYER_DRAW) {
             score_draw++;
             tips = "双方平局！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);            
@@ -1224,7 +1224,7 @@ hash_t Position::updateHashMisc()
     }
 
     context.hash |= static_cast<hash_t>(context.nPiecesNeedRemove) << 2;
-    context.hash |= static_cast<hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 position.stage 也可以？
+    context.hash |= static_cast<hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 position.phase 也可以？
 
     return context.hash;
 }

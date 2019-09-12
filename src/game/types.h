@@ -71,17 +71,17 @@ enum Player : uint8_t
 };
 
 // 局面阶段标识
-enum PositionStage : uint16_t
+enum phase_t : uint16_t
 {
-    GAME_NONE = 0x0000,
-    GAME_NOTSTARTED = 0x0001,   // 未开局
-    GAME_PLACING = 0x0002,      // 开局（摆棋）
-    GAME_MOVING = 0x0004,       // 中局（走棋）
-    GAME_OVER = 0x0008          // 结局
+    PHASE_NONE = 0,
+    PHASE_NOTSTARTED = 1,       // 未开局
+    PHASE_PLACING = 1 << 1,     // 开局（摆棋）
+    PHASE_MOVING = 1 << 2,      // 中局（走棋）
+    PHASE_GAMEOVER = 1 << 3     // 结局
 };
 
 // 动作状态标识
-enum Action : uint16_t
+enum action_t : uint16_t
 {
     ACTION_NONE = 0x0000,
     ACTION_CHOOSE = 0x0100,    // 选子

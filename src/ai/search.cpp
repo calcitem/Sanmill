@@ -57,7 +57,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 {
     depth_t newDepth = originalDepth;
 
-    if ((dummyPosition.context.stage) & (GAME_PLACING)) {
+    if ((dummyPosition.context.phase) & (PHASE_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -85,7 +85,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 
 #ifdef GAME_MOVING_FIXED_DEPTH
     // 走棋阶段将深度调整
-    if ((dummyPosition.context.stage) & (GAME_MOVING)) {
+    if ((dummyPosition.context.phase) & (PHASE_MOVING)) {
         newDepth = GAME_MOVING_FIXED_DEPTH;
     }
 #endif /* GAME_MOVING_FIXED_DEPTH */
@@ -141,7 +141,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
 
 #ifdef DEBUG_AB_TREE
     newNode->root = rootNode;
-    newNode->stage = dummyPosition.context.stage;
+    newNode->phase = dummyPosition.context.phase;
     newNode->action = dummyPosition.context.action;
     newNode->evaluated = false;
     newNode->nPiecesInHandDiff = INT_MAX;
@@ -176,7 +176,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
             // 优先成三
-            if (dummyPosition.getStage() == GAME_PLACING && move > 0 && dummyPosition.context.board.isInMills(move, true)) {
+            if (dummyPosition.getPhase() == GAME_PLACING && move > 0 && dummyPosition.context.board.isInMills(move, true)) {
                 parent->children.insert(parent->children.begin(), newNode);
             } else {
                 parent->children.push_back(newNode);
@@ -295,7 +295,7 @@ void MillGameAi_ab::setPosition(const Position &position)
 #endif
 #ifdef DEBUG_AB_TREE
     rootNode->action = ACTION_NONE;
-    rootNode->stage = GAME_NONE;
+    rootNode->phase = GAME_NONE;
     rootNode->root = rootNode;
 #endif
 }
@@ -313,7 +313,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
     chrono::steady_clock::time_point timeEnd;
 
 #ifdef BOOK_LEARNING
-    if (position_.getStage() == GAME_PLACING)
+    if (position_.getPhase() == GAME_PLACING)
     {
         if (position_.context.nPiecesInHand_1 <= 10) {
             // 开局库只记录摆棋阶段最后的局面
@@ -328,7 +328,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (position_.getStage() == GAME_MOVING) {
+    if (position_.getPhase() == PHASE_MOVING) {
         hash_t hash = position_.getHash();
         
         if (std::find(positions.begin(), positions.end(), hash) != positions.end()) {
@@ -342,7 +342,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
         }
     }
 
-    if (position_.getStage() == GAME_PLACING) {
+    if (position_.getPhase() == PHASE_PLACING) {
         positions.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -459,7 +459,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #endif // DEBUG_AB_TREE
 
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-    if (positionContext->stage == GAME_OVER) {
+    if (positionContext->phase == PHASE_GAMEOVER) {
         // 局面评估
         node->value = Evaluation::getValue(dummyPosition, positionContext, node);
         evaluatedNodeCount++;
@@ -504,7 +504,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #ifdef BOOK_LEARNING
         // 检索开局库
-        if (positionContext->stage == GAME_PLACING && findBookHash(hash, hashValue)) {
+        if (positionContext->phase == GAME_PLACING && findBookHash(hash, hashValue)) {
             if (positionContext->turn == PLAYER2) {
                 // 是否需对后手扣分 // TODO: 先后手都处理
                 node->value += 1;
