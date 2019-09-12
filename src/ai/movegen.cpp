@@ -78,7 +78,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     case ACTION_PLACE:
         // 对于摆子阶段
         if (dummyPosition.context.stage & (GAME_PLACING | GAME_NOTSTARTED)) {
-            for (int i : movePriorityTable) {
+            for (move_t i : movePriorityTable) {
                 location = i;
 
                 if (dummyPosition.board_[location]) {
@@ -86,11 +86,11 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                 }
 
                 if (dummyPosition.context.stage != GAME_NOTSTARTED || node != rootNode) {
-                    ai_ab.addNode(node, 0, location, bestMove, dummyPosition.context.turn);
+                    ai_ab.addNode(node, 0, (move_t)location, bestMove, dummyPosition.context.turn);
                 } else {
                     // 若为先手，则抢占星位
                     if (Position::isStarPoint(location)) {
-                        ai_ab.addNode(node, MillGameAi_ab::INF_VALUE, location, bestMove, dummyPosition.context.turn);
+                        ai_ab.addNode(node, MillGameAi_ab::INF_VALUE, (move_t)location, bestMove, dummyPosition.context.turn);
                     }
                 }
             }
@@ -118,7 +118,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newLocation = moveTable[oldLocation][moveDirection];
                         if (newLocation && !dummyPosition.board_[newLocation]) {
-                            int move = (oldLocation << 8) + newLocation;
+                            move_t move = move_t((oldLocation << 8) + newLocation);
                             ai_ab.addNode(node, 0, move, bestMove, dummyPosition.context.turn); // (12%)
                         }
                     }
@@ -126,7 +126,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newLocation = Board::LOCATION_BEGIN; newLocation < Board::LOCATION_END; newLocation++) {
                         if (!dummyPosition.board_[newLocation]) {
-                            int move = (oldLocation << 8) + newLocation;
+                            move_t move = move_t((oldLocation << 8) + newLocation);
                             ai_ab.addNode(node, 0, move, bestMove, dummyPosition.context.turn);
                         }
                     }
@@ -142,7 +142,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 location = movePriorityTable[i];
                 if (dummyPosition.board_[location] & opponent) {
-                    ai_ab.addNode(node, 0, -location, bestMove, dummyPosition.context.turn);
+                    ai_ab.addNode(node, 0, (move_t)-location, bestMove, dummyPosition.context.turn);
                 }
             }
             break;
@@ -153,7 +153,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             location = movePriorityTable[i];
             if (dummyPosition.board_[location] & opponent) {
                 if (dummyPosition.getRule()->allowRemoveMill || !dummyPosition.context.board.inHowManyMills(location)) {
-                    ai_ab.addNode(node, 0, -location, bestMove, dummyPosition.context.turn);
+                    ai_ab.addNode(node, 0, (move_t)-location, bestMove, dummyPosition.context.turn);
                 }
             }
         }
@@ -381,10 +381,10 @@ void MoveList::createMoveTable(Position &position)
 
 void MoveList::shuffleMovePriorityTable(Position &position)
 {
-    array<int, 4> movePriorityTable0 = { 17, 19, 21, 23 }; // 中圈四个顶点 (星位)
-    array<int, 8> movePriorityTable1 = { 25, 27, 29, 31, 9, 11, 13, 15 }; // 外圈和内圈四个顶点
-    array<int, 4> movePriorityTable2 = { 16, 18, 20, 22 }; // 中圈十字架
-    array<int, 8> movePriorityTable3 = { 24, 26, 28, 30, 8, 10, 12, 14 }; // 外内圈十字架
+    array<move_t, 4> movePriorityTable0 = { (move_t)17, (move_t)19, (move_t)21, (move_t)23 }; // 中圈四个顶点 (星位)
+    array<move_t, 8> movePriorityTable1 = { (move_t)25, (move_t)27, (move_t)29, (move_t)31, (move_t)9, (move_t)11, (move_t)13, (move_t)15 }; // 外圈和内圈四个顶点
+    array<move_t, 4> movePriorityTable2 = { (move_t)16, (move_t)18, (move_t)20, (move_t)22 }; // 中圈十字架
+    array<move_t, 8> movePriorityTable3 = { (move_t)24, (move_t)26, (move_t)28, (move_t)30, (move_t)8, (move_t)10, (move_t)12, (move_t)14 }; // 外内圈十字架
 
     if (position.getRandomMove() == true) {
         uint32_t seed = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count());

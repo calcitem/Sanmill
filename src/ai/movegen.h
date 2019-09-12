@@ -45,14 +45,14 @@ public:
     static void shuffleMovePriorityTable(Position &position);
 
     // 着法表 // TODO: Move to private
-    inline static int moveTable[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = { {0} };
+    inline static move_t moveTable[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = { {MOVE_NONE} };
 
 private:
     // 着法顺序表, 后续会被打乱
-    inline static array<int, Board::N_RINGS *Board::N_SEATS> movePriorityTable {
-        8, 9, 10, 11, 12, 13, 14, 15,
-        16, 17, 18, 19, 20, 21, 22, 23,
-        24, 25, 26, 27, 28, 29, 30, 31,
+    inline static array<move_t, Board::N_RINGS *Board::N_SEATS> movePriorityTable {
+        (move_t)8, (move_t)9, (move_t)10, (move_t)11, (move_t)12, (move_t)13, (move_t)14, (move_t)15,
+        (move_t)16, (move_t)17, (move_t)18, (move_t)19, (move_t)20, (move_t)21, (move_t)22, (move_t)23,
+        (move_t)24, (move_t)25, (move_t)26, (move_t)27, (move_t)28, (move_t)29, (move_t)30, (move_t)31,
     };
 };
 

@@ -24,7 +24,6 @@
 
 #include "config.h"
 
-using move_t = int32_t;
 using step_t = uint16_t;
 using value_t = int16_t;
 using depth_t = uint8_t;
@@ -34,6 +33,12 @@ using hash_t = uint32_t;
 #else
 using hash_t = uint64_t;
 #endif /* TRANSPOSITION_TABLE_CUTDOWN */
+
+enum move_t : int32_t
+{
+    MOVE_NONE,
+    //MOVE_NULL = 65
+};
 
 // 移动方向，包括顺时针、逆时针、向内、向外4个方向
 enum MoveDirection

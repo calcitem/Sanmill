@@ -97,7 +97,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 
 void MillGameAi_ab::buildRoot()
 {
-    rootNode = addNode(nullptr, 0, 0, 0, PLAYER_NOBODY);
+    rootNode = addNode(nullptr, 0, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
 }
 
 struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
@@ -288,7 +288,7 @@ void MillGameAi_ab::setPosition(const Position &position)
     rootNode = new Node;
 #endif
     rootNode->value = 0;
-    rootNode->move = 0;
+    rootNode->move = MOVE_NONE;
     rootNode->parent = nullptr;
 #ifdef SORT_CONSIDER_PRUNED
     rootNode->pruned = false;
@@ -393,7 +393,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     depth_t epsilon = 0;
 
     // 子节点的最优着法
-    move_t bestMove = 0;
+    move_t bestMove = MOVE_NONE;
 
 #if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
     // 哈希值
@@ -477,7 +477,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TranspositionTable::recordHash(node->value, depth, TranspositionTable::hashfEXACT, hash, 0);
+        TranspositionTable::recordHash(node->value, depth, TranspositionTable::hashfEXACT, hash, MOVE_NONE);
 #endif
 
         return node->value;
@@ -514,7 +514,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TranspositionTable::recordHash(node->value, depth, TranspositionTable::hashfEXACT, hash, 0);
+        TranspositionTable::recordHash(node->value, depth, TranspositionTable::hashfEXACT, hash, MOVE_NONE);
 #endif
 
         return node->value;
