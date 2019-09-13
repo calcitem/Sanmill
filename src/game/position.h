@@ -88,19 +88,6 @@ public:
     int score_2 {};
     int score_draw {};
 
-    uint64_t rand64() {
-        return static_cast<uint64_t>(rand()) ^
-                (static_cast<uint64_t>(rand()) << 15) ^
-                (static_cast<uint64_t>(rand()) << 30) ^
-                (static_cast<uint64_t>(rand()) << 45) ^
-                (static_cast<uint64_t>(rand()) << 60);
-    }
-
-    uint64_t rand56()
-    {
-        return rand64() << 8;
-    }
-
     static int playerToId(enum player_t player);
 
     static player_t getOpponent(enum player_t player);

@@ -25,6 +25,7 @@ SOURCES += \
     src/ai/evaluate.cpp \
     src/ai/movegen.cpp \
     src/ai/tt.cpp \
+    src/base/misc.cpp \
     src/game/board.cpp \
     src/game/position.cpp \
     src/game/rule.cpp \
@@ -52,6 +53,7 @@ HEADERS  += \
     src/base/hashMap.h \
     src/base/MemoryPool.h \
     src/base/MemoryPool.tcc \
+    src/base/misc.h \
     src/base/stackalloc.h \
     src/base/thread.h \
     src/ai/search.h \

@@ -111,6 +111,9 @@
     <ClInclude Include="src\game\position.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="src\base\misc.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -319,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="src\game\position.cpp">
       <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\misc.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

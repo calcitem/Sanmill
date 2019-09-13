@@ -22,6 +22,7 @@
 #include <random>
 
 #include "movegen.h"
+#include "misc.h"
 
 void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                                   MillGameAi_ab::Node *node, MillGameAi_ab::Node *rootNode,
@@ -388,7 +389,7 @@ void MoveList::shuffleMovePriorityTable(Position &position)
     array<move_t, 8> movePriorityTable3 = { (move_t)24, (move_t)26, (move_t)28, (move_t)30, (move_t)8, (move_t)10, (move_t)12, (move_t)14 }; // 外内圈十字架
 
     if (position.getRandomMove() == true) {
-        uint32_t seed = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count());
+        uint32_t seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
         std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
