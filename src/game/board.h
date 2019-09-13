@@ -78,27 +78,28 @@ public:
     int inHowManyMills(int location);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
-    bool isAllInMills(char ch);
     bool isAllInMills(enum player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], int location, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(int turnId, const Rule &currentRule, int nPiecesOnBoard[], int location, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
-    bool isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], int location);
+    bool isSurrounded(int turnId, const Rule &currentRule, int nPiecesOnBoard[], int location);
 
     // 判断玩家的棋子是否全部被围
-    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], char ch);
+    bool isAllSurrounded(int turnId, const Rule &currentRule, int nPiecesOnBoard[], char ch);
 
-    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], enum player_t ply);
+    bool isAllSurrounded(int turnId, const Rule &currentRule, int nPiecesOnBoard[], enum player_t ply);
 
     // 三连加入列表
     int addMills(const Rule &currentRule, int location);
 
+#if 0
     // 获取位置点棋子的归属人
     enum player_t getWhosPiece(int r, int s);
 
     bool getPieceRS(const player_t &player, const int &number, int &r, int &s, struct Rule &currentRule);
+#endif
 
     // 获取当前棋子
     bool getCurrentPiece(player_t &player, int &number, int currentPos);

@@ -22,6 +22,7 @@
 #include <QTimer>
 #include "thread.h"
 #include "tt.h"
+#include "player.h"
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
@@ -107,7 +108,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = Position::playerToId(position_->whosTurn());
+        i = Player::toId(position_->context.turn);
 
         if (i != id || waiting_) {
             pauseCondition.wait(&mutex);

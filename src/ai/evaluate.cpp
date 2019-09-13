@@ -87,12 +87,12 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 #endif  /* EVALUATE_MOBILITY */
 
         switch (positionContext->action) {
-            // 选子和落子使用相同的评价方法
+        // 选子和落子使用相同的评价方法
         case ACTION_CHOOSE:
         case ACTION_PLACE:
             break;
 
-            // 如果形成去子状态，每有一个可去的子，算128分
+        // 如果形成去子状态，每有一个可去的子，算128分
         case ACTION_CAPTURE:
             nPiecesNeedRemove = (positionContext->turn == PLAYER_1) ?
                 positionContext->nPiecesNeedRemove : -(positionContext->nPiecesNeedRemove);
@@ -107,17 +107,13 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
         break;
 
-        // 终局评价最简单
+    // 终局评价最简单
     case PHASE_GAMEOVER:
         // 布局阶段闷棋判断
         if (positionContext->nPiecesOnBoard[1] + positionContext->nPiecesOnBoard[2] >=
             Board::N_SEATS * Board::N_RINGS) {
             if (dummyPosition.getRule()->isStartingPlayerLoseWhenBoardFull) {
-                // winner = PLAYER_2;
                 value -= VALUE_WIN;
-#ifdef DEBUG_AB_TREE
-                node->result = -3;
-#endif
             } else {
                 value = VALUE_DRAW;
             }
@@ -128,30 +124,15 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
             dummyPosition.context.board.isAllSurrounded(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesOnBoard, positionContext->turn) &&
             dummyPosition.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-            if (positionContext->turn == PLAYER_1) {
-                value -= VALUE_WIN;
-#ifdef DEBUG_AB_TREE
-                node->result = -2;
-#endif
-            } else {
-                value += VALUE_WIN;
-#ifdef DEBUG_AB_TREE
-                node->result = 2;
-#endif
-            }
+            value_t delta = positionContext->turn == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
+            value += delta;
         }
 
         // 剩余棋子个数判断
         if (positionContext->nPiecesOnBoard[1] < dummyPosition.getRule()->nPiecesAtLeast) {
             value -= VALUE_WIN;
-#ifdef DEBUG_AB_TREE
-            node->result = -1;
-#endif
         } else if (positionContext->nPiecesOnBoard[2] < dummyPosition.getRule()->nPiecesAtLeast) {
             value += VALUE_WIN;
-#ifdef DEBUG_AB_TREE
-            node->result = 1;
-#endif
         }
 
         break;

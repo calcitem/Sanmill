@@ -51,6 +51,13 @@ public:
 
     // 轮流状态标识
     enum player_t turn;
+    int turnId;
+    char turnChar;
+    //string turnStr;
+    enum player_t opponent;
+    int opponentId;
+    char opponentChar;
+    //string opponentStr;
 
     // 动作状态标识
     enum action_t action
@@ -77,13 +84,8 @@ class Position
 
 public:
     // 赢盘数
-    int score_1 {};
-    int score_2 {};
+    int score[3];
     int score_draw {};
-
-    static int playerToId(enum player_t player);
-
-    static player_t getOpponent(enum player_t player);
 
 private:
 
@@ -114,12 +116,6 @@ public:
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
                  int nPiecesNeedRemove = 0      // 尚待去除的子数
     );
-
-    // 获取棋局状态和棋盘上下文
-    void getContext(struct Rule &rule, step_t &step,
-                    phase_t &phase, player_t &turn, action_t &action,
-                    int *&board,
-                    int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove);
 
     // 获取当前规则
     const struct Rule *getRule() const
@@ -167,12 +163,6 @@ public:
     enum phase_t getPhase() const
     {
         return context.phase;
-    }
-
-    // 获取轮流状态标识
-    enum player_t whosTurn() const
-    {
-        return context.turn;
     }
 
     // 获取动作状态标识
@@ -272,8 +262,11 @@ public:
     // 清除所有禁点
     void cleanForbiddenLocations();
 
+    // 设置轮流
+    void setTurn(player_t player);
+
     // 改变轮流
-    enum player_t changeTurn();
+    void changeTurn();
 
     // 设置提示
     void setTips();
@@ -358,11 +351,8 @@ private:
     // 当前游戏时间
     time_t currentTime {};
 
-    // 玩家1用时（秒）
-    time_t elapsedSeconds_1 {};
-
-    // 玩家2用时（秒）
-    time_t elapsedSeconds_2 {};
+    // 玩家用时（秒）
+    time_t elapsedSeconds[3];
 
     // 当前棋局的字符提示
     string tips;

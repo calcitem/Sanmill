@@ -22,6 +22,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <string>
+
 #include "config.h"
 #include "types.h"
 
@@ -31,7 +33,7 @@ public:
     explicit Player();
     virtual ~Player();
 
-    const player_t getPlayer() const
+    player_t getPlayer() const
     {
         return who;
     }
@@ -43,7 +45,36 @@ public:
 
     inline static int toId(player_t who)
     {
-        return int((int)who >> PLAYER_SHIFT);
+        return int(static_cast<int>(who) >> PLAYER_SHIFT);
+    }
+
+    inline static player_t idToPlayer(int id)
+    {
+        return player_t(id << PLAYER_SHIFT);
+    }
+
+    inline static char idToCh(int id)
+    {
+        return static_cast<char>('0' + id);
+    }
+
+    inline static std::string chToStr(char ch)
+    {
+        if (ch == '1') {
+            return "1";
+        } else {
+            return "2";
+        }
+    }
+
+    inline static player_t getOpponent(player_t player)
+    {
+        return player == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    }
+
+    inline static int getOpponentById(int id)
+    {
+        return id == 1 ? 2 : 1;
     }
 
 private:

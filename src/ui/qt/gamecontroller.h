@@ -140,11 +140,10 @@ public slots:
     // 设置黑白反转状态
     void setInvert(bool arg = true);
 
-    // 让电脑执先手
-    void setEngine1(bool arg = true);
-
-    // 让电脑执后手
-    void setEngine2(bool arg = true);
+    // id为1时让电脑执先手, id为2时让的电脑执后手
+    void setEngine(int id, bool arg = true);
+    void setEngine1(bool arg);
+    void setEngine2(bool arg);
 
     // 是否有落子动画
     void setAnimation(bool arg = true);
@@ -210,7 +209,7 @@ private:
     Position dummyPosition;
 
     // 2个AI的线程
-    AiThread ai1, ai2;
+    AiThread *ai[3];
 
     // 棋局的场景类
     GameScene &scene;
@@ -230,11 +229,8 @@ private:
     // 是否黑白反转
     bool isInverted;
 
-    // 是否电脑执先手
-    bool isAiPlayer_1;
-
-    // 是否电脑执后手
-    bool isAiPlayer_2;
+    // 电脑执先手时为 true
+    bool isAiPlayer[3];
 
     // 是否有落子动画
     bool hasAnimation;
@@ -266,11 +262,8 @@ private:
     // 规则限步数
     step_t stepsLimit;
 
-    // 玩家1剩余时间（秒）
-    time_t remainingTime1;
-
-    // 玩家2剩余时间（秒）
-    time_t remainingTime2;
+    // 玩家剩余时间（秒）
+    time_t remainingTime[3];
 
     // 用于主窗口状态栏显示的字符串
     QString message;

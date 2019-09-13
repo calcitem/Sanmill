@@ -22,6 +22,7 @@
 #include <random>
 
 #include "movegen.h"
+#include "player.h"
 #include "misc.h"
 
 void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
@@ -36,20 +37,14 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     switch (dummyPosition.getPhase()) {
     case PHASE_PLACING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
-            if (dummyPosition.whosTurn() == PLAYER_1)
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(2));
-            else
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(1));
+            newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(dummyPosition.context.opponentId));
         } else {
             newCapacity = static_cast<size_t>(dummyPosition.getPiecesInHandCount(1) + dummyPosition.getPiecesInHandCount(2));
         }
         break;
     case PHASE_MOVING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
-            if (dummyPosition.whosTurn() == PLAYER_1)
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(2));
-            else
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(1));
+            newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(dummyPosition.context.opponentId));
         } else {
             newCapacity = 6;
         }
@@ -70,7 +65,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     }
 
     // 对手
-    player_t opponent = Position::getOpponent(dummyPosition.context.turn);
+    player_t opponent = Player::getOpponent(dummyPosition.context.turn);
 
     // 列出所有合法的下一招
     switch (dummyPosition.context.action) {
@@ -110,10 +105,8 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                     continue;
                 }
 
-                if ((dummyPosition.context.turn == PLAYER_1 &&
-                    (dummyPosition.context.nPiecesOnBoard[1] > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces)) ||
-                     (dummyPosition.context.turn == PLAYER_2 &&
-                    (dummyPosition.context.nPiecesOnBoard[2] > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces))) {
+                if (dummyPosition.context.nPiecesOnBoard[dummyPosition.context.turnId] > dummyPosition.currentRule.nPiecesAtLeast ||
+                    !dummyPosition.currentRule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中

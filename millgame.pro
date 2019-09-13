@@ -27,6 +27,7 @@ SOURCES += \
     src/ai/tt.cpp \
     src/base/misc.cpp \
     src/game/board.cpp \
+    src/game/player.cpp \
     src/game/position.cpp \
     src/game/rule.cpp \
     src/main.cpp \
@@ -59,6 +60,7 @@ HEADERS  += \
     src/ai/search.h \
     src/ai/zobrist.h \
     src/game/board.h \
+    src/game/player.h \
     src/game/position.h \
     src/game/rule.h \
     src/game/types.h \

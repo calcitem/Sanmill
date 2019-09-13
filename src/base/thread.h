@@ -36,6 +36,7 @@ class AiThread : public QThread
     Q_OBJECT
 
 public:
+    explicit AiThread(QObject *parent = nullptr);
     explicit AiThread(int id, QObject *parent = nullptr);
     ~AiThread() override;
 
@@ -90,9 +91,11 @@ public slots:
     // 发射着法信号
     void emitCommand();
 
-private:
+public:
     // 玩家ID
     int id;
+
+private:
 
     // 发射的指令
     const char* strCommand {};

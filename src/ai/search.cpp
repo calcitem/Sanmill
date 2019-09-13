@@ -149,7 +149,6 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     newNode->nPiecesNeedRemove = INT_MAX;
     newNode->alpha = -VALUE_INFINITE;
     newNode->beta = VALUE_INFINITE;
-    newNode->result = 0;
     newNode->visited = false;
 
     int r, s;
@@ -233,11 +232,9 @@ void MillGameAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    if (dummyPosition.whosTurn() == PLAYER_1) {
-        std::stable_sort(node->children.begin(), node->children.end(), nodeGreater);
-    } else {
-        std::stable_sort(node->children.begin(), node->children.end(), nodeLess);
-    }
+    auto cmp = dummyPosition.context.turn == PLAYER_1 ? nodeGreater : nodeLess;
+
+    std::stable_sort(node->children.begin(), node->children.end(), cmp);
 }
 
 void MillGameAi_ab::deleteTree(Node *node)
@@ -490,11 +487,8 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        if (positionContext->turn == PLAYER_1) {
-            node->value += depth;
-        } else {
-            node->value -= depth;
-        }
+        value_t delta = value_t(positionContext->turn == PLAYER_1 ? depth : -depth);
+        node->value += delta;
 
 #ifdef DEBUG_AB_TREE
         if (requiredQuit) {
@@ -505,8 +499,8 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #ifdef BOOK_LEARNING
         // 检索开局库
         if (positionContext->phase == GAME_PLACING && findBookHash(hash, hashValue)) {
-            if (positionContext->turn == PLAYER_2) {
-                // 是否需对后手扣分 // TODO: 先后手都处理
+            if (positionContext->turn == ???) {
+                // TODO:
                 node->value += 1;
             }
         }
@@ -525,7 +519,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = dummyPosition.whosTurn() == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = dummyPosition.context.turn == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
@@ -556,7 +550,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         dummyPosition.context = contextStack.top();
         contextStack.pop();
 
-        if (dummyPosition.whosTurn() == PLAYER_1) {
+        if (dummyPosition.context.turn == PLAYER_1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -689,12 +683,11 @@ const char* MillGameAi_ab::bestMove()
     if (position_.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
-        player_t whosTurn = position_.whosTurn();
+        player_t whosTurn = position_.context.turn;
 
         for (auto child : rootNode->children) {
-            // TODO: 使用常量代替
-            if ((whosTurn == PLAYER_1 && child->value > -10000) ||
-                (whosTurn == PLAYER_2 && child->value < 10000)) {
+            if ((whosTurn == PLAYER_1 && child->value > -VALUE_WIN) ||
+                (whosTurn == PLAYER_2 && child->value < VALUE_WIN)) {
                 isMostLose = false;
                 break;
             }
@@ -702,12 +695,7 @@ const char* MillGameAi_ab::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            if (whosTurn == PLAYER_1) {
-                sprintf(cmdline, "Player1 give up!");
-            } else if (whosTurn == PLAYER_2) {
-                sprintf(cmdline, "Player2 give up!");
-            }
-
+            sprintf(cmdline, "Player%d give up!", position_.context.turnChar);
             return cmdline;
         }
     }
