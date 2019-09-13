@@ -89,7 +89,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                     ai_ab.addNode(node, VALUE_ZERO, (move_t)location, bestMove, dummyPosition.context.turn);
                 } else {
                     // 若为先手，则抢占星位
-                    if (Position::isStarPoint(location)) {
+                    if (Position::isStarLocation(location)) {
                         ai_ab.addNode(node, VALUE_INFINITE, (move_t)location, bestMove, dummyPosition.context.turn);
                     }
                 }

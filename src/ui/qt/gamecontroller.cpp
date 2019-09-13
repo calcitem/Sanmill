@@ -1061,7 +1061,7 @@ bool GameController::updateScence(Position &game)
     }
 
     // 添加摆棋阶段禁子点
-    if (game.getRule()->hasForbiddenPoint && game.getPhase() == PHASE_PLACING) {
+    if (game.getRule()->hasForbiddenLocations && game.getPhase() == PHASE_PLACING) {
         for (int j = Board::LOCATION_BEGIN; j < Board::LOCATION_END; j++) {
             if (board[j] == 0x0F) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
@@ -1080,7 +1080,7 @@ bool GameController::updateScence(Position &game)
     }
 
     // 走棋阶段清除禁子点
-    if (game.getRule()->hasForbiddenPoint && game.getPhase() != PHASE_PLACING) {
+    if (game.getRule()->hasForbiddenLocations && game.getPhase() != PHASE_PLACING) {
         while (nTotalPieces < pieceList.size()) {
             delete pieceList.at(nTotalPieces);
             pieceList.removeAt(nTotalPieces);

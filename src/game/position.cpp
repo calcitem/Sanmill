@@ -447,7 +447,7 @@ bool Position::place(int location, int time_p, int8_t rs)
                 context.action = ACTION_CHOOSE;
 
                 // 清除禁点
-                cleanForbiddenPoints();
+                cleanForbiddenLocations();
 
                 // 设置轮到谁走
                 if (currentRule.isDefenderMoveFirst) {
@@ -609,7 +609,7 @@ bool Position::capture(int location, int time_p, int8_t cp)
     }
 
     // 去子（设置禁点）
-    if (currentRule.hasForbiddenPoint && context.phase == PHASE_PLACING) {
+    if (currentRule.hasForbiddenLocations && context.phase == PHASE_PLACING) {
         revertHash(location);
         boardLocations[location] = '\x0f';
         updateHash(location);
@@ -664,7 +664,7 @@ bool Position::capture(int location, int time_p, int8_t cp)
             context.action = ACTION_CHOOSE;
 
             // 清除禁点
-            cleanForbiddenPoints();
+            cleanForbiddenLocations();
 
             // 设置轮到谁走
             if (currentRule.isDefenderMoveFirst) {
@@ -1066,7 +1066,7 @@ int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesO
     return diff;
 }
 
-void Position::cleanForbiddenPoints()
+void Position::cleanForbiddenLocations()
 {
     int location = 0;
 

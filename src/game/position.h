@@ -158,7 +158,7 @@ public:
     }
 
     // 判断位置点是否为星位 (星位是经常会先占的位置)
-    static bool isStarPoint(int location)
+    static bool isStarLocation(int location)
     {
         return (location == 17 || location == 19 || location == 21 || location == 23);
     }
@@ -306,7 +306,7 @@ public:
     bool win(bool forceDraw);
 
     // 清除所有禁点
-    void cleanForbiddenPoints();
+    void cleanForbiddenLocations();
 
     // 改变轮流
     enum player_t changeTurn();
