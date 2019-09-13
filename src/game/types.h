@@ -52,13 +52,13 @@ enum MoveDirection
 };
 
 // 棋盘点上棋子的类型
-enum PointType : uint16_t
+enum piece_t : uint16_t
 {
-    POINT_TYPE_EMPTY = 0,   // 没有棋子
-    POINT_TYPE_PLAYER1 = 1,    // 先手的子
-    POINT_TYPE_PLAYER2 = 2,     // 后手的子
-    POINT_TYPE_FORBIDDEN = 3,    // 禁点
-    POINT_TYPE_COUNT = 4
+    PIECE_EMPTY = 0,   // 没有棋子
+    PIECE_PLAYER_1 = 1,    // 先手的子
+    PIECE_PLAYER_2 = 2,     // 后手的子
+    PIECE_FORBIDDEN = 3,    // 禁点
+    PIECE_TYPE_COUNT = 4
 };
 
 // 玩家标识, 轮流状态, 胜负标识

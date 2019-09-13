@@ -45,7 +45,7 @@ public:
     hash_t hash{};
 
     // Zobrist 数组
-    hash_t zobrist[Board::N_LOCATIONS][POINT_TYPE_COUNT]{};
+    hash_t zobrist[Board::N_LOCATIONS][PIECE_TYPE_COUNT]{};
 
     // 局面阶段标识
     enum phase_t phase;

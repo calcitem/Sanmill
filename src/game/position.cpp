@@ -1179,7 +1179,7 @@ void Position::constructHash()
     context.hash = 0;
 
 #include "zobrist.h"
-    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * Board::N_LOCATIONS * POINT_TYPE_COUNT);
+    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * Board::N_LOCATIONS * PIECE_TYPE_COUNT);
 }
 
 hash_t Position::getHash()
