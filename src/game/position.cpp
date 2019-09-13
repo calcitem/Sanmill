@@ -116,7 +116,9 @@ bool Position::configure(bool giveUpIfMostLose, bool randomMove)
 
 // 设置棋局状态和棋盘数据，用于初始化
 bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
-                          step_t initialStep, int flags, const char *locations,
+                          step_t initialStep,
+                          phase_t phase, player_t turn, action_t action,
+                          const char *locations,
                           int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
     // 有效性判断
@@ -136,37 +138,13 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     this->moveStep = initialStep;
 
     // 局面阶段标识
-    if (flags & PHASE_NOTSTARTED) {
-        context.phase = PHASE_NOTSTARTED;
-    } else if (flags & PHASE_PLACING) {
-        context.phase = PHASE_PLACING;
-    } else if (flags & PHASE_MOVING) {
-        context.phase = PHASE_MOVING;
-    } else if (flags & PHASE_GAMEOVER) {
-        context.phase = PHASE_GAMEOVER;
-    } else {
-        return false;
-    }
+    context.phase = phase;
 
     // 轮流状态标识
-    if (flags & PLAYER_1) {
-        context.turn = PLAYER_1;
-    } else if (flags & PLAYER_2) {
-        context.turn = PLAYER_2;
-    } else {
-        return false;
-    }
+    context.turn = turn;
 
     // 动作状态标识
-    if (flags & ACTION_CHOOSE) {
-        context.action = ACTION_CHOOSE;
-    } else if (flags & ACTION_PLACE) {
-        context.action = ACTION_PLACE;
-    } else if (flags & ACTION_CAPTURE) {
-        context.action = ACTION_CAPTURE;
-    } else {
-        return false;
-    }
+    context.action = action;
 
     // 当前棋局（3×8）
     if (locations == nullptr) {
@@ -217,7 +195,7 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     context.nPiecesInHand_2 = std::min(nPiecesInHand_2, context.nPiecesInHand_2);
 
     // 设置去子状态时的剩余尚待去除子数
-    if (flags & ACTION_CAPTURE) {
+    if (action == ACTION_CAPTURE) {
         if (0 <= nPiecesNeedRemove && nPiecesNeedRemove < 3) {
             context.nPiecesNeedRemove = nPiecesNeedRemove;
         }
@@ -266,12 +244,15 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     return false;
 }
 
-void Position::getContext(struct Rule &rule, step_t &step, int &flags,
-                           int *&locations, int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove)
+void Position::getContext(struct Rule &rule, step_t &step,
+                          phase_t &phase, player_t &turn, action_t &action,
+                          int *&locations, int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove)
 {
     rule = this->currentRule;
     step = this->currentStep;
-    flags = context.phase | context.turn | context.action;
+    phase = context.phase;
+    turn = context.turn;
+    action = context.action;
     boardLocations = locations;
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;

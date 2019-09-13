@@ -114,7 +114,7 @@ public:
                  step_t maxStepsLedToDraw = 0,     // 限制步数
                  int maxTimeLedToLose = 0,      // 限制时间
                  step_t initialStep = 0,           // 默认起始步数为0
-                 int flags = PHASE_NOTSTARTED | PLAYER_1 | ACTION_PLACE, // 默认状态
+                 phase_t phase = PHASE_NOTSTARTED, player_t turn = PLAYER_1, action_t action = ACTION_PLACE,
                  const char *locations = nullptr,   // 默认空棋盘
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
@@ -122,7 +122,9 @@ public:
     );
 
     // 获取棋局状态和棋盘上下文
-    void getContext(struct Rule &rule, step_t &step, int &flags, int *&board,
+    void getContext(struct Rule &rule, step_t &step,
+                    phase_t &phase, player_t &turn, action_t &action,
+                    int *&board,
                     int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove);
 
     // 获取当前规则
