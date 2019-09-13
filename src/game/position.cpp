@@ -26,7 +26,7 @@
 
 Position::Position()
 {
-    // 单独提出 boardLocations 等数据，免得每次都写 context.board.locations;
+    // 单独提出 boardLocations 等数据，免得每次都写 boardLocations;
     boardLocations = context.board.locations;
 
     // 创建哈希数据
@@ -62,7 +62,7 @@ Position &Position::operator= (const Position &position)
     moveStep = position.moveStep;
     randomMove_ = position.randomMove_;
     giveUpIfMostLose_ = position.giveUpIfMostLose_;
-    boardLocations = context.board.locations;
+    boardLocations = boardLocations;
     currentLocation = position.currentLocation;
     winner = position.winner;
     startTime = position.startTime;
@@ -170,10 +170,10 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
 
     // 当前棋局（3×8）
     if (locations == nullptr) {
-        memset(context.board.locations, 0, sizeof(context.board.locations));
+        memset(boardLocations, 0, sizeof(boardLocations));
         context.hash = 0;
     } else {
-        memcpy(context.board.locations, locations, sizeof(context.board.locations));
+        memcpy(boardLocations, locations, sizeof(boardLocations));
     }
 
     // 计算盘面子数
@@ -191,11 +191,11 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
             int location = r * Board::N_SEATS + s;
-            if (context.board.locations[location] & 0x10) {
+            if (boardLocations[location] & 0x10) {
                 context.nPiecesOnBoard_1++;
-            } else if (context.board.locations[location] & 0x20) {
+            } else if (boardLocations[location] & 0x20) {
                 context.nPiecesOnBoard_2++;
-            } else if (context.board.locations[location] & 0x0F) {
+            } else if (boardLocations[location] & 0x0F) {
                 // 不计算盘面子数
             }
         }
@@ -1045,7 +1045,7 @@ bool Position::win(bool forceDraw)
 // 计算玩家1和玩家2的棋子活动能力之差
 int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
 {
-    int *locations = context.board.locations;
+    int *locations = boardLocations;
     int mobility1 = 0;
     int mobility2 = 0;
     int diff = 0;

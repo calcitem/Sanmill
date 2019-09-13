@@ -148,7 +148,7 @@ public:
     // 获取棋盘数据
     const int *getBoardLocations() const
     {
-        return context.board.locations;
+        return boardLocations;
     }
 
     // 获取当前棋子位置点
