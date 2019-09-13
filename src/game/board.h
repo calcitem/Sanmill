@@ -114,8 +114,8 @@ public:
         0x0F 代表禁点
         0x11~0x1C 代表先手第 1~12 子
         0x21~0x2C 代表后手第 1~12 子
-        判断棋子是先手的用 (board[i] & 0x10)
-        判断棋子是后手的用 (board[i] & 0x20)
+        判断棋子是先手的用 (location[i] & 0x10)
+        判断棋子是后手的用 (location[i] & 0x20)
      */
     int locations[N_LOCATIONS]{};
 

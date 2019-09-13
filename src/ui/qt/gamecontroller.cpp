@@ -977,7 +977,7 @@ bool GameController::updateScence()
 
 bool GameController::updateScence(Position &game)
 {
-    const int *board = game.getBoard();
+    const int *board = game.getBoardLocations();
     QPointF pos;
 
     // game类中的棋子代码

@@ -129,7 +129,7 @@ public:
                  int maxTimeLedToLose = 0,      // 限制时间
                  step_t initialStep = 0,           // 默认起始步数为0
                  int flags = PHASE_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
-                 const char *board = nullptr,   // 默认空棋盘
+                 const char *locations = nullptr,   // 默认空棋盘
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
                  int nPiecesNeedRemove = 0      // 尚待去除的子数
@@ -146,7 +146,7 @@ public:
     }
 
     // 获取棋盘数据
-    const int *getBoard() const
+    const int *getBoardLocations() const
     {
         return context.board.locations;
     }
@@ -336,7 +336,7 @@ public: /* TODO: move to private */
     };
 
     // 棋局上下文中的棋盘数据，单独提出来
-    int *board_;
+    int *boardLocations;
 
     // 棋谱
     list <string> cmdlist;

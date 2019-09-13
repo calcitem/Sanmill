@@ -81,7 +81,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             for (move_t i : movePriorityTable) {
                 location = i;
 
-                if (dummyPosition.board_[location]) {
+                if (dummyPosition.boardLocations[location]) {
                     continue;
                 }
 
@@ -117,7 +117,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newLocation = moveTable[oldLocation][direction];
-                        if (newLocation && !dummyPosition.board_[newLocation]) {
+                        if (newLocation && !dummyPosition.boardLocations[newLocation]) {
                             move_t move = move_t((oldLocation << 8) + newLocation);
                             ai_ab.addNode(node, VALUE_ZERO, move, bestMove, dummyPosition.context.turn); // (12%)
                         }
@@ -125,7 +125,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newLocation = Board::LOCATION_BEGIN; newLocation < Board::LOCATION_END; newLocation++) {
-                        if (!dummyPosition.board_[newLocation]) {
+                        if (!dummyPosition.boardLocations[newLocation]) {
                             move_t move = move_t((oldLocation << 8) + newLocation);
                             ai_ab.addNode(node, VALUE_ZERO, move, bestMove, dummyPosition.context.turn);
                         }
@@ -141,7 +141,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
             // 全成三的情况
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 location = movePriorityTable[i];
-                if (dummyPosition.board_[location] & opponent) {
+                if (dummyPosition.boardLocations[location] & opponent) {
                     ai_ab.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, dummyPosition.context.turn);
                 }
             }
@@ -151,7 +151,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
         // 不是全成三的情况
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             location = movePriorityTable[i];
-            if (dummyPosition.board_[location] & opponent) {
+            if (dummyPosition.boardLocations[location] & opponent) {
                 if (dummyPosition.getRule()->allowRemoveMill || !dummyPosition.context.board.inHowManyMills(location)) {
                     ai_ab.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, dummyPosition.context.turn);
                 }
@@ -166,6 +166,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
 
 void MoveList::createMoveTable(Position &position)
 {
+    // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
 #if 1
     const int moveTable_obliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
         /*  0 */ {0, 0, 0, 0},

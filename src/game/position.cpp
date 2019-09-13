@@ -26,8 +26,8 @@
 
 Position::Position()
 {
-    // 单独提出 board 等数据，免得每次都写 context.board;
-    board_ = context.board.locations;
+    // 单独提出 boardLocations 等数据，免得每次都写 context.board.locations;
+    boardLocations = context.board.locations;
 
     // 创建哈希数据
     constructHash();
@@ -62,7 +62,7 @@ Position &Position::operator= (const Position &position)
     moveStep = position.moveStep;
     randomMove_ = position.randomMove_;
     giveUpIfMostLose_ = position.giveUpIfMostLose_;
-    board_ = context.board.locations;
+    boardLocations = context.board.locations;
     currentLocation = position.currentLocation;
     winner = position.winner;
     startTime = position.startTime;
@@ -116,7 +116,7 @@ bool Position::configure(bool giveUpIfMostLose, bool randomMove)
 
 // 设置棋局状态和棋盘数据，用于初始化
 bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
-                          step_t initialStep, int flags, const char *board,
+                          step_t initialStep, int flags, const char *locations,
                           int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
     // 有效性判断
@@ -169,11 +169,11 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     }
 
     // 当前棋局（3×8）
-    if (board == nullptr) {
+    if (locations == nullptr) {
         memset(context.board.locations, 0, sizeof(context.board.locations));
         context.hash = 0;
     } else {
-        memcpy(context.board.locations, board, sizeof(context.board.locations));
+        memcpy(context.board.locations, locations, sizeof(context.board.locations));
     }
 
     // 计算盘面子数
@@ -183,8 +183,8 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
         0x0F 代表禁点
         0x11～0x1C 代表先手第 1～12 子
         0x21～0x2C 代表后手第 1～12 子
-        判断棋子是先手的用 (board[i] & 0x10)
-        判断棋子是后手的用 (board[i] & 0x20)
+        判断棋子是先手的用 (locations[i] & 0x10)
+        判断棋子是后手的用 (locations[i] & 0x20)
      */
     context.nPiecesOnBoard_1 = context.nPiecesOnBoard_2 = 0;
 
@@ -267,12 +267,12 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
 }
 
 void Position::getContext(struct Rule &rule, step_t &step, int &flags,
-                           int *&board, int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove)
+                           int *&locations, int &nPiecesInHand_1, int &nPiecesInHand_2, int &nPiecesNeedRemove)
 {
     rule = this->currentRule;
     step = this->currentStep;
     flags = context.phase | context.turn | context.action;
-    board_ = board;
+    boardLocations = locations;
     nPiecesInHand_1 = context.nPiecesInHand_1;
     nPiecesInHand_2 = context.nPiecesInHand_2;
     nPiecesNeedRemove = context.nPiecesNeedRemove;
@@ -302,7 +302,7 @@ bool Position::reset()
     winner = PLAYER_NOBODY;
 
     // 当前棋局（3×8）
-    memset(board_, 0, sizeof(context.board));
+    memset(boardLocations, 0, sizeof(context.board));
 
     // 盘面子数归零
     context.nPiecesOnBoard_1 = context.nPiecesOnBoard_2 = 0;
@@ -389,7 +389,7 @@ bool Position::place(int location, int time_p, int8_t rs)
         return false;
 
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
-    if (!context.board.onBoard[location] || board_[location])
+    if (!context.board.onBoard[location] || boardLocations[location])
         return false;
 
     // 格式转换
@@ -418,7 +418,7 @@ bool Position::place(int location, int time_p, int8_t rs)
             context.nPiecesOnBoard_2++;
         }
 
-        board_[location] = piece;
+        boardLocations[location] = piece;
 
         updateHash(location);
 
@@ -515,11 +515,11 @@ bool Position::place(int location, int time_p, int8_t rs)
         moveStep++;
     }
 
-    board_[location] = board_[currentLocation];
+    boardLocations[location] = boardLocations[currentLocation];
 
     updateHash(location);
 
-    board_[currentLocation] = '\x00';
+    boardLocations[currentLocation] = '\x00';
 
     revertHash(currentLocation);
 
@@ -598,7 +598,7 @@ bool Position::capture(int location, int time_p, int8_t cp)
     char opponent = context.turn == PLAYER1 ? 0x20 : 0x10;
 
     // 判断去子是不是对手棋
-    if (!(opponent & board_[location]))
+    if (!(opponent & boardLocations[location]))
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
@@ -611,11 +611,11 @@ bool Position::capture(int location, int time_p, int8_t cp)
     // 去子（设置禁点）
     if (currentRule.hasForbiddenPoint && context.phase == PHASE_PLACING) {
         revertHash(location);
-        board_[location] = '\x0f';
+        boardLocations[location] = '\x0f';
         updateHash(location);
     } else { // 去子
         revertHash(location);
-        board_[location] = '\x00';
+        boardLocations[location] = '\x00';
     }
 
     if (context.turn == PLAYER1)
@@ -727,7 +727,7 @@ bool Position::choose(int location)
     char t = context.turn == PLAYER1 ? 0x10 : 0x20;
 
     // 判断选子是否可选
-    if (board_[location] & t) {
+    if (boardLocations[location] & t) {
         // 判断location处的棋子是否被“闷”
         if (context.board.isSurrounded(context.turn, currentRule, context.nPiecesOnBoard_1, context.nPiecesOnBoard_2, location)) {
             return false;
@@ -1045,7 +1045,7 @@ bool Position::win(bool forceDraw)
 // 计算玩家1和玩家2的棋子活动能力之差
 int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
 {
-    int *board = context.board.locations;
+    int *locations = context.board.locations;
     int mobility1 = 0;
     int mobility2 = 0;
     int diff = 0;
@@ -1054,9 +1054,9 @@ int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesO
     for (int i = Board::LOCATION_BEGIN; i < Board::LOCATION_END; i++) {
         n = context.board.getSurroundedEmptyLocationCount(turn, rule, nPiecesOnBoard_1, nPiecesOnBoard_2, i, includeFobidden);
 
-        if (board[i] & 0x10) {
+        if (locations[i] & 0x10) {
             mobility1 += n;
-        } else if (board[i] & 0x20) {
+        } else if (locations[i] & 0x20) {
             mobility2 += n;
         }
     }
@@ -1074,9 +1074,9 @@ void Position::cleanForbiddenPoints()
         for (int s = 0; s < Board::N_SEATS; s++) {
             location = r * Board::N_SEATS + s;
 
-            if (board_[location] == '\x0f') {
+            if (boardLocations[location] == '\x0f') {
                 revertHash(location);
-                board_[location] = '\x00';
+                boardLocations[location] = '\x00';
             }
         }
     }
@@ -1192,13 +1192,13 @@ hash_t Position::getHash()
 
 hash_t Position::updateHash(int location)
 {
-    // PieceType is board_[location]
+    // PieceType is boardLocations[location] 
 
     // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
-    int pointType = (board_[location] & 0x30) >> 4;
+    int pieceType = (boardLocations[location] & 0x30) >> 4;
 
     // 清除或者放置棋子
-    context.hash ^= context.zobrist[location][pointType];
+    context.hash ^= context.zobrist[location][pieceType];
 
     return context.hash;
 }
