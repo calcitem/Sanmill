@@ -338,8 +338,8 @@ int Board::getSurroundedEmptyLocationCount(enum player_t turn, const Rule &curre
         (nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
          (turn == PLAYER2 &&
         (nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
-        int d, moveLocation;
-        for (d = 0; d < DIRECTIONS_COUNT; d++) {
+        int moveLocation;
+        for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
             moveLocation = MoveList::moveTable[location][d];
             if (moveLocation) {
                 if (locations[moveLocation] == 0x00 ||
@@ -396,7 +396,7 @@ bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPi
             continue;
         }
 
-        for (int d = 0; d < DIRECTIONS_COUNT; d++) {
+        for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
             moveLocation = MoveList::moveTable[i][d];
             if (moveLocation && !locations[moveLocation])
                 return false;

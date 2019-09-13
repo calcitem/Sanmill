@@ -358,7 +358,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
         TranspositionTable::clearTranspositionTable();   // 每次走子前清空哈希表
 #endif
 #endif
-        alphaBetaPruning(i, (value_t)-VALUE_INFINITE, VALUE_INFINITE, rootNode);
+        alphaBetaPruning(i, -VALUE_INFINITE, VALUE_INFINITE, rootNode);
     }
 
     timeEnd = chrono::steady_clock::now();
@@ -525,7 +525,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = dummyPosition.whosTurn() == PLAYER1 ? (value_t)-VALUE_INFINITE : VALUE_INFINITE;
+    minMax = dummyPosition.whosTurn() == PLAYER1 ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法

@@ -78,8 +78,8 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
     case PHASE_MOVING:
         // 按场上棋子计分
-        value = (value_t)(positionContext->nPiecesOnBoard_1 * VALUE_EACH_PIECE_ONBOARD -
-                          positionContext->nPiecesOnBoard_2 * VALUE_EACH_PIECE_ONBOARD);
+        value = positionContext->nPiecesOnBoard_1 * VALUE_EACH_PIECE_ONBOARD -
+                positionContext->nPiecesOnBoard_2 * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分

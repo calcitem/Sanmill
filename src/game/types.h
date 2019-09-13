@@ -54,6 +54,7 @@ enum square_t : int
 enum direction_t
 {
     DIRECTION_CLOCKWISE = 0,       // 顺时针
+    DIRECTION_BEGIN = DIRECTION_CLOCKWISE,
     DIRECTION_ANTICLOCKWISE = 1,   // 逆时针
     DIRECTION_INWARD = 2,          // 向内
     DIRECTION_OUTWARD = 3,         // 向外
@@ -113,6 +114,42 @@ enum value_t : int16_t
     VALUE_EACH_PIECE_NEEDREMOVE_2 = 128,
 };
 
+// 动作状态标识
+enum action_t : uint16_t
+{
+    ACTION_NONE = 0x0000,
+    ACTION_CHOOSE = 0x0100,    // 选子
+    ACTION_PLACE = 0x0200,     // 落子
+    ACTION_CAPTURE = 0x0400    // 提子
+};
+
+#define ENABLE_BASE_OPERATORS_ON(T)                                \
+constexpr T operator+(T d1, T d2) { return T(int(d1) + int(d2)); } \
+constexpr T operator-(T d1, T d2) { return T(int(d1) - int(d2)); } \
+constexpr T operator-(T d) { return T(-int(d)); }                  \
+inline T& operator+=(T& d1, T d2) { return d1 = d1 + d2; }         \
+inline T& operator-=(T& d1, T d2) { return d1 = d1 - d2; }
+
+#define ENABLE_INCR_OPERATORS_ON(T)                                \
+inline T& operator++(T& d) { return d = T(int(d) + 1); }           \
+inline T& operator--(T& d) { return d = T(int(d) - 1); }
+
+#define ENABLE_FULL_OPERATORS_ON(T)                                \
+ENABLE_BASE_OPERATORS_ON(T)                                        \
+constexpr T operator*(int i, T d) { return T(i * int(d)); }        \
+constexpr T operator*(T d, int i) { return T(int(d) * i); }        \
+constexpr T operator/(T d, int i) { return T(int(d) / i); }        \
+constexpr int operator/(T d1, T d2) { return int(d1) / int(d2); }  \
+inline T& operator*=(T& d, int i) { return d = T(int(d) * i); }    \
+inline T& operator/=(T& d, int i) { return d = T(int(d) / i); }
+
+ENABLE_FULL_OPERATORS_ON(value_t)
+ENABLE_FULL_OPERATORS_ON(direction_t)
+
+ENABLE_INCR_OPERATORS_ON(direction_t)
+ENABLE_INCR_OPERATORS_ON(piece_t)
+ENABLE_INCR_OPERATORS_ON(square_t)
+
 // Additional operators to add integers to a Value
 constexpr value_t operator+(value_t v, int i)
 {
@@ -133,14 +170,5 @@ inline value_t &operator-=(value_t &v, int i)
 {
     return v = v - i;
 }
-
-// 动作状态标识
-enum action_t : uint16_t
-{
-    ACTION_NONE = 0x0000,
-    ACTION_CHOOSE = 0x0100,    // 选子
-    ACTION_PLACE = 0x0200,     // 落子
-    ACTION_CAPTURE = 0x0400    // 提子
-};
 
 #endif /* TYPES_H */
