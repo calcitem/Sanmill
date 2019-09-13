@@ -41,14 +41,23 @@ enum move_t : int32_t
 };
 
 // 移动方向，包括顺时针、逆时针、向内、向外4个方向
-enum MoveDirection
+enum direction_t
 {
-    MOVE_DIRECTION_CLOCKWISE = 0,       // 顺时针
-    MOVE_DIRECTION_ANTICLOCKWISE = 1,   // 逆时针
-    MOVE_DIRECTION_INWARD = 2,          // 向内
-    MOVE_DIRECTION_OUTWARD = 3,         // 向外
-    MOVE_DIRECTION_FLY = 4,             // 飞子
-    N_MOVE_DIRECTIONS = 4               // 移动方向数
+    DIRECTION_CLOCKWISE = 0,       // 顺时针
+    DIRECTION_ANTICLOCKWISE = 1,   // 逆时针
+    DIRECTION_INWARD = 2,          // 向内
+    DIRECTION_OUTWARD = 3,         // 向外
+    DIRECTION_FLY = 4,             // 飞子
+    DIRECTIONS_COUNT = 4               // 移动方向数
+};
+
+// 横直斜3个方向，禁止修改!
+enum line_t
+{
+    LINE_HORIZONTAL = 0,        // 横线
+    LINE_VERTICAL = 1,          // 直线
+    LINE_SLASH = 2,  // 斜线
+    LINE_TYPES_COUNT = 3               // 移动方向数
 };
 
 // 棋盘点上棋子的类型

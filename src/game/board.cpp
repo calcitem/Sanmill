@@ -32,7 +32,7 @@ const int Board::onBoard[N_LOCATIONS] = {
 };
 
 // 成三表
-int Board::millTable[N_LOCATIONS][N_DIRECTIONS][N_RINGS - 1] = { {{0}} };
+int Board::millTable[N_LOCATIONS][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}} };
 
 Board::Board()
 {
@@ -67,7 +67,7 @@ Board &Board::operator= (const Board &other)
 
 void Board::createMillTable(const Rule &currentRule)
 {
-    const int millTable_noObliqueLine[Board::N_LOCATIONS][Board::N_DIRECTIONS][2] = {
+    const int millTable_noObliqueLine[Board::N_LOCATIONS][LINE_TYPES_COUNT][2] = {
         /* 0 */ {{0, 0}, {0, 0}, {0, 0}},
         /* 1 */ {{0, 0}, {0, 0}, {0, 0}},
         /* 2 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -114,7 +114,7 @@ void Board::createMillTable(const Rule &currentRule)
         /* 39 */ {{0, 0}, {0, 0}, {0, 0}}
     };
 
-    const int millTable_hasObliqueLines[Board::N_LOCATIONS][Board::N_DIRECTIONS][2] = {
+    const int millTable_hasObliqueLines[Board::N_LOCATIONS][LINE_TYPES_COUNT][2] = {
         /*  0 */ {{0, 0}, {0, 0}, {0, 0}},
         /*  1 */ {{0, 0}, {0, 0}, {0, 0}},
         /*  2 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -215,9 +215,9 @@ int Board::inHowManyMills(int location)
     int n = 0;
     int location1, location2;
 
-    for (int d = 0; d < N_DIRECTIONS; d++) {
-        location1 = millTable[location][d][0];
-        location2 = millTable[location][d][1];
+    for (int l = 0; l < LINE_TYPES_COUNT; l++) {
+        location1 = millTable[location][l][0];
+        location2 = millTable[location][l][1];
         if ((locations[location] & 0x30) & locations[location1] & locations[location2]) {
             n++;
         }
@@ -339,7 +339,7 @@ int Board::getSurroundedEmptyLocationCount(enum Player turn, const Rule &current
          (turn == PLAYER2 &&
         (nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
         int d, moveLocation;
-        for (d = 0; d < N_MOVE_DIRECTIONS; d++) {
+        for (d = 0; d < DIRECTIONS_COUNT; d++) {
             moveLocation = MoveList::moveTable[location][d];
             if (moveLocation) {
                 if (locations[moveLocation] == 0x00 ||
@@ -396,7 +396,7 @@ bool Board::isAllSurrounded(enum Player turn, const Rule &currentRule, int nPiec
             continue;
         }
 
-        for (int d = 0; d < N_MOVE_DIRECTIONS; d++) {
+        for (int d = 0; d < DIRECTIONS_COUNT; d++) {
             moveLocation = MoveList::moveTable[i][d];
             if (moveLocation && !locations[moveLocation])
                 return false;

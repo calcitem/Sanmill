@@ -45,7 +45,7 @@ public:
     static void shuffleMovePriorityTable(Position &position);
 
     // 着法表 // TODO: Move to private
-    inline static move_t moveTable[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = { {MOVE_NONE} };
+    inline static move_t moveTable[Board::N_LOCATIONS][DIRECTIONS_COUNT] = { {MOVE_NONE} };
 
 private:
     // 着法顺序表, 后续会被打乱

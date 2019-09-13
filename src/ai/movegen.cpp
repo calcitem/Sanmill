@@ -114,9 +114,9 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                      (dummyPosition.context.turn == PLAYER2 &&
                     (dummyPosition.context.nPiecesOnBoard_2 > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces))) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
-                    for (int moveDirection = MOVE_DIRECTION_CLOCKWISE; moveDirection <= MOVE_DIRECTION_OUTWARD; moveDirection++) {
+                    for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newLocation = moveTable[oldLocation][moveDirection];
+                        newLocation = moveTable[oldLocation][direction];
                         if (newLocation && !dummyPosition.board_[newLocation]) {
                             move_t move = move_t((oldLocation << 8) + newLocation);
                             ai_ab.addNode(node, VALUE_ZERO, move, bestMove, dummyPosition.context.turn); // (12%)
@@ -167,7 +167,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
 void MoveList::createMoveTable(Position &position)
 {
 #if 1
-    const int moveTable_obliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_obliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -214,7 +214,7 @@ void MoveList::createMoveTable(Position &position)
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable_noObliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_noObliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -261,7 +261,7 @@ void MoveList::createMoveTable(Position &position)
         /* 39 */ {0, 0, 0, 0},
     };
 #else
-    const int moveTable_obliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_obliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
@@ -308,7 +308,7 @@ void MoveList::createMoveTable(Position &position)
         {0, 0, 0, 0}
     };
 
-    const int moveTable_noObliqueLine[Board::N_LOCATIONS][N_MOVE_DIRECTIONS] = {
+    const int moveTable_noObliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -366,8 +366,8 @@ void MoveList::createMoveTable(Position &position)
     int sum = 0;
     for (int i = 0; i < Board::N_LOCATIONS; i++) {
         loggerDebug("/* %d */ {", i);
-        for (int j = 0; j < N_MOVE_DIRECTIONS; j++) {
-            if (j == N_MOVE_DIRECTIONS - 1)
+        for (int j = 0; j < DIRECTIONS_COUNT; j++) {
+            if (j == DIRECTIONS_COUNT - 1)
                 loggerDebug("%d", moveTable[i][j]);
             else
                 loggerDebug("%d, ", moveTable[i][j]);

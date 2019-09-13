@@ -45,9 +45,6 @@ public:
     // 8位，禁止修改!
     static const int N_SEATS = 8;
 
-    // 横直斜3个方向，禁止修改!
-    static const int N_DIRECTIONS = 3;
-
     // 棋盘点的个数：40
     static const int N_LOCATIONS = (Board::N_RINGS + 2) * Board::N_SEATS;
 
@@ -60,7 +57,7 @@ public:
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int millTable[N_LOCATIONS][N_DIRECTIONS][N_RINGS - 1];
+    static int millTable[N_LOCATIONS][LINE_TYPES_COUNT][N_RINGS - 1];
 
     // 生成成三表
     void createMillTable(const Rule &currentRule);
