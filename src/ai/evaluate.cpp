@@ -63,7 +63,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
             // 如果形成去子状态，每有一个可去的子，算100分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (positionContext->turn == PLAYER1) ?
+            nPiecesNeedRemove = (positionContext->turn == PLAYER_1) ?
                 positionContext->nPiecesNeedRemove : -(positionContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
@@ -94,7 +94,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
             // 如果形成去子状态，每有一个可去的子，算128分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (positionContext->turn == PLAYER1) ?
+            nPiecesNeedRemove = (positionContext->turn == PLAYER_1) ?
                 positionContext->nPiecesNeedRemove : -(positionContext->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE_2;
 #ifdef DEBUG_AB_TREE
@@ -113,7 +113,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
         if (positionContext->nPiecesOnBoard_1 + positionContext->nPiecesOnBoard_2 >=
             Board::N_SEATS * Board::N_RINGS) {
             if (dummyPosition.getRule()->isStartingPlayerLoseWhenBoardFull) {
-                // winner = PLAYER2;
+                // winner = PLAYER_2;
                 value -= VALUE_WIN;
 #ifdef DEBUG_AB_TREE
                 node->result = -3;
@@ -128,7 +128,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
             dummyPosition.context.board.isAllSurrounded(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesOnBoard_1, positionContext->nPiecesOnBoard_2, positionContext->turn) &&
             dummyPosition.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-            if (positionContext->turn == PLAYER1) {
+            if (positionContext->turn == PLAYER_1) {
                 value -= VALUE_WIN;
 #ifdef DEBUG_AB_TREE
                 node->result = -2;

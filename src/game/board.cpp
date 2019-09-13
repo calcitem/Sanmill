@@ -319,9 +319,9 @@ bool Board::isAllInMills(enum player_t player)
 {
     char ch = 0x00;
 
-    if (player == PLAYER1)
+    if (player == PLAYER_1)
         ch = 0x10;
-    else if (player == PLAYER2)
+    else if (player == PLAYER_2)
         ch = 0x20;
     else
         return true;
@@ -334,9 +334,9 @@ int Board::getSurroundedEmptyLocationCount(enum player_t turn, const Rule &curre
 {
     int count = 0;
 
-    if ((turn == PLAYER1 &&
+    if ((turn == PLAYER_1 &&
         (nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
-         (turn == PLAYER2 &&
+         (turn == PLAYER_2 &&
         (nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
         int moveLocation;
         for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
@@ -357,9 +357,9 @@ int Board::getSurroundedEmptyLocationCount(enum player_t turn, const Rule &curre
 bool Board::isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location)
 {
     // 判断location处的棋子是否被“闷”
-    if ((turn == PLAYER1 &&
+    if ((turn == PLAYER_1 &&
         (nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
-         (turn == PLAYER2 &&
+         (turn == PLAYER_2 &&
         (nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
         int i, moveLocation;
         for (i = 0; i < 4; i++) {
@@ -382,9 +382,9 @@ bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPi
         return true;
 
     // 判断是否可以飞子
-    if ((turn == PLAYER1 &&
+    if ((turn == PLAYER_1 &&
         (nPiecesOnBoard_1 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces)) ||
-         (turn == PLAYER2 &&
+         (turn == PLAYER_2 &&
         (nPiecesOnBoard_2 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces))) {
         return false;
     }
@@ -411,9 +411,9 @@ bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPi
 {
     char t = '\x30';
 
-    if (ply == PLAYER1)
+    if (ply == PLAYER_1)
         t &= '\x10';
-    else if (ply == PLAYER2)
+    else if (ply == PLAYER_2)
         t &= '\x20';
 
     return isAllSurrounded(turn, currentRule, nPiecesOnBoard_1, nPiecesOnBoard_2, t);
@@ -424,10 +424,10 @@ enum player_t Board::getWhosPiece(int r, int s)
     int location = polarToLocation(r, s);
 
     if (locations[location] & '\x10')
-        return PLAYER1;
+        return PLAYER_1;
 
     if (locations[location] & '\x20')
-        return PLAYER2;
+        return PLAYER_2;
 
     return PLAYER_NOBODY;
 }
@@ -437,9 +437,9 @@ bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s
 {
     int piece;
 
-    if (player == PLAYER1) {
+    if (player == PLAYER_1) {
         piece = 0x10;
-    } else if (player == PLAYER2) {
+    } else if (player == PLAYER_2) {
         piece = 0x20;
     } else {
         return false;
@@ -469,10 +469,10 @@ bool Board::getCurrentPiece(player_t &player, int &number, int location)
     int p = locations[location];
 
     if (p & 0x10) {
-        player = PLAYER1;
+        player = PLAYER_1;
         number = p - 0x10;
     } else if (p & 0x20) {
-        player = PLAYER2;
+        player = PLAYER_2;
         number = p - 0x20;
     } else {
         return false;

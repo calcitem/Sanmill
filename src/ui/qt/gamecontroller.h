@@ -224,9 +224,6 @@ private:
     // 当前浏览的棋谱行
     int currentRow;
 
-    // 玩家1手棋数、玩家2手棋数、待去棋数，没有用到，注释掉
-    //int player1_InHand, player2_InHand, num_NeedRemove;
-
     // 是否处于“编辑棋局”状态
     bool isEditing;
 
@@ -234,10 +231,10 @@ private:
     bool isInverted;
 
     // 是否电脑执先手
-    bool isAiPlayer1;
+    bool isAiPlayer_1;
 
     // 是否电脑执后手
-    bool isAiPlayer2;
+    bool isAiPlayer_2;
 
     // 是否有落子动画
     bool hasAnimation;

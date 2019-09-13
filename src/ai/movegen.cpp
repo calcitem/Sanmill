@@ -36,7 +36,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     switch (dummyPosition.getPhase()) {
     case PHASE_PLACING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
-            if (dummyPosition.whosTurn() == PLAYER1)
+            if (dummyPosition.whosTurn() == PLAYER_1)
                 newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
             else
                 newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_1());
@@ -46,7 +46,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
         break;
     case PHASE_MOVING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
-            if (dummyPosition.whosTurn() == PLAYER1)
+            if (dummyPosition.whosTurn() == PLAYER_1)
                 newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
             else
                 newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_1());
@@ -110,9 +110,9 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                     continue;
                 }
 
-                if ((dummyPosition.context.turn == PLAYER1 &&
+                if ((dummyPosition.context.turn == PLAYER_1 &&
                     (dummyPosition.context.nPiecesOnBoard_1 > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces)) ||
-                     (dummyPosition.context.turn == PLAYER2 &&
+                     (dummyPosition.context.turn == PLAYER_2 &&
                     (dummyPosition.context.nPiecesOnBoard_2 > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces))) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {

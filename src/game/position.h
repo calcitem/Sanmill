@@ -115,7 +115,7 @@ public:
                  step_t maxStepsLedToDraw = 0,     // 限制步数
                  int maxTimeLedToLose = 0,      // 限制时间
                  step_t initialStep = 0,           // 默认起始步数为0
-                 int flags = PHASE_NOTSTARTED | PLAYER1 | ACTION_PLACE, // 默认状态
+                 int flags = PHASE_NOTSTARTED | PLAYER_1 | ACTION_PLACE, // 默认状态
                  const char *locations = nullptr,   // 默认空棋盘
                  int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
                  int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数

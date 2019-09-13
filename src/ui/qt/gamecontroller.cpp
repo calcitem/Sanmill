@@ -44,8 +44,8 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     currentRow(-1),
     isEditing(false),
     isInverted(false),
-    isAiPlayer1(false),
-    isAiPlayer2(false),
+    isAiPlayer_1(false),
+    isAiPlayer_2(false),
     hasAnimation(true),
     durationTime(500),
     hasSound(true),
@@ -151,8 +151,8 @@ void GameController::gameReset()
     if (!isAutoRestart) {
         ai1.stop();
         ai2.stop();
-        isAiPlayer1 = false;
-        isAiPlayer2 = false;
+        isAiPlayer_1 = false;
+        isAiPlayer_2 = false;
     }
 
     // 清除棋子
@@ -286,7 +286,7 @@ void GameController::setEngine1(bool arg)
 {
     position_.configure(giveUpIfMostLose_, randomMove_);
 
-    isAiPlayer1 = arg;
+    isAiPlayer_1 = arg;
     if (arg) {
         ai1.setAi(position_);
         if (ai1.isRunning())
@@ -302,7 +302,7 @@ void GameController::setEngine2(bool arg)
 {
     position_.configure(giveUpIfMostLose_, randomMove_);
 
-    isAiPlayer2 = arg;
+    isAiPlayer_2 = arg;
     if (arg) {
         ai2.setAi(position_);
         if (ai2.isRunning())
@@ -316,11 +316,11 @@ void GameController::setEngine2(bool arg)
 
 void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2)
 {
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.stop();
         ai2.wait();
     }
@@ -328,10 +328,10 @@ void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, i
     ai1.setAi(position_, depth1, time1);
     ai2.setAi(position_, depth2, time2);
 
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.start();
     }
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.start();
     }
 }
@@ -389,11 +389,11 @@ void GameController::setRandomMove(bool arg)
 // 上下翻转
 void GameController::flip()
 {
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.stop();
         ai2.wait();
     }
@@ -417,11 +417,11 @@ void GameController::flip()
     ai1.setAi(position_);
     ai2.setAi(position_);
 
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.start();
     }
 
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.start();
     }
 }
@@ -429,11 +429,11 @@ void GameController::flip()
 // 左右镜像
 void GameController::mirror()
 {
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.stop();
         ai2.wait();
     }
@@ -459,11 +459,11 @@ void GameController::mirror()
     ai1.setAi(position_);
     ai2.setAi(position_);
 
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.start();
     }
 
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.start();
     }
 }
@@ -471,11 +471,11 @@ void GameController::mirror()
 // 视图须时针旋转90°
 void GameController::turnRight()
 {
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.stop();
         ai2.wait();
     }
@@ -499,11 +499,11 @@ void GameController::turnRight()
     ai1.setAi(position_);
     ai2.setAi(position_);
 
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.start();
     }
 
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.start();
     }
 }
@@ -511,11 +511,11 @@ void GameController::turnRight()
 // 视图逆时针旋转90°
 void GameController::turnLeft()
 {
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.stop();
         ai1.wait();
     }
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.stop();
         ai2.wait();
     }
@@ -534,10 +534,10 @@ void GameController::turnLeft()
 
     ai1.setAi(position_);
     ai2.setAi(position_);
-    if (isAiPlayer1) {
+    if (isAiPlayer_1) {
         ai1.start();
     }
-    if (isAiPlayer2) {
+    if (isAiPlayer_2) {
         ai2.start();
     }
 }
@@ -609,8 +609,8 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::isAIsTurn()
 {
-    return ((position_.whosTurn() == PLAYER1 && isAiPlayer1) ||
-            (position_.whosTurn() == PLAYER2 && isAiPlayer2));
+    return ((position_.whosTurn() == PLAYER_1 && isAiPlayer_1) ||
+            (position_.whosTurn() == PLAYER_2 && isAiPlayer_2));
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -748,16 +748,16 @@ bool GameController::actionPiece(QPointF pos)
         if (&position_ == &(this->position_)) {
             // 如果还未决出胜负
             if (position_.whoWin() == PLAYER_NOBODY) {
-                if (position_.whosTurn() == PLAYER1) {
-                    if (isAiPlayer1) {
+                if (position_.whosTurn() == PLAYER_1) {
+                    if (isAiPlayer_1) {
                         ai1.resume();
                     }
-                    if (isAiPlayer2)
+                    if (isAiPlayer_2)
                         ai2.pause();
                 } else {
-                    if (isAiPlayer1)
+                    if (isAiPlayer_1)
                         ai1.pause();
-                    if (isAiPlayer2) {
+                    if (isAiPlayer_2) {
                         ai2.resume();
                     }
                 }
@@ -782,11 +782,11 @@ bool GameController::giveUp()
 {
     bool result = false;
 
-    if (position_.whosTurn() == PLAYER1) {
-        result = position_.giveup(PLAYER1);
+    if (position_.whosTurn() == PLAYER_1) {
+        result = position_.giveup(PLAYER_1);
     }
-    else if (position_.whosTurn() == PLAYER2) {
-        result = position_.giveup(PLAYER2);
+    else if (position_.whosTurn() == PLAYER_2) {
+        result = position_.giveup(PLAYER_2);
     }
         
     if (result) {
@@ -815,10 +815,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     Q_UNUSED(hasSound)
 
     // 防止接收滞后结束的线程发送的指令
-    if (sender() == &ai1 && !isAiPlayer1)
+    if (sender() == &ai1 && !isAiPlayer_1)
         return false;
 
-    if (sender() == &ai2 && !isAiPlayer2)
+    if (sender() == &ai2 && !isAiPlayer_2)
         return false;
 
     // 声音
@@ -892,16 +892,16 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     if (&position_ == &(this->position_)) {
         // 如果还未决出胜负
         if (position_.whoWin() == PLAYER_NOBODY) {
-            if (position_.whosTurn() == PLAYER1) {
-                if (isAiPlayer1) {
+            if (position_.whosTurn() == PLAYER_1) {
+                if (isAiPlayer_1) {
                     ai1.resume();
                 }
-                if (isAiPlayer2)
+                if (isAiPlayer_2)
                     ai2.pause();
             } else {
-                if (isAiPlayer1)
+                if (isAiPlayer_1)
                     ai1.pause();
-                if (isAiPlayer2) {
+                if (isAiPlayer_2) {
                     ai2.resume();
                 }
             }
@@ -915,10 +915,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
                     gameReset();
                     gameStart();
 
-                    if (isAiPlayer1) {
+                    if (isAiPlayer_1) {
                         setEngine1(true);
                     }
-                    if (isAiPlayer2) {
+                    if (isAiPlayer_2) {
                         setEngine2(true);
                     }
                 }
@@ -932,10 +932,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 网络: 将着法放到服务器的发送列表中
-    if (isAiPlayer1)
+    if (isAiPlayer_1)
     {
         ai1.getServer()->setAction(cmd);
-    } else if (isAiPlayer2) {
+    } else if (isAiPlayer_2) {
         ai1.getServer()->setAction(cmd);    // 注意: 同样是AI1
     }
 

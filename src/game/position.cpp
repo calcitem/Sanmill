@@ -79,9 +79,9 @@ Position &Position::operator= (const Position &position)
 
 int Position::playerToId(enum player_t player)
 {
-    if (player == PLAYER1)
+    if (player == PLAYER_1)
         return 1;
-    else if (player == PLAYER2)
+    else if (player == PLAYER_2)
         return 2;
 
     return 0;
@@ -91,10 +91,10 @@ player_t Position::getOpponent(player_t player)
 {
     switch (player)
     {
-    case PLAYER1:
-        return PLAYER2;
-    case PLAYER2:
-        return PLAYER1;
+    case PLAYER_1:
+        return PLAYER_2;
+    case PLAYER_2:
+        return PLAYER_1;
     default:
         break;
     }
@@ -149,10 +149,10 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     }
 
     // 轮流状态标识
-    if (flags & PLAYER1) {
-        context.turn = PLAYER1;
-    } else if (flags & PLAYER2) {
-        context.turn = PLAYER2;
+    if (flags & PLAYER_1) {
+        context.turn = PLAYER_1;
+    } else if (flags & PLAYER_2) {
+        context.turn = PLAYER_2;
     } else {
         return false;
     }
@@ -293,7 +293,7 @@ bool Position::reset()
     context.phase = PHASE_NOTSTARTED;
 
     // 轮流状态标识
-    context.turn = PLAYER1;
+    context.turn = PLAYER_1;
 
     // 动作状态标识
     context.action = ACTION_PLACE;
@@ -406,7 +406,7 @@ bool Position::place(int location, int time_p, int8_t rs)
 
     if (context.phase == PHASE_PLACING) {
         // 先手下
-        if (context.turn == PLAYER1) {
+        if (context.turn == PLAYER_1) {
             piece = '\x11' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand_1;
             context.nPiecesInHand_1--;
             context.nPiecesOnBoard_1++;
@@ -451,9 +451,9 @@ bool Position::place(int location, int time_p, int8_t rs)
 
                 // 设置轮到谁走
                 if (currentRule.isDefenderMoveFirst) {
-                    context.turn = PLAYER2;
+                    context.turn = PLAYER_2;
                 } else {
-                    context.turn = PLAYER1;
+                    context.turn = PLAYER_1;
                 }
 
                 // 再决胜负
@@ -487,9 +487,9 @@ bool Position::place(int location, int time_p, int8_t rs)
     // 对于中局落子 (ontext.phase == GAME_MOVING)
 
     // 如果落子不合法
-    if ((context.turn == PLAYER1 &&
+    if ((context.turn == PLAYER_1 &&
          (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
-        (context.turn == PLAYER2 &&
+        (context.turn == PLAYER_2 &&
          (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
 
         int i;
@@ -595,7 +595,7 @@ bool Position::capture(int location, int time_p, int8_t cp)
     int player_ms = -1;
 
     // 对手
-    char opponent = context.turn == PLAYER1 ? 0x20 : 0x10;
+    char opponent = context.turn == PLAYER_1 ? 0x20 : 0x10;
 
     // 判断去子是不是对手棋
     if (!(opponent & boardLocations[location]))
@@ -618,9 +618,9 @@ bool Position::capture(int location, int time_p, int8_t cp)
         boardLocations[location] = '\x00';
     }
 
-    if (context.turn == PLAYER1)
+    if (context.turn == PLAYER_1)
         context.nPiecesOnBoard_2--;
-    else if (context.turn == PLAYER2)
+    else if (context.turn == PLAYER_2)
         context.nPiecesOnBoard_1--;
 
     move_ = -location;
@@ -668,9 +668,9 @@ bool Position::capture(int location, int time_p, int8_t cp)
 
             // 设置轮到谁走
             if (currentRule.isDefenderMoveFirst) {
-                context.turn = PLAYER2;
+                context.turn = PLAYER_2;
             } else {
-                context.turn = PLAYER1;
+                context.turn = PLAYER_1;
             }
 
             // 再决胜负
@@ -724,7 +724,7 @@ bool Position::choose(int location)
     if (context.action != ACTION_CHOOSE && context.action != ACTION_PLACE)
         return false;
 
-    char t = context.turn == PLAYER1 ? 0x10 : 0x20;
+    char t = context.turn == PLAYER_1 ? 0x10 : 0x20;
 
     // 判断选子是否可选
     if (boardLocations[location] & t) {
@@ -760,13 +760,13 @@ bool Position::giveup(player_t loser)
 
     context.phase = PHASE_GAMEOVER;
 
-    if (loser == PLAYER1) {
-        winner = PLAYER2;
+    if (loser == PLAYER_1) {
+        winner = PLAYER_2;
         tips = "玩家1投子认负。";
         sprintf(cmdline, "Player1 give up!");
         score_2++;
-    } else if (loser == PLAYER2) { 
-        winner = PLAYER1;
+    } else if (loser == PLAYER_2) { 
+        winner = PLAYER_1;
         tips = "玩家2投子认负。";
         sprintf(cmdline, "Player2 give up!");
         score_1++;
@@ -837,10 +837,10 @@ bool Position::command(const char *cmd)
 
     if (args == 1) {
         if (t == 1) {
-            return giveup(PLAYER1);
+            return giveup(PLAYER_1);
         }
         if (t == 2) {
-            return giveup(PLAYER2);
+            return giveup(PLAYER_2);
         }
     }
 
@@ -883,8 +883,8 @@ bool Position::command(int move)
 inline int Position::update(int time_p /*= -1*/)
 {
     int ret = -1;
-    time_t *player_ms = (context.turn == PLAYER1 ? &elapsedSeconds_1 : &elapsedSeconds_2);
-    time_t playerNext_ms = (context.turn == PLAYER1 ? elapsedSeconds_2 : elapsedSeconds_1);
+    time_t *player_ms = (context.turn == PLAYER_1 ? &elapsedSeconds_1 : &elapsedSeconds_2);
+    time_t playerNext_ms = (context.turn == PLAYER_1 ? elapsedSeconds_2 : elapsedSeconds_1);
 
     // 根据局面调整计时器
 
@@ -935,14 +935,14 @@ bool Position::win(bool forceDraw)
         // 如果玩家1超时
         if (elapsedSeconds_1 > currentRule.maxTimeLedToLose * 60) {
             elapsedSeconds_1 = currentRule.maxTimeLedToLose * 60;
-            winner = PLAYER2;
+            winner = PLAYER_2;
             tips = "玩家1超时判负。";
             sprintf(cmdline, "Time over. Player2 win!");
         }
         // 如果玩家2超时
         else if (elapsedSeconds_2 > currentRule.maxTimeLedToLose * 60) {
             elapsedSeconds_2 = currentRule.maxTimeLedToLose * 60;
-            winner = PLAYER1;
+            winner = PLAYER_1;
             tips = "玩家2超时判负。";
             sprintf(cmdline, "Time over. Player1 win!");
         }
@@ -963,7 +963,7 @@ bool Position::win(bool forceDraw)
 
     // 如果玩家1子数小于赛点，则玩家2获胜
     if (context.nPiecesOnBoard_1 + context.nPiecesInHand_1 < currentRule.nPiecesAtLeast) {
-        winner = PLAYER2;
+        winner = PLAYER_2;
         context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player2 win!");
         cmdlist.emplace_back(string(cmdline));
@@ -972,7 +972,7 @@ bool Position::win(bool forceDraw)
 
     // 如果玩家2子数小于赛点，则玩家1获胜
     if (context.nPiecesOnBoard_2 + context.nPiecesInHand_2 < currentRule.nPiecesAtLeast) {
-        winner = PLAYER1;
+        winner = PLAYER_1;
         context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player1 win!");
         cmdlist.emplace_back(string(cmdline));
@@ -987,7 +987,7 @@ bool Position::win(bool forceDraw)
         context.phase = PHASE_GAMEOVER;
 
         if (currentRule.isStartingPlayerLoseWhenBoardFull) {
-            winner = PLAYER2;
+            winner = PLAYER_2;
             sprintf(cmdline, "Player2 win!");
         } else {
             winner = PLAYER_DRAW;  
@@ -1004,14 +1004,14 @@ bool Position::win(bool forceDraw)
         context.phase = PHASE_GAMEOVER;
 
         if (currentRule.isLoseWhenNoWay) {
-            if (context.turn == PLAYER1) {
+            if (context.turn == PLAYER_1) {
                 tips = "玩家1无子可走被闷。";
-                winner = PLAYER2;
+                winner = PLAYER_2;
                 sprintf(cmdline, "Player1 no way to go. Player2 win!");
                 cmdlist.emplace_back(string(cmdline));
             } else {
                 tips = "玩家2无子可走被闷。";
-                winner = PLAYER1;
+                winner = PLAYER_1;
                 sprintf(cmdline, "Player2 no way to go. Player1 win!");
                 cmdlist.emplace_back(string(cmdline));
 #ifdef BOOK_LEARNING
@@ -1085,7 +1085,7 @@ void Position::cleanForbiddenLocations()
 enum player_t Position::changeTurn()
 {
     // 设置轮到谁走
-    context.turn = (context.turn == PLAYER1) ? PLAYER2 : PLAYER1;
+    context.turn = (context.turn == PLAYER_1) ? PLAYER_2 : PLAYER_1;
 
     return context.turn;
 }
@@ -1100,15 +1100,15 @@ void Position::setTips()
 
     case PHASE_PLACING:
         if (context.action == ACTION_PLACE) {
-            if (context.turn == PLAYER1) {
+            if (context.turn == PLAYER_1) {
                 tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
-            } else if (context.turn == PLAYER2) {
+            } else if (context.turn == PLAYER_2) {
                 tips = "轮到玩家2落子，剩余" + std::to_string(context.nPiecesInHand_2) + "子";
             }
         } else if (context.action == ACTION_CAPTURE) {
-            if (context.turn == PLAYER1) {
+            if (context.turn == PLAYER_1) {
                 tips = "成三！轮到玩家1去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
-            } else if (context.turn == PLAYER2) {
+            } else if (context.turn == PLAYER_2) {
                 tips = "成三！轮到玩家2去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
             }
         }
@@ -1116,15 +1116,15 @@ void Position::setTips()
 
     case PHASE_MOVING:
         if (context.action == ACTION_PLACE || context.action == ACTION_CHOOSE) {
-            if (context.turn == PLAYER1) {
+            if (context.turn == PLAYER_1) {
                 tips = "轮到玩家1选子移动";
-            } else if (context.turn == PLAYER2) {
+            } else if (context.turn == PLAYER_2) {
                 tips = "轮到玩家2选子移动";
             }
         } else if (context.action == ACTION_CAPTURE) {
-            if (context.turn == PLAYER1) {
+            if (context.turn == PLAYER_1) {
                 tips = "成三！轮到玩家1去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
-            } else if (context.turn == PLAYER2) {
+            } else if (context.turn == PLAYER_2) {
                 tips = "成三！轮到玩家2去子，需去" + std::to_string(context.nPiecesNeedRemove) + "子";
             }
         }
@@ -1135,13 +1135,13 @@ void Position::setTips()
             score_draw++;
             tips = "双方平局！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);            
         }            
-        else if (winner == PLAYER1) {
+        else if (winner == PLAYER_1) {
             score_1++;
             if (tips.find("无子可走") != string::npos)
                 tips += "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
             else
                 tips = "玩家1获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
-        } else if (winner == PLAYER2) {
+        } else if (winner == PLAYER_2) {
             score_2++;
             if (tips.find("无子可走") != string::npos)
                 tips += "玩家2获胜！比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
@@ -1215,7 +1215,7 @@ hash_t Position::updateHashMisc()
 
     // 置位
 
-    if (context.turn == PLAYER2) {
+    if (context.turn == PLAYER_2) {
         context.hash |= 1U;
     }
 

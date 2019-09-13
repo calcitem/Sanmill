@@ -233,7 +233,7 @@ void MillGameAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    if (dummyPosition.whosTurn() == PLAYER1) {
+    if (dummyPosition.whosTurn() == PLAYER_1) {
         std::stable_sort(node->children.begin(), node->children.end(), nodeGreater);
     } else {
         std::stable_sort(node->children.begin(), node->children.end(), nodeLess);
@@ -432,7 +432,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #if 0
         // TODO: 有必要针对深度微调 value?
-        if (positionContext->turn == PLAYER1)
+        if (positionContext->turn == PLAYER_1)
             node->value += hashValue.depth - depth;
         else
             node->value -= hashValue.depth - depth;
@@ -490,7 +490,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        if (positionContext->turn == PLAYER1) {
+        if (positionContext->turn == PLAYER_1) {
             node->value += depth;
         } else {
             node->value -= depth;
@@ -505,7 +505,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #ifdef BOOK_LEARNING
         // 检索开局库
         if (positionContext->phase == GAME_PLACING && findBookHash(hash, hashValue)) {
-            if (positionContext->turn == PLAYER2) {
+            if (positionContext->turn == PLAYER_2) {
                 // 是否需对后手扣分 // TODO: 先后手都处理
                 node->value += 1;
             }
@@ -525,7 +525,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = dummyPosition.whosTurn() == PLAYER1 ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = dummyPosition.whosTurn() == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
@@ -556,7 +556,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         dummyPosition.context = contextStack.top();
         contextStack.pop();
 
-        if (dummyPosition.whosTurn() == PLAYER1) {
+        if (dummyPosition.whosTurn() == PLAYER_1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -693,8 +693,8 @@ const char* MillGameAi_ab::bestMove()
 
         for (auto child : rootNode->children) {
             // TODO: 使用常量代替
-            if ((whosTurn == PLAYER1 && child->value > -10000) ||
-                (whosTurn == PLAYER2 && child->value < 10000)) {
+            if ((whosTurn == PLAYER_1 && child->value > -10000) ||
+                (whosTurn == PLAYER_2 && child->value < 10000)) {
                 isMostLose = false;
                 break;
             }
@@ -702,9 +702,9 @@ const char* MillGameAi_ab::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            if (whosTurn == PLAYER1) {
+            if (whosTurn == PLAYER_1) {
                 sprintf(cmdline, "Player1 give up!");
-            } else if (whosTurn == PLAYER2) {
+            } else if (whosTurn == PLAYER_2) {
                 sprintf(cmdline, "Player2 give up!");
             }
 

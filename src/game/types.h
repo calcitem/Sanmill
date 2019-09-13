@@ -84,8 +84,8 @@ enum piece_t : uint16_t
 // 玩家标识, 轮流状态, 胜负标识
 enum player_t : uint8_t
 {
-    PLAYER1 = 0x10,   // 玩家1
-    PLAYER2 = 0x20,   // 玩家2
+    PLAYER_1 = 0x10,   // 玩家1
+    PLAYER_2 = 0x20,   // 玩家2
     PLAYER_DRAW = 0x40,      // 双方和棋
     PLAYER_NOBODY = 0x80     // 胜负未分
 };
