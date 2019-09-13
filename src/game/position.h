@@ -51,7 +51,7 @@ public:
     enum phase_t phase;
 
     // 轮流状态标识
-    enum Player turn;
+    enum player_t turn;
 
     // 动作状态标识
     enum action_t action
@@ -101,9 +101,9 @@ public:
         return rand64() << 8;
     }
 
-    static int playerToId(enum Player player);
+    static int playerToId(enum player_t player);
 
-    static Player getOpponent(enum Player player);
+    static player_t getOpponent(enum player_t player);
 
 private:
 
@@ -194,7 +194,7 @@ public:
     }
 
     // 获取轮流状态标识
-    enum Player whosTurn() const
+    enum player_t whosTurn() const
     {
         return context.turn;
     }
@@ -206,7 +206,7 @@ public:
     }
 
     // 判断胜负
-    enum Player whoWin() const
+    enum player_t whoWin() const
     {
         return winner;
     }
@@ -275,7 +275,7 @@ public:
     }
 
     // 计算玩家1和玩家2的棋子活动能力之差
-    int getMobilityDiff(enum Player turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden);
+    int getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden);
 
     // 游戏重置
     bool reset();
@@ -293,7 +293,7 @@ public:
     bool _capture(int r, int s, int time_p = -1);
 
     // 认输
-    bool giveup(Player loser);
+    bool giveup(player_t loser);
 
     // 命令行解析函数
     bool command(const char *cmd);
@@ -309,7 +309,7 @@ public:
     void cleanForbiddenPoints();
 
     // 改变轮流
-    enum Player changeTurn();
+    enum player_t changeTurn();
 
     // 设置提示
     void setTips();
@@ -374,7 +374,7 @@ private:
     // uint64_t hash;
 
     // 胜负标识
-    enum Player winner;
+    enum player_t winner;
 
     // 当前步数
     step_t currentStep {};

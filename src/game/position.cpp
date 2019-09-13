@@ -77,7 +77,7 @@ Position &Position::operator= (const Position &position)
     return *this;
 }
 
-int Position::playerToId(enum Player player)
+int Position::playerToId(enum player_t player)
 {
     if (player == PLAYER1)
         return 1;
@@ -87,7 +87,7 @@ int Position::playerToId(enum Player player)
     return 0;
 }
 
-Player Position::getOpponent(Player player)
+player_t Position::getOpponent(player_t player)
 {
     switch (player)
     {
@@ -750,7 +750,7 @@ bool Position::choose(int r, int s)
     return choose(context.board.polarToLocation(r, s));
 }
 
-bool Position::giveup(Player loser)
+bool Position::giveup(player_t loser)
 {
     if (context.phase == PHASE_NOTSTARTED ||
         context.phase == PHASE_GAMEOVER ||
@@ -1043,7 +1043,7 @@ bool Position::win(bool forceDraw)
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int Position::getMobilityDiff(enum Player turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
+int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
 {
     int *board = context.board.locations;
     int mobility1 = 0;
@@ -1082,7 +1082,7 @@ void Position::cleanForbiddenPoints()
     }
 }
 
-enum Player Position::changeTurn()
+enum player_t Position::changeTurn()
 {
     // 设置轮到谁走
     context.turn = (context.turn == PLAYER1) ? PLAYER2 : PLAYER1;

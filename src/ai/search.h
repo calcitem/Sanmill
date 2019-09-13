@@ -60,7 +60,7 @@ public:
         struct Node* parent {};            // 父节点
         move_t move {};                  // 着法的命令行指令，图上标示为节点前的连线
         value_t value {};                 // 节点的值
-        enum Player player;  // 此着是谁下的 (目前仅调试用)
+        enum player_t player;  // 此着是谁下的 (目前仅调试用)
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned {};                    // 是否在此处剪枝
 #endif
@@ -133,7 +133,7 @@ public: /* TODO: Move to private or protected */
     // 增加新节点
     struct Node *addNode(Node *parent, value_t value,
                          move_t move, move_t bestMove,
-                         enum Player player);
+                         enum player_t player);
 
 protected:
     // 对合法的着法降序排序

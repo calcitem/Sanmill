@@ -105,7 +105,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     value_t value,
     move_t move,
     move_t bestMove,
-    enum Player player
+    enum player_t player
 )
 {
 #ifdef MEMORY_POOL
@@ -689,7 +689,7 @@ const char* MillGameAi_ab::bestMove()
     if (position_.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
-        Player whosTurn = position_.whosTurn();
+        player_t whosTurn = position_.whosTurn();
 
         for (auto child : rootNode->children) {
             // TODO: 使用常量代替

@@ -69,7 +69,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     }
 
     // 对手
-    Player opponent = Position::getOpponent(dummyPosition.context.turn);
+    player_t opponent = Position::getOpponent(dummyPosition.context.turn);
 
     // 列出所有合法的下一招
     switch (dummyPosition.context.action) {

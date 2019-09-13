@@ -76,29 +76,29 @@ public:
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(char ch);
-    bool isAllInMills(enum Player);
+    bool isAllInMills(enum player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
-    bool isSurrounded(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location);
+    bool isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location);
 
     // 判断玩家的棋子是否全部被围
-    bool isAllSurrounded(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, char ch);
+    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, char ch);
 
-    bool isAllSurrounded(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, enum Player ply);
+    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, enum player_t ply);
 
     // 三连加入列表
     int addMills(const Rule &currentRule, int location);
 
     // 获取位置点棋子的归属人
-    enum Player getWhosPiece(int r, int s);
+    enum player_t getWhosPiece(int r, int s);
 
-    bool getPieceRS(const Player &player, const int &number, int &r, int &s, struct Rule &currentRule);
+    bool getPieceRS(const player_t &player, const int &number, int &r, int &s, struct Rule &currentRule);
 
     // 获取当前棋子
-    bool getCurrentPiece(Player &player, int &number, int currentPos);
+    bool getCurrentPiece(player_t &player, int &number, int currentPos);
 
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
     void locationToPolar(int location, int &r, int &s);

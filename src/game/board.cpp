@@ -315,7 +315,7 @@ bool Board::isAllInMills(char ch)
     return true;
 }
 
-bool Board::isAllInMills(enum Player player)
+bool Board::isAllInMills(enum player_t player)
 {
     char ch = 0x00;
 
@@ -330,7 +330,7 @@ bool Board::isAllInMills(enum Player player)
 }
 
 // 判断玩家的棋子周围有几个空位
-int Board::getSurroundedEmptyLocationCount(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location, bool includeFobidden)
+int Board::getSurroundedEmptyLocationCount(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location, bool includeFobidden)
 {
     int count = 0;
 
@@ -354,7 +354,7 @@ int Board::getSurroundedEmptyLocationCount(enum Player turn, const Rule &current
 }
 
 // 判断玩家的棋子是否被围
-bool Board::isSurrounded(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location)
+bool Board::isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location)
 {
     // 判断location处的棋子是否被“闷”
     if ((turn == PLAYER1 &&
@@ -375,7 +375,7 @@ bool Board::isSurrounded(enum Player turn, const Rule &currentRule, int nPiecesO
     return false;
 }
 
-bool Board::isAllSurrounded(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, char ch)
+bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, char ch)
 {
     // 如果摆满
     if (nPiecesOnBoard_1 + nPiecesOnBoard_2 >= N_SEATS * N_RINGS)
@@ -407,7 +407,7 @@ bool Board::isAllSurrounded(enum Player turn, const Rule &currentRule, int nPiec
 }
 
 // 判断玩家的棋子是否全部被围
-bool Board::isAllSurrounded(enum Player turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, enum Player ply)
+bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, enum player_t ply)
 {
     char t = '\x30';
 
@@ -419,7 +419,7 @@ bool Board::isAllSurrounded(enum Player turn, const Rule &currentRule, int nPiec
     return isAllSurrounded(turn, currentRule, nPiecesOnBoard_1, nPiecesOnBoard_2, t);
 }
 
-enum Player Board::getWhosPiece(int r, int s)
+enum player_t Board::getWhosPiece(int r, int s)
 {
     int location = polarToLocation(r, s);
 
@@ -433,7 +433,7 @@ enum Player Board::getWhosPiece(int r, int s)
 }
 
 // Unused
-bool Board::getPieceRS(const Player &player, const int &number, int &r, int &s, struct Rule &currentRule)
+bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s, struct Rule &currentRule)
 {
     int piece;
 
@@ -461,7 +461,7 @@ bool Board::getPieceRS(const Player &player, const int &number, int &r, int &s, 
 }
 
 // 获取当前棋子
-bool Board::getCurrentPiece(Player &player, int &number, int location)
+bool Board::getCurrentPiece(player_t &player, int &number, int location)
 {
     if (!onBoard[location])
         return false;
