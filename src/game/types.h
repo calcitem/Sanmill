@@ -25,7 +25,6 @@
 #include "config.h"
 
 using step_t = uint16_t;
-
 using depth_t = uint8_t;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
@@ -81,13 +80,15 @@ enum piece_t : uint16_t
     PIECE_TYPE_COUNT = 4
 };
 
+#define PLAYER_SHIFT    4
+
 // 玩家标识, 轮流状态, 胜负标识
 enum player_t : uint8_t
 {
-    PLAYER_1 = 0x10,   // 玩家1
-    PLAYER_2 = 0x20,   // 玩家2
-    PLAYER_DRAW = 0x40,      // 双方和棋
-    PLAYER_NOBODY = 0x80     // 胜负未分
+    PLAYER_1 = 0x1 << PLAYER_SHIFT,   // 玩家1
+    PLAYER_2 = 0x2 << PLAYER_SHIFT,   // 玩家2
+    PLAYER_DRAW = 0x4 << PLAYER_SHIFT,      // 双方和棋
+    PLAYER_NOBODY = 0x8 << PLAYER_SHIFT     // 胜负未分
 };
 
 // 局面阶段标识

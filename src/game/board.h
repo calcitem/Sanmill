@@ -82,15 +82,15 @@ public:
     bool isAllInMills(enum player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], int location, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
-    bool isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location);
+    bool isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], int location);
 
     // 判断玩家的棋子是否全部被围
-    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, char ch);
+    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], char ch);
 
-    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, enum player_t ply);
+    bool isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], enum player_t ply);
 
     // 三连加入列表
     int addMills(const Rule &currentRule, int location);

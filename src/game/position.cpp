@@ -164,15 +164,15 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
         判断棋子是先手的用 (locations[i] & 0x10)
         判断棋子是后手的用 (locations[i] & 0x20)
      */
-    context.nPiecesOnBoard_1 = context.nPiecesOnBoard_2 = 0;
+    context.nPiecesOnBoard[1] = context.nPiecesOnBoard[2] = 0;
 
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
             int location = r * Board::N_SEATS + s;
             if (boardLocations[location] & 0x10) {
-                context.nPiecesOnBoard_1++;
+                context.nPiecesOnBoard[1]++;
             } else if (boardLocations[location] & 0x20) {
-                context.nPiecesOnBoard_2++;
+                context.nPiecesOnBoard[2]++;
             } else if (boardLocations[location] & 0x0F) {
                 // 不计算盘面子数
             }
@@ -180,8 +180,8 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     }
 
     // 设置玩家盘面剩余子数和未放置子数
-    if (context.nPiecesOnBoard_1 > rule->nTotalPiecesEachSide ||
-        context.nPiecesOnBoard_2 > rule->nTotalPiecesEachSide) {
+    if (context.nPiecesOnBoard[1] > rule->nTotalPiecesEachSide ||
+        context.nPiecesOnBoard[2] > rule->nTotalPiecesEachSide) {
         return false;
     }
 
@@ -189,10 +189,10 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
         return false;
     }
 
-    context.nPiecesInHand_1 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_1;
-    context.nPiecesInHand_2 = rule->nTotalPiecesEachSide - context.nPiecesOnBoard_2;
-    context.nPiecesInHand_1 = std::min(nPiecesInHand_1, context.nPiecesInHand_1);
-    context.nPiecesInHand_2 = std::min(nPiecesInHand_2, context.nPiecesInHand_2);
+    context.nPiecesInHand[1] = rule->nTotalPiecesEachSide - context.nPiecesOnBoard[1];
+    context.nPiecesInHand[2] = rule->nTotalPiecesEachSide - context.nPiecesOnBoard[2];
+    context.nPiecesInHand[1] = std::min(nPiecesInHand_1, context.nPiecesInHand[1]);
+    context.nPiecesInHand[2] = std::min(nPiecesInHand_2, context.nPiecesInHand[2]);
 
     // 设置去子状态时的剩余尚待去除子数
     if (action == ACTION_CAPTURE) {
@@ -254,8 +254,8 @@ void Position::getContext(struct Rule &rule, step_t &step,
     turn = context.turn;
     action = context.action;
     boardLocations = locations;
-    nPiecesInHand_1 = context.nPiecesInHand_1;
-    nPiecesInHand_2 = context.nPiecesInHand_2;
+    nPiecesInHand_1 = context.nPiecesInHand[1];
+    nPiecesInHand_2 = context.nPiecesInHand[2];
     nPiecesNeedRemove = context.nPiecesNeedRemove;
 }
 
@@ -286,10 +286,10 @@ bool Position::reset()
     memset(boardLocations, 0, sizeof(context.board));
 
     // 盘面子数归零
-    context.nPiecesOnBoard_1 = context.nPiecesOnBoard_2 = 0;
+    context.nPiecesOnBoard[1] = context.nPiecesOnBoard[2] = 0;
 
     // 设置玩家盘面剩余子数和未放置子数
-    context.nPiecesInHand_1 = context.nPiecesInHand_2 = currentRule.nTotalPiecesEachSide;
+    context.nPiecesInHand[1] = context.nPiecesInHand[2] = currentRule.nTotalPiecesEachSide;
 
     // 设置去子状态时的剩余尚待去除子数
     context.nPiecesNeedRemove = 0;
@@ -388,15 +388,15 @@ bool Position::place(int location, int time_p, int8_t rs)
     if (context.phase == PHASE_PLACING) {
         // 先手下
         if (context.turn == PLAYER_1) {
-            piece = '\x11' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand_1;
-            context.nPiecesInHand_1--;
-            context.nPiecesOnBoard_1++;
+            piece = '\x11' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand[1];
+            context.nPiecesInHand[1]--;
+            context.nPiecesOnBoard[1]++;
         }
         // 后手下
         else {
-            piece = '\x21' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand_2;
-            context.nPiecesInHand_2--;
-            context.nPiecesOnBoard_2++;
+            piece = '\x21' + currentRule.nTotalPiecesEachSide - context.nPiecesInHand[2];
+            context.nPiecesInHand[2]--;
+            context.nPiecesOnBoard[2]++;
         }
 
         boardLocations[location] = piece;
@@ -420,7 +420,7 @@ bool Position::place(int location, int time_p, int8_t rs)
         // 开局阶段未成三
         if (n == 0) {
             // 如果双方都无未放置的棋子
-            if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
+            if (context.nPiecesInHand[1] == 0 && context.nPiecesInHand[2] == 0) {
                 // 进入中局阶段
                 context.phase = PHASE_MOVING;
 
@@ -469,9 +469,9 @@ bool Position::place(int location, int time_p, int8_t rs)
 
     // 如果落子不合法
     if ((context.turn == PLAYER_1 &&
-         (context.nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
+         (context.nPiecesOnBoard[1] > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
         (context.turn == PLAYER_2 &&
-         (context.nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
+         (context.nPiecesOnBoard[2] > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
 
         int i;
         for (i = 0; i < 4; i++) {
@@ -601,9 +601,9 @@ bool Position::capture(int location, int time_p, int8_t cp)
     }
 
     if (context.turn == PLAYER_1)
-        context.nPiecesOnBoard_2--;
+        context.nPiecesOnBoard[2]--;
     else if (context.turn == PLAYER_2)
-        context.nPiecesOnBoard_1--;
+        context.nPiecesOnBoard[1]--;
 
     move_ = static_cast<move_t>(-location);
 
@@ -637,7 +637,7 @@ bool Position::capture(int location, int time_p, int8_t cp)
     // 开局阶段
     if (context.phase == PHASE_PLACING) {
         // 如果双方都无未放置的棋子
-        if (context.nPiecesInHand_1 == 0 && context.nPiecesInHand_2 == 0) {
+        if (context.nPiecesInHand[1] == 0 && context.nPiecesInHand[2] == 0) {
 
             // 进入中局阶段
             context.phase = PHASE_MOVING;
@@ -711,7 +711,7 @@ bool Position::choose(int location)
     // 判断选子是否可选
     if (boardLocations[location] & t) {
         // 判断location处的棋子是否被“闷”
-        if (context.board.isSurrounded(context.turn, currentRule, context.nPiecesOnBoard_1, context.nPiecesOnBoard_2, location)) {
+        if (context.board.isSurrounded(context.turn, currentRule, context.nPiecesOnBoard, location)) {
             return false;
         }
 
@@ -944,7 +944,7 @@ bool Position::win(bool forceDraw)
     }
 
     // 如果玩家1子数小于赛点，则玩家2获胜
-    if (context.nPiecesOnBoard_1 + context.nPiecesInHand_1 < currentRule.nPiecesAtLeast) {
+    if (context.nPiecesOnBoard[1] + context.nPiecesInHand[1] < currentRule.nPiecesAtLeast) {
         winner = PLAYER_2;
         context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player2 win!");
@@ -953,7 +953,7 @@ bool Position::win(bool forceDraw)
     }
 
     // 如果玩家2子数小于赛点，则玩家1获胜
-    if (context.nPiecesOnBoard_2 + context.nPiecesInHand_2 < currentRule.nPiecesAtLeast) {
+    if (context.nPiecesOnBoard[2] + context.nPiecesInHand[2] < currentRule.nPiecesAtLeast) {
         winner = PLAYER_1;
         context.phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player1 win!");
@@ -965,7 +965,7 @@ bool Position::win(bool forceDraw)
     }
 
     // 如果摆满了，根据规则判断胜负
-    if (context.nPiecesOnBoard_1 + context.nPiecesOnBoard_2 >= Board::N_SEATS * Board::N_RINGS) {
+    if (context.nPiecesOnBoard[1] + context.nPiecesOnBoard[2] >= Board::N_SEATS * Board::N_RINGS) {
         context.phase = PHASE_GAMEOVER;
 
         if (currentRule.isStartingPlayerLoseWhenBoardFull) {
@@ -981,7 +981,7 @@ bool Position::win(bool forceDraw)
     }
 
     // 如果中局被“闷”
-    if (context.phase == PHASE_MOVING && context.action == ACTION_CHOOSE && context.board.isAllSurrounded(context.turn, currentRule, context.nPiecesOnBoard_1, context.nPiecesOnBoard_2, context.turn)) {
+    if (context.phase == PHASE_MOVING && context.action == ACTION_CHOOSE && context.board.isAllSurrounded(context.turn, currentRule, context.nPiecesOnBoard, context.turn)) {
         // 规则要求被“闷”判负，则对手获胜
         context.phase = PHASE_GAMEOVER;
 
@@ -1025,7 +1025,7 @@ bool Position::win(bool forceDraw)
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden)
+int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden)
 {
     int *locations = boardLocations;
     int mobility1 = 0;
@@ -1034,7 +1034,7 @@ int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesO
     int n = 0;
 
     for (int i = Board::LOCATION_BEGIN; i < Board::LOCATION_END; i++) {
-        n = context.board.getSurroundedEmptyLocationCount(turn, rule, nPiecesOnBoard_1, nPiecesOnBoard_2, i, includeFobidden);
+        n = context.board.getSurroundedEmptyLocationCount(turn, rule, nPiecesOnBoard, i, includeFobidden);
 
         if (locations[i] & 0x10) {
             mobility1 += n;
@@ -1076,16 +1076,16 @@ void Position::setTips()
 {
     switch (context.phase) {
     case PHASE_NOTSTARTED:
-        tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子" +
+        tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand[1]) + "子" +
             "  比分 " + to_string(score_1) + ":" + to_string(score_2) + ", 和棋 " + to_string(score_draw);
         break;
 
     case PHASE_PLACING:
         if (context.action == ACTION_PLACE) {
             if (context.turn == PLAYER_1) {
-                tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand_1) + "子";
+                tips = "轮到玩家1落子，剩余" + std::to_string(context.nPiecesInHand[1]) + "子";
             } else if (context.turn == PLAYER_2) {
-                tips = "轮到玩家2落子，剩余" + std::to_string(context.nPiecesInHand_2) + "子";
+                tips = "轮到玩家2落子，剩余" + std::to_string(context.nPiecesInHand[2]) + "子";
             }
         } else if (context.action == ACTION_CAPTURE) {
             if (context.turn == PLAYER_1) {
@@ -1206,7 +1206,7 @@ hash_t Position::updateHashMisc()
     }
 
     context.hash |= static_cast<hash_t>(context.nPiecesNeedRemove) << 2;
-    context.hash |= static_cast<hash_t>(context.nPiecesInHand_1) << 4;     // TODO: 或许换 position.phase 也可以？
+    context.hash |= static_cast<hash_t>(context.nPiecesInHand[1]) << 4;     // TODO: 或许换 position.phase 也可以？
 
     return context.hash;
 }

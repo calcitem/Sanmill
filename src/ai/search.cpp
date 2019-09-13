@@ -77,7 +77,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
         depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
 #endif
 #endif // DEAL_WITH_HORIZON_EFFECT
-        newDepth = depthTable[dummyPosition.getPiecesInHandCount_1()];
+        newDepth = depthTable[dummyPosition.getPiecesInHandCount(1)];
 #elif defined GAME_PLACING_FIXED_DEPTH
         newDepth = GAME_PLACING_FIXED_DEPTH;
 #endif // GAME_PLACING_DYNAMIC_DEPTH
@@ -315,7 +315,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #ifdef BOOK_LEARNING
     if (position_.getPhase() == GAME_PLACING)
     {
-        if (position_.context.nPiecesInHand_1 <= 10) {
+        if (position_.context.nPiecesInHand[1] <= 10) {
             // 开局库只记录摆棋阶段最后的局面
             openingBook.push_back(position_.getHash());
         } else {

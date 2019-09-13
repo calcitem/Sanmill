@@ -454,6 +454,7 @@
     <ClInclude Include="src\base\stackalloc.h" />
     <QtMoc Include="src\base\thread.h" />
     <ClInclude Include="src\game\board.h" />
+    <ClInclude Include="src\game\player.h" />
     <ClInclude Include="src\game\position.h" />
     <ClInclude Include="src\game\rule.h" />
     <ClInclude Include="src\game\types.h" />
@@ -698,6 +699,7 @@
     <ClCompile Include="src\base\misc.cpp" />
     <ClCompile Include="src\base\thread.cpp" />
     <ClCompile Include="src\game\board.cpp" />
+    <ClCompile Include="src\game\player.cpp" />
     <ClCompile Include="src\game\position.cpp" />
     <ClCompile Include="src\game\rule.cpp" />
     <ClCompile Include="src\main.cpp" />

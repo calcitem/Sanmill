@@ -37,19 +37,19 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     case PHASE_PLACING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
             if (dummyPosition.whosTurn() == PLAYER_1)
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(2));
             else
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_1());
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(1));
         } else {
-            newCapacity = static_cast<size_t>(dummyPosition.getPiecesInHandCount_1() + dummyPosition.getPiecesInHandCount_2());
+            newCapacity = static_cast<size_t>(dummyPosition.getPiecesInHandCount(1) + dummyPosition.getPiecesInHandCount(2));
         }
         break;
     case PHASE_MOVING:
         if (dummyPosition.getAction() == ACTION_CAPTURE) {
             if (dummyPosition.whosTurn() == PLAYER_1)
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_2());
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(2));
             else
-                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount_1());
+                newCapacity = static_cast<size_t>(dummyPosition.getPiecesOnBoardCount(1));
         } else {
             newCapacity = 6;
         }
@@ -111,9 +111,9 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
                 }
 
                 if ((dummyPosition.context.turn == PLAYER_1 &&
-                    (dummyPosition.context.nPiecesOnBoard_1 > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces)) ||
+                    (dummyPosition.context.nPiecesOnBoard[1] > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces)) ||
                      (dummyPosition.context.turn == PLAYER_2 &&
-                    (dummyPosition.context.nPiecesOnBoard_2 > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces))) {
+                    (dummyPosition.context.nPiecesOnBoard[2] > dummyPosition.currentRule.nPiecesAtLeast || !dummyPosition.currentRule.allowFlyWhenRemainThreePieces))) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中

@@ -19,6 +19,36 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#include "config.h"
-#include "misc.h"
+#ifndef PLAYER_H
+#define PLAYER_H
 
+#include "config.h"
+#include "types.h"
+
+class Player
+{
+public:
+    explicit Player();
+    virtual ~Player();
+
+    const player_t getPlayer() const
+    {
+        return who;
+    }
+
+    int getId() const
+    {
+        return id;
+    }
+
+    inline static int toId(player_t who)
+    {
+        return int((int)who >> PLAYER_SHIFT);
+    }
+
+private:
+    player_t who;
+    int id;
+};
+
+#endif // PLAYER_H

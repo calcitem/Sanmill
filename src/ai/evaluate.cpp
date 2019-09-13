@@ -42,14 +42,14 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
     case PHASE_PLACING:
         // 按手中的棋子计分，不要break;
-        nPiecesInHandDiff = positionContext->nPiecesInHand_1 - positionContext->nPiecesInHand_2;
+        nPiecesInHandDiff = positionContext->nPiecesInHand[1] - positionContext->nPiecesInHand[2];
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 #ifdef DEBUG_AB_TREE
         node->nPiecesInHandDiff = nPiecesInHandDiff;
 #endif
 
         // 按场上棋子计分
-        nPiecesOnBoardDiff = positionContext->nPiecesOnBoard_1 - positionContext->nPiecesOnBoard_2;
+        nPiecesOnBoardDiff = positionContext->nPiecesOnBoard[1] - positionContext->nPiecesOnBoard[2];
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 #ifdef DEBUG_AB_TREE
         node->nPiecesOnBoardDiff = nPiecesOnBoardDiff;
@@ -78,12 +78,12 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
     case PHASE_MOVING:
         // 按场上棋子计分
-        value = positionContext->nPiecesOnBoard_1 * VALUE_EACH_PIECE_ONBOARD -
-                positionContext->nPiecesOnBoard_2 * VALUE_EACH_PIECE_ONBOARD;
+        value = positionContext->nPiecesOnBoard[1] * VALUE_EACH_PIECE_ONBOARD -
+                positionContext->nPiecesOnBoard[2] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
-        value += dummyPosition.getMobilityDiff(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesInHand_1, positionContext->nPiecesInHand_2, false) * 10;
+        value += dummyPosition.getMobilityDiff(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesInHand[1], positionContext->nPiecesInHand[2], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (positionContext->action) {
@@ -110,7 +110,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
         // 终局评价最简单
     case PHASE_GAMEOVER:
         // 布局阶段闷棋判断
-        if (positionContext->nPiecesOnBoard_1 + positionContext->nPiecesOnBoard_2 >=
+        if (positionContext->nPiecesOnBoard[1] + positionContext->nPiecesOnBoard[2] >=
             Board::N_SEATS * Board::N_RINGS) {
             if (dummyPosition.getRule()->isStartingPlayerLoseWhenBoardFull) {
                 // winner = PLAYER_2;
@@ -125,7 +125,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
         // 走棋阶段被闷判断
         if (positionContext->action == ACTION_CHOOSE &&
-            dummyPosition.context.board.isAllSurrounded(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesOnBoard_1, positionContext->nPiecesOnBoard_2, positionContext->turn) &&
+            dummyPosition.context.board.isAllSurrounded(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesOnBoard, positionContext->turn) &&
             dummyPosition.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             if (positionContext->turn == PLAYER_1) {
@@ -142,12 +142,12 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
         }
 
         // 剩余棋子个数判断
-        if (positionContext->nPiecesOnBoard_1 < dummyPosition.getRule()->nPiecesAtLeast) {
+        if (positionContext->nPiecesOnBoard[1] < dummyPosition.getRule()->nPiecesAtLeast) {
             value -= VALUE_WIN;
 #ifdef DEBUG_AB_TREE
             node->result = -1;
 #endif
-        } else if (positionContext->nPiecesOnBoard_2 < dummyPosition.getRule()->nPiecesAtLeast) {
+        } else if (positionContext->nPiecesOnBoard[2] < dummyPosition.getRule()->nPiecesAtLeast) {
             value += VALUE_WIN;
 #ifdef DEBUG_AB_TREE
             node->result = 1;

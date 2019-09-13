@@ -1031,10 +1031,10 @@ bool GameController::updateScence(Position &game)
         if (j == (Board::N_SEATS) * (Board::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & 0x10) {
-                pos = (key - 0x11 < nTotalPieces / 2 - game.getPiecesInHandCount_1()) ?
+                pos = (key - 0x11 < nTotalPieces / 2 - game.getPiecesInHandCount(1)) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
-                pos = (key - 0x21 < nTotalPieces / 2 - game.getPiecesInHandCount_2()) ?
+                pos = (key - 0x21 < nTotalPieces / 2 - game.getPiecesInHandCount(2)) ?
                         scene.pos_p1_g : scene.pos_p2;
             }
 

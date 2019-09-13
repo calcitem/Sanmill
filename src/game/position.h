@@ -57,17 +57,11 @@ public:
     {
     };
 
-    // 玩家1剩余未放置子数
-    int nPiecesInHand_1{};
+    // 玩家剩余未放置子数
+    int nPiecesInHand[3]{0};
 
-    // 玩家2剩余未放置子数
-    int nPiecesInHand_2{};
-
-    // 玩家1盘面剩余子数
-    int nPiecesOnBoard_1{};
-
-    // 玩家1盘面剩余子数
-    int nPiecesOnBoard_2{};
+    // 玩家盘面剩余子数
+    int nPiecesOnBoard[3] {0};
 
     // 尚待去除的子数
     int nPiecesNeedRemove{};
@@ -226,28 +220,16 @@ public:
         startTime = stimeb;
     }
 
-    // 玩家1剩余未放置子数
-    int getPiecesInHandCount_1() const
+    // 玩家剩余未放置子数
+    int getPiecesInHandCount(int playerId) const
     {
-        return context.nPiecesInHand_1;
-    }
-
-    // 玩家2剩余未放置子数
-    int getPiecesInHandCount_2() const
-    {
-        return context.nPiecesInHand_2;
+        return context.nPiecesInHand[playerId];
     }
 
     // 玩家1盘面剩余子数
-    int getPiecesOnBoardCount_1() const
+    int getPiecesOnBoardCount(int playerId) const
     {
-        return context.nPiecesOnBoard_1;
-    }
-
-    // 玩家1盘面剩余子数
-    int getPiecesOnBoardCount_2() const
-    {
-        return context.nPiecesOnBoard_2;
+        return context.nPiecesOnBoard[playerId];
     }
 
     // 尚待去除的子数
@@ -257,7 +239,7 @@ public:
     }
 
     // 计算玩家1和玩家2的棋子活动能力之差
-    int getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, bool includeFobidden);
+    int getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden);
 
     // 游戏重置
     bool reset();

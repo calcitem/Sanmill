@@ -330,14 +330,14 @@ bool Board::isAllInMills(enum player_t player)
 }
 
 // 判断玩家的棋子周围有几个空位
-int Board::getSurroundedEmptyLocationCount(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location, bool includeFobidden)
+int Board::getSurroundedEmptyLocationCount(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], int location, bool includeFobidden)
 {
     int count = 0;
 
     if ((turn == PLAYER_1 &&
-        (nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
+        (nPiecesOnBoard[1] > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
          (turn == PLAYER_2 &&
-        (nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
+        (nPiecesOnBoard[2] > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
         int moveLocation;
         for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
             moveLocation = MoveList::moveTable[location][d];
@@ -354,13 +354,13 @@ int Board::getSurroundedEmptyLocationCount(enum player_t turn, const Rule &curre
 }
 
 // 判断玩家的棋子是否被围
-bool Board::isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, int location)
+bool Board::isSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], int location)
 {
     // 判断location处的棋子是否被“闷”
     if ((turn == PLAYER_1 &&
-        (nPiecesOnBoard_1 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
+        (nPiecesOnBoard[1] > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces)) ||
          (turn == PLAYER_2 &&
-        (nPiecesOnBoard_2 > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
+        (nPiecesOnBoard[2] > currentRule.nPiecesAtLeast || !currentRule.allowFlyWhenRemainThreePieces))) {
         int i, moveLocation;
         for (i = 0; i < 4; i++) {
             moveLocation = MoveList::moveTable[location][i];
@@ -375,17 +375,17 @@ bool Board::isSurrounded(enum player_t turn, const Rule &currentRule, int nPiece
     return false;
 }
 
-bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, char ch)
+bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], char ch)
 {
     // 如果摆满
-    if (nPiecesOnBoard_1 + nPiecesOnBoard_2 >= N_SEATS * N_RINGS)
+    if (nPiecesOnBoard[1] + nPiecesOnBoard[2] >= N_SEATS * N_RINGS)
         return true;
 
     // 判断是否可以飞子
     if ((turn == PLAYER_1 &&
-        (nPiecesOnBoard_1 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces)) ||
+        (nPiecesOnBoard[1] <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces)) ||
          (turn == PLAYER_2 &&
-        (nPiecesOnBoard_2 <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces))) {
+        (nPiecesOnBoard[2] <= currentRule.nPiecesAtLeast && currentRule.allowFlyWhenRemainThreePieces))) {
         return false;
     }
 
@@ -407,7 +407,7 @@ bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPi
 }
 
 // 判断玩家的棋子是否全部被围
-bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard_1, int nPiecesOnBoard_2, enum player_t ply)
+bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPiecesOnBoard[], enum player_t ply)
 {
     char t = '\x30';
 
@@ -416,7 +416,7 @@ bool Board::isAllSurrounded(enum player_t turn, const Rule &currentRule, int nPi
     else if (ply == PLAYER_2)
         t &= '\x20';
 
-    return isAllSurrounded(turn, currentRule, nPiecesOnBoard_1, nPiecesOnBoard_2, t);
+    return isAllSurrounded(turn, currentRule, nPiecesOnBoard, t);
 }
 
 enum player_t Board::getWhosPiece(int r, int s)
