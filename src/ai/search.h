@@ -75,8 +75,8 @@ public:
         bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
         bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
         bool visited;                   // 是否在遍历时访问过
-        PositionPhase phase;     // 摆棋阶段还是走棋阶段
-        Action action;       // 动作状态
+        phase_t phase;     // 摆棋阶段还是走棋阶段
+        action_t action;       // 动作状态
         int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
         int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
         int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数

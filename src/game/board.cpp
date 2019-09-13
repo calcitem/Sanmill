@@ -170,7 +170,7 @@ void Board::createMillTable(const Rule &currentRule)
 #ifdef DEBUG_MODE
     for (int i = 0; i < N_LOCATIONS; i++) {
         loggerDebug("/* %d */ {", i);
-        for (int j = 0; j < N_DIRECTIONS; j++) {
+        for (int j = 0; j < DIRECTIONS_COUNT; j++) {
             loggerDebug("{");
             for (int k = 0; k < 2; k++) {
                 if (k == 0) {

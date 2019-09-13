@@ -295,7 +295,7 @@ void MillGameAi_ab::setPosition(const Position &position)
 #endif
 #ifdef DEBUG_AB_TREE
     rootNode->action = ACTION_NONE;
-    rootNode->phase = GAME_NONE;
+    rootNode->phase = PHASE_NONE;
     rootNode->root = rootNode;
 #endif
 }
