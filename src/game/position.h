@@ -132,7 +132,7 @@ public:
     }
 
     // 获取棋盘数据
-    const int *getBoardLocations() const
+    int *getBoardLocations() const
     {
         return boardLocations;
     }
@@ -162,9 +162,9 @@ public:
     }
 
     // 获取 AI 是否随机走子
-    bool getRandomMove() const
+    bool randomMoveEnabled() const
     {
-        return randomMove_;
+        return isRandomMove;
     }
 
     // 获取局面阶段标识
@@ -344,7 +344,7 @@ public: /* TODO: move to private */
         | /       |     \  |
         29 ----- 28 ----- 27
     */
-    int32_t move_{};
+    move_t move_{};
 
     // 选中的棋子在board中的位置
     int currentLocation{};
@@ -366,7 +366,7 @@ private:
     bool giveUpIfMostLose_ {false};
 
     // AI 是否随机走子
-    bool randomMove_ {true};
+    bool isRandomMove {true};
 
     // 游戏起始时间
     time_t startTime {};

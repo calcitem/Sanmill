@@ -388,7 +388,7 @@ void MoveList::shuffleMovePriorityTable(Position &position)
     array<move_t, 4> movePriorityTable2 = { (move_t)16, (move_t)18, (move_t)20, (move_t)22 }; // 中圈十字架
     array<move_t, 8> movePriorityTable3 = { (move_t)24, (move_t)26, (move_t)28, (move_t)30, (move_t)8, (move_t)10, (move_t)12, (move_t)14 }; // 外内圈十字架
 
-    if (position.getRandomMove() == true) {
+    if (position.randomMoveEnabled()) {
         uint32_t seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));

@@ -60,7 +60,7 @@ Position &Position::operator= (const Position &position)
     context = position.context;
     currentStep = position.currentStep;
     moveStep = position.moveStep;
-    randomMove_ = position.randomMove_;
+    isRandomMove = position.isRandomMove;
     giveUpIfMostLose_ = position.giveUpIfMostLose_;
     boardLocations = boardLocations;
     currentLocation = position.currentLocation;
@@ -109,7 +109,7 @@ bool Position::configure(bool giveUpIfMostLose, bool randomMove)
     this->giveUpIfMostLose_ = giveUpIfMostLose;
 
     // 设置是否随机走子
-    this->randomMove_ = randomMove;
+    this->isRandomMove = randomMove;
 
     return true;
 }
@@ -422,7 +422,7 @@ bool Position::place(int location, int time_p, int8_t rs)
 
         updateHash(location);
 
-        move_ = location;
+        move_ = static_cast<move_t>(location);
 
         if (rs) {
             player_ms = update(time_p);
@@ -505,7 +505,8 @@ bool Position::place(int location, int time_p, int8_t rs)
     }
 
     // 移子
-    move_ = (currentLocation << 8) + location;
+    move_ = static_cast<move_t>((currentLocation << 8) + location);
+
     if (rs) {
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentLocation / Board::N_SEATS, currentLocation % Board::N_SEATS + 1,
@@ -623,7 +624,7 @@ bool Position::capture(int location, int time_p, int8_t cp)
     else if (context.turn == PLAYER_2)
         context.nPiecesOnBoard_1--;
 
-    move_ = -location;
+    move_ = static_cast<move_t>(-location);
 
     if (cp) {
         player_ms = update(time_p);
@@ -1228,4 +1229,3 @@ hash_t Position::updateHashMisc()
 
     return context.hash;
 }
-
