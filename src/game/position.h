@@ -33,7 +33,6 @@
 
 using namespace std;
 
-
 // 棋局结构体，算法相关，包含当前棋盘数据
 // 单独分离出来供AI判断局面用，生成置换表时使用
 class PositionContext
@@ -142,12 +141,6 @@ public:
     int getCurrentLocation() const
     {
         return currentLocation;
-    }
-
-    // 判断位置点是否为星位 (星位是经常会先占的位置)
-    static bool isStarLocation(int location)
-    {
-        return (location == 17 || location == 19 || location == 21 || location == 23);
     }
 
     // 获取当前步数

@@ -55,6 +55,9 @@ public:
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
     static const int onBoard[N_LOCATIONS];
 
+    // 判断位置点是否为星位 (星位是经常会先占的位置)
+    static bool isStarLocation(int location);
+
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
     static int millTable[N_LOCATIONS][LINE_TYPES_COUNT][N_RINGS - 1];

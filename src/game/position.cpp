@@ -87,7 +87,7 @@ int Position::playerToId(enum player_t player)
     return 0;
 }
 
-player_t Position::getOpponent(player_t player)
+player_t Position::getOpponent(enum player_t player)
 {
     switch (player)
     {

@@ -481,6 +481,14 @@ bool Board::getCurrentPiece(player_t &player, int &number, int location)
     return true;
 }
 
+bool Board::isStarLocation(int location)
+{
+    return (location == 17 ||
+            location == 19 ||
+            location == 21 ||
+            location == 23);
+}
+
 void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, struct Rule &currentRule, int location, bool cmdChange /*= true*/)
 {
     int ch;
