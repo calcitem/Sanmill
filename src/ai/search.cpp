@@ -466,9 +466,9 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
         // 为争取速胜，value 值 +- 深度
         if (node->value > 0) {
-            node->value = value_t(node->value + depth);
+            node->value += depth;
         } else {
-            node->value = value_t(node->value - depth);
+            node->value -= depth;
         }
 
 #ifdef DEBUG_AB_TREE
@@ -491,9 +491,9 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
         if (positionContext->turn == PLAYER1) {
-            node->value = (value_t)(node->value + depth);
+            node->value += depth;
         } else {
-            node->value = (value_t)(node->value - depth);
+            node->value -= depth;
         }
 
 #ifdef DEBUG_AB_TREE

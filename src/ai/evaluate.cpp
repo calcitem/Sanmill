@@ -43,14 +43,14 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
     case PHASE_PLACING:
         // 按手中的棋子计分，不要break;
         nPiecesInHandDiff = positionContext->nPiecesInHand_1 - positionContext->nPiecesInHand_2;
-        value = (value_t)(value + nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND);
+        value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 #ifdef DEBUG_AB_TREE
         node->nPiecesInHandDiff = nPiecesInHandDiff;
 #endif
 
         // 按场上棋子计分
         nPiecesOnBoardDiff = positionContext->nPiecesOnBoard_1 - positionContext->nPiecesOnBoard_2;
-        value = (value_t)(value + nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD);
+        value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 #ifdef DEBUG_AB_TREE
         node->nPiecesOnBoardDiff = nPiecesOnBoardDiff;
 #endif
@@ -65,7 +65,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
         case ACTION_CAPTURE:
             nPiecesNeedRemove = (positionContext->turn == PLAYER1) ?
                 positionContext->nPiecesNeedRemove : -(positionContext->nPiecesNeedRemove);
-            value = (value_t)(value + nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE);
+            value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
 #endif
@@ -96,7 +96,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
         case ACTION_CAPTURE:
             nPiecesNeedRemove = (positionContext->turn == PLAYER1) ?
                 positionContext->nPiecesNeedRemove : -(positionContext->nPiecesNeedRemove);
-            value = (value_t)(value + nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE_2);
+            value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE_2;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
 #endif
@@ -114,7 +114,7 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
             Board::N_SEATS * Board::N_RINGS) {
             if (dummyPosition.getRule()->isStartingPlayerLoseWhenBoardFull) {
                 // winner = PLAYER2;
-                value = value_t(value - VALUE_WIN);
+                value -= VALUE_WIN;
 #ifdef DEBUG_AB_TREE
                 node->result = -3;
 #endif
@@ -129,12 +129,12 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
             dummyPosition.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             if (positionContext->turn == PLAYER1) {
-                value = value_t(value - VALUE_WIN);
+                value -= VALUE_WIN;
 #ifdef DEBUG_AB_TREE
                 node->result = -2;
 #endif
             } else {
-                value = value_t(value + VALUE_WIN);
+                value += VALUE_WIN;
 #ifdef DEBUG_AB_TREE
                 node->result = 2;
 #endif
@@ -143,12 +143,12 @@ value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionC
 
         // 剩余棋子个数判断
         if (positionContext->nPiecesOnBoard_1 < dummyPosition.getRule()->nPiecesAtLeast) {
-            value = value_t(value - VALUE_WIN);
+            value -= VALUE_WIN;
 #ifdef DEBUG_AB_TREE
             node->result = -1;
 #endif
         } else if (positionContext->nPiecesOnBoard_2 < dummyPosition.getRule()->nPiecesAtLeast) {
-            value = value_t(value + VALUE_WIN);
+            value += VALUE_WIN;
 #ifdef DEBUG_AB_TREE
             node->result = 1;
 #endif

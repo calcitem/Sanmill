@@ -113,6 +113,26 @@ enum value_t : int16_t
     VALUE_EACH_PIECE_NEEDREMOVE_2 = 128,
 };
 
+// Additional operators to add integers to a Value
+constexpr value_t operator+(value_t v, int i)
+{
+    return value_t(int(v) + i);
+}
+
+constexpr value_t operator-(value_t v, int i)
+{
+    return value_t(int(v) - i);
+}
+
+inline value_t &operator+=(value_t &v, int i)
+{
+    return v = v + i;
+}
+
+inline value_t &operator-=(value_t &v, int i)
+{
+    return v = v - i;
+}
 
 // 动作状态标识
 enum action_t : uint16_t
