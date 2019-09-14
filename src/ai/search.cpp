@@ -647,19 +647,7 @@ const char* MillGameAi_ab::bestMove()
         return "error!";
     }
 
-    loggerDebug("\n");
-    loggerDebug("31 ----- 24 ----- 25\n");
-    loggerDebug("| \\       |      / |\n");
-    loggerDebug("|  23 -- 16 -- 17  |\n");
-    loggerDebug("|  | \\    |   / |  |\n");
-    loggerDebug("|  |  15-08-09  |  |\n");
-    loggerDebug("30-22-14    10-18-26\n");
-    loggerDebug("|  |  13-12-11  |  |\n");
-    loggerDebug("|  | /    |   \\ |  |\n");
-    loggerDebug("|  21 -- 20 -- 19  |\n");
-    loggerDebug("| /       |      \\ |\n");
-    loggerDebug("29 ----- 28 ----- 27\n");
-    loggerDebug("\n");
+    Board::printBoard();
 
     int i = 0;
     string moves = "moves";

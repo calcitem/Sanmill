@@ -24,6 +24,7 @@
 #include "search.h"
 #include "movegen.h"
 #include "player.h"
+#include "zobrist.h"
 
 Position::Position()
 {
@@ -1085,9 +1086,6 @@ void Position::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
 void Position::constructHash()
 {
     context.hash = 0;
-
-#include "zobrist.h"
-    memcpy(context.zobrist, zobrist0, sizeof(hash_t) * Board::N_LOCATIONS * PIECE_TYPE_COUNT);
 }
 
 hash_t Position::getHash()
@@ -1106,7 +1104,7 @@ hash_t Position::updateHash(int location)
     int pieceType = (boardLocations[location] & 0x30) >> 4;
 
     // 清除或者放置棋子
-    context.hash ^= context.zobrist[location][pieceType];
+    context.hash ^= zobrist[location][pieceType];
 
     return context.hash;
 }

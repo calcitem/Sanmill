@@ -43,9 +43,6 @@ public:
     // 局面的哈希值
     hash_t hash{};
 
-    // Zobrist 数组
-    hash_t zobrist[Board::N_LOCATIONS][PIECE_TYPE_COUNT]{};
-
     // 局面阶段标识
     enum phase_t phase;
 
@@ -67,7 +64,7 @@ public:
     // 玩家剩余未放置子数
     int nPiecesInHand[3]{0};
 
-    // 玩家盘面剩余子数
+    // 玩家盘面剩余子数, [0] 为两个玩家之和
     int nPiecesOnBoard[3] {0};
 
     // 尚待去除的子数

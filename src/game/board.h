@@ -110,6 +110,8 @@ public:
     // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
     int polarToLocation(int r, int s);
 
+    static void printBoard();
+
 //private:
 
     // 棋局，抽象为一个 5*8 的数组，上下两行留空

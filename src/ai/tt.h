@@ -11,6 +11,8 @@ using namespace CTSL;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
+extern const hash_t zobrist[Board::N_LOCATIONS][PIECE_TYPE_COUNT];
+
 class TranspositionTable
 {
 public:

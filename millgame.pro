@@ -26,6 +26,7 @@ SOURCES += \
     src/ai/movegen.cpp \
     src/ai/tt.cpp \
     src/base/misc.cpp \
+    src/base/zobrist.cpp \
     src/game/board.cpp \
     src/game/player.cpp \
     src/game/position.cpp \
@@ -59,6 +60,7 @@ HEADERS  += \
     src/base/thread.h \
     src/ai/search.h \
     src/ai/zobrist.h \
+    src/base/zobrist.h \
     src/game/board.h \
     src/game/player.h \
     src/game/position.h \

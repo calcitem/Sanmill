@@ -63,9 +63,6 @@
     <ClInclude Include="include\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ai\zobrist.h">
-      <Filter>ai</Filter>
-    </ClInclude>
     <ClInclude Include="src\base\stackalloc.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -116,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="src\game\player.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\zobrist.h">
+      <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="src\game\player.cpp">
       <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\zobrist.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
