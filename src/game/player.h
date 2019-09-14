@@ -45,7 +45,7 @@ public:
 
     inline static int toId(player_t who)
     {
-        return int(static_cast<int>(who) >> PLAYER_SHIFT);
+        return who == PLAYER_1 ? 1 : 2;
     }
 
     inline static player_t idToPlayer(int id)
