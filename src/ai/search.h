@@ -29,6 +29,7 @@
 //#include "StackAlloc.h"
 //#else
 #include <stack>
+#include <vector>
 //#endif
 #include <mutex>
 #include <string>
@@ -216,7 +217,7 @@ private:
 //#ifdef MEMORY_POOL
 //    StackAlloc<MillGame::PositionContext, MemoryPool<MillGame::PositionContext> > contextStack;
 //#else
-    stack<PositionContext> contextStack;
+    stack<PositionContext, vector<PositionContext> > contextStack;
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回
