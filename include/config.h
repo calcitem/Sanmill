@@ -135,6 +135,8 @@
 
 // 不使用哈希桶
 #define DISABLE_HASHBUCKET
+// 哈希表不加锁
+#define HASHMAP_NOLOCK
 
 #ifdef WIN32
 #define sscanf sscanf_s

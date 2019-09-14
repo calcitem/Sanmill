@@ -61,7 +61,9 @@ namespace CTSL //Concurrent Thread Safe Library
                 size_t hashValue = hashFn(key) & (hashSize - 1) ;
 #ifdef DISABLE_HASHBUCKET
                 // A shared mutex is used to enable multiple concurrent reads
+#ifndef HASHMAP_NOLOCK
                 std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+#endif /* HASHMAP_NOLOCK */
 
                 if (hashTable[hashValue].getKey() == key) {
                     value = hashTable[hashValue].getValue();
@@ -80,7 +82,9 @@ namespace CTSL //Concurrent Thread Safe Library
             {
                 size_t hashValue = hashFn(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
+#ifndef HASHMAP_NOLOCK
                 std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+#endif /* HASHMAP_NOLOCK */
                 hashTable[hashValue].setKey(key);
                 hashTable[hashValue].setValue(value);
 #else
@@ -151,7 +155,9 @@ namespace CTSL //Concurrent Thread Safe Library
 #endif
             const size_t hashSize;
 #ifdef DISABLE_HASHBUCKET
+#ifndef HASHMAP_NOLOCK
             mutable std::shared_timed_mutex mutex_;
+#endif /* HASHMAP_NOLOCK */
 #endif
     };
 }
