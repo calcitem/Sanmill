@@ -75,7 +75,6 @@ int TranspositionTable::recordHash(value_t value, depth_t depth, TranspositionTa
 
     //hashMapMutex.lock();
     HashValue hashValue{};
-    memset(&hashValue, 0, sizeof(HashValue));
 
     if (findHash(hash, hashValue) &&
         hashValue.type != hashfEMPTY &&

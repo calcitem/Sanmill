@@ -393,10 +393,6 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     move_t bestMove = MOVE_NONE;
 
 #if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
-    // 哈希值
-    TranspositionTable::HashValue hashValue {};
-    memset(&hashValue, 0, sizeof(hashValue));
-
     // 哈希类型
     enum TranspositionTable::HashType hashf = TranspositionTable::hashfALPHA;
 
