@@ -193,7 +193,7 @@ private:
     Game tempGameShift;
 
     // 根节点
-    Node *rootNode {nullptr};
+    Node *root {nullptr};
 
     // 结点个数;
     size_t nodeCount {0};

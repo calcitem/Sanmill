@@ -26,7 +26,7 @@
 #include "misc.h"
 
 void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
-                                  AIAlgorithm::Node *node, AIAlgorithm::Node *rootNode,
+                                  AIAlgorithm::Node *node, AIAlgorithm::Node *root,
                                   move_t bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
@@ -81,7 +81,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
                     continue;
                 }
 
-                if (tempGame.position.phase != PHASE_NOTSTARTED || node != rootNode) {
+                if (tempGame.position.phase != PHASE_NOTSTARTED || node != root) {
                     ai.addNode(node, VALUE_ZERO, (move_t)location, bestMove, tempGame.position.turn);
                 } else {
                     // 若为先手，则抢占星位

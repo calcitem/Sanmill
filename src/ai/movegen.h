@@ -35,7 +35,7 @@ public:
    
     // 生成所有合法的着法并建立子节点
     static void generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
-                                   AIAlgorithm::Node *node, AIAlgorithm::Node *rootNode,
+                                   AIAlgorithm::Node *node, AIAlgorithm::Node *root,
                                    move_t bestMove);
 
     // 生成着法表

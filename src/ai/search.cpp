@@ -49,8 +49,8 @@ AIAlgorithm::AIAlgorithm()
 
 AIAlgorithm::~AIAlgorithm()
 {
-    deleteTree(rootNode);
-    rootNode = nullptr;
+    deleteTree(root);
+    root = nullptr;
 }
 
 depth_t AIAlgorithm::changeDepth(depth_t originalDepth)
@@ -97,7 +97,7 @@ depth_t AIAlgorithm::changeDepth(depth_t originalDepth)
 
 void AIAlgorithm::buildRoot()
 {
-    rootNode = addNode(nullptr, VALUE_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
+    root = addNode(nullptr, VALUE_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
 }
 
 struct AIAlgorithm::Node *AIAlgorithm::addNode(
@@ -140,7 +140,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     newNode->player = player;
 
 #ifdef DEBUG_AB_TREE
-    newNode->root = rootNode;
+    newNode->root = root;
     newNode->phase = tempGame.position.phase;
     newNode->action = tempGame.position.action;
     newNode->evaluated = false;
@@ -278,22 +278,22 @@ void AIAlgorithm::setGame(const Game &game)
     tempGame = game;
     position = &(tempGame.position);
     requiredQuit = false;
-    deleteTree(rootNode);
+    deleteTree(root);
 #ifdef MEMORY_POOL
-    rootNode = pool.newElement();
+    root = pool.newElement();
 #else
-    rootNode = new Node;
+    root = new Node;
 #endif
-    rootNode->value = VALUE_ZERO;
-    rootNode->move = MOVE_NONE;
-    rootNode->parent = nullptr;
+    root->value = VALUE_ZERO;
+    root->move = MOVE_NONE;
+    root->parent = nullptr;
 #ifdef SORT_CONSIDER_PRUNED
-    rootNode->pruned = false;
+    root->pruned = false;
 #endif
 #ifdef DEBUG_AB_TREE
-    rootNode->action = ACTION_NONE;
-    rootNode->phase = PHASE_NONE;
-    rootNode->root = rootNode;
+    root->action = ACTION_NONE;
+    root->phase = PHASE_NONE;
+    root->root = root;
 #endif
 }
 
@@ -355,7 +355,7 @@ int AIAlgorithm::alphaBetaPruning(depth_t depth)
         TranspositionTable::clearTranspositionTable();   // 每次走子前清空哈希表
 #endif
 #endif
-        alphaBetaPruning(i, -VALUE_INFINITE, VALUE_INFINITE, rootNode);
+        alphaBetaPruning(i, -VALUE_INFINITE, VALUE_INFINITE, root);
     }
 
     timeEnd = chrono::steady_clock::now();
@@ -368,7 +368,7 @@ int AIAlgorithm::alphaBetaPruning(depth_t depth)
 #endif
 #endif
 
-    value = alphaBetaPruning(d, value_t(-VALUE_INFINITE) /* alpha */, VALUE_INFINITE /* beta */, rootNode);
+    value = alphaBetaPruning(d, value_t(-VALUE_INFINITE) /* alpha */, VALUE_INFINITE /* beta */, root);
 
     timeEnd = chrono::steady_clock::now();
     loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
@@ -408,7 +408,7 @@ value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta
 
     value_t probeVal = TranspositionTable::probeHash(hash, depth, alpha, beta, bestMove, type);
 
-    if (probeVal != INT16_MIN /* TODO: valUNKOWN */  && node != rootNode) {
+    if (probeVal != INT16_MIN /* TODO: valUNKOWN */  && node != root) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
         hashHitCount++;
 #endif
@@ -439,7 +439,7 @@ value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta
 
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
-    node->root = rootNode;
+    node->root = root;
     // node->player = position->turn;
     // 初始化
     node->isLeaf = false;
@@ -511,7 +511,7 @@ value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta
     }
 
     // 生成子节点树，即生成每个合理的着法
-    MoveList::generateLegalMoves(*this, tempGame, node, rootNode, bestMove);
+    MoveList::generateLegalMoves(*this, tempGame, node, root, bestMove);
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
@@ -639,7 +639,7 @@ const char* AIAlgorithm::bestMove()
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
 
-    if ((rootNode->children).empty()) {
+    if ((root->children).empty()) {
         return "error!";
     }
 
@@ -648,8 +648,8 @@ const char* AIAlgorithm::bestMove()
     int i = 0;
     string moves = "moves";
 
-    for (auto child : rootNode->children) {
-        if (child->value == rootNode->value
+    for (auto child : root->children) {
+        if (child->value == root->value
 #ifdef SORT_CONSIDER_PRUNED
             && !child->pruned
 #endif
@@ -669,7 +669,7 @@ const char* AIAlgorithm::bestMove()
 
         player_t whosTurn = game_.position.turn;
 
-        for (auto child : rootNode->children) {
+        for (auto child : root->children) {
             if ((whosTurn == PLAYER_1 && child->value > -VALUE_WIN) ||
                 (whosTurn == PLAYER_2 && child->value < VALUE_WIN)) {
                 isMostLose = false;
@@ -684,8 +684,8 @@ const char* AIAlgorithm::bestMove()
         }
     }
 
-    for (auto child : rootNode->children) {
-        if (child->value == rootNode->value) {
+    for (auto child : root->children) {
+        if (child->value == root->value) {
             bestMoves.push_back(child);
         }
     }
@@ -694,7 +694,7 @@ const char* AIAlgorithm::bestMove()
 
     if (bestMovesSize == 0) {
         loggerDebug("Not any child value is equal to root value\n");
-        for (auto child : rootNode->children) {
+        for (auto child : root->children) {
             bestMoves.push_back(child);
         }
     }
