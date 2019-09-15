@@ -203,7 +203,7 @@ protected:
 
 private:
     // 棋对象的数据模型
-    Game position_;
+    Game game_;
 
     // 棋对象的数据模型（临时）
     Game dummyGame;
