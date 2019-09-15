@@ -42,7 +42,7 @@ public:
     static int recordHash(value_t value, depth_t depth, HashType type, hash_t hash, move_t bestMove);
 
     // 清空置换表
-    static void clearTranspositionTable();
+    static void clear();
 };
 
 extern HashMap<hash_t, TranspositionTable::HashValue> transpositionTable;
@@ -50,4 +50,3 @@ extern HashMap<hash_t, TranspositionTable::HashValue> transpositionTable;
 #endif  // TRANSPOSITION_TABLE_ENABLE
 
 #endif /* TT_H */
-

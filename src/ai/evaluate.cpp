@@ -63,7 +63,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
             // 如果形成去子状态，每有一个可去的子，算100分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (position->turn == PLAYER_1) ?
+            nPiecesNeedRemove = (position->sideToMove == PLAYER_1) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
@@ -94,7 +94,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
         // 如果形成去子状态，每有一个可去的子，算128分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (position->turn == PLAYER_1) ?
+            nPiecesNeedRemove = (position->sideToMove == PLAYER_1) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE_2;
 #ifdef DEBUG_AB_TREE
@@ -121,10 +121,10 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
         // 走棋阶段被闷判断
         if (position->action == ACTION_CHOOSE &&
-            tempGame.position.board.isAllSurrounded(position->turn, tempGame.currentRule, position->nPiecesOnBoard, position->turn) &&
+            tempGame.position.board.isAllSurrounded(position->sideToMove, tempGame.currentRule, position->nPiecesOnBoard, position->sideToMove) &&
             tempGame.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-            value_t delta = position->turn == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
+            value_t delta = position->sideToMove == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
             value += delta;
         }
 

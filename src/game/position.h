@@ -47,13 +47,13 @@ public:
     enum phase_t phase;
 
     // 轮流状态标识
-    enum player_t turn;
-    int turnId;
-    char turnChar;
+    player_t sideToMove;
+    int sideId;
+    char chSide;
     //string turnStr;
-    enum player_t opponent;
+    player_t opponent;
     int opponentId;
-    char opponentChar;
+    char chOpponent;
     //string opponentStr;
 
     // 动作状态标识
@@ -169,7 +169,7 @@ public:
     }
 
     // 判断胜负
-    enum player_t whoWin() const
+    player_t whoWin() const
     {
         return winner;
     }
@@ -226,7 +226,7 @@ public:
     }
 
     // 计算玩家1和玩家2的棋子活动能力之差
-    int getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden);
+    int getMobilityDiff(player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden);
 
     // 游戏重置
     bool reset();
@@ -260,10 +260,10 @@ public:
     void cleanForbiddenLocations();
 
     // 设置轮流
-    void setTurn(player_t player);
+    void setSideToMove(player_t player);
 
     // 改变轮流
-    void changeTurn();
+    void changeSideToMove();
 
     // 设置提示
     void setTips();
@@ -328,7 +328,7 @@ private:
     // uint64_t hash;
 
     // 胜负标识
-    enum player_t winner;
+    player_t winner;
 
     // 当前步数
     step_t currentStep {};

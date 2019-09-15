@@ -71,7 +71,7 @@ void AiThread::setAi(const Game &game)
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clearTranspositionTable();
+    TranspositionTable::clear();
 #endif
 #endif
 
@@ -108,7 +108,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = Player::toId(game_->position.turn);
+        i = Player::toId(game_->position.sideToMove);
 
         if (i != id || waiting_) {
             pauseCondition.wait(&mutex);
@@ -120,7 +120,7 @@ void AiThread::run()
         emit calcStarted();
         mutex.unlock();
 
-        if (ai.alphaBetaPruning(aiDepth) == 3) {
+        if (ai.search(aiDepth) == 3) {
             // 三次重复局面和
             loggerDebug("Draw\n\n");
             strCommand = "draw";

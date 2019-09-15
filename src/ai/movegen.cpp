@@ -25,7 +25,7 @@
 #include "player.h"
 #include "misc.h"
 
-void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
+void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                                   AIAlgorithm::Node *node, AIAlgorithm::Node *root,
                                   move_t bestMove)
 {
@@ -65,7 +65,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
     }
 
     // 对手
-    player_t opponent = Player::getOpponent(tempGame.position.turn);
+    player_t opponent = Player::getOpponent(tempGame.position.sideToMove);
 
     // 列出所有合法的下一招
     switch (tempGame.position.action) {
@@ -82,11 +82,11 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
                 }
 
                 if (tempGame.position.phase != PHASE_NOTSTARTED || node != root) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)location, bestMove, tempGame.position.turn);
+                    ai.addNode(node, VALUE_ZERO, (move_t)location, bestMove, tempGame.position.sideToMove);
                 } else {
                     // 若为先手，则抢占星位
                     if (Board::isStarLocation(location)) {
-                        ai.addNode(node, VALUE_INFINITE, (move_t)location, bestMove, tempGame.position.turn);
+                        ai.addNode(node, VALUE_INFINITE, (move_t)location, bestMove, tempGame.position.sideToMove);
                     }
                 }
             }
@@ -105,7 +105,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
                     continue;
                 }
 
-                if (tempGame.position.nPiecesOnBoard[tempGame.position.turnId] > tempGame.currentRule.nPiecesAtLeast ||
+                if (tempGame.position.nPiecesOnBoard[tempGame.position.sideId] > tempGame.currentRule.nPiecesAtLeast ||
                     !tempGame.currentRule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
@@ -113,7 +113,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
                         newLocation = moveTable[oldLocation][direction];
                         if (newLocation && !tempGame.boardLocations[newLocation]) {
                             move_t move = move_t((oldLocation << 8) + newLocation);
-                            ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.turn); // (12%)
+                            ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.sideToMove); // (12%)
                         }
                     }
                 } else {
@@ -121,7 +121,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
                     for (newLocation = Board::LOCATION_BEGIN; newLocation < Board::LOCATION_END; newLocation++) {
                         if (!tempGame.boardLocations[newLocation]) {
                             move_t move = move_t((oldLocation << 8) + newLocation);
-                            ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.turn);
+                            ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.sideToMove);
                         }
                     }
                 }
@@ -136,7 +136,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 location = movePriorityTable[i];
                 if (tempGame.boardLocations[location] & opponent) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.turn);
+                    ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.sideToMove);
                 }
             }
             break;
@@ -147,7 +147,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
             location = movePriorityTable[i];
             if (tempGame.boardLocations[location] & opponent) {
                 if (tempGame.getRule()->allowRemoveMill || !tempGame.position.board.inHowManyMills(location)) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.turn);
+                    ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.sideToMove);
                 }
             }
         }
@@ -158,7 +158,7 @@ void MoveList::generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
     }
 }
 
-void MoveList::createMoveTable(Game &game)
+void MoveList::create(Game &game)
 {
     // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
 #if 1
@@ -374,7 +374,7 @@ void MoveList::createMoveTable(Game &game)
 #endif
 }
 
-void MoveList::shuffleMovePriorityTable(Game &game)
+void MoveList::shuffle(Game &game)
 {
     array<move_t, 4> movePriorityTable0 = { (move_t)17, (move_t)19, (move_t)21, (move_t)23 }; // 中圈四个顶点 (星位)
     array<move_t, 8> movePriorityTable1 = { (move_t)25, (move_t)27, (move_t)29, (move_t)31, (move_t)9, (move_t)11, (move_t)13, (move_t)15 }; // 外圈和内圈四个顶点

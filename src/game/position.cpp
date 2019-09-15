@@ -94,7 +94,7 @@ bool Game::configure(bool giveUpIfMostLose, bool randomMove)
 // 设置棋局状态和棋盘数据，用于初始化
 bool Game::setPosition(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
                           step_t initialStep,
-                          phase_t phase, player_t turn, action_t action,
+                          phase_t phase, player_t side, action_t action,
                           const char *locations,
                           int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
 {
@@ -118,7 +118,7 @@ bool Game::setPosition(const struct Rule *rule, step_t maxStepsLedToDraw, int ma
     position.phase = phase;
 
     // 轮流状态标识
-    setTurn(turn);
+    setSideToMove(side);
 
     // 动作状态标识
     position.action = action;
@@ -189,7 +189,7 @@ bool Game::setPosition(const struct Rule *rule, step_t maxStepsLedToDraw, int ma
     winner = PLAYER_NOBODY;
 
     // 生成着法表
-    MoveList::createMoveTable(*this);
+    MoveList::create(*this);
 
     // 生成成三表
     position.board.createMillTable(currentRule);
@@ -236,7 +236,7 @@ bool Game::reset()
     position.phase = PHASE_NOTSTARTED;
 
     // 设置轮流状态
-    setTurn(PLAYER_1);
+    setSideToMove(PLAYER_1);
 
     // 动作状态标识
     position.action = ACTION_PLACE;
@@ -317,7 +317,7 @@ bool Game::start()
     }
 }
 
-bool Game::place(int location, int time_p, int8_t rs)
+bool Game::place(int location, int time_p, int8_t updateCmdlist)
 {
     // 如果局面为“结局”，返回false
     if (position.phase == PHASE_GAMEOVER)
@@ -338,7 +338,7 @@ bool Game::place(int location, int time_p, int8_t rs)
     // 格式转换
     int r = 0;
     int s = 0;
-    position.board.locationToPolar(location, r, s);
+    Board::locationToPolar(location, r, s);
 
     // 时间的临时变量
     int player_ms = -1;
@@ -348,8 +348,8 @@ bool Game::place(int location, int time_p, int8_t rs)
     int n = 0;
 
     if (position.phase == PHASE_PLACING) {
-        int playerId = Player::toId(position.turn);
-        piece = (0x01 | position.turn) + currentRule.nTotalPiecesEachSide - position.nPiecesInHand[playerId];
+        int playerId = Player::toId(position.sideToMove);
+        piece = (0x01 | position.sideToMove) + currentRule.nTotalPiecesEachSide - position.nPiecesInHand[playerId];
         position.nPiecesInHand[playerId]--;
         position.nPiecesOnBoard[playerId]++;
 
@@ -359,7 +359,7 @@ bool Game::place(int location, int time_p, int8_t rs)
 
         move_ = static_cast<move_t>(location);
 
-        if (rs) {
+        if (updateCmdlist) {
             player_ms = update(time_p);
             sprintf(cmdline, "(%1u,%1u) %02u:%02u",
                     r, s, player_ms / 60, player_ms % 60);
@@ -386,9 +386,9 @@ bool Game::place(int location, int time_p, int8_t rs)
 
                 // 设置轮到谁走
                 if (currentRule.isDefenderMoveFirst) {
-                    setTurn(PLAYER_2);
+                    setSideToMove(PLAYER_2);
                 } else {
-                    setTurn(PLAYER_1);
+                    setSideToMove(PLAYER_1);
                 }
 
                 // 再决胜负
@@ -399,7 +399,7 @@ bool Game::place(int location, int time_p, int8_t rs)
             // 如果双方还有子
             else {
                 // 设置轮到谁走
-                changeTurn();
+                changeSideToMove();
             }
         }
         // 如果成三
@@ -422,7 +422,7 @@ bool Game::place(int location, int time_p, int8_t rs)
     // 对于中局落子 (ontext.phase == GAME_MOVING)
 
     // 如果落子不合法
-    if (position.nPiecesOnBoard[position.turnId] > currentRule.nPiecesAtLeast ||
+    if (position.nPiecesOnBoard[position.sideId] > currentRule.nPiecesAtLeast ||
         !currentRule.allowFlyWhenRemainThreePieces) {
         int i;
         for (i = 0; i < 4; i++) {
@@ -439,7 +439,7 @@ bool Game::place(int location, int time_p, int8_t rs)
     // 移子
     move_ = static_cast<move_t>((currentLocation << 8) + location);
 
-    if (rs) {
+    if (updateCmdlist) {
         player_ms = update(time_p);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentLocation / Board::N_SEATS, currentLocation % Board::N_SEATS + 1,
                 r, s, player_ms / 60, player_ms % 60);
@@ -465,7 +465,7 @@ bool Game::place(int location, int time_p, int8_t rs)
         position.action = ACTION_CHOOSE;
 
         // 设置轮到谁走
-        changeTurn();
+        changeSideToMove();
 
         // 如果决出胜负
         if (win()) {
@@ -482,7 +482,7 @@ bool Game::place(int location, int time_p, int8_t rs)
     }
 
 out:
-    if (rs) {
+    if (updateCmdlist) {
         setTips();
     }
 
@@ -492,7 +492,7 @@ out:
 bool Game::_place(int r, int s, int time_p)
 {
     // 转换为 location
-    int location = position.board.polarToLocation(r, s);
+    int location = Board::polarToLocation(r, s);
 
     return place(location, time_p, true);
 }
@@ -500,12 +500,12 @@ bool Game::_place(int r, int s, int time_p)
 bool Game::_capture(int r, int s, int time_p)
 {
     // 转换为 location
-    int location = position.board.polarToLocation(r, s);
+    int location = Board::polarToLocation(r, s);
 
     return capture(location, time_p, 1);
 }
 
-bool Game::capture(int location, int time_p, int8_t cp)
+bool Game::capture(int location, int time_p, int8_t updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (position.phase == PHASE_NOTSTARTED || position.phase == PHASE_GAMEOVER)
@@ -522,12 +522,12 @@ bool Game::capture(int location, int time_p, int8_t cp)
     // 格式转换
     int r = 0;
     int s = 0;
-    position.board.locationToPolar(location, r, s);
+    Board::locationToPolar(location, r, s);
 
     // 时间的临时变量
     int player_ms = -1;
 
-    player_t opponent = Player::getOpponent(position.turn);
+    player_t opponent = Player::getOpponent(position.sideToMove);
 
     // 判断去子是不是对手棋
     if (!(opponent & boardLocations[location]))
@@ -554,7 +554,7 @@ bool Game::capture(int location, int time_p, int8_t cp)
 
     move_ = static_cast<move_t>(-location);
 
-    if (cp) {
+    if (updateCmdlist) {
         player_ms = update(time_p);
         sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", r, s, player_ms / 60, player_ms % 60);
         cmdlist.emplace_back(string(cmdline));
@@ -597,9 +597,9 @@ bool Game::capture(int location, int time_p, int8_t cp)
 
             // 设置轮到谁走
             if (currentRule.isDefenderMoveFirst) {
-                setTurn(PLAYER_2);
+                setSideToMove(PLAYER_2);
             } else {
-                setTurn(PLAYER_1);
+                setSideToMove(PLAYER_1);
             }
 
             // 再决胜负
@@ -613,7 +613,7 @@ bool Game::capture(int location, int time_p, int8_t cp)
             position.action = ACTION_PLACE;
 
             // 设置轮到谁走
-            changeTurn();
+            changeSideToMove();
 
             // 如果决出胜负
             if (win()) {
@@ -627,7 +627,7 @@ bool Game::capture(int location, int time_p, int8_t cp)
         position.action = ACTION_CHOOSE;
 
         // 设置轮到谁走
-        changeTurn();
+        changeSideToMove();
 
         // 如果决出胜负
         if (win()) {
@@ -636,7 +636,7 @@ bool Game::capture(int location, int time_p, int8_t cp)
     }
 
 out:
-    if (cp) {
+    if (updateCmdlist) {
         setTips();
     }
 
@@ -654,9 +654,9 @@ bool Game::choose(int location)
         return false;
 
     // 判断选子是否可选
-    if (boardLocations[location] & position.turn) {
+    if (boardLocations[location] & position.sideToMove) {
         // 判断location处的棋子是否被“闷”
-        if (position.board.isSurrounded(position.turnId, currentRule, position.nPiecesOnBoard, location)) {
+        if (position.board.isSurrounded(position.sideId, currentRule, position.nPiecesOnBoard, location)) {
             return false;
         }
 
@@ -674,7 +674,7 @@ bool Game::choose(int location)
 
 bool Game::choose(int r, int s)
 {
-    return choose(position.board.polarToLocation(r, s));
+    return choose(Board::polarToLocation(r, s));
 }
 
 bool Game::giveup(player_t loser)
@@ -803,7 +803,7 @@ bool Game::command(int move)
 inline int Game::update(int time_p /*= -1*/)
 {
     int ret = -1;
-    time_t *player_ms = &elapsedSeconds[position.turnId];
+    time_t *player_ms = &elapsedSeconds[position.sideId];
     time_t playerNext_ms = elapsedSeconds[position.opponentId];
 
     // 根据局面调整计时器
@@ -912,15 +912,15 @@ bool Game::win(bool forceDraw)
     }
 
     // 如果中局被“闷”
-    if (position.phase == PHASE_MOVING && position.action == ACTION_CHOOSE && position.board.isAllSurrounded(position.turn, currentRule, position.nPiecesOnBoard, position.turn)) {
+    if (position.phase == PHASE_MOVING && position.action == ACTION_CHOOSE && position.board.isAllSurrounded(position.sideToMove, currentRule, position.nPiecesOnBoard, position.sideToMove)) {
         // 规则要求被“闷”判负，则对手获胜
         position.phase = PHASE_GAMEOVER;
 
         if (currentRule.isLoseWhenNoWay) {
-            tips = "玩家" + Player::chToStr(position.turnChar) + "无子可走被闷";
-            winner = Player::getOpponent(position.turn);
+            tips = "玩家" + Player::chToStr(position.chSide) + "无子可走被闷";
+            winner = Player::getOpponent(position.sideToMove);
             int winnerId = Player::toId(winner);
-            sprintf(cmdline, "Player%d no way to go. Player%d win!", position.turnId, winnerId);
+            sprintf(cmdline, "Player%d no way to go. Player%d win!", position.sideId, winnerId);
             cmdlist.emplace_back(string(cmdline));
 #ifdef BOOK_LEARNING
             MillGameAi_ab::recordOpeningBookToHashMap();  // TODO: 目前是对所有的失败记录到开局库
@@ -930,7 +930,7 @@ bool Game::win(bool forceDraw)
         }
 
         // 否则让棋，由对手走
-        changeTurn();
+        changeSideToMove();
 
         return false;
     }
@@ -951,7 +951,7 @@ bool Game::win(bool forceDraw)
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int Game::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden)
+int Game::getMobilityDiff(player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden)
 {
     int *locations = boardLocations;
     int mobility1 = 0;
@@ -990,30 +990,30 @@ void Game::cleanForbiddenLocations()
     }
 }
 
-void Game::setTurn(player_t player)
+void Game::setSideToMove(player_t player)
 {
     // 设置轮到谁走
-    position.turn = player;
+    position.sideToMove = player;
 
-    position.turnId = Player::toId(position.turn);
-    position.turnChar = Player::idToCh(position.turnId);
+    position.sideId = Player::toId(position.sideToMove);
+    position.chSide = Player::idToCh(position.sideId);
 
     position.opponent = Player::getOpponent(player);
 
     position.opponentId = Player::toId(position.opponent);
-    position.opponentChar = Player::idToCh(position.opponentId);
+    position.chOpponent = Player::idToCh(position.opponentId);
 }
 
-void Game::changeTurn()
+void Game::changeSideToMove()
 {
-    setTurn(Player::getOpponent(position.turn));
+    setSideToMove(Player::getOpponent(position.sideToMove));
 }
 
 void Game::setTips()
 {
     string winnerStr, t;
     int winnerId;
-    string turnStr = Player::chToStr(position.turnChar);
+    string turnStr = Player::chToStr(position.chSide);
 
     switch (position.phase) {
     case PHASE_NOTSTARTED:
@@ -1023,7 +1023,7 @@ void Game::setTips()
 
     case PHASE_PLACING:
         if (position.action == ACTION_PLACE) {
-            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(position.nPiecesInHand[position.turnId]) + "子";
+            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(position.nPiecesInHand[position.sideId]) + "子";
         } else if (position.action == ACTION_CAPTURE) {
             tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(position.nPiecesNeedRemove) + "子";
         }
@@ -1120,7 +1120,7 @@ hash_t Game::updateHashMisc()
 
     // 置位
 
-    if (position.turn == PLAYER_2) {
+    if (position.sideToMove == PLAYER_2) {
         position.hash |= 1U;
     }
 

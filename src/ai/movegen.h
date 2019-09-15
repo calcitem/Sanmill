@@ -34,15 +34,15 @@ public:
     MoveList &operator=(const MoveList &) = delete;
    
     // 生成所有合法的着法并建立子节点
-    static void generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
+    static void generate(AIAlgorithm &ai, Game &tempGame,
                                    AIAlgorithm::Node *node, AIAlgorithm::Node *root,
                                    move_t bestMove);
 
     // 生成着法表
-    static void createMoveTable(Game &game);
+    static void create(Game &game);
 
     // 随机打乱着法搜索顺序
-    static void shuffleMovePriorityTable(Game &game);
+    static void shuffle(Game &game);
 
     // 着法表 // TODO: Move to private
     inline static move_t moveTable[Board::N_LOCATIONS][DIRECTIONS_COUNT] = { {MOVE_NONE} };

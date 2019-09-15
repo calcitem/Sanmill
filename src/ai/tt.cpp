@@ -94,7 +94,7 @@ int TranspositionTable::recordHash(value_t value, depth_t depth, TranspositionTa
     return 0;
 }
 
-void TranspositionTable::clearTranspositionTable()
+void TranspositionTable::clear()
 {
     transpositionTable.clear();
 }

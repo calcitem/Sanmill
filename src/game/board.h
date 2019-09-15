@@ -63,40 +63,40 @@ public:
     static int millTable[N_LOCATIONS][LINE_TYPES_COUNT][N_RINGS - 1];
 
     // 生成成三表
-    void createMillTable(const Rule &currentRule);
+    void createMillTable(const Rule &rule);
 
     // 局面左右镜像
-    void mirror(list <string> &cmdlist, char *cmdline, int32_t move_, struct Rule &currentRule, int currentPos, bool cmdChange = true);
+    void mirror(list <string> &cmdlist, char *cmdline, int32_t move_, struct Rule &rule, int currentPos, bool cmdChange = true);
 
     // 局面内外翻转
-    void turn(list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &currentRule, int currentPos, bool cmdChange = true);
+    void turn(list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &rule, int currentPos, bool cmdChange = true);
 
     // 局面逆时针旋转
-    void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &currentRule, int currentPos, bool cmdChange = true);
+    void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &rule, int currentPos, bool cmdChange = true);
 
     // 判断棋盘location处的棋子处于几个“三连”中
     int inHowManyMills(int location);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
-    bool isAllInMills(enum player_t);
+    bool isAllInMills(player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(int turnId, const Rule &currentRule, int nPiecesOnBoard[], int location, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(int sideId, const Rule &rule, int nPiecesOnBoard[], int location, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
-    bool isSurrounded(int turnId, const Rule &currentRule, int nPiecesOnBoard[], int location);
+    bool isSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], int location);
 
     // 判断玩家的棋子是否全部被围
-    bool isAllSurrounded(int turnId, const Rule &currentRule, int nPiecesOnBoard[], char ch);
+    bool isAllSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], char ch);
 
-    bool isAllSurrounded(int turnId, const Rule &currentRule, int nPiecesOnBoard[], enum player_t ply);
+    bool isAllSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], player_t ply);
 
     // 三连加入列表
-    int addMills(const Rule &currentRule, int location);
+    int addMills(const Rule &rule, int location);
 
 #if 0
     // 获取位置点棋子的归属人
-    enum player_t getWhosPiece(int r, int s);
+    player_t getWhosPiece(int r, int s);
 
     bool getPieceRS(const player_t &player, const int &number, int &r, int &s, struct Rule &currentRule);
 #endif
@@ -105,10 +105,10 @@ public:
     bool getCurrentPiece(player_t &player, int &number, int currentPos);
 
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
-    void locationToPolar(int location, int &r, int &s);
+    static void locationToPolar(int location, int &r, int &s);
 
     // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
-    int polarToLocation(int r, int s);
+    static int polarToLocation(int r, int s);
 
     static void printBoard();
 

@@ -53,9 +53,9 @@ AIAlgorithm::~AIAlgorithm()
     root = nullptr;
 }
 
-depth_t AIAlgorithm::changeDepth(depth_t originalDepth)
+depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 {
-    depth_t newDepth = originalDepth;
+    depth_t newDepth = origDepth;
 
     if ((tempGame.position.phase) & (PHASE_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
@@ -105,7 +105,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     value_t value,
     move_t move,
     move_t bestMove,
-    enum player_t player
+    player_t side
 )
 {
 #ifdef MEMORY_POOL
@@ -137,7 +137,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 #endif
 #endif
 
-    newNode->player = player;
+    newNode->sideToMove = side;
 
 #ifdef DEBUG_AB_TREE
     newNode->root = root;
@@ -228,11 +228,11 @@ bool AIAlgorithm::nodeGreater(const Node *first, const Node *second)
 #endif
 }
 
-void AIAlgorithm::sortLegalMoves(Node *node)
+void AIAlgorithm::sortMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    auto cmp = tempGame.position.turn == PLAYER_1 ? nodeGreater : nodeLess;
+    auto cmp = tempGame.position.sideToMove == PLAYER_1 ? nodeGreater : nodeLess;
 
     std::stable_sort(node->children.begin(), node->children.end(), cmp);
 }
@@ -262,7 +262,7 @@ void AIAlgorithm::setGame(const Game &game)
     // 如果规则改变，重建hashmap
     if (strcmp(this->game_.currentRule.name, game.currentRule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-        TranspositionTable::clearTranspositionTable();
+        TranspositionTable::clear();
 #endif // TRANSPOSITION_TABLE_ENABLE
 
 #ifdef BOOK_LEARNING
@@ -297,7 +297,7 @@ void AIAlgorithm::setGame(const Game &game)
 #endif
 }
 
-int AIAlgorithm::alphaBetaPruning(depth_t depth)
+int AIAlgorithm::search(depth_t depth)
 {
     value_t value = VALUE_ZERO;
 
@@ -306,7 +306,7 @@ int AIAlgorithm::alphaBetaPruning(depth_t depth)
     time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
 
-    chrono::steady_clock::time_point timeStart = chrono::steady_clock::now();
+    auto timeStart = chrono::steady_clock::now();
     chrono::steady_clock::time_point timeEnd;
 
 #ifdef BOOK_LEARNING
@@ -345,17 +345,17 @@ int AIAlgorithm::alphaBetaPruning(depth_t depth)
 #endif // THREEFOLD_REPETITION
 
     // 随机打乱着法顺序
-    MoveList::shuffleMovePriorityTable(game_);   
+    MoveList::shuffle(game_);   
 
 #ifdef IDS_SUPPORT
     // 深化迭代
     for (depth_t i = 2; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-        TranspositionTable::clearTranspositionTable();   // 每次走子前清空哈希表
+        TranspositionTable::clear();   // 每次走子前清空哈希表
 #endif
 #endif
-        alphaBetaPruning(i, -VALUE_INFINITE, VALUE_INFINITE, root);
+        search(i, -VALUE_INFINITE, VALUE_INFINITE, root);
     }
 
     timeEnd = chrono::steady_clock::now();
@@ -364,11 +364,11 @@ int AIAlgorithm::alphaBetaPruning(depth_t depth)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clearTranspositionTable();  // 每次走子前清空哈希表
+    TranspositionTable::clear();  // 每次走子前清空哈希表
 #endif
 #endif
 
-    value = alphaBetaPruning(d, value_t(-VALUE_INFINITE) /* alpha */, VALUE_INFINITE /* beta */, root);
+    value = search(d, value_t(-VALUE_INFINITE) /* alpha */, VALUE_INFINITE /* beta */, root);
 
     timeEnd = chrono::steady_clock::now();
     loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
@@ -378,7 +378,7 @@ int AIAlgorithm::alphaBetaPruning(depth_t depth)
     return 0;
 }
 
-value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node)
+value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *node)
 {
     // 评价值
     value_t value;
@@ -483,7 +483,7 @@ value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        value_t delta = value_t(position->turn == PLAYER_1 ? depth : -depth);
+        value_t delta = value_t(position->sideToMove == PLAYER_1 ? depth : -depth);
         node->value += delta;
 
 #ifdef DEBUG_AB_TREE
@@ -511,11 +511,11 @@ value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta
     }
 
     // 生成子节点树，即生成每个合理的着法
-    MoveList::generateLegalMoves(*this, tempGame, node, root, bestMove);
+    MoveList::generate(*this, tempGame, node, root, bestMove);
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = tempGame.position.turn == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = tempGame.position.sideToMove == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
         // 棋局入栈保存，以便后续撤销着法
@@ -540,13 +540,13 @@ value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta
 #endif /* DEEPER_IF_ONLY_ONE_LEGAL_MOVE */
 
         // 递归 Alpha-Beta 剪枝
-        value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
+        value = search(depth - 1 + epsilon, alpha, beta, child);
 
         // 棋局弹出栈，撤销着法
         tempGame.position = positionStack.top();
         positionStack.pop();
 
-        if (tempGame.position.turn == PLAYER_1) {
+        if (tempGame.position.sideToMove == PLAYER_1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -622,7 +622,7 @@ value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta
 
 #ifdef IDS_SUPPORT
     // 排序子节点树
-    sortLegalMoves(node);
+    sortMoves(node);
 #endif // IDS_SUPPORT
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -654,9 +654,9 @@ const char* AIAlgorithm::bestMove()
             && !child->pruned
 #endif
             ) {
-            loggerDebug("[%.2d] %d\t%s\t%d *\n", i, child->move, move2string(child->move), child->value);
+            loggerDebug("[%.2d] %d\t%s\t%d *\n", i, child->move, moveToCommand(child->move), child->value);
         } else {
-            loggerDebug("[%.2d] %d\t%s\t%d\n", i, child->move, move2string(child->move), child->value);
+            loggerDebug("[%.2d] %d\t%s\t%d\n", i, child->move, moveToCommand(child->move), child->value);
         }
 
         i++;
@@ -667,7 +667,7 @@ const char* AIAlgorithm::bestMove()
     if (game_.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
-        player_t whosTurn = game_.position.turn;
+        player_t whosTurn = game_.position.sideToMove;
 
         for (auto child : root->children) {
             if ((whosTurn == PLAYER_1 && child->value > -VALUE_WIN) ||
@@ -679,7 +679,7 @@ const char* AIAlgorithm::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            sprintf(cmdline, "Player%d give up!", game_.position.turnId);
+            sprintf(cmdline, "Player%d give up!", game_.position.sideId);
             return cmdline;
         }
     }
@@ -714,23 +714,23 @@ const char* AIAlgorithm::bestMove()
         return nullptr;
     }
 
-    return move2string(bestMoves[0]->move);
+    return moveToCommand(bestMoves[0]->move);
 }
 
-const char *AIAlgorithm::move2string(move_t move)
+const char *AIAlgorithm::moveToCommand(move_t move)
 {
     int r, s;
 
     if (move < 0) {
-        tempGame.position.board.locationToPolar(-move, r, s);
+        Board::locationToPolar(-move, r, s);
         sprintf(cmdline, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        tempGame.position.board.locationToPolar(move >> 8, r1, s1);
-        tempGame.position.board.locationToPolar(move & 0x00ff, r, s);
+        Board::locationToPolar(move >> 8, r1, s1);
+        Board::locationToPolar(move & 0x00ff, r, s);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        tempGame.position.board.locationToPolar(move & 0x007f, r, s);
+        Board::locationToPolar(move & 0x007f, r, s);
         sprintf(cmdline, "(%1u,%1u)", r, s);
     }
 
@@ -739,12 +739,12 @@ const char *AIAlgorithm::move2string(move_t move)
 
 #ifdef BOOK_LEARNING
 
-bool MillGameAi_ab::findBookHash(hash_t hash, HashValue &hashValue)
+bool AIAlgorithm::findBookHash(hash_t hash, HashValue &hashValue)
 {
     return bookHashMap.find(hash, hashValue);
 }
 
-int MillGameAi_ab::recordBookHash(hash_t hash, const HashValue &hashValue)
+int AIAlgorithm::recordBookHash(hash_t hash, const HashValue &hashValue)
 {
     //hashMapMutex.lock();
     bookHashMap.insert(hash, hashValue);
@@ -753,14 +753,14 @@ int MillGameAi_ab::recordBookHash(hash_t hash, const HashValue &hashValue)
     return 0;
 }
 
-void MillGameAi_ab::clearBookHashMap()
+void AIAlgorithm::clearBookHashMap()
 {
     //hashMapMutex.lock();
     bookHashMap.clear();
     //hashMapMutex.unlock();
 }
 
-void MillGameAi_ab::recordOpeningBookToHashMap()
+void AIAlgorithm::recordOpeningBookToHashMap()
 {
     HashValue hashValue;
     hash_t hash = 0;
@@ -780,13 +780,13 @@ void MillGameAi_ab::recordOpeningBookToHashMap()
     openingBook.clear();
 }
 
-void MillGameAi_ab::recordOpeningBookHashMapToFile()
+void AIAlgorithm::recordOpeningBookHashMapToFile()
 {
     const QString bookFileName = "opening-book.txt";
     bookHashMap.dump(bookFileName);
 }
 
-void MillGameAi_ab::loadOpeningBookFileToHashMap()
+void AIAlgorithm::loadOpeningBookFileToHashMap()
 {
     const QString bookFileName = "opening-book.txt";
     bookHashMap.load(bookFileName);

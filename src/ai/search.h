@@ -19,8 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#ifndef MILLGAMEAI_AB
-#define MILLGAMEAI_AB
+#ifndef SEARCH_H
+#define SEARCH_H
 
 #include "config.h"
 
@@ -61,7 +61,7 @@ public:
         struct Node* parent {};            // 父节点
         move_t move {};                  // 着法的命令行指令，图上标示为节点前的连线
         value_t value {};                 // 节点的值
-        enum player_t player;  // 此着是谁下的 (目前仅调试用)
+        player_t sideToMove;  // 此着是谁下的 (目前仅调试用)
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned {};                    // 是否在此处剪枝
 #endif
@@ -106,7 +106,7 @@ public:
     }
 
     // Alpha-Beta剪枝算法
-    int alphaBetaPruning(depth_t depth);
+    int search(depth_t depth);
 
     // 返回最佳走法的命令行
     const char *bestMove();
@@ -133,11 +133,11 @@ public: /* TODO: Move to private or protected */
     // 增加新节点
     struct Node *addNode(Node *parent, value_t value,
                          move_t move, move_t bestMove,
-                         enum player_t player);
+                         player_t side);
 
 protected:
     // 对合法的着法降序排序
-    void sortLegalMoves(Node *node);
+    void sortMoves(Node *node);
 
     // 清空节点树
     void deleteTree(Node *node);
@@ -172,13 +172,13 @@ protected:
 #endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
-    value_t alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node);
+    value_t search(depth_t depth, value_t alpha, value_t beta, Node *node);
 
     // 返回着法的命令行
-    const char *move2string(move_t move);
+    const char *moveToCommand(move_t move);
 
     // 篡改深度
-    depth_t changeDepth(depth_t originalDepth);
+    depth_t changeDepth(depth_t origDepth);
        
 private:
     // 原始模型
@@ -234,4 +234,4 @@ private:
 extern vector<hash_t> history;
 #endif
 
-#endif
+#endif /* SEARCH_H */

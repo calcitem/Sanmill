@@ -43,9 +43,9 @@ public:
         return id;
     }
 
-    inline static int toId(player_t who)
+    inline static int toId(player_t player)
     {
-        return who == PLAYER_1 ? 1 : 2;
+        return player == PLAYER_1 ? 1 : 2;
     }
 
     inline static player_t idToPlayer(int id)
