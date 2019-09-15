@@ -103,7 +103,7 @@ public:
     bool configure(bool giveUpIfMostLose, bool randomMove);
 
     // 设置棋局状态和棋局，用于初始化
-    bool setContext(const struct Rule *rule,
+    bool setPosition(const struct Rule *rule,
                  step_t maxStepsLedToDraw = 0,     // 限制步数
                  int maxTimeLedToLose = 0,      // 限制时间
                  step_t initialStep = 0,           // 默认起始步数为0

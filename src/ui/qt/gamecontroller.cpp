@@ -280,7 +280,7 @@ void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLi
     }
 
     // 设置模型规则，重置游戏
-    game_.setContext(&RULES[ruleNo], stepsLimit, timeLimit);
+    game_.setPosition(&RULES[ruleNo], stepsLimit, timeLimit);
     dummyGame = game_;
 
     // 重置游戏

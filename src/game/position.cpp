@@ -40,7 +40,7 @@ Game::Game()
 #endif
 
     // 默认选择第1号规则，即“打三棋”
-    setContext(&RULES[1]);
+    setPosition(&RULES[1]);
 
     // 比分归零
     score[1] = score[2] = score_draw = 0;
@@ -92,7 +92,7 @@ bool Game::configure(bool giveUpIfMostLose, bool randomMove)
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool Game::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
+bool Game::setPosition(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
                           step_t initialStep,
                           phase_t phase, player_t turn, action_t action,
                           const char *locations,
@@ -718,7 +718,7 @@ bool Game::command(const char *cmd)
             return false;
         }
 
-        return setContext(&RULES[r - 1], s, t);
+        return setPosition(&RULES[r - 1], s, t);
     }
 
     // 选子移动
