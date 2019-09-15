@@ -55,21 +55,67 @@ AIAlgorithm::~AIAlgorithm()
 
 depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 {
-    depth_t newDepth = origDepth;
+    depth_t d = origDepth;
 
-    const depth_t placingDepthTable[] = { 6, 14, 15, 16, 16, 16, 16, 14, 12, 12, 9, 7, 1 };
+#ifdef _DEBUG
+    // 当 VC 下编译为 Debug 时
+    depth_t reduce = 4;
+#else
+    depth_t reduce = 0;
+#endif
+
+    const depth_t placingDepthTable[] = {
+        6, 14, 15, 16,      /* 0 ~ 3 */
+        17, 16, 16, 14,     /* 4 ~ 7 */
+        12, 12, 9, 7, 1     /* 8 ~ 12 */
+    };
+
+    const depth_t movingDepthTable[] = {
+         1,  1,  1,  1,     /* 0 ~ 3 */
+         1,  1, 11, 11,     /* 4 ~ 7 */
+        11, 11, 11, 11,     /* 8 ~ 11 */
+        11, 11, 11, 11,     /* 12 ~ 15 */
+        11, 11, 11, 11,     /* 16 ~ 19 */
+        12, 12, 13, 14,     /* 20 ~ 23 */
+    };
+
+    const depth_t movingDiffDepthTable[] = {
+        0, 0, 11,               /* 0 ~ 2 */
+        10, 9, 8,               /* 3 ~ 5 */
+        7, 6, 5, 4, 3, 2, 1     /* 6 ~ 12 */
+    };
 
     if ((tempGame.position.phase) & (PHASE_PLACING)) {
-        newDepth = placingDepthTable[tempGame.getPiecesInHandCount(1)];
+        d = placingDepthTable[tempGame.getPiecesInHandCount(1)];
     }
 
     if ((tempGame.position.phase) & (PHASE_MOVING)) {
-        newDepth = 11;
+        int p1 = tempGame.getPiecesOnBoardCount(1);
+        int p2 = tempGame.getPiecesOnBoardCount(2);
+
+        int pieces = p1 + p2;
+        int diff = p1 - p2;
+
+        if (diff < 0) {
+            diff = -diff;
+        }
+
+        d = movingDiffDepthTable[diff];
+
+        if (d == 0) {
+            d = movingDepthTable[pieces];
+        }
     }
 
-    loggerDebug("Depth: %d\n", newDepth);
+    // Debug 下调低深度
+    if (d > reduce)
+    {
+        d -= reduce;
+    }
 
-    return newDepth;
+    loggerDebug("Depth: %d\n", d);
+
+    return d;
 }
 
 void AIAlgorithm::buildRoot()
