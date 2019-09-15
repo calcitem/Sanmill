@@ -64,7 +64,7 @@ Position &Position::operator= (const Position &position)
     moveStep = position.moveStep;
     isRandomMove = position.isRandomMove;
     giveUpIfMostLose_ = position.giveUpIfMostLose_;
-    boardLocations = boardLocations;
+    boardLocations = context.board.locations;
     currentLocation = position.currentLocation;
     winner = position.winner;
     startTime = position.startTime;
@@ -125,10 +125,10 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
 
     // 当前棋局（3×8）
     if (locations == nullptr) {
-        memset(boardLocations, 0, sizeof(boardLocations));
+        memset(boardLocations, 0, sizeof(context.board.locations));
         context.hash = 0;
     } else {
-        memcpy(boardLocations, locations, sizeof(boardLocations));
+        memcpy(boardLocations, locations, sizeof(context.board.locations));
     }
 
     // 计算盘面子数
