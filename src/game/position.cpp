@@ -997,13 +997,11 @@ void Game::setTurn(player_t player)
 
     position.turnId = Player::toId(position.turn);
     position.turnChar = Player::idToCh(position.turnId);
-    //context.turnStr = Player::chToStr(context.turnChar);
 
     position.opponent = Player::getOpponent(player);
 
     position.opponentId = Player::toId(position.opponent);
     position.opponentChar = Player::idToCh(position.opponentId);
-    //context.opponentStr = Player::chToStr(context.opponentChar);
 }
 
 void Game::changeTurn()

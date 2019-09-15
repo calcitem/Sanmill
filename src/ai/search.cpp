@@ -519,7 +519,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
     for (auto child : node->children) {
         // 棋局入栈保存，以便后续撤销着法
-        contextStack.push(dummyGame.position);
+        positionStack.push(dummyGame.position);
 
         // 执行着法
         dummyGame.command(child->move);
@@ -543,8 +543,8 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
         // 棋局弹出栈，撤销着法
-        dummyGame.position = contextStack.top();
-        contextStack.pop();
+        dummyGame.position = positionStack.top();
+        positionStack.pop();
 
         if (dummyGame.position.turn == PLAYER_1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价

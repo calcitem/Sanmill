@@ -215,9 +215,9 @@ private:
 
     // 局面数据栈
 //#ifdef MEMORY_POOL
-//    StackAlloc<MillGame::Position, MemoryPool<MillGame::Position> > contextStack;
+//    StackAlloc<MillGame::Position, MemoryPool<MillGame::Position> > positionStack;
 //#else
-    stack<Position, vector<Position> > contextStack;
+    stack<Position, vector<Position> > positionStack;
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回
