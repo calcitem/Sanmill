@@ -50,7 +50,7 @@ using namespace CTSL;
 // 另外，AI类是MillGame类的友元类，可以访问其私有变量
 // 尽量不要使用MillGame的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
 
-class MillGameAi_ab
+class AIAlgorithm
 {
 public:
     // 定义一个节点结构体
@@ -94,8 +94,8 @@ public:
 #endif
 
 public:
-    MillGameAi_ab();
-    ~MillGameAi_ab();
+    AIAlgorithm();
+    ~AIAlgorithm();
 
     void setGame(const Game &game);
 

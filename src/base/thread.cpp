@@ -66,7 +66,7 @@ void AiThread::setAi(const Game &game)
     mutex.lock();
 
     this->game_ = &game;
-    ai_ab.setGame(*(this->game_));
+    ai.setGame(*(this->game_));
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
@@ -82,7 +82,7 @@ void AiThread::setAi(const Game &game, depth_t depth, int time)
 {
     mutex.lock();
     this->game_ = &game;
-    ai_ab.setGame(game);
+    ai.setGame(game);
     aiDepth = depth;
     aiTime = time;
     mutex.unlock();
@@ -116,17 +116,17 @@ void AiThread::run()
             continue;
         }
 
-        ai_ab.setGame(*game_);
+        ai.setGame(*game_);
         emit calcStarted();
         mutex.unlock();
 
-        if (ai_ab.alphaBetaPruning(aiDepth) == 3) {
+        if (ai.alphaBetaPruning(aiDepth) == 3) {
             // 三次重复局面和
             loggerDebug("Draw\n\n");
             strCommand = "draw";
             QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
         } else {
-            strCommand = ai_ab.bestMove();
+            strCommand = ai.bestMove();
             if (strCommand && strcmp(strCommand, "error!") != 0) {
                 loggerDebug("Computer: %s\n\n", strCommand);
                 QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
@@ -153,7 +153,7 @@ void AiThread::act()
 
     mutex.lock();
     waiting_ = false;
-    ai_ab.quit();
+    ai.quit();
     mutex.unlock();
 }
 
@@ -181,7 +181,7 @@ void AiThread::stop()
         requestInterruption();
         mutex.lock();
         waiting_ = false;
-        ai_ab.quit();
+        ai.quit();
         pauseCondition.wakeAll();
         mutex.unlock();
     }

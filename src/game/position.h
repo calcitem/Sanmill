@@ -77,7 +77,7 @@ public:
 class Game
 {
     // AI友元类
-    friend class MillGameAi_ab;
+    friend class AIAlgorithm;
 
 public:
     // 赢盘数

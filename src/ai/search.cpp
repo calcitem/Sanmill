@@ -42,18 +42,18 @@ vector<hash_t> openingBook;
 // 用于检测重复局面 (Position)
 vector<hash_t> history;
 
-MillGameAi_ab::MillGameAi_ab()
+AIAlgorithm::AIAlgorithm()
 {
     buildRoot();
 }
 
-MillGameAi_ab::~MillGameAi_ab()
+AIAlgorithm::~AIAlgorithm()
 {
     deleteTree(rootNode);
     rootNode = nullptr;
 }
 
-depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
+depth_t AIAlgorithm::changeDepth(depth_t originalDepth)
 {
     depth_t newDepth = originalDepth;
 
@@ -95,12 +95,12 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
     return newDepth;
 }
 
-void MillGameAi_ab::buildRoot()
+void AIAlgorithm::buildRoot()
 {
     rootNode = addNode(nullptr, VALUE_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
 }
 
-struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
+struct AIAlgorithm::Node *AIAlgorithm::addNode(
     Node *parent,
     value_t value,
     move_t move,
@@ -192,7 +192,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     return newNode;
 }
 
-bool MillGameAi_ab::nodeLess(const Node *first, const Node *second)
+bool AIAlgorithm::nodeLess(const Node *first, const Node *second)
 {
 #ifdef SORT_CONSIDER_PRUNED
     if (first->value < second->value) {
@@ -210,7 +210,7 @@ bool MillGameAi_ab::nodeLess(const Node *first, const Node *second)
 #endif
 }
 
-bool MillGameAi_ab::nodeGreater(const Node *first, const Node *second)
+bool AIAlgorithm::nodeGreater(const Node *first, const Node *second)
 {
 #ifdef SORT_CONSIDER_PRUNED
     if (first->value > second->value) {
@@ -228,7 +228,7 @@ bool MillGameAi_ab::nodeGreater(const Node *first, const Node *second)
 #endif
 }
 
-void MillGameAi_ab::sortLegalMoves(Node *node)
+void AIAlgorithm::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
@@ -237,7 +237,7 @@ void MillGameAi_ab::sortLegalMoves(Node *node)
     std::stable_sort(node->children.begin(), node->children.end(), cmp);
 }
 
-void MillGameAi_ab::deleteTree(Node *node)
+void AIAlgorithm::deleteTree(Node *node)
 {
     // 递归删除节点树
     if (node == nullptr) {
@@ -257,7 +257,7 @@ void MillGameAi_ab::deleteTree(Node *node)
 #endif  
 }
 
-void MillGameAi_ab::setGame(const Game &game)
+void AIAlgorithm::setGame(const Game &game)
 {
     // 如果规则改变，重建hashmap
     if (strcmp(this->game_.currentRule.name, game.currentRule.name) != 0) {
@@ -297,7 +297,7 @@ void MillGameAi_ab::setGame(const Game &game)
 #endif
 }
 
-int MillGameAi_ab::alphaBetaPruning(depth_t depth)
+int AIAlgorithm::alphaBetaPruning(depth_t depth)
 {
     value_t value = VALUE_ZERO;
 
@@ -378,7 +378,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
     return 0;
 }
 
-value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node)
+value_t AIAlgorithm::alphaBetaPruning(depth_t depth, value_t alpha, value_t beta, Node *node)
 {
     // 评价值
     value_t value;
@@ -634,7 +634,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     return node->value;
 }
 
-const char* MillGameAi_ab::bestMove()
+const char* AIAlgorithm::bestMove()
 {
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
@@ -717,7 +717,7 @@ const char* MillGameAi_ab::bestMove()
     return move2string(bestMoves[0]->move);
 }
 
-const char *MillGameAi_ab::move2string(move_t move)
+const char *AIAlgorithm::move2string(move_t move)
 {
     int r, s;
 

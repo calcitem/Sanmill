@@ -112,8 +112,8 @@ private:
     // 主线程棋对象的引用
     const Game *game_;
 
-    // Alpha-Beta剪枝算法类
-    MillGameAi_ab ai_ab;
+    // AI 算法类
+    AIAlgorithm ai;
 
     // AI的层数
     depth_t aiDepth;
