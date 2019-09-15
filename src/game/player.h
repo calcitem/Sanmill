@@ -50,7 +50,7 @@ public:
 
     inline static player_t idToPlayer(int id)
     {
-        return player_t(id << PLAYER_SHIFT);
+        return id == 1? PLAYER_1 : PLAYER_2;
     }
 
     inline static char idToCh(int id)

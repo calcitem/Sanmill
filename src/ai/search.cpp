@@ -679,7 +679,7 @@ const char* MillGameAi_ab::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            sprintf(cmdline, "Player%d give up!", position_.context.turnChar);
+            sprintf(cmdline, "Player%d give up!", position_.context.turnId);
             return cmdline;
         }
     }

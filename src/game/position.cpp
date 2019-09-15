@@ -704,7 +704,8 @@ bool Position::giveup(player_t loser)
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
 bool Position::command(const char *cmd)
 {
-    int r, t;
+    int r;
+    unsigned t;
     step_t s;
     int r1, s1, r2, s2;
     int args = 0;
