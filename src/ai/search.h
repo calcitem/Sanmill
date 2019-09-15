@@ -182,7 +182,7 @@ protected:
        
 private:
     // 原始模型
-    Game position_;
+    Game game_;
 
     // 演算用的模型
     Game dummyGame;

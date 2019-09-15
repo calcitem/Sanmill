@@ -260,7 +260,7 @@ void MillGameAi_ab::deleteTree(Node *node)
 void MillGameAi_ab::setGame(const Game &game)
 {
     // 如果规则改变，重建hashmap
-    if (strcmp(this->position_.currentRule.name, game.currentRule.name) != 0) {
+    if (strcmp(this->game_.currentRule.name, game.currentRule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
         TranspositionTable::clearTranspositionTable();
 #endif // TRANSPOSITION_TABLE_ENABLE
@@ -274,7 +274,7 @@ void MillGameAi_ab::setGame(const Game &game)
         history.clear();
     }
 
-    this->position_ = game;
+    this->game_ = game;
     dummyGame = game;
     positionContext = &(dummyGame.context);
     requiredQuit = false;
@@ -325,8 +325,8 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (position_.getPhase() == PHASE_MOVING) {
-        hash_t hash = position_.getHash();
+    if (game_.getPhase() == PHASE_MOVING) {
+        hash_t hash = game_.getHash();
         
         if (std::find(history.begin(), history.end(), hash) != history.end()) {
             nRepetition++;
@@ -339,13 +339,13 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
         }
     }
 
-    if (position_.getPhase() == PHASE_PLACING) {
+    if (game_.getPhase() == PHASE_PLACING) {
         history.clear();
     }
 #endif // THREEFOLD_REPETITION
 
     // 随机打乱着法顺序
-    MoveList::shuffleMovePriorityTable(position_);   
+    MoveList::shuffleMovePriorityTable(game_);   
 
 #ifdef IDS_SUPPORT
     // 深化迭代
@@ -664,10 +664,10 @@ const char* MillGameAi_ab::bestMove()
 
     // 检查是否必败
 
-    if (position_.getGiveUpIfMostLose() == true) {
+    if (game_.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
-        player_t whosTurn = position_.context.turn;
+        player_t whosTurn = game_.context.turn;
 
         for (auto child : rootNode->children) {
             if ((whosTurn == PLAYER_1 && child->value > -VALUE_WIN) ||
@@ -679,7 +679,7 @@ const char* MillGameAi_ab::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            sprintf(cmdline, "Player%d give up!", position_.context.turnId);
+            sprintf(cmdline, "Player%d give up!", game_.context.turnId);
             return cmdline;
         }
     }
