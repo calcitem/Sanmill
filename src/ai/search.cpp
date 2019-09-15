@@ -57,38 +57,15 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 {
     depth_t newDepth = origDepth;
 
+    const depth_t placingDepthTable[] = { 6, 14, 15, 16, 16, 16, 16, 14, 12, 12, 9, 7, 1 };
+
     if ((tempGame.position.phase) & (PHASE_PLACING)) {
-#ifdef GAME_PLACING_DYNAMIC_DEPTH
-#ifdef DEAL_WITH_HORIZON_EFFECT
-#ifdef TRANSPOSITION_TABLE_ENABLE
-        depth_t depthTable[] = { 4, 11, 12, 13, 14, 14,  14, 12, 11, 10, 6, 6, 1 };
-#else // TRANSPOSITION_TABLE_ENABLE
-        depth_t depthTable[] = { 2, 11, 11, 11, 11, 10,   9,  8,  8, 8, 7, 7, 1 };
-#endif // TRANSPOSITION_TABLE_ENABLE
-#else // DEAL_WITH_HORIZON_EFFECT
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef RAPID_GAME
-        depth_t depthTable[] = { 6, 14, 15, 16, 15, 15, 15, 13, 10,  9, 8, 7, 1 };
-#else
-        depth_t depthTable[] = { 6, 14, 15, 16, 16, 16, 16, 14, 12, 12, 9, 7, 1 };
-      //depth_t depthTable[] = { 6, 15, 16, 17, 16, 16, 16, 14, 13, 12, 9, 7, 1 };
-#endif  // RAPID_GAME
-#else // TRANSPOSITION_TABLE_ENABLE
-        depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
-#endif
-#endif // DEAL_WITH_HORIZON_EFFECT
-        newDepth = depthTable[tempGame.getPiecesInHandCount(1)];
-#elif defined GAME_PLACING_FIXED_DEPTH
-        newDepth = GAME_PLACING_FIXED_DEPTH;
-#endif // GAME_PLACING_DYNAMIC_DEPTH
+        newDepth = placingDepthTable[tempGame.getPiecesInHandCount(1)];
     }
 
-#ifdef GAME_MOVING_FIXED_DEPTH
-    // 走棋阶段将深度调整
     if ((tempGame.position.phase) & (PHASE_MOVING)) {
-        newDepth = GAME_MOVING_FIXED_DEPTH;
+        newDepth = 11;
     }
-#endif /* GAME_MOVING_FIXED_DEPTH */
 
     loggerDebug("Depth: %d\n", newDepth);
 
