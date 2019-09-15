@@ -970,7 +970,7 @@ bool GameController::updateScence()
     return updateScence(position_);
 }
 
-bool GameController::updateScence(Position &game)
+bool GameController::updateScence(Game &game)
 {
     const int *board = game.getBoardLocations();
     QPointF pos;

@@ -26,7 +26,7 @@
 #include "player.h"
 #include "zobrist.h"
 
-Position::Position()
+Game::Game()
 {
     // 单独提出 boardLocations 等数据，免得每次都写 boardLocations;
     boardLocations = context.board.locations;
@@ -46,14 +46,14 @@ Position::Position()
     score[1] = score[2] = score_draw = 0;
 }
 
-Position::~Position() = default;
+Game::~Game() = default;
 
-Position::Position(const Position &position)
+Game::Game(const Game &position)
 {  
     *this = position;
 }
 
-Position &Position::operator= (const Position &position)
+Game &Game::operator= (const Game &position)
 {
     if (this == &position)
         return *this;
@@ -80,7 +80,7 @@ Position &Position::operator= (const Position &position)
 }
 
 // 设置配置
-bool Position::configure(bool giveUpIfMostLose, bool randomMove)
+bool Game::configure(bool giveUpIfMostLose, bool randomMove)
 {
     // 设置是否必败时认输
     this->giveUpIfMostLose_ = giveUpIfMostLose;
@@ -92,7 +92,7 @@ bool Position::configure(bool giveUpIfMostLose, bool randomMove)
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
+bool Game::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
                           step_t initialStep,
                           phase_t phase, player_t turn, action_t action,
                           const char *locations,
@@ -221,7 +221,7 @@ bool Position::setContext(const struct Rule *rule, step_t maxStepsLedToDraw, int
     return false;
 }
 
-bool Position::reset()
+bool Game::reset()
 {
     if (context.phase == PHASE_NOTSTARTED &&
         elapsedSeconds[1] == elapsedSeconds[2] == 0) {
@@ -294,7 +294,7 @@ bool Position::reset()
     return false;
 }
 
-bool Position::start()
+bool Game::start()
 {
     switch (context.phase) {
     // 如果游戏已经开始，则返回false
@@ -317,7 +317,7 @@ bool Position::start()
     }
 }
 
-bool Position::place(int location, int time_p, int8_t rs)
+bool Game::place(int location, int time_p, int8_t rs)
 {
     // 如果局面为“结局”，返回false
     if (context.phase == PHASE_GAMEOVER)
@@ -489,7 +489,7 @@ out:
     return true;
 }
 
-bool Position::_place(int r, int s, int time_p)
+bool Game::_place(int r, int s, int time_p)
 {
     // 转换为 location
     int location = context.board.polarToLocation(r, s);
@@ -497,7 +497,7 @@ bool Position::_place(int r, int s, int time_p)
     return place(location, time_p, true);
 }
 
-bool Position::_capture(int r, int s, int time_p)
+bool Game::_capture(int r, int s, int time_p)
 {
     // 转换为 location
     int location = context.board.polarToLocation(r, s);
@@ -505,7 +505,7 @@ bool Position::_capture(int r, int s, int time_p)
     return capture(location, time_p, 1);
 }
 
-bool Position::capture(int location, int time_p, int8_t cp)
+bool Game::capture(int location, int time_p, int8_t cp)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (context.phase == PHASE_NOTSTARTED || context.phase == PHASE_GAMEOVER)
@@ -643,7 +643,7 @@ out:
     return true;
 }
 
-bool Position::choose(int location)
+bool Game::choose(int location)
 {
     // 如果局面不是"中局”，返回false
     if (context.phase != PHASE_MOVING)
@@ -672,12 +672,12 @@ bool Position::choose(int location)
     return false;
 }
 
-bool Position::choose(int r, int s)
+bool Game::choose(int r, int s)
 {
     return choose(context.board.polarToLocation(r, s));
 }
 
-bool Position::giveup(player_t loser)
+bool Game::giveup(player_t loser)
 {
     if (context.phase == PHASE_NOTSTARTED ||
         context.phase == PHASE_GAMEOVER ||
@@ -702,7 +702,7 @@ bool Position::giveup(player_t loser)
 }
 
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
-bool Position::command(const char *cmd)
+bool Game::command(const char *cmd)
 {
     int r;
     unsigned t;
@@ -783,7 +783,7 @@ bool Position::command(const char *cmd)
     return false;
 }
 
-bool Position::command(int move)
+bool Game::command(int move)
 {
     if (move < 0) {
         return capture(-move);
@@ -800,7 +800,7 @@ bool Position::command(int move)
     return false;
 }
 
-inline int Position::update(int time_p /*= -1*/)
+inline int Game::update(int time_p /*= -1*/)
 {
     int ret = -1;
     time_t *player_ms = &elapsedSeconds[context.turnId];
@@ -831,13 +831,13 @@ inline int Position::update(int time_p /*= -1*/)
 }
 
 // 是否分出胜负
-bool Position::win()
+bool Game::win()
 {
     return win(false);
 }
 
 // 是否分出胜负
-bool Position::win(bool forceDraw)
+bool Game::win(bool forceDraw)
 {
     if (context.phase == PHASE_GAMEOVER) {
         return true;
@@ -951,7 +951,7 @@ bool Position::win(bool forceDraw)
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden)
+int Game::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden)
 {
     int *locations = boardLocations;
     int mobility1 = 0;
@@ -974,7 +974,7 @@ int Position::getMobilityDiff(enum player_t turn, const Rule &rule, int nPiecesO
     return diff;
 }
 
-void Position::cleanForbiddenLocations()
+void Game::cleanForbiddenLocations()
 {
     int location = 0;
 
@@ -990,7 +990,7 @@ void Position::cleanForbiddenLocations()
     }
 }
 
-void Position::setTurn(player_t player)
+void Game::setTurn(player_t player)
 {
     // 设置轮到谁走
     context.turn = player;
@@ -1006,12 +1006,12 @@ void Position::setTurn(player_t player)
     //context.opponentStr = Player::chToStr(context.opponentChar);
 }
 
-void Position::changeTurn()
+void Game::changeTurn()
 {
     setTurn(Player::getOpponent(context.turn));
 }
 
-void Position::setTips()
+void Game::setTips()
 {
     string winnerStr, t;
     int winnerId;
@@ -1066,7 +1066,7 @@ void Position::setTips()
     }
 }
 
-void Position::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
+void Game::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
 {
     update();
 
@@ -1084,12 +1084,12 @@ void Position::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
  * 0位：轮流标识，0为先手，1为后手
  */
 
-void Position::constructHash()
+void Game::constructHash()
 {
     context.hash = 0;
 }
 
-hash_t Position::getHash()
+hash_t Game::getHash()
 {
     // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
     updateHashMisc();
@@ -1097,7 +1097,7 @@ hash_t Position::getHash()
     return context.hash;
 }
 
-hash_t Position::updateHash(int location)
+hash_t Game::updateHash(int location)
 {
     // PieceType is boardLocations[location] 
 
@@ -1110,12 +1110,12 @@ hash_t Position::updateHash(int location)
     return context.hash;
 }
 
-hash_t Position::revertHash(int location)
+hash_t Game::revertHash(int location)
 {
     return updateHash(location);
 }
 
-hash_t Position::updateHashMisc()
+hash_t Game::updateHashMisc()
 {
     // 清除标记位
     context.hash &= static_cast<hash_t>(~0xFF);

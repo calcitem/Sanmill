@@ -61,7 +61,7 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const Position &position)
+void AiThread::setAi(const Game &position)
 {
     mutex.lock();
 
@@ -78,7 +78,7 @@ void AiThread::setAi(const Position &position)
     mutex.unlock();
 }
 
-void AiThread::setAi(const Position &position, depth_t depth, int time)
+void AiThread::setAi(const Game &position, depth_t depth, int time)
 {
     mutex.lock();
     this->position_ = &position;

@@ -21,7 +21,7 @@
 
 #include "evaluate.h"
 
-value_t Evaluation::getValue(Position &dummyPosition, PositionContext *positionContext, MillGameAi_ab::Node *node)
+value_t Evaluation::getValue(Game &dummyPosition, PositionContext *positionContext, MillGameAi_ab::Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;

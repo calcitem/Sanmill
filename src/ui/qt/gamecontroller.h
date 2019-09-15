@@ -191,7 +191,7 @@ public slots:
 
     // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();
-    bool updateScence(Position &game);
+    bool updateScence(Game &game);
 
     // 显示网络配置窗口
     void showNetworkWindow();
@@ -203,10 +203,10 @@ protected:
 
 private:
     // 棋对象的数据模型
-    Position position_;
+    Game position_;
 
     // 棋对象的数据模型（临时）
-    Position dummyPosition;
+    Game dummyPosition;
 
     // 2个AI的线程
     AiThread *ai[3];

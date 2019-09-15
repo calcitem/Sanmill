@@ -97,7 +97,7 @@ public:
     MillGameAi_ab();
     ~MillGameAi_ab();
 
-    void setPosition(const Position &position);
+    void setPosition(const Game &position);
 
     void quit()
     {
@@ -182,15 +182,15 @@ protected:
        
 private:
     // 原始模型
-    Position position_;
+    Game position_;
 
     // 演算用的模型
-    Position dummyPosition;
+    Game dummyPosition;
 
     PositionContext *positionContext {};
 
     // hash 计算时，各种转换用的模型
-    Position dummyPositionShift;
+    Game dummyPositionShift;
 
     // 根节点
     Node *rootNode {nullptr};

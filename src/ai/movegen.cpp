@@ -25,7 +25,7 @@
 #include "player.h"
 #include "misc.h"
 
-void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
+void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Game &dummyPosition,
                                   MillGameAi_ab::Node *node, MillGameAi_ab::Node *rootNode,
                                   move_t bestMove)
 {
@@ -158,7 +158,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Position &dummyPosition,
     }
 }
 
-void MoveList::createMoveTable(Position &position)
+void MoveList::createMoveTable(Game &position)
 {
     // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
 #if 1
@@ -374,7 +374,7 @@ void MoveList::createMoveTable(Position &position)
 #endif
 }
 
-void MoveList::shuffleMovePriorityTable(Position &position)
+void MoveList::shuffleMovePriorityTable(Game &position)
 {
     array<move_t, 4> movePriorityTable0 = { (move_t)17, (move_t)19, (move_t)21, (move_t)23 }; // 中圈四个顶点 (星位)
     array<move_t, 8> movePriorityTable1 = { (move_t)25, (move_t)27, (move_t)29, (move_t)31, (move_t)9, (move_t)11, (move_t)13, (move_t)15 }; // 外圈和内圈四个顶点

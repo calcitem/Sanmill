@@ -74,7 +74,7 @@ public:
 // 棋类（在数据模型内，玩家只分先后手，不分黑白）
 // 注意：Position 类不是线程安全的！
 // 所以不能跨线程修改 Position 类的静态成员变量，切记！
-class Position
+class Game
 {
     // AI友元类
     friend class MillGameAi_ab;
@@ -90,14 +90,14 @@ private:
     void constructHash();
 
 public:
-    explicit Position();
-    virtual ~Position();
+    explicit Game();
+    virtual ~Game();
 
     // 拷贝构造函数
-    explicit Position(const Position &);
+    explicit Game(const Game &);
 
     // 运算符重载
-    Position &operator=(const Position &);
+    Game &operator=(const Game &);
 
     // 设置配置
     bool configure(bool giveUpIfMostLose, bool randomMove);
