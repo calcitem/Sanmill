@@ -276,7 +276,7 @@ void MillGameAi_ab::setGame(const Game &game)
 
     this->game_ = game;
     dummyGame = game;
-    positionContext = &(dummyGame.context);
+    position = &(dummyGame.context);
     requiredQuit = false;
     deleteTree(rootNode);
 #ifdef MEMORY_POOL
@@ -425,7 +425,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #if 0
         // TODO: 有必要针对深度微调 value?
-        if (positionContext->turn == PLAYER_1)
+        if (position->turn == PLAYER_1)
             node->value += hashValue.depth - depth;
         else
             node->value -= hashValue.depth - depth;
@@ -440,7 +440,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #ifdef DEBUG_AB_TREE
     node->depth = depth;
     node->root = rootNode;
-    // node->player = positionContext->turn;
+    // node->player = position->turn;
     // 初始化
     node->isLeaf = false;
     node->isTimeout = false;
@@ -452,9 +452,9 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 #endif // DEBUG_AB_TREE
 
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-    if (positionContext->phase == PHASE_GAMEOVER) {
+    if (position->phase == PHASE_GAMEOVER) {
         // 局面评估
-        node->value = Evaluation::getValue(dummyGame, positionContext, node);
+        node->value = Evaluation::getValue(dummyGame, position, node);
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度
@@ -479,11 +479,11 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
         // 局面评估
-        node->value = Evaluation::getValue(dummyGame, positionContext, node);
+        node->value = Evaluation::getValue(dummyGame, position, node);
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        value_t delta = value_t(positionContext->turn == PLAYER_1 ? depth : -depth);
+        value_t delta = value_t(position->turn == PLAYER_1 ? depth : -depth);
         node->value += delta;
 
 #ifdef DEBUG_AB_TREE
@@ -494,8 +494,8 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
 #ifdef BOOK_LEARNING
         // 检索开局库
-        if (positionContext->phase == GAME_PLACING && findBookHash(hash, hashValue)) {
-            if (positionContext->turn == ???) {
+        if (position->phase == GAME_PLACING && findBookHash(hash, hashValue)) {
+            if (position->turn == ???) {
                 // TODO:
                 node->value += 1;
             }

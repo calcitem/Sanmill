@@ -21,7 +21,7 @@
 
 #include "evaluate.h"
 
-value_t Evaluation::getValue(Game &dummyGame, Position *positionContext, MillGameAi_ab::Node *node)
+value_t Evaluation::getValue(Game &dummyGame, Position *position, MillGameAi_ab::Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
@@ -31,31 +31,31 @@ value_t Evaluation::getValue(Game &dummyGame, Position *positionContext, MillGam
     int nPiecesNeedRemove = 0;
 
 #ifdef DEBUG_AB_TREE
-    node->phase = positionContext->phase;
-    node->action = positionContext->action;
+    node->phase = position->phase;
+    node->action = position->action;
     node->evaluated = true;
 #endif
 
-    switch (positionContext->phase) {
+    switch (position->phase) {
     case PHASE_NOTSTARTED:
         break;
 
     case PHASE_PLACING:
         // 按手中的棋子计分，不要break;
-        nPiecesInHandDiff = positionContext->nPiecesInHand[1] - positionContext->nPiecesInHand[2];
+        nPiecesInHandDiff = position->nPiecesInHand[1] - position->nPiecesInHand[2];
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 #ifdef DEBUG_AB_TREE
         node->nPiecesInHandDiff = nPiecesInHandDiff;
 #endif
 
         // 按场上棋子计分
-        nPiecesOnBoardDiff = positionContext->nPiecesOnBoard[1] - positionContext->nPiecesOnBoard[2];
+        nPiecesOnBoardDiff = position->nPiecesOnBoard[1] - position->nPiecesOnBoard[2];
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 #ifdef DEBUG_AB_TREE
         node->nPiecesOnBoardDiff = nPiecesOnBoardDiff;
 #endif
 
-        switch (positionContext->action) {
+        switch (position->action) {
             // 选子和落子使用相同的评价方法
         case ACTION_CHOOSE:
         case ACTION_PLACE:
@@ -63,8 +63,8 @@ value_t Evaluation::getValue(Game &dummyGame, Position *positionContext, MillGam
 
             // 如果形成去子状态，每有一个可去的子，算100分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (positionContext->turn == PLAYER_1) ?
-                positionContext->nPiecesNeedRemove : -(positionContext->nPiecesNeedRemove);
+            nPiecesNeedRemove = (position->turn == PLAYER_1) ?
+                position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
@@ -78,15 +78,15 @@ value_t Evaluation::getValue(Game &dummyGame, Position *positionContext, MillGam
 
     case PHASE_MOVING:
         // 按场上棋子计分
-        value = positionContext->nPiecesOnBoard[1] * VALUE_EACH_PIECE_ONBOARD -
-                positionContext->nPiecesOnBoard[2] * VALUE_EACH_PIECE_ONBOARD;
+        value = position->nPiecesOnBoard[1] * VALUE_EACH_PIECE_ONBOARD -
+                position->nPiecesOnBoard[2] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
-        value += dummyGame.getMobilityDiff(positionContext->turn, dummyGame.currentRule, positionContext->nPiecesInHand[1], positionContext->nPiecesInHand[2], false) * 10;
+        value += dummyGame.getMobilityDiff(position->turn, dummyGame.currentRule, position->nPiecesInHand[1], position->nPiecesInHand[2], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
-        switch (positionContext->action) {
+        switch (position->action) {
         // 选子和落子使用相同的评价方法
         case ACTION_CHOOSE:
         case ACTION_PLACE:
@@ -94,8 +94,8 @@ value_t Evaluation::getValue(Game &dummyGame, Position *positionContext, MillGam
 
         // 如果形成去子状态，每有一个可去的子，算128分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (positionContext->turn == PLAYER_1) ?
-                positionContext->nPiecesNeedRemove : -(positionContext->nPiecesNeedRemove);
+            nPiecesNeedRemove = (position->turn == PLAYER_1) ?
+                position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE_2;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
@@ -110,7 +110,7 @@ value_t Evaluation::getValue(Game &dummyGame, Position *positionContext, MillGam
     // 终局评价最简单
     case PHASE_GAMEOVER:
         // 布局阶段闷棋判断
-        if (positionContext->nPiecesOnBoard[1] + positionContext->nPiecesOnBoard[2] >=
+        if (position->nPiecesOnBoard[1] + position->nPiecesOnBoard[2] >=
             Board::N_SEATS * Board::N_RINGS) {
             if (dummyGame.getRule()->isStartingPlayerLoseWhenBoardFull) {
                 value -= VALUE_WIN;
@@ -120,18 +120,18 @@ value_t Evaluation::getValue(Game &dummyGame, Position *positionContext, MillGam
         }
 
         // 走棋阶段被闷判断
-        if (positionContext->action == ACTION_CHOOSE &&
-            dummyGame.context.board.isAllSurrounded(positionContext->turn, dummyGame.currentRule, positionContext->nPiecesOnBoard, positionContext->turn) &&
+        if (position->action == ACTION_CHOOSE &&
+            dummyGame.context.board.isAllSurrounded(position->turn, dummyGame.currentRule, position->nPiecesOnBoard, position->turn) &&
             dummyGame.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-            value_t delta = positionContext->turn == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
+            value_t delta = position->turn == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
             value += delta;
         }
 
         // 剩余棋子个数判断
-        if (positionContext->nPiecesOnBoard[1] < dummyGame.getRule()->nPiecesAtLeast) {
+        if (position->nPiecesOnBoard[1] < dummyGame.getRule()->nPiecesAtLeast) {
             value -= VALUE_WIN;
-        } else if (positionContext->nPiecesOnBoard[2] < dummyGame.getRule()->nPiecesAtLeast) {
+        } else if (position->nPiecesOnBoard[2] < dummyGame.getRule()->nPiecesAtLeast) {
             value += VALUE_WIN;
         }
 

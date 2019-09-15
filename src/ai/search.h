@@ -187,7 +187,7 @@ private:
     // 演算用的模型
     Game dummyGame;
 
-    Position *positionContext {};
+    Position *position {};
 
     // hash 计算时，各种转换用的模型
     Game dummyGameShift;
