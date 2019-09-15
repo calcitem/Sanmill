@@ -40,7 +40,7 @@ vector<hash_t> openingBook;
 #endif // BOOK_LEARNING
 
 // 用于检测重复局面 (Position)
-vector<hash_t> positions;
+vector<hash_t> history;
 
 MillGameAi_ab::MillGameAi_ab()
 {
@@ -271,7 +271,7 @@ void MillGameAi_ab::setPosition(const Game &game)
         //openingBook.clear();
 #endif // BOOK_LEARNING
 
-        positions.clear();
+        history.clear();
     }
 
     this->position_ = game;
@@ -328,19 +328,19 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
     if (position_.getPhase() == PHASE_MOVING) {
         hash_t hash = position_.getHash();
         
-        if (std::find(positions.begin(), positions.end(), hash) != positions.end()) {
+        if (std::find(history.begin(), history.end(), hash) != history.end()) {
             nRepetition++;
             if (nRepetition == 3) {
                 nRepetition = 0;
                 return 3;
             }
         } else {
-            positions.push_back(hash);
+            history.push_back(hash);
         }
     }
 
     if (position_.getPhase() == PHASE_PLACING) {
-        positions.clear();
+        history.clear();
     }
 #endif // THREEFOLD_REPETITION
 

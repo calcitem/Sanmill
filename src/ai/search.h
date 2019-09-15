@@ -231,7 +231,7 @@ private:
 #include "tt.h"
 
 #ifdef THREEFOLD_REPETITION
-extern vector<hash_t> positions;
+extern vector<hash_t> history;
 #endif
 
 #endif
