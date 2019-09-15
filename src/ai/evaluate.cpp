@@ -21,7 +21,7 @@
 
 #include "evaluate.h"
 
-value_t Evaluation::getValue(Game &dummyPosition, PositionContext *positionContext, MillGameAi_ab::Node *node)
+value_t Evaluation::getValue(Game &dummyGame, PositionContext *positionContext, MillGameAi_ab::Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
@@ -83,7 +83,7 @@ value_t Evaluation::getValue(Game &dummyPosition, PositionContext *positionConte
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
-        value += dummyPosition.getMobilityDiff(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesInHand[1], positionContext->nPiecesInHand[2], false) * 10;
+        value += dummyGame.getMobilityDiff(positionContext->turn, dummyGame.currentRule, positionContext->nPiecesInHand[1], positionContext->nPiecesInHand[2], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (positionContext->action) {
@@ -112,7 +112,7 @@ value_t Evaluation::getValue(Game &dummyPosition, PositionContext *positionConte
         // 布局阶段闷棋判断
         if (positionContext->nPiecesOnBoard[1] + positionContext->nPiecesOnBoard[2] >=
             Board::N_SEATS * Board::N_RINGS) {
-            if (dummyPosition.getRule()->isStartingPlayerLoseWhenBoardFull) {
+            if (dummyGame.getRule()->isStartingPlayerLoseWhenBoardFull) {
                 value -= VALUE_WIN;
             } else {
                 value = VALUE_DRAW;
@@ -121,17 +121,17 @@ value_t Evaluation::getValue(Game &dummyPosition, PositionContext *positionConte
 
         // 走棋阶段被闷判断
         if (positionContext->action == ACTION_CHOOSE &&
-            dummyPosition.context.board.isAllSurrounded(positionContext->turn, dummyPosition.currentRule, positionContext->nPiecesOnBoard, positionContext->turn) &&
-            dummyPosition.getRule()->isLoseWhenNoWay) {
+            dummyGame.context.board.isAllSurrounded(positionContext->turn, dummyGame.currentRule, positionContext->nPiecesOnBoard, positionContext->turn) &&
+            dummyGame.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             value_t delta = positionContext->turn == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
             value += delta;
         }
 
         // 剩余棋子个数判断
-        if (positionContext->nPiecesOnBoard[1] < dummyPosition.getRule()->nPiecesAtLeast) {
+        if (positionContext->nPiecesOnBoard[1] < dummyGame.getRule()->nPiecesAtLeast) {
             value -= VALUE_WIN;
-        } else if (positionContext->nPiecesOnBoard[2] < dummyPosition.getRule()->nPiecesAtLeast) {
+        } else if (positionContext->nPiecesOnBoard[2] < dummyGame.getRule()->nPiecesAtLeast) {
             value += VALUE_WIN;
         }
 

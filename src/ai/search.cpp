@@ -57,7 +57,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 {
     depth_t newDepth = originalDepth;
 
-    if ((dummyPosition.context.phase) & (PHASE_PLACING)) {
+    if ((dummyGame.context.phase) & (PHASE_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -77,7 +77,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
         depth_t depthTable[] = { 2, 13, 13, 13, 12, 11, 10,  9,  9,  8, 8, 7, 1 };
 #endif
 #endif // DEAL_WITH_HORIZON_EFFECT
-        newDepth = depthTable[dummyPosition.getPiecesInHandCount(1)];
+        newDepth = depthTable[dummyGame.getPiecesInHandCount(1)];
 #elif defined GAME_PLACING_FIXED_DEPTH
         newDepth = GAME_PLACING_FIXED_DEPTH;
 #endif // GAME_PLACING_DYNAMIC_DEPTH
@@ -85,7 +85,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 
 #ifdef GAME_MOVING_FIXED_DEPTH
     // 走棋阶段将深度调整
-    if ((dummyPosition.context.phase) & (PHASE_MOVING)) {
+    if ((dummyGame.context.phase) & (PHASE_MOVING)) {
         newDepth = GAME_MOVING_FIXED_DEPTH;
     }
 #endif /* GAME_MOVING_FIXED_DEPTH */
@@ -141,8 +141,8 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
 
 #ifdef DEBUG_AB_TREE
     newNode->root = rootNode;
-    newNode->phase = dummyPosition.context.phase;
-    newNode->action = dummyPosition.context.action;
+    newNode->phase = dummyGame.context.phase;
+    newNode->action = dummyGame.context.action;
     newNode->evaluated = false;
     newNode->nPiecesInHandDiff = INT_MAX;
     newNode->nPiecesOnBoardDiff = INT_MAX;
@@ -155,15 +155,15 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        dummyPosition.context.board.locationToPolar(-move, r, s);
+        dummyGame.context.board.locationToPolar(-move, r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        dummyPosition.context.board.locationToPolar(move >> 8, r1, s1);
-        dummyPosition.context.board.locationToPolar(move & 0x00ff, r, s);
+        dummyGame.context.board.locationToPolar(move >> 8, r1, s1);
+        dummyGame.context.board.locationToPolar(move & 0x00ff, r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        dummyPosition.context.board.locationToPolar(move & 0x007f, r, s);
+        dummyGame.context.board.locationToPolar(move & 0x007f, r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
@@ -175,7 +175,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
             // 优先成三
-            if (dummyPosition.getPhase() == GAME_PLACING && move > 0 && dummyPosition.context.board.isInMills(move, true)) {
+            if (dummyGame.getPhase() == GAME_PLACING && move > 0 && dummyGame.context.board.isInMills(move, true)) {
                 parent->children.insert(parent->children.begin(), newNode);
             } else {
                 parent->children.push_back(newNode);
@@ -232,7 +232,7 @@ void MillGameAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    auto cmp = dummyPosition.context.turn == PLAYER_1 ? nodeGreater : nodeLess;
+    auto cmp = dummyGame.context.turn == PLAYER_1 ? nodeGreater : nodeLess;
 
     std::stable_sort(node->children.begin(), node->children.end(), cmp);
 }
@@ -275,8 +275,8 @@ void MillGameAi_ab::setPosition(const Game &position)
     }
 
     this->position_ = position;
-    dummyPosition = position;
-    positionContext = &(dummyPosition.context);
+    dummyGame = position;
+    positionContext = &(dummyGame.context);
     requiredQuit = false;
     deleteTree(rootNode);
 #ifdef MEMORY_POOL
@@ -397,7 +397,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     enum TranspositionTable::HashType hashf = TranspositionTable::hashfALPHA;
 
     // 获取哈希值
-    hash_t hash = dummyPosition.getHash();
+    hash_t hash = dummyGame.getHash();
 #ifdef DEBUG_AB_TREE
     node->hash = hash;
 #endif
@@ -454,7 +454,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
     if (positionContext->phase == PHASE_GAMEOVER) {
         // 局面评估
-        node->value = Evaluation::getValue(dummyPosition, positionContext, node);
+        node->value = Evaluation::getValue(dummyGame, positionContext, node);
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度
@@ -479,7 +479,7 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     // 搜索到第0层或需要退出
     if (!depth || requiredQuit) {
         // 局面评估
-        node->value = Evaluation::getValue(dummyPosition, positionContext, node);
+        node->value = Evaluation::getValue(dummyGame, positionContext, node);
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
@@ -511,18 +511,18 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
     }
 
     // 生成子节点树，即生成每个合理的着法
-    MoveList::generateLegalMoves(*this, dummyPosition, node, rootNode, bestMove);
+    MoveList::generateLegalMoves(*this, dummyGame, node, rootNode, bestMove);
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = dummyPosition.context.turn == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = dummyGame.context.turn == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
         // 上下文入栈保存，以便后续撤销着法
-        contextStack.push(dummyPosition.context);
+        contextStack.push(dummyGame.context);
 
         // 执行着法
-        dummyPosition.command(child->move);
+        dummyGame.command(child->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
         // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
@@ -543,10 +543,10 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
         // 上下文弹出栈，撤销着法
-        dummyPosition.context = contextStack.top();
+        dummyGame.context = contextStack.top();
         contextStack.pop();
 
-        if (dummyPosition.context.turn == PLAYER_1) {
+        if (dummyGame.context.turn == PLAYER_1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -722,15 +722,15 @@ const char *MillGameAi_ab::move2string(move_t move)
     int r, s;
 
     if (move < 0) {
-        dummyPosition.context.board.locationToPolar(-move, r, s);
+        dummyGame.context.board.locationToPolar(-move, r, s);
         sprintf(cmdline, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        dummyPosition.context.board.locationToPolar(move >> 8, r1, s1);
-        dummyPosition.context.board.locationToPolar(move & 0x00ff, r, s);
+        dummyGame.context.board.locationToPolar(move >> 8, r1, s1);
+        dummyGame.context.board.locationToPolar(move & 0x00ff, r, s);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        dummyPosition.context.board.locationToPolar(move & 0x007f, r, s);
+        dummyGame.context.board.locationToPolar(move & 0x007f, r, s);
         sprintf(cmdline, "(%1u,%1u)", r, s);
     }
 

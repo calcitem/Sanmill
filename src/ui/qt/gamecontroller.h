@@ -206,7 +206,7 @@ private:
     Game position_;
 
     // 棋对象的数据模型（临时）
-    Game dummyPosition;
+    Game dummyGame;
 
     // 2个AI的线程
     AiThread *ai[3];
