@@ -48,33 +48,33 @@ Game::Game()
 
 Game::~Game() = default;
 
-Game::Game(const Game &position)
+Game::Game(const Game &game)
 {  
-    *this = position;
+    *this = game;
 }
 
-Game &Game::operator= (const Game &position)
+Game &Game::operator= (const Game &game)
 {
-    if (this == &position)
+    if (this == &game)
         return *this;
 
-    currentRule = position.currentRule;
-    context = position.context;
-    currentStep = position.currentStep;
-    moveStep = position.moveStep;
-    isRandomMove = position.isRandomMove;
-    giveUpIfMostLose_ = position.giveUpIfMostLose_;
+    currentRule = game.currentRule;
+    context = game.context;
+    currentStep = game.currentStep;
+    moveStep = game.moveStep;
+    isRandomMove = game.isRandomMove;
+    giveUpIfMostLose_ = game.giveUpIfMostLose_;
     boardLocations = context.board.locations;
-    currentLocation = position.currentLocation;
-    winner = position.winner;
-    startTime = position.startTime;
-    currentTime = position.currentTime;
-    elapsedSeconds[1] = position.elapsedSeconds[1];
-    elapsedSeconds[2] = position.elapsedSeconds[2];
-    move_ = position.move_;
-    memcpy(cmdline, position.cmdline, sizeof(cmdline));
-    cmdlist = position.cmdlist;
-    tips = position.tips;
+    currentLocation = game.currentLocation;
+    winner = game.winner;
+    startTime = game.startTime;
+    currentTime = game.currentTime;
+    elapsedSeconds[1] = game.elapsedSeconds[1];
+    elapsedSeconds[2] = game.elapsedSeconds[2];
+    move_ = game.move_;
+    memcpy(cmdline, game.cmdline, sizeof(cmdline));
+    cmdlist = game.cmdlist;
+    tips = game.tips;
 
     return *this;
 }

@@ -39,10 +39,10 @@ public:
                                    move_t bestMove);
 
     // 生成着法表
-    static void createMoveTable(Game &position);
+    static void createMoveTable(Game &game);
 
     // 随机打乱着法搜索顺序
-    static void shuffleMovePriorityTable(Game &position);
+    static void shuffleMovePriorityTable(Game &game);
 
     // 着法表 // TODO: Move to private
     inline static move_t moveTable[Board::N_LOCATIONS][DIRECTIONS_COUNT] = { {MOVE_NONE} };

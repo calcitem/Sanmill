@@ -257,10 +257,10 @@ void MillGameAi_ab::deleteTree(Node *node)
 #endif  
 }
 
-void MillGameAi_ab::setPosition(const Game &position)
+void MillGameAi_ab::setPosition(const Game &game)
 {
     // 如果规则改变，重建hashmap
-    if (strcmp(this->position_.currentRule.name, position.currentRule.name) != 0) {
+    if (strcmp(this->position_.currentRule.name, game.currentRule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
         TranspositionTable::clearTranspositionTable();
 #endif // TRANSPOSITION_TABLE_ENABLE
@@ -274,8 +274,8 @@ void MillGameAi_ab::setPosition(const Game &position)
         positions.clear();
     }
 
-    this->position_ = position;
-    dummyGame = position;
+    this->position_ = game;
+    dummyGame = game;
     positionContext = &(dummyGame.context);
     requiredQuit = false;
     deleteTree(rootNode);

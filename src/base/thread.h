@@ -55,8 +55,8 @@ protected:
 
 public:
     // AI设置
-    void setAi(const Game &position);
-    void setAi(const Game &position, depth_t depth, int time);
+    void setAi(const Game &game);
+    void setAi(const Game &game, depth_t depth, int time);
 
     Server *getServer()
     {

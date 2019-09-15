@@ -61,11 +61,11 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const Game &position)
+void AiThread::setAi(const Game &game)
 {
     mutex.lock();
 
-    this->position_ = &position;
+    this->position_ = &game;
     ai_ab.setPosition(*(this->position_));
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -78,11 +78,11 @@ void AiThread::setAi(const Game &position)
     mutex.unlock();
 }
 
-void AiThread::setAi(const Game &position, depth_t depth, int time)
+void AiThread::setAi(const Game &game, depth_t depth, int time)
 {
     mutex.lock();
-    this->position_ = &position;
-    ai_ab.setPosition(position);
+    this->position_ = &game;
+    ai_ab.setPosition(game);
     aiDepth = depth;
     aiTime = time;
     mutex.unlock();

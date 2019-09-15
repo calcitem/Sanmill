@@ -97,7 +97,7 @@ public:
     MillGameAi_ab();
     ~MillGameAi_ab();
 
-    void setPosition(const Game &position);
+    void setPosition(const Game &game);
 
     void quit()
     {

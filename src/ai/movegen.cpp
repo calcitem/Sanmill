@@ -158,7 +158,7 @@ void MoveList::generateLegalMoves(MillGameAi_ab &ai_ab, Game &dummyGame,
     }
 }
 
-void MoveList::createMoveTable(Game &position)
+void MoveList::createMoveTable(Game &game)
 {
     // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
 #if 1
@@ -351,7 +351,7 @@ void MoveList::createMoveTable(Game &position)
     };
 #endif
 
-    if (position.currentRule.hasObliqueLines) {
+    if (game.currentRule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
     } else {
         memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
@@ -374,14 +374,14 @@ void MoveList::createMoveTable(Game &position)
 #endif
 }
 
-void MoveList::shuffleMovePriorityTable(Game &position)
+void MoveList::shuffleMovePriorityTable(Game &game)
 {
     array<move_t, 4> movePriorityTable0 = { (move_t)17, (move_t)19, (move_t)21, (move_t)23 }; // 中圈四个顶点 (星位)
     array<move_t, 8> movePriorityTable1 = { (move_t)25, (move_t)27, (move_t)29, (move_t)31, (move_t)9, (move_t)11, (move_t)13, (move_t)15 }; // 外圈和内圈四个顶点
     array<move_t, 4> movePriorityTable2 = { (move_t)16, (move_t)18, (move_t)20, (move_t)22 }; // 中圈十字架
     array<move_t, 8> movePriorityTable3 = { (move_t)24, (move_t)26, (move_t)28, (move_t)30, (move_t)8, (move_t)10, (move_t)12, (move_t)14 }; // 外内圈十字架
 
-    if (position.randomMoveEnabled()) {
+    if (game.randomMoveEnabled()) {
         uint32_t seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
