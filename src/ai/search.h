@@ -187,7 +187,7 @@ private:
     // 演算用的模型
     Game dummyGame;
 
-    PositionContext *positionContext {};
+    Position *positionContext {};
 
     // hash 计算时，各种转换用的模型
     Game dummyGameShift;
@@ -215,9 +215,9 @@ private:
 
     // 局面数据栈
 //#ifdef MEMORY_POOL
-//    StackAlloc<MillGame::PositionContext, MemoryPool<MillGame::PositionContext> > contextStack;
+//    StackAlloc<MillGame::Position, MemoryPool<MillGame::Position> > contextStack;
 //#else
-    stack<PositionContext, vector<PositionContext> > contextStack;
+    stack<Position, vector<Position> > contextStack;
 //#endif
 
     // 标识，用于跳出剪枝算法，立即返回

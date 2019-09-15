@@ -34,7 +34,7 @@ public:
 
     Evaluation &operator=(const Evaluation &) = delete;
 
-    static value_t getValue(Game &dummyGame, PositionContext *positionContext, MillGameAi_ab::Node *node);
+    static value_t getValue(Game &dummyGame, Position *Position, MillGameAi_ab::Node *node);
 
     // 评估子力
 #ifdef EVALUATE_ENABLE
