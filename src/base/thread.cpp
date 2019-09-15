@@ -66,7 +66,7 @@ void AiThread::setAi(const Game &game)
     mutex.lock();
 
     this->position_ = &game;
-    ai_ab.setPosition(*(this->position_));
+    ai_ab.setGame(*(this->position_));
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
@@ -82,7 +82,7 @@ void AiThread::setAi(const Game &game, depth_t depth, int time)
 {
     mutex.lock();
     this->position_ = &game;
-    ai_ab.setPosition(game);
+    ai_ab.setGame(game);
     aiDepth = depth;
     aiTime = time;
     mutex.unlock();
@@ -116,7 +116,7 @@ void AiThread::run()
             continue;
         }
 
-        ai_ab.setPosition(*position_);
+        ai_ab.setGame(*position_);
         emit calcStarted();
         mutex.unlock();
 

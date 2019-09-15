@@ -257,7 +257,7 @@ void MillGameAi_ab::deleteTree(Node *node)
 #endif  
 }
 
-void MillGameAi_ab::setPosition(const Game &game)
+void MillGameAi_ab::setGame(const Game &game)
 {
     // 如果规则改变，重建hashmap
     if (strcmp(this->position_.currentRule.name, game.currentRule.name) != 0) {
