@@ -121,7 +121,7 @@ value_t Evaluation::getValue(Game &dummyGame, Position *position, MillGameAi_ab:
 
         // 走棋阶段被闷判断
         if (position->action == ACTION_CHOOSE &&
-            dummyGame.context.board.isAllSurrounded(position->turn, dummyGame.currentRule, position->nPiecesOnBoard, position->turn) &&
+            dummyGame.position.board.isAllSurrounded(position->turn, dummyGame.currentRule, position->nPiecesOnBoard, position->turn) &&
             dummyGame.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             value_t delta = position->turn == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;

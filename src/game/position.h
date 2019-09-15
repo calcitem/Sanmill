@@ -102,7 +102,7 @@ public:
     // 设置配置
     bool configure(bool giveUpIfMostLose, bool randomMove);
 
-    // 设置棋局状态和棋盘上下文，用于初始化
+    // 设置棋局状态和棋局，用于初始化
     bool setContext(const struct Rule *rule,
                  step_t maxStepsLedToDraw = 0,     // 限制步数
                  int maxTimeLedToLose = 0,      // 限制时间
@@ -159,13 +159,13 @@ public:
     // 获取局面阶段标识
     enum phase_t getPhase() const
     {
-        return context.phase;
+        return position.phase;
     }
 
     // 获取动作状态标识
     enum action_t getAction() const
     {
-        return context.action;
+        return position.action;
     }
 
     // 判断胜负
@@ -210,19 +210,19 @@ public:
     // 玩家剩余未放置子数
     int getPiecesInHandCount(int playerId) const
     {
-        return context.nPiecesInHand[playerId];
+        return position.nPiecesInHand[playerId];
     }
 
     // 玩家1盘面剩余子数
     int getPiecesOnBoardCount(int playerId) const
     {
-        return context.nPiecesOnBoard[playerId];
+        return position.nPiecesOnBoard[playerId];
     }
 
     // 尚待去除的子数
     int getNum_NeedRemove() const
     {
-        return context.nPiecesNeedRemove;
+        return position.nPiecesNeedRemove;
     }
 
     // 计算玩家1和玩家2的棋子活动能力之差
@@ -281,15 +281,15 @@ public:
     hash_t updateHashMisc();
 
 public: /* TODO: move to private */
-    // 棋局上下文
-    Position context;
+    // 棋局
+    Position position;
 
     // 当前使用的规则
     struct Rule currentRule
     {
     };
 
-    // 棋局上下文中的棋盘数据，单独提出来
+    // 棋局中的棋盘数据，单独提出来
     int *boardLocations;
 
     // 棋谱

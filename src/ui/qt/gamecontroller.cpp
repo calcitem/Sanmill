@@ -398,8 +398,8 @@ void GameController::flip()
         ai[2]->wait();
     }
 
-    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    game_.context.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     dummyGame = game_;
 
     // 更新棋谱
@@ -438,7 +438,7 @@ void GameController::mirror()
         ai[2]->wait();
     }
 
-    game_.context.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     dummyGame = game_;
 
     // 更新棋谱
@@ -480,7 +480,7 @@ void GameController::turnRight()
         ai[2]->wait();
     }
 
-    game_.context.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     dummyGame = game_;
 
     // 更新棋谱
@@ -520,7 +520,7 @@ void GameController::turnLeft()
         ai[2]->wait();
     }
 
-    game_.context.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     dummyGame = game_;
 
     // 更新棋谱
@@ -609,7 +609,7 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::isAIsTurn()
 {
-    return isAiPlayer[game_.context.turnId];
+    return isAiPlayer[game_.position.turnId];
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -747,7 +747,7 @@ bool GameController::actionPiece(QPointF pos)
         if (&game_ == &(this->game_)) {
             // 如果还未决出胜负
             if (game_.whoWin() == PLAYER_NOBODY) {
-                if (game_.context.turn == PLAYER_1) {
+                if (game_.position.turn == PLAYER_1) {
                     if (isAiPlayer[1]) {
                         ai[1]->resume();
                     }
@@ -779,7 +779,7 @@ bool GameController::actionPiece(QPointF pos)
 
 bool GameController::giveUp()
 {
-    bool result = game_.giveup(game_.context.turn);
+    bool result = game_.giveup(game_.position.turn);
         
     if (!result) {
         return false;
@@ -887,7 +887,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     if (&game_ == &(this->game_)) {
         // 如果还未决出胜负
         if (game_.whoWin() == PLAYER_NOBODY) {
-            if (game_.context.turn == PLAYER_1) {
+            if (game_.position.turn == PLAYER_1) {
                 if (isAiPlayer[1]) {
                     ai[1]->resume();
                 }

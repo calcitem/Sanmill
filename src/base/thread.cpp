@@ -108,7 +108,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = Player::toId(game_->context.turn);
+        i = Player::toId(game_->position.turn);
 
         if (i != id || waiting_) {
             pauseCondition.wait(&mutex);

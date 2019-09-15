@@ -57,7 +57,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 {
     depth_t newDepth = originalDepth;
 
-    if ((dummyGame.context.phase) & (PHASE_PLACING)) {
+    if ((dummyGame.position.phase) & (PHASE_PLACING)) {
 #ifdef GAME_PLACING_DYNAMIC_DEPTH
 #ifdef DEAL_WITH_HORIZON_EFFECT
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -85,7 +85,7 @@ depth_t MillGameAi_ab::changeDepth(depth_t originalDepth)
 
 #ifdef GAME_MOVING_FIXED_DEPTH
     // 走棋阶段将深度调整
-    if ((dummyGame.context.phase) & (PHASE_MOVING)) {
+    if ((dummyGame.position.phase) & (PHASE_MOVING)) {
         newDepth = GAME_MOVING_FIXED_DEPTH;
     }
 #endif /* GAME_MOVING_FIXED_DEPTH */
@@ -141,8 +141,8 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
 
 #ifdef DEBUG_AB_TREE
     newNode->root = rootNode;
-    newNode->phase = dummyGame.context.phase;
-    newNode->action = dummyGame.context.action;
+    newNode->phase = dummyGame.position.phase;
+    newNode->action = dummyGame.position.action;
     newNode->evaluated = false;
     newNode->nPiecesInHandDiff = INT_MAX;
     newNode->nPiecesOnBoardDiff = INT_MAX;
@@ -155,15 +155,15 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        dummyGame.context.board.locationToPolar(-move, r, s);
+        dummyGame.position.board.locationToPolar(-move, r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        dummyGame.context.board.locationToPolar(move >> 8, r1, s1);
-        dummyGame.context.board.locationToPolar(move & 0x00ff, r, s);
+        dummyGame.position.board.locationToPolar(move >> 8, r1, s1);
+        dummyGame.position.board.locationToPolar(move & 0x00ff, r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        dummyGame.context.board.locationToPolar(move & 0x007f, r, s);
+        dummyGame.position.board.locationToPolar(move & 0x007f, r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
@@ -175,7 +175,7 @@ struct MillGameAi_ab::Node *MillGameAi_ab::addNode(
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
             // 优先成三
-            if (dummyGame.getPhase() == GAME_PLACING && move > 0 && dummyGame.context.board.isInMills(move, true)) {
+            if (dummyGame.getPhase() == GAME_PLACING && move > 0 && dummyGame.position.board.isInMills(move, true)) {
                 parent->children.insert(parent->children.begin(), newNode);
             } else {
                 parent->children.push_back(newNode);
@@ -232,7 +232,7 @@ void MillGameAi_ab::sortLegalMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    auto cmp = dummyGame.context.turn == PLAYER_1 ? nodeGreater : nodeLess;
+    auto cmp = dummyGame.position.turn == PLAYER_1 ? nodeGreater : nodeLess;
 
     std::stable_sort(node->children.begin(), node->children.end(), cmp);
 }
@@ -276,7 +276,7 @@ void MillGameAi_ab::setGame(const Game &game)
 
     this->game_ = game;
     dummyGame = game;
-    position = &(dummyGame.context);
+    position = &(dummyGame.position);
     requiredQuit = false;
     deleteTree(rootNode);
 #ifdef MEMORY_POOL
@@ -312,7 +312,7 @@ int MillGameAi_ab::alphaBetaPruning(depth_t depth)
 #ifdef BOOK_LEARNING
     if (position_.getPhase() == GAME_PLACING)
     {
-        if (position_.context.nPiecesInHand[1] <= 10) {
+        if (position_.position.nPiecesInHand[1] <= 10) {
             // 开局库只记录摆棋阶段最后的局面
             openingBook.push_back(position_.getHash());
         } else {
@@ -515,11 +515,11 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = dummyGame.context.turn == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = dummyGame.position.turn == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
-        // 上下文入栈保存，以便后续撤销着法
-        contextStack.push(dummyGame.context);
+        // 棋局入栈保存，以便后续撤销着法
+        contextStack.push(dummyGame.position);
 
         // 执行着法
         dummyGame.command(child->move);
@@ -542,11 +542,11 @@ value_t MillGameAi_ab::alphaBetaPruning(depth_t depth, value_t alpha, value_t be
         // 递归 Alpha-Beta 剪枝
         value = alphaBetaPruning(depth - 1 + epsilon, alpha, beta, child);
 
-        // 上下文弹出栈，撤销着法
-        dummyGame.context = contextStack.top();
+        // 棋局弹出栈，撤销着法
+        dummyGame.position = contextStack.top();
         contextStack.pop();
 
-        if (dummyGame.context.turn == PLAYER_1) {
+        if (dummyGame.position.turn == PLAYER_1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -667,7 +667,7 @@ const char* MillGameAi_ab::bestMove()
     if (game_.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
-        player_t whosTurn = game_.context.turn;
+        player_t whosTurn = game_.position.turn;
 
         for (auto child : rootNode->children) {
             if ((whosTurn == PLAYER_1 && child->value > -VALUE_WIN) ||
@@ -679,7 +679,7 @@ const char* MillGameAi_ab::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            sprintf(cmdline, "Player%d give up!", game_.context.turnId);
+            sprintf(cmdline, "Player%d give up!", game_.position.turnId);
             return cmdline;
         }
     }
@@ -722,15 +722,15 @@ const char *MillGameAi_ab::move2string(move_t move)
     int r, s;
 
     if (move < 0) {
-        dummyGame.context.board.locationToPolar(-move, r, s);
+        dummyGame.position.board.locationToPolar(-move, r, s);
         sprintf(cmdline, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        dummyGame.context.board.locationToPolar(move >> 8, r1, s1);
-        dummyGame.context.board.locationToPolar(move & 0x00ff, r, s);
+        dummyGame.position.board.locationToPolar(move >> 8, r1, s1);
+        dummyGame.position.board.locationToPolar(move & 0x00ff, r, s);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        dummyGame.context.board.locationToPolar(move & 0x007f, r, s);
+        dummyGame.position.board.locationToPolar(move & 0x007f, r, s);
         sprintf(cmdline, "(%1u,%1u)", r, s);
     }
 
