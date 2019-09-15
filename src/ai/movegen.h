@@ -34,7 +34,7 @@ public:
     MoveList &operator=(const MoveList &) = delete;
    
     // 生成所有合法的着法并建立子节点
-    static void generateLegalMoves(AIAlgorithm &ai, Game &dummyGame,
+    static void generateLegalMoves(AIAlgorithm &ai, Game &tempGame,
                                    AIAlgorithm::Node *node, AIAlgorithm::Node *rootNode,
                                    move_t bestMove);
 

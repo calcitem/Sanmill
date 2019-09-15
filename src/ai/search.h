@@ -185,12 +185,12 @@ private:
     Game game_;
 
     // 演算用的模型
-    Game dummyGame;
+    Game tempGame;
 
     Position *position {};
 
     // hash 计算时，各种转换用的模型
-    Game dummyGameShift;
+    Game tempGameShift;
 
     // 根节点
     Node *rootNode {nullptr};

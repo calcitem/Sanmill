@@ -124,7 +124,7 @@ void GameController::gameStart()
 {
     game_.configure(giveUpIfMostLose_, randomMove_);
     game_.start();
-    dummyGame = game_;
+    tempGame = game_;
 
     // 每隔100毫秒调用一次定时器处理函数
     if (timeID == 0) {
@@ -150,7 +150,7 @@ void GameController::gameReset()
     // 重置游戏
     game_.configure(giveUpIfMostLose_, randomMove_);
     game_.reset();
-    dummyGame = game_;
+    tempGame = game_;
 
     // 停掉线程
     if (!isAutoRestart) {
@@ -281,7 +281,7 @@ void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLi
 
     // 设置模型规则，重置游戏
     game_.setPosition(&RULES[ruleNo], stepsLimit, timeLimit);
-    dummyGame = game_;
+    tempGame = game_;
 
     // 重置游戏
     gameReset();
@@ -400,7 +400,7 @@ void GameController::flip()
 
     game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
     game_.position.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    dummyGame = game_;
+    tempGame = game_;
 
     // 更新棋谱
     int row = 0;
@@ -439,7 +439,7 @@ void GameController::mirror()
     }
 
     game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    dummyGame = game_;
+    tempGame = game_;
 
     // 更新棋谱
     int row = 0;
@@ -481,7 +481,7 @@ void GameController::turnRight()
     }
 
     game_.position.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    dummyGame = game_;
+    tempGame = game_;
 
     // 更新棋谱
     int row = 0;
@@ -521,7 +521,7 @@ void GameController::turnLeft()
     }
 
     game_.position.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    dummyGame = game_;
+    tempGame = game_;
 
     // 更新棋谱
     int row = 0;
@@ -642,7 +642,7 @@ bool GameController::actionPiece(QPointF pos)
 
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !MOBILE_APP_UI */
-            game_ = dummyGame;
+            game_ = tempGame;
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
 
             // 如果再决出胜负后悔棋，则重新启动计时
@@ -953,14 +953,14 @@ bool GameController::phaseChange(int row, bool forceUpdate)
 
     for (int i = 0; i <= row; i++) {
         loggerDebug("%s\n", mlist.at(i).toStdString().c_str());
-        dummyGame.command(mlist.at(i).toStdString().c_str());
+        tempGame.command(mlist.at(i).toStdString().c_str());
     }
 
     // 下面这步关键，会让悔棋者承担时间损失
-    dummyGame.setStartTime(game_.getStartTimeb());
+    tempGame.setStartTime(game_.getStartTimeb());
 
     // 刷新棋局场景
-    updateScence(dummyGame);
+    updateScence(tempGame);
 
     return true;
 }

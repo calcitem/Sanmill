@@ -49,17 +49,17 @@ bool TranspositionTable::findHash(hash_t hash, TranspositionTable::HashValue &ha
         return iter;
 
     // 变换局面，查找 hash (废弃)
-    dummyGameShift = dummyGame;
+    tempGameShift = tempGame;
     for (int i = 0; i < 2; i++) {
         if (i)
-            dummyGameShift.mirror(false);
+            tempGameShift.mirror(false);
 
         for (int j = 0; j < 2; j++) {
             if (j)
-                dummyGameShift.turn(false);
+                tempGameShift.turn(false);
             for (int k = 0; k < 4; k++) {
-                dummyGameShift.rotate(k * 90, false);
-                iter = hashmap.find(dummyGameShift.getHash());
+                tempGameShift.rotate(k * 90, false);
+                iter = hashmap.find(tempGameShift.getHash());
                 if (iter != hashmap.end())
                     return iter;
             }

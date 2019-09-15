@@ -34,7 +34,7 @@ public:
 
     Evaluation &operator=(const Evaluation &) = delete;
 
-    static value_t getValue(Game &dummyGame, Position *Position, AIAlgorithm::Node *node);
+    static value_t getValue(Game &tempGame, Position *Position, AIAlgorithm::Node *node);
 
     // 评估子力
 #ifdef EVALUATE_ENABLE

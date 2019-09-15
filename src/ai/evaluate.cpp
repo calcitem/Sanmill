@@ -21,7 +21,7 @@
 
 #include "evaluate.h"
 
-value_t Evaluation::getValue(Game &dummyGame, Position *position, AIAlgorithm::Node *node)
+value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
@@ -83,7 +83,7 @@ value_t Evaluation::getValue(Game &dummyGame, Position *position, AIAlgorithm::N
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
-        value += dummyGame.getMobilityDiff(position->turn, dummyGame.currentRule, position->nPiecesInHand[1], position->nPiecesInHand[2], false) * 10;
+        value += tempGame.getMobilityDiff(position->turn, tempGame.currentRule, position->nPiecesInHand[1], position->nPiecesInHand[2], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (position->action) {
@@ -112,7 +112,7 @@ value_t Evaluation::getValue(Game &dummyGame, Position *position, AIAlgorithm::N
         // 布局阶段闷棋判断
         if (position->nPiecesOnBoard[1] + position->nPiecesOnBoard[2] >=
             Board::N_SEATS * Board::N_RINGS) {
-            if (dummyGame.getRule()->isStartingPlayerLoseWhenBoardFull) {
+            if (tempGame.getRule()->isStartingPlayerLoseWhenBoardFull) {
                 value -= VALUE_WIN;
             } else {
                 value = VALUE_DRAW;
@@ -121,17 +121,17 @@ value_t Evaluation::getValue(Game &dummyGame, Position *position, AIAlgorithm::N
 
         // 走棋阶段被闷判断
         if (position->action == ACTION_CHOOSE &&
-            dummyGame.position.board.isAllSurrounded(position->turn, dummyGame.currentRule, position->nPiecesOnBoard, position->turn) &&
-            dummyGame.getRule()->isLoseWhenNoWay) {
+            tempGame.position.board.isAllSurrounded(position->turn, tempGame.currentRule, position->nPiecesOnBoard, position->turn) &&
+            tempGame.getRule()->isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             value_t delta = position->turn == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
             value += delta;
         }
 
         // 剩余棋子个数判断
-        if (position->nPiecesOnBoard[1] < dummyGame.getRule()->nPiecesAtLeast) {
+        if (position->nPiecesOnBoard[1] < tempGame.getRule()->nPiecesAtLeast) {
             value -= VALUE_WIN;
-        } else if (position->nPiecesOnBoard[2] < dummyGame.getRule()->nPiecesAtLeast) {
+        } else if (position->nPiecesOnBoard[2] < tempGame.getRule()->nPiecesAtLeast) {
             value += VALUE_WIN;
         }
 
