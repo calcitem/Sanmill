@@ -80,9 +80,9 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     };
 
     const depth_t movingDiffDepthTable[] = {
-        0, 0, 11,               /* 0 ~ 2 */
-        10, 9, 8,               /* 3 ~ 5 */
-        7, 6, 5, 4, 3, 2, 1     /* 6 ~ 12 */
+        0, 0, 0,               /* 0 ~ 2 */
+        11, 10, 9, 8, 7,       /* 3 ~ 7 */
+        6, 5, 4, 3, 2          /* 8 ~ 12 */
     };
 
     if ((tempGame.position.phase) & (PHASE_PLACING)) {
