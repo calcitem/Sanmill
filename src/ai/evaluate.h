@@ -40,49 +40,49 @@ public:
 #ifdef EVALUATE_ENABLE
 
 #ifdef EVALUATE_MATERIAL
-    static value_t evaluateMaterial(MillGameAi_ab::Node *node)
+    static value_t evaluateMaterial(AIAlgorithm::Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SPACE
-    static value_t evaluateSpace(MillGameAi_ab::Node *node)
+    static value_t evaluateSpace(AIAlgorithm::Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOBILITY
-    static value_t evaluateMobility(MillGameAi_ab::Node *node)
+    static value_t evaluateMobility(AIAlgorithm::Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_TEMPO
-    static value_t evaluateTempo(MillGameAi_ab::Node *node)
+    static value_t evaluateTempo(AIAlgorithm::Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_THREAT
-    static value_t evaluateThreat(MillGameAi_ab::Node *node)
+    static value_t evaluateThreat(AIAlgorithm::Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SHAPE
-    static value_t evaluateShape(MillGameAi_ab::Node *node)
+    static value_t evaluateShape(AIAlgorithm::Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOTIF
-    static value_t MillGameAi_ab::evaluateMotif(MillGameAi_ab::Node *node)
+    static value_t AIAlgorithm::evaluateMotif(AIAlgorithm::Node *node)
     {
         return 0;
     }

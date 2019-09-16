@@ -34,9 +34,9 @@ Game::Game()
     // 创建哈希数据
     constructHash();
 
-#ifdef BOOK_LEARNING
-    // TODO: 开局库文件被加载了多次
-    MillGameAi_ab::loadOpeningBookFileToHashMap();
+#ifdef ENDGAME_LEARNING
+    // TODO: 残局文件被加载了多次
+    AIAlgorithm::loadEndgameFileToHashMap();
 #endif
 
     // 默认选择第1号规则，即“打三棋”
@@ -886,9 +886,6 @@ bool Game::win(bool forceDraw)
             position.phase = PHASE_GAMEOVER;
             sprintf(cmdline, "Player%d win!", o);
             cmdlist.emplace_back(string(cmdline));
-#ifdef BOOK_LEARNING
-            MillGameAi_ab::recordOpeningBookToHashMap();  // TODO: 目前是对"双方"失败都记录到开局库
-#endif /* BOOK_LEARNING */
 
             return true;
         }
@@ -922,9 +919,6 @@ bool Game::win(bool forceDraw)
             int winnerId = Player::toId(winner);
             sprintf(cmdline, "Player%d no way to go. Player%d win!", position.sideId, winnerId);
             cmdlist.emplace_back(string(cmdline));
-#ifdef BOOK_LEARNING
-            MillGameAi_ab::recordOpeningBookToHashMap();  // TODO: 目前是对所有的失败记录到开局库
-#endif /* BOOK_LEARNING */
 
             return true;
         }

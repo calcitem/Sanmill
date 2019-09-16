@@ -98,9 +98,9 @@ GameController::~GameController()
     delete ai[1];
     delete ai[2];
 
-#ifdef BOOK_LEARNING
-    MillGameAi_ab::recordOpeningBookHashMapToFile();
-#endif /* BOOK_LEARNING */
+#ifdef ENDGAME_LEARNING
+    AIAlgorithm::recordEndgameHashMapToFile();
+#endif /* ENDGAME_LEARNING */
 }
 
 const QMap<int, QStringList> GameController::getActions()

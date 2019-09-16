@@ -22,6 +22,7 @@ INCLUDEPATH += src/game
 INCLUDEPATH += src/ui/qt
 
 SOURCES += \
+    src/ai/endgame.cpp \
     src/ai/evaluate.cpp \
     src/ai/movegen.cpp \
     src/ai/tt.cpp \
@@ -47,6 +48,7 @@ HEADERS  += \
     include/config.h \
     include/version.h \
     include/version.h.template \
+    src/ai/endgame.h \
     src/ai/evaluate.h \
     src/ai/movegen.h \
     src/ai/tt.h \
@@ -59,7 +61,6 @@ HEADERS  += \
     src/base/stackalloc.h \
     src/base/thread.h \
     src/ai/search.h \
-    src/ai/zobrist.h \
     src/base/zobrist.h \
     src/game/board.h \
     src/game/player.h \

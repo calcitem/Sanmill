@@ -36,7 +36,10 @@
 #include <array>
 
 #include "position.h"
+#include "tt.h"
 #include "hashmap.h"
+#include "endgame.h"
+#include "types.h"
 
 #ifdef MEMORY_POOL
 #include "MemoryPool.h"
@@ -111,7 +114,7 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
+#ifdef TRANSPOSITION_TABLE_ENABLE
     // 清空哈希表
     void clearTranspositionTable();
 #endif
@@ -120,14 +123,14 @@ public:
     static bool nodeLess(const Node *first, const Node *second);
     static bool nodeGreater(const Node *first, const Node *second);
 
-#ifdef BOOK_LEARNING
-    bool findBookHash(hash_t hash, HashValue &hashValue);
-    static int recordBookHash(hash_t hash, const HashValue &hashValue);
-    void clearBookHashMap();
-    static void recordOpeningBookToHashMap();
-    static void recordOpeningBookHashMapToFile();
-    static void loadOpeningBookFileToHashMap();
-#endif // BOOK_LEARNING
+#ifdef ENDGAME_LEARNING
+    bool findEndgameHash(hash_t hash, Endgame &endgame);
+    static int recordEndgameHash(hash_t hash, const Endgame &endgame);
+    void clearEndgameHashMap();
+    static void recordEndgameHashMapToFile();
+    static void loadEndgameFileToHashMap();
+#endif // ENDGAME_LEARNING
+
 
 public: /* TODO: Move to private or protected */
     // 增加新节点

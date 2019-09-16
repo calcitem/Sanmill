@@ -29,15 +29,10 @@
 #include "movegen.h"
 #include "hashmap.h"
 #include "tt.h"
+#include "endgame.h"
 #include "types.h"
 
 using namespace CTSL;
-
-#ifdef BOOK_LEARNING
-static constexpr int bookHashsize = 0x1000000; // 16M
-HashMap<hash_t, MillGameAi_ab::HashValue> bookHashMap(bookHashsize);
-vector<hash_t> openingBook;
-#endif // BOOK_LEARNING
 
 // 用于检测重复局面 (Position)
 vector<hash_t> history;
@@ -79,11 +74,19 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         12, 12, 13, 14,     /* 20 ~ 23 */
     };
 
+#ifdef ENDGAME_LEARNING
+    const depth_t movingDiffDepthTable[] = {
+        0, 0, 0,               /* 0 ~ 2 */
+        0, 0, 0, 0, 0,       /* 3 ~ 7 */
+        0, 0, 0, 0, 0          /* 8 ~ 12 */
+    };
+#else
     const depth_t movingDiffDepthTable[] = {
         0, 0, 0,               /* 0 ~ 2 */
         11, 10, 9, 8, 7,       /* 3 ~ 7 */
         6, 5, 4, 3, 2          /* 8 ~ 12 */
     };
+#endif /* ENDGAME_LEARNING */
 
     if ((tempGame.position.phase) & (PHASE_PLACING)) {
         d = placingDepthTable[tempGame.getPiecesInHandCount(1)];
@@ -288,11 +291,11 @@ void AIAlgorithm::setGame(const Game &game)
         TranspositionTable::clear();
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-#ifdef BOOK_LEARNING
-        // TODO: 规则改变时清空学习表
-        //clearBookHashMap();
-        //openingBook.clear();
-#endif // BOOK_LEARNING
+#ifdef ENDGAME_LEARNING
+        // TODO: 规则改变时清空残局库
+        //clearEndgameHashMap();
+        //endgameList.clear();
+#endif // ENDGAME_LEARNING
 
         history.clear();
     }
@@ -331,19 +334,6 @@ int AIAlgorithm::search(depth_t depth)
 
     auto timeStart = chrono::steady_clock::now();
     chrono::steady_clock::time_point timeEnd;
-
-#ifdef BOOK_LEARNING
-    if (position_.getPhase() == GAME_PLACING)
-    {
-        if (position_.position.nPiecesInHand[1] <= 10) {
-            // 开局库只记录摆棋阶段最后的局面
-            openingBook.push_back(position_.getHash());
-        } else {
-            // 暂时在此处清空开局库
-            openingBook.clear();
-        }
-    }
-#endif
 
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
@@ -415,18 +405,37 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 子节点的最优着法
     move_t bestMove = MOVE_NONE;
 
-#if ((defined TRANSPOSITION_TABLE_ENABLE) || (defined BOOK_LEARNING))
-    // 哈希类型
-    enum TranspositionTable::HashType hashf = TranspositionTable::hashfALPHA;
-
+#if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
     hash_t hash = tempGame.getHash();
+#endif
+
+#ifdef ENDGAME_LEARNING
+    // 检索残局库
+    Endgame endgame;
+
+    if (findEndgameHash(hash, endgame)) {
+        switch (endgame.type) {
+        case ENDGAME_PLAYER_1_WIN:
+            node->value = VALUE_WIN;
+        case ENDGAME_PLAYER_2_WIN:
+            node->value = -VALUE_WIN;
+        default:
+            break;
+        }
+
+        return node->value;
+    }
+#endif /* ENDGAME_LEARNING */
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    // 哈希类型
+    enum TranspositionTable::HashType hashf = TranspositionTable::hashfALPHA;
+    
 #ifdef DEBUG_AB_TREE
     node->hash = hash;
 #endif
-#endif
 
-#ifdef TRANSPOSITION_TABLE_ENABLE
     TranspositionTable::HashType type = TranspositionTable::hashfEMPTY;
 
     value_t probeVal = TranspositionTable::probeHash(hash, depth, alpha, beta, bestMove, type);
@@ -455,7 +464,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif
 
         return node->value;
-}
+    }
 
     //hashMapMutex.unlock();
 #endif /* TRANSPOSITION_TABLE_ENABLE */
@@ -512,16 +521,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #ifdef DEBUG_AB_TREE
         if (requiredQuit) {
             node->isTimeout = true;
-        }
-#endif
-
-#ifdef BOOK_LEARNING
-        // 检索开局库
-        if (position->phase == GAME_PLACING && findBookHash(hash, hashValue)) {
-            if (position->turn == ???) {
-                // TODO:
-                node->value += 1;
-            }
         }
 #endif
 
@@ -702,6 +701,13 @@ const char* AIAlgorithm::bestMove()
 
         // 自动认输
         if (isMostLose) {
+#ifdef ENDGAME_LEARNING
+            Endgame endgame;
+            endgame.type = game_.position.sideToMove == PLAYER_1 ?
+                ENDGAME_PLAYER_2_WIN : ENDGAME_PLAYER_1_WIN;
+            recordEndgameHash(this->game_.getHash(), endgame);
+#endif /* ENDGAME_LEARNING */
+
             sprintf(cmdline, "Player%d give up!", game_.position.sideId);
             return cmdline;
         }
@@ -760,58 +766,37 @@ const char *AIAlgorithm::moveToCommand(move_t move)
     return cmdline;
 }
 
-#ifdef BOOK_LEARNING
-
-bool AIAlgorithm::findBookHash(hash_t hash, HashValue &hashValue)
+#ifdef ENDGAME_LEARNING
+bool AIAlgorithm::findEndgameHash(hash_t hash, Endgame &endgame)
 {
-    return bookHashMap.find(hash, hashValue);
+    return endgameHashMap.find(hash, endgame);
 }
 
-int AIAlgorithm::recordBookHash(hash_t hash, const HashValue &hashValue)
+int AIAlgorithm::recordEndgameHash(hash_t hash, const Endgame &endgame)
 {
     //hashMapMutex.lock();
-    bookHashMap.insert(hash, hashValue);
+    endgameHashMap.insert(hash, endgame);
     //hashMapMutex.unlock();
 
     return 0;
 }
 
-void AIAlgorithm::clearBookHashMap()
+void AIAlgorithm::clearEndgameHashMap()
 {
     //hashMapMutex.lock();
-    bookHashMap.clear();
+    endgameHashMap.clear();
     //hashMapMutex.unlock();
 }
 
-void AIAlgorithm::recordOpeningBookToHashMap()
+void AIAlgorithm::recordEndgameHashMapToFile()
 {
-    HashValue hashValue;
-    hash_t hash = 0;
-
-    for (auto iter = openingBook.begin(); iter != openingBook.end(); ++iter)
-    {
-#if 0
-        if (findBookHash(*iter, hashValue))
-        {
-        }
-#endif
-        memset(&hashValue, 0, sizeof(HashValue));
-        hash = *iter;
-        recordBookHash(hash, hashValue);  // 暂时使用直接覆盖策略
-    }
-
-    openingBook.clear();
+    const QString filename = "endgame.txt";
+    endgameHashMap.dump(filename);
 }
 
-void AIAlgorithm::recordOpeningBookHashMapToFile()
+void AIAlgorithm::loadEndgameFileToHashMap()
 {
-    const QString bookFileName = "opening-book.txt";
-    bookHashMap.dump(bookFileName);
+    const QString filename = "endgame.txt";
+    endgameHashMap.load(filename);
 }
-
-void AIAlgorithm::loadOpeningBookFileToHashMap()
-{
-    const QString bookFileName = "opening-book.txt";
-    bookHashMap.load(bookFileName);
-}
-#endif // BOOK_LEARNING
+#endif // ENDGAME_LEARNING
