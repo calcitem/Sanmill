@@ -418,8 +418,12 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         switch (endgame.type) {
         case ENDGAME_PLAYER_1_WIN:
             node->value = VALUE_WIN;
+            node->value += depth;
+            break;
         case ENDGAME_PLAYER_2_WIN:
             node->value = -VALUE_WIN;
+            node->value -= depth;
+            break;
         default:
             break;
         }
