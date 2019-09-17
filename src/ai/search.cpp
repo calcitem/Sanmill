@@ -684,16 +684,39 @@ const char* AIAlgorithm::bestMove()
         i++;
     }
 
-    // 检查是否必败
+    player_t side = game_.position.sideToMove;
 
+#ifdef ENDGAME_LEARNING
+    // 检查是否明显劣势
+    if (1) {    // TODO: 替换为开关选项
+        bool isMostWeak = true; // 是否明显劣势
+
+        for (auto child : root->children) {
+            if ((side == PLAYER_1 && child->value > -VALUE_STRONG) ||
+                (side == PLAYER_2 && child->value < VALUE_STRONG)) {
+                isMostWeak = false;
+                break;
+            }
+        }
+
+        if (isMostWeak) {
+            Endgame endgame;
+            endgame.type = game_.position.sideToMove == PLAYER_1 ?
+                ENDGAME_PLAYER_2_WIN : ENDGAME_PLAYER_1_WIN;
+            hash_t endgameHash = this->game_.getHash(); // TODO: 减少重复计算哈希
+            recordEndgameHash(endgameHash, endgame);
+            loggerDebug("Record 0x%08I32x to Endgame Hashmap\n", endgameHash);
+        }
+    }
+#endif /* ENDGAME_LEARNING */
+
+    // 检查是否必败
     if (game_.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
-        player_t whosTurn = game_.position.sideToMove;
-
         for (auto child : root->children) {
-            if ((whosTurn == PLAYER_1 && child->value > -VALUE_WIN) ||
-                (whosTurn == PLAYER_2 && child->value < VALUE_WIN)) {
+            if ((side == PLAYER_1 && child->value > -VALUE_WIN) ||
+                (side == PLAYER_2 && child->value < VALUE_WIN)) {
                 isMostLose = false;
                 break;
             }
@@ -701,13 +724,6 @@ const char* AIAlgorithm::bestMove()
 
         // 自动认输
         if (isMostLose) {
-#ifdef ENDGAME_LEARNING
-            Endgame endgame;
-            endgame.type = game_.position.sideToMove == PLAYER_1 ?
-                ENDGAME_PLAYER_2_WIN : ENDGAME_PLAYER_1_WIN;
-            recordEndgameHash(this->game_.getHash(), endgame);
-#endif /* ENDGAME_LEARNING */
-
             sprintf(cmdline, "Player%d give up!", game_.position.sideId);
             return cmdline;
         }

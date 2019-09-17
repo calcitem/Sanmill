@@ -105,6 +105,7 @@ enum value_t : int16_t
 {
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
+    VALUE_STRONG = 400,
     VALUE_WIN = 10000,
     VALUE_INFINITE = 32001,
     VALUE_UNKNOWN = INT16_MIN,
