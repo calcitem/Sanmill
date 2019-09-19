@@ -99,9 +99,6 @@ public:
     // 运算符重载
     Game &operator=(const Game &);
 
-    // 设置配置
-    bool configure(bool giveUpIfMostLose, bool randomMove);
-
     // 设置棋局状态和棋局，用于初始化
     bool setPosition(const struct Rule *rule,
                  step_t maxStepsLedToDraw = 0,     // 限制步数
@@ -143,12 +140,6 @@ public:
     {
         return moveStep;
     } 
-
-    // 获取是否必败时认输
-    bool getGiveUpIfMostLose() const
-    {
-        return giveUpIfMostLose_;
-    }
 
     // 获取 AI 是否随机走子
     bool randomMoveEnabled() const
@@ -335,9 +326,6 @@ private:
 
     // 从走子阶段开始或上次吃子起的步数
     int moveStep {};
-
-    // 是否必败时认输
-    bool giveUpIfMostLose_ {false};
 
     // AI 是否随机走子
     bool isRandomMove {true};

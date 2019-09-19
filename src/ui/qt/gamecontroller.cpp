@@ -50,7 +50,6 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     ruleNo_(-1),
     timeLimit(0),
     stepsLimit(50),
-    giveUpIfMostLose_(false),
     randomMove_(true)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
@@ -122,7 +121,6 @@ const QMap<int, QStringList> GameController::getActions()
 
 void GameController::gameStart()
 {
-    game_.configure(giveUpIfMostLose_, randomMove_);
     game_.start();
     tempGame = game_;
 
@@ -148,7 +146,6 @@ void GameController::gameReset()
     }
 
     // 重置游戏
-    game_.configure(giveUpIfMostLose_, randomMove_);
     game_.reset();
     tempGame = game_;
 
@@ -289,8 +286,6 @@ void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLi
 
 void GameController::setEngine(int id, bool arg)
 {
-    game_.configure(giveUpIfMostLose_, randomMove_);
-
     isAiPlayer[id] = arg;
 
     if (arg) {
@@ -371,9 +366,9 @@ void GameController::playSound(const QString &soundPath)
 #endif /* ! DONOT_PLAY_SOUND */
 }
 
-void GameController::setGiveUpIfMostLose(bool arg)
+void GameController::setGiveUpIfMostLose(bool enabled)
 {
-    giveUpIfMostLose_ = arg;
+    options.setGiveUpIfMostLose(enabled);
 }
 
 void GameController::setAutoRestart(bool enabled)

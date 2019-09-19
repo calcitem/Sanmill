@@ -63,7 +63,6 @@ Game &Game::operator= (const Game &game)
     currentStep = game.currentStep;
     moveStep = game.moveStep;
     isRandomMove = game.isRandomMove;
-    giveUpIfMostLose_ = game.giveUpIfMostLose_;
     boardLocations = position.board.locations;
     currentLocation = game.currentLocation;
     winner = game.winner;
@@ -77,18 +76,6 @@ Game &Game::operator= (const Game &game)
     tips = game.tips;
 
     return *this;
-}
-
-// 设置配置
-bool Game::configure(bool giveUpIfMostLose, bool randomMove)
-{
-    // 设置是否必败时认输
-    this->giveUpIfMostLose_ = giveUpIfMostLose;
-
-    // 设置是否随机走子
-    this->isRandomMove = randomMove;
-
-    return true;
 }
 
 // 设置棋局状态和棋盘数据，用于初始化

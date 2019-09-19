@@ -32,3 +32,13 @@ bool Options::getAutoRestart()
 {
     return isAutoRestart;
 }
+
+void Options::setGiveUpIfMostLose(bool enabled)
+{
+    giveUpIfMostLose = enabled;
+}
+
+bool Options::getGiveUpIfMostLose()
+{
+    return giveUpIfMostLose;
+}

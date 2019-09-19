@@ -70,11 +70,6 @@ public:
         return stepsLimit;
     }
 
-    bool getGiveUpIfMostLose()
-    {
-        return giveUpIfMostLose_;
-    }
-
     bool getRandomMove()
     {
         return randomMove_;
@@ -155,7 +150,7 @@ public slots:
     void playSound(const QString &soundPath);
 
     // 是否必败时认输
-    void setGiveUpIfMostLose(bool arg);
+    void setGiveUpIfMostLose(bool enabled);
 
     // 是否自动开局
     void setAutoRestart(bool enabled = false);

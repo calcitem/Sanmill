@@ -31,6 +31,7 @@
 #include "tt.h"
 #include "endgame.h"
 #include "types.h"
+#include "option.h"
 
 using namespace CTSL;
 
@@ -715,7 +716,7 @@ const char* AIAlgorithm::bestMove()
 #endif /* ENDGAME_LEARNING */
 
     // 检查是否必败
-    if (game_.getGiveUpIfMostLose() == true) {
+    if (options.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
         for (auto child : root->children) {

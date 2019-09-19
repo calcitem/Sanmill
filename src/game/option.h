@@ -30,6 +30,8 @@ public:
     void setAutoRestart(bool enabled);
     bool getAutoRestart();
 
+    void setGiveUpIfMostLose(bool enabled);
+    bool getGiveUpIfMostLose();
 protected:
 
 private:
