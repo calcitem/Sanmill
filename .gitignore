@@ -328,3 +328,8 @@ CMakeLists.txt.user*
 
 # Other files
 user*
+desktop.ini
+*.swp
+*.zip
+*.rar
+*.7z
