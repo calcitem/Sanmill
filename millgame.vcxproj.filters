@@ -120,6 +120,9 @@
     <ClInclude Include="src\ai\endgame.h">
       <Filter>ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\option.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -340,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="src\ai\endgame.cpp">
       <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\option.cpp">
+      <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

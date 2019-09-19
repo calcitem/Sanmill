@@ -48,6 +48,7 @@
 #include "server.h"
 #include "client.h"
 #include "version.h"
+#include "option.h"
 
 MillGameWindow::MillGameWindow(QWidget * parent) :
     QMainWindow(parent),

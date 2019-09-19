@@ -34,6 +34,7 @@
 #include "boarditem.h"
 #include "server.h"
 #include "client.h"
+#include "option.h"
 
 GameController::GameController(GameScene & scene, QObject * parent) :
     QObject(parent),
@@ -45,7 +46,6 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     hasAnimation(true),
     durationTime(500),
     hasSound(true),
-    isAutoRestart(false),
     timeID(0),
     ruleNo_(-1),
     timeLimit(0),
@@ -153,7 +153,7 @@ void GameController::gameReset()
     tempGame = game_;
 
     // 停掉线程
-    if (!isAutoRestart) {
+    if (!options.getAutoRestart()) {
         ai[1]->stop();
         ai[2]->stop();
         isAiPlayer[1] = false;
@@ -376,9 +376,9 @@ void GameController::setGiveUpIfMostLose(bool arg)
     giveUpIfMostLose_ = arg;
 }
 
-void GameController::setAutoRestart(bool arg)
+void GameController::setAutoRestart(bool enabled)
 {
-    isAutoRestart = arg;
+    options.setAutoRestart(enabled);
 }
 
 void GameController::setRandomMove(bool arg)
@@ -906,7 +906,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
                 ai[1]->stop();
                 ai[2]->stop();
 
-                if (isAutoRestart) {
+                if (options.getAutoRestart()) {
                     gameReset();
                     gameStart();
 

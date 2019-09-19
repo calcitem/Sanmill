@@ -158,7 +158,7 @@ public slots:
     void setGiveUpIfMostLose(bool arg);
 
     // 是否自动开局
-    void setAutoRestart(bool arg = false);
+    void setAutoRestart(bool enabled = false);
 
     // AI 是否随机走子
     void setRandomMove(bool arg);
@@ -243,9 +243,6 @@ private:
 
     // 是否必败时认输
     bool giveUpIfMostLose_ {false};
-
-    // 是否棋局结束后自动重新开局
-    bool isAutoRestart;
 
     // AI 是否随机走子
     bool randomMove_;
