@@ -588,7 +588,7 @@
             <bool>false</bool>
            </property>
            <property name="digitCount">
-            <number>3</number>
+            <number>4</number>
            </property>
            <property name="value" stdset="0">
             <double>0.000000000000000</double>
@@ -610,7 +610,7 @@
             <enum>QFrame::Raised</enum>
            </property>
            <property name="digitCount">
-            <number>3</number>
+            <number>4</number>
            </property>
            <property name="mode">
             <enum>QLCDNumber::Dec</enum>
@@ -629,7 +629,7 @@
             <bool>false</bool>
            </property>
            <property name="digitCount">
-            <number>3</number>
+            <number>4</number>
            </property>
           </widget>
          </item>
