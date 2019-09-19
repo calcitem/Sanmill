@@ -97,7 +97,9 @@ GameController::~GameController()
     delete ai[2];
 
 #ifdef ENDGAME_LEARNING
-    AIAlgorithm::recordEndgameHashMapToFile();
+    if (options.getLearnEndgameEnabled()) {
+        AIAlgorithm::recordEndgameHashMapToFile();
+    }
 #endif /* ENDGAME_LEARNING */
 }
 
@@ -378,6 +380,11 @@ void GameController::setAutoRestart(bool enabled)
 void GameController::setRandomMove(bool enabled)
 {
     options.setRandomMoveEnabled(enabled);
+}
+
+void GameController::setLearnEndgame(bool enabled)
+{
+    options.setLearnEndgameEnabled(enabled);  
 }
 
 // 上下翻转

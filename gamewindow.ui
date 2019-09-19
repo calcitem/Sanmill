@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>491</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -294,6 +294,7 @@
     <addaction name="actionGiveUpIfMostLose_G"/>
     <addaction name="actionAutoRestart_A"/>
     <addaction name="actionRandomMove_R"/>
+    <addaction name="actionLearnEndgame_E"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -1123,6 +1124,18 @@
    </property>
    <property name="text">
     <string>必败时认输(&amp;G)</string>
+   </property>
+  </action>
+  <action name="actionLearnEndgame_E">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>残局自学习
+(&amp;E)</string>
    </property>
   </action>
  </widget>

@@ -153,6 +153,9 @@ public slots:
     // AI 是否随机走子
     void setRandomMove(bool enabled);
 
+    // AI 是否记录残局库
+    void setLearnEndgame(bool enabled);
+
     // 上下翻转
     void flip();
 

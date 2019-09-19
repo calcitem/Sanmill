@@ -52,3 +52,13 @@ bool Options::getRandomMoveEnabled()
 {
     return randomMoveEnabled;
 }
+
+void Options::setLearnEndgameEnabled(bool enabled)
+{
+    learnEndgame = enabled;
+}
+
+bool Options::getLearnEndgameEnabled()
+{
+    return learnEndgame;
+}

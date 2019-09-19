@@ -214,6 +214,9 @@ void MillGameWindow::initialize()
     connect(ui.actionRandomMove_R, SIGNAL(toggled(bool)),
             game, SLOT(setRandomMove(bool)));
 
+    connect(ui.actionLearnEndgame_E, SIGNAL(toggled(bool)),
+            game, SLOT(setLearnEndgame(bool)));
+
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
             game, &GameController::flip);

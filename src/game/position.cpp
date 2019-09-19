@@ -24,6 +24,7 @@
 #include "search.h"
 #include "movegen.h"
 #include "player.h"
+#include "option.h"
 #include "zobrist.h"
 
 Game::Game()
@@ -36,7 +37,9 @@ Game::Game()
 
 #ifdef ENDGAME_LEARNING
     // TODO: 残局文件被加载了多次
-    AIAlgorithm::loadEndgameFileToHashMap();
+    if (options.getLearnEndgameEnabled()) {
+        AIAlgorithm::loadEndgameFileToHashMap();
+    }    
 #endif
 
     // 默认选择第1号规则，即“打三棋”

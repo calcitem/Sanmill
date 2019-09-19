@@ -35,6 +35,9 @@ public:
 
     void setRandomMoveEnabled(bool enabled);
     bool getRandomMoveEnabled();
+
+    void setLearnEndgameEnabled(bool enabled);
+    bool getLearnEndgameEnabled();
 protected:
 
 private:
@@ -46,6 +49,9 @@ private:
 
     // AI 是否随机走子
     bool randomMoveEnabled { true };
+
+    // AI 是否生成残局库
+    bool learnEndgame { true };
 };
 
 extern Options options;
