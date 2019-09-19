@@ -32,6 +32,9 @@ public:
 
     void setGiveUpIfMostLose(bool enabled);
     bool getGiveUpIfMostLose();
+
+    void setRandomMoveEnabled(bool enabled);
+    bool getRandomMoveEnabled();
 protected:
 
 private:
@@ -40,6 +43,9 @@ private:
 
     // 是否必败时认输
     bool giveUpIfMostLose { false };
+
+    // AI 是否随机走子
+    bool randomMoveEnabled { true };
 };
 
 extern Options options;

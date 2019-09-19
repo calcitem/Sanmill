@@ -49,8 +49,7 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     timeID(0),
     ruleNo_(-1),
     timeLimit(0),
-    stepsLimit(50),
-    randomMove_(true)
+    stepsLimit(50)
 {
     // 已在view的样式表中添加背景，scene中不用添加背景
     // 区别在于，view中的背景不随视图变换而变换，scene中的背景随视图变换而变换
@@ -376,9 +375,9 @@ void GameController::setAutoRestart(bool enabled)
     options.setAutoRestart(enabled);
 }
 
-void GameController::setRandomMove(bool arg)
+void GameController::setRandomMove(bool enabled)
 {
-    randomMove_ = arg;
+    options.setRandomMoveEnabled(enabled);
 }
 
 // 上下翻转

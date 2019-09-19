@@ -24,6 +24,7 @@
 #include "movegen.h"
 #include "player.h"
 #include "misc.h"
+#include "option.h"
 
 void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                                   AIAlgorithm::Node *node, AIAlgorithm::Node *root,
@@ -374,14 +375,14 @@ void MoveList::create(Game &game)
 #endif
 }
 
-void MoveList::shuffle(Game &game)
+void MoveList::shuffle()
 {
     array<move_t, 4> movePriorityTable0 = { (move_t)17, (move_t)19, (move_t)21, (move_t)23 }; // 中圈四个顶点 (星位)
     array<move_t, 8> movePriorityTable1 = { (move_t)25, (move_t)27, (move_t)29, (move_t)31, (move_t)9, (move_t)11, (move_t)13, (move_t)15 }; // 外圈和内圈四个顶点
     array<move_t, 4> movePriorityTable2 = { (move_t)16, (move_t)18, (move_t)20, (move_t)22 }; // 中圈十字架
     array<move_t, 8> movePriorityTable3 = { (move_t)24, (move_t)26, (move_t)28, (move_t)30, (move_t)8, (move_t)10, (move_t)12, (move_t)14 }; // 外内圈十字架
 
-    if (game.randomMoveEnabled()) {
+    if (options.getRandomMoveEnabled()) {
         uint32_t seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));

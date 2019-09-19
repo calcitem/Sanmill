@@ -141,12 +141,6 @@ public:
         return moveStep;
     } 
 
-    // 获取 AI 是否随机走子
-    bool randomMoveEnabled() const
-    {
-        return isRandomMove;
-    }
-
     // 获取局面阶段标识
     enum phase_t getPhase() const
     {
@@ -327,10 +321,7 @@ private:
     // 从走子阶段开始或上次吃子起的步数
     int moveStep {};
 
-    // AI 是否随机走子
-    bool isRandomMove {true};
-
-    // 游戏起始时间
+     // 游戏起始时间
     time_t startTime {};
 
     // 当前游戏时间

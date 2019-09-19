@@ -42,3 +42,13 @@ bool Options::getGiveUpIfMostLose()
 {
     return giveUpIfMostLose;
 }
+
+void Options::setRandomMoveEnabled(bool enabled)
+{
+    randomMoveEnabled = enabled;
+}
+
+bool Options::getRandomMoveEnabled()
+{
+    return randomMoveEnabled;
+}

@@ -70,11 +70,6 @@ public:
         return stepsLimit;
     }
 
-    bool getRandomMove()
-    {
-        return randomMove_;
-    }
-
     bool isAnimation()
     {
         return hasAnimation;
@@ -156,7 +151,7 @@ public slots:
     void setAutoRestart(bool enabled = false);
 
     // AI 是否随机走子
-    void setRandomMove(bool arg);
+    void setRandomMove(bool enabled);
 
     // 上下翻转
     void flip();
@@ -238,9 +233,6 @@ private:
 
     // 是否必败时认输
     bool giveUpIfMostLose_ {false};
-
-    // AI 是否随机走子
-    bool randomMove_;
 
     // 定时器ID
     int timeID;

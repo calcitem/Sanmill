@@ -359,7 +359,7 @@ int AIAlgorithm::search(depth_t depth)
 #endif // THREEFOLD_REPETITION
 
     // 随机打乱着法顺序
-    MoveList::shuffle(game_);   
+    MoveList::shuffle();   
 
 #ifdef IDS_SUPPORT
     // 深化迭代

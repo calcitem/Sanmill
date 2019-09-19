@@ -62,7 +62,6 @@ Game &Game::operator= (const Game &game)
     position = game.position;
     currentStep = game.currentStep;
     moveStep = game.moveStep;
-    isRandomMove = game.isRandomMove;
     boardLocations = position.board.locations;
     currentLocation = game.currentLocation;
     winner = game.winner;

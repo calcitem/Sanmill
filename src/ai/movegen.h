@@ -42,7 +42,7 @@ public:
     static void create(Game &game);
 
     // 随机打乱着法搜索顺序
-    static void shuffle(Game &game);
+    static void shuffle();
 
     // 着法表 // TODO: Move to private
     inline static move_t moveTable[Board::N_LOCATIONS][DIRECTIONS_COUNT] = { {MOVE_NONE} };
