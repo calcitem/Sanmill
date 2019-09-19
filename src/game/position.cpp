@@ -265,6 +265,12 @@ bool Game::reset()
     // 计棋谱
     cmdlist.clear();
 
+#ifdef ENDGAME_LEARNING
+    if (options.getLearnEndgameEnabled()) {
+        AIAlgorithm::recordEndgameHashMapToFile();
+    }
+#endif /* ENDGAME_LEARNING */
+
     int i;
 
     for (i = 0; i < N_RULES; i++) {
