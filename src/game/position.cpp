@@ -335,7 +335,7 @@ bool Game::place(int location, int8_t updateCmdlist)
     Board::locationToPolar(location, r, s);
 
     // 时间的临时变量
-    int player_ms = -1;
+    int seconds = -1;
 
     // 对于开局落子
     int piece = '\x00';
@@ -354,9 +354,9 @@ bool Game::place(int location, int8_t updateCmdlist)
         move_ = static_cast<move_t>(location);
 
         if (updateCmdlist) {
-            player_ms = update();
+            seconds = update();
             sprintf(cmdline, "(%1u,%1u) %02u:%02u",
-                    r, s, player_ms / 60, player_ms % 60);
+                    r, s, seconds / 60, seconds % 60);
             cmdlist.emplace_back(string(cmdline));
             currentStep++;
         }
@@ -434,9 +434,9 @@ bool Game::place(int location, int8_t updateCmdlist)
     move_ = static_cast<move_t>((currentLocation << 8) + location);
 
     if (updateCmdlist) {
-        player_ms = update();
+        seconds = update();
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentLocation / Board::N_SEATS, currentLocation % Board::N_SEATS + 1,
-                r, s, player_ms / 60, player_ms % 60);
+                r, s, seconds / 60, seconds % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep++;
@@ -519,7 +519,7 @@ bool Game::capture(int location, int8_t updateCmdlist)
     Board::locationToPolar(location, r, s);
 
     // 时间的临时变量
-    int player_ms = -1;
+    int seconds = -1;
 
     player_t opponent = Player::getOpponent(position.sideToMove);
 
@@ -549,8 +549,8 @@ bool Game::capture(int location, int8_t updateCmdlist)
     move_ = static_cast<move_t>(-location);
 
     if (updateCmdlist) {
-        player_ms = update();
-        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", r, s, player_ms / 60, player_ms % 60);
+        seconds = update();
+        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", r, s, seconds / 60, seconds % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep = 0;
@@ -796,9 +796,9 @@ bool Game::command(int move)
 inline int Game::update()
 {
     int ret = -1;
-    int time_p = -1;
-    time_t *player_ms = &elapsedSeconds[position.sideId];
-    time_t playerNext_ms = elapsedSeconds[position.opponentId];
+    int timePoint = -1;
+    time_t *seconds = &elapsedSeconds[position.sideId];
+    time_t opponentSeconds = elapsedSeconds[position.opponentId];
 
     // 根据局面调整计时器
 
@@ -809,11 +809,11 @@ inline int Game::update()
     currentTime = time(NULL);
 
     // 更新时间
-    if (time_p >= *player_ms) {
-        *player_ms = ret = time_p;
+    if (timePoint >= *seconds) {
+        *seconds = ret = timePoint;
         startTime = currentTime - (elapsedSeconds[1] + elapsedSeconds[2]);
     } else {
-        *player_ms = ret = currentTime - startTime - playerNext_ms;
+        *seconds = ret = currentTime - startTime - opponentSeconds;
     }
 
     // 有限时要求则判断胜负
@@ -1052,12 +1052,12 @@ void Game::setTips()
     }
 }
 
-void Game::getElapsedTime(time_t &p1_ms, time_t &p2_ms)
+void Game::getElapsedTime(time_t &seconds_1, time_t &seconds_2)
 {
     update();
 
-    p1_ms = elapsedSeconds[1];
-    p2_ms = elapsedSeconds[2];
+    seconds_1 = elapsedSeconds[1];
+    seconds_2 = elapsedSeconds[2];
 }
 
 /*

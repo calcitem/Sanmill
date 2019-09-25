@@ -156,7 +156,7 @@ public:
     }
 
     // 玩家1和玩家2的用时
-    void getElapsedTime(time_t &p1_ms, time_t &p2_ms);
+    void getElapsedTime(time_t &seconds_1, time_t &seconds_2);
 
     // 获取棋局的字符提示
     const string getTips() const
