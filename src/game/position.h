@@ -205,7 +205,7 @@ public:
     }
 
     // 计算玩家1和玩家2的棋子活动能力之差
-    int getMobilityDiff(player_t turn, const Rule &rule, int nPiecesOnBoard[], bool includeFobidden);
+    int getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden);
 
     // 游戏重置
     bool reset();

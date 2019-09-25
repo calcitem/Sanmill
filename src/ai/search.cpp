@@ -287,7 +287,7 @@ void AIAlgorithm::deleteTree(Node *node)
 void AIAlgorithm::setGame(const Game &game)
 {
     // 如果规则改变，重建hashmap
-    if (strcmp(currentRule.name, currentRule.name) != 0) {
+    if (strcmp(rule.name, rule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
         TranspositionTable::clear();
 #endif // TRANSPOSITION_TABLE_ENABLE

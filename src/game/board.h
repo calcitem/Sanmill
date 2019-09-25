@@ -63,16 +63,16 @@ public:
     static int millTable[N_LOCATIONS][LINE_TYPES_COUNT][N_RINGS - 1];
 
     // 生成成三表
-    void createMillTable(const Rule &rule);
+    void createMillTable();
 
     // 局面左右镜像
-    void mirror(list <string> &cmdlist, char *cmdline, int32_t move_, struct Rule &rule, int currentPos, bool cmdChange = true);
+    void mirror(list <string> &cmdlist, char *cmdline, int32_t move_, int currentPos, bool cmdChange = true);
 
     // 局面内外翻转
-    void turn(list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &rule, int currentPos, bool cmdChange = true);
+    void turn(list <string> &cmdlist, char *cmdline, int32_t move_, int currentPos, bool cmdChange = true);
 
     // 局面逆时针旋转
-    void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &rule, int currentPos, bool cmdChange = true);
+    void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, int currentPos, bool cmdChange = true);
 
     // 判断棋盘location处的棋子处于几个“三连”中
     int inHowManyMills(int location);
@@ -81,24 +81,24 @@ public:
     bool isAllInMills(player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(int sideId, const Rule &rule, int nPiecesOnBoard[], int location, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], int location, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
-    bool isSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], int location);
+    bool isSurrounded(int sideId, int nPiecesOnBoard[], int location);
 
     // 判断玩家的棋子是否全部被围
-    bool isAllSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], char ch);
+    bool isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch);
 
-    bool isAllSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], player_t ply);
+    bool isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t ply);
 
     // 三连加入列表
-    int addMills(const Rule &rule, int location);
+    int addMills(int location);
 
 #if 0
     // 获取位置点棋子的归属人
     player_t getWhosPiece(int r, int s);
 
-    bool getPieceRS(const player_t &player, const int &number, int &r, int &s, struct Rule &currentRule);
+    bool getPieceRS(const player_t &player, const int &number, int &r, int &s);
 #endif
 
     // 获取当前棋子

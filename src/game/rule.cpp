@@ -23,7 +23,7 @@
 #include "types.h"
 
  // 当前使用的规则
-struct Rule currentRule;
+struct Rule rule;
 
 // 对静态常量数组的定义要放在类外，不要放在头文件
 // 预定义的4套规则

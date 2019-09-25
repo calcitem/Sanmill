@@ -106,8 +106,8 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                     continue;
                 }
 
-                if (tempGame.position.nPiecesOnBoard[tempGame.position.sideId] > currentRule.nPiecesAtLeast ||
-                    !currentRule.allowFlyWhenRemainThreePieces) {
+                if (tempGame.position.nPiecesOnBoard[tempGame.position.sideId] > rule.nPiecesAtLeast ||
+                    !rule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
@@ -147,7 +147,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             location = movePriorityTable[i];
             if (tempGame.boardLocations[location] & opponent) {
-                if (currentRule.allowRemoveMill || !tempGame.position.board.inHowManyMills(location)) {
+                if (rule.allowRemoveMill || !tempGame.position.board.inHowManyMills(location)) {
                     ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.sideToMove);
                 }
             }
@@ -352,7 +352,7 @@ void MoveList::create()
     };
 #endif
 
-    if (currentRule.hasObliqueLines) {
+    if (rule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
     } else {
         memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));

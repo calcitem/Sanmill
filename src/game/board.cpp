@@ -65,7 +65,7 @@ Board &Board::operator= (const Board &other)
     return *this;
 }
 
-void Board::createMillTable(const Rule &rule)
+void Board::createMillTable()
 {
     const int millTable_noObliqueLine[Board::N_LOCATIONS][LINE_TYPES_COUNT][2] = {
         /* 0 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -225,7 +225,7 @@ int Board::inHowManyMills(int location)
     return n;
 }
 
-int Board::addMills(const Rule &rule, int location)
+int Board::addMills(int location)
 {
     // 成三用一个64位整数了，规则如下
     // 0x   00     00     00    00    00    00    00    00
@@ -315,7 +315,7 @@ bool Board::isAllInMills(player_t player)
 }
 
 // 判断玩家的棋子周围有几个空位
-int Board::getSurroundedEmptyLocationCount(int sideId, const Rule &rule, int nPiecesOnBoard[],
+int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
                                            int location, bool includeFobidden)
 {
     int count = 0;
@@ -338,7 +338,7 @@ int Board::getSurroundedEmptyLocationCount(int sideId, const Rule &rule, int nPi
 }
 
 // 判断玩家的棋子是否被围
-bool Board::isSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], int location)
+bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], int location)
 {
     // 判断location处的棋子是否被“闷”
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
@@ -357,7 +357,7 @@ bool Board::isSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], int
     return false;
 }
 
-bool Board::isAllSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], char ch)
+bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
 {
     // 如果摆满
     if (nPiecesOnBoard[1] + nPiecesOnBoard[2] >= N_SEATS * N_RINGS)
@@ -387,11 +387,11 @@ bool Board::isAllSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], 
 }
 
 // 判断玩家的棋子是否全部被围
-bool Board::isAllSurrounded(int sideId, const Rule &rule, int nPiecesOnBoard[], player_t player)
+bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 {
     char t = 0x30 & player;
 
-    return isAllSurrounded(sideId, rule, nPiecesOnBoard, t);
+    return isAllSurrounded(sideId, nPiecesOnBoard, t);
 }
 
 #if 0
@@ -465,7 +465,7 @@ bool Board::isStarLocation(int location)
             location == 23);
 }
 
-void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, struct Rule &rule, int location, bool cmdChange /*= true*/)
+void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, int location, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -577,7 +577,7 @@ void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, struct 
     }
 }
 
-void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &rule, int location, bool cmdChange /*= true*/)
+void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, int location, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -742,7 +742,7 @@ void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, const Rul
     }
 }
 
-void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, const Rule &rule, int location, bool cmdChange /*= true*/)
+void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, int location, bool cmdChange /*= true*/)
 {
     // 将degrees转化为0~359之间的数
     degrees = degrees % 360;

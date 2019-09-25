@@ -79,7 +79,7 @@ static const int N_RULES = 4;
 extern const struct Rule RULES[N_RULES];
 
 // 当前规则
-extern struct Rule currentRule;
+extern struct Rule rule;
 
 #endif /* RULE_H */
 

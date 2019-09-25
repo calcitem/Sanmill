@@ -83,7 +83,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
-        value += tempGame.getMobilityDiff(position->turn, currentRule, position->nPiecesInHand[1], position->nPiecesInHand[2], false) * 10;
+        value += tempGame.getMobilityDiff(position->turn, position->nPiecesInHand[1], position->nPiecesInHand[2], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (position->action) {
@@ -112,7 +112,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
         // 布局阶段闷棋判断
         if (position->nPiecesOnBoard[1] + position->nPiecesOnBoard[2] >=
             Board::N_SEATS * Board::N_RINGS) {
-            if (currentRule.isStartingPlayerLoseWhenBoardFull) {
+            if (rule.isStartingPlayerLoseWhenBoardFull) {
                 value -= VALUE_WIN;
             } else {
                 value = VALUE_DRAW;
@@ -121,17 +121,17 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
         // 走棋阶段被闷判断
         if (position->action == ACTION_CHOOSE &&
-            tempGame.position.board.isAllSurrounded(position->sideToMove, currentRule, position->nPiecesOnBoard, position->sideToMove) &&
-            currentRule.isLoseWhenNoWay) {
+            tempGame.position.board.isAllSurrounded(position->sideToMove, position->nPiecesOnBoard, position->sideToMove) &&
+            rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             value_t delta = position->sideToMove == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
             value += delta;
         }
 
         // 剩余棋子个数判断
-        if (position->nPiecesOnBoard[1] < currentRule.nPiecesAtLeast) {
+        if (position->nPiecesOnBoard[1] < rule.nPiecesAtLeast) {
             value -= VALUE_WIN;
-        } else if (position->nPiecesOnBoard[2] < currentRule.nPiecesAtLeast) {
+        } else if (position->nPiecesOnBoard[2] < rule.nPiecesAtLeast) {
             value += VALUE_WIN;
         }
 
