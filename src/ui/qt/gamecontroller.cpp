@@ -164,7 +164,7 @@ void GameController::gameReset()
     currentPiece = nullptr;
 
     // 重新绘制棋盘
-    scene.setDiagonal(game_.getRule()->hasObliqueLines);
+    scene.setDiagonal(currentRule.hasObliqueLines);
 
     // 绘制所有棋子，放在起始位置
     // 0: 先手第1子； 1：后手第1子
@@ -173,7 +173,7 @@ void GameController::gameReset()
     PieceItem::Models md;
     PieceItem *newP;
 
-    for (int i = 0; i < game_.getRule()->nTotalPiecesEachSide; i++) {
+    for (int i = 0; i < currentRule.nTotalPiecesEachSide; i++) {
         // 先手的棋子
         md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
         newP = new PieceItem;
@@ -182,7 +182,7 @@ void GameController::gameReset()
         newP->setNum(i + 1);
 
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(game_.getRule()->allowRemovePiecesRepeatedly))
+        if (!(currentRule.allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
 
         pieceList.append(newP);
@@ -196,7 +196,7 @@ void GameController::gameReset()
         newP->setNum(i + 1);
 
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(game_.getRule()->allowRemovePiecesRepeatedly))
+        if (!(currentRule.allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
 
         pieceList.append(newP);
@@ -204,7 +204,7 @@ void GameController::gameReset()
     }
 
     // 读取规则限时要求
-    timeLimit = game_.getRule()->maxTimeLedToLose;
+    timeLimit = currentRule.maxTimeLedToLose;
 
     // 如果规则不要求计时，则time1和time2表示已用时间
     if (timeLimit <= 0) {
@@ -399,8 +399,8 @@ void GameController::flip()
         ai[2]->wait();
     }
 
-    game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
-    game_.position.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, currentRule, game_.currentLocation);
+    game_.position.board.rotate(180, game_.cmdlist, game_.cmdline, game_.move_, currentRule, game_.currentLocation);
     tempGame = game_;
 
     // 更新棋谱
@@ -439,7 +439,7 @@ void GameController::mirror()
         ai[2]->wait();
     }
 
-    game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.mirror(game_.cmdlist, game_.cmdline, game_.move_, currentRule, game_.currentLocation);
     tempGame = game_;
 
     // 更新棋谱
@@ -481,7 +481,7 @@ void GameController::turnRight()
         ai[2]->wait();
     }
 
-    game_.position.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.rotate(-90, game_.cmdlist, game_.cmdline, game_.move_, currentRule, game_.currentLocation);
     tempGame = game_;
 
     // 更新棋谱
@@ -521,7 +521,7 @@ void GameController::turnLeft()
         ai[2]->wait();
     }
 
-    game_.position.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, game_.currentRule, game_.currentLocation);
+    game_.position.board.rotate(90, game_.cmdlist, game_.cmdline, game_.move_, currentRule, game_.currentLocation);
     tempGame = game_;
 
     // 更新棋谱
@@ -980,7 +980,7 @@ bool GameController::updateScence(Game &game)
     int key;
 
     // 棋子总数
-    int nTotalPieces = game.getRule()->nTotalPiecesEachSide * 2;
+    int nTotalPieces = currentRule.nTotalPiecesEachSide * 2;
 
     // 动画组
     auto *animationGroup = new QParallelAnimationGroup;
@@ -1057,7 +1057,7 @@ bool GameController::updateScence(Game &game)
     }
 
     // 添加摆棋阶段禁子点
-    if (game.getRule()->hasForbiddenLocations && game.getPhase() == PHASE_PLACING) {
+    if (currentRule.hasForbiddenLocations && game.getPhase() == PHASE_PLACING) {
         for (int j = Board::LOCATION_BEGIN; j < Board::LOCATION_END; j++) {
             if (board[j] == 0x0F) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
@@ -1076,7 +1076,7 @@ bool GameController::updateScence(Game &game)
     }
 
     // 走棋阶段清除禁子点
-    if (game.getRule()->hasForbiddenLocations && game.getPhase() != PHASE_PLACING) {
+    if (currentRule.hasForbiddenLocations && game.getPhase() != PHASE_PLACING) {
         while (nTotalPieces < pieceList.size()) {
             delete pieceList.at(nTotalPieces);
             pieceList.removeAt(nTotalPieces);

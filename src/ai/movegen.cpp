@@ -106,8 +106,8 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                     continue;
                 }
 
-                if (tempGame.position.nPiecesOnBoard[tempGame.position.sideId] > tempGame.currentRule.nPiecesAtLeast ||
-                    !tempGame.currentRule.allowFlyWhenRemainThreePieces) {
+                if (tempGame.position.nPiecesOnBoard[tempGame.position.sideId] > currentRule.nPiecesAtLeast ||
+                    !currentRule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
@@ -147,7 +147,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             location = movePriorityTable[i];
             if (tempGame.boardLocations[location] & opponent) {
-                if (tempGame.getRule()->allowRemoveMill || !tempGame.position.board.inHowManyMills(location)) {
+                if (currentRule.allowRemoveMill || !tempGame.position.board.inHowManyMills(location)) {
                     ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.sideToMove);
                 }
             }
@@ -159,7 +159,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
     }
 }
 
-void MoveList::create(Game &game)
+void MoveList::create()
 {
     // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
 #if 1
@@ -352,7 +352,7 @@ void MoveList::create(Game &game)
     };
 #endif
 
-    if (game.currentRule.hasObliqueLines) {
+    if (currentRule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
     } else {
         memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));

@@ -61,7 +61,6 @@ Game &Game::operator= (const Game &game)
     if (this == &game)
         return *this;
 
-    currentRule = game.currentRule;
     position = game.position;
     currentStep = game.currentStep;
     moveStep = game.moveStep;
@@ -93,9 +92,9 @@ bool Game::setPosition(const struct Rule *rule, step_t maxStepsLedToDraw, int ma
     }
 
     // 根据规则
-    this->currentRule = *rule;
-    this->currentRule.maxStepsLedToDraw = maxStepsLedToDraw;
-    this->currentRule.maxTimeLedToLose = maxTimeLedToLose;
+    currentRule = *rule;
+    currentRule.maxStepsLedToDraw = maxStepsLedToDraw;
+    currentRule.maxTimeLedToLose = maxTimeLedToLose;
 
     // 设置棋局数据
 
@@ -178,7 +177,7 @@ bool Game::setPosition(const struct Rule *rule, step_t maxStepsLedToDraw, int ma
     winner = PLAYER_NOBODY;
 
     // 生成着法表
-    MoveList::create(*this);
+    MoveList::create();
 
     // 生成成三表
     position.board.createMillTable(currentRule);
@@ -197,7 +196,7 @@ bool Game::setPosition(const struct Rule *rule, step_t maxStepsLedToDraw, int ma
 
     int r;
     for (r = 0; r < N_RULES; r++) {
-        if (strcmp(this->currentRule.name, RULES[r].name) == 0)
+        if (strcmp(currentRule.name, RULES[r].name) == 0)
             break;
     }
 
@@ -274,7 +273,7 @@ bool Game::reset()
     int i;
 
     for (i = 0; i < N_RULES; i++) {
-        if (strcmp(this->currentRule.name, RULES[i].name) == 0)
+        if (strcmp(currentRule.name, RULES[i].name) == 0)
             break;
     }
 

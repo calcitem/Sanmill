@@ -111,12 +111,6 @@ public:
                  int nPiecesNeedRemove = 0      // 尚待去除的子数
     );
 
-    // 获取当前规则
-    const struct Rule *getRule() const
-    {
-        return &currentRule;
-    }
-
     // 获取棋盘数据
     int *getBoardLocations() const
     {
@@ -268,11 +262,6 @@ public:
 public: /* TODO: move to private */
     // 棋局
     Position position;
-
-    // 当前使用的规则
-    struct Rule currentRule
-    {
-    };
 
     // 棋局中的棋盘数据，单独提出来
     int *boardLocations;

@@ -39,7 +39,7 @@ public:
                                    move_t bestMove);
 
     // 生成着法表
-    static void create(Game &game);
+    static void create();
 
     // 随机打乱着法搜索顺序
     static void shuffle();

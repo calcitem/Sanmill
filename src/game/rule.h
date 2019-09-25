@@ -78,5 +78,8 @@ static const int N_RULES = 4;
 // 预定义的规则
 extern const struct Rule RULES[N_RULES];
 
+// 当前规则
+extern struct Rule currentRule;
+
 #endif /* RULE_H */
 
