@@ -80,11 +80,7 @@ Game &Game::operator= (const Game &game)
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool Game::setPosition(const struct Rule *newRule, step_t maxStepsLedToDraw, int maxTimeLedToLose,
-                          step_t initialStep,
-                          phase_t phase, player_t side, action_t action,
-                          const char *locations,
-                          int nPiecesInHand_1, int nPiecesInHand_2, int nPiecesNeedRemove)
+bool Game::setPosition(const struct Rule *newRule, step_t maxStepsLedToDraw, int maxTimeLedToLose)
 {
     // 有效性判断
     if (maxTimeLedToLose < 0) {
@@ -98,26 +94,9 @@ bool Game::setPosition(const struct Rule *newRule, step_t maxStepsLedToDraw, int
 
     // 设置棋局数据
 
-    // 设置步数
-    this->currentStep = initialStep;
-    this->moveStep = initialStep;
-
-    // 局面阶段标识
-    position.phase = phase;
-
-    // 轮流状态标识
-    setSideToMove(side);
-
-    // 动作状态标识
-    position.action = action;
-
     // 当前棋局（3×8）
-    if (locations == nullptr) {
-        memset(boardLocations, 0, sizeof(position.board.locations));
-        position.hash = 0;
-    } else {
-        memcpy(boardLocations, locations, sizeof(position.board.locations));
-    }
+    memset(boardLocations, 0, sizeof(position.board.locations));
+    position.hash = 0;
 
     // 计算盘面子数
     // 棋局，抽象为一个（5×8）的数组，上下两行留空
@@ -150,23 +129,13 @@ bool Game::setPosition(const struct Rule *newRule, step_t maxStepsLedToDraw, int
         return false;
     }
 
-    if (nPiecesInHand_1 < 0 || nPiecesInHand_2 < 0) {
-        return false;
-    }
-
     position.nPiecesInHand[1] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[1];
     position.nPiecesInHand[2] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[2];
-    position.nPiecesInHand[1] = std::min(nPiecesInHand_1, position.nPiecesInHand[1]);
-    position.nPiecesInHand[2] = std::min(nPiecesInHand_2, position.nPiecesInHand[2]);
+    position.nPiecesInHand[1] = std::min(12, position.nPiecesInHand[1]);    // TODO: 12改为变量 
+    position.nPiecesInHand[2] = std::min(12, position.nPiecesInHand[2]);    // TODO: 12改为变量 
 
     // 设置去子状态时的剩余尚待去除子数
-    if (action == ACTION_CAPTURE) {
-        if (0 <= nPiecesNeedRemove && nPiecesNeedRemove < 3) {
-            position.nPiecesNeedRemove = nPiecesNeedRemove;
-        }
-    } else {
-        position.nPiecesNeedRemove = 0;
-    }
+    position.nPiecesNeedRemove = 0;
 
     // 清空成三记录
     if (!position.board.millList.empty()) {

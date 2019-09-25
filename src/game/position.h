@@ -104,13 +104,7 @@ public:
     // 设置棋局状态和棋局，用于初始化
     bool setPosition(const struct Rule *rule,
                  step_t maxStepsLedToDraw = 0,     // 限制步数
-                 int maxTimeLedToLose = 0,      // 限制时间
-                 step_t initialStep = 0,           // 默认起始步数为0
-                 phase_t phase = PHASE_NOTSTARTED, player_t turn = PLAYER_1, action_t action = ACTION_PLACE,
-                 const char *locations = nullptr,   // 默认空棋盘
-                 int nPiecesInHand_1 = 12,      // 玩家1剩余未放置子数
-                 int nPiecesInHand_2 = 12,      // 玩家2剩余未放置子数
-                 int nPiecesNeedRemove = 0      // 尚待去除的子数
+                 int maxTimeLedToLose = 0      // 限制时间
     );
 
     // 获取棋盘数据
