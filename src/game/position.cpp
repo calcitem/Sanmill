@@ -311,7 +311,7 @@ bool Game::start()
     }
 }
 
-bool Game::place(int location, int time_p, int8_t updateCmdlist)
+bool Game::place(int location, int8_t updateCmdlist)
 {
     // 如果局面为“结局”，返回false
     if (position.phase == PHASE_GAMEOVER)
@@ -354,7 +354,7 @@ bool Game::place(int location, int time_p, int8_t updateCmdlist)
         move_ = static_cast<move_t>(location);
 
         if (updateCmdlist) {
-            player_ms = update(time_p);
+            player_ms = update();
             sprintf(cmdline, "(%1u,%1u) %02u:%02u",
                     r, s, player_ms / 60, player_ms % 60);
             cmdlist.emplace_back(string(cmdline));
@@ -434,7 +434,7 @@ bool Game::place(int location, int time_p, int8_t updateCmdlist)
     move_ = static_cast<move_t>((currentLocation << 8) + location);
 
     if (updateCmdlist) {
-        player_ms = update(time_p);
+        player_ms = update();
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentLocation / Board::N_SEATS, currentLocation % Board::N_SEATS + 1,
                 r, s, player_ms / 60, player_ms % 60);
         cmdlist.emplace_back(string(cmdline));
@@ -483,23 +483,23 @@ out:
     return true;
 }
 
-bool Game::_place(int r, int s, int time_p)
+bool Game::_place(int r, int s)
 {
     // 转换为 location
     int location = Board::polarToLocation(r, s);
 
-    return place(location, time_p, true);
+    return place(location, true);
 }
 
-bool Game::_capture(int r, int s, int time_p)
+bool Game::_capture(int r, int s)
 {
     // 转换为 location
     int location = Board::polarToLocation(r, s);
 
-    return capture(location, time_p, 1);
+    return capture(location, 1);
 }
 
-bool Game::capture(int location, int time_p, int8_t updateCmdlist)
+bool Game::capture(int location, int8_t updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (position.phase == PHASE_NOTSTARTED || position.phase == PHASE_GAMEOVER)
@@ -549,7 +549,7 @@ bool Game::capture(int location, int time_p, int8_t updateCmdlist)
     move_ = static_cast<move_t>(-location);
 
     if (updateCmdlist) {
-        player_ms = update(time_p);
+        player_ms = update();
         sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", r, s, player_ms / 60, player_ms % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
@@ -704,7 +704,6 @@ bool Game::command(const char *cmd)
     int r1, s1, r2, s2;
     int args = 0;
     int mm = 0, ss = 0;
-    int tm = -1;
 
     // 设置规则
     if (sscanf(cmd, "r%1u s%3hd t%2u", &r, &s, &t) == 3) {
@@ -725,7 +724,7 @@ bool Game::command(const char *cmd)
         }
 
         if (choose(r1, s1)) {
-            return _place(r2, s2, tm);
+            return _place(r2, s2);
         }
 
         return false;
@@ -738,7 +737,7 @@ bool Game::command(const char *cmd)
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _capture(r1, s1, tm);
+        return _capture(r1, s1);
     }
 
     // 落子
@@ -748,7 +747,7 @@ bool Game::command(const char *cmd)
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _place(r1, s1, tm);
+        return _place(r1, s1);
     }
 
     // 认输
@@ -794,9 +793,10 @@ bool Game::command(int move)
     return false;
 }
 
-inline int Game::update(int time_p /*= -1*/)
+inline int Game::update()
 {
     int ret = -1;
+    int time_p = -1;
     time_t *player_ms = &elapsedSeconds[position.sideId];
     time_t playerNext_ms = elapsedSeconds[position.opponentId];
 

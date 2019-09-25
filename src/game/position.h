@@ -84,6 +84,8 @@ public:
     int score[3];
     int score_draw {};
 
+    int tm {-1};
+
 private:
 
     // 创建哈希值
@@ -217,10 +219,10 @@ public:
     bool choose(int r, int s);
 
     // 落子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _place(int r, int s, int time_p = -1);
+    bool _place(int r, int s);
 
     // 去子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _capture(int r, int s, int time_p = -1);
+    bool _capture(int r, int s);
 
     // 认输
     bool giveup(player_t loser);
@@ -229,7 +231,7 @@ public:
     bool command(const char *cmd);
 
     // 更新时间和状态，用内联函数以提高效率
-    inline int update(int time_p = -1);
+    inline int update();
 
     // 是否分出胜负
     bool win();
@@ -250,8 +252,8 @@ public:
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool command(int move);
     bool choose(int location);
-    bool place(int location, int time_p = -1, int8_t cp = 0);
-    bool capture(int location, int time_p = -1, int8_t cp = 0);
+    bool place(int location, int8_t cp = 0);
+    bool capture(int location, int8_t cp = 0);
 
     // hash 相关
     hash_t getHash();
