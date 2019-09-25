@@ -51,7 +51,7 @@ private:
     bool randomMoveEnabled { true };
 
     // AI 是否生成残局库
-    bool learnEndgame { true };
+    bool learnEndgame { false };
 };
 
 extern Options options;
