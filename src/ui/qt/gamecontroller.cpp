@@ -334,8 +334,11 @@ void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, i
 
 void GameController::getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2)
 {
-    ai[1]->getDepthTime(depth1, time1);
-    ai[2]->getDepthTime(depth2, time2);
+    depth1 = ai[1]->getDepth();
+    time1 = ai[1]->getTimeLimit();
+
+    depth2 = ai[2]->getDepth();
+    time2 = ai[2]->getTimeLimit();
 }
 
 void GameController::setAnimation(bool arg)

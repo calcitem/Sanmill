@@ -28,13 +28,13 @@ AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
     waiting_(false),
     game_(nullptr),
-    aiDepth(2),
-    aiTime(3600)
+    depth(2),
+    timeLimit(3600)
 {
     this->id = id;
 
     // 连接定时器启动，减去118毫秒的返回时间
-    connect(this, &AiThread::calcStarted, this, [=]() {timer.start(aiTime * 1000 - 118); }, Qt::QueuedConnection);
+    connect(this, &AiThread::calcStarted, this, [=]() {timer.start(timeLimit * 1000 - 118); }, Qt::QueuedConnection);
 
     // 连接定时器停止
     connect(this, &AiThread::calcFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
@@ -78,13 +78,13 @@ void AiThread::setAi(const Game &game)
     mutex.unlock();
 }
 
-void AiThread::setAi(const Game &game, depth_t depth, int time)
+void AiThread::setAi(const Game &game, depth_t d, int tl)
 {
     mutex.lock();
     this->game_ = &game;
     ai.setGame(game);
-    aiDepth = depth;
-    aiTime = time;
+    depth = d;
+    timeLimit = tl;
     mutex.unlock();
 }
 
@@ -120,7 +120,7 @@ void AiThread::run()
         emit calcStarted();
         mutex.unlock();
 
-        if (ai.search(aiDepth) == 3) {
+        if (ai.search(depth) == 3) {
             // 三次重复局面和
             loggerDebug("Draw\n\n");
             strCommand = "draw";

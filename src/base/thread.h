@@ -69,10 +69,14 @@ public:
     }
 
     // 深度和限时
-    void getDepthTime(depth_t &depth, int &time)
+    depth_t getDepth()
     {
-        depth = aiDepth;
-        time = aiTime;
+        return depth;
+    }
+
+    int getTimeLimit()
+    {
+        return timeLimit;
     }
 
 public slots:
@@ -116,10 +120,10 @@ private:
     AIAlgorithm ai;
 
     // AI的层数
-    depth_t aiDepth;
+    depth_t depth;
 
     // AI的限时
-    int aiTime;
+    int timeLimit;
 
     // 定时器
     QTimer timer;
