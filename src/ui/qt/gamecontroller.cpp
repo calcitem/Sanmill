@@ -549,7 +549,9 @@ void GameController::timerEvent(QTimerEvent *event)
     static QTime qt1, qt2;
 
     // 玩家的已用时间
-    game_.getElapsedTime(remainingTime[1], remainingTime[2]);
+    game_.update();
+    remainingTime[1] = game_.getElapsedTime(1);
+    remainingTime[2] = game_.getElapsedTime(2);
 
     // 如果规则要求计时，则time1和time2表示倒计时
     if (timeLimit > 0) {

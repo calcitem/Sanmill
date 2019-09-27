@@ -1021,12 +1021,9 @@ void Game::setTips()
     }
 }
 
-void Game::getElapsedTime(time_t &seconds_1, time_t &seconds_2)
+time_t Game::getElapsedTime(int playerId)
 {
-    update();
-
-    seconds_1 = elapsedSeconds[1];
-    seconds_2 = elapsedSeconds[2];
+    return elapsedSeconds[playerId];
 }
 
 /*

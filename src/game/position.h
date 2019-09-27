@@ -149,8 +149,8 @@ public:
         return winner;
     }
 
-    // 玩家1和玩家2的用时
-    void getElapsedTime(time_t &seconds_1, time_t &seconds_2);
+    // 玩家1或玩家2的用时
+    time_t getElapsedTime(int playerId);
 
     // 获取棋局的字符提示
     const string getTips() const
