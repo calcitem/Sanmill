@@ -471,7 +471,7 @@ bool Game::_capture(int r, int s)
 bool Game::capture(int location, int8_t updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
-    if (position.phase == PHASE_NOTSTARTED || position.phase == PHASE_GAMEOVER)
+    if (position.phase & PHASE_NOTPLAYING)
         return false;
 
     // 如非“去子”状态，返回false
@@ -642,8 +642,7 @@ bool Game::choose(int r, int s)
 
 bool Game::giveup(player_t loser)
 {
-    if (position.phase == PHASE_NOTSTARTED ||
-        position.phase == PHASE_GAMEOVER ||
+    if (position.phase & PHASE_NOTPLAYING ||
         position.phase == PHASE_NONE) {
         return false;
     }
@@ -771,7 +770,7 @@ inline int Game::update()
 
     // 根据局面调整计时器
 
-    if (!(position.phase == PHASE_PLACING || position.phase == PHASE_MOVING)) {
+    if (!(position.phase & PHASE_PLAYING)) {
         return -1;
     }
 
@@ -802,12 +801,8 @@ bool Game::win()
 // 是否分出胜负
 bool Game::win(bool forceDraw)
 {
-    if (position.phase == PHASE_GAMEOVER) {
+    if (position.phase & PHASE_NOTPLAYING) {
         return true;
-    }
-
-    if (position.phase == PHASE_NOTSTARTED) {
-        return false;
     }
 
     // 如果有时间限定

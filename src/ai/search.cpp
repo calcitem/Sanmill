@@ -89,11 +89,11 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     };
 #endif /* ENDGAME_LEARNING */
 
-    if ((tempGame.position.phase) & (PHASE_PLACING)) {
+    if (tempGame.position.phase & PHASE_PLACING) {
         d = placingDepthTable[tempGame.getPiecesInHandCount(1)];
     }
 
-    if ((tempGame.position.phase) & (PHASE_MOVING)) {
+    if (tempGame.position.phase & PHASE_MOVING) {
         int p1 = tempGame.getPiecesOnBoardCount(1);
         int p2 = tempGame.getPiecesOnBoardCount(2);
 
