@@ -44,16 +44,16 @@ public:
     hash_t hash{};
 
     // 局面阶段标识
-    enum phase_t phase;
+    enum phase_t phase {PHASE_NONE};
 
     // 轮流状态标识
-    player_t sideToMove;
-    int sideId;
-    char chSide;
+    player_t sideToMove {PLAYER_NOBODY};
+    int sideId {0};
+    char chSide {'0'};
     //string turnStr;
-    player_t opponent;
-    int opponentId;
-    char chOpponent;
+    player_t opponent {PLAYER_NOBODY};
+    int opponentId {0};
+    char chOpponent {'0'};
     //string opponentStr;
 
     // 动作状态标识
