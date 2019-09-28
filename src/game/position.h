@@ -102,10 +102,7 @@ public:
     Game &operator=(const Game &);
 
     // 设置棋局状态和棋局，用于初始化
-    bool setPosition(const struct Rule *rule,
-                 step_t maxStepsLedToDraw = 0,     // 限制步数
-                 int maxTimeLedToLose = 0      // 限制时间
-    );
+    bool setPosition(const struct Rule *rule);
 
     // 获取棋盘数据
     int *getBoardLocations() const

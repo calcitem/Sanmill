@@ -80,17 +80,10 @@ Game &Game::operator= (const Game &game)
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool Game::setPosition(const struct Rule *newRule, step_t maxStepsLedToDraw, int maxTimeLedToLose)
+bool Game::setPosition(const struct Rule *newRule)
 {
-    // 有效性判断
-    if (maxTimeLedToLose < 0) {
-        return false;
-    }
-
     // 根据规则
     rule = *newRule;
-    rule.maxStepsLedToDraw = maxStepsLedToDraw;
-    rule.maxTimeLedToLose = maxTimeLedToLose;
 
     // 设置棋局数据
 
@@ -169,7 +162,7 @@ bool Game::setPosition(const struct Rule *newRule, step_t maxStepsLedToDraw, int
             break;
     }
 
-    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, maxStepsLedToDraw, maxTimeLedToLose) > 0) {
+    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, rule.maxTimeLedToLose) > 0) {
         cmdlist.emplace_back(string(cmdline));
         return true;
     }
@@ -679,7 +672,7 @@ bool Game::command(const char *cmd)
             return false;
         }
 
-        return setPosition(&RULES[r - 1], s, t);
+        return setPosition(&RULES[r - 1]);
     }
 
     // 选子移动

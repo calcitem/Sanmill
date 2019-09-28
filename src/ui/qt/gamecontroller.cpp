@@ -278,7 +278,7 @@ void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLi
     }
 
     // 设置模型规则，重置游戏
-    game.setPosition(&RULES[ruleNo], stepsLimit, timeLimit);
+    game.setPosition(&RULES[ruleNo]);
     tempGame = game;
 
     // 重置游戏
