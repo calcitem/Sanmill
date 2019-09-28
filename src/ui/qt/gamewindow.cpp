@@ -398,6 +398,35 @@ void MillGameWindow::ruleInfo()
 #endif
 }
 
+void MillGameWindow::saveBook(const QString &path)
+{
+    if (path.isEmpty()) {
+        return;
+    }
+
+    if (file.isOpen()) {
+        file.close();
+    }
+
+    // 文件对象
+    file.setFileName(path);
+
+    // 打开文件,只写方式打开
+    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
+        return;
+    }
+
+    // 写文件
+    QTextStream textStream(&file);
+    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+
+    for (const QString &cmd : strlist->stringList()) {
+        textStream << cmd << endl;
+    }
+
+    file.flush();
+}
+
 void MillGameWindow::on_actionLimited_T_triggered()
 {
     /* 
@@ -513,25 +542,17 @@ void MillGameWindow::actionRules_triggered()
 
 void MillGameWindow::on_actionNew_N_triggered()
 {
-    if (file.isOpen())
-        file.close();
-
 #ifdef SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
-    QString path = QDir::currentPath() + "/" + tr("book_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t()) + ".txt";
-    auto *strlist = qobject_cast<QStringListModel*>(ui.listView->model());
+    QString path = QDir::currentPath()
+        + "/" + tr("book_")
+        + QString::number(QDateTime::currentDateTimeUtc().toTime_t())
+        + ".txt";
 
-    if (!path.isEmpty() && strlist->stringList().size() > 18) {
-        // 文件对象  
-        file.setFileName(path);
+    // 下了一定步数之后新建游戏时才保存棋谱
+    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
 
-        // 打开文件,只写方式打开
-        if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
-            // 写文件
-            QTextStream textStream(&file);
-            for (const QString &cmd : strlist->stringList())
-                textStream << cmd << endl;
-            file.flush();
-        }
+    if (strlist->stringList().size() > 18) {
+        saveBook(path);
     }
 #endif /* SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED */
 
@@ -635,31 +656,7 @@ void MillGameWindow::on_actionSaveAs_A_triggered()
         tr("打开棋谱文件"),
         QDir::currentPath() + tr("棋谱_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t())+ ".txt", "TXT(*.txt)");
 
-    if (path.isEmpty()) {
-        return;
-    }
-
-    if (file.isOpen()) {
-        file.close();
-    }
-
-    // 文件对象
-    file.setFileName(path);
-
-    // 打开文件,只写方式打开
-    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
-        return;
-    }
-
-    // 写文件
-    QTextStream textStream(&file);
-    auto *strlist = qobject_cast<QStringListModel*>(ui.listView->model());
-
-    for (const QString &cmd : strlist->stringList()) {
-        textStream << cmd << endl;
-    }
-
-    file.flush();
+    saveBook(path);
 }
 
 void MillGameWindow::on_actionEdit_E_toggled(bool arg1)

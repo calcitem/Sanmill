@@ -106,6 +106,9 @@ private slots:
     void on_actionWeb_W_triggered();
     void on_actionAbout_A_triggered();
 
+protected:
+    void saveBook(const QString &path);
+
 private:
     // 界面文件
     Ui::MillGameWindowClass ui {};
