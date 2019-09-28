@@ -124,7 +124,7 @@ public:
         判断棋子是先手的用 (location[i] & 0x10)
         判断棋子是后手的用 (location[i] & 0x20)
      */
-    int locations[N_LOCATIONS]{};
+    location_t locations[N_LOCATIONS]{};
 
     /*
         本打算用如下的结构体来表示“三连”

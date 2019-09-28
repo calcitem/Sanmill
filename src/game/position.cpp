@@ -904,7 +904,7 @@ bool Game::win(bool forceDraw)
 // 计算玩家1和玩家2的棋子活动能力之差
 int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
 {
-    int *locations = boardLocations;
+    location_t *locations = boardLocations;
     int mobility1 = 0;
     int mobility2 = 0;
     int diff = 0;

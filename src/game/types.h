@@ -26,6 +26,7 @@
 
 using step_t = uint16_t;
 using depth_t = uint8_t;
+using location_t = uint8_t;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
 using hash_t = uint32_t;

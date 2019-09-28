@@ -105,7 +105,7 @@ public:
     bool setPosition(const struct Rule *rule);
 
     // 获取棋盘数据
-    int *getBoardLocations() const
+    location_t *getBoardLocations() const
     {
         return boardLocations;
     }
@@ -257,7 +257,7 @@ public: /* TODO: move to private */
     Position position;
 
     // 棋局中的棋盘数据，单独提出来
-    int *boardLocations;
+    location_t *boardLocations;
 
     // 棋谱
     list <string> cmdlist;
