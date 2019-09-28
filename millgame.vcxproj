@@ -455,6 +455,7 @@
     <QtMoc Include="src\base\thread.h" />
     <ClInclude Include="src\base\zobrist.h" />
     <ClInclude Include="src\game\board.h" />
+    <ClInclude Include="src\game\location.h" />
     <ClInclude Include="src\game\option.h" />
     <ClInclude Include="src\game\player.h" />
     <ClInclude Include="src\game\position.h" />
@@ -703,6 +704,7 @@
     <ClCompile Include="src\base\thread.cpp" />
     <ClCompile Include="src\base\zobrist.cpp" />
     <ClCompile Include="src\game\board.cpp" />
+    <ClCompile Include="src\game\location.cpp" />
     <ClCompile Include="src\game\option.cpp" />
     <ClCompile Include="src\game\player.cpp" />
     <ClCompile Include="src\game\position.cpp" />

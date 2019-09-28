@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "config.h"
+#include "location.h"
 #include "rule.h"
 #include "types.h"
 

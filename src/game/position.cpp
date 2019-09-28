@@ -127,16 +127,6 @@ bool Game::setPosition(const struct Rule *newRule)
     memset(boardLocations, 0, sizeof(position.board.locations));
     position.hash = 0;
 
-    // 计算盘面子数
-    // 棋局，抽象为一个（5×8）的数组，上下两行留空
-    /*
-        0x00 代表无棋子
-        0x0F 代表禁点
-        0x11～0x1C 代表先手第 1～12 子
-        0x21～0x2C 代表后手第 1～12 子
-        判断棋子是先手的用 (locations[i] & 0x10)
-        判断棋子是后手的用 (locations[i] & 0x20)
-     */
     if (countPiecesOnBoard() == -1) {
         return false;
     }
