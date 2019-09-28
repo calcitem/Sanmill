@@ -37,7 +37,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 #endif
 
     switch (position->phase) {
-    case PHASE_NOTSTARTED:
+    case PHASE_READY:
         break;
 
     case PHASE_PLACING:

@@ -50,7 +50,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
             newCapacity = 6;
         }
         break;
-    case PHASE_NOTSTARTED:
+    case PHASE_READY:
         newCapacity = 24;
         break;
     default:
@@ -74,7 +74,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
     case ACTION_CHOOSE:
     case ACTION_PLACE:
         // 对于摆子阶段
-        if (tempGame.position.phase & (PHASE_PLACING | PHASE_NOTSTARTED)) {
+        if (tempGame.position.phase & (PHASE_PLACING | PHASE_READY)) {
             for (move_t i : movePriorityTable) {
                 location = i;
 
@@ -82,7 +82,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                     continue;
                 }
 
-                if (tempGame.position.phase != PHASE_NOTSTARTED || node != root) {
+                if (tempGame.position.phase != PHASE_READY || node != root) {
                     ai.addNode(node, VALUE_ZERO, (move_t)location, bestMove, tempGame.position.sideToMove);
                 } else {
                     // 若为先手，则抢占星位

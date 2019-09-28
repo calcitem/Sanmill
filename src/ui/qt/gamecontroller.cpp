@@ -669,7 +669,7 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     // 如果未开局则开局
-    if (game.getPhase() == PHASE_NOTSTARTED)
+    if (game.getPhase() == PHASE_READY)
         gameStart();
 
     // 判断执行选子、落子或去子
@@ -838,7 +838,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 如果未开局则开局
-    if (game.getPhase() == PHASE_NOTSTARTED) {
+    if (game.getPhase() == PHASE_READY) {
         gameStart();
     }
 

@@ -173,7 +173,7 @@ bool Game::setPosition(const struct Rule *newRule)
 
 bool Game::reset()
 {
-    if (position.phase == PHASE_NOTSTARTED &&
+    if (position.phase == PHASE_READY &&
         elapsedSeconds[1] == elapsedSeconds[2] == 0) {
         return true;
     }
@@ -183,7 +183,7 @@ bool Game::reset()
     moveStep = 0;
 
     // 局面阶段标识
-    position.phase = PHASE_NOTSTARTED;
+    position.phase = PHASE_READY;
 
     // 设置轮流状态
     setSideToMove(PLAYER_1);
@@ -262,7 +262,7 @@ bool Game::start()
         reset();
         [[fallthrough]];
     // 如果游戏处于未开始状态
-    case PHASE_NOTSTARTED:
+    case PHASE_READY:
         // 启动计时器
         startTime = time(NULL);
         // 进入开局状态
@@ -280,7 +280,7 @@ bool Game::place(int location, int8_t updateCmdlist)
         return false;
 
     // 如果局面为“未开局”，则开局
-    if (position.phase == PHASE_NOTSTARTED)
+    if (position.phase == PHASE_READY)
         start();
 
     // 如非“落子”状态，返回false
@@ -961,7 +961,7 @@ void Game::setTips()
     string turnStr = Player::chToStr(position.chSide);
 
     switch (position.phase) {
-    case PHASE_NOTSTARTED:
+    case PHASE_READY:
         tips = "轮到玩家1落子，剩余" + std::to_string(position.nPiecesInHand[1]) + "子" +
             "  比分 " + to_string(score[1]) + ":" + to_string(score[2]) + ", 和棋 " + to_string(score_draw);
         break;

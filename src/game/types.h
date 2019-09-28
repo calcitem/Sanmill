@@ -95,12 +95,12 @@ enum player_t : uint8_t
 enum phase_t : uint16_t
 {
     PHASE_NONE = 0,
-    PHASE_NOTSTARTED = 1,       // 未开局
+    PHASE_READY = 1,       // 未开局
     PHASE_PLACING = 1 << 1,     // 开局（摆棋）
     PHASE_MOVING = 1 << 2,      // 中局（走棋）
     PHASE_GAMEOVER = 1 << 3,    // 结局
     PHASE_PLAYING = PHASE_PLACING | PHASE_MOVING,  // 进行中
-    PHASE_NOTPLAYING = PHASE_NOTSTARTED | PHASE_GAMEOVER,  // 不在进行中
+    PHASE_NOTPLAYING = PHASE_READY | PHASE_GAMEOVER,  // 不在进行中
 };
 
 enum value_t : int16_t
