@@ -543,9 +543,11 @@ void MillGameWindow::actionRules_triggered()
 void MillGameWindow::on_actionNew_N_triggered()
 {
 #ifdef SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
+    QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_hhmmss");
+
     QString path = QDir::currentPath()
         + "/" + tr("book_")
-        + QString::number(QDateTime::currentDateTimeUtc().toTime_t())
+        + strDateTime
         + ".txt";
 
     // 下了一定步数之后新建游戏时才保存棋谱
