@@ -39,13 +39,13 @@ class Server : public QDialog
 public:
     explicit Server(QWidget *parent = nullptr, uint16_t port = 33333);
     void setAction(const QString &action);
-    void setPort(uint16_t port)
+    void setPort(uint16_t p)
     {
-        this->port_ = port;
+        port = p;
     }
     uint16_t getPort()
     {
-        return port_;
+        return port;
     }
 
 private slots:
@@ -56,9 +56,9 @@ private:
     QLabel *statusLabel = nullptr;
     QTcpServer *tcpServer = nullptr;
     QNetworkSession *networkSession = nullptr;
-    uint16_t port_;
+    uint16_t port;
     std::queue<QString> actions;
-    QString action_;
+    QString action;
 };
 
 #endif // SERVER_H

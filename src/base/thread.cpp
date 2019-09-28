@@ -26,8 +26,8 @@
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
-    waiting_(false),
-    game_(nullptr),
+    waiting(false),
+    game(nullptr),
     depth(2),
     timeLimit(3600)
 {
@@ -61,12 +61,12 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const Game &game)
+void AiThread::setAi(const Game &g)
 {
     mutex.lock();
 
-    this->game_ = &game;
-    ai.setGame(*(this->game_));
+    this->game = &g;
+    ai.setGame(*(this->game));
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
@@ -78,11 +78,11 @@ void AiThread::setAi(const Game &game)
     mutex.unlock();
 }
 
-void AiThread::setAi(const Game &game, depth_t d, int tl)
+void AiThread::setAi(const Game &g, depth_t d, int tl)
 {
     mutex.lock();
-    this->game_ = &game;
-    ai.setGame(game);
+    this->game = &g;
+    ai.setGame(g);
     depth = d;
     timeLimit = tl;
     mutex.unlock();
@@ -108,15 +108,15 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = Player::toId(game_->position.sideToMove);
+        i = Player::toId(game->position.sideToMove);
 
-        if (i != id || waiting_) {
+        if (i != id || waiting) {
             pauseCondition.wait(&mutex);
             mutex.unlock();
             continue;
         }
 
-        ai.setGame(*game_);
+        ai.setGame(*game);
         emit calcStarted();
         mutex.unlock();
 
@@ -152,7 +152,7 @@ void AiThread::act()
         return;
 
     mutex.lock();
-    waiting_ = false;
+    waiting = false;
     ai.quit();
     mutex.unlock();
 }
@@ -160,14 +160,14 @@ void AiThread::act()
 void AiThread::pause()
 {
     mutex.lock();
-    waiting_ = true;
+    waiting = true;
     mutex.unlock();
 }
 
 void AiThread::resume()
 {
     mutex.lock();
-    waiting_ = false;
+    waiting = false;
     pauseCondition.wakeAll();
     mutex.unlock();
 }
@@ -180,7 +180,7 @@ void AiThread::stop()
     if (!isInterruptionRequested()) {
         requestInterruption();
         mutex.lock();
-        waiting_ = false;
+        waiting = false;
         ai.quit();
         pauseCondition.wakeAll();
         mutex.unlock();

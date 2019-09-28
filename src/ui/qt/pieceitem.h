@@ -69,12 +69,12 @@ public:
 
     enum Models getModel()
     {
-        return model_;
+        return model;
     }
 
-    void setModel(enum Models model)
+    void setModel(enum Models m)
     {
-        this->model_ = model;
+        this->model = m;
     }
 
     int getNum()
@@ -89,15 +89,15 @@ public:
 
     bool isDeleted()
     {
-        return deleted_;
+        return deleted;
     }
 
-    void setDeleted(bool deleted = true)
+    void setDeleted(bool del = true)
     {
-        this->deleted_ = deleted;
+        deleted = del;
 
         if (deleted)
-            this->model_ = noPiece;
+            this->model = noPiece;
 
         update(boundingRect());
     }
@@ -114,7 +114,7 @@ protected:
 
 private:
     // 棋子本质
-    enum Models model_;
+    enum Models model;
 
     // 棋子序号，黑白都从1开始
     int num = 1;
@@ -123,7 +123,7 @@ private:
     int size;
 
     // 有无删除线
-    bool deleted_ {false};
+    bool deleted {false};
 
     // 显示序号
     bool showNum {false};

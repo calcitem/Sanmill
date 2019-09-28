@@ -114,7 +114,7 @@ private:
     GameScene *scene {nullptr};
 
     // 控制器
-    GameController *game {nullptr};
+    GameController *gameController {nullptr};
 
     // 动态增加的菜单栏动作列表
     QList <QAction *> ruleActionList;

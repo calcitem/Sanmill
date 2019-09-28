@@ -288,7 +288,7 @@ public: /* TODO: move to private */
         | /       |     \  |
         29 ----- 28 ----- 27
     */
-    move_t move_{};
+    move_t move{};
 
     // 选中的棋子在board中的位置
     int currentLocation{};

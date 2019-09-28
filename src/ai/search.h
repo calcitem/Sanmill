@@ -185,7 +185,7 @@ protected:
        
 private:
     // 原始模型
-    Game game_;
+    Game game;
 
     // 演算用的模型
     Game tempGame;

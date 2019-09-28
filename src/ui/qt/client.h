@@ -50,13 +50,13 @@ private slots:
     void displayError(QAbstractSocket::SocketError socketError);
     void enableGetActionButton();
     void sessionOpened();
-    void setPort(uint16_t port)
+    void setPort(uint16_t p)
     {
-        this->port_ = port;
+        this->port = p;
     }
     uint16_t getPort()
     {
-        return port_;
+        return port;
     }
 
 private:
@@ -71,7 +71,7 @@ private:
 
     QNetworkSession *networkSession = nullptr;
 
-    uint16_t port_ {};
+    uint16_t port {};
 };
 
 #endif // CLIENT_H

@@ -71,7 +71,7 @@ Game &Game::operator= (const Game &game)
     currentTime = game.currentTime;
     elapsedSeconds[1] = game.elapsedSeconds[1];
     elapsedSeconds[2] = game.elapsedSeconds[2];
-    move_ = game.move_;
+    move = game.move;
     memcpy(cmdline, game.cmdline, sizeof(cmdline));
     cmdlist = game.cmdlist;
     tips = game.tips;
@@ -320,7 +320,7 @@ bool Game::place(int location, int8_t updateCmdlist)
 
         updateHash(location);
 
-        move_ = static_cast<move_t>(location);
+        move = static_cast<move_t>(location);
 
         if (updateCmdlist) {
             seconds = update();
@@ -400,7 +400,7 @@ bool Game::place(int location, int8_t updateCmdlist)
     }
 
     // 移子
-    move_ = static_cast<move_t>((currentLocation << 8) + location);
+    move = static_cast<move_t>((currentLocation << 8) + location);
 
     if (updateCmdlist) {
         seconds = update();
@@ -515,7 +515,7 @@ bool Game::capture(int location, int8_t updateCmdlist)
 
     position.nPiecesOnBoard[position.opponentId]--;
 
-    move_ = static_cast<move_t>(-location);
+    move = static_cast<move_t>(-location);
 
     if (updateCmdlist) {
         seconds = update();
@@ -744,18 +744,18 @@ bool Game::command(const char *cmd)
     return false;
 }
 
-bool Game::command(int move)
+bool Game::command(int m)
 {
-    if (move < 0) {
-        return capture(-move);
+    if (m < 0) {
+        return capture(-m);
     }
 
-    if (move & 0x1f00) {
-        if (choose(move >> 8)) {
-            return place(move & 0x00ff);
+    if (m & 0x1f00) {
+        if (choose(m >> 8)) {
+            return place(m & 0x00ff);
         }
     } else {
-        return place(move & 0x00ff);
+        return place(m & 0x00ff);
     }
 
     return false;

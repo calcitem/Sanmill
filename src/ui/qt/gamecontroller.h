@@ -55,9 +55,9 @@ public:
     //主窗口菜单栏明细
     const QMap <int, QStringList> getActions();
 
-    int getRuleNo()
+    int getRuleIndex()
     {
-        return ruleNo_;
+        return ruleIndex;
     }
 
     int getTimeLimit()
@@ -196,7 +196,7 @@ protected:
 
 private:
     // 棋对象的数据模型
-    Game game_;
+    Game game;
 
     // 棋对象的数据模型（临时）
     Game tempGame;
@@ -241,7 +241,7 @@ private:
     int timeID;
 
     // 规则号
-    int ruleNo_;
+    int ruleIndex;
 
     // 规则限时（分钟）
     int timeLimit;

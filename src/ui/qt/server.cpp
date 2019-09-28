@@ -31,7 +31,7 @@ Server::Server(QWidget *parent, uint16_t port)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     statusLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
-    this->port_ = port;
+    this->port = port;
 
     QNetworkConfigurationManager manager;
 
@@ -110,9 +110,9 @@ void Server::sessionOpened()
 
     tcpServer = new QTcpServer(this);
 
-    if (!tcpServer->listen(QHostAddress::LocalHost, port_)) {
-        port_++;
-        if (!tcpServer->listen(QHostAddress::LocalHost, port_)) {
+    if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
+        port++;
+        if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
             QMessageBox::critical(this, tr("Server"),
                                   tr("Unable to start the server: %1.")
                                   .arg(tcpServer->errorString()));
@@ -150,9 +150,9 @@ void Server::sessionOpened()
                          .arg(ipAddress).arg(tcpServer->serverPort()));
 }
 
-void Server::setAction(const QString &action)
+void Server::setAction(const QString &a)
 {
-    actions.push(action);
+    actions.push(a);
 }
 
 void Server::sendAction()
@@ -162,10 +162,10 @@ void Server::sendAction()
     out.setVersion(QDataStream::Qt_5_10);
 
     if (!actions.empty()) {
-        action_ = actions.front();
+        action = actions.front();
     }
     
-    out << action_;
+    out << action;
 
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
 

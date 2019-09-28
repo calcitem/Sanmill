@@ -284,7 +284,7 @@ void AIAlgorithm::deleteTree(Node *node)
 #endif  
 }
 
-void AIAlgorithm::setGame(const Game &game)
+void AIAlgorithm::setGame(const Game &g)
 {
     // 如果规则改变，重建hashmap
     if (strcmp(rule.name, rule.name) != 0) {
@@ -301,8 +301,8 @@ void AIAlgorithm::setGame(const Game &game)
         history.clear();
     }
 
-    this->game_ = game;
-    tempGame = game;
+    this->game = g;
+    tempGame = g;
     position = &(tempGame.position);
     requiredQuit = false;
     deleteTree(root);
@@ -339,8 +339,8 @@ int AIAlgorithm::search(depth_t depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (game_.getPhase() == PHASE_MOVING) {
-        hash_t hash = game_.getHash();
+    if (game.getPhase() == PHASE_MOVING) {
+        hash_t hash = game.getHash();
         
         if (std::find(history.begin(), history.end(), hash) != history.end()) {
             nRepetition++;
@@ -353,7 +353,7 @@ int AIAlgorithm::search(depth_t depth)
         }
     }
 
-    if (game_.getPhase() == PHASE_PLACING) {
+    if (game.getPhase() == PHASE_PLACING) {
         history.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -690,7 +690,7 @@ const char* AIAlgorithm::bestMove()
         i++;
     }
 
-    player_t side = game_.position.sideToMove;
+    player_t side = game.position.sideToMove;
 
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
@@ -707,9 +707,9 @@ const char* AIAlgorithm::bestMove()
 
         if (isMostWeak) {
             Endgame endgame;
-            endgame.type = game_.position.sideToMove == PLAYER_1 ?
+            endgame.type = game.position.sideToMove == PLAYER_1 ?
                 ENDGAME_PLAYER_2_WIN : ENDGAME_PLAYER_1_WIN;
-            hash_t endgameHash = this->game_.getHash(); // TODO: 减少重复计算哈希
+            hash_t endgameHash = this->game.getHash(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
             loggerDebug("Record 0x%08I32x to Endgame Hashmap\n", endgameHash);
         }
@@ -730,7 +730,7 @@ const char* AIAlgorithm::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            sprintf(cmdline, "Player%d give up!", game_.position.sideId);
+            sprintf(cmdline, "Player%d give up!", game.position.sideId);
             return cmdline;
         }
     }
