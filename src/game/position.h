@@ -111,9 +111,9 @@ public:
     }
 
     // 获取当前棋子位置点
-    int getCurrentLocation() const
+    int getCurrentIndex() const
     {
-        return currentLocation;
+        return currentIndex;
     }
 
     // 获取当前步数
@@ -242,14 +242,14 @@ public:
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool command(int move);
-    bool choose(int location);
-    bool place(int location, int8_t cp = 0);
-    bool capture(int location, int8_t cp = 0);
+    bool choose(int index);
+    bool place(int index, int8_t cp = 0);
+    bool capture(int index, int8_t cp = 0);
 
     // hash 相关
     hash_t getHash();
-    hash_t revertHash(int location);
-    hash_t updateHash(int location);
+    hash_t revertHash(int index);
+    hash_t updateHash(int index);
     hash_t updateHashMisc();
 
 public: /* TODO: move to private */
@@ -268,7 +268,7 @@ public: /* TODO: move to private */
     /* 
         当前着法，AI会用到，如下表示
         0x   00    00
-            location1  location2
+            index1  index2
         开局落子：0x00??，??为棋盘上的位置
         移子：0x__??，__为移动前的位置，??为移动后的位置
         去子：0xFF??，??取位置补码，即为负数
@@ -288,7 +288,7 @@ public: /* TODO: move to private */
     move_t move{};
 
     // 选中的棋子在board中的位置
-    int currentLocation{};
+    int currentIndex{};
 
 private:
     // 棋局哈希值

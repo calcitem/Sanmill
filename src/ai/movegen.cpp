@@ -31,7 +31,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                                   move_t bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
-    int location = 0;
+    int index = 0;
     size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
@@ -76,18 +76,18 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
         // 对于摆子阶段
         if (tempGame.position.phase & (PHASE_PLACING | PHASE_READY)) {
             for (move_t i : movePriorityTable) {
-                location = i;
+                index = i;
 
-                if (tempGame.boardLocations[location]) {
+                if (tempGame.boardLocations[index]) {
                     continue;
                 }
 
                 if (tempGame.position.phase != PHASE_READY || node != root) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)location, bestMove, tempGame.position.sideToMove);
+                    ai.addNode(node, VALUE_ZERO, (move_t)index, bestMove, tempGame.position.sideToMove);
                 } else {
                     // 若为先手，则抢占星位
-                    if (Board::isStarLocation(location)) {
-                        ai.addNode(node, VALUE_INFINITE, (move_t)location, bestMove, tempGame.position.sideToMove);
+                    if (Board::isStar(index)) {
+                        ai.addNode(node, VALUE_INFINITE, (move_t)index, bestMove, tempGame.position.sideToMove);
                     }
                 }
             }
@@ -96,13 +96,13 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
 
         // 对于移子阶段
         if (tempGame.position.phase & PHASE_MOVING) {
-            int newLocation, oldLocation;
+            int newIndex, oldIndex;
 
             // 尽量走理论上较差的位置的棋子
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldLocation = movePriorityTable[i];
+                oldIndex = movePriorityTable[i];
 
-                if (!tempGame.choose(oldLocation)) {
+                if (!tempGame.choose(oldIndex)) {
                     continue;
                 }
 
@@ -111,17 +111,17 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newLocation = moveTable[oldLocation][direction];
-                        if (newLocation && !tempGame.boardLocations[newLocation]) {
-                            move_t move = move_t((oldLocation << 8) + newLocation);
+                        newIndex = moveTable[oldIndex][direction];
+                        if (newIndex && !tempGame.boardLocations[newIndex]) {
+                            move_t move = move_t((oldIndex << 8) + newIndex);
                             ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.sideToMove); // (12%)
                         }
                     }
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
-                    for (newLocation = Board::LOCATION_BEGIN; newLocation < Board::LOCATION_END; newLocation++) {
-                        if (!tempGame.boardLocations[newLocation]) {
-                            move_t move = move_t((oldLocation << 8) + newLocation);
+                    for (newIndex = Board::INDEX_BEGIN; newIndex < Board::INDEX_END; newIndex++) {
+                        if (!tempGame.boardLocations[newIndex]) {
+                            move_t move = move_t((oldIndex << 8) + newIndex);
                             ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.sideToMove);
                         }
                     }
@@ -135,9 +135,9 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
         if (tempGame.position.board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                location = movePriorityTable[i];
-                if (tempGame.boardLocations[location] & opponent) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.sideToMove);
+                index = movePriorityTable[i];
+                if (tempGame.boardLocations[index] & opponent) {
+                    ai.addNode(node, VALUE_ZERO, (move_t)-index, bestMove, tempGame.position.sideToMove);
                 }
             }
             break;
@@ -145,10 +145,10 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
 
         // 不是全成三的情况
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            location = movePriorityTable[i];
-            if (tempGame.boardLocations[location] & opponent) {
-                if (rule.allowRemoveMill || !tempGame.position.board.inHowManyMills(location)) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)-location, bestMove, tempGame.position.sideToMove);
+            index = movePriorityTable[i];
+            if (tempGame.boardLocations[index] & opponent) {
+                if (rule.allowRemoveMill || !tempGame.position.board.inHowManyMills(index)) {
+                    ai.addNode(node, VALUE_ZERO, (move_t)-index, bestMove, tempGame.position.sideToMove);
                 }
             }
         }
@@ -163,7 +163,7 @@ void MoveList::create()
 {
     // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
 #if 1
-    const int moveTable_obliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
+    const int moveTable_obliqueLine[Board::EXPANDED_BOARD_SIZE][DIRECTIONS_COUNT] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -210,7 +210,7 @@ void MoveList::create()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable_noObliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
+    const int moveTable_noObliqueLine[Board::EXPANDED_BOARD_SIZE][DIRECTIONS_COUNT] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},

@@ -24,6 +24,7 @@
 
 #include "config.h"
 #include "option.h"
+#include "types.h"
 
  // 棋局，抽象为一个（5×8）的数组，上下两行留空
  /*
@@ -42,6 +43,16 @@ public:
     ~Location();
 
     Location & operator=(const Location &);
+
+    inline static void setForbiden(location_t &location)
+    {
+        location = FLAG_FORBIDDEN;
+    }
+
+private:
+    static const location_t FLAG_FORBIDDEN = 0x0F;
+    static const location_t FLAG_PLAYER_1 = 0x10;
+    static const location_t FLAG_PLAYER_2 = 0x20;
 };
 
 #endif /* LOCATION_H */

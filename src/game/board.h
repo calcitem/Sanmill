@@ -47,21 +47,21 @@ public:
     static const int N_SEATS = 8;
 
     // 棋盘点的个数：40
-    static const int N_LOCATIONS = (Board::N_RINGS + 2) * Board::N_SEATS;
+    static const int EXPANDED_BOARD_SIZE = (Board::N_RINGS + 2) * Board::N_SEATS;
 
     // 遍历棋盘点所用的起始位置，即 [8, 32)
-    static const int LOCATION_BEGIN = N_SEATS;
-    static const int LOCATION_END = ((N_RINGS + 1) * N_SEATS);
+    static const int INDEX_BEGIN = N_SEATS;
+    static const int INDEX_END = ((N_RINGS + 1) * N_SEATS);
 
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const int onBoard[N_LOCATIONS];
+    static const int onBoard[EXPANDED_BOARD_SIZE];
 
     // 判断位置点是否为星位 (星位是经常会先占的位置)
-    static bool isStarLocation(int location);
+    static bool isStar(int index);
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int millTable[N_LOCATIONS][LINE_TYPES_COUNT][N_RINGS - 1];
+    static int millTable[EXPANDED_BOARD_SIZE][LINE_TYPES_COUNT][N_RINGS - 1];
 
     // 生成成三表
     void createMillTable();
@@ -75,17 +75,17 @@ public:
     // 局面逆时针旋转
     void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, int currentPos, bool cmdChange = true);
 
-    // 判断棋盘location处的棋子处于几个“三连”中
-    int inHowManyMills(int location);
+    // 判断棋盘 index 处的棋子处于几个“三连”中
+    int inHowManyMills(int index);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], int location, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], int index, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
-    bool isSurrounded(int sideId, int nPiecesOnBoard[], int location);
+    bool isSurrounded(int sideId, int nPiecesOnBoard[], int index);
 
     // 判断玩家的棋子是否全部被围
     bool isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch);
@@ -93,7 +93,7 @@ public:
     bool isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t ply);
 
     // 三连加入列表
-    int addMills(int location);
+    int addMills(int index);
 
 #if 0
     // 获取位置点棋子的归属人
@@ -106,10 +106,10 @@ public:
     bool getCurrentPiece(player_t &player, int &number, int currentPos);
 
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
-    static void locationToPolar(int location, int &r, int &s);
+    static void indexToPolar(int index, int &r, int &s);
 
     // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
-    static int polarToLocation(int r, int s);
+    static int polarToIndex(int r, int s);
 
     static void printBoard();
 
@@ -121,20 +121,20 @@ public:
         0x0F 代表禁点
         0x11~0x1C 代表先手第 1~12 子
         0x21~0x2C 代表后手第 1~12 子
-        判断棋子是先手的用 (location[i] & 0x10)
-        判断棋子是后手的用 (location[i] & 0x20)
+        判断棋子是先手的用 (locations[i] & 0x10)
+        判断棋子是后手的用 (locations[i] & 0x20)
      */
-    location_t locations[N_LOCATIONS]{};
+    location_t locations[EXPANDED_BOARD_SIZE]{};
 
     /*
         本打算用如下的结构体来表示“三连”
         struct Mill {
             char piece1;    // “三连”中最小的棋子
-            char location1;      // 最小棋子的位置
+            char index1;      // 最小棋子的位置
             char piece2;    // 次小的棋子
-            char location2;      // 次小棋子的位置
+            char index2;      // 次小棋子的位置
             char piece3;    // 最大的棋子
-            char location3;      // 最大棋子的位置
+            char index3;      // 最大棋子的位置
         };
 
         但为了提高执行效率改用一个64位整数了，规则如下

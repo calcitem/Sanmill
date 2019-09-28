@@ -182,15 +182,15 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        tempGame.position.board.locationToPolar(-move, r, s);
+        tempGame.position.board.indexToPolar(-move, r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        tempGame.position.board.locationToPolar(move >> 8, r1, s1);
-        tempGame.position.board.locationToPolar(move & 0x00ff, r, s);
+        tempGame.position.board.indexToPolar(move >> 8, r1, s1);
+        tempGame.position.board.indexToPolar(move & 0x00ff, r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        tempGame.position.board.locationToPolar(move & 0x007f, r, s);
+        tempGame.position.board.indexToPolar(move & 0x007f, r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
@@ -773,15 +773,15 @@ const char *AIAlgorithm::moveToCommand(move_t move)
     int r, s;
 
     if (move < 0) {
-        Board::locationToPolar(-move, r, s);
+        Board::indexToPolar(-move, r, s);
         sprintf(cmdline, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        Board::locationToPolar(move >> 8, r1, s1);
-        Board::locationToPolar(move & 0x00ff, r, s);
+        Board::indexToPolar(move >> 8, r1, s1);
+        Board::indexToPolar(move & 0x00ff, r, s);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        Board::locationToPolar(move & 0x007f, r, s);
+        Board::indexToPolar(move & 0x007f, r, s);
         sprintf(cmdline, "(%1u,%1u)", r, s);
     }
 

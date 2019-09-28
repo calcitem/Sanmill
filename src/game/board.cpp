@@ -23,7 +23,7 @@
 #include "movegen.h"
 
  // 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
-const int Board::onBoard[N_LOCATIONS] = {
+const int Board::onBoard[EXPANDED_BOARD_SIZE] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -32,7 +32,7 @@ const int Board::onBoard[N_LOCATIONS] = {
 };
 
 // 成三表
-int Board::millTable[N_LOCATIONS][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}} };
+int Board::millTable[EXPANDED_BOARD_SIZE][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}} };
 
 Board::Board()
 {
@@ -67,7 +67,7 @@ Board &Board::operator= (const Board &other)
 
 void Board::createMillTable()
 {
-    const int millTable_noObliqueLine[Board::N_LOCATIONS][LINE_TYPES_COUNT][2] = {
+    const int millTable_noObliqueLine[Board::EXPANDED_BOARD_SIZE][LINE_TYPES_COUNT][2] = {
         /* 0 */ {{0, 0}, {0, 0}, {0, 0}},
         /* 1 */ {{0, 0}, {0, 0}, {0, 0}},
         /* 2 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -114,7 +114,7 @@ void Board::createMillTable()
         /* 39 */ {{0, 0}, {0, 0}, {0, 0}}
     };
 
-    const int millTable_hasObliqueLines[Board::N_LOCATIONS][LINE_TYPES_COUNT][2] = {
+    const int millTable_hasObliqueLines[Board::EXPANDED_BOARD_SIZE][LINE_TYPES_COUNT][2] = {
         /*  0 */ {{0, 0}, {0, 0}, {0, 0}},
         /*  1 */ {{0, 0}, {0, 0}, {0, 0}},
         /*  2 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -168,7 +168,7 @@ void Board::createMillTable()
     }
 
 #ifdef DEBUG_MODE
-    for (int i = 0; i < N_LOCATIONS; i++) {
+    for (int i = 0; i < EXPANDED_BOARD_SIZE; i++) {
         loggerDebug("/* %d */ {", i);
         for (int j = 0; j < DIRECTIONS_COUNT; j++) {
             loggerDebug("{");
@@ -192,15 +192,15 @@ void Board::createMillTable()
 #endif /* DEBUG_MODE */
 }
 
-void Board::locationToPolar(const int location, int &r, int &s)
+void Board::indexToPolar(const int index, int &r, int &s)
 {
-    //r = location / N_SEATS;
-    //s = location % N_SEATS + 1;
-    r = location >> 3;
-    s = (location & 0x07) + 1;
+    //r = index / N_SEATS;
+    //s = index % N_SEATS + 1;
+    r = index >> 3;
+    s = (index & 0x07) + 1;
 }
 
-int Board::polarToLocation(int r, int s)
+int Board::polarToIndex(int r, int s)
 {
     if (r < 1 || r > N_RINGS || s < 1 || s > N_SEATS) {
         return 0;
@@ -209,15 +209,15 @@ int Board::polarToLocation(int r, int s)
     return r * N_SEATS + s - 1;
 }
 
-int Board::inHowManyMills(int location)
+int Board::inHowManyMills(int index)
 {
     int n = 0;
-    int location1, location2;
+    int index_1, index_2;
 
     for (int l = 0; l < LINE_TYPES_COUNT; l++) {
-        location1 = millTable[location][l][0];
-        location2 = millTable[location][l][1];
-        if ((locations[location] & 0x30) & locations[location1] & locations[location2]) {
+        index_1 = millTable[index][l][0];
+        index_2 = millTable[index][l][1];
+        if ((locations[index] & 0x30) & locations[index_1] & locations[index_2]) {
             n++;
         }
     }
@@ -225,24 +225,24 @@ int Board::inHowManyMills(int location)
     return n;
 }
 
-int Board::addMills(int location)
+int Board::addMills(int index)
 {
     // 成三用一个64位整数了，规则如下
     // 0x   00     00     00    00    00    00    00    00
-    //    unused unused piece1 location1 piece2 location2 piece3 pos3
+    //    unused unused piece1 index1 piece2 index2 piece3 pos3
     // piece1、piece2、piece3按照序号从小到大顺序排放
     uint64_t mill = 0;
     int n = 0;
-    int p[3], min, temp;
-    char m = locations[location] & '\x30';
+    int idx[3], min, temp;
+    char m = locations[index] & '\x30';
 
     for (int i = 0; i < 3; i++) {
-        p[0] = location;
-        p[1] = millTable[location][i][0];
-        p[2] = millTable[location][i][1];
+        idx[0] = index;
+        idx[1] = millTable[index][i][0];
+        idx[2] = millTable[index][i][1];
 
         // 如果没有成三
-        if (!(m & locations[p[1]] & locations[p[2]])) {
+        if (!(m & locations[idx[1]] & locations[idx[2]])) {
             continue;
         }
 
@@ -253,7 +253,7 @@ int Board::addMills(int location)
             min = j;
 
             for (int k = j + 1; k < 3; k++) {
-                if (p[min] > p[k])
+                if (idx[min] > idx[k])
                     min = k;
             }
 
@@ -261,18 +261,18 @@ int Board::addMills(int location)
                 continue;
             }
 
-            temp = p[min];
-            p[min] = p[j];
-            p[j] = temp;
+            temp = idx[min];
+            idx[min] = idx[j];
+            idx[j] = temp;
         }
 
         // 成三
-        mill = (static_cast<uint64_t>(locations[p[0]]) << 40)
-            + (static_cast<uint64_t>(p[0]) << 32)
-            + (static_cast<uint64_t>(locations[p[1]]) << 24)
-            + (static_cast<uint64_t>(p[1]) << 16)
-            + (static_cast<uint64_t>(locations[p[2]]) << 8)
-            + static_cast<uint64_t>(p[2]);
+        mill = (static_cast<uint64_t>(locations[idx[0]]) << 40)
+            + (static_cast<uint64_t>(idx[0]) << 32)
+            + (static_cast<uint64_t>(locations[idx[1]]) << 24)
+            + (static_cast<uint64_t>(idx[1]) << 16)
+            + (static_cast<uint64_t>(locations[idx[2]]) << 8)
+            + static_cast<uint64_t>(idx[2]);
 
         // 如果允许相同三连反复去子
         if (rule.allowRemovePiecesRepeatedly) {
@@ -303,7 +303,7 @@ int Board::addMills(int location)
 
 bool Board::isAllInMills(player_t player)
 {
-    for (int i = LOCATION_BEGIN; i < LOCATION_END; i++) {
+    for (int i = INDEX_BEGIN; i < INDEX_END; i++) {
         if (locations[i] & (uint8_t)player) {
             if (!inHowManyMills(i)) {
                 return false;
@@ -316,18 +316,18 @@ bool Board::isAllInMills(player_t player)
 
 // 判断玩家的棋子周围有几个空位
 int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
-                                           int location, bool includeFobidden)
+                                           int index, bool includeFobidden)
 {
     int count = 0;
 
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
-        int moveLocation;
+        int moveIndex;
         for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
-            moveLocation = MoveList::moveTable[location][d];
-            if (moveLocation) {
-                if (locations[moveLocation] == 0x00 ||
-                    (includeFobidden && locations[moveLocation] == 0x0F)) {
+            moveIndex = MoveList::moveTable[index][d];
+            if (moveIndex) {
+                if (locations[moveIndex] == 0x00 ||
+                    (includeFobidden && locations[moveIndex] == 0x0F)) {
                     count++;
                 }
             }
@@ -338,15 +338,15 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
 }
 
 // 判断玩家的棋子是否被围
-bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], int location)
+bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], int index)
 {
-    // 判断location处的棋子是否被“闷”
+    // 判断index处的棋子是否被“闷”
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
-        int i, moveLocation;
+        int i, moveIndex;
         for (i = 0; i < 4; i++) {
-            moveLocation = MoveList::moveTable[location][i];
-            if (moveLocation && !locations[moveLocation])
+            moveIndex = MoveList::moveTable[index][i];
+            if (moveIndex && !locations[moveIndex])
                 break;
         }
         // 被围住
@@ -370,15 +370,15 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
     }
 
     // 查询整个棋盘
-    int moveLocation;
+    int moveIndex;
     for (int i = 1; i < N_SEATS * (N_RINGS + 1); i++) {
         if (!(ch & locations[i])) {
             continue;
         }
 
         for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
-            moveLocation = MoveList::moveTable[i][d];
-            if (moveLocation && !locations[moveLocation])
+            moveIndex = MoveList::moveTable[i][d];
+            if (moveIndex && !locations[moveIndex])
                 return false;
         }
     }
@@ -397,12 +397,12 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 #if 0
 player_t Board::getWhosPiece(int r, int s)
 {
-    int location = polarToLocation(r, s);
+    int index = polarToIndex(r, s);
 
-    if (locations[location] & PLAYER_1)
+    if (locations[index] & PLAYER_1)
         return PLAYER_1;
 
-    if (locations[location] & PLAYER_2)
+    if (locations[index] & PLAYER_2)
         return PLAYER_2;
 
     return PLAYER_NOBODY;
@@ -425,9 +425,9 @@ bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s
     else
         return false;
 
-    for (int i = LOCATION_BEGIN; i < LOCATION_END; i++) {
+    for (int i = INDEX_BEGIN; i < INDEX_END; i++) {
         if (locations[i] == piece) {
-            locationToPolar(i, r, s);
+            indexToPolar(i, r, s);
             return true;
         }
     }
@@ -436,12 +436,12 @@ bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s
 }
 
 // 获取当前棋子
-bool Board::getCurrentPiece(player_t &player, int &number, int location)
+bool Board::getCurrentPiece(player_t &player, int &number, int index)
 {
-    if (!onBoard[location])
+    if (!onBoard[index])
         return false;
 
-    int p = locations[location];
+    int p = locations[index];
 
     if (p & 0x10) {
         player = PLAYER_1;
@@ -457,15 +457,15 @@ bool Board::getCurrentPiece(player_t &player, int &number, int location)
 }
 #endif
 
-bool Board::isStarLocation(int location)
+bool Board::isStar(int index)
 {
-    return (location == 17 ||
-            location == 19 ||
-            location == 21 ||
-            location == 23);
+    return (index == 17 ||
+            index == 19 ||
+            index == 21 ||
+            index == 23);
 }
 
-void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, int location, bool cmdChange /*= true*/)
+void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, int index, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -502,11 +502,11 @@ void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, int loc
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
-    if (location != 0) {
-        r = location / N_SEATS;
-        s = location % N_SEATS;
+    if (index != 0) {
+        r = index / N_SEATS;
+        s = index % N_SEATS;
         s = (N_SEATS - s) % N_SEATS;
-        location = r * N_SEATS + s;
+        index = r * N_SEATS + s;
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
@@ -577,7 +577,7 @@ void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, int loc
     }
 }
 
-void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, int location, bool cmdChange /*= true*/)
+void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, int index, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -622,16 +622,16 @@ void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, int locat
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
-    if (location != 0) {
-        r = location / N_SEATS;
-        s = location % N_SEATS;
+    if (index != 0) {
+        r = index / N_SEATS;
+        s = index % N_SEATS;
 
         if (r == 1)
             r = N_RINGS;
         else if (r == N_RINGS)
             r = 1;
 
-        location = r * N_SEATS + s;
+        index = r * N_SEATS + s;
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
@@ -742,7 +742,7 @@ void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, int locat
     }
 }
 
-void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, int location, bool cmdChange /*= true*/)
+void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, int index, bool cmdChange /*= true*/)
 {
     // 将degrees转化为0~359之间的数
     degrees = degrees % 360;
@@ -823,11 +823,11 @@ void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t m
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
-    if (location != 0) {
-        r = location / N_SEATS;
-        s = location % N_SEATS;
+    if (index != 0) {
+        r = index / N_SEATS;
+        s = index % N_SEATS;
         s = (s + N_SEATS - degrees) % N_SEATS;
-        location = r * N_SEATS + s;
+        index = r * N_SEATS + s;
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
