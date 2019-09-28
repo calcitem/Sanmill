@@ -222,7 +222,7 @@ public:
     bool command(const char *cmd);
 
     // 更新时间和状态，用内联函数以提高效率
-    inline int update();
+    int update();
 
     // 是否分出胜负
     bool win();

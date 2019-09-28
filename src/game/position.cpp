@@ -770,7 +770,7 @@ bool Game::command(int m)
     return false;
 }
 
-inline int Game::update()
+int Game::update()
 {
     int ret = -1;
     int timePoint = -1;
