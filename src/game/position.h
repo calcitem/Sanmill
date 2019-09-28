@@ -314,6 +314,12 @@ private:
 
     // 当前棋局的字符提示
     string tips;
+
+    // 计算双方在棋盘上各有几个子
+    int countPiecesOnBoard();
+
+    // 计算双方手中各有几个字
+    int countPiecesInHand();
 };
 
 #endif /* POSITION_H */

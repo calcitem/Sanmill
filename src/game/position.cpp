@@ -79,6 +79,42 @@ Game &Game::operator= (const Game &game)
     return *this;
 }
 
+int Game::countPiecesOnBoard()
+{
+    position.nPiecesOnBoard[1] = position.nPiecesOnBoard[2] = 0;
+
+    for (int r = 1; r < Board::N_RINGS + 2; r++) {
+        for (int s = 0; s < Board::N_SEATS; s++) {
+            int location = r * Board::N_SEATS + s;
+            if (boardLocations[location] & 0x10) {
+                position.nPiecesOnBoard[1]++;
+            } else if (boardLocations[location] & 0x20) {
+                position.nPiecesOnBoard[2]++;
+            } else if (boardLocations[location] & 0x0F) {
+                // 不计算盘面子数
+            }
+        }
+    }
+
+    // 设置玩家盘面剩余子数和未放置子数
+    if (position.nPiecesOnBoard[1] > rule.nTotalPiecesEachSide ||
+        position.nPiecesOnBoard[2] > rule.nTotalPiecesEachSide) {
+        return -1;
+    }
+
+    return position.nPiecesOnBoard[1] + position.nPiecesOnBoard[2];
+}
+
+int Game::countPiecesInHand()
+{
+    position.nPiecesInHand[1] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[1];
+    position.nPiecesInHand[2] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[2];
+    position.nPiecesInHand[1] = std::min(12, position.nPiecesInHand[1]);    // TODO: 12改为变量
+    position.nPiecesInHand[2] = std::min(12, position.nPiecesInHand[2]);    // TODO: 12改为变量
+
+    return position.nPiecesInHand[1] + position.nPiecesInHand[2];
+}
+
 // 设置棋局状态和棋盘数据，用于初始化
 bool Game::setPosition(const struct Rule *newRule)
 {
@@ -101,31 +137,11 @@ bool Game::setPosition(const struct Rule *newRule)
         判断棋子是先手的用 (locations[i] & 0x10)
         判断棋子是后手的用 (locations[i] & 0x20)
      */
-    position.nPiecesOnBoard[1] = position.nPiecesOnBoard[2] = 0;
-
-    for (int r = 1; r < Board::N_RINGS + 2; r++) {
-        for (int s = 0; s < Board::N_SEATS; s++) {
-            int location = r * Board::N_SEATS + s;
-            if (boardLocations[location] & 0x10) {
-                position.nPiecesOnBoard[1]++;
-            } else if (boardLocations[location] & 0x20) {
-                position.nPiecesOnBoard[2]++;
-            } else if (boardLocations[location] & 0x0F) {
-                // 不计算盘面子数
-            }
-        }
-    }
-
-    // 设置玩家盘面剩余子数和未放置子数
-    if (position.nPiecesOnBoard[1] > rule.nTotalPiecesEachSide ||
-        position.nPiecesOnBoard[2] > rule.nTotalPiecesEachSide) {
+    if (countPiecesOnBoard() == -1) {
         return false;
     }
 
-    position.nPiecesInHand[1] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[1];
-    position.nPiecesInHand[2] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[2];
-    position.nPiecesInHand[1] = std::min(12, position.nPiecesInHand[1]);    // TODO: 12改为变量 
-    position.nPiecesInHand[2] = std::min(12, position.nPiecesInHand[2]);    // TODO: 12改为变量 
+    countPiecesInHand();
 
     // 设置去子状态时的剩余尚待去除子数
     position.nPiecesNeedRemove = 0;
