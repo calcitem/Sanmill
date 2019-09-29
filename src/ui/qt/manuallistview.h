@@ -85,7 +85,7 @@ protected slots:
     void rowsInserted(const QModelIndex &parent, int start, int end) {
         // 调用父类函数，为使滚动条更新，否则scrollToBottom不能正确执行。
         QListView::rowsInserted(parent, start, end);
-        QModelIndex id = model()->index(end, 0);
+        QModelIndex id = model()->square(end, 0);
         setCurrentIndex(id);
         scrollToBottom();
     }
@@ -101,9 +101,9 @@ protected slots:
         // 如果包含model
         if (model()) {
             // 判断
-            QModelIndex index = model()->index(model()->rowCount() - 1, 0);
-            if (index == bottomRight && newEmptyRow) {
-                setCurrentIndex(index);
+            QModelIndex square = model()->index(model()->rowCount() - 1, 0);
+            if (square == bottomRight && newEmptyRow) {
+                setCurrentIndex(square);
                 QAbstractItemView::scrollToBottom();
                 newEmptyRow = false;
             }

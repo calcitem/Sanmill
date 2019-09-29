@@ -45,7 +45,7 @@ public:
     static void shuffle();
 
     // 着法表 // TODO: Move to private
-    inline static move_t moveTable[Board::EXPANDED_BOARD_SIZE][DIRECTIONS_COUNT] = { {MOVE_NONE} };
+    inline static move_t moveTable[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = { {MOVE_NONE} };
 
 private:
     // 着法顺序表, 后续会被打乱

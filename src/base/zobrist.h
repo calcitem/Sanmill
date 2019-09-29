@@ -23,4 +23,4 @@
 #include "config.h"
 #include "position.h"
 
-extern const hash_t zobrist[Board::EXPANDED_BOARD_SIZE][PIECE_TYPE_COUNT];
+extern const hash_t zobrist[SQ_EXPANDED_COUNT][PIECE_TYPE_COUNT];

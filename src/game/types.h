@@ -27,7 +27,6 @@
 using step_t = uint16_t;
 using depth_t = uint8_t;
 using location_t = uint8_t;
-using index_t = uint8_t;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
 using hash_t = uint32_t;
@@ -41,14 +40,16 @@ enum move_t : int32_t
     //MOVE_NULL = 65
 };
 
-enum square_t : int
+enum square_t : int32_t
 {
-    SQ_0, SQ_1, SQ_2, SQ_3, SQ_4, SQ_5, SQ_6, SQ_7,
-    SQ_D5, SQ_E5, SQ_E4, SQ_E3, SQ_D3, SQ_C3, SQ_C4, SQ_C5,
-    SQ_D6, SQ_F6, SQ_F4, SQ_F2, SQ_D2, SQ_B2, SQ_B4, SQ_B6,
-    SQ_D7, SQ_G7, SQ_G4, SQ_G1, SQ_D1, SQ_A1, SQ_A4, SQ_A7,
-    SQ_32, SQ_33, SQ_34, SQ_35, SQ_36, SQ_37, SQ_38, SQ_39,
-    SQ_COUNT
+    SQ_0 = 0, SQ_1 = 1, SQ_2 = 2, SQ_3 = 3, SQ_4 = 4, SQ_5 = 5, SQ_6 = 6, SQ_7 = 7,
+    SQ_D5 = 8, SQ_E5 = 9, SQ_E4 = 10, SQ_E3 = 11, SQ_D3 = 12, SQ_C3 = 13, SQ_C4 = 14, SQ_C5 = 15,
+    SQ_D6 = 16, SQ_F6 = 17, SQ_F4 = 18, SQ_F2 = 19, SQ_D2 = 20, SQ_B2 = 21, SQ_B4 = 22, SQ_B6 = 23,
+    SQ_D7 = 24, SQ_G7 = 25, SQ_G4 = 26, SQ_G1 = 27, SQ_D1 = 28, SQ_A1 = 29, SQ_A4 = 30, SQ_A7 = 31,
+    SQ_32 = 32, SQ_33 = 33, SQ_34 = 34, SQ_35 = 35, SQ_36 = 36, SQ_37 = 37, SQ_38 = 38, SQ_39 = 39,
+    SQ_EXPANDED_COUNT = 40,
+    SQ_BEGIN = SQ_D5,
+    SQ_END = SQ_32
 };
 
 // 移动方向，包括顺时针、逆时针、向内、向外4个方向

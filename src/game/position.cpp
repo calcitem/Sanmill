@@ -65,7 +65,7 @@ Game &Game::operator= (const Game &game)
     currentStep = game.currentStep;
     moveStep = game.moveStep;
     boardLocations = position.board.locations;
-    currentIndex = game.currentIndex;
+    currentSquare = game.currentSquare;
     winner = game.winner;
     startTime = game.startTime;
     currentTime = game.currentTime;
@@ -85,12 +85,12 @@ int Game::countPiecesOnBoard()
 
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
-            index_t index = r * Board::N_SEATS + s;
-            if (boardLocations[index] & 0x10) {
+            square_t square = static_cast<square_t>(r * Board::N_SEATS + s);
+            if (boardLocations[square] & 0x10) {
                 position.nPiecesOnBoard[1]++;
-            } else if (boardLocations[index] & 0x20) {
+            } else if (boardLocations[square] & 0x20) {
                 position.nPiecesOnBoard[2]++;
-            } else if (boardLocations[index] & 0x0F) {
+            } else if (boardLocations[square] & 0x0F) {
                 // 不计算盘面子数
             }
         }
@@ -151,7 +151,7 @@ bool Game::setPosition(const struct Rule *newRule)
     position.board.createMillTable();
 
     // 不选中棋子
-    currentIndex = 0;
+    currentSquare = SQ_0;
 
     // 用时置零
     elapsedSeconds[1] = elapsedSeconds[2] = 0;
@@ -218,7 +218,7 @@ bool Game::reset()
     }    
 
     // 不选中棋子
-    currentIndex = 0;
+    currentSquare = SQ_0;
 
     // 用时置零
     elapsedSeconds[1] = elapsedSeconds[2] = 0;
@@ -279,7 +279,7 @@ bool Game::start()
     }
 }
 
-bool Game::place(index_t index, int8_t updateCmdlist)
+bool Game::place(square_t square, int8_t updateCmdlist)
 {
     // 如果局面为“结局”，返回false
     if (position.phase == PHASE_GAMEOVER)
@@ -294,13 +294,13 @@ bool Game::place(index_t index, int8_t updateCmdlist)
         return false;
 
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
-    if (!position.board.onBoard[index] || boardLocations[index])
+    if (!position.board.onBoard[square] || boardLocations[square])
         return false;
 
     // 格式转换
     int r = 0;
     int s = 0;
-    Board::indexToPolar(index, r, s);
+    Board::squareToPolar(square, r, s);
 
     // 时间的临时变量
     int seconds = -1;
@@ -315,11 +315,11 @@ bool Game::place(index_t index, int8_t updateCmdlist)
         position.nPiecesInHand[playerId]--;
         position.nPiecesOnBoard[playerId]++;
 
-        boardLocations[index] = piece;
+        boardLocations[square] = piece;
 
-        updateHash(index);
+        updateHash(square);
 
-        move = static_cast<move_t>(index);
+        move = static_cast<move_t>(square);
 
         if (updateCmdlist) {
             seconds = update();
@@ -329,9 +329,9 @@ bool Game::place(index_t index, int8_t updateCmdlist)
             currentStep++;
         }
 
-        currentIndex = index;
+        currentSquare = square;
 
-        n = position.board.addMills(currentIndex);
+        n = position.board.addMills(currentSquare);
 
         // 开局阶段未成三
         if (n == 0) {
@@ -388,7 +388,7 @@ bool Game::place(index_t index, int8_t updateCmdlist)
         !rule.allowFlyWhenRemainThreePieces) {
         int i;
         for (i = 0; i < 4; i++) {
-            if (index == MoveList::moveTable[currentIndex][i])
+            if (square == MoveList::moveTable[currentSquare][i])
                 break;
         }
 
@@ -399,27 +399,27 @@ bool Game::place(index_t index, int8_t updateCmdlist)
     }
 
     // 移子
-    move = static_cast<move_t>((currentIndex << 8) + index);
+    move = static_cast<move_t>((currentSquare << 8) + square);
 
     if (updateCmdlist) {
         seconds = update();
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentIndex / Board::N_SEATS, currentIndex % Board::N_SEATS + 1,
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentSquare / Board::N_SEATS, currentSquare % Board::N_SEATS + 1,
                 r, s, seconds / 60, seconds % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep++;
     }
 
-    boardLocations[index] = boardLocations[currentIndex];
+    boardLocations[square] = boardLocations[currentSquare];
 
-    updateHash(index);
+    updateHash(square);
 
-    boardLocations[currentIndex] = '\x00';
+    boardLocations[currentSquare] = '\x00';
 
-    revertHash(currentIndex);
+    revertHash(currentSquare);
 
-    currentIndex = index;
-    n = position.board.addMills(currentIndex);
+    currentSquare = square;
+    n = position.board.addMills(currentSquare);
 
     // 中局阶段未成三
     if (n == 0) {
@@ -453,21 +453,21 @@ out:
 
 bool Game::_place(int r, int s)
 {
-    // 转换为 index
-    index_t index = Board::polarToIndex(r, s);
+    // 转换为 square
+    square_t square = Board::polarToSquare(r, s);
 
-    return place(index, true);
+    return place(square, true);
 }
 
 bool Game::_capture(int r, int s)
 {
-    // 转换为 index
-    index_t index = Board::polarToIndex(r, s);
+    // 转换为 square
+    square_t square = Board::polarToSquare(r, s);
 
-    return capture(index, 1);
+    return capture(square, 1);
 }
 
-bool Game::capture(index_t index, int8_t updateCmdlist)
+bool Game::capture(square_t square, int8_t updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (position.phase & PHASE_NOTPLAYING)
@@ -484,7 +484,7 @@ bool Game::capture(index_t index, int8_t updateCmdlist)
     // 格式转换
     int r = 0;
     int s = 0;
-    Board::indexToPolar(index, r, s);
+    Board::squareToPolar(square, r, s);
 
     // 时间的临时变量
     int seconds = -1;
@@ -492,29 +492,29 @@ bool Game::capture(index_t index, int8_t updateCmdlist)
     player_t opponent = Player::getOpponent(position.sideToMove);
 
     // 判断去子是不是对手棋
-    if (!(opponent & boardLocations[index]))
+    if (!(opponent & boardLocations[square]))
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
     if (!rule.allowRemoveMill &&
-        position.board.inHowManyMills(index) &&
+        position.board.inHowManyMills(square) &&
         !position.board.isAllInMills(opponent)) {
         return false;
     }
 
     // 去子（设置禁点）
     if (rule.hasForbiddenLocations && position.phase == PHASE_PLACING) {
-        revertHash(index);
-        boardLocations[index] = '\x0f';
-        updateHash(index);
+        revertHash(square);
+        boardLocations[square] = '\x0f';
+        updateHash(square);
     } else { // 去子
-        revertHash(index);
-        boardLocations[index] = '\x00';
+        revertHash(square);
+        boardLocations[square] = '\x00';
     }
 
     position.nPiecesOnBoard[position.opponentId]--;
 
-    move = static_cast<move_t>(-index);
+    move = static_cast<move_t>(-square);
 
     if (updateCmdlist) {
         seconds = update();
@@ -524,9 +524,9 @@ bool Game::capture(index_t index, int8_t updateCmdlist)
         moveStep = 0;
     }
 
-    currentIndex = 0;
+    currentSquare = SQ_0;
     position.nPiecesNeedRemove--;
-    updateHash(index);
+    updateHash(square);
 
     // 去子完成
 
@@ -605,7 +605,7 @@ out:
     return true;
 }
 
-bool Game::choose(index_t index)
+bool Game::choose(square_t square)
 {
     // 如果局面不是"中局”，返回false
     if (position.phase != PHASE_MOVING)
@@ -616,14 +616,14 @@ bool Game::choose(index_t index)
         return false;
 
     // 判断选子是否可选
-    if (boardLocations[index] & position.sideToMove) {
+    if (boardLocations[square] & position.sideToMove) {
         // 判断location处的棋子是否被“闷”
-        if (position.board.isSurrounded(position.sideId, position.nPiecesOnBoard, index)) {
+        if (position.board.isSurrounded(position.sideId, position.nPiecesOnBoard, square)) {
             return false;
         }
 
         // 选子
-        currentIndex = index;
+        currentSquare = square;
 
         // 选子完成，进入落子状态
         position.action = ACTION_PLACE;
@@ -636,7 +636,7 @@ bool Game::choose(index_t index)
 
 bool Game::choose(int r, int s)
 {
-    return choose(Board::polarToIndex(r, s));
+    return choose(Board::polarToSquare(r, s));
 }
 
 bool Game::giveup(player_t loser)
@@ -746,15 +746,15 @@ bool Game::command(const char *cmd)
 bool Game::command(int m)
 {
     if (m < 0) {
-        return capture(-m);
+        return capture(static_cast<square_t>(-m));
     }
 
     if (m & 0x1f00) {
-        if (choose(m >> 8)) {
-            return place(m & 0x00ff);
+        if (choose(static_cast<square_t>(m >> 8))) {
+            return place(static_cast<square_t>(m & 0x00ff));
         }
     } else {
-        return place(m & 0x00ff);
+        return place(static_cast<square_t>(m & 0x00ff));
     }
 
     return false;
@@ -910,7 +910,7 @@ int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobid
     int diff = 0;
     int n = 0;
 
-    for (int i = Board::INDEX_BEGIN; i < Board::INDEX_END; i++) {
+    for (square_t i = SQ_BEGIN; i < SQ_END; i = static_cast<square_t>(i + 1)) {
         n = position.board.getSurroundedEmptyLocationCount(turn, nPiecesOnBoard, i, includeFobidden);
 
         if (locations[i] & 0x10) {
@@ -927,15 +927,15 @@ int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobid
 
 void Game::cleanForbiddenLocations()
 {
-    index_t index = 0;
+    square_t square = SQ_0;
 
     for (int r = 1; r <= Board::N_RINGS; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
-            index = r * Board::N_SEATS + s;
+            square = static_cast<square_t>(r * Board::N_SEATS + s);
 
-            if (boardLocations[index] == '\x0f') {
-                revertHash(index);
-                boardLocations[index] = '\x00';
+            if (boardLocations[square] == '\x0f') {
+                revertHash(square);
+                boardLocations[square] = '\x00';
             }
         }
     }
@@ -1043,22 +1043,22 @@ hash_t Game::getHash()
     return position.hash;
 }
 
-hash_t Game::updateHash(index_t index)
+hash_t Game::updateHash(square_t square)
 {
-    // PieceType is boardLocations[index] 
+    // PieceType is boardLocations[square] 
 
     // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
-    int pieceType = (boardLocations[index] & 0x30) >> 4;
+    int pieceType = (boardLocations[square] & 0x30) >> 4;
 
     // 清除或者放置棋子
-    position.hash ^= zobrist[index][pieceType];
+    position.hash ^= zobrist[square][pieceType];
 
     return position.hash;
 }
 
-hash_t Game::revertHash(index_t index)
+hash_t Game::revertHash(square_t square)
 {
-    return updateHash(index);
+    return updateHash(square);
 }
 
 hash_t Game::updateHashMisc()

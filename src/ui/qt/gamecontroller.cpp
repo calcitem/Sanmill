@@ -402,8 +402,8 @@ void GameController::flip()
         ai[2]->wait();
     }
 
-    game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentIndex);
-    game.position.board.rotate(180, game.cmdlist, game.cmdline, game.move, game.currentIndex);
+    game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
+    game.position.board.rotate(180, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -442,7 +442,7 @@ void GameController::mirror()
         ai[2]->wait();
     }
 
-    game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentIndex);
+    game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -484,7 +484,7 @@ void GameController::turnRight()
         ai[2]->wait();
     }
 
-    game.position.board.rotate(-90, game.cmdlist, game.cmdline, game.move, game.currentIndex);
+    game.position.board.rotate(-90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -524,7 +524,7 @@ void GameController::turnLeft()
         ai[2]->wait();
     }
 
-    game.position.board.rotate(90, game.cmdlist, game.cmdline, game.move, game.currentIndex);
+    game.position.board.rotate(90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -1005,7 +1005,7 @@ bool GameController::updateScence(Game &g)
         int j;
 
         // 遍历棋盘，查找并放置棋盘上的棋子
-        for (j = Board::INDEX_BEGIN; j < Board::INDEX_END; j++) {
+        for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
                 if (piece->pos() != pos) {
@@ -1063,7 +1063,7 @@ bool GameController::updateScence(Game &g)
 
     // 添加摆棋阶段禁子点
     if (rule.hasForbiddenLocations && g.getPhase() == PHASE_PLACING) {
-        for (int j = Board::INDEX_BEGIN; j < Board::INDEX_END; j++) {
+        for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == 0x0F) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
                 if (nTotalPieces < pieceList.size()) {
@@ -1089,9 +1089,9 @@ bool GameController::updateScence(Game &g)
     }
 
     // 选中当前棋子
-    int ipos = g.getCurrentIndex();
+    int ipos = g.getCurrentSquare();
     if (ipos) {
-        key = board[g.getCurrentIndex()];
+        key = board[g.getCurrentSquare()];
         ipos = key & 0x10 ? (key - 0x11) * 2 : (key - 0x21) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(ipos);
