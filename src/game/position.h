@@ -111,7 +111,7 @@ public:
     }
 
     // 获取当前棋子位置点
-    int getCurrentIndex() const
+    index_t getCurrentIndex() const
     {
         return currentIndex;
     }
@@ -242,14 +242,14 @@ public:
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool command(int move);
-    bool choose(int index);
-    bool place(int index, int8_t cp = 0);
-    bool capture(int index, int8_t cp = 0);
+    bool choose(index_t index);
+    bool place(index_t index, int8_t cp = 0);
+    bool capture(index_t index, int8_t cp = 0);
 
     // hash 相关
     hash_t getHash();
-    hash_t revertHash(int index);
-    hash_t updateHash(int index);
+    hash_t revertHash(index_t index);
+    hash_t updateHash(index_t index);
     hash_t updateHashMisc();
 
 public: /* TODO: move to private */
@@ -288,7 +288,7 @@ public: /* TODO: move to private */
     move_t move{};
 
     // 选中的棋子在board中的位置
-    int currentIndex{};
+    index_t currentIndex {};
 
 private:
     // 棋局哈希值

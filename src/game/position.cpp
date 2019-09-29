@@ -85,7 +85,7 @@ int Game::countPiecesOnBoard()
 
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
-            int index = r * Board::N_SEATS + s;
+            index_t index = r * Board::N_SEATS + s;
             if (boardLocations[index] & 0x10) {
                 position.nPiecesOnBoard[1]++;
             } else if (boardLocations[index] & 0x20) {
@@ -279,7 +279,7 @@ bool Game::start()
     }
 }
 
-bool Game::place(int index, int8_t updateCmdlist)
+bool Game::place(index_t index, int8_t updateCmdlist)
 {
     // 如果局面为“结局”，返回false
     if (position.phase == PHASE_GAMEOVER)
@@ -454,7 +454,7 @@ out:
 bool Game::_place(int r, int s)
 {
     // 转换为 index
-    int index = Board::polarToIndex(r, s);
+    index_t index = Board::polarToIndex(r, s);
 
     return place(index, true);
 }
@@ -462,12 +462,12 @@ bool Game::_place(int r, int s)
 bool Game::_capture(int r, int s)
 {
     // 转换为 index
-    int index = Board::polarToIndex(r, s);
+    index_t index = Board::polarToIndex(r, s);
 
     return capture(index, 1);
 }
 
-bool Game::capture(int index, int8_t updateCmdlist)
+bool Game::capture(index_t index, int8_t updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (position.phase & PHASE_NOTPLAYING)
@@ -605,7 +605,7 @@ out:
     return true;
 }
 
-bool Game::choose(int index)
+bool Game::choose(index_t index)
 {
     // 如果局面不是"中局”，返回false
     if (position.phase != PHASE_MOVING)
@@ -927,7 +927,7 @@ int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobid
 
 void Game::cleanForbiddenLocations()
 {
-    int index = 0;
+    index_t index = 0;
 
     for (int r = 1; r <= Board::N_RINGS; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
@@ -1043,7 +1043,7 @@ hash_t Game::getHash()
     return position.hash;
 }
 
-hash_t Game::updateHash(int index)
+hash_t Game::updateHash(index_t index)
 {
     // PieceType is boardLocations[index] 
 
@@ -1056,7 +1056,7 @@ hash_t Game::updateHash(int index)
     return position.hash;
 }
 
-hash_t Game::revertHash(int index)
+hash_t Game::revertHash(index_t index)
 {
     return updateHash(index);
 }

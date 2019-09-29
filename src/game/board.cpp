@@ -192,7 +192,7 @@ void Board::createMillTable()
 #endif /* DEBUG_MODE */
 }
 
-void Board::indexToPolar(const int index, int &r, int &s)
+void Board::indexToPolar(const index_t index, int &r, int &s)
 {
     //r = index / N_SEATS;
     //s = index % N_SEATS + 1;
@@ -200,7 +200,7 @@ void Board::indexToPolar(const int index, int &r, int &s)
     s = (index & 0x07) + 1;
 }
 
-int Board::polarToIndex(int r, int s)
+index_t Board::polarToIndex(int r, int s)
 {
     if (r < 1 || r > N_RINGS || s < 1 || s > N_SEATS) {
         return 0;
@@ -209,7 +209,7 @@ int Board::polarToIndex(int r, int s)
     return r * N_SEATS + s - 1;
 }
 
-int Board::inHowManyMills(int index)
+int Board::inHowManyMills(index_t index)
 {
     int n = 0;
     int index_1, index_2;
@@ -225,7 +225,7 @@ int Board::inHowManyMills(int index)
     return n;
 }
 
-int Board::addMills(int index)
+int Board::addMills(index_t index)
 {
     // 成三用一个64位整数了，规则如下
     // 0x   00     00     00    00    00    00    00    00
@@ -316,13 +316,13 @@ bool Board::isAllInMills(player_t player)
 
 // 判断玩家的棋子周围有几个空位
 int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
-                                           int index, bool includeFobidden)
+                                           index_t index, bool includeFobidden)
 {
     int count = 0;
 
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
-        int moveIndex;
+        index_t moveIndex;
         for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
             moveIndex = MoveList::moveTable[index][d];
             if (moveIndex) {
@@ -338,12 +338,13 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
 }
 
 // 判断玩家的棋子是否被围
-bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], int index)
+bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], index_t index)
 {
     // 判断index处的棋子是否被“闷”
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
-        int i, moveIndex;
+        int i;
+        index_t moveIndex;
         for (i = 0; i < 4; i++) {
             moveIndex = MoveList::moveTable[index][i];
             if (moveIndex && !locations[moveIndex])
@@ -370,7 +371,7 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
     }
 
     // 查询整个棋盘
-    int moveIndex;
+    index_t moveIndex;
     for (int i = 1; i < N_SEATS * (N_RINGS + 1); i++) {
         if (!(ch & locations[i])) {
             continue;
@@ -397,7 +398,7 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 #if 0
 player_t Board::getWhosPiece(int r, int s)
 {
-    int index = polarToIndex(r, s);
+    index_t index = polarToIndex(r, s);
 
     if (locations[index] & PLAYER_1)
         return PLAYER_1;
@@ -436,7 +437,7 @@ bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s
 }
 
 // 获取当前棋子
-bool Board::getCurrentPiece(player_t &player, int &number, int index)
+bool Board::getCurrentPiece(player_t &player, int &number, index_t index)
 {
     if (!onBoard[index])
         return false;
@@ -457,7 +458,7 @@ bool Board::getCurrentPiece(player_t &player, int &number, int index)
 }
 #endif
 
-bool Board::isStar(int index)
+bool Board::isStar(index_t index)
 {
     return (index == 17 ||
             index == 19 ||
@@ -465,7 +466,7 @@ bool Board::isStar(int index)
             index == 23);
 }
 
-void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, int index, bool cmdChange /*= true*/)
+void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, index_t index, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -577,7 +578,7 @@ void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, int ind
     }
 }
 
-void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, int index, bool cmdChange /*= true*/)
+void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, index_t index, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -742,7 +743,7 @@ void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, int index
     }
 }
 
-void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, int index, bool cmdChange /*= true*/)
+void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, index_t index, bool cmdChange /*= true*/)
 {
     // 将degrees转化为0~359之间的数
     degrees = degrees % 360;

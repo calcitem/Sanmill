@@ -57,7 +57,7 @@ public:
     static const int onBoard[EXPANDED_BOARD_SIZE];
 
     // 判断位置点是否为星位 (星位是经常会先占的位置)
-    static bool isStar(int index);
+    static bool isStar(index_t index);
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
@@ -67,25 +67,25 @@ public:
     void createMillTable();
 
     // 局面左右镜像
-    void mirror(list <string> &cmdlist, char *cmdline, int32_t move_, int currentPos, bool cmdChange = true);
+    void mirror(list <string> &cmdlist, char *cmdline, int32_t move_, index_t index, bool cmdChange = true);
 
     // 局面内外翻转
-    void turn(list <string> &cmdlist, char *cmdline, int32_t move_, int currentPos, bool cmdChange = true);
+    void turn(list <string> &cmdlist, char *cmdline, int32_t move_, index_t index, bool cmdChange = true);
 
     // 局面逆时针旋转
-    void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, int currentPos, bool cmdChange = true);
+    void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, index_t index, bool cmdChange = true);
 
     // 判断棋盘 index 处的棋子处于几个“三连”中
-    int inHowManyMills(int index);
+    int inHowManyMills(index_t index);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], int index, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], index_t index, bool includeFobidden);
 
     // 判断玩家的棋子是否被围
-    bool isSurrounded(int sideId, int nPiecesOnBoard[], int index);
+    bool isSurrounded(int sideId, int nPiecesOnBoard[], index_t index);
 
     // 判断玩家的棋子是否全部被围
     bool isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch);
@@ -93,7 +93,7 @@ public:
     bool isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t ply);
 
     // 三连加入列表
-    int addMills(int index);
+    int addMills(index_t index);
 
 #if 0
     // 获取位置点棋子的归属人
@@ -106,10 +106,10 @@ public:
     bool getCurrentPiece(player_t &player, int &number, int currentPos);
 
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
-    static void indexToPolar(int index, int &r, int &s);
+    static void indexToPolar(index_t index, int &r, int &s);
 
     // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
-    static int polarToIndex(int r, int s);
+    static index_t polarToIndex(int r, int s);
 
     static void printBoard();
 

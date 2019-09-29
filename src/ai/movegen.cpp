@@ -31,7 +31,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                                   move_t bestMove)
 {
     const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
-    int index = 0;
+    index_t index = 0;
     size_t newCapacity = 24;
 
     // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
@@ -96,7 +96,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
 
         // 对于移子阶段
         if (tempGame.position.phase & PHASE_MOVING) {
-            int newIndex, oldIndex;
+            index_t newIndex, oldIndex;
 
             // 尽量走理论上较差的位置的棋子
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
