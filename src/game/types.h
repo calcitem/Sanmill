@@ -40,6 +40,11 @@ enum move_t : int32_t
     //MOVE_NULL = 65
 };
 
+enum color_t
+{
+    BLACK, WHITE, COLOR_COUNT = 2
+};
+
 enum square_t : int32_t
 {
     SQ_0 = 0, SQ_1 = 1, SQ_2 = 2, SQ_3 = 3, SQ_4 = 4, SQ_5 = 5, SQ_6 = 6, SQ_7 = 7,
@@ -62,6 +67,18 @@ enum direction_t
     DIRECTION_OUTWARD = 3,         // 向外
     DIRECTION_FLY = 4,             // 飞子
     DIRECTIONS_COUNT = 4               // 移动方向数
+};
+
+// 列
+enum file_t : int
+{
+    FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_COUNT
+};
+
+// 行
+enum rank_t : int
+{
+    RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_COUNT
 };
 
 // 横直斜3个方向，禁止修改!
