@@ -363,17 +363,40 @@ int AIAlgorithm::search(depth_t depth)
 
 #ifdef IDS_SUPPORT
     // 深化迭代
-    for (depth_t i = 2; i < d; i += 1) {
+    value_t alpha = -VALUE_INFINITE;
+    value_t beta = VALUE_INFINITE;
+
+    depth_t depthBegin = 2;
+
+    for (depth_t i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
         TranspositionTable::clear();   // 每次走子前清空哈希表
 #endif
 #endif
-        search(i, -VALUE_INFINITE, VALUE_INFINITE, root);
+        value = search(i, alpha, beta, root);
+
+        loggerDebug("IDS [%d]: %d\n", i, value);
+
+#if 0
+        if (value <= alpha) {
+            alpha = -VALUE_INFINITE;
+            beta = value + 1;   // X
+            continue;
+        }
+        if (value >= beta) {
+            beta = VALUE_INFINITE;
+            alpha = value - 1;
+            continue;
+        }
+#endif
+
+        alpha = value - VALUE_IDS_WINDOW;
+        beta = value + VALUE_IDS_WINDOW;
     }
 
     timeEnd = chrono::steady_clock::now();
-    loggerDebug("IDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+    loggerDebug("\nIDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif /* IDS_SUPPORT */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -382,7 +405,10 @@ int AIAlgorithm::search(depth_t depth)
 #endif
 #endif
 
-    value = search(d, value_t(-VALUE_INFINITE) /* alpha */, VALUE_INFINITE /* beta */, root);
+    alpha = value - VALUE_WINDOW;
+    beta = value + VALUE_WINDOW;
+
+    value = search(d, alpha, beta, root);
 
     timeEnd = chrono::steady_clock::now();
     loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
