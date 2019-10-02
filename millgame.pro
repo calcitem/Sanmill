@@ -60,6 +60,7 @@ HEADERS  += \
     src/base/MemoryPool.h \
     src/base/MemoryPool.tcc \
     src/base/misc.h \
+    src/base/stack.h \
     src/base/stackalloc.h \
     src/base/thread.h \
     src/ai/search.h \

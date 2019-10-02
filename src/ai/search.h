@@ -28,8 +28,12 @@
 //#ifdef MEMORY_POOL
 //#include "StackAlloc.h"
 //#else
+#ifdef USE_STD_STACK
 #include <stack>
 #include <vector>
+#else
+#include "stack.h"
+#endif // USE_STD_STACK
 //#endif
 #include <mutex>
 #include <string>
@@ -223,11 +227,11 @@ private:
 #endif
 
     // 局面数据栈
-//#ifdef MEMORY_POOL
-//    StackAlloc<MillGame::Position, MemoryPool<MillGame::Position> > positionStack;
-//#else
+#ifdef USE_STD_STACK
     stack<Position, vector<Position> > positionStack;
-//#endif
+#else
+    Stack<Position> positionStack;
+#endif /* USE_STD_STACK */
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};

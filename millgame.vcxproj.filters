@@ -126,6 +126,9 @@
     <ClInclude Include="src\game\location.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="src\base\stack.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">

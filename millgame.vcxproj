@@ -451,6 +451,7 @@
     <ClInclude Include="src\base\HashNode.h" />
     <ClInclude Include="src\base\MemoryPool.h" />
     <ClInclude Include="src\base\misc.h" />
+    <ClInclude Include="src\base\stack.h" />
     <ClInclude Include="src\base\stackalloc.h" />
     <QtMoc Include="src\base\thread.h" />
     <ClInclude Include="src\base\zobrist.h" />

@@ -72,6 +72,8 @@
 
 #define MEMORY_POOL
 
+//#define USE_STD_STACK
+
 //#define RAPID_GAME
 
 #define ENDGAME_LEARNING
