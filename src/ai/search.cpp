@@ -405,8 +405,9 @@ int AIAlgorithm::search(depth_t depth)
 #endif
 #endif
 
-    alpha = value - VALUE_WINDOW;
-    beta = value + VALUE_WINDOW;
+    value_t window = game.getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
+    alpha = value - window;
+    beta = value + window;
 
     value = search(d, alpha, beta, root);
 

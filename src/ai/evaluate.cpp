@@ -65,7 +65,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
         case ACTION_CAPTURE:
             nPiecesNeedRemove = (position->sideToMove == PLAYER_1) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
-            value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE;
+            value += nPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
 #endif
@@ -96,7 +96,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
         case ACTION_CAPTURE:
             nPiecesNeedRemove = (position->sideToMove == PLAYER_1) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
-            value += nPiecesNeedRemove * VALUE_EACH_PIECE_NEEDREMOVE_2;
+            value += nPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
             node->nPiecesNeedRemove = nPiecesNeedRemove;
 #endif
