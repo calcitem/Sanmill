@@ -32,6 +32,9 @@ public:
         depth_t depth;
         enum HashType type;
         move_t bestMove;
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+        uint8_t age;
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     };
 
     // 查找哈希表
@@ -48,6 +51,10 @@ public:
 using TT = TranspositionTable;
 
 extern HashMap<hash_t, TT::HashValue> transpositionTable;
+
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+extern uint8_t transpositionTableAge;
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
 #endif  // TRANSPOSITION_TABLE_ENABLE
 

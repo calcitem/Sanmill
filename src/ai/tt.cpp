@@ -4,6 +4,10 @@
 static constexpr int TRANSPOSITION_TABLE_SIZE = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
 HashMap<hash_t, TT::HashValue> transpositionTable(TRANSPOSITION_TABLE_SIZE);
 
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+uint8_t transpositionTableAge;
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
+
 value_t TT::probeHash(hash_t hash,
                                  depth_t depth, value_t alpha, value_t beta,
                                  move_t &bestMove, HashType &type)
@@ -13,6 +17,13 @@ value_t TT::probeHash(hash_t hash,
     if (!transpositionTable.find(hash, hashValue)) {
         return VALUE_UNKNOWN;
     }
+
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+    if (hashValue.age != transpositionTableAge)
+    {
+        return VALUE_UNKNOWN;
+    }
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
     if (depth > hashValue.depth) {
         goto out;
@@ -74,18 +85,29 @@ int TT::recordHash(value_t value, depth_t depth, TT::HashType type, hash_t hash,
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
 
     //hashMapMutex.lock();
-    HashValue hashValue{};
+    HashValue hashValue {};
 
-    if (findHash(hash, hashValue) &&
-        hashValue.type != hashfEMPTY &&
-        hashValue.depth > depth) {
-        return -1;
+    if (findHash(hash, hashValue)) {
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+        if (hashValue.age == transpositionTableAge) {
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
+            if (hashValue.type != hashfEMPTY &&
+                hashValue.depth > depth) {
+                return -1;
+            }
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+        }
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     }
 
     hashValue.value = value;
     hashValue.depth = depth;
     hashValue.type = type;
     hashValue.bestMove = bestMove;
+
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+    hashValue.age = transpositionTableAge;
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
     transpositionTable.insert(hash, hashValue);
 
@@ -96,7 +118,18 @@ int TT::recordHash(value_t value, depth_t depth, TT::HashType type, hash_t hash,
 
 void TT::clear()
 {
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+    if (transpositionTableAge == UINT8_MAX)
+    {
+        loggerDebug("Clean TT\n");
+        transpositionTable.clear();
+        transpositionTableAge = 0;
+    } else {
+        transpositionTableAge++;
+    }
+#else
     transpositionTable.clear();
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 }
 
 #endif /* TRANSPOSITION_TABLE_ENABLE */
