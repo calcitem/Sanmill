@@ -110,3 +110,7 @@ QMAKE_CXXFLAGS += -std=c++0x
 *msvc* {
     QMAKE_CXXFLAGS += /MP
 }
+
+android {
+    QMAKE_LFLAGS += -nostdlib++
+}
