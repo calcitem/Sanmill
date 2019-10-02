@@ -2,9 +2,9 @@
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 static constexpr int TRANSPOSITION_TABLE_SIZE = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
-HashMap<hash_t, TranspositionTable::HashValue> transpositionTable(TRANSPOSITION_TABLE_SIZE);
+HashMap<hash_t, TT::HashValue> transpositionTable(TRANSPOSITION_TABLE_SIZE);
 
-value_t TranspositionTable::probeHash(hash_t hash,
+value_t TT::probeHash(hash_t hash,
                                  depth_t depth, value_t alpha, value_t beta,
                                  move_t &bestMove, HashType &type)
 {
@@ -39,7 +39,7 @@ out:
     return VALUE_UNKNOWN;
 }
 
-bool TranspositionTable::findHash(hash_t hash, TranspositionTable::HashValue &hashValue)
+bool TT::findHash(hash_t hash, TT::HashValue &hashValue)
 {
     return transpositionTable.find(hash, hashValue);
 
@@ -68,7 +68,7 @@ bool TranspositionTable::findHash(hash_t hash, TranspositionTable::HashValue &ha
 #endif
 }
 
-int TranspositionTable::recordHash(value_t value, depth_t depth, TranspositionTable::HashType type, hash_t hash, move_t bestMove)
+int TT::recordHash(value_t value, depth_t depth, TT::HashType type, hash_t hash, move_t bestMove)
 {
     // 同样深度或更深时替换
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
@@ -94,7 +94,7 @@ int TranspositionTable::recordHash(value_t value, depth_t depth, TranspositionTa
     return 0;
 }
 
-void TranspositionTable::clear()
+void TT::clear()
 {
     transpositionTable.clear();
 }

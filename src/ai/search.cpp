@@ -289,7 +289,7 @@ void AIAlgorithm::setGame(const Game &g)
     // 如果规则改变，重建hashmap
     if (strcmp(rule.name, rule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-        TranspositionTable::clear();
+        TT::clear();
 #endif // TRANSPOSITION_TABLE_ENABLE
 
 #ifdef ENDGAME_LEARNING
@@ -371,7 +371,7 @@ int AIAlgorithm::search(depth_t depth)
     for (depth_t i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-        TranspositionTable::clear();   // 每次走子前清空哈希表
+        TT::clear();   // 每次走子前清空哈希表
 #endif
 #endif
         value = search(i, alpha, beta, root);
@@ -401,7 +401,7 @@ int AIAlgorithm::search(depth_t depth)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();  // 每次走子前清空哈希表
+    TT::clear();  // 每次走子前清空哈希表
 #endif
 #endif
 
@@ -463,15 +463,15 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 哈希类型
-    enum TranspositionTable::HashType hashf = TranspositionTable::hashfALPHA;
+    enum TT::HashType hashf = TT::hashfALPHA;
     
 #ifdef DEBUG_AB_TREE
     node->hash = hash;
 #endif
 
-    TranspositionTable::HashType type = TranspositionTable::hashfEMPTY;
+    TT::HashType type = TT::hashfEMPTY;
 
-    value_t probeVal = TranspositionTable::probeHash(hash, depth, alpha, beta, bestMove, type);
+    value_t probeVal = TT::probeHash(hash, depth, alpha, beta, bestMove, type);
 
     if (probeVal != INT16_MIN /* TODO: valUNKOWN */  && node != root) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
@@ -483,7 +483,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         node->value = probeVal;
 
 #ifdef SORT_CONSIDER_PRUNED
-        if (type != TranspositionTable::hashfEXACT && type != TranspositionTable::hashfEMPTY) {
+        if (type != TT::hashfEXACT && type != TT::hashfEMPTY) {
             node->pruned = true;    // TODO: 是否有用?
         }
 #endif
@@ -535,7 +535,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TranspositionTable::recordHash(node->value, depth, TranspositionTable::hashfEXACT, hash, MOVE_NONE);
+        TT::recordHash(node->value, depth, TT::hashfEXACT, hash, MOVE_NONE);
 #endif
 
         return node->value;
@@ -559,7 +559,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TranspositionTable::recordHash(node->value, depth, TranspositionTable::hashfEXACT, hash, MOVE_NONE);
+        TT::recordHash(node->value, depth, TT::hashfEXACT, hash, MOVE_NONE);
 #endif
 
         return node->value;
@@ -612,7 +612,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
             if (value > alpha) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-                hashf = TranspositionTable::hashfEXACT;
+                hashf = TT::hashfEXACT;
 #endif
                 alpha = value;
             }
@@ -682,7 +682,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值
-    TranspositionTable::recordHash(node->value, depth, hashf, hash, node->children[0]->move);
+    TT::recordHash(node->value, depth, hashf, hash, node->children[0]->move);
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // 返回

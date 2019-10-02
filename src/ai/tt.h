@@ -45,7 +45,9 @@ public:
     static void clear();
 };
 
-extern HashMap<hash_t, TranspositionTable::HashValue> transpositionTable;
+using TT = TranspositionTable;
+
+extern HashMap<hash_t, TT::HashValue> transpositionTable;
 
 #endif  // TRANSPOSITION_TABLE_ENABLE
 

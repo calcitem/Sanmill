@@ -116,7 +116,7 @@ public:
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 清空哈希表
-    void clearTranspositionTable();
+    void clearTT();
 #endif
 
     // 比较函数
