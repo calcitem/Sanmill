@@ -573,11 +573,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     minMax = tempGame.position.sideToMove == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
-        // 棋局入栈保存，以便后续撤销着法
-        positionStack.push(tempGame.position);
-
-        // 执行着法
-        tempGame.command(child->move);
+        doMove(child->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
         // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
@@ -597,9 +593,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         // 递归 Alpha-Beta 剪枝
         value = search(depth - 1 + epsilon, alpha, beta, child);
 
-        // 棋局弹出栈，撤销着法
-        tempGame.position = positionStack.top();
-        positionStack.pop();
+        undoMove();
 
         if (tempGame.position.sideToMove == PLAYER_1) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
@@ -687,6 +681,22 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 返回
     return node->value;
+}
+
+void AIAlgorithm::doMove(move_t move)
+{
+    // 棋局入栈保存，以便后续撤销着法
+    positionStack.push(tempGame.position);
+
+    // 执行着法
+    tempGame.command(move);
+}
+
+void AIAlgorithm::undoMove()
+{
+    // 棋局弹出栈，撤销着法
+    tempGame.position = positionStack.top();
+    positionStack.pop();
 }
 
 const char* AIAlgorithm::bestMove()

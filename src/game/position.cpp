@@ -743,7 +743,7 @@ bool Game::command(const char *cmd)
     return false;
 }
 
-bool Game::command(int m)
+bool Game::command(move_t m)
 {
     if (m < 0) {
         return capture(static_cast<square_t>(-m));

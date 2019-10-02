@@ -114,6 +114,12 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
+    // 执行着法
+    void doMove(move_t move);
+
+    // 撤销着法
+    void undoMove();
+
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 清空哈希表
     void clearTT();
