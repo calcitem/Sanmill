@@ -116,16 +116,37 @@ int Game::countPiecesInHand()
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool Game::setPosition(const struct Rule *newRule)
+bool Game::setPosition(const struct Rule *newRule,
+                       step_t initialStep,
+                       phase_t phase, player_t side, action_t action,
+                       const char *locations,
+                       int nPiecesNeedRemove)
 {
     // 根据规则
     rule = *newRule;
 
     // 设置棋局数据
 
+    // 设置步数
+    this->currentStep = initialStep;
+    this->moveStep = initialStep;
+
+    // 局面阶段标识
+    position.phase = phase;
+
+    // 轮流状态标识
+    setSideToMove(side);
+
+    // 动作状态标识
+    position.action = action;
+
     // 当前棋局（3×8）
-    memset(boardLocations, 0, sizeof(position.board.locations));
-    position.hash = 0;
+    if (locations == nullptr) {
+        memset(boardLocations, 0, sizeof(position.board.locations));
+        position.hash = 0;
+    } else {
+        memcpy(boardLocations, locations, sizeof(position.board.locations));
+    }
 
     if (countPiecesOnBoard() == -1) {
         return false;
@@ -134,7 +155,13 @@ bool Game::setPosition(const struct Rule *newRule)
     countPiecesInHand();
 
     // 设置去子状态时的剩余尚待去除子数
-    position.nPiecesNeedRemove = 0;
+    if (action == ACTION_CAPTURE) {
+        if (0 <= nPiecesNeedRemove && nPiecesNeedRemove < 3) {
+            position.nPiecesNeedRemove = nPiecesNeedRemove;
+        }
+    } else {
+        position.nPiecesNeedRemove = 0;
+    }
 
     // 清空成三记录
     if (!position.board.millList.empty()) {
