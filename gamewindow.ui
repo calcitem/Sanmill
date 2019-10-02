@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>491</width>
-    <height>432</height>
+    <width>685</width>
+    <height>739</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -226,8 +226,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>491</width>
-     <height>22</height>
+     <width>685</width>
+     <height>48</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -589,7 +589,7 @@
             <bool>false</bool>
            </property>
            <property name="digitCount">
-            <number>4</number>
+            <number>5</number>
            </property>
            <property name="value" stdset="0">
             <double>0.000000000000000</double>
@@ -611,7 +611,7 @@
             <enum>QFrame::Raised</enum>
            </property>
            <property name="digitCount">
-            <number>4</number>
+            <number>5</number>
            </property>
            <property name="mode">
             <enum>QLCDNumber::Dec</enum>
@@ -630,7 +630,7 @@
             <bool>false</bool>
            </property>
            <property name="digitCount">
-            <number>4</number>
+            <number>5</number>
            </property>
           </widget>
          </item>
