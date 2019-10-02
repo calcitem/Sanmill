@@ -63,7 +63,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
             // 如果形成去子状态，每有一个可去的子，算100分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (position->sideToMove == PLAYER_1) ?
+            nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
@@ -94,7 +94,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
         // 如果形成去子状态，每有一个可去的子，算128分
         case ACTION_CAPTURE:
-            nPiecesNeedRemove = (position->sideToMove == PLAYER_1) ?
+            nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
 #ifdef DEBUG_AB_TREE
@@ -124,7 +124,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
             tempGame.position.board.isAllSurrounded(position->sideToMove, position->nPiecesOnBoard, position->sideToMove) &&
             rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-            value_t delta = position->sideToMove == PLAYER_1 ? -VALUE_WIN : VALUE_WIN;
+            value_t delta = position->sideToMove == PLAYER_BLACK ? -VALUE_WIN : VALUE_WIN;
             value += delta;
         }
 

@@ -97,8 +97,8 @@ enum line_t
 enum piece_t : uint16_t
 {
     PIECE_EMPTY = 0,   // 没有棋子
-    PIECE_PLAYER_1 = 1,    // 先手的子
-    PIECE_PLAYER_2 = 2,     // 后手的子
+    PIECE_PLAYER_BLACK = 1,    // 先手的子
+    PIECE_PLAYER_WHITE = 2,     // 后手的子
     PIECE_FORBIDDEN = 3,    // 禁点
     PIECE_TYPE_COUNT = 4
 };
@@ -108,8 +108,8 @@ enum piece_t : uint16_t
 // 玩家标识, 轮流状态, 胜负标识
 enum player_t : uint8_t
 {
-    PLAYER_1 = 0x1 << PLAYER_SHIFT,   // 玩家1
-    PLAYER_2 = 0x2 << PLAYER_SHIFT,   // 玩家2
+    PLAYER_BLACK = 0x1 << PLAYER_SHIFT,   // 玩家1
+    PLAYER_WHITE = 0x2 << PLAYER_SHIFT,   // 玩家2
     PLAYER_DRAW = 0x4 << PLAYER_SHIFT,      // 双方和棋
     PLAYER_NOBODY = 0x8 << PLAYER_SHIFT     // 胜负未分
 };

@@ -45,12 +45,12 @@ public:
 
     inline static int toId(player_t player)
     {
-        return player == PLAYER_1 ? 1 : 2;
+        return player == PLAYER_BLACK ? 1 : 2;
     }
 
     inline static player_t idToPlayer(int id)
     {
-        return id == 1? PLAYER_1 : PLAYER_2;
+        return id == 1? PLAYER_BLACK : PLAYER_WHITE;
     }
 
     inline static char idToCh(int id)
@@ -69,7 +69,7 @@ public:
 
     inline static player_t getOpponent(player_t player)
     {
-        return player == PLAYER_1 ? PLAYER_2 : PLAYER_1;
+        return player == PLAYER_BLACK ? PLAYER_WHITE : PLAYER_BLACK;
     }
 
     inline static int getOpponentById(int id)

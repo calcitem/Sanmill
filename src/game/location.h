@@ -51,8 +51,8 @@ public:
 
 private:
     static const location_t FLAG_FORBIDDEN = 0x0F;
-    static const location_t FLAG_PLAYER_1 = 0x10;
-    static const location_t FLAG_PLAYER_2 = 0x20;
+    static const location_t FLAG_PLAYER_BLACK = 0x10;
+    static const location_t FLAG_PLAYER_WHITE = 0x20;
 };
 
 #endif /* LOCATION_H */

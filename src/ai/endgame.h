@@ -37,8 +37,8 @@ using namespace CTSL;
 enum endgame_t : uint8_t
 {
     ENDGAME_NONE,
-    ENDGAME_PLAYER_1_WIN,
-    ENDGAME_PLAYER_2_WIN,
+    ENDGAME_PLAYER_BLACK_WIN,
+    ENDGAME_PLAYER_WHITE_WIN,
     ENDGAME_DRAW,
 };
 

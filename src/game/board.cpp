@@ -400,11 +400,11 @@ player_t Board::getWhosPiece(int r, int s)
 {
     square_t square = polarToSquare(r, s);
 
-    if (locations[square] & PLAYER_1)
-        return PLAYER_1;
+    if (locations[square] & PLAYER_BLACK)
+        return PLAYER_BLACK;
 
-    if (locations[square] & PLAYER_2)
-        return PLAYER_2;
+    if (locations[square] & PLAYER_WHITE)
+        return PLAYER_WHITE;
 
     return PLAYER_NOBODY;
 }
@@ -413,9 +413,9 @@ bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s
 {
     int piece;
 
-    if (player == PLAYER_1) {
+    if (player == PLAYER_BLACK) {
         piece = 0x10;
-    } else if (player == PLAYER_2) {
+    } else if (player == PLAYER_WHITE) {
         piece = 0x20;
     } else {
         return false;
@@ -445,10 +445,10 @@ bool Board::getCurrentPiece(player_t &player, int &number, square_t square)
     int p = locations[square];
 
     if (p & 0x10) {
-        player = PLAYER_1;
+        player = PLAYER_BLACK;
         number = p - 0x10;
     } else if (p & 0x20) {
-        player = PLAYER_2;
+        player = PLAYER_WHITE;
         number = p - 0x20;
     } else {
         return false;

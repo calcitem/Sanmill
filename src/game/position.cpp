@@ -219,7 +219,7 @@ bool Game::reset()
     position.phase = PHASE_READY;
 
     // 设置轮流状态
-    setSideToMove(PLAYER_1);
+    setSideToMove(PLAYER_BLACK);
 
     // 动作状态标识
     position.action = ACTION_PLACE;
@@ -375,9 +375,9 @@ bool Game::place(square_t square, int8_t updateCmdlist)
 
                 // 设置轮到谁走
                 if (rule.isDefenderMoveFirst) {
-                    setSideToMove(PLAYER_2);
+                    setSideToMove(PLAYER_WHITE);
                 } else {
-                    setSideToMove(PLAYER_1);
+                    setSideToMove(PLAYER_BLACK);
                 }
 
                 // 再决胜负
@@ -586,9 +586,9 @@ bool Game::capture(square_t square, int8_t updateCmdlist)
 
             // 设置轮到谁走
             if (rule.isDefenderMoveFirst) {
-                setSideToMove(PLAYER_2);
+                setSideToMove(PLAYER_WHITE);
             } else {
-                setSideToMove(PLAYER_1);
+                setSideToMove(PLAYER_BLACK);
             }
 
             // 再决胜负
@@ -880,7 +880,7 @@ bool Game::win(bool forceDraw)
         position.phase = PHASE_GAMEOVER;
 
         if (rule.isStartingPlayerLoseWhenBoardFull) {
-            winner = PLAYER_2;
+            winner = PLAYER_WHITE;
             sprintf(cmdline, "Player2 win!");
         } else {
             winner = PLAYER_DRAW;  
@@ -932,8 +932,8 @@ bool Game::win(bool forceDraw)
 int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
 {
     location_t *locations = boardLocations;
-    int mobility1 = 0;
-    int mobility2 = 0;
+    int mobilityBlack = 0;
+    int mobilityWhite = 0;
     int diff = 0;
     int n = 0;
 
@@ -941,13 +941,13 @@ int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobid
         n = position.board.getSurroundedEmptyLocationCount(turn, nPiecesOnBoard, i, includeFobidden);
 
         if (locations[i] & 0x10) {
-            mobility1 += n;
+            mobilityBlack += n;
         } else if (locations[i] & 0x20) {
-            mobility2 += n;
+            mobilityWhite += n;
         }
     }
 
-    diff = mobility1 - mobility2;
+    diff = mobilityBlack - mobilityWhite;
 
     return diff;
 }
@@ -1095,7 +1095,7 @@ hash_t Game::updateHashMisc()
 
     // 置位
 
-    if (position.sideToMove == PLAYER_2) {
+    if (position.sideToMove == PLAYER_WHITE) {
         position.hash |= 1U;
     }
 

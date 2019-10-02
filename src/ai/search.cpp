@@ -259,7 +259,7 @@ void AIAlgorithm::sortMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
 
-    auto cmp = tempGame.position.sideToMove == PLAYER_1 ? nodeGreater : nodeLess;
+    auto cmp = tempGame.position.sideToMove == PLAYER_BLACK ? nodeGreater : nodeLess;
 
     std::stable_sort(node->children.begin(), node->children.end(), cmp);
 }
@@ -445,11 +445,11 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     if (options.getLearnEndgameEnabled() &&
         findEndgameHash(hash, endgame)) {
         switch (endgame.type) {
-        case ENDGAME_PLAYER_1_WIN:
+        case ENDGAME_PLAYER_BLACK_WIN:
             node->value = VALUE_WIN;
             node->value += depth;
             break;
-        case ENDGAME_PLAYER_2_WIN:
+        case ENDGAME_PLAYER_WHITE_WIN:
             node->value = -VALUE_WIN;
             node->value -= depth;
             break;
@@ -490,7 +490,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #if 0
         // TODO: 有必要针对深度微调 value?
-        if (position->turn == PLAYER_1)
+        if (position->turn == PLAYER_BLACK)
             node->value += hashValue.depth - depth;
         else
             node->value -= hashValue.depth - depth;
@@ -548,7 +548,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度 (有必要?)
-        value_t delta = value_t(position->sideToMove == PLAYER_1 ? depth : -depth);
+        value_t delta = value_t(position->sideToMove == PLAYER_BLACK ? depth : -depth);
         node->value += delta;
 
 #ifdef DEBUG_AB_TREE
@@ -570,7 +570,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = tempGame.position.sideToMove == PLAYER_1 ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = tempGame.position.sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
 
     for (auto child : node->children) {
         doMove(child->move);
@@ -595,7 +595,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
         undoMove();
 
-        if (tempGame.position.sideToMove == PLAYER_1) {
+        if (tempGame.position.sideToMove == PLAYER_BLACK) {
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -735,8 +735,8 @@ const char* AIAlgorithm::bestMove()
         bool isMostWeak = true; // 是否明显劣势
 
         for (auto child : root->children) {
-            if ((side == PLAYER_1 && child->value > -VALUE_STRONG) ||
-                (side == PLAYER_2 && child->value < VALUE_STRONG)) {
+            if ((side == PLAYER_BLACK && child->value > -VALUE_STRONG) ||
+                (side == PLAYER_WHITE && child->value < VALUE_STRONG)) {
                 isMostWeak = false;
                 break;
             }
@@ -744,8 +744,8 @@ const char* AIAlgorithm::bestMove()
 
         if (isMostWeak) {
             Endgame endgame;
-            endgame.type = game.position.sideToMove == PLAYER_1 ?
-                ENDGAME_PLAYER_2_WIN : ENDGAME_PLAYER_1_WIN;
+            endgame.type = game.position.sideToMove == PLAYER_BLACK ?
+                ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
             hash_t endgameHash = this->game.getHash(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
             loggerDebug("Record 0x%08I32x to Endgame Hashmap\n", endgameHash);
@@ -758,8 +758,8 @@ const char* AIAlgorithm::bestMove()
         bool isMostLose = true; // 是否必败
 
         for (auto child : root->children) {
-            if ((side == PLAYER_1 && child->value > -VALUE_WIN) ||
-                (side == PLAYER_2 && child->value < VALUE_WIN)) {
+            if ((side == PLAYER_BLACK && child->value > -VALUE_WIN) ||
+                (side == PLAYER_WHITE && child->value < VALUE_WIN)) {
                 isMostLose = false;
                 break;
             }

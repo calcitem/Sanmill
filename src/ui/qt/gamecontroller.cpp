@@ -753,7 +753,7 @@ bool GameController::actionPiece(QPointF pos)
         if (&game == &(this->game)) {
             // 如果还未决出胜负
             if (game.whoWin() == PLAYER_NOBODY) {
-                if (game.position.sideToMove == PLAYER_1) {
+                if (game.position.sideToMove == PLAYER_BLACK) {
                     if (isAiPlayer[1]) {
                         ai[1]->resume();
                     }
@@ -893,7 +893,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     if (&game == &(this->game)) {
         // 如果还未决出胜负
         if (game.whoWin() == PLAYER_NOBODY) {
-            if (game.position.sideToMove == PLAYER_1) {
+            if (game.position.sideToMove == PLAYER_BLACK) {
                 if (isAiPlayer[1]) {
                     ai[1]->resume();
                 }
