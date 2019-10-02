@@ -46,13 +46,10 @@ public:
 
     inline static void setForbiden(location_t &location)
     {
-        location = FLAG_FORBIDDEN;
+        location = PIECE_FORBIDDEN;
     }
 
 private:
-    static const location_t FLAG_FORBIDDEN = 0x0F;
-    static const location_t FLAG_PLAYER_BLACK = 0x10;
-    static const location_t FLAG_PLAYER_WHITE = 0x20;
 };
 
 #endif /* LOCATION_H */

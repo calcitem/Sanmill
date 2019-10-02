@@ -86,11 +86,11 @@ int Game::countPiecesOnBoard()
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
             square_t square = static_cast<square_t>(r * Board::N_SEATS + s);
-            if (boardLocations[square] & 0x10) {
+            if (boardLocations[square] & PIECE_BLACK) {
                 position.nPiecesOnBoard[BLACK]++;
-            } else if (boardLocations[square] & 0x20) {
+            } else if (boardLocations[square] & PIECE_WHITE) {
                 position.nPiecesOnBoard[WHITE]++;
-            } else if (boardLocations[square] & 0x0F) {
+            } else if (boardLocations[square] & PIECE_FORBIDDEN) {
                 // 不计算盘面子数
             }
         }
@@ -940,9 +940,9 @@ int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobid
     for (square_t i = SQ_BEGIN; i < SQ_END; i = static_cast<square_t>(i + 1)) {
         n = position.board.getSurroundedEmptyLocationCount(turn, nPiecesOnBoard, i, includeFobidden);
 
-        if (locations[i] & 0x10) {
+        if (locations[i] & PIECE_BLACK) {
             mobilityBlack += n;
-        } else if (locations[i] & 0x20) {
+        } else if (locations[i] & PIECE_WHITE) {
             mobilityWhite += n;
         }
     }

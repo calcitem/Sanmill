@@ -93,16 +93,6 @@ enum line_t
     LINE_TYPES_COUNT = 3               // 移动方向数
 };
 
-// 棋盘点上棋子的类型
-enum piece_t : uint16_t
-{
-    PIECE_EMPTY = 0,   // 没有棋子
-    PIECE_PLAYER_BLACK = 1,    // 先手的子
-    PIECE_PLAYER_WHITE = 2,     // 后手的子
-    PIECE_FORBIDDEN = 3,    // 禁点
-    PIECE_TYPE_COUNT = 4
-};
-
 #define PLAYER_SHIFT    4
 
 // 玩家标识, 轮流状态, 胜负标识
@@ -145,6 +135,56 @@ enum value_t : int16_t
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1
 };
 
+// 棋盘点上棋子的类型
+enum piecetype_t : uint16_t
+{
+    PIECETYPE_EMPTY = 0,   // 没有棋子
+    PIECETYPE_PLAYER_BLACK = 1,    // 先手的子
+    PIECETYPE_PLAYER_WHITE = 2,     // 后手的子
+    PIECETYPE_FORBIDDEN = 3,    // 禁点
+    PIECETYPE_COUNT = 4
+};
+
+/*
+0x00 代表无棋子
+0x0F 代表禁点
+0x11～0x1C 代表先手第 1～12 子
+0x21～0x2C 代表后手第 1～12 子
+*/
+enum piece_t
+{
+    NO_PIECE = 0x00,
+    PIECE_FORBIDDEN = 0x0F,
+
+    PIECE_BLACK = 0x10,
+    PIECE_B1 = 0x11,
+    PIECE_B2 = 0x12,
+    PIECE_B3 = 0x13,
+    PIECE_B4 = 0x14,
+    PIECE_B5 = 0x15,
+    PIECE_B6 = 0x16,
+    PIECE_B7 = 0x17,
+    PIECE_B8 = 0x18,
+    PIECE_B9 = 0x19,
+    PIECE_B10 = 0x1A,
+    PIECE_B11 = 0x1B,
+    PIECE_B12 = 0x1C,
+
+    PIECE_WHITE = 0x20,
+    PIECE_W1 = 0x21,
+    PIECE_W2 = 0x22,
+    PIECE_W3 = 0x23,
+    PIECE_W4 = 0x24,
+    PIECE_W5 = 0x25,
+    PIECE_W6 = 0x26,
+    PIECE_W7 = 0x27,
+    PIECE_W8 = 0x28,
+    PIECE_W9 = 0x29,
+    PIECE_W10 = 0x2A,
+    PIECE_W11 = 0x2B,
+    PIECE_W12 = 0x2C,
+};
+
 // 动作状态标识
 enum action_t : uint16_t
 {
@@ -178,7 +218,7 @@ ENABLE_FULL_OPERATORS_ON(value_t)
 ENABLE_FULL_OPERATORS_ON(direction_t)
 
 ENABLE_INCR_OPERATORS_ON(direction_t)
-ENABLE_INCR_OPERATORS_ON(piece_t)
+ENABLE_INCR_OPERATORS_ON(piecetype_t)
 ENABLE_INCR_OPERATORS_ON(square_t)
 
 // Additional operators to add integers to a Value
@@ -200,6 +240,11 @@ inline value_t &operator+=(value_t &v, int i)
 inline value_t &operator-=(value_t &v, int i)
 {
     return v = v - i;
+}
+
+constexpr color_t operator~(color_t color)
+{
+    return (color == BLACK? WHITE : BLACK);   // Toggle color
 }
 
 #endif /* TYPES_H */

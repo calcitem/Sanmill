@@ -1000,7 +1000,7 @@ bool GameController::updateScence(Game &g)
         piece->setSelected(false);
 
         // 将pieceList的下标转换为game的棋子代号
-        key = (i % 2) ? (i / 2 + 0x21) : (i / 2 + 0x11);
+        key = (i % 2) ? (i / 2 + PIECE_W1) : (i / 2 + PIECE_B1);
 
         int j;
 
@@ -1031,7 +1031,7 @@ bool GameController::updateScence(Game &g)
         // 如果没有找到，放置棋盘外的棋子
         if (j == (Board::N_SEATS) * (Board::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
-            if (key & 0x10) {
+            if (key & PIECE_BLACK) {
                 pos = (key - 0x11 < nTotalPieces / 2 - g.getPiecesInHandCount(BLACK)) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
@@ -1092,7 +1092,7 @@ bool GameController::updateScence(Game &g)
     int ipos = g.getCurrentSquare();
     if (ipos) {
         key = board[g.getCurrentSquare()];
-        ipos = key & 0x10 ? (key - 0x11) * 2 : (key - 0x21) * 2 + 1;
+        ipos = key & PIECE_BLACK ? (key - PIECE_B1) * 2 : (key - PIECE_W1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(ipos);
             currentPiece->setSelected(true);

@@ -414,9 +414,9 @@ bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s
     int piece;
 
     if (player == PLAYER_BLACK) {
-        piece = 0x10;
+        piece = PIECE_BLACK;
     } else if (player == PLAYER_WHITE) {
-        piece = 0x20;
+        piece = PIECE_WHITE;
     } else {
         return false;
     }
@@ -444,12 +444,12 @@ bool Board::getCurrentPiece(player_t &player, int &number, square_t square)
 
     int p = locations[square];
 
-    if (p & 0x10) {
+    if (p & PIECE_BLACK) {
         player = PLAYER_BLACK;
-        number = p - 0x10;
-    } else if (p & 0x20) {
+        number = p - PIECE_BLACK;
+    } else if (p & PIECE_WHITE) {
         player = PLAYER_WHITE;
-        number = p - 0x20;
+        number = p - PIECE_WHITE;
     } else {
         return false;
     }
