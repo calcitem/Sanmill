@@ -46,7 +46,7 @@ Game::Game()
     setPosition(&RULES[1]);
 
     // 比分归零
-    score[1] = score[2] = score_draw = 0;
+    score[BLACK] = score[WHITE] = score_draw = 0;
 }
 
 Game::~Game() = default;
@@ -69,8 +69,8 @@ Game &Game::operator= (const Game &game)
     winner = game.winner;
     startTime = game.startTime;
     currentTime = game.currentTime;
-    elapsedSeconds[1] = game.elapsedSeconds[1];
-    elapsedSeconds[2] = game.elapsedSeconds[2];
+    elapsedSeconds[BLACK] = game.elapsedSeconds[BLACK];
+    elapsedSeconds[WHITE] = game.elapsedSeconds[WHITE];
     move = game.move;
     memcpy(cmdline, game.cmdline, sizeof(cmdline));
     cmdlist = game.cmdlist;
@@ -81,15 +81,15 @@ Game &Game::operator= (const Game &game)
 
 int Game::countPiecesOnBoard()
 {
-    position.nPiecesOnBoard[1] = position.nPiecesOnBoard[2] = 0;
+    position.nPiecesOnBoard[BLACK] = position.nPiecesOnBoard[WHITE] = 0;
 
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
             square_t square = static_cast<square_t>(r * Board::N_SEATS + s);
             if (boardLocations[square] & 0x10) {
-                position.nPiecesOnBoard[1]++;
+                position.nPiecesOnBoard[BLACK]++;
             } else if (boardLocations[square] & 0x20) {
-                position.nPiecesOnBoard[2]++;
+                position.nPiecesOnBoard[WHITE]++;
             } else if (boardLocations[square] & 0x0F) {
                 // 不计算盘面子数
             }
@@ -97,22 +97,22 @@ int Game::countPiecesOnBoard()
     }
 
     // 设置玩家盘面剩余子数和未放置子数
-    if (position.nPiecesOnBoard[1] > rule.nTotalPiecesEachSide ||
-        position.nPiecesOnBoard[2] > rule.nTotalPiecesEachSide) {
+    if (position.nPiecesOnBoard[BLACK] > rule.nTotalPiecesEachSide ||
+        position.nPiecesOnBoard[WHITE] > rule.nTotalPiecesEachSide) {
         return -1;
     }
 
-    return position.nPiecesOnBoard[1] + position.nPiecesOnBoard[2];
+    return position.nPiecesOnBoard[BLACK] + position.nPiecesOnBoard[WHITE];
 }
 
 int Game::countPiecesInHand()
 {
-    position.nPiecesInHand[1] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[1];
-    position.nPiecesInHand[2] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[2];
-    position.nPiecesInHand[1] = std::min(12, position.nPiecesInHand[1]);    // TODO: 12改为变量
-    position.nPiecesInHand[2] = std::min(12, position.nPiecesInHand[2]);    // TODO: 12改为变量
+    position.nPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[BLACK];
+    position.nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[WHITE];
+    position.nPiecesInHand[BLACK] = std::min(12, position.nPiecesInHand[BLACK]);    // TODO: 12改为变量
+    position.nPiecesInHand[WHITE] = std::min(12, position.nPiecesInHand[WHITE]);    // TODO: 12改为变量
 
-    return position.nPiecesInHand[1] + position.nPiecesInHand[2];
+    return position.nPiecesInHand[BLACK] + position.nPiecesInHand[WHITE];
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
@@ -181,7 +181,7 @@ bool Game::setPosition(const struct Rule *newRule,
     currentSquare = SQ_0;
 
     // 用时置零
-    elapsedSeconds[1] = elapsedSeconds[2] = 0;
+    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     // 提示
     setTips();
@@ -207,7 +207,7 @@ bool Game::setPosition(const struct Rule *newRule,
 bool Game::reset()
 {
     if (position.phase == PHASE_READY &&
-        elapsedSeconds[1] == elapsedSeconds[2] == 0) {
+        elapsedSeconds[BLACK] == elapsedSeconds[WHITE] == 0) {
         return true;
     }
 
@@ -231,10 +231,10 @@ bool Game::reset()
     memset(boardLocations, 0, sizeof(position.board));
 
     // 盘面子数归零
-    position.nPiecesOnBoard[1] = position.nPiecesOnBoard[2] = 0;
+    position.nPiecesOnBoard[BLACK] = position.nPiecesOnBoard[WHITE] = 0;
 
     // 设置玩家盘面剩余子数和未放置子数
-    position.nPiecesInHand[1] = position.nPiecesInHand[2] = rule.nTotalPiecesEachSide;
+    position.nPiecesInHand[BLACK] = position.nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide;
 
     // 设置去子状态时的剩余尚待去除子数
     position.nPiecesNeedRemove = 0;
@@ -248,7 +248,7 @@ bool Game::reset()
     currentSquare = SQ_0;
 
     // 用时置零
-    elapsedSeconds[1] = elapsedSeconds[2] = 0;
+    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     // 哈希归零
     position.hash = 0;
@@ -363,7 +363,7 @@ bool Game::place(square_t square, int8_t updateCmdlist)
         // 开局阶段未成三
         if (n == 0) {
             // 如果双方都无未放置的棋子
-            if (position.nPiecesInHand[1] == 0 && position.nPiecesInHand[2] == 0) {
+            if (position.nPiecesInHand[BLACK] == 0 && position.nPiecesInHand[WHITE] == 0) {
                 // 进入中局阶段
                 position.phase = PHASE_MOVING;
 
@@ -573,7 +573,7 @@ bool Game::capture(square_t square, int8_t updateCmdlist)
     // 开局阶段
     if (position.phase == PHASE_PLACING) {
         // 如果双方都无未放置的棋子
-        if (position.nPiecesInHand[1] == 0 && position.nPiecesInHand[2] == 0) {
+        if (position.nPiecesInHand[BLACK] == 0 && position.nPiecesInHand[WHITE] == 0) {
 
             // 进入中局阶段
             position.phase = PHASE_MOVING;
@@ -805,7 +805,7 @@ int Game::update()
     // 更新时间
     if (timePoint >= *seconds) {
         *seconds = ret = timePoint;
-        startTime = currentTime - (elapsedSeconds[1] + elapsedSeconds[2]);
+        startTime = currentTime - (elapsedSeconds[BLACK] + elapsedSeconds[WHITE]);
     } else {
         *seconds = ret = currentTime - startTime - opponentSeconds;
     }
@@ -876,7 +876,7 @@ bool Game::win(bool forceDraw)
     }
 
     // 如果摆满了，根据规则判断胜负
-    if (position.nPiecesOnBoard[1] + position.nPiecesOnBoard[2] >= Board::N_SEATS * Board::N_RINGS) {
+    if (position.nPiecesOnBoard[BLACK] + position.nPiecesOnBoard[WHITE] >= Board::N_SEATS * Board::N_RINGS) {
         position.phase = PHASE_GAMEOVER;
 
         if (rule.isStartingPlayerLoseWhenBoardFull) {
@@ -995,8 +995,8 @@ void Game::setTips()
 
     switch (position.phase) {
     case PHASE_READY:
-        tips = "轮到玩家1落子，剩余" + std::to_string(position.nPiecesInHand[1]) + "子" +
-            "  比分 " + to_string(score[1]) + ":" + to_string(score[2]) + ", 和棋 " + to_string(score_draw);
+        tips = "轮到玩家1落子，剩余" + std::to_string(position.nPiecesInHand[BLACK]) + "子" +
+            "  比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
         break;
 
     case PHASE_PLACING:
@@ -1018,7 +1018,7 @@ void Game::setTips()
     case PHASE_GAMEOVER:  
         if (winner == PLAYER_DRAW) {
             score_draw++;
-            tips = "双方平局！比分 " + to_string(score[1]) + ":" + to_string(score[2]) + ", 和棋 " + to_string(score_draw); 
+            tips = "双方平局！比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
             break;
         }
 
@@ -1027,7 +1027,7 @@ void Game::setTips()
 
         score[winnerId]++;
 
-        t = "玩家" + winnerStr + "获胜！比分 " + to_string(score[1]) + ":" + to_string(score[2]) + ", 和棋 " + to_string(score_draw);
+        t = "玩家" + winnerStr + "获胜！比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
 
         if (tips.find("无子可走") != string::npos) {
             tips += t;
@@ -1104,7 +1104,7 @@ hash_t Game::updateHashMisc()
     }
 
     position.hash |= static_cast<hash_t>(position.nPiecesNeedRemove) << 2;
-    position.hash |= static_cast<hash_t>(position.nPiecesInHand[1]) << 4;     // TODO: 或许换 position.phase 也可以？
+    position.hash |= static_cast<hash_t>(position.nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 position.phase 也可以？
 
     return position.hash;
 }

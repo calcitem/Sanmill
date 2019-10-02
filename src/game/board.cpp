@@ -361,7 +361,7 @@ bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], square_t square)
 bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
 {
     // 如果摆满
-    if (nPiecesOnBoard[1] + nPiecesOnBoard[2] >= N_SEATS * N_RINGS)
+    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= N_SEATS * N_RINGS)
         return true;
 
     // 判断是否可以飞子

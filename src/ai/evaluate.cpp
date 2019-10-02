@@ -42,14 +42,14 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
     case PHASE_PLACING:
         // 按手中的棋子计分，不要break;
-        nPiecesInHandDiff = position->nPiecesInHand[1] - position->nPiecesInHand[2];
+        nPiecesInHandDiff = position->nPiecesInHand[BLACK] - position->nPiecesInHand[WHITE];
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 #ifdef DEBUG_AB_TREE
         node->nPiecesInHandDiff = nPiecesInHandDiff;
 #endif
 
         // 按场上棋子计分
-        nPiecesOnBoardDiff = position->nPiecesOnBoard[1] - position->nPiecesOnBoard[2];
+        nPiecesOnBoardDiff = position->nPiecesOnBoard[BLACK] - position->nPiecesOnBoard[WHITE];
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 #ifdef DEBUG_AB_TREE
         node->nPiecesOnBoardDiff = nPiecesOnBoardDiff;
@@ -78,8 +78,8 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
 
     case PHASE_MOVING:
         // 按场上棋子计分
-        value = position->nPiecesOnBoard[1] * VALUE_EACH_PIECE_ONBOARD -
-                position->nPiecesOnBoard[2] * VALUE_EACH_PIECE_ONBOARD;
+        value = position->nPiecesOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
+                position->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
@@ -110,7 +110,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
     // 终局评价最简单
     case PHASE_GAMEOVER:
         // 布局阶段闷棋判断
-        if (position->nPiecesOnBoard[1] + position->nPiecesOnBoard[2] >=
+        if (position->nPiecesOnBoard[BLACK] + position->nPiecesOnBoard[WHITE] >=
             Board::N_SEATS * Board::N_RINGS) {
             if (rule.isStartingPlayerLoseWhenBoardFull) {
                 value -= VALUE_WIN;
@@ -129,9 +129,9 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
         }
 
         // 剩余棋子个数判断
-        if (position->nPiecesOnBoard[1] < rule.nPiecesAtLeast) {
+        if (position->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
             value -= VALUE_WIN;
-        } else if (position->nPiecesOnBoard[2] < rule.nPiecesAtLeast) {
+        } else if (position->nPiecesOnBoard[WHITE] < rule.nPiecesAtLeast) {
             value += VALUE_WIN;
         }
 

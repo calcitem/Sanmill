@@ -209,10 +209,10 @@ void GameController::gameReset()
     // 如果规则不要求计时，则time1和time2表示已用时间
     if (timeLimit <= 0) {
         // 将玩家的已用时间清零
-        remainingTime[1] = remainingTime[2] = 0;
+        remainingTime[BLACK] = remainingTime[WHITE] = 0;
     } else {
         // 将玩家的剩余时间置为限定时间
-        remainingTime[1] = remainingTime[2] = timeLimit * 60;
+        remainingTime[BLACK] = remainingTime[WHITE] = timeLimit * 60;
     }
 
     // 更新棋谱
@@ -222,7 +222,7 @@ void GameController::gameReset()
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
-    QTime qtime = QTime(0, 0, 0, 0).addSecs(remainingTime[1]);
+    QTime qtime = QTime(0, 0, 0, 0).addSecs(remainingTime[BLACK]);
     emit time1Changed(qtime.toString("hh:mm:ss"));
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
@@ -231,8 +231,8 @@ void GameController::gameReset()
     emit statusBarChanged(message);
 
     // 更新比分 LCD 显示
-    emit score1Changed(QString::number(game.score[1], 10));
-    emit score2Changed(QString::number(game.score[2], 10));
+    emit score1Changed(QString::number(game.score[BLACK], 10));
+    emit score2Changed(QString::number(game.score[WHITE], 10));
     emit scoreDrawChanged(QString::number(game.score_draw, 10));
 
     // 播放音效
@@ -553,18 +553,18 @@ void GameController::timerEvent(QTimerEvent *event)
 
     // 玩家的已用时间
     game.update();
-    remainingTime[1] = game.getElapsedTime(1);
-    remainingTime[2] = game.getElapsedTime(2);
+    remainingTime[BLACK] = game.getElapsedTime(BLACK);
+    remainingTime[WHITE] = game.getElapsedTime(WHITE);
 
     // 如果规则要求计时，则time1和time2表示倒计时
     if (timeLimit > 0) {
         // 玩家的剩余时间
-        remainingTime[1] = timeLimit * 60 - remainingTime[1];
-        remainingTime[2] = timeLimit * 60 - remainingTime[2];
+        remainingTime[BLACK] = timeLimit * 60 - remainingTime[BLACK];
+        remainingTime[WHITE] = timeLimit * 60 - remainingTime[WHITE];
     }
 
-    qt1 = QTime(0, 0, 0, 0).addSecs(remainingTime[1]);
-    qt2 = QTime(0, 0, 0, 0).addSecs(remainingTime[2]);
+    qt1 = QTime(0, 0, 0, 0).addSecs(remainingTime[BLACK]);
+    qt2 = QTime(0, 0, 0, 0).addSecs(remainingTime[WHITE]);
 
     emit time1Changed(qt1.toString("hh:mm:ss"));
     emit time2Changed(qt2.toString("hh:mm:ss"));
@@ -1032,10 +1032,10 @@ bool GameController::updateScence(Game &g)
         if (j == (Board::N_SEATS) * (Board::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & 0x10) {
-                pos = (key - 0x11 < nTotalPieces / 2 - g.getPiecesInHandCount(1)) ?
+                pos = (key - 0x11 < nTotalPieces / 2 - g.getPiecesInHandCount(BLACK)) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
-                pos = (key - 0x21 < nTotalPieces / 2 - g.getPiecesInHandCount(2)) ?
+                pos = (key - 0x21 < nTotalPieces / 2 - g.getPiecesInHandCount(WHITE)) ?
                         scene.pos_p1_g : scene.pos_p2;
             }
 
@@ -1107,8 +1107,8 @@ bool GameController::updateScence(Game &g)
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     // 更新比分 LCD 显示
-    emit score1Changed(QString::number(g.score[1], 10));
-    emit score2Changed(QString::number(g.score[2], 10));
+    emit score1Changed(QString::number(g.score[BLACK], 10));
+    emit score2Changed(QString::number(g.score[WHITE], 10));
     emit scoreDrawChanged(QString::number(g.score_draw, 10));
 
     return true;

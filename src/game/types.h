@@ -40,9 +40,12 @@ enum move_t : int32_t
     //MOVE_NULL = 65
 };
 
-enum color_t
+enum color_t : uint8_t
 {
-    BLACK, WHITE, COLOR_COUNT = 2
+    NOCOLOR,
+    BLACK,
+    WHITE,
+    COLOR_COUNT
 };
 
 enum square_t : int32_t

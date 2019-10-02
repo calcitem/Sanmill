@@ -40,7 +40,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
         if (tempGame.getAction() == ACTION_CAPTURE) {
             newCapacity = static_cast<size_t>(tempGame.getPiecesOnBoardCount(tempGame.position.opponentId));
         } else {
-            newCapacity = static_cast<size_t>(tempGame.getPiecesInHandCount(1) + tempGame.getPiecesInHandCount(2));
+            newCapacity = static_cast<size_t>(tempGame.getPiecesInHandCount(BLACK) + tempGame.getPiecesInHandCount(WHITE));
         }
         break;
     case PHASE_MOVING:
