@@ -449,10 +449,9 @@
     <ClInclude Include="src\base\debug.h" />
     <ClInclude Include="src\base\hashmap.h" />
     <ClInclude Include="src\base\HashNode.h" />
-    <ClInclude Include="src\base\MemoryPool.h" />
+    <ClInclude Include="src\base\memmgr.h" />
     <ClInclude Include="src\base\misc.h" />
     <ClInclude Include="src\base\stack.h" />
-    <ClInclude Include="src\base\stackalloc.h" />
     <QtMoc Include="src\base\thread.h" />
     <ClInclude Include="src\base\zobrist.h" />
     <ClInclude Include="src\game\board.h" />
@@ -686,7 +685,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="src\base\MemoryPool.tcc" />
     <QtRcc Include="gamewindow.qrc" />
     <None Include="Resources\image\white_piece.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -701,6 +699,7 @@
     <ClCompile Include="src\ai\movegen.cpp" />
     <ClCompile Include="src\ai\search.cpp" />
     <ClCompile Include="src\ai\tt.cpp" />
+    <ClCompile Include="src\base\memmgr.cpp" />
     <ClCompile Include="src\base\misc.cpp" />
     <ClCompile Include="src\base\thread.cpp" />
     <ClCompile Include="src\base\zobrist.cpp" />

@@ -25,16 +25,14 @@
 #include "config.h"
 
 #include <list>
-//#ifdef MEMORY_POOL
-//#include "StackAlloc.h"
-//#else
+
 #ifdef USE_STD_STACK
 #include <stack>
 #include <vector>
 #else
 #include "stack.h"
 #endif // USE_STD_STACK
-//#endif
+
 #include <mutex>
 #include <string>
 #include <array>
@@ -46,7 +44,7 @@
 #include "types.h"
 
 #ifdef MEMORY_POOL
-#include "MemoryPool.h"
+#include "memmgr.h"
 #endif
 
 using namespace std;
@@ -60,18 +58,26 @@ using namespace CTSL;
 class AIAlgorithm
 {
 public:
+    static const int NODE_CHILDREN_SIZE = 64;   // TODO: 缩减空间
     // 定义一个节点结构体
     struct Node
     {
     public:
-        vector<struct Node*> children;  // 子节点列表
-        struct Node* parent {};            // 父节点
-        move_t move {};                  // 着法的命令行指令，图上标示为节点前的连线
-        value_t value {};                 // 节点的值
-        player_t sideToMove;  // 此着是谁下的 (目前仅调试用)
+        move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
+        value_t value { VALUE_UNKNOWN };                 // 节点的值
+
 #ifdef SORT_CONSIDER_PRUNED
-        bool pruned {};                    // 是否在此处剪枝
+        bool pruned { false };                    // 是否在此处剪枝
 #endif
+
+#ifdef MEMORY_POOL
+        struct Node *children[NODE_CHILDREN_SIZE];
+        int childrenSize { 0 };
+#else
+        vector<struct Node*> children;  // 子节点列表
+#endif
+        struct Node* parent {nullptr};            // 父节点
+        player_t sideToMove {PLAYER_NOBODY};  // 此着是谁下的 (目前仅调试用)
 
 #ifdef DEBUG_AB_TREE
         size_t id;                      // 结点编号
@@ -97,7 +103,7 @@ public:
     };
 
 #ifdef MEMORY_POOL
-    MemoryPool<Node> pool;
+    MemoryManager memmgr;
 #endif
 
 public:
@@ -130,8 +136,10 @@ public:
 #endif
 
     // 比较函数
+#ifdef MEMORY_POOL
     static bool nodeLess(const Node *first, const Node *second);
     static bool nodeGreater(const Node *first, const Node *second);
+#endif // MEMORY_POOL
 
 #ifdef ENDGAME_LEARNING
     bool findEndgameHash(hash_t hash, Endgame &endgame);

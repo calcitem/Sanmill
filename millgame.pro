@@ -26,6 +26,7 @@ SOURCES += \
     src/ai/evaluate.cpp \
     src/ai/movegen.cpp \
     src/ai/tt.cpp \
+    src/base/memmgr.cpp \
     src/base/misc.cpp \
     src/base/zobrist.cpp \
     src/game/board.cpp \
@@ -57,11 +58,9 @@ HEADERS  += \
     src/base/HashNode.h \
     src/base/debug.h \
     src/base/hashMap.h \
-    src/base/MemoryPool.h \
-    src/base/MemoryPool.tcc \
+    src/base/memmgr.h \
     src/base/misc.h \
     src/base/stack.h \
-    src/base/stackalloc.h \
     src/base/thread.h \
     src/ai/search.h \
     src/base/zobrist.h \
@@ -101,8 +100,8 @@ RC_FILE += millgame.rc
 # With C++17 support
 greaterThan(QT_MAJOR_VERSION, 4) {
 CONFIG += c++17
-#QMAKE_CXXFLAGS += -O0 -g3 -fsanitize=leak -fno-omit-frame-pointer
-#QMAKE_LFLAGS += -fsanitize=leak
+#QMAKE_CXXFLAGS += -O0 -g3 -fsanitize=address -fno-omit-frame-pointer
+#QMAKE_LFLAGS += -fsanitize=address
 } else {
 QMAKE_CXXFLAGS += -std=c++0x
 }

@@ -71,6 +71,7 @@
 //#define TRANSPOSITION_TABLE_DEBUG
 #endif
 
+// TODO: Fix disable Memory Tool build failed
 #define MEMORY_POOL
 
 //#define USE_STD_STACK

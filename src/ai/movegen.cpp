@@ -58,10 +58,14 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
         break;
     };
 
+    // 如果有子节点，则返回，避免重复建立
+#ifdef MEMORY_POOL
+    if (node->childrenSize) {
+#else
     node->children.reserve(newCapacity + 2 /* TODO: 未细调故再多留余量2 */);
 
-    // 如果有子节点，则返回，避免重复建立
     if (!node->children.empty()) {
+#endif
         return;
     }
 

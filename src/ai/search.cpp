@@ -40,6 +40,10 @@ vector<hash_t> history;
 
 AIAlgorithm::AIAlgorithm()
 {
+#ifdef MEMORY_POOL
+    memmgr.memmgr_init();
+#endif
+
     buildRoot();
 }
 
@@ -47,6 +51,10 @@ AIAlgorithm::~AIAlgorithm()
 {
     deleteTree(root);
     root = nullptr;
+
+#ifdef MEMORY_POOL
+    memmgr.memmgr_exit();
+#endif
 }
 
 depth_t AIAlgorithm::changeDepth(depth_t origDepth)
@@ -125,6 +133,8 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 void AIAlgorithm::buildRoot()
 {
     root = addNode(nullptr, VALUE_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
+
+    assert(root != nullptr);
 }
 
 struct AIAlgorithm::Node *AIAlgorithm::addNode(
@@ -136,7 +146,9 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 )
 {
 #ifdef MEMORY_POOL
-    Node *newNode = pool.newElement();
+    Node *newNode = (Node *)memmgr.memmgr_alloc(sizeof(Node));
+    assert(newNode != nullptr);
+    newNode->childrenSize = 0;  // Important
 #else
     Node *newNode = new Node;
 #endif
@@ -201,18 +213,32 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
         // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
-            // 优先成三
+            // 优先成三 // TODO: Adapt MEMORY_POOL
             if (tempGame.getPhase() == GAME_PLACING && move > 0 && tempGame.position.board.isInMills(move, true)) {
                 parent->children.insert(parent->children.begin(), newNode);
             } else {
                 parent->children.push_back(newNode);
             }
-#else
+#else // MILL_FIRST
+#ifdef MEMORY_POOL
+            parent->children[parent->childrenSize] = newNode;
+            parent->childrenSize++;
+#else // MEMORY_POOL
             parent->children.push_back(newNode);
-#endif
+#endif // MEMORY_POOL
+#endif // MILL_FIRST
         } else {
             // 如果启用了置换表并且不是叶子结点，把哈希得到的最优着法换到首位
+#ifdef MEMORY_POOL
+            for (int i = parent->childrenSize; i >= 1; i--) {
+                parent->children[i] = parent->children[i - 1];
+            }
+
+            parent->children[0] = newNode;
+            parent->childrenSize++;
+#else // MEMORY_POOL
             parent->children.insert(parent->children.begin(), newNode);
+#endif // MEMORY_POOL
         }
     }
 
@@ -258,10 +284,50 @@ bool AIAlgorithm::nodeGreater(const Node *first, const Node *second)
 void AIAlgorithm::sortMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
-
     auto cmp = tempGame.position.sideToMove == PLAYER_BLACK ? nodeGreater : nodeLess;
 
+#ifdef MEMORY_POOL
+    assert(node->childrenSize != 0);
+
+    //#define DEBUG_SORT
+#ifdef DEBUG_SORT
+    for (int i = 0; i < node->childrenSize; i++) {
+        loggerDebug("* [%d] %x = %d\n", i, &(node->children[i]), node->children[i]->value);
+    }
+    loggerDebug("\n");
+#endif
+
+    // TODO: 暂时使用 std::sort 排序, 后续需实现自己的排序函数
+
+    vector<Node *> vec;
+    vec.reserve(NODE_CHILDREN_SIZE);
+
+    for (int i = 0; i < node->childrenSize; i++) {
+        vec.push_back(node->children[i]);
+    }
+
+    std::stable_sort(vec.begin(), vec.end(), cmp);
+
+    for (int i = 0; i < node->childrenSize; i++) {
+        node->children[i] = vec[i];
+    }
+
+#ifdef DEBUG_SORT
+    if (tempGame.position.sideToMove == PLAYER_BLACK) {
+        for (int i = 0; i < node->childrenSize; i++) {
+            loggerDebug("+ [%d] %x = %d\n", i, &(node->children[i]), node->children[i]->value);
+        }
+     } else {
+        for (int i = 0; i < node->childrenSize; i++) {
+            loggerDebug("- [%d] %x = %d\n", i, &(node->children[i]), node->children[i]->value);
+        }
+    }
+    loggerDebug("\n----------------------------------------\n");
+#endif
+    assert(node->childrenSize != 0);
+#else
     std::stable_sort(node->children.begin(), node->children.end(), cmp);
+#endif
 }
 
 void AIAlgorithm::deleteTree(Node *node)
@@ -271,14 +337,28 @@ void AIAlgorithm::deleteTree(Node *node)
         return;
     }
 
-    for (auto i : node->children) {
-        deleteTree(i);
+#ifdef MEMORY_POOL  
+    for (int i = 0; i < node->childrenSize; i++) {
+        deleteTree(node->children[i]);
     }
-
-    node->children.clear();
+#else
+    for (auto child : node->children) {
+        deleteTree(child);
+    }
+#endif
 
 #ifdef MEMORY_POOL
-    pool.deleteElement(node);
+    if (node->childrenSize) {
+        node->childrenSize = 0;
+    }
+#else
+    if (!node->children.empty()) {
+        node->children.clear();
+    }
+#endif
+
+#ifdef MEMORY_POOL
+    memmgr.memmgr_free(node);
 #else
     delete(node);
 #endif  
@@ -307,7 +387,9 @@ void AIAlgorithm::setGame(const Game &g)
     requiredQuit = false;
     deleteTree(root);
 #ifdef MEMORY_POOL
-    root = pool.newElement();
+    root = (Node *)memmgr.memmgr_alloc(sizeof(Node));
+    assert(root != nullptr);
+    root->childrenSize = 0; // Important
 #else
     root = new Node;
 #endif
@@ -326,6 +408,8 @@ void AIAlgorithm::setGame(const Game &g)
 
 int AIAlgorithm::search(depth_t depth)
 {
+    assert(root != nullptr);
+
     value_t value = VALUE_ZERO;
 
     depth_t d = changeDepth(depth);
@@ -421,6 +505,8 @@ int AIAlgorithm::search(depth_t depth)
 
 value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *node)
 {
+    assert(node != nullptr);
+    
     // 评价值
     value_t value;
 
@@ -572,8 +658,18 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     minMax = tempGame.position.sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
 
+#ifdef MEMORY_POOL
+    assert(node->childrenSize != 0);
+    for (int i = 0; i < node->childrenSize; i++) {
+#else
     for (auto child : node->children) {
+#endif // MEMORY_POOL
+
+#ifdef MEMORY_POOL
+        doMove(node->children[i]->move);
+#else
         doMove(child->move);
+#endif // MEMORY_POOL
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
         // 克服“水平线效应”: 若遇到吃子，则搜索深度增加
@@ -591,7 +687,12 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif /* DEEPER_IF_ONLY_ONE_LEGAL_MOVE */
 
         // 递归 Alpha-Beta 剪枝
+
+#ifdef MEMORY_POOL
+        value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+#else
         value = search(depth - 1 + epsilon, alpha, beta, child);
+#endif // MEMORY_POOL
 
         undoMove();
 
@@ -661,12 +762,22 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
 #ifndef DONOT_DELETE_TREE
+#ifdef MEMORY_POOL
+    for (int i = 0; i < node->childrenSize; i++) {
+        for (int j = 0; j < node->children[i]->childrenSize; j++) {
+            deleteTree(node->children[i]->children[j]);
+        }
+        node->children[i]->childrenSize = 0;
+    }
+    assert(node->childrenSize != 0);
+#else // MEMORY_POOL
     for (auto child : node->children) {
         for (auto grandChild : child->children) {
             deleteTree(grandChild);
         }
         child->children.clear();
     }
+#endif // MEMORY_POOL
 #endif // DONOT_DELETE_TREE
 
 #ifdef IDS_SUPPORT
@@ -676,7 +787,10 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值
-    TT::recordHash(node->value, depth, hashf, hash, node->children[0]->move);
+    if (node->children[0])
+    {
+        TT::recordHash(node->value, depth, hashf, hash, node->children[0]->move);
+    }
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // 返回
@@ -704,7 +818,11 @@ const char* AIAlgorithm::bestMove()
     vector<Node*> bestMoves;
     size_t bestMovesSize = 0;
 
+#ifdef MEMORY_POOL
+    if (!root->childrenSize) {
+#else
     if ((root->children).empty()) {
+#endif
         return "error!";
     }
 
@@ -713,15 +831,19 @@ const char* AIAlgorithm::bestMove()
     int i = 0;
     string moves = "moves";
 
+#ifdef MEMORY_POOL
+    for (int j = 0; j < root->childrenSize; j++) {
+#else
     for (auto child : root->children) {
-        if (child->value == root->value
+#endif
+        if (root->children[j]->value == root->value
 #ifdef SORT_CONSIDER_PRUNED
-            && !child->pruned
+            && !root->children[j]->pruned
 #endif
             ) {
-            loggerDebug("[%.2d] %d\t%s\t%d *\n", i, child->move, moveToCommand(child->move), child->value);
+            loggerDebug("[%.2d] %d\t%s\t%d *\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
         } else {
-            loggerDebug("[%.2d] %d\t%s\t%d\n", i, child->move, moveToCommand(child->move), child->value);
+            loggerDebug("[%.2d] %d\t%s\t%d\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
         }
 
         i++;
@@ -734,9 +856,13 @@ const char* AIAlgorithm::bestMove()
     if (options.getLearnEndgameEnabled()) {
         bool isMostWeak = true; // 是否明显劣势
 
+#ifdef MEMORY_POOL
+        for (int j = 0; j < root->childrenSize; j++) {
+#else
         for (auto child : root->children) {
-            if ((side == PLAYER_BLACK && child->value > -VALUE_STRONG) ||
-                (side == PLAYER_WHITE && child->value < VALUE_STRONG)) {
+#endif
+            if ((side == PLAYER_BLACK && root->children[j]->value > -VALUE_STRONG) ||
+                (side == PLAYER_WHITE && root->children[j]->value < VALUE_STRONG)) {
                 isMostWeak = false;
                 break;
             }
@@ -757,9 +883,13 @@ const char* AIAlgorithm::bestMove()
     if (options.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
+#ifdef MEMORY_POOL
+        for (int j = 0; j < root->childrenSize; j++) {
+#else
         for (auto child : root->children) {
-            if ((side == PLAYER_BLACK && child->value > -VALUE_WIN) ||
-                (side == PLAYER_WHITE && child->value < VALUE_WIN)) {
+#endif
+            if ((side == PLAYER_BLACK && root->children[j]->value > -VALUE_WIN) ||
+                (side == PLAYER_WHITE && root->children[j]->value < VALUE_WIN)) {
                 isMostLose = false;
                 break;
             }
@@ -772,9 +902,13 @@ const char* AIAlgorithm::bestMove()
         }
     }
 
+#ifdef MEMORY_POOL
+    for (int j = 0; j < root->childrenSize; j++) {
+#else
     for (auto child : root->children) {
-        if (child->value == root->value) {
-            bestMoves.push_back(child);
+#endif
+        if (root->children[j]->value == root->value) {
+            bestMoves.push_back(root->children[j]);
         }
     }
 
@@ -782,8 +916,12 @@ const char* AIAlgorithm::bestMove()
 
     if (bestMovesSize == 0) {
         loggerDebug("Not any child value is equal to root value\n");
+#ifdef MEMORY_POOL
+        for (int j = 0; j < root->childrenSize; j++) {
+#else
         for (auto child : root->children) {
-            bestMoves.push_back(child);
+#endif
+            bestMoves.push_back(root->children[j]);
         }
     }
 

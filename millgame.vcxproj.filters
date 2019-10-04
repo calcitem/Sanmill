@@ -63,17 +63,11 @@
     <ClInclude Include="include\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\base\stackalloc.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="src\ui\qt\boarditem.h">
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\qt\graphicsconst.h">
       <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\MemoryPool.h">
-      <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="src\base\HashNode.h">
       <Filter>base</Filter>
@@ -127,6 +121,9 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="src\base\stack.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\memmgr.h">
       <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>
@@ -253,9 +250,6 @@
     <None Include="millgame.pro">
       <Filter>Project Files</Filter>
     </None>
-    <None Include="src\base\MemoryPool.tcc">
-      <Filter>base</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\ui\qt\gamecontroller.h">
@@ -355,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="src\game\location.cpp">
       <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\memmgr.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
