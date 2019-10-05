@@ -14,7 +14,7 @@
 
 void MemoryManager::memmgr_init()
 {
-    pool = static_cast<uint8_t *>(malloc(POOL_SIZE));
+    pool = static_cast<uint8_t *>(malloc(memPoolSize));
     base.s.next = nullptr;
     base.s.size = 0;
     freep = nullptr;
@@ -28,40 +28,48 @@ void MemoryManager::memmgr_exit()
 
 void MemoryManager::memmgr_print_stats()
 {
-    #ifdef DEBUG_MEMMGR_SUPPORT_STATS
+#if DEBUG_MEMMGR_SUPPORT_STATS
     mem_header_t* p;
 
+    size_t left = memPoolSize - pool_free_pos;
+    size_t leftPercent = left * 100 / memPoolSize;
+    size_t usedPercent = 100 - leftPercent;
+
+#if DEBUG_MEMMGR_SUPPORT_STATS_VERBOSE
     printf("------ Memory manager stats ------\n\n");
-    printf(    "Pool: free_pos = %llu (%llu bytes left)\n\n",
-            pool_free_pos, POOL_SIZE - pool_free_pos);
+#endif
+
+    printf("Pool %p - Used: %zd (%zd%%), Free: %zd (%zd%%)\n",
+           pool,
+           pool_free_pos, usedPercent, left, leftPercent);
 
     p = (mem_header_t*) pool;
 
-    while (p < (mem_header_t*) (pool + pool_free_pos))
-    {
-        if (p->s.size == 0)
-        {
+    while (p < (mem_header_t*) (pool + pool_free_pos)) {
+        if (p->s.size == 0) {
             printf("ERROR: p->s.size == 0\n");
             break;
         }
-
+#if DEBUG_MEMMGR_SUPPORT_STATS_VERBOSE
         printf(    "  * Addr: %p; Size: %16llu\n",
                 p, p->s.size);
+#endif
 
         p += p->s.size;
     }
 
+#if DEBUG_MEMMGR_SUPPORT_STATS_VERBOSE
     printf("\nFree list:\n\n");
+#endif
 
-    if (freep)
-    {
+    if (freep) {
         p = freep;
 
-        while (1)
-        {
-            printf(    "  * Addr: %p; Size: %16llu; Next: %p\n",
+        while (1) {
+#if DEBUG_MEMMGR_SUPPORT_STATS_VERBOSE
+            printf("  * Addr: %p; Size: %16llu; Next: %p\n",
                     p, p->s.size, p->s.next);
-
+#endif
             p = p->s.next;
 
             if (p == freep)
@@ -72,14 +80,12 @@ void MemoryManager::memmgr_print_stats()
                 break;
             }
         }
-    }
-    else
-    {
+    } else {
         printf("Empty\n");
     }
 
     printf("\n");
-    #endif // DEBUG_MEMMGR_SUPPORT_STATS
+#endif // DEBUG_MEMMGR_SUPPORT_STATS
 }
 
 mem_header_t* MemoryManager::get_mem_from_pool(size_t nquantas)
@@ -93,7 +99,7 @@ mem_header_t* MemoryManager::get_mem_from_pool(size_t nquantas)
 
     total_req_size = nquantas * sizeof(mem_header_t);
 
-    if (pool_free_pos + total_req_size <= POOL_SIZE)
+    if (pool_free_pos + total_req_size <= memPoolSize)
     {
         h = (mem_header_t*)(pool + pool_free_pos);
         h->s.size = nquantas;
@@ -278,6 +284,19 @@ void *MemoryManager::memmgr_alloc(size_t nbytes)
     return memmgr_alloc_with_align(nbytes, 4);
 }
 
+void *MemoryManager::memmgr_resize()
+{
+    uint8_t *p = pool;
+
+    memPoolSize <<= 1;
+
+    // TODO: Implement
+
+    printf("memmgr: Resize pool size to %d\n, pool address from %p to %p\n",
+           memPoolSize, p, pool);
+
+    return pool;
+}
 
 ///////////////
 

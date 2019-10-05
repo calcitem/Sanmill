@@ -67,6 +67,7 @@
 #include <cstdint>
 
 #define DEBUG_MEMMGR_SUPPORT_STATS 1
+#define DEBUG_MEMMGR_SUPPORT_STATS_VERBOSE 0
 
 typedef unsigned long Align;
 
@@ -115,7 +116,7 @@ public:
 
 protected:
 private:
-    static const int POOL_SIZE = 1024 * 1024;
+    int memPoolSize { 1024 * 1024 * 2};
     static const int MIN_POOL_ALLOC_QUANTAS = 1024;
 
     // Initial empty list
@@ -132,7 +133,7 @@ private:
     mem_header_t *get_mem_from_pool(size_t nquantas);
     void *__builtin_memalign(int align, size_t len);
     void *memmgr_alloc_with_align(size_t len, int align);
-
+    void *memmgr_resize();
 };
 
 #endif // MEMMGR_H

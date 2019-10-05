@@ -147,7 +147,12 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 {
 #ifdef MEMORY_POOL
     Node *newNode = (Node *)memmgr.memmgr_alloc(sizeof(Node));
-    assert(newNode != nullptr);
+
+    if (newNode == nullptr) {
+        memmgr.memmgr_print_stats();
+        loggerDebug("Memory Manager Alloc failed\n");
+        // TODO: Deal with alloc failed
+    }
     newNode->childrenSize = 0;  // Important
 #else
     Node *newNode = new Node;
@@ -926,6 +931,7 @@ const char* AIAlgorithm::bestMove()
     }
 
     loggerDebug("Evaluated: %llu / %llu = %llu%%\n", evaluatedNodeCount, nodeCount, evaluatedNodeCount * 100 / nodeCount);
+    memmgr.memmgr_print_stats();
 
     nodeCount = 0;
     evaluatedNodeCount = 0;
