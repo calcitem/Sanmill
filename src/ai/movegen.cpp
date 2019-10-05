@@ -32,40 +32,9 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
 {
     const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
     square_t square = SQ_0;
-    size_t newCapacity = 24;
-
-    // 留足余量空间避免多次重新分配，此动作本身也占用 CPU/内存 开销
-    switch (tempGame.getPhase()) {
-    case PHASE_PLACING:
-        if (tempGame.getAction() == ACTION_CAPTURE) {
-            newCapacity = static_cast<size_t>(tempGame.getPiecesOnBoardCount(tempGame.position.opponentId));
-        } else {
-            newCapacity = static_cast<size_t>(tempGame.getPiecesInHandCount(BLACK) + tempGame.getPiecesInHandCount(WHITE));
-        }
-        break;
-    case PHASE_MOVING:
-        if (tempGame.getAction() == ACTION_CAPTURE) {
-            newCapacity = static_cast<size_t>(tempGame.getPiecesOnBoardCount(tempGame.position.opponentId));
-        } else {
-            newCapacity = 6;
-        }
-        break;
-    case PHASE_READY:
-        newCapacity = 24;
-        break;
-    default:
-        newCapacity = 24;
-        break;
-    };
 
     // 如果有子节点，则返回，避免重复建立
-#ifdef MEMORY_POOL
     if (node->childrenSize) {
-#else
-    node->children.reserve(newCapacity + 2 /* TODO: 未细调故再多留余量2 */);
-
-    if (!node->children.empty()) {
-#endif
         return;
     }
 

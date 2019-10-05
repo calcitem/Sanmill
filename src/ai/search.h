@@ -42,10 +42,7 @@
 #include "hashmap.h"
 #include "endgame.h"
 #include "types.h"
-
-#ifdef MEMORY_POOL
 #include "memmgr.h"
-#endif
 
 using namespace std;
 using namespace CTSL;
@@ -70,12 +67,9 @@ public:
         bool pruned { false };                    // 是否在此处剪枝
 #endif
 
-#ifdef MEMORY_POOL
         struct Node *children[NODE_CHILDREN_SIZE];
         int childrenSize { 0 };
-#else
-        vector<struct Node*> children;  // 子节点列表
-#endif
+
         struct Node* parent {nullptr};            // 父节点
         player_t sideToMove {PLAYER_NOBODY};  // 此着是谁下的 (目前仅调试用)
 
@@ -142,9 +136,7 @@ public:
         }
     };
 
-#ifdef MEMORY_POOL
     MemoryManager memmgr;
-#endif
 
 public:
     AIAlgorithm();
@@ -176,11 +168,9 @@ public:
 #endif
 
     // 比较函数
-#ifdef MEMORY_POOL
     static bool nodeLess(const Node *first, const Node *second);
     static bool nodeGreater(const Node *first, const Node *second);
     static int nodeCompare(const Node *first, const Node *second);
-#endif // MEMORY_POOL
 
 #ifdef ENDGAME_LEARNING
     bool findEndgameHash(hash_t hash, Endgame &endgame);
