@@ -94,46 +94,6 @@ public:
 #endif /* TRANSPOSITION_TABLE_ENABLE */
         hash_t hash;                  //  哈希值
 #endif /* DEBUG_AB_TREE */
-
-        bool operator < (const Node &other)
-        {
-            if (value < other.value) {
-                return true;
-            }
-
-            if (value == other.value) {
-                if (pruned && !other.pruned) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        bool operator > (const Node &other)
-        {
-            if (value > other.value) {
-                return true;
-            }
-
-            if (value == other.value) {
-                if (!pruned && other.pruned) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        bool operator == (const Node &other)
-        {
-            if (value == other.value &&
-                pruned == other.pruned) {
-                return true;
-            }
-
-            return false;
-        }
     };
 
     MemoryManager memmgr;
@@ -168,8 +128,6 @@ public:
 #endif
 
     // 比较函数
-    static bool nodeLess(const Node *first, const Node *second);
-    static bool nodeGreater(const Node *first, const Node *second);
     static int nodeCompare(const Node *first, const Node *second);
 
 #ifdef ENDGAME_LEARNING

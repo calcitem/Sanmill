@@ -244,42 +244,6 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     return newNode;
 }
 
-bool AIAlgorithm::nodeLess(const Node *first, const Node *second)
-{
-#ifdef SORT_CONSIDER_PRUNED
-    if (first->value < second->value) {
-        return true;
-    }
-
-    if ((first->value == second->value) &&
-        (!first->pruned&& second->pruned)) {
-        return true;
-    }
-
-    return false;
-#else
-    return first->value < second->value;
-#endif
-}
-
-bool AIAlgorithm::nodeGreater(const Node *first, const Node *second)
-{
-#ifdef SORT_CONSIDER_PRUNED
-    if (first->value > second->value) {
-        return true;
-    }
-
-    if ((first->value == second->value) &&
-        (!first->pruned && second->pruned)) {
-        return true;
-    }
-
-    return false;
-#else
-    return first->value > second->value;
-#endif
-}
-
 int AIAlgorithm::nodeCompare(const Node * first, const Node * second)
 {
     int ret = 0;
@@ -335,8 +299,6 @@ out:
 void AIAlgorithm::sortMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
-    auto cmp = tempGame.position.sideToMove == PLAYER_BLACK ? nodeGreater : nodeLess;
-
     assert(node->childrenSize != 0);
 
     //#define DEBUG_SORT
