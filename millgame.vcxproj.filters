@@ -126,6 +126,9 @@
     <ClInclude Include="src\base\memmgr.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="src\base\sort.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">

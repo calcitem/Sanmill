@@ -33,6 +33,14 @@
 #include "types.h"
 #include "option.h"
 
+#define SORT_NAME nodep
+#define SORT_TYPE AIAlgorithm::Node*
+#define SORT_CMP(x, y) (-AIAlgorithm::nodeCompare((x), (y)))
+
+player_t gSideToMove;
+
+#include "sort.h"
+
 using namespace CTSL;
 
 // 用于检测重复局面 (Position)
@@ -286,6 +294,58 @@ bool AIAlgorithm::nodeGreater(const Node *first, const Node *second)
 #endif
 }
 
+int AIAlgorithm::nodeCompare(const Node * first, const Node * second)
+{
+    int ret = 0;
+
+    if (gSideToMove == PLAYER_BLACK) {
+        if (first->value > second->value) {
+            ret = 1;
+            goto out;
+        }
+
+        if (first->value < second->value) {
+            ret = -1;
+            goto out;
+        }
+
+        if (first->value == second->value) {
+            if (!first->pruned && second->pruned) {
+                ret = 1;
+                goto out;
+            } else if (first->pruned && !second->pruned) {
+                ret = -1;
+                goto out;
+            }
+        }
+    }
+
+    if (gSideToMove == PLAYER_WHITE) {
+        if (first->value < second->value) {
+            ret = 1;
+            goto out;
+        }
+
+        if (first->value > second->value) {
+            ret = -1;
+            goto out;
+        }
+
+        if (first->value == second->value) {
+            if (!first->pruned && second->pruned) {
+                ret = 1;
+                goto out;
+            } else if (first->pruned && !second->pruned) {
+                ret = -1;
+                goto out;
+            }
+        }
+    }
+
+out:
+    return ret;
+}
+
 void AIAlgorithm::sortMoves(Node *node)
 {
     // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
@@ -297,34 +357,29 @@ void AIAlgorithm::sortMoves(Node *node)
     //#define DEBUG_SORT
 #ifdef DEBUG_SORT
     for (int i = 0; i < node->childrenSize; i++) {
-        loggerDebug("* [%d] %x = %d\n", i, &(node->children[i]), node->children[i]->value);
+        loggerDebug("* [%d] %p: %d = %d (%d)\n",
+                    i, &(node->children[i]), node->children[i]->move, node->children[i]->value, !node->children[i]->pruned);
     }
     loggerDebug("\n");
 #endif
 
-    // TODO: 暂时使用 std::sort 排序, 后续需实现自己的排序函数
+#define NODE_PTR_SORT_FUN(x) nodep_##x
 
-    vector<Node *> vec;
-    vec.reserve(NODE_CHILDREN_SIZE);
+    gSideToMove = tempGame.position.sideToMove; // TODO: 暂时用全局变量
 
-    for (int i = 0; i < node->childrenSize; i++) {
-        vec.push_back(node->children[i]);
-    }
-
-    std::stable_sort(vec.begin(), vec.end(), cmp);
-
-    for (int i = 0; i < node->childrenSize; i++) {
-        node->children[i] = vec[i];
-    }
+    // 此处选用排序算法
+    NODE_PTR_SORT_FUN(sqrt_sort_sort_ins)(node->children, node->childrenSize);
 
 #ifdef DEBUG_SORT
     if (tempGame.position.sideToMove == PLAYER_BLACK) {
         for (int i = 0; i < node->childrenSize; i++) {
-            loggerDebug("+ [%d] %x = %d\n", i, &(node->children[i]), node->children[i]->value);
+            loggerDebug("+ [%d] %p: %d = %d (%d)\n",
+                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, !node->children[i]->pruned);
         }
      } else {
         for (int i = 0; i < node->childrenSize; i++) {
-            loggerDebug("- [%d] %x = %d\n", i, &(node->children[i]), node->children[i]->value);
+            loggerDebug("- [%d] %p: %d = %d (%d)\n",
+                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, !node->children[i]->pruned);
         }
     }
     loggerDebug("\n----------------------------------------\n");

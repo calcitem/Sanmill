@@ -60,6 +60,7 @@ HEADERS  += \
     src/base/hashMap.h \
     src/base/memmgr.h \
     src/base/misc.h \
+    src/base/sort.h \
     src/base/stack.h \
     src/base/thread.h \
     src/ai/search.h \
