@@ -67,7 +67,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
 #ifdef _DEBUG
     // 当 VC 下编译为 Debug 时
-    depth_t reduce = 4;
+    depth_t reduce = 0;
 #else
     depth_t reduce = 0;
 #endif
