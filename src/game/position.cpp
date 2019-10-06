@@ -893,7 +893,7 @@ bool Game::win(bool forceDraw)
     }
 
     // 如果中局被“闷”
-    if (position.phase == PHASE_MOVING && position.action == ACTION_CHOOSE && position.board.isAllSurrounded(position.sideToMove, position.nPiecesOnBoard, position.sideToMove)) {
+    if (position.phase == PHASE_MOVING && position.action == ACTION_CHOOSE && position.board.isAllSurrounded(position.sideId, position.nPiecesOnBoard, position.sideToMove)) {
         // 规则要求被“闷”判负，则对手获胜
         position.phase = PHASE_GAMEOVER;
 

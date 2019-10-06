@@ -390,7 +390,7 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
 // 判断玩家的棋子是否全部被围
 bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 {
-    char t = 0x30 & player;
+    char t = 0x30 & player; // 非 chSide
 
     return isAllSurrounded(sideId, nPiecesOnBoard, t);
 }
