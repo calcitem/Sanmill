@@ -36,7 +36,7 @@
 
 #define SORT_NAME nodep
 #define SORT_TYPE AIAlgorithm::Node*
-#define SORT_CMP(x, y) (-AIAlgorithm::nodeCompare((x), (y)))
+#define SORT_CMP(x, y) (AIAlgorithm::nodeCompare((x), (y)))
 
 player_t gSideToMove;
 
@@ -245,56 +245,19 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     return newNode;
 }
 
-int AIAlgorithm::nodeCompare(const Node * first, const Node * second)
+int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
-    int ret = 0;
-
-    if (gSideToMove == PLAYER_BLACK) {
-        if (first->value > second->value) {
-            ret = 1;
-            goto out;
+    if (first->value == second->value) {
+        if (first->pruned == second->pruned) {
+            return 0;
         }
 
-        if (first->value < second->value) {
-            ret = -1;
-            goto out;
-        }
-
-        if (first->value == second->value) {
-            if (!first->pruned && second->pruned) {
-                ret = 1;
-                goto out;
-            } else if (first->pruned && !second->pruned) {
-                ret = -1;
-                goto out;
-            }
-        }
+        return (first->pruned ? 1 : -1);
     }
 
-    if (gSideToMove == PLAYER_WHITE) {
-        if (first->value < second->value) {
-            ret = 1;
-            goto out;
-        }
+    int ret = (gSideToMove == PLAYER_BLACK ? 1 : -1);
 
-        if (first->value > second->value) {
-            ret = -1;
-            goto out;
-        }
-
-        if (first->value == second->value) {
-            if (!first->pruned && second->pruned) {
-                ret = 1;
-                goto out;
-            } else if (first->pruned && !second->pruned) {
-                ret = -1;
-                goto out;
-            }
-        }
-    }
-
-out:
-    return ret;
+    return (first->value < second->value ? ret : -ret);
 }
 
 void AIAlgorithm::sortMoves(Node *node)
