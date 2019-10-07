@@ -22,6 +22,9 @@
 #ifndef MISC_H
 #define MISC_H
 
+#include <cstdlib>
+#include <chrono>
+
 using TimePoint = std::chrono::milliseconds::rep; // A value in milliseconds
 
 static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 bits");

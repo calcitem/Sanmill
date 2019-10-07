@@ -116,8 +116,11 @@ private:
     // 主线程棋对象的引用
     const Game *game;
 
+public: // TODO: Change to private
     // AI 算法类
     AIAlgorithm ai;
+
+private:
 
     // AI的层数
     depth_t depth;

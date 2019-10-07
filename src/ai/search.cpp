@@ -32,6 +32,7 @@
 #include "endgame.h"
 #include "types.h"
 #include "option.h"
+#include "misc.h"
 
 #define SORT_NAME nodep
 #define SORT_TYPE AIAlgorithm::Node*
@@ -314,8 +315,22 @@ void AIAlgorithm::sortMoves(Node *node)
 
     gSideToMove = tempGame.position.sideToMove; // TODO: 暂时用全局变量
 
-    // 此处选用排序算法
+    // 此处选用排序算法, 各算法耗时统计如下:
+    /*
+     * sqrt_sort_sort_ins:          100% (4272)
+     * bubble_sort:                 115% (4920)
+     * binary_insertion_sort:       122% (5209)
+     * merge_sort:                  131% (5612)
+     * grail_lazy_stable_sort:      175% (7471)
+     * tim_sort:                    185% (7885)
+     * selection_sort:              202% (8642)
+     * rec_stable_sort:             226% (9646)
+     * sqrt_sort:                   275% (11729)
+     */
+    auto timeStart = now();
     NODE_PTR_SORT_FUN(sqrt_sort_sort_ins)(node->children, node->childrenSize);
+    auto timeEnd = now();
+    sortTime += (timeEnd - timeStart);
 
 #ifdef DEBUG_SORT
     if (tempGame.position.sideToMove == PLAYER_BLACK) {

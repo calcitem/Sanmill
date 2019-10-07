@@ -43,6 +43,7 @@
 #include "endgame.h"
 #include "types.h"
 #include "memmgr.h"
+#include "misc.h"
 
 using namespace std;
 using namespace CTSL;
@@ -97,6 +98,9 @@ public:
     };
 
     MemoryManager memmgr;
+
+    // 排序算法耗时 (ms)
+    TimePoint sortTime { 0 };
 
 public:
     AIAlgorithm();

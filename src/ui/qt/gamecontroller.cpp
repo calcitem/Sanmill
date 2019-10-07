@@ -61,19 +61,19 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     isAiPlayer[1] = false,
     isAiPlayer[2] = false,
 
-    ai[1] = new AiThread(1);
-    ai[2] = new AiThread(2);
+    aiThread[1] = new AiThread(1);
+    aiThread[2] = new AiThread(2);
 
     gameReset();
 
     // 关联AI和控制器的着法命令行
-    connect(ai[1], SIGNAL(command(const QString &, bool)),
+    connect(aiThread[1], SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
-    connect(ai[2], SIGNAL(command(const QString &, bool)),
+    connect(aiThread[2], SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
 
     // 关联AI和网络类的着法命令行
-    connect(ai[1]->getClient(), SIGNAL(command(const QString &, bool)),
+    connect(aiThread[1]->getClient(), SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
 
     // 安装事件过滤器监视scene的各个事件，
@@ -88,13 +88,13 @@ GameController::~GameController()
         killTimer(timeID);
 
     // 停掉线程
-    ai[1]->stop();
-    ai[2]->stop();
-    ai[1]->wait();
-    ai[2]->wait();
+    aiThread[1]->stop();
+    aiThread[2]->stop();
+    aiThread[1]->wait();
+    aiThread[2]->wait();
 
-    delete ai[1];
-    delete ai[2];
+    delete aiThread[1];
+    delete aiThread[2];
 
 #ifdef ENDGAME_LEARNING
     if (options.getLearnEndgameEnabled()) {
@@ -152,8 +152,8 @@ void GameController::gameReset()
 
     // 停掉线程
     if (!options.getAutoRestart()) {
-        ai[1]->stop();
-        ai[2]->stop();
+        aiThread[1]->stop();
+        aiThread[2]->stop();
         isAiPlayer[1] = false;
         isAiPlayer[2] = false;
     }
@@ -290,13 +290,13 @@ void GameController::setEngine(int id, bool arg)
     isAiPlayer[id] = arg;
 
     if (arg) {
-        ai[id]->setAi(game);
-        if (ai[id]->isRunning())
-            ai[id]->resume();
+        aiThread[id]->setAi(game);
+        if (aiThread[id]->isRunning())
+            aiThread[id]->resume();
         else
-            ai[id]->start();
+            aiThread[id]->start();
     } else {
-        ai[id]->stop();
+        aiThread[id]->stop();
     }
 }
 
@@ -313,32 +313,32 @@ void GameController::setEngine2(bool arg)
 void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2)
 {
     if (isAiPlayer[1]) {
-        ai[1]->stop();
-        ai[1]->wait();
+        aiThread[1]->stop();
+        aiThread[1]->wait();
     }
     if (isAiPlayer[2]) {
-        ai[2]->stop();
-        ai[2]->wait();
+        aiThread[2]->stop();
+        aiThread[2]->wait();
     }
 
-    ai[1]->setAi(game, depth1, time1);
-    ai[2]->setAi(game, depth2, time2);
+    aiThread[1]->setAi(game, depth1, time1);
+    aiThread[2]->setAi(game, depth2, time2);
 
     if (isAiPlayer[1]) {
-        ai[1]->start();
+        aiThread[1]->start();
     }
     if (isAiPlayer[2]) {
-        ai[2]->start();
+        aiThread[2]->start();
     }
 }
 
 void GameController::getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2)
 {
-    depth1 = ai[1]->getDepth();
-    time1 = ai[1]->getTimeLimit();
+    depth1 = aiThread[1]->getDepth();
+    time1 = aiThread[1]->getTimeLimit();
 
-    depth2 = ai[2]->getDepth();
-    time2 = ai[2]->getTimeLimit();
+    depth2 = aiThread[2]->getDepth();
+    time2 = aiThread[2]->getTimeLimit();
 }
 
 void GameController::setAnimation(bool arg)
@@ -394,12 +394,12 @@ void GameController::setLearnEndgame(bool enabled)
 void GameController::flip()
 {
     if (isAiPlayer[1]) {
-        ai[1]->stop();
-        ai[1]->wait();
+        aiThread[1]->stop();
+        aiThread[1]->wait();
     }
     if (isAiPlayer[2]) {
-        ai[2]->stop();
-        ai[2]->wait();
+        aiThread[2]->stop();
+        aiThread[2]->wait();
     }
 
     game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -418,15 +418,15 @@ void GameController::flip()
     else
         phaseChange(currentRow, true);
 
-    ai[1]->setAi(game);
-    ai[2]->setAi(game);
+    aiThread[1]->setAi(game);
+    aiThread[2]->setAi(game);
 
     if (isAiPlayer[1]) {
-        ai[1]->start();
+        aiThread[1]->start();
     }
 
     if (isAiPlayer[2]) {
-        ai[2]->start();
+        aiThread[2]->start();
     }
 }
 
@@ -434,12 +434,12 @@ void GameController::flip()
 void GameController::mirror()
 {
     if (isAiPlayer[1]) {
-        ai[1]->stop();
-        ai[1]->wait();
+        aiThread[1]->stop();
+        aiThread[1]->wait();
     }
     if (isAiPlayer[2]) {
-        ai[2]->stop();
-        ai[2]->wait();
+        aiThread[2]->stop();
+        aiThread[2]->wait();
     }
 
     game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -460,15 +460,15 @@ void GameController::mirror()
     else
         phaseChange(currentRow, true);
 
-    ai[1]->setAi(game);
-    ai[2]->setAi(game);
+    aiThread[1]->setAi(game);
+    aiThread[2]->setAi(game);
 
     if (isAiPlayer[1]) {
-        ai[1]->start();
+        aiThread[1]->start();
     }
 
     if (isAiPlayer[2]) {
-        ai[2]->start();
+        aiThread[2]->start();
     }
 }
 
@@ -476,12 +476,12 @@ void GameController::mirror()
 void GameController::turnRight()
 {
     if (isAiPlayer[1]) {
-        ai[1]->stop();
-        ai[1]->wait();
+        aiThread[1]->stop();
+        aiThread[1]->wait();
     }
     if (isAiPlayer[2]) {
-        ai[2]->stop();
-        ai[2]->wait();
+        aiThread[2]->stop();
+        aiThread[2]->wait();
     }
 
     game.position.board.rotate(-90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -500,15 +500,15 @@ void GameController::turnRight()
     else
         phaseChange(currentRow, true);
 
-    ai[1]->setAi(game);
-    ai[2]->setAi(game);
+    aiThread[1]->setAi(game);
+    aiThread[2]->setAi(game);
 
     if (isAiPlayer[1]) {
-        ai[1]->start();
+        aiThread[1]->start();
     }
 
     if (isAiPlayer[2]) {
-        ai[2]->start();
+        aiThread[2]->start();
     }
 }
 
@@ -516,12 +516,12 @@ void GameController::turnRight()
 void GameController::turnLeft()
 {
     if (isAiPlayer[1]) {
-        ai[1]->stop();
-        ai[1]->wait();
+        aiThread[1]->stop();
+        aiThread[1]->wait();
     }
     if (isAiPlayer[2]) {
-        ai[2]->stop();
-        ai[2]->wait();
+        aiThread[2]->stop();
+        aiThread[2]->wait();
     }
 
     game.position.board.rotate(90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -536,13 +536,13 @@ void GameController::turnLeft()
     // 刷新显示
     updateScence();
 
-    ai[1]->setAi(game);
-    ai[2]->setAi(game);
+    aiThread[1]->setAi(game);
+    aiThread[2]->setAi(game);
     if (isAiPlayer[1]) {
-        ai[1]->start();
+        aiThread[1]->start();
     }
     if (isAiPlayer[2]) {
-        ai[2]->start();
+        aiThread[2]->start();
     }
 }
 
@@ -755,22 +755,22 @@ bool GameController::actionPiece(QPointF pos)
             if (game.whoWin() == PLAYER_NOBODY) {
                 if (game.position.sideToMove == PLAYER_BLACK) {
                     if (isAiPlayer[1]) {
-                        ai[1]->resume();
+                        aiThread[1]->resume();
                     }
                     if (isAiPlayer[2])
-                        ai[2]->pause();
+                        aiThread[2]->pause();
                 } else {
                     if (isAiPlayer[1])
-                        ai[1]->pause();
+                        aiThread[1]->pause();
                     if (isAiPlayer[2]) {
-                        ai[2]->resume();
+                        aiThread[2]->resume();
                     }
                 }
             }
             // 如果已经决出胜负
             else {
-                ai[1]->stop();
-                ai[2]->stop();
+                aiThread[1]->stop();
+                aiThread[2]->stop();
 
                 // 弹框
                 //message = QString::fromStdString(game.getTips());
@@ -816,10 +816,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     Q_UNUSED(hasSound)
 
     // 防止接收滞后结束的线程发送的指令
-    if (sender() == ai[1] && !isAiPlayer[1])
+    if (sender() == aiThread[1] && !isAiPlayer[1])
         return false;
 
-    if (sender() == ai[2] && !isAiPlayer[2])
+    if (sender() == aiThread[2] && !isAiPlayer[2])
         return false;
 
     // 声音
@@ -895,22 +895,27 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         if (game.whoWin() == PLAYER_NOBODY) {
             if (game.position.sideToMove == PLAYER_BLACK) {
                 if (isAiPlayer[1]) {
-                    ai[1]->resume();
+                    aiThread[1]->resume();
                 }
                 if (isAiPlayer[2])
-                    ai[2]->pause();
+                    aiThread[2]->pause();
             } else {
                 if (isAiPlayer[1])
-                    ai[1]->pause();
+                    aiThread[1]->pause();
                 if (isAiPlayer[2]) {
-                    ai[2]->resume();
+                    aiThread[2]->resume();
                 }
             }
         }
         // 如果已经决出胜负
         else {           
-                ai[1]->stop();
-                ai[2]->stop();
+                aiThread[1]->stop();
+                aiThread[2]->stop();
+
+                loggerDebug("Sort Time: %ld + %ld = %ldms\n",
+                            aiThread[1]->ai.sortTime, aiThread[2]->ai.sortTime,
+                            (aiThread[1]->ai.sortTime + aiThread[2]->ai.sortTime));
+                aiThread[1]->ai.sortTime = aiThread[2]->ai.sortTime = 0;
 
                 if (options.getAutoRestart()) {
                     gameReset();
@@ -935,9 +940,9 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     // 网络: 将着法放到服务器的发送列表中
     if (isAiPlayer[1])
     {
-        ai[1]->getServer()->setAction(cmd);
+        aiThread[1]->getServer()->setAction(cmd);
     } else if (isAiPlayer[2]) {
-        ai[1]->getServer()->setAction(cmd);    // 注意: 同样是AI1
+        aiThread[1]->getServer()->setAction(cmd);    // 注意: 同样是AI1
     }
 
     return true;
@@ -1116,6 +1121,6 @@ bool GameController::updateScence(Game &g)
 
 void GameController::showNetworkWindow()
 {
-    ai[1]->getServer()->show();
-    ai[1]->getClient()->show();
+    aiThread[1]->getServer()->show();
+    aiThread[1]->getClient()->show();
 }

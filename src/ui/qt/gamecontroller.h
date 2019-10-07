@@ -202,7 +202,7 @@ private:
     Game tempGame;
 
     // 2个AI的线程
-    AiThread *ai[3];
+    AiThread *aiThread[3];
 
     // 棋局的场景类
     GameScene &scene;
