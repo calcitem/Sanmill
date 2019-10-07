@@ -22,16 +22,56 @@
 #ifndef STACK_H
 #define STACK_H
 
-template <typename T, size_t size = 128>
+#include <cstdlib>
+
+template <typename T, size_t capacity = 128>
 class Stack
 {
 public:
+    Stack &operator= (const Stack &other)
+    {
+        memcpy(arr, other.arr, length());
+        p = other.p;
+        return *this;
+    }
+
+    bool operator== (const T &other) const
+    {
+        return (p == other.p &&
+                memcmp(arr, other.arr, size()));
+    }
+
+#if 0
+    T operator*(const Stack<T> &obj)
+    {
+        return (obj.arr);
+    };
+#endif
+
+    T &operator[](int i)
+    {
+        return arr[i];
+    }
+
+    const T &operator[](int i) const
+    {
+        return arr[i];
+    }
+
     inline void push(const T &obj)
     {
         p++;
         memcpy(arr + p, &obj, sizeof(T));
 
-        assert(p < size);
+        assert(p < capacity);
+    }
+
+    inline void push_back(const T &obj)
+    {
+        p++;
+        arr[p] = obj;
+
+        assert(p < capacity);
     }
 
     inline void pop()
@@ -44,9 +84,39 @@ public:
         return arr[p];
     }
 
+    inline int size()
+    {
+        return p + 1;
+    }
+
+    inline size_t length()
+    {
+        return (sizeof(T) * size());
+    }
+
+    inline T &begin()
+    {
+        return arr[0];
+    }
+
+    inline T &end()
+    {
+        return arr[p + 1];
+    }
+
+    inline bool empty()
+    {
+        return (p < 0);
+    }
+
+    inline void clear()
+    {
+        p = -1;
+    }
+
 private:
     int p { -1 };
-    T arr[size];
+    T arr[capacity];
 };
 
 #endif // STACK_H
