@@ -333,7 +333,7 @@ void MoveList::create()
 
 #ifdef DEBUG_MODE
     int sum = 0;
-    for (int i = 0; i < Board::N_LOCATIONS; i++) {
+    for (int i = 0; i < SQ_EXPANDED_COUNT; i++) {
         loggerDebug("/* %d */ {", i);
         for (int j = 0; j < DIRECTIONS_COUNT; j++) {
             if (j == DIRECTIONS_COUNT - 1)

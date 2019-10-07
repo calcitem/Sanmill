@@ -76,7 +76,7 @@ public:
 
 #ifdef DEBUG_AB_TREE
         size_t id;                      // 结点编号
-        string cmd;
+        char cmd[32];
         int depth;                      // 深度
         bool evaluated;                 // 是否评估过局面
         int alpha;                      // 当前搜索结点走棋方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义。当函数递归时 Alpha 和 Beta 不但取负数而且要交换位置
