@@ -123,7 +123,7 @@ mem_header_t* MemoryManager::get_mem_from_pool(size_t nquantas)
 // The pointer returned to the user points to the free space within the block,
 // which begins one quanta after the header.
 //
-void* MemoryManager::_memmgr_alloc(size_t nbytes)
+void* MemoryManager::memmgr_alloc(size_t nbytes)
 {
     mem_header_t* p;
     mem_header_t* prevp;
@@ -279,7 +279,7 @@ void *MemoryManager::memmgr_alloc_with_align(size_t len, int align)
     return __builtin_memalign(align, len);
 }
 
-void *MemoryManager::memmgr_alloc(size_t nbytes)
+void *MemoryManager::_memmgr_alloc(size_t nbytes)
 {
     return memmgr_alloc_with_align(nbytes, 4);
 }
