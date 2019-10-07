@@ -99,8 +99,10 @@ public:
 
     MemoryManager memmgr;
 
+#ifdef TIME_STAT
     // 排序算法耗时 (ms)
     TimePoint sortTime { 0 };
+#endif
 
 public:
     AIAlgorithm();

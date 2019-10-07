@@ -911,11 +911,12 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         else {           
                 aiThread[1]->stop();
                 aiThread[2]->stop();
-
+#ifdef TIME_STAT
                 loggerDebug("Sort Time: %ld + %ld = %ldms\n",
                             aiThread[1]->ai.sortTime, aiThread[2]->ai.sortTime,
                             (aiThread[1]->ai.sortTime + aiThread[2]->ai.sortTime));
                 aiThread[1]->ai.sortTime = aiThread[2]->ai.sortTime = 0;
+#endif
 
                 if (options.getAutoRestart()) {
                     gameReset();

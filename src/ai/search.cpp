@@ -290,10 +290,16 @@ void AIAlgorithm::sortMoves(Node *node)
      * rec_stable_sort:             226% (9646)
      * sqrt_sort:                   275% (11729)
      */
+#ifdef TIME_STAT
     auto timeStart = now();
+#endif
+
     NODE_PTR_SORT_FUN(sqrt_sort_sort_ins)(node->children, node->childrenSize);
+
+#ifdef TIME_STAT
     auto timeEnd = now();
     sortTime += (timeEnd - timeStart);
+#endif
 
 #ifdef DEBUG_SORT
     if (tempGame.position.sideToMove == PLAYER_BLACK) {
@@ -382,8 +388,10 @@ int AIAlgorithm::search(depth_t depth)
     time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
 
+#ifdef TIME_STAT
     auto timeStart = chrono::steady_clock::now();
     chrono::steady_clock::time_point timeEnd;
+#endif
 
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
@@ -448,8 +456,10 @@ int AIAlgorithm::search(depth_t depth)
         beta = value + VALUE_IDS_WINDOW;
     }
 
+#ifdef TIME_STAT
     timeEnd = chrono::steady_clock::now();
     loggerDebug("\nIDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+#endif
 #endif /* IDS_SUPPORT */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -464,8 +474,10 @@ int AIAlgorithm::search(depth_t depth)
 
     value = search(d, alpha, beta, root);
 
+#ifdef TIME_STAT
     timeEnd = chrono::steady_clock::now();
     loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+#endif
 
     // 生成了 Alpha-Beta 树
 

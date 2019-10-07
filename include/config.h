@@ -40,6 +40,8 @@
 #define EMIT_COMMAND_DELAY (0)
 #endif
 
+//#define TIME_STAT
+
 //#define MIN_MAX_ONLY
 
 //#define EVALUATE_ENABLE
