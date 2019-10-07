@@ -73,7 +73,7 @@ struct Rule
 };
 
 // 预定义的规则数目
-static const int N_RULES = 4;
+#define N_RULES 5
 
 // 预定义的规则
 extern const struct Rule RULES[N_RULES];
