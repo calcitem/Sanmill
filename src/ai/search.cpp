@@ -415,7 +415,10 @@ int AIAlgorithm::search(depth_t depth)
     value_t alpha = -VALUE_INFINITE;
     value_t beta = VALUE_INFINITE;
 
+    loggerDebug("IDS: ");
+
     depth_t depthBegin = 2;
+    value_t lastValue = VALUE_ZERO;
 
     for (depth_t i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -425,7 +428,8 @@ int AIAlgorithm::search(depth_t depth)
 #endif
         value = search(i, alpha, beta, root);
 
-        loggerDebug("IDS [%d]: %d\n", i, value);
+        loggerDebug("%d(%d) ", value, value - lastValue);
+        lastValue = value;
 
 #if 0
         if (value <= alpha) {
