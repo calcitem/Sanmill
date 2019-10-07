@@ -868,7 +868,7 @@ const char* AIAlgorithm::bestMove()
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    loggerDebug(""Hash hit count: %llu\n", hashHitCount);
+    loggerDebug("Hash hit count: %llu\n", hashHitCount);
 #endif
 #endif
 

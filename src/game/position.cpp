@@ -556,7 +556,7 @@ bool Game::capture(square_t square, int8_t updateCmdlist)
 
     currentSquare = SQ_0;
     position.nPiecesNeedRemove--;
-    updateHash(square);
+    updateHash(square); // TODO: 多余? 若去掉.则评估点的数量和哈希命中数量上升, 未剪枝?
 
     // 去子完成
 
