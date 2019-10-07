@@ -318,6 +318,8 @@ bool Board::isAllInMills(player_t player)
 int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
                                            square_t square, bool includeFobidden)
 {
+    assert(rule.hasForbiddenLocations == includeFobidden);
+
     int count = 0;
 
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||

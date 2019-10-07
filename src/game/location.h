@@ -25,6 +25,7 @@
 #include "config.h"
 #include "option.h"
 #include "types.h"
+#include "rule.h"
 
  // 棋局，抽象为一个（5×8）的数组，上下两行留空
  /*
@@ -46,6 +47,7 @@ public:
 
     inline static void setForbiden(location_t &location)
     {
+        assert(rule.hasForbiddenLocations == true);
         location = PIECE_FORBIDDEN;
     }
 

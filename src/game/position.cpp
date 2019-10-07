@@ -90,9 +90,12 @@ int Game::countPiecesOnBoard()
                 position.nPiecesOnBoard[BLACK]++;
             } else if (boardLocations[square] & PIECE_WHITE) {
                 position.nPiecesOnBoard[WHITE]++;
-            } else if (boardLocations[square] & PIECE_FORBIDDEN) {
+            }
+#if 0
+            else if (boardLocations[square] & PIECE_FORBIDDEN) {
                 // 不计算盘面子数
             }
+#endif
         }
     }
 
@@ -931,6 +934,7 @@ bool Game::win(bool forceDraw)
 // 计算玩家1和玩家2的棋子活动能力之差
 int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
 {
+    // TODO: 处理规则无禁点的情况
     location_t *locations = boardLocations;
     int mobilityBlack = 0;
     int mobilityWhite = 0;
@@ -954,6 +958,10 @@ int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobid
 
 void Game::cleanForbiddenLocations()
 {
+    if (!rule.hasForbiddenLocations) {
+        return;
+    }
+
     square_t square = SQ_0;
 
     for (int r = 1; r <= Board::N_RINGS; r++) {
