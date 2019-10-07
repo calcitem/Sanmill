@@ -1070,7 +1070,7 @@ bool GameController::updateScence(Game &g)
     // 添加摆棋阶段禁子点
     if (rule.hasForbiddenLocations && g.getPhase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
-            if (board[j] == 0x0F) {
+            if (board[j] == PIECE_FORBIDDEN) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
                 if (nTotalPieces < pieceList.size()) {
                     pieceList.at(nTotalPieces++)->setPos(pos);

@@ -327,7 +327,7 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
             moveSquare = static_cast<square_t>(MoveList::moveTable[square][d]);
             if (moveSquare) {
                 if (locations[moveSquare] == 0x00 ||
-                    (includeFobidden && locations[moveSquare] == 0x0F)) {
+                    (includeFobidden && locations[moveSquare] == PIECE_FORBIDDEN)) {
                     count++;
                 }
             }
