@@ -540,7 +540,8 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     value_t probeVal = TT::probeHash(hash, depth, alpha, beta, bestMove, type);
 
-    if (probeVal != INT16_MIN /* TODO: valUNKOWN */  && node != root) {
+    if (probeVal != INT16_MIN /* TODO: valUNKOWN */) {
+        assert(node != root);
 #ifdef TRANSPOSITION_TABLE_DEBUG
         hashHitCount++;
 #endif
