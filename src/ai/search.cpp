@@ -566,6 +566,11 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
         return node->value;
     }
+#ifdef TRANSPOSITION_TABLE_DEBUG
+    else {
+        hashMissCount++;
+    }
+#endif
 
     //hashMapMutex.unlock();
 #endif /* TRANSPOSITION_TABLE_ENABLE */
@@ -869,9 +874,14 @@ const char* AIAlgorithm::bestMove()
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    loggerDebug("Hash hit count: %llu\n", hashHitCount);
-#endif
-#endif
+    size_t hashProbeCount = hashHitCount + hashMissCount;
+    if (hashProbeCount)
+    {
+        loggerDebug("[hash] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                    hashProbeCount, hashHitCount, hashMissCount, hashHitCount * 100 / hashProbeCount);
+    }
+#endif // TRANSPOSITION_TABLE_DEBUG
+#endif // TRANSPOSITION_TABLE_ENABLE
 
     if (bestMoves.empty()) {
         return nullptr;

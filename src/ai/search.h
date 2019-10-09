@@ -217,18 +217,6 @@ private:
     // 评估过的结点个数
     size_t evaluatedNodeCount {0};
 
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef TRANSPOSITION_TABLE_DEBUG
-    // Hash 统计数据
-    size_t hashEntryCount;
-    size_t hashHitCount;
-    size_t hashInsertNewCount;
-    size_t hashAddrHitCount;
-    size_t hashReplaceCozDepthCount;
-    size_t hashReplaceCozHashCount;
-#endif
-#endif
-
     // 局面数据栈
 #ifdef USE_STD_STACK
     stack<Position, vector<Position> > positionStack;
@@ -242,6 +230,20 @@ private:
 private:
     // 命令行
     char cmdline[64] {};
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef TRANSPOSITION_TABLE_DEBUG
+public:
+    // Hash 统计数据
+    size_t hashEntryCount{ 0 };
+    size_t hashHitCount{ 0 };
+    size_t hashMissCount{ 0 };
+    size_t hashInsertNewCount{ 0 };
+    size_t hashAddrHitCount{ 0 };
+    size_t hashReplaceCozDepthCount{ 0 };
+    size_t hashReplaceCozHashCount{ 0 };
+#endif
+#endif
 };
 
 #include "tt.h"

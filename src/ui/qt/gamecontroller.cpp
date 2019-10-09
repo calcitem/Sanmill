@@ -916,7 +916,30 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
                             aiThread[1]->ai.sortTime, aiThread[2]->ai.sortTime,
                             (aiThread[1]->ai.sortTime + aiThread[2]->ai.sortTime));
                 aiThread[1]->ai.sortTime = aiThread[2]->ai.sortTime = 0;
-#endif
+#endif // TIME_STAT
+
+#ifdef TRANSPOSITION_TABLE_DEBUG                
+                size_t hashProbeCount_1 = aiThread[1]->ai.hashHitCount + aiThread[1]->ai.hashMissCount;
+                size_t hashProbeCount_2 = aiThread[2]->ai.hashHitCount + aiThread[2]->ai.hashMissCount;
+                
+                loggerDebug("[hash 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                            hashProbeCount_1,
+                            aiThread[1]->ai.hashHitCount,
+                            aiThread[1]->ai.hashMissCount,
+                            aiThread[1]->ai.hashHitCount * 100 / hashProbeCount_1);
+
+                loggerDebug("[hash 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                            hashProbeCount_2,
+                            aiThread[2]->ai.hashHitCount,
+                            aiThread[2]->ai.hashMissCount,
+                            aiThread[2]->ai.hashHitCount * 100 / hashProbeCount_2);
+
+                loggerDebug("[hash +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                            hashProbeCount_1 + hashProbeCount_2,
+                            aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount,
+                            aiThread[1]->ai.hashMissCount + aiThread[2]->ai.hashMissCount,
+                            (aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
+#endif // TRANSPOSITION_TABLE_DEBUG
 
                 if (options.getAutoRestart()) {
                     gameReset();
