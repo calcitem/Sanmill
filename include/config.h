@@ -124,4 +124,11 @@
 #define sprintf sprintf_s
 #endif
 
+#ifndef  __GNUC__
+#define __builtin_expect(expr, n)    (expr)
+#endif
+
+#define likely(expr)    (__builtin_expect(!!(expr), 1))
+#define unlikely(expr)  (__builtin_expect(!!(expr), 0))
+
 #endif // CONFIG_H

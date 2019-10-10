@@ -125,7 +125,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     }
 
     // Debug 下调低深度
-    if (d > reduce)
+    if (unlikely(d > reduce))
     {
         d -= reduce;
     }
@@ -144,25 +144,25 @@ void AIAlgorithm::buildRoot()
 
 struct AIAlgorithm::Node *AIAlgorithm::addNode(
     Node *parent,
-    value_t value,
-    move_t move,
-    move_t bestMove,
-    player_t side
+    const value_t &value,
+    const move_t &move,
+    const move_t &bestMove,
+    const player_t &side
 )
 {
     Node *newNode = (Node *)memmgr.memmgr_alloc(sizeof(Node));
 
-    if (newNode == nullptr) {
+    if (unlikely(newNode == nullptr)) {
         memmgr.memmgr_print_stats();
         loggerDebug("Memory Manager Alloc failed\n");
         // TODO: Deal with alloc failed
         return nullptr;
     }
 
+    newNode->move = move;
+    newNode->value = value;
     newNode->childrenSize = 0;  // Important
     newNode->parent = parent;
-    newNode->value = value;
-    newNode->move = move;
 
     nodeCount++;
 #ifdef DEBUG_AB_TREE
@@ -233,9 +233,13 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
         } else {
             // 如果启用了置换表并且不是叶子结点，把哈希得到的最优着法换到首位
             // TODO: memmove
-            for (int i = parent->childrenSize; i >= 1; i--) {
+#if 1
+            int pcs = parent->childrenSize;
+            for (int i = pcs; i >= 1; i--) {
                 parent->children[i] = parent->children[i - 1];
             }
+#endif
+            //memmove(parent->children[1], parent->children[0], parent->childrenSize);
 
             parent->children[0] = newNode;
             parent->childrenSize++;
@@ -326,7 +330,8 @@ void AIAlgorithm::deleteTree(Node *node)
         return;
     }
 
-    for (int i = 0; i < node->childrenSize; i++) {
+    int nchild = node->childrenSize;
+    for (int i = 0; i < nchild; i++) {
         deleteTree(node->children[i]);
     }
 
@@ -541,7 +546,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     value_t probeVal = TT::probeHash(hash, depth, alpha, beta, bestMove, type);
 
     if (probeVal != INT16_MIN /* TODO: valUNKOWN */) {
+#ifdef DEBUG_MODE
         assert(node != root);
+#endif
 #ifdef TRANSPOSITION_TABLE_DEBUG
         hashHitCount++;
 #endif
@@ -590,7 +597,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif // DEBUG_AB_TREE
 
     // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-    if (position->phase == PHASE_GAMEOVER) {
+    if (unlikely(position->phase == PHASE_GAMEOVER)) {
         // 局面评估
         node->value = Evaluation::getValue(tempGame, position, node);
         evaluatedNodeCount++;
@@ -615,7 +622,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     }
 
     // 搜索到第0层或需要退出
-    if (!depth || requiredQuit) {
+    if (!depth || unlikely(requiredQuit)) {
         // 局面评估
         node->value = Evaluation::getValue(tempGame, position, node);
         evaluatedNodeCount++;
@@ -647,7 +654,8 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     assert(node->childrenSize != 0);
 
-    for (int i = 0; i < node->childrenSize; i++) {
+    int nchild = node->childrenSize;
+    for (int i = 0; i < nchild; i++) {
         doMove(node->children[i]->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
@@ -736,11 +744,14 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
 #ifndef DONOT_DELETE_TREE
-    for (int i = 0; i < node->childrenSize; i++) {
-        for (int j = 0; j < node->children[i]->childrenSize; j++) {
-            deleteTree(node->children[i]->children[j]);
+    int cs =  node->childrenSize;
+    for (int i = 0; i < cs; i++) {
+        Node *c = node->children[i];
+        int size = c->childrenSize;
+        for (int j = 0; j < size; j++) {
+            deleteTree(c->children[j]);
         }
-        node->children[i]->childrenSize = 0;
+        c->childrenSize = 0;
     }
 #endif // DONOT_DELETE_TREE
 
@@ -790,8 +801,8 @@ const char* AIAlgorithm::bestMove()
 
     int i = 0;
     string moves = "moves";
-
-    for (int j = 0; j < root->childrenSize; j++) {
+    int cs = root->childrenSize;
+    for (int j = 0; j < cs; j++) {
         if (root->children[j]->value == root->value
 #ifdef SORT_CONSIDER_PRUNED
             && !root->children[j]->pruned
@@ -850,7 +861,8 @@ const char* AIAlgorithm::bestMove()
         }
     }
 
-    for (int j = 0; j < root->childrenSize; j++) {
+    int nchild = root->childrenSize;
+    for (int j = 0; j < nchild; j++) {
         if (root->children[j]->value == root->value) {
             bestMoves.push_back(root->children[j]);
         }
