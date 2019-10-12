@@ -8,9 +8,11 @@ HashMap<hash_t, TT::HashValue> transpositionTable(TRANSPOSITION_TABLE_SIZE);
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-value_t TT::probeHash(hash_t hash,
-                                 depth_t depth, value_t alpha, value_t beta,
-                                 move_t &bestMove, HashType &type)
+value_t TT::probeHash(const hash_t &hash,
+                      const depth_t &depth,
+                      const value_t &alpha,
+                      const value_t &beta,
+                      move_t &bestMove, HashType &type)
 {
     HashValue hashValue{};
 
@@ -50,7 +52,7 @@ out:
     return VALUE_UNKNOWN;
 }
 
-bool TT::findHash(hash_t hash, TT::HashValue &hashValue)
+bool TT::findHash(const hash_t &hash, TT::HashValue &hashValue)
 {
     return transpositionTable.find(hash, hashValue);
 
@@ -79,7 +81,11 @@ bool TT::findHash(hash_t hash, TT::HashValue &hashValue)
 #endif
 }
 
-int TT::recordHash(value_t value, depth_t depth, TT::HashType type, hash_t hash, move_t bestMove)
+int TT::recordHash(const value_t &value,
+                   const depth_t &depth,
+                   const TT::HashType &type,
+                   const hash_t &hash,
+                   const move_t &bestMove)
 {
     // 同样深度或更深时替换
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY

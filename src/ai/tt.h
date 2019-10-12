@@ -38,11 +38,11 @@ public:
     };
 
     // 查找哈希表
-    static bool findHash(hash_t hash, HashValue &hashValue);
-    static value_t probeHash(hash_t hash, depth_t depth, value_t alpha, value_t beta, move_t &bestMove, HashType &type);
+    static bool findHash(const hash_t &hash, HashValue &hashValue);
+    static value_t probeHash(const hash_t &hash, const depth_t &depth, const value_t &alpha, const value_t &beta, move_t &bestMove, HashType &type);
 
     // 插入哈希表
-    static int recordHash(value_t value, depth_t depth, HashType type, hash_t hash, move_t bestMove);
+    static int recordHash(const value_t &value, const depth_t &depth, const HashType &type, const hash_t &hash, const move_t &bestMove);
 
     // 清空置换表
     static void clear();
