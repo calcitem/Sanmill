@@ -45,7 +45,7 @@ player_t gSideToMove;
 using namespace CTSL;
 
 // 用于检测重复局面 (Position)
-vector<hash_t> history;
+vector<hash_t> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
 {
@@ -367,7 +367,7 @@ void AIAlgorithm::setGame(const Game &g)
         //endgameList.clear();
 #endif // ENDGAME_LEARNING
 
-        history.clear();
+        moveHistory.clear();
     }
 
     this->game = g;
@@ -415,19 +415,19 @@ int AIAlgorithm::search(depth_t depth)
     if (game.getPhase() == PHASE_MOVING) {
         hash_t hash = game.getHash();
         
-        if (std::find(history.begin(), history.end(), hash) != history.end()) {
+        if (std::find(moveHistory.begin(), moveHistory.end(), hash) != moveHistory.end()) {
             nRepetition++;
             if (nRepetition == 3) {
                 nRepetition = 0;
                 return 3;
             }
         } else {
-            history.push_back(hash);
+            moveHistory.push_back(hash);
         }
     }
 
     if (game.getPhase() == PHASE_PLACING) {
-        history.clear();
+        moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
 

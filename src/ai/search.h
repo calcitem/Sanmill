@@ -249,7 +249,7 @@ public:
 #include "tt.h"
 
 #ifdef THREEFOLD_REPETITION
-extern vector<hash_t> history;
+extern vector<hash_t> moveHistory;
 #endif
 
 #endif /* SEARCH_H */
