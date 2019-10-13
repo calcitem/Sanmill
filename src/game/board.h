@@ -70,6 +70,7 @@ public:
 
     // 判断棋盘 square 处的棋子处于几个“三连”中
     int inHowManyMills(square_t square);
+    int inHowManyMills2(square_t square);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(player_t);

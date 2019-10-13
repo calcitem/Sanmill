@@ -220,11 +220,18 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
         // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
-            // 优先成三 // TODO: Adapt MEMORY_POOL
-            if (tempGame.getPhase() == GAME_PLACING && move > 0 && tempGame.position.board.isInMills(move, true)) {
-                parent->children.insert(parent->children.begin(), newNode);
+            // 优先成三
+            if (tempGame.getPhase() == PHASE_PLACING && move > 0 &&
+                tempGame.position.board.inHowManyMills2((square_t)move)) {
+                int pcs = parent->childrenSize;
+                for (int i = pcs; i >= 1; i--) {
+                    parent->children[i] = parent->children[i - 1];
+                }
+                parent->children[0] = newNode;
+                parent->childrenSize++;
             } else {
-                parent->children.push_back(newNode);
+                parent->children[parent->childrenSize] = newNode;
+                parent->childrenSize++;
             }
 #else // MILL_FIRST
             parent->children[parent->childrenSize] = newNode;

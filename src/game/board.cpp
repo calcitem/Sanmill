@@ -225,6 +225,22 @@ int Board::inHowManyMills(square_t square)
     return n;
 }
 
+int Board::inHowManyMills2(square_t square)
+{
+    int n = 0;
+    int square_1, square_2;
+
+    for (int l = 0; l < LINE_TYPES_COUNT; l++) {
+        square_1 = millTable[square][l][0];
+        square_2 = millTable[square][l][1];
+        if (locations[square_1] & locations[square_2]) {
+            n++;
+        }
+    }
+
+    return n;
+}
+
 int Board::addMills(square_t square)
 {
     // 成三用一个64位整数了，规则如下

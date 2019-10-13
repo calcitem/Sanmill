@@ -51,10 +51,12 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
             for (move_t i : movePriorityTable) {
                 square = static_cast<square_t>(i);
 
+                // 如果已经有子占据, 继续检索
                 if (tempGame.boardLocations[square]) {
                     continue;
                 }
 
+                // 否则如果是空位
                 if (tempGame.position.phase != PHASE_READY || node != root) {
                     ai.addNode(node, VALUE_ZERO, (move_t)square, bestMove, tempGame.position.sideToMove);
                 } else {
