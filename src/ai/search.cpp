@@ -259,11 +259,15 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
     if (first->value == second->value) {
+#ifdef SORT_CONSIDER_PRUNED
         if (first->pruned == second->pruned) {
             return 0;
         }
 
         return (first->pruned ? 1 : -1);
+#else /* SORT_CONSIDER_PRUNED */
+        return 0;
+#endif /* SORT_CONSIDER_PRUNED */
     }
 
     int ret = (gSideToMove == PLAYER_BLACK ? 1 : -1);
