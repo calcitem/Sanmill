@@ -434,10 +434,11 @@ int AIAlgorithm::search(depth_t depth)
     // 随机打乱着法顺序
     MoveList::shuffle();   
 
-#ifdef IDS_SUPPORT
-    // 深化迭代
     value_t alpha = -VALUE_INFINITE;
     value_t beta = VALUE_INFINITE;
+
+#ifdef IDS_SUPPORT
+    // 深化迭代
 
     loggerDebug("IDS: ");
 
@@ -484,9 +485,11 @@ int AIAlgorithm::search(depth_t depth)
 #endif
 #endif
 
+#ifdef IDS_SUPPORT
     value_t window = game.getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
     alpha = value - window;
     beta = value + window;
+#endif // IDS_SUPPORT
 
     value = search(d, alpha, beta, root);
 
