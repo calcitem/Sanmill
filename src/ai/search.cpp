@@ -668,6 +668,12 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     assert(node->childrenSize != 0);
 
+#ifdef CLEAR_PRUNED_FLAG_BEFORE_SEARCH
+#ifdef SORT_CONSIDER_PRUNED
+    node->pruned = false;
+#endif  // SORT_CONSIDER_PRUNED
+#endif // CLEAR_PRUNED_FLAG_BEFORE_SEARCH
+
     int nchild = node->childrenSize;
     for (int i = 0; i < nchild; i++) {
         doMove(node->children[i]->move);
