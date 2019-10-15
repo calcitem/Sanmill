@@ -28,6 +28,15 @@ template <typename T, size_t capacity = 128>
 class Stack
 {
 public:
+    Stack()
+    {
+    }
+
+    ~Stack()
+    {
+        memset(arr, 0, sizeof(T) * capacity);
+    }
+
     Stack &operator= (const Stack &other)
     {
         memcpy(arr, other.arr, length());
