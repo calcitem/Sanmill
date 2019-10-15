@@ -445,6 +445,10 @@ int AIAlgorithm::search(depth_t depth)
     depth_t depthBegin = 2;
     value_t lastValue = VALUE_ZERO;
 
+    loggerDebug("\n==============================\n");
+    loggerDebug("==============================\n");
+    loggerDebug("==============================\n");
+
     for (depth_t i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
@@ -454,6 +458,27 @@ int AIAlgorithm::search(depth_t depth)
         value = search(i, alpha, beta, root);
 
         loggerDebug("%d(%d) ", value, value - lastValue);
+
+#ifdef IDS_DEBUG
+        loggerDebug(": --------------- depth = %d/%d ---------------\n", i, d);
+        int k = 0;
+        int cs = root->childrenSize;
+        for (int j = 0; j < cs; j++) {
+            if (root->children[j]->value == root->value
+#ifdef SORT_CONSIDER_PRUNED
+                && !root->children[j]->pruned
+#endif
+                ) {
+                loggerDebug("[%.2d] %d\t%s\t%d *\n", k, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
+            } else {
+                loggerDebug("[%.2d] %d\t%s\t%d\n", k, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
+            }
+
+            k++;
+        }
+        loggerDebug("\n");
+#endif // IDS_DEBUG
+
         lastValue = value;
 
 #if 0
