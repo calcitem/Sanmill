@@ -803,6 +803,16 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #ifdef IDS_SUPPORT
     // 排序子节点树
     sortMoves(node);
+
+#ifdef IDS_ADD_VALUE
+    if (tempGame.position.sideToMove == PLAYER_BLACK) {
+        node->children[0]->value += 1;
+        node->value += 1;
+    } else {
+        node->children[0]->value -= 1;
+        node->value -= 1;
+    }
+#endif /* IDS_ADD_VALUE */
 #endif // IDS_SUPPORT
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
