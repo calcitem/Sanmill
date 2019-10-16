@@ -367,6 +367,11 @@ bool Game::place(square_t square, int8_t updateCmdlist)
         if (n == 0) {
             // 如果双方都无未放置的棋子
             if (position.nPiecesInHand[BLACK] == 0 && position.nPiecesInHand[WHITE] == 0) {
+                // 决胜负
+                if (win()) {
+                    goto out;
+                }
+
                 // 进入中局阶段
                 position.phase = PHASE_MOVING;
 
