@@ -221,8 +221,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
         if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
             // 优先成三
-            if (tempGame.getPhase() == PHASE_PLACING && move > 0 &&
-                tempGame.position.board.inHowManyMills2((square_t)move)) {
+            if (move > 0 && tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.sideToMove)) {
                 int pcs = parent->childrenSize;
                 for (int i = pcs; i >= 1; i--) {
                     parent->children[i] = parent->children[i - 1];
