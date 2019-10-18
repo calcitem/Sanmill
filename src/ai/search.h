@@ -63,6 +63,7 @@ public:
     public:
         move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
         value_t value { VALUE_UNKNOWN };                 // 节点的值
+        rating_t rating { RATING_ZERO };             // 节点分数
 
 #ifdef SORT_CONSIDER_PRUNED
         bool pruned { false };                    // 是否在此处剪枝
@@ -147,7 +148,7 @@ public:
 
 public: /* TODO: Move to private or protected */
     // 增加新节点
-    struct Node *addNode(Node *parent, const value_t &value,
+    struct Node *addNode(Node *parent, const value_t &value, const rating_t &rating,
                          const move_t &move, const move_t &bestMove,
                          const player_t &side);
 

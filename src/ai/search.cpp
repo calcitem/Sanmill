@@ -137,7 +137,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
 void AIAlgorithm::buildRoot()
 {
-    root = addNode(nullptr, VALUE_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
+    root = addNode(nullptr, VALUE_ZERO, RATING_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
 
     assert(root != nullptr);
 }
@@ -145,6 +145,7 @@ void AIAlgorithm::buildRoot()
 struct AIAlgorithm::Node *AIAlgorithm::addNode(
     Node *parent,
     const value_t &value,
+    const rating_t &rating,
     const move_t &move,
     const move_t &bestMove,
     const player_t &side
@@ -161,6 +162,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 
     newNode->move = move;
     newNode->value = value;
+    newNode->rating = rating;
     newNode->childrenSize = 0;  // Important
     newNode->parent = parent;
 
@@ -216,40 +218,32 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     strcpy(newNode->cmd, cmd);
 #endif // DEBUG_AB_TREE
 
-    if (parent) {
-        // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
-        if (bestMove == 0 || move != bestMove) {
-#ifdef MILL_FIRST
-            // 优先成三
-            if (move > 0 && tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.sideToMove)) {
-                int pcs = parent->childrenSize;
-                for (int i = pcs; i >= 1; i--) {
-                    parent->children[i] = parent->children[i - 1];
-                }
-                parent->children[0] = newNode;
-                parent->childrenSize++;
-            } else {
-                parent->children[parent->childrenSize] = newNode;
-                parent->childrenSize++;
-            }
-#else // MILL_FIRST
-            parent->children[parent->childrenSize] = newNode;
-            parent->childrenSize++;
-#endif // MILL_FIRST
-        } else {
-            // 如果启用了置换表并且不是叶子结点，把哈希得到的最优着法换到首位
-            // TODO: memmove
-#if 1
-            int pcs = parent->childrenSize;
-            for (int i = pcs; i >= 1; i--) {
-                parent->children[i] = parent->children[i - 1];
-            }
-#endif
-            //memmove(parent->children[1], parent->children[0], parent->childrenSize);
+    if (!parent) {
+        return newNode;
+    }
 
-            parent->children[0] = newNode;
-            parent->childrenSize++;
+    parent->children[parent->childrenSize] = newNode;
+    parent->childrenSize++;
+
+    // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
+    if (bestMove == 0 || move != bestMove) {
+#ifdef MILL_FIRST
+        // TODO: rule.allowRemoveMultiPieces
+        if (move > 0) {
+            // 检测落子点是否能使得本方成三
+            int nMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.sideToMove);
+            if (nMills > 0) {
+                newNode->rating = static_cast<rating_t>(RATING_ONE_MILL * nMills);
+            } else {
+                // 检测落子点是否能阻止对方成三
+                int nopponentMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.opponent);
+                newNode->rating = static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+            }
         }
+#endif // MILL_FIRST
+    } else {
+        // 如果启用了置换表并且不是叶子结点
+        newNode->rating = RATING_TT;
     }
 
     return newNode;
@@ -257,21 +251,17 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 
 int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
-    if (first->value == second->value) {
-#ifdef SORT_CONSIDER_PRUNED
-        if (first->pruned == second->pruned) {
+    if (first->rating == second->rating) {
+        if (first->value == second->value) {
             return 0;
         }
 
-        return (first->pruned ? 1 : -1);
-#else /* SORT_CONSIDER_PRUNED */
-        return 0;
-#endif /* SORT_CONSIDER_PRUNED */
+        int ret = (gSideToMove == PLAYER_BLACK ? 1 : -1);
+
+        return (first->value < second->value ? ret : -ret);        
     }
 
-    int ret = (gSideToMove == PLAYER_BLACK ? 1 : -1);
-
-    return (first->value < second->value ? ret : -ret);
+    return (first->rating < second->rating ? 1 : -1);    
 }
 
 void AIAlgorithm::sortMoves(Node *node)
@@ -282,8 +272,8 @@ void AIAlgorithm::sortMoves(Node *node)
     //#define DEBUG_SORT
 #ifdef DEBUG_SORT
     for (int i = 0; i < node->childrenSize; i++) {
-        loggerDebug("* [%d] %p: %d = %d (%d)\n",
-                    i, &(node->children[i]), node->children[i]->move, node->children[i]->value, !node->children[i]->pruned);
+        loggerDebug("* [%d] %p: %d = %d %d (%d)\n",
+                    i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
     }
     loggerDebug("\n");
 #endif
@@ -318,13 +308,13 @@ void AIAlgorithm::sortMoves(Node *node)
 #ifdef DEBUG_SORT
     if (tempGame.position.sideToMove == PLAYER_BLACK) {
         for (int i = 0; i < node->childrenSize; i++) {
-            loggerDebug("+ [%d] %p: %d = %d (%d)\n",
-                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, !node->children[i]->pruned);
+            loggerDebug("+ [%d] %p: %d = %d %d (%d)\n",
+                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
         }
      } else {
         for (int i = 0; i < node->childrenSize; i++) {
-            loggerDebug("- [%d] %p: %d = %d (%d)\n",
-                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, !node->children[i]->pruned);
+            loggerDebug("- [%d] %p: %d = %d %d (%d)\n",
+                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
         }
     }
     loggerDebug("\n----------------------------------------\n");
@@ -380,6 +370,7 @@ void AIAlgorithm::setGame(const Game &g)
 
     root->childrenSize = 0; // Important
     root->value = VALUE_ZERO;
+    root->rating = RATING_ZERO;
     root->move = MOVE_NONE;
     root->parent = nullptr;
 #ifdef SORT_CONSIDER_PRUNED
@@ -468,9 +459,17 @@ int AIAlgorithm::search(depth_t depth)
                 && !root->children[j]->pruned
 #endif
                 ) {
-                loggerDebug("[%.2d] %d\t%s\t%d *\n", k, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
+                loggerDebug("[%.2d] %d\t%s\t%d\t%d *\n", k,
+                            root->children[j]->move,
+                            moveToCommand(root->children[j]->move),
+                            root->children[j]->value,
+                            root->children[j]->rating);
             } else {
-                loggerDebug("[%.2d] %d\t%s\t%d\n", k, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
+                loggerDebug("[%.2d] %d\t%s\t%d\t%d\n", k,
+                            root->children[j]->move,
+                            moveToCommand(root->children[j]->move),
+                            root->children[j]->value,
+                            root->children[j]->rating);
             }
 
             k++;
@@ -686,6 +685,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 生成子节点树，即生成每个合理的着法
     MoveList::generate(*this, tempGame, node, root, bestMove);
 
+    // 排序子节点树
+    sortMoves(node);
+
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
     minMax = tempGame.position.sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
@@ -800,9 +802,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif // DONOT_DELETE_TREE
 
 #ifdef IDS_SUPPORT
-    // 排序子节点树
-    sortMoves(node);
-
 #ifdef IDS_ADD_VALUE
     if (tempGame.position.sideToMove == PLAYER_BLACK) {
         node->children[0]->value += 1;
@@ -862,9 +861,9 @@ const char* AIAlgorithm::bestMove()
             && !root->children[j]->pruned
 #endif
             ) {
-            loggerDebug("[%.2d] %d\t%s\t%d *\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
+            loggerDebug("[%.2d] %d\t%s\t%d\t%d *\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value, root->children[j]->rating);
         } else {
-            loggerDebug("[%.2d] %d\t%s\t%d\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value);
+            loggerDebug("[%.2d] %d\t%s\t%d\t%d\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value, root->children[j]->rating);
         }
 
         i++;

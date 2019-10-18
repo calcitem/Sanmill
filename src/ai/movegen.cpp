@@ -58,11 +58,11 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
 
                 // 否则如果是空位
                 if (tempGame.position.phase != PHASE_READY || node != root) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)square, bestMove, tempGame.position.sideToMove);
+                    ai.addNode(node, VALUE_ZERO, RATING_ZERO, (move_t)square, bestMove, tempGame.position.sideToMove);
                 } else {
                     // 若为先手，则抢占星位
                     if (Board::isStar(square)) {
-                        ai.addNode(node, VALUE_INFINITE, (move_t)square, bestMove, tempGame.position.sideToMove);
+                        ai.addNode(node, VALUE_INFINITE, RATING_MAX, (move_t)square, bestMove, tempGame.position.sideToMove);
                     }
                 }
             }
@@ -89,7 +89,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                         newSquare = static_cast<square_t>(moveTable[oldSquare][direction]);
                         if (newSquare && !tempGame.boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.sideToMove); // (12%)
+                            ai.addNode(node, VALUE_ZERO, RATING_ZERO, move, bestMove, tempGame.position.sideToMove); // (12%)
                         }
                     }
                 } else {
@@ -97,7 +97,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
                         if (!tempGame.boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            ai.addNode(node, VALUE_ZERO, move, bestMove, tempGame.position.sideToMove);
+                            ai.addNode(node, VALUE_ZERO, RATING_ZERO, move, bestMove, tempGame.position.sideToMove);
                         }
                     }
                 }
@@ -112,7 +112,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<square_t>(movePriorityTable[i]);
                 if (tempGame.boardLocations[square] & opponent) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)-square, bestMove, tempGame.position.sideToMove);
+                    ai.addNode(node, VALUE_ZERO, RATING_ZERO, (move_t)-square, bestMove, tempGame.position.sideToMove);
                 }
             }
             break;
@@ -123,7 +123,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
             square = static_cast<square_t>(movePriorityTable[i]);
             if (tempGame.boardLocations[square] & opponent) {
                 if (rule.allowRemoveMill || !tempGame.position.board.inHowManyMills(square)) {
-                    ai.addNode(node, VALUE_ZERO, (move_t)-square, bestMove, tempGame.position.sideToMove);
+                    ai.addNode(node, VALUE_ZERO, RATING_ZERO, (move_t)-square, bestMove, tempGame.position.sideToMove);
                 }
             }
         }
