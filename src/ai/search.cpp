@@ -233,21 +233,25 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
             // 检测落子点是否能使得本方成三
             int nMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.sideToMove);
             if (nMills > 0) {
-                newNode->rating = static_cast<rating_t>(RATING_ONE_MILL * nMills);
+                newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
             } else {
                 // 检测落子点是否能阻止对方成三
                 int nopponentMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.opponent);
-                newNode->rating = static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+            }
+
+            if (tempGame.getPhase() == PHASE_PLACING && Board::isStar(static_cast<square_t>(move))) {
+                newNode->rating += RATING_STAR_SQUARE;
             }
         } else if (move < 0) {
             // 检测吃子点是否处于对方的三连中
             int nopponentMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.opponent);
-            newNode->rating = static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nopponentMills);
+            newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nopponentMills);
         }
 #endif // MILL_FIRST
     } else {
         // 如果启用了置换表并且不是叶子结点
-        newNode->rating = RATING_TT;
+        newNode->rating += RATING_TT;
     }
 
     return newNode;

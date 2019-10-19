@@ -39,7 +39,7 @@ value_t TT::probeHash(const hash_t &hash,
 
     if ((hashValue.type == hashfALPHA) && // 最多是 hashValue.value
         (hashValue.value <= alpha)) {
-        return alpha;
+        return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
     }
 
     if ((hashValue.type == hashfBETA) && // 至少是 hashValue.value

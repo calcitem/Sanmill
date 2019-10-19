@@ -142,6 +142,7 @@ enum rating_t : int8_t
     // 正值
     RATING_BLOCK_ONE_MILL = 10,
     RATING_ONE_MILL = 11,
+    RATING_STAR_SQUARE = 11,
     RATING_BLOCK_TWO_MILLS = RATING_BLOCK_ONE_MILL * 2,
     RATING_TWO_MILLS = RATING_ONE_MILL * 2,
     RATING_BLOCK_THREE_MILLS = RATING_BLOCK_ONE_MILL * 3,
@@ -235,6 +236,7 @@ inline T& operator*=(T& d, int i) { return d = T(int(d) * i); }    \
 inline T& operator/=(T& d, int i) { return d = T(int(d) / i); }
 
 ENABLE_FULL_OPERATORS_ON(value_t)
+ENABLE_FULL_OPERATORS_ON(rating_t)
 ENABLE_FULL_OPERATORS_ON(direction_t)
 
 ENABLE_INCR_OPERATORS_ON(direction_t)
