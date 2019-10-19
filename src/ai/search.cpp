@@ -239,6 +239,10 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
                 int nopponentMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.opponent);
                 newNode->rating = static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
             }
+        } else if (move < 0) {
+            // 检测吃子点是否处于对方的三连中
+            int nopponentMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.opponent);
+            newNode->rating = static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nopponentMills);
         }
 #endif // MILL_FIRST
     } else {
