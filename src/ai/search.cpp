@@ -74,8 +74,8 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 #endif
 
     const depth_t placingDepthTable[] = {
-        6, 14, 15, 16,      /* 0 ~ 3 */
-        17, 16, 16, 14,     /* 4 ~ 7 */
+        6, 15, 16, 17,      /* 0 ~ 3 */
+        18, 17, 16, 15,     /* 4 ~ 7 */
         12, 12, 9, 7, 1     /* 8 ~ 12 */
     };
 
