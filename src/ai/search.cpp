@@ -500,8 +500,10 @@ int AIAlgorithm::search(depth_t depth)
         }
 #endif
 
+#ifdef IDS_WINDOW
         alpha = value - VALUE_IDS_WINDOW;
         beta = value + VALUE_IDS_WINDOW;
+#endif // IDS_WINDOW
     }
 
 #ifdef TIME_STAT
@@ -517,9 +519,14 @@ int AIAlgorithm::search(depth_t depth)
 #endif
 
 #ifdef IDS_SUPPORT
+#ifdef IDS_WINDOW
     value_t window = game.getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
     alpha = value - window;
     beta = value + window;
+#else
+    alpha = -VALUE_INFINITE;
+    beta = VALUE_INFINITE;
+#endif // IDS_WINDOW
 #endif // IDS_SUPPORT
 
     value = search(d, alpha, beta, root);

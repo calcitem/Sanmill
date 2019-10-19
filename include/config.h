@@ -61,6 +61,7 @@
 //#define DEAL_WITH_HORIZON_EFFECT
 
 #define IDS_SUPPORT
+//#define IDS_WINDOW
 #define IDS_DEBUG
 //#define IDS_ADD_VALUE
 
