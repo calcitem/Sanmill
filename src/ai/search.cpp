@@ -245,7 +245,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
     if (bestMove == 0 || move != bestMove) {
 #ifdef MILL_FIRST
-        // TODO: rule.allowRemoveMultiPieces
+        // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
         if (move > 0) {
             // 检测落子点是否能使得本方成三
             int nMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.sideToMove);
@@ -261,9 +261,13 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
                 newNode->rating += RATING_STAR_SQUARE;
             }
         } else if (move < 0) {
+            // 检测吃子点是否处于我方的三连中
+            int nMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.sideToMove);
+            newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nMills);
+
             // 检测吃子点是否处于对方的三连中
             int nopponentMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.opponent);
-            newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nopponentMills);
+            newNode->rating += static_cast<rating_t>(RATING_CAPTURE_OPPONENT_ONE_MILL * nopponentMills);
         }
 #endif // MILL_FIRST
     } else {
