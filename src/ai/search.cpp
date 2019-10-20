@@ -92,7 +92,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     const depth_t placingDepthTable[] = {
     6, 14, 15, 16,      /* 0 ~ 3 */
     17, 16, 16, 14,     /* 4 ~ 7 */
-    12, 12, 9, 7, 1     /* 8 ~ 12 */
+    12, 12, 10, 7, 1     /* 8 ~ 12 */
     };
 
     const depth_t movingDepthTable[] = {
@@ -257,13 +257,17 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
                 newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
             }
 
-            if (tempGame.getPhase() == PHASE_PLACING && Board::isStar(static_cast<square_t>(move))) {
+            if (tempGame.getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
+                Board::isStar(static_cast<square_t>(move))) {
                 newNode->rating += RATING_STAR_SQUARE;
             }
         } else if (move < 0) {
             // 检测吃子点是否处于我方的三连中
             int nMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.sideToMove);
             newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nMills);
+            if (nMills > 0) {
+                // TODO:  处在我方三连中且吃子点旁边有2个空位的优先考虑
+            }
 
             // 检测吃子点是否处于对方的三连中
             int nopponentMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.opponent);
@@ -280,6 +284,8 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 
 int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
+    //return second->rating - first->rating;
+
     if (first->rating == second->rating) {
         if (first->value == second->value) {
             return 0;
