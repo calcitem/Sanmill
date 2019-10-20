@@ -40,6 +40,8 @@
 #define EMIT_COMMAND_DELAY (0)
 #endif
 
+//#define HARD_LEVEL_DEPTH
+
 //#define TIME_STAT
 
 //#define MIN_MAX_ONLY
@@ -66,7 +68,7 @@
 //#define IDS_ADD_VALUE
 
 //#define CLEAR_PRUNED_FLAG_BEFORE_SEARCH
-//define DEEPER_IF_ONLY_ONE_LEGAL_MOVE
+//#define DEEPER_IF_ONLY_ONE_LEGAL_MOVE
 
 #define TRANSPOSITION_TABLE_ENABLE
 
@@ -97,10 +99,6 @@
 #endif
 
 //#define DONOT_PLAY_SOUND
-
-#ifndef DEBUG_MODE
-#define GAME_PLACING_DYNAMIC_DEPTH
-#endif
 
 #ifdef DEBUG_MODE
 #define PLAYER_DRAW_SEAT_NUMBER

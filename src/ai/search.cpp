@@ -73,6 +73,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     depth_t reduce = 0;
 #endif
 
+#ifdef HARD_LEVEL_DEPTH
     const depth_t placingDepthTable[] = {
         6, 16, 17, 18,      /* 0 ~ 3 */
         19, 18, 18, 17,     /* 4 ~ 7 */
@@ -87,6 +88,22 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         12, 12, 12, 12,     /* 16 ~ 19 */
         12, 13, 14, 15,     /* 20 ~ 23 */
     };
+#else
+    const depth_t placingDepthTable[] = {
+    6, 14, 15, 16,      /* 0 ~ 3 */
+    17, 16, 16, 14,     /* 4 ~ 7 */
+    12, 12, 9, 7, 1     /* 8 ~ 12 */
+    };
+
+    const depth_t movingDepthTable[] = {
+         1,  1,  1,  1,     /* 0 ~ 3 */
+         1,  1, 11, 11,     /* 4 ~ 7 */
+        11, 11, 11, 11,     /* 8 ~ 11 */
+        11, 11, 11, 11,     /* 12 ~ 15 */
+        11, 11, 11, 11,     /* 16 ~ 19 */
+        12, 12, 13, 14,     /* 20 ~ 23 */
+    };
+#endif // HARD_LEVEL_DEPTH
 
 #ifdef ENDGAME_LEARNING
     const depth_t movingDiffDepthTable[] = {
@@ -730,8 +747,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif // DEAL_WITH_HORIZON_EFFECT
 
 #ifdef DEEPER_IF_ONLY_ONE_LEGAL_MOVE
-        if (node->children.size() == 1)
+        if (node->childrenSize == 1) {
             epsilon++;
+        }
 #endif /* DEEPER_IF_ONLY_ONE_LEGAL_MOVE */
 
         // 递归 Alpha-Beta 剪枝
