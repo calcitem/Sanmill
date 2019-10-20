@@ -62,9 +62,9 @@
 
 //#define DEAL_WITH_HORIZON_EFFECT
 
-#define IDS_SUPPORT
+//#define IDS_SUPPORT
 //#define IDS_WINDOW
-#define IDS_DEBUG
+//#define IDS_DEBUG
 //#define IDS_ADD_VALUE
 
 //#define CLEAR_PRUNED_FLAG_BEFORE_SEARCH
