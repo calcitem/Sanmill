@@ -262,11 +262,11 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 #ifdef MILL_FIRST
         // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
         if (move > 0) {
-            // 检测落子点是否能使得本方成三            
+            // 在任何阶段, 都检测落子点是否能使得本方成三
             if (nMills > 0) {
                 newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
-            } else {
-                // 检测落子点是否能阻止对方成三
+            } else if (tempGame.getPhase() == PHASE_PLACING) {
+                // 仅在摆棋阶段, 检测落子点是否能阻止对方成三, 因为摆棋阶段的判断不完善
                 nopponentMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.opponent);
                 newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
             }
