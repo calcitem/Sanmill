@@ -78,6 +78,9 @@ public:
     // 判断玩家的棋子周围有几个空位
     int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], square_t square, bool includeFobidden);
 
+    // 计算指定位置周围有几个棋子
+    void getSurroundedPieceCount(square_t square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nForbidden, int &nEmpty);
+
     // 判断玩家的棋子是否被围
     bool isSurrounded(int sideId, int nPiecesOnBoard[], square_t square);
 

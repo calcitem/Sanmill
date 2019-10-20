@@ -62,7 +62,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                 } else {
                     // 若为先手，则抢占星位
                     if (Board::isStar(square)) {
-                        ai.addNode(node, VALUE_INFINITE, RATING_MAX, (move_t)square, bestMove, tempGame.position.sideToMove);
+                        ai.addNode(node, VALUE_INFINITE, RATING_STAR_SQUARE, (move_t)square, bestMove, tempGame.position.sideToMove);
                     }
                 }
             }
@@ -84,7 +84,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                 if (tempGame.position.nPiecesOnBoard[tempGame.position.sideId] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
-                    for (int direction = DIRECTION_CLOCKWISE; direction <= DIRECTION_OUTWARD; direction++) {
+                    for (int direction = DIRECTION_BEGIN; direction < DIRECTIONS_COUNT; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newSquare = static_cast<square_t>(moveTable[oldSquare][direction]);
                         if (newSquare && !tempGame.boardLocations[newSquare]) {

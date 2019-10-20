@@ -244,34 +244,74 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 
     // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
     if (bestMove == 0 || move != bestMove) {
+        int nPlayerPiece = 0;
+        int nOpponentPiece = 0;
+        int nForbidden = 0;
+        int nEmpty = 0;
+        square_t sq = SQ_0;
+
+        if (move > 0) {
+            // 摆子或者走子
+            sq = (square_t)(move & 0x00ff);
+        } else {
+            // 吃子
+            sq = (square_t)((-move) & 0x00ff);
+        }
+
+        // TODO: 处理移动子的统计
+        tempGame.position.board.getSurroundedPieceCount(sq, tempGame.position.sideId,
+                                                        nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
+
+        int nMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.sideToMove);
+        int nopponentMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.opponent);
+
 #ifdef MILL_FIRST
         // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
         if (move > 0) {
-            // 检测落子点是否能使得本方成三
-            int nMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.sideToMove);
+            // 检测落子点是否能使得本方成三            
             if (nMills > 0) {
                 newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
             } else {
-                // 检测落子点是否能阻止对方成三
-                int nopponentMills = tempGame.position.board.inHowManyMills((square_t)(move & 0x00ff), tempGame.position.opponent);
+                // 检测落子点是否能阻止对方成三                
                 newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
             }
+
+            newNode->rating += static_cast<rating_t>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
 
             if (tempGame.getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
                 Board::isStar(static_cast<square_t>(move))) {
                 newNode->rating += RATING_STAR_SQUARE;
             }
-        } else if (move < 0) {
-            // 检测吃子点是否处于我方的三连中
-            int nMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.sideToMove);
-            newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nMills);
+        } else if (move < 0) {            
             if (nMills > 0) {
-                // TODO:  处在我方三连中且吃子点旁边有2个空位的优先考虑
+                // 吃子点处于我方的三连中
+                newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nMills);
+       
+                if (nOpponentPiece == 0) {
+                    // 吃子点旁边没有对方棋子则优先考虑     
+                    newNode->rating += static_cast<rating_t>(1);
+                    if (nPlayerPiece > 0) {
+                        // 且吃子点旁边有我方棋子则更优先考虑
+                        newNode->rating += static_cast<rating_t>(nPlayerPiece);
+                    }
+                }
             }
 
-            // 检测吃子点是否处于对方的三连中
-            int nopponentMills = tempGame.position.board.inHowManyMills((square_t)((-move) & 0x00ff), tempGame.position.opponent);
-            newNode->rating += static_cast<rating_t>(RATING_CAPTURE_OPPONENT_ONE_MILL * nopponentMills);
+            // 吃子点处于对方的三连中
+            if (nopponentMills) {
+                if (nOpponentPiece >= 2) {
+                    // 旁边对方的子较多, 则倾向不吃
+                    newNode->rating -= static_cast<rating_t>(nOpponentPiece);
+
+                    if (nPlayerPiece == 0) {
+                        // 如果旁边无我方棋子, 则更倾向不吃
+                        newNode->rating -= static_cast<rating_t>(1);
+                    }
+                }
+            }
+
+            // 优先吃活动力强的棋子
+            newNode->rating += static_cast<rating_t>(nEmpty);
         }
 #endif // MILL_FIRST
     } else {

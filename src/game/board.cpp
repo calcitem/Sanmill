@@ -330,11 +330,11 @@ bool Board::isAllInMills(player_t player)
     return true;
 }
 
-// 判断玩家的棋子周围有几个空位
+// 判断指定位置周围有几个空位 (可以包含禁点一起统计)
 int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
                                            square_t square, bool includeFobidden)
 {
-    assert(rule.hasForbiddenLocations == includeFobidden);
+    //assert(rule.hasForbiddenLocations == includeFobidden);
 
     int count = 0;
 
@@ -353,6 +353,38 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
     }
 
     return count;
+}
+
+// 计算指定位置周围有几个棋子
+void Board::getSurroundedPieceCount(square_t square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nForbidden, int &nEmpty)
+{
+    square_t moveSquare;
+
+    for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
+        moveSquare = static_cast<square_t>(MoveList::moveTable[square][d]);
+
+        if (!moveSquare) {
+            continue;
+        }
+
+        enum piece_t pieceType = static_cast<piece_t>(locations[moveSquare]);
+
+        switch (pieceType) {
+        case NO_PIECE:
+            nEmpty++;
+            break;
+        case PIECE_FORBIDDEN:
+            nForbidden++;
+            break;
+        default:
+            if (sideId == pieceType >> PLAYER_SHIFT) {
+                nPlayerPiece++;
+            } else {
+                nOpponentPiece++;
+            }
+            break;
+        }
+    }
 }
 
 // 判断玩家的棋子是否被围
