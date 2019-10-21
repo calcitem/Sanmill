@@ -266,10 +266,33 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
             if (nMills > 0) {
                 newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
             } else if (tempGame.getPhase() == PHASE_PLACING) {
-                // 仅在摆棋阶段, 检测落子点是否能阻止对方成三, 因为摆棋阶段的判断不完善
+                // 在摆棋阶段, 检测落子点是否能阻止对方成三
                 nopponentMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.opponent);
                 newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
             }
+#if 1
+            else if (tempGame.getPhase() == PHASE_MOVING) {
+                // 在走棋阶段, 检测落子点是否能阻止对方成三
+                nopponentMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.opponent);
+
+                if (nopponentMills) {
+                    int nPlayerPiece = 0;
+                    int nOpponentPiece = 0;
+                    int nForbidden = 0;
+                    int nEmpty = 0;
+
+                    tempGame.position.board.getSurroundedPieceCount(sq, tempGame.position.sideId,
+                                                                    nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
+
+
+                    if (sq % 2 == 0 && nOpponentPiece == 3) {
+                        newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                    } else if (sq % 2 == 1 && nOpponentPiece == 2) {
+                        newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                    }
+                }
+            }
+#endif
 
             //newNode->rating += static_cast<rating_t>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
 
