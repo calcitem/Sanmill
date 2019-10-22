@@ -259,10 +259,11 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
         int nMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.sideToMove);
         int nopponentMills = 0;
 
-#ifdef MILL_FIRST
+#ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
         // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
         if (move > 0) {
             // 在任何阶段, 都检测落子点是否能使得本方成三
+            // TODO: 为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三
             if (nMills > 0) {
                 newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
             } else if (tempGame.getPhase() == PHASE_PLACING) {
@@ -340,7 +341,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
             // 优先吃活动力强的棋子
             newNode->rating += static_cast<rating_t>(nEmpty);
         }
-#endif // MILL_FIRST
+#endif // SORT_MOVE_WITH_HUMAN_KNOWLEDGES
     } else {
         // 如果启用了置换表并且不是叶子结点
         newNode->rating += RATING_TT;
