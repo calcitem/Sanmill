@@ -89,10 +89,16 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         12, 13, 14, 15,     /* 20 ~ 23 */
     };
 #else
-    const depth_t placingDepthTable[] = {
+    const depth_t placingDepthTable_12[] = {
         1, 7, 10, 12,         /* 0 ~ 3 */
         12, 14, 16, 16,       /* 4 ~ 7 */
         17, 16, 15, 14, 6     /* 8 ~ 12 */
+    };
+
+    const depth_t placingDepthTable_9[] = {
+        1, 7, 10, 12,         /* 0 ~ 3 */
+        12, 13, 13, 13,       /* 4 ~ 7 */
+        13, 13                /* 8 ~ 9 */
     };
 
     const depth_t movingDepthTable[] = {
@@ -120,7 +126,12 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 #endif /* ENDGAME_LEARNING */
 
     if (tempGame.position.phase & PHASE_PLACING) {
-        d = placingDepthTable[rule.nTotalPiecesEachSide - tempGame.getPiecesInHandCount(BLACK)];
+        if (rule.nTotalPiecesEachSide == 12)
+        {
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide - tempGame.getPiecesInHandCount(BLACK)];
+        } else {
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide - tempGame.getPiecesInHandCount(BLACK)];
+        }
     }
 
     if (tempGame.position.phase & PHASE_MOVING) {
