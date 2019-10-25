@@ -270,8 +270,8 @@ void MillGameWindow::initialize()
     connect(gameController, SIGNAL(statusBarChanged(QString)),
             statusBarlabel, SLOT(setText(QString)));
 
-    // 默认第2号规则
-    ruleNo = 1;
+    // 默认第3号规则
+    ruleNo = 3;
     ruleActionList.at(ruleNo)->setChecked(true);
 
     // 重置游戏规则
