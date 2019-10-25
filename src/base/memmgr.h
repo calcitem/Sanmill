@@ -116,7 +116,7 @@ public:
 
 protected:
 private:
-    int memPoolSize { 1024 * 1024 * 2};
+    int memPoolSize { 1024 * 1024 * 4};
     static const int MIN_POOL_ALLOC_QUANTAS = 1024;
 
     // Initial empty list
