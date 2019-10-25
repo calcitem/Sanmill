@@ -510,10 +510,17 @@ bool Board::getCurrentPiece(player_t &player, int &number, square_t square)
 
 bool Board::isStar(square_t square)
 {
-    return (square == 17 ||
-            square == 19 ||
-            square == 21 ||
-            square == 23);
+    if (rule.nTotalPiecesEachSide == 12) {
+        return (square == 17 ||
+                square == 19 ||
+                square == 21 ||
+                square == 23);
+    }
+
+    return (square == 16 ||
+            square == 18 ||
+            square == 20 ||
+            square == 22);
 }
 
 void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
