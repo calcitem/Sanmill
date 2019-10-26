@@ -40,6 +40,8 @@
 #define EMIT_COMMAND_DELAY (0)
 #endif
 
+#define DEFAULT_RULE_NUMBER 1
+
 //#define HARD_LEVEL_DEPTH
 
 //#define TIME_STAT

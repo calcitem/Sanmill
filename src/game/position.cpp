@@ -42,8 +42,8 @@ Game::Game()
     }    
 #endif
 
-    // 默认选择第3号规则，即“莫里斯九子棋”
-    setPosition(&RULES[3]);
+    // 默认规则
+    setPosition(&RULES[DEFAULT_RULE_NUMBER]);
 
     // 比分归零
     score[BLACK] = score[WHITE] = score_draw = 0;
