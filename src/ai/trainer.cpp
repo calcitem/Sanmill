@@ -19,19 +19,30 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#include <QtWidgets/QApplication>
-#include <QDesktopWidget>
+#include "gamecontroller.h"
+#include "trainer.h"
 
-#include "gamewindow.h"
+#ifdef TRAINING_MODE
 
-#ifndef TRAINING_MODE
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MillGameWindow w;
-    w.show();
-    w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
+    loggerDebug("Training start...\n");
 
-    return QApplication::exec();
+    GameController *gameController = new GameController();
+    
+    gameController->gameReset();
+    gameController->gameStart();
+
+    gameController->isAiPlayer[1] = gameController->isAiPlayer[2] = true;
+
+    gameController->setEngine(1, true);
+    gameController->setEngine(2, true);
+
+#ifdef WIN32
+    system("pause");
+#endif
+
+    return 0;
 }
+
 #endif // TRAINING_MODE

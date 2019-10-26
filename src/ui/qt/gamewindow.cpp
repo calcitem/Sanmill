@@ -156,8 +156,12 @@ void MillGameWindow::initialize()
     if (gameController)
         return;
 
+#ifndef TRAINING_MODE
     // 开辟一个新的游戏控制器
     gameController = new GameController(*scene, this);
+#else
+    gameController = new GameController(this);
+#endif // TRAINING_MODE
 
     // 添加新菜单栏动作
     map<int, QStringList> actions = gameController->getActions();

@@ -52,7 +52,12 @@ class GameController : public QObject
     Q_OBJECT
 
 public:
-    GameController(GameScene &scene, QObject *parent = nullptr);
+    GameController(
+#ifndef TRAINING_MODE
+        GameScene &scene,
+#endif
+        QObject *parent = nullptr
+    );
     ~GameController() override;
 
     //主窗口菜单栏明细
@@ -204,11 +209,14 @@ private:
     // 棋对象的数据模型（临时）
     Game tempGame;
 
+private:
     // 2个AI的线程
     AiThread *aiThread[3];
 
+#ifndef TRAINING_MODE
     // 棋局的场景类
     GameScene &scene;
+#endif
 
     // 所有棋子
     vector<PieceItem *> pieceList;
@@ -225,8 +233,10 @@ private:
     // 是否黑白反转
     bool isInverted;
 
+public:
     // 电脑执先手时为 true
     bool isAiPlayer[3];
+private:
 
     // 是否有落子动画
     bool hasAnimation;

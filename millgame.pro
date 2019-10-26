@@ -25,6 +25,7 @@ SOURCES += \
     src/ai/endgame.cpp \
     src/ai/evaluate.cpp \
     src/ai/movegen.cpp \
+    src/ai/trainer.cpp \
     src/ai/tt.cpp \
     src/base/memmgr.cpp \
     src/base/misc.cpp \
@@ -54,6 +55,7 @@ HEADERS  += \
     src/ai/endgame.h \
     src/ai/evaluate.h \
     src/ai/movegen.h \
+    src/ai/trainer.h \
     src/ai/tt.h \
     src/base/HashNode.h \
     src/base/debug.h \

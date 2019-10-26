@@ -445,6 +445,7 @@
     <ClInclude Include="src\ai\evaluate.h" />
     <ClInclude Include="src\ai\movegen.h" />
     <ClInclude Include="src\ai\search.h" />
+    <ClInclude Include="src\ai\trainer.h" />
     <ClInclude Include="src\ai\tt.h" />
     <ClInclude Include="src\base\debug.h" />
     <ClInclude Include="src\base\hashmap.h" />
@@ -699,6 +700,7 @@
     <ClCompile Include="src\ai\evaluate.cpp" />
     <ClCompile Include="src\ai\movegen.cpp" />
     <ClCompile Include="src\ai\search.cpp" />
+    <ClCompile Include="src\ai\trainer.cpp" />
     <ClCompile Include="src\ai\tt.cpp" />
     <ClCompile Include="src\base\memmgr.cpp" />
     <ClCompile Include="src\base\misc.cpp" />

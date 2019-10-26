@@ -129,6 +129,9 @@
     <ClInclude Include="src\base\sort.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="src\ai\trainer.h">
+      <Filter>ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -355,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="src\base\memmgr.cpp">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ai\trainer.cpp">
+      <Filter>ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -42,12 +42,14 @@ AiThread::AiThread(int id, QObject *parent) :
     // 连接定时器处理函数
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
 
+#ifndef TRAINING_MODE
     // 网络
     if (id == 1) {
         server = new Server(nullptr, 30001);    // TODO: WARNING: ThreadSanitizer: data race
         uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
         client = new Client(nullptr, clientPort);
     }
+#endif  // TRAINING_MODE
 }
 
 AiThread::~AiThread()
@@ -124,12 +126,20 @@ void AiThread::run()
             // 三次重复局面和
             loggerDebug("Draw\n\n");
             strCommand = "draw";
+#ifdef TRAINING_MODE
+            emitCommand();
+#else
             QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
+#endif
         } else {
             strCommand = ai.bestMove();
             if (strCommand && strcmp(strCommand, "error!") != 0) {
                 loggerDebug("Computer: %s\n\n", strCommand);
+#ifdef TRAINING_MODE
+                emitCommand();
+#else
                 QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
+#endif
             }
         }
 

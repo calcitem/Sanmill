@@ -19,19 +19,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#include <QtWidgets/QApplication>
-#include <QDesktopWidget>
+#ifndef TRAINER_H
+#define TRAINER_H
 
-#include "gamewindow.h"
+#include "config.h"
 
-#ifndef TRAINING_MODE
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MillGameWindow w;
-    w.show();
-    w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
-
-    return QApplication::exec();
-}
-#endif // TRAINING_MODE
+#endif // TRAINER_H

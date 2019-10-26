@@ -29,6 +29,8 @@
 
 //#define MOBILE_APP_UI
 
+//#define TRAINING_MODE
+
 //#define DEBUG_MODE
 //#define DEBUG_MODE_A
 
