@@ -172,7 +172,7 @@ void MillGameWindow::initialize()
         ruleAction->setData(i->first);
 
         // 添加到动作列表
-        ruleActionList.append(ruleAction);
+        ruleActionList.push_back(ruleAction);
 
         // 添加到“规则”菜单
         ui.menu_R->addAction(ruleAction);
@@ -271,7 +271,7 @@ void MillGameWindow::initialize()
 
     // 默认规则
     ruleNo = DEFAULT_RULE_NUMBER;
-    ruleActionList.at(ruleNo)->setChecked(true);
+    ruleActionList[ruleNo]->setChecked(true);
 
     // 重置游戏规则
     gameController->setRule(ruleNo);

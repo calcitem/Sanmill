@@ -30,10 +30,10 @@
 #define GAMECONTROLLER_H
 
 #include <map>
+#include <vector>
 
 #include <QTime>
 #include <QPointF>
-#include <QList>
 #include <QTextStream>
 #include <QStringListModel>
 #include <QModelIndex>
@@ -211,7 +211,7 @@ private:
     GameScene &scene;
 
     // 所有棋子
-    QList<PieceItem *> pieceList;
+    vector<PieceItem *> pieceList;
 
     // 当前棋子
     PieceItem *currentPiece;

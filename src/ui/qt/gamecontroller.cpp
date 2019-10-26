@@ -194,7 +194,7 @@ void GameController::gameReset()
         if (!(rule.allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
 
-        pieceList.append(newP);
+        pieceList.push_back(newP);
         scene.addItem(newP);
 
         // 后手的棋子
@@ -208,7 +208,7 @@ void GameController::gameReset()
         if (!(rule.allowRemovePiecesRepeatedly))
             newP->setShowNum(true);
 
-        pieceList.append(newP);
+        pieceList.push_back(newP);
         scene.addItem(newP);
     }
 
@@ -1116,7 +1116,7 @@ bool GameController::updateScence(Game &g)
                     auto *newP = new PieceItem;
                     newP->setDeleted();
                     newP->setPos(pos);
-                    pieceList.append(newP);
+                    pieceList.push_back(newP);
                     nTotalPieces++;
                     scene.addItem(newP);
                 }
@@ -1127,8 +1127,8 @@ bool GameController::updateScence(Game &g)
     // 走棋阶段清除禁子点
     if (rule.hasForbiddenLocations && g.getPhase() != PHASE_PLACING) {
         while (nTotalPieces < pieceList.size()) {
-            delete pieceList.at(nTotalPieces);
-            pieceList.removeAt(nTotalPieces);
+            delete pieceList.at(pieceList.size() - 1);
+            pieceList.pop_back();
         }
     }
 

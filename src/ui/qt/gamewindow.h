@@ -22,6 +22,8 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
+#include <vector>
+
 #include <QtWidgets/QMainWindow>
 #include <QTextStream>
 #include <QStringListModel>
@@ -34,6 +36,8 @@
 
 #include "server.h"
 #include "client.h"
+
+using namespace std;
 
 class GameScene;
 class GameController;
@@ -120,7 +124,7 @@ private:
     GameController *gameController {nullptr};
 
     // 动态增加的菜单栏动作列表
-    QList <QAction *> ruleActionList;
+    vector<QAction *> ruleActionList;
 
     // 游戏的规则号，涉及菜单项和对话框，所以要有
     int ruleNo {-1};
