@@ -112,8 +112,6 @@ int Game::countPiecesInHand()
 {
     position.nPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[BLACK];
     position.nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - position.nPiecesOnBoard[WHITE];
-    position.nPiecesInHand[BLACK] = std::min(12, position.nPiecesInHand[BLACK]);    // TODO: 12改为变量
-    position.nPiecesInHand[WHITE] = std::min(12, position.nPiecesInHand[WHITE]);    // TODO: 12改为变量
 
     return position.nPiecesInHand[BLACK] + position.nPiecesInHand[WHITE];
 }
