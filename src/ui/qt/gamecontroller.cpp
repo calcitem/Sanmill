@@ -45,6 +45,9 @@ GameController::GameController(GameScene & scene, QObject * parent) :
     isInverted(false),
     hasAnimation(true),
     durationTime(500),
+    gameStartTime(0),
+    gameEndTime(0),
+    gameDurationTime(0),
     hasSound(true),
     timeID(0),
     ruleIndex(-1),
@@ -129,6 +132,8 @@ void GameController::gameStart()
     if (timeID == 0) {
         timeID = startTimer(100);
     }
+
+    gameStartTime = now();
 }
 
 void GameController::gameReset()
@@ -911,6 +916,12 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         else {           
                 aiThread[1]->stop();
                 aiThread[2]->stop();
+
+                gameEndTime = now();
+                gameDurationTime = gameEndTime - gameStartTime;
+
+                loggerDebug("Game Duration Time: %dms\n", gameDurationTime);
+
 #ifdef TIME_STAT
                 loggerDebug("Sort Time: %ld + %ld = %ldms\n",
                             aiThread[1]->ai.sortTime, aiThread[2]->ai.sortTime,

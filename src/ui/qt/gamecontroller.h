@@ -231,6 +231,15 @@ private:
     // 动画持续时间
     int durationTime;
 
+    // 游戏开始时间
+    TimePoint gameStartTime;
+
+    // 游戏结束时间
+    TimePoint gameEndTime;
+
+    // 游戏持续时间
+    TimePoint gameDurationTime;
+
     // 是否有落子音效
     bool hasSound;
 
