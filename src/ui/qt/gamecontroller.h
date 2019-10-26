@@ -29,9 +29,10 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
+#include <map>
+
 #include <QTime>
 #include <QPointF>
-#include <QMap>
 #include <QList>
 #include <QTextStream>
 #include <QStringListModel>
@@ -44,6 +45,8 @@
 #include "server.h"
 #include "client.h"
 
+using namespace std;
+
 class GameController : public QObject
 {
     Q_OBJECT
@@ -53,7 +56,7 @@ public:
     ~GameController() override;
 
     //主窗口菜单栏明细
-    const QMap <int, QStringList> getActions();
+    const map<int, QStringList> getActions();
 
     int getRuleIndex()
     {

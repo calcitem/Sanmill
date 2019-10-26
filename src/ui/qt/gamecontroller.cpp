@@ -19,6 +19,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
+#include <map>
+
 #include <QGraphicsView>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -35,6 +37,8 @@
 #include "server.h"
 #include "client.h"
 #include "option.h"
+
+using namespace std;
 
 GameController::GameController(GameScene & scene, QObject * parent) :
     QObject(parent),
@@ -106,18 +110,18 @@ GameController::~GameController()
 #endif /* ENDGAME_LEARNING */
 }
 
-const QMap<int, QStringList> GameController::getActions()
+const map<int, QStringList> GameController::getActions()
 {
     // 主窗口更新菜单栏
     // 之所以不用信号和槽的模式，是因为发信号的时候槽还来不及关联
-    QMap<int, QStringList> actions;
+    map<int, QStringList> actions;
 
     for (int i = 0; i < N_RULES; i++) {
-        // QMap的key存放int索引值，value存放规则名称和规则提示
+        // map的key存放int索引值，value存放规则名称和规则提示
         QStringList strlist;
         strlist.append(tr(RULES[i].name));
         strlist.append(tr(RULES[i].description));
-        actions.insert(i, strlist);
+        actions.insert(map<int, QStringList>::value_type(i, strlist));
     }
 
     return actions;

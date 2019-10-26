@@ -20,7 +20,6 @@
  *****************************************************************************/
 
 #include <QDesktopServices>
-#include <QMap>
 #include <QMessageBox>
 #include <QTimer>
 #include <QDialog>
@@ -161,16 +160,16 @@ void MillGameWindow::initialize()
     gameController = new GameController(*scene, this);
 
     // 添加新菜单栏动作
-    QMap <int, QStringList> actions = gameController->getActions();
+    map<int, QStringList> actions = gameController->getActions();
 
-    for (auto i = actions.constBegin(); i != actions.constEnd(); i++) {
-        // QMap的key存放int索引值，value存放规则名称和规则提示
-        auto *ruleAction = new QAction(i.value().at(0), this);
-        ruleAction->setToolTip(i.value().at(1));
+    for (auto i = actions.begin(); i != actions.end(); i++) {
+        // map的key存放int索引值，value存放规则名称和规则提示
+        auto *ruleAction = new QAction(i->second.at(0), this);
+        ruleAction->setToolTip(i->second.at(1));
         ruleAction->setCheckable(true);
 
         // 索引值放在QAction的Data里
-        ruleAction->setData(i.key());
+        ruleAction->setData(i->first);
 
         // 添加到动作列表
         ruleActionList.append(ruleAction);
