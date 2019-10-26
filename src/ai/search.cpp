@@ -299,7 +299,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 
                     if (sq % 2 == 0 && nOpponentPiece == 3) {
                         newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
-                    } else if (sq % 2 == 1 && nOpponentPiece == 2) {
+                    } else if (sq % 2 == 1 && nOpponentPiece == 2 && rule.nTotalPiecesEachSide == 12) {
                         newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
                     }
                 }
@@ -308,7 +308,9 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
 
             //newNode->rating += static_cast<rating_t>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
 
-            if (tempGame.getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
+            // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
+            if (rule.nTotalPiecesEachSide == 12 &&
+                tempGame.getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
                 Board::isStar(static_cast<square_t>(move))) {
                 newNode->rating += RATING_STAR_SQUARE;
             }
