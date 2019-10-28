@@ -87,7 +87,7 @@
 
 //#define RAPID_GAME
 
-#define ENDGAME_LEARNING
+//#define ENDGAME_LEARNING
 
 #define THREEFOLD_REPETITION
 
