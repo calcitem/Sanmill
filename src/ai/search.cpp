@@ -120,8 +120,8 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 #else
     const depth_t movingDiffDepthTable[] = {
         0, 0, 0,               /* 0 ~ 2 */
-        11, 10, 9, 8, 7,       /* 3 ~ 7 */
-        6, 5, 4, 3, 2          /* 8 ~ 12 */
+        11, 11, 10, 9, 8,       /* 3 ~ 7 */
+        7, 6, 5, 4, 3          /* 8 ~ 12 */
     };
 #endif /* ENDGAME_LEARNING */
 
