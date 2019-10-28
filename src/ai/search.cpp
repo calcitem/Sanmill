@@ -705,7 +705,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     value_t probeVal = TT::probeHash(hash, depth, alpha, beta, bestMove, type);
 
-    if (probeVal != INT16_MIN /* TODO: valUNKOWN */) {
+    if (probeVal != VALUE_UNKNOWN) {
 #ifdef DEBUG_MODE
         assert(node != root);
 #endif

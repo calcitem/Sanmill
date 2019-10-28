@@ -52,10 +52,10 @@ public:
         value_t value;
         depth_t depth;
         enum HashType type;
-        move_t bestMove;
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
         uint8_t age;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
+        move_t bestMove;
     };
 
     // 查找哈希表
