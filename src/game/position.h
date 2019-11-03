@@ -228,8 +228,8 @@ public:
     int update();
 
     // 是否分出胜负
-    bool win();
-    bool win(bool forceDraw);
+    bool checkGameOverCondition();
+    bool checkGameOverCondition(bool forceDraw);
 
     // 清除所有禁点
     void cleanForbiddenLocations();

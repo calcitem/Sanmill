@@ -364,7 +364,7 @@ bool Game::place(square_t square, int8_t updateCmdlist)
             // 如果双方都无未放置的棋子
             if (position.nPiecesInHand[BLACK] == 0 && position.nPiecesInHand[WHITE] == 0) {
                 // 决胜负
-                if (win()) {
+                if (checkGameOverCondition()) {
                     goto out;
                 }
 
@@ -385,7 +385,7 @@ bool Game::place(square_t square, int8_t updateCmdlist)
                 }
 
                 // 再决胜负
-                if (win()) {
+                if (checkGameOverCondition()) {
                     goto out;
                 }
             }
@@ -408,7 +408,7 @@ bool Game::place(square_t square, int8_t updateCmdlist)
     }
 
     // 如果决出胜负
-    if (win()) {
+    if (checkGameOverCondition()) {
         goto out;
     }
 
@@ -461,7 +461,7 @@ bool Game::place(square_t square, int8_t updateCmdlist)
         changeSideToMove();
 
         // 如果决出胜负
-        if (win()) {
+        if (checkGameOverCondition()) {
             goto out;
         }
     }
@@ -562,7 +562,7 @@ bool Game::capture(square_t square, int8_t updateCmdlist)
     // 去子完成
 
     // 如果决出胜负
-    if (win()) {
+    if (checkGameOverCondition()) {
         goto out;
     }
 
@@ -596,7 +596,7 @@ bool Game::capture(square_t square, int8_t updateCmdlist)
             }
 
             // 再决胜负
-            if (win()) {
+            if (checkGameOverCondition()) {
                 goto out;
             }
         }
@@ -609,7 +609,7 @@ bool Game::capture(square_t square, int8_t updateCmdlist)
             changeSideToMove();
 
             // 如果决出胜负
-            if (win()) {
+            if (checkGameOverCondition()) {
                 goto out;
             }
         }
@@ -623,7 +623,7 @@ bool Game::capture(square_t square, int8_t updateCmdlist)
         changeSideToMove();
 
         // 如果决出胜负
-        if (win()) {
+        if (checkGameOverCondition()) {
             goto out;
         }
     }
@@ -816,20 +816,20 @@ int Game::update()
 
     // 有限时要求则判断胜负
     if (rule.maxTimeLedToLose > 0) {
-        win();
+        checkGameOverCondition();
     }
 
     return ret;
 }
 
 // 是否分出胜负
-bool Game::win()
+bool Game::checkGameOverCondition()
 {
-    return win(false);
+    return checkGameOverCondition(false);
 }
 
 // 是否分出胜负
-bool Game::win(bool forceDraw)
+bool Game::checkGameOverCondition(bool forceDraw)
 {
     if (position.phase & PHASE_NOTPLAYING) {
         return true;
