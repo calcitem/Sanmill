@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     gameController->gameReset();
     gameController->gameStart();
 
-    gameController->isAiPlayer[1] = gameController->isAiPlayer[2] = true;
+    gameController->isAiPlayer[BLACK] = gameController->isAiPlayer[WHITE] = true;
 
     gameController->setEngine(1, true);
     gameController->setEngine(2, true);

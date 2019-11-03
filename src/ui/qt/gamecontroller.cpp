@@ -70,23 +70,23 @@ GameController::GameController(
     scene.setBackgroundBrush(QColor(239, 239, 239));
 #endif /* MOBILE_APP_UI */
 
-    isAiPlayer[1] = false,
-    isAiPlayer[2] = false,
+    isAiPlayer[BLACK] = false,
+    isAiPlayer[WHITE] = false,
 
-    aiThread[1] = new AiThread(1);
-    aiThread[2] = new AiThread(2);
+    aiThread[BLACK] = new AiThread(1);
+    aiThread[WHITE] = new AiThread(2);
 
     gameReset();
 
     // 关联AI和控制器的着法命令行
-    connect(aiThread[1], SIGNAL(command(const QString &, bool)),
+    connect(aiThread[BLACK], SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
-    connect(aiThread[2], SIGNAL(command(const QString &, bool)),
+    connect(aiThread[WHITE], SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
 
 #ifndef TRAINING_MODE
     // 关联AI和网络类的着法命令行
-    connect(aiThread[1]->getClient(), SIGNAL(command(const QString &, bool)),
+    connect(aiThread[BLACK]->getClient(), SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
 #endif // TRAINING_MODE
 
@@ -102,13 +102,13 @@ GameController::~GameController()
         killTimer(timeID);
 
     // 停掉线程
-    aiThread[1]->stop();
-    aiThread[2]->stop();
-    aiThread[1]->wait();
-    aiThread[2]->wait();
+    aiThread[BLACK]->stop();
+    aiThread[WHITE]->stop();
+    aiThread[BLACK]->wait();
+    aiThread[WHITE]->wait();
 
-    delete aiThread[1];
-    delete aiThread[2];
+    delete aiThread[BLACK];
+    delete aiThread[WHITE];
 
 #ifdef ENDGAME_LEARNING
     if (options.getLearnEndgameEnabled()) {
@@ -171,10 +171,10 @@ void GameController::gameReset()
 
     // 停掉线程
     if (!options.getAutoRestart()) {
-        aiThread[1]->stop();
-        aiThread[2]->stop();
-        isAiPlayer[1] = false;
-        isAiPlayer[2] = false;
+        aiThread[BLACK]->stop();
+        aiThread[WHITE]->stop();
+        isAiPlayer[BLACK] = false;
+        isAiPlayer[WHITE] = false;
     }
 
 #ifndef TRAINING_MODE
@@ -337,33 +337,33 @@ void GameController::setEngine2(bool arg)
 
 void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2)
 {
-    if (isAiPlayer[1]) {
-        aiThread[1]->stop();
-        aiThread[1]->wait();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->stop();
+        aiThread[BLACK]->wait();
     }
-    if (isAiPlayer[2]) {
-        aiThread[2]->stop();
-        aiThread[2]->wait();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->stop();
+        aiThread[WHITE]->wait();
     }
 
-    aiThread[1]->setAi(game, depth1, time1);
-    aiThread[2]->setAi(game, depth2, time2);
+    aiThread[BLACK]->setAi(game, depth1, time1);
+    aiThread[WHITE]->setAi(game, depth2, time2);
 
-    if (isAiPlayer[1]) {
-        aiThread[1]->start();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->start();
     }
-    if (isAiPlayer[2]) {
-        aiThread[2]->start();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->start();
     }
 }
 
 void GameController::getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2)
 {
-    depth1 = aiThread[1]->getDepth();
-    time1 = aiThread[1]->getTimeLimit();
+    depth1 = aiThread[BLACK]->getDepth();
+    time1 = aiThread[BLACK]->getTimeLimit();
 
-    depth2 = aiThread[2]->getDepth();
-    time2 = aiThread[2]->getTimeLimit();
+    depth2 = aiThread[WHITE]->getDepth();
+    time2 = aiThread[WHITE]->getTimeLimit();
 }
 
 void GameController::setAnimation(bool arg)
@@ -425,13 +425,13 @@ void GameController::setLearnEndgame(bool enabled)
 void GameController::flip()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[1]) {
-        aiThread[1]->stop();
-        aiThread[1]->wait();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->stop();
+        aiThread[BLACK]->wait();
     }
-    if (isAiPlayer[2]) {
-        aiThread[2]->stop();
-        aiThread[2]->wait();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->stop();
+        aiThread[WHITE]->wait();
     }
 
     game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -450,15 +450,15 @@ void GameController::flip()
     else
         phaseChange(currentRow, true);
 
-    aiThread[1]->setAi(game);
-    aiThread[2]->setAi(game);
+    aiThread[BLACK]->setAi(game);
+    aiThread[WHITE]->setAi(game);
 
-    if (isAiPlayer[1]) {
-        aiThread[1]->start();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->start();
     }
 
-    if (isAiPlayer[2]) {
-        aiThread[2]->start();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->start();
     }
 #endif // TRAINING_MODE
 }
@@ -467,13 +467,13 @@ void GameController::flip()
 void GameController::mirror()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[1]) {
-        aiThread[1]->stop();
-        aiThread[1]->wait();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->stop();
+        aiThread[BLACK]->wait();
     }
-    if (isAiPlayer[2]) {
-        aiThread[2]->stop();
-        aiThread[2]->wait();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->stop();
+        aiThread[WHITE]->wait();
     }
 
     game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -494,15 +494,15 @@ void GameController::mirror()
     else
         phaseChange(currentRow, true);
 
-    aiThread[1]->setAi(game);
-    aiThread[2]->setAi(game);
+    aiThread[BLACK]->setAi(game);
+    aiThread[WHITE]->setAi(game);
 
-    if (isAiPlayer[1]) {
-        aiThread[1]->start();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->start();
     }
 
-    if (isAiPlayer[2]) {
-        aiThread[2]->start();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->start();
     }
 #endif // TRAINING_MODE
 }
@@ -511,13 +511,13 @@ void GameController::mirror()
 void GameController::turnRight()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[1]) {
-        aiThread[1]->stop();
-        aiThread[1]->wait();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->stop();
+        aiThread[BLACK]->wait();
     }
-    if (isAiPlayer[2]) {
-        aiThread[2]->stop();
-        aiThread[2]->wait();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->stop();
+        aiThread[WHITE]->wait();
     }
 
     game.position.board.rotate(-90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -536,15 +536,15 @@ void GameController::turnRight()
     else
         phaseChange(currentRow, true);
 
-    aiThread[1]->setAi(game);
-    aiThread[2]->setAi(game);
+    aiThread[BLACK]->setAi(game);
+    aiThread[WHITE]->setAi(game);
 
-    if (isAiPlayer[1]) {
-        aiThread[1]->start();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->start();
     }
 
-    if (isAiPlayer[2]) {
-        aiThread[2]->start();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->start();
     }
 #endif
 }
@@ -553,13 +553,13 @@ void GameController::turnRight()
 void GameController::turnLeft()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[1]) {
-        aiThread[1]->stop();
-        aiThread[1]->wait();
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->stop();
+        aiThread[BLACK]->wait();
     }
-    if (isAiPlayer[2]) {
-        aiThread[2]->stop();
-        aiThread[2]->wait();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->stop();
+        aiThread[WHITE]->wait();
     }
 
     game.position.board.rotate(90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -574,13 +574,13 @@ void GameController::turnLeft()
     // 刷新显示
     updateScence();
 
-    aiThread[1]->setAi(game);
-    aiThread[2]->setAi(game);
-    if (isAiPlayer[1]) {
-        aiThread[1]->start();
+    aiThread[BLACK]->setAi(game);
+    aiThread[WHITE]->setAi(game);
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->start();
     }
-    if (isAiPlayer[2]) {
-        aiThread[2]->start();
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->start();
     }
 #endif // TRAINING_MODE
 }
@@ -795,19 +795,19 @@ bool GameController::actionPiece(QPointF pos)
         // 如果还未决出胜负
         if (game.whoWin() == PLAYER_NOBODY) {
             if (game.position.sideToMove == PLAYER_BLACK) {
-                if (isAiPlayer[1]) {
-                    aiThread[1]->resume();
+                if (isAiPlayer[BLACK]) {
+                    aiThread[BLACK]->resume();
                 }
             } else {
-                if (isAiPlayer[2]) {
-                    aiThread[2]->resume();
+                if (isAiPlayer[WHITE]) {
+                    aiThread[WHITE]->resume();
                 }
             }
         }
         // 如果已经决出胜负
         else {
-            aiThread[1]->stop();
-            aiThread[2]->stop();
+            aiThread[BLACK]->stop();
+            aiThread[WHITE]->stop();
         }
     }
 
@@ -858,10 +858,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 #endif
 
     // 防止接收滞后结束的线程发送的指令
-    if (sender() == aiThread[1] && !isAiPlayer[1])
+    if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK])
         return false;
 
-    if (sender() == aiThread[2] && !isAiPlayer[2])
+    if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE])
         return false;
 
 #ifndef TRAINING_MODE
@@ -939,19 +939,19 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     // 如果还未决出胜负
     if (game.whoWin() == PLAYER_NOBODY) {
         if (game.position.sideToMove == PLAYER_BLACK) {
-            if (isAiPlayer[1]) {
-                aiThread[1]->resume();
+            if (isAiPlayer[BLACK]) {
+                aiThread[BLACK]->resume();
             }
         } else {
-            if (isAiPlayer[2]) {
-                aiThread[2]->resume();
+            if (isAiPlayer[WHITE]) {
+                aiThread[WHITE]->resume();
             }
         }
     }
     // 如果已经决出胜负
     else {           
-            aiThread[1]->stop();
-            aiThread[2]->stop();
+            aiThread[BLACK]->stop();
+            aiThread[WHITE]->stop();
 
             gameEndTime = now();
             gameDurationTime = gameEndTime - gameStartTime;
@@ -960,43 +960,43 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
 #ifdef TIME_STAT
             loggerDebug("Sort Time: %ld + %ld = %ldms\n",
-                        aiThread[1]->ai.sortTime, aiThread[2]->ai.sortTime,
-                        (aiThread[1]->ai.sortTime + aiThread[2]->ai.sortTime));
-            aiThread[1]->ai.sortTime = aiThread[2]->ai.sortTime = 0;
+                        aiThread[BLACK]->ai.sortTime, aiThread[WHITE]->ai.sortTime,
+                        (aiThread[BLACK]->ai.sortTime + aiThread[WHITE]->ai.sortTime));
+            aiThread[BLACK]->ai.sortTime = aiThread[WHITE]->ai.sortTime = 0;
 #endif // TIME_STAT
 
 #ifdef TRANSPOSITION_TABLE_DEBUG                
-            size_t hashProbeCount_1 = aiThread[1]->ai.hashHitCount + aiThread[1]->ai.hashMissCount;
-            size_t hashProbeCount_2 = aiThread[2]->ai.hashHitCount + aiThread[2]->ai.hashMissCount;
+            size_t hashProbeCount_1 = aiThread[BLACK]->ai.hashHitCount + aiThread[BLACK]->ai.hashMissCount;
+            size_t hashProbeCount_2 = aiThread[WHITE]->ai.hashHitCount + aiThread[WHITE]->ai.hashMissCount;
                 
             loggerDebug("[hash 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1,
-                        aiThread[1]->ai.hashHitCount,
-                        aiThread[1]->ai.hashMissCount,
-                        aiThread[1]->ai.hashHitCount * 100 / hashProbeCount_1);
+                        aiThread[BLACK]->ai.hashHitCount,
+                        aiThread[BLACK]->ai.hashMissCount,
+                        aiThread[BLACK]->ai.hashHitCount * 100 / hashProbeCount_1);
 
             loggerDebug("[hash 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_2,
-                        aiThread[2]->ai.hashHitCount,
-                        aiThread[2]->ai.hashMissCount,
-                        aiThread[2]->ai.hashHitCount * 100 / hashProbeCount_2);
+                        aiThread[WHITE]->ai.hashHitCount,
+                        aiThread[WHITE]->ai.hashMissCount,
+                        aiThread[WHITE]->ai.hashHitCount * 100 / hashProbeCount_2);
 
             loggerDebug("[hash +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1 + hashProbeCount_2,
-                        aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount,
-                        aiThread[1]->ai.hashMissCount + aiThread[2]->ai.hashMissCount,
-                        (aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
+                        aiThread[BLACK]->ai.hashHitCount + aiThread[WHITE]->ai.hashHitCount,
+                        aiThread[BLACK]->ai.hashMissCount + aiThread[WHITE]->ai.hashMissCount,
+                        (aiThread[BLACK]->ai.hashHitCount + aiThread[WHITE]->ai.hashHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
 #endif // TRANSPOSITION_TABLE_DEBUG
 
             if (options.getAutoRestart()) {
                 gameReset();
                 gameStart();
 
-                if (isAiPlayer[1]) {
-                    setEngine(1, true);
+                if (isAiPlayer[BLACK]) {
+                    setEngine(BLACK, true);
                 }
-                if (isAiPlayer[2]) {
-                    setEngine(2, true);
+                if (isAiPlayer[WHITE]) {
+                    setEngine(WHITE, true);
                 }
             }
 
@@ -1009,11 +1009,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
 #ifndef TRAINING_MODE
     // 网络: 将着法放到服务器的发送列表中
-    if (isAiPlayer[1])
-    {
-        aiThread[1]->getServer()->setAction(cmd);
-    } else if (isAiPlayer[2]) {
-        aiThread[1]->getServer()->setAction(cmd);    // 注意: 同样是AI1
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->getServer()->setAction(cmd);
+    } else if (isAiPlayer[WHITE]) {
+        aiThread[BLACK]->getServer()->setAction(cmd);    // 注意: 同样是AI1
     }
 #endif // TRAINING_MODE
 
@@ -1201,7 +1200,7 @@ bool GameController::updateScence(Game &g)
 void GameController::showNetworkWindow()
 {
 #ifndef TRAINING_MODE
-    aiThread[1]->getServer()->show();
-    aiThread[1]->getClient()->show();
+    aiThread[BLACK]->getServer()->show();
+    aiThread[BLACK]->getClient()->show();
 #endif // TRAINING_MODE
 }
