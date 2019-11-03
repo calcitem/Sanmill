@@ -156,6 +156,10 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         d -= reduce;
     }
 
+    d += DEPTH_ADJUST;
+
+    d = d >= 1 ? d : 1;
+
     loggerDebug("Depth: %d\n", d);
 
     return d;
