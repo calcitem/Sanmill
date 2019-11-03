@@ -81,9 +81,6 @@ public slots:
     // 强制出招，不退出线程
     void act();
 
-    // 线程暂停
-    void pause();
-
     // 线程继续
     void resume();
 

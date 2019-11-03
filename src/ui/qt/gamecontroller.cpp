@@ -799,11 +799,7 @@ bool GameController::actionPiece(QPointF pos)
                     if (isAiPlayer[1]) {
                         aiThread[1]->resume();
                     }
-                    if (isAiPlayer[2])
-                        aiThread[2]->pause();
                 } else {
-                    if (isAiPlayer[1])
-                        aiThread[1]->pause();
                     if (isAiPlayer[2]) {
                         aiThread[2]->resume();
                     }
@@ -953,11 +949,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
                 if (isAiPlayer[1]) {
                     aiThread[1]->resume();
                 }
-                if (isAiPlayer[2])
-                    aiThread[2]->pause();
             } else {
-                if (isAiPlayer[1])
-                    aiThread[1]->pause();
                 if (isAiPlayer[2]) {
                     aiThread[2]->resume();
                 }

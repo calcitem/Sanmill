@@ -155,12 +155,6 @@ void AiThread::act()
     mutex.unlock();
 }
 
-void AiThread::pause()
-{
-    mutex.lock();
-    mutex.unlock();
-}
-
 void AiThread::resume()
 {
     mutex.lock();
