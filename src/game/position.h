@@ -229,7 +229,6 @@ public:
 
     // 是否分出胜负
     bool checkGameOverCondition();
-    bool checkGameOverCondition(bool forceDraw);
 
     // 清除所有禁点
     void cleanForbiddenLocations();

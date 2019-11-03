@@ -825,12 +825,6 @@ int Game::update()
 // 是否分出胜负
 bool Game::checkGameOverCondition()
 {
-    return checkGameOverCondition(false);
-}
-
-// 是否分出胜负
-bool Game::checkGameOverCondition(bool forceDraw)
-{
     if (position.phase & PHASE_NOTPLAYING) {
         return true;
     }
@@ -916,18 +910,6 @@ bool Game::checkGameOverCondition(bool forceDraw)
 
         return false;
     }
-
-#ifdef THREEFOLD_REPETITION
-    if (forceDraw)
-    {
-        tips = "重复三次局面和棋！";
-        winner = PLAYER_DRAW;
-        position.phase = PHASE_GAMEOVER;
-        sprintf(cmdline, "Threefold Repetition. Draw!");
-        cmdlist.emplace_back(string(cmdline));
-        return true;
-    }
-#endif
 
     return false;
 }
