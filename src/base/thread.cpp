@@ -29,7 +29,7 @@ AiThread::AiThread(int id, QObject *parent) :
     depth(2),
     timeLimit(3600)
 {
-    this->id = id;
+    this->playerId = id;
 
     // 连接定时器启动，减去118毫秒的返回时间
     connect(this, &AiThread::calcStarted, this, [=]() {timer.start(timeLimit * 1000 - 118); }, Qt::QueuedConnection);
@@ -101,16 +101,16 @@ void AiThread::run()
 #endif
 
     // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
-    int i = 0;
+    int sideId = 0;
 
-    loggerDebug("Thread %d start\n", id);
+    loggerDebug("Thread %d start\n", playerId);
 
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        i = Player::toId(game->position.sideToMove);
+        sideId = Player::toId(game->position.sideToMove);
 
-        if (i != id || waiting) {
+        if (sideId != playerId || waiting) {
             pauseCondition.wait(&mutex);
             mutex.unlock();
             continue;
@@ -124,20 +124,12 @@ void AiThread::run()
             // 三次重复局面和
             loggerDebug("Draw\n\n");
             strCommand = "draw";
-#ifdef TRAINING_MODE
             emitCommand();
-#else
-            QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
-#endif
         } else {
             strCommand = ai.bestMove();
             if (strCommand && strcmp(strCommand, "error!") != 0) {
                 loggerDebug("Computer: %s\n\n", strCommand);
-#ifdef TRAINING_MODE
                 emitCommand();
-#else
-                QTimer::singleShot(EMIT_COMMAND_DELAY, this, &AiThread::emitCommand);
-#endif
             }
         }
 
@@ -151,7 +143,7 @@ void AiThread::run()
         mutex.unlock();
     }
 
-    loggerDebug("Thread %d quit\n", id);
+    loggerDebug("Thread %d quit\n", playerId);
 }
 
 void AiThread::act()

@@ -95,7 +95,7 @@ public slots:
 
 public:
     // 玩家ID
-    int id;
+    int playerId;
 
 private:
 
