@@ -792,28 +792,22 @@ bool GameController::actionPiece(QPointF pos)
 #endif
 
         // AI设置
-        if (&game == &(this->game)) {
-            // 如果还未决出胜负
-            if (game.whoWin() == PLAYER_NOBODY) {
-                if (game.position.sideToMove == PLAYER_BLACK) {
-                    if (isAiPlayer[1]) {
-                        aiThread[1]->resume();
-                    }
-                } else {
-                    if (isAiPlayer[2]) {
-                        aiThread[2]->resume();
-                    }
+        // 如果还未决出胜负
+        if (game.whoWin() == PLAYER_NOBODY) {
+            if (game.position.sideToMove == PLAYER_BLACK) {
+                if (isAiPlayer[1]) {
+                    aiThread[1]->resume();
+                }
+            } else {
+                if (isAiPlayer[2]) {
+                    aiThread[2]->resume();
                 }
             }
-            // 如果已经决出胜负
-            else {
-                aiThread[1]->stop();
-                aiThread[2]->stop();
-
-                // 弹框
-                //message = QString::fromStdString(game.getTips());
-                //QMessageBox::about(NULL, "游戏结果", message);
-            }
+        }
+        // 如果已经决出胜负
+        else {
+            aiThread[1]->stop();
+            aiThread[2]->stop();
         }
     }
 
@@ -942,77 +936,75 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 #endif // TRAINING_MODE
 
     // AI设置
-    if (&game == &(this->game)) {
-        // 如果还未决出胜负
-        if (game.whoWin() == PLAYER_NOBODY) {
-            if (game.position.sideToMove == PLAYER_BLACK) {
-                if (isAiPlayer[1]) {
-                    aiThread[1]->resume();
-                }
-            } else {
-                if (isAiPlayer[2]) {
-                    aiThread[2]->resume();
-                }
+    // 如果还未决出胜负
+    if (game.whoWin() == PLAYER_NOBODY) {
+        if (game.position.sideToMove == PLAYER_BLACK) {
+            if (isAiPlayer[1]) {
+                aiThread[1]->resume();
+            }
+        } else {
+            if (isAiPlayer[2]) {
+                aiThread[2]->resume();
             }
         }
-        // 如果已经决出胜负
-        else {           
-                aiThread[1]->stop();
-                aiThread[2]->stop();
+    }
+    // 如果已经决出胜负
+    else {           
+            aiThread[1]->stop();
+            aiThread[2]->stop();
 
-                gameEndTime = now();
-                gameDurationTime = gameEndTime - gameStartTime;
+            gameEndTime = now();
+            gameDurationTime = gameEndTime - gameStartTime;
 
-                loggerDebug("Game Duration Time: %dms\n", gameDurationTime);
+            loggerDebug("Game Duration Time: %dms\n", gameDurationTime);
 
 #ifdef TIME_STAT
-                loggerDebug("Sort Time: %ld + %ld = %ldms\n",
-                            aiThread[1]->ai.sortTime, aiThread[2]->ai.sortTime,
-                            (aiThread[1]->ai.sortTime + aiThread[2]->ai.sortTime));
-                aiThread[1]->ai.sortTime = aiThread[2]->ai.sortTime = 0;
+            loggerDebug("Sort Time: %ld + %ld = %ldms\n",
+                        aiThread[1]->ai.sortTime, aiThread[2]->ai.sortTime,
+                        (aiThread[1]->ai.sortTime + aiThread[2]->ai.sortTime));
+            aiThread[1]->ai.sortTime = aiThread[2]->ai.sortTime = 0;
 #endif // TIME_STAT
 
 #ifdef TRANSPOSITION_TABLE_DEBUG                
-                size_t hashProbeCount_1 = aiThread[1]->ai.hashHitCount + aiThread[1]->ai.hashMissCount;
-                size_t hashProbeCount_2 = aiThread[2]->ai.hashHitCount + aiThread[2]->ai.hashMissCount;
+            size_t hashProbeCount_1 = aiThread[1]->ai.hashHitCount + aiThread[1]->ai.hashMissCount;
+            size_t hashProbeCount_2 = aiThread[2]->ai.hashHitCount + aiThread[2]->ai.hashMissCount;
                 
-                loggerDebug("[hash 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-                            hashProbeCount_1,
-                            aiThread[1]->ai.hashHitCount,
-                            aiThread[1]->ai.hashMissCount,
-                            aiThread[1]->ai.hashHitCount * 100 / hashProbeCount_1);
+            loggerDebug("[hash 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                        hashProbeCount_1,
+                        aiThread[1]->ai.hashHitCount,
+                        aiThread[1]->ai.hashMissCount,
+                        aiThread[1]->ai.hashHitCount * 100 / hashProbeCount_1);
 
-                loggerDebug("[hash 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-                            hashProbeCount_2,
-                            aiThread[2]->ai.hashHitCount,
-                            aiThread[2]->ai.hashMissCount,
-                            aiThread[2]->ai.hashHitCount * 100 / hashProbeCount_2);
+            loggerDebug("[hash 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                        hashProbeCount_2,
+                        aiThread[2]->ai.hashHitCount,
+                        aiThread[2]->ai.hashMissCount,
+                        aiThread[2]->ai.hashHitCount * 100 / hashProbeCount_2);
 
-                loggerDebug("[hash +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-                            hashProbeCount_1 + hashProbeCount_2,
-                            aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount,
-                            aiThread[1]->ai.hashMissCount + aiThread[2]->ai.hashMissCount,
-                            (aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
+            loggerDebug("[hash +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                        hashProbeCount_1 + hashProbeCount_2,
+                        aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount,
+                        aiThread[1]->ai.hashMissCount + aiThread[2]->ai.hashMissCount,
+                        (aiThread[1]->ai.hashHitCount + aiThread[2]->ai.hashHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
 #endif // TRANSPOSITION_TABLE_DEBUG
 
-                if (options.getAutoRestart()) {
-                    gameReset();
-                    gameStart();
+            if (options.getAutoRestart()) {
+                gameReset();
+                gameStart();
 
-                    if (isAiPlayer[1]) {
-                        setEngine(1, true);
-                    }
-                    if (isAiPlayer[2]) {
-                        setEngine(2, true);
-                    }
+                if (isAiPlayer[1]) {
+                    setEngine(1, true);
                 }
+                if (isAiPlayer[2]) {
+                    setEngine(2, true);
+                }
+            }
 
 #ifdef MESSAGEBOX_ENABLE
-            // 弹框
-            message = QString::fromStdString(game.getTips());
-            QMessageBox::about(NULL, "游戏结果", message);
+        // 弹框
+        message = QString::fromStdString(game.getTips());
+        QMessageBox::about(NULL, "游戏结果", message);
 #endif
-        }
     }
 
 #ifndef TRAINING_MODE
