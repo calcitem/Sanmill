@@ -105,9 +105,6 @@ private:
     // 互斥锁
     QMutex mutex;
 
-    // 线程等待标识，这里没用到，留着以后扩展用
-    bool waiting;
-
     // 等待条件，这里没用到，留着以后扩展用
     QWaitCondition pauseCondition;
 

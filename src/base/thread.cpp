@@ -24,7 +24,6 @@
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
-    waiting(false),
     game(nullptr),
     depth(2),
     timeLimit(3600)
@@ -110,7 +109,7 @@ void AiThread::run()
 
         sideId = Player::toId(game->position.sideToMove);
 
-        if (sideId != playerId || waiting) {
+        if (sideId != playerId) {
             pauseCondition.wait(&mutex);
             mutex.unlock();
             continue;
@@ -152,7 +151,6 @@ void AiThread::act()
         return;
 
     mutex.lock();
-    waiting = false;
     ai.quit();
     mutex.unlock();
 }
@@ -160,14 +158,12 @@ void AiThread::act()
 void AiThread::pause()
 {
     mutex.lock();
-    waiting = true;
     mutex.unlock();
 }
 
 void AiThread::resume()
 {
     mutex.lock();
-    waiting = false;
     pauseCondition.wakeAll();
     mutex.unlock();
 }
@@ -180,7 +176,6 @@ void AiThread::stop()
     if (!isInterruptionRequested()) {
         requestInterruption();
         mutex.lock();
-        waiting = false;
         ai.quit();
         pauseCondition.wakeAll();
         mutex.unlock();
