@@ -24,8 +24,8 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
 
-    int nPiecesInHandDiff = INT_MAX;
-    int nPiecesOnBoardDiff = INT_MAX;
+    int nPiecesInHandDiff = std::numeric_limits<int>::max();
+    int nPiecesOnBoardDiff = std::numeric_limits<int>::max();
     int nPiecesNeedRemove = 0;
 
 #ifdef DEBUG_AB_TREE

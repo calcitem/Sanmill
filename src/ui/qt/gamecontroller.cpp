@@ -297,7 +297,7 @@ void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLi
         return;
     this->ruleIndex = ruleNo;
 
-    if (stepLimited != UINT16_MAX && timeLimited != -1) {
+    if (stepLimited != std::numeric_limits<uint16_t>::max() && timeLimited != -1) {
         stepsLimit = stepLimited;
         timeLimit = timeLimited;
     }

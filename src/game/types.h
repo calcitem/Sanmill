@@ -121,7 +121,7 @@ enum value_t : int8_t
     VALUE_STRONG = 20,
     VALUE_WIN = 80,
     VALUE_INFINITE = 125,
-    VALUE_UNKNOWN = INT8_MIN,
+    VALUE_UNKNOWN = std::numeric_limits<int8_t>::min(),
 
     VALUE_EACH_PIECE_INHAND = 5,
     VALUE_EACH_PIECE_ONBOARD = 5,
@@ -157,7 +157,7 @@ enum rating_t : int8_t
     RATING_CAPTURE_OPPONENT_THREE_MILLS = -RATING_CAPTURE_THREE_MILLS,
 
     RATING_TT = 100,
-    RATING_MAX = INT8_MAX,
+    RATING_MAX = std::numeric_limits<int8_t>::max(),
 };
 
 // 棋盘点上棋子的类型

@@ -144,7 +144,7 @@ int TT::recordHash(const value_t &value,
 void TT::clear()
 {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    if (transpositionTableAge == UINT8_MAX)
+    if (transpositionTableAge == std::numeric_limits<uint8_t>::max())
     {
         loggerDebug("Clean TT\n");
         transpositionTable.clear();

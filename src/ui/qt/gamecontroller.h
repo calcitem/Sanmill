@@ -122,7 +122,7 @@ signals:
 public slots:
 
     // 设置规则
-    void setRule(int ruleNo, step_t stepLimited = UINT16_MAX, int timeLimited = -1);
+    void setRule(int ruleNo, step_t stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = -1);
 
     // 游戏开始
     void gameStart();

@@ -222,9 +222,9 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     newNode->phase = tempGame.position.phase;
     newNode->action = tempGame.position.action;
     newNode->evaluated = false;
-    newNode->nPiecesInHandDiff = INT_MAX;
-    newNode->nPiecesOnBoardDiff = INT_MAX;
-    newNode->nPiecesNeedRemove = INT_MAX;
+    newNode->nPiecesInHandDiff = std::numeric_limits<int>::max();
+    newNode->nPiecesOnBoardDiff = std::numeric_limits<int>::max();
+    newNode->nPiecesNeedRemove = std::numeric_limits<int>::max();
     newNode->alpha = -VALUE_INFINITE;
     newNode->beta = VALUE_INFINITE;
     newNode->visited = false;
