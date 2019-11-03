@@ -60,10 +60,10 @@ public:
     };
 
     // 玩家剩余未放置子数
-    int nPiecesInHand[3]{0};
+    int nPiecesInHand[COLOR_COUNT]{0};
 
     // 玩家盘面剩余子数, [0] 为两个玩家之和
-    int nPiecesOnBoard[3] {0};
+    int nPiecesOnBoard[COLOR_COUNT] {0};
 
     // 尚待去除的子数
     int nPiecesNeedRemove{};
@@ -79,7 +79,7 @@ class Game
 
 public:
     // 赢盘数
-    int score[3];
+    int score[COLOR_COUNT];
     int score_draw {};
 
     int tm {-1};
@@ -312,7 +312,7 @@ private:
     time_t currentTime {};
 
     // 玩家用时（秒）
-    time_t elapsedSeconds[3];
+    time_t elapsedSeconds[COLOR_COUNT];
 
     // 当前棋局的字符提示
     string tips;
