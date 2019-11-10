@@ -64,6 +64,7 @@ HEADERS  += \
     src/base/misc.h \
     src/base/sort.h \
     src/base/stack.h \
+    src/base/stopwatch.h \
     src/base/thread.h \
     src/ai/search.h \
     src/base/zobrist.h \

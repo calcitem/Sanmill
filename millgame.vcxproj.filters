@@ -132,6 +132,9 @@
     <ClInclude Include="src\ai\trainer.h">
       <Filter>ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\base\stopwatch.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
