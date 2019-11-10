@@ -105,13 +105,10 @@ mem_header_t* MemoryManager::get_mem_from_pool(size_t nquantas)
         h->s.size = nquantas;
         memmgr_free((void*)(h + 1));
         pool_free_pos += total_req_size;
-    }
-    else
-    {
-        return nullptr;
+        return freep;
     }
 
-    return freep;
+    return nullptr;
 }
 
 
@@ -368,4 +365,3 @@ void MemoryManager::test_memmgr()
 
     memmgr_print_stats();
 }
-
