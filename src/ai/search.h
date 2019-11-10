@@ -42,6 +42,9 @@
 #include "types.h"
 #include "memmgr.h"
 #include "misc.h"
+#ifdef CYCLE_STAT
+#include "stopwatch.h"
+#endif
 
 using namespace std;
 using namespace CTSL;
@@ -101,6 +104,12 @@ public:
 #ifdef TIME_STAT
     // 排序算法耗时 (ms)
     TimePoint sortTime { 0 };
+#endif
+#ifdef CYCLE_STAT
+    // 排序算法耗费时间周期 (TODO: 计算单次或平均)
+    stopwatch::rdtscp_clock::time_point sortCycle;
+    stopwatch::timer::duration sortCycle { 0 };
+    stopwatch::timer::period sortCycle;
 #endif
 
 public:

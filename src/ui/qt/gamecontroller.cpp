@@ -57,6 +57,7 @@ GameController::GameController(
     gameStartTime(0),
     gameEndTime(0),
     gameDurationTime(0),
+    gameDurationCycle(0),
     hasSound(true),
     timeID(0),
     ruleIndex(-1),
@@ -148,6 +149,7 @@ void GameController::gameStart()
     }
 
     gameStartTime = now();
+    gameStartCycle = stopwatch::rdtscp_clock::now();
 }
 
 void GameController::gameReset()
@@ -956,6 +958,8 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
             gameEndTime = now();
             gameDurationTime = gameEndTime - gameStartTime;
 
+            gameEndCycle = stopwatch::rdtscp_clock::now();
+
             loggerDebug("Game Duration Time: %dms\n", gameDurationTime);
 
 #ifdef TIME_STAT
@@ -964,6 +968,19 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
                         (aiThread[BLACK]->ai.sortTime + aiThread[WHITE]->ai.sortTime));
             aiThread[BLACK]->ai.sortTime = aiThread[WHITE]->ai.sortTime = 0;
 #endif // TIME_STAT
+#ifdef CYCLE_STAT
+            loggerDebug("Sort Cycle: %ld + %ld = %ld\n",
+                        aiThread[BLACK]->ai.sortCycle, aiThread[WHITE]->ai.sortCycle,
+                        (aiThread[BLACK]->ai.sortCycle + aiThread[WHITE]->ai.sortCycle));
+            aiThread[BLACK]->ai.sortCycle = aiThread[WHITE]->ai.sortCycle = 0;
+#endif // CYCLE_STAT
+
+#if 0
+            gameDurationCycle = gameEndCycle - gameStartCycle;
+            loggerDebug("Game Start Cycle: %u\n", gameStartCycle);
+            loggerDebug("Game End Cycle: %u\n", gameEndCycle);
+            loggerDebug("Game Duration Cycle: %u\n", gameDurationCycle);
+#endif
 
 #ifdef TRANSPOSITION_TABLE_DEBUG                
             size_t hashProbeCount_1 = aiThread[BLACK]->ai.hashHitCount + aiThread[BLACK]->ai.hashMissCount;

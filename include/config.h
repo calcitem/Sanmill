@@ -46,6 +46,7 @@
 //#define HARD_LEVEL_DEPTH
 
 //#define TIME_STAT
+//#define CYCLE_STAT
 
 //#define MIN_MAX_ONLY
 

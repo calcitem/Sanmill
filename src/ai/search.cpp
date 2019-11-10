@@ -415,12 +415,19 @@ void AIAlgorithm::sortMoves(Node *node)
 #ifdef TIME_STAT
     auto timeStart = now();
 #endif
+#ifdef CYCLE_STAT
+    auto cycleStart = stopwatch::rdtscp_clock::now();
+#endif
 
     NODE_PTR_SORT_FUN(sqrt_sort_sort_ins)(node->children, node->childrenSize);
 
 #ifdef TIME_STAT
     auto timeEnd = now();
     sortTime += (timeEnd - timeStart);
+#endif
+#ifdef CYCLE_STAT
+    auto cycleEnd = stopwatch::rdtscp_clock::now();
+    sortCycle += (cycleEnd - cycleStart);
 #endif
 
 #ifdef DEBUG_SORT
@@ -515,6 +522,10 @@ int AIAlgorithm::search(depth_t depth)
 #ifdef TIME_STAT
     auto timeStart = chrono::steady_clock::now();
     chrono::steady_clock::time_point timeEnd;
+#endif
+#ifdef CYCLE_STAT
+    auto cycleStart = stopwatch::rdtscp_clock::now();
+    chrono::steady_clock::time_point cycleEnd;
 #endif
 
 #ifdef THREEFOLD_REPETITION

@@ -42,6 +42,7 @@
 #include "thread.h"
 #include "server.h"
 #include "client.h"
+#include "stopwatch.h"
 
 using namespace std;
 
@@ -250,6 +251,15 @@ private:
 
     // 游戏持续时间
     TimePoint gameDurationTime;
+
+    // 游戏开始周期
+    stopwatch::rdtscp_clock::time_point gameStartCycle;
+
+    // 游戏结束周期
+    stopwatch::rdtscp_clock::time_point gameEndCycle;
+
+    // 游戏持续周期
+    stopwatch::rdtscp_clock::duration gameDurationCycle;
 
     // 是否有落子音效
     bool hasSound;
