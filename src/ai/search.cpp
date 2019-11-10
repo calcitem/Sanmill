@@ -990,7 +990,7 @@ const char* AIAlgorithm::bestMove()
     Board::printBoard();
 
     int i = 0;
-    string moves = "moves";
+
     int cs = root->childrenSize;
     for (int j = 0; j < cs; j++) {
         if (root->children[j]->value == root->value

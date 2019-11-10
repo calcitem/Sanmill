@@ -22,8 +22,6 @@
 
 #include "config.h"
 
-#include <list>
-
 #ifdef USE_STD_STACK
 #include <stack>
 #include <vector>

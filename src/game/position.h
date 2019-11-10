@@ -22,7 +22,6 @@
 
 #include <string>
 #include <cstring>
-#include <list>
 
 #include "config.h"
 #include "types.h"
@@ -165,7 +164,7 @@ public:
     }
 
     // 获得棋谱
-    const list<string> *getCmdList() const
+    const vector<string> *getCmdList() const
     {
         return &cmdlist;
     }
@@ -262,7 +261,7 @@ public: /* TODO: move to private */
     location_t *boardLocations;
 
     // 棋谱
-    list <string> cmdlist;
+    vector <string> cmdlist;
 
     // 着法命令行用于棋谱的显示和解析, 当前着法的命令行指令，即一招棋谱
     char cmdline[64]{};

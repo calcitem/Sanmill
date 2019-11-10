@@ -521,7 +521,7 @@ bool Board::isStar(square_t square)
             square == 22);
 }
 
-void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
+void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -633,7 +633,7 @@ void Board::mirror(list <string> &cmdlist, char* cmdline, int32_t move_, square_
     }
 }
 
-void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
+void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -798,7 +798,7 @@ void Board::turn(list <string> &cmdlist, char *cmdline, int32_t move_, square_t 
     }
 }
 
-void Board::rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
+void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
 {
     // 将degrees转化为0~359之间的数
     degrees = degrees % 360;

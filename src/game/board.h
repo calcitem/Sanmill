@@ -58,13 +58,13 @@ public:
     void createMillTable();
 
     // 局面左右镜像
-    void mirror(list <string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
+    void mirror(vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
 
     // 局面内外翻转
-    void turn(list <string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
+    void turn(vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
 
     // 局面逆时针旋转
-    void rotate(int degrees, list <string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
+    void rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
 
     // 判断棋盘 square 处的棋子处于几个“三连”中
     int inHowManyMills(square_t square);

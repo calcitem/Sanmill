@@ -45,6 +45,9 @@ Game::Game()
 
     // 比分归零
     score[BLACK] = score[WHITE] = score_draw = 0;
+
+    //tips.reserve(1024);
+    cmdlist.reserve(256);
 }
 
 Game::~Game() = default;
