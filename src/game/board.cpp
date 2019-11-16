@@ -200,9 +200,7 @@ void Board::squareToPolar(const square_t square, int &r, int &s)
 
 square_t Board::polarToSquare(int r, int s)
 {
-    if (r < 1 || r > N_RINGS || s < 1 || s > N_SEATS) {
-        return SQ_0;
-    }
+    assert(!(r < 1 || r > N_RINGS || s < 1 || s > N_SEATS));
 
     return static_cast<square_t>(r * N_SEATS + s - 1);
 }
@@ -210,12 +208,11 @@ square_t Board::polarToSquare(int r, int s)
 int Board::inHowManyMills(square_t square)
 {
     int n = 0;
-    int square_1, square_2;
 
     for (int l = 0; l < LINE_TYPES_COUNT; l++) {
-        square_1 = millTable[square][l][0];
-        square_2 = millTable[square][l][1];
-        if ((locations[square] & 0x30) & locations[square_1] & locations[square_2]) {
+        if ((locations[square] & 0x30) &
+            locations[millTable[square][l][0]] &
+            locations[millTable[square][l][1]]) {
             n++;
         }
     }
@@ -226,12 +223,11 @@ int Board::inHowManyMills(square_t square)
 int Board::inHowManyMills(square_t square, player_t player)
 {
     int n = 0;
-    int square_1, square_2;
 
     for (int l = 0; l < LINE_TYPES_COUNT; l++) {
-        square_1 = millTable[square][l][0];
-        square_2 = millTable[square][l][1];
-        if (player & locations[square_1] & locations[square_2]) {
+        if (player &
+            locations[millTable[square][l][0]] &
+            locations[millTable[square][l][1]]) {
             n++;
         }
     }
@@ -248,7 +244,7 @@ int Board::addMills(square_t square)
     uint64_t mill = 0;
     int n = 0;
     int idx[3], min, temp;
-    char m = locations[square] & '\x30';
+    char m = locations[square] & 0x30;
 
     for (int i = 0; i < 3; i++) {
         idx[0] = square;
@@ -388,19 +384,22 @@ void Board::getSurroundedPieceCount(square_t square, int sideId, int &nPlayerPie
 // 判断玩家的棋子是否被围
 bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], square_t square)
 {
+    int i;
+    square_t moveSquare;
+
     // 判断square处的棋子是否被“闷”
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
-        int i;
-        square_t moveSquare;
         for (i = 0; i < 4; i++) {
             moveSquare = static_cast<square_t>(MoveList::moveTable[square][i]);
             if (moveSquare && !locations[moveSquare])
                 break;
         }
+
         // 被围住
-        if (i == 4)
+        if (i == 4) {
             return true;
+        }
     }
     // 没被围住
     return false;
@@ -420,15 +419,18 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
 
     // 查询整个棋盘
     square_t moveSquare;
-    for (int i = 1; i < N_SEATS * (N_RINGS + 1); i++) {
+    int locend = N_SEATS * (N_RINGS + 1);
+
+    for (int i = 1; i < locend; i++) {
         if (!(ch & locations[i])) {
             continue;
         }
 
         for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
             moveSquare = static_cast<square_t>(MoveList::moveTable[i][d]);
-            if (moveSquare && !locations[moveSquare])
+            if (moveSquare && !locations[moveSquare]) {
                 return false;
+            }
         }
     }
 
