@@ -25,7 +25,7 @@ namespace CTSL //Concurrent Thread Safe Library
     //during the creation of the bucket. All the hash buckets are created during the construction of the map.
     //Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the hash map
 #ifdef HASH_KEY_DISABLE
-    #define hashFn uint64_t
+    #define hashFn hash_t
     template <typename K, typename V>
 #else
     template <typename K, typename V, typename F = std::hash<K> >
@@ -58,7 +58,7 @@ namespace CTSL //Concurrent Thread Safe Library
             //If key is not found, function returns false.
             bool find(const K &key, V &value) const
             {
-                size_t hashValue = hashFn(key) & (hashSize - 1) ;
+                K hashValue = hashFn(key) & (hashSize - 1) ;
 #ifdef DISABLE_HASHBUCKET
                 // A shared mutex is used to enable multiple concurrent reads
 #ifndef HASHMAP_NOLOCK
@@ -80,7 +80,7 @@ namespace CTSL //Concurrent Thread Safe Library
             //If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
             void insert(const K &key, const V &value)
             {
-                size_t hashValue = hashFn(key) & (hashSize - 1);
+                K hashValue = hashFn(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
                 std::unique_lock<std::shared_timed_mutex> lock(mutex_);
@@ -153,7 +153,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #else
             F hashFn;
 #endif
-            const size_t hashSize;
+            const hash_t hashSize;
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
             mutable std::shared_timed_mutex mutex_;
