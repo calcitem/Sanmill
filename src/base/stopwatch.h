@@ -20,6 +20,7 @@ struct rdtscp_clock {
 
   static auto now() noexcept -> time_point
   {
+#if defined(__x86_64__) || defined(__amd64__)
 #ifdef _WIN32
     unsigned int ui;
     return time_point(duration((static_cast<std::uint64_t>(__rdtscp(&ui)))));
@@ -28,7 +29,11 @@ struct rdtscp_clock {
     __asm__ __volatile__("rdtscp" : "=d"(hi), "=a"(lo));
     return time_point(duration((static_cast<std::uint64_t>(hi) << 32) | lo));
 #endif // WIN32
-  }
+#else
+      unsigned int ui = 0;
+      return time_point(duration((static_cast<std::uint64_t>(ui))));
+#endif
+  }  
 };
 
 // A timer using the specified clock.
