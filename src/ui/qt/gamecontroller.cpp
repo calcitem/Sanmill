@@ -172,7 +172,7 @@ void GameController::gameReset()
     tempGame = game;
 
     // 停掉线程
-    if (!options.getAutoRestart()) {
+    if (!gameOptions.getAutoRestart()) {
         aiThread[BLACK]->stop();
         aiThread[WHITE]->stop();
         isAiPlayer[BLACK] = false;
@@ -405,22 +405,22 @@ void GameController::playSound(const QString &soundPath)
 
 void GameController::setGiveUpIfMostLose(bool enabled)
 {
-    options.setGiveUpIfMostLose(enabled);
+    gameOptions.setGiveUpIfMostLose(enabled);
 }
 
 void GameController::setAutoRestart(bool enabled)
 {
-    options.setAutoRestart(enabled);
+    gameOptions.setAutoRestart(enabled);
 }
 
 void GameController::setRandomMove(bool enabled)
 {
-    options.setRandomMoveEnabled(enabled);
+    gameOptions.setRandomMoveEnabled(enabled);
 }
 
 void GameController::setLearnEndgame(bool enabled)
 {
-    options.setLearnEndgameEnabled(enabled);  
+    gameOptions.setLearnEndgameEnabled(enabled);
 }
 
 // 上下翻转
@@ -1005,7 +1005,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
                         (aiThread[BLACK]->ai.hashHitCount + aiThread[WHITE]->ai.hashHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
 #endif // TRANSPOSITION_TABLE_DEBUG
 
-            if (options.getAutoRestart()) {
+            if (gameOptions.getAutoRestart()) {
                 gameReset();
                 gameStart();
 

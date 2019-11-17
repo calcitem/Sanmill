@@ -52,6 +52,6 @@ private:
     bool learnEndgame { false };
 };
 
-extern Options options;
+extern Options gameOptions;
 
 #endif /* OPTION_H */

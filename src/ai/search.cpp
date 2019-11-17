@@ -1033,7 +1033,7 @@ const char* AIAlgorithm::bestMove()
 #endif /* ENDGAME_LEARNING */
 
     // 检查是否必败
-    if (options.getGiveUpIfMostLose() == true) {
+    if (gameOptions.getGiveUpIfMostLose() == true) {
         bool isMostLose = true; // 是否必败
 
         for (int j = 0; j < root->childrenSize; j++) {

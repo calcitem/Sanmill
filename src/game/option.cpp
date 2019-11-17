@@ -19,7 +19,7 @@
 
 #include "option.h"
 
-Options options;
+Options gameOptions;
 
 void Options::setAutoRestart(bool enabled)
 {

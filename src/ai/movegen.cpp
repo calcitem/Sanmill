@@ -364,7 +364,7 @@ void MoveList::shuffle()
     }
 
 
-    if (options.getRandomMoveEnabled()) {
+    if (gameOptions.getRandomMoveEnabled()) {
         uint32_t seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
