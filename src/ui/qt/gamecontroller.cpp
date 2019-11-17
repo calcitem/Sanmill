@@ -960,7 +960,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
             gameEndCycle = stopwatch::rdtscp_clock::now();
 
-            loggerDebug("Game Duration Time: %dms\n", gameDurationTime);
+            loggerDebug("Game Duration Time: %lldms\n", gameDurationTime);
 
 #ifdef TIME_STAT
             loggerDebug("Sort Time: %ld + %ld = %ldms\n",
