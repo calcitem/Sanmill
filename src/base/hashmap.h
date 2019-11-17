@@ -33,7 +33,7 @@ namespace CTSL //Concurrent Thread Safe Library
     class HashMap
     {
         public:
-            HashMap(size_t hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
+            HashMap(hash_t hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
             {
 #ifdef DISABLE_HASHBUCKET
                 hashTable = new HashNode<K, V>[hashSize]; //create the hash table as an array of hash nodes
