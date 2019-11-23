@@ -28,7 +28,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MillGameWindow w;
     w.show();
+#ifndef _DEBUG
     w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
+#endif
 
     return QApplication::exec();
 }

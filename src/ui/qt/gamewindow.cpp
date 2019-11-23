@@ -97,6 +97,11 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
     int unith = (deskTopRect.height() - height()) / 2;
     this->move(unitw, unith);
 
+#ifdef _DEBUG
+    this->setFixedWidth(width());
+    this->setFixedHeight(height());
+#endif
+
 #ifdef MOBILE_APP_UI
     // 隐藏菜单栏、工具栏、状态栏等
     ui.menuBar->setVisible(false);
