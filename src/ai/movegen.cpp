@@ -28,9 +28,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                                   AIAlgorithm::Node *node, AIAlgorithm::Node *root, move_t bestMove)
 {
     square_t square = SQ_0;
-
-    // 对手
-    player_t opponent = Player::getOpponent(tempGame.position.sideToMove);
+    player_t opponent = PLAYER_NOBODY;
 
     // 列出所有合法的下一招
     switch (tempGame.position.action) {
@@ -98,6 +96,8 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
 
         // 对于吃子动作
     case ACTION_CAPTURE:
+        opponent = Player::getOpponent(tempGame.position.sideToMove);
+
         if (tempGame.position.board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
