@@ -167,7 +167,8 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
 void AIAlgorithm::buildRoot()
 {
-    root = addNode(nullptr, VALUE_ZERO, RATING_ZERO, MOVE_NONE, MOVE_NONE, PLAYER_NOBODY);
+    root = addNode(nullptr, VALUE_ZERO, RATING_ZERO, MOVE_NONE, MOVE_NONE);
+    root->sideToMove = PLAYER_NOBODY;
 
     assert(root != nullptr);
 }
@@ -177,8 +178,7 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     const value_t &value,
     const rating_t &rating,
     const move_t &move,
-    const move_t &bestMove,
-    const player_t &side
+    const move_t &bestMove
 )
 {
     Node *newNode = (Node *)memmgr.memmgr_alloc(sizeof(Node));
@@ -214,8 +214,6 @@ struct AIAlgorithm::Node *AIAlgorithm::addNode(
     newNode->isHash = false;
 #endif
 #endif
-
-    newNode->sideToMove = side;
 
 #ifdef DEBUG_AB_TREE
     newNode->root = root;

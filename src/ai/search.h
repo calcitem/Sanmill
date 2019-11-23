@@ -154,8 +154,7 @@ public:
 public: /* TODO: Move to private or protected */
     // 增加新节点
     struct Node *addNode(Node *parent, const value_t &value, const rating_t &rating,
-                         const move_t &move, const move_t &bestMove,
-                         const player_t &side);
+                         const move_t &move, const move_t &bestMove);
 
 protected:
     // 对合法的着法降序排序
