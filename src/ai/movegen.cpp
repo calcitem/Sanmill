@@ -29,11 +29,6 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
 {
     square_t square = SQ_0;
 
-    // 如果有子节点，则返回，避免重复建立
-    if (node->childrenSize) {
-        return;
-    }
-
     // 对手
     player_t opponent = Player::getOpponent(tempGame.position.sideToMove);
 
