@@ -44,6 +44,8 @@ public:
     // 8位，禁止修改!
     static const int N_SEATS = 8;
 
+    static const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
+
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
     static const int onBoard[SQ_EXPANDED_COUNT];
 

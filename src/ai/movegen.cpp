@@ -27,7 +27,6 @@
 void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
                                   AIAlgorithm::Node *node, AIAlgorithm::Node *root, move_t bestMove)
 {
-    const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
     square_t square = SQ_0;
 
     // 如果有子节点，则返回，避免重复建立
@@ -71,7 +70,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
             square_t newSquare, oldSquare;
 
             // 尽量走理论上较差的位置的棋子
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+            for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 oldSquare = static_cast<square_t>(movePriorityTable[i]);
 
                 if (!tempGame.choose(oldSquare)) {
@@ -106,7 +105,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
     case ACTION_CAPTURE:
         if (tempGame.position.board.isAllInMills(opponent)) {
             // 全成三的情况
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+            for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<square_t>(movePriorityTable[i]);
                 if (tempGame.boardLocations[square] & opponent) {
                     ai.addNode(node, VALUE_ZERO, RATING_ZERO, (move_t)-square, bestMove);
@@ -116,7 +115,7 @@ void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
         }
 
         // 不是全成三的情况
-        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+        for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<square_t>(movePriorityTable[i]);
             if (tempGame.boardLocations[square] & opponent) {
                 if (rule.allowRemoveMill || !tempGame.position.board.inHowManyMills(square)) {
