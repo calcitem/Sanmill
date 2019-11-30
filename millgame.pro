@@ -37,7 +37,7 @@ SOURCES += \
     src/game/position.cpp \
     src/game/rule.cpp \
     src/main.cpp \
-    src/base/thread.cpp \
+    src/base/aithread.cpp \
     src/ai/search.cpp \
     src/ui/qt/gamewindow.cpp \
     src/ui/qt/pieceitem.cpp \
@@ -65,7 +65,7 @@ HEADERS  += \
     src/base/sort.h \
     src/base/stack.h \
     src/base/stopwatch.h \
-    src/base/thread.h \
+    src/base/aithread.h \
     src/ai/search.h \
     src/base/zobrist.h \
     src/game/board.h \

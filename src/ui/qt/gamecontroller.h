@@ -39,7 +39,7 @@
 #include "position.h"
 #include "gamescene.h"
 #include "pieceitem.h"
-#include "thread.h"
+#include "aithread.h"
 #include "server.h"
 #include "client.h"
 #include "stopwatch.h"

@@ -21,7 +21,7 @@
 #include <QtNetwork>
 
 #include "client.h"
-#include "thread.h"
+#include "aithread.h"
 
 Client::Client(QWidget *parent, uint16_t port)
     : QDialog(parent)

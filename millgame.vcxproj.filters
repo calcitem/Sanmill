@@ -285,16 +285,13 @@
     <QtMoc Include="src\ui\qt\server.h">
       <Filter>ui</Filter>
     </QtMoc>
-    <QtMoc Include="src\base\thread.h">
+    <QtMoc Include="src\base\aithread.h">
       <Filter>base</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\base\thread.cpp">
-      <Filter>base</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\qt\server.cpp">
       <Filter>ui</Filter>
@@ -364,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="src\ai\trainer.cpp">
       <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\aithread.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

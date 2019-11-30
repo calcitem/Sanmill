@@ -18,7 +18,7 @@
 */
 
 #include <QTimer>
-#include "thread.h"
+#include "aithread.h"
 #include "tt.h"
 #include "player.h"
 
