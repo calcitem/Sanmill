@@ -135,6 +135,12 @@
     <ClInclude Include="src\base\stopwatch.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="src\base\thread.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\thread_win32_osx.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -363,6 +369,9 @@
       <Filter>ai</Filter>
     </ClCompile>
     <ClCompile Include="src\base\aithread.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\thread.cpp">
       <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>

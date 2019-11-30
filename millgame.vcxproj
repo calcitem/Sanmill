@@ -456,6 +456,8 @@
     <ClInclude Include="src\base\stack.h" />
     <QtMoc Include="src\base\aithread.h" />
     <ClInclude Include="src\base\stopwatch.h" />
+    <ClInclude Include="src\base\thread.h" />
+    <ClInclude Include="src\base\thread_win32_osx.h" />
     <ClInclude Include="src\base\zobrist.h" />
     <ClInclude Include="src\game\board.h" />
     <ClInclude Include="src\game\location.h" />
@@ -706,6 +708,7 @@
     <ClCompile Include="src\base\memmgr.cpp" />
     <ClCompile Include="src\base\misc.cpp" />
     <ClCompile Include="src\base\aithread.cpp" />
+    <ClCompile Include="src\base\thread.cpp" />
     <ClCompile Include="src\base\zobrist.cpp" />
     <ClCompile Include="src\game\board.cpp" />
     <ClCompile Include="src\game\location.cpp" />
