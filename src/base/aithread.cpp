@@ -31,10 +31,10 @@ AiThread::AiThread(int id, QObject *parent) :
     this->playerId = id;
 
     // 连接定时器启动，减去118毫秒的返回时间
-    connect(this, &AiThread::calcStarted, this, [=]() {timer.start(timeLimit * 1000 - 118); }, Qt::QueuedConnection);
+    connect(this, &AiThread::searchStarted, this, [=]() {timer.start(timeLimit * 1000 - 118); }, Qt::QueuedConnection);
 
     // 连接定时器停止
-    connect(this, &AiThread::calcFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
+    connect(this, &AiThread::searchFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
 
     // 连接定时器处理函数
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
@@ -116,7 +116,7 @@ void AiThread::run()
         }
 
         ai.setGame(*game);
-        emit calcStarted();
+        emit searchStarted();
         mutex.unlock();
 
         if (ai.search(depth) == 3) {
@@ -132,7 +132,7 @@ void AiThread::run()
             }
         }
 
-        emit calcFinished();
+        emit searchFinished();
 
         // 执行完毕后继续判断
         mutex.lock();

@@ -42,11 +42,11 @@ signals:
     // 着法信号
     void command(const QString &cmdline, bool update = true);
 
-    // 开始计算的信号
-    void calcStarted();
+    // 开始搜索的信号
+    void searchStarted();
 
-    // 计算结束的信号
-    void calcFinished();
+    // 计算搜索的信号
+    void searchFinished();
 
 protected:
     void run() override;
