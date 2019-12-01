@@ -71,11 +71,8 @@ GameController::GameController(
     scene.setBackgroundBrush(QColor(239, 239, 239));
 #endif /* MOBILE_APP_UI */
 
-    isAiPlayer[BLACK] = false,
-    isAiPlayer[WHITE] = false,
-
-    aiThread[BLACK] = new AiThread(1);
-    aiThread[WHITE] = new AiThread(2);
+    resetAiPlayers();
+    createAiThreads();
 
     gameReset();
 
@@ -103,13 +100,8 @@ GameController::~GameController()
         killTimer(timeID);
 
     // 停掉线程
-    aiThread[BLACK]->stop();
-    aiThread[WHITE]->stop();
-    aiThread[BLACK]->wait();
-    aiThread[WHITE]->wait();
-
-    delete aiThread[BLACK];
-    delete aiThread[WHITE];
+    stopAndWaitThreads();
+    deleteAiThreads();
 
 #ifdef ENDGAME_LEARNING
     if (options.getLearnEndgameEnabled()) {
@@ -173,10 +165,8 @@ void GameController::gameReset()
 
     // 停掉线程
     if (!gameOptions.getAutoRestart()) {
-        aiThread[BLACK]->stop();
-        aiThread[WHITE]->stop();
-        isAiPlayer[BLACK] = false;
-        isAiPlayer[WHITE] = false;
+        stopThreads();
+        resetAiPlayers();
     }
 
 #ifndef TRAINING_MODE
@@ -339,24 +329,12 @@ void GameController::setEngine2(bool arg)
 
 void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2)
 {
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->stop();
-        aiThread[BLACK]->wait();
-    }
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->stop();
-        aiThread[WHITE]->wait();
-    }
+    stopAndWaitAiThreads();
 
     aiThread[BLACK]->setAi(game, depth1, time1);
     aiThread[WHITE]->setAi(game, depth2, time2);
 
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->start();
-    }
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->start();
-    }
+    startAiThreads();
 }
 
 void GameController::getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2)
@@ -427,14 +405,7 @@ void GameController::setLearnEndgame(bool enabled)
 void GameController::flip()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->stop();
-        aiThread[BLACK]->wait();
-    }
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->stop();
-        aiThread[WHITE]->wait();
-    }
+    stopAndWaitAiThreads();
 
     game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
     game.position.board.rotate(180, game.cmdlist, game.cmdline, game.move, game.currentSquare);
@@ -452,16 +423,8 @@ void GameController::flip()
     else
         phaseChange(currentRow, true);
 
-    aiThread[BLACK]->setAi(game);
-    aiThread[WHITE]->setAi(game);
-
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->start();
-    }
-
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->start();
-    }
+    threadsSetAi(game);
+    startAiThreads();
 #endif // TRAINING_MODE
 }
 
@@ -469,14 +432,7 @@ void GameController::flip()
 void GameController::mirror()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->stop();
-        aiThread[BLACK]->wait();
-    }
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->stop();
-        aiThread[WHITE]->wait();
-    }
+    stopAndWaitAiThreads();
 
     game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
@@ -496,16 +452,8 @@ void GameController::mirror()
     else
         phaseChange(currentRow, true);
 
-    aiThread[BLACK]->setAi(game);
-    aiThread[WHITE]->setAi(game);
-
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->start();
-    }
-
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->start();
-    }
+    threadsSetAi(game);
+    startAiThreads();
 #endif // TRAINING_MODE
 }
 
@@ -513,14 +461,7 @@ void GameController::mirror()
 void GameController::turnRight()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->stop();
-        aiThread[BLACK]->wait();
-    }
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->stop();
-        aiThread[WHITE]->wait();
-    }
+    stopAndWaitAiThreads();
 
     game.position.board.rotate(-90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
@@ -538,16 +479,8 @@ void GameController::turnRight()
     else
         phaseChange(currentRow, true);
 
-    aiThread[BLACK]->setAi(game);
-    aiThread[WHITE]->setAi(game);
-
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->start();
-    }
-
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->start();
-    }
+    threadsSetAi(game);
+    startAiThreads();
 #endif
 }
 
@@ -555,14 +488,7 @@ void GameController::turnRight()
 void GameController::turnLeft()
 {
 #ifndef TRAINING_MODE
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->stop();
-        aiThread[BLACK]->wait();
-    }
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->stop();
-        aiThread[WHITE]->wait();
-    }
+    stopAndWaitAiThreads();
 
     game.position.board.rotate(90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
@@ -576,14 +502,8 @@ void GameController::turnLeft()
     // 刷新显示
     updateScence();
 
-    aiThread[BLACK]->setAi(game);
-    aiThread[WHITE]->setAi(game);
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->start();
-    }
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->start();
-    }
+    threadsSetAi(game);
+    startAiThreads();
 #endif // TRAINING_MODE
 }
 
@@ -796,20 +716,11 @@ bool GameController::actionPiece(QPointF pos)
         // AI设置
         // 如果还未决出胜负
         if (game.whoWin() == PLAYER_NOBODY) {
-            if (game.position.sideToMove == PLAYER_BLACK) {
-                if (isAiPlayer[BLACK]) {
-                    aiThread[BLACK]->resume();
-                }
-            } else {
-                if (isAiPlayer[WHITE]) {
-                    aiThread[WHITE]->resume();
-                }
-            }
+            resumeAiThreads(game.position.sideToMove);
         }
         // 如果已经决出胜负
         else {
-            aiThread[BLACK]->stop();
-            aiThread[WHITE]->stop();
+            stopThreads();
         }
     }
 
@@ -940,20 +851,11 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     // AI设置
     // 如果还未决出胜负
     if (game.whoWin() == PLAYER_NOBODY) {
-        if (game.position.sideToMove == PLAYER_BLACK) {
-            if (isAiPlayer[BLACK]) {
-                aiThread[BLACK]->resume();
-            }
-        } else {
-            if (isAiPlayer[WHITE]) {
-                aiThread[WHITE]->resume();
-            }
-        }
+        resumeAiThreads(game.position.sideToMove);
     }
     // 如果已经决出胜负
     else {           
-            aiThread[BLACK]->stop();
-            aiThread[WHITE]->stop();
+            stopThreads();
 
             gameEndTime = now();
             gameDurationTime = gameEndTime - gameStartTime;

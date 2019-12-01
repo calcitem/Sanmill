@@ -177,6 +177,84 @@ public slots:
 
     bool isAIsTurn();
 
+    void threadsSetAi(const Game &g)
+    {
+        aiThread[BLACK]->setAi(g);
+        aiThread[WHITE]->setAi(g);
+    }
+
+    void resetAiPlayers()
+    {
+        isAiPlayer[BLACK] = false;
+        isAiPlayer[WHITE] = false;
+    }
+
+    void createAiThreads()
+    {
+        aiThread[BLACK] = new AiThread(1);
+        aiThread[WHITE] = new AiThread(2);
+    }
+
+    void startAiThreads()
+    {
+        if (isAiPlayer[BLACK]) {
+            aiThread[BLACK]->start();
+        }
+
+        if (isAiPlayer[WHITE]) {
+            aiThread[WHITE]->start();
+        }
+    }
+
+    void stopAndWaitAiThreads()
+    {
+        if (isAiPlayer[BLACK]) {
+            aiThread[BLACK]->stop();
+            aiThread[BLACK]->wait();
+        }
+        if (isAiPlayer[WHITE]) {
+            aiThread[WHITE]->stop();
+            aiThread[WHITE]->wait();
+        }
+    }
+
+    void stopThreads()
+    {
+        aiThread[BLACK]->stop();
+        aiThread[WHITE]->stop();
+    }
+
+    void waitThreads()
+    {
+        aiThread[BLACK]->wait();
+        aiThread[WHITE]->wait();
+    }
+
+    void stopAndWaitThreads()
+    {
+        stopThreads();
+        waitThreads();
+    }
+
+    void resumeAiThreads(player_t sideToMove)
+    {
+        if (sideToMove == PLAYER_BLACK) {
+            if (isAiPlayer[BLACK]) {
+                aiThread[BLACK]->resume();
+            }
+        } else {
+            if (isAiPlayer[WHITE]) {
+                aiThread[WHITE]->resume();
+            }
+        }
+    }
+
+    void deleteAiThreads()
+    {
+        delete aiThread[BLACK];
+        delete aiThread[WHITE];
+    }
+
     // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
     bool actionPiece(QPointF p);
 
