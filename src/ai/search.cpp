@@ -922,10 +922,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值
-    if (node->children[0])
-    {
-        TT::recordHash(node->value, depth, hashf, hash, node->children[0]->move);
-    }
+    TT::recordHash(node->value, depth, hashf, hash, node->children[0]->move);
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // 返回
