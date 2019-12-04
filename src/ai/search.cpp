@@ -753,8 +753,10 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif // TRANSPOSITION_TABLE_ENABLE
 #endif // DEBUG_AB_TREE
 
-    // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-    if (unlikely(position->phase == PHASE_GAMEOVER)) {
+
+    if (unlikely(position->phase == PHASE_GAMEOVER) ||   // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
+        !depth ||   // 搜索到第0层
+        unlikely(requiredQuit)) {
         // 局面评估
         node->value = Evaluation::getValue(tempGame, position, node);
         evaluatedNodeCount++;
@@ -767,26 +769,10 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         }
 
 #ifdef DEBUG_AB_TREE
-        node->isLeaf = true;
-#endif
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-        // 记录确切的哈希值
-        TT::recordHash(node->value, depth, TT::hashfEXACT, hash, MOVE_NONE);
-#endif
-
-        return node->value;
-    }
-
-    // 搜索到第0层或需要退出
-    if (!depth || unlikely(requiredQuit)) {
-        // 局面评估
-        node->value = Evaluation::getValue(tempGame, position, node);
-        evaluatedNodeCount++;
-
-#ifdef DEBUG_AB_TREE
         if (requiredQuit) {
             node->isTimeout = true;
+        } else {
+            node->isLeaf = true;
         }
 #endif
 
