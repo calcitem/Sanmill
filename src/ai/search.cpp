@@ -448,19 +448,13 @@ void AIAlgorithm::sortMoves(Node *node)
 
 void AIAlgorithm::deleteTree(Node *node)
 {
-    // 递归删除节点树
-    if (node == nullptr) {
-        return;
-    }
-
     int nchild = node->childrenSize;
+
     for (int i = 0; i < nchild; i++) {
         deleteTree(node->children[i]);
     }
 
-    if (node->childrenSize) {
-        node->childrenSize = 0;
-    }
+    node->childrenSize = 0;
 
     memmgr.memmgr_free(node);
 }
