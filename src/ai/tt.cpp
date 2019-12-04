@@ -52,18 +52,20 @@ value_t TT::probeHash(const hash_t &hash,
 
     type = hashValue.type;
 
-    if (hashValue.type == hashfEXACT) {
+    switch (hashValue.type) {
+    case hashfEXACT:
         return hashValue.value;
-    }
-
-    if ((hashValue.type == hashfALPHA) && // 最多是 hashValue.value
-        (hashValue.value <= alpha)) {
-        return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
-    }
-
-    if ((hashValue.type == hashfBETA) && // 至少是 hashValue.value
-        (hashValue.value >= beta)) {
-        return beta;
+        break;
+    case hashfALPHA:     // 最多是 hashValue.value
+        if (hashValue.value <= alpha) {
+            return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
+        }
+        break;
+    case hashfBETA:     // 至少是 hashValue.value
+        if (hashValue.value >= beta) {
+            return beta;
+        }
+        break;
     }
 
 out:
