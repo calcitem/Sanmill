@@ -1059,9 +1059,7 @@ void Game::constructHash()
 hash_t Game::getHash()
 {
     // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
-    updateHashMisc();
-
-    return position.hash;
+    return updateHashMisc();
 }
 
 hash_t Game::updateHash(square_t square)
