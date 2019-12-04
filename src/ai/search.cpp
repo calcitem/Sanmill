@@ -827,7 +827,8 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
         undoMove();
 
-        if (tempGame.position.sideToMove == PLAYER_BLACK) {
+        switch (tempGame.position.sideToMove) {
+        case PLAYER_BLACK:
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
             // 取最大值
@@ -843,11 +844,12 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                 alpha = value;
             }
 
-        } else {
+            break;
 
+        case PLAYER_WHITE:
             // 为走棋方的对手一方的层, 局面对对手一方来说是以 β 为评价
 
-            // 取最小值
+           // 取最小值
             minMax = std::min(value, minMax);
 
             // β 表示对手目前的劣势，这是对手所能承受的最坏结果
@@ -871,7 +873,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                 beta = value;
             }
 #endif
+            break;
         }
+        
 #ifndef MIN_MAX_ONLY
         // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
         // 否则剪枝返回
