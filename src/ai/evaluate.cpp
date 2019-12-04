@@ -118,7 +118,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
         }
 
         // 走棋阶段被闷判断
-        if (position->action == ACTION_CHOOSE &&
+        else if (position->action == ACTION_CHOOSE &&
             tempGame.position.board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove) &&
             rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
@@ -127,7 +127,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::No
         }
 
         // 剩余棋子个数判断
-        if (position->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
+        else if (position->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
             value -= VALUE_WIN;
         } else if (position->nPiecesOnBoard[WHITE] < rule.nPiecesAtLeast) {
             value += VALUE_WIN;
