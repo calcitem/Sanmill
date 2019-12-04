@@ -784,10 +784,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         node->value = Evaluation::getValue(tempGame, position, node);
         evaluatedNodeCount++;
 
-        // 为争取速胜，value 值 +- 深度 (有必要?)
-        value_t delta = value_t(position->sideToMove == PLAYER_BLACK ? depth : -depth);
-        node->value += delta;
-
 #ifdef DEBUG_AB_TREE
         if (requiredQuit) {
             node->isTimeout = true;
