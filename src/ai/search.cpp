@@ -485,17 +485,9 @@ void AIAlgorithm::setGame(const Game &g)
     root = (Node *)memmgr.memmgr_alloc(sizeof(Node));
     assert(root != nullptr);
 
-    root->childrenSize = 0; // Important
-    root->value = VALUE_ZERO;
-    root->rating = RATING_ZERO;
-    root->move = MOVE_NONE;
-    root->parent = nullptr;
-#ifdef SORT_CONSIDER_PRUNED
-    root->pruned = false;
-#endif
+    memset(root, 0, sizeof(Node));
+ 
 #ifdef DEBUG_AB_TREE
-    root->action = ACTION_NONE;
-    root->phase = PHASE_NONE;
     root->root = root;
 #endif
 }
