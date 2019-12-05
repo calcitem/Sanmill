@@ -55,7 +55,7 @@ using namespace CTSL;
 class AIAlgorithm
 {
 public:
-    static const int NODE_CHILDREN_SIZE = 64;   // TODO: 缩减空间
+    static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
     // 定义一个节点结构体
     struct Node
     {
