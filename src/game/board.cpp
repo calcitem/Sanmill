@@ -296,9 +296,10 @@ int Board::addMills(square_t square)
         auto iter = millList.begin();
 
         // 遍历
-        for (iter = millList.begin(); iter != millList.end(); iter++) {
-            if (mill == *iter)
+        for ( ; iter != millList.end(); iter++) {
+            if (mill == *iter) {
                 break;
+            }
         }
 
         // 如果没找到历史项
