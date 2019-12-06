@@ -45,20 +45,9 @@ Board::~Board()
 
 Board &Board::operator= (const Board &other)
 {
-    if (this == &other)
-        return *this;
-
     memcpy(this->locations, other.locations, sizeof(this->locations));
 
-    if (!millList.empty()) {
-        millList.clear();
-    }
-
-    if (!other.millList.empty()) {
-        for (auto i : other.millList) {
-            millList.push_back(i);
-        }
-    }
+    // TODO: 确定 millList 确实不用复制?
 
     return *this;
 }
