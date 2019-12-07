@@ -28,6 +28,7 @@
 #include "search.h"
 #include "server.h"
 #include "client.h"
+#include "test.h"
 
 class AiThread : public QThread
 {

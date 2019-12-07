@@ -52,6 +52,9 @@
     <Filter Include="base">
       <UniqueIdentifier>{c5349658-6cbb-4076-8529-29de7092f9d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{944f132b-1dc6-4222-a345-79e3d2c821e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -294,6 +297,9 @@
     <QtMoc Include="src\base\aithread.h">
       <Filter>base</Filter>
     </QtMoc>
+    <QtMoc Include="src\test\test.h">
+      <Filter>test</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -373,6 +379,9 @@
     </ClCompile>
     <ClCompile Include="src\base\thread.cpp">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\test.cpp">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

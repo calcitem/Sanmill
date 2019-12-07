@@ -106,10 +106,10 @@
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)\src\base;$(ProjectDir)\include;$(ProjectDir)\src\ai;$(ProjectDir)\src\game;$(ProjectDir)\src\ui\qt;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\src\base;$(ProjectDir)\include;$(ProjectDir)\src\ai;$(ProjectDir)\src\game;$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\test;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\game;$(ProjectDir)\src\ai;$(ProjectDir)\src\base;$(ProjectDir)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\game;$(ProjectDir)\src\ai;$(ProjectDir)\src\base;$(ProjectDir)\include;$(ProjectDir)\src\test;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -466,6 +466,7 @@
     <ClInclude Include="src\game\position.h" />
     <ClInclude Include="src\game\rule.h" />
     <ClInclude Include="src\game\types.h" />
+    <QtMoc Include="src\test\test.h" />
     <ClInclude Include="src\ui\qt\boarditem.h" />
     <QtMoc Include="src\ui\qt\client.h" />
     <QtMoc Include="src\ui\qt\gamecontroller.h" />
@@ -717,6 +718,7 @@
     <ClCompile Include="src\game\position.cpp" />
     <ClCompile Include="src\game\rule.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\test\test.cpp" />
     <ClCompile Include="src\ui\qt\boarditem.cpp" />
     <ClCompile Include="src\ui\qt\client.cpp" />
     <ClCompile Include="src\ui\qt\gamecontroller.cpp" />

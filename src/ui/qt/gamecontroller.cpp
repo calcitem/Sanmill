@@ -76,11 +76,24 @@ GameController::GameController(
 
     gameReset();
 
+#ifdef TEST_MODE
+    gameTest = new Test();
+
+    readMemoryTimer = new QTimer(this);
+    connect(readMemoryTimer, SIGNAL(timeout()), this, SLOT(onTimeOut()));
+    readMemoryTimer->start(100);
+#endif // TEST_MODE
+
     // 关联AI和控制器的着法命令行
     connect(aiThread[BLACK], SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
     connect(aiThread[WHITE], SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
+
+#ifdef TEST_MODE
+    connect(this->gameTest, SIGNAL(command(const QString &, bool)),
+            this, SLOT(command(const QString &, bool)));
+#endif
 
 #ifndef TRAINING_MODE
     // 关联AI和网络类的着法命令行
@@ -109,6 +122,13 @@ GameController::~GameController()
     }
 #endif /* ENDGAME_LEARNING */
 }
+
+#ifdef TEST_MODE
+void GameController::onTimeOut()
+{
+    gameTest->readFromMemory();
+}
+#endif // TEST_MODE
 
 const map<int, QStringList> GameController::getActions()
 {
@@ -926,12 +946,16 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 #endif
     }
 
+#ifdef TEST_MODE
+    gameTest->writeToMemory(cmd);
+#endif // TEST_MODE
+
 #ifndef TRAINING_MODE
     // 网络: 将着法放到服务器的发送列表中
     if (isAiPlayer[BLACK]) {
         aiThread[BLACK]->getServer()->setAction(cmd);
     } else if (isAiPlayer[WHITE]) {
-        aiThread[BLACK]->getServer()->setAction(cmd);    // 注意: 同样是AI1
+        aiThread[BLACK]->getServer()->setAction(cmd);    // 注意: 同样是 aiThread[BLACK]
     }
 #endif // TRAINING_MODE
 

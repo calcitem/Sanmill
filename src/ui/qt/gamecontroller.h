@@ -274,6 +274,11 @@ public slots:
     // 显示网络配置窗口
     void showNetworkWindow();
 
+#ifdef TEST_MODE
+    // 定时器超时
+    void onTimeOut();
+#endif // TEST_MODE
+
 protected:
     //bool eventFilter(QObject * watched, QEvent * event);
     // 定时器
@@ -285,6 +290,11 @@ private:
 
     // 棋对象的数据模型（临时）
     Game tempGame;
+
+#ifdef TEST_MODE
+    // 测试
+    Test *gameTest;
+#endif // TEST_MODE
 
 private:
     // 2个AI的线程
@@ -365,6 +375,9 @@ private:
 
     // 棋谱字符串列表模型
     QStringListModel manualListModel;
+
+    // 读取共享内存的定时器
+    QTimer *readMemoryTimer;
 };
 
 #endif // GAMECONTROLLER_H

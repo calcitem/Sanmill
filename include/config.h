@@ -30,6 +30,8 @@
 
 //#define TRAINING_MODE
 
+//#define TEST_MODE
+
 //#define DEBUG_MODE
 //#define DEBUG_MODE_A
 

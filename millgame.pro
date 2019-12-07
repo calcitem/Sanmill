@@ -19,6 +19,7 @@ INCLUDEPATH += include
 INCLUDEPATH += src/base
 INCLUDEPATH += src/ai
 INCLUDEPATH += src/game
+INCLUDEPATH += src/test
 INCLUDEPATH += src/ui/qt
 
 SOURCES += \
@@ -39,6 +40,7 @@ SOURCES += \
     src/main.cpp \
     src/base/aithread.cpp \
     src/ai/search.cpp \
+    src/test/test.cpp \
     src/ui/qt/gamewindow.cpp \
     src/ui/qt/pieceitem.cpp \
     src/ui/qt/server.cpp \
@@ -75,6 +77,7 @@ HEADERS  += \
     src/game/position.h \
     src/game/rule.h \
     src/game/types.h \
+    src/test/test.h \
     src/ui/qt/client.h \
     src/ui/qt/gamecontroller.h \
     src/ui/qt/gamescene.h \
