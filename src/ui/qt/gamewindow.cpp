@@ -849,15 +849,33 @@ void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)
 void MillGameWindow::on_actionLocal_L_triggered()
 {
     ui.actionLocal_L->setChecked(true);
+    ui.actionEngineFight_E->setChecked(false);
     ui.actionInternet_I->setChecked(false);
+
+    gameController->isTestMode = false;
+    gameController->readMemoryTimer->stop();
 }
 
 void MillGameWindow::on_actionInternet_I_triggered()
 {
     ui.actionLocal_L->setChecked(false);
+    ui.actionEngineFight_E->setChecked(false);
     ui.actionInternet_I->setChecked(true);
 
+    gameController->isTestMode = false;
+    gameController->readMemoryTimer->stop();
+
     gameController->showNetworkWindow();
+}
+
+void MillGameWindow::on_actionEngineFight_E_triggered()
+{
+    ui.actionLocal_L->setChecked(false);
+    ui.actionEngineFight_E->setChecked(true);
+    ui.actionInternet_I->setChecked(false);
+
+    gameController->isTestMode = true;
+    gameController->readMemoryTimer->start(100);
 }
 
 void MillGameWindow::on_actionEngine_E_triggered()

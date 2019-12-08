@@ -19,8 +19,6 @@
 
 #include "config.h"
 
-#ifdef TEST_MODE
-
 #include <QBuffer>
 #include <QUuid>
 #include <QDataStream>
@@ -117,5 +115,3 @@ QString Test::createUuidString()
 {
     return QUuid::createUuid().toString();
 }
-
-#endif // TEST_MODE

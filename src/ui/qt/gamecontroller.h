@@ -276,10 +276,8 @@ public slots:
 
     void saveScore();
 
-#ifdef TEST_MODE
     // 定时器超时
     void onTimeOut();
-#endif // TEST_MODE
 
 protected:
     //bool eventFilter(QObject * watched, QEvent * event);
@@ -293,10 +291,8 @@ private:
     // 棋对象的数据模型（临时）
     Game tempGame;
 
-#ifdef TEST_MODE
     // 测试
     Test *gameTest;
-#endif // TEST_MODE
 
 private:
     // 2个AI的线程
@@ -325,6 +321,12 @@ private:
 public:
     // 电脑执先手时为 true
     bool isAiPlayer[COLOR_COUNT];
+
+    // 是否为引擎对战模式
+    bool isTestMode {false};
+
+    // 读取共享内存的定时器
+    QTimer *readMemoryTimer;
 
 private:
     // 是否有落子动画
@@ -377,9 +379,6 @@ private:
 
     // 棋谱字符串列表模型
     QStringListModel manualListModel;
-
-    // 读取共享内存的定时器
-    QTimer *readMemoryTimer;
 };
 
 #endif // GAMECONTROLLER_H

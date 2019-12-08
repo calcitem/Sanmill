@@ -22,8 +22,6 @@
 
 #include "config.h"
 
-#ifdef TEST_MODE
-
 #include <QObject>
 #include <QSharedMemory>
 #include <QString>
@@ -57,5 +55,4 @@ private:
     QString readStr;
 };
 
-#endif // TEST_MODE
 #endif // TEST_H

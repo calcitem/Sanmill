@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>685</width>
-     <height>48</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -272,6 +272,7 @@
     </property>
     <addaction name="actionEngine_E"/>
     <addaction name="actionLocal_L"/>
+    <addaction name="actionEngineFight_E"/>
     <addaction name="actionInternet_I"/>
     <addaction name="separator"/>
     <addaction name="actionEngine1_T"/>
@@ -1136,6 +1137,11 @@
    <property name="text">
     <string>残局自学习
 (&amp;E)</string>
+   </property>
+  </action>
+  <action name="actionEngineFight_E">
+   <property name="text">
+    <string>引擎对战(&amp;F)</string>
    </property>
   </action>
  </widget>
