@@ -278,6 +278,7 @@
     <addaction name="actionEngine1_T"/>
     <addaction name="actionEngine2_R"/>
     <addaction name="separator"/>
+    <addaction name="actionAutoChangeFirstMove_C"/>
    </widget>
    <widget class="QMenu" name="menu_O">
     <property name="title">
@@ -1203,6 +1204,20 @@
   <action name="actionEngineFight_E">
    <property name="text">
     <string>引擎对战(&amp;F)</string>
+   </property>
+  </action>
+  <action name="actionAutoChangeFirstMove_C">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>先后手轮替(&amp;C)</string>
    </property>
   </action>
  </widget>

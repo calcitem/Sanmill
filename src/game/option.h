@@ -28,6 +28,9 @@ public:
     void setAutoRestart(bool enabled);
     bool getAutoRestart();
 
+    void setAutoChangeFirstMove(bool enabled);
+    bool getAutoChangeFirstMove();
+
     void setGiveUpIfMostLose(bool enabled);
     bool getGiveUpIfMostLose();
 
@@ -41,6 +44,9 @@ protected:
 private:
     // 是否棋局结束后自动重新开局
     bool isAutoRestart { false };
+
+    // 是否重新开局时自动改变先后手
+    bool isAutoChangeFirstMove { false };
 
     // 是否必败时认输
     bool giveUpIfMostLose { false };

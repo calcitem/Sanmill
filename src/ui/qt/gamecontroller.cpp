@@ -411,6 +411,11 @@ void GameController::setAutoRestart(bool enabled)
     gameOptions.setAutoRestart(enabled);
 }
 
+void GameController::setAutoChangeFirstMove(bool enabled)
+{
+    gameOptions.setAutoChangeFirstMove(enabled);
+}
+
 void GameController::setRandomMove(bool enabled)
 {
     gameOptions.setRandomMoveEnabled(enabled);

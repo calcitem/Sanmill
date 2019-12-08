@@ -31,6 +31,16 @@ bool Options::getAutoRestart()
     return isAutoRestart;
 }
 
+void Options::setAutoChangeFirstMove(bool enabled)
+{
+    isAutoChangeFirstMove = enabled;
+}
+
+bool Options::getAutoChangeFirstMove()
+{
+    return isAutoChangeFirstMove;
+}
+
 void Options::setGiveUpIfMostLose(bool enabled)
 {
     giveUpIfMostLose = enabled;

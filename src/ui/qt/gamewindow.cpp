@@ -204,8 +204,7 @@ void MillGameWindow::initialize()
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
             gameController, SLOT(setEngine2(bool)));
 
-    connect(ui.
-            actionSound_S, SIGNAL(toggled(bool)),
+    connect(ui.actionSound_S, SIGNAL(toggled(bool)),
             gameController, SLOT(setSound(bool)));
 
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
@@ -216,6 +215,9 @@ void MillGameWindow::initialize()
 
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
             gameController, SLOT(setAutoRestart(bool)));
+
+    connect(ui.actionAutoChangeFirstMove_C, SIGNAL(toggled(bool)),
+            gameController, SLOT(setAutoChangeFirstMove(bool)));
 
     connect(ui.actionRandomMove_R, SIGNAL(toggled(bool)),
             gameController, SLOT(setRandomMove(bool)));

@@ -166,6 +166,9 @@ public slots:
     // 是否自动开局
     void setAutoRestart(bool enabled = false);
 
+    // 是否开局自动改变先后手
+    void setAutoChangeFirstMove(bool enabled = false);
+
     // AI 是否随机走子
     void setRandomMove(bool enabled);
 
@@ -366,6 +369,12 @@ private:
 
     // 是否必败时认输
     bool giveUpIfMostLose_ {false};
+
+    // 是否自动交换先后手
+    bool isAutoChangeFirstMove { false };
+
+    // AI 是否为先手
+    bool isAiFirstMove { false };
 
     // 定时器ID
     int timeID;
