@@ -274,10 +274,15 @@ public slots:
     // 显示网络配置窗口
     void showNetworkWindow();
 
+    // 显示引擎对战窗口
+    void showTestWindow();
+
     void saveScore();
 
-    // 定时器超时
-    void onTimeOut();
+    Test *getTest()
+    {
+        return gameTest;
+    }
 
 protected:
     //bool eventFilter(QObject * watched, QEvent * event);
@@ -321,12 +326,6 @@ private:
 public:
     // 电脑执先手时为 true
     bool isAiPlayer[COLOR_COUNT];
-
-    // 是否为引擎对战模式
-    bool isTestMode {false};
-
-    // 读取共享内存的定时器
-    QTimer *readMemoryTimer;
 
 private:
     // 是否有落子动画

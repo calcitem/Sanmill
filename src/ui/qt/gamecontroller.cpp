@@ -80,10 +80,6 @@ GameController::GameController(
 
     gameTest = new Test();
 
-    readMemoryTimer = new QTimer(this);
-    connect(readMemoryTimer, SIGNAL(timeout()), this, SLOT(onTimeOut()));        
-    readMemoryTimer->stop();
-
     // 关联AI和控制器的着法命令行
     connect(aiThread[BLACK], SIGNAL(command(const QString &, bool)),
             this, SLOT(command(const QString &, bool)));
@@ -119,13 +115,6 @@ GameController::~GameController()
         AIAlgorithm::recordEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
-}
-
-void GameController::onTimeOut()
-{
-    if (isTestMode) {
-        gameTest->readFromMemory();
-    }    
 }
 
 const map<int, QStringList> GameController::getActions()
@@ -945,10 +934,8 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         QMessageBox::about(NULL, "游戏结果", message);
 #endif
     }
-
-    if (isTestMode) {
-        gameTest->writeToMemory(cmd);
-    }
+    
+    gameTest->writeToMemory(cmd);
 
 #ifndef TRAINING_MODE
     // 网络: 将着法放到服务器的发送列表中
@@ -1148,6 +1135,11 @@ void GameController::showNetworkWindow()
 #endif // TRAINING_MODE
 }
 
+void GameController::showTestWindow()
+{
+    gameTest->show();
+}
+
 void GameController::saveScore()
 {
     qint64 pid = QCoreApplication::applicationPid();
@@ -1174,6 +1166,8 @@ void GameController::saveScore()
     QTextStream textStream(&file);
 
     textStream << QCoreApplication::applicationFilePath() << endl << endl;
+
+    textStream << gameTest->getKey() << endl << endl;
 
     if (isAiPlayer[BLACK]) {
         textStream << "Black:\tAI Player" << endl;

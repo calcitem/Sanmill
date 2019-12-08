@@ -23,17 +23,32 @@
 #include "config.h"
 
 #include <QObject>
+#include <QComboBox>
+#include <QLabel>
 #include <QSharedMemory>
 #include <QString>
 #include <QBuffer>
+#include <QDialog>
 
-class Test : public QObject
+class Test : public QDialog
 {
     Q_OBJECT
 
 public:
-    Test();
+    explicit Test(QWidget *parent = nullptr, QString key = "MillGame-Key-0");
     ~Test();
+
+    void setKey(QString k)
+    {
+        key = k;
+    }
+
+    QString getKey()
+    {
+        return key;
+    }
+
+    void stop();
 
 signals:
     void command(const QString &cmd, bool update = true);
@@ -41,18 +56,32 @@ signals:
 public slots:
     void writeToMemory(const QString &str);
     void readFromMemory();
+    void startAction();
+    void stopAction();
+    void onTimeOut();
 
 private:
+    void attach();
     void detach();
     QString createUuidString();
 
 private:
-    const int SHARED_MEMORY_SIZE = 4096;
+    static const int SHARED_MEMORY_SIZE = 4096;
     QSharedMemory sharedMemory;
     QString uuid;
     int uuidSize;
     char *to { nullptr };
     QString readStr;
+
+    QString key;
+
+    QComboBox *keyCombo = nullptr;
+    QLabel *statusLabel = nullptr;
+    QPushButton *startButton = nullptr;
+    QPushButton *stopButton = nullptr;
+
+    bool isTestMode { false };
+    QTimer *readMemoryTimer;
 };
 
 #endif // TEST_H

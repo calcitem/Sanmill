@@ -852,8 +852,7 @@ void MillGameWindow::on_actionLocal_L_triggered()
     ui.actionEngineFight_E->setChecked(false);
     ui.actionInternet_I->setChecked(false);
 
-    gameController->isTestMode = false;
-    gameController->readMemoryTimer->stop();
+    gameController->getTest()->stop();
 }
 
 void MillGameWindow::on_actionInternet_I_triggered()
@@ -862,8 +861,7 @@ void MillGameWindow::on_actionInternet_I_triggered()
     ui.actionEngineFight_E->setChecked(false);
     ui.actionInternet_I->setChecked(true);
 
-    gameController->isTestMode = false;
-    gameController->readMemoryTimer->stop();
+    gameController->getTest()->stop();
 
     gameController->showNetworkWindow();
 }
@@ -874,8 +872,7 @@ void MillGameWindow::on_actionEngineFight_E_triggered()
     ui.actionEngineFight_E->setChecked(true);
     ui.actionInternet_I->setChecked(false);
 
-    gameController->isTestMode = true;
-    gameController->readMemoryTimer->start(100);
+    gameController->showTestWindow();
 }
 
 void MillGameWindow::on_actionEngine_E_triggered()

@@ -24,13 +24,85 @@
 #include <QDataStream>
 #include <QString>
 #include <QThread>
+#include <QtWidgets>
+#include <QtCore>
 #include <random>
 
 #include "test.h"
 
-Test::Test()
+Test::Test(QWidget *parent, QString k)
+    : QDialog(parent)
+    , keyCombo(new QComboBox)
+    , startButton(new QPushButton(tr("Start")))
+    , stopButton(new QPushButton(tr("Stop")))
 {
-    sharedMemory.setKey("MillGameSharedMemory");
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+    this->key = k;
+
+    readMemoryTimer = new QTimer(this);
+    connect(readMemoryTimer, SIGNAL(timeout()), this, SLOT(onTimeOut()));
+    readMemoryTimer->stop();
+
+    keyCombo->setEditable(true);
+    keyCombo->addItem(QString("MillGame-Key-0"));
+    keyCombo->addItem(QString("MillGame-Key-1"));
+    auto keyLabel = new QLabel(tr("&Key:"));
+    keyLabel->setBuddy(keyCombo);
+
+    startButton->setDefault(true);
+    startButton->setEnabled(true);
+    stopButton->setEnabled(false);
+
+    auto closeButton = new QPushButton(tr("Close"));
+    auto buttonBox = new QDialogButtonBox;
+    buttonBox->addButton(startButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(stopButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(closeButton, QDialogButtonBox::RejectRole);
+
+    connect(startButton, &QAbstractButton::clicked, this, &Test::startAction);
+    connect(stopButton, &QAbstractButton::clicked, this, &Test::stopAction);
+    connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
+
+    QGridLayout *mainLayout = nullptr;
+    if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
+        auto outerVerticalLayout = new QVBoxLayout(this);
+        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        auto outerHorizontalLayout = new QHBoxLayout;
+        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        auto groupBox = new QGroupBox(QGuiApplication::applicationDisplayName());
+        mainLayout = new QGridLayout(groupBox);
+        outerHorizontalLayout->addWidget(groupBox);
+        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        outerVerticalLayout->addLayout(outerHorizontalLayout);
+        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+    } else {
+        mainLayout = new QGridLayout(this);
+    }
+
+    mainLayout->addWidget(keyLabel, 0, 0);
+    mainLayout->addWidget(keyCombo, 0, 1);
+    mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
+
+    setWindowTitle(QGuiApplication::applicationDisplayName());
+}
+
+Test::~Test()
+{
+    detach();
+    readMemoryTimer->stop();
+}
+
+void Test::stop()
+{
+    detach();
+    isTestMode = false;
+    readMemoryTimer->stop();
+}
+
+void Test::attach()
+{
+    sharedMemory.setKey(key);
 
     if (sharedMemory.attach()) {
         loggerDebug("Attached shared memory segment.\n");
@@ -50,19 +122,31 @@ Test::Test()
     assert(uuidSize == 38);
 }
 
-Test::~Test()
+void Test::detach()
 {
-    detach();
+    if (sharedMemory.isAttached()) {
+        if (sharedMemory.detach()) {
+            loggerDebug("Detached shared memory segment.\n");            
+        }
+    }
 }
 
 void Test::writeToMemory(const QString &cmdline)
 {
+    if (!isTestMode) {
+        return;
+    }
+
     if (cmdline == readStr) {
         return;
     }
 
-    char from[128] = { 0 };
+    char from[BUFSIZ] = { 0 };
+#ifdef _WIN32
+    strcpy_s(from, cmdline.toStdString().c_str());
+#else
     strcpy(from, cmdline.toStdString().c_str());
+#endif
 
     while (true) {
         sharedMemory.lock();
@@ -84,6 +168,10 @@ void Test::writeToMemory(const QString &cmdline)
 
 void Test::readFromMemory()
 {
+    if (!isTestMode) {
+        return;
+    }
+
     sharedMemory.lock();
     QString str = to;
     sharedMemory.unlock();
@@ -104,14 +192,34 @@ void Test::readFromMemory()
     }
 }
 
-void Test::detach()
-{
-    if (sharedMemory.isAttached()) {
-        sharedMemory.detach();
-    }
-}
-
 QString Test::createUuidString()
 {
     return QUuid::createUuid().toString();
+}
+
+void Test::startAction()
+{
+    key = keyCombo->currentText();
+
+    detach();
+    attach();
+
+    isTestMode = true;
+    readMemoryTimer->start(100);
+
+    startButton->setEnabled(false);
+    stopButton->setEnabled(true);
+}
+
+void Test::stopAction()
+{
+    stop();
+
+    startButton->setEnabled(true);
+    stopButton->setEnabled(false);
+}
+
+void Test::onTimeOut()
+{
+    readFromMemory();
 }
