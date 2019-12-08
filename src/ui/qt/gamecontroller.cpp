@@ -29,6 +29,8 @@
 #include <QAbstractButton>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+#include <QDir>
+
 #include "gamecontroller.h"
 #include "graphicsconst.h"
 #include "boarditem.h"
@@ -928,6 +930,8 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 #endif // TRANSPOSITION_TABLE_DEBUG
 
             if (gameOptions.getAutoRestart()) {
+                saveScore();
+
                 gameReset();
                 gameStart();
 
@@ -1146,4 +1150,61 @@ void GameController::showNetworkWindow()
     aiThread[BLACK]->getServer()->show();
     aiThread[BLACK]->getClient()->show();
 #endif // TRAINING_MODE
+}
+
+void GameController::saveScore()
+{
+    qint64 pid = QCoreApplication::applicationPid();
+    QString path = QDir::currentPath()
+        + "/" + tr("MillGame-Score_")
+        + QString::number(pid)
+        + ".txt";
+
+    QFile file;
+
+    // 文件对象
+    file.setFileName(path);
+
+    if (file.isOpen()) {
+        file.close();
+    }
+
+    // 打开文件,只写方式打开
+    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
+        return;
+    }
+
+    // 写文件
+    QTextStream textStream(&file);
+
+    textStream << QCoreApplication::applicationFilePath() << endl << endl;
+
+    if (isAiPlayer[BLACK]) {
+        textStream << "Black:\tAI Player" << endl;
+    } else {
+        textStream << "Black:\tHuman Player" << endl;
+    }
+
+    if (isAiPlayer[WHITE]) {
+        textStream << "White:\tAI Player" << endl;
+    } else {
+        textStream << "White:\tHuman Player" << endl;
+    }
+
+    textStream << "" << endl;
+
+    int sum = game.score[BLACK] + game.score[WHITE] + game.score_draw;
+
+    if (sum == 0) {
+        goto out;
+    }
+
+    textStream << "Sum\t" + QString::number(sum) << endl;
+    textStream << "Black\t" + QString::number(game.score[BLACK])  + "\t" + QString::number(game.score[BLACK] * 10000 / sum) << endl;
+    textStream << "White\t" + QString::number(game.score[WHITE]) + "\t" + QString::number(game.score[WHITE] * 10000 / sum) << endl;
+    textStream << "Draw\t" + QString::number(game.score_draw) + "\t" + QString::number(game.score_draw * 10000 / sum)  << endl;
+
+out:
+    file.flush();
+    file.close();
 }

@@ -274,6 +274,8 @@ public slots:
     // 显示网络配置窗口
     void showNetworkWindow();
 
+    void saveScore();
+
 #ifdef TEST_MODE
     // 定时器超时
     void onTimeOut();
