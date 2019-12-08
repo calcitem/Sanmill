@@ -253,6 +253,18 @@ void MillGameWindow::initialize()
     connect(gameController, SIGNAL(scoreDrawChanged(QString)),
             ui.scoreLcdNumber_draw, SLOT(display(QString)));
 
+    // 更新LCD，显示玩家1赢盘率
+    connect(gameController, SIGNAL(winningRate1Changed(QString)),
+            ui.winningRateLcdNumber_1, SLOT(display(QString)));
+
+    // 更新LCD，显示玩家2赢盘率
+    connect(gameController, SIGNAL(winningRate2Changed(QString)),
+            ui.winningRateLcdNumber_2, SLOT(display(QString)));
+
+    // 更新LCD，显示和棋率
+    connect(gameController, SIGNAL(winningRateDrawChanged(QString)),
+            ui.winningRateLcdNumber_draw, SLOT(display(QString)));
+
     // 更新LCD1，显示玩家1用时
     connect(gameController, SIGNAL(time1Changed(QString)),
             ui.lcdNumber_1, SLOT(display(QString)));

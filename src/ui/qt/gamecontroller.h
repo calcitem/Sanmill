@@ -105,11 +105,20 @@ signals:
     // 玩家1(先手）赢盘数改变的信号
     void score1Changed(const QString &score);
 
-    // 玩家2(后手）赢盘 数改变的信号
+    // 玩家2(后手）赢盘数改变的信号
     void score2Changed(const QString &score);
 
     // 和棋数改变的信号
     void scoreDrawChanged(const QString &score);
+
+    // 玩家1(先手）胜率改变的信号
+    void winningRate1Changed(const QString &score);
+
+    // 玩家2(后手）胜率改变的信号
+    void winningRate2Changed(const QString &score);
+
+    // 和棋率改变的信号
+    void winningRateDrawChanged(const QString &score);
 
     // 玩家1(先手）用时改变的信号
     void time1Changed(const QString &time);

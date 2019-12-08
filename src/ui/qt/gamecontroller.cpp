@@ -254,6 +254,19 @@ void GameController::gameReset()
     emit score2Changed(QString::number(game.score[WHITE], 10));
     emit scoreDrawChanged(QString::number(game.score_draw, 10));
 
+    // 更新胜率 LCD 显示
+    int scoreSum = game.score[BLACK] + game.score[WHITE] + game.score_draw;
+    int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
+    if (scoreSum != 0) {
+        winningRate_1 = game.score[BLACK] * 10000 / scoreSum;
+        winningRate_2 = game.score[WHITE] * 10000 / scoreSum;
+        winningRate_draw = game.score_draw * 10000 / scoreSum;
+    }
+    
+    emit winningRate1Changed(QString::number(winningRate_1, 10));
+    emit winningRate2Changed(QString::number(winningRate_2, 10));
+    emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
+
     // 播放音效
     //playSound(":/sound/resources/sound/newgame.wav");
 #endif // TRAINING_MODE
@@ -1123,6 +1136,20 @@ bool GameController::updateScence(Game &g)
     emit score1Changed(QString::number(g.score[BLACK], 10));
     emit score2Changed(QString::number(g.score[WHITE], 10));
     emit scoreDrawChanged(QString::number(g.score_draw, 10));
+
+    // 更新胜率 LCD 显示
+    int scoreSum = game.score[BLACK] + game.score[WHITE] + game.score_draw;
+    int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
+    if (scoreSum != 0) {
+        winningRate_1 = game.score[BLACK] * 10000 / scoreSum;
+        winningRate_2 = game.score[WHITE] * 10000 / scoreSum;
+        winningRate_draw = game.score_draw * 10000 / scoreSum;
+    }
+
+    emit winningRate1Changed(QString::number(winningRate_1, 10));
+    emit winningRate2Changed(QString::number(winningRate_2, 10));
+    emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
+
 #endif  TRAINING_MODE
     return true;
 }
