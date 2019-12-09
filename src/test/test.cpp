@@ -47,6 +47,7 @@ Test::Test(QWidget *parent, QString k)
     keyCombo->setEditable(true);
     keyCombo->addItem(QString("MillGame-Key-0"));
     keyCombo->addItem(QString("MillGame-Key-1"));
+    keyCombo->addItem(QString("MillGame-Key-2"));
     auto keyLabel = new QLabel(tr("&Key:"));
     keyLabel->setBuddy(keyCombo);
 
