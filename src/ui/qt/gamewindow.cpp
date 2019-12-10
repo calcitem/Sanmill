@@ -578,6 +578,8 @@ void MillGameWindow::on_actionNew_N_triggered()
     }
 #endif /* SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED */
 
+    gameController->saveScore();
+
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);    
 
