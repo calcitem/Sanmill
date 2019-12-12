@@ -48,6 +48,19 @@ Test::Test(QWidget *parent, QString k)
     keyCombo->addItem(QString("MillGame-Key-0"));
     keyCombo->addItem(QString("MillGame-Key-1"));
     keyCombo->addItem(QString("MillGame-Key-2"));
+    keyCombo->addItem(QString("MillGame-Key-3"));
+    keyCombo->addItem(QString("MillGame-Key-4"));
+    keyCombo->addItem(QString("MillGame-Key-5"));
+    keyCombo->addItem(QString("MillGame-Key-6"));
+    keyCombo->addItem(QString("MillGame-Key-7"));
+    keyCombo->addItem(QString("MillGame-Key-8"));
+    keyCombo->addItem(QString("MillGame-Key-9"));
+    keyCombo->addItem(QString("MillGame-Key-A"));
+    keyCombo->addItem(QString("MillGame-Key-B"));
+    keyCombo->addItem(QString("MillGame-Key-C"));
+    keyCombo->addItem(QString("MillGame-Key-D"));
+    keyCombo->addItem(QString("MillGame-Key-E"));
+    keyCombo->addItem(QString("MillGame-Key-F"));
     auto keyLabel = new QLabel(tr("&Key:"));
     keyLabel->setBuddy(keyCombo);
 
