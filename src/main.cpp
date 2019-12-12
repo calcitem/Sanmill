@@ -26,8 +26,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MillGameWindow w;
+    MillGameWindow w;   
     w.show();
+    w.setWindowTitle(QCoreApplication::applicationFilePath() +  " (" + QString::number(QCoreApplication::applicationPid()) + ")");
 #ifndef _DEBUG
     w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
 #endif
