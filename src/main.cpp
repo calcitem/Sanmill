@@ -22,13 +22,20 @@
 
 #include "gamewindow.h"
 
+QString APP_FILENAME_DEFAULT = "MillGame";
+
 #ifndef TRAINING_MODE
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MillGameWindow w;   
     w.show();
-    w.setWindowTitle(QCoreApplication::applicationFilePath() +  " (" + QString::number(QCoreApplication::applicationPid()) + ")");
+
+    QString appFileName;
+    appFileName = QCoreApplication::applicationFilePath().mid(QCoreApplication::applicationDirPath().size() + 1);
+    appFileName = appFileName.mid(0, appFileName.size() - QString(".exe").size());
+    w.setWindowTitle(appFileName +  " (" + QString::number(QCoreApplication::applicationPid()) + ")");
+
 #ifndef _DEBUG
     w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
 #endif

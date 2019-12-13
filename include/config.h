@@ -30,6 +30,12 @@
 
 //#define TRAINING_MODE
 
+//#define TEST_MODE
+
+#ifdef TEST_MODE
+#define DONOT_PLAY_SOUND
+#endif // TEST_MODE
+
 //#define DEBUG_MODE
 //#define DEBUG_MODE_A
 

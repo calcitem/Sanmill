@@ -25,6 +25,8 @@
 #include <QVector>
 #include <queue>
 
+#include "config.h"
+
 QT_BEGIN_NAMESPACE
 class QLabel;
 class QTcpServer;

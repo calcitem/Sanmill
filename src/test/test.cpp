@@ -30,6 +30,9 @@
 
 #include "test.h"
 
+extern QString appFileName;
+extern QString APP_FILENAME_DEFAULT;
+
 Test::Test(QWidget *parent, QString k)
     : QDialog(parent)
     , keyCombo(new QComboBox)
@@ -45,6 +48,14 @@ Test::Test(QWidget *parent, QString k)
     readMemoryTimer->stop();
 
     keyCombo->setEditable(true);
+#ifdef TEST_MODE
+    QString appFileName;
+    appFileName = QCoreApplication::applicationFilePath().mid(QCoreApplication::applicationDirPath().size() + 1);
+    appFileName = appFileName.mid(0, appFileName.size() - QString(".exe").size());
+    if (appFileName != APP_FILENAME_DEFAULT) {
+        keyCombo->addItem(QString(appFileName));
+    }
+#endif // TEST_MODE
     keyCombo->addItem(QString("MillGame-Key-0"));
     keyCombo->addItem(QString("MillGame-Key-1"));
     keyCombo->addItem(QString("MillGame-Key-2"));

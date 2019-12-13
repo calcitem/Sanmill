@@ -97,7 +97,7 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
     int unith = (deskTopRect.height() - height()) / 2;
     this->move(unitw, unith);
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(TEST_MODE)
     this->setFixedWidth(width());
     this->setFixedHeight(height());
 #endif
@@ -204,17 +204,34 @@ void MillGameWindow::initialize()
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
             gameController, SLOT(setEngine2(bool)));
 
+#ifdef TEST_MODE    
+    //ui.actionEngine1_T->setChecked(false);
+    //ui.actionEngine2_R->setChecked(false);
+#endif // TEST_MODE
+
     connect(ui.actionSound_S, SIGNAL(toggled(bool)),
             gameController, SLOT(setSound(bool)));
 
+#ifdef TEST_MODE
+    ui.actionSound_S->setChecked(false);
+#endif // TEST_MODE
+
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             gameController, SLOT(setAnimation(bool)));
-
+    
     connect(ui.actionGiveUpIfMostLose_G, SIGNAL(toggled(bool)),
             gameController, SLOT(setGiveUpIfMostLose(bool)));
 
+#ifdef TEST_MODE
+    ui.actionGiveUpIfMostLose_G->setChecked(true);
+#endif // TEST_MODE
+
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
             gameController, SLOT(setAutoRestart(bool)));
+
+#ifdef TEST_MODE
+    ui.actionAutoRestart_A->setChecked(true);
+#endif // TEST_MODE
 
     connect(ui.actionAutoChangeFirstMove_C, SIGNAL(toggled(bool)),
             gameController, SLOT(setAutoChangeFirstMove(bool)));
