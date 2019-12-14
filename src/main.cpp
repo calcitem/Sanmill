@@ -21,6 +21,7 @@
 #include <QDesktopWidget>
 
 #include "gamewindow.h"
+#include "misc.h"
 
 QString APP_FILENAME_DEFAULT = "MillGame";
 
@@ -31,10 +32,7 @@ int main(int argc, char *argv[])
     MillGameWindow w;   
     w.show();
 
-    QString appFileName;
-    appFileName = QCoreApplication::applicationFilePath().mid(QCoreApplication::applicationDirPath().size() + 1);
-    appFileName = appFileName.mid(0, appFileName.size() - QString(".exe").size());
-    w.setWindowTitle(appFileName +  " (" + QString::number(QCoreApplication::applicationPid()) + ")");
+    w.setWindowTitle(getAppFileName() +  " (" + QString::number(QCoreApplication::applicationPid()) + ")");
 
 #ifndef _DEBUG
     w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);

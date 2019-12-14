@@ -17,5 +17,17 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtWidgets/QApplication>
+
 #include "config.h"
 #include "misc.h"
+
+QString getAppFileName()
+{
+    QString filename;
+    filename = QCoreApplication::applicationFilePath().mid(QCoreApplication::applicationDirPath().size() + 1);
+    filename = filename.mid(0, filename.size() - QString(".exe").size());
+
+    return filename;
+}
+

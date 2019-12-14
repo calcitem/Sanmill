@@ -23,6 +23,8 @@
 #include <cstdlib>
 #include <chrono>
 
+#include <QString>
+
 using TimePoint = std::chrono::milliseconds::rep; // A value in milliseconds
 
 static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 bits");
@@ -46,5 +48,7 @@ inline uint64_t rand56()
 {
     return rand64() << 8;
 }
+
+extern QString getAppFileName();
 
 #endif /* MISC_H */
