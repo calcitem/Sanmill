@@ -56,6 +56,7 @@ HEADERS  += \
     include/version.h.template \
     src/ai/endgame.h \
     src/ai/evaluate.h \
+    src/ai/mcts.h \
     src/ai/movegen.h \
     src/ai/trainer.h \
     src/ai/tt.h \

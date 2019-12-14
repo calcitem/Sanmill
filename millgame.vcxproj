@@ -268,6 +268,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies>qtmaind.lib;shell32.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Multimediad.lib;Qt5MultimediaWidgetsd.lib;Qt5Networkd.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -443,6 +444,7 @@
     </CustomBuild>
     <ClInclude Include="src\ai\endgame.h" />
     <ClInclude Include="src\ai\evaluate.h" />
+    <ClInclude Include="src\ai\mcts.h" />
     <ClInclude Include="src\ai\movegen.h" />
     <ClInclude Include="src\ai\search.h" />
     <ClInclude Include="src\ai\trainer.h" />

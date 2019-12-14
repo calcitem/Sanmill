@@ -144,6 +144,9 @@
     <ClInclude Include="src\base\thread_win32_osx.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="src\ai\mcts.h">
+      <Filter>ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
