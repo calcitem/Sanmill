@@ -579,6 +579,8 @@ void MillGameWindow::actionRules_triggered()
 
 void MillGameWindow::on_actionNew_N_triggered()
 {
+    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+
 #ifdef SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
     QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_hhmmss");
 
@@ -588,12 +590,15 @@ void MillGameWindow::on_actionNew_N_triggered()
         + ".txt";
 
     // 下了一定步数之后新建游戏时才保存棋谱
-    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
-
     if (strlist->stringList().size() > 18) {
         saveBook(path);
     }
 #endif /* SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED */
+
+    // 棋未下完，且已经走了若干步以上，则算对手得分
+    if (strlist->stringList().size() > 12) {
+        gameController->humanGiveUp();
+    }
 
     gameController->saveScore();
 

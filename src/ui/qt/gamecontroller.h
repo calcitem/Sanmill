@@ -100,6 +100,8 @@ public:
     void setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2);
     void getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2);
 
+    void humanGiveUp();
+
 signals:
 
     // 玩家1(先手）赢盘数改变的信号

@@ -160,12 +160,6 @@ void GameController::gameReset()
     // 定时器ID为0
     timeID = 0;
 
-    // 棋未下完，则算对手得分
-    if (game.getPhase() == PHASE_MOVING &&
-        game.whoWin() == PLAYER_NOBODY) {
-        giveUp();
-    }
-
     // 重置游戏
     game.reset();
     tempGame = game;
@@ -1170,6 +1164,13 @@ void GameController::showNetworkWindow()
 void GameController::showTestWindow()
 {
     gameTest->show();
+}
+
+void GameController::humanGiveUp()
+{
+    if (game.whoWin() == PLAYER_NOBODY) {
+        giveUp();
+    }
 }
 
 void GameController::saveScore()
