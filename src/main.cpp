@@ -26,6 +26,7 @@
 QString APP_FILENAME_DEFAULT = "MillGame";
 
 #ifndef TRAINING_MODE
+#ifndef UCT_DEMO
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -40,4 +41,5 @@ int main(int argc, char *argv[])
 
     return QApplication::exec();
 }
-#endif // TRAINING_MODE
+#endif // !UCT_DEMO
+#endif // !TRAINING_MODE

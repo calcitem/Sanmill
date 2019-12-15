@@ -704,6 +704,7 @@
   <ItemGroup>
     <ClCompile Include="src\ai\endgame.cpp" />
     <ClCompile Include="src\ai\evaluate.cpp" />
+    <ClCompile Include="src\ai\mcts.cpp" />
     <ClCompile Include="src\ai\movegen.cpp" />
     <ClCompile Include="src\ai\search.cpp" />
     <ClCompile Include="src\ai\trainer.cpp" />

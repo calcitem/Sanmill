@@ -25,6 +25,7 @@ INCLUDEPATH += src/ui/qt
 SOURCES += \
     src/ai/endgame.cpp \
     src/ai/evaluate.cpp \
+    src/ai/mcts.cpp \
     src/ai/movegen.cpp \
     src/ai/trainer.cpp \
     src/ai/tt.cpp \
