@@ -88,7 +88,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     };
 #else
     const depth_t placingDepthTable_12[] = {
-        1, 7, 10, 12,         /* 0 ~ 3 */
+        1, 7, 9, 12,         /* 0 ~ 3 */
         12, 14, 16, 16,       /* 4 ~ 7 */
         17, 16, 15, 14, 6     /* 8 ~ 12 */
     };
