@@ -33,13 +33,6 @@ Game::Game()
     // 创建哈希数据
     constructHash();
 
-#ifdef ENDGAME_LEARNING
-    // TODO: 残局文件被加载了多次
-    if (gameOptions.getLearnEndgameEnabled()) {
-        AIAlgorithm::loadEndgameFileToHashMap();
-    }    
-#endif
-
     // 默认规则
     setPosition(&RULES[DEFAULT_RULE_NUMBER]);
 

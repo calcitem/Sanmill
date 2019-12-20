@@ -418,6 +418,12 @@ void GameController::setRandomMove(bool enabled)
 void GameController::setLearnEndgame(bool enabled)
 {
     gameOptions.setLearnEndgameEnabled(enabled);
+
+#ifdef ENDGAME_LEARNING
+    if (gameOptions.getLearnEndgameEnabled()) {
+        AIAlgorithm::loadEndgameFileToHashMap();
+    }
+#endif
 }
 
 // 上下翻转
