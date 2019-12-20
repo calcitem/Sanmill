@@ -35,7 +35,7 @@ Game::Game()
 
 #ifdef ENDGAME_LEARNING
     // TODO: 残局文件被加载了多次
-    if (options.getLearnEndgameEnabled()) {
+    if (gameOptions.getLearnEndgameEnabled()) {
         AIAlgorithm::loadEndgameFileToHashMap();
     }    
 #endif
@@ -262,7 +262,7 @@ bool Game::reset()
     cmdlist.clear();
 
 #ifdef ENDGAME_LEARNING
-    if (options.getLearnEndgameEnabled()) {
+    if (gameOptions.getLearnEndgameEnabled()) {
         AIAlgorithm::recordEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */

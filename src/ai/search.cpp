@@ -671,7 +671,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 检索残局库
     Endgame endgame;
 
-    if (options.getLearnEndgameEnabled() &&
+    if (gameOptions.getLearnEndgameEnabled() &&
         findEndgameHash(hash, endgame)) {
         switch (endgame.type) {
         case ENDGAME_PLAYER_BLACK_WIN:
@@ -977,7 +977,7 @@ const char* AIAlgorithm::bestMove()
 
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
-    if (options.getLearnEndgameEnabled()) {
+    if (gameOptions.getLearnEndgameEnabled()) {
         bool isMostWeak = true; // 是否明显劣势
 
         for (int j = 0; j < root->childrenSize; j++) {

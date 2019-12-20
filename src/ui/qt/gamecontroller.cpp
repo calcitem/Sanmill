@@ -111,7 +111,7 @@ GameController::~GameController()
     deleteAiThreads();
 
 #ifdef ENDGAME_LEARNING
-    if (options.getLearnEndgameEnabled()) {
+    if (gameOptions.getLearnEndgameEnabled()) {
         AIAlgorithm::recordEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
