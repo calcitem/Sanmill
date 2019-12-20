@@ -249,12 +249,12 @@ void GameController::gameReset()
     emit scoreDrawChanged(QString::number(game.score_draw, 10));
 
     // 更新胜率 LCD 显示
-    int scoreSum = game.score[BLACK] + game.score[WHITE] + game.score_draw;
+    game.nPlayed = game.score[BLACK] + game.score[WHITE] + game.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
-    if (scoreSum != 0) {
-        winningRate_1 = game.score[BLACK] * 10000 / scoreSum;
-        winningRate_2 = game.score[WHITE] * 10000 / scoreSum;
-        winningRate_draw = game.score_draw * 10000 / scoreSum;
+    if (game.nPlayed != 0) {
+        winningRate_1 = game.score[BLACK] * 10000 / game.nPlayed;
+        winningRate_2 = game.score[WHITE] * 10000 / game.nPlayed;
+        winningRate_draw = game.score_draw * 10000 / game.nPlayed;
     }
     
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -1143,12 +1143,12 @@ bool GameController::updateScence(Game &g)
     emit scoreDrawChanged(QString::number(g.score_draw, 10));
 
     // 更新胜率 LCD 显示
-    int scoreSum = game.score[BLACK] + game.score[WHITE] + game.score_draw;
+    game.nPlayed = game.score[BLACK] + game.score[WHITE] + game.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
-    if (scoreSum != 0) {
-        winningRate_1 = game.score[BLACK] * 10000 / scoreSum;
-        winningRate_2 = game.score[WHITE] * 10000 / scoreSum;
-        winningRate_draw = game.score_draw * 10000 / scoreSum;
+    if (game.nPlayed != 0) {
+        winningRate_1 = game.score[BLACK] * 10000 / game.nPlayed;
+        winningRate_2 = game.score[WHITE] * 10000 / game.nPlayed;
+        winningRate_draw = game.score_draw * 10000 / game.nPlayed;
     }
 
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -1222,16 +1222,16 @@ void GameController::saveScore()
 
     textStream << "" << endl;
 
-    int sum = game.score[BLACK] + game.score[WHITE] + game.score_draw;
+    game.nPlayed = game.score[BLACK] + game.score[WHITE] + game.score_draw;
 
-    if (sum == 0) {
+    if (game.nPlayed == 0) {
         goto out;
     }
 
-    textStream << "Sum\t" + QString::number(sum) << endl;
-    textStream << "Black\t" + QString::number(game.score[BLACK])  + "\t" + QString::number(game.score[BLACK] * 10000 / sum) << endl;
-    textStream << "White\t" + QString::number(game.score[WHITE]) + "\t" + QString::number(game.score[WHITE] * 10000 / sum) << endl;
-    textStream << "Draw\t" + QString::number(game.score_draw) + "\t" + QString::number(game.score_draw * 10000 / sum)  << endl;
+    textStream << "Sum\t" + QString::number(game.nPlayed) << endl;
+    textStream << "Black\t" + QString::number(game.score[BLACK])  + "\t" + QString::number(game.score[BLACK] * 10000 / game.nPlayed) << endl;
+    textStream << "White\t" + QString::number(game.score[WHITE]) + "\t" + QString::number(game.score[WHITE] * 10000 / game.nPlayed) << endl;
+    textStream << "Draw\t" + QString::number(game.score_draw) + "\t" + QString::number(game.score_draw * 10000 / game.nPlayed)  << endl;
 
 out:
     file.flush();

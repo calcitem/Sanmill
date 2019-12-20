@@ -80,6 +80,7 @@ public:
     // 赢盘数
     int score[COLOR_COUNT];
     int score_draw {};
+    int nPlayed { 0 };
 
     int tm {-1};
 
