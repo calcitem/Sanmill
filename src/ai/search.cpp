@@ -994,7 +994,6 @@ const char* AIAlgorithm::bestMove()
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
             hash_t endgameHash = this->game.getHash(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
-            loggerDebug("Record 0x%08I32x to Endgame Hashmap\n", endgameHash);
         }
     }
 #endif /* ENDGAME_LEARNING */
@@ -1088,8 +1087,11 @@ bool AIAlgorithm::findEndgameHash(hash_t hash, Endgame &endgame)
 int AIAlgorithm::recordEndgameHash(hash_t hash, const Endgame &endgame)
 {
     //hashMapMutex.lock();
-    endgameHashMap.insert(hash, endgame);
+    hash_t hashValue = endgameHashMap.insert(hash, endgame);
+    unsigned addr = hashValue * (sizeof(hash) + sizeof(endgame));
     //hashMapMutex.unlock();
+
+    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame Hash map, HashValue: 0x%08I32x, Address: 0x%08I32x\n", hash, endgame.type, hashValue, addr);
 
     return 0;
 }

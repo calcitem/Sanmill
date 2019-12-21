@@ -78,7 +78,7 @@ namespace CTSL //Concurrent Thread Safe Library
 
             //Function to insert into the hash map.
             //If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
-            void insert(const K &key, const V &value)
+            K insert(const K &key, const V &value)
             {
                 K hashValue = hashFn(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
@@ -90,6 +90,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #else
                 hashTable[hashValue].insert(key, value);
 #endif
+                return hashValue;
             }
 
             //Function to remove an entry from the bucket, if found
