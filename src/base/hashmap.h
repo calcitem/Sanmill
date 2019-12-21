@@ -153,7 +153,6 @@ namespace CTSL //Concurrent Thread Safe Library
                 size_t size = sizeof(HashNode<K, V>);
                 char empty[sizeof(HashNode<K, V>)];
                 memset(empty, 0, size);
-                size_t nTotalEntries = hashSize / size;
 
                 for (size_t i = 0; i < hashSize; i++) {
                     if (memcmp((char *)hashTable + i * size, empty, size)) {
@@ -161,7 +160,7 @@ namespace CTSL //Concurrent Thread Safe Library
                     }
                 }
 
-                loggerDebug("Hash map loaded from file (%lld/%lld entries)\n", nEntries, nTotalEntries);
+                loggerDebug("Hash map loaded from file (%lld/%d entries)\n", nEntries, hashSize);
 
                 return nEntries;
             }
