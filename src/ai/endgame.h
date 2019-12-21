@@ -32,7 +32,8 @@
 using namespace std;
 using namespace CTSL;
 
-enum endgame_t : uint8_t
+// TODO: uint8_t
+enum endgame_t : uint32_t
 {
     ENDGAME_NONE,
     ENDGAME_PLAYER_BLACK_WIN,
