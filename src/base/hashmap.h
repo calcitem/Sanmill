@@ -146,6 +146,52 @@ namespace CTSL //Concurrent Thread Safe Library
 #endif
             }
 
+            void merge(const HashMap &other)
+            {
+                size_t ksize = sizeof(K);
+                size_t nsize = sizeof(HashNode<K, V>);
+
+                size_t nProcessed = 0;
+                size_t nMerged = 0;
+                size_t nSkip = 0;
+                size_t nAllSame = 0;
+                size_t nOnlyKeySame = 0;
+                size_t nDiff = 0;
+
+                char empty[sizeof(HashNode<K, V>)];
+                memset(empty, 0, nsize);
+
+                size_t nBefore = stat();
+
+                for (size_t i = 0; i < hashSize; i++) {
+                    size_t offset = i * nsize;
+                    if (memcmp((char *)other.hashTable + offset, empty, ksize)) {
+                        nProcessed++;
+                        if (!memcmp((char *)hashTable + offset, empty, ksize)) {
+                            memcpy((char *)hashTable + offset, (char *)other.hashTable + offset, nsize);
+                            nMerged++;
+                        } else {
+                            nSkip++;
+                            if (!memcmp((char *)other.hashTable + offset, (char *)hashTable + offset, nsize)) {
+                                nAllSame++;
+                            } else if (!memcmp((char *)other.hashTable + offset, (char *)hashTable + offset, ksize)) {
+                                nOnlyKeySame++;
+                            } else {
+                                nDiff++;
+                            }
+                        }
+                    }
+                }
+
+                size_t nAfter = stat();
+
+                loggerDebug("[hash merge]\nnProcessed = %lld, nMerged = %lld,\n"
+                            "nSkip = %lld (nAllSame = %lld, nOnlyKeySame = %lld, nDiff = %lld)\n"
+                            "hashSize = %d, nBefore = %lld (%f%%), nAfter = %lld (%f%%)\n",
+                            nProcessed, nMerged, nSkip, nAllSame, nOnlyKeySame, nDiff,
+                            hashSize, nBefore, (double)nBefore * 100 / hashSize, nAfter, (double)nAfter * 100 / hashSize);
+            }
+
             size_t stat()
             {
                 size_t nEntries = 0;
