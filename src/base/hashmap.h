@@ -140,7 +140,29 @@ namespace CTSL //Concurrent Thread Safe Library
                 file.open(QIODevice::ReadOnly);
                 file.read((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
+
+                stat();
 #endif
+            }
+
+            size_t stat()
+            {
+                size_t nEntries = 0;
+
+                size_t size = sizeof(HashNode<K, V>);
+                char empty[sizeof(HashNode<K, V>)];
+                memset(empty, 0, size);
+                size_t nTotalEntries = hashSize / size;
+
+                for (size_t i = 0; i < hashSize; i++) {
+                    if (memcmp((char *)hashTable + i * size, empty, size)) {
+                        nEntries++;
+                    }
+                }
+
+                loggerDebug("Hash map loaded from file (%lld/%lld entries)\n", nEntries, nTotalEntries);
+
+                return nEntries;
             }
 
         private:
