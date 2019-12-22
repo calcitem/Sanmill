@@ -255,11 +255,7 @@ bool Game::reset()
     cmdlist.clear();
 
 #ifdef ENDGAME_LEARNING
-    if (gameOptions.getLearnEndgameEnabled()
-#ifdef TEST_MODE
-        && nPlayed % 256 == 0
-#endif // TEST_MODE
-        ) {
+    if (gameOptions.getLearnEndgameEnabled() && nPlayed != 0 && nPlayed % 256 == 0) {
         AIAlgorithm::recordEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
