@@ -95,6 +95,12 @@ GameController::GameController(
             this, SLOT(command(const QString &, bool)));
 #endif // TRAINING_MODE
 
+#ifdef ENDGAME_LEARNING_FORCE
+    if (gameOptions.getLearnEndgameEnabled()) {
+        AIAlgorithm::loadEndgameFileToHashMap();
+    }
+#endif
+
     // 安装事件过滤器监视scene的各个事件，
     // 由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
     //scene.installEventFilter(this);    

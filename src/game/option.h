@@ -55,7 +55,11 @@ private:
     bool randomMoveEnabled { true };
 
     // AI 是否生成残局库
+#ifdef ENDGAME_LEARNING_FORCE
+    bool learnEndgame { true };
+#else
     bool learnEndgame { false };
+#endif
 };
 
 extern Options gameOptions;

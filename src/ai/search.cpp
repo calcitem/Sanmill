@@ -1107,6 +1107,8 @@ void AIAlgorithm::recordEndgameHashMapToFile()
 {
     const QString filename = "endgame.txt";
     endgameHashMap.dump(filename);
+
+    loggerDebug("[endgame] Dump hash map to file\n");
 }
 
 void AIAlgorithm::loadEndgameFileToHashMap()

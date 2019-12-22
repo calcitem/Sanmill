@@ -63,10 +63,18 @@ bool Options::getRandomMoveEnabled()
 
 void Options::setLearnEndgameEnabled(bool enabled)
 {
+#ifdef ENDGAME_LEARNING_FORCE
+    learnEndgame = true;
+#else
     learnEndgame = enabled;
+#endif
 }
 
 bool Options::getLearnEndgameEnabled()
 {
+#ifdef ENDGAME_LEARNING_FORCE
+    return  true;
+#else
     return learnEndgame;
+#endif
 }
