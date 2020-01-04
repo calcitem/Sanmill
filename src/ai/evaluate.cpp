@@ -19,7 +19,7 @@
 
 #include "evaluate.h"
 
-value_t Evaluation::getValue(Game &tempGame, Position *position, AIAlgorithm::Node *node)
+value_t Evaluation::getValue(Game &tempGame, Position *position, Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;

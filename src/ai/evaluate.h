@@ -32,55 +32,55 @@ public:
 
     Evaluation &operator=(const Evaluation &) = delete;
 
-    static value_t getValue(Game &tempGame, Position *Position, AIAlgorithm::Node *node);
+    static value_t getValue(Game &tempGame, Position *Position, Node *node);
 
     // 评估子力
 #ifdef EVALUATE_ENABLE
 
 #ifdef EVALUATE_MATERIAL
-    static value_t evaluateMaterial(AIAlgorithm::Node *node)
+    static value_t evaluateMaterial(Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SPACE
-    static value_t evaluateSpace(AIAlgorithm::Node *node)
+    static value_t evaluateSpace(Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOBILITY
-    static value_t evaluateMobility(AIAlgorithm::Node *node)
+    static value_t evaluateMobility(Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_TEMPO
-    static value_t evaluateTempo(AIAlgorithm::Node *node)
+    static value_t evaluateTempo(Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_THREAT
-    static value_t evaluateThreat(AIAlgorithm::Node *node)
+    static value_t evaluateThreat(Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SHAPE
-    static value_t evaluateShape(AIAlgorithm::Node *node)
+    static value_t evaluateShape(Node *node)
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOTIF
-    static value_t AIAlgorithm::evaluateMotif(AIAlgorithm::Node *node)
+    static value_t AIAlgorithm::evaluateMotif(Node *node)
     {
         return 0;
     }

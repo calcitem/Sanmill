@@ -52,51 +52,51 @@ using namespace CTSL;
 // 另外，AI类是MillGame类的友元类，可以访问其私有变量
 // 尽量不要使用MillGame的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
 
-class AIAlgorithm
+class Node
 {
 public:
     static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
-    // 定义一个节点结构体
-    struct Node
-    {
-    public:
-        move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
-        value_t value { VALUE_UNKNOWN };                 // 节点的值
-        rating_t rating { RATING_ZERO };             // 节点分数
+
+    move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
+    value_t value { VALUE_UNKNOWN };                 // 节点的值
+    rating_t rating { RATING_ZERO };             // 节点分数
 
 #ifdef SORT_CONSIDER_PRUNED
-        bool pruned { false };                    // 是否在此处剪枝
+    bool pruned { false };                    // 是否在此处剪枝
 #endif
 
-        struct Node *children[NODE_CHILDREN_SIZE];
-        int childrenSize { 0 };
+    Node *children[NODE_CHILDREN_SIZE];
+    int childrenSize { 0 };
 
-        struct Node* parent {nullptr};            // 父节点
-        player_t sideToMove {PLAYER_NOBODY};  // 此着是谁下的 (目前仅调试用)
+    Node *parent { nullptr };            // 父节点
+    player_t sideToMove { PLAYER_NOBODY };  // 此着是谁下的 (目前仅调试用)
 
 #ifdef DEBUG_AB_TREE
-        size_t id;                      // 结点编号
-        char cmd[32];
-        int depth;                      // 深度
-        bool evaluated;                 // 是否评估过局面
-        int alpha;                      // 当前搜索结点走棋方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义。当函数递归时 Alpha 和 Beta 不但取负数而且要交换位置
-        int beta;                       // 表示对手目前的劣势，这是对手所能承受的最坏结果，Beta 值越大，表示对手劣势越明显，如果当前结点返回  Beta 或比 Beta 更好的值，作为父结点的对方就绝对不会选择这种策略
-        bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
-        bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
-        bool visited;                   // 是否在遍历时访问过
-        phase_t phase;     // 摆棋阶段还是走棋阶段
-        action_t action;       // 动作状态
-        int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
-        int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
-        int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
-        struct Node* root;              // 根节点
+    size_t id;                      // 结点编号
+    char cmd[32];
+    int depth;                      // 深度
+    bool evaluated;                 // 是否评估过局面
+    int alpha;                      // 当前搜索结点走棋方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义。当函数递归时 Alpha 和 Beta 不但取负数而且要交换位置
+    int beta;                       // 表示对手目前的劣势，这是对手所能承受的最坏结果，Beta 值越大，表示对手劣势越明显，如果当前结点返回  Beta 或比 Beta 更好的值，作为父结点的对方就绝对不会选择这种策略
+    bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
+    bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
+    bool visited;                   // 是否在遍历时访问过
+    phase_t phase;     // 摆棋阶段还是走棋阶段
+    action_t action;       // 动作状态
+    int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
+    int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
+    int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
+    struct Node *root;              // 根节点
 #ifdef TRANSPOSITION_TABLE_ENABLE
-        bool isHash;                    //  是否从 Hash 读取
+    bool isHash;                    //  是否从 Hash 读取
 #endif /* TRANSPOSITION_TABLE_ENABLE */
-        hash_t hash;                  //  哈希值
+    hash_t hash;                  //  哈希值
 #endif /* DEBUG_AB_TREE */
-    };
+};
 
+class AIAlgorithm
+{
+public:
     MemoryManager memmgr;
 
 #ifdef TIME_STAT
@@ -156,8 +156,8 @@ public:
 
 public: /* TODO: Move to private or protected */
     // 增加新节点
-    struct Node *addNode(Node *parent, const value_t &value, const rating_t &rating,
-                         const move_t &move, const move_t &bestMove);
+    Node *addNode(Node *parent, const value_t &value, const rating_t &rating,
+                  const move_t &move, const move_t &bestMove);
 
 protected:
     // 对合法的着法降序排序

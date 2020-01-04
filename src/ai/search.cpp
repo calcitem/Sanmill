@@ -33,7 +33,7 @@
 #include "misc.h"
 
 #define SORT_NAME nodep
-#define SORT_TYPE AIAlgorithm::Node*
+#define SORT_TYPE Node*
 #define SORT_CMP(x, y) (AIAlgorithm::nodeCompare((x), (y)))
 
 player_t gSideToMove;
@@ -173,7 +173,7 @@ void AIAlgorithm::buildRoot()
     assert(root != nullptr);
 }
 
-struct AIAlgorithm::Node *AIAlgorithm::addNode(
+Node *AIAlgorithm::addNode(
     Node *parent,
     const value_t &value,
     const rating_t &rating,

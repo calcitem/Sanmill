@@ -25,7 +25,7 @@
 #include "option.h"
 
 void MoveList::generate(AIAlgorithm &ai, Game &tempGame,
-                                  AIAlgorithm::Node *node, AIAlgorithm::Node *root, move_t bestMove)
+                        Node *node, Node *root, move_t bestMove)
 {
     square_t square = SQ_0;
     player_t opponent = PLAYER_NOBODY;
