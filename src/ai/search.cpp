@@ -804,6 +804,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     int nchild = node->childrenSize;
     for (int i = 0; i < nchild; i++) {
+        // 棋局入栈保存，以便后续撤销着法
+        stashPosition();
+
         doMove(node->children[i]->move);
 
 #ifdef DEAL_WITH_HORIZON_EFFECT
@@ -929,11 +932,14 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     return node->value;
 }
 
-void AIAlgorithm::doMove(move_t move)
+void AIAlgorithm::stashPosition()
 {
     // 棋局入栈保存，以便后续撤销着法
     positionStack.push(tempGame.position);
+}
 
+void AIAlgorithm::doMove(move_t move)
+{
     // 执行着法
     tempGame.command(move);
 }

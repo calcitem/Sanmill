@@ -128,6 +128,9 @@ public:
     // 返回最佳走法的命令行
     const char *bestMove();
 
+    // 暂存局面
+    void stashPosition();
+
     // 执行着法
     void doMove(move_t move);
 
