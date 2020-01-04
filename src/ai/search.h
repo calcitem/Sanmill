@@ -55,6 +55,11 @@ using namespace CTSL;
 class Node
 {
 public:
+    bool hasChildren() const
+    {
+        return (childrenSize != 0);
+    }
+
     static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
 
     move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
@@ -65,6 +70,7 @@ public:
     bool pruned { false };                    // 是否在此处剪枝
 #endif
 
+    move_t moves[NODE_CHILDREN_SIZE];
     Node *children[NODE_CHILDREN_SIZE];
     int childrenSize { 0 };
 
