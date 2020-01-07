@@ -33,7 +33,7 @@ public:
    
     // 生成所有合法的着法并建立子节点
     static void generate(AIAlgorithm &ai, Game &tempGame,
-                                   Node *node, Node *root,
+                                   Node *parent, Node *root,
                                    move_t bestMove);
 
     // 生成着法表
