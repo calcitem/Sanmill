@@ -253,11 +253,13 @@ Node *AIAlgorithm::addNode(
     parent->children[parent->childrenSize] = newNode;
     parent->childrenSize++;
 
+#if 0
     // 如果启用了置换表并且不是叶子结点
     if (move == bestMove && move != 0) {
         newNode->rating += RATING_TT;
         return newNode;
     }
+#endif
 
     // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
     square_t sq = SQ_0;
