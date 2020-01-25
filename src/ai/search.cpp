@@ -167,7 +167,11 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
 void AIAlgorithm::buildRoot()
 {
-    root = addNode(nullptr, VALUE_ZERO, RATING_ZERO, MOVE_NONE, MOVE_NONE);
+    root = addNode(nullptr, VALUE_ZERO, RATING_ZERO, MOVE_NONE                   
+#ifdef BEST_MOVE_ENABLE
+                   , MOVE_NONE
+#endif // BEST_MOVE_ENABLE
+    );
     root->sideToMove = PLAYER_NOBODY;
 
     assert(root != nullptr);
@@ -177,8 +181,10 @@ Node *AIAlgorithm::addNode(
     Node *parent,
     const value_t &value,
     const rating_t &rating,
-    const move_t &move,
-    const move_t &bestMove
+    const move_t &move
+#ifdef BEST_MOVE_ENABLE
+    , const move_t &bestMove
+#endif // BEST_MOVE_ENABLE
 )
 {
     Node *newNode = (Node *)memmgr.memmgr_alloc(sizeof(Node));
@@ -253,13 +259,13 @@ Node *AIAlgorithm::addNode(
     parent->children[parent->childrenSize] = newNode;
     parent->childrenSize++;
 
-#if 0
+#ifdef BEST_MOVE_ENABLE
     // 如果启用了置换表并且不是叶子结点
     if (move == bestMove && move != 0) {
         newNode->rating += RATING_TT;
         return newNode;
     }
-#endif
+#endif // BEST_MOVE_ENABLE
 
     // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
     square_t sq = SQ_0;
@@ -660,8 +666,10 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 临时增加的深度，克服水平线效应用
     depth_t epsilon = 0;
 
+#ifdef BEST_MOVE_ENABLE
     // 子节点的最优着法
     move_t bestMove = MOVE_NONE;
+#endif // BEST_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
@@ -701,7 +709,11 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     TT::HashType type = TT::hashfEMPTY;
 
-    value_t probeVal = TT::probeHash(hash, depth, alpha, beta, bestMove, type);
+    value_t probeVal = TT::probeHash(hash, depth, alpha, beta, type
+#ifdef BEST_MOVE_ENABLE
+                                     , bestMove
+#endif // BEST_MOVE_ENABLE                                     
+    );
 
     if (probeVal != VALUE_UNKNOWN) {
 #ifdef DEBUG_MODE
@@ -779,14 +791,25 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TT::recordHash(node->value, depth, TT::hashfEXACT, hash, MOVE_NONE);
+        TT::recordHash(node->value,
+                       depth,
+                       TT::hashfEXACT,
+                       hash
+#ifdef BEST_MOVE_ENABLE
+                       , MOVE_NONE
+#endif // BEST_MOVE_ENABLE
+                      );
 #endif
 
         return node->value;
     }
 
     // 生成子节点树，即生成每个合理的着法
-    MoveList::generate(*this, tempGame, node, root, bestMove);
+    MoveList::generate(*this, tempGame, node, root                       
+#ifdef BEST_MOVE_ENABLE
+                       , bestMove
+#endif // BEST_MOVE_ENABLE
+    );
 
     // 排序子节点树
     sortMoves(node);
@@ -926,7 +949,14 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值
-    TT::recordHash(node->value, depth, hashf, hash, node->children[0]->move);
+    TT::recordHash(node->value,
+                   depth,
+                   hashf,
+                   hash
+#ifdef BEST_MOVE_ENABLE
+                   , node->children[0]->move
+#endif // BEST_MOVE_ENABLE
+                  );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // 返回

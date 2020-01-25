@@ -162,8 +162,14 @@ public:
 
 public: /* TODO: Move to private or protected */
     // 增加新节点
-    Node *addNode(Node *parent, const value_t &value, const rating_t &rating,
-                  const move_t &move, const move_t &bestMove);
+    Node *addNode(Node *parent,
+                  const value_t &value,
+                  const rating_t &rating,
+                  const move_t &move
+#ifdef BEST_MOVE_ENABLE
+                  , const move_t &bestMove
+#endif // BEST_MOVE_ENABLE
+                 );
 
 protected:
     // 对合法的着法降序排序

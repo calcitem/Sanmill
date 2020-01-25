@@ -32,9 +32,14 @@ public:
     MoveList &operator=(const MoveList &) = delete;
    
     // 生成所有合法的着法并建立子节点
-    static void generate(AIAlgorithm &ai, Game &tempGame,
-                                   Node *parent, Node *root,
-                                   move_t bestMove);
+    static void generate(AIAlgorithm &ai,
+                         Game &tempGame,
+                         Node *parent,
+                         Node *root
+#ifdef BEST_MOVE_ENABLE
+                         , move_t bestMove
+#endif // BEST_MOVE_ENABLE                         
+    );
 
     // 生成着法表
     static void create();

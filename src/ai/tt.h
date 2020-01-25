@@ -53,15 +53,32 @@ public:
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
         uint8_t age;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
+#ifdef BEST_MOVE_ENABLE
         move_t bestMove;
+#endif // BEST_MOVE_ENABLE
     };
 
     // 查找哈希表
     static bool findHash(const hash_t &hash, HashValue &hashValue);
-    static value_t probeHash(const hash_t &hash, const depth_t &depth, const value_t &alpha, const value_t &beta, move_t &bestMove, HashType &type);
+    static value_t probeHash(const hash_t &hash,
+                             const depth_t &depth,
+                             const value_t &alpha,
+                             const value_t &beta,
+                             HashType &type
+#ifdef BEST_MOVE_ENABLE
+                             , move_t &bestMove
+#endif // BEST_MOVE_ENABLE
+                             );
 
     // 插入哈希表
-    static int recordHash(const value_t &value, const depth_t &depth, const HashType &type, const hash_t &hash, const move_t &bestMove);
+    static int recordHash(const value_t &value,
+                          const depth_t &depth,
+                          const HashType &type,
+                          const hash_t &hash
+#ifdef BEST_MOVE_ENABLE
+                          , const move_t &bestMove
+#endif // BEST_MOVE_ENABLE
+                         );
 
     // 清空置换表
     static void clear();
