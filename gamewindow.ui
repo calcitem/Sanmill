@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>三棋</string>
+   <string>直棋</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">

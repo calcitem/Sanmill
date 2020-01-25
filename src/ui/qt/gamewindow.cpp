@@ -1019,12 +1019,12 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
 void MillGameWindow::on_actionViewHelp_V_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/MillGame"));
+    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/SanMill/"));
 }
 
 void MillGameWindow::on_actionWeb_W_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/MillGame/blob/master/Licence.txt"));
+    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/Sanmill/wiki"));
 }
 
 void MillGameWindow::on_actionAbout_A_triggered()
@@ -1033,7 +1033,7 @@ void MillGameWindow::on_actionAbout_A_triggered()
 
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("aboutDialog"));
-    dialog->setWindowTitle(tr("三棋"));
+    dialog->setWindowTitle(tr("直棋"));
     dialog->setModal(true);
 
     // 生成各个控件
