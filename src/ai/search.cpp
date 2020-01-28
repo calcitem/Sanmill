@@ -123,7 +123,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     };
 #endif /* ENDGAME_LEARNING */
 
-    if (tempGame.position.phase & PHASE_PLACING) {
+    if (tempGame.position->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12)
         {
             d = placingDepthTable_12[rule.nTotalPiecesEachSide - tempGame.getPiecesInHandCount(BLACK)];
@@ -132,7 +132,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         }
     }
 
-    if (tempGame.position.phase & PHASE_MOVING) {
+    if (tempGame.position->phase & PHASE_MOVING) {
         int pb = tempGame.getPiecesOnBoardCount(BLACK);
         int pw = tempGame.getPiecesOnBoardCount(WHITE);
 
@@ -223,8 +223,8 @@ Node *AIAlgorithm::addNode(
 
 #ifdef DEBUG_AB_TREE
     newNode->root = root;
-    newNode->phase = tempGame.position.phase;
-    newNode->action = tempGame.position.action;
+    newNode->phase = tempGame.position->phase;
+    newNode->action = tempGame.position->action;
     newNode->evaluated = false;
     newNode->nPiecesInHandDiff = std::numeric_limits<int>::max();
     newNode->nPiecesOnBoardDiff = std::numeric_limits<int>::max();
@@ -237,15 +237,15 @@ Node *AIAlgorithm::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        tempGame.position.board.squareToPolar(static_cast<square_t>(-move), r, s);
+        tempGame.position->board.squareToPolar(static_cast<square_t>(-move), r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        tempGame.position.board.squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
-        tempGame.position.board.squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
+        tempGame.position->board.squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
+        tempGame.position->board.squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        tempGame.position.board.squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
+        tempGame.position->board.squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
@@ -278,7 +278,7 @@ Node *AIAlgorithm::addNode(
         sq = (square_t)((-move) & 0x00ff);
     }
 
-    int nMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.sideToMove);
+    int nMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->sideToMove);
     int nopponentMills = 0;
 
 #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
@@ -290,13 +290,13 @@ Node *AIAlgorithm::addNode(
             newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
         } else if (tempGame.getPhase() == PHASE_PLACING) {
             // 在摆棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.opponent);
+            nopponentMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->opponent);
             newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
         }
 #if 1
         else if (tempGame.getPhase() == PHASE_MOVING) {
             // 在走棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.opponent);
+            nopponentMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->opponent);
 
             if (nopponentMills) {
                 int nPlayerPiece = 0;
@@ -304,7 +304,7 @@ Node *AIAlgorithm::addNode(
                 int nForbidden = 0;
                 int nEmpty = 0;
 
-                tempGame.position.board.getSurroundedPieceCount(sq, tempGame.position.sideId,
+                tempGame.position->board.getSurroundedPieceCount(sq, tempGame.position->sideId,
                                                                 nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
 
@@ -331,7 +331,7 @@ Node *AIAlgorithm::addNode(
         int nForbidden = 0;
         int nEmpty = 0;
 
-        tempGame.position.board.getSurroundedPieceCount(sq, tempGame.position.sideId,
+        tempGame.position->board.getSurroundedPieceCount(sq, tempGame.position->sideId,
                                                         nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
         if (nMills > 0) {
@@ -349,7 +349,7 @@ Node *AIAlgorithm::addNode(
         }
 
         // 吃子点处于对方的三连中
-        nopponentMills = tempGame.position.board.inHowManyMills(sq, tempGame.position.opponent);
+        nopponentMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->opponent);
         if (nopponentMills) {
             if (nOpponentPiece >= 2) {
                 // 旁边对方的子较多, 则倾向不吃
@@ -403,7 +403,7 @@ void AIAlgorithm::sortMoves(Node *node)
 
 #define NODE_PTR_SORT_FUN(x) nodep_##x
 
-    gSideToMove = tempGame.position.sideToMove; // TODO: 暂时用全局变量
+    gSideToMove = tempGame.position->sideToMove; // TODO: 暂时用全局变量
 
     // 此处选用排序算法, 各算法耗时统计如下:
     /*
@@ -436,7 +436,7 @@ void AIAlgorithm::sortMoves(Node *node)
 #endif
 
 #ifdef DEBUG_SORT
-    if (tempGame.position.sideToMove == PLAYER_BLACK) {
+    if (tempGame.position->sideToMove == PLAYER_BLACK) {
         for (int i = 0; i < node->childrenSize; i++) {
             loggerDebug("+ [%d] %p: %d = %d %d (%d)\n",
                         i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
@@ -485,7 +485,7 @@ void AIAlgorithm::setGame(const Game &g)
 
     this->game = g;
     tempGame = g;
-    position = &(tempGame.position);
+    position = tempGame.position;
     requiredQuit = false;
     deleteTree(root);
 
@@ -816,7 +816,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = tempGame.position.sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = tempGame.position->sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
 
     assert(node->childrenSize != 0);
 
@@ -854,7 +854,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
         undoMove();
 
-        switch (tempGame.position.sideToMove) {
+        switch (tempGame.position->sideToMove) {
         case PLAYER_BLACK:
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
@@ -937,7 +937,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef IDS_SUPPORT
 #ifdef IDS_ADD_VALUE
-    if (tempGame.position.sideToMove == PLAYER_BLACK) {
+    if (tempGame.position->sideToMove == PLAYER_BLACK) {
         node->children[0]->value += 1;
         node->value += 1;
     } else {
@@ -966,7 +966,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 void AIAlgorithm::stashPosition()
 {
     // 棋局入栈保存，以便后续撤销着法
-    positionStack.push(tempGame.position);
+    positionStack.push(*(tempGame.position));
 }
 
 void AIAlgorithm::doMove(move_t move)
@@ -978,7 +978,8 @@ void AIAlgorithm::doMove(move_t move)
 void AIAlgorithm::undoMove()
 {
     // 棋局弹出栈，撤销着法
-    tempGame.position = positionStack.top();
+    memcpy(tempGame.position, positionStack.top(), sizeof(Position));
+    //tempGame.position = positionStack.top();
     positionStack.pop();
 }
 
@@ -1010,7 +1011,7 @@ const char* AIAlgorithm::bestMove()
         i++;
     }
 
-    player_t side = game.position.sideToMove;
+    player_t side = game.position->sideToMove;
 
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
@@ -1027,7 +1028,7 @@ const char* AIAlgorithm::bestMove()
 
         if (isMostWeak) {
             Endgame endgame;
-            endgame.type = game.position.sideToMove == PLAYER_BLACK ?
+            endgame.type = game.position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
             hash_t endgameHash = this->game.getHash(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
@@ -1049,7 +1050,7 @@ const char* AIAlgorithm::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            sprintf(cmdline, "Player%d give up!", game.position.sideId);
+            sprintf(cmdline, "Player%d give up!", game.position->sideId);
             return cmdline;
         }
     }

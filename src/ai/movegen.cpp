@@ -37,12 +37,12 @@ void MoveList::generate(AIAlgorithm &ai,
     player_t opponent = PLAYER_NOBODY;
 
     // 列出所有合法的下一招
-    switch (tempGame.position.action) {
+    switch (tempGame.position->action) {
         // 对于选子和落子动作
     case ACTION_CHOOSE:
     case ACTION_PLACE:
         // 对于摆子阶段
-        if (tempGame.position.phase & (PHASE_PLACING | PHASE_READY)) {
+        if (tempGame.position->phase & (PHASE_PLACING | PHASE_READY)) {
             for (move_t i : movePriorityTable) {
                 square = static_cast<square_t>(i);
 
@@ -52,7 +52,7 @@ void MoveList::generate(AIAlgorithm &ai,
                 }
 
                 // 否则如果是空位
-                if (tempGame.position.phase != PHASE_READY || parent != root) {
+                if (tempGame.position->phase != PHASE_READY || parent != root) {
                     ai.addNode(parent, VALUE_ZERO, RATING_ZERO, (move_t)square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
@@ -73,7 +73,7 @@ void MoveList::generate(AIAlgorithm &ai,
         }
 
         // 对于移子阶段
-        if (tempGame.position.phase & PHASE_MOVING) {
+        if (tempGame.position->phase & PHASE_MOVING) {
             square_t newSquare, oldSquare;
 
             // 尽量走理论上较差的位置的棋子
@@ -84,7 +84,7 @@ void MoveList::generate(AIAlgorithm &ai,
                     continue;
                 }
 
-                if (tempGame.position.nPiecesOnBoard[tempGame.position.sideId] > rule.nPiecesAtLeast ||
+                if (tempGame.position->nPiecesOnBoard[tempGame.position->sideId] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_BEGIN; direction < DIRECTIONS_COUNT; direction++) {
@@ -118,9 +118,9 @@ void MoveList::generate(AIAlgorithm &ai,
 
         // 对于吃子动作
     case ACTION_CAPTURE:
-        opponent = Player::getOpponent(tempGame.position.sideToMove);
+        opponent = Player::getOpponent(tempGame.position->sideToMove);
 
-        if (tempGame.position.board.isAllInMills(opponent)) {
+        if (tempGame.position->board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<square_t>(movePriorityTable[i]);
@@ -139,7 +139,7 @@ void MoveList::generate(AIAlgorithm &ai,
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<square_t>(movePriorityTable[i]);
             if (tempGame.boardLocations[square] & opponent) {
-                if (rule.allowRemoveMill || !tempGame.position.board.inHowManyMills(square)) {
+                if (rule.allowRemoveMill || !tempGame.position->board.inHowManyMills(square)) {
                     ai.addNode(parent, VALUE_ZERO, RATING_ZERO, (move_t)-square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
@@ -155,7 +155,7 @@ void MoveList::generate(AIAlgorithm &ai,
     }
 
     // 赋值
-    parent->sideToMove = tempGame.position.sideToMove;
+    parent->sideToMove = tempGame.position->sideToMove;
 }
 
 void MoveList::create()

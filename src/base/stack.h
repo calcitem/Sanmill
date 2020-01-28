@@ -86,9 +86,9 @@ public:
         p--;
     }
 
-    inline T &top()
+    inline T *top()
     {
-        return arr[p];
+        return &(arr[p]);
     }
 
     inline int size()

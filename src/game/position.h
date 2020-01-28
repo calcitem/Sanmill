@@ -38,7 +38,7 @@ public:
     Board board;
 
     // 局面的哈希值
-    hash_t hash{};
+    hash_t hash {0};
 
     // 局面阶段标识
     enum phase_t phase {PHASE_NONE};
@@ -65,7 +65,7 @@ public:
     int nPiecesOnBoard[COLOR_COUNT] {0};
 
     // 尚待去除的子数
-    int nPiecesNeedRemove{};
+    int nPiecesNeedRemove {0};
 };
 
 // 棋类（在数据模型内，玩家只分先后手，不分黑白）
@@ -134,13 +134,13 @@ public:
     // 获取局面阶段标识
     enum phase_t getPhase() const
     {
-        return position.phase;
+        return position->phase;
     }
 
     // 获取动作状态标识
     enum action_t getAction() const
     {
-        return position.action;
+        return position->action;
     }
 
     // 判断胜负
@@ -185,19 +185,19 @@ public:
     // 玩家剩余未放置子数
     int getPiecesInHandCount(int playerId) const
     {
-        return position.nPiecesInHand[playerId];
+        return position->nPiecesInHand[playerId];
     }
 
     // 玩家1盘面剩余子数
     int getPiecesOnBoardCount(int playerId) const
     {
-        return position.nPiecesOnBoard[playerId];
+        return position->nPiecesOnBoard[playerId];
     }
 
     // 尚待去除的子数
     int getNum_NeedRemove() const
     {
-        return position.nPiecesNeedRemove;
+        return position->nPiecesNeedRemove;
     }
 
     // 计算玩家1和玩家2的棋子活动能力之差
@@ -256,7 +256,7 @@ public:
 
 public: /* TODO: move to private */
     // 棋局
-    Position position;
+    Position *position {nullptr};
 
     // 棋局中的棋盘数据，单独提出来
     location_t *boardLocations;

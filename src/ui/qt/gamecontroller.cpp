@@ -438,8 +438,8 @@ void GameController::flip()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
-    game.position.board.rotate(180, game.cmdlist, game.cmdline, game.move, game.currentSquare);
+    game.position->board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
+    game.position->board.rotate(180, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -465,7 +465,7 @@ void GameController::mirror()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    game.position.board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
+    game.position->board.mirror(game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -494,7 +494,7 @@ void GameController::turnRight()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    game.position.board.rotate(-90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
+    game.position->board.rotate(-90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -521,7 +521,7 @@ void GameController::turnLeft()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    game.position.board.rotate(90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
+    game.position->board.rotate(90, game.cmdlist, game.cmdline, game.move, game.currentSquare);
     tempGame = game;
 
     // 更新棋谱
@@ -609,7 +609,7 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::isAIsTurn()
 {
-    return isAiPlayer[game.position.sideId];
+    return isAiPlayer[game.position->sideId];
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -747,7 +747,7 @@ bool GameController::actionPiece(QPointF pos)
         // AI设置
         // 如果还未决出胜负
         if (game.whoWin() == PLAYER_NOBODY) {
-            resumeAiThreads(game.position.sideToMove);
+            resumeAiThreads(game.position->sideToMove);
         }
         // 如果已经决出胜负
         else {
@@ -765,7 +765,7 @@ bool GameController::actionPiece(QPointF pos)
 
 bool GameController::giveUp()
 {
-    bool result = game.giveup(game.position.sideToMove);
+    bool result = game.giveup(game.position->sideToMove);
         
     if (!result) {
         return false;
@@ -882,7 +882,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     // AI设置
     // 如果还未决出胜负
     if (game.whoWin() == PLAYER_NOBODY) {
-        resumeAiThreads(game.position.sideToMove);
+        resumeAiThreads(game.position->sideToMove);
     }
     // 如果已经决出胜负
     else {           

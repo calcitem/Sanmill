@@ -107,7 +107,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        sideId = Player::toId(game->position.sideToMove);
+        sideId = Player::toId(game->position->sideToMove);
 
         if (sideId != playerId) {
             pauseCondition.wait(&mutex);

@@ -119,7 +119,7 @@ value_t Evaluation::getValue(Game &tempGame, Position *position, Node *node)
 
         // 走棋阶段被闷判断
         else if (position->action == ACTION_CHOOSE &&
-            tempGame.position.board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove) &&
+            tempGame.position->board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove) &&
             rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             value_t delta = position->sideToMove == PLAYER_BLACK ? -VALUE_WIN : VALUE_WIN;
