@@ -28,11 +28,13 @@ class Stack
 public:
     Stack()
     {
+        arr = new T[capacity];
     }
 
     ~Stack()
-    {
-        memset(arr, 0, sizeof(T) * capacity);
+    {        
+        //memset(arr, 0, sizeof(T) * capacity);
+        delete[] arr;
     }
 
     Stack &operator= (const Stack &other)
@@ -123,7 +125,7 @@ public:
 
 private:
     int p { -1 };
-    T arr[capacity];
+    T* arr;
 };
 
 #endif // STACK_H
