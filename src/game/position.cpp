@@ -770,7 +770,7 @@ bool Game::command(const char *cmd)
     return false;
 }
 
-bool Game::command(move_t m)
+bool Game::doMove(move_t m)
 {
     if (m < 0) {
         return capture(static_cast<square_t>(-m));

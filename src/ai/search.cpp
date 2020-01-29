@@ -982,7 +982,7 @@ void AIAlgorithm::stashPosition()
 void AIAlgorithm::doMove(move_t move)
 {
     // 执行着法
-    tempGame->command(move);
+    tempGame->doMove(move);
 }
 
 void AIAlgorithm::undoMove()

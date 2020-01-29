@@ -257,7 +257,7 @@ public:
     void setTips();
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
-    bool command(move_t move);
+    bool doMove(move_t move);
     bool choose(square_t square);
     bool place(square_t square, int8_t cp = 0);
     bool capture(square_t square, int8_t cp = 0);
