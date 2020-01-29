@@ -225,9 +225,6 @@ private:
 
     Position *position { nullptr };
 
-    // hash 计算时，各种转换用的模型
-    Game tempGameShift;
-
     // 根节点
     Node *root {nullptr};
 
