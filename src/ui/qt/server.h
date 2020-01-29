@@ -1,7 +1,7 @@
 /*
   Sanmill, a mill game playing engine derived from NineChess 1.5
   Copyright (C) 2015-2018 liuweilhy (NineChess author)
-  Copyright (C) 2019 Calcitem <calcitem@outlook.com>
+  Copyright (C) 2019-2020 Calcitem <calcitem@outlook.com>
 
   Sanmill is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

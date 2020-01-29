@@ -1,7 +1,7 @@
 ﻿/* Copyright (c) 2010-2019 Christopher Swenson. */
 /* Copyright (c) 2012 Vojtech Fried. */
 /* Copyright (c) 2012 Google Inc. All Rights Reserved. */
-/* Copyright (C) 2019 Calcitem <calcitem@outlook.com> */
+/* Copyright (C) 2019-2020 Calcitem <calcitem@outlook.com> */
 
 #include <stdlib.h>
 #include <stdio.h>
