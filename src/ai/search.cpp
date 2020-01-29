@@ -47,6 +47,8 @@ vector<hash_t> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
 {
+    game = new Game();
+
     memmgr.memmgr_init();
 
     buildRoot();
@@ -58,6 +60,8 @@ AIAlgorithm::~AIAlgorithm()
     root = nullptr;
 
     memmgr.memmgr_exit();
+
+    //delete game;
 }
 
 depth_t AIAlgorithm::changeDepth(depth_t origDepth)
@@ -483,7 +487,7 @@ void AIAlgorithm::setGame(const Game &g)
         moveHistory.clear();
     }
 
-    this->game = g;
+    memcpy(this->game, &g, sizeof(Game));
     tempGame = g;
     position = tempGame.position;
     requiredQuit = false;
@@ -522,8 +526,8 @@ int AIAlgorithm::search(depth_t depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (game.getPhase() == PHASE_MOVING) {
-        hash_t hash = game.getHash();
+    if (game->getPhase() == PHASE_MOVING) {
+        hash_t hash = game->getHash();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), hash) != moveHistory.end()) {
             nRepetition++;
@@ -536,7 +540,7 @@ int AIAlgorithm::search(depth_t depth)
         }
     }
 
-    if (game.getPhase() == PHASE_PLACING) {
+    if (game->getPhase() == PHASE_PLACING) {
         moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -632,7 +636,7 @@ int AIAlgorithm::search(depth_t depth)
 
 #ifdef IDS_SUPPORT
 #ifdef IDS_WINDOW
-    value_t window = game.getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
+    value_t window = game->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
     alpha = value - window;
     beta = value + window;
 #else
@@ -1011,7 +1015,7 @@ const char* AIAlgorithm::bestMove()
         i++;
     }
 
-    player_t side = game.position->sideToMove;
+    player_t side = game->position->sideToMove;
 
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
@@ -1028,9 +1032,9 @@ const char* AIAlgorithm::bestMove()
 
         if (isMostWeak) {
             Endgame endgame;
-            endgame.type = game.position->sideToMove == PLAYER_BLACK ?
+            endgame.type = game->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            hash_t endgameHash = this->game.getHash(); // TODO: 减少重复计算哈希
+            hash_t endgameHash = this->game->getHash(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
         }
     }
@@ -1050,7 +1054,7 @@ const char* AIAlgorithm::bestMove()
 
         // 自动认输
         if (isMostLose) {
-            sprintf(cmdline, "Player%d give up!", game.position->sideId);
+            sprintf(cmdline, "Player%d give up!", game->position->sideId);
             return cmdline;
         }
     }
