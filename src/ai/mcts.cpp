@@ -325,7 +325,7 @@ unique_ptr<Node> computeTree(const MCTSGame rootState,
 
     if (options.maxTime >= 0) {
 #ifndef USE_OPENMP
-        throw runtime_error("ComputeOptions::max_time requires OpenMP.");
+        throw runtime_error("ComputeOptions::maxTime requires OpenMP.");
 #endif
     }
 
@@ -370,14 +370,14 @@ unique_ptr<Node> computeTree(const MCTSGame rootState,
         }
 
 #ifdef USE_OPENMP
-        if (options.verbose || options.max_time >= 0) {
+        if (options.verbose || options.maxTime >= 0) {
             double time = ::omp_get_wtime();
-            if (options.verbose && (time - print_time >= 1.0 || iter == options.max_iterations)) {
+            if (options.verbose && (time - print_time >= 1.0 || iter == options.maxIterations)) {
                 cerr << iter << " games played (" << double(iter) / (time - start_time) << " / second)." << endl;
                 print_time = time;
             }
 
-            if (time - start_time >= options.max_time) {
+            if (time - start_time >= options.maxTime) {
                 break;
             }
         }
@@ -475,7 +475,7 @@ move_t computeMove(const MCTSGame rootState,
         double time = ::omp_get_wtime();
         cerr << gamesPlayed << " games played in " << double(time - start_time) << " s. "
             << "(" << double(gamesPlayed) / (time - start_time) << " / second, "
-            << options.number_of_threads << " parallel jobs)." << endl;
+            << options.nThreads << " parallel jobs)." << endl;
     }
 #endif
 
@@ -497,10 +497,10 @@ const char MCTSGame::playerMarkers[3] = { '.', 'X', 'O' };
 
 void runConnectFour()
 {
-    bool humanPlayer = true;
+    bool humanPlayer = false;
 
     MCTSOptions optionsPlayer1, optionsPlayer2;
-    optionsPlayer1.maxIterations = 100000;
+    optionsPlayer1.maxIterations = 10000;
     optionsPlayer1.verbose = true;
     optionsPlayer2.maxIterations = 10000;
     optionsPlayer2.verbose = true;

@@ -60,6 +60,8 @@ private:
 #include <vector>
 #include <cassert>
 
+#define USE_OPENMP
+
 #ifdef USE_OPENMP
 #include <omp.h>
 #endif
@@ -117,7 +119,7 @@ private:
 class MCTSOptions
 {
 public:
-	int nThreads {8};
+	int nThreads {2};
 	int maxIterations { 10000 };
 	double maxTime { -1.0 };
 	bool verbose { false };
