@@ -28,7 +28,7 @@
 #include "position.h"
 
 void Game::generateMoves(AIAlgorithm *ai,
-                        Node *parent,
+                        Node *node,
                         Node *root
 #ifdef BEST_MOVE_ENABLE
                         , move_t bestMove
@@ -54,8 +54,8 @@ void Game::generateMoves(AIAlgorithm *ai,
                 }
 
                 // 否则如果是空位
-                if (position->phase != PHASE_READY || parent != root) {
-                    parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)square
+                if (position->phase != PHASE_READY || node != root) {
+                    node->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -63,7 +63,7 @@ void Game::generateMoves(AIAlgorithm *ai,
                 } else {
                     // 若为先手，则抢占星位
                     if (Board::isStar(square)) {
-                        parent->addChild(ai, this, VALUE_INFINITE, RATING_STAR_SQUARE, (move_t)square
+                        node->addChild(ai, this, VALUE_INFINITE, RATING_STAR_SQUARE, (move_t)square
 #ifdef BEST_MOVE_ENABLE
                                    , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -94,7 +94,7 @@ void Game::generateMoves(AIAlgorithm *ai,
                         newSquare = static_cast<square_t>(MoveList::moveTable[oldSquare][direction]);
                         if (newSquare && !boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, move
+                            node->addChild(ai, this, VALUE_ZERO, RATING_ZERO, move
 #ifdef BEST_MOVE_ENABLE
                                        , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -106,7 +106,7 @@ void Game::generateMoves(AIAlgorithm *ai,
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
                         if (!boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, move
+                            node->addChild(ai, this, VALUE_ZERO, RATING_ZERO, move
 #ifdef BEST_MOVE_ENABLE
                                        , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -127,7 +127,7 @@ void Game::generateMoves(AIAlgorithm *ai,
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<square_t>(MoveList::movePriorityTable[i]);
                 if (boardLocations[square] & opponent) {
-                    parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)-square
+                    node->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)-square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -142,7 +142,7 @@ void Game::generateMoves(AIAlgorithm *ai,
             square = static_cast<square_t>(MoveList::movePriorityTable[i]);
             if (boardLocations[square] & opponent) {
                 if (rule.allowRemoveMill || !position->board.inHowManyMills(square)) {
-                    parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)-square
+                    node->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)-square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -157,7 +157,7 @@ void Game::generateMoves(AIAlgorithm *ai,
     }
 
     // 赋值
-    parent->sideToMove = position->sideToMove;
+    node->sideToMove = position->sideToMove;
 }
 
 void MoveList::create()

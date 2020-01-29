@@ -114,7 +114,7 @@ public:
 
     // 着法生成
     void generateMoves(AIAlgorithm *ai,
-                       Node *parent,
+                       Node *node,
                        Node *root
 #ifdef BEST_MOVE_ENABLE
                        , move_t bestMove
