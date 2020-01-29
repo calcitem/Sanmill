@@ -55,9 +55,6 @@ Game::Game(const Game &game)
 
 Game &Game::operator= (const Game &game)
 {
-    if (this == &game)
-        return *this;
-
     position = game.position;
     currentStep = game.currentStep;
     moveStep = game.moveStep;

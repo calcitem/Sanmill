@@ -489,35 +489,8 @@ void AIAlgorithm::setGame(const Game &g)
         moveHistory.clear();
     }
 
-    memcpy(this->game->position, g.position, sizeof(Position));
-    game->currentStep = g.currentStep;
-    game->moveStep = g.moveStep;
-    memcpy(this->game->boardLocations, g.position->board.locations, sizeof(location_t));
-    game->currentSquare = g.currentSquare;
-    game->winner = g.winner;
-    game->startTime = g.startTime;
-    game->currentTime = g.currentTime;
-    game->elapsedSeconds[BLACK] = g.elapsedSeconds[BLACK];
-    game->elapsedSeconds[WHITE] = g.elapsedSeconds[WHITE];
-    game->move = g.move;
-    memcpy(game->cmdline, g.cmdline, sizeof(cmdline));
-    game->cmdlist = g.cmdlist;
-    game->tips = g.tips;
-
-    memcpy(this->tempGame->position, g.position, sizeof(Position));
-    tempGame->currentStep = g.currentStep;
-    tempGame->moveStep = g.moveStep;
-    memcpy(this->tempGame->boardLocations, g.position->board.locations, sizeof(location_t));
-    tempGame->currentSquare = g.currentSquare;
-    tempGame->winner = g.winner;
-    tempGame->startTime = g.startTime;
-    tempGame->currentTime = g.currentTime;
-    tempGame->elapsedSeconds[BLACK] = g.elapsedSeconds[BLACK];
-    tempGame->elapsedSeconds[WHITE] = g.elapsedSeconds[WHITE];
-    tempGame->move = g.move;
-    memcpy(tempGame->cmdline, g.cmdline, sizeof(cmdline));
-    tempGame->cmdlist = g.cmdlist;
-    tempGame->tips = g.tips;
+    *game = g;
+    *tempGame = g;
 
     //memcpy(this->game, &g, sizeof(Game));
     //memcpy(this->tempGame, &this->game, sizeof(Game));
