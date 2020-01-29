@@ -10,7 +10,7 @@
 
 #include "mcts.h"
 
-void State::doMove(move_t move)
+void MCTSGame::doMove(move_t move)
 {
     assert(0 <= move && move < numCols);
     assert(board[0][move] == playerMarkers[0]);
@@ -26,7 +26,7 @@ void State::doMove(move_t move)
 }
 
 template<typename RandomEngine>
-void State::doRandomMove(RandomEngine *engine)
+void MCTSGame::doRandomMove(RandomEngine *engine)
 {
     assert(hasMoves());
     checkInvariant();
@@ -42,7 +42,7 @@ void State::doRandomMove(RandomEngine *engine)
     }
 }
 
-bool State::hasMoves() const
+bool MCTSGame::hasMoves() const
 {
     checkInvariant();
 
@@ -60,7 +60,7 @@ bool State::hasMoves() const
     return false;
 }
 
-vector<move_t> State::MoveList_Generate() const
+vector<move_t> MCTSGame::generateMoves() const
 {
     checkInvariant();
 
@@ -80,7 +80,7 @@ vector<move_t> State::MoveList_Generate() const
     return moves;
 }
 
-char State::getWinner() const
+char MCTSGame::getWinner() const
 {
     if (lastCol < 0) {
         return playerMarkers[0];
@@ -135,7 +135,7 @@ char State::getWinner() const
     return playerMarkers[0];
 }
 
-double State::getResult(int currentSideToMove) const
+double MCTSGame::getResult(int currentSideToMove) const
 {
     assert(!hasMoves());
     checkInvariant();
@@ -153,7 +153,7 @@ double State::getResult(int currentSideToMove) const
     }
 }
 
-void State::print(ostream &out) const
+void MCTSGame::print(ostream &out) const
 {
     out << endl;
     out << " ";
@@ -176,24 +176,24 @@ void State::print(ostream &out) const
     out << playerMarkers[sideToMove] << " to move " << endl << endl;
 }
 
-void State::checkInvariant() const
+void MCTSGame::checkInvariant() const
 {
     assert(sideToMove == 1 || sideToMove == 2);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-Node::Node(const State &state) :
-    sideToMove(state.sideToMove),
-    moves(state.MoveList_Generate())
+Node::Node(const MCTSGame &game) :
+    sideToMove(game.sideToMove),
+    moves(game.generateMoves())
 {
 }
 
-Node::Node(const State &state, const move_t &m, Node *p) :
+Node::Node(const MCTSGame &game, const move_t &m, Node *p) :
     move(m),
     parent(p),
-    sideToMove(state.sideToMove),
-    moves(state.MoveList_Generate())
+    sideToMove(game.sideToMove),
+    moves(game.generateMoves())
 {
 }
 
@@ -247,9 +247,9 @@ Node *Node::selectChildUCT() const
                              [](Node *a, Node *b) { return a->scoreUCT < b->scoreUCT; });
 }
 
-Node *Node::addChild(const move_t &move, const State &state)
+Node *Node::addChild(const move_t &move, const MCTSGame &game)
 {
-    auto node = new Node(state, move, this);
+    auto node = new Node(game, move, this);
     children.push_back(node);
 
     assert(!children.empty());
@@ -315,7 +315,7 @@ string Node::indentString(int indent) const
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
-unique_ptr<Node> computeTree(const State rootState,
+unique_ptr<Node> computeTree(const MCTSGame rootState,
                              const MCTSOptions options,
                              mt19937_64::result_type initialSeed)
 {
@@ -341,31 +341,31 @@ unique_ptr<Node> computeTree(const State rootState,
 
     for (int iter = 1; iter <= options.maxIterations || options.maxIterations < 0; ++iter) {
         auto node = root.get();
-        State state = rootState;
+        MCTSGame game = rootState;
 
         // Select a path through the tree to a leaf node.
         while (!node->hasUntriedMoves() && node->hasChildren()) {
             node = node->selectChildUCT();
-            state.doMove(node->move);
+            game.doMove(node->move);
         }
 
-        // If we are not already at the final state, expand the
+        // If we are not already at the final game, expand the
         // tree with a new node and move there.
         if (node->hasUntriedMoves()) {
             auto move = node->getUntriedMove(&random_engine);
-            state.doMove(move);
-            node = node->addChild(move, state);
+            game.doMove(move);
+            node = node->addChild(move, game);
         }
 
         // We now play randomly until the game ends.
-        while (state.hasMoves()) {
-            state.doRandomMove(&random_engine);
+        while (game.hasMoves()) {
+            game.doRandomMove(&random_engine);
         }
 
-        // We have now reached a final state. Backpropagate the result
+        // We have now reached a final game. Backpropagate the result
         // up the tree to the root node.
         while (node != nullptr) {
-            node->update(state.getResult(node->sideToMove));
+            node->update(game.getResult(node->sideToMove));
             node = node->parent;
         }
 
@@ -387,13 +387,13 @@ unique_ptr<Node> computeTree(const State rootState,
     return root;
 }
 
-move_t computeMove(const State rootState,
+move_t computeMove(const MCTSGame rootState,
                    const MCTSOptions options)
 {
     // Will support more players later.
     assert(rootState.sideToMove == 1 || rootState.sideToMove == 2);
 
-    auto moves = rootState.MoveList_Generate();
+    auto moves = rootState.generateMoves();
     assert(moves.size() > 0);
     if (moves.size() == 1) {
         return moves[0];
@@ -484,13 +484,13 @@ move_t computeMove(const State rootState,
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream &operator << (ostream &out, const State &state)
+ostream &operator << (ostream &out, const MCTSGame &game)
 {
-    state.print(out);
+    game.print(out);
     return out;
 }
 
-const char State::playerMarkers[3] = { '.', 'X', 'O' };
+const char MCTSGame::playerMarkers[3] = { '.', 'X', 'O' };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -505,40 +505,40 @@ void runConnectFour()
     optionsPlayer2.maxIterations = 10000;
     optionsPlayer2.verbose = true;
 
-    State state;
+    MCTSGame game;
 
-    while (state.hasMoves()) {
-        cout << endl << "State: " << state << endl;
+    while (game.hasMoves()) {
+        cout << endl << "State: " << game << endl;
 
-        move_t move = State::noMove;
-        if (state.sideToMove == 1) {
-            move = computeMove(state, optionsPlayer1);
-            state.doMove(move);
+        move_t move = MCTSGame::noMove;
+        if (game.sideToMove == 1) {
+            move = computeMove(game, optionsPlayer1);
+            game.doMove(move);
         } else {
             if (humanPlayer) {
                 while (true) {
                     cout << "Input your move: ";
-                    move = State::noMove;
+                    move = MCTSGame::noMove;
                     cin >> move;
                     try {
-                        state.doMove(move);
+                        game.doMove(move);
                         break;
                     } catch (exception &) {
                         cout << "Invalid move." << endl;
                     }
                 }
             } else {
-                move = computeMove(state, optionsPlayer2);
-                state.doMove(move);
+                move = computeMove(game, optionsPlayer2);
+                game.doMove(move);
             }
         }
     }
 
-    cout << endl << "Final state: " << state << endl;
+    cout << endl << "Final game: " << game << endl;
 
-    if (state.getResult(2) == 1.0) {
+    if (game.getResult(2) == 1.0) {
         cout << "Player 1 wins!" << endl;
-    } else if (state.getResult(1) == 1.0) {
+    } else if (game.getResult(1) == 1.0) {
         cout << "Player 2 wins!" << endl;
     } else {
         cout << "Nobody wins!" << endl;

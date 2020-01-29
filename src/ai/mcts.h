@@ -11,7 +11,7 @@
 //
 // Uses the "root parallelization" technique [1].
 //
-// This game engine can play any game defined by a state like this:
+// This game engine can play any game defined by a game like this:
 /*
 
 class GameState
@@ -70,7 +70,7 @@ using namespace std;
 
 typedef int move_t;
 
-class State
+class MCTSGame
 {
 public:
     typedef int move_t;
@@ -78,7 +78,7 @@ public:
 
     static const char playerMarkers[3];
 
-    State(int nRows = 6, int nCols = 7)
+    MCTSGame(int nRows = 6, int nCols = 7)
         : sideToMove(1),
         numRows(nRows),
         numCols(nCols),
@@ -95,7 +95,7 @@ public:
 
     bool hasMoves() const;
 
-    vector<move_t> MoveList_Generate() const;
+    vector<move_t> generateMoves() const;
 
     char getWinner() const;
 
@@ -138,7 +138,7 @@ public:
 class Node
 {
 public:
-	Node(const State &state);
+	Node(const MCTSGame &game);
 	~Node();
 
 	bool hasUntriedMoves() const;
@@ -152,14 +152,14 @@ public:
 
 	Node *selectChildUCT() const;
 
-	Node *addChild(const move_t &move, const State &state);
+	Node *addChild(const move_t &move, const MCTSGame &game);
 
 	void update(double result);
 
 	string toString() const;
 	string treeToString(int max_depth = 1000000, int indent = 0) const;
 
-	const move_t move { State::noMove };
+	const move_t move { MCTSGame::noMove };
 	Node *const parent {nullptr};
 	const int sideToMove;
 
@@ -172,7 +172,7 @@ public:
 	vector<Node *> children;
 
 private:
-	Node(const State &state, const move_t &move, Node *parent);
+	Node(const MCTSGame &game, const move_t &move, Node *parent);
 
 	string indentString(int indent) const;
 
@@ -182,7 +182,7 @@ private:
 	double scoreUCT { 0 };
 };
 
-move_t computeMove(const State rootState,
+move_t computeMove(const MCTSGame rootState,
                    const MCTSOptions options = MCTSOptions());
 
 
