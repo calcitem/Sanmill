@@ -32,7 +32,7 @@ public:
 
     Evaluation &operator=(const Evaluation &) = delete;
 
-    static value_t getValue(Game &tempGame, Position *Position, Node *node);
+    static value_t getValue(Game *tempGame, Position *Position, Node *node);
 
     // 评估子力
 #ifdef EVALUATE_ENABLE

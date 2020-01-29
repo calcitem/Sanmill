@@ -218,10 +218,10 @@ protected:
        
 private:
     // 原始模型
-    Game *game;
+    Game *game { nullptr };
 
     // 演算用的模型
-    Game tempGame;
+    Game *tempGame { nullptr };
 
     Position *position { nullptr };
 

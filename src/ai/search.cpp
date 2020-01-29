@@ -48,6 +48,7 @@ vector<hash_t> moveHistory;
 AIAlgorithm::AIAlgorithm()
 {
     game = new Game();
+    tempGame = new Game();
 
     memmgr.memmgr_init();
 
@@ -61,6 +62,7 @@ AIAlgorithm::~AIAlgorithm()
 
     memmgr.memmgr_exit();
 
+    delete tempGame;
     //delete game;
 }
 
@@ -127,18 +129,18 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     };
 #endif /* ENDGAME_LEARNING */
 
-    if (tempGame.position->phase & PHASE_PLACING) {
+    if (tempGame->position->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12)
         {
-            d = placingDepthTable_12[rule.nTotalPiecesEachSide - tempGame.getPiecesInHandCount(BLACK)];
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide - tempGame->getPiecesInHandCount(BLACK)];
         } else {
-            d = placingDepthTable_9[rule.nTotalPiecesEachSide - tempGame.getPiecesInHandCount(BLACK)];
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide - tempGame->getPiecesInHandCount(BLACK)];
         }
     }
 
-    if (tempGame.position->phase & PHASE_MOVING) {
-        int pb = tempGame.getPiecesOnBoardCount(BLACK);
-        int pw = tempGame.getPiecesOnBoardCount(WHITE);
+    if (tempGame->position->phase & PHASE_MOVING) {
+        int pb = tempGame->getPiecesOnBoardCount(BLACK);
+        int pw = tempGame->getPiecesOnBoardCount(WHITE);
 
         int pieces = pb + pw;
         int diff = pb - pw;
@@ -227,8 +229,8 @@ Node *AIAlgorithm::addNode(
 
 #ifdef DEBUG_AB_TREE
     newNode->root = root;
-    newNode->phase = tempGame.position->phase;
-    newNode->action = tempGame.position->action;
+    newNode->phase = tempGame->position->phase;
+    newNode->action = tempGame->position->action;
     newNode->evaluated = false;
     newNode->nPiecesInHandDiff = std::numeric_limits<int>::max();
     newNode->nPiecesOnBoardDiff = std::numeric_limits<int>::max();
@@ -241,15 +243,15 @@ Node *AIAlgorithm::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        tempGame.position->board.squareToPolar(static_cast<square_t>(-move), r, s);
+        tempGame->position->board.squareToPolar(static_cast<square_t>(-move), r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        tempGame.position->board.squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
-        tempGame.position->board.squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
+        tempGame->position->board.squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
+        tempGame->position->board.squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        tempGame.position->board.squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
+        tempGame->position->board.squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
@@ -282,7 +284,7 @@ Node *AIAlgorithm::addNode(
         sq = (square_t)((-move) & 0x00ff);
     }
 
-    int nMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->sideToMove);
+    int nMills = tempGame->position->board.inHowManyMills(sq, tempGame->position->sideToMove);
     int nopponentMills = 0;
 
 #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
@@ -292,15 +294,15 @@ Node *AIAlgorithm::addNode(
         // TODO: 为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三
         if (nMills > 0) {
             newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
-        } else if (tempGame.getPhase() == PHASE_PLACING) {
+        } else if (tempGame->getPhase() == PHASE_PLACING) {
             // 在摆棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->opponent);
+            nopponentMills = tempGame->position->board.inHowManyMills(sq, tempGame->position->opponent);
             newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
         }
 #if 1
-        else if (tempGame.getPhase() == PHASE_MOVING) {
+        else if (tempGame->getPhase() == PHASE_MOVING) {
             // 在走棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->opponent);
+            nopponentMills = tempGame->position->board.inHowManyMills(sq, tempGame->position->opponent);
 
             if (nopponentMills) {
                 int nPlayerPiece = 0;
@@ -308,7 +310,7 @@ Node *AIAlgorithm::addNode(
                 int nForbidden = 0;
                 int nEmpty = 0;
 
-                tempGame.position->board.getSurroundedPieceCount(sq, tempGame.position->sideId,
+                tempGame->position->board.getSurroundedPieceCount(sq, tempGame->position->sideId,
                                                                 nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
 
@@ -325,7 +327,7 @@ Node *AIAlgorithm::addNode(
 
         // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
         if (rule.nTotalPiecesEachSide == 12 &&
-            tempGame.getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
+            tempGame->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
             Board::isStar(static_cast<square_t>(move))) {
             newNode->rating += RATING_STAR_SQUARE;
         }
@@ -335,7 +337,7 @@ Node *AIAlgorithm::addNode(
         int nForbidden = 0;
         int nEmpty = 0;
 
-        tempGame.position->board.getSurroundedPieceCount(sq, tempGame.position->sideId,
+        tempGame->position->board.getSurroundedPieceCount(sq, tempGame->position->sideId,
                                                         nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
         if (nMills > 0) {
@@ -353,7 +355,7 @@ Node *AIAlgorithm::addNode(
         }
 
         // 吃子点处于对方的三连中
-        nopponentMills = tempGame.position->board.inHowManyMills(sq, tempGame.position->opponent);
+        nopponentMills = tempGame->position->board.inHowManyMills(sq, tempGame->position->opponent);
         if (nopponentMills) {
             if (nOpponentPiece >= 2) {
                 // 旁边对方的子较多, 则倾向不吃
@@ -407,7 +409,7 @@ void AIAlgorithm::sortMoves(Node *node)
 
 #define NODE_PTR_SORT_FUN(x) nodep_##x
 
-    gSideToMove = tempGame.position->sideToMove; // TODO: 暂时用全局变量
+    gSideToMove = tempGame->position->sideToMove; // TODO: 暂时用全局变量
 
     // 此处选用排序算法, 各算法耗时统计如下:
     /*
@@ -440,7 +442,7 @@ void AIAlgorithm::sortMoves(Node *node)
 #endif
 
 #ifdef DEBUG_SORT
-    if (tempGame.position->sideToMove == PLAYER_BLACK) {
+    if (tempGame->position->sideToMove == PLAYER_BLACK) {
         for (int i = 0; i < node->childrenSize; i++) {
             loggerDebug("+ [%d] %p: %d = %d %d (%d)\n",
                         i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
@@ -487,9 +489,40 @@ void AIAlgorithm::setGame(const Game &g)
         moveHistory.clear();
     }
 
-    memcpy(this->game, &g, sizeof(Game));
-    tempGame = g;
-    position = tempGame.position;
+    memcpy(this->game->position, g.position, sizeof(Position));
+    game->currentStep = g.currentStep;
+    game->moveStep = g.moveStep;
+    memcpy(this->game->boardLocations, g.position->board.locations, sizeof(location_t));
+    game->currentSquare = g.currentSquare;
+    game->winner = g.winner;
+    game->startTime = g.startTime;
+    game->currentTime = g.currentTime;
+    game->elapsedSeconds[BLACK] = g.elapsedSeconds[BLACK];
+    game->elapsedSeconds[WHITE] = g.elapsedSeconds[WHITE];
+    game->move = g.move;
+    memcpy(game->cmdline, g.cmdline, sizeof(cmdline));
+    game->cmdlist = g.cmdlist;
+    game->tips = g.tips;
+
+    memcpy(this->tempGame->position, g.position, sizeof(Position));
+    tempGame->currentStep = g.currentStep;
+    tempGame->moveStep = g.moveStep;
+    memcpy(this->tempGame->boardLocations, g.position->board.locations, sizeof(location_t));
+    tempGame->currentSquare = g.currentSquare;
+    tempGame->winner = g.winner;
+    tempGame->startTime = g.startTime;
+    tempGame->currentTime = g.currentTime;
+    tempGame->elapsedSeconds[BLACK] = g.elapsedSeconds[BLACK];
+    tempGame->elapsedSeconds[WHITE] = g.elapsedSeconds[WHITE];
+    tempGame->move = g.move;
+    memcpy(tempGame->cmdline, g.cmdline, sizeof(cmdline));
+    tempGame->cmdlist = g.cmdlist;
+    tempGame->tips = g.tips;
+
+    //memcpy(this->game, &g, sizeof(Game));
+    //memcpy(this->tempGame, &this->game, sizeof(Game));
+
+    position = tempGame->position;
     requiredQuit = false;
     deleteTree(root);
 
@@ -677,7 +710,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
-    hash_t hash = tempGame.getHash();
+    hash_t hash = tempGame->getHash();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -820,7 +853,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
 
-    minMax = tempGame.position->sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
+    minMax = tempGame->position->sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
 
     assert(node->childrenSize != 0);
 
@@ -858,7 +891,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
         undoMove();
 
-        switch (tempGame.position->sideToMove) {
+        switch (tempGame->position->sideToMove) {
         case PLAYER_BLACK:
             // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
 
@@ -941,7 +974,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef IDS_SUPPORT
 #ifdef IDS_ADD_VALUE
-    if (tempGame.position->sideToMove == PLAYER_BLACK) {
+    if (tempGame->position->sideToMove == PLAYER_BLACK) {
         node->children[0]->value += 1;
         node->value += 1;
     } else {
@@ -970,20 +1003,20 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 void AIAlgorithm::stashPosition()
 {
     // 棋局入栈保存，以便后续撤销着法
-    positionStack.push(*(tempGame.position));
+    positionStack.push(*(tempGame->position));
 }
 
 void AIAlgorithm::doMove(move_t move)
 {
     // 执行着法
-    tempGame.command(move);
+    tempGame->command(move);
 }
 
 void AIAlgorithm::undoMove()
 {
     // 棋局弹出栈，撤销着法
-    memcpy(tempGame.position, positionStack.top(), sizeof(Position));
-    //tempGame.position = positionStack.top();
+    memcpy(tempGame->position, positionStack.top(), sizeof(Position));
+    //tempGame->position = positionStack.top();
     positionStack.pop();
 }
 
