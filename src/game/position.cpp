@@ -28,6 +28,7 @@
 Game::Game()
 {
     position = new Position();
+    //memset(position, 0, sizeof(Position));
 
     // 单独提出 boardLocations 等数据，免得每次都写 boardLocations;
     boardLocations = position->board.locations;

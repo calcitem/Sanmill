@@ -44,6 +44,11 @@
 #include "stopwatch.h"
 #endif
 
+class AIAlgorithm;
+class Game;
+class Node;
+class Position;
+
 using namespace std;
 using namespace CTSL;
 
@@ -55,10 +60,24 @@ using namespace CTSL;
 class Node
 {
 public:
+    Node();
+    ~Node();
+
     bool hasChildren() const
     {
         return (childrenSize != 0);
     }
+
+    Node *addChild(
+        AIAlgorithm *ai,
+        Game *tempGame,
+        const value_t &value,
+        const rating_t &rating,
+        const move_t &move
+#ifdef BEST_MOVE_ENABLE
+        , const move_t &bestMove
+#endif // BEST_MOVE_ENABLE
+    );
 
     static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
 
@@ -161,15 +180,9 @@ public:
 
 
 public: /* TODO: Move to private or protected */
-    // 增加新节点
-    Node *addNode(Node *parent,
-                  const value_t &value,
-                  const rating_t &rating,
-                  const move_t &move
-#ifdef BEST_MOVE_ENABLE
-                  , const move_t &bestMove
-#endif // BEST_MOVE_ENABLE
-                 );
+
+    // 结点个数;
+    size_t nodeCount { 0 };
 
 protected:
     // 对合法的着法降序排序
@@ -227,9 +240,6 @@ private:
 
     // 根节点
     Node *root {nullptr};
-
-    // 结点个数;
-    size_t nodeCount {0};
 
     // 评估过的结点个数
     size_t evaluatedNodeCount {0};

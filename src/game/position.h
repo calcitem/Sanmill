@@ -27,8 +27,13 @@
 #include "types.h"
 #include "rule.h"
 #include "board.h"
+#include "search.h"
 
 using namespace std;
+
+class AIAlgorithm;
+class Game;
+class Node;
 
 // 棋局结构体，算法相关，包含当前棋盘数据
 // 单独分离出来供AI判断局面用，生成置换表时使用
@@ -107,6 +112,15 @@ public:
                      int nPiecesNeedRemove = 0      // 尚待去除的子数
     );
 
+    // 着法生成
+    void generateMoves(AIAlgorithm *ai,
+                       Node *parent,
+                       Node *root
+#ifdef BEST_MOVE_ENABLE
+                       , move_t bestMove
+#endif // BEST_MOVE_ENABLE
+    );
+
     // 获取棋盘数据
     location_t *getBoardLocations() const
     {
@@ -129,7 +143,7 @@ public:
     int getMoveStep() const
     {
         return moveStep;
-    } 
+    }
 
     // 获取局面阶段标识
     enum phase_t getPhase() const
@@ -267,7 +281,7 @@ public: /* TODO: move to private */
     // 着法命令行用于棋谱的显示和解析, 当前着法的命令行指令，即一招棋谱
     char cmdline[64]{};
 
-    /* 
+    /*
         当前着法，AI会用到，如下表示
         0x   00    00
             square1  square2

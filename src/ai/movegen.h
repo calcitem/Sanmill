@@ -31,16 +31,6 @@ public:
 
     MoveList &operator=(const MoveList &) = delete;
    
-    // 生成所有合法的着法并建立子节点
-    static void generate(AIAlgorithm &ai,
-                         Game *tempGame,
-                         Node *parent,
-                         Node *root
-#ifdef BEST_MOVE_ENABLE
-                         , move_t bestMove
-#endif // BEST_MOVE_ENABLE                         
-    );
-
     // 生成着法表
     static void create();
 
@@ -50,7 +40,6 @@ public:
     // 着法表 // TODO: Move to private
     inline static move_t moveTable[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = { {MOVE_NONE} };
 
-private:
     // 着法顺序表, 后续会被打乱
     inline static array<move_t, Board::N_RINGS *Board::N_SEATS> movePriorityTable {
         (move_t)8, (move_t)9, (move_t)10, (move_t)11, (move_t)12, (move_t)13, (move_t)14, (move_t)15,

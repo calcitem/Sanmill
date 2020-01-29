@@ -130,8 +130,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 #endif /* ENDGAME_LEARNING */
 
     if (tempGame->position->phase & PHASE_PLACING) {
-        if (rule.nTotalPiecesEachSide == 12)
-        {
+        if (rule.nTotalPiecesEachSide == 12) {
             d = placingDepthTable_12[rule.nTotalPiecesEachSide - tempGame->getPiecesInHandCount(BLACK)];
         } else {
             d = placingDepthTable_9[rule.nTotalPiecesEachSide - tempGame->getPiecesInHandCount(BLACK)];
@@ -157,8 +156,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     }
 
     // Debug 下调低深度
-    if (unlikely(d > reduce))
-    {
+    if (unlikely(d > reduce)) {
         d -= reduce;
     }
 
@@ -173,18 +171,24 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
 void AIAlgorithm::buildRoot()
 {
-    root = addNode(nullptr, VALUE_ZERO, RATING_ZERO, MOVE_NONE                   
-#ifdef BEST_MOVE_ENABLE
-                   , MOVE_NONE
-#endif // BEST_MOVE_ENABLE
-    );
+    root = (Node *)memmgr.memmgr_alloc(sizeof(Node));
+
+    root->parent = nullptr;
+    root->move = MOVE_NONE;
+    root->value = VALUE_ZERO;
+    root->rating = RATING_ZERO;
     root->sideToMove = PLAYER_NOBODY;
+
+#ifdef BEST_MOVE_ENABLE
+    root->bestMove = MOVE_NONE;
+#endif // BEST_MOVE_ENABLE
 
     assert(root != nullptr);
 }
 
-Node *AIAlgorithm::addNode(
-    Node *parent,
+Node *Node::addChild(
+    AIAlgorithm *ai,
+    Game *tempGame,
     const value_t &value,
     const rating_t &rating,
     const move_t &move
@@ -193,10 +197,10 @@ Node *AIAlgorithm::addNode(
 #endif // BEST_MOVE_ENABLE
 )
 {
-    Node *newNode = (Node *)memmgr.memmgr_alloc(sizeof(Node));
+    Node *newNode = (Node *)ai->memmgr.memmgr_alloc(sizeof(Node));
 
     if (unlikely(newNode == nullptr)) {
-        memmgr.memmgr_print_stats();
+        ai->memmgr.memmgr_print_stats();
         loggerDebug("Memory Manager Alloc failed\n");
         // TODO: Deal with alloc failed
         return nullptr;
@@ -206,9 +210,9 @@ Node *AIAlgorithm::addNode(
     newNode->value = value;
     newNode->rating = rating;
     newNode->childrenSize = 0;  // Important
-    newNode->parent = parent;
+    newNode->parent = this;
 
-    nodeCount++;
+    ai->nodeCount++;
 #ifdef DEBUG_AB_TREE
     newNode->id = nodeCount;
 #endif
@@ -229,8 +233,8 @@ Node *AIAlgorithm::addNode(
 
 #ifdef DEBUG_AB_TREE
     newNode->root = root;
-    newNode->phase = tempGame->position->phase;
-    newNode->action = tempGame->position->action;
+    newNode->phase = tempGame->position.phase;
+    newNode->action = tempGame->position.action;
     newNode->evaluated = false;
     newNode->nPiecesInHandDiff = std::numeric_limits<int>::max();
     newNode->nPiecesOnBoardDiff = std::numeric_limits<int>::max();
@@ -243,27 +247,23 @@ Node *AIAlgorithm::addNode(
     char cmd[32] = { 0 };
 
     if (move < 0) {
-        tempGame->position->board.squareToPolar(static_cast<square_t>(-move), r, s);
+        tempGame->position.board.squareToPolar(static_cast<square_t>(-move), r, s);
         sprintf(cmd, "-(%1u,%1u)", r, s);
     } else if (move & 0x7f00) {
         int r1, s1;
-        tempGame->position->board.squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
-        tempGame->position->board.squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
+        tempGame->position.board.squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
+        tempGame->position.board.squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
         sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
     } else {
-        tempGame->position->board.squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
+        tempGame->position.board.squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
         sprintf(cmd, "(%1u,%1u)", r, s);
     }
 
     strcpy(newNode->cmd, cmd);
 #endif // DEBUG_AB_TREE
 
-    if (!parent) {
-        return newNode;
-    }
-
-    parent->children[parent->childrenSize] = newNode;
-    parent->childrenSize++;
+    children[childrenSize] = newNode;
+    childrenSize++;
 
 #ifdef BEST_MOVE_ENABLE
     // 如果启用了置换表并且不是叶子结点
@@ -442,7 +442,7 @@ void AIAlgorithm::sortMoves(Node *node)
 #endif
 
 #ifdef DEBUG_SORT
-    if (tempGame->position->sideToMove == PLAYER_BLACK) {
+    if (tempGame->position.sideToMove == PLAYER_BLACK) {
         for (int i = 0; i < node->childrenSize; i++) {
             loggerDebug("+ [%d] %p: %d = %d %d (%d)\n",
                         i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
@@ -842,7 +842,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     }
 
     // 生成子节点树，即生成每个合理的着法
-    MoveList::generate(*this, tempGame, node, root                       
+    tempGame->generateMoves(this, node, root
 #ifdef BEST_MOVE_ENABLE
                        , bestMove
 #endif // BEST_MOVE_ENABLE

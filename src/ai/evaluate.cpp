@@ -81,7 +81,7 @@ value_t Evaluation::getValue(Game *tempGame, Position *position, Node *node)
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
-        value += tempGame.getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
+        value += tempGame->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (position->action) {

@@ -23,9 +23,11 @@
 #include "player.h"
 #include "misc.h"
 #include "option.h"
+#include "types.h"
+#include "search.h"
+#include "position.h"
 
-void MoveList::generate(AIAlgorithm &ai,
-                        Game *tempGame,
+void Game::generateMoves(AIAlgorithm *ai,
                         Node *parent,
                         Node *root
 #ifdef BEST_MOVE_ENABLE
@@ -37,23 +39,23 @@ void MoveList::generate(AIAlgorithm &ai,
     player_t opponent = PLAYER_NOBODY;
 
     // 列出所有合法的下一招
-    switch (tempGame->position->action) {
+    switch (position->action) {
         // 对于选子和落子动作
     case ACTION_CHOOSE:
     case ACTION_PLACE:
         // 对于摆子阶段
-        if (tempGame->position->phase & (PHASE_PLACING | PHASE_READY)) {
-            for (move_t i : movePriorityTable) {
+        if (position->phase & (PHASE_PLACING | PHASE_READY)) {
+            for (move_t i : MoveList::movePriorityTable) {
                 square = static_cast<square_t>(i);
 
                 // 如果已经有子占据, 继续检索
-                if (tempGame->boardLocations[square]) {
+                if (boardLocations[square]) {
                     continue;
                 }
 
                 // 否则如果是空位
-                if (tempGame->position->phase != PHASE_READY || parent != root) {
-                    ai.addNode(parent, VALUE_ZERO, RATING_ZERO, (move_t)square
+                if (position->phase != PHASE_READY || parent != root) {
+                    parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -61,7 +63,7 @@ void MoveList::generate(AIAlgorithm &ai,
                 } else {
                     // 若为先手，则抢占星位
                     if (Board::isStar(square)) {
-                        ai.addNode(parent, VALUE_INFINITE, RATING_STAR_SQUARE, (move_t)square
+                        parent->addChild(ai, this, VALUE_INFINITE, RATING_STAR_SQUARE, (move_t)square
 #ifdef BEST_MOVE_ENABLE
                                    , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -73,26 +75,26 @@ void MoveList::generate(AIAlgorithm &ai,
         }
 
         // 对于移子阶段
-        if (tempGame->position->phase & PHASE_MOVING) {
+        if (position->phase & PHASE_MOVING) {
             square_t newSquare, oldSquare;
 
             // 尽量走理论上较差的位置的棋子
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldSquare = static_cast<square_t>(movePriorityTable[i]);
+                oldSquare = static_cast<square_t>(MoveList::movePriorityTable[i]);
 
-                if (!tempGame->choose(oldSquare)) {
+                if (!choose(oldSquare)) {
                     continue;
                 }
 
-                if (tempGame->position->nPiecesOnBoard[tempGame->position->sideId] > rule.nPiecesAtLeast ||
+                if (position->nPiecesOnBoard[position->sideId] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_BEGIN; direction < DIRECTIONS_COUNT; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newSquare = static_cast<square_t>(moveTable[oldSquare][direction]);
-                        if (newSquare && !tempGame->boardLocations[newSquare]) {
+                        newSquare = static_cast<square_t>(MoveList::moveTable[oldSquare][direction]);
+                        if (newSquare && !boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            ai.addNode(parent, VALUE_ZERO, RATING_ZERO, move
+                            parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, move
 #ifdef BEST_MOVE_ENABLE
                                        , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -102,9 +104,9 @@ void MoveList::generate(AIAlgorithm &ai,
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
-                        if (!tempGame->boardLocations[newSquare]) {
+                        if (!boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            ai.addNode(parent, VALUE_ZERO, RATING_ZERO, move
+                            parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, move
 #ifdef BEST_MOVE_ENABLE
                                        , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -118,14 +120,14 @@ void MoveList::generate(AIAlgorithm &ai,
 
         // 对于吃子动作
     case ACTION_CAPTURE:
-        opponent = Player::getOpponent(tempGame->position->sideToMove);
+        opponent = Player::getOpponent(position->sideToMove);
 
-        if (tempGame->position->board.isAllInMills(opponent)) {
+        if (position->board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                square = static_cast<square_t>(movePriorityTable[i]);
-                if (tempGame->boardLocations[square] & opponent) {
-                    ai.addNode(parent, VALUE_ZERO, RATING_ZERO, (move_t)-square
+                square = static_cast<square_t>(MoveList::movePriorityTable[i]);
+                if (boardLocations[square] & opponent) {
+                    parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)-square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -137,10 +139,10 @@ void MoveList::generate(AIAlgorithm &ai,
 
         // 不是全成三的情况
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            square = static_cast<square_t>(movePriorityTable[i]);
-            if (tempGame->boardLocations[square] & opponent) {
-                if (rule.allowRemoveMill || !tempGame->position->board.inHowManyMills(square)) {
-                    ai.addNode(parent, VALUE_ZERO, RATING_ZERO, (move_t)-square
+            square = static_cast<square_t>(MoveList::movePriorityTable[i]);
+            if (boardLocations[square] & opponent) {
+                if (rule.allowRemoveMill || !position->board.inHowManyMills(square)) {
+                    parent->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)-square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
 #endif // BEST_MOVE_ENABLE
@@ -155,7 +157,7 @@ void MoveList::generate(AIAlgorithm &ai,
     }
 
     // 赋值
-    parent->sideToMove = tempGame->position->sideToMove;
+    parent->sideToMove = position->sideToMove;
 }
 
 void MoveList::create()
