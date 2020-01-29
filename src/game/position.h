@@ -158,7 +158,7 @@ public:
     }
 
     // 判断胜负
-    player_t whoWin() const
+    player_t getWinner() const
     {
         return winner;
     }

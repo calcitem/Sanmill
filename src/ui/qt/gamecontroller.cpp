@@ -562,7 +562,7 @@ void GameController::timerEvent(QTimerEvent *event)
     emit time2Changed(qt2.toString("hh:mm:ss"));
 
     // 如果胜负已分
-    if (game.whoWin() != PLAYER_NOBODY) {
+    if (game.getWinner() != PLAYER_NOBODY) {
         // 停止计时
         killTimer(timeID);
 
@@ -647,7 +647,7 @@ bool GameController::actionPiece(QPointF pos)
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
 
             // 如果再决出胜负后悔棋，则重新启动计时
-            if (game.whoWin() == PLAYER_NOBODY) {
+            if (game.getWinner() == PLAYER_NOBODY) {
 
                 // 重新启动计时
                 timeID = startTimer(100);
@@ -739,14 +739,14 @@ bool GameController::actionPiece(QPointF pos)
 
         // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-        if (game.whoWin() != PLAYER_NOBODY &&
+        if (game.getWinner() != PLAYER_NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
             playSound(":/sound/resources/sound/win.wav");
 #endif
 
         // AI设置
         // 如果还未决出胜负
-        if (game.whoWin() == PLAYER_NOBODY) {
+        if (game.getWinner() == PLAYER_NOBODY) {
             resumeAiThreads(game.position->sideToMove);
         }
         // 如果已经决出胜负
@@ -786,7 +786,7 @@ bool GameController::giveUp()
         manualListModel.setData(manualListModel.index(currentRow), i.c_str());
     }
 
-    if (game.whoWin() != PLAYER_NOBODY)
+    if (game.getWinner() != PLAYER_NOBODY)
         playSound(":/sound/resources/sound/loss.wav");
 
 #endif // TRAINING_MODE
@@ -872,7 +872,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-    if (game.whoWin() != PLAYER_NOBODY &&
+    if (game.getWinner() != PLAYER_NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
         playSound(":/sound/resources/sound/win.wav");
     }
@@ -881,7 +881,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     // AI设置
     // 如果还未决出胜负
-    if (game.whoWin() == PLAYER_NOBODY) {
+    if (game.getWinner() == PLAYER_NOBODY) {
         resumeAiThreads(game.position->sideToMove);
     }
     // 如果已经决出胜负
@@ -1180,7 +1180,7 @@ void GameController::showTestWindow()
 
 void GameController::humanGiveUp()
 {
-    if (game.whoWin() == PLAYER_NOBODY) {
+    if (game.getWinner() == PLAYER_NOBODY) {
         giveUp();
     }
 }
