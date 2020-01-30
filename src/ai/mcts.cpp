@@ -500,9 +500,9 @@ void runConnectFour()
     bool humanPlayer = false;
 
     MCTSOptions optionsPlayer1, optionsPlayer2;
-    optionsPlayer1.maxIterations = 10000;
+    optionsPlayer1.maxIterations = 2000000;
     optionsPlayer1.verbose = true;
-    optionsPlayer2.maxIterations = 10000;
+    optionsPlayer2.maxIterations = 2000000;
     optionsPlayer2.verbose = true;
 
     MCTSGame game;
