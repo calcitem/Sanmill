@@ -60,7 +60,9 @@ private:
 #include <vector>
 #include <cassert>
 
-//#define USE_OPENMP
+#ifdef _DEBUG
+#define USE_OPENMP
+#endif
 
 #ifdef USE_OPENMP
 #include <omp.h>

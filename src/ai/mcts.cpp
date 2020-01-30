@@ -8,6 +8,7 @@
 // http://mcts.ai/code/python.html
 //
 
+#include <chrono>
 #include "mcts.h"
 
 void MCTSGame::doMove(move_t move)
@@ -556,11 +557,23 @@ void runConnectFour()
 #ifdef UCT_DEMO
 int main()
 {
+    std::chrono::milliseconds::rep timeStart = std::chrono::duration_cast<std::chrono::milliseconds>
+        (std::chrono::steady_clock::now().time_since_epoch()).count();
+
     try {
         runConnectFour();
     } catch (runtime_error & error) {
         cerr << "ERROR: " << error.what() << endl;
         return 1;
     }
+
+    std::chrono::milliseconds::rep timeEnd = std::chrono::duration_cast<std::chrono::milliseconds>
+        (std::chrono::steady_clock::now().time_since_epoch()).count();
+
+    std::chrono::milliseconds::rep totalTime = (timeEnd - timeStart);
+
+    loggerDebug("\nTotal Time: %llums\n", totalTime);
+
+    return 0;
 }
 #endif // UCT_DEMO
