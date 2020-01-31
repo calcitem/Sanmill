@@ -60,6 +60,8 @@ private:
 #include <vector>
 #include <cassert>
 
+#include "stack.h"
+
 #ifdef _DEBUG
 #define USE_OPENMP
 #endif
@@ -99,7 +101,7 @@ public:
 
     bool hasMoves() const;
 
-    vector<move_t> generateMoves() const;
+    void generateMoves(Stack<move_t, 8> &moves) const;
 
     char getWinner() const;
 
@@ -160,7 +162,7 @@ public:
 
 	void update(double result);
 
-	string toString() const;
+	string toString();
 	string treeToString(int max_depth = 1000000, int indent = 0) const;
 
 	const move_t move { MCTSGame::noMove };
@@ -172,7 +174,7 @@ public:
 	double wins { 0 };
 	int visits { 0 };
 
-	vector<move_t> moves;
+	Stack<move_t, 8> moves;
 	vector<Node *> children;
 
 private:

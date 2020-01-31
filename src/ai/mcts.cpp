@@ -61,24 +61,21 @@ bool MCTSGame::hasMoves() const
     return false;
 }
 
-vector<move_t> MCTSGame::generateMoves() const
+void MCTSGame::generateMoves(Stack<move_t, 8> &moves) const
 {
     checkInvariant();
 
-    vector<move_t> moves;
-
     if (getWinner() != playerMarkers[0]) {
-        return moves;
+        return;
     }
 
-    moves.reserve(numCols);
+    //moves.reserve(numCols);
 
     for (int col = 0; col < numCols; ++col) {
         if (board[0][col] == playerMarkers[0]) {
             moves.push_back(col);
         }
     }
-    return moves;
 }
 
 char MCTSGame::getWinner() const
@@ -185,17 +182,17 @@ void MCTSGame::checkInvariant() const
 ////////////////////////////////////////////////////////////////////////////////////////
 
 Node::Node(const MCTSGame &game) :
-    sideToMove(game.sideToMove),
-    moves(game.generateMoves())
+    sideToMove(game.sideToMove)
 {
+    game.generateMoves(moves);
 }
 
 Node::Node(const MCTSGame &game, const move_t &m, Node *p) :
     move(m),
     parent(p),
-    sideToMove(game.sideToMove),
-    moves(game.generateMoves())
+    sideToMove(game.sideToMove)
 {
+    game.generateMoves(moves);
 }
 
 Node::~Node()
@@ -255,8 +252,8 @@ Node *Node::addChild(const move_t &move, const MCTSGame &game)
 
     assert(!children.empty());
 
-    auto iter = moves.begin();
-    for (; iter != moves.end() && *iter != move; ++iter);
+    int iter = 0;
+    for (; iter != 8 && moves[iter] != move; ++iter); // TODO: 8
 
     assert(iter != moves.end());
 
@@ -274,7 +271,7 @@ void Node::update(double result)
     //while ( ! wins.compare_exchange_strong(my_wins, my_wins + result));
 }
 
-string Node::toString() const
+string Node::toString()
 {
     stringstream sout;
 
@@ -287,6 +284,7 @@ string Node::toString() const
     return sout.str();
 }
 
+#if 0
 string Node::treeToString(int maxDepth, int indent) const
 {
     if (indent >= maxDepth) {
@@ -301,6 +299,7 @@ string Node::treeToString(int maxDepth, int indent) const
 
     return s;
 }
+#endif
 
 string Node::indentString(int indent) const
 {
@@ -394,7 +393,8 @@ move_t computeMove(const MCTSGame rootState,
     // Will support more players later.
     assert(rootState.sideToMove == 1 || rootState.sideToMove == 2);
 
-    auto moves = rootState.generateMoves();
+    Stack<move_t, 8> moves;
+    rootState.generateMoves(moves);
     assert(moves.size() > 0);
     if (moves.size() == 1) {
         return moves[0];

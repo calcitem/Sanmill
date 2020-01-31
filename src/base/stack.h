@@ -31,6 +31,11 @@ public:
         arr = new T[capacity];
     }
 
+    Stack(const Stack &other)
+    {
+        *this = other;
+    }
+
     ~Stack()
     {        
         //memset(arr, 0, sizeof(T) * capacity);
@@ -93,7 +98,7 @@ public:
         return &(arr[p]);
     }
 
-    inline int size()
+    inline int size() const
     {
         return p + 1;
     }
@@ -113,7 +118,7 @@ public:
         return arr[p + 1];
     }
 
-    inline bool empty()
+    inline bool empty() const
     {
         return (p < 0);
     }
@@ -121,6 +126,16 @@ public:
     inline void clear()
     {
         p = -1;
+    }
+
+    inline void erase(int index)
+    {
+        for (int i = index; i != 8; i++) // TODO: 8
+        {
+            arr[i] = arr[i + 1];
+        }
+
+        p--;
     }
 
 private:
