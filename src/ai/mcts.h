@@ -165,6 +165,8 @@ public:
 	string toString();
 	string treeToString(int max_depth = 1000000, int indent = 0) const;
 
+	static const int NODE_CHILDREN_SIZE = 8;
+
 	const move_t move { MCTSGame::noMove };
 	Node *const parent {nullptr};
 	const int sideToMove;
@@ -175,7 +177,8 @@ public:
 	int visits { 0 };
 
 	Stack<move_t, 8> moves;
-	vector<Node *> children;
+	Node *children[NODE_CHILDREN_SIZE];
+	int childrenSize { 0 };
 
 private:
 	Node(const MCTSGame &game, const move_t &move, Node *parent);

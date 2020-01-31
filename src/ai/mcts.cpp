@@ -197,8 +197,8 @@ Node::Node(const MCTSGame &game, const move_t &m, Node *p) :
 
 Node::~Node()
 {
-    for (auto child : children) {
-        delete child;
+    for (int i = 0; i < childrenSize; i++) {
+        delete children[i];
     }
 }
 
@@ -219,38 +219,64 @@ move_t Node::getUntriedMove(RandomEngine *engine) const
 
 bool Node::hasChildren() const
 {
-    return !children.empty();
+    return (childrenSize != 0);
 }
-
 
 Node *Node::bestChildren() const
 {
     assert(moves.empty());
-    assert(!children.empty());
+    assert(childrenSize > 0);
 
-    return *max_element(children.begin(), children.end(),
-                             [](Node *a, Node *b) { return a->visits < b->visits; });;
+    // return *max_element(children.begin(), children.end(),
+    //                     [](Node *a, Node *b) { return a->visits < b->visits; });
+
+    int visitsMax = numeric_limits<int>::min();
+    Node *nodeMax = nullptr;
+
+    for (int i = 0; i < childrenSize; i++) {
+        if (children[i]->visits > visitsMax) {
+            visitsMax = children[i]->visits;
+            nodeMax = children[i];
+        }
+    }
+
+    return nodeMax;
 }
 
 Node *Node::selectChildUCT() const
 {
-    assert(!children.empty());
+    assert(childrenSize > 0);
 
-    for (auto child : children) {
-        child->scoreUCT = double(child->wins) / double(child->visits) +
-                          sqrt(2.0 * log(double(this->visits)) / child->visits);
+    for (int i = 0; i < childrenSize; i++) {
+        children[i]->scoreUCT = double(children[i]->wins) / double(children[i]->visits) +
+                          sqrt(2.0 * log(double(this->visits)) / children[i]->visits);
     }
 
-    return *max_element(children.begin(), children.end(),
-                             [](Node *a, Node *b) { return a->scoreUCT < b->scoreUCT; });
+    // return *max_element(children.begin(), children.end(),
+    //                     [](Node *a, Node *b) { return a->scoreUCT < b->scoreUCT; });
+
+    double scoreMax = numeric_limits<double>::min();
+    Node *nodeMax = nullptr;
+
+    for (int i = 0; i < childrenSize; i++) {
+        if (children[i]->scoreUCT > scoreMax) {
+            scoreMax = children[i]->scoreUCT;
+            nodeMax = children[i];
+        }
+    }
+
+    return nodeMax;
 }
 
 Node *Node::addChild(const move_t &move, const MCTSGame &game)
 {
-    auto node = new Node(game, move, this);
-    children.push_back(node);
+    auto node = new Node(game, move, this); // TODO: memmgr_alloc
 
-    assert(!children.empty());
+    //children.push_back(node);
+    children[childrenSize] = node;
+    childrenSize++;
+
+    assert(childrenSize > 0);
 
     int iter = 0;
     for (; iter != 8 && moves[iter] != move; ++iter); // TODO: 8
@@ -433,9 +459,17 @@ move_t computeMove(const MCTSGame rootState,
     for (int t = 0; t < options.nThreads; ++t) {
         auto root = roots[t].get();
         gamesPlayed += root->visits;
+
+#if 0
         for (auto child = root->children.cbegin(); child != root->children.cend(); ++child) {
             visits[(*child)->move] += (*child)->visits;
             wins[(*child)->move] += (*child)->wins;
+        }
+#endif
+
+        for (int i = 0; i < root->childrenSize; i++) {
+            visits[root->children[i]->move] += root->children[i]->visits;
+            wins[root->children[i]->move] += root->children[i]->wins;
         }
     }
 
