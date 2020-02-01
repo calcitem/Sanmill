@@ -125,10 +125,12 @@ private:
     int lastRow;
 };
 
+static const int THREADS_COUNT = 2;
+
 class MCTSOptions
 {
 public:
-	int nThreads {2};
+	int nThreads { THREADS_COUNT };
 	int maxIterations { 10000 };
 	double maxTime { -1.0 };
 	bool verbose { false };

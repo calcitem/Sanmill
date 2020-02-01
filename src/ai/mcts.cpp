@@ -335,9 +335,14 @@ string Node::indentString(int indent) const
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
+#if  0
 unique_ptr<Node> computeTree(const MCTSGame rootState,
                              const MCTSOptions options,
                              mt19937_64::result_type initialSeed)
+#endif
+    Node *computeTree(const MCTSGame rootState,
+                      const MCTSOptions options,
+                      mt19937_64::result_type initialSeed)
 {
     mt19937_64 random_engine(initialSeed);
 
@@ -352,7 +357,8 @@ unique_ptr<Node> computeTree(const MCTSGame rootState,
     // Will support more players later.
     assert(rootState.sideToMove == 1 || rootState.sideToMove == 2);
 
-    auto root = unique_ptr<Node>(new Node(rootState));
+    // auto root = unique_ptr<Node>(new Node(rootState));
+    Node *root = new Node(rootState);
 
 #ifdef USE_OPENMP
     double start_time = ::omp_get_wtime();
@@ -360,7 +366,9 @@ unique_ptr<Node> computeTree(const MCTSGame rootState,
 #endif
 
     for (int iter = 1; iter <= options.maxIterations || options.maxIterations < 0; ++iter) {
-        auto node = root.get();
+        //auto node = root.get();
+        Node *node = root;
+
         MCTSGame game = rootState;
 
         // Select a path through the tree to a leaf node.
@@ -425,24 +433,34 @@ move_t computeMove(const MCTSGame rootState,
 #endif
 
     // Start all jobs to compute trees.
-    vector<future<unique_ptr<Node>>> rootFutures;
+    //vector<future<unique_ptr<Node>>> rootFutures;
+    future<Node *> rootFutures[THREADS_COUNT];
     MCTSOptions jobOptions = options;
 
     jobOptions.verbose = false;
 
     for (int t = 0; t < options.nThreads; ++t) {
+#if 0
         auto func = [t, &rootState, &jobOptions]() -> unique_ptr<Node> {
             return computeTree(rootState, jobOptions, 1012411 * t + 12515);
         };
+#endif
 
-        rootFutures.push_back(async(launch::async, func));
+        auto func = [t, &rootState, &jobOptions]() -> Node* {
+            return computeTree(rootState, jobOptions, 1012411 * t + 12515);
+        };
+
+        //rootFutures.push_back(async(launch::async, func));
+        rootFutures[t] = async(launch::async, func);
     }
 
     // Collect the results.
-    vector<unique_ptr<Node>> roots;
+    //vector<unique_ptr<Node>> roots;
+    Node *roots[THREADS_COUNT] = { nullptr };
 
     for (int t = 0; t < options.nThreads; ++t) {
-        roots.push_back(move(rootFutures[t].get()));
+        //roots.push_back(move(rootFutures[t].get()));
+        roots[t] = move(rootFutures[t].get());
     }
 
     // Merge the children of all root nodes.
@@ -451,7 +469,8 @@ move_t computeMove(const MCTSGame rootState,
     long long gamesPlayed = 0;
 
     for (int t = 0; t < options.nThreads; ++t) {
-        auto root = roots[t].get();
+        //auto root = roots[t].get();
+        Node *root = roots[t];
         gamesPlayed += root->visits;
 
 #if 0
@@ -465,6 +484,9 @@ move_t computeMove(const MCTSGame rootState,
             visits[root->children[i]->move] += root->children[i]->visits;
             wins[root->children[i]->move] += root->children[i]->wins;
         }
+
+        delete root;
+        root = nullptr;
     }
 
     // Find the node with the highest score.
