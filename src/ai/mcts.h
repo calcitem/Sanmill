@@ -86,12 +86,16 @@ public:
 
     MCTSGame(int nRows = 6, int nCols = 7)
         : sideToMove(1),
-        numRows(nRows),
-        numCols(nCols),
         lastCol(-1),
         lastRow(-1)
     {
-        board.resize(numRows, vector<char>(numCols, playerMarkers[0]));
+        //board.resize(numRows, vector<char>(numCols, playerMarkers[0]));
+
+		for (int r = 0; r < nRows; r++) {
+			for (int c = 0; c < nCols; c++) {
+				board[r][c] = playerMarkers[0];
+			}
+		}
     }
 
     void doMove(move_t move);
@@ -114,8 +118,11 @@ private:
 
 	void checkInvariant() const;
 
-    int numRows, numCols;
-    vector<vector<char>> board;
+	static const int numRows = 6;
+	static const int numCols = 7;
+
+	char board[numRows][numCols];
+	
     int lastCol;
     int lastRow;
 };
