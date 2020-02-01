@@ -108,14 +108,14 @@ public:
         return (sizeof(T) * size());
     }
 
-    inline T &begin()
+    inline T *begin()
     {
-        return arr[0];
+        return &arr[0];
     }
 
-    inline T &end()
+    inline T *end()
     {
-        return arr[p + 1];
+        return &arr[p + 1];
     }
 
     inline bool empty() const
@@ -130,7 +130,7 @@ public:
 
     inline void erase(int index)
     {
-        for (int i = index; i != 8; i++) // TODO: 8
+        for (int i = index; i < capacity - 1; i++)
         {
             arr[i] = arr[i + 1];
         }

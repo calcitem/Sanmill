@@ -279,9 +279,9 @@ Node *Node::addChild(const move_t &move, const MCTSGame &game)
     assert(childrenSize > 0);
 
     int iter = 0;
-    for (; iter != 8 && moves[iter] != move; ++iter); // TODO: 8
+    for (; &moves[iter] != moves.end() && moves[iter] != move; ++iter);
 
-    assert(iter != moves.end());
+    assert(&moves[iter] != moves.end());
 
     moves.erase(iter);
 
