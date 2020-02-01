@@ -227,9 +227,6 @@ Node *Node::bestChildren() const
     assert(moves.empty());
     assert(childrenSize > 0);
 
-    // return *max_element(children.begin(), children.end(),
-    //                     [](Node *a, Node *b) { return a->visits < b->visits; });
-
     int visitsMax = numeric_limits<int>::min();
     Node *nodeMax = nullptr;
 
@@ -251,9 +248,6 @@ Node *Node::selectChildUCT() const
         children[i]->scoreUCT = double(children[i]->wins) / double(children[i]->visits) +
                           sqrt(2.0 * log(double(this->visits)) / children[i]->visits);
     }
-
-    // return *max_element(children.begin(), children.end(),
-    //                     [](Node *a, Node *b) { return a->scoreUCT < b->scoreUCT; });
 
     double scoreMax = numeric_limits<double>::min();
     Node *nodeMax = nullptr;

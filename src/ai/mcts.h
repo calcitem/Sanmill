@@ -84,15 +84,13 @@ public:
 
     static const char playerMarkers[3];
 
-    MCTSGame(int nRows = 6, int nCols = 7)
+    MCTSGame()
         : sideToMove(1),
         lastCol(-1),
         lastRow(-1)
     {
-        //board.resize(numRows, vector<char>(numCols, playerMarkers[0]));
-
-		for (int r = 0; r < nRows; r++) {
-			for (int c = 0; c < nCols; c++) {
+		for (int r = 0; r < numRows; r++) {
+			for (int c = 0; c < numCols; c++) {
 				board[r][c] = playerMarkers[0];
 			}
 		}
