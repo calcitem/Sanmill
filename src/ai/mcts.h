@@ -61,6 +61,7 @@ private:
 #include <cassert>
 
 #include "stack.h"
+#include "memmgr.h"
 
 #ifdef _DEBUG
 #define USE_OPENMP
@@ -75,6 +76,8 @@ private:
 using namespace std;
 
 typedef int move_t;
+
+extern MemoryManager mcts_memmgr;
 
 class MCTSGame
 {
@@ -125,7 +128,7 @@ private:
     int lastRow;
 };
 
-static const int THREADS_COUNT = 2;
+static const int THREADS_COUNT = 1;
 
 class MCTSOptions
 {
@@ -174,9 +177,9 @@ public:
 
 	static const int NODE_CHILDREN_SIZE = 8;
 
-	const move_t move { MCTSGame::noMove };
-	Node *const parent {nullptr};
-	const int sideToMove;
+	move_t move { MCTSGame::noMove };
+	Node *parent {nullptr};
+	int sideToMove;
 
 	//atomic<double> wins;
 	//atomic<int> visits;

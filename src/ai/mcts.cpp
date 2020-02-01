@@ -198,7 +198,8 @@ Node::Node(const MCTSGame &game, const move_t &m, Node *p) :
 Node::~Node()
 {
     for (int i = 0; i < childrenSize; i++) {
-        delete children[i];
+        //delete children[i];
+        mcts_memmgr.memmgr_free(children[i]);
     }
 }
 
@@ -262,9 +263,32 @@ Node *Node::selectChildUCT() const
     return nodeMax;
 }
 
+int stat_temp = 0;
+
 Node *Node::addChild(const move_t &move, const MCTSGame &game)
 {
-    auto node = new Node(game, move, this); // TODO: memmgr_alloc
+    //auto node = new Node(game, move, this); // TODO: memmgr_alloc
+    stat_temp++;
+    Node *node = (Node *)mcts_memmgr.memmgr_alloc(sizeof(Node));
+    //node->NODE_CHILDREN_SIZE = 8;
+    node->move = move;
+    node->parent = this;
+    node->wins = 0;
+    node->visits = 0;
+    node->moves.alloc();
+    node->sideToMove = game.sideToMove;
+    game.generateMoves(node->moves);
+    node->childrenSize = 0;
+
+#if 0
+    Node::Node(const MCTSGame & game, const move_t & m, Node * p) :
+        move(m),
+        parent(p),
+        sideToMove(game.sideToMove)
+    {
+        game.generateMoves(moves);
+    }
+#endif
 
     //children.push_back(node);
     children[childrenSize] = node;
@@ -358,7 +382,25 @@ unique_ptr<Node> computeTree(const MCTSGame rootState,
     assert(rootState.sideToMove == 1 || rootState.sideToMove == 2);
 
     // auto root = unique_ptr<Node>(new Node(rootState));
-    Node *root = new Node(rootState);
+    //Node *root = new Node(rootState);
+    Node *root = (Node *)mcts_memmgr.memmgr_alloc(sizeof(Node));
+    //root->NODE_CHILDREN_SIZE = 8;
+    root->move = MCTSGame::noMove;
+    root->parent = nullptr;
+    root->wins = 0;
+    root->visits = 0;
+    root->moves.alloc();
+    root->sideToMove = rootState.sideToMove;
+    rootState.generateMoves(root->moves);
+    root->childrenSize = 0;
+
+#if 0
+    Node::Node(const MCTSGame & game) :
+        sideToMove(game.sideToMove)
+    {
+        game.generateMoves(moves);
+    }
+#endif
 
 #ifdef USE_OPENMP
     double start_time = ::omp_get_wtime();
@@ -485,7 +527,8 @@ move_t computeMove(const MCTSGame rootState,
             wins[root->children[i]->move] += root->children[i]->wins;
         }
 
-        delete root;
+        //delete root;
+        mcts_memmgr.memmgr_free(root);
         root = nullptr;
     }
 
@@ -605,13 +648,18 @@ void runConnectFour()
 }
 
 #ifdef UCT_DEMO
+
+MemoryManager mcts_memmgr;
+
 int main()
 {
     std::chrono::milliseconds::rep timeStart = std::chrono::duration_cast<std::chrono::milliseconds>
         (std::chrono::steady_clock::now().time_since_epoch()).count();
 
     try {
+        mcts_memmgr.memmgr_init();
         runConnectFour();
+        mcts_memmgr.memmgr_exit();
     } catch (runtime_error & error) {
         cerr << "ERROR: " << error.what() << endl;
         return 1;

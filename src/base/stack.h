@@ -28,7 +28,7 @@ class Stack
 public:
     Stack()
     {
-        arr = new T[capacity];
+        alloc();
     }
 
     Stack(const Stack &other)
@@ -70,6 +70,12 @@ public:
     const T &operator[](int i) const
     {
         return arr[i];
+    }
+
+    inline void alloc()
+    {
+        arr = new T[capacity];
+        clear();
     }
 
     inline void push(const T &obj)

@@ -67,7 +67,7 @@
 #include <cstdint>
 
 #define DEBUG_MEMMGR_SUPPORT_STATS 1
-#define DEBUG_MEMMGR_SUPPORT_STATS_VERBOSE 0
+#define DEBUG_MEMMGR_SUPPORT_STATS_VERBOSE 1
 
 typedef unsigned long Align;
 
@@ -116,8 +116,10 @@ public:
 
 protected:
 private:
-    int memPoolSize { 1024 * 1024 * 4};
-    static const int MIN_POOL_ALLOC_QUANTAS = 1024;
+    // int memPoolSize { 1024 * 1024 * 4};
+    int memPoolSize { 1024 * 1024 * 512 };
+    // static const int MIN_POOL_ALLOC_QUANTAS = 1024;
+    static const int MIN_POOL_ALLOC_QUANTAS = 8192;
 
     // Initial empty list
     mem_header_t base;
