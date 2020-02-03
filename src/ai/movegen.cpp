@@ -28,8 +28,7 @@
 #include "position.h"
 
 void Game::generateMoves(AIAlgorithm *ai,
-                        Node *node,
-                        Node *root
+                        Node *node
 #ifdef BEST_MOVE_ENABLE
                         , move_t bestMove
 #endif // BEST_MOVE_ENABLE
@@ -53,8 +52,7 @@ void Game::generateMoves(AIAlgorithm *ai,
                     continue;
                 }
 
-                // 否则如果是空位
-                if (position->phase != PHASE_READY || node != root) {
+                if (position->phase != PHASE_READY) {
                     node->addChild(ai, this, VALUE_ZERO, RATING_ZERO, (move_t)square
 #ifdef BEST_MOVE_ENABLE
                                , bestMove
