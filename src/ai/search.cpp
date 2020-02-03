@@ -189,8 +189,6 @@ void AIAlgorithm::buildRoot()
 Node *Node::addChild(
     AIAlgorithm *ai,
     Game *tempGame,
-    const value_t &value,
-    const rating_t &rating,
     const move_t &move
 #ifdef BEST_MOVE_ENABLE
     , const move_t &bestMove
@@ -207,8 +205,8 @@ Node *Node::addChild(
     }
 
     newNode->move = move;
-    newNode->value = value;
-    newNode->rating = rating;
+    newNode->value = VALUE_ZERO;
+    newNode->rating = RATING_ZERO;
     newNode->childrenSize = 0;  // Important
     newNode->parent = this;
 

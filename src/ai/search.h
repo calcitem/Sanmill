@@ -71,8 +71,6 @@ public:
     Node *addChild(
         AIAlgorithm *ai,
         Game *tempGame,
-        const value_t &value,
-        const rating_t &rating,
         const move_t &move
 #ifdef BEST_MOVE_ENABLE
         , const move_t &bestMove
