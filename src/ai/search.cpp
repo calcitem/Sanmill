@@ -187,9 +187,9 @@ void AIAlgorithm::buildRoot()
 }
 
 Node *Node::addChild(
+    const move_t &move,
     AIAlgorithm *ai,
-    Game *tempGame,
-    const move_t &move
+    Game *tempGame
 #ifdef BEST_MOVE_ENABLE
     , const move_t &bestMove
 #endif // BEST_MOVE_ENABLE
