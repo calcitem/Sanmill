@@ -198,7 +198,7 @@ private:
 	double scoreUCT { 0 };
 };
 
-move_t computeMove(const MCTSGame rootState,
+move_t computeMove(const MCTSGame game,
                    const MCTSOptions options = MCTSOptions());
 
 
