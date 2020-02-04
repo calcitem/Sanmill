@@ -195,7 +195,7 @@ void MillGameWindow::initialize()
 
 #ifdef MOBILE_APP_UI
     connect(ui.pushButton_giveUp, SIGNAL(released()),
-            game, SLOT(giveUp()));
+            gameController, SLOT(giveUp()));
 #endif
 
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
