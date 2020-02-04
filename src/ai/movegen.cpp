@@ -66,8 +66,6 @@ void Game::generateMoves(AIAlgorithm *ai,
                                    , bestMove
 #endif // BEST_MOVE_ENABLE
                                   );
-                        newNode->value = VALUE_INFINITE;
-                        newNode->rating = RATING_STAR_SQUARE;
                     }
                 }
             }
