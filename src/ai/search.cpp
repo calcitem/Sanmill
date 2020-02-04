@@ -813,11 +813,13 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     }
 
     // 生成子节点树，即生成每个合理的着法
-    tempGame->generateMoves(this, node
+    tempGame->generateMoves(moves);
+
+    tempGame->generateChildren(moves, this, node
 #ifdef BEST_MOVE_ENABLE
-                       , bestMove
+                             , bestMove
 #endif // BEST_MOVE_ENABLE
-    );
+                              );
 
     // 排序子节点树
     sortMoves(node);

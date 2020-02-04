@@ -249,6 +249,8 @@ private:
     Stack<Position> positionStack;
 #endif /* USE_STD_STACK */
 
+    Stack<move_t, MOVE_COUNT> moves;
+
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
 

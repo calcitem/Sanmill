@@ -112,13 +112,16 @@ public:
                      int nPiecesNeedRemove = 0      // 尚待去除的子数
     );
 
-    // 着法生成
-    void generateMoves(AIAlgorithm *ai,
-                       Node *node
+    void Game::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
+                                AIAlgorithm *ai,
+                                Node *node
 #ifdef BEST_MOVE_ENABLE
-                       , move_t bestMove
+                                , move_t bestMove
 #endif // BEST_MOVE_ENABLE
-    );
+                               );
+
+    // 着法生成
+    void generateMoves(Stack<move_t, MOVE_COUNT> &moves);
 
     // 获取棋盘数据
     location_t *getBoardLocations() const

@@ -27,15 +27,36 @@
 #include "search.h"
 #include "position.h"
 
-void Game::generateMoves(AIAlgorithm *ai,
-                        Node *node
+void Game::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
+                            AIAlgorithm *ai,
+                            Node *node
 #ifdef BEST_MOVE_ENABLE
-                        , move_t bestMove
+                          , move_t bestMove
 #endif // BEST_MOVE_ENABLE
-                        )
+)
+{
+    int size = moves.size();
+
+    for (int i  = 0; i < size; i++) {
+        node->addChild(moves[i], ai, this
+#ifdef BEST_MOVE_ENABLE
+                       , bestMove
+#endif // BEST_MOVE_ENABLE
+        );
+    }
+
+    // 赋值
+    node->sideToMove = position->sideToMove;
+
+    return;
+}
+
+void Game::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
 {
     square_t square = SQ_0;
     player_t opponent = PLAYER_NOBODY;
+
+    moves.clear();
 
     // 列出所有合法的下一招
     switch (position->action) {
@@ -53,19 +74,11 @@ void Game::generateMoves(AIAlgorithm *ai,
                 }
 
                 if (position->phase != PHASE_READY) {
-                    node->addChild((move_t)square, ai, this
-#ifdef BEST_MOVE_ENABLE
-                               , bestMove
-#endif // BEST_MOVE_ENABLE
-                              );
+                    moves.push_back((move_t)square);
                 } else {
                     // 若为先手，则抢占星位
                     if (Board::isStar(square)) {
-                        Node* newNode = node->addChild((move_t)square, ai, this
-#ifdef BEST_MOVE_ENABLE
-                                   , bestMove
-#endif // BEST_MOVE_ENABLE
-                                  );
+                        moves.push_back((move_t)square);
                     }
                 }
             }
@@ -92,11 +105,7 @@ void Game::generateMoves(AIAlgorithm *ai,
                         newSquare = static_cast<square_t>(MoveList::moveTable[oldSquare][direction]);
                         if (newSquare && !boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            node->addChild(move, ai, this
-#ifdef BEST_MOVE_ENABLE
-                                       , bestMove
-#endif // BEST_MOVE_ENABLE
-                                       );
+                            moves.push_back((move_t)move);
                         }
                     }
                 } else {
@@ -104,11 +113,7 @@ void Game::generateMoves(AIAlgorithm *ai,
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
                         if (!boardLocations[newSquare]) {
                             move_t move = move_t((oldSquare << 8) + newSquare);
-                            node->addChild(move, ai, this
-#ifdef BEST_MOVE_ENABLE
-                                       , bestMove
-#endif // BEST_MOVE_ENABLE
-                                      );
+                            moves.push_back((move_t)move);
                         }
                     }
                 }
@@ -125,11 +130,7 @@ void Game::generateMoves(AIAlgorithm *ai,
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<square_t>(MoveList::movePriorityTable[i]);
                 if (boardLocations[square] & opponent) {
-                    node->addChild((move_t)-square, ai, this
-#ifdef BEST_MOVE_ENABLE
-                               , bestMove
-#endif // BEST_MOVE_ENABLE
-                              );
+                    moves.push_back((move_t)-square);
                 }
             }
             break;
@@ -140,11 +141,7 @@ void Game::generateMoves(AIAlgorithm *ai,
             square = static_cast<square_t>(MoveList::movePriorityTable[i]);
             if (boardLocations[square] & opponent) {
                 if (rule.allowRemoveMill || !position->board.inHowManyMills(square)) {
-                    node->addChild((move_t)-square, ai, this
-#ifdef BEST_MOVE_ENABLE
-                               , bestMove
-#endif // BEST_MOVE_ENABLE
-                              );
+                    moves.push_back((move_t)-square);
                 }
             }
         }
@@ -153,9 +150,6 @@ void Game::generateMoves(AIAlgorithm *ai,
     default:
         break;
     }
-
-    // 赋值
-    node->sideToMove = position->sideToMove;
 }
 
 void MoveList::create()

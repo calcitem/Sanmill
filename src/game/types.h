@@ -38,6 +38,8 @@ enum move_t : int32_t
     //MOVE_NULL = 65
 };
 
+static const int MOVE_COUNT = 40;
+
 enum color_t : uint8_t
 {
     NOCOLOR,
@@ -53,6 +55,7 @@ enum square_t : int32_t
     SQ_D6 = 16, SQ_F6 = 17, SQ_F4 = 18, SQ_F2 = 19, SQ_D2 = 20, SQ_B2 = 21, SQ_B4 = 22, SQ_B6 = 23,
     SQ_D7 = 24, SQ_G7 = 25, SQ_G4 = 26, SQ_G1 = 27, SQ_D1 = 28, SQ_A1 = 29, SQ_A4 = 30, SQ_A7 = 31,
     SQ_32 = 32, SQ_33 = 33, SQ_34 = 34, SQ_35 = 35, SQ_36 = 36, SQ_37 = 37, SQ_38 = 38, SQ_39 = 39,
+    SQ_COUNT = 24,
     SQ_EXPANDED_COUNT = 40,
     SQ_BEGIN = SQ_D5,
     SQ_END = SQ_32
