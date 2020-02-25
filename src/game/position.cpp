@@ -355,6 +355,8 @@ bool Game::place(square_t square, int8_t updateCmdlist)
 
         // 开局阶段未成三
         if (n == 0) {
+            assert(position->nPiecesInHand[BLACK] >= 0 && position->nPiecesInHand[WHITE] >= 0);
+     
             // 如果双方都无未放置的棋子
             if (position->nPiecesInHand[BLACK] == 0 && position->nPiecesInHand[WHITE] == 0) {
                 // 决胜负
@@ -886,7 +888,7 @@ bool Game::checkGameOverCondition()
 
     // 如果中局被“闷”
     if (position->phase == PHASE_MOVING && position->action == ACTION_CHOOSE && position->board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove)) {
-        // 规则要求被“闷”判负，则对手获胜
+        // 规则要求被“闷”判负，则对手获胜 // TODO: 应该转移到下面的分支中
         position->phase = PHASE_GAMEOVER;
 
         if (rule.isLoseWhenNoWay) {

@@ -37,6 +37,8 @@ void Game::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
 {
     int size = moves.size();
 
+    assert(size != 0);
+
     for (int i  = 0; i < size; i++) {
         node->addChild(moves[i], ai, this
 #ifdef BEST_MOVE_ENABLE
@@ -148,8 +150,11 @@ void Game::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
         break;
 
     default:
+        assert(0);
         break;
     }
+
+    assert(moves.size() != 0);
 }
 
 void MoveList::create()
