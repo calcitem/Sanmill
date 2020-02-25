@@ -95,14 +95,16 @@ private:
     void constructHash();
 
 public:
-    explicit Game();
+    Game();
     virtual ~Game();
 
     // 拷贝构造函数
-    explicit Game(const Game &);
+    Game(Game &);
+    Game(const Game &);
 
     // 运算符重载
     Game &operator=(const Game &);
+    Game &operator=(Game &);
 
     // 设置棋局状态和棋局，用于初始化
     bool setPosition(const struct Rule *rule,

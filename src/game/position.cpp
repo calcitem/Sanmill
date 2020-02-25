@@ -27,6 +27,10 @@
 
 Game::Game()
 {
+    if (position != nullptr) {
+        delete position;
+    }
+
     position = new Position();
     //memset(position, 0, sizeof(Position));
 
@@ -46,16 +50,63 @@ Game::Game()
     cmdlist.reserve(256);
 }
 
-Game::~Game() = default;
+Game::~Game()
+{
+    if (position != nullptr) {
+        delete position;
+        position = nullptr;
+    }
+
+    cmdlist.clear();
+}
 
 Game::Game(const Game &game)
 {  
+    if (position != nullptr) {
+        delete position;
+        position = nullptr;
+    }
+    
+    position = new Position();
+
+    *this = game;
+}
+
+Game::Game(Game &game)
+{
+    if (position != nullptr) {
+        delete position;
+        position = nullptr;
+    }
+
+    position = new Position();
+
     *this = game;
 }
 
 Game &Game::operator= (const Game &game)
 {
-    position = game.position;
+    memcpy(position, game.position, sizeof(Position));
+    currentStep = game.currentStep;
+    moveStep = game.moveStep;
+    boardLocations = position->board.locations;
+    currentSquare = game.currentSquare;
+    winner = game.winner;
+    startTime = game.startTime;
+    currentTime = game.currentTime;
+    elapsedSeconds[BLACK] = game.elapsedSeconds[BLACK];
+    elapsedSeconds[WHITE] = game.elapsedSeconds[WHITE];
+    move = game.move;
+    memcpy(cmdline, game.cmdline, sizeof(cmdline));
+    cmdlist = game.cmdlist;
+    tips = game.tips;
+
+    return *this;
+}
+
+Game &Game::operator= (Game &game)
+{
+    memcpy(position, game.position, sizeof(Position));
     currentStep = game.currentStep;
     moveStep = game.moveStep;
     boardLocations = position->board.locations;
