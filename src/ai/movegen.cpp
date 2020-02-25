@@ -157,8 +157,6 @@ void Game::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
         assert(0);
         break;
     }
-
-    assert(moves.size() != 0);
 }
 
 void MoveList::create()
