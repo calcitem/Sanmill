@@ -92,6 +92,11 @@ void AiThread::emitCommand()
     emit command(strCommand);
 }
 
+#ifdef MCTS_AI
+move_t computeMove(Game game,
+                   const MCTSOptions options);
+#endif // MCTS_AI
+
 void AiThread::run()
 {
     // 测试用数据
@@ -119,6 +124,15 @@ void AiThread::run()
         emit searchStarted();
         mutex.unlock();
 
+#ifdef MCTS_AI
+        MCTSOptions mctsOptions;
+
+        move_t move = computeMove(*game, mctsOptions);
+        
+        strCommand = ai.moveToCommand(move);
+        emitCommand();
+#else  // MCTS_AI
+
         if (ai.search(depth) == 3) {
             // 三次重复局面和
             loggerDebug("Draw\n\n");
@@ -131,6 +145,8 @@ void AiThread::run()
                 emitCommand();
             }
         }
+
+#endif // MCTS_AI
 
         emit searchFinished();
 

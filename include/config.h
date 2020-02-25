@@ -34,6 +34,8 @@
 
 //#define UCT_DEMO
 
+//#define MCTS_AI
+
 #ifdef TEST_MODE
 #define DONOT_PLAY_SOUND
 #endif // TEST_MODE

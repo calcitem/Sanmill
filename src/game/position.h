@@ -29,6 +29,10 @@
 #include "board.h"
 #include "search.h"
 
+#ifdef MCTS_AI
+#include "mcts.h"
+#endif
+
 using namespace std;
 
 class AIAlgorithm;
@@ -138,12 +142,6 @@ public:
         return position->action;
     }
 
-    // 判断胜负
-    player_t getWinner() const
-    {
-        return winner;
-    }
-
     // 玩家1或玩家2的用时
     time_t getElapsedTime(int playerId);
 
@@ -249,6 +247,9 @@ public:
     // 着法生成
     void generateMoves(Stack<move_t, MOVE_COUNT> &moves);
 
+    // 判断胜负
+    player_t getWinner() const;
+
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool doMove(move_t move);
     bool choose(square_t square);
@@ -260,6 +261,19 @@ public:
     hash_t revertHash(square_t square);
     hash_t updateHash(square_t square);
     hash_t updateHashMisc();
+
+#ifdef MCTS_AI
+    // MCTS 相关
+    Stack<move_t, MOVE_COUNT> moves;
+
+    //template<typename RandomEngine>
+    //void doRandomMove(RandomEngine *engine);    
+    void doRandomMove(Node *node, mt19937_64 *engine);
+
+    bool hasMoves() const;
+    double getResult(player_t currentSideToMove) const;
+    void checkInvariant() const;
+#endif // MCTS_AI
 
     // 赢盘数
     int score[COLOR_COUNT] = { 0 };

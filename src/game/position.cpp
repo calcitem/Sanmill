@@ -836,6 +836,11 @@ bool Game::doMove(move_t m)
     return false;
 }
 
+player_t Game::getWinner() const
+{
+    return winner;
+}
+
 int Game::update()
 {
     int ret = -1;

@@ -63,10 +63,12 @@ public:
     Node();
     ~Node();
 
-    bool hasChildren() const
-    {
-        return (childrenSize != 0);
-    }
+#ifdef MCTS_AI
+    Node(Game &game);
+    Node(Game &game, const move_t &move, Node *parent);
+#endif // MCTS_AI
+
+    bool hasChildren() const;
 
     Node *addChild(
         const move_t &move, 
@@ -79,6 +81,29 @@ public:
 
     static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
 
+#ifdef MCTS_AI
+    Stack<move_t, NODE_CHILDREN_SIZE> moves;
+
+    //atomic<double> wins;
+    //atomic<int> visits;
+    double wins { 0 };
+    int visits { 0 };
+    double scoreUCT { 0 };
+
+    bool hasUntriedMoves() const;
+    template<typename RandomEngine>
+    move_t getUntriedMove(RandomEngine *engine) const;
+    Node *bestChildren() const;
+    Node *selectChildUCT() const;
+    Node *addChild(const move_t &move, Game &game);
+    void update(double result);
+    string toString();
+    string treeToString(int max_depth = 1000000, int indent = 0) const;
+    string indentString(int indent) const;
+#else
+    move_t moves[NODE_CHILDREN_SIZE];
+#endif // MCTS_AI
+
     move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
     value_t value { VALUE_UNKNOWN };                 // 节点的值
     rating_t rating { RATING_ZERO };             // 节点分数
@@ -87,7 +112,6 @@ public:
     bool pruned { false };                    // 是否在此处剪枝
 #endif
 
-    move_t moves[NODE_CHILDREN_SIZE];
     Node *children[NODE_CHILDREN_SIZE];
     int childrenSize { 0 };
 

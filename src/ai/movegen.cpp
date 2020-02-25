@@ -75,6 +75,9 @@ void Game::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
                     continue;
                 }
 
+#ifdef MCTS_AI
+                moves.push_back((move_t)square);
+#else // MCTS_AI
                 if (position->phase != PHASE_READY) {
                     moves.push_back((move_t)square);
                 } else {
@@ -83,6 +86,7 @@ void Game::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
                         moves.push_back((move_t)square);
                     }
                 }
+#endif // MCTS_AI
             }
             break;
         }
