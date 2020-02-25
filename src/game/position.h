@@ -82,19 +82,7 @@ class Game
     friend class AIAlgorithm;
 
 public:
-    // 赢盘数
-    int score[COLOR_COUNT];
-    int score_draw {};
-    int nPlayed { 0 };
 
-    int tm {-1};
-
-private:
-
-    // 创建哈希值
-    void constructHash();
-
-public:
     Game();
     virtual ~Game();
 
@@ -113,17 +101,6 @@ public:
                      const char *locations = nullptr,   // 默认空棋盘
                      int nPiecesNeedRemove = 0      // 尚待去除的子数
     );
-
-    void Game::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
-                                AIAlgorithm *ai,
-                                Node *node
-#ifdef BEST_MOVE_ENABLE
-                                , move_t bestMove
-#endif // BEST_MOVE_ENABLE
-                               );
-
-    // 着法生成
-    void generateMoves(Stack<move_t, MOVE_COUNT> &moves);
 
     // 获取棋盘数据
     location_t *getBoardLocations() const
@@ -260,6 +237,18 @@ public:
     // 设置提示
     void setTips();
 
+    // 着法生成
+    void generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
+                          AIAlgorithm *ai,
+                          Node *node
+#ifdef BEST_MOVE_ENABLE
+                        , move_t bestMove
+#endif // BEST_MOVE_ENABLE
+    );
+
+    // 着法生成
+    void generateMoves(Stack<move_t, MOVE_COUNT> &moves);
+
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool doMove(move_t move);
     bool choose(square_t square);
@@ -272,18 +261,24 @@ public:
     hash_t updateHash(square_t square);
     hash_t updateHashMisc();
 
-public: /* TODO: move to private */
+    // 赢盘数
+    int score[COLOR_COUNT] = { 0 };
+    int score_draw { 0 };
+    int nPlayed { 0 };
+
+    int tm { -1 };
+
     // 棋局
     Position *position {nullptr};
 
     // 棋局中的棋盘数据，单独提出来
-    location_t *boardLocations;
+    location_t *boardLocations {nullptr};
 
     // 棋谱
     vector <string> cmdlist;
 
     // 着法命令行用于棋谱的显示和解析, 当前着法的命令行指令，即一招棋谱
-    char cmdline[64]{};
+    char cmdline[64] {'\0'};
 
     /*
         当前着法，AI会用到，如下表示
@@ -305,14 +300,21 @@ public: /* TODO: move to private */
         | /       |     \  |
         29 ----- 28 ----- 27
     */
-    move_t move{};
+    move_t move {MOVE_NONE};
 
     // 选中的棋子在board中的位置
     square_t currentSquare {};
 
 private:
-    // 棋局哈希值
-    // uint64_t hash;
+
+    // 创建哈希值
+    void constructHash();
+
+    // 计算双方在棋盘上各有几个子
+    int countPiecesOnBoard();
+
+    // 计算双方手中各有几个字
+    int countPiecesInHand();
 
     // 胜负标识
     player_t winner;
@@ -334,12 +336,6 @@ private:
 
     // 当前棋局的字符提示
     string tips;
-
-    // 计算双方在棋盘上各有几个子
-    int countPiecesOnBoard();
-
-    // 计算双方手中各有几个字
-    int countPiecesInHand();
 };
 
 #endif /* POSITION_H */

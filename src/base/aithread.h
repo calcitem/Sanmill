@@ -106,6 +106,7 @@ private:
     // 等待条件，这里没用到，留着以后扩展用
     QWaitCondition pauseCondition;
 
+public:
     // 主线程棋对象的引用
     const Game *game;
 

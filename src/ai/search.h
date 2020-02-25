@@ -221,15 +221,18 @@ protected:
     // Alpha-Beta剪枝算法
     value_t search(depth_t depth, value_t alpha, value_t beta, Node *node);
 
+public:
     // 返回着法的命令行
     const char *moveToCommand(move_t move);
-
+protected:
     // 篡改深度
     depth_t changeDepth(depth_t origDepth);
        
-private:
+public:
     // 原始模型
     Game *game { nullptr };
+
+private:
 
     // 演算用的模型
     Game *tempGame { nullptr };
