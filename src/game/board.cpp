@@ -34,13 +34,14 @@ int Board::millTable[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}}
 
 Board::Board()
 {
+    memset(&millList, 0, sizeof(millList));
+    millListSize = 0;
 }
 
 Board::~Board()
 {
-    if (!millList.empty()) {
-        millList.clear();
-    }
+    memset(&millList, 0, sizeof(millList));
+    millListSize = 0;
 }
 
 Board &Board::operator= (const Board &other)
@@ -50,15 +51,11 @@ Board &Board::operator= (const Board &other)
 
     memcpy(this->locations, other.locations, sizeof(this->locations));
 
-    if (!millList.empty()) {
-        millList.clear();
-    }
+    memset(&millList, 0, sizeof(millList));
+    millListSize = 0;
 
-    if (!other.millList.empty()) {
-        for (auto i : other.millList) {
-            millList.push_back(i);
-        }
-    }
+    memcpy(&millList, &other.millList, sizeof(millList));
+    millListSize = other.millListSize;
 
     return *this;
 }
@@ -292,20 +289,18 @@ int Board::addMills(square_t square)
 
         // 如果不允许相同三连反复去子
 
-        // 迭代器
-        auto iter = millList.begin();
-
-        // 遍历
-        for ( ; iter != millList.end(); iter++) {
-            if (mill == *iter) {
+        int im = 0;
+        for (im = 0; im < millListSize; im++) {
+            if (mill == millList[im]) {
                 break;
             }
         }
 
         // 如果没找到历史项
-        if (iter == millList.end()) {
+        if (im == millListSize) {
             n++;
-            millList.push_back(mill);
+            millList[i] = mill;
+            millListSize++;
         }
     }
 

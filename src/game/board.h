@@ -140,7 +140,8 @@ public:
     */
 
     // 三连列表
-    vector<uint64_t> millList;
+    uint64_t millList[4];
+    int millListSize { 0 };
 };
 
 #endif

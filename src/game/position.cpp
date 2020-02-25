@@ -159,9 +159,8 @@ bool Game::setPosition(const struct Rule *newRule,
     }
 
     // 清空成三记录
-    if (!position->board.millList.empty()) {
-        position->board.millList.clear();
-    }
+    memset(&position->board.millList, 0, sizeof(position->board.millList));
+    position->board.millListSize = 0;
 
     // 胜负标识
     winner = PLAYER_NOBODY;
@@ -235,9 +234,8 @@ bool Game::reset()
     position->nPiecesNeedRemove = 0;
 
     // 清空成三记录
-    if (!position->board.millList.empty()) {
-        position->board.millList.clear();
-    }    
+    memset(&position->board.millList, 0, sizeof(position->board.millList));
+    position->board.millListSize = 0;
 
     // 不选中棋子
     currentSquare = SQ_0;
