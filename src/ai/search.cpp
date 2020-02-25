@@ -34,7 +34,9 @@
 
 #define SORT_NAME nodep
 #define SORT_TYPE Node*
+#ifdef ALPHABETA_AI
 #define SORT_CMP(x, y) (AIAlgorithm::nodeCompare((x), (y)))
+#endif
 
 player_t gSideToMove;
 
@@ -175,8 +177,12 @@ void AIAlgorithm::buildRoot()
 
     root->parent = nullptr;
     root->move = MOVE_NONE;
+
+#ifdef ALPHABETA_AI
     root->value = VALUE_ZERO;
     root->rating = RATING_ZERO;
+#endif // ALPHABETA_AI
+
     root->sideToMove = PLAYER_NOBODY;
 
 #ifdef BEST_MOVE_ENABLE
@@ -205,18 +211,22 @@ Node *Node::addChild(
     }
 
     newNode->move = move;
+
+#ifdef ALPHABETA_AI
     newNode->value = VALUE_ZERO;
     newNode->rating = RATING_ZERO;
+
+#ifdef SORT_CONSIDER_PRUNED
+    newNode->pruned = false;
+#endif
+#endif // ALPHABETA_AI
+
     newNode->childrenSize = 0;  // Important
     newNode->parent = this;
 
     ai->nodeCount++;
 #ifdef DEBUG_AB_TREE
     newNode->id = nodeCount;
-#endif
-
-#ifdef SORT_CONSIDER_PRUNED
-    newNode->pruned = false;
 #endif
 
 #ifdef DEBUG_AB_TREE
@@ -291,11 +301,15 @@ Node *Node::addChild(
         // 在任何阶段, 都检测落子点是否能使得本方成三
         // TODO: 为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三
         if (nMills > 0) {
+#ifdef ALPHABETA_AI
             newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
+#endif
         } else if (tempGame->getPhase() == PHASE_PLACING) {
             // 在摆棋阶段, 检测落子点是否能阻止对方成三
             nopponentMills = tempGame->position->board.inHowManyMills(sq, tempGame->position->opponent);
+#ifdef ALPHABETA_AI
             newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+#endif
         }
 #if 1
         else if (tempGame->getPhase() == PHASE_MOVING) {
@@ -311,12 +325,13 @@ Node *Node::addChild(
                 tempGame->position->board.getSurroundedPieceCount(sq, tempGame->position->sideId,
                                                                 nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
-
+#ifdef ALPHABETA_AI
                 if (sq % 2 == 0 && nOpponentPiece == 3) {
                     newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
                 } else if (sq % 2 == 1 && nOpponentPiece == 2 && rule.nTotalPiecesEachSide == 12) {
                     newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
                 }
+#endif
             }
         }
 #endif
@@ -324,11 +339,13 @@ Node *Node::addChild(
         //newNode->rating += static_cast<rating_t>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
 
         // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
+#ifdef ALPHABETA_AI
         if (rule.nTotalPiecesEachSide == 12 &&
             tempGame->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
             Board::isStar(static_cast<square_t>(move))) {
             newNode->rating += RATING_STAR_SQUARE;
         }
+#endif
     } else if (move < 0) {
         int nPlayerPiece = 0;
         int nOpponentPiece = 0;
@@ -338,6 +355,7 @@ Node *Node::addChild(
         tempGame->position->board.getSurroundedPieceCount(sq, tempGame->position->sideId,
                                                         nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
+#ifdef ALPHABETA_AI
         if (nMills > 0) {
             // 吃子点处于我方的三连中
             //newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nMills);
@@ -368,12 +386,14 @@ Node *Node::addChild(
 
         // 优先吃活动力强的棋子
         newNode->rating += static_cast<rating_t>(nEmpty);
+#endif
     }
 #endif // SORT_MOVE_WITH_HUMAN_KNOWLEDGES
 
     return newNode;
 }
 
+#ifdef ALPHABETA_AI
 int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
     //return second->rating - first->rating;
@@ -390,6 +410,7 @@ int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 
     return (first->rating < second->rating ? 1 : -1);
 }
+#endif
 
 void AIAlgorithm::sortMoves(Node *node)
 {
@@ -507,6 +528,7 @@ void AIAlgorithm::setGame(const Game &g)
 #endif
 }
 
+#ifdef ALPHABETA_AI
 int AIAlgorithm::search(depth_t depth)
 {
     assert(root != nullptr);
@@ -972,6 +994,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 返回
     return node->value;
 }
+#endif // ALPHABETA_AI
 
 void AIAlgorithm::stashPosition()
 {
@@ -993,6 +1016,7 @@ void AIAlgorithm::undoMove()
     positionStack.pop();
 }
 
+#ifdef ALPHABETA_AI
 const char* AIAlgorithm::bestMove()
 {
     vector<Node*> bestMoves;
@@ -1105,6 +1129,7 @@ const char* AIAlgorithm::bestMove()
 
     return moveToCommand(bestMoves[0]->move);
 }
+#endif // ALPHABETA_AI
 
 const char *AIAlgorithm::moveToCommand(move_t move)
 {

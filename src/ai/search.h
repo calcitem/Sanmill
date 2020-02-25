@@ -105,12 +105,15 @@ public:
 #endif // MCTS_AI
 
     move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
+
+#ifdef ALPHABETA_AI
     value_t value { VALUE_UNKNOWN };                 // 节点的值
     rating_t rating { RATING_ZERO };             // 节点分数
 
 #ifdef SORT_CONSIDER_PRUNED
     bool pruned { false };                    // 是否在此处剪枝
 #endif
+#endif // ALPHABETA_AI
 
     Node *children[NODE_CHILDREN_SIZE];
     int childrenSize { 0 };
@@ -169,11 +172,13 @@ public:
         requiredQuit = true;
     }
 
+#ifdef ALPHABETA_AI
     // Alpha-Beta剪枝算法
     int search(depth_t depth);
 
     // 返回最佳走法的命令行
     const char *bestMove();
+#endif // ALPHABETA_AI
 
     // 暂存局面
     void stashPosition();
@@ -189,8 +194,10 @@ public:
     void clearTT();
 #endif
 
+#ifdef ALPHABETA_AI
     // 比较函数
     static int nodeCompare(const Node *first, const Node *second);
+#endif // ALPHABETA_AI
 
 #ifdef ENDGAME_LEARNING
     bool findEndgameHash(hash_t hash, Endgame &endgame);

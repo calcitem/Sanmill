@@ -19,6 +19,7 @@
 
 #include "evaluate.h"
 
+#ifdef ALPHABETA_AI
 value_t Evaluation::getValue(Game *tempGame, Position *position, Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
@@ -143,3 +144,4 @@ value_t Evaluation::getValue(Game *tempGame, Position *position, Node *node)
     node->value = value;
     return value;
 }
+#endif  // ALPHABETA_AI

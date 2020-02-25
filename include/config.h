@@ -34,6 +34,7 @@
 
 //#define UCT_DEMO
 
+#define ALPHABETA_AI
 //#define MCTS_AI
 
 #ifdef TEST_MODE
