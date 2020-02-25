@@ -385,10 +385,10 @@ int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 
         int ret = (gSideToMove == PLAYER_BLACK ? 1 : -1);
 
-        return (first->value < second->value ? ret : -ret);        
+        return (first->value < second->value ? ret : -ret);
     }
 
-    return (first->rating < second->rating ? 1 : -1);    
+    return (first->rating < second->rating ? 1 : -1);
 }
 
 void AIAlgorithm::sortMoves(Node *node)
