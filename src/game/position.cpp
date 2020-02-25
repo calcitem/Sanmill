@@ -159,7 +159,6 @@ bool Game::setPosition(const struct Rule *newRule,
     }
 
     // 清空成三记录
-    memset(&position->board.millList, 0, sizeof(position->board.millList));
     position->board.millListSize = 0;
 
     // 胜负标识
@@ -234,7 +233,6 @@ bool Game::reset()
     position->nPiecesNeedRemove = 0;
 
     // 清空成三记录
-    memset(&position->board.millList, 0, sizeof(position->board.millList));
     position->board.millListSize = 0;
 
     // 不选中棋子

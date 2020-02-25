@@ -34,13 +34,11 @@ int Board::millTable[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}}
 
 Board::Board()
 {
-    memset(&millList, 0, sizeof(millList));
     millListSize = 0;
 }
 
 Board::~Board()
 {
-    memset(&millList, 0, sizeof(millList));
     millListSize = 0;
 }
 
@@ -50,9 +48,6 @@ Board &Board::operator= (const Board &other)
         return *this;
 
     memcpy(this->locations, other.locations, sizeof(this->locations));
-
-    memset(&millList, 0, sizeof(millList));
-    millListSize = 0;
 
     memcpy(&millList, &other.millList, sizeof(millList));
     millListSize = other.millListSize;
