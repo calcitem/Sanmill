@@ -79,17 +79,7 @@ public:
 #endif // BEST_MOVE_ENABLE
     );
 
-    static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
-
 #ifdef MCTS_AI
-    Stack<move_t, NODE_CHILDREN_SIZE> moves;
-
-    //atomic<double> wins;
-    //atomic<int> visits;
-    double wins { 0 };
-    int visits { 0 };
-    double scoreUCT { 0 };
-
     bool hasUntriedMoves() const;
     template<typename RandomEngine>
     move_t getUntriedMove(RandomEngine *engine) const;
@@ -100,26 +90,36 @@ public:
     string toString();
     string treeToString(int max_depth = 1000000, int indent = 0) const;
     string indentString(int indent) const;
+#endif // MCTS_AI
+
+    static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
+
+    Node *children[NODE_CHILDREN_SIZE];
+    Node *parent { nullptr };
+
+#ifdef MCTS_AI
+    //atomic<double> wins;
+    //atomic<int> visits;
+    double wins { 0 };
+    double scoreUCT { 0 };
+    Stack<move_t, NODE_CHILDREN_SIZE> moves;
+    int visits { 0 };
 #else
     move_t moves[NODE_CHILDREN_SIZE];
 #endif // MCTS_AI
 
-    move_t move { MOVE_NONE };                  // 着法的命令行指令，图上标示为节点前的连线
-
-#ifdef ALPHABETA_AI
-    value_t value { VALUE_UNKNOWN };                 // 节点的值
-    rating_t rating { RATING_ZERO };             // 节点分数
-
-#ifdef SORT_CONSIDER_PRUNED
-    bool pruned { false };                    // 是否在此处剪枝
-#endif
-#endif // ALPHABETA_AI
-
-    Node *children[NODE_CHILDREN_SIZE];
+    move_t move { MOVE_NONE };
     int childrenSize { 0 };
 
-    Node *parent { nullptr };            // 父节点
-    player_t sideToMove { PLAYER_NOBODY };  // 此着是谁下的 (目前仅调试用)
+#ifdef ALPHABETA_AI
+#ifdef SORT_CONSIDER_PRUNED
+    bool pruned { false };
+#endif
+    value_t value { VALUE_UNKNOWN };
+    rating_t rating { RATING_ZERO };
+#endif // ALPHABETA_AI
+
+    player_t sideToMove { PLAYER_NOBODY };
 
 #ifdef DEBUG_AB_TREE
     size_t id;                      // 结点编号

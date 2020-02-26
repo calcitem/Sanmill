@@ -139,8 +139,8 @@ public:
     }
 
 private:
+    T *arr;
     int p { -1 };
-    T* arr;
 };
 
 #endif // STACK_H
