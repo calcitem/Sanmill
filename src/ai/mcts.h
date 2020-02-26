@@ -80,7 +80,7 @@ class MCTSOptions
 {
 public:
     int nThreads { THREADS_COUNT };
-    int maxIterations { 40000000 };
+    int maxIterations { 10000 }; // 40G: 40000000
     double maxTime { 6000 };
     bool verbose { true };
 };
