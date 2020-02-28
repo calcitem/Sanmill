@@ -923,6 +923,29 @@ bool Game::checkGameOverCondition()
         }
     }
 
+#ifdef MCTS_AI
+#if 0
+    int diff = position->nPiecesOnBoard[BLACK] - position->nPiecesOnBoard[WHITE];
+    if (diff > 4) {
+        winner = PLAYER_BLACK;
+        position->phase = PHASE_GAMEOVER;
+        sprintf(cmdline, "Player1 win!");
+        cmdlist.emplace_back(string(cmdline));
+
+        return true;
+    }
+
+    if (diff < -4) {
+        winner = PLAYER_WHITE;
+        position->phase = PHASE_GAMEOVER;
+        sprintf(cmdline, "Player2 win!");
+        cmdlist.emplace_back(string(cmdline));
+
+        return true;
+    }
+#endif
+#endif
+
     // 如果摆满了，根据规则判断胜负
     if (position->nPiecesOnBoard[BLACK] + position->nPiecesOnBoard[WHITE] >= Board::N_SEATS * Board::N_RINGS) {
         position->phase = PHASE_GAMEOVER;

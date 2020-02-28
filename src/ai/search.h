@@ -92,7 +92,7 @@ public:
     string indentString(int indent) const;
 #endif // MCTS_AI
 
-    static const int NODE_CHILDREN_SIZE = (4 * 4 + 3 * 4 * 2);   // TODO: 缩减空间
+    static const int NODE_CHILDREN_SIZE = MOVE_COUNT;
 
     Node *children[NODE_CHILDREN_SIZE];
     Node *parent { nullptr };
