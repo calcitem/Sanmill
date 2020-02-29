@@ -44,6 +44,10 @@
 #include "stopwatch.h"
 #endif
 
+#ifdef MCTS_AI
+#include "mcts.h"
+#endif
+
 class AIAlgorithm;
 class Game;
 class Node;
@@ -198,6 +202,15 @@ public:
     // 比较函数
     static int nodeCompare(const Node *first, const Node *second);
 #endif // ALPHABETA_AI
+
+#ifdef MCTS_AI
+    // TODO: 分离到 MCTS 算法类
+    Node *computeTree(Game game,
+                      const MCTSOptions options,
+                      mt19937_64::result_type initialSeed);
+    move_t AIAlgorithm::computeMove(Game game,
+                                    const MCTSOptions options);
+#endif
 
 #ifdef ENDGAME_LEARNING
     bool findEndgameHash(hash_t hash, Endgame &endgame);

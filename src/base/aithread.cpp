@@ -127,7 +127,7 @@ void AiThread::run()
 #ifdef MCTS_AI
         MCTSOptions mctsOptions;
 
-        move_t move = computeMove(*game, mctsOptions);
+        move_t move = ai.computeMove(*game, mctsOptions);
         
         strCommand = ai.moveToCommand(move);
         emitCommand();
