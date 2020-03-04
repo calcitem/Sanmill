@@ -137,12 +137,12 @@ Node *Node::bestChildren() const
     return nodeMax;
 }
 
-Node *Node::selectChildUCT() const
+Node *Node::selectChild() const
 {
     assert(childrenSize > 0);
 
     for (int i = 0; i < childrenSize; i++) {
-        children[i]->scoreUCT = double(children[i]->wins) / double(children[i]->visits) +
+        children[i]->score = double(children[i]->wins) / double(children[i]->visits) +
             sqrt(2.0 * log(double(this->visits)) / children[i]->visits);
     }
 
@@ -150,8 +150,8 @@ Node *Node::selectChildUCT() const
     Node *nodeMax = nullptr;
 
     for (int i = 0; i < childrenSize; i++) {
-        if (children[i]->scoreUCT > scoreMax) {
-            scoreMax = children[i]->scoreUCT;
+        if (children[i]->score > scoreMax) {
+            scoreMax = children[i]->score;
             nodeMax = children[i];
         }
     }
@@ -264,7 +264,7 @@ Node *AIAlgorithm::computeTree(Game game,
 
         // Select a path through the tree to a leaf node.
         while (!node->hasUntriedMoves() && node->hasChildren()) {
-            node = node->selectChildUCT();
+            node = node->selectChild();
             tempGame.doMove(node->move);
         }
 

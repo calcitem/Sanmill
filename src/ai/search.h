@@ -88,7 +88,7 @@ public:
     template<typename RandomEngine>
     move_t getUntriedMove(RandomEngine *engine) const;
     Node *bestChildren() const;
-    Node *selectChildUCT() const;
+    Node *selectChild() const;
     Node *addChild(const move_t &move, Game &game);
     void update(double result);
     string toString();
@@ -105,7 +105,7 @@ public:
     //atomic<double> wins;
     //atomic<int> visits;
     double wins { 0 };
-    double scoreUCT { 0 };
+    double score { 0 };
     Stack<move_t, NODE_CHILDREN_SIZE> moves;
     int visits { 0 };
 #else
