@@ -12,6 +12,7 @@
 #include "mcts.h"
 #include "position.h"
 #include "search.h"
+#include "movegen.h"
 
 #ifdef MCTS_AI
 
@@ -311,6 +312,9 @@ move_t AIAlgorithm::computeMove(Game game,
 {
     // Will support more players later.
     assert(game.position->sideToMove == PLAYER_BLACK || game.position->sideToMove == PLAYER_WHITE);
+    
+    // 分段随机打乱着法表
+    MoveList::shuffle();
 
     Stack<move_t, MOVE_COUNT> moves;
     game.generateMoves(moves);
