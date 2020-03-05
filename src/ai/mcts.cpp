@@ -24,8 +24,21 @@ void Game::doRandomMove(Node *node, mt19937_64 *engine)
     generateMoves(moves);
 
     int movesSize = moves.size();
+
+#ifdef MCTS_PLD
+    int i = 0;
+    if (movesSize > 1)
+    {
+        std::vector<int> v{ 0, movesSize - 1 };             // Sample values
+        std::vector<int> w{ movesSize - 1, 0 };                 // Weights for the samples
+        std::piecewise_linear_distribution<> index{ std::begin(v), std::end(v), std::begin(w) };
+
+        i = (int)index(*engine);
+    }
+#else
     uniform_int_distribution<int> index(0, movesSize - 1);
     auto i = index(*engine);
+#endif // MCTS_PLD
     move_t m = moves[i];
     doMove(m);
 }
@@ -110,9 +123,23 @@ move_t Node::getUntriedMove(RandomEngine *engine) const
 {
     assert(!moves.empty());
 
+#ifdef MCTS_PLD
+    int i = 0;
+    int movesSize = moves.size();
+    if (movesSize > 1) {
+        std::vector<int> v{ 0, movesSize - 1 };             // Sample values
+        std::vector<int> w{ movesSize - 1, 0 };                 // Weights for the samples
+        std::piecewise_linear_distribution<> index{ std::begin(v), std::end(v), std::begin(w) };
+
+        i = (int)index(*engine);
+    }
+
+    return moves[i];
+#else
     uniform_int_distribution<size_t> movesDistribution(0, moves.size() - 1);
 
     return moves[movesDistribution(*engine)];
+#endif // #ifdef MCTS_PLD
 }
 
 bool Node::hasChildren() const
