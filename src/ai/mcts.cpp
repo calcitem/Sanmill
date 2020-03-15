@@ -16,7 +16,7 @@
 
 #ifdef MCTS_AI
 
-void Game::doRandomMove(Node *node, mt19937_64 *engine)
+void StateInfo::doRandomMove(Node *node, mt19937_64 *engine)
 {
     assert(hasMoves());
     checkInvariant();
@@ -43,7 +43,7 @@ void Game::doRandomMove(Node *node, mt19937_64 *engine)
     doMove(m);
 }
 
-bool Game::hasMoves() const
+bool StateInfo::hasMoves() const
 {
     checkInvariant();
 
@@ -55,7 +55,7 @@ bool Game::hasMoves() const
     return true;
 }
 
-double Game::getResult(player_t currentSideToMove) const
+double StateInfo::getResult(player_t currentSideToMove) const
 {
     assert(!hasMoves());
     checkInvariant();
@@ -73,25 +73,25 @@ double Game::getResult(player_t currentSideToMove) const
     }
 }
 
-void Game::checkInvariant() const
+void StateInfo::checkInvariant() const
 {
     assert(position->sideToMove == PLAYER_BLACK || position->sideToMove == PLAYER_WHITE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-Node::Node(Game &game) :
-    sideToMove(game.position->sideToMove)
+Node::Node(StateInfo &state) :
+    sideToMove(state.position->sideToMove)
 {
-    game.generateMoves(moves);
+    state.generateMoves(moves);
 }
 
-Node::Node(Game &game, const move_t &m, Node *p) :
+Node::Node(StateInfo &state, const move_t &m, Node *p) :
     move(m),
     parent(p),
-    sideToMove(game.position->sideToMove)
+    sideToMove(state.position->sideToMove)
 {
-    game.generateMoves(moves);
+    state.generateMoves(moves);
 }
 
 void deleteChild(Node *node)
@@ -187,9 +187,9 @@ Node *Node::selectChild() const
     return nodeMax;
 }
 
-Node *Node::addChild(const move_t &move, Game &game)
+Node *Node::addChild(const move_t &move, StateInfo &state)
 {
-    auto node = new Node(game, move, this); // TODO: memmgr_alloc
+    auto node = new Node(state, move, this); // TODO: memmgr_alloc
 
     //children.push_back(node);
     children[childrenSize] = node;
@@ -260,7 +260,7 @@ string Node::indentString(int indent) const
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
-Node *AIAlgorithm::computeTree(Game game,
+Node *AIAlgorithm::computeTree(StateInfo state,
                   const MCTSOptions options,
                   mt19937_64::result_type initialSeed)
 {
@@ -275,9 +275,9 @@ Node *AIAlgorithm::computeTree(Game game,
     }
 
     // Will support more players later.
-    assert(game.position->sideToMove == PLAYER_BLACK || game.position->sideToMove == PLAYER_WHITE);
+    assert(state.position->sideToMove == PLAYER_BLACK || state.position->sideToMove == PLAYER_WHITE);
 
-    Node *root = new Node(game);
+    Node *root = new Node(state);
 
 #ifdef USE_OPENMP
     double start_time = ::omp_get_wtime();
@@ -288,31 +288,31 @@ Node *AIAlgorithm::computeTree(Game game,
         //auto node = root.get();
         Node *node = root;
 
-        Game tempGame = game;
+        StateInfo st = state;
 
         // Select a path through the tree to a leaf node.
         while (!node->hasUntriedMoves() && node->hasChildren()) {
             node = node->selectChild();
-            tempGame.doMove(node->move);
+            st.doMove(node->move);
         }
 
         // If we are not already at the final game, expand the
         // tree with a new node and move there.
         if (node->hasUntriedMoves()) {
             auto move = node->getUntriedMove(&random_engine);
-            tempGame.doMove(move);
-            node = node->addChild(move, tempGame);
+            st.doMove(move);
+            node = node->addChild(move, st);
         }
 
         // We now play randomly until the game ends.
-        while (tempGame.hasMoves()) {
-            tempGame.doRandomMove(root, &random_engine);
+        while (st.hasMoves()) {
+            st.doRandomMove(root, &random_engine);
         }
 
         // We have now reached a final game. Backpropagate the result
         // up the tree to the root node.
         while (node != nullptr) {
-            node->update(tempGame.getResult(node->sideToMove));
+            node->update(st.getResult(node->sideToMove));
             node = node->parent;
         }
 
@@ -334,17 +334,17 @@ Node *AIAlgorithm::computeTree(Game game,
     return root;
 }
 
-move_t AIAlgorithm::computeMove(Game game,
+move_t AIAlgorithm::computeMove(StateInfo state,
                    const MCTSOptions options)
 {
     // Will support more players later.
-    assert(game.position->sideToMove == PLAYER_BLACK || game.position->sideToMove == PLAYER_WHITE);
+    assert(state.position->sideToMove == PLAYER_BLACK || state.position->sideToMove == PLAYER_WHITE);
     
     // 分段随机打乱着法表
     MoveList::shuffle();
 
     Stack<move_t, MOVE_COUNT> moves;
-    game.generateMoves(moves);
+    state.generateMoves(moves);
     assert(moves.size() > 0);
     if (moves.size() == 1) {
         return moves[0];
@@ -361,8 +361,8 @@ move_t AIAlgorithm::computeMove(Game game,
     jobOptions.verbose = true;
 
     for (int t = 0; t < options.nThreads; ++t) {
-        auto func = [t, &game, &jobOptions, this]() -> Node* {
-            return computeTree(game, jobOptions, 1012411 * t + 12515);
+        auto func = [t, &state, &jobOptions, this]() -> Node* {
+            return computeTree(state, jobOptions, 1012411 * t + 12515);
         };
 
         rootFutures[t] = async(launch::async, func);
@@ -446,9 +446,9 @@ move_t AIAlgorithm::computeMove(Game game,
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ostream &operator << (ostream &out, Game &game)
+ostream &operator << (ostream &out, StateInfo &state)
 {
-    //game.print(out);
+    //state.print(out);
     return out;
 }
 

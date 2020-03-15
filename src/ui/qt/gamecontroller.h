@@ -191,7 +191,7 @@ public slots:
 
     bool isAIsTurn();
 
-    void threadsSetAi(const Game &g)
+    void threadsSetAi(const StateInfo &g)
     {
         aiThread[BLACK]->setAi(g);
         aiThread[WHITE]->setAi(g);
@@ -283,7 +283,7 @@ public slots:
 
     // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();
-    bool updateScence(Game &game);
+    bool updateScence(StateInfo &game);
 
     // 显示网络配置窗口
     void showNetworkWindow();
@@ -305,10 +305,10 @@ protected:
 
 private:
     // 棋对象的数据模型
-    Game game;
+    StateInfo state;
 
     // 棋对象的数据模型（临时）
-    Game tempGame;
+    StateInfo st;
 
     // 测试
     Test *gameTest;

@@ -54,8 +54,8 @@ protected:
 
 public:
     // AI设置
-    void setAi(const Game &game);
-    void setAi(const Game &game, depth_t depth, int time);
+    void setAi(const StateInfo &state);
+    void setAi(const StateInfo &state, depth_t depth, int time);
 
     Server *getServer()
     {
@@ -108,7 +108,7 @@ private:
 
 public:
     // 主线程棋对象的引用
-    const Game *game;
+    const StateInfo *state;
 
 public: // TODO: Change to private
     // AI 算法类

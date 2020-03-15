@@ -36,7 +36,7 @@
 using namespace std;
 
 class AIAlgorithm;
-class Game;
+class StateInfo;
 class Node;
 
 // 棋局结构体，算法相关，包含当前棋盘数据
@@ -78,25 +78,25 @@ public:
 };
 
 // 棋类（在数据模型内，玩家只分先后手，不分黑白）
-// 注意：Game 类不是线程安全的！
-// 所以不能跨线程修改 Game 类的静态成员变量，切记！
-class Game
+// 注意：StateInfo 类不是线程安全的！
+// 所以不能跨线程修改 StateInfo 类的静态成员变量，切记！
+class StateInfo
 {
     // AI友元类
     friend class AIAlgorithm;
 
 public:
 
-    Game();
-    virtual ~Game();
+    StateInfo();
+    virtual ~StateInfo();
 
     // 拷贝构造函数
-    Game(Game &);
-    Game(const Game &);
+    StateInfo(StateInfo &);
+    StateInfo(const StateInfo &);
 
     // 运算符重载
-    Game &operator=(const Game &);
-    Game &operator=(Game &);
+    StateInfo &operator=(const StateInfo &);
+    StateInfo &operator=(StateInfo &);
 
     // 设置棋局状态和棋局，用于初始化
     bool setPosition(const struct Rule *rule,

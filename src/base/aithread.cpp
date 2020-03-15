@@ -24,7 +24,7 @@
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
-    game(nullptr),
+    state(nullptr),
     depth(2),
     timeLimit(3600)
 {
@@ -60,12 +60,12 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const Game &g)
+void AiThread::setAi(const StateInfo &g)
 {
     mutex.lock();
 
-    this->game = &g;
-    ai.setGame(*(this->game));
+    this->state = &g;
+    ai.setState(*(this->state));
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
@@ -77,11 +77,11 @@ void AiThread::setAi(const Game &g)
     mutex.unlock();
 }
 
-void AiThread::setAi(const Game &g, depth_t d, int tl)
+void AiThread::setAi(const StateInfo &g, depth_t d, int tl)
 {
     mutex.lock();
-    this->game = &g;
-    ai.setGame(g);
+    this->state = &g;
+    ai.setState(g);
     depth = d;
     timeLimit = tl;
     mutex.unlock();
@@ -93,7 +93,7 @@ void AiThread::emitCommand()
 }
 
 #ifdef MCTS_AI
-move_t computeMove(Game game,
+move_t computeMove(StateInfo state,
                    const MCTSOptions options);
 #endif // MCTS_AI
 
@@ -112,7 +112,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        sideId = Player::toId(game->position->sideToMove);
+        sideId = Player::toId(state->position->sideToMove);
 
         if (sideId != playerId) {
             pauseCondition.wait(&mutex);
@@ -120,14 +120,14 @@ void AiThread::run()
             continue;
         }
 
-        ai.setGame(*game);
+        ai.setState(*state);
         emit searchStarted();
         mutex.unlock();
 
 #ifdef MCTS_AI
         MCTSOptions mctsOptions;
 
-        move_t move = ai.computeMove(*game, mctsOptions);
+        move_t move = ai.computeMove(*state, mctsOptions);
         
         strCommand = ai.moveToCommand(move);
         emitCommand();

@@ -49,17 +49,17 @@
 #endif
 
 class AIAlgorithm;
-class Game;
+class StateInfo;
 class Node;
 class Position;
 
 using namespace std;
 using namespace CTSL;
 
-// 注意：MillGame类不是线程安全的！
-// 所以不能在ai类中修改MillGame类的静态成员变量，切记！
-// 另外，AI类是MillGame类的友元类，可以访问其私有变量
-// 尽量不要使用MillGame的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
+// 注意：StateInfo类不是线程安全的！
+// 所以不能在ai类中修改StateInfo类的静态成员变量，切记！
+// 另外，AI类是StateInfo类的友元类，可以访问其私有变量
+// 尽量不要使用StateInfo的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
 
 class Node
 {
@@ -68,8 +68,8 @@ public:
     ~Node();
 
 #ifdef MCTS_AI
-    Node(Game &game);
-    Node(Game &game, const move_t &move, Node *parent);
+    Node(StateInfo &state);
+    Node(StateInfo &state, const move_t &move, Node *parent);
 #endif // MCTS_AI
 
     bool hasChildren() const;
@@ -77,7 +77,7 @@ public:
     Node *addChild(
         const move_t &move, 
         AIAlgorithm *ai,
-        Game *tempGame
+        StateInfo *st
 #ifdef BEST_MOVE_ENABLE
         , const move_t &bestMove
 #endif // BEST_MOVE_ENABLE
@@ -89,7 +89,7 @@ public:
     move_t getUntriedMove(RandomEngine *engine) const;
     Node *bestChildren() const;
     Node *selectChild() const;
-    Node *addChild(const move_t &move, Game &game);
+    Node *addChild(const move_t &move, StateInfo &state);
     void update(double result);
     string toString();
     string treeToString(int max_depth = 1000000, int indent = 0) const;
@@ -168,7 +168,7 @@ public:
     AIAlgorithm();
     ~AIAlgorithm();
 
-    void setGame(const Game &game);
+    void setState(const StateInfo &state);
 
     void quit()
     {
@@ -205,10 +205,10 @@ public:
 
 #ifdef MCTS_AI
     // TODO: 分离到 MCTS 算法类
-    Node *computeTree(Game game,
+    Node *computeTree(StateInfo state,
                       const MCTSOptions options,
                       mt19937_64::result_type initialSeed);
-    move_t AIAlgorithm::computeMove(Game game,
+    move_t AIAlgorithm::computeMove(StateInfo state,
                                     const MCTSOptions options);
 #endif
 
@@ -274,12 +274,12 @@ protected:
        
 public:
     // 原始模型
-    Game *game { nullptr };
+    StateInfo *state { nullptr };
 
 private:
 
     // 演算用的模型
-    Game *tempGame { nullptr };
+    StateInfo *st { nullptr };
 
     Position *position { nullptr };
 

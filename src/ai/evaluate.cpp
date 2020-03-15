@@ -20,7 +20,7 @@
 #include "evaluate.h"
 
 #ifdef ALPHABETA_AI
-value_t Evaluation::getValue(Game *tempGame, Position *position, Node *node)
+value_t Evaluation::getValue(StateInfo *st, Position *position, Node *node)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
@@ -82,7 +82,7 @@ value_t Evaluation::getValue(Game *tempGame, Position *position, Node *node)
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
-        value += tempGame->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
+        value += st->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (position->action) {
@@ -120,7 +120,7 @@ value_t Evaluation::getValue(Game *tempGame, Position *position, Node *node)
 
         // 走棋阶段被闷判断
         else if (position->action == ACTION_CHOOSE &&
-            tempGame->position->board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove) &&
+            st->position->board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove) &&
             rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             value_t delta = position->sideToMove == PLAYER_BLACK ? -VALUE_WIN : VALUE_WIN;

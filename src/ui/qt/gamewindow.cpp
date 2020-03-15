@@ -797,9 +797,9 @@ void MillGameWindow::on_actionRowChange()
 #if 0
     // 下面的代码全部取消，改用QTimer的方式实现
     // 更新局面
-    bool changed = game->phaseChange(currentRow);
+    bool changed = state->phaseChange(currentRow);
     // 处理自动播放时的动画
-    if (changed && game->isAnimation()) {
+    if (changed && state->isAnimation()) {
         // 不使用processEvents函数进行非阻塞延时，频繁调用占用CPU较多
         //QElapsedTimer et;
         //et.start();
@@ -807,7 +807,7 @@ void MillGameWindow::on_actionRowChange()
         //    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
         //}
 
-        int waitTime = game->getDurationTime() + 50;
+        int waitTime = state->getDurationTime() + 50;
         // 使用QEventLoop进行非阻塞延时，CPU占用低
         QEventLoop loop;
         QTimer::singleShot(waitTime, &loop, SLOT(quit()));

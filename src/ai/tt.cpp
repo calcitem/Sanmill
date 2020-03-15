@@ -91,17 +91,17 @@ bool TT::findHash(const hash_t &hash, TT::HashValue &hashValue)
         return iter;
 
     // 变换局面，查找 hash (废弃)
-    tempGameShift = tempGame;
+    tempStateShift = st;
     for (int i = 0; i < 2; i++) {
         if (i)
-            tempGameShift.mirror(false);
+            tempStateShift.mirror(false);
 
         for (int j = 0; j < 2; j++) {
             if (j)
-                tempGameShift.turn(false);
+                tempStateShift.turn(false);
             for (int k = 0; k < 4; k++) {
-                tempGameShift.rotate(k * 90, false);
-                iter = hashmap.find(tempGameShift.getHash());
+                tempStateShift.rotate(k * 90, false);
+                iter = hashmap.find(tempStateShift.getHash());
                 if (iter != hashmap.end())
                     return iter;
             }

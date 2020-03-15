@@ -27,7 +27,7 @@
 #include "search.h"
 #include "position.h"
 
-void Game::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
+void StateInfo::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
                             AIAlgorithm *ai,
                             Node *node
 #ifdef BEST_MOVE_ENABLE
@@ -53,7 +53,7 @@ void Game::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
     return;
 }
 
-void Game::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
+void StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
 {
     square_t square = SQ_0;
     player_t opponent = PLAYER_NOBODY;

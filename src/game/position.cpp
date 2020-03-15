@@ -25,7 +25,7 @@
 #include "option.h"
 #include "zobrist.h"
 
-Game::Game()
+StateInfo::StateInfo()
 {
     if (position != nullptr) {
         delete position;
@@ -50,7 +50,7 @@ Game::Game()
     cmdlist.reserve(256);
 }
 
-Game::~Game()
+StateInfo::~StateInfo()
 {
     if (position != nullptr) {
         delete position;
@@ -60,7 +60,7 @@ Game::~Game()
     cmdlist.clear();
 }
 
-Game::Game(const Game &game)
+StateInfo::StateInfo(const StateInfo &state)
 {  
     if (position != nullptr) {
         delete position;
@@ -69,10 +69,10 @@ Game::Game(const Game &game)
     
     position = new Position();
 
-    *this = game;
+    *this = state;
 }
 
-Game::Game(Game &game)
+StateInfo::StateInfo(StateInfo &state)
 {
     if (position != nullptr) {
         delete position;
@@ -81,50 +81,50 @@ Game::Game(Game &game)
 
     position = new Position();
 
-    *this = game;
+    *this = state;
 }
 
-Game &Game::operator= (const Game &game)
+StateInfo &StateInfo::operator= (const StateInfo &state)
 {
-    memcpy(position, game.position, sizeof(Position));
-    currentStep = game.currentStep;
-    moveStep = game.moveStep;
+    memcpy(position, state.position, sizeof(Position));
+    currentStep = state.currentStep;
+    moveStep = state.moveStep;
     boardLocations = position->board.locations;
-    currentSquare = game.currentSquare;
-    winner = game.winner;
-    startTime = game.startTime;
-    currentTime = game.currentTime;
-    elapsedSeconds[BLACK] = game.elapsedSeconds[BLACK];
-    elapsedSeconds[WHITE] = game.elapsedSeconds[WHITE];
-    move = game.move;
-    memcpy(cmdline, game.cmdline, sizeof(cmdline));
-    cmdlist = game.cmdlist;
-    tips = game.tips;
+    currentSquare = state.currentSquare;
+    winner = state.winner;
+    startTime = state.startTime;
+    currentTime = state.currentTime;
+    elapsedSeconds[BLACK] = state.elapsedSeconds[BLACK];
+    elapsedSeconds[WHITE] = state.elapsedSeconds[WHITE];
+    move = state.move;
+    memcpy(cmdline, state.cmdline, sizeof(cmdline));
+    cmdlist = state.cmdlist;
+    tips = state.tips;
 
     return *this;
 }
 
-Game &Game::operator= (Game &game)
+StateInfo &StateInfo::operator= (StateInfo &state)
 {
-    memcpy(position, game.position, sizeof(Position));
-    currentStep = game.currentStep;
-    moveStep = game.moveStep;
+    memcpy(position, state.position, sizeof(Position));
+    currentStep = state.currentStep;
+    moveStep = state.moveStep;
     boardLocations = position->board.locations;
-    currentSquare = game.currentSquare;
-    winner = game.winner;
-    startTime = game.startTime;
-    currentTime = game.currentTime;
-    elapsedSeconds[BLACK] = game.elapsedSeconds[BLACK];
-    elapsedSeconds[WHITE] = game.elapsedSeconds[WHITE];
-    move = game.move;
-    memcpy(cmdline, game.cmdline, sizeof(cmdline));
-    cmdlist = game.cmdlist;
-    tips = game.tips;
+    currentSquare = state.currentSquare;
+    winner = state.winner;
+    startTime = state.startTime;
+    currentTime = state.currentTime;
+    elapsedSeconds[BLACK] = state.elapsedSeconds[BLACK];
+    elapsedSeconds[WHITE] = state.elapsedSeconds[WHITE];
+    move = state.move;
+    memcpy(cmdline, state.cmdline, sizeof(cmdline));
+    cmdlist = state.cmdlist;
+    tips = state.tips;
 
     return *this;
 }
 
-int Game::countPiecesOnBoard()
+int StateInfo::countPiecesOnBoard()
 {
     position->nPiecesOnBoard[BLACK] = position->nPiecesOnBoard[WHITE] = 0;
 
@@ -153,7 +153,7 @@ int Game::countPiecesOnBoard()
     return position->nPiecesOnBoard[BLACK] + position->nPiecesOnBoard[WHITE];
 }
 
-int Game::countPiecesInHand()
+int StateInfo::countPiecesInHand()
 {
     position->nPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - position->nPiecesOnBoard[BLACK];
     position->nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - position->nPiecesOnBoard[WHITE];
@@ -162,7 +162,7 @@ int Game::countPiecesInHand()
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool Game::setPosition(const struct Rule *newRule,
+bool StateInfo::setPosition(const struct Rule *newRule,
                        step_t initialStep,
                        phase_t phase, player_t side, action_t action,
                        const char *locations,
@@ -248,7 +248,7 @@ bool Game::setPosition(const struct Rule *newRule,
     return false;
 }
 
-bool Game::reset()
+bool StateInfo::reset()
 {
     if (position->phase == PHASE_READY &&
         elapsedSeconds[BLACK] == elapsedSeconds[WHITE] == 0) {
@@ -325,7 +325,7 @@ bool Game::reset()
     return false;
 }
 
-bool Game::start()
+bool StateInfo::start()
 {
     switch (position->phase) {
     // 如果游戏已经开始，则返回false
@@ -348,7 +348,7 @@ bool Game::start()
     }
 }
 
-bool Game::place(square_t square, int8_t updateCmdlist)
+bool StateInfo::place(square_t square, int8_t updateCmdlist)
 {
     // 如果局面为“结局”，返回false
     if (position->phase == PHASE_GAMEOVER)
@@ -527,7 +527,7 @@ out:
     return true;
 }
 
-bool Game::_place(int r, int s)
+bool StateInfo::_place(int r, int s)
 {
     // 转换为 square
     square_t square = Board::polarToSquare(r, s);
@@ -535,7 +535,7 @@ bool Game::_place(int r, int s)
     return place(square, true);
 }
 
-bool Game::_capture(int r, int s)
+bool StateInfo::_capture(int r, int s)
 {
     // 转换为 square
     square_t square = Board::polarToSquare(r, s);
@@ -543,7 +543,7 @@ bool Game::_capture(int r, int s)
     return capture(square, 1);
 }
 
-bool Game::capture(square_t square, int8_t updateCmdlist)
+bool StateInfo::capture(square_t square, int8_t updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (position->phase & PHASE_NOTPLAYING)
@@ -681,7 +681,7 @@ out:
     return true;
 }
 
-bool Game::choose(square_t square)
+bool StateInfo::choose(square_t square)
 {
     // 如果局面不是"中局”，返回false
     if (position->phase != PHASE_MOVING)
@@ -710,12 +710,12 @@ bool Game::choose(square_t square)
     return false;
 }
 
-bool Game::choose(int r, int s)
+bool StateInfo::choose(int r, int s)
 {
     return choose(Board::polarToSquare(r, s));
 }
 
-bool Game::giveup(player_t loser)
+bool StateInfo::giveup(player_t loser)
 {
     if (position->phase & PHASE_NOTPLAYING ||
         position->phase == PHASE_NONE) {
@@ -739,7 +739,7 @@ bool Game::giveup(player_t loser)
 }
 
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
-bool Game::command(const char *cmd)
+bool StateInfo::command(const char *cmd)
 {
     int r;
     unsigned t;
@@ -819,7 +819,7 @@ bool Game::command(const char *cmd)
     return false;
 }
 
-bool Game::doMove(move_t m)
+bool StateInfo::doMove(move_t m)
 {
     if (m < 0) {
         return capture(static_cast<square_t>(-m));
@@ -836,12 +836,12 @@ bool Game::doMove(move_t m)
     return false;
 }
 
-player_t Game::getWinner() const
+player_t StateInfo::getWinner() const
 {
     return winner;
 }
 
-int Game::update()
+int StateInfo::update()
 {
     int ret = -1;
     int timePoint = -1;
@@ -873,7 +873,7 @@ int Game::update()
 }
 
 // 是否分出胜负
-bool Game::checkGameOverCondition()
+bool StateInfo::checkGameOverCondition()
 {
     if (position->phase & PHASE_NOTPLAYING) {
         return true;
@@ -988,7 +988,7 @@ bool Game::checkGameOverCondition()
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
+int StateInfo::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
 {
     // TODO: 处理规则无禁点的情况
     location_t *locations = boardLocations;
@@ -1012,7 +1012,7 @@ int Game::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobid
     return diff;
 }
 
-void Game::cleanForbiddenLocations()
+void StateInfo::cleanForbiddenLocations()
 {
     if (!rule.hasForbiddenLocations) {
         return;
@@ -1032,7 +1032,7 @@ void Game::cleanForbiddenLocations()
     }
 }
 
-void Game::setSideToMove(player_t player)
+void StateInfo::setSideToMove(player_t player)
 {
     // 设置轮到谁走
     position->sideToMove = player;
@@ -1046,12 +1046,12 @@ void Game::setSideToMove(player_t player)
     position->chOpponent = Player::idToCh(position->opponentId);
 }
 
-void Game::changeSideToMove()
+void StateInfo::changeSideToMove()
 {
     setSideToMove(Player::getOpponent(position->sideToMove));
 }
 
-void Game::setTips()
+void StateInfo::setTips()
 {
     string winnerStr, t;
     int winnerId;
@@ -1106,7 +1106,7 @@ void Game::setTips()
     }
 }
 
-time_t Game::getElapsedTime(int playerId)
+time_t StateInfo::getElapsedTime(int playerId)
 {
     return elapsedSeconds[playerId];
 }
@@ -1121,18 +1121,18 @@ time_t Game::getElapsedTime(int playerId)
  * 0位：轮流标识，0为先手，1为后手
  */
 
-void Game::constructHash()
+void StateInfo::constructHash()
 {
     position->hash = 0;
 }
 
-hash_t Game::getHash()
+hash_t StateInfo::getHash()
 {
     // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
     return updateHashMisc();
 }
 
-hash_t Game::updateHash(square_t square)
+hash_t StateInfo::updateHash(square_t square)
 {
     // PieceType is boardLocations[square] 
 
@@ -1145,12 +1145,12 @@ hash_t Game::updateHash(square_t square)
     return position->hash;
 }
 
-hash_t Game::revertHash(square_t square)
+hash_t StateInfo::revertHash(square_t square)
 {
     return updateHash(square);
 }
 
-hash_t Game::updateHashMisc()
+hash_t StateInfo::updateHashMisc()
 {
     // 清除标记位
     position->hash &= static_cast<hash_t>(~0xFF);
