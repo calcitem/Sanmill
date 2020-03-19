@@ -53,7 +53,7 @@ void StateInfo::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
     return;
 }
 
-void StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
+int StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
 {
     square_t square = SQ_0;
     player_t opponent = PLAYER_NOBODY;
@@ -157,6 +157,8 @@ void StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
         assert(0);
         break;
     }
+
+    return moves.size();
 }
 
 void MoveList::create()

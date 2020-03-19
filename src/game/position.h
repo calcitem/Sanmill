@@ -245,7 +245,7 @@ public:
     );
 
     // 着法生成
-    void generateMoves(Stack<move_t, MOVE_COUNT> &moves);
+    int generateMoves(Stack<move_t, MOVE_COUNT> &moves);
 
     // 判断胜负
     player_t getWinner() const;
