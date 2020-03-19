@@ -55,6 +55,7 @@
 #define DEFAULT_RULE_NUMBER 1
 
 #define DEPTH_ADJUST (0)
+//#define FIX_DEPTH   (24)
 
 //#define HARD_LEVEL_DEPTH
 

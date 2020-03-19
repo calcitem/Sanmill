@@ -166,6 +166,10 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
     d = d >= 1 ? d : 1;
 
+#if defined(FIX_DEPTH)
+    d = FIX_DEPTH;
+#endif
+
     loggerDebug("Depth: %d\n", d);
 
     return d;
