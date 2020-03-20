@@ -226,7 +226,6 @@ public: /* TODO: Move to private or protected */
     // 结点个数;
     size_t nodeCount { 0 };
 
-protected:
     // 对合法的着法降序排序
     void sortMoves(Node *node);
 

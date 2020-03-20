@@ -39,6 +39,13 @@ void StateInfo::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
 
     assert(size != 0);
 
+    if (node->childrenSize > 0) {
+        for (int i = 0; i < size; i++) {
+            ai->deleteTree(node->children[i]);
+        }
+        node->childrenSize = 0;
+    }
+
     for (int i  = 0; i < size; i++) {
         node->addChild(moves[i], ai, this
 #ifdef BEST_MOVE_ENABLE
