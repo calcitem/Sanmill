@@ -114,16 +114,16 @@ int StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newSquare = static_cast<square_t>(MoveList::moveTable[oldSquare][direction]);
                         if (newSquare && !boardLocations[newSquare]) {
-                            move_t move = move_t((oldSquare << 8) + newSquare);
-                            moves.push_back((move_t)move);
+                            move_t m = move_t((oldSquare << 8) + newSquare);
+                            moves.push_back((move_t)m);
                         }
                     }
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
                         if (!boardLocations[newSquare]) {
-                            move_t move = move_t((oldSquare << 8) + newSquare);
-                            moves.push_back((move_t)move);
+                            move_t m = move_t((oldSquare << 8) + newSquare);
+                            moves.push_back((move_t)m);
                         }
                     }
                 }

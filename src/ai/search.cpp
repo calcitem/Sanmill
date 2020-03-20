@@ -197,7 +197,7 @@ void AIAlgorithm::buildRoot()
 }
 
 Node *Node::addChild(
-    const move_t &move,
+    const move_t &m,
     AIAlgorithm *ai,
     StateInfo *st
 #ifdef BEST_MOVE_ENABLE
@@ -214,7 +214,7 @@ Node *Node::addChild(
         return nullptr;
     }
 
-    newNode->move = move;
+    newNode->move = m;
 
 #ifdef ALPHABETA_AI
     newNode->value = VALUE_ZERO;
@@ -288,12 +288,12 @@ Node *Node::addChild(
     // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
     square_t sq = SQ_0;
 
-    if (move > 0) {
+    if (m > 0) {
         // 摆子或者走子
-        sq = (square_t)(move & 0x00ff);
+        sq = (square_t)(m & 0x00ff);
     } else {
         // 吃子
-        sq = (square_t)((-move) & 0x00ff);
+        sq = (square_t)((-m) & 0x00ff);
     }
 
     int nMills = st->position->board.inHowManyMills(sq, st->position->sideToMove);
@@ -301,7 +301,7 @@ Node *Node::addChild(
 
 #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
     // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
-    if (move > 0) {
+    if (m > 0) {
         // 在任何阶段, 都检测落子点是否能使得本方成三
         // TODO: 为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三
         if (nMills > 0) {
@@ -346,11 +346,11 @@ Node *Node::addChild(
 #ifdef ALPHABETA_AI
         if (rule.nTotalPiecesEachSide == 12 &&
             st->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
-            Board::isStar(static_cast<square_t>(move))) {
+            Board::isStar(static_cast<square_t>(m))) {
             newNode->rating += RATING_STAR_SQUARE;
         }
 #endif
-    } else if (move < 0) {
+    } else if (m < 0) {
         int nPlayerPiece = 0;
         int nOpponentPiece = 0;
         int nForbidden = 0;
