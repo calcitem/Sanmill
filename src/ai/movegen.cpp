@@ -82,9 +82,13 @@ int StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
                     moves.push_back((move_t)square);
                 } else {
                     // 若为先手，则抢占星位
+#ifdef FIRST_MOVE_STAR_PREFERRED
                     if (Board::isStar(square)) {
                         moves.push_back((move_t)square);
                     }
+#else
+                    moves.push_back((move_t)square);
+#endif
                 }
 #endif // MCTS_AI
             }

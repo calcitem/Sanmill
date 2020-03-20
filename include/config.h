@@ -57,6 +57,8 @@
 #define DEPTH_ADJUST (0)
 //#define FIX_DEPTH   (24)
 
+//#define FIRST_MOVE_STAR_PREFERRED
+
 //#define HARD_LEVEL_DEPTH
 
 //#define TIME_STAT
