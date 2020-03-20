@@ -197,24 +197,13 @@ square_t Board::polarToSquare(int r, int s)
     return static_cast<square_t>(r * N_SEATS + s - 1);
 }
 
-int Board::inHowManyMills(square_t square)
-{
-    int n = 0;
-
-    for (int l = 0; l < LINE_TYPES_COUNT; l++) {
-        if ((locations[square] & 0x30) &
-            locations[millTable[square][l][0]] &
-            locations[millTable[square][l][1]]) {
-            n++;
-        }
-    }
-
-    return n;
-}
-
 int Board::inHowManyMills(square_t square, player_t player)
 {
     int n = 0;
+
+    if (player == PLAYER_NOBODY) {
+        player = player_t(locations[square] & 0x30);
+    }
 
     for (int l = 0; l < LINE_TYPES_COUNT; l++) {
         if (player &
@@ -306,7 +295,7 @@ bool Board::isAllInMills(player_t player)
 {
     for (square_t i = SQ_BEGIN; i < SQ_END; i = static_cast<square_t>(i + 1)) {
         if (locations[i] & (uint8_t)player) {
-            if (!inHowManyMills(i)) {
+            if (!inHowManyMills(i, PLAYER_NOBODY)) {
                 return false;
             }
         }

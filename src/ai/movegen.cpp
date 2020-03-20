@@ -150,7 +150,7 @@ int StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<square_t>(MoveList::movePriorityTable[i]);
             if (boardLocations[square] & opponent) {
-                if (rule.allowRemoveMill || !position->board.inHowManyMills(square)) {
+                if (rule.allowRemoveMill || !position->board.inHowManyMills(square, PLAYER_NOBODY)) {
                     moves.push_back((move_t)-square);
                 }
             }

@@ -573,7 +573,7 @@ bool StateInfo::capture(square_t square, int8_t updateCmdlist)
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
     if (!rule.allowRemoveMill &&
-        position->board.inHowManyMills(square) &&
+        position->board.inHowManyMills(square, PLAYER_NOBODY) &&
         !position->board.isAllInMills(opponent)) {
         return false;
     }

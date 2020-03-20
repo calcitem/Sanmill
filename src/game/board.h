@@ -69,7 +69,6 @@ public:
     void rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
 
     // 判断棋盘 square 处的棋子处于几个“三连”中
-    int inHowManyMills(square_t square);
     int inHowManyMills(square_t square, player_t player);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
