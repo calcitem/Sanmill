@@ -8,13 +8,13 @@ rm -f $VERSION_H
 
 git rev-list HEAD | sort > config.git-hash
 
-LOCALVER=`wc -l config.git-hash | awk '{print $1}'`
-TAG=`git describe --tags $(git rev-list --tags --max-count=1)`
+LOCALVER="$(wc -l config.git-hash | awk '{print $1}')"
+TAG="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
 
-if [ $LOCALVER \> 1 ] ; then
-    VER=`git rev-list origin/$GIT_BRANCH | sort | join config.git-hash - | wc -l | awk '{print $1}'`
-    if [ $VER != $LOCALVER ] ; then
-        VER="$VER+$(($LOCALVER-$VER))"
+if [ "$LOCALVER" -gt "1" ] ; then
+    VER=$(git rev-list origin/$GIT_BRANCH | sort | join config.git-hash - | wc -l | awk '{print $1}')
+    if [ "$VER" != "$LOCALVER" ] ; then
+        VER="$VER+$((LOCALVER-VER))"
     fi
     if git status | grep -q "modified:" ; then
         VER="${VER}M"
@@ -28,7 +28,7 @@ fi
 
 rm -f config.git-hash
 
-cat $TEMPLATE_FILE | sed "s/\$FULL_VERSION/$GIT_VERSION/g" > $VERSION_H
+sed "s/\$FULL_VERSION/$GIT_VERSION/g" < $TEMPLATE_FILE > $VERSION_H
 
 git update-index --assume-unchanged $VERSION_H
 
