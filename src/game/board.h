@@ -109,6 +109,8 @@ public:
 
     static void printBoard();
 
+    player_t locationToPlayer(square_t square);
+
 //private:
 
     // 棋局，抽象为一个 5*8 的数组，上下两行留空
@@ -117,8 +119,8 @@ public:
         0x0F 代表禁点
         0x11~0x1C 代表先手第 1~12 子
         0x21~0x2C 代表后手第 1~12 子
-        判断棋子是先手的用 (locations[i] & 0x10)
-        判断棋子是后手的用 (locations[i] & 0x20)
+        判断棋子是先手的用 (locations[square] & 0x10)
+        判断棋子是后手的用 (locations[square] & 0x20)
      */
     location_t locations[SQ_EXPANDED_COUNT]{};
 

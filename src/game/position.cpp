@@ -1137,7 +1137,7 @@ hash_t StateInfo::updateHash(square_t square)
     // PieceType is boardLocations[square] 
 
     // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
-    int pieceType = (boardLocations[square] & 0x30) >> 4;
+    int pieceType = Player::toId(position->board.locationToPlayer(square));
 
     // 清除或者放置棋子
     position->hash ^= zobrist[square][pieceType];

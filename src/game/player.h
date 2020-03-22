@@ -43,7 +43,7 @@ public:
 
     inline static int toId(player_t player)
     {
-        return player == PLAYER_BLACK ? 1 : 2;
+        return player >> PLAYER_SHIFT;
     }
 
     inline static player_t idToPlayer(int id)

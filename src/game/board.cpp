@@ -195,12 +195,17 @@ square_t Board::polarToSquare(int r, int s)
     return static_cast<square_t>(r * N_SEATS + s - 1);
 }
 
+player_t Board::locationToPlayer(square_t square)
+{
+    return player_t(locations[square] & 0x30);
+}
+
 int Board::inHowManyMills(square_t square, player_t player)
 {
     int n = 0;
 
     if (player == PLAYER_NOBODY) {
-        player = player_t(locations[square] & 0x30);
+        player = locationToPlayer(square);
     }
 
     for (int l = 0; l < LINE_TYPES_COUNT; l++) {
@@ -223,7 +228,7 @@ int Board::addMills(square_t square)
     uint64_t mill = 0;
     int n = 0;
     int idx[3], min, temp;
-    char m = locations[square] & 0x30;
+    player_t m = locationToPlayer(square);
 
     for (int i = 0; i < 3; i++) {
         idx[0] = square;
