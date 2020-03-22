@@ -34,12 +34,10 @@ int Board::millTable[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}}
 
 Board::Board()
 {
-    millListSize = 0;
 }
 
 Board::~Board()
 {
-    millListSize = 0;
 }
 
 Board &Board::operator= (const Board &other)
