@@ -388,7 +388,8 @@ bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], square_t square)
     return false;
 }
 
-bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
+// 判断玩家的棋子是否全部被围
+bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 {
     // 如果摆满
     if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= N_SEATS * N_RINGS)
@@ -405,7 +406,7 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
     int locend = N_SEATS * (N_RINGS + 1);
 
     for (int i = 1; i < locend; i++) {
-        if (!(ch & locations[i])) {
+        if (!(0x30 & player & locations[i])) {
             continue;
         }
 
@@ -418,14 +419,6 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch)
     }
 
     return true;
-}
-
-// 判断玩家的棋子是否全部被围
-bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
-{
-    char t = 0x30 & player; // 非 chSide
-
-    return isAllSurrounded(sideId, nPiecesOnBoard, t);
 }
 
 #if 0

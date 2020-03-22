@@ -84,8 +84,6 @@ public:
     bool isSurrounded(int sideId, int nPiecesOnBoard[], square_t square);
 
     // 判断玩家的棋子是否全部被围
-    bool isAllSurrounded(int sideId, int nPiecesOnBoard[], char ch);
-
     bool isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t ply);
 
     // 三连加入列表
