@@ -89,16 +89,6 @@ public:
     // 三连加入列表
     int addMills(square_t square);
 
-#if 0
-    // 获取位置点棋子的归属人
-    player_t getWhosPiece(int r, int s);
-
-    bool getPieceRS(const player_t &player, const int &number, int &r, int &s);
-#endif
-
-    // 获取当前棋子
-    bool getCurrentPiece(player_t &player, int &number, int currentPos);
-
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
     static void squareToPolar(square_t square, int &r, int &s);
 

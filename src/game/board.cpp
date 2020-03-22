@@ -421,69 +421,6 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
     return true;
 }
 
-#if 0
-player_t Board::getWhosPiece(int r, int s)
-{
-    square_t square = polarToSquare(r, s);
-
-    if (locations[square] & PLAYER_BLACK)
-        return PLAYER_BLACK;
-
-    if (locations[square] & PLAYER_WHITE)
-        return PLAYER_WHITE;
-
-    return PLAYER_NOBODY;
-}
-
-bool Board::getPieceRS(const player_t &player, const int &number, int &r, int &s, struct Rule &rule)
-{
-    int piece;
-
-    if (player == PLAYER_BLACK) {
-        piece = PIECE_BLACK;
-    } else if (player == PLAYER_WHITE) {
-        piece = PIECE_WHITE;
-    } else {
-        return false;
-    }
-
-    if (number > 0 && number <= rule.nTotalPiecesEachSide)
-        piece &= number;
-    else
-        return false;
-
-    for (int i = SQ_BEGIN; i < SQ_END; i++) {
-        if (locations[i] == piece) {
-            squareToPolar(i, r, s);
-            return true;
-        }
-    }
-
-    return false;
-}
-
-// 获取当前棋子
-bool Board::getCurrentPiece(player_t &player, int &number, square_t square)
-{
-    if (!onBoard[square])
-        return false;
-
-    int p = locations[square];
-
-    if (p & PIECE_BLACK) {
-        player = PLAYER_BLACK;
-        number = p - PIECE_BLACK;
-    } else if (p & PIECE_WHITE) {
-        player = PLAYER_WHITE;
-        number = p - PIECE_WHITE;
-    } else {
-        return false;
-    }
-
-    return true;
-}
-#endif
-
 bool Board::isStar(square_t square)
 {
     if (rule.nTotalPiecesEachSide == 12) {
@@ -509,9 +446,7 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, square
         for (s = 1; s < N_SEATS / 2; s++) {
             ch = locations[r * N_SEATS + s];
             locations[r * N_SEATS + s] = locations[(r + 1) * N_SEATS - s];
-            //updateHash(i * N_SEATS + j);
             locations[(r + 1) * N_SEATS - s] = ch;
-            //updateHash((i + 1) * N_SEATS - j);
         }
     }
 
@@ -620,9 +555,7 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, square_
     for (s = 0; s < N_SEATS; s++) {
         ch = locations[N_SEATS + s];
         locations[N_SEATS + s] = locations[N_SEATS * N_RINGS + s];
-        //updateHash(N_SEATS + s);
         locations[N_SEATS * N_RINGS + s] = ch;
-        //updateHash(N_SEATS * N_RINGS + s);
     }
 
     uint64_t llp[3] = { 0 };
@@ -803,9 +736,7 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
             }
 
             locations[r * N_SEATS + 6] = ch1;
-            //updateHash(i * N_SEATS + 6);
             locations[r * N_SEATS + 7] = ch2;
-            //updateHash(i * N_SEATS + 7);
         }
     } else if (degrees == 6) {
         for (r = 1; r <= N_RINGS; r++) {
@@ -814,22 +745,17 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
 
             for (s = N_SEATS - 1; s >= 2; s--) {
                 locations[r * N_SEATS + s] = locations[r * N_SEATS + s - 2];
-                //updateHash(i * N_SEATS + j);
             }
 
             locations[r * N_SEATS + 1] = ch1;
-            //updateHash(i * N_SEATS + 1);
             locations[r * N_SEATS] = ch2;
-            //updateHash(i * N_SEATS);
         }
     } else if (degrees == 4) {
         for (r = 1; r <= N_RINGS; r++) {
             for (s = 0; s < N_SEATS / 2; s++) {
                 ch1 = locations[r * N_SEATS + s];
                 locations[r * N_SEATS + s] = locations[r * N_SEATS + s + 4];
-                //updateHash(i * N_SEATS + j);
                 locations[r * N_SEATS + s + 4] = ch1;
-                //updateHash(i * N_SEATS + j + 4);
             }
         }
     } else {
