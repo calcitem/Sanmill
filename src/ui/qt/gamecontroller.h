@@ -177,6 +177,9 @@ public slots:
     // AI 是否记录残局库
     void setLearnEndgame(bool enabled);
 
+    // Alpha-Beta 搜索时是否迭代加深
+    void setIDS(bool enabled);
+
     // 上下翻转
     void flip();
 

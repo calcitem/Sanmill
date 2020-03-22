@@ -314,11 +314,18 @@
     <addaction name="actionLimited_T"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menu_A">
+    <property name="title">
+     <string>算法(&amp;A)</string>
+    </property>
+    <addaction name="actionIDS_I"/>
+   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_C"/>
    <addaction name="menu_M"/>
    <addaction name="menu_R"/>
    <addaction name="menu_E"/>
+   <addaction name="menu_A"/>
    <addaction name="menu_O"/>
    <addaction name="menu_H"/>
   </widget>
@@ -1218,6 +1225,14 @@
    </property>
    <property name="text">
     <string>先后手轮替(&amp;C)</string>
+   </property>
+  </action>
+  <action name="actionIDS_I">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>迭代加深(&amp;I)</string>
    </property>
   </action>
  </widget>

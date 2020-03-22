@@ -581,99 +581,99 @@ int AIAlgorithm::search(depth_t depth)
     value_t alpha = -VALUE_INFINITE;
     value_t beta = VALUE_INFINITE;
 
-#ifdef IDS_SUPPORT
-    // 深化迭代
+    if (gameOptions.getIDSEnabled()) {
+        // 深化迭代
 
-    loggerDebug("IDS: ");
+        loggerDebug("IDS: ");
 
-    depth_t depthBegin = 2;
-    value_t lastValue = VALUE_ZERO;
+        depth_t depthBegin = 2;
+        value_t lastValue = VALUE_ZERO;
 
-    loggerDebug("\n==============================\n");
-    loggerDebug("==============================\n");
-    loggerDebug("==============================\n");
+        loggerDebug("\n==============================\n");
+        loggerDebug("==============================\n");
+        loggerDebug("==============================\n");
 
-    for (depth_t i = depthBegin; i < d; i += 1) {
+        for (depth_t i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-        TT::clear();   // 每次走子前清空哈希表
+            TT::clear();   // 每次走子前清空哈希表
 #endif
 #endif
-        value = search(i, alpha, beta, root);
+            value = search(i, alpha, beta, root);
 
-        loggerDebug("%d(%d) ", value, value - lastValue);
+            loggerDebug("%d(%d) ", value, value - lastValue);
 
 #ifdef IDS_DEBUG
-        loggerDebug(": --------------- depth = %d/%d ---------------\n", i, d);
-        int k = 0;
-        int cs = root->childrenSize;
-        for (int j = 0; j < cs; j++) {
-            if (root->children[j]->value == root->value
+            loggerDebug(": --------------- depth = %d/%d ---------------\n", i, d);
+            int k = 0;
+            int cs = root->childrenSize;
+            for (int j = 0; j < cs; j++) {
+                if (root->children[j]->value == root->value
 #ifdef SORT_CONSIDER_PRUNED
-                && !root->children[j]->pruned
+                    && !root->children[j]->pruned
 #endif
-                ) {
-                loggerDebug("[%.2d] %d\t%s\t%d\t%d *\n", k,
-                            root->children[j]->move,
-                            moveToCommand(root->children[j]->move),
-                            root->children[j]->value,
-                            root->children[j]->rating);
-            } else {
-                loggerDebug("[%.2d] %d\t%s\t%d\t%d\n", k,
-                            root->children[j]->move,
-                            moveToCommand(root->children[j]->move),
-                            root->children[j]->value,
-                            root->children[j]->rating);
-            }
+                    ) {
+                    loggerDebug("[%.2d] %d\t%s\t%d\t%d *\n", k,
+                                root->children[j]->move,
+                                moveToCommand(root->children[j]->move),
+                                root->children[j]->value,
+                                root->children[j]->rating);
+                } else {
+                    loggerDebug("[%.2d] %d\t%s\t%d\t%d\n", k,
+                                root->children[j]->move,
+                                moveToCommand(root->children[j]->move),
+                                root->children[j]->value,
+                                root->children[j]->rating);
+                }
 
-            k++;
-        }
-        loggerDebug("\n");
+                k++;
+            }
+            loggerDebug("\n");
 #endif // IDS_DEBUG
 
-        lastValue = value;
+            lastValue = value;
 
 #if 0
-        if (value <= alpha) {
-            alpha = -VALUE_INFINITE;
-            beta = value + 1;   // X
-            continue;
-        }
-        if (value >= beta) {
-            beta = VALUE_INFINITE;
-            alpha = value - 1;
-            continue;
-        }
+            if (value <= alpha) {
+                alpha = -VALUE_INFINITE;
+                beta = value + 1;   // X
+                continue;
+            }
+            if (value >= beta) {
+                beta = VALUE_INFINITE;
+                alpha = value - 1;
+                continue;
+            }
 #endif
 
 #ifdef IDS_WINDOW
-        alpha = value - VALUE_IDS_WINDOW;
-        beta = value + VALUE_IDS_WINDOW;
+            alpha = value - VALUE_IDS_WINDOW;
+            beta = value + VALUE_IDS_WINDOW;
 #endif // IDS_WINDOW
-    }
+        }
 
 #ifdef TIME_STAT
-    timeEnd = chrono::steady_clock::now();
-    loggerDebug("\nIDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+        timeEnd = chrono::steady_clock::now();
+        loggerDebug("\nIDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif
-#endif /* IDS_SUPPORT */
+    }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TT::clear();  // 每次走子前清空哈希表
+        TT::clear();  // 每次走子前清空哈希表
 #endif
 #endif
 
-#ifdef IDS_SUPPORT
+    if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_WINDOW
-    value_t window = state->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
-    alpha = value - window;
-    beta = value + window;
+        value_t window = state->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
+        alpha = value - window;
+        beta = value + window;
 #else
-    alpha = -VALUE_INFINITE;
-    beta = VALUE_INFINITE;
+        alpha = -VALUE_INFINITE;
+        beta = VALUE_INFINITE;
 #endif // IDS_WINDOW
-#endif // IDS_SUPPORT
+    }
 
     value = search(d, alpha, beta, root);
 
@@ -977,17 +977,17 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     }
 #endif // DONOT_DELETE_TREE
 
-#ifdef IDS_SUPPORT
+    if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_ADD_VALUE
-    if (st->position->sideToMove == PLAYER_BLACK) {
-        node->children[0]->value += 1;
-        node->value += 1;
-    } else {
-        node->children[0]->value -= 1;
-        node->value -= 1;
-    }
+        if (st->position->sideToMove == PLAYER_BLACK) {
+            node->children[0]->value += 1;
+            node->value += 1;
+        } else {
+            node->children[0]->value -= 1;
+            node->value -= 1;
+        }
 #endif /* IDS_ADD_VALUE */
-#endif // IDS_SUPPORT
+    }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值

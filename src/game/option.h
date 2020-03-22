@@ -39,6 +39,10 @@ public:
 
     void setLearnEndgameEnabled(bool enabled);
     bool getLearnEndgameEnabled();
+
+    void setIDSEnabled(bool enabled);
+    bool getIDSEnabled();
+
 protected:
 
 private:
@@ -60,6 +64,9 @@ private:
 #else
     bool learnEndgame { false };
 #endif
+
+    // Alpha-Beta 搜索时是否迭代加深
+    bool IDSEnabled { false };
 };
 
 extern Options gameOptions;

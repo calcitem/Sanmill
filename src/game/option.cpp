@@ -78,3 +78,13 @@ bool Options::getLearnEndgameEnabled()
     return learnEndgame;
 #endif
 }
+
+void Options::setIDSEnabled(bool enabled)
+{
+    IDSEnabled = enabled;
+}
+
+bool Options::getIDSEnabled()
+{
+    return IDSEnabled;
+}

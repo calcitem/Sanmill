@@ -432,6 +432,11 @@ void GameController::setLearnEndgame(bool enabled)
 #endif
 }
 
+void GameController::setIDS(bool enabled)
+{
+    gameOptions.setIDSEnabled(enabled);
+}
+
 // 上下翻转
 void GameController::flip()
 {
