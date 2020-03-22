@@ -943,6 +943,8 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
             }
 #endif
             break;
+        default:
+            break;
         }
         
 #ifndef MIN_MAX_ONLY

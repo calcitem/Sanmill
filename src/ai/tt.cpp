@@ -70,6 +70,8 @@ value_t TT::probeHash(const hash_t &hash,
             return beta;
         }
         break;
+    default:
+        break;
     }
 
 out:

@@ -241,7 +241,7 @@ void GameController::gameReset()
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
-    QTime qtime = QTime(0, 0, 0, 0).addSecs(remainingTime[BLACK]);
+    QTime qtime = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
     emit time1Changed(qtime.toString("hh:mm:ss"));
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
@@ -560,8 +560,8 @@ void GameController::timerEvent(QTimerEvent *event)
         remainingTime[WHITE] = timeLimit * 60 - remainingTime[WHITE];
     }
 
-    qt1 = QTime(0, 0, 0, 0).addSecs(remainingTime[BLACK]);
-    qt2 = QTime(0, 0, 0, 0).addSecs(remainingTime[WHITE]);
+    qt1 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
+    qt2 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
 
     emit time1Changed(qt1.toString("hh:mm:ss"));
     emit time2Changed(qt2.toString("hh:mm:ss"));
@@ -999,7 +999,7 @@ bool GameController::phaseChange(int row, bool forceUpdate)
     }
 
     // 下面这步关键，会让悔棋者承担时间损失
-    st.setStartTime(state.getStartTimeb());
+    st.setStartTime(static_cast<int>(state.getStartTimeb()));
 
     // 刷新棋局场景
     updateScence(st);
@@ -1037,7 +1037,7 @@ bool GameController::updateScence(StateInfo &g)
     PieceItem *deletedPiece = nullptr;
 
     for (int i = 0; i < nTotalPieces; i++) {
-        piece = pieceList.at(i);
+        piece = pieceList.at(static_cast<size_t>(i));
 
         piece->setSelected(false);
 
@@ -1108,8 +1108,8 @@ bool GameController::updateScence(StateInfo &g)
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == PIECE_FORBIDDEN) {
                 pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
-                if (nTotalPieces < pieceList.size()) {
-                    pieceList.at(nTotalPieces++)->setPos(pos);
+                if (nTotalPieces < static_cast<int>(pieceList.size())) {
+                    pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
                 } else {
                     auto *newP = new PieceItem;
                     newP->setDeleted();
@@ -1124,7 +1124,7 @@ bool GameController::updateScence(StateInfo &g)
 
     // 走棋阶段清除禁子点
     if (rule.hasForbiddenLocations && g.getPhase() != PHASE_PLACING) {
-        while (nTotalPieces < pieceList.size()) {
+        while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();
         }
@@ -1136,7 +1136,7 @@ bool GameController::updateScence(StateInfo &g)
         key = board[g.getCurrentSquare()];
         ipos = key & PIECE_BLACK ? (key - PIECE_B1) * 2 : (key - PIECE_W1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
-            currentPiece = pieceList.at(ipos);
+            currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);
         }
     }
@@ -1166,7 +1166,7 @@ bool GameController::updateScence(StateInfo &g)
     emit winningRate2Changed(QString::number(winningRate_2, 10));
     emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
 
-#endif  TRAINING_MODE
+#endif // TRAINING_MODE
     return true;
 }
 
