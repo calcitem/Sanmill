@@ -82,6 +82,10 @@
 
 //#define DEAL_WITH_HORIZON_EFFECT
 
+#ifdef DEAL_WITH_HORIZON_EFFECT
+#define HORIZON_EFFECT_ONLY_ONE_MOVE
+#endif
+
 //#define IDS_WINDOW
 //#define IDS_DEBUG
 //#define IDS_ADD_VALUE
