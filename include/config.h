@@ -59,8 +59,6 @@
 
 //#define FIRST_MOVE_STAR_PREFERRED
 
-//#define HARD_LEVEL_DEPTH
-
 //#define TIME_STAT
 //#define CYCLE_STAT
 

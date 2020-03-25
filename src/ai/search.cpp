@@ -79,32 +79,21 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     depth_t reduce = 0;
 #endif
 
-#ifdef HARD_LEVEL_DEPTH
-    const depth_t placingDepthTable[] = {
-        6, 16, 17, 18,      /* 0 ~ 3 */
-        19, 18, 18, 17,     /* 4 ~ 7 */
-        12, 12, 9, 7, 1     /* 8 ~ 12 */
-    };
-
-    const depth_t movingDepthTable[] = {
-         1,  1,  1,  1,     /* 0 ~ 3 */
-         1,  1, 12, 12,     /* 4 ~ 7 */
-        12, 12, 12, 12,     /* 8 ~ 11 */
-        12, 12, 12, 12,     /* 12 ~ 15 */
-        12, 12, 12, 12,     /* 16 ~ 19 */
-        12, 13, 14, 15,     /* 20 ~ 23 */
-    };
-#else
     const depth_t placingDepthTable_12[] = {
-        1, 7, 9, 12,         /* 0 ~ 3 */
-        12, 14, 16, 16,       /* 4 ~ 7 */
-        17, 16, 15, 14, 6     /* 8 ~ 12 */
+         +1,  7,  +7,  9,     /* 0 ~ 3 */
+         +9, 12, +12, 12,     /* 4 ~ 7 */
+        +12, 14, +14, 16,     /* 8 ~ 11 */
+        +16, 16, +16, 17,     /* 12 ~ 15 */
+        +17, 16, +16, 15,     /* 16 ~ 19 */
+        +15, 14, +14,  6,     /* 20 ~ 23 */
     };
 
     const depth_t placingDepthTable_9[] = {
-        1, 7, 10, 12,         /* 0 ~ 3 */
-        12, 13, 13, 13,       /* 4 ~ 7 */
-        13, 13                /* 8 ~ 9 */
+         +1, 7,  +7,  10,     /* 0 ~ 3 */
+        +10, 12, +12, 12,     /* 4 ~ 7 */
+        +12, 13, +13, 13,     /* 8 ~ 11 */
+        +13, 13, +13, 13,     /* 12 ~ 15 */
+        +13, 13,              /* 16 ~ 18 */
     };
 
     const depth_t movingDepthTable[] = {
@@ -115,7 +104,6 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         11, 11, 11, 11,     /* 16 ~ 19 */
         12, 12, 13, 14,     /* 20 ~ 23 */
     };
-#endif // HARD_LEVEL_DEPTH
 
 #ifdef ENDGAME_LEARNING
     const depth_t movingDiffDepthTable[] = {
@@ -133,9 +121,9 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
     if (st->position->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12) {
-            d = placingDepthTable_12[rule.nTotalPiecesEachSide - st->getPiecesInHandCount(BLACK)];
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - st->getPiecesInHandCount(BLACK) - st->getPiecesInHandCount(WHITE)];
         } else {
-            d = placingDepthTable_9[rule.nTotalPiecesEachSide - st->getPiecesInHandCount(BLACK)];
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - st->getPiecesInHandCount(BLACK) - st->getPiecesInHandCount(WHITE)];
         }
     }
 
