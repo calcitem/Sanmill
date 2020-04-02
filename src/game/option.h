@@ -43,6 +43,10 @@ public:
     void setIDSEnabled(bool enabled);
     bool getIDSEnabled();
 
+    // DepthExtension
+    void setDepthExtension(bool enabled);
+    bool getDepthExtension();
+
 protected:
 
 private:
@@ -67,6 +71,9 @@ private:
 
     // Alpha-Beta 搜索时是否迭代加深
     bool IDSEnabled { false };
+
+    // DepthExtension
+    bool depthExtension {true};
 };
 
 extern Options gameOptions;

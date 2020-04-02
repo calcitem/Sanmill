@@ -245,6 +245,10 @@ void MillGameWindow::initialize()
     connect(ui.actionIDS_I, SIGNAL(toggled(bool)),
             gameController, SLOT(setIDS(bool)));
 
+    // DepthExtension
+    connect(ui.actionDepthExtension_D, SIGNAL(toggled(bool)),
+            gameController, SLOT(setDepthExtension(bool)));
+
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
             gameController, &GameController::flip);

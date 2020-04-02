@@ -863,17 +863,11 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
         doMove(node->children[i]->move);
 
-#ifdef DEAL_WITH_HORIZON_EFFECT
-        if (false
-#ifdef HORIZON_EFFECT_ONLY_ONE_MOVE
-            || nchild == 1
-#endif // HORIZON_EFFECT_ONLY_ONE_MOVE
-            ) {
+        if (gameOptions.getDepthExtension() == true && nchild == 1) {
             epsilon = 1;
         } else {
             epsilon = 0;
         }
-#endif // DEAL_WITH_HORIZON_EFFECT
 
 #ifdef DEEPER_IF_ONLY_ONE_LEGAL_MOVE
         if (node->childrenSize == 1) {

@@ -437,6 +437,12 @@ void GameController::setIDS(bool enabled)
     gameOptions.setIDSEnabled(enabled);
 }
 
+// DepthExtension
+void GameController::setDepthExtension(bool enabled)
+{
+    gameOptions.setDepthExtension(enabled);
+}
+
 // 上下翻转
 void GameController::flip()
 {

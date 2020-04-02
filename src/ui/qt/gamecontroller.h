@@ -180,6 +180,9 @@ public slots:
     // Alpha-Beta 搜索时是否迭代加深
     void setIDS(bool enabled);
 
+    // DepthExtension
+    void setDepthExtension(bool enabled);
+
     // 上下翻转
     void flip();
 

@@ -88,3 +88,15 @@ bool Options::getIDSEnabled()
 {
     return IDSEnabled;
 }
+
+// DepthExtension
+
+void Options::setDepthExtension(bool enabled)
+{
+    depthExtension = enabled;
+}
+
+bool Options::getDepthExtension()
+{
+    return depthExtension;
+}

@@ -319,6 +319,7 @@
      <string>算法(&amp;A)</string>
     </property>
     <addaction name="actionIDS_I"/>
+    <addaction name="actionDepthExtension_D"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_C"/>
@@ -1233,6 +1234,17 @@
    </property>
    <property name="text">
     <string>迭代加深(&amp;I)</string>
+   </property>
+  </action>
+  <action name="actionDepthExtension_D">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>深度延伸(&amp;D)</string>
    </property>
   </action>
  </widget>
