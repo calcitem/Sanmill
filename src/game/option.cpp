@@ -100,3 +100,16 @@ bool Options::getDepthExtension()
 {
     return depthExtension;
 }
+
+// OpeningBook
+
+void Options::setOpeningBook(bool enabled)
+{
+    openingBook = enabled;
+}
+
+bool Options::getOpeningBook()
+{
+    return openingBook;
+}
+

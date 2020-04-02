@@ -443,6 +443,12 @@ void GameController::setDepthExtension(bool enabled)
     gameOptions.setDepthExtension(enabled);
 }
 
+// OpeningBook
+void GameController::setOpeningBook(bool enabled)
+{
+    gameOptions.setOpeningBook(enabled);
+}
+
 // 上下翻转
 void GameController::flip()
 {

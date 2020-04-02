@@ -183,6 +183,9 @@ public slots:
     // DepthExtension
     void setDepthExtension(bool enabled);
 
+    // OpeningBook
+    void setOpeningBook(bool enabled);
+
     // 上下翻转
     void flip();
 

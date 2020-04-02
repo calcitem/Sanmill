@@ -249,6 +249,10 @@ void MillGameWindow::initialize()
     connect(ui.actionDepthExtension_D, SIGNAL(toggled(bool)),
             gameController, SLOT(setDepthExtension(bool)));
 
+    //  OpeningBook
+    connect(ui.actionOpeningBook_O, SIGNAL(toggled(bool)),
+            gameController, SLOT(setOpeningBook(bool)));
+
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
             gameController, &GameController::flip);

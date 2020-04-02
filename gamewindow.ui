@@ -296,7 +296,6 @@
     <addaction name="actionGiveUpIfMostLose_G"/>
     <addaction name="actionAutoRestart_A"/>
     <addaction name="actionRandomMove_R"/>
-    <addaction name="actionLearnEndgame_E"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -320,6 +319,8 @@
     </property>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
+    <addaction name="actionOpeningBook_O"/>
+    <addaction name="actionLearnEndgame_E"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_C"/>
@@ -1245,6 +1246,14 @@
    </property>
    <property name="text">
     <string>深度延伸(&amp;D)</string>
+   </property>
+  </action>
+  <action name="actionOpeningBook_O">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>开局库(&amp;O)</string>
    </property>
   </action>
  </widget>

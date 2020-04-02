@@ -47,6 +47,10 @@ public:
     void setDepthExtension(bool enabled);
     bool getDepthExtension();
 
+    // OpeningBook
+    void setOpeningBook(bool enabled);
+    bool getOpeningBook();
+
 protected:
 
 private:
@@ -74,6 +78,9 @@ private:
 
     // DepthExtension
     bool depthExtension {true};
+
+    // OpeningBook
+    bool openingBook { false };
 };
 
 extern Options gameOptions;
