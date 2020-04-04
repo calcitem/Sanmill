@@ -1046,6 +1046,11 @@ void StateInfo::setSideToMove(player_t player)
     position->chOpponent = Player::idToCh(position->opponentId);
 }
 
+player_t StateInfo::getSideToMove()
+{
+    return position->sideToMove;
+}
+
 void StateInfo::changeSideToMove()
 {
     setSideToMove(Player::getOpponent(position->sideToMove));

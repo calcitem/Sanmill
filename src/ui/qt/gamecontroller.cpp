@@ -386,8 +386,100 @@ void GameController::setSound(bool arg)
 #endif // TRAINING_MODE
 }
 
-void GameController::playSound(const QString &soundPath)
+void GameController::playSound(sound_t soundType, player_t player)
 {
+    string soundDir = ":/sound/resources/sound/";
+    string sideStr = player == PLAYER_BLACK ? "B" : "W";
+    string oppenentStr = player == PLAYER_WHITE? "B" : "W";
+    string filename;
+
+    switch (soundType) {
+    case GAME_SOUND_BLOCK_MILL:
+        filename = "BlockMill_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_CAPTURE:
+        filename = "Capture_" + oppenentStr + ".wav";
+        break;
+    case GAME_SOUND_CHOOSE:
+        filename = "choose.wav";
+        break;
+    case GAME_SOUND_DRAW:
+        filename = "Draw.wav";
+        break;
+    case GAME_SOUND_DROG:
+        filename = "drog.wav";
+        break;
+    case GAME_SOUND_FORBIDDEN:
+        filename = "forbidden.wav";
+        break;
+    case GAME_SOUND_GAME_START:
+        filename = "GameStart.wav";
+        break;
+    case GAME_SOUND_GIVE_UP:
+        filename = "GiveUp_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_LOSS:
+        filename = "loss.wav";
+        break;
+    case GAME_SOUND_MILL:
+        filename = "Mill_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_MILL_REPEATLY:
+        filename = "MillRepeatly_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_MOVE:
+        filename = "move.wav";
+        break;
+    case GAME_SOUND_NEW_GAME:
+        filename = "newgame.wav";
+        break;
+    case GAME_SOUND_NEXT_MILL:
+        filename = "NextMill_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_OBVIOUS:
+        filename = "Obvious.wav";
+        break;
+    case GAME_SOUND_REMOVE:
+        filename = "remove.wav";
+        break;
+    case GAME_SOUND_REPEAT_THREE_DRAW:
+        filename = "RepeatThreeDraw.wav";
+        break;
+    case GAME_SOUND_SIDE:
+        filename = "Side_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_STAR:
+        filename = "Star_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_SUFFOCATED:
+        filename = "Suffocated_" + sideStr + ".wav";
+        break;
+    case GAME_SOUND_VANTAGE:
+        filename = "Vantage.wav";
+        break;
+    case GAME_SOUND_VERY:
+        filename = "Very.wav";
+        break;
+    case GAME_SOUND_WARNING:
+        filename = "warning.wav";
+        break;
+    case GAME_SOUND_WIN:        
+        if (player == PLAYER_DRAW) {
+            filename = "Draw.wav";
+        } else {
+            filename = "Win_" + sideStr + ".wav";
+        }
+        break;
+    case GAME_SOUND_WIN_AND_LOSSES_ARE_OBVIOUS:
+        filename = "WinsAndLossesAreObvious.wav";
+        break;
+    default:
+        filename = "";
+        break;
+    };
+
+    QString soundPath = QString::fromStdString(soundDir + filename);
+
 #ifndef TRAINING_MODE
     if (soundPath == "") {
         return;
@@ -579,7 +671,8 @@ void GameController::timerEvent(QTimerEvent *event)
     emit time2Changed(qt2.toString("hh:mm:ss"));
 
     // 如果胜负已分
-    if (state.getWinner() != PLAYER_NOBODY) {
+    player_t winner = state.getWinner();
+    if (winner != PLAYER_NOBODY) {
         // 停止计时
         killTimer(timeID);
 
@@ -596,7 +689,7 @@ void GameController::timerEvent(QTimerEvent *event)
 
         // 播放音效
 #ifndef DONOT_PLAY_WIN_SOUND
-        playSound(":/sound/resources/sound/win.wav");
+        playSound(GAME_SOUND_WIN, winner);
 #endif
 #endif // TRAINING_MODE
     }
@@ -694,10 +787,10 @@ bool GameController::actionPiece(QPointF pos)
         if (state._place(r, s)) {
             if (state.getAction() == ACTION_CAPTURE) {
                 // 播放成三音效
-                playSound(":/sound/resources/sound/capture.wav");
+                playSound(GAME_SOUND_MILL, state.getSideToMove());
             } else {
                 // 播放移动棋子音效
-                playSound(":/sound/resources/sound/drog.wav");
+                playSound(GAME_SOUND_DROG, state.getSideToMove());
             }
             result = true;
             break;
@@ -712,22 +805,22 @@ bool GameController::actionPiece(QPointF pos)
             break;
         if (state.choose(r, s)) {
             // 播放选子音效
-            playSound(":/sound/resources/sound/choose.wav");
+            playSound(GAME_SOUND_CHOOSE, state.getSideToMove());
             result = true;
         } else {
             // 播放禁止音效
-            playSound(":/sound/resources/sound/forbidden.wav");
+            playSound(GAME_SOUND_FORBIDDEN, state.getSideToMove());
         }
         break;
 
     case ACTION_CAPTURE:
         if (state._capture(r, s)) {
             // 播放音效
-            playSound(":/sound/resources/sound/remove.wav");
+            playSound(GAME_SOUND_CAPTURE, state.getSideToMove());
             result = true;
         } else {
             // 播放禁止音效
-            playSound(":/sound/resources/sound/forbidden.wav");
+            playSound(GAME_SOUND_FORBIDDEN, state.getSideToMove());
         }
         break;
 
@@ -756,9 +849,10 @@ bool GameController::actionPiece(QPointF pos)
 
         // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-        if (state.getWinner() != PLAYER_NOBODY &&
+        player_t winner = state.getWinner();
+        if (winner != PLAYER_NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
-            playSound(":/sound/resources/sound/win.wav");
+            playSound(GAME_SOUND_WIN, winner);
 #endif
 
         // AI设置
@@ -804,7 +898,7 @@ bool GameController::giveUp()
     }
 
     if (state.getWinner() != PLAYER_NOBODY)
-        playSound(":/sound/resources/sound/loss.wav");
+        playSound(GAME_SOUND_GIVE_UP, state.getSideToMove());
 
 #endif // TRAINING_MODE
 
@@ -827,15 +921,15 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
 #ifndef TRAINING_MODE
     // 声音
-    QString sound;
+    sound_t soundType = GAME_SOUND_NONE;
 
     switch (state.getAction()) {
     case ACTION_CHOOSE:
     case ACTION_PLACE:
-        sound = ":/sound/resources/sound/drog.wav";
+        soundType = GAME_SOUND_DROG;
         break;
     case ACTION_CAPTURE:
-        sound = ":/sound/resources/sound/remove.wav";
+        soundType = GAME_SOUND_CAPTURE;
         break;
     default:
         break;
@@ -851,12 +945,12 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         return false;
 
 #ifndef TRAINING_MODE
-    if (sound == ":/sound/resources/sound/drog.wav" && state.getAction() == ACTION_CAPTURE) {
-        sound = ":/sound/resources/sound/capture.wav";
+    if (soundType == GAME_SOUND_DROG && state.getAction() == ACTION_CAPTURE) {
+        soundType = GAME_SOUND_MILL;
     }
 
     if (update) {
-        playSound(sound);
+        playSound(soundType, state.getSideToMove());
         updateScence(state);
     }
 
@@ -889,9 +983,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-    if (state.getWinner() != PLAYER_NOBODY &&
+    player_t winner = state.getWinner();
+    if (winner != PLAYER_NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
-        playSound(":/sound/resources/sound/win.wav");
+        playSound(GAME_SOUND_WIN, winner);
     }
 #endif
 #endif // TRAINING_MODE

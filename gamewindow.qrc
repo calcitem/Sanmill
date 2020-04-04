@@ -62,9 +62,34 @@
         <file>resources/sound/loss.wav</file>
         <file>resources/sound/move.wav</file>
         <file>resources/sound/newgame.wav</file>
-        <file>resources/sound/remove.wav</file>
         <file>resources/sound/win.wav</file>
         <file>resources/sound/warning.wav</file>
-        <file>resources/sound/capture.wav</file>
+        <file>resources/sound/BlockMill_B.wav</file>
+        <file>resources/sound/BlockMill_W.wav</file>
+        <file>resources/sound/Capture_B.wav</file>
+        <file>resources/sound/Capture_W.wav</file>
+        <file>resources/sound/Draw.wav</file>
+        <file>resources/sound/GameStart.wav</file>
+        <file>resources/sound/Mill_B.wav</file>
+        <file>resources/sound/Mill_W.wav</file>
+        <file>resources/sound/MillRepeatly_B.wav</file>
+        <file>resources/sound/MillRepeatly_W.wav</file>
+        <file>resources/sound/NextMill_B.wav</file>
+        <file>resources/sound/NextMill_W.wav</file>
+        <file>resources/sound/Obvious.wav</file>
+        <file>resources/sound/RepeatThreeDraw.wav</file>
+        <file>resources/sound/Side_B.wav</file>
+        <file>resources/sound/Side_W.wav</file>
+        <file>resources/sound/Star_B.wav</file>
+        <file>resources/sound/Star_W.wav</file>
+        <file>resources/sound/Suffocated_B.wav</file>
+        <file>resources/sound/Suffocated_W.wav</file>
+        <file>resources/sound/Vantage.wav</file>
+        <file>resources/sound/Very.wav</file>
+        <file>resources/sound/Win_B.wav</file>
+        <file>resources/sound/Win_W.wav</file>
+        <file>resources/sound/WinsAndLossesAreObvious.wav</file>
+        <file>resources/sound/GiveUp_B.wav</file>
+        <file>resources/sound/GiveUp_W.wav</file>
     </qresource>
 </RCC>

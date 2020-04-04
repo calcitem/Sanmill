@@ -834,18 +834,17 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\sound\capture.wav">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Media>
+    <Media Include="resources\sound\BlockMill_B.wav" />
+    <Media Include="resources\sound\BlockMill_W.wav" />
+    <Media Include="resources\sound\Capture_B.wav" />
+    <Media Include="resources\sound\Capture_W.wav" />
     <Media Include="resources\sound\choose.wav">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
+    <Media Include="resources\sound\Draw.wav" />
     <Media Include="resources\sound\drog.wav">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -858,12 +857,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
+    <Media Include="resources\sound\GameStart.wav" />
+    <Media Include="resources\sound\GiveUp_B.wav" />
+    <Media Include="resources\sound\GiveUp_W.wav" />
     <Media Include="resources\sound\loss.wav">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
+    <Media Include="resources\sound\MillRepeatly_B.wav" />
+    <Media Include="resources\sound\MillRepeatly_W.wav" />
+    <Media Include="resources\sound\Mill_B.wav" />
+    <Media Include="resources\sound\Mill_W.wav" />
     <Media Include="resources\sound\move.wav">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -876,12 +882,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
-    <Media Include="resources\sound\remove.wav">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Media>
+    <Media Include="resources\sound\NextMill_B.wav" />
+    <Media Include="resources\sound\NextMill_W.wav" />
+    <Media Include="resources\sound\Obvious.wav" />
+    <Media Include="resources\sound\RepeatThreeDraw.wav" />
+    <Media Include="resources\sound\Side_B.wav" />
+    <Media Include="resources\sound\Side_W.wav" />
+    <Media Include="resources\sound\Star_B.wav" />
+    <Media Include="resources\sound\Star_W.wav" />
+    <Media Include="resources\sound\Suffocated_B.wav" />
+    <Media Include="resources\sound\Suffocated_W.wav" />
+    <Media Include="resources\sound\Vantage.wav" />
+    <Media Include="resources\sound\Very.wav" />
     <Media Include="resources\sound\warning.wav">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -894,6 +906,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
+    <Media Include="resources\sound\WinsAndLossesAreObvious.wav" />
+    <Media Include="resources\sound\Win_B.wav" />
+    <Media Include="resources\sound\Win_W.wav" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="gamewindow.ui" />

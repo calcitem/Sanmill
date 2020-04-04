@@ -229,6 +229,9 @@ public:
     // 设置轮流
     void setSideToMove(player_t player);
 
+    // 获取轮流
+    player_t getSideToMove();
+
     // 改变轮流
     void changeSideToMove();
 

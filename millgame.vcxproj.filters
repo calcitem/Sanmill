@@ -467,16 +467,91 @@
     <Media Include="resources\sound\newgame.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="resources\sound\remove.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
     <Media Include="resources\sound\win.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\warning.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="resources\sound\capture.wav">
+    <Media Include="resources\sound\BlockMill_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\BlockMill_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Capture_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Capture_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Draw.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\GameStart.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Mill_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Mill_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\MillRepeatly_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\MillRepeatly_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\NextMill_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\NextMill_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Obvious.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\RepeatThreeDraw.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Side_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Side_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Star_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Star_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Suffocated_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Suffocated_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Vantage.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Very.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Win_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Win_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\WinsAndLossesAreObvious.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\GiveUp_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\GiveUp_W.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>
