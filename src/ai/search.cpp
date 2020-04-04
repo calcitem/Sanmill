@@ -167,6 +167,8 @@ void AIAlgorithm::buildRoot()
 {
     root = (Node *)memmgr.memmgr_alloc(sizeof(Node));
 
+    assert(root != nullptr);
+
     root->parent = nullptr;
     root->move = MOVE_NONE;
 
@@ -180,8 +182,6 @@ void AIAlgorithm::buildRoot()
 #ifdef BEST_MOVE_ENABLE
     root->bestMove = MOVE_NONE;
 #endif // BEST_MOVE_ENABLE
-
-    assert(root != nullptr);
 }
 
 Node *Node::addChild(
