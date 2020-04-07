@@ -60,7 +60,6 @@ GameController::GameController(
     gameEndTime(0),
     gameDurationTime(0),
     gameDurationCycle(0),
-    hasSound(true),
     timeID(0),
     ruleIndex(-1),
     timeLimit(0),

@@ -190,7 +190,7 @@ public slots:
     void setSound(bool arg = true);
 
     // 播放声音
-    void playSound(sound_t soundType, player_t player);
+    static void playSound(sound_t soundType, player_t player);
 
     // 是否必败时认输
     void setGiveUpIfMostLose(bool enabled);
@@ -406,7 +406,7 @@ private:
     stopwatch::rdtscp_clock::duration gameDurationCycle;
 
     // 是否有落子音效
-    bool hasSound;
+    inline static bool hasSound {true};
 
     // 是否必败时认输
     bool giveUpIfMostLose_ {false};
