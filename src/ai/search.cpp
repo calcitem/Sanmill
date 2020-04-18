@@ -863,6 +863,17 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     int nchild = node->childrenSize;
     for (int i = 0; i < nchild; i++) {
+#ifdef PREFETCH_SUPPORT
+        if (i + 1 < nchild)
+        {
+            stashPosition();
+            doMove(node->children[i + 1]->move);
+            hash_t nextHash = st->getHash();
+            TT::prefetchHash(nextHash);
+            undoMove();
+        }
+#endif // PREFETCH_SUPPORT
+
         // 棋局入栈保存，以便后续撤销着法
         stashPosition();
 

@@ -82,6 +82,9 @@ public:
 
     // 清空置换表
     static void clear();
+
+    // 预读取
+    static void prefetchHash(const hash_t &hash);
 };
 
 using TT = TranspositionTable;

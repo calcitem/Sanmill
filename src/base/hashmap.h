@@ -76,6 +76,24 @@ namespace CTSL //Concurrent Thread Safe Library
 #endif
             }
 
+            void prefetch(const K &key)
+            {
+                K hashValue = hashFn(key) & (hashSize - 1);
+                const V *addr = &(hashTable[hashValue].getValue());
+
+#  if defined(__INTEL_COMPILER)
+                // This hack prevents prefetches from being optimized away by
+                // Intel compiler. Both MSVC and gcc seem not be affected by this.
+                __asm__("");
+#  endif
+
+#  if defined(__INTEL_COMPILER) || defined(_MSC_VER)
+                _mm_prefetch((const char *)addr, _MM_HINT_T0);
+#  else
+                __builtin_prefetch(addr);
+#  endif
+            }
+
             //Function to insert into the hash map.
             //If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
             K insert(const K &key, const V &value)
