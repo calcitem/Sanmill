@@ -874,12 +874,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
             epsilon = 0;
         }
 
-#ifdef DEEPER_IF_ONLY_ONE_LEGAL_MOVE
-        if (node->childrenSize == 1) {
-            epsilon++;
-        }
-#endif /* DEEPER_IF_ONLY_ONE_LEGAL_MOVE */
-
         // 递归 Alpha-Beta 剪枝
         value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
 
