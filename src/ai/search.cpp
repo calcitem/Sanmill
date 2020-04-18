@@ -85,7 +85,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         +12, 16, +16, 16,     /* 8 ~ 11 */
         +16, 16, +16, 17,     /* 12 ~ 15 */
         +17, 16, +16, 15,     /* 16 ~ 19 */
-        +15, 14, +14,  6,     /* 20 ~ 23 */
+        +15, 14, +14, 14,     /* 20 ~ 23 */
     };
 
     const depth_t placingDepthTable_9[] = {
@@ -788,6 +788,11 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif // TRANSPOSITION_TABLE_ENABLE
 #endif // DEBUG_AB_TREE
 
+#if 0
+    if (position->phase == PHASE_PLACING && depth == 1 && st->position->nPiecesNeedRemove > 0) {
+        depth--;
+    }
+#endif
 
     if (unlikely(position->phase == PHASE_GAMEOVER) ||   // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
         !depth ||   // 搜索到第0层
