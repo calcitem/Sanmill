@@ -1171,3 +1171,32 @@ hash_t StateInfo::updateHashMisc()
 
     return position->hash;
 }
+
+hash_t StateInfo::getNextMainHash(move_t m)
+{
+    hash_t nextMainHash = position->hash << 8 >> 8;
+    square_t sq = SQ_0;
+
+    if (m < 0) {
+        sq = static_cast<square_t>(-m);
+        int pieceType = Player::toId(position->board.locationToPlayer(sq));
+        nextMainHash ^= zobrist[sq][pieceType];
+
+        if (rule.hasForbiddenLocations && position->phase == PHASE_PLACING) {
+            nextMainHash ^= zobrist[sq][PIECETYPE_FORBIDDEN];
+        }
+    }
+
+#if 0
+    if (m & 0x1f00) {
+        if (choose(static_cast<square_t>(m >> 8))) {
+            return place(static_cast<square_t>(m & 0x00ff));
+        }
+    } else {
+        return place(static_cast<square_t>(m & 0x00ff));
+    }
+#endif
+
+    return nextMainHash;
+}
+

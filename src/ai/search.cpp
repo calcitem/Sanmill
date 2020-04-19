@@ -862,18 +862,14 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif // CLEAR_PRUNED_FLAG_BEFORE_SEARCH
 
     int nchild = node->childrenSize;
-    for (int i = 0; i < nchild; i++) {
+
 #ifdef PREFETCH_SUPPORT
-        if (i + 1 < nchild)
-        {
-            stashPosition();
-            doMove(node->children[i + 1]->move);
-            hash_t nextHash = st->getHash();
-            TT::prefetchHash(nextHash);
-            undoMove();
-        }
+    for (int i = 0; i < nchild; i++) {
+        TT::prefetchHash(st->getNextMainHash(node->children[i]->move));
+    }
 #endif // PREFETCH_SUPPORT
 
+    for (int i = 0; i < nchild; i++) {
         // 棋局入栈保存，以便后续撤销着法
         stashPosition();
 

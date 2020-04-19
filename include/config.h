@@ -95,7 +95,7 @@
 //#define TRANSPOSITION_TABLE_DEBUG
 #endif
 
-//#define PREFETCH_SUPPORT
+#define PREFETCH_SUPPORT
 
 //#define USE_STD_STACK
 
