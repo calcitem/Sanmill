@@ -18,6 +18,7 @@
 */
 
 #include <algorithm>
+#include <climits>
 #include "position.h"
 #include "search.h"
 #include "movegen.h"
@@ -1116,16 +1117,6 @@ time_t StateInfo::getElapsedTime(int playerId)
     return elapsedSeconds[playerId];
 }
 
-/*
- * hash 各数据位详解
- * 8-63位 (共56位): zobrist 值
- * TODO: 低8位浪费了哈希空间，待后续优化
- * 4-7位 (共4位)：player1的手棋数，不需要player2的（可计算出）, 走子阶段置为全1即为全15
- * 2-3位（共2位）：待去子数，最大为3，用2个二进制位表示即可
- * 1位: 动作标识，落子（选子移动）为0，1为去子
- * 0位：轮流标识，0为先手，1为后手
- */
-
 void StateInfo::constructHash()
 {
     position->hash = 0;
@@ -1133,7 +1124,7 @@ void StateInfo::constructHash()
 
 hash_t StateInfo::getHash()
 {
-    // TODO: 每次获取哈希值时更新 hash 值低8位，放在此处调用不优雅
+    // TODO: 每次获取哈希值时更新 hash 值剩余8位，放在此处调用不优雅
     return updateHashMisc();
 }
 
@@ -1157,21 +1148,26 @@ hash_t StateInfo::revertHash(square_t square)
 
 hash_t StateInfo::updateHashMisc()
 {
+    const int HASH_MISC_BIT = 8;
+
     // 清除标记位
-    position->hash &= static_cast<hash_t>(~0xFF);
+    position->hash = position->hash << HASH_MISC_BIT >> HASH_MISC_BIT;
+    hash_t hi = 0;
 
     // 置位
 
     if (position->sideToMove == PLAYER_WHITE) {
-        position->hash |= 1U;
+        hi |= 1U;
     }
 
     if (position->action == ACTION_CAPTURE) {
-        position->hash |= 1U << 1;
+        hi |= 1U << 1;
     }
 
-    position->hash |= static_cast<hash_t>(position->nPiecesNeedRemove) << 2;
-    position->hash |= static_cast<hash_t>(position->nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 position->phase 也可以？
+    hi |= static_cast<hash_t>(position->nPiecesNeedRemove) << 2;
+    hi |= static_cast<hash_t>(position->nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 position->phase 也可以？
+
+    position->hash = position->hash | (hi << (CHAR_BIT * sizeof(hash_t) - HASH_MISC_BIT));
 
     return position->hash;
 }
