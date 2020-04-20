@@ -867,6 +867,13 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     for (int i = 0; i < nchild; i++) {
         TT::prefetchHash(st->getNextMainHash(node->children[i]->move));
     }
+
+#ifdef PREFETCH_DEBUG
+    if (hash << 8 >> 8 == 0x0)
+    {
+        int pause = 1;
+    }
+#endif // PREFETCH_DEBUG
 #endif // PREFETCH_SUPPORT
 
     for (int i = 0; i < nchild; i++) {

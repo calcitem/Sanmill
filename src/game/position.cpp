@@ -1179,23 +1179,28 @@ hash_t StateInfo::getNextMainHash(move_t m)
 
     if (m < 0) {
         sq = static_cast<square_t>(-m);
-        int pieceType = Player::toId(position->board.locationToPlayer(sq));
+        int pieceType = Player::getOpponentById(Player::toId(position->sideToMove));
         nextMainHash ^= zobrist[sq][pieceType];
 
         if (rule.hasForbiddenLocations && position->phase == PHASE_PLACING) {
             nextMainHash ^= zobrist[sq][PIECETYPE_FORBIDDEN];
         }
+
+        return nextMainHash;
     }
 
-#if 0
     if (m & 0x1f00) {
+        return nextMainHash;
+        /*
         if (choose(static_cast<square_t>(m >> 8))) {
             return place(static_cast<square_t>(m & 0x00ff));
         }
+        */
     } else {
-        return place(static_cast<square_t>(m & 0x00ff));
+        sq = static_cast<square_t>(m & 0x00ff);
+        int pieceType = Player::toId(position->sideToMove);
+        nextMainHash ^= zobrist[sq][pieceType];
     }
-#endif
 
     return nextMainHash;
 }
