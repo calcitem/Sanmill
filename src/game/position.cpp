@@ -1189,12 +1189,12 @@ hash_t StateInfo::getNextMainHash(move_t m)
     }
 
     if (m & 0x1f00) {
-        return nextMainHash;
-        /*
-        if (choose(static_cast<square_t>(m >> 8))) {
-            return place(static_cast<square_t>(m & 0x00ff));
-        }
-        */
+        square_t csq = static_cast<square_t>(m >> 8);
+        sq = static_cast<square_t>(m & 0x00ff);
+        int pieceType = Player::toId(position->sideToMove);
+
+        nextMainHash ^= zobrist[sq][pieceType];
+        nextMainHash ^= zobrist[csq][pieceType];
     } else {
         sq = static_cast<square_t>(m & 0x00ff);
         int pieceType = Player::toId(position->sideToMove);
