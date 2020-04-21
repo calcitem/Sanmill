@@ -114,7 +114,7 @@ bool TT::findHash(const hash_t &hash, TT::HashValue &hashValue)
 
 void TT::prefetchHash(const hash_t &hash)
 {
-    transpositionTable.prefetch(hash);
+    transpositionTable.prefetchValue(hash);
 }
 
 int TT::recordHash(const value_t &value,

@@ -463,6 +463,7 @@
     <ClInclude Include="src\base\HashNode.h" />
     <ClInclude Include="src\base\memmgr.h" />
     <ClInclude Include="src\base\misc.h" />
+    <ClInclude Include="src\base\prefetch.h" />
     <ClInclude Include="src\base\sort.h" />
     <ClInclude Include="src\base\stack.h" />
     <QtMoc Include="src\base\aithread.h" />

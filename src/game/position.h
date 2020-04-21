@@ -264,7 +264,7 @@ public:
     hash_t revertHash(square_t square);
     hash_t updateHash(square_t square);
     hash_t updateHashMisc();
-    hash_t StateInfo::getNextMainHash(move_t m);
+    hash_t getNextMainHash(move_t m);
 
 #ifdef MCTS_AI
     // MCTS 相关

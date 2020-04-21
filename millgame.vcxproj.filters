@@ -147,6 +147,9 @@
     <ClInclude Include="src\ai\mcts.h">
       <Filter>ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\base\prefetch.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">

@@ -66,6 +66,7 @@ HEADERS  += \
     src/base/hashMap.h \
     src/base/memmgr.h \
     src/base/misc.h \
+    src/base/prefetch.h \
     src/base/sort.h \
     src/base/stack.h \
     src/base/stopwatch.h \

@@ -8,7 +8,8 @@
 #include <QFile>
 #include <iostream>
 #include "HashNode.h"
-
+#include "prefetch.h"
+#include "types.h"
 #include "config.h"
 
 #define HASH_KEY_DISABLE
@@ -76,22 +77,12 @@ namespace CTSL //Concurrent Thread Safe Library
 #endif
             }
 
-            void prefetch(const K &key)
+            void prefetchValue(const K &key)
             {
                 K hashValue = hashFn(key) & (hashSize - 1);
                 const V *addr = &(hashTable[hashValue].getValue());
 
-#  if defined(__INTEL_COMPILER)
-                // This hack prevents prefetches from being optimized away by
-                // Intel compiler. Both MSVC and gcc seem not be affected by this.
-                __asm__("");
-#  endif
-
-#  if defined(__INTEL_COMPILER) || defined(_MSC_VER)
-                _mm_prefetch((const char *)addr, _MM_HINT_T0);
-#  else
-                __builtin_prefetch(addr);
-#  endif
+                prefetch((void *)addr);
             }
 
             //Function to insert into the hash map.
