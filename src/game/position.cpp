@@ -1173,7 +1173,7 @@ hash_t StateInfo::updateHashMisc()
 
 hash_t StateInfo::getNextMainHash(move_t m)
 {
-    hash_t nextMainHash = position->hash << 8 >> 8;
+    hash_t nextMainHash = position->hash /* << 8 >> 8 */;
     square_t sq = SQ_0;
 
     if (m < 0) {
@@ -1188,19 +1188,13 @@ hash_t StateInfo::getNextMainHash(move_t m)
         return nextMainHash;
     }
 
-    if (m & 0x1f00) {
-        square_t csq = static_cast<square_t>(m >> 8);
-        sq = static_cast<square_t>(m & 0x00ff);
-        int pieceType = Player::toId(position->sideToMove);
+    sq = static_cast<square_t>(m & 0x00ff);
+    int pieceType = Player::toId(position->sideToMove);
+    nextMainHash ^= zobrist[sq][pieceType];
 
-        nextMainHash ^= zobrist[sq][pieceType];
-        nextMainHash ^= zobrist[csq][pieceType];
-    } else {
-        sq = static_cast<square_t>(m & 0x00ff);
-        int pieceType = Player::toId(position->sideToMove);
-        nextMainHash ^= zobrist[sq][pieceType];
+    if (m & 0x1f00) {
+        nextMainHash ^= zobrist[static_cast<square_t>(m >> 8)][pieceType];
     }
 
     return nextMainHash;
 }
-
