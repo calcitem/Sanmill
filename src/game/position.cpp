@@ -490,10 +490,9 @@ bool StateInfo::place(square_t square, int8_t updateCmdlist)
     boardLocations[square] = boardLocations[currentSquare];
 
     updateHash(square);
+    revertHash(currentSquare);
 
     boardLocations[currentSquare] = '\x00';
-
-    revertHash(currentSquare);
 
     currentSquare = square;
     n = position->board.addMills(currentSquare);
