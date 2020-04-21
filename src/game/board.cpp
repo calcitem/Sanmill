@@ -19,6 +19,7 @@
 
 #include "board.h"
 #include "movegen.h"
+#include "prefetch.h"
 
  // 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
 const int Board::onBoard[SQ_EXPANDED_COUNT] = {
@@ -34,6 +35,9 @@ int Board::millTable[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}}
 
 Board::Board()
 {
+#ifdef PREFETCH_SUPPORT
+    prefetch_range(millTable, sizeof(millTable));
+#endif
 }
 
 Board::~Board()

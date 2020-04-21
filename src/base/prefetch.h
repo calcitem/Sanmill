@@ -42,7 +42,7 @@
 */
 
 /* L1 cache line size */
-#define L1_CACHE_SHIFT	12
+#define L1_CACHE_SHIFT	7
 #define L1_CACHE_BYTES	(1 << L1_CACHE_SHIFT)
 
 static inline void prefetch(void *addr)
