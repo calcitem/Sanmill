@@ -368,30 +368,6 @@ void Board::getSurroundedPieceCount(square_t square, int sideId, int &nPlayerPie
     }
 }
 
-// 判断玩家的棋子是否被围
-bool Board::isSurrounded(int sideId, int nPiecesOnBoard[], square_t square)
-{
-    int i;
-    square_t moveSquare;
-
-    // 判断square处的棋子是否被“闷”
-    if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
-        !rule.allowFlyWhenRemainThreePieces) {
-        for (i = 0; i < 4; i++) {
-            moveSquare = static_cast<square_t>(MoveList::moveTable[square][i]);
-            if (moveSquare && !locations[moveSquare])
-                break;
-        }
-
-        // 被围住
-        if (i == 4) {
-            return true;
-        }
-    }
-    // 没被围住
-    return false;
-}
-
 // 判断玩家的棋子是否全部被围
 bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 {

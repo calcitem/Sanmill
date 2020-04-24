@@ -693,11 +693,6 @@ bool StateInfo::choose(square_t square)
 
     // 判断选子是否可选
     if (boardLocations[square] & position->sideToMove) {
-        // 判断location处的棋子是否被“闷”
-        if (position->board.isSurrounded(position->sideId, position->nPiecesOnBoard, square)) {
-            return false;
-        }
-
         // 选子
         currentSquare = square;
 
