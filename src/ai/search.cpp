@@ -863,6 +863,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     int nchild = node->childrenSize;
 
+#ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
     for (int i = 0; i < nchild; i++) {
         TT::prefetchHash(st->getNextMainHash(node->children[i]->move));
@@ -875,6 +876,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     }
 #endif // PREFETCH_DEBUG
 #endif // PREFETCH_SUPPORT
+#endif // TRANSPOSITION_TABLE_ENABLE
 
     for (int i = 0; i < nchild; i++) {
         // 棋局入栈保存，以便后续撤销着法
