@@ -880,11 +880,28 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
             epsilon = 0;
         }
 
-        // 递归 Alpha-Beta 剪枝
-        if (after != before) {
-            value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[i]);
+        if (i == 0) {
+            if (after != before) {
+                value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[0]);
+            } else {
+                value = search(depth - 1 + epsilon, alpha, beta, node->children[0]);
+            }
         } else {
-            value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+            if (after != before) {
+                value = -search(depth - 1 + epsilon, -alpha - 1, -alpha, node->children[i]);
+
+                if (value > alpha && value < beta) {
+                    value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[i]);
+                    //assert(value >= alpha && value <= beta);
+                }
+            } else {
+                value = search(depth - 1 + epsilon, alpha, alpha + 1, node->children[i]);
+
+                if (value > alpha && value < beta) {
+                    value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+                    //assert(value >= alpha && value <= beta);
+                }
+            }
         }
 
         undoMove();
