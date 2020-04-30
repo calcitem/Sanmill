@@ -140,6 +140,10 @@ value_t Evaluation::getValue(StateInfo *st, Position *position, Node *node)
         break;
     }
 
+    if (st->position->sideToMove == PLAYER_WHITE) {
+        value = -value;
+    }
+
     // 赋值返回
     node->value = value;
     return value;

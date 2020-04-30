@@ -62,8 +62,6 @@
 //#define TIME_STAT
 //#define CYCLE_STAT
 
-//#define MIN_MAX_ONLY
-
 //#define EVALUATE_ENABLE
 
 #ifdef EVALUATE_ENABLE
@@ -82,7 +80,6 @@
 //#define IDS_DEBUG
 //#define IDS_ADD_VALUE
 
-//#define CLEAR_PRUNED_FLAG_BEFORE_SEARCH
 //#define DEEPER_IF_ONLY_ONE_LEGAL_MOVE
 
 #define TRANSPOSITION_TABLE_ENABLE
@@ -108,8 +105,6 @@
 #define THREEFOLD_REPETITION
 
 //#define DONOT_DELETE_TREE
-
-//#define SORT_CONSIDER_PRUNED
 
 //#define MESSAGEBOX_ENABLE
 

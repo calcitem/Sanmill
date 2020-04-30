@@ -116,9 +116,6 @@ public:
     int childrenSize { 0 };
 
 #ifdef ALPHABETA_AI
-#ifdef SORT_CONSIDER_PRUNED
-    bool pruned { false };
-#endif
     value_t value { VALUE_UNKNOWN };
     rating_t rating { RATING_ZERO };
 #endif // ALPHABETA_AI
@@ -299,6 +296,9 @@ private:
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
+
+    move_t best { MOVE_NONE };
+    depth_t originDepth { 0 };
 
 private:
     // 命令行

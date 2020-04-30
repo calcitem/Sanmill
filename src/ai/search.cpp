@@ -207,10 +207,6 @@ Node *Node::addChild(
 #ifdef ALPHABETA_AI
     newNode->value = VALUE_ZERO;
     newNode->rating = RATING_ZERO;
-
-#ifdef SORT_CONSIDER_PRUNED
-    newNode->pruned = false;
-#endif
 #endif // ALPHABETA_AI
 
     newNode->childrenSize = 0;  // Important
@@ -395,9 +391,7 @@ int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
             return 0;
         }
 
-        int ret = (gSideToMove == PLAYER_BLACK ? 1 : -1);
-
-        return (first->value < second->value ? ret : -ret);
+        return (first->value < second->value ? 1 : -1);
     }
 
     return (first->rating < second->rating ? 1 : -1);
@@ -411,9 +405,9 @@ void AIAlgorithm::sortMoves(Node *node)
 
     //#define DEBUG_SORT
 #ifdef DEBUG_SORT
-    for (int i = 0; i < node->childrenSize; i++) {
+    for (int moveIndex = 0; moveIndex < node->childrenSize; moveIndex++) {
         loggerDebug("* [%d] %p: %d = %d %d (%d)\n",
-                    i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
+                    moveIndex, &(node->children[moveIndex]), node->children[moveIndex]->move, node->children[moveIndex]->value, node->children[moveIndex]->rating, !node->children[moveIndex]->pruned);
     }
     loggerDebug("\n");
 #endif
@@ -454,14 +448,14 @@ void AIAlgorithm::sortMoves(Node *node)
 
 #ifdef DEBUG_SORT
     if (st->position.sideToMove == PLAYER_BLACK) {
-        for (int i = 0; i < node->childrenSize; i++) {
+        for (int moveIndex = 0; moveIndex < node->childrenSize; moveIndex++) {
             loggerDebug("+ [%d] %p: %d = %d %d (%d)\n",
-                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
+                        moveIndex, &(node->children[moveIndex]), node->children[moveIndex]->move, node->children[moveIndex]->value, node->children[moveIndex]->rating, !node->children[moveIndex]->pruned);
         }
      } else {
-        for (int i = 0; i < node->childrenSize; i++) {
+        for (int moveIndex = 0; moveIndex < node->childrenSize; moveIndex++) {
             loggerDebug("- [%d] %p: %d = %d %d (%d)\n",
-                        i, &(node->children[i]), node->children[i]->move, node->children[i]->value, node->children[i]->rating, !node->children[i]->pruned);
+                        moveIndex, &(node->children[moveIndex]), node->children[moveIndex]->move, node->children[moveIndex]->value, node->children[moveIndex]->rating, !node->children[moveIndex]->pruned);
         }
     }
     loggerDebug("\n----------------------------------------\n");
@@ -592,26 +586,22 @@ int AIAlgorithm::search(depth_t depth)
             loggerDebug("%d(%d) ", value, value - lastValue);
 
 #ifdef IDS_DEBUG
-            loggerDebug(": --------------- depth = %d/%d ---------------\n", i, d);
+            loggerDebug(": --------------- depth = %d/%d ---------------\n", moveIndex, d);
             int k = 0;
             int cs = root->childrenSize;
-            for (int j = 0; j < cs; j++) {
-                if (root->children[j]->value == root->value
-#ifdef SORT_CONSIDER_PRUNED
-                    && !root->children[j]->pruned
-#endif
-                    ) {
+            for (int i = 0; i < cs; i++) {
+                if (root->children[i]->value == root->value) {
                     loggerDebug("[%.2d] %d\t%s\t%d\t%d *\n", k,
-                                root->children[j]->move,
-                                moveToCommand(root->children[j]->move),
-                                root->children[j]->value,
-                                root->children[j]->rating);
+                                root->children[i]->move,
+                                moveToCommand(root->children[i]->move),
+                                root->children[i]->value,
+                                root->children[i]->rating);
                 } else {
                     loggerDebug("[%.2d] %d\t%s\t%d\t%d\n", k,
-                                root->children[j]->move,
-                                moveToCommand(root->children[j]->move),
-                                root->children[j]->value,
-                                root->children[j]->rating);
+                                root->children[i]->move,
+                                moveToCommand(root->children[i]->move),
+                                root->children[i]->value,
+                                root->children[i]->rating);
                 }
 
                 k++;
@@ -663,6 +653,8 @@ int AIAlgorithm::search(depth_t depth)
 #endif // IDS_WINDOW
     }
 
+    originDepth = d;
+
     value = search(d, alpha, beta, root);
 
 #ifdef TIME_STAT
@@ -681,9 +673,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     
     // 评价值
     value_t value;
-
-    // 当前节点的 MinMax 值，最终赋值给节点 value，与 alpha 和 Beta 不同
-    value_t minMax;
 
     // 临时增加的深度，克服水平线效应用
     depth_t epsilon = 0;
@@ -748,12 +737,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         node->isHash = true;
 #endif
         node->value = probeVal;
-
-#ifdef SORT_CONSIDER_PRUNED
-        if (type != TT::hashfEXACT && type != TT::hashfEMPTY) {
-            node->pruned = true;    // TODO: 是否有用?
-        }
-#endif
 
 #if 0
         // TODO: 有必要针对深度微调 value?
@@ -842,6 +825,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                              );
 
         if (node == root && moveSize == 1) {
+            best = moves[0];
             return node->value;
         }
     }
@@ -849,17 +833,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 排序子节点树
     sortMoves(node);
 
-    // 根据演算模型执行 MiniMax 检索，对先手，搜索 Max, 对后手，搜索 Min
-
-    minMax = st->position->sideToMove == PLAYER_BLACK ? -VALUE_INFINITE : VALUE_INFINITE;
-
     assert(node->childrenSize != 0);
-
-#ifdef CLEAR_PRUNED_FLAG_BEFORE_SEARCH
-#ifdef SORT_CONSIDER_PRUNED
-    node->pruned = false;
-#endif  // SORT_CONSIDER_PRUNED
-#endif // CLEAR_PRUNED_FLAG_BEFORE_SEARCH
 
     int nchild = node->childrenSize;
 
@@ -881,8 +855,10 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     for (int i = 0; i < nchild; i++) {
         // 棋局入栈保存，以便后续撤销着法
         stashPosition();
-
-        doMove(node->children[i]->move);
+        player_t before = st->position->sideToMove;
+        move_t m = node->children[i]->move;
+        doMove(m);
+        player_t after = st->position->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && nchild == 1) {
             epsilon = 1;
@@ -891,74 +867,37 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         }
 
         // 递归 Alpha-Beta 剪枝
-        value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+        if (after != before) {
+            value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[i]);
+        } else {
+            value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+        }
 
         undoMove();
 
-        switch (st->position->sideToMove) {
-        case PLAYER_BLACK:
-            // 为走棋一方的层, 局面对走棋的一方来说是以 α 为评价
-
-            // 取最大值
-            minMax = std::max(value, minMax);
-
-            // α 为走棋一方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义
-            // 如果某个着法的结果小于或等于 α，那么它就是很差的着法，因此可以抛弃
-
-            if (value > alpha) {
+        if (value >= beta) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-                hashf = TT::hashfEXACT;
+            hashf = TT::hashfBETA;
 #endif
-                alpha = value;
-            }
+            node->value = beta;
+            goto out;
+        }
 
-            break;
-
-        case PLAYER_WHITE:
-            // 为走棋方的对手一方的层, 局面对对手一方来说是以 β 为评价
-
-           // 取最小值
-            minMax = std::min(value, minMax);
-
-            // β 表示对手目前的劣势，这是对手所能承受的最坏结果
-            // β 值越大，表示对手劣势越明显
-            // 在对手看来，他总是会找到一个对策不比 β 更坏的
-            // 如果当前结点返回 β 或比 β 更好的值，作为父结点的对方就绝对不会选择这种策略，
-            // 如果搜索过程中返回 β 或比 β 更好的值，那就够好的了，走棋的一方就没有机会使用这种策略了。
-            // 如果某个着法的结果大于或等于 β，那么整个结点就作废了，因为对手不希望走到这个局面，而它有别的着法可以避免到达这个局面。
-            // 因此如果我们找到的评价大于或等于β，就证明了这个结点是不会发生的，因此剩下的合理着法没有必要再搜索。
-
-            // TODO: 本意是要删掉这句，忘了删，结果反而棋力没有明显问题，待查
-            // 如果删掉这句，启用下面这段代码，则三有时不会堵并且计算效率较低
-            // 有了这句之后，hashf 不可能等于 hashfBETA
-            beta = std::min(value, beta);
-
-#if 0
-            if (value < beta) {
+        if (value > alpha) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-                hashf = hashfBETA;
+            hashf = TT::hashfEXACT;
 #endif
-                beta = value;
+            alpha = value;
+
+            if (depth == originDepth) {
+                best = m;
             }
-#endif
-            break;
-        default:
-            break;
         }
-        
-#ifndef MIN_MAX_ONLY
-        // 如果某个着法的结果大于 α 但小于β，那么这个着法就是走棋一方可以考虑走的
-        // 否则剪枝返回
-        if (alpha >= beta) {
-#ifdef SORT_CONSIDER_PRUNED
-            node->pruned = true;
-#endif
-            break;
-        }
-#endif /* !MIN_MAX_ONLY */
     }
 
-    node->value = minMax;
+    node->value = alpha;
+
+out:
 
 #ifdef DEBUG_AB_TREE
     node->alpha = alpha;
@@ -978,15 +917,12 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     }
 #endif // DONOT_DELETE_TREE
 
+
+
     if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_ADD_VALUE
-        if (st->position->sideToMove == PLAYER_BLACK) {
-            node->children[0]->value += 1;
-            node->value += 1;
-        } else {
-            node->children[0]->value -= 1;
-            node->value -= 1;
-        }
+        node->children[0]->value += 1;
+        node->value += 1;
 #endif /* IDS_ADD_VALUE */
     }
 
@@ -997,7 +933,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                    hashf,
                    hash
 #ifdef BEST_MOVE_ENABLE
-                   , node->children[0]->move
+                   , best
 #endif // BEST_MOVE_ENABLE
                   );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
@@ -1030,8 +966,7 @@ void AIAlgorithm::undoMove()
 #ifdef ALPHABETA_AI
 const char* AIAlgorithm::bestMove()
 {
-    vector<Node*> bestMoves;
-    size_t bestMovesSize = 0;
+    char charChoose = '*';
 
     if (!root->childrenSize) {
         return "error!";
@@ -1039,21 +974,22 @@ const char* AIAlgorithm::bestMove()
 
     Board::printBoard();
 
-    int i = 0;
+    int moveIndex = 0;
 
     int cs = root->childrenSize;
-    for (int j = 0; j < cs; j++) {
-        if (root->children[j]->value == root->value
-#ifdef SORT_CONSIDER_PRUNED
-            && !root->children[j]->pruned
-#endif
-            ) {
-            loggerDebug("[%.2d] %d\t%s\t%d\t%d *\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value, root->children[j]->rating);
-        } else {
-            loggerDebug("[%.2d] %d\t%s\t%d\t%d\n", i, root->children[j]->move, moveToCommand(root->children[j]->move), root->children[j]->value, root->children[j]->rating);
+    for (int i = 0; i < cs; i++) {
+        if (root->children[i]->move != best) {
+            charChoose = ' ';
         }
 
-        i++;
+        loggerDebug("[%.2d] %d\t%s\t%d\t%d %c\n", moveIndex,
+                    root->children[i]->move,
+                    moveToCommand(root->children[i]->move),
+                    root->children[i]->value,
+                    root->children[i]->rating,
+                    charChoose);
+
+        moveIndex++;
     }
 
     player_t side = state->position->sideToMove;
@@ -1061,17 +997,7 @@ const char* AIAlgorithm::bestMove()
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
     if (gameOptions.getLearnEndgameEnabled()) {
-        bool isMostWeak = true; // 是否明显劣势
-
-        for (int j = 0; j < root->childrenSize; j++) {
-            if ((side == PLAYER_BLACK && root->children[j]->value > -VALUE_STRONG) ||
-                (side == PLAYER_WHITE && root->children[j]->value < VALUE_STRONG)) {
-                isMostWeak = false;
-                break;
-            }
-        }
-
-        if (isMostWeak) {
+        if (root->value <= -VALUE_STRONG) {
             Endgame endgame;
             endgame.type = state->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
@@ -1083,37 +1009,10 @@ const char* AIAlgorithm::bestMove()
 
     // 检查是否必败
     if (gameOptions.getGiveUpIfMostLose() == true) {
-        bool isMostLose = true; // 是否必败
-
-        for (int j = 0; j < root->childrenSize; j++) {
-            if ((side == PLAYER_BLACK && root->children[j]->value > -VALUE_WIN) ||
-                (side == PLAYER_WHITE && root->children[j]->value < VALUE_WIN)) {
-                isMostLose = false;
-                break;
-            }
-        }
-
         // 自动认输
-        if (isMostLose) {
+        if (root->value <= -VALUE_WIN) {
             sprintf(cmdline, "Player%d give up!", state->position->sideId);
             return cmdline;
-        }
-    }
-
-    int nchild = root->childrenSize;
-    for (int j = 0; j < nchild; j++) {
-        if (root->children[j]->value == root->value) {
-            bestMoves.push_back(root->children[j]);
-        }
-    }
-
-    bestMovesSize = bestMoves.size();
-
-    if (bestMovesSize == 0) {
-        loggerDebug("Not any child value is equal to root value\n");
-
-        for (int j = 0; j < root->childrenSize; j++) {
-            bestMoves.push_back(root->children[j]);
         }
     }
 
@@ -1134,11 +1033,7 @@ const char* AIAlgorithm::bestMove()
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-    if (bestMoves.empty()) {
-        return nullptr;
-    }
-
-    return moveToCommand(bestMoves[0]->move);
+    return moveToCommand(best);
 }
 #endif // ALPHABETA_AI
 
