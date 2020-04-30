@@ -249,6 +249,10 @@ public:
 
     // 着法生成
     int generateMoves(Stack<move_t, MOVE_COUNT> &moves);
+    int generateNullMove(Stack<move_t, MOVE_COUNT> &moves);
+
+    bool doNullMove();
+    bool undoNullMove();
 
     // 判断胜负
     player_t getWinner() const;

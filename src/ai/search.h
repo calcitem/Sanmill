@@ -190,6 +190,9 @@ public:
     // 撤销着法
     void undoMove();
 
+    void doNullMove();
+    void undoNullMove();
+
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 清空哈希表
     void clearTT();

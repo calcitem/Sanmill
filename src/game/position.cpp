@@ -1051,6 +1051,18 @@ void StateInfo::changeSideToMove()
     setSideToMove(Player::getOpponent(position->sideToMove));
 }
 
+bool StateInfo::doNullMove()
+{
+    changeSideToMove();
+    return true;
+}
+
+bool StateInfo::undoNullMove()
+{
+    changeSideToMove();
+    return true;
+}
+
 void StateInfo::setTips()
 {
     string winnerStr, t;

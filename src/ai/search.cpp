@@ -799,6 +799,20 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         }
 #endif
 
+#ifdef NULL_MOVE
+        // 空着向前裁剪 (WIP)
+        doNullMove();
+        st->generateNullMove(moves);
+        st->generateChildren(moves, this, node);
+        value = -search(depth - 1 - 2, -beta, -beta + 1, node->children[0]);
+        undoNullMove();
+
+        if (value >= beta) {
+            node->value = beta;
+            return beta;
+        }
+#endif
+
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
         TT::recordHash(node->value,
@@ -961,6 +975,18 @@ void AIAlgorithm::undoMove()
     memcpy(st->position, positionStack.top(), sizeof(Position));
     //st->position = positionStack.top();
     positionStack.pop();
+}
+
+void AIAlgorithm::doNullMove()
+{
+    // 执行空着
+    st->doNullMove();
+}
+
+void AIAlgorithm::undoNullMove()
+{
+    // 执行空着
+    st->undoNullMove();
 }
 
 #ifdef ALPHABETA_AI

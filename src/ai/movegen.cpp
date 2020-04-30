@@ -172,6 +172,13 @@ int StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
     return moves.size();
 }
 
+int StateInfo::generateNullMove(Stack<move_t, MOVE_COUNT> &moves)
+{
+    moves.clear();
+    moves.push_back((move_t)SQ_0);
+    return moves.size();
+}
+
 void MoveList::create()
 {
     // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
