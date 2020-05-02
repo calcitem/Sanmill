@@ -271,6 +271,10 @@ void MillGameWindow::initialize()
 
     // 关联控制器的信号和主窗口控件的槽
 
+    // 更新LCD，显示总盘数
+    connect(gameController, SIGNAL(nGamesPlayedChanged(QString)),
+            ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
+
     // 更新LCD，显示玩家1赢盘数
     connect(gameController, SIGNAL(score1Changed(QString)),
             ui.scoreLcdNumber_1, SLOT(display(QString)));

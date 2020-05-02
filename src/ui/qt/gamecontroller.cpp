@@ -249,6 +249,7 @@ void GameController::gameReset()
     emit statusBarChanged(message);
 
     // 更新比分 LCD 显示
+    emit nGamesPlayedChanged(QString::number(state.nPlayed, 10));
     emit score1Changed(QString::number(state.score[BLACK], 10));
     emit score2Changed(QString::number(state.score[WHITE], 10));
     emit scoreDrawChanged(QString::number(state.score_draw, 10));
