@@ -1298,9 +1298,12 @@ void GameController::humanGiveUp()
 
 void GameController::saveScore()
 {
+    QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_hhmmss");
     qint64 pid = QCoreApplication::applicationPid();
+
     QString path = QDir::currentPath()
-        + "/" + tr("MillGame-Score_")
+        + "/" + tr("Score-MillGame_")
+        + strDateTime + "_"
         + QString::number(pid)
         + ".txt";
 
