@@ -48,28 +48,31 @@ Test::Test(QWidget *parent, QString k)
     readMemoryTimer->stop();
 
     keyCombo->setEditable(true);
+
+    keyCombo->addItem(QString("Key0"));
+    keyCombo->addItem(QString("Key1"));
+    keyCombo->addItem(QString("Key2"));
+    keyCombo->addItem(QString("Key3"));
+    keyCombo->addItem(QString("Key4"));
+    keyCombo->addItem(QString("Key5"));
+    keyCombo->addItem(QString("Key6"));
+    keyCombo->addItem(QString("Key7"));
+    keyCombo->addItem(QString("Key8"));
+    keyCombo->addItem(QString("Key9"));
+    keyCombo->addItem(QString("KeyA"));
+    keyCombo->addItem(QString("KeyB"));
+    keyCombo->addItem(QString("KeyC"));
+    keyCombo->addItem(QString("KeyD"));
+    keyCombo->addItem(QString("KeyE"));
+    keyCombo->addItem(QString("KeyF"));
+
 #ifdef TEST_MODE
     QString appFileName = getAppFileName();
     if (appFileName != APP_FILENAME_DEFAULT) {
         keyCombo->addItem(QString(appFileName));
     }
 #endif // TEST_MODE
-    keyCombo->addItem(QString("MillGame-Key-0"));
-    keyCombo->addItem(QString("MillGame-Key-1"));
-    keyCombo->addItem(QString("MillGame-Key-2"));
-    keyCombo->addItem(QString("MillGame-Key-3"));
-    keyCombo->addItem(QString("MillGame-Key-4"));
-    keyCombo->addItem(QString("MillGame-Key-5"));
-    keyCombo->addItem(QString("MillGame-Key-6"));
-    keyCombo->addItem(QString("MillGame-Key-7"));
-    keyCombo->addItem(QString("MillGame-Key-8"));
-    keyCombo->addItem(QString("MillGame-Key-9"));
-    keyCombo->addItem(QString("MillGame-Key-A"));
-    keyCombo->addItem(QString("MillGame-Key-B"));
-    keyCombo->addItem(QString("MillGame-Key-C"));
-    keyCombo->addItem(QString("MillGame-Key-D"));
-    keyCombo->addItem(QString("MillGame-Key-E"));
-    keyCombo->addItem(QString("MillGame-Key-F"));
+
     auto keyLabel = new QLabel(tr("&Key:"));
     keyLabel->setBuddy(keyCombo);
 
