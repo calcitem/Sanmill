@@ -223,7 +223,7 @@ void MillGameWindow::initialize()
             gameController, SLOT(setGiveUpIfMostLose(bool)));
 
 #ifdef TEST_MODE
-    ui.actionGiveUpIfMostLose_G->setChecked(true);
+    //ui.actionGiveUpIfMostLose_G->setChecked(true);
 #endif // TEST_MODE
 
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
