@@ -134,6 +134,9 @@ public:
 
 signals:
 
+    // 总盘数改变的信号
+    void nGamesPlayedChanged(const QString &score);
+
     // 玩家1(先手）赢盘数改变的信号
     void score1Changed(const QString &score);
 
