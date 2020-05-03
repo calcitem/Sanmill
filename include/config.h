@@ -115,6 +115,9 @@
 
 //#define RAPID_GAME
 
+// WIP, Debugging only
+//#define OPENING_BOOK
+
 //#define ENDGAME_LEARNING
 //#define ENDGAME_LEARNING_FORCE
 //#define ENDGAME_LEARNING_DEBUG

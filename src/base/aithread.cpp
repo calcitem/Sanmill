@@ -22,6 +22,11 @@
 #include "tt.h"
 #include "player.h"
 
+#ifdef OPENING_BOOK
+#include <deque>
+using namespace std;
+#endif
+
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
     state(nullptr),
@@ -97,6 +102,49 @@ move_t computeMove(StateInfo state,
                    const MCTSOptions options);
 #endif // MCTS_AI
 
+#ifdef OPENING_BOOK
+deque<int> openingBookDeque(
+    {
+        /* B W */
+        21, 23,
+        19, 20,
+        17, 18,
+        15, 10,
+        26, 12,
+        28, 11,
+        27, 9, -15,
+        29, -12, 25,
+        13, -25
+    }
+);
+
+deque<int> openingBookDequeBak;
+
+void sq2str(char *str)
+{
+    int sq = openingBookDeque.front();
+    openingBookDeque.pop_front();
+    openingBookDequeBak.push_back(sq);
+
+    int r = 0;
+    int s = 0;
+    int sig = 1;
+
+    if (sq < 0) {
+        sq = -sq;
+        sig = 0;
+    }
+
+    Board::squareToPolar((square_t)sq, r, s);
+
+    if (sig == 1) {
+        sprintf_s(str, 16, "(%d,%d)", r, s);
+    } else {
+        sprintf_s(str, 16, "-(%d,%d)", r, s);
+    }
+}
+#endif // OPENING_BOOK
+
 void AiThread::run()
 {
     // 测试用数据
@@ -133,18 +181,30 @@ void AiThread::run()
         emitCommand();
 #else  // MCTS_AI
 
-        if (ai.search(depth) == 3) {
-            // 三次重复局面和
-            loggerDebug("Draw\n\n");
-            strCommand = "draw";
+#ifdef OPENING_BOOK
+        // gameOptions.getOpeningBook()
+        if (!openingBookDeque.empty()) {
+            char obc[16] = { 0 };
+            sq2str(obc);
+            strCommand = obc;
             emitCommand();
         } else {
-            strCommand = ai.ttMove();
-            if (strCommand && strcmp(strCommand, "error!") != 0) {
-                loggerDebug("Computer: %s\n\n", strCommand);
+#endif
+            if (ai.search(depth) == 3) {
+                // 三次重复局面和
+                loggerDebug("Draw\n\n");
+                strCommand = "draw";
                 emitCommand();
+            } else {
+                strCommand = ai.ttMove();
+                if (strCommand && strcmp(strCommand, "error!") != 0) {
+                    loggerDebug("Computer: %s\n\n", strCommand);
+                    emitCommand();
+                }
             }
+#ifdef OPENING_BOOK
         }
+#endif
 
 #endif // MCTS_AI
 
