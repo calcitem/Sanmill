@@ -78,9 +78,9 @@ public:
         const move_t &move, 
         AIAlgorithm *ai,
         StateInfo *st
-#ifdef BEST_MOVE_ENABLE
-        , const move_t &bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+        , const move_t &ttMove
+#endif // TT_MOVE_ENABLE
     );
 
 #ifdef MCTS_AI
@@ -114,10 +114,6 @@ public:
 
     move_t move { MOVE_NONE };
     int childrenSize { 0 };
-
-#ifdef BEST_MOVE_ENABLE
-    move_t bestMove;
-#endif // BEST_MOVE_ENABLE
 
 #ifdef ALPHABETA_AI
     value_t value { VALUE_UNKNOWN };
@@ -182,7 +178,7 @@ public:
     int search(depth_t depth);
 
     // 返回最佳走法的命令行
-    const char *bestMove();
+    const char *ttMove();
 #endif // ALPHABETA_AI
 
     // 暂存局面

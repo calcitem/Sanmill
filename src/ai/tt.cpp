@@ -32,9 +32,9 @@ value_t TT::probeHash(const hash_t &hash,
                       const value_t &alpha,
                       const value_t &beta,
                       HashType &type
-#ifdef BEST_MOVE_ENABLE
-                      , move_t &bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                      , move_t &ttMove
+#endif // TT_MOVE_ENABLE
                       )
 {
     HashValue hashValue{};
@@ -76,9 +76,9 @@ value_t TT::probeHash(const hash_t &hash,
 
 out:
 
-#ifdef BEST_MOVE_ENABLE
-    bestMove = hashValue.bestMove;
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+    ttMove = hashValue.ttMove;
+#endif // TT_MOVE_ENABLE
 
     return VALUE_UNKNOWN;
 }
@@ -121,9 +121,9 @@ int TT::recordHash(const value_t &value,
                    const depth_t &depth,
                    const TT::HashType &type,
                    const hash_t &hash
-#ifdef BEST_MOVE_ENABLE
-                   , const move_t &bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                   , const move_t &ttMove
+#endif // TT_MOVE_ENABLE
                   )
 {
     // 同样深度或更深时替换
@@ -149,9 +149,9 @@ int TT::recordHash(const value_t &value,
     hashValue.depth = depth;
     hashValue.type = type;
 
-#ifdef BEST_MOVE_ENABLE
-    hashValue.bestMove = bestMove;
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+    hashValue.ttMove = ttMove;
+#endif // TT_MOVE_ENABLE
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
     hashValue.age = transpositionTableAge;

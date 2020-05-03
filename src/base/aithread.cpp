@@ -139,7 +139,7 @@ void AiThread::run()
             strCommand = "draw";
             emitCommand();
         } else {
-            strCommand = ai.bestMove();
+            strCommand = ai.ttMove();
             if (strCommand && strcmp(strCommand, "error!") != 0) {
                 loggerDebug("Computer: %s\n\n", strCommand);
                 emitCommand();

@@ -30,9 +30,9 @@
 void StateInfo::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
                             AIAlgorithm *ai,
                             Node *node
-#ifdef BEST_MOVE_ENABLE
-                          , move_t bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                          , move_t ttMove
+#endif // TT_MOVE_ENABLE
 )
 {
     int size = moves.size();
@@ -48,9 +48,9 @@ void StateInfo::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
 
     for (int i  = 0; i < size; i++) {
         node->addChild(moves[i], ai, this
-#ifdef BEST_MOVE_ENABLE
-                       , bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                       , ttMove
+#endif // TT_MOVE_ENABLE
         );
     }
 

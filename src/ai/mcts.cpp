@@ -402,7 +402,7 @@ move_t AIAlgorithm::computeMove(StateInfo state,
 
     // Find the node with the highest score.
     double bestScore = -1;
-    move_t bestMove = move_t();
+    move_t ttMove = move_t();
 
     for (auto iter : visits) {
         auto move = iter.first;
@@ -412,7 +412,7 @@ move_t AIAlgorithm::computeMove(StateInfo state,
         // https://en.wikipedia.org/wiki/Beta_distribution
         double expectedSuccessRate = (w + 1) / (v + 2);
         if (expectedSuccessRate > bestScore) {
-            bestMove = move;
+            ttMove = move;
             bestScore = expectedSuccessRate;
         }
 
@@ -424,10 +424,10 @@ move_t AIAlgorithm::computeMove(StateInfo state,
     }
 
     if (options.verbose) {
-        auto best_wins = wins[bestMove];
-        auto best_visits = visits[bestMove];
+        auto best_wins = wins[ttMove];
+        auto best_visits = visits[ttMove];
         cerr << "----" << endl;
-        cerr << "Best: " << bestMove
+        cerr << "Best: " << ttMove
             << " (" << 100.0 * best_visits / double(gamesPlayed) << "% visits)"
             << " (" << 100.0 * best_wins / best_visits << "% wins)" << endl;
     }
@@ -441,7 +441,7 @@ move_t AIAlgorithm::computeMove(StateInfo state,
     }
 #endif
 
-    return bestMove;
+    return ttMove;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
