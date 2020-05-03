@@ -380,8 +380,7 @@ Node *Node::addChild(
 #ifdef ALPHABETA_AI
 int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
-    //return second->rating - first->rating;
-
+#if 0
     if (first->rating == second->rating) {
         if (first->value == second->value) {
             return 0;
@@ -391,6 +390,9 @@ int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
     }
 
     return (first->rating < second->rating ? 1 : -1);
+#endif
+
+    return second->rating - first->rating;
 }
 #endif
 
