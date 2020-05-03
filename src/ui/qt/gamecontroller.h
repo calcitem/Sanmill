@@ -132,6 +132,11 @@ public:
 
     void humanGiveUp();
 
+    StateInfo getState()
+    {
+        return state;
+    }
+
 signals:
 
     // 总盘数改变的信号
