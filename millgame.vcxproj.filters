@@ -150,6 +150,9 @@
     <ClInclude Include="src\base\prefetch.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="src\ai\movepick.h">
+      <Filter>ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -390,6 +393,9 @@
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="src\ai\mcts.cpp">
+      <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ai\movepick.cpp">
       <Filter>ai</Filter>
     </ClCompile>
   </ItemGroup>

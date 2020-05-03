@@ -27,6 +27,7 @@ SOURCES += \
     src/ai/evaluate.cpp \
     src/ai/mcts.cpp \
     src/ai/movegen.cpp \
+    src/ai/movepick.cpp \
     src/ai/trainer.cpp \
     src/ai/tt.cpp \
     src/base/memmgr.cpp \
@@ -59,6 +60,7 @@ HEADERS  += \
     src/ai/evaluate.h \
     src/ai/mcts.h \
     src/ai/movegen.h \
+    src/ai/movepick.h \
     src/ai/trainer.h \
     src/ai/tt.h \
     src/base/HashNode.h \

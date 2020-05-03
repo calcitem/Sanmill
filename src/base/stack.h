@@ -21,6 +21,7 @@
 #define STACK_H
 
 #include <cstdlib>
+#include <cassert>
 
 template <typename T, size_t capacity = 128>
 class Stack

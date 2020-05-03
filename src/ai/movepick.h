@@ -23,56 +23,21 @@
 #include "stack.h"
 #include "types.h"
 
-// TODO: Fix size
-typedef Stack<score_t, 64> PlaceHistory;
-typedef Stack<score_t, 64> CaptureHistory;
-typedef Stack<score_t, 10240> MoveHistory;
-
 class MovePicker
 {
 public:
-    static PlaceHistory placeHistory;
-    static CaptureHistory captureHistory;
-    static MoveHistory moveHistory;
+    MovePicker();
 
-    static score_t getHistoryScore(move_t move)
-    {
-        score_t ret;
+#ifdef HOSTORY_HEURISTIC
+    // TODO: Fix size
+    score_t placeHistory[64];
+    score_t captureHistory[64];
+    score_t moveHistory[10240];
 
-        if (move < 0) {
-            ret = placeHistory[-move];
-        } else if (move & 0x7f00) {
-            ret = moveHistory[move];
-        } else {
-            ret = placeHistory[move & 0x007f];
-        }
-
-        return ret;
-    }
-
-    static void setHistoryScore(move_t move, depth_t depth)
-    {
-        if (move == MOVE_NONE) {
-            return;
-        }
-
-        score_t score = 1 << depth;
-
-        if (move < 0) {
-            placeHistory[-move] += score;
-        } else if (move & 0x7f00) {
-            moveHistory[move] += score;
-        } else {
-            moveHistory[move & 0x007f] += score;
-        }
-    }
-
-    static void clearHistoryScore()
-    {
-        placeHistory.clear();
-        captureHistory.clear();
-        moveHistory.clear();
-    }
+    score_t getHistoryScore(move_t move);
+    void setHistoryScore(move_t move, depth_t depth);
+    void clearHistoryScore();
+#endif // HOSTORY_HEURISTIC
 };
 
 #endif // MOVEPICK_H
