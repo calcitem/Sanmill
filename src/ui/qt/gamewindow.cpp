@@ -596,12 +596,36 @@ void MillGameWindow::on_actionNew_N_triggered()
 {
     auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
 
+    // 棋未下完，且已经走了若干步以上，则算对手得分
+    if (strlist->stringList().size() > 12) {
+        gameController->humanGiveUp();
+    }
+
+    gameController->saveScore();
+
 #ifdef SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
     QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_hhmmss");
+    QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
+    QString whoWin;
 
-    QString path = QDir::currentPath()
-        + "/" + tr("book_")
-        + strDateTime
+    switch (gameController->getState().getWinner()) {
+    case PLAYER_BLACK:
+        whoWin = "Black-Win";
+        break;
+    case PLAYER_WHITE:
+        whoWin = "White-Win";
+        break;
+    case PLAYER_DRAW:
+        whoWin = "Draw";
+        break;
+    default:
+        whoWin = "Unknown";
+        break;
+    }
+
+    QString path = QDir::currentPath() + "/"
+        + tr("Book_")
+        + whoWin + "_" + strDateTime
         + ".txt";
 
     // 下了一定步数之后新建游戏时才保存棋谱
@@ -609,13 +633,6 @@ void MillGameWindow::on_actionNew_N_triggered()
         saveBook(path);
     }
 #endif /* SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED */
-
-    // 棋未下完，且已经走了若干步以上，则算对手得分
-    if (strlist->stringList().size() > 12) {
-        gameController->humanGiveUp();
-    }
-
-    gameController->saveScore();
 
     // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);    
