@@ -141,6 +141,10 @@ const map<int, QStringList> GameController::getActions()
     return actions;
 }
 
+#ifdef OPENING_BOOK
+extern deque<int> openingBookDeque;
+extern deque<int> openingBookDequeBak;
+#endif
 
 void GameController::gameStart()
 {
@@ -154,6 +158,13 @@ void GameController::gameStart()
 
     gameStartTime = now();
     gameStartCycle = stopwatch::rdtscp_clock::now();
+
+#ifdef OPENING_BOOK
+    if (openingBookDeque.empty() && !openingBookDequeBak.empty()) {
+        openingBookDeque = openingBookDequeBak;
+        openingBookDequeBak.clear();
+    }
+#endif
 }
 
 void GameController::gameReset()
