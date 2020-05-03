@@ -31,6 +31,7 @@
 #include "types.h"
 #include "option.h"
 #include "misc.h"
+#include "movepick.h"
 
 #define SORT_NAME nodep
 #define SORT_TYPE Node*
@@ -51,6 +52,7 @@ AIAlgorithm::AIAlgorithm()
 {
     state = new StateInfo();
     st = new StateInfo();
+    movePicker = new MovePicker();
 
     memmgr.memmgr_init();
 
@@ -199,6 +201,10 @@ Node *Node::addChild(
     }
 
     newNode->move = m;
+
+#ifdef HOSTORY_HEURISTIC
+    newNode->score = ai->movePicker->getHistoryScore(m);
+#endif
 
 #ifdef ALPHABETA_AI
     newNode->value = VALUE_ZERO;
@@ -380,19 +386,37 @@ Node *Node::addChild(
 #ifdef ALPHABETA_AI
 int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
-#if 0
-    if (first->rating == second->rating) {
-        if (first->value == second->value) {
+#ifdef COMPARE_RATING_ONLY
+    return second->rating - first->rating;
+#endif
+
+#ifdef COMPARE_SCORE_ONLY
+    return second->score - first->score;
+#endif
+
+#ifdef COMPARE_SCORE_PREFERRED
+    if (first->score == second->score) {
+        if (first->rating == second->rating) {
             return 0;
         }
 
-        return (first->value < second->value ? 1 : -1);
+        return (first->rating < second->rating ? 1 : -1);
+    }
+
+    return (first->score < second->score ? 1 : -1);
+#endif
+
+#ifdef COMPARE_RATING_PREFERRED
+    if (first->rating == second->rating) {
+        if (first->score == second->score) {
+            return 0;
+        }
+
+        return (first->score < second->score ? 1 : -1);
     }
 
     return (first->rating < second->rating ? 1 : -1);
 #endif
-
-    return second->rating - first->rating;
 }
 #endif
 
@@ -973,6 +997,10 @@ out:
                   );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
+#ifdef HOSTORY_HEURISTIC
+    movePicker->setHistoryScore(best, depth);
+#endif
+
     // 返回
     return node->value;
 }
@@ -1029,11 +1057,16 @@ const char* AIAlgorithm::ttMove()
             charChoose = ' ';
         }
 
-        loggerDebug("[%.2d] %d\t%s\t%d\t%d %c\n", moveIndex,
+        loggerDebug("[%.2d] %d\t%s\t%d\t%d\t%u %c\n", moveIndex,
                     root->children[i]->move,
                     moveToCommand(root->children[i]->move),
                     root->children[i]->value,
                     root->children[i]->rating,
+#ifdef HOSTORY_HEURISTIC
+                    root->children[i]->score,
+#else
+                    0,
+#endif
                     charChoose);
 
         moveIndex++;

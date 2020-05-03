@@ -40,6 +40,7 @@
 #include "types.h"
 #include "memmgr.h"
 #include "misc.h"
+#include "movepick.h"
 #ifdef CYCLE_STAT
 #include "stopwatch.h"
 #endif
@@ -118,6 +119,9 @@ public:
 #ifdef ALPHABETA_AI
     value_t value { VALUE_UNKNOWN };
     rating_t rating { RATING_ZERO };
+#ifdef HOSTORY_HEURISTIC
+    score_t score { 0 };
+#endif
 #endif // ALPHABETA_AI
 
     player_t sideToMove { PLAYER_NOBODY };
@@ -171,6 +175,9 @@ public:
     {
         loggerDebug("Timeout\n");
         requiredQuit = true;
+#ifdef HOSTORY_HEURISTIC
+        movePicker->clearHistoryScore();
+#endif
     }
 
 #ifdef ALPHABETA_AI
@@ -274,6 +281,8 @@ protected:
 public:
     // 原始模型
     StateInfo *state { nullptr };
+
+    MovePicker *movePicker { nullptr };
 
 private:
 
