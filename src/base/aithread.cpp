@@ -109,12 +109,7 @@ deque<int> openingBookDeque(
         21, 23,
         19, 20,
         17, 18,
-        15, 10,
-        26, 12,
-        28, 11,
-        27, 9, -15,
-        29, -12, 25,
-        13, -25
+        15,
     }
 );
 
@@ -196,7 +191,7 @@ void AiThread::run()
                 strCommand = "draw";
                 emitCommand();
             } else {
-                strCommand = ai.ttMove();
+                strCommand = ai.nextMove();
                 if (strCommand && strcmp(strCommand, "error!") != 0) {
                     loggerDebug("Computer: %s\n\n", strCommand);
                     emitCommand();

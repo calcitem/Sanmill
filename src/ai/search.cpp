@@ -83,7 +83,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
     const depth_t placingDepthTable_12[] = {
          +1,  2,  +2,  4,     /* 0 ~ 3 */
-         +4, 12, +12, 12,     /* 4 ~ 7 */
+         +4, 12, +12, 18,     /* 4 ~ 7 */
         +12, 16, +16, 16,     /* 8 ~ 11 */
         +16, 16, +16, 17,     /* 12 ~ 15 */
         +17, 16, +16, 15,     /* 16 ~ 19 */
@@ -271,7 +271,7 @@ Node *Node::addChild(
     }
 #endif // TT_MOVE_ENABLE
 
-    // 若没有启用置换表，或启用了但为叶子节点，则 ttMove 为0
+    // 若没有启用置换表，或启用了但为叶子节点，则 nextMove 为0
     square_t sq = SQ_0;
 
     if (m > 0) {
@@ -386,6 +386,30 @@ Node *Node::addChild(
 #ifdef ALPHABETA_AI
 int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
 {
+#ifdef COMPARE_RATING_1ST_VALUE_2ND
+    if (first->rating == second->rating) {
+        if (first->value == second->value) {
+            return 0;
+        }
+
+        return (first->value < second->value ? 1 : -1);
+        }
+
+    return (first->rating < second->rating ? 1 : -1);
+#endif
+
+#ifdef COMPARE_VALUE_1ST_RATING_2ND
+    if (first->value == second->value) {
+        if (first->rating == second->rating) {
+            return 0;
+        }
+
+        return (first->rating < second->rating ? 1 : -1);
+        }
+
+    return (first->value < second->value ? 1 : -1);
+#endif
+
 #ifdef COMPARE_RATING_ONLY
     return second->rating - first->rating;
 #endif
@@ -1039,7 +1063,7 @@ void AIAlgorithm::undoNullMove()
 }
 
 #ifdef ALPHABETA_AI
-const char* AIAlgorithm::ttMove()
+const char* AIAlgorithm::nextMove()
 {
     char charChoose = '*';
 
@@ -1050,11 +1074,15 @@ const char* AIAlgorithm::ttMove()
     Board::printBoard();
 
     int moveIndex = 0;
+    bool foundBest = false;
 
     int cs = root->childrenSize;
     for (int i = 0; i < cs; i++) {
         if (root->children[i]->move != best) {
             charChoose = ' ';
+        } else {
+            charChoose = '*';
+            foundBest = true;
         }
 
         loggerDebug("[%.2d] %d\t%s\t%d\t%d\t%u %c\n", moveIndex,
@@ -1112,8 +1140,11 @@ const char* AIAlgorithm::ttMove()
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
-
-    return moveToCommand(best);
+    if (foundBest == false) {
+        assert(0);
+    } else {
+        return moveToCommand(best);
+    }
 }
 #endif // ALPHABETA_AI
 

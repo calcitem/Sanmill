@@ -185,7 +185,7 @@ public:
     int search(depth_t depth);
 
     // 返回最佳走法的命令行
-    const char *ttMove();
+    const char *nextMove();
 #endif // ALPHABETA_AI
 
     // 暂存局面
