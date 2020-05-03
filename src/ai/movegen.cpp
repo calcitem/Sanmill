@@ -62,8 +62,8 @@ void StateInfo::generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
 
 int StateInfo::generateMoves(Stack<move_t, MOVE_COUNT> &moves)
 {
-    square_t square = SQ_0;
-    player_t opponent = PLAYER_NOBODY;
+    square_t square;
+    player_t opponent;
 
     moves.clear();
 

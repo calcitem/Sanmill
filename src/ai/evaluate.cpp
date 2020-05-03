@@ -25,9 +25,9 @@ value_t Evaluation::getValue(StateInfo *st, Position *position, Node *node)
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
 
-    int nPiecesInHandDiff = std::numeric_limits<int>::max();
-    int nPiecesOnBoardDiff = std::numeric_limits<int>::max();
-    int nPiecesNeedRemove = 0;
+    int nPiecesInHandDiff;
+    int nPiecesOnBoardDiff;
+    int nPiecesNeedRemove;
 
 #ifdef DEBUG_AB_TREE
     node->phase = position->phase;

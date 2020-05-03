@@ -675,7 +675,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     value_t value;
 
     // 临时增加的深度，克服水平线效应用
-    depth_t epsilon = 0;
+    depth_t epsilon;
 
 #ifdef BEST_MOVE_ENABLE
     // 子节点的最优着法
