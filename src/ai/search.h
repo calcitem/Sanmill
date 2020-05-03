@@ -115,6 +115,10 @@ public:
     move_t move { MOVE_NONE };
     int childrenSize { 0 };
 
+#ifdef BEST_MOVE_ENABLE
+    move_t bestMove;
+#endif // BEST_MOVE_ENABLE
+
 #ifdef ALPHABETA_AI
     value_t value { VALUE_UNKNOWN };
     rating_t rating { RATING_ZERO };
