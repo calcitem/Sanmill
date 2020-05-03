@@ -178,19 +178,15 @@ void AIAlgorithm::buildRoot()
 #endif // ALPHABETA_AI
 
     root->sideToMove = PLAYER_NOBODY;
-
-#ifdef BEST_MOVE_ENABLE
-    root->bestMove = MOVE_NONE;
-#endif // BEST_MOVE_ENABLE
 }
 
 Node *Node::addChild(
     const move_t &m,
     AIAlgorithm *ai,
     StateInfo *st
-#ifdef BEST_MOVE_ENABLE
-    , const move_t &bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+    , const move_t &ttMove
+#endif // TT_MOVE_ENABLE
 )
 {
     Node *newNode = (Node *)ai->memmgr.memmgr_alloc(sizeof(Node));
@@ -261,15 +257,15 @@ Node *Node::addChild(
     children[childrenSize] = newNode;
     childrenSize++;
 
-#ifdef BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
     // 如果启用了置换表并且不是叶子结点
-    if (move == bestMove && move != 0) {
+    if (move == ttMove && move != 0) {
         newNode->rating += RATING_TT;
         return newNode;
     }
-#endif // BEST_MOVE_ENABLE
+#endif // TT_MOVE_ENABLE
 
-    // 若没有启用置换表，或启用了但为叶子节点，则 bestMove 为0
+    // 若没有启用置换表，或启用了但为叶子节点，则 ttMove 为0
     square_t sq = SQ_0;
 
     if (m > 0) {
@@ -677,10 +673,10 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 临时增加的深度，克服水平线效应用
     depth_t epsilon;
 
-#ifdef BEST_MOVE_ENABLE
-    // 子节点的最优着法
-    move_t bestMove = MOVE_NONE;
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+    // 置换表中读取到的最优着法
+    move_t ttMove = MOVE_NONE;
+#endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
@@ -721,9 +717,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     TT::HashType type = TT::hashfEMPTY;
 
     value_t probeVal = TT::probeHash(hash, depth, alpha, beta, type
-#ifdef BEST_MOVE_ENABLE
-                                     , bestMove
-#endif // BEST_MOVE_ENABLE                                     
+#ifdef TT_MOVE_ENABLE
+                                     , ttMove
+#endif // TT_MOVE_ENABLE                                     
     );
 
     if (probeVal != VALUE_UNKNOWN) {
@@ -745,6 +741,12 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         else
             node->value -= hashValue.depth - depth;
 #endif
+
+#ifdef TT_MOVE_ENABLE
+//         if (ttMove != MOVE_NONE) {
+//             best = ttMove;
+//         }
+#endif // TT_MOVE_ENABLE
 
         return node->value;
     }
@@ -819,9 +821,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                        depth,
                        TT::hashfEXACT,
                        hash
-#ifdef BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
                        , MOVE_NONE
-#endif // BEST_MOVE_ENABLE
+#endif // TT_MOVE_ENABLE
                       );
 #endif
 
@@ -833,9 +835,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         int moveSize = st->generateMoves(moves);
 
         st->generateChildren(moves, this, node
-#ifdef BEST_MOVE_ENABLE
-                             , bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                             , ttMove
+#endif // TT_MOVE_ENABLE
                              );
 
         if (node == root && moveSize == 1) {
@@ -963,9 +965,9 @@ out:
                    depth,
                    hashf,
                    hash
-#ifdef BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
                    , best
-#endif // BEST_MOVE_ENABLE
+#endif // TT_MOVE_ENABLE
                   );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
@@ -1007,7 +1009,7 @@ void AIAlgorithm::undoNullMove()
 }
 
 #ifdef ALPHABETA_AI
-const char* AIAlgorithm::bestMove()
+const char* AIAlgorithm::ttMove()
 {
     char charChoose = '*';
 

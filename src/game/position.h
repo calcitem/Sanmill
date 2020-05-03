@@ -242,9 +242,9 @@ public:
     void generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
                           AIAlgorithm *ai,
                           Node *node
-#ifdef BEST_MOVE_ENABLE
-                        , move_t bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                        , move_t ttMove
+#endif // TT_MOVE_ENABLE
     );
 
     // 着法生成

@@ -53,9 +53,9 @@ public:
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
         uint8_t age;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-#ifdef BEST_MOVE_ENABLE
-        move_t bestMove;
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+        move_t ttMove;
+#endif // TT_MOVE_ENABLE
     };
 
     // 查找哈希表
@@ -65,9 +65,9 @@ public:
                              const value_t &alpha,
                              const value_t &beta,
                              HashType &type
-#ifdef BEST_MOVE_ENABLE
-                             , move_t &bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                             , move_t &ttMove
+#endif // TT_MOVE_ENABLE
                              );
 
     // 插入哈希表
@@ -75,9 +75,9 @@ public:
                           const depth_t &depth,
                           const HashType &type,
                           const hash_t &hash
-#ifdef BEST_MOVE_ENABLE
-                          , const move_t &bestMove
-#endif // BEST_MOVE_ENABLE
+#ifdef TT_MOVE_ENABLE
+                          , const move_t &ttMove
+#endif // TT_MOVE_ENABLE
                          );
 
     // 清空置换表
