@@ -35,6 +35,7 @@
 //#define UCT_DEMO
 
 #define ALPHABETA_AI
+//#define MTDF_AI
 //#define MCTS_AI
 
 //#define MCTS_PLD
