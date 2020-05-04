@@ -56,10 +56,6 @@ Position::Position()
 
 StateInfo::~StateInfo()
 {
-    if (position != nullptr) {
-        delete position;
-        position = nullptr;
-    }
 }
 
 Position::~Position()

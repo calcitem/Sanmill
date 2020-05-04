@@ -40,7 +40,7 @@ public:
     ~Stack()
     {        
         //memset(arr, 0, sizeof(T) * capacity);
-        delete[] arr;
+        //delete[] arr;
     }
 
     Stack &operator= (const Stack &other)
