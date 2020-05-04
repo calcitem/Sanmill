@@ -739,6 +739,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     
     // 评价值
     value_t value;
+    node->value = -VALUE_INFINITE;
 
     // 临时增加的深度，克服水平线效应用
     depth_t epsilon;
@@ -850,7 +851,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif
 
     if (unlikely(position->phase == PHASE_GAMEOVER) ||   // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-        !depth ||   // 搜索到第0层
+        depth <= 0 ||   // 搜索到第0层
         unlikely(requiredQuit)) {
         // 局面评估
         node->value = Evaluation::getValue(st, position, node);
@@ -978,27 +979,29 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
         undoMove();
 
-        if (value >= beta) {
-#ifdef TRANSPOSITION_TABLE_ENABLE
-            hashf = TT::hashfBETA;
-#endif
-            node->value = beta;
-            goto out;
-        }
+        if (value >= node->value) {
+            node->value = value;
 
-        if (value > alpha) {
+            if (value > alpha) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-            hashf = TT::hashfEXACT;
+                hashf = TT::hashfEXACT;
 #endif
-            alpha = value;
+                alpha = value;
 
-            if (depth == originDepth) {
-                best = m;
+                if (depth == originDepth) {
+                    best = m;
+                }
+            }
+
+            if (value >= beta) {
+#ifdef TRANSPOSITION_TABLE_ENABLE
+                hashf = TT::hashfBETA;
+#endif
+                node->value = beta;
+                goto out;
             }
         }
     }
-
-    node->value = alpha;
 
 out:
 
