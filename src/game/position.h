@@ -181,7 +181,7 @@ public:
         return position->nPiecesInHand[playerId];
     }
 
-    // 玩家1盘面剩余子数
+    // 玩家盘面剩余子数
     int getPiecesOnBoardCount(int playerId) const
     {
         return position->nPiecesOnBoard[playerId];
