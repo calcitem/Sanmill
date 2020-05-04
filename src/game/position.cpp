@@ -26,6 +26,9 @@
 #include "option.h"
 #include "zobrist.h"
 
+// 当前棋局的字符提示
+string tips;
+
 StateInfo::StateInfo()
 {
     if (position != nullptr) {
@@ -118,7 +121,7 @@ Position &Position::operator= (const Position &pos)
     move = pos.move;
     memcpy(cmdline, pos.cmdline, sizeof(cmdline));
     cmdlist = pos.cmdlist;
-    tips = pos.tips;
+    //tips = pos.tips;
 
     return *this;
 }
@@ -143,7 +146,7 @@ Position &Position::operator= (Position &pos)
     move = pos.move;
     memcpy(cmdline, pos.cmdline, sizeof(cmdline));
     cmdlist = pos.cmdlist;
-    tips = pos.tips;
+    //tips = pos.tips;
 
     return *this;
 }

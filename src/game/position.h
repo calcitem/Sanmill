@@ -39,6 +39,8 @@ class AIAlgorithm;
 class StateInfo;
 class Node;
 
+extern string tips;
+
 // 棋局结构体，算法相关，包含当前棋盘数据
 // 单独分离出来供AI判断局面用，生成置换表时使用
 class Position
@@ -340,9 +342,6 @@ private:
 
     // 玩家用时（秒）
     time_t elapsedSeconds[COLOR_COUNT];
-
-    // 当前棋局的字符提示
-    string tips;
 };
 
 // 棋类（在数据模型内，玩家只分先后手，不分黑白）
