@@ -908,16 +908,25 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif
 
 #ifdef NULL_MOVE
-        // 空着向前裁剪 (WIP)
-        doNullMove();
-        st->generateNullMove(moves);
-        st->generateChildren(moves, this, node);
-        value = -search(depth - 1 - 2, -beta, -beta + 1, node->children[0]);
-        undoNullMove();
+        if (depth % 2 == 1)
+        {
+            // 空着向前裁剪 (WIP)        
+            st->generateNullMove(moves);
+            st->generateChildren(moves, this, node);
+            doNullMove();
+            int moveCount = st->generateMoves(moves);
+            if (moveCount)
+            {
+                st->generateChildren(moves, this, node->children[0]);
+                value = -search(depth - 1 - 2, -beta, -beta + 1, node->children[0]);
+                undoNullMove();
 
-        if (value >= beta) {
-            node->value = beta;
-            return beta;
+                if (value >= beta) {
+                    node->value = beta;
+                    return beta;
+                }
+            }
+
         }
 #endif
 
