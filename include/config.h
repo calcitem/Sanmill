@@ -36,7 +36,7 @@
 
 #define ALPHABETA_AI
 #define PVS_AI
-//#define MTDF_AI
+#define MTDF_AI
 //#define MCTS_AI
 
 //#define MCTS_PLD

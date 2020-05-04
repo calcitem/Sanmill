@@ -751,18 +751,12 @@ value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
 
     while (lowerbound < upperbound) {
         if (g == lowerbound) {
-            beta = g + 1;
+            beta = g + VALUE_MTDF_WINDOW;
         } else {
             beta = g;
         }
 
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef CLEAR_TRANSPOSITION_TABLE
-        //TT::clear();  // 每次走子前清空哈希表 TODO: 需要?
-#endif
-#endif
-
-        g = search(depth, beta - 1, beta, root);
+        g = search(depth, beta - VALUE_MTDF_WINDOW, beta, root);
 
         if (g < beta) {
             upperbound = g;    // fail low
@@ -1003,14 +997,14 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     }
         } else {
             if (after != before) {
-                value = -search(depth - 1 + epsilon, -alpha - 1, -alpha, node->children[i]);
+                value = -search(depth - 1 + epsilon, -alpha - VALUE_PVS_WINDOW, -alpha, node->children[i]);
 
                 if (value > alpha && value < beta) {
                     value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[i]);
                     //assert(value >= alpha && value <= beta);
                 }
             } else {
-                value = search(depth - 1 + epsilon, alpha, alpha + 1, node->children[i]);
+                value = search(depth - 1 + epsilon, alpha, alpha + VALUE_PVS_WINDOW, node->children[i]);
 
                 if (value > alpha && value < beta) {
                     value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
