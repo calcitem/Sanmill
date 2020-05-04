@@ -238,6 +238,7 @@ public: /* TODO: Move to private or protected */
 
     // 清空节点树
     void deleteTree(Node *node);
+    void deleteSubTree(Node *node);
 
     // 构造根节点
     void buildRoot();
