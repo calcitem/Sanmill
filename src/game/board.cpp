@@ -204,12 +204,18 @@ player_t Board::locationToPlayer(square_t square)
     return player_t(locations[square] & 0x30);
 }
 
-int Board::inHowManyMills(square_t square, player_t player)
+int Board::inHowManyMills(square_t square, player_t player, square_t squareChoose)
 {
     int n = 0;
+    location_t locbak = SQ_0;
 
     if (player == PLAYER_NOBODY) {
         player = locationToPlayer(square);
+    }
+
+    if (squareChoose != SQ_0) {
+        locbak = locations[squareChoose];
+        locations[squareChoose] = 0;
     }
 
     for (int l = 0; l < LINE_TYPES_COUNT; l++) {
@@ -218,6 +224,10 @@ int Board::inHowManyMills(square_t square, player_t player)
             locations[millTable[square][l][1]]) {
             n++;
         }
+    }
+
+    if (squareChoose != SQ_0) {
+        locations[squareChoose] = locbak;
     }
 
     return n;
