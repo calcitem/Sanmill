@@ -63,7 +63,7 @@ void Position::generateChildren(const Stack<move_t, MAX_MOVES> &moves,
 int Position::generateMoves(Stack<move_t, MAX_MOVES> &moves)
 {
     square_t square;
-    player_t opponent;
+    player_t op;
 
     moves.clear();
 
@@ -140,13 +140,13 @@ int Position::generateMoves(Stack<move_t, MAX_MOVES> &moves)
 
         // 对于吃子动作
     case ACTION_CAPTURE:
-        opponent = Player::getOpponent(sideToMove);
+        op = Player::getOpponent(sideToMove);
 
-        if (board.isAllInMills(opponent)) {
+        if (board.isAllInMills(op)) {
             // 全成三的情况
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<square_t>(MoveList::movePriorityTable[i]);
-                if (board.locations[square] & opponent) {
+                if (board.locations[square] & op) {
                     moves.push_back((move_t)-square);
                 }
             }
@@ -156,7 +156,7 @@ int Position::generateMoves(Stack<move_t, MAX_MOVES> &moves)
         // 不是全成三的情况
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<square_t>(MoveList::movePriorityTable[i]);
-            if (board.locations[square] & opponent) {
+            if (board.locations[square] & op) {
                 if (rule.allowRemoveMill || !board.inHowManyMills(square, PLAYER_NOBODY)) {
                     moves.push_back((move_t)-square);
                 }

@@ -1165,7 +1165,7 @@ const char* AIAlgorithm::nextMove()
         moveIndex++;
     }
 
-    player_t side = state->position->sideToMove;
+    //player_t side = state->position->sideToMove;
 
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
@@ -1205,11 +1205,12 @@ const char* AIAlgorithm::nextMove()
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
+
     if (foundBest == false) {
-        assert(0);
-    } else {
-        return moveToCommand(best);
+        loggerDebug("Warning: Best Move NOT Found\n");
     }
+
+    return moveToCommand(best);
 }
 #endif // ALPHABETA_AI
 

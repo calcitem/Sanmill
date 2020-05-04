@@ -188,9 +188,9 @@ int Position::countPiecesInHand()
 // 设置棋局状态和棋盘数据，用于初始化
 bool Position::setPosition(const struct Rule *newRule,
                        step_t initialStep,
-                       phase_t phase, player_t side, action_t action,
+                       phase_t ph, player_t side, action_t act,
                        const char *locations,
-                       int nPiecesNeedRemove)
+                       int piecesNeedRemove)
 {
     // 根据规则
     rule = *newRule;
@@ -202,13 +202,13 @@ bool Position::setPosition(const struct Rule *newRule,
     this->moveStep = initialStep;
 
     // 局面阶段标识
-    phase = phase;
+    phase = ph;
 
     // 轮流状态标识
     setSideToMove(side);
 
     // 动作状态标识
-    action = action;
+    action = act;
 
     // 当前棋局（3×8）
     if (locations == nullptr) {
@@ -226,8 +226,8 @@ bool Position::setPosition(const struct Rule *newRule,
 
     // 设置去子状态时的剩余尚待去除子数
     if (action == ACTION_CAPTURE) {
-        if (0 <= nPiecesNeedRemove && nPiecesNeedRemove < 3) {
-            nPiecesNeedRemove = nPiecesNeedRemove;
+        if (0 <= piecesNeedRemove && piecesNeedRemove < 3) {
+            nPiecesNeedRemove = piecesNeedRemove;
         }
     } else {
         nPiecesNeedRemove = 0;
@@ -588,8 +588,6 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
     // 时间的临时变量
     int seconds = -1;
 
-    player_t opponent = Player::getOpponent(sideToMove);
-
     // 判断去子是不是对手棋
     if (!(opponent & board.locations[square]))
         return false;
@@ -597,7 +595,7 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
     if (!rule.allowRemoveMill &&
         board.inHowManyMills(square, PLAYER_NOBODY) &&
-        !board.isAllInMills(opponent)) {
+        !board.isAllInMills(Player::getOpponent(sideToMove))) {
         return false;
     }
 
@@ -1006,7 +1004,7 @@ bool Position::checkGameOverCondition()
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int Position::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
+int Position::getMobilityDiff(player_t turn, int piecesOnBoard[], bool includeFobidden)
 {
     // TODO: 处理规则无禁点的情况
     location_t *locations = board.locations;
@@ -1016,7 +1014,7 @@ int Position::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeF
     int n = 0;
 
     for (square_t i = SQ_BEGIN; i < SQ_END; i = static_cast<square_t>(i + 1)) {
-        n = board.getSurroundedEmptyLocationCount(turn, nPiecesOnBoard, i, includeFobidden);
+        n = board.getSurroundedEmptyLocationCount(turn, piecesOnBoard, i, includeFobidden);
 
         if (locations[i] & PIECE_BLACK) {
             mobilityBlack += n;
