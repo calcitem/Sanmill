@@ -647,7 +647,12 @@ int AIAlgorithm::search(depth_t depth)
             TT::clear();   // 每次走子前清空哈希表
 #endif
 #endif
+
+#ifdef MTDF_AI
+            value = MTDF(value, i);
+#else
             value = search(i, alpha, beta, root);
+#endif
 
             loggerDebug("%d(%d) ", value, value - lastValue);
 
@@ -721,7 +726,11 @@ int AIAlgorithm::search(depth_t depth)
 
     originDepth = d;
 
+#ifdef MTDF_AI
+    value = MTDF(value, d);
+#else
     value = search(d, alpha, beta, root);
+#endif
 
 #ifdef TIME_STAT
     timeEnd = chrono::steady_clock::now();
@@ -731,6 +740,38 @@ int AIAlgorithm::search(depth_t depth)
     // 生成了 Alpha-Beta 树
 
     return 0;
+}
+
+value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
+{
+    value_t g = firstguess;
+    value_t lowerbound = -VALUE_INFINITE;
+    value_t upperbound = VALUE_INFINITE;
+    value_t beta;
+
+    while (lowerbound < upperbound) {
+        if (g == lowerbound) {
+            beta = g + 1;
+        } else {
+            beta = g;
+        }
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef CLEAR_TRANSPOSITION_TABLE
+        //TT::clear();  // 每次走子前清空哈希表 TODO: 需要?
+#endif
+#endif
+
+        g = search(depth, beta - 1, beta, root);
+
+        if (g < beta) {
+            upperbound = g;    // fail low
+        } else {
+            lowerbound = g;    // fail high
+        }
+    }
+
+    return g;
 }
 
 value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *node)
@@ -851,7 +892,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif
 
     if (unlikely(position->phase == PHASE_GAMEOVER) ||   // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
-        depth <= 0 ||   // 搜索到第0层
+        depth <= 0 ||
         unlikely(requiredQuit)) {
         // 局面评估
         node->value = Evaluation::getValue(st, position, node);
@@ -903,7 +944,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 生成子节点树，即生成每个合理的着法
     if (node->childrenSize == 0) {
-        int moveSize = st->generateMoves(moves);
+        int moveCount = st->generateMoves(moves);
 
         st->generateChildren(moves, this, node
 #ifdef TT_MOVE_ENABLE
@@ -911,7 +952,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #endif // TT_MOVE_ENABLE
                              );
 
-        if (node == root && moveSize == 1) {
+        if (node == root && moveCount == 1) {
             best = moves[0];
             return node->value;
         }

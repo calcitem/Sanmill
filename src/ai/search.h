@@ -272,6 +272,9 @@ public: /* TODO: Move to private or protected */
     // Alpha-Beta剪枝算法
     value_t search(depth_t depth, value_t alpha, value_t beta, Node *node);
 
+    // MTD(f)
+    value_t MTDF(value_t firstguess, depth_t depth);
+
 public:
     // 返回着法的命令行
     const char *moveToCommand(move_t move);
@@ -311,6 +314,7 @@ private:
     bool requiredQuit {false};
 
     move_t best { MOVE_NONE };
+
     depth_t originDepth { 0 };
 
 private:
