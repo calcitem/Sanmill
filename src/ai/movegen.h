@@ -24,13 +24,50 @@
 #include "position.h"
 #include "search.h"
 
+enum GenType
+{
+    CAPTURES,
+    LEGAL
+};
+
+struct ExtMove
+{
+    move_t move;
+    value_t value;
+
+    operator move_t() const
+    {
+        return move;
+    }
+
+    void operator = (move_t m)
+    {
+        move = m;
+    }
+
+    // Inhibit unwanted implicit conversions to Move
+    // with an ambiguity that yields to a compile error.
+    operator float() const = delete;
+};
+
+inline bool operator < (const ExtMove &first, const ExtMove &second)
+{
+    return first.value < second.value;
+}
+
+//template <GenType>
+ExtMove *generate(const Position &pos, ExtMove *moveList);
+
+/// The MoveList struct is a simple wrapper around generate(). It sometimes comes
+/// in handy to use this class instead of the low level generate() function.
+//template<GenType T>
 class MoveList
 {
 public:
     MoveList() = delete;
 
     MoveList &operator=(const MoveList &) = delete;
-   
+
     // 生成着法表
     static void create();
 
@@ -41,11 +78,39 @@ public:
     inline static move_t moveTable[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = { {MOVE_NONE} };
 
     // 着法顺序表, 后续会被打乱
-    inline static array<move_t, Board::N_RINGS *Board::N_SEATS> movePriorityTable {
+    inline static array<move_t, Board::N_RINGS *Board::N_SEATS> movePriorityTable{
         (move_t)8, (move_t)9, (move_t)10, (move_t)11, (move_t)12, (move_t)13, (move_t)14, (move_t)15,
         (move_t)16, (move_t)17, (move_t)18, (move_t)19, (move_t)20, (move_t)21, (move_t)22, (move_t)23,
         (move_t)24, (move_t)25, (move_t)26, (move_t)27, (move_t)28, (move_t)29, (move_t)30, (move_t)31,
     };
+
+    //explicit MoveList(const Position &pos) : last(generate<T>(pos, moveList))
+    explicit MoveList(const Position &pos) : last(generate(pos, moveList))
+    {
+    }
+
+    const ExtMove *begin() const
+    {
+        return moveList;
+    }
+
+    const ExtMove *end() const
+    {
+        return last;
+    }
+
+    size_t size() const
+    {
+        return last - moveList;
+    }
+
+    bool contains(move_t move) const
+    {
+        return std::find(begin(), end(), move) != end();
+    }
+
+private:
+    ExtMove moveList[MAX_MOVES], *last;
 };
 
 #endif /* MOVEGEN_H */

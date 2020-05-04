@@ -44,6 +44,17 @@ class Node;
 class Position
 {
 public:
+    Position();
+    virtual ~Position();
+
+    // 拷贝构造函数
+    Position(Position &);
+    Position(const Position &);
+
+    // 运算符重载
+    Position &operator=(const Position &);
+    Position &operator=(Position &);
+
     Board board;
 
     // 局面的哈希值
@@ -75,28 +86,8 @@ public:
 
     // 尚待去除的子数
     int nPiecesNeedRemove {0};
-};
 
-// 棋类（在数据模型内，玩家只分先后手，不分黑白）
-// 注意：StateInfo 类不是线程安全的！
-// 所以不能跨线程修改 StateInfo 类的静态成员变量，切记！
-class StateInfo
-{
-    // AI友元类
-    friend class AIAlgorithm;
-
-public:
-
-    StateInfo();
-    virtual ~StateInfo();
-
-    // 拷贝构造函数
-    StateInfo(StateInfo &);
-    StateInfo(const StateInfo &);
-
-    // 运算符重载
-    StateInfo &operator=(const StateInfo &);
-    StateInfo &operator=(StateInfo &);
+    //////////////////////////////////////
 
     // 设置棋局状态和棋局，用于初始化
     bool setPosition(const struct Rule *rule,
@@ -109,7 +100,7 @@ public:
     // 获取棋盘数据
     location_t *getBoardLocations() const
     {
-        return boardLocations;
+        return (location_t *)board.locations;
     }
 
     // 获取当前棋子位置点
@@ -133,13 +124,13 @@ public:
     // 获取局面阶段标识
     enum phase_t getPhase() const
     {
-        return position->phase;
+        return phase;
     }
 
     // 获取动作状态标识
     enum action_t getAction() const
     {
-        return position->action;
+        return action;
     }
 
     // 玩家1或玩家2的用时
@@ -178,19 +169,19 @@ public:
     // 玩家剩余未放置子数
     int getPiecesInHandCount(int playerId) const
     {
-        return position->nPiecesInHand[playerId];
+        return nPiecesInHand[playerId];
     }
 
     // 玩家盘面剩余子数
     int getPiecesOnBoardCount(int playerId) const
     {
-        return position->nPiecesOnBoard[playerId];
+        return nPiecesOnBoard[playerId];
     }
 
     // 尚待去除的子数
     int getNum_NeedRemove() const
     {
-        return position->nPiecesNeedRemove;
+        return nPiecesNeedRemove;
     }
 
     // 计算玩家1和玩家2的棋子活动能力之差
@@ -239,17 +230,17 @@ public:
     void setTips();
 
     // 着法生成
-    void generateChildren(const Stack<move_t, MOVE_COUNT> &moves,
+    void generateChildren(const Stack<move_t, MAX_MOVES> &moves,
                           AIAlgorithm *ai,
                           Node *node
 #ifdef TT_MOVE_ENABLE
-                        , move_t ttMove
+                          , move_t ttMove
 #endif // TT_MOVE_ENABLE
     );
 
     // 着法生成
-    int generateMoves(Stack<move_t, MOVE_COUNT> &moves);
-    int generateNullMove(Stack<move_t, MOVE_COUNT> &moves);
+    int generateMoves(Stack<move_t, MAX_MOVES> &moves);
+    int generateNullMove(Stack<move_t, MAX_MOVES> &moves);
 
     bool doNullMove();
     bool undoNullMove();
@@ -272,7 +263,7 @@ public:
 
 #ifdef MCTS_AI
     // MCTS 相关
-    Stack<move_t, MOVE_COUNT> moves;
+    Stack<move_t, MAX_MOVES> moves;
 
     //template<typename RandomEngine>
     //void doRandomMove(RandomEngine *engine);    
@@ -290,17 +281,11 @@ public:
 
     int tm { -1 };
 
-    // 棋局
-    Position *position {nullptr};
-
-    // 棋局中的棋盘数据，单独提出来
-    location_t *boardLocations {nullptr};
-
     // 棋谱
     vector <string> cmdlist;
 
     // 着法命令行用于棋谱的显示和解析, 当前着法的命令行指令，即一招棋谱
-    char cmdline[64] {'\0'};
+    char cmdline[64]{ '\0' };
 
     /*
         当前着法，AI会用到，如下表示
@@ -322,10 +307,10 @@ public:
         | /       |     \  |
         29 ----- 28 ----- 27
     */
-    move_t move {MOVE_NONE};
+    move_t move{ MOVE_NONE };
 
     // 选中的棋子在board中的位置
-    square_t currentSquare {};
+    square_t currentSquare{};
 
 private:
 
@@ -342,22 +327,46 @@ private:
     player_t winner;
 
     // 当前步数
-    step_t currentStep {};
+    step_t currentStep{};
 
     // 从走子阶段开始或上次吃子起的步数
-    int moveStep {};
+    int moveStep{};
 
-     // 游戏起始时间
-    time_t startTime {};
+    // 游戏起始时间
+    time_t startTime{};
 
     // 当前游戏时间
-    time_t currentTime {};
+    time_t currentTime{};
 
     // 玩家用时（秒）
     time_t elapsedSeconds[COLOR_COUNT];
 
     // 当前棋局的字符提示
     string tips;
+};
+
+// 棋类（在数据模型内，玩家只分先后手，不分黑白）
+// 注意：StateInfo 类不是线程安全的！
+// 所以不能跨线程修改 StateInfo 类的静态成员变量，切记！
+class StateInfo
+{
+    // AI友元类
+    friend class AIAlgorithm;
+
+public:
+
+    StateInfo();
+    virtual ~StateInfo();
+
+    // 拷贝构造函数
+    StateInfo(StateInfo &);
+    StateInfo(const StateInfo &);
+
+    // 运算符重载
+    StateInfo &operator=(const StateInfo &);
+    StateInfo &operator=(StateInfo &);
+
+    Position *position { nullptr };
 };
 
 #endif /* POSITION_H */

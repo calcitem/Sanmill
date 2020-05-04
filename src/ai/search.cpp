@@ -123,15 +123,15 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
 
     if (st->position->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12) {
-            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - st->getPiecesInHandCount(BLACK) - st->getPiecesInHandCount(WHITE)];
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - st->position->getPiecesInHandCount(BLACK) - st->position->getPiecesInHandCount(WHITE)];
         } else {
-            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - st->getPiecesInHandCount(BLACK) - st->getPiecesInHandCount(WHITE)];
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - st->position->getPiecesInHandCount(BLACK) - st->position->getPiecesInHandCount(WHITE)];
         }
     }
 
     if (st->position->phase & PHASE_MOVING) {
-        int pb = st->getPiecesOnBoardCount(BLACK);
-        int pw = st->getPiecesOnBoardCount(WHITE);
+        int pb = st->position->getPiecesOnBoardCount(BLACK);
+        int pw = st->position->getPiecesOnBoardCount(WHITE);
 
         int pieces = pb + pw;
         int diff = pb - pw;
@@ -185,7 +185,7 @@ void AIAlgorithm::buildRoot()
 Node *Node::addChild(
     const move_t &m,
     AIAlgorithm *ai,
-    StateInfo *st
+    Position *position
 #ifdef TT_MOVE_ENABLE
     , const move_t &ttMove
 #endif // TT_MOVE_ENABLE
@@ -289,7 +289,7 @@ Node *Node::addChild(
     }
 
     // 若为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三，所以需要传值 sqsrc 进行判断
-    int nMills = st->position->board.inHowManyMills(sq, st->position->sideToMove, sqsrc);
+    int nMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);
     int nopponentMills = 0;
 
 #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
@@ -300,17 +300,17 @@ Node *Node::addChild(
 #ifdef ALPHABETA_AI
             newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
 #endif
-        } else if (st->getPhase() == PHASE_PLACING) {
+        } else if (position->getPhase() == PHASE_PLACING) {
             // 在摆棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = st->position->board.inHowManyMills(sq, st->position->opponent);
+            nopponentMills = position->board.inHowManyMills(sq, position->opponent);
 #ifdef ALPHABETA_AI
             newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
 #endif
         }
 #if 1
-        else if (st->getPhase() == PHASE_MOVING) {
+        else if (position->getPhase() == PHASE_MOVING) {
             // 在走棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = st->position->board.inHowManyMills(sq, st->position->opponent);
+            nopponentMills = position->board.inHowManyMills(sq, position->opponent);
 
             if (nopponentMills) {
                 int nPlayerPiece = 0;
@@ -318,7 +318,7 @@ Node *Node::addChild(
                 int nForbidden = 0;
                 int nEmpty = 0;
 
-                st->position->board.getSurroundedPieceCount(sq, st->position->sideId,
+                position->board.getSurroundedPieceCount(sq, position->sideId,
                                                                 nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
 #ifdef ALPHABETA_AI
@@ -337,7 +337,7 @@ Node *Node::addChild(
         // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
 #ifdef ALPHABETA_AI
         if (rule.nTotalPiecesEachSide == 12 &&
-            st->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
+            position->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
             Board::isStar(static_cast<square_t>(m))) {
             newNode->rating += RATING_STAR_SQUARE;
         }
@@ -348,7 +348,7 @@ Node *Node::addChild(
         int nForbidden = 0;
         int nEmpty = 0;
 
-        st->position->board.getSurroundedPieceCount(sq, st->position->sideId,
+        position->board.getSurroundedPieceCount(sq, position->sideId,
                                                         nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
 
 #ifdef ALPHABETA_AI
@@ -367,7 +367,7 @@ Node *Node::addChild(
         }
 
         // 吃子点处于对方的三连中
-        nopponentMills = st->position->board.inHowManyMills(sq, st->position->opponent);
+        nopponentMills = position->board.inHowManyMills(sq, position->opponent);
         if (nopponentMills) {
             if (nOpponentPiece >= 2) {
                 // 旁边对方的子较多, 则倾向不吃
@@ -604,8 +604,8 @@ int AIAlgorithm::search(depth_t depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (state->getPhase() == PHASE_MOVING) {
-        hash_t hash = state->getHash();
+    if (state->position->getPhase() == PHASE_MOVING) {
+        hash_t hash = state->position->getHash();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), hash) != moveHistory.end()) {
             nRepetition++;
@@ -618,7 +618,7 @@ int AIAlgorithm::search(depth_t depth)
         }
     }
 
-    if (state->getPhase() == PHASE_PLACING) {
+    if (state->position->getPhase() == PHASE_PLACING) {
         moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -715,7 +715,7 @@ int AIAlgorithm::search(depth_t depth)
 
     if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_WINDOW
-        value_t window = state->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
+        value_t window = state->position.getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
         alpha = value - window;
         beta = value + window;
 #else
@@ -786,7 +786,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
-    hash_t hash = st->getHash();
+    hash_t hash = st->position->getHash();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -889,7 +889,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         depth <= 0 ||
         unlikely(requiredQuit)) {
         // 局面评估
-        node->value = Evaluation::getValue(st, position, node);
+        node->value = Evaluation::getValue(position, node);
         evaluatedNodeCount++;
 
         // 为争取速胜，value 值 +- 深度
@@ -947,9 +947,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     // 生成子节点树，即生成每个合理的着法
     if (node->childrenSize == 0) {
-        int moveCount = st->generateMoves(moves);
+        int moveCount = st->position->generateMoves(moves);
 
-        st->generateChildren(moves, this, node
+        st->position->generateChildren(moves, this, node
 #ifdef TT_MOVE_ENABLE
                              , ttMove
 #endif // TT_MOVE_ENABLE
@@ -971,7 +971,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
     for (int i = 0; i < nchild; i++) {
-        TT::prefetchHash(st->getNextMainHash(node->children[i]->move));
+        TT::prefetchHash(st->position->getNextMainHash(node->children[i]->move));
     }
 
 #ifdef PREFETCH_DEBUG
@@ -1104,7 +1104,7 @@ void AIAlgorithm::stashPosition()
 void AIAlgorithm::doMove(move_t move)
 {
     // 执行着法
-    st->doMove(move);
+    st->position->doMove(move);
 }
 
 void AIAlgorithm::undoMove()
@@ -1118,13 +1118,13 @@ void AIAlgorithm::undoMove()
 void AIAlgorithm::doNullMove()
 {
     // 执行空着
-    st->doNullMove();
+    st->position->doNullMove();
 }
 
 void AIAlgorithm::undoNullMove()
 {
     // 执行空着
-    st->undoNullMove();
+    st->position->undoNullMove();
 }
 
 #ifdef ALPHABETA_AI

@@ -98,7 +98,7 @@ void AiThread::emitCommand()
 }
 
 #ifdef MCTS_AI
-move_t computeMove(StateInfo state,
+move_t computeMove(Position position,
                    const MCTSOptions options);
 #endif // MCTS_AI
 

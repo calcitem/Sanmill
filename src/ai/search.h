@@ -57,10 +57,10 @@ class Position;
 using namespace std;
 using namespace CTSL;
 
-// 注意：StateInfo类不是线程安全的！
-// 所以不能在ai类中修改StateInfo类的静态成员变量，切记！
-// 另外，AI类是StateInfo类的友元类，可以访问其私有变量
-// 尽量不要使用StateInfo的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
+// 注意：Position 类不是线程安全的！
+// 所以不能在ai类中修改 Position 类的静态成员变量，切记！
+// 另外，AI类是 Position 类的友元类，可以访问其私有变量
+// 尽量不要使用 Position 的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
 
 class Node
 {
@@ -69,8 +69,8 @@ public:
     ~Node();
 
 #ifdef MCTS_AI
-    Node(StateInfo &state);
-    Node(StateInfo &state, const move_t &move, Node *parent);
+    Node(Position &position);
+    Node(Position &position, const move_t &move, Node *parent);
 #endif // MCTS_AI
 
     bool hasChildren() const;
@@ -78,7 +78,7 @@ public:
     Node *addChild(
         const move_t &move, 
         AIAlgorithm *ai,
-        StateInfo *st
+        Position *position
 #ifdef TT_MOVE_ENABLE
         , const move_t &ttMove
 #endif // TT_MOVE_ENABLE
@@ -90,14 +90,14 @@ public:
     move_t getUntriedMove(RandomEngine *engine) const;
     Node *bestChildren() const;
     Node *selectChild() const;
-    Node *addChild(const move_t &move, StateInfo &state);
+    Node *addChild(const move_t &move, Position &position);
     void update(double result);
     string toString();
     string treeToString(int max_depth = 1000000, int indent = 0) const;
     string indentString(int indent) const;
 #endif // MCTS_AI
 
-    static const int NODE_CHILDREN_SIZE = MOVE_COUNT;
+    static const int NODE_CHILDREN_SIZE = MAX_MOVES;
 
     Node *children[NODE_CHILDREN_SIZE];
     Node *parent { nullptr };
@@ -212,10 +212,10 @@ public:
 
 #ifdef MCTS_AI
     // TODO: 分离到 MCTS 算法类
-    Node *computeTree(StateInfo state,
+    Node *computeTree(Position position,
                       const MCTSOptions options,
                       mt19937_64::result_type initialSeed);
-    move_t AIAlgorithm::computeMove(StateInfo state,
+    move_t AIAlgorithm::computeMove(Position position,
                                     const MCTSOptions options);
 #endif
 
@@ -308,7 +308,7 @@ private:
     Stack<Position> positionStack;
 #endif /* USE_STD_STACK */
 
-    Stack<move_t, MOVE_COUNT> moves;
+    Stack<move_t, MAX_MOVES> moves;
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};

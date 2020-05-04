@@ -34,10 +34,10 @@ StateInfo::StateInfo()
 
     position = new Position();
     //memset(position, 0, sizeof(Position));
+}
 
-    // 单独提出 boardLocations 等数据，免得每次都写 boardLocations;
-    boardLocations = position->board.locations;
-
+Position::Position()
+{
     // 创建哈希数据
     constructHash();
 
@@ -57,7 +57,10 @@ StateInfo::~StateInfo()
         delete position;
         position = nullptr;
     }
+}
 
+Position::~Position()
+{
     cmdlist.clear();
 }
 
@@ -73,6 +76,11 @@ StateInfo::StateInfo(const StateInfo &state)
     *this = state;
 }
 
+Position::Position(const Position &pos)
+{  
+    *this = pos;
+}
+
 StateInfo::StateInfo(StateInfo &state)
 {
     if (position != nullptr) {
@@ -85,22 +93,32 @@ StateInfo::StateInfo(StateInfo &state)
     *this = state;
 }
 
+Position::Position(Position &pos)
+{  
+    *this = pos;
+}
+
 StateInfo &StateInfo::operator= (const StateInfo &state)
 {
     memcpy(position, state.position, sizeof(Position));
-    currentStep = state.currentStep;
-    moveStep = state.moveStep;
-    boardLocations = position->board.locations;
-    currentSquare = state.currentSquare;
-    winner = state.winner;
-    startTime = state.startTime;
-    currentTime = state.currentTime;
-    elapsedSeconds[BLACK] = state.elapsedSeconds[BLACK];
-    elapsedSeconds[WHITE] = state.elapsedSeconds[WHITE];
-    move = state.move;
-    memcpy(cmdline, state.cmdline, sizeof(cmdline));
-    cmdlist = state.cmdlist;
-    tips = state.tips;
+    return *this;
+}
+
+Position &Position::operator= (const Position &pos)
+{
+    currentStep = pos.currentStep;
+    moveStep = pos.moveStep;
+    memcpy(board.locations, pos.board.locations, sizeof(board.locations));
+    currentSquare = pos.currentSquare;
+    winner = pos.winner;
+    startTime = pos.startTime;
+    currentTime = pos.currentTime;
+    elapsedSeconds[BLACK] = pos.elapsedSeconds[BLACK];
+    elapsedSeconds[WHITE] = pos.elapsedSeconds[WHITE];
+    move = pos.move;
+    memcpy(cmdline, pos.cmdline, sizeof(cmdline));
+    cmdlist = pos.cmdlist;
+    tips = pos.tips;
 
     return *this;
 }
@@ -108,37 +126,43 @@ StateInfo &StateInfo::operator= (const StateInfo &state)
 StateInfo &StateInfo::operator= (StateInfo &state)
 {
     memcpy(position, state.position, sizeof(Position));
-    currentStep = state.currentStep;
-    moveStep = state.moveStep;
-    boardLocations = position->board.locations;
-    currentSquare = state.currentSquare;
-    winner = state.winner;
-    startTime = state.startTime;
-    currentTime = state.currentTime;
-    elapsedSeconds[BLACK] = state.elapsedSeconds[BLACK];
-    elapsedSeconds[WHITE] = state.elapsedSeconds[WHITE];
-    move = state.move;
-    memcpy(cmdline, state.cmdline, sizeof(cmdline));
-    cmdlist = state.cmdlist;
-    tips = state.tips;
+    return *this;
+}
+
+Position &Position::operator= (Position &pos)
+{
+    currentStep = pos.currentStep;
+    moveStep = pos.moveStep;
+    memcpy(board.locations, pos.board.locations, sizeof(board.locations));
+    currentSquare = pos.currentSquare;
+    winner = pos.winner;
+    startTime = pos.startTime;
+    currentTime = pos.currentTime;
+    elapsedSeconds[BLACK] = pos.elapsedSeconds[BLACK];
+    elapsedSeconds[WHITE] = pos.elapsedSeconds[WHITE];
+    move = pos.move;
+    memcpy(cmdline, pos.cmdline, sizeof(cmdline));
+    cmdlist = pos.cmdlist;
+    tips = pos.tips;
 
     return *this;
 }
 
-int StateInfo::countPiecesOnBoard()
+
+int Position::countPiecesOnBoard()
 {
-    position->nPiecesOnBoard[BLACK] = position->nPiecesOnBoard[WHITE] = 0;
+    nPiecesOnBoard[BLACK] = nPiecesOnBoard[WHITE] = 0;
 
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
             square_t square = static_cast<square_t>(r * Board::N_SEATS + s);
-            if (boardLocations[square] & PIECE_BLACK) {
-                position->nPiecesOnBoard[BLACK]++;
-            } else if (boardLocations[square] & PIECE_WHITE) {
-                position->nPiecesOnBoard[WHITE]++;
+            if (board.locations[square] & PIECE_BLACK) {
+                nPiecesOnBoard[BLACK]++;
+            } else if (board.locations[square] & PIECE_WHITE) {
+                nPiecesOnBoard[WHITE]++;
             }
 #if 0
-            else if (boardLocations[square] & PIECE_FORBIDDEN) {
+            else if (board.locations[square] & PIECE_FORBIDDEN) {
                 // 不计算盘面子数
             }
 #endif
@@ -146,24 +170,24 @@ int StateInfo::countPiecesOnBoard()
     }
 
     // 设置玩家盘面剩余子数和未放置子数
-    if (position->nPiecesOnBoard[BLACK] > rule.nTotalPiecesEachSide ||
-        position->nPiecesOnBoard[WHITE] > rule.nTotalPiecesEachSide) {
+    if (nPiecesOnBoard[BLACK] > rule.nTotalPiecesEachSide ||
+        nPiecesOnBoard[WHITE] > rule.nTotalPiecesEachSide) {
         return -1;
     }
 
-    return position->nPiecesOnBoard[BLACK] + position->nPiecesOnBoard[WHITE];
+    return nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE];
 }
 
-int StateInfo::countPiecesInHand()
+int Position::countPiecesInHand()
 {
-    position->nPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - position->nPiecesOnBoard[BLACK];
-    position->nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - position->nPiecesOnBoard[WHITE];
+    nPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - nPiecesOnBoard[BLACK];
+    nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - nPiecesOnBoard[WHITE];
 
-    return position->nPiecesInHand[BLACK] + position->nPiecesInHand[WHITE];
+    return nPiecesInHand[BLACK] + nPiecesInHand[WHITE];
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool StateInfo::setPosition(const struct Rule *newRule,
+bool Position::setPosition(const struct Rule *newRule,
                        step_t initialStep,
                        phase_t phase, player_t side, action_t action,
                        const char *locations,
@@ -179,20 +203,20 @@ bool StateInfo::setPosition(const struct Rule *newRule,
     this->moveStep = initialStep;
 
     // 局面阶段标识
-    position->phase = phase;
+    phase = phase;
 
     // 轮流状态标识
     setSideToMove(side);
 
     // 动作状态标识
-    position->action = action;
+    action = action;
 
     // 当前棋局（3×8）
     if (locations == nullptr) {
-        memset(boardLocations, 0, sizeof(position->board.locations));
-        position->hash = 0;
+        memset(board.locations, 0, sizeof(board.locations));
+        hash = 0;
     } else {
-        memcpy(boardLocations, locations, sizeof(position->board.locations));
+        memcpy(board.locations, locations, sizeof(board.locations));
     }
 
     if (countPiecesOnBoard() == -1) {
@@ -204,14 +228,14 @@ bool StateInfo::setPosition(const struct Rule *newRule,
     // 设置去子状态时的剩余尚待去除子数
     if (action == ACTION_CAPTURE) {
         if (0 <= nPiecesNeedRemove && nPiecesNeedRemove < 3) {
-            position->nPiecesNeedRemove = nPiecesNeedRemove;
+            nPiecesNeedRemove = nPiecesNeedRemove;
         }
     } else {
-        position->nPiecesNeedRemove = 0;
+        nPiecesNeedRemove = 0;
     }
 
     // 清空成三记录
-    position->board.millListSize = 0;
+    board.millListSize = 0;
 
     // 胜负标识
     winner = PLAYER_NOBODY;
@@ -220,7 +244,7 @@ bool StateInfo::setPosition(const struct Rule *newRule,
     MoveList::create();
 
     // 生成成三表
-    position->board.createMillTable();
+    board.createMillTable();
 
     // 不选中棋子
     currentSquare = SQ_0;
@@ -249,9 +273,9 @@ bool StateInfo::setPosition(const struct Rule *newRule,
     return false;
 }
 
-bool StateInfo::reset()
+bool Position::reset()
 {
-    if (position->phase == PHASE_READY &&
+    if (phase == PHASE_READY &&
         elapsedSeconds[BLACK] == elapsedSeconds[WHITE] == 0) {
         return true;
     }
@@ -261,31 +285,31 @@ bool StateInfo::reset()
     moveStep = 0;
 
     // 局面阶段标识
-    position->phase = PHASE_READY;
+    phase = PHASE_READY;
 
     // 设置轮流状态
     setSideToMove(PLAYER_BLACK);
 
     // 动作状态标识
-    position->action = ACTION_PLACE;
+    action = ACTION_PLACE;
 
     // 胜负标识
     winner = PLAYER_NOBODY;
 
     // 当前棋局（3×8）
-    memset(boardLocations, 0, sizeof(position->board));
+    memset(board.locations, 0, sizeof(board.locations));
 
     // 盘面子数归零
-    position->nPiecesOnBoard[BLACK] = position->nPiecesOnBoard[WHITE] = 0;
+    nPiecesOnBoard[BLACK] = nPiecesOnBoard[WHITE] = 0;
 
     // 设置玩家盘面剩余子数和未放置子数
-    position->nPiecesInHand[BLACK] = position->nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide;
+    nPiecesInHand[BLACK] = nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide;
 
     // 设置去子状态时的剩余尚待去除子数
-    position->nPiecesNeedRemove = 0;
+    nPiecesNeedRemove = 0;
 
     // 清空成三记录
-    position->board.millListSize = 0;
+    board.millListSize = 0;
 
     // 不选中棋子
     currentSquare = SQ_0;
@@ -294,7 +318,7 @@ bool StateInfo::reset()
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     // 哈希归零
-    position->hash = 0;
+    hash = 0;
 
     // 提示
     setTips();
@@ -326,9 +350,9 @@ bool StateInfo::reset()
     return false;
 }
 
-bool StateInfo::start()
+bool Position::start()
 {
-    switch (position->phase) {
+    switch (phase) {
     // 如果游戏已经开始，则返回false
     case PHASE_PLACING:
     case PHASE_MOVING:
@@ -342,29 +366,29 @@ bool StateInfo::start()
         // 启动计时器
         startTime = time(NULL);
         // 进入开局状态
-        position->phase = PHASE_PLACING;
+        phase = PHASE_PLACING;
         return true;
     default:
         return false;
     }
 }
 
-bool StateInfo::place(square_t square, int8_t updateCmdlist)
+bool Position::place(square_t square, int8_t updateCmdlist)
 {
     // 如果局面为“结局”，返回false
-    if (position->phase == PHASE_GAMEOVER)
+    if (phase == PHASE_GAMEOVER)
         return false;
 
     // 如果局面为“未开局”，则开局
-    if (position->phase == PHASE_READY)
+    if (phase == PHASE_READY)
         start();
 
     // 如非“落子”状态，返回false
-    if (position->action != ACTION_PLACE)
+    if (action != ACTION_PLACE)
         return false;
 
     // 如果落子位置在棋盘外、已有子点或禁点，返回false
-    if (!position->board.onBoard[square] || boardLocations[square])
+    if (!board.onBoard[square] || board.locations[square])
         return false;
 
     // 格式转换
@@ -379,13 +403,13 @@ bool StateInfo::place(square_t square, int8_t updateCmdlist)
     int piece = '\x00';
     int n = 0;
 
-    if (position->phase == PHASE_PLACING) {
-        int playerId = Player::toId(position->sideToMove);
-        piece = (0x01 | position->sideToMove) + rule.nTotalPiecesEachSide - position->nPiecesInHand[playerId];
-        position->nPiecesInHand[playerId]--;
-        position->nPiecesOnBoard[playerId]++;
+    if (phase == PHASE_PLACING) {
+        int playerId = Player::toId(sideToMove);
+        piece = (0x01 | sideToMove) + rule.nTotalPiecesEachSide - nPiecesInHand[playerId];
+        nPiecesInHand[playerId]--;
+        nPiecesOnBoard[playerId]++;
 
-        boardLocations[square] = piece;
+        board.locations[square] = piece;
 
         updateHash(square);
 
@@ -401,24 +425,24 @@ bool StateInfo::place(square_t square, int8_t updateCmdlist)
 
         currentSquare = square;
 
-        n = position->board.addMills(currentSquare);
+        n = board.addMills(currentSquare);
 
         // 开局阶段未成三
         if (n == 0) {
-            assert(position->nPiecesInHand[BLACK] >= 0 && position->nPiecesInHand[WHITE] >= 0);
+            assert(nPiecesInHand[BLACK] >= 0 && nPiecesInHand[WHITE] >= 0);
      
             // 如果双方都无未放置的棋子
-            if (position->nPiecesInHand[BLACK] == 0 && position->nPiecesInHand[WHITE] == 0) {
+            if (nPiecesInHand[BLACK] == 0 && nPiecesInHand[WHITE] == 0) {
                 // 决胜负
                 if (checkGameOverCondition()) {
                     goto out;
                 }
 
                 // 进入中局阶段
-                position->phase = PHASE_MOVING;
+                phase = PHASE_MOVING;
 
                 // 进入选子状态
-                position->action = ACTION_CHOOSE;
+                action = ACTION_CHOOSE;
 
                 // 清除禁点
                 cleanForbiddenLocations();
@@ -444,10 +468,10 @@ bool StateInfo::place(square_t square, int8_t updateCmdlist)
         // 如果成三
         else {
             // 设置去子数目
-            position->nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
+            nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
 
             // 进入去子状态
-            position->action = ACTION_CAPTURE;
+            action = ACTION_CAPTURE;
         }
 
         goto out;
@@ -461,7 +485,7 @@ bool StateInfo::place(square_t square, int8_t updateCmdlist)
     // 对于中局落子 (ontext.phase == GAME_MOVING)
 
     // 如果落子不合法
-    if (position->nPiecesOnBoard[position->sideId] > rule.nPiecesAtLeast ||
+    if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         int i;
         for (i = 0; i < 4; i++) {
@@ -487,20 +511,20 @@ bool StateInfo::place(square_t square, int8_t updateCmdlist)
         moveStep++;
     }
 
-    boardLocations[square] = boardLocations[currentSquare];
+    board.locations[square] = board.locations[currentSquare];
 
     updateHash(square);
     revertHash(currentSquare);
 
-    boardLocations[currentSquare] = '\x00';
+    board.locations[currentSquare] = '\x00';
 
     currentSquare = square;
-    n = position->board.addMills(currentSquare);
+    n = board.addMills(currentSquare);
 
     // 中局阶段未成三
     if (n == 0) {
         // 进入选子状态
-        position->action = ACTION_CHOOSE;
+        action = ACTION_CHOOSE;
 
         // 设置轮到谁走
         changeSideToMove();
@@ -513,10 +537,10 @@ bool StateInfo::place(square_t square, int8_t updateCmdlist)
     // 中局阶段成三
     else {
         // 设置去子数目
-        position->nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
+        nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
 
         // 进入去子状态
-        position->action = ACTION_CAPTURE;
+        action = ACTION_CAPTURE;
     }
 
 out:
@@ -527,7 +551,7 @@ out:
     return true;
 }
 
-bool StateInfo::_place(int r, int s)
+bool Position::_place(int r, int s)
 {
     // 转换为 square
     square_t square = Board::polarToSquare(r, s);
@@ -535,7 +559,7 @@ bool StateInfo::_place(int r, int s)
     return place(square, true);
 }
 
-bool StateInfo::_capture(int r, int s)
+bool Position::_capture(int r, int s)
 {
     // 转换为 square
     square_t square = Board::polarToSquare(r, s);
@@ -543,18 +567,18 @@ bool StateInfo::_capture(int r, int s)
     return capture(square, 1);
 }
 
-bool StateInfo::capture(square_t square, int8_t updateCmdlist)
+bool Position::capture(square_t square, int8_t updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
-    if (position->phase & PHASE_NOTPLAYING)
+    if (phase & PHASE_NOTPLAYING)
         return false;
 
     // 如非“去子”状态，返回false
-    if (position->action != ACTION_CAPTURE)
+    if (action != ACTION_CAPTURE)
         return false;
 
     // 如果去子完成，返回false
-    if (position->nPiecesNeedRemove <= 0)
+    if (nPiecesNeedRemove <= 0)
         return false;
 
     // 格式转换
@@ -565,30 +589,30 @@ bool StateInfo::capture(square_t square, int8_t updateCmdlist)
     // 时间的临时变量
     int seconds = -1;
 
-    player_t opponent = Player::getOpponent(position->sideToMove);
+    player_t opponent = Player::getOpponent(sideToMove);
 
     // 判断去子是不是对手棋
-    if (!(opponent & boardLocations[square]))
+    if (!(opponent & board.locations[square]))
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
     if (!rule.allowRemoveMill &&
-        position->board.inHowManyMills(square, PLAYER_NOBODY) &&
-        !position->board.isAllInMills(opponent)) {
+        board.inHowManyMills(square, PLAYER_NOBODY) &&
+        !board.isAllInMills(opponent)) {
         return false;
     }
 
     // 去子（设置禁点）
-    if (rule.hasForbiddenLocations && position->phase == PHASE_PLACING) {
+    if (rule.hasForbiddenLocations && phase == PHASE_PLACING) {
         revertHash(square);
-        boardLocations[square] = '\x0f';
+        board.locations[square] = '\x0f';
         updateHash(square);
     } else { // 去子
         revertHash(square);
-        boardLocations[square] = '\x00';
+        board.locations[square] = '\x00';
     }
 
-    position->nPiecesOnBoard[position->opponentId]--;
+    nPiecesOnBoard[opponentId]--;
 
     move = static_cast<move_t>(-square);
 
@@ -601,7 +625,7 @@ bool StateInfo::capture(square_t square, int8_t updateCmdlist)
     }
 
     currentSquare = SQ_0;
-    position->nPiecesNeedRemove--;
+    nPiecesNeedRemove--;
     //updateHash(square); // TODO: 多余? 若去掉.则评估点的数量和哈希命中数量上升, 未剪枝?
 
     // 去子完成
@@ -612,7 +636,7 @@ bool StateInfo::capture(square_t square, int8_t updateCmdlist)
     }
 
     // 还有其余的子要去吗
-    if (position->nPiecesNeedRemove > 0) {
+    if (nPiecesNeedRemove > 0) {
         // 继续去子
         return true;
     }
@@ -620,15 +644,15 @@ bool StateInfo::capture(square_t square, int8_t updateCmdlist)
     // 所有去子都完成了
 
     // 开局阶段
-    if (position->phase == PHASE_PLACING) {
+    if (phase == PHASE_PLACING) {
         // 如果双方都无未放置的棋子
-        if (position->nPiecesInHand[BLACK] == 0 && position->nPiecesInHand[WHITE] == 0) {
+        if (nPiecesInHand[BLACK] == 0 && nPiecesInHand[WHITE] == 0) {
 
             // 进入中局阶段
-            position->phase = PHASE_MOVING;
+            phase = PHASE_MOVING;
 
             // 进入选子状态
-            position->action = ACTION_CHOOSE;
+            action = ACTION_CHOOSE;
 
             // 清除禁点
             cleanForbiddenLocations();
@@ -648,7 +672,7 @@ bool StateInfo::capture(square_t square, int8_t updateCmdlist)
         // 如果双方还有子
         else {
             // 进入落子状态
-            position->action = ACTION_PLACE;
+            action = ACTION_PLACE;
 
             // 设置轮到谁走
             changeSideToMove();
@@ -662,7 +686,7 @@ bool StateInfo::capture(square_t square, int8_t updateCmdlist)
     // 中局阶段
     else {
         // 进入选子状态
-        position->action = ACTION_CHOOSE;
+        action = ACTION_CHOOSE;
 
         // 设置轮到谁走
         changeSideToMove();
@@ -681,23 +705,23 @@ out:
     return true;
 }
 
-bool StateInfo::choose(square_t square)
+bool Position::choose(square_t square)
 {
     // 如果局面不是"中局”，返回false
-    if (position->phase != PHASE_MOVING)
+    if (phase != PHASE_MOVING)
         return false;
 
     // 如非“选子”或“落子”状态，返回false
-    if (position->action != ACTION_CHOOSE && position->action != ACTION_PLACE)
+    if (action != ACTION_CHOOSE && action != ACTION_PLACE)
         return false;
 
     // 判断选子是否可选
-    if (boardLocations[square] & position->sideToMove) {
+    if (board.locations[square] & sideToMove) {
         // 选子
         currentSquare = square;
 
         // 选子完成，进入落子状态
-        position->action = ACTION_PLACE;
+        action = ACTION_PLACE;
 
         return true;
     }
@@ -705,19 +729,19 @@ bool StateInfo::choose(square_t square)
     return false;
 }
 
-bool StateInfo::choose(int r, int s)
+bool Position::choose(int r, int s)
 {
     return choose(Board::polarToSquare(r, s));
 }
 
-bool StateInfo::giveup(player_t loser)
+bool Position::giveup(player_t loser)
 {
-    if (position->phase & PHASE_NOTPLAYING ||
-        position->phase == PHASE_NONE) {
+    if (phase & PHASE_NOTPLAYING ||
+        phase == PHASE_NONE) {
         return false;
     }
 
-    position->phase = PHASE_GAMEOVER;
+    phase = PHASE_GAMEOVER;
 
     int loserId = Player::toId(loser);
     char loserCh = Player::idToCh(loserId);
@@ -734,7 +758,7 @@ bool StateInfo::giveup(player_t loser)
 }
 
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
-bool StateInfo::command(const char *cmd)
+bool Position::command(const char *cmd)
 {
     int r;
     unsigned t;
@@ -801,7 +825,7 @@ bool StateInfo::command(const char *cmd)
     }
 
     if (!strcmp(cmd, "draw")) {
-        position->phase = PHASE_GAMEOVER;
+        phase = PHASE_GAMEOVER;
         winner = PLAYER_DRAW;
         score_draw++;
         tips = "三次重复局面判和。";
@@ -814,7 +838,7 @@ bool StateInfo::command(const char *cmd)
     return false;
 }
 
-bool StateInfo::doMove(move_t m)
+bool Position::doMove(move_t m)
 {
     if (m < 0) {
         return capture(static_cast<square_t>(-m));
@@ -831,21 +855,21 @@ bool StateInfo::doMove(move_t m)
     return false;
 }
 
-player_t StateInfo::getWinner() const
+player_t Position::getWinner() const
 {
     return winner;
 }
 
-int StateInfo::update()
+int Position::update()
 {
     int ret = -1;
     int timePoint = -1;
-    time_t *seconds = &elapsedSeconds[position->sideId];
-    time_t opponentSeconds = elapsedSeconds[position->opponentId];
+    time_t *seconds = &elapsedSeconds[sideId];
+    time_t opponentSeconds = elapsedSeconds[opponentId];
 
     // 根据局面调整计时器
 
-    if (!(position->phase & PHASE_PLAYING)) {
+    if (!(phase & PHASE_PLAYING)) {
         return -1;
     }
 
@@ -868,15 +892,15 @@ int StateInfo::update()
 }
 
 // 是否分出胜负
-bool StateInfo::checkGameOverCondition()
+bool Position::checkGameOverCondition()
 {
-    if (position->phase & PHASE_NOTPLAYING) {
+    if (phase & PHASE_NOTPLAYING) {
         return true;
     }
 
     // 如果有时间限定
     if (rule.maxTimeLedToLose > 0) {
-        position->phase = PHASE_GAMEOVER;
+        phase = PHASE_GAMEOVER;
 
         // 这里不能update更新时间，否则会形成循环嵌套
         for (int i = 1; i <= 2; i++)
@@ -898,7 +922,7 @@ bool StateInfo::checkGameOverCondition()
     if (rule.maxStepsLedToDraw > 0 &&
         moveStep > rule.maxStepsLedToDraw) {
         winner = PLAYER_DRAW;
-        position->phase = PHASE_GAMEOVER;
+        phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Steps over. In draw!");
         cmdlist.emplace_back(string(cmdline));
         return true;
@@ -907,10 +931,10 @@ bool StateInfo::checkGameOverCondition()
     // 如果玩家子数小于赛点，则对方获胜
     for (int i = 1; i <= 2; i++)
     {
-        if (position->nPiecesOnBoard[i] + position->nPiecesInHand[i] < rule.nPiecesAtLeast) {
+        if (nPiecesOnBoard[i] + nPiecesInHand[i] < rule.nPiecesAtLeast) {
             int o = Player::getOpponentById(i);
             winner = Player::idToPlayer(o);
-            position->phase = PHASE_GAMEOVER;
+            phase = PHASE_GAMEOVER;
             sprintf(cmdline, "Player%d win!", o);
             cmdlist.emplace_back(string(cmdline));
 
@@ -920,10 +944,10 @@ bool StateInfo::checkGameOverCondition()
 
 #ifdef MCTS_AI
 #if 0
-    int diff = position->nPiecesOnBoard[BLACK] - position->nPiecesOnBoard[WHITE];
+    int diff = nPiecesOnBoard[BLACK] - nPiecesOnBoard[WHITE];
     if (diff > 4) {
         winner = PLAYER_BLACK;
-        position->phase = PHASE_GAMEOVER;
+        phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player1 win!");
         cmdlist.emplace_back(string(cmdline));
 
@@ -932,7 +956,7 @@ bool StateInfo::checkGameOverCondition()
 
     if (diff < -4) {
         winner = PLAYER_WHITE;
-        position->phase = PHASE_GAMEOVER;
+        phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player2 win!");
         cmdlist.emplace_back(string(cmdline));
 
@@ -942,8 +966,8 @@ bool StateInfo::checkGameOverCondition()
 #endif
 
     // 如果摆满了，根据规则判断胜负
-    if (position->nPiecesOnBoard[BLACK] + position->nPiecesOnBoard[WHITE] >= Board::N_SEATS * Board::N_RINGS) {
-        position->phase = PHASE_GAMEOVER;
+    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= Board::N_SEATS * Board::N_RINGS) {
+        phase = PHASE_GAMEOVER;
 
         if (rule.isStartingPlayerLoseWhenBoardFull) {
             winner = PLAYER_WHITE;
@@ -959,15 +983,15 @@ bool StateInfo::checkGameOverCondition()
     }
 
     // 如果中局被“闷”
-    if (position->phase == PHASE_MOVING && position->action == ACTION_CHOOSE && position->board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove)) {
+    if (phase == PHASE_MOVING && action == ACTION_CHOOSE && board.isAllSurrounded(sideId, nPiecesOnBoard, sideToMove)) {
         // 规则要求被“闷”判负，则对手获胜 // TODO: 应该转移到下面的分支中
-        position->phase = PHASE_GAMEOVER;
+        phase = PHASE_GAMEOVER;
 
         if (rule.isLoseWhenNoWay) {
-            tips = "玩家" + Player::chToStr(position->chSide) + "无子可走被闷";
-            winner = Player::getOpponent(position->sideToMove);
+            tips = "玩家" + Player::chToStr(chSide) + "无子可走被闷";
+            winner = Player::getOpponent(sideToMove);
             int winnerId = Player::toId(winner);
-            sprintf(cmdline, "Player%d no way to go. Player%d win!", position->sideId, winnerId);
+            sprintf(cmdline, "Player%d no way to go. Player%d win!", sideId, winnerId);
             cmdlist.emplace_back(string(cmdline));
 
             return true;
@@ -983,17 +1007,17 @@ bool StateInfo::checkGameOverCondition()
 }
 
 // 计算玩家1和玩家2的棋子活动能力之差
-int StateInfo::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
+int Position::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden)
 {
     // TODO: 处理规则无禁点的情况
-    location_t *locations = boardLocations;
+    location_t *locations = board.locations;
     int mobilityBlack = 0;
     int mobilityWhite = 0;
     int diff = 0;
     int n = 0;
 
     for (square_t i = SQ_BEGIN; i < SQ_END; i = static_cast<square_t>(i + 1)) {
-        n = position->board.getSurroundedEmptyLocationCount(turn, nPiecesOnBoard, i, includeFobidden);
+        n = board.getSurroundedEmptyLocationCount(turn, nPiecesOnBoard, i, includeFobidden);
 
         if (locations[i] & PIECE_BLACK) {
             mobilityBlack += n;
@@ -1007,7 +1031,7 @@ int StateInfo::getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool include
     return diff;
 }
 
-void StateInfo::cleanForbiddenLocations()
+void Position::cleanForbiddenLocations()
 {
     if (!rule.hasForbiddenLocations) {
         return;
@@ -1019,75 +1043,75 @@ void StateInfo::cleanForbiddenLocations()
         for (int s = 0; s < Board::N_SEATS; s++) {
             square = static_cast<square_t>(r * Board::N_SEATS + s);
 
-            if (boardLocations[square] == '\x0f') {
+            if (board.locations[square] == '\x0f') {
                 revertHash(square);
-                boardLocations[square] = '\x00';
+                board.locations[square] = '\x00';
             }
         }
     }
 }
 
-void StateInfo::setSideToMove(player_t player)
+void Position::setSideToMove(player_t player)
 {
     // 设置轮到谁走
-    position->sideToMove = player;
+    sideToMove = player;
 
-    position->sideId = Player::toId(position->sideToMove);
-    position->chSide = Player::idToCh(position->sideId);
+    sideId = Player::toId(sideToMove);
+    chSide = Player::idToCh(sideId);
 
-    position->opponent = Player::getOpponent(player);
+    opponent = Player::getOpponent(player);
 
-    position->opponentId = Player::toId(position->opponent);
-    position->chOpponent = Player::idToCh(position->opponentId);
+    opponentId = Player::toId(opponent);
+    chOpponent = Player::idToCh(opponentId);
 }
 
-player_t StateInfo::getSideToMove()
+player_t Position::getSideToMove()
 {
-    return position->sideToMove;
+    return sideToMove;
 }
 
-void StateInfo::changeSideToMove()
+void Position::changeSideToMove()
 {
-    setSideToMove(Player::getOpponent(position->sideToMove));
+    setSideToMove(Player::getOpponent(sideToMove));
 }
 
-bool StateInfo::doNullMove()
-{
-    changeSideToMove();
-    return true;
-}
-
-bool StateInfo::undoNullMove()
+bool Position::doNullMove()
 {
     changeSideToMove();
     return true;
 }
 
-void StateInfo::setTips()
+bool Position::undoNullMove()
+{
+    changeSideToMove();
+    return true;
+}
+
+void Position::setTips()
 {
     string winnerStr, t;
     int winnerId;
-    string turnStr = Player::chToStr(position->chSide);
+    string turnStr = Player::chToStr(chSide);
 
-    switch (position->phase) {
+    switch (phase) {
     case PHASE_READY:
-        tips = "轮到玩家1落子，剩余" + std::to_string(position->nPiecesInHand[BLACK]) + "子" +
+        tips = "轮到玩家1落子，剩余" + std::to_string(nPiecesInHand[BLACK]) + "子" +
             "  比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
         break;
 
     case PHASE_PLACING:
-        if (position->action == ACTION_PLACE) {
-            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(position->nPiecesInHand[position->sideId]) + "子";
-        } else if (position->action == ACTION_CAPTURE) {
-            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(position->nPiecesNeedRemove) + "子";
+        if (action == ACTION_PLACE) {
+            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(nPiecesInHand[sideId]) + "子";
+        } else if (action == ACTION_CAPTURE) {
+            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(nPiecesNeedRemove) + "子";
         }
         break;
 
     case PHASE_MOVING:
-        if (position->action == ACTION_PLACE || position->action == ACTION_CHOOSE) {
+        if (action == ACTION_PLACE || action == ACTION_CHOOSE) {
             tips = "轮到玩家" + turnStr + "选子移动";
-        } else if (position->action == ACTION_CAPTURE) {
-            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(position->nPiecesNeedRemove) + "子";
+        } else if (action == ACTION_CAPTURE) {
+            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(nPiecesNeedRemove) + "子";
         }
         break;
 
@@ -1118,77 +1142,77 @@ void StateInfo::setTips()
     }
 }
 
-time_t StateInfo::getElapsedTime(int playerId)
+time_t Position::getElapsedTime(int playerId)
 {
     return elapsedSeconds[playerId];
 }
 
-void StateInfo::constructHash()
+void Position::constructHash()
 {
-    position->hash = 0;
+    hash = 0;
 }
 
-hash_t StateInfo::getHash()
+hash_t Position::getHash()
 {
     // TODO: 每次获取哈希值时更新 hash 值剩余8位，放在此处调用不优雅
     return updateHashMisc();
 }
 
-hash_t StateInfo::updateHash(square_t square)
+hash_t Position::updateHash(square_t square)
 {
-    // PieceType is boardLocations[square] 
+    // PieceType is board.locations[square] 
 
     // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
-    int pieceType = Player::toId(position->board.locationToPlayer(square));
+    int pieceType = Player::toId(board.locationToPlayer(square));
 
     // 清除或者放置棋子
-    position->hash ^= zobrist[square][pieceType];
+    hash ^= zobrist[square][pieceType];
 
-    return position->hash;
+    return hash;
 }
 
-hash_t StateInfo::revertHash(square_t square)
+hash_t Position::revertHash(square_t square)
 {
     return updateHash(square);
 }
 
-hash_t StateInfo::updateHashMisc()
+hash_t Position::updateHashMisc()
 {
     const int HASH_MISC_BIT = 8;
 
     // 清除标记位
-    position->hash = position->hash << HASH_MISC_BIT >> HASH_MISC_BIT;
+    hash = hash << HASH_MISC_BIT >> HASH_MISC_BIT;
     hash_t hi = 0;
 
     // 置位
 
-    if (position->sideToMove == PLAYER_WHITE) {
+    if (sideToMove == PLAYER_WHITE) {
         hi |= 1U;
     }
 
-    if (position->action == ACTION_CAPTURE) {
+    if (action == ACTION_CAPTURE) {
         hi |= 1U << 1;
     }
 
-    hi |= static_cast<hash_t>(position->nPiecesNeedRemove) << 2;
-    hi |= static_cast<hash_t>(position->nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 position->phase 也可以？
+    hi |= static_cast<hash_t>(nPiecesNeedRemove) << 2;
+    hi |= static_cast<hash_t>(nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 phase 也可以？
 
-    position->hash = position->hash | (hi << (CHAR_BIT * sizeof(hash_t) - HASH_MISC_BIT));
+    hash = hash | (hi << (CHAR_BIT * sizeof(hash_t) - HASH_MISC_BIT));
 
-    return position->hash;
+    return hash;
 }
 
-hash_t StateInfo::getNextMainHash(move_t m)
+hash_t Position::getNextMainHash(move_t m)
 {
-    hash_t nextMainHash = position->hash /* << 8 >> 8 */;
+    hash_t nextMainHash = hash /* << 8 >> 8 */;
     square_t sq = SQ_0;
 
     if (m < 0) {
         sq = static_cast<square_t>(-m);
-        int pieceType = Player::getOpponentById(Player::toId(position->sideToMove));
+        int pieceType = Player::getOpponentById(Player::toId(sideToMove));
         nextMainHash ^= zobrist[sq][pieceType];
 
-        if (rule.hasForbiddenLocations && position->phase == PHASE_PLACING) {
+        if (rule.hasForbiddenLocations && phase == PHASE_PLACING) {
             nextMainHash ^= zobrist[sq][PIECETYPE_FORBIDDEN];
         }
 
@@ -1196,7 +1220,7 @@ hash_t StateInfo::getNextMainHash(move_t m)
     }
 
     sq = static_cast<square_t>(m & 0x00ff);
-    int pieceType = Player::toId(position->sideToMove);
+    int pieceType = Player::toId(sideToMove);
     nextMainHash ^= zobrist[sq][pieceType];
 
     if (m & 0x1f00) {
