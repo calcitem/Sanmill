@@ -20,7 +20,7 @@
 #include "evaluate.h"
 
 #ifdef ALPHABETA_AI
-value_t Evaluation::getValue(Position *position, Node *node)
+value_t Evaluation::getValue(Position *position)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
@@ -28,12 +28,6 @@ value_t Evaluation::getValue(Position *position, Node *node)
     int nPiecesInHandDiff;
     int nPiecesOnBoardDiff;
     int nPiecesNeedRemove;
-
-#ifdef DEBUG_AB_TREE
-    node->phase = position->phase;
-    node->action = position->action;
-    node->evaluated = true;
-#endif
 
     switch (position->phase) {
     case PHASE_READY:
@@ -43,16 +37,10 @@ value_t Evaluation::getValue(Position *position, Node *node)
         // 按手中的棋子计分，不要break;
         nPiecesInHandDiff = position->nPiecesInHand[BLACK] - position->nPiecesInHand[WHITE];
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
-#ifdef DEBUG_AB_TREE
-        node->nPiecesInHandDiff = nPiecesInHandDiff;
-#endif
 
         // 按场上棋子计分
         nPiecesOnBoardDiff = position->nPiecesOnBoard[BLACK] - position->nPiecesOnBoard[WHITE];
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
-#ifdef DEBUG_AB_TREE
-        node->nPiecesOnBoardDiff = nPiecesOnBoardDiff;
-#endif
 
         switch (position->action) {
             // 选子和落子使用相同的评价方法
@@ -65,9 +53,6 @@ value_t Evaluation::getValue(Position *position, Node *node)
             nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
-#ifdef DEBUG_AB_TREE
-            node->nPiecesNeedRemove = nPiecesNeedRemove;
-#endif
             break;
         default:
             break;
@@ -96,9 +81,6 @@ value_t Evaluation::getValue(Position *position, Node *node)
             nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
-#ifdef DEBUG_AB_TREE
-            node->nPiecesNeedRemove = nPiecesNeedRemove;
-#endif
             break;
         default:
             break;
@@ -144,8 +126,6 @@ value_t Evaluation::getValue(Position *position, Node *node)
         value = -value;
     }
 
-    // 赋值返回
-    node->value = value;
     return value;
 }
 #endif  // ALPHABETA_AI

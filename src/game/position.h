@@ -309,7 +309,7 @@ public:
         | /       |     \  |
         29 ----- 28 ----- 27
     */
-    move_t move{ MOVE_NONE };
+    move_t move { MOVE_NONE };
 
     // 选中的棋子在board中的位置
     square_t currentSquare{};

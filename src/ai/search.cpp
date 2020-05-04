@@ -52,7 +52,7 @@ AIAlgorithm::AIAlgorithm()
 {
     state = new StateInfo();
     st = new StateInfo();
-    movePicker = new MovePicker();
+    //movePicker = new MovePicker();
 
     memmgr.memmgr_init();
 
@@ -215,50 +215,6 @@ Node *Node::addChild(
     newNode->parent = this;
 
     ai->nodeCount++;
-#ifdef DEBUG_AB_TREE
-    newNode->id = nodeCount;
-#endif
-
-#ifdef DEBUG_AB_TREE
-    newNode->hash = 0;
-#endif
-
-#ifdef DEBUG_AB_TREE
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    newNode->isHash = false;
-#endif
-#endif
-
-#ifdef DEBUG_AB_TREE
-    newNode->root = root;
-    newNode->phase = st->position.phase;
-    newNode->action = st->position.action;
-    newNode->evaluated = false;
-    newNode->nPiecesInHandDiff = std::numeric_limits<int>::max();
-    newNode->nPiecesOnBoardDiff = std::numeric_limits<int>::max();
-    newNode->nPiecesNeedRemove = std::numeric_limits<int>::max();
-    newNode->alpha = -VALUE_INFINITE;
-    newNode->beta = VALUE_INFINITE;
-    newNode->visited = false;
-
-    int r, s;
-    char cmd[32] = { 0 };
-
-    if (move < 0) {
-        st->position.board.squareToPolar(static_cast<square_t>(-move), r, s);
-        sprintf(cmd, "-(%1u,%1u)", r, s);
-    } else if (move & 0x7f00) {
-        int r1, s1;
-        st->position.board.squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
-        st->position.board.squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
-        sprintf(cmd, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
-    } else {
-        st->position.board.squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
-        sprintf(cmd, "(%1u,%1u)", r, s);
-    }
-
-    strcpy(newNode->cmd, cmd);
-#endif // DEBUG_AB_TREE
 
     children[childrenSize] = newNode;
     childrenSize++;
@@ -756,7 +712,7 @@ value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
             beta = g;
         }
 
-        g = search(depth, beta - VALUE_MTDF_WINDOW, beta, root);
+        g = search(depth, beta - VALUE_MTDF_WINDOW, beta);
 
         if (g < beta) {
             upperbound = g;    // fail low
@@ -768,13 +724,11 @@ value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
     return g;
 }
 
-value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *node)
+value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 {
-    assert(node != nullptr);
-    
     // 评价值
-    value_t value;
-    node->value = -VALUE_INFINITE;
+    value_t value, current;
+    current = -VALUE_INFINITE;
 
     // 临时增加的深度，克服水平线效应用
     depth_t epsilon;
@@ -797,18 +751,18 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         findEndgameHash(hash, endgame)) {
         switch (endgame.type) {
         case ENDGAME_PLAYER_BLACK_WIN:
-            node->value = VALUE_WIN;
-            node->value += depth;
+            current = VALUE_WIN;
+            current += depth;
             break;
         case ENDGAME_PLAYER_WHITE_WIN:
-            node->value = -VALUE_WIN;
-            node->value -= depth;
+            current = -VALUE_WIN;
+            current -= depth;
             break;
         default:
             break;
         }
 
-        return node->value;
+        return current;
     }
 #endif /* ENDGAME_LEARNING */
 
@@ -816,10 +770,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
     // 哈希类型
     enum TT::HashType hashf = TT::hashfALPHA;
     
-#ifdef DEBUG_AB_TREE
-    node->hash = hash;
-#endif
-
     TT::HashType type = TT::hashfEMPTY;
 
     value_t probeVal = TT::probeHash(hash, depth, alpha, beta, type
@@ -838,14 +788,14 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #ifdef DEBUG_AB_TREE
         node->isHash = true;
 #endif
-        node->value = probeVal;
+        current = probeVal;
 
 #if 0
         // TODO: 有必要针对深度微调 value?
         if (position->turn == PLAYER_BLACK)
-            node->value += hashValue.depth - depth;
+            current += hashValue.depth - depth;
         else
-            node->value -= hashValue.depth - depth;
+            current -= hashValue.depth - depth;
 #endif
 
 #ifdef TT_MOVE_ENABLE
@@ -854,7 +804,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 //         }
 #endif // TT_MOVE_ENABLE
 
-        return node->value;
+        return current;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
     else {
@@ -864,20 +814,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
     //hashMapMutex.unlock();
 #endif /* TRANSPOSITION_TABLE_ENABLE */
-
-#ifdef DEBUG_AB_TREE
-    node->depth = depth;
-    node->root = root;
-    // node->player = position->turn;
-    // 初始化
-    node->isLeaf = false;
-    node->isTimeout = false;
-    node->visited = true;
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    node->isHash = false;
-    node->hash = 0;
-#endif // TRANSPOSITION_TABLE_ENABLE
-#endif // DEBUG_AB_TREE
 
 #if 0
     if (position->phase == PHASE_PLACING && depth == 1 && st->position->nPiecesNeedRemove > 0) {
@@ -889,14 +825,13 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         depth <= 0 ||
         unlikely(requiredQuit)) {
         // 局面评估
-        node->value = Evaluation::getValue(position, node);
-        evaluatedNodeCount++;
+        current = Evaluation::getValue(position);
 
         // 为争取速胜，value 值 +- 深度
-        if (node->value > 0) {
-            node->value += depth;
+        if (current > 0) {
+            current += depth;
         } else {
-            node->value -= depth;
+            current -= depth;
         }
 
 #ifdef DEBUG_AB_TREE
@@ -922,7 +857,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                 undoNullMove();
 
                 if (value >= beta) {
-                    node->value = beta;
+                    current = beta;
                     return beta;
                 }
             }
@@ -932,7 +867,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TT::recordHash(node->value,
+        TT::recordHash(current,
                        depth,
                        TT::hashfEXACT,
                        hash
@@ -942,36 +877,30 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                       );
 #endif
 
-        return node->value;
+        return current;
     }
 
-    // 生成子节点树，即生成每个合理的着法
-    if (node->childrenSize == 0) {
-        int moveCount = st->position->generateMoves(moves);
+    ExtMove extMoves[MAX_MOVES];
+    memset(extMoves, 0, sizeof(extMoves));
+    ExtMove *end = generate(st->position, extMoves);
+    MovePicker mp(st->position, extMoves);
+    mp.score();
 
-        st->position->generateChildren(moves, this, node
-#ifdef TT_MOVE_ENABLE
-                             , ttMove
-#endif // TT_MOVE_ENABLE
-                             );
+    partial_insertion_sort(extMoves, end, -100);
+    ExtMove *cur = extMoves;
 
-        if (node == root && moveCount == 1) {
-            best = moves[0];
-            return node->value;
-        }
+    int nchild = end - cur;
+
+    if (nchild == 1 && depth == originDepth) {
+        bestMove = extMoves[0].move;
+        bestValue = VALUE_STRONG;
+        return bestValue;
     }
-
-    // 排序子节点树
-    sortMoves(node);
-
-    assert(node->childrenSize != 0);
-
-    int nchild = node->childrenSize;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
     for (int i = 0; i < nchild; i++) {
-        TT::prefetchHash(st->position->getNextMainHash(node->children[i]->move));
+        TT::prefetchHash(st->position->getNextMainHash(extMoves[i].move));
     }
 
 #ifdef PREFETCH_DEBUG
@@ -987,7 +916,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         // 棋局入栈保存，以便后续撤销着法
         stashPosition();
         player_t before = st->position->sideToMove;
-        move_t m = node->children[i]->move;
+        move_t m = extMoves[i].move;
         doMove(m);
         player_t after = st->position->sideToMove;
 
@@ -1023,16 +952,16 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
         }
 #else
         if (after != before) {
-            value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[i]);
+            value = -search(depth - 1 + epsilon, -beta, -alpha);
         } else {
-            value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+            value = search(depth - 1 + epsilon, alpha, beta);
         }
 #endif // PVS_AI
 
         undoMove();
 
-        if (value >= node->value) {
-            node->value = value;
+        if (value >= current) {
+            current = value;
 
             if (value > alpha) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -1049,7 +978,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
 #ifdef TRANSPOSITION_TABLE_ENABLE
                 hashf = TT::hashfBETA;
 #endif
-                node->value = beta;
+                current = beta;
                 goto out;
             }
         }
@@ -1062,21 +991,16 @@ out:
     node->beta = beta;
 #endif
 
-    // 删除“孙子”节点，防止层数较深的时候节点树太大
-#ifndef DONOT_DELETE_TREE
-    deleteSubTree(node);
-#endif // DONOT_DELETE_TREE
-
     if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_ADD_VALUE
         node->children[0]->value += 1;
-        node->value += 1;
+        current += 1;
 #endif /* IDS_ADD_VALUE */
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值
-    TT::recordHash(node->value,
+    TT::recordHash(current,
                    depth,
                    hashf,
                    hash
@@ -1091,7 +1015,7 @@ out:
 #endif
 
     // 返回
-    return node->value;
+    return current;
 }
 #endif // ALPHABETA_AI
 
@@ -1130,6 +1054,8 @@ void AIAlgorithm::undoNullMove()
 #ifdef ALPHABETA_AI
 const char* AIAlgorithm::nextMove()
 {
+    return moveToCommand(best);
+
     char charChoose = '*';
 
     if (!root->childrenSize) {
@@ -1189,11 +1115,9 @@ const char* AIAlgorithm::nextMove()
         }
     }
 
-    loggerDebug("Evaluated: %llu / %llu = %llu%%\n", evaluatedNodeCount, nodeCount, evaluatedNodeCount * 100 / nodeCount);
     memmgr.memmgr_print_stats();
 
     nodeCount = 0;
-    evaluatedNodeCount = 0;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG

@@ -24,16 +24,20 @@
 #include "position.h"
 #include "search.h"
 
+class Position;
+
 enum GenType
 {
     CAPTURES,
     LEGAL
 };
 
-struct ExtMove
+class ExtMove
 {
+public:
     move_t move;
     value_t value;
+    rating_t rating;
 
     operator move_t() const
     {
@@ -52,11 +56,12 @@ struct ExtMove
 
 inline bool operator < (const ExtMove &first, const ExtMove &second)
 {
-    return first.value < second.value;
+    //return first.value < second.value;
+    return first.rating < second.rating;
 }
 
 //template <GenType>
-ExtMove *generate(const Position &pos, ExtMove *moveList);
+ExtMove *generate(Position *pos, ExtMove *moveList);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.
@@ -85,9 +90,9 @@ public:
     };
 
     //explicit MoveList(const Position &pos) : last(generate<T>(pos, moveList))
-    explicit MoveList(const Position &pos) : last(generate(pos, moveList))
-    {
-    }
+//     explicit MoveList(const Position &pos) : last(generate(pos, moveList))
+//     {
+//     }
 
     const ExtMove *begin() const
     {

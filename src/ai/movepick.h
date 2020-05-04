@@ -22,11 +22,26 @@
 
 #include "stack.h"
 #include "types.h"
+#include "movegen.h"
+#include "position.h"
+
+class Position;
+class ExtMove;
+
+void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit);
 
 class MovePicker
 {
+    enum PickType
+    {
+        Next, Best
+    };
+
 public:
-    MovePicker();
+    MovePicker(Position *position, ExtMove *cur);
+    MovePicker(const MovePicker &) = delete;
+    MovePicker &operator=(const MovePicker &) = delete;
+   // move_t nextMove(bool skipQuiets = false);
 
 #ifdef HOSTORY_HEURISTIC
     // TODO: Fix size
@@ -38,6 +53,22 @@ public:
     void setHistoryScore(move_t move, depth_t depth);
     void clearHistoryScore();
 #endif // HOSTORY_HEURISTIC
+
+public:
+    void score();
+
+    ExtMove *begin()
+    {
+        return cur;
+    }
+
+//     ExtMove *end()
+//     {
+//         return endMoves;
+//     }
+
+    Position *position;
+    ExtMove *cur;
 };
 
 #endif // MOVEPICK_H

@@ -442,7 +442,7 @@ void MoveList::shuffle()
 /// generate<LEGAL> generates all the legal moves in the given position
 
 //template<>
-ExtMove *generate(/* TODO: const */ Position &position, ExtMove *moveList)
+ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
 {
     square_t square;
     player_t opponent;
@@ -451,24 +451,24 @@ ExtMove *generate(/* TODO: const */ Position &position, ExtMove *moveList)
     ExtMove *cur = moveList;
 
     // 列出所有合法的下一招
-    switch (position.action) {
+    switch (position->action) {
         // 对于选子和落子动作
     case ACTION_CHOOSE:
     case ACTION_PLACE:
         // 对于摆子阶段
-        if (position.phase & (PHASE_PLACING | PHASE_READY)) {
+        if (position->phase & (PHASE_PLACING | PHASE_READY)) {
             for (move_t i : MoveList::movePriorityTable) {
                 square = static_cast<square_t>(i);
 
                 // 如果已经有子占据, 继续检索
-                if (position.board.locations[square]) {
+                if (position->board.locations[square]) {
                     continue;
                 }
 
 #ifdef MCTS_AI
                 moves.push_back((move_t)square);
 #else // MCTS_AI
-                if (position.phase != PHASE_READY) {
+                if (position->phase != PHASE_READY) {
                     *cur++ = ((move_t)square);
                 } else {
                     // 若为先手，则抢占星位
@@ -486,24 +486,24 @@ ExtMove *generate(/* TODO: const */ Position &position, ExtMove *moveList)
         }
 
         // 对于移子阶段
-        if (position.phase & PHASE_MOVING) {
+        if (position->phase & PHASE_MOVING) {
             square_t newSquare, oldSquare;
 
             // 尽量走理论上较差的位置的棋子
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 oldSquare = static_cast<square_t>(MoveList::movePriorityTable[i]);
 
-                if (!position.choose(oldSquare)) {
+                if (!position->choose(oldSquare)) {
                     continue;
                 }
 
-                if (position.nPiecesOnBoard[position.sideId] > rule.nPiecesAtLeast ||
+                if (position->nPiecesOnBoard[position->sideId] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_BEGIN; direction < DIRECTIONS_COUNT; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newSquare = static_cast<square_t>(MoveList::moveTable[oldSquare][direction]);
-                        if (newSquare && !position.board.locations[newSquare]) {
+                        if (newSquare && !position->board.locations[newSquare]) {
                             move_t m = move_t((oldSquare << 8) + newSquare);
                             *cur++ = ((move_t)m);
                         }
@@ -511,7 +511,7 @@ ExtMove *generate(/* TODO: const */ Position &position, ExtMove *moveList)
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
-                        if (!position.board.locations[newSquare]) {
+                        if (!position->board.locations[newSquare]) {
                             move_t m = move_t((oldSquare << 8) + newSquare);
                             *cur++ = ((move_t)m);
                         }
@@ -523,13 +523,13 @@ ExtMove *generate(/* TODO: const */ Position &position, ExtMove *moveList)
 
         // 对于吃子动作
     case ACTION_CAPTURE:
-        opponent = Player::getOpponent(position.sideToMove);
+        opponent = Player::getOpponent(position->sideToMove);
 
-        if (position.board.isAllInMills(opponent)) {
+        if (position->board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<square_t>(MoveList::movePriorityTable[i]);
-                if (position.board.locations[square] & opponent) {
+                if (position->board.locations[square] & opponent) {
                     *cur++ = ((move_t)-square);
                 }
             }
@@ -539,8 +539,8 @@ ExtMove *generate(/* TODO: const */ Position &position, ExtMove *moveList)
         // 不是全成三的情况
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<square_t>(MoveList::movePriorityTable[i]);
-            if (position.board.locations[square] & opponent) {
-                if (rule.allowRemoveMill || !position.board.inHowManyMills(square, PLAYER_NOBODY)) {
+            if (position->board.locations[square] & opponent) {
+                if (rule.allowRemoveMill || !position->board.inHowManyMills(square, PLAYER_NOBODY)) {
                     *cur++ = ((move_t)-square);
                 }
             }
@@ -552,6 +552,6 @@ ExtMove *generate(/* TODO: const */ Position &position, ExtMove *moveList)
         break;
     }
 
-    return moveList;
+    return cur;
 }
 

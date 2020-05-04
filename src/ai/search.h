@@ -53,6 +53,7 @@ class AIAlgorithm;
 class StateInfo;
 class Node;
 class Position;
+class MovePicker;
 
 using namespace std;
 using namespace CTSL;
@@ -270,7 +271,7 @@ public: /* TODO: Move to private or protected */
 #endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
-    value_t search(depth_t depth, value_t alpha, value_t beta, Node *node);
+    value_t search(depth_t depth, value_t alpha, value_t beta);
 
     // MTD(f)
     value_t MTDF(value_t firstguess, depth_t depth);
@@ -297,9 +298,6 @@ private:
 
     // 根节点
     Node *root {nullptr};
-
-    // 评估过的结点个数
-    size_t evaluatedNodeCount {0};
 
     // 局面数据栈
 #ifdef USE_STD_STACK
