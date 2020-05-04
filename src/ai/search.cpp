@@ -523,6 +523,20 @@ void AIAlgorithm::deleteTree(Node *node)
     memmgr.memmgr_free(node);
 }
 
+void AIAlgorithm::deleteSubTree(Node *node)
+{
+    int cs = node->childrenSize;
+
+    for (int i = 0; i < cs; i++) {
+        Node *c = node->children[i];
+        int size = c->childrenSize;
+        for (int j = 0; j < size; j++) {
+            deleteTree(c->children[j]);
+        }
+        c->childrenSize = 0;
+    }
+}
+
 void AIAlgorithm::setState(const StateInfo &g)
 {
     // 如果规则改变，重建hashmap
@@ -989,18 +1003,8 @@ out:
 
     // 删除“孙子”节点，防止层数较深的时候节点树太大
 #ifndef DONOT_DELETE_TREE
-    int cs =  node->childrenSize;
-    for (int i = 0; i < cs; i++) {
-        Node *c = node->children[i];
-        int size = c->childrenSize;
-        for (int j = 0; j < size; j++) {
-            deleteTree(c->children[j]);
-        }
-        c->childrenSize = 0;
-    }
+    deleteSubTree(node);
 #endif // DONOT_DELETE_TREE
-
-
 
     if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_ADD_VALUE
