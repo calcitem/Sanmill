@@ -994,12 +994,13 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
             epsilon = 0;
         }
 
+#ifdef PVS_AI
         if (i == 0) {
             if (after != before) {
                 value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[0]);
             } else {
                 value = search(depth - 1 + epsilon, alpha, beta, node->children[0]);
-            }
+    }
         } else {
             if (after != before) {
                 value = -search(depth - 1 + epsilon, -alpha - 1, -alpha, node->children[i]);
@@ -1017,6 +1018,13 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta, Node *no
                 }
             }
         }
+#else
+        if (after != before) {
+            value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[i]);
+        } else {
+            value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+        }
+#endif // PVS_AI
 
         undoMove();
 
