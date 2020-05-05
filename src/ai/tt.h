@@ -32,18 +32,17 @@ using namespace CTSL;
 
 extern const hash_t zobrist[SQ_EXPANDED_COUNT][PIECETYPE_COUNT];
 
+enum bound_t : uint8_t
+{
+    BOUND_NONE,
+    BOUND_UPPER,
+    BOUND_LOWER,
+    BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
+};
+
 class TranspositionTable
 {
 public:
-    // 定义哈希值的类型
-    enum bound_t : uint8_t
-    {
-        BOUND_NONE,
-        BOUND_UPPER,
-        BOUND_LOWER,
-        BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
-    };
-
     // 定义哈希表的值
     struct HashValue
     {

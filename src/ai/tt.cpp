@@ -119,7 +119,7 @@ void TT::prefetchHash(const hash_t &hash)
 
 int TT::recordHash(const value_t &value,
                    const depth_t &depth,
-                   const TT::bound_t &type,
+                   const bound_t &type,
                    const hash_t &hash
 #ifdef TT_MOVE_ENABLE
                    , const move_t &ttMove

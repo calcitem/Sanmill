@@ -607,7 +607,7 @@ int AIAlgorithm::search(depth_t depth)
 #ifdef MTDF_AI
             value = MTDF(value, i);
 #else
-            value = search(i, alpha, beta, root);
+            value = search(i, alpha, beta);
 #endif
 
             loggerDebug("%d(%d) ", value, value - lastValue);
@@ -685,7 +685,7 @@ int AIAlgorithm::search(depth_t depth)
 #ifdef MTDF_AI
     value = MTDF(value, d);
 #else
-    value = search(d, alpha, beta, root);
+    value = search(d, alpha, beta);
 #endif
 
 #ifdef TIME_STAT
@@ -768,9 +768,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 哈希类型
-    enum TT::bound_t hashf = TT::BOUND_UPPER;
+    enum bound_t hashf = BOUND_UPPER;
     
-    TT::bound_t type = TT::BOUND_NONE;
+    bound_t type = BOUND_NONE;
 
     value_t probeVal = TT::probeHash(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
@@ -869,7 +869,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
         // 记录确切的哈希值
         TT::recordHash(bestValue,
                        depth,
-                       TT::BOUND_EXACT,
+                       BOUND_EXACT,
                        posKey
 #ifdef TT_MOVE_ENABLE
                        , MOVE_NONE
@@ -929,23 +929,23 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 #ifdef PVS_AI
         if (i == 0) {
             if (after != before) {
-                value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[0]);
+                value = -search(depth - 1 + epsilon, -beta, -alpha);
             } else {
-                value = search(depth - 1 + epsilon, alpha, beta, node->children[0]);
+                value = search(depth - 1 + epsilon, alpha, beta);
     }
         } else {
             if (after != before) {
-                value = -search(depth - 1 + epsilon, -alpha - VALUE_PVS_WINDOW, -alpha, node->children[i]);
+                value = -search(depth - 1 + epsilon, -alpha - VALUE_PVS_WINDOW, -alpha);
 
                 if (value > alpha && value < beta) {
-                    value = -search(depth - 1 + epsilon, -beta, -alpha, node->children[i]);
+                    value = -search(depth - 1 + epsilon, -beta, -alpha);
                     //assert(value >= alpha && value <= beta);
                 }
             } else {
-                value = search(depth - 1 + epsilon, alpha, alpha + VALUE_PVS_WINDOW, node->children[i]);
+                value = search(depth - 1 + epsilon, alpha, alpha + VALUE_PVS_WINDOW);
 
                 if (value > alpha && value < beta) {
-                    value = search(depth - 1 + epsilon, alpha, beta, node->children[i]);
+                    value = search(depth - 1 + epsilon, alpha, beta);
                     //assert(value >= alpha && value <= beta);
                 }
             }
@@ -970,19 +970,16 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
                     bestMove = move;
                 }
 
-#ifdef TRANSPOSITION_TABLE_ENABLE
-                hashf = TT::BOUND_EXACT;
-#endif
-                alpha = value;  
-            }
+                //alpha = value;
 
+                break;
+            }
+#if 0
             if (value >= beta) {
-#ifdef TRANSPOSITION_TABLE_ENABLE
-                hashf = TT::BOUND_LOWER;
-#endif
                 bestValue = beta;
                 goto out;
             }
+#endif
         }
     }
 
@@ -1001,10 +998,10 @@ out:
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    // 记录不一定确切的哈希值
     TT::recordHash(bestValue,
                    depth,
-                   hashf,
+                   bestValue >= beta ? BOUND_LOWER :
+                   BOUND_UPPER,
                    posKey
 #ifdef TT_MOVE_ENABLE
                    , bestMove
