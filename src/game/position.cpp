@@ -989,7 +989,7 @@ bool Position::checkGameOverCondition()
             winner = Player::getOpponent(sideToMove);
             int winnerId = Player::toId(winner);
             sprintf(cmdline, "Player%d no way to go. Player%d win!", sideId, winnerId);
-            cmdlist.emplace_back(string(cmdline));
+            //cmdlist.emplace_back(string(cmdline));  // TODO: 内存泄漏
 
             return true;
         }
