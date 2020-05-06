@@ -433,7 +433,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
             // 如果双方都无未放置的棋子
             if (nPiecesInHand[BLACK] == 0 && nPiecesInHand[WHITE] == 0) {
                 // 决胜负
-                if (checkGameOverCondition()) {
+                if (checkGameOverCondition(updateCmdlist)) {
                     goto out;
                 }
 
@@ -454,7 +454,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
                 }
 
                 // 再决胜负
-                if (checkGameOverCondition()) {
+                if (checkGameOverCondition(updateCmdlist)) {
                     goto out;
                 }
             }
@@ -477,7 +477,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
     }
 
     // 如果决出胜负
-    if (checkGameOverCondition()) {
+    if (checkGameOverCondition(updateCmdlist)) {
         goto out;
     }
 
@@ -529,7 +529,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
         changeSideToMove();
 
         // 如果决出胜负
-        if (checkGameOverCondition()) {
+        if (checkGameOverCondition(updateCmdlist)) {
             goto out;
         }
     }
@@ -628,7 +628,7 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
     // 去子完成
 
     // 如果决出胜负
-    if (checkGameOverCondition()) {
+    if (checkGameOverCondition(updateCmdlist)) {
         goto out;
     }
 
@@ -662,7 +662,7 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
             }
 
             // 再决胜负
-            if (checkGameOverCondition()) {
+            if (checkGameOverCondition(updateCmdlist)) {
                 goto out;
             }
         }
@@ -675,7 +675,7 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
             changeSideToMove();
 
             // 如果决出胜负
-            if (checkGameOverCondition()) {
+            if (checkGameOverCondition(updateCmdlist)) {
                 goto out;
             }
         }
@@ -689,7 +689,7 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
         changeSideToMove();
 
         // 如果决出胜负
-        if (checkGameOverCondition()) {
+        if (checkGameOverCondition(updateCmdlist)) {
             goto out;
         }
     }
@@ -889,7 +889,7 @@ int Position::update()
 }
 
 // 是否分出胜负
-bool Position::checkGameOverCondition()
+bool Position::checkGameOverCondition(int8_t updateCmdlist)
 {
     if (phase & PHASE_NOTPLAYING) {
         return true;
@@ -899,18 +899,19 @@ bool Position::checkGameOverCondition()
     if (rule.maxTimeLedToLose > 0) {
         phase = PHASE_GAMEOVER;
 
-        // 这里不能update更新时间，否则会形成循环嵌套
-        for (int i = 1; i <= 2; i++)
-        {
-            if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
-                elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
-                winner = Player::idToPlayer(Player::getOpponentById(i));
-                tips = "玩家" + Player::chToStr(Player::idToCh(i)) + "超时判负。";
-                sprintf(cmdline, "Time over. Player%d win!", Player::getOpponentById(i));
+        if (updateCmdlist) {
+            // 这里不能update更新时间，否则会形成循环嵌套
+            for (int i = 1; i <= 2; i++) {
+                if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
+                    elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
+                    winner = Player::idToPlayer(Player::getOpponentById(i));
+                    tips = "玩家" + Player::chToStr(Player::idToCh(i)) + "超时判负。";
+                    sprintf(cmdline, "Time over. Player%d win!", Player::getOpponentById(i));
+                }
             }
-        }
 
-        cmdlist.emplace_back(string(cmdline));
+            cmdlist.emplace_back(string(cmdline));
+        }
 
         return true;
     }
@@ -920,8 +921,11 @@ bool Position::checkGameOverCondition()
         moveStep > rule.maxStepsLedToDraw) {
         winner = PLAYER_DRAW;
         phase = PHASE_GAMEOVER;
-        sprintf(cmdline, "Steps over. In draw!");
-        cmdlist.emplace_back(string(cmdline));
+        if (updateCmdlist) {
+            sprintf(cmdline, "Steps over. In draw!");
+            cmdlist.emplace_back(string(cmdline));
+        }
+
         return true;
     }
 
@@ -932,8 +936,10 @@ bool Position::checkGameOverCondition()
             int o = Player::getOpponentById(i);
             winner = Player::idToPlayer(o);
             phase = PHASE_GAMEOVER;
-            sprintf(cmdline, "Player%d win!", o);
-            cmdlist.emplace_back(string(cmdline));
+            if (updateCmdlist) {
+                sprintf(cmdline, "Player%d win!", o);
+                cmdlist.emplace_back(string(cmdline));
+            }
 
             return true;
         }
@@ -968,13 +974,19 @@ bool Position::checkGameOverCondition()
 
         if (rule.isStartingPlayerLoseWhenBoardFull) {
             winner = PLAYER_WHITE;
-            sprintf(cmdline, "Player2 win!");
+            if (updateCmdlist) {
+                sprintf(cmdline, "Player2 win!");
+            }
         } else {
-            winner = PLAYER_DRAW;  
-            sprintf(cmdline, "Full. In draw!");
+            winner = PLAYER_DRAW; 
+            if (updateCmdlist) {
+                sprintf(cmdline, "Full. In draw!");
+            }
         }
 
-        cmdlist.emplace_back(string(cmdline));
+        if (updateCmdlist) {
+            cmdlist.emplace_back(string(cmdline));
+        }
 
         return true;
     }
@@ -985,11 +997,13 @@ bool Position::checkGameOverCondition()
         phase = PHASE_GAMEOVER;
 
         if (rule.isLoseWhenNoWay) {
-            tips = "玩家" + Player::chToStr(chSide) + "无子可走被闷";
-            winner = Player::getOpponent(sideToMove);
-            int winnerId = Player::toId(winner);
-            sprintf(cmdline, "Player%d no way to go. Player%d win!", sideId, winnerId);
-            //cmdlist.emplace_back(string(cmdline));  // TODO: 内存泄漏
+            if (updateCmdlist) {
+                tips = "玩家" + Player::chToStr(chSide) + "无子可走被闷";
+                winner = Player::getOpponent(sideToMove);
+                int winnerId = Player::toId(winner);
+                sprintf(cmdline, "Player%d no way to go. Player%d win!", sideId, winnerId);
+                cmdlist.emplace_back(string(cmdline));  // TODO: 内存泄漏
+            }
 
             return true;
         }

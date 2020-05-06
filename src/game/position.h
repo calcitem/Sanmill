@@ -214,7 +214,7 @@ public:
     int update();
 
     // 是否分出胜负
-    bool checkGameOverCondition();
+    bool checkGameOverCondition(int8_t cp = 0);
 
     // 清除所有禁点
     void cleanForbiddenLocations();
