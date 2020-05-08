@@ -27,39 +27,6 @@
 #include "search.h"
 #include "position.h"
 
-void Position::generateChildren(const Stack<move_t, MAX_MOVES> &moves,
-                            AIAlgorithm *ai,
-                            Node *node
-#ifdef TT_MOVE_ENABLE
-                          , move_t ttMove
-#endif // TT_MOVE_ENABLE
-)
-{
-    int size = moves.size();
-
-    assert(size != 0);
-
-    if (node->childrenSize > 0) {
-        for (int i = 0; i < size; i++) {
-            ai->deleteTree(node->children[i]);
-        }
-        node->childrenSize = 0;
-    }
-
-    for (int i  = 0; i < size; i++) {
-        node->addChild(moves[i], ai, this
-#ifdef TT_MOVE_ENABLE
-                       , ttMove
-#endif // TT_MOVE_ENABLE
-        );
-    }
-
-    // 赋值
-    node->sideToMove = sideToMove;
-
-    return;
-}
-
 int Position::generateMoves(Stack<move_t, MAX_MOVES> &moves)
 {
     square_t square;

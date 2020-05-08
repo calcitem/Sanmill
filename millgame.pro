@@ -25,7 +25,6 @@ INCLUDEPATH += src/ui/qt
 SOURCES += \
     src/ai/endgame.cpp \
     src/ai/evaluate.cpp \
-    src/ai/mcts.cpp \
     src/ai/movegen.cpp \
     src/ai/movepick.cpp \
     src/ai/trainer.cpp \
@@ -58,7 +57,6 @@ HEADERS  += \
     include/version.h.template \
     src/ai/endgame.h \
     src/ai/evaluate.h \
-    src/ai/mcts.h \
     src/ai/movegen.h \
     src/ai/movepick.h \
     src/ai/trainer.h \
@@ -69,7 +67,6 @@ HEADERS  += \
     src/base/memmgr.h \
     src/base/misc.h \
     src/base/prefetch.h \
-    src/base/sort.h \
     src/base/stack.h \
     src/base/stopwatch.h \
     src/base/aithread.h \

@@ -38,49 +38,49 @@ public:
 #ifdef EVALUATE_ENABLE
 
 #ifdef EVALUATE_MATERIAL
-    static value_t evaluateMaterial(Node *node)
+    static value_t evaluateMaterial()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SPACE
-    static value_t evaluateSpace(Node *node)
+    static value_t evaluateSpace()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOBILITY
-    static value_t evaluateMobility(Node *node)
+    static value_t evaluateMobility()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_TEMPO
-    static value_t evaluateTempo(Node *node)
+    static value_t evaluateTempo()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_THREAT
-    static value_t evaluateThreat(Node *node)
+    static value_t evaluateThreat()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SHAPE
-    static value_t evaluateShape(Node *node)
+    static value_t evaluateShape()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOTIF
-    static value_t AIAlgorithm::evaluateMotif(Node *node)
+    static value_t AIAlgorithm::evaluateMotif()
     {
         return 0;
     }

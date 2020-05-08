@@ -33,15 +33,7 @@
 #include "misc.h"
 #include "movepick.h"
 
-#define SORT_NAME nodep
-#define SORT_TYPE Node*
-#ifdef ALPHABETA_AI
-#define SORT_CMP(x, y) (AIAlgorithm::nodeCompare((x), (y)))
-#endif
-
 player_t gSideToMove;
-
-#include "sort.h"
 
 using namespace CTSL;
 
@@ -53,19 +45,10 @@ AIAlgorithm::AIAlgorithm()
     state = new StateInfo();
     st = new StateInfo();
     //movePicker = new MovePicker();
-
-    memmgr.memmgr_init();
-
-    buildRoot();
 }
 
 AIAlgorithm::~AIAlgorithm()
 {
-    deleteTree(root);
-    root = nullptr;
-
-    memmgr.memmgr_exit();
-
     delete st;
     //delete state;
 }
@@ -165,340 +148,6 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     return d;
 }
 
-void AIAlgorithm::buildRoot()
-{
-    root = (Node *)memmgr.memmgr_alloc(sizeof(Node));
-
-    assert(root != nullptr);
-
-    root->parent = nullptr;
-    root->move = MOVE_NONE;
-
-#ifdef ALPHABETA_AI
-    root->value = VALUE_ZERO;
-    root->rating = RATING_ZERO;
-#endif // ALPHABETA_AI
-
-    root->sideToMove = PLAYER_NOBODY;
-}
-
-Node *Node::addChild(
-    const move_t &m,
-    AIAlgorithm *ai,
-    Position *position
-#ifdef TT_MOVE_ENABLE
-    , const move_t &ttMove
-#endif // TT_MOVE_ENABLE
-)
-{
-    Node *newNode = (Node *)ai->memmgr.memmgr_alloc(sizeof(Node));
-
-    if (unlikely(newNode == nullptr)) {
-        ai->memmgr.memmgr_print_stats();
-        loggerDebug("Memory Manager Alloc failed\n");
-        // TODO: Deal with alloc failed
-        return nullptr;
-    }
-
-    newNode->move = m;
-
-#ifdef HOSTORY_HEURISTIC
-    newNode->score = ai->movePicker->getHistoryScore(m);
-#endif
-
-#ifdef ALPHABETA_AI
-    newNode->value = VALUE_ZERO;
-    newNode->rating = RATING_ZERO;
-#endif // ALPHABETA_AI
-
-    newNode->childrenSize = 0;  // Important
-    newNode->parent = this;
-
-    ai->nodeCount++;
-
-    children[childrenSize] = newNode;
-    childrenSize++;
-
-#ifdef TT_MOVE_ENABLE
-    // 如果启用了置换表并且不是叶子结点
-    if (move == ttMove && move != 0) {
-        newNode->rating += RATING_TT;
-        return newNode;
-    }
-#endif // TT_MOVE_ENABLE
-
-    // 若没有启用置换表，或启用了但为叶子节点，则 nextMove 为0
-    square_t sq = SQ_0;
-    square_t sqsrc = SQ_0;
-
-    if (m > 0) {
-        if (m & 0x1f00) {
-            // 走子
-            sqsrc = static_cast<square_t>(m >> 8);
-        }
-
-        // 摆子或走子
-        sq = static_cast<square_t>(m & 0x00ff);
-    } else {
-        // 吃子
-        sq = static_cast<square_t>((-m) & 0x00ff);
-    }
-
-    // 若为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三，所以需要传值 sqsrc 进行判断
-    int nMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);
-    int nopponentMills = 0;
-
-#ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
-    // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
-    if (m > 0) {
-        // 在任何阶段, 都检测落子点是否能使得本方成三
-        if (nMills > 0) {
-#ifdef ALPHABETA_AI
-            newNode->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
-#endif
-        } else if (position->getPhase() == PHASE_PLACING) {
-            // 在摆棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = position->board.inHowManyMills(sq, position->opponent);
-#ifdef ALPHABETA_AI
-            newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
-#endif
-        }
-#if 1
-        else if (position->getPhase() == PHASE_MOVING) {
-            // 在走棋阶段, 检测落子点是否能阻止对方成三
-            nopponentMills = position->board.inHowManyMills(sq, position->opponent);
-
-            if (nopponentMills) {
-                int nPlayerPiece = 0;
-                int nOpponentPiece = 0;
-                int nForbidden = 0;
-                int nEmpty = 0;
-
-                position->board.getSurroundedPieceCount(sq, position->sideId,
-                                                                nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
-
-#ifdef ALPHABETA_AI
-                if (sq % 2 == 0 && nOpponentPiece == 3) {
-                    newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
-                } else if (sq % 2 == 1 && nOpponentPiece == 2 && rule.nTotalPiecesEachSide == 12) {
-                    newNode->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
-                }
-#endif
-            }
-        }
-#endif
-
-        //newNode->rating += static_cast<rating_t>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
-
-        // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
-#ifdef ALPHABETA_AI
-        if (rule.nTotalPiecesEachSide == 12 &&
-            position->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
-            Board::isStar(static_cast<square_t>(m))) {
-            newNode->rating += RATING_STAR_SQUARE;
-        }
-#endif
-    } else if (m < 0) {
-        int nPlayerPiece = 0;
-        int nOpponentPiece = 0;
-        int nForbidden = 0;
-        int nEmpty = 0;
-
-        position->board.getSurroundedPieceCount(sq, position->sideId,
-                                                        nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
-
-#ifdef ALPHABETA_AI
-        if (nMills > 0) {
-            // 吃子点处于我方的三连中
-            //newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nMills);
-       
-            if (nOpponentPiece == 0) {
-                // 吃子点旁边没有对方棋子则优先考虑     
-                newNode->rating += static_cast<rating_t>(1);
-                if (nPlayerPiece > 0) {
-                    // 且吃子点旁边有我方棋子则更优先考虑
-                    newNode->rating += static_cast<rating_t>(nPlayerPiece);
-                }
-            }
-        }
-
-        // 吃子点处于对方的三连中
-        nopponentMills = position->board.inHowManyMills(sq, position->opponent);
-        if (nopponentMills) {
-            if (nOpponentPiece >= 2) {
-                // 旁边对方的子较多, 则倾向不吃
-                newNode->rating -= static_cast<rating_t>(nOpponentPiece);
-
-                if (nPlayerPiece == 0) {
-                    // 如果旁边无我方棋子, 则更倾向不吃
-                    newNode->rating -= static_cast<rating_t>(1);
-                }
-            }
-        }
-
-        // 优先吃活动力强的棋子
-        newNode->rating += static_cast<rating_t>(nEmpty);
-#endif
-    }
-#endif // SORT_MOVE_WITH_HUMAN_KNOWLEDGES
-
-    return newNode;
-}
-
-#ifdef ALPHABETA_AI
-int AIAlgorithm::nodeCompare(const Node *first, const Node *second)
-{
-#ifdef COMPARE_RATING_1ST_VALUE_2ND
-    if (first->rating == second->rating) {
-        if (first->value == second->value) {
-            return 0;
-        }
-
-        return (first->value < second->value ? 1 : -1);
-        }
-
-    return (first->rating < second->rating ? 1 : -1);
-#endif
-
-#ifdef COMPARE_VALUE_1ST_RATING_2ND
-    if (first->value == second->value) {
-        if (first->rating == second->rating) {
-            return 0;
-        }
-
-        return (first->rating < second->rating ? 1 : -1);
-        }
-
-    return (first->value < second->value ? 1 : -1);
-#endif
-
-#ifdef COMPARE_RATING_ONLY
-    return second->rating - first->rating;
-#endif
-
-#ifdef COMPARE_SCORE_ONLY
-    return second->score - first->score;
-#endif
-
-#ifdef COMPARE_SCORE_PREFERRED
-    if (first->score == second->score) {
-        if (first->rating == second->rating) {
-            return 0;
-        }
-
-        return (first->rating < second->rating ? 1 : -1);
-    }
-
-    return (first->score < second->score ? 1 : -1);
-#endif
-
-#ifdef COMPARE_RATING_PREFERRED
-    if (first->rating == second->rating) {
-        if (first->score == second->score) {
-            return 0;
-        }
-
-        return (first->score < second->score ? 1 : -1);
-    }
-
-    return (first->rating < second->rating ? 1 : -1);
-#endif
-}
-#endif
-
-void AIAlgorithm::sortMoves(Node *node)
-{
-    // 这个函数对效率的影响很大，排序好的话，剪枝较早，节省时间，但不能在此函数耗费太多时间
-    assert(node->childrenSize != 0);
-
-    //#define DEBUG_SORT
-#ifdef DEBUG_SORT
-    for (int moveIndex = 0; moveIndex < node->childrenSize; moveIndex++) {
-        loggerDebug("* [%d] %p: %d = %d %d (%d)\n",
-                    moveIndex, &(node->children[moveIndex]), node->children[moveIndex]->move, node->children[moveIndex]->value, node->children[moveIndex]->rating, !node->children[moveIndex]->pruned);
-    }
-    loggerDebug("\n");
-#endif
-
-#define NODE_PTR_SORT_FUN(x) nodep_##x
-
-    gSideToMove = st->position->sideToMove; // TODO: 暂时用全局变量
-
-    // 此处选用排序算法, 各算法耗时统计如下:
-    /*
-     * sqrt_sort_sort_ins:          100% (4272)
-     * bubble_sort:                 115% (4920)
-     * binary_insertion_sort:       122% (5209)
-     * merge_sort:                  131% (5612)
-     * grail_lazy_stable_sort:      175% (7471)
-     * tim_sort:                    185% (7885)
-     * selection_sort:              202% (8642)
-     * rec_stable_sort:             226% (9646)
-     * sqrt_sort:                   275% (11729)
-     */
-#ifdef TIME_STAT
-    auto timeStart = now();
-#endif
-#ifdef CYCLE_STAT
-    auto cycleStart = stopwatch::rdtscp_clock::now();
-#endif
-
-    NODE_PTR_SORT_FUN(sqrt_sort_sort_ins)(node->children, node->childrenSize);
-
-#ifdef TIME_STAT
-    auto timeEnd = now();
-    sortTime += (timeEnd - timeStart);
-#endif
-#ifdef CYCLE_STAT
-    auto cycleEnd = stopwatch::rdtscp_clock::now();
-    sortCycle += (cycleEnd - cycleStart);
-#endif
-
-#ifdef DEBUG_SORT
-    if (st->position.sideToMove == PLAYER_BLACK) {
-        for (int moveIndex = 0; moveIndex < node->childrenSize; moveIndex++) {
-            loggerDebug("+ [%d] %p: %d = %d %d (%d)\n",
-                        moveIndex, &(node->children[moveIndex]), node->children[moveIndex]->move, node->children[moveIndex]->value, node->children[moveIndex]->rating, !node->children[moveIndex]->pruned);
-        }
-     } else {
-        for (int moveIndex = 0; moveIndex < node->childrenSize; moveIndex++) {
-            loggerDebug("- [%d] %p: %d = %d %d (%d)\n",
-                        moveIndex, &(node->children[moveIndex]), node->children[moveIndex]->move, node->children[moveIndex]->value, node->children[moveIndex]->rating, !node->children[moveIndex]->pruned);
-        }
-    }
-    loggerDebug("\n----------------------------------------\n");
-#endif
-
-    assert(node->childrenSize != 0);
-}
-
-void AIAlgorithm::deleteTree(Node *node)
-{
-    int nchild = node->childrenSize;
-
-    for (int i = 0; i < nchild; i++) {
-        deleteTree(node->children[i]);
-    }
-
-    node->childrenSize = 0;
-
-    memmgr.memmgr_free(node);
-}
-
-void AIAlgorithm::deleteSubTree(Node *node)
-{
-    int cs = node->childrenSize;
-
-    for (int i = 0; i < cs; i++) {
-        Node *c = node->children[i];
-        int size = c->childrenSize;
-        for (int j = 0; j < size; j++) {
-            deleteTree(c->children[j]);
-        }
-        c->childrenSize = 0;
-    }
-}
-
 void AIAlgorithm::setState(const StateInfo &g)
 {
     // 如果规则改变，重建hashmap
@@ -524,23 +173,11 @@ void AIAlgorithm::setState(const StateInfo &g)
 
     position = st->position;
     requiredQuit = false;
-    deleteTree(root);
-
-    root = (Node *)memmgr.memmgr_alloc(sizeof(Node));
-    assert(root != nullptr);
-
-    memset(root, 0, sizeof(Node));
- 
-#ifdef DEBUG_AB_TREE
-    root->root = root;
-#endif
 }
 
 #ifdef ALPHABETA_AI
 int AIAlgorithm::search(depth_t depth)
 {
-    assert(root != nullptr);
-
     value_t value = VALUE_ZERO;
 
     depth_t d = changeDepth(depth);
@@ -612,44 +249,7 @@ int AIAlgorithm::search(depth_t depth)
 
             loggerDebug("%d(%d) ", value, value - lastValue);
 
-#ifdef IDS_DEBUG
-            loggerDebug(": --------------- depth = %d/%d ---------------\n", moveIndex, d);
-            int k = 0;
-            int cs = root->childrenSize;
-            for (int i = 0; i < cs; i++) {
-                if (root->children[i]->value == root->value) {
-                    loggerDebug("[%.2d] %d\t%s\t%d\t%d *\n", k,
-                                root->children[i]->move,
-                                moveToCommand(root->children[i]->move),
-                                root->children[i]->value,
-                                root->children[i]->rating);
-                } else {
-                    loggerDebug("[%.2d] %d\t%s\t%d\t%d\n", k,
-                                root->children[i]->move,
-                                moveToCommand(root->children[i]->move),
-                                root->children[i]->value,
-                                root->children[i]->rating);
-                }
-
-                k++;
-            }
-            loggerDebug("\n");
-#endif // IDS_DEBUG
-
             lastValue = value;
-
-#if 0
-            if (value <= alpha) {
-                alpha = -VALUE_INFINITE;
-                beta = value + 1;   // X
-                continue;
-            }
-            if (value >= beta) {
-                beta = VALUE_INFINITE;
-                alpha = value - 1;
-                continue;
-            }
-#endif
 
 #ifdef IDS_WINDOW
             alpha = value - VALUE_IDS_WINDOW;
@@ -671,7 +271,7 @@ int AIAlgorithm::search(depth_t depth)
 
     if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_WINDOW
-        value_t window = state->position.getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
+        value_t window = state->position->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
         alpha = value - window;
         beta = value + window;
 #else
@@ -727,8 +327,8 @@ value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
 value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 {
     // 评价值
-    value_t value, bestValue;
-    bestValue = -VALUE_INFINITE;
+    value_t value;
+    value_t bestValue = -VALUE_INFINITE;
 
     // 临时增加的深度，克服水平线效应用
     depth_t epsilon;
@@ -767,9 +367,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 #endif /* ENDGAME_LEARNING */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    // 哈希类型
-    enum bound_t hashf = BOUND_UPPER;
-    
     bound_t type = BOUND_NONE;
 
     value_t probeVal = TT::probeHash(posKey, depth, alpha, beta, type
@@ -779,15 +376,10 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
     );
 
     if (probeVal != VALUE_UNKNOWN) {
-#ifdef DEBUG_MODE
-        assert(node != root);
-#endif
 #ifdef TRANSPOSITION_TABLE_DEBUG
         hashHitCount++;
 #endif
-#ifdef DEBUG_AB_TREE
-        node->isHash = true;
-#endif
+
         bestValue = probeVal;
 
 #if 0
@@ -833,14 +425,6 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
         } else {
             bestValue -= depth;
         }
-
-#ifdef DEBUG_AB_TREE
-        if (requiredQuit) {
-            node->isTimeout = true;
-        } else {
-            node->isLeaf = true;
-        }
-#endif
 
 #ifdef NULL_MOVE
         if (depth % 2 == 1)
@@ -970,31 +554,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
                     bestMove = move;
                 }
 
-                //alpha = value;
-
                 break;
             }
-#if 0
-            if (value >= beta) {
-                bestValue = beta;
-                goto out;
-            }
-#endif
         }
-    }
-
-out:
-
-#ifdef DEBUG_AB_TREE
-    node->alpha = alpha;
-    node->beta = beta;
-#endif
-
-    if (gameOptions.getIDSEnabled()) {
-#ifdef IDS_ADD_VALUE
-        node->children[0]->value += 1;
-        bestValue += 1;
-#endif /* IDS_ADD_VALUE */
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -1056,11 +618,8 @@ const char* AIAlgorithm::nextMove()
 {
     return moveToCommand(bestMove);
 
+#if 0
     char charChoose = '*';
-
-    if (!root->childrenSize) {
-        return "error!";
-    }
 
     Board::printBoard();
 
@@ -1096,11 +655,11 @@ const char* AIAlgorithm::nextMove()
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
     if (gameOptions.getLearnEndgameEnabled()) {
-        if (root->value <= -VALUE_STRONG) {
+        if (bestValue <= -VALUE_STRONG) {
             Endgame endgame;
             endgame.type = state->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            hash_t endgameHash = this->state->getPosKey(); // TODO: 减少重复计算哈希
+            hash_t endgameHash = state->position->getPosKey(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
         }
     }
@@ -1114,8 +673,6 @@ const char* AIAlgorithm::nextMove()
             return cmdline;
         }
     }
-
-    memmgr.memmgr_print_stats();
 
     nodeCount = 0;
 
@@ -1135,6 +692,7 @@ const char* AIAlgorithm::nextMove()
     }
 
     return moveToCommand(bestMove);
+#endif
 }
 #endif // ALPHABETA_AI
 

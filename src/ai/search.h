@@ -22,17 +22,11 @@
 
 #include "config.h"
 
-#ifdef USE_STD_STACK
-#include <stack>
-#include <vector>
-#else
-#include "stack.h"
-#endif // USE_STD_STACK
-
 #include <mutex>
 #include <string>
 #include <array>
 
+#include "stack.h"
 #include "position.h"
 #include "tt.h"
 #include "hashmap.h"
@@ -41,12 +35,9 @@
 #include "memmgr.h"
 #include "misc.h"
 #include "movepick.h"
+#include "movegen.h"
 #ifdef CYCLE_STAT
 #include "stopwatch.h"
-#endif
-
-#ifdef MCTS_AI
-#include "mcts.h"
 #endif
 
 class AIAlgorithm;
@@ -54,6 +45,7 @@ class StateInfo;
 class Node;
 class Position;
 class MovePicker;
+class ExtMove;
 
 using namespace std;
 using namespace CTSL;
@@ -63,98 +55,9 @@ using namespace CTSL;
 // 另外，AI类是 Position 类的友元类，可以访问其私有变量
 // 尽量不要使用 Position 的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
 
-class Node
-{
-public:
-    Node();
-    ~Node();
-
-#ifdef MCTS_AI
-    Node(Position &position);
-    Node(Position &position, const move_t &move, Node *parent);
-#endif // MCTS_AI
-
-    bool hasChildren() const;
-
-    Node *addChild(
-        const move_t &move, 
-        AIAlgorithm *ai,
-        Position *position
-#ifdef TT_MOVE_ENABLE
-        , const move_t &ttMove
-#endif // TT_MOVE_ENABLE
-    );
-
-#ifdef MCTS_AI
-    bool hasUntriedMoves() const;
-    template<typename RandomEngine>
-    move_t getUntriedMove(RandomEngine *engine) const;
-    Node *bestChildren() const;
-    Node *selectChild() const;
-    Node *addChild(const move_t &move, Position &position);
-    void update(double result);
-    string toString();
-    string treeToString(int max_depth = 1000000, int indent = 0) const;
-    string indentString(int indent) const;
-#endif // MCTS_AI
-
-    static const int NODE_CHILDREN_SIZE = MAX_MOVES;
-
-    Node *children[NODE_CHILDREN_SIZE];
-    Node *parent { nullptr };
-
-#ifdef MCTS_AI
-    //atomic<double> wins;
-    //atomic<int> visits;
-    double wins { 0 };
-    double score { 0 };
-    Stack<move_t, NODE_CHILDREN_SIZE> moves;
-    int visits { 0 };
-#else
-    move_t moves[NODE_CHILDREN_SIZE];
-#endif // MCTS_AI
-
-    move_t move { MOVE_NONE };
-    int childrenSize { 0 };
-
-#ifdef ALPHABETA_AI
-    value_t value { VALUE_UNKNOWN };
-    rating_t rating { RATING_ZERO };
-#ifdef HOSTORY_HEURISTIC
-    score_t score { 0 };
-#endif
-#endif // ALPHABETA_AI
-
-    player_t sideToMove { PLAYER_NOBODY };
-
-#ifdef DEBUG_AB_TREE
-    size_t id;                      // 结点编号
-    char cmd[32];
-    int depth;                      // 深度
-    bool evaluated;                 // 是否评估过局面
-    int alpha;                      // 当前搜索结点走棋方搜索到的最好值，任何比它小的值对当前结点的走棋方都没有意义。当函数递归时 Alpha 和 Beta 不但取负数而且要交换位置
-    int beta;                       // 表示对手目前的劣势，这是对手所能承受的最坏结果，Beta 值越大，表示对手劣势越明显，如果当前结点返回  Beta 或比 Beta 更好的值，作为父结点的对方就绝对不会选择这种策略
-    bool isTimeout;                 // 是否遍历到此结点时因为超时而被迫退出
-    bool isLeaf;                    // 是否为叶子结点, 叶子结点是决胜局面
-    bool visited;                   // 是否在遍历时访问过
-    phase_t phase;     // 摆棋阶段还是走棋阶段
-    action_t action;       // 动作状态
-    int nPiecesOnBoardDiff;         // 场上棋子个数和对手的差值
-    int nPiecesInHandDiff;          // 手中的棋子个数和对手的差值
-    int nPiecesNeedRemove;          // 手中有多少可去的子，如对手有可去的子则为负数
-    struct Node *root;              // 根节点
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    bool isHash;                    //  是否从 Hash 读取
-#endif /* TRANSPOSITION_TABLE_ENABLE */
-    hash_t hash;                  //  哈希值
-#endif /* DEBUG_AB_TREE */
-};
-
 class AIAlgorithm
 {
 public:
-    MemoryManager memmgr;
-
 #ifdef TIME_STAT
     // 排序算法耗时 (ms)
     TimePoint sortTime { 0 };
@@ -206,20 +109,6 @@ public:
     void clearTT();
 #endif
 
-#ifdef ALPHABETA_AI
-    // 比较函数
-    static int nodeCompare(const Node *first, const Node *second);
-#endif // ALPHABETA_AI
-
-#ifdef MCTS_AI
-    // TODO: 分离到 MCTS 算法类
-    Node *computeTree(Position position,
-                      const MCTSOptions options,
-                      mt19937_64::result_type initialSeed);
-    move_t AIAlgorithm::computeMove(Position position,
-                                    const MCTSOptions options);
-#endif
-
 #ifdef ENDGAME_LEARNING
     bool findEndgameHash(hash_t hash, Endgame &endgame);
     static int recordEndgameHash(hash_t hash, const Endgame &endgame);
@@ -228,45 +117,33 @@ public:
     static void loadEndgameFileToHashMap();
 #endif // ENDGAME_LEARNING
 
-
 public: /* TODO: Move to private or protected */
 
-    // 结点个数;
-    size_t nodeCount { 0 };
-
-    // 对合法的着法降序排序
-    void sortMoves(Node *node);
-
-    // 清空节点树
-    void deleteTree(Node *node);
-    void deleteSubTree(Node *node);
-
-    // 构造根节点
-    void buildRoot();
-
-    // 评价函数
-    value_t evaluate(Node *node);
 #ifdef EVALUATE_ENABLE
+
+        // 评价函数
+    value_t evaluate();
+
 #ifdef EVALUATE_MATERIAL
-    value_t evaluateMaterial(Node *node);
+    value_t evaluateMaterial();
 #endif
 #ifdef EVALUATE_SPACE
-    value_t evaluateSpace(Node *node);
+    value_t evaluateSpace();
 #endif
 #ifdef EVALUATE_MOBILITY
-    value_t evaluateMobility(Node *node);
+    value_t evaluateMobility();
 #endif
 #ifdef EVALUATE_TEMPO
-    value_t evaluateTempo(Node *node);
+    value_t evaluateTempo();
 #endif
 #ifdef EVALUATE_THREAT
-    value_t evaluateThreat(Node *node);
+    value_t evaluateThreat();
 #endif
 #ifdef EVALUATE_SHAPE
-    value_t evaluateShape(Node *node);
+    value_t evaluateShape();
 #endif
 #ifdef EVALUATE_MOTIF
-    value_t evaluateMotif(Node *node);
+    value_t evaluateMotif();
 #endif
 #endif /* EVALUATE_ENABLE */
 
@@ -296,22 +173,14 @@ private:
 
     Position *position { nullptr };
 
-    // 根节点
-    Node *root {nullptr};
-
     // 局面数据栈
-#ifdef USE_STD_STACK
-    stack<Position, vector<Position> > positionStack;
-#else
     Stack<Position> positionStack;
-#endif /* USE_STD_STACK */
-
-    Stack<move_t, MAX_MOVES> moves;
 
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
 
     move_t bestMove { MOVE_NONE };
+    //value_t bestvalue { VALUE_ZERO };
 
     depth_t originDepth { 0 };
 

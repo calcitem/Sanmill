@@ -81,10 +81,6 @@
 #define SORT_MOVE_WITH_HUMAN_KNOWLEDGES
 
 //#define IDS_WINDOW
-//#define IDS_DEBUG
-//#define IDS_ADD_VALUE
-
-//#define DEEPER_IF_ONLY_ONE_LEGAL_MOVE
 
 #define TRANSPOSITION_TABLE_ENABLE
 
@@ -96,6 +92,7 @@
 //#define TRANSPOSITION_TABLE_DEBUG
 #endif
 
+//WIP
 //#define HOSTORY_HEURISTIC
 
 #ifdef HOSTORY_HEURISTIC
@@ -115,10 +112,6 @@
 
 #define PREFETCH_SUPPORT
 
-//#define USE_STD_STACK
-
-//#define RAPID_GAME
-
 // WIP, Debugging only
 //#define OPENING_BOOK
 
@@ -128,13 +121,10 @@
 
 #define THREEFOLD_REPETITION
 
-//#define DONOT_DELETE_TREE
-
 //#define MESSAGEBOX_ENABLE
 
 #ifdef DEBUG_MODE
 #define DONOT_PLAY_SOUND
-#define DEBUG_AB_TREE
 #endif
 
 //#define DONOT_PLAY_SOUND
@@ -147,7 +137,7 @@
 #define SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 
-// #define DONOT_PLAY_WIN_SOUND
+//#define DONOT_PLAY_WIN_SOUND
 
 // 摆棋阶段在叉下面显示被吃的子
 //#define GAME_PLACING_SHOW_CAPTURED_PIECES

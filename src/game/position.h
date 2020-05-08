@@ -29,10 +29,6 @@
 #include "board.h"
 #include "search.h"
 
-#ifdef MCTS_AI
-#include "mcts.h"
-#endif
-
 using namespace std;
 
 class AIAlgorithm;
@@ -232,15 +228,6 @@ public:
     void setTips();
 
     // 着法生成
-    void generateChildren(const Stack<move_t, MAX_MOVES> &moves,
-                          AIAlgorithm *ai,
-                          Node *node
-#ifdef TT_MOVE_ENABLE
-                          , move_t ttMove
-#endif // TT_MOVE_ENABLE
-    );
-
-    // 着法生成
     int generateMoves(Stack<move_t, MAX_MOVES> &moves);
     int generateNullMove(Stack<move_t, MAX_MOVES> &moves);
 
@@ -262,19 +249,6 @@ public:
     hash_t updateHash(square_t square);
     hash_t updateHashMisc();
     hash_t getNextMainHash(move_t m);
-
-#ifdef MCTS_AI
-    // MCTS 相关
-    Stack<move_t, MAX_MOVES> moves;
-
-    //template<typename RandomEngine>
-    //void doRandomMove(RandomEngine *engine);    
-    void doRandomMove(Node *node, mt19937_64 *engine);
-
-    bool hasMoves() const;
-    double getResult(player_t currentSideToMove) const;
-    void checkInvariant() const;
-#endif // MCTS_AI
 
     // 赢盘数
     int score[COLOR_COUNT] = { 0 };

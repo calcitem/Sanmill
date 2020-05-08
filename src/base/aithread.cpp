@@ -97,11 +97,6 @@ void AiThread::emitCommand()
     emit command(strCommand);
 }
 
-#ifdef MCTS_AI
-move_t computeMove(Position position,
-                   const MCTSOptions options);
-#endif // MCTS_AI
-
 #ifdef OPENING_BOOK
 deque<int> openingBookDeque(
     {

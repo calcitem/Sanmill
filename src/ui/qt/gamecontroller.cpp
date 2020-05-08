@@ -1204,7 +1204,7 @@ bool GameController::updateScence(StateInfo &g)
                 deletedPiece = piece;
 
 #ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
-                if (state.position->getPhase() == GAME_MOVING) {
+                if (state.position->getPhase() == PHASE_MOVING) {
 #endif
                     QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
