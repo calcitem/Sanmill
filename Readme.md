@@ -1,5 +1,7 @@
 # 直棋 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a09e5b5ab4f04b1585acb478af0bd593)](https://app.codacy.com/manual/calcitem/Sanmill?utm_source=github.com&utm_medium=referral&utm_content=calcitem/Sanmill&utm_campaign=Badge_Grade_Settings)
+
 ## 古老的游戏
 
 ### 莫里斯九子棋
