@@ -31,7 +31,7 @@ value_t TT::probeHash(const hash_t &hash,
                       const depth_t &depth,
                       const value_t &alpha,
                       const value_t &beta,
-                      HashType &type
+                      bound_t &type
 #ifdef TT_MOVE_ENABLE
                       , move_t &ttMove
 #endif // TT_MOVE_ENABLE
@@ -57,15 +57,15 @@ value_t TT::probeHash(const hash_t &hash,
     type = hashValue.type;
 
     switch (hashValue.type) {
-    case hashfEXACT:
+    case BOUND_EXACT:
         return hashValue.value;
         break;
-    case hashfALPHA:     // 最多是 hashValue.value
+    case BOUND_UPPER:     // 最多是 hashValue.value
         if (hashValue.value <= alpha) {
             return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
         }
         break;
-    case hashfBETA:     // 至少是 hashValue.value
+    case BOUND_LOWER:     // 至少是 hashValue.value
         if (hashValue.value >= beta) {
             return beta;
         }
@@ -119,7 +119,7 @@ void TT::prefetchHash(const hash_t &hash)
 
 int TT::recordHash(const value_t &value,
                    const depth_t &depth,
-                   const TT::HashType &type,
+                   const TT::bound_t &type,
                    const hash_t &hash
 #ifdef TT_MOVE_ENABLE
                    , const move_t &ttMove
@@ -127,7 +127,7 @@ int TT::recordHash(const value_t &value,
                   )
 {
     // 同样深度或更深时替换
-    // 注意: 每走一步以前都必须把散列表中所有的标志项置为 hashfEMPTY
+    // 注意: 每走一步以前都必须把散列表中所有的标志项置为 BOUND_NONE
 
     //hashMapMutex.lock();
     HashValue hashValue {};
@@ -136,7 +136,7 @@ int TT::recordHash(const value_t &value,
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
         if (hashValue.age == transpositionTableAge) {
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-            if (hashValue.type != hashfEMPTY &&
+            if (hashValue.type != BOUND_NONE &&
                 hashValue.depth > depth) {
                 return -1;
             }

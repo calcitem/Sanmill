@@ -36,12 +36,12 @@ class TranspositionTable
 {
 public:
     // 定义哈希值的类型
-    enum HashType : uint8_t
+    enum bound_t : uint8_t
     {
-        hashfEMPTY = 0,
-        hashfALPHA = 1, // 结点的值最多是 value
-        hashfBETA = 2,  // 结点的值至少是 value
-        hashfEXACT = 3  // 结点值 value 是准确值
+        BOUND_NONE,
+        BOUND_UPPER,
+        BOUND_LOWER,
+        BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
     };
 
     // 定义哈希表的值
@@ -49,7 +49,7 @@ public:
     {
         value_t value;
         depth_t depth;
-        enum HashType type;
+        enum bound_t type;
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
         uint8_t age;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
@@ -64,7 +64,7 @@ public:
                              const depth_t &depth,
                              const value_t &alpha,
                              const value_t &beta,
-                             HashType &type
+                             bound_t &type
 #ifdef TT_MOVE_ENABLE
                              , move_t &ttMove
 #endif // TT_MOVE_ENABLE
@@ -73,7 +73,7 @@ public:
     // 插入哈希表
     static int recordHash(const value_t &value,
                           const depth_t &depth,
-                          const HashType &type,
+                          const bound_t &type,
                           const hash_t &hash
 #ifdef TT_MOVE_ENABLE
                           , const move_t &ttMove

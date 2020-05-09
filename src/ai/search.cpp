@@ -561,7 +561,7 @@ int AIAlgorithm::search(depth_t depth)
     static int nRepetition = 0;
 
     if (state->position->getPhase() == PHASE_MOVING) {
-        hash_t hash = state->position->getHash();
+        hash_t hash = state->position->getPosKey();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), hash) != moveHistory.end()) {
             nRepetition++;
@@ -727,8 +727,8 @@ value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
 value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 {
     // 评价值
-    value_t value, current;
-    current = -VALUE_INFINITE;
+    value_t value, bestValue;
+    bestValue = -VALUE_INFINITE;
 
     // 临时增加的深度，克服水平线效应用
     depth_t epsilon;
@@ -740,7 +740,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
-    hash_t hash = st->position->getHash();
+    hash_t posKey = st->position->getPosKey();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -748,31 +748,31 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
     Endgame endgame;
 
     if (gameOptions.getLearnEndgameEnabled() &&
-        findEndgameHash(hash, endgame)) {
+        findEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case ENDGAME_PLAYER_BLACK_WIN:
-            current = VALUE_WIN;
-            current += depth;
+            bestValue = VALUE_WIN;
+            bestValue += depth;
             break;
         case ENDGAME_PLAYER_WHITE_WIN:
-            current = -VALUE_WIN;
-            current -= depth;
+            bestValue = -VALUE_WIN;
+            bestValue -= depth;
             break;
         default:
             break;
         }
 
-        return current;
+        return bestValue;
     }
 #endif /* ENDGAME_LEARNING */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 哈希类型
-    enum TT::HashType hashf = TT::hashfALPHA;
+    enum TT::bound_t hashf = TT::BOUND_UPPER;
     
-    TT::HashType type = TT::hashfEMPTY;
+    TT::bound_t type = TT::BOUND_NONE;
 
-    value_t probeVal = TT::probeHash(hash, depth, alpha, beta, type
+    value_t probeVal = TT::probeHash(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
                                      , ttMove
 #endif // TT_MOVE_ENABLE                                     
@@ -788,23 +788,23 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 #ifdef DEBUG_AB_TREE
         node->isHash = true;
 #endif
-        current = probeVal;
+        bestValue = probeVal;
 
 #if 0
         // TODO: 有必要针对深度微调 value?
         if (position->turn == PLAYER_BLACK)
-            current += hashValue.depth - depth;
+            bestValue += hashValue.depth - depth;
         else
-            current -= hashValue.depth - depth;
+            bestValue -= hashValue.depth - depth;
 #endif
 
 #ifdef TT_MOVE_ENABLE
 //         if (ttMove != MOVE_NONE) {
-//             best = ttMove;
+//             bestMove = ttMove;
 //         }
 #endif // TT_MOVE_ENABLE
 
-        return current;
+        return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
     else {
@@ -825,13 +825,13 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
         depth <= 0 ||
         unlikely(requiredQuit)) {
         // 局面评估
-        current = Evaluation::getValue(position);
+        bestValue = Evaluation::getValue(position);
 
         // 为争取速胜，value 值 +- 深度
-        if (current > 0) {
-            current += depth;
+        if (bestValue > 0) {
+            bestValue += depth;
         } else {
-            current -= depth;
+            bestValue -= depth;
         }
 
 #ifdef DEBUG_AB_TREE
@@ -857,7 +857,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
                 undoNullMove();
 
                 if (value >= beta) {
-                    current = beta;
+                    bestValue = beta;
                     return beta;
                 }
             }
@@ -867,17 +867,17 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TT::recordHash(current,
+        TT::recordHash(bestValue,
                        depth,
-                       TT::hashfEXACT,
-                       hash
+                       TT::BOUND_EXACT,
+                       posKey
 #ifdef TT_MOVE_ENABLE
                        , MOVE_NONE
 #endif // TT_MOVE_ENABLE
                       );
 #endif
 
-        return current;
+        return bestValue;
     }
 
     ExtMove extMoves[MAX_MOVES];
@@ -904,7 +904,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
     }
 
 #ifdef PREFETCH_DEBUG
-    if (hash << 8 >> 8 == 0x0)
+    if (posKey << 8 >> 8 == 0x0)
     {
         int pause = 1;
     }
@@ -916,8 +916,8 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
         // 棋局入栈保存，以便后续撤销着法
         stashPosition();
         player_t before = st->position->sideToMove;
-        move_t m = extMoves[i].move;
-        doMove(m);
+        move_t move = extMoves[i].move;
+        doMove(move);
         player_t after = st->position->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && nchild == 1) {
@@ -960,25 +960,27 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
         undoMove();
 
-        if (value >= current) {
-            current = value;
+        assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
+
+        if (value >= bestValue) {
+            bestValue = value;
 
             if (value > alpha) {
-#ifdef TRANSPOSITION_TABLE_ENABLE
-                hashf = TT::hashfEXACT;
-#endif
-                alpha = value;
-
                 if (depth == originDepth) {
-                    best = m;
+                    bestMove = move;
                 }
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+                hashf = TT::BOUND_EXACT;
+#endif
+                alpha = value;  
             }
 
             if (value >= beta) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-                hashf = TT::hashfBETA;
+                hashf = TT::BOUND_LOWER;
 #endif
-                current = beta;
+                bestValue = beta;
                 goto out;
             }
         }
@@ -994,28 +996,29 @@ out:
     if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_ADD_VALUE
         node->children[0]->value += 1;
-        current += 1;
+        bestValue += 1;
 #endif /* IDS_ADD_VALUE */
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 记录不一定确切的哈希值
-    TT::recordHash(current,
+    TT::recordHash(bestValue,
                    depth,
                    hashf,
-                   hash
+                   posKey
 #ifdef TT_MOVE_ENABLE
-                   , best
+                   , bestMove
 #endif // TT_MOVE_ENABLE
                   );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #ifdef HOSTORY_HEURISTIC
-    movePicker->setHistoryScore(best, depth);
+    movePicker->setHistoryScore(bestMove, depth);
 #endif
 
-    // 返回
-    return current;
+    assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+
+    return bestValue;
 }
 #endif // ALPHABETA_AI
 
@@ -1054,7 +1057,7 @@ void AIAlgorithm::undoNullMove()
 #ifdef ALPHABETA_AI
 const char* AIAlgorithm::nextMove()
 {
-    return moveToCommand(best);
+    return moveToCommand(bestMove);
 
     char charChoose = '*';
 
@@ -1069,7 +1072,7 @@ const char* AIAlgorithm::nextMove()
 
     int cs = root->childrenSize;
     for (int i = 0; i < cs; i++) {
-        if (root->children[i]->move != best) {
+        if (root->children[i]->move != bestMove) {
             charChoose = ' ';
         } else {
             charChoose = '*';
@@ -1100,7 +1103,7 @@ const char* AIAlgorithm::nextMove()
             Endgame endgame;
             endgame.type = state->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            hash_t endgameHash = this->state->getHash(); // TODO: 减少重复计算哈希
+            hash_t endgameHash = this->state->getPosKey(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
         }
     }
@@ -1124,7 +1127,7 @@ const char* AIAlgorithm::nextMove()
     size_t hashProbeCount = hashHitCount + hashMissCount;
     if (hashProbeCount)
     {
-        loggerDebug("[hash] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+        loggerDebug("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                     hashProbeCount, hashHitCount, hashMissCount, hashHitCount * 100 / hashProbeCount);
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
@@ -1134,7 +1137,7 @@ const char* AIAlgorithm::nextMove()
         loggerDebug("Warning: Best Move NOT Found\n");
     }
 
-    return moveToCommand(best);
+    return moveToCommand(bestMove);
 }
 #endif // ALPHABETA_AI
 
@@ -1159,19 +1162,19 @@ const char *AIAlgorithm::moveToCommand(move_t move)
 }
 
 #ifdef ENDGAME_LEARNING
-bool AIAlgorithm::findEndgameHash(hash_t hash, Endgame &endgame)
+bool AIAlgorithm::findEndgameHash(hash_t posKey, Endgame &endgame)
 {
-    return endgameHashMap.find(hash, endgame);
+    return endgameHashMap.find(posKey, endgame);
 }
 
-int AIAlgorithm::recordEndgameHash(hash_t hash, const Endgame &endgame)
+int AIAlgorithm::recordEndgameHash(hash_t posKey, const Endgame &endgame)
 {
     //hashMapMutex.lock();
-    hash_t hashValue = endgameHashMap.insert(hash, endgame);
-    unsigned addr = hashValue * (sizeof(hash) + sizeof(endgame));
+    hash_t hashValue = endgameHashMap.insert(posKey, endgame);
+    unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
     //hashMapMutex.unlock();
 
-    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame Hash map, HashValue: 0x%08I32x, Address: 0x%08I32x\n", hash, endgame.type, hashValue, addr);
+    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame Hash map, HashValue: 0x%08I32x, Address: 0x%08I32x\n", posKey, endgame.type, hashValue, addr);
 
     return 0;
 }

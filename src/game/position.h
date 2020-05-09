@@ -257,7 +257,7 @@ public:
     bool capture(square_t square, int8_t cp = 0);
 
     // hash 相关
-    hash_t getHash();
+    hash_t getPosKey();
     hash_t revertHash(square_t square);
     hash_t updateHash(square_t square);
     hash_t updateHashMisc();

@@ -311,7 +311,7 @@ private:
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
 
-    move_t best { MOVE_NONE };
+    move_t bestMove { MOVE_NONE };
 
     depth_t originDepth { 0 };
 

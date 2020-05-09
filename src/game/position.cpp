@@ -1149,7 +1149,7 @@ void Position::constructHash()
     hash = 0;
 }
 
-hash_t Position::getHash()
+hash_t Position::getPosKey()
 {
     // TODO: 每次获取哈希值时更新 hash 值剩余8位，放在此处调用不优雅
     return updateHashMisc();
