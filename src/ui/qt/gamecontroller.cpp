@@ -408,11 +408,11 @@ void GameController::playSound(sound_t soundType, player_t player)
     case GAME_SOUND_BLOCK_MILL:
         filename = "BlockMill_" + sideStr + ".wav";
         break;
-    case GAME_SOUND_CAPTURE:
-        filename = "Capture_" + oppenentStr + ".wav";
+    case GAME_SOUND_REMOVE:
+        filename = "Remove_" + oppenentStr + ".wav";
         break;
-    case GAME_SOUND_CHOOSE:
-        filename = "choose.wav";
+    case GAME_SOUND_SELECT:
+        filename = "Select.wav";
         break;
     case GAME_SOUND_DRAW:
         filename = "Draw.wav";
@@ -449,9 +449,6 @@ void GameController::playSound(sound_t soundType, player_t player)
         break;
     case GAME_SOUND_OBVIOUS:
         filename = "Obvious.wav";
-        break;
-    case GAME_SOUND_REMOVE:
-        filename = "remove.wav";
         break;
     case GAME_SOUND_REPEAT_THREE_DRAW:
         filename = "RepeatThreeDraw.wav";
@@ -738,7 +735,9 @@ bool GameController::actionPiece(QPointF pos)
 {
 #ifndef TRAINING_MODE
     // 点击非落子点，不执行
-    int r, s;
+    ring_t r;
+    seat_t s;
+
     if (!scene.pos2rs(pos, r, s)) {
         return false;
     }
@@ -795,8 +794,8 @@ bool GameController::actionPiece(QPointF pos)
 
     switch (state.position->getAction()) {
     case ACTION_PLACE:
-        if (state.position->_place(r, s)) {
-            if (state.position->getAction() == ACTION_CAPTURE) {
+        if (state.position->_placePiece(r, s)) {
+            if (state.position->getAction() == ACTION_REMOVE) {
                 // 播放成三音效
                 playSound(GAME_SOUND_MILL, state.position->getSideToMove());
             } else {
@@ -810,13 +809,13 @@ bool GameController::actionPiece(QPointF pos)
      // 如果移子不成功，尝试重新选子，这里不break
         [[fallthrough]];
 
-    case ACTION_CHOOSE:
+    case ACTION_SELECT:
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (state.position->choose(r, s)) {
+        if (state.position->selectPiece(r, s)) {
             // 播放选子音效
-            playSound(GAME_SOUND_CHOOSE, state.position->getSideToMove());
+            playSound(GAME_SOUND_SELECT, state.position->getSideToMove());
             result = true;
         } else {
             // 播放禁止音效
@@ -824,10 +823,10 @@ bool GameController::actionPiece(QPointF pos)
         }
         break;
 
-    case ACTION_CAPTURE:
-        if (state.position->_capture(r, s)) {
+    case ACTION_REMOVE:
+        if (state.position->_removePiece(r, s)) {
             // 播放音效
-            playSound(GAME_SOUND_CAPTURE, state.position->getSideToMove());
+            playSound(GAME_SOUND_REMOVE, state.position->getSideToMove());
             result = true;
         } else {
             // 播放禁止音效
@@ -935,12 +934,12 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     sound_t soundType = GAME_SOUND_NONE;
 
     switch (state.position->getAction()) {
-    case ACTION_CHOOSE:
+    case ACTION_SELECT:
     case ACTION_PLACE:
         soundType = GAME_SOUND_DROG;
         break;
-    case ACTION_CAPTURE:
-        soundType = GAME_SOUND_CAPTURE;
+    case ACTION_REMOVE:
+        soundType = GAME_SOUND_REMOVE;
         break;
     default:
         break;
@@ -956,7 +955,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         return false;
 
 #ifndef TRAINING_MODE
-    if (soundType == GAME_SOUND_DROG && state.position->getAction() == ACTION_CAPTURE) {
+    if (soundType == GAME_SOUND_DROG && state.position->getAction() == ACTION_REMOVE) {
         soundType = GAME_SOUND_MILL;
     }
 
@@ -1167,7 +1166,7 @@ bool GameController::updateScence(StateInfo &g)
         // 遍历棋盘，查找并放置棋盘上的棋子
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
+                pos = scene.rs2pos(ring_t(j / Board::N_SEATS), seat_t(j % Board::N_SEATS + 1));
                 if (piece->pos() != pos) {
 
                     // 让移动的棋子位于顶层
@@ -1203,7 +1202,7 @@ bool GameController::updateScence(StateInfo &g)
                 // 为了对最近移除的棋子置为选择状态作准备
                 deletedPiece = piece;
 
-#ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
+#ifdef GAME_PLACING_SHOW_REMOVED_PIECES
                 if (state.position->getPhase() == PHASE_MOVING) {
 #endif
                     QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
@@ -1212,7 +1211,7 @@ bool GameController::updateScence(StateInfo &g)
                     animation->setEndValue(pos);
                     animation->setEasingCurve(QEasingCurve::InOutQuad);
                     animationGroup->addAnimation(animation);
-#ifdef GAME_PLACING_SHOW_CAPTURED_PIECES
+#ifdef GAME_PLACING_SHOW_REMOVED_PIECES
                 }
 #endif
             }
@@ -1225,7 +1224,7 @@ bool GameController::updateScence(StateInfo &g)
     if (rule.hasForbiddenLocations && g.position->getPhase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == PIECE_FORBIDDEN) {
-                pos = scene.rs2pos(j / Board::N_SEATS, j % Board::N_SEATS + 1);
+                pos = scene.rs2pos(ring_t(j / Board::N_SEATS), seat_t(j % Board::N_SEATS + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
                 } else {

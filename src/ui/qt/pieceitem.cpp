@@ -53,16 +53,16 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
     size = PIECE_SIZE;
 
     // 选中子标识线宽度
-    chooseLineWeight = LINE_WEIGHT;
+    selectLineWeight = LINE_WEIGHT;
 
     // 删除线宽度
     removeLineWeight = LINE_WEIGHT * 5;
 
     // 选中线为黄色
 #ifdef MOBILE_APP_UI
-    chooseLineColor = Qt::gray;
+    selectLineColor = Qt::gray;
 #else
-    chooseLineColor = Qt::darkYellow;
+    selectLineColor = Qt::darkYellow;
 #endif /* MOBILE_APP_UI */
 
     // 删除线颜色
@@ -145,9 +145,9 @@ void PieceItem::paint(QPainter *painter,
 
     // 如果模型为选中状态，则画上四个小直角
     if (isSelected()) {
-        QPen pen(chooseLineColor, chooseLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+        QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
-        int xy = (size - chooseLineWeight) / 2;
+        int xy = (size - selectLineWeight) / 2;
 
         painter->drawLine(-xy, -xy, -xy, -xy / 2);
         painter->drawLine(-xy, -xy, -xy / 2, -xy);

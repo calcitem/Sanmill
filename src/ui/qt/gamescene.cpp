@@ -26,6 +26,7 @@
 #include "pieceitem.h"
 #include "boarditem.h"
 #include "graphicsconst.h"
+#include "types.h"
 
 GameScene::GameScene(QObject *parent) :
     QGraphicsScene(parent),
@@ -112,12 +113,12 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     //QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 
-QPointF GameScene::rs2pos(int r, int s)
+QPointF GameScene::rs2pos(ring_t r, seat_t s)
 {
     return board->rs2pos(r, s);
 }
 
-bool GameScene::pos2rs(QPointF pos, int &r, int &s)
+bool GameScene::pos2rs(QPointF pos, ring_t &r, seat_t &s)
 {
     return board->pos2rs(pos, r, s);
 }

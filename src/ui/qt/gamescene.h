@@ -23,6 +23,7 @@
 #include <QGraphicsScene>
 
 #include "config.h"
+#include "types.h"
 
 class BoardItem;
 
@@ -34,10 +35,10 @@ public:
     ~GameScene() override;
 
     // 将模型的圈、位转化为落子点坐标
-    QPointF rs2pos(int r, int s);
+    QPointF rs2pos(ring_t r, seat_t s);
 
     // 将落子点坐标转化为模型用的圈、位
-    bool pos2rs(QPointF pos, int &r, int &s);
+    bool pos2rs(QPointF pos, ring_t &r, seat_t &s);
 
     // 设置棋盘斜线
     void setDiagonal(bool arg = true);

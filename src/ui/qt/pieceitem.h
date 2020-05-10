@@ -127,13 +127,13 @@ private:
     bool showNum {false};
 
     // 选中子标识线宽度
-    int chooseLineWeight;
+    int selectLineWeight;
 
     // 删除线宽度
     int removeLineWeight;
 
     // 选中线颜色
-    QColor chooseLineColor;
+    QColor selectLineColor;
 
     // 删除线颜色
     QColor removeLineColor;

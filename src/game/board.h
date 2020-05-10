@@ -69,7 +69,7 @@ public:
     void rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
 
     // 判断棋盘 square 处的棋子处于几个“三连”中
-    int inHowManyMills(square_t square, player_t player, square_t squareChoose = SQ_0);
+    int inHowManyMills(square_t square, player_t player, square_t squareSelected = SQ_0);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(player_t);
@@ -87,10 +87,10 @@ public:
     int addMills(square_t square);
 
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
-    static void squareToPolar(square_t square, int &r, int &s);
+    static void squareToPolar(square_t square, ring_t &r, seat_t &s);
 
     // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
-    static square_t polarToSquare(int r, int s);
+    static square_t polarToSquare(ring_t r, seat_t s);
 
     static void printBoard();
 

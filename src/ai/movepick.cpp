@@ -60,7 +60,7 @@ void MovePicker::score()
 
     #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
         // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
-        if (type_of(m) != MOVETYPE_CAPTURE) {
+        if (type_of(m) != MOVETYPE_REMOVE) {
             // 在任何阶段, 都检测落子点是否能使得本方成三
             if (nMills > 0) {
     #ifdef ALPHABETA_AI
@@ -108,7 +108,7 @@ void MovePicker::score()
                 cur->rating += RATING_STAR_SQUARE;
             }
     #endif
-        } else { // Capture
+        } else { // Remove
             int nPlayerPiece = 0;
             int nOpponentPiece = 0;
             int nForbidden = 0;
@@ -120,7 +120,7 @@ void MovePicker::score()
     #ifdef ALPHABETA_AI
             if (nMills > 0) {
                 // 吃子点处于我方的三连中
-                //newNode->rating += static_cast<rating_t>(RATING_CAPTURE_ONE_MILL * nMills);
+                //newNode->rating += static_cast<rating_t>(RATING_REMOVE_ONE_MILL * nMills);
 
                 if (nOpponentPiece == 0) {
                     // 吃子点旁边没有对方棋子则优先考虑     
@@ -203,7 +203,7 @@ void MovePicker::clearHistoryScore()
 {
 #ifndef HOSTORY_HEURISTIC_ACTION_MOVE_ONLY
     memset(placeHistory, 0, sizeof(placeHistory));
-    memset(captureHistory, 0, sizeof(captureHistory));
+    memset(removeHistory, 0, sizeof(removeHistory));
 #endif
     memset(moveHistory, 0, sizeof(moveHistory));
 }

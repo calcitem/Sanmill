@@ -619,7 +619,7 @@ const char* AIAlgorithm::nextMove()
     return moveToCommand(bestMove);
 
 #if 0
-    char charChoose = '*';
+    char charSelect = '*';
 
     Board::printBoard();
 
@@ -629,9 +629,9 @@ const char* AIAlgorithm::nextMove()
     int cs = root->childrenSize;
     for (int i = 0; i < cs; i++) {
         if (root->children[i]->move != bestMove) {
-            charChoose = ' ';
+            charSelect = ' ';
         } else {
-            charChoose = '*';
+            charSelect = '*';
             foundBest = true;
         }
 
@@ -645,7 +645,7 @@ const char* AIAlgorithm::nextMove()
 #else
                     0,
 #endif
-                    charChoose);
+                    charSelect);
 
         moveIndex++;
     }
@@ -698,13 +698,15 @@ const char* AIAlgorithm::nextMove()
 
 const char *AIAlgorithm::moveToCommand(move_t move)
 {
-    int rto, sto;
+    ring_t rto;
+    seat_t sto;
     Board::squareToPolar(to_sq(move), rto, sto);
 
     if (move < 0) {
         sprintf(cmdline, "-(%1u,%1u)", rto, sto);
     } else if (move & 0x7f00) {
-        int rfrom, sfrom;
+        ring_t rfrom;
+        seat_t sfrom;
         Board::squareToPolar(from_sq(move), rfrom, sfrom);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", rfrom, sfrom, rto, sto);
     } else {

@@ -455,7 +455,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\sound\choose.wav">
+    <Media Include="resources\sound\Select.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\drog.wav">
@@ -485,10 +485,10 @@
     <Media Include="resources\sound\BlockMill_W.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="resources\sound\Capture_B.wav">
+    <Media Include="resources\sound\Remove_B.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="resources\sound\Capture_W.wav">
+    <Media Include="resources\sound\Remove_W.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\Draw.wav">

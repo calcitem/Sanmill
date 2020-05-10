@@ -44,12 +44,12 @@ value_t Evaluation::getValue(Position *position)
 
         switch (position->action) {
             // 选子和落子使用相同的评价方法
-        case ACTION_CHOOSE:
+        case ACTION_SELECT:
         case ACTION_PLACE:
             break;
 
             // 如果形成去子状态，每有一个可去的子，算100分
-        case ACTION_CAPTURE:
+        case ACTION_REMOVE:
             nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
@@ -72,12 +72,12 @@ value_t Evaluation::getValue(Position *position)
 
         switch (position->action) {
         // 选子和落子使用相同的评价方法
-        case ACTION_CHOOSE:
+        case ACTION_SELECT:
         case ACTION_PLACE:
             break;
 
         // 如果形成去子状态，每有一个可去的子，算128分
-        case ACTION_CAPTURE:
+        case ACTION_REMOVE:
             nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
                 position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
@@ -101,7 +101,7 @@ value_t Evaluation::getValue(Position *position)
         }
 
         // 走棋阶段被闷判断
-        else if (position->action == ACTION_CHOOSE &&
+        else if (position->action == ACTION_SELECT &&
             position->board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove) &&
             rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  

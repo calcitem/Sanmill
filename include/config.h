@@ -140,7 +140,7 @@
 //#define DONOT_PLAY_WIN_SOUND
 
 // 摆棋阶段在叉下面显示被吃的子
-//#define GAME_PLACING_SHOW_CAPTURED_PIECES
+//#define GAME_PLACING_SHOW_REMOVED_PIECES
 
 // 启动时窗口最大化
 //#define SHOW_MAXIMIZED_ON_LOAD

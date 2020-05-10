@@ -225,7 +225,7 @@ bool Position::setPosition(const struct Rule *newRule,
     countPiecesInHand();
 
     // 设置去子状态时的剩余尚待去除子数
-    if (action == ACTION_CAPTURE) {
+    if (action == ACTION_REMOVE) {
         if (0 <= piecesNeedRemove && piecesNeedRemove < 3) {
             nPiecesNeedRemove = piecesNeedRemove;
         }
@@ -372,7 +372,7 @@ bool Position::start()
     }
 }
 
-bool Position::place(square_t square, int8_t updateCmdlist)
+bool Position::placePiece(square_t square, bool updateCmdlist)
 {
     // 如果局面为“结局”，返回false
     if (phase == PHASE_GAMEOVER)
@@ -391,8 +391,8 @@ bool Position::place(square_t square, int8_t updateCmdlist)
         return false;
 
     // 格式转换
-    int r = 0;
-    int s = 0;
+    ring_t r;
+    seat_t s;
     Board::squareToPolar(square, r, s);
 
     // 时间的临时变量
@@ -441,7 +441,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
                 phase = PHASE_MOVING;
 
                 // 进入选子状态
-                action = ACTION_CHOOSE;
+                action = ACTION_SELECT;
 
                 // 清除禁点
                 cleanForbiddenLocations();
@@ -470,7 +470,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
             nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
 
             // 进入去子状态
-            action = ACTION_CAPTURE;
+            action = ACTION_REMOVE;
         }
 
         goto out;
@@ -523,7 +523,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
     // 中局阶段未成三
     if (n == 0) {
         // 进入选子状态
-        action = ACTION_CHOOSE;
+        action = ACTION_SELECT;
 
         // 设置轮到谁走
         changeSideToMove();
@@ -539,7 +539,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
         nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
 
         // 进入去子状态
-        action = ACTION_CAPTURE;
+        action = ACTION_REMOVE;
     }
 
 out:
@@ -550,30 +550,30 @@ out:
     return true;
 }
 
-bool Position::_place(int r, int s)
+bool Position::_placePiece(ring_t r, seat_t s)
 {
     // 转换为 square
     square_t square = Board::polarToSquare(r, s);
 
-    return place(square, true);
+    return placePiece(square, true);
 }
 
-bool Position::_capture(int r, int s)
+bool Position::_removePiece(ring_t r, seat_t s)
 {
     // 转换为 square
     square_t square = Board::polarToSquare(r, s);
 
-    return capture(square, 1);
+    return removePiece(square, 1);
 }
 
-bool Position::capture(square_t square, int8_t updateCmdlist)
+bool Position::removePiece(square_t square, bool updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (phase & PHASE_NOTPLAYING)
         return false;
 
     // 如非“去子”状态，返回false
-    if (action != ACTION_CAPTURE)
+    if (action != ACTION_REMOVE)
         return false;
 
     // 如果去子完成，返回false
@@ -581,8 +581,8 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
         return false;
 
     // 格式转换
-    int r = 0;
-    int s = 0;
+    ring_t r;
+    seat_t s;
     Board::squareToPolar(square, r, s);
 
     // 时间的临时变量
@@ -649,7 +649,7 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
             phase = PHASE_MOVING;
 
             // 进入选子状态
-            action = ACTION_CHOOSE;
+            action = ACTION_SELECT;
 
             // 清除禁点
             cleanForbiddenLocations();
@@ -683,7 +683,7 @@ bool Position::capture(square_t square, int8_t updateCmdlist)
     // 中局阶段
     else {
         // 进入选子状态
-        action = ACTION_CHOOSE;
+        action = ACTION_SELECT;
 
         // 设置轮到谁走
         changeSideToMove();
@@ -702,14 +702,14 @@ out:
     return true;
 }
 
-bool Position::choose(square_t square)
+bool Position::selectPiece(square_t square)
 {
     // 如果局面不是"中局”，返回false
     if (phase != PHASE_MOVING)
         return false;
 
     // 如非“选子”或“落子”状态，返回false
-    if (action != ACTION_CHOOSE && action != ACTION_PLACE)
+    if (action != ACTION_SELECT && action != ACTION_PLACE)
         return false;
 
     // 判断选子是否可选
@@ -726,9 +726,9 @@ bool Position::choose(square_t square)
     return false;
 }
 
-bool Position::choose(int r, int s)
+bool Position::selectPiece(ring_t r, seat_t s)
 {
-    return choose(Board::polarToSquare(r, s));
+    return selectPiece(Board::polarToSquare(r, s));
 }
 
 bool Position::giveup(player_t loser)
@@ -760,7 +760,8 @@ bool Position::command(const char *cmd)
     int r;
     unsigned t;
     step_t s;
-    int r1, s1, r2, s2;
+    ring_t r1, r2;
+    seat_t s1, s2;
     int args = 0;
     int mm = 0, ss = 0;
 
@@ -782,8 +783,8 @@ bool Position::command(const char *cmd)
                 tm = mm * 60 + ss;
         }
 
-        if (choose(r1, s1)) {
-            return _place(r2, s2);
+        if (selectPiece(r1, s1)) {
+            return _placePiece(r2, s2);
         }
 
         return false;
@@ -796,7 +797,7 @@ bool Position::command(const char *cmd)
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _capture(r1, s1);
+        return _removePiece(r1, s1);
     }
 
     // 落子
@@ -806,7 +807,7 @@ bool Position::command(const char *cmd)
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _place(r1, s1);
+        return _placePiece(r1, s1);
     }
 
     // 认输
@@ -840,14 +841,14 @@ bool Position::doMove(move_t m)
     movetype_t mt = type_of(m);
 
     switch (mt) {
-    case MOVETYPE_CAPTURE:
-        return capture(static_cast<square_t>(-m));
+    case MOVETYPE_REMOVE:
+        return removePiece(static_cast<square_t>(-m));
     case MOVETYPE_MOVE:
-        if (choose(from_sq(m))) {
-            return place(to_sq(m));
+        if (selectPiece(from_sq(m))) {
+            return placePiece(to_sq(m));
         }
     case MOVETYPE_PLACE:
-        return place(to_sq(m));
+        return placePiece(to_sq(m));
     default:
         break;
     }
@@ -995,7 +996,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
     }
 
     // 如果中局被“闷”
-    if (phase == PHASE_MOVING && action == ACTION_CHOOSE && board.isAllSurrounded(sideId, nPiecesOnBoard, sideToMove)) {
+    if (phase == PHASE_MOVING && action == ACTION_SELECT && board.isAllSurrounded(sideId, nPiecesOnBoard, sideToMove)) {
         // 规则要求被“闷”判负，则对手获胜 // TODO: 应该转移到下面的分支中
         phase = PHASE_GAMEOVER;
 
@@ -1116,15 +1117,15 @@ void Position::setTips()
     case PHASE_PLACING:
         if (action == ACTION_PLACE) {
             tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(nPiecesInHand[sideId]) + "子";
-        } else if (action == ACTION_CAPTURE) {
+        } else if (action == ACTION_REMOVE) {
             tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(nPiecesNeedRemove) + "子";
         }
         break;
 
     case PHASE_MOVING:
-        if (action == ACTION_PLACE || action == ACTION_CHOOSE) {
+        if (action == ACTION_PLACE || action == ACTION_SELECT) {
             tips = "轮到玩家" + turnStr + "选子移动";
-        } else if (action == ACTION_CAPTURE) {
+        } else if (action == ACTION_REMOVE) {
             tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(nPiecesNeedRemove) + "子";
         }
         break;
@@ -1204,7 +1205,7 @@ hash_t Position::updateHashMisc()
         hi |= 1U;
     }
 
-    if (action == ACTION_CAPTURE) {
+    if (action == ACTION_REMOVE) {
         hi |= 1U << 1;
     }
 
@@ -1222,7 +1223,7 @@ hash_t Position::getNextMainHash(move_t m)
     square_t sq = static_cast<square_t>(to_sq(m));;
     movetype_t mt = type_of(m);
 
-    if (mt == MOVETYPE_CAPTURE) {
+    if (mt == MOVETYPE_REMOVE) {
         int pieceType = Player::getOpponentById(Player::toId(sideToMove));
         nextMainHash ^= zobrist[sq][pieceType];
 

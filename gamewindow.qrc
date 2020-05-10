@@ -56,7 +56,7 @@
         <file>resources/icon/ic_visibility_black_48dp.png</file>
     </qresource>
     <qresource prefix="/sound">
-        <file>resources/sound/choose.wav</file>
+        <file>resources/sound/Select.wav</file>
         <file>resources/sound/drog.wav</file>
         <file>resources/sound/forbidden.wav</file>
         <file>resources/sound/loss.wav</file>
@@ -66,8 +66,8 @@
         <file>resources/sound/warning.wav</file>
         <file>resources/sound/BlockMill_B.wav</file>
         <file>resources/sound/BlockMill_W.wav</file>
-        <file>resources/sound/Capture_B.wav</file>
-        <file>resources/sound/Capture_W.wav</file>
+        <file>resources/sound/Remove_B.wav</file>
+        <file>resources/sound/Remove_W.wav</file>
         <file>resources/sound/Draw.wav</file>
         <file>resources/sound/GameStart.wav</file>
         <file>resources/sound/Mill_B.wav</file>

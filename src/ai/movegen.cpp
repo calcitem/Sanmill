@@ -308,7 +308,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
     // 列出所有合法的下一招
     switch (position->action) {
         // 对于选子和落子动作
-    case ACTION_CHOOSE:
+    case ACTION_SELECT:
     case ACTION_PLACE:
         // 对于摆子阶段
         if (position->phase & (PHASE_PLACING | PHASE_READY)) {
@@ -348,7 +348,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 oldSquare = static_cast<square_t>(MoveList::movePriorityTable[i]);
 
-                if (!position->choose(oldSquare)) {
+                if (!position->selectPiece(oldSquare)) {
                     continue;
                 }
 
@@ -377,7 +377,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
         break;
 
         // 对于吃子动作
-    case ACTION_CAPTURE:
+    case ACTION_REMOVE:
         opponent = Player::getOpponent(position->sideToMove);
 
         if (position->board.isAllInMills(opponent)) {

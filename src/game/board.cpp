@@ -184,15 +184,15 @@ void Board::createMillTable()
 #endif /* DEBUG_MODE */
 }
 
-void Board::squareToPolar(const square_t square, int &r, int &s)
+void Board::squareToPolar(const square_t square, ring_t &r, seat_t &s)
 {
     //r = square / N_SEATS;
     //s = square % N_SEATS + 1;
-    r = square >> 3;
-    s = (square & 0x07) + 1;
+    r = ring_t(square >> 3);
+    s = seat_t((square & 0x07) + 1);
 }
 
-square_t Board::polarToSquare(int r, int s)
+square_t Board::polarToSquare(ring_t r, seat_t s)
 {
     assert(!(r < 1 || r > N_RINGS || s < 1 || s > N_SEATS));
 
@@ -204,7 +204,7 @@ player_t Board::locationToPlayer(square_t square)
     return player_t(locations[square] & 0x30);
 }
 
-int Board::inHowManyMills(square_t square, player_t player, square_t squareChoose)
+int Board::inHowManyMills(square_t square, player_t player, square_t squareSelected)
 {
     int n = 0;
     location_t locbak = SQ_0;
@@ -213,9 +213,9 @@ int Board::inHowManyMills(square_t square, player_t player, square_t squareChoos
         player = locationToPlayer(square);
     }
 
-    if (squareChoose != SQ_0) {
-        locbak = locations[squareChoose];
-        locations[squareChoose] = 0;
+    if (squareSelected != SQ_0) {
+        locbak = locations[squareSelected];
+        locations[squareSelected] = 0;
     }
 
     for (int l = 0; l < LINE_TYPES_COUNT; l++) {
@@ -226,8 +226,8 @@ int Board::inHowManyMills(square_t square, player_t player, square_t squareChoos
         }
     }
 
-    if (squareChoose != SQ_0) {
-        locations[squareChoose] = locbak;
+    if (squareSelected != SQ_0) {
+        locations[squareSelected] = locbak;
     }
 
     return n;

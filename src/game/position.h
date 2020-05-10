@@ -191,15 +191,6 @@ public:
     // 游戏开始
     bool start();
 
-    // 选子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool choose(int r, int s);
-
-    // 落子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _place(int r, int s);
-
-    // 去子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _capture(int r, int s);
-
     // 认输
     bool giveup(player_t loser);
 
@@ -236,11 +227,20 @@ public:
     // 判断胜负
     player_t getWinner() const;
 
+    // 选子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
+    bool selectPiece(ring_t r, seat_t s);
+
+    // 落子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
+    bool _placePiece(ring_t r, seat_t s);
+
+    // 去子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
+    bool _removePiece(ring_t r, seat_t s);
+
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool doMove(move_t move);
-    bool choose(square_t square);
-    bool place(square_t square, int8_t cp = 0);
-    bool capture(square_t square, int8_t cp = 0);
+    bool selectPiece(square_t square);
+    bool placePiece(square_t square, bool updateCmdlist = false);
+    bool removePiece(square_t square, bool updateCmdlist = false);
 
     // hash 相关
     hash_t getPosKey();

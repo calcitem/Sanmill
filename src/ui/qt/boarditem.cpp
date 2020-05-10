@@ -20,6 +20,7 @@
 #include "boarditem.h"
 #include "graphicsconst.h"
 #include <QPainter>
+#include "types.h"
 
 BoardItem::BoardItem(QGraphicsItem *parent) :
     size(BOARD_SIZE)
@@ -169,19 +170,19 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     return nearestPos;
 }
 
-QPointF BoardItem::rs2pos(int r, int s)
+QPointF BoardItem::rs2pos(ring_t r, seat_t s)
 {
-    return position[(r - 1) * N_SEATS + s - 1]; // TODO: 为什么是 r - 1 和算法部分不一样?
+    return position[((int)r - 1) * N_SEATS + (int)s - 1]; // TODO: 为什么是 r - 1 和算法部分不一样?
 }
 
-bool BoardItem::pos2rs(QPointF pos, int &r, int &s)
+bool BoardItem::pos2rs(QPointF pos, ring_t &r, seat_t &s)
 {
     // 寻找最近的落子点
     for (int i = 0; i < N_RINGS * N_SEATS; i++) {
         // 如果pos点在落子点附近
         if (QLineF(pos, position[i]).length() < PIECE_SIZE / 6) {
-            r = i / N_SEATS + 1;
-            s = i % N_SEATS + 1;
+            r = ring_t(i / N_SEATS + 1);
+            s = seat_t(i % N_SEATS + 1);
             return true;
         }
     }
