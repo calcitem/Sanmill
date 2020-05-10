@@ -144,6 +144,7 @@ enum value_t : int8_t
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
     VALUE_STRONG = 20,
+    VALUE_UNIQUE = 60,
     VALUE_WIN = 80,
     VALUE_INFINITE = 125,
     VALUE_UNKNOWN = std::numeric_limits<int8_t>::min(),

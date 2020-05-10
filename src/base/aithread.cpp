@@ -27,6 +27,10 @@
 using namespace std;
 #endif
 
+#if _MSC_VER >= 1600
+#pragma execution_character_set("GB2312")
+#endif
+
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
     state(nullptr),
@@ -135,6 +139,77 @@ void sq2str(char *str)
 }
 #endif // OPENING_BOOK
 
+void AiThread::analyze()
+{
+    int d = (int)ai.originDepth;
+    int v = (int)ai.bestvalue;
+    int lv = (int)ai.lastvalue;
+    bool win = v >= VALUE_WIN;
+    bool lose = v <= -VALUE_WIN;
+    int p = v / VALUE_EACH_PIECE;
+
+    if (v == VALUE_UNIQUE) {
+        cout << "唯一着法" << endl << endl << endl;
+        return;
+    }
+
+    if (lv < -VALUE_EACH_PIECE && v == 0) {
+        cout << "坏棋, 被拉回均势!" << endl;
+    }
+
+    if (lv < 0 && v > 0) {
+        cout << "坏棋, 被翻转了局势!" << endl;
+    }
+
+    if (lv == 0 && v > VALUE_EACH_PIECE) {
+        cout << "败着!" << endl;
+    }
+
+    if (lv > VALUE_EACH_PIECE && v == 0) {
+        cout << "好棋, 拉回均势!" << endl;
+    }
+
+    if (lv > 0 && v < 0) {
+        cout << "好棋, 翻转了局势!" << endl;
+    }
+
+    if (lv == 0 && v < -VALUE_EACH_PIECE) {
+        cout << "秒棋!" << endl;
+    }
+
+    if (lv != v) {
+        if (lv < 0 && v < 0) {
+            if (abs(lv) < abs(v)) {
+                cout << "领先幅度扩大" << endl;
+            } else if (abs(lv) > abs(v)) {
+                cout << "领先幅度缩小" << endl;
+            }
+        }
+
+        if (lv > 0 && v > 0) {
+            if (abs(lv) < abs(v)) {
+                cout << "落后幅度扩大" << endl;
+            } else if (abs(lv) > abs(v)) {
+                cout << "落后幅度缩小" << endl;
+            }
+        }
+    }
+
+    if (win) {
+        cout << "将在 " << d << " 步后输棋!" << endl;
+    } else if (lose) {
+        cout << "将在 " << d << " 步后赢棋!" << endl;
+    } else if (p == 0) {
+        cout << "将在 " << d << " 步后双方保持均势" << endl;
+    } else if (p > 0) {
+        cout << "将在 " << d << " 步后落后 " << p << " 子" << endl;
+    } else if (p < 0) {
+        cout << "将在 " << d << " 步后领先 " << -p << " 子" << endl;
+    }
+
+    cout << endl << endl;
+}
+
 void AiThread::run()
 {
     // 测试用数据
@@ -146,6 +221,8 @@ void AiThread::run()
     int sideId = 0;
 
     loggerDebug("Thread %d start\n", playerId);
+
+    ai.bestvalue = ai.lastvalue = VALUE_ZERO;
 
     while (!isInterruptionRequested()) {
         mutex.lock();
@@ -189,6 +266,7 @@ void AiThread::run()
                 strCommand = ai.nextMove();
                 if (strCommand && strcmp(strCommand, "error!") != 0) {
                     loggerDebug("Computer: %s\n\n", strCommand);
+                    analyze();
                     emitCommand();
                 }
             }

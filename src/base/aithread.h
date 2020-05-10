@@ -78,6 +78,8 @@ public:
         return timeLimit;
     }
 
+    void analyze();
+
 public slots:
     // 强制出招，不退出线程
     void act();

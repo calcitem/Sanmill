@@ -166,6 +166,11 @@ public:
 
     MovePicker *movePicker { nullptr };
 
+    value_t bestvalue { VALUE_ZERO };
+    value_t lastvalue { VALUE_ZERO };
+
+    depth_t originDepth{ 0 };
+
 private:
 
     // 演算用的模型
@@ -180,9 +185,6 @@ private:
     bool requiredQuit {false};
 
     move_t bestMove { MOVE_NONE };
-    //value_t bestvalue { VALUE_ZERO };
-
-    depth_t originDepth { 0 };
 
 private:
     // 命令行

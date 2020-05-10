@@ -295,6 +295,9 @@ int AIAlgorithm::search(depth_t depth)
 
     // 生成了 Alpha-Beta 树
 
+    lastvalue = bestvalue;
+    bestvalue = value;
+
     return 0;
 }
 
@@ -477,7 +480,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
     if (nchild == 1 && depth == originDepth) {
         bestMove = extMoves[0].move;
-        bestValue = VALUE_STRONG;
+        bestValue = VALUE_UNIQUE;
         return bestValue;
     }
 
