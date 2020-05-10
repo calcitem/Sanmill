@@ -41,6 +41,13 @@ enum move_t : int32_t
     //MOVE_NULL = 65
 };
 
+enum movetype_t
+{
+    MOVETYPE_PLACE,
+    MOVETYPE_MOVE,
+    MOVETYPE_CAPTURE
+};
+
 constexpr int MAX_MOVES = 40;
 
 enum color_t : uint8_t
@@ -321,27 +328,23 @@ constexpr seat_t seat_of(square_t s)
 
 constexpr square_t from_sq(move_t m)
 {
-#if 0
-    if (m > 0) {
-        if (m & 0x1f00) {
-            // 走子
-            sqsrc = static_cast<square_t>(m >> 8);
-        }
-
-        // 摆子或走子
-        sq = static_cast<square_t>(m & 0x00ff);
-    } else {
-        // 吃子
-        sq = static_cast<square_t>((-m) & 0x00ff);
-    }
-#endif
-
     return static_cast<square_t>(m >> 8);
 }
 
 inline const square_t to_sq(move_t m)
 {
     return static_cast<square_t>(abs(m) & 0x00ff);
+}
+
+inline const movetype_t type_of(move_t m)
+{
+    if (m < 0) {
+        return MOVETYPE_CAPTURE;
+    } else if (m & 0x1f00) {
+        return MOVETYPE_MOVE;
+    }
+
+    return MOVETYPE_PLACE;  // m & 0x00ff
 }
 
 constexpr move_t make_move(square_t from, square_t to)

@@ -54,28 +54,13 @@ void MovePicker::score()
         square_t sq = to_sq(m);
         square_t sqsrc = from_sq(m);
 
-#if 0
-        if (m > 0) {
-            if (m & 0x1f00) {
-                // 走子
-                sqsrc = static_cast<square_t>(m >> 8);
-            }
-
-            // 摆子或走子
-            sq = static_cast<square_t>(m & 0x00ff);
-        } else {
-            // 吃子
-            sq = static_cast<square_t>((-m) & 0x00ff);
-        }
-#endif
-
         // 若为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三，所以需要传值 sqsrc 进行判断
         int nMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);
         int nopponentMills = 0;
 
     #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
         // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
-        if (m > 0) {
+        if (type_of(m) != MOVETYPE_CAPTURE) {
             // 在任何阶段, 都检测落子点是否能使得本方成三
             if (nMills > 0) {
     #ifdef ALPHABETA_AI
@@ -123,7 +108,7 @@ void MovePicker::score()
                 cur->rating += RATING_STAR_SQUARE;
             }
     #endif
-        } else if (m < 0) {
+        } else { // Capture
             int nPlayerPiece = 0;
             int nOpponentPiece = 0;
             int nForbidden = 0;

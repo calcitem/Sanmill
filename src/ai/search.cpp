@@ -698,19 +698,17 @@ const char* AIAlgorithm::nextMove()
 
 const char *AIAlgorithm::moveToCommand(move_t move)
 {
-    int r, s;
+    int rto, sto;
+    Board::squareToPolar(to_sq(move), rto, sto);
 
     if (move < 0) {
-        Board::squareToPolar(static_cast<square_t>(-move), r, s);
-        sprintf(cmdline, "-(%1u,%1u)", r, s);
+        sprintf(cmdline, "-(%1u,%1u)", rto, sto);
     } else if (move & 0x7f00) {
-        int r1, s1;
-        Board::squareToPolar(static_cast<square_t>(move >> 8), r1, s1);
-        Board::squareToPolar(static_cast<square_t>(move & 0x00ff), r, s);
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", r1, s1, r, s);
+        int rfrom, sfrom;
+        Board::squareToPolar(from_sq(move), rfrom, sfrom);
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", rfrom, sfrom, rto, sto);
     } else {
-        Board::squareToPolar(static_cast<square_t>(move & 0x007f), r, s);
-        sprintf(cmdline, "(%1u,%1u)", r, s);
+        sprintf(cmdline, "(%1u,%1u)", rto, sto);
     }
 
     return cmdline;

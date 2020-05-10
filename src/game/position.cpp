@@ -837,16 +837,19 @@ bool Position::command(const char *cmd)
 
 bool Position::doMove(move_t m)
 {
-    if (m < 0) {
-        return capture(static_cast<square_t>(-m));
-    }
+    movetype_t mt = type_of(m);
 
-    if (m & 0x1f00) {
+    switch (mt) {
+    case MOVETYPE_CAPTURE:
+        return capture(static_cast<square_t>(-m));
+    case MOVETYPE_MOVE:
         if (choose(from_sq(m))) {
             return place(to_sq(m));
         }
-    } else {
+    case MOVETYPE_PLACE:
         return place(to_sq(m));
+    default:
+        break;
     }
 
     return false;
@@ -1217,8 +1220,9 @@ hash_t Position::getNextMainHash(move_t m)
 {
     hash_t nextMainHash = hash /* << 8 >> 8 */;
     square_t sq = SQ_0;
+    movetype_t mt = type_of(m);
 
-    if (m < 0) {
+    if (mt == MOVETYPE_CAPTURE) {
         sq = static_cast<square_t>(-m);
         int pieceType = Player::getOpponentById(Player::toId(sideToMove));
         nextMainHash ^= zobrist[sq][pieceType];
@@ -1230,11 +1234,11 @@ hash_t Position::getNextMainHash(move_t m)
         return nextMainHash;
     }
 
-    sq = static_cast<square_t>(m & 0x00ff);
+    sq = static_cast<square_t>(to_sq(m));
     int pieceType = Player::toId(sideToMove);
     nextMainHash ^= zobrist[sq][pieceType];
 
-    if (m & 0x1f00) {
+    if (mt == MOVETYPE_MOVE) {
         nextMainHash ^= zobrist[from_sq(m)][pieceType];
     }
 

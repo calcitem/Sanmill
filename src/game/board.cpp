@@ -447,8 +447,8 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, square
         s = (N_SEATS - s) % N_SEATS;
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = static_cast<uint64_t>(move_ >> 8);
-        llp[1] = move_ & 0x00ff;
+        llp[0] = static_cast<uint64_t>(from_sq((move_t)move_));
+        llp[1] = to_sq((move_t)move_);
 
         for (i = 0; i < 2; i++) {
             r = static_cast<int>(llp[i]) / N_SEATS;
@@ -560,8 +560,8 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, square_
 
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = static_cast<uint64_t>(move_ >> 8);
-        llp[1] = move_ & 0x00ff;
+        llp[0] = static_cast<uint64_t>(from_sq((move_t)move_));
+        llp[1] = to_sq((move_t)move_);
 
         for (i = 0; i < 2; i++) {
             r = static_cast<int>(llp[i]) / N_SEATS;
@@ -759,8 +759,8 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
         s = (s + N_SEATS - degrees) % N_SEATS;
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = static_cast<uint64_t>(move_ >> 8);
-        llp[1] = move_ & 0x00ff;
+        llp[0] = static_cast<uint64_t>(from_sq((move_t)move_));
+        llp[1] = to_sq((move_t)move_);
         r = static_cast<int>(llp[0]) / N_SEATS;
         s = static_cast<int>(llp[0]) % N_SEATS;
         s = (s + N_SEATS - degrees) % N_SEATS;
