@@ -228,7 +228,6 @@ public:
     void setTips();
 
     // 着法生成
-    int generateMoves(Stack<move_t, MAX_MOVES> &moves);
     int generateNullMove(Stack<move_t, MAX_MOVES> &moves);
 
     bool doNullMove();
