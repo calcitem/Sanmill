@@ -359,7 +359,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newSquare = static_cast<square_t>(MoveList::moveTable[oldSquare][direction]);
                         if (newSquare && !position->board.locations[newSquare]) {
-                            move_t m = move_t((oldSquare << 8) + newSquare);
+                            move_t m = make_move(oldSquare, newSquare);
                             *cur++ = ((move_t)m);
                         }
                     }
@@ -367,7 +367,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
                         if (!position->board.locations[newSquare]) {
-                            move_t m = move_t((oldSquare << 8) + newSquare);
+                            move_t m = make_move(oldSquare, newSquare);
                             *cur++ = ((move_t)m);
                         }
                     }

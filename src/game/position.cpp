@@ -499,7 +499,7 @@ bool Position::place(square_t square, int8_t updateCmdlist)
     }
 
     // 移子
-    move = static_cast<move_t>((currentSquare << 8) + square);
+    move = make_move(currentSquare, square);
 
     if (updateCmdlist) {
         seconds = update();

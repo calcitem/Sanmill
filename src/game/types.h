@@ -344,4 +344,9 @@ inline const square_t to_sq(move_t m)
     return static_cast<square_t>(abs(m) & 0x00ff);
 }
 
+constexpr move_t make_move(square_t from, square_t to)
+{
+    return move_t((from << 8) + to);
+}
+
 #endif /* TYPES_H */
