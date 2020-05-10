@@ -393,15 +393,14 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 
     // 查询整个棋盘
     square_t moveSquare;
-    int locend = N_SEATS * (N_RINGS + 1);
 
-    for (int i = 1; i < locend; i++) {
-        if (!(0x30 & player & locations[i])) {
+    for (square_t sq = SQ_BEGIN; sq < SQ_END; sq = (square_t)(sq + 1)) {
+        if (!(player & locationToPlayer(sq))) {
             continue;
         }
 
         for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
-            moveSquare = static_cast<square_t>(MoveList::moveTable[i][d]);
+            moveSquare = static_cast<square_t>(MoveList::moveTable[sq][d]);
             if (moveSquare && !locations[moveSquare]) {
                 return false;
             }
