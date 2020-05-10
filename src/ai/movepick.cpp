@@ -51,9 +51,10 @@ void MovePicker::score()
     while (cur++->move != MOVE_NONE) {
         move_t m = cur->move;
 
-        square_t sq = SQ_0;
-        square_t sqsrc = SQ_0;
+        square_t sq = to_sq(m);
+        square_t sqsrc = from_sq(m);
 
+#if 0
         if (m > 0) {
             if (m & 0x1f00) {
                 // 走子
@@ -66,6 +67,7 @@ void MovePicker::score()
             // 吃子
             sq = static_cast<square_t>((-m) & 0x00ff);
         }
+#endif
 
         // 若为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三，所以需要传值 sqsrc 进行判断
         int nMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);

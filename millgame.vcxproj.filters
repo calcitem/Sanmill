@@ -147,6 +147,9 @@
     <ClInclude Include="src\ai\movepick.h">
       <Filter>ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\bitboard.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -388,6 +391,9 @@
     </ClCompile>
     <ClCompile Include="src\ai\movepick.cpp">
       <Filter>ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\bitboard.cpp">
+      <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

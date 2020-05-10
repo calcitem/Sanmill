@@ -32,6 +32,7 @@ SOURCES += \
     src/base/memmgr.cpp \
     src/base/misc.cpp \
     src/base/zobrist.cpp \
+    src/game/bitboard.cpp \
     src/game/board.cpp \
     src/game/location.cpp \
     src/game/option.cpp \
@@ -72,6 +73,7 @@ HEADERS  += \
     src/base/aithread.h \
     src/ai/search.h \
     src/base/zobrist.h \
+    src/game/bitboard.h \
     src/game/board.h \
     src/game/location.h \
     src/game/option.h \

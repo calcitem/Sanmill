@@ -26,6 +26,8 @@ using step_t = uint16_t;
 using depth_t = int8_t;
 using location_t = uint8_t;
 using score_t = uint32_t;
+//using bitboard_t = uint32_t;
+typedef uint32_t bitboard_t;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
 using hash_t = uint32_t;
@@ -52,13 +54,13 @@ enum color_t : uint8_t
 enum square_t : int32_t
 {
     SQ_0 = 0, SQ_1 = 1, SQ_2 = 2, SQ_3 = 3, SQ_4 = 4, SQ_5 = 5, SQ_6 = 6, SQ_7 = 7,
-    SQ_D5 = 8, SQ_E5 = 9, SQ_E4 = 10, SQ_E3 = 11, SQ_D3 = 12, SQ_C3 = 13, SQ_C4 = 14, SQ_C5 = 15,
-    SQ_D6 = 16, SQ_F6 = 17, SQ_F4 = 18, SQ_F2 = 19, SQ_D2 = 20, SQ_B2 = 21, SQ_B4 = 22, SQ_B6 = 23,
-    SQ_D7 = 24, SQ_G7 = 25, SQ_G4 = 26, SQ_G1 = 27, SQ_D1 = 28, SQ_A1 = 29, SQ_A4 = 30, SQ_A7 = 31,
+     SQ_8_R1S1_D5 = 8,   SQ_9_R1S2_E5 = 9,  SQ_10_R1S3_E4 = 10, SQ_11_R1S4_E3 = 11, SQ_12_R1S5_D3 = 12, SQ_13_R1S6_C3 = 13, SQ_14_R1S7_C4 = 14, SQ_15_R1S8_C5 = 15,
+    SQ_16_R2S1_D6 = 16, SQ_17_R2S2_F6 = 17, SQ_18_R2S3_F4 = 18, SQ_19_R2S4_F2 = 19, SQ_20_R2S5_D2 = 20, SQ_21_R2S6_B2 = 21, SQ_22_R2S7_B4 = 22, SQ_23_R2S8_B6 = 23,
+    SQ_24_R3S1_D7 = 24, SQ_25_R3S2_G7 = 25, SQ_26_R3S3_G4 = 26, SQ_27_R3S4_G1 = 27, SQ_28_R3S5_D1 = 28, SQ_29_R3S6_A1 = 29, SQ_30_R3S7_A4 = 30, SQ_31_R3S8_A7 = 31,
     SQ_32 = 32, SQ_33 = 33, SQ_34 = 34, SQ_35 = 35, SQ_36 = 36, SQ_37 = 37, SQ_38 = 38, SQ_39 = 39,
-    SQ_COUNT = 24,
+    SQUARE_COUNT = 24,
     SQ_EXPANDED_COUNT = 40,
-    SQ_BEGIN = SQ_D5,
+    SQ_BEGIN = SQ_8_R1S1_D5,
     SQ_END = SQ_32
 };
 
@@ -84,6 +86,18 @@ enum file_t : int
 enum rank_t : int
 {
     RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_COUNT
+};
+
+// 圈
+enum ring_t : int
+{
+    RING_NONE, RING_1, RING_2, RING_3, RING_COUNT = RING_3
+};
+
+// 位
+enum seat_t : int
+{
+    SEAT_NONE, SEAT_1, SEAT_2, SEAT_3, SEAT_4, SEAT_5, SEAT_6, SEAT_7, SEAT_8, SEAT_COUNT = SEAT_8
 };
 
 // 横直斜3个方向，禁止修改!
@@ -278,7 +292,56 @@ inline value_t &operator-=(value_t &v, int i)
 
 constexpr color_t operator~(color_t color)
 {
-    return (color == BLACK? WHITE : BLACK);   // Toggle color
+    return color_t(color ^ BLACK);   // Toggle color
+}
+
+// constexpr piece_t operator~(piece_t p)
+// {
+//     return piece_t(p ^ 8);   // Swap color of piece
+// }
+
+
+// TODO
+constexpr square_t make_square(ring_t r, seat_t s)
+{
+    return square_t((r << 3) + s - 1);
+}
+
+#if 0
+constexpr ring_t ring_of(square_t s)
+{
+   // return File(s & 7);
+}
+
+constexpr seat_t seat_of(square_t s)
+{
+    //return seat(s >> 3);
+}
+#endif
+
+constexpr square_t from_sq(move_t m)
+{
+#if 0
+    if (m > 0) {
+        if (m & 0x1f00) {
+            // 走子
+            sqsrc = static_cast<square_t>(m >> 8);
+        }
+
+        // 摆子或走子
+        sq = static_cast<square_t>(m & 0x00ff);
+    } else {
+        // 吃子
+        sq = static_cast<square_t>((-m) & 0x00ff);
+    }
+#endif
+
+    return static_cast<square_t>(m >> 8);
+}
+
+inline const square_t to_sq(move_t m)
+{
+    return static_cast<square_t>(abs(m) & 0x00ff);
 }
 
 #endif /* TYPES_H */

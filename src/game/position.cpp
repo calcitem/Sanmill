@@ -842,11 +842,11 @@ bool Position::doMove(move_t m)
     }
 
     if (m & 0x1f00) {
-        if (choose(static_cast<square_t>(m >> 8))) {
-            return place(static_cast<square_t>(m & 0x00ff));
+        if (choose(from_sq(m))) {
+            return place(to_sq(m));
         }
     } else {
-        return place(static_cast<square_t>(m & 0x00ff));
+        return place(to_sq(m));
     }
 
     return false;
@@ -1235,7 +1235,7 @@ hash_t Position::getNextMainHash(move_t m)
     nextMainHash ^= zobrist[sq][pieceType];
 
     if (m & 0x1f00) {
-        nextMainHash ^= zobrist[static_cast<square_t>(m >> 8)][pieceType];
+        nextMainHash ^= zobrist[from_sq(m)][pieceType];
     }
 
     return nextMainHash;
