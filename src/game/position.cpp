@@ -1219,11 +1219,10 @@ hash_t Position::updateHashMisc()
 hash_t Position::getNextMainHash(move_t m)
 {
     hash_t nextMainHash = hash /* << 8 >> 8 */;
-    square_t sq = SQ_0;
+    square_t sq = static_cast<square_t>(to_sq(m));;
     movetype_t mt = type_of(m);
 
     if (mt == MOVETYPE_CAPTURE) {
-        sq = static_cast<square_t>(-m);
         int pieceType = Player::getOpponentById(Player::toId(sideToMove));
         nextMainHash ^= zobrist[sq][pieceType];
 
@@ -1233,8 +1232,7 @@ hash_t Position::getNextMainHash(move_t m)
 
         return nextMainHash;
     }
-
-    sq = static_cast<square_t>(to_sq(m));
+    
     int pieceType = Player::toId(sideToMove);
     nextMainHash ^= zobrist[sq][pieceType];
 
