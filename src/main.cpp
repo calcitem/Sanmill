@@ -22,6 +22,7 @@
 
 #include "gamewindow.h"
 #include "misc.h"
+#include "bitboard.h"
 
 QString APP_FILENAME_DEFAULT = "MillGame";
 
@@ -29,6 +30,8 @@ QString APP_FILENAME_DEFAULT = "MillGame";
 #ifndef UCT_DEMO
 int main(int argc, char *argv[])
 {
+    Bitboards::init();
+
     QApplication a(argc, argv);
     MillGameWindow w;   
     w.show();

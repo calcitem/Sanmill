@@ -25,6 +25,7 @@
 #include "player.h"
 #include "option.h"
 #include "zobrist.h"
+#include "bitboard.h"
 
 // 当前棋局的字符提示
 string tips;
@@ -108,6 +109,7 @@ Position &Position::operator= (const Position &pos)
     currentStep = pos.currentStep;
     moveStep = pos.moveStep;
     memcpy(board.locations, pos.board.locations, sizeof(board.locations));
+    memcpy(board.byTypeBB, pos.board.byTypeBB, sizeof(board.byTypeBB));
     currentSquare = pos.currentSquare;
     winner = pos.winner;
     startTime = pos.startTime;
@@ -133,6 +135,7 @@ Position &Position::operator= (Position &pos)
     currentStep = pos.currentStep;
     moveStep = pos.moveStep;
     memcpy(board.locations, pos.board.locations, sizeof(board.locations));
+    memcpy(board.byTypeBB, pos.board.byTypeBB, sizeof(board.byTypeBB));
     currentSquare = pos.currentSquare;
     winner = pos.winner;
     startTime = pos.startTime;
@@ -186,11 +189,7 @@ int Position::countPiecesInHand()
 }
 
 // 设置棋局状态和棋盘数据，用于初始化
-bool Position::setPosition(const struct Rule *newRule,
-                       step_t initialStep,
-                       phase_t ph, player_t side, action_t act,
-                       const char *locations,
-                       int piecesNeedRemove)
+bool Position::setPosition(const struct Rule *newRule)
 {
     // 根据规则
     rule = *newRule;
@@ -198,25 +197,22 @@ bool Position::setPosition(const struct Rule *newRule,
     // 设置棋局数据
 
     // 设置步数
-    this->currentStep = initialStep;
-    this->moveStep = initialStep;
+    this->currentStep = 0;
+    this->moveStep = 0;
 
     // 局面阶段标识
-    phase = ph;
+    phase = PHASE_READY;
 
     // 轮流状态标识
-    setSideToMove(side);
+    setSideToMove(PLAYER_BLACK);
 
     // 动作状态标识
-    action = act;
+    action = ACTION_PLACE;
 
     // 当前棋局（3×8）
-    if (locations == nullptr) {
-        memset(board.locations, 0, sizeof(board.locations));
-        hash = 0;
-    } else {
-        memcpy(board.locations, locations, sizeof(board.locations));
-    }
+    memset(board.locations, 0, sizeof(board.locations));
+    hash = 0;
+    memset(board.byTypeBB, 0, sizeof(board.byTypeBB));
 
     if (countPiecesOnBoard() == -1) {
         return false;
@@ -225,13 +221,7 @@ bool Position::setPosition(const struct Rule *newRule,
     countPiecesInHand();
 
     // 设置去子状态时的剩余尚待去除子数
-    if (action == ACTION_REMOVE) {
-        if (0 <= piecesNeedRemove && piecesNeedRemove < 3) {
-            nPiecesNeedRemove = piecesNeedRemove;
-        }
-    } else {
-        nPiecesNeedRemove = 0;
-    }
+    nPiecesNeedRemove = 0;
 
     // 清空成三记录
     board.millListSize = 0;
@@ -297,6 +287,8 @@ bool Position::reset()
 
     // 当前棋局（3×8）
     memset(board.locations, 0, sizeof(board.locations));
+    hash = 0;
+    memset(board.byTypeBB, 0, sizeof(board.byTypeBB));
 
     // 盘面子数归零
     nPiecesOnBoard[BLACK] = nPiecesOnBoard[WHITE] = 0;
@@ -315,9 +307,6 @@ bool Position::reset()
 
     // 用时置零
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
-
-    // 哈希归零
-    hash = 0;
 
     // 提示
     setTips();
@@ -402,8 +391,9 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
     int piece = '\x00';
     int n = 0;
 
+    int playerId = Player::toId(sideToMove);
+
     if (phase == PHASE_PLACING) {
-        int playerId = Player::toId(sideToMove);
         piece = (0x01 | sideToMove) + rule.nTotalPiecesEachSide - nPiecesInHand[playerId];
         nPiecesInHand[playerId]--;
         nPiecesOnBoard[playerId]++;
@@ -411,6 +401,9 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
         board.locations[square] = piece;
 
         updateHash(square);
+
+        board.byTypeBB[ALL_PIECES] |= square;
+        board.byTypeBB[playerId] |= square;
 
         move = static_cast<move_t>(square);
 
@@ -510,6 +503,10 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
         moveStep++;
     }
 
+    bitboard_t fromTo = square_bb(currentSquare) | square_bb(square);
+    board.byTypeBB[ALL_PIECES] ^= fromTo;
+    board.byTypeBB[playerId] ^= fromTo;
+
     board.locations[square] = board.locations[currentSquare];
 
     updateHash(square);
@@ -588,6 +585,8 @@ bool Position::removePiece(square_t square, bool updateCmdlist)
     // 时间的临时变量
     int seconds = -1;
 
+    int oppId = Player::toId(opponent);
+
     // 判断去子是不是对手棋
     if (!(opponent & board.locations[square]))
         return false;
@@ -604,9 +603,15 @@ bool Position::removePiece(square_t square, bool updateCmdlist)
         revertHash(square);
         board.locations[square] = '\x0f';
         updateHash(square);
+
+        board.byTypeBB[oppId] ^= square;
+        board.byTypeBB[FORBIDDEN_STONE] |= square;
     } else { // 去子
         revertHash(square);
         board.locations[square] = '\x00';
+
+        board.byTypeBB[ALL_PIECES] ^= square;
+        board.byTypeBB[opponentId] ^= square;
     }
 
     nPiecesOnBoard[opponentId]--;
@@ -1061,6 +1066,8 @@ void Position::cleanForbiddenLocations()
             if (board.locations[square] == '\x0f') {
                 revertHash(square);
                 board.locations[square] = '\x00';
+                board.byTypeBB[ALL_PIECES] ^= square;
+                board.byTypeBB[FORBIDDEN_STONE] ^= square;  // TODO: 可能是多余
             }
         }
     }
@@ -1179,6 +1186,9 @@ hash_t Position::updateHash(square_t square)
 
     // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
     int pieceType = Player::toId(board.locationToPlayer(square));
+    // TODO: 标准写法应该是如下的写法，但目前这么写也可以工作
+    //location_t loc = board.locations[square];
+    //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
 
     // 清除或者放置棋子
     hash ^= zobrist[square][pieceType];
@@ -1228,7 +1238,7 @@ hash_t Position::getNextMainHash(move_t m)
         nextMainHash ^= zobrist[sq][pieceType];
 
         if (rule.hasForbiddenLocations && phase == PHASE_PLACING) {
-            nextMainHash ^= zobrist[sq][PIECETYPE_FORBIDDEN];
+            nextMainHash ^= zobrist[sq][FORBIDDEN_STONE];
         }
 
         return nextMainHash;

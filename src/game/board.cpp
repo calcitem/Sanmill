@@ -50,6 +50,7 @@ Board &Board::operator= (const Board &other)
         return *this;
 
     memcpy(this->locations, other.locations, sizeof(this->locations));
+    memcpy(this->byTypeBB, other.byTypeBB, sizeof(this->byTypeBB));
 
     memcpy(&millList, &other.millList, sizeof(millList));
     millListSize = other.millListSize;

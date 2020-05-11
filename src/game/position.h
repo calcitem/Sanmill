@@ -88,12 +88,7 @@ public:
     //////////////////////////////////////
 
     // 设置棋局状态和棋局，用于初始化
-    bool setPosition(const struct Rule *rule,
-                     step_t initialStep = 0,           // 默认起始步数为0
-                     phase_t phase = PHASE_READY, player_t turn = PLAYER_BLACK, action_t action = ACTION_PLACE,
-                     const char *locations = nullptr,   // 默认空棋盘
-                     int nPiecesNeedRemove = 0      // 尚待去除的子数
-    );
+    bool setPosition(const struct Rule *rule);
 
     // 获取棋盘数据
     location_t *getBoardLocations() const

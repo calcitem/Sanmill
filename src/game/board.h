@@ -109,6 +109,8 @@ public:
      */
     location_t locations[SQ_EXPANDED_COUNT]{};
 
+    bitboard_t byTypeBB[PIECETYPE_COUNT];
+
     /*
         本打算用如下的结构体来表示“三连”
         struct Mill {

@@ -193,10 +193,11 @@ enum rating_t : int8_t
 // 棋盘点上棋子的类型
 enum piecetype_t : uint16_t
 {
-    PIECETYPE_EMPTY = 0,   // 没有棋子
-    PIECETYPE_PLAYER_BLACK = 1,    // 先手的子
-    PIECETYPE_PLAYER_WHITE = 2,     // 后手的子
-    PIECETYPE_FORBIDDEN = 3,    // 禁点
+    NO_PIECE_TYPE = 0,   // 没有棋子
+    BLACK_STONE = 1,    // 先手的子
+    WHITE_STONE = 2,     // 后手的子
+    FORBIDDEN_STONE = 3,    // 禁点
+    ALL_PIECES = 0,    // 禁点
     PIECETYPE_COUNT = 4
 };
 
