@@ -44,10 +44,15 @@ value_t TT::probeHash(const hash_t &hash,
     }
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    if (hashValue.age != transpositionTableAge)
-    {
-        return VALUE_UNKNOWN;
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
+    if (hashValue.type != BOUND_EXACT) {
+#endif
+        if (hashValue.age != transpositionTableAge) {
+            return VALUE_UNKNOWN;
+        }
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
     }
+#endif
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
     if (depth > hashValue.depth) {
