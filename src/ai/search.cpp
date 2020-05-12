@@ -420,7 +420,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
         depth <= 0 ||
         unlikely(requiredQuit)) {
         // 局面评估
-        bestValue = Evaluation::getValue(position);
+        bestValue = Eval::evaluate(position);
 
         // 为争取速胜，value 值 +- 深度
         if (bestValue > 0) {

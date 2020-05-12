@@ -20,7 +20,7 @@
 #include "evaluate.h"
 
 #ifdef ALPHABETA_AI
-value_t Evaluation::getValue(Position *position)
+value_t Eval::evaluate(Position *pos)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
     value_t value = VALUE_ZERO;
@@ -29,20 +29,20 @@ value_t Evaluation::getValue(Position *position)
     int nPiecesOnBoardDiff;
     int nPiecesNeedRemove;
 
-    switch (position->phase) {
+    switch (pos->phase) {
     case PHASE_READY:
         break;
 
     case PHASE_PLACING:
         // 按手中的棋子计分，不要break;
-        nPiecesInHandDiff = position->nPiecesInHand[BLACK] - position->nPiecesInHand[WHITE];
+        nPiecesInHandDiff = pos->nPiecesInHand[BLACK] - pos->nPiecesInHand[WHITE];
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 
         // 按场上棋子计分
-        nPiecesOnBoardDiff = position->nPiecesOnBoard[BLACK] - position->nPiecesOnBoard[WHITE];
+        nPiecesOnBoardDiff = pos->nPiecesOnBoard[BLACK] - pos->nPiecesOnBoard[WHITE];
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 
-        switch (position->action) {
+        switch (pos->action) {
             // 选子和落子使用相同的评价方法
         case ACTION_SELECT:
         case ACTION_PLACE:
@@ -50,8 +50,8 @@ value_t Evaluation::getValue(Position *position)
 
             // 如果形成去子状态，每有一个可去的子，算100分
         case ACTION_REMOVE:
-            nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
-                position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
+            nPiecesNeedRemove = (pos->sideToMove == PLAYER_BLACK) ?
+                pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
             break;
         default:
@@ -62,15 +62,15 @@ value_t Evaluation::getValue(Position *position)
 
     case PHASE_MOVING:
         // 按场上棋子计分
-        value = position->nPiecesOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
-                position->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
+        value = pos->nPiecesOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
+                pos->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         // 按棋子活动能力计分
         value += st->position->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
-        switch (position->action) {
+        switch (pos->action) {
         // 选子和落子使用相同的评价方法
         case ACTION_SELECT:
         case ACTION_PLACE:
@@ -78,8 +78,8 @@ value_t Evaluation::getValue(Position *position)
 
         // 如果形成去子状态，每有一个可去的子，算128分
         case ACTION_REMOVE:
-            nPiecesNeedRemove = (position->sideToMove == PLAYER_BLACK) ?
-                position->nPiecesNeedRemove : -(position->nPiecesNeedRemove);
+            nPiecesNeedRemove = (pos->sideToMove == PLAYER_BLACK) ?
+                pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
             break;
         default:
@@ -91,7 +91,7 @@ value_t Evaluation::getValue(Position *position)
     // 终局评价最简单
     case PHASE_GAMEOVER:
         // 布局阶段闷棋判断
-        if (position->nPiecesOnBoard[BLACK] + position->nPiecesOnBoard[WHITE] >=
+        if (pos->nPiecesOnBoard[BLACK] + pos->nPiecesOnBoard[WHITE] >=
             Board::N_SEATS * Board::N_RINGS) {
             if (rule.isStartingPlayerLoseWhenBoardFull) {
                 value -= VALUE_WIN;
@@ -101,18 +101,18 @@ value_t Evaluation::getValue(Position *position)
         }
 
         // 走棋阶段被闷判断
-        else if (position->action == ACTION_SELECT &&
-            position->board.isAllSurrounded(position->sideId, position->nPiecesOnBoard, position->sideToMove) &&
+        else if (pos->action == ACTION_SELECT &&
+            pos->board.isAllSurrounded(pos->sideId, pos->nPiecesOnBoard, pos->sideToMove) &&
             rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-            value_t delta = position->sideToMove == PLAYER_BLACK ? -VALUE_WIN : VALUE_WIN;
+            value_t delta = pos->sideToMove == PLAYER_BLACK ? -VALUE_WIN : VALUE_WIN;
             value += delta;
         }
 
         // 剩余棋子个数判断
-        else if (position->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
+        else if (pos->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
             value -= VALUE_WIN;
-        } else if (position->nPiecesOnBoard[WHITE] < rule.nPiecesAtLeast) {
+        } else if (pos->nPiecesOnBoard[WHITE] < rule.nPiecesAtLeast) {
             value += VALUE_WIN;
         }
 
@@ -122,7 +122,7 @@ value_t Evaluation::getValue(Position *position)
         break;
     }
 
-    if (position->sideToMove == PLAYER_WHITE) {
+    if (pos->sideToMove == PLAYER_WHITE) {
         value = -value;
     }
 

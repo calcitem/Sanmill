@@ -25,69 +25,60 @@
 #include "position.h"
 #include "search.h"
 
-class Evaluation
-{
-public:
-    Evaluation() = delete;
+namespace Eval {
+    value_t evaluate(Position *pos);
 
-    Evaluation &operator=(const Evaluation &) = delete;
-
-    static value_t getValue(Position *Position);
-
-    // 评估子力
 #ifdef EVALUATE_ENABLE
 
 #ifdef EVALUATE_MATERIAL
-    static value_t evaluateMaterial()
+    value_t evaluateMaterial()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SPACE
-    static value_t evaluateSpace()
+    value_t evaluateSpace()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOBILITY
-    static value_t evaluateMobility()
+    value_t evaluateMobility()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_TEMPO
-    static value_t evaluateTempo()
+    value_t evaluateTempo()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_THREAT
-    static value_t evaluateThreat()
+    value_t evaluateThreat()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SHAPE
-    static value_t evaluateShape()
+    value_t evaluateShape()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOTIF
-    static value_t AIAlgorithm::evaluateMotif()
+    value_t AIAlgorithm::evaluateMotif()
     {
         return 0;
     }
 #endif
 #endif /* EVALUATE_ENABLE */
-
-private:
 };
 
 #endif /* EVALUATE_H */
