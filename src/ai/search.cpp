@@ -469,7 +469,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
     ExtMove extMoves[MAX_MOVES];
     memset(extMoves, 0, sizeof(extMoves));
-    ExtMove *end = generate(st->position, extMoves);
+    ExtMove *end = generateMoves(st->position, extMoves);
     MovePicker mp(st->position, extMoves);
     mp.score();
 

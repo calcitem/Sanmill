@@ -61,7 +61,7 @@ inline bool operator < (const ExtMove &first, const ExtMove &second)
 }
 
 //template <GenType>
-ExtMove *generate(Position *pos, ExtMove *moveList);
+ExtMove *generateMoves(Position *pos, ExtMove *moveList);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.
