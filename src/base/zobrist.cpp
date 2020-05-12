@@ -19,7 +19,7 @@
 
 #include "zobrist.h"
 
-const hash_t zobrist[SQ_EXPANDED_COUNT][PIECETYPE_COUNT] = {
+const key_t zobrist[SQ_EXPANDED_COUNT][PIECETYPE_COUNT] = {
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
     {0x4E421A, 0x3962FF, 0x6DB6EE, 0x219AE1},
     {0x1F3DE2, 0xD9AACB, 0xD51733, 0xD3F9EA},

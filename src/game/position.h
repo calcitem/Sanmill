@@ -56,7 +56,7 @@ public:
     Board board;
 
     // 局面的哈希值
-    hash_t hash {0};
+    key_t key {0};
 
     // 局面阶段标识
     enum phase_t phase {PHASE_NONE};
@@ -237,12 +237,12 @@ public:
     bool placePiece(square_t square, bool updateCmdlist = false);
     bool removePiece(square_t square, bool updateCmdlist = false);
 
-    // hash 相关
-    hash_t getPosKey();
-    hash_t revertHash(square_t square);
-    hash_t updateHash(square_t square);
-    hash_t updateHashMisc();
-    hash_t getNextMainHash(move_t m);
+    // key 相关
+    key_t getPosKey();
+    key_t revertKey(square_t square);
+    key_t updateKey(square_t square);
+    key_t updateKeyMisc();
+    key_t getNextPrimaryKey(move_t m);
 
     // 赢盘数
     int score[COLOR_COUNT] = { 0 };
@@ -285,7 +285,7 @@ public:
 private:
 
     // 创建哈希值
-    void constructHash();
+    void constructKey();
 
     // 计算双方在棋盘上各有几个子
     int countPiecesOnBoard();

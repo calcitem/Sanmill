@@ -110,8 +110,8 @@ public:
 #endif
 
 #ifdef ENDGAME_LEARNING
-    bool findEndgameHash(hash_t hash, Endgame &endgame);
-    static int recordEndgameHash(hash_t hash, const Endgame &endgame);
+    bool findEndgameHash(key_t key, Endgame &endgame);
+    static int recordEndgameHash(key_t key, const Endgame &endgame);
     void clearEndgameHashMap();
     static void recordEndgameHashMapToFile();
     static void loadEndgameFileToHashMap();
@@ -193,14 +193,14 @@ private:
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
 public:
-    // Hash 统计数据
-    size_t hashEntryCount{ 0 };
-    size_t hashHitCount{ 0 };
-    size_t hashMissCount{ 0 };
-    size_t hashInsertNewCount{ 0 };
-    size_t hashAddrHitCount{ 0 };
-    size_t hashReplaceCozDepthCount{ 0 };
-    size_t hashReplaceCozHashCount{ 0 };
+    // TT 统计数据
+    size_t tteCount{ 0 };
+    size_t ttHitCount{ 0 };
+    size_t ttMissCount{ 0 };
+    size_t ttInsertNewCount{ 0 };
+    size_t ttAddrHitCount{ 0 };
+    size_t ttReplaceCozDepthCount{ 0 };
+    size_t ttReplaceCozHashCount{ 0 };
 #endif
 #endif
 };
@@ -208,7 +208,7 @@ public:
 #include "tt.h"
 
 #ifdef THREEFOLD_REPETITION
-extern vector<hash_t> moveHistory;
+extern vector<key_t> moveHistory;
 #endif
 
 #endif /* SEARCH_H */

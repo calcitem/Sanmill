@@ -21,12 +21,12 @@
 
 #ifdef ENDGAME_LEARNING
 static constexpr int endgameHashsize = 0x1000000; // 16M
-HashMap<hash_t, Endgame> endgameHashMap(endgameHashsize);
+HashMap<key_t, Endgame> endgameHashMap(endgameHashsize);
 
 void mergeEndgameFile(QString file1, QString file2, QString mergedFile)
 {
-    HashMap<hash_t, Endgame> map1(endgameHashsize);
-    HashMap<hash_t, Endgame> map2(endgameHashsize);
+    HashMap<key_t, Endgame> map1(endgameHashsize);
+    HashMap<key_t, Endgame> map2(endgameHashsize);
 
     map1.load(file1);
     map2.load(file2);

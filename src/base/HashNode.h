@@ -6,7 +6,7 @@
 #include <shared_mutex>
 namespace CTSL  //Concurrent Thread Safe Library
 {
-    // Class representing a templatized hash node
+    // Class representing a templatized key node
     template <typename K, typename V>
     class HashNode
     {
@@ -38,12 +38,12 @@ namespace CTSL  //Concurrent Thread Safe Library
             HashNode *next; //Pointer to the next node in the same bucket
 #endif
         private:
-            K key;   //the hash key
+            K key;   //the key key
             V value; //the value corresponding to the key
     };
 
 
-    //Class representing a hash bucket. The bucket is implemented as a singly linked list.
+    //Class representing a key bucket. The bucket is implemented as a singly linked list.
     //A bucket is always constructed with a dummy head node
     template <typename K, typename V>
     class HashBucket

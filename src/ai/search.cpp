@@ -38,7 +38,7 @@ player_t gSideToMove;
 using namespace CTSL;
 
 // 用于检测重复局面 (Position)
-vector<hash_t> moveHistory;
+vector<key_t> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
 {
@@ -153,7 +153,7 @@ void AIAlgorithm::setState(const StateInfo &g)
     // 如果规则改变，重建hashmap
     if (strcmp(rule.name, rule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-        TT::clear();
+        TranspositionTable::clear();
 #endif // TRANSPOSITION_TABLE_ENABLE
 
 #ifdef ENDGAME_LEARNING
@@ -198,16 +198,16 @@ int AIAlgorithm::search(depth_t depth)
     static int nRepetition = 0;
 
     if (state->position->getPhase() == PHASE_MOVING) {
-        hash_t hash = state->position->getPosKey();
+        key_t key = state->position->getPosKey();
         
-        if (std::find(moveHistory.begin(), moveHistory.end(), hash) != moveHistory.end()) {
+        if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
             nRepetition++;
             if (nRepetition == 3) {
                 nRepetition = 0;
                 return 3;
             }
         } else {
-            moveHistory.push_back(hash);
+            moveHistory.push_back(key);
         }
     }
 
@@ -237,7 +237,7 @@ int AIAlgorithm::search(depth_t depth)
         for (depth_t i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-            TT::clear();   // 每次走子前清空哈希表
+            TranspositionTable::clear();   // 每次走子前清空哈希表
 #endif
 #endif
 
@@ -265,7 +265,7 @@ int AIAlgorithm::search(depth_t depth)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-        TT::clear();  // 每次走子前清空哈希表
+    TranspositionTable::clear();  // 每次走子前清空哈希表
 #endif
 #endif
 
@@ -343,7 +343,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
-    hash_t posKey = st->position->getPosKey();
+    key_t posKey = st->position->getPosKey();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -372,7 +372,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 #ifdef TRANSPOSITION_TABLE_ENABLE
     bound_t type = BOUND_NONE;
 
-    value_t probeVal = TT::probeHash(posKey, depth, alpha, beta, type
+    value_t probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
                                      , ttMove
 #endif // TT_MOVE_ENABLE                                     
@@ -380,7 +380,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
     if (probeVal != VALUE_UNKNOWN) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
-        hashHitCount++;
+        ttHitCount++;
 #endif
 
         bestValue = probeVal;
@@ -388,9 +388,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 #if 0
         // TODO: 有必要针对深度微调 value?
         if (position->turn == PLAYER_BLACK)
-            bestValue += hashValue.depth - depth;
+            bestValue += tte.depth - depth;
         else
-            bestValue -= hashValue.depth - depth;
+            bestValue -= tte.depth - depth;
 #endif
 
 #ifdef TT_MOVE_ENABLE
@@ -403,7 +403,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
     else {
-        hashMissCount++;
+        ttMissCount++;
     }
 #endif
 
@@ -454,7 +454,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // 记录确切的哈希值
-        TT::recordHash(bestValue,
+        TranspositionTable::save(bestValue,
                        depth,
                        BOUND_EXACT,
                        posKey
@@ -487,7 +487,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
     for (int i = 0; i < nchild; i++) {
-        TT::prefetchHash(st->position->getNextMainHash(extMoves[i].move));
+        TranspositionTable::prefetch(st->position->getNextPrimaryKey(extMoves[i].move));
     }
 
 #ifdef PREFETCH_DEBUG
@@ -563,7 +563,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TT::recordHash(bestValue,
+    TranspositionTable::save(bestValue,
                    depth,
                    bestValue >= beta ? BOUND_LOWER :
                    BOUND_UPPER,
@@ -662,7 +662,7 @@ const char* AIAlgorithm::nextMove()
             Endgame endgame;
             endgame.type = state->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            hash_t endgameHash = state->position->getPosKey(); // TODO: 减少重复计算哈希
+            key_t endgameHash = state->position->getPosKey(); // TODO: 减少重复计算哈希
             recordEndgameHash(endgameHash, endgame);
         }
     }
@@ -681,11 +681,11 @@ const char* AIAlgorithm::nextMove()
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    size_t hashProbeCount = hashHitCount + hashMissCount;
+    size_t hashProbeCount = ttHitCount + ttMissCount;
     if (hashProbeCount)
     {
         loggerDebug("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-                    hashProbeCount, hashHitCount, hashMissCount, hashHitCount * 100 / hashProbeCount);
+                    hashProbeCount, ttHitCount, ttMissCount, ttHitCount * 100 / hashProbeCount);
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
@@ -720,19 +720,19 @@ const char *AIAlgorithm::moveToCommand(move_t move)
 }
 
 #ifdef ENDGAME_LEARNING
-bool AIAlgorithm::findEndgameHash(hash_t posKey, Endgame &endgame)
+bool AIAlgorithm::findEndgameHash(key_t posKey, Endgame &endgame)
 {
     return endgameHashMap.find(posKey, endgame);
 }
 
-int AIAlgorithm::recordEndgameHash(hash_t posKey, const Endgame &endgame)
+int AIAlgorithm::recordEndgameHash(key_t posKey, const Endgame &endgame)
 {
     //hashMapMutex.lock();
-    hash_t hashValue = endgameHashMap.insert(posKey, endgame);
+    key_t hashValue = endgameHashMap.insert(posKey, endgame);
     unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
     //hashMapMutex.unlock();
 
-    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame Hash map, HashValue: 0x%08I32x, Address: 0x%08I32x\n", posKey, endgame.type, hashValue, addr);
+    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame Hash map, TTEntry: 0x%08I32x, Address: 0x%08I32x\n", posKey, endgame.type, hashValue, addr);
 
     return 0;
 }

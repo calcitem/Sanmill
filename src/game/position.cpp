@@ -43,7 +43,7 @@ StateInfo::StateInfo()
 Position::Position()
 {
     // 创建哈希数据
-    constructHash();
+    constructKey();
 
     // 默认规则
     setPosition(&RULES[DEFAULT_RULE_NUMBER]);
@@ -211,7 +211,7 @@ bool Position::setPosition(const struct Rule *newRule)
 
     // 当前棋局（3×8）
     memset(board.locations, 0, sizeof(board.locations));
-    hash = 0;
+    key = 0;
     memset(board.byTypeBB, 0, sizeof(board.byTypeBB));
 
     if (countPiecesOnBoard() == -1) {
@@ -287,7 +287,7 @@ bool Position::reset()
 
     // 当前棋局（3×8）
     memset(board.locations, 0, sizeof(board.locations));
-    hash = 0;
+    key = 0;
     memset(board.byTypeBB, 0, sizeof(board.byTypeBB));
 
     // 盘面子数归零
@@ -400,7 +400,7 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
 
         board.locations[square] = piece;
 
-        updateHash(square);
+        updateKey(square);
 
         board.byTypeBB[ALL_PIECES] |= square;
         board.byTypeBB[playerId] |= square;
@@ -509,8 +509,8 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
 
     board.locations[square] = board.locations[currentSquare];
 
-    updateHash(square);
-    revertHash(currentSquare);
+    updateKey(square);
+    revertKey(currentSquare);
 
     board.locations[currentSquare] = '\x00';
 
@@ -600,14 +600,14 @@ bool Position::removePiece(square_t square, bool updateCmdlist)
 
     // 去子（设置禁点）
     if (rule.hasForbiddenLocations && phase == PHASE_PLACING) {
-        revertHash(square);
+        revertKey(square);
         board.locations[square] = '\x0f';
-        updateHash(square);
+        updateKey(square);
 
         board.byTypeBB[oppId] ^= square;
         board.byTypeBB[FORBIDDEN_STONE] |= square;
     } else { // 去子
-        revertHash(square);
+        revertKey(square);
         board.locations[square] = '\x00';
 
         board.byTypeBB[ALL_PIECES] ^= square;
@@ -628,7 +628,7 @@ bool Position::removePiece(square_t square, bool updateCmdlist)
 
     currentSquare = SQ_0;
     nPiecesNeedRemove--;
-    //updateHash(square); // TODO: 多余? 若去掉.则评估点的数量和哈希命中数量上升, 未剪枝?
+    //updateKey(square); // TODO: 多余? 若去掉.则评估点的数量和哈希命中数量上升, 未剪枝?
 
     // 去子完成
 
@@ -1064,7 +1064,7 @@ void Position::cleanForbiddenLocations()
             square = static_cast<square_t>(r * Board::N_SEATS + s);
 
             if (board.locations[square] == '\x0f') {
-                revertHash(square);
+                revertKey(square);
                 board.locations[square] = '\x00';
                 board.byTypeBB[ALL_PIECES] ^= square;
                 board.byTypeBB[FORBIDDEN_STONE] ^= square;  // TODO: 可能是多余
@@ -1169,18 +1169,18 @@ time_t Position::getElapsedTime(int playerId)
     return elapsedSeconds[playerId];
 }
 
-void Position::constructHash()
+void Position::constructKey()
 {
-    hash = 0;
+    key = 0;
 }
 
-hash_t Position::getPosKey()
+key_t Position::getPosKey()
 {
-    // TODO: 每次获取哈希值时更新 hash 值剩余8位，放在此处调用不优雅
-    return updateHashMisc();
+    // TODO: 每次获取哈希值时更新 key 值剩余8位，放在此处调用不优雅
+    return updateKeyMisc();
 }
 
-hash_t Position::updateHash(square_t square)
+key_t Position::updateKey(square_t square)
 {
     // PieceType is board.locations[square] 
 
@@ -1191,23 +1191,23 @@ hash_t Position::updateHash(square_t square)
     //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
 
     // 清除或者放置棋子
-    hash ^= zobrist[square][pieceType];
+    key ^= zobrist[square][pieceType];
 
-    return hash;
+    return key;
 }
 
-hash_t Position::revertHash(square_t square)
+key_t Position::revertKey(square_t square)
 {
-    return updateHash(square);
+    return updateKey(square);
 }
 
-hash_t Position::updateHashMisc()
+key_t Position::updateKeyMisc()
 {
-    const int HASH_MISC_BIT = 8;
+    const int KEY_MISC_BIT = 8;
 
     // 清除标记位
-    hash = hash << HASH_MISC_BIT >> HASH_MISC_BIT;
-    hash_t hi = 0;
+    key = key << KEY_MISC_BIT >> KEY_MISC_BIT;
+    key_t hi = 0;
 
     // 置位
 
@@ -1219,37 +1219,37 @@ hash_t Position::updateHashMisc()
         hi |= 1U << 1;
     }
 
-    hi |= static_cast<hash_t>(nPiecesNeedRemove) << 2;
-    hi |= static_cast<hash_t>(nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 phase 也可以？
+    hi |= static_cast<key_t>(nPiecesNeedRemove) << 2;
+    hi |= static_cast<key_t>(nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 phase 也可以？
 
-    hash = hash | (hi << (CHAR_BIT * sizeof(hash_t) - HASH_MISC_BIT));
+    key = key | (hi << (CHAR_BIT * sizeof(key_t) - KEY_MISC_BIT));
 
-    return hash;
+    return key;
 }
 
-hash_t Position::getNextMainHash(move_t m)
+key_t Position::getNextPrimaryKey(move_t m)
 {
-    hash_t nextMainHash = hash /* << 8 >> 8 */;
+    key_t npKey = key /* << 8 >> 8 */;
     square_t sq = static_cast<square_t>(to_sq(m));;
     movetype_t mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
         int pieceType = Player::getOpponentById(Player::toId(sideToMove));
-        nextMainHash ^= zobrist[sq][pieceType];
+        npKey ^= zobrist[sq][pieceType];
 
         if (rule.hasForbiddenLocations && phase == PHASE_PLACING) {
-            nextMainHash ^= zobrist[sq][FORBIDDEN_STONE];
+            npKey ^= zobrist[sq][FORBIDDEN_STONE];
         }
 
-        return nextMainHash;
+        return npKey;
     }
     
     int pieceType = Player::toId(sideToMove);
-    nextMainHash ^= zobrist[sq][pieceType];
+    npKey ^= zobrist[sq][pieceType];
 
     if (mt == MOVETYPE_MOVE) {
-        nextMainHash ^= zobrist[from_sq(m)][pieceType];
+        npKey ^= zobrist[from_sq(m)][pieceType];
     }
 
-    return nextMainHash;
+    return npKey;
 }

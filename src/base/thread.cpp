@@ -127,7 +127,7 @@ void ThreadPool::set(size_t requested) {
           push_back(new Thread(size()));
       clear();
 
-      // Reallocate the hash with the new threadpool size
+      // Reallocate the key with the new threadpool size
       //TT.resize(Options["Hash"]);
   }
 }

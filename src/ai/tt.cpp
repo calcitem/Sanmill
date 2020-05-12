@@ -21,13 +21,13 @@
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 static constexpr int TRANSPOSITION_TABLE_SIZE = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
-HashMap<hash_t, TT::HashValue> transpositionTable(TRANSPOSITION_TABLE_SIZE);
+HashMap<key_t, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-value_t TT::probeHash(const hash_t &hash,
+value_t TranspositionTable::probe(const key_t &key,
                       const depth_t &depth,
                       const value_t &alpha,
                       const value_t &beta,
@@ -37,17 +37,17 @@ value_t TT::probeHash(const hash_t &hash,
 #endif // TT_MOVE_ENABLE
                       )
 {
-    HashValue hashValue{};
+    TTEntry tte {};
 
-    if (!transpositionTable.find(hash, hashValue)) {
+    if (!TT.find(key, tte)) {
         return VALUE_UNKNOWN;
     }
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
-    if (hashValue.type != BOUND_EXACT) {
+    if (tte.type != BOUND_EXACT) {
 #endif
-        if (hashValue.age != transpositionTableAge) {
+        if (tte.age != transpositionTableAge) {
             return VALUE_UNKNOWN;
         }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
@@ -55,23 +55,23 @@ value_t TT::probeHash(const hash_t &hash,
 #endif
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-    if (depth > hashValue.depth) {
+    if (depth > tte.depth) {
         goto out;
     }
 
-    type = hashValue.type;
+    type = tte.type;
 
-    switch (hashValue.type) {
+    switch (tte.type) {
     case BOUND_EXACT:
-        return hashValue.value;
+        return tte.value;
         break;
-    case BOUND_UPPER:     // 最多是 hashValue.value
-        if (hashValue.value <= alpha) {
+    case BOUND_UPPER:     // 最多是 tte.value
+        if (tte.value <= alpha) {
             return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
         }
         break;
-    case BOUND_LOWER:     // 至少是 hashValue.value
-        if (hashValue.value >= beta) {
+    case BOUND_LOWER:     // 至少是 tte.value
+        if (tte.value >= beta) {
             return beta;
         }
         break;
@@ -82,22 +82,22 @@ value_t TT::probeHash(const hash_t &hash,
 out:
 
 #ifdef TT_MOVE_ENABLE
-    ttMove = hashValue.ttMove;
+    ttMove = tte.ttMove;
 #endif // TT_MOVE_ENABLE
 
     return VALUE_UNKNOWN;
 }
 
-bool TT::findHash(const hash_t &hash, TT::HashValue &hashValue)
+bool TranspositionTable::search(const key_t &key, TTEntry &tte)
 {
-    return transpositionTable.find(hash, hashValue);
+    return TT.find(key, tte);
 
     // TODO: 变换局面
 #if 0
     if (iter != hashmap.end())
         return iter;
 
-    // 变换局面，查找 hash (废弃)
+    // 变换局面，查找 key (废弃)
     tempStateShift = st;
     for (int i = 0; i < 2; i++) {
         if (i)
@@ -117,15 +117,15 @@ bool TT::findHash(const hash_t &hash, TT::HashValue &hashValue)
 #endif
 }
 
-void TT::prefetchHash(const hash_t &hash)
+void TranspositionTable::prefetch(const key_t &key)
 {
-    transpositionTable.prefetchValue(hash);
+    TT.prefetchValue(key);
 }
 
-int TT::recordHash(const value_t &value,
+int TranspositionTable::save(const value_t &value,
                    const depth_t &depth,
                    const bound_t &type,
-                   const hash_t &hash
+                   const key_t &key
 #ifdef TT_MOVE_ENABLE
                    , const move_t &ttMove
 #endif // TT_MOVE_ENABLE
@@ -135,14 +135,14 @@ int TT::recordHash(const value_t &value,
     // 注意: 每走一步以前都必须把散列表中所有的标志项置为 BOUND_NONE
 
     //hashMapMutex.lock();
-    HashValue hashValue {};
+    TTEntry tte {};
 
-    if (findHash(hash, hashValue)) {
+    if (search(key, tte)) {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-        if (hashValue.age == transpositionTableAge) {
+        if (tte.age == transpositionTableAge) {
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-            if (hashValue.type != BOUND_NONE &&
-                hashValue.depth > depth) {
+            if (tte.type != BOUND_NONE &&
+                tte.depth > depth) {
                 return -1;
             }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
@@ -150,38 +150,38 @@ int TT::recordHash(const value_t &value,
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     }
 
-    hashValue.value = value;
-    hashValue.depth = depth;
-    hashValue.type = type;
+    tte.value = value;
+    tte.depth = depth;
+    tte.type = type;
 
 #ifdef TT_MOVE_ENABLE
-    hashValue.ttMove = ttMove;
+    tte.ttMove = ttMove;
 #endif // TT_MOVE_ENABLE
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    hashValue.age = transpositionTableAge;
+    tte.age = transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-    transpositionTable.insert(hash, hashValue);
+    TT.insert(key, tte);
 
     //hashMapMutex.unlock();
 
     return 0;
 }
 
-void TT::clear()
+void TranspositionTable::clear()
 {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
     if (transpositionTableAge == std::numeric_limits<uint8_t>::max())
     {
         loggerDebug("Clean TT\n");
-        transpositionTable.clear();
+        TT.clear();
         transpositionTableAge = 0;
     } else {
         transpositionTableAge++;
     }
 #else
-    transpositionTable.clear();
+    TT.clear();
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 }
 

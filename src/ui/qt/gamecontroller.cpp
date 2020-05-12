@@ -1038,26 +1038,26 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 #endif
 
 #ifdef TRANSPOSITION_TABLE_DEBUG                
-            size_t hashProbeCount_1 = aiThread[BLACK]->ai.hashHitCount + aiThread[BLACK]->ai.hashMissCount;
-            size_t hashProbeCount_2 = aiThread[WHITE]->ai.hashHitCount + aiThread[WHITE]->ai.hashMissCount;
+            size_t hashProbeCount_1 = aiThread[BLACK]->ai.ttHitCount + aiThread[BLACK]->ai.ttMissCount;
+            size_t hashProbeCount_2 = aiThread[WHITE]->ai.ttHitCount + aiThread[WHITE]->ai.ttMissCount;
                 
-            loggerDebug("[hash 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+            loggerDebug("[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1,
-                        aiThread[BLACK]->ai.hashHitCount,
-                        aiThread[BLACK]->ai.hashMissCount,
-                        aiThread[BLACK]->ai.hashHitCount * 100 / hashProbeCount_1);
+                        aiThread[BLACK]->ai.ttHitCount,
+                        aiThread[BLACK]->ai.ttMissCount,
+                        aiThread[BLACK]->ai.ttHitCount * 100 / hashProbeCount_1);
 
-            loggerDebug("[hash 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+            loggerDebug("[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_2,
-                        aiThread[WHITE]->ai.hashHitCount,
-                        aiThread[WHITE]->ai.hashMissCount,
-                        aiThread[WHITE]->ai.hashHitCount * 100 / hashProbeCount_2);
+                        aiThread[WHITE]->ai.ttHitCount,
+                        aiThread[WHITE]->ai.ttMissCount,
+                        aiThread[WHITE]->ai.ttHitCount * 100 / hashProbeCount_2);
 
-            loggerDebug("[hash +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+            loggerDebug("[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1 + hashProbeCount_2,
-                        aiThread[BLACK]->ai.hashHitCount + aiThread[WHITE]->ai.hashHitCount,
-                        aiThread[BLACK]->ai.hashMissCount + aiThread[WHITE]->ai.hashMissCount,
-                        (aiThread[BLACK]->ai.hashHitCount + aiThread[WHITE]->ai.hashHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
+                        aiThread[BLACK]->ai.ttHitCount + aiThread[WHITE]->ai.ttHitCount,
+                        aiThread[BLACK]->ai.ttMissCount + aiThread[WHITE]->ai.ttMissCount,
+                        (aiThread[BLACK]->ai.ttHitCount + aiThread[WHITE]->ai.ttHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
 #endif // TRANSPOSITION_TABLE_DEBUG
 
             if (gameOptions.getAutoRestart()) {

@@ -79,7 +79,7 @@ void AiThread::setAi(const StateInfo &g)
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TT::clear();
+    TranspositionTable::clear();
 #endif
 #endif
 
