@@ -72,10 +72,10 @@ constexpr bitboard_t Seat7 = Seat1 << 6;
 constexpr bitboard_t Seat8 = Seat1 << 7;
 
 extern uint8_t PopCnt16[1 << 16];
-extern uint8_t SquareDistance[SQUARE_COUNT][SQUARE_COUNT];
+extern uint8_t SquareDistance[SQ_32][SQ_32];
 
-extern bitboard_t SquareBB[SQUARE_COUNT];
-extern bitboard_t LineBB[SQUARE_COUNT][SQUARE_COUNT];
+extern bitboard_t SquareBB[SQ_32];
+extern bitboard_t LineBB[SQUARE_COUNT][SQ_32];
 
 inline bitboard_t square_bb(square_t s)
 {

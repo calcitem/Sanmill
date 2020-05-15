@@ -23,10 +23,10 @@
 #include "misc.h"
 
 uint8_t PopCnt16[1 << 16];
-uint8_t SquareDistance[SQUARE_COUNT][SQUARE_COUNT];
+uint8_t SquareDistance[SQ_32][SQ_32];
 
-bitboard_t SquareBB[SQUARE_COUNT];
-bitboard_t LineBB[SQUARE_COUNT][SQUARE_COUNT];
+bitboard_t SquareBB[SQ_32];
+bitboard_t LineBB[SQUARE_COUNT][SQ_32];
 
 /// Bitboards::pretty() returns an ASCII representation of a bitboard suitable
 /// to be printed to standard output. Useful for debugging.
