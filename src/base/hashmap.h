@@ -26,7 +26,7 @@ namespace CTSL //Concurrent Thread Safe Library
     //during the creation of the bucket. All the key buckets are created during the construction of the map.
     //Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the key map
 #ifdef HASH_KEY_DISABLE
-    #define hashFn key_t
+    #define hashFn hash_t
     template <typename K, typename V>
 #else
     template <typename K, typename V, typename F = std::key<K> >
@@ -34,7 +34,7 @@ namespace CTSL //Concurrent Thread Safe Library
     class HashMap
     {
         public:
-            HashMap(key_t hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
+            HashMap(hash_t hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
             {
 #ifdef DISABLE_HASHBUCKET
                 hashTable = new HashNode<K, V>[hashSize]; //create the key table as an array of key nodes
@@ -230,7 +230,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #else
             F hashFn;
 #endif
-            const key_t hashSize;
+            const hash_t hashSize;
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
             mutable std::shared_timed_mutex mutex_;

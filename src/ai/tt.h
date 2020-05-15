@@ -30,7 +30,7 @@ using namespace CTSL;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
-extern const key_t zobrist[SQ_EXPANDED_COUNT][PIECETYPE_COUNT];
+extern const hash_t zobrist[SQ_EXPANDED_COUNT][PIECETYPE_COUNT];
 
 enum bound_t : uint8_t
 {
@@ -57,8 +57,8 @@ class TranspositionTable
 {
 public:
     // 查找哈希表
-    static bool search(const key_t &key, TTEntry &tte);
-    static value_t probe(const key_t &key,
+    static bool search(const hash_t &key, TTEntry &tte);
+    static value_t probe(const hash_t &key,
                             const depth_t &depth,
                             const value_t &alpha,
                             const value_t &beta,
@@ -72,7 +72,7 @@ public:
     static int save(const value_t &value,
                           const depth_t &depth,
                           const bound_t &type,
-                          const key_t &key
+                          const hash_t &key
 #ifdef TT_MOVE_ENABLE
                           , const move_t &ttMove
 #endif // TT_MOVE_ENABLE
@@ -82,13 +82,13 @@ public:
     static void clear();
 
     // 预读取
-    static void prefetch(const key_t &key);
+    static void prefetch(const hash_t &key);
 
 private:
     friend struct TTEntry;
 };
 
-extern HashMap<key_t, TTEntry> TT;
+extern HashMap<hash_t, TTEntry> TT;
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
 extern uint8_t transpositionTableAge;

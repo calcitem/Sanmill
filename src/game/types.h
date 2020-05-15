@@ -30,9 +30,9 @@ using score_t = uint32_t;
 typedef uint32_t bitboard_t;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
-using key_t = uint32_t;
+using hash_t = uint32_t;
 #else
-using key_t = uint64_t;
+using hash_t = uint64_t;
 #endif /* TRANSPOSITION_TABLE_CUTDOWN */
 
 enum move_t : int32_t

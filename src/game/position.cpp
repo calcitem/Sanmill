@@ -352,7 +352,7 @@ bool Position::start()
     // 如果游戏处于未开始状态
     case PHASE_READY:
         // 启动计时器
-        startTime = time(NULL);
+        startTime = time(nullptr);
         // 进入开局状态
         phase = PHASE_PLACING;
         return true;
@@ -363,6 +363,20 @@ bool Position::start()
 
 bool Position::placePiece(square_t square, bool updateCmdlist)
 {
+    ring_t r;
+    seat_t s;
+    int i;
+    // 时间的临时变量
+    int seconds = -1;
+
+    // 对于开局落子
+    int piece = '\x00';
+    int n = 0;
+
+    int playerId = Player::toId(sideToMove);
+
+    bitboard_t fromTo;
+
     // 如果局面为“结局”，返回false
     if (phase == PHASE_GAMEOVER)
         return false;
@@ -380,18 +394,7 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
         return false;
 
     // 格式转换
-    ring_t r;
-    seat_t s;
     Board::squareToPolar(square, r, s);
-
-    // 时间的临时变量
-    int seconds = -1;
-
-    // 对于开局落子
-    int piece = '\x00';
-    int n = 0;
-
-    int playerId = Player::toId(sideToMove);
 
     if (phase == PHASE_PLACING) {
         piece = (0x01 | sideToMove) + rule.nTotalPiecesEachSide - nPiecesInHand[playerId];
@@ -479,7 +482,6 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
     // 如果落子不合法
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
-        int i;
         for (i = 0; i < 4; i++) {
             if (square == MoveList::moveTable[currentSquare][i])
                 break;
@@ -503,7 +505,7 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
         moveStep++;
     }
 
-    bitboard_t fromTo = square_bb(currentSquare) | square_bb(square);
+    fromTo = square_bb(currentSquare) | square_bb(square);
     board.byTypeBB[ALL_PIECES] ^= fromTo;
     board.byTypeBB[playerId] ^= fromTo;
 
@@ -852,6 +854,7 @@ bool Position::doMove(move_t m)
         if (selectPiece(from_sq(m))) {
             return placePiece(to_sq(m));
         }
+        break;
     case MOVETYPE_PLACE:
         return placePiece(to_sq(m));
     default:
@@ -1174,13 +1177,13 @@ void Position::constructKey()
     key = 0;
 }
 
-key_t Position::getPosKey()
+hash_t Position::getPosKey()
 {
     // TODO: 每次获取哈希值时更新 key 值剩余8位，放在此处调用不优雅
     return updateKeyMisc();
 }
 
-key_t Position::updateKey(square_t square)
+hash_t Position::updateKey(square_t square)
 {
     // PieceType is board.locations[square] 
 
@@ -1196,18 +1199,18 @@ key_t Position::updateKey(square_t square)
     return key;
 }
 
-key_t Position::revertKey(square_t square)
+hash_t Position::revertKey(square_t square)
 {
     return updateKey(square);
 }
 
-key_t Position::updateKeyMisc()
+hash_t Position::updateKeyMisc()
 {
     const int KEY_MISC_BIT = 8;
 
     // 清除标记位
     key = key << KEY_MISC_BIT >> KEY_MISC_BIT;
-    key_t hi = 0;
+    hash_t hi = 0;
 
     // 置位
 
@@ -1219,17 +1222,17 @@ key_t Position::updateKeyMisc()
         hi |= 1U << 1;
     }
 
-    hi |= static_cast<key_t>(nPiecesNeedRemove) << 2;
-    hi |= static_cast<key_t>(nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 phase 也可以？
+    hi |= static_cast<hash_t>(nPiecesNeedRemove) << 2;
+    hi |= static_cast<hash_t>(nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 phase 也可以？
 
-    key = key | (hi << (CHAR_BIT * sizeof(key_t) - KEY_MISC_BIT));
+    key = key | (hi << (CHAR_BIT * sizeof(hash_t) - KEY_MISC_BIT));
 
     return key;
 }
 
-key_t Position::getNextPrimaryKey(move_t m)
+hash_t Position::getNextPrimaryKey(move_t m)
 {
-    key_t npKey = key /* << 8 >> 8 */;
+    hash_t npKey = key /* << 8 >> 8 */;
     square_t sq = static_cast<square_t>(to_sq(m));;
     movetype_t mt = type_of(m);
 

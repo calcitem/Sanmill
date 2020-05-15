@@ -56,7 +56,7 @@ public:
     Board board;
 
     // 局面的哈希值
-    key_t key {0};
+    hash_t key {0};
 
     // 局面阶段标识
     enum phase_t phase {PHASE_NONE};
@@ -238,11 +238,11 @@ public:
     bool removePiece(square_t square, bool updateCmdlist = false);
 
     // key 相关
-    key_t getPosKey();
-    key_t revertKey(square_t square);
-    key_t updateKey(square_t square);
-    key_t updateKeyMisc();
-    key_t getNextPrimaryKey(move_t m);
+    hash_t getPosKey();
+    hash_t revertKey(square_t square);
+    hash_t updateKey(square_t square);
+    hash_t updateKeyMisc();
+    hash_t getNextPrimaryKey(move_t m);
 
     // 赢盘数
     int score[COLOR_COUNT] = { 0 };
