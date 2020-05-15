@@ -34,7 +34,7 @@ namespace CTSL //Concurrent Thread Safe Library
     class HashMap
     {
         public:
-            HashMap(hash_t hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
+            HashMap(hashFn hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
             {
 #ifdef DISABLE_HASHBUCKET
                 hashTable = new HashNode<K, V>[hashSize]; //create the key table as an array of key nodes
@@ -230,7 +230,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #else
             F hashFn;
 #endif
-            const hash_t hashSize;
+            const hashFn hashSize;
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
             mutable std::shared_timed_mutex mutex_;
