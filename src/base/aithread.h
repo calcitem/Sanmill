@@ -55,7 +55,7 @@ protected:
 public:
     // AI设置
     void setAi(const StateInfo &state);
-    void setAi(const StateInfo &state, depth_t depth, int time);
+    void setAi(const StateInfo &state, Depth depth, int time);
 
     Server *getServer()
     {
@@ -68,7 +68,7 @@ public:
     }
 
     // 深度和限时
-    depth_t getDepth()
+    Depth getDepth()
     {
         return depth;
     }
@@ -119,7 +119,7 @@ public: // TODO: Change to private
 private:
 
     // AI的层数
-    depth_t depth;
+    Depth depth;
 
     // AI的限时
     int timeLimit;

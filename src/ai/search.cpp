@@ -38,7 +38,7 @@ player_t gSideToMove;
 using namespace CTSL;
 
 // 用于检测重复局面 (Position)
-vector<hash_t> moveHistory;
+vector<Key> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
 {
@@ -53,18 +53,18 @@ AIAlgorithm::~AIAlgorithm()
     //delete state;
 }
 
-depth_t AIAlgorithm::changeDepth(depth_t origDepth)
+Depth AIAlgorithm::changeDepth(Depth origDepth)
 {
-    depth_t d = origDepth;
+    Depth d = origDepth;
 
 #ifdef _DEBUG
     // 当 VC 下编译为 Debug 时
-    depth_t reduce = 0;
+    Depth reduce = 0;
 #else
-    depth_t reduce = 0;
+    Depth reduce = 0;
 #endif
 
-    const depth_t placingDepthTable_12[] = {
+    const Depth placingDepthTable_12[] = {
          +1,  2,  +2,  4,     /* 0 ~ 3 */
          +4, 12, +12, 18,     /* 4 ~ 7 */
         +12, 16, +16, 16,     /* 8 ~ 11 */
@@ -73,7 +73,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         +15, 14, +14, 14,     /* 20 ~ 23 */
     };
 
-    const depth_t placingDepthTable_9[] = {
+    const Depth placingDepthTable_9[] = {
          +1, 7,  +7,  10,     /* 0 ~ 3 */
         +10, 12, +12, 12,     /* 4 ~ 7 */
         +12, 13, +13, 13,     /* 8 ~ 11 */
@@ -81,7 +81,7 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
         +13, 13,              /* 16 ~ 18 */
     };
 
-    const depth_t movingDepthTable[] = {
+    const Depth movingDepthTable[] = {
          1,  1,  1,  1,     /* 0 ~ 3 */
          1,  1, 11, 11,     /* 4 ~ 7 */
         11, 11, 11, 11,     /* 8 ~ 11 */
@@ -91,13 +91,13 @@ depth_t AIAlgorithm::changeDepth(depth_t origDepth)
     };
 
 #ifdef ENDGAME_LEARNING
-    const depth_t movingDiffDepthTable[] = {
+    const Depth movingDiffDepthTable[] = {
         0, 0, 0,               /* 0 ~ 2 */
         0, 0, 0, 0, 0,       /* 3 ~ 7 */
         0, 0, 0, 0, 0          /* 8 ~ 12 */
     };
 #else
-    const depth_t movingDiffDepthTable[] = {
+    const Depth movingDiffDepthTable[] = {
         0, 0, 0,               /* 0 ~ 2 */
         11, 11, 10, 9, 8,       /* 3 ~ 7 */
         7, 6, 5, 4, 3          /* 8 ~ 12 */
@@ -176,11 +176,11 @@ void AIAlgorithm::setState(const StateInfo &g)
 }
 
 #ifdef ALPHABETA_AI
-int AIAlgorithm::search(depth_t depth)
+int AIAlgorithm::search(Depth depth)
 {
-    value_t value = VALUE_ZERO;
+    Value value = VALUE_ZERO;
 
-    depth_t d = changeDepth(depth);
+    Depth d = changeDepth(depth);
 
     time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
@@ -198,7 +198,7 @@ int AIAlgorithm::search(depth_t depth)
     static int nRepetition = 0;
 
     if (state->position->getPhase() == PHASE_MOVING) {
-        hash_t key = state->position->getPosKey();
+        Key key = state->position->getPosKey();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
             nRepetition++;
@@ -219,22 +219,22 @@ int AIAlgorithm::search(depth_t depth)
     // 随机打乱着法顺序
     MoveList::shuffle();   
 
-    value_t alpha = -VALUE_INFINITE;
-    value_t beta = VALUE_INFINITE;
+    Value alpha = -VALUE_INFINITE;
+    Value beta = VALUE_INFINITE;
 
     if (gameOptions.getIDSEnabled()) {
         // 深化迭代
 
         loggerDebug("IDS: ");
 
-        depth_t depthBegin = 2;
-        value_t lastValue = VALUE_ZERO;
+        Depth depthBegin = 2;
+        Value lastValue = VALUE_ZERO;
 
         loggerDebug("\n==============================\n");
         loggerDebug("==============================\n");
         loggerDebug("==============================\n");
 
-        for (depth_t i = depthBegin; i < d; i += 1) {
+        for (Depth i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
             TranspositionTable::clear();   // 每次走子前清空哈希表
@@ -271,7 +271,7 @@ int AIAlgorithm::search(depth_t depth)
 
     if (gameOptions.getIDSEnabled()) {
 #ifdef IDS_WINDOW
-        value_t window = state->position->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
+        Value window = state->position->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
         alpha = value - window;
         beta = value + window;
 #else
@@ -301,12 +301,12 @@ int AIAlgorithm::search(depth_t depth)
     return 0;
 }
 
-value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
+Value AIAlgorithm::MTDF(Value firstguess, Depth depth)
 {
-    value_t g = firstguess;
-    value_t lowerbound = -VALUE_INFINITE;
-    value_t upperbound = VALUE_INFINITE;
-    value_t beta;
+    Value g = firstguess;
+    Value lowerbound = -VALUE_INFINITE;
+    Value upperbound = VALUE_INFINITE;
+    Value beta;
 
     while (lowerbound < upperbound) {
         if (g == lowerbound) {
@@ -327,23 +327,23 @@ value_t AIAlgorithm::MTDF(value_t firstguess, depth_t depth)
     return g;
 }
 
-value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
+Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 {
     // 评价值
-    value_t value;
-    value_t bestValue = -VALUE_INFINITE;
+    Value value;
+    Value bestValue = -VALUE_INFINITE;
 
     // 临时增加的深度，克服水平线效应用
-    depth_t epsilon;
+    Depth epsilon;
 
 #ifdef TT_MOVE_ENABLE
     // 置换表中读取到的最优着法
-    move_t ttMove = MOVE_NONE;
+    Move ttMove = MOVE_NONE;
 #endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     // 获取哈希值
-    hash_t posKey = st->position->getPosKey();
+    Key posKey = st->position->getPosKey();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -354,11 +354,11 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
         findEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case ENDGAME_PLAYER_BLACK_WIN:
-            bestValue = VALUE_WIN;
+            bestValue = VALUE_MATE;
             bestValue += depth;
             break;
         case ENDGAME_PLAYER_WHITE_WIN:
-            bestValue = -VALUE_WIN;
+            bestValue = -VALUE_MATE;
             bestValue -= depth;
             break;
         default:
@@ -370,9 +370,9 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
 #endif /* ENDGAME_LEARNING */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    bound_t type = BOUND_NONE;
+    Bound type = BOUND_NONE;
 
-    value_t probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
+    Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
                                      , ttMove
 #endif // TT_MOVE_ENABLE                                     
@@ -503,7 +503,7 @@ value_t AIAlgorithm::search(depth_t depth, value_t alpha, value_t beta)
         // 棋局入栈保存，以便后续撤销着法
         stashPosition();
         player_t before = st->position->sideToMove;
-        move_t move = extMoves[i].move;
+        Move move = extMoves[i].move;
         doMove(move);
         player_t after = st->position->sideToMove;
 
@@ -590,7 +590,7 @@ void AIAlgorithm::stashPosition()
     positionStack.push(*(st->position));
 }
 
-void AIAlgorithm::doMove(move_t move)
+void AIAlgorithm::doMove(Move move)
 {
     // 执行着法
     st->position->doMove(move);
@@ -658,7 +658,7 @@ const char* AIAlgorithm::nextMove()
 #ifdef ENDGAME_LEARNING
     // 检查是否明显劣势
     if (gameOptions.getLearnEndgameEnabled()) {
-        if (bestValue <= -VALUE_STRONG) {
+        if (bestValue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
             endgame.type = state->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
@@ -671,7 +671,7 @@ const char* AIAlgorithm::nextMove()
     // 检查是否必败
     if (gameOptions.getGiveUpIfMostLose() == true) {
         // 自动认输
-        if (root->value <= -VALUE_WIN) {
+        if (root->value <= -VALUE_MATE) {
             sprintf(cmdline, "Player%d give up!", state->position->sideId);
             return cmdline;
         }
@@ -699,17 +699,17 @@ const char* AIAlgorithm::nextMove()
 }
 #endif // ALPHABETA_AI
 
-const char *AIAlgorithm::moveToCommand(move_t move)
+const char *AIAlgorithm::moveToCommand(Move move)
 {
-    ring_t rto;
-    seat_t sto;
+    File rto;
+    Rank sto;
     Board::squareToPolar(to_sq(move), rto, sto);
 
     if (move < 0) {
         sprintf(cmdline, "-(%1u,%1u)", rto, sto);
     } else if (move & 0x7f00) {
-        ring_t rfrom;
-        seat_t sfrom;
+        File rfrom;
+        Rank sfrom;
         Board::squareToPolar(from_sq(move), rfrom, sfrom);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", rfrom, sfrom, rto, sto);
     } else {

@@ -20,10 +20,10 @@
 #include "evaluate.h"
 
 #ifdef ALPHABETA_AI
-value_t Eval::evaluate(Position *pos)
+Value Eval::evaluate(Position *pos)
 {
     // 初始评估值为0，对先手有利则增大，对后手有利则减小
-    value_t value = VALUE_ZERO;
+    Value value = VALUE_ZERO;
 
     int nPiecesInHandDiff;
     int nPiecesOnBoardDiff;
@@ -94,7 +94,7 @@ value_t Eval::evaluate(Position *pos)
         if (pos->nPiecesOnBoard[BLACK] + pos->nPiecesOnBoard[WHITE] >=
             Board::N_SEATS * Board::N_RINGS) {
             if (rule.isStartingPlayerLoseWhenBoardFull) {
-                value -= VALUE_WIN;
+                value -= VALUE_MATE;
             } else {
                 value = VALUE_DRAW;
             }
@@ -105,15 +105,15 @@ value_t Eval::evaluate(Position *pos)
             pos->board.isAllSurrounded(pos->sideId, pos->nPiecesOnBoard, pos->sideToMove) &&
             rule.isLoseWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
-            value_t delta = pos->sideToMove == PLAYER_BLACK ? -VALUE_WIN : VALUE_WIN;
+            Value delta = pos->sideToMove == PLAYER_BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
 
         // 剩余棋子个数判断
         else if (pos->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
-            value -= VALUE_WIN;
+            value -= VALUE_MATE;
         } else if (pos->nPiecesOnBoard[WHITE] < rule.nPiecesAtLeast) {
-            value += VALUE_WIN;
+            value += VALUE_MATE;
         }
 
         break;

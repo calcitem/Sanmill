@@ -86,7 +86,7 @@ public:
 
 #ifdef ALPHABETA_AI
     // Alpha-Beta剪枝算法
-    int search(depth_t depth);
+    int search(Depth depth);
 
     // 返回最佳走法的命令行
     const char *nextMove();
@@ -96,7 +96,7 @@ public:
     void stashPosition();
 
     // 执行着法
-    void doMove(move_t move);
+    void doMove(Move move);
 
     // 撤销着法
     void undoMove();
@@ -122,43 +122,43 @@ public: /* TODO: Move to private or protected */
 #ifdef EVALUATE_ENABLE
 
         // 评价函数
-    value_t evaluate();
+    Value evaluate();
 
 #ifdef EVALUATE_MATERIAL
-    value_t evaluateMaterial();
+    Value evaluateMaterial();
 #endif
 #ifdef EVALUATE_SPACE
-    value_t evaluateSpace();
+    Value evaluateSpace();
 #endif
 #ifdef EVALUATE_MOBILITY
-    value_t evaluateMobility();
+    Value evaluateMobility();
 #endif
 #ifdef EVALUATE_TEMPO
-    value_t evaluateTempo();
+    Value evaluateTempo();
 #endif
 #ifdef EVALUATE_THREAT
-    value_t evaluateThreat();
+    Value evaluateThreat();
 #endif
 #ifdef EVALUATE_SHAPE
-    value_t evaluateShape();
+    Value evaluateShape();
 #endif
 #ifdef EVALUATE_MOTIF
-    value_t evaluateMotif();
+    Value evaluateMotif();
 #endif
 #endif /* EVALUATE_ENABLE */
 
     // Alpha-Beta剪枝算法
-    value_t search(depth_t depth, value_t alpha, value_t beta);
+    Value search(Depth depth, Value alpha, Value beta);
 
     // MTD(f)
-    value_t MTDF(value_t firstguess, depth_t depth);
+    Value MTDF(Value firstguess, Depth depth);
 
 public:
     // 返回着法的命令行
-    const char *moveToCommand(move_t move);
+    const char *moveToCommand(Move move);
 protected:
     // 篡改深度
-    depth_t changeDepth(depth_t origDepth);
+    Depth changeDepth(Depth origDepth);
        
 public:
     // 原始模型
@@ -166,10 +166,10 @@ public:
 
     MovePicker *movePicker { nullptr };
 
-    value_t bestvalue { VALUE_ZERO };
-    value_t lastvalue { VALUE_ZERO };
+    Value bestvalue { VALUE_ZERO };
+    Value lastvalue { VALUE_ZERO };
 
-    depth_t originDepth{ 0 };
+    Depth originDepth{ 0 };
 
 private:
 
@@ -184,7 +184,7 @@ private:
     // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
 
-    move_t bestMove { MOVE_NONE };
+    Move bestMove { MOVE_NONE };
 
 private:
     // 命令行
@@ -208,7 +208,7 @@ public:
 #include "tt.h"
 
 #ifdef THREEFOLD_REPETITION
-extern vector<hash_t> moveHistory;
+extern vector<Key> moveHistory;
 #endif
 
 #endif /* SEARCH_H */

@@ -26,54 +26,54 @@
 #include "search.h"
 
 namespace Eval {
-    value_t evaluate(Position *pos);
+    Value evaluate(Position *pos);
 
 #ifdef EVALUATE_ENABLE
 
 #ifdef EVALUATE_MATERIAL
-    value_t evaluateMaterial()
+    Value evaluateMaterial()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SPACE
-    value_t evaluateSpace()
+    Value evaluateSpace()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOBILITY
-    value_t evaluateMobility()
+    Value evaluateMobility()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_TEMPO
-    value_t evaluateTempo()
+    Value evaluateTempo()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_THREAT
-    value_t evaluateThreat()
+    Value evaluateThreat()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_SHAPE
-    value_t evaluateShape()
+    Value evaluateShape()
     {
         return 0;
     }
 #endif
 
 #ifdef EVALUATE_MOTIF
-    value_t AIAlgorithm::evaluateMotif()
+    Value AIAlgorithm::evaluateMotif()
     {
         return 0;
     }

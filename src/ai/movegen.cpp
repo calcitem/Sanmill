@@ -27,16 +27,16 @@
 #include "search.h"
 #include "position.h"
 
-int Position::generateNullMove(Stack<move_t, MAX_MOVES> &moves)
+int Position::generateNullMove(Stack<Move, MAX_MOVES> &moves)
 {
     moves.clear();
-    moves.push_back((move_t)SQ_0);
+    moves.push_back((Move)SQ_0);
     return moves.size();
 }
 
 void MoveList::create()
 {
-    // Note: 未严格按 direction_t 中枚举的顺序从左到右排列
+    // Note: 未严格按 MoveDirection 中枚举的顺序从左到右排列
 #if 1
     const int moveTable_obliqueLine[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = {
         /*  0 */ {0, 0, 0, 0},
@@ -252,17 +252,17 @@ void MoveList::create()
 
 void MoveList::shuffle()
 {
-    array<move_t, 4> movePriorityTable0 = { (move_t)17, (move_t)19, (move_t)21, (move_t)23 }; // 中圈四个顶点 (星位)
-    array<move_t, 8> movePriorityTable1 = { (move_t)25, (move_t)27, (move_t)29, (move_t)31, (move_t)9, (move_t)11, (move_t)13, (move_t)15 }; // 外圈和内圈四个顶点
-    array<move_t, 4> movePriorityTable2 = { (move_t)16, (move_t)18, (move_t)20, (move_t)22 }; // 中圈十字架
-    array<move_t, 8> movePriorityTable3 = { (move_t)24, (move_t)26, (move_t)28, (move_t)30, (move_t)8, (move_t)10, (move_t)12, (move_t)14 }; // 外内圈十字架
+    array<Move, 4> movePriorityTable0 = { (Move)17, (Move)19, (Move)21, (Move)23 }; // 中圈四个顶点 (星位)
+    array<Move, 8> movePriorityTable1 = { (Move)25, (Move)27, (Move)29, (Move)31, (Move)9, (Move)11, (Move)13, (Move)15 }; // 外圈和内圈四个顶点
+    array<Move, 4> movePriorityTable2 = { (Move)16, (Move)18, (Move)20, (Move)22 }; // 中圈十字架
+    array<Move, 8> movePriorityTable3 = { (Move)24, (Move)26, (Move)28, (Move)30, (Move)8, (Move)10, (Move)12, (Move)14 }; // 外内圈十字架
 
     if (rule.nTotalPiecesEachSide == 9)
     {
-        movePriorityTable0 = { (move_t)16, (move_t)18, (move_t)20, (move_t)22 }; // 中圈十字架 (星位)
-        movePriorityTable1 = { (move_t)24, (move_t)26, (move_t)28, (move_t)30, (move_t)8, (move_t)10, (move_t)12, (move_t)14 }; // 外内圈十字架
-        movePriorityTable2 = { (move_t)17, (move_t)19, (move_t)21, (move_t)23 }; // 中圈四个顶点
-        movePriorityTable3 = { (move_t)25, (move_t)27, (move_t)29, (move_t)31, (move_t)9, (move_t)11, (move_t)13, (move_t)15 }; // 外圈和内圈四个顶点
+        movePriorityTable0 = { (Move)16, (Move)18, (Move)20, (Move)22 }; // 中圈十字架 (星位)
+        movePriorityTable1 = { (Move)24, (Move)26, (Move)28, (Move)30, (Move)8, (Move)10, (Move)12, (Move)14 }; // 外内圈十字架
+        movePriorityTable2 = { (Move)17, (Move)19, (Move)21, (Move)23 }; // 中圈四个顶点
+        movePriorityTable3 = { (Move)25, (Move)27, (Move)29, (Move)31, (Move)9, (Move)11, (Move)13, (Move)15 }; // 外圈和内圈四个顶点
     }
 
 
@@ -299,7 +299,7 @@ void MoveList::shuffle()
 //template<>
 ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
 {
-    square_t square;
+    Square square;
     player_t opponent;
 
     //moves.clear();
@@ -312,8 +312,8 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
     case ACTION_PLACE:
         // 对于摆子阶段
         if (position->phase & (PHASE_PLACING | PHASE_READY)) {
-            for (move_t i : MoveList::movePriorityTable) {
-                square = static_cast<square_t>(i);
+            for (Move i : MoveList::movePriorityTable) {
+                square = static_cast<Square>(i);
 
                 // 如果已经有子占据, 继续检索
                 if (position->board.locations[square]) {
@@ -321,18 +321,18 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
                 }
 
 #ifdef MCTS_AI
-                moves.push_back((move_t)square);
+                moves.push_back((Move)square);
 #else // MCTS_AI
                 if (position->phase != PHASE_READY) {
-                    *cur++ = ((move_t)square);
+                    *cur++ = ((Move)square);
                 } else {
                     // 若为先手，则抢占星位
 #ifdef FIRST_MOVE_STAR_PREFERRED
                     if (Board::isStar(square)) {
-                        moves.push_back((move_t)square);
+                        moves.push_back((Move)square);
                     }
 #else
-                    *cur++ = ((move_t)square);
+                    *cur++ = ((Move)square);
 #endif
                 }
 #endif // MCTS_AI
@@ -342,11 +342,11 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
 
         // 对于移子阶段
         if (position->phase & PHASE_MOVING) {
-            square_t newSquare, oldSquare;
+            Square newSquare, oldSquare;
 
             // 尽量走理论上较差的位置的棋子
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldSquare = static_cast<square_t>(MoveList::movePriorityTable[i]);
+                oldSquare = static_cast<Square>(MoveList::movePriorityTable[i]);
 
                 if (!position->selectPiece(oldSquare)) {
                     continue;
@@ -357,18 +357,18 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
                     for (int direction = DIRECTION_BEGIN; direction < DIRECTIONS_COUNT; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
-                        newSquare = static_cast<square_t>(MoveList::moveTable[oldSquare][direction]);
+                        newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);
                         if (newSquare && !position->board.locations[newSquare]) {
-                            move_t m = make_move(oldSquare, newSquare);
-                            *cur++ = ((move_t)m);
+                            Move m = make_move(oldSquare, newSquare);
+                            *cur++ = ((Move)m);
                         }
                     }
                 } else {
                     // 对于棋盘上还有不到3个字，但允许飞子的情况，不要求在着法表中，是空位就行
-                    for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<square_t>(newSquare + 1)) {
+                    for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
                         if (!position->board.locations[newSquare]) {
-                            move_t m = make_move(oldSquare, newSquare);
-                            *cur++ = ((move_t)m);
+                            Move m = make_move(oldSquare, newSquare);
+                            *cur++ = ((Move)m);
                         }
                     }
                 }
@@ -383,9 +383,9 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         if (position->board.isAllInMills(opponent)) {
             // 全成三的情况
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                square = static_cast<square_t>(MoveList::movePriorityTable[i]);
+                square = static_cast<Square>(MoveList::movePriorityTable[i]);
                 if (position->board.locations[square] & opponent) {
-                    *cur++ = ((move_t)-square);
+                    *cur++ = ((Move)-square);
                 }
             }
             break;
@@ -393,10 +393,10 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
 
         // 不是全成三的情况
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            square = static_cast<square_t>(MoveList::movePriorityTable[i]);
+            square = static_cast<Square>(MoveList::movePriorityTable[i]);
             if (position->board.locations[square] & opponent) {
                 if (rule.allowRemoveMill || !position->board.inHowManyMills(square, PLAYER_NOBODY)) {
-                    *cur++ = ((move_t)-square);
+                    *cur++ = ((Move)-square);
                 }
             }
         }

@@ -157,7 +157,7 @@ int Position::countPiecesOnBoard()
 
     for (int r = 1; r < Board::N_RINGS + 2; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
-            square_t square = static_cast<square_t>(r * Board::N_SEATS + s);
+            Square square = static_cast<Square>(r * Board::N_SEATS + s);
             if (board.locations[square] & PIECE_BLACK) {
                 nPiecesOnBoard[BLACK]++;
             } else if (board.locations[square] & PIECE_WHITE) {
@@ -361,10 +361,10 @@ bool Position::start()
     }
 }
 
-bool Position::placePiece(square_t square, bool updateCmdlist)
+bool Position::placePiece(Square square, bool updateCmdlist)
 {
-    ring_t r;
-    seat_t s;
+    File r;
+    Rank s;
     int i;
     // 时间的临时变量
     int seconds = -1;
@@ -375,7 +375,7 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
 
     int playerId = Player::toId(sideToMove);
 
-    bitboard_t fromTo;
+    Bitboard fromTo;
 
     // 如果局面为“结局”，返回false
     if (phase == PHASE_GAMEOVER)
@@ -408,7 +408,7 @@ bool Position::placePiece(square_t square, bool updateCmdlist)
         board.byTypeBB[ALL_PIECES] |= square;
         board.byTypeBB[playerId] |= square;
 
-        move = static_cast<move_t>(square);
+        move = static_cast<Move>(square);
 
         if (updateCmdlist) {
             seconds = update();
@@ -549,23 +549,23 @@ out:
     return true;
 }
 
-bool Position::_placePiece(ring_t r, seat_t s)
+bool Position::_placePiece(File r, Rank s)
 {
     // 转换为 square
-    square_t square = Board::polarToSquare(r, s);
+    Square square = Board::polarToSquare(r, s);
 
     return placePiece(square, true);
 }
 
-bool Position::_removePiece(ring_t r, seat_t s)
+bool Position::_removePiece(File r, Rank s)
 {
     // 转换为 square
-    square_t square = Board::polarToSquare(r, s);
+    Square square = Board::polarToSquare(r, s);
 
     return removePiece(square, 1);
 }
 
-bool Position::removePiece(square_t square, bool updateCmdlist)
+bool Position::removePiece(Square square, bool updateCmdlist)
 {
     // 如果局面为"未开局"或“结局”，返回false
     if (phase & PHASE_NOTPLAYING)
@@ -580,8 +580,8 @@ bool Position::removePiece(square_t square, bool updateCmdlist)
         return false;
 
     // 格式转换
-    ring_t r;
-    seat_t s;
+    File r;
+    Rank s;
     Board::squareToPolar(square, r, s);
 
     // 时间的临时变量
@@ -618,7 +618,7 @@ bool Position::removePiece(square_t square, bool updateCmdlist)
 
     nPiecesOnBoard[opponentId]--;
 
-    move = static_cast<move_t>(-square);
+    move = static_cast<Move>(-square);
 
     if (updateCmdlist) {
         seconds = update();
@@ -709,7 +709,7 @@ out:
     return true;
 }
 
-bool Position::selectPiece(square_t square)
+bool Position::selectPiece(Square square)
 {
     // 如果局面不是"中局”，返回false
     if (phase != PHASE_MOVING)
@@ -733,7 +733,7 @@ bool Position::selectPiece(square_t square)
     return false;
 }
 
-bool Position::selectPiece(ring_t r, seat_t s)
+bool Position::selectPiece(File r, Rank s)
 {
     return selectPiece(Board::polarToSquare(r, s));
 }
@@ -767,8 +767,8 @@ bool Position::command(const char *cmd)
     int r;
     unsigned t;
     step_t s;
-    ring_t r1, r2;
-    seat_t s1, s2;
+    File r1, r2;
+    Rank s1, s2;
     int args = 0;
     int mm = 0, ss = 0;
 
@@ -843,13 +843,13 @@ bool Position::command(const char *cmd)
     return false;
 }
 
-bool Position::doMove(move_t m)
+bool Position::doMove(Move m)
 {
-    movetype_t mt = type_of(m);
+    MoveType mt = type_of(m);
 
     switch (mt) {
     case MOVETYPE_REMOVE:
-        return removePiece(static_cast<square_t>(-m));
+        return removePiece(static_cast<Square>(-m));
     case MOVETYPE_MOVE:
         if (selectPiece(from_sq(m))) {
             return placePiece(to_sq(m));
@@ -1039,7 +1039,7 @@ int Position::getMobilityDiff(player_t turn, int piecesOnBoard[], bool includeFo
     int diff = 0;
     int n = 0;
 
-    for (square_t i = SQ_BEGIN; i < SQ_END; i = static_cast<square_t>(i + 1)) {
+    for (Square i = SQ_BEGIN; i < SQ_END; i = static_cast<Square>(i + 1)) {
         n = board.getSurroundedEmptyLocationCount(turn, piecesOnBoard, i, includeFobidden);
 
         if (locations[i] & PIECE_BLACK) {
@@ -1060,11 +1060,11 @@ void Position::cleanForbiddenLocations()
         return;
     }
 
-    square_t square = SQ_0;
+    Square square = SQ_0;
 
     for (int r = 1; r <= Board::N_RINGS; r++) {
         for (int s = 0; s < Board::N_SEATS; s++) {
-            square = static_cast<square_t>(r * Board::N_SEATS + s);
+            square = static_cast<Square>(r * Board::N_SEATS + s);
 
             if (board.locations[square] == '\x0f') {
                 revertKey(square);
@@ -1177,13 +1177,13 @@ void Position::constructKey()
     key = 0;
 }
 
-hash_t Position::getPosKey()
+Key Position::getPosKey()
 {
     // TODO: 每次获取哈希值时更新 key 值剩余8位，放在此处调用不优雅
     return updateKeyMisc();
 }
 
-hash_t Position::updateKey(square_t square)
+Key Position::updateKey(Square square)
 {
     // PieceType is board.locations[square] 
 
@@ -1199,18 +1199,18 @@ hash_t Position::updateKey(square_t square)
     return key;
 }
 
-hash_t Position::revertKey(square_t square)
+Key Position::revertKey(Square square)
 {
     return updateKey(square);
 }
 
-hash_t Position::updateKeyMisc()
+Key Position::updateKeyMisc()
 {
     const int KEY_MISC_BIT = 8;
 
     // 清除标记位
     key = key << KEY_MISC_BIT >> KEY_MISC_BIT;
-    hash_t hi = 0;
+    Key hi = 0;
 
     // 置位
 
@@ -1222,19 +1222,19 @@ hash_t Position::updateKeyMisc()
         hi |= 1U << 1;
     }
 
-    hi |= static_cast<hash_t>(nPiecesNeedRemove) << 2;
-    hi |= static_cast<hash_t>(nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 phase 也可以？
+    hi |= static_cast<Key>(nPiecesNeedRemove) << 2;
+    hi |= static_cast<Key>(nPiecesInHand[BLACK]) << 4;     // TODO: 或许换 phase 也可以？
 
-    key = key | (hi << (CHAR_BIT * sizeof(hash_t) - KEY_MISC_BIT));
+    key = key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
 
     return key;
 }
 
-hash_t Position::getNextPrimaryKey(move_t m)
+Key Position::getNextPrimaryKey(Move m)
 {
-    hash_t npKey = key /* << 8 >> 8 */;
-    square_t sq = static_cast<square_t>(to_sq(m));;
-    movetype_t mt = type_of(m);
+    Key npKey = key /* << 8 >> 8 */;
+    Square sq = static_cast<Square>(to_sq(m));;
+    MoveType mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
         int pieceType = Player::getOpponentById(Player::toId(sideToMove));

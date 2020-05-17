@@ -358,7 +358,7 @@ void GameController::setEngine2(bool arg)
     setEngine(2, arg);
 }
 
-void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, int time2)
+void GameController::setAiDepthTime(Depth depth1, int time1, Depth depth2, int time2)
 {
     stopAndWaitAiThreads();
 
@@ -368,7 +368,7 @@ void GameController::setAiDepthTime(depth_t depth1, int time1, depth_t depth2, i
     startAiThreads();
 }
 
-void GameController::getAiDepthTime(depth_t &depth1, int &time1, depth_t &depth2, int &time2)
+void GameController::getAiDepthTime(Depth &depth1, int &time1, Depth &depth2, int &time2)
 {
     depth1 = aiThread[BLACK]->getDepth();
     time1 = aiThread[BLACK]->getTimeLimit();
@@ -735,8 +735,8 @@ bool GameController::actionPiece(QPointF pos)
 {
 #ifndef TRAINING_MODE
     // 点击非落子点，不执行
-    ring_t r;
-    seat_t s;
+    File r;
+    Rank s;
 
     if (!scene.pos2rs(pos, r, s)) {
         return false;
@@ -1166,7 +1166,7 @@ bool GameController::updateScence(StateInfo &g)
         // 遍历棋盘，查找并放置棋盘上的棋子
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.rs2pos(ring_t(j / Board::N_SEATS), seat_t(j % Board::N_SEATS + 1));
+                pos = scene.rs2pos(File(j / Board::N_SEATS), Rank(j % Board::N_SEATS + 1));
                 if (piece->pos() != pos) {
 
                     // 让移动的棋子位于顶层
@@ -1224,7 +1224,7 @@ bool GameController::updateScence(StateInfo &g)
     if (rule.hasForbiddenLocations && g.position->getPhase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == PIECE_FORBIDDEN) {
-                pos = scene.rs2pos(ring_t(j / Board::N_SEATS), seat_t(j % Board::N_SEATS + 1));
+                pos = scene.rs2pos(File(j / Board::N_SEATS), Rank(j % Board::N_SEATS + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
                 } else {

@@ -86,7 +86,7 @@ void AiThread::setAi(const StateInfo &g)
     mutex.unlock();
 }
 
-void AiThread::setAi(const StateInfo &g, depth_t d, int tl)
+void AiThread::setAi(const StateInfo &g, Depth d, int tl)
 {
     mutex.lock();
     this->state = &g;
@@ -129,7 +129,7 @@ void sq2str(char *str)
         sig = 0;
     }
 
-    Board::squareToPolar((square_t)sq, r, s);
+    Board::squareToPolar((Square)sq, r, s);
 
     if (sig == 1) {
         sprintf_s(str, 16, "(%d,%d)", r, s);
@@ -144,8 +144,8 @@ void AiThread::analyze()
     int d = (int)ai.originDepth;
     int v = (int)ai.bestvalue;
     int lv = (int)ai.lastvalue;
-    bool win = v >= VALUE_WIN;
-    bool lose = v <= -VALUE_WIN;
+    bool win = v >= VALUE_MATE;
+    bool lose = v <= -VALUE_MATE;
     int p = v / VALUE_EACH_PIECE;
 
     if (v == VALUE_UNIQUE) {
@@ -242,7 +242,7 @@ void AiThread::run()
 #ifdef MCTS_AI
         MCTSOptions mctsOptions;
 
-        move_t move = ai.computeMove(*state, mctsOptions);
+        Move move = ai.computeMove(*state, mctsOptions);
         
         strCommand = ai.moveToCommand(move);
         emitCommand();

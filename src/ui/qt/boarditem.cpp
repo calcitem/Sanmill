@@ -170,19 +170,19 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     return nearestPos;
 }
 
-QPointF BoardItem::rs2pos(ring_t r, seat_t s)
+QPointF BoardItem::rs2pos(File r, Rank s)
 {
     return position[((int)r - 1) * N_SEATS + (int)s - 1]; // TODO: 为什么是 r - 1 和算法部分不一样?
 }
 
-bool BoardItem::pos2rs(QPointF pos, ring_t &r, seat_t &s)
+bool BoardItem::pos2rs(QPointF pos, File &r, Rank &s)
 {
     // 寻找最近的落子点
     for (int i = 0; i < N_RINGS * N_SEATS; i++) {
         // 如果pos点在落子点附近
         if (QLineF(pos, position[i]).length() < PIECE_SIZE / 6) {
-            r = ring_t(i / N_SEATS + 1);
-            s = seat_t(i % N_SEATS + 1);
+            r = File(i / N_SEATS + 1);
+            s = Rank(i % N_SEATS + 1);
             return true;
         }
     }

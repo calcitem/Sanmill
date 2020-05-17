@@ -56,10 +56,10 @@ public:
     Board board;
 
     // 局面的哈希值
-    hash_t key {0};
+    Key key {0};
 
     // 局面阶段标识
-    enum phase_t phase {PHASE_NONE};
+    enum Phase phase {PHASE_NONE};
 
     // 轮流状态标识
     player_t sideToMove {PLAYER_NOBODY};
@@ -72,7 +72,7 @@ public:
     //string opponentStr;
 
     // 动作状态标识
-    enum action_t action
+    enum Action action
     {
     };
 
@@ -97,7 +97,7 @@ public:
     }
 
     // 获取当前棋子位置点
-    square_t getCurrentSquare() const
+    Square getCurrentSquare() const
     {
         return currentSquare;
     }
@@ -115,13 +115,13 @@ public:
     }
 
     // 获取局面阶段标识
-    enum phase_t getPhase() const
+    enum Phase getPhase() const
     {
         return phase;
     }
 
     // 获取动作状态标识
-    enum action_t getAction() const
+    enum Action getAction() const
     {
         return action;
     }
@@ -214,7 +214,7 @@ public:
     void setTips();
 
     // 着法生成
-    int generateNullMove(Stack<move_t, MAX_MOVES> &moves);
+    int generateNullMove(Stack<Move, MAX_MOVES> &moves);
 
     bool doNullMove();
     bool undoNullMove();
@@ -223,26 +223,26 @@ public:
     player_t getWinner() const;
 
     // 选子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool selectPiece(ring_t r, seat_t s);
+    bool selectPiece(File r, Rank s);
 
     // 落子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _placePiece(ring_t r, seat_t s);
+    bool _placePiece(File r, Rank s);
 
     // 去子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _removePiece(ring_t r, seat_t s);
+    bool _removePiece(File r, Rank s);
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
-    bool doMove(move_t move);
-    bool selectPiece(square_t square);
-    bool placePiece(square_t square, bool updateCmdlist = false);
-    bool removePiece(square_t square, bool updateCmdlist = false);
+    bool doMove(Move move);
+    bool selectPiece(Square square);
+    bool placePiece(Square square, bool updateCmdlist = false);
+    bool removePiece(Square square, bool updateCmdlist = false);
 
     // key 相关
-    hash_t getPosKey();
-    hash_t revertKey(square_t square);
-    hash_t updateKey(square_t square);
-    hash_t updateKeyMisc();
-    hash_t getNextPrimaryKey(move_t m);
+    Key getPosKey();
+    Key revertKey(Square square);
+    Key updateKey(Square square);
+    Key updateKeyMisc();
+    Key getNextPrimaryKey(Move m);
 
     // 赢盘数
     int score[COLOR_COUNT] = { 0 };
@@ -277,10 +277,10 @@ public:
         | /       |     \  |
         29 ----- 28 ----- 27
     */
-    move_t move { MOVE_NONE };
+    Move move { MOVE_NONE };
 
     // 选中的棋子在board中的位置
-    square_t currentSquare{};
+    Square currentSquare{};
 
 private:
 

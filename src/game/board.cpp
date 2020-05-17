@@ -185,27 +185,27 @@ void Board::createMillTable()
 #endif /* DEBUG_MODE */
 }
 
-void Board::squareToPolar(const square_t square, ring_t &r, seat_t &s)
+void Board::squareToPolar(const Square square, File &r, Rank &s)
 {
     //r = square / N_SEATS;
     //s = square % N_SEATS + 1;
-    r = ring_t(square >> 3);
-    s = seat_t((square & 0x07) + 1);
+    r = File(square >> 3);
+    s = Rank((square & 0x07) + 1);
 }
 
-square_t Board::polarToSquare(ring_t r, seat_t s)
+Square Board::polarToSquare(File r, Rank s)
 {
     assert(!(r < 1 || r > N_RINGS || s < 1 || s > N_SEATS));
 
-    return static_cast<square_t>(r * N_SEATS + s - 1);
+    return static_cast<Square>(r * N_SEATS + s - 1);
 }
 
-player_t Board::locationToPlayer(square_t square)
+player_t Board::locationToPlayer(Square square)
 {
     return player_t(locations[square] & 0x30);
 }
 
-int Board::inHowManyMills(square_t square, player_t player, square_t squareSelected)
+int Board::inHowManyMills(Square square, player_t player, Square squareSelected)
 {
     int n = 0;
     location_t locbak = SQ_0;
@@ -234,7 +234,7 @@ int Board::inHowManyMills(square_t square, player_t player, square_t squareSelec
     return n;
 }
 
-int Board::addMills(square_t square)
+int Board::addMills(Square square)
 {
     // 成三用一个64位整数了，规则如下
     // 0x   00     00     00    00    00    00    00    00
@@ -311,7 +311,7 @@ int Board::addMills(square_t square)
 
 bool Board::isAllInMills(player_t player)
 {
-    for (square_t i = SQ_BEGIN; i < SQ_END; i = static_cast<square_t>(i + 1)) {
+    for (Square i = SQ_BEGIN; i < SQ_END; i = static_cast<Square>(i + 1)) {
         if (locations[i] & (uint8_t)player) {
             if (!inHowManyMills(i, PLAYER_NOBODY)) {
                 return false;
@@ -324,7 +324,7 @@ bool Board::isAllInMills(player_t player)
 
 // 判断指定位置周围有几个空位 (可以包含禁点一起统计)
 int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
-                                           square_t square, bool includeFobidden)
+                                           Square square, bool includeFobidden)
 {
     //assert(rule.hasForbiddenLocations == includeFobidden);
 
@@ -332,9 +332,9 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
 
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
-        square_t moveSquare;
-        for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
-            moveSquare = static_cast<square_t>(MoveList::moveTable[square][d]);
+        Square moveSquare;
+        for (MoveDirection d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (MoveDirection)(d + 1)) {
+            moveSquare = static_cast<Square>(MoveList::moveTable[square][d]);
             if (moveSquare) {
                 if (locations[moveSquare] == 0x00 ||
                     (includeFobidden && locations[moveSquare] == PIECE_FORBIDDEN)) {
@@ -348,18 +348,18 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
 }
 
 // 计算指定位置周围有几个棋子
-void Board::getSurroundedPieceCount(square_t square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nForbidden, int &nEmpty)
+void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nForbidden, int &nEmpty)
 {
-    square_t moveSquare;
+    Square moveSquare;
 
-    for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
-        moveSquare = static_cast<square_t>(MoveList::moveTable[square][d]);
+    for (MoveDirection d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (MoveDirection)(d + 1)) {
+        moveSquare = static_cast<Square>(MoveList::moveTable[square][d]);
 
         if (!moveSquare) {
             continue;
         }
 
-        enum piece_t pieceType = static_cast<piece_t>(locations[moveSquare]);
+        enum Piece pieceType = static_cast<Piece>(locations[moveSquare]);
 
         switch (pieceType) {
         case NO_PIECE:
@@ -393,15 +393,15 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
     }
 
     // 查询整个棋盘
-    square_t moveSquare;
+    Square moveSquare;
 
-    for (square_t sq = SQ_BEGIN; sq < SQ_END; sq = (square_t)(sq + 1)) {
+    for (Square sq = SQ_BEGIN; sq < SQ_END; sq = (Square)(sq + 1)) {
         if (!(player & locationToPlayer(sq))) {
             continue;
         }
 
-        for (direction_t d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (direction_t)(d + 1)) {
-            moveSquare = static_cast<square_t>(MoveList::moveTable[sq][d]);
+        for (MoveDirection d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (MoveDirection)(d + 1)) {
+            moveSquare = static_cast<Square>(MoveList::moveTable[sq][d]);
             if (moveSquare && !locations[moveSquare]) {
                 return false;
             }
@@ -411,7 +411,7 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
     return true;
 }
 
-bool Board::isStar(square_t square)
+bool Board::isStar(Square square)
 {
     if (rule.nTotalPiecesEachSide == 12) {
         return (square == 17 ||
@@ -426,7 +426,7 @@ bool Board::isStar(square_t square)
             square == 22);
 }
 
-void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
+void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square square, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -448,8 +448,8 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, square
         s = (N_SEATS - s) % N_SEATS;
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = static_cast<uint64_t>(from_sq((move_t)move_));
-        llp[1] = to_sq((move_t)move_);
+        llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
+        llp[1] = to_sq((Move)move_);
 
         for (i = 0; i < 2; i++) {
             r = static_cast<int>(llp[i]) / N_SEATS;
@@ -465,7 +465,7 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, square
         r = square / N_SEATS;
         s = square % N_SEATS;
         s = (N_SEATS - s) % N_SEATS;
-        square = static_cast<square_t>(r * N_SEATS + s);
+        square = static_cast<Square>(r * N_SEATS + s);
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
@@ -536,7 +536,7 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, square
     }
 }
 
-void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
+void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange /*= true*/)
 {
     int ch;
     int r, s;
@@ -561,8 +561,8 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, square_
 
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = static_cast<uint64_t>(from_sq((move_t)move_));
-        llp[1] = to_sq((move_t)move_);
+        llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
+        llp[1] = to_sq((Move)move_);
 
         for (i = 0; i < 2; i++) {
             r = static_cast<int>(llp[i]) / N_SEATS;
@@ -588,7 +588,7 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, square_
         else if (r == N_RINGS)
             r = 1;
 
-        square = static_cast<square_t>(r * N_SEATS + s);
+        square = static_cast<Square>(r * N_SEATS + s);
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
@@ -699,7 +699,7 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, square_
     }
 }
 
-void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange /*= true*/)
+void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange /*= true*/)
 {
     // 将degrees转化为0~359之间的数
     degrees = degrees % 360;
@@ -760,8 +760,8 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
         s = (s + N_SEATS - degrees) % N_SEATS;
         move_ = -(r * N_SEATS + s);
     } else {
-        llp[0] = static_cast<uint64_t>(from_sq((move_t)move_));
-        llp[1] = to_sq((move_t)move_);
+        llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
+        llp[1] = to_sq((Move)move_);
         r = static_cast<int>(llp[0]) / N_SEATS;
         s = static_cast<int>(llp[0]) % N_SEATS;
         s = (s + N_SEATS - degrees) % N_SEATS;
@@ -777,7 +777,7 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
         r = square / N_SEATS;
         s = square % N_SEATS;
         s = (s + N_SEATS - degrees) % N_SEATS;
-        square = static_cast<square_t>(r * N_SEATS + s);
+        square = static_cast<Square>(r * N_SEATS + s);
     }
 
     if (rule.allowRemovePiecesRepeatedly) {

@@ -41,7 +41,7 @@ public:
     MovePicker(Position *position, ExtMove *cur);
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-   // move_t nextMove(bool skipQuiets = false);
+   // Move nextMove(bool skipQuiets = false);
 
 #ifdef HOSTORY_HEURISTIC
     // TODO: Fix size
@@ -49,8 +49,8 @@ public:
     score_t removeHistory[64];
     score_t moveHistory[10240];
 
-    score_t getHistoryScore(move_t move);
-    void setHistoryScore(move_t move, depth_t depth);
+    score_t getHistoryScore(Move move);
+    void setHistoryScore(Move move, Depth depth);
     void clearHistoryScore();
 #endif // HOSTORY_HEURISTIC
 

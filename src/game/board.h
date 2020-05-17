@@ -50,7 +50,7 @@ public:
     static const int onBoard[SQ_EXPANDED_COUNT];
 
     // 判断位置点是否为星位 (星位是经常会先占的位置)
-    static bool isStar(square_t square);
+    static bool isStar(Square square);
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
@@ -60,41 +60,41 @@ public:
     void createMillTable();
 
     // 局面左右镜像
-    void mirror(vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
+    void mirror(vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
 
     // 局面内外翻转
-    void turn(vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
+    void turn(vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
 
     // 局面逆时针旋转
-    void rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, square_t square, bool cmdChange = true);
+    void rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
 
     // 判断棋盘 square 处的棋子处于几个“三连”中
-    int inHowManyMills(square_t square, player_t player, square_t squareSelected = SQ_0);
+    int inHowManyMills(Square square, player_t player, Square squareSelected = SQ_0);
 
     // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(player_t);
 
     // 判断玩家的棋子周围有几个空位
-    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], square_t square, bool includeFobidden);
+    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], Square square, bool includeFobidden);
 
     // 计算指定位置周围有几个棋子
-    void getSurroundedPieceCount(square_t square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nForbidden, int &nEmpty);
+    void getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nForbidden, int &nEmpty);
 
     // 判断玩家的棋子是否全部被围
     bool isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t ply);
 
     // 三连加入列表
-    int addMills(square_t square);
+    int addMills(Square square);
 
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
-    static void squareToPolar(square_t square, ring_t &r, seat_t &s);
+    static void squareToPolar(Square square, File &r, Rank &s);
 
     // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
-    static square_t polarToSquare(ring_t r, seat_t s);
+    static Square polarToSquare(File r, Rank s);
 
     static void printBoard();
 
-    player_t locationToPlayer(square_t square);
+    player_t locationToPlayer(Square square);
 
 //private:
 
@@ -109,7 +109,7 @@ public:
      */
     location_t locations[SQ_EXPANDED_COUNT]{};
 
-    bitboard_t byTypeBB[PIECETYPE_COUNT];
+    Bitboard byTypeBB[PIECE_TYPE_NB];
 
     /*
         本打算用如下的结构体来表示“三连”

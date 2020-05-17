@@ -23,97 +23,38 @@
 #include "config.h"
 
 using step_t = uint16_t;
-using depth_t = int8_t;
 using location_t = uint8_t;
 using score_t = uint32_t;
-//using bitboard_t = uint32_t;
-typedef uint32_t bitboard_t;
+//using Bitboard = uint32_t;
+typedef uint32_t Bitboard;
+
+constexpr int MAX_MOVES = 40;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
-using hash_t = uint32_t;
+using Key = uint32_t;
 #else
-using hash_t = uint64_t;
+using Key = uint64_t;
 #endif /* TRANSPOSITION_TABLE_CUTDOWN */
 
-enum move_t : int32_t
+enum Move : int32_t
 {
     MOVE_NONE,
     //MOVE_NULL = 65
 };
 
-enum movetype_t
+enum MoveType
 {
     MOVETYPE_PLACE,
     MOVETYPE_MOVE,
     MOVETYPE_REMOVE
 };
 
-constexpr int MAX_MOVES = 40;
-
-enum color_t : uint8_t
+enum Color : uint8_t
 {
     NOCOLOR,
     BLACK,
     WHITE,
     COLOR_COUNT
-};
-
-enum square_t : int32_t
-{
-    SQ_0 = 0, SQ_1 = 1, SQ_2 = 2, SQ_3 = 3, SQ_4 = 4, SQ_5 = 5, SQ_6 = 6, SQ_7 = 7,
-     SQ_8_R1S1_D5 = 8,   SQ_9_R1S2_E5 = 9,  SQ_10_R1S3_E4 = 10, SQ_11_R1S4_E3 = 11, SQ_12_R1S5_D3 = 12, SQ_13_R1S6_C3 = 13, SQ_14_R1S7_C4 = 14, SQ_15_R1S8_C5 = 15,
-    SQ_16_R2S1_D6 = 16, SQ_17_R2S2_F6 = 17, SQ_18_R2S3_F4 = 18, SQ_19_R2S4_F2 = 19, SQ_20_R2S5_D2 = 20, SQ_21_R2S6_B2 = 21, SQ_22_R2S7_B4 = 22, SQ_23_R2S8_B6 = 23,
-    SQ_24_R3S1_D7 = 24, SQ_25_R3S2_G7 = 25, SQ_26_R3S3_G4 = 26, SQ_27_R3S4_G1 = 27, SQ_28_R3S5_D1 = 28, SQ_29_R3S6_A1 = 29, SQ_30_R3S7_A4 = 30, SQ_31_R3S8_A7 = 31,
-    SQ_32 = 32, SQ_33 = 33, SQ_34 = 34, SQ_35 = 35, SQ_36 = 36, SQ_37 = 37, SQ_38 = 38, SQ_39 = 39,
-    SQUARE_COUNT = 24,
-    SQ_EXPANDED_COUNT = 40,
-    SQ_BEGIN = SQ_8_R1S1_D5,
-    SQ_END = SQ_32
-};
-
-// 移动方向，包括顺时针、逆时针、向内、向外4个方向
-enum direction_t
-{
-    DIRECTION_CLOCKWISE = 0,       // 顺时针
-    DIRECTION_BEGIN = DIRECTION_CLOCKWISE,
-    DIRECTION_ANTICLOCKWISE = 1,   // 逆时针
-    DIRECTION_INWARD = 2,          // 向内
-    DIRECTION_OUTWARD = 3,         // 向外
-    DIRECTION_FLY = 4,             // 飞子
-    DIRECTIONS_COUNT = 4               // 移动方向数
-};
-
-// 列
-enum file_t : int
-{
-    FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_COUNT
-};
-
-// 行
-enum rank_t : int
-{
-    RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_COUNT
-};
-
-// 圈
-enum ring_t : int
-{
-    RING_NONE, RING_1, RING_2, RING_3, RING_COUNT = RING_3
-};
-
-// 位
-enum seat_t : int
-{
-    SEAT_NONE, SEAT_1, SEAT_2, SEAT_3, SEAT_4, SEAT_5, SEAT_6, SEAT_7, SEAT_8, SEAT_COUNT = SEAT_8
-};
-
-// 横直斜3个方向，禁止修改!
-enum line_t
-{
-    LINE_HORIZONTAL = 0,        // 横线
-    LINE_VERTICAL = 1,          // 直线
-    LINE_SLASH = 2,  // 斜线
-    LINE_TYPES_COUNT = 3               // 移动方向数
 };
 
 #define PLAYER_SHIFT    4
@@ -127,8 +68,7 @@ enum player_t : uint8_t
     PLAYER_NOBODY = 0x8 << PLAYER_SHIFT     // 胜负未分
 };
 
-// 局面阶段标识
-enum phase_t : uint16_t
+enum Phase : uint16_t
 {
     PHASE_NONE = 0,
     PHASE_READY = 1,       // 未开局
@@ -139,13 +79,30 @@ enum phase_t : uint16_t
     PHASE_NOTPLAYING = PHASE_READY | PHASE_GAMEOVER,  // 不在进行中
 };
 
-enum value_t : int8_t
+// 动作状态标识
+enum Action : uint16_t
+{
+    ACTION_NONE = 0x0000,
+    ACTION_SELECT = 0x0100,    // 选子
+    ACTION_PLACE = 0x0200,     // 落子
+    ACTION_REMOVE = 0x0400    // 提子
+};
+
+enum Bound : uint8_t
+{
+    BOUND_NONE,
+    BOUND_UPPER,
+    BOUND_LOWER,
+    BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
+};
+
+enum Value : int8_t
 {
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
-    VALUE_STRONG = 20,
+    VALUE_KNOWN_WIN = 20,
     VALUE_UNIQUE = 60,
-    VALUE_WIN = 80,
+    VALUE_MATE = 80,
     VALUE_INFINITE = 125,
     VALUE_UNKNOWN = std::numeric_limits<int8_t>::min(),
 
@@ -163,10 +120,10 @@ enum value_t : int8_t
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1
 };
 
-enum rating_t : int8_t
+enum Rating : int8_t
 {
     RATING_ZERO = 0,
- 
+
     RATING_BLOCK_ONE_MILL = 10,
     RATING_ONE_MILL = 11,
 
@@ -190,15 +147,14 @@ enum rating_t : int8_t
     RATING_MAX = std::numeric_limits<int8_t>::max(),
 };
 
-// 棋盘点上棋子的类型
-enum piecetype_t : uint16_t
+enum PieceType : uint16_t
 {
     NO_PIECE_TYPE = 0,   // 没有棋子
     BLACK_STONE = 1,    // 先手的子
     WHITE_STONE = 2,     // 后手的子
     FORBIDDEN_STONE = 3,    // 禁点
     ALL_PIECES = 0,    // 禁点
-    PIECETYPE_COUNT = 4
+    PIECE_TYPE_NB = 4
 };
 
 /*
@@ -207,7 +163,7 @@ enum piecetype_t : uint16_t
 0x11～0x1C 代表先手第 1～12 子
 0x21～0x2C 代表后手第 1～12 子
 */
-enum piece_t
+enum Piece
 {
     NO_PIECE = 0x00,
     PIECE_FORBIDDEN = 0x0F,
@@ -241,13 +197,59 @@ enum piece_t
     PIECE_W12 = 0x2C,
 };
 
-// 动作状态标识
-enum action_t : uint16_t
+using Depth = int8_t;
+
+enum Square : int32_t
 {
-    ACTION_NONE = 0x0000,
-    ACTION_SELECT = 0x0100,    // 选子
-    ACTION_PLACE = 0x0200,     // 落子
-    ACTION_REMOVE = 0x0400    // 提子
+     SQ_0 = 0,   SQ_1 = 1,   SQ_2 = 2,   SQ_3 = 3,   SQ_4 = 4,   SQ_5 = 5,   SQ_6 = 6,   SQ_7 = 7,
+     SQ_8 = 8,   SQ_9 = 9,  SQ_10 = 10, SQ_11 = 11, SQ_12 = 12, SQ_13 = 13, SQ_14 = 14, SQ_15 = 15,
+    SQ_16 = 16, SQ_17 = 17, SQ_18 = 18, SQ_19 = 19, SQ_20 = 20, SQ_21 = 21, SQ_22 = 22, SQ_23 = 23,
+    SQ_24 = 24, SQ_25 = 25, SQ_26 = 26, SQ_27 = 27, SQ_28 = 28, SQ_29 = 29, SQ_30 = 30, SQ_31 = 31,
+
+    SQ_A1 =  8, SQ_A2 =  9, SQ_A3 = 10, SQ_A4 = 11, SQ_A5 = 12, SQ_A6 = 13, SQ_A7 = 14, SQ_A8 = 15,
+    SQ_B1 = 16, SQ_B2 = 17, SQ_B3 = 18, SQ_B4 = 19, SQ_B5 = 20, SQ_B6 = 21, SQ_B7 = 22, SQ_B8 = 23,
+    SQ_C1 = 24, SQ_C2 = 25, SQ_C3 = 26, SQ_C4 = 27, SQ_C5 = 28, SQ_C6 = 29, SQ_C7 = 30, SQ_C8 = 31,
+
+    SQ_32 = 32, SQ_33 = 33, SQ_34 = 34, SQ_35 = 35, SQ_36 = 36, SQ_37 = 37, SQ_38 = 38, SQ_39 = 39,
+    SQUARE_COUNT = 24,
+
+    SQ_EXPANDED_COUNT = 40,
+
+    SQ_BEGIN = SQ_8,
+    SQ_END = SQ_32
+};
+
+// 移动方向，包括顺时针、逆时针、向内、向外4个方向
+enum MoveDirection
+{
+    DIRECTION_CLOCKWISE = 0,       // 顺时针
+    DIRECTION_BEGIN = DIRECTION_CLOCKWISE,
+    DIRECTION_ANTICLOCKWISE = 1,   // 逆时针
+    DIRECTION_INWARD = 2,          // 向内
+    DIRECTION_OUTWARD = 3,         // 向外
+    DIRECTION_FLY = 4,             // 飞子
+    DIRECTIONS_COUNT = 4               // 移动方向数
+};
+
+// 横直斜3个方向，禁止修改!
+enum LineDirection
+{
+    LINE_HORIZONTAL = 0,        // 横线
+    LINE_VERTICAL = 1,          // 直线
+    LINE_SLASH = 2,  // 斜线
+    LINE_TYPES_COUNT = 3               // 移动方向数
+};
+
+// 圈
+enum File : int
+{
+    FILE_A = 1, FILE_B, FILE_C, FILE_NB = 3
+};
+
+// 位
+enum Rank : int
+{
+    RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NB = 8
 };
 
 #define ENABLE_BASE_OPERATORS_ON(T)                                \
@@ -270,75 +272,75 @@ constexpr int operator/(T d1, T d2) { return int(d1) / int(d2); }  \
 inline T& operator*=(T& d, int i) { return d = T(int(d) * i); }    \
 inline T& operator/=(T& d, int i) { return d = T(int(d) / i); }
 
-ENABLE_FULL_OPERATORS_ON(value_t)
-ENABLE_FULL_OPERATORS_ON(rating_t)
-ENABLE_FULL_OPERATORS_ON(direction_t)
+ENABLE_FULL_OPERATORS_ON(Value)
+ENABLE_FULL_OPERATORS_ON(Rating)
+ENABLE_FULL_OPERATORS_ON(MoveDirection)
 
-ENABLE_INCR_OPERATORS_ON(direction_t)
-ENABLE_INCR_OPERATORS_ON(piecetype_t)
-ENABLE_INCR_OPERATORS_ON(square_t)
+ENABLE_INCR_OPERATORS_ON(MoveDirection)
+ENABLE_INCR_OPERATORS_ON(PieceType)
+ENABLE_INCR_OPERATORS_ON(Square)
 
 // Additional operators to add integers to a Value
-constexpr value_t operator+(value_t v, int i)
+constexpr Value operator+(Value v, int i)
 {
-    return value_t(int(v) + i);
+    return Value(int(v) + i);
 }
 
-constexpr value_t operator-(value_t v, int i)
+constexpr Value operator-(Value v, int i)
 {
-    return value_t(int(v) - i);
+    return Value(int(v) - i);
 }
 
-inline value_t &operator+=(value_t &v, int i)
+inline Value &operator+=(Value &v, int i)
 {
     return v = v + i;
 }
 
-inline value_t &operator-=(value_t &v, int i)
+inline Value &operator-=(Value &v, int i)
 {
     return v = v - i;
 }
 
-constexpr color_t operator~(color_t color)
+constexpr Color operator~(Color color)
 {
-    return color_t(color ^ BLACK);   // Toggle color
+    return Color(color ^ BLACK);   // Toggle color
 }
 
-// constexpr piece_t operator~(piece_t p)
+// constexpr Piece operator~(Piece p)
 // {
-//     return piece_t(p ^ 8);   // Swap color of piece
+//     return Piece(p ^ 8);   // Swap color of piece
 // }
 
 
 // TODO
-constexpr square_t make_square(ring_t r, seat_t s)
+constexpr Square make_square(File r, Rank s)
 {
-    return square_t((r << 3) + s - 1);
+    return Square((r << 3) + s - 1);
 }
 
 #if 0
-constexpr ring_t ring_of(square_t s)
+constexpr ring_t ring_of(Square s)
 {
    // return File(s & 7);
 }
 
-constexpr seat_t seat_of(square_t s)
+constexpr Rank seat_of(Square s)
 {
     //return seat(s >> 3);
 }
 #endif
 
-constexpr square_t from_sq(move_t m)
+constexpr Square from_sq(Move m)
 {
-    return static_cast<square_t>(m >> 8);
+    return static_cast<Square>(m >> 8);
 }
 
-inline const square_t to_sq(move_t m)
+inline const Square to_sq(Move m)
 {
-    return static_cast<square_t>(abs(m) & 0x00ff);
+    return static_cast<Square>(abs(m) & 0x00ff);
 }
 
-inline const movetype_t type_of(move_t m)
+inline const MoveType type_of(Move m)
 {
     if (m < 0) {
         return MOVETYPE_REMOVE;
@@ -349,9 +351,9 @@ inline const movetype_t type_of(move_t m)
     return MOVETYPE_PLACE;  // m & 0x00ff
 }
 
-constexpr move_t make_move(square_t from, square_t to)
+constexpr Move make_move(Square from, Square to)
 {
-    return move_t((from << 8) + to);
+    return Move((from << 8) + to);
 }
 
 #endif /* TYPES_H */

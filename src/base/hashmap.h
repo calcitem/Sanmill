@@ -26,7 +26,7 @@ namespace CTSL //Concurrent Thread Safe Library
     //during the creation of the bucket. All the key buckets are created during the construction of the map.
     //Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the key map
 #ifdef HASH_KEY_DISABLE
-    #define hashFn hash_t
+    #define hashFn Key
     template <typename K, typename V>
 #else
     template <typename K, typename V, typename F = std::key<K> >

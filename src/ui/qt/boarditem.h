@@ -57,10 +57,10 @@ public:
     QPointF nearestPosition(QPointF pos);
 
     // 将模型的圈、位转化为落子点坐标
-    QPointF rs2pos(ring_t r, seat_t s);
+    QPointF rs2pos(File r, Rank s);
 
     // 将落子点坐标转化为模型用的圈、位
-    bool pos2rs(QPointF pos, ring_t &r, seat_t &s);
+    bool pos2rs(QPointF pos, File &r, Rank &s);
 
     // 3圈，禁止修改！
     static const uint8_t N_RINGS = 3;

@@ -49,10 +49,10 @@ MovePicker::MovePicker(Position *pos, ExtMove *extMove)
 void MovePicker::score()
 {
     while (cur++->move != MOVE_NONE) {
-        move_t m = cur->move;
+        Move m = cur->move;
 
-        square_t sq = to_sq(m);
-        square_t sqsrc = from_sq(m);
+        Square sq = to_sq(m);
+        Square sqsrc = from_sq(m);
 
         // 若为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三，所以需要传值 sqsrc 进行判断
         int nMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);
@@ -64,13 +64,13 @@ void MovePicker::score()
             // 在任何阶段, 都检测落子点是否能使得本方成三
             if (nMills > 0) {
     #ifdef ALPHABETA_AI
-                cur->rating += static_cast<rating_t>(RATING_ONE_MILL * nMills);
+                cur->rating += static_cast<Rating>(RATING_ONE_MILL * nMills);
     #endif
             } else if (position->getPhase() == PHASE_PLACING) {
                 // 在摆棋阶段, 检测落子点是否能阻止对方成三
                 nopponentMills = position->board.inHowManyMills(sq, position->opponent);
     #ifdef ALPHABETA_AI
-                cur->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nopponentMills);
     #endif
             }
     #if 1
@@ -89,22 +89,22 @@ void MovePicker::score()
 
     #ifdef ALPHABETA_AI
                     if (sq % 2 == 0 && nOpponentPiece == 3) {
-                        cur->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nopponentMills);
                     } else if (sq % 2 == 1 && nOpponentPiece == 2 && rule.nTotalPiecesEachSide == 12) {
-                        cur->rating += static_cast<rating_t>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nopponentMills);
                     }
     #endif
                 }
             }
     #endif
 
-            //newNode->rating += static_cast<rating_t>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
+            //newNode->rating += static_cast<Rating>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
 
             // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
     #ifdef ALPHABETA_AI
             if (rule.nTotalPiecesEachSide == 12 &&
                 position->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
-                Board::isStar(static_cast<square_t>(m))) {
+                Board::isStar(static_cast<Square>(m))) {
                 cur->rating += RATING_STAR_SQUARE;
             }
     #endif
@@ -120,14 +120,14 @@ void MovePicker::score()
     #ifdef ALPHABETA_AI
             if (nMills > 0) {
                 // 吃子点处于我方的三连中
-                //newNode->rating += static_cast<rating_t>(RATING_REMOVE_ONE_MILL * nMills);
+                //newNode->rating += static_cast<Rating>(RATING_REMOVE_ONE_MILL * nMills);
 
                 if (nOpponentPiece == 0) {
                     // 吃子点旁边没有对方棋子则优先考虑     
-                    cur->rating += static_cast<rating_t>(1);
+                    cur->rating += static_cast<Rating>(1);
                     if (nPlayerPiece > 0) {
                         // 且吃子点旁边有我方棋子则更优先考虑
-                        cur->rating += static_cast<rating_t>(nPlayerPiece);
+                        cur->rating += static_cast<Rating>(nPlayerPiece);
                     }
                 }
             }
@@ -137,17 +137,17 @@ void MovePicker::score()
             if (nopponentMills) {
                 if (nOpponentPiece >= 2) {
                     // 旁边对方的子较多, 则倾向不吃
-                    cur->rating -= static_cast<rating_t>(nOpponentPiece);
+                    cur->rating -= static_cast<Rating>(nOpponentPiece);
 
                     if (nPlayerPiece == 0) {
                         // 如果旁边无我方棋子, 则更倾向不吃
-                        cur->rating -= static_cast<rating_t>(1);
+                        cur->rating -= static_cast<Rating>(1);
                     }
                 }
             }
 
             // 优先吃活动力强的棋子
-            cur->rating += static_cast<rating_t>(nEmpty);
+            cur->rating += static_cast<Rating>(nEmpty);
     #endif
         }
     #endif // SORT_MOVE_WITH_HUMAN_KNOWLEDGES
@@ -155,7 +155,7 @@ void MovePicker::score()
 }
 
 #ifdef HOSTORY_HEURISTIC
-score_t MovePicker::getHistoryScore(move_t move)
+score_t MovePicker::getHistoryScore(Move move)
 {
     score_t ret = 0;
 
@@ -174,7 +174,7 @@ score_t MovePicker::getHistoryScore(move_t move)
     return ret;
 }
 
-void MovePicker::setHistoryScore(move_t move, depth_t depth)
+void MovePicker::setHistoryScore(Move move, Depth depth)
 {
     if (move == MOVE_NONE) {
         return;

@@ -22,4 +22,4 @@
 #include "config.h"
 #include "position.h"
 
-extern const hash_t zobrist[SQ_EXPANDED_COUNT][PIECETYPE_COUNT];
+extern const Key zobrist[SQ_EXPANDED_COUNT][PIECE_TYPE_NB];

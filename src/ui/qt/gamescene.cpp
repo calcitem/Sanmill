@@ -113,12 +113,12 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     //QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 
-QPointF GameScene::rs2pos(ring_t r, seat_t s)
+QPointF GameScene::rs2pos(File r, Rank s)
 {
     return board->rs2pos(r, s);
 }
 
-bool GameScene::pos2rs(QPointF pos, ring_t &r, seat_t &s)
+bool GameScene::pos2rs(QPointF pos, File &r, Rank &s)
 {
     return board->pos2rs(pos, r, s);
 }

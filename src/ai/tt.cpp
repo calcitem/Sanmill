@@ -21,19 +21,19 @@
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 static constexpr int TRANSPOSITION_TABLE_SIZE = 0x2000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
-HashMap<hash_t, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
+HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-value_t TranspositionTable::probe(const hash_t &key,
-                      const depth_t &depth,
-                      const value_t &alpha,
-                      const value_t &beta,
-                      bound_t &type
+Value TranspositionTable::probe(const Key &key,
+                      const Depth &depth,
+                      const Value &alpha,
+                      const Value &beta,
+                      Bound &type
 #ifdef TT_MOVE_ENABLE
-                      , move_t &ttMove
+                      , Move &ttMove
 #endif // TT_MOVE_ENABLE
                       )
 {
@@ -88,7 +88,7 @@ out:
     return VALUE_UNKNOWN;
 }
 
-bool TranspositionTable::search(const hash_t &key, TTEntry &tte)
+bool TranspositionTable::search(const Key &key, TTEntry &tte)
 {
     return TT.find(key, tte);
 
@@ -117,17 +117,17 @@ bool TranspositionTable::search(const hash_t &key, TTEntry &tte)
 #endif
 }
 
-void TranspositionTable::prefetch(const hash_t &key)
+void TranspositionTable::prefetch(const Key &key)
 {
     TT.prefetchValue(key);
 }
 
-int TranspositionTable::save(const value_t &value,
-                   const depth_t &depth,
-                   const bound_t &type,
-                   const hash_t &key
+int TranspositionTable::save(const Value &value,
+                   const Depth &depth,
+                   const Bound &type,
+                   const Key &key
 #ifdef TT_MOVE_ENABLE
-                   , const move_t &ttMove
+                   , const Move &ttMove
 #endif // TT_MOVE_ENABLE
                   )
 {

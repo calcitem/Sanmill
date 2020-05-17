@@ -25,20 +25,20 @@
 uint8_t PopCnt16[1 << 16];
 uint8_t SquareDistance[SQ_32][SQ_32];
 
-bitboard_t SquareBB[SQ_32];
-bitboard_t LineBB[SQUARE_COUNT][SQ_32];
+Bitboard SquareBB[SQ_32];
+Bitboard LineBB[SQUARE_COUNT][SQ_32];
 
 /// Bitboards::pretty() returns an ASCII representation of a bitboard suitable
 /// to be printed to standard output. Useful for debugging.
 
 // TODO: Pretty
-const std::string Bitboards::pretty(bitboard_t b)
+const std::string Bitboards::pretty(Bitboard b)
 {
 
     std::string str = "+---+---+---+---+---+---+---+---+\n";
 
-    for (seat_t s = SEAT_1; s <= SEAT_8; s = (seat_t)(s + 1)) {
-        for (ring_t r = RING_1; r <= RING_3; r = (ring_t)(r + 1))
+    for (Rank s = RANK_1; s <= RANK_8; s = (Rank)(s + 1)) {
+        for (File r = FILE_A; r <= FILE_C; r = (File)(r + 1))
             str += b & make_square(r, s) ? "| X " : "|   ";
 
         str += "|\n+---+---+---+---+---+---+---+---+\n";
@@ -57,6 +57,6 @@ void Bitboards::init()
     for (unsigned i = 0; i < (1 << 16); ++i)
         PopCnt16[i] = (uint8_t)std::bitset<16>(i).count();
 
-    for (square_t s = SQ_8_R1S1_D5; s <= SQ_31_R3S8_A7; ++s)
+    for (Square s = SQ_BEGIN; s < SQ_END; ++s)
         SquareBB[s] = (1UL << s);
 }

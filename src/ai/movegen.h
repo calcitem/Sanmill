@@ -35,16 +35,16 @@ enum GenType
 class ExtMove
 {
 public:
-    move_t move;
-    value_t value;
-    rating_t rating;
+    Move move;
+    Value value;
+    Rating rating;
 
-    operator move_t() const
+    operator Move() const
     {
         return move;
     }
 
-    void operator = (move_t m)
+    void operator = (Move m)
     {
         move = m;
     }
@@ -80,13 +80,13 @@ public:
     static void shuffle();
 
     // 着法表 // TODO: Move to private
-    inline static move_t moveTable[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = { {MOVE_NONE} };
+    inline static Move moveTable[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = { {MOVE_NONE} };
 
     // 着法顺序表, 后续会被打乱
-    inline static array<move_t, Board::N_RINGS *Board::N_SEATS> movePriorityTable{
-        (move_t)8, (move_t)9, (move_t)10, (move_t)11, (move_t)12, (move_t)13, (move_t)14, (move_t)15,
-        (move_t)16, (move_t)17, (move_t)18, (move_t)19, (move_t)20, (move_t)21, (move_t)22, (move_t)23,
-        (move_t)24, (move_t)25, (move_t)26, (move_t)27, (move_t)28, (move_t)29, (move_t)30, (move_t)31,
+    inline static array<Move, Board::N_RINGS *Board::N_SEATS> movePriorityTable{
+        (Move)8, (Move)9, (Move)10, (Move)11, (Move)12, (Move)13, (Move)14, (Move)15,
+        (Move)16, (Move)17, (Move)18, (Move)19, (Move)20, (Move)21, (Move)22, (Move)23,
+        (Move)24, (Move)25, (Move)26, (Move)27, (Move)28, (Move)29, (Move)30, (Move)31,
     };
 
     //explicit MoveList(const Position &pos) : last(generate<T>(pos, moveList))
@@ -109,7 +109,7 @@ public:
         return last - moveList;
     }
 
-    bool contains(move_t move) const
+    bool contains(Move move) const
     {
         return std::find(begin(), end(), move) != end();
     }

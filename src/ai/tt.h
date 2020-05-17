@@ -30,26 +30,18 @@ using namespace CTSL;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
-extern const hash_t zobrist[SQ_EXPANDED_COUNT][PIECETYPE_COUNT];
-
-enum bound_t : uint8_t
-{
-    BOUND_NONE,
-    BOUND_UPPER,
-    BOUND_LOWER,
-    BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
-};
+extern const Key zobrist[SQ_EXPANDED_COUNT][PIECE_TYPE_NB];
 
 struct TTEntry
 {
-    value_t value;
-    depth_t depth;
-    enum bound_t type;
+    Value value;
+    Depth depth;
+    enum Bound type;
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
     uint8_t age;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TT_MOVE_ENABLE
-    move_t ttMove;
+    Move ttMove;
 #endif // TT_MOVE_ENABLE
 };
 
@@ -57,24 +49,24 @@ class TranspositionTable
 {
 public:
     // 查找哈希表
-    static bool search(const hash_t &key, TTEntry &tte);
-    static value_t probe(const hash_t &key,
-                            const depth_t &depth,
-                            const value_t &alpha,
-                            const value_t &beta,
-                            bound_t &type
+    static bool search(const Key &key, TTEntry &tte);
+    static Value probe(const Key &key,
+                            const Depth &depth,
+                            const Value &alpha,
+                            const Value &beta,
+                            Bound &type
     #ifdef TT_MOVE_ENABLE
-                            , move_t &ttMove
+                            , Move &ttMove
     #endif // TT_MOVE_ENABLE
                             );
 
     // 插入哈希表
-    static int save(const value_t &value,
-                          const depth_t &depth,
-                          const bound_t &type,
-                          const hash_t &key
+    static int save(const Value &value,
+                          const Depth &depth,
+                          const Bound &type,
+                          const Key &key
 #ifdef TT_MOVE_ENABLE
-                          , const move_t &ttMove
+                          , const Move &ttMove
 #endif // TT_MOVE_ENABLE
                          );
 
@@ -82,13 +74,13 @@ public:
     static void clear();
 
     // 预读取
-    static void prefetch(const hash_t &key);
+    static void prefetch(const Key &key);
 
 private:
     friend struct TTEntry;
 };
 
-extern HashMap<hash_t, TTEntry> TT;
+extern HashMap<Key, TTEntry> TT;
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
 extern uint8_t transpositionTableAge;
