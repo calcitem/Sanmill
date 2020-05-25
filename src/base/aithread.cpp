@@ -120,8 +120,8 @@ void sq2str(char *str)
     openingBookDeque.pop_front();
     openingBookDequeBak.push_back(sq);
 
-    int r = 0;
-    int s = 0;
+    File r = FILE_A;
+    Rank s = RANK_1;
     int sig = 1;
 
     if (sq < 0) {
