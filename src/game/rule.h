@@ -40,7 +40,7 @@ struct Rule
     bool hasObliqueLines;
 
     // 是否有禁点（摆棋阶段被提子的点不能再摆子）
-    bool hasForbiddenLocations;
+    bool hasBannedLocations;
 
     // 是否后摆棋者先行棋
     bool isDefenderMoveFirst;

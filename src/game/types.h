@@ -152,7 +152,7 @@ enum PieceType : uint16_t
     NO_PIECE_TYPE = 0,   // 没有棋子
     BLACK_STONE = 1,    // 先手的子
     WHITE_STONE = 2,     // 后手的子
-    FORBIDDEN_STONE = 3,    // 禁点
+    BAN = 3,    // 禁点
     ALL_PIECES = 0,    // 禁点
     PIECE_TYPE_NB = 4
 };
@@ -166,7 +166,7 @@ enum PieceType : uint16_t
 enum Piece
 {
     NO_PIECE = 0x00,
-    PIECE_FORBIDDEN = 0x0F,
+    PIECE_BAN = 0x0F,
 
     PIECE_BLACK = 0x10,
     PIECE_B1 = 0x11,

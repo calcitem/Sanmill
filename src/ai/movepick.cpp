@@ -81,11 +81,11 @@ void MovePicker::score()
                 if (nopponentMills) {
                     int nPlayerPiece = 0;
                     int nOpponentPiece = 0;
-                    int nForbidden = 0;
+                    int nBanned = 0;
                     int nEmpty = 0;
 
                     position->board.getSurroundedPieceCount(sq, position->sideId,
-                                                            nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
+                                                            nPlayerPiece, nOpponentPiece, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
                     if (sq % 2 == 0 && nOpponentPiece == 3) {
@@ -98,7 +98,7 @@ void MovePicker::score()
             }
     #endif
 
-            //newNode->rating += static_cast<Rating>(nForbidden);  // 摆子阶段尽量往禁点旁边落子
+            //newNode->rating += static_cast<Rating>(nBanned);  // 摆子阶段尽量往禁点旁边落子
 
             // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
     #ifdef ALPHABETA_AI
@@ -111,11 +111,11 @@ void MovePicker::score()
         } else { // Remove
             int nPlayerPiece = 0;
             int nOpponentPiece = 0;
-            int nForbidden = 0;
+            int nBanned = 0;
             int nEmpty = 0;
 
             position->board.getSurroundedPieceCount(sq, position->sideId,
-                                                    nPlayerPiece, nOpponentPiece, nForbidden, nEmpty);
+                                                    nPlayerPiece, nOpponentPiece, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
             if (nMills > 0) {

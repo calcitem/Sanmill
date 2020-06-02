@@ -326,7 +326,7 @@ bool Board::isAllInMills(player_t player)
 int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
                                            Square square, bool includeFobidden)
 {
-    //assert(rule.hasForbiddenLocations == includeFobidden);
+    //assert(rule.hasBannedLocations == includeFobidden);
 
     int count = 0;
 
@@ -337,7 +337,7 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
             moveSquare = static_cast<Square>(MoveList::moveTable[square][d]);
             if (moveSquare) {
                 if (locations[moveSquare] == 0x00 ||
-                    (includeFobidden && locations[moveSquare] == PIECE_FORBIDDEN)) {
+                    (includeFobidden && locations[moveSquare] == PIECE_BAN)) {
                     count++;
                 }
             }
@@ -348,7 +348,7 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
 }
 
 // 计算指定位置周围有几个棋子
-void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nForbidden, int &nEmpty)
+void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty)
 {
     Square moveSquare;
 
@@ -365,8 +365,8 @@ void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece
         case NO_PIECE:
             nEmpty++;
             break;
-        case PIECE_FORBIDDEN:
-            nForbidden++;
+        case PIECE_BAN:
+            nBanned++;
             break;
         default:
             if (sideId == pieceType >> PLAYER_SHIFT) {

@@ -420,7 +420,7 @@ void GameController::playSound(sound_t soundType, player_t player)
     case GAME_SOUND_DROG:
         filename = "drog.wav";
         break;
-    case GAME_SOUND_FORBIDDEN:
+    case GAME_SOUND_BANNED:
         filename = "forbidden.wav";
         break;
     case GAME_SOUND_GAME_START:
@@ -819,7 +819,7 @@ bool GameController::actionPiece(QPointF pos)
             result = true;
         } else {
             // 播放禁止音效
-            playSound(GAME_SOUND_FORBIDDEN, state.position->getSideToMove());
+            playSound(GAME_SOUND_BANNED, state.position->getSideToMove());
         }
         break;
 
@@ -830,7 +830,7 @@ bool GameController::actionPiece(QPointF pos)
             result = true;
         } else {
             // 播放禁止音效
-            playSound(GAME_SOUND_FORBIDDEN, state.position->getSideToMove());
+            playSound(GAME_SOUND_BANNED, state.position->getSideToMove());
         }
         break;
 
@@ -1221,9 +1221,9 @@ bool GameController::updateScence(StateInfo &g)
     }
 
     // 添加摆棋阶段禁子点
-    if (rule.hasForbiddenLocations && g.position->getPhase() == PHASE_PLACING) {
+    if (rule.hasBannedLocations && g.position->getPhase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
-            if (board[j] == PIECE_FORBIDDEN) {
+            if (board[j] == PIECE_BAN) {
                 pos = scene.rs2pos(File(j / Board::N_SEATS), Rank(j % Board::N_SEATS + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
@@ -1240,7 +1240,7 @@ bool GameController::updateScence(StateInfo &g)
     }
 
     // 走棋阶段清除禁子点
-    if (rule.hasForbiddenLocations && g.position->getPhase() != PHASE_PLACING) {
+    if (rule.hasBannedLocations && g.position->getPhase() != PHASE_PLACING) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();

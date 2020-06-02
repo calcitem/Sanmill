@@ -199,7 +199,7 @@ public:
     bool checkGameOverCondition(int8_t cp = 0);
 
     // 清除所有禁点
-    void cleanForbiddenLocations();
+    void cleanBannedLocations();
 
     // 设置轮流
     void setSideToMove(player_t player);

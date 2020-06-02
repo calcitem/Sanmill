@@ -164,7 +164,7 @@ int Position::countPiecesOnBoard()
                 nPiecesOnBoard[WHITE]++;
             }
 #if 0
-            else if (board.locations[square] & PIECE_FORBIDDEN) {
+            else if (board.locations[square] & PIECE_BAN) {
                 // 不计算盘面子数
             }
 #endif
@@ -440,7 +440,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
                 action = ACTION_SELECT;
 
                 // 清除禁点
-                cleanForbiddenLocations();
+                cleanBannedLocations();
 
                 // 设置轮到谁走
                 if (rule.isDefenderMoveFirst) {
@@ -601,13 +601,13 @@ bool Position::removePiece(Square square, bool updateCmdlist)
     }
 
     // 去子（设置禁点）
-    if (rule.hasForbiddenLocations && phase == PHASE_PLACING) {
+    if (rule.hasBannedLocations && phase == PHASE_PLACING) {
         revertKey(square);
         board.locations[square] = '\x0f';
         updateKey(square);
 
         board.byTypeBB[oppId] ^= square;
-        board.byTypeBB[FORBIDDEN_STONE] |= square;
+        board.byTypeBB[BAN] |= square;
     } else { // 去子
         revertKey(square);
         board.locations[square] = '\x00';
@@ -659,7 +659,7 @@ bool Position::removePiece(Square square, bool updateCmdlist)
             action = ACTION_SELECT;
 
             // 清除禁点
-            cleanForbiddenLocations();
+            cleanBannedLocations();
 
             // 设置轮到谁走
             if (rule.isDefenderMoveFirst) {
@@ -1054,9 +1054,9 @@ int Position::getMobilityDiff(player_t turn, int piecesOnBoard[], bool includeFo
     return diff;
 }
 
-void Position::cleanForbiddenLocations()
+void Position::cleanBannedLocations()
 {
-    if (!rule.hasForbiddenLocations) {
+    if (!rule.hasBannedLocations) {
         return;
     }
 
@@ -1070,7 +1070,7 @@ void Position::cleanForbiddenLocations()
                 revertKey(square);
                 board.locations[square] = '\x00';
                 board.byTypeBB[ALL_PIECES] ^= square;
-                board.byTypeBB[FORBIDDEN_STONE] ^= square;  // TODO: 可能是多余
+                board.byTypeBB[BAN] ^= square;  // TODO: 可能是多余
             }
         }
     }
@@ -1240,8 +1240,8 @@ Key Position::getNextPrimaryKey(Move m)
         int pieceType = Player::getOpponentById(Player::toId(sideToMove));
         npKey ^= zobrist[sq][pieceType];
 
-        if (rule.hasForbiddenLocations && phase == PHASE_PLACING) {
-            npKey ^= zobrist[sq][FORBIDDEN_STONE];
+        if (rule.hasBannedLocations && phase == PHASE_PLACING) {
+            npKey ^= zobrist[sq][BAN];
         }
 
         return npKey;

@@ -43,10 +43,10 @@ public:
 
     Location & operator=(const Location &);
 
-    inline static void setForbiden(location_t &location)
+    inline static void setBan(location_t &location)
     {
-        assert(rule.hasForbiddenLocations == true);
-        location = PIECE_FORBIDDEN;
+        assert(rule.hasBannedLocations == true);
+        location = PIECE_BAN;
     }
 
 private:
