@@ -28,7 +28,7 @@ using score_t = uint32_t;
 //using Bitboard = uint32_t;
 typedef uint32_t Bitboard;
 
-constexpr int MAX_MOVES = 40;
+constexpr int MAX_MOVES = 64;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
 using Key = uint32_t;
