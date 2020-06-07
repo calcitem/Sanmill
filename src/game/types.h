@@ -166,35 +166,37 @@ enum PieceType : uint16_t
 enum Piece
 {
     NO_PIECE = 0x00,
-    PIECE_BAN = 0x0F,
+    BAN_STONE = 0x0F,
 
-    PIECE_BLACK = 0x10,
-    PIECE_B1 = 0x11,
-    PIECE_B2 = 0x12,
-    PIECE_B3 = 0x13,
-    PIECE_B4 = 0x14,
-    PIECE_B5 = 0x15,
-    PIECE_B6 = 0x16,
-    PIECE_B7 = 0x17,
-    PIECE_B8 = 0x18,
-    PIECE_B9 = 0x19,
-    PIECE_B10 = 0x1A,
-    PIECE_B11 = 0x1B,
-    PIECE_B12 = 0x1C,
+    B_STONE = 0x10,
+    B_STONE_1 = 0x11,
+    B_STONE_2 = 0x12,
+    B_STONE_3 = 0x13,
+    B_STONE_4 = 0x14,
+    B_STONE_5 = 0x15,
+    B_STONE_6 = 0x16,
+    B_STONE_7 = 0x17,
+    B_STONE_8 = 0x18,
+    B_STONE_9 = 0x19,
+    B_STONE_10 = 0x1A,
+    B_STONE_11 = 0x1B,
+    B_STONE_12 = 0x1C,
 
-    PIECE_WHITE = 0x20,
-    PIECE_W1 = 0x21,
-    PIECE_W2 = 0x22,
-    PIECE_W3 = 0x23,
-    PIECE_W4 = 0x24,
-    PIECE_W5 = 0x25,
-    PIECE_W6 = 0x26,
-    PIECE_W7 = 0x27,
-    PIECE_W8 = 0x28,
-    PIECE_W9 = 0x29,
-    PIECE_W10 = 0x2A,
-    PIECE_W11 = 0x2B,
-    PIECE_W12 = 0x2C,
+    W_STONE = 0x20,
+    W_STONE_1 = 0x21,
+    W_STONE_2 = 0x22,
+    W_STONE_3 = 0x23,
+    W_STONE_4 = 0x24,
+    W_STONE_5 = 0x25,
+    W_STONE_6 = 0x26,
+    W_STONE_7 = 0x27,
+    W_STONE_8 = 0x28,
+    W_STONE_9 = 0x29,
+    W_STONE_10 = 0x2A,
+    W_STONE_11 = 0x2B,
+    W_STONE_12 = 0x2C,
+
+    PIECE_NB = 24
 };
 
 using Depth = int8_t;
@@ -211,33 +213,33 @@ enum Square : int32_t
     SQ_C1 = 24, SQ_C2 = 25, SQ_C3 = 26, SQ_C4 = 27, SQ_C5 = 28, SQ_C6 = 29, SQ_C7 = 30, SQ_C8 = 31,
 
     SQ_32 = 32, SQ_33 = 33, SQ_34 = 34, SQ_35 = 35, SQ_36 = 36, SQ_37 = 37, SQ_38 = 38, SQ_39 = 39,
-    SQUARE_COUNT = 24,
 
-    SQ_EXPANDED_COUNT = 40,
+    SQ_NONE = 0,
+
+    EFFECTIVE_SQUARE_NB = 24,
+
+    SQUARE_NB = 40,
 
     SQ_BEGIN = SQ_8,
     SQ_END = SQ_32
 };
 
-// 移动方向，包括顺时针、逆时针、向内、向外4个方向
 enum MoveDirection
 {
-    DIRECTION_CLOCKWISE = 0,       // 顺时针
-    DIRECTION_BEGIN = DIRECTION_CLOCKWISE,
-    DIRECTION_ANTICLOCKWISE = 1,   // 逆时针
-    DIRECTION_INWARD = 2,          // 向内
-    DIRECTION_OUTWARD = 3,         // 向外
-    DIRECTION_FLY = 4,             // 飞子
-    DIRECTIONS_COUNT = 4               // 移动方向数
+    MD_CLOCKWISE = 0,
+    MD_BEGIN = MD_CLOCKWISE,
+    MD_ANTICLOCKWISE = 1,
+    MD_INWARD = 2,
+    MD_OUTWARD = 3,
+    MD_NB = 4
 };
 
-// 横直斜3个方向，禁止修改!
 enum LineDirection
 {
-    LINE_HORIZONTAL = 0,        // 横线
-    LINE_VERTICAL = 1,          // 直线
-    LINE_SLASH = 2,  // 斜线
-    LINE_TYPES_COUNT = 3               // 移动方向数
+    LD_HORIZONTAL = 0,
+    LD_VERTICAL = 1,
+    LD_SLASH = 2,
+    LD_NB = 3
 };
 
 // 圈
@@ -274,9 +276,8 @@ inline T& operator/=(T& d, int i) { return d = T(int(d) / i); }
 
 ENABLE_FULL_OPERATORS_ON(Value)
 ENABLE_FULL_OPERATORS_ON(Rating)
-ENABLE_FULL_OPERATORS_ON(MoveDirection)
+//ENABLE_FULL_OPERATORS_ON(MoveDirection)
 
-ENABLE_INCR_OPERATORS_ON(MoveDirection)
 ENABLE_INCR_OPERATORS_ON(PieceType)
 ENABLE_INCR_OPERATORS_ON(Square)
 

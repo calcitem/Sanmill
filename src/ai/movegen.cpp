@@ -38,7 +38,7 @@ void MoveList::create()
 {
     // Note: 未严格按 MoveDirection 中枚举的顺序从左到右排列
 #if 1
-    const int moveTable_obliqueLine[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = {
+    const int moveTable_obliqueLine[SQUARE_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -85,7 +85,7 @@ void MoveList::create()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable_noObliqueLine[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = {
+    const int moveTable_noObliqueLine[SQUARE_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -132,7 +132,7 @@ void MoveList::create()
         /* 39 */ {0, 0, 0, 0},
     };
 #else
-    const int moveTable_obliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
+    const int moveTable_obliqueLine[Board::N_LOCATIONS][MD_NB] = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
@@ -179,7 +179,7 @@ void MoveList::create()
         {0, 0, 0, 0}
     };
 
-    const int moveTable_noObliqueLine[Board::N_LOCATIONS][DIRECTIONS_COUNT] = {
+    const int moveTable_noObliqueLine[Board::N_LOCATIONS][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -235,10 +235,10 @@ void MoveList::create()
 
 #ifdef DEBUG_MODE
     int sum = 0;
-    for (int i = 0; i < SQ_EXPANDED_COUNT; i++) {
+    for (int i = 0; i < SQUARE_NB; i++) {
         loggerDebug("/* %d */ {", i);
-        for (int j = 0; j < DIRECTIONS_COUNT; j++) {
-            if (j == DIRECTIONS_COUNT - 1)
+        for (int j = 0; j < MD_NB; j++) {
+            if (j == MD_NB - 1)
                 loggerDebug("%d", moveTable[i][j]);
             else
                 loggerDebug("%d, ", moveTable[i][j]);
@@ -355,7 +355,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
                 if (position->nPiecesOnBoard[position->sideId] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     // 对于棋盘上还有3个子以上，或不允许飞子的情况，要求必须在着法表中
-                    for (int direction = DIRECTION_BEGIN; direction < DIRECTIONS_COUNT; direction++) {
+                    for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
                         // 对于原有位置，遍历四个方向的着法，如果棋盘上为空位就加到结点列表中
                         newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);
                         if (newSquare && !position->board.locations[newSquare]) {

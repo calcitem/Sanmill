@@ -47,14 +47,14 @@ public:
     static const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
 
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
-    static const int onBoard[SQ_EXPANDED_COUNT];
+    static const int onBoard[SQUARE_NB];
 
     // 判断位置点是否为星位 (星位是经常会先占的位置)
     static bool isStar(Square square);
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int millTable[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][N_RINGS - 1];
+    static int millTable[SQUARE_NB][LD_NB][N_RINGS - 1];
 
     // 生成成三表
     void createMillTable();
@@ -107,7 +107,7 @@ public:
         判断棋子是先手的用 (locations[square] & 0x10)
         判断棋子是后手的用 (locations[square] & 0x20)
      */
-    location_t locations[SQ_EXPANDED_COUNT]{};
+    location_t locations[SQUARE_NB]{};
 
     Bitboard byTypeBB[PIECE_TYPE_NB];
 

@@ -22,7 +22,7 @@
 #include "prefetch.h"
 
  // 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
-const int Board::onBoard[SQ_EXPANDED_COUNT] = {
+const int Board::onBoard[SQUARE_NB] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -31,7 +31,7 @@ const int Board::onBoard[SQ_EXPANDED_COUNT] = {
 };
 
 // 成三表
-int Board::millTable[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][N_RINGS - 1] = { {{0}} };
+int Board::millTable[SQUARE_NB][LD_NB][N_RINGS - 1] = { {{0}} };
 
 Board::Board()
 {
@@ -60,7 +60,7 @@ Board &Board::operator= (const Board &other)
 
 void Board::createMillTable()
 {
-    const int millTable_noObliqueLine[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][2] = {
+    const int millTable_noObliqueLine[SQUARE_NB][LD_NB][2] = {
         /* 0 */ {{0, 0}, {0, 0}, {0, 0}},
         /* 1 */ {{0, 0}, {0, 0}, {0, 0}},
         /* 2 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -107,7 +107,7 @@ void Board::createMillTable()
         /* 39 */ {{0, 0}, {0, 0}, {0, 0}}
     };
 
-    const int millTable_hasObliqueLines[SQ_EXPANDED_COUNT][LINE_TYPES_COUNT][2] = {
+    const int millTable_hasObliqueLines[SQUARE_NB][LD_NB][2] = {
         /*  0 */ {{0, 0}, {0, 0}, {0, 0}},
         /*  1 */ {{0, 0}, {0, 0}, {0, 0}},
         /*  2 */ {{0, 0}, {0, 0}, {0, 0}},
@@ -161,9 +161,9 @@ void Board::createMillTable()
     }
 
 #ifdef DEBUG_MODE
-    for (int i = 0; i < SQ_EXPANDED_COUNT; i++) {
+    for (int i = 0; i < SQUARE_NB; i++) {
         loggerDebug("/* %d */ {", i);
-        for (int j = 0; j < DIRECTIONS_COUNT; j++) {
+        for (int j = 0; j < MD_NB; j++) {
             loggerDebug("{");
             for (int k = 0; k < 2; k++) {
                 if (k == 0) {
@@ -219,7 +219,7 @@ int Board::inHowManyMills(Square square, player_t player, Square squareSelected)
         locations[squareSelected] = 0;
     }
 
-    for (int l = 0; l < LINE_TYPES_COUNT; l++) {
+    for (int l = 0; l < LD_NB; l++) {
         if (player &
             locations[millTable[square][l][0]] &
             locations[millTable[square][l][1]]) {
@@ -333,11 +333,11 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
     if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         Square moveSquare;
-        for (MoveDirection d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (MoveDirection)(d + 1)) {
+        for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
             moveSquare = static_cast<Square>(MoveList::moveTable[square][d]);
             if (moveSquare) {
                 if (locations[moveSquare] == 0x00 ||
-                    (includeFobidden && locations[moveSquare] == PIECE_BAN)) {
+                    (includeFobidden && locations[moveSquare] == BAN_STONE)) {
                     count++;
                 }
             }
@@ -352,7 +352,7 @@ void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece
 {
     Square moveSquare;
 
-    for (MoveDirection d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (MoveDirection)(d + 1)) {
+    for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
         moveSquare = static_cast<Square>(MoveList::moveTable[square][d]);
 
         if (!moveSquare) {
@@ -365,7 +365,7 @@ void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece
         case NO_PIECE:
             nEmpty++;
             break;
-        case PIECE_BAN:
+        case BAN_STONE:
             nBanned++;
             break;
         default:
@@ -400,7 +400,7 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
             continue;
         }
 
-        for (MoveDirection d = DIRECTION_BEGIN; d < DIRECTIONS_COUNT; d = (MoveDirection)(d + 1)) {
+        for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
             moveSquare = static_cast<Square>(MoveList::moveTable[sq][d]);
             if (moveSquare && !locations[moveSquare]) {
                 return false;

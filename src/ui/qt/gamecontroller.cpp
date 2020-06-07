@@ -1159,7 +1159,7 @@ bool GameController::updateScence(StateInfo &g)
         piece->setSelected(false);
 
         // 将pieceList的下标转换为game的棋子代号
-        key = (i % 2) ? (i / 2 + PIECE_W1) : (i / 2 + PIECE_B1);
+        key = (i % 2) ? (i / 2 + W_STONE_1) : (i / 2 + B_STONE_1);
 
         int j;
 
@@ -1190,7 +1190,7 @@ bool GameController::updateScence(StateInfo &g)
         // 如果没有找到，放置棋盘外的棋子
         if (j == (Board::N_SEATS) * (Board::N_RINGS + 1)) {
             // 判断是被吃掉的子，还是未安放的子
-            if (key & PIECE_BLACK) {
+            if (key & B_STONE) {
                 pos = (key - 0x11 < nTotalPieces / 2 - g.position->getPiecesInHandCount(BLACK)) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
@@ -1223,7 +1223,7 @@ bool GameController::updateScence(StateInfo &g)
     // 添加摆棋阶段禁子点
     if (rule.hasBannedLocations && g.position->getPhase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
-            if (board[j] == PIECE_BAN) {
+            if (board[j] == BAN_STONE) {
                 pos = scene.rs2pos(File(j / Board::N_SEATS), Rank(j % Board::N_SEATS + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
@@ -1251,7 +1251,7 @@ bool GameController::updateScence(StateInfo &g)
     int ipos = g.position->getCurrentSquare();
     if (ipos) {
         key = board[g.position->getCurrentSquare()];
-        ipos = key & PIECE_BLACK ? (key - PIECE_B1) * 2 : (key - PIECE_W1) * 2 + 1;
+        ipos = key & B_STONE ? (key - B_STONE_1) * 2 : (key - W_STONE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);

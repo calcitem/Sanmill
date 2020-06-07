@@ -46,7 +46,7 @@ public:
     inline static void setBan(location_t &location)
     {
         assert(rule.hasBannedLocations == true);
-        location = PIECE_BAN;
+        location = BAN_STONE;
     }
 
 private:

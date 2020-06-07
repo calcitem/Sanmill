@@ -75,7 +75,7 @@ extern uint8_t PopCnt16[1 << 16];
 extern uint8_t SquareDistance[SQ_32][SQ_32];
 
 extern Bitboard SquareBB[SQ_32];
-extern Bitboard LineBB[SQUARE_COUNT][SQ_32];
+extern Bitboard LineBB[EFFECTIVE_SQUARE_NB][SQ_32];
 
 inline Bitboard square_bb(Square s)
 {

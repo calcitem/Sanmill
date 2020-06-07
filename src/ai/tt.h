@@ -30,7 +30,7 @@ using namespace CTSL;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
-extern const Key zobrist[SQ_EXPANDED_COUNT][PIECE_TYPE_NB];
+extern const Key zobrist[SQUARE_NB][PIECE_TYPE_NB];
 
 struct TTEntry
 {

@@ -80,7 +80,7 @@ public:
     static void shuffle();
 
     // 着法表 // TODO: Move to private
-    inline static Move moveTable[SQ_EXPANDED_COUNT][DIRECTIONS_COUNT] = { {MOVE_NONE} };
+    inline static Move moveTable[SQUARE_NB][MD_NB] = { {MOVE_NONE} };
 
     // 着法顺序表, 后续会被打乱
     inline static array<Move, Board::N_RINGS *Board::N_SEATS> movePriorityTable{
