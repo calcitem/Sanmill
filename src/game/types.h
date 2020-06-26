@@ -59,33 +59,32 @@ enum Color : uint8_t
 
 #define PLAYER_SHIFT    4
 
-// 玩家标识, 轮流状态, 胜负标识
 enum player_t : uint8_t
 {
-    PLAYER_BLACK = 0x1 << PLAYER_SHIFT,   // 玩家1
-    PLAYER_WHITE = 0x2 << PLAYER_SHIFT,   // 玩家2
-    PLAYER_DRAW = 0x4 << PLAYER_SHIFT,      // 双方和棋
-    PLAYER_NOBODY = 0x8 << PLAYER_SHIFT     // 胜负未分
+    PLAYER_BLACK = 0x1 << PLAYER_SHIFT,
+    PLAYER_WHITE = 0x2 << PLAYER_SHIFT,
+    PLAYER_DRAW = 0x4 << PLAYER_SHIFT,
+    PLAYER_NOBODY = 0x8 << PLAYER_SHIFT
 };
 
 enum Phase : uint16_t
 {
     PHASE_NONE = 0,
-    PHASE_READY = 1,       // 未开局
-    PHASE_PLACING = 1 << 1,     // 开局（摆棋）
-    PHASE_MOVING = 1 << 2,      // 中局（走棋）
-    PHASE_GAMEOVER = 1 << 3,    // 结局
-    PHASE_PLAYING = PHASE_PLACING | PHASE_MOVING,  // 进行中
-    PHASE_NOTPLAYING = PHASE_READY | PHASE_GAMEOVER,  // 不在进行中
+    PHASE_READY = 1,
+    PHASE_PLACING = 1 << 1,
+    PHASE_MOVING = 1 << 2,
+    PHASE_GAMEOVER = 1 << 3,
+    PHASE_PLAYING = PHASE_PLACING | PHASE_MOVING,
+    PHASE_NOTPLAYING = PHASE_READY | PHASE_GAMEOVER,
 };
 
 // 动作状态标识
 enum Action : uint16_t
 {
     ACTION_NONE = 0x0000,
-    ACTION_SELECT = 0x0100,    // 选子
-    ACTION_PLACE = 0x0200,     // 落子
-    ACTION_REMOVE = 0x0400    // 提子
+    ACTION_SELECT = 0x0100,
+    ACTION_PLACE = 0x0200,
+    ACTION_REMOVE = 0x0400
 };
 
 enum Bound : uint8_t
@@ -115,7 +114,6 @@ enum Value : int8_t
     VALUE_MTDF_WINDOW = VALUE_EACH_PIECE,
     VALUE_PVS_WINDOW = VALUE_EACH_PIECE,
 
-    VALUE_IDS_WINDOW = 16, // IDS 前面的迭代可能至少要达到16,才不改变自对弈棋谱 TODO: 原因待查, 且前面的 value 调整后需跟着调整
     VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_PLACING_NEEDREMOVE + (VALUE_EACH_PIECE_ONBOARD - VALUE_EACH_PIECE_INHAND) + 1,
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1
 };

@@ -250,11 +250,6 @@ int AIAlgorithm::search(Depth depth)
             loggerDebug("%d(%d) ", value, value - lastValue);
 
             lastValue = value;
-
-#ifdef IDS_WINDOW
-            alpha = value - VALUE_IDS_WINDOW;
-            beta = value + VALUE_IDS_WINDOW;
-#endif // IDS_WINDOW
         }
 
 #ifdef TIME_STAT
@@ -270,14 +265,8 @@ int AIAlgorithm::search(Depth depth)
 #endif
 
     if (gameOptions.getIDSEnabled()) {
-#ifdef IDS_WINDOW
-        Value window = state->position->getPhase() == PHASE_PLACING ? VALUE_PLACING_WINDOW : VALUE_MOVING_WINDOW;
-        alpha = value - window;
-        beta = value + window;
-#else
         alpha = -VALUE_INFINITE;
         beta = VALUE_INFINITE;
-#endif // IDS_WINDOW
     }
 
     originDepth = d;
