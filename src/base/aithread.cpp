@@ -120,8 +120,8 @@ void sq2str(char *str)
     openingBookDeque.pop_front();
     openingBookDequeBak.push_back(sq);
 
-    File r = FILE_A;
-    Rank s = RANK_1;
+    File file = FILE_A;
+    Rank rank = RANK_1;
     int sig = 1;
 
     if (sq < 0) {
@@ -129,12 +129,12 @@ void sq2str(char *str)
         sig = 0;
     }
 
-    Board::squareToPolar((Square)sq, r, s);
+    Board::squareToPolar((Square)sq, file, rank);
 
     if (sig == 1) {
-        sprintf_s(str, 16, "(%d,%d)", r, s);
+        sprintf_s(str, 16, "(%d,%d)", file, rank);
     } else {
-        sprintf_s(str, 16, "-(%d,%d)", r, s);
+        sprintf_s(str, 16, "-(%d,%d)", file, rank);
     }
 }
 #endif // OPENING_BOOK

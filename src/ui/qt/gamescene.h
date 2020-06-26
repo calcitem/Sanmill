@@ -35,10 +35,10 @@ public:
     ~GameScene() override;
 
     // 将模型的圈、位转化为落子点坐标
-    QPointF rs2pos(File r, Rank s);
+    QPointF polar2pos(File file, Rank rank);
 
     // 将落子点坐标转化为模型用的圈、位
-    bool pos2rs(QPointF pos, File &r, Rank &s);
+    bool pos2polar(QPointF pos, File &file, Rank &rank);
 
     // 设置棋盘斜线
     void setDiagonal(bool arg = true);

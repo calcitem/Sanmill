@@ -31,7 +31,7 @@ const int Board::onBoard[SQUARE_NB] = {
 };
 
 // 成三表
-int Board::millTable[SQUARE_NB][LD_NB][N_RINGS - 1] = { {{0}} };
+int Board::millTable[SQUARE_NB][LD_NB][N_FILES - 1] = { {{0}} };
 
 Board::Board()
 {
@@ -185,19 +185,19 @@ void Board::createMillTable()
 #endif /* DEBUG_MODE */
 }
 
-void Board::squareToPolar(const Square square, File &r, Rank &s)
+void Board::squareToPolar(const Square square, File &file, Rank &rank)
 {
-    //r = square / N_SEATS;
-    //s = square % N_SEATS + 1;
-    r = File(square >> 3);
-    s = Rank((square & 0x07) + 1);
+    //r = square / N_RANKS;
+    //s = square % N_RANKS + 1;
+    file = File(square >> 3);
+    rank = Rank((square & 0x07) + 1);
 }
 
-Square Board::polarToSquare(File r, Rank s)
+Square Board::polarToSquare(File file, Rank rank)
 {
-    assert(!(r < 1 || r > N_RINGS || s < 1 || s > N_SEATS));
+    assert(!(file < 1 || file > N_FILES || rank < 1 || rank > N_RANKS));
 
-    return static_cast<Square>(r * N_SEATS + s - 1);
+    return static_cast<Square>(file * N_RANKS + rank - 1);
 }
 
 player_t Board::locationToPlayer(Square square)
@@ -383,7 +383,7 @@ void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece
 bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 {
     // 如果摆满
-    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= N_SEATS * N_RINGS)
+    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= N_RANKS * N_FILES)
         return true;
 
     // 判断是否可以飞子
@@ -432,40 +432,40 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square
     int r, s;
     int i;
 
-    for (r = 1; r <= N_RINGS; r++) {
-        for (s = 1; s < N_SEATS / 2; s++) {
-            ch = locations[r * N_SEATS + s];
-            locations[r * N_SEATS + s] = locations[(r + 1) * N_SEATS - s];
-            locations[(r + 1) * N_SEATS - s] = ch;
+    for (r = 1; r <= N_FILES; r++) {
+        for (s = 1; s < N_RANKS / 2; s++) {
+            ch = locations[r * N_RANKS + s];
+            locations[r * N_RANKS + s] = locations[(r + 1) * N_RANKS - s];
+            locations[(r + 1) * N_RANKS - s] = ch;
         }
     }
 
     uint64_t llp[3] = { 0 };
 
     if (move_ < 0) {
-        r = (-move_) / N_SEATS;
-        s = (-move_) % N_SEATS;
-        s = (N_SEATS - s) % N_SEATS;
-        move_ = -(r * N_SEATS + s);
+        r = (-move_) / N_RANKS;
+        s = (-move_) % N_RANKS;
+        s = (N_RANKS - s) % N_RANKS;
+        move_ = -(r * N_RANKS + s);
     } else {
         llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
         llp[1] = to_sq((Move)move_);
 
         for (i = 0; i < 2; i++) {
-            r = static_cast<int>(llp[i]) / N_SEATS;
-            s = static_cast<int>(llp[i]) % N_SEATS;
-            s = (N_SEATS - s) % N_SEATS;
-            llp[i] = (static_cast<uint64_t>(r) * N_SEATS + s);
+            r = static_cast<int>(llp[i]) / N_RANKS;
+            s = static_cast<int>(llp[i]) % N_RANKS;
+            s = (N_RANKS - s) % N_RANKS;
+            llp[i] = (static_cast<uint64_t>(r) * N_RANKS + s);
         }
 
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
     if (square != 0) {
-        r = square / N_SEATS;
-        s = square % N_SEATS;
-        s = (N_SEATS - s) % N_SEATS;
-        square = static_cast<Square>(r * N_SEATS + s);
+        r = square / N_RANKS;
+        s = square % N_RANKS;
+        s = (N_RANKS - s) % N_RANKS;
+        square = static_cast<Square>(r * N_RANKS + s);
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
@@ -475,10 +475,10 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square
             llp[2] = (mill & 0x00000000000000ff);
 
             for (i = 0; i < 3; i++) {
-                r = static_cast<int>(llp[i]) / N_SEATS;
-                s = static_cast<int>(llp[i]) % N_SEATS;
-                s = (N_SEATS - s) % N_SEATS;
-                llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
+                r = static_cast<int>(llp[i]) / N_RANKS;
+                s = static_cast<int>(llp[i]) % N_RANKS;
+                s = (N_RANKS - s) % N_RANKS;
+                llp[i] = static_cast<uint64_t>(r * N_RANKS + s);
             }
 
             mill &= 0xffffff00ff00ff00;
@@ -494,19 +494,19 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
         if (args >= 4) {
-            s1 = (N_SEATS - s1 + 1) % N_SEATS;
-            s2 = (N_SEATS - s2 + 1) % N_SEATS;
+            s1 = (N_RANKS - s1 + 1) % N_RANKS;
+            s2 = (N_RANKS - s2 + 1) % N_RANKS;
             cmdline[3] = '1' + static_cast<char>(s1);
             cmdline[10] = '1' + static_cast<char>(s2);
         } else {
             args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
             if (args >= 2) {
-                s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                s1 = (N_RANKS - s1 + 1) % N_RANKS;
                 cmdline[4] = '1' + static_cast<char>(s1);
             } else {
                 args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
-                    s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                    s1 = (N_RANKS - s1 + 1) % N_RANKS;
                     cmdline[3] = '1' + static_cast<char>(s1);
                 }
             }
@@ -515,19 +515,19 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square
         for (auto &iter : cmdlist) {
             args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
             if (args >= 4) {
-                s1 = (N_SEATS - s1 + 1) % N_SEATS;
-                s2 = (N_SEATS - s2 + 1) % N_SEATS;
+                s1 = (N_RANKS - s1 + 1) % N_RANKS;
+                s2 = (N_RANKS - s2 + 1) % N_RANKS;
                 iter[3] = '1' + static_cast<char>(s1);
                 iter[10] = '1' + static_cast<char>(s2);
             } else {
                 args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
-                    s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                    s1 = (N_RANKS - s1 + 1) % N_RANKS;
                     iter[4] = '1' + static_cast<char>(s1);
                 } else {
                     args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                     if (args >= 2) {
-                        s1 = (N_SEATS - s1 + 1) % N_SEATS;
+                        s1 = (N_RANKS - s1 + 1) % N_RANKS;
                         iter[3] = '1' + static_cast<char>(s1);
                     }
                 }
@@ -542,53 +542,53 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
     int r, s;
     int i;
 
-    for (s = 0; s < N_SEATS; s++) {
-        ch = locations[N_SEATS + s];
-        locations[N_SEATS + s] = locations[N_SEATS * N_RINGS + s];
-        locations[N_SEATS * N_RINGS + s] = ch;
+    for (s = 0; s < N_RANKS; s++) {
+        ch = locations[N_RANKS + s];
+        locations[N_RANKS + s] = locations[N_RANKS * N_FILES + s];
+        locations[N_RANKS * N_FILES + s] = ch;
     }
 
     uint64_t llp[3] = { 0 };
 
     if (move_ < 0) {
-        r = (-move_) / N_SEATS;
-        s = (-move_) % N_SEATS;
+        r = (-move_) / N_RANKS;
+        s = (-move_) % N_RANKS;
 
         if (r == 1)
-            r = N_RINGS;
-        else if (r == N_RINGS)
+            r = N_FILES;
+        else if (r == N_FILES)
             r = 1;
 
-        move_ = -(r * N_SEATS + s);
+        move_ = -(r * N_RANKS + s);
     } else {
         llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
         llp[1] = to_sq((Move)move_);
 
         for (i = 0; i < 2; i++) {
-            r = static_cast<int>(llp[i]) / N_SEATS;
-            s = static_cast<int>(llp[i]) % N_SEATS;
+            r = static_cast<int>(llp[i]) / N_RANKS;
+            s = static_cast<int>(llp[i]) % N_RANKS;
 
             if (r == 1)
-                r = N_RINGS;
-            else if (r == N_RINGS)
+                r = N_FILES;
+            else if (r == N_FILES)
                 r = 1;
 
-            llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
+            llp[i] = static_cast<uint64_t>(r * N_RANKS + s);
         }
 
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
     if (square != 0) {
-        r = square / N_SEATS;
-        s = square % N_SEATS;
+        r = square / N_RANKS;
+        s = square % N_RANKS;
 
         if (r == 1)
-            r = N_RINGS;
-        else if (r == N_RINGS)
+            r = N_FILES;
+        else if (r == N_FILES)
             r = 1;
 
-        square = static_cast<Square>(r * N_SEATS + s);
+        square = static_cast<Square>(r * N_RANKS + s);
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
@@ -598,15 +598,15 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
             llp[2] = (mill & 0x00000000000000ff);
 
             for (i = 0; i < 3; i++) {
-                r = static_cast<int>(llp[i]) / N_SEATS;
-                s = static_cast<int>(llp[i]) % N_SEATS;
+                r = static_cast<int>(llp[i]) / N_RANKS;
+                s = static_cast<int>(llp[i]) % N_RANKS;
 
                 if (r == 1)
-                    r = N_RINGS;
-                else if (r == N_RINGS)
+                    r = N_FILES;
+                else if (r == N_FILES)
                     r = 1;
 
-                llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
+                llp[i] = static_cast<uint64_t>(r * N_RANKS + s);
             }
 
             mill &= 0xffffff00ff00ff00;
@@ -625,13 +625,13 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
 
         if (args >= 4) {
             if (r1 == 1)
-                r1 = N_RINGS;
-            else if (r1 == N_RINGS)
+                r1 = N_FILES;
+            else if (r1 == N_FILES)
                 r1 = 1;
 
             if (r2 == 1)
-                r2 = N_RINGS;
-            else if (r2 == N_RINGS)
+                r2 = N_FILES;
+            else if (r2 == N_FILES)
                 r2 = 1;
 
             cmdline[1] = '0' + static_cast<char>(r1);
@@ -640,16 +640,16 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
             args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
             if (args >= 2) {
                 if (r1 == 1)
-                    r1 = N_RINGS;
-                else if (r1 == N_RINGS)
+                    r1 = N_FILES;
+                else if (r1 == N_FILES)
                     r1 = 1;
                 cmdline[2] = '0' + static_cast<char>(r1);
             } else {
                 args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
                     if (r1 == 1)
-                        r1 = N_RINGS;
-                    else if (r1 == N_RINGS)
+                        r1 = N_FILES;
+                    else if (r1 == N_FILES)
                         r1 = 1;
                     cmdline[1] = '0' + static_cast<char>(r1);
                 }
@@ -663,13 +663,13 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
 
             if (args >= 4) {
                 if (r1 == 1)
-                    r1 = N_RINGS;
-                else if (r1 == N_RINGS)
+                    r1 = N_FILES;
+                else if (r1 == N_FILES)
                     r1 = 1;
 
                 if (r2 == 1)
-                    r2 = N_RINGS;
-                else if (r2 == N_RINGS)
+                    r2 = N_FILES;
+                else if (r2 == N_FILES)
                     r2 = 1;
 
                 iter[1] = '0' + static_cast<char>(r1);
@@ -678,8 +678,8 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
                 args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                 if (args >= 2) {
                     if (r1 == 1)
-                        r1 = N_RINGS;
-                    else if (r1 == N_RINGS)
+                        r1 = N_FILES;
+                    else if (r1 == N_FILES)
                         r1 = 1;
 
                     iter[2] = '0' + static_cast<char>(r1);
@@ -687,8 +687,8 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
                     args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                     if (args >= 2) {
                         if (r1 == 1)
-                            r1 = N_RINGS;
-                        else if (r1 == N_RINGS)
+                            r1 = N_FILES;
+                        else if (r1 == N_FILES)
                             r1 = 1;
 
                         iter[1] = '0' + static_cast<char>(r1);
@@ -717,35 +717,35 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
     int i;
 
     if (degrees == 2) {
-        for (r = 1; r <= N_RINGS; r++) {
-            ch1 = locations[r * N_SEATS];
-            ch2 = locations[r * N_SEATS + 1];
+        for (r = 1; r <= N_FILES; r++) {
+            ch1 = locations[r * N_RANKS];
+            ch2 = locations[r * N_RANKS + 1];
 
-            for (s = 0; s < N_SEATS - 2; s++) {
-                locations[r * N_SEATS + s] = locations[r * N_SEATS + s + 2];
+            for (s = 0; s < N_RANKS - 2; s++) {
+                locations[r * N_RANKS + s] = locations[r * N_RANKS + s + 2];
             }
 
-            locations[r * N_SEATS + 6] = ch1;
-            locations[r * N_SEATS + 7] = ch2;
+            locations[r * N_RANKS + 6] = ch1;
+            locations[r * N_RANKS + 7] = ch2;
         }
     } else if (degrees == 6) {
-        for (r = 1; r <= N_RINGS; r++) {
-            ch1 = locations[r * N_SEATS + 7];
-            ch2 = locations[r * N_SEATS + 6];
+        for (r = 1; r <= N_FILES; r++) {
+            ch1 = locations[r * N_RANKS + 7];
+            ch2 = locations[r * N_RANKS + 6];
 
-            for (s = N_SEATS - 1; s >= 2; s--) {
-                locations[r * N_SEATS + s] = locations[r * N_SEATS + s - 2];
+            for (s = N_RANKS - 1; s >= 2; s--) {
+                locations[r * N_RANKS + s] = locations[r * N_RANKS + s - 2];
             }
 
-            locations[r * N_SEATS + 1] = ch1;
-            locations[r * N_SEATS] = ch2;
+            locations[r * N_RANKS + 1] = ch1;
+            locations[r * N_RANKS] = ch2;
         }
     } else if (degrees == 4) {
-        for (r = 1; r <= N_RINGS; r++) {
-            for (s = 0; s < N_SEATS / 2; s++) {
-                ch1 = locations[r * N_SEATS + s];
-                locations[r * N_SEATS + s] = locations[r * N_SEATS + s + 4];
-                locations[r * N_SEATS + s + 4] = ch1;
+        for (r = 1; r <= N_FILES; r++) {
+            for (s = 0; s < N_RANKS / 2; s++) {
+                ch1 = locations[r * N_RANKS + s];
+                locations[r * N_RANKS + s] = locations[r * N_RANKS + s + 4];
+                locations[r * N_RANKS + s + 4] = ch1;
             }
         }
     } else {
@@ -755,29 +755,29 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
     uint64_t llp[3] = { 0 };
 
     if (move_ < 0) {
-        r = (-move_) / N_SEATS;
-        s = (-move_) % N_SEATS;
-        s = (s + N_SEATS - degrees) % N_SEATS;
-        move_ = -(r * N_SEATS + s);
+        r = (-move_) / N_RANKS;
+        s = (-move_) % N_RANKS;
+        s = (s + N_RANKS - degrees) % N_RANKS;
+        move_ = -(r * N_RANKS + s);
     } else {
         llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
         llp[1] = to_sq((Move)move_);
-        r = static_cast<int>(llp[0]) / N_SEATS;
-        s = static_cast<int>(llp[0]) % N_SEATS;
-        s = (s + N_SEATS - degrees) % N_SEATS;
-        llp[0] = static_cast<uint64_t>(r * N_SEATS + s);
-        r = static_cast<int>(llp[1]) / N_SEATS;
-        s = static_cast<int>(llp[1]) % N_SEATS;
-        s = (s + N_SEATS - degrees) % N_SEATS;
-        llp[1] = static_cast<uint64_t>(r * N_SEATS + s);
+        r = static_cast<int>(llp[0]) / N_RANKS;
+        s = static_cast<int>(llp[0]) % N_RANKS;
+        s = (s + N_RANKS - degrees) % N_RANKS;
+        llp[0] = static_cast<uint64_t>(r * N_RANKS + s);
+        r = static_cast<int>(llp[1]) / N_RANKS;
+        s = static_cast<int>(llp[1]) % N_RANKS;
+        s = (s + N_RANKS - degrees) % N_RANKS;
+        llp[1] = static_cast<uint64_t>(r * N_RANKS + s);
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
     if (square != 0) {
-        r = square / N_SEATS;
-        s = square % N_SEATS;
-        s = (s + N_SEATS - degrees) % N_SEATS;
-        square = static_cast<Square>(r * N_SEATS + s);
+        r = square / N_RANKS;
+        s = square % N_RANKS;
+        s = (s + N_RANKS - degrees) % N_RANKS;
+        square = static_cast<Square>(r * N_RANKS + s);
     }
 
     if (rule.allowRemovePiecesRepeatedly) {
@@ -787,10 +787,10 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
             llp[2] = (mill & 0x00000000000000ff);
 
             for (i = 0; i < 3; i++) {
-                r = static_cast<int>(llp[i]) / N_SEATS;
-                s = static_cast<int>(llp[i]) % N_SEATS;
-                s = (s + N_SEATS - degrees) % N_SEATS;
-                llp[i] = static_cast<uint64_t>(r * N_SEATS + s);
+                r = static_cast<int>(llp[i]) / N_RANKS;
+                s = static_cast<int>(llp[i]) % N_RANKS;
+                s = (s + N_RANKS - degrees) % N_RANKS;
+                llp[i] = static_cast<uint64_t>(r * N_RANKS + s);
             }
 
             mill &= 0xffffff00ff00ff00;
@@ -806,21 +806,21 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
         if (args >= 4) {
-            s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
-            s2 = (s2 - 1 + N_SEATS - degrees) % N_SEATS;
+            s1 = (s1 - 1 + N_RANKS - degrees) % N_RANKS;
+            s2 = (s2 - 1 + N_RANKS - degrees) % N_RANKS;
             cmdline[3] = '1' + static_cast<char>(s1);
             cmdline[10] = '1' + static_cast<char>(s2);
         } else {
             args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
 
             if (args >= 2) {
-                s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                s1 = (s1 - 1 + N_RANKS - degrees) % N_RANKS;
                 cmdline[4] = '1' + static_cast<char>(s1);
             } else {
                 args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
 
                 if (args >= 2) {
-                    s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                    s1 = (s1 - 1 + N_RANKS - degrees) % N_RANKS;
                     cmdline[3] = '1' + static_cast<char>(s1);
                 }
             }
@@ -830,20 +830,20 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
             args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
 
             if (args >= 4) {
-                s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
-                s2 = (s2 - 1 + N_SEATS - degrees) % N_SEATS;
+                s1 = (s1 - 1 + N_RANKS - degrees) % N_RANKS;
+                s2 = (s2 - 1 + N_RANKS - degrees) % N_RANKS;
                 iter[3] = '1' + static_cast<char>(s1);
                 iter[10] = '1' + static_cast<char>(s2);
             } else {
                 args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
 
                 if (args >= 2) {
-                    s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                    s1 = (s1 - 1 + N_RANKS - degrees) % N_RANKS;
                     iter[4] = '1' + static_cast<char>(s1);
                 } else {
                     args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
                     if (args >= 2) {
-                        s1 = (s1 - 1 + N_SEATS - degrees) % N_SEATS;
+                        s1 = (s1 - 1 + N_RANKS - degrees) % N_RANKS;
                         iter[3] = '1' + static_cast<char>(s1);
                     }
                 }

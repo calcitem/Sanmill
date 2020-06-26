@@ -38,12 +38,12 @@ public:
 
     // 静态成员常量
     // 3圈，禁止修改!
-    static const int N_RINGS = 3;
+    static const int N_FILES = 3;
 
     // 8位，禁止修改!
-    static const int N_SEATS = 8;
+    static const int N_RANKS = 8;
 
-    static const int MOVE_PRIORITY_TABLE_SIZE = Board::N_RINGS * Board::N_SEATS;
+    static const int MOVE_PRIORITY_TABLE_SIZE = Board::N_FILES * Board::N_RANKS;
 
     // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
     static const int onBoard[SQUARE_NB];
@@ -53,7 +53,7 @@ public:
 
     // 成三表，表示棋盘上各个位置有成三关系的对应位置表
     // 这个表跟规则有关，一旦规则改变需要重新修改
-    static int millTable[SQUARE_NB][LD_NB][N_RINGS - 1];
+    static int millTable[SQUARE_NB][LD_NB][N_FILES - 1];
 
     // 生成成三表
     void createMillTable();
@@ -86,10 +86,10 @@ public:
     int addMills(Square square);
 
     // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
-    static void squareToPolar(Square square, File &r, Rank &s);
+    static void squareToPolar(Square square, File &file, Rank &rank);
 
     // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
-    static Square polarToSquare(File r, Rank s);
+    static Square polarToSquare(File file, Rank rank);
 
     static void printBoard();
 

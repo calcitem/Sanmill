@@ -137,14 +137,14 @@ inline Bitboard file_bb(Square s)
 }
 #endif
 
-inline Bitboard ring_bb(File r)
+inline Bitboard ring_bb(File file)
 {
-    return Ring1 << (8 * (r - 1));
+    return Ring1 << (8 * (file - 1));
 }
 
-inline Bitboard seat_bb(Rank s)
+inline Bitboard seat_bb(Rank rank)
 {
-    return Seat1 << (s - 1);
+    return Seat1 << (rank - 1);
 }
 
 #if 0

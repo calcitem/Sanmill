@@ -155,9 +155,9 @@ int Position::countPiecesOnBoard()
 {
     nPiecesOnBoard[BLACK] = nPiecesOnBoard[WHITE] = 0;
 
-    for (int r = 1; r < Board::N_RINGS + 2; r++) {
-        for (int s = 0; s < Board::N_SEATS; s++) {
-            Square square = static_cast<Square>(r * Board::N_SEATS + s);
+    for (int r = 1; r < Board::N_FILES + 2; r++) {
+        for (int s = 0; s < Board::N_RANKS; s++) {
+            Square square = static_cast<Square>(r * Board::N_RANKS + s);
             if (board.locations[square] & B_STONE) {
                 nPiecesOnBoard[BLACK]++;
             } else if (board.locations[square] & W_STONE) {
@@ -363,8 +363,8 @@ bool Position::start()
 
 bool Position::placePiece(Square square, bool updateCmdlist)
 {
-    File r;
-    Rank s;
+    File file;
+    Rank rank;
     int i;
     // 时间的临时变量
     int seconds = -1;
@@ -394,7 +394,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
         return false;
 
     // 格式转换
-    Board::squareToPolar(square, r, s);
+    Board::squareToPolar(square, file, rank);
 
     if (phase == PHASE_PLACING) {
         piece = (0x01 | sideToMove) + rule.nTotalPiecesEachSide - nPiecesInHand[playerId];
@@ -413,7 +413,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
         if (updateCmdlist) {
             seconds = update();
             sprintf(cmdline, "(%1u,%1u) %02u:%02u",
-                    r, s, seconds / 60, seconds % 60);
+                    file, rank, seconds / 60, seconds % 60);
             cmdlist.emplace_back(string(cmdline));
             currentStep++;
         }
@@ -498,8 +498,8 @@ bool Position::placePiece(Square square, bool updateCmdlist)
 
     if (updateCmdlist) {
         seconds = update();
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentSquare / Board::N_SEATS, currentSquare % Board::N_SEATS + 1,
-                r, s, seconds / 60, seconds % 60);
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentSquare / Board::N_RANKS, currentSquare % Board::N_RANKS + 1,
+                file, rank, seconds / 60, seconds % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep++;
@@ -549,18 +549,18 @@ out:
     return true;
 }
 
-bool Position::_placePiece(File r, Rank s)
+bool Position::_placePiece(File file, Rank rank)
 {
     // 转换为 square
-    Square square = Board::polarToSquare(r, s);
+    Square square = Board::polarToSquare(file, rank);
 
     return placePiece(square, true);
 }
 
-bool Position::_removePiece(File r, Rank s)
+bool Position::_removePiece(File file, Rank rank)
 {
     // 转换为 square
-    Square square = Board::polarToSquare(r, s);
+    Square square = Board::polarToSquare(file, rank);
 
     return removePiece(square, 1);
 }
@@ -580,9 +580,9 @@ bool Position::removePiece(Square square, bool updateCmdlist)
         return false;
 
     // 格式转换
-    File r;
-    Rank s;
-    Board::squareToPolar(square, r, s);
+    File file;
+    Rank rank;
+    Board::squareToPolar(square, file, rank);
 
     // 时间的临时变量
     int seconds = -1;
@@ -622,7 +622,7 @@ bool Position::removePiece(Square square, bool updateCmdlist)
 
     if (updateCmdlist) {
         seconds = update();
-        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", r, s, seconds / 60, seconds % 60);
+        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", file, rank, seconds / 60, seconds % 60);
         cmdlist.emplace_back(string(cmdline));
         currentStep++;
         moveStep = 0;
@@ -733,9 +733,9 @@ bool Position::selectPiece(Square square)
     return false;
 }
 
-bool Position::selectPiece(File r, Rank s)
+bool Position::selectPiece(File file, Rank rank)
 {
-    return selectPiece(Board::polarToSquare(r, s));
+    return selectPiece(Board::polarToSquare(file, rank));
 }
 
 bool Position::giveup(player_t loser)
@@ -764,25 +764,25 @@ bool Position::giveup(player_t loser)
 // 打算用个C++的命令行解析库的，简单的没必要，但中文编码有极小概率出问题
 bool Position::command(const char *cmd)
 {
-    int r;
+    int ruleIndex;
     unsigned t;
-    Step s;
-    File r1, r2;
-    Rank s1, s2;
+    Step step;
+    File file1, file2;
+    Rank rank1, rank2;
     int args = 0;
     int mm = 0, ss = 0;
 
     // 设置规则
-    if (sscanf(cmd, "r%1u s%3hd t%2u", &r, &s, &t) == 3) {
-        if (r <= 0 || r > N_RULES) {
+    if (sscanf(cmd, "r%1u s%3hd t%2u", &ruleIndex, &step, &t) == 3) {
+        if (ruleIndex <= 0 || ruleIndex > N_RULES) {
             return false;
         }
 
-        return setPosition(&RULES[r - 1]);
+        return setPosition(&RULES[ruleIndex - 1]);
     }
 
     // 选子移动
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &file1, &rank1, &file2, &rank2, &mm, &ss);
 
     if (args >= 4) {
         if (args == 7) {
@@ -790,31 +790,31 @@ bool Position::command(const char *cmd)
                 tm = mm * 60 + ss;
         }
 
-        if (selectPiece(r1, s1)) {
-            return _placePiece(r2, s2);
+        if (selectPiece(file1, rank1)) {
+            return _placePiece(file2, rank2);
         }
 
         return false;
     }
 
     // 去子
-    args = sscanf(cmd, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+    args = sscanf(cmd, "-(%1u,%1u) %2u:%2u", &file1, &rank1, &mm, &ss);
     if (args >= 2) {
         if (args == 5) {
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _removePiece(r1, s1);
+        return _removePiece(file1, rank1);
     }
 
     // 落子
-    args = sscanf(cmd, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+    args = sscanf(cmd, "(%1u,%1u) %2u:%2u", &file1, &rank1, &mm, &ss);
     if (args >= 2) {
         if (args == 5) {
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _placePiece(r1, s1);
+        return _placePiece(file1, rank1);
     }
 
     // 认输
@@ -981,7 +981,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
 #endif
 
     // 如果摆满了，根据规则判断胜负
-    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= Board::N_SEATS * Board::N_RINGS) {
+    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= Board::N_RANKS * Board::N_FILES) {
         phase = PHASE_GAMEOVER;
 
         if (rule.isStartingPlayerLoseWhenBoardFull) {
@@ -1062,9 +1062,9 @@ void Position::cleanBannedLocations()
 
     Square square = SQ_0;
 
-    for (int r = 1; r <= Board::N_RINGS; r++) {
-        for (int s = 0; s < Board::N_SEATS; s++) {
-            square = static_cast<Square>(r * Board::N_SEATS + s);
+    for (int r = 1; r <= Board::N_FILES; r++) {
+        for (int s = 0; s < Board::N_RANKS; s++) {
+            square = static_cast<Square>(r * Board::N_RANKS + s);
 
             if (board.locations[square] == '\x0f') {
                 revertKey(square);

@@ -37,9 +37,9 @@ const std::string Bitboards::pretty(Bitboard b)
 
     std::string str = "+---+---+---+---+---+---+---+---+\n";
 
-    for (Rank s = RANK_1; s <= RANK_8; s = (Rank)(s + 1)) {
-        for (File r = FILE_A; r <= FILE_C; r = (File)(r + 1))
-            str += b & make_square(r, s) ? "| X " : "|   ";
+    for (Rank rank = RANK_1; rank <= RANK_8; rank = (Rank)(rank + 1)) {
+        for (File file = FILE_A; file <= FILE_C; file = (File)(file + 1))
+            str += b & make_square(file, rank) ? "| X " : "|   ";
 
         str += "|\n+---+---+---+---+---+---+---+---+\n";
     }

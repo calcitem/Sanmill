@@ -31,34 +31,34 @@ BoardItem::BoardItem(QGraphicsItem *parent) :
         setPos(0, 0);
 
     // 初始化24个落子点
-    for (int r = 0; r < N_RINGS; r++) {
+    for (int r = 0; r < N_FILES; r++) {
         // 内圈的12点钟方向为第一个位置，按顺时针方向排序
         // 然后是中圈和外圈
         int a = (r + 1) * LINE_INTERVAL;
 
-        position[r * N_SEATS + 0].rx() = 0;
-        position[r * N_SEATS + 0].ry() = -a;
+        position[r * N_RANKS + 0].rx() = 0;
+        position[r * N_RANKS + 0].ry() = -a;
 
-        position[r * N_SEATS + 1].rx() = a;
-        position[r * N_SEATS + 1].ry() = -a;
+        position[r * N_RANKS + 1].rx() = a;
+        position[r * N_RANKS + 1].ry() = -a;
 
-        position[r * N_SEATS + 2].rx() = a;
-        position[r * N_SEATS + 2].ry() = 0;
+        position[r * N_RANKS + 2].rx() = a;
+        position[r * N_RANKS + 2].ry() = 0;
 
-        position[r * N_SEATS + 3].rx() = a;
-        position[r * N_SEATS + 3].ry() = a;
+        position[r * N_RANKS + 3].rx() = a;
+        position[r * N_RANKS + 3].ry() = a;
 
-        position[r * N_SEATS + 4].rx() = 0;
-        position[r * N_SEATS + 4].ry() = a;
+        position[r * N_RANKS + 4].rx() = 0;
+        position[r * N_RANKS + 4].ry() = a;
 
-        position[r * N_SEATS + 5].rx() = -a;
-        position[r * N_SEATS + 5].ry() = a;
+        position[r * N_RANKS + 5].rx() = -a;
+        position[r * N_RANKS + 5].ry() = a;
 
-        position[r * N_SEATS + 6].rx() = -a;
-        position[r * N_SEATS + 6].ry() = 0;
+        position[r * N_RANKS + 6].rx() = -a;
+        position[r * N_RANKS + 6].ry() = 0;
 
-        position[r * N_SEATS + 7].rx() = -a;
-        position[r * N_SEATS + 7].ry() = -a;
+        position[r * N_RANKS + 7].rx() = -a;
+        position[r * N_RANKS + 7].ry() = -a;
     }
 }
 
@@ -118,20 +118,20 @@ void BoardItem::paint(QPainter *painter,
     // 空画刷
     painter->setBrush(Qt::NoBrush);
 
-    for (uint8_t i = 0; i < N_RINGS; i++) {
+    for (uint8_t i = 0; i < N_FILES; i++) {
         // 画3个方框
-        painter->drawPolygon(position + i * N_SEATS, N_SEATS);
+        painter->drawPolygon(position + i * N_RANKS, N_RANKS);
     }
 
     // 画4条纵横线
-    for (int i = 0; i  < N_SEATS; i += 2) {
-        painter->drawLine(position[i], position[(N_RINGS - 1) * N_SEATS + i]);
+    for (int i = 0; i  < N_RANKS; i += 2) {
+        painter->drawLine(position[i], position[(N_FILES - 1) * N_RANKS + i]);
     }
 
     if (hasObliqueLine) {
         // 画4条斜线
-        for (int i = 1; i  < N_SEATS; i += 2) {
-            painter->drawLine(position[i], position[(N_RINGS - 1) * N_SEATS + i]);
+        for (int i = 1; i  < N_RANKS; i += 2) {
+            painter->drawLine(position[i], position[(N_FILES - 1) * N_RANKS + i]);
         }
     }
 
@@ -145,10 +145,10 @@ void BoardItem::paint(QPainter *painter,
     font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     painter->setFont(font);
 
-    for (int i = 0; i < N_SEATS; i++) {
+    for (int i = 0; i < N_RANKS; i++) {
         char cSeat = '1' + i;
         QString strSeat(cSeat);
-        painter->drawText(position[(N_RINGS - 1) * N_SEATS + i], strSeat);
+        painter->drawText(position[(N_FILES - 1) * N_RANKS + i], strSeat);
     }
 #endif // PLAYER_DRAW_SEAT_NUMBER
 }
@@ -170,19 +170,19 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     return nearestPos;
 }
 
-QPointF BoardItem::rs2pos(File r, Rank s)
+QPointF BoardItem::polar2pos(File file, Rank rank)
 {
-    return position[((int)r - 1) * N_SEATS + (int)s - 1]; // TODO: 为什么是 r - 1 和算法部分不一样?
+    return position[((int)file - 1) * N_RANKS + (int)rank - 1]; // TODO: 为什么是 r - 1 和算法部分不一样?
 }
 
-bool BoardItem::pos2rs(QPointF pos, File &r, Rank &s)
+bool BoardItem::pos2polar(QPointF pos, File &file, Rank &rank)
 {
     // 寻找最近的落子点
-    for (int i = 0; i < N_RINGS * N_SEATS; i++) {
+    for (int i = 0; i < N_FILES * N_RANKS; i++) {
         // 如果pos点在落子点附近
         if (QLineF(pos, position[i]).length() < PIECE_SIZE / 6) {
-            r = File(i / N_SEATS + 1);
-            s = Rank(i % N_SEATS + 1);
+            file = File(i / N_RANKS + 1);
+            rank = Rank(i % N_RANKS + 1);
             return true;
         }
     }

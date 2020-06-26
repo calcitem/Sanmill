@@ -223,13 +223,13 @@ public:
     player_t getWinner() const;
 
     // 选子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool selectPiece(File r, Rank s);
+    bool selectPiece(File file, Rank rank);
 
     // 落子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _placePiece(File r, Rank s);
+    bool _placePiece(File file, Rank rank);
 
     // 去子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
-    bool _removePiece(File r, Rank s);
+    bool _removePiece(File file, Rank rank);
 
     // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool doMove(Move move);

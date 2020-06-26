@@ -735,10 +735,10 @@ bool GameController::actionPiece(QPointF pos)
 {
 #ifndef TRAINING_MODE
     // 点击非落子点，不执行
-    File r;
-    Rank s;
+    File file;
+    Rank rank;
 
-    if (!scene.pos2rs(pos, r, s)) {
+    if (!scene.pos2polar(pos, file, rank)) {
         return false;
     }
 
@@ -794,7 +794,7 @@ bool GameController::actionPiece(QPointF pos)
 
     switch (state.position->getAction()) {
     case ACTION_PLACE:
-        if (state.position->_placePiece(r, s)) {
+        if (state.position->_placePiece(file, rank)) {
             if (state.position->getAction() == ACTION_REMOVE) {
                 // 播放成三音效
                 playSound(GAME_SOUND_MILL, state.position->getSideToMove());
@@ -813,7 +813,7 @@ bool GameController::actionPiece(QPointF pos)
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (state.position->selectPiece(r, s)) {
+        if (state.position->selectPiece(file, rank)) {
             // 播放选子音效
             playSound(GAME_SOUND_SELECT, state.position->getSideToMove());
             result = true;
@@ -824,7 +824,7 @@ bool GameController::actionPiece(QPointF pos)
         break;
 
     case ACTION_REMOVE:
-        if (state.position->_removePiece(r, s)) {
+        if (state.position->_removePiece(file, rank)) {
             // 播放音效
             playSound(GAME_SOUND_REMOVE, state.position->getSideToMove());
             result = true;
@@ -1166,7 +1166,7 @@ bool GameController::updateScence(StateInfo &g)
         // 遍历棋盘，查找并放置棋盘上的棋子
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.rs2pos(File(j / Board::N_SEATS), Rank(j % Board::N_SEATS + 1));
+                pos = scene.polar2pos(File(j / Board::N_RANKS), Rank(j % Board::N_RANKS + 1));
                 if (piece->pos() != pos) {
 
                     // 让移动的棋子位于顶层
@@ -1188,7 +1188,7 @@ bool GameController::updateScence(StateInfo &g)
         }
 
         // 如果没有找到，放置棋盘外的棋子
-        if (j == (Board::N_SEATS) * (Board::N_RINGS + 1)) {
+        if (j == (Board::N_RANKS) * (Board::N_FILES + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & B_STONE) {
                 pos = (key - 0x11 < nTotalPieces / 2 - g.position->getPiecesInHandCount(BLACK)) ?
@@ -1224,7 +1224,7 @@ bool GameController::updateScence(StateInfo &g)
     if (rule.hasBannedLocations && g.position->getPhase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == BAN_STONE) {
-                pos = scene.rs2pos(File(j / Board::N_SEATS), Rank(j % Board::N_SEATS + 1));
+                pos = scene.polar2pos(File(j / Board::N_RANKS), Rank(j % Board::N_RANKS + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
                 } else {

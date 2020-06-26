@@ -57,16 +57,16 @@ public:
     QPointF nearestPosition(QPointF pos);
 
     // 将模型的圈、位转化为落子点坐标
-    QPointF rs2pos(File r, Rank s);
+    QPointF polar2pos(File file, Rank rank);
 
     // 将落子点坐标转化为模型用的圈、位
-    bool pos2rs(QPointF pos, File &r, Rank &s);
+    bool pos2polar(QPointF pos, File &file, Rank &rank);
 
     // 3圈，禁止修改！
-    static const uint8_t N_RINGS = 3;
+    static const uint8_t N_FILES = 3;
 
     // 8位，禁止修改！
-    static const uint8_t N_SEATS = 8;
+    static const uint8_t N_RANKS = 8;
 
 private:
     // 棋盘尺寸
@@ -76,7 +76,7 @@ private:
     int sizeShadow {5};
 
     // 24个落子点
-    QPointF position[N_RINGS * N_SEATS];
+    QPointF position[N_FILES * N_RANKS];
 
     // 是否有斜线
     bool hasObliqueLine {false};

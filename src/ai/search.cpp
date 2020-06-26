@@ -701,19 +701,19 @@ const char* AIAlgorithm::nextMove()
 
 const char *AIAlgorithm::moveToCommand(Move move)
 {
-    File rto;
-    Rank sto;
-    Board::squareToPolar(to_sq(move), rto, sto);
+    File file2;
+    Rank rank2;
+    Board::squareToPolar(to_sq(move), file2, rank2);
 
     if (move < 0) {
-        sprintf(cmdline, "-(%1u,%1u)", rto, sto);
+        sprintf(cmdline, "-(%1u,%1u)", file2, rank2);
     } else if (move & 0x7f00) {
-        File rfrom;
-        Rank sfrom;
-        Board::squareToPolar(from_sq(move), rfrom, sfrom);
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", rfrom, sfrom, rto, sto);
+        File file1;
+        Rank rank1;
+        Board::squareToPolar(from_sq(move), file1, rank1);
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", file1, rank1, file2, rank2);
     } else {
-        sprintf(cmdline, "(%1u,%1u)", rto, sto);
+        sprintf(cmdline, "(%1u,%1u)", file2, rank2);
     }
 
     return cmdline;

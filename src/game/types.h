@@ -314,9 +314,9 @@ constexpr Color operator~(Color color)
 
 
 // TODO
-constexpr Square make_square(File r, Rank s)
+constexpr Square make_square(File file, Rank rank)
 {
-    return Square((r << 3) + s - 1);
+    return Square((file << 3) + rank - 1);
 }
 
 #if 0

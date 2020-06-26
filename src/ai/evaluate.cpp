@@ -92,7 +92,7 @@ Value Eval::evaluate(Position *pos)
     case PHASE_GAMEOVER:
         // 布局阶段闷棋判断
         if (pos->nPiecesOnBoard[BLACK] + pos->nPiecesOnBoard[WHITE] >=
-            Board::N_SEATS * Board::N_RINGS) {
+            Board::N_RANKS * Board::N_FILES) {
             if (rule.isStartingPlayerLoseWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
