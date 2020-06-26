@@ -313,7 +313,7 @@ void GameController::setInvert(bool arg)
 #endif // TRAINING_MODE
 }
 
-void GameController::setRule(int ruleNo, step_t stepLimited /*= -1*/, int timeLimited /*= -1*/)
+void GameController::setRule(int ruleNo, Step stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
     // 更新规则，原限时和限步不变
     if (ruleNo < 0 || ruleNo >= N_RULES)
@@ -1137,7 +1137,7 @@ bool GameController::updateScence()
 bool GameController::updateScence(StateInfo &g)
 {
 #ifndef TRAINING_MODE
-    const location_t *board = g.position->getBoardLocations();
+    const Location *board = g.position->getBoardLocations();
     QPointF pos;
 
     // game类中的棋子代码

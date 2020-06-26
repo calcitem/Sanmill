@@ -91,9 +91,9 @@ public:
     bool setPosition(const struct Rule *rule);
 
     // 获取棋盘数据
-    location_t *getBoardLocations() const
+    Location *getBoardLocations() const
     {
-        return (location_t *)board.locations;
+        return (Location *)board.locations;
     }
 
     // 获取当前棋子位置点
@@ -297,7 +297,7 @@ private:
     player_t winner;
 
     // 当前步数
-    step_t currentStep{};
+    Step currentStep{};
 
     // 从走子阶段开始或上次吃子起的步数
     int moveStep{};

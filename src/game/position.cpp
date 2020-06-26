@@ -766,7 +766,7 @@ bool Position::command(const char *cmd)
 {
     int r;
     unsigned t;
-    step_t s;
+    Step s;
     File r1, r2;
     Rank s1, s2;
     int args = 0;
@@ -1033,7 +1033,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
 int Position::getMobilityDiff(player_t turn, int piecesOnBoard[], bool includeFobidden)
 {
     // TODO: 处理规则无禁点的情况
-    location_t *locations = board.locations;
+    Location *locations = board.locations;
     int mobilityBlack = 0;
     int mobilityWhite = 0;
     int diff = 0;
@@ -1190,7 +1190,7 @@ Key Position::updateKey(Square square)
     // 0b00 表示空白，0b01 = 1 表示先手棋子，0b10 = 2 表示后手棋子，0b11 = 3 表示禁点
     int pieceType = Player::toId(board.locationToPlayer(square));
     // TODO: 标准写法应该是如下的写法，但目前这么写也可以工作
-    //location_t loc = board.locations[square];
+    //Location loc = board.locations[square];
     //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
 
     // 清除或者放置棋子

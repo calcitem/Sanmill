@@ -208,7 +208,7 @@ player_t Board::locationToPlayer(Square square)
 int Board::inHowManyMills(Square square, player_t player, Square squareSelected)
 {
     int n = 0;
-    location_t locbak = SQ_0;
+    Location locbak = SQ_0;
 
     if (player == PLAYER_NOBODY) {
         player = locationToPlayer(square);

@@ -45,11 +45,11 @@ public:
 
 #ifdef HOSTORY_HEURISTIC
     // TODO: Fix size
-    score_t placeHistory[64];
-    score_t removeHistory[64];
-    score_t moveHistory[10240];
+    Score placeHistory[64];
+    Score removeHistory[64];
+    Score moveHistory[10240];
 
-    score_t getHistoryScore(Move move);
+    Score getHistoryScore(Move move);
     void setHistoryScore(Move move, Depth depth);
     void clearHistoryScore();
 #endif // HOSTORY_HEURISTIC

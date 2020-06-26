@@ -106,7 +106,7 @@ public:
         判断棋子是先手的用 (locations[square] & 0x10)
         判断棋子是后手的用 (locations[square] & 0x20)
      */
-    location_t locations[SQUARE_NB]{};
+    Location locations[SQUARE_NB]{};
 
     Bitboard byTypeBB[PIECE_TYPE_NB];
 

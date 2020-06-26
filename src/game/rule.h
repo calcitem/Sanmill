@@ -64,7 +64,7 @@ struct Rule
     bool allowFlyWhenRemainThreePieces;
 
     // 最大步数，超出判和
-    step_t maxStepsLedToDraw;
+    Step maxStepsLedToDraw;
 
     // 包干最长时间（秒），超出判负，为0则不计时
     int maxTimeLedToLose;

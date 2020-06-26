@@ -17,14 +17,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef TYPES_H_INCLUDED
+#define TYPES_H_INCLUDED
 
 #include "config.h"
 
-using step_t = uint16_t;
-using location_t = uint8_t;
-using score_t = uint32_t;
+using Step = uint16_t;
+using Location = uint8_t;
+using Score = uint32_t;
 //using Bitboard = uint32_t;
 typedef uint32_t Bitboard;
 
@@ -357,4 +357,4 @@ constexpr Move make_move(Square from, Square to)
     return Move((from << 8) + to);
 }
 
-#endif /* TYPES_H */
+#endif // #ifndef TYPES_H_INCLUDED

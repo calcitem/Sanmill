@@ -155,9 +155,9 @@ void MovePicker::score()
 }
 
 #ifdef HOSTORY_HEURISTIC
-score_t MovePicker::getHistoryScore(Move move)
+Score MovePicker::getHistoryScore(Move move)
 {
-    score_t ret = 0;
+    Score ret = 0;
 
     if (move < 0) {
 #ifndef HOSTORY_HEURISTIC_ACTION_MOVE_ONLY
@@ -181,9 +181,9 @@ void MovePicker::setHistoryScore(Move move, Depth depth)
     }
 
 #ifdef HOSTORY_HEURISTIC_SCORE_HIGH_WHEN_DEEPER
-    score_t score = 1 << (32 - depth);
+    Score score = 1 << (32 - depth);
 #else
-    score_t score = 1 << depth;
+    Score score = 1 << depth;
 #endif
 
     if (move < 0) {

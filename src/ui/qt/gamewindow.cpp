@@ -551,7 +551,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             // 重置游戏规则
-            gameController->setRule(ruleNo, static_cast<step_t>(dStep), dTime);
+            gameController->setRule(ruleNo, static_cast<Step>(dStep), dTime);
         }
     }
 
