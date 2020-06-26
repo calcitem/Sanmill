@@ -34,7 +34,6 @@ SOURCES += \
     src/base/zobrist.cpp \
     src/game/bitboard.cpp \
     src/game/board.cpp \
-    src/game/location.cpp \
     src/game/option.cpp \
     src/game/player.cpp \
     src/game/position.cpp \
@@ -75,7 +74,6 @@ HEADERS  += \
     src/base/zobrist.h \
     src/game/bitboard.h \
     src/game/board.h \
-    src/game/location.h \
     src/game/option.h \
     src/game/player.h \
     src/game/position.h \

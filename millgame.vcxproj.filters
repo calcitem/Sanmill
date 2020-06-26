@@ -120,9 +120,6 @@
     <ClInclude Include="src\game\option.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\location.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="src\base\stack.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -371,9 +368,6 @@
     <ClCompile Include="src\game\option.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\location.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
     <ClCompile Include="src\base\memmgr.cpp">
       <Filter>base</Filter>
     </ClCompile>
@@ -455,9 +449,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\sound\Select.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
     <Media Include="resources\sound\drog.wav">
       <Filter>Resource Files</Filter>
     </Media>
@@ -483,12 +474,6 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\BlockMill_W.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resources\sound\Remove_B.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resources\sound\Remove_W.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\Draw.wav">
@@ -560,6 +545,9 @@
     <Media Include="resources\sound\GiveUp_W.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="resources\sound\Capture_B.wav" />
+    <Media Include="resources\sound\Capture_W.wav" />
+    <Media Include="resources\sound\choose.wav" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="gamewindow.qrc">
