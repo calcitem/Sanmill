@@ -22,7 +22,6 @@
 #ifdef ALPHABETA_AI
 Value Eval::evaluate(Position *pos)
 {
-    // 初始评估值为0，对先手有利则增大，对后手有利则减小
     Value value = VALUE_ZERO;
 
     int nPiecesInHandDiff;
@@ -34,21 +33,17 @@ Value Eval::evaluate(Position *pos)
         break;
 
     case PHASE_PLACING:
-        // 按手中的棋子计分，不要break;
         nPiecesInHandDiff = pos->nPiecesInHand[BLACK] - pos->nPiecesInHand[WHITE];
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 
-        // 按场上棋子计分
         nPiecesOnBoardDiff = pos->nPiecesOnBoard[BLACK] - pos->nPiecesOnBoard[WHITE];
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 
         switch (pos->action) {
-            // 选子和落子使用相同的评价方法
         case ACTION_SELECT:
         case ACTION_PLACE:
             break;
 
-            // 如果形成去子状态，每有一个可去的子，算100分
         case ACTION_REMOVE:
             nPiecesNeedRemove = (pos->sideToMove == PLAYER_BLACK) ?
                 pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
@@ -61,22 +56,18 @@ Value Eval::evaluate(Position *pos)
         break;
 
     case PHASE_MOVING:
-        // 按场上棋子计分
         value = pos->nPiecesOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
                 pos->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
-        // 按棋子活动能力计分
         value += st->position->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (pos->action) {
-        // 选子和落子使用相同的评价方法
         case ACTION_SELECT:
         case ACTION_PLACE:
             break;
 
-        // 如果形成去子状态，每有一个可去的子，算128分
         case ACTION_REMOVE:
             nPiecesNeedRemove = (pos->sideToMove == PLAYER_BLACK) ?
                 pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
@@ -88,9 +79,7 @@ Value Eval::evaluate(Position *pos)
 
         break;
 
-    // 终局评价最简单
     case PHASE_GAMEOVER:
-        // 布局阶段闷棋判断
         if (pos->nPiecesOnBoard[BLACK] + pos->nPiecesOnBoard[WHITE] >=
             Board::N_RANKS * Board::N_FILES) {
             if (rule.isBlackLosebutNotDrawWhenBoardFull) {
@@ -98,18 +87,13 @@ Value Eval::evaluate(Position *pos)
             } else {
                 value = VALUE_DRAW;
             }
-        }
-
-        // 走棋阶段被闷判断
-        else if (pos->action == ACTION_SELECT &&
+        } else if (pos->action == ACTION_SELECT &&
             pos->board.isAllSurrounded(pos->sideId, pos->nPiecesOnBoard, pos->sideToMove) &&
             rule.isLoseButNotChangeTurnWhenNoWay) {
-            // 规则要求被“闷”判负，则对手获胜  
             Value delta = pos->sideToMove == PLAYER_BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
 
-        // 剩余棋子个数判断
         else if (pos->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
             value -= VALUE_MATE;
         } else if (pos->nPiecesOnBoard[WHITE] < rule.nPiecesAtLeast) {

@@ -36,59 +36,34 @@ public:
 
     Board & operator=(const Board &);
 
-    // 静态成员常量
-    // 3圈，禁止修改!
     static const int N_FILES = 3;
-
-    // 8位，禁止修改!
     static const int N_RANKS = 8;
 
     static const int MOVE_PRIORITY_TABLE_SIZE = Board::N_FILES * Board::N_RANKS;
 
-    // 空棋盘点位，用于判断一个棋子位置是否在棋盘上
     static const int onBoard[SQUARE_NB];
 
-    // 判断位置点是否为星位 (星位是经常会先占的位置)
     static bool isStar(Square square);
 
-    // 成三表，表示棋盘上各个位置有成三关系的对应位置表
-    // 这个表跟规则有关，一旦规则改变需要重新修改
+    // Relate to Rule
     static int millTable[SQUARE_NB][LD_NB][N_FILES - 1];
 
-    // 生成成三表
     void createMillTable();
 
-    // 局面左右镜像
     void mirror(vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
-
-    // 局面内外翻转
     void turn(vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
-
-    // 局面逆时针旋转
     void rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
 
-    // 判断棋盘 square 处的棋子处于几个“三连”中
     int inHowManyMills(Square square, player_t player, Square squareSelected = SQ_0);
-
-    // 判断玩家的所有棋子是否都处于“三连”状态
     bool isAllInMills(player_t);
 
-    // 判断玩家的棋子周围有几个空位
     int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], Square square, bool includeFobidden);
-
-    // 计算指定位置周围有几个棋子
     void getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty);
-
-    // 判断玩家的棋子是否全部被围
     bool isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t ply);
 
-    // 三连加入列表
     int addMills(Square square);
 
-    // 将棋盘下标形式转化为第r圈，第s位，r和s下标都从1开始
     static void squareToPolar(Square square, File &file, Rank &rank);
-
-    // 将第c圈，第p位转化为棋盘下标形式，r和s下标都从1开始
     static Square polarToSquare(File file, Rank rank);
 
     static void printBoard();
@@ -97,36 +72,15 @@ public:
 
 //private:
 
-    // 棋局，抽象为一个 5*8 的数组，上下两行留空
-    /*
-        0x00 代表无棋子
-        0x0F 代表禁点
-        0x11~0x1C 代表先手第 1~12 子
-        0x21~0x2C 代表后手第 1~12 子
-        判断棋子是先手的用 (locations[square] & 0x10)
-        判断棋子是后手的用 (locations[square] & 0x20)
-     */
     Location locations[SQUARE_NB]{};
 
     Bitboard byTypeBB[PIECE_TYPE_NB];
 
     /*
-        本打算用如下的结构体来表示“三连”
-        struct Mill {
-            char piece1;    // “三连”中最小的棋子
-            char square1;      // 最小棋子的位置
-            char piece2;    // 次小的棋子
-            char square2;      // 次小棋子的位置
-            char piece3;    // 最大的棋子
-            char square3;      // 最大棋子的位置
-        };
-
-        但为了提高执行效率改用一个64位整数了，规则如下
         0x   00     00     00    00    00    00    00    00
            unused unused piece1 square1 piece2 square2 piece3 square3
     */
 
-    // 三连列表
     uint64_t millList[4];
     int millListSize { 0 };
 };

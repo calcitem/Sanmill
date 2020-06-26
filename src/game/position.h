@@ -37,31 +37,24 @@ class Node;
 
 extern string tips;
 
-// 棋局结构体，算法相关，包含当前棋盘数据
-// 单独分离出来供AI判断局面用，生成置换表时使用
 class Position
 {
 public:
     Position();
     virtual ~Position();
 
-    // 拷贝构造函数
     Position(Position &);
     Position(const Position &);
 
-    // 运算符重载
     Position &operator=(const Position &);
     Position &operator=(Position &);
 
     Board board;
 
-    // 局面的哈希值
     Key key {0};
 
-    // 局面阶段标识
     enum Phase phase {PHASE_NONE};
 
-    // 轮流状态标识
     player_t sideToMove {PLAYER_NOBODY};
     int sideId {0};
     char chSide {'0'};
@@ -71,199 +64,147 @@ public:
     char chOpponent {'0'};
     //string opponentStr;
 
-    // 动作状态标识
-    enum Action action
-    {
-    };
+    enum Action action { };
 
-    // 玩家剩余未放置子数
+    // Note: [0] is sum of Black and White
     int nPiecesInHand[COLOR_COUNT]{0};
-
-    // 玩家盘面剩余子数, [0] 为两个玩家之和
     int nPiecesOnBoard[COLOR_COUNT] {0};
-
-    // 尚待去除的子数
     int nPiecesNeedRemove {0};
 
     //////////////////////////////////////
 
-    // 设置棋局状态和棋局，用于初始化
     bool setPosition(const struct Rule *rule);
 
-    // 获取棋盘数据
     Location *getBoardLocations() const
     {
         return (Location *)board.locations;
     }
 
-    // 获取当前棋子位置点
     Square getCurrentSquare() const
     {
         return currentSquare;
     }
 
-    // 获取当前步数
     int getStep() const
     {
         return currentStep;
     }
 
-    // 获取从上次吃子开始经历的移动步数
-    int getMoveStep() const
-    {
-        return moveStep;
-    }
-
-    // 获取局面阶段标识
     enum Phase getPhase() const
     {
         return phase;
     }
 
-    // 获取动作状态标识
     enum Action getAction() const
     {
         return action;
     }
 
-    // 玩家1或玩家2的用时
     time_t getElapsedTime(int playerId);
 
-    // 获取棋局的字符提示
     const string getTips() const
     {
         return tips;
     }
 
-    // 获取当前着法
     const char *getCmdLine() const
     {
         return cmdline;
     }
 
-    // 获得棋谱
     const vector<string> *getCmdList() const
     {
         return &cmdlist;
     }
 
-    // 获取开局时间
     time_t getStartTimeb() const
     {
         return startTime;
     }
 
-    // 重新设置开局时间
     void setStartTime(int stimeb)
     {
         startTime = stimeb;
     }
 
-    // 玩家剩余未放置子数
     int getPiecesInHandCount(int playerId) const
     {
         return nPiecesInHand[playerId];
     }
 
-    // 玩家盘面剩余子数
     int getPiecesOnBoardCount(int playerId) const
     {
         return nPiecesOnBoard[playerId];
     }
 
-    // 尚待去除的子数
     int getNum_NeedRemove() const
     {
         return nPiecesNeedRemove;
     }
 
-    // 计算玩家1和玩家2的棋子活动能力之差
     int getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden);
 
-    // 游戏重置
     bool reset();
 
-    // 游戏开始
     bool start();
 
-    // 认输
     bool giveup(player_t loser);
 
-    // 命令行解析函数
     bool command(const char *cmd);
 
-    // 更新时间和状态，用内联函数以提高效率
     int update();
 
-    // 是否分出胜负
     bool checkGameOverCondition(int8_t cp = 0);
 
-    // 清除所有禁点
     void cleanBannedLocations();
 
-    // 设置轮流
     void setSideToMove(player_t player);
 
-    // 获取轮流
     player_t getSideToMove();
 
-    // 改变轮流
     void changeSideToMove();
 
-    // 设置提示
     void setTips();
 
-    // 着法生成
     int generateNullMove(Stack<Move, MAX_MOVES> &moves);
 
     bool doNullMove();
     bool undoNullMove();
 
-    // 判断胜负
     player_t getWinner() const;
 
-    // 选子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
     bool selectPiece(File file, Rank rank);
-
-    // 落子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
     bool _placePiece(File file, Rank rank);
-
-    // 去子，在第r圈第s个位置，为迎合日常，r和s下标都从1开始
     bool _removePiece(File file, Rank rank);
 
-    // 下面几个函数没有算法无关判断和无关操作，节约算法时间
     bool doMove(Move move);
     bool selectPiece(Square square);
     bool placePiece(Square square, bool updateCmdlist = false);
     bool removePiece(Square square, bool updateCmdlist = false);
 
-    // key 相关
     Key getPosKey();
     Key revertKey(Square square);
     Key updateKey(Square square);
     Key updateKeyMisc();
     Key getNextPrimaryKey(Move m);
 
-    // 赢盘数
     int score[COLOR_COUNT] = { 0 };
     int score_draw { 0 };
     int nPlayed { 0 };
 
     int tm { -1 };
 
-    // 棋谱
     vector <string> cmdlist;
 
     // 着法命令行用于棋谱的显示和解析, 当前着法的命令行指令，即一招棋谱
     char cmdline[64]{ '\0' };
 
     /*
-        当前着法，AI会用到，如下表示
         0x   00    00
             square1  square2
-        开局落子：0x00??，??为棋盘上的位置
-        移子：0x__??，__为移动前的位置，??为移动后的位置
-        去子：0xFF??，??取位置补码，即为负数
+        Placing：0x00??，?? is place location
+        Moving：0x__??，__ is from，?? is to
+        Removing：0xFF??，?? is neg
 
         31 ----- 24 ----- 25
         | \       |      / |
@@ -279,45 +220,31 @@ public:
     */
     Move move { MOVE_NONE };
 
-    // 选中的棋子在board中的位置
     Square currentSquare{};
 
 private:
 
-    // 创建哈希值
     void constructKey();
 
-    // 计算双方在棋盘上各有几个子
     int countPiecesOnBoard();
 
-    // 计算双方手中各有几个字
     int countPiecesInHand();
 
-    // 胜负标识
     player_t winner;
 
-    // 当前步数
-    Step currentStep{};
+    Step currentStep {};
 
-    // 从走子阶段开始或上次吃子起的步数
-    int moveStep{};
+    int moveStep {};
 
-    // 游戏起始时间
-    time_t startTime{};
+    time_t startTime {};
 
-    // 当前游戏时间
-    time_t currentTime{};
+    time_t currentTime {};
 
-    // 玩家用时（秒）
     time_t elapsedSeconds[COLOR_COUNT];
 };
 
-// 棋类（在数据模型内，玩家只分先后手，不分黑白）
-// 注意：StateInfo 类不是线程安全的！
-// 所以不能跨线程修改 StateInfo 类的静态成员变量，切记！
 class StateInfo
 {
-    // AI友元类
     friend class AIAlgorithm;
 
 public:
@@ -325,11 +252,9 @@ public:
     StateInfo();
     virtual ~StateInfo();
 
-    // 拷贝构造函数
     StateInfo(StateInfo &);
     StateInfo(const StateInfo &);
 
-    // 运算符重载
     StateInfo &operator=(const StateInfo &);
     StateInfo &operator=(StateInfo &);
 

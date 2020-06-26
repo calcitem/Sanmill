@@ -39,17 +39,11 @@ AiThread::AiThread(int id, QObject *parent) :
 {
     this->playerId = id;
 
-    // 连接定时器启动，减去118毫秒的返回时间
-    connect(this, &AiThread::searchStarted, this, [=]() {timer.start(timeLimit * 1000 - 118); }, Qt::QueuedConnection);
-
-    // 连接定时器停止
+    connect(this, &AiThread::searchStarted, this, [=]() {timer.start(timeLimit * 1000 - 118 /* 118ms is return time */); }, Qt::QueuedConnection);
     connect(this, &AiThread::searchFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
-
-    // 连接定时器处理函数
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
 
 #ifndef TRAINING_MODE
-    // 网络
     if (id == 1) {
         server = new Server(nullptr, 30001);    // TODO: WARNING: ThreadSanitizer: data race
         uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
@@ -60,7 +54,6 @@ AiThread::AiThread(int id, QObject *parent) :
 
 AiThread::~AiThread()
 {
-    // 网络相关
     //delete server;
     //delete client;
 
@@ -77,7 +70,6 @@ void AiThread::setAi(const StateInfo &g)
     ai.setState(*(this->state));
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    // 新下一盘前清除哈希表 (注意可能同时存在每步之前清除)
 #ifdef CLEAR_TRANSPOSITION_TABLE
     TranspositionTable::clear();
 #endif
@@ -212,12 +204,10 @@ void AiThread::analyze()
 
 void AiThread::run()
 {
-    // 测试用数据
 #ifdef DEBUG_MODE
     int iTemp = 0;
 #endif
 
-    // 设一个标识，1号线程只管玩家1，2号线程只管玩家2
     int sideId = 0;
 
     loggerDebug("Thread %d start\n", playerId);
@@ -258,7 +248,6 @@ void AiThread::run()
         } else {
 #endif
             if (ai.search(depth) == 3) {
-                // 三次重复局面和
                 loggerDebug("Draw\n\n");
                 strCommand = "draw";
                 emitCommand();
@@ -278,7 +267,6 @@ void AiThread::run()
 
         emit searchFinished();
 
-        // 执行完毕后继续判断
         mutex.lock();
         if (!isInterruptionRequested()) {
             pauseCondition.wait(&mutex);

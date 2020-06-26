@@ -21,7 +21,6 @@
 #include "movegen.h"
 #include "prefetch.h"
 
- // 名义上是个数组，实际上相当于一个判断是否在棋盘上的函数
 const int Board::onBoard[SQUARE_NB] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -30,7 +29,6 @@ const int Board::onBoard[SQUARE_NB] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-// 成三表
 int Board::millTable[SQUARE_NB][LD_NB][N_FILES - 1] = { {{0}} };
 
 Board::Board()
@@ -236,10 +234,6 @@ int Board::inHowManyMills(Square square, player_t player, Square squareSelected)
 
 int Board::addMills(Square square)
 {
-    // 成三用一个64位整数了，规则如下
-    // 0x   00     00     00    00    00    00    00    00
-    //    unused unused piece1 square1 piece2 square2 piece3 pos3
-    // piece1、piece2、piece3按照序号从小到大顺序排放
     uint64_t mill = 0;
     int n = 0;
     int idx[3], min, temp;
@@ -250,14 +244,14 @@ int Board::addMills(Square square)
         idx[1] = millTable[square][i][0];
         idx[2] = millTable[square][i][1];
 
-        // 如果没有成三
+        // no mill
         if (!(m & locations[idx[1]] & locations[idx[2]])) {
             continue;
         }
 
-        // 如果成三
+        // close mill
 
-        // 排序
+        // sort
         for (int j = 0; j < 2; j++) {
             min = j;
 
@@ -275,7 +269,6 @@ int Board::addMills(Square square)
             idx[j] = temp;
         }
 
-        // 成三
         mill = (static_cast<uint64_t>(locations[idx[0]]) << 40)
             + (static_cast<uint64_t>(idx[0]) << 32)
             + (static_cast<uint64_t>(locations[idx[1]]) << 24)
@@ -283,13 +276,10 @@ int Board::addMills(Square square)
             + (static_cast<uint64_t>(locations[idx[2]]) << 8)
             + static_cast<uint64_t>(idx[2]);
 
-        // 如果允许相同三连反复去子
         if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
             n++;
             continue;
         }
-
-        // 如果不允许相同三连反复去子
 
         int im = 0;
         for (im = 0; im < millListSize; im++) {
@@ -298,7 +288,6 @@ int Board::addMills(Square square)
             }
         }
 
-        // 如果没找到历史项
         if (im == millListSize) {
             n++;
             millList[i] = mill;
@@ -322,7 +311,7 @@ bool Board::isAllInMills(player_t player)
     return true;
 }
 
-// 判断指定位置周围有几个空位 (可以包含禁点一起统计)
+// Stat include ban
 int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
                                            Square square, bool includeFobidden)
 {
@@ -347,7 +336,6 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
     return count;
 }
 
-// 计算指定位置周围有几个棋子
 void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty)
 {
     Square moveSquare;
@@ -379,20 +367,18 @@ void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece
     }
 }
 
-// 判断玩家的棋子是否全部被围
 bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
 {
-    // 如果摆满
+    // Full
     if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= N_RANKS * N_FILES)
         return true;
 
-    // 判断是否可以飞子
+    // Can fly
     if (nPiecesOnBoard[sideId] <= rule.nPiecesAtLeast &&
         rule.allowFlyWhenRemainThreePieces) {
         return false;
     }
 
-    // 查询整个棋盘
     Square moveSquare;
 
     for (Square sq = SQ_BEGIN; sq < SQ_END; sq = (Square)(sq + 1)) {
@@ -486,7 +472,6 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square
         }
     }
 
-    // 命令行解析
     if (cmdChange) {
         int r1, s1, r2, s2;
         int args = 0;
@@ -701,7 +686,6 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
 
 void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange /*= true*/)
 {
-    // 将degrees转化为0~359之间的数
     degrees = degrees % 360;
 
     if (degrees < 0)
@@ -798,7 +782,6 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
         }
     }
 
-    // 命令行解析
     if (cmdChange) {
         int r1, s1, r2, s2;
         int args = 0;

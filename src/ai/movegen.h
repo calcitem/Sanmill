@@ -73,16 +73,12 @@ public:
 
     MoveList &operator=(const MoveList &) = delete;
 
-    // 生成着法表
     static void create();
-
-    // 随机打乱着法搜索顺序
     static void shuffle();
 
-    // 着法表 // TODO: Move to private
+    // TODO: Move to private
     inline static Move moveTable[SQUARE_NB][MD_NB] = { {MOVE_NONE} };
 
-    // 着法顺序表, 后续会被打乱
     inline static array<Move, Board::N_FILES *Board::N_RANKS> movePriorityTable{
         (Move)8, (Move)9, (Move)10, (Move)11, (Move)12, (Move)13, (Move)14, (Move)15,
         (Move)16, (Move)17, (Move)18, (Move)19, (Move)20, (Move)21, (Move)22, (Move)23,

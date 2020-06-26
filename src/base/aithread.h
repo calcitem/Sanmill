@@ -40,20 +40,16 @@ public:
     ~AiThread() override;
 
 signals:
-    // 着法信号
     void command(const QString &cmdline, bool update = true);
 
-    // 开始搜索的信号
     void searchStarted();
 
-    // 计算搜索的信号
     void searchFinished();
 
 protected:
     void run() override;
 
 public:
-    // AI设置
     void setAi(const StateInfo &state);
     void setAi(const StateInfo &state, Depth depth, int time);
 
@@ -67,7 +63,6 @@ public:
         return client;
     }
 
-    // 深度和限时
     Depth getDepth()
     {
         return depth;
@@ -81,53 +76,32 @@ public:
     void analyze();
 
 public slots:
-    // 强制出招，不退出线程
-    void act();
-
-    // 线程继续
+    void act(); // Force move, not quit thread
     void resume();
-
-    // 退出线程
     void stop();
-
-    // 发射着法信号
     void emitCommand();
 
 public:
-    // 玩家ID
     int playerId;
 
 private:
-
-    // 发射的指令
     const char* strCommand {};
-
-    // 互斥锁
     QMutex mutex;
 
-    // 等待条件，这里没用到，留着以后扩展用
+    // For ext in future
     QWaitCondition pauseCondition;
 
 public:
-    // 主线程棋对象的引用
     const StateInfo *state;
 
 public: // TODO: Change to private
-    // AI 算法类
     AIAlgorithm ai;
 
 private:
-
-    // AI的层数
     Depth depth;
-
-    // AI的限时
     int timeLimit;
-
-    // 定时器
     QTimer timer;
 
-    // 网络
     Server *server;
     Client *client;
 };

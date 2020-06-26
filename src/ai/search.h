@@ -50,20 +50,13 @@ class ExtMove;
 using namespace std;
 using namespace CTSL;
 
-// 注意：Position 类不是线程安全的！
-// 所以不能在ai类中修改 Position 类的静态成员变量，切记！
-// 另外，AI类是 Position 类的友元类，可以访问其私有变量
-// 尽量不要使用 Position 的操作函数，因为有参数安全性检测和不必要的赋值，影响效率
-
 class AIAlgorithm
 {
 public:
 #ifdef TIME_STAT
-    // 排序算法耗时 (ms)
     TimePoint sortTime { 0 };
 #endif
 #ifdef CYCLE_STAT
-    // 排序算法耗费时间周期 (TODO: 计算单次或平均)
     stopwatch::rdtscp_clock::time_point sortCycle;
     stopwatch::timer::duration sortCycle { 0 };
     stopwatch::timer::period sortCycle;
@@ -85,27 +78,20 @@ public:
     }
 
 #ifdef ALPHABETA_AI
-    // Alpha-Beta剪枝算法
     int search(Depth depth);
-
-    // 返回最佳走法的命令行
     const char *nextMove();
 #endif // ALPHABETA_AI
 
-    // 暂存局面
     void stashPosition();
 
-    // 执行着法
     void doMove(Move move);
 
-    // 撤销着法
     void undoMove();
 
     void doNullMove();
     void undoNullMove();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    // 清空哈希表
     void clearTT();
 #endif
 
@@ -120,8 +106,6 @@ public:
 public: /* TODO: Move to private or protected */
 
 #ifdef EVALUATE_ENABLE
-
-        // 评价函数
     Value evaluate();
 
 #ifdef EVALUATE_MATERIAL
@@ -147,21 +131,16 @@ public: /* TODO: Move to private or protected */
 #endif
 #endif /* EVALUATE_ENABLE */
 
-    // Alpha-Beta剪枝算法
     Value search(Depth depth, Value alpha, Value beta);
 
-    // MTD(f)
     Value MTDF(Value firstguess, Depth depth);
 
 public:
-    // 返回着法的命令行
     const char *moveToCommand(Move move);
 protected:
-    // 篡改深度
     Depth changeDepth(Depth origDepth);
        
 public:
-    // 原始模型
     StateInfo *state { nullptr };
 
     MovePicker *movePicker { nullptr };
@@ -172,28 +151,22 @@ public:
     Depth originDepth{ 0 };
 
 private:
-
-    // 演算用的模型
     StateInfo *st { nullptr };
 
     Position *position { nullptr };
 
-    // 局面数据栈
     Stack<Position> positionStack;
 
-    // 标识，用于跳出剪枝算法，立即返回
     bool requiredQuit {false};
 
     Move bestMove { MOVE_NONE };
 
 private:
-    // 命令行
     char cmdline[64] {};
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
 public:
-    // TT 统计数据
     size_t tteCount{ 0 };
     size_t ttHitCount{ 0 };
     size_t ttMissCount{ 0 };

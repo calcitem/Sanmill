@@ -65,12 +65,12 @@ Value TranspositionTable::probe(const Key &key,
     case BOUND_EXACT:
         return tte.value;
         break;
-    case BOUND_UPPER:     // 最多是 tte.value
+    case BOUND_UPPER:
         if (tte.value <= alpha) {
             return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
         }
         break;
-    case BOUND_LOWER:     // 至少是 tte.value
+    case BOUND_LOWER:
         if (tte.value >= beta) {
             return beta;
         }
@@ -92,7 +92,7 @@ bool TranspositionTable::search(const Key &key, TTEntry &tte)
 {
     return TT.find(key, tte);
 
-    // TODO: 变换局面
+    // TODO: Change position
 #if 0
     if (iter != hashmap.end())
         return iter;
@@ -131,9 +131,6 @@ int TranspositionTable::save(const Value &value,
 #endif // TT_MOVE_ENABLE
                   )
 {
-    // 同样深度或更深时替换
-    // 注意: 每走一步以前都必须把散列表中所有的标志项置为 BOUND_NONE
-
     //hashMapMutex.lock();
     TTEntry tte {};
 

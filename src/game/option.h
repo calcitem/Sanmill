@@ -54,32 +54,17 @@ public:
 protected:
 
 private:
-    // 是否棋局结束后自动重新开局
     bool isAutoRestart { false };
-
-    // 是否重新开局时自动改变先后手
     bool isAutoChangeFirstMove { false };
-
-    // 是否必败时认输
     bool giveUpIfMostLose { false };
-
-    // AI 是否随机走子
     bool randomMoveEnabled { true };
-
-    // AI 是否生成残局库
 #ifdef ENDGAME_LEARNING_FORCE
     bool learnEndgame { true };
 #else
     bool learnEndgame { false };
 #endif
-
-    // Alpha-Beta 搜索时是否迭代加深
     bool IDSEnabled { false };
-
-    // DepthExtension
     bool depthExtension {true};
-
-    // OpeningBook
     bool openingBook { false };
 };
 

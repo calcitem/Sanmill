@@ -37,7 +37,6 @@ player_t gSideToMove;
 
 using namespace CTSL;
 
-// 用于检测重复局面 (Position)
 vector<Key> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
@@ -58,7 +57,6 @@ Depth AIAlgorithm::changeDepth(Depth origDepth)
     Depth d = origDepth;
 
 #ifdef _DEBUG
-    // 当 VC 下编译为 Debug 时
     Depth reduce = 0;
 #else
     Depth reduce = 0;
@@ -130,7 +128,6 @@ Depth AIAlgorithm::changeDepth(Depth origDepth)
         }
     }
 
-    // Debug 下调低深度
     if (unlikely(d > reduce)) {
         d -= reduce;
     }
@@ -150,7 +147,6 @@ Depth AIAlgorithm::changeDepth(Depth origDepth)
 
 void AIAlgorithm::setState(const StateInfo &g)
 {
-    // 如果规则改变，重建hashmap
     if (strcmp(rule.name, rule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
         TranspositionTable::clear();
@@ -216,15 +212,12 @@ int AIAlgorithm::search(Depth depth)
     }
 #endif // THREEFOLD_REPETITION
 
-    // 随机打乱着法顺序
     MoveList::shuffle();   
 
     Value alpha = -VALUE_INFINITE;
     Value beta = VALUE_INFINITE;
 
     if (gameOptions.getIDSEnabled()) {
-        // 深化迭代
-
         loggerDebug("IDS: ");
 
         Depth depthBegin = 2;
@@ -237,7 +230,7 @@ int AIAlgorithm::search(Depth depth)
         for (Depth i = depthBegin; i < d; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-            TranspositionTable::clear();   // 每次走子前清空哈希表
+            TranspositionTable::clear();
 #endif
 #endif
 
@@ -260,7 +253,7 @@ int AIAlgorithm::search(Depth depth)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();  // 每次走子前清空哈希表
+    TranspositionTable::clear();
 #endif
 #endif
 
@@ -281,8 +274,6 @@ int AIAlgorithm::search(Depth depth)
     timeEnd = chrono::steady_clock::now();
     loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif
-
-    // 生成了 Alpha-Beta 树
 
     lastvalue = bestvalue;
     bestvalue = value;
@@ -318,20 +309,16 @@ Value AIAlgorithm::MTDF(Value firstguess, Depth depth)
 
 Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 {
-    // 评价值
     Value value;
     Value bestValue = -VALUE_INFINITE;
 
-    // 临时增加的深度，克服水平线效应用
     Depth epsilon;
 
 #ifdef TT_MOVE_ENABLE
-    // 置换表中读取到的最优着法
     Move ttMove = MOVE_NONE;
 #endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
-    // 获取哈希值
     Key posKey = st->position->getPosKey();
 #endif
 
@@ -405,13 +392,12 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
     }
 #endif
 
-    if (unlikely(position->phase == PHASE_GAMEOVER) ||   // 搜索到叶子节点（决胜局面） // TODO: 对哈希进行特殊处理
+    if (unlikely(position->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash
         depth <= 0 ||
         unlikely(requiredQuit)) {
-        // 局面评估
         bestValue = Eval::evaluate(position);
 
-        // 为争取速胜，value 值 +- 深度
+        // For win quickly
         if (bestValue > 0) {
             bestValue += depth;
         } else {
@@ -421,7 +407,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #ifdef NULL_MOVE
         if (depth % 2 == 1)
         {
-            // 空着向前裁剪 (WIP)        
+            // TODO: WIP       
             st->generateNullMove(moves);
             st->generateChildren(moves, this, node);
             doNullMove();
@@ -442,7 +428,6 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #endif
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-        // 记录确切的哈希值
         TranspositionTable::save(bestValue,
                        depth,
                        BOUND_EXACT,
@@ -489,7 +474,6 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #endif // TRANSPOSITION_TABLE_ENABLE
 
     for (int i = 0; i < nchild; i++) {
-        // 棋局入栈保存，以便后续撤销着法
         stashPosition();
         player_t before = st->position->sideToMove;
         Move move = extMoves[i].move;
@@ -575,19 +559,16 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 
 void AIAlgorithm::stashPosition()
 {
-    // 棋局入栈保存，以便后续撤销着法
     positionStack.push(*(st->position));
 }
 
 void AIAlgorithm::doMove(Move move)
 {
-    // 执行着法
     st->position->doMove(move);
 }
 
 void AIAlgorithm::undoMove()
 {
-    // 棋局弹出栈，撤销着法
     memcpy(st->position, positionStack.top(), sizeof(Position));
     //st->position = positionStack.top();
     positionStack.pop();
@@ -595,13 +576,11 @@ void AIAlgorithm::undoMove()
 
 void AIAlgorithm::doNullMove()
 {
-    // 执行空着
     st->position->doNullMove();
 }
 
 void AIAlgorithm::undoNullMove()
 {
-    // 执行空着
     st->position->undoNullMove();
 }
 
@@ -645,21 +624,19 @@ const char* AIAlgorithm::nextMove()
     //player_t side = state->position->sideToMove;
 
 #ifdef ENDGAME_LEARNING
-    // 检查是否明显劣势
+    // Check if very weak
     if (gameOptions.getLearnEndgameEnabled()) {
         if (bestValue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
             endgame.type = state->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            key_t endgameHash = state->position->getPosKey(); // TODO: 减少重复计算哈希
+            key_t endgameHash = state->position->getPosKey(); // TODO: Do not generate hash repeately
             recordEndgameHash(endgameHash, endgame);
         }
     }
 #endif /* ENDGAME_LEARNING */
 
-    // 检查是否必败
     if (gameOptions.getGiveUpIfMostLose() == true) {
-        // 自动认输
         if (root->value <= -VALUE_MATE) {
             sprintf(cmdline, "Player%d give up!", state->position->sideId);
             return cmdline;

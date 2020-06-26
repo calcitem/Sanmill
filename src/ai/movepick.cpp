@@ -53,21 +53,21 @@ void MovePicker::score()
 
         Square sq = to_sq(m);
         Square sqsrc = from_sq(m);
-
-        // 若为走子之前的统计故走棋阶段可能会从 @-0-@ 走成 0-@-@, 并未成三，所以需要传值 sqsrc 进行判断
+        
+        // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need sqsrc to judge
         int nMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);
         int nopponentMills = 0;
 
     #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
-        // TODO: rule.allowRemoveMultiPiecesWhenCloseMultiMill 以及 适配打三棋之外的其他规则
+        // TODO: rule.allowRemoveMultiPiecesWhenCloseMultiMill adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
-            // 在任何阶段, 都检测落子点是否能使得本方成三
+            // all phrase, check if place sq can close mill
             if (nMills > 0) {
     #ifdef ALPHABETA_AI
                 cur->rating += static_cast<Rating>(RATING_ONE_MILL * nMills);
     #endif
             } else if (position->getPhase() == PHASE_PLACING) {
-                // 在摆棋阶段, 检测落子点是否能阻止对方成三
+                // placing phrase, check if place sq can block opponent close mill
                 nopponentMills = position->board.inHowManyMills(sq, position->opponent);
     #ifdef ALPHABETA_AI
                 cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nopponentMills);
@@ -75,7 +75,7 @@ void MovePicker::score()
             }
     #if 1
             else if (position->getPhase() == PHASE_MOVING) {
-                // 在走棋阶段, 检测落子点是否能阻止对方成三
+                // moving phrase, check if place sq can block opponent close mill
                 nopponentMills = position->board.inHowManyMills(sq, position->opponent);
 
                 if (nopponentMills) {
@@ -98,12 +98,12 @@ void MovePicker::score()
             }
     #endif
 
-            //newNode->rating += static_cast<Rating>(nBanned);  // 摆子阶段尽量往禁点旁边落子
+            //newNode->rating += static_cast<Rating>(nBanned);  // placing phrase, place nearby ban point
 
-            // 对于12子棋, 白方第2着走星点的重要性和成三一样重要 (TODO)
+            // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)
     #ifdef ALPHABETA_AI
             if (rule.nTotalPiecesEachSide == 12 &&
-                position->getPiecesOnBoardCount(2) < 2 &&    // patch: 仅当白方第2着时
+                position->getPiecesOnBoardCount(2) < 2 &&    // patch: only when white's 2nd move
                 Board::isStar(static_cast<Square>(m))) {
                 cur->rating += RATING_STAR_SQUARE;
             }
@@ -119,34 +119,34 @@ void MovePicker::score()
 
     #ifdef ALPHABETA_AI
             if (nMills > 0) {
-                // 吃子点处于我方的三连中
+                // remove point is in our mill
                 //newNode->rating += static_cast<Rating>(RATING_REMOVE_ONE_MILL * nMills);
 
                 if (nOpponentPiece == 0) {
-                    // 吃子点旁边没有对方棋子则优先考虑     
+                    // if remove point nearby has no opponent's stone, preferred.
                     cur->rating += static_cast<Rating>(1);
                     if (nPlayerPiece > 0) {
-                        // 且吃子点旁边有我方棋子则更优先考虑
+                        // if remove point nearby our stone, preferred
                         cur->rating += static_cast<Rating>(nPlayerPiece);
                     }
                 }
             }
 
-            // 吃子点处于对方的三连中
+            // remove point is in their mill
             nopponentMills = position->board.inHowManyMills(sq, position->opponent);
             if (nopponentMills) {
                 if (nOpponentPiece >= 2) {
-                    // 旁边对方的子较多, 则倾向不吃
+                    // if nearby opponent's piece, prefer do not remove
                     cur->rating -= static_cast<Rating>(nOpponentPiece);
 
                     if (nPlayerPiece == 0) {
-                        // 如果旁边无我方棋子, 则更倾向不吃
+                        // if nearby has no our piece, more prefer do not remove
                         cur->rating -= static_cast<Rating>(1);
                     }
                 }
             }
 
-            // 优先吃活动力强的棋子
+            // prefer remove piece that mobility is strong 
             cur->rating += static_cast<Rating>(nEmpty);
     #endif
         }

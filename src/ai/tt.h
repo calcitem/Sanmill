@@ -48,7 +48,6 @@ struct TTEntry
 class TranspositionTable
 {
 public:
-    // 查找哈希表
     static bool search(const Key &key, TTEntry &tte);
     static Value probe(const Key &key,
                             const Depth &depth,
@@ -60,7 +59,6 @@ public:
     #endif // TT_MOVE_ENABLE
                             );
 
-    // 插入哈希表
     static int save(const Value &value,
                           const Depth &depth,
                           const Bound &type,
@@ -70,10 +68,8 @@ public:
 #endif // TT_MOVE_ENABLE
                          );
 
-    // 清空置换表
     static void clear();
 
-    // 预读取
     static void prefetch(const Key &key);
 
 private:
