@@ -20,11 +20,8 @@
 #include "rule.h"
 #include "types.h"
 
- // 当前使用的规则
 struct Rule rule;
 
-// 对静态常量数组的定义要放在类外，不要放在头文件
-// 预定义的几套规则
 const struct Rule RULES[N_RULES] = {
     {
         "成三棋",   // 成三棋

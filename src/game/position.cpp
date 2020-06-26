@@ -463,7 +463,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
         // 如果成三
         else {
             // 设置去子数目
-            nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
+            nPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
 
             // 进入去子状态
             action = ACTION_REMOVE;
@@ -535,7 +535,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
     // 中局阶段成三
     else {
         // 设置去子数目
-        nPiecesNeedRemove = rule.allowRemoveMultiPieces ? n : 1;
+        nPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
 
         // 进入去子状态
         action = ACTION_REMOVE;
@@ -594,7 +594,7 @@ bool Position::removePiece(Square square, bool updateCmdlist)
         return false;
 
     // 如果当前子是否处于“三连”之中，且对方还未全部处于“三连”之中
-    if (!rule.allowRemoveMill &&
+    if (!rule.allowRemovePieceInMill &&
         board.inHowManyMills(square, PLAYER_NOBODY) &&
         !board.isAllInMills(Player::getOpponent(sideToMove))) {
         return false;
@@ -984,7 +984,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
     if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= Board::N_RANKS * Board::N_FILES) {
         phase = PHASE_GAMEOVER;
 
-        if (rule.isStartingPlayerLoseWhenBoardFull) {
+        if (rule.isBlackLosebutNotDrawWhenBoardFull) {
             winner = PLAYER_WHITE;
             if (updateCmdlist) {
                 sprintf(cmdline, "Player2 win!");
@@ -1008,7 +1008,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
         // 规则要求被“闷”判负，则对手获胜 // TODO: 应该转移到下面的分支中
         phase = PHASE_GAMEOVER;
 
-        if (rule.isLoseWhenNoWay) {
+        if (rule.isLoseButNotChangeTurnWhenNoWay) {
             if (updateCmdlist) {
                 tips = "玩家" + Player::chToStr(chSide) + "无子可走被闷";
                 winner = Player::getOpponent(sideToMove);

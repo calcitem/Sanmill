@@ -284,7 +284,7 @@ int Board::addMills(Square square)
             + static_cast<uint64_t>(idx[2]);
 
         // 如果允许相同三连反复去子
-        if (rule.allowRemovePiecesRepeatedly) {
+        if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
             n++;
             continue;
         }
@@ -468,7 +468,7 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square
         square = static_cast<Square>(r * N_RANKS + s);
     }
 
-    if (rule.allowRemovePiecesRepeatedly) {
+    if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
         for (auto &mill : millList) {
             llp[0] = (mill & 0x000000ff00000000) >> 32;
             llp[1] = (mill & 0x0000000000ff0000) >> 16;
@@ -591,7 +591,7 @@ void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square 
         square = static_cast<Square>(r * N_RANKS + s);
     }
 
-    if (rule.allowRemovePiecesRepeatedly) {
+    if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
         for (auto &mill : millList) {
             llp[0] = (mill & 0x000000ff00000000) >> 32;
             llp[1] = (mill & 0x0000000000ff0000) >> 16;
@@ -780,7 +780,7 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
         square = static_cast<Square>(r * N_RANKS + s);
     }
 
-    if (rule.allowRemovePiecesRepeatedly) {
+    if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
         for (auto &mill : millList) {
             llp[0] = (mill & 0x000000ff00000000) >> 32;
             llp[1] = (mill & 0x0000000000ff0000) >> 16;

@@ -395,7 +395,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<Square>(MoveList::movePriorityTable[i]);
             if (position->board.locations[square] & opponent) {
-                if (rule.allowRemoveMill || !position->board.inHowManyMills(square, PLAYER_NOBODY)) {
+                if (rule.allowRemovePieceInMill || !position->board.inHowManyMills(square, PLAYER_NOBODY)) {
                     *cur++ = ((Move)-square);
                 }
             }

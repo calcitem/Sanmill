@@ -147,20 +147,14 @@ enum Rating : int8_t
 
 enum PieceType : uint16_t
 {
-    NO_PIECE_TYPE = 0,   // 没有棋子
-    BLACK_STONE = 1,    // 先手的子
-    WHITE_STONE = 2,     // 后手的子
-    BAN = 3,    // 禁点
-    ALL_PIECES = 0,    // 禁点
+    NO_PIECE_TYPE = 0,
+    BLACK_STONE = 1,
+    WHITE_STONE = 2,
+    BAN = 3,
+    ALL_PIECES = 0,
     PIECE_TYPE_NB = 4
 };
 
-/*
-0x00 代表无棋子
-0x0F 代表禁点
-0x11～0x1C 代表先手第 1～12 子
-0x21～0x2C 代表后手第 1～12 子
-*/
 enum Piece
 {
     NO_PIECE = 0x00,
@@ -240,13 +234,11 @@ enum LineDirection
     LD_NB = 3
 };
 
-// 圈
 enum File : int
 {
     FILE_A = 1, FILE_B, FILE_C, FILE_NB = 3
 };
 
-// 位
 enum Rank : int
 {
     RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NB = 8

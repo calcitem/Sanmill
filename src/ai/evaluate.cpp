@@ -93,7 +93,7 @@ Value Eval::evaluate(Position *pos)
         // 布局阶段闷棋判断
         if (pos->nPiecesOnBoard[BLACK] + pos->nPiecesOnBoard[WHITE] >=
             Board::N_RANKS * Board::N_FILES) {
-            if (rule.isStartingPlayerLoseWhenBoardFull) {
+            if (rule.isBlackLosebutNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
                 value = VALUE_DRAW;
@@ -103,7 +103,7 @@ Value Eval::evaluate(Position *pos)
         // 走棋阶段被闷判断
         else if (pos->action == ACTION_SELECT &&
             pos->board.isAllSurrounded(pos->sideId, pos->nPiecesOnBoard, pos->sideToMove) &&
-            rule.isLoseWhenNoWay) {
+            rule.isLoseButNotChangeTurnWhenNoWay) {
             // 规则要求被“闷”判负，则对手获胜  
             Value delta = pos->sideToMove == PLAYER_BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;

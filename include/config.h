@@ -138,15 +138,12 @@
 
 //#define DONOT_PLAY_WIN_SOUND
 
-// 摆棋阶段在叉下面显示被吃的子
 //#define GAME_PLACING_SHOW_REMOVED_PIECES
 
-// 启动时窗口最大化
 //#define SHOW_MAXIMIZED_ON_LOAD
 
-// 不使用哈希桶
 #define DISABLE_HASHBUCKET
-// 哈希表不加锁
+
 #define HASHMAP_NOLOCK
 
 #ifdef WIN32

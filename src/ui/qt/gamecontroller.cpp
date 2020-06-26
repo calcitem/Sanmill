@@ -211,7 +211,7 @@ void GameController::gameReset()
         newP->setNum(i + 1);
 
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(rule.allowRemovePiecesRepeatedly))
+        if (!(rule.allowRemovePiecesRepeatedlyWhenCloseSameMill))
             newP->setShowNum(true);
 
         pieceList.push_back(newP);
@@ -225,7 +225,7 @@ void GameController::gameReset()
         newP->setNum(i + 1);
 
         // 如果重复三连不可用，则显示棋子序号，九连棋专用玩法
-        if (!(rule.allowRemovePiecesRepeatedly))
+        if (!(rule.allowRemovePiecesRepeatedlyWhenCloseSameMill))
             newP->setShowNum(true);
 
         pieceList.push_back(newP);

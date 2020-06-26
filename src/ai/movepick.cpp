@@ -59,7 +59,7 @@ void MovePicker::score()
         int nopponentMills = 0;
 
     #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
-        // TODO: rule.allowRemoveMultiPieces 以及 适配打三棋之外的其他规则
+        // TODO: rule.allowRemoveMultiPiecesWhenCloseMultiMill 以及 适配打三棋之外的其他规则
         if (type_of(m) != MOVETYPE_REMOVE) {
             // 在任何阶段, 都检测落子点是否能使得本方成三
             if (nMills > 0) {
