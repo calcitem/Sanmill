@@ -166,8 +166,6 @@ public:
 
     void setTips();
 
-    int generateNullMove(Stack<Move, MAX_MOVES> &moves);
-
     bool doNullMove();
     bool undoNullMove();
 

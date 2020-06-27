@@ -29,7 +29,6 @@ SOURCES += \
     src/ai/movepick.cpp \
     src/ai/trainer.cpp \
     src/ai/tt.cpp \
-    src/base/memmgr.cpp \
     src/base/misc.cpp \
     src/base/zobrist.cpp \
     src/game/bitboard.cpp \
@@ -64,7 +63,6 @@ HEADERS  += \
     src/base/HashNode.h \
     src/base/debug.h \
     src/base/hashMap.h \
-    src/base/memmgr.h \
     src/base/misc.h \
     src/base/prefetch.h \
     src/base/stack.h \

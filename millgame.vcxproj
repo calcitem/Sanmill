@@ -461,7 +461,6 @@
     <ClInclude Include="src\base\debug.h" />
     <ClInclude Include="src\base\hashmap.h" />
     <ClInclude Include="src\base\HashNode.h" />
-    <ClInclude Include="src\base\memmgr.h" />
     <ClInclude Include="src\base\misc.h" />
     <ClInclude Include="src\base\prefetch.h" />
     <ClInclude Include="src\base\stack.h" />
@@ -718,7 +717,6 @@
     <ClCompile Include="src\ai\search.cpp" />
     <ClCompile Include="src\ai\trainer.cpp" />
     <ClCompile Include="src\ai\tt.cpp" />
-    <ClCompile Include="src\base\memmgr.cpp" />
     <ClCompile Include="src\base\misc.cpp" />
     <ClCompile Include="src\base\aithread.cpp" />
     <ClCompile Include="src\base\thread.cpp" />

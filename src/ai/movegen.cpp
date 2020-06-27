@@ -27,13 +27,6 @@
 #include "search.h"
 #include "position.h"
 
-int Position::generateNullMove(Stack<Move, MAX_MOVES> &moves)
-{
-    moves.clear();
-    moves.push_back((Move)SQ_0);
-    return moves.size();
-}
-
 void MoveList::create()
 {
     // Note: Not follow order of MoveDirection array
