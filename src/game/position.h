@@ -67,8 +67,8 @@ public:
     enum Action action { };
 
     // Note: [0] is sum of Black and White
-    int nPiecesInHand[COLOR_COUNT]{0};
-    int nPiecesOnBoard[COLOR_COUNT] {0};
+    int nPiecesInHand[COLOR_NB]{0};
+    int nPiecesOnBoard[COLOR_NB] {0};
     int nPiecesNeedRemove {0};
 
     //////////////////////////////////////
@@ -186,7 +186,7 @@ public:
     Key updateKeyMisc();
     Key getNextPrimaryKey(Move m);
 
-    int score[COLOR_COUNT] = { 0 };
+    int score[COLOR_NB] = { 0 };
     int score_draw { 0 };
     int nPlayed { 0 };
 
@@ -238,7 +238,7 @@ private:
 
     time_t currentTime {};
 
-    time_t elapsedSeconds[COLOR_COUNT];
+    time_t elapsedSeconds[COLOR_NB];
 };
 
 class StateInfo

@@ -54,7 +54,7 @@ enum Color : uint8_t
     NOCOLOR,
     BLACK,
     WHITE,
-    COLOR_COUNT
+    COLOR_NB
 };
 
 #define PLAYER_SHIFT    4
@@ -328,7 +328,7 @@ constexpr Square from_sq(Move m)
 
 inline const Square to_sq(Move m)
 {
-    return static_cast<Square>(abs(m) & 0x00ff);
+    return static_cast<Square>(abs(m) & 0x00FF);
 }
 
 inline const MoveType type_of(Move m)

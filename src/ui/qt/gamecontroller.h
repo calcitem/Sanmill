@@ -361,7 +361,7 @@ private:
 
 private:
     // 2个AI的线程
-    AiThread *aiThread[COLOR_COUNT];
+    AiThread *aiThread[COLOR_NB];
 
 #ifndef TRAINING_MODE
     // 棋局的场景类
@@ -385,7 +385,7 @@ private:
 
 public:
     // 电脑执先手时为 true
-    bool isAiPlayer[COLOR_COUNT];
+    bool isAiPlayer[COLOR_NB];
 
 private:
     // 是否有落子动画
@@ -437,7 +437,7 @@ private:
     Step stepsLimit;
 
     // 玩家剩余时间（秒）
-    time_t remainingTime[COLOR_COUNT];
+    time_t remainingTime[COLOR_NB];
 
     // 用于主窗口状态栏显示的字符串
     QString message;
