@@ -43,11 +43,8 @@ public:
     Position();
     virtual ~Position();
 
-    Position(Position &);
-    Position(const Position &);
-
-    Position &operator=(const Position &);
-    Position &operator=(Position &);
+    Position(const Position &) = delete;
+    Position &operator=(const Position &) = delete;
 
     Board board;
 

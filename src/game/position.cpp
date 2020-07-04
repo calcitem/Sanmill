@@ -72,11 +72,6 @@ StateInfo::StateInfo(const StateInfo &state)
     *this = state;
 }
 
-Position::Position(const Position &pos)
-{  
-    *this = pos;
-}
-
 StateInfo::StateInfo(StateInfo &state)
 {
     if (position != nullptr) {
@@ -89,34 +84,9 @@ StateInfo::StateInfo(StateInfo &state)
     *this = state;
 }
 
-Position::Position(Position &pos)
-{  
-    *this = pos;
-}
-
 StateInfo &StateInfo::operator= (const StateInfo &state)
 {
     memcpy(position, state.position, sizeof(Position));
-    return *this;
-}
-
-Position &Position::operator= (const Position &pos)
-{
-    currentStep = pos.currentStep;
-    moveStep = pos.moveStep;
-    memcpy(board.locations, pos.board.locations, sizeof(board.locations));
-    memcpy(board.byTypeBB, pos.board.byTypeBB, sizeof(board.byTypeBB));
-    currentSquare = pos.currentSquare;
-    winner = pos.winner;
-    startTime = pos.startTime;
-    currentTime = pos.currentTime;
-    elapsedSeconds[BLACK] = pos.elapsedSeconds[BLACK];
-    elapsedSeconds[WHITE] = pos.elapsedSeconds[WHITE];
-    move = pos.move;
-    memcpy(cmdline, pos.cmdline, sizeof(cmdline));
-    cmdlist = pos.cmdlist;
-    //tips = pos.tips;
-
     return *this;
 }
 
@@ -125,27 +95,6 @@ StateInfo &StateInfo::operator= (StateInfo &state)
     memcpy(position, state.position, sizeof(Position));
     return *this;
 }
-
-Position &Position::operator= (Position &pos)
-{
-    currentStep = pos.currentStep;
-    moveStep = pos.moveStep;
-    memcpy(board.locations, pos.board.locations, sizeof(board.locations));
-    memcpy(board.byTypeBB, pos.board.byTypeBB, sizeof(board.byTypeBB));
-    currentSquare = pos.currentSquare;
-    winner = pos.winner;
-    startTime = pos.startTime;
-    currentTime = pos.currentTime;
-    elapsedSeconds[BLACK] = pos.elapsedSeconds[BLACK];
-    elapsedSeconds[WHITE] = pos.elapsedSeconds[WHITE];
-    move = pos.move;
-    memcpy(cmdline, pos.cmdline, sizeof(cmdline));
-    cmdlist = pos.cmdlist;
-    //tips = pos.tips;
-
-    return *this;
-}
-
 
 int Position::countPiecesOnBoard()
 {
