@@ -33,7 +33,7 @@ using namespace std;
 
 AiThread::AiThread(int id, QObject *parent) :
     QThread(parent),
-    state(nullptr),
+    position(nullptr),
     depth(2),
     timeLimit(3600)
 {
@@ -62,12 +62,12 @@ AiThread::~AiThread()
     wait();
 }
 
-void AiThread::setAi(const StateInfo &g)
+void AiThread::setAi(Position *p)
 {
     mutex.lock();
 
-    this->state = &g;
-    ai.setState(*(this->state));
+    this->position = p;
+    ai.setPosition(p);
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
@@ -78,11 +78,11 @@ void AiThread::setAi(const StateInfo &g)
     mutex.unlock();
 }
 
-void AiThread::setAi(const StateInfo &g, Depth d, int tl)
+void AiThread::setAi(Position *p, Depth d, int tl)
 {
     mutex.lock();
-    this->state = &g;
-    ai.setState(g);
+    this->position = p;
+    ai.setPosition(p);
     depth = d;
     timeLimit = tl;
     mutex.unlock();
@@ -217,7 +217,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        sideId = Player::toId(state->position->sideToMove);
+        sideId = Player::toId(position->sideToMove);
 
         if (sideId != playerId) {
             pauseCondition.wait(&mutex);
@@ -225,7 +225,7 @@ void AiThread::run()
             continue;
         }
 
-        ai.setState(*state);
+        ai.setPosition(position);
         emit searchStarted();
         mutex.unlock();
 

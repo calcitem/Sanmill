@@ -29,16 +29,6 @@
 
 string tips;
 
-StateInfo::StateInfo()
-{
-    if (position != nullptr) {
-        delete position;
-    }
-
-    position = new Position();
-    //memset(position, 0, sizeof(Position));
-}
-
 Position::Position()
 {
     constructKey();
@@ -51,49 +41,9 @@ Position::Position()
     cmdlist.reserve(256);
 }
 
-StateInfo::~StateInfo()
-{
-}
-
 Position::~Position()
 {
     cmdlist.clear();
-}
-
-StateInfo::StateInfo(const StateInfo &state)
-{  
-    if (position != nullptr) {
-        delete position;
-        position = nullptr;
-    }
-    
-    position = new Position();
-
-    *this = state;
-}
-
-StateInfo::StateInfo(StateInfo &state)
-{
-    if (position != nullptr) {
-        delete position;
-        position = nullptr;
-    }
-
-    position = new Position();
-
-    *this = state;
-}
-
-StateInfo &StateInfo::operator= (const StateInfo &state)
-{
-    memcpy(position, state.position, sizeof(Position));
-    return *this;
-}
-
-StateInfo &StateInfo::operator= (StateInfo &state)
-{
-    memcpy(position, state.position, sizeof(Position));
-    return *this;
 }
 
 int Position::countPiecesOnBoard()

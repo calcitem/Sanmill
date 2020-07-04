@@ -60,7 +60,7 @@ Value Eval::evaluate(Position *pos)
                 pos->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
-        value += st->position->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
+        value += pos->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (pos->action) {

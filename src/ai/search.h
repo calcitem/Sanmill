@@ -40,7 +40,6 @@
 #endif
 
 class AIAlgorithm;
-class StateInfo;
 class Node;
 class Position;
 class MovePicker;
@@ -65,7 +64,7 @@ public:
     AIAlgorithm();
     ~AIAlgorithm();
 
-    void setState(const StateInfo &state);
+    void setPosition(Position *p);
 
     void quit()
     {
@@ -140,8 +139,6 @@ protected:
     Depth changeDepth(Depth origDepth);
        
 public:
-    StateInfo *state { nullptr };
-
     MovePicker *movePicker { nullptr };
 
     Value bestvalue { VALUE_ZERO };
@@ -150,8 +147,7 @@ public:
     Depth originDepth{ 0 };
 
 private:
-    StateInfo *st { nullptr };
-
+    Position *pos { nullptr };
     Position *position { nullptr };
 
     Stack<Position> positionStack;

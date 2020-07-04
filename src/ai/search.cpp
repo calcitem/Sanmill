@@ -41,15 +41,14 @@ vector<Key> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
 {
-    state = new StateInfo();
-    st = new StateInfo();
+    position = new Position();
+    pos = new Position();
     //movePicker = new MovePicker();
 }
 
 AIAlgorithm::~AIAlgorithm()
 {
-    delete st;
-    //delete state;
+    //delete pos;
 }
 
 Depth AIAlgorithm::changeDepth(Depth origDepth)
@@ -102,17 +101,17 @@ Depth AIAlgorithm::changeDepth(Depth origDepth)
     };
 #endif /* ENDGAME_LEARNING */
 
-    if (st->position->phase & PHASE_PLACING) {
+    if (pos->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12) {
-            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - st->position->getPiecesInHandCount(BLACK) - st->position->getPiecesInHandCount(WHITE)];
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - pos->getPiecesInHandCount(BLACK) - pos->getPiecesInHandCount(WHITE)];
         } else {
-            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - st->position->getPiecesInHandCount(BLACK) - st->position->getPiecesInHandCount(WHITE)];
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - pos->getPiecesInHandCount(BLACK) - pos->getPiecesInHandCount(WHITE)];
         }
     }
 
-    if (st->position->phase & PHASE_MOVING) {
-        int pb = st->position->getPiecesOnBoardCount(BLACK);
-        int pw = st->position->getPiecesOnBoardCount(WHITE);
+    if (pos->phase & PHASE_MOVING) {
+        int pb = pos->getPiecesOnBoardCount(BLACK);
+        int pw = pos->getPiecesOnBoardCount(WHITE);
 
         int pieces = pb + pw;
         int diff = pb - pw;
@@ -145,7 +144,7 @@ Depth AIAlgorithm::changeDepth(Depth origDepth)
     return d;
 }
 
-void AIAlgorithm::setState(const StateInfo &g)
+void AIAlgorithm::setPosition(Position *p)
 {
     if (strcmp(rule.name, rule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -161,13 +160,10 @@ void AIAlgorithm::setState(const StateInfo &g)
         moveHistory.clear();
     }
 
-    *state = g;
-    *st = g;
+    //position = p;
+    pos = p;
+    position = pos;
 
-    //memcpy(this->state, &g, sizeof(StateInfo));
-    //memcpy(this->st, &this->state, sizeof(StateInfo));
-
-    position = st->position;
     requiredQuit = false;
 }
 
@@ -193,8 +189,8 @@ int AIAlgorithm::search(Depth depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (state->position->getPhase() == PHASE_MOVING) {
-        Key key = state->position->getPosKey();
+    if (position->getPhase() == PHASE_MOVING) {
+        Key key = position->getPosKey();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
             nRepetition++;
@@ -207,7 +203,7 @@ int AIAlgorithm::search(Depth depth)
         }
     }
 
-    if (state->position->getPhase() == PHASE_PLACING) {
+    if (position->getPhase() == PHASE_PLACING) {
         moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -319,7 +315,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
-    Key posKey = st->position->getPosKey();
+    Key posKey = pos->getPosKey();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -387,7 +383,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #if 0
-    if (position->phase == PHASE_PLACING && depth == 1 && st->position->nPiecesNeedRemove > 0) {
+    if (position->phase == PHASE_PLACING && depth == 1 && pos->nPiecesNeedRemove > 0) {
         depth--;
     }
 #endif
@@ -443,8 +439,8 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 
     ExtMove extMoves[MAX_MOVES];
     memset(extMoves, 0, sizeof(extMoves));
-    ExtMove *end = generateMoves(st->position, extMoves);
-    MovePicker mp(st->position, extMoves);
+    ExtMove *end = generateMoves(pos, extMoves);
+    MovePicker mp(pos, extMoves);
     mp.score();
 
     partial_insertion_sort(extMoves, end, -100);
@@ -461,7 +457,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
     for (int i = 0; i < nchild; i++) {
-        TranspositionTable::prefetch(st->position->getNextPrimaryKey(extMoves[i].move));
+        TranspositionTable::prefetch(pos->getNextPrimaryKey(extMoves[i].move));
     }
 
 #ifdef PREFETCH_DEBUG
@@ -475,10 +471,10 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 
     for (int i = 0; i < nchild; i++) {
         stashPosition();
-        player_t before = st->position->sideToMove;
+        player_t before = pos->sideToMove;
         Move move = extMoves[i].move;
         doMove(move);
-        player_t after = st->position->sideToMove;
+        player_t after = pos->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && nchild == 1) {
             epsilon = 1;
@@ -559,29 +555,29 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 
 void AIAlgorithm::stashPosition()
 {
-    positionStack.push(*(st->position));
+    positionStack.push(*(pos));
 }
 
 void AIAlgorithm::doMove(Move move)
 {
-    st->position->doMove(move);
+    pos->doMove(move);
 }
 
 void AIAlgorithm::undoMove()
 {
-    memcpy(st->position, positionStack.top(), sizeof(Position));
-    //st->position = positionStack.top();
+    memcpy(pos, positionStack.top(), sizeof(Position));
+    //tmppos = positionStack.top();
     positionStack.pop();
 }
 
 void AIAlgorithm::doNullMove()
 {
-    st->position->doNullMove();
+    pos->doNullMove();
 }
 
 void AIAlgorithm::undoNullMove()
 {
-    st->position->undoNullMove();
+    pos->undoNullMove();
 }
 
 #ifdef ALPHABETA_AI
@@ -621,7 +617,7 @@ const char* AIAlgorithm::nextMove()
         moveIndex++;
     }
 
-    //player_t side = state->position->sideToMove;
+    //player_t side = position->sideToMove;
 
 #ifdef ENDGAME_LEARNING
     // Check if very weak
@@ -630,7 +626,7 @@ const char* AIAlgorithm::nextMove()
             Endgame endgame;
             endgame.type = state->position->sideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            key_t endgameHash = state->position->getPosKey(); // TODO: Do not generate hash repeately
+            key_t endgameHash = position->getPosKey(); // TODO: Do not generate hash repeately
             recordEndgameHash(endgameHash, endgame);
         }
     }
@@ -638,7 +634,7 @@ const char* AIAlgorithm::nextMove()
 
     if (gameOptions.getGiveUpIfMostLose() == true) {
         if (root->value <= -VALUE_MATE) {
-            sprintf(cmdline, "Player%d give up!", state->position->sideId);
+            sprintf(cmdline, "Player%d give up!", position->sideId);
             return cmdline;
         }
     }

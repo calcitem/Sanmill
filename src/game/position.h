@@ -32,7 +32,6 @@
 using namespace std;
 
 class AIAlgorithm;
-class StateInfo;
 class Node;
 
 extern string tips;
@@ -236,24 +235,6 @@ private:
     time_t currentTime {};
 
     time_t elapsedSeconds[COLOR_NB];
-};
-
-class StateInfo
-{
-    friend class AIAlgorithm;
-
-public:
-
-    StateInfo();
-    virtual ~StateInfo();
-
-    StateInfo(StateInfo &);
-    StateInfo(const StateInfo &);
-
-    StateInfo &operator=(const StateInfo &);
-    StateInfo &operator=(StateInfo &);
-
-    Position *position { nullptr };
 };
 
 #endif /* POSITION_H */

@@ -50,8 +50,8 @@ protected:
     void run() override;
 
 public:
-    void setAi(const StateInfo &state);
-    void setAi(const StateInfo &state, Depth depth, int time);
+    void setAi(Position *p);
+    void setAi(Position *p, Depth depth, int time);
 
     Server *getServer()
     {
@@ -92,7 +92,7 @@ private:
     QWaitCondition pauseCondition;
 
 public:
-    const StateInfo *state;
+    Position *position;
 
 public: // TODO: Change to private
     AIAlgorithm ai;
