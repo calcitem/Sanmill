@@ -31,29 +31,14 @@ public:
     explicit Player();
     virtual ~Player();
 
-    player_t getPlayer() const
+    Color getColor() const
     {
-        return who;
+        return color;
     }
 
-    int getId() const
+    inline static char colorToCh(Color color)
     {
-        return id;
-    }
-
-    inline static int toId(player_t player)
-    {
-        return player >> PLAYER_SHIFT;
-    }
-
-    inline static player_t idToPlayer(int id)
-    {
-        return id == 1? PLAYER_BLACK : PLAYER_WHITE;
-    }
-
-    inline static char idToCh(int id)
-    {
-        return static_cast<char>('0' + id);
+        return static_cast<char>('0' + color);
     }
 
     inline static std::string chToStr(char ch)
@@ -65,19 +50,13 @@ public:
         }
     }
 
-    inline static player_t getOpponent(player_t player)
+    inline static Color getOpponent(Color c)
     {
-        return player == PLAYER_BLACK ? PLAYER_WHITE : PLAYER_BLACK;
-    }
-
-    inline static int getOpponentById(int id)
-    {
-        return id == 1 ? 2 : 1;
+        return c == BLACK ? WHITE : BLACK;
     }
 
 private:
-    player_t who;
-    int id;
+    Color color;
 };
 
 #endif // PLAYER_H

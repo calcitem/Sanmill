@@ -45,7 +45,7 @@ Value Eval::evaluate(Position *pos)
             break;
 
         case ACTION_REMOVE:
-            nPiecesNeedRemove = (pos->sideToMove == PLAYER_BLACK) ?
+            nPiecesNeedRemove = (pos->sideToMove == BLACK) ?
                 pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
             break;
@@ -69,7 +69,7 @@ Value Eval::evaluate(Position *pos)
             break;
 
         case ACTION_REMOVE:
-            nPiecesNeedRemove = (pos->sideToMove == PLAYER_BLACK) ?
+            nPiecesNeedRemove = (pos->sideToMove == BLACK) ?
                 pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
             value += nPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
             break;
@@ -88,9 +88,9 @@ Value Eval::evaluate(Position *pos)
                 value = VALUE_DRAW;
             }
         } else if (pos->action == ACTION_SELECT &&
-            pos->board.isAllSurrounded(pos->sideId, pos->nPiecesOnBoard, pos->sideToMove) &&
+            pos->board.isAllSurrounded(pos->sideToMove, pos->nPiecesOnBoard) &&
             rule.isLoseButNotChangeTurnWhenNoWay) {
-            Value delta = pos->sideToMove == PLAYER_BLACK ? -VALUE_MATE : VALUE_MATE;
+            Value delta = pos->sideToMove == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
 
@@ -106,7 +106,7 @@ Value Eval::evaluate(Position *pos)
         break;
     }
 
-    if (pos->sideToMove == PLAYER_WHITE) {
+    if (pos->sideToMove == WHITE) {
         value = -value;
     }
 

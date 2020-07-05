@@ -51,12 +51,10 @@ public:
 
     enum Phase phase {PHASE_NONE};
 
-    player_t sideToMove {PLAYER_NOBODY};
-    int sideId {0};
+    Color sideToMove {NOCOLOR};
     char chSide {'0'};
     //string turnStr;
-    player_t opponent {PLAYER_NOBODY};
-    int opponentId {0};
+    Color opponent { NOCOLOR };
     char chOpponent {'0'};
     //string opponentStr;
 
@@ -138,13 +136,13 @@ public:
         return nPiecesNeedRemove;
     }
 
-    int getMobilityDiff(player_t turn, int nPiecesOnBoard[], bool includeFobidden);
+    int getMobilityDiff(Color turn, int nPiecesOnBoard[], bool includeFobidden);
 
     bool reset();
 
     bool start();
 
-    bool giveup(player_t loser);
+    bool giveup(Color loser);
 
     bool command(const char *cmd);
 
@@ -154,9 +152,9 @@ public:
 
     void cleanBannedLocations();
 
-    void setSideToMove(player_t player);
+    void setSideToMove(Color c);
 
-    player_t getSideToMove();
+    Color getSideToMove();
 
     void changeSideToMove();
 
@@ -165,7 +163,7 @@ public:
     bool doNullMove();
     bool undoNullMove();
 
-    player_t getWinner() const;
+    Color getWinner() const;
 
     bool selectPiece(File file, Rank rank);
     bool _placePiece(File file, Rank rank);
@@ -224,7 +222,7 @@ private:
 
     int countPiecesInHand();
 
-    player_t winner;
+    Color winner;
 
     Step currentStep {};
 

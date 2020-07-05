@@ -186,7 +186,7 @@ public slots:
     void setInvert(bool arg = true);
 
     // id为1时让电脑执先手, id为2时让的电脑执后手
-    void setEngine(int id, bool arg = true);
+    void setEngine(int color, bool arg = true);
     void setEngine1(bool arg);
     void setEngine2(bool arg);
 
@@ -197,7 +197,7 @@ public slots:
     void setSound(bool arg = true);
 
     // 播放声音
-    static void playSound(sound_t soundType, player_t player);
+    static void playSound(sound_t soundType, Color c);
 
     // 是否必败时认输
     void setGiveUpIfMostLose(bool enabled);
@@ -296,16 +296,10 @@ public slots:
         waitThreads();
     }
 
-    void resumeAiThreads(player_t sideToMove)
+    void resumeAiThreads(Color sideToMove)
     {
-        if (sideToMove == PLAYER_BLACK) {
-            if (isAiPlayer[BLACK]) {
-                aiThread[BLACK]->resume();
-            }
-        } else {
-            if (isAiPlayer[WHITE]) {
-                aiThread[WHITE]->resume();
-            }
+        if (isAiPlayer[sideToMove]) {
+            aiThread[sideToMove]->resume();
         }
     }
 

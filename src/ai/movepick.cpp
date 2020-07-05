@@ -84,7 +84,7 @@ void MovePicker::score()
                     int nBanned = 0;
                     int nEmpty = 0;
 
-                    position->board.getSurroundedPieceCount(sq, position->sideId,
+                    position->board.getSurroundedPieceCount(sq, position->sideToMove,
                                                             nPlayerPiece, nOpponentPiece, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
@@ -114,7 +114,7 @@ void MovePicker::score()
             int nBanned = 0;
             int nEmpty = 0;
 
-            position->board.getSurroundedPieceCount(sq, position->sideId,
+            position->board.getSurroundedPieceCount(sq, position->sideToMove,
                                                     nPlayerPiece, nOpponentPiece, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI

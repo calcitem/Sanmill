@@ -33,8 +33,6 @@
 #include "misc.h"
 #include "movepick.h"
 
-player_t gSideToMove;
-
 using namespace CTSL;
 
 vector<Key> moveHistory;
@@ -471,10 +469,10 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 
     for (int i = 0; i < nchild; i++) {
         stashPosition();
-        player_t before = pos->sideToMove;
+        Color before = pos->sideToMove;
         Move move = extMoves[i].move;
         doMove(move);
-        player_t after = pos->sideToMove;
+        Color after = pos->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && nchild == 1) {
             epsilon = 1;
@@ -617,14 +615,14 @@ const char* AIAlgorithm::nextMove()
         moveIndex++;
     }
 
-    //player_t side = position->sideToMove;
+    Color side = position->sideToMove;
 
 #ifdef ENDGAME_LEARNING
     // Check if very weak
     if (gameOptions.getLearnEndgameEnabled()) {
         if (bestValue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
-            endgame.type = state->position->sideToMove == PLAYER_BLACK ?
+            endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
             key_t endgameHash = position->getPosKey(); // TODO: Do not generate hash repeately
             recordEndgameHash(endgameHash, endgame);
@@ -634,7 +632,7 @@ const char* AIAlgorithm::nextMove()
 
     if (gameOptions.getGiveUpIfMostLose() == true) {
         if (root->value <= -VALUE_MATE) {
-            sprintf(cmdline, "Player%d give up!", position->sideId);
+            sprintf(cmdline, "Player%d give up!", position->sideToMove);
             return cmdline;
         }
     }

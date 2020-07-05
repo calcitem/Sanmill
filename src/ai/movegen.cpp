@@ -293,7 +293,7 @@ void MoveList::shuffle()
 ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
 {
     Square square;
-    player_t opponent;
+    Color opponent;
 
     //moves.clear();
     ExtMove *cur = moveList;
@@ -340,7 +340,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
                     continue;
                 }
 
-                if (position->nPiecesOnBoard[position->sideId] > rule.nPiecesAtLeast ||
+                if (position->nPiecesOnBoard[position->sideToMove] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
                         newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);
@@ -368,7 +368,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         if (position->board.isAllInMills(opponent)) {
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<Square>(MoveList::movePriorityTable[i]);
-                if (position->board.locations[square] & opponent) {
+                if (position->board.locations[square] & (opponent << PLAYER_SHIFT)) {
                     *cur++ = ((Move)-square);
                 }
             }
@@ -378,8 +378,8 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         // not is all in mills
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<Square>(MoveList::movePriorityTable[i]);
-            if (position->board.locations[square] & opponent) {
-                if (rule.allowRemovePieceInMill || !position->board.inHowManyMills(square, PLAYER_NOBODY)) {
+            if (position->board.locations[square] & (opponent << PLAYER_SHIFT)) {
+                if (rule.allowRemovePieceInMill || !position->board.inHowManyMills(square, NOBODY)) {
                     *cur++ = ((Move)-square);
                 }
             }

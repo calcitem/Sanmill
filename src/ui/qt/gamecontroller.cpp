@@ -337,18 +337,18 @@ void GameController::setRule(int ruleNo, Step stepLimited /*= -1*/, int timeLimi
     gameReset();
 }
 
-void GameController::setEngine(int id, bool arg)
+void GameController::setEngine(int color, bool arg)
 {
-    isAiPlayer[id] = arg;
+    isAiPlayer[color] = arg;
 
     if (arg) {
-        aiThread[id]->setAi(position);
-        if (aiThread[id]->isRunning())
-            aiThread[id]->resume();
+        aiThread[color]->setAi(position);
+        if (aiThread[color]->isRunning())
+            aiThread[color]->resume();
         else
-            aiThread[id]->start();
+            aiThread[color]->start();
     } else {
-        aiThread[id]->stop();
+        aiThread[color]->stop();
     }
 }
 
@@ -401,11 +401,11 @@ void GameController::setSound(bool arg)
 #endif // TRAINING_MODE
 }
 
-void GameController::playSound(sound_t soundType, player_t player)
+void GameController::playSound(sound_t soundType, Color c)
 {
     string soundDir = ":/sound/resources/sound/";
-    string sideStr = player == PLAYER_BLACK ? "B" : "W";
-    string oppenentStr = player == PLAYER_WHITE? "B" : "W";
+    string sideStr = c == BLACK ? "B" : "W";
+    string oppenentStr = c == WHITE? "B" : "W";
     string filename;
 
     switch (soundType) {
@@ -476,7 +476,7 @@ void GameController::playSound(sound_t soundType, player_t player)
         filename = "warning.wav";
         break;
     case GAME_SOUND_WIN:        
-        if (player == PLAYER_DRAW) {
+        if (c == DRAW) {
             filename = "Draw.wav";
         } else {
             filename = "Win_" + sideStr + ".wav";
@@ -683,8 +683,8 @@ void GameController::timerEvent(QTimerEvent *event)
     emit time2Changed(qt2.toString("hh:mm:ss"));
 
     // 如果胜负已分
-    player_t winner = position->getWinner();
-    if (winner != PLAYER_NOBODY) {
+    Color winner = position->getWinner();
+    if (winner != NOBODY) {
         // 停止计时
         killTimer(timeID);
 
@@ -731,7 +731,7 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::isAIsTurn()
 {
-    return isAiPlayer[position->sideId];
+    return isAiPlayer[position->sideToMove];
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -771,7 +771,7 @@ bool GameController::actionPiece(QPointF pos)
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
 
             // 如果再决出胜负后悔棋，则重新启动计时
-            if (position->getWinner() == PLAYER_NOBODY) {
+            if (position->getWinner() == NOBODY) {
 
                 // 重新启动计时
                 timeID = startTimer(100);
@@ -863,15 +863,15 @@ bool GameController::actionPiece(QPointF pos)
 
         // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-        player_t winner = position->getWinner();
-        if (winner != PLAYER_NOBODY &&
+        Color winner = position->getWinner();
+        if (winner != NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
             playSound(GAME_SOUND_WIN, winner);
 #endif
 
         // AI设置
         // 如果还未决出胜负
-        if (position->getWinner() == PLAYER_NOBODY) {
+        if (position->getWinner() == NOBODY) {
             resumeAiThreads(position->sideToMove);
         }
         // 如果已经决出胜负
@@ -911,7 +911,7 @@ bool GameController::giveUp()
         manualListModel.setData(manualListModel.index(currentRow), i.c_str());
     }
 
-    if (position->getWinner() != PLAYER_NOBODY)
+    if (position->getWinner() != NOBODY)
         playSound(GAME_SOUND_GIVE_UP, position->getSideToMove());
 
 #endif // TRAINING_MODE
@@ -997,8 +997,8 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-    player_t winner = position->getWinner();
-    if (winner != PLAYER_NOBODY &&
+    Color winner = position->getWinner();
+    if (winner != NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
         playSound(GAME_SOUND_WIN, winner);
     }
@@ -1007,7 +1007,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     // AI设置
     // 如果还未决出胜负
-    if (position->getWinner() == PLAYER_NOBODY) {
+    if (position->getWinner() == NOBODY) {
         resumeAiThreads(position->sideToMove);
     }
     // 如果已经决出胜负
@@ -1306,7 +1306,7 @@ void GameController::showTestWindow()
 
 void GameController::humanGiveUp()
 {
-    if (position->getWinner() == PLAYER_NOBODY) {
+    if (position->getWinner() == NOBODY) {
         giveUp();
     }
 }

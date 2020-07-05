@@ -51,21 +51,15 @@ enum MoveType
 
 enum Color : uint8_t
 {
-    NOCOLOR,
-    BLACK,
-    WHITE,
-    COLOR_NB
+    NOCOLOR = 0,
+    BLACK = 1,
+    WHITE = 2,
+    COLOR_NB = 3,
+    DRAW = 4,
+    NOBODY = 8
 };
 
 #define PLAYER_SHIFT    4
-
-enum player_t : uint8_t
-{
-    PLAYER_BLACK = 0x1 << PLAYER_SHIFT,
-    PLAYER_WHITE = 0x2 << PLAYER_SHIFT,
-    PLAYER_DRAW = 0x4 << PLAYER_SHIFT,
-    PLAYER_NOBODY = 0x8 << PLAYER_SHIFT
-};
 
 enum Phase : uint16_t
 {

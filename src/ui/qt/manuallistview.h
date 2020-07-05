@@ -83,8 +83,8 @@ protected slots:
     void rowsInserted(const QModelIndex &parent, int start, int end) {
         // 调用父类函数，为使滚动条更新，否则scrollToBottom不能正确执行。
         QListView::rowsInserted(parent, start, end);
-        QModelIndex id = model()->square(end, 0);
-        setCurrentIndex(id);
+        QModelIndex color = model()->square(end, 0);
+        setCurrentIndex(color);
         scrollToBottom();
     }
 #endif

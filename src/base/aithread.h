@@ -36,7 +36,7 @@ class AiThread : public QThread
 
 public:
     explicit AiThread(QObject *parent = nullptr);
-    explicit AiThread(int id, QObject *parent = nullptr);
+    explicit AiThread(int color, QObject *parent = nullptr);
     ~AiThread() override;
 
 signals:

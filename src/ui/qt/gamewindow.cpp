@@ -609,13 +609,13 @@ void MillGameWindow::on_actionNew_N_triggered()
     QString whoWin;
 
     switch (gameController->getPosition()->getWinner()) {
-    case PLAYER_BLACK:
+    case BLACK:
         whoWin = "Black-Win";
         break;
-    case PLAYER_WHITE:
+    case WHITE:
         whoWin = "White-Win";
         break;
-    case PLAYER_DRAW:
+    case DRAW:
         whoWin = "Draw";
         break;
     default:

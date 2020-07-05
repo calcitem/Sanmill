@@ -54,12 +54,12 @@ public:
     void turn(vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
     void rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange = true);
 
-    int inHowManyMills(Square square, player_t player, Square squareSelected = SQ_0);
-    bool isAllInMills(player_t);
+    int inHowManyMills(Square square, Color c, Square squareSelected = SQ_0);
+    bool isAllInMills(Color c);
 
-    int getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[], Square square, bool includeFobidden);
-    void getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty);
-    bool isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t ply);
+    int getSurroundedEmptyLocationCount(Color sideToMove, int nPiecesOnBoard[], Square square, bool includeFobidden);
+    void getSurroundedPieceCount(Square square, Color sideToMove, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty);
+    bool isAllSurrounded(Color sideToMove, int nPiecesOnBoard[]);
 
     int addMills(Square square);
 
@@ -68,7 +68,7 @@ public:
 
     static void printBoard();
 
-    player_t locationToPlayer(Square square);
+    Color locationToColor(Square square);
 
 //private:
 

@@ -89,7 +89,7 @@ bool Position::setPosition(const struct Rule *newRule)
     this->moveStep = 0;
 
     phase = PHASE_READY;
-    setSideToMove(PLAYER_BLACK);
+    setSideToMove(BLACK);
     action = ACTION_PLACE;
 
     memset(board.locations, 0, sizeof(board.locations));
@@ -103,7 +103,7 @@ bool Position::setPosition(const struct Rule *newRule)
     countPiecesInHand();
     nPiecesNeedRemove = 0;
     board.millListSize = 0;
-    winner = PLAYER_NOBODY;
+    winner = NOBODY;
     MoveList::create();
     board.createMillTable();
     currentSquare = SQ_0;
@@ -137,10 +137,10 @@ bool Position::reset()
     moveStep = 0;
 
     phase = PHASE_READY;
-    setSideToMove(PLAYER_BLACK);
+    setSideToMove(BLACK);
     action = ACTION_PLACE;
 
-    winner = PLAYER_NOBODY;
+    winner = NOBODY;
 
     memset(board.locations, 0, sizeof(board.locations));
     key = 0;
@@ -207,7 +207,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
     int piece = '\x00';
     int n = 0;
 
-    int playerId = Player::toId(sideToMove);
+    int playerId = sideToMove;
 
     Bitboard fromTo;
 
@@ -226,7 +226,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
     Board::squareToPolar(square, file, rank);
 
     if (phase == PHASE_PLACING) {
-        piece = (0x01 | sideToMove) + rule.nTotalPiecesEachSide - nPiecesInHand[playerId];
+        piece = (0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - nPiecesInHand[playerId];
         nPiecesInHand[playerId]--;
         nPiecesOnBoard[playerId]++;
 
@@ -264,9 +264,9 @@ bool Position::placePiece(Square square, bool updateCmdlist)
                 cleanBannedLocations();
 
                 if (rule.isDefenderMoveFirst) {
-                    setSideToMove(PLAYER_WHITE);
+                    setSideToMove(WHITE);
                 } else {
-                    setSideToMove(PLAYER_BLACK);
+                    setSideToMove(BLACK);
                 }
 
                 if (checkGameOverCondition(updateCmdlist)) {
@@ -290,7 +290,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
     // When hase == GAME_MOVING
 
     // if illegal
-    if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
+    if (nPiecesOnBoard[sideToMove] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         for (i = 0; i < 4; i++) {
             if (square == MoveList::moveTable[currentSquare][i])
@@ -380,14 +380,14 @@ bool Position::removePiece(Square square, bool updateCmdlist)
 
     int seconds = -1;
 
-    int oppId = Player::toId(opponent);
+    int oppId = opponent;
 
     // if piece is not opponent's
-    if (!(opponent & board.locations[square]))
+    if (!((opponent << PLAYER_SHIFT) & board.locations[square]))
         return false;
 
     if (!rule.allowRemovePieceInMill &&
-        board.inHowManyMills(square, PLAYER_NOBODY) &&
+        board.inHowManyMills(square, NOBODY) &&
         !board.isAllInMills(Player::getOpponent(sideToMove))) {
         return false;
     }
@@ -404,10 +404,10 @@ bool Position::removePiece(Square square, bool updateCmdlist)
         board.locations[square] = '\x00';
 
         board.byTypeBB[ALL_PIECES] ^= square;
-        board.byTypeBB[opponentId] ^= square;
+        board.byTypeBB[opponent] ^= square;
     }
 
-    nPiecesOnBoard[opponentId]--;
+    nPiecesOnBoard[opponent]--;
 
     move = static_cast<Move>(-square);
 
@@ -440,9 +440,9 @@ bool Position::removePiece(Square square, bool updateCmdlist)
             cleanBannedLocations();
 
             if (rule.isDefenderMoveFirst) {
-                setSideToMove(PLAYER_WHITE);
+                setSideToMove(WHITE);
             } else {
-                setSideToMove(PLAYER_BLACK);
+                setSideToMove(BLACK);
             }
 
             if (checkGameOverCondition(updateCmdlist)) {
@@ -481,7 +481,7 @@ bool Position::selectPiece(Square square)
     if (action != ACTION_SELECT && action != ACTION_PLACE)
         return false;
 
-    if (board.locations[square] & sideToMove) {
+    if (board.locations[square] & (sideToMove << PLAYER_SHIFT)) {
         currentSquare = square;
         action = ACTION_PLACE;
 
@@ -496,7 +496,7 @@ bool Position::selectPiece(File file, Rank rank)
     return selectPiece(Board::polarToSquare(file, rank));
 }
 
-bool Position::giveup(player_t loser)
+bool Position::giveup(Color loser)
 {
     if (phase & PHASE_NOTPLAYING ||
         phase == PHASE_NONE) {
@@ -505,14 +505,14 @@ bool Position::giveup(player_t loser)
 
     phase = PHASE_GAMEOVER;
 
-    int loserId = Player::toId(loser);
-    char loserCh = Player::idToCh(loserId);
+    Color loserColor = loser;
+    char loserCh = Player::colorToCh(loserColor);
     string loserStr = Player::chToStr(loserCh);
 
     winner = Player::getOpponent(loser);
     tips = "玩家" + loserStr + "投子认负";
-    sprintf(cmdline, "Player%d give up!", loserId);
-    score[Player::toId(winner)]++;
+    sprintf(cmdline, "Player%d give up!", loserColor);
+    score[winner]++;
 
     cmdlist.emplace_back(string(cmdline));
 
@@ -573,7 +573,7 @@ bool Position::command(const char *cmd)
     args = sscanf(cmd, "Player%1u give up!", &t);
 
     if (args == 1) {
-        return giveup(Player::idToPlayer(t));
+        return giveup((Color)t);
     }
 
 #ifdef THREEFOLD_REPETITION
@@ -583,7 +583,7 @@ bool Position::command(const char *cmd)
 
     if (!strcmp(cmd, "draw")) {
         phase = PHASE_GAMEOVER;
-        winner = PLAYER_DRAW;
+        winner = DRAW;
         score_draw++;
         tips = "三次重复局面判和。";
         sprintf(cmdline, "Threefold Repetition. Draw!");
@@ -616,7 +616,7 @@ bool Position::doMove(Move m)
     return false;
 }
 
-player_t Position::getWinner() const
+Color Position::getWinner() const
 {
     return winner;
 }
@@ -625,8 +625,8 @@ int Position::update()
 {
     int ret = -1;
     int timePoint = -1;
-    time_t *seconds = &elapsedSeconds[sideId];
-    time_t opponentSeconds = elapsedSeconds[opponentId];
+    time_t *seconds = &elapsedSeconds[sideToMove];
+    time_t opponentSeconds = elapsedSeconds[opponent];
 
     if (!(phase & PHASE_PLAYING)) {
         return -1;
@@ -661,9 +661,9 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
             for (int i = 1; i <= 2; i++) {
                 if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
                     elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
-                    winner = Player::idToPlayer(Player::getOpponentById(i));
-                    tips = "玩家" + Player::chToStr(Player::idToCh(i)) + "超时判负。";
-                    sprintf(cmdline, "Time over. Player%d win!", Player::getOpponentById(i));
+                    winner = Player::getOpponent(Color(i));
+                    tips = "玩家" + Player::chToStr(Player::colorToCh(Color(i))) + "超时判负。";
+                    sprintf(cmdline, "Time over. Player%d win!", Player::getOpponent(Color(i)));
                 }
             }
 
@@ -675,7 +675,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
 
     if (rule.maxStepsLedToDraw > 0 &&
         moveStep > rule.maxStepsLedToDraw) {
-        winner = PLAYER_DRAW;
+        winner = DRAW;
         phase = PHASE_GAMEOVER;
         if (updateCmdlist) {
             sprintf(cmdline, "Steps over. In draw!");
@@ -688,11 +688,11 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
     for (int i = 1; i <= 2; i++)
     {
         if (nPiecesOnBoard[i] + nPiecesInHand[i] < rule.nPiecesAtLeast) {
-            int o = Player::getOpponentById(i);
-            winner = Player::idToPlayer(o);
+            winner = Player::getOpponent(Color(i));
             phase = PHASE_GAMEOVER;
+
             if (updateCmdlist) {
-                sprintf(cmdline, "Player%d win!", o);
+                sprintf(cmdline, "Player%d win!", winner);
                 cmdlist.emplace_back(string(cmdline));
             }
 
@@ -704,7 +704,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
 #if 0
     int diff = nPiecesOnBoard[BLACK] - nPiecesOnBoard[WHITE];
     if (diff > 4) {
-        winner = PLAYER_BLACK;
+        winner = BLACK;
         phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player1 win!");
         cmdlist.emplace_back(string(cmdline));
@@ -713,7 +713,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
     }
 
     if (diff < -4) {
-        winner = PLAYER_WHITE;
+        winner = WHITE;
         phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player2 win!");
         cmdlist.emplace_back(string(cmdline));
@@ -727,12 +727,12 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
         phase = PHASE_GAMEOVER;
 
         if (rule.isBlackLosebutNotDrawWhenBoardFull) {
-            winner = PLAYER_WHITE;
+            winner = WHITE;
             if (updateCmdlist) {
                 sprintf(cmdline, "Player2 win!");
             }
         } else {
-            winner = PLAYER_DRAW; 
+            winner = DRAW; 
             if (updateCmdlist) {
                 sprintf(cmdline, "Full. In draw!");
             }
@@ -745,7 +745,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
         return true;
     }
 
-    if (phase == PHASE_MOVING && action == ACTION_SELECT && board.isAllSurrounded(sideId, nPiecesOnBoard, sideToMove)) {
+    if (phase == PHASE_MOVING && action == ACTION_SELECT && board.isAllSurrounded(sideToMove, nPiecesOnBoard)) {
         // TODO: move to next branch
         phase = PHASE_GAMEOVER;
 
@@ -753,8 +753,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
             if (updateCmdlist) {
                 tips = "玩家" + Player::chToStr(chSide) + "无子可走被闷";
                 winner = Player::getOpponent(sideToMove);
-                int winnerId = Player::toId(winner);
-                sprintf(cmdline, "Player%d no way to go. Player%d win!", sideId, winnerId);
+                sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
                 cmdlist.emplace_back(string(cmdline));  // TODO: memleak
             }
 
@@ -769,7 +768,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
     return false;
 }
 
-int Position::getMobilityDiff(player_t turn, int piecesOnBoard[], bool includeFobidden)
+int Position::getMobilityDiff(Color turn, int piecesOnBoard[], bool includeFobidden)
 {
     // TODO: Deal with rule is no ban location
     Location *locations = board.locations;
@@ -814,20 +813,17 @@ void Position::cleanBannedLocations()
     }
 }
 
-void Position::setSideToMove(player_t player)
+void Position::setSideToMove(Color c)
 {
-    sideToMove = player;
+    sideToMove = c;
 
-    sideId = Player::toId(sideToMove);
-    chSide = Player::idToCh(sideId);
+    chSide = Player::colorToCh(sideToMove);
 
-    opponent = Player::getOpponent(player);
-
-    opponentId = Player::toId(opponent);
-    chOpponent = Player::idToCh(opponentId);
+    opponent = Player::getOpponent(sideToMove);
+    chOpponent = Player::colorToCh(opponent);
 }
 
-player_t Position::getSideToMove()
+Color Position::getSideToMove()
 {
     return sideToMove;
 }
@@ -852,7 +848,6 @@ bool Position::undoNullMove()
 void Position::setTips()
 {
     string winnerStr, t;
-    int winnerId;
     string turnStr = Player::chToStr(chSide);
 
     switch (phase) {
@@ -863,7 +858,7 @@ void Position::setTips()
 
     case PHASE_PLACING:
         if (action == ACTION_PLACE) {
-            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(nPiecesInHand[sideId]) + "子";
+            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(nPiecesInHand[sideToMove]) + "子";
         } else if (action == ACTION_REMOVE) {
             tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(nPiecesNeedRemove) + "子";
         }
@@ -878,16 +873,15 @@ void Position::setTips()
         break;
 
     case PHASE_GAMEOVER:  
-        if (winner == PLAYER_DRAW) {
+        if (winner == DRAW) {
             score_draw++;
             tips = "双方平局！比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
             break;
         }
 
-        winnerId = Player::toId(winner);
-        winnerStr = Player::chToStr(Player::idToCh(winnerId));
+        winnerStr = Player::chToStr(Player::colorToCh(winner));
 
-        score[winnerId]++;
+        score[winner]++;
 
         t = "玩家" + winnerStr + "获胜！比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
 
@@ -925,7 +919,7 @@ Key Position::updateKey(Square square)
     // PieceType is board.locations[square] 
 
     // 0b00 - no piece，0b01 = 1 black，0b10 = 2 white，0b11 = 3 ban
-    int pieceType = Player::toId(board.locationToPlayer(square));
+    int pieceType = board.locationToColor(square);
     // TODO: this is std, but current code can work
     //Location loc = board.locations[square];
     //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
@@ -947,7 +941,7 @@ Key Position::updateKeyMisc()
     key = key << KEY_MISC_BIT >> KEY_MISC_BIT;
     Key hi = 0;
 
-    if (sideToMove == PLAYER_WHITE) {
+    if (sideToMove == WHITE) {
         hi |= 1U;
     }
 
@@ -970,7 +964,7 @@ Key Position::getNextPrimaryKey(Move m)
     MoveType mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
-        int pieceType = Player::getOpponentById(Player::toId(sideToMove));
+        int pieceType = Player::getOpponent(sideToMove);
         npKey ^= zobrist[sq][pieceType];
 
         if (rule.hasBannedLocations && phase == PHASE_PLACING) {
@@ -980,7 +974,7 @@ Key Position::getNextPrimaryKey(Move m)
         return npKey;
     }
     
-    int pieceType = Player::toId(sideToMove);
+    int pieceType = sideToMove;
     npKey ^= zobrist[sq][pieceType];
 
     if (mt == MOVETYPE_MOVE) {

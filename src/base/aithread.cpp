@@ -31,20 +31,20 @@ using namespace std;
 #pragma execution_character_set("GB2312")
 #endif
 
-AiThread::AiThread(int id, QObject *parent) :
+AiThread::AiThread(int color, QObject *parent) :
     QThread(parent),
     position(nullptr),
     depth(2),
     timeLimit(3600)
 {
-    this->playerId = id;
+    this->playerId = color;
 
     connect(this, &AiThread::searchStarted, this, [=]() {timer.start(timeLimit * 1000 - 118 /* 118ms is return time */); }, Qt::QueuedConnection);
     connect(this, &AiThread::searchFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
     connect(&timer, &QTimer::timeout, this, &AiThread::act, Qt::QueuedConnection);
 
 #ifndef TRAINING_MODE
-    if (id == 1) {
+    if (color == 1) {
         server = new Server(nullptr, 30001);    // TODO: WARNING: ThreadSanitizer: data race
         uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
         client = new Client(nullptr, clientPort);
@@ -208,7 +208,7 @@ void AiThread::run()
     int iTemp = 0;
 #endif
 
-    int sideId = 0;
+    Color sideToMove = NOCOLOR;
 
     loggerDebug("Thread %d start\n", playerId);
 
@@ -217,9 +217,9 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        sideId = Player::toId(position->sideToMove);
+        sideToMove = position->sideToMove;
 
-        if (sideId != playerId) {
+        if (sideToMove != playerId) {
             pauseCondition.wait(&mutex);
             mutex.unlock();
             continue;

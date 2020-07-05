@@ -198,18 +198,18 @@ Square Board::polarToSquare(File file, Rank rank)
     return static_cast<Square>(file * N_RANKS + rank - 1);
 }
 
-player_t Board::locationToPlayer(Square square)
+Color Board::locationToColor(Square square)
 {
-    return player_t(locations[square] & 0x30);
+    return Color((locations[square] & 0x30) >> PLAYER_SHIFT);
 }
 
-int Board::inHowManyMills(Square square, player_t player, Square squareSelected)
+int Board::inHowManyMills(Square square, Color c, Square squareSelected)
 {
     int n = 0;
     Location locbak = SQ_0;
 
-    if (player == PLAYER_NOBODY) {
-        player = locationToPlayer(square);
+    if (c == NOBODY) {
+        c = Color(locationToColor(square) >> PLAYER_SHIFT);
     }
 
     if (squareSelected != SQ_0) {
@@ -218,7 +218,7 @@ int Board::inHowManyMills(Square square, player_t player, Square squareSelected)
     }
 
     for (int l = 0; l < LD_NB; l++) {
-        if (player &
+        if ((c << PLAYER_SHIFT) &
             locations[millTable[square][l][0]] &
             locations[millTable[square][l][1]]) {
             n++;
@@ -237,7 +237,7 @@ int Board::addMills(Square square)
     uint64_t mill = 0;
     int n = 0;
     int idx[3], min, temp;
-    player_t m = locationToPlayer(square);
+    Color m = locationToColor(square);
 
     for (int i = 0; i < 3; i++) {
         idx[0] = square;
@@ -245,7 +245,7 @@ int Board::addMills(Square square)
         idx[2] = millTable[square][i][1];
 
         // no mill
-        if (!(m & locations[idx[1]] & locations[idx[2]])) {
+        if (!((m << PLAYER_SHIFT) & locations[idx[1]] & locations[idx[2]])) {
             continue;
         }
 
@@ -298,11 +298,11 @@ int Board::addMills(Square square)
     return n;
 }
 
-bool Board::isAllInMills(player_t player)
+bool Board::isAllInMills(Color c)
 {
     for (Square i = SQ_BEGIN; i < SQ_END; i = static_cast<Square>(i + 1)) {
-        if (locations[i] & (uint8_t)player) {
-            if (!inHowManyMills(i, PLAYER_NOBODY)) {
+        if (locations[i] & ((uint8_t)(c << PLAYER_SHIFT))) {
+            if (!inHowManyMills(i, NOBODY)) {
                 return false;
             }
         }
@@ -312,14 +312,14 @@ bool Board::isAllInMills(player_t player)
 }
 
 // Stat include ban
-int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
+int Board::getSurroundedEmptyLocationCount(Color sideToMove, int nPiecesOnBoard[],
                                            Square square, bool includeFobidden)
 {
     //assert(rule.hasBannedLocations == includeFobidden);
 
     int count = 0;
 
-    if (nPiecesOnBoard[sideId] > rule.nPiecesAtLeast ||
+    if (nPiecesOnBoard[sideToMove] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
@@ -336,7 +336,7 @@ int Board::getSurroundedEmptyLocationCount(int sideId, int nPiecesOnBoard[],
     return count;
 }
 
-void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty)
+void Board::getSurroundedPieceCount(Square square, Color sideToMove, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty)
 {
     Square moveSquare;
 
@@ -357,7 +357,7 @@ void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece
             nBanned++;
             break;
         default:
-            if (sideId == pieceType >> PLAYER_SHIFT) {
+            if (sideToMove == pieceType >> PLAYER_SHIFT) {
                 nPlayerPiece++;
             } else {
                 nOpponentPiece++;
@@ -367,14 +367,14 @@ void Board::getSurroundedPieceCount(Square square, int sideId, int &nPlayerPiece
     }
 }
 
-bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
+bool Board::isAllSurrounded(Color sideToMove, int nPiecesOnBoard[])
 {
     // Full
     if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= N_RANKS * N_FILES)
         return true;
 
     // Can fly
-    if (nPiecesOnBoard[sideId] <= rule.nPiecesAtLeast &&
+    if (nPiecesOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
         rule.allowFlyWhenRemainThreePieces) {
         return false;
     }
@@ -382,7 +382,7 @@ bool Board::isAllSurrounded(int sideId, int nPiecesOnBoard[], player_t player)
     Square moveSquare;
 
     for (Square sq = SQ_BEGIN; sq < SQ_END; sq = (Square)(sq + 1)) {
-        if (!(player & locationToPlayer(sq))) {
+        if (!(sideToMove & locationToColor(sq))) {
             continue;
         }
 
