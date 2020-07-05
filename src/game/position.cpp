@@ -22,7 +22,6 @@
 #include "position.h"
 #include "search.h"
 #include "movegen.h"
-#include "player.h"
 #include "option.h"
 #include "zobrist.h"
 #include "bitboard.h"
@@ -506,8 +505,8 @@ bool Position::giveup(Color loser)
     phase = PHASE_GAMEOVER;
 
     Color loserColor = loser;
-    char loserCh = Player::colorToCh(loserColor);
-    string loserStr = Player::chToStr(loserCh);
+    char loserCh = colorToCh(loserColor);
+    string loserStr = chToStr(loserCh);
 
     winner = ~loser;
     tips = "玩家" + loserStr + "投子认负";
@@ -662,7 +661,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
                 if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
                     elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
                     winner = ~Color(i);
-                    tips = "玩家" + Player::chToStr(Player::colorToCh(Color(i))) + "超时判负。";
+                    tips = "玩家" + chToStr(colorToCh(Color(i))) + "超时判负。";
                     sprintf(cmdline, "Time over. Player%d win!", ~Color(i));
                 }
             }
@@ -751,7 +750,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
 
         if (rule.isLoseButNotChangeTurnWhenNoWay) {
             if (updateCmdlist) {
-                tips = "玩家" + Player::chToStr(Player::colorToCh(sideToMove)) + "无子可走被闷";
+                tips = "玩家" + chToStr(colorToCh(sideToMove)) + "无子可走被闷";
                 winner = ~sideToMove;
                 sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
                 cmdlist.emplace_back(string(cmdline));  // TODO: memleak
@@ -844,7 +843,7 @@ bool Position::undo_null_move()
 void Position::setTips()
 {
     string winnerStr, t;
-    string turnStr = Player::chToStr(Player::colorToCh(sideToMove));
+    string turnStr = chToStr(colorToCh(sideToMove));
 
     switch (phase) {
     case PHASE_READY:
@@ -875,7 +874,7 @@ void Position::setTips()
             break;
         }
 
-        winnerStr = Player::chToStr(Player::colorToCh(winner));
+        winnerStr = chToStr(colorToCh(winner));
 
         score[winner]++;
 

@@ -20,7 +20,6 @@
 #include <QTimer>
 #include "aithread.h"
 #include "tt.h"
-#include "player.h"
 
 #ifdef OPENING_BOOK
 #include <deque>

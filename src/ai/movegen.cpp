@@ -20,7 +20,6 @@
 #include <random>
 
 #include "movegen.h"
-#include "player.h"
 #include "misc.h"
 #include "option.h"
 #include "types.h"

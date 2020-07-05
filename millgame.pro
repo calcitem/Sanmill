@@ -34,7 +34,6 @@ SOURCES += \
     src/game/bitboard.cpp \
     src/game/board.cpp \
     src/game/option.cpp \
-    src/game/player.cpp \
     src/game/position.cpp \
     src/game/rule.cpp \
     src/main.cpp \
@@ -73,7 +72,6 @@ HEADERS  += \
     src/game/bitboard.h \
     src/game/board.h \
     src/game/option.h \
-    src/game/player.h \
     src/game/position.h \
     src/game/rule.h \
     src/game/types.h \

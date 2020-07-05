@@ -243,6 +243,20 @@ private:
 
     int countPiecesInHand();
 
+    inline static char colorToCh(Color color)
+    {
+        return static_cast<char>('0' + color);
+    }
+
+    inline static std::string chToStr(char ch)
+    {
+        if (ch == '1') {
+            return "1";
+        } else {
+            return "2";
+        }
+    }
+
     Color winner;
 
     Step currentStep {};

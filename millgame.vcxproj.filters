@@ -108,9 +108,6 @@
     <ClInclude Include="src\base\misc.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\player.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="src\base\zobrist.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -352,9 +349,6 @@
     </ClCompile>
     <ClCompile Include="src\base\misc.cpp">
       <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\player.cpp">
-      <Filter>game</Filter>
     </ClCompile>
     <ClCompile Include="src\base\zobrist.cpp">
       <Filter>base</Filter>

@@ -472,7 +472,6 @@
     <ClInclude Include="src\game\bitboard.h" />
     <ClInclude Include="src\game\board.h" />
     <ClInclude Include="src\game\option.h" />
-    <ClInclude Include="src\game\player.h" />
     <ClInclude Include="src\game\position.h" />
     <ClInclude Include="src\game\rule.h" />
     <ClInclude Include="src\game\types.h" />
@@ -724,7 +723,6 @@
     <ClCompile Include="src\game\bitboard.cpp" />
     <ClCompile Include="src\game\board.cpp" />
     <ClCompile Include="src\game\option.cpp" />
-    <ClCompile Include="src\game\player.cpp" />
     <ClCompile Include="src\game\position.cpp" />
     <ClCompile Include="src\game\rule.cpp" />
     <ClCompile Include="src\main.cpp" />
