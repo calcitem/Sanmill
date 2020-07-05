@@ -207,7 +207,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
     int piece = '\x00';
     int n = 0;
 
-    int playerId = sideToMove;
+    int us = sideToMove;
 
     Bitboard fromTo;
 
@@ -226,16 +226,16 @@ bool Position::placePiece(Square square, bool updateCmdlist)
     Board::squareToPolar(square, file, rank);
 
     if (phase == PHASE_PLACING) {
-        piece = (0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - nPiecesInHand[playerId];
-        nPiecesInHand[playerId]--;
-        nPiecesOnBoard[playerId]++;
+        piece = (0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - nPiecesInHand[us];
+        nPiecesInHand[us]--;
+        nPiecesOnBoard[us]++;
 
         board.locations[square] = piece;
 
         updateKey(square);
 
         board.byTypeBB[ALL_PIECES] |= square;
-        board.byTypeBB[playerId] |= square;
+        board.byTypeBB[us] |= square;
 
         move = static_cast<Move>(square);
 
@@ -316,7 +316,7 @@ bool Position::placePiece(Square square, bool updateCmdlist)
 
     fromTo = square_bb(currentSquare) | square_bb(square);
     board.byTypeBB[ALL_PIECES] ^= fromTo;
-    board.byTypeBB[playerId] ^= fromTo;
+    board.byTypeBB[us] ^= fromTo;
 
     board.locations[square] = board.locations[currentSquare];
 
@@ -894,9 +894,9 @@ void Position::setTips()
     }
 }
 
-time_t Position::getElapsedTime(int playerId)
+time_t Position::getElapsedTime(int us)
 {
-    return elapsedSeconds[playerId];
+    return elapsedSeconds[us];
 }
 
 void Position::constructKey()

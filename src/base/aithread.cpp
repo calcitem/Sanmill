@@ -37,7 +37,7 @@ AiThread::AiThread(int color, QObject *parent) :
     depth(2),
     timeLimit(3600)
 {
-    this->playerId = color;
+    this->us = color;
 
     connect(this, &AiThread::searchStarted, this, [=]() {timer.start(timeLimit * 1000 - 118 /* 118ms is return time */); }, Qt::QueuedConnection);
     connect(this, &AiThread::searchFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
@@ -210,7 +210,7 @@ void AiThread::run()
 
     Color sideToMove = NOCOLOR;
 
-    loggerDebug("Thread %d start\n", playerId);
+    loggerDebug("Thread %d start\n", us);
 
     ai.bestvalue = ai.lastvalue = VALUE_ZERO;
 
@@ -219,7 +219,7 @@ void AiThread::run()
 
         sideToMove = position->sideToMove;
 
-        if (sideToMove != playerId) {
+        if (sideToMove != us) {
             pauseCondition.wait(&mutex);
             mutex.unlock();
             continue;
@@ -274,7 +274,7 @@ void AiThread::run()
         mutex.unlock();
     }
 
-    loggerDebug("Thread %d quit\n", playerId);
+    loggerDebug("Thread %d quit\n", us);
 }
 
 void AiThread::act()

@@ -90,7 +90,7 @@ public:
         return action;
     }
 
-    time_t getElapsedTime(int playerId);
+    time_t getElapsedTime(int us);
 
     const string getTips() const
     {
@@ -117,14 +117,14 @@ public:
         startTime = stimeb;
     }
 
-    int getPiecesInHandCount(int playerId) const
+    int getPiecesInHandCount(Color c) const
     {
-        return nPiecesInHand[playerId];
+        return nPiecesInHand[c];
     }
 
-    int getPiecesOnBoardCount(int playerId) const
+    int getPiecesOnBoardCount(Color c) const
     {
-        return nPiecesOnBoard[playerId];
+        return nPiecesOnBoard[c];
     }
 
     int getNum_NeedRemove() const

@@ -58,7 +58,7 @@ public:
     bool isAllInMills(Color c);
 
     int getSurroundedEmptyLocationCount(Color sideToMove, int nPiecesOnBoard[], Square square, bool includeFobidden);
-    void getSurroundedPieceCount(Square square, Color sideToMove, int &nPlayerPiece, int &nTheirPieces, int &nBanned, int &nEmpty);
+    void getSurroundedPieceCount(Square square, Color sideToMove, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
     bool isAllSurrounded(Color sideToMove, int nPiecesOnBoard[]);
 
     int addMills(Square square);

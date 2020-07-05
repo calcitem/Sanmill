@@ -357,7 +357,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 
 #if 0
         // TODO: 有必要针对深度微调 value?
-        if (position->turn == PLAYER_BLACK)
+        if (position->turn == BLACK)
             bestValue += tte.depth - depth;
         else
             bestValue -= tte.depth - depth;

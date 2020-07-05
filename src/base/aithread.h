@@ -82,7 +82,7 @@ public slots:
     void emitCommand();
 
 public:
-    int playerId;
+    int us;
 
 private:
     const char* strCommand {};
