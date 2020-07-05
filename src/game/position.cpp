@@ -472,7 +472,7 @@ out:
     return true;
 }
 
-bool Position::_selectPiece(Square square)
+bool Position::select_piece(Square square)
 {
     if (phase != PHASE_MOVING)
         return false;
@@ -492,7 +492,7 @@ bool Position::_selectPiece(Square square)
 
 bool Position::_selectPiece(File file, Rank rank)
 {
-    return _selectPiece(Board::polarToSquare(file, rank));
+    return select_piece(Board::polarToSquare(file, rank));
 }
 
 bool Position::giveup(Color loser)
@@ -602,7 +602,7 @@ bool Position::do_move(Move m)
     case MOVETYPE_REMOVE:
         return remove_piece(static_cast<Square>(-m));
     case MOVETYPE_MOVE:
-        if (_selectPiece(from_sq(m))) {
+        if (select_piece(from_sq(m))) {
             return place_piece(to_sq(m));
         }
         break;

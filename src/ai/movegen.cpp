@@ -337,7 +337,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 oldSquare = static_cast<Square>(MoveList::movePriorityTable[i]);
 
-                if (!position->_selectPiece(oldSquare)) {
+                if (!position->select_piece(oldSquare)) {
                     continue;
                 }
 

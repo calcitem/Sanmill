@@ -73,7 +73,7 @@ public:
     Position &operator=(const Position &) = delete;
 
     // Properties of moves
-    bool _selectPiece(Square s);
+    bool select_piece(Square s);
     bool place_piece(Square s, bool updateCmdlist = false);
     bool remove_piece(Square s, bool updateCmdlist = false);
 
