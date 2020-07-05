@@ -817,7 +817,7 @@ bool GameController::actionPiece(QPointF pos)
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (position->selectPiece(file, rank)) {
+        if (position->_selectPiece(file, rank)) {
             // 播放选子音效
             playSound(GAME_SOUND_SELECT, position->getSideToMove());
             result = true;

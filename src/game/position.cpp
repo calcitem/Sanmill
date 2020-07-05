@@ -93,7 +93,7 @@ bool Position::setPosition(const struct Rule *newRule)
     action = ACTION_PLACE;
 
     memset(board.locations, 0, sizeof(board.locations));
-    key = 0;
+    st.key = 0;
     memset(board.byTypeBB, 0, sizeof(board.byTypeBB));
 
     if (countPiecesOnBoard() == -1) {
@@ -143,7 +143,7 @@ bool Position::reset()
     winner = NOBODY;
 
     memset(board.locations, 0, sizeof(board.locations));
-    key = 0;
+    st.key = 0;
     memset(board.byTypeBB, 0, sizeof(board.byTypeBB));
 
     nPiecesOnBoard[BLACK] = nPiecesOnBoard[WHITE] = 0;
@@ -197,7 +197,7 @@ bool Position::start()
     }
 }
 
-bool Position::placePiece(Square square, bool updateCmdlist)
+bool Position::place_piece(Square square, bool updateCmdlist)
 {
     File file;
     Rank rank;
@@ -353,17 +353,17 @@ bool Position::_placePiece(File file, Rank rank)
 {
     Square square = Board::polarToSquare(file, rank);
 
-    return placePiece(square, true);
+    return place_piece(square, true);
 }
 
 bool Position::_removePiece(File file, Rank rank)
 {
     Square square = Board::polarToSquare(file, rank);
 
-    return removePiece(square, 1);
+    return remove_piece(square, 1);
 }
 
-bool Position::removePiece(Square square, bool updateCmdlist)
+bool Position::remove_piece(Square square, bool updateCmdlist)
 {
     if (phase & PHASE_NOTPLAYING)
         return false;
@@ -473,7 +473,7 @@ out:
     return true;
 }
 
-bool Position::selectPiece(Square square)
+bool Position::_selectPiece(Square square)
 {
     if (phase != PHASE_MOVING)
         return false;
@@ -491,9 +491,9 @@ bool Position::selectPiece(Square square)
     return false;
 }
 
-bool Position::selectPiece(File file, Rank rank)
+bool Position::_selectPiece(File file, Rank rank)
 {
-    return selectPiece(Board::polarToSquare(file, rank));
+    return _selectPiece(Board::polarToSquare(file, rank));
 }
 
 bool Position::giveup(Color loser)
@@ -545,7 +545,7 @@ bool Position::command(const char *cmd)
                 tm = mm * 60 + ss;
         }
 
-        if (selectPiece(file1, rank1)) {
+        if (_selectPiece(file1, rank1)) {
             return _placePiece(file2, rank2);
         }
 
@@ -595,20 +595,20 @@ bool Position::command(const char *cmd)
     return false;
 }
 
-bool Position::doMove(Move m)
+bool Position::do_move(Move m)
 {
     MoveType mt = type_of(m);
 
     switch (mt) {
     case MOVETYPE_REMOVE:
-        return removePiece(static_cast<Square>(-m));
+        return remove_piece(static_cast<Square>(-m));
     case MOVETYPE_MOVE:
-        if (selectPiece(from_sq(m))) {
-            return placePiece(to_sq(m));
+        if (_selectPiece(from_sq(m))) {
+            return place_piece(to_sq(m));
         }
         break;
     case MOVETYPE_PLACE:
-        return placePiece(to_sq(m));
+        return place_piece(to_sq(m));
     default:
         break;
     }
@@ -829,13 +829,13 @@ void Position::changeSideToMove()
     setSideToMove(~sideToMove);
 }
 
-bool Position::doNullMove()
+bool Position::do_null_move()
 {
     changeSideToMove();
     return true;
 }
 
-bool Position::undoNullMove()
+bool Position::undo_null_move()
 {
     changeSideToMove();
     return true;
@@ -901,10 +901,10 @@ time_t Position::getElapsedTime(int us)
 
 void Position::constructKey()
 {
-    key = 0;
+    st.key = 0;
 }
 
-Key Position::getPosKey()
+Key Position::key()
 {
     // TODO: Move to suitable function
     return updateKeyMisc();
@@ -920,9 +920,9 @@ Key Position::updateKey(Square square)
     //Location loc = board.locations[square];
     //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
 
-    key ^= zobrist[square][pieceType];
+    st.key ^= zobrist[square][pieceType];
 
-    return key;
+    return st.key;
 }
 
 Key Position::revertKey(Square square)
@@ -934,7 +934,7 @@ Key Position::updateKeyMisc()
 {
     const int KEY_MISC_BIT = 8;
 
-    key = key << KEY_MISC_BIT >> KEY_MISC_BIT;
+    st.key = st.key << KEY_MISC_BIT >> KEY_MISC_BIT;
     Key hi = 0;
 
     if (sideToMove == WHITE) {
@@ -948,14 +948,14 @@ Key Position::updateKeyMisc()
     hi |= static_cast<Key>(nPiecesNeedRemove) << 2;
     hi |= static_cast<Key>(nPiecesInHand[BLACK]) << 4;     // TODO: may use phase is also OK?
 
-    key = key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
+    st.key = st.key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
 
-    return key;
+    return st.key;
 }
 
 Key Position::getNextPrimaryKey(Move m)
 {
-    Key npKey = key /* << 8 >> 8 */;
+    Key npKey = st.key /* << 8 >> 8 */;
     Square sq = static_cast<Square>(to_sq(m));;
     MoveType mt = type_of(m);
 

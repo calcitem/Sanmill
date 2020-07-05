@@ -20,6 +20,9 @@
 #ifndef POSITION_H
 #define POSITION_H
 
+#include <cassert>
+#include <deque>
+#include <memory> // For std::unique_ptr
 #include <string>
 #include <cstring>
 
@@ -36,6 +39,30 @@ class Node;
 
 extern string tips;
 
+/// StateInfo struct stores information needed to restore a Position object to
+/// its previous state when we retract a move. Whenever a move is made on the
+/// board (by calling Position::do_move), a StateInfo object must be passed.
+
+struct StateInfo
+{
+
+    // Copied when making a move
+    int    rule50;
+    int    pliesFromNull;
+
+    // Not copied when making a move (will be recomputed anyhow)
+    Key        key;
+    Piece      capturedPiece;
+    StateInfo *previous;
+    int        repetition;
+};
+
+/// A list to keep track of the position states along the setup moves (from the
+/// start position to the position just before the search starts). Needed by
+/// 'draw by repetition' detection. Use a std::deque because pointers to
+/// elements are not invalidated upon list resizing.
+typedef std::unique_ptr<std::deque<StateInfo>> StateListPtr;
+
 class Position
 {
 public:
@@ -45,9 +72,30 @@ public:
     Position(const Position &) = delete;
     Position &operator=(const Position &) = delete;
 
+    // Properties of moves
+    bool _selectPiece(Square s);
+    bool place_piece(Square s, bool updateCmdlist = false);
+    bool remove_piece(Square s, bool updateCmdlist = false);
+
+    bool _selectPiece(File file, Rank rank);
+    bool _placePiece(File file, Rank rank);
+    bool _removePiece(File file, Rank rank);
+
+    // Doing and undoing moves
+    bool do_move(Move m);
+    bool do_null_move();
+    bool undo_null_move();
+
+    // Accessing hash keys
+    Key key();
+    Key revertKey(Square square);
+    Key updateKey(Square square);
+    Key updateKeyMisc();
+    Key getNextPrimaryKey(Move m);
+
     Board board;
 
-    Key key {0};
+    // Other properties of the position
 
     enum Phase phase {PHASE_NONE};
 
@@ -127,11 +175,6 @@ public:
         return nPiecesOnBoard[c];
     }
 
-    int getNum_NeedRemove() const
-    {
-        return nPiecesNeedRemove;
-    }
-
     int getMobilityDiff(Color turn, int nPiecesOnBoard[], bool includeFobidden);
 
     bool reset();
@@ -156,25 +199,7 @@ public:
 
     void setTips();
 
-    bool doNullMove();
-    bool undoNullMove();
-
     Color getWinner() const;
-
-    bool selectPiece(File file, Rank rank);
-    bool _placePiece(File file, Rank rank);
-    bool _removePiece(File file, Rank rank);
-
-    bool doMove(Move move);
-    bool selectPiece(Square square);
-    bool placePiece(Square square, bool updateCmdlist = false);
-    bool removePiece(Square square, bool updateCmdlist = false);
-
-    Key getPosKey();
-    Key revertKey(Square square);
-    Key updateKey(Square square);
-    Key updateKeyMisc();
-    Key getNextPrimaryKey(Move m);
 
     int score[COLOR_NB] = { 0 };
     int score_draw { 0 };
@@ -229,6 +254,8 @@ private:
     time_t currentTime {};
 
     time_t elapsedSeconds[COLOR_NB];
+
+    StateInfo st;
 };
 
 #endif /* POSITION_H */

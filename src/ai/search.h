@@ -82,12 +82,12 @@ public:
 
     void stashPosition();
 
-    void doMove(Move move);
+    void do_move(Move move);
 
     void undoMove();
 
-    void doNullMove();
-    void undoNullMove();
+    void do_null_move();
+    void undo_null_move();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     void clearTT();

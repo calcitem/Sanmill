@@ -188,7 +188,7 @@ int AIAlgorithm::search(Depth depth)
     static int nRepetition = 0;
 
     if (position->getPhase() == PHASE_MOVING) {
-        Key key = position->getPosKey();
+        Key key = position->key();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
             nRepetition++;
@@ -313,7 +313,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
-    Key posKey = pos->getPosKey();
+    Key posKey = pos->key();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -404,13 +404,13 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
             // TODO: WIP       
             st->generateNullMove(moves);
             st->generateChildren(moves, this, node);
-            doNullMove();
+            do_null_move();
             int moveCount = st->generateMoves(moves);
             if (moveCount)
             {
                 st->generateChildren(moves, this, node->children[0]);
                 value = -search(depth - 1 - 2, -beta, -beta + 1, node->children[0]);
-                undoNullMove();
+                undo_null_move();
 
                 if (value >= beta) {
                     bestValue = beta;
@@ -471,7 +471,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
         stashPosition();
         Color before = pos->sideToMove;
         Move move = extMoves[i].move;
-        doMove(move);
+        do_move(move);
         Color after = pos->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && nchild == 1) {
@@ -556,9 +556,9 @@ void AIAlgorithm::stashPosition()
     positionStack.push(*(pos));
 }
 
-void AIAlgorithm::doMove(Move move)
+void AIAlgorithm::do_move(Move move)
 {
-    pos->doMove(move);
+    pos->do_move(move);
 }
 
 void AIAlgorithm::undoMove()
@@ -568,14 +568,14 @@ void AIAlgorithm::undoMove()
     positionStack.pop();
 }
 
-void AIAlgorithm::doNullMove()
+void AIAlgorithm::do_null_move()
 {
-    pos->doNullMove();
+    pos->do_null_move();
 }
 
-void AIAlgorithm::undoNullMove()
+void AIAlgorithm::undo_null_move()
 {
-    pos->undoNullMove();
+    pos->undo_null_move();
 }
 
 #ifdef ALPHABETA_AI
@@ -624,7 +624,7 @@ const char* AIAlgorithm::nextMove()
             Endgame endgame;
             endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            key_t endgameHash = position->getPosKey(); // TODO: Do not generate hash repeately
+            key_t endgameHash = position->key(); // TODO: Do not generate hash repeately
             recordEndgameHash(endgameHash, endgame);
         }
     }
