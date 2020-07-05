@@ -293,7 +293,9 @@ void MoveList::shuffle()
 ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
 {
     Square square;
-    Color opponent;
+
+    Color us = position->sideToMove;
+    Color them = ~us;
 
     //moves.clear();
     ExtMove *cur = moveList;
@@ -363,12 +365,10 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         break;
 
     case ACTION_REMOVE:
-        opponent = ~position->sideToMove;
-
-        if (position->board.isAllInMills(opponent)) {
+        if (position->board.isAllInMills(them)) {
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<Square>(MoveList::movePriorityTable[i]);
-                if (position->board.locations[square] & (opponent << PLAYER_SHIFT)) {
+                if (position->board.locations[square] & (them << PLAYER_SHIFT)) {
                     *cur++ = ((Move)-square);
                 }
             }
@@ -378,7 +378,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         // not is all in mills
         for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<Square>(MoveList::movePriorityTable[i]);
-            if (position->board.locations[square] & (opponent << PLAYER_SHIFT)) {
+            if (position->board.locations[square] & (them << PLAYER_SHIFT)) {
                 if (rule.allowRemovePieceInMill || !position->board.inHowManyMills(square, NOBODY)) {
                     *cur++ = ((Move)-square);
                 }

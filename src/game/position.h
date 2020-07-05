@@ -53,10 +53,7 @@ public:
 
     Color sideToMove {NOCOLOR};
     char chSide {'0'};
-    //string turnStr;
-    Color opponent { NOCOLOR };
-    char chOpponent {'0'};
-    //string opponentStr;
+    Color them { NOCOLOR };
 
     enum Action action { };
 

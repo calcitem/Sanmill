@@ -55,43 +55,43 @@ void MovePicker::score()
         Square sqsrc = from_sq(m);
         
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need sqsrc to judge
-        int nMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);
-        int nopponentMills = 0;
+        int nOurMills = position->board.inHowManyMills(sq, position->sideToMove, sqsrc);
+        int nTheirMills = 0;
 
     #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
         // TODO: rule.allowRemoveMultiPiecesWhenCloseMultiMill adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
-            if (nMills > 0) {
+            if (nOurMills > 0) {
     #ifdef ALPHABETA_AI
-                cur->rating += static_cast<Rating>(RATING_ONE_MILL * nMills);
+                cur->rating += static_cast<Rating>(RATING_ONE_MILL * nOurMills);
     #endif
             } else if (position->getPhase() == PHASE_PLACING) {
-                // placing phrase, check if place sq can block opponent close mill
-                nopponentMills = position->board.inHowManyMills(sq, position->opponent);
+                // placing phrase, check if place sq can block their close mill
+                nTheirMills = position->board.inHowManyMills(sq, position->them);
     #ifdef ALPHABETA_AI
-                cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nTheirMills);
     #endif
             }
     #if 1
             else if (position->getPhase() == PHASE_MOVING) {
-                // moving phrase, check if place sq can block opponent close mill
-                nopponentMills = position->board.inHowManyMills(sq, position->opponent);
+                // moving phrase, check if place sq can block their close mill
+                nTheirMills = position->board.inHowManyMills(sq, position->them);
 
-                if (nopponentMills) {
-                    int nPlayerPiece = 0;
-                    int nOpponentPiece = 0;
+                if (nTheirMills) {
+                    int nOurPieces = 0;
+                    int nTheirPieces = 0;
                     int nBanned = 0;
                     int nEmpty = 0;
 
                     position->board.getSurroundedPieceCount(sq, position->sideToMove,
-                                                            nPlayerPiece, nOpponentPiece, nBanned, nEmpty);
+                                                            nOurPieces, nTheirPieces, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
-                    if (sq % 2 == 0 && nOpponentPiece == 3) {
-                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nopponentMills);
-                    } else if (sq % 2 == 1 && nOpponentPiece == 2 && rule.nTotalPiecesEachSide == 12) {
-                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nopponentMills);
+                    if (sq % 2 == 0 && nTheirPieces == 3) {
+                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nTheirMills);
+                    } else if (sq % 2 == 1 && nTheirPieces == 2 && rule.nTotalPiecesEachSide == 12) {
+                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nTheirMills);
                     }
     #endif
                 }
@@ -109,37 +109,37 @@ void MovePicker::score()
             }
     #endif
         } else { // Remove
-            int nPlayerPiece = 0;
-            int nOpponentPiece = 0;
+            int nOurPieces = 0;
+            int nTheirPieces = 0;
             int nBanned = 0;
             int nEmpty = 0;
 
             position->board.getSurroundedPieceCount(sq, position->sideToMove,
-                                                    nPlayerPiece, nOpponentPiece, nBanned, nEmpty);
+                                                    nOurPieces, nTheirPieces, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
-            if (nMills > 0) {
+            if (nOurMills > 0) {
                 // remove point is in our mill
-                //newNode->rating += static_cast<Rating>(RATING_REMOVE_ONE_MILL * nMills);
+                //newNode->rating += static_cast<Rating>(RATING_REMOVE_ONE_MILL * nOurMills);
 
-                if (nOpponentPiece == 0) {
-                    // if remove point nearby has no opponent's stone, preferred.
+                if (nTheirPieces == 0) {
+                    // if remove point nearby has no their stone, preferred.
                     cur->rating += static_cast<Rating>(1);
-                    if (nPlayerPiece > 0) {
+                    if (nOurPieces > 0) {
                         // if remove point nearby our stone, preferred
-                        cur->rating += static_cast<Rating>(nPlayerPiece);
+                        cur->rating += static_cast<Rating>(nOurPieces);
                     }
                 }
             }
 
             // remove point is in their mill
-            nopponentMills = position->board.inHowManyMills(sq, position->opponent);
-            if (nopponentMills) {
-                if (nOpponentPiece >= 2) {
-                    // if nearby opponent's piece, prefer do not remove
-                    cur->rating -= static_cast<Rating>(nOpponentPiece);
+            nTheirMills = position->board.inHowManyMills(sq, position->them);
+            if (nTheirMills) {
+                if (nTheirPieces >= 2) {
+                    // if nearby their piece, prefer do not remove
+                    cur->rating -= static_cast<Rating>(nTheirPieces);
 
-                    if (nPlayerPiece == 0) {
+                    if (nOurPieces == 0) {
                         // if nearby has no our piece, more prefer do not remove
                         cur->rating -= static_cast<Rating>(1);
                     }

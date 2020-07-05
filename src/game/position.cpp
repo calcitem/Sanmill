@@ -380,10 +380,10 @@ bool Position::removePiece(Square square, bool updateCmdlist)
 
     int seconds = -1;
 
-    int oppId = opponent;
+    int oppId = them;
 
-    // if piece is not opponent's
-    if (!((opponent << PLAYER_SHIFT) & board.locations[square]))
+    // if piece is not their
+    if (!((them << PLAYER_SHIFT) & board.locations[square]))
         return false;
 
     if (!rule.allowRemovePieceInMill &&
@@ -404,10 +404,10 @@ bool Position::removePiece(Square square, bool updateCmdlist)
         board.locations[square] = '\x00';
 
         board.byTypeBB[ALL_PIECES] ^= square;
-        board.byTypeBB[opponent] ^= square;
+        board.byTypeBB[them] ^= square;
     }
 
-    nPiecesOnBoard[opponent]--;
+    nPiecesOnBoard[them]--;
 
     move = static_cast<Move>(-square);
 
@@ -625,8 +625,8 @@ int Position::update()
 {
     int ret = -1;
     int timePoint = -1;
-    time_t *seconds = &elapsedSeconds[sideToMove];
-    time_t opponentSeconds = elapsedSeconds[opponent];
+    time_t *ourSeconds = &elapsedSeconds[sideToMove];
+    time_t theirSeconds = elapsedSeconds[them];
 
     if (!(phase & PHASE_PLAYING)) {
         return -1;
@@ -634,11 +634,11 @@ int Position::update()
 
     currentTime = time(NULL);
 
-    if (timePoint >= *seconds) {
-        *seconds = ret = timePoint;
+    if (timePoint >= *ourSeconds) {
+        *ourSeconds = ret = timePoint;
         startTime = currentTime - (elapsedSeconds[BLACK] + elapsedSeconds[WHITE]);
     } else {
-        *seconds = ret = currentTime - startTime - opponentSeconds;
+        *ourSeconds = ret = currentTime - startTime - theirSeconds;
     }
 
     if (rule.maxTimeLedToLose > 0) {
@@ -819,8 +819,7 @@ void Position::setSideToMove(Color c)
 
     chSide = Player::colorToCh(sideToMove);
 
-    opponent = ~sideToMove;
-    chOpponent = Player::colorToCh(opponent);
+    them = ~sideToMove;
 }
 
 Color Position::getSideToMove()

@@ -336,7 +336,7 @@ int Board::getSurroundedEmptyLocationCount(Color sideToMove, int nPiecesOnBoard[
     return count;
 }
 
-void Board::getSurroundedPieceCount(Square square, Color sideToMove, int &nPlayerPiece, int &nOpponentPiece, int &nBanned, int &nEmpty)
+void Board::getSurroundedPieceCount(Square square, Color sideToMove, int &nPlayerPiece, int &nTheirPieces, int &nBanned, int &nEmpty)
 {
     Square moveSquare;
 
@@ -360,7 +360,7 @@ void Board::getSurroundedPieceCount(Square square, Color sideToMove, int &nPlaye
             if (sideToMove == pieceType >> PLAYER_SHIFT) {
                 nPlayerPiece++;
             } else {
-                nOpponentPiece++;
+                nTheirPieces++;
             }
             break;
         }
