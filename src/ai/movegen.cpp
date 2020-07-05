@@ -363,7 +363,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         break;
 
     case ACTION_REMOVE:
-        opponent = Player::getOpponent(position->sideToMove);
+        opponent = ~position->sideToMove;
 
         if (position->board.isAllInMills(opponent)) {
             for (int i = Board::MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {

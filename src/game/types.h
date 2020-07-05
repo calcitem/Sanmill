@@ -288,7 +288,7 @@ inline Value &operator-=(Value &v, int i)
 
 constexpr Color operator~(Color color)
 {
-    return Color(color ^ BLACK);   // Toggle color
+    return Color(color ^ 3);   // Toggle color
 }
 
 // constexpr Piece operator~(Piece p)

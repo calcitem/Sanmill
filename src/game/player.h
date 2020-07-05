@@ -50,11 +50,6 @@ public:
         }
     }
 
-    inline static Color getOpponent(Color c)
-    {
-        return c == BLACK ? WHITE : BLACK;
-    }
-
 private:
     Color color;
 };
