@@ -751,7 +751,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
 
         if (rule.isLoseButNotChangeTurnWhenNoWay) {
             if (updateCmdlist) {
-                tips = "玩家" + Player::chToStr(chSide) + "无子可走被闷";
+                tips = "玩家" + Player::chToStr(Player::colorToCh(sideToMove)) + "无子可走被闷";
                 winner = ~sideToMove;
                 sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
                 cmdlist.emplace_back(string(cmdline));  // TODO: memleak
@@ -816,9 +816,6 @@ void Position::cleanBannedLocations()
 void Position::setSideToMove(Color c)
 {
     sideToMove = c;
-
-    chSide = Player::colorToCh(sideToMove);
-
     them = ~sideToMove;
 }
 
@@ -847,7 +844,7 @@ bool Position::undoNullMove()
 void Position::setTips()
 {
     string winnerStr, t;
-    string turnStr = Player::chToStr(chSide);
+    string turnStr = Player::chToStr(Player::colorToCh(sideToMove));
 
     switch (phase) {
     case PHASE_READY:

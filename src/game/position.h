@@ -52,7 +52,6 @@ public:
     enum Phase phase {PHASE_NONE};
 
     Color sideToMove {NOCOLOR};
-    char chSide {'0'};
     Color them { NOCOLOR };
 
     enum Action action { };
