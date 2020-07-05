@@ -203,7 +203,7 @@ bool Position::place_piece(Square square, bool updateCmdlist)
     int i;
     int seconds = -1;
 
-    int piece = '\x00';
+    int piece = NO_PIECE;
     int n = 0;
 
     int us = sideToMove;
@@ -322,7 +322,7 @@ bool Position::place_piece(Square square, bool updateCmdlist)
     updateKey(square);
     revertKey(currentSquare);
 
-    board.locations[currentSquare] = '\x00';
+    board.locations[currentSquare] = NO_PIECE;
 
     currentSquare = square;
     n = board.addMills(currentSquare);
@@ -393,14 +393,14 @@ bool Position::remove_piece(Square square, bool updateCmdlist)
 
     if (rule.hasBannedLocations && phase == PHASE_PLACING) {
         revertKey(square);
-        board.locations[square] = '\x0f';
+        board.locations[square] = BAN_STONE;
         updateKey(square);
 
         board.byTypeBB[oppId] ^= square;
         board.byTypeBB[BAN] |= square;
     } else { // Remove
         revertKey(square);
-        board.locations[square] = '\x00';
+        board.locations[square] = NO_PIECE;
 
         board.byTypeBB[ALL_PIECES] ^= square;
         board.byTypeBB[them] ^= square;
@@ -803,9 +803,9 @@ void Position::cleanBannedLocations()
         for (int s = 0; s < Board::N_RANKS; s++) {
             square = static_cast<Square>(r * Board::N_RANKS + s);
 
-            if (board.locations[square] == '\x0f') {
+            if (board.locations[square] == BAN_STONE) {
                 revertKey(square);
-                board.locations[square] = '\x00';
+                board.locations[square] = NO_PIECE;
                 board.byTypeBB[ALL_PIECES] ^= square;   // Need to remove?
             }
         }
