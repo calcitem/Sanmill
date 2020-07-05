@@ -203,7 +203,7 @@ bool Position::place_piece(Square square, bool updateCmdlist)
     int i;
     int seconds = -1;
 
-    int piece = NO_PIECE;
+    Piece piece = NO_PIECE;
     int n = 0;
 
     int us = sideToMove;
@@ -225,7 +225,7 @@ bool Position::place_piece(Square square, bool updateCmdlist)
     Board::squareToPolar(square, file, rank);
 
     if (phase == PHASE_PLACING) {
-        piece = (0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - nPiecesInHand[us];
+        piece = (Piece)((0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - nPiecesInHand[us]);
         nPiecesInHand[us]--;
         nPiecesOnBoard[us]++;
 
@@ -770,7 +770,7 @@ bool Position::checkGameOverCondition(int8_t updateCmdlist)
 int Position::getMobilityDiff(Color turn, int piecesOnBoard[], bool includeFobidden)
 {
     // TODO: Deal with rule is no ban location
-    Location *locations = board.locations;
+    Piece *locations = board.locations;
     int mobilityBlack = 0;
     int mobilityWhite = 0;
     int diff = 0;

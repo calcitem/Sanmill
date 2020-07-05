@@ -1141,7 +1141,7 @@ bool GameController::updateScence()
 bool GameController::updateScence(Position *p)
 {
 #ifndef TRAINING_MODE
-    const Location *board = p->getBoardLocations();
+    const Piece *board = p->getBoardLocations();
     QPointF pos;
 
     // game类中的棋子代码

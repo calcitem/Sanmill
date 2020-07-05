@@ -113,9 +113,9 @@ public:
 
     bool setPosition(const struct Rule *rule);
 
-    Location *getBoardLocations() const
+    Piece *getBoardLocations() const
     {
-        return (Location *)board.locations;
+        return (Piece *)board.locations;
     }
 
     Square getCurrentSquare() const

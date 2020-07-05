@@ -206,7 +206,7 @@ Color Board::locationToColor(Square square)
 int Board::inHowManyMills(Square square, Color c, Square squareSelected)
 {
     int n = 0;
-    Location locbak = SQ_0;
+    Piece locbak = NO_PIECE;
 
     if (c == NOBODY) {
         c = Color(locationToColor(square) >> PLAYER_SHIFT);
@@ -214,7 +214,7 @@ int Board::inHowManyMills(Square square, Color c, Square squareSelected)
 
     if (squareSelected != SQ_0) {
         locbak = locations[squareSelected];
-        locations[squareSelected] = 0;
+        locations[squareSelected] = NO_PIECE;
     }
 
     for (int l = 0; l < LD_NB; l++) {
@@ -414,7 +414,7 @@ bool Board::isStar(Square square)
 
 void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square square, bool cmdChange /*= true*/)
 {
-    int ch;
+    Piece ch;
     int r, s;
     int i;
 
@@ -523,7 +523,7 @@ void Board::mirror(vector<string> &cmdlist, char* cmdline, int32_t move_, Square
 
 void Board::turn(vector <string> &cmdlist, char *cmdline, int32_t move_, Square square, bool cmdChange /*= true*/)
 {
-    int ch;
+    Piece ch;
     int r, s;
     int i;
 
@@ -696,7 +696,7 @@ void Board::rotate(int degrees, vector<string> &cmdlist, char *cmdline, int32_t 
 
     degrees /= 45;
 
-    int ch1, ch2;
+    Piece ch1, ch2;
     int r, s;
     int i;
 

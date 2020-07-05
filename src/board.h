@@ -72,7 +72,7 @@ public:
 
 //private:
 
-    Location locations[SQUARE_NB]{};
+    Piece locations[SQUARE_NB]{};
 
     Bitboard byTypeBB[PIECE_TYPE_NB];
 

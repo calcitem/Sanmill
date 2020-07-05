@@ -23,7 +23,6 @@
 #include "config.h"
 
 using Step = uint16_t;
-using Location = uint8_t;
 using Score = uint32_t;
 //using Bitboard = uint32_t;
 typedef uint32_t Bitboard;
@@ -149,7 +148,7 @@ enum PieceType : uint16_t
     PIECE_TYPE_NB = 4
 };
 
-enum Piece
+enum Piece : uint8_t
 {
     NO_PIECE = 0x00,
     BAN_STONE = 0x0F,
