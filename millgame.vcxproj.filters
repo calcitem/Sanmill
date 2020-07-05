@@ -40,19 +40,10 @@
     <Filter Include="Project Files">
       <UniqueIdentifier>{16c52ca8-0391-4ad2-919c-4a865ad87e98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ai">
-      <UniqueIdentifier>{d56e01a7-0384-4d80-8a77-d84d0b5f833f}</UniqueIdentifier>
+    <Filter Include="Qt Files">
+      <UniqueIdentifier>{945b98a5-ad02-4b58-abf0-ee6570e315ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="game">
-      <UniqueIdentifier>{b46f9543-9c34-4458-bc3b-29223bfd7fe1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ui">
-      <UniqueIdentifier>{6580c956-6aa7-472b-a665-9e36fe68b3f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="base">
-      <UniqueIdentifier>{c5349658-6cbb-4076-8529-29de7092f9d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="test">
+    <Filter Include="Qt Files\test">
       <UniqueIdentifier>{944f132b-1dc6-4222-a345-79e3d2c821e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -66,80 +57,80 @@
     <ClInclude Include="include\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\thread_win32_osx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bitboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\evaluate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\endgame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hashmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HashNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movegen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movepick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\position.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\prefetch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\search.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stopwatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\zobrist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\trainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\option.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\ui\qt\boarditem.h">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\qt\graphicsconst.h">
-      <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\HashNode.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\hashmap.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ai\search.h">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\debug.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ai\evaluate.h">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ai\movegen.h">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\board.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\rule.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\types.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ai\tt.h">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\position.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\misc.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\zobrist.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ai\endgame.h">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\option.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\stack.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ai\trainer.h">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\stopwatch.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\thread.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\thread_win32_osx.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\base\prefetch.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ai\movepick.h">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\bitboard.h">
-      <Filter>game</Filter>
+      <Filter>Qt Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,115 +258,115 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\ui\qt\gamecontroller.h">
-      <Filter>ui</Filter>
+    <QtMoc Include="src\test\test.h">
+      <Filter>Qt Files\test</Filter>
     </QtMoc>
-    <QtMoc Include="src\ui\qt\gamescene.h">
-      <Filter>ui</Filter>
+    <QtMoc Include="src\aithread.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\client.h">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\gamecontroller.h">
+      <Filter>Qt Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\gamescene.h">
+      <Filter>Qt Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\gameview.h">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\gamewindow.h">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\manuallistview.h">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\pieceitem.h">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\server.h">
-      <Filter>ui</Filter>
-    </QtMoc>
-    <QtMoc Include="src\base\aithread.h">
-      <Filter>base</Filter>
-    </QtMoc>
-    <QtMoc Include="src\test\test.h">
-      <Filter>test</Filter>
+      <Filter>Qt Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\qt\server.cpp">
-      <Filter>ui</Filter>
+    <ClCompile Include="src\test\test.cpp">
+      <Filter>Qt Files\test</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\qt\pieceitem.cpp">
-      <Filter>ui</Filter>
+    <ClCompile Include="src\endgame.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\qt\gamewindow.cpp">
-      <Filter>ui</Filter>
+    <ClCompile Include="src\evaluate.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\qt\gameview.cpp">
-      <Filter>ui</Filter>
+    <ClCompile Include="src\movegen.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\qt\gamescene.cpp">
-      <Filter>ui</Filter>
+    <ClCompile Include="src\movepick.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\qt\gamecontroller.cpp">
-      <Filter>ui</Filter>
+    <ClCompile Include="src\search.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\trainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aithread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\misc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zobrist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bitboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\option.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\position.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rule.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\qt\boarditem.cpp">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\qt\client.cpp">
-      <Filter>ui</Filter>
+      <Filter>Qt Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ai\search.cpp">
-      <Filter>ai</Filter>
+    <ClCompile Include="src\ui\qt\gamecontroller.cpp">
+      <Filter>Qt Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ai\evaluate.cpp">
-      <Filter>ai</Filter>
+    <ClCompile Include="src\ui\qt\gamescene.cpp">
+      <Filter>Qt Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ai\movegen.cpp">
-      <Filter>ai</Filter>
+    <ClCompile Include="src\ui\qt\gameview.cpp">
+      <Filter>Qt Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\board.cpp">
-      <Filter>game</Filter>
+    <ClCompile Include="src\ui\qt\gamewindow.cpp">
+      <Filter>Qt Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\rule.cpp">
-      <Filter>game</Filter>
+    <ClCompile Include="src\ui\qt\pieceitem.cpp">
+      <Filter>Qt Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ai\tt.cpp">
-      <Filter>ai</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\position.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\base\misc.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="src\base\zobrist.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ai\endgame.cpp">
-      <Filter>ai</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\option.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ai\trainer.cpp">
-      <Filter>ai</Filter>
-    </ClCompile>
-    <ClCompile Include="src\base\aithread.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="src\base\thread.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="src\test\test.cpp">
-      <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ai\movepick.cpp">
-      <Filter>ai</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\bitboard.cpp">
-      <Filter>game</Filter>
+    <ClCompile Include="src\ui\qt\server.cpp">
+      <Filter>Qt Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -533,9 +524,15 @@
     <Media Include="resources\sound\GiveUp_W.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="resources\sound\Capture_B.wav" />
-    <Media Include="resources\sound\Capture_W.wav" />
-    <Media Include="resources\sound\choose.wav" />
+    <Media Include="resources\sound\Capture_B.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\Capture_W.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resources\sound\choose.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="gamewindow.qrc">

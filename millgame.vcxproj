@@ -108,10 +108,10 @@
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)\src\base;$(ProjectDir)\include;$(ProjectDir)\src\ai;$(ProjectDir)\src\game;$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\test;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\src;$(ProjectDir)\include;$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\test;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\game;$(ProjectDir)\src\ai;$(ProjectDir)\src\base;$(ProjectDir)\include;$(ProjectDir)\src\test;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\;$(ProjectDir)\include;$(ProjectDir)\src\test;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -189,7 +189,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\ui;$(ProjectDir)\src\test;$(ProjectDir)\src\game;$(ProjectDir)\src\ai;$(ProjectDir)\src\base;$(ProjectDir)\include;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtNetworkAuth;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\ui;$(ProjectDir)\src\test;$(ProjectDir)\src;$(ProjectDir)\include;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtNetworkAuth;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -240,7 +240,7 @@
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <InputFile>%(FullPath)</InputFile>
       <DynamicSource>output</DynamicSource>
-      <IncludePath>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\ui;$(ProjectDir)\src\test;$(ProjectDir)\src\game;$(ProjectDir)\src\ai;$(ProjectDir)\src\base;$(ProjectDir)\include;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtNetworkAuth;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</IncludePath>
+      <IncludePath>$(ProjectDir)\src\ui\qt;$(ProjectDir)\src\ui;$(ProjectDir)\src\test;$(ProjectDir)\src;$(ProjectDir)\include;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtNetworkAuth;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</IncludePath>
     </QtMoc>
     <QtRcc>
       <InitFuncName>MillGamewindow</InitFuncName>
@@ -451,30 +451,30 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </AdditionalInputs>
     </CustomBuild>
-    <ClInclude Include="src\ai\endgame.h" />
-    <ClInclude Include="src\ai\evaluate.h" />
-    <ClInclude Include="src\ai\movegen.h" />
-    <ClInclude Include="src\ai\movepick.h" />
-    <ClInclude Include="src\ai\search.h" />
-    <ClInclude Include="src\ai\trainer.h" />
-    <ClInclude Include="src\ai\tt.h" />
-    <ClInclude Include="src\base\debug.h" />
-    <ClInclude Include="src\base\hashmap.h" />
-    <ClInclude Include="src\base\HashNode.h" />
-    <ClInclude Include="src\base\misc.h" />
-    <ClInclude Include="src\base\prefetch.h" />
-    <ClInclude Include="src\base\stack.h" />
-    <QtMoc Include="src\base\aithread.h" />
-    <ClInclude Include="src\base\stopwatch.h" />
-    <ClInclude Include="src\base\thread.h" />
-    <ClInclude Include="src\base\thread_win32_osx.h" />
-    <ClInclude Include="src\base\zobrist.h" />
-    <ClInclude Include="src\game\bitboard.h" />
-    <ClInclude Include="src\game\board.h" />
-    <ClInclude Include="src\game\option.h" />
-    <ClInclude Include="src\game\position.h" />
-    <ClInclude Include="src\game\rule.h" />
-    <ClInclude Include="src\game\types.h" />
+    <ClInclude Include="src\endgame.h" />
+    <ClInclude Include="src\evaluate.h" />
+    <ClInclude Include="src\movegen.h" />
+    <ClInclude Include="src\movepick.h" />
+    <ClInclude Include="src\search.h" />
+    <ClInclude Include="src\trainer.h" />
+    <ClInclude Include="src\tt.h" />
+    <ClInclude Include="src\debug.h" />
+    <ClInclude Include="src\hashmap.h" />
+    <ClInclude Include="src\HashNode.h" />
+    <ClInclude Include="src\misc.h" />
+    <ClInclude Include="src\prefetch.h" />
+    <ClInclude Include="src\stack.h" />
+    <QtMoc Include="src\aithread.h" />
+    <ClInclude Include="src\stopwatch.h" />
+    <ClInclude Include="src\thread.h" />
+    <ClInclude Include="src\thread_win32_osx.h" />
+    <ClInclude Include="src\zobrist.h" />
+    <ClInclude Include="src\bitboard.h" />
+    <ClInclude Include="src\board.h" />
+    <ClInclude Include="src\option.h" />
+    <ClInclude Include="src\position.h" />
+    <ClInclude Include="src\rule.h" />
+    <ClInclude Include="src\types.h" />
     <QtMoc Include="src\test\test.h" />
     <ClInclude Include="src\ui\qt\boarditem.h" />
     <QtMoc Include="src\ui\qt\client.h" />
@@ -709,22 +709,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ai\endgame.cpp" />
-    <ClCompile Include="src\ai\evaluate.cpp" />
-    <ClCompile Include="src\ai\movegen.cpp" />
-    <ClCompile Include="src\ai\movepick.cpp" />
-    <ClCompile Include="src\ai\search.cpp" />
-    <ClCompile Include="src\ai\trainer.cpp" />
-    <ClCompile Include="src\ai\tt.cpp" />
-    <ClCompile Include="src\base\misc.cpp" />
-    <ClCompile Include="src\base\aithread.cpp" />
-    <ClCompile Include="src\base\thread.cpp" />
-    <ClCompile Include="src\base\zobrist.cpp" />
-    <ClCompile Include="src\game\bitboard.cpp" />
-    <ClCompile Include="src\game\board.cpp" />
-    <ClCompile Include="src\game\option.cpp" />
-    <ClCompile Include="src\game\position.cpp" />
-    <ClCompile Include="src\game\rule.cpp" />
+    <ClCompile Include="src\endgame.cpp" />
+    <ClCompile Include="src\evaluate.cpp" />
+    <ClCompile Include="src\movegen.cpp" />
+    <ClCompile Include="src\movepick.cpp" />
+    <ClCompile Include="src\search.cpp" />
+    <ClCompile Include="src\trainer.cpp" />
+    <ClCompile Include="src\tt.cpp" />
+    <ClCompile Include="src\misc.cpp" />
+    <ClCompile Include="src\aithread.cpp" />
+    <ClCompile Include="src\thread.cpp" />
+    <ClCompile Include="src\zobrist.cpp" />
+    <ClCompile Include="src\bitboard.cpp" />
+    <ClCompile Include="src\board.cpp" />
+    <ClCompile Include="src\option.cpp" />
+    <ClCompile Include="src\position.cpp" />
+    <ClCompile Include="src\rule.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\test\test.cpp" />
     <ClCompile Include="src\ui\qt\boarditem.cpp" />

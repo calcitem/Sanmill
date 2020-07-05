@@ -16,29 +16,27 @@ CONFIG += warn_off
 CONFIG += console
 
 INCLUDEPATH += include
-INCLUDEPATH += src/base
-INCLUDEPATH += src/ai
-INCLUDEPATH += src/game
+INCLUDEPATH += src
 INCLUDEPATH += src/test
 INCLUDEPATH += src/ui/qt
 
 SOURCES += \
-    src/ai/endgame.cpp \
-    src/ai/evaluate.cpp \
-    src/ai/movegen.cpp \
-    src/ai/movepick.cpp \
-    src/ai/trainer.cpp \
-    src/ai/tt.cpp \
-    src/base/misc.cpp \
-    src/base/zobrist.cpp \
-    src/game/bitboard.cpp \
-    src/game/board.cpp \
-    src/game/option.cpp \
-    src/game/position.cpp \
-    src/game/rule.cpp \
+    src/endgame.cpp \
+    src/evaluate.cpp \
+    src/movegen.cpp \
+    src/movepick.cpp \
+    src/trainer.cpp \
+    src/tt.cpp \
+    src/misc.cpp \
+    src/zobrist.cpp \
+    src/bitboard.cpp \
+    src/board.cpp \
+    src/option.cpp \
+    src/position.cpp \
+    src/rule.cpp \
     src/main.cpp \
-    src/base/aithread.cpp \
-    src/ai/search.cpp \
+    src/aithread.cpp \
+    src/search.cpp \
     src/test/test.cpp \
     src/ui/qt/gamewindow.cpp \
     src/ui/qt/pieceitem.cpp \
@@ -53,28 +51,28 @@ HEADERS  += \
     include/config.h \
     include/version.h \
     include/version.h.template \
-    src/ai/endgame.h \
-    src/ai/evaluate.h \
-    src/ai/movegen.h \
-    src/ai/movepick.h \
-    src/ai/trainer.h \
-    src/ai/tt.h \
-    src/base/HashNode.h \
-    src/base/debug.h \
-    src/base/hashMap.h \
-    src/base/misc.h \
-    src/base/prefetch.h \
-    src/base/stack.h \
-    src/base/stopwatch.h \
-    src/base/aithread.h \
-    src/ai/search.h \
-    src/base/zobrist.h \
-    src/game/bitboard.h \
-    src/game/board.h \
-    src/game/option.h \
-    src/game/position.h \
-    src/game/rule.h \
-    src/game/types.h \
+    src/endgame.h \
+    src/evaluate.h \
+    src/movegen.h \
+    src/movepick.h \
+    src/trainer.h \
+    src/tt.h \
+    src/HashNode.h \
+    src/debug.h \
+    src/hashMap.h \
+    src/misc.h \
+    src/prefetch.h \
+    src/stack.h \
+    src/stopwatch.h \
+    src/aithread.h \
+    src/search.h \
+    src/zobrist.h \
+    src/bitboard.h \
+    src/board.h \
+    src/option.h \
+    src/position.h \
+    src/rule.h \
+    src/types.h \
     src/test/test.h \
     src/ui/qt/client.h \
     src/ui/qt/gamecontroller.h \
