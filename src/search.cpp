@@ -187,7 +187,7 @@ int AIAlgorithm::search(Depth depth)
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (position->getPhase() == PHASE_MOVING) {
+    if (position->get_phase() == PHASE_MOVING) {
         Key key = position->key();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
@@ -201,7 +201,7 @@ int AIAlgorithm::search(Depth depth)
         }
     }
 
-    if (position->getPhase() == PHASE_PLACING) {
+    if (position->get_phase() == PHASE_PLACING) {
         moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -455,7 +455,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
     for (int i = 0; i < nchild; i++) {
-        TranspositionTable::prefetch(pos->getNextPrimaryKey(extMoves[i].move));
+        TranspositionTable::prefetch(pos->next_primary_key(extMoves[i].move));
     }
 
 #ifdef PREFETCH_DEBUG
@@ -586,7 +586,7 @@ const char* AIAlgorithm::nextMove()
 #if 0
     char charSelect = '*';
 
-    Position::printBoard();
+    Position::print_board();
 
     int moveIndex = 0;
     bool foundBest = false;
@@ -663,14 +663,14 @@ const char *AIAlgorithm::moveToCommand(Move move)
 {
     File file2;
     Rank rank2;
-    Position::squareToPolar(to_sq(move), file2, rank2);
+    Position::square_to_polar(to_sq(move), file2, rank2);
 
     if (move < 0) {
         sprintf(cmdline, "-(%1u,%1u)", file2, rank2);
     } else if (move & 0x7f00) {
         File file1;
         Rank rank1;
-        Position::squareToPolar(from_sq(move), file1, rank1);
+        Position::square_to_polar(from_sq(move), file1, rank1);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", file1, rank1, file2, rank2);
     } else {
         sprintf(cmdline, "(%1u,%1u)", file2, rank2);

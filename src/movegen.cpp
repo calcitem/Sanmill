@@ -309,7 +309,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
             for (Move i : MoveList::movePriorityTable) {
                 square = static_cast<Square>(i);
 
-                if (position->locations[square]) {
+                if (position->board[square]) {
                     continue;
                 }
 
@@ -320,7 +320,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
                     *cur++ = ((Move)square);
                 } else {
 #ifdef FIRST_MOVE_STAR_PREFERRED
-                    if (Position::isStar(square)) {
+                    if (Position::is_star_square(square)) {
                         moves.push_back((Move)square);
                     }
 #else
@@ -347,7 +347,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
                     !rule.allowFlyWhenRemainThreePieces) {
                     for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
                         newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);
-                        if (newSquare && !position->locations[newSquare]) {
+                        if (newSquare && !position->board[newSquare]) {
                             Move m = make_move(oldSquare, newSquare);
                             *cur++ = ((Move)m);
                         }
@@ -355,7 +355,7 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
                 } else {
                     // piece count < 3，and allow fly, if is empty point, that's ok, do not need in move list
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
-                        if (!position->locations[newSquare]) {
+                        if (!position->board[newSquare]) {
                             Move m = make_move(oldSquare, newSquare);
                             *cur++ = ((Move)m);
                         }
@@ -366,10 +366,10 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         break;
 
     case ACTION_REMOVE:
-        if (position->isAllInMills(them)) {
+        if (position->is_all_in_mills(them)) {
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 square = static_cast<Square>(MoveList::movePriorityTable[i]);
-                if (position->locations[square] & (them << PLAYER_SHIFT)) {
+                if (position->board[square] & (them << PLAYER_SHIFT)) {
                     *cur++ = ((Move)-square);
                 }
             }
@@ -379,8 +379,8 @@ ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
         // not is all in mills
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             square = static_cast<Square>(MoveList::movePriorityTable[i]);
-            if (position->locations[square] & (them << PLAYER_SHIFT)) {
-                if (rule.allowRemovePieceInMill || !position->inHowManyMills(square, NOBODY)) {
+            if (position->board[square] & (them << PLAYER_SHIFT)) {
+                if (rule.allowRemovePieceInMill || !position->in_how_many_mills(square, NOBODY)) {
                     *cur++ = ((Move)-square);
                 }
             }

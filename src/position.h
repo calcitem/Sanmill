@@ -71,143 +71,142 @@ public:
     Position(const Position &) = delete;
     Position &operator=(const Position &) = delete;
 
+    // Position representation
+    Color color_on(Square s);
+    int getPiecesInHandCount(Color c) const;
+    int getPiecesOnBoardCount(Color c) const;
+
     // Properties of moves
     bool select_piece(Square s);
     bool place_piece(Square s, bool updateCmdlist = false);
     bool remove_piece(Square s, bool updateCmdlist = false);
-
     bool _selectPiece(File file, Rank rank);
     bool _placePiece(File file, Rank rank);
     bool _removePiece(File file, Rank rank);
 
     // Doing and undoing moves
     bool do_move(Move m);
-    bool do_null_move();
     bool undo_null_move();
+    bool do_null_move();
 
     // Accessing hash keys
     Key key();
-    Key revertKey(Square square);
-    Key updateKey(Square square);
-    Key updateKeyMisc();
-    Key getNextPrimaryKey(Move m);
+    void construct_key();
+    Key revert_key(Square square);
+    Key update_key(Square square);
+    Key update_key_misc();
+    Key next_primary_key(Move m);
 
     // Other properties of the position
-
-    enum Phase phase {PHASE_NONE};
-
-    Color sideToMove {NOCOLOR};
-    Color them { NOCOLOR };
-
-    enum Action action { };
-
-    // Note: [0] is sum of Black and White
-    int nPiecesInHand[COLOR_NB]{0};
-    int nPiecesOnBoard[COLOR_NB] {0};
-    int nPiecesNeedRemove {0};
+    Color side_to_move() const;
 
     //////////////////////////////////////
 
-    bool setPosition(const struct Rule *rule);
+    bool set_position(const struct Rule *rule);
 
-    Piece *getBoardLocations() const
-    {
-        return (Piece *)locations;
-    }
+    time_t get_elapsed_time(int us);
+    time_t start_timeb() const;
+    void set_start_time(int stimeb);
 
-    Square getCurrentSquare() const
-    {
-        return currentSquare;
-    }
+    Piece *get_board() const;
+    Square current_square() const;
+    int get_step() const;
+    enum Phase get_phase() const;
+    enum Action get_action() const;
+    const string get_tips() const;
+    const char *cmd_line() const;
+    const vector<string> *cmd_list() const;
 
-    int getStep() const
-    {
-        return currentStep;
-    }
-
-    enum Phase getPhase() const
-    {
-        return phase;
-    }
-
-    enum Action getAction() const
-    {
-        return action;
-    }
-
-    time_t getElapsedTime(int us);
-
-    const string getTips() const
-    {
-        return tips;
-    }
-
-    const char *getCmdLine() const
-    {
-        return cmdline;
-    }
-
-    const vector<string> *getCmdList() const
-    {
-        return &cmdlist;
-    }
-
-    time_t getStartTimeb() const
-    {
-        return startTime;
-    }
-
-    void setStartTime(int stimeb)
-    {
-        startTime = stimeb;
-    }
-
-    int getPiecesInHandCount(Color c) const
-    {
-        return nPiecesInHand[c];
-    }
-
-    int getPiecesOnBoardCount(Color c) const
-    {
-        return nPiecesOnBoard[c];
-    }
-
-    int getMobilityDiff(bool includeFobidden);
+    int get_mobility_diff(bool includeFobidden);
 
     bool reset();
-
     bool start();
-
     bool giveup(Color loser);
-
     bool command(const char *cmd);
-
     int update();
+    bool check_gameover_condition(int8_t cp = 0);
+    void clean_banned();
+    void set_side_to_move(Color c);
+  
+    void change_side_to_move();
+    void set_tips();
+    Color get_winner() const;
 
-    bool checkGameOverCondition(int8_t cp = 0);
+    void mirror(int32_t move_, Square square, bool cmdChange = true);
+    void turn(int32_t move_, Square square, bool cmdChange = true);
+    void rotate(int degrees, int32_t move_, Square square, bool cmdChange = true);
 
-    void cleanBannedLocations();
+    void create_mill_table();
+    int add_mills(Square square);
+    int in_how_many_mills(Square square, Color c, Square squareSelected = SQ_0);
+    bool is_all_in_mills(Color c);
 
-    void setSideToMove(Color c);
+    int surrounded_empty_squres_count(Square square, bool includeFobidden);
+    void surrounded_pieces_count(Square square, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
+    bool is_all_surrounded();
 
-    Color getSideToMove();
+    static void square_to_polar(Square square, File &file, Rank &rank);
+    static Square polar_to_square(File file, Rank rank);
 
-    void changeSideToMove();
+    static void print_board();
 
-    void setTips();
+    int pieces_on_board_count();
+    int pieces_in_hand_count();
 
-    Color getWinner() const;
+    static char color_to_char(Color color);
+    static std::string char_to_string(char ch);
 
-    int score[COLOR_NB] = { 0 };
+    static bool is_star_square(Square square);
+
+// private:
+
+    // Data members
+
+    Color sideToMove { NOCOLOR };
+    Color them { NOCOLOR };
+    Color winner;
+
+    enum Phase phase {PHASE_NONE};
+    enum Action action;
+
+    int score[COLOR_NB] { 0 };
     int score_draw { 0 };
-    int nPlayed { 0 };
 
-    int tm { -1 };
+    Step currentStep;
+    int moveStep;
+
+    static const int onBoard[SQUARE_NB];
+
+    // Relate to Rule
+    static int millTable[SQUARE_NB][LD_NB][FILE_NB - 1];
+
+    Square currentSquare;
+    int nPlayed{ 0 };
 
     vector <string> cmdlist;
-
-    // 着法命令行用于棋谱的显示和解析, 当前着法的命令行指令，即一招棋谱
     char cmdline[64]{ '\0' };
+
+    // Note: [0] is sum of Black and White
+    int nPiecesInHand[COLOR_NB] { 0 };
+    int nPiecesOnBoard[COLOR_NB] { 0 };
+    int nPiecesNeedRemove { 0 };
+
+    int tm { -1 };
+    time_t startTime;
+    time_t currentTime;
+    time_t elapsedSeconds[COLOR_NB];
+
+    Piece board[SQUARE_NB];
+
+    Bitboard byTypeBB[PIECE_TYPE_NB];
+
+    /*
+        0x   00     00     00    00    00    00    00    00
+           unused unused piece1 square1 piece2 square2 piece3 square3
+    */
+
+    uint64_t millList[4];
+    int millListSize { 0 };
 
     /*
         0x   00    00
@@ -230,86 +229,86 @@ public:
     */
     Move move { MOVE_NONE };
 
-    Square currentSquare{};
-
-    void createMillTable();
-
-    void mirror(int32_t move_, Square square, bool cmdChange = true);
-    void turn(int32_t move_, Square square, bool cmdChange = true);
-    void rotate(int degrees, int32_t move_, Square square, bool cmdChange = true);
-
-    int inHowManyMills(Square square, Color c, Square squareSelected = SQ_0);
-    bool isAllInMills(Color c);
-
-    int getSurroundedEmptyLocationCount(Square square, bool includeFobidden);
-    void getSurroundedPieceCount(Square square, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
-    bool isAllSurrounded();
-
-    int addMills(Square square);
-
-    static void squareToPolar(Square square, File &file, Rank &rank);
-    static Square polarToSquare(File file, Rank rank);
-
-    static void printBoard();
-
-    Color locationToColor(Square square);
-
-    Piece locations[SQUARE_NB]{};
-
-    Bitboard byTypeBB[PIECE_TYPE_NB];
-
-    /*
-        0x   00     00     00    00    00    00    00    00
-           unused unused piece1 square1 piece2 square2 piece3 square3
-    */
-
-    uint64_t millList[4];
-    int millListSize{ 0 };
-
-    //Board &operator=(const Board &);
-
-    static const int onBoard[SQUARE_NB];
-
-    static bool isStar(Square square);
-
-    // Relate to Rule
-    static int millTable[SQUARE_NB][LD_NB][FILE_NB - 1];
-
-private:
-
-    void constructKey();
-
-    int countPiecesOnBoard();
-
-    int countPiecesInHand();
-
-    inline static char colorToCh(Color color)
-    {
-        return static_cast<char>('0' + color);
-    }
-
-    inline static std::string chToStr(char ch)
-    {
-        if (ch == '1') {
-            return "1";
-        } else {
-            return "2";
-        }
-    }
-
-    Color winner;
-
-    Step currentStep {};
-
-    int moveStep {};
-
-    time_t startTime {};
-
-    time_t currentTime {};
-
-    time_t elapsedSeconds[COLOR_NB];
-
     StateInfo st;
 };
+
+inline Color Position::side_to_move() const
+{
+    return sideToMove;
+}
+
+inline char Position::color_to_char(Color color)
+{
+    return static_cast<char>('0' + color);
+}
+
+inline std::string Position::char_to_string(char ch)
+{
+    if (ch == '1') {
+        return "1";
+    } else {
+        return "2";
+    }
+}
+
+inline int Position::getPiecesInHandCount(Color c) const
+{
+    return nPiecesInHand[c];
+}
+
+inline int Position::getPiecesOnBoardCount(Color c) const
+{
+    return nPiecesOnBoard[c];
+}
+
+inline Piece *Position::get_board() const
+{
+    return (Piece *)board;
+}
+
+inline Square Position::current_square() const
+{
+    return currentSquare;
+}
+
+inline int Position::get_step() const
+{
+    return currentStep;
+}
+
+inline enum Phase Position::get_phase() const
+{
+    return phase;
+}
+
+inline enum Action Position::get_action() const
+{
+    return action;
+}
+
+inline const string Position::get_tips() const
+{
+    return tips;
+}
+
+inline const char *Position::cmd_line() const
+{
+    return cmdline;
+}
+
+inline const vector<string> *Position::cmd_list() const
+{
+    return &cmdlist;
+}
+
+inline time_t Position::start_timeb() const
+{
+    return startTime;
+}
+
+inline void Position::set_start_time(int stimeb)
+{
+    startTime = stimeb;
+}
 
 #endif /* POSITION_H */

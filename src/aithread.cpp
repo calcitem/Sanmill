@@ -120,7 +120,7 @@ void sq2str(char *str)
         sig = 0;
     }
 
-    Position::squareToPolar((Square)sq, file, rank);
+    Position::square_to_polar((Square)sq, file, rank);
 
     if (sig == 1) {
         sprintf_s(str, 16, "(%d,%d)", file, rank);

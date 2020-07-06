@@ -60,7 +60,7 @@ Value Eval::evaluate(Position *pos)
                 pos->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
-        value += pos->getMobilityDiff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
+        value += pos->get_mobility_diff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (pos->action) {
@@ -88,7 +88,7 @@ Value Eval::evaluate(Position *pos)
                 value = VALUE_DRAW;
             }
         } else if (pos->action == ACTION_SELECT &&
-            pos->isAllSurrounded() &&
+            pos->is_all_surrounded() &&
             rule.isLoseButNotChangeTurnWhenNoWay) {
             Value delta = pos->sideToMove == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;

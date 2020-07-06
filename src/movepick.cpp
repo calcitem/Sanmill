@@ -55,7 +55,7 @@ void MovePicker::score()
         Square sqsrc = from_sq(m);
         
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need sqsrc to judge
-        int nOurMills = position->inHowManyMills(sq, position->sideToMove, sqsrc);
+        int nOurMills = position->in_how_many_mills(sq, position->sideToMove, sqsrc);
         int nTheirMills = 0;
 
     #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
@@ -66,17 +66,17 @@ void MovePicker::score()
     #ifdef ALPHABETA_AI
                 cur->rating += static_cast<Rating>(RATING_ONE_MILL * nOurMills);
     #endif
-            } else if (position->getPhase() == PHASE_PLACING) {
+            } else if (position->get_phase() == PHASE_PLACING) {
                 // placing phrase, check if place sq can block their close mill
-                nTheirMills = position->inHowManyMills(sq, position->them);
+                nTheirMills = position->in_how_many_mills(sq, position->them);
     #ifdef ALPHABETA_AI
                 cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nTheirMills);
     #endif
             }
     #if 1
-            else if (position->getPhase() == PHASE_MOVING) {
+            else if (position->get_phase() == PHASE_MOVING) {
                 // moving phrase, check if place sq can block their close mill
-                nTheirMills = position->inHowManyMills(sq, position->them);
+                nTheirMills = position->in_how_many_mills(sq, position->them);
 
                 if (nTheirMills) {
                     int nOurPieces = 0;
@@ -84,7 +84,7 @@ void MovePicker::score()
                     int nBanned = 0;
                     int nEmpty = 0;
 
-                    position->getSurroundedPieceCount(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
+                    position->surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
                     if (sq % 2 == 0 && nTheirPieces == 3) {
@@ -103,7 +103,7 @@ void MovePicker::score()
     #ifdef ALPHABETA_AI
             if (rule.nTotalPiecesEachSide == 12 &&
                 position->getPiecesOnBoardCount(WHITE) < 2 &&    // patch: only when white's 2nd move
-                Position::isStar(static_cast<Square>(m))) {
+                Position::is_star_square(static_cast<Square>(m))) {
                 cur->rating += RATING_STAR_SQUARE;
             }
     #endif
@@ -113,7 +113,7 @@ void MovePicker::score()
             int nBanned = 0;
             int nEmpty = 0;
 
-            position->getSurroundedPieceCount(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
+            position->surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
             if (nOurMills > 0) {
@@ -131,7 +131,7 @@ void MovePicker::score()
             }
 
             // remove point is in their mill
-            nTheirMills = position->inHowManyMills(sq, position->them);
+            nTheirMills = position->in_how_many_mills(sq, position->them);
             if (nTheirMills) {
                 if (nTheirPieces >= 2) {
                     // if nearby their piece, prefer do not remove

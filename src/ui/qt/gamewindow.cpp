@@ -608,7 +608,7 @@ void MillGameWindow::on_actionNew_N_triggered()
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QString whoWin;
 
-    switch (gameController->getPosition()->getWinner()) {
+    switch (gameController->getPosition()->get_winner()) {
     case BLACK:
         whoWin = "Black-Win";
         break;
