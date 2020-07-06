@@ -559,8 +559,8 @@ void GameController::flip()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position->board.mirror(position->cmdlist, position->cmdline, position->move, position->currentSquare);
-    position->board.rotate(180, position->cmdlist, position->cmdline, position->move, position->currentSquare);
+    position->mirror(position->move, position->currentSquare);
+    position->rotate(180, position->move, position->currentSquare);
     tmppos = position;;
 
     // 更新棋谱
@@ -586,7 +586,7 @@ void GameController::mirror()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position->board.mirror(position->cmdlist, position->cmdline, position->move, position->currentSquare);
+    position->mirror(position->move, position->currentSquare);
     tmppos = position;
 
     // 更新棋谱
@@ -615,7 +615,7 @@ void GameController::turnRight()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position->board.rotate(-90, position->cmdlist, position->cmdline, position->move, position->currentSquare);
+    position->rotate(-90, position->move, position->currentSquare);
     tmppos = position;
 
     // 更新棋谱
@@ -642,7 +642,7 @@ void GameController::turnLeft()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position->board.rotate(90, position->cmdlist, position->cmdline, position->move, position->currentSquare);
+    position->rotate(90, position->move, position->currentSquare);
     tmppos = position;
 
     // 更新棋谱
@@ -1170,7 +1170,7 @@ bool GameController::updateScence(Position *p)
         // 遍历棋盘，查找并放置棋盘上的棋子
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.polar2pos(File(j / Board::N_RANKS), Rank(j % Board::N_RANKS + 1));
+                pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
                 if (piece->pos() != pos) {
 
                     // 让移动的棋子位于顶层
@@ -1192,7 +1192,7 @@ bool GameController::updateScence(Position *p)
         }
 
         // 如果没有找到，放置棋盘外的棋子
-        if (j == (Board::N_RANKS) * (Board::N_FILES + 1)) {
+        if (j == (RANK_NB) * (FILE_NB + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & B_STONE) {
                 pos = (key - 0x11 < nTotalPieces / 2 - p->getPiecesInHandCount(BLACK)) ?
@@ -1228,7 +1228,7 @@ bool GameController::updateScence(Position *p)
     if (rule.hasBannedLocations && p->getPhase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == BAN_STONE) {
-                pos = scene.polar2pos(File(j / Board::N_RANKS), Rank(j % Board::N_RANKS + 1));
+                pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
                 } else {

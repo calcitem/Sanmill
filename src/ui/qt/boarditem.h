@@ -63,10 +63,10 @@ public:
     bool pos2polar(QPointF pos, File &file, Rank &rank);
 
     // 3圈，禁止修改！
-    static const uint8_t N_FILES = 3;
+    static const uint8_t FILE_NB = 3;
 
     // 8位，禁止修改！
-    static const uint8_t N_RANKS = 8;
+    static const uint8_t RANK_NB = 8;
 
 private:
     // 棋盘尺寸
@@ -76,7 +76,7 @@ private:
     int sizeShadow {5};
 
     // 24个落子点
-    QPointF position[N_FILES * N_RANKS];
+    QPointF position[FILE_NB * RANK_NB];
 
     // 是否有斜线
     bool hasObliqueLine {false};

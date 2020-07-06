@@ -81,14 +81,14 @@ Value Eval::evaluate(Position *pos)
 
     case PHASE_GAMEOVER:
         if (pos->nPiecesOnBoard[BLACK] + pos->nPiecesOnBoard[WHITE] >=
-            Board::N_RANKS * Board::N_FILES) {
+            RANK_NB * FILE_NB) {
             if (rule.isBlackLosebutNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
                 value = VALUE_DRAW;
             }
         } else if (pos->action == ACTION_SELECT &&
-            pos->board.isAllSurrounded(pos->sideToMove, pos->nPiecesOnBoard) &&
+            pos->isAllSurrounded() &&
             rule.isLoseButNotChangeTurnWhenNoWay) {
             Value delta = pos->sideToMove == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;

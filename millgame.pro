@@ -30,7 +30,6 @@ SOURCES += \
     src/misc.cpp \
     src/zobrist.cpp \
     src/bitboard.cpp \
-    src/board.cpp \
     src/option.cpp \
     src/position.cpp \
     src/rule.cpp \
@@ -68,7 +67,6 @@ HEADERS  += \
     src/search.h \
     src/zobrist.h \
     src/bitboard.h \
-    src/board.h \
     src/option.h \
     src/position.h \
     src/rule.h \

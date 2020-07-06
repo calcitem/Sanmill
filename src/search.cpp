@@ -586,7 +586,7 @@ const char* AIAlgorithm::nextMove()
 #if 0
     char charSelect = '*';
 
-    Board::printBoard();
+    Position::printBoard();
 
     int moveIndex = 0;
     bool foundBest = false;
@@ -663,14 +663,14 @@ const char *AIAlgorithm::moveToCommand(Move move)
 {
     File file2;
     Rank rank2;
-    Board::squareToPolar(to_sq(move), file2, rank2);
+    Position::squareToPolar(to_sq(move), file2, rank2);
 
     if (move < 0) {
         sprintf(cmdline, "-(%1u,%1u)", file2, rank2);
     } else if (move & 0x7f00) {
         File file1;
         Rank rank1;
-        Board::squareToPolar(from_sq(move), file1, rank1);
+        Position::squareToPolar(from_sq(move), file1, rank1);
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", file1, rank1, file2, rank2);
     } else {
         sprintf(cmdline, "(%1u,%1u)", file2, rank2);

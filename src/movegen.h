@@ -20,9 +20,14 @@
 #ifndef MOVEGEN_H
 #define MOVEGEN_H
 
+#include <array>
+
 #include "config.h"
 #include "position.h"
 #include "search.h"
+#include "types.h"
+
+using namespace std;
 
 class Position;
 
@@ -79,7 +84,7 @@ public:
     // TODO: Move to private
     inline static Move moveTable[SQUARE_NB][MD_NB] = { {MOVE_NONE} };
 
-    inline static array<Move, Board::N_FILES *Board::N_RANKS> movePriorityTable{
+    inline static array<Move, FILE_NB * RANK_NB> movePriorityTable{
         (Move)8, (Move)9, (Move)10, (Move)11, (Move)12, (Move)13, (Move)14, (Move)15,
         (Move)16, (Move)17, (Move)18, (Move)19, (Move)20, (Move)21, (Move)22, (Move)23,
         (Move)24, (Move)25, (Move)26, (Move)27, (Move)28, (Move)29, (Move)30, (Move)31,

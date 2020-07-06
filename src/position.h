@@ -29,7 +29,6 @@
 #include "config.h"
 #include "types.h"
 #include "rule.h"
-#include "board.h"
 #include "search.h"
 
 using namespace std;
@@ -93,8 +92,6 @@ public:
     Key updateKeyMisc();
     Key getNextPrimaryKey(Move m);
 
-    Board board;
-
     // Other properties of the position
 
     enum Phase phase {PHASE_NONE};
@@ -115,7 +112,7 @@ public:
 
     Piece *getBoardLocations() const
     {
-        return (Piece *)board.locations;
+        return (Piece *)locations;
     }
 
     Square getCurrentSquare() const
@@ -175,7 +172,7 @@ public:
         return nPiecesOnBoard[c];
     }
 
-    int getMobilityDiff(Color turn, int nPiecesOnBoard[], bool includeFobidden);
+    int getMobilityDiff(bool includeFobidden);
 
     bool reset();
 
@@ -234,6 +231,49 @@ public:
     Move move { MOVE_NONE };
 
     Square currentSquare{};
+
+    void createMillTable();
+
+    void mirror(int32_t move_, Square square, bool cmdChange = true);
+    void turn(int32_t move_, Square square, bool cmdChange = true);
+    void rotate(int degrees, int32_t move_, Square square, bool cmdChange = true);
+
+    int inHowManyMills(Square square, Color c, Square squareSelected = SQ_0);
+    bool isAllInMills(Color c);
+
+    int getSurroundedEmptyLocationCount(Square square, bool includeFobidden);
+    void getSurroundedPieceCount(Square square, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
+    bool isAllSurrounded();
+
+    int addMills(Square square);
+
+    static void squareToPolar(Square square, File &file, Rank &rank);
+    static Square polarToSquare(File file, Rank rank);
+
+    static void printBoard();
+
+    Color locationToColor(Square square);
+
+    Piece locations[SQUARE_NB]{};
+
+    Bitboard byTypeBB[PIECE_TYPE_NB];
+
+    /*
+        0x   00     00     00    00    00    00    00    00
+           unused unused piece1 square1 piece2 square2 piece3 square3
+    */
+
+    uint64_t millList[4];
+    int millListSize{ 0 };
+
+    //Board &operator=(const Board &);
+
+    static const int onBoard[SQUARE_NB];
+
+    static bool isStar(Square square);
+
+    // Relate to Rule
+    static int millTable[SQUARE_NB][LD_NB][FILE_NB - 1];
 
 private:
 
