@@ -24,7 +24,6 @@
 
 #include "search.h"
 #include "evaluate.h"
-#include "movegen.h"
 #include "hashmap.h"
 #include "tt.h"
 #include "endgame.h"
@@ -405,7 +404,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
             st->generateNullMove(moves);
             st->generateChildren(moves, this, node);
             do_null_move();
-            int moveCount = st->generateMoves(moves);
+            int moveCount = st->generate(moves);
             if (moveCount)
             {
                 st->generateChildren(moves, this, node->children[0]);
@@ -435,19 +434,17 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
         return bestValue;
     }
 
-    ExtMove extMoves[MAX_MOVES];
-    memset(extMoves, 0, sizeof(extMoves));
-    ExtMove *end = generateMoves(pos, extMoves);
-    MovePicker mp(pos, extMoves);
+    MovePicker mp(pos);
+    mp.endMoves = generate(pos, mp.moves);
     mp.score();
 
-    partial_insertion_sort(extMoves, end, -100);
-    ExtMove *cur = extMoves;
+    partial_insertion_sort(mp.moves, mp.endMoves, -100);
+    ExtMove *cur = mp.moves;
 
-    int nchild = end - cur;
+    int nchild = mp.endMoves - cur;
 
     if (nchild == 1 && depth == originDepth) {
-        bestMove = extMoves[0].move;
+        bestMove = mp.moves[0].move;
         bestValue = VALUE_UNIQUE;
         return bestValue;
     }
@@ -455,7 +452,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
     for (int i = 0; i < nchild; i++) {
-        TranspositionTable::prefetch(pos->next_primary_key(extMoves[i].move));
+        TranspositionTable::prefetch(pos->next_primary_key(mp.moves[i].move));
     }
 
 #ifdef PREFETCH_DEBUG
@@ -470,7 +467,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
     for (int i = 0; i < nchild; i++) {
         stashPosition();
         Color before = pos->sideToMove;
-        Move move = extMoves[i].move;
+        Move move = mp.moves[i].move;
         do_move(move);
         Color after = pos->sideToMove;
 

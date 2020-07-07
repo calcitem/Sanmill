@@ -36,16 +36,18 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
         }
 }
 
-MovePicker::MovePicker(Position *pos, ExtMove *extMove)
+MovePicker::MovePicker(Position *pos)
 {
     position = pos;
-    cur = extMove;
+    cur = moves;
 
 #ifdef HOSTORY_HEURISTIC
     clearHistoryScore();
 #endif
 }
 
+/// MovePicker::score() assigns a numerical value to each move in a list, used
+/// for sorting.
 void MovePicker::score()
 {
     while (cur++->move != MOVE_NONE) {
@@ -150,6 +152,15 @@ void MovePicker::score()
         }
     #endif // SORT_MOVE_WITH_HUMAN_KNOWLEDGES
         }
+}
+
+/// MovePicker::next_move() is the most important method of the MovePicker class. It
+/// returns a new pseudo legal move every time it is called until there are no more
+/// moves left, picking the move with the highest score from a list of generated moves.
+Move MovePicker::next_move()
+{
+    // TODO
+    return MOVE_NONE;
 }
 
 #ifdef HOSTORY_HEURISTIC

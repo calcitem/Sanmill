@@ -20,13 +20,15 @@
 #ifndef MOVEPICK_H
 #define MOVEPICK_H
 
-#include "stack.h"
-#include "types.h"
+#include <array>
+#include <limits>
+#include <type_traits>
+
 #include "movegen.h"
 #include "position.h"
 
 class Position;
-class ExtMove;
+struct ExtMove;
 
 void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit);
 
@@ -38,10 +40,28 @@ class MovePicker
     };
 
 public:
-    MovePicker(Position *position, ExtMove *cur);
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-   // Move nextMove(bool skipQuiets = false);
+    MovePicker(Position *position);
+
+    Move next_move();
+
+//private:
+    void score();
+
+    ExtMove *begin()
+    {
+        return cur;
+    }
+
+    ExtMove *end()
+    {
+        return endMoves;
+    }
+
+    Position *position;
+    ExtMove *cur, *endMoves;
+    ExtMove moves[MAX_MOVES] { MOVE_NONE };
 
 #ifdef HOSTORY_HEURISTIC
     // TODO: Fix size
@@ -53,22 +73,6 @@ public:
     void setHistoryScore(Move move, Depth depth);
     void clearHistoryScore();
 #endif // HOSTORY_HEURISTIC
-
-public:
-    void score();
-
-    ExtMove *begin()
-    {
-        return cur;
-    }
-
-//     ExtMove *end()
-//     {
-//         return endMoves;
-//     }
-
-    Position *position;
-    ExtMove *cur;
 };
 
-#endif // MOVEPICK_H
+#endif // #ifndef MOVEPICK_H

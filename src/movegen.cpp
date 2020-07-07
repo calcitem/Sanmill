@@ -289,7 +289,7 @@ void MoveList::shuffle()
 /// generate<LEGAL> generates all the legal moves in the given position
 
 //template<>
-ExtMove *generateMoves(/* TODO: const */ Position *position, ExtMove *moveList)
+ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
 {
     Square square;
 

@@ -27,14 +27,12 @@
 #include <array>
 
 #include "stack.h"
-#include "position.h"
 #include "tt.h"
 #include "hashmap.h"
 #include "endgame.h"
 #include "types.h"
 #include "misc.h"
-#include "movepick.h"
-#include "movegen.h"
+
 #ifdef CYCLE_STAT
 #include "stopwatch.h"
 #endif
@@ -43,7 +41,6 @@ class AIAlgorithm;
 class Node;
 class Position;
 class MovePicker;
-class ExtMove;
 
 using namespace std;
 using namespace CTSL;

@@ -23,8 +23,6 @@
 #include <array>
 
 #include "config.h"
-#include "position.h"
-#include "search.h"
 #include "types.h"
 
 using namespace std;
@@ -37,9 +35,8 @@ enum GenType
     LEGAL
 };
 
-class ExtMove
+struct ExtMove
 {
-public:
     Move move;
     Value value;
     Rating rating;
@@ -66,7 +63,7 @@ inline bool operator < (const ExtMove &first, const ExtMove &second)
 }
 
 //template <GenType>
-ExtMove *generateMoves(Position *pos, ExtMove *moveList);
+ExtMove *generate(Position *pos, ExtMove *moveList);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.

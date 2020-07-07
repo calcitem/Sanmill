@@ -19,7 +19,7 @@
 
 #include <algorithm>
 #include <climits>
-#include "position.h"
+
 #include "search.h"
 #include "movegen.h"
 #include "option.h"
