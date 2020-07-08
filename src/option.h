@@ -22,7 +22,7 @@
 
 #include "config.h"
 
-class Options
+class GameOptions
 {
 public:
     void setAutoRestart(bool enabled);
@@ -68,6 +68,6 @@ private:
     bool openingBook { false };
 };
 
-extern Options gameOptions;
+extern GameOptions gameOptions;
 
 #endif /* OPTION_H */

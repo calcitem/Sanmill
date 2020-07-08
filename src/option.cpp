@@ -19,49 +19,49 @@
 
 #include "option.h"
 
-Options gameOptions;
+GameOptions gameOptions;
 
-void Options::setAutoRestart(bool enabled)
+void GameOptions::setAutoRestart(bool enabled)
 {
     isAutoRestart = enabled;
 };
 
-bool Options::getAutoRestart()
+bool GameOptions::getAutoRestart()
 {
     return isAutoRestart;
 }
 
-void Options::setAutoChangeFirstMove(bool enabled)
+void GameOptions::setAutoChangeFirstMove(bool enabled)
 {
     isAutoChangeFirstMove = enabled;
 }
 
-bool Options::getAutoChangeFirstMove()
+bool GameOptions::getAutoChangeFirstMove()
 {
     return isAutoChangeFirstMove;
 }
 
-void Options::setGiveUpIfMostLose(bool enabled)
+void GameOptions::setGiveUpIfMostLose(bool enabled)
 {
     giveUpIfMostLose = enabled;
 }
 
-bool Options::getGiveUpIfMostLose()
+bool GameOptions::getGiveUpIfMostLose()
 {
     return giveUpIfMostLose;
 }
 
-void Options::setRandomMoveEnabled(bool enabled)
+void GameOptions::setRandomMoveEnabled(bool enabled)
 {
     randomMoveEnabled = enabled;
 }
 
-bool Options::getRandomMoveEnabled()
+bool GameOptions::getRandomMoveEnabled()
 {
     return randomMoveEnabled;
 }
 
-void Options::setLearnEndgameEnabled(bool enabled)
+void GameOptions::setLearnEndgameEnabled(bool enabled)
 {
 #ifdef ENDGAME_LEARNING_FORCE
     learnEndgame = true;
@@ -70,7 +70,7 @@ void Options::setLearnEndgameEnabled(bool enabled)
 #endif
 }
 
-bool Options::getLearnEndgameEnabled()
+bool GameOptions::getLearnEndgameEnabled()
 {
 #ifdef ENDGAME_LEARNING_FORCE
     return  true;
@@ -79,36 +79,36 @@ bool Options::getLearnEndgameEnabled()
 #endif
 }
 
-void Options::setIDSEnabled(bool enabled)
+void GameOptions::setIDSEnabled(bool enabled)
 {
     IDSEnabled = enabled;
 }
 
-bool Options::getIDSEnabled()
+bool GameOptions::getIDSEnabled()
 {
     return IDSEnabled;
 }
 
 // DepthExtension
 
-void Options::setDepthExtension(bool enabled)
+void GameOptions::setDepthExtension(bool enabled)
 {
     depthExtension = enabled;
 }
 
-bool Options::getDepthExtension()
+bool GameOptions::getDepthExtension()
 {
     return depthExtension;
 }
 
 // OpeningBook
 
-void Options::setOpeningBook(bool enabled)
+void GameOptions::setOpeningBook(bool enabled)
 {
     openingBook = enabled;
 }
 
-bool Options::getOpeningBook()
+bool GameOptions::getOpeningBook()
 {
     return openingBook;
 }

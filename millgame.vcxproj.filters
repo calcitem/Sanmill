@@ -90,9 +90,6 @@
     <ClInclude Include="src\position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\prefetch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -128,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="src\ui\qt\graphicsconst.h">
       <Filter>Qt Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uci.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timeman.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +364,18 @@
     </ClCompile>
     <ClCompile Include="src\ui\qt\server.cpp">
       <Filter>Qt Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uci.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ucioption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\timeman.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\benchmark.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

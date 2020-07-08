@@ -21,13 +21,17 @@ INCLUDEPATH += src/test
 INCLUDEPATH += src/ui/qt
 
 SOURCES += \
+    src/benchmark.cpp \
     src/endgame.cpp \
     src/evaluate.cpp \
     src/movegen.cpp \
     src/movepick.cpp \
+    src/thread.cpp \
     src/trainer.cpp \
     src/tt.cpp \
     src/misc.cpp \
+    src/uci.cpp \
+    src/ucioption.cpp \
     src/zobrist.cpp \
     src/bitboard.cpp \
     src/option.cpp \
@@ -54,17 +58,18 @@ HEADERS  += \
     src/evaluate.h \
     src/movegen.h \
     src/movepick.h \
+    src/thread.h \
     src/trainer.h \
     src/tt.h \
     src/HashNode.h \
     src/debug.h \
     src/hashMap.h \
     src/misc.h \
-    src/prefetch.h \
     src/stack.h \
     src/stopwatch.h \
     src/aithread.h \
     src/search.h \
+    src/uci.h \
     src/zobrist.h \
     src/bitboard.h \
     src/option.h \

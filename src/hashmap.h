@@ -8,7 +8,7 @@
 #include <QFile>
 #include <iostream>
 #include "HashNode.h"
-#include "prefetch.h"
+#include "misc.h"
 #include "types.h"
 #include "config.h"
 
@@ -129,6 +129,12 @@ namespace CTSL //Concurrent Thread Safe Library
                     (hashTable[i]).clear();
                 }
 #endif
+            }
+
+            void resize(size_t o)
+            {
+                // TODO
+                return;
             }
 
             //Function to dump the key map to file

@@ -62,6 +62,12 @@ struct StateInfo
 /// elements are not invalidated upon list resizing.
 typedef std::unique_ptr<std::deque<StateInfo>> StateListPtr;
 
+/// Position class stores information regarding the board representation as
+/// pieces, side to move, hash keys, castling info, etc. Important methods are
+/// do_move() and undo_move(), used by the search to update node info when
+/// traversing the search tree.
+class Thread;
+
 class Position
 {
 public:
@@ -70,6 +76,11 @@ public:
 
     Position(const Position &) = delete;
     Position &operator=(const Position &) = delete;
+
+    // FEN string input/output
+    Position &set(const std::string &fenStr, StateInfo *si, Thread *th);
+    Position &set(const std::string &code, Color c, StateInfo *si);
+    const std::string fen() const;
 
     // Position representation
     Color color_on(Square s);
@@ -135,6 +146,7 @@ public:
     void mirror(int32_t move_, Square square, bool cmdChange = true);
     void turn(int32_t move_, Square square, bool cmdChange = true);
     void rotate(int degrees, int32_t move_, Square square, bool cmdChange = true);
+    void flip();
 
     void create_mill_table();
     int add_mills(Square square);
@@ -159,6 +171,8 @@ public:
     static bool is_star_square(Square square);
 
 // private:
+      // Initialization helpers (used while setting up a position)
+    void set_state(StateInfo *si) const;
 
     // Data members
 

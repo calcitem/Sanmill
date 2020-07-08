@@ -34,6 +34,7 @@
 
 #include "config.h"
 
+class Position;
 
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material key tables so that once we get a

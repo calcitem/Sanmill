@@ -22,12 +22,90 @@
 
 #include "config.h"
 
+/// When compiling with provided Makefile (e.g. for Linux and OSX), configuration
+/// is done automatically. To get started type 'make help'.
+///
+/// When Makefile is not used (e.g. with Microsoft Visual Studio) some switches
+/// need to be set manually:
+///
+/// -DNDEBUG      | Disable debugging mode. Always use this for release.
+///
+/// -DNO_PREFETCH | Disable use of prefetch asm-instruction. You may need this to
+///               | run on some very old machines.
+///
+/// -DUSE_POPCNT  | Add runtime support for use of popcnt asm-instruction. Works
+///               | only in 64-bit mode and requires hardware with popcnt support.
+///
+/// -DUSE_PEXT    | Add runtime support for use of pext asm-instruction. Works
+///               | only in 64-bit mode and requires hardware with pext support.
+
+#include <cassert>
+#include <cctype>
+#include <climits>
+#include <cstdint>
+#include <cstdlib>
+#include <algorithm>
+
+#if defined(_MSC_VER)
+// Disable some silly and noisy warning from MSVC compiler
+#pragma warning(disable: 4127) // Conditional expression is constant
+#pragma warning(disable: 4146) // Unary minus operator applied to unsigned type
+#pragma warning(disable: 4800) // Forcing value to bool 'true' or 'false'
+#endif
+
+/// Predefined macros hell:
+///
+/// __GNUC__           Compiler is gcc, Clang or Intel on Linux
+/// __INTEL_COMPILER   Compiler is Intel
+/// _MSC_VER           Compiler is MSVC or Intel on Windows
+/// _WIN32             Building on Windows (any)
+/// _WIN64             Building on Windows 64 bit
+
+#if defined(_WIN64) && defined(_MSC_VER) // No Makefile used
+#  include <intrin.h> // Microsoft header for _BitScanForward64()
+#  define IS_64BIT
+#endif
+
+#if defined(USE_POPCNT) && (defined(__INTEL_COMPILER) || defined(_MSC_VER))
+#  include <nmmintrin.h> // Intel and Microsoft header for _mm_popcnt_u64()
+#endif
+
+#if !defined(NO_PREFETCH) && (defined(__INTEL_COMPILER) || defined(_MSC_VER))
+#  include <xmmintrin.h> // Intel and Microsoft header for _mm_prefetch()
+#endif
+
+#if defined(USE_PEXT)
+#  include <immintrin.h> // Header for _pext_u64() intrinsic
+#  define pext(b, m) _pext_u64(b, m)
+#else
+#  define pext(b, m) 0
+#endif
+
+#ifdef USE_POPCNT
+constexpr bool HasPopCnt = true;
+#else
+constexpr bool HasPopCnt = false;
+#endif
+
+#ifdef USE_PEXT
+constexpr bool HasPext = true;
+#else
+constexpr bool HasPext = false;
+#endif
+
+#ifdef IS_64BIT
+constexpr bool Is64Bit = true;
+#else
+constexpr bool Is64Bit = false;
+#endif
+
 using Step = uint16_t;
 using Score = uint32_t;
 //using Bitboard = uint32_t;
 typedef uint32_t Bitboard;
 
 constexpr int MAX_MOVES = 64;
+constexpr int MAX_PLY = 48;
 
 #ifdef TRANSPOSITION_TABLE_CUTDOWN
 using Key = uint32_t;
@@ -38,7 +116,7 @@ using Key = uint64_t;
 enum Move : int32_t
 {
     MOVE_NONE,
-    //MOVE_NULL = 65
+    MOVE_NULL = 65
 };
 
 enum MoveType
@@ -97,8 +175,10 @@ enum Value : int8_t
     VALUE_MATE = 80,
     VALUE_INFINITE = 125,
     VALUE_UNKNOWN = std::numeric_limits<int8_t>::min(),
+    VALUE_NONE = VALUE_UNKNOWN,
 
-    VALUE_EACH_PIECE = 5,
+    StoneValue = 5,
+    VALUE_EACH_PIECE = StoneValue,
     VALUE_EACH_PIECE_INHAND = VALUE_EACH_PIECE,
     VALUE_EACH_PIECE_ONBOARD = VALUE_EACH_PIECE,
     VALUE_EACH_PIECE_PLACING_NEEDREMOVE = VALUE_EACH_PIECE,
@@ -108,7 +188,10 @@ enum Value : int8_t
     VALUE_PVS_WINDOW = VALUE_EACH_PIECE,
 
     VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_PLACING_NEEDREMOVE + (VALUE_EACH_PIECE_ONBOARD - VALUE_EACH_PIECE_INHAND) + 1,
-    VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1
+    VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1,
+
+    VALUE_MATE_IN_MAX_PLY = VALUE_MATE - MAX_PLY,
+    VALUE_MATED_IN_MAX_PLY = -VALUE_MATE_IN_MAX_PLY,
 };
 
 enum Rating : int8_t
@@ -237,6 +320,46 @@ enum Rank : int
     RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NB = 8
 };
 
+
+#if 0
+/// Score enum stores a middlegame and an endgame value in a single integer (enum).
+/// The least significant 16 bits are used to store the middlegame value and the
+/// upper 16 bits are used to store the endgame value. We have to take care to
+/// avoid left-shifting a signed int to avoid undefined behavior.
+enum Score : int
+{
+    SCORE_ZERO
+};
+#endif
+
+// TODO Begin
+constexpr Score make_score(int mg, int eg)
+{
+    return Score((int)((unsigned int)eg << 16) + mg);
+}
+
+/// Extracting the signed lower and upper 16 bits is not so trivial because
+/// according to the standard a simple cast to short is implementation defined
+/// and so is a right shift of a signed integer.
+inline Value eg_value(Score s)
+{
+    union
+    {
+        uint16_t u; int16_t s;
+    } eg = { uint16_t(unsigned(s + 0x8000) >> 16) };
+    return Value(eg.s);
+}
+
+inline Value mg_value(Score s)
+{
+    union
+    {
+        uint16_t u; int16_t s;
+    } mg = { uint16_t(unsigned(s)) };
+    return Value(mg.s);
+}
+// TODO End
+
 #define ENABLE_BASE_OPERATORS_ON(T)                                \
 constexpr T operator+(T d1, T d2) { return T(int(d1) + int(d2)); } \
 constexpr T operator-(T d1, T d2) { return T(int(d1) - int(d2)); } \
@@ -300,6 +423,53 @@ constexpr Color operator~(Color color)
 constexpr Square make_square(File file, Rank rank)
 {
     return Square((file << 3) + rank - 1);
+}
+
+constexpr Piece make_piece(Color c, PieceType pt)
+{
+    if (pt == BLACK_STONE || pt == WHITE_STONE) {
+        return Piece((c << 4));
+    }
+
+    if (pt == BAN) {
+        return BAN_STONE;
+    }
+
+    return NO_PIECE;
+}
+
+constexpr PieceType type_of(Piece pc)
+{
+    if (pc & 0x30) {
+        //return STONE; // TODO
+    }
+
+    if (pc == BAN_STONE) {
+        return BAN;
+    }
+
+    return NO_PIECE_TYPE;
+}
+
+inline Color color_of(Piece pc)
+{
+    assert(pc != NO_PIECE);
+    return Color(pc >> 4);
+}
+
+constexpr bool is_ok(Square s)
+{
+    return s >= SQ_A1 && s <= SQ_C8;
+}
+
+constexpr File file_of(Square s)
+{
+    return File((s >> 3) - 1);
+}
+
+constexpr Rank rank_of(Square s)
+{
+    return Rank(s & 7);
 }
 
 #if 0

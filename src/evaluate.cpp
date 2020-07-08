@@ -17,7 +17,69 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
+#include <cassert>
+#include <cstring>   // For std::memset
+#include <iomanip>
+#include <sstream>
+
+#include "bitboard.h"
 #include "evaluate.h"
+#include "thread.h"
+
+namespace Trace
+{
+
+enum Tracing
+{
+    NO_TRACE, TRACE
+};
+
+enum Term
+{ // The first 8 entries are reserved for PieceType
+    MATERIAL = 8, IMBALANCE, MOBILITY, THREAT, PASSED, SPACE, INITIATIVE, TOTAL, TERM_NB
+};
+
+Score scores[TERM_NB][COLOR_NB];
+
+double to_cp(Value v)
+{
+    return double(v) / StoneValue;
+}
+
+void add(int idx, Color c, Score s)
+{
+    scores[idx][c] = s;
+}
+
+void add(int idx, Score w, Score b = 0)
+{
+    scores[idx][WHITE] = w;
+    scores[idx][BLACK] = b;
+}
+
+std::ostream &operator<<(std::ostream &os, Score s)
+{
+    os << std::setw(5) << to_cp(mg_value(s)) << " "
+        << std::setw(5) << to_cp(eg_value(s));
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, Term t)
+{
+#if 0
+    if (t == MATERIAL || t == IMBALANCE || t == INITIATIVE || t == TOTAL)
+        os << " ----  ----" << " | " << " ----  ----";
+    else
+        os << scores[t][WHITE] << " | " << scores[t][BLACK];
+
+    os << " | " << scores[t][WHITE] - scores[t][BLACK] << "\n";
+#endif
+    return os;
+}
+}
+
+using namespace Trace;
 
 #ifdef ALPHABETA_AI
 Value Eval::evaluate(Position *pos)
@@ -113,3 +175,43 @@ Value Eval::evaluate(Position *pos)
     return value;
 }
 #endif  // ALPHABETA_AI
+
+
+
+/// trace() is like evaluate(), but instead of returning a value, it returns
+/// a string (suitable for outputting to stdout) that contains the detailed
+/// descriptions and values of each evaluation term. Useful for debugging.
+
+std::string Eval::trace(Position *pos)
+{
+#if 0
+    std::memset(scores, 0, sizeof(scores));
+
+    // TODO
+    //pos->this_thread()->contempt = 0 // TODO: SCORE_ZERO; // Reset any dynamic contempt
+
+    Value v = Evaluation(pos)->value();
+
+    v = pos->side_to_move() == WHITE ? v : -v; // Trace scores are from white's point of view
+
+    std::stringstream ss;
+    ss << std::showpoint << std::noshowpos << std::fixed << std::setprecision(2)
+        << "     Term    |    White    |    Black    |    Total   \n"
+        << "             |   MG    EG  |   MG    EG  |   MG    EG \n"
+        << " ------------+-------------+-------------+------------\n"
+        << "    Material | " << Term(MATERIAL)
+        << "   Imbalance | " << Term(IMBALANCE)
+        << "    Mobility | " << Term(MOBILITY)
+        << "     Threats | " << Term(THREAT)
+        << "      Passed | " << Term(PASSED)
+        << "       Space | " << Term(SPACE)
+        << "  Initiative | " << Term(INITIATIVE)
+        << " ------------+-------------+-------------+------------\n"
+        << "       Total | " << Term(TOTAL);
+
+    ss << "\nTotal evaluation: " << to_cp(v) << " (white side)\n";
+
+    return ss.str();
+#endif
+    return "";
+}

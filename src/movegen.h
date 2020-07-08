@@ -87,10 +87,9 @@ public:
         (Move)24, (Move)25, (Move)26, (Move)27, (Move)28, (Move)29, (Move)30, (Move)31,
     };
 
-    //explicit MoveList(const Position &tmppos) : last(generate<T>(tmppos, moveList))
-//     explicit MoveList(const Position &tmppos) : last(generate(tmppos, moveList))
-//     {
-//     }
+    explicit MoveList(Position *pos) : last(generate(pos, moveList))
+    {
+    }
 
     const ExtMove *begin() const
     {

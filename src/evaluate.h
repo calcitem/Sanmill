@@ -22,11 +22,17 @@
 
 #include "config.h"
 
-#include "position.h"
-#include "search.h"
+#include <string>
+
+#include "types.h"
+
+class Position;
 
 namespace Eval {
-    Value evaluate(Position *pos);
+
+std::string trace(Position *pos);
+
+Value evaluate(Position *pos);
 
 #ifdef EVALUATE_ENABLE
 

@@ -18,14 +18,22 @@
 */
 
 #include <algorithm>
-#include <climits>
+#include <cassert>
+#include <cstddef> // For offsetof()
+#include <cstring> // For std::memset, std::memcmp
+#include <iomanip>
+#include <sstream>
 
-#include "search.h"
+#include "bitboard.h"
+#include "misc.h"
 #include "movegen.h"
+#include "position.h"
+#include "thread.h"
+#include "tt.h"
+#include "uci.h"
+
 #include "option.h"
 #include "zobrist.h"
-#include "bitboard.h"
-#include "prefetch.h"
 
 string tips;
 
@@ -48,6 +56,175 @@ Position::Position()
 Position::~Position()
 {
     cmdlist.clear();
+}
+
+/// Position::set() initializes the position object with the given FEN string.
+/// This function is not very robust - make sure that input FENs are correct,
+/// this is assumed to be the responsibility of the GUI.
+
+Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
+{
+    // TODO
+#if 0
+    /*
+       A FEN string defines a particular position using only the ASCII character set.
+
+       A FEN string contains six fields separated by a space. The fields are:
+
+       1) Piece placement (from white's perspective). Each rank is described, starting
+          with rank 8 and ending with rank 1. Within each rank, the contents of each
+          square are described from file A through file H. Following the Standard
+          Algebraic Notation (SAN), each piece is identified by a single letter taken
+          from the standard English names. White pieces are designated using upper-case
+          letters ("PNBRQK") whilst Black uses lowercase ("pnbrqk"). Blank squares are
+          noted using digits 1 through 8 (the number of blank squares), and "/"
+          separates ranks.
+
+       2) Active color. "w" means white moves next, "b" means black.
+
+       4) En passant target square (in algebraic notation). If there's no en passant
+          target square, this is "-". If a pawn has just made a 2-square move, this
+          is the position "behind" the pawn. This is recorded only if there is a pawn
+          in position to make an en passant capture, and if there really is a pawn
+          that might have advanced two squares.
+
+       5) Halfmove clock. This is the number of halfmoves since the last pawn advance
+          or capture. This is used to determine if a draw can be claimed under the
+          fifty-move rule.
+
+       6) Fullmove number. The number of the full move. It starts at 1, and is
+          incremented after Black's move.
+    */
+
+    unsigned char token;
+    size_t idx;
+    Square sq = SQ_A8;
+    std::istringstream ss(fenStr);
+
+    std::memset(this, 0, sizeof(Position));
+    std::memset(si, 0, sizeof(StateInfo));
+    std::fill_n(&pieceList[0][0], sizeof(pieceList) / sizeof(Square), SQ_NONE);
+    st = si;
+
+    ss >> std::noskipws;
+
+    // 1. Piece placement
+    while ((ss >> token) && !isspace(token)) {
+        if (isdigit(token))
+            sq += (token - '0') * EAST; // Advance the given number of files
+
+        else if (token == '/')
+            sq += 2 * SOUTH;
+
+        else if ((idx = PieceToChar.find(token)) != string::npos) {
+            put_piece(Piece(idx), sq);
+            ++sq;
+        }
+    }
+
+    // 2. Active color
+    ss >> token;
+    sideToMove = (token == 'w' ? WHITE : BLACK);
+    ss >> token;
+
+    // 5-6. Halfmove clock and fullmove number
+    ss >> std::skipws >> st->rule50 >> gamePly;
+
+    // Convert from fullmove starting from 1 to gamePly starting from 0,
+    // handle also common incorrect FEN with fullmove = 0.
+    gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == BLACK);
+
+    thisThread = th;
+    set_state(st);
+
+    assert(pos_is_ok());
+#endif
+    return *this;
+}
+
+/// Position::set_state() computes the hash keys of the position, and other
+/// data that once computed is updated incrementally as moves are made.
+/// The function is only used when a new position is set up, and to verify
+/// the correctness of the StateInfo data when running in debug mode.
+
+void Position::set_state(StateInfo *si) const
+{
+    // TODO
+#if 0
+    si->key = 0;
+
+    for (Bitboard b = pieces(); b; ) {
+        Square s = pop_lsb(&b);
+        Piece pc = piece_on(s);
+        si->key ^= Zobrist::psq[pc][s];
+    }
+
+    if (sideToMove == BLACK)
+        si->key ^= Zobrist::side;
+#endif
+}
+
+
+/// Position::set() is an overload to initialize the position object with
+/// the given endgame code string like "KBPKN". It is mainly a helper to
+/// get the material key out of an endgame code.
+
+Position &Position::set(const string &code, Color c, StateInfo *si)
+{
+    // TODO
+#if 0
+    assert(code[0] == 'K');
+
+    string sides[] = { code.substr(code.find('K', 1)),      // Weak
+                       code.substr(0, std::min(code.find('v'), code.find('K', 1))) }; // Strong
+
+    assert(sides[0].length() > 0 && sides[0].length() < 8);
+    assert(sides[1].length() > 0 && sides[1].length() < 8);
+
+    std::transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
+
+    string fenStr = "8/" + sides[0] + char(8 - sides[0].length() + '0') + "/8/8/8/8/"
+        + sides[1] + char(8 - sides[1].length() + '0') + "/8 w - - 0 10";
+
+    return set(fenStr, si, nullptr);
+#endif
+    return *this;
+}
+
+/// Position::fen() returns a FEN representation of the position. In case of
+/// Chess960 the Shredder-FEN notation is used. This is mainly a debugging function.
+
+const string Position::fen() const
+{
+    // TODO
+#if 0
+    int emptyCnt;
+    std::ostringstream ss;
+
+    for (Rank r = RANK_8; r >= RANK_1; --r) {
+        for (File f = FILE_A; f <= FILE_C; ++f) {
+            for (emptyCnt = 0; f <= FILE_C && empty(make_square(f, r)); ++f)
+                ++emptyCnt;
+
+            if (emptyCnt)
+                ss << emptyCnt;
+
+            if (f <= FILE_C)
+                ss << PieceToChar[piece_on(make_square(f, r))];
+        }
+
+        if (r > RANK_1)
+            ss << '/';
+    }
+
+    ss << (sideToMove == WHITE ? " w " : " b ");
+
+    ss << (" - ")
+        << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
+
+    return ss.str();
+#endif
+    return "";
 }
 
 int Position::pieces_on_board_count()
@@ -1001,7 +1178,7 @@ Key Position::next_primary_key(Move m)
 
 
 #include "movegen.h"
-#include "prefetch.h"
+#include "misc.h"
 
 const int Position::onBoard[SQUARE_NB] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1805,6 +1982,12 @@ void Position::rotate(int degrees, int32_t move_, Square square, bool cmdChange 
             }
         }
     }
+}
+
+void Position::flip()
+{
+    // TODO
+    return;
 }
 
 void Position::print_board()

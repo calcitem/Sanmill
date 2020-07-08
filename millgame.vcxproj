@@ -456,18 +456,19 @@
     <ClInclude Include="src\movegen.h" />
     <ClInclude Include="src\movepick.h" />
     <ClInclude Include="src\search.h" />
+    <ClInclude Include="src\timeman.h" />
     <ClInclude Include="src\trainer.h" />
     <ClInclude Include="src\tt.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\hashmap.h" />
     <ClInclude Include="src\HashNode.h" />
     <ClInclude Include="src\misc.h" />
-    <ClInclude Include="src\prefetch.h" />
     <ClInclude Include="src\stack.h" />
     <QtMoc Include="src\aithread.h" />
     <ClInclude Include="src\stopwatch.h" />
     <ClInclude Include="src\thread.h" />
     <ClInclude Include="src\thread_win32_osx.h" />
+    <ClInclude Include="src\uci.h" />
     <ClInclude Include="src\zobrist.h" />
     <ClInclude Include="src\bitboard.h" />
     <ClInclude Include="src\option.h" />
@@ -708,16 +709,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\benchmark.cpp" />
     <ClCompile Include="src\endgame.cpp" />
     <ClCompile Include="src\evaluate.cpp" />
     <ClCompile Include="src\movegen.cpp" />
     <ClCompile Include="src\movepick.cpp" />
     <ClCompile Include="src\search.cpp" />
+    <ClCompile Include="src\timeman.cpp" />
     <ClCompile Include="src\trainer.cpp" />
     <ClCompile Include="src\tt.cpp" />
     <ClCompile Include="src\misc.cpp" />
     <ClCompile Include="src\aithread.cpp" />
     <ClCompile Include="src\thread.cpp" />
+    <ClCompile Include="src\uci.cpp" />
+    <ClCompile Include="src\ucioption.cpp" />
     <ClCompile Include="src\zobrist.cpp" />
     <ClCompile Include="src\bitboard.cpp" />
     <ClCompile Include="src\option.cpp" />

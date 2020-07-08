@@ -34,6 +34,11 @@
 
 using namespace CTSL;
 
+namespace Search
+{
+LimitsType Limits;
+}
+
 vector<Key> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
@@ -714,4 +719,23 @@ void AIAlgorithm::loadEndgameFileToHashMap()
     const QString filename = "endgame.txt";
     endgameHashMap.load(filename);
 }
+
 #endif // ENDGAME_LEARNING
+
+
+/// Search::init() is called at startup to initialize various lookup tables
+
+void Search::init()
+{
+    // TODO
+    return;
+}
+
+
+/// Search::clear() resets search state to its initial value
+
+void Search::clear()
+{
+    // TODO
+    return;
+}
