@@ -56,7 +56,6 @@ vector<Key> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
 {
-    position = new Position();
     pos = new Position();
     //movePicker = new MovePicker();
 }
@@ -177,7 +176,7 @@ void AIAlgorithm::setPosition(Position *p)
 
     //position = p;
     pos = p;
-    position = pos;
+   // position = pos;
 
     requiredQuit = false;
 }
@@ -204,8 +203,8 @@ int AIAlgorithm::search()
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (position->get_phase() == PHASE_MOVING) {
-        Key key = position->key();
+    if (pos->get_phase() == PHASE_MOVING) {
+        Key key = pos->key();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
             nRepetition++;
@@ -218,7 +217,7 @@ int AIAlgorithm::search()
         }
     }
 
-    if (position->get_phase() == PHASE_PLACING) {
+    if (pos->get_phase() == PHASE_PLACING) {
         moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -403,10 +402,10 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
     }
 #endif
 
-    if (unlikely(position->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash
+    if (unlikely(pos->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash
         depth <= 0 ||
         unlikely(requiredQuit)) {
-        bestValue = Eval::evaluate(position);
+        bestValue = Eval::evaluate(pos);
 
         // For win quickly
         if (bestValue > 0) {

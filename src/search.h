@@ -227,7 +227,6 @@ public:
 
 private:
     Position *pos { nullptr };
-    Position *position { nullptr };
 
     Stack<Position> positionStack;
 
