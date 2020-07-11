@@ -83,6 +83,8 @@ public:
     const std::string fen() const;
 
     // Position representation
+    Piece piece_on(Square s) const;
+    bool empty(Square s) const;
     Color color_on(Square s);
     int getPiecesInHandCount(Color c) const;
     int getPiecesOnBoardCount(Color c) const;
@@ -91,12 +93,14 @@ public:
     bool select_piece(Square s);
     bool place_piece(Square s, bool updateCmdlist = false);
     bool remove_piece(Square s, bool updateCmdlist = false);
+    bool move_piece(Square from, Square to);
     bool _selectPiece(File file, Rank rank);
     bool _placePiece(File file, Rank rank);
     bool _removePiece(File file, Rank rank);
 
     // Doing and undoing moves
     bool do_move(Move m);
+    bool undo_move(Move m);
     bool undo_null_move();
     bool do_null_move();
 
@@ -175,7 +179,7 @@ public:
     void set_state(StateInfo *si) const;
 
     // Data members
-
+    int gamePly;
     Color sideToMove { NOCOLOR };
     Color them { NOCOLOR };
     Color winner;
@@ -246,9 +250,21 @@ public:
     StateInfo st;
 };
 
+inline bool Position::empty(Square s) const
+{
+    return piece_on(s) == NO_PIECE;
+}
+
+
 inline Color Position::side_to_move() const
 {
     return sideToMove;
+}
+
+inline Piece Position::piece_on(Square s) const
+{
+    assert(is_ok(s));
+    return board[s];
 }
 
 inline char Position::color_to_char(Color color)

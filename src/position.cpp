@@ -807,6 +807,15 @@ bool Position::_selectPiece(File file, Rank rank)
     return select_piece(Position::polar_to_square(file, rank));
 }
 
+bool Position::move_piece(Square from, Square to)
+{
+    if (select_piece(from)) {
+        return place_piece(to);
+    }
+
+    return false;
+}
+
 bool Position::giveup(Color loser)
 {
     if (phase & PHASE_NOTPLAYING ||
@@ -914,10 +923,7 @@ bool Position::do_move(Move m)
     case MOVETYPE_REMOVE:
         return remove_piece(static_cast<Square>(-m));
     case MOVETYPE_MOVE:
-        if (select_piece(from_sq(m))) {
-            return place_piece(to_sq(m));
-        }
-        break;
+        return move_piece(from_sq(m), to_sq(m));
     case MOVETYPE_PLACE:
         return place_piece(to_sq(m));
     default:
@@ -925,6 +931,46 @@ bool Position::do_move(Move m)
     }
 
     return false;
+}
+
+/// Position::undo_move() unmakes a move. When it returns, the position should
+/// be restored to exactly the same state as before the move was made.
+
+bool Position::undo_move(Move m)
+{
+    bool ret = false;
+
+#if 0
+    MoveType mt = type_of(m);
+
+    switch (mt) {
+    case MOVETYPE_REMOVE:
+        return place_piece(to_sq(-m));
+    case MOVETYPE_MOVE:
+        if (select_piece(to_sq(m))) {
+            return place_piece(from_sq(m));
+        }
+        break;
+    case MOVETYPE_PLACE:
+        return remove_piece(static_cast<Square>(m));
+    default:
+        break;
+    }
+
+    // Finally point our state pointer back to the previous state
+    st = st->previous;
+    --gamePly;
+
+    //assert(pos_is_ok()); // TODO
+#endif
+
+    // TODO: Adjust
+    //int nPiecesInHand[COLOR_NB]{ 0 };
+    //int nPiecesOnBoard[COLOR_NB]{ 0 };
+    //int nPiecesNeedRemove{ 0 };
+    m = m;
+
+    return ret;
 }
 
 Color Position::get_winner() const
