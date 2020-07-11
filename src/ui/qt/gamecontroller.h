@@ -347,9 +347,6 @@ private:
     // 棋对象的数据模型
     Position *position {nullptr};
 
-    // 棋对象的数据模型（临时）
-    Position *tmppos;
-
     // 测试
     Test *gameTest;
 

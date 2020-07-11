@@ -153,7 +153,6 @@ extern deque<int> openingBookDequeBak;
 void GameController::gameStart()
 {
     position->start();
-    tmppos = position;;
 
     // 每隔100毫秒调用一次定时器处理函数
     if (timeID == 0) {
@@ -182,7 +181,6 @@ void GameController::gameReset()
 
     // 重置游戏
     position->reset();
-    tmppos = position;
 
     // 停掉线程
     if (!gameOptions.getAutoRestart()) {
@@ -331,7 +329,6 @@ void GameController::setRule(int ruleNo, Step stepLimited /*= -1*/, int timeLimi
 
     // 设置模型规则，重置游戏
     position->set_position(&RULES[ruleNo]);
-    tmppos = position;
 
     // 重置游戏
     gameReset();
@@ -558,7 +555,6 @@ void GameController::flip()
 
     position->mirror(position->move, position->currentSquare);
     position->rotate(180, position->move, position->currentSquare);
-    tmppos = position;;
 
     // 更新棋谱
     int row = 0;
@@ -584,7 +580,6 @@ void GameController::mirror()
     stopAndWaitAiThreads();
 
     position->mirror(position->move, position->currentSquare);
-    tmppos = position;
 
     // 更新棋谱
     int row = 0;
@@ -613,7 +608,6 @@ void GameController::turnRight()
     stopAndWaitAiThreads();
 
     position->rotate(-90, position->move, position->currentSquare);
-    tmppos = position;
 
     // 更新棋谱
     int row = 0;
@@ -640,7 +634,6 @@ void GameController::turnLeft()
     stopAndWaitAiThreads();
 
     position->rotate(90, position->move, position->currentSquare);
-    tmppos = position;
 
     // 更新棋谱
     int row = 0;
@@ -764,7 +757,6 @@ bool GameController::actionPiece(QPointF pos)
 
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !MOBILE_APP_UI */
-            position = tmppos;
             manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
 
             // 如果再决出胜负后悔棋，则重新启动计时
@@ -1113,14 +1105,14 @@ bool GameController::phaseChange(int row, bool forceUpdate)
 
     for (int i = 0; i <= row; i++) {
         loggerDebug("%s\n", mlist.at(i).toStdString().c_str());
-        tmppos->command(mlist.at(i).toStdString().c_str());
+        position->command(mlist.at(i).toStdString().c_str());
     }
 
     // 下面这步关键，会让悔棋者承担时间损失
-    tmppos->set_start_time(static_cast<int>(position->start_timeb()));
+    position->set_start_time(static_cast<int>(position->start_timeb()));
 
     // 刷新棋局场景
-    updateScence(tmppos);
+    updateScence(position);
 #endif // TRAINING_MODE
 
     return true;
