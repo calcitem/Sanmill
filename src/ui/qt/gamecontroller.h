@@ -133,7 +133,7 @@ public:
 
     Position *getPosition()
     {
-        return position;
+        return &position;
     }
 
 signals:
@@ -345,7 +345,7 @@ protected:
 
 private:
     // 棋对象的数据模型
-    Position *position {nullptr};
+    Position position;
 
     // 测试
     Test *gameTest;
