@@ -415,29 +415,6 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
             bestValue -= depth;
         }
 
-#ifdef NULL_MOVE
-        if (depth % 2 == 1)
-        {
-            // TODO: WIP       
-            st->generateNullMove(moves);
-            st->generateChildren(moves, this, node);
-            do_null_move();
-            int moveCount = st->generate(moves);
-            if (moveCount)
-            {
-                st->generateChildren(moves, this, node->children[0]);
-                value = -search(depth - 1 - 2, -beta, -beta + 1, node->children[0]);
-                undo_null_move();
-
-                if (value >= beta) {
-                    bestValue = beta;
-                    return beta;
-                }
-            }
-
-        }
-#endif
-
 #ifdef TRANSPOSITION_TABLE_ENABLE
         TranspositionTable::save(bestValue,
                        depth,
@@ -581,16 +558,6 @@ void AIAlgorithm::undo_move()
     memcpy(pos, positionStack.top(), sizeof(Position));
     //tmppos = positionStack.top();
     positionStack.pop();
-}
-
-void AIAlgorithm::do_null_move()
-{
-    pos->do_null_move();
-}
-
-void AIAlgorithm::undo_null_move()
-{
-    pos->undo_null_move();
 }
 
 #ifdef ALPHABETA_AI

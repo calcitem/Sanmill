@@ -168,9 +168,6 @@ public:
 
     void undo_move();
 
-    void do_null_move();
-    void undo_null_move();
-
 #ifdef TRANSPOSITION_TABLE_ENABLE
     void clearTT();
 #endif
