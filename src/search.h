@@ -182,32 +182,6 @@ public:
 
 public: /* TODO: Move to private or protected */
 
-#ifdef EVALUATE_ENABLE
-    Value evaluate();
-
-#ifdef EVALUATE_MATERIAL
-    Value evaluateMaterial();
-#endif
-#ifdef EVALUATE_SPACE
-    Value evaluateSpace();
-#endif
-#ifdef EVALUATE_MOBILITY
-    Value evaluateMobility();
-#endif
-#ifdef EVALUATE_TEMPO
-    Value evaluateTempo();
-#endif
-#ifdef EVALUATE_THREAT
-    Value evaluateThreat();
-#endif
-#ifdef EVALUATE_SHAPE
-    Value evaluateShape();
-#endif
-#ifdef EVALUATE_MOTIF
-    Value evaluateMotif();
-#endif
-#endif /* EVALUATE_ENABLE */
-
     Value search(Depth depth, Value alpha, Value beta);
 
     Value MTDF(Value firstguess, Depth depth);

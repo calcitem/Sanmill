@@ -34,57 +34,6 @@ std::string trace(Position *pos);
 
 Value evaluate(Position *pos);
 
-#ifdef EVALUATE_ENABLE
-
-#ifdef EVALUATE_MATERIAL
-    Value evaluateMaterial()
-    {
-        return 0;
-    }
-#endif
-
-#ifdef EVALUATE_SPACE
-    Value evaluateSpace()
-    {
-        return 0;
-    }
-#endif
-
-#ifdef EVALUATE_MOBILITY
-    Value evaluateMobility()
-    {
-        return 0;
-    }
-#endif
-
-#ifdef EVALUATE_TEMPO
-    Value evaluateTempo()
-    {
-        return 0;
-    }
-#endif
-
-#ifdef EVALUATE_THREAT
-    Value evaluateThreat()
-    {
-        return 0;
-    }
-#endif
-
-#ifdef EVALUATE_SHAPE
-    Value evaluateShape()
-    {
-        return 0;
-    }
-#endif
-
-#ifdef EVALUATE_MOTIF
-    Value AIAlgorithm::evaluateMotif()
-    {
-        return 0;
-    }
-#endif
-#endif /* EVALUATE_ENABLE */
 };
 
 #endif /* EVALUATE_H */
