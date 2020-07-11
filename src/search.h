@@ -166,7 +166,7 @@ public:
 
     void do_move(Move move);
 
-    void undoMove();
+    void undo_move();
 
     void do_null_move();
     void undo_null_move();

@@ -469,7 +469,6 @@
     <ClInclude Include="src\thread.h" />
     <ClInclude Include="src\thread_win32_osx.h" />
     <ClInclude Include="src\uci.h" />
-    <ClInclude Include="src\zobrist.h" />
     <ClInclude Include="src\bitboard.h" />
     <ClInclude Include="src\option.h" />
     <ClInclude Include="src\position.h" />
@@ -723,7 +722,6 @@
     <ClCompile Include="src\thread.cpp" />
     <ClCompile Include="src\uci.cpp" />
     <ClCompile Include="src\ucioption.cpp" />
-    <ClCompile Include="src\zobrist.cpp" />
     <ClCompile Include="src\bitboard.cpp" />
     <ClCompile Include="src\option.cpp" />
     <ClCompile Include="src\position.cpp" />

@@ -527,7 +527,7 @@ Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
         }
 #endif // PVS_AI
 
-        undoMove();
+        undo_move();
 
         assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
 
@@ -576,7 +576,7 @@ void AIAlgorithm::do_move(Move move)
     pos->do_move(move);
 }
 
-void AIAlgorithm::undoMove()
+void AIAlgorithm::undo_move()
 {
     memcpy(pos, positionStack.top(), sizeof(Position));
     //tmppos = positionStack.top();

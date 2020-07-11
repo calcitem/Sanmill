@@ -27,12 +27,12 @@ SOURCES += \
     src/movegen.cpp \
     src/movepick.cpp \
     src/thread.cpp \
+    src/timeman.cpp \
     src/trainer.cpp \
     src/tt.cpp \
     src/misc.cpp \
     src/uci.cpp \
     src/ucioption.cpp \
-    src/zobrist.cpp \
     src/bitboard.cpp \
     src/option.cpp \
     src/position.cpp \
@@ -70,7 +70,6 @@ HEADERS  += \
     src/aithread.h \
     src/search.h \
     src/uci.h \
-    src/zobrist.h \
     src/bitboard.h \
     src/option.h \
     src/position.h \
