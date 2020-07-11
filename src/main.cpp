@@ -1,14 +1,16 @@
-﻿/*
-  Sanmill, a mill game playing engine derived from NineChess 1.5
-  Copyright (C) 2015-2018 liuweilhy (NineChess author)
-  Copyright (C) 2019-2020 Calcitem <calcitem@outlook.com>
+/*
+  Fishmill, a UCI Mill Game playing engine derived from Stockfish
+  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
+  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad (Stockfish author)
+  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Stockfish author)
+  Copyright (C) 2020 Calcitem <calcitem@outlook.com>
 
-  Sanmill is free software: you can redistribute it and/or modify
+  Fishmill is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  Sanmill is distributed in the hope that it will be useful,
+  Fishmill is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
@@ -17,32 +19,34 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets/QApplication>
-#include <QDesktopWidget>
+#include <iostream>
 
-#include "gamewindow.h"
-#include "misc.h"
 #include "bitboard.h"
+#include "endgame.h"
+#include "position.h"
+#include "search.h"
+#include "thread.h"
+#include "tt.h"
+#include "uci.h"
 
-QString APP_FILENAME_DEFAULT = "MillGame";
+#ifndef QT_UI
 
-#ifndef TRAINING_MODE
-#ifndef UCT_DEMO
-int main(int argc, char *argv[])
-{
-    Bitboards::init();
+int main(int argc, char* argv[]) {
 
-    QApplication a(argc, argv);
-    MillGameWindow w;   
-    w.show();
+  std::cout << engine_info() << std::endl;
 
-    w.setWindowTitle(getAppFileName() +  " (" + QString::number(QCoreApplication::applicationPid()) + ")");
+  UCI::init(Options);
+  //Tune::init();
+  Bitboards::init();
+  //Position::init();
+  //Bitbases::init();
+  //Endgames::init();
+  Threads.set((int)Options["Threads"]);
+  Search::clear(); // After threads are up
 
-#ifndef _DEBUG
-    w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
-#endif
+  UCI::loop(argc, argv);
 
-    return QApplication::exec();
+  Threads.set(0);
+  return 0;
 }
-#endif // !UCT_DEMO
-#endif // !TRAINING_MODE
+#endif

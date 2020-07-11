@@ -287,9 +287,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\test\test.cpp">
       <Filter>Qt Files\test</Filter>
     </ClCompile>
@@ -369,6 +366,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\benchmark.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\winmain.cpp">
+      <Filter>Qt Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

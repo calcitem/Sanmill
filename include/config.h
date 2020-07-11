@@ -26,6 +26,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
+#define QT_UI
+
 //#define MOBILE_APP_UI
 
 //#define TRAINING_MODE

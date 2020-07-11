@@ -711,6 +711,7 @@
     <ClCompile Include="src\benchmark.cpp" />
     <ClCompile Include="src\endgame.cpp" />
     <ClCompile Include="src\evaluate.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\movegen.cpp" />
     <ClCompile Include="src\movepick.cpp" />
     <ClCompile Include="src\search.cpp" />
@@ -726,7 +727,6 @@
     <ClCompile Include="src\option.cpp" />
     <ClCompile Include="src\position.cpp" />
     <ClCompile Include="src\rule.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\test\test.cpp" />
     <ClCompile Include="src\ui\qt\boarditem.cpp" />
     <ClCompile Include="src\ui\qt\client.cpp" />
@@ -736,6 +736,7 @@
     <ClCompile Include="src\ui\qt\gamewindow.cpp" />
     <ClCompile Include="src\ui\qt\pieceitem.cpp" />
     <ClCompile Include="src\ui\qt\server.cpp" />
+    <ClCompile Include="src\ui\qt\winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="millgame.rc" />

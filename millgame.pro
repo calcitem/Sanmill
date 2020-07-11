@@ -48,7 +48,8 @@ SOURCES += \
     src/ui/qt/gamecontroller.cpp \
     src/ui/qt/gamescene.cpp \
     src/ui/qt/gameview.cpp \
-    src/ui/qt/client.cpp
+    src/ui/qt/client.cpp \
+    src/ui/qt/winmain.cpp \
 
 HEADERS  += \
     include/config.h \
