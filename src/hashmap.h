@@ -134,6 +134,7 @@ namespace CTSL //Concurrent Thread Safe Library
             void resize(size_t o)
             {
                 // TODO
+                o = o;
                 return;
             }
 

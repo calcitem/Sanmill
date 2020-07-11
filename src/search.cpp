@@ -17,20 +17,31 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
+#include <cassert>
 #include <cmath>
+#include <cstring>   // For std::memset
+#include <iostream>
+#include <sstream>
+
+#include "evaluate.h"
+#include "misc.h"
+#include "movegen.h"
+#include "movepick.h"
+#include "position.h"
+#include "search.h"
+#include "thread.h"
+#include "timeman.h"
+#include "tt.h"
+#include "uci.h"
+
 #include <array>
 #include <chrono>
-#include <algorithm>
 
-#include "search.h"
-#include "evaluate.h"
 #include "hashmap.h"
-#include "tt.h"
 #include "endgame.h"
 #include "types.h"
 #include "option.h"
-#include "misc.h"
-#include "movepick.h"
 
 using namespace CTSL;
 
@@ -38,6 +49,8 @@ namespace Search
 {
 LimitsType Limits;
 }
+
+using namespace Search;
 
 vector<Key> moveHistory;
 
@@ -738,4 +751,146 @@ void Search::clear()
 {
     // TODO
     return;
+}
+
+/// MainThread::search() is started when the program receives the UCI 'go'
+/// command. It searches from the root position and outputs the "bestmove".
+
+void MainThread::search()
+{
+    // TODO
+#if 0
+    if (Limits.perft) {
+        nodes = perft<true>(rootPos, Limits.perft);
+        sync_cout << "\nNodes searched: " << nodes << "\n" << sync_endl;
+        return;
+    }
+
+    Color us = rootPos.side_to_move();
+    Time.init(Limits, us, rootPos.game_ply());
+    TT.new_search();
+
+    if (rootMoves.empty()) {
+        rootMoves.emplace_back(MOVE_NONE);
+        sync_cout << "info depth 0 score "
+            << UCI::value(false /* TODO */ ? -VALUE_MATE : VALUE_DRAW)
+            << sync_endl;
+    } else {
+        for (Thread *th : Threads) {
+            th->bestMoveChanges = 0;
+            if (th != this)
+                th->start_searching();
+        }
+
+        Thread::search(); // Let's start searching!
+    }
+
+    // When we reach the maximum depth, we can arrive here without a raise of
+    // Threads.stop. However, if we are pondering or in an infinite search,
+    // the UCI protocol states that we shouldn't print the best move before the
+    // GUI sends a "stop" or "ponderhit" command. We therefore simply wait here
+    // until the GUI sends one of those commands.
+
+    while (!Threads.stop && (ponder || Limits.infinite)) {
+    } // Busy wait for a stop or a ponder reset
+
+                // Stop the threads if not already stopped (also raise the stop if
+                // "ponderhit" just reset Threads.ponder).
+    Threads.stop = true;
+
+    // Wait until all threads have finished
+    for (Thread *th : Threads)
+        if (th != this)
+            th->wait_for_search_finished();
+
+    // When playing in 'nodes as time' mode, subtract the searched nodes from
+    // the available ones before exiting.
+    if (Limits.npmsec)
+        Time.availableNodes += Limits.inc[us] - Threads.nodes_searched();
+
+    Thread *bestThread = this;
+
+    // Check if there are threads with a better score than main thread
+    if (Options["MultiPV"] == 1
+        && !Limits.depth
+        && !(Skill((int)Options["Skill Level"]).enabled() || Options["UCI_LimitStrength"])
+        && rootMoves[0].pv[0] != MOVE_NONE) {
+        std::map<Move, int64_t> votes;
+        Value minScore = this->rootMoves[0].score;
+
+        // Find minimum score
+        for (Thread *th : Threads)
+            minScore = std::min(minScore, th->rootMoves[0].score);
+
+        // Vote according to score and depth, and select the best thread
+        for (Thread *th : Threads) {
+            votes[th->rootMoves[0].pv[0]] +=
+                (th->rootMoves[0].score - minScore + 14) * int(th->completedDepth);
+
+            if (abs(bestThread->rootMoves[0].score) >= VALUE_TB_WIN_IN_MAX_PLY) {
+                // Make sure we pick the shortest mate / TB conversion or stave off mate the longest
+                if (th->rootMoves[0].score > bestThread->rootMoves[0].score)
+                    bestThread = th;
+            } else if (th->rootMoves[0].score >= VALUE_TB_WIN_IN_MAX_PLY
+                       || (th->rootMoves[0].score > VALUE_TB_LOSS_IN_MAX_PLY
+                           && votes[th->rootMoves[0].pv[0]] > votes[bestThread->rootMoves[0].pv[0]]))
+                bestThread = th;
+        }
+    }
+
+    bestPreviousScore = bestThread->rootMoves[0].score;
+
+    // Send again PV info if we have a new best thread
+    if (bestThread != this)
+        sync_cout << UCI::pv(bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << sync_endl;
+
+    sync_cout << "bestmove " << UCI::move(bestThread->rootMoves[0].pv[0]);
+
+    if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
+        std::cout << " ponder " << UCI::move(bestThread->rootMoves[0].pv[1]);
+
+    std::cout << sync_endl;
+#endif
+}
+
+/// Thread::search() is the main iterative deepening loop. It calls search()
+/// repeatedly with increasing depth until the allocated thinking time has been
+/// consumed, the user stops the search, or the maximum search depth is reached.
+
+void Thread::search()
+{
+    // TODO
+    return;
+}
+
+/// MainThread::check_time() is used to print debug info and, more importantly,
+/// to detect when we are out of available time and thus stop the search.
+
+void MainThread::check_time()
+{
+
+    if (--callsCnt > 0)
+        return;
+
+    // When using nodes, ensure checking rate is not lower than 0.1% of nodes
+    callsCnt = Limits.nodes ? std::min(1024, int(Limits.nodes / 1024)) : 1024;
+
+    static TimePoint lastInfoTime = now();
+
+    TimePoint elapsed = Time.elapsed();
+    TimePoint tick = Limits.startTime + elapsed;
+
+    if (tick - lastInfoTime >= 1000) {
+        lastInfoTime = tick;
+        dbg_print();
+    }
+
+    // We should not stop pondering until told so by the GUI
+    if (ponder)
+        return;
+
+    if ((Limits.use_time_management() && (elapsed > Time.maximum() - 10 || stopOnPonderhit))
+        || (Limits.movetime && elapsed >= Limits.movetime)
+        || (Limits.nodes && Threads.nodes_searched() >= (uint64_t)Limits.nodes))
+        Threads.stop = true;
 }

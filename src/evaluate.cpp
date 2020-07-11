@@ -75,6 +75,7 @@ std::ostream &operator<<(std::ostream &os, Term t)
 
     os << " | " << scores[t][WHITE] - scores[t][BLACK] << "\n";
 #endif
+    t = t;
     return os;
 }
 }
@@ -213,5 +214,6 @@ std::string Eval::trace(Position *pos)
 
     return ss.str();
 #endif
+    pos = pos;
     return "";
 }

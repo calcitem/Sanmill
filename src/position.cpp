@@ -139,6 +139,10 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
 
     assert(pos_is_ok());
 #endif
+    th = th;
+    si = si;
+    string str = fenStr;
+    str = "";
     return *this;
 }
 
@@ -162,6 +166,7 @@ void Position::set_state(StateInfo *si) const
     if (sideToMove == BLACK)
         si->key ^= Zobrist::side;
 #endif
+    si = si;
 }
 
 
@@ -188,6 +193,10 @@ Position &Position::set(const string &code, Color c, StateInfo *si)
 
     return set(fenStr, si, nullptr);
 #endif
+    si = si;
+    c = c;
+    string ccc = code;
+    ccc = "";
     return *this;
 }
 

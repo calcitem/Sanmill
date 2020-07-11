@@ -133,7 +133,7 @@ namespace {
         else if (token == "infinite")  limits.infinite = 1;
         else if (token == "ponder")    ponderMode = true;
 
-    //Threads.start_thinking(pos, states, limits, ponderMode); // TODO
+    Threads.start_thinking(&pos, states, limits, ponderMode); // TODO
   }
 
 
