@@ -158,7 +158,7 @@ public:
     }
 
 #ifdef ALPHABETA_AI
-    int search(Depth depth);
+    int search();
     const char *nextMove();
 #endif // ALPHABETA_AI
 
@@ -215,7 +215,7 @@ public: /* TODO: Move to private or protected */
 public:
     const char *moveToCommand(Move move);
 protected:
-    Depth changeDepth(Depth origDepth);
+    Depth changeDepth();
        
 public:
     MovePicker *movePicker { nullptr };

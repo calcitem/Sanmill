@@ -51,7 +51,7 @@ protected:
 
 public:
     void setAi(Position *p);
-    void setAi(Position *p, Depth depth, int time);
+    void setAi(Position *p, int time);
 
     Server *getServer()
     {
@@ -61,11 +61,6 @@ public:
     Client *getClient()
     {
         return client;
-    }
-
-    Depth getDepth()
-    {
-        return depth;
     }
 
     int getTimeLimit()
@@ -98,7 +93,6 @@ public: // TODO: Change to private
     AIAlgorithm ai;
 
 private:
-    Depth depth;
     int timeLimit;
     QTimer timer;
 

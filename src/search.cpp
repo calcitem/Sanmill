@@ -66,9 +66,9 @@ AIAlgorithm::~AIAlgorithm()
     //delete pos;
 }
 
-Depth AIAlgorithm::changeDepth(Depth origDepth)
+Depth AIAlgorithm::changeDepth()
 {
-    Depth d = origDepth;
+    Depth d = 0;
 
 #ifdef _DEBUG
     Depth reduce = 0;
@@ -183,11 +183,11 @@ void AIAlgorithm::setPosition(Position *p)
 }
 
 #ifdef ALPHABETA_AI
-int AIAlgorithm::search(Depth depth)
+int AIAlgorithm::search()
 {
     Value value = VALUE_ZERO;
 
-    Depth d = changeDepth(depth);
+    Depth d = changeDepth();
 
     time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));

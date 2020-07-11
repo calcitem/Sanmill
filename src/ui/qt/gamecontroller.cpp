@@ -362,22 +362,19 @@ void GameController::setEngine2(bool arg)
     setEngine(2, arg);
 }
 
-void GameController::setAiDepthTime(Depth depth1, int time1, Depth depth2, int time2)
+void GameController::setAiDepthTime(int time1, int time2)
 {
     stopAndWaitAiThreads();
 
-    aiThread[BLACK]->setAi(position, depth1, time1);
-    aiThread[WHITE]->setAi(position, depth2, time2);
+    aiThread[BLACK]->setAi(position,  time1);
+    aiThread[WHITE]->setAi(position, time2);
 
     startAiThreads();
 }
 
-void GameController::getAiDepthTime(Depth &depth1, int &time1, Depth &depth2, int &time2)
+void GameController::getAiDepthTime(int &time1, int &time2)
 {
-    depth1 = aiThread[BLACK]->getDepth();
     time1 = aiThread[BLACK]->getTimeLimit();
-
-    depth2 = aiThread[WHITE]->getDepth();
     time2 = aiThread[WHITE]->getTimeLimit();
 }
 

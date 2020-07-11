@@ -126,8 +126,8 @@ public:
         return &manualListModel;
     }
 
-    void setAiDepthTime(Depth depth1, int time1, Depth depth2, int time2);
-    void getAiDepthTime(Depth &depth1, int &time1, Depth &depth2, int &time2);
+    void setAiDepthTime(int time1, int time2);
+    void getAiDepthTime(int &time1, int &time2);
 
     void humanGiveUp();
 

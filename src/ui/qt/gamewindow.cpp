@@ -961,14 +961,10 @@ void MillGameWindow::on_actionEngine_E_triggered()
     auto *groupBox2 = new QGroupBox(dialog);
 
     auto *hLayout1 = new QHBoxLayout;
-    auto *label_depth1 = new QLabel(dialog);
-    auto *spinBox_depth1 = new QSpinBox(dialog);
     auto *label_time1 = new QLabel(dialog);
     auto *spinBox_time1 = new QSpinBox(dialog);
 
     auto *hLayout2 = new QHBoxLayout;
-    auto *label_depth2 = new QLabel(dialog);
-    auto *spinBox_depth2 = new QSpinBox(dialog);
     auto *label_time2 = new QLabel(dialog);
     auto *spinBox_time2 = new QSpinBox(dialog);
 
@@ -976,17 +972,11 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
     // 设置各个控件数据
     groupBox1->setTitle(tr("玩家1 AI设置"));
-    label_depth1->setText(tr("深度"));
-    spinBox_depth1->setMinimum(1);
-    spinBox_depth1->setMaximum(99);
     label_time1->setText(tr("限时"));
     spinBox_time1->setMinimum(1);
     spinBox_time1->setMaximum(3600);
 
     groupBox2->setTitle(tr("玩家2 AI设置"));
-    label_depth2->setText(tr("深度"));
-    spinBox_depth2->setMinimum(1);
-    spinBox_depth2->setMaximum(99);
     label_time2->setText(tr("限时"));
     spinBox_time2->setMinimum(1);
     spinBox_time2->setMaximum(3600);
@@ -1002,12 +992,8 @@ void MillGameWindow::on_actionEngine_E_triggered()
     vLayout->addWidget(buttonBox);
     groupBox1->setLayout(hLayout1);
     groupBox2->setLayout(hLayout2);
-    hLayout1->addWidget(label_depth1);
-    hLayout1->addWidget(spinBox_depth1);
     hLayout1->addWidget(label_time1);
     hLayout1->addWidget(spinBox_time1);
-    hLayout2->addWidget(label_depth2);
-    hLayout2->addWidget(spinBox_depth2);
     hLayout2->addWidget(label_time2);
     hLayout2->addWidget(spinBox_time2);
 
@@ -1016,31 +1002,22 @@ void MillGameWindow::on_actionEngine_E_triggered()
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     // 目前数据
-    Depth depth1, depth2;
     int time1, time2;
-    gameController->getAiDepthTime(depth1, time1, depth2, time2);
-    spinBox_depth1->setValue(depth1);
-    spinBox_depth2->setValue(depth2);
+    gameController->getAiDepthTime(time1, time2);
     spinBox_time1->setValue(time1);
     spinBox_time2->setValue(time2);
 
     // 新设数据
     if (dialog->exec() == QDialog::Accepted) {
-        Depth depth1_new, depth2_new;
         int time1_new, time2_new;
-
-        depth1_new = static_cast<Depth>(spinBox_depth1->value());
-        depth2_new = static_cast<Depth>(spinBox_depth2->value());
 
         time1_new = spinBox_time1->value();
         time2_new = spinBox_time2->value();
 
-        if (depth1 != depth1_new ||
-            depth2 != depth2_new ||
-            time1 != time1_new ||
+        if (time1 != time1_new ||
             time2 != time2_new) {
             // 重置AI
-            gameController->setAiDepthTime(depth1_new, time1_new, depth2_new, time2_new);
+            gameController->setAiDepthTime(time1_new, time2_new);
         }
     }
 

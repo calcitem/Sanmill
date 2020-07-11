@@ -33,7 +33,6 @@ using namespace std;
 AiThread::AiThread(int color, QObject *parent) :
     QThread(parent),
     position(nullptr),
-    depth(2),
     timeLimit(3600)
 {
     this->us = color;
@@ -77,12 +76,11 @@ void AiThread::setAi(Position *p)
     mutex.unlock();
 }
 
-void AiThread::setAi(Position *p, Depth d, int tl)
+void AiThread::setAi(Position *p, int tl)
 {
     mutex.lock();
     this->position = p;
     ai.setPosition(p);
-    depth = d;
     timeLimit = tl;
     mutex.unlock();
 }
@@ -246,7 +244,7 @@ void AiThread::run()
             emitCommand();
         } else {
 #endif
-            if (ai.search(depth) == 3) {
+            if (ai.search() == 3) {
                 loggerDebug("Draw\n\n");
                 strCommand = "draw";
                 emitCommand();
