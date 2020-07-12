@@ -101,6 +101,7 @@ public:
     // Doing and undoing moves
     bool do_move(Move m);
     bool undo_move(Move m);
+    void undo_move(Stack<Position> &ss);
     bool undo_null_move();
     bool do_null_move();
 

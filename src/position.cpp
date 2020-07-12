@@ -973,6 +973,12 @@ bool Position::undo_move(Move m)
     return ret;
 }
 
+void Position::undo_move(Stack<Position> &ss)
+{
+    memcpy(this, ss.top(), sizeof(Position));
+    ss.pop();
+}
+
 Color Position::get_winner() const
 {
     return winner;

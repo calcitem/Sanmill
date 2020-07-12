@@ -51,6 +51,7 @@ namespace Search
 constexpr int CounterMovePruneThreshold = 0;
 
 
+#if 0
 /// Stack struct keeps track of the information we need to remember from nodes
 /// shallower and deeper in the tree during the search. Each search thread has
 /// its own array of Stack objects, indexed by the current ply.
@@ -67,6 +68,7 @@ struct Stack
     int moveCount;
     bool inCheck;
 };
+#endif
 
 
 /// RootMove struct is used for moves at the root of the tree. For each root move
@@ -151,7 +153,7 @@ public:
     void quit()
     {
         loggerDebug("Timeout\n");
-        requiredQuit = true;
+        //requiredQuit = true;  // TODO
 #ifdef HOSTORY_HEURISTIC
         movePicker->clearHistoryScore();
 #endif
@@ -161,8 +163,6 @@ public:
     int search();
     const char *nextMove();
 #endif // ALPHABETA_AI
-
-    void stashPosition();
 
     void do_move(Move move);
 
@@ -181,13 +181,8 @@ public:
 #endif // ENDGAME_LEARNING
 
 public: /* TODO: Move to private or protected */
-
-    Value search(Depth depth, Value alpha, Value beta);
-
-    Value MTDF(Value firstguess, Depth depth);
-
-public:
     const char *moveToCommand(Move move);
+
 protected:
     Depth changeDepth();
        
@@ -202,9 +197,9 @@ public:
 private:
     Position *pos { nullptr };
 
-    Stack<Position> positionStack;
+    Stack<Position> ss;
 
-    bool requiredQuit {false};
+    // bool requiredQuit {false}; // TODO
 
     Move bestMove { MOVE_NONE };
 

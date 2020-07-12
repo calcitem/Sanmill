@@ -52,6 +52,8 @@ LimitsType Limits;
 
 using namespace Search;
 
+Value MTDF(Position *pos, Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
+
 vector<Key> moveHistory;
 
 AIAlgorithm::AIAlgorithm()
@@ -178,7 +180,7 @@ void AIAlgorithm::setPosition(Position *p)
     pos = p;
    // position = pos;
 
-    requiredQuit = false;
+    //requiredQuit = false;
 }
 
 #ifdef ALPHABETA_AI
@@ -245,9 +247,9 @@ int AIAlgorithm::search()
 #endif
 
 #ifdef MTDF_AI
-            value = MTDF(value, i);
+            value = MTDF(pos, ss, value, i, originDepth, bestMove);
 #else
-            value = search(i, alpha, beta);
+            value = search(pos, ss, i, originDepth, alpha, beta, bestMove);
 #endif
 
             loggerDebug("%d(%d) ", value, value - lastValue);
@@ -275,9 +277,9 @@ int AIAlgorithm::search()
     originDepth = d;
 
 #ifdef MTDF_AI
-    value = MTDF(value, d);
+    value = MTDF(pos, ss, value, d, originDepth, bestMove);
 #else
-    value = search(d, alpha, beta);
+    value = search(pos, ss, d, originDepth, alpha, beta, bestMove);
 #endif
 
 #ifdef TIME_STAT
@@ -290,273 +292,11 @@ int AIAlgorithm::search()
 
     return 0;
 }
-
-Value AIAlgorithm::MTDF(Value firstguess, Depth depth)
-{
-    Value g = firstguess;
-    Value lowerbound = -VALUE_INFINITE;
-    Value upperbound = VALUE_INFINITE;
-    Value beta;
-
-    while (lowerbound < upperbound) {
-        if (g == lowerbound) {
-            beta = g + VALUE_MTDF_WINDOW;
-        } else {
-            beta = g;
-        }
-
-        g = search(depth, beta - VALUE_MTDF_WINDOW, beta);
-
-        if (g < beta) {
-            upperbound = g;    // fail low
-        } else {
-            lowerbound = g;    // fail high
-        }
-    }
-
-    return g;
-}
-
-Value AIAlgorithm::search(Depth depth, Value alpha, Value beta)
-{
-    Value value;
-    Value bestValue = -VALUE_INFINITE;
-
-    Depth epsilon;
-
-#ifdef TT_MOVE_ENABLE
-    Move ttMove = MOVE_NONE;
-#endif // TT_MOVE_ENABLE
-
-#if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
-    Key posKey = pos->key();
-#endif
-
-#ifdef ENDGAME_LEARNING
-    // 检索残局库
-    Endgame endgame;
-
-    if (gameOptions.getLearnEndgameEnabled() &&
-        findEndgameHash(posKey, endgame)) {
-        switch (endgame.type) {
-        case ENDGAME_PLAYER_BLACK_WIN:
-            bestValue = VALUE_MATE;
-            bestValue += depth;
-            break;
-        case ENDGAME_PLAYER_WHITE_WIN:
-            bestValue = -VALUE_MATE;
-            bestValue -= depth;
-            break;
-        default:
-            break;
-        }
-
-        return bestValue;
-    }
-#endif /* ENDGAME_LEARNING */
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    Bound type = BOUND_NONE;
-
-    Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
-#ifdef TT_MOVE_ENABLE
-                                     , ttMove
-#endif // TT_MOVE_ENABLE                                     
-    );
-
-    if (probeVal != VALUE_UNKNOWN) {
-#ifdef TRANSPOSITION_TABLE_DEBUG
-        ttHitCount++;
-#endif
-
-        bestValue = probeVal;
-
-#if 0
-        // TODO: 有必要针对深度微调 value?
-        if (position->turn == BLACK)
-            bestValue += tte.depth - depth;
-        else
-            bestValue -= tte.depth - depth;
-#endif
-
-#ifdef TT_MOVE_ENABLE
-//         if (ttMove != MOVE_NONE) {
-//             bestMove = ttMove;
-//         }
-#endif // TT_MOVE_ENABLE
-
-        return bestValue;
-    }
-#ifdef TRANSPOSITION_TABLE_DEBUG
-    else {
-        ttMissCount++;
-    }
-#endif
-
-    //hashMapMutex.unlock();
-#endif /* TRANSPOSITION_TABLE_ENABLE */
-
-#if 0
-    if (position->phase == PHASE_PLACING && depth == 1 && pos->nPiecesNeedRemove > 0) {
-        depth--;
-    }
-#endif
-
-    if (unlikely(pos->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash
-        depth <= 0 ||
-        unlikely(requiredQuit)) {
-        bestValue = Eval::evaluate(pos);
-
-        // For win quickly
-        if (bestValue > 0) {
-            bestValue += depth;
-        } else {
-            bestValue -= depth;
-        }
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-        TranspositionTable::save(bestValue,
-                       depth,
-                       BOUND_EXACT,
-                       posKey
-#ifdef TT_MOVE_ENABLE
-                       , MOVE_NONE
-#endif // TT_MOVE_ENABLE
-                      );
-#endif
-
-        return bestValue;
-    }
-
-    MovePicker mp(pos);
-    mp.endMoves = generate(pos, mp.moves);
-    mp.score();
-
-    partial_insertion_sort(mp.moves, mp.endMoves, -100);
-    ExtMove *cur = mp.moves;
-
-    int nchild = mp.endMoves - cur;
-
-    if (nchild == 1 && depth == originDepth) {
-        bestMove = mp.moves[0].move;
-        bestValue = VALUE_UNIQUE;
-        return bestValue;
-    }
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef PREFETCH_SUPPORT
-    for (int i = 0; i < nchild; i++) {
-        TranspositionTable::prefetch(pos->next_primary_key(mp.moves[i].move));
-    }
-
-#ifdef PREFETCH_DEBUG
-    if (posKey << 8 >> 8 == 0x0)
-    {
-        int pause = 1;
-    }
-#endif // PREFETCH_DEBUG
-#endif // PREFETCH_SUPPORT
-#endif // TRANSPOSITION_TABLE_ENABLE
-
-    for (int i = 0; i < nchild; i++) {
-        stashPosition();
-        Color before = pos->sideToMove;
-        Move move = mp.moves[i].move;
-        do_move(move);
-        Color after = pos->sideToMove;
-
-        if (gameOptions.getDepthExtension() == true && nchild == 1) {
-            epsilon = 1;
-        } else {
-            epsilon = 0;
-        }
-
-#ifdef PVS_AI
-        if (i == 0) {
-            if (after != before) {
-                value = -search(depth - 1 + epsilon, -beta, -alpha);
-            } else {
-                value = search(depth - 1 + epsilon, alpha, beta);
-    }
-        } else {
-            if (after != before) {
-                value = -search(depth - 1 + epsilon, -alpha - VALUE_PVS_WINDOW, -alpha);
-
-                if (value > alpha && value < beta) {
-                    value = -search(depth - 1 + epsilon, -beta, -alpha);
-                    //assert(value >= alpha && value <= beta);
-                }
-            } else {
-                value = search(depth - 1 + epsilon, alpha, alpha + VALUE_PVS_WINDOW);
-
-                if (value > alpha && value < beta) {
-                    value = search(depth - 1 + epsilon, alpha, beta);
-                    //assert(value >= alpha && value <= beta);
-                }
-            }
-        }
-#else
-        if (after != before) {
-            value = -search(depth - 1 + epsilon, -beta, -alpha);
-        } else {
-            value = search(depth - 1 + epsilon, alpha, beta);
-        }
-#endif // PVS_AI
-
-        undo_move();
-
-        assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
-
-        if (value >= bestValue) {
-            bestValue = value;
-
-            if (value > alpha) {
-                if (depth == originDepth) {
-                    bestMove = move;
-                }
-
-                break;
-            }
-        }
-    }
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    TranspositionTable::save(bestValue,
-                   depth,
-                   bestValue >= beta ? BOUND_LOWER :
-                   BOUND_UPPER,
-                   posKey
-#ifdef TT_MOVE_ENABLE
-                   , bestMove
-#endif // TT_MOVE_ENABLE
-                  );
-#endif /* TRANSPOSITION_TABLE_ENABLE */
-
-#ifdef HOSTORY_HEURISTIC
-    movePicker->setHistoryScore(bestMove, depth);
-#endif
-
-    assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
-
-    return bestValue;
-}
 #endif // ALPHABETA_AI
-
-void AIAlgorithm::stashPosition()
-{
-    positionStack.push(*(pos));
-}
 
 void AIAlgorithm::do_move(Move move)
 {
     pos->do_move(move);
-}
-
-void AIAlgorithm::undo_move()
-{
-    memcpy(pos, positionStack.top(), sizeof(Position));
-    //tmppos = positionStack.top();
-    positionStack.pop();
 }
 
 #ifdef ALPHABETA_AI
@@ -859,4 +599,254 @@ void MainThread::check_time()
         || (Limits.movetime && elapsed >= Limits.movetime)
         || (Limits.nodes && Threads.nodes_searched() >= (uint64_t)Limits.nodes))
         Threads.stop = true;
+}
+
+// search<>() is the main search function for both PV and non-PV nodes
+
+Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
+{
+    Value value;
+    Value bestValue = -VALUE_INFINITE;
+
+    Depth epsilon;
+
+#ifdef TT_MOVE_ENABLE
+    Move ttMove = MOVE_NONE;
+#endif // TT_MOVE_ENABLE
+
+#if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
+    Key posKey = pos->key();
+#endif
+
+#ifdef ENDGAME_LEARNING
+    // 检索残局库
+    Endgame endgame;
+
+    if (gameOptions.getLearnEndgameEnabled() &&
+        findEndgameHash(posKey, endgame)) {
+        switch (endgame.type) {
+        case ENDGAME_PLAYER_BLACK_WIN:
+            bestValue = VALUE_MATE;
+            bestValue += depth;
+            break;
+        case ENDGAME_PLAYER_WHITE_WIN:
+            bestValue = -VALUE_MATE;
+            bestValue -= depth;
+            break;
+        default:
+            break;
+        }
+
+        return bestValue;
+    }
+#endif /* ENDGAME_LEARNING */
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    Bound type = BOUND_NONE;
+
+    Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
+#ifdef TT_MOVE_ENABLE
+                                               , ttMove
+#endif // TT_MOVE_ENABLE                                     
+    );
+
+    if (probeVal != VALUE_UNKNOWN) {
+#ifdef TRANSPOSITION_TABLE_DEBUG
+        ttHitCount++;
+#endif
+
+        bestValue = probeVal;
+
+#if 0
+        // TODO: 有必要针对深度微调 value?
+        if (position->turn == BLACK)
+            bestValue += tte.depth - depth;
+        else
+            bestValue -= tte.depth - depth;
+#endif
+
+#ifdef TT_MOVE_ENABLE
+        //         if (ttMove != MOVE_NONE) {
+        //             bestMove = ttMove;
+        //         }
+#endif // TT_MOVE_ENABLE
+
+        return bestValue;
+    }
+#ifdef TRANSPOSITION_TABLE_DEBUG
+    else {
+        ttMissCount++;
+    }
+#endif
+
+    //hashMapMutex.unlock();
+#endif /* TRANSPOSITION_TABLE_ENABLE */
+
+#if 0
+    if (position->phase == PHASE_PLACING && depth == 1 && pos->nPiecesNeedRemove > 0) {
+        depth--;
+    }
+#endif
+
+    if (unlikely(pos->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash and requiredQuit
+        depth <= 0) {
+        bestValue = Eval::evaluate(pos);
+
+        // For win quickly
+        if (bestValue > 0) {
+            bestValue += depth;
+        } else {
+            bestValue -= depth;
+        }
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        TranspositionTable::save(bestValue,
+                                 depth,
+                                 BOUND_EXACT,
+                                 posKey
+#ifdef TT_MOVE_ENABLE
+                                 , MOVE_NONE
+#endif // TT_MOVE_ENABLE
+        );
+#endif
+
+        return bestValue;
+    }
+
+    MovePicker mp(pos);
+    mp.endMoves = generate(pos, mp.moves);
+    mp.score();
+
+    partial_insertion_sort(mp.moves, mp.endMoves, -100);
+    ExtMove *cur = mp.moves;
+
+    int nchild = mp.endMoves - cur;
+
+    if (nchild == 1 && depth == originDepth) {
+        bestMove = mp.moves[0].move;
+        bestValue = VALUE_UNIQUE;
+        return bestValue;
+    }
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef PREFETCH_SUPPORT
+    for (int i = 0; i < nchild; i++) {
+        TranspositionTable::prefetch(pos->next_primary_key(mp.moves[i].move));
+    }
+
+#ifdef PREFETCH_DEBUG
+    if (posKey << 8 >> 8 == 0x0) {
+        int pause = 1;
+    }
+#endif // PREFETCH_DEBUG
+#endif // PREFETCH_SUPPORT
+#endif // TRANSPOSITION_TABLE_ENABLE
+
+    for (int i = 0; i < nchild; i++) {
+        ss.push(*(pos));
+        Color before = pos->sideToMove;
+        Move move = mp.moves[i].move;
+        pos->do_move(move);
+        Color after = pos->sideToMove;
+
+        if (gameOptions.getDepthExtension() == true && nchild == 1) {
+            epsilon = 1;
+        } else {
+            epsilon = 0;
+        }
+
+#ifdef PVS_AI
+        if (i == 0) {
+            if (after != before) {
+                value = -search(depth - 1 + epsilon, -beta, -alpha);
+            } else {
+                value = search(depth - 1 + epsilon, alpha, beta);
+            }
+        } else {
+            if (after != before) {
+                value = -search(depth - 1 + epsilon, -alpha - VALUE_PVS_WINDOW, -alpha);
+
+                if (value > alpha && value < beta) {
+                    value = -search(depth - 1 + epsilon, -beta, -alpha);
+                    //assert(value >= alpha && value <= beta);
+                }
+            } else {
+                value = search(depth - 1 + epsilon, alpha, alpha + VALUE_PVS_WINDOW);
+
+                if (value > alpha && value < beta) {
+                    value = search(depth - 1 + epsilon, alpha, beta);
+                    //assert(value >= alpha && value <= beta);
+                }
+            }
+        }
+#else
+        if (after != before) {
+            value = -search(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
+        } else {
+            value = search(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
+        }
+#endif // PVS_AI
+
+        pos->undo_move(ss);
+
+        assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
+
+        if (value >= bestValue) {
+            bestValue = value;
+
+            if (value > alpha) {
+                if (depth == originDepth) {
+                    bestMove = move;
+                }
+
+                break;
+            }
+        }
+    }
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    TranspositionTable::save(bestValue,
+                             depth,
+                             bestValue >= beta ? BOUND_LOWER :
+                             BOUND_UPPER,
+                             posKey
+#ifdef TT_MOVE_ENABLE
+                             , bestMove
+#endif // TT_MOVE_ENABLE
+    );
+#endif /* TRANSPOSITION_TABLE_ENABLE */
+
+#ifdef HOSTORY_HEURISTIC
+    movePicker->setHistoryScore(bestMove, depth);
+#endif
+
+    assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+
+    return bestValue;
+}
+
+Value MTDF(Position *pos, Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove)
+{
+    Value g = firstguess;
+    Value lowerbound = -VALUE_INFINITE;
+    Value upperbound = VALUE_INFINITE;
+    Value beta;
+
+    while (lowerbound < upperbound) {
+        if (g == lowerbound) {
+            beta = g + VALUE_MTDF_WINDOW;
+        } else {
+            beta = g;
+        }
+
+        g = search(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta, bestMove);
+
+        if (g < beta) {
+            upperbound = g;    // fail low
+        } else {
+            lowerbound = g;    // fail high
+        }
+    }
+
+    return g;
 }
