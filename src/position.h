@@ -107,8 +107,8 @@ public:
     // Accessing hash keys
     Key key();
     void construct_key();
-    Key revert_key(Square square);
-    Key update_key(Square square);
+    Key revert_key(Square s);
+    Key update_key(Square s);
     Key update_key_misc();
     Key next_primary_key(Move m);
 
@@ -147,21 +147,21 @@ public:
     void set_tips();
     Color get_winner() const;
 
-    void mirror(int32_t move_, Square square, bool cmdChange = true);
-    void turn(int32_t move_, Square square, bool cmdChange = true);
-    void rotate(int degrees, int32_t move_, Square square, bool cmdChange = true);
+    void mirror(int32_t move_, Square s, bool cmdChange = true);
+    void turn(int32_t move_, Square s, bool cmdChange = true);
+    void rotate(int degrees, int32_t move_, Square s, bool cmdChange = true);
     void flip();
 
     void create_mill_table();
-    int add_mills(Square square);
-    int in_how_many_mills(Square square, Color c, Square squareSelected = SQ_0);
+    int add_mills(Square s);
+    int in_how_many_mills(Square s, Color c, Square squareSelected = SQ_0);
     bool is_all_in_mills(Color c);
 
-    int surrounded_empty_squares_count(Square square, bool includeFobidden);
-    void surrounded_pieces_count(Square square, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
+    int surrounded_empty_squares_count(Square s, bool includeFobidden);
+    void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
     bool is_all_surrounded();
 
-    static void square_to_polar(Square square, File &file, Rank &rank);
+    static void square_to_polar(Square s, File &file, Rank &rank);
     static Square polar_to_square(File file, Rank rank);
 
     static void print_board();
@@ -172,7 +172,7 @@ public:
     static char color_to_char(Color color);
     static std::string char_to_string(char ch);
 
-    static bool is_star_square(Square square);
+    static bool is_star_square(Square s);
 
 // private:
       // Initialization helpers (used while setting up a position)

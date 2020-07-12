@@ -363,14 +363,14 @@ int Position::pieces_on_board_count()
 
     for (int f = 1; f < FILE_NB + 2; f++) {
         for (int r = 0; r < RANK_NB; r++) {
-            Square square = static_cast<Square>(f * RANK_NB + r);
-            if (board[square] & B_STONE) {
+            Square s = static_cast<Square>(f * RANK_NB + r);
+            if (board[s] & B_STONE) {
                 nPiecesOnBoard[BLACK]++;
-            } else if (board[square] & W_STONE) {
+            } else if (board[s]& W_STONE) {
                 nPiecesOnBoard[WHITE]++;
             }
 #if 0
-            else if (board[square] & BAN_STONE) {
+            else if (board[s]& BAN_STONE) {
             }
 #endif
         }
@@ -508,7 +508,7 @@ bool Position::start()
     }
 }
 
-bool Position::place_piece(Square square, bool updateCmdlist)
+bool Position::place_piece(Square s, bool updateCmdlist)
 {
     File file;
     Rank rank;
@@ -531,24 +531,24 @@ bool Position::place_piece(Square square, bool updateCmdlist)
     if (action != ACTION_PLACE)
         return false;
 
-    if (!onBoard[square] || board[square])
+    if (!onBoard[s]|| board[s])
         return false;
 
-    Position::square_to_polar(square, file, rank);
+    Position::square_to_polar(s, file, rank);
 
     if (phase == PHASE_PLACING) {
         piece = (Piece)((0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - nPiecesInHand[us]);
         nPiecesInHand[us]--;
         nPiecesOnBoard[us]++;
 
-        board[square] = piece;
+        board[s]= piece;
 
-        update_key(square);
+        update_key(s);
 
-        byTypeBB[ALL_PIECES] |= square;
-        byTypeBB[us] |= square;
+        byTypeBB[ALL_PIECES] |= s;
+        byTypeBB[us] |= s;
 
-        move = static_cast<Move>(square);
+        move = static_cast<Move>(s);
 
         if (updateCmdlist) {
             seconds = update();
@@ -558,7 +558,7 @@ bool Position::place_piece(Square square, bool updateCmdlist)
             currentStep++;
         }
 
-        currentSquare = square;
+        currentSquare = s;
 
         n = add_mills(currentSquare);
 
@@ -604,7 +604,7 @@ bool Position::place_piece(Square square, bool updateCmdlist)
     if (nPiecesOnBoard[sideToMove] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         for (i = 0; i < 4; i++) {
-            if (square == MoveList::moveTable[currentSquare][i])
+            if (s == MoveList::moveTable[currentSquare][i])
                 break;
         }
 
@@ -614,7 +614,7 @@ bool Position::place_piece(Square square, bool updateCmdlist)
         }
     }
 
-    move = make_move(currentSquare, square);
+    move = make_move(currentSquare, s);
 
     if (updateCmdlist) {
         seconds = update();
@@ -625,18 +625,18 @@ bool Position::place_piece(Square square, bool updateCmdlist)
         moveStep++;
     }
 
-    fromTo = square_bb(currentSquare) | square_bb(square);
+    fromTo = square_bb(currentSquare) | square_bb(s);
     byTypeBB[ALL_PIECES] ^= fromTo;
     byTypeBB[us] ^= fromTo;
 
-    board[square] = board[currentSquare];
+    board[s]= board[currentSquare];
 
-    update_key(square);
+    update_key(s);
     revert_key(currentSquare);
 
     board[currentSquare] = NO_PIECE;
 
-    currentSquare = square;
+    currentSquare = s;
     n = add_mills(currentSquare);
 
     // midgame
@@ -662,19 +662,19 @@ out:
 
 bool Position::_placePiece(File file, Rank rank)
 {
-    Square square = Position::polar_to_square(file, rank);
+    Square s = Position::polar_to_square(file, rank);
 
-    return place_piece(square, true);
+    return place_piece(s, true);
 }
 
 bool Position::_removePiece(File file, Rank rank)
 {
-    Square square = Position::polar_to_square(file, rank);
+    Square s = Position::polar_to_square(file, rank);
 
-    return remove_piece(square, 1);
+    return remove_piece(s, 1);
 }
 
-bool Position::remove_piece(Square square, bool updateCmdlist)
+bool Position::remove_piece(Square s, bool updateCmdlist)
 {
     if (phase & PHASE_NOTPLAYING)
         return false;
@@ -687,40 +687,40 @@ bool Position::remove_piece(Square square, bool updateCmdlist)
 
     File file;
     Rank rank;
-    Position::square_to_polar(square, file, rank);
+    Position::square_to_polar(s, file, rank);
 
     int seconds = -1;
 
     int oppId = them;
 
     // if piece is not their
-    if (!((them << PLAYER_SHIFT) & board[square]))
+    if (!((them << PLAYER_SHIFT) & board[s]))
         return false;
 
     if (!rule.allowRemovePieceInMill &&
-        in_how_many_mills(square, NOBODY) &&
+        in_how_many_mills(s, NOBODY) &&
         !is_all_in_mills(~sideToMove)) {
         return false;
     }
 
     if (rule.hasBannedLocations && phase == PHASE_PLACING) {
-        revert_key(square);
-        board[square] = BAN_STONE;
-        update_key(square);
+        revert_key(s);
+        board[s]= BAN_STONE;
+        update_key(s);
 
-        byTypeBB[oppId] ^= square;
-        byTypeBB[BAN] |= square;
+        byTypeBB[oppId] ^= s;
+        byTypeBB[BAN] |= s;
     } else { // Remove
-        revert_key(square);
-        board[square] = NO_PIECE;
+        revert_key(s);
+        board[s]= NO_PIECE;
 
-        byTypeBB[ALL_PIECES] ^= square;
-        byTypeBB[them] ^= square;
+        byTypeBB[ALL_PIECES] ^= s;
+        byTypeBB[them] ^= s;
     }
 
     nPiecesOnBoard[them]--;
 
-    move = static_cast<Move>(-square);
+    move = static_cast<Move>(-s);
 
     if (updateCmdlist) {
         seconds = update();
@@ -784,7 +784,7 @@ out:
     return true;
 }
 
-bool Position::select_piece(Square square)
+bool Position::select_piece(Square s)
 {
     if (phase != PHASE_MOVING)
         return false;
@@ -792,8 +792,8 @@ bool Position::select_piece(Square square)
     if (action != ACTION_SELECT && action != ACTION_PLACE)
         return false;
 
-    if (board[square] & (sideToMove << PLAYER_SHIFT)) {
-        currentSquare = square;
+    if (board[s]& (sideToMove << PLAYER_SHIFT)) {
+        currentSquare = s;
         action = ACTION_PLACE;
 
         return true;
@@ -1154,16 +1154,16 @@ void Position::clean_banned()
         return;
     }
 
-    Square square = SQ_0;
+    Square s = SQ_0;
 
     for (int f = 1; f <= FILE_NB; f++) {
         for (int r = 0; r < RANK_NB; r++) {
-            square = static_cast<Square>(f * RANK_NB + r);
+            s = static_cast<Square>(f * RANK_NB + r);
 
-            if (board[square] == BAN_STONE) {
-                revert_key(square);
-                board[square] = NO_PIECE;
-                byTypeBB[ALL_PIECES] ^= square;   // Need to remove?
+            if (board[s]== BAN_STONE) {
+                revert_key(s);
+                board[s]= NO_PIECE;
+                byTypeBB[ALL_PIECES] ^= s;   // Need to remove?
             }
         }
     }
@@ -1261,24 +1261,24 @@ Key Position::key()
     return update_key_misc();
 }
 
-Key Position::update_key(Square square)
+Key Position::update_key(Square s)
 {
-    // PieceType is board[square] 
+    // PieceType is board[s]
 
     // 0b00 - no piece，0b01 = 1 black，0b10 = 2 white，0b11 = 3 ban
-    int pieceType = color_on(square);
+    int pieceType = color_on(s);
     // TODO: this is std, but current code can work
-    //Location loc = board[square];
+    //Location loc = board[s];
     //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
 
-    st.key ^= Zobrist::psq[pieceType][square];
+    st.key ^= Zobrist::psq[pieceType][s];
 
     return st.key;
 }
 
-Key Position::revert_key(Square square)
+Key Position::revert_key(Square s)
 {
-    return update_key(square);
+    return update_key(s);
 }
 
 Key Position::update_key_misc()
@@ -1307,22 +1307,22 @@ Key Position::update_key_misc()
 Key Position::next_primary_key(Move m)
 {
     Key npKey = st.key /* << 8 >> 8 */;
-    Square sq = static_cast<Square>(to_sq(m));;
+    Square s = static_cast<Square>(to_sq(m));;
     MoveType mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
         int pieceType = ~sideToMove;
-        npKey ^= Zobrist::psq[pieceType][sq];
+        npKey ^= Zobrist::psq[pieceType][s];
 
         if (rule.hasBannedLocations && phase == PHASE_PLACING) {
-            npKey ^= Zobrist::psq[BAN][sq];
+            npKey ^= Zobrist::psq[BAN][s];
         }
 
         return npKey;
     }
     
     int pieceType = sideToMove;
-    npKey ^= Zobrist::psq[pieceType][sq];
+    npKey ^= Zobrist::psq[pieceType][s];
 
     if (mt == MOVETYPE_MOVE) {
         npKey ^= Zobrist::psq[pieceType][from_sq(m)];
@@ -1509,12 +1509,12 @@ void Position::create_mill_table()
 #endif /* DEBUG_MODE */
 }
 
-void Position::square_to_polar(const Square square, File &file, Rank &rank)
+void Position::square_to_polar(const Square s, File &file, Rank &rank)
 {
-    //r = square / RANK_NB;
-    //s = square % RANK_NB + 1;
-    file = File(square >> 3);
-    rank = Rank((square & 0x07) + 1);
+    //r = s / RANK_NB;
+    //s = s % RANK_NB + 1;
+    file = File(s >> 3);
+    rank = Rank((s & 0x07) + 1);
 }
 
 Square Position::polar_to_square(File file, Rank rank)
@@ -1529,13 +1529,13 @@ Color Position::color_on(Square s)
     return Color((board[s] & 0x30) >> PLAYER_SHIFT);
 }
 
-int Position::in_how_many_mills(Square square, Color c, Square squareSelected)
+int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
 {
     int n = 0;
     Piece locbak = NO_PIECE;
 
     if (c == NOBODY) {
-        c = Color(color_on(square) >> PLAYER_SHIFT);
+        c = Color(color_on(s) >> PLAYER_SHIFT);
     }
 
     if (squareSelected != SQ_0) {
@@ -1545,8 +1545,8 @@ int Position::in_how_many_mills(Square square, Color c, Square squareSelected)
 
     for (int l = 0; l < LD_NB; l++) {
         if ((c << PLAYER_SHIFT) &
-            board[millTable[square][l][0]] &
-            board[millTable[square][l][1]]) {
+            board[millTable[s][l][0]] &
+            board[millTable[s][l][1]]) {
             n++;
         }
     }
@@ -1558,17 +1558,17 @@ int Position::in_how_many_mills(Square square, Color c, Square squareSelected)
     return n;
 }
 
-int Position::add_mills(Square square)
+int Position::add_mills(Square s)
 {
     uint64_t mill = 0;
     int n = 0;
     int idx[3], min, temp;
-    Color m = color_on(square);
+    Color m = color_on(s);
 
     for (int i = 0; i < 3; i++) {
-        idx[0] = square;
-        idx[1] = millTable[square][i][0];
-        idx[2] = millTable[square][i][1];
+        idx[0] = s;
+        idx[1] = millTable[s][i][0];
+        idx[2] = millTable[s][i][1];
 
         // no mill
         if (!((m << PLAYER_SHIFT) & board[idx[1]] & board[idx[2]])) {
@@ -1638,7 +1638,7 @@ bool Position::is_all_in_mills(Color c)
 }
 
 // Stat include ban
-int Position::surrounded_empty_squares_count(Square square, bool includeFobidden)
+int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
 {
     //assert(rule.hasBannedLocations == includeFobidden);
 
@@ -1648,7 +1648,7 @@ int Position::surrounded_empty_squares_count(Square square, bool includeFobidden
         !rule.allowFlyWhenRemainThreePieces) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
-            moveSquare = static_cast<Square>(MoveList::moveTable[square][d]);
+            moveSquare = static_cast<Square>(MoveList::moveTable[s][d]);
             if (moveSquare) {
                 if (board[moveSquare] == 0x00 ||
                     (includeFobidden && board[moveSquare] == BAN_STONE)) {
@@ -1661,12 +1661,12 @@ int Position::surrounded_empty_squares_count(Square square, bool includeFobidden
     return count;
 }
 
-void Position::surrounded_pieces_count(Square square, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty)
+void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty)
 {
     Square moveSquare;
 
     for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
-        moveSquare = static_cast<Square>(MoveList::moveTable[square][d]);
+        moveSquare = static_cast<Square>(MoveList::moveTable[s][d]);
 
         if (!moveSquare) {
             continue;
@@ -1706,13 +1706,13 @@ bool Position::is_all_surrounded()
 
     Square moveSquare;
 
-    for (Square sq = SQ_BEGIN; sq < SQ_END; sq = (Square)(sq + 1)) {
-        if (!(sideToMove & color_on(sq))) {
+    for (Square s = SQ_BEGIN; s < SQ_END; s = (Square)(s + 1)) {
+        if (!(sideToMove & color_on(s))) {
             continue;
         }
 
         for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
-            moveSquare = static_cast<Square>(MoveList::moveTable[sq][d]);
+            moveSquare = static_cast<Square>(MoveList::moveTable[s][d]);
             if (moveSquare && !board[moveSquare]) {
                 return false;
             }
@@ -1722,22 +1722,22 @@ bool Position::is_all_surrounded()
     return true;
 }
 
-bool Position::is_star_square(Square square)
+bool Position::is_star_square(Square s)
 {
     if (rule.nTotalPiecesEachSide == 12) {
-        return (square == 17 ||
-                square == 19 ||
-                square == 21 ||
-                square == 23);
+        return (s == 17 ||
+                s == 19 ||
+                s == 21 ||
+                s == 23);
     }
 
-    return (square == 16 ||
-            square == 18 ||
-            square == 20 ||
-            square == 22);
+    return (s == 16 ||
+            s == 18 ||
+            s == 20 ||
+            s == 22);
 }
 
-void Position::mirror(int32_t move_, Square square, bool cmdChange /*= true*/)
+void Position::mirror(int32_t move_, Square s, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1772,11 +1772,11 @@ void Position::mirror(int32_t move_, Square square, bool cmdChange /*= true*/)
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
-    if (square != 0) {
-        f = square / RANK_NB;
-        r = square % RANK_NB;
+    if (s != 0) {
+        f = s / RANK_NB;
+        r = s % RANK_NB;
         r = (RANK_NB - r) % RANK_NB;
-        square = static_cast<Square>(f * RANK_NB + r);
+        s = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
@@ -1846,7 +1846,7 @@ void Position::mirror(int32_t move_, Square square, bool cmdChange /*= true*/)
     }
 }
 
-void Position::turn(int32_t move_, Square square, bool cmdChange /*= true*/)
+void Position::turn(int32_t move_, Square s, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1889,16 +1889,16 @@ void Position::turn(int32_t move_, Square square, bool cmdChange /*= true*/)
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
-    if (square != 0) {
-        f = square / RANK_NB;
-        r = square % RANK_NB;
+    if (s != 0) {
+        f = s / RANK_NB;
+        r = s % RANK_NB;
 
         if (f == 1)
             f = FILE_NB;
         else if (f == FILE_NB)
             f = 1;
 
-        square = static_cast<Square>(f * RANK_NB + r);
+        s = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
@@ -2009,7 +2009,7 @@ void Position::turn(int32_t move_, Square square, bool cmdChange /*= true*/)
     }
 }
 
-void Position::rotate(int degrees, int32_t move_, Square square, bool cmdChange /*= true*/)
+void Position::rotate(int degrees, int32_t move_, Square s, bool cmdChange /*= true*/)
 {
     degrees = degrees % 360;
 
@@ -2082,11 +2082,11 @@ void Position::rotate(int degrees, int32_t move_, Square square, bool cmdChange 
         move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
     }
 
-    if (square != 0) {
-        f = square / RANK_NB;
-        r = square % RANK_NB;
+    if (s != 0) {
+        f = s / RANK_NB;
+        r = s % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
-        square = static_cast<Square>(f * RANK_NB + r);
+        s = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {

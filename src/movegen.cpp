@@ -291,7 +291,7 @@ void MoveList::shuffle()
 //template<>
 ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
 {
-    Square square;
+    Square s;
 
     Color us = position->sideToMove;
     Color them = ~us;
@@ -307,24 +307,24 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
         // 对于摆子阶段
         if (position->phase & (PHASE_PLACING | PHASE_READY)) {
             for (Move i : MoveList::movePriorityTable) {
-                square = static_cast<Square>(i);
+                s = static_cast<Square>(i);
 
-                if (position->board[square]) {
+                if (position->board[s]) {
                     continue;
                 }
 
 #ifdef MCTS_AI
-                moves.push_back((Move)square);
+                moves.push_back((Move)s);
 #else // MCTS_AI
                 if (position->phase != PHASE_READY) {
-                    *cur++ = ((Move)square);
+                    *cur++ = ((Move)s);
                 } else {
 #ifdef FIRST_MOVE_STAR_PREFERRED
-                    if (Position::is_star_square(square)) {
-                        moves.push_back((Move)square);
+                    if (Position::is_star_square(s)) {
+                        moves.push_back((Move)s);
                     }
 #else
-                    *cur++ = ((Move)square);
+                    *cur++ = ((Move)s);
 #endif
                 }
 #endif // MCTS_AI
@@ -368,9 +368,9 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
     case ACTION_REMOVE:
         if (position->is_all_in_mills(them)) {
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                square = static_cast<Square>(MoveList::movePriorityTable[i]);
-                if (position->board[square] & (them << PLAYER_SHIFT)) {
-                    *cur++ = ((Move)-square);
+                s = static_cast<Square>(MoveList::movePriorityTable[i]);
+                if (position->board[s]& (them << PLAYER_SHIFT)) {
+                    *cur++ = ((Move)-s);
                 }
             }
             break;
@@ -378,10 +378,10 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
 
         // not is all in mills
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            square = static_cast<Square>(MoveList::movePriorityTable[i]);
-            if (position->board[square] & (them << PLAYER_SHIFT)) {
-                if (rule.allowRemovePieceInMill || !position->in_how_many_mills(square, NOBODY)) {
-                    *cur++ = ((Move)-square);
+            s = static_cast<Square>(MoveList::movePriorityTable[i]);
+            if (position->board[s]& (them << PLAYER_SHIFT)) {
+                if (rule.allowRemovePieceInMill || !position->in_how_many_mills(s, NOBODY)) {
+                    *cur++ = ((Move)-s);
                 }
             }
         }
