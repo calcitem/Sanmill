@@ -157,7 +157,7 @@ public:
     int in_how_many_mills(Square square, Color c, Square squareSelected = SQ_0);
     bool is_all_in_mills(Color c);
 
-    int surrounded_empty_squres_count(Square square, bool includeFobidden);
+    int surrounded_empty_squares_count(Square square, bool includeFobidden);
     void surrounded_pieces_count(Square square, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
     bool is_all_surrounded();
 
