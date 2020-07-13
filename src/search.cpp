@@ -117,6 +117,8 @@ Depth AIAlgorithm::changeDepth()
     };
 #endif /* ENDGAME_LEARNING */
 
+    const Depth flyingDepth = 9;
+
     if (pos->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12) {
             d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - pos->getPiecesInHandCount(BLACK) - pos->getPiecesInHandCount(WHITE)];
@@ -141,6 +143,19 @@ Depth AIAlgorithm::changeDepth()
         if (d == 0) {
             d = movingDepthTable[pieces];
         }
+
+        // Can fly
+        if (rule.allowFlyWhenRemainThreePieces) {
+            if (pb == rule.nPiecesAtLeast ||
+                pw == rule.nPiecesAtLeast) {
+                d = flyingDepth;
+            }
+
+            if (pb == rule.nPiecesAtLeast &&
+                pw == rule.nPiecesAtLeast) {
+                d = flyingDepth / 2;
+            }
+        }
     }
 
     if (unlikely(d > reduce)) {
@@ -154,6 +169,8 @@ Depth AIAlgorithm::changeDepth()
 #if defined(FIX_DEPTH)
     d = FIX_DEPTH;
 #endif
+
+    assert(d <= 32);
 
     loggerDebug("Depth: %d\n", d);
 
