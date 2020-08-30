@@ -17,8 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MOVEPICK_H
-#define MOVEPICK_H
+#ifndef MOVEPICK_H_INCLUDED
+#define MOVEPICK_H_INCLUDED
 
 #include <array>
 #include <limits>
@@ -26,12 +26,20 @@
 
 #include "movegen.h"
 #include "position.h"
+#include "types.h"
 
 class Position;
 struct ExtMove;
 
 void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit);
 
+
+/// MovePicker class is used to pick one pseudo legal move at a time from the
+/// current position. The most important method is next_move(), which returns a
+/// new pseudo legal move each time it is called, until there are no moves left,
+/// when MOVE_NONE is returned. In order to improve the efficiency of the alpha
+/// beta algorithm, MovePicker attempts to return the moves which are most likely
+/// to get a cut-off first.
 class MovePicker
 {
     enum PickType
@@ -75,4 +83,4 @@ public:
 #endif // HOSTORY_HEURISTIC
 };
 
-#endif // #ifndef MOVEPICK_H
+#endif // #ifndef MOVEPICK_H_INCLUDED
