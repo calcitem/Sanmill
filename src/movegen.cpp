@@ -244,17 +244,17 @@ void MoveList::create()
 
 void MoveList::shuffle()
 {
-    array<Move, 4> movePriorityTable0 = { (Move)17, (Move)19, (Move)21, (Move)23 };
-    array<Move, 8> movePriorityTable1 = { (Move)25, (Move)27, (Move)29, (Move)31, (Move)9, (Move)11, (Move)13, (Move)15 };
-    array<Move, 4> movePriorityTable2 = { (Move)16, (Move)18, (Move)20, (Move)22 };
-    array<Move, 8> movePriorityTable3 = { (Move)24, (Move)26, (Move)28, (Move)30, (Move)8, (Move)10, (Move)12, (Move)14 };
+    array<Square, 4> movePriorityTable0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
+    array<Square, 8> movePriorityTable1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
+    array<Square, 4> movePriorityTable2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
+    array<Square, 8> movePriorityTable3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
 
     if (rule.nTotalPiecesEachSide == 9)
     {
-        movePriorityTable0 = { (Move)16, (Move)18, (Move)20, (Move)22 };
-        movePriorityTable1 = { (Move)24, (Move)26, (Move)28, (Move)30, (Move)8, (Move)10, (Move)12, (Move)14 };
-        movePriorityTable2 = { (Move)17, (Move)19, (Move)21, (Move)23 };
-        movePriorityTable3 = { (Move)25, (Move)27, (Move)29, (Move)31, (Move)9, (Move)11, (Move)13, (Move)15 };
+        movePriorityTable0 = { SQ_16, SQ_18, SQ_20, SQ_22 };
+        movePriorityTable1 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
+        movePriorityTable2 = { SQ_17, SQ_19, SQ_21, SQ_23 };
+        movePriorityTable3 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
     }
 
 
@@ -306,8 +306,8 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
     case ACTION_PLACE:
         // 对于摆子阶段
         if (position->phase & (PHASE_PLACING | PHASE_READY)) {
-            for (Move i : MoveList::movePriorityTable) {
-                s = static_cast<Square>(i);
+            for (Square i : MoveList::movePriorityTable) {
+                s = i;
 
                 if (position->board[s]) {
                     continue;
@@ -337,7 +337,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
 
             // move piece that location weak first
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldSquare = static_cast<Square>(MoveList::movePriorityTable[i]);
+                oldSquare = MoveList::movePriorityTable[i];
 
                 if (!position->select_piece(oldSquare)) {
                     continue;
@@ -368,7 +368,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
     case ACTION_REMOVE:
         if (position->is_all_in_mills(them)) {
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                s = static_cast<Square>(MoveList::movePriorityTable[i]);
+                s = MoveList::movePriorityTable[i];
                 if (position->board[s]& (them << PLAYER_SHIFT)) {
                     *cur++ = ((Move)-s);
                 }
@@ -378,7 +378,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
 
         // not is all in mills
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            s = static_cast<Square>(MoveList::movePriorityTable[i]);
+            s = MoveList::movePriorityTable[i];
             if (position->board[s]& (them << PLAYER_SHIFT)) {
                 if (rule.allowRemovePieceInMill || !position->in_how_many_mills(s, NOBODY)) {
                     *cur++ = ((Move)-s);
