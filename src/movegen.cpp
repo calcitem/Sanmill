@@ -20,11 +20,8 @@
 #include <random>
 
 #include "movegen.h"
-#include "misc.h"
-#include "option.h"
-#include "types.h"
-#include "search.h"
 #include "position.h"
+#include "option.h"
 
 void MoveList::create()
 {
@@ -285,30 +282,24 @@ void MoveList::shuffle()
 }
 
 
+/// generate generates all the legal moves in the given position
 
-/// generate<LEGAL> generates all the legal moves in the given position
-
-//template<>
-ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
+ExtMove *generate(Position *position, ExtMove *moveList)
 {
     Square s;
 
-    Color us = position->sideToMove;
+    Color us = position->side_to_move();
     Color them = ~us;
 
-   const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
+    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
 
-    //moves.clear();
     ExtMove *cur = moveList;
 
     switch (position->action) {
     case ACTION_SELECT:
     case ACTION_PLACE:
-        // 对于摆子阶段
-        if (position->phase & (PHASE_PLACING | PHASE_READY)) {
-            for (Square i : MoveList::movePriorityTable) {
-                s = i;
-
+         if (position->phase & (PHASE_PLACING | PHASE_READY)) {
+            for (auto s : MoveList::movePriorityTable) {
                 if (position->board[s]) {
                     continue;
                 }
@@ -317,14 +308,14 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
                 moves.push_back((Move)s);
 #else // MCTS_AI
                 if (position->phase != PHASE_READY) {
-                    *cur++ = ((Move)s);
+                    *cur++ = (Move)s;
                 } else {
 #ifdef FIRST_MOVE_STAR_PREFERRED
                     if (Position::is_star_square(s)) {
                         moves.push_back((Move)s);
                     }
 #else
-                    *cur++ = ((Move)s);
+                    *cur++ = (Move)s;
 #endif
                 }
 #endif // MCTS_AI
@@ -349,7 +340,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
                         newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);
                         if (newSquare && !position->board[newSquare]) {
                             Move m = make_move(oldSquare, newSquare);
-                            *cur++ = ((Move)m);
+                            *cur++ = (Move)m;
                         }
                     }
                 } else {
@@ -357,7 +348,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
                         if (!position->board[newSquare]) {
                             Move m = make_move(oldSquare, newSquare);
-                            *cur++ = ((Move)m);
+                            *cur++ = (Move)m;
                         }
                     }
                 }
@@ -370,7 +361,7 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 s = MoveList::movePriorityTable[i];
                 if (position->board[s]& (them << PLAYER_SHIFT)) {
-                    *cur++ = ((Move)-s);
+                    *cur++ = (Move)-s;
                 }
             }
             break;
@@ -379,9 +370,9 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
         // not is all in mills
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             s = MoveList::movePriorityTable[i];
-            if (position->board[s]& (them << PLAYER_SHIFT)) {
+            if (position->board[s] & (them << PLAYER_SHIFT)) {
                 if (rule.allowRemovePieceInMill || !position->in_how_many_mills(s, NOBODY)) {
-                    *cur++ = ((Move)-s);
+                    *cur++ = (Move)-s;
                 }
             }
         }
@@ -394,4 +385,3 @@ ExtMove *generate(/* TODO: const */ Position *position, ExtMove *moveList)
 
     return cur;
 }
-
