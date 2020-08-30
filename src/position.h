@@ -17,26 +17,24 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef POSITION_H
-#define POSITION_H
+#ifndef POSITION_H_INCLUDED
+#define POSITION_H_INCLUDED
 
 #include <cassert>
 #include <deque>
 #include <memory> // For std::unique_ptr
 #include <string>
-#include <cstring>
 
-#include "config.h"
 #include "types.h"
 #include "rule.h"
 #include "search.h"
 
-using namespace std;
 
 class AIAlgorithm;
 class Node;
 
-extern string tips;
+extern std::string tips;
+
 
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
@@ -44,7 +42,6 @@ extern string tips;
 
 struct StateInfo
 {
-
     // Copied when making a move
     int    rule50;
     int    pliesFromNull;
@@ -129,9 +126,9 @@ public:
     int get_step() const;
     enum Phase get_phase() const;
     enum Action get_action() const;
-    const string get_tips() const;
+    const std::string get_tips() const;
     const char *cmd_line() const;
-    const vector<string> *cmd_list() const;
+    const std::vector<std::string> *cmd_list() const;
 
     int get_mobility_diff(bool includeFobidden);
 
@@ -202,7 +199,7 @@ public:
     Square currentSquare;
     int nPlayed{ 0 };
 
-    vector <string> cmdlist;
+    std::vector <std::string> cmdlist;
     char cmdline[64]{ '\0' };
 
     // Note: [0] is sum of Black and White
@@ -317,7 +314,7 @@ inline enum Action Position::get_action() const
     return action;
 }
 
-inline const string Position::get_tips() const
+inline const std::string Position::get_tips() const
 {
     return tips;
 }
@@ -327,7 +324,7 @@ inline const char *Position::cmd_line() const
     return cmdline;
 }
 
-inline const vector<string> *Position::cmd_list() const
+inline const std::vector<std::string> *Position::cmd_list() const
 {
     return &cmdlist;
 }
@@ -342,4 +339,4 @@ inline void Position::set_start_time(int stimeb)
     startTime = stimeb;
 }
 
-#endif /* POSITION_H */
+#endif // #ifndef POSITION_H_INCLUDED
