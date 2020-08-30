@@ -51,15 +51,12 @@ inline bool operator<(const ExtMove &f, const ExtMove &s)
     return f.value < s.value;
 }
 
-//template <GenType>
 ExtMove *generate(Position *pos, ExtMove *moveList);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.
-//template<GenType T>
-class MoveList
+struct MoveList
 {
-public:
     MoveList() = delete;
 
     MoveList &operator=(const MoveList &) = delete;
@@ -70,7 +67,7 @@ public:
     // TODO: Move to private
     inline static Move moveTable[SQUARE_NB][MD_NB] = { {MOVE_NONE} };
 
-    inline static std::array<Move, FILE_NB * RANK_NB> movePriorityTable{
+    inline static std::array<Move, FILE_NB * RANK_NB> movePriorityTable {
         (Move)8, (Move)9, (Move)10, (Move)11, (Move)12, (Move)13, (Move)14, (Move)15,
         (Move)16, (Move)17, (Move)18, (Move)19, (Move)20, (Move)21, (Move)22, (Move)23,
         (Move)24, (Move)25, (Move)26, (Move)27, (Move)28, (Move)29, (Move)30, (Move)31,
