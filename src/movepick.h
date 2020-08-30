@@ -55,6 +55,7 @@ public:
     Move next_move();
 
 //private:
+    template<PickType T, typename Pred> Move select(Pred);
     void score();
 
     ExtMove *begin()
@@ -67,7 +68,7 @@ public:
         return endMoves;
     }
 
-    Position *position;
+    Position *pos;
     ExtMove *cur, *endMoves;
     ExtMove moves[MAX_MOVES] { MOVE_NONE };
 

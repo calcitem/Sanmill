@@ -18,9 +18,9 @@
 */
 
 #include "movepick.h"
-#include "option.h"
-#include "types.h"
-#include "config.h"
+
+// namespace
+// {
 
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
@@ -36,9 +36,19 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
         }
 }
 
-MovePicker::MovePicker(Position *pos)
+//}
+
+
+/// Constructors of the MovePicker class. As arguments we pass information
+/// to help it to return the (presumably) good moves first, to decide which
+/// moves to return (in the quiescence search, for instance, we only want to
+/// search captures, promotions, and some checks) and how important good move
+/// ordering is at the current node.
+
+/// MovePicker constructor for the main search
+MovePicker::MovePicker(Position *p)
 {
-    position = pos;
+    pos = p;
     cur = moves;
 
 #ifdef HOSTORY_HEURISTIC
@@ -57,7 +67,7 @@ void MovePicker::score()
         Square sqsrc = from_sq(m);
         
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need sqsrc to judge
-        int nOurMills = position->in_how_many_mills(sq, position->sideToMove, sqsrc);
+        int nOurMills = pos->in_how_many_mills(sq, pos->sideToMove, sqsrc);
         int nTheirMills = 0;
 
     #ifdef SORT_MOVE_WITH_HUMAN_KNOWLEDGES
@@ -68,17 +78,17 @@ void MovePicker::score()
     #ifdef ALPHABETA_AI
                 cur->value += RATING_ONE_MILL * nOurMills;
     #endif
-            } else if (position->get_phase() == PHASE_PLACING) {
+            } else if (pos->get_phase() == PHASE_PLACING) {
                 // placing phrase, check if place sq can block their close mill
-                nTheirMills = position->in_how_many_mills(sq, position->them);
+                nTheirMills = pos->in_how_many_mills(sq, pos->them);
     #ifdef ALPHABETA_AI
                 cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
     #endif
             }
     #if 1
-            else if (position->get_phase() == PHASE_MOVING) {
+            else if (pos->get_phase() == PHASE_MOVING) {
                 // moving phrase, check if place sq can block their close mill
-                nTheirMills = position->in_how_many_mills(sq, position->them);
+                nTheirMills = pos->in_how_many_mills(sq, pos->them);
 
                 if (nTheirMills) {
                     int nOurPieces = 0;
@@ -86,7 +96,7 @@ void MovePicker::score()
                     int nBanned = 0;
                     int nEmpty = 0;
 
-                    position->surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
+                    pos->surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
                     if (sq % 2 == 0 && nTheirPieces == 3) {
@@ -104,7 +114,7 @@ void MovePicker::score()
             // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)
     #ifdef ALPHABETA_AI
             if (rule.nTotalPiecesEachSide == 12 &&
-                position->getPiecesOnBoardCount(WHITE) < 2 &&    // patch: only when white's 2nd move
+                pos->getPiecesOnBoardCount(WHITE) < 2 &&    // patch: only when white's 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
             }
@@ -115,7 +125,7 @@ void MovePicker::score()
             int nBanned = 0;
             int nEmpty = 0;
 
-            position->surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
+            pos->surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
 
     #ifdef ALPHABETA_AI
             if (nOurMills > 0) {
@@ -133,7 +143,7 @@ void MovePicker::score()
             }
 
             // remove point is in their mill
-            nTheirMills = position->in_how_many_mills(sq, position->them);
+            nTheirMills = pos->in_how_many_mills(sq, pos->them);
             if (nTheirMills) {
                 if (nTheirPieces >= 2) {
                     // if nearby their piece, prefer do not remove
