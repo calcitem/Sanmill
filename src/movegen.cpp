@@ -299,23 +299,23 @@ ExtMove *generate(Position *position, ExtMove *moveList)
     case ACTION_SELECT:
     case ACTION_PLACE:
          if (position->phase & (PHASE_PLACING | PHASE_READY)) {
-            for (auto s : MoveList::movePriorityTable) {
-                if (position->board[s]) {
+            for (auto i : MoveList::movePriorityTable) {
+                if (position->board[i]) {
                     continue;
                 }
 
 #ifdef MCTS_AI
-                moves.push_back((Move)s);
+                moves.push_back((Move)i);
 #else // MCTS_AI
                 if (position->phase != PHASE_READY) {
-                    *cur++ = (Move)s;
+                    *cur++ = (Move)i;
                 } else {
 #ifdef FIRST_MOVE_STAR_PREFERRED
                     if (Position::is_star_square(s)) {
                         moves.push_back((Move)s);
                     }
 #else
-                    *cur++ = (Move)s;
+                    *cur++ = (Move)i;
 #endif
                 }
 #endif // MCTS_AI
