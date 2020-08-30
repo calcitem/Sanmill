@@ -730,23 +730,18 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
     }
 
     MovePicker mp(pos);
-    mp.endMoves = generate(pos, mp.moves);
-    mp.score();
+    Move nextMove = mp.next_move();
+    int moveCount = mp.move_count();
 
-    partial_insertion_sort(mp.moves, mp.endMoves, -100);
-    ExtMove *cur = mp.moves;
-
-    int nchild = mp.endMoves - cur;
-
-    if (nchild == 1 && depth == originDepth) {
-        bestMove = mp.moves[0].move;
+    if (moveCount == 1 && depth == originDepth) {
+        bestMove = nextMove;
         bestValue = VALUE_UNIQUE;
         return bestValue;
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef PREFETCH_SUPPORT
-    for (int i = 0; i < nchild; i++) {
+    for (int i = 0; i < moveCount; i++) {
         TranspositionTable::prefetch(pos->next_primary_key(mp.moves[i].move));
     }
 
@@ -758,14 +753,14 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
 #endif // PREFETCH_SUPPORT
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-    for (int i = 0; i < nchild; i++) {
+    for (int i = 0; i < moveCount; i++) {
         ss.push(*(pos));
         Color before = pos->sideToMove;
         Move move = mp.moves[i].move;
         pos->do_move(move);
         Color after = pos->sideToMove;
 
-        if (gameOptions.getDepthExtension() == true && nchild == 1) {
+        if (gameOptions.getDepthExtension() == true && moveCount == 1) {
             epsilon = 1;
         } else {
             epsilon = 0;

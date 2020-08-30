@@ -69,8 +69,16 @@ public:
     }
 
     Position *pos;
+    Move ttMove { MOVE_NONE };
     ExtMove *cur, *endMoves;
     ExtMove moves[MAX_MOVES] { MOVE_NONE };
+
+    int moveCount{ 0 };
+
+    int move_count()
+    {
+        return moveCount;
+    }
 
 #ifdef HOSTORY_HEURISTIC
     // TODO: Fix size
