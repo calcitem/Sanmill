@@ -338,11 +338,10 @@ const char* AIAlgorithm::nextMove()
             foundBest = true;
         }
 
-        loggerDebug("[%.2d] %d\t%s\t%d\t%d\t%u %c\n", moveIndex,
+        loggerDebug("[%.2d] %d\t%s\t%d\t%u %c\n", moveIndex,
                     root->children[i]->move,
                     moveToCommand(root->children[i]->move),
                     root->children[i]->value,
-                    root->children[i]->rating,
 #ifdef HOSTORY_HEURISTIC
                     root->children[i]->score,
 #else

@@ -66,13 +66,13 @@ void MovePicker::score()
             // all phrase, check if place sq can close mill
             if (nOurMills > 0) {
     #ifdef ALPHABETA_AI
-                cur->rating += static_cast<Rating>(RATING_ONE_MILL * nOurMills);
+                cur->value += RATING_ONE_MILL * nOurMills;
     #endif
             } else if (position->get_phase() == PHASE_PLACING) {
                 // placing phrase, check if place sq can block their close mill
                 nTheirMills = position->in_how_many_mills(sq, position->them);
     #ifdef ALPHABETA_AI
-                cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nTheirMills);
+                cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
     #endif
             }
     #if 1
@@ -90,23 +90,23 @@ void MovePicker::score()
 
     #ifdef ALPHABETA_AI
                     if (sq % 2 == 0 && nTheirPieces == 3) {
-                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nTheirMills);
+                        cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
                     } else if (sq % 2 == 1 && nTheirPieces == 2 && rule.nTotalPiecesEachSide == 12) {
-                        cur->rating += static_cast<Rating>(RATING_BLOCK_ONE_MILL * nTheirMills);
+                        cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
                     }
     #endif
                 }
             }
     #endif
 
-            //newNode->rating += static_cast<Rating>(nBanned);  // placing phrase, place nearby ban point
+            //newNode->value += nBanned;  // placing phrase, place nearby ban point
 
             // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)
     #ifdef ALPHABETA_AI
             if (rule.nTotalPiecesEachSide == 12 &&
                 position->getPiecesOnBoardCount(WHITE) < 2 &&    // patch: only when white's 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
-                cur->rating += RATING_STAR_SQUARE;
+                cur->value += RATING_STAR_SQUARE;
             }
     #endif
         } else { // Remove
@@ -120,14 +120,14 @@ void MovePicker::score()
     #ifdef ALPHABETA_AI
             if (nOurMills > 0) {
                 // remove point is in our mill
-                //newNode->rating += static_cast<Rating>(RATING_REMOVE_ONE_MILL * nOurMills);
+                //newNode->value += RATING_REMOVE_ONE_MILL * nOurMills;
 
                 if (nTheirPieces == 0) {
                     // if remove point nearby has no their stone, preferred.
-                    cur->rating += static_cast<Rating>(1);
+                    cur->value += 1;
                     if (nOurPieces > 0) {
                         // if remove point nearby our stone, preferred
-                        cur->rating += static_cast<Rating>(nOurPieces);
+                        cur->value += nOurPieces;
                     }
                 }
             }
@@ -137,17 +137,17 @@ void MovePicker::score()
             if (nTheirMills) {
                 if (nTheirPieces >= 2) {
                     // if nearby their piece, prefer do not remove
-                    cur->rating -= static_cast<Rating>(nTheirPieces);
+                    cur->value -= nTheirPieces;
 
                     if (nOurPieces == 0) {
                         // if nearby has no our piece, more prefer do not remove
-                        cur->rating -= static_cast<Rating>(1);
+                        cur->value -= 1;
                     }
                 }
             }
 
             // prefer remove piece that mobility is strong 
-            cur->rating += static_cast<Rating>(nEmpty);
+            cur->value += nEmpty;
     #endif
         }
     #endif // SORT_MOVE_WITH_HUMAN_KNOWLEDGES

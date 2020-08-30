@@ -29,8 +29,7 @@ class Position;
 struct ExtMove
 {
     Move move;
-    Value value;
-    Rating rating;
+    int value;
 
     operator Move() const
     {
@@ -47,10 +46,9 @@ struct ExtMove
     operator float() const = delete;
 };
 
-inline bool operator < (const ExtMove &first, const ExtMove &second)
+inline bool operator<(const ExtMove &f, const ExtMove &s)
 {
-    //return first.value < second.value;
-    return first.rating < second.rating;
+    return f.value < s.value;
 }
 
 //template <GenType>
