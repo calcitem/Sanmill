@@ -30,32 +30,9 @@
 namespace Trace
 {
 
-enum Tracing
-{
-    NO_TRACE, TRACE
-};
-
-enum Term
-{ // The first 8 entries are reserved for PieceType
-    MATERIAL = 8, IMBALANCE, MOBILITY, THREAT, PASSED, SPACE, INITIATIVE, TOTAL, TERM_NB
-};
-
-Score scores[TERM_NB][COLOR_NB];
-
 double to_cp(Value v)
 {
     return double(v) / StoneValue;
-}
-
-void add(int idx, Color c, Score s)
-{
-    scores[idx][c] = s;
-}
-
-void add(int idx, Score w, Score b = 0)
-{
-    scores[idx][WHITE] = w;
-    scores[idx][BLACK] = b;
 }
 
 std::ostream &operator<<(std::ostream &os, Score s)
@@ -64,26 +41,32 @@ std::ostream &operator<<(std::ostream &os, Score s)
         << std::setw(5) << to_cp(eg_value(s));
     return os;
 }
-
-std::ostream &operator<<(std::ostream &os, Term t)
-{
-#if 0
-    if (t == MATERIAL || t == IMBALANCE || t == INITIATIVE || t == TOTAL)
-        os << " ----  ----" << " | " << " ----  ----";
-    else
-        os << scores[t][WHITE] << " | " << scores[t][BLACK];
-
-    os << " | " << scores[t][WHITE] - scores[t][BLACK] << "\n";
-#endif
-    t = t;
-    return os;
-}
 }
 
 using namespace Trace;
 
-#ifdef ALPHABETA_AI
-Value Eval::evaluate(Position *pos)
+namespace
+{
+
+class Evaluation
+{
+public:
+    Evaluation() = delete;
+    explicit Evaluation(Position *p) : pos(p)
+    {
+    }
+    Evaluation &operator=(const Evaluation &) = delete;
+    Value value();
+
+private:
+    Position *pos;
+};
+
+// Evaluation::value() is the main function of the class. It computes the various
+// parts of the evaluation and returns the value of the position from the point
+// of view of the side to move.
+
+Value Evaluation::value()
 {
     Value value = VALUE_ZERO;
 
@@ -120,7 +103,7 @@ Value Eval::evaluate(Position *pos)
 
     case PHASE_MOVING:
         value = pos->nPiecesOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
-                pos->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
+            pos->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         value += pos->get_mobility_diff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
@@ -151,8 +134,8 @@ Value Eval::evaluate(Position *pos)
                 value = VALUE_DRAW;
             }
         } else if (pos->action == ACTION_SELECT &&
-            pos->is_all_surrounded() &&
-            rule.isLoseButNotChangeTurnWhenNoWay) {
+                   pos->is_all_surrounded() &&
+                   rule.isLoseButNotChangeTurnWhenNoWay) {
             Value delta = pos->sideToMove == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
@@ -175,9 +158,19 @@ Value Eval::evaluate(Position *pos)
 
     return value;
 }
+
+} // namespace
+
+
+/// evaluate() is the evaluator for the outer world. It returns a static
+/// evaluation of the position from the point of view of the side to move.
+
+Value Eval::evaluate(Position *pos)
+{
+#ifdef ALPHABETA_AI
+    return Evaluation(pos).value();
 #endif  // ALPHABETA_AI
-
-
+}
 
 /// trace() is like evaluate(), but instead of returning a value, it returns
 /// a string (suitable for outputting to stdout) that contains the detailed

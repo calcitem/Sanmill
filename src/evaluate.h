@@ -17,10 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef EVALUATE_H
-#define EVALUATE_H
-
-#include "config.h"
+#ifndef EVALUATE_H_INCLUDED
+#define EVALUATE_H_INCLUDED
 
 #include <string>
 
@@ -33,7 +31,6 @@ namespace Eval {
 std::string trace(Position *pos);
 
 Value evaluate(Position *pos);
-
 };
 
-#endif /* EVALUATE_H */
+#endif // #ifndef EVALUATE_H_INCLUDED
