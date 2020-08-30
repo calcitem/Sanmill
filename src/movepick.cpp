@@ -47,10 +47,8 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
 
 /// MovePicker constructor for the main search
 MovePicker::MovePicker(Position *p)
+    : pos(p)
 {
-    pos = p;
-    cur = moves;
-
 #ifdef HOSTORY_HEURISTIC
     clearHistoryScore();
 #endif
@@ -60,6 +58,8 @@ MovePicker::MovePicker(Position *p)
 /// for sorting.
 void MovePicker::score()
 {
+    cur = moves;
+
     while (cur++->move != MOVE_NONE) {
         Move m = cur->move;
 
@@ -109,7 +109,7 @@ void MovePicker::score()
             }
     #endif
 
-            //newNode->value += nBanned;  // placing phrase, place nearby ban point
+            //cur->value += nBanned;  // placing phrase, place nearby ban point
 
             // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)
     #ifdef ALPHABETA_AI
@@ -130,7 +130,7 @@ void MovePicker::score()
     #ifdef ALPHABETA_AI
             if (nOurMills > 0) {
                 // remove point is in our mill
-                //newNode->value += RATING_REMOVE_ONE_MILL * nOurMills;
+                //cur->value += RATING_REMOVE_ONE_MILL * nOurMills;
 
                 if (nTheirPieces == 0) {
                     // if remove point nearby has no their stone, preferred.
