@@ -488,16 +488,3 @@ void bindThisThread(size_t idx)
 #endif
 
 } // namespace WinProcGroup
-
-///////////////////////////////////////////////////////////////////////////////
-
-#include <QCoreApplication>
-
-QString getAppFileName()
-{
-    QString filename;
-    filename = QCoreApplication::applicationFilePath().mid(QCoreApplication::applicationDirPath().size() + 1);
-    filename = filename.mid(0, filename.size() - QString(".exe").size());
-
-    return filename;
-}

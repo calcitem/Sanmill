@@ -163,8 +163,6 @@ inline uint64_t rand56()
     return rand64() << 8;
 }
 
-extern QString getAppFileName();
-
 void start_logger(const std::string &fname);
 
 #endif // #ifndef MISC_H_INCLUDED

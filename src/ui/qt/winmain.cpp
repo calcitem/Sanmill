@@ -17,9 +17,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets/QApplication>
-#include <QDesktopWidget>
-
 #include "gamewindow.h"
 #include "misc.h"
 #include "bitboard.h"
@@ -27,8 +24,21 @@
 QString APP_FILENAME_DEFAULT = "MillGame";
 
 #ifdef  QT_UI
+#include <QtWidgets/QApplication>
+#include <QDesktopWidget>
+#include <QCoreApplication>
+
 #ifndef TRAINING_MODE
 #ifndef UCT_DEMO
+
+QString getAppFileName()
+{
+    QString filename;
+    filename = QCoreApplication::applicationFilePath().mid(QCoreApplication::applicationDirPath().size() + 1);
+    filename = filename.mid(0, filename.size() - QString(".exe").size());
+
+    return filename;
+}
 
 int main(int argc, char *argv[])
 {
