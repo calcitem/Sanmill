@@ -660,14 +660,14 @@ out:
     return true;
 }
 
-bool Position::_placePiece(File file, Rank rank)
+bool Position::place_piece(File file, Rank rank)
 {
     Square s = Position::polar_to_square(file, rank);
 
     return place_piece(s, true);
 }
 
-bool Position::_removePiece(File file, Rank rank)
+bool Position::remove_piece(File file, Rank rank)
 {
     Square s = Position::polar_to_square(file, rank);
 
@@ -802,7 +802,7 @@ bool Position::select_piece(Square s)
     return false;
 }
 
-bool Position::_selectPiece(File file, Rank rank)
+bool Position::select_piece(File file, Rank rank)
 {
     return select_piece(Position::polar_to_square(file, rank));
 }
@@ -865,8 +865,8 @@ bool Position::command(const char *cmd)
                 tm = mm * 60 + ss;
         }
 
-        if (_selectPiece(file1, rank1)) {
-            return _placePiece(file2, rank2);
+        if (select_piece(file1, rank1)) {
+            return place_piece(file2, rank2);
         }
 
         return false;
@@ -878,7 +878,7 @@ bool Position::command(const char *cmd)
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _removePiece(file1, rank1);
+        return remove_piece(file1, rank1);
     }
 
     args = sscanf(cmd, "(%1u,%1u) %2u:%2u", &file1, &rank1, &mm, &ss);
@@ -887,7 +887,7 @@ bool Position::command(const char *cmd)
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return _placePiece(file1, rank1);
+        return place_piece(file1, rank1);
     }
 
     args = sscanf(cmd, "Player%1u give up!", &t);

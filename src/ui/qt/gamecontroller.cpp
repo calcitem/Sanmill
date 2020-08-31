@@ -783,7 +783,7 @@ bool GameController::actionPiece(QPointF pos)
 
     switch (position.get_action()) {
     case ACTION_PLACE:
-        if (position._placePiece(file, rank)) {
+        if (position.place_piece(file, rank)) {
             if (position.get_action() == ACTION_REMOVE) {
                 // 播放成三音效
                 playSound(GAME_SOUND_MILL, position.side_to_move());
@@ -802,7 +802,7 @@ bool GameController::actionPiece(QPointF pos)
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (position._selectPiece(file, rank)) {
+        if (position.select_piece(file, rank)) {
             // 播放选子音效
             playSound(GAME_SOUND_SELECT, position.side_to_move());
             result = true;
@@ -813,7 +813,7 @@ bool GameController::actionPiece(QPointF pos)
         break;
 
     case ACTION_REMOVE:
-        if (position._removePiece(file, rank)) {
+        if (position.remove_piece(file, rank)) {
             // 播放音效
             playSound(GAME_SOUND_REMOVE, position.side_to_move());
             result = true;

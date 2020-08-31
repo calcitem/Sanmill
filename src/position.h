@@ -83,12 +83,12 @@ public:
 
     // Properties of moves
     bool select_piece(Square s);
+    bool select_piece(File file, Rank rank);
     bool place_piece(Square s, bool updateCmdlist = false);
+    bool place_piece(File file, Rank rank);
     bool remove_piece(Square s, bool updateCmdlist = false);
+    bool remove_piece(File file, Rank rank);
     bool move_piece(Square from, Square to);
-    bool _selectPiece(File file, Rank rank);
-    bool _placePiece(File file, Rank rank);
-    bool _removePiece(File file, Rank rank);
 
     // Doing and undoing moves
     bool do_move(Move m);
