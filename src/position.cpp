@@ -1743,7 +1743,7 @@ bool Position::is_star_square(Square s)
             s == 22);
 }
 
-void Position::mirror(int32_t move_, Square s, bool cmdChange /*= true*/)
+void Position::mirror(bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1759,14 +1759,14 @@ void Position::mirror(int32_t move_, Square s, bool cmdChange /*= true*/)
 
     uint64_t llp[3] = { 0 };
 
-    if (move_ < 0) {
-        f = (-move_) / RANK_NB;
-        r = (-move_) % RANK_NB;
+    if (move < 0) {
+        f = (-move) / RANK_NB;
+        r = (-move) % RANK_NB;
         r = (RANK_NB - r) % RANK_NB;
-        move_ = -(f * RANK_NB + r);
+        move = static_cast<Move>(-(f * RANK_NB + r));
     } else {
-        llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
-        llp[1] = to_sq((Move)move_);
+        llp[0] = static_cast<uint64_t>(from_sq((Move)move));
+        llp[1] = to_sq((Move)move);
 
         for (i = 0; i < 2; i++) {
             f = static_cast<int>(llp[i]) / RANK_NB;
@@ -1775,14 +1775,14 @@ void Position::mirror(int32_t move_, Square s, bool cmdChange /*= true*/)
             llp[i] = (static_cast<uint64_t>(f) * RANK_NB + r);
         }
 
-        move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
+        move = static_cast<Move>(((llp[0] << 8) | llp[1]));
     }
 
-    if (s != 0) {
-        f = s / RANK_NB;
-        r = s % RANK_NB;
+    if (currentSquare != 0) {
+        f = currentSquare / RANK_NB;
+        r = currentSquare % RANK_NB;
         r = (RANK_NB - r) % RANK_NB;
-        s = static_cast<Square>(f * RANK_NB + r);
+        currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
@@ -1852,7 +1852,7 @@ void Position::mirror(int32_t move_, Square s, bool cmdChange /*= true*/)
     }
 }
 
-void Position::turn(int32_t move_, Square s, bool cmdChange /*= true*/)
+void Position::turn(bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1866,19 +1866,19 @@ void Position::turn(int32_t move_, Square s, bool cmdChange /*= true*/)
 
     uint64_t llp[3] = { 0 };
 
-    if (move_ < 0) {
-        f = (-move_) / RANK_NB;
-        r = (-move_) % RANK_NB;
+    if (move < 0) {
+        f = (-move) / RANK_NB;
+        r = (-move) % RANK_NB;
 
         if (f == 1)
             f = FILE_NB;
         else if (f == FILE_NB)
             f = 1;
 
-        move_ = -(f * RANK_NB + r);
+        move = static_cast<Move>(-(f * RANK_NB + r));
     } else {
-        llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
-        llp[1] = to_sq((Move)move_);
+        llp[0] = static_cast<uint64_t>(from_sq((Move)move));
+        llp[1] = to_sq((Move)move);
 
         for (i = 0; i < 2; i++) {
             f = static_cast<int>(llp[i]) / RANK_NB;
@@ -1892,19 +1892,19 @@ void Position::turn(int32_t move_, Square s, bool cmdChange /*= true*/)
             llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
         }
 
-        move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
+        move = static_cast<Move>(((llp[0] << 8) | llp[1]));
     }
 
-    if (s != 0) {
-        f = s / RANK_NB;
-        r = s % RANK_NB;
+    if (currentSquare != 0) {
+        f = currentSquare / RANK_NB;
+        r = currentSquare % RANK_NB;
 
         if (f == 1)
             f = FILE_NB;
         else if (f == FILE_NB)
             f = 1;
 
-        s = static_cast<Square>(f * RANK_NB + r);
+        currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
@@ -2015,7 +2015,7 @@ void Position::turn(int32_t move_, Square s, bool cmdChange /*= true*/)
     }
 }
 
-void Position::rotate(int degrees, int32_t move_, Square s, bool cmdChange /*= true*/)
+void Position::rotate(int degrees, bool cmdChange /*= true*/)
 {
     degrees = degrees % 360;
 
@@ -2069,14 +2069,14 @@ void Position::rotate(int degrees, int32_t move_, Square s, bool cmdChange /*= t
 
     uint64_t llp[3] = { 0 };
 
-    if (move_ < 0) {
-        f = (-move_) / RANK_NB;
-        r = (-move_) % RANK_NB;
+    if (move < 0) {
+        f = (-move) / RANK_NB;
+        r = (-move) % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
-        move_ = -(f * RANK_NB + r);
+        move = static_cast<Move>(-(f * RANK_NB + r));
     } else {
-        llp[0] = static_cast<uint64_t>(from_sq((Move)move_));
-        llp[1] = to_sq((Move)move_);
+        llp[0] = static_cast<uint64_t>(from_sq((Move)move));
+        llp[1] = to_sq((Move)move);
         f = static_cast<int>(llp[0]) / RANK_NB;
         r = static_cast<int>(llp[0]) % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
@@ -2085,14 +2085,14 @@ void Position::rotate(int degrees, int32_t move_, Square s, bool cmdChange /*= t
         r = static_cast<int>(llp[1]) % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
         llp[1] = static_cast<uint64_t>(f * RANK_NB + r);
-        move_ = static_cast<int16_t>(((llp[0] << 8) | llp[1]));
+        move = static_cast<Move>(((llp[0] << 8) | llp[1]));
     }
 
-    if (s != 0) {
-        f = s / RANK_NB;
-        r = s % RANK_NB;
+    if (currentSquare != 0) {
+        f = currentSquare / RANK_NB;
+        r = currentSquare % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
-        s = static_cast<Square>(f * RANK_NB + r);
+        currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {

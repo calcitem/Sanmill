@@ -145,9 +145,9 @@ public:
     void set_tips();
     Color get_winner() const;
 
-    void mirror(int32_t move_, Square s, bool cmdChange = true);
-    void turn(int32_t move_, Square s, bool cmdChange = true);
-    void rotate(int degrees, int32_t move_, Square s, bool cmdChange = true);
+    void mirror(bool cmdChange = true);
+    void turn(bool cmdChange = true);
+    void rotate(int degrees, bool cmdChange = true);
 
     void create_mill_table();
     int add_mills(Square s);

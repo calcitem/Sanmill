@@ -549,8 +549,8 @@ void GameController::flip()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror(position.move, position.currentSquare);
-    position.rotate(180, position.move, position.currentSquare);
+    position.mirror();
+    position.rotate(180);
 
     // 更新棋谱
     int row = 0;
@@ -575,7 +575,7 @@ void GameController::mirror()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror(position.move, position.currentSquare);
+    position.mirror();
 
     // 更新棋谱
     int row = 0;
@@ -603,7 +603,7 @@ void GameController::turnRight()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(-90, position.move, position.currentSquare);
+    position.rotate(-90);
 
     // 更新棋谱
     int row = 0;
@@ -629,7 +629,7 @@ void GameController::turnLeft()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(90, position.move, position.currentSquare);
+    position.rotate(90);
 
     // 更新棋谱
     int row = 0;
