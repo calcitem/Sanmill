@@ -1180,10 +1180,10 @@ bool GameController::updateScence(Position *p)
         if (j == (RANK_NB) * (FILE_NB + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & B_STONE) {
-                pos = (key - 0x11 < nTotalPieces / 2 - p->getPiecesInHandCount(BLACK)) ?
+                pos = (key - 0x11 < nTotalPieces / 2 - p->count<IN_HAND>(BLACK)) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
-                pos = (key - 0x21 < nTotalPieces / 2 - p->getPiecesInHandCount(WHITE)) ?
+                pos = (key - 0x21 < nTotalPieces / 2 - p->count<IN_HAND>(WHITE)) ?
                         scene.pos_p1_g : scene.pos_p2;
             }
 

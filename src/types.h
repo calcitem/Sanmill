@@ -228,7 +228,10 @@ enum PieceType : uint16_t
     WHITE_STONE = 2,
     BAN = 3,
     ALL_PIECES = 0,
-    PIECE_TYPE_NB = 4
+    PIECE_TYPE_NB = 4,
+
+    IN_HAND = 0x10,
+    ON_BOARD = 0x20,
 };
 
 enum Piece : uint8_t

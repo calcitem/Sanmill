@@ -77,10 +77,9 @@ public:
 
     // Position representation
     Piece piece_on(Square s) const;
-    bool empty(Square s) const;
     Color color_on(Square s);
-    int getPiecesInHandCount(Color c) const;
-    int getPiecesOnBoardCount(Color c) const;
+    bool empty(Square s) const;
+    template<PieceType Pt> int count(Color c) const;
 
     // Properties of moves
     bool select_piece(Square s);
@@ -275,14 +274,15 @@ inline std::string Position::char_to_string(char ch)
     }
 }
 
-inline int Position::getPiecesInHandCount(Color c) const
+template<PieceType Pt> inline int Position::count(Color c) const
 {
-    return nPiecesInHand[c];
-}
+    if (Pt == ON_BOARD) {
+        return nPiecesOnBoard[c];
+    } else if (Pt == IN_HAND) {
+        return nPiecesInHand[c];
+    }
 
-inline int Position::getPiecesOnBoardCount(Color c) const
-{
-    return nPiecesOnBoard[c];
+    return 0;
 }
 
 inline Piece *Position::get_board() const

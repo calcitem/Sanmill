@@ -121,15 +121,15 @@ Depth AIAlgorithm::changeDepth()
 
     if (pos->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12) {
-            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - pos->getPiecesInHandCount(BLACK) - pos->getPiecesInHandCount(WHITE)];
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE)];
         } else {
-            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - pos->getPiecesInHandCount(BLACK) - pos->getPiecesInHandCount(WHITE)];
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE)];
         }
     }
 
     if (pos->phase & PHASE_MOVING) {
-        int pb = pos->getPiecesOnBoardCount(BLACK);
-        int pw = pos->getPiecesOnBoardCount(WHITE);
+        int pb = pos->count<ON_BOARD>(BLACK);
+        int pw = pos->count<ON_BOARD>(WHITE);
 
         int pieces = pb + pw;
         int diff = pb - pw;

@@ -114,7 +114,7 @@ void MovePicker::score()
             // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)
     #ifdef ALPHABETA_AI
             if (rule.nTotalPiecesEachSide == 12 &&
-                pos->getPiecesOnBoardCount(WHITE) < 2 &&    // patch: only when white's 2nd move
+                pos->count<ON_BOARD>(WHITE) < 2 &&    // patch: only when white's 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
             }
