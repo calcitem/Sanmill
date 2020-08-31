@@ -29,12 +29,7 @@
 #include "rule.h"
 #include "search.h"
 
-
-class AIAlgorithm;
-class Node;
-
 extern std::string tips;
-
 
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
@@ -58,6 +53,7 @@ struct StateInfo
 /// 'draw by repetition' detection. Use a std::deque because pointers to
 /// elements are not invalidated upon list resizing.
 typedef std::unique_ptr<std::deque<StateInfo>> StateListPtr;
+
 
 /// Position class stores information regarding the board representation as
 /// pieces, side to move, hash keys, castling info, etc. Important methods are
