@@ -255,11 +255,7 @@ public:
     Move move { MOVE_NONE };
 };
 
-inline bool Position::empty(Square s) const
-{
-    return piece_on(s) == NO_PIECE;
-}
-
+extern std::ostream &operator<<(std::ostream &os, const Position &pos);
 
 inline Color Position::side_to_move() const
 {
@@ -271,6 +267,78 @@ inline Piece Position::piece_on(Square s) const
     assert(is_ok(s));
     return board[s];
 }
+
+inline bool Position::empty(Square s) const
+{
+    return piece_on(s) == NO_PIECE;
+}
+
+template<PieceType Pt> inline int Position::count(Color c) const
+{
+    if (Pt == ON_BOARD) {
+        return pieceCountOnBoard[c];
+    } else if (Pt == IN_HAND) {
+        return pieceCountInHand[c];
+    }
+
+    return 0;
+}
+
+inline Key Position::key()
+{
+    // TODO: Move to suitable function
+    return update_key_misc();
+}
+
+inline void Position::construct_key()
+{
+    st.key = 0;
+}
+
+inline int Position::game_ply() const
+{
+    return gamePly;
+}
+
+inline int Position::rule50_count() const
+{
+    return st.rule50;
+}
+
+inline Thread *Position::this_thread() const
+{
+    return thisThread;
+}
+
+inline bool Position::select_piece(File file, Rank rank)
+{
+    return select_piece(Position::polar_to_square(file, rank));
+}
+
+inline bool Position::put_piece(File file, Rank rank)
+{
+    Square s = Position::polar_to_square(file, rank);
+
+    return put_piece(s, true);
+}
+
+inline bool Position::remove_piece(File file, Rank rank)
+{
+    Square s = Position::polar_to_square(file, rank);
+
+    return remove_piece(s, 1);
+}
+
+inline bool Position::move_piece(Square from, Square to)
+{
+    if (select_piece(from)) {
+        return put_piece(to);
+    }
+
+    return false;
+}
+
+/// Mill Game
 
 inline char Position::color_to_char(Color color)
 {
@@ -284,17 +352,6 @@ inline std::string Position::char_to_string(char ch)
     } else {
         return "2";
     }
-}
-
-template<PieceType Pt> inline int Position::count(Color c) const
-{
-    if (Pt == ON_BOARD) {
-        return pieceCountOnBoard[c];
-    } else if (Pt == IN_HAND) {
-        return pieceCountInHand[c];
-    }
-
-    return 0;
 }
 
 inline Piece *Position::get_board() const

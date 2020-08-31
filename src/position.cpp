@@ -660,20 +660,6 @@ out:
     return true;
 }
 
-bool Position::put_piece(File file, Rank rank)
-{
-    Square s = Position::polar_to_square(file, rank);
-
-    return put_piece(s, true);
-}
-
-bool Position::remove_piece(File file, Rank rank)
-{
-    Square s = Position::polar_to_square(file, rank);
-
-    return remove_piece(s, 1);
-}
-
 bool Position::remove_piece(Square s, bool updateCmdlist)
 {
     if (phase & PHASE_NOTPLAYING)
@@ -797,20 +783,6 @@ bool Position::select_piece(Square s)
         action = ACTION_PLACE;
 
         return true;
-    }
-
-    return false;
-}
-
-bool Position::select_piece(File file, Rank rank)
-{
-    return select_piece(Position::polar_to_square(file, rank));
-}
-
-bool Position::move_piece(Square from, Square to)
-{
-    if (select_piece(from)) {
-        return put_piece(to);
     }
 
     return false;
@@ -1256,18 +1228,7 @@ time_t Position::get_elapsed_time(int us)
     return elapsedSeconds[us];
 }
 
-void Position::construct_key()
-{
-    st.key = 0;
-}
-
-Key Position::key()
-{
-    // TODO: Move to suitable function
-    return update_key_misc();
-}
-
-Key Position::update_key(Square s)
+inline Key Position::update_key(Square s)
 {
     // PieceType is board[s]
 
@@ -1282,7 +1243,7 @@ Key Position::update_key(Square s)
     return st.key;
 }
 
-Key Position::revert_key(Square s)
+inline Key Position::revert_key(Square s)
 {
     return update_key(s);
 }
@@ -1326,7 +1287,7 @@ Key Position::next_primary_key(Move m)
 
         return npKey;
     }
-    
+
     int pieceType = sideToMove;
     npKey ^= Zobrist::psq[pieceType][s];
 
