@@ -82,13 +82,8 @@ public:
     template<PieceType Pt> int count(Color c) const;
 
     // Properties of moves
-    bool select_piece(Square s);
-    bool select_piece(File file, Rank rank);
-    bool place_piece(Square s, bool updateCmdlist = false);
-    bool place_piece(File file, Rank rank);
-    bool remove_piece(Square s, bool updateCmdlist = false);
-    bool remove_piece(File file, Rank rank);
-    bool move_piece(Square from, Square to);
+    bool legal(Move m) const;
+    bool pseudo_legal(const Move m) const;
 
     // Doing and undoing moves
     bool do_move(Move m);
@@ -107,6 +102,16 @@ public:
 
     // Other properties of the position
     Color side_to_move() const;
+    int game_ply() const;
+    Thread *this_thread() const;
+    bool is_draw(int ply) const;
+    bool has_game_cycle(int ply) const;
+    bool has_repeated() const;
+    int rule50_count() const;
+
+    // Position consistency check, for debugging
+    bool pos_is_ok() const;
+    void flip();
 
     //////////////////////////////////////
 
@@ -143,7 +148,6 @@ public:
     void mirror(int32_t move_, Square s, bool cmdChange = true);
     void turn(int32_t move_, Square s, bool cmdChange = true);
     void rotate(int degrees, int32_t move_, Square s, bool cmdChange = true);
-    void flip();
 
     void create_mill_table();
     int add_mills(Square s);
@@ -170,6 +174,15 @@ public:
 // private:
       // Initialization helpers (used while setting up a position)
     void set_state(StateInfo *si) const;
+
+    // Other helpers
+    bool select_piece(Square s);
+    bool select_piece(File file, Rank rank);
+    bool put_piece(Square s, bool updateCmdlist = false);
+    bool put_piece(File file, Rank rank);
+    bool remove_piece(Square s, bool updateCmdlist = false);
+    bool remove_piece(File file, Rank rank);
+    bool move_piece(Square from, Square to);
 
     // Data members
     int gamePly;

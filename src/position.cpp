@@ -508,7 +508,7 @@ bool Position::start()
     }
 }
 
-bool Position::place_piece(Square s, bool updateCmdlist)
+bool Position::put_piece(Square s, bool updateCmdlist)
 {
     File file;
     Rank rank;
@@ -660,11 +660,11 @@ out:
     return true;
 }
 
-bool Position::place_piece(File file, Rank rank)
+bool Position::put_piece(File file, Rank rank)
 {
     Square s = Position::polar_to_square(file, rank);
 
-    return place_piece(s, true);
+    return put_piece(s, true);
 }
 
 bool Position::remove_piece(File file, Rank rank)
@@ -810,7 +810,7 @@ bool Position::select_piece(File file, Rank rank)
 bool Position::move_piece(Square from, Square to)
 {
     if (select_piece(from)) {
-        return place_piece(to);
+        return put_piece(to);
     }
 
     return false;
@@ -866,7 +866,7 @@ bool Position::command(const char *cmd)
         }
 
         if (select_piece(file1, rank1)) {
-            return place_piece(file2, rank2);
+            return put_piece(file2, rank2);
         }
 
         return false;
@@ -887,7 +887,7 @@ bool Position::command(const char *cmd)
             if (mm >= 0 && ss >= 0)
                 tm = mm * 60 + ss;
         }
-        return place_piece(file1, rank1);
+        return put_piece(file1, rank1);
     }
 
     args = sscanf(cmd, "Player%1u give up!", &t);
@@ -925,7 +925,7 @@ bool Position::do_move(Move m)
     case MOVETYPE_MOVE:
         return move_piece(from_sq(m), to_sq(m));
     case MOVETYPE_PLACE:
-        return place_piece(to_sq(m));
+        return put_piece(to_sq(m));
     default:
         break;
     }
@@ -945,10 +945,10 @@ bool Position::undo_move(Move m)
 
     switch (mt) {
     case MOVETYPE_REMOVE:
-        return place_piece(to_sq(-m));
+        return put_piece(to_sq(-m));
     case MOVETYPE_MOVE:
         if (select_piece(to_sq(m))) {
-            return place_piece(from_sq(m));
+            return put_piece(from_sq(m));
         }
         break;
     case MOVETYPE_PLACE:
