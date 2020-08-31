@@ -359,15 +359,15 @@ const string Position::fen() const
 
 int Position::pieces_on_board_count()
 {
-    nPiecesOnBoard[BLACK] = nPiecesOnBoard[WHITE] = 0;
+    pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
 
     for (int f = 1; f < FILE_NB + 2; f++) {
         for (int r = 0; r < RANK_NB; r++) {
             Square s = static_cast<Square>(f * RANK_NB + r);
             if (board[s] & B_STONE) {
-                nPiecesOnBoard[BLACK]++;
+                pieceCountOnBoard[BLACK]++;
             } else if (board[s]& W_STONE) {
-                nPiecesOnBoard[WHITE]++;
+                pieceCountOnBoard[WHITE]++;
             }
 #if 0
             else if (board[s]& BAN_STONE) {
@@ -376,20 +376,20 @@ int Position::pieces_on_board_count()
         }
     }
 
-    if (nPiecesOnBoard[BLACK] > rule.nTotalPiecesEachSide ||
-        nPiecesOnBoard[WHITE] > rule.nTotalPiecesEachSide) {
+    if (pieceCountOnBoard[BLACK] > rule.nTotalPiecesEachSide ||
+        pieceCountOnBoard[WHITE] > rule.nTotalPiecesEachSide) {
         return -1;
     }
 
-    return nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE];
+    return pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE];
 }
 
 int Position::pieces_in_hand_count()
 {
-    nPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - nPiecesOnBoard[BLACK];
-    nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - nPiecesOnBoard[WHITE];
+    pieceCountInHand[BLACK] = rule.nTotalPiecesEachSide - pieceCountOnBoard[BLACK];
+    pieceCountInHand[WHITE] = rule.nTotalPiecesEachSide - pieceCountOnBoard[WHITE];
 
-    return nPiecesInHand[BLACK] + nPiecesInHand[WHITE];
+    return pieceCountInHand[BLACK] + pieceCountInHand[WHITE];
 }
 
 bool Position::set_position(const struct Rule *newRule)
@@ -412,7 +412,7 @@ bool Position::set_position(const struct Rule *newRule)
     }
 
     pieces_in_hand_count();
-    nPiecesNeedRemove = 0;
+    pieceCountNeedRemove = 0;
     millListSize = 0;
     winner = NOBODY;
     MoveList::create();
@@ -457,9 +457,9 @@ bool Position::reset()
     st.key = 0;
     memset(byTypeBB, 0, sizeof(byTypeBB));
 
-    nPiecesOnBoard[BLACK] = nPiecesOnBoard[WHITE] = 0;
-    nPiecesInHand[BLACK] = nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide;
-    nPiecesNeedRemove = 0;
+    pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
+    pieceCountInHand[BLACK] = pieceCountInHand[WHITE] = rule.nTotalPiecesEachSide;
+    pieceCountNeedRemove = 0;
     millListSize = 0;
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
@@ -537,9 +537,9 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     Position::square_to_polar(s, file, rank);
 
     if (phase == PHASE_PLACING) {
-        piece = (Piece)((0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - nPiecesInHand[us]);
-        nPiecesInHand[us]--;
-        nPiecesOnBoard[us]++;
+        piece = (Piece)((0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
+        pieceCountInHand[us]--;
+        pieceCountOnBoard[us]++;
 
         board[s]= piece;
 
@@ -563,9 +563,9 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         n = add_mills(currentSquare);
 
         if (n == 0) {
-            assert(nPiecesInHand[BLACK] >= 0 && nPiecesInHand[WHITE] >= 0);     
+            assert(pieceCountInHand[BLACK] >= 0 && pieceCountInHand[WHITE] >= 0);     
 
-            if (nPiecesInHand[BLACK] == 0 && nPiecesInHand[WHITE] == 0) {
+            if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
                 if (check_gameover_condition(updateCmdlist)) {
                     goto out;
                 }
@@ -587,7 +587,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 change_side_to_move();
             }
         } else {
-            nPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             action = ACTION_REMOVE;
         }
 
@@ -601,7 +601,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     // When hase == GAME_MOVING
 
     // if illegal
-    if (nPiecesOnBoard[sideToMove] > rule.nPiecesAtLeast ||
+    if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         for (i = 0; i < 4; i++) {
             if (s == MoveList::moveTable[currentSquare][i])
@@ -648,7 +648,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             goto out;
         }
     } else {
-        nPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+        pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
         action = ACTION_REMOVE;
     }
 
@@ -682,7 +682,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (action != ACTION_REMOVE)
         return false;
 
-    if (nPiecesNeedRemove <= 0)
+    if (pieceCountNeedRemove <= 0)
         return false;
 
     File file;
@@ -718,7 +718,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         byTypeBB[them] ^= s;
     }
 
-    nPiecesOnBoard[them]--;
+    pieceCountOnBoard[them]--;
 
     move = static_cast<Move>(-s);
 
@@ -731,7 +731,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     }
 
     currentSquare = SQ_0;
-    nPiecesNeedRemove--;
+    pieceCountNeedRemove--;
 
     // Remove piece completed
 
@@ -739,12 +739,12 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         goto out;
     }
 
-    if (nPiecesNeedRemove > 0) {
+    if (pieceCountNeedRemove > 0) {
         return true;
     }
 
     if (phase == PHASE_PLACING) {
-        if (nPiecesInHand[BLACK] == 0 && nPiecesInHand[WHITE] == 0) {
+        if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
 
             phase = PHASE_MOVING;
             action = ACTION_SELECT;
@@ -965,9 +965,9 @@ bool Position::undo_move(Move m)
 #endif
 
     // TODO: Adjust
-    //int nPiecesInHand[COLOR_NB]{ 0 };
-    //int nPiecesOnBoard[COLOR_NB]{ 0 };
-    //int nPiecesNeedRemove{ 0 };
+    //int pieceCountInHand[COLOR_NB]{ 0 };
+    //int pieceCountOnBoard[COLOR_NB]{ 0 };
+    //int pieceCountNeedRemove{ 0 };
     m = m;
 
     return ret;
@@ -1050,7 +1050,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
 
     for (int i = 1; i <= 2; i++)
     {
-        if (nPiecesOnBoard[i] + nPiecesInHand[i] < rule.nPiecesAtLeast) {
+        if (pieceCountOnBoard[i] + pieceCountInHand[i] < rule.nPiecesAtLeast) {
             winner = ~Color(i);
             phase = PHASE_GAMEOVER;
 
@@ -1065,7 +1065,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
 
 #ifdef MCTS_AI
 #if 0
-    int diff = nPiecesOnBoard[BLACK] - nPiecesOnBoard[WHITE];
+    int diff = pieceCountOnBoard[BLACK] - pieceCountOnBoard[WHITE];
     if (diff > 4) {
         winner = BLACK;
         phase = PHASE_GAMEOVER;
@@ -1086,7 +1086,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
 #endif
 #endif
 
-    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= RANK_NB * FILE_NB) {
+    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB) {
         phase = PHASE_GAMEOVER;
 
         if (rule.isBlackLosebutNotDrawWhenBoardFull) {
@@ -1205,15 +1205,15 @@ void Position::set_tips()
 
     switch (phase) {
     case PHASE_READY:
-        tips = "轮到玩家1落子，剩余" + std::to_string(nPiecesInHand[BLACK]) + "子" +
+        tips = "轮到玩家1落子，剩余" + std::to_string(pieceCountInHand[BLACK]) + "子" +
             "  比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
         break;
 
     case PHASE_PLACING:
         if (action == ACTION_PLACE) {
-            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(nPiecesInHand[sideToMove]) + "子";
+            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(pieceCountInHand[sideToMove]) + "子";
         } else if (action == ACTION_REMOVE) {
-            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(nPiecesNeedRemove) + "子";
+            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(pieceCountNeedRemove) + "子";
         }
         break;
 
@@ -1221,7 +1221,7 @@ void Position::set_tips()
         if (action == ACTION_PLACE || action == ACTION_SELECT) {
             tips = "轮到玩家" + turnStr + "选子移动";
         } else if (action == ACTION_REMOVE) {
-            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(nPiecesNeedRemove) + "子";
+            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(pieceCountNeedRemove) + "子";
         }
         break;
 
@@ -1302,8 +1302,8 @@ Key Position::update_key_misc()
         hi |= 1U << 1;
     }
 
-    hi |= static_cast<Key>(nPiecesNeedRemove) << 2;
-    hi |= static_cast<Key>(nPiecesInHand[BLACK]) << 4;     // TODO: may use phase is also OK?
+    hi |= static_cast<Key>(pieceCountNeedRemove) << 2;
+    hi |= static_cast<Key>(pieceCountInHand[BLACK]) << 4;     // TODO: may use phase is also OK?
 
     st.key = st.key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
 
@@ -1650,7 +1650,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
 
     int count = 0;
 
-    if (nPiecesOnBoard[sideToMove] > rule.nPiecesAtLeast ||
+    if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
@@ -1701,11 +1701,11 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
 bool Position::is_all_surrounded()
 {
     // Full
-    if (nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE] >= RANK_NB * FILE_NB)
+    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB)
         return true;
 
     // Can fly
-    if (nPiecesOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
+    if (pieceCountOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
         rule.allowFlyWhenRemainThreePieces) {
         return false;
     }

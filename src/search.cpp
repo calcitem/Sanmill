@@ -699,7 +699,7 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #if 0
-    if (position->phase == PHASE_PLACING && depth == 1 && pos->nPiecesNeedRemove > 0) {
+    if (position->phase == PHASE_PLACING && depth == 1 && pos->pieceCountNeedRemove > 0) {
         depth--;
     }
 #endif

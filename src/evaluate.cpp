@@ -72,17 +72,17 @@ Value Evaluation::value()
 
     int nPiecesInHandDiff;
     int nPiecesOnBoardDiff;
-    int nPiecesNeedRemove;
+    int pieceCountNeedRemove;
 
     switch (pos->phase) {
     case PHASE_READY:
         break;
 
     case PHASE_PLACING:
-        nPiecesInHandDiff = pos->nPiecesInHand[BLACK] - pos->nPiecesInHand[WHITE];
+        nPiecesInHandDiff = pos->pieceCountInHand[BLACK] - pos->pieceCountInHand[WHITE];
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 
-        nPiecesOnBoardDiff = pos->nPiecesOnBoard[BLACK] - pos->nPiecesOnBoard[WHITE];
+        nPiecesOnBoardDiff = pos->pieceCountOnBoard[BLACK] - pos->pieceCountOnBoard[WHITE];
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 
         switch (pos->action) {
@@ -91,9 +91,9 @@ Value Evaluation::value()
             break;
 
         case ACTION_REMOVE:
-            nPiecesNeedRemove = (pos->sideToMove == BLACK) ?
-                pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
-            value += nPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
+            pieceCountNeedRemove = (pos->sideToMove == BLACK) ?
+                pos->pieceCountNeedRemove : -(pos->pieceCountNeedRemove);
+            value += pieceCountNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
             break;
         default:
             break;
@@ -102,11 +102,11 @@ Value Evaluation::value()
         break;
 
     case PHASE_MOVING:
-        value = pos->nPiecesOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
-            pos->nPiecesOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
+        value = pos->pieceCountOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
+            pos->pieceCountOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
-        value += pos->get_mobility_diff(position->turn, position->nPiecesInHand[BLACK], position->nPiecesInHand[WHITE], false) * 10;
+        value += pos->get_mobility_diff(position->turn, position->pieceCountInHand[BLACK], position->pieceCountInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (pos->action) {
@@ -115,9 +115,9 @@ Value Evaluation::value()
             break;
 
         case ACTION_REMOVE:
-            nPiecesNeedRemove = (pos->sideToMove == BLACK) ?
-                pos->nPiecesNeedRemove : -(pos->nPiecesNeedRemove);
-            value += nPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
+            pieceCountNeedRemove = (pos->sideToMove == BLACK) ?
+                pos->pieceCountNeedRemove : -(pos->pieceCountNeedRemove);
+            value += pieceCountNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
             break;
         default:
             break;
@@ -126,7 +126,7 @@ Value Evaluation::value()
         break;
 
     case PHASE_GAMEOVER:
-        if (pos->nPiecesOnBoard[BLACK] + pos->nPiecesOnBoard[WHITE] >=
+        if (pos->pieceCountOnBoard[BLACK] + pos->pieceCountOnBoard[WHITE] >=
             RANK_NB * FILE_NB) {
             if (rule.isBlackLosebutNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
@@ -140,9 +140,9 @@ Value Evaluation::value()
             value += delta;
         }
 
-        else if (pos->nPiecesOnBoard[BLACK] < rule.nPiecesAtLeast) {
+        else if (pos->pieceCountOnBoard[BLACK] < rule.nPiecesAtLeast) {
             value -= VALUE_MATE;
-        } else if (pos->nPiecesOnBoard[WHITE] < rule.nPiecesAtLeast) {
+        } else if (pos->pieceCountOnBoard[WHITE] < rule.nPiecesAtLeast) {
             value += VALUE_MATE;
         }
 

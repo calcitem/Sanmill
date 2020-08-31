@@ -334,7 +334,7 @@ ExtMove *generate(Position *position, ExtMove *moveList)
                     continue;
                 }
 
-                if (position->nPiecesOnBoard[position->sideToMove] > rule.nPiecesAtLeast ||
+                if (position->pieceCountOnBoard[position->sideToMove] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
                         newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);

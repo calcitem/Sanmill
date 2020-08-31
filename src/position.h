@@ -113,7 +113,7 @@ public:
     bool pos_is_ok() const;
     void flip();
 
-    //////////////////////////////////////
+    /// Mill Game
 
     bool set_position(const struct Rule *rule);
 
@@ -185,8 +185,18 @@ public:
     bool move_piece(Square from, Square to);
 
     // Data members
+    Piece board[SQUARE_NB];
+    Bitboard byTypeBB[PIECE_TYPE_NB];
+    // TODO: [0] is sum of Black and White
+    int pieceCountInHand[COLOR_NB]{ 0 };
+    int pieceCountOnBoard[COLOR_NB]{ 0 };
+    int pieceCountNeedRemove{ 0 };
     int gamePly;
     Color sideToMove { NOCOLOR };
+    Thread *thisThread;
+    StateInfo st;
+
+    /// Mill Game
     Color them { NOCOLOR };
     Color winner;
 
@@ -205,24 +215,15 @@ public:
     static int millTable[SQUARE_NB][LD_NB][FILE_NB - 1];
 
     Square currentSquare;
-    int nPlayed{ 0 };
+    int nPlayed { 0 };
 
     std::vector <std::string> cmdlist;
-    char cmdline[64]{ '\0' };
-
-    // Note: [0] is sum of Black and White
-    int nPiecesInHand[COLOR_NB] { 0 };
-    int nPiecesOnBoard[COLOR_NB] { 0 };
-    int nPiecesNeedRemove { 0 };
+    char cmdline[64] { '\0' };
 
     int tm { -1 };
     time_t startTime;
     time_t currentTime;
-    time_t elapsedSeconds[COLOR_NB];
-
-    Piece board[SQUARE_NB];
-
-    Bitboard byTypeBB[PIECE_TYPE_NB];
+    time_t elapsedSeconds[COLOR_NB];    
 
     /*
         0x   00     00     00    00    00    00    00    00
@@ -252,8 +253,6 @@ public:
         29 ----- 28 ----- 27
     */
     Move move { MOVE_NONE };
-
-    StateInfo st;
 };
 
 inline bool Position::empty(Square s) const
@@ -290,9 +289,9 @@ inline std::string Position::char_to_string(char ch)
 template<PieceType Pt> inline int Position::count(Color c) const
 {
     if (Pt == ON_BOARD) {
-        return nPiecesOnBoard[c];
+        return pieceCountOnBoard[c];
     } else if (Pt == IN_HAND) {
-        return nPiecesInHand[c];
+        return pieceCountInHand[c];
     }
 
     return 0;
