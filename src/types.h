@@ -272,6 +272,12 @@ enum Piece : uint8_t
 
 using Depth = int8_t;
 
+enum : int
+{
+    DEPTH_NONE = 0, // TODO: -6,
+    DEPTH_OFFSET = DEPTH_NONE
+};
+
 enum Square : int32_t
 {
      SQ_0 = 0,   SQ_1 = 1,   SQ_2 = 2,   SQ_3 = 3,   SQ_4 = 4,   SQ_5 = 5,   SQ_6 = 6,   SQ_7 = 7,

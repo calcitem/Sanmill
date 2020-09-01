@@ -47,7 +47,7 @@ Value TranspositionTable::probe(const Key &key,
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
     if (tte.type != BOUND_EXACT) {
 #endif
-        if (tte.age != transpositionTableAge) {
+        if (tte.age8 != transpositionTableAge) {
             return VALUE_UNKNOWN;
         }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
@@ -55,23 +55,23 @@ Value TranspositionTable::probe(const Key &key,
 #endif
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-    if (depth > tte.depth) {
+    if (depth > tte.depth()) {
         goto out;
     }
 
-    type = tte.type;
+    type = tte.bound();
 
-    switch (tte.type) {
+    switch (tte.bound()) {
     case BOUND_EXACT:
-        return tte.value;
+        return tte.value();
         break;
     case BOUND_UPPER:
-        if (tte.value <= alpha) {
+        if (tte.value8 <= alpha) {
             return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
         }
         break;
     case BOUND_LOWER:
-        if (tte.value >= beta) {
+        if (tte.value() >= beta) {
             return beta;
         }
         break;
@@ -136,10 +136,10 @@ int TranspositionTable::save(const Value &value,
 
     if (search(key, tte)) {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-        if (tte.age == transpositionTableAge) {
+        if (tte.age8 == transpositionTableAge) {
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-            if (tte.type != BOUND_NONE &&
-                tte.depth > depth) {
+            if (tte.genBound8 != BOUND_NONE &&
+                tte.depth() > depth) {
                 return -1;
             }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
@@ -147,16 +147,16 @@ int TranspositionTable::save(const Value &value,
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     }
 
-    tte.value = value;
-    tte.depth = depth;
-    tte.type = type;
+    tte.value8 = value;
+    tte.depth8 = depth;
+    tte.genBound8 = type;
 
 #ifdef TT_MOVE_ENABLE
     tte.ttMove = ttMove;
 #endif // TT_MOVE_ENABLE
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    tte.age = transpositionTableAge;
+    tte.age8 = transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
     TT.insert(key, tte);

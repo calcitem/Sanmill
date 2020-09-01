@@ -17,31 +17,54 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef TT_H
-#define TT_H
+#ifndef TT_H_INCLUDED
+#define TT_H_INCLUDED
 
-#include "config.h"
-#include "types.h"
-#include "position.h"
-#include "search.h"
 #include "hashmap.h"
+#include "types.h"
 
 using namespace CTSL;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
+/// TTEntry struct is the 4 bytes transposition table entry, defined as below:
+///
+/// value       8 bit
+/// depth       8 bit
+/// type        8 bit
+/// age         8 bit
+
 struct TTEntry
 {
-    Value value;
-    Depth depth;
-    enum Bound type;
+    Value value() const
+    {
+        return (Value)value8;
+    }
+
+    Depth depth() const
+    {
+        return (Depth)depth8 + DEPTH_OFFSET;
+    }
+
+    Bound bound() const
+    {
+        return (Bound)(genBound8);
+    }
+
+private:
+    friend class TranspositionTable;
+
+    int8_t  value8;
+    int8_t  depth8;
+    uint8_t genBound8;
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    uint8_t age;
+    uint8_t age8;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TT_MOVE_ENABLE
     Move ttMove;
 #endif // TT_MOVE_ENABLE
 };
+
 
 class TranspositionTable
 {
@@ -82,4 +105,4 @@ extern uint8_t transpositionTableAge;
 
 #endif  // TRANSPOSITION_TABLE_ENABLE
 
-#endif /* TT_H */
+#endif // #ifndef TT_H_INCLUDED
