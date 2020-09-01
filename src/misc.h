@@ -28,8 +28,6 @@
 #include <string>
 #include <vector>
 
-#include <QString>
-
 #include "types.h"
 
 const std::string engine_info(bool to_uci = false);

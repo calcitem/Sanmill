@@ -20,6 +20,7 @@
 #include "gamewindow.h"
 #include "misc.h"
 #include "bitboard.h"
+#include "position.h"
 
 QString APP_FILENAME_DEFAULT = "MillGame";
 
@@ -43,6 +44,7 @@ QString getAppFileName()
 int main(int argc, char *argv[])
 {
     Bitboards::init();
+    Position::init();
 
     QApplication a(argc, argv);
     MillGameWindow w;   
