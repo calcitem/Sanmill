@@ -64,6 +64,8 @@ class Thread;
 class Position
 {
 public:
+    static void init();
+
     Position();
     virtual ~Position();
 

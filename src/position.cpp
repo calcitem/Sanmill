@@ -158,6 +158,64 @@ int main(void)
 }
 #endif
 
+
+/// operator<<(Position) returns an ASCII representation of the position
+
+#if 0
+std::ostream &operator<<(std::ostream &os, const Position &pos)
+{
+    os << "\n +---+---+---+---+---+---+---+---+\n";
+
+    for (Rank r = RANK_8; r >= RANK_1; --r) {
+        for (File f = FILE_A; f <= FILE_C; ++f)
+            os << " | " << PieceToChar[pos.piece_on(make_square(f, r))];
+
+        os << " |\n +---+---+---+---+---+---+---+---+\n";
+    }
+
+    os << "\nFen: " << pos.fen() << "\nKey: " << std::hex << std::uppercase
+        << std::setfill('0') << std::setw(16) << pos.key()
+        << std::setfill(' ') << std::dec << "\nCheckers: ";
+
+    if (int(Tablebases::MaxCardinality) >= popcount(pos.pieces())
+        ) {
+        StateInfo st;
+        Position p;
+        p.set(pos.fen(), &st, pos.this_thread());
+        Tablebases::ProbeState s1, s2;
+        Tablebases::WDLScore wdl = Tablebases::probe_wdl(p, &s1);
+        int dtz = Tablebases::probe_dtz(p, &s2);
+        os << "\nTablebases WDL: " << std::setw(4) << wdl << " (" << s1 << ")"
+            << "\nTablebases DTZ: " << std::setw(4) << dtz << " (" << s2 << ")";
+    }
+
+    return os;
+}
+#endif
+
+// Marcel van Kervinck's cuckoo algorithm for fast detection of "upcoming repetition"
+// situations. Description of the algorithm in the following paper:
+// https://marcelk.net/2013-04-06/paper/upcoming-rep-v2.pdf
+
+// First and second hash functions for indexing the cuckoo tables
+inline int H1(Key h)
+{
+    return h & 0x1fff;
+}
+inline int H2(Key h)
+{
+    return (h >> 16) & 0x1fff;
+}
+
+// Cuckoo tables with Zobrist hashes of valid reversible moves, and the moves themselves
+Key cuckoo[8192];
+Move cuckooMove[8192];
+
+void Position::init()
+{
+    return;
+}
+
 Position::Position()
 {
     construct_key();
