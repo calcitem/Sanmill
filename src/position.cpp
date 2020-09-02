@@ -329,6 +329,75 @@ const string Position::fen() const
     return "";
 }
 
+
+/// Position::do_move() makes a move, and saves all information necessary
+/// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
+/// moves should be filtered out before this function is called.
+
+bool Position::do_move(Move m)
+{
+    MoveType mt = type_of(m);
+
+    switch (mt) {
+    case MOVETYPE_REMOVE:
+        return remove_piece(static_cast<Square>(-m));
+    case MOVETYPE_MOVE:
+        return move_piece(from_sq(m), to_sq(m));
+    case MOVETYPE_PLACE:
+        return put_piece(to_sq(m));
+    default:
+        break;
+    }
+
+    return false;
+}
+
+/// Position::undo_move() unmakes a move. When it returns, the position should
+/// be restored to exactly the same state as before the move was made.
+
+bool Position::undo_move(Move m)
+{
+    bool ret = false;
+
+#if 0
+    MoveType mt = type_of(m);
+
+    switch (mt) {
+    case MOVETYPE_REMOVE:
+        return put_piece(to_sq(-m));
+    case MOVETYPE_MOVE:
+        if (select_piece(to_sq(m))) {
+            return put_piece(from_sq(m));
+        }
+        break;
+    case MOVETYPE_PLACE:
+        return remove_piece(static_cast<Square>(m));
+    default:
+        break;
+    }
+
+    // Finally point our state pointer back to the previous state
+    st = st->previous;
+    --gamePly;
+
+    //assert(pos_is_ok()); // TODO
+#endif
+
+    // TODO: Adjust
+    //int pieceCountInHand[COLOR_NB]{ 0 };
+    //int pieceCountOnBoard[COLOR_NB]{ 0 };
+    //int pieceCountNeedRemove{ 0 };
+    m = m;
+
+    return ret;
+}
+
+void Position::undo_move(Stack<Position> &ss)
+{
+    memcpy(this, ss.top(), sizeof(Position));
+    ss.pop();
+}
+
 int Position::pieces_on_board_count()
 {
     pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
@@ -857,70 +926,6 @@ bool Position::command(const char *cmd)
 #endif /* THREEFOLD_REPETITION */
 
     return false;
-}
-
-bool Position::do_move(Move m)
-{
-    MoveType mt = type_of(m);
-
-    switch (mt) {
-    case MOVETYPE_REMOVE:
-        return remove_piece(static_cast<Square>(-m));
-    case MOVETYPE_MOVE:
-        return move_piece(from_sq(m), to_sq(m));
-    case MOVETYPE_PLACE:
-        return put_piece(to_sq(m));
-    default:
-        break;
-    }
-
-    return false;
-}
-
-/// Position::undo_move() unmakes a move. When it returns, the position should
-/// be restored to exactly the same state as before the move was made.
-
-bool Position::undo_move(Move m)
-{
-    bool ret = false;
-
-#if 0
-    MoveType mt = type_of(m);
-
-    switch (mt) {
-    case MOVETYPE_REMOVE:
-        return put_piece(to_sq(-m));
-    case MOVETYPE_MOVE:
-        if (select_piece(to_sq(m))) {
-            return put_piece(from_sq(m));
-        }
-        break;
-    case MOVETYPE_PLACE:
-        return remove_piece(static_cast<Square>(m));
-    default:
-        break;
-    }
-
-    // Finally point our state pointer back to the previous state
-    st = st->previous;
-    --gamePly;
-
-    //assert(pos_is_ok()); // TODO
-#endif
-
-    // TODO: Adjust
-    //int pieceCountInHand[COLOR_NB]{ 0 };
-    //int pieceCountOnBoard[COLOR_NB]{ 0 };
-    //int pieceCountNeedRemove{ 0 };
-    m = m;
-
-    return ret;
-}
-
-void Position::undo_move(Stack<Position> &ss)
-{
-    memcpy(this, ss.top(), sizeof(Position));
-    ss.pop();
 }
 
 Color Position::get_winner() const
