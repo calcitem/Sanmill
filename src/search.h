@@ -164,8 +164,6 @@ public:
     const char *nextMove();
 #endif // ALPHABETA_AI
 
-    void do_move(Move move);
-
     void undo_move();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE

@@ -311,11 +311,6 @@ int AIAlgorithm::search()
 }
 #endif // ALPHABETA_AI
 
-void AIAlgorithm::do_move(Move move)
-{
-    pos->do_move(move);
-}
-
 #ifdef ALPHABETA_AI
 const char* AIAlgorithm::nextMove()
 {
