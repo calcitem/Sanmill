@@ -196,7 +196,8 @@ public:
     int gamePly;
     Color sideToMove { NOCOLOR };
     Thread *thisThread;
-    StateInfo st;
+    StateInfo *st;
+    StateInfo tmpSt;    // TODO
 
     /// Mill Game
     Color them { NOCOLOR };
@@ -294,7 +295,7 @@ inline Key Position::key()
 
 inline void Position::construct_key()
 {
-    st.key = 0;
+    st->key = 0;
 }
 
 inline int Position::game_ply() const
@@ -304,7 +305,7 @@ inline int Position::game_ply() const
 
 inline int Position::rule50_count() const
 {
-    return st.rule50;
+    return st->rule50;
 }
 
 inline Thread *Position::this_thread() const

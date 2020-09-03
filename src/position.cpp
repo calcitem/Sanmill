@@ -132,6 +132,9 @@ void Position::init()
 
 Position::Position()
 {
+    // TODO
+    st = &tmpSt;
+
     construct_key();
 
     set_position(&RULES[DEFAULT_RULE_NUMBER]);
@@ -445,7 +448,7 @@ bool Position::set_position(const struct Rule *newRule)
     action = ACTION_PLACE;
 
     memset(board, 0, sizeof(board));
-    st.key = 0;
+    st->key = 0;
     memset(byTypeBB, 0, sizeof(byTypeBB));
 
     if (pieces_on_board_count() == -1) {
@@ -495,7 +498,7 @@ bool Position::reset()
     winner = NOBODY;
 
     memset(board, 0, sizeof(board));
-    st.key = 0;
+    st->key = 0;
     memset(byTypeBB, 0, sizeof(byTypeBB));
 
     pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
@@ -1215,9 +1218,9 @@ inline Key Position::update_key(Square s)
     //Location loc = board[s];
     //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
 
-    st.key ^= Zobrist::psq[pieceType][s];
+    st->key ^= Zobrist::psq[pieceType][s];
 
-    return st.key;
+    return st->key;
 }
 
 inline Key Position::revert_key(Square s)
@@ -1229,7 +1232,7 @@ Key Position::update_key_misc()
 {
     const int KEY_MISC_BIT = 8;
 
-    st.key = st.key << KEY_MISC_BIT >> KEY_MISC_BIT;
+    st->key = st->key << KEY_MISC_BIT >> KEY_MISC_BIT;
     Key hi = 0;
 
     if (sideToMove == WHITE) {
@@ -1243,14 +1246,14 @@ Key Position::update_key_misc()
     hi |= static_cast<Key>(pieceCountNeedRemove) << 2;
     hi |= static_cast<Key>(pieceCountInHand[BLACK]) << 4;     // TODO: may use phase is also OK?
 
-    st.key = st.key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
+    st->key = st->key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
 
-    return st.key;
+    return st->key;
 }
 
 Key Position::next_primary_key(Move m)
 {
-    Key npKey = st.key /* << 8 >> 8 */;
+    Key npKey = st->key /* << 8 >> 8 */;
     Square s = static_cast<Square>(to_sq(m));;
     MoveType mt = type_of(m);
 
