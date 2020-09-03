@@ -35,22 +35,102 @@
 #include "tt.h"
 #include "uci.h"
 
-#include <array>
-#include <chrono>
-
-#include "hashmap.h"
 #include "endgame.h"
 #include "types.h"
 #include "option.h"
-
-using namespace CTSL;
 
 namespace Search
 {
 LimitsType Limits;
 }
 
+using std::string;
+using Eval::evaluate;
 using namespace Search;
+
+namespace
+{
+
+// Different node types, used as a template parameter
+enum NodeType
+{
+    NonPV, PV
+};
+
+// Add a small random component to draw evaluations to avoid 3fold-blindness
+Value value_draw(Thread *thisThread)
+{
+    return VALUE_DRAW + Value(2 * (thisThread->nodes & 1) - 1);
+}
+
+// Skill structure is used to implement strength limit
+struct Skill
+{
+    explicit Skill(int l) : level(l)
+    {
+    }
+    bool enabled() const
+    {
+        return level < 20;
+    }
+    bool time_to_pick(Depth depth) const
+    {
+        return depth == 1 + level;
+    }
+    Move pick_best(size_t multiPV);
+
+    int level;
+    Move best = MOVE_NONE;
+};
+
+// Breadcrumbs are used to mark nodes as being searched by a given thread
+struct Breadcrumb
+{
+    std::atomic<Thread *> thread;
+    std::atomic<Key> key;
+};
+std::array<Breadcrumb, 1024> breadcrumbs;
+
+// ThreadHolding structure keeps track of which thread left breadcrumbs at the given
+// node for potential reductions. A free node will be marked upon entering the moves
+// loop by the constructor, and unmarked upon leaving that loop by the destructor.
+struct ThreadHolding
+{
+    explicit ThreadHolding(Thread *thisThread, Key posKey, int ply)
+    {
+        location = ply < 8 ? &breadcrumbs[posKey & (breadcrumbs.size() - 1)] : nullptr;
+        otherThread = false;
+        owning = false;
+        if (location) {
+            // See if another already marked this location, if not, mark it ourselves
+            Thread *tmp = (*location).thread.load(std::memory_order_relaxed);
+            if (tmp == nullptr) {
+                (*location).thread.store(thisThread, std::memory_order_relaxed);
+                (*location).key.store(posKey, std::memory_order_relaxed);
+                owning = true;
+            } else if (tmp != thisThread
+                       && (*location).key.load(std::memory_order_relaxed) == posKey)
+                otherThread = true;
+        }
+    }
+
+    ~ThreadHolding()
+    {
+        if (owning) // Free the marked location
+            (*location).thread.store(nullptr, std::memory_order_relaxed);
+    }
+
+    bool marked()
+    {
+        return otherThread;
+    }
+
+private:
+    Breadcrumb *location;
+    bool otherThread, owning;
+};
+
+}
 
 Value MTDF(Position *pos, Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
 

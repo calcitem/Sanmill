@@ -17,21 +17,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SEARCH_H
-#define SEARCH_H
-
-#include "config.h"
-
-#include <mutex>
-#include <string>
-#include <array>
+#ifndef SEARCH_H_INCLUDED
+#define SEARCH_H_INCLUDED
 
 #include "stack.h"
 #include "tt.h"
-#include "hashmap.h"
 #include "endgame.h"
 #include "types.h"
-#include "misc.h"
 
 #ifdef CYCLE_STAT
 #include "stopwatch.h"
@@ -49,7 +41,6 @@ namespace Search
 {
 /// Threshold used for countermoves based pruning
 constexpr int CounterMovePruneThreshold = 0;
-
 
 #if 0
 /// Stack struct keeps track of the information we need to remember from nodes
@@ -70,14 +61,12 @@ struct Stack
 };
 #endif
 
-
 /// RootMove struct is used for moves at the root of the tree. For each root move
 /// we store a score and a PV (really a refutation in the case of moves which
 /// fail low). Score is normally set at -VALUE_INFINITE for all non-pv moves.
 
 struct RootMove
 {
-
     explicit RootMove(Move m) : pv(1, m)
     {
     }
@@ -109,7 +98,8 @@ typedef std::vector<RootMove> RootMoves;
 struct LimitsType
 {
     LimitsType()
-    { // Init explicitly due to broken value-initialization of non POD in MSVC
+    { 
+        // Init explicitly due to broken value-initialization of non POD in MSVC
         time[WHITE] = time[BLACK] = inc[WHITE] = inc[BLACK] = npmsec = movetime = TimePoint(0);
         movestogo = depth = mate = perft = infinite = 0;
         nodes = 0;
@@ -130,7 +120,7 @@ extern LimitsType Limits;
 
 void init();
 void clear();
-}
+} // namespace Search
 
 class AIAlgorithm
 {
@@ -185,8 +175,6 @@ protected:
     Depth changeDepth();
        
 public:
-    MovePicker *movePicker { nullptr };
-
     Value bestvalue { VALUE_ZERO };
     Value lastvalue { VALUE_ZERO };
 
@@ -224,4 +212,4 @@ public:
 extern vector<Key> moveHistory;
 #endif
 
-#endif /* SEARCH_H */
+#endif // #ifndef SEARCH_H_INCLUDED
