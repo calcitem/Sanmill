@@ -43,43 +43,86 @@ Key psq[PIECE_TYPE_NB][SQUARE_NB];
 
 namespace
 {
+const string  PieceToChar(Piece p)
+{
+    if (p == NO_PIECE) {
+        return "+";
+    }
+
+    if (p == BAN_STONE) {
+        return "X";
+    }
+
+    if (B_STONE <= p && p <= B_STONE_12) {
+        return "#";
+    }
+
+    if (W_STONE <= p && p <= W_STONE_12) {
+        return "O";
+    }
+
+    return "*";
+}
+
 constexpr PieceType PieceTypes[] = { NO_PIECE_TYPE, BLACK_STONE, WHITE_STONE, BAN };
 } // namespace
 
 
 /// operator<<(Position) returns an ASCII representation of the position
 
-#if 0
 std::ostream &operator<<(std::ostream &os, const Position &pos)
 {
-    os << "\n +---+---+---+---+---+---+---+---+\n";
+    /*
+        31 ----- 24 ----- 25
+        | \       |      / |
+        |  23 -- 16 -- 17  |
+        |  | \    |   / |  |
+        |  |  15 08 09  |  |
+        30-22-14    10-18-26
+        |  |  13 12 11  |  |
+        |  | /    |   \ |  |
+        |  21 -- 20 -- 19  |
+        | /       |     \  |
+        29 ----- 28 ----- 27
+    */
 
-    for (Rank r = RANK_8; r >= RANK_1; --r) {
-        for (File f = FILE_A; f <= FILE_C; ++f)
-            os << " | " << PieceToChar[pos.piece_on(make_square(f, r))];
+    /*
+    X --- X --- X
+    |\    |    /|
+    | X - X - X |
+    | |\  |  /| |
+    | | X-X-X | |
+    X-X-X   X-X-X
+    | | X-X-X | |
+    | |/     \| |
+    | X - X - X |
+    |/    |    \|
+    X --- X --- X
+*/
 
-        os << " |\n +---+---+---+---+---+---+---+---+\n";
-    }
+#define P(s) PieceToChar(pos.piece_on(Square(s)))
 
+    os << P(31) << " --- " << P(24)<< " --- " << P(25) << "\n";
+    os << "|\\    |    /|\n";
+    os << "| " << P(23) << " - " << P(16) << " - " << P(17) << " |\n";
+    os << "| |\\  |  /| |\n";
+    os << "| | " << P(15) << "-" << P(8) << "-" << P(9) << " | |\n";
+    os << P(30) << "-" << P(22) << "-" << P(14) << "   " << P(10) << "-" << P(18) << "-" << P(26) << "\n";
+    os << "| | " << P(13) << "-" << P(12) << "-" << P(11) << " | |\n";
+    os << "| |/     \\| |\n";
+    os << "| " << P(21) << " - " << P(20) << " - " << P(19) << " |\n";
+    os << "|/    |    \\|\n";
+    os << P(29) << " --- " << P(28) << " --- " << P(27) << "\n";
+
+#undef P
+
+#if 0
     os << "\nFen: " << pos.fen() << "\nKey: " << std::hex << std::uppercase
-        << std::setfill('0') << std::setw(16) << pos.key()
-        << std::setfill(' ') << std::dec << "\nCheckers: ";
-
-    if (int(Tablebases::MaxCardinality) >= popcount(pos.pieces())
-        ) {
-        StateInfo st;
-        Position p;
-        p.set(pos.fen(), &st, pos.this_thread());
-        Tablebases::ProbeState s1, s2;
-        Tablebases::WDLScore wdl = Tablebases::probe_wdl(p, &s1);
-        int dtz = Tablebases::probe_dtz(p, &s2);
-        os << "\nTablebases WDL: " << std::setw(4) << wdl << " (" << s1 << ")"
-            << "\nTablebases DTZ: " << std::setw(4) << dtz << " (" << s2 << ")";
-    }
+        << std::setfill('0') << std::setw(16) << pos.key();
+#endif
 
     return os;
 }
-#endif
 
 // Marcel van Kervinck's cuckoo algorithm for fast detection of "upcoming repetition"
 // situations. Description of the algorithm in the following paper:

@@ -137,6 +137,8 @@ void AiThread::analyze()
     bool lose = v <= -VALUE_MATE;
     int p = v / VALUE_EACH_PIECE;
 
+    cout << *ai.position() << endl;
+
     if (v == VALUE_UNIQUE) {
         cout << "唯一着法" << endl << endl << endl;
         return;

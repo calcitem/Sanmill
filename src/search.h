@@ -180,6 +180,11 @@ public:
 
     Depth originDepth{ 0 };
 
+    inline Position *position()
+    {
+        return pos;
+    }
+
 private:
     Position *pos { nullptr };
 
