@@ -41,22 +41,6 @@ namespace Zobrist
 Key psq[PIECE_TYPE_NB][SQUARE_NB];
 }
 
-#ifdef ONLY_USED_FOR_CONVERT
-int main(void)
-{
-    for (int i = 0; i < 40; i++) {
-        printf("{");
-        for (int j = 0; j < 3; j++) {
-            printf("0x%08X, ", (uint32_t)arr[i][j]);
-        }
-        printf("0x%08X},\n", (uint32_t)arr[i][3]);
-    }
-
-    return 0;
-}
-#endif
-
-
 namespace
 {
 constexpr PieceType PieceTypes[] = { NO_PIECE_TYPE, BLACK_STONE, WHITE_STONE, BAN };
