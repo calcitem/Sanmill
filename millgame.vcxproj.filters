@@ -57,9 +57,6 @@
     <ClInclude Include="include\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\thread_win32_osx.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\bitboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -128,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="src\timeman.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thread_win32_osx.h">
+      <Filter>Qt Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
