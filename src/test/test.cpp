@@ -31,6 +31,10 @@
 #include "misc.h"
 #include "test.h"
 
+#ifdef TEST_MODE
+QString getAppFileName();
+#endif /* TEST_MODE */
+
 extern QString APP_FILENAME_DEFAULT;
 
 Test::Test(QWidget *parent, QString k)
