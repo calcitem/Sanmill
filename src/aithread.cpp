@@ -128,7 +128,7 @@ void sq2str(char *str)
 }
 #endif // OPENING_BOOK
 
-void AiThread::analyze()
+void AiThread::analyze(Color c)
 {
     int d = (int)ai.originDepth;
     int v = (int)ai.bestvalue;
@@ -136,6 +136,9 @@ void AiThread::analyze()
     bool win = v >= VALUE_MATE;
     bool lose = v <= -VALUE_MATE;
     int p = v / VALUE_EACH_PIECE;
+
+    string strUs = (c == BLACK ? "黑方" : "白方");
+    string strThem = (c == BLACK ? "白方" : "黑方");
 
     cout << *ai.position() << endl;
 
@@ -145,57 +148,57 @@ void AiThread::analyze()
     }
 
     if (lv < -VALUE_EACH_PIECE && v == 0) {
-        cout << "坏棋, 被拉回均势!" << endl;
+        cout << strThem << "坏棋, 被" << strUs << "拉回均势!" << endl;
     }
 
     if (lv < 0 && v > 0) {
-        cout << "坏棋, 被翻转了局势!" << endl;
+        cout << strThem << "坏棋, 被" << strUs << "翻转了局势!" << endl;
     }
 
     if (lv == 0 && v > VALUE_EACH_PIECE) {
-        cout << "败着!" << endl;
+        cout << strThem << "败着!" << endl;
     }
 
     if (lv > VALUE_EACH_PIECE && v == 0) {
-        cout << "好棋, 拉回均势!" << endl;
+        cout << strThem << "好棋, 拉回均势!" << endl;
     }
 
     if (lv > 0 && v < 0) {
-        cout << "好棋, 翻转了局势!" << endl;
+        cout << strThem << "好棋, 翻转了局势!" << endl;
     }
 
     if (lv == 0 && v < -VALUE_EACH_PIECE) {
-        cout << "秒棋!" << endl;
+        cout << strThem << "秒棋!" << endl;
     }
 
     if (lv != v) {
         if (lv < 0 && v < 0) {
             if (abs(lv) < abs(v)) {
-                cout << "领先幅度扩大" << endl;
+                cout << strThem << "领先幅度扩大" << endl;
             } else if (abs(lv) > abs(v)) {
-                cout << "领先幅度缩小" << endl;
+                cout << strThem << "领先幅度缩小" << endl;
             }
         }
 
         if (lv > 0 && v > 0) {
             if (abs(lv) < abs(v)) {
-                cout << "落后幅度扩大" << endl;
+                cout << strThem << "落后幅度扩大" << endl;
             } else if (abs(lv) > abs(v)) {
-                cout << "落后幅度缩小" << endl;
+                cout << strThem << "落后幅度缩小" << endl;
             }
         }
     }
 
     if (win) {
-        cout << "将在 " << d << " 步后输棋!" << endl;
+        cout << strThem << "将在 " << d << " 步后输棋!" << endl;
     } else if (lose) {
-        cout << "将在 " << d << " 步后赢棋!" << endl;
+        cout << strThem << "将在 " << d << " 步后赢棋!" << endl;
     } else if (p == 0) {
         cout << "将在 " << d << " 步后双方保持均势" << endl;
     } else if (p > 0) {
-        cout << "将在 " << d << " 步后落后 " << p << " 子" << endl;
+        cout << strThem << "将在 " << d << " 步后落后 " << p << " 子" << endl;
     } else if (p < 0) {
-        cout << "将在 " << d << " 步后领先 " << -p << " 子" << endl;
+        cout << strThem << "将在 " << d << " 步后领先 " << -p << " 子" << endl;
     }
 
     cout << endl << endl;
@@ -253,10 +256,7 @@ void AiThread::run()
             } else {
                 strCommand = ai.nextMove();
                 if (strCommand && strcmp(strCommand, "error!") != 0) {
-                    loggerDebug("Computer: %s\n\n", strCommand);
-                    
                     emitCommand();
-                    //analyze();
                 }
             }
 #ifdef OPENING_BOOK

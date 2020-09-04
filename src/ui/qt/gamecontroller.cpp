@@ -940,7 +940,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         gameStart();
     }
 
-    if (!position.command(cmd.toStdString().c_str()))
+    string command = cmd.toStdString();
+    loggerDebug("Computer: %s\n\n", command.c_str());
+
+    if (!position.command(command.c_str()))
         return false;
 
 #ifndef TRAINING_MODE
@@ -949,7 +952,6 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     if (update) {
-        //cout << position << endl;
         playSound(soundType, position.side_to_move());
         updateScence(&position);
     }
@@ -1082,10 +1084,10 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 #endif // TRAINING_MODE
 
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->analyze();
-    } else if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->analyze(); 
+    if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->analyze(WHITE);
+    } else if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->analyze(BLACK);
     }    
 
     return true;

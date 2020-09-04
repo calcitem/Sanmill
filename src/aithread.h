@@ -68,7 +68,7 @@ public:
         return timeLimit;
     }
 
-    void analyze();
+    void analyze(Color c);
 
 public slots:
     void act(); // Force move, not quit thread
