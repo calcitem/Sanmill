@@ -949,6 +949,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     if (update) {
+        //cout << position << endl;
         playSound(soundType, position.side_to_move());
         updateScence(&position);
     }
@@ -1080,6 +1081,12 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         aiThread[BLACK]->getServer()->setAction(cmd);    // 注意: 同样是 aiThread[BLACK]
     }
 #endif // TRAINING_MODE
+
+    if (isAiPlayer[BLACK]) {
+        aiThread[BLACK]->analyze();
+    } else if (isAiPlayer[WHITE]) {
+        aiThread[WHITE]->analyze(); 
+    }    
 
     return true;
 }

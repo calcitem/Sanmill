@@ -254,8 +254,9 @@ void AiThread::run()
                 strCommand = ai.nextMove();
                 if (strCommand && strcmp(strCommand, "error!") != 0) {
                     loggerDebug("Computer: %s\n\n", strCommand);
-                    analyze();
+                    
                     emitCommand();
+                    //analyze();
                 }
             }
 #ifdef OPENING_BOOK
