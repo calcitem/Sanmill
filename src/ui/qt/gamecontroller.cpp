@@ -1388,7 +1388,14 @@ void GameController::setTips()
     Position &p = position;
 
     string winnerStr, reasonStr, resultStr, scoreStr;
-    string turnStr = char_to_string(color_to_char(p.sideToMove));
+    string turnStr;
+    
+    if (isInverted) {
+        turnStr = char_to_string(color_to_char(~p.sideToMove));
+    } else {
+        turnStr = char_to_string(color_to_char(p.sideToMove));
+    }
+    
 
     switch (p.phase) {
     case PHASE_READY:
