@@ -46,7 +46,7 @@ namespace
 const string  PieceToChar(Piece p)
 {
     if (p == NO_PIECE) {
-        return "+";
+        return "*";
     }
 
     if (p == BAN_STONE) {
@@ -54,7 +54,7 @@ const string  PieceToChar(Piece p)
     }
 
     if (B_STONE <= p && p <= B_STONE_12) {
-        return "#";
+        return "@";
     }
 
     if (W_STONE <= p && p <= W_STONE_12) {
