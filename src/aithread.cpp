@@ -150,6 +150,31 @@ void AiThread::analyze(Color c)
     cout << "Key: " << std::hex << std::uppercase << pos->key() << endl;
 #endif
 
+    switch (pos->get_phase())
+    {
+    case PHASE_PLACING:
+        cout << "摆子阶段" << endl;
+        break;
+    case PHASE_MOVING:
+        cout << "走子阶段" << endl;
+        break;
+    case PHASE_GAMEOVER:
+        if (pos->get_winner() == DRAW) {
+            cout << "和棋" << endl;
+        } else if (pos->get_winner() == BLACK) {
+            cout << "黑方胜" << endl;
+        } else if (pos->get_winner() == WHITE) {
+            cout << "白方胜" << endl;
+        }
+        goto out;
+        break;
+    case PHASE_NONE:
+        cout << "无棋局" << endl;
+        break;
+    default:
+        cout << "未知阶段" << endl;
+    }
+
     if (v == VALUE_UNIQUE) {
         cout << "唯一着法" << endl << endl << endl;
         return;
@@ -215,6 +240,7 @@ void AiThread::analyze(Color c)
         cout << "轮到白方行棋";
     }
 
+out:
     cout << endl << endl;
 }
 
