@@ -341,6 +341,11 @@ const string Position::fen() const
         }        
     }
 
+    // Active color
+    ss << (sideToMove == WHITE ? "w" : "b");
+
+    ss << " ";
+
     // Phrase
     switch (phase) {
     case PHASE_NONE:
@@ -363,9 +368,6 @@ const string Position::fen() const
         break;
     }
 
-    ss << " ";
-    // Active color
-    ss << (sideToMove == WHITE ? "w" : "b");
     ss << " ";
 
     // http://www.xqbase.com/protocol/pgnfen2.htm
