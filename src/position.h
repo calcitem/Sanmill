@@ -193,7 +193,7 @@ public:
     int pieceCountInHand[COLOR_NB]{ 0 };
     int pieceCountOnBoard[COLOR_NB]{ 0 };
     int pieceCountNeedRemove{ 0 };
-    int gamePly;
+    int gamePly { 0 };
     Color sideToMove { NOCOLOR };
     Thread *thisThread;
     StateInfo *st;

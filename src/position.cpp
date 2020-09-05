@@ -370,15 +370,7 @@ const string Position::fen() const
 
     ss << " ";
 
-    // http://www.xqbase.com/protocol/pgnfen2.htm
-
-    // Halfmove clock
-
-    ss << st->rule50;
-    //ss << " ";
-
-    // Fullmove number
-    //ss << moveStep;
+    ss << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
     return ss.str();
 }
@@ -390,10 +382,14 @@ const string Position::fen() const
 
 bool Position::do_move(Move m)
 {
+    ++st->rule50;
+
     MoveType mt = type_of(m);
 
     switch (mt) {
     case MOVETYPE_REMOVE:
+        // Reset rule 50 counter
+        st->rule50 = 0;
         return remove_piece(static_cast<Square>(-m));
     case MOVETYPE_MOVE:
         return move_piece(from_sq(m), to_sq(m));
