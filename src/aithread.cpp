@@ -140,7 +140,9 @@ void AiThread::analyze(Color c)
     string strUs = (c == BLACK ? "黑方" : "白方");
     string strThem = (c == BLACK ? "白方" : "黑方");
 
-    cout << *ai.position() << endl;
+    Position *pos = ai.position();
+
+    cout << *pos << endl;
 
     if (v == VALUE_UNIQUE) {
         cout << "唯一着法" << endl << endl << endl;
@@ -199,6 +201,12 @@ void AiThread::analyze(Color c)
         cout << strThem << "将在 " << d << " 步后落后 " << p << " 子" << endl;
     } else if (p < 0) {
         cout << strThem << "将在 " << d << " 步后领先 " << -p << " 子" << endl;
+    }
+
+    if (pos->side_to_move() == BLACK) {
+        cout << "轮到黑方行棋";
+    } else {
+        cout << "轮到白方行棋";
     }
 
     cout << endl << endl;
