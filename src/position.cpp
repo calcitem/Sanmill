@@ -380,7 +380,7 @@ const string Position::fen() const
 /// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
 /// moves should be filtered out before this function is called.
 
-bool Position::do_move(Move m)
+void Position::do_move(Move m)
 {
     ++st->rule50;
 
@@ -390,25 +390,24 @@ bool Position::do_move(Move m)
     case MOVETYPE_REMOVE:
         // Reset rule 50 counter
         st->rule50 = 0;
-        return remove_piece(static_cast<Square>(-m));
+        remove_piece(static_cast<Square>(-m));
+        break;
     case MOVETYPE_MOVE:
-        return move_piece(from_sq(m), to_sq(m));
+        move_piece(from_sq(m), to_sq(m));
+        break;
     case MOVETYPE_PLACE:
-        return put_piece(to_sq(m));
+        put_piece(to_sq(m));
+        break;
     default:
         break;
     }
-
-    return false;
 }
 
 /// Position::undo_move() unmakes a move. When it returns, the position should
 /// be restored to exactly the same state as before the move was made.
 
-bool Position::undo_move(Move m)
+void Position::undo_move(Move m)
 {
-    bool ret = false;
-
 #if 0
     MoveType mt = type_of(m);
 
@@ -438,8 +437,6 @@ bool Position::undo_move(Move m)
     //int pieceCountOnBoard[COLOR_NB]{ 0 };
     //int pieceCountNeedRemove{ 0 };
     m = m;
-
-    return ret;
 }
 
 void Position::undo_move(Stack<Position> &ss)
@@ -1185,16 +1182,14 @@ void Position::change_side_to_move()
     set_side_to_move(~sideToMove);
 }
 
-bool Position::do_null_move()
+void Position::do_null_move()
 {
     change_side_to_move();
-    return true;
 }
 
-bool Position::undo_null_move()
+void Position::undo_null_move()
 {
     change_side_to_move();
-    return true;
 }
 
 void Position::set_tips()
