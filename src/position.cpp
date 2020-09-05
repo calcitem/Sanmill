@@ -34,8 +34,6 @@
 
 #include "option.h"
 
-string tips;
-
 namespace Zobrist
 {
 Key psq[PIECE_TYPE_NB][SQUARE_NB];
@@ -507,7 +505,7 @@ bool Position::set_position(const struct Rule *newRule)
     create_mill_table();
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
-    set_tips();
+    update_score();
     cmdlist.clear();
 
     int r;
@@ -540,6 +538,7 @@ bool Position::reset()
     action = ACTION_PLACE;
 
     winner = NOBODY;
+    gameoverReason = NO_REASON;
 
     memset(board, 0, sizeof(board));
     st->key = 0;
@@ -551,7 +550,7 @@ bool Position::reset()
     millListSize = 0;
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
-    set_tips();
+    update_score();
     cmdlist.clear();
 
 #ifdef ENDGAME_LEARNING
@@ -580,6 +579,8 @@ bool Position::reset()
 
 bool Position::start()
 {
+    gameoverReason = NO_REASON;
+
     switch (phase) {
     case PHASE_PLACING:
     case PHASE_MOVING:
@@ -742,7 +743,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
 out:
     if (updateCmdlist) {
-        set_tips();
+        update_score();
     }
 
     return true;
@@ -852,7 +853,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
 out:
     if (updateCmdlist) {
-        set_tips();
+        update_score();
     }
 
     return true;
@@ -885,13 +886,9 @@ bool Position::giveup(Color loser)
 
     phase = PHASE_GAMEOVER;
 
-    Color loserColor = loser;
-    char loserCh = color_to_char(loserColor);
-    string loserStr = char_to_string(loserCh);
-
     winner = ~loser;
-    tips = "玩家" + loserStr + "投子认负";
-    sprintf(cmdline, "Player%d give up!", loserColor);
+    gameoverReason = LOSE_REASON_GIVE_UP;
+    sprintf(cmdline, "Player%d give up!", loser);
     score[winner]++;
 
     cmdlist.emplace_back(string(cmdline));
@@ -965,7 +962,7 @@ bool Position::command(const char *cmd)
         phase = PHASE_GAMEOVER;
         winner = DRAW;
         score_draw++;
-        tips = "三次重复局面判和。";
+        gameoverReason = DRAW_REASON_THREEFOLD_REPETITION;        
         sprintf(cmdline, "Threefold Repetition. Draw!");
         cmdlist.emplace_back(string(cmdline));
         return true;
@@ -1007,6 +1004,18 @@ int Position::update()
     return ret;
 }
 
+void Position::update_score()
+{
+    if (phase == PHASE_GAMEOVER) {    
+        if (winner == DRAW) {
+            score_draw++;
+            return;
+        }
+
+        score[winner]++;
+    }
+}
+
 bool Position::check_gameover_condition(int8_t updateCmdlist)
 {
     if (phase & PHASE_NOTPLAYING) {
@@ -1021,7 +1030,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
                 if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
                     elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
                     winner = ~Color(i);
-                    tips = "玩家" + char_to_string(color_to_char(Color(i))) + "超时判负。";
+                    gameoverReason = LOST_REASON_TIME_OVER;
                     sprintf(cmdline, "Time over. Player%d win!", ~Color(i));
                 }
             }
@@ -1110,7 +1119,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
 
         if (rule.isLoseButNotChangeTurnWhenNoWay) {
             if (updateCmdlist) {
-                tips = "玩家" + char_to_string(color_to_char(sideToMove)) + "无子可走被闷";
+                gameoverReason = LOSE_REASON_NO_WAY;
                 winner = ~sideToMove;
                 sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
                 cmdlist.emplace_back(string(cmdline));  // TODO: memleak
@@ -1190,59 +1199,6 @@ void Position::do_null_move()
 void Position::undo_null_move()
 {
     change_side_to_move();
-}
-
-void Position::set_tips()
-{
-    string winnerStr, t;
-    string turnStr = char_to_string(color_to_char(sideToMove));
-
-    switch (phase) {
-    case PHASE_READY:
-        tips = "轮到玩家1落子，剩余" + std::to_string(pieceCountInHand[BLACK]) + "子" +
-            "  比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
-        break;
-
-    case PHASE_PLACING:
-        if (action == ACTION_PLACE) {
-            tips = "轮到玩家" + turnStr + "落子，剩余" + std::to_string(pieceCountInHand[sideToMove]) + "子";
-        } else if (action == ACTION_REMOVE) {
-            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(pieceCountNeedRemove) + "子";
-        }
-        break;
-
-    case PHASE_MOVING:
-        if (action == ACTION_PLACE || action == ACTION_SELECT) {
-            tips = "轮到玩家" + turnStr + "选子移动";
-        } else if (action == ACTION_REMOVE) {
-            tips = "成三！轮到玩家" + turnStr + "去子，需去" + std::to_string(pieceCountNeedRemove) + "子";
-        }
-        break;
-
-    case PHASE_GAMEOVER:  
-        if (winner == DRAW) {
-            score_draw++;
-            tips = "双方平局！比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
-            break;
-        }
-
-        winnerStr = char_to_string(color_to_char(winner));
-
-        score[winner]++;
-
-        t = "玩家" + winnerStr + "获胜！比分 " + to_string(score[BLACK]) + ":" + to_string(score[WHITE]) + ", 和棋 " + to_string(score_draw);
-
-        if (tips.find("无子可走") != string::npos) {
-            tips += t;
-        } else {
-            tips = t;
-        }
-
-        break;
-
-    default:
-        break;
-    }
 }
 
 time_t Position::get_elapsed_time(int us)

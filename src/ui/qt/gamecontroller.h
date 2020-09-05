@@ -136,6 +136,10 @@ public:
         return &position;
     }
 
+    char color_to_char(Color color);
+    std::string char_to_string(char ch);
+    void setTips();
+
 signals:
 
     // 总盘数改变的信号
@@ -378,6 +382,11 @@ public:
     // 电脑执先手时为 true
     bool isAiPlayer[COLOR_NB];
 
+    string getTips()
+    {
+        return tips;
+    }
+
 private:
     // 是否有落子动画
     bool hasAnimation;
@@ -435,6 +444,9 @@ private:
 
     // 棋谱字符串列表模型
     QStringListModel manualListModel;
+
+    // 提示语
+    string tips;
 };
 
 #endif // GAMECONTROLLER_H

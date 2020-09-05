@@ -254,7 +254,7 @@ void GameController::gameReset()
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
     // 发信号更新状态栏
-    message = QString::fromStdString(position.get_tips());
+    message = QString::fromStdString(getTips());
     emit statusBarChanged(message);
 
     // 更新比分 LCD 显示
@@ -679,7 +679,7 @@ void GameController::timerEvent(QTimerEvent *event)
 
 #ifndef TRAINING_MODE
         // 发信号更新状态栏
-        message = QString::fromStdString(position.get_tips());
+        message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
 
         // 弹框
@@ -762,7 +762,7 @@ bool GameController::actionPiece(QPointF pos)
                 timeID = startTimer(100);
 
                 // 发信号更新状态栏
-                message = QString::fromStdString(position.get_tips());
+                message = QString::fromStdString(getTips());
                 emit statusBarChanged(message);
 #ifndef MOBILE_APP_UI
             }
@@ -830,7 +830,7 @@ bool GameController::actionPiece(QPointF pos)
 
     if (result) {
         // 发信号更新状态栏
-        message = QString::fromStdString(position.get_tips());
+        message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
 
         // 将新增的棋谱行插入到ListModel
@@ -896,9 +896,9 @@ bool GameController::giveUp()
         manualListModel.setData(manualListModel.index(currentRow), i.c_str());
     }
 
-    if (position.get_winner() != NOBODY)
+    if (position.get_winner() != NOBODY) {
         playSound(GAME_SOUND_GIVE_UP, position.side_to_move());
-
+    }
 #endif // TRAINING_MODE
 
     return result;
@@ -957,7 +957,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
     }
 
     // 发信号更新状态栏
-    message = QString::fromStdString(position.get_tips());
+    message = QString::fromStdString(getTips());
     emit statusBarChanged(message);
 
     // 对于新开局
@@ -1281,7 +1281,9 @@ bool GameController::updateScence(Position *p)
     emit winningRate2Changed(QString::number(winningRate_2, 10));
     emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
 
-#endif // TRAINING_MODE
+    setTips();
+
+#endif // !TRAINING_MODE
     return true;
 }
 
@@ -1365,4 +1367,90 @@ void GameController::saveScore()
 out:
     file.flush();
     file.close();
+}
+
+inline char GameController::color_to_char(Color color)
+{
+    return static_cast<char>('0' + color);
+}
+
+inline std::string GameController::char_to_string(char ch)
+{
+    if (ch == '1') {
+        return "黑方";
+    } else {
+        return "白方";
+    }
+}
+
+void GameController::setTips()
+{
+    Position *p = &position;
+
+    string winnerStr, reasonStr, resultStr, scoreStr;
+    string turnStr = char_to_string(color_to_char(p->sideToMove));
+
+    switch (p->phase) {
+    case PHASE_READY:
+        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p->pieceCountInHand[BLACK]) + "子" +
+            "  比分 " + to_string(p->score[BLACK]) + ":" + to_string(p->score[WHITE]) + ", 和棋 " + to_string(p->score_draw);
+        break;
+
+    case PHASE_PLACING:
+        if (p->action == ACTION_PLACE) {
+            tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p->pieceCountInHand[p->sideToMove]) + "子";
+        } else if (p->action == ACTION_REMOVE) {
+            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p->pieceCountNeedRemove) + "子";
+        }
+        break;
+
+    case PHASE_MOVING:
+        if (p->action == ACTION_PLACE || p->action == ACTION_SELECT) {
+            tips = "轮到" + turnStr + "选子移动";
+        } else if (p->action == ACTION_REMOVE) {
+            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p->pieceCountNeedRemove) + "子";
+        }
+        break;
+
+    case PHASE_GAMEOVER:
+        scoreStr = "比分 " + to_string(p->score[BLACK]) + " : " + to_string(p->score[WHITE]) + ", 和棋 " + to_string(p->score_draw);        
+
+        switch (p->winner) {
+        case BLACK:
+        case WHITE:
+            winnerStr = char_to_string(color_to_char(p->winner));
+            resultStr = winnerStr + "获胜！";
+            break;
+        case DRAW:
+            resultStr = "双方平局！";
+            break;
+        default:
+            break;
+        }
+
+        switch (p->gameoverReason) {
+        case LOSE_EASON_LESS_THAN_THREE:
+            break;
+        case  LOSE_REASON_NO_WAY:
+            reasonStr = turnStr + "无子可走被闷。";
+            break;
+        case LOSE_REASON_GIVE_UP:
+            reasonStr = turnStr + "投子认负。";
+            break;
+        case LOST_REASON_TIME_OVER:
+            reasonStr = turnStr + "超时判负。";
+            break;
+        case DRAW_REASON_THREEFOLD_REPETITION:
+            tips = "三次重复局面判和。";
+            break;
+        default:
+            break;
+        }       
+
+        tips = reasonStr + resultStr + scoreStr;
+        break;
+
+    default:
+        break;
+    }
 }

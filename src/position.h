@@ -29,8 +29,6 @@
 #include "rule.h"
 #include "search.h"
 
-extern std::string tips;
-
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
 /// board (by calling Position::do_move), a StateInfo object must be passed.
@@ -128,7 +126,6 @@ public:
     int get_step() const;
     enum Phase get_phase() const;
     enum Action get_action() const;
-    const std::string get_tips() const;
     const char *cmd_line() const;
     const std::vector<std::string> *cmd_list() const;
 
@@ -139,12 +136,12 @@ public:
     bool giveup(Color loser);
     bool command(const char *cmd);
     int update();
+    void update_score();
     bool check_gameover_condition(int8_t cp = 0);
     void clean_banned();
     void set_side_to_move(Color c);
   
     void change_side_to_move();
-    void set_tips();
     Color get_winner() const;
 
     void mirror(bool cmdChange = true);
@@ -167,9 +164,6 @@ public:
 
     int pieces_on_board_count();
     int pieces_in_hand_count();
-
-    static char color_to_char(Color color);
-    static std::string char_to_string(char ch);
 
     static bool is_star_square(Square s);
 
@@ -202,6 +196,7 @@ public:
     /// Mill Game
     Color them { NOCOLOR };
     Color winner;
+    GameOverReason gameoverReason { NO_REASON };
 
     enum Phase phase {PHASE_NONE};
     enum Action action;
@@ -342,20 +337,6 @@ inline bool Position::move_piece(Square from, Square to)
 
 /// Mill Game
 
-inline char Position::color_to_char(Color color)
-{
-    return static_cast<char>('0' + color);
-}
-
-inline std::string Position::char_to_string(char ch)
-{
-    if (ch == '1') {
-        return "1";
-    } else {
-        return "2";
-    }
-}
-
 inline Piece *Position::get_board() const
 {
     return (Piece *)board;
@@ -379,11 +360,6 @@ inline enum Phase Position::get_phase() const
 inline enum Action Position::get_action() const
 {
     return action;
-}
-
-inline const std::string Position::get_tips() const
-{
-    return tips;
 }
 
 inline const char *Position::cmd_line() const

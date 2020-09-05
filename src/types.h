@@ -158,6 +158,16 @@ enum Action : uint16_t
     ACTION_REMOVE = 0x0400
 };
 
+enum GameOverReason
+{
+    NO_REASON,
+    LOSE_EASON_LESS_THAN_THREE,
+    LOSE_REASON_NO_WAY,
+    LOSE_REASON_GIVE_UP,
+    LOST_REASON_TIME_OVER,
+    DRAW_REASON_THREEFOLD_REPETITION,
+};
+
 enum Bound : uint8_t
 {
     BOUND_NONE,
