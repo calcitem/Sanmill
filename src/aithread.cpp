@@ -142,7 +142,13 @@ void AiThread::analyze(Color c)
 
     Position *pos = ai.position();
 
+#ifdef TEST_MODE
     cout << *pos << endl;
+#endif
+
+#ifdef TEST_MODE
+    cout << "Key: " << std::hex << std::uppercase << pos->key() << endl;
+#endif
 
     if (v == VALUE_UNIQUE) {
         cout << "唯一着法" << endl << endl << endl;
