@@ -328,6 +328,7 @@ const string Position::fen() const
 {
     std::ostringstream ss;
 
+    // Piece placement data
     for (File f = FILE_A; f <= FILE_C; f = (File)(f + 1)) {
         for (Rank r = RANK_1; r <= RANK_8; r = (Rank)(r + 1)) {
             ss << PieceToChar(piece_on(make_square(f, r)));
@@ -340,10 +341,42 @@ const string Position::fen() const
         }        
     }
 
-    ss << (sideToMove == WHITE ? " w " : " b ");
+    // Phrase
+    switch (phase) {
+    case PHASE_NONE:
+        ss << "n";
+        break;
+    case PHASE_READY:
+        ss << "r";
+        break;
+    case PHASE_PLACING:
+        ss << "p";
+        break;
+    case PHASE_MOVING:
+        ss << "m";
+        break;
+    case PHASE_GAMEOVER:
+        ss << "o";
+        break;
+    default:
+        ss << "?";
+        break;
+    }
 
-//     ss << (" - ")
-//         << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
+    ss << " ";
+    // Active color
+    ss << (sideToMove == WHITE ? "w" : "b");
+    ss << " ";
+
+    // http://www.xqbase.com/protocol/pgnfen2.htm
+
+    // Halfmove clock
+
+    ss << st->rule50;
+    //ss << " ";
+
+    // Fullmove number
+    //ss << moveStep;
 
     return ss.str();
 }
