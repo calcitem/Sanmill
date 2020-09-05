@@ -145,6 +145,7 @@ void AiThread::analyze(Color c)
     Position *pos = ai.position();
 
     cout << *pos << "\n" << endl;
+    cout << std::dec;
 
     switch (pos->get_phase())
     {
