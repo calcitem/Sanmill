@@ -116,10 +116,8 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
 
 #undef P
 
-#if 0
     os << "\nFen: " << pos.fen() << "\nKey: " << std::hex << std::uppercase
         << std::setfill('0') << std::setw(16) << pos.key();
-#endif
 
     return os;
 }
@@ -328,35 +326,26 @@ Position &Position::set(const string &code, Color c, StateInfo *si)
 
 const string Position::fen() const
 {
-    // TODO
-#if 0
-    int emptyCnt;
     std::ostringstream ss;
 
-    for (Rank r = RANK_8; r >= RANK_1; --r) {
-        for (File f = FILE_A; f <= FILE_C; ++f) {
-            for (emptyCnt = 0; f <= FILE_C && empty(make_square(f, r)); ++f)
-                ++emptyCnt;
-
-            if (emptyCnt)
-                ss << emptyCnt;
-
-            if (f <= FILE_C)
-                ss << PieceToChar[piece_on(make_square(f, r))];
+    for (File f = FILE_A; f <= FILE_C; f = (File)(f + 1)) {
+        for (Rank r = RANK_1; r <= RANK_8; r = (Rank)(r + 1)) {
+            ss << PieceToChar(piece_on(make_square(f, r)));
         }
 
-        if (r > RANK_1)
-            ss << '/';
+        if (f == FILE_C) {
+            ss << " ";
+        } else {
+            ss << "/";
+        }        
     }
 
     ss << (sideToMove == WHITE ? " w " : " b ");
 
-    ss << (" - ")
-        << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
+//     ss << (" - ")
+//         << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
     return ss.str();
-#endif
-    return "";
 }
 
 

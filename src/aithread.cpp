@@ -140,15 +140,11 @@ void AiThread::analyze(Color c)
     string strUs = (c == BLACK ? "黑方" : "白方");
     string strThem = (c == BLACK ? "白方" : "黑方");
 
+    loggerDebug("Depth: %d\n\n", ai.newDepth);
+
     Position *pos = ai.position();
 
-#ifdef TEST_MODE
-    cout << *pos << endl;
-#endif
-
-#ifdef TEST_MODE
-    cout << "Key: " << std::hex << std::uppercase << pos->key() << endl;
-#endif
+    cout << *pos << "\n" << endl;
 
     switch (pos->get_phase())
     {

@@ -95,7 +95,7 @@ public:
     bool do_null_move();
 
     // Accessing hash keys
-    Key key();
+    Key key() const;
     void construct_key();
     Key revert_key(Square s);
     Key update_key(Square s);
@@ -287,10 +287,9 @@ template<PieceType Pt> inline int Position::count(Color c) const
     return 0;
 }
 
-inline Key Position::key()
+inline Key Position::key() const
 {
-    // TODO: Move to suitable function
-    return update_key_misc();
+    return st->key;
 }
 
 inline void Position::construct_key()

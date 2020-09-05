@@ -178,7 +178,8 @@ public:
     Value bestvalue { VALUE_ZERO };
     Value lastvalue { VALUE_ZERO };
 
-    Depth originDepth{ 0 };
+    Depth originDepth { 0 };
+    Depth newDepth{ 0 };
 
     inline Position *position()
     {

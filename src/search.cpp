@@ -380,7 +380,7 @@ Depth AIAlgorithm::changeDepth()
 
     assert(d <= 32);
 
-    loggerDebug("Depth: %d\n", d);
+    //loggerDebug("Depth: %d\n", d);
 
     return d;
 }
@@ -414,6 +414,7 @@ int AIAlgorithm::search()
     Value value = VALUE_ZERO;
 
     Depth d = changeDepth();
+    newDepth = d;
 
     time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
@@ -431,6 +432,7 @@ int AIAlgorithm::search()
     static int nRepetition = 0;
 
     if (pos->get_phase() == PHASE_MOVING) {
+        pos->update_key_misc();
         Key key = pos->key();
         
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
@@ -564,6 +566,7 @@ const char* AIAlgorithm::nextMove()
             Endgame endgame;
             endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
+            position->update_key_misc();
             key_t endgameHash = position->key(); // TODO: Do not generate hash repeately
             recordEndgameHash(endgameHash, endgame);
         }
@@ -707,6 +710,7 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
 #endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
+    pos->update_key_misc();
     Key posKey = pos->key();
 #endif
 
