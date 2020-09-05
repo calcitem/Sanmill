@@ -1385,40 +1385,40 @@ inline std::string GameController::char_to_string(char ch)
 
 void GameController::setTips()
 {
-    Position *p = &position;
+    Position &p = position;
 
     string winnerStr, reasonStr, resultStr, scoreStr;
-    string turnStr = char_to_string(color_to_char(p->sideToMove));
+    string turnStr = char_to_string(color_to_char(p.sideToMove));
 
-    switch (p->phase) {
+    switch (p.phase) {
     case PHASE_READY:
-        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p->pieceCountInHand[BLACK]) + "子" +
-            "  比分 " + to_string(p->score[BLACK]) + ":" + to_string(p->score[WHITE]) + ", 和棋 " + to_string(p->score_draw);
+        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceCountInHand[BLACK]) + "子" +
+            "  比分 " + to_string(p.score[BLACK]) + ":" + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);
         break;
 
     case PHASE_PLACING:
-        if (p->action == ACTION_PLACE) {
-            tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p->pieceCountInHand[p->sideToMove]) + "子";
-        } else if (p->action == ACTION_REMOVE) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p->pieceCountNeedRemove) + "子";
+        if (p.action == ACTION_PLACE) {
+            tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceCountInHand[p.sideToMove]) + "子";
+        } else if (p.action == ACTION_REMOVE) {
+            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceCountNeedRemove) + "子";
         }
         break;
 
     case PHASE_MOVING:
-        if (p->action == ACTION_PLACE || p->action == ACTION_SELECT) {
+        if (p.action == ACTION_PLACE || p.action == ACTION_SELECT) {
             tips = "轮到" + turnStr + "选子移动";
-        } else if (p->action == ACTION_REMOVE) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p->pieceCountNeedRemove) + "子";
+        } else if (p.action == ACTION_REMOVE) {
+            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceCountNeedRemove) + "子";
         }
         break;
 
     case PHASE_GAMEOVER:
-        scoreStr = "比分 " + to_string(p->score[BLACK]) + " : " + to_string(p->score[WHITE]) + ", 和棋 " + to_string(p->score_draw);        
+        scoreStr = "比分 " + to_string(p.score[BLACK]) + " : " + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);        
 
-        switch (p->winner) {
+        switch (p.winner) {
         case BLACK:
         case WHITE:
-            winnerStr = char_to_string(color_to_char(p->winner));
+            winnerStr = char_to_string(color_to_char(p.winner));
             resultStr = winnerStr + "获胜！";
             break;
         case DRAW:
@@ -1428,7 +1428,7 @@ void GameController::setTips()
             break;
         }
 
-        switch (p->gameoverReason) {
+        switch (p.gameoverReason) {
         case LOSE_EASON_LESS_THAN_THREE:
             break;
         case  LOSE_REASON_NO_WAY:
