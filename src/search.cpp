@@ -837,7 +837,8 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
         ss.push(*(pos));
         Color before = pos->sideToMove;
         Move move = mp.moves[i].move;
-        pos->do_move(move);
+        StateInfo st;   // TODO
+        pos->do_move(move, st);
         Color after = pos->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && moveCount == 1) {

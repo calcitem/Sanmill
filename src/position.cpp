@@ -378,7 +378,7 @@ const string Position::fen() const
 /// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
 /// moves should be filtered out before this function is called.
 
-void Position::do_move(Move m)
+void Position::do_move(Move m, StateInfo &newSt)
 {
     ++st->rule50;
 

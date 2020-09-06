@@ -86,7 +86,7 @@ public:
     bool pseudo_legal(const Move m) const;
 
     // Doing and undoing moves
-    void do_move(Move m);
+    void do_move(Move m, StateInfo &newSt);
     void undo_move(Move m);
     void undo_move(Stack<Position> &ss);
     void undo_null_move();
