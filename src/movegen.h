@@ -51,13 +51,13 @@ inline bool operator<(const ExtMove &f, const ExtMove &s)
     return f.value < s.value;
 }
 
-ExtMove *generate(Position *pos, ExtMove *moveList);
+ExtMove *generate(Position &pos, ExtMove *moveList);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.
 struct MoveList
 {
-    explicit MoveList(Position *pos) : last(generate(pos, moveList)) {}
+    explicit MoveList(Position &pos) : last(generate(pos, moveList)) {}
 
     const ExtMove *begin() const
     {

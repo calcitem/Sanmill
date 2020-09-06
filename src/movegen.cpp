@@ -284,30 +284,30 @@ void MoveList::shuffle()
 
 /// generate generates all the legal moves in the given position
 
-ExtMove *generate(Position *position, ExtMove *moveList)
+ExtMove *generate(Position &position, ExtMove *moveList)
 {
     Square s;
 
-    Color us = position->side_to_move();
+    Color us = position.side_to_move();
     Color them = ~us;
 
     const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
 
     ExtMove *cur = moveList;
 
-    switch (position->action) {
+    switch (position.action) {
     case ACTION_SELECT:
     case ACTION_PLACE:
-         if (position->phase & (PHASE_PLACING | PHASE_READY)) {
+         if (position.phase & (PHASE_PLACING | PHASE_READY)) {
             for (auto i : MoveList::movePriorityTable) {
-                if (position->board[i]) {
+                if (position.board[i]) {
                     continue;
                 }
 
 #ifdef MCTS_AI
                 moves.push_back((Move)i);
 #else // MCTS_AI
-                if (position->phase != PHASE_READY) {
+                if (position.phase != PHASE_READY) {
                     *cur++ = (Move)i;
                 } else {
 #ifdef FIRST_MOVE_STAR_PREFERRED
@@ -323,22 +323,22 @@ ExtMove *generate(Position *position, ExtMove *moveList)
             break;
         }
 
-        if (position->phase & PHASE_MOVING) {
+        if (position.phase & PHASE_MOVING) {
             Square newSquare, oldSquare;
 
             // move piece that location weak first
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 oldSquare = MoveList::movePriorityTable[i];
 
-                if (!position->select_piece(oldSquare)) {
+                if (!position.select_piece(oldSquare)) {
                     continue;
                 }
 
-                if (position->pieceCountOnBoard[position->sideToMove] > rule.nPiecesAtLeast ||
+                if (position.pieceCountOnBoard[position.sideToMove] > rule.nPiecesAtLeast ||
                     !rule.allowFlyWhenRemainThreePieces) {
                     for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
                         newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);
-                        if (newSquare && !position->board[newSquare]) {
+                        if (newSquare && !position.board[newSquare]) {
                             Move m = make_move(oldSquare, newSquare);
                             *cur++ = (Move)m;
                         }
@@ -346,7 +346,7 @@ ExtMove *generate(Position *position, ExtMove *moveList)
                 } else {
                     // piece count < 3，and allow fly, if is empty point, that's ok, do not need in move list
                     for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
-                        if (!position->board[newSquare]) {
+                        if (!position.board[newSquare]) {
                             Move m = make_move(oldSquare, newSquare);
                             *cur++ = (Move)m;
                         }
@@ -357,10 +357,10 @@ ExtMove *generate(Position *position, ExtMove *moveList)
         break;
 
     case ACTION_REMOVE:
-        if (position->is_all_in_mills(them)) {
+        if (position.is_all_in_mills(them)) {
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 s = MoveList::movePriorityTable[i];
-                if (position->board[s]& (them << PLAYER_SHIFT)) {
+                if (position.board[s]& (them << PLAYER_SHIFT)) {
                     *cur++ = (Move)-s;
                 }
             }
@@ -370,8 +370,8 @@ ExtMove *generate(Position *position, ExtMove *moveList)
         // not is all in mills
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             s = MoveList::movePriorityTable[i];
-            if (position->board[s] & (them << PLAYER_SHIFT)) {
-                if (rule.allowRemovePieceInMill || !position->in_how_many_mills(s, NOBODY)) {
+            if (position.board[s] & (them << PLAYER_SHIFT)) {
+                if (rule.allowRemovePieceInMill || !position.in_how_many_mills(s, NOBODY)) {
                     *cur++ = (Move)-s;
                 }
             }

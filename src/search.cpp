@@ -809,7 +809,7 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
         return bestValue;
     }
 
-    MovePicker mp(pos);
+    MovePicker mp(*pos);
     Move nextMove = mp.next_move();
     int moveCount = mp.move_count();
 

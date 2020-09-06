@@ -50,7 +50,7 @@ class MovePicker
 public:
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-    MovePicker(Position *position);
+    MovePicker(Position &position);
 
     Move next_move();
 
@@ -68,7 +68,7 @@ public:
         return endMoves;
     }
 
-    Position *pos;
+    Position &pos;
     Move ttMove { MOVE_NONE };
     ExtMove *cur, *endMoves;
     ExtMove moves[MAX_MOVES] { MOVE_NONE };
