@@ -606,17 +606,15 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
     Bitboard fromTo;
 
-    if (phase == PHASE_GAMEOVER)
+    if (phase == PHASE_GAMEOVER ||
+        action != ACTION_PLACE ||
+        !onBoard[s] || board[s]) {
         return false;
+    }
 
-    if (phase == PHASE_READY)
+    if (phase == PHASE_READY) {
         start();
-
-    if (action != ACTION_PLACE)
-        return false;
-
-    if (!onBoard[s]|| board[s])
-        return false;
+    }        
 
     Position::square_to_polar(s, file, rank);
 
