@@ -437,8 +437,6 @@ constexpr Color operator~(Color color)
 //     return Piece(p ^ 8);   // Swap color of piece
 // }
 
-
-// TODO
 constexpr Square make_square(File file, Rank rank)
 {
     return Square((file << 3) + rank - 1);

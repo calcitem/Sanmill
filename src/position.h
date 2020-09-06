@@ -158,7 +158,6 @@ public:
     bool is_all_surrounded() const;
 
     static void square_to_polar(Square s, File &file, Rank &rank);
-    static Square polar_to_square(File file, Rank rank);
 
     static void print_board();
 
@@ -307,23 +306,19 @@ inline Thread *Position::this_thread() const
     return thisThread;
 }
 
-inline bool Position::select_piece(File file, Rank rank)
+inline bool Position::select_piece(File f, Rank r)
 {
-    return select_piece(Position::polar_to_square(file, rank));
+    return select_piece(make_square(f, r));
 }
 
-inline bool Position::put_piece(File file, Rank rank)
+inline bool Position::put_piece(File f, Rank r)
 {
-    Square s = Position::polar_to_square(file, rank);
-
-    return put_piece(s, true);
+    return put_piece(make_square(f, r), true);
 }
 
-inline bool Position::remove_piece(File file, Rank rank)
+inline bool Position::remove_piece(File f, Rank r)
 {
-    Square s = Position::polar_to_square(file, rank);
-
-    return remove_piece(s, 1);
+    return remove_piece(make_square(f, r), 1);
 }
 
 inline bool Position::move_piece(Square from, Square to)

@@ -1457,13 +1457,6 @@ void Position::square_to_polar(const Square s, File &file, Rank &rank)
     rank = Rank((s & 0x07) + 1);
 }
 
-Square Position::polar_to_square(File file, Rank rank)
-{
-    assert(!(file < 1 || file > FILE_NB || rank < 1 || rank > RANK_NB));
-
-    return static_cast<Square>(file * RANK_NB + rank - 1);
-}
-
 Color Position::color_on(Square s) const
 {
     return Color((board[s] & 0x30) >> PLAYER_SHIFT);
