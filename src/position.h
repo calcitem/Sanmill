@@ -203,9 +203,6 @@ public:
     int score[COLOR_NB] { 0 };
     int score_draw { 0 };
 
-    Step currentStep;
-    int moveStep;
-
     static const int onBoard[SQUARE_NB];
 
     // Relate to Rule
@@ -340,11 +337,6 @@ inline Piece *Position::get_board() const
 inline Square Position::current_square() const
 {
     return currentSquare;
-}
-
-inline int Position::get_step() const
-{
-    return currentStep;
 }
 
 inline enum Phase Position::get_phase() const

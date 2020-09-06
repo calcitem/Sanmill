@@ -477,8 +477,8 @@ bool Position::set_position(const struct Rule *newRule)
 {
     rule = *newRule;
 
-    this->currentStep = 0;
-    this->moveStep = 0;
+    gamePly = 0;
+    st->rule50 = 0;
 
     phase = PHASE_READY;
     set_side_to_move(BLACK);
@@ -525,8 +525,8 @@ bool Position::reset()
         return true;
     }
 
-    currentStep = 0;
-    moveStep = 0;
+    gamePly = 0;
+    st->rule50 = 0;
 
     phase = PHASE_READY;
     set_side_to_move(BLACK);
@@ -637,7 +637,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             sprintf(cmdline, "(%1u,%1u) %02u:%02u",
                     file, rank, seconds / 60, seconds % 60);
             cmdlist.emplace_back(string(cmdline));
-            currentStep++;
+            gamePly++;
         }
 
         currentSquare = s;
@@ -680,7 +680,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         goto out;
     }
 
-    // When hase == GAME_MOVING
+    // When phase == GAME_MOVING
 
     // if illegal
     if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
@@ -703,8 +703,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
                 file, rank, seconds / 60, seconds % 60);
         cmdlist.emplace_back(string(cmdline));
-        currentStep++;
-        moveStep++;
+        gamePly++;
+        st->rule50++;
     }
 
     fromTo = square_bb(currentSquare) | square_bb(s);
@@ -794,8 +794,8 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         seconds = update();
         sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", file, rank, seconds / 60, seconds % 60);
         cmdlist.emplace_back(string(cmdline));
-        currentStep++;
-        moveStep = 0;
+        gamePly++;
+        st->rule50 = 0;
     }
 
     currentSquare = SQ_0;
@@ -1035,7 +1035,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
     }
 
     if (rule.maxStepsLedToDraw > 0 &&
-        moveStep > rule.maxStepsLedToDraw) {
+        st->rule50 > rule.maxStepsLedToDraw) {
         winner = DRAW;
         phase = PHASE_GAMEOVER;
         if (updateCmdlist) {
