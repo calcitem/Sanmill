@@ -327,7 +327,7 @@ public slots:
 
     // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();
-    bool updateScence(Position *position);
+    bool updateScence(Position &position);
 
     // 显示网络配置窗口
     void showNetworkWindow();

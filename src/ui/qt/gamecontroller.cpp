@@ -294,18 +294,18 @@ void GameController::setInvert(bool arg)
     isInverted = arg;
 
     // 遍历所有棋子
-    for (PieceItem *p : pieceList) {
-        if (p) {
+    for (PieceItem *pieceItem : pieceList) {
+        if (pieceItem) {
             // 黑子变白
-            if (p->getModel() == PieceItem::blackPiece)
-                p->setModel(PieceItem::whitePiece);
+            if (pieceItem->getModel() == PieceItem::blackPiece)
+                pieceItem->setModel(PieceItem::whitePiece);
 
             // 白子变黑
-            else if (p->getModel() == PieceItem::whitePiece)
-                p->setModel(PieceItem::blackPiece);
+            else if (pieceItem->getModel() == PieceItem::whitePiece)
+                pieceItem->setModel(PieceItem::blackPiece);
 
             // 刷新棋子显示
-            p->update();
+            pieceItem->update();
         }
     }
 #endif // TRAINING_MODE
@@ -953,7 +953,7 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 
     if (update) {
         playSound(soundType, position.side_to_move());
-        updateScence(&position);
+        updateScence(position);
     }
 
     // 发信号更新状态栏
@@ -1117,7 +1117,7 @@ bool GameController::phaseChange(int row, bool forceUpdate)
     position.set_start_time(static_cast<int>(position.start_timeb()));
 
     // 刷新棋局场景
-    updateScence(&position);
+    updateScence(position);
 #endif // TRAINING_MODE
 
     return true;
@@ -1126,16 +1126,16 @@ bool GameController::phaseChange(int row, bool forceUpdate)
 bool GameController::updateScence()
 {
 #ifndef TRAINING_MODE
-    return updateScence(&position);
+    return updateScence(position);
 #else
     return true;
 #endif
 }
 
-bool GameController::updateScence(Position *p)
+bool GameController::updateScence(Position &p)
 {
 #ifndef TRAINING_MODE
-    const Piece *board = p->get_board();
+    const Piece *board = p.get_board();
     QPointF pos;
 
     // game类中的棋子代码
@@ -1189,10 +1189,10 @@ bool GameController::updateScence(Position *p)
         if (j == (RANK_NB) * (FILE_NB + 1)) {
             // 判断是被吃掉的子，还是未安放的子
             if (key & B_STONE) {
-                pos = (key - 0x11 < nTotalPieces / 2 - p->count<IN_HAND>(BLACK)) ?
+                pos = (key - 0x11 < nTotalPieces / 2 - p.count<IN_HAND>(BLACK)) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
-                pos = (key - 0x21 < nTotalPieces / 2 - p->count<IN_HAND>(WHITE)) ?
+                pos = (key - 0x21 < nTotalPieces / 2 - p.count<IN_HAND>(WHITE)) ?
                         scene.pos_p1_g : scene.pos_p2;
             }
 
@@ -1219,7 +1219,7 @@ bool GameController::updateScence(Position *p)
     }
 
     // 添加摆棋阶段禁子点
-    if (rule.hasBannedLocations && p->get_phase() == PHASE_PLACING) {
+    if (rule.hasBannedLocations && p.get_phase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == BAN_STONE) {
                 pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
@@ -1238,7 +1238,7 @@ bool GameController::updateScence(Position *p)
     }
 
     // 走棋阶段清除禁子点
-    if (rule.hasBannedLocations && p->get_phase() != PHASE_PLACING) {
+    if (rule.hasBannedLocations && p.get_phase() != PHASE_PLACING) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();
@@ -1246,9 +1246,9 @@ bool GameController::updateScence(Position *p)
     }
 
     // 选中当前棋子
-    int ipos = p->current_square();
+    int ipos = p.current_square();
     if (ipos) {
-        key = board[p->current_square()];
+        key = board[p.current_square()];
         ipos = key & B_STONE ? (key - B_STONE_1) * 2 : (key - W_STONE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
@@ -1264,9 +1264,9 @@ bool GameController::updateScence(Position *p)
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     // 更新比分 LCD 显示
-    emit score1Changed(QString::number(p->score[BLACK], 10));
-    emit score2Changed(QString::number(p->score[WHITE], 10));
-    emit scoreDrawChanged(QString::number(p->score_draw, 10));
+    emit score1Changed(QString::number(p.score[BLACK], 10));
+    emit score2Changed(QString::number(p.score[WHITE], 10));
+    emit scoreDrawChanged(QString::number(p.score_draw, 10));
 
     // 更新胜率 LCD 显示
     position.nPlayed = position.score[BLACK] + position.score[WHITE] + position.score_draw;
