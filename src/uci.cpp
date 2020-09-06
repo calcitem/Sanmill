@@ -37,8 +37,6 @@ using namespace std;
 
 extern vector<string> setup_bench(Position*, istream&);
 
-#if 0
-
 namespace {
 
   // FEN string of the initial position, normal mill game
@@ -50,7 +48,7 @@ namespace {
   // or the starting position ("startpos") and then makes the moves given in the
   // following move list ("moves").
 
-  void position(Position& pos, istringstream& is, StateListPtr& states) {
+  void position(Position* pos, istringstream& is, StateListPtr& states) {
 
     Move m;
     string token, fen;
@@ -76,7 +74,7 @@ namespace {
     {
         states->emplace_back();
         //pos.do_move(m, states->back()); // TODO
-        pos.do_move(m);
+        pos->do_move(m);
     }
   }
 
@@ -109,7 +107,7 @@ namespace {
   // the thinking time and other parameters from the input string, then starts
   // the search.
 
-  void go(Position& pos, istringstream& is, StateListPtr& states) {
+  void go(Position* pos, istringstream& is, StateListPtr& states) {
 
     Search::LimitsType limits;
     string token;
@@ -120,7 +118,7 @@ namespace {
     while (is >> token)
         if (token == "searchmoves") // Needs to be the last command on the line
             while (is >> token)
-                limits.searchmoves.push_back(UCI::to_move(&pos, token));
+                limits.searchmoves.push_back(UCI::to_move(pos, token));
 
         else if (token == "wtime")     is >> limits.time[WHITE];
         else if (token == "btime")     is >> limits.time[BLACK];
@@ -135,7 +133,7 @@ namespace {
         else if (token == "infinite")  limits.infinite = 1;
         else if (token == "ponder")    ponderMode = true;
 
-    Threads.start_thinking(&pos, states, limits, ponderMode); // TODO
+    Threads.start_thinking(pos, states, limits, ponderMode); // TODO
   }
 
 
@@ -143,12 +141,12 @@ namespace {
   // a list of UCI commands is setup according to bench parameters, then
   // it is run one by one printing a summary at the end.
 
-  void bench(Position& pos, istream& args, StateListPtr& states) {
+  void bench(Position* pos, istream& args, StateListPtr& states) {
 
     string token;
     uint64_t num, nodes = 0, cnt = 1;
 
-    vector<string> list = setup_bench(&pos, args);
+    vector<string> list = setup_bench(pos, args);
     num = count_if(list.begin(), list.end(), [](string s) { return s.find("go ") == 0 || s.find("eval") == 0; });
 
     TimePoint elapsed = now();
@@ -168,7 +166,7 @@ namespace {
                nodes += Threads.nodes_searched();
             }
             else
-               sync_cout << "\n" << Eval::trace(pos) << sync_endl;
+               sync_cout << "\n" << Eval::trace(*pos) << sync_endl;
         }
         else if (token == "setoption")  setoption(is);
         else if (token == "position")   position(pos, is, states);
@@ -196,7 +194,7 @@ namespace {
 
 void UCI::loop(int argc, char* argv[]) {
 
-  Position pos;
+  Position *pos = new Position;
   string token, cmd;
   StateListPtr states(new std::deque<StateInfo>(1));
 
@@ -238,15 +236,17 @@ void UCI::loop(int argc, char* argv[]) {
 
       // Additional custom non-UCI commands, mainly for debugging.
       // Do not use these commands during a search!
-      else if (token == "flip")     pos.flip();
+      else if (token == "flip")     pos->flip();
       else if (token == "bench")    bench(pos, is, states);
       else if (token == "d")        sync_cout << &pos << sync_endl;
-      else if (token == "eval")     sync_cout << Eval::trace(pos) << sync_endl;
+      else if (token == "eval")     sync_cout << Eval::trace(*pos) << sync_endl;
       else if (token == "compiler") sync_cout << compiler_info() << sync_endl;
       else
           sync_cout << "Unknown command: " << cmd << sync_endl;
 
   } while (token != "quit" && argc == 1); // Command line args are one-shot
+
+  delete pos;
 }
 
 
@@ -304,15 +304,14 @@ string UCI::move(Move m) {
 /// UCI::to_move() converts a string representing a move in coordinate notation
 /// (g1f3, a7a8q) to the corresponding legal Move, if any.
 
-Move UCI::to_move(const Position& pos, string& str) {
+Move UCI::to_move(Position *pos, string& str) {
 
   if (str.length() == 5) // Junior could send promotion piece in uppercase
       str[4] = char(tolower(str[4]));
 
-  for (const auto& m : MoveList(pos))
+  for (const auto& m : MoveList(*pos))
       if (str == UCI::move(m))
           return m;
 
   return MOVE_NONE;
 }
-#endif

@@ -168,7 +168,7 @@ void ThreadPool::clear()
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
 /// returns immediately. Main thread will wake up other threads and start the search.
 
-void ThreadPool::start_thinking(Position &pos, StateListPtr &states,
+void ThreadPool::start_thinking(Position *pos, StateListPtr &states,
                                 const Search::LimitsType &limits, bool ponderMode)
 {
 
@@ -180,7 +180,7 @@ void ThreadPool::start_thinking(Position &pos, StateListPtr &states,
     Search::Limits = limits;
     Search::RootMoves rootMoves;
 
-    for (auto &m : MoveList(pos))
+    for (const auto &m : MoveList(*pos))
         if (limits.searchmoves.empty()
             || std::count(limits.searchmoves.begin(), limits.searchmoves.end(), m))
             rootMoves.emplace_back(m);
@@ -208,7 +208,7 @@ void ThreadPool::start_thinking(Position &pos, StateListPtr &states,
         th->nodes = th->tbHits = th->nmpMinPly = 0;
         th->rootDepth = th->completedDepth = 0;
         th->rootMoves = rootMoves;
-        th->rootPos.set(pos.fen(), &setupStates->back(), th);
+        th->rootPos.set(pos->fen(), &setupStates->back(), th);
     }
 
     setupStates->back() = tmp;
