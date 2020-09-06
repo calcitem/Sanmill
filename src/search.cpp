@@ -522,9 +522,9 @@ int AIAlgorithm::search()
 #endif // ALPHABETA_AI
 
 #ifdef ALPHABETA_AI
-const char* AIAlgorithm::nextMove()
+string AIAlgorithm::nextMove()
 {
-    return UCI::move(bestMove).c_str();
+    return UCI::move(bestMove);
 
 #if 0
     char charSelect = '*';

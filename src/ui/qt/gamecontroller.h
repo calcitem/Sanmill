@@ -320,7 +320,7 @@ public slots:
     bool giveUp();
 
     // 棋谱的命令行执行
-    bool command(const QString &cmd, bool update = true);
+    bool command(const string &cmd, bool update = true);
 
     // 历史局面及局面改变
     bool phaseChange(int row, bool forceUpdate = false);

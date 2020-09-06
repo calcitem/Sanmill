@@ -40,7 +40,7 @@ public:
     ~AiThread() override;
 
 signals:
-    void command(const QString &cmdline, bool update = true);
+    void command(const string &cmdline, bool update = true);
 
     void searchStarted();
 
@@ -80,7 +80,7 @@ public:
     int us;
 
 private:
-    const char* strCommand {};
+    string strCommand;
     QMutex mutex;
 
     // For ext in future

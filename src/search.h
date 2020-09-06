@@ -151,7 +151,7 @@ public:
 
 #ifdef ALPHABETA_AI
     int search();
-    const char *nextMove();
+    string nextMove();
 #endif // ALPHABETA_AI
 
     void undo_move();

@@ -23,6 +23,9 @@
 #include <QDataStream>
 #include <QDialog>
 #include <QTcpSocket>
+#include <string>
+
+using std::string;
 
 QT_BEGIN_NAMESPACE
 class QComboBox;
@@ -41,7 +44,7 @@ public:
     explicit Client(QWidget *parent = nullptr, uint16_t port = 33333);
 
 signals:
-    void command(const QString &cmd, bool update = true);
+    void command(const string &cmd, bool update = true);
 
 private slots:
     void requestNewAction();

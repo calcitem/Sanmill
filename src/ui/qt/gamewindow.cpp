@@ -691,7 +691,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
     cmd = textStream.readLine();
 
     // 读取并显示棋谱时，不必刷新棋局场景
-    if (!(gameController->command(cmd, false))) {
+    if (!(gameController->command(cmd.toStdString(), false))) {
         // 定义新对话框
         QMessageBox msgBox(QMessageBox::Warning, tr("文件错误"), tr("不是正确的棋谱文件"), QMessageBox::Ok);
         msgBox.exec();
@@ -700,7 +700,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
 
     while (!textStream.atEnd()) {
         cmd = textStream.readLine();
-        gameController->command(cmd, false);
+        gameController->command(cmd.toStdString(), false);
     }
 
     // 最后刷新棋局场景

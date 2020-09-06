@@ -79,19 +79,21 @@ GameController::GameController(
 
     gameTest = new Test();
 
-    // 关联AI和控制器的着法命令行
-    connect(aiThread[BLACK], SIGNAL(command(const QString &, bool)),
-            this, SLOT(command(const QString &, bool)));
-    connect(aiThread[WHITE], SIGNAL(command(const QString &, bool)),
-            this, SLOT(command(const QString &, bool)));
+    qRegisterMetaType<std::string>("string");
 
-    connect(this->gameTest, SIGNAL(command(const QString &, bool)),
-            this, SLOT(command(const QString &, bool)));
+    // 关联AI和控制器的着法命令行
+    connect(aiThread[BLACK], SIGNAL(command(const string &, bool)),
+            this, SLOT(command(const string &, bool)));
+    connect(aiThread[WHITE], SIGNAL(command(const string &, bool)),
+            this, SLOT(command(const string &, bool)));
+
+    connect(this->gameTest, SIGNAL(command(const string &, bool)),
+            this, SLOT(command(const string &, bool)));
 
 #ifndef TRAINING_MODE
     // 关联AI和网络类的着法命令行
-    connect(aiThread[BLACK]->getClient(), SIGNAL(command(const QString &, bool)),
-            this, SLOT(command(const QString &, bool)));
+    connect(aiThread[BLACK]->getClient(), SIGNAL(command(const string &, bool)),
+            this, SLOT(command(const string &, bool)));
 #endif // TRAINING_MODE
 
 #ifdef ENDGAME_LEARNING_FORCE
@@ -905,7 +907,7 @@ bool GameController::giveUp()
 }
 
 // 关键槽函数，棋谱的命令行执行，与actionPiece独立
-bool GameController::command(const QString &cmd, bool update /* = true */)
+bool GameController::command(const string &cmd, bool update /* = true */)
 {
 #ifndef TRAINING_MODE
     Q_UNUSED(hasSound)
@@ -940,10 +942,9 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
         gameStart();
     }
 
-    string command = cmd.toStdString();
-    loggerDebug("Computer: %s\n\n", command.c_str());
+    loggerDebug("Computer: %s\n\n", cmd.c_str());
 
-    if (!position.command(command.c_str()))
+    if (!position.command(cmd.c_str()))
         return false;
 
 #ifndef TRAINING_MODE
@@ -1073,14 +1074,14 @@ bool GameController::command(const QString &cmd, bool update /* = true */)
 #endif
     }
     
-    gameTest->writeToMemory(cmd);
+    gameTest->writeToMemory(QString::fromStdString(cmd));
 
 #ifndef TRAINING_MODE
     // 网络: 将着法放到服务器的发送列表中
     if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->getServer()->setAction(cmd);
+        aiThread[BLACK]->getServer()->setAction(QString::fromStdString(cmd));
     } else if (isAiPlayer[WHITE]) {
-        aiThread[BLACK]->getServer()->setAction(cmd);    // 注意: 同样是 aiThread[BLACK]
+        aiThread[BLACK]->getServer()->setAction(QString::fromStdString(cmd));    // 注意: 同样是 aiThread[BLACK]
     }
 #endif // TRAINING_MODE
 

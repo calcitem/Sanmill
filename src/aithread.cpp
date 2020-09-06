@@ -293,7 +293,7 @@ void AiThread::run()
                 emitCommand();
             } else {
                 strCommand = ai.nextMove();
-                if (strCommand && strcmp(strCommand, "error!") != 0) {
+                if (strCommand != "" && strCommand != "error!") {
                     emitCommand();
                 }
             }

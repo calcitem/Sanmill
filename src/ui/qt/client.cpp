@@ -139,7 +139,7 @@ void Client::readAction()
 
     currentAction = nextAction;
     statusLabel->setText(currentAction);
-    emit command(currentAction);
+    emit command(currentAction.toStdString());
     getActionButton->setEnabled(true);
 
     QTimer::singleShot(10, this, &Client::requestNewAction);

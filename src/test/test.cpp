@@ -217,7 +217,7 @@ void Test::readFromMemory()
             memset(to, 0, SHARED_MEMORY_SIZE);
             sharedMemory.unlock();
             readStr = str;
-            emit command(str);
+            emit command(str.toStdString());
         }
     }
 }

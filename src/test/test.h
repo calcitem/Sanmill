@@ -29,6 +29,9 @@
 #include <QString>
 #include <QBuffer>
 #include <QDialog>
+#include <string>
+
+using std::string;
 
 class Test : public QDialog
 {
@@ -51,7 +54,7 @@ public:
     void stop();
 
 signals:
-    void command(const QString &cmd, bool update = true);
+    void command(const string &cmd, bool update = true);
 
 public slots:
     void writeToMemory(const QString &str);

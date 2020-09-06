@@ -24,8 +24,11 @@
 #include <QString>
 #include <QVector>
 #include <queue>
+#include <string>
 
 #include "config.h"
+
+using std::string;
 
 QT_BEGIN_NAMESPACE
 class QLabel;
