@@ -1469,7 +1469,7 @@ Square Position::polar_to_square(File file, Rank rank)
     return static_cast<Square>(file * RANK_NB + rank - 1);
 }
 
-Color Position::color_on(Square s)
+Color Position::color_on(Square s) const
 {
     return Color((board[s] & 0x30) >> PLAYER_SHIFT);
 }
@@ -1637,7 +1637,7 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
     }
 }
 
-bool Position::is_all_surrounded()
+bool Position::is_all_surrounded() const
 {
     // Full
     if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB)

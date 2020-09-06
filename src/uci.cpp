@@ -37,6 +37,8 @@ using namespace std;
 
 extern vector<string> setup_bench(Position*, istream&);
 
+#if 0
+
 namespace {
 
   // FEN string of the initial position, normal mill game
@@ -48,7 +50,7 @@ namespace {
   // or the starting position ("startpos") and then makes the moves given in the
   // following move list ("moves").
 
-  void position(Position* pos, istringstream& is, StateListPtr& states) {
+  void position(Position& pos, istringstream& is, StateListPtr& states) {
 
     Move m;
     string token, fen;
@@ -74,7 +76,7 @@ namespace {
     {
         states->emplace_back();
         //pos.do_move(m, states->back()); // TODO
-        pos->do_move(m);
+        pos.do_move(m);
     }
   }
 
@@ -166,10 +168,10 @@ namespace {
                nodes += Threads.nodes_searched();
             }
             else
-               sync_cout << "\n" << Eval::trace(&pos) << sync_endl;
+               sync_cout << "\n" << Eval::trace(pos) << sync_endl;
         }
         else if (token == "setoption")  setoption(is);
-        else if (token == "position")   position(&pos, is, states);
+        else if (token == "position")   position(pos, is, states);
         else if (token == "ucinewgame") { Search::clear(); elapsed = now(); } // Search::clear() may take some while
     }
 
@@ -230,7 +232,7 @@ void UCI::loop(int argc, char* argv[]) {
 
       else if (token == "setoption")  setoption(is);
       else if (token == "go")         go(pos, is, states);
-      else if (token == "position")   position(&pos, is, states);
+      else if (token == "position")   position(pos, is, states);
       else if (token == "ucinewgame") Search::clear();
       else if (token == "isready")    sync_cout << "readyok" << sync_endl;
 
@@ -239,7 +241,7 @@ void UCI::loop(int argc, char* argv[]) {
       else if (token == "flip")     pos.flip();
       else if (token == "bench")    bench(pos, is, states);
       else if (token == "d")        sync_cout << &pos << sync_endl;
-      else if (token == "eval")     sync_cout << Eval::trace(&pos) << sync_endl;
+      else if (token == "eval")     sync_cout << Eval::trace(pos) << sync_endl;
       else if (token == "compiler") sync_cout << compiler_info() << sync_endl;
       else
           sync_cout << "Unknown command: " << cmd << sync_endl;
@@ -302,7 +304,7 @@ string UCI::move(Move m) {
 /// UCI::to_move() converts a string representing a move in coordinate notation
 /// (g1f3, a7a8q) to the corresponding legal Move, if any.
 
-Move UCI::to_move(Position* pos, string& str) {
+Move UCI::to_move(const Position& pos, string& str) {
 
   if (str.length() == 5) // Junior could send promotion piece in uppercase
       str[4] = char(tolower(str[4]));
@@ -313,3 +315,4 @@ Move UCI::to_move(Position* pos, string& str) {
 
   return MOVE_NONE;
 }
+#endif

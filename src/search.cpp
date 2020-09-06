@@ -786,7 +786,7 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
 
     if (unlikely(pos->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash and requiredQuit
         depth <= 0) {
-        bestValue = Eval::evaluate(pos);
+        bestValue = Eval::evaluate(*pos);
 
         // For win quickly
         if (bestValue > 0) {

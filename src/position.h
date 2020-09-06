@@ -77,7 +77,7 @@ public:
 
     // Position representation
     Piece piece_on(Square s) const;
-    Color color_on(Square s);
+    Color color_on(Square s) const;
     bool empty(Square s) const;
     template<PieceType Pt> int count(Color c) const;
 
@@ -155,7 +155,7 @@ public:
 
     int surrounded_empty_squares_count(Square s, bool includeFobidden);
     void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
-    bool is_all_surrounded();
+    bool is_all_surrounded() const;
 
     static void square_to_polar(Square s, File &file, Rank &rank);
     static Square polar_to_square(File file, Rank rank);
