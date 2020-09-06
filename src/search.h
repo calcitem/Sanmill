@@ -168,9 +168,6 @@ public:
     static void loadEndgameFileToHashMap();
 #endif // ENDGAME_LEARNING
 
-public: /* TODO: Move to private or protected */
-    const char *moveToCommand(Move move);
-
 protected:
     Depth changeDepth();
        

@@ -524,7 +524,7 @@ int AIAlgorithm::search()
 #ifdef ALPHABETA_AI
 const char* AIAlgorithm::nextMove()
 {
-    return moveToCommand(bestMove);
+    return UCI::move(bestMove).c_str();
 
 #if 0
     char charSelect = '*';
@@ -545,7 +545,7 @@ const char* AIAlgorithm::nextMove()
 
         loggerDebug("[%.2d] %d\t%s\t%d\t%u %c\n", moveIndex,
                     root->children[i]->move,
-                    moveToCommand(root->children[i]->move),
+                    UCI::move(root->children[i]->move).c_str();
                     root->children[i]->value,
 #ifdef HOSTORY_HEURISTIC
                     root->children[i]->score,
@@ -597,28 +597,10 @@ const char* AIAlgorithm::nextMove()
         loggerDebug("Warning: Best Move NOT Found\n");
     }
 
-    return moveToCommand(bestMove);
+    return UCI::move(bestMove).c_str();
 #endif
 }
 #endif // ALPHABETA_AI
-
-const char *AIAlgorithm::moveToCommand(Move move)
-{
-    File file2 = file_of(to_sq(move));
-    Rank rank2 = rank_of(to_sq(move));
-
-    if (move < 0) {
-        sprintf(cmdline, "-(%1u,%1u)", file2, rank2);
-    } else if (move & 0x7f00) {
-        File file1 = file_of(from_sq(move));
-        Rank rank1 = rank_of(from_sq(move));
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", file1, rank1, file2, rank2);
-    } else {
-        sprintf(cmdline, "(%1u,%1u)", file2, rank2);
-    }
-
-    return cmdline;
-}
 
 #ifdef ENDGAME_LEARNING
 bool AIAlgorithm::findEndgameHash(key_t posKey, Endgame &endgame)
