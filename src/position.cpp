@@ -183,53 +183,48 @@ Position::~Position()
 
 Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
 {
-    // TODO
-#if 0
     /*
        A FEN string defines a particular position using only the ASCII character set.
 
        A FEN string contains six fields separated by a space. The fields are:
 
-       1) Piece placement (from white's perspective). Each rank is described, starting
-          with rank 8 and ending with rank 1. Within each rank, the contents of each
-          square are described from file A through file H. Following the Standard
+       1) Piece placement. Each rank is described, starting
+          with rank 1 and ending with rank 8. Within each rank, the contents of each
+          square are described from file A through file C. Following the Standard
           Algebraic Notation (SAN), each piece is identified by a single letter taken
-          from the standard English names. White pieces are designated using upper-case
-          letters ("PNBRQK") whilst Black uses lowercase ("pnbrqk"). Blank squares are
+          from the standard English names. White pieces are designated using "O"
+          whilst Black uses "@". Blank uses "*". Banned uses "X".
           noted using digits 1 through 8 (the number of blank squares), and "/"
           separates ranks.
 
        2) Active color. "w" means white moves next, "b" means black.
 
-       4) En passant target square (in algebraic notation). If there's no en passant
-          target square, this is "-". If a pawn has just made a 2-square move, this
-          is the position "behind" the pawn. This is recorded only if there is a pawn
-          in position to make an en passant capture, and if there really is a pawn
-          that might have advanced two squares.
+       3) Phrase.
 
-       5) Halfmove clock. This is the number of halfmoves since the last pawn advance
-          or capture. This is used to determine if a draw can be claimed under the
+       4) Halfmove clock. This is the number of halfmoves since the last
+          capture. This is used to determine if a draw can be claimed under the
           fifty-move rule.
 
-       6) Fullmove number. The number of the full move. It starts at 1, and is
+       5) Fullmove number. The number of the full move. It starts at 1, and is
           incremented after Black's move.
     */
 
     unsigned char token;
     size_t idx;
-    Square sq = SQ_A8;
+    Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
     std::memset(this, 0, sizeof(Position));
     std::memset(si, 0, sizeof(StateInfo));
-    std::fill_n(&pieceList[0][0], sizeof(pieceList) / sizeof(Square), SQ_NONE);
     st = si;
 
     ss >> std::noskipws;
 
     // 1. Piece placement
+    // TODO
+#if 0
     while ((ss >> token) && !isspace(token)) {
-        if (isdigit(token))
+        if (token == '@')
             sq += (token - '0') * EAST; // Advance the given number of files
 
         else if (token == '/')
@@ -240,28 +235,28 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
             ++sq;
         }
     }
+#endif
 
     // 2. Active color
     ss >> token;
     sideToMove = (token == 'w' ? WHITE : BLACK);
     ss >> token;
 
-    // 5-6. Halfmove clock and fullmove number
+    // 3. Phrase
+
+
+    // 4-5. Halfmove clock and fullmove number
     ss >> std::skipws >> st->rule50 >> gamePly;
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
     // handle also common incorrect FEN with fullmove = 0.
-    gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == BLACK);
+    gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == WHITE);
 
     thisThread = th;
     set_state(st);
 
-    assert(pos_is_ok());
-#endif
-    th = th;
-    si = si;
-    string str = fenStr;
-    str = "";
+    //assert(pos_is_ok());
+
     return *this;
 }
 
@@ -867,7 +862,7 @@ bool Position::select_piece(Square s)
     if (action != ACTION_SELECT && action != ACTION_PLACE)
         return false;
 
-    if (board[s]& (sideToMove << PLAYER_SHIFT)) {
+    if (board[s] & (sideToMove << PLAYER_SHIFT)) {
         currentSquare = s;
         action = ACTION_PLACE;
 
