@@ -157,8 +157,6 @@ public:
     void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
     bool is_all_surrounded() const;
 
-    static void square_to_polar(Square s, File &file, Rank &rank);
-
     static void print_board();
 
     int pieces_on_board_count();

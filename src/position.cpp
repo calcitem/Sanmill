@@ -616,7 +616,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         start();
     }        
 
-    Position::square_to_polar(s, file, rank);
+    file = file_of(s);
+    rank = rank_of(s);
 
     if (phase == PHASE_PLACING) {
         piece = (Piece)((0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
@@ -753,9 +754,8 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (pieceCountNeedRemove <= 0)
         return false;
 
-    File file;
-    Rank rank;
-    Position::square_to_polar(s, file, rank);
+    File file = file_of(s);
+    Rank rank = rank_of(s);
 
     int seconds = -1;
 
@@ -1445,14 +1445,6 @@ void Position::create_mill_table()
 
     loggerDebug("======== millTable End =========\n");
 #endif /* DEBUG_MODE */
-}
-
-void Position::square_to_polar(const Square s, File &file, Rank &rank)
-{
-    //r = s / RANK_NB;
-    //s = s % RANK_NB + 1;
-    file = File(s >> 3);
-    rank = Rank((s & 0x07) + 1);
 }
 
 Color Position::color_on(Square s) const

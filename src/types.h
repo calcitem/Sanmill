@@ -481,25 +481,13 @@ constexpr bool is_ok(Square s)
 
 constexpr File file_of(Square s)
 {
-    return File((s >> 3) - 1);
+    return File(s >> 3);
 }
 
 constexpr Rank rank_of(Square s)
 {
-    return Rank(s & 7);
+    return Rank((s & 0x07) + 1);
 }
-
-#if 0
-constexpr ring_t ring_of(Square s)
-{
-   // return File(s & 7);
-}
-
-constexpr Rank seat_of(Square s)
-{
-    //return seat(s >> 3);
-}
-#endif
 
 constexpr Square from_sq(Move m)
 {

@@ -604,16 +604,14 @@ const char* AIAlgorithm::nextMove()
 
 const char *AIAlgorithm::moveToCommand(Move move)
 {
-    File file2;
-    Rank rank2;
-    Position::square_to_polar(to_sq(move), file2, rank2);
+    File file2 = file_of(to_sq(move));
+    Rank rank2 = rank_of(to_sq(move));
 
     if (move < 0) {
         sprintf(cmdline, "-(%1u,%1u)", file2, rank2);
     } else if (move & 0x7f00) {
-        File file1;
-        Rank rank1;
-        Position::square_to_polar(from_sq(move), file1, rank1);
+        File file1 = file_of(from_sq(move));
+        Rank rank1 = rank_of(from_sq(move));
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", file1, rank1, file2, rank2);
     } else {
         sprintf(cmdline, "(%1u,%1u)", file2, rank2);
