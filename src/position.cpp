@@ -769,17 +769,15 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         return false;
     }
 
+    revert_key(s);
+
     if (rule.hasBannedLocations && phase == PHASE_PLACING) {
-        revert_key(s);
         board[s]= BAN_STONE;
         update_key(s);
-
         byTypeBB[oppId] ^= s;
         byTypeBB[BAN] |= s;
     } else { // Remove
-        revert_key(s);
         board[s]= NO_PIECE;
-
         byTypeBB[ALL_PIECES] ^= s;
         byTypeBB[them] ^= s;
     }
@@ -811,34 +809,24 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
     if (phase == PHASE_PLACING) {
         if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
-
             phase = PHASE_MOVING;
             action = ACTION_SELECT;
             clean_banned();
 
-            if (!rule.isDefenderMoveFirst) {
-                change_side_to_move();
-            }
-
-            if (check_gameover_condition(updateCmdlist)) {
-                goto out;
+            if (rule.isDefenderMoveFirst) {
+                goto check;
             }
         } else {
             action = ACTION_PLACE;
-            change_side_to_move();
-
-            if (check_gameover_condition(updateCmdlist)) {
-                goto out;
-            }
         }
     } else {
         action = ACTION_SELECT;
-        change_side_to_move();
-
-        if (check_gameover_condition(updateCmdlist)) {
-            goto out;
-        }
     }
+
+    change_side_to_move();
+
+check:
+    check_gameover_condition(updateCmdlist);    
 
 out:
     if (updateCmdlist) {
