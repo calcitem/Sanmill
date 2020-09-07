@@ -657,10 +657,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 action = ACTION_SELECT;
                 clean_banned();
 
-                if (rule.isDefenderMoveFirst) {
-                    set_side_to_move(WHITE);
-                } else {
-                    set_side_to_move(BLACK);
+                if (!rule.isDefenderMoveFirst) {
+                    change_side_to_move();
                 }
 
                 if (check_gameover_condition(updateCmdlist)) {
@@ -818,10 +816,8 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
             action = ACTION_SELECT;
             clean_banned();
 
-            if (rule.isDefenderMoveFirst) {
-                set_side_to_move(WHITE);
-            } else {
-                set_side_to_move(BLACK);
+            if (!rule.isDefenderMoveFirst) {
+                change_side_to_move();
             }
 
             if (check_gameover_condition(updateCmdlist)) {
