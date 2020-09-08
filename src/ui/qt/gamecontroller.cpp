@@ -102,6 +102,8 @@ GameController::GameController(
     }
 #endif
 
+    cmdlist.reserve(256);
+
     // 安装事件过滤器监视scene的各个事件，
     // 由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
     //scene.installEventFilter(this);    
@@ -122,6 +124,8 @@ GameController::~GameController()
         AIAlgorithm::recordEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
+
+    cmdlist.clear();
 }
 
 const map<int, QStringList> GameController::getActions()
@@ -179,6 +183,8 @@ void GameController::gameReset()
 
     // 重置游戏
     position.reset();
+
+    cmdlist.clear();
 
     // 停掉线程
     if (!gameOptions.getAutoRestart()) {
@@ -330,6 +336,8 @@ void GameController::setRule(int ruleNo, Step stepLimited /*= -1*/, int timeLimi
 
     // 重置游戏
     gameReset();
+
+    cmdlist.clear();
 }
 
 void GameController::setEngine(int color, bool arg)
@@ -551,12 +559,12 @@ void GameController::flip()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror();
-    position.rotate(180);
+    position.mirror(cmdlist);
+    position.rotate(cmdlist, 180);
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(position.cmd_list())) {
+    for (const auto &str : *(cmd_list())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -577,12 +585,12 @@ void GameController::mirror()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror();
+    position.mirror(cmdlist);
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(position.cmd_list())) {
+    for (const auto &str : *(cmd_list())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -605,12 +613,12 @@ void GameController::turnRight()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(-90);
+    position.rotate(cmdlist, -90);
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(position.cmd_list())) {
+    for (const auto &str : *(cmd_list())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -631,11 +639,11 @@ void GameController::turnLeft()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(90);
+    position.rotate(cmdlist, 90);
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(position.cmd_list())) {
+    for (const auto &str : *(cmd_list())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -840,7 +848,7 @@ bool GameController::actionPiece(QPointF pos)
         int k = 0;
 
         // 输出命令行        
-        for (const auto & i : *(position.cmd_list())) {
+        for (const auto & i : *(cmd_list())) {
             // 跳过已添加的，因标准list容器没有下标
             if (k++ <= currentRow)
                 continue;
@@ -890,7 +898,7 @@ bool GameController::giveUp()
     int k = 0;
 
     // 输出命令行
-    for (const auto & i : *(position.cmd_list())) {
+    for (const auto & i : *(cmd_list())) {
         // 跳过已添加的，因标准list容器没有下标
         if (k++ <= currentRow)
             continue;
@@ -944,6 +952,8 @@ bool GameController::command(const string &cmd, bool update /* = true */)
 
     loggerDebug("Computer: %s\n\n", cmd.c_str());
 
+    cmdlist.emplace_back(cmd);
+
     if (!position.command(cmd.c_str()))
         return false;
 
@@ -962,7 +972,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
     emit statusBarChanged(message);
 
     // 对于新开局
-    if (position.cmd_list()->size() <= 1) {
+    if (cmd_list()->size() <= 1) {
         manualListModel.removeRows(0, manualListModel.rowCount());
         manualListModel.insertRow(0);
         manualListModel.setData(manualListModel.index(0), position.cmd_line());
@@ -972,13 +982,13 @@ bool GameController::command(const string &cmd, bool update /* = true */)
     else {
         currentRow = manualListModel.rowCount() - 1;
         // 跳过已添加行,迭代器不支持+运算符,只能一个个++
-        auto i = (position.cmd_list()->begin());
-        for (int r = 0; i != (position.cmd_list())->end(); i++) {
+        auto i = (cmd_list()->begin());
+        for (int r = 0; i != (cmd_list())->end(); i++) {
             if (r++ > currentRow)
                 break;
         }
         // 将新增的棋谱行插入到ListModel
-        while (i != position.cmd_list()->end()) {
+        while (i != cmd_list()->end()) {
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());
         }
@@ -1437,7 +1447,7 @@ void GameController::setTips()
         }
 
         switch (p.gameoverReason) {
-        case LOSE_EASON_LESS_THAN_THREE:
+        case LOSE_REASON_LESS_THAN_THREE:
             break;
         case  LOSE_REASON_NO_WAY:
             reasonStr = turnStr + "无子可走被闷。";
@@ -1445,7 +1455,7 @@ void GameController::setTips()
         case LOSE_REASON_GIVE_UP:
             reasonStr = turnStr + "投子认负。";
             break;
-        case LOST_REASON_TIME_OVER:
+        case LOSE_REASON_TIME_OVER:
             reasonStr = turnStr + "超时判负。";
             break;
         case DRAW_REASON_THREEFOLD_REPETITION:

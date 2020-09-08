@@ -140,6 +140,11 @@ public:
     std::string char_to_string(char ch);
     void setTips();
 
+    inline const std::vector<std::string> *cmd_list() const
+    {
+        return &cmdlist;
+    }
+
 signals:
 
     // 总盘数改变的信号
@@ -447,6 +452,8 @@ private:
 
     // 提示语
     string tips;
+
+    std::vector <std::string> cmdlist;
 };
 
 #endif // GAMECONTROLLER_H

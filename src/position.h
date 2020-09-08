@@ -127,7 +127,6 @@ public:
     enum Phase get_phase() const;
     enum Action get_action() const;
     const char *cmd_line() const;
-    const std::vector<std::string> *cmd_list() const;
 
     int get_mobility_diff(bool includeFobidden);
 
@@ -144,9 +143,9 @@ public:
     void change_side_to_move();
     Color get_winner() const;
 
-    void mirror(bool cmdChange = true);
-    void turn(bool cmdChange = true);
-    void rotate(int degrees, bool cmdChange = true);
+    void mirror(vector <string> &cmdlist, bool cmdChange = true);
+    void turn(vector <string> &cmdlist, bool cmdChange = true);
+    void rotate(vector <string> &cmdlist, int degrees, bool cmdChange = true);
 
     void create_mill_table();
     int add_mills(Square s);
@@ -209,7 +208,6 @@ public:
     Square currentSquare;
     int nPlayed { 0 };
 
-    std::vector <std::string> cmdlist;
     char cmdline[64] { '\0' };
 
     int tm { -1 };
@@ -350,11 +348,6 @@ inline enum Action Position::get_action() const
 inline const char *Position::cmd_line() const
 {
     return cmdline;
-}
-
-inline const std::vector<std::string> *Position::cmd_list() const
-{
-    return &cmdlist;
 }
 
 inline time_t Position::start_timeb() const

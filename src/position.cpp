@@ -165,7 +165,6 @@ Position::Position()
     score[BLACK] = score[WHITE] = score_draw = nPlayed = 0;
 
     //tips.reserve(1024);
-    cmdlist.reserve(256);
 
 #ifdef PREFETCH_SUPPORT
     prefetch_range(millTable, sizeof(millTable));
@@ -174,7 +173,7 @@ Position::Position()
 
 Position::~Position()
 {
-    cmdlist.clear();
+
 }
 
 /// Position::set() initializes the position object with the given FEN string.
@@ -501,7 +500,6 @@ bool Position::set_position(const struct Rule *newRule)
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
     update_score();
-    cmdlist.clear();
 
     int r;
     for (r = 0; r < N_RULES; r++) {
@@ -510,7 +508,6 @@ bool Position::set_position(const struct Rule *newRule)
     }
 
     if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, rule.maxTimeLedToLose) > 0) {
-        cmdlist.emplace_back(string(cmdline));
         return true;
     }
 
@@ -546,7 +543,6 @@ bool Position::reset()
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
     update_score();
-    cmdlist.clear();
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.getLearnEndgameEnabled() && nPlayed != 0 && nPlayed % 256 == 0) {
@@ -563,7 +559,6 @@ bool Position::reset()
 
     if (sprintf(cmdline, "r%1u s%03u t%02u",
                 i + 1, rule.maxStepsLedToDraw, rule.maxTimeLedToLose) > 0) {
-        cmdlist.emplace_back(string(cmdline));
         return true;
     }
 
@@ -637,7 +632,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             seconds = update();
             sprintf(cmdline, "(%1u,%1u) %02u:%02u",
                     file, rank, seconds / 60, seconds % 60);
-            cmdlist.emplace_back(string(cmdline));
             gamePly++;
         }
 
@@ -701,7 +695,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         seconds = update();
         sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
                 file, rank, seconds / 60, seconds % 60);
-        cmdlist.emplace_back(string(cmdline));
         gamePly++;
         st->rule50++;
     }
@@ -789,7 +782,6 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (updateCmdlist) {
         seconds = update();
         sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", file, rank, seconds / 60, seconds % 60);
-        cmdlist.emplace_back(string(cmdline));
         gamePly++;
         st->rule50 = 0;
     }
@@ -868,8 +860,6 @@ bool Position::giveup(Color loser)
     sprintf(cmdline, "Player%d give up!", loser);
     score[winner]++;
 
-    cmdlist.emplace_back(string(cmdline));
-
     return true;
 }
 
@@ -941,7 +931,6 @@ bool Position::command(const char *cmd)
         score_draw++;
         gameoverReason = DRAW_REASON_THREEFOLD_REPETITION;        
         sprintf(cmdline, "Threefold Repetition. Draw!");
-        cmdlist.emplace_back(string(cmdline));
         return true;
     }
 #endif /* THREEFOLD_REPETITION */
@@ -1007,12 +996,10 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
                 if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
                     elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
                     winner = ~Color(i);
-                    gameoverReason = LOST_REASON_TIME_OVER;
+                    gameoverReason = LOSE_REASON_TIME_OVER;
                     sprintf(cmdline, "Time over. Player%d win!", ~Color(i));
                 }
             }
-
-            cmdlist.emplace_back(string(cmdline));
         }
 
         return true;
@@ -1023,8 +1010,8 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         winner = DRAW;
         phase = PHASE_GAMEOVER;
         if (updateCmdlist) {
+            gameoverReason = DRAW_REASON_RULE_50;
             sprintf(cmdline, "Steps over. In draw!");
-            cmdlist.emplace_back(string(cmdline));
         }
 
         return true;
@@ -1035,10 +1022,10 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         if (pieceCountOnBoard[i] + pieceCountInHand[i] < rule.nPiecesAtLeast) {
             winner = ~Color(i);
             phase = PHASE_GAMEOVER;
+            gameoverReason = LOSE_REASON_LESS_THAN_THREE;
 
             if (updateCmdlist) {
                 sprintf(cmdline, "Player%d win!", winner);
-                cmdlist.emplace_back(string(cmdline));
             }
 
             return true;
@@ -1052,7 +1039,6 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         winner = BLACK;
         phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player1 win!");
-        cmdlist.emplace_back(string(cmdline));
 
         return true;
     }
@@ -1061,7 +1047,6 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         winner = WHITE;
         phase = PHASE_GAMEOVER;
         sprintf(cmdline, "Player2 win!");
-        cmdlist.emplace_back(string(cmdline));
 
         return true;
     }
@@ -1073,18 +1058,16 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
 
         if (rule.isBlackLosebutNotDrawWhenBoardFull) {
             winner = WHITE;
+            gameoverReason = LOSE_REASON_BOARD_IS_FULL;
             if (updateCmdlist) {
                 sprintf(cmdline, "Player2 win!");
             }
         } else {
-            winner = DRAW; 
+            winner = DRAW;
+            gameoverReason = DRAW_REASON_BOARD_IS_FULL;
             if (updateCmdlist) {
                 sprintf(cmdline, "Full. In draw!");
             }
-        }
-
-        if (updateCmdlist) {
-            cmdlist.emplace_back(string(cmdline));
         }
 
         return true;
@@ -1099,7 +1082,6 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
                 gameoverReason = LOSE_REASON_NO_WAY;
                 winner = ~sideToMove;
                 sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
-                cmdlist.emplace_back(string(cmdline));  // TODO: memleak
             }
 
             return true;
@@ -1644,7 +1626,7 @@ bool Position::is_star_square(Square s)
             s == 22);
 }
 
-void Position::mirror(bool cmdChange /*= true*/)
+void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1753,7 +1735,7 @@ void Position::mirror(bool cmdChange /*= true*/)
     }
 }
 
-void Position::turn(bool cmdChange /*= true*/)
+void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1916,7 +1898,7 @@ void Position::turn(bool cmdChange /*= true*/)
     }
 }
 
-void Position::rotate(int degrees, bool cmdChange /*= true*/)
+void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= true*/)
 {
     degrees = degrees % 360;
 
