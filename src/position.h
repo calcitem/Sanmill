@@ -115,7 +115,7 @@ public:
 
     /// Mill Game
 
-    bool set_position(const struct Rule *rule);
+    int set_position(const struct Rule *rule);
 
     time_t get_elapsed_time(int us);
     time_t start_timeb() const;

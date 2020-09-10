@@ -154,6 +154,7 @@ extern deque<int> openingBookDequeBak;
 
 void GameController::gameStart()
 {
+    //cmdlist.clear();
     position.start();
 
     // 每隔100毫秒调用一次定时器处理函数
@@ -182,9 +183,14 @@ void GameController::gameReset()
     timeID = 0;
 
     // 重置游戏
-    position.reset();
+    // WAR
+    if (cmdlist.size() > 1) {
+        string bak = cmdlist[0];
+        cmdlist.clear();
+        cmdlist.emplace_back(bak);
+    }    
 
-    cmdlist.clear();
+    position.reset();    
 
     // 停掉线程
     if (!gameOptions.getAutoRestart()) {
@@ -332,12 +338,18 @@ void GameController::setRule(int ruleNo, Step stepLimited /*= -1*/, int timeLimi
     }
 
     // 设置模型规则，重置游戏
-    position.set_position(&RULES[ruleNo]);
+    int r = position.set_position(&RULES[ruleNo]);
+
+    char cmdline[64] = { 0 };
+    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, rule.maxTimeLedToLose) <= 0) {
+        assert(0);
+    }
+    string cmd(cmdline);
+    cmdlist.clear();
+    cmdlist.emplace_back(cmd);
 
     // 重置游戏
     gameReset();
-
-    cmdlist.clear();
 }
 
 void GameController::setEngine(int color, bool arg)

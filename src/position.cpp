@@ -472,7 +472,7 @@ int Position::pieces_in_hand_count()
     return pieceCountInHand[BLACK] + pieceCountInHand[WHITE];
 }
 
-bool Position::set_position(const struct Rule *newRule)
+int Position::set_position(const struct Rule *newRule)
 {
     rule = *newRule;
 
@@ -504,15 +504,10 @@ bool Position::set_position(const struct Rule *newRule)
     int r;
     for (r = 0; r < N_RULES; r++) {
         if (strcmp(rule.name, RULES[r].name) == 0)
-            break;
+            return r;
     }
 
-    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, rule.maxTimeLedToLose) > 0) {
-        return true;
-    }
-
-    cmdline[0] = '\0';
-    return false;
+    return -1;
 }
 
 bool Position::reset()
@@ -878,7 +873,7 @@ bool Position::command(const char *cmd)
             return false;
         }
 
-        return set_position(&RULES[ruleIndex - 1]);
+        return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
     }
 
     args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &file1, &rank1, &file2, &rank2, &mm, &ss);
