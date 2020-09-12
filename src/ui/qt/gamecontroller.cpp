@@ -1441,6 +1441,7 @@ void GameController::appendGameOverReasonToCmdlist()
         break;
     }
 
+    loggerDebug("%s\n", cmdline);
     cmdlist.emplace_back(cmdline);
 }
 
