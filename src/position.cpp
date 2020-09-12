@@ -657,65 +657,63 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         } else {
             pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             action = ACTION_REMOVE;
-        }
+        } 
 
-        goto out;
-    }
-
-    if (check_gameover_condition(updateCmdlist)) {
-        goto out;
-    }
-
-    // When phase == GAME_MOVING
-
-    // if illegal
-    if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
-        !rule.allowFlyWhenRemainThreePieces) {
-        for (i = 0; i < 4; i++) {
-            if (s == MoveList::moveTable[currentSquare][i])
-                break;
-        }
-
-        // not in moveTable
-        if (i == 4) {
-            return false;
-        }
-    }
-
-    move = make_move(currentSquare, s);
-
-    if (updateCmdlist) {
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
-                file, rank);
-        gamePly++;
-        st->rule50++;
-    }
-
-    fromTo = square_bb(currentSquare) | square_bb(s);
-    byTypeBB[ALL_PIECES] ^= fromTo;
-    byTypeBB[us] ^= fromTo;
-
-    board[s]= board[currentSquare];
-
-    update_key(s);
-    revert_key(currentSquare);
-
-    board[currentSquare] = NO_PIECE;
-
-    currentSquare = s;
-    n = add_mills(currentSquare);
-
-    // midgame
-    if (n == 0) {
-        action = ACTION_SELECT;
-        change_side_to_move();
+    } else if (phase == PHASE_MOVING) {
 
         if (check_gameover_condition(updateCmdlist)) {
             goto out;
         }
-    } else {
-        pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
-        action = ACTION_REMOVE;
+
+        // if illegal
+        if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
+            !rule.allowFlyWhenRemainThreePieces) {
+            for (i = 0; i < 4; i++) {
+                if (s == MoveList::moveTable[currentSquare][i])
+                    break;
+            }
+
+            // not in moveTable
+            if (i == 4) {
+                return false;
+            }
+        }
+
+        move = make_move(currentSquare, s);
+
+        if (updateCmdlist) {
+            sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
+                    file, rank);
+            gamePly++;
+            st->rule50++;
+        }
+
+        fromTo = square_bb(currentSquare) | square_bb(s);
+        byTypeBB[ALL_PIECES] ^= fromTo;
+        byTypeBB[us] ^= fromTo;
+
+        board[s] = board[currentSquare];
+
+        update_key(s);
+        revert_key(currentSquare);
+
+        board[currentSquare] = NO_PIECE;
+
+        currentSquare = s;
+        n = add_mills(currentSquare);
+
+        // midgame
+        if (n == 0) {
+            action = ACTION_SELECT;
+            change_side_to_move();
+
+            if (check_gameover_condition(updateCmdlist)) {
+                goto out;
+            }
+        } else {
+            pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            action = ACTION_REMOVE;
+        }
     }
 
 out:
