@@ -969,7 +969,6 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
                     elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
                     winner = ~Color(i);
                     gameoverReason = LOSE_REASON_TIME_OVER;
-                    //sprintf(cmdline, "Time over. Player%d win!", ~Color(i));
                 }
             }
         }
@@ -983,7 +982,6 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         phase = PHASE_GAMEOVER;
         if (updateCmdlist) {
             gameoverReason = DRAW_REASON_RULE_50;
-            //sprintf(cmdline, "Steps over. In draw!");
         }
 
         return true;
@@ -995,11 +993,6 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
             winner = ~Color(i);
             phase = PHASE_GAMEOVER;
             gameoverReason = LOSE_REASON_LESS_THAN_THREE;
-
-            if (updateCmdlist) {
-                //sprintf(cmdline, "Player%d win!", winner);
-            }
-
             return true;
         }
     }
@@ -1031,15 +1024,9 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         if (rule.isBlackLosebutNotDrawWhenBoardFull) {
             winner = WHITE;
             gameoverReason = LOSE_REASON_BOARD_IS_FULL;
-            if (updateCmdlist) {
-                //sprintf(cmdline, "Player2 win!");
-            }
         } else {
             winner = DRAW;
             gameoverReason = DRAW_REASON_BOARD_IS_FULL;
-            if (updateCmdlist) {
-                //sprintf(cmdline, "Full. In draw!");
-            }
         }
 
         return true;
@@ -1053,7 +1040,6 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
             if (updateCmdlist) {
                 gameoverReason = LOSE_REASON_NO_WAY;
                 winner = ~sideToMove;
-                //sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
             }
 
             return true;
