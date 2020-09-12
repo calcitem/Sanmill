@@ -852,7 +852,7 @@ bool Position::giveup(Color loser)
 
     winner = ~loser;
     gameoverReason = LOSE_REASON_GIVE_UP;
-    sprintf(cmdline, "Player%d give up!", loser);
+    //sprintf(cmdline, "Player%d give up!", loser);
     score[winner]++;
 
     return true;
@@ -925,7 +925,7 @@ bool Position::command(const char *cmd)
         winner = DRAW;
         score_draw++;
         gameoverReason = DRAW_REASON_THREEFOLD_REPETITION;        
-        sprintf(cmdline, "Threefold Repetition. Draw!");
+        //sprintf(cmdline, "Threefold Repetition. Draw!");
         return true;
     }
 #endif /* THREEFOLD_REPETITION */
@@ -992,7 +992,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
                     elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
                     winner = ~Color(i);
                     gameoverReason = LOSE_REASON_TIME_OVER;
-                    sprintf(cmdline, "Time over. Player%d win!", ~Color(i));
+                    //sprintf(cmdline, "Time over. Player%d win!", ~Color(i));
                 }
             }
         }
@@ -1006,7 +1006,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         phase = PHASE_GAMEOVER;
         if (updateCmdlist) {
             gameoverReason = DRAW_REASON_RULE_50;
-            sprintf(cmdline, "Steps over. In draw!");
+            //sprintf(cmdline, "Steps over. In draw!");
         }
 
         return true;
@@ -1020,7 +1020,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
             gameoverReason = LOSE_REASON_LESS_THAN_THREE;
 
             if (updateCmdlist) {
-                sprintf(cmdline, "Player%d win!", winner);
+                //sprintf(cmdline, "Player%d win!", winner);
             }
 
             return true;
@@ -1055,13 +1055,13 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
             winner = WHITE;
             gameoverReason = LOSE_REASON_BOARD_IS_FULL;
             if (updateCmdlist) {
-                sprintf(cmdline, "Player2 win!");
+                //sprintf(cmdline, "Player2 win!");
             }
         } else {
             winner = DRAW;
             gameoverReason = DRAW_REASON_BOARD_IS_FULL;
             if (updateCmdlist) {
-                sprintf(cmdline, "Full. In draw!");
+                //sprintf(cmdline, "Full. In draw!");
             }
         }
 
@@ -1076,7 +1076,7 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
             if (updateCmdlist) {
                 gameoverReason = LOSE_REASON_NO_WAY;
                 winner = ~sideToMove;
-                sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
+                //sprintf(cmdline, "Player%d no way to go. Player%d win!", sideToMove, winner);
             }
 
             return true;

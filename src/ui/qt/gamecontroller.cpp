@@ -1406,6 +1406,44 @@ inline std::string GameController::char_to_string(char ch)
     }
 }
 
+void GameController::appendGameOverReasonToCmdlist()
+{
+    assert(position.phase == PHASE_GAMEOVER);
+
+    char cmdline[64] = { 0 };
+    switch (position.gameoverReason) {
+    case LOSE_REASON_NO_WAY:
+        sprintf(cmdline, "Player%d no way to go. Player%d win!", position.sideToMove, position.winner);
+        break;
+    case LOSE_REASON_TIME_OVER:
+        sprintf(cmdline, "Time over. Player%d win!", position.winner);
+        break;
+    case DRAW_REASON_THREEFOLD_REPETITION:
+        sprintf(cmdline, "Threefold Repetition. Draw!");
+        break;
+    case DRAW_REASON_RULE_50:
+        sprintf(cmdline, "Steps over. In draw!");
+        break;
+    case LOSE_REASON_BOARD_IS_FULL:
+        sprintf(cmdline, "Player2 win!");
+        break;
+    case DRAW_REASON_BOARD_IS_FULL:
+        sprintf(cmdline, "Full. In draw!");
+        break;
+    case LOSE_REASON_LESS_THAN_THREE:
+        sprintf(cmdline, "Player%d win!", position.winner);
+        break;
+    case LOSE_REASON_GIVE_UP:
+        sprintf(cmdline, "Player%d give up!", ~position.winner);
+        break;
+    default:
+        loggerDebug("No Game Over Reason");
+        break;
+    }
+
+    cmdlist.emplace_back(cmdline);
+}
+
 void GameController::setTips()
 {
     Position &p = position;
@@ -1443,6 +1481,8 @@ void GameController::setTips()
         break;
 
     case PHASE_GAMEOVER:
+        appendGameOverReasonToCmdlist();
+
         scoreStr = "比分 " + to_string(p.score[BLACK]) + " : " + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);        
 
         switch (p.winner) {

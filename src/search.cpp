@@ -576,7 +576,7 @@ string AIAlgorithm::nextMove()
     if (gameOptions.getGiveUpIfMostLose() == true) {
         if (root->value <= -VALUE_MATE) {
             gameoverReason = LOSE_REASON_GIVE_UP;
-            sprintf(cmdline, "Player%d give up!", position->sideToMove);
+            //sprintf(cmdline, "Player%d give up!", position->sideToMove);
             return cmdline;
         }
     }

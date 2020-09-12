@@ -138,6 +138,7 @@ public:
 
     char color_to_char(Color color);
     std::string char_to_string(char ch);
+    void appendGameOverReasonToCmdlist();
     void setTips();
 
     inline const std::vector<std::string> *cmd_list() const
