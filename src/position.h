@@ -136,7 +136,7 @@ public:
     bool command(const char *cmd);
     int update();
     void update_score();
-    bool check_gameover_condition(int8_t cp = 0);
+    bool check_gameover_condition();
     void clean_banned();
     void set_side_to_move(Color c);
   

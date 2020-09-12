@@ -636,7 +636,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             assert(pieceCountInHand[BLACK] >= 0 && pieceCountInHand[WHITE] >= 0);     
 
             if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
-                if (check_gameover_condition(updateCmdlist)) {
+                if (check_gameover_condition()) {
                     goto out;
                 }
 
@@ -648,7 +648,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                     change_side_to_move();
                 }
 
-                if (check_gameover_condition(updateCmdlist)) {
+                if (check_gameover_condition()) {
                     goto out;
                 }
             } else {
@@ -661,7 +661,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
     } else if (phase == PHASE_MOVING) {
 
-        if (check_gameover_condition(updateCmdlist)) {
+        if (check_gameover_condition()) {
             goto out;
         }
 
@@ -707,7 +707,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             action = ACTION_SELECT;
             change_side_to_move();
 
-            if (check_gameover_condition(updateCmdlist)) {
+            if (check_gameover_condition()) {
                 goto out;
             }
         } else {
@@ -778,7 +778,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
     // Remove piece completed
 
-    if (check_gameover_condition(updateCmdlist)) {
+    if (check_gameover_condition()) {
         goto out;
     }
 
@@ -805,7 +805,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     change_side_to_move();
 
 check:
-    check_gameover_condition(updateCmdlist);    
+    check_gameover_condition();    
 
 out:
     if (updateCmdlist) {
@@ -954,22 +954,20 @@ void Position::update_score()
     }
 }
 
-bool Position::check_gameover_condition(int8_t updateCmdlist)
+bool Position::check_gameover_condition()
 {
     if (phase & PHASE_NOTPLAYING) {
         return true;
     }
 
     if (rule.maxTimeLedToLose > 0) {
-        phase = PHASE_GAMEOVER;
-
-        if (updateCmdlist) {
-            for (int i = 1; i <= 2; i++) {
-                if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
-                    elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
-                    winner = ~Color(i);
-                    gameoverReason = LOSE_REASON_TIME_OVER;
-                }
+        phase = PHASE_GAMEOVER; // TODO: Move to below??
+       
+        for (int i = 1; i <= 2; i++) {
+            if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
+                elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
+                winner = ~Color(i);
+                gameoverReason = LOSE_REASON_TIME_OVER;
             }
         }
 
@@ -979,11 +977,8 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
     if (rule.maxStepsLedToDraw > 0 &&
         st->rule50 > rule.maxStepsLedToDraw) {
         winner = DRAW;
-        phase = PHASE_GAMEOVER;
-        if (updateCmdlist) {
-            gameoverReason = DRAW_REASON_RULE_50;
-        }
-
+        phase = PHASE_GAMEOVER;        
+        gameoverReason = DRAW_REASON_RULE_50;
         return true;
     }
 
@@ -1037,17 +1032,13 @@ bool Position::check_gameover_condition(int8_t updateCmdlist)
         phase = PHASE_GAMEOVER;
 
         if (rule.isLoseButNotChangeTurnWhenNoWay) {
-            if (updateCmdlist) {
-                gameoverReason = LOSE_REASON_NO_WAY;
-                winner = ~sideToMove;
-            }
-
+            gameoverReason = LOSE_REASON_NO_WAY;
+            winner = ~sideToMove;
             return true;
+        } else {
+            change_side_to_move();
+            return false;
         }
-
-        change_side_to_move();
-
-        return false;
     }
 
     return false;
