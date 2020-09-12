@@ -587,7 +587,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     File file;
     Rank rank;
     int i;
-    int seconds = -1;
 
     Piece piece = NO_PIECE;
     int n = 0;
@@ -624,9 +623,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         move = static_cast<Move>(s);
 
         if (updateCmdlist) {
-            seconds = update();
-            sprintf(cmdline, "(%1u,%1u) %02u:%02u",
-                    file, rank, seconds / 60, seconds % 60);
+            sprintf(cmdline, "(%1u,%1u)",
+                    file, rank);
             gamePly++;
         }
 
@@ -687,9 +685,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     move = make_move(currentSquare, s);
 
     if (updateCmdlist) {
-        seconds = update();
-        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u) %02u:%02u", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
-                file, rank, seconds / 60, seconds % 60);
+        sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
+                file, rank);
         gamePly++;
         st->rule50++;
     }
@@ -743,8 +740,6 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     File file = file_of(s);
     Rank rank = rank_of(s);
 
-    int seconds = -1;
-
     int oppId = them;
 
     // if piece is not their
@@ -775,8 +770,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     move = static_cast<Move>(-s);
 
     if (updateCmdlist) {
-        seconds = update();
-        sprintf(cmdline, "-(%1u,%1u)  %02u:%02u", file, rank, seconds / 60, seconds % 60);
+        sprintf(cmdline, "-(%1u,%1u)", file, rank);
         gamePly++;
         st->rule50 = 0;
     }
@@ -866,7 +860,6 @@ bool Position::command(const char *cmd)
     File file1, file2;
     Rank rank1, rank2;
     int args = 0;
-    int mm = 0, ss = 0;
 
     if (sscanf(cmd, "r%1u s%3hd t%2u", &ruleIndex, &step, &t) == 3) {
         if (ruleIndex <= 0 || ruleIndex > N_RULES) {
@@ -876,36 +869,22 @@ bool Position::command(const char *cmd)
         return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
     }
 
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &file1, &rank1, &file2, &rank2, &mm, &ss);
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", &file1, &rank1, &file2, &rank2);
 
     if (args >= 4) {
-        if (args == 7) {
-            if (mm >= 0 && ss >= 0)
-                tm = mm * 60 + ss;
-        }
-
         if (select_piece(file1, rank1)) {
             return put_piece(file2, rank2);
         }
-
         return false;
     }
 
-    args = sscanf(cmd, "-(%1u,%1u) %2u:%2u", &file1, &rank1, &mm, &ss);
+    args = sscanf(cmd, "-(%1u,%1u)", &file1, &rank1);
     if (args >= 2) {
-        if (args == 5) {
-            if (mm >= 0 && ss >= 0)
-                tm = mm * 60 + ss;
-        }
         return remove_piece(file1, rank1);
     }
 
-    args = sscanf(cmd, "(%1u,%1u) %2u:%2u", &file1, &rank1, &mm, &ss);
+    args = sscanf(cmd, "(%1u,%1u)", &file1, &rank1);
     if (args >= 2) {
-        if (args == 5) {
-            if (mm >= 0 && ss >= 0)
-                tm = mm * 60 + ss;
-        }
         return put_piece(file1, rank1);
     }
 
@@ -1684,21 +1663,20 @@ void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
     if (cmdChange) {
         int r1, s1, r2, s2;
         int args = 0;
-        int mm = 0, ss = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
         if (args >= 4) {
             s1 = (RANK_NB - s1 + 1) % RANK_NB;
             s2 = (RANK_NB - s2 + 1) % RANK_NB;
             cmdline[3] = '1' + static_cast<char>(s1);
             cmdline[10] = '1' + static_cast<char>(s2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+            args = sscanf(cmdline, "-(%1u,%1u)", &r1, &s1);
             if (args >= 2) {
                 s1 = (RANK_NB - s1 + 1) % RANK_NB;
                 cmdline[4] = '1' + static_cast<char>(s1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                args = sscanf(cmdline, "(%1u,%1u)", &r1, &s1);
                 if (args >= 2) {
                     s1 = (RANK_NB - s1 + 1) % RANK_NB;
                     cmdline[3] = '1' + static_cast<char>(s1);
@@ -1707,19 +1685,19 @@ void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
         }
 
         for (auto &iter : cmdlist) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
+            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
             if (args >= 4) {
                 s1 = (RANK_NB - s1 + 1) % RANK_NB;
                 s2 = (RANK_NB - s2 + 1) % RANK_NB;
                 iter[3] = '1' + static_cast<char>(s1);
                 iter[10] = '1' + static_cast<char>(s2);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
                 if (args >= 2) {
                     s1 = (RANK_NB - s1 + 1) % RANK_NB;
                     iter[4] = '1' + static_cast<char>(s1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
                     if (args >= 2) {
                         s1 = (RANK_NB - s1 + 1) % RANK_NB;
                         iter[3] = '1' + static_cast<char>(s1);
@@ -1812,10 +1790,9 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
     if (cmdChange) {
         int r1, s1, r2, s2;
         int args = 0;
-        int mm = 0, ss = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u",
-                      &r1, &s1, &r2, &s2, &mm, &ss);
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)",
+                      &r1, &s1, &r2, &s2);
 
         if (args >= 4) {
             if (r1 == 1)
@@ -1831,7 +1808,7 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
             cmdline[1] = '0' + static_cast<char>(r1);
             cmdline[8] = '0' + static_cast<char>(r2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+            args = sscanf(cmdline, "-(%1u,%1u)", &r1, &s1);
             if (args >= 2) {
                 if (r1 == 1)
                     r1 = FILE_NB;
@@ -1839,7 +1816,7 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
                     r1 = 1;
                 cmdline[2] = '0' + static_cast<char>(r1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                args = sscanf(cmdline, "(%1u,%1u)", &r1, &s1);
                 if (args >= 2) {
                     if (r1 == 1)
                         r1 = FILE_NB;
@@ -1852,8 +1829,8 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
 
         for (auto &iter : cmdlist) {
             args = sscanf(iter.c_str(),
-                          "(%1u,%1u)->(%1u,%1u) %2u:%2u",
-                          &r1, &s1, &r2, &s2, &mm, &ss);
+                          "(%1u,%1u)->(%1u,%1u)",
+                          &r1, &s1, &r2, &s2);
 
             if (args >= 4) {
                 if (r1 == 1)
@@ -1869,7 +1846,7 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
                 iter[1] = '0' + static_cast<char>(r1);
                 iter[8] = '0' + static_cast<char>(r2);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
                 if (args >= 2) {
                     if (r1 == 1)
                         r1 = FILE_NB;
@@ -1878,7 +1855,7 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
 
                     iter[2] = '0' + static_cast<char>(r1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
                     if (args >= 2) {
                         if (r1 == 1)
                             r1 = FILE_NB;
@@ -1994,22 +1971,21 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
     if (cmdChange) {
         int r1, s1, r2, s2;
         int args = 0;
-        int mm = 0, ss = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
+        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
         if (args >= 4) {
             s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
             s2 = (s2 - 1 + RANK_NB - degrees) % RANK_NB;
             cmdline[3] = '1' + static_cast<char>(s1);
             cmdline[10] = '1' + static_cast<char>(s2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+            args = sscanf(cmdline, "-(%1u,%1u)", &r1, &s1);
 
             if (args >= 2) {
                 s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
                 cmdline[4] = '1' + static_cast<char>(s1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                args = sscanf(cmdline, "(%1u,%1u)", &r1, &s1);
 
                 if (args >= 2) {
                     s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
@@ -2019,7 +1995,7 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
         }
 
         for (auto &iter : cmdlist) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u) %2u:%2u", &r1, &s1, &r2, &s2, &mm, &ss);
+            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
 
             if (args >= 4) {
                 s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
@@ -2027,13 +2003,13 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
                 iter[3] = '1' + static_cast<char>(s1);
                 iter[10] = '1' + static_cast<char>(s2);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
 
                 if (args >= 2) {
                     s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
                     iter[4] = '1' + static_cast<char>(s1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u) %2u:%2u", &r1, &s1, &mm, &ss);
+                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
                     if (args >= 2) {
                         s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
                         iter[3] = '1' + static_cast<char>(s1);

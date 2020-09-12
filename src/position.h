@@ -210,7 +210,6 @@ public:
 
     char cmdline[64] { '\0' };
 
-    int tm { -1 };
     time_t startTime;
     time_t currentTime;
     time_t elapsedSeconds[COLOR_NB];    
