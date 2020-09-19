@@ -294,36 +294,6 @@ void Position::set_state(StateInfo *si) const
 }
 
 
-/// Position::set() is an overload to initialize the position object with
-/// the given endgame code string like "KBPKN". It is mainly a helper to
-/// get the material key out of an endgame code.
-
-Position &Position::set(const string &code, Color c, StateInfo *si)
-{
-    // TODO
-#if 0
-    assert(code[0] == 'K');
-
-    string sides[] = { code.substr(code.find('K', 1)),      // Weak
-                       code.substr(0, std::min(code.find('v'), code.find('K', 1))) }; // Strong
-
-    assert(sides[0].length() > 0 && sides[0].length() < 8);
-    assert(sides[1].length() > 0 && sides[1].length() < 8);
-
-    std::transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
-
-    string fenStr = "8/" + sides[0] + char(8 - sides[0].length() + '0') + "/8/8/8/8/"
-        + sides[1] + char(8 - sides[1].length() + '0') + "/8 w - - 0 10";
-
-    return set(fenStr, si, nullptr);
-#endif
-    si = si;
-    c = c;
-    string ccc = code;
-    ccc = "";
-    return *this;
-}
-
 /// Position::fen() returns a FEN representation of the position. In case of
 /// Chess960 the Shredder-FEN notation is used. This is mainly a debugging function.
 
