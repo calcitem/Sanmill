@@ -523,11 +523,9 @@ inline const Move reverse_move(Move m)
     return make_move(to_sq(m), from_sq(m));
 }
 
-#if 0
-constexpr bool is_ok(Move m)
+static inline bool is_ok(Move m)
 {
     return from_sq(m) != to_sq(m); // Catch MOVE_NULL and MOVE_NONE
 }
-#endif
 
 #endif // #ifndef TYPES_H_INCLUDED

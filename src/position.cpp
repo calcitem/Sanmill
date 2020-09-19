@@ -349,6 +349,39 @@ const string Position::fen() const
 }
 
 
+/// Position::legal() tests whether a pseudo-legal move is legal
+
+bool Position::legal(Move m) const
+{
+    assert(is_ok(m));
+
+    Color us = sideToMove;
+    Square from = from_sq(m);
+    Square to = to_sq(m);
+
+    if (phase == PHASE_MOVING && type_of(move) != MOVETYPE_REMOVE) {
+        if (color_of(moved_piece(m)) != us) {
+            return false;
+        }
+    }
+
+    // TODO: Add more
+
+    return true;
+}
+
+
+/// Position::pseudo_legal() takes a random move and tests whether the move is
+/// pseudo legal. It is used to validate moves from TT that can be corrupted
+/// due to SMP concurrent access or hash position key aliasing.
+
+bool Position::pseudo_legal(const Move m) const
+{
+    // TODO
+    return legal(m);
+}
+
+
 /// Position::do_move() makes a move, and saves all information necessary
 /// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
 /// moves should be filtered out before this function is called.

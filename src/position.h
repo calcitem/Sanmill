@@ -84,6 +84,7 @@ public:
     // Properties of moves
     bool legal(Move m) const;
     bool pseudo_legal(const Move m) const;
+    Piece moved_piece(Move m) const;
 
     // Doing and undoing moves
     void do_move(Move m, StateInfo &newSt);
@@ -260,6 +261,11 @@ inline Piece Position::piece_on(Square s) const
 inline bool Position::empty(Square s) const
 {
     return piece_on(s) == NO_PIECE;
+}
+
+inline Piece Position::moved_piece(Move m) const
+{
+    return piece_on(from_sq(m));
 }
 
 template<PieceType Pt> inline int Position::count(Color c) const
