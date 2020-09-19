@@ -138,6 +138,9 @@ inline int H2(Key h)
 Key cuckoo[8192];
 Move cuckooMove[8192];
 
+/// Position::init() initializes at startup the various arrays used to compute
+/// hash keys.
+
 void Position::init()
 {
     PRNG rng(1070372);
@@ -220,29 +223,37 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     ss >> std::noskipws;
 
     // 1. Piece placement
-    // TODO
-#if 0
     while ((ss >> token) && !isspace(token)) {
-        if (token == '@')
-            sq += (token - '0') * EAST; // Advance the given number of files
-
-        else if (token == '/')
-            sq += 2 * SOUTH;
-
-        else if ((idx = PieceToChar.find(token)) != string::npos) {
-            put_piece(Piece(idx), sq);
-            ++sq;
+        if (token == '@' || token == 'O' || token == 'X') {
+            // put_piece(Piece(idx), sq);   // TODO
         }
+
+        ++sq;
     }
-#endif
 
     // 2. Active color
     ss >> token;
-    sideToMove = (token == 'w' ? WHITE : BLACK);
-    ss >> token;
+    sideToMove = (token == 'b' ? BLACK : WHITE);    
 
     // 3. Phrase
+    ss >> token;
 
+    switch (token) {
+    case 'r':
+        phase = PHASE_READY;
+        break;
+    case 'p':
+        phase = PHASE_PLACING;
+        break;
+    case 'm':
+        phase = PHASE_MOVING;
+        break;
+    case 'o':
+        phase = PHASE_GAMEOVER;
+        break;
+    default:
+        phase = PHASE_NONE;
+    }
 
     // 4-5. Halfmove clock and fullmove number
     ss >> std::skipws >> st->rule50 >> gamePly;
@@ -254,7 +265,7 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     thisThread = th;
     set_state(st);
 
-    //assert(pos_is_ok());
+    assert(pos_is_ok());
 
     return *this;
 }
@@ -2032,4 +2043,14 @@ void Position::print_board()
                     "29 ----- 28 ----- 27\n"
                     "\n");
     }
+}
+
+/// Position::pos_is_ok() performs some consistency checks for the
+/// position object and raises an asserts if something wrong is detected.
+/// This is meant to be helpful when debugging.
+
+bool Position::pos_is_ok() const
+{
+    // TODO
+    return true;
 }
