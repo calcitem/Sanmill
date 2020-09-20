@@ -762,6 +762,12 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         return false;
     }
 
+    pieceCountOnBoard[them]--;
+
+    if (check_gameover_condition()) {
+        goto out;
+    }
+
     revert_key(s);
 
     if (rule.hasBannedLocations && phase == PHASE_PLACING) {
@@ -784,13 +790,8 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     currentSquare = SQ_0;
 
     pieceCountNeedRemove--;
-    pieceCountOnBoard[them]--;
 
     // Remove piece completed
-
-    if (check_gameover_condition()) {
-        goto out;
-    }
 
     if (pieceCountNeedRemove > 0) {
         return true;
