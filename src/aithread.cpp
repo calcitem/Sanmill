@@ -269,15 +269,6 @@ void AiThread::run()
         emit searchStarted();
         mutex.unlock();
 
-#ifdef MCTS_AI
-        MCTSOptions mctsOptions;
-
-        Move move = ai.computeMove(*state, mctsOptions);
-        
-        strCommand = ai.moveToCommand(move);
-        emitCommand();
-#else  // MCTS_AI
-
 #ifdef OPENING_BOOK
         // gameOptions.getOpeningBook()
         if (!openingBookDeque.empty()) {
@@ -300,8 +291,6 @@ void AiThread::run()
 #ifdef OPENING_BOOK
         }
 #endif
-
-#endif // MCTS_AI
 
         emit searchFinished();
 

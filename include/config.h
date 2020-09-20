@@ -39,9 +39,6 @@
 #define ALPHABETA_AI
 //#define PVS_AI
 #define MTDF_AI
-//#define MCTS_AI
-
-//#define MCTS_PLD
 
 #ifdef TEST_MODE
 #define DONOT_PLAY_SOUND

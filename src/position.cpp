@@ -970,27 +970,6 @@ bool Position::check_gameover_condition()
         return true;
     }
 
-#ifdef MCTS_AI
-#if 0
-    int diff = pieceCountOnBoard[BLACK] - pieceCountOnBoard[WHITE];
-    if (diff > 4) {
-        winner = BLACK;
-        phase = PHASE_GAMEOVER;
-        sprintf(cmdline, "Player1 win!");
-
-        return true;
-    }
-
-    if (diff < -4) {
-        winner = WHITE;
-        phase = PHASE_GAMEOVER;
-        sprintf(cmdline, "Player2 win!");
-
-        return true;
-    }
-#endif
-#endif
-
     if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB) {
         if (rule.isBlackLosebutNotDrawWhenBoardFull) {
             set_gameover(WHITE, LOSE_REASON_BOARD_IS_FULL);

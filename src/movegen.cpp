@@ -304,9 +304,6 @@ ExtMove *generate(Position &position, ExtMove *moveList)
                     continue;
                 }
 
-#ifdef MCTS_AI
-                moves.push_back((Move)i);
-#else // MCTS_AI
                 if (position.phase != PHASE_READY) {
                     *cur++ = (Move)i;
                 } else {
@@ -318,7 +315,6 @@ ExtMove *generate(Position &position, ExtMove *moveList)
                     *cur++ = (Move)i;
 #endif
                 }
-#endif // MCTS_AI
             }
             break;
         }
