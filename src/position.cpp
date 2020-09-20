@@ -653,7 +653,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
             if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
                 if (check_gameover_condition()) {
-                    goto out;
+                    return true;
                 }
 
                 phase = PHASE_MOVING;
@@ -665,7 +665,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 }
 
                 if (check_gameover_condition()) {
-                    goto out;
+                    return true;
                 }
             } else {
                 change_side_to_move();
@@ -678,7 +678,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     } else if (phase == PHASE_MOVING) {
 
         if (check_gameover_condition()) {
-            goto out;
+            return true;
         }
 
         // if illegal
@@ -723,17 +723,12 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             change_side_to_move();
 
             if (check_gameover_condition()) {
-                goto out;
+                return true;
             }
         } else {
             pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             action = ACTION_REMOVE;
         }
-    }
-
-out:
-    if (updateCmdlist) {
-        update_score();
     }
 
     return true;
@@ -766,7 +761,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         winner = sideToMove;
         phase = PHASE_GAMEOVER;
         gameoverReason = LOSE_REASON_LESS_THAN_THREE;
-        goto out;
+        return true;
     }
 
     revert_key(s);
@@ -819,11 +814,6 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 check:
     check_gameover_condition();    
 
-out:
-    if (updateCmdlist) {
-        update_score();
-    }
-
     return true;
 }
 
@@ -857,7 +847,7 @@ bool Position::giveup(Color loser)
     winner = ~loser;
     gameoverReason = LOSE_REASON_GIVE_UP;
     //sprintf(cmdline, "Player%d give up!", loser);
-    score[winner]++;
+    update_score();
 
     return true;
 }
@@ -882,10 +872,7 @@ bool Position::command(const char *cmd)
     args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", &file1, &rank1, &file2, &rank2);
 
     if (args >= 4) {
-        if (select_piece(file1, rank1)) {
-            return put_piece(file2, rank2);
-        }
-        return false;
+        return move_piece(file1, rank1, file2, rank2);
     }
 
     args = sscanf(cmd, "-(%1u,%1u)", &file1, &rank1);

@@ -176,6 +176,7 @@ public:
     bool remove_piece(Square s, bool updateCmdlist = false);
     bool remove_piece(File file, Rank rank);
     bool move_piece(Square from, Square to);
+    bool move_piece(File f1, Rank r1, File f2, Rank r2);
 
     // Data members
     Piece board[SQUARE_NB];
@@ -311,12 +312,33 @@ inline bool Position::select_piece(File f, Rank r)
 
 inline bool Position::put_piece(File f, Rank r)
 {
-    return put_piece(make_square(f, r), true);
+    bool ret = put_piece(make_square(f, r), true);
+
+    if (ret) {
+        update_score();
+    }
+
+    return ret;
+}
+
+inline bool Position::move_piece(File f1, Rank r1, File f2, Rank r2)
+{
+    if (select_piece(f1, r1)) {
+        return put_piece(f2, r2);
+    }
+
+    return false;
 }
 
 inline bool Position::remove_piece(File f, Rank r)
 {
-    return remove_piece(make_square(f, r), true);
+    bool ret = remove_piece(make_square(f, r), true);
+
+    if (ret) {
+        update_score();
+    }
+
+    return ret;
 }
 
 inline bool Position::move_piece(Square from, Square to)
