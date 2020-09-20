@@ -628,7 +628,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     }        
 
     if (phase == PHASE_PLACING) {
-        piece = (Piece)((0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
+        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
         pieceCountInHand[us]--;
         pieceCountOnBoard[us]++;
 
@@ -746,7 +746,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         return false;
 
     // if piece is not their
-    if (!((them << PLAYER_SHIFT) & board[s]))
+    if (!(make_piece(them) & board[s]))
         return false;
 
     if (!rule.allowRemovePieceInMill &&
@@ -825,7 +825,7 @@ bool Position::select_piece(Square s)
     if (action != ACTION_SELECT && action != ACTION_PLACE)
         return false;
 
-    if (board[s] & (sideToMove << PLAYER_SHIFT)) {
+    if (board[s] & make_piece(sideToMove)) {
         currentSquare = s;
         action = ACTION_PLACE;
 
@@ -1093,7 +1093,7 @@ inline Key Position::update_key(Square s)
     int pieceType = color_on(s);
     // TODO: this is std, but current code can work
     //Location loc = board[s];
-    //int pieceType = loc == 0x0f? 3 : loc >> PLAYER_SHIFT;
+    //int pieceType = loc == 0x0f? 3 : loc >> 4;
 
     st->key ^= Zobrist::psq[pieceType][s];
 
@@ -1335,7 +1335,7 @@ void Position::create_mill_table()
 
 Color Position::color_on(Square s) const
 {
-    return Color((board[s] & 0x30) >> PLAYER_SHIFT);
+    return color_of(board[s]);
 }
 
 int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
@@ -1344,7 +1344,7 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
     Piece locbak = NO_PIECE;
 
     if (c == NOBODY) {
-        c = Color(color_on(s) >> PLAYER_SHIFT);
+        c = color_on(s);
     }
 
     if (squareSelected != SQ_0) {
@@ -1353,7 +1353,7 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
     }
 
     for (int l = 0; l < LD_NB; l++) {
-        if ((c << PLAYER_SHIFT) &
+        if (make_piece(c) &
             board[millTable[s][l][0]] &
             board[millTable[s][l][1]]) {
             n++;
@@ -1380,7 +1380,7 @@ int Position::add_mills(Square s)
         idx[2] = millTable[s][i][1];
 
         // no mill
-        if (!((m << PLAYER_SHIFT) & board[idx[1]] & board[idx[2]])) {
+        if (!(make_piece(m) & board[idx[1]] & board[idx[2]])) {
             continue;
         }
 
@@ -1436,7 +1436,7 @@ int Position::add_mills(Square s)
 bool Position::is_all_in_mills(Color c)
 {
     for (Square i = SQ_BEGIN; i < SQ_END; i = static_cast<Square>(i + 1)) {
-        if (board[i] & ((uint8_t)(c << PLAYER_SHIFT))) {
+        if (board[i] & ((uint8_t)make_piece(c))) {
             if (!in_how_many_mills(i, NOBODY)) {
                 return false;
             }
@@ -1491,7 +1491,7 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
             nBanned++;
             break;
         default:
-            if (sideToMove == pieceType >> PLAYER_SHIFT) {
+            if (color_of(pieceType) == sideToMove) {
                 nOurPieces++;
             } else {
                 nTheirPieces++;

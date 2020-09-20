@@ -360,7 +360,7 @@ ExtMove *generate(Position &position, ExtMove *moveList)
         if (position.is_all_in_mills(them)) {
             for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
                 s = MoveList::movePriorityTable[i];
-                if (position.board[s]& (them << PLAYER_SHIFT)) {
+                if (position.board[s]& make_piece(them)) {
                     *cur++ = (Move)-s;
                 }
             }
@@ -370,7 +370,7 @@ ExtMove *generate(Position &position, ExtMove *moveList)
         // not is all in mills
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             s = MoveList::movePriorityTable[i];
-            if (position.board[s] & (them << PLAYER_SHIFT)) {
+            if (position.board[s] & make_piece(them)) {
                 if (rule.allowRemovePieceInMill || !position.in_how_many_mills(s, NOBODY)) {
                     *cur++ = (Move)-s;
                 }

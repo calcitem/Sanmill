@@ -136,8 +136,6 @@ enum Color : uint8_t
     NOBODY = 8
 };
 
-#define PLAYER_SHIFT    4
-
 enum Phase : uint16_t
 {
     PHASE_NONE = 0,
@@ -445,10 +443,15 @@ constexpr Square make_square(File file, Rank rank)
     return Square((file << 3) + rank - 1);
 }
 
+constexpr Piece make_piece(Color c)
+{
+    return Piece(c << 4);
+}
+
 constexpr Piece make_piece(Color c, PieceType pt)
 {
     if (pt == BLACK_STONE || pt == WHITE_STONE) {
-        return Piece((c << 4));
+        return make_piece(c);
     }
 
     if (pt == BAN) {
@@ -473,7 +476,6 @@ constexpr PieceType type_of(Piece pc)
 
 inline Color color_of(Piece pc)
 {
-    assert(pc != NO_PIECE);
     return Color(pc >> 4);
 }
 
