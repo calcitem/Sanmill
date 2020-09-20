@@ -755,15 +755,6 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         return false;
     }
 
-    pieceCountOnBoard[them]--;
-
-    if (pieceCountOnBoard[them] + pieceCountInHand[them] < rule.nPiecesAtLeast) {
-        winner = sideToMove;
-        phase = PHASE_GAMEOVER;
-        gameoverReason = LOSE_REASON_LESS_THAN_THREE;
-        return true;
-    }
-
     revert_key(s);
 
     if (rule.hasBannedLocations && phase == PHASE_PLACING) {
@@ -783,11 +774,18 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         st->rule50 = 0;     // TODO: Need to move out?
     }
 
+    pieceCountOnBoard[them]--;
+
+    if (pieceCountOnBoard[them] + pieceCountInHand[them] < rule.nPiecesAtLeast) {
+        winner = sideToMove;
+        phase = PHASE_GAMEOVER;
+        gameoverReason = LOSE_REASON_LESS_THAN_THREE;
+        return true;
+    }
+
     currentSquare = SQ_0;
 
     pieceCountNeedRemove--;
-
-    // Remove piece completed
 
     if (pieceCountNeedRemove > 0) {
         return true;
