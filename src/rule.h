@@ -35,7 +35,7 @@ struct Rule
     bool allowRemoveMultiPiecesWhenCloseMultiMill;
     bool allowRemovePieceInMill;
     bool isBlackLosebutNotDrawWhenBoardFull;
-    bool isLoseButNotChangeTurnWhenNoWay;
+    bool isLoseButNotChangeSideWhenNoWay;
     bool allowFlyWhenRemainThreePieces;
     Step maxStepsLedToDraw;
 };

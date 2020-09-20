@@ -135,7 +135,7 @@ Value Evaluation::value()
             }
         } else if (pos.action == ACTION_SELECT &&
                    pos.is_all_surrounded() &&
-                   rule.isLoseButNotChangeTurnWhenNoWay) {
+                   rule.isLoseButNotChangeSideWhenNoWay) {
             Value delta = pos.sideToMove == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }

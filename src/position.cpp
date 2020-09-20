@@ -1006,7 +1006,7 @@ bool Position::check_gameover_condition()
         // TODO: move to next branch
         phase = PHASE_GAMEOVER;
 
-        if (rule.isLoseButNotChangeTurnWhenNoWay) {
+        if (rule.isLoseButNotChangeSideWhenNoWay) {
             gameoverReason = LOSE_REASON_NO_WAY;
             winner = ~sideToMove;
             return true;
