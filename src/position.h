@@ -316,7 +316,7 @@ inline bool Position::put_piece(File f, Rank r)
 
 inline bool Position::remove_piece(File f, Rank r)
 {
-    return remove_piece(make_square(f, r), 1);
+    return remove_piece(make_square(f, r), true);
 }
 
 inline bool Position::move_piece(Square from, Square to)

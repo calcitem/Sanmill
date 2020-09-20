@@ -525,7 +525,6 @@ int Position::set_position(const struct Rule *newRule)
     create_mill_table();
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
-    update_score();
 
     int r;
     for (r = 0; r < N_RULES; r++) {
@@ -563,7 +562,6 @@ bool Position::reset()
     millListSize = 0;
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
-    update_score();
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.getLearnEndgameEnabled() && nPlayed != 0 && nPlayed % 256 == 0) {
@@ -787,7 +785,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (updateCmdlist) {
         sprintf(cmdline, "-(%1u,%1u)", file_of(s), rank_of(s));
         gamePly++;
-        st->rule50 = 0;
+        st->rule50 = 0;     // TODO: Need to move out?
     }
 
     currentSquare = SQ_0;
