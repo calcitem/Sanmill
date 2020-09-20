@@ -245,7 +245,7 @@ void GameController::gameReset()
     }
 
     // 读取规则限时要求
-    timeLimit = rule.maxTimeLedToLose;
+    timeLimit = 0; // TODO: rule.maxTimeLedToLose;
 
     // 如果规则不要求计时，则time1和time2表示已用时间
     if (timeLimit <= 0) {
@@ -341,7 +341,7 @@ void GameController::setRule(int ruleNo, Step stepLimited /*= -1*/, int timeLimi
     int r = position.set_position(&RULES[ruleNo]);
 
     char cmdline[64] = { 0 };
-    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, rule.maxTimeLedToLose) <= 0) {
+    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
         assert(0);
     }
     string cmd(cmdline);

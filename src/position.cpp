@@ -579,7 +579,7 @@ bool Position::reset()
     }
 
     if (sprintf(cmdline, "r%1u s%03u t%02u",
-                i + 1, rule.maxStepsLedToDraw, rule.maxTimeLedToLose) > 0) {
+                i + 1, rule.maxStepsLedToDraw, 0) > 0) {
         return true;
     }
 
@@ -946,10 +946,6 @@ int Position::update()
         *ourSeconds = ret = currentTime - startTime - theirSeconds;
     }
 
-    if (rule.maxTimeLedToLose > 0) {
-        check_gameover_condition();
-    }
-
     return ret;
 }
 
@@ -968,20 +964,6 @@ void Position::update_score()
 bool Position::check_gameover_condition()
 {
     if (phase & PHASE_NOTPLAYING) {
-        return true;
-    }
-
-    if (rule.maxTimeLedToLose > 0) {
-        phase = PHASE_GAMEOVER; // TODO: Move to below??
-       
-        for (int i = 1; i <= 2; i++) {
-            if (elapsedSeconds[i] > rule.maxTimeLedToLose * 60) {
-                elapsedSeconds[i] = rule.maxTimeLedToLose * 60;
-                winner = ~Color(i);
-                gameoverReason = LOSE_REASON_TIME_OVER;
-            }
-        }
-
         return true;
     }
 

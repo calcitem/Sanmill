@@ -38,7 +38,6 @@ struct Rule
     bool isLoseButNotChangeTurnWhenNoWay;
     bool allowFlyWhenRemainThreePieces;
     Step maxStepsLedToDraw;
-    int maxTimeLedToLose;
 };
 
 #define N_RULES 5
