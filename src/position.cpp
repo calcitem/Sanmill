@@ -627,9 +627,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         start();
     }        
 
-    file = file_of(s);
-    rank = rank_of(s);
-
     if (phase == PHASE_PLACING) {
         piece = (Piece)((0x01 | (sideToMove << PLAYER_SHIFT)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
         pieceCountInHand[us]--;
@@ -643,8 +640,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         byTypeBB[us] |= s;
 
         if (updateCmdlist) {
-            sprintf(cmdline, "(%1u,%1u)",
-                    file, rank);
+            sprintf(cmdline, "(%1u,%1u)", file_of(s), rank_of(s));
             gamePly++;
         }
 
@@ -700,8 +696,9 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         }
 
         if (updateCmdlist) {
-            sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
-                    file, rank);
+            sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)",
+                    file_of(currentSquare), rank_of(currentSquare),
+                    file_of(s), rank_of(s));
             gamePly++;
             st->rule50++;
         }
@@ -779,9 +776,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     pieceCountOnBoard[them]--;
 
     if (updateCmdlist) {
-        File file = file_of(s);
-        Rank rank = rank_of(s);
-        sprintf(cmdline, "-(%1u,%1u)", file, rank);
+        sprintf(cmdline, "-(%1u,%1u)", file_of(s), rank_of(s));
         gamePly++;
         st->rule50 = 0;
     }
