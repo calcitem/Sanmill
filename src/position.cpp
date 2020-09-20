@@ -1003,10 +1003,8 @@ bool Position::check_gameover_condition()
     }
 
     if (phase == PHASE_MOVING && action == ACTION_SELECT && is_all_surrounded()) {
-        // TODO: move to next branch
-        phase = PHASE_GAMEOVER;
-
         if (rule.isLoseButNotChangeSideWhenNoWay) {
+            phase = PHASE_GAMEOVER;
             gameoverReason = LOSE_REASON_NO_WAY;
             winner = ~sideToMove;
             return true;
