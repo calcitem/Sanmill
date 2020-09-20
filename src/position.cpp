@@ -658,7 +658,10 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
                 phase = PHASE_MOVING;
                 action = ACTION_SELECT;
-                clean_banned();
+
+                if (rule.hasBannedLocations) {
+                    remove_ban_stones();
+                }
 
                 if (!rule.isDefenderMoveFirst) {
                     change_side_to_move();
@@ -795,7 +798,10 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
             phase = PHASE_MOVING;
             action = ACTION_SELECT;
-            clean_banned();
+
+            if (rule.hasBannedLocations) {
+                remove_ban_stones();
+            }
 
             if (rule.isDefenderMoveFirst) {
                 goto check;
@@ -1036,11 +1042,9 @@ int Position::get_mobility_diff(bool includeFobidden)
     return diff;
 }
 
-void Position::clean_banned()
+void Position::remove_ban_stones()
 {
-    if (!rule.hasBannedLocations) {
-        return;
-    }
+    assert(rule.hasBannedLocations);
 
     Square s = SQ_0;
 

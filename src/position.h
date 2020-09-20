@@ -138,7 +138,7 @@ public:
     int update();
     void update_score();
     bool check_gameover_condition();
-    void clean_banned();
+    void remove_ban_stones();
     void set_side_to_move(Color c);
   
     void change_side_to_move();
