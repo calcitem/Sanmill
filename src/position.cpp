@@ -388,6 +388,8 @@ bool Position::pseudo_legal(const Move m) const
 
 void Position::do_move(Move m, StateInfo &newSt)
 {
+    bool ret = false;
+
     ++st->rule50;
 
     MoveType mt = type_of(m);
@@ -396,17 +398,23 @@ void Position::do_move(Move m, StateInfo &newSt)
     case MOVETYPE_REMOVE:
         // Reset rule 50 counter
         st->rule50 = 0;
-        remove_piece(static_cast<Square>(-m));
+        ret = remove_piece(static_cast<Square>(-m));
         break;
     case MOVETYPE_MOVE:
-        move_piece(from_sq(m), to_sq(m));
+        ret = move_piece(from_sq(m), to_sq(m));
         break;
     case MOVETYPE_PLACE:
-        put_piece(to_sq(m));
+        ret = put_piece(to_sq(m));
         break;
     default:
         break;
     }
+
+    if (!ret) {
+        return;
+    }
+    
+    move = m;
 }
 
 /// Position::undo_move() unmakes a move. When it returns, the position should
@@ -634,8 +642,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         byTypeBB[ALL_PIECES] |= s;
         byTypeBB[us] |= s;
 
-        move = static_cast<Move>(s);
-
         if (updateCmdlist) {
             sprintf(cmdline, "(%1u,%1u)",
                     file, rank);
@@ -693,8 +699,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             }
         }
 
-        move = make_move(currentSquare, s);
-
         if (updateCmdlist) {
             sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)", currentSquare / RANK_NB, currentSquare % RANK_NB + 1,
                     file, rank);
@@ -749,11 +753,6 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (pieceCountNeedRemove <= 0)
         return false;
 
-    File file = file_of(s);
-    Rank rank = rank_of(s);
-
-    int oppId = them;
-
     // if piece is not their
     if (!((them << PLAYER_SHIFT) & board[s]))
         return false;
@@ -769,7 +768,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (rule.hasBannedLocations && phase == PHASE_PLACING) {
         board[s]= BAN_STONE;
         update_key(s);
-        byTypeBB[oppId] ^= s;
+        byTypeBB[them] ^= s;
         byTypeBB[BAN] |= s;
     } else { // Remove
         board[s]= NO_PIECE;
@@ -779,9 +778,9 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
     pieceCountOnBoard[them]--;
 
-    move = static_cast<Move>(-s);
-
     if (updateCmdlist) {
+        File file = file_of(s);
+        Rank rank = rank_of(s);
         sprintf(cmdline, "-(%1u,%1u)", file, rank);
         gamePly++;
         st->rule50 = 0;
