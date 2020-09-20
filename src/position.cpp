@@ -359,6 +359,10 @@ bool Position::legal(Move m) const
     Square from = from_sq(m);
     Square to = to_sq(m);
 
+    if (from == to) {
+        return false;   // TODO: Same with is_ok(m)
+    }
+
     if (phase == PHASE_MOVING && type_of(move) != MOVETYPE_REMOVE) {
         if (color_of(moved_piece(m)) != us) {
             return false;
@@ -606,8 +610,6 @@ bool Position::start()
 
 bool Position::put_piece(Square s, bool updateCmdlist)
 {
-    File file;
-    Rank rank;
     int i;
 
     Piece piece = NO_PIECE;
@@ -773,8 +775,6 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         byTypeBB[them] ^= s;
     }
 
-    pieceCountOnBoard[them]--;
-
     if (updateCmdlist) {
         sprintf(cmdline, "-(%1u,%1u)", file_of(s), rank_of(s));
         gamePly++;
@@ -782,7 +782,9 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     }
 
     currentSquare = SQ_0;
+
     pieceCountNeedRemove--;
+    pieceCountOnBoard[them]--;
 
     // Remove piece completed
 
