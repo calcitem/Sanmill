@@ -133,7 +133,7 @@ public:
 
     bool reset();
     bool start();
-    bool giveup(Color loser);
+    bool resign(Color loser);
     bool command(const char *cmd);
     int update();
     void update_score();

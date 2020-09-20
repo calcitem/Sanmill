@@ -442,8 +442,8 @@ void GameController::playSound(sound_t soundType, Color c)
     case GAME_SOUND_GAME_START:
         filename = "GameStart.wav";
         break;
-    case GAME_SOUND_GIVE_UP:
-        filename = "GiveUp_" + sideStr + ".wav";
+    case GAME_SOUND_RESIGN:
+        filename = "Resign_" + sideStr + ".wav";
         break;
     case GAME_SOUND_LOSS:
         filename = "loss.wav";
@@ -517,9 +517,9 @@ void GameController::playSound(sound_t soundType, Color c)
 #endif // TRAINING_MODE
 }
 
-void GameController::setGiveUpIfMostLose(bool enabled)
+void GameController::setResignIfMostLose(bool enabled)
 {
-    gameOptions.setGiveUpIfMostLose(enabled);
+    gameOptions.setResignIfMostLose(enabled);
 }
 
 void GameController::setAutoRestart(bool enabled)
@@ -895,9 +895,9 @@ bool GameController::actionPiece(QPointF pos)
 }
 
 
-bool GameController::giveUp()
+bool GameController::resign()
 {
-    bool result = position.giveup(position.sideToMove);
+    bool result = position.resign(position.sideToMove);
         
     if (!result) {
         return false;
@@ -919,7 +919,7 @@ bool GameController::giveUp()
     }
 
     if (position.get_winner() != NOBODY) {
-        playSound(GAME_SOUND_GIVE_UP, position.side_to_move());
+        playSound(GAME_SOUND_RESIGN, position.side_to_move());
     }
 #endif // TRAINING_MODE
 
@@ -1323,10 +1323,10 @@ void GameController::showTestWindow()
     gameTest->show();
 }
 
-void GameController::humanGiveUp()
+void GameController::humanResign()
 {
     if (position.get_winner() == NOBODY) {
-        giveUp();
+        resign();
     }
 }
 
@@ -1433,7 +1433,7 @@ void GameController::appendGameOverReasonToCmdlist()
     case LOSE_REASON_LESS_THAN_THREE:
         sprintf(cmdline, "Player%d win!", position.winner);
         break;
-    case LOSE_REASON_GIVE_UP:
+    case LOSE_REASON_RESIGN:
         sprintf(cmdline, "Player%d give up!", ~position.winner);
         break;
     default:
@@ -1505,7 +1505,7 @@ void GameController::setTips()
         case  LOSE_REASON_NO_WAY:
             reasonStr = turnStr + "无子可走被闷。";
             break;
-        case LOSE_REASON_GIVE_UP:
+        case LOSE_REASON_RESIGN:
             reasonStr = turnStr + "投子认负。";
             break;
         case LOSE_REASON_TIME_OVER:

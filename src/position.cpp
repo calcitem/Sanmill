@@ -839,7 +839,7 @@ bool Position::select_piece(Square s)
     return false;
 }
 
-bool Position::giveup(Color loser)
+bool Position::resign(Color loser)
 {
     if (phase & PHASE_NOTPLAYING ||
         phase == PHASE_NONE) {
@@ -849,7 +849,7 @@ bool Position::giveup(Color loser)
     phase = PHASE_GAMEOVER;
 
     winner = ~loser;
-    gameoverReason = LOSE_REASON_GIVE_UP;
+    gameoverReason = LOSE_REASON_RESIGN;
     //sprintf(cmdline, "Player%d give up!", loser);
     update_score();
 
@@ -892,7 +892,7 @@ bool Position::command(const char *cmd)
     args = sscanf(cmd, "Player%1u give up!", &t);
 
     if (args == 1) {
-        return giveup((Color)t);
+        return resign((Color)t);
     }
 
 #ifdef THREEFOLD_REPETITION

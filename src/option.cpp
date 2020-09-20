@@ -41,14 +41,14 @@ bool GameOptions::getAutoChangeFirstMove()
     return isAutoChangeFirstMove;
 }
 
-void GameOptions::setGiveUpIfMostLose(bool enabled)
+void GameOptions::setResignIfMostLose(bool enabled)
 {
-    giveUpIfMostLose = enabled;
+    resignIfMostLose = enabled;
 }
 
-bool GameOptions::getGiveUpIfMostLose()
+bool GameOptions::getResignIfMostLose()
 {
-    return giveUpIfMostLose;
+    return resignIfMostLose;
 }
 
 void GameOptions::setRandomMoveEnabled(bool enabled)

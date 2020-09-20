@@ -91,7 +91,7 @@ private slots:
     // 前后招的公共槽
     void on_actionRowChange();
     void on_actionAutoRun_A_toggled(bool arg1);
-    //void on_actionGiveUp_G_triggered();
+    //void on_actionResign_G_triggered();
     void on_actionLimited_T_triggered();
     void on_actionLocal_L_triggered();
     void on_actionEngineFight_E_triggered();

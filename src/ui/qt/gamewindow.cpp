@@ -190,12 +190,12 @@ void MillGameWindow::initialize()
 
     // 关联主窗口动作信号和控制器的槽
 
-    connect(ui.actionGiveUp_G, SIGNAL(triggered()),
-            gameController, SLOT(giveUp()));
+    connect(ui.actionResign_G, SIGNAL(triggered()),
+            gameController, SLOT(resign()));
 
 #ifdef MOBILE_APP_UI
-    connect(ui.pushButton_giveUp, SIGNAL(released()),
-            gameController, SLOT(giveUp()));
+    connect(ui.pushButton_resign, SIGNAL(released()),
+            gameController, SLOT(resign()));
 #endif
 
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
@@ -219,11 +219,11 @@ void MillGameWindow::initialize()
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             gameController, SLOT(setAnimation(bool)));
     
-    connect(ui.actionGiveUpIfMostLose_G, SIGNAL(toggled(bool)),
-            gameController, SLOT(setGiveUpIfMostLose(bool)));
+    connect(ui.actionResignIfMostLose_G, SIGNAL(toggled(bool)),
+            gameController, SLOT(setResignIfMostLose(bool)));
 
 #ifdef TEST_MODE
-    //ui.actionGiveUpIfMostLose_G->setChecked(true);
+    //ui.actionResignIfMostLose_G->setChecked(true);
 #endif // TEST_MODE
 
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
@@ -393,7 +393,7 @@ void MillGameWindow::initialize()
     ui.label_2->setVisible(false);
     ui.label->setVisible(false);
     ui.pushButton_newGame->setVisible(false);
-    ui.pushButton_giveUp->setVisible(false);
+    ui.pushButton_resign->setVisible(false);
     ui.pushButton_retractMove->setVisible(false);
     ui.pushButton_hint->setVisible(false);
 #endif /* MOBILE_APP_UI */
@@ -598,7 +598,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 
     // 棋未下完，且已经走了若干步以上，则算对手得分
     if (strlist->stringList().size() > 12) {
-        gameController->humanGiveUp();
+        gameController->humanResign();
     }
 
     gameController->saveScore();

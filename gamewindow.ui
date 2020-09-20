@@ -138,7 +138,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_giveUp">
+       <widget class="QPushButton" name="pushButton_resign">
         <property name="font">
          <font>
           <family>黑体</family>
@@ -263,7 +263,7 @@
     <addaction name="actionEnd_E"/>
     <addaction name="actionAutoRun_A"/>
     <addaction name="separator"/>
-    <addaction name="actionGiveUp_G"/>
+    <addaction name="actionResign_G"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_E">
@@ -293,7 +293,7 @@
     <addaction name="actionSound_S"/>
     <addaction name="actionAnimation_A"/>
     <addaction name="separator"/>
-    <addaction name="actionGiveUpIfMostLose_G"/>
+    <addaction name="actionResignIfMostLose_G"/>
     <addaction name="actionAutoRestart_A"/>
     <addaction name="actionRandomMove_R"/>
    </widget>
@@ -988,7 +988,7 @@
     <string>自动演示(A)</string>
    </property>
   </action>
-  <action name="actionGiveUp_G">
+  <action name="actionResign_G">
    <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/BreakpointHS.png</normaloff>:/icon/resources/icon/BreakpointHS.png</iconset>
@@ -1222,7 +1222,7 @@
     <string>电脑着法随机(&amp;R)</string>
    </property>
   </action>
-  <action name="actionGiveUpIfMostLose_G">
+  <action name="actionResignIfMostLose_G">
    <property name="checkable">
     <bool>true</bool>
    </property>

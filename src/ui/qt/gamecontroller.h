@@ -56,7 +56,7 @@ enum sound_t
     GAME_SOUND_DROG,
     GAME_SOUND_BANNED,
     GAME_SOUND_GAME_START,
-    GAME_SOUND_GIVE_UP,
+    GAME_SOUND_RESIGN,
     GAME_SOUND_LOSS,
     GAME_SOUND_MILL,
     GAME_SOUND_MILL_REPEATLY,
@@ -129,7 +129,7 @@ public:
     void setAiDepthTime(int time1, int time2);
     void getAiDepthTime(int &time1, int &time2);
 
-    void humanGiveUp();
+    void humanResign();
 
     Position *getPosition()
     {
@@ -210,7 +210,7 @@ public slots:
     static void playSound(sound_t soundType, Color c);
 
     // 是否必败时认输
-    void setGiveUpIfMostLose(bool enabled);
+    void setResignIfMostLose(bool enabled);
 
     // 是否自动开局
     void setAutoRestart(bool enabled = false);
@@ -323,7 +323,7 @@ public slots:
     bool actionPiece(QPointF p);
 
     // 认输
-    bool giveUp();
+    bool resign();
 
     // 棋谱的命令行执行
     bool command(const string &cmd, bool update = true);
@@ -422,7 +422,7 @@ private:
     inline static bool hasSound {true};
 
     // 是否必败时认输
-    bool giveUpIfMostLose_ {false};
+    bool resignIfMostLose_ {false};
 
     // 是否自动交换先后手
     bool isAutoChangeFirstMove { false };

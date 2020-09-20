@@ -865,8 +865,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
     <Media Include="resources\sound\GameStart.wav" />
-    <Media Include="resources\sound\GiveUp_B.wav" />
-    <Media Include="resources\sound\GiveUp_W.wav" />
+    <Media Include="resources\sound\Resign_B.wav" />
+    <Media Include="resources\sound\Resign_W.wav" />
     <Media Include="resources\sound\loss.wav">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

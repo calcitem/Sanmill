@@ -524,10 +524,10 @@
     <Media Include="resources\sound\WinsAndLossesAreObvious.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="resources\sound\GiveUp_B.wav">
+    <Media Include="resources\sound\Resign_B.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="resources\sound\GiveUp_W.wav">
+    <Media Include="resources\sound\Resign_W.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\Capture_B.wav">

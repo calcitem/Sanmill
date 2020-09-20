@@ -89,7 +89,7 @@
         <file>resources/sound/Win_B.wav</file>
         <file>resources/sound/Win_W.wav</file>
         <file>resources/sound/WinsAndLossesAreObvious.wav</file>
-        <file>resources/sound/GiveUp_B.wav</file>
-        <file>resources/sound/GiveUp_W.wav</file>
+        <file>resources/sound/Resign_B.wav</file>
+        <file>resources/sound/Resign_W.wav</file>
     </qresource>
 </RCC>

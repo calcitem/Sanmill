@@ -31,8 +31,8 @@ public:
     void setAutoChangeFirstMove(bool enabled);
     bool getAutoChangeFirstMove();
 
-    void setGiveUpIfMostLose(bool enabled);
-    bool getGiveUpIfMostLose();
+    void setResignIfMostLose(bool enabled);
+    bool getResignIfMostLose();
 
     void setRandomMoveEnabled(bool enabled);
     bool getRandomMoveEnabled();
@@ -56,7 +56,7 @@ protected:
 private:
     bool isAutoRestart { false };
     bool isAutoChangeFirstMove { false };
-    bool giveUpIfMostLose { false };
+    bool resignIfMostLose { false };
     bool randomMoveEnabled { true };
 #ifdef ENDGAME_LEARNING_FORCE
     bool learnEndgame { true };

@@ -573,9 +573,9 @@ string AIAlgorithm::nextMove()
     }
 #endif /* ENDGAME_LEARNING */
 
-    if (gameOptions.getGiveUpIfMostLose() == true) {
+    if (gameOptions.getResignIfMostLose() == true) {
         if (root->value <= -VALUE_MATE) {
-            gameoverReason = LOSE_REASON_GIVE_UP;
+            gameoverReason = LOSE_REASON_RESIGN;
             //sprintf(cmdline, "Player%d give up!", position->sideToMove);
             return cmdline;
         }
