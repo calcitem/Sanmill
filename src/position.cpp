@@ -1061,13 +1061,13 @@ void Position::remove_ban_stones()
     }
 }
 
-void Position::set_side_to_move(Color c)
+inline void Position::set_side_to_move(Color c)
 {
     sideToMove = c;
     them = ~sideToMove;
 }
 
-void Position::change_side_to_move()
+inline void Position::change_side_to_move()
 {
     set_side_to_move(~sideToMove);
 }
