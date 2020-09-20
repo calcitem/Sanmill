@@ -764,7 +764,10 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
     pieceCountOnBoard[them]--;
 
-    if (check_gameover_condition()) {
+    if (pieceCountOnBoard[them] + pieceCountInHand[them] < rule.nPiecesAtLeast) {
+        winner = sideToMove;
+        phase = PHASE_GAMEOVER;
+        gameoverReason = LOSE_REASON_LESS_THAN_THREE;
         goto out;
     }
 
@@ -973,16 +976,6 @@ bool Position::check_gameover_condition()
         phase = PHASE_GAMEOVER;        
         gameoverReason = DRAW_REASON_RULE_50;
         return true;
-    }
-
-    for (int i = 1; i <= 2; i++)
-    {
-        if (pieceCountOnBoard[i] + pieceCountInHand[i] < rule.nPiecesAtLeast) {
-            winner = ~Color(i);
-            phase = PHASE_GAMEOVER;
-            gameoverReason = LOSE_REASON_LESS_THAN_THREE;
-            return true;
-        }
     }
 
 #ifdef MCTS_AI
