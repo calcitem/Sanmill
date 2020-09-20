@@ -608,11 +608,7 @@ bool Position::start()
 
 bool Position::put_piece(Square s, bool updateCmdlist)
 {
-    int i;
-
     Piece piece = NO_PIECE;
-    int n = 0;
-
     int us = sideToMove;
 
     Bitboard fromTo;
@@ -625,7 +621,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
     if (phase == PHASE_READY) {
         start();
-    }        
+    }
 
     if (phase == PHASE_PLACING) {
         piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
@@ -646,7 +642,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         currentSquare = s;
 
-        n = add_mills(currentSquare);
+        int n = add_mills(currentSquare);
 
         if (n == 0) {
             assert(pieceCountInHand[BLACK] >= 0 && pieceCountInHand[WHITE] >= 0);     
@@ -687,13 +683,15 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         // if illegal
         if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
             !rule.allowFlyWhenRemainThreePieces) {
-            for (i = 0; i < 4; i++) {
-                if (s == MoveList::moveTable[currentSquare][i])
+            int md;
+
+            for (md = 0; md < MD_NB; md++) {
+                if (s == MoveList::moveTable[currentSquare][md])
                     break;
             }
 
             // not in moveTable
-            if (i == 4) {
+            if (md == MD_NB) {
                 return false;
             }
         }
@@ -718,7 +716,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         board[currentSquare] = NO_PIECE;
 
         currentSquare = s;
-        n = add_mills(currentSquare);
+        int n = add_mills(currentSquare);
 
         // midgame
         if (n == 0) {
@@ -732,6 +730,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             action = ACTION_REMOVE;
         }
+    } else {
+        assert(0);
     }
 
     return true;
