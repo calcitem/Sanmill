@@ -143,6 +143,7 @@ public:
   
     void change_side_to_move();
     Color get_winner() const;
+    void set_gameover(Color w, GameOverReason reason);
 
     void mirror(vector <string> &cmdlist, bool cmdChange = true);
     void turn(vector <string> &cmdlist, bool cmdChange = true);

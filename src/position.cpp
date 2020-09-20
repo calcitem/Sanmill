@@ -780,9 +780,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     pieceCountOnBoard[them]--;
 
     if (pieceCountOnBoard[them] + pieceCountInHand[them] < rule.nPiecesAtLeast) {
-        winner = sideToMove;
-        phase = PHASE_GAMEOVER;
-        gameoverReason = LOSE_REASON_LESS_THAN_THREE;
+        set_gameover(sideToMove, LOSE_REASON_LESS_THAN_THREE);
         return true;
     }
 
@@ -846,10 +844,8 @@ bool Position::resign(Color loser)
         return false;
     }
 
-    phase = PHASE_GAMEOVER;
+    set_gameover(~loser, LOSE_REASON_RESIGN);
 
-    winner = ~loser;
-    gameoverReason = LOSE_REASON_RESIGN;
     //sprintf(cmdline, "Player%d give up!", loser);
     update_score();
 
@@ -916,6 +912,13 @@ bool Position::command(const char *cmd)
 Color Position::get_winner() const
 {
     return winner;
+}
+
+inline void Position::set_gameover(Color w, GameOverReason reason)
+{
+    phase = PHASE_GAMEOVER;
+    gameoverReason = reason;
+    winner = w;
 }
 
 int Position::update()
@@ -989,14 +992,10 @@ bool Position::check_gameover_condition()
 #endif
 
     if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB) {
-        phase = PHASE_GAMEOVER;
-
         if (rule.isBlackLosebutNotDrawWhenBoardFull) {
-            winner = WHITE;
-            gameoverReason = LOSE_REASON_BOARD_IS_FULL;
+            set_gameover(WHITE, LOSE_REASON_BOARD_IS_FULL);
         } else {
-            winner = DRAW;
-            gameoverReason = DRAW_REASON_BOARD_IS_FULL;
+            set_gameover(DRAW, DRAW_REASON_BOARD_IS_FULL);
         }
 
         return true;
@@ -1004,12 +1003,10 @@ bool Position::check_gameover_condition()
 
     if (phase == PHASE_MOVING && action == ACTION_SELECT && is_all_surrounded()) {
         if (rule.isLoseButNotChangeSideWhenNoWay) {
-            phase = PHASE_GAMEOVER;
-            gameoverReason = LOSE_REASON_NO_WAY;
-            winner = ~sideToMove;
+            set_gameover(~sideToMove, LOSE_REASON_NO_WAY);
             return true;
         } else {
-            change_side_to_move();
+            change_side_to_move();  // TODO: Need?
             return false;
         }
     }
