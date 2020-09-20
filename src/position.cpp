@@ -402,7 +402,7 @@ void Position::do_move(Move m, StateInfo &newSt)
     case MOVETYPE_REMOVE:
         // Reset rule 50 counter
         st->rule50 = 0;
-        ret = remove_piece(static_cast<Square>(-m));
+        ret = remove_piece(to_sq(m));
         break;
     case MOVETYPE_MOVE:
         ret = move_piece(from_sq(m), to_sq(m));
