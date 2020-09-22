@@ -172,12 +172,18 @@ public:
     // Other helpers
     bool select_piece(Square s);
     bool select_piece(File file, Rank rank);
-    bool put_piece(Square s, bool updateCmdlist = false);
+
     bool put_piece(File file, Rank rank);
-    bool remove_piece(Square s, bool updateCmdlist = false);
+    bool put_piece(Square s, bool updateCmdlist = false);
+    bool undo_put_piece(Square s);
+
     bool remove_piece(File file, Rank rank);
-    bool move_piece(Square from, Square to);
+    bool remove_piece(Square s, bool updateCmdlist = false);
+    bool undo_remove_piece(Square s);
+
     bool move_piece(File f1, Rank r1, File f2, Rank r2);
+    bool move_piece(Square from, Square to);
+    bool undo_move_piece(Square from, Square to);
 
     // Data members
     Piece board[SQUARE_NB];
@@ -349,6 +355,11 @@ inline bool Position::move_piece(Square from, Square to)
     }
 
     return false;
+}
+
+inline bool Position::undo_move_piece(Square from, Square to)
+{
+    return move_piece(to, from);    // TODO
 }
 
 /// Mill Game
