@@ -293,9 +293,257 @@ void MainThread::search()
 
 void Thread::search()
 {
-    // TODO
-    return;
+
+    // To allow access to (ss-7) up to (ss+2), the stack must be oversized.
+    // The former is needed to allow update_continuation_histories(ss-1, ...),
+    // which accesses its argument at ss-6, also near the root.
+    // The latter is needed for statScores and killer initialization.
+    Stack stack[MAX_PLY + 10], *ss = stack + 7;
+    Move  pv[MAX_PLY + 1];
+    Value bestValue, alpha, beta, delta;
+    Move  lastBestMove = MOVE_NONE;
+    Depth lastBestMoveDepth = 0;
+    MainThread *mainThread = (this == Threads.main() ? Threads.main() : nullptr);
+    double timeReduction = 1, totBestMoveChanges = 0;
+    Color us = rootPos.side_to_move();
+    int iterIdx = 0;
+
+    std::memset(ss - 7, 0, 10 * sizeof(Stack));
+    for (int i = 7; i > 0; i--)
+        (ss - i)->continuationHistory = &this->continuationHistory[0][0][NO_PIECE][0]; // Use as a sentinel
+
+    ss->pv = pv;
+
+    bestValue = delta = alpha = -VALUE_INFINITE;
+    beta = VALUE_INFINITE;
+
+    if (mainThread) {
+        if (mainThread->bestPreviousScore == VALUE_INFINITE)
+            for (int i = 0; i < 4; ++i)
+                mainThread->iterValue[i] = VALUE_ZERO;
+        else
+            for (int i = 0; i < 4; ++i)
+                mainThread->iterValue[i] = mainThread->bestPreviousScore;
+    }
+
+    size_t multiPV = (size_t)Options["MultiPV"];
+
+    // Pick integer skill levels, but non-deterministically round up or down
+    // such that the average integer skill corresponds to the input floating point one.
+    // UCI_Elo is converted to a suitable fractional skill level, using anchoring
+    // to CCRL Elo (goldfish 1.13 = 2000) and a fit through Ordo derived Elo
+    // for match (TC 60+0.6) results spanning a wide range of k values.
+    PRNG rng(now());
+    double floatLevel = Options["UCI_LimitStrength"] ?
+        Utility::clamp(std::pow((Options["UCI_Elo"] - 1346.6) / 143.4, 1 / 0.806), 0.0, 20.0) :
+        double(Options["Skill Level"]);
+    int intLevel = int(floatLevel) +
+        ((floatLevel - int(floatLevel)) * 1024 > rng.rand<unsigned>() % 1024 ? 1 : 0);
+    Skill skill(intLevel);
+
+    // When playing with strength handicap enable MultiPV search that we will
+    // use behind the scenes to retrieve a set of possible moves.
+    if (skill.enabled())
+        multiPV = std::max(multiPV, (size_t)4);
+
+    multiPV = std::min(multiPV, rootMoves.size());
+    //ttHitAverage = TtHitAverageWindow * TtHitAverageResolution / 2;
+
+    //int ct = int(Options["Contempt"]) * PawnValueEg / 100; // From centipawns
+    int ct = int(Options["Contempt"]) * StoneValue / 100; // From centipawns    // TODO
+
+    // In analysis mode, adjust contempt in accordance with user preference
+    if (Limits.infinite || Options["UCI_AnalyseMode"])
+        ct = Options["Analysis Contempt"] == "Off" ? 0
+        : Options["Analysis Contempt"] == "Both" ? ct
+        : Options["Analysis Contempt"] == "White" && us == BLACK ? -ct
+        : Options["Analysis Contempt"] == "Black" && us == WHITE ? -ct
+        : ct;
+
+    // Evaluation score is from the white point of view
+    contempt = (us == WHITE ? make_score(ct, ct / 2)
+                : -make_score(ct, ct / 2));
+
+    int searchAgainCounter = 0;
+
+    // Iterative deepening loop until requested to stop or the target depth is reached
+    while (++rootDepth < MAX_PLY
+           && !Threads.stop
+           && !(Limits.depth && mainThread && rootDepth > Limits.depth)) {
+        // Age out PV variability metric
+        if (mainThread)
+            totBestMoveChanges /= 2;
+
+        // Save the last iteration's scores before first PV line is searched and
+        // all the move scores except the (new) PV are set to -VALUE_INFINITE.
+        for (RootMove &rm : rootMoves)
+            rm.previousScore = rm.score;
+
+        size_t pvFirst = 0;
+        pvLast = 0;
+
+        if (!Threads.increaseDepth)
+            searchAgainCounter++;
+
+        // MultiPV loop. We perform a full root search for each PV line
+        for (pvIdx = 0; pvIdx < multiPV && !Threads.stop; ++pvIdx) {
+            if (pvIdx == pvLast) {
+                pvFirst = pvLast;
+                for (pvLast++; pvLast < rootMoves.size(); pvLast++)
+                    if (rootMoves[pvLast].tbRank != rootMoves[pvFirst].tbRank)
+                        break;
+            }
+
+            // Reset UCI info selDepth for each depth and each PV line
+            selDepth = 0;
+
+            // Reset aspiration window starting size
+            if (rootDepth >= 4) {
+                Value prev = rootMoves[pvIdx].previousScore;
+                delta = Value(21);
+                alpha = std::max(prev - delta, -VALUE_INFINITE);
+                beta = std::min(prev + delta, VALUE_INFINITE);
+
+                // Adjust contempt based on root move's previousScore (dynamic contempt)
+                int dct = ct + (102 - ct / 2) * prev / (abs(prev) + 157);
+
+                contempt = (us == WHITE ? make_score(dct, dct / 2)
+                            : -make_score(dct, dct / 2));
+            }
+
+            // Start with a small aspiration window and, in the case of a fail
+            // high/low, re-search with a bigger window until we don't fail
+            // high/low anymore.
+            int failedHighCnt = 0;
+            while (true) {
+                Depth adjustedDepth = std::max(1, rootDepth - failedHighCnt - searchAgainCounter);
+                //bestValue = ::search<PV>(rootPos, ss, alpha, beta, adjustedDepth, false);
+                // bestValue = MTDF(rootPos, ss, value, i, adjustedDepth, bestMove);    // TODO
+
+                // Bring the best move to the front. It is critical that sorting
+                // is done with a stable algorithm because all the values but the
+                // first and eventually the new best one are set to -VALUE_INFINITE
+                // and we want to keep the same order for all the moves except the
+                // new PV that goes to the front. Note that in case of MultiPV
+                // search the already searched PV lines are preserved.
+                std::stable_sort(rootMoves.begin() + pvIdx, rootMoves.begin() + pvLast);
+
+                // If search has been stopped, we break immediately. Sorting is
+                // safe because RootMoves is still valid, although it refers to
+                // the previous iteration.
+                if (Threads.stop)
+                    break;
+
+                // When failing high/low give some update (without cluttering
+                // the UI) before a re-search.
+                if (mainThread
+                    && multiPV == 1
+                    && (bestValue <= alpha || bestValue >= beta)
+                    && Time.elapsed() > 3000)
+                    sync_cout << UCI::pv(&rootPos, rootDepth, alpha, beta) << sync_endl;
+
+                // In case of failing low/high increase aspiration window and
+                // re-search, otherwise exit the loop.
+                if (bestValue <= alpha) {
+                    beta = (alpha + beta) / 2;
+                    alpha = std::max(bestValue - delta, -VALUE_INFINITE);
+
+                    failedHighCnt = 0;
+                    if (mainThread)
+                        mainThread->stopOnPonderhit = false;
+                } else if (bestValue >= beta) {
+                    beta = std::min(bestValue + delta, VALUE_INFINITE);
+                    ++failedHighCnt;
+                } else {
+                    ++rootMoves[pvIdx].bestMoveCount;
+                    break;
+                }
+
+                delta += delta / 4 + 5;
+
+                assert(alpha >= -VALUE_INFINITE && beta <= VALUE_INFINITE);
+            }
+
+            // Sort the PV lines searched so far and update the GUI
+            std::stable_sort(rootMoves.begin() + pvFirst, rootMoves.begin() + pvIdx + 1);
+
+            if (mainThread
+                && (Threads.stop || pvIdx + 1 == multiPV || Time.elapsed() > 3000))
+                sync_cout << UCI::pv(&rootPos, rootDepth, alpha, beta) << sync_endl;
+        }
+
+        if (!Threads.stop)
+            completedDepth = rootDepth;
+
+        if (rootMoves[0].pv[0] != lastBestMove) {
+            lastBestMove = rootMoves[0].pv[0];
+            lastBestMoveDepth = rootDepth;
+        }
+
+        // Have we found a "mate in x"?
+        if (Limits.mate
+            && bestValue >= VALUE_MATE_IN_MAX_PLY
+            && VALUE_MATE - bestValue <= 2 * Limits.mate)
+            Threads.stop = true;
+
+        if (!mainThread)
+            continue;
+
+        // If skill level is enabled and time is up, pick a sub-optimal best move
+        if (skill.enabled() && skill.time_to_pick(rootDepth))
+            skill.pick_best(multiPV);
+
+        // Do we have time for the next iteration? Can we stop searching now?
+        if (Limits.use_time_management()
+            && !Threads.stop
+            && !mainThread->stopOnPonderhit) {
+            double fallingEval = (332 + 6 * (mainThread->bestPreviousScore - bestValue)
+                                  + 6 * (mainThread->iterValue[iterIdx] - bestValue)) / 704.0;
+            fallingEval = Utility::clamp(fallingEval, 0.5, 1.5);
+
+            // If the bestMove is stable over several iterations, reduce time accordingly
+            timeReduction = lastBestMoveDepth + 9 < completedDepth ? 1.94 : 0.91;
+            double reduction = (1.41 + mainThread->previousTimeReduction) / (2.27 * timeReduction);
+
+            // Use part of the gained time from a previous stable move for the current move
+            for (Thread *th : Threads) {
+                totBestMoveChanges += th->bestMoveChanges;
+                th->bestMoveChanges = 0;
+            }
+            double bestMoveInstability = 1 + totBestMoveChanges / Threads.size();
+
+            // Stop the search if we have only one legal move, or if available time elapsed
+            if (rootMoves.size() == 1
+                || Time.elapsed() > Time.optimum() * fallingEval * reduction * bestMoveInstability) {
+                // If we are allowed to ponder do not stop the search now but
+                // keep pondering until the GUI sends "ponderhit" or "stop".
+                if (mainThread->ponder)
+                    mainThread->stopOnPonderhit = true;
+                else
+                    Threads.stop = true;
+            } else if (Threads.increaseDepth
+                       && !mainThread->ponder
+                       && Time.elapsed() > Time.optimum() * fallingEval * reduction * bestMoveInstability * 0.6)
+                Threads.increaseDepth = false;
+            else
+                Threads.increaseDepth = true;
+        }
+
+        mainThread->iterValue[iterIdx] = bestValue;
+        iterIdx = (iterIdx + 1) & 3;
+    }
+
+    if (!mainThread)
+        return;
+
+    mainThread->previousTimeReduction = timeReduction;
+
+    // If skill level is enabled, swap best PV line with the sub-optimal one
+    if (skill.enabled())
+        std::swap(rootMoves[0], *std::find(rootMoves.begin(), rootMoves.end(),
+                                           skill.best ? skill.best : skill.pick_best(multiPV)));
 }
+
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
 
@@ -680,6 +928,40 @@ void AIAlgorithm::loadEndgameFileToHashMap()
 }
 
 #endif // ENDGAME_LEARNING
+
+
+// When playing with strength handicap, choose best move among a set of RootMoves
+// using a statistical rule dependent on 'level'. Idea by Heinz van Saanen.
+
+Move Skill::pick_best(size_t multiPV)
+{
+
+    const RootMoves &rootMoves = Threads.main()->rootMoves;
+    static PRNG rng(now()); // PRNG sequence should be non-deterministic
+
+    // RootMoves are already sorted by score in descending order
+    Value topScore = rootMoves[0].score;
+    //int delta = std::min(topScore - rootMoves[multiPV - 1].score, PawnValueMg);
+    int delta = std::min(topScore - rootMoves[multiPV - 1].score, StoneValue);
+    int weakness = 120 - 2 * level;
+    int maxScore = -VALUE_INFINITE;
+
+    // Choose best move. For each move score we add two terms, both dependent on
+    // weakness. One is deterministic and bigger for weaker levels, and one is
+    // random. Then we choose the move with the resulting highest score.
+    for (size_t i = 0; i < multiPV; ++i) {
+        // This is our magic formula
+        int push = (weakness * int(topScore - rootMoves[i].score)
+                    + delta * (rng.rand<unsigned>() % weakness)) / 128;
+
+        if (rootMoves[i].score + push >= maxScore) {
+            maxScore = rootMoves[i].score + push;
+            best = rootMoves[i].pv[0];
+        }
+    }
+
+    return best;
+}
 
 
 /// MainThread::check_time() is used to print debug info and, more importantly,

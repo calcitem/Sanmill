@@ -66,6 +66,11 @@ public:
     Position rootPos;
     Search::RootMoves rootMoves;
     Depth rootDepth, completedDepth;
+    CounterMoveHistory counterMoves;
+    ButterflyHistory mainHistory;
+    LowPlyHistory lowPlyHistory;
+    CapturePieceToHistory captureHistory;
+    ContinuationHistory continuationHistory[2][2];
     Score contempt;
 };
 
