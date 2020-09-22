@@ -18,8 +18,10 @@
 */
 
 #include <random>
+#include <array>
 
 #include "movegen.h"
+#include "misc.h"
 #include "position.h"
 #include "option.h"
 
@@ -241,10 +243,10 @@ void MoveList::create()
 
 void MoveList::shuffle()
 {
-    array<Square, 4> movePriorityTable0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
-    array<Square, 8> movePriorityTable1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
-    array<Square, 4> movePriorityTable2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
-    array<Square, 8> movePriorityTable3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
+    std::array<Square, 4> movePriorityTable0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
+    std::array<Square, 8> movePriorityTable1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
+    std::array<Square, 4> movePriorityTable2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
+    std::array<Square, 8> movePriorityTable3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
 
     if (rule.nTotalPiecesEachSide == 9)
     {

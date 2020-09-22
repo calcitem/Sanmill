@@ -496,7 +496,7 @@ void Position::undo_move(Move m)
     m = m;
 }
 
-void Position::undo_move(Stack<Position> &ss)
+void Position::undo_move(Sanmill::Stack<Position> &ss)
 {
     memcpy(this, ss.top(), sizeof(Position));
     ss.pop();

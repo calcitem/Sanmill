@@ -23,6 +23,7 @@
 #include "stack.h"
 #include "tt.h"
 #include "endgame.h"
+#include "movepick.h"
 #include "types.h"
 
 #ifdef CYCLE_STAT
@@ -42,7 +43,7 @@ namespace Search
 /// Threshold used for countermoves based pruning
 constexpr int CounterMovePruneThreshold = 0;
 
-#if 0
+
 /// Stack struct keeps track of the information we need to remember from nodes
 /// shallower and deeper in the tree during the search. Each search thread has
 /// its own array of Stack objects, indexed by the current ply.
@@ -50,6 +51,7 @@ constexpr int CounterMovePruneThreshold = 0;
 struct Stack
 {
     Move *pv;
+    PieceToHistory *continuationHistory;
     int ply;
     Move currentMove;
     Move excludedMove;
@@ -59,7 +61,7 @@ struct Stack
     int moveCount;
     bool inCheck;
 };
-#endif
+
 
 /// RootMove struct is used for moves at the root of the tree. For each root move
 /// we store a score and a PV (really a refutation in the case of moves which
@@ -186,7 +188,7 @@ public:
 private:
     Position *pos { nullptr };
 
-    Stack<Position> ss;
+    Sanmill::Stack<Position> ss;
 
     // bool requiredQuit {false}; // TODO
 

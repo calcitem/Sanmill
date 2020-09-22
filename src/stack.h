@@ -23,6 +23,9 @@
 #include <cstdlib>
 #include <cassert>
 
+namespace Sanmill
+{
+
 template <typename T, size_t capacity = 128>
 class Stack
 {
@@ -38,7 +41,7 @@ public:
     }
 
     ~Stack()
-    {        
+    {
         //memset(arr, 0, sizeof(T) * capacity);
         //delete[] arr;
     }
@@ -131,8 +134,7 @@ public:
 
     inline void erase(int index)
     {
-        for (int i = index; i < capacity - 1; i++)
-        {
+        for (int i = index; i < capacity - 1; i++) {
             arr[i] = arr[i + 1];
         }
 
@@ -141,7 +143,9 @@ public:
 
 private:
     T *arr;
-    int p { -1 };
+    int p{ -1 };
 };
+
+}
 
 #endif // STACK_H

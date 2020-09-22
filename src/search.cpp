@@ -260,7 +260,7 @@ void Thread::search()
     return;
 }
 
-Value MTDF(Position *pos, Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
+Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
 
 vector<Key> moveHistory;
 
@@ -679,7 +679,7 @@ void MainThread::check_time()
 
 // search<>() is the main search function for both PV and non-PV nodes
 
-Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
+Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
     Value value;
     Value bestValue = -VALUE_INFINITE;
@@ -899,7 +899,7 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
     return bestValue;
 }
 
-Value MTDF(Position *pos, Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove)
+Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove)
 {
     Value g = firstguess;
     Value lowerbound = -VALUE_INFINITE;

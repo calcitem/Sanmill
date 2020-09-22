@@ -24,10 +24,11 @@
 #include <deque>
 #include <memory> // For std::unique_ptr
 #include <string>
+#include <vector>
 
 #include "types.h"
 #include "rule.h"
-#include "search.h"
+#include "stack.h"
 
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
@@ -89,7 +90,7 @@ public:
     // Doing and undoing moves
     void do_move(Move m, StateInfo &newSt);
     void undo_move(Move m);
-    void undo_move(Stack<Position> &ss);
+    void undo_move(Sanmill::Stack<Position> &ss);
     void undo_null_move();
     void do_null_move();
 
@@ -145,9 +146,9 @@ public:
     Color get_winner() const;
     void set_gameover(Color w, GameOverReason reason);
 
-    void mirror(vector <string> &cmdlist, bool cmdChange = true);
-    void turn(vector <string> &cmdlist, bool cmdChange = true);
-    void rotate(vector <string> &cmdlist, int degrees, bool cmdChange = true);
+    void mirror(std::vector <std::string> &cmdlist, bool cmdChange = true);
+    void turn(std::vector <std::string> &cmdlist, bool cmdChange = true);
+    void rotate(std::vector <std::string> &cmdlist, int degrees, bool cmdChange = true);
 
     void create_mill_table();
     int add_mills(Square s);
