@@ -44,6 +44,17 @@ namespace Search
 LimitsType Limits;
 }
 
+namespace Tablebases
+{
+
+int Cardinality;
+bool RootInTB;
+bool UseRule50;
+Depth ProbeDepth;
+}
+
+namespace TB = Tablebases;
+
 using std::string;
 using Eval::evaluate;
 using namespace Search;
@@ -130,6 +141,31 @@ private:
     bool otherThread, owning;
 };
 
+// perft() is our utility to verify move generation. All the leaf nodes up
+// to the given depth are generated and counted, and the sum is returned.
+template<bool Root>
+uint64_t perft(Position &pos, Depth depth)
+{
+
+    StateInfo st;
+    uint64_t cnt, nodes = 0;
+    const bool leaf = (depth == 2);
+
+    for (const auto &m : MoveList(pos)) {
+        if (Root && depth <= 1)
+            cnt = 1, nodes++;
+        else {
+            pos.do_move(m, st);
+            cnt = leaf ? MoveList(pos).size() : perft<false>(pos, depth - 1);
+            nodes += cnt;
+            pos.undo_move(m);
+        }
+        if (Root)
+            sync_cout << UCI::move(m) << ": " << cnt << sync_endl;
+    }
+    return nodes;
+}
+
 } // namespace
 
 
@@ -146,8 +182,11 @@ void Search::init()
 
 void Search::clear()
 {
-    // TODO
-    return;
+    Threads.main()->wait_for_search_finished();
+
+    Time.availableNodes = 0;
+    TT.clear();
+    Threads.clear();
 }
 
 /// MainThread::search() is started when the program receives the UCI 'go'
@@ -155,8 +194,7 @@ void Search::clear()
 
 void MainThread::search()
 {
-    // TODO
-#if 0
+
     if (Limits.perft) {
         nodes = perft<true>(rootPos, Limits.perft);
         sync_cout << "\nNodes searched: " << nodes << "\n" << sync_endl;
@@ -165,7 +203,7 @@ void MainThread::search()
 
     Color us = rootPos.side_to_move();
     Time.init(Limits, us, rootPos.game_ply());
-    TT.new_search();
+    //TT.new_search();
 
     if (rootMoves.empty()) {
         rootMoves.emplace_back(MOVE_NONE);
@@ -239,15 +277,14 @@ void MainThread::search()
 
     // Send again PV info if we have a new best thread
     if (bestThread != this)
-        sync_cout << UCI::pv(bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << sync_endl;
+        sync_cout << UCI::pv(&bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << sync_endl;
 
     sync_cout << "bestmove " << UCI::move(bestThread->rootMoves[0].pv[0]);
 
-    if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
+    if (bestThread->rootMoves[0].pv.size() > 1 /* || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos) */)
         std::cout << " ponder " << UCI::move(bestThread->rootMoves[0].pv[1]);
 
     std::cout << sync_endl;
-#endif
 }
 
 /// Thread::search() is the main iterative deepening loop. It calls search()
@@ -923,4 +960,62 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
     }
 
     return g;
+}
+
+
+/// UCI::pv() formats PV information according to the UCI protocol. UCI requires
+/// that all (if any) unsearched PV lines are sent using a previous search score.
+
+string UCI::pv(Position *pos, Depth depth, Value alpha, Value beta)
+{
+
+    std::stringstream ss;
+    TimePoint elapsed = Time.elapsed() + 1;
+    const RootMoves &rootMoves = pos->this_thread()->rootMoves;
+    size_t pvIdx = pos->this_thread()->pvIdx;
+    size_t multiPV = std::min((size_t)Options["MultiPV"], rootMoves.size());
+    uint64_t nodesSearched = Threads.nodes_searched();
+    uint64_t tbHits = Threads.tb_hits() + (TB::RootInTB ? rootMoves.size() : 0);
+
+    for (size_t i = 0; i < multiPV; ++i) {
+        bool updated = rootMoves[i].score != -VALUE_INFINITE;
+
+        if (depth == 1 && !updated)
+            continue;
+
+        Depth d = updated ? depth : depth - 1;
+        Value v = updated ? rootMoves[i].score : rootMoves[i].previousScore;
+
+        bool tb = TB::RootInTB && abs(v) < VALUE_MATE_IN_MAX_PLY;
+        v = tb ? rootMoves[i].tbScore : v;
+
+        if (ss.rdbuf()->in_avail()) // Not at first line
+            ss << "\n";
+
+        ss << "info"
+            << " depth " << d
+            << " seldepth " << rootMoves[i].selDepth
+            << " multipv " << i + 1
+            << " score " << UCI::value(v);
+
+        if (!tb && i == pvIdx)
+            ss << (v >= beta ? " lowerbound" : v <= alpha ? " upperbound" : "");
+
+        ss << " nodes " << nodesSearched
+            << " nps " << nodesSearched * 1000 / elapsed;
+
+#if 0
+        if (elapsed > 1000) // Earlier makes little sense
+            ss << " hashfull " << TT.hashfull();
+#endif
+
+        ss << " tbhits " << tbHits
+            << " time " << elapsed
+            << " pv";
+
+        for (Move m : rootMoves[i].pv)
+            ss << " " << UCI::move(m);
+    }
+
+    return ss.str();
 }

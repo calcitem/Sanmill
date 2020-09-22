@@ -20,6 +20,8 @@
 #ifndef SEARCH_H_INCLUDED
 #define SEARCH_H_INCLUDED
 
+#include <vector>
+
 #include "stack.h"
 #include "tt.h"
 #include "endgame.h"
@@ -122,7 +124,9 @@ extern LimitsType Limits;
 
 void init();
 void clear();
+
 } // namespace Search
+
 
 class AIAlgorithm
 {
