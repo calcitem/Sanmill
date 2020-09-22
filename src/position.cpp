@@ -392,8 +392,24 @@ bool Position::pseudo_legal(const Move m) const
 
 void Position::do_move(Move m, StateInfo &newSt)
 {
+    //assert(is_ok(m));
+    //assert(&newSt != st);
+
+    //thisThread->nodes.fetch_add(1, std::memory_order_relaxed);    // TODO
+
+#if 0
+    // Copy some fields of the old state to our new StateInfo object except the
+    // ones which are going to be recalculated from scratch anyway and then switch
+    // our state pointer to point to the new (ready to be updated) state.
+    std::memcpy(&newSt, st, offsetof(StateInfo, key));
+    newSt.previous = st;
+    st = &newSt;
+#endif
+
     bool ret = false;
 
+    // Increment ply counters. In particular, rule50 will be reset to zero later on
+    // in case of a capture.
     ++st->rule50;
 
     MoveType mt = type_of(m);
@@ -417,8 +433,31 @@ void Position::do_move(Move m, StateInfo &newSt)
     if (!ret) {
         return;
     }
+
+    ++gamePly;
+    ++st->pliesFromNull;
     
     move = m;
+
+#if 0
+    // Calculate the repetition info. It is the ply distance from the previous
+    // occurrence of the same position, negative in the 3-fold case, or zero
+    // if the position was not repeated.
+    st->repetition = 0;
+    int end = std::min(st->rule50, st->pliesFromNull);
+    if (end >= 4) {
+        StateInfo *stp = st->previous->previous;
+        for (int i = 4; i <= end; i += 2) {
+            stp = stp->previous->previous;
+            if (stp->key == st->key) {
+                st->repetition = stp->repetition ? -i : i;
+                break;
+            }
+        }
+    }
+
+    assert(pos_is_ok());
+#endif
 }
 
 /// Position::undo_move() unmakes a move. When it returns, the position should
@@ -637,7 +676,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         if (updateCmdlist) {
             sprintf(cmdline, "(%1u,%1u)", file_of(s), rank_of(s));
-            gamePly++;
         }
 
         currentSquare = s;
@@ -700,7 +738,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)",
                     file_of(currentSquare), rank_of(currentSquare),
                     file_of(s), rank_of(s));
-            gamePly++;
             st->rule50++;
         }
 
@@ -773,7 +810,6 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
     if (updateCmdlist) {
         sprintf(cmdline, "-(%1u,%1u)", file_of(s), rank_of(s));
-        gamePly++;
         st->rule50 = 0;     // TODO: Need to move out?
     }
 
