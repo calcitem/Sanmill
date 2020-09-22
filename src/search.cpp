@@ -684,6 +684,8 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
     Value value;
     Value bestValue = -VALUE_INFINITE;
 
+    StateInfo st;   // TODO
+
     Depth epsilon;
 
 #ifdef TT_MOVE_ENABLE
@@ -817,8 +819,7 @@ Value search(Position *pos, Stack<Position> &ss, Depth depth, Depth originDepth,
     for (int i = 0; i < moveCount; i++) {
         ss.push(*(pos));
         Color before = pos->sideToMove;
-        Move move = mp.moves[i].move;
-        StateInfo st;   // TODO
+        Move move = mp.moves[i].move;        
         pos->do_move(move, st);
         Color after = pos->sideToMove;
 
