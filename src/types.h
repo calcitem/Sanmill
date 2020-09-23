@@ -99,17 +99,18 @@ constexpr bool Is64Bit = true;
 constexpr bool Is64Bit = false;
 #endif
 
-//using Bitboard = uint32_t;
+#ifdef TRANSPOSITION_TABLE_CUTDOWN
+typedef uint32_t Key;
+#else
+typedef uint64_t Key;
+#endif /* TRANSPOSITION_TABLE_CUTDOWN */
+
 typedef uint32_t Bitboard;
 
 constexpr int MAX_MOVES = 64;
 constexpr int MAX_PLY = 48;
 
-#ifdef TRANSPOSITION_TABLE_CUTDOWN
-using Key = uint32_t;
-#else
-using Key = uint64_t;
-#endif /* TRANSPOSITION_TABLE_CUTDOWN */
+
 
 enum Move : int32_t
 {
@@ -145,7 +146,6 @@ enum Phase : uint16_t
     PHASE_NOTPLAYING = PHASE_READY | PHASE_GAMEOVER,
 };
 
-// 动作状态标识
 enum Action : uint16_t
 {
     ACTION_NONE = 0x0000,
@@ -186,6 +186,11 @@ enum Value : int8_t
     VALUE_UNKNOWN = std::numeric_limits<int8_t>::min(),
     VALUE_NONE = VALUE_UNKNOWN,
 
+    VALUE_TB_WIN_IN_MAX_PLY = VALUE_MATE - 2 * MAX_PLY,
+    VALUE_TB_LOSS_IN_MAX_PLY = -VALUE_TB_WIN_IN_MAX_PLY,
+    VALUE_MATE_IN_MAX_PLY = VALUE_MATE - MAX_PLY,
+    VALUE_MATED_IN_MAX_PLY = -VALUE_MATE_IN_MAX_PLY,
+
     StoneValue = 5,
     VALUE_EACH_PIECE = StoneValue,
     VALUE_EACH_PIECE_INHAND = VALUE_EACH_PIECE,
@@ -199,10 +204,6 @@ enum Value : int8_t
     VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_PLACING_NEEDREMOVE + (VALUE_EACH_PIECE_ONBOARD - VALUE_EACH_PIECE_INHAND) + 1,
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1,
 
-    VALUE_TB_WIN_IN_MAX_PLY = VALUE_MATE - 2 * MAX_PLY,
-    VALUE_TB_LOSS_IN_MAX_PLY = -VALUE_TB_WIN_IN_MAX_PLY,
-    VALUE_MATE_IN_MAX_PLY = VALUE_MATE - MAX_PLY,
-    VALUE_MATED_IN_MAX_PLY = -VALUE_MATE_IN_MAX_PLY,
 };
 
 enum Rating : int8_t
@@ -291,12 +292,12 @@ enum : int
 
 enum Square : int32_t
 {
-     SQ_0 = 0,   SQ_1 = 1,   SQ_2 = 2,   SQ_3 = 3,   SQ_4 = 4,   SQ_5 = 5,   SQ_6 = 6,   SQ_7 = 7,
-     SQ_8 = 8,   SQ_9 = 9,  SQ_10 = 10, SQ_11 = 11, SQ_12 = 12, SQ_13 = 13, SQ_14 = 14, SQ_15 = 15,
+    SQ_0 = 0, SQ_1 = 1, SQ_2 = 2, SQ_3 = 3, SQ_4 = 4, SQ_5 = 5, SQ_6 = 6, SQ_7 = 7,
+    SQ_8 = 8, SQ_9 = 9, SQ_10 = 10, SQ_11 = 11, SQ_12 = 12, SQ_13 = 13, SQ_14 = 14, SQ_15 = 15,
     SQ_16 = 16, SQ_17 = 17, SQ_18 = 18, SQ_19 = 19, SQ_20 = 20, SQ_21 = 21, SQ_22 = 22, SQ_23 = 23,
     SQ_24 = 24, SQ_25 = 25, SQ_26 = 26, SQ_27 = 27, SQ_28 = 28, SQ_29 = 29, SQ_30 = 30, SQ_31 = 31,
 
-    SQ_A1 =  8, SQ_A2 =  9, SQ_A3 = 10, SQ_A4 = 11, SQ_A5 = 12, SQ_A6 = 13, SQ_A7 = 14, SQ_A8 = 15,
+    SQ_A1 = 8, SQ_A2 = 9, SQ_A3 = 10, SQ_A4 = 11, SQ_A5 = 12, SQ_A6 = 13, SQ_A7 = 14, SQ_A8 = 15,
     SQ_B1 = 16, SQ_B2 = 17, SQ_B3 = 18, SQ_B4 = 19, SQ_B5 = 20, SQ_B6 = 21, SQ_B7 = 22, SQ_B8 = 23,
     SQ_C1 = 24, SQ_C2 = 25, SQ_C3 = 26, SQ_C4 = 27, SQ_C5 = 28, SQ_C6 = 29, SQ_C7 = 30, SQ_C8 = 31,
 
@@ -374,11 +375,16 @@ inline T& operator*=(T& d, int i) { return d = T(int(d) * i); }    \
 inline T& operator/=(T& d, int i) { return d = T(int(d) / i); }
 
 ENABLE_FULL_OPERATORS_ON(Value)
-ENABLE_FULL_OPERATORS_ON(Rating)
-//ENABLE_FULL_OPERATORS_ON(MoveDirection)
 
 ENABLE_INCR_OPERATORS_ON(PieceType)
+ENABLE_INCR_OPERATORS_ON(Piece)
 ENABLE_INCR_OPERATORS_ON(Square)
+ENABLE_INCR_OPERATORS_ON(File)
+ENABLE_INCR_OPERATORS_ON(Rank)
+
+#undef ENABLE_FULL_OPERATORS_ON
+#undef ENABLE_INCR_OPERATORS_ON
+#undef ENABLE_BASE_OPERATORS_ON
 
 // Additional operators to add integers to a Value
 constexpr Value operator+(Value v, int i)
@@ -401,9 +407,9 @@ inline Value &operator-=(Value &v, int i)
     return v = v - i;
 }
 
-constexpr Color operator~(Color color)
+constexpr Color operator~(Color c)
 {
-    return Color(color ^ 3);   // Toggle color
+    return Color(c ^ 3); // Toggle color
 }
 
 // constexpr Piece operator~(Piece p)
@@ -411,9 +417,9 @@ constexpr Color operator~(Color color)
 //     return Piece(p ^ 8);   // Swap color of piece
 // }
 
-constexpr Square make_square(File file, Rank rank)
+constexpr Square make_square(File f, Rank r)
 {
-    return Square((file << 3) + rank - 1);
+    return Square((f << 3) + r - 1);
 }
 
 constexpr Piece make_piece(Color c)
@@ -474,7 +480,10 @@ constexpr Square from_sq(Move m)
 
 inline const Square to_sq(Move m)
 {
-    return static_cast<Square>(abs(m) & 0x00FF);
+    if (m < 0)
+        m = (Move)-m;
+
+    return Square(m & 0x00FF);
 }
 
 inline const MoveType type_of(Move m)
