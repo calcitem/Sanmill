@@ -68,12 +68,6 @@ enum NodeType
     NonPV, PV
 };
 
-// Add a small random component to draw evaluations to avoid 3fold-blindness
-Value value_draw(Thread *thisThread)
-{
-    return VALUE_DRAW + Value(2 * (thisThread->nodes & 1) - 1);
-}
-
 // Skill structure is used to implement strength limit
 struct Skill
 {
@@ -141,6 +135,9 @@ private:
     bool otherThread, owning;
 };
 
+template <NodeType NT>
+Value search(Position &pos, Stack *ss, Value alpha, Value beta, Depth depth, bool cutNode);
+
 // perft() is our utility to verify move generation. All the leaf nodes up
 // to the given depth are generated and counted, and the sum is returned.
 template<bool Root>
@@ -173,7 +170,6 @@ uint64_t perft(Position &pos, Depth depth)
 
 void Search::init()
 {
-    // TODO
     return;
 }
 
@@ -188,6 +184,7 @@ void Search::clear()
     TT.clear();
     Threads.clear();
 }
+
 
 /// MainThread::search() is started when the program receives the UCI 'go'
 /// command. It searches from the root position and outputs the "bestmove".
@@ -229,8 +226,8 @@ void MainThread::search()
     while (!Threads.stop && (ponder || Limits.infinite)) {
     } // Busy wait for a stop or a ponder reset
 
-                // Stop the threads if not already stopped (also raise the stop if
-                // "ponderhit" just reset Threads.ponder).
+   // Stop the threads if not already stopped (also raise the stop if
+   // "ponderhit" just reset Threads.ponder).
     Threads.stop = true;
 
     // Wait until all threads have finished
@@ -286,6 +283,7 @@ void MainThread::search()
 
     std::cout << sync_endl;
 }
+
 
 /// Thread::search() is the main iterative deepening loop. It calls search()
 /// repeatedly with increasing depth until the allocated thinking time has been
@@ -417,8 +415,7 @@ void Thread::search()
             int failedHighCnt = 0;
             while (true) {
                 Depth adjustedDepth = std::max(1, rootDepth - failedHighCnt - searchAgainCounter);
-                //bestValue = ::search<PV>(rootPos, ss, alpha, beta, adjustedDepth, false);
-                // bestValue = MTDF(rootPos, ss, value, i, adjustedDepth, bestMove);    // TODO
+                bestValue = ::search<PV>(rootPos, ss, alpha, beta, adjustedDepth, false);
 
                 // Bring the best move to the front. It is critical that sorting
                 // is done with a stable algorithm because all the values but the
@@ -543,6 +540,148 @@ void Thread::search()
         std::swap(rootMoves[0], *std::find(rootMoves.begin(), rootMoves.end(),
                                            skill.best ? skill.best : skill.pick_best(multiPV)));
 }
+
+
+namespace
+{
+
+// search<>() is the main search function for both PV and non-PV nodes
+
+template <NodeType NT>
+Value search(Position &pos, Stack *ss, Value alpha, Value beta, Depth depth, bool cutNode)
+{
+    //return MTDF(rootPos, ss, value, i, adjustedDepth, bestMove);    // TODO;
+    return VALUE_DRAW;
+}
+
+
+// When playing with strength handicap, choose best move among a set of RootMoves
+// using a statistical rule dependent on 'level'. Idea by Heinz van Saanen.
+
+Move Skill::pick_best(size_t multiPV)
+{
+
+    const RootMoves &rootMoves = Threads.main()->rootMoves;
+    static PRNG rng(now()); // PRNG sequence should be non-deterministic
+
+    // RootMoves are already sorted by score in descending order
+    Value topScore = rootMoves[0].score;
+    //int delta = std::min(topScore - rootMoves[multiPV - 1].score, PawnValueMg);
+    int delta = std::min(topScore - rootMoves[multiPV - 1].score, StoneValue);
+    int weakness = 120 - 2 * level;
+    int maxScore = -VALUE_INFINITE;
+
+    // Choose best move. For each move score we add two terms, both dependent on
+    // weakness. One is deterministic and bigger for weaker levels, and one is
+    // random. Then we choose the move with the resulting highest score.
+    for (size_t i = 0; i < multiPV; ++i) {
+        // This is our magic formula
+        int push = (weakness * int(topScore - rootMoves[i].score)
+                    + delta * (rng.rand<unsigned>() % weakness)) / 128;
+
+        if (rootMoves[i].score + push >= maxScore) {
+            maxScore = rootMoves[i].score + push;
+            best = rootMoves[i].pv[0];
+        }
+    }
+
+    return best;
+}
+
+} // namespace
+
+/// MainThread::check_time() is used to print debug info and, more importantly,
+/// to detect when we are out of available time and thus stop the search.
+
+void MainThread::check_time()
+{
+
+    if (--callsCnt > 0)
+        return;
+
+    // When using nodes, ensure checking rate is not lower than 0.1% of nodes
+    callsCnt = Limits.nodes ? std::min(1024, int(Limits.nodes / 1024)) : 1024;
+
+    static TimePoint lastInfoTime = now();
+
+    TimePoint elapsed = Time.elapsed();
+    TimePoint tick = Limits.startTime + elapsed;
+
+    if (tick - lastInfoTime >= 1000) {
+        lastInfoTime = tick;
+        dbg_print();
+    }
+
+    // We should not stop pondering until told so by the GUI
+    if (ponder)
+        return;
+
+    if ((Limits.use_time_management() && (elapsed > Time.maximum() - 10 || stopOnPonderhit))
+        || (Limits.movetime && elapsed >= Limits.movetime)
+        || (Limits.nodes && Threads.nodes_searched() >= (uint64_t)Limits.nodes))
+        Threads.stop = true;
+}
+
+
+/// UCI::pv() formats PV information according to the UCI protocol. UCI requires
+/// that all (if any) unsearched PV lines are sent using a previous search score.
+
+string UCI::pv(Position *pos, Depth depth, Value alpha, Value beta)
+{
+
+    std::stringstream ss;
+    TimePoint elapsed = Time.elapsed() + 1;
+    const RootMoves &rootMoves = pos->this_thread()->rootMoves;
+    size_t pvIdx = pos->this_thread()->pvIdx;
+    size_t multiPV = std::min((size_t)Options["MultiPV"], rootMoves.size());
+    uint64_t nodesSearched = Threads.nodes_searched();
+    uint64_t tbHits = Threads.tb_hits() + (TB::RootInTB ? rootMoves.size() : 0);
+
+    for (size_t i = 0; i < multiPV; ++i) {
+        bool updated = rootMoves[i].score != -VALUE_INFINITE;
+
+        if (depth == 1 && !updated)
+            continue;
+
+        Depth d = updated ? depth : depth - 1;
+        Value v = updated ? rootMoves[i].score : rootMoves[i].previousScore;
+
+        bool tb = TB::RootInTB && abs(v) < VALUE_MATE_IN_MAX_PLY;
+        v = tb ? rootMoves[i].tbScore : v;
+
+        if (ss.rdbuf()->in_avail()) // Not at first line
+            ss << "\n";
+
+        ss << "info"
+            << " depth " << d
+            << " seldepth " << rootMoves[i].selDepth
+            << " multipv " << i + 1
+            << " score " << UCI::value(v);
+
+        if (!tb && i == pvIdx)
+            ss << (v >= beta ? " lowerbound" : v <= alpha ? " upperbound" : "");
+
+        ss << " nodes " << nodesSearched
+            << " nps " << nodesSearched * 1000 / elapsed;
+
+#if 0
+        if (elapsed > 1000) // Earlier makes little sense
+            ss << " hashfull " << TT.hashfull();
+#endif
+
+        ss << " tbhits " << tbHits
+            << " time " << elapsed
+            << " pv";
+
+        for (Move m : rootMoves[i].pv)
+            ss << " " << UCI::move(m);
+    }
+
+    return ss.str();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
 
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
@@ -688,9 +827,9 @@ void AIAlgorithm::setPosition(Position *p)
 
     //position = p;
     pos = p;
-   // position = pos;
+    // position = pos;
 
-    //requiredQuit = false;
+     //requiredQuit = false;
 }
 
 #ifdef ALPHABETA_AI
@@ -719,7 +858,7 @@ int AIAlgorithm::search()
     if (pos->get_phase() == PHASE_MOVING) {
         pos->update_key_misc();
         Key key = pos->key();
-        
+
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
             nRepetition++;
             if (nRepetition == 3) {
@@ -736,7 +875,7 @@ int AIAlgorithm::search()
     }
 #endif // THREEFOLD_REPETITION
 
-    MoveList::shuffle();   
+    MoveList::shuffle();
 
     Value alpha = -VALUE_INFINITE;
     Value beta = VALUE_INFINITE;
@@ -831,13 +970,13 @@ string AIAlgorithm::nextMove()
         loggerDebug("[%.2d] %d\t%s\t%d\t%u %c\n", moveIndex,
                     root->children[i]->move,
                     UCI::move(root->children[i]->move).c_str();
-                    root->children[i]->value,
+        root->children[i]->value,
 #ifdef HOSTORY_HEURISTIC
-                    root->children[i]->score,
+            root->children[i]->score,
 #else
-                    0,
+            0,
 #endif
-                    charSelect);
+            charSelect);
 
         moveIndex++;
     }
@@ -871,8 +1010,7 @@ string AIAlgorithm::nextMove()
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
     size_t hashProbeCount = ttHitCount + ttMissCount;
-    if (hashProbeCount)
-    {
+    if (hashProbeCount) {
         loggerDebug("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                     hashProbeCount, ttHitCount, ttMissCount, ttHitCount * 100 / hashProbeCount);
     }
@@ -928,75 +1066,6 @@ void AIAlgorithm::loadEndgameFileToHashMap()
 }
 
 #endif // ENDGAME_LEARNING
-
-
-// When playing with strength handicap, choose best move among a set of RootMoves
-// using a statistical rule dependent on 'level'. Idea by Heinz van Saanen.
-
-Move Skill::pick_best(size_t multiPV)
-{
-
-    const RootMoves &rootMoves = Threads.main()->rootMoves;
-    static PRNG rng(now()); // PRNG sequence should be non-deterministic
-
-    // RootMoves are already sorted by score in descending order
-    Value topScore = rootMoves[0].score;
-    //int delta = std::min(topScore - rootMoves[multiPV - 1].score, PawnValueMg);
-    int delta = std::min(topScore - rootMoves[multiPV - 1].score, StoneValue);
-    int weakness = 120 - 2 * level;
-    int maxScore = -VALUE_INFINITE;
-
-    // Choose best move. For each move score we add two terms, both dependent on
-    // weakness. One is deterministic and bigger for weaker levels, and one is
-    // random. Then we choose the move with the resulting highest score.
-    for (size_t i = 0; i < multiPV; ++i) {
-        // This is our magic formula
-        int push = (weakness * int(topScore - rootMoves[i].score)
-                    + delta * (rng.rand<unsigned>() % weakness)) / 128;
-
-        if (rootMoves[i].score + push >= maxScore) {
-            maxScore = rootMoves[i].score + push;
-            best = rootMoves[i].pv[0];
-        }
-    }
-
-    return best;
-}
-
-
-/// MainThread::check_time() is used to print debug info and, more importantly,
-/// to detect when we are out of available time and thus stop the search.
-
-void MainThread::check_time()
-{
-
-    if (--callsCnt > 0)
-        return;
-
-    // When using nodes, ensure checking rate is not lower than 0.1% of nodes
-    callsCnt = Limits.nodes ? std::min(1024, int(Limits.nodes / 1024)) : 1024;
-
-    static TimePoint lastInfoTime = now();
-
-    TimePoint elapsed = Time.elapsed();
-    TimePoint tick = Limits.startTime + elapsed;
-
-    if (tick - lastInfoTime >= 1000) {
-        lastInfoTime = tick;
-        dbg_print();
-    }
-
-    // We should not stop pondering until told so by the GUI
-    if (ponder)
-        return;
-
-    if ((Limits.use_time_management() && (elapsed > Time.maximum() - 10 || stopOnPonderhit))
-        || (Limits.movetime && elapsed >= Limits.movetime)
-        || (Limits.nodes && Threads.nodes_searched() >= (uint64_t)Limits.nodes))
-        Threads.stop = true;
-}
-
-// search<>() is the main search function for both PV and non-PV nodes
 
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
@@ -1138,7 +1207,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     for (int i = 0; i < moveCount; i++) {
         ss.push(*(pos));
         Color before = pos->sideToMove;
-        Move move = mp.moves[i].move;        
+        Move move = mp.moves[i].move;
         pos->do_move(move, st);
         Color after = pos->sideToMove;
 
@@ -1242,62 +1311,4 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
     }
 
     return g;
-}
-
-
-/// UCI::pv() formats PV information according to the UCI protocol. UCI requires
-/// that all (if any) unsearched PV lines are sent using a previous search score.
-
-string UCI::pv(Position *pos, Depth depth, Value alpha, Value beta)
-{
-
-    std::stringstream ss;
-    TimePoint elapsed = Time.elapsed() + 1;
-    const RootMoves &rootMoves = pos->this_thread()->rootMoves;
-    size_t pvIdx = pos->this_thread()->pvIdx;
-    size_t multiPV = std::min((size_t)Options["MultiPV"], rootMoves.size());
-    uint64_t nodesSearched = Threads.nodes_searched();
-    uint64_t tbHits = Threads.tb_hits() + (TB::RootInTB ? rootMoves.size() : 0);
-
-    for (size_t i = 0; i < multiPV; ++i) {
-        bool updated = rootMoves[i].score != -VALUE_INFINITE;
-
-        if (depth == 1 && !updated)
-            continue;
-
-        Depth d = updated ? depth : depth - 1;
-        Value v = updated ? rootMoves[i].score : rootMoves[i].previousScore;
-
-        bool tb = TB::RootInTB && abs(v) < VALUE_MATE_IN_MAX_PLY;
-        v = tb ? rootMoves[i].tbScore : v;
-
-        if (ss.rdbuf()->in_avail()) // Not at first line
-            ss << "\n";
-
-        ss << "info"
-            << " depth " << d
-            << " seldepth " << rootMoves[i].selDepth
-            << " multipv " << i + 1
-            << " score " << UCI::value(v);
-
-        if (!tb && i == pvIdx)
-            ss << (v >= beta ? " lowerbound" : v <= alpha ? " upperbound" : "");
-
-        ss << " nodes " << nodesSearched
-            << " nps " << nodesSearched * 1000 / elapsed;
-
-#if 0
-        if (elapsed > 1000) // Earlier makes little sense
-            ss << " hashfull " << TT.hashfull();
-#endif
-
-        ss << " tbhits " << tbHits
-            << " time " << elapsed
-            << " pv";
-
-        for (Move m : rootMoves[i].pv)
-            ss << " " << UCI::move(m);
-    }
-
-    return ss.str();
 }
