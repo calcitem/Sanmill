@@ -181,7 +181,7 @@ signals:
 public slots:
 
     // 设置规则
-    void setRule(int ruleNo, Step stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = -1);
+    void setRule(int ruleNo, int stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = -1);
 
     // 游戏开始
     void gameStart();
@@ -440,7 +440,7 @@ private:
     int timeLimit;
 
     // 规则限步数
-    Step stepsLimit;
+    int stepsLimit;
 
     // 玩家剩余时间（秒）
     time_t remainingTime[COLOR_NB];

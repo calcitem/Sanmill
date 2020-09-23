@@ -892,7 +892,7 @@ bool Position::command(const char *cmd)
 {
     int ruleIndex;
     unsigned t;
-    Step step;
+    int step;
     File file1, file2;
     Rank rank1, rank2;
     int args = 0;

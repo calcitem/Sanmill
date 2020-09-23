@@ -37,8 +37,8 @@ double to_cp(Value v)
 
 std::ostream &operator<<(std::ostream &os, Score s)
 {
-    os << std::setw(5) << to_cp(mg_value(s)) << " "
-        << std::setw(5) << to_cp(eg_value(s));
+    os << std::setw(5) << "" << " "
+        << std::setw(5) << "";
     return os;
 }
 }

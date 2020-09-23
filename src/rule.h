@@ -37,7 +37,7 @@ struct Rule
     bool isBlackLosebutNotDrawWhenBoardFull;
     bool isLoseButNotChangeSideWhenNoWay;
     bool allowFlyWhenRemainThreePieces;
-    Step maxStepsLedToDraw;
+    int maxStepsLedToDraw;
 };
 
 #define N_RULES 5

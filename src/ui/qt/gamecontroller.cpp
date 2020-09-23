@@ -325,7 +325,7 @@ void GameController::setInvert(bool arg)
 #endif // TRAINING_MODE
 }
 
-void GameController::setRule(int ruleNo, Step stepLimited /*= -1*/, int timeLimited /*= -1*/)
+void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
     // 更新规则，原限时和限步不变
     if (ruleNo < 0 || ruleNo >= N_RULES)
