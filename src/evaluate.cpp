@@ -35,12 +35,6 @@ double to_cp(Value v)
     return double(v) / StoneValue;
 }
 
-std::ostream &operator<<(std::ostream &os, Score s)
-{
-    os << std::setw(5) << "" << " "
-        << std::setw(5) << "";
-    return os;
-}
 }
 
 using namespace Trace;

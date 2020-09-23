@@ -347,21 +347,6 @@ void Thread::search()
     multiPV = std::min(multiPV, rootMoves.size());
     //ttHitAverage = TtHitAverageWindow * TtHitAverageResolution / 2;
 
-    //int ct = int(Options["Contempt"]) * PawnValueEg / 100; // From centipawns
-    int ct = int(Options["Contempt"]) * StoneValue / 100; // From centipawns    // TODO
-
-    // In analysis mode, adjust contempt in accordance with user preference
-    if (Limits.infinite || Options["UCI_AnalyseMode"])
-        ct = Options["Analysis Contempt"] == "Off" ? 0
-        : Options["Analysis Contempt"] == "Both" ? ct
-        : Options["Analysis Contempt"] == "White" && us == BLACK ? -ct
-        : Options["Analysis Contempt"] == "Black" && us == WHITE ? -ct
-        : ct;
-
-    // Evaluation score is from the white point of view
-    contempt = (us == WHITE ? make_score(ct, ct / 2)
-                : -make_score(ct, ct / 2));
-
     int searchAgainCounter = 0;
 
     // Iterative deepening loop until requested to stop or the target depth is reached
@@ -401,12 +386,6 @@ void Thread::search()
                 delta = Value(21);
                 alpha = std::max(prev - delta, -VALUE_INFINITE);
                 beta = std::min(prev + delta, VALUE_INFINITE);
-
-                // Adjust contempt based on root move's previousScore (dynamic contempt)
-                int dct = ct + (102 - ct / 2) * prev / (abs(prev) + 157);
-
-                contempt = (us == WHITE ? make_score(dct, dct / 2)
-                            : -make_score(dct, dct / 2));
             }
 
             // Start with a small aspiration window and, in the case of a fail

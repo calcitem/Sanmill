@@ -99,7 +99,6 @@ constexpr bool Is64Bit = true;
 constexpr bool Is64Bit = false;
 #endif
 
-using Score = uint32_t;
 //using Bitboard = uint32_t;
 typedef uint32_t Bitboard;
 
@@ -353,11 +352,6 @@ enum Score : int
 };
 #endif
 
-// TODO Begin
-constexpr Score make_score(int mg, int eg)
-{
-    return Score((int)((unsigned int)eg << 16) + mg);
-}
 
 #define ENABLE_BASE_OPERATORS_ON(T)                                \
 constexpr T operator+(T d1, T d2) { return T(int(d1) + int(d2)); } \
