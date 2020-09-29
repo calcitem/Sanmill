@@ -91,8 +91,8 @@ public:
     void do_move(Move m, StateInfo &newSt);
     void undo_move(Move m);
     void undo_move(Sanmill::Stack<Position> &ss);
-    void undo_null_move();
     void do_null_move();
+    void undo_null_move();
 
     // Accessing hash keys
     Key key() const;

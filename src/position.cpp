@@ -1423,23 +1423,7 @@ int Position::add_mills(Square s)
             + (static_cast<uint64_t>(board[idx[2]]) << 8)
             + static_cast<uint64_t>(idx[2]);
 
-        if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
-            n++;
-            continue;
-        }
-
-        int im = 0;
-        for (im = 0; im < millListSize; im++) {
-            if (mill == millList[im]) {
-                break;
-            }
-        }
-
-        if (im == millListSize) {
-            n++;
-            millList[i] = mill;
-            millListSize++;
-        }
+        n++;         
     }
 
     return n;
@@ -1600,22 +1584,21 @@ void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
-    if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
-        for (auto &mill : millList) {
-            llp[0] = (mill & 0x000000ff00000000) >> 32;
-            llp[1] = (mill & 0x0000000000ff0000) >> 16;
-            llp[2] = (mill & 0x00000000000000ff);
 
-            for (i = 0; i < 3; i++) {
-                f = static_cast<int>(llp[i]) / RANK_NB;
-                r = static_cast<int>(llp[i]) % RANK_NB;
-                r = (RANK_NB - r) % RANK_NB;
-                llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
-            }
+    for (auto &mill : millList) {
+        llp[0] = (mill & 0x000000ff00000000) >> 32;
+        llp[1] = (mill & 0x0000000000ff0000) >> 16;
+        llp[2] = (mill & 0x00000000000000ff);
 
-            mill &= 0xffffff00ff00ff00;
-            mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
+        for (i = 0; i < 3; i++) {
+            f = static_cast<int>(llp[i]) / RANK_NB;
+            r = static_cast<int>(llp[i]) % RANK_NB;
+            r = (RANK_NB - r) % RANK_NB;
+            llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
         }
+
+        mill &= 0xffffff00ff00ff00;
+        mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
     }
 
     if (cmdChange) {
@@ -1721,27 +1704,25 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
-    if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
-        for (auto &mill : millList) {
-            llp[0] = (mill & 0x000000ff00000000) >> 32;
-            llp[1] = (mill & 0x0000000000ff0000) >> 16;
-            llp[2] = (mill & 0x00000000000000ff);
+    for (auto &mill : millList) {
+        llp[0] = (mill & 0x000000ff00000000) >> 32;
+        llp[1] = (mill & 0x0000000000ff0000) >> 16;
+        llp[2] = (mill & 0x00000000000000ff);
 
-            for (i = 0; i < 3; i++) {
-                f = static_cast<int>(llp[i]) / RANK_NB;
-                r = static_cast<int>(llp[i]) % RANK_NB;
+        for (i = 0; i < 3; i++) {
+            f = static_cast<int>(llp[i]) / RANK_NB;
+            r = static_cast<int>(llp[i]) % RANK_NB;
 
-                if (f == 1)
-                    f = FILE_NB;
-                else if (f == FILE_NB)
-                    f = 1;
+            if (f == 1)
+                f = FILE_NB;
+            else if (f == FILE_NB)
+                f = 1;
 
-                llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
-            }
-
-            mill &= 0xffffff00ff00ff00;
-            mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
+            llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
         }
+
+        mill &= 0xffffff00ff00ff00;
+        mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
     }
 
     // 命令行解析
@@ -1908,22 +1889,20 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
-    if (rule.allowRemovePiecesRepeatedlyWhenCloseSameMill) {
-        for (auto &mill : millList) {
-            llp[0] = (mill & 0x000000ff00000000) >> 32;
-            llp[1] = (mill & 0x0000000000ff0000) >> 16;
-            llp[2] = (mill & 0x00000000000000ff);
+    for (auto &mill : millList) {
+        llp[0] = (mill & 0x000000ff00000000) >> 32;
+        llp[1] = (mill & 0x0000000000ff0000) >> 16;
+        llp[2] = (mill & 0x00000000000000ff);
 
-            for (i = 0; i < 3; i++) {
-                f = static_cast<int>(llp[i]) / RANK_NB;
-                r = static_cast<int>(llp[i]) % RANK_NB;
-                r = (r + RANK_NB - degrees) % RANK_NB;
-                llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
-            }
-
-            mill &= 0xffffff00ff00ff00;
-            mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
+        for (i = 0; i < 3; i++) {
+            f = static_cast<int>(llp[i]) / RANK_NB;
+            r = static_cast<int>(llp[i]) % RANK_NB;
+            r = (r + RANK_NB - degrees) % RANK_NB;
+            llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
         }
+
+        mill &= 0xffffff00ff00ff00;
+        mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
     }
 
     if (cmdChange) {
