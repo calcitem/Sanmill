@@ -65,12 +65,12 @@ void MovePicker::score()
 
         Square sq = to_sq(m);
         Square sqsrc = from_sq(m);
-        
+
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need sqsrc to judge
-        int nOurMills = pos.in_how_many_mills(sq, pos.sideToMove, sqsrc);
+        int nOurMills = pos.in_how_many_mills(sq, pos.side_to_move(), sqsrc);
         int nTheirMills = 0;
 
-    #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
+#ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
         // TODO: rule.allowRemoveMultiPiecesWhenCloseMultiMill adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
@@ -78,13 +78,13 @@ void MovePicker::score()
                 cur->value += RATING_ONE_MILL * nOurMills;
             } else if (pos.get_phase() == PHASE_PLACING) {
                 // placing phrase, check if place sq can block their close mill
-                nTheirMills = pos.in_how_many_mills(sq, pos.them);
+                nTheirMills = pos.in_how_many_mills(sq, ~pos.side_to_move());
                 cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
             }
-    #if 1
+#if 1
             else if (pos.get_phase() == PHASE_MOVING) {
                 // moving phrase, check if place sq can block their close mill
-                nTheirMills = pos.in_how_many_mills(sq, pos.them);
+                nTheirMills = pos.in_how_many_mills(sq, ~pos.side_to_move());
 
                 if (nTheirMills) {
                     int nOurPieces = 0;
@@ -101,7 +101,7 @@ void MovePicker::score()
                     }
                 }
             }
-    #endif
+#endif
 
             //cur->value += nBanned;  // placing phrase, place nearby ban point
 
@@ -119,7 +119,7 @@ void MovePicker::score()
 
             pos.surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
 
-               if (nOurMills > 0) {
+            if (nOurMills > 0) {
                 // remove point is in our mill
                 //cur->value += RATING_REMOVE_ONE_MILL * nOurMills;
 
@@ -134,7 +134,7 @@ void MovePicker::score()
             }
 
             // remove point is in their mill
-            nTheirMills = pos.in_how_many_mills(sq, pos.them);
+            nTheirMills = pos.in_how_many_mills(sq, ~pos.side_to_move());
             if (nTheirMills) {
                 if (nTheirPieces >= 2) {
                     // if nearby their piece, prefer do not remove
@@ -150,8 +150,8 @@ void MovePicker::score()
             // prefer remove piece that mobility is strong 
             cur->value += nEmpty;
         }
-    #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
-        }
+#endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
+    }
 }
 
 /// MovePicker::select() returns the next move satisfying a predicate function.
