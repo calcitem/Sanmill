@@ -331,11 +331,7 @@ inline bool Position::put_piece(File f, Rank r)
 
 inline bool Position::move_piece(File f1, Rank r1, File f2, Rank r2)
 {
-    if (select_piece(f1, r1)) {
-        return put_piece(f2, r2);
-    }
-
-    return false;
+    return move_piece(make_square(f1, r1), make_square(f2, r2));
 }
 
 inline bool Position::remove_piece(File f, Rank r)
