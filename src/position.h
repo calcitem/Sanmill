@@ -161,8 +161,13 @@ public:
 
     static void print_board();
 
-    int pieces_on_board_count();
+        int pieces_on_board_count();
     int pieces_in_hand_count();
+
+    int pieces_count_on_board(Color c);
+    int pieces_count_in_hand(Color c);
+
+    int piece_count_need_remove();
 
     static bool is_star_square(Square s);
 
@@ -394,6 +399,21 @@ inline time_t Position::start_timeb() const
 inline void Position::set_start_time(int stimeb)
 {
     startTime = stimeb;
+}
+
+inline int Position::pieces_count_on_board(Color c)
+{
+    return pieceCountOnBoard[c];
+}
+
+inline int Position::pieces_count_in_hand(Color c)
+{
+    return pieceCountInHand[c];
+}
+
+inline int Position::piece_count_need_remove()
+{
+    return pieceCountNeedRemove;
 }
 
 #endif // #ifndef POSITION_H_INCLUDED

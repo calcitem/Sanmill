@@ -46,15 +46,16 @@ class Evaluation
 {
 public:
     Evaluation() = delete;
-    explicit Evaluation(const Position &p) : pos(p)
+    explicit Evaluation(Position &p) : pos(p)
     {
     }
     Evaluation &operator=(const Evaluation &) = delete;
     Value value();
 
 private:
-    const Position &pos;
+    Position &pos;
 };
+
 
 // Evaluation::value() is the main function of the class. It computes the various
 // parts of the evaluation and returns the value of the position from the point
@@ -68,25 +69,25 @@ Value Evaluation::value()
     int nPiecesOnBoardDiff;
     int pieceCountNeedRemove;
 
-    switch (pos.phase) {
+    switch (pos.get_phase()) {
     case PHASE_READY:
         break;
 
     case PHASE_PLACING:
-        nPiecesInHandDiff = pos.pieceCountInHand[BLACK] - pos.pieceCountInHand[WHITE];
+        nPiecesInHandDiff = pos.pieces_count_in_hand(BLACK) - pos.pieces_count_in_hand(WHITE);
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 
-        nPiecesOnBoardDiff = pos.pieceCountOnBoard[BLACK] - pos.pieceCountOnBoard[WHITE];
+        nPiecesOnBoardDiff = pos.pieces_count_on_board(BLACK) - pos.pieces_count_on_board(WHITE);
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 
-        switch (pos.action) {
+        switch (pos.get_action()) {
         case ACTION_SELECT:
         case ACTION_PLACE:
             break;
 
         case ACTION_REMOVE:
-            pieceCountNeedRemove = (pos.sideToMove == BLACK) ?
-                pos.pieceCountNeedRemove : -(pos.pieceCountNeedRemove);
+            pieceCountNeedRemove = (pos.side_to_move() == BLACK) ?
+                pos.piece_count_need_remove() : -(pos.piece_count_need_remove());
             value += pieceCountNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
             break;
         default:
@@ -96,21 +97,21 @@ Value Evaluation::value()
         break;
 
     case PHASE_MOVING:
-        value = pos.pieceCountOnBoard[BLACK] * VALUE_EACH_PIECE_ONBOARD -
-            pos.pieceCountOnBoard[WHITE] * VALUE_EACH_PIECE_ONBOARD;
+        value = pos.pieces_count_on_board(BLACK) * VALUE_EACH_PIECE_ONBOARD -
+            pos.pieces_count_on_board(WHITE) * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         value += pos.get_mobility_diff(position->turn, position->pieceCountInHand[BLACK], position->pieceCountInHand[WHITE], false) * 10;
 #endif  /* EVALUATE_MOBILITY */
 
-        switch (pos.action) {
+        switch (pos.get_action()) {
         case ACTION_SELECT:
         case ACTION_PLACE:
             break;
 
         case ACTION_REMOVE:
-            pieceCountNeedRemove = (pos.sideToMove == BLACK) ?
-                pos.pieceCountNeedRemove : -(pos.pieceCountNeedRemove);
+            pieceCountNeedRemove = (pos.side_to_move() == BLACK) ?
+                pos.piece_count_need_remove() : -(pos.piece_count_need_remove());
             value += pieceCountNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
             break;
         default:
@@ -120,23 +121,23 @@ Value Evaluation::value()
         break;
 
     case PHASE_GAMEOVER:
-        if (pos.pieceCountOnBoard[BLACK] + pos.pieceCountOnBoard[WHITE] >=
+        if (pos.pieces_count_on_board(BLACK) + pos.pieces_count_on_board(WHITE) >=
             RANK_NB * FILE_NB) {
             if (rule.isBlackLosebutNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
                 value = VALUE_DRAW;
             }
-        } else if (pos.action == ACTION_SELECT &&
+        } else if (pos.get_action() == ACTION_SELECT &&
                    pos.is_all_surrounded() &&
                    rule.isLoseButNotChangeSideWhenNoWay) {
-            Value delta = pos.sideToMove == BLACK ? -VALUE_MATE : VALUE_MATE;
+            Value delta = pos.side_to_move() == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
 
-        else if (pos.pieceCountOnBoard[BLACK] < rule.nPiecesAtLeast) {
+        else if (pos.pieces_count_on_board(BLACK) < rule.nPiecesAtLeast) {
             value -= VALUE_MATE;
-        } else if (pos.pieceCountOnBoard[WHITE] < rule.nPiecesAtLeast) {
+        } else if (pos.pieces_count_on_board(WHITE) < rule.nPiecesAtLeast) {
             value += VALUE_MATE;
         }
 
@@ -146,7 +147,7 @@ Value Evaluation::value()
         break;
     }
 
-    if (pos.sideToMove == WHITE) {
+    if (pos.side_to_move() == WHITE) {
         value = -value;
     }
 
@@ -159,7 +160,7 @@ Value Evaluation::value()
 /// evaluate() is the evaluator for the outer world. It returns a static
 /// evaluation of the position from the point of view of the side to move.
 
-Value Eval::evaluate(const Position &pos)
+Value Eval::evaluate(Position &pos)
 {
 #ifdef ALPHABETA_AI
     return Evaluation(pos).value();
