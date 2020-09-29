@@ -36,7 +36,6 @@ ThreadPool Threads; // Global object
 
 Thread::Thread(size_t n) : idx(n), stdThread(&Thread::idle_loop, this)
 {
-
     wait_for_search_finished();
 }
 
@@ -46,7 +45,6 @@ Thread::Thread(size_t n) : idx(n), stdThread(&Thread::idle_loop, this)
 
 Thread::~Thread()
 {
-
     assert(!searching);
 
     exit = true;
@@ -58,7 +56,6 @@ Thread::~Thread()
 
 int Thread::best_move_count(Move move) const
 {
-
     auto rm = std::find(rootMoves.begin() + pvIdx,
                         rootMoves.begin() + pvLast, move);
 
@@ -76,7 +73,6 @@ void Thread::clear()
 
 void Thread::start_searching()
 {
-
     std::lock_guard<std::mutex> lk(mutex);
     searching = true;
     cv.notify_one(); // Wake up the thread in idle_loop()
@@ -88,7 +84,6 @@ void Thread::start_searching()
 
 void Thread::wait_for_search_finished()
 {
-
     std::unique_lock<std::mutex> lk(mutex);
     cv.wait(lk, [&] { return !searching; });
 }
@@ -99,7 +94,6 @@ void Thread::wait_for_search_finished()
 
 void Thread::idle_loop()
 {
-
     // If OS already scheduled us on a different group than 0 then don't overwrite
     // the choice, eventually we are one of many one-threaded processes running on
     // some Windows NUMA hardware, for instance in fishtest. To make it simple,
@@ -129,7 +123,6 @@ void Thread::idle_loop()
 
 void ThreadPool::set(size_t requested)
 {
-
     if (size() > 0) { // destroy any existing thread(s)
         main()->wait_for_search_finished();
 
@@ -156,7 +149,6 @@ void ThreadPool::set(size_t requested)
 
 void ThreadPool::clear()
 {
-
     for (Thread *th : *this)
         th->clear();
 
@@ -171,7 +163,6 @@ void ThreadPool::clear()
 void ThreadPool::start_thinking(Position *pos, StateListPtr &states,
                                 const Search::LimitsType &limits, bool ponderMode)
 {
-
     main()->wait_for_search_finished();
 
     main()->stopOnPonderhit = stop = false;

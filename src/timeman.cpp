@@ -29,32 +29,36 @@
 
 TimeManagement Time; // Our global time management object
 
-namespace {
+namespace
+{
 
-  enum TimeType { OptimumTime, MaxTime };
+enum TimeType
+{
+    OptimumTime, MaxTime
+};
 
-  constexpr int MoveHorizon   = 50;   // Plan time management at most this many moves ahead
-  constexpr double MaxRatio   = 7.3;  // When in trouble, we can step over reserved time with this ratio
-  constexpr double StealRatio = 0.34; // However we must not steal time from remaining moves over this ratio
+constexpr int MoveHorizon = 50;   // Plan time management at most this many moves ahead
+constexpr double MaxRatio = 7.3;  // When in trouble, we can step over reserved time with this ratio
+constexpr double StealRatio = 0.34; // However we must not steal time from remaining moves over this ratio
 
 
-  // move_importance() is a skew-logistic function based on naive statistical
-  // analysis of "how many games are still undecided after n half-moves". Game
-  // is considered "undecided" as long as neither side has >275cp advantage.
-  // Data was extracted from the CCRL game database with some simple filtering criteria.
+// move_importance() is a skew-logistic function based on naive statistical
+// analysis of "how many games are still undecided after n half-moves". Game
+// is considered "undecided" as long as neither side has >275cp advantage.
+// Data was extracted from the CCRL game database with some simple filtering criteria.
 
-  double move_importance(int ply) {
-
+double move_importance(int ply)
+{
     constexpr double XScale = 6.85;
     constexpr double XShift = 64.5;
     constexpr double Skew   = 0.171;
 
     return pow((1 + exp((ply - XShift) / XScale)), -Skew) + DBL_MIN; // Ensure non-zero
-  }
+}
 
-  template<TimeType T>
-  TimePoint remaining(TimePoint myTime, int movesToGo, int ply, TimePoint slowMover) {
-
+template<TimeType T>
+TimePoint remaining(TimePoint myTime, int movesToGo, int ply, TimePoint slowMover)
+{
     constexpr double TMaxRatio   = (T == OptimumTime ? 1.0 : MaxRatio);
     constexpr double TStealRatio = (T == OptimumTime ? 0.0 : StealRatio);
 
@@ -68,7 +72,7 @@ namespace {
     double ratio2 = (moveImportance + TStealRatio * otherMovesImportance) / (moveImportance + otherMovesImportance);
 
     return TimePoint(myTime * std::min(ratio1, ratio2)); // Intel C++ asks for an explicit cast
-  }
+}
 
 } // namespace
 
@@ -82,8 +86,8 @@ namespace {
 ///  inc >  0 && movestogo == 0 means: x basetime + z increment
 ///  inc >  0 && movestogo != 0 means: x moves in y minutes + z increment
 
-void TimeManagement::init(Search::LimitsType& limits, Color us, int ply) {
-
+void TimeManagement::init(Search::LimitsType &limits, Color us, int ply)
+{
   TimePoint minThinkingTime = (TimePoint)Options["Minimum Thinking Time"];
   TimePoint moveOverhead    = (TimePoint)Options["Move Overhead"];
   TimePoint slowMover       = (TimePoint)Options["Slow Mover"];
@@ -94,8 +98,7 @@ void TimeManagement::init(Search::LimitsType& limits, Color us, int ply) {
   // to nodes, and use resulting values in time management formulas.
   // WARNING: to avoid time losses, the given npmsec (nodes per millisecond)
   // must be much lower than the real engine speed.
-  if (npmsec)
-  {
+    if (npmsec) {
       if (!availableNodes) // Only once at game start
           availableNodes = npmsec * limits.time[us]; // Time is in msec
 
@@ -113,8 +116,7 @@ void TimeManagement::init(Search::LimitsType& limits, Color us, int ply) {
   // We calculate optimum time usage for different hypothetical "moves to go" values
   // and choose the minimum of calculated search time values. Usually the greatest
   // hypMTG gives the minimum values.
-  for (int hypMTG = 1; hypMTG <= maxMTG; ++hypMTG)
-  {
+    for (int hypMTG = 1; hypMTG <= maxMTG; ++hypMTG) {
       // Calculate thinking time for hypothetical "moves to go"-value
       hypMyTime =  limits.time[us]
                  + limits.inc[us] * (hypMTG - 1)

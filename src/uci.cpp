@@ -51,7 +51,6 @@ const char *StartFEN = "********/********/******** b p 0 1"; // Chess: "rnbqkbnr
 
 void position(Position *pos, istringstream &is, StateListPtr &states)
 {
-
     Move m;
     string token, fen;
 
@@ -82,7 +81,6 @@ void position(Position *pos, istringstream &is, StateListPtr &states)
 
 void setoption(istringstream &is)
 {
-
     string token, name, value;
 
     is >> token; // Consume "name" token
@@ -108,7 +106,6 @@ void setoption(istringstream &is)
 
 void go(Position *pos, istringstream &is, StateListPtr &states)
 {
-
     Search::LimitsType limits;
     string token;
     bool ponderMode = false;
@@ -143,7 +140,6 @@ void go(Position *pos, istringstream &is, StateListPtr &states)
 
 void bench(Position *pos, istream &args, StateListPtr &states)
 {
-
     string token;
     uint64_t num, nodes = 0, cnt = 1;
 
@@ -258,7 +254,6 @@ void UCI::loop(int argc, char *argv[])
 
 string UCI::value(Value v)
 {
-
     assert(-VALUE_INFINITE < v &&v < VALUE_INFINITE);
 
     stringstream ss;
@@ -315,7 +310,6 @@ string UCI::move(Move m)
 
 Move UCI::to_move(Position *pos, string &str)
 {
-
     if (str.length() == 5) // Junior could send promotion piece in uppercase
         str[4] = char(tolower(str[4]));
 
