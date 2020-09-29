@@ -169,7 +169,7 @@ Position::Position()
 
     //tips.reserve(1024);
 
-#ifdef PREFETCH_SUPPORT
+#ifndef DISABLE_PREFETCH
     prefetch_range(millTable, sizeof(millTable));
 #endif
 }

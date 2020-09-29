@@ -1166,7 +1166,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef PREFETCH_SUPPORT
+#ifndef DISABLE_PREFETCH
     for (int i = 0; i < moveCount; i++) {
         TranspositionTable::prefetch(pos->next_primary_key(mp.moves[i].move));
     }
@@ -1176,7 +1176,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         int pause = 1;
     }
 #endif // PREFETCH_DEBUG
-#endif // PREFETCH_SUPPORT
+#endif // !DISABLE_PREFETCH
 #endif // TRANSPOSITION_TABLE_ENABLE
 
     for (int i = 0; i < moveCount; i++) {

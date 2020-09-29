@@ -87,7 +87,7 @@
 //#define COMPARE_VALUE_1ST_RATING_2ND
 #endif // HOSTORY_HEURISTIC
 
-#define PREFETCH_SUPPORT
+//#define DISABLE_PREFETCH
 
 // WIP, Debugging only
 //#define OPENING_BOOK
