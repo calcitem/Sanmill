@@ -155,10 +155,8 @@ public:
 #endif
     }
 
-#ifdef ALPHABETA_AI
     int search();
     string nextMove();
-#endif // ALPHABETA_AI
 
     void undo_move();
 

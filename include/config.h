@@ -36,7 +36,6 @@
 
 //#define UCT_DEMO
 
-#define ALPHABETA_AI
 //#define PVS_AI
 #define MTDF_AI
 
@@ -65,7 +64,7 @@
 //#define TIME_STAT
 //#define CYCLE_STAT
 
-#define SORT_MOVE_WITH_HUMAN_KNOWLEDGES
+//#define SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
 
 #define TRANSPOSITION_TABLE_ENABLE
 

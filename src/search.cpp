@@ -811,7 +811,6 @@ void AIAlgorithm::setPosition(Position *p)
      //requiredQuit = false;
 }
 
-#ifdef ALPHABETA_AI
 int AIAlgorithm::search()
 {
     Value value = VALUE_ZERO;
@@ -922,9 +921,7 @@ int AIAlgorithm::search()
 
     return 0;
 }
-#endif // ALPHABETA_AI
 
-#ifdef ALPHABETA_AI
 string AIAlgorithm::nextMove()
 {
     return UCI::move(bestMove);
@@ -1003,7 +1000,6 @@ string AIAlgorithm::nextMove()
     return UCI::move(bestMove).c_str();
 #endif
 }
-#endif // ALPHABETA_AI
 
 #ifdef ENDGAME_LEARNING
 bool AIAlgorithm::findEndgameHash(key_t posKey, Endgame &endgame)

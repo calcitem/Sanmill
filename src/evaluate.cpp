@@ -162,9 +162,7 @@ Value Evaluation::value()
 
 Value Eval::evaluate(Position &pos)
 {
-#ifdef ALPHABETA_AI
     return Evaluation(pos).value();
-#endif  // ALPHABETA_AI
 }
 
 /// trace() is like evaluate(), but instead of returning a value, it returns
