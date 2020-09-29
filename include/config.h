@@ -44,13 +44,6 @@
 #endif // TEST_MODE
 
 //#define DEBUG_MODE
-//#define DEBUG_MODE_A
-
-#ifdef DEBUG_MODE_A
-#define DONOT_PLAY_SOUND
-#else
-#define RANDOM_MOVE
-#endif
 
 #define DEFAULT_RULE_NUMBER 1
 
