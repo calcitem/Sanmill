@@ -66,7 +66,6 @@ public:
     static void init();
 
     Position();
-    virtual ~Position();
 
     Position(const Position &) = delete;
     Position &operator=(const Position &) = delete;
@@ -161,7 +160,7 @@ public:
 
     static void print_board();
 
-        int pieces_on_board_count();
+    int pieces_on_board_count();
     int pieces_in_hand_count();
 
     int pieces_count_on_board(Color c);

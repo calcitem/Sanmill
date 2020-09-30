@@ -120,6 +120,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
     return os;
 }
 
+
 // Marcel van Kervinck's cuckoo algorithm for fast detection of "upcoming repetition"
 // situations. Description of the algorithm in the following paper:
 // https://marcelk.net/2013-04-06/paper/upcoming-rep-v2.pdf
@@ -137,6 +138,7 @@ inline int H2(Key h)
 // Cuckoo tables with Zobrist hashes of valid reversible moves, and the moves themselves
 Key cuckoo[8192];
 Move cuckooMove[8192];
+
 
 /// Position::init() initializes at startup the various arrays used to compute
 /// hash keys.
@@ -167,17 +169,11 @@ Position::Position()
 
     score[BLACK] = score[WHITE] = score_draw = nPlayed = 0;
 
-    //tips.reserve(1024);
-
 #ifndef DISABLE_PREFETCH
     prefetch_range(millTable, sizeof(millTable));
 #endif
 }
 
-Position::~Position()
-{
-
-}
 
 /// Position::set() initializes the position object with the given FEN string.
 /// This function is not very robust - make sure that input FENs are correct,
@@ -218,6 +214,7 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
 
     std::memset(this, 0, sizeof(Position));
     std::memset(si, 0, sizeof(StateInfo));
+    //std::fill_n(&pieceList[0][0], sizeof(pieceList) / sizeof(Square), SQ_NONE);
     st = si;
 
     ss >> std::noskipws;
@@ -270,6 +267,7 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     return *this;
 }
 
+
 /// Position::set_state() computes the hash keys of the position, and other
 /// data that once computed is updated incrementally as moves are made.
 /// The function is only used when a new position is set up, and to verify
@@ -290,8 +288,33 @@ void Position::set_state(StateInfo *si) const
     if (sideToMove == BLACK)
         si->key ^= Zobrist::side;
 #endif
-    si = si;
 }
+
+
+    // TODO
+#if 0
+/// Position::set() is an overload to initialize the position object with
+/// the given endgame code string like "KBPKN". It is mainly a helper to
+/// get the material key out of an endgame code.
+
+Position &Position::set(const string &code, Color c, StateInfo *si)
+{
+    assert(code[0] == 'K');
+
+    string sides[] = { code.substr(code.find('K', 1)),      // Weak
+                       code.substr(0, std::min(code.find('v'), code.find('K', 1))) }; // Strong
+
+    assert(sides[0].length() > 0 && sides[0].length() < 8);
+    assert(sides[1].length() > 0 && sides[1].length() < 8);
+
+    std::transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
+
+    string fenStr = "8/" + sides[0] + char(8 - sides[0].length() + '0') + "/8/8/8/8/"
+        + sides[1] + char(8 - sides[1].length() + '0') + "/8 w - - 0 10";
+
+    return set(fenStr, si, nullptr);
+}
+#endif
 
 
 /// Position::fen() returns a FEN representation of the position. In case of
@@ -502,6 +525,96 @@ void Position::undo_move(Sanmill::Stack<Position> &ss)
     ss.pop();
 }
 
+void Position::do_null_move()
+{
+    change_side_to_move();
+}
+
+void Position::undo_null_move()
+{
+    change_side_to_move();
+}
+
+/// Position::flip() flips position with the white and black sides reversed. This
+/// is only useful for debugging e.g. for finding evaluation symmetry bugs.
+
+void Position::flip()
+{
+#if 0
+    string f, token;
+    std::stringstream ss(fen());
+
+    for (Rank r = RANK_8; r >= RANK_1; --r) // Piece placement
+    {
+        std::getline(ss, token, r > RANK_1 ? '/' : ' ');
+        f.insert(0, token + (f.empty() ? " " : "/"));
+    }
+
+    ss >> token; // Active color
+    f += (token == "w" ? "B " : "W "); // Will be lowercased later
+
+    ss >> token; // Castling availability
+    f += token + " ";
+
+    std::transform(f.begin(), f.end(), f.begin(),
+                   [](char c) { return char(islower(c) ? toupper(c) : tolower(c)); });
+
+    ss >> token; // En passant square
+    f += (token == "-" ? token : token.replace(1, 1, token[1] == '3' ? "6" : "3"));
+
+    std::getline(ss, token); // Half and full moves
+    f += token;
+
+    set(f, st, this_thread());
+
+    assert(pos_is_ok());
+#endif
+}
+
+
+/// Position::pos_is_ok() performs some consistency checks for the
+/// position object and raises an asserts if something wrong is detected.
+/// This is meant to be helpful when debugging.
+
+bool Position::pos_is_ok() const
+{
+#if 0
+    constexpr bool Fast = true; // Quick (default) or full check?
+
+    if (Fast)
+        return true;
+
+    if ((pieces(WHITE) & pieces(BLACK))
+        || (pieces(WHITE) | pieces(BLACK)) != pieces()
+        || popcount(pieces(WHITE)) > 16
+        || popcount(pieces(BLACK)) > 16)
+        assert(0 && "pos_is_ok: Bitboards");
+
+    for (PieceType p1 = BAN; p1 <= STONE; ++p1)
+        for (PieceType p2 = BAN; p2 <= STONE; ++p2)
+            if (p1 != p2 && (pieces(p1) & pieces(p2)))
+                assert(0 && "pos_is_ok: Bitboards");
+
+    StateInfo si = *st;
+    set_state(&si);
+    if (std::memcmp(&si, st, sizeof(StateInfo)))
+        assert(0 && "pos_is_ok: State");
+
+    for (Piece pc : Pieces) {
+        if (pieceCount[pc] != popcount(pieces(color_of(pc), type_of(pc)))
+            || pieceCount[pc] != std::count(board, board + SQUARE_NB, pc))
+            assert(0 && "pos_is_ok: Pieces");
+
+        for (int i = 0; i < pieceCount[pc]; ++i)
+            if (board[pieceList[pc][i]] != pc || index[pieceList[pc][i]] != i)
+                assert(0 && "pos_is_ok: Index");
+    }
+#endif
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 int Position::pieces_on_board_count()
 {
     pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
@@ -511,11 +624,11 @@ int Position::pieces_on_board_count()
             Square s = static_cast<Square>(f * RANK_NB + r);
             if (board[s] & B_STONE) {
                 pieceCountOnBoard[BLACK]++;
-            } else if (board[s]& W_STONE) {
+            } else if (board[s] & W_STONE) {
                 pieceCountOnBoard[WHITE]++;
             }
 #if 0
-            else if (board[s]& BAN_STONE) {
+            else if (board[s] & BAN_STONE) {
             }
 #endif
         }
@@ -936,7 +1049,7 @@ bool Position::command(const char *cmd)
         phase = PHASE_GAMEOVER;
         winner = DRAW;
         score_draw++;
-        gameoverReason = DRAW_REASON_THREEFOLD_REPETITION;        
+        gameoverReason = DRAW_REASON_THREEFOLD_REPETITION;
         //sprintf(cmdline, "Threefold Repetition. Draw!");
         return true;
     }
@@ -982,7 +1095,7 @@ int Position::update()
 
 void Position::update_score()
 {
-    if (phase == PHASE_GAMEOVER) {    
+    if (phase == PHASE_GAMEOVER) {
         if (winner == DRAW) {
             score_draw++;
             return;
@@ -1001,7 +1114,7 @@ bool Position::check_gameover_condition()
     if (rule.maxStepsLedToDraw > 0 &&
         st->rule50 > rule.maxStepsLedToDraw) {
         winner = DRAW;
-        phase = PHASE_GAMEOVER;        
+        phase = PHASE_GAMEOVER;
         gameoverReason = DRAW_REASON_RULE_50;
         return true;
     }
@@ -1082,26 +1195,11 @@ inline void Position::change_side_to_move()
     set_side_to_move(~sideToMove);
 }
 
-void Position::do_null_move()
-{
-    change_side_to_move();
-}
-
-void Position::undo_null_move()
-{
-    change_side_to_move();
-}
-
-time_t Position::get_elapsed_time(int us)
-{
-    return elapsedSeconds[us];
-}
-
 inline Key Position::update_key(Square s)
 {
     // PieceType is board[s]
 
-    // 0b00 - no piece，0b01 = 1 black，0b10 = 2 white，0b11 = 3 ban
+    // 0b00 - no piece, 0b01 = 1 black, 0b10 = 2 white, 0b11 = 3 ban
     int pieceType = color_on(s);
     // TODO: this is std, but current code can work
     //Location loc = board[s];
@@ -1423,7 +1521,7 @@ int Position::add_mills(Square s)
             + (static_cast<uint64_t>(board[idx[2]]) << 8)
             + static_cast<uint64_t>(idx[2]);
 
-        n++;         
+        n++;
     }
 
     return n;
@@ -1540,6 +1638,39 @@ bool Position::is_star_square(Square s)
             s == 18 ||
             s == 20 ||
             s == 22);
+}
+
+void Position::print_board()
+{
+    if (rule.nTotalPiecesEachSide == 12) {
+        printf("\n"
+                    "31 ----- 24 ----- 25\n"
+                    "| \\       |      / |\n"
+                    "|  23 -- 16 -- 17  |\n"
+                    "|  | \\    |   / |  |\n"
+                    "|  |  15-08-09  |  |\n"
+                    "30-22-14    10-18-26\n"
+                    "|  |  13-12-11  |  |\n"
+                    "|  | /    |   \\ |  |\n"
+                    "|  21 -- 20 -- 19  |\n"
+                    "| /       |      \\ |\n"
+                    "29 ----- 28 ----- 27\n"
+                    "\n");
+    } else {
+        printf("\n"
+                    "31 ----- 24 ----- 25\n"
+                    "|         |        |\n"
+                    "|  23 -- 16 -- 17  |\n"
+                    "|  |      |     |  |\n"
+                    "|  |  15-08-09  |  |\n"
+                    "30-22-14    10-18-26\n"
+                    "|  |  13-12-11  |  |\n"
+                    "|  |      |     |  |\n"
+                    "|  21 -- 20 -- 19  |\n"
+                    "|         |        |\n"
+                    "29 ----- 28 ----- 27\n"
+                    "\n");
+    }
 }
 
 void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
@@ -1957,51 +2088,7 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
     }
 }
 
-void Position::flip()
+time_t Position::get_elapsed_time(int us)
 {
-    // TODO
-    return;
-}
-
-void Position::print_board()
-{
-    if (rule.nTotalPiecesEachSide == 12) {
-        loggerDebug("\n"
-                    "31 ----- 24 ----- 25\n"
-                    "| \\       |      / |\n"
-                    "|  23 -- 16 -- 17  |\n"
-                    "|  | \\    |   / |  |\n"
-                    "|  |  15-08-09  |  |\n"
-                    "30-22-14    10-18-26\n"
-                    "|  |  13-12-11  |  |\n"
-                    "|  | /    |   \\ |  |\n"
-                    "|  21 -- 20 -- 19  |\n"
-                    "| /       |      \\ |\n"
-                    "29 ----- 28 ----- 27\n"
-                    "\n");
-    } else {
-        loggerDebug("\n"
-                    "31 ----- 24 ----- 25\n"
-                    "|         |        |\n"
-                    "|  23 -- 16 -- 17  |\n"
-                    "|  |      |     |  |\n"
-                    "|  |  15-08-09  |  |\n"
-                    "30-22-14    10-18-26\n"
-                    "|  |  13-12-11  |  |\n"
-                    "|  |      |     |  |\n"
-                    "|  21 -- 20 -- 19  |\n"
-                    "|         |        |\n"
-                    "29 ----- 28 ----- 27\n"
-                    "\n");
-    }
-}
-
-/// Position::pos_is_ok() performs some consistency checks for the
-/// position object and raises an asserts if something wrong is detected.
-/// This is meant to be helpful when debugging.
-
-bool Position::pos_is_ok() const
-{
-    // TODO
-    return true;
+    return elapsedSeconds[us];
 }
