@@ -239,9 +239,9 @@ public:
     /*
         0x   00    00
             square1  square2
-        Placing：0x00??，?? is place location
-        Moving：0x__??，__ is from，?? is to
-        Removing：0xFF??，?? is neg
+        Placing:0x00??,?? is place location
+        Moving:0x__??,__ is from,?? is to
+        Removing:0xFF??,?? is neg
 
         31 ----- 24 ----- 25
         | \       |      / |
@@ -349,8 +349,27 @@ inline bool Position::remove_piece(File f, Rank r)
     return ret;
 }
 
+inline bool Position::undo_move_piece(Square from, Square to)
+{
+    return move_piece(to, from);    // TODO
+}
+
 inline bool Position::move_piece(Square from, Square to)
 {
+#if 0
+    // index[from] is not updated and becomes stale. This works as long as index[]
+    // is accessed just by known occupied squares.
+    Piece pc = board[from];
+    Bitboard fromTo = from | to;
+    byTypeBB[ALL_PIECES] ^= fromTo;
+    byTypeBB[type_of(pc)] ^= fromTo;
+    byColorBB[color_of(pc)] ^= fromTo;
+    board[from] = NO_PIECE;
+    board[to] = pc;
+    index[to] = index[from];
+    pieceList[pc][index[to]] = to;
+#endif
+
     if (select_piece(from)) {
         return put_piece(to);
     }
@@ -358,10 +377,6 @@ inline bool Position::move_piece(Square from, Square to)
     return false;
 }
 
-inline bool Position::undo_move_piece(Square from, Square to)
-{
-    return move_piece(to, from);    // TODO
-}
 
 /// Mill Game
 

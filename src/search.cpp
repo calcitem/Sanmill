@@ -46,7 +46,6 @@ LimitsType Limits;
 
 namespace Tablebases
 {
-
 int Cardinality;
 bool RootInTB;
 bool UseRule50;
@@ -143,7 +142,6 @@ Value search(Position &pos, Stack *ss, Value alpha, Value beta, Depth depth, boo
 template<bool Root>
 uint64_t perft(Position &pos, Depth depth)
 {
-
     StateInfo st;
     uint64_t cnt, nodes = 0;
     const bool leaf = (depth == 2);
@@ -191,7 +189,6 @@ void Search::clear()
 
 void MainThread::search()
 {
-
     if (Limits.perft) {
         nodes = perft<true>(rootPos, Limits.perft);
         sync_cout << "\nNodes searched: " << nodes << "\n" << sync_endl;
@@ -291,7 +288,6 @@ void MainThread::search()
 
 void Thread::search()
 {
-
     // To allow access to (ss-7) up to (ss+2), the stack must be oversized.
     // The former is needed to allow update_continuation_histories(ss-1, ...),
     // which accesses its argument at ss-6, also near the root.
