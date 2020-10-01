@@ -1254,26 +1254,12 @@ inline Key Position::revert_key(Square s)
 
 Key Position::update_key_misc()
 {
-    const int KEY_MISC_BIT = 8;
+    const int KEY_MISC_BIT = 2;
 
     st->key = st->key << KEY_MISC_BIT >> KEY_MISC_BIT;
     Key hi = 0;
 
-#if 0
-    if (sideToMove == WHITE) {
-        hi |= 1U;
-    }
-#endif
-
-#if 0
-    if (action == ACTION_REMOVE) {
-        hi |= 1U << 1;
-    }
-
-    hi |= static_cast<Key>(pieceCountInHand[BLACK]) << 4;     // TODO: may use phase is also OK?
-#endif
-
-    hi |= static_cast<Key>(pieceCountNeedRemove) << 2;
+    hi |= static_cast<Key>(pieceCountNeedRemove);
 
     st->key = st->key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
 
