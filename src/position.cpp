@@ -39,6 +39,7 @@ using std::string;
 namespace Zobrist
 {
 Key psq[PIECE_TYPE_NB][SQUARE_NB];
+Key side;
 }
 
 namespace
@@ -152,6 +153,8 @@ void Position::init()
     for (PieceType pt : PieceTypes)
         for (Square s = SQ_0; s < SQUARE_NB; ++s)
             Zobrist::psq[pt][s] = rng.rand<Key>();
+
+    Zobrist::side = rng.rand<Key>();
 
     // Prepare the cuckoo tables
     std::memset(cuckoo, 0, sizeof(cuckoo));
@@ -1226,6 +1229,7 @@ inline void Position::set_side_to_move(Color c)
 inline void Position::change_side_to_move()
 {
     set_side_to_move(~sideToMove);
+    st->key ^= Zobrist::side;
 }
 
 inline Key Position::update_key(Square s)
@@ -1255,9 +1259,11 @@ Key Position::update_key_misc()
     st->key = st->key << KEY_MISC_BIT >> KEY_MISC_BIT;
     Key hi = 0;
 
+#if 0
     if (sideToMove == WHITE) {
         hi |= 1U;
     }
+#endif
 
     if (action == ACTION_REMOVE) {
         hi |= 1U << 1;
@@ -1278,22 +1284,24 @@ Key Position::next_primary_key(Move m)
     MoveType mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
-        int pieceType = ~sideToMove;
-        npKey ^= Zobrist::psq[pieceType][s];
+        npKey ^= Zobrist::psq[~sideToMove][s];
 
         if (rule.hasBannedLocations && phase == PHASE_PLACING) {
             npKey ^= Zobrist::psq[BAN][s];
         }
 
-        return npKey;
+        goto out;
     }
 
-    int pieceType = sideToMove;
-    npKey ^= Zobrist::psq[pieceType][s];
+    npKey ^= Zobrist::psq[sideToMove][s];
 
     if (mt == MOVETYPE_MOVE) {
-        npKey ^= Zobrist::psq[pieceType][from_sq(m)];
+        npKey ^= Zobrist::psq[sideToMove][from_sq(m)];
     }
+
+out:
+    // Note: Guess only, maybe side is not changed actually
+    npKey ^= Zobrist::side;
 
     return npKey;
 }
