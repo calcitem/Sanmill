@@ -1265,12 +1265,15 @@ Key Position::update_key_misc()
     }
 #endif
 
+#if 0
     if (action == ACTION_REMOVE) {
         hi |= 1U << 1;
     }
 
-    hi |= static_cast<Key>(pieceCountNeedRemove) << 2;
     hi |= static_cast<Key>(pieceCountInHand[BLACK]) << 4;     // TODO: may use phase is also OK?
+#endif
+
+    hi |= static_cast<Key>(pieceCountNeedRemove) << 2;
 
     st->key = st->key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
 
