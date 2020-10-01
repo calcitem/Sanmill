@@ -279,7 +279,7 @@ enum Piece : uint8_t
     W_STONE_11 = 0x2B,
     W_STONE_12 = 0x2C,
 
-    PIECE_NB = 24
+    PIECE_NB = 64,  // Fix overflow
 };
 
 using Depth = int8_t;

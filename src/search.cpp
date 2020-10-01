@@ -570,7 +570,6 @@ Move Skill::pick_best(size_t multiPV)
 
 void MainThread::check_time()
 {
-
     if (--callsCnt > 0)
         return;
 
