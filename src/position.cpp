@@ -1257,11 +1257,8 @@ Key Position::update_key_misc()
     const int KEY_MISC_BIT = 2;
 
     st->key = st->key << KEY_MISC_BIT >> KEY_MISC_BIT;
-    Key hi = 0;
 
-    hi |= static_cast<Key>(pieceCountNeedRemove);
-
-    st->key = st->key | (hi << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT));
+    st->key |= static_cast<Key>(pieceCountNeedRemove) << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT);
 
     return st->key;
 }
