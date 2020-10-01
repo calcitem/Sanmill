@@ -34,6 +34,8 @@
 
 #include "option.h"
 
+using std::string;
+
 namespace Zobrist
 {
 Key psq[PIECE_TYPE_NB][SQUARE_NB];
@@ -431,10 +433,6 @@ void Position::do_move(Move m, StateInfo &newSt)
 
     bool ret = false;
 
-    // Increment ply counters. In particular, rule50 will be reset to zero later on
-    // in case of a capture.
-    ++st->rule50;
-
     MoveType mt = type_of(m);
 
     switch (mt) {
@@ -457,7 +455,10 @@ void Position::do_move(Move m, StateInfo &newSt)
         return;
     }
 
+    // Increment ply counters. In particular, rule50 will be reset to zero later on
+    // in case of a capture.
     ++gamePly;
+    ++st->rule50;
     ++st->pliesFromNull;
     
     move = m;
@@ -482,6 +483,7 @@ void Position::do_move(Move m, StateInfo &newSt)
     assert(pos_is_ok());
 #endif
 }
+
 
 /// Position::undo_move() unmakes a move. When it returns, the position should
 /// be restored to exactly the same state as before the move was made.
