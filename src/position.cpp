@@ -572,6 +572,38 @@ void Position::undo_null_move()
     change_side_to_move();
 }
 
+
+/// Position::key_after() computes the new hash key after the given move. Needed
+/// for speculative prefetch. It doesn't recognize special moves like (need remove)
+
+Key Position::key_after(Move m) const
+{
+    Key k = st->key;
+    Square s = static_cast<Square>(to_sq(m));;
+    MoveType mt = type_of(m);
+
+    if (mt == MOVETYPE_REMOVE) {
+        k ^= Zobrist::psq[~side_to_move()][s];
+
+        if (rule.hasBannedLocations && phase == PHASE_PLACING) {
+            k ^= Zobrist::psq[BAN][s];
+        }
+
+        goto out;
+    }
+
+    k ^= Zobrist::psq[side_to_move()][s];
+
+    if (mt == MOVETYPE_MOVE) {
+        k ^= Zobrist::psq[side_to_move()][from_sq(m)];
+    }
+
+out:
+    k ^= Zobrist::side;
+
+    return k;
+}
+
 /// Position::flip() flips position with the white and black sides reversed. This
 /// is only useful for debugging e.g. for finding evaluation symmetry bugs.
 
@@ -938,7 +970,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         return false;
 
     // if piece is not their
-    if (!(make_piece(them) & board[s]))
+    if (!(make_piece(~side_to_move()) & board[s]))
         return false;
 
     if (!rule.allowRemovePieceInMill &&
@@ -1215,9 +1247,9 @@ void Position::remove_ban_stones()
         for (int r = 0; r < RANK_NB; r++) {
             s = static_cast<Square>(f * RANK_NB + r);
 
-            if (board[s]== BAN_STONE) {
+            if (board[s] == BAN_STONE) {
                 revert_key(s);
-                board[s]= NO_PIECE;
+                board[s] = NO_PIECE;
                 byTypeBB[ALL_PIECES] ^= s;   // Need to remove?
             }
         }
@@ -1263,36 +1295,6 @@ Key Position::update_key_misc()
     st->key |= static_cast<Key>(pieceCountNeedRemove) << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
     return st->key;
-}
-
-/// Position::key_after() computes the new hash key after the given move. Needed
-/// for speculative prefetch. It doesn't recognize special moves like (need remove)
-Key Position::key_after(Move m) const
-{
-    Key k = st->key;
-    Square s = static_cast<Square>(to_sq(m));;
-    MoveType mt = type_of(m);
-
-    if (mt == MOVETYPE_REMOVE) {
-        k ^= Zobrist::psq[~side_to_move()][s];
-
-        if (rule.hasBannedLocations && phase == PHASE_PLACING) {
-            k ^= Zobrist::psq[BAN][s];
-        }
-
-        goto out;
-    }
-
-    k ^= Zobrist::psq[side_to_move()][s];
-
-    if (mt == MOVETYPE_MOVE) {
-        k ^= Zobrist::psq[side_to_move()][from_sq(m)];
-    }
-
-out:
-    k ^= Zobrist::side;
-
-    return k;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
