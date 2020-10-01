@@ -834,7 +834,6 @@ int AIAlgorithm::search()
     static int nRepetition = 0;
 
     if (pos->get_phase() == PHASE_MOVING) {
-        pos->update_key_misc();
         Key key = pos->key();
 
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
@@ -966,7 +965,6 @@ string AIAlgorithm::nextMove()
             Endgame endgame;
             endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            position->update_key_misc();
             key_t endgameHash = position->key(); // TODO: Do not generate hash repeately
             recordEndgameHash(endgameHash, endgame);
         }
@@ -1056,7 +1054,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
-    pos->update_key_misc();
     Key posKey = pos->key();
 #endif
 
@@ -1168,7 +1165,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH
     for (int i = 0; i < moveCount; i++) {
-        TranspositionTable::prefetch(pos->next_primary_key(mp.moves[i].move));
+        TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
     }
 
 #ifdef PREFETCH_DEBUG

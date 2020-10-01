@@ -38,6 +38,7 @@ using std::string;
 
 namespace Zobrist
 {
+const int KEY_MISC_BIT = 2;
 Key psq[PIECE_TYPE_NB][SQUARE_NB];
 Key side;
 }
@@ -152,9 +153,9 @@ void Position::init()
 
     for (PieceType pt : PieceTypes)
         for (Square s = SQ_0; s < SQUARE_NB; ++s)
-            Zobrist::psq[pt][s] = rng.rand<Key>();
+            Zobrist::psq[pt][s] = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
-    Zobrist::side = rng.rand<Key>();
+    Zobrist::side = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
     // Prepare the cuckoo tables
     std::memset(cuckoo, 0, sizeof(cuckoo));
@@ -858,6 +859,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             }
         } else {
             pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            update_key_misc();
             action = ACTION_REMOVE;
         } 
 
@@ -914,6 +916,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             }
         } else {
             pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            update_key_misc();
             action = ACTION_REMOVE;
         }
     } else {
@@ -972,6 +975,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     currentSquare = SQ_0;
 
     pieceCountNeedRemove--;
+    update_key_misc();
 
     if (pieceCountNeedRemove > 0) {
         return true;
@@ -1254,42 +1258,41 @@ inline Key Position::revert_key(Square s)
 
 Key Position::update_key_misc()
 {
-    const int KEY_MISC_BIT = 2;
+    st->key = st->key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
-    st->key = st->key << KEY_MISC_BIT >> KEY_MISC_BIT;
-
-    st->key |= static_cast<Key>(pieceCountNeedRemove) << (CHAR_BIT * sizeof(Key) - KEY_MISC_BIT);
+    st->key |= static_cast<Key>(pieceCountNeedRemove) << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
     return st->key;
 }
 
-Key Position::next_primary_key(Move m)
+/// Position::key_after() computes the new hash key after the given move. Needed
+/// for speculative prefetch. It doesn't recognize special moves like (need remove)
+Key Position::key_after(Move m) const
 {
-    Key npKey = st->key /* << 8 >> 8 */;
+    Key k = st->key;
     Square s = static_cast<Square>(to_sq(m));;
     MoveType mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
-        npKey ^= Zobrist::psq[~sideToMove][s];
+        k ^= Zobrist::psq[~side_to_move()][s];
 
         if (rule.hasBannedLocations && phase == PHASE_PLACING) {
-            npKey ^= Zobrist::psq[BAN][s];
+            k ^= Zobrist::psq[BAN][s];
         }
 
         goto out;
     }
 
-    npKey ^= Zobrist::psq[sideToMove][s];
+    k ^= Zobrist::psq[side_to_move()][s];
 
     if (mt == MOVETYPE_MOVE) {
-        npKey ^= Zobrist::psq[sideToMove][from_sq(m)];
+        k ^= Zobrist::psq[side_to_move()][from_sq(m)];
     }
 
 out:
-    // Note: Guess only, maybe side is not changed actually
-    npKey ^= Zobrist::side;
+    k ^= Zobrist::side;
 
-    return npKey;
+    return k;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

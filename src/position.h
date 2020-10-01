@@ -99,7 +99,7 @@ public:
     Key revert_key(Square s);
     Key update_key(Square s);
     Key update_key_misc();
-    Key next_primary_key(Move m);
+    Key key_after(Move m) const;
 
     // Other properties of the position
     Color side_to_move() const;
