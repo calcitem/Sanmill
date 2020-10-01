@@ -417,12 +417,12 @@ bool Position::pseudo_legal(const Move m) const
 
 void Position::do_move(Move m, StateInfo &newSt)
 {
-    //assert(is_ok(m));
-    //assert(&newSt != st);
-
-    //thisThread->nodes.fetch_add(1, std::memory_order_relaxed);    // TODO
-
 #if 0
+    assert(is_ok(m));
+    assert(&newSt != st);
+
+    thisThread->nodes.fetch_add(1, std::memory_order_relaxed);
+
     // Copy some fields of the old state to our new StateInfo object except the
     // ones which are going to be recalculated from scratch anyway and then switch
     // our state pointer to point to the new (ready to be updated) state.
@@ -490,35 +490,66 @@ void Position::do_move(Move m, StateInfo &newSt)
 
 void Position::undo_move(Move m)
 {
+    assert(is_ok(m));
+
 #if 0
+    sideToMove = ~sideToMove;
+
+    Color us = sideToMove;
+    Square from = from_sq(m);
+    Square to = to_sq(m);
+    Piece pc = piece_on(to);
+
+    assert(empty(from));
+
+    {
+        move_piece(to, from); // Put the piece back at the source square
+
+        if (st->capturedPiece) {
+            Square capsq = to;
+
+            put_piece(st->capturedPiece, capsq); // Restore the captured piece
+        }
+    }
+#endif
+
+    bool ret = false;
+
+    // TODO Start
     MoveType mt = type_of(m);
 
     switch (mt) {
     case MOVETYPE_REMOVE:
-        return put_piece(to_sq(-m));
+        ret = put_piece(to_sq((Move)-m));
+        break;
     case MOVETYPE_MOVE:
         if (select_piece(to_sq(m))) {
-            return put_piece(from_sq(m));
+            ret = put_piece(from_sq(m));
         }
         break;
     case MOVETYPE_PLACE:
-        return remove_piece(static_cast<Square>(m));
+        ret = remove_piece(static_cast<Square>(m));
+        break;
     default:
         break;
     }
 
-    // Finally point our state pointer back to the previous state
-    st = st->previous;
-    --gamePly;
-
-    //assert(pos_is_ok()); // TODO
-#endif
+    if (!ret) {
+        return;
+    }
 
     // TODO: Adjust
     //int pieceCountInHand[COLOR_NB]{ 0 };
     //int pieceCountOnBoard[COLOR_NB]{ 0 };
     //int pieceCountNeedRemove{ 0 };
-    m = m;
+
+    // TODO End
+
+    // Finally point our state pointer back to the previous state
+    st = st->previous;
+    --gamePly;
+
+    assert(pos_is_ok());
 }
 
 void Position::undo_move(Sanmill::Stack<Position> &ss)
