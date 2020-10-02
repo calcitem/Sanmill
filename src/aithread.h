@@ -20,9 +20,9 @@
 #ifndef AITHREAD_H
 #define AITHREAD_H
 
+#include <condition_variable>
+#include <mutex>
 #include <QThread>
-#include <QMutex>
-#include <QWaitCondition>
 #include <QTimer>
 #include "position.h"
 #include "search.h"
@@ -36,8 +36,8 @@ class AiThread : public QThread
     Q_OBJECT
 
 private:
-    QMutex mutex;
-    QWaitCondition pauseCondition;
+    std::mutex mutex;
+    std::condition_variable pauseCondition;
 
     string strCommand;
 

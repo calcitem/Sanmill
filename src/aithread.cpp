@@ -65,7 +65,7 @@ AiThread::~AiThread()
 
 void AiThread::setAi(Position *p)
 {
-    mutex.lock();
+    std::lock_guard<std::mutex> lk(mutex);
 
     this->rootPos = p;
     setPosition(p);
@@ -75,17 +75,15 @@ void AiThread::setAi(Position *p)
     TranspositionTable::clear();
 #endif
 #endif
-
-    mutex.unlock();
 }
 
 void AiThread::setAi(Position *p, int tl)
 {
-    mutex.lock();
+    std::lock_guard<std::mutex> lk(mutex);
+
     this->rootPos = p;
     setPosition(p);
     timeLimit = tl;
-    mutex.unlock();
 }
 
 void AiThread::emitCommand()
@@ -247,6 +245,8 @@ out:
 
 void AiThread::run()
 {
+    std::unique_lock<std::mutex> lk(mutex, std::defer_lock);
+
 #ifdef DEBUG_MODE
     int iTemp = 0;
 #endif
@@ -258,19 +258,19 @@ void AiThread::run()
     bestvalue = lastvalue = VALUE_ZERO;
 
     while (!isInterruptionRequested()) {
-        mutex.lock();
+        lk.lock();
 
         sideToMove = rootPos->sideToMove;
 
         if (sideToMove != us) {
-            pauseCondition.wait(&mutex);
-            mutex.unlock();
+            pauseCondition.wait(lk);
+            lk.unlock();
             continue;
         }
 
         setPosition(rootPos);
         emit searchStarted();
-        mutex.unlock();
+        lk.unlock();
 
 #ifdef OPENING_BOOK
         // gameOptions.getOpeningBook()
@@ -297,11 +297,11 @@ void AiThread::run()
 
         emit searchFinished();
 
-        mutex.lock();
+        lk.lock();
         if (!isInterruptionRequested()) {
-            pauseCondition.wait(&mutex);
+            pauseCondition.wait(lk);
         }
-        mutex.unlock();
+        lk.unlock();
     }
 
     loggerDebug("Thread %d quit\n", us);
@@ -312,16 +312,14 @@ void AiThread::act()
     if (isFinished() || !isRunning())
         return;
 
-    mutex.lock();
+    std::lock_guard<std::mutex> lk(mutex);
     quit();
-    mutex.unlock();
 }
 
 void AiThread::resume()
 {
-    mutex.lock();
-    pauseCondition.wakeAll();
-    mutex.unlock();
+    std::lock_guard<std::mutex> lk(mutex);
+    pauseCondition.notify_one(); // Wake up anyone
 }
 
 void AiThread::stop()
@@ -331,10 +329,9 @@ void AiThread::stop()
 
     if (!isInterruptionRequested()) {
         requestInterruption();
-        mutex.lock();
+        std::lock_guard<std::mutex> lk(mutex);
         quit();
-        pauseCondition.wakeAll();
-        mutex.unlock();
+        pauseCondition.notify_one(); // Wake up anyone
     }
 }
 
