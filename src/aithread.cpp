@@ -20,6 +20,8 @@
 #include <QTimer>
 #include "aithread.h"
 #include "tt.h"
+#include "uci.h"
+#include "option.h"
 
 #ifdef OPENING_BOOK
 #include <deque>
@@ -30,9 +32,10 @@ using namespace std;
 #pragma execution_character_set("GB2312")
 #endif
 
+Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
+
 AiThread::AiThread(int color, QObject *parent) :
     QThread(parent),
-    position(nullptr),
     timeLimit(3600)
 {
     this->us = color;
@@ -64,8 +67,8 @@ void AiThread::setAi(Position *p)
 {
     mutex.lock();
 
-    this->position = p;
-    ai.setPosition(p);
+    this->pos = p;
+    setPosition(p);
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
@@ -79,8 +82,8 @@ void AiThread::setAi(Position *p)
 void AiThread::setAi(Position *p, int tl)
 {
     mutex.lock();
-    this->position = p;
-    ai.setPosition(p);
+    this->pos = p;
+    setPosition(p);
     timeLimit = tl;
     mutex.unlock();
 }
@@ -131,24 +134,24 @@ void sq2str(char *str)
 
 void AiThread::analyze(Color c)
 {
-    int d = (int)ai.originDepth;
-    int v = (int)ai.bestvalue;
-    int lv = (int)ai.lastvalue;
+    int d = (int)originDepth;
+    int v = (int)bestvalue;
+    int lv = (int)lastvalue;
     bool win = v >= VALUE_MATE;
     bool lose = v <= -VALUE_MATE;
-    int p = v / VALUE_EACH_PIECE;
+    int np = v / VALUE_EACH_PIECE;
 
     string strUs = (c == BLACK ? "黑方" : "白方");
     string strThem = (c == BLACK ? "白方" : "黑方");
 
-    loggerDebug("Depth: %d\n\n", ai.newDepth);
+    loggerDebug("Depth: %d\n\n", newDepth);
 
-    Position *pos = ai.position();
+    Position *p = position();
 
-    cout << *pos << "\n" << endl;
+    cout << *p << "\n" << endl;
     cout << std::dec;
 
-    switch (pos->get_phase())
+    switch (p->get_phase())
     {
     case PHASE_PLACING:
         cout << "摆子阶段" << endl;
@@ -157,11 +160,11 @@ void AiThread::analyze(Color c)
         cout << "走子阶段" << endl;
         break;
     case PHASE_GAMEOVER:
-        if (pos->get_winner() == DRAW) {
+        if (p->get_winner() == DRAW) {
             cout << "和棋" << endl;
-        } else if (pos->get_winner() == BLACK) {
+        } else if (p->get_winner() == BLACK) {
             cout << "黑方胜" << endl;
-        } else if (pos->get_winner() == WHITE) {
+        } else if (p->get_winner() == WHITE) {
             cout << "白方胜" << endl;
         }
         goto out;
@@ -224,15 +227,15 @@ void AiThread::analyze(Color c)
         cout << strThem << "将在 " << d << " 步后输棋!" << endl;
     } else if (lose) {
         cout << strThem << "将在 " << d << " 步后赢棋!" << endl;
-    } else if (p == 0) {
+    } else if (np == 0) {
         cout << "将在 " << d << " 步后双方保持均势" << endl;
-    } else if (p > 0) {
-        cout << strThem << "将在 " << d << " 步后落后 " << p << " 子" << endl;
-    } else if (p < 0) {
-        cout << strThem << "将在 " << d << " 步后领先 " << -p << " 子" << endl;
+    } else if (np > 0) {
+        cout << strThem << "将在 " << d << " 步后落后 " << np << " 子" << endl;
+    } else if (np < 0) {
+        cout << strThem << "将在 " << d << " 步后领先 " << -np << " 子" << endl;
     }
 
-    if (pos->side_to_move() == BLACK) {
+    if (p->side_to_move() == BLACK) {
         cout << "轮到黑方行棋";
     } else {
         cout << "轮到白方行棋";
@@ -252,12 +255,12 @@ void AiThread::run()
 
     loggerDebug("Thread %d start\n", us);
 
-    ai.bestvalue = ai.lastvalue = VALUE_ZERO;
+    bestvalue = lastvalue = VALUE_ZERO;
 
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        sideToMove = position->sideToMove;
+        sideToMove = pos->sideToMove;
 
         if (sideToMove != us) {
             pauseCondition.wait(&mutex);
@@ -265,7 +268,7 @@ void AiThread::run()
             continue;
         }
 
-        ai.setPosition(position);
+        setPosition(pos);
         emit searchStarted();
         mutex.unlock();
 
@@ -278,12 +281,12 @@ void AiThread::run()
             emitCommand();
         } else {
 #endif
-            if (ai.search() == 3) {
+            if (search() == 3) {
                 loggerDebug("Draw\n\n");
                 strCommand = "draw";
                 emitCommand();
             } else {
-                strCommand = ai.nextMove();
+                strCommand = nextMove();
                 if (strCommand != "" && strCommand != "error!") {
                     emitCommand();
                 }
@@ -310,7 +313,7 @@ void AiThread::act()
         return;
 
     mutex.lock();
-    ai.quit();
+    quit();
     mutex.unlock();
 }
 
@@ -329,8 +332,379 @@ void AiThread::stop()
     if (!isInterruptionRequested()) {
         requestInterruption();
         mutex.lock();
-        ai.quit();
+        quit();
         pauseCondition.wakeAll();
         mutex.unlock();
     }
 }
+
+///////////////
+
+Depth AiThread::changeDepth()
+{
+    Depth d = 0;
+
+#ifdef _DEBUG
+    Depth reduce = 0;
+#else
+    Depth reduce = 0;
+#endif
+
+    const Depth placingDepthTable_12[] = {
+         +1,  2,  +2,  4,     /* 0 ~ 3 */
+         +4, 12, +12, 18,     /* 4 ~ 7 */
+        +12, 16, +16, 16,     /* 8 ~ 11 */
+        +16, 16, +16, 17,     /* 12 ~ 15 */
+        +17, 16, +16, 15,     /* 16 ~ 19 */
+        +15, 14, +14, 14,     /* 20 ~ 23 */
+    };
+
+    const Depth placingDepthTable_9[] = {
+         +1, 7,  +7,  10,     /* 0 ~ 3 */
+        +10, 12, +12, 12,     /* 4 ~ 7 */
+        +12, 13, +13, 13,     /* 8 ~ 11 */
+        +13, 13, +13, 13,     /* 12 ~ 15 */
+        +13, 13, +13          /* 16 ~ 18 */
+    };
+
+    const Depth movingDepthTable[] = {
+         1,  1,  1,  1,     /* 0 ~ 3 */
+         1,  1, 11, 11,     /* 4 ~ 7 */
+        11, 11, 11, 11,     /* 8 ~ 11 */
+        11, 11, 11, 11,     /* 12 ~ 15 */
+        11, 11, 11, 11,     /* 16 ~ 19 */
+        12, 12, 13, 14,     /* 20 ~ 23 */
+    };
+
+#ifdef ENDGAME_LEARNING
+    const Depth movingDiffDepthTable[] = {
+        0, 0, 0,               /* 0 ~ 2 */
+        0, 0, 0, 0, 0,       /* 3 ~ 7 */
+        0, 0, 0, 0, 0          /* 8 ~ 12 */
+    };
+#else
+    const Depth movingDiffDepthTable[] = {
+        0, 0, 0,               /* 0 ~ 2 */
+        11, 11, 10, 9, 8,       /* 3 ~ 7 */
+        7, 6, 5, 4, 3          /* 8 ~ 12 */
+    };
+#endif /* ENDGAME_LEARNING */
+
+    const Depth flyingDepth = 9;
+
+    if (pos->phase & PHASE_PLACING) {
+        if (rule.nTotalPiecesEachSide == 12) {
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE)];
+        } else {
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE)];
+        }
+    }
+
+    if (pos->phase & PHASE_MOVING) {
+        int pb = pos->count<ON_BOARD>(BLACK);
+        int pw = pos->count<ON_BOARD>(WHITE);
+
+        int pieces = pb + pw;
+        int diff = pb - pw;
+
+        if (diff < 0) {
+            diff = -diff;
+        }
+
+        d = movingDiffDepthTable[diff];
+
+        if (d == 0) {
+            d = movingDepthTable[pieces];
+        }
+
+        // Can fly
+        if (rule.allowFlyWhenRemainThreePieces) {
+            if (pb == rule.nPiecesAtLeast ||
+                pw == rule.nPiecesAtLeast) {
+                d = flyingDepth;
+            }
+
+            if (pb == rule.nPiecesAtLeast &&
+                pw == rule.nPiecesAtLeast) {
+                d = flyingDepth / 2;
+            }
+        }
+    }
+
+    if (unlikely(d > reduce)) {
+        d -= reduce;
+    }
+
+    d += DEPTH_ADJUST;
+
+    d = d >= 1 ? d : 1;
+
+#if defined(FIX_DEPTH)
+    d = FIX_DEPTH;
+#endif
+
+    assert(d <= 32);
+
+    //loggerDebug("Depth: %d\n", d);
+
+    return d;
+}
+
+void AiThread::setPosition(Position *p)
+{
+    if (strcmp(rule.name, rule.name) != 0) {
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        TranspositionTable::clear();
+#endif // TRANSPOSITION_TABLE_ENABLE
+
+#ifdef ENDGAME_LEARNING
+        // TODO: 规则改变时清空残局库
+        //clearEndgameHashMap();
+        //endgameList.clear();
+#endif // ENDGAME_LEARNING
+
+        moveHistory.clear();
+    }
+
+    //position = p;
+    pos = p;
+    // position = pos;
+
+     //requiredQuit = false;
+}
+
+
+/// Thread::search() is the main iterative deepening loop. It calls search()
+/// repeatedly with increasing depth until the allocated thinking time has been
+/// consumed, the user stops the search, or the maximum search depth is reached.
+
+int AiThread::search()
+{
+    Sanmill::Stack<Position> ss;
+
+    Value value = VALUE_ZERO;
+
+    Depth d = changeDepth();
+    newDepth = d;
+
+    time_t time0 = time(nullptr);
+    srand(static_cast<unsigned int>(time0));
+
+#ifdef TIME_STAT
+    auto timeStart = chrono::steady_clock::now();
+    chrono::steady_clock::time_point timeEnd;
+#endif
+#ifdef CYCLE_STAT
+    auto cycleStart = stopwatch::rdtscp_clock::now();
+    chrono::steady_clock::time_point cycleEnd;
+#endif
+
+#ifdef THREEFOLD_REPETITION
+    static int nRepetition = 0;
+
+    if (pos->get_phase() == PHASE_MOVING) {
+        Key key = pos->key();
+
+        if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
+            nRepetition++;
+            if (nRepetition == 3) {
+                nRepetition = 0;
+                return 3;
+            }
+        } else {
+            moveHistory.push_back(key);
+        }
+    }
+
+    if (pos->get_phase() == PHASE_PLACING) {
+        moveHistory.clear();
+    }
+#endif // THREEFOLD_REPETITION
+
+    MoveList<LEGAL>::shuffle();
+
+    Value alpha = -VALUE_INFINITE;
+    Value beta = VALUE_INFINITE;
+
+    if (gameOptions.getIDSEnabled()) {
+        loggerDebug("IDS: ");
+
+        Depth depthBegin = 2;
+        Value lastValue = VALUE_ZERO;
+
+        loggerDebug("\n==============================\n");
+        loggerDebug("==============================\n");
+        loggerDebug("==============================\n");
+
+        for (Depth i = depthBegin; i < d; i += 1) {
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef CLEAR_TRANSPOSITION_TABLE
+            TranspositionTable::clear();
+#endif
+#endif
+
+#ifdef MTDF_AI
+            value = MTDF(pos, ss, value, i, originDepth, bestMove);
+#else
+            value = search(pos, ss, i, originDepth, alpha, beta, bestMove);
+#endif
+
+            loggerDebug("%d(%d) ", value, value - lastValue);
+
+            lastValue = value;
+        }
+
+#ifdef TIME_STAT
+        timeEnd = chrono::steady_clock::now();
+        loggerDebug("\nIDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+#endif
+    }
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef CLEAR_TRANSPOSITION_TABLE
+    TranspositionTable::clear();
+#endif
+#endif
+
+    if (gameOptions.getIDSEnabled()) {
+        alpha = -VALUE_INFINITE;
+        beta = VALUE_INFINITE;
+    }
+
+    originDepth = d;
+
+#ifdef MTDF_AI
+    value = MTDF(pos, ss, value, d, originDepth, bestMove);
+#else
+    value = search(pos, ss, d, originDepth, alpha, beta, bestMove);
+#endif
+
+#ifdef TIME_STAT
+    timeEnd = chrono::steady_clock::now();
+    loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+#endif
+
+    lastvalue = bestvalue;
+    bestvalue = value;
+
+    return 0;
+}
+
+string AiThread::nextMove()
+{
+    return UCI::move(bestMove);
+
+#if 0
+    char charSelect = '*';
+
+    Position::print_board();
+
+    int moveIndex = 0;
+    bool foundBest = false;
+
+    int cs = root->childrenSize;
+    for (int i = 0; i < cs; i++) {
+        if (root->children[i]->move != bestMove) {
+            charSelect = ' ';
+        } else {
+            charSelect = '*';
+            foundBest = true;
+        }
+
+        loggerDebug("[%.2d] %d\t%s\t%d\t%u %c\n", moveIndex,
+                    root->children[i]->move,
+                    UCI::move(root->children[i]->move).c_str();
+        root->children[i]->value,
+#ifdef HOSTORY_HEURISTIC
+            root->children[i]->score,
+#else
+            0,
+#endif
+            charSelect);
+
+        moveIndex++;
+    }
+
+    Color side = position->sideToMove;
+
+#ifdef ENDGAME_LEARNING
+    // Check if very weak
+    if (gameOptions.getLearnEndgameEnabled()) {
+        if (bestValue <= -VALUE_KNOWN_WIN) {
+            Endgame endgame;
+            endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
+                ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
+            key_t endgameHash = position->key(); // TODO: Do not generate hash repeately
+            recordEndgameHash(endgameHash, endgame);
+        }
+    }
+#endif /* ENDGAME_LEARNING */
+
+    if (gameOptions.getResignIfMostLose() == true) {
+        if (root->value <= -VALUE_MATE) {
+            gameoverReason = LOSE_REASON_RESIGN;
+            //sprintf(cmdline, "Player%d give up!", position->sideToMove);
+            return cmdline;
+        }
+    }
+
+    nodeCount = 0;
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef TRANSPOSITION_TABLE_DEBUG
+    size_t hashProbeCount = ttHitCount + ttMissCount;
+    if (hashProbeCount) {
+        loggerDebug("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+                    hashProbeCount, ttHitCount, ttMissCount, ttHitCount * 100 / hashProbeCount);
+    }
+#endif // TRANSPOSITION_TABLE_DEBUG
+#endif // TRANSPOSITION_TABLE_ENABLE
+
+    if (foundBest == false) {
+        loggerDebug("Warning: Best Move NOT Found\n");
+    }
+
+    return UCI::move(bestMove).c_str();
+#endif
+}
+
+#ifdef ENDGAME_LEARNING
+bool AiThread::findEndgameHash(key_t posKey, Endgame &endgame)
+{
+    return endgameHashMap.find(posKey, endgame);
+}
+
+int AiThread::recordEndgameHash(key_t posKey, const Endgame &endgame)
+{
+    //hashMapMutex.lock();
+    key_t hashValue = endgameHashMap.insert(posKey, endgame);
+    unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
+    //hashMapMutex.unlock();
+
+    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame Hash map, TTEntry: 0x%08I32x, Address: 0x%08I32x\n", posKey, endgame.type, hashValue, addr);
+
+    return 0;
+}
+
+void AiThread::clearEndgameHashMap()
+{
+    //hashMapMutex.lock();
+    endgameHashMap.clear();
+    //hashMapMutex.unlock();
+}
+
+void AiThread::recordEndgameHashMapToFile()
+{
+    const QString filename = "endgame.txt";
+    endgameHashMap.dump(filename);
+
+    loggerDebug("[endgame] Dump hash map to file\n");
+}
+
+void AiThread::loadEndgameFileToHashMap()
+{
+    const QString filename = "endgame.txt";
+    endgameHashMap.load(filename);
+}
+
+#endif // ENDGAME_LEARNING

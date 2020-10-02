@@ -29,6 +29,7 @@
 #include "server.h"
 #include "client.h"
 #include "test.h"
+#include "position.h"
 
 class AiThread : public QThread
 {
@@ -86,18 +87,82 @@ private:
     // For ext in future
     QWaitCondition pauseCondition;
 
-public:
-    Position *position;
-
-public: // TODO: Change to private
-    AIAlgorithm ai;
-
 private:
     int timeLimit;
     QTimer timer;
 
     Server *server;
     Client *client;
+
+    ////////////////
+
+public:
+    Position *pos { nullptr };
+
+    Depth originDepth { 0 };
+    Depth newDepth { 0 };
+
+    Move bestMove { MOVE_NONE };
+    Value bestvalue{ VALUE_ZERO };
+    Value lastvalue{ VALUE_ZERO };
+
+    char cmdline[64]{};
+
+    // bool requiredQuit {false}; // TODO
+
+    inline Position *position()
+    {
+        return pos;
+    }
+
+    void setPosition(Position *p);
+
+    int search();
+    string nextMove();
+    void undo_move();
+    Depth changeDepth();
+
+    void quit()
+    {
+        loggerDebug("Timeout\n");
+        //requiredQuit = true;  // TODO
+#ifdef HOSTORY_HEURISTIC
+        movePicker->clearHistoryScore();
+#endif
+    }
+
+#ifdef TIME_STAT
+    TimePoint sortTime{ 0 };
+#endif
+#ifdef CYCLE_STAT
+    stopwatch::rdtscp_clock::time_point sortCycle;
+    stopwatch::timer::duration sortCycle{ 0 };
+    stopwatch::timer::period sortCycle;
+#endif
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    void clearTT();
+#endif
+
+#ifdef ENDGAME_LEARNING
+    bool findEndgameHash(key_t key, Endgame &endgame);
+    static int recordEndgameHash(key_t key, const Endgame &endgame);
+    void clearEndgameHashMap();
+    static void recordEndgameHashMapToFile();
+    static void loadEndgameFileToHashMap();
+#endif // ENDGAME_LEARNING
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef TRANSPOSITION_TABLE_DEBUG
+    size_t tteCount{ 0 };
+    size_t ttHitCount{ 0 };
+    size_t ttMissCount{ 0 };
+    size_t ttInsertNewCount{ 0 };
+    size_t ttAddrHitCount{ 0 };
+    size_t ttReplaceCozDepthCount{ 0 };
+    size_t ttReplaceCozHashCount{ 0 };
+#endif
+#endif
 };
 
 #endif // AITHREAD_H
