@@ -243,10 +243,8 @@ out:
     cout << endl << endl;
 }
 
-void AiThread::run()
+void AiThread::run()    // idle_loop()
 {
-    std::unique_lock<std::mutex> lk(mutex, std::defer_lock);
-
 #ifdef DEBUG_MODE
     int iTemp = 0;
 #endif
@@ -258,12 +256,13 @@ void AiThread::run()
     bestvalue = lastvalue = VALUE_ZERO;
 
     while (!isInterruptionRequested()) {
-        lk.lock();
+        std::unique_lock<std::mutex> lk(mutex);
+        searching = false;
 
         sideToMove = rootPos->sideToMove;
 
         if (sideToMove != us) {
-            pauseCondition.wait(lk);
+            cv.wait(lk);
             lk.unlock();
             continue;
         }
@@ -299,7 +298,7 @@ void AiThread::run()
 
         lk.lock();
         if (!isInterruptionRequested()) {
-            pauseCondition.wait(lk);
+            cv.wait(lk);
         }
         lk.unlock();
     }
@@ -319,7 +318,7 @@ void AiThread::act()
 void AiThread::resume()
 {
     std::lock_guard<std::mutex> lk(mutex);
-    pauseCondition.notify_one(); // Wake up anyone
+    cv.notify_one(); // Wake up anyone
 }
 
 void AiThread::stop()
@@ -331,7 +330,8 @@ void AiThread::stop()
         requestInterruption();
         std::lock_guard<std::mutex> lk(mutex);
         quit();
-        pauseCondition.notify_one(); // Wake up anyone
+        searching = true;
+        cv.notify_one(); // Wake up anyone
     }
 }
 

@@ -37,7 +37,8 @@ class AiThread : public QThread
 
 private:
     std::mutex mutex;
-    std::condition_variable pauseCondition;
+    std::condition_variable cv;
+    bool exit = false, searching = true; // Set before starting std::thread
 
     string strCommand;
 
