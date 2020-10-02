@@ -189,8 +189,6 @@ public:
 private:
     Position *pos { nullptr };
 
-    Sanmill::Stack<Position> ss;
-
     // bool requiredQuit {false}; // TODO
 
     Move bestMove { MOVE_NONE };

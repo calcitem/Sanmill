@@ -806,6 +806,8 @@ void AIAlgorithm::setPosition(Position *p)
 
 int AIAlgorithm::search()
 {
+    Sanmill::Stack<Position> ss;
+
     Value value = VALUE_ZERO;
 
     Depth d = changeDepth();
