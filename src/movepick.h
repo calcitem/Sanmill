@@ -41,7 +41,6 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit);
 template<typename T, int D>
 class StatsEntry
 {
-
     T entry;
 
 public:
@@ -158,8 +157,7 @@ public:
 
 //private:
     template<PickType T, typename Pred> Move select(Pred);
-    void score();
-
+    template<GenType> void score();
     ExtMove *begin()
     {
         return cur;

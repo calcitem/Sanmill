@@ -17,6 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cassert>
+
 #include "movepick.h"
 
 // namespace
@@ -56,6 +58,7 @@ MovePicker::MovePicker(Position &p)
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
 /// for sorting.
+template<GenType Type>
 void MovePicker::score()
 {
     cur = moves;
@@ -176,10 +179,10 @@ Move MovePicker::select(Pred filter)
 /// moves left, picking the move with the highest score from a list of generated moves.
 Move MovePicker::next_move()
 {
-    endMoves = generate(pos, moves);
+    endMoves = generate<LEGAL>(pos, moves);
     moveCount = endMoves - moves;
 
-    score();
+    score<LEGAL>();
     partial_insertion_sort(moves, endMoves, -100);    // TODO: limit = -3000 * depth
 
     return *moves;

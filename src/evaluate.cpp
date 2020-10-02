@@ -30,6 +30,11 @@
 namespace Trace
 {
 
+enum Tracing
+{
+    NO_TRACE, TRACE
+};
+
 double to_cp(Value v)
 {
     return double(v) / StoneValue;
@@ -41,7 +46,7 @@ using namespace Trace;
 
 namespace
 {
-
+template<Tracing T>
 class Evaluation
 {
 public:
@@ -61,7 +66,8 @@ private:
 // parts of the evaluation and returns the value of the position from the point
 // of view of the side to move.
 
-Value Evaluation::value()
+template<Tracing T>
+Value Evaluation<T>::value()
 {
     Value value = VALUE_ZERO;
 
@@ -162,8 +168,9 @@ Value Evaluation::value()
 
 Value Eval::evaluate(Position &pos)
 {
-    return Evaluation(pos).value();
+    return Evaluation<NO_TRACE>(pos).value();
 }
+
 
 /// trace() is like evaluate(), but instead of returning a value, it returns
 /// a string (suitable for outputting to stdout) that contains the detailed
@@ -177,7 +184,7 @@ std::string Eval::trace(const Position &pos)
     // TODO
     //pos.this_thread()->contempt = 0 // TODO: SCORE_ZERO; // Reset any dynamic contempt
 
-    Value v = Evaluation(pos)->value();
+    Value v = Evaluation<TRACE>(pos)->value();
 
     v = pos.side_to_move() == WHITE ? v : -v; // Trace scores are from white's point of view
 

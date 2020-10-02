@@ -205,11 +205,15 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
 
        3) Phrase.
 
-       4) Halfmove clock. This is the number of halfmoves since the last
+       4) Action.
+
+       5) Black on board/Black in hand/White on board/White in hand/need to remove
+
+       6) Halfmove clock. This is the number of halfmoves since the last
           capture. This is used to determine if a draw can be claimed under the
           fifty-move rule.
 
-       5) Fullmove number. The number of the full move. It starts at 1, and is
+       7) Fullmove number. The number of the full move. It starts at 1, and is
           incremented after Black's move.
     */
 
@@ -240,6 +244,7 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
 
     // 3. Phrase
     ss >> token;
+    ss >> token;
 
     switch (token) {
     case 'r':
@@ -258,7 +263,32 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
         phase = PHASE_NONE;
     }
 
-    // 4-5. Halfmove clock and fullmove number
+    // 4. Action
+    ss >> token;
+    ss >> token;
+
+    switch (token) {
+    case 'p':
+        action = ACTION_PLACE;
+        break;
+    case 's':
+        action = ACTION_SELECT;
+        break;
+    case 'r':
+        action = ACTION_REMOVE;
+        break;
+    default:
+        action = ACTION_NONE;
+    }
+    
+    // 5. Black on board / Black in hand / White on board / White in hand / need to remove
+    ss >> std::skipws
+        >> pieceCountOnBoard[BLACK] >> pieceCountInHand[BLACK]
+        >> pieceCountOnBoard[WHITE] >> pieceCountInHand[WHITE]
+        >> pieceCountNeedRemove;
+
+
+    // 6-7. Halfmove clock and fullmove number
     ss >> std::skipws >> st->rule50 >> gamePly;
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
@@ -371,6 +401,28 @@ const string Position::fen() const
     }
 
     ss << " ";
+
+    // Action
+    switch (action) {
+    case ACTION_PLACE:
+        ss << "p";
+        break;
+    case ACTION_SELECT:
+        ss << "s";
+        break;
+    case ACTION_REMOVE:
+        ss << "r";
+        break;
+    default:
+        ss << "?";
+        break;
+    }
+
+    ss << " ";
+
+    ss << pieceCountOnBoard[BLACK] << " " << pieceCountInHand[BLACK] << " "
+        << pieceCountOnBoard[WHITE] << " " << pieceCountInHand[WHITE] << " "
+        << pieceCountNeedRemove << " ";
 
     ss << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
@@ -742,7 +794,7 @@ int Position::set_position(const struct Rule *newRule)
     pieceCountNeedRemove = 0;
     millListSize = 0;
     winner = NOBODY;
-    MoveList::create();
+    MoveList<LEGAL>::create();
     create_mill_table();
     currentSquare = SQ_0;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
@@ -907,7 +959,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             int md;
 
             for (md = 0; md < MD_NB; md++) {
-                if (s == MoveList::moveTable[currentSquare][md])
+                if (s == MoveList<LEGAL>::moveTable[currentSquare][md])
                     break;
             }
 
@@ -1583,7 +1635,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
         !rule.allowFlyWhenRemainThreePieces) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
-            moveSquare = static_cast<Square>(MoveList::moveTable[s][d]);
+            moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
             if (moveSquare) {
                 if (board[moveSquare] == 0x00 ||
                     (includeFobidden && board[moveSquare] == BAN_STONE)) {
@@ -1601,7 +1653,7 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
     Square moveSquare;
 
     for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
-        moveSquare = static_cast<Square>(MoveList::moveTable[s][d]);
+        moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
 
         if (!moveSquare) {
             continue;
@@ -1647,7 +1699,7 @@ bool Position::is_all_surrounded() const
         }
 
         for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
-            moveSquare = static_cast<Square>(MoveList::moveTable[s][d]);
+            moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
             if (moveSquare && !board[moveSquare]) {
                 return false;
             }

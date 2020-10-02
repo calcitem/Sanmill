@@ -99,7 +99,6 @@ struct MainThread : public Thread
 
 struct ThreadPool : public std::vector<Thread *>
 {
-
     void start_thinking(Position *, StateListPtr &, const Search::LimitsType &, bool = false);
     void clear();
     void set(size_t);
@@ -124,7 +123,6 @@ private:
 
     uint64_t accumulate(std::atomic<uint64_t> Thread:: *member) const
     {
-
         uint64_t sum = 0;
         for (Thread *th : *this)
             sum += (th->*member).load(std::memory_order_relaxed);

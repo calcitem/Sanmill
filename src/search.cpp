@@ -146,12 +146,12 @@ uint64_t perft(Position &pos, Depth depth)
     uint64_t cnt, nodes = 0;
     const bool leaf = (depth == 2);
 
-    for (const auto &m : MoveList(pos)) {
+    for (const auto &m : MoveList<LEGAL>(pos)) {
         if (Root && depth <= 1)
             cnt = 1, nodes++;
         else {
             pos.do_move(m, st);
-            cnt = leaf ? MoveList(pos).size() : perft<false>(pos, depth - 1);
+            cnt = leaf ? MoveList<LEGAL>(pos).size() : perft<false>(pos, depth - 1);
             nodes += cnt;
             pos.undo_move(m);
         }
@@ -202,7 +202,7 @@ void MainThread::search()
     if (rootMoves.empty()) {
         rootMoves.emplace_back(MOVE_NONE);
         sync_cout << "info depth 0 score "
-            << UCI::value(false /* TODO */ ? -VALUE_MATE : VALUE_DRAW)
+            << UCI::value(rootPos.get_phase() == PHASE_GAMEOVER ? -VALUE_MATE : VALUE_DRAW) // TODO
             << sync_endl;
     } else {
         for (Thread *th : Threads) {
@@ -303,8 +303,6 @@ void Thread::search()
     int iterIdx = 0;
 
     std::memset(ss - 7, 0, 10 * sizeof(Stack));
-    for (int i = 7; i > 0; i--)
-        (ss - i)->continuationHistory = &this->continuationHistory[0][0][NO_PIECE][0]; // Use as a sentinel
 
     ss->pv = pv;
 
@@ -847,7 +845,7 @@ int AIAlgorithm::search()
     }
 #endif // THREEFOLD_REPETITION
 
-    MoveList::shuffle();
+    MoveList<LEGAL>::shuffle();
 
     Value alpha = -VALUE_INFINITE;
     Value beta = VALUE_INFINITE;

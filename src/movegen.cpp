@@ -17,15 +17,120 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cassert>
 #include <random>
 #include <array>
 
 #include "movegen.h"
-#include "misc.h"
 #include "position.h"
+#include "misc.h"
 #include "option.h"
 
-void MoveList::create()
+/// generate<LEGAL> generates all the legal moves in the given position
+
+template<>
+ExtMove *generate<LEGAL>(/* const */ Position &pos, ExtMove *moveList)
+{
+    Square s;
+
+    Color us = pos.side_to_move();
+    Color them = ~us;
+
+    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
+
+    ExtMove *cur = moveList;
+
+    switch (pos.get_action()) {
+    case ACTION_SELECT:
+    case ACTION_PLACE:
+        if (pos.get_phase() & (PHASE_PLACING | PHASE_READY)) {
+            for (auto i : MoveList<LEGAL>::movePriorityTable) {
+                if (pos.get_board()[i]) {
+                    continue;
+                }
+
+                if (pos.get_phase() != PHASE_READY) {
+                    *cur++ = (Move)i;
+                } else {
+#ifdef FIRST_MOVE_STAR_PREFERRED
+                    if (Position::is_star_square(s)) {
+                        moves.push_back((Move)s);
+                    }
+#else
+                    *cur++ = (Move)i;
+#endif
+                }
+            }
+            break;
+        }
+
+        if (pos.get_phase() & PHASE_MOVING) {
+            Square newSquare, oldSquare;
+
+            // move piece that location weak first
+            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+                oldSquare = MoveList<LEGAL>::movePriorityTable[i];
+
+                if (!pos.select_piece(oldSquare)) {
+                    continue;
+                }
+
+                if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
+                    !rule.allowFlyWhenRemainThreePieces) {
+                    for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
+                        newSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[oldSquare][direction]);
+                        if (newSquare && !pos.get_board()[newSquare]) {
+                            Move m = make_move(oldSquare, newSquare);
+                            *cur++ = (Move)m;
+                        }
+                    }
+                } else {
+                    // piece count < 3£¬and allow fly, if is empty point, that's ok, do not need in move list
+                    for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
+                        if (!pos.get_board()[newSquare]) {
+                            Move m = make_move(oldSquare, newSquare);
+                            *cur++ = (Move)m;
+                        }
+                    }
+                }
+            }
+        }
+        break;
+
+    case ACTION_REMOVE:
+        if (pos.is_all_in_mills(them)) {
+            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+                s = MoveList<LEGAL>::movePriorityTable[i];
+                if (pos.get_board()[s] & make_piece(them)) {
+                    *cur++ = (Move)-s;
+                }
+            }
+            break;
+        }
+
+        // not is all in mills
+        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+            s = MoveList<LEGAL>::movePriorityTable[i];
+            if (pos.get_board()[s] & make_piece(them)) {
+                if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
+                    *cur++ = (Move)-s;
+                }
+            }
+        }
+        break;
+
+    default:
+        assert(0);
+        break;
+    }
+
+    return cur;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+template<>
+void MoveList<LEGAL>::create()
 {
     // Note: Not follow order of MoveDirection array
 #if 1
@@ -241,7 +346,8 @@ void MoveList::create()
 #endif
 }
 
-void MoveList::shuffle()
+template<>
+void MoveList<LEGAL>::shuffle()
 {
     std::array<Square, 4> movePriorityTable0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
     std::array<Square, 8> movePriorityTable1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
@@ -281,105 +387,4 @@ void MoveList::shuffle()
     for (size_t i = 0; i < 8; i++) {
         movePriorityTable[i + 16] = movePriorityTable3[i];
     }
-}
-
-
-/// generate generates all the legal moves in the given position
-
-ExtMove *generate(Position &pos, ExtMove *moveList)
-{
-    Square s;
-
-    Color us = pos.side_to_move();
-    Color them = ~us;
-
-    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
-
-    ExtMove *cur = moveList;
-
-    switch (pos.action) {
-    case ACTION_SELECT:
-    case ACTION_PLACE:
-         if (pos.phase & (PHASE_PLACING | PHASE_READY)) {
-            for (auto i : MoveList::movePriorityTable) {
-                if (pos.board[i]) {
-                    continue;
-                }
-
-                if (pos.phase != PHASE_READY) {
-                    *cur++ = (Move)i;
-                } else {
-#ifdef FIRST_MOVE_STAR_PREFERRED
-                    if (Position::is_star_square(s)) {
-                        moves.push_back((Move)s);
-                    }
-#else
-                    *cur++ = (Move)i;
-#endif
-                }
-            }
-            break;
-        }
-
-        if (pos.phase & PHASE_MOVING) {
-            Square newSquare, oldSquare;
-
-            // move piece that location weak first
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldSquare = MoveList::movePriorityTable[i];
-
-                if (!pos.select_piece(oldSquare)) {
-                    continue;
-                }
-
-                if (pos.pieceCountOnBoard[pos.sideToMove] > rule.nPiecesAtLeast ||
-                    !rule.allowFlyWhenRemainThreePieces) {
-                    for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
-                        newSquare = static_cast<Square>(MoveList::moveTable[oldSquare][direction]);
-                        if (newSquare && !pos.board[newSquare]) {
-                            Move m = make_move(oldSquare, newSquare);
-                            *cur++ = (Move)m;
-                        }
-                    }
-                } else {
-                    // piece count < 3，and allow fly, if is empty point, that's ok, do not need in move list
-                    for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
-                        if (!pos.board[newSquare]) {
-                            Move m = make_move(oldSquare, newSquare);
-                            *cur++ = (Move)m;
-                        }
-                    }
-                }
-            }
-        }
-        break;
-
-    case ACTION_REMOVE:
-        if (pos.is_all_in_mills(them)) {
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                s = MoveList::movePriorityTable[i];
-                if (pos.board[s]& make_piece(them)) {
-                    *cur++ = (Move)-s;
-                }
-            }
-            break;
-        }
-
-        // not is all in mills
-        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            s = MoveList::movePriorityTable[i];
-            if (pos.board[s] & make_piece(them)) {
-                if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
-                    *cur++ = (Move)-s;
-                }
-            }
-        }
-        break;
-
-    default:
-        assert(0);
-        break;
-    }
-
-    return cur;
 }

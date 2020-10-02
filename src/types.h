@@ -242,6 +242,8 @@ enum PieceType : uint16_t
     ALL_PIECES = 0,
     PIECE_TYPE_NB = 4,
 
+    STONE  = 5,
+
     IN_HAND = 0x10,
     ON_BOARD = 0x20,
 };
@@ -282,6 +284,8 @@ enum Piece : uint8_t
     PIECE_NB = 64,  // Fix overflow
 };
 
+constexpr Value PieceValue = StoneValue;
+
 using Depth = int8_t;
 
 enum : int
@@ -313,7 +317,7 @@ enum Square : int32_t
     SQ_END = SQ_32
 };
 
-enum MoveDirection
+enum MoveDirection : int
 {
     MD_CLOCKWISE = 0,
     MD_BEGIN = MD_CLOCKWISE,
@@ -323,7 +327,7 @@ enum MoveDirection
     MD_NB = 4
 };
 
-enum LineDirection
+enum LineDirection : int
 {
     LD_HORIZONTAL = 0,
     LD_VERTICAL = 1,
@@ -460,7 +464,7 @@ inline Color color_of(Piece pc)
 
 constexpr bool is_ok(Square s)
 {
-    return s >= SQ_A1 && s <= SQ_C8;
+    return s == SQ_NONE || (s >= SQ_A1 && s <= SQ_C8);  // TODO: SQ_NONE?
 }
 
 constexpr File file_of(Square s)
@@ -484,6 +488,14 @@ inline const Square to_sq(Move m)
         m = (Move)-m;
 
     return Square(m & 0x00FF);
+}
+
+constexpr int from_to(Move m)
+{
+#if 0
+    return m & 0xFFF;
+#endif
+    return m & 0xFFFF;   // TODO
 }
 
 inline const MoveType type_of(Move m)

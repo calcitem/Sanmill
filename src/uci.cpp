@@ -41,7 +41,7 @@ namespace
 {
 
 // FEN string of the initial position, normal mill game
-const char *StartFEN = "********/********/******** b p 0 1"; // Chess: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const char *StartFEN = "********/********/******** b p p 0 12 0 12 0 0 1"; // Chess: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 
 // position() is called when engine receives the "position" UCI command.
@@ -313,7 +313,7 @@ Move UCI::to_move(Position *pos, string &str)
     if (str.length() == 5) // Junior could send promotion piece in uppercase
         str[4] = char(tolower(str[4]));
 
-    for (const auto &m : MoveList(*pos))
+    for (const auto &m : MoveList<LEGAL>(*pos))
         if (str == UCI::move(m))
             return m;
 

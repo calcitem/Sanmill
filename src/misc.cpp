@@ -72,7 +72,8 @@ const string Version = "";
 /// Idea from http://groups.google.com/group/comp.lang.c++/msg/1d941c0f26ea0d81
 
 struct Tie : public streambuf
-{ // MSVC requires split streambuf for cin and cout
+{
+    // MSVC requires split streambuf for cin and cout
 
     Tie(streambuf *b, streambuf *l) : buf(b), logBuf(l)
     {
@@ -126,7 +127,6 @@ class Logger
 public:
     static void start(const std::string &fname)
     {
-
         static Logger l;
 
         if (!fname.empty() && !l.file.is_open()) {
@@ -156,7 +156,6 @@ public:
 
 const string engine_info(bool to_uci)
 {
-
     const string months("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec");
     string month, day, year;
     stringstream ss, date(__DATE__); // From compiler, format is "Sep 21 2008"
@@ -267,7 +266,6 @@ void dbg_mean_of(int v)
 
 void dbg_print()
 {
-
     if (hits[0])
         cerr << "Total " << hits[0] << " Hits " << hits[1]
         << " hit rate (%) " << 100 * hits[1] / hits[0] << endl;
@@ -283,7 +281,6 @@ void dbg_print()
 
 std::ostream &operator<<(std::ostream &os, SyncCout sc)
 {
-
     static std::mutex m;
 
     if (sc == IO_LOCK)
@@ -316,7 +313,6 @@ void prefetch(void *)
 
 void prefetch(void *addr)
 {
-
 #  if defined(__INTEL_COMPILER)
     // This hack prevents prefetches from being optimized away by
     // Intel compiler. Both MSVC and gcc seem not be affected by this.
@@ -370,7 +366,6 @@ void *aligned_ttmem_alloc(size_t allocSize, void *&mem)
 
 void *aligned_ttmem_alloc(size_t allocSize, void *&mem)
 {
-
     constexpr size_t alignment = 64; // assumed cache line size
     size_t size = allocSize + alignment - 1; // allocate some extra space
     mem = malloc(size);
@@ -465,7 +460,6 @@ int best_group(size_t idx)
 
 void bindThisThread(size_t idx)
 {
-
     // Use only local variables to be thread-safe
     int group = best_group(idx);
 

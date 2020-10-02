@@ -95,11 +95,11 @@ public:
 
     // Accessing hash keys
     Key key() const;
+    Key key_after(Move m) const;
     void construct_key();
     Key revert_key(Square s);
     Key update_key(Square s);
     Key update_key_misc();
-    Key key_after(Move m) const;
 
     // Other properties of the position
     Color side_to_move() const;
