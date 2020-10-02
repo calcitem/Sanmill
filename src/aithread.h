@@ -35,24 +35,34 @@ class AiThread : public QThread
 {
     Q_OBJECT
 
+private:
+    QMutex mutex;
+    QWaitCondition pauseCondition;
+
+    string strCommand;
+
 public:
     explicit AiThread(QObject *parent = nullptr);
     explicit AiThread(int color, QObject *parent = nullptr);
     ~AiThread() override;
+    int search();
 
 signals:
     void command(const string &cmdline, bool update = true);
 
     void searchStarted();
-
     void searchFinished();
 
-protected:
-    void run() override;
+public slots:
+    void act(); // Force move, not quit thread
+    void resume();
+    void stop();
+    void emitCommand();
 
 public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
+    void run() override;
 
     Server *getServer()
     {
@@ -71,56 +81,11 @@ public:
 
     void analyze(Color c);
 
-public slots:
-    void act(); // Force move, not quit thread
-    void resume();
-    void stop();
-    void emitCommand();
-
-public:
-    int us;
-
-private:
-    string strCommand;
-    QMutex mutex;
-
-    // For ext in future
-    QWaitCondition pauseCondition;
-
-private:
-    int timeLimit;
-    QTimer timer;
-
-    Server *server;
-    Client *client;
-
-    ////////////////
-
-public:
-    Position *pos { nullptr };
-
-    Depth originDepth { 0 };
-    Depth newDepth { 0 };
-
-    Move bestMove { MOVE_NONE };
-    Value bestvalue{ VALUE_ZERO };
-    Value lastvalue{ VALUE_ZERO };
-
-    char cmdline[64]{};
-
     // bool requiredQuit {false}; // TODO
 
-    inline Position *position()
-    {
-        return pos;
-    }
-
     void setPosition(Position *p);
-
-    int search();
     string nextMove();
-    void undo_move();
-    Depth changeDepth();
+    Depth adjustDepth();
 
     void quit()
     {
@@ -136,12 +101,8 @@ public:
 #endif
 #ifdef CYCLE_STAT
     stopwatch::rdtscp_clock::time_point sortCycle;
-    stopwatch::timer::duration sortCycle{ 0 };
+    stopwatch::timer::duration sortCycle { 0 };
     stopwatch::timer::period sortCycle;
-#endif
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    void clearTT();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -163,6 +124,25 @@ public:
     size_t ttReplaceCozHashCount{ 0 };
 #endif
 #endif
+
+public:
+    Position *rootPos { nullptr };
+
+    Depth originDepth { 0 };
+    Depth adjustedDepth { 0 };
+
+    Move bestMove { MOVE_NONE };
+    Value bestvalue { VALUE_ZERO };
+    Value lastvalue { VALUE_ZERO };
+
+    int us;
+
+private:
+    int timeLimit;
+    QTimer timer;
+
+    Server *server;
+    Client *client;
 };
 
 #endif // AITHREAD_H

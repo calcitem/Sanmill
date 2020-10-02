@@ -67,7 +67,7 @@ void AiThread::setAi(Position *p)
 {
     mutex.lock();
 
-    this->pos = p;
+    this->rootPos = p;
     setPosition(p);
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -82,7 +82,7 @@ void AiThread::setAi(Position *p)
 void AiThread::setAi(Position *p, int tl)
 {
     mutex.lock();
-    this->pos = p;
+    this->rootPos = p;
     setPosition(p);
     timeLimit = tl;
     mutex.unlock();
@@ -144,9 +144,9 @@ void AiThread::analyze(Color c)
     string strUs = (c == BLACK ? "黑方" : "白方");
     string strThem = (c == BLACK ? "白方" : "黑方");
 
-    loggerDebug("Depth: %d\n\n", newDepth);
+    loggerDebug("Depth: %d\n\n", adjustedDepth);
 
-    Position *p = position();
+    Position *p = rootPos;
 
     cout << *p << "\n" << endl;
     cout << std::dec;
@@ -260,7 +260,7 @@ void AiThread::run()
     while (!isInterruptionRequested()) {
         mutex.lock();
 
-        sideToMove = pos->sideToMove;
+        sideToMove = rootPos->sideToMove;
 
         if (sideToMove != us) {
             pauseCondition.wait(&mutex);
@@ -268,7 +268,7 @@ void AiThread::run()
             continue;
         }
 
-        setPosition(pos);
+        setPosition(rootPos);
         emit searchStarted();
         mutex.unlock();
 
@@ -340,7 +340,7 @@ void AiThread::stop()
 
 ///////////////
 
-Depth AiThread::changeDepth()
+Depth AiThread::adjustDepth()
 {
     Depth d = 0;
 
@@ -392,17 +392,17 @@ Depth AiThread::changeDepth()
 
     const Depth flyingDepth = 9;
 
-    if (pos->phase & PHASE_PLACING) {
+    if (rootPos->phase & PHASE_PLACING) {
         if (rule.nTotalPiecesEachSide == 12) {
-            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE)];
+            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
         } else {
-            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE)];
+            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
         }
     }
 
-    if (pos->phase & PHASE_MOVING) {
-        int pb = pos->count<ON_BOARD>(BLACK);
-        int pw = pos->count<ON_BOARD>(WHITE);
+    if (rootPos->phase & PHASE_MOVING) {
+        int pb = rootPos->count<ON_BOARD>(BLACK);
+        int pw = rootPos->count<ON_BOARD>(WHITE);
 
         int pieces = pb + pw;
         int diff = pb - pw;
@@ -466,11 +466,7 @@ void AiThread::setPosition(Position *p)
         moveHistory.clear();
     }
 
-    //position = p;
-    pos = p;
-    // position = pos;
-
-     //requiredQuit = false;
+    rootPos = p;
 }
 
 
@@ -484,8 +480,8 @@ int AiThread::search()
 
     Value value = VALUE_ZERO;
 
-    Depth d = changeDepth();
-    newDepth = d;
+    Depth d = adjustDepth();
+    adjustedDepth = d;
 
     time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
@@ -502,8 +498,8 @@ int AiThread::search()
 #ifdef THREEFOLD_REPETITION
     static int nRepetition = 0;
 
-    if (pos->get_phase() == PHASE_MOVING) {
-        Key key = pos->key();
+    if (rootPos->get_phase() == PHASE_MOVING) {
+        Key key = rootPos->key();
 
         if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
             nRepetition++;
@@ -516,7 +512,7 @@ int AiThread::search()
         }
     }
 
-    if (pos->get_phase() == PHASE_PLACING) {
+    if (rootPos->get_phase() == PHASE_PLACING) {
         moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -544,7 +540,7 @@ int AiThread::search()
 #endif
 
 #ifdef MTDF_AI
-            value = MTDF(pos, ss, value, i, originDepth, bestMove);
+            value = MTDF(rootPos, ss, value, i, originDepth, bestMove);
 #else
             value = search(pos, ss, i, originDepth, alpha, beta, bestMove);
 #endif
@@ -574,7 +570,7 @@ int AiThread::search()
     originDepth = d;
 
 #ifdef MTDF_AI
-    value = MTDF(pos, ss, value, d, originDepth, bestMove);
+    value = MTDF(rootPos, ss, value, d, originDepth, bestMove);
 #else
     value = search(pos, ss, d, originDepth, alpha, beta, bestMove);
 #endif
