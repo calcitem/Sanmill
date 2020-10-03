@@ -57,7 +57,11 @@ private:
     bool isAutoRestart { false };
     bool isAutoChangeFirstMove { false };
     bool resignIfMostLose { false };
+#ifdef SELF_MOVE
+    bool randomMoveEnabled { false };
+#else
     bool randomMoveEnabled { true };
+#endif
 #ifdef ENDGAME_LEARNING_FORCE
     bool learnEndgame { true };
 #else

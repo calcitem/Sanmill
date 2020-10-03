@@ -28,6 +28,8 @@
 
 #define QT_UI
 
+//#define SELF_MOVE
+
 //#define MOBILE_APP_UI
 
 //#define TRAINING_MODE
@@ -101,6 +103,10 @@
 //#define MESSAGEBOX_ENABLE
 
 #ifdef DEBUG_MODE
+#define DONOT_PLAY_SOUND
+#endif
+
+#ifdef SELF_MOVE
 #define DONOT_PLAY_SOUND
 #endif
 

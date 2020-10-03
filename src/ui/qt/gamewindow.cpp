@@ -209,6 +209,11 @@ void MillGameWindow::initialize()
     //ui.actionEngine2_R->setChecked(false);
 #endif // TEST_MODE
 
+#ifdef SELF_MOVE    
+    ui.actionEngine1_T->setChecked(true);
+    ui.actionEngine2_R->setChecked(true);
+#endif // SELF_MOVE
+
     connect(ui.actionSound_S, SIGNAL(toggled(bool)),
             gameController, SLOT(setSound(bool)));
 
