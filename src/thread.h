@@ -100,10 +100,8 @@ public:
 
     void analyze(Color c);
 
-    void quit()
+    void clearHistoryScore()
     {
-        loggerDebug("Timeout\n");
-        //requiredQuit = true;  // TODO
 #ifdef HOSTORY_HEURISTIC
         movePicker->clearHistoryScore();
 #endif

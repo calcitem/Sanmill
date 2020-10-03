@@ -72,7 +72,7 @@ Thread::~Thread()
     assert(!searching);
 
     exit = true;
-    quit();
+    clearHistoryScore();
     start_searching();
     stdThread.join();
 }
@@ -97,7 +97,7 @@ void Thread::clear()
 
 void Thread::start_searching()
 {
-    quit();
+    clearHistoryScore();
 
     std::lock_guard<std::mutex> lk(mutex);
     searching = true;
@@ -195,7 +195,7 @@ void Thread::act()
         return;
 
     std::lock_guard<std::mutex> lk(mutex);
-    quit();
+    clearHistoryScore();
 }
 
 void Thread::setAi(Position *p)
