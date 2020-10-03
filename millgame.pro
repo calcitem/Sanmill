@@ -38,7 +38,6 @@ SOURCES += \
     src/position.cpp \
     src/rule.cpp \
     src/main.cpp \
-    src/aithread.cpp \
     src/search.cpp \
     src/test/test.cpp \
     src/ui/qt/gamewindow.cpp \
@@ -68,7 +67,6 @@ HEADERS  += \
     src/misc.h \
     src/stack.h \
     src/stopwatch.h \
-    src/aithread.h \
     src/search.h \
     src/uci.h \
     src/bitboard.h \

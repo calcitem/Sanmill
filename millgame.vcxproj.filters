@@ -102,9 +102,6 @@
     <ClInclude Include="src\tt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -258,9 +255,6 @@
     <QtMoc Include="src\test\test.h">
       <Filter>Qt Files\test</Filter>
     </QtMoc>
-    <QtMoc Include="src\aithread.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="src\ui\qt\client.h">
       <Filter>Qt Files</Filter>
     </QtMoc>
@@ -284,6 +278,9 @@
     </QtMoc>
     <QtMoc Include="src\ui\qt\server.h">
       <Filter>Qt Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\thread.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -309,9 +306,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\tt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aithread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\misc.cpp">

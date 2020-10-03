@@ -25,35 +25,41 @@
 #include <atomic>
 #include <condition_variable>
 #include <mutex>
-#include <thread>
 #include <vector>
+
+#include <QTimer>
 
 #include "movepick.h"
 #include "position.h"
 #include "search.h"
 #include "thread_win32_osx.h"
 
+#include "server.h"
+#include "client.h"
+#include "test.h"
+
 
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material hash tables so that once we get a
 /// pointer to an entry its life time is unlimited and we don't have
 /// to care about someone changing the entry under our feet.
-
-class Thread
+class Thread : public QObject
 {
+public:
     std::mutex mutex;
     std::condition_variable cv;
     size_t idx;
     bool exit = false, searching = true; // Set before starting std::thread
     NativeThread stdThread;
 
-public:
-    explicit Thread(size_t);
+    string strCommand;
+
+    explicit Thread(QObject *parent = nullptr);
+    explicit Thread(int color, QObject *parent = nullptr);
     virtual ~Thread();
-    virtual void search();
+    int search();
     void clear();
     void idle_loop();
-    void start_searching();
     void wait_for_search_finished();
     int best_move_count(Move move) const;
 
@@ -63,7 +69,7 @@ public:
     Color nmpColor;
     std::atomic<uint64_t> nodes, tbHits, bestMoveChanges;
 
-    Position rootPos;
+    Position *rootPos { nullptr };
     Search::RootMoves rootMoves;
     Depth rootDepth, completedDepth;
     CounterMoveHistory counterMoves;
@@ -71,6 +77,98 @@ public:
     LowPlyHistory lowPlyHistory;
     CapturePieceToHistory captureHistory;
     ContinuationHistory continuationHistory[2][2];
+
+    void setAi(Position *p);
+    void setAi(Position *p, int time);
+
+    void setPosition(Position *p);
+    string nextMove();
+    Depth adjustDepth();
+
+    Server *getServer()
+    {
+        return server;
+    }
+
+    Client *getClient()
+    {
+        return client;
+    }
+
+    int getTimeLimit()
+    {
+        return timeLimit;
+    }
+
+    void analyze(Color c);
+
+    void quit()
+    {
+        loggerDebug("Timeout\n");
+        //requiredQuit = true;  // TODO
+#ifdef HOSTORY_HEURISTIC
+        movePicker->clearHistoryScore();
+#endif
+    }
+
+#ifdef TIME_STAT
+    TimePoint sortTime{ 0 };
+#endif
+#ifdef CYCLE_STAT
+    stopwatch::rdtscp_clock::time_point sortCycle;
+    stopwatch::timer::duration sortCycle { 0 };
+    stopwatch::timer::period sortCycle;
+#endif
+
+#ifdef ENDGAME_LEARNING
+    bool findEndgameHash(key_t key, Endgame &endgame);
+    static int recordEndgameHash(key_t key, const Endgame &endgame);
+    void clearEndgameHashMap();
+    static void recordEndgameHashMapToFile();
+    static void loadEndgameFileToHashMap();
+#endif // ENDGAME_LEARNING
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef TRANSPOSITION_TABLE_DEBUG
+    size_t tteCount{ 0 };
+    size_t ttHitCount{ 0 };
+    size_t ttMissCount{ 0 };
+    size_t ttInsertNewCount{ 0 };
+    size_t ttAddrHitCount{ 0 };
+    size_t ttReplaceCozDepthCount{ 0 };
+    size_t ttReplaceCozHashCount{ 0 };
+#endif
+#endif
+
+public:
+    Depth originDepth { 0 };
+    Depth adjustedDepth { 0 };
+
+    Move bestMove { MOVE_NONE };
+    Value bestvalue { VALUE_ZERO };
+    Value lastvalue { VALUE_ZERO };
+
+    int us;
+
+    Q_OBJECT
+
+private:
+    int timeLimit;
+    QTimer timer;
+
+    Server *server;
+    Client *client;
+
+signals:
+    void command(const string &cmdline, bool update = true);
+
+    void searchStarted();
+    void searchFinished();
+
+public slots:
+    void act(); // Force move, not quit thread
+    void start_searching();
+    void emitCommand();
 };
 
 
@@ -78,10 +176,9 @@ public:
 
 struct MainThread : public Thread
 {
-
     using Thread::Thread;
 
-    void search() override;
+    int search() /* override */;
     void check_time();
 
     double previousTimeReduction;

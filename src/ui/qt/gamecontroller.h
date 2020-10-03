@@ -39,7 +39,7 @@
 #include "position.h"
 #include "gamescene.h"
 #include "pieceitem.h"
-#include "aithread.h"
+#include "thread.h"
 #include "server.h"
 #include "client.h"
 #include "stopwatch.h"
@@ -261,8 +261,8 @@ public slots:
 
     void createAiThreads()
     {
-        aiThread[BLACK] = new AiThread(1);
-        aiThread[WHITE] = new AiThread(2);
+        aiThread[BLACK] = new Thread(1);
+        aiThread[WHITE] = new Thread(2);
     }
 
     void startAiThreads()
@@ -362,7 +362,7 @@ private:
 
 private:
     // 2个AI的线程
-    AiThread *aiThread[COLOR_NB];
+    Thread *aiThread[COLOR_NB];
 
 #ifndef TRAINING_MODE
     // 棋局的场景类
