@@ -279,19 +279,19 @@ public slots:
     void stopAndWaitAiThreads()
     {
         if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->stop();
+            aiThread[BLACK]->start_searching();
             aiThread[BLACK]->wait();
         }
         if (isAiPlayer[WHITE]) {
-            aiThread[WHITE]->stop();
+            aiThread[WHITE]->start_searching();
             aiThread[WHITE]->wait();
         }
     }
 
     void stopThreads()
     {
-        aiThread[BLACK]->stop();
-        aiThread[WHITE]->stop();
+        aiThread[BLACK]->start_searching();
+        aiThread[WHITE]->start_searching();
     }
 
     void waitThreads()
@@ -309,7 +309,7 @@ public slots:
     void resumeAiThreads(Color sideToMove)
     {
         if (isAiPlayer[sideToMove]) {
-            aiThread[sideToMove]->resume();
+            aiThread[sideToMove]->start_searching();
         }
     }
 

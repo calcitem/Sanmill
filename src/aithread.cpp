@@ -35,6 +35,7 @@ using namespace std;
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
 
 AiThread::AiThread(int color, QObject *parent) :
+    stdThread(&AiThread::idle_loop, this),
     QThread(parent),
     timeLimit(3600)
 {
@@ -51,24 +52,141 @@ AiThread::AiThread(int color, QObject *parent) :
         client = new Client(nullptr, clientPort);
     }
 #endif  // TRAINING_MODE
+
+    wait_for_search_finished();
 }
 
 AiThread::~AiThread()
 {
     //delete server;
-    //delete client;
+    //delete client
+    
+    assert(!searching);
 
-    stop();
+    exit = true;
     quit();
-    wait();
+    start_searching();
+    stdThread.join();
 }
+
+/// Thread::start_searching() wakes up the thread that will start the search
+
+void AiThread::start_searching()
+{
+    quit();
+
+    std::lock_guard<std::mutex> lk(mutex);
+    searching = true;
+    cv.notify_one(); // Wake up the thread in idle_loop()
+}
+
+/// Thread::wait_for_search_finished() blocks on the condition variable
+/// until the thread has finished searching.
+
+void AiThread::wait_for_search_finished()
+{
+    std::unique_lock<std::mutex> lk(mutex);
+    cv.wait(lk, [&] { return !searching; });
+}
+
+
+void AiThread::idle_loop()    // idle_loop()
+{
+#ifdef DEBUG_MODE
+    int iTemp = 0;
+#endif
+
+    Color sideToMove = NOCOLOR;
+
+    loggerDebug("Thread %d start\n", us);
+
+    bestvalue = lastvalue = VALUE_ZERO;
+
+    while (true) {
+        std::unique_lock<std::mutex> lk(mutex);
+        searching = false;        
+
+#if 0
+        sideToMove = rootPos->sideToMove;
+
+        // TODO
+        if (sideToMove != us) {
+            cv.notify_one(); // Wake up anyone waiting for search finished
+            cv.wait(lk, [&] { return searching; });
+
+            if (exit)
+                return;
+
+            lk.unlock();
+            continue;
+        }
+#endif
+
+        cv.notify_one(); // Wake up anyone waiting for search finished
+        cv.wait(lk, [&] { return searching; });
+
+        if (exit)
+            return;
+
+        emit searchStarted();
+        lk.unlock();
+
+        if (rootPos == nullptr) {
+            continue;
+        }
+
+        setPosition(rootPos);
+
+#ifdef OPENING_BOOK
+        // gameOptions.getOpeningBook()
+        if (!openingBookDeque.empty()) {
+            char obc[16] = { 0 };
+            sq2str(obc);
+            strCommand = obc;
+            emitCommand();
+        } else {
+#endif
+            if (search() == 3) {
+                loggerDebug("Draw\n\n");
+                strCommand = "draw";
+                emitCommand();
+            } else {
+                strCommand = nextMove();
+                if (strCommand != "" && strCommand != "error!") {
+                    emitCommand();
+                }
+            }
+#ifdef OPENING_BOOK
+        }
+#endif
+
+        emit searchFinished();
+
+//         lk.lock();
+//         cv.wait(lk, [&] { return searching; });
+//         lk.unlock();
+    }
+
+    loggerDebug("Thread %d quit\n", us);
+}
+
+void AiThread::act()
+{
+    if (isFinished() || !isRunning())
+        return;
+
+    std::lock_guard<std::mutex> lk(mutex);
+    quit();
+}
+
+
+///////////////
 
 void AiThread::setAi(Position *p)
 {
     std::lock_guard<std::mutex> lk(mutex);
 
     this->rootPos = p;
-    setPosition(p);
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
@@ -79,10 +197,8 @@ void AiThread::setAi(Position *p)
 
 void AiThread::setAi(Position *p, int tl)
 {
-    std::lock_guard<std::mutex> lk(mutex);
+    setAi(p);
 
-    this->rootPos = p;
-    setPosition(p);
     timeLimit = tl;
 }
 
@@ -149,8 +265,7 @@ void AiThread::analyze(Color c)
     cout << *p << "\n" << endl;
     cout << std::dec;
 
-    switch (p->get_phase())
-    {
+    switch (p->get_phase()) {
     case PHASE_PLACING:
         cout << "摆子阶段" << endl;
         break;
@@ -242,100 +357,6 @@ void AiThread::analyze(Color c)
 out:
     cout << endl << endl;
 }
-
-void AiThread::run()    // idle_loop()
-{
-#ifdef DEBUG_MODE
-    int iTemp = 0;
-#endif
-
-    Color sideToMove = NOCOLOR;
-
-    loggerDebug("Thread %d start\n", us);
-
-    bestvalue = lastvalue = VALUE_ZERO;
-
-    while (!isInterruptionRequested()) {
-        std::unique_lock<std::mutex> lk(mutex);
-        searching = false;
-
-        sideToMove = rootPos->sideToMove;
-
-        if (sideToMove != us) {
-            cv.wait(lk);
-            lk.unlock();
-            continue;
-        }
-
-        setPosition(rootPos);
-        emit searchStarted();
-        lk.unlock();
-
-#ifdef OPENING_BOOK
-        // gameOptions.getOpeningBook()
-        if (!openingBookDeque.empty()) {
-            char obc[16] = { 0 };
-            sq2str(obc);
-            strCommand = obc;
-            emitCommand();
-        } else {
-#endif
-            if (search() == 3) {
-                loggerDebug("Draw\n\n");
-                strCommand = "draw";
-                emitCommand();
-            } else {
-                strCommand = nextMove();
-                if (strCommand != "" && strCommand != "error!") {
-                    emitCommand();
-                }
-            }
-#ifdef OPENING_BOOK
-        }
-#endif
-
-        emit searchFinished();
-
-        lk.lock();
-        if (!isInterruptionRequested()) {
-            cv.wait(lk);
-        }
-        lk.unlock();
-    }
-
-    loggerDebug("Thread %d quit\n", us);
-}
-
-void AiThread::act()
-{
-    if (isFinished() || !isRunning())
-        return;
-
-    std::lock_guard<std::mutex> lk(mutex);
-    quit();
-}
-
-void AiThread::resume()
-{
-    std::lock_guard<std::mutex> lk(mutex);
-    cv.notify_one(); // Wake up anyone
-}
-
-void AiThread::stop()
-{
-    if (isFinished() || !isRunning())
-        return;
-
-    if (!isInterruptionRequested()) {
-        requestInterruption();
-        std::lock_guard<std::mutex> lk(mutex);
-        quit();
-        searching = true;
-        cv.notify_one(); // Wake up anyone
-    }
-}
-
-///////////////
 
 Depth AiThread::adjustDepth()
 {

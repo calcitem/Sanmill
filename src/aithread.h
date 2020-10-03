@@ -30,6 +30,7 @@
 #include "client.h"
 #include "test.h"
 #include "position.h"
+#include "thread_win32_osx.h"
 
 class AiThread : public QThread
 {
@@ -39,6 +40,7 @@ private:
     std::mutex mutex;
     std::condition_variable cv;
     bool exit = false, searching = true; // Set before starting std::thread
+    NativeThread stdThread;
 
     string strCommand;
 
@@ -56,14 +58,14 @@ signals:
 
 public slots:
     void act(); // Force move, not quit thread
-    void resume();
-    void stop();
+    void start_searching();
     void emitCommand();
 
 public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
-    void run() override;
+    void idle_loop();
+    void wait_for_search_finished();
 
     Server *getServer()
     {
