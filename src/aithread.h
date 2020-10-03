@@ -22,7 +22,6 @@
 
 #include <condition_variable>
 #include <mutex>
-#include <QThread>
 #include <QTimer>
 #include "position.h"
 #include "search.h"
@@ -32,11 +31,11 @@
 #include "position.h"
 #include "thread_win32_osx.h"
 
-class AiThread : public QThread
+class AiThread : public QObject
 {
     Q_OBJECT
 
-private:
+public:
     std::mutex mutex;
     std::condition_variable cv;
     bool exit = false, searching = true; // Set before starting std::thread

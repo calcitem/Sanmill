@@ -36,7 +36,7 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
 
 AiThread::AiThread(int color, QObject *parent) :
     stdThread(&AiThread::idle_loop, this),
-    QThread(parent),
+    QObject(parent),
     timeLimit(3600)
 {
     this->us = color;
@@ -172,7 +172,7 @@ void AiThread::idle_loop()    // idle_loop()
 
 void AiThread::act()
 {
-    if (isFinished() || !isRunning())
+    if (exit|| !searching)
         return;
 
     std::lock_guard<std::mutex> lk(mutex);

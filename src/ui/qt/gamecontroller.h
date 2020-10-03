@@ -268,11 +268,11 @@ public slots:
     void startAiThreads()
     {
         if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->start();
+            aiThread[BLACK]->start_searching();
         }
 
         if (isAiPlayer[WHITE]) {
-            aiThread[WHITE]->start();
+            aiThread[WHITE]->start_searching();
         }
     }
 
@@ -280,11 +280,11 @@ public slots:
     {
         if (isAiPlayer[BLACK]) {
             aiThread[BLACK]->start_searching();
-            aiThread[BLACK]->wait();
+            aiThread[BLACK]->wait_for_search_finished();
         }
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->start_searching();
-            aiThread[WHITE]->wait();
+            aiThread[WHITE]->wait_for_search_finished();
         }
     }
 
@@ -296,8 +296,8 @@ public slots:
 
     void waitThreads()
     {
-        aiThread[BLACK]->wait();
-        aiThread[WHITE]->wait();
+        aiThread[BLACK]->wait_for_search_finished();
+        aiThread[WHITE]->wait_for_search_finished();
     }
 
     void stopAndWaitThreads()
