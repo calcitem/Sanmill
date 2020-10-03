@@ -27,8 +27,6 @@
 #include <mutex>
 #include <vector>
 
-#include <QTimer>
-
 #include "movepick.h"
 #include "position.h"
 #include "search.h"
@@ -154,7 +152,6 @@ public:
 
 private:
     int timeLimit;
-    QTimer timer;
 
     Server *server;
     Client *client;

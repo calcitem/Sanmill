@@ -27,8 +27,6 @@
 #include "tt.h"
 #include "option.h"
 
-#include <QTimer>
-
 ThreadPool Threads; // Global object
 
 #ifdef OPENING_BOOK
@@ -50,10 +48,6 @@ Thread::Thread(int color, QObject *parent) :
     timeLimit(3600)
 {
     this->us = color;
-
-    connect(this, &Thread::searchStarted, this, [=]() {timer.start(timeLimit * 1000 - 118 /* 118ms is return time */); }, Qt::QueuedConnection);
-    connect(this, &Thread::searchFinished, this, [=]() {timer.stop(); }, Qt::QueuedConnection);
-    connect(&timer, &QTimer::timeout, this, &Thread::act, Qt::QueuedConnection);
 
 #ifndef TRAINING_MODE
     if (color == 1) {
