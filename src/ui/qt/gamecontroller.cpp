@@ -262,6 +262,7 @@ void GameController::gameReset()
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
     // 发信号更新状态栏
+    updateScence();
     message = QString::fromStdString(getTips());
     emit statusBarChanged(message);
 
@@ -695,6 +696,7 @@ void GameController::timerEvent(QTimerEvent *event)
 
 #ifndef TRAINING_MODE
         // 发信号更新状态栏
+        updateScence();
         message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
 
@@ -778,6 +780,7 @@ bool GameController::actionPiece(QPointF pos)
                 timeID = startTimer(100);
 
                 // 发信号更新状态栏
+                updateScence();
                 message = QString::fromStdString(getTips());
                 emit statusBarChanged(message);
 #ifndef MOBILE_APP_UI
@@ -846,6 +849,7 @@ bool GameController::actionPiece(QPointF pos)
 
     if (result) {
         // 发信号更新状态栏
+        updateScence();
         message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
 
@@ -974,6 +978,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
     }
 
     // 发信号更新状态栏
+    updateScence();
     message = QString::fromStdString(getTips());
     emit statusBarChanged(message);
 
