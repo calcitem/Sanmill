@@ -261,8 +261,8 @@ public slots:
 
     void createAiThreads()
     {
-        aiThread[BLACK] = new Thread(1);
-        aiThread[WHITE] = new Thread(2);
+        aiThread[BLACK] = new Thread(BLACK);
+        aiThread[WHITE] = new Thread(WHITE);
     }
 
     void startAiThreads()
