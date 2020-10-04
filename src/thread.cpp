@@ -158,7 +158,8 @@ void Thread::idle_loop()
         emit searchStarted();
         lk.unlock();
 
-        if (rootPos == nullptr) {
+        // TODO: Stockfish doesn't have this
+        if (rootPos == nullptr ||  rootPos->side_to_move() != us) {
             continue;
         }
 
