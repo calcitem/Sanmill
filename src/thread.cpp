@@ -104,6 +104,13 @@ void Thread::start_searching()
     cv.notify_one(); // Wake up the thread in idle_loop()
 }
 
+void Thread::pause()
+{
+    // TODO: Can work?
+    std::lock_guard<std::mutex> lk(mutex);
+    searching = false;
+    cv.notify_one(); // Wake up the thread in idle_loop()
+}
 
 /// Thread::wait_for_search_finished() blocks on the condition variable
 /// until the thread has finished searching.

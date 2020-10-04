@@ -61,6 +61,8 @@ public:
     void wait_for_search_finished();
     int best_move_count(Move move) const;
 
+    void pause();
+
     size_t pvIdx, pvLast;
     uint64_t ttHitAverage;
     int selDepth, nmpMinPly;

@@ -116,7 +116,7 @@ GameController::~GameController()
         killTimer(timeID);
 
     // 停掉线程
-    stopAndWaitThreads();
+    pauseAndWaitThreads();
     deleteAiThreads();
 
 #ifdef ENDGAME_LEARNING
@@ -194,7 +194,7 @@ void GameController::gameReset()
 
     // 停掉线程
     if (!gameOptions.getAutoRestart()) {
-        stopThreads();
+        pauseThreads();
         resetAiPlayers();
     }
 
@@ -877,7 +877,7 @@ bool GameController::actionPiece(QPointF pos)
         }
         // 如果已经决出胜负
         else {
-            stopThreads();
+            pauseThreads();
         }
     }
 
@@ -1017,7 +1017,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
     }
     // 如果已经决出胜负
     else {           
-            stopThreads();
+            pauseThreads();
 
             gameEndTime = now();
             gameDurationTime = gameEndTime - gameStartTime;
