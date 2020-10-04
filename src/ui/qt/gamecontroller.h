@@ -306,10 +306,10 @@ public slots:
         waitThreads();
     }
 
-    void resumeAiThreads(Color sideToMove)
+    void resumeAiThreads(Color c)
     {
-        if (isAiPlayer[sideToMove]) {
-            aiThread[sideToMove]->start_searching();
+        if (isAiPlayer[c]) {
+            aiThread[c]->start_searching();
         }
     }
 
@@ -356,6 +356,7 @@ protected:
 private:
     // 棋对象的数据模型
     Position position;
+    Color sideToMove;
 
     // 测试
     Test *gameTest;

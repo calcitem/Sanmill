@@ -190,7 +190,8 @@ void GameController::gameReset()
         cmdlist.emplace_back(bak);
     }    
 
-    position.reset();    
+    position.reset();
+    sideToMove = position.side_to_move();
 
     // 停掉线程
     if (!gameOptions.getAutoRestart()) {
@@ -209,7 +210,7 @@ void GameController::gameReset()
 
     // 绘制所有棋子，放在起始位置
     // 0: 先手第1子； 1：后手第1子
-    // 2：先手嫡2子； 3：后手第2子
+    // 2：先手第2子； 3：后手第2子
     // ......
     PieceItem::Models md;
     PieceItem *newP;
@@ -735,7 +736,7 @@ void GameController::timerEvent(QTimerEvent *event)
 
 bool GameController::isAIsTurn()
 {
-    return isAiPlayer[position.sideToMove];
+    return isAiPlayer[sideToMove];
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
@@ -885,6 +886,7 @@ bool GameController::actionPiece(QPointF pos)
         }
     }
 
+    sideToMove = position.side_to_move();
     updateScence();
     return result;
 #else
@@ -966,6 +968,8 @@ bool GameController::command(const string &cmd, bool update /* = true */)
 
     if (!position.command(cmd.c_str()))
         return false;
+
+    sideToMove = position.side_to_move();
 
 #ifndef TRAINING_MODE
     if (soundType == GAME_SOUND_DROG && position.get_action() == ACTION_REMOVE) {
