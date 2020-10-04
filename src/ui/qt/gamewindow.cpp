@@ -199,10 +199,10 @@ void MillGameWindow::initialize()
 #endif
 
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
-            gameController, SLOT(setEngine1(bool)));
+            gameController, SLOT(setEngineBlack(bool)));
 
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
-            gameController, SLOT(setEngine2(bool)));
+            gameController, SLOT(setEngineWhite(bool)));
 
 #ifdef TEST_MODE    
     //ui.actionEngine1_T->setChecked(false);

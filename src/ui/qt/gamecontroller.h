@@ -196,9 +196,9 @@ public slots:
     void setInvert(bool arg = true);
 
     // id为1时让电脑执先手, id为2时让的电脑执后手
-    void setEngine(int color, bool arg = true);
-    void setEngine1(bool arg);
-    void setEngine2(bool arg);
+    void setEngine(Color color, bool enabled = true);
+    void setEngineBlack(bool enabled);
+    void setEngineWhite(bool enabled);
 
     // 是否有落子动画
     void setAnimation(bool arg = true);

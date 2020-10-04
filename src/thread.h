@@ -47,7 +47,7 @@ public:
     std::mutex mutex;
     std::condition_variable cv;
     size_t idx;
-    bool exit = false, searching = true; // Set before starting std::thread
+    bool exit = false, searching = false; // Set before starting std::thread
     NativeThread stdThread;
 
     string strCommand;

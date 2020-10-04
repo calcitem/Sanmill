@@ -346,29 +346,29 @@ void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimit
     gameReset();
 }
 
-void GameController::setEngine(int color, bool arg)
+void GameController::setEngine(Color color, bool enabled)
 {
-    isAiPlayer[color] = arg;
+    isAiPlayer[color] = enabled;
 
-    if (arg) {
+    if (enabled == true) {
         aiThread[color]->setAi(&position);
         if (aiThread[color]->searching)
             aiThread[color]->start_searching();
         else
             aiThread[color]->start_searching();
     } else {
-        aiThread[color]->start_searching();
+        aiThread[color]->pause();
     }
 }
 
-void GameController::setEngine1(bool arg)
+void GameController::setEngineBlack(bool enabled)
 {
-    setEngine(1, arg);
+    setEngine(BLACK, enabled);
 }
 
-void GameController::setEngine2(bool arg)
+void GameController::setEngineWhite(bool enabled)
 {
-    setEngine(2, arg);
+    setEngine(WHITE, enabled);
 }
 
 void GameController::setAiDepthTime(int time1, int time2)
