@@ -803,7 +803,7 @@ bool GameController::actionPiece(QPointF pos)
 
     switch (position.get_action()) {
     case ACTION_PLACE:
-        if (position.put_piece(file, rank)) {
+        if (position.put_piece(file, rank)) { 
             if (position.get_action() == ACTION_REMOVE) {
                 // 播放成三音效
                 playSound(GAME_SOUND_MILL, position.side_to_move());
@@ -849,6 +849,8 @@ bool GameController::actionPiece(QPointF pos)
     }
 
     if (result) {
+        cmdlist.emplace_back(position.cmdline);
+
         // 发信号更新状态栏
         updateScence();
         message = QString::fromStdString(getTips());
