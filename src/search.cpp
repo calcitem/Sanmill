@@ -730,7 +730,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
         pos->undo_move(ss);
 
-        //assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
+        assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
 
         if (value >= bestValue) {
             bestValue = value;
@@ -761,7 +761,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     movePicker->setHistoryScore(bestMove, depth);
 #endif
 
-    //assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+    assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
 
     return bestValue;
 }

@@ -917,7 +917,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         int n = add_mills(currentSquare);
 
         if (n == 0) {
-            //assert(pieceCountInHand[BLACK] >= 0 && pieceCountInHand[WHITE] >= 0);     
+            assert(pieceCountInHand[BLACK] >= 0 && pieceCountInHand[WHITE] >= 0);     
 
             if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
                 if (check_gameover_condition()) {
