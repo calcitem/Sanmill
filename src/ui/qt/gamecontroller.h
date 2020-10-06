@@ -146,6 +146,21 @@ public:
         return &cmdlist;
     }
 
+#ifdef NET_FIGHT_SUPPORT
+    Server *server;
+    Client *client;
+
+    Server *getServer()
+    {
+        return server;
+    }
+
+    Client *getClient()
+    {
+        return client;
+    }
+#endif
+
 signals:
 
     // 总盘数改变的信号

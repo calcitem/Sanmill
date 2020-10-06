@@ -92,10 +92,14 @@ GameController::GameController(
 
 #ifdef NET_FIGHT_SUPPORT
 #ifndef TRAINING_MODE
+    server = new Server(nullptr, 30001);    // TODO: WARNING: ThreadSanitizer: data race
+    uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
+    client = new Client(nullptr, clientPort);
+
     // 关联AI和网络类的着法命令行
-    connect(aiThread[BLACK]->getClient(), SIGNAL(command(const string &, bool)),
+    connect(getClient(), SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
-#endif // TRAINING_MODE
+#endif  // TRAINING_MODE
 #endif // NET_FIGHT_SUPPORT
 
 #ifdef ENDGAME_LEARNING_FORCE
@@ -1108,11 +1112,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
 #ifdef NET_FIGHT_SUPPORT
 #ifndef TRAINING_MODE
     // 网络: 将着法放到服务器的发送列表中
-    if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->getServer()->setAction(QString::fromStdString(cmd));
-    } else if (isAiPlayer[WHITE]) {
-        aiThread[BLACK]->getServer()->setAction(QString::fromStdString(cmd));    // 注意: 同样是 aiThread[BLACK]
-    }
+    getServer()->setAction(QString::fromStdString(cmd));
 #endif // TRAINING_MODE
 #endif
 
@@ -1323,8 +1323,8 @@ bool GameController::updateScence(Position &p)
 void GameController::showNetworkWindow()
 {
 #ifndef TRAINING_MODE
-    aiThread[BLACK]->getServer()->show();
-    aiThread[BLACK]->getClient()->show();
+    getServer()->show();
+    getClient()->show();
 #endif // TRAINING_MODE
 }
 #endif

@@ -85,18 +85,6 @@ public:
     string nextMove();
     Depth adjustDepth();
 
-#ifdef NET_FIGHT_SUPPORT
-    Server *getServer()
-    {
-        return server;
-    }
-
-    Client *getClient()
-    {
-        return client;
-    }
-#endif
-
     int getTimeLimit()
     {
         return timeLimit;
@@ -154,9 +142,6 @@ public:
 
 private:
     int timeLimit;
-
-    Server *server;
-    Client *client;
 
 signals:
     void command(const string &cmdline, bool update = true);
