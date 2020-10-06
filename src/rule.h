@@ -41,7 +41,7 @@ struct Rule
 
 #define N_RULES 4
 extern const struct Rule RULES[N_RULES];
-extern struct Rule rule;
+extern const struct Rule *rule;
 
 #endif /* RULE_H */
 

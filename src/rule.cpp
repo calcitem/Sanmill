@@ -20,7 +20,7 @@
 #include "rule.h"
 #include "types.h"
 
-struct Rule rule;
+const struct Rule *rule;
 
 const struct Rule RULES[N_RULES] = {
     {

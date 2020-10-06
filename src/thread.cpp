@@ -435,10 +435,10 @@ Depth Thread::adjustDepth()
     const Depth flyingDepth = 9;
 
     if (rootPos->phase & PHASE_PLACING) {
-        if (rule.nTotalPiecesEachSide == 12) {
-            d = placingDepthTable_12[rule.nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
+        if (rule->nTotalPiecesEachSide == 12) {
+            d = placingDepthTable_12[rule->nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
         } else {
-            d = placingDepthTable_9[rule.nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
+            d = placingDepthTable_9[rule->nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
         }
     }
 
@@ -460,14 +460,14 @@ Depth Thread::adjustDepth()
         }
 
         // Can fly
-        if (rule.allowFlyWhenRemainThreePieces) {
-            if (pb == rule.nPiecesAtLeast ||
-                pw == rule.nPiecesAtLeast) {
+        if (rule->allowFlyWhenRemainThreePieces) {
+            if (pb == rule->nPiecesAtLeast ||
+                pw == rule->nPiecesAtLeast) {
                 d = flyingDepth;
             }
 
-            if (pb == rule.nPiecesAtLeast &&
-                pw == rule.nPiecesAtLeast) {
+            if (pb == rule->nPiecesAtLeast &&
+                pw == rule->nPiecesAtLeast) {
                 d = flyingDepth / 2;
             }
         }
@@ -494,7 +494,7 @@ Depth Thread::adjustDepth()
 
 void Thread::setPosition(Position *p)
 {
-    if (strcmp(rule.name, rule.name) != 0) {
+    if (strcmp(rule->name, rule->name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
         TranspositionTable::clear();
 #endif // TRANSPOSITION_TABLE_ENABLE

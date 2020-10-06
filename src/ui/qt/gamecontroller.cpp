@@ -206,7 +206,7 @@ void GameController::gameReset()
     currentPiece = nullptr;
 
     // 重新绘制棋盘
-    scene.setDiagonal(rule.hasObliqueLines);
+    scene.setDiagonal(rule->hasObliqueLines);
 
     // 绘制所有棋子，放在起始位置
     // 0: 先手第1子； 1：后手第1子
@@ -215,7 +215,7 @@ void GameController::gameReset()
     PieceItem::Models md;
     PieceItem *newP;
 
-    for (int i = 0; i < rule.nTotalPiecesEachSide; i++) {
+    for (int i = 0; i < rule->nTotalPiecesEachSide; i++) {
         // 先手的棋子
         md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
         newP = new PieceItem;
@@ -240,7 +240,7 @@ void GameController::gameReset()
     }
 
     // 读取规则限时要求
-    timeLimit = 0; // TODO: rule.maxTimeLedToLose;
+    timeLimit = 0; // TODO: rule->maxTimeLedToLose;
 
     // 如果规则不要求计时，则time1和time2表示已用时间
     if (timeLimit <= 0) {
@@ -337,7 +337,7 @@ void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimit
     int r = position.set_position(&RULES[ruleNo]);
 
     char cmdline[64] = { 0 };
-    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
+    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule->maxStepsLedToDraw, 0) <= 0) {
         assert(0);
     }
     string cmd(cmdline);
@@ -1170,7 +1170,7 @@ bool GameController::updateScence(Position &p)
     int key;
 
     // 棋子总数
-    int nTotalPieces = rule.nTotalPiecesEachSide * 2;
+    int nTotalPieces = rule->nTotalPiecesEachSide * 2;
 
     // 动画组
     auto *animationGroup = new QParallelAnimationGroup;
@@ -1247,7 +1247,7 @@ bool GameController::updateScence(Position &p)
     }
 
     // 添加摆棋阶段禁子点
-    if (rule.hasBannedLocations && p.get_phase() == PHASE_PLACING) {
+    if (rule->hasBannedLocations && p.get_phase() == PHASE_PLACING) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == BAN_STONE) {
                 pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
@@ -1266,7 +1266,7 @@ bool GameController::updateScence(Position &p)
     }
 
     // 走棋阶段清除禁子点
-    if (rule.hasBannedLocations && p.get_phase() != PHASE_PLACING) {
+    if (rule->hasBannedLocations && p.get_phase() != PHASE_PLACING) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();
