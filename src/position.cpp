@@ -1140,7 +1140,7 @@ bool Position::command(const char *cmd)
     Rank rank1, rank2;
     int args = 0;
 
-    if (sscanf(cmd, "r%1u s%3hd t%2u", &ruleIndex, &step, &t) == 3) {
+    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleIndex, &step, &t) == 3) {
         if (ruleIndex <= 0 || ruleIndex > N_RULES) {
             return false;
         }
