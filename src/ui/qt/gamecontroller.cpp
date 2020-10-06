@@ -90,11 +90,13 @@ GameController::GameController(
     connect(this->gameTest, SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
 
+#ifdef NET_FIGHT_SUPPORT
 #ifndef TRAINING_MODE
     // 关联AI和网络类的着法命令行
     connect(aiThread[BLACK]->getClient(), SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
 #endif // TRAINING_MODE
+#endif // NET_FIGHT_SUPPORT
 
 #ifdef ENDGAME_LEARNING_FORCE
     if (gameOptions.getLearnEndgameEnabled()) {
@@ -1103,6 +1105,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
     
     gameTest->writeToMemory(QString::fromStdString(cmd));
 
+#ifdef NET_FIGHT_SUPPORT
 #ifndef TRAINING_MODE
     // 网络: 将着法放到服务器的发送列表中
     if (isAiPlayer[BLACK]) {
@@ -1111,6 +1114,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
         aiThread[BLACK]->getServer()->setAction(QString::fromStdString(cmd));    // 注意: 同样是 aiThread[BLACK]
     }
 #endif // TRAINING_MODE
+#endif
 
     if (isAiPlayer[WHITE]) {
         aiThread[WHITE]->analyze(WHITE);
@@ -1315,6 +1319,7 @@ bool GameController::updateScence(Position &p)
     return true;
 }
 
+#ifdef NET_FIGHT_SUPPORT
 void GameController::showNetworkWindow()
 {
 #ifndef TRAINING_MODE
@@ -1322,6 +1327,7 @@ void GameController::showNetworkWindow()
     aiThread[BLACK]->getClient()->show();
 #endif // TRAINING_MODE
 }
+#endif
 
 void GameController::showTestWindow()
 {

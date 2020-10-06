@@ -335,8 +335,10 @@ public slots:
     bool updateScence();
     bool updateScence(Position &position);
 
+#ifdef NET_FIGHT_SUPPORT
     // 显示网络配置窗口
     void showNetworkWindow();
+#endif
 
     // 显示引擎对战窗口
     void showTestWindow();

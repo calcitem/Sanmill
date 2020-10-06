@@ -932,6 +932,7 @@ void MillGameWindow::on_actionLocal_L_triggered()
 
 void MillGameWindow::on_actionInternet_I_triggered()
 {
+#ifdef NET_FIGHT_SUPPORT
     ui.actionLocal_L->setChecked(false);
     ui.actionEngineFight_E->setChecked(false);
     ui.actionInternet_I->setChecked(true);
@@ -939,6 +940,7 @@ void MillGameWindow::on_actionInternet_I_triggered()
     gameController->getTest()->stop();
 
     gameController->showNetworkWindow();
+#endif
 }
 
 void MillGameWindow::on_actionEngineFight_E_triggered()

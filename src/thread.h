@@ -85,6 +85,7 @@ public:
     string nextMove();
     Depth adjustDepth();
 
+#ifdef NET_FIGHT_SUPPORT
     Server *getServer()
     {
         return server;
@@ -94,6 +95,7 @@ public:
     {
         return client;
     }
+#endif
 
     int getTimeLimit()
     {

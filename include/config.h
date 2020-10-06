@@ -30,6 +30,8 @@
 
 //#define SELF_MOVE
 
+//#define NET_FIGHT_SUPPORT
+
 //#define MOBILE_APP_UI
 
 //#define TRAINING_MODE

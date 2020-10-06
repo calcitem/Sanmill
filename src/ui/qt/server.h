@@ -42,6 +42,7 @@ class Server : public QDialog
 
 public:
     explicit Server(QWidget *parent = nullptr, uint16_t port = 33333);
+    ~Server();
     void setAction(const QString &action);
     void setPort(uint16_t p)
     {

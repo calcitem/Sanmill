@@ -89,6 +89,13 @@ Server::Server(QWidget *parent, uint16_t port)
     setWindowTitle(QGuiApplication::applicationDisplayName());
 }
 
+Server::~Server()
+{
+    while (!actions.empty()) {
+        actions.pop();
+    }
+}
+
 void Server::sessionOpened()
 {
     // Save the used configuration
@@ -153,6 +160,13 @@ void Server::sessionOpened()
 
 void Server::setAction(const QString &a)
 {
+    // TODO: WAR
+    if (actions.size() > 256) {
+        while (!actions.empty()) {
+            actions.pop();
+        }
+    }
+
     actions.push(a);
 }
 
