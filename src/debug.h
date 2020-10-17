@@ -20,8 +20,12 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include "config.h"
 #include <cstdio>
+
+#ifdef QT_UI
 #include <QDebug>
+#endif
 
 //#define QT_NO_DEBUG_OUTPUT
 
@@ -30,7 +34,9 @@
 #ifdef CSTYLE_DEBUG_OUTPUT
 #define loggerDebug printf
 #else
+#ifdef QT_UI
 #define loggerDebug qDebug
+#endif
 #endif /* CSTYLE_DEBUG_OUTPUT */
 
 #endif /* DEBUG_H */
