@@ -43,6 +43,7 @@
 #include "server.h"
 #include "client.h"
 #include "stopwatch.h"
+#include "test.h"
 
 using namespace std;
 

@@ -42,9 +42,15 @@ using namespace std;
 /// Thread constructor launches the thread and waits until it goes to sleep
 /// in idle_loop(). Note that 'searching' and 'exit' should be already set.
 
-Thread::Thread(int color, QObject *parent) :
+Thread::Thread(int color
+#ifdef QT_UI
+               , QObject *parent
+#endif
+) :
     stdThread(&Thread::idle_loop, this),
+#ifdef QT_UI
     QObject(parent),
+#endif
     timeLimit(3600)
 {
     this->us = color;
@@ -168,11 +174,15 @@ void Thread::idle_loop()
             if (search() == 3) {
                 loggerDebug("Draw\n\n");
                 strCommand = "draw";
+#ifdef QT_UI
                 emitCommand();
+#endif
             } else {
                 strCommand = nextMove();
                 if (strCommand != "" && strCommand != "error!") {
+#ifdef QT_UI
                     emitCommand();
+#endif
                 }
             }
 #ifdef OPENING_BOOK

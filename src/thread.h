@@ -32,16 +32,19 @@
 #include "search.h"
 #include "thread_win32_osx.h"
 
-#include "server.h"
-#include "client.h"
-#include "test.h"
-
+#include "config.h"
+#ifdef QT_UI
+#include <QObject>
+#endif QT_UI
 
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material hash tables so that once we get a
 /// pointer to an entry its life time is unlimited and we don't have
 /// to care about someone changing the entry under our feet.
-class Thread : public QObject
+class Thread 
+#ifdef QT_UI
+    : public QObject
+#endif
 {
 public:
     std::mutex mutex;
@@ -52,8 +55,16 @@ public:
 
     string strCommand;
 
-    explicit Thread(QObject *parent = nullptr);
-    explicit Thread(int color, QObject *parent = nullptr);
+    explicit Thread(
+#ifdef QT_UI
+        QObject *parent = nullptr
+#endif
+    );
+    explicit Thread(int color
+#ifdef QT_UI
+                    , QObject *parent = nullptr
+#endif
+    );
     virtual ~Thread();
     int search();
     void clear();
@@ -142,15 +153,15 @@ public:
 private:
     int timeLimit;
 
+#ifdef QT_UI
     Q_OBJECT
 
 public:
-#ifdef QT_UI
     void emitCommand();
-#endif // QT_UI
 
 signals:
     void command(const string &cmdline, bool update = true);
+#endif // QT_UI
 };
 
 

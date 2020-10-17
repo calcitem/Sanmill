@@ -81,6 +81,7 @@ GameController::GameController(
 
     qRegisterMetaType<std::string>("string");
 
+#ifdef QT_UI
     // 关联AI和控制器的着法命令行
     connect(aiThread[BLACK], SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
@@ -89,6 +90,7 @@ GameController::GameController(
 
     connect(this->gameTest, SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
+#endif // QT_UI
 
 #ifdef NET_FIGHT_SUPPORT
 #ifndef TRAINING_MODE
@@ -941,12 +943,14 @@ bool GameController::command(const string &cmd, bool update /* = true */)
     Q_UNUSED(hasSound)
 #endif
 
+#ifdef QT_UI
     // 防止接收滞后结束的线程发送的指令
     if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK])
         return false;
 
     if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE])
         return false;
+#endif // QT_UI
 
 #ifndef TRAINING_MODE
     // 声音
