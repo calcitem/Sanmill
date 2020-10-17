@@ -58,6 +58,7 @@ public:
     int search();
     void clear();
     void idle_loop();
+    void start_searching();
     void wait_for_search_finished();
     int best_move_count(Move move) const;
 
@@ -138,21 +139,18 @@ public:
 
     int us;
 
-    Q_OBJECT
-
 private:
     int timeLimit;
 
+    Q_OBJECT
+
+public:
+#ifdef QT_UI
+    void emitCommand();
+#endif // QT_UI
+
 signals:
     void command(const string &cmdline, bool update = true);
-
-    void searchStarted();
-    void searchFinished();
-
-public slots:
-    void act(); // Force move, not quit thread
-    void start_searching();
-    void emitCommand();
 };
 
 

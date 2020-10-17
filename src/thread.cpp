@@ -147,7 +147,6 @@ void Thread::idle_loop()
         if (exit)
             return;
 
-        emit searchStarted();
         lk.unlock();
 
         // TODO: Stockfish doesn't have this
@@ -179,8 +178,6 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
         }
 #endif
-
-        emit searchFinished();
     }
 
     loggerDebug("Thread %d quit\n", us);
@@ -188,15 +185,6 @@ void Thread::idle_loop()
 
 
 ///////////////
-
-void Thread::act()
-{
-    if (exit|| !searching)
-        return;
-
-    std::lock_guard<std::mutex> lk(mutex);
-    clearHistoryScore();
-}
 
 void Thread::setAi(Position *p)
 {
@@ -218,10 +206,12 @@ void Thread::setAi(Position *p, int tl)
     timeLimit = tl;
 }
 
+#ifdef QT_UI
 void Thread::emitCommand()
 {
     emit command(strCommand);
 }
+#endif // QT_UI
 
 #ifdef OPENING_BOOK
 deque<int> openingBookDeque(
