@@ -5,7 +5,7 @@
 #include <iostream>
 #include <functional>
 #include <mutex>
-#include <QFile>
+#include <fstream>
 #include <iostream>
 #include "HashNode.h"
 #include "misc.h"
@@ -139,22 +139,22 @@ namespace CTSL //Concurrent Thread Safe Library
             }
 
             //Function to dump the key map to file
-            void dump(const QString &filename)
+            void dump(const std::string &filename)
             {
 #ifdef DISABLE_HASHBUCKET
-                QFile file(filename);
-                file.open(QIODevice::WriteOnly);
+                ofstream file;
+                file.open(filename, ios::out);
                 file.write((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 #endif
             }
 
             //Function to load the key map from file
-            void load(const QString &filename)
+            void load(const std::string &filename)
             {
 #ifdef DISABLE_HASHBUCKET
-                QFile file(filename);
-                file.open(QIODevice::ReadOnly);
+                ifstream file;
+                file.open(filename, ios::in);
                 file.read((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 
