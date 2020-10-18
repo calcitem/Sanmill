@@ -55,12 +55,7 @@ public:
 
     string strCommand;
 
-    explicit Thread(
-#ifdef QT_UI
-        QObject *parent = nullptr
-#endif
-    );
-    explicit Thread(int color
+    explicit Thread(size_t n
 #ifdef QT_UI
                     , QObject *parent = nullptr
 #endif

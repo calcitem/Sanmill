@@ -42,7 +42,7 @@ using namespace std;
 /// Thread constructor launches the thread and waits until it goes to sleep
 /// in idle_loop(). Note that 'searching' and 'exit' should be already set.
 
-Thread::Thread(int color
+Thread::Thread(size_t n
 #ifdef QT_UI
                , QObject *parent
 #endif
@@ -53,7 +53,7 @@ Thread::Thread(int color
 #endif
     timeLimit(3600)
 {
-    this->us = color;
+    //this->us = color;
 
     wait_for_search_finished();
 }
