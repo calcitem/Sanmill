@@ -45,7 +45,9 @@ void on_clear_hash(const Option &)
 }
 void on_hash_size(const Option &o)
 {
+#ifdef TRANSPOSITION_TABLE_ENABLE
     TT.resize((size_t)o);
+#endif
 }
 void on_logger(const Option &o)
 {

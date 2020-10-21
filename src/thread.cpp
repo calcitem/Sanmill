@@ -643,8 +643,10 @@ void ThreadPool::set(size_t requested)
             push_back(new Thread(size()));
         clear();
 
+#ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new threadpool size
         TT.resize((size_t)Options["Hash"]);
+#endif
 
         // Init thread number dependent search params.
         Search::init();

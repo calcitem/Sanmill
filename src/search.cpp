@@ -181,7 +181,9 @@ void Search::clear()
     Threads.main()->wait_for_search_finished();
 
     Time.availableNodes = 0;
+#ifdef TRANSPOSITION_TABLE_ENABLE
     TT.clear();
+#endif
     Threads.clear();
 }
 
