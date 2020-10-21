@@ -224,6 +224,10 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
+    if (this->phase != PHASE_NONE && this->phase != PHASE_READY && this->phase != PHASE_GAMEOVER) {
+        goto out;
+    }
+
     std::memset(this, 0, sizeof(Position));
     std::memset(si, 0, sizeof(StateInfo));
     //std::fill_n(&pieceList[0][0], sizeof(pieceList) / sizeof(Square), SQ_NONE);
@@ -301,7 +305,7 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     set_state(st);
 
     assert(pos_is_ok());
-
+out:
     return *this;
 }
 

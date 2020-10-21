@@ -265,8 +265,8 @@ int MainThread::search()
                 if (th->rootMoves[0].score > bestThread->rootMoves[0].score)
                     bestThread = th;
             } else if (th->rootMoves[0].score >= VALUE_TB_WIN_IN_MAX_PLY
-                       || (th->rootMoves[0].score > VALUE_TB_LOSS_IN_MAX_PLY
-                           && votes[th->rootMoves[0].pv[0]] > votes[bestThread->rootMoves[0].pv[0]]))
+                      || (th->rootMoves[0].score > VALUE_TB_LOSS_IN_MAX_PLY
+                          && votes[th->rootMoves[0].pv[0]] > votes[bestThread->rootMoves[0].pv[0]]))
                 bestThread = th;
         }
     }
@@ -488,7 +488,7 @@ void MainThread::check_time()
 /// UCI::pv() formats PV information according to the UCI protocol. UCI requires
 /// that all (if any) unsearched PV lines are sent using a previous search score.
 
-string UCI::pv(Position *pos, Depth depth, Value alpha, Value beta)
+string UCI::pv(const Position *pos, Depth depth, Value alpha, Value beta)
 {
 
     std::stringstream ss;
@@ -545,6 +545,7 @@ string UCI::pv(Position *pos, Depth depth, Value alpha, Value beta)
 
 ///////////////////////////////////////////////////////////////////////////////
 
+extern ThreadPool Threads;
 
 vector<Key> moveHistory;
 

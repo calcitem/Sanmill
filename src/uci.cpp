@@ -106,6 +106,7 @@ void setoption(istringstream &is)
 
 void go(Position *pos, istringstream &is, StateListPtr &states)
 {
+begin:
     Search::LimitsType limits;
     string token;
     bool ponderMode = false;
@@ -131,6 +132,8 @@ void go(Position *pos, istringstream &is, StateListPtr &states)
         else if (token == "ponder")    ponderMode = true;
 
     Threads.start_thinking(pos, states, limits, ponderMode);
+
+    goto begin;
 }
 
 

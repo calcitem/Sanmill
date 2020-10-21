@@ -156,7 +156,11 @@ void Thread::idle_loop()
         lk.unlock();
 
         // TODO: Stockfish doesn't have this
-        if (rootPos == nullptr ||  rootPos->side_to_move() != us) {
+        if (
+#ifdef QT_UI
+            //rootPos == nullptr ||
+#endif
+            rootPos->side_to_move() != us) {
             continue;
         }
 
@@ -174,15 +178,13 @@ void Thread::idle_loop()
             if (search() == 3) {
                 loggerDebug("Draw\n\n");
                 strCommand = "draw";
-#ifdef QT_UI
                 emitCommand();
-#endif
             } else {
                 strCommand = nextMove();
                 if (strCommand != "" && strCommand != "error!") {
-#ifdef QT_UI
                     emitCommand();
-#endif
+                } else {
+                    int err = 1;
                 }
             }
 #ifdef OPENING_BOOK
@@ -216,12 +218,17 @@ void Thread::setAi(Position *p, int tl)
     timeLimit = tl;
 }
 
-#ifdef QT_UI
 void Thread::emitCommand()
 {
+#ifdef QT_UI
     emit command(strCommand);
-}
+#else
+    loggerDebug("%s\n", strCommand.c_str());
+    rootPos.command(strCommand.c_str());
+    us = rootPos.side_to_move();
+    analyze(rootPos.side_to_move());
 #endif // QT_UI
+}
 
 #ifdef OPENING_BOOK
 deque<int> openingBookDeque(
@@ -264,6 +271,10 @@ void sq2str(char *str)
 
 void Thread::analyze(Color c)
 {
+    static int nbwin = 0;
+    static int nwwin = 0;
+    static int ndraw = 0;
+
     int d = (int)originDepth;
     int v = (int)bestvalue;
     int lv = (int)lastvalue;
@@ -291,10 +302,13 @@ void Thread::analyze(Color c)
     case PHASE_GAMEOVER:
         if (p->get_winner() == DRAW) {
             cout << "和棋" << endl;
+            ndraw++;
         } else if (p->get_winner() == BLACK) {
             cout << "黑方胜" << endl;
+            nbwin++;
         } else if (p->get_winner() == WHITE) {
             cout << "白方胜" << endl;
+            nwwin++;
         }
         goto out;
         break;
@@ -365,10 +379,12 @@ void Thread::analyze(Color c)
     }
 
     if (p->side_to_move() == BLACK) {
-        cout << "轮到黑方行棋";
+        cout << "轮到黑方行棋" << endl;
     } else {
-        cout << "轮到白方行棋";
+        cout << "轮到白方行棋" << endl;
     }
+
+    cout << "比分: " << nbwin << " : " << nwwin << " : " << ndraw << endl;
 
 out:
     cout << endl << endl;
@@ -506,8 +522,6 @@ void Thread::clearTT()
 
 string Thread::nextMove()
 {
-    return UCI::move(bestMove);
-
 #if 0
     char charSelect = '*';
 
@@ -564,6 +578,8 @@ string Thread::nextMove()
 
     nodeCount = 0;
 
+#endif
+
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
     size_t hashProbeCount = ttHitCount + ttMissCount;
@@ -574,12 +590,13 @@ string Thread::nextMove()
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
 
+#if 0
     if (foundBest == false) {
         loggerDebug("Warning: Best Move NOT Found\n");
     }
-
-    return UCI::move(bestMove).c_str();
 #endif
+
+    return UCI::move(bestMove);
 }
 
 #ifdef ENDGAME_LEARNING
