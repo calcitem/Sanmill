@@ -598,7 +598,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
     if (probeVal != VALUE_UNKNOWN) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
-        ttHitCount++;
+        Threads.main()->ttHitCount++;
 #endif
 
         bestValue = probeVal;
@@ -621,7 +621,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
     else {
-        ttMissCount++;
+        Threads.main()->ttMissCount++;
     }
 #endif
 

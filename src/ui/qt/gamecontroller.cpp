@@ -1049,15 +1049,15 @@ bool GameController::command(const string &cmd, bool update /* = true */)
 
 #ifdef TIME_STAT
             loggerDebug("Sort Time: %ld + %ld = %ldms\n",
-                        aiThread[BLACK]->ai.sortTime, aiThread[WHITE]->ai.sortTime,
-                        (aiThread[BLACK]->ai.sortTime + aiThread[WHITE]->ai.sortTime));
-            aiThread[BLACK]->ai.sortTime = aiThread[WHITE]->ai.sortTime = 0;
+                        aiThread[BLACK]->sortTime, aiThread[WHITE]->sortTime,
+                        (aiThread[BLACK]->sortTime + aiThread[WHITE]->sortTime));
+            aiThread[BLACK]->sortTime = aiThread[WHITE]->sortTime = 0;
 #endif // TIME_STAT
 #ifdef CYCLE_STAT
             loggerDebug("Sort Cycle: %ld + %ld = %ld\n",
-                        aiThread[BLACK]->ai.sortCycle, aiThread[WHITE]->ai.sortCycle,
-                        (aiThread[BLACK]->ai.sortCycle + aiThread[WHITE]->ai.sortCycle));
-            aiThread[BLACK]->ai.sortCycle = aiThread[WHITE]->ai.sortCycle = 0;
+                        aiThread[BLACK]->sortCycle, aiThread[WHITE]->sortCycle,
+                        (aiThread[BLACK]->sortCycle + aiThread[WHITE]->sortCycle));
+            aiThread[BLACK]->sortCycle = aiThread[WHITE]->sortCycle = 0;
 #endif // CYCLE_STAT
 
 #if 0
@@ -1068,26 +1068,26 @@ bool GameController::command(const string &cmd, bool update /* = true */)
 #endif
 
 #ifdef TRANSPOSITION_TABLE_DEBUG                
-            size_t hashProbeCount_1 = aiThread[BLACK]->ai.ttHitCount + aiThread[BLACK]->ai.ttMissCount;
-            size_t hashProbeCount_2 = aiThread[WHITE]->ai.ttHitCount + aiThread[WHITE]->ai.ttMissCount;
+            size_t hashProbeCount_1 = aiThread[BLACK]->ttHitCount + aiThread[BLACK]->ttMissCount;
+            size_t hashProbeCount_2 = aiThread[WHITE]->ttHitCount + aiThread[WHITE]->ttMissCount;
                 
             loggerDebug("[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1,
-                        aiThread[BLACK]->ai.ttHitCount,
-                        aiThread[BLACK]->ai.ttMissCount,
-                        aiThread[BLACK]->ai.ttHitCount * 100 / hashProbeCount_1);
+                        aiThread[BLACK]->ttHitCount,
+                        aiThread[BLACK]->ttMissCount,
+                        aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_1);
 
             loggerDebug("[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_2,
-                        aiThread[WHITE]->ai.ttHitCount,
-                        aiThread[WHITE]->ai.ttMissCount,
-                        aiThread[WHITE]->ai.ttHitCount * 100 / hashProbeCount_2);
+                        aiThread[WHITE]->ttHitCount,
+                        aiThread[WHITE]->ttMissCount,
+                        aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_2);
 
             loggerDebug("[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1 + hashProbeCount_2,
-                        aiThread[BLACK]->ai.ttHitCount + aiThread[WHITE]->ai.ttHitCount,
-                        aiThread[BLACK]->ai.ttMissCount + aiThread[WHITE]->ai.ttMissCount,
-                        (aiThread[BLACK]->ai.ttHitCount + aiThread[WHITE]->ai.ttHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
+                        aiThread[BLACK]->ttHitCount + aiThread[WHITE]->ttHitCount,
+                        aiThread[BLACK]->ttMissCount + aiThread[WHITE]->ttMissCount,
+                        (aiThread[BLACK]->ttHitCount + aiThread[WHITE]->ttHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
 #endif // TRANSPOSITION_TABLE_DEBUG
 
             if (gameOptions.getAutoRestart()) {
