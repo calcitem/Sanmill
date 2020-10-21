@@ -111,8 +111,8 @@ public:
 #endif
 #ifdef CYCLE_STAT
     stopwatch::rdtscp_clock::time_point sortCycle;
-    stopwatch::timer::duration sortCycle { 0 };
-    stopwatch::timer::period sortCycle;
+    stopwatch::timer<std::chrono::system_clock>::duration sortCycle { 0 };
+    stopwatch::timer<std::chrono::system_clock>::period sortCycle;
 #endif
 
 #ifdef ENDGAME_LEARNING
