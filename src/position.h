@@ -178,6 +178,7 @@ public:
     bool select_piece(Square s);
     bool select_piece(File file, Rank rank);
 
+    void put_piece(Piece pc, Square s);
     bool put_piece(File file, Rank rank);
     bool put_piece(Square s, bool updateCmdlist = false);
     bool undo_put_piece(Square s);
@@ -320,6 +321,20 @@ inline Thread *Position::this_thread() const
 inline bool Position::select_piece(File f, Rank r)
 {
     return select_piece(make_square(f, r));
+}
+
+inline void Position::put_piece(Piece pc, Square s)
+{
+    // TODO: put_piece
+#if 0
+    board[s] = pc;
+    byTypeBB[ALL_PIECES] |= s;
+    byTypeBB[type_of(pc)] |= s;
+    byColorBB[color_of(pc)] |= s;
+    index[s] = pieceCount[pc]++;
+    pieceList[pc][index[s]] = s;
+    pieceCount[make_piece(color_of(pc), ALL_PIECES)]++;
+#endif
 }
 
 inline bool Position::put_piece(File f, Rank r)
