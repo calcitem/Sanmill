@@ -224,9 +224,9 @@ void Thread::emitCommand()
     emit command(strCommand);
 #else
     loggerDebug("%s\n", strCommand.c_str());
-    rootPos.command(strCommand.c_str());
-    us = rootPos.side_to_move();
-    analyze(rootPos.side_to_move());
+    rootPos->command(strCommand.c_str());
+    us = rootPos->side_to_move();
+    analyze(rootPos->side_to_move());
 #endif // QT_UI
 }
 
