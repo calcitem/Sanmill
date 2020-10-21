@@ -53,8 +53,6 @@ public:
     bool exit = false, searching = true; // Set before starting std::thread
     NativeThread stdThread;
 
-    string strCommand;
-
     explicit Thread(size_t n
 #ifdef QT_UI
                     , QObject *parent = nullptr
@@ -68,8 +66,6 @@ public:
     void wait_for_search_finished();
     int best_move_count(Move move) const;
 
-    void pause();
-
     size_t pvIdx, pvLast;
     uint64_t ttHitAverage;
     int selDepth, nmpMinPly;
@@ -79,11 +75,12 @@ public:
     Position *rootPos { nullptr };
     Search::RootMoves rootMoves;
     Depth rootDepth, completedDepth;
-    CounterMoveHistory counterMoves;
-    ButterflyHistory mainHistory;
-    LowPlyHistory lowPlyHistory;
-    CapturePieceToHistory captureHistory;
-    ContinuationHistory continuationHistory[2][2];
+
+    // Mill Game
+
+    string strCommand;
+
+    void pause();
 
     void setAi(Position *p);
     void setAi(Position *p, int time);
@@ -143,7 +140,7 @@ public:
     Value bestvalue { VALUE_ZERO };
     Value lastvalue { VALUE_ZERO };
 
-    int us;
+    int us {1};
 
 private:
     int timeLimit;
@@ -155,8 +152,12 @@ public:
     void emitCommand();
 
 signals:
-    void command(const string &cmdline, bool update = true);
+#else
+    public:
+        void emitCommand();
 #endif // QT_UI
+
+    void command(const string &cmdline, bool update = true);
 };
 
 
