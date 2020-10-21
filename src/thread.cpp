@@ -160,7 +160,7 @@ void Thread::idle_loop()
             continue;
         }
 
-        setPosition(rootPos);
+        clearTT();
 
 #ifdef OPENING_BOOK
         // gameOptions.getOpeningBook()
@@ -484,7 +484,7 @@ Depth Thread::adjustDepth()
     return d;
 }
 
-void Thread::setPosition(Position *p)
+void Thread::clearTT()
 {
     if (strcmp(rule->name, rule->name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -499,8 +499,6 @@ void Thread::setPosition(Position *p)
 
         moveHistory.clear();
     }
-
-    rootPos = p;
 }
 
 

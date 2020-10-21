@@ -88,7 +88,7 @@ public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    void setPosition(Position *p);
+    void clearTT();
     string nextMove();
     Depth adjustDepth();
 
