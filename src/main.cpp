@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
   UCI::init(Options);
   //Tune::init();
   Bitboards::init();
-  //Position::init();
+  Position::init();
   //Bitbases::init();
   //Endgames::init();
   Threads.set((int)Options["Threads"]);
