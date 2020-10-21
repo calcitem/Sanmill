@@ -195,8 +195,8 @@ public:
     Piece board[SQUARE_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
     // TODO: [0] is sum of Black and White
-    int pieceCountInHand[COLOR_NB]{ 0 };
-    int pieceCountOnBoard[COLOR_NB]{ 0 };
+    int pieceCountInHand[COLOR_NB]{ 0, 12, 12 }; // TODO
+    int pieceCountOnBoard[COLOR_NB]{ 0, 0, 0 };
     int pieceCountNeedRemove{ 0 };
     int gamePly { 0 };
     Color sideToMove { NOCOLOR };
