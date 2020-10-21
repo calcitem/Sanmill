@@ -167,7 +167,7 @@ void Position::init()
 Position::Position()
 {
     // TODO
-    st = &tmpSt;
+    //st = &tmpSt;
 
     construct_key();
 
@@ -229,9 +229,9 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     }
 
     std::memset(this, 0, sizeof(Position));
-    std::memset(si, 0, sizeof(StateInfo));
+    //std::memset(si, 0, sizeof(StateInfo));
     //std::fill_n(&pieceList[0][0], sizeof(pieceList) / sizeof(Square), SQ_NONE);
-    st = si;
+    //st = si;
 
     ss >> std::noskipws;
 
@@ -295,14 +295,14 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
 
 
     // 6-7. Halfmove clock and fullmove number
-    ss >> std::skipws >> st->rule50 >> gamePly;
+    ss >> std::skipws >> st.rule50 >> gamePly;
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
     // handle also common incorrect FEN with fullmove = 0.
     gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == WHITE);
 
     thisThread = th;
-    set_state(st);
+    //set_state(st);
 
     assert(pos_is_ok());
 out:
@@ -430,7 +430,7 @@ const string Position::fen() const
         << pieceCountOnBoard[WHITE] << " " << pieceCountInHand[WHITE] << " "
         << pieceCountNeedRemove << " ";
 
-    ss << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
+    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
     return ss.str();
 }
@@ -500,7 +500,7 @@ void Position::do_move(Move m, StateInfo &newSt)
     switch (mt) {
     case MOVETYPE_REMOVE:
         // Reset rule 50 counter
-        st->rule50 = 0;
+        st.rule50 = 0;
         ret = remove_piece(to_sq(m));
         break;
     case MOVETYPE_MOVE:
@@ -520,8 +520,8 @@ void Position::do_move(Move m, StateInfo &newSt)
     // Increment ply counters. In particular, rule50 will be reset to zero later on
     // in case of a capture.
     ++gamePly;
-    ++st->rule50;
-    ++st->pliesFromNull;
+    ++st.rule50;
+    ++st.pliesFromNull;
     
     move = m;
 
@@ -529,14 +529,14 @@ void Position::do_move(Move m, StateInfo &newSt)
     // Calculate the repetition info. It is the ply distance from the previous
     // occurrence of the same position, negative in the 3-fold case, or zero
     // if the position was not repeated.
-    st->repetition = 0;
-    int end = std::min(st->rule50, st->pliesFromNull);
+    st.repetition = 0;
+    int end = std::min(st.rule50, st.pliesFromNull);
     if (end >= 4) {
-        StateInfo *stp = st->previous->previous;
+        StateInfo *stp = st.previous->previous;
         for (int i = 4; i <= end; i += 2) {
             stp = stp->previous->previous;
-            if (stp->key == st->key) {
-                st->repetition = stp->repetition ? -i : i;
+            if (stp->key == st.key) {
+                st.repetition = stp->repetition ? -i : i;
                 break;
             }
         }
@@ -567,10 +567,10 @@ void Position::undo_move(Move m)
     {
         move_piece(to, from); // Put the piece back at the source square
 
-        if (st->capturedPiece) {
+        if (st.capturedPiece) {
             Square capsq = to;
 
-            put_piece(st->capturedPiece, capsq); // Restore the captured piece
+            put_piece(st.capturedPiece, capsq); // Restore the captured piece
         }
     }
 #endif
@@ -608,7 +608,7 @@ void Position::undo_move(Move m)
     // TODO End
 
     // Finally point our state pointer back to the previous state
-    st = st->previous;
+    //st = st.previous;
     --gamePly;
 
     assert(pos_is_ok());
@@ -636,7 +636,7 @@ void Position::undo_null_move()
 
 Key Position::key_after(Move m) const
 {
-    Key k = st->key;
+    Key k = st.key;
     Square s = static_cast<Square>(to_sq(m));;
     MoveType mt = type_of(m);
 
@@ -782,14 +782,14 @@ int Position::set_position(const struct Rule *newRule)
     rule = newRule;
 
     gamePly = 0;
-    st->rule50 = 0;
+    st.rule50 = 0;
 
     phase = PHASE_READY;
     set_side_to_move(BLACK);
     action = ACTION_PLACE;
 
     memset(board, 0, sizeof(board));
-    st->key = 0;
+    st.key = 0;
     memset(byTypeBB, 0, sizeof(byTypeBB));
 
     if (pieces_on_board_count() == -1) {
@@ -822,7 +822,7 @@ bool Position::reset()
     }
 
     gamePly = 0;
-    st->rule50 = 0;
+    st.rule50 = 0;
 
     phase = PHASE_READY;
     set_side_to_move(BLACK);
@@ -832,7 +832,7 @@ bool Position::reset()
     gameoverReason = NO_REASON;
 
     memset(board, 0, sizeof(board));
-    st->key = 0;
+    st.key = 0;
     memset(byTypeBB, 0, sizeof(byTypeBB));
 
     if (rule == nullptr) {
@@ -983,7 +983,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)",
                     file_of(currentSquare), rank_of(currentSquare),
                     file_of(s), rank_of(s));
-            st->rule50++;
+            st.rule50++;
         }
 
         fromTo = square_bb(currentSquare) | square_bb(s);
@@ -1056,7 +1056,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
     if (updateCmdlist) {
         sprintf(cmdline, "-(%1u,%1u)", file_of(s), rank_of(s));
-        st->rule50 = 0;     // TODO: Need to move out?
+        st.rule50 = 0;     // TODO: Need to move out?
     }
 
     pieceCountOnBoard[them]--;
@@ -1246,7 +1246,7 @@ bool Position::check_gameover_condition()
     }
 
     if (rule->maxStepsLedToDraw > 0 &&
-        st->rule50 > rule->maxStepsLedToDraw) {
+        st.rule50 > rule->maxStepsLedToDraw) {
         winner = DRAW;
         phase = PHASE_GAMEOVER;
         gameoverReason = DRAW_REASON_RULE_50;
@@ -1327,7 +1327,7 @@ inline void Position::set_side_to_move(Color c)
 inline void Position::change_side_to_move()
 {
     set_side_to_move(~sideToMove);
-    st->key ^= Zobrist::side;
+    st.key ^= Zobrist::side;
 }
 
 inline Key Position::update_key(Square s)
@@ -1340,9 +1340,9 @@ inline Key Position::update_key(Square s)
     //Location loc = board[s];
     //int pieceType = loc == 0x0f? 3 : loc >> 4;
 
-    st->key ^= Zobrist::psq[pieceType][s];
+    st.key ^= Zobrist::psq[pieceType][s];
 
-    return st->key;
+    return st.key;
 }
 
 inline Key Position::revert_key(Square s)
@@ -1352,11 +1352,11 @@ inline Key Position::revert_key(Square s)
 
 Key Position::update_key_misc()
 {
-    st->key = st->key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
+    st.key = st.key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
-    st->key |= static_cast<Key>(pieceCountNeedRemove) << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
+    st.key |= static_cast<Key>(pieceCountNeedRemove) << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
-    return st->key;
+    return st.key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

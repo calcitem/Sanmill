@@ -133,6 +133,16 @@ begin:
 
     Threads.start_thinking(pos, states, limits, ponderMode);
 
+    if (pos->get_phase() == PHASE_GAMEOVER)
+    {
+        // TODO
+        for (int i = 0; i < 100000; i++)
+        {
+        }
+
+        pos->set(StartFEN, &states->back(), Threads.main());
+    }
+
     goto begin;
 }
 

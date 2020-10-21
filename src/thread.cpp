@@ -690,16 +690,16 @@ void ThreadPool::start_thinking(Position *pos, StateListPtr &states,
 {
     main()->wait_for_search_finished();
 
-    main()->stopOnPonderhit = stop = false;
-    increaseDepth = true;
-    main()->ponder = ponderMode;
-    Search::Limits = limits;
-    Search::RootMoves rootMoves;
+//     main()->stopOnPonderhit = stop = false;
+//     increaseDepth = true;
+//     main()->ponder = ponderMode;
+//     Search::Limits = limits;
+//     Search::RootMoves rootMoves;
 
-    for (const auto &m : MoveList<LEGAL>(*pos))
-        if (limits.searchmoves.empty()
-            || std::count(limits.searchmoves.begin(), limits.searchmoves.end(), m))
-            rootMoves.emplace_back(m);
+//     for (const auto &m : MoveList<LEGAL>(*pos))
+//         if (limits.searchmoves.empty()
+//             || std::count(limits.searchmoves.begin(), limits.searchmoves.end(), m))
+//             rootMoves.emplace_back(m);
 
 #ifdef TBPROBE
     if (!rootMoves.empty())
@@ -708,26 +708,27 @@ void ThreadPool::start_thinking(Position *pos, StateListPtr &states,
 
     // After ownership transfer 'states' becomes empty, so if we stop the search
     // and call 'go' again without setting a new position states.get() == NULL.
-    assert(states.get() || setupStates.get());
+    //assert(states.get() || setupStates.get());
 
-    if (states.get())
-        setupStates = std::move(states); // Ownership transfer, states is now empty
+    //if (states.get())
+    //    setupStates = std::move(states); // Ownership transfer, states is now empty
 
     // We use Position::set() to set root position across threads. But there are
     // some StateInfo fields (previous, pliesFromNull, capturedPiece) that cannot
     // be deduced from a fen string, so set() clears them and to not lose the info
     // we need to backup and later restore setupStates->back(). Note that setupStates
     // is shared by threads but is accessed in read-only mode.
-    StateInfo tmp = setupStates->back();
+    //StateInfo tmp = setupStates->back();
 
     for (Thread *th : *this) {
-        th->nodes = th->tbHits = th->nmpMinPly = 0;
-        th->rootDepth = th->completedDepth = 0;
-        th->rootMoves = rootMoves;
-        th->rootPos->set(pos->fen(), &setupStates->back(), th);
+        //th->nodes = th->tbHits = th->nmpMinPly = 0;
+        //th->rootDepth = th->completedDepth = 0;
+        //th->rootMoves = rootMoves;
+        //th->rootPos->set(pos->fen(), &setupStates->back(), th);
+        th->rootPos = pos;
     }
 
-    setupStates->back() = tmp;
+    //setupStates->back() = tmp;
 
     main()->start_searching();
 }
