@@ -47,7 +47,7 @@ Thread::Thread(size_t n
                , QObject *parent
 #endif
 ) :
-    stdThread(&Thread::idle_loop, this),
+    idx(n), stdThread(&Thread::idle_loop, this),
 #ifdef QT_UI
     QObject(parent),
 #endif
