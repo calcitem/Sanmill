@@ -35,11 +35,6 @@ enum Tracing
     NO_TRACE, TRACE
 };
 
-double to_cp(Value v)
-{
-    return double(v) / StoneValue;
-}
-
 }
 
 using namespace Trace;
@@ -176,37 +171,15 @@ Value Eval::evaluate(Position &pos)
 /// a string (suitable for outputting to stdout) that contains the detailed
 /// descriptions and values of each evaluation term. Useful for debugging.
 
-std::string Eval::trace(const Position &pos)
+std::string Eval::trace(Position &pos)
 {
-#if 0
-    std::memset(scores, 0, sizeof(scores));
+    Value v = Evaluation<TRACE>(pos).value();
 
-    // TODO
-    //pos.this_thread()->contempt = 0 // TODO: SCORE_ZERO; // Reset any dynamic contempt
-
-    Value v = Evaluation<TRACE>(pos)->value();
-
-    v = pos.side_to_move() == WHITE ? v : -v; // Trace scores are from white's point of view
+    v = pos.side_to_move() == BLACK ? v : -v; // Trace scores are from black's point of view
 
     std::stringstream ss;
-    ss << std::showpoint << std::noshowpos << std::fixed << std::setprecision(2)
-        << "     Term    |    White    |    Black    |    Total   \n"
-        << "             |   MG    EG  |   MG    EG  |   MG    EG \n"
-        << " ------------+-------------+-------------+------------\n"
-        << "    Material | " << Term(MATERIAL)
-        << "   Imbalance | " << Term(IMBALANCE)
-        << "    Mobility | " << Term(MOBILITY)
-        << "     Threats | " << Term(THREAT)
-        << "      Passed | " << Term(PASSED)
-        << "       Space | " << Term(SPACE)
-        << "  Initiative | " << Term(INITIATIVE)
-        << " ------------+-------------+-------------+------------\n"
-        << "       Total | " << Term(TOTAL);
 
-    ss << "\nTotal evaluation: " << to_cp(v) << " (white side)\n";
+    ss << "\nTotal evaluation: " << v << " (black side)\n";
 
     return ss.str();
-#endif
-    //pos = pos;
-    return "";
 }

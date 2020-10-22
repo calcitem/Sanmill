@@ -53,8 +53,6 @@ Thread::Thread(size_t n
 #endif
     timeLimit(3600)
 {
-    //this->us = color;
-
     wait_for_search_finished();
 }
 
@@ -63,25 +61,15 @@ Thread::Thread(size_t n
 /// for its termination. Thread should be already waiting.
 
 Thread::~Thread()
-{
-    //delete server;
-    //delete client
-    
+{    
     assert(!searching);
 
     exit = true;
+#ifdef HOSTORY_HEURISTIC
     clearHistoryScore();
+#endif // HOSTORY_HEURISTIC
     start_searching();
     stdThread.join();
-}
-
-/// Thread::bestMoveCount(Move move) return best move counter for the given root move
-
-int Thread::best_move_count(Move move) const
-{
-    // TODO
-
-    return 0;
 }
 
 /// Thread::clear() reset histories, usually before a new game
@@ -125,23 +113,7 @@ void Thread::wait_for_search_finished()
 
 void Thread::idle_loop()
 {
-#ifdef DEBUG_MODE
-    int iTemp = 0;
-#endif
-
-    loggerDebug("Thread %d start\n", us);
-
     bestvalue = lastvalue = VALUE_ZERO;
-
-#if 0
-    // If OS already scheduled us on a different group than 0 then don't overwrite
-    // the choice, eventually we are one of many one-threaded processes running on
-    // some Windows NUMA hardware, for instance in fishtest. To make it simple,
-    // just check if running threads are below a threshold, in this case all this
-    // NUMA machinery is not needed.
-    if (Options["Threads"] > 8)
-        WinProcGroup::bindThisThread(idx);
-#endif
 
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
@@ -183,20 +155,16 @@ void Thread::idle_loop()
                 strCommand = nextMove();
                 if (strCommand != "" && strCommand != "error!") {
                     emitCommand();
-                } else {
-                    int err = 1;
                 }
             }
 #ifdef OPENING_BOOK
         }
 #endif
     }
-
-    loggerDebug("Thread %d quit\n", us);
 }
 
 
-///////////////
+////////////////////////////////////////////////////////////////////////////
 
 void Thread::setAi(Position *p)
 {
@@ -517,9 +485,6 @@ void Thread::clearTT()
     }
 }
 
-
-
-
 string Thread::nextMove()
 {
 #if 0
@@ -676,42 +641,18 @@ void ThreadPool::clear()
 {
     for (Thread *th : *this)
         th->clear();
-
-    main()->callsCnt = 0;
-    main()->bestPreviousScore = VALUE_INFINITE;
-    main()->previousTimeReduction = 1.0;
 }
 
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
 /// returns immediately. Main thread will wake up other threads and start the search.
 
-void ThreadPool::start_thinking(Position *pos, StateListPtr &states,
-                                const Search::LimitsType &limits, bool ponderMode)
+void ThreadPool::start_thinking(Position *pos, bool ponderMode)
 {
     main()->wait_for_search_finished();
 
-//     main()->stopOnPonderhit = stop = false;
-//     increaseDepth = true;
-//     main()->ponder = ponderMode;
-//     Search::Limits = limits;
-//     Search::RootMoves rootMoves;
-
-//     for (const auto &m : MoveList<LEGAL>(*pos))
-//         if (limits.searchmoves.empty()
-//             || std::count(limits.searchmoves.begin(), limits.searchmoves.end(), m))
-//             rootMoves.emplace_back(m);
-
-#ifdef TBPROBE
-    if (!rootMoves.empty())
-        Tablebases::rank_root_moves(pos, rootMoves);
-#endif
-
-    // After ownership transfer 'states' becomes empty, so if we stop the search
-    // and call 'go' again without setting a new position states.get() == NULL.
-    //assert(states.get() || setupStates.get());
-
-    //if (states.get())
-    //    setupStates = std::move(states); // Ownership transfer, states is now empty
+    main()->stopOnPonderhit = stop = false;
+    increaseDepth = true;
+    main()->ponder = ponderMode;
 
     // We use Position::set() to set root position across threads. But there are
     // some StateInfo fields (previous, pliesFromNull, capturedPiece) that cannot
@@ -721,14 +662,10 @@ void ThreadPool::start_thinking(Position *pos, StateListPtr &states,
     //StateInfo tmp = setupStates->back();
 
     for (Thread *th : *this) {
-        //th->nodes = th->tbHits = th->nmpMinPly = 0;
-        //th->rootDepth = th->completedDepth = 0;
-        //th->rootMoves = rootMoves;
+        // TODO
         //th->rootPos->set(pos->fen(), &setupStates->back(), th);
         th->rootPos = pos;
     }
-
-    //setupStates->back() = tmp;
 
     main()->start_searching();
 }

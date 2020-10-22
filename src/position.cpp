@@ -125,25 +125,6 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
 }
 
 
-// Marcel van Kervinck's cuckoo algorithm for fast detection of "upcoming repetition"
-// situations. Description of the algorithm in the following paper:
-// https://marcelk.net/2013-04-06/paper/upcoming-rep-v2.pdf
-
-// First and second hash functions for indexing the cuckoo tables
-inline int H1(Key h)
-{
-    return h & 0x1fff;
-}
-inline int H2(Key h)
-{
-    return (h >> 16) & 0x1fff;
-}
-
-// Cuckoo tables with Zobrist hashes of valid reversible moves, and the moves themselves
-Key cuckoo[8192];
-Move cuckooMove[8192];
-
-
 /// Position::init() initializes at startup the various arrays used to compute
 /// hash keys.
 
@@ -157,18 +138,11 @@ void Position::init()
 
     Zobrist::side = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
-    // Prepare the cuckoo tables
-    std::memset(cuckoo, 0, sizeof(cuckoo));
-    std::memset(cuckooMove, 0, sizeof(cuckooMove));
-
     return;
 }
 
 Position::Position()
 {
-    // TODO
-    //st = &tmpSt;
-
     construct_key();
 
     if (rule == nullptr) {
@@ -187,7 +161,7 @@ Position::Position()
 /// This function is not very robust - make sure that input FENs are correct,
 /// this is assumed to be the responsibility of the GUI.
 
-Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
+Position &Position::set(const string &fenStr, Thread *th)
 {
     /*
        A FEN string defines a particular position using only the ASCII character set.
@@ -220,7 +194,6 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     */
 
     unsigned char token;
-    size_t idx;
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
@@ -229,9 +202,6 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     }
 
     std::memset(this, 0, sizeof(Position));
-    //std::memset(si, 0, sizeof(StateInfo));
-    //std::fill_n(&pieceList[0][0], sizeof(pieceList) / sizeof(Square), SQ_NONE);
-    //st = si;
 
     ss >> std::noskipws;
 
@@ -302,61 +272,11 @@ Position &Position::set(const string &fenStr, StateInfo *si, Thread *th)
     gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == WHITE);
 
     thisThread = th;
-    //set_state(st);
 
     assert(pos_is_ok());
 out:
     return *this;
 }
-
-
-/// Position::set_state() computes the hash keys of the position, and other
-/// data that once computed is updated incrementally as moves are made.
-/// The function is only used when a new position is set up, and to verify
-/// the correctness of the StateInfo data when running in debug mode.
-
-void Position::set_state(StateInfo *si) const
-{
-    // TODO
-#if 0
-    si->key = 0;
-
-    for (Bitboard b = pieces(); b; ) {
-        Square s = pop_lsb(&b);
-        Piece pc = piece_on(s);
-        si->key ^= Zobrist::psq[pc][s];
-    }
-
-    if (sideToMove == BLACK)
-        si->key ^= Zobrist::side;
-#endif
-}
-
-
-    // TODO
-#if 0
-/// Position::set() is an overload to initialize the position object with
-/// the given endgame code string like "KBPKN". It is mainly a helper to
-/// get the material key out of an endgame code.
-
-Position &Position::set(const string &code, Color c, StateInfo *si)
-{
-    assert(code[0] == 'K');
-
-    string sides[] = { code.substr(code.find('K', 1)),      // Weak
-                       code.substr(0, std::min(code.find('v'), code.find('K', 1))) }; // Strong
-
-    assert(sides[0].length() > 0 && sides[0].length() < 8);
-    assert(sides[1].length() > 0 && sides[1].length() < 8);
-
-    std::transform(sides[c].begin(), sides[c].end(), sides[c].begin(), tolower);
-
-    string fenStr = "8/" + sides[0] + char(8 - sides[0].length() + '0') + "/8/8/8/8/"
-        + sides[1] + char(8 - sides[1].length() + '0') + "/8 w - - 0 10";
-
-    return set(fenStr, si, nullptr);
-}
-#endif
 
 
 /// Position::fen() returns a FEN representation of the position. In case of
@@ -477,7 +397,7 @@ bool Position::pseudo_legal(const Move m) const
 /// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
 /// moves should be filtered out before this function is called.
 
-void Position::do_move(Move m, StateInfo &newSt)
+void Position::do_move(Move m)
 {
 #if 0
     assert(is_ok(m));
@@ -1204,27 +1124,24 @@ inline void Position::set_gameover(Color w, GameOverReason reason)
     winner = w;
 }
 
-int Position::update()
+void Position::update()
 {
-    int ret = -1;
     int timePoint = -1;
     time_t *ourSeconds = &elapsedSeconds[sideToMove];
     time_t theirSeconds = elapsedSeconds[them];
 
     if (!(phase & PHASE_PLAYING)) {
-        return -1;
+        return;
     }
 
     currentTime = time(NULL);
 
     if (timePoint >= *ourSeconds) {
-        *ourSeconds = ret = timePoint;
+        *ourSeconds = timePoint;
         startTime = currentTime - (elapsedSeconds[BLACK] + elapsedSeconds[WHITE]);
     } else {
-        *ourSeconds = ret = currentTime - startTime - theirSeconds;
+        *ourSeconds = currentTime - startTime - theirSeconds;
     }
-
-    return ret;
 }
 
 void Position::update_score()

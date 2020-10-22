@@ -64,17 +64,8 @@ public:
     void idle_loop();
     void start_searching();
     void wait_for_search_finished();
-    int best_move_count(Move move) const;
-
-    size_t pvIdx, pvLast;
-    uint64_t ttHitAverage;
-    int selDepth, nmpMinPly;
-    Color nmpColor;
-    std::atomic<uint64_t> nodes, tbHits, bestMoveChanges;
 
     Position *rootPos { nullptr };
-    Search::RootMoves rootMoves;
-    Depth rootDepth, completedDepth;
 
     // Mill Game
 
@@ -167,12 +158,6 @@ struct MainThread : public Thread
 {
     using Thread::Thread;
 
-    int search() /* override */;
-    void check_time();
-
-    double previousTimeReduction;
-    Value bestPreviousScore;
-    Value iterValue[4];
     int callsCnt;
     bool stopOnPonderhit;
     std::atomic_bool ponder;
@@ -185,7 +170,7 @@ struct MainThread : public Thread
 
 struct ThreadPool : public std::vector<Thread *>
 {
-    void start_thinking(Position *, StateListPtr &, const Search::LimitsType &, bool = false);
+    void start_thinking(Position *, bool = false);
     void clear();
     void set(size_t);
 
@@ -193,20 +178,10 @@ struct ThreadPool : public std::vector<Thread *>
     {
         return static_cast<MainThread *>(front());
     }
-    uint64_t nodes_searched() const
-    {
-        return accumulate(&Thread::nodes);
-    }
-    uint64_t tb_hits()        const
-    {
-        return accumulate(&Thread::tbHits);
-    }
 
     std::atomic_bool stop, increaseDepth;
 
 private:
-    StateListPtr setupStates;
-
     uint64_t accumulate(std::atomic<uint64_t> Thread:: *member) const
     {
         uint64_t sum = 0;

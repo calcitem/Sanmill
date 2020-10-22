@@ -21,9 +21,6 @@
 
 #include "movepick.h"
 
-// namespace
-// {
-
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
 void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
@@ -37,9 +34,6 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
             *q = tmp;
         }
 }
-
-//}
-
 
 /// Constructors of the MovePicker class. As arguments we pass information
 /// to help it to return the (presumably) good moves first, to decide which
@@ -180,7 +174,7 @@ Move MovePicker::select(Pred filter)
 Move MovePicker::next_move()
 {
     endMoves = generate<LEGAL>(pos, moves);
-    moveCount = endMoves - moves;
+    moveCount = int(endMoves - moves);
 
     score<LEGAL>();
     partial_insertion_sort(moves, endMoves, -100);    // TODO: limit = -3000 * depth

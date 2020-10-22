@@ -29,7 +29,6 @@
 #include "position.h"
 #include "search.h"
 #include "thread.h"
-#include "timeman.h"
 #include "tt.h"
 #include "uci.h"
 
@@ -41,7 +40,7 @@ namespace
 {
 
 // FEN string of the initial position, normal mill game
-const char *StartFEN = "********/********/******** b p p 0 12 0 12 0 0 1"; // Chess: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const char *StartFEN = "********/********/******** b p p 0 12 0 12 0 0 1";
 
 
 // position() is called when engine receives the "position" UCI command.
@@ -49,7 +48,7 @@ const char *StartFEN = "********/********/******** b p p 0 12 0 12 0 0 1"; // Ch
 // or the starting position ("startpos") and then makes the moves given in the
 // following move list ("moves").
 
-void position(Position *pos, istringstream &is, StateListPtr &states)
+void position(Position *pos, istringstream &is)
 {
     Move m;
     string token, fen;
@@ -65,13 +64,11 @@ void position(Position *pos, istringstream &is, StateListPtr &states)
     else
         return;
 
-    states = StateListPtr(new std::deque<StateInfo>(1)); // Drop old and create a new one
-    pos->set(fen, &states->back(), Threads.main());
+    pos->set(fen, Threads.main());
 
     // Parse move list (if any)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
-        states->emplace_back();
-        pos->do_move(m, states->back());
+        pos->do_move(m);
     }
 }
 
@@ -104,34 +101,10 @@ void setoption(istringstream &is)
 // the thinking time and other parameters from the input string, then starts
 // the search.
 
-void go(Position *pos, istringstream &is, StateListPtr &states)
+void go(Position *pos)
 {
 begin:
-    Search::LimitsType limits;
-    string token;
-    bool ponderMode = false;
-
-    limits.startTime = now(); // As early as possible!
-
-    while (is >> token)
-        if (token == "searchmoves") // Needs to be the last command on the line
-            while (is >> token)
-                limits.searchmoves.push_back(UCI::to_move(pos, token));
-
-        else if (token == "wtime")     is >> limits.time[WHITE];
-        else if (token == "btime")     is >> limits.time[BLACK];
-        else if (token == "winc")      is >> limits.inc[WHITE];
-        else if (token == "binc")      is >> limits.inc[BLACK];
-        else if (token == "movestogo") is >> limits.movestogo;
-        else if (token == "depth")     is >> limits.depth;
-        else if (token == "nodes")     is >> limits.nodes;
-        else if (token == "movetime")  is >> limits.movetime;
-        else if (token == "mate")      is >> limits.mate;
-        else if (token == "perft")     is >> limits.perft;
-        else if (token == "infinite")  limits.infinite = 1;
-        else if (token == "ponder")    ponderMode = true;
-
-    Threads.start_thinking(pos, states, limits, ponderMode);
+    Threads.start_thinking(pos);
 
     if (pos->get_phase() == PHASE_GAMEOVER)
     {
@@ -140,7 +113,7 @@ begin:
         {
         }
 
-        pos->set(StartFEN, &states->back(), Threads.main());
+        pos->set(StartFEN, Threads.main());
     }
 
     goto begin;
@@ -151,10 +124,10 @@ begin:
 // a list of UCI commands is setup according to bench parameters, then
 // it is run one by one printing a summary at the end.
 
-void bench(Position *pos, istream &args, StateListPtr &states)
+void bench(Position *pos, istream &args)
 {
     string token;
-    uint64_t num, nodes = 0, cnt = 1;
+    uint64_t num, cnt = 1;
 
     vector<string> list = setup_bench(pos, args);
     num = count_if(list.begin(), list.end(), [](string s) { return s.find("go ") == 0 || s.find("eval") == 0; });
@@ -168,13 +141,12 @@ void bench(Position *pos, istream &args, StateListPtr &states)
         if (token == "go" || token == "eval") {
             cerr << "\nPosition: " << cnt++ << '/' << num << endl;
             if (token == "go") {
-                go(pos, is, states);
+                go(pos);
                 Threads.main()->wait_for_search_finished();
-                nodes += Threads.nodes_searched();
             } else
                 sync_cout << "\n" << Eval::trace(*pos) << sync_endl;
         } else if (token == "setoption")  setoption(is);
-        else if (token == "position")   position(pos, is, states);
+        else if (token == "position")   position(pos, is);
         else if (token == "ucinewgame") {
             Search::clear(); elapsed = now();
         } // Search::clear() may take some while
@@ -186,8 +158,7 @@ void bench(Position *pos, istream &args, StateListPtr &states)
 
     cerr << "\n==========================="
         << "\nTotal time (ms) : " << elapsed
-        << "\nNodes searched  : " << nodes
-        << "\nNodes/second    : " << 1000 * nodes / elapsed << endl;
+        << endl;
 }
 
 } // namespace
@@ -204,9 +175,8 @@ void UCI::loop(int argc, char *argv[])
 
     Position *pos = new Position;
     string token, cmd;
-    StateListPtr states(new std::deque<StateInfo>(1));
 
-    pos->set(StartFEN, &states->back(), Threads.main());
+    pos->set(StartFEN, Threads.main());
 
     for (int i = 1; i < argc; ++i)
         cmd += std::string(argv[i]) + " ";
@@ -237,15 +207,15 @@ void UCI::loop(int argc, char *argv[])
             << "\nuciok" << sync_endl;
 
         else if (token == "setoption")  setoption(is);
-        else if (token == "go")         go(pos, is, states);
-        else if (token == "position")   position(pos, is, states);
+        else if (token == "go")         go(pos);
+        else if (token == "position")   position(pos, is);
         else if (token == "ucinewgame") Search::clear();
         else if (token == "isready")    sync_cout << "readyok" << sync_endl;
 
         // Additional custom non-UCI commands, mainly for debugging.
         // Do not use these commands during a search!
         else if (token == "flip")     pos->flip();
-        else if (token == "bench")    bench(pos, is, states);
+        else if (token == "bench")    bench(pos, is);
         else if (token == "d")        sync_cout << &pos << sync_endl;
         else if (token == "eval")     sync_cout << Eval::trace(*pos) << sync_endl;
         else if (token == "compiler") sync_cout << compiler_info() << sync_endl;

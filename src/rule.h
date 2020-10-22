@@ -44,4 +44,3 @@ extern const struct Rule RULES[N_RULES];
 extern const struct Rule *rule;
 
 #endif /* RULE_H */
-

@@ -1048,7 +1048,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
             loggerDebug("Game Duration Time: %lldms\n", gameDurationTime);
 
 #ifdef TIME_STAT
-            loggerDebug("Sort Time: %ld + %ld = %ldms\n",
+            loggerDebug("Sort Time: %I64d + %I64d = %I64dms\n",
                         aiThread[BLACK]->sortTime, aiThread[WHITE]->sortTime,
                         (aiThread[BLACK]->sortTime + aiThread[WHITE]->sortTime));
             aiThread[BLACK]->sortTime = aiThread[WHITE]->sortTime = 0;

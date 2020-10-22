@@ -107,34 +107,6 @@ enum StatsType
     NoCaptures, Captures
 };
 
-/// ButterflyHistory records how often quiet moves have been successful or
-/// unsuccessful during the current search, and is used for reduction and move
-/// ordering decisions. It uses 2 tables (one for each color) indexed by
-/// the move's from and to squares, see www.chessprogramming.org/Butterfly_Boards
-typedef Stats<int16_t, 10692, COLOR_NB, int(SQUARE_NB) *int(SQUARE_NB)> ButterflyHistory;
-
-/// LowPlyHistory at higher depths records successful quiet moves on plies 0 to 3
-/// and quiet moves which are/were in the PV (ttPv)
-/// It get cleared with each new search and get filled during iterative deepening
-constexpr int MAX_LPH = 4;
-typedef Stats<int16_t, 10692, MAX_LPH, int(SQUARE_NB) *int(SQUARE_NB)> LowPlyHistory;
-
-/// CounterMoveHistory stores counter moves indexed by [piece][to] of the previous
-/// move, see www.chessprogramming.org/Countermove_Heuristic
-typedef Stats<Move, NOT_USED, PIECE_NB, SQUARE_NB> CounterMoveHistory;
-
-/// CapturePieceToHistory is addressed by a move's [piece][to][captured piece type]
-typedef Stats<int16_t, 10692, PIECE_NB, SQUARE_NB, PIECE_TYPE_NB> CapturePieceToHistory;
-
-/// PieceToHistory is like ButterflyHistory but is addressed by a move's [piece][to]
-typedef Stats<int16_t, 29952, PIECE_NB, SQUARE_NB> PieceToHistory;
-
-/// ContinuationHistory is the combined history of a given pair of moves, usually
-/// the current one given a previous one. The nested history table is based on
-/// PieceToHistory instead of ButterflyBoards.
-typedef Stats<PieceToHistory, NOT_USED, PIECE_NB, SQUARE_NB> ContinuationHistory;
-
-
 /// MovePicker class is used to pick one pseudo legal move at a time from the
 /// current position. The most important method is next_move(), which returns a
 /// new pseudo legal move each time it is called, until there are no moves left,
@@ -155,7 +127,6 @@ public:
 
     Move next_move();
 
-//private:
     template<PickType T, typename Pred> Move select(Pred);
     template<GenType> void score();
     ExtMove *begin()

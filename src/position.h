@@ -42,16 +42,7 @@ struct StateInfo
 
     // Not copied when making a move (will be recomputed anyhow)
     Key        key;
-    Piece      capturedPiece;
-    StateInfo *previous;
-    int        repetition;
 };
-
-/// A list to keep track of the position states along the setup moves (from the
-/// start position to the position just before the search starts). Needed by
-/// 'draw by repetition' detection. Use a std::deque because pointers to
-/// elements are not invalidated upon list resizing.
-typedef std::unique_ptr<std::deque<StateInfo>> StateListPtr;
 
 
 /// Position class stores information regarding the board representation as
@@ -71,8 +62,7 @@ public:
     Position &operator=(const Position &) = delete;
 
     // FEN string input/output
-    Position &set(const std::string &fenStr, StateInfo *si, Thread *th);
-    Position &set(const std::string &code, Color c, StateInfo *si);
+    Position &set(const std::string &fenStr, Thread *th);
     const std::string fen() const;
 
     // Position representation
@@ -87,7 +77,7 @@ public:
     Piece moved_piece(Move m) const;
 
     // Doing and undoing moves
-    void do_move(Move m, StateInfo &newSt);
+    void do_move(Move m);
     void undo_move(Move m);
     void undo_move(Sanmill::Stack<Position> &ss);
     void do_null_move();
@@ -124,7 +114,6 @@ public:
 
     Piece *get_board() const;
     Square current_square() const;
-    int get_step() const;
     enum Phase get_phase() const;
     enum Action get_action() const;
     const char *cmd_line() const;
@@ -135,7 +124,7 @@ public:
     bool start();
     bool resign(Color loser);
     bool command(const char *cmd);
-    int update();
+    void update();
     void update_score();
     bool check_gameover_condition();
     void remove_ban_stones();
@@ -181,11 +170,9 @@ public:
     void put_piece(Piece pc, Square s);
     bool put_piece(File file, Rank rank);
     bool put_piece(Square s, bool updateCmdlist = false);
-    bool undo_put_piece(Square s);
 
     bool remove_piece(File file, Rank rank);
     bool remove_piece(Square s, bool updateCmdlist = false);
-    bool undo_remove_piece(Square s);
 
     bool move_piece(File f1, Rank r1, File f2, Rank r2);
     bool move_piece(Square from, Square to);
@@ -323,10 +310,11 @@ inline bool Position::select_piece(File f, Rank r)
     return select_piece(make_square(f, r));
 }
 
+#if 0
 inline void Position::put_piece(Piece pc, Square s)
 {
     // TODO: put_piece
-#if 0
+
     board[s] = pc;
     byTypeBB[ALL_PIECES] |= s;
     byTypeBB[type_of(pc)] |= s;
@@ -334,8 +322,8 @@ inline void Position::put_piece(Piece pc, Square s)
     index[s] = pieceCount[pc]++;
     pieceList[pc][index[s]] = s;
     pieceCount[make_piece(color_of(pc), ALL_PIECES)]++;
-#endif
 }
+#endif
 
 inline bool Position::put_piece(File f, Rank r)
 {

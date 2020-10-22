@@ -28,7 +28,7 @@ class Position;
 
 namespace Eval {
 
-std::string trace(const Position &pos);
+std::string trace(Position &pos);
 
 Value evaluate(Position &pos);
 };

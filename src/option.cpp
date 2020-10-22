@@ -112,4 +112,3 @@ bool GameOptions::getOpeningBook()
 {
     return openingBook;
 }
-

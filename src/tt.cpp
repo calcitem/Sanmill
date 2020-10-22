@@ -67,7 +67,7 @@ Value TranspositionTable::probe(const Key &key,
         break;
     case BOUND_UPPER:
         if (tte.value8 <= alpha) {
-            return alpha;   // TODO: https://github.com/calcitem/NineChess/issues/25
+            return alpha;   // TODO: https://github.com/calcitem/Sanmill/issues/25
         }
         break;
     case BOUND_LOWER:

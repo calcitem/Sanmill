@@ -73,7 +73,6 @@ void loop(int argc, char* argv[]);
 std::string value(Value v);
 std::string square(Square s);
 std::string move(Move m);
-std::string pv(const Position* pos, Depth depth, Value alpha, Value beta);
 Move to_move(Position* pos, std::string& str);
 
 } // namespace UCI

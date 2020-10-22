@@ -120,9 +120,6 @@
     <ClInclude Include="src\uci.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\timeman.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\thread_win32_osx.h">
       <Filter>Qt Files</Filter>
     </ClInclude>
@@ -354,9 +351,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ucioption.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\timeman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\benchmark.cpp">
