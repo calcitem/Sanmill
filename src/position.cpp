@@ -737,7 +737,7 @@ int Position::set_position(const struct Rule *newRule)
 bool Position::reset()
 {
     if (phase == PHASE_READY &&
-        elapsedSeconds[BLACK] == elapsedSeconds[WHITE] == 0) {
+        elapsedSeconds[BLACK] == 0 && elapsedSeconds[WHITE] == 0) {
         return true;
     }
 
@@ -1057,7 +1057,7 @@ bool Position::resign(Color loser)
 
 bool Position::command(const char *cmd)
 {
-    int ruleIndex;
+    unsigned int ruleIndex;
     unsigned t;
     int step;
     File file1, file2;
@@ -1072,18 +1072,18 @@ bool Position::command(const char *cmd)
         return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
     }
 
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", &file1, &rank1, &file2, &rank2);
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned*)&file1, (unsigned*)&rank1, (unsigned*)&file2, (unsigned*)&rank2);
 
     if (args >= 4) {
         return move_piece(file1, rank1, file2, rank2);
     }
 
-    args = sscanf(cmd, "-(%1u,%1u)", &file1, &rank1);
+    args = sscanf(cmd, "-(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
     if (args >= 2) {
         return remove_piece(file1, rank1);
     }
 
-    args = sscanf(cmd, "(%1u,%1u)", &file1, &rank1);
+    args = sscanf(cmd, "(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
     if (args >= 2) {
         return put_piece(file1, rank1);
     }
@@ -1490,7 +1490,6 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
 
 int Position::add_mills(Square s)
 {
-    uint64_t mill = 0;
     int n = 0;
     int idx[3], min, temp;
     Color m = color_on(s);
@@ -1524,13 +1523,6 @@ int Position::add_mills(Square s)
             idx[min] = idx[j];
             idx[j] = temp;
         }
-
-        mill = (static_cast<uint64_t>(board[idx[0]]) << 40)
-            + (static_cast<uint64_t>(idx[0]) << 32)
-            + (static_cast<uint64_t>(board[idx[1]]) << 24)
-            + (static_cast<uint64_t>(idx[1]) << 16)
-            + (static_cast<uint64_t>(board[idx[2]]) << 8)
-            + static_cast<uint64_t>(idx[2]);
 
         n++;
     }
@@ -1744,7 +1736,7 @@ void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
     }
 
     if (cmdChange) {
-        int r1, s1, r2, s2;
+        unsigned r1, s1, r2, s2;
         int args = 0;
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
@@ -1869,7 +1861,7 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
 
     // 命令行解析
     if (cmdChange) {
-        int r1, s1, r2, s2;
+        unsigned r1, s1, r2, s2;
         int args = 0;
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)",
@@ -2048,7 +2040,7 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
     }
 
     if (cmdChange) {
-        int r1, s1, r2, s2;
+        unsigned r1, s1, r2, s2;
         int args = 0;
 
         args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);

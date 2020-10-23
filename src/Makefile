@@ -159,7 +159,7 @@ CXXFLAGS += -Wall -Wcast-qual -fno-exceptions -std=c++17 $(EXTRACXXFLAGS)
 DEPENDFLAGS += -std=c++17
 LDFLAGS += $(EXTRALDFLAGS)
 
-CXXFLAGS += -I../include -I.
+CXXFLAGS += -Wno-class-memaccess -I../include -I.
 
 ifeq ($(COMP),)
 	COMP=gcc

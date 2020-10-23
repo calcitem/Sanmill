@@ -35,7 +35,7 @@
 #include "config.h"
 #ifdef QT_UI
 #include <QObject>
-#endif QT_UI
+#endif // QT_UI
 
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material hash tables so that once we get a

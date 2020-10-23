@@ -482,7 +482,7 @@ constexpr Square from_sq(Move m)
     return static_cast<Square>(m >> 8);
 }
 
-inline const Square to_sq(Move m)
+constexpr Square to_sq(Move m)
 {
     if (m < 0)
         m = (Move)-m;
@@ -498,7 +498,7 @@ constexpr int from_to(Move m)
     return m & 0xFFFF;   // TODO
 }
 
-inline const MoveType type_of(Move m)
+constexpr MoveType type_of(Move m)
 {
     if (m < 0) {
         return MOVETYPE_REMOVE;
@@ -514,12 +514,12 @@ constexpr Move make_move(Square from, Square to)
     return Move((from << 8) + to);
 }
 
-inline const Move reverse_move(Move m)
+constexpr Move reverse_move(Move m)
 {
     return make_move(to_sq(m), from_sq(m));
 }
 
-static inline bool is_ok(Move m)
+constexpr bool is_ok(Move m)
 {
     return from_sq(m) != to_sq(m); // Catch MOVE_NULL and MOVE_NONE
 }

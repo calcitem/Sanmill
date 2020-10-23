@@ -81,7 +81,7 @@ namespace CTSL //Concurrent Thread Safe Library
             void prefetchValue(const K &key)
             {
                 K hashValue = hashFn(key) & (hashSize - 1);
-                const V *addr = &(hashTable[hashValue].getValue());
+                V *addr = &(hashTable[hashValue].getValue());
 
                 prefetch((void *)addr);
             }

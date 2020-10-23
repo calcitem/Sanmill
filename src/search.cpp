@@ -44,6 +44,8 @@ using namespace Search;
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
 
+Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove);
+
 namespace
 {
 
@@ -126,8 +128,10 @@ int Thread::search()
 
     MoveList<LEGAL>::shuffle();
 
+#ifndef MTDF_AI
     Value alpha = -VALUE_INFINITE;
     Value beta = VALUE_INFINITE;
+#endif
 
     if (gameOptions.getIDSEnabled()) {
         loggerDebug("IDS: ");
@@ -149,7 +153,7 @@ int Thread::search()
 #ifdef MTDF_AI
             value = MTDF(rootPos, ss, value, i, originDepth, bestMove);
 #else
-            value = search(pos, ss, i, originDepth, alpha, beta, bestMove);
+            value = search(rootPos, ss, i, originDepth, alpha, beta, bestMove);
 #endif
 
             loggerDebug("%d(%d) ", value, value - lastValue);
@@ -159,7 +163,7 @@ int Thread::search()
 
 #ifdef TIME_STAT
         timeEnd = chrono::steady_clock::now();
-        loggerDebug("\nIDS Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+        loggerDebug("\nIDS Time: %llds\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif
     }
 
@@ -169,17 +173,19 @@ int Thread::search()
 #endif
 #endif
 
+#ifndef MTDF_AI
     if (gameOptions.getIDSEnabled()) {
         alpha = -VALUE_INFINITE;
         beta = VALUE_INFINITE;
     }
+#endif
 
     originDepth = d;
 
 #ifdef MTDF_AI
     value = MTDF(rootPos, ss, value, d, originDepth, bestMove);
 #else
-    value = search(pos, ss, d, originDepth, alpha, beta, bestMove);
+    value = search(rootPos, ss, d, originDepth, alpha, beta, bestMove);
 #endif
 
 #ifdef TIME_STAT

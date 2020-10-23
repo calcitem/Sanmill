@@ -24,7 +24,7 @@ GameOptions gameOptions;
 void GameOptions::setAutoRestart(bool enabled)
 {
     isAutoRestart = enabled;
-};
+}
 
 bool GameOptions::getAutoRestart()
 {

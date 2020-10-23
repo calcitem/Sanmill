@@ -58,7 +58,7 @@
 
 //#define FIRST_MOVE_STAR_PREFERRED
 
-#define TIME_STAT
+//#define TIME_STAT
 //#define CYCLE_STAT
 
 //#define SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES

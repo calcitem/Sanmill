@@ -112,7 +112,7 @@ public:
     time_t start_timeb() const;
     void set_start_time(int stimeb);
 
-    Piece *get_board() const;
+    Piece *get_board();
     Square current_square() const;
     enum Phase get_phase() const;
     enum Action get_action() const;
@@ -383,7 +383,7 @@ inline bool Position::move_piece(Square from, Square to)
 
 /// Mill Game
 
-inline Piece *Position::get_board() const
+inline Piece *Position::get_board()
 {
     return (Piece *)board;
 }
