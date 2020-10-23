@@ -128,11 +128,7 @@ void Thread::idle_loop()
         lk.unlock();
 
         // TODO: Stockfish doesn't have this
-        if (
-#ifdef QT_UI
-            //rootPos == nullptr ||
-#endif
-            rootPos->side_to_move() != us) {
+        if (rootPos == nullptr || rootPos->side_to_move() != us) {
             continue;
         }
 
