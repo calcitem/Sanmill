@@ -35,7 +35,8 @@ using namespace std;
 #endif
 
 #if _MSC_VER >= 1600
-#pragma execution_character_set("GB2312")
+#pragma warning(disable:4695)
+#pragma execution_character_set("ANSI")
 #endif
 
 
