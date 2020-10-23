@@ -247,6 +247,9 @@
     <None Include="millgame.pro">
       <Filter>Project Files</Filter>
     </None>
+    <None Include="src\Makefile">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\test\test.h">

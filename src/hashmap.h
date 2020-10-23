@@ -7,6 +7,7 @@
 #include <mutex>
 #include <fstream>
 #include <iostream>
+#include <cstring>
 #include "HashNode.h"
 #include "misc.h"
 #include "types.h"
@@ -142,8 +143,8 @@ namespace CTSL //Concurrent Thread Safe Library
             void dump(const std::string &filename)
             {
 #ifdef DISABLE_HASHBUCKET
-                ofstream file;
-                file.open(filename, ios::out);
+                std::ofstream file;
+                file.open(filename, std::ios::out);
                 file.write((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 #endif
@@ -153,8 +154,8 @@ namespace CTSL //Concurrent Thread Safe Library
             void load(const std::string &filename)
             {
 #ifdef DISABLE_HASHBUCKET
-                ifstream file;
-                file.open(filename, ios::in);
+                std::ifstream file;
+                file.open(filename, std::ios::in);
                 file.read((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
                 file.close();
 

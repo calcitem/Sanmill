@@ -20,6 +20,7 @@
 #include <cassert>
 #include <random>
 #include <array>
+#include <cstring>
 
 #include "movegen.h"
 #include "position.h"

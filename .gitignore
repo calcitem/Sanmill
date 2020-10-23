@@ -327,6 +327,7 @@ CMakeLists.txt.user*
 *.txt
 
 # Other files
+.depend
 user*
 desktop.ini
 *.swp
