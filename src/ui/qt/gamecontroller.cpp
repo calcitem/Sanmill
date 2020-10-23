@@ -1423,7 +1423,9 @@ inline std::string GameController::char_to_string(char ch)
 
 void GameController::appendGameOverReasonToCmdlist()
 {
-    assert(position.phase == PHASE_GAMEOVER);
+    if (position.phase != PHASE_GAMEOVER) {
+        return;
+    }
 
     char cmdline[64] = { 0 };
     switch (position.gameoverReason) {
