@@ -104,6 +104,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
 
 #define P(s) PieceToChar(pos.piece_on(Square(s)))
 
+    os << "\n";
     os << P(31) << " --- " << P(24)<< " --- " << P(25) << "\n";
     os << "|\\    |    /|\n";
     os << "| " << P(23) << " - " << P(16) << " - " << P(17) << " |\n";
