@@ -20,6 +20,7 @@
 #include <cassert>
 
 #include <algorithm> // For std::count
+#include <iomanip>
 #include "movegen.h"
 #include "search.h"
 #include "thread.h"
@@ -356,7 +357,21 @@ void Thread::analyze(Color c)
         cout << "轮到白方行棋" << endl;
     }
 
-    cout << "比分: " << nbwin << " : " << nwwin << " : " << ndraw << endl;
+    int total = nbwin + nwwin + ndraw;
+    float bwinrate, wwinrate, drawrate;
+
+    if (total == 0) {
+        bwinrate = 0;
+        wwinrate = 0;
+        drawrate = 0;
+    } else {
+        bwinrate = (float)nbwin * 100 / total;
+        wwinrate = (float)nwwin * 100 / total;
+        drawrate = (float)ndraw * 100 / total;
+    }
+
+    cout << "比分: " << nbwin << " : " << nwwin << " : " << ndraw << "\ttotal: " << total << endl;
+    cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
 
 out:
     cout << endl << endl;
