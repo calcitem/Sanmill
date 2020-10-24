@@ -479,6 +479,9 @@ constexpr Rank rank_of(Square s)
 
 constexpr Square from_sq(Move m)
 {
+    if (m < 0)
+        m = (Move)-m;
+
     return static_cast<Square>(m >> 8);
 }
 

@@ -1464,6 +1464,8 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
     int n = 0;
     Piece locbak = NO_PIECE;
 
+    assert(SQ_0 <= squareSelected && squareSelected < SQUARE_NB);
+
     if (c == NOBODY) {
         c = color_on(s);
     }
