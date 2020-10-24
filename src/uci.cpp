@@ -223,7 +223,7 @@ void UCI::loop(int argc, char *argv[])
         // Do not use these commands during a search!
         else if (token == "flip")     pos->flip();
         else if (token == "bench")    bench(pos, is);
-        else if (token == "d")        sync_cout << &pos << sync_endl;
+        else if (token == "d")        sync_cout << *pos << sync_endl;
         else if (token == "eval")     sync_cout << Eval::trace(*pos) << sync_endl;
         else if (token == "compiler") sync_cout << compiler_info() << sync_endl;
         else
