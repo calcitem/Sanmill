@@ -191,8 +191,11 @@ void Thread::emitCommand()
     sync_cout << "bestmove " << strCommand.c_str();
     std::cout << sync_endl;
 
+#ifdef UCI_DO_BEST_MOVE
     rootPos->command(strCommand.c_str());
     us = rootPos->side_to_move();
+#endif
+
 #ifdef ANALYZE_POSITION
     analyze(rootPos->side_to_move());
 #endif

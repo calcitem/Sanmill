@@ -180,7 +180,6 @@ void bench(Position *pos, istream &args)
 
 void UCI::loop(int argc, char *argv[])
 {
-
     Position *pos = new Position;
     string token, cmd;
 

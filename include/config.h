@@ -31,6 +31,7 @@
 //#define DISABLE_RANDOM_MOVE
 //#define UCI_AUTO_RE_GO
 //#define UCI_AUTO_RESTART
+//#define UCI_DO_BEST_MOVE
 #define ANALYZE_POSITION
 
 #ifdef UCI_AUTO_RESTART
