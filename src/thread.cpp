@@ -191,7 +191,9 @@ void Thread::emitCommand()
     loggerDebug("%s\n", strCommand.c_str());
     rootPos->command(strCommand.c_str());
     us = rootPos->side_to_move();
+#ifdef ANALYZE_POSITION
     analyze(rootPos->side_to_move());
+#endif
 #endif // QT_UI
 }
 

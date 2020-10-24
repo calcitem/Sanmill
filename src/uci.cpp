@@ -108,6 +108,10 @@ begin:
 
     if (pos->get_phase() == PHASE_GAMEOVER)
     {
+#ifndef UCI_AUTO_RESTART
+        return;
+#endif
+
         // TODO
         for (int i = 0; i < 100000; i++)
         {
@@ -116,7 +120,10 @@ begin:
         pos->set(StartFEN, Threads.main());
     }
 
+#ifdef UCI_AUTO_RE_GO
     goto begin;
+#endif
+
 }
 
 

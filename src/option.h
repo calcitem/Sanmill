@@ -57,7 +57,7 @@ private:
     bool isAutoRestart { false };
     bool isAutoChangeFirstMove { false };
     bool resignIfMostLose { false };
-#ifdef SELF_MOVE
+#ifdef DISABLE_RANDOM_MOVE
     bool randomMoveEnabled { false };
 #else
     bool randomMoveEnabled { true };

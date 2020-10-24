@@ -28,7 +28,14 @@
 
 #define QT_UI
 
-//#define SELF_MOVE
+//#define DISABLE_RANDOM_MOVE
+//#define UCI_AUTO_RE_GO
+//#define UCI_AUTO_RESTART
+#define ANALYZE_POSITION
+
+#ifdef UCI_AUTO_RESTART
+#define UCI_AUTO_RE_GO
+#endif
 
 #define NET_FIGHT_SUPPORT
 
@@ -105,10 +112,6 @@
 //#define MESSAGEBOX_ENABLE
 
 #ifdef DEBUG_MODE
-#define DONOT_PLAY_SOUND
-#endif
-
-#ifdef SELF_MOVE
 #define DONOT_PLAY_SOUND
 #endif
 
