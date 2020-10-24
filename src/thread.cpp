@@ -188,7 +188,9 @@ void Thread::emitCommand()
 #ifdef QT_UI
     emit command(strCommand);
 #else
-    loggerDebug("%s\n", strCommand.c_str());
+    sync_cout << "bestmove " << strCommand.c_str();
+    std::cout << sync_endl;
+
     rootPos->command(strCommand.c_str());
     us = rootPos->side_to_move();
 #ifdef ANALYZE_POSITION
