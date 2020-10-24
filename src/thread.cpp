@@ -114,7 +114,7 @@ void Thread::wait_for_search_finished()
 
 void Thread::idle_loop()
 {
-    bestvalue = lastvalue = VALUE_ZERO;
+    //bestvalue = lastvalue = VALUE_ZERO;
 
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
