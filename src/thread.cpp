@@ -248,6 +248,9 @@ void Thread::analyze(Color c)
     static int nwwin = 0;
     static int ndraw = 0;
 
+    int total;
+    float bwinrate, wwinrate, drawrate;
+
     int d = (int)originDepth;
     int v = (int)bestvalue;
     int lv = (int)lastvalue;
@@ -357,8 +360,7 @@ void Thread::analyze(Color c)
         cout << "轮到白方行棋" << endl;
     }
 
-    int total = nbwin + nwwin + ndraw;
-    float bwinrate, wwinrate, drawrate;
+    total = nbwin + nwwin + ndraw;
 
     if (total == 0) {
         bwinrate = 0;
