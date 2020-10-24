@@ -103,27 +103,28 @@ void setoption(istringstream &is)
 
 void go(Position *pos)
 {
-begin:
+#ifdef UCI_AUTO_RE_GO
+    begin:
+#endif
     Threads.start_thinking(pos);
 
     if (pos->get_phase() == PHASE_GAMEOVER)
     {
 #ifndef UCI_AUTO_RESTART
         return;
-#endif
-
+#else
         // TODO
         for (int i = 0; i < 100000; i++)
         {
         }
 
         pos->set(StartFEN, Threads.main());
+#endif
     }
 
 #ifdef UCI_AUTO_RE_GO
     goto begin;
 #endif
-
 }
 
 
