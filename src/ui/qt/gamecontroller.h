@@ -278,10 +278,10 @@ public slots:
     void createAiThreads()
     {
         aiThread[BLACK] = new Thread(0);
-        aiThread[BLACK]->us = 1;
+        aiThread[BLACK]->us = BLACK;
 
         aiThread[WHITE] = new Thread(0);
-        aiThread[WHITE]->us = 2;
+        aiThread[WHITE]->us = WHITE;
     }
 
     void startAiThreads()

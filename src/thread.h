@@ -131,7 +131,7 @@ public:
     Value bestvalue { VALUE_ZERO };
     Value lastvalue { VALUE_ZERO };
 
-    int us {1};
+    Color us { BLACK };
 
 private:
     int timeLimit;
