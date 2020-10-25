@@ -116,6 +116,7 @@ void go(Position *pos)
         }
 
         pos->set(StartFEN, Threads.main());
+        Threads.main()->us = BLACK; // WAR
 #else
         return;
 #endif
