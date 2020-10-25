@@ -27,7 +27,6 @@ SOURCES += \
     src/movegen.cpp \
     src/movepick.cpp \
     src/thread.cpp \
-    src/timeman.cpp \
     src/trainer.cpp \
     src/tt.cpp \
     src/misc.cpp \
