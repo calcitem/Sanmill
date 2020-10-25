@@ -112,8 +112,10 @@ void go(Position *pos)
     {
 #ifdef UCI_AUTO_RESTART
         // TODO
+#if 0
         for (int i = 0; i < 100000; i++) {
         }
+#endif
 
         pos->set(StartFEN, Threads.main());
         Threads.main()->us = BLACK; // WAR
