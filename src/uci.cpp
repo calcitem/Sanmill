@@ -110,15 +110,14 @@ void go(Position *pos)
 
     if (pos->get_phase() == PHASE_GAMEOVER)
     {
-#ifndef UCI_AUTO_RESTART
-        return;
-#else
+#ifdef UCI_AUTO_RESTART
         // TODO
-        for (int i = 0; i < 100000; i++)
-        {
+        for (int i = 0; i < 100000; i++) {
         }
 
         pos->set(StartFEN, Threads.main());
+#else
+        return;
 #endif
     }
 
