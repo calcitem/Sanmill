@@ -396,6 +396,7 @@ Depth Thread::adjustDepth()
         +16, 16, +16, 17,     /* 12 ~ 15 */
         +17, 16, +16, 15,     /* 16 ~ 19 */
         +15, 14, +14, 14,     /* 20 ~ 23 */
+        +14                   /* 24 */
     };
 
     const Depth placingDepthTable_9[] = {
@@ -403,7 +404,8 @@ Depth Thread::adjustDepth()
         +10, 12, +12, 12,     /* 4 ~ 7 */
         +12, 13, +13, 13,     /* 8 ~ 11 */
         +13, 13, +13, 13,     /* 12 ~ 15 */
-        +13, 13, +13          /* 16 ~ 18 */
+        +13, 13, +13,         /* 16 ~ 18 */
+        +13                   /* 19 */
     };
 
     const Depth movingDepthTable[] = {
@@ -432,10 +434,14 @@ Depth Thread::adjustDepth()
     const Depth flyingDepth = 9;
 
     if (rootPos->phase & PHASE_PLACING) {
+        int index = rule->nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE);
+
         if (rule->nTotalPiecesEachSide == 12) {
-            d = placingDepthTable_12[rule->nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
+            assert(0 <= index && index <= 24);
+            d = placingDepthTable_12[index];
         } else {
-            d = placingDepthTable_9[rule->nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE)];
+            assert(0 <= index && index <= 19);
+            d = placingDepthTable_9[index];
         }
     }
 
