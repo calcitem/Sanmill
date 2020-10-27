@@ -117,8 +117,15 @@ void go(Position *pos)
         }
 #endif
 
-        pos->set(StartFEN, Threads.main());
-        Threads.main()->us = BLACK; // WAR
+        while (true) {
+            if (Threads.main()->searching == true) {
+                continue;
+            }
+
+            pos->set(StartFEN, Threads.main());
+            Threads.main()->us = BLACK; // WAR
+            break;
+        }
 #else
         return;
 #endif
