@@ -66,7 +66,7 @@ const string  PieceToChar(Piece p)
     return "*";
 }
 
-const Piece CharToPiece(char ch)
+Piece CharToPiece(char ch)
 {
 
     if (ch == '*') {

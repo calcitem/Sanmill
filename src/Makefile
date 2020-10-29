@@ -159,7 +159,7 @@ CXXFLAGS += -Wall -Wcast-qual -fno-exceptions -std=c++17 $(EXTRACXXFLAGS)
 DEPENDFLAGS += -std=c++17
 LDFLAGS += $(EXTRALDFLAGS)
 
-CXXFLAGS += -Wno-class-memaccess -I../include -I.
+CXXFLAGS += -I../include -I.
 
 ifeq ($(COMP),)
 	COMP=gcc
@@ -169,6 +169,7 @@ ifeq ($(COMP),gcc)
 	comp=gcc
 	CXX=g++
 	CXXFLAGS += -pedantic -Wextra -Wshadow
+	CXXFLAGS += -Wno-class-memaccess
 
 	ifeq ($(ARCH),armv7)
 		ifeq ($(OS),Android)
@@ -220,6 +221,7 @@ ifeq ($(COMP),clang)
 	comp=clang
 	CXX=clang++
 	CXXFLAGS += -pedantic -Wextra -Wshadow
+	CXXFLAGS += -Wno-class-varargs
 
 	ifneq ($(KERNEL),Darwin)
 	ifneq ($(KERNEL),OpenBSD)
