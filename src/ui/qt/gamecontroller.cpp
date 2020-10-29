@@ -30,6 +30,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QDir>
+#include <iomanip>
 
 #include "gamecontroller.h"
 #include "graphicsconst.h"
@@ -939,6 +940,9 @@ bool GameController::resign()
 // 关键槽函数，棋谱的命令行执行，与actionPiece独立
 bool GameController::command(const string &cmd, bool update /* = true */)
 {
+    int total;
+    float bwinrate, wwinrate, drawrate;
+
 #ifndef TRAINING_MODE
     Q_UNUSED(hasSound)
 #endif
@@ -1124,7 +1128,22 @@ bool GameController::command(const string &cmd, bool update /* = true */)
         aiThread[WHITE]->analyze(WHITE);
     } else if (isAiPlayer[BLACK]) {
         aiThread[BLACK]->analyze(BLACK);
-    }    
+    }
+
+    total = position.score[BLACK] + position.score[WHITE] + position.score_draw;  
+
+    if (total == 0) {
+        bwinrate = 0;
+        wwinrate = 0;
+        drawrate = 0;
+    } else {
+        bwinrate = (float)position.score[BLACK] * 100 / total;
+        wwinrate = (float)position.score[WHITE] * 100 / total;
+        drawrate = (float)position.score_draw * 100 / total;
+    }
+
+    cout << "Score: " << position.score[BLACK] << " : " << position.score[WHITE] << " : " << position.score_draw << "\ttotal: " << total << endl;
+    cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
 
     return true;
 }

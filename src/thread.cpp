@@ -247,9 +247,10 @@ void Thread::analyze(Color c)
     static int nbwin = 0;
     static int nwwin = 0;
     static int ndraw = 0;
-
+#ifndef QT_UI
     int total;
     float bwinrate, wwinrate, drawrate;
+#endif // !QT_UI
 
     int d = (int)originDepth;
     int v = (int)bestvalue;
@@ -360,6 +361,7 @@ void Thread::analyze(Color c)
         cout << "轮到白方行棋" << endl;
     }
 
+#ifndef QT_UI
     total = nbwin + nwwin + ndraw;
 
     if (total == 0) {
@@ -374,6 +376,7 @@ void Thread::analyze(Color c)
 
     cout << "比分: " << nbwin << " : " << nwwin << " : " << ndraw << "\ttotal: " << total << endl;
     cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
+#endif // !QT_UI
 
 out:
     cout << endl << endl;
