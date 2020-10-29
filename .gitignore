@@ -336,3 +336,6 @@ desktop.ini
 *.7z
 *.diagsession
 enc_temp_folder
+
+# Executable files
+src/fishmill
