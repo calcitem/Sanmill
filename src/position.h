@@ -108,10 +108,6 @@ public:
 
     int set_position(const struct Rule *rule);
 
-    time_t get_elapsed_time(int us);
-    time_t start_timeb() const;
-    void set_start_time(int stimeb);
-
     Piece *get_board();
     Square current_square() const;
     enum Phase get_phase() const;
@@ -211,10 +207,6 @@ public:
     int nPlayed { 0 };
 
     char cmdline[64] { '\0' };
-
-    time_t startTime;
-    time_t currentTime;
-    time_t elapsedSeconds[COLOR_NB];    
 
     /*
         0x   00     00     00    00    00    00    00    00
@@ -406,16 +398,6 @@ inline enum Action Position::get_action() const
 inline const char *Position::cmd_line() const
 {
     return cmdline;
-}
-
-inline time_t Position::start_timeb() const
-{
-    return startTime;
-}
-
-inline void Position::set_start_time(int stimeb)
-{
-    startTime = stimeb;
 }
 
 inline int Position::pieces_count_on_board(Color c)

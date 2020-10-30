@@ -147,6 +147,11 @@ public:
         return &cmdlist;
     }
 
+    time_t get_elapsed_time(int us);
+    time_t start_timeb() const;
+    void set_start_time(int stimeb);
+    void updateTime();
+
 #ifdef NET_FIGHT_SUPPORT
     Server *server;
     Client *client;
@@ -440,6 +445,11 @@ private:
     // 游戏持续周期
     stopwatch::rdtscp_clock::duration gameDurationCycle;
 
+    // 时间相关
+    time_t startTime;
+    time_t currentTime;
+    time_t elapsedSeconds[COLOR_NB];
+
     // 是否有落子音效
     inline static bool hasSound {true};
 
@@ -478,5 +488,15 @@ private:
 
     std::vector <std::string> cmdlist;
 };
+
+inline time_t GameController::start_timeb() const
+{
+    return startTime;
+}
+
+inline void GameController::set_start_time(int stimeb)
+{
+    startTime = stimeb;
+}
 
 #endif // GAMECONTROLLER_H

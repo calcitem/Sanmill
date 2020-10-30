@@ -724,7 +724,6 @@ int Position::set_position(const struct Rule *newRule)
     MoveList<LEGAL>::create();
     create_mill_table();
     currentSquare = SQ_0;
-    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     int r;
     for (r = 0; r < N_RULES; r++) {
@@ -737,8 +736,7 @@ int Position::set_position(const struct Rule *newRule)
 
 bool Position::reset()
 {
-    if (phase == PHASE_READY &&
-        elapsedSeconds[BLACK] == 0 && elapsedSeconds[WHITE] == 0) {
+    if (phase == PHASE_READY) {
         return true;
     }
 
@@ -765,7 +763,6 @@ bool Position::reset()
     pieceCountNeedRemove = 0;
     millListSize = 0;
     currentSquare = SQ_0;
-    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.getLearnEndgameEnabled() && nPlayed != 0 && nPlayed % 256 == 0) {
@@ -802,7 +799,6 @@ bool Position::start()
         reset();
         [[fallthrough]];
     case PHASE_READY:
-        startTime = time(nullptr);
         phase = PHASE_PLACING;
         return true;
     default:
@@ -1123,26 +1119,6 @@ inline void Position::set_gameover(Color w, GameOverReason reason)
     phase = PHASE_GAMEOVER;
     gameoverReason = reason;
     winner = w;
-}
-
-void Position::update()
-{
-    int timePoint = -1;
-    time_t *ourSeconds = &elapsedSeconds[sideToMove];
-    time_t theirSeconds = elapsedSeconds[them];
-
-    if (!(phase & PHASE_PLAYING)) {
-        return;
-    }
-
-    currentTime = time(NULL);
-
-    if (timePoint >= *ourSeconds) {
-        *ourSeconds = timePoint;
-        startTime = currentTime - (elapsedSeconds[BLACK] + elapsedSeconds[WHITE]);
-    } else {
-        *ourSeconds = currentTime - startTime - theirSeconds;
-    }
 }
 
 void Position::update_score()
@@ -2092,9 +2068,4 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
             }
         }
     }
-}
-
-time_t Position::get_elapsed_time(int us)
-{
-    return elapsedSeconds[us];
 }

@@ -165,6 +165,7 @@ void GameController::gameStart()
 {
     //cmdlist.clear();
     position.start();
+    startTime = time(nullptr);
 
     // 每隔100毫秒调用一次定时器处理函数
     if (timeID == 0) {
@@ -200,6 +201,7 @@ void GameController::gameReset()
     }    
 
     position.reset();
+    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
     sideToMove = position.side_to_move();
 
     // 停掉线程
@@ -344,6 +346,7 @@ void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimit
 
     // 设置模型规则，重置游戏
     int r = position.set_position(&RULES[ruleNo]);
+    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     char cmdline[64] = { 0 };
     if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule->maxStepsLedToDraw, 0) <= 0) {
@@ -672,15 +675,35 @@ void GameController::turnLeft()
 #endif // TRAINING_MODE
 }
 
+void GameController::updateTime()
+{
+    int timePoint = -1;
+    time_t *ourSeconds = &elapsedSeconds[sideToMove];
+    time_t theirSeconds = elapsedSeconds[~sideToMove];
+
+//     if (!(phase & PHASE_PLAYING)) {
+//         return;
+//     }
+
+    currentTime = time(NULL);
+
+    if (timePoint >= *ourSeconds) {
+        *ourSeconds = timePoint;
+        startTime = currentTime - (elapsedSeconds[BLACK] + elapsedSeconds[WHITE]);
+    } else {
+        *ourSeconds = currentTime - startTime - theirSeconds;
+    }
+}
+
 void GameController::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
     static QTime qt1, qt2;
 
     // 玩家的已用时间
-    position.update();
-    remainingTime[BLACK] = position.get_elapsed_time(BLACK);
-    remainingTime[WHITE] = position.get_elapsed_time(WHITE);
+    updateTime();
+    remainingTime[BLACK] = get_elapsed_time(BLACK);
+    remainingTime[WHITE] = get_elapsed_time(WHITE);
 
     // 如果规则要求计时，则time1和time2表示倒计时
     if (timeLimit > 0) {
@@ -1169,7 +1192,7 @@ bool GameController::phaseChange(int row, bool forceUpdate)
     }
 
     // 下面这步关键，会让悔棋者承担时间损失
-    position.set_start_time(static_cast<int>(position.start_timeb()));
+    set_start_time(static_cast<int>(start_timeb()));
 
     // 刷新棋局场景
     updateScence(position);
@@ -1560,4 +1583,9 @@ void GameController::setTips()
     default:
         break;
     }
+}
+
+time_t GameController::get_elapsed_time(int us)
+{
+    return elapsedSeconds[us];
 }
