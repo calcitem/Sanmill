@@ -736,10 +736,6 @@ int Position::set_position(const struct Rule *newRule)
 
 bool Position::reset()
 {
-    if (phase == PHASE_READY) {
-        return true;
-    }
-
     gamePly = 0;
     st.rule50 = 0;
 
