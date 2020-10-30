@@ -112,11 +112,6 @@ void go(Position *pos)
     {
 #ifdef UCI_AUTO_RESTART
         // TODO
-#if 0
-        for (int i = 0; i < 100000; i++) {
-        }
-#endif
-
         while (true) {
             if (Threads.main()->searching == true) {
                 continue;

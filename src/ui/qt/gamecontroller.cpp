@@ -30,6 +30,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QDir>
+#include <QThread>
 #include <iomanip>
 
 #include "gamecontroller.h"
@@ -185,6 +186,13 @@ void GameController::gameStart()
 
 void GameController::gameReset()
 {
+    while (aiThread[BLACK]->searching || aiThread[WHITE]->searching) {
+        loggerDebug(".");
+        QThread::msleep(100);
+    }
+
+    loggerDebug("\n");
+
     // 停止计时器
     if (timeID != 0)
         killTimer(timeID);
