@@ -791,8 +791,10 @@ bool GameController::actionPiece(QPointF pos)
         return false;
     }
 
-    // 电脑走棋时，点击无效
-    if (isAIsTurn()) {
+    // 电脑走棋或正在搜索时，点击无效
+    if (isAIsTurn() ||
+        aiThread[BLACK]->searching ||
+        aiThread[WHITE]->searching) {
         return false;
     }
 
