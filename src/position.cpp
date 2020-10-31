@@ -66,6 +66,28 @@ const string  PieceToChar(Piece p)
     return "*";
 }
 
+const Piece CharToPiece(char ch)
+{
+
+    if (ch == '*') {
+        return NO_PIECE;
+    }
+
+    if (ch == '@') {
+        return B_STONE;
+    }
+
+    if (ch == 'O') {
+        return W_STONE;
+    }
+
+    if (ch == 'X') {
+        return BAN_STONE;
+    }
+
+    return NO_PIECE;
+}
+
 constexpr PieceType PieceTypes[] = { NO_PIECE_TYPE, BLACK_STONE, WHITE_STONE, BAN };
 } // namespace
 
@@ -198,12 +220,6 @@ Position &Position::set(const string &fenStr, Thread *th)
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
-#if 0
-    if (this->phase != PHASE_NONE && this->phase != PHASE_READY && this->phase != PHASE_GAMEOVER) {
-        goto out;
-    }
-#endif
-
     std::memset(this, 0, sizeof(Position));
 
     ss >> std::noskipws;
@@ -211,10 +227,12 @@ Position &Position::set(const string &fenStr, Thread *th)
     // 1. Piece placement
     while ((ss >> token) && !isspace(token)) {
         if (token == '@' || token == 'O' || token == 'X') {
-            // put_piece(Piece(idx), sq);   // TODO
+            put_piece(CharToPiece(token), sq);
+            ++sq;
         }
-
-        ++sq;
+        if (token == '*') {
+            ++sq;
+        }
     }
 
     // 2. Active color
@@ -277,7 +295,7 @@ Position &Position::set(const string &fenStr, Thread *th)
     thisThread = th;
 
     assert(pos_is_ok());
-out:
+
     return *this;
 }
 

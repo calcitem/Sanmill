@@ -302,20 +302,16 @@ inline bool Position::select_piece(File f, Rank r)
     return select_piece(make_square(f, r));
 }
 
-#if 0
 inline void Position::put_piece(Piece pc, Square s)
 {
-    // TODO: put_piece
-
     board[s] = pc;
     byTypeBB[ALL_PIECES] |= s;
     byTypeBB[type_of(pc)] |= s;
-    byColorBB[color_of(pc)] |= s;
-    index[s] = pieceCount[pc]++;
-    pieceList[pc][index[s]] = s;
-    pieceCount[make_piece(color_of(pc), ALL_PIECES)]++;
+    //byColorBB[color_of(pc)] |= s;
+    //index[s] = pieceCount[pc]++;
+    //pieceList[pc][index[s]] = s;
+    //pieceCount[make_piece(color_of(pc), ALL_PIECES)]++;
 }
-#endif
 
 inline bool Position::put_piece(File f, Rank r)
 {
