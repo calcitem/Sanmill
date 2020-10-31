@@ -1,0 +1,42 @@
+name: sanmill
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  audioplayers: ^0.14.0
+  path_provider: ^1.6.1
+  package_info: ^0.4.0+16
+  uuid: ^2.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - images/logo.png
+    - images/logo-mini.png
+
+    #- assets/audios/bg_music.mp3
+    #- assets/audios/capture.mp3
+    #- assets/audios/check.mp3
+    #- assets/audios/click.mp3
+    #- assets/audios/regret.mp3
+    #- assets/audios/draw.mp3
+    #- assets/audios/tips.mp3
+    #- assets/audios/invalid.mp3
+    #- assets/audios/lose.mp3
+    #- assets/audios/move.mp3
+    #- assets/audios/win.mp3
+
+    #- assets/book.dat
