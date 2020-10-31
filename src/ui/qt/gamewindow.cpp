@@ -1069,7 +1069,15 @@ void MillGameWindow::on_actionAbout_A_triggered()
     //label_icon2->setScaledContents(true);
 
     //date_text->setText(__DATE__);
-    version_text->setText(tr("Version: ") + versionNumber);
+    QString versionText;
+
+    if (strcmp(versionNumber, "Unknown")) {
+        versionText = tr("Version: ") + versionNumber + "\nBuild: " + __DATE__ " " __TIME__;
+    } else {
+        versionText = tr("Build: ") + __DATE__ " " __TIME__;
+    }
+
+    version_text->setText(versionText);
     version_text->setAlignment(Qt::AlignLeft);
 
     // 布局
