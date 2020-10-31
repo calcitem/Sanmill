@@ -198,9 +198,11 @@ Position &Position::set(const string &fenStr, Thread *th)
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
+#if 0
     if (this->phase != PHASE_NONE && this->phase != PHASE_READY && this->phase != PHASE_GAMEOVER) {
         goto out;
     }
+#endif
 
     std::memset(this, 0, sizeof(Position));
 
