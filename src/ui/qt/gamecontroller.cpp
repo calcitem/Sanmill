@@ -374,10 +374,8 @@ void GameController::setEngine(Color color, bool enabled)
 
     if (enabled == true) {
         aiThread[color]->setAi(&position);
-        if (aiThread[color]->searching)
-            aiThread[color]->start_searching();
-        else
-            aiThread[color]->start_searching();
+        aiThread[color]->start_searching();
+
     } else {
         aiThread[color]->pause();
     }
