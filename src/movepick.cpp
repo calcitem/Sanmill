@@ -45,9 +45,7 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
 MovePicker::MovePicker(Position &p)
     : pos(p)
 {
-#ifdef HOSTORY_HEURISTIC
-    clearHistoryScore();
-#endif
+
 }
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
@@ -181,58 +179,3 @@ Move MovePicker::next_move()
 
     return *moves;
 }
-
-#ifdef HOSTORY_HEURISTIC
-Score MovePicker::getHistoryScore(Move move)
-{
-    Score ret = 0;
-
-    if (move < 0) {
-#ifndef HOSTORY_HEURISTIC_ACTION_MOVE_ONLY
-        ret = placeHistory[-move];
-#endif
-    } else if (move & 0x7f00) {
-        ret = moveHistory[move];
-    } else {
-#ifndef HOSTORY_HEURISTIC_ACTION_MOVE_ONLY
-        ret = placeHistory[move];
-#endif
-    }
-
-    return ret;
-}
-
-void MovePicker::setHistoryScore(Move move, Depth depth)
-{
-    if (move == MOVE_NONE) {
-        return;
-    }
-
-#ifdef HOSTORY_HEURISTIC_SCORE_HIGH_WHEN_DEEPER
-    Score score = 1 << (32 - depth);
-#else
-    Score score = 1 << depth;
-#endif
-
-    if (move < 0) {
-#ifndef HOSTORY_HEURISTIC_ACTION_MOVE_ONLY
-        placeHistory[-move] += score;
-#endif
-    } else if (move & 0x7f00) {
-        moveHistory[move] += score;
-    } else {
-#ifndef HOSTORY_HEURISTIC_ACTION_MOVE_ONLY
-        moveHistory[move] += score;
-#endif
-    }
-}
-
-void MovePicker::clearHistoryScore()
-{
-#ifndef HOSTORY_HEURISTIC_ACTION_MOVE_ONLY
-    memset(placeHistory, 0, sizeof(placeHistory));
-    memset(removeHistory, 0, sizeof(removeHistory));
-#endif
-    memset(moveHistory, 0, sizeof(moveHistory));
-}
-#endif // HOSTORY_HEURISTIC

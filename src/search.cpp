@@ -414,10 +414,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-#ifdef HOSTORY_HEURISTIC
-    movePicker->setHistoryScore(bestMove, depth);
-#endif
-
     assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
 
     return bestValue;

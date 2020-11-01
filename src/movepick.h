@@ -151,17 +151,6 @@ public:
     {
         return moveCount;
     }
-
-#ifdef HOSTORY_HEURISTIC
-    // TODO: Fix size
-    Score placeHistory[64];
-    Score removeHistory[64];
-    Score moveHistory[10240];
-
-    Score getHistoryScore(Move move);
-    void setHistoryScore(Move move, Depth depth);
-    void clearHistoryScore();
-#endif // HOSTORY_HEURISTIC
 };
 
 #endif // #ifndef MOVEPICK_H_INCLUDED

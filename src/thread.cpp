@@ -67,9 +67,6 @@ Thread::~Thread()
     assert(!searching);
 
     exit = true;
-#ifdef HOSTORY_HEURISTIC
-    clearHistoryScore();
-#endif // HOSTORY_HEURISTIC
     start_searching();
     stdThread.join();
 }
@@ -85,8 +82,6 @@ void Thread::clear()
 
 void Thread::start_searching()
 {
-    clearHistoryScore();
-
     std::lock_guard<std::mutex> lk(mutex);
     searching = true;
     cv.notify_one(); // Wake up the thread in idle_loop()
@@ -538,11 +533,7 @@ string Thread::nextMove()
                     root->children[i]->move,
                     UCI::move(root->children[i]->move).c_str();
         root->children[i]->value,
-#ifdef HOSTORY_HEURISTIC
-            root->children[i]->score,
-#else
             0,
-#endif
             charSelect);
 
         moveIndex++;

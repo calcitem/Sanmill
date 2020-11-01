@@ -87,13 +87,6 @@ public:
 
     void analyze(Color c);
 
-    void clearHistoryScore()
-    {
-#ifdef HOSTORY_HEURISTIC
-        movePicker->clearHistoryScore();
-#endif
-    }
-
 #ifdef TIME_STAT
     TimePoint sortTime{ 0 };
 #endif
