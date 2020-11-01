@@ -132,10 +132,9 @@ namespace CTSL //Concurrent Thread Safe Library
 #endif
             }
 
-            void resize(size_t o)
+            void resize(size_t size)
             {
-                // TODO
-                o = o;
+                hashSize = size;
                 return;
             }
 
@@ -238,7 +237,7 @@ namespace CTSL //Concurrent Thread Safe Library
 #else
             F hashFn;
 #endif
-            const hashFn hashSize;
+            hashFn hashSize;
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
             mutable std::shared_timed_mutex mutex_;
