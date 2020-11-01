@@ -1543,7 +1543,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
 {
     //assert(rule->hasBannedLocations == includeFobidden);
 
-    int count = 0;
+    int n = 0;
 
     if (pieceCountOnBoard[sideToMove] > rule->nPiecesAtLeast ||
         !rule->allowFlyWhenRemainThreePieces) {
@@ -1553,13 +1553,13 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
             if (moveSquare) {
                 if (board[moveSquare] == 0x00 ||
                     (includeFobidden && board[moveSquare] == BAN_STONE)) {
-                    count++;
+                    n++;
                 }
             }
         }
     }
 
-    return count;
+    return n;
 }
 
 void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty)
