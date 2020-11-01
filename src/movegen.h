@@ -99,7 +99,8 @@ struct MoveList
     inline static Square moveTable[SQUARE_NB][MD_NB] = { {SQ_0} };
 
 private:
-    ExtMove moveList[MAX_MOVES], *last;
+    ExtMove moveList[MAX_MOVES] { {MOVE_NONE, 0} };
+    ExtMove *last {nullptr};
 };
 
 #endif // #ifndef MOVEGEN_H_INCLUDED

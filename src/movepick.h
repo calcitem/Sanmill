@@ -141,7 +141,8 @@ public:
 
     Position &pos;
     Move ttMove { MOVE_NONE };
-    ExtMove *cur, *endMoves;
+    ExtMove *cur { nullptr };
+    ExtMove *endMoves { nullptr };
     ExtMove moves[MAX_MOVES]{ {MOVE_NONE, 0} };
 
     int moveCount{ 0 };
