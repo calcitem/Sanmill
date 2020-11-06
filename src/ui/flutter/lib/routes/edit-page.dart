@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../common/color-consts.dart';
 
 class EditPage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _EditPageState extends State<EditPage> {
     //
     final inputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(25),
-      borderSide: BorderSide(color: ColorConsts.Secondary),
+      borderSide: BorderSide(color: ColorConst.secondaryColor),
     );
 
     return Scaffold(
@@ -46,12 +47,13 @@ class _EditPageState extends State<EditPage> {
         title: Text(widget.title, style: TextStyle(fontFamily: '')),
         actions: <Widget>[
           FlatButton(
-            child: Text('确定', style: TextStyle(fontFamily: '', color: Colors.white)),
+            child: Text('确定',
+                style: TextStyle(fontFamily: '', color: Colors.white)),
             onPressed: () => onSubmit(_textController.text),
           )
         ],
       ),
-      backgroundColor: ColorConsts.LightBackground,
+      backgroundColor: ColorConst.lightBackgroundColor,
       body: Container(
         margin: EdgeInsets.all(16),
         child: Column(
@@ -59,11 +61,13 @@ class _EditPageState extends State<EditPage> {
             TextField(
               controller: _textController,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                 enabledBorder: inputBorder,
                 focusedBorder: inputBorder,
               ),
-              style: TextStyle(color: ColorConsts.Primary, fontSize: 16, fontFamily: ''),
+              style: TextStyle(
+                  color: ColorConst.primaryColor, fontSize: 16, fontFamily: ''),
               onSubmitted: (input) => onSubmit(input),
               focusNode: _commentFocus,
             ),

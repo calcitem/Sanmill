@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'board-widget.dart';
 
 abstract class PainterBase extends CustomPainter {
@@ -9,6 +10,6 @@ abstract class PainterBase extends CustomPainter {
   final gridWidth, squareSide;
 
   PainterBase({@required this.width})
-      : gridWidth = (width - BoardWidget.Padding * 2) ,
-        squareSide = (width - BoardWidget.Padding * 2) / 7;
+      : gridWidth = (width - BoardWidget.padding * 2),
+        squareSide = (width - BoardWidget.padding * 2) / 7;
 }

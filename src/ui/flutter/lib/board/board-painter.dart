@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../board/painter-base.dart';
 import '../common/color-consts.dart';
 import 'board-widget.dart';
@@ -15,8 +16,8 @@ class BoardPainter extends PainterBase {
       thePaint,
       gridWidth,
       squareSide,
-      offsetX: BoardWidget.Padding + squareSide / 2,
-      offsetY: BoardWidget.Padding + BoardWidget.DigitsHeight + squareSide / 2,
+      offsetX: BoardWidget.padding + squareSide / 2,
+      offsetY: BoardWidget.padding + BoardWidget.digitsHeight + squareSide / 2,
     );
   }
 
@@ -34,7 +35,7 @@ class BoardPainter extends PainterBase {
     double offsetY,
   }) {
     //
-    paint.color = ColorConsts.BoardLine;
+    paint.color = ColorConst.boardLineColor;
     paint.style = PaintingStyle.stroke;
 
     var left = offsetX;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../mill/mill-base.dart';
-import '../common/color-consts.dart';
+
 import '../board/painter-base.dart';
+import '../common/color-consts.dart';
+import '../mill/mill-base.dart';
 import '../mill/position.dart';
 import 'board-widget.dart';
 
@@ -39,8 +40,8 @@ class PiecesPainter extends PainterBase {
       squareSide: squareSide,
       pieceSide: pieceSide,
       // 棋子放在线上中央
-      offsetX: BoardWidget.Padding + squareSide / 2,
-      offsetY: BoardWidget.Padding + BoardWidget.DigitsHeight + squareSide / 2,
+      offsetX: BoardWidget.padding + squareSide / 2,
+      offsetY: BoardWidget.padding + BoardWidget.digitsHeight + squareSide / 2,
       focusIndex: focusIndex,
       blurIndex: blurIndex,
     );
@@ -106,15 +107,15 @@ class PiecesPainter extends PainterBase {
     piecesToDraw.forEach((pps) {
       //
       paint.color = Piece.isWhite(pps.piece)
-          ? ColorConsts.WhitePieceBorderColor
-          : ColorConsts.BlackPieceBorderColor;
+          ? ColorConst.whitePieceBorderColor
+          : ColorConst.blackPieceBorderColor;
 
       canvas.drawCircle(pps.pos, pieceSide / 2, paint); // 临时调试用
 
       // 棋子颜色
       paint.color = Piece.isWhite(pps.piece)
-          ? ColorConsts.WhitePieceColor
-          : ColorConsts.BlackPieceColor;
+          ? ColorConst.whitePieceColor
+          : ColorConst.blackPieceColor;
       //paint.color = ColorConsts.WhitePieceColor;
 
       canvas.drawCircle(pps.pos, pieceSide * 0.8 / 2, paint); // 决定棋子外圈有宽
@@ -143,7 +144,7 @@ class PiecesPainter extends PainterBase {
       //
       final int row = focusIndex ~/ 7, column = focusIndex % 7;
 
-      paint.color = ColorConsts.FocusPosition;
+      paint.color = ColorConst.focusPositionColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
@@ -158,7 +159,7 @@ class PiecesPainter extends PainterBase {
       //
       final row = blurIndex ~/ 7, column = blurIndex % 7;
 
-      paint.color = ColorConsts.BlurPosition;
+      paint.color = ColorConst.blurPositionColor;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(

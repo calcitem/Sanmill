@@ -1,11 +1,12 @@
-import '../services/player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
-import '../common/toast.dart';
+
 import '../common/color-consts.dart';
 import '../common/config.dart';
+import '../common/toast.dart';
 import '../services/audios.dart';
+import '../services/player.dart';
 import 'edit-page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
         children: <Widget>[
           SizedBox(height: 10),
           RadioListTile(
-            activeColor: ColorConsts.Primary,
+            activeColor: ColorConst.primaryColor,
             title: Text('初级'),
             groupValue: Config.stepTime,
             value: 5000,
@@ -59,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Divider(),
           RadioListTile(
-            activeColor: ColorConsts.Primary,
+            activeColor: ColorConst.primaryColor,
             title: Text('中级'),
             groupValue: Config.stepTime,
             value: 15000,
@@ -67,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Divider(),
           RadioListTile(
-            activeColor: ColorConsts.Primary,
+            activeColor: ColorConst.primaryColor,
             title: Text('高级'),
             groupValue: Config.stepTime,
             value: 30000,
@@ -130,7 +131,8 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('关于「直棋 」', style: TextStyle(color: ColorConsts.Primary)),
+        title:
+            Text('关于「直棋 」', style: TextStyle(color: ColorConst.primaryColor)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,11 +168,11 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     //
     final TextStyle headerStyle =
-        TextStyle(color: ColorConsts.Secondary, fontSize: 20.0);
-    final TextStyle itemStyle = TextStyle(color: ColorConsts.Primary);
+        TextStyle(color: ColorConst.secondaryColor, fontSize: 20.0);
+    final TextStyle itemStyle = TextStyle(color: ColorConst.primaryColor);
 
     return Scaffold(
-      backgroundColor: ColorConsts.LightBackground,
+      backgroundColor: ColorConst.lightBackgroundColor,
       appBar: AppBar(title: Text('设置')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -181,7 +183,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Text("人机难度", style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
-              color: ColorConsts.BoardBackground,
+              color: ColorConst.boardBackgroundColor,
               elevation: 0.5,
               margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0),
               child: Column(
@@ -194,7 +196,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ? '初级'
                           : Config.stepTime <= 15000 ? '中级' : '高级'),
                       Icon(Icons.keyboard_arrow_right,
-                          color: ColorConsts.Secondary),
+                          color: ColorConst.secondaryColor),
                     ]),
                     onTap: changeDifficult,
                   ),
@@ -204,19 +206,19 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 16),
             Text("声音", style: headerStyle),
             Card(
-              color: ColorConsts.BoardBackground,
+              color: ColorConst.boardBackgroundColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
-                    activeColor: ColorConsts.Primary,
+                    activeColor: ColorConst.primaryColor,
                     value: Config.bgmEnabled,
                     title: Text("背景音乐", style: itemStyle),
                     onChanged: switchMusic,
                   ),
                   _buildDivider(),
                   SwitchListTile(
-                    activeColor: ColorConsts.Primary,
+                    activeColor: ColorConst.primaryColor,
                     value: Config.toneEnabled,
                     title: Text("提示音效", style: itemStyle),
                     onChanged: switchTone,
@@ -227,7 +229,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 16),
             Text("排行榜", style: headerStyle),
             Card(
-              color: ColorConsts.BoardBackground,
+              color: ColorConst.boardBackgroundColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -237,7 +239,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Player.shared.name),
                       Icon(Icons.keyboard_arrow_right,
-                          color: ColorConsts.Secondary),
+                          color: ColorConst.secondaryColor),
                     ]),
                     onTap: changeName,
                   ),
@@ -247,7 +249,7 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 16),
             Text("关于", style: headerStyle),
             Card(
-              color: ColorConsts.BoardBackground,
+              color: ColorConst.boardBackgroundColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -257,7 +259,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(_version ?? ''),
                       Icon(Icons.keyboard_arrow_right,
-                          color: ColorConsts.Secondary),
+                          color: ColorConst.secondaryColor),
                     ]),
                     onTap: showAbout,
                   ),
@@ -276,7 +278,7 @@ class _SettingsPageState extends State<SettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       width: double.infinity,
       height: 1.0,
-      color: ColorConsts.LightLine,
+      color: ColorConst.lightLineColor,
     );
   }
 }
