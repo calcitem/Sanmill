@@ -3,7 +3,7 @@ import 'mill-base.dart';
 
 class Position {
   //
-  BattleResult result = BattleResult.Pending;
+  BattleResult result = BattleResult.pending;
 
   String _sideToMove;
   List<String> _board; // 8  *  3
@@ -16,9 +16,9 @@ class Position {
   void initDefaultPosition() {
     //
     _sideToMove = Side.black;
-    _board = List<String>(40); // SQUARE_NB
+    _board = List<String>(64); // 7 * 7
 
-    for (var i = 0; i < 40; i++) {
+    for (var i = 0; i < 64; i++) {
       _board[i] ??= Piece.Empty;
     }
 
@@ -107,7 +107,7 @@ class Position {
       _recorder.lastCapturedPosition = tempPosition.toFen();
     }
 
-    result = BattleResult.Pending;
+    result = BattleResult.pending;
 
     return true;
   }
