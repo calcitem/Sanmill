@@ -17,7 +17,7 @@ class PiecesPainter extends PainterBase {
   final Position position;
   final int focusIndex, blurIndex;
 
-  double pieceSide;
+  double pieceWidth;
 
   PiecesPainter({
     @required double width,
@@ -26,7 +26,7 @@ class PiecesPainter extends PainterBase {
     this.blurIndex = Move.invalidIndex,
   }) : super(width: width) {
     //
-    pieceSide = squareWidth * 0.9; // 棋子大小
+    pieceWidth = squareWidth * 0.9; // 棋子大小
   }
 
   @override
@@ -37,8 +37,8 @@ class PiecesPainter extends PainterBase {
       thePaint,
       position: position,
       gridWidth: gridWidth,
-      squareSide: squareWidth,
-      pieceSide: pieceSide,
+      squareWidth: squareWidth,
+      pieceWidth: pieceWidth,
       // 棋子放在线上中央
       offsetX: BoardWidget.padding + squareWidth / 2,
       offsetY: BoardWidget.padding + BoardWidget.digitsHeight + squareWidth / 2,
@@ -58,8 +58,8 @@ class PiecesPainter extends PainterBase {
     Paint paint, {
     Position position,
     double gridWidth,
-    double squareSide,
-    double pieceSide,
+    double squareWidth,
+    double pieceWidth,
     double offsetX,
     double offsetY,
     int focusIndex = Move.invalidIndex,
@@ -75,18 +75,18 @@ class PiecesPainter extends PainterBase {
     // 在棋盘上画棋子
     for (var row = 0; row < 7; row++) {
       //
-      for (var column = 0; column < 7; column++) {
+      for (var col = 0; col < 7; col++) {
         //
-        final piece = position.pieceAt(row * 7 + column); // 改为9则全空
+        final piece = position.pieceAt(row * 7 + col); // 改为9则全空
 
         if (piece == Piece.noPiece) continue;
 
-        var pos = Offset(left + squareSide * column, top + squareSide * row);
+        var pos = Offset(left + squareWidth * col, top + squareWidth * row);
 
         piecesToDraw.add(PiecePaintStub(piece: piece, pos: pos));
 
         shadowPath.addOval(
-          Rect.fromCenter(center: pos, width: pieceSide, height: pieceSide),
+          Rect.fromCenter(center: pos, width: pieceWidth, height: pieceWidth),
         );
       }
     }
@@ -110,7 +110,7 @@ class PiecesPainter extends PainterBase {
           ? ColorConst.whitePieceBorderColor
           : ColorConst.blackPieceBorderColor;
 
-      canvas.drawCircle(pps.pos, pieceSide / 2, paint); // 临时调试用
+      canvas.drawCircle(pps.pos, pieceWidth / 2, paint); // 临时调试用
 
       // 棋子颜色
       paint.color = Piece.isWhite(pps.piece)
@@ -118,7 +118,7 @@ class PiecesPainter extends PainterBase {
           : ColorConst.blackPieceColor;
       //paint.color = ColorConst.WhitePieceColor;
 
-      canvas.drawCircle(pps.pos, pieceSide * 0.8 / 2, paint); // 决定棋子外圈有宽
+      canvas.drawCircle(pps.pos, pieceWidth * 0.8 / 2, paint); // 决定棋子外圈有宽
       /*
       final textSpan = TextSpan(text: Piece.Names[pps.piece], style: textStyle);
 
@@ -149,8 +149,8 @@ class PiecesPainter extends PainterBase {
       paint.strokeWidth = 2;
 
       canvas.drawCircle(
-        Offset(left + column * squareSide, top + row * squareSide),
-        pieceSide / 2,
+        Offset(left + column * squareWidth, top + row * squareWidth),
+        pieceWidth / 2,
         paint,
       );
     }
@@ -163,8 +163,8 @@ class PiecesPainter extends PainterBase {
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(
-        Offset(left + column * squareSide, top + row * squareSide),
-        pieceSide / 2 * 0.8,
+        Offset(left + column * squareWidth, top + row * squareWidth),
+        pieceWidth / 2 * 0.8,
         paint,
       );
     }
