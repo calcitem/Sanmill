@@ -41,9 +41,9 @@ class BoardWidget extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.symmetric(
             vertical: padding,
-            horizontal: (width - padding * 2) / 7 / 2 +
+            horizontal: (width - padding * 2) / 6 / 2 +
                 padding -
-                WordsOnBoard.DigitsFontSize / 2,
+                WordsOnBoard.digitsFontSize / 2,
           ),
           //child: WordsOnBoard(),
         ),
@@ -54,18 +54,18 @@ class BoardWidget extends StatelessWidget {
       child: boardContainer,
       onTapUp: (d) {
         //
-        final gridWidth = (width - padding * 2) * 6 / 7;
-        final squareSide = gridWidth / 8;
+        final gridWidth = (width - padding * 2);
+        final squareWidth = gridWidth / 6;
 
         final dx = d.localPosition.dx, dy = d.localPosition.dy;
-        final row = (dy - padding - digitsHeight) ~/ squareSide;
-        final column = (dx - padding) ~/ squareSide;
+        final row = (dy - padding - digitsHeight) ~/ squareWidth;
+        final column = (dx - padding) ~/ squareWidth;
 
         if (row < 0 || row > 6) return;
 
         if (column < 0 || column > 6) return;
 
-        onBoardTap(context, row * 7 + column);
+        onBoardTap(context, row * 6 + column);
       },
     );
   }

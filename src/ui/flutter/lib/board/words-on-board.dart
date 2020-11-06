@@ -4,7 +4,7 @@ import '../common/color-consts.dart';
 
 class WordsOnBoard extends StatelessWidget {
   //
-  static const DigitsFontSize = 18.0;
+  static const digitsFontSize = 18.0;
 
   @override
   Widget build(BuildContext context) {
