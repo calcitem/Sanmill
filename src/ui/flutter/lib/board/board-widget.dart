@@ -11,6 +11,8 @@ class BoardWidget extends StatelessWidget {
   static const padding = 5.0;
   static const digitsHeight = 0.0;
 
+  static const double boardBorderRadius = 5;
+
   final double width;
   final double height;
   final Function(BuildContext, int) onBoardTap;
@@ -25,7 +27,7 @@ class BoardWidget extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(boardBorderRadius),
         color: ColorConst.boardBackgroundColor,
       ),
       child: CustomPaint(
