@@ -51,7 +51,7 @@ class _BattlePageState extends State<BattlePage> {
     final tapedPiece = position.pieceAt(index);
 
     // 之前已经有棋子被选中了
-    if (Battle.shared.focusIndex != Move.InvalidIndex &&
+    if (Battle.shared.focusIndex != Move.invalidIndex &&
         Side.of(position.pieceAt(Battle.shared.focusIndex)) == Side.white) {
       //
       // 当前点击的棋子和之前已经选择的是同一个位置
@@ -86,7 +86,7 @@ class _BattlePageState extends State<BattlePage> {
       //
     } else {
       // 之前未选择棋子，现在点击就是选择棋子
-      if (tapedPiece != Piece.Empty) Battle.shared.select(index);
+      if (tapedPiece != Piece.noPiece) Battle.shared.select(index);
     }
 
     setState(() {});

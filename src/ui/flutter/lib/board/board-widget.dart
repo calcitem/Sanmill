@@ -55,7 +55,7 @@ class BoardWidget extends StatelessWidget {
       onTapUp: (d) {
         //
         final gridWidth = (width - padding * 2);
-        final squareWidth = gridWidth / 6;
+        final squareWidth = gridWidth / 7;
 
         final dx = d.localPosition.dx, dy = d.localPosition.dy;
         final row = (dy - padding - digitsHeight) ~/ squareWidth;

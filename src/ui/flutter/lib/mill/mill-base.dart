@@ -28,18 +28,18 @@ class Side {
 
 class Piece {
   //
-  static const Empty = ' ';
+  static const noPiece = ' ';
   //
-  static const BlackStone = 'b';
-  static const WhiteStone = 'w';
-  static const Ban = 'x';
+  static const blackStone = 'b';
+  static const whiteStone = 'w';
+  static const ban = 'x';
 
   static const Names = {
-    Empty: '',
+    noPiece: '',
     //
-    BlackStone: 'b',
-    WhiteStone: 'w',
-    Ban: 'x',
+    blackStone: 'b',
+    whiteStone: 'w',
+    ban: 'x',
   };
 
   static bool isBlack(String c) => 'b'.contains(c);
@@ -49,7 +49,7 @@ class Piece {
 
 class Move {
   // TODO
-  static const InvalidIndex = -1;
+  static const invalidIndex = -1;
 
   // List<String>(90) 中的索引
   int from, to;
@@ -67,7 +67,7 @@ class Move {
   String counterMarks;
 
   Move(this.from, this.to,
-      {this.captured = Piece.Empty, this.counterMarks = '0 0'}) {
+      {this.captured = Piece.noPiece, this.counterMarks = '0 0'}) {
     //
     fx = from % 9;
     fy = from ~/ 9;
@@ -104,7 +104,7 @@ class Move {
     from = fx + fy * 9;
     to = tx + ty * 9;
 
-    captured = Piece.Empty;
+    captured = Piece.noPiece;
   }
 
   static bool validateEngineStep(String step) {

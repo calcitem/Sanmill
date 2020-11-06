@@ -22,8 +22,8 @@ class PiecesPainter extends PainterBase {
   PiecesPainter({
     @required double width,
     @required this.position,
-    this.focusIndex = Move.InvalidIndex,
-    this.blurIndex = Move.InvalidIndex,
+    this.focusIndex = Move.invalidIndex,
+    this.blurIndex = Move.invalidIndex,
   }) : super(width: width) {
     //
     pieceSide = squareWidth * 0.9; // 棋子大小
@@ -62,11 +62,12 @@ class PiecesPainter extends PainterBase {
     double pieceSide,
     double offsetX,
     double offsetY,
-    int focusIndex = Move.InvalidIndex,
-    int blurIndex = Move.InvalidIndex,
+    int focusIndex = Move.invalidIndex,
+    int blurIndex = Move.invalidIndex,
   }) {
     //
-    final left = offsetX, top = offsetY;
+    final left = offsetX;
+    final top = offsetY;
 
     final shadowPath = Path();
     final piecesToDraw = <PiecePaintStub>[];
@@ -76,10 +77,9 @@ class PiecesPainter extends PainterBase {
       //
       for (var column = 0; column < 7; column++) {
         //
-        //final piece = position.pieceAt(row * 7 + column);
         final piece = position.pieceAt(row * 7 + column); // 改为9则全空
 
-        if (piece == Piece.Empty) continue;
+        if (piece == Piece.noPiece) continue;
 
         var pos = Offset(left + squareSide * column, top + squareSide * row);
 
@@ -98,7 +98,7 @@ class PiecesPainter extends PainterBase {
 
     /*
     final textStyle = TextStyle(
-      color: ColorConsts.PieceTextColor,
+      color: ColorConst.PieceTextColor,
       fontSize: pieceSide * 0.8,
       height: 1.0,
     );
@@ -116,7 +116,7 @@ class PiecesPainter extends PainterBase {
       paint.color = Piece.isWhite(pps.piece)
           ? ColorConst.whitePieceColor
           : ColorConst.blackPieceColor;
-      //paint.color = ColorConsts.WhitePieceColor;
+      //paint.color = ColorConst.WhitePieceColor;
 
       canvas.drawCircle(pps.pos, pieceSide * 0.8 / 2, paint); // 决定棋子外圈有宽
       /*
@@ -140,7 +140,7 @@ class PiecesPainter extends PainterBase {
 
     // draw focus and blur position
 
-    if (focusIndex != Move.InvalidIndex) {
+    if (focusIndex != Move.invalidIndex) {
       //
       final int row = focusIndex ~/ 7, column = focusIndex % 7;
 
@@ -155,7 +155,7 @@ class PiecesPainter extends PainterBase {
       );
     }
 
-    if (blurIndex != Move.InvalidIndex) {
+    if (blurIndex != Move.invalidIndex) {
       //
       final row = blurIndex ~/ 7, column = blurIndex % 7;
 

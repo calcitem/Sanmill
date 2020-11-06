@@ -15,17 +15,17 @@ class Battle {
 
   init() {
     _position = Position.defaultPosition();
-    _focusIndex = _blurIndex = Move.InvalidIndex;
+    _focusIndex = _blurIndex = Move.invalidIndex;
   }
 
   newGame() {
     Battle.shared.position.initDefaultPosition();
-    _focusIndex = _blurIndex = Move.InvalidIndex;
+    _focusIndex = _blurIndex = Move.invalidIndex;
   }
 
   select(int pos) {
     _focusIndex = pos;
-    _blurIndex = Move.InvalidIndex;
+    _blurIndex = Move.invalidIndex;
     //Audios.playTone('click.mp3');
   }
 
@@ -69,7 +69,7 @@ class Battle {
         //
       } else {
         //
-        _blurIndex = _focusIndex = Move.InvalidIndex;
+        _blurIndex = _focusIndex = Move.invalidIndex;
       }
 
       regreted = true;
@@ -85,7 +85,7 @@ class Battle {
   }
 
   clear() {
-    _blurIndex = _focusIndex = Move.InvalidIndex;
+    _blurIndex = _focusIndex = Move.invalidIndex;
   }
 
   BattleResult scanBattleResult() {

@@ -26,7 +26,7 @@ class MillRecorder {
   }
   void stepIn(Move move, Position position) {
     //
-    if (move.captured != Piece.Empty) {
+    if (move.captured != Piece.noPiece) {
       halfMove = 0;
     } else {
       halfMove++;
@@ -40,7 +40,7 @@ class MillRecorder {
 
     _history.add(move);
 
-    if (move.captured != Piece.Empty) {
+    if (move.captured != Piece.noPiece) {
       lastCapturedPosition = position.toFen();
     }
   }
@@ -57,7 +57,7 @@ class MillRecorder {
     List<Move> moves = [];
 
     for (var i = _history.length - 1; i >= 0; i--) {
-      if (_history[i].captured != Piece.Empty) break;
+      if (_history[i].captured != Piece.noPiece) break;
       moves.add(_history[i]);
     }
 

@@ -19,7 +19,7 @@ class Position {
     _board = List<String>(64); // 7 * 7
 
     for (var i = 0; i < 64; i++) {
-      _board[i] ??= Piece.Empty;
+      _board[i] ??= Piece.noPiece;
     }
 
     _recorder = MillRecorder(lastCapturedPosition: toFen());
@@ -48,7 +48,7 @@ class Position {
 
     // 修改棋盘
     _board[to] = _board[from];
-    _board[from] = Piece.Empty;
+    _board[from] = Piece.noPiece;
 
     // 交换走棋方
     _sideToMove = Side.opponent(_sideToMove);
@@ -70,7 +70,7 @@ class Position {
     //
     // 修改棋盘
     _board[move.to] = _board[move.from];
-    _board[move.from] = Piece.Empty;
+    _board[move.from] = Piece.noPiece;
 
     // 交换走棋方
     if (turnSide) _sideToMove = Side.opponent(_sideToMove);
@@ -90,7 +90,7 @@ class Position {
     _recorder.halfMove = counterMarks.halfMove;
     _recorder.fullMove = counterMarks.fullMove;
 
-    if (lastMove.captured != Piece.Empty) {
+    if (lastMove.captured != Piece.noPiece) {
       //
       // 查找上一个吃子局面（或开局），NativeEngine 需要
       final tempPosition = Position.clone(this);
@@ -124,7 +124,7 @@ class Position {
         //
         final piece = pieceAt((file - 1) * 8 + rank + 8);
 
-        if (piece == Piece.Empty) {
+        if (piece == Piece.noPiece) {
           //
           emptyCounter++;
           //
@@ -157,7 +157,7 @@ class Position {
     var steps = '', posAfterLastCaptured = 0;
 
     for (var i = _recorder.stepsCount - 1; i >= 0; i--) {
-      if (_recorder.stepAt(i).captured != Piece.Empty) break;
+      if (_recorder.stepAt(i).captured != Piece.noPiece) break;
       posAfterLastCaptured = i;
     }
 
