@@ -34,7 +34,7 @@ class MillRecorder {
 
     if (fullMove == 0) {
       fullMove++;
-    } else if (position.side != Side.Black) {
+    } else if (position.side != Side.black) {
       fullMove++;
     }
 

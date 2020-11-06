@@ -47,7 +47,7 @@ class Battle {
   bool regret({steps = 2}) {
     //
     // 轮到自己走棋的时候，才能悔棋
-    if (_position.side != Side.White) {
+    if (_position.side != Side.white) {
       //Audios.playTone('invalid.mp3');
       return false;
     }
@@ -90,7 +90,7 @@ class Battle {
 
   BattleResult scanBattleResult() {
     //
-    final forPerson = (_position.side == Side.White);
+    final forPerson = (_position.side == Side.white);
 
     if (scanLongCatch()) {
       // born 'repeat' position by oppo

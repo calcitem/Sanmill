@@ -3,26 +3,25 @@ enum BattleResult { Pending, Win, Lose, Draw }
 
 class Side {
   //
-  static const Unknown = '-';
-  static const Black = 'b';
-  static const White = 'w';
-
-  static const Ban = 'x';
+  static const unknown = '-';
+  static const black = 'b';
+  static const white = 'w';
+  static const ban = 'x';
 
   static String of(String piece) {
-    if (Black.contains(piece)) return Black;
-    if (White.contains(piece)) return White;
-    if (Ban.contains(piece)) return Ban;
-    return Unknown;
+    if (black.contains(piece)) return black;
+    if (white.contains(piece)) return white;
+    if (ban.contains(piece)) return ban;
+    return unknown;
   }
 
   static bool sameSide(String p1, String p2) {
     return of(p1) == of(p2);
   }
 
-  static String oppo(String side) {
-    if (side == White) return Black;
-    if (side == Black) return White;
+  static String opponent(String side) {
+    if (side == white) return black;
+    if (side == black) return white;
     return side;
   }
 }

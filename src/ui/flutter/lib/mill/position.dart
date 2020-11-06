@@ -1,12 +1,11 @@
 import '../mill/mill-recorder.dart';
-
 import 'mill-base.dart';
 
 class Position {
   //
   BattleResult result = BattleResult.Pending;
 
-  String _side;
+  String _sideToMove;
   List<String> _board; // 8  *  3
   MillRecorder _recorder;
 
@@ -16,7 +15,7 @@ class Position {
 
   void initDefaultPosition() {
     //
-    _side = Side.Black;
+    _sideToMove = Side.black;
     _board = List<String>(40); // SQUARE_NB
 
     for (var i = 0; i < 40; i++) {
@@ -32,7 +31,7 @@ class Position {
 
     other._board.forEach((piece) => _board.add(piece));
 
-    _side = other._side;
+    _sideToMove = other._sideToMove;
 
     _recorder = other._recorder;
   }
@@ -52,7 +51,7 @@ class Position {
     _board[from] = Piece.Empty;
 
     // 交换走棋方
-    _side = Side.oppo(_side);
+    _sideToMove = Side.opponent(_sideToMove);
 
     return captured;
   }
@@ -60,7 +59,7 @@ class Position {
   // 验证移动棋子的着法是否合法
   bool validateMove(int from, int to) {
     // 移动的棋子的选手，应该是当前方
-    if (Side.of(_board[from]) != _side) return false;
+    if (Side.of(_board[from]) != _sideToMove) return false;
     return true;
     //(StepValidate.validate(this, Move(from, to)));
   }
@@ -74,7 +73,7 @@ class Position {
     _board[move.from] = Piece.Empty;
 
     // 交换走棋方
-    if (turnSide) _side = Side.oppo(_side);
+    if (turnSide) _sideToMove = Side.opponent(_sideToMove);
   }
 
   bool regret() {
@@ -85,7 +84,7 @@ class Position {
     _board[lastMove.from] = _board[lastMove.to];
     _board[lastMove.to] = lastMove.captured;
 
-    _side = Side.oppo(_side);
+    _sideToMove = Side.opponent(_sideToMove);
 
     final counterMarks = MillRecorder.fromCounterMarks(lastMove.counterMarks);
     _recorder.halfMove = counterMarks.halfMove;
@@ -102,7 +101,7 @@ class Position {
         tempPosition._board[move.from] = tempPosition._board[move.to];
         tempPosition._board[move.to] = move.captured;
 
-        tempPosition._side = Side.oppo(tempPosition._side);
+        tempPosition._sideToMove = Side.opponent(tempPosition._sideToMove);
       });
 
       _recorder.lastCapturedPosition = tempPosition.toFen();
@@ -171,9 +170,9 @@ class Position {
 
   get manualText => _recorder.buildManualText();
 
-  get side => _side;
+  get side => _sideToMove;
 
-  trunSide() => _side = Side.oppo(_side);
+  changeSideToMove() => _sideToMove = Side.opponent(_sideToMove);
 
   String pieceAt(int index) => _board[index];
 
