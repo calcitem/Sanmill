@@ -7,9 +7,10 @@ abstract class PainterBase extends CustomPainter {
   final double width;
 
   final thePaint = Paint();
-  final gridWidth, squareSide;
+  final gridWidth;
+  final squareWidth;
 
   PainterBase({@required this.width})
       : gridWidth = (width - BoardWidget.padding * 2),
-        squareSide = (width - BoardWidget.padding * 2) / 7;
+        squareWidth = (width - BoardWidget.padding * 2) / 7;
 }

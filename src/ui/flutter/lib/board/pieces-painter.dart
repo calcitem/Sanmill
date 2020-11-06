@@ -26,7 +26,7 @@ class PiecesPainter extends PainterBase {
     this.blurIndex = Move.InvalidIndex,
   }) : super(width: width) {
     //
-    pieceSide = squareSide * 0.9; // 棋子大小
+    pieceSide = squareWidth * 0.9; // 棋子大小
   }
 
   @override
@@ -37,11 +37,11 @@ class PiecesPainter extends PainterBase {
       thePaint,
       position: position,
       gridWidth: gridWidth,
-      squareSide: squareSide,
+      squareSide: squareWidth,
       pieceSide: pieceSide,
       // 棋子放在线上中央
-      offsetX: BoardWidget.padding + squareSide / 2,
-      offsetY: BoardWidget.padding + BoardWidget.digitsHeight + squareSide / 2,
+      offsetX: BoardWidget.padding + squareWidth / 2,
+      offsetY: BoardWidget.padding + BoardWidget.digitsHeight + squareWidth / 2,
       focusIndex: focusIndex,
       blurIndex: blurIndex,
     );
