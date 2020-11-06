@@ -94,12 +94,12 @@ class Battle {
 
     if (scanLongCatch()) {
       // born 'repeat' position by oppo
-      return forPerson ? BattleResult.Win : BattleResult.Lose;
+      return forPerson ? BattleResult.win : BattleResult.lose;
     }
 
     return (_position.halfMove > 120)
-        ? BattleResult.Draw
-        : BattleResult.Pending;
+        ? BattleResult.draw
+        : BattleResult.pending;
   }
 
   scanLongCatch() {

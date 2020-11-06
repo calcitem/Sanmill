@@ -1,7 +1,7 @@
-import '../mill/mill-base.dart';
-import '../mill/position.dart';
 import 'package:flutter/services.dart';
 
+import '../mill/mill-base.dart';
+import '../mill/position.dart';
 import 'engine.dart';
 
 class NativeEngine extends AiEngine {

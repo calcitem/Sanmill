@@ -69,16 +69,16 @@ class _BattlePageState extends State<BattlePage> {
         final result = Battle.shared.scanBattleResult();
 
         switch (result) {
-          case BattleResult.Pending:
+          case BattleResult.pending:
             engineToGo();
             break;
-          case BattleResult.Win:
+          case BattleResult.win:
             gotWin();
             break;
-          case BattleResult.Lose:
+          case BattleResult.lose:
             gotLose();
             break;
-          case BattleResult.Draw:
+          case BattleResult.draw:
             gotDraw();
             break;
         }
@@ -106,16 +106,16 @@ class _BattlePageState extends State<BattlePage> {
       final result = Battle.shared.scanBattleResult();
 
       switch (result) {
-        case BattleResult.Pending:
+        case BattleResult.pending:
           changeStatus('请走棋...');
           break;
-        case BattleResult.Win:
+        case BattleResult.win:
           gotWin();
           break;
-        case BattleResult.Lose:
+        case BattleResult.lose:
           gotLose();
           break;
-        case BattleResult.Draw:
+        case BattleResult.draw:
           gotDraw();
           break;
       }
@@ -199,7 +199,7 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotWin() {
     //
-    Battle.shared.position.result = BattleResult.Win;
+    Battle.shared.position.result = BattleResult.win;
     //Audios.playTone('win.mp3');
 
     showDialog(
@@ -227,7 +227,7 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotLose() {
     //
-    Battle.shared.position.result = BattleResult.Lose;
+    Battle.shared.position.result = BattleResult.lose;
     //Audios.playTone('lose.mp3');
 
     showDialog(
@@ -250,7 +250,7 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotDraw() {
     //
-    Battle.shared.position.result = BattleResult.Draw;
+    Battle.shared.position.result = BattleResult.draw;
 
     showDialog(
       context: context,

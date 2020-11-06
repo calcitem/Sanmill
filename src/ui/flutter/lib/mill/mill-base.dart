@@ -1,5 +1,5 @@
 /// 对战结果：未决、赢、输、和
-enum BattleResult { Pending, Win, Lose, Draw }
+enum BattleResult { pending, win, lose, draw }
 
 class Side {
   //
