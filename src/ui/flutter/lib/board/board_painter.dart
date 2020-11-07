@@ -38,21 +38,22 @@ class BoardPainter extends PainterBase {
     paint.color = ColorConst.boardLineColor;
     paint.style = PaintingStyle.stroke;
 
+    const double borderLineWidth = 2.0;
+    const double innerLineWidth = 1.0;
+
     var left = offsetX;
     var top = offsetY;
 
-    // 外框
-    paint.strokeWidth = 2;
+    paint.strokeWidth = borderLineWidth;
 
     canvas.drawRect(
-      //Rect.fromLTWH(left, top, gridWidth, squareSide * 6),
       Rect.fromLTWH(left, top, squareWidth * 6, squareWidth * 6),
       paint,
     );
 
-    paint.strokeWidth = 1;
+    paint.strokeWidth = innerLineWidth;
 
-    // 横线 (从上到下)
+    // Horizontal lines (Top to Bottom)
 
     canvas.drawLine(
       Offset(left + squareWidth * 1, top + squareWidth * 1),
@@ -78,7 +79,7 @@ class BoardPainter extends PainterBase {
       paint,
     );
 
-    // 中间的横线 (从左到右)
+    // Middle horizontal lines (Left to Right)
 
     canvas.drawLine(
       Offset(left, top + squareWidth * 3),
@@ -92,7 +93,7 @@ class BoardPainter extends PainterBase {
       paint,
     );
 
-    // 竖线 (从左到右)
+    // Ordinate Lines (Left to Right)
 
     canvas.drawLine(
       Offset(left + squareWidth * 1, top + squareWidth * 1),
@@ -118,7 +119,7 @@ class BoardPainter extends PainterBase {
       paint,
     );
 
-    // 中间的横线 (从上到下)
+    // Middle horizontal lines (Top to Bottom)
 
     canvas.drawLine(
       Offset(left + squareWidth * 3, top),
@@ -132,28 +133,28 @@ class BoardPainter extends PainterBase {
       paint,
     );
 
-    // 左上斜线
+    // top left oblique line
     canvas.drawLine(
       Offset(left + 0, top),
       Offset(left + squareWidth * 2, top + squareWidth * 2),
       paint,
     );
 
-    // 右下斜线
+    // lower right oblique line
     canvas.drawLine(
       Offset(left + squareWidth * 4, top + squareWidth * 4),
       Offset(left + squareWidth * 6, top + squareWidth * 6),
       paint,
     );
 
-    // 右上斜线
+    // top right oblique line
     canvas.drawLine(
       Offset(left + squareWidth * 6, top),
       Offset(left + squareWidth * 4, top + squareWidth * 2),
       paint,
     );
 
-    // 左下斜线
+    // lower left oblique line
     canvas.drawLine(
       Offset(left + squareWidth * 2, top + squareWidth * 4),
       Offset(left + squareWidth * 0, top + squareWidth * 6),
