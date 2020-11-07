@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'board-widget.dart';
+import 'board_widget.dart';
 
 abstract class PainterBase extends CustomPainter {
   //

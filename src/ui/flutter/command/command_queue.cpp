@@ -3,8 +3,8 @@
 //  Runner
 //
 
-#include <string.h>
-#include "command-queue.h"
+#include <cstring>
+#include "command_queue.h"
 
 CommandQueue::CommandQueue()
 {

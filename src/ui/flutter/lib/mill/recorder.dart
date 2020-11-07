@@ -1,4 +1,4 @@
-import 'mill-base.dart';
+import 'mill.dart';
 import 'position.dart';
 
 class MillRecorder {

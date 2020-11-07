@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../common/color-consts.dart';
+import '../common/color.dart';
 import '../engine/engine.dart';
 import '../main.dart';
-import 'battle-page.dart';
-import 'settings-page.dart';
+import 'battle_page.dart';
+import 'settings_page.dart';
 
 class MainMenu extends StatefulWidget {
   @override

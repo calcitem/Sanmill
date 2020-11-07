@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/color-consts.dart';
+import '../common/color.dart';
 
 class EditPage extends StatefulWidget {
   //

@@ -1,5 +1,5 @@
-import '../mill/mill-recorder.dart';
-import 'mill-base.dart';
+import '../mill/recorder.dart';
+import 'mill.dart';
 
 class Position {
   //

@@ -2,7 +2,7 @@
 #include <stdarg.h>
 
 #include "base.h"
-#include "command-channel.h"
+#include "command_channel.h"
 
 void println(const char *str, ...) {
 
@@ -17,8 +17,9 @@ void println(const char *str, ...) {
 
     CommandChannel *channel = CommandChannel::getInstance();
 
-    while (!channel->pushResponse(buffer))
-      Idle();
+    while (!channel->pushResponse(buffer)) {
+        Idle();
+    }
 }
 
 int engineMain(void)

@@ -1,4 +1,4 @@
-import '../mill/mill-base.dart';
+import '../mill/mill.dart';
 import '../mill/position.dart';
 
 class Battle {

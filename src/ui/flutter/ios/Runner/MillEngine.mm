@@ -16,7 +16,7 @@
     self = [super init];
 
     if (self) {
-        state = Ready;
+        state = STATE_READY;
     }
 
     return self;
@@ -58,7 +58,7 @@
 -(int) send: (NSString *) command {
     
     if ([command hasPrefix:@"go"]) {
-        state = Thinking;
+        state = STATE_THINKING;
     }
 
     CommandChannel *channel = CommandChannel::getInstance();
@@ -87,7 +87,7 @@
         [line hasPrefix:@"bestmove"] ||
         [line hasPrefix:@"nobestmove"]) {
         
-        state = Ready;
+        state = STATE_READY;
     }
     
     return line;
@@ -106,11 +106,11 @@
 }
 
 -(BOOL) isReady {
-    return state == Ready;
+    return state == STATE_READY;
 }
 
 -(BOOL) isThinking {
-    return state == Thinking;
+    return state == STATE_THINKING;
 }
 
 @end

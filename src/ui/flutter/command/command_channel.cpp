@@ -4,8 +4,8 @@
 //
 
 #include <stdlib.h>
-#include "command-queue.h"
-#include "command-channel.h"
+#include "command_queue.h"
+#include "command_channel.h"
 
 CommandChannel *CommandChannel::instance = NULL;
 

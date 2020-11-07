@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../common/color-consts.dart';
+import '../common/color.dart';
 import '../game/battle.dart';
-import 'board-painter.dart';
-import 'pieces-painter.dart';
-import 'words-on-board.dart';
+import 'board_painter.dart';
+import 'pieces_painter.dart';
+import 'words_on_board.dart';
 
 class BoardWidget extends StatelessWidget {
   //

@@ -7,10 +7,10 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        src/main/cpp/mill-engine.cpp
-        ../../command/command-channel.cpp
-        ../../command/command-queue.cpp
-        ../../command/engine-main.cpp)
+        src/main/cpp/mill_engine.cpp
+        ../../command/command_channel.cpp
+        ../../command/command_queue.cpp
+        ../../command/engine_main.cpp)
 
 
 find_library( # Sets the name of the path variable.

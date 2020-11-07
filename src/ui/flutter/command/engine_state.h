@@ -8,8 +8,8 @@
 
 typedef enum
 {
-    Ready,
-    Thinking
+    STATE_READY,
+    STATE_THINKING
 } State;
 
 #endif /* ENGINE_STATE_H */

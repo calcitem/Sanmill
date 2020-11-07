@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../board/painter-base.dart';
-import '../common/color-consts.dart';
-import '../mill/mill-base.dart';
+import '../board/painter_base.dart';
+import '../common/color.dart';
+import '../mill/mill.dart';
 import '../mill/position.dart';
-import 'board-widget.dart';
+import 'board_widget.dart';
 
 class PiecePaintStub {
   final String piece;

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../board/board-widget.dart';
-import '../common/color-consts.dart';
+import '../board/board_widget.dart';
+import '../common/color.dart';
 import '../common/toast.dart';
 import '../engine/analysis.dart';
 import '../engine/engine.dart';
-import '../engine/native-engine.dart';
+import '../engine/native_engine.dart';
 import '../game/battle.dart';
 import '../main.dart';
-import '../mill/mill-base.dart';
+import '../mill/mill.dart';
 import '../services/player.dart';
-import 'settings-page.dart';
+import 'settings_page.dart';
 
 class BattlePage extends StatefulWidget {
   //
