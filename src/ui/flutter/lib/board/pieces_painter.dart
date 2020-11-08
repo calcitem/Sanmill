@@ -96,7 +96,7 @@ class PiecesPainter extends PainterBase {
       //
       for (var col = 0; col < 7; col++) {
         //
-        final piece = position.pieceAt(row * 7 + col); // 初始状态无棋子
+        final piece = position.pieceOn(row * 7 + col); // 初始状态无棋子
 
         if (piece == Piece.noPiece) continue;
 

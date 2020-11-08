@@ -89,15 +89,48 @@ enum Rank { rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8 }
 
 const rankNumber = 8;
 
+Map<int, int> squareToIndex = {
+  8: 17,
+  9: 18,
+  10: 25,
+  11: 32,
+  12: 31,
+  13: 30,
+  14: 23,
+  15: 16,
+  16: 10,
+  17: 12,
+  18: 26,
+  19: 40,
+  20: 38,
+  21: 36,
+  22: 22,
+  23: 8,
+  24: 3,
+  25: 6,
+  26: 27,
+  27: 48,
+  28: 45,
+  29: 42,
+  30: 21,
+  31: 0
+};
+
+Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
+
+int makeSquare(int file, int rank) {
+  return (file << 3) + rank - 1;
+}
+
 /// 对战结果：未决、赢、输、和
 enum GameResult { pending, win, lose, draw }
 
 class Color {
   //
   static const unknown = '-';
-  static const black = 'b';
-  static const white = 'w';
-  static const ban = 'x';
+  static const black = '@';
+  static const white = 'O';
+  static const ban = 'X';
 
   static String of(String piece) {
     if (black.contains(piece)) return black;
@@ -121,15 +154,15 @@ class Color {
 
 class Piece {
   //
-  static const noPiece = ' ';
+  static const noPiece = '*';
   //
-  static const blackStone = 'b';
-  static const whiteStone = 'w';
-  static const ban = 'x';
+  static const blackStone = '@';
+  static const whiteStone = 'O';
+  static const ban = 'X';
 
-  static bool isBlack(String c) => 'b'.contains(c);
+  static bool isBlack(String c) => '@'.contains(c);
 
-  static bool isWhite(String c) => 'w'.contains(c);
+  static bool isWhite(String c) => 'O'.contains(c);
 }
 
 class Move {

@@ -20,35 +20,6 @@
 import '../mill/recorder.dart';
 import 'mill.dart';
 
-Map<int, int> sqToLoc = {
-  8: 17,
-  9: 18,
-  10: 25,
-  11: 32,
-  12: 31,
-  13: 30,
-  14: 23,
-  15: 16,
-  16: 10,
-  17: 12,
-  18: 26,
-  19: 40,
-  20: 38,
-  21: 36,
-  22: 22,
-  23: 8,
-  24: 3,
-  25: 6,
-  26: 27,
-  27: 48,
-  28: 45,
-  29: 42,
-  30: 21,
-  31: 0
-};
-
-Map<int, int> locToSq = sqToLoc.map((k, v) => MapEntry(v, k));
-
 class Position {
   GameResult result = GameResult.pending;
   String _sideToMove = Color.black;
@@ -73,44 +44,32 @@ class Position {
     _recorder = other._recorder;
   }
 
+  /// fen() returns a FEN representation of the position.
+
   String fen() {
     // TODO
-    var fen = '';
+    var ss = '';
 
     for (var file = 1; file <= 3; file++) {
-      //
-      var emptyCounter = 0;
-
       for (var rank = 1; rank <= 8; rank++) {
         //
-        final piece = pieceAt((file - 1) * 8 + rank + 8);
+        final piece = pieceOn((file - 1) * 8 + rank + 8);
 
         if (piece == Piece.noPiece) {
-          //
-          emptyCounter++;
-          //
         } else {
-          //
-          if (emptyCounter > 0) {
-            fen += emptyCounter.toString();
-            emptyCounter = 0;
-          }
-
-          fen += piece;
+          ss += piece;
         }
       }
 
-      if (emptyCounter > 0) fen += emptyCounter.toString();
-
-      if (file < 9) fen += '/';
+      if (file < 9) ss += '/';
     }
 
-    fen += ' $side';
+    ss += ' $side';
 
     // step counter
-    fen += '${_recorder?.halfMove ?? 0} ${_recorder?.fullMove ?? 0}';
+    ss += '${_recorder?.halfMove ?? 0} ${_recorder?.fullMove ?? 0}';
 
-    return fen;
+    return ss;
   }
 
   void putPiece(var pt, int index) {
@@ -215,7 +174,7 @@ class Position {
 
   changeSideToMove() => _sideToMove = Color.opponent(_sideToMove);
 
-  String pieceAt(int index) => _board[index];
+  String pieceOn(int index) => _board[index];
 
   get halfMove => _recorder.halfMove;
 
