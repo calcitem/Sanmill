@@ -185,7 +185,6 @@ public:
     Color sideToMove { NOCOLOR };
     Thread *thisThread;
     StateInfo st;
-    StateInfo tmpSt;    // TODO
 
     /// Mill Game
     Color them { NOCOLOR };
