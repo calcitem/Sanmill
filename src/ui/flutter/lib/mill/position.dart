@@ -37,15 +37,10 @@ class StateInfo {
 
 class Position {
   GameResult result = GameResult.pending;
-  String _sideToMove = Color.black;
+
   List<String> _board = List<String>(49); // 7  *  7
   MillRecorder _recorder;
 
-  int rule50 = 0;
-  int pliesFromNull = 0;
-
-  Phase phase = Phase.none;
-  Action action = Action.none;
   int pieceCountInHandBlack = 12;
   int pieceCountInHandWhite = 12;
   int pieceCountOnBoardBlack = 0;
@@ -53,12 +48,28 @@ class Position {
   int pieceCountNeedRemove = 0;
 
   int gamePly = 0;
+  String _sideToMove = Color.black;
+
+  int rule50 = 0;
+  int pliesFromNull = 0;
 
   StateInfo st;
 
   String them;
   String winner;
   GameOverReason gameOverReason = GameOverReason.noReason;
+
+  Phase phase = Phase.none;
+  Action action = Action.none;
+
+  int scoreBlack = 0;
+  int scoreWhite = 0;
+  int scoreDraw = 0;
+
+  int currentSquare;
+  int nPlayed = 0;
+
+  //Move move;
 
   Position.init() {
     for (var i = 0; i < _board.length; i++) {
