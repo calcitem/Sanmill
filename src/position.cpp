@@ -1164,7 +1164,7 @@ bool Position::check_gameover_condition()
     }
 
     if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB) {
-        if (rule->isBlackLosebutNotDrawWhenBoardFull) {
+        if (rule->isBlackLoseButNotDrawWhenBoardFull) {
             set_gameover(WHITE, LOSE_REASON_BOARD_IS_FULL);
         } else {
             set_gameover(DRAW, DRAW_REASON_BOARD_IS_FULL);

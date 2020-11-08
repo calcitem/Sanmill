@@ -33,7 +33,7 @@ struct Rule
     bool isDefenderMoveFirst;
     bool allowRemoveMultiPiecesWhenCloseMultiMill;
     bool allowRemovePieceInMill;
-    bool isBlackLosebutNotDrawWhenBoardFull;
+    bool isBlackLoseButNotDrawWhenBoardFull;
     bool isLoseButNotChangeSideWhenNoWay;
     bool allowFlyWhenRemainThreePieces;
     int maxStepsLedToDraw;
