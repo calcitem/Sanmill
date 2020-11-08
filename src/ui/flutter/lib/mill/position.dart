@@ -17,6 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import '../common/types.dart';
 import '../mill/mill.dart';
 import '../mill/recorder.dart';
 
@@ -138,6 +139,11 @@ class Position {
     currentSquare = other.currentSquare;
     nPlayed = other.nPlayed;
   }
+
+  String pieceOnGrid(int index) => _grid[index];
+  String pieceOn(int sq) => _board[sq];
+
+  bool empty(int sq) => pieceOn(sq) == Piece.noPiece;
 
   /// fen() returns a FEN representation of the position.
 
@@ -337,9 +343,6 @@ class Position {
   get side => _sideToMove;
 
   changeSideToMove() => _sideToMove = Color.opponent(_sideToMove);
-
-  String pieceOnGrid(int index) => _grid[index];
-  String pieceOn(int sq) => _board[sq];
 
   get halfMove => _recorder.halfMove;
 
