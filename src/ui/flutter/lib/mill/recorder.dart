@@ -34,14 +34,14 @@ class MillRecorder {
 
     if (fullMove == 0) {
       fullMove++;
-    } else if (position.side != Side.black) {
+    } else if (position.side != Color.black) {
       fullMove++;
     }
 
     _history.add(move);
 
     if (move.captured != Piece.noPiece) {
-      lastCapturedPosition = position.toFen();
+      lastCapturedPosition = position.fen();
     }
   }
 

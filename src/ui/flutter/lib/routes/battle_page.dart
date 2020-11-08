@@ -57,14 +57,14 @@ class _BattlePageState extends State<BattlePage> {
     position.putPiece(flag % 2 == 0 ? 'b' : 'w', index);
 
     // 仅 Position 中的 side 指示一方能动棋
-    if (position.side != Side.black) return;
+    if (position.side != Color.black) return;
 
     final tapedPiece = position.pieceAt(index);
     print("Tap piece $tapedPiece at <$index>");
 
     // 之前已经有棋子被选中了
     if (Battle.shared.focusIndex != Move.invalidIndex &&
-        Side.of(position.pieceAt(Battle.shared.focusIndex)) == Side.black) {
+        Color.of(position.pieceAt(Battle.shared.focusIndex)) == Color.black) {
       //
       // 当前点击的棋子和之前已经选择的是同一个位置
       if (Battle.shared.focusIndex == index) return;
@@ -72,7 +72,7 @@ class _BattlePageState extends State<BattlePage> {
       // 之前已经选择的棋子和现在点击的棋子是同一边的，说明是选择另外一个棋子
       final focusPiece = position.pieceAt(Battle.shared.focusIndex);
 
-      if (Side.sameSide(focusPiece, tapedPiece)) {
+      if (Color.isSameColor(focusPiece, tapedPiece)) {
         //
         Battle.shared.select(index);
         //
@@ -81,16 +81,16 @@ class _BattlePageState extends State<BattlePage> {
         final result = Battle.shared.scanBattleResult();
 
         switch (result) {
-          case BattleResult.pending:
+          case GameResult.pending:
             engineToGo();
             break;
-          case BattleResult.win:
+          case GameResult.win:
             gotWin();
             break;
-          case BattleResult.lose:
+          case GameResult.lose:
             gotLose();
             break;
-          case BattleResult.draw:
+          case GameResult.draw:
             gotDraw();
             break;
         }
@@ -118,16 +118,16 @@ class _BattlePageState extends State<BattlePage> {
       final result = Battle.shared.scanBattleResult();
 
       switch (result) {
-        case BattleResult.pending:
+        case GameResult.pending:
           changeStatus('请走棋...');
           break;
-        case BattleResult.win:
+        case GameResult.win:
           gotWin();
           break;
-        case BattleResult.lose:
+        case GameResult.lose:
           gotLose();
           break;
-        case BattleResult.draw:
+        case GameResult.draw:
           gotDraw();
           break;
       }
@@ -211,7 +211,7 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotWin() {
     //
-    Battle.shared.position.result = BattleResult.win;
+    Battle.shared.position.result = GameResult.win;
     //Audios.playTone('win.mp3');
 
     showDialog(
@@ -239,7 +239,7 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotLose() {
     //
-    Battle.shared.position.result = BattleResult.lose;
+    Battle.shared.position.result = GameResult.lose;
     //Audios.playTone('lose.mp3');
 
     showDialog(
@@ -262,7 +262,7 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotDraw() {
     //
-    Battle.shared.position.result = BattleResult.draw;
+    Battle.shared.position.result = GameResult.draw;
 
     showDialog(
       context: context,

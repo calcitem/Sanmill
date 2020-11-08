@@ -14,7 +14,7 @@ class Battle {
   }
 
   init() {
-    _position = Position.defaultPosition();
+    _position = Position.init();
     _focusIndex = _blurIndex = Move.invalidIndex;
   }
 
@@ -47,7 +47,7 @@ class Battle {
   bool regret({steps = 2}) {
     //
     // 轮到自己走棋的时候，才能悔棋
-    if (_position.side != Side.white) {
+    if (_position.side != Color.white) {
       //Audios.playTone('invalid.mp3');
       return false;
     }
@@ -88,18 +88,16 @@ class Battle {
     _blurIndex = _focusIndex = Move.invalidIndex;
   }
 
-  BattleResult scanBattleResult() {
+  GameResult scanBattleResult() {
     //
-    final forPerson = (_position.side == Side.white);
+    final forPerson = (_position.side == Color.white);
 
     if (scanLongCatch()) {
       // born 'repeat' position by oppo
-      return forPerson ? BattleResult.win : BattleResult.lose;
+      return forPerson ? GameResult.win : GameResult.lose;
     }
 
-    return (_position.halfMove > 120)
-        ? BattleResult.draw
-        : BattleResult.pending;
+    return (_position.halfMove > 120) ? GameResult.draw : GameResult.pending;
   }
 
   scanLongCatch() {

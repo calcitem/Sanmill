@@ -28,130 +28,33 @@ Map<int, int> sqToLoc = {
   31: 0
 };
 
-Map<int, int> locToSq;
+Map<int, int> locToSq = sqToLoc.map((k, v) => MapEntry(v, k));
 
 class Position {
-  //
-  BattleResult result = BattleResult.pending;
-
-  String _sideToMove;
-  List<String> _board; // 8  *  3
+  GameResult result = GameResult.pending;
+  String _sideToMove = Color.black;
+  List<String> _board = List<String>(49); // 7  *  7
   MillRecorder _recorder;
 
-  Position.defaultPosition() {
-    initDefaultPosition();
-  }
-
-  void initDefaultPosition() {
-    //
-    locToSq = sqToLoc.map((k, v) => MapEntry(v, k));
-
-    _sideToMove = Side.black;
-    _board = List<String>(64); // 7 * 7
-    for (var i = 0; i < 64; i++) {
+  Position.init() {
+    for (var i = 0; i < _board.length; i++) {
       _board[i] ??= Piece.noPiece;
     }
 
-    // Debugging
-    _board[sqToLoc[8]] = Piece.blackStone;
-    //_board[7] = Piece.ban;
-    //_board[8] = Piece.whiteStone;
+    // Example
+    //_board[sqToLoc[8]] = Piece.blackStone;
 
-    _recorder = MillRecorder(lastCapturedPosition: toFen());
+    _recorder = MillRecorder(lastCapturedPosition: fen());
   }
 
   Position.clone(Position other) {
-    //
     _board = List<String>();
-
     other._board.forEach((piece) => _board.add(piece));
-
     _sideToMove = other._sideToMove;
-
     _recorder = other._recorder;
   }
 
-  void putPiece(var pt, int index) {
-    _board[index] = pt;
-  }
-
-  String move(int from, int to) {
-    //
-    if (!validateMove(from, to)) return null;
-
-    final captured = _board[to];
-
-    final move = Move(from, to, captured: captured);
-    //StepName.translate(this, move);
-    _recorder.stepIn(move, this);
-
-    // 修改棋盘
-    _board[to] = _board[from];
-    _board[from] = Piece.noPiece;
-
-    // 交换走棋方
-    _sideToMove = Side.opponent(_sideToMove);
-
-    return captured;
-  }
-
-  // 验证移动棋子的着法是否合法
-  bool validateMove(int from, int to) {
-    // 移动的棋子的选手，应该是当前方
-    if (Side.of(_board[from]) != _sideToMove) return false;
-    return true;
-    //(StepValidate.validate(this, Move(from, to)));
-  }
-
-  // 在判断行棋合法性等环节，要在克隆的棋盘上进行行棋假设，然后检查效果
-  // 这种情况下不验证、不记录、不翻译
-  void moveTest(Move move, {turnSide = false}) {
-    //
-    // 修改棋盘
-    _board[move.to] = _board[move.from];
-    _board[move.from] = Piece.noPiece;
-
-    // 交换走棋方
-    if (turnSide) _sideToMove = Side.opponent(_sideToMove);
-  }
-
-  bool regret() {
-    //
-    final lastMove = _recorder.removeLast();
-    if (lastMove == null) return false;
-
-    _board[lastMove.from] = _board[lastMove.to];
-    _board[lastMove.to] = lastMove.captured;
-
-    _sideToMove = Side.opponent(_sideToMove);
-
-    final counterMarks = MillRecorder.fromCounterMarks(lastMove.counterMarks);
-    _recorder.halfMove = counterMarks.halfMove;
-    _recorder.fullMove = counterMarks.fullMove;
-
-    if (lastMove.captured != Piece.noPiece) {
-      //
-      // 查找上一个吃子局面（或开局），NativeEngine 需要
-      final tempPosition = Position.clone(this);
-
-      final moves = _recorder.reverseMovesToPrevCapture();
-      moves.forEach((move) {
-        //
-        tempPosition._board[move.from] = tempPosition._board[move.to];
-        tempPosition._board[move.to] = move.captured;
-
-        tempPosition._sideToMove = Side.opponent(tempPosition._sideToMove);
-      });
-
-      _recorder.lastCapturedPosition = tempPosition.toFen();
-    }
-
-    result = BattleResult.pending;
-
-    return true;
-  }
-
-  String toFen() {
+  String fen() {
     // TODO
     var fen = '';
 
@@ -191,6 +94,86 @@ class Position {
     return fen;
   }
 
+  void putPiece(var pt, int index) {
+    _board[index] = pt;
+  }
+
+  String move(int from, int to) {
+    //
+    if (!validateMove(from, to)) return null;
+
+    final captured = _board[to];
+
+    final move = Move(from, to, captured: captured);
+    //StepName.translate(this, move);
+    _recorder.stepIn(move, this);
+
+    // 修改棋盘
+    _board[to] = _board[from];
+    _board[from] = Piece.noPiece;
+
+    // 交换走棋方
+    _sideToMove = Color.opponent(_sideToMove);
+
+    return captured;
+  }
+
+  // 验证移动棋子的着法是否合法
+  bool validateMove(int from, int to) {
+    // 移动的棋子的选手，应该是当前方
+    //if (Color.of(_board[from]) != _sideToMove) return false;
+    return true;
+    //(StepValidate.validate(this, Move(from, to)));
+  }
+
+  // 在判断行棋合法性等环节，要在克隆的棋盘上进行行棋假设，然后检查效果
+  // 这种情况下不验证、不记录、不翻译
+  void moveTest(Move move, {turnSide = false}) {
+    //
+    // 修改棋盘
+    _board[move.to] = _board[move.from];
+    _board[move.from] = Piece.noPiece;
+
+    // 交换走棋方
+    if (turnSide) _sideToMove = Color.opponent(_sideToMove);
+  }
+
+  bool regret() {
+    //
+    final lastMove = _recorder.removeLast();
+    if (lastMove == null) return false;
+
+    _board[lastMove.from] = _board[lastMove.to];
+    _board[lastMove.to] = lastMove.captured;
+
+    _sideToMove = Color.opponent(_sideToMove);
+
+    final counterMarks = MillRecorder.fromCounterMarks(lastMove.counterMarks);
+    _recorder.halfMove = counterMarks.halfMove;
+    _recorder.fullMove = counterMarks.fullMove;
+
+    if (lastMove.captured != Piece.noPiece) {
+      //
+      // 查找上一个吃子局面（或开局），NativeEngine 需要
+      final tempPosition = Position.clone(this);
+
+      final moves = _recorder.reverseMovesToPrevCapture();
+      moves.forEach((move) {
+        //
+        tempPosition._board[move.from] = tempPosition._board[move.to];
+        tempPosition._board[move.to] = move.captured;
+
+        tempPosition._sideToMove = Color.opponent(tempPosition._sideToMove);
+      });
+
+      _recorder.lastCapturedPosition = tempPosition.fen();
+    }
+
+    result = GameResult.pending;
+
+    return true;
+  }
+
   String movesSinceLastCaptured() {
     //
     var steps = '', posAfterLastCaptured = 0;
@@ -211,7 +194,7 @@ class Position {
 
   get side => _sideToMove;
 
-  changeSideToMove() => _sideToMove = Side.opponent(_sideToMove);
+  changeSideToMove() => _sideToMove = Color.opponent(_sideToMove);
 
   String pieceAt(int index) => _board[index];
 
