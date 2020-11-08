@@ -812,7 +812,13 @@ bool GameController::actionPiece(QPointF pos)
 
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !MOBILE_APP_UI */
-            manualListModel.removeRows(currentRow + 1, manualListModel.rowCount() - currentRow - 1);
+            int rowCount = manualListModel.rowCount();
+            int removeCount = rowCount - currentRow - 1;
+            manualListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
+
+            for (int i = 0; i < removeCount; i++) {
+                cmdlist.pop_back();
+            }
 
             // 如果再决出胜负后悔棋，则重新启动计时
             if (position.get_winner() == NOBODY) {
