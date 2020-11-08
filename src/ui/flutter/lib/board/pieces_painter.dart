@@ -105,12 +105,17 @@ class PiecesPainter extends PainterBase {
     */
 
     piecesToDraw.forEach((pps) {
-      //
+      var pieceRadius = pieceWidth / 2;
+      var pieceInnerRadius = pieceRadius * 0.99; // 决定棋子外圈有宽
+
+      // 绘制棋子边界
       paint.color = Piece.isWhite(pps.piece)
           ? ColorConst.whitePieceBorderColor
           : ColorConst.blackPieceBorderColor;
 
-      canvas.drawCircle(pps.pos, pieceWidth / 2, paint); // 临时调试用
+      canvas.drawCircle(pps.pos, pieceRadius, paint); // 临时调试用
+
+      // 绘制棋子内部
 
       // 棋子颜色
       paint.color = Piece.isWhite(pps.piece)
@@ -118,7 +123,7 @@ class PiecesPainter extends PainterBase {
           : ColorConst.blackPieceColor;
       //paint.color = ColorConst.WhitePieceColor;
 
-      canvas.drawCircle(pps.pos, pieceWidth * 0.8 / 2, paint); // 决定棋子外圈有宽
+      canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
       /*
       final textSpan = TextSpan(text: Piece.Names[pps.piece], style: textStyle);
 

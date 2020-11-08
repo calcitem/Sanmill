@@ -53,7 +53,7 @@ class Position {
     }
 
     // Debugging
-    //_board[sqToLoc[8]] = Piece.blackStone;
+    _board[sqToLoc[8]] = Piece.whiteStone;
     //_board[7] = Piece.ban;
     //_board[8] = Piece.whiteStone;
 
