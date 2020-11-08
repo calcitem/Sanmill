@@ -17,14 +17,48 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import '../mill/mill.dart';
 import '../mill/recorder.dart';
-import 'mill.dart';
+
+class StateInfo {
+  /*
+  // Copied when making a move
+  int rule50 = 0;
+  int pliesFromNull = 0;
+
+
+  get rule50 => _rule50;
+  set rule50(int value) => _rule50 = value;
+
+  get pliesFromNull => _pliesFromNull;
+  set pliesFromNull(int value) => _pliesFromNull = value;
+  */
+}
 
 class Position {
   GameResult result = GameResult.pending;
   String _sideToMove = Color.black;
   List<String> _board = List<String>(49); // 7  *  7
   MillRecorder _recorder;
+
+  int rule50 = 0;
+  int pliesFromNull = 0;
+
+  Phase phase = Phase.none;
+  Action action = Action.none;
+  int pieceCountInHandBlack = 12;
+  int pieceCountInHandWhite = 12;
+  int pieceCountOnBoardBlack = 0;
+  int pieceCountOnBoardWhite = 0;
+  int pieceCountNeedRemove = 0;
+
+  int gamePly = 0;
+
+  StateInfo st;
+
+  String them;
+  String winner;
+  GameOverReason gameOverReason = GameOverReason.noReason;
 
   Position.init() {
     for (var i = 0; i < _board.length; i++) {
@@ -47,27 +81,89 @@ class Position {
   /// fen() returns a FEN representation of the position.
 
   String fen() {
-    // TODO
     var ss = '';
 
+    // Piece placement data
     for (var file = 1; file <= 3; file++) {
       for (var rank = 1; rank <= 8; rank++) {
         //
-        final piece = pieceOn((file - 1) * 8 + rank + 8);
-
-        if (piece == Piece.noPiece) {
-        } else {
-          ss += piece;
-        }
+        final piece = pieceOn(squareToIndex[makeSquare(file, rank)]);
+        ss += piece;
       }
 
-      if (file < 9) ss += '/';
+      if (file == 3)
+        ss += ' ';
+      else
+        ss += '/';
     }
 
-    ss += ' $side';
+    // Active color
+    ss += _sideToMove;
+
+    ss += " ";
+
+    // Phrase
+    switch (phase) {
+      case Phase.none:
+        ss += "n";
+        break;
+      case Phase.ready:
+        ss += "r";
+        break;
+      case Phase.placing:
+        ss += "p";
+        break;
+      case Phase.moving:
+        ss += "m";
+        break;
+      case Phase.gameOver:
+        ss += "o";
+        break;
+      default:
+        ss += "?";
+        break;
+    }
+
+    ss += " ";
+
+    // Action
+    switch (action) {
+      case Action.place:
+        ss += "p";
+        break;
+      case Action.select:
+        ss += "s";
+        break;
+      case Action.remove:
+        ss += "r";
+        break;
+      default:
+        ss += "?";
+        break;
+    }
+
+    ss += " ";
+
+    ss += pieceCountOnBoardBlack.toString() +
+        " " +
+        pieceCountInHandBlack.toString() +
+        " " +
+        pieceCountOnBoardWhite.toString() +
+        " " +
+        pieceCountInHandWhite.toString() +
+        " " +
+        pieceCountNeedRemove.toString() +
+        " ";
+
+    int sideIsBlack = _sideToMove == Color.black ? 1 : 0;
+
+    ss +=
+        rule50.toString() + " " + (1 + (gamePly - sideIsBlack) ~/ 2).toString();
 
     // step counter
-    ss += '${_recorder?.halfMove ?? 0} ${_recorder?.fullMove ?? 0}';
+    //ss += '${_recorder?.halfMove ?? 0} ${_recorder?.fullMove ?? 0}';
+
+    print("fen = " + ss);
 
     return ss;
   }

@@ -24,7 +24,7 @@ enum Phase { none, ready, placing, moving, gameOver }
 enum Action { none, select, place, remove }
 
 enum GameOverReason {
-  loseReasonNoReason,
+  noReason,
   loseReasonlessThanThree,
   loseReasonNoWay,
   loseReasonBoardIsFull,
