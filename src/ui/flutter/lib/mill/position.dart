@@ -1,6 +1,35 @@
 import '../mill/recorder.dart';
 import 'mill.dart';
 
+Map<int, int> sqToLoc = {
+  8: 17,
+  9: 18,
+  10: 25,
+  11: 32,
+  12: 31,
+  13: 30,
+  14: 23,
+  15: 16,
+  16: 10,
+  17: 12,
+  18: 26,
+  19: 40,
+  20: 38,
+  21: 36,
+  22: 22,
+  23: 8,
+  24: 3,
+  25: 6,
+  26: 27,
+  27: 48,
+  28: 45,
+  29: 42,
+  30: 21,
+  31: 0
+};
+
+Map<int, int> locToSq;
+
 class Position {
   //
   BattleResult result = BattleResult.pending;
@@ -12,35 +41,6 @@ class Position {
   Position.defaultPosition() {
     initDefaultPosition();
   }
-
-  Map<int, int> sqToLoc = {
-    8: 17,
-    9: 18,
-    10: 25,
-    11: 32,
-    12: 31,
-    13: 30,
-    14: 23,
-    15: 16,
-    16: 10,
-    17: 12,
-    18: 26,
-    19: 40,
-    20: 38,
-    21: 36,
-    22: 22,
-    23: 8,
-    24: 3,
-    25: 6,
-    26: 27,
-    27: 48,
-    28: 45,
-    29: 42,
-    30: 21,
-    31: 0
-  };
-
-  Map<int, int> locToSq;
 
   void initDefaultPosition() {
     //
@@ -69,6 +69,10 @@ class Position {
     _sideToMove = other._sideToMove;
 
     _recorder = other._recorder;
+  }
+
+  void putPiece(var pt, int index) {
+    _board[index] = pt;
   }
 
   String move(int from, int to) {

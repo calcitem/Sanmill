@@ -12,6 +12,8 @@ import '../mill/mill.dart';
 import '../services/player.dart';
 import 'settings_page.dart';
 
+enum Phase { placing, moving }
+
 class BattlePage extends StatefulWidget {
   //
   static double boardMargin = 10.0, screenPaddingH = 10.0;
@@ -30,6 +32,8 @@ class _BattlePageState extends State<BattlePage> {
   String _status = '';
   bool _analysising = false;
 
+  static int flag = 0;
+
   @override
   void initState() {
     //
@@ -43,7 +47,14 @@ class _BattlePageState extends State<BattlePage> {
 
   onBoardTap(BuildContext context, int index) {
     //
+
+    //Phase phase = Phase.placing;
+
     final position = Battle.shared.position;
+
+    //position
+    flag++;
+    position.putPiece(flag % 2 == 0 ? 'b' : 'w', index);
 
     // 仅 Position 中的 side 指示一方能动棋
     if (position.side != Side.black) return;
