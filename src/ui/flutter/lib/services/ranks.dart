@@ -1,3 +1,22 @@
+/*
+  FlutterMill, a mill game playing frontend derived from ChessRoad
+  Copyright (C) 2019 He Zhaoyun (ChessRoad author)
+  Copyright (C) 2019-2020 Calcitem <calcitem@outlook.com>
+
+  FlutterMill is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  FlutterMill is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -85,12 +104,17 @@ class Ranks {
 
   static Future<bool> upload({String uuid, RankItem rank}) async {
     //
-    Uri url = Uri(scheme: 'http', host: Host, port: Port, path: UploadPath, queryParameters: {
-      'uuid': uuid,
-      'name': rank.name,
-      'win_cloud_engine': '${rank.winCloudEngine}',
-      'win_phone_ai': '${rank.winPhoneAi}',
-    });
+    Uri url = Uri(
+        scheme: 'http',
+        host: Host,
+        port: Port,
+        path: UploadPath,
+        queryParameters: {
+          'uuid': uuid,
+          'name': rank.name,
+          'win_cloud_engine': '${rank.winCloudEngine}',
+          'win_phone_ai': '${rank.winPhoneAi}',
+        });
 
     final httpClient = HttpClient();
 
@@ -112,7 +136,14 @@ class Ranks {
   }
 
   static Future<List<RankItem>> mockLoad({pageIndex, int pageSize = 10}) async {
-    return [RankItem.mock(), RankItem.mock(), RankItem.mock(), RankItem.mock(), RankItem.mock(), RankItem.mock()];
+    return [
+      RankItem.mock(),
+      RankItem.mock(),
+      RankItem.mock(),
+      RankItem.mock(),
+      RankItem.mock(),
+      RankItem.mock()
+    ];
   }
 
   static Future<bool> mockUpload({String uuid, RankItem rank}) async {
