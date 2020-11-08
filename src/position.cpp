@@ -734,7 +734,7 @@ int Position::set_position(const struct Rule *newRule)
     memset(byTypeBB, 0, sizeof(byTypeBB));
 
     if (pieces_on_board_count() == -1) {
-        return false;
+        return -1;
     }
 
     pieces_in_hand_count();
