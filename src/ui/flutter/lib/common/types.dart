@@ -23,7 +23,7 @@ enum MoveType { place, move, remove }
 
 enum Phase { none, ready, placing, moving, gameOver }
 
-enum Action { none, select, place, remove }
+enum Act { none, select, place, remove }
 
 enum GameOverReason {
   noReason,
