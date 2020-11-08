@@ -300,8 +300,8 @@ Position &Position::set(const string &fenStr, Thread *th)
 }
 
 
-/// Position::fen() returns a FEN representation of the position. In case of
-/// Chess960 the Shredder-FEN notation is used. This is mainly a debugging function.
+/// Position::fen() returns a FEN representation of the position.
+/// This is mainly a debugging function.
 
 const string Position::fen() const
 {
