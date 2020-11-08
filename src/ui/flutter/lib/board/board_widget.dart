@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/color.dart';
+import '../common/properties.dart';
 import '../game/battle.dart';
 import 'board_painter.dart';
 import 'pieces_painter.dart';
@@ -28,7 +28,7 @@ class BoardWidget extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(boardBorderRadius),
-        color: ColorConst.boardBackgroundColor,
+        color: Properties.boardBackgroundColor,
       ),
       child: CustomPaint(
         painter: BoardPainter(width: width),

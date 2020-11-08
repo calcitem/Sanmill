@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/color.dart';
+import '../common/properties.dart';
 
 class WordsOnBoard extends StatelessWidget {
   //
@@ -26,7 +26,7 @@ class WordsOnBoard extends StatelessWidget {
           Row(children: rChildren),
         ],
       ),
-      style: TextStyle(color: ColorConst.boardTipsColor),
+      style: TextStyle(color: Properties.boardTipsColor),
     );
   }
 }

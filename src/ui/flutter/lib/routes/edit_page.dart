@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/color.dart';
+import '../common/properties.dart';
 
 class EditPage extends StatefulWidget {
   //
@@ -39,7 +39,7 @@ class _EditPageState extends State<EditPage> {
     //
     final inputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(25),
-      borderSide: BorderSide(color: ColorConst.secondaryColor),
+      borderSide: BorderSide(color: Properties.secondaryColor),
     );
 
     return Scaffold(
@@ -53,7 +53,7 @@ class _EditPageState extends State<EditPage> {
           )
         ],
       ),
-      backgroundColor: ColorConst.lightBackgroundColor,
+      backgroundColor: Properties.lightBackgroundColor,
       body: Container(
         margin: EdgeInsets.all(16),
         child: Column(
@@ -67,7 +67,7 @@ class _EditPageState extends State<EditPage> {
                 focusedBorder: inputBorder,
               ),
               style: TextStyle(
-                  color: ColorConst.primaryColor, fontSize: 16, fontFamily: ''),
+                  color: Properties.primaryColor, fontSize: 16, fontFamily: ''),
               onSubmitted: (input) => onSubmit(input),
               focusNode: _commentFocus,
             ),

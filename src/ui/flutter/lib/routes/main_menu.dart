@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/color.dart';
+import '../common/properties.dart';
 import '../engine/engine.dart';
 import '../main.dart';
 import 'battle_page.dart';
@@ -89,7 +89,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
     );
     final menuItemStyle = TextStyle(
       fontSize: 28,
-      color: ColorConst.primaryColor,
+      color: Properties.primaryColor,
       shadows: [menuItemShadow],
     );
 
@@ -115,7 +115,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
     );
 
     return Scaffold(
-      backgroundColor: ColorConst.lightBackgroundColor,
+      backgroundColor: Properties.lightBackgroundColor,
       body: Stack(
         children: <Widget>[
           menuItems,
@@ -123,7 +123,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
             top: SanmillApp.StatusBarHeight,
             left: 10,
             child: IconButton(
-              icon: Icon(Icons.settings, color: ColorConst.primaryColor),
+              icon: Icon(Icons.settings, color: Properties.primaryColor),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => SettingsPage()),
               ),

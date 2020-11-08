@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../board/painter_base.dart';
-import '../common/color.dart';
+import '../common/properties.dart';
 import '../mill/mill.dart';
 import '../mill/position.dart';
 import 'board_widget.dart';
@@ -110,8 +110,8 @@ class PiecesPainter extends PainterBase {
 
       // 绘制棋子边界
       paint.color = Piece.isWhite(pps.piece)
-          ? ColorConst.whitePieceBorderColor
-          : ColorConst.blackPieceBorderColor;
+          ? Properties.whitePieceBorderColor
+          : Properties.blackPieceBorderColor;
 
       canvas.drawCircle(pps.pos, pieceRadius, paint); // 临时调试用
 
@@ -119,8 +119,8 @@ class PiecesPainter extends PainterBase {
 
       // 棋子颜色
       paint.color = Piece.isWhite(pps.piece)
-          ? ColorConst.whitePieceColor
-          : ColorConst.blackPieceColor;
+          ? Properties.whitePieceColor
+          : Properties.blackPieceColor;
       //paint.color = ColorConst.WhitePieceColor;
 
       canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
@@ -149,7 +149,7 @@ class PiecesPainter extends PainterBase {
       //
       final int row = focusIndex ~/ 7, column = focusIndex % 7;
 
-      paint.color = ColorConst.focusPositionColor;
+      paint.color = Properties.focusPositionColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
@@ -164,7 +164,7 @@ class PiecesPainter extends PainterBase {
       //
       final row = blurIndex ~/ 7, column = blurIndex % 7;
 
-      paint.color = ColorConst.blurPositionColor;
+      paint.color = Properties.blurPositionColor;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(

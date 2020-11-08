@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ColorConst {
+class Properties {
   //
   static const logoColor = Color(0xFF6D000D);
 

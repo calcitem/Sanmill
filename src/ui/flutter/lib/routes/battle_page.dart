@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../board/board_widget.dart';
-import '../common/color.dart';
+import '../common/properties.dart';
 import '../common/toast.dart';
 import '../engine/analysis.dart';
 import '../engine/engine.dart';
@@ -153,7 +153,7 @@ class _BattlePageState extends State<BattlePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title:
-              Text('放弃对局？', style: TextStyle(color: ColorConst.primaryColor)),
+              Text('放弃对局？', style: TextStyle(color: Properties.primaryColor)),
           content: SingleChildScrollView(child: Text('你确定要放弃当前的对局吗？')),
           actions: <Widget>[
             FlatButton(child: Text('确定'), onPressed: confirm),
@@ -219,7 +219,7 @@ class _BattlePageState extends State<BattlePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('赢了', style: TextStyle(color: ColorConst.primaryColor)),
+          title: Text('赢了', style: TextStyle(color: Properties.primaryColor)),
           content: Text('恭喜您取得了伟大的胜利！'),
           actions: <Widget>[
             FlatButton(child: Text('再来一盘'), onPressed: newGame),
@@ -247,7 +247,7 @@ class _BattlePageState extends State<BattlePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('输了', style: TextStyle(color: ColorConst.primaryColor)),
+          title: Text('输了', style: TextStyle(color: Properties.primaryColor)),
           content: Text('勇士！坚定战斗，虽败犹荣！'),
           actions: <Widget>[
             FlatButton(child: Text('再来一盘'), onPressed: newGame),
@@ -269,7 +269,7 @@ class _BattlePageState extends State<BattlePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('和���', style: TextStyle(color: ColorConst.primaryColor)),
+          title: Text('和���', style: TextStyle(color: Properties.primaryColor)),
           content: Text('您用自己的力量捍卫了和平！'),
           actions: <Widget>[
             FlatButton(child: Text('再来一盘'), onPressed: newGame),
@@ -298,9 +298,9 @@ class _BattlePageState extends State<BattlePage> {
   Widget createPageHeader() {
     //
     final titleStyle =
-        TextStyle(fontSize: 28, color: ColorConst.darkTextPrimaryColor);
+        TextStyle(fontSize: 28, color: Properties.darkTextPrimaryColor);
     final subTitleStyle =
-        TextStyle(fontSize: 16, color: ColorConst.darkTextSecondaryColor);
+        TextStyle(fontSize: 16, color: Properties.darkTextSecondaryColor);
 
     return Container(
       margin: EdgeInsets.only(top: SanmillApp.StatusBarHeight),
@@ -310,7 +310,7 @@ class _BattlePageState extends State<BattlePage> {
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.arrow_back,
-                    color: ColorConst.darkTextPrimaryColor),
+                    color: Properties.darkTextPrimaryColor),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               Expanded(child: SizedBox()),
@@ -321,7 +321,7 @@ class _BattlePageState extends State<BattlePage> {
               Expanded(child: SizedBox()),
               IconButton(
                 icon: Icon(Icons.settings,
-                    color: ColorConst.darkTextPrimaryColor),
+                    color: Properties.darkTextPrimaryColor),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SettingsPage()),
                 ),
@@ -333,7 +333,7 @@ class _BattlePageState extends State<BattlePage> {
             width: 180,
             margin: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: ColorConst.boardBackgroundColor,
+              color: Properties.boardBackgroundColor,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -363,12 +363,12 @@ class _BattlePageState extends State<BattlePage> {
 
   Widget createOperatorBar() {
     //
-    final buttonStyle = TextStyle(color: ColorConst.primaryColor, fontSize: 20);
+    final buttonStyle = TextStyle(color: Properties.primaryColor, fontSize: 20);
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: ColorConst.boardBackgroundColor,
+        color: Properties.boardBackgroundColor,
       ),
       margin: EdgeInsets.symmetric(horizontal: BattlePage.screenPaddingH),
       padding: EdgeInsets.symmetric(vertical: 2),
@@ -410,7 +410,7 @@ class _BattlePageState extends State<BattlePage> {
     //
     final manualStyle = TextStyle(
       fontSize: 18,
-      color: ColorConst.darkTextSecondaryColor,
+      color: Properties.darkTextSecondaryColor,
       height: 1.5,
     );
 
@@ -428,14 +428,14 @@ class _BattlePageState extends State<BattlePage> {
 
     return Expanded(
       child: IconButton(
-        icon: Icon(Icons.expand_less, color: ColorConst.darkTextPrimaryColor),
+        icon: Icon(Icons.expand_less, color: Properties.darkTextPrimaryColor),
         onPressed: () => showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
               title:
-                  Text('棋谱', style: TextStyle(color: ColorConst.primaryColor)),
+                  Text('棋谱', style: TextStyle(color: Properties.primaryColor)),
               content:
                   SingleChildScrollView(child: Text(text, style: manualStyle)),
               actions: <Widget>[
@@ -462,7 +462,7 @@ class _BattlePageState extends State<BattlePage> {
     final footer = buildFooter();
 
     return Scaffold(
-      backgroundColor: ColorConst.darkBackgroundColor,
+      backgroundColor: Properties.darkBackgroundColor,
       body: Column(children: <Widget>[header, board, operatorBar, footer]),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../board/painter_base.dart';
-import '../common/color.dart';
+import '../common/properties.dart';
 import 'board_widget.dart';
 
 class BoardPainter extends PainterBase {
@@ -35,7 +35,7 @@ class BoardPainter extends PainterBase {
     double offsetY,
   }) {
     //
-    paint.color = ColorConst.boardLineColor;
+    paint.color = Properties.boardLineColor;
     paint.style = PaintingStyle.stroke;
 
     const double borderLineWidth = 2.0;
