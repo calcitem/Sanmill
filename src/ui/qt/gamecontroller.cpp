@@ -804,7 +804,7 @@ bool GameController::actionPiece(QPointF pos)
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setMinimumSize(600, 400);
         msgBox.setText(tr("当前正在浏览历史局面。"));
-        msgBox.setInformativeText(tr("是否在此局面下重新开始？悔棋者将承担时间损失！"));
+        msgBox.setInformativeText(tr("您确定要悔棋？"));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
         (msgBox.button(QMessageBox::Ok))->setText(tr("确定"));
