@@ -22,6 +22,11 @@ class Position {
       _board[i] ??= Piece.noPiece;
     }
 
+    // Debugging // 需要一个映射表，从 sq 转换为 board 的坐标！
+    _board[4] = Piece.blackStone;
+    _board[7] = Piece.ban;
+    _board[8] = Piece.whiteStone;
+
     _recorder = MillRecorder(lastCapturedPosition: toFen());
   }
 
