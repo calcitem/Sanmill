@@ -13,19 +13,49 @@ class Position {
     initDefaultPosition();
   }
 
+  Map<int, int> sqToLoc = {
+    8: 17,
+    9: 18,
+    10: 25,
+    11: 32,
+    12: 31,
+    13: 30,
+    14: 23,
+    15: 16,
+    16: 10,
+    17: 12,
+    18: 26,
+    19: 40,
+    20: 38,
+    21: 36,
+    22: 22,
+    23: 8,
+    24: 3,
+    25: 6,
+    26: 27,
+    27: 48,
+    28: 45,
+    29: 42,
+    30: 21,
+    31: 0
+  };
+
+  Map<int, int> locToSq;
+
   void initDefaultPosition() {
     //
+    locToSq = sqToLoc.map((k, v) => MapEntry(v, k));
+
     _sideToMove = Side.black;
     _board = List<String>(64); // 7 * 7
-
     for (var i = 0; i < 64; i++) {
       _board[i] ??= Piece.noPiece;
     }
 
-    // Debugging // 需要一个映射表，从 sq 转换为 board 的坐标！
-    _board[4] = Piece.blackStone;
-    _board[7] = Piece.ban;
-    _board[8] = Piece.whiteStone;
+    // Debugging
+    //_board[sqToLoc[8]] = Piece.blackStone;
+    //_board[7] = Piece.ban;
+    //_board[8] = Piece.whiteStone;
 
     _recorder = MillRecorder(lastCapturedPosition: toFen());
   }
