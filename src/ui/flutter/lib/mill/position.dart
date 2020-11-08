@@ -38,7 +38,9 @@ class StateInfo {
 class Position {
   GameResult result = GameResult.pending;
 
-  List<String> _board = List<String>(49); // 7  *  7
+  List<String> _board = List<String>(40);
+  List<String> _grid = List<String>(49); // 7  *  7
+
   MillRecorder _recorder;
 
   int pieceCountInHandBlack = 12;
@@ -72,6 +74,10 @@ class Position {
   //Move move;
 
   Position.init() {
+    for (var i = 0; i < _grid.length; i++) {
+      _grid[i] ??= Piece.noPiece;
+    }
+
     for (var i = 0; i < _board.length; i++) {
       _board[i] ??= Piece.noPiece;
     }
@@ -82,11 +88,55 @@ class Position {
     _recorder = MillRecorder(lastCapturedPosition: fen());
   }
 
+  Position.boardToGrid() {
+    _grid = List<String>();
+    for (int sq = 0; sq < _board.length; sq++) {
+      _grid[squareToIndex[sq]] = _board[sq];
+    }
+  }
+
+  Position.gridToBoard() {
+    _board = List<String>();
+    for (int i = 0; i < _grid.length; i++) {
+      _board[indexToSquare[i]] = _grid[i];
+    }
+  }
+
   Position.clone(Position other) {
+    _grid = List<String>();
+    other._grid.forEach((piece) => _grid.add(piece));
+
     _board = List<String>();
     other._board.forEach((piece) => _board.add(piece));
-    _sideToMove = other._sideToMove;
+
     _recorder = other._recorder;
+
+    pieceCountInHandBlack = other.pieceCountInHandBlack;
+    pieceCountInHandWhite = other.pieceCountInHandWhite;
+    pieceCountOnBoardBlack = other.pieceCountOnBoardBlack;
+    pieceCountOnBoardWhite = other.pieceCountOnBoardWhite;
+    pieceCountNeedRemove = other.pieceCountNeedRemove;
+
+    gamePly = other.gamePly;
+
+    _sideToMove = other._sideToMove;
+
+    rule50 = other.rule50;
+    pliesFromNull = other.pliesFromNull;
+
+    them = other.them;
+    winner = other.winner;
+    gameOverReason = other.gameOverReason;
+
+    phase = other.phase;
+    action = other.action;
+
+    scoreBlack = other.scoreBlack;
+    scoreWhite = other.scoreWhite;
+    scoreDraw = other.scoreDraw;
+
+    currentSquare = other.currentSquare;
+    nPlayed = other.nPlayed;
   }
 
   /// fen() returns a FEN representation of the position.
@@ -98,7 +148,7 @@ class Position {
     for (var file = 1; file <= 3; file++) {
       for (var rank = 1; rank <= 8; rank++) {
         //
-        final piece = pieceOn(squareToIndex[makeSquare(file, rank)]);
+        final piece = pieceOnGrid(squareToIndex[makeSquare(file, rank)]);
         ss += piece;
       }
 
@@ -180,20 +230,23 @@ class Position {
   }
 
   void putPiece(var pt, int index) {
-    _board[index] = pt;
+    _grid[index] = pt;
+    _board[indexToSquare[index]] = pt;
   }
 
-  String move(int from, int to) {
+  String doMove(int from, int to) {
     //
     if (!validateMove(from, to)) return null;
 
-    final captured = _board[to];
+    final captured = _grid[to];
 
     final move = Move(from, to, captured: captured);
     //StepName.translate(this, move);
     _recorder.stepIn(move, this);
 
     // 修改棋盘
+    _grid[to] = _grid[from];
+    _grid[from] = Piece.noPiece;
     _board[to] = _board[from];
     _board[from] = Piece.noPiece;
 
@@ -216,6 +269,8 @@ class Position {
   void moveTest(Move move, {turnSide = false}) {
     //
     // 修改棋盘
+    _grid[move.to] = _grid[move.from];
+    _grid[move.from] = Piece.noPiece;
     _board[move.to] = _board[move.from];
     _board[move.from] = Piece.noPiece;
 
@@ -228,6 +283,8 @@ class Position {
     final lastMove = _recorder.removeLast();
     if (lastMove == null) return false;
 
+    _grid[lastMove.from] = _grid[lastMove.to];
+    _grid[lastMove.to] = lastMove.captured;
     _board[lastMove.from] = _board[lastMove.to];
     _board[lastMove.to] = lastMove.captured;
 
@@ -245,8 +302,8 @@ class Position {
       final moves = _recorder.reverseMovesToPrevCapture();
       moves.forEach((move) {
         //
-        tempPosition._board[move.from] = tempPosition._board[move.to];
-        tempPosition._board[move.to] = move.captured;
+        tempPosition._grid[move.from] = tempPosition._grid[move.to];
+        tempPosition._grid[move.to] = move.captured;
 
         tempPosition._sideToMove = Color.opponent(tempPosition._sideToMove);
       });
@@ -281,7 +338,8 @@ class Position {
 
   changeSideToMove() => _sideToMove = Color.opponent(_sideToMove);
 
-  String pieceOn(int index) => _board[index];
+  String pieceOnGrid(int index) => _grid[index];
+  String pieceOn(int sq) => _board[sq];
 
   get halfMove => _recorder.halfMove;
 

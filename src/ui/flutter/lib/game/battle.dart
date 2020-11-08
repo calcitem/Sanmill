@@ -50,7 +50,7 @@ class Battle {
 
   bool move(int from, int to) {
     //
-    final captured = _position.move(from, to);
+    final captured = _position.doMove(from, to);
 
     if (captured == null) {
       //Audios.playTone('invalid.mp3');

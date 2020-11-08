@@ -78,18 +78,19 @@ class _BattlePageState extends State<BattlePage> {
     // 仅 Position 中的 side 指示一方能动棋
     if (position.side != Color.black) return;
 
-    final tapedPiece = position.pieceOn(index);
+    final tapedPiece = position.pieceOnGrid(index);
     print("Tap piece $tapedPiece at <$index>");
 
     // 之前已经有棋子被选中了
     if (Battle.shared.focusIndex != Move.invalidIndex &&
-        Color.of(position.pieceOn(Battle.shared.focusIndex)) == Color.black) {
+        Color.of(position.pieceOnGrid(Battle.shared.focusIndex)) ==
+            Color.black) {
       //
       // 当前点击的棋子和之前已经选择的是同一个位置
       if (Battle.shared.focusIndex == index) return;
 
       // 之前已经选择的棋子和现在点击的棋子是同一边的，说明是选择另外一个棋子
-      final focusPiece = position.pieceOn(Battle.shared.focusIndex);
+      final focusPiece = position.pieceOnGrid(Battle.shared.focusIndex);
 
       if (Color.isSameColor(focusPiece, tapedPiece)) {
         //
