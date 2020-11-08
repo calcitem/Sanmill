@@ -61,9 +61,9 @@ class BoardWidget extends StatelessWidget {
         final row = (dy - padding - digitsHeight) ~/ squareWidth;
         final column = (dx - padding) ~/ squareWidth;
 
-        final index = row * 6 + column;
+        final index = row * 7 + column;
 
-        print("Tap on ($row, $column) => $index\n");
+        print("Tap on ($row, $column) <$index>");
 
         if (row < 0 || row > 6) return;
 

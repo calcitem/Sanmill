@@ -46,13 +46,14 @@ class _BattlePageState extends State<BattlePage> {
     final position = Battle.shared.position;
 
     // 仅 Position 中的 side 指示一方能动棋
-    if (position.side != Side.white) return;
+    if (position.side != Side.black) return;
 
     final tapedPiece = position.pieceAt(index);
+    print("Tap piece $tapedPiece at <$index>");
 
     // 之前已经有棋子被选中了
     if (Battle.shared.focusIndex != Move.invalidIndex &&
-        Side.of(position.pieceAt(Battle.shared.focusIndex)) == Side.white) {
+        Side.of(position.pieceAt(Battle.shared.focusIndex)) == Side.black) {
       //
       // 当前点击的棋子和之前已经选择的是同一个位置
       if (Battle.shared.focusIndex == index) return;
