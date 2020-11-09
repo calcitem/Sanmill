@@ -10,7 +10,24 @@ add_library( # Sets the name of the library.
         src/main/cpp/mill_engine.cpp
         ../../command/command_channel.cpp
         ../../command/command_queue.cpp
-        ../../command/engine_main.cpp)
+        ../../command/engine_main.cpp
+        ../../../../benchmark.cpp
+        ../../../../bitboard.cpp
+        ../../../../endgame.cpp
+        ../../../../evaluate.cpp
+        ../../../../main.cpp
+        ../../../../misc.cpp
+        ../../../../movegen.cpp
+        ../../../../movepick.cpp
+        ../../../../option.cpp
+        ../../../../position.cpp
+        ../../../../rule.cpp
+        ../../../../search.cpp
+        ../../../../thread.cpp
+        ../../../../trainer.cpp
+        ../../../../tt.cpp
+        ../../../../uci.cpp
+        ../../../../ucioption.cpp)
 
 
 find_library( # Sets the name of the path variable.

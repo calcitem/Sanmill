@@ -17,10 +17,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef TRAINING_MODE
 #include "gamecontroller.h"
 #include "trainer.h"
-
-#ifdef TRAINING_MODE
 
 int main(int argc, char *argv[])
 {
