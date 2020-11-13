@@ -32,6 +32,11 @@
 #include "tt.h"
 #include "uci.h"
 
+#ifdef FLUTTER_UI
+#include "command_channel.h"
+#include "base.h"
+#endif
+
 using namespace std;
 
 extern vector<string> setup_bench(Position *, istream &);
@@ -193,8 +198,17 @@ void UCI::loop(int argc, char *argv[])
         cmd += std::string(argv[i]) + " ";
 
     do {
+#ifdef FLUTTER_UI
+        static const int LINE_INPUT_MAX_CHAR = 256;
+        char szLineStr[LINE_INPUT_MAX_CHAR];
+        CommandChannel *channel = CommandChannel::getInstance();
+        while (!channel->popupCommand(szLineStr)) Idle();
+        cmd = szLineStr;
+        LOGD("szLine = %s\n", szLineStr);
+#else
         if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
             cmd = "quit";
+#endif
 
         istringstream is(cmd);
 

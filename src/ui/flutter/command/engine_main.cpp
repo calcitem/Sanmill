@@ -19,9 +19,12 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <iostream>
 
 #include "base.h"
 #include "command_channel.h"
+
+extern int main(int argc, char* argv[]) ;
 
 void println(const char *str, ...) {
 
@@ -36,6 +39,8 @@ void println(const char *str, ...) {
 
     CommandChannel *channel = CommandChannel::getInstance();
 
+    LOGD("println: %s\n", buffer);
+
     while (!channel->pushResponse(buffer)) {
         Idle();
     }
@@ -43,6 +48,5 @@ void println(const char *str, ...) {
 
 int engineMain(void)
 {
-    println("bye");
-    return 0;
+    return main(1, 0);
 }

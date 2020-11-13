@@ -38,6 +38,9 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        ndk{
+            ldLibs "log"
+        }
     }
 
     buildTypes {

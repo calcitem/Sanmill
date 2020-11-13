@@ -43,6 +43,7 @@ class NativeEngine extends AiEngine {
   Future<void> send(String command) async {
     //
     try {
+      print("send: $command");
       await platform.invokeMethod('send', command);
     } catch (e) {
       print('Native sendCommand Error: $e');
@@ -116,10 +117,12 @@ class NativeEngine extends AiEngine {
     //
     if (await isThinking()) await stopSearching();
 
-    send(buildPositionCommand(position));
-    send('go time 5000');
+    //send(buildPositionCommand(position));
+    send('go');
 
     final response = await waitResponse(['bestmove', 'nobestmove']);
+
+    print("response: $response");
 
     if (response.startsWith('bestmove')) {
       //

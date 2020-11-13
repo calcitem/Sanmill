@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+add_definitions(-D FLUTTER_UI)
+
 add_library( # Sets the name of the library.
         engine
 
@@ -30,6 +32,7 @@ add_library( # Sets the name of the library.
         ../../../../ucioption.cpp)
 
 include_directories(
+        ../../command
         ../../../../../include
         ../../../../
 )

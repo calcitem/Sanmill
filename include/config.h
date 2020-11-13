@@ -34,6 +34,11 @@
 //#define UCI_DO_BEST_MOVE
 #define ANALYZE_POSITION
 
+#ifdef FLUTTER_UI
+#undef QT_GUI_LIB
+#undef ANALYZE_POSITION
+#endif
+
 #ifdef UCI_AUTO_RESTART
 #define UCI_AUTO_RE_GO
 #endif

@@ -17,6 +17,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef BASE2_H
+#define BASE2_H
+
 #ifdef _WIN32
   #include <windows.h>
 #else
@@ -26,8 +29,7 @@
 #endif
 #include <string.h>
 
-#ifndef BASE2_H
-#define BASE2_H
+#include <android/log.h>
 
 #ifdef _WIN32
 
@@ -41,5 +43,13 @@ inline void Idle(void) {
   usleep(1000);
 }
 #endif
+
+#define LOG_TAG   "MillEngine"
+
+#define LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
+#define LOGW(...)  __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
+#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#define LOGF(...)  __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
 
 #endif

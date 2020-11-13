@@ -28,6 +28,10 @@
 #include "tt.h"
 #include "option.h"
 
+#ifdef FLUTTER_UI
+#include "engine_main.h"
+#endif
+
 ThreadPool Threads; // Global object
 
 #ifdef OPENING_BOOK
@@ -186,6 +190,10 @@ void Thread::emitCommand()
 #else
     sync_cout << "bestmove " << strCommand.c_str();
     std::cout << sync_endl;
+
+#ifdef FLUTTER_UI
+    println("bestmove %s\n", strCommand.c_str());
+#endif
 
 #ifdef UCI_DO_BEST_MOVE
     rootPos->command(strCommand.c_str());
