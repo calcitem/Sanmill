@@ -24,7 +24,7 @@
 
 QString APP_FILENAME_DEFAULT = "MillGame";
 
-#ifdef  QT_UI
+#ifdef  QT_GUI_LIB
 #include <QtWidgets/QApplication>
 #include <QDesktopWidget>
 #include <QCoreApplication>
@@ -61,4 +61,4 @@ int main(int argc, char *argv[])
 
 #endif // !UCT_DEMO
 #endif // !TRAINING_MODE
-#endif // QT_UI
+#endif // QT_GUI_LIB

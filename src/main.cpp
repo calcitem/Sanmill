@@ -29,7 +29,7 @@
 #include "tt.h"
 #include "uci.h"
 
-#ifndef QT_UI
+#ifndef QT_GUI_LIB
 
 int main(int argc, char* argv[]) {
 

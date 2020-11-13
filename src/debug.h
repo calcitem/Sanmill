@@ -23,7 +23,7 @@
 #include "config.h"
 #include <cstdio>
 
-#ifdef QT_UI
+#ifdef QT_GUI_LIB
 #include <QDebug>
 #endif
 
@@ -34,7 +34,7 @@
 #ifdef CSTYLE_DEBUG_OUTPUT
 #define loggerDebug printf
 #else
-#ifdef QT_UI
+#ifdef QT_GUI_LIB
 #define loggerDebug qDebug
 #endif
 #endif /* CSTYLE_DEBUG_OUTPUT */

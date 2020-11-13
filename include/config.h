@@ -26,7 +26,7 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#define QT_UI
+//#undef QT_GUI_LIB
 
 //#define DISABLE_RANDOM_MOVE
 //#define UCI_AUTO_RE_GO

@@ -45,12 +45,12 @@ using namespace std;
 /// in idle_loop(). Note that 'searching' and 'exit' should be already set.
 
 Thread::Thread(size_t n
-#ifdef QT_UI
+#ifdef QT_GUI_LIB
                , QObject *parent
 #endif
 ) :
     idx(n), stdThread(&Thread::idle_loop, this),
-#ifdef QT_UI
+#ifdef QT_GUI_LIB
     QObject(parent),
 #endif
     timeLimit(3600)
@@ -181,7 +181,7 @@ void Thread::setAi(Position *p, int tl)
 
 void Thread::emitCommand()
 {
-#ifdef QT_UI
+#ifdef QT_GUI_LIB
     emit command(strCommand);
 #else
     sync_cout << "bestmove " << strCommand.c_str();
@@ -195,7 +195,7 @@ void Thread::emitCommand()
 #ifdef ANALYZE_POSITION
     analyze(rootPos->side_to_move());
 #endif
-#endif // QT_UI
+#endif // QT_GUI_LIB
 }
 
 #ifdef OPENING_BOOK
@@ -242,10 +242,10 @@ void Thread::analyze(Color c)
     static int nbwin = 0;
     static int nwwin = 0;
     static int ndraw = 0;
-#ifndef QT_UI
+#ifndef QT_GUI_LIB
     int total;
     float bwinrate, wwinrate, drawrate;
-#endif // !QT_UI
+#endif // !QT_GUI_LIB
 
     int d = (int)originDepth;
     int v = (int)bestvalue;
@@ -356,7 +356,7 @@ void Thread::analyze(Color c)
         cout << "轮到白方行棋" << endl;
     }
 
-#ifndef QT_UI
+#ifndef QT_GUI_LIB
     total = nbwin + nwwin + ndraw;
 
     if (total == 0) {
@@ -371,7 +371,7 @@ void Thread::analyze(Color c)
 
     cout << "比分: " << nbwin << " : " << nwwin << " : " << ndraw << "\ttotal: " << total << endl;
     cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
-#endif // !QT_UI
+#endif // !QT_GUI_LIB
 
 out:
     cout << endl << endl;
