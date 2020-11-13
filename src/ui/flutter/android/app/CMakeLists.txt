@@ -29,6 +29,10 @@ add_library( # Sets the name of the library.
         ../../../../uci.cpp
         ../../../../ucioption.cpp)
 
+include_directories(
+        ../../../../../include
+        ../../../../
+)
 
 find_library( # Sets the name of the path variable.
         log-lib
