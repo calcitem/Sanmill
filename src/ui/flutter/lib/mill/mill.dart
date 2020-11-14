@@ -105,9 +105,9 @@ class Move {
 
   String captured;
 
-  // 'step' is the UCI engine's move-string
-  String step;
-  String stepName;
+  // 'move' is the UCI engine's move-string
+  String move;
+  String moveName;
 
   // 这一步走完后的 FEN 记数，用于悔棋时恢复 FEN 步数 Counter
   String counterMarks;
@@ -125,8 +125,8 @@ class Move {
       throw "Error: Invlid Step (from:$from, to:$to)";
     }
 
-    step = String.fromCharCode('a'.codeUnitAt(0) + fx) + (9 - fy).toString();
-    step += String.fromCharCode('a'.codeUnitAt(0) + tx) + (9 - ty).toString();
+    move = String.fromCharCode('a'.codeUnitAt(0) + fx) + (9 - fy).toString();
+    move += String.fromCharCode('a'.codeUnitAt(0) + tx) + (9 - ty).toString();
   }
 
   /// 引擎返回的招法用是如此表示的，例如:
@@ -134,18 +134,18 @@ class Move {
   /// 吃子：-(1,2)
   /// 走子：(3,1)->(2,1)
 
-  Move.fromEngineStep(String step) {
+  Move.fromEngineStep(String move) {
     //
-    this.step = step;
+    this.move = move;
 
-    if (!validateEngineStep(step)) {
-      throw "Error: Invlid Step: $step";
+    if (!validateEngineMove(move)) {
+      throw "Error: Invalid Move: $move";
     }
 
-    fx = step[0].codeUnitAt(0) - 'a'.codeUnitAt(0);
-    fy = 9 - (step[1].codeUnitAt(0) - '0'.codeUnitAt(0));
-    tx = step[2].codeUnitAt(0) - 'a'.codeUnitAt(0);
-    ty = 9 - (step[3].codeUnitAt(0) - '0'.codeUnitAt(0));
+    fx = move[0].codeUnitAt(0) - 'a'.codeUnitAt(0);
+    fy = 9 - (move[1].codeUnitAt(0) - '0'.codeUnitAt(0));
+    tx = move[2].codeUnitAt(0) - 'a'.codeUnitAt(0);
+    ty = 9 - (move[3].codeUnitAt(0) - '0'.codeUnitAt(0));
 
     from = fx + fy * 9;
     to = tx + ty * 9;
@@ -153,17 +153,22 @@ class Move {
     captured = Piece.noPiece;
   }
 
-  static bool validateEngineStep(String step) {
-    //
-    if (step == null || step.length > "(3,1)->(2,1)".length) return false;
+  static bool validateEngineMove(String move) {
+    if (move == null || move.length > "(3,1)->(2,1)".length) return false;
 
-    final fx = step[0].codeUnitAt(0) - 'a'.codeUnitAt(0);
-    final fy = 9 - (step[1].codeUnitAt(0) - '0'.codeUnitAt(0));
-    if (fx < 0 || fx > 8 || fy < 0 || fy > 9) return false;
+    String sets = "0123456789(,)->";
 
-    final tx = step[2].codeUnitAt(0) - 'a'.codeUnitAt(0);
-    final ty = 9 - (step[3].codeUnitAt(0) - '0'.codeUnitAt(0));
-    if (tx < 0 || tx > 8 || ty < 0 || ty > 9) return false;
+    if (!(move[0] == '(' || move[0] == '-')) {
+      return false;
+    }
+
+    if (move[move.length - 1] != ')') {
+      return false;
+    }
+
+    for (int i = 0; i < move.length; i++) {
+      if (!sets.contains(move[i])) return false;
+    }
 
     return true;
   }

@@ -192,7 +192,7 @@ void Thread::emitCommand()
     std::cout << sync_endl;
 
 #ifdef FLUTTER_UI
-    println("bestmove %s\n", strCommand.c_str());
+    println("bestmove %s", strCommand.c_str());
 #endif
 
 #ifdef UCI_DO_BEST_MOVE

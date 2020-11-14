@@ -88,7 +88,7 @@ class MillRecorder {
     var manualText = '';
 
     for (var i = 0; i < _history.length; i++) {
-      manualText += '${i < 9 ? ' ' : ''}${i + 1}. ${_history[i].stepName}　';
+      manualText += '${i < 9 ? ' ' : ''}${i + 1}. ${_history[i].moveName}　';
       if ((i + 1) % cols == 0) manualText += '\n';
     }
 

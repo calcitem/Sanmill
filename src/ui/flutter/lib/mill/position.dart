@@ -511,7 +511,7 @@ class Position {
     }
 
     for (var i = posAfterLastCaptured; i < _recorder.stepsCount; i++) {
-      steps += ' ${_recorder.stepAt(i).step}';
+      steps += ' ${_recorder.stepAt(i).move}';
     }
 
     return steps.length > 0 ? steps.substring(1) : '';
