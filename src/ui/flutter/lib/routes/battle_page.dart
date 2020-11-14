@@ -51,7 +51,7 @@ class _BattlePageState extends State<BattlePage> {
   String _status = '';
   bool _analysising = false;
 
-  static int flag = 0;
+  //static int flag = 0;
 
   @override
   void initState() {
@@ -72,8 +72,11 @@ class _BattlePageState extends State<BattlePage> {
     final position = Battle.shared.position;
 
     //position
-    flag++;
-    position.putPiece(flag % 2 == 0 ? '@' : 'O', index);
+    //flag++;
+    //position.putPiece(flag % 2 == 0 ? '@' : 'O', index);
+    if (position.putPiece('@', index) == false) {
+      return;
+    }
 
     // 仅 Position 中的 side 指示一方能动棋
     if (position.side != Color.black) return;

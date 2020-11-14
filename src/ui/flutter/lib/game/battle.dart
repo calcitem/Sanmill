@@ -38,7 +38,7 @@ class Battle {
   }
 
   newGame() {
-    Battle.shared.position.initDefaultPosition();
+    Battle.shared.position.init();
     _focusIndex = _blurIndex = Move.invalidIndex;
   }
 

@@ -94,6 +94,10 @@ class Position {
     _recorder = MillRecorder(lastCapturedPosition: fen());
   }
 
+  init() {
+    Position.init();
+  }
+
   Position.boardToGrid() {
     _grid = List<String>();
     for (int sq = 0; sq < _board.length; sq++) {
@@ -164,9 +168,20 @@ class Position {
     return selectPieceSQ(makeSquare(file, rank));
   }
 
-  void putPiece(var pt, int index) {
+  bool putPiece(var pt, int index) {
+    var sq = indexToSquare[index];
+
+    if (sq == null) {
+      print("putPiece skip index: $index");
+      return false;
+    }
+
     _grid[index] = pt;
-    _board[indexToSquare[index]] = pt;
+    _board[sq] = pt;
+
+    print("putPiece: pt = $pt, index = $index, sq = $sq");
+
+    return true;
   }
 
   bool putPieceFR(int file, int rank) {
