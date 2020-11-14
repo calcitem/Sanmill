@@ -17,6 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/common/types.dart';
+
 Map<int, int> squareToIndex = {
   8: 17,
   9: 18,
@@ -94,11 +96,21 @@ class Piece {
 }
 
 class Move {
-  // TODO
-  static const invalidIndex = -1;
+  static const invalidValue = -1;
 
-  // List<String>(90) 中的索引
-  int from, to;
+  // Square
+  int from = 0;
+  int to = 0;
+
+  // file & rank
+  int fromFile = 0;
+  int fromRank = 0;
+  int toFile = 0;
+  int toRank = 0;
+
+  // Index
+  int fromIndex = 0;
+  int toIndex = 0;
 
   // 左上角为坐标原点
   int fx, fy, tx, ty;
@@ -109,9 +121,43 @@ class Move {
   String move;
   String moveName;
 
+  MoveType type;
+
   // 这一步走完后的 FEN 记数，用于悔棋时恢复 FEN 步数 Counter
   String counterMarks;
 
+  parse() {
+    if (move[0] == '-' && move.length == "-(1,2)".length) {
+      type = MoveType.remove;
+      from = fromFile = fromRank = fromIndex = invalidValue;
+      toFile = int.parse(move[2]);
+      toRank = int.parse(move[4]);
+    } else if (move.length == "(1,2)->(3,4)".length) {
+      type = MoveType.move;
+      fromFile = int.parse(move[1]);
+      fromRank = int.parse(move[3]);
+      from = makeSquare(fromFile, toFile);
+      fromIndex = squareToIndex[from];
+      toFile = int.parse(move[8]);
+      toRank = int.parse(move[10]);
+    } else if (move.length == "(1,2)".length) {
+      type = MoveType.place;
+      from = fromFile = fromRank = fromIndex = invalidValue;
+      toFile = int.parse(move[1]);
+      toRank = int.parse(move[3]);
+    } else {
+      assert(false);
+    }
+
+    to = makeSquare(toFile, toRank);
+    toIndex = squareToIndex[to];
+  }
+
+  Move(this.move) {
+    parse();
+  }
+
+  /*
   Move(this.from, this.to,
       {this.captured = Piece.noPiece, this.counterMarks = '0 0'}) {
     //
@@ -122,12 +168,13 @@ class Move {
     ty = to ~/ 9;
 
     if (fx < 0 || fx > 8 || fy < 0 || fy > 9) {
-      throw "Error: Invlid Step (from:$from, to:$to)";
+      throw "Error: Invalid Step (from:$from, to:$to)";
     }
 
     move = String.fromCharCode('a'.codeUnitAt(0) + fx) + (9 - fy).toString();
     move += String.fromCharCode('a'.codeUnitAt(0) + tx) + (9 - ty).toString();
   }
+  */
 
   /// 引擎返回的招法用是如此表示的，例如:
   /// 落子：(1,2)

@@ -436,26 +436,40 @@ class Position {
   }
   */
 
-  String doMove(int from, int to) {
+  bool doMove(Move move) {
     //
-    if (!validateMove(from, to)) return null;
+    //if (!validateMove(m)) return null;
 
-    final captured = _grid[to];
+    //final move = Move(m);
 
-    final move = Move(from, to, captured: captured);
+    if (move.type == MoveType.remove) {
+      final captured = _grid[move.to];
+    }
+
+    switch (move.type) {
+      case MoveType.place:
+        _grid[move.toIndex] = _board[move.to] = _sideToMove;
+        break;
+      case MoveType.remove:
+        _grid[move.toIndex] = _board[move.to] = Piece.noPiece;
+        break;
+      case MoveType.move:
+        _grid[move.toIndex] = _grid[move.fromIndex];
+        _board[move.to] = _board[move.from];
+        _grid[move.fromIndex] = _board[move.from] = Piece.noPiece;
+        break;
+      default:
+        assert(false);
+        break;
+    }
+
     //StepName.translate(this, move);
     _recorder.stepIn(move, this);
-
-    // 修改棋盘
-    _grid[to] = _grid[from];
-    _grid[from] = Piece.noPiece;
-    _board[to] = _board[from];
-    _board[from] = Piece.noPiece;
 
     // 交换走棋方
     _sideToMove = Color.opponent(_sideToMove);
 
-    return captured;
+    return true;
   }
 
   // 验证移动棋子的着法是否合法

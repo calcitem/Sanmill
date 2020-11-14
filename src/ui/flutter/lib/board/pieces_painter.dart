@@ -41,8 +41,8 @@ class PiecesPainter extends PainterBase {
   PiecesPainter({
     @required double width,
     @required this.position,
-    this.focusIndex = Move.invalidIndex,
-    this.blurIndex = Move.invalidIndex,
+    this.focusIndex = Move.invalidValue,
+    this.blurIndex = Move.invalidValue,
   }) : super(width: width) {
     //
     pieceWidth = squareWidth * 0.9; // 棋子大小
@@ -81,8 +81,8 @@ class PiecesPainter extends PainterBase {
     double pieceWidth,
     double offsetX,
     double offsetY,
-    int focusIndex = Move.invalidIndex,
-    int blurIndex = Move.invalidIndex,
+    int focusIndex = Move.invalidValue,
+    int blurIndex = Move.invalidValue,
   }) {
     //
     final left = offsetX;
@@ -164,7 +164,7 @@ class PiecesPainter extends PainterBase {
 
     // draw focus and blur position
 
-    if (focusIndex != Move.invalidIndex) {
+    if (focusIndex != Move.invalidValue) {
       //
       final int row = focusIndex ~/ 7, column = focusIndex % 7;
 
@@ -179,7 +179,7 @@ class PiecesPainter extends PainterBase {
       );
     }
 
-    if (blurIndex != Move.invalidIndex) {
+    if (blurIndex != Move.invalidValue) {
       //
       final row = blurIndex ~/ 7, column = blurIndex % 7;
 

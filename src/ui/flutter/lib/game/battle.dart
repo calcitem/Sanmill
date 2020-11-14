@@ -34,31 +34,31 @@ class Battle {
 
   init() {
     _position = Position.init();
-    _focusIndex = _blurIndex = Move.invalidIndex;
+    _focusIndex = _blurIndex = Move.invalidValue;
   }
 
   newGame() {
     Battle.shared.position.init();
-    _focusIndex = _blurIndex = Move.invalidIndex;
+    _focusIndex = _blurIndex = Move.invalidValue;
   }
 
   select(int pos) {
     _focusIndex = pos;
-    _blurIndex = Move.invalidIndex;
+    _blurIndex = Move.invalidValue;
     //Audios.playTone('click.mp3');
   }
 
-  bool move(int from, int to) {
+  bool move(Move move) {
     //
-    final captured = _position.doMove(from, to);
+    final captured = _position.doMove(move);
 
     if (captured == null) {
       //Audios.playTone('invalid.mp3');
       return false;
     }
 
-    _blurIndex = from;
-    _focusIndex = to;
+    _blurIndex = move.fromIndex;
+    _focusIndex = move.toIndex;
 
     return true;
   }
@@ -88,7 +88,7 @@ class Battle {
         //
       } else {
         //
-        _blurIndex = _focusIndex = Move.invalidIndex;
+        _blurIndex = _focusIndex = Move.invalidValue;
       }
 
       regreted = true;
@@ -104,7 +104,7 @@ class Battle {
   }
 
   clear() {
-    _blurIndex = _focusIndex = Move.invalidIndex;
+    _blurIndex = _focusIndex = Move.invalidValue;
   }
 
   GameResult scanBattleResult() {

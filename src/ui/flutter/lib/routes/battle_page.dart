@@ -89,7 +89,7 @@ class _BattlePageState extends State<BattlePage> {
         break;
       case Phase.moving:
         // 之前已经有棋子被选中了
-        if (Battle.shared.focusIndex != Move.invalidIndex &&
+        if (Battle.shared.focusIndex != Move.invalidValue &&
             Color.of(position.pieceOnGrid(Battle.shared.focusIndex)) ==
                 Color.black) {
           //
@@ -144,8 +144,10 @@ class _BattlePageState extends State<BattlePage> {
 
     if (response.type == 'move') {
       //
-      final step = response.value;
-      Battle.shared.move(step.from, step.to);
+      Move mv = response.value;
+      final Move move = new Move(mv.move);
+
+      Battle.shared.move(move);
 
       final result = Battle.shared.scanBattleResult();
 
