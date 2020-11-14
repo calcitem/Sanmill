@@ -88,6 +88,8 @@ class Position {
       _board[i] ??= Piece.noPiece;
     }
 
+    phase = Phase.placing;
+
     // Example
     //_board[sqToLoc[8]] = Piece.blackStone;
 

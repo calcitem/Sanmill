@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import '../board/board_widget.dart';
 import '../common/properties.dart';
 import '../common/toast.dart';
+import '../common/types.dart';
 import '../engine/analysis.dart';
 import '../engine/engine.dart';
 import '../engine/native_engine.dart';
@@ -30,8 +31,6 @@ import '../main.dart';
 import '../mill/mill.dart';
 import '../services/player.dart';
 import 'settings_page.dart';
-
-enum Phase { placing, moving }
 
 class BattlePage extends StatefulWidget {
   //
@@ -84,44 +83,54 @@ class _BattlePageState extends State<BattlePage> {
     final tapedPiece = position.pieceOnGrid(index);
     print("Tap piece $tapedPiece at <$index>");
 
-    // 之前已经有棋子被选中了
-    if (Battle.shared.focusIndex != Move.invalidIndex &&
-        Color.of(position.pieceOnGrid(Battle.shared.focusIndex)) ==
-            Color.black) {
-      //
-      // 当前点击的棋子和之前已经选择的是同一个位置
-      if (Battle.shared.focusIndex == index) return;
+    switch (position.phase) {
+      case Phase.placing:
+        engineToGo();
+        break;
+      case Phase.moving:
+        // 之前已经有棋子被选中了
+        if (Battle.shared.focusIndex != Move.invalidIndex &&
+            Color.of(position.pieceOnGrid(Battle.shared.focusIndex)) ==
+                Color.black) {
+          //
+          // 当前点击的棋子和之前已经选择的是同一个位置
+          if (Battle.shared.focusIndex == index) return;
 
-      // 之前已经选择的棋子和现在点击的棋子是同一边的，说明是选择另外一个棋子
-      final focusPiece = position.pieceOnGrid(Battle.shared.focusIndex);
+          // 之前已经选择的棋子和现在点击的棋子是同一边的，说明是选择另外一个棋子
+          final focusPiece = position.pieceOnGrid(Battle.shared.focusIndex);
 
-      if (Color.isSameColor(focusPiece, tapedPiece)) {
-        //
-        Battle.shared.select(index);
-        //
-      } else if (Battle.shared.move(Battle.shared.focusIndex, index)) {
-        // 现在点击的棋子和上一次选择棋子不同边，要么是吃子，要么是移动棋子到空白处
-        final result = Battle.shared.scanBattleResult();
+          if (Color.isSameColor(focusPiece, tapedPiece)) {
+            //
+            Battle.shared.select(index);
+            //
+          } else if (Battle.shared.move(Battle.shared.focusIndex, index)) {
+            // 现在点击的棋子和上一次选择棋子不同边，要么是吃子，要么是移动棋子到空白处
+            final result = Battle.shared.scanBattleResult();
 
-        switch (result) {
-          case GameResult.pending:
-            engineToGo();
-            break;
-          case GameResult.win:
-            gotWin();
-            break;
-          case GameResult.lose:
-            gotLose();
-            break;
-          case GameResult.draw:
-            gotDraw();
-            break;
+            switch (result) {
+              case GameResult.pending:
+                engineToGo();
+                break;
+              case GameResult.win:
+                gotWin();
+                break;
+              case GameResult.lose:
+                gotLose();
+                break;
+              case GameResult.draw:
+                gotDraw();
+                break;
+            }
+          }
+          //
+        } else {
+          // 之前未选择棋子，现在点击就是选择棋子
+          if (tapedPiece != Piece.noPiece) Battle.shared.select(index);
         }
-      }
-      //
-    } else {
-      // 之前未选择棋子，现在点击就是选择棋子
-      if (tapedPiece != Piece.noPiece) Battle.shared.select(index);
+
+        break;
+      default:
+        break;
     }
 
     setState(() {});
