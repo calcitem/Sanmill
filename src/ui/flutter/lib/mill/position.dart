@@ -79,27 +79,6 @@ class Position {
 
   Move move;
 
-  Position.init() {
-    for (var i = 0; i < _grid.length; i++) {
-      _grid[i] ??= Piece.noPiece;
-    }
-
-    for (var i = 0; i < board.length; i++) {
-      board[i] ??= Piece.noPiece;
-    }
-
-    phase = Phase.placing;
-
-    // Example
-    //_board[sqToLoc[8]] = Piece.blackStone;
-
-    _recorder = MillRecorder(lastCapturedPosition: fen());
-  }
-
-  init() {
-    Position.init();
-  }
-
   Position.boardToGrid() {
     _grid = List<String>();
     for (int sq = 0; sq < board.length; sq++) {
@@ -216,6 +195,36 @@ class Position {
     }
 
     return false;
+  }
+
+  Position.init() {
+    for (var i = 0; i < _grid.length; i++) {
+      _grid[i] ??= Piece.noPiece;
+    }
+
+    for (var i = 0; i < board.length; i++) {
+      board[i] ??= Piece.noPiece;
+    }
+
+    phase = Phase.placing;
+
+    // Example
+    //_board[sqToLoc[8]] = Piece.blackStone;
+
+    _recorder = MillRecorder(lastCapturedPosition: fen());
+  }
+
+  init() {
+    Position.init();
+  }
+
+  Position() {
+    //const DEFAULT_RULE_NUMBER = 1;
+
+    //setPosition(rules[DEFAULT_RULE_NUMBER]);
+    setPosition(rule); // TODO
+
+    score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
   }
 
   void set(String fenStr) {
