@@ -293,6 +293,13 @@ class _BattlePageState extends State<BattlePage> {
       Navigator.of(context).pop();
       Battle.shared.newGame();
       setState(() {});
+
+      if (Battle.shared.isAIsTurn()) {
+        print("New Game: AI's turn.");
+        engineToGo();
+      }
+
+      setState(() {});
     }
 
     cancel() => Navigator.of(context).pop();

@@ -61,9 +61,9 @@ class Position {
 
   StateInfo st;
 
-  String us;
-  String them;
-  String winner;
+  String us = Color.black;
+  String them = Color.white;
+  String winner = Color.nobody;
   GameOverReason gameOverReason = GameOverReason.noReason;
 
   Phase phase = Phase.none;
@@ -137,6 +137,8 @@ class Position {
 
   void setSideToMove(String color) {
     _sideToMove = color;
+    us = _sideToMove;
+    them = Color.opponent(us);
   }
 
   String movedPiece(int move) {
@@ -201,11 +203,11 @@ class Position {
 
   Position.init() {
     for (var i = 0; i < _grid.length; i++) {
-      _grid[i] ??= Piece.noPiece;
+      _grid[i] = Piece.noPiece;
     }
 
     for (var i = 0; i < board.length; i++) {
-      board[i] ??= Piece.noPiece;
+      board[i] = Piece.noPiece;
     }
 
     phase = Phase.placing;
@@ -1570,20 +1572,6 @@ class Position {
     //(StepValidate.validate(this, Move(from, to)));
   }
 
-// 在判断行棋合法性等环节，要在克隆的棋盘上进行行棋假设，然后检查效果
-// 这种情况下不验证、不记录、不翻译
-  void moveTest(Move move, {turnSide = false}) {
-    // TODO
-    // 修改棋盘
-    _grid[move.to] = _grid[move.from];
-    _grid[move.from] = Piece.noPiece;
-    board[move.to] = board[move.from];
-    board[move.from] = Piece.noPiece;
-
-    // 交换走棋方
-    if (turnSide) _sideToMove = Color.opponent(_sideToMove);
-  }
-
   bool regret() {
     // TODO
     final lastMove = _recorder.removeLast();
@@ -1594,7 +1582,7 @@ class Position {
     board[lastMove.from] = board[lastMove.to];
     board[lastMove.to] = lastMove.captured;
 
-    _sideToMove = Color.opponent(_sideToMove);
+    changeSideToMove();
 
     final counterMarks = MillRecorder.fromCounterMarks(lastMove.counterMarks);
     _recorder.halfMove = counterMarks.halfMove;
@@ -1642,7 +1630,10 @@ class Position {
 
   get side => _sideToMove;
 
-  changeSideToMove() => _sideToMove = Color.opponent(_sideToMove);
+  void changeSideToMove() {
+    them = _sideToMove;
+    _sideToMove = Color.opponent(_sideToMove);
+  }
 
   get halfMove => _recorder.halfMove;
 
