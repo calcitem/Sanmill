@@ -74,12 +74,15 @@ enum Square {
   SQ_31,
 }
 
-const sqBegin = Square.SQ_8;
+const sqBegin = 8;
 const sqEnd = 32;
 const sqNumber = 40;
 const effectiveSqNumber = 24;
 
 enum MoveDirection { clockwise, anticlockwise, inward, outward }
+
+const moveDirectionBegin = 0;
+const moveDirectionNumber = 4;
 
 enum LineDirection { horizontal, vertical, slash }
 

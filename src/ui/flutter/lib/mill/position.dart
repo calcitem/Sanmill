@@ -77,6 +77,7 @@ class Position {
   String cmdline;
 
   var millTable;
+  var moveTable;
 
   //int _move;
 
@@ -1117,11 +1118,114 @@ class Position {
     }
   }
 
+  void createMoveTable() {
+    // Note: Not follow order of MoveDirection array
+    const moveTable_obliqueLine = [
+      /*  0 */ [0, 0, 0, 0],
+      /*  1 */ [0, 0, 0, 0],
+      /*  2 */ [0, 0, 0, 0],
+      /*  3 */ [0, 0, 0, 0],
+      /*  4 */ [0, 0, 0, 0],
+      /*  5 */ [0, 0, 0, 0],
+      /*  6 */ [0, 0, 0, 0],
+      /*  7 */ [0, 0, 0, 0],
+
+      /*  8 */ [9, 15, 16, 0],
+      /*  9 */ [17, 8, 10, 0],
+      /* 10 */ [9, 11, 18, 0],
+      /* 11 */ [19, 10, 12, 0],
+      /* 12 */ [11, 13, 20, 0],
+      /* 13 */ [21, 12, 14, 0],
+      /* 14 */ [13, 15, 22, 0],
+      /* 15 */ [23, 8, 14, 0],
+
+      /* 16 */ [17, 23, 8, 24],
+      /* 17 */ [9, 25, 16, 18],
+      /* 18 */ [17, 19, 10, 26],
+      /* 19 */ [11, 27, 18, 20],
+      /* 20 */ [19, 21, 12, 28],
+      /* 21 */ [13, 29, 20, 22],
+      /* 22 */ [21, 23, 14, 30],
+      /* 23 */ [15, 31, 16, 22],
+
+      /* 24 */ [25, 31, 16, 0],
+      /* 25 */ [17, 24, 26, 0],
+      /* 26 */ [25, 27, 18, 0],
+      /* 27 */ [19, 26, 28, 0],
+      /* 28 */ [27, 29, 20, 0],
+      /* 29 */ [21, 28, 30, 0],
+      /* 30 */ [29, 31, 22, 0],
+      /* 31 */ [23, 24, 30, 0],
+
+      /* 32 */ [0, 0, 0, 0],
+      /* 33 */ [0, 0, 0, 0],
+      /* 34 */ [0, 0, 0, 0],
+      /* 35 */ [0, 0, 0, 0],
+      /* 36 */ [0, 0, 0, 0],
+      /* 37 */ [0, 0, 0, 0],
+      /* 38 */ [0, 0, 0, 0],
+      /* 39 */ [0, 0, 0, 0],
+    ];
+
+    const moveTable_noObliqueLine = [
+      /*  0 */ [0, 0, 0, 0],
+      /*  1 */ [0, 0, 0, 0],
+      /*  2 */ [0, 0, 0, 0],
+      /*  3 */ [0, 0, 0, 0],
+      /*  4 */ [0, 0, 0, 0],
+      /*  5 */ [0, 0, 0, 0],
+      /*  6 */ [0, 0, 0, 0],
+      /*  7 */ [0, 0, 0, 0],
+
+      /*  8 */ [16, 9, 15, 0],
+      /*  9 */ [10, 8, 0, 0],
+      /* 10 */ [18, 11, 9, 0],
+      /* 11 */ [12, 10, 0, 0],
+      /* 12 */ [20, 13, 11, 0],
+      /* 13 */ [14, 12, 0, 0],
+      /* 14 */ [22, 15, 13, 0],
+      /* 15 */ [8, 14, 0, 0],
+
+      /* 16 */ [8, 24, 17, 23],
+      /* 17 */ [18, 16, 0, 0],
+      /* 18 */ [10, 26, 19, 17],
+      /* 19 */ [20, 18, 0, 0],
+      /* 20 */ [12, 28, 21, 19],
+      /* 21 */ [22, 20, 0, 0],
+      /* 22 */ [14, 30, 23, 21],
+      /* 23 */ [16, 22, 0, 0],
+
+      /* 24 */ [16, 25, 31, 0],
+      /* 25 */ [26, 24, 0, 0],
+      /* 26 */ [18, 27, 25, 0],
+      /* 27 */ [28, 26, 0, 0],
+      /* 28 */ [20, 29, 27, 0],
+      /* 29 */ [30, 28, 0, 0],
+      /* 30 */ [22, 31, 29, 0],
+      /* 31 */ [24, 30, 0, 0],
+
+      /* 32 */ [0, 0, 0, 0],
+      /* 33 */ [0, 0, 0, 0],
+      /* 34 */ [0, 0, 0, 0],
+      /* 35 */ [0, 0, 0, 0],
+      /* 36 */ [0, 0, 0, 0],
+      /* 37 */ [0, 0, 0, 0],
+      /* 38 */ [0, 0, 0, 0],
+      /* 39 */ [0, 0, 0, 0],
+    ];
+
+    if (rule.hasObliqueLines) {
+      moveTable = moveTable_obliqueLine;
+    } else {
+      moveTable = moveTable_noObliqueLine;
+    }
+  }
+
   String colorOn(int sq) {
     return board[sq];
   }
 
-  int inHowManyMills(int s, String c, int squareSelected) {
+  int inHowManyMills(int s, String c, {int squareSelected = 0}) {
     int n = 0;
     String locbak = Piece.noPiece;
 
@@ -1148,5 +1252,97 @@ class Position {
     }
 
     return n;
+  }
+
+  int addMills(int s) {
+    int n = 0;
+    List<int> idx = [0, 0, 0];
+    int min;
+    int temp;
+    String m = colorOn(s);
+
+    for (int i = 0; i < idx.length; i++) {
+      idx[0] = s;
+      idx[1] = millTable[s][i][0];
+      idx[2] = millTable[s][i][1];
+
+      // no mill
+      // TODO: right?
+      if (!(m == board[idx[1]] && m == board[idx[2]])) {
+        continue;
+      }
+
+      // close mill
+
+      // sort
+      for (int j = 0; j < 2; j++) {
+        min = j;
+
+        for (int k = j + 1; k < 3; k++) {
+          if (idx[min] > idx[k]) min = k;
+        }
+
+        if (min == j) {
+          continue;
+        }
+
+        temp = idx[min];
+        idx[min] = idx[j];
+        idx[j] = temp;
+      }
+
+      n++;
+    }
+
+    return n;
+  }
+
+  bool isAllInMills(String c) {
+    for (int i = sqBegin; i < sqEnd; i++) {
+      if (board[i] == c) {
+        if (inHowManyMills(i, Color.nobody) > 0) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  bool isAllSurrounded() {
+    // Full
+    if (pieceCountOnBoard[Color.black] + pieceCountOnBoard[Color.white] >=
+        rankNumber * fileNumber) return true;
+
+    // Can fly
+    if (pieceCountOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
+        rule.allowFlyWhenRemainThreePieces) {
+      return false;
+    }
+
+    int moveSquare;
+
+    for (int s = sqBegin; s < sqEnd; s++) {
+      if (!(sideToMove() == colorOn(s))) {
+        continue;
+      }
+
+      for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
+        moveSquare = moveTable[s][d];
+        if (moveSquare != 0 && board[moveSquare] != Piece.noPiece) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  bool isStarSquare(int s) {
+    if (rule.nTotalPiecesEachSide == 12) {
+      return (s == 17 || s == 19 || s == 21 || s == 23);
+    }
+
+    return (s == 16 || s == 18 || s == 20 || s == 22);
   }
 }
