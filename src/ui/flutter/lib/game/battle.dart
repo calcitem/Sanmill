@@ -48,21 +48,6 @@ class Battle {
     //Audios.playTone('click.mp3');
   }
 
-  bool move(Move move) {
-    //
-    final captured = _position.doMove(move);
-
-    if (captured == null) {
-      //Audios.playTone('invalid.mp3');
-      return false;
-    }
-
-    _blurIndex = move.fromIndex;
-    _focusIndex = move.toIndex;
-
-    return true;
-  }
-
   bool regret({steps = 2}) {
     //
     // 轮到自己走棋的时候，才能悔棋

@@ -77,7 +77,7 @@ class Position {
   var millTable;
   var moveTable;
 
-  //int _move;
+  Move move;
 
   Position.init() {
     for (var i = 0; i < _grid.length; i++) {
@@ -416,38 +416,6 @@ class Position {
   }
   */
 
-  bool doMove(Move move) {
-    //
-    //if (!validateMove(m)) return null;
-
-    //final move = Move(m);
-
-    switch (move.type) {
-      case MoveType.place:
-        _grid[move.toIndex] = board[move.to] = _sideToMove;
-        break;
-      case MoveType.remove:
-        _grid[move.toIndex] = board[move.to] = Piece.noPiece;
-        break;
-      case MoveType.move:
-        _grid[move.toIndex] = _grid[move.fromIndex];
-        board[move.to] = board[move.from];
-        _grid[move.fromIndex] = board[move.from] = Piece.noPiece;
-        break;
-      default:
-        assert(false);
-        break;
-    }
-
-    //StepName.translate(this, move);
-    _recorder.stepIn(move, this);
-
-    // 交换走棋方
-    _sideToMove = Color.opponent(_sideToMove);
-
-    return true;
-  }
-
   // 验证移动棋子的着法是否合法
   bool validateMove(int from, int to) {
     // 移动的棋子的选手，应该是当前方
@@ -537,6 +505,66 @@ class Position {
   get lastMove => _recorder.last;
 
   get lastCapturedPosition => _recorder.lastCapturedPosition;
+
+  void doMove(Move m) {
+    //
+    //if (!validateMove(m)) return null;
+
+    //final move = Move(m);
+
+    bool ret = false;
+
+    switch (m.type) {
+      case MoveType.remove:
+        //_grid[move.toIndex] = board[move.to] = Piece.noPiece;
+        rule50 = 0;
+        ret = removePiece(m.to);
+        break;
+      case MoveType.move:
+        //_grid[move.toIndex] = _grid[move.fromIndex];
+        //board[move.to] = board[move.from];
+        //_grid[move.fromIndex] = board[move.from] = Piece.noPiece;
+        ret = movePiece(m.from, m.to);
+        break;
+      case MoveType.place:
+        _grid[m.toIndex] = board[m.to] = _sideToMove;
+        ret = putPiece(m.to);
+        break;
+      default:
+        assert(false);
+        break;
+    }
+
+    if (!ret) {
+      return;
+    }
+
+    // Increment ply counters. In particular, rule50 will be reset to zero later on
+    // in case of a capture.
+    ++gamePly;
+    ++rule50;
+    ++pliesFromNull;
+
+    this.move = m;
+
+    //StepName.translate(this, move);
+    //_recorder.stepIn(move, this);
+
+    // 交换走棋方
+    //_sideToMove = Color.opponent(_sideToMove);
+  }
+
+  void doNullMove() {
+    changeSideToMove();
+  }
+
+  void undoNullMove() {
+    changeSideToMove();
+  }
+
+  bool posIsOk() {
+    return true;
+  }
 
 ///////////////////////////////////////////////////////////////////////////////
 
