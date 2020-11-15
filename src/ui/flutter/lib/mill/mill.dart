@@ -57,16 +57,17 @@ enum GameResult { pending, win, lose, draw }
 
 class Color {
   //
-  static const unknown = '-';
+  static const none = '*';
   static const black = '@';
   static const white = 'O';
   static const ban = 'X';
+  static const nobody = '-';
 
   static String of(String piece) {
     if (black.contains(piece)) return black;
     if (white.contains(piece)) return white;
     if (ban.contains(piece)) return ban;
-    return unknown;
+    return nobody;
   }
 
   static bool isSameColor(String p1, String p2) {

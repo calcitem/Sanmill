@@ -42,7 +42,7 @@ class StateInfo {
 class Position {
   GameResult result = GameResult.pending;
 
-  List<String> _board = List<String>(40);
+  List<String> board = List<String>(40);
   List<String> _grid = List<String>(49); // 7  *  7
 
   MillRecorder _recorder;
@@ -85,8 +85,8 @@ class Position {
       _grid[i] ??= Piece.noPiece;
     }
 
-    for (var i = 0; i < _board.length; i++) {
-      _board[i] ??= Piece.noPiece;
+    for (var i = 0; i < board.length; i++) {
+      board[i] ??= Piece.noPiece;
     }
 
     phase = Phase.placing;
@@ -103,15 +103,15 @@ class Position {
 
   Position.boardToGrid() {
     _grid = List<String>();
-    for (int sq = 0; sq < _board.length; sq++) {
-      _grid[squareToIndex[sq]] = _board[sq];
+    for (int sq = 0; sq < board.length; sq++) {
+      _grid[squareToIndex[sq]] = board[sq];
     }
   }
 
   Position.gridToBoard() {
-    _board = List<String>();
+    board = List<String>();
     for (int i = 0; i < _grid.length; i++) {
-      _board[indexToSquare[i]] = _grid[i];
+      board[indexToSquare[i]] = _grid[i];
     }
   }
 
@@ -119,8 +119,8 @@ class Position {
     _grid = List<String>();
     other._grid.forEach((piece) => _grid.add(piece));
 
-    _board = List<String>();
-    other._board.forEach((piece) => _board.add(piece));
+    board = List<String>();
+    other.board.forEach((piece) => board.add(piece));
 
     _recorder = other._recorder;
 
@@ -151,7 +151,7 @@ class Position {
   }
 
   String pieceOnGrid(int index) => _grid[index];
-  String pieceOn(int sq) => _board[sq];
+  String pieceOn(int sq) => board[sq];
 
   bool empty(int sq) => pieceOn(sq) == Piece.noPiece;
 
@@ -178,7 +178,7 @@ class Position {
 
     if (phase == Phase.gameOver ||
         action != Act.place ||
-        _board[s] != Piece.noPiece) {
+        board[s] != Piece.noPiece) {
       return false;
     }
 
@@ -192,7 +192,7 @@ class Position {
       pieceCountOnBoard[us]++;
 
       _grid[index] = piece;
-      _board[s] = piece;
+      board[s] = piece;
 
       cmdline = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
     }
@@ -464,21 +464,17 @@ class Position {
 
     //final move = Move(m);
 
-    if (move.type == MoveType.remove) {
-      final captured = _grid[move.to];
-    }
-
     switch (move.type) {
       case MoveType.place:
-        _grid[move.toIndex] = _board[move.to] = _sideToMove;
+        _grid[move.toIndex] = board[move.to] = _sideToMove;
         break;
       case MoveType.remove:
-        _grid[move.toIndex] = _board[move.to] = Piece.noPiece;
+        _grid[move.toIndex] = board[move.to] = Piece.noPiece;
         break;
       case MoveType.move:
         _grid[move.toIndex] = _grid[move.fromIndex];
-        _board[move.to] = _board[move.from];
-        _grid[move.fromIndex] = _board[move.from] = Piece.noPiece;
+        board[move.to] = board[move.from];
+        _grid[move.fromIndex] = board[move.from] = Piece.noPiece;
         break;
       default:
         assert(false);
@@ -509,8 +505,8 @@ class Position {
     // 修改棋盘
     _grid[move.to] = _grid[move.from];
     _grid[move.from] = Piece.noPiece;
-    _board[move.to] = _board[move.from];
-    _board[move.from] = Piece.noPiece;
+    board[move.to] = board[move.from];
+    board[move.from] = Piece.noPiece;
 
     // 交换走棋方
     if (turnSide) _sideToMove = Color.opponent(_sideToMove);
@@ -523,8 +519,8 @@ class Position {
 
     _grid[lastMove.from] = _grid[lastMove.to];
     _grid[lastMove.to] = lastMove.captured;
-    _board[lastMove.from] = _board[lastMove.to];
-    _board[lastMove.to] = lastMove.captured;
+    board[lastMove.from] = board[lastMove.to];
+    board[lastMove.to] = lastMove.captured;
 
     _sideToMove = Color.opponent(_sideToMove);
 
@@ -592,9 +588,9 @@ class Position {
     for (int f = 1; f < 3 + 2; f++) {
       for (int r = 0; r < 8; r++) {
         int s = f * 8 + r;
-        if (_board[s] == Piece.blackStone) {
+        if (board[s] == Piece.blackStone) {
           pieceCountOnBoard[Color.black]++;
-        } else if (_board[s] == Piece.whiteStone) {
+        } else if (board[s] == Piece.whiteStone) {
           pieceCountOnBoard[Color.black]++;
         }
       }
@@ -629,7 +625,7 @@ class Position {
 
     for (int i = 0; i < _grid.length; i++) _grid[i] = Piece.noPiece;
 
-    for (int i = 0; i < _board.length; i++) _board[i] = Piece.noPiece;
+    for (int i = 0; i < board.length; i++) board[i] = Piece.noPiece;
 
     if (piecesOnBoardCount() == -1) {
       return -1;
@@ -638,7 +634,7 @@ class Position {
     piecesInHandCount();
     pieceCountNeedRemove = 0;
 
-    winner = Color.unknown;
+    winner = Color.nobody;
 
     currentSquare = 0;
     return -1;
@@ -652,12 +648,12 @@ class Position {
     setSideToMove(Color.black);
     action = Act.place;
 
-    winner = Color.unknown;
+    winner = Color.nobody;
     gameOverReason = GameOverReason.noReason;
 
     for (int i = 0; i < _grid.length; i++) _grid[i] = Piece.noPiece;
 
-    for (int i = 0; i < _board.length; i++) _board[i] = Piece.noPiece;
+    for (int i = 0; i < board.length; i++) board[i] = Piece.noPiece;
 
     pieceCountOnBoard[Color.black] = pieceCountOnBoard[Color.white] = 0;
     pieceCountInHand[Color.black] =
@@ -695,6 +691,8 @@ class Position {
       default:
         return false;
     }
+
+    return false;
   }
 
   void createMillTable() {
@@ -1117,5 +1115,38 @@ class Position {
     } else {
       millTable = millTable_noObliqueLine;
     }
+  }
+
+  String colorOn(int sq) {
+    return board[sq];
+  }
+
+  int inHowManyMills(int s, String c, int squareSelected) {
+    int n = 0;
+    String locbak = Piece.noPiece;
+
+    assert(0 <= squareSelected && squareSelected < sqNumber);
+
+    if (c == Color.nobody) {
+      c = colorOn(s);
+    }
+
+    if (squareSelected != 0) {
+      locbak = board[squareSelected];
+      board[squareSelected] = Piece.noPiece;
+    }
+
+    for (int l = 0; l < lineDirectionNumber; l++) {
+      // TODO: right?
+      if (c == board[millTable[s][l][0]] && c == board[millTable[s][l][1]]) {
+        n++;
+      }
+    }
+
+    if (squareSelected != 0) {
+      board[squareSelected] = locbak;
+    }
+
+    return n;
   }
 }
