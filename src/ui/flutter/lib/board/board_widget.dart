@@ -76,17 +76,24 @@ class BoardWidget extends StatelessWidget {
         final gridWidth = (width - padding * 2);
         final squareWidth = gridWidth / 7;
 
-        final dx = d.localPosition.dx, dy = d.localPosition.dy;
-        final row = (dy - padding - digitsHeight) ~/ squareWidth;
+        final dx = d.localPosition.dx;
+        final dy = d.localPosition.dy;
+
         final column = (dx - padding) ~/ squareWidth;
+        if (column < 0 || column > 6) {
+          print("Tap on column $column skip");
+          return;
+        }
+
+        final row = (dy - padding - digitsHeight) ~/ squareWidth;
+        if (row < 0 || row > 6) {
+          print("Tap on row $row skip");
+          return;
+        }
 
         final index = row * 7 + column;
 
         print("Tap on ($row, $column) <$index>");
-
-        if (row < 0 || row > 6) return;
-
-        if (column < 0 || column > 6) return;
 
         onBoardTap(context, index);
       },
