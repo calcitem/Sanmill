@@ -284,7 +284,7 @@ class Position {
     }
 
     // Active color
-    ss += _sideToMove;
+    ss += _sideToMove == Color.black ? "b" : "w";
 
     ss += " ";
 
