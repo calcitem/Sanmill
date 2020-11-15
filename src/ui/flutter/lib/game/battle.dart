@@ -27,6 +27,41 @@ class Battle {
   Position _position;
   int _focusIndex, _blurIndex;
 
+  String sideToMove;
+
+  // 是否黑白反转
+  bool isInverted;
+
+  Map<String, bool> isAiPlayer = {Color.black: false, Color.white: false};
+
+  // 是否有落子动画
+  bool hasAnimation;
+
+  // 动画持续时间
+  int durationTime;
+
+  // 是否有落子音效
+  static bool hasSound = true;
+
+  // 是否必败时认输
+  bool resignIfMostLose_ = false;
+
+  // 是否自动交换先后手
+  bool isAutoChangeFirstMove = false;
+
+  // AI 是否为先手
+  bool isAiFirstMove = false;
+
+  // 规则号
+  int ruleIndex;
+
+  // 提示语
+  String tips;
+
+  List<String> cmdlist;
+
+  String getTips() => tips;
+
   static get shared {
     _instance ??= Battle();
     return _instance;
