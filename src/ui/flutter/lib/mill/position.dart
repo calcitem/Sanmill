@@ -218,9 +218,6 @@ class Position {
     // TODO
     score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
 
-    // Example
-    //_board[sqToLoc[8]] = Piece.blackStone;
-
     _recorder = MillRecorder(lastCapturedPosition: fen());
   }
 
@@ -400,18 +397,13 @@ class Position {
 
     switch (m.type) {
       case MoveType.remove:
-        //_grid[move.toIndex] = board[move.to] = Piece.noPiece;
         rule50 = 0;
         ret = removePiece(m.to);
         break;
       case MoveType.move:
-        //_grid[move.toIndex] = _grid[move.fromIndex];
-        //board[move.to] = board[move.from];
-        //_grid[move.fromIndex] = board[move.from] = Piece.noPiece;
         ret = movePiece(m.from, m.to);
         break;
       case MoveType.place:
-        _grid[m.toIndex] = board[m.to] = _sideToMove;
         ret = putPiece(m.to);
         break;
       default:
@@ -526,9 +518,13 @@ class Position {
     winner = Color.nobody;
     gameOverReason = GameOverReason.noReason;
 
-    for (int i = 0; i < _grid.length; i++) _grid[i] = Piece.noPiece;
+    for (int i = 0; i < _grid.length; i++) {
+      _grid[i] = Piece.noPiece;
+    }
 
-    for (int i = 0; i < board.length; i++) board[i] = Piece.noPiece;
+    for (int i = 0; i < board.length; i++) {
+      board[i] = Piece.noPiece;
+    }
 
     pieceCountOnBoard[Color.black] = pieceCountOnBoard[Color.white] = 0;
     pieceCountInHand[Color.black] =
@@ -663,9 +659,8 @@ class Position {
 
       rule50++;
 
-      board[s] = board[currentSquare];
-
-      board[currentSquare] = Piece.noPiece;
+      board[s] = _grid[squareToIndex[s]] = board[currentSquare];
+      board[currentSquare] = _grid[squareToIndex[s]] = Piece.noPiece;
 
       currentSquare = s;
       int n = addMills(currentSquare);
@@ -707,10 +702,10 @@ class Position {
     }
 
     if (rule.hasBannedLocations && phase == Phase.placing) {
-      board[s] = Piece.ban;
+      board[s] = _grid[squareToIndex[s]] = Piece.ban;
     } else {
       // Remove
-      board[s] = Piece.noPiece;
+      board[s] = _grid[squareToIndex[s]] = Piece.noPiece;
     }
 
     cmdline = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
@@ -908,8 +903,7 @@ class Position {
         s = f * rankNumber + r;
 
         if (board[s] == Piece.ban) {
-          board[s] = Piece.noPiece;
-          _grid[squareToIndex[s]] = Piece.noPiece;
+          board[s] = _grid[squareToIndex[s]] = Piece.noPiece;
         }
       }
     }
@@ -1456,7 +1450,8 @@ class Position {
 
     if (squareSelected != 0) {
       locbak = board[squareSelected];
-      board[squareSelected] = Piece.noPiece;
+      board[squareSelected] =
+          _grid[squareToIndex[squareSelected]] = Piece.noPiece;
     }
 
     for (int l = 0; l < lineDirectionNumber; l++) {
@@ -1467,7 +1462,7 @@ class Position {
     }
 
     if (squareSelected != 0) {
-      board[squareSelected] = locbak;
+      board[squareSelected] = _grid[squareToIndex[squareSelected]] = locbak;
     }
 
     return n;
@@ -1578,7 +1573,7 @@ class Position {
 // 在判断行棋合法性等环节，要在克隆的棋盘上进行行棋假设，然后检查效果
 // 这种情况下不验证、不记录、不翻译
   void moveTest(Move move, {turnSide = false}) {
-    //
+    // TODO
     // 修改棋盘
     _grid[move.to] = _grid[move.from];
     _grid[move.from] = Piece.noPiece;
@@ -1590,7 +1585,7 @@ class Position {
   }
 
   bool regret() {
-    //
+    // TODO
     final lastMove = _recorder.removeLast();
     if (lastMove == null) return false;
 
