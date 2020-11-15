@@ -131,7 +131,7 @@ class NativeEngine extends AiEngine {
       final pos = step.indexOf(' ');
       if (pos > -1) step = step.substring(0, pos);
 
-      return EngineResponse('move', value: Move.fromEngineStep(step));
+      return EngineResponse('move', value: Move.fromEngineMove(step));
     }
 
     if (response.startsWith('nobestmove')) {

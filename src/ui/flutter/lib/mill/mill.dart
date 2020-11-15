@@ -112,9 +112,6 @@ class Move {
   int fromIndex = 0;
   int toIndex = 0;
 
-  // 左上角为坐标原点
-  int fx, fy, tx, ty;
-
   String captured;
 
   // 'move' is the UCI engine's move-string
@@ -127,11 +124,16 @@ class Move {
   String counterMarks;
 
   parse() {
+    if (!validateEngineMove(move)) {
+      throw "Error: Invalid Move: $move";
+    }
+
     if (move[0] == '-' && move.length == "-(1,2)".length) {
       type = MoveType.remove;
       from = fromFile = fromRank = fromIndex = invalidValue;
       toFile = int.parse(move[2]);
       toRank = int.parse(move[4]);
+      //captured = Piece.noPiece;
     } else if (move.length == "(1,2)->(3,4)".length) {
       type = MoveType.move;
       fromFile = int.parse(move[1]);
@@ -140,11 +142,13 @@ class Move {
       fromIndex = squareToIndex[from];
       toFile = int.parse(move[8]);
       toRank = int.parse(move[10]);
+      captured = Piece.noPiece;
     } else if (move.length == "(1,2)".length) {
       type = MoveType.place;
       from = fromFile = fromRank = fromIndex = invalidValue;
       toFile = int.parse(move[1]);
       toRank = int.parse(move[3]);
+      captured = Piece.noPiece;
     } else {
       assert(false);
     }
@@ -181,23 +185,10 @@ class Move {
   /// 吃子：-(1,2)
   /// 走子：(3,1)->(2,1)
 
-  Move.fromEngineStep(String move) {
+  Move.fromEngineMove(String move) {
     //
     this.move = move;
-
-    if (!validateEngineMove(move)) {
-      throw "Error: Invalid Move: $move";
-    }
-
-    fx = move[0].codeUnitAt(0) - 'a'.codeUnitAt(0);
-    fy = 9 - (move[1].codeUnitAt(0) - '0'.codeUnitAt(0));
-    tx = move[2].codeUnitAt(0) - 'a'.codeUnitAt(0);
-    ty = 9 - (move[3].codeUnitAt(0) - '0'.codeUnitAt(0));
-
-    from = fx + fy * 9;
-    to = tx + ty * 9;
-
-    captured = Piece.noPiece;
+    parse();
   }
 
   static bool validateEngineMove(String move) {
