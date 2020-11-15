@@ -729,6 +729,49 @@ class Position {
     return false;
   }
 
+  void setGameOver(String w, GameOverReason reason) {
+    phase = Phase.gameOver;
+    gameOverReason = reason;
+    winner = w;
+  }
+
+  bool checkGameOverCondition() {
+    if (phase == Phase.ready || phase == Phase.gameOver) {
+      return true;
+    }
+
+    if (rule.maxStepsLedToDraw > 0 && rule50 > rule.maxStepsLedToDraw) {
+      winner = Color.draw;
+      phase = Phase.gameOver;
+      gameOverReason = GameOverReason.drawReasonRule50;
+      return true;
+    }
+
+    if (pieceCountOnBoard[Color.black] + pieceCountOnBoard[Color.white] >=
+        rankNumber * fileNumber) {
+      if (rule.isBlackLoseButNotDrawWhenBoardFull) {
+        setGameOver(Color.white, GameOverReason.loseReasonBoardIsFull);
+      } else {
+        setGameOver(Color.draw, GameOverReason.drawReasonBoardIsFull);
+      }
+
+      return true;
+    }
+
+    if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
+      if (rule.isLoseButNotChangeSideWhenNoWay) {
+        setGameOver(
+            Color.opponent(sideToMove()), GameOverReason.loseReasonNoWay);
+        return true;
+      } else {
+        changeSideToMove(); // TODO: Need?
+        return false;
+      }
+    }
+
+    return false;
+  }
+
   void removeBanStones() {
     assert(rule.hasBannedLocations);
 

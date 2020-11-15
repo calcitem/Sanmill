@@ -62,6 +62,7 @@ class Color {
   static const white = 'O';
   static const ban = 'X';
   static const nobody = '-';
+  static const draw = '=';
 
   static String of(String piece) {
     if (black.contains(piece)) return black;
