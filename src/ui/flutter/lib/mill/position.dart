@@ -71,7 +71,7 @@ class Position {
 
   Map<String, int> score = {Color.black: 0, Color.white: 0, Color.draw: 0};
 
-  int currentSquare;
+  int currentSquare = 0;
   int nPlayed = 0;
 
   String cmdline;
@@ -478,14 +478,21 @@ class Position {
   }
 
   int setPosition(Rule newRule) {
+    result = GameResult.pending;
+
     rule = new Rule(); // TODO
 
     gamePly = 0;
     rule50 = 0;
+    pliesFromNull = 0;
 
-    phase = Phase.ready;
+    gameOverReason = GameOverReason.noReason;
+    phase = Phase.placing;
     setSideToMove(Color.black);
     action = Act.place;
+    currentSquare = 0;
+
+    cmdline = "";
 
     for (int i = 0; i < _grid.length; i++) {
       _grid[i] = Piece.noPiece;
@@ -796,7 +803,7 @@ class Position {
     return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
   }
   */
-    if (cmd.substring(0, 5) == "Player") {
+    if (cmd.length > 6 && cmd.substring(0, 5) == "Player") {
       if (cmd[6] == '1') {
         return resign(Color.black);
       } else {
@@ -1531,7 +1538,7 @@ class Position {
         rankNumber * fileNumber) return true;
 
     // Can fly
-    if (pieceCountOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
+    if (pieceCountOnBoard[sideToMove()] <= rule.nPiecesAtLeast &&
         rule.allowFlyWhenRemainThreePieces) {
       return false;
     }
@@ -1633,6 +1640,7 @@ class Position {
   void changeSideToMove() {
     them = _sideToMove;
     _sideToMove = Color.opponent(_sideToMove);
+    print("Change sideToMove to $_sideToMove");
   }
 
   get halfMove => _recorder.halfMove;

@@ -124,7 +124,7 @@ class _BattlePageState extends State<BattlePage> {
         break;
 
       case Act.remove:
-        if (position.remove_piece(sq)) {
+        if (position.removePiece(sq)) {
           // 播放音效
           //playSound(GAME_SOUND_REMOVE, position.side_to_move());
           result = true;
@@ -174,12 +174,9 @@ class _BattlePageState extends State<BattlePage> {
       // AI设置
       // 如果还未决出胜负
       if (position.winner == Color.nobody) {
-        //resumeAiThreads(position.sideToMove);
+        // Color.black is TODO
+        //resumeAiThreads(position.sideToMove());
         engineToGo();
-      }
-      // 如果已经决出胜负
-      else {
-        //pauseThreads();
       }
     }
 
@@ -251,39 +248,40 @@ class _BattlePageState extends State<BattlePage> {
   }
 
   engineToGo() async {
-    //
-    changeStatus('对方思考中...');
+    while (Battle.shared.position.sideToMove() == Color.black) {
+      changeStatus('对方思考中...');
 
-    final response = await widget.engine.search(Battle.shared.position);
+      final response = await widget.engine.search(Battle.shared.position);
 
-    if (response.type == 'move') {
-      //
-      Move mv = response.value;
-      final Move move = new Move(mv.move);
+      if (response.type == 'move') {
+        //
+        Move mv = response.value;
+        final Move move = new Move(mv.move);
 
-      //Battle.shared.move = move;
-      Battle.shared.command(move.move);
+        //Battle.shared.move = move;
+        Battle.shared.command(move.move);
 
-      final result = Battle.shared.scanBattleResult();
+        final result = Battle.shared.scanBattleResult();
 
-      switch (result) {
-        case GameResult.pending:
-          changeStatus('请走棋...');
-          break;
-        case GameResult.win:
-          gotWin();
-          break;
-        case GameResult.lose:
-          gotLose();
-          break;
-        case GameResult.draw:
-          gotDraw();
-          break;
+        switch (result) {
+          case GameResult.pending:
+            changeStatus('请走棋...');
+            break;
+          case GameResult.win:
+            gotWin();
+            break;
+          case GameResult.lose:
+            gotLose();
+            break;
+          case GameResult.draw:
+            gotDraw();
+            break;
+        }
+        //
+      } else {
+        //
+        changeStatus('Error: ${response.type}');
       }
-      //
-    } else {
-      //
-      changeStatus('Error: ${response.type}');
     }
   }
 
@@ -308,9 +306,8 @@ class _BattlePageState extends State<BattlePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title:
-              Text('放弃对局？', style: TextStyle(color: Properties.primaryColor)),
-          content: SingleChildScrollView(child: Text('你确定要放弃当前的对局吗？')),
+          title: Text('新局？', style: TextStyle(color: Properties.primaryColor)),
+          content: SingleChildScrollView(child: Text('开始新局？')),
           actions: <Widget>[
             FlatButton(child: Text('确定'), onPressed: confirm),
             FlatButton(child: Text('取消'), onPressed: cancel),

@@ -95,6 +95,7 @@ class Battle {
   newGame() {
     Battle.shared.position.init();
     _focusIndex = _blurIndex = Move.invalidValue;
+    cmdlist = [""];
   }
 
   select(int pos) {
@@ -192,7 +193,7 @@ class Battle {
     String winner = position.winner;
 
     if (winner != Color.nobody) {
-      //resumeAiThreads(position.sideToMove);
+      //resumeAiThreads(position.sideToMove());
       // TODO
     } else {
       // pauseThreads();

@@ -155,6 +155,9 @@ class Move {
       toFile = int.parse(move[1]);
       toRank = int.parse(move[3]);
       captured = Piece.noPiece;
+    } else if (move == "draw") {
+      // TODO
+      print("Computer request draw");
     } else {
       assert(false);
     }
@@ -198,6 +201,10 @@ class Move {
   }
 
   static bool validateEngineMove(String move) {
+    if (move == "draw") {
+      return true; // TODO
+    }
+
     if (move == null || move.length > "(3,1)->(2,1)".length) return false;
 
     String sets = "0123456789(,)->";
