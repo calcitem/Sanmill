@@ -723,6 +723,160 @@ class Position {
     return false;
   }
 
+  bool removePiece(int s) {
+    if (phase == Phase.ready || phase == Phase.gameOver) return false;
+
+    if (action != Act.remove) return false;
+
+    if (pieceCountNeedRemove <= 0) return false;
+
+    // if piece is not their
+    if (!(Color.opponent(sideToMove()) == board[s])) return false;
+
+    if (!rule.allowRemovePieceInMill &&
+        inHowManyMills(s, Color.nobody) > 0 &&
+        !isAllInMills(Color.opponent(sideToMove()))) {
+      return false;
+    }
+
+    if (rule.hasBannedLocations && phase == Phase.placing) {
+      board[s] = Piece.ban;
+    } else {
+      // Remove
+      board[s] = Piece.noPiece;
+    }
+
+    cmdline = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+    rule50 = 0; // TODO: Need to move out?
+
+    pieceCountOnBoard[them]--;
+
+    if (pieceCountOnBoard[them] + pieceCountInHand[them] <
+        rule.nPiecesAtLeast) {
+      setGameOver(sideToMove(), GameOverReason.loseReasonlessThanThree);
+      return true;
+    }
+
+    currentSquare = 0;
+
+    pieceCountNeedRemove--;
+
+    if (pieceCountNeedRemove > 0) {
+      return true;
+    }
+
+    if (phase == Phase.placing) {
+      if (pieceCountInHand[Color.black] == 0 &&
+          pieceCountInHand[Color.white] == 0) {
+        phase = Phase.moving;
+        action = Act.select;
+
+        if (rule.hasBannedLocations) {
+          removeBanStones();
+        }
+
+        if (rule.isDefenderMoveFirst) {
+          checkGameOverCondition();
+          return true;
+        }
+      } else {
+        action = Act.place;
+      }
+    } else {
+      action = Act.select;
+    }
+
+    changeSideToMove();
+    checkGameOverCondition();
+
+    return true;
+  }
+
+  bool selectPiece(int s) {
+    if (phase != Phase.moving) return false;
+
+    if (action != Act.select && action != Act.place) return false;
+
+    if (board[s] == sideToMove()) {
+      currentSquare = s;
+      action = Act.place;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  bool resign(String loser) {
+    if (phase == Phase.ready ||
+        phase == Phase.gameOver ||
+        phase == Phase.none) {
+      return false;
+    }
+
+    setGameOver(Color.opponent(loser), GameOverReason.loseReasonResign);
+
+    updateScore();
+
+    return true;
+  }
+
+  bool command(String cmd) {
+    // TODO
+    /*
+  if (sscanf(cmd, "r%1u s%3d t%2u", &ruleIndex, &step, &t) == 3) {
+    if (ruleIndex <= 0 || ruleIndex > N_RULES) {
+      return false;
+    }
+
+    return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
+  }
+  */
+    if (cmd.substring(0, 5) == "Player") {
+      if (cmd[6] == '1') {
+        return resign(Color.black);
+      } else {
+        return resign(Color.white);
+      }
+    }
+
+    // TODO
+    if (cmd == "Threefold Repetition. Draw!") {
+      return true;
+    }
+
+    if (cmd == "draw") {
+      phase = Phase.gameOver;
+      winner = Color.draw;
+      score[Color.draw]++;
+      gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
+      return true;
+    }
+
+    Move move = Move(cmd);
+
+    switch (move.type) {
+      case MoveType.move:
+        return movePiece(move.from, move.to);
+        break;
+      case MoveType.place:
+        return putPiece(move.to);
+        break;
+      case MoveType.remove:
+        return removePiece(move.to);
+        break;
+      default:
+        assert(false);
+        break;
+    }
+
+    return false;
+  }
+
+  String getWinner() {
+    return winner;
+  }
+
   void setGameOver(String w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
