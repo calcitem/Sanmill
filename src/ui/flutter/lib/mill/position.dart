@@ -171,8 +171,8 @@ class Position {
     return selectPieceSQ(makeSquare(file, rank));
   }
 
-  bool putPiece(var pt, int index) {
-    var sq = indexToSquare[index];
+  bool putPiece(var pt, int sq) {
+    var index = squareToIndex[sq];
 
     if (sq == null) {
       print("putPiece skip index: $index");

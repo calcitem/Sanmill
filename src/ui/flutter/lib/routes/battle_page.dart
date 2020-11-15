@@ -73,7 +73,7 @@ class _BattlePageState extends State<BattlePage> {
     //position
     //flag++;
     //position.putPiece(flag % 2 == 0 ? '@' : 'O', index);
-    if (position.putPiece('@', index) == false) {
+    if (position.putPiece('@', indexToSquare[index]) == false) {
       return;
     }
 
