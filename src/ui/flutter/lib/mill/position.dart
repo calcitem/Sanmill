@@ -225,6 +225,8 @@ class Position {
     setPosition(rule); // TODO
 
     score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
+
+    init();
   }
 
   void set(String fenStr) {
