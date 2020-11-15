@@ -376,136 +376,6 @@ class Position {
     return legal(move);
   }
 
-  /*
-  /// Position::do_move() makes a move, and saves all information necessary
-  /// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
-  /// moves should be filtered out before this function is called.
-
-  void doMove(int move) {
-    bool ret = false;
-
-    MoveType mt = typeOf(move);
-
-    switch (mt) {
-      case MoveType.remove:
-        // Reset rule 50 counter
-        rule50 = 0;
-        ret = removePiece(toSq(move));
-        break;
-      case MoveType.move:
-        ret = movePiece(fromSq(move), toSq(move));
-        break;
-      case MoveType.place:
-        ret = putPieceSQ(toSq(move));
-        break;
-      default:
-        break;
-    }
-
-    if (!ret) {
-      return;
-    }
-
-    // Increment ply counters. In particular, rule50 will be reset to zero later on
-    // in case of a capture.
-    ++gamePly;
-    ++rule50;
-    ++pliesFromNull;
-
-    _move = move;
-  }
-  */
-
-  // 验证移动棋子的着法是否合法
-  bool validateMove(int from, int to) {
-    // 移动的棋子的选手，应该是当前方
-    //if (Color.of(_board[from]) != _sideToMove) return false;
-    return true;
-    //(StepValidate.validate(this, Move(from, to)));
-  }
-
-  // 在判断行棋合法性等环节，要在克隆的棋盘上进行行棋假设，然后检查效果
-  // 这种情况下不验证、不记录、不翻译
-  void moveTest(Move move, {turnSide = false}) {
-    //
-    // 修改棋盘
-    _grid[move.to] = _grid[move.from];
-    _grid[move.from] = Piece.noPiece;
-    board[move.to] = board[move.from];
-    board[move.from] = Piece.noPiece;
-
-    // 交换走棋方
-    if (turnSide) _sideToMove = Color.opponent(_sideToMove);
-  }
-
-  bool regret() {
-    //
-    final lastMove = _recorder.removeLast();
-    if (lastMove == null) return false;
-
-    _grid[lastMove.from] = _grid[lastMove.to];
-    _grid[lastMove.to] = lastMove.captured;
-    board[lastMove.from] = board[lastMove.to];
-    board[lastMove.to] = lastMove.captured;
-
-    _sideToMove = Color.opponent(_sideToMove);
-
-    final counterMarks = MillRecorder.fromCounterMarks(lastMove.counterMarks);
-    _recorder.halfMove = counterMarks.halfMove;
-    _recorder.fullMove = counterMarks.fullMove;
-
-    if (lastMove.captured != Piece.noPiece) {
-      //
-      // 查找上一个吃子局面（或开局），NativeEngine 需要
-      final tempPosition = Position.clone(this);
-
-      final moves = _recorder.reverseMovesToPrevCapture();
-      moves.forEach((move) {
-        //
-        tempPosition._grid[move.from] = tempPosition._grid[move.to];
-        tempPosition._grid[move.to] = move.captured;
-
-        tempPosition._sideToMove = Color.opponent(tempPosition._sideToMove);
-      });
-
-      _recorder.lastCapturedPosition = tempPosition.fen();
-    }
-
-    result = GameResult.pending;
-
-    return true;
-  }
-
-  String movesSinceLastCaptured() {
-    //
-    var steps = '', posAfterLastCaptured = 0;
-
-    for (var i = _recorder.stepsCount - 1; i >= 0; i--) {
-      if (_recorder.stepAt(i).captured != Piece.noPiece) break;
-      posAfterLastCaptured = i;
-    }
-
-    for (var i = posAfterLastCaptured; i < _recorder.stepsCount; i++) {
-      steps += ' ${_recorder.stepAt(i).move}';
-    }
-
-    return steps.length > 0 ? steps.substring(1) : '';
-  }
-
-  get manualText => _recorder.buildManualText();
-
-  get side => _sideToMove;
-
-  changeSideToMove() => _sideToMove = Color.opponent(_sideToMove);
-
-  get halfMove => _recorder.halfMove;
-
-  get fullMove => _recorder.fullMove;
-
-  get lastMove => _recorder.last;
-
-  get lastCapturedPosition => _recorder.lastCapturedPosition;
-
   void doMove(Move m) {
     //
     //if (!validateMove(m)) return null;
@@ -1675,4 +1545,96 @@ class Position {
 
     return (s == 16 || s == 18 || s == 20 || s == 22);
   }
+
+///////////////////////////////////////////////////////////////////////////////
+
+// 验证移动棋子的着法是否合法
+  bool validateMove(int from, int to) {
+    // 移动的棋子的选手，应该是当前方
+    //if (Color.of(_board[from]) != _sideToMove) return false;
+    return true;
+    //(StepValidate.validate(this, Move(from, to)));
+  }
+
+// 在判断行棋合法性等环节，要在克隆的棋盘上进行行棋假设，然后检查效果
+// 这种情况下不验证、不记录、不翻译
+  void moveTest(Move move, {turnSide = false}) {
+    //
+    // 修改棋盘
+    _grid[move.to] = _grid[move.from];
+    _grid[move.from] = Piece.noPiece;
+    board[move.to] = board[move.from];
+    board[move.from] = Piece.noPiece;
+
+    // 交换走棋方
+    if (turnSide) _sideToMove = Color.opponent(_sideToMove);
+  }
+
+  bool regret() {
+    //
+    final lastMove = _recorder.removeLast();
+    if (lastMove == null) return false;
+
+    _grid[lastMove.from] = _grid[lastMove.to];
+    _grid[lastMove.to] = lastMove.captured;
+    board[lastMove.from] = board[lastMove.to];
+    board[lastMove.to] = lastMove.captured;
+
+    _sideToMove = Color.opponent(_sideToMove);
+
+    final counterMarks = MillRecorder.fromCounterMarks(lastMove.counterMarks);
+    _recorder.halfMove = counterMarks.halfMove;
+    _recorder.fullMove = counterMarks.fullMove;
+
+    if (lastMove.captured != Piece.noPiece) {
+      //
+      // 查找上一个吃子局面（或开局），NativeEngine 需要
+      final tempPosition = Position.clone(this);
+
+      final moves = _recorder.reverseMovesToPrevCapture();
+      moves.forEach((move) {
+        //
+        tempPosition._grid[move.from] = tempPosition._grid[move.to];
+        tempPosition._grid[move.to] = move.captured;
+
+        tempPosition._sideToMove = Color.opponent(tempPosition._sideToMove);
+      });
+
+      _recorder.lastCapturedPosition = tempPosition.fen();
+    }
+
+    result = GameResult.pending;
+
+    return true;
+  }
+
+  String movesSinceLastCaptured() {
+    //
+    var steps = '', posAfterLastCaptured = 0;
+
+    for (var i = _recorder.stepsCount - 1; i >= 0; i--) {
+      if (_recorder.stepAt(i).captured != Piece.noPiece) break;
+      posAfterLastCaptured = i;
+    }
+
+    for (var i = posAfterLastCaptured; i < _recorder.stepsCount; i++) {
+      steps += ' ${_recorder.stepAt(i).move}';
+    }
+
+    return steps.length > 0 ? steps.substring(1) : '';
+  }
+
+  get manualText => _recorder.buildManualText();
+
+  get side => _sideToMove;
+
+  changeSideToMove() => _sideToMove = Color.opponent(_sideToMove);
+
+  get halfMove => _recorder.halfMove;
+
+  get fullMove => _recorder.fullMove;
+
+  get lastMove => _recorder.last;
+
+  get lastCapturedPosition => _recorder.lastCapturedPosition;
 }
