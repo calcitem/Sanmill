@@ -199,9 +199,42 @@ class Position {
     }
 
     currentSquare = s;
+/*
+    int n = addMills(currentSquare);
 
-    //int n = addMills(currentSquare);
+    if (n == 0) {
+      assert(pieceCountInHand[Color.black] >= 0 &&
+          pieceCountInHand[Color.white] >= 0);
 
+      if (pieceCountInHand[Color.black] == 0 &&
+          pieceCountInHand[Color.white] == 0) {
+        if (checkGameoverCondition()) {
+          return true;
+        }
+
+        phase = Phase.moving;
+        action = Act.select;
+
+        if (rule.hasBannedLocations) {
+          removeBanStones();
+        }
+
+        if (!rule.isDefenderMoveFirst) {
+          changeSideToMove();
+        }
+
+        if (checkGameoverCondition()) {
+          return true;
+        }
+      } else {
+        changeSideToMove();
+      }
+    } else {
+      pieceCountNeedRemove =
+          rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+      action = Act.remove;
+    }
+ */
     // TODO: pieceCountNeedRemove
 
     print("putPiece: pt = $piece, index = $index, sq = $s");
@@ -694,6 +727,23 @@ class Position {
     }
 
     return false;
+  }
+
+  void removeBanStones() {
+    assert(rule.hasBannedLocations);
+
+    int s = 0;
+
+    for (int f = 1; f <= fileNumber; f++) {
+      for (int r = 0; r < rankNumber; r++) {
+        s = f * rankNumber + r;
+
+        if (board[s] == Piece.ban) {
+          board[s] = Piece.noPiece;
+          _grid[squareToIndex[s]] = Piece.noPiece;
+        }
+      }
+    }
   }
 
   void createMillTable() {
