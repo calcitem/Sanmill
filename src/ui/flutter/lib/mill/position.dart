@@ -47,10 +47,8 @@ class Position {
 
   MillRecorder _recorder;
 
-  int pieceCountInHandBlack = 12;
-  int pieceCountInHandWhite = 12;
-  int pieceCountOnBoardBlack = 0;
-  int pieceCountOnBoardWhite = 0;
+  Map<String, int> pieceCountInHand = {Color.black: 12, Color.white: 12};
+  Map<String, int> pieceCountOnBoard = {Color.black: 0, Color.white: 0};
   int pieceCountNeedRemove = 0;
 
   int gamePly = 0;
@@ -77,6 +75,8 @@ class Position {
   int nPlayed = 0;
 
   String cmdline;
+
+  var millTable;
 
   //int _move;
 
@@ -124,10 +124,8 @@ class Position {
 
     _recorder = other._recorder;
 
-    pieceCountInHandBlack = other.pieceCountInHandBlack;
-    pieceCountInHandWhite = other.pieceCountInHandWhite;
-    pieceCountOnBoardBlack = other.pieceCountOnBoardBlack;
-    pieceCountOnBoardWhite = other.pieceCountOnBoardWhite;
+    pieceCountInHand = other.pieceCountInHand;
+    pieceCountOnBoard = other.pieceCountOnBoard;
     pieceCountNeedRemove = other.pieceCountNeedRemove;
 
     gamePly = other.gamePly;
@@ -173,30 +171,39 @@ class Position {
     return selectPieceSQ(makeSquare(file, rank));
   }
 
-  bool putPiece(int sq) {
-    var index = squareToIndex[sq];
+  bool putPiece(int s) {
+    var index = squareToIndex[s];
+    var piece = _sideToMove;
+    var us = _sideToMove;
 
-    if (sq == null) {
-      print("putPiece skip index: $index");
+    if (phase == Phase.gameOver ||
+        action != Act.place ||
+        _board[s] != Piece.noPiece) {
       return false;
     }
 
-    String pt = _sideToMove;
-
-    _grid[index] = pt;
-    _board[sq] = pt;
-
-    if (_sideToMove == Color.black) {
-      pieceCountInHandBlack--;
-      pieceCountOnBoardBlack++;
-    } else if (_sideToMove == Color.white) {
-      pieceCountInHandWhite--;
-      pieceCountInHandWhite++;
+    if (phase == Phase.ready) {
+      start();
     }
+
+    if (phase == Phase.placing) {
+      piece = sideToMove();
+      pieceCountInHand[us]--;
+      pieceCountOnBoard[us]++;
+
+      _grid[index] = piece;
+      _board[s] = piece;
+
+      cmdline = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+    }
+
+    currentSquare = s;
+
+    //int n = addMills(currentSquare);
 
     // TODO: pieceCountNeedRemove
 
-    print("putPiece: pt = $pt, index = $index, sq = $sq");
+    print("putPiece: pt = $piece, index = $index, sq = $s");
 
     return true;
   }
@@ -354,13 +361,13 @@ class Position {
 
     ss += " ";
 
-    ss += pieceCountOnBoardBlack.toString() +
+    ss += pieceCountOnBoard[Color.black].toString() +
         " " +
-        pieceCountInHandBlack.toString() +
+        pieceCountInHand[Color.black].toString() +
         " " +
-        pieceCountOnBoardWhite.toString() +
+        pieceCountOnBoard[Color.white].toString() +
         " " +
-        pieceCountInHandWhite.toString() +
+        pieceCountInHand[Color.white].toString() +
         " " +
         pieceCountNeedRemove.toString() +
         " ";
@@ -580,32 +587,34 @@ class Position {
 ///////////////////////////////////////////////////////////////////////////////
 
   int piecesOnBoardCount() {
-    pieceCountOnBoardBlack = pieceCountOnBoardWhite = 0;
+    pieceCountOnBoard[Color.black] = pieceCountOnBoard[Color.white] = 0;
 
     for (int f = 1; f < 3 + 2; f++) {
       for (int r = 0; r < 8; r++) {
         int s = f * 8 + r;
         if (_board[s] == Piece.blackStone) {
-          pieceCountOnBoardBlack++;
+          pieceCountOnBoard[Color.black]++;
         } else if (_board[s] == Piece.whiteStone) {
-          pieceCountOnBoardBlack++;
+          pieceCountOnBoard[Color.black]++;
         }
       }
     }
 
-    if (pieceCountOnBoardBlack > rule.nTotalPiecesEachSide ||
-        pieceCountOnBoardWhite > rule.nTotalPiecesEachSide) {
+    if (pieceCountOnBoard[Color.black] > rule.nTotalPiecesEachSide ||
+        pieceCountOnBoard[Color.white] > rule.nTotalPiecesEachSide) {
       return -1;
     }
 
-    return pieceCountOnBoardBlack + pieceCountOnBoardWhite;
+    return pieceCountOnBoard[Color.black] + pieceCountOnBoard[Color.white];
   }
 
   int piecesInHandCount() {
-    pieceCountInHandBlack = rule.nTotalPiecesEachSide - pieceCountOnBoardBlack;
-    pieceCountInHandWhite = rule.nTotalPiecesEachSide - pieceCountOnBoardWhite;
+    pieceCountInHand[Color.black] =
+        rule.nTotalPiecesEachSide - pieceCountOnBoard[Color.black];
+    pieceCountInHand[Color.white] =
+        rule.nTotalPiecesEachSide - pieceCountOnBoard[Color.white];
 
-    return pieceCountOnBoardBlack + pieceCountOnBoardWhite;
+    return pieceCountOnBoard[Color.black] + pieceCountOnBoard[Color.white];
   }
 
   int setPosition(Rule newRule) {
@@ -650,8 +659,9 @@ class Position {
 
     for (int i = 0; i < _board.length; i++) _board[i] = Piece.noPiece;
 
-    pieceCountOnBoardBlack = pieceCountOnBoardWhite = 0;
-    pieceCountInHandBlack = pieceCountInHandWhite = rule.nTotalPiecesEachSide;
+    pieceCountOnBoard[Color.black] = pieceCountOnBoard[Color.white] = 0;
+    pieceCountInHand[Color.black] =
+        pieceCountInHand[Color.white] = rule.nTotalPiecesEachSide;
     pieceCountNeedRemove = 0;
 
     currentSquare = 0;
@@ -684,6 +694,428 @@ class Position {
         return true;
       default:
         return false;
+    }
+  }
+
+  void createMillTable() {
+    const millTable_noObliqueLine = [
+      /* 0 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 1 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 2 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 3 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 4 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 5 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 6 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 7 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+
+      /* 8 */ [
+        [16, 24],
+        [9, 15],
+        [0, 0]
+      ],
+      /* 9 */ [
+        [0, 0],
+        [15, 8],
+        [10, 11]
+      ],
+      /* 10 */ [
+        [18, 26],
+        [11, 9],
+        [0, 0]
+      ],
+      /* 11 */ [
+        [0, 0],
+        [9, 10],
+        [12, 13]
+      ],
+      /* 12 */ [
+        [20, 28],
+        [13, 11],
+        [0, 0]
+      ],
+      /* 13 */ [
+        [0, 0],
+        [11, 12],
+        [14, 15]
+      ],
+      /* 14 */ [
+        [22, 30],
+        [15, 13],
+        [0, 0]
+      ],
+      /* 15 */ [
+        [0, 0],
+        [13, 14],
+        [8, 9]
+      ],
+
+      /* 16 */ [
+        [8, 24],
+        [17, 23],
+        [0, 0]
+      ],
+      /* 17 */ [
+        [0, 0],
+        [23, 16],
+        [18, 19]
+      ],
+      /* 18 */ [
+        [10, 26],
+        [19, 17],
+        [0, 0]
+      ],
+      /* 19 */ [
+        [0, 0],
+        [17, 18],
+        [20, 21]
+      ],
+      /* 20 */ [
+        [12, 28],
+        [21, 19],
+        [0, 0]
+      ],
+      /* 21 */ [
+        [0, 0],
+        [19, 20],
+        [22, 23]
+      ],
+      /* 22 */ [
+        [14, 30],
+        [23, 21],
+        [0, 0]
+      ],
+      /* 23 */ [
+        [0, 0],
+        [21, 22],
+        [16, 17]
+      ],
+
+      /* 24 */ [
+        [8, 16],
+        [25, 31],
+        [0, 0]
+      ],
+      /* 25 */ [
+        [0, 0],
+        [31, 24],
+        [26, 27]
+      ],
+      /* 26 */ [
+        [10, 18],
+        [27, 25],
+        [0, 0]
+      ],
+      /* 27 */ [
+        [0, 0],
+        [25, 26],
+        [28, 29]
+      ],
+      /* 28 */ [
+        [12, 20],
+        [29, 27],
+        [0, 0]
+      ],
+      /* 29 */ [
+        [0, 0],
+        [27, 28],
+        [30, 31]
+      ],
+      /* 30 */ [
+        [14, 22],
+        [31, 29],
+        [0, 0]
+      ],
+      /* 31 */ [
+        [0, 0],
+        [29, 30],
+        [24, 25]
+      ],
+
+      /* 32 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 33 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 34 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 35 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 36 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 37 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 38 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 39 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ]
+    ];
+
+    const millTable_hasObliqueLines = [
+      /*  0 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /*  1 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /*  2 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /*  3 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /*  4 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /*  5 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /*  6 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /*  7 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+
+      /*  8 */ [
+        [16, 24],
+        [9, 15],
+        [0, 0]
+      ],
+      /*  9 */ [
+        [17, 25],
+        [15, 8],
+        [10, 11]
+      ],
+      /* 10 */ [
+        [18, 26],
+        [11, 9],
+        [0, 0]
+      ],
+      /* 11 */ [
+        [19, 27],
+        [9, 10],
+        [12, 13]
+      ],
+      /* 12 */ [
+        [20, 28],
+        [13, 11],
+        [0, 0]
+      ],
+      /* 13 */ [
+        [21, 29],
+        [11, 12],
+        [14, 15]
+      ],
+      /* 14 */ [
+        [22, 30],
+        [15, 13],
+        [0, 0]
+      ],
+      /* 15 */ [
+        [23, 31],
+        [13, 14],
+        [8, 9]
+      ],
+
+      /* 16 */ [
+        [8, 24],
+        [17, 23],
+        [0, 0]
+      ],
+      /* 17 */ [
+        [9, 25],
+        [23, 16],
+        [18, 19]
+      ],
+      /* 18 */ [
+        [10, 26],
+        [19, 17],
+        [0, 0]
+      ],
+      /* 19 */ [
+        [11, 27],
+        [17, 18],
+        [20, 21]
+      ],
+      /* 20 */ [
+        [12, 28],
+        [21, 19],
+        [0, 0]
+      ],
+      /* 21 */ [
+        [13, 29],
+        [19, 20],
+        [22, 23]
+      ],
+      /* 22 */ [
+        [14, 30],
+        [23, 21],
+        [0, 0]
+      ],
+      /* 23 */ [
+        [15, 31],
+        [21, 22],
+        [16, 17]
+      ],
+
+      /* 24 */ [
+        [8, 16],
+        [25, 31],
+        [0, 0]
+      ],
+      /* 25 */ [
+        [9, 17],
+        [31, 24],
+        [26, 27]
+      ],
+      /* 26 */ [
+        [10, 18],
+        [27, 25],
+        [0, 0]
+      ],
+      /* 27 */ [
+        [11, 19],
+        [25, 26],
+        [28, 29]
+      ],
+      /* 28 */ [
+        [12, 20],
+        [29, 27],
+        [0, 0]
+      ],
+      /* 29 */ [
+        [13, 21],
+        [27, 28],
+        [30, 31]
+      ],
+      /* 30 */ [
+        [14, 22],
+        [31, 29],
+        [0, 0]
+      ],
+      /* 31 */ [
+        [15, 23],
+        [29, 30],
+        [24, 25]
+      ],
+
+      /* 32 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 33 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 34 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 35 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 36 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 37 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 38 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ],
+      /* 39 */ [
+        [0, 0],
+        [0, 0],
+        [0, 0]
+      ]
+    ];
+
+    if (rule.hasObliqueLines) {
+      millTable = millTable_hasObliqueLines;
+    } else {
+      millTable = millTable_noObliqueLine;
     }
   }
 }

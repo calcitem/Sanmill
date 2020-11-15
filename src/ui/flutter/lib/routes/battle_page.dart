@@ -73,7 +73,14 @@ class _BattlePageState extends State<BattlePage> {
     //position
     //flag++;
     //position.putPiece(flag % 2 == 0 ? '@' : 'O', index);
-    if (position.putPiece(indexToSquare[index]) == false) {
+    int sq = indexToSquare[index];
+
+    if (sq == null) {
+      print("putPiece skip index: $index");
+      return;
+    }
+
+    if (position.putPiece(sq) == false) {
       return;
     }
 

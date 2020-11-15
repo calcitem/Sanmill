@@ -83,6 +83,8 @@ enum MoveDirection { clockwise, anticlockwise, inward, outward }
 
 enum LineDirection { horizontal, vertical, slash }
 
+const lineDirectionNumber = 3;
+
 enum File { A, B, C }
 
 const fileNumber = 3;
