@@ -34,4 +34,3 @@ class Rule {
 }
 
 const ruleNumber = 4;
-Rule rule;

@@ -40,6 +40,8 @@ class StateInfo {
 }
 
 class Position {
+  Rule rule;
+
   GameResult result = GameResult.pending;
 
   List<String> board = List<String>(40);
@@ -208,6 +210,14 @@ class Position {
 
     phase = Phase.placing;
 
+    //const DEFAULT_RULE_NUMBER = 1;
+
+    //setPosition(rules[DEFAULT_RULE_NUMBER]);
+    setPosition(rule); // TODO
+
+    // TODO
+    score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
+
     // Example
     //_board[sqToLoc[8]] = Piece.blackStone;
 
@@ -219,13 +229,6 @@ class Position {
   }
 
   Position() {
-    //const DEFAULT_RULE_NUMBER = 1;
-
-    //setPosition(rules[DEFAULT_RULE_NUMBER]);
-    setPosition(rule); // TODO
-
-    score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
-
     init();
   }
 
@@ -481,7 +484,7 @@ class Position {
   }
 
   int setPosition(Rule newRule) {
-    rule = newRule;
+    rule = new Rule(); // TODO
 
     gamePly = 0;
     rule50 = 0;
@@ -490,9 +493,13 @@ class Position {
     setSideToMove(Color.black);
     action = Act.place;
 
-    for (int i = 0; i < _grid.length; i++) _grid[i] = Piece.noPiece;
+    for (int i = 0; i < _grid.length; i++) {
+      _grid[i] = Piece.noPiece;
+    }
 
-    for (int i = 0; i < board.length; i++) board[i] = Piece.noPiece;
+    for (int i = 0; i < board.length; i++) {
+      board[i] = Piece.noPiece;
+    }
 
     if (piecesOnBoardCount() == -1) {
       return -1;
@@ -502,7 +509,8 @@ class Position {
     pieceCountNeedRemove = 0;
 
     winner = Color.nobody;
-
+    createMoveTable();
+    createMillTable();
     currentSquare = 0;
     return -1;
   }
