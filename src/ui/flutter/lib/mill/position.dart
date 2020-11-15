@@ -61,6 +61,7 @@ class Position {
 
   StateInfo st;
 
+  String us;
   String them;
   String winner;
   GameOverReason gameOverReason = GameOverReason.noReason;
@@ -180,6 +181,16 @@ class Position {
 
     _grid[index] = pt;
     _board[sq] = pt;
+
+    if (_sideToMove == Color.black) {
+      pieceCountInHandBlack--;
+      pieceCountOnBoardBlack++;
+    } else if (_sideToMove == Color.white) {
+      pieceCountInHandWhite--;
+      pieceCountInHandWhite++;
+    }
+
+    // TODO: pieceCountNeedRemove
 
     print("putPiece: pt = $pt, index = $index, sq = $sq");
 
@@ -671,127 +682,4 @@ class Position {
         return false;
     }
   }
-
-  /*
-  bool putPiece(int sq)
-  {
-    String piece = Piece.noPiece;
-    String us = _sideToMove;
-
-    if (phase == Phase.gameOver ||
-        action != Act.place ||
-        sq < 0 || sq >= 31 || _board[sq] != Piece.noPiece) {
-      return false;
-    }
-
-    if (phase == Phase.ready) {
-      start();
-    }
-
-    if (phase == Phase.placing) {
-      piece = _sideToMove;
-      if (_sideToMove == Color.black) {
-        pieceCountInHandBlack--;
-        pieceCountOnBoardBlack++;
-      }
-      else if (_sideToMove == Color.white) {
-        pieceCountInHandWhite--;
-        pieceCountOnBoardWhite++;
-      }
-
-      _board[sq]= piece;
-      _grid[squareToIndex[sq]] = piece;
-
-      cmdline = "(" + fileOf(sq).toString() + "," + rankOf(sq).toString() + ")";
-
-      currentSquare = sq;
-
-      int n = addMills(currentSquare);
-
-      if (n == 0) {
-        assert(pieceCountInHandBlack >= 0 && pieceCountInHandWhite >= 0);
-
-        if (pieceCountInHandBlack == 0 && pieceCountInHandWhite == 0) {
-          if (checkGameOverCondition()) {
-            return true;
-          }
-
-          phase = Phase.moving;
-          action = Act.select;
-
-          if (rule.hasBannedLocations) {
-            removeBanStones();
-          }
-
-          if (!rule.isDefenderMoveFirst) {
-            changeSideToMove();
-          }
-
-          if (checkGameOverCondition()) {
-            return true;
-          }
-        } else {
-          changeSideToMove();
-        }
-      } else {
-        pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
-        action = Act.remove;
-  }
-
-  } else if (phase == Phase.moving) {
-
-  if (checkGameOverCondition()) {
-  return true;
-  }
-
-  // if illegal
-  if (pieceCountOnBoard[sideToMove] > rule->nPiecesAtLeast ||
-  !rule->allowFlyWhenRemainThreePieces) {
-  int md;
-
-  for (md = 0; md < MD_NB; md++) {
-  if (s == MoveList<LEGAL>::moveTable[currentSquare][md])
-  break;
-  }
-
-  // not in moveTable
-  if (md == MD_NB) {
-  return false;
-  }
-  }
-
-  if (updateCmdlist) {
-  sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)",
-  file_of(currentSquare), rank_of(currentSquare),
-  file_of(s), rank_of(s));
-  st.rule50++;
-  }
-
-  board[s] = board[currentSquare];
-
-  board[currentSquare] = NO_PIECE;
-
-  currentSquare = s;
-  int n = add_mills(currentSquare);
-
-  // midgame
-  if (n == 0) {
-  action = ACTION_SELECT;
-  change_side_to_move();
-
-  if (check_gameover_condition()) {
-  return true;
-  }
-  } else {
-  pieceCountNeedRemove = rule->allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
-  update_key_misc();
-  action = ACTION_REMOVE;
-  }
-  } else {
-  assert(0);
-  }
-
-    return true;
-  }
-   */
 }
