@@ -70,22 +70,129 @@ class _BattlePageState extends State<BattlePage> {
 
     final position = Battle.shared.position;
 
-    //position
-    //flag++;
-    //position.putPiece(flag % 2 == 0 ? '@' : 'O', index);
     int sq = indexToSquare[index];
 
+    // 点击非落子点，不执行
     if (sq == null) {
       print("putPiece skip index: $index");
       return;
     }
 
-    if (position.putPiece(sq) == false) {
-      return;
+    // AI 走棋或正在搜索时，点击无效
+    if (Battle.shared.isAIsTurn() || Battle.shared.aiIsSearching()) {
+      return false;
     }
 
+    // 如果未开局则开局
+    if (position.phase == Phase.ready) {
+      Battle.shared.gameStart();
+    }
+
+    // 判断执行选子、落子或去子
+    bool result = false;
+
+    switch (position.action) {
+      case Act.place:
+        if (position.putPiece(sq)) {
+          if (position.action == Act.remove) {
+            // 播放成三音效
+            //playSound(GAME_SOUND_MILL, position.side_to_move());
+          } else {
+            // 播放移动棋子音效
+            //playSound(GAME_SOUND_DROG, position.side_to_move());
+          }
+          result = true;
+          break;
+        }
+
+        // 如果移子不成功，尝试重新选子，这里不break
+        //[[fallthrough]];
+        continue select;
+      select:
+      case Act.select:
+        //piece = qgraphicsitem_cast<PieceItem *>(item);
+        //if (!piece)
+        //break;
+        if (position.selectPiece(sq)) {
+          // 播放选子音效
+          //playSound(GAME_SOUND_SELECT, position.side_to_move());
+          result = true;
+        } else {
+          // 播放禁止音效
+          //playSound(GAME_SOUND_BANNED, position.side_to_move());
+        }
+        break;
+
+      case Act.remove:
+        if (position.remove_piece(sq)) {
+          // 播放音效
+          //playSound(GAME_SOUND_REMOVE, position.side_to_move());
+          result = true;
+        } else {
+          // 播放禁止音效
+          //playSound(GAME_SOUND_BANNED, position.side_to_move());
+        }
+        break;
+
+      default:
+        // 如果是结局状态，不做任何响应
+        break;
+    }
+
+    if (result) {
+      Battle.shared.cmdlist.add(position.cmdline);
+
+      // 发信号更新状态栏
+      setState(() {});
+      //message = QString::fromStdString(getTips());
+      //emit statusBarChanged(message);
+
+      // 将新增的棋谱行插入到ListModel
+      /*
+    currentRow = manualListModel.rowCount() - 1;
+    int k = 0;
+
+    // 输出命令行
+    for (const auto & i : *(cmd_list())) {
+    // 跳过已添加的，因标准list容器没有下标
+    if (k++ <= currentRow)
+    continue;
+    manualListModel.insertRow(++currentRow);
+    manualListModel.setData(manualListModel.index(currentRow), i.c_str());
+    }
+     */
+
+      // 播放胜利或失败音效
+      /*
+      String winner = position.winner;
+      if (winner != Color.nobody &&
+          (manualListModel.data(manualListModel.index(currentRow - 1)))
+              .toString()
+              .contains("Time over.")) playSound(GAME_SOUND_WIN, winner);
+       */
+
+      // AI设置
+      // 如果还未决出胜负
+      if (position.winner == Color.nobody) {
+        //resumeAiThreads(position.sideToMove);
+        engineToGo();
+      }
+      // 如果已经决出胜负
+      else {
+        //pauseThreads();
+      }
+    }
+
+    Battle.shared.sideToMove = position.sideToMove();
+
+    setState(() {});
+
+    return result;
+
+    // TODO:
+
     // 仅 Position 中的 side 指示一方能动棋
-    if (position.side != Color.black) return;
+    //if (position.side != Color.black) return;
 
     final tapedPiece = position.pieceOnGrid(index);
     print("Tap piece $tapedPiece at <$index>");
@@ -154,7 +261,8 @@ class _BattlePageState extends State<BattlePage> {
       Move mv = response.value;
       final Move move = new Move(mv.move);
 
-      Battle.shared.move(move);
+      //Battle.shared.move = move;
+      Battle.shared.command(move.move);
 
       final result = Battle.shared.scanBattleResult();
 

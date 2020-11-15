@@ -17,6 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/common/types.dart';
+
 import '../mill/mill.dart';
 import '../mill/position.dart';
 
@@ -27,12 +29,26 @@ class Battle {
   Position _position;
   int _focusIndex, _blurIndex;
 
-  String sideToMove;
+  String sideToMove = Color.black;
 
   // 是否黑白反转
   bool isInverted;
 
   Map<String, bool> isAiPlayer = {Color.black: false, Color.white: false};
+  Map<String, bool> isAiSearching = {Color.black: false, Color.white: false};
+
+  Battle() {
+    //cmdlist = new List;
+  }
+
+  bool aiIsSearching() {
+    return isAiSearching[Color.black] == true ||
+        isAiSearching[Color.white] == true;
+  }
+
+  void gameStart() {
+    position.start();
+  }
 
   // 是否有落子动画
   bool hasAnimation;
@@ -58,9 +74,13 @@ class Battle {
   // 提示语
   String tips;
 
-  List<String> cmdlist;
+  List<String> cmdlist = [""];
 
   String getTips() => tips;
+
+  bool isAIsTurn() {
+    return isAiPlayer[sideToMove];
+  }
 
   static get shared {
     _instance ??= Battle();
@@ -149,4 +169,82 @@ class Battle {
   get focusIndex => _focusIndex;
 
   get blurIndex => _blurIndex;
+
+  bool command(String cmd) {
+    int total;
+    double blackWinRate, whiteWinRate, drawRate;
+
+    // 如果未开局则开局
+    if (position.phase == Phase.ready) {
+      gameStart();
+    }
+
+    print("Computer: $cmd");
+
+    cmdlist.add(cmd);
+
+    if (!position.command(cmd)) {
+      return false;
+    }
+
+    sideToMove = position.sideToMove();
+
+    String winner = position.winner;
+
+    if (winner != Color.nobody) {
+      //resumeAiThreads(position.sideToMove);
+      // TODO
+    } else {
+      // pauseThreads();
+
+      /*
+                  if (gameOptions.getAutoRestart()) {
+                saveScore();
+
+                gameReset();
+                gameStart();
+
+                if (isAiPlayer[BLACK]) {
+                    setEngine(BLACK, true);
+                }
+                if (isAiPlayer[WHITE]) {
+                    setEngine(WHITE, true);
+                }
+            }
+       */
+    }
+    total = position.score[Color.black] +
+        position.score[Color.white] +
+        position.score[Color.draw];
+
+    if (total == 0) {
+      blackWinRate = 0;
+      whiteWinRate = 0;
+      drawRate = 0;
+    } else {
+      blackWinRate = position.score[Color.black] * 100 / total;
+      whiteWinRate = position.score[Color.white] * 100 / total;
+      drawRate = position.score[Color.draw] * 100 / total;
+    }
+
+    String outStr = "Score: " +
+        position.score[Color.black].toString() +
+        " : " +
+        position.score[Color.white].toString() +
+        " : " +
+        position.score[Color.draw].toString() +
+        "\ttotal: " +
+        total.toString() +
+        "\n" +
+        blackWinRate.toString() +
+        "% : " +
+        whiteWinRate.toString() +
+        "% : " +
+        drawRate.toString() +
+        "%" +
+        "\n";
+
+    print(outStr);
+    return true;
+  }
 }
