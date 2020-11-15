@@ -157,6 +157,8 @@ class Position {
 
   bool empty(int sq) => pieceOn(sq) == Piece.noPiece;
 
+  String sideToMove() => _sideToMove;
+
   void updateScore() {}
 
   void setSideToMove(String color) {
@@ -171,13 +173,15 @@ class Position {
     return selectPieceSQ(makeSquare(file, rank));
   }
 
-  bool putPiece(var pt, int sq) {
+  bool putPiece(int sq) {
     var index = squareToIndex[sq];
 
     if (sq == null) {
       print("putPiece skip index: $index");
       return false;
     }
+
+    String pt = _sideToMove;
 
     _grid[index] = pt;
     _board[sq] = pt;
