@@ -67,9 +67,7 @@ class Position {
   Phase phase = Phase.none;
   Act action = Act.none;
 
-  int scoreBlack = 0;
-  int scoreWhite = 0;
-  int scoreDraw = 0;
+  Map<String, int> score = {Color.black: 0, Color.white: 0, Color.draw: 0};
 
   int currentSquare;
   int nPlayed = 0;
@@ -143,9 +141,7 @@ class Position {
     phase = other.phase;
     action = other.action;
 
-    scoreBlack = other.scoreBlack;
-    scoreWhite = other.scoreWhite;
-    scoreDraw = other.scoreDraw;
+    score = other.score;
 
     currentSquare = other.currentSquare;
     nPlayed = other.nPlayed;
@@ -157,8 +153,6 @@ class Position {
   bool empty(int sq) => pieceOn(sq) == Piece.noPiece;
 
   String sideToMove() => _sideToMove;
-
-  void updateScore() {}
 
   void setSideToMove(String color) {
     _sideToMove = color;
@@ -733,6 +727,17 @@ class Position {
     phase = Phase.gameOver;
     gameOverReason = reason;
     winner = w;
+  }
+
+  void updateScore() {
+    if (phase == Phase.gameOver) {
+      if (winner == Color.draw) {
+        score[Color.draw]++;
+        return;
+      }
+
+      score[winner]++;
+    }
   }
 
   bool checkGameOverCondition() {
