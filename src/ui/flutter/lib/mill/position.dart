@@ -166,76 +166,6 @@ class Position {
     return selectPieceSQ(makeSquare(file, rank));
   }
 
-  bool putPiece(int s) {
-    var index = squareToIndex[s];
-    var piece = _sideToMove;
-    var us = _sideToMove;
-
-    if (phase == Phase.gameOver ||
-        action != Act.place ||
-        board[s] != Piece.noPiece) {
-      return false;
-    }
-
-    if (phase == Phase.ready) {
-      start();
-    }
-
-    if (phase == Phase.placing) {
-      piece = sideToMove();
-      pieceCountInHand[us]--;
-      pieceCountOnBoard[us]++;
-
-      _grid[index] = piece;
-      board[s] = piece;
-
-      cmdline = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
-    }
-
-    currentSquare = s;
-/*
-    int n = addMills(currentSquare);
-
-    if (n == 0) {
-      assert(pieceCountInHand[Color.black] >= 0 &&
-          pieceCountInHand[Color.white] >= 0);
-
-      if (pieceCountInHand[Color.black] == 0 &&
-          pieceCountInHand[Color.white] == 0) {
-        if (checkGameoverCondition()) {
-          return true;
-        }
-
-        phase = Phase.moving;
-        action = Act.select;
-
-        if (rule.hasBannedLocations) {
-          removeBanStones();
-        }
-
-        if (!rule.isDefenderMoveFirst) {
-          changeSideToMove();
-        }
-
-        if (checkGameoverCondition()) {
-          return true;
-        }
-      } else {
-        changeSideToMove();
-      }
-    } else {
-      pieceCountNeedRemove =
-          rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
-      action = Act.remove;
-    }
- */
-    // TODO: pieceCountNeedRemove
-
-    print("putPiece: pt = $piece, index = $index, sq = $s");
-
-    return true;
-  }
-
   bool putPieceFR(int file, int rank) {
     bool ret = putPieceSQ(makeSquare(file, rank));
 
@@ -721,6 +651,126 @@ class Position {
     }
 
     return false;
+  }
+
+  bool putPiece(int s) {
+    var index = squareToIndex[s];
+    var piece = _sideToMove;
+    var us = _sideToMove;
+
+    if (phase == Phase.gameOver ||
+        action != Act.place ||
+        board[s] != Piece.noPiece) {
+      return false;
+    }
+
+    if (phase == Phase.ready) {
+      start();
+    }
+
+    if (phase == Phase.placing) {
+      piece = sideToMove();
+      pieceCountInHand[us]--;
+      pieceCountOnBoard[us]++;
+
+      _grid[index] = piece;
+      board[s] = piece;
+
+      cmdline = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+
+      currentSquare = s;
+
+      int n = addMills(currentSquare);
+
+      if (n == 0) {
+        assert(pieceCountInHand[Color.black] >= 0 &&
+            pieceCountInHand[Color.white] >= 0);
+
+        if (pieceCountInHand[Color.black] == 0 &&
+            pieceCountInHand[Color.white] == 0) {
+          if (checkGameOverCondition()) {
+            return true;
+          }
+
+          phase = Phase.moving;
+          action = Act.select;
+
+          if (rule.hasBannedLocations) {
+            removeBanStones();
+          }
+
+          if (!rule.isDefenderMoveFirst) {
+            changeSideToMove();
+          }
+
+          if (checkGameOverCondition()) {
+            return true;
+          }
+        } else {
+          changeSideToMove();
+        }
+      } else {
+        pieceCountNeedRemove =
+            rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+        action = Act.remove;
+      }
+    } else if (phase == Phase.moving) {
+      if (checkGameOverCondition()) {
+        return true;
+      }
+
+      // if illegal
+      if (pieceCountOnBoard[sideToMove()] > rule.nPiecesAtLeast ||
+          !rule.allowFlyWhenRemainThreePieces) {
+        int md;
+
+        for (md = 0; md < moveDirectionNumber; md++) {
+          if (s == moveTable[currentSquare][md]) break;
+        }
+
+        // not in moveTable
+        if (md == moveDirectionNumber) {
+          return false;
+        }
+      }
+
+      cmdline = "(" +
+          fileOf(currentSquare).toString() +
+          "," +
+          rankOf(currentSquare).toString() +
+          ")->(" +
+          fileOf(s).toString() +
+          "," +
+          rankOf(s).toString() +
+          ")";
+
+      rule50++;
+
+      board[s] = board[currentSquare];
+
+      board[currentSquare] = Piece.noPiece;
+
+      currentSquare = s;
+      int n = addMills(currentSquare);
+
+      // midgame
+      if (n == 0) {
+        action = Act.select;
+        changeSideToMove();
+
+        if (checkGameOverCondition()) {
+          return true;
+        }
+      } else {
+        pieceCountNeedRemove =
+            rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+        action = Act.remove;
+      }
+    } else {
+      assert(false);
+    }
+
+    return true;
   }
 
   bool removePiece(int s) {
