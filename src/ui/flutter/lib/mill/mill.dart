@@ -95,6 +95,10 @@ class Piece {
   static bool isBlack(String c) => '@'.contains(c);
 
   static bool isWhite(String c) => 'O'.contains(c);
+
+  static bool isBan(String c) => 'X'.contains(c);
+
+  static bool isEmpty(String c) => '*'.contains(c);
 }
 
 class Move {

@@ -128,21 +128,34 @@ class PiecesPainter extends PainterBase {
       var pieceInnerRadius = pieceRadius * 0.99; // 决定棋子外圈有宽
 
       // 绘制棋子边界
-      paint.color = Piece.isWhite(pps.piece)
-          ? Properties.whitePieceBorderColor
-          : Properties.blackPieceBorderColor;
+      switch (pps.piece) {
+        case Piece.blackStone:
+          paint.color = Properties.blackPieceBorderColor;
+          canvas.drawCircle(pps.pos, pieceRadius, paint); // 临时调试用
+          paint.color = Properties.blackPieceColor;
+          canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
+          break;
+        case Piece.whiteStone:
+          paint.color = Properties.whitePieceBorderColor;
+          canvas.drawCircle(pps.pos, pieceRadius, paint); // 临时调试用
+          paint.color = Properties.whitePieceColor;
+          canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
+          break;
+        case Piece.ban:
+          print("pps.piece is Ban");
+          paint.color = Properties.banBorderColor;
+          // TODO
+          paint.color = Properties.banColor;
+          canvas.drawLine(new Offset(0, 0),
+              new Offset(pieceInnerRadius, pieceInnerRadius), paint);
+          canvas.drawLine(new Offset(pieceInnerRadius, 0),
+              new Offset(0, pieceInnerRadius), paint);
+          break;
+        default:
+          assert(false);
+          break;
+      }
 
-      canvas.drawCircle(pps.pos, pieceRadius, paint); // 临时调试用
-
-      // 绘制棋子内部
-
-      // 棋子颜色
-      paint.color = Piece.isWhite(pps.piece)
-          ? Properties.whitePieceColor
-          : Properties.blackPieceColor;
-      //paint.color = ColorConst.WhitePieceColor;
-
-      canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
       /*
       final textSpan = TextSpan(text: Piece.Names[pps.piece], style: textStyle);
 

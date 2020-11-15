@@ -48,5 +48,8 @@ class Properties {
   static const whitePieceColor = Color.fromARGB(0xFF, 0xFF, 0xFF, 0xFF);
   static const whitePieceBorderColor = Color.fromARGB(0xFF, 0x66, 0x00, 0x00);
 
+  static const banColor = Color.fromARGB(0xFF, 0xFF, 0x00, 0x00);
+  static const banBorderColor = Color.fromARGB(0x80, 0xFF, 0x00, 0x00);
+
   static const pieceTextColor = Color.fromARGB(0xCC, 0xFF, 0xFF, 0xFF);
 }
