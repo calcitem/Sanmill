@@ -117,7 +117,7 @@ class NativeEngine extends AiEngine {
     //
     if (await isThinking()) await stopSearching();
 
-    //send(buildPositionCommand(position));
+    send(buildPositionCommand(position));
     send('go');
 
     final response = await waitResponse(['bestmove', 'nobestmove']);
@@ -165,12 +165,17 @@ class NativeEngine extends AiEngine {
   }
 
   String buildPositionCommand(Position position) {
-    //
+    /*
     final startPosition = position.lastCapturedPosition;
     final moves = position.movesSinceLastCaptured();
 
     if (moves.isEmpty) return 'position fen $startPosition';
 
     return 'position fen $startPosition moves $moves';
+    */
+
+    String fenStr = position.fen();
+
+    return "position fen $fenStr";
   }
 }
