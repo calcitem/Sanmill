@@ -248,7 +248,7 @@ class _BattlePageState extends State<BattlePage> {
 
   engineToGo() async {
     while (Battle.shared.position.sideToMove() == Color.black) {
-      changeStatus('对方思考中...');
+      changeStatus('电脑思考中...');
 
       final response = await widget.engine.search(Battle.shared.position);
 
@@ -260,19 +260,19 @@ class _BattlePageState extends State<BattlePage> {
         //Battle.shared.move = move;
         Battle.shared.command(move.move);
 
-        final result = Battle.shared.scanBattleResult();
+        final winner = Battle.shared.position.winner;
 
-        switch (result) {
-          case GameResult.pending:
-            changeStatus('请走棋...');
+        switch (winner) {
+          case Color.nobody:
+            changeStatus('请走棋');
             break;
-          case GameResult.win:
+          case Color.white: // TODO
             gotWin();
             break;
-          case GameResult.lose:
+          case Color.black:
             gotLose();
             break;
-          case GameResult.draw:
+          case Color.draw:
             gotDraw();
             break;
         }
