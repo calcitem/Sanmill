@@ -98,7 +98,10 @@ class _BattlePageState extends State<BattlePage> {
             //playSound(GAME_SOUND_DROG, position.side_to_move());
           }
           result = true;
+          print("putPiece: [$sq]");
           break;
+        } else {
+          print("putPiece: skip [$sq]");
         }
 
         // 如果移子不成功，尝试重新选子，这里不break
@@ -127,9 +130,11 @@ class _BattlePageState extends State<BattlePage> {
           // 播放音效
           //playSound(GAME_SOUND_REMOVE, position.side_to_move());
           result = true;
+          print("removePiece: [$sq]");
         } else {
           // 播放禁止音效
           //playSound(GAME_SOUND_BANNED, position.side_to_move());
+          print("removePiece: skip [$sq]");
         }
         break;
 

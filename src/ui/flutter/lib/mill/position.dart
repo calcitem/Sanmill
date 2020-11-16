@@ -652,6 +652,7 @@ class Position {
 
         // not in moveTable
         if (md == moveDirectionNumber) {
+          print("putPiece: [$s] is not in [$currentSquare]'s moveTable");
           return false;
         }
       }
