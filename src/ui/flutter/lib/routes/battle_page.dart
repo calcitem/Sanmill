@@ -64,10 +64,6 @@ class _BattlePageState extends State<BattlePage> {
   changeStatus(String status) => setState(() => _status = status);
 
   onBoardTap(BuildContext context, int index) {
-    //
-
-    //Phase phase = Phase.placing;
-
     final position = Battle.shared.position;
 
     int sq = indexToSquare[index];
@@ -116,10 +112,13 @@ class _BattlePageState extends State<BattlePage> {
         if (position.selectPiece(sq)) {
           // 播放选子音效
           //playSound(GAME_SOUND_SELECT, position.side_to_move());
+          Battle.shared.select(index);
           result = true;
+          print("selectPiece: [$sq]");
         } else {
           // 播放禁止音效
           //playSound(GAME_SOUND_BANNED, position.side_to_move());
+          print("selectPiece: skip [$sq]");
         }
         break;
 
