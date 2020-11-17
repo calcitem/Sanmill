@@ -194,8 +194,8 @@ class Position {
   }
 
   bool movePiece(int fromSq, int toSq) {
-    if (selectPieceSQ(fromSq)) {
-      return putPieceSQ(toSq);
+    if (selectPiece(fromSq)) {
+      return putPiece(toSq);
     }
 
     return false;
@@ -670,7 +670,8 @@ class Position {
       rule50++;
 
       board[s] = _grid[squareToIndex[s]] = board[currentSquare];
-      board[currentSquare] = _grid[squareToIndex[s]] = Piece.noPiece;
+      board[currentSquare] =
+          _grid[squareToIndex[currentSquare]] = Piece.noPiece;
 
       currentSquare = s;
       int n = addMills(currentSquare);

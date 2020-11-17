@@ -104,6 +104,24 @@ class Battle {
     //Audios.playTone('click.mp3');
   }
 
+  bool move(int from, int to) {
+    //
+    position.move(from, to);
+
+    _blurIndex = from;
+    _focusIndex = to;
+
+    /*
+    if (ChessRules.checked(position)) {
+      //Audios.playTone('check.mp3');
+    } else {
+      //Audios.playTone(captured != Piece.Empty ? 'capture.mp3' : 'move.mp3');
+    }
+     */
+
+    return true;
+  }
+
   bool regret({steps = 2}) {
     //
     // 轮到自己走棋的时候，才能悔棋
