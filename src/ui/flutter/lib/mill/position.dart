@@ -426,7 +426,7 @@ class Position {
     this.move = m;
 
     //StepName.translate(this, move);
-    //_recorder.stepIn(move, this);
+    _recorder.stepIn(move, this);
 
     // 交换走棋方
     //_sideToMove = Color.opponent(_sideToMove);

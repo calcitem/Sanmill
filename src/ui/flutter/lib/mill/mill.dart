@@ -122,7 +122,6 @@ class Move {
 
   // 'move' is the UCI engine's move-string
   String move;
-  String moveName;
 
   MoveType type;
 
