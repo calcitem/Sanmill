@@ -93,15 +93,18 @@ class _BattlePageState extends State<BattlePage> {
           if (position.action == Act.remove) {
             // 播放成三音效
             //playSound(GAME_SOUND_MILL, position.side_to_move());
+            changeStatus('请吃子');
           } else {
             // 播放移动棋子音效
             //playSound(GAME_SOUND_DROG, position.side_to_move());
+            changeStatus('已落子');
           }
           result = true;
           print("putPiece: [$sq]");
           break;
         } else {
           print("putPiece: skip [$sq]");
+          changeStatus('不能落在此处');
         }
 
         // 如果移子不成功，尝试重新选子，这里不break
@@ -118,10 +121,12 @@ class _BattlePageState extends State<BattlePage> {
           Battle.shared.select(index);
           result = true;
           print("selectPiece: [$sq]");
+          changeStatus('请落子');
         } else {
           // 播放禁止音效
           //playSound(GAME_SOUND_BANNED, position.side_to_move());
           print("selectPiece: skip [$sq]");
+          changeStatus('选择的子不对');
         }
         break;
 
@@ -131,10 +136,12 @@ class _BattlePageState extends State<BattlePage> {
           //playSound(GAME_SOUND_REMOVE, position.side_to_move());
           result = true;
           print("removePiece: [$sq]");
+          changeStatus('已吃子');
         } else {
           // 播放禁止音效
           //playSound(GAME_SOUND_BANNED, position.side_to_move());
           print("removePiece: skip [$sq]");
+          changeStatus('不能吃这个子');
         }
         break;
 
@@ -252,6 +259,7 @@ class _BattlePageState extends State<BattlePage> {
   }
 
   engineToGo() async {
+    // TODO
     while (Battle.shared.position.sideToMove() == Color.black) {
       changeStatus('电脑思考中...');
 
@@ -269,15 +277,22 @@ class _BattlePageState extends State<BattlePage> {
 
         switch (winner) {
           case Color.nobody:
-            changeStatus('请走棋');
-            break;
-          case Color.white: // TODO
-            gotWin();
+            if (Battle.shared.position.phase == Phase.placing) {
+              changeStatus('请摆子');
+            } else if (Battle.shared.position.phase == Phase.moving) {
+              changeStatus('请走子');
+            }
             break;
           case Color.black:
+            changeStatus('黑方胜');
             gotLose();
             break;
+          case Color.white: // TODO
+            changeStatus('白方胜');
+            gotWin();
+            break;
           case Color.draw:
+            changeStatus('平局');
             gotDraw();
             break;
         }
@@ -301,7 +316,8 @@ class _BattlePageState extends State<BattlePage> {
         engineToGo();
       }
 
-      setState(() {});
+      //setState(() {});
+      changeStatus('新游戏');
     }
 
     cancel() => Navigator.of(context).pop();
