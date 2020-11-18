@@ -144,7 +144,7 @@ class Move {
       type = MoveType.move;
       fromFile = int.parse(move[1]);
       fromRank = int.parse(move[3]);
-      from = makeSquare(fromFile, toFile);
+      from = makeSquare(fromFile, fromRank);
       fromIndex = squareToIndex[from];
       toFile = int.parse(move[8]);
       toRank = int.parse(move[10]);

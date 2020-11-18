@@ -805,6 +805,8 @@ class Position {
     return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
   }
   */
+    print("position: command = $cmd");
+
     if (cmd.length > 6 && cmd.substring(0, 5) == "Player") {
       if (cmd[6] == '1') {
         return resign(Color.black);
