@@ -531,7 +531,7 @@ class _BattlePageState extends State<BattlePage> {
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Row(children: <Widget>[
         Expanded(child: SizedBox()),
-        FlatButton(child: Text('新对局', style: buttonStyle), onPressed: newGame),
+        FlatButton(child: Text('新局', style: buttonStyle), onPressed: newGame),
         Expanded(child: SizedBox()),
         FlatButton(
           child: Text('悔棋', style: buttonStyle),
@@ -542,7 +542,7 @@ class _BattlePageState extends State<BattlePage> {
         ),
         Expanded(child: SizedBox()),
         FlatButton(
-          child: Text('分析局面', style: buttonStyle),
+          child: Text('分析', style: buttonStyle),
           onPressed: _analysising ? null : analysisPosition,
         ),
         Expanded(child: SizedBox()),
