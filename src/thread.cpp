@@ -514,7 +514,9 @@ void Thread::clearTT()
         //endgameList.clear();
 #endif // ENDGAME_LEARNING
 
+#ifdef THREEFOLD_REPETITION
         moveHistory.clear();
+#endif
     }
 }
 
