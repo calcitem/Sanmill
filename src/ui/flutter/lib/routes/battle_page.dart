@@ -260,7 +260,7 @@ class _BattlePageState extends State<BattlePage> {
 
   engineToGo() async {
     // TODO
-    while (Battle.shared.position.sideToMove() == Color.black) {
+    while (Battle.shared.position.sideToMove() == Color.white) {
       changeStatus('电脑思考中...');
 
       final response = await widget.engine.search(Battle.shared.position);

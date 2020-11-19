@@ -34,7 +34,7 @@ class Battle {
   // 是否黑白反转
   bool isInverted;
 
-  Map<String, bool> isAiPlayer = {Color.black: true, Color.white: false};
+  Map<String, bool> isAiPlayer = {Color.black: false, Color.white: true};
   Map<String, bool> isAiSearching = {Color.black: false, Color.white: false};
 
   Battle() {
