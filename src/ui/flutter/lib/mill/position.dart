@@ -201,7 +201,7 @@ class Position {
     return false;
   }
 
-  Position.init() {
+  init() {
     for (var i = 0; i < _grid.length; i++) {
       _grid[i] = Piece.noPiece;
     }
@@ -218,16 +218,12 @@ class Position {
     setPosition(rule); // TODO
 
     // TODO
-    score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
 
     _recorder = MillRecorder(lastCapturedPosition: fen());
   }
 
-  init() {
-    Position.init();
-  }
-
   Position() {
+    score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
     init();
   }
 

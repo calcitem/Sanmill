@@ -309,7 +309,8 @@ class _BattlePageState extends State<BattlePage> {
     confirm() {
       Navigator.of(context).pop();
       Battle.shared.newGame();
-      setState(() {});
+      //setState(() {});
+      changeStatus('新游戏');
 
       if (Battle.shared.isAIsTurn()) {
         print("New Game: AI's turn.");
@@ -317,7 +318,6 @@ class _BattlePageState extends State<BattlePage> {
       }
 
       //setState(() {});
-      changeStatus('新游戏');
     }
 
     cancel() => Navigator.of(context).pop();

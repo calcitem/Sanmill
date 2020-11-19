@@ -88,7 +88,7 @@ class Battle {
   }
 
   init() {
-    _position = Position.init();
+    _position = Position();
     _focusIndex = _blurIndex = Move.invalidValue;
   }
 
@@ -96,6 +96,7 @@ class Battle {
     Battle.shared.position.init();
     _focusIndex = _blurIndex = Move.invalidValue;
     cmdlist = [""];
+    sideToMove = Color.black;
   }
 
   select(int pos) {
