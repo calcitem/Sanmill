@@ -237,7 +237,8 @@ Position &Position::set(const string &fenStr, Thread *th)
 
     // 2. Active color
     ss >> token;
-    sideToMove = (token == 'b' ? BLACK : WHITE);    
+    sideToMove = (token == 'b' ? BLACK : WHITE);
+    th->us = sideToMove;
 
     // 3. Phrase
     ss >> token;
@@ -1231,6 +1232,7 @@ void Position::remove_ban_stones()
 inline void Position::set_side_to_move(Color c)
 {
     sideToMove = c;
+    //us = c;
     them = ~sideToMove;
 }
 
