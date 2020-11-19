@@ -247,11 +247,11 @@ void sq2str(char *str)
 
 void Thread::analyze(Color c)
 {
-    static int nbwin = 0;
-    static int nwwin = 0;
-    static int ndraw = 0;
+    static float nbwin = 0;
+    static float nwwin = 0;
+    static float ndraw = 0;
 #ifndef QT_GUI_LIB
-    int total;
+    float total;
     float bwinrate, wwinrate, drawrate;
 #endif // !QT_GUI_LIB
 
@@ -282,13 +282,13 @@ void Thread::analyze(Color c)
     case PHASE_GAMEOVER:
         if (p->get_winner() == DRAW) {
             cout << "和棋" << endl;
-            ndraw++;
+            ndraw += 0.5;   // TODO
         } else if (p->get_winner() == BLACK) {
             cout << "黑方胜" << endl;
-            nbwin++;
+            nbwin += 0.5;  // TODO
         } else if (p->get_winner() == WHITE) {
             cout << "白方胜" << endl;
-            nwwin++;
+            nwwin += 0.5;    // TODO
         }
         goto out;
         break;
@@ -377,7 +377,7 @@ void Thread::analyze(Color c)
         drawrate = (float)ndraw * 100 / total;
     }
 
-    cout << "比分: " << nbwin << " : " << nwwin << " : " << ndraw << "\ttotal: " << total << endl;
+    cout << "比分: " << (int)nbwin << " : " << (int)nwwin << " : " << (int)ndraw << "\ttotal: " << (int)total << endl;
     cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
 #endif // !QT_GUI_LIB
 
