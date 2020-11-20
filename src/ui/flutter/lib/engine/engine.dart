@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import '../mill/position.dart';
+import 'package:sanmill/mill/position.dart';
 
 enum EngineType { Cloud, Native }
 
@@ -28,10 +28,7 @@ class EngineResponse {
 }
 
 abstract class AiEngine {
-  //
   Future<void> startup() async {}
-
   Future<void> shutdown() async {}
-
   Future<EngineResponse> search(Position position, {bool byUser = true});
 }

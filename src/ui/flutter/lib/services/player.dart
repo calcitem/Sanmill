@@ -32,7 +32,6 @@ class Player extends RankItem {
   static get shared => _instance;
 
   static Future<Player> loadProfile() async {
-    //
     if (_instance == null) {
       _instance = Player();
       await _instance._load();
@@ -42,7 +41,6 @@ class Player extends RankItem {
   }
 
   _load() async {
-    //
     final profile = await Profile.shared();
 
     _uuid = profile['player-uuid'];
@@ -56,14 +54,14 @@ class Player extends RankItem {
 
       name = values['name'] ?? '无名英雄';
       winCloudEngine = values['win_cloud_engine'] ?? 0;
-      winPhoneAi = values['win_phone_ai'] ?? 0;
+      winAi = values['win_ai'] ?? 0;
     }
   }
 
   Player() : super.empty();
 
-  Future<void> increaseWinPhoneAi() async {
-    winPhoneAi++;
+  Future<void> increaseWinAi() async {
+    winAi++;
     await saveAndUpload();
   }
 

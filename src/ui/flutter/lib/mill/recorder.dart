@@ -20,16 +20,16 @@
 import 'mill.dart';
 import 'position.dart';
 
-class MillRecorder {
+class GameRecorder {
   //
   // 无吃子步数、总回合数
   int halfMove, fullMove;
-  String lastCapturedPosition;
+  String lastPositionWithRemove;
   final _history = <Move>[];
 
-  MillRecorder(
-      {this.halfMove = 0, this.fullMove = 0, this.lastCapturedPosition});
-  MillRecorder.fromCounterMarks(String marks) {
+  GameRecorder(
+      {this.halfMove = 0, this.fullMove = 0, this.lastPositionWithRemove});
+  GameRecorder.fromCounterMarks(String marks) {
     //
     var segments = marks.split(' ');
     if (segments.length != 2) {
@@ -43,9 +43,9 @@ class MillRecorder {
       throw 'Error: Invalid Counter Marks: $marks';
     }
   }
-  void stepIn(Move move, Position position) {
+  void moveIn(Move move, Position position) {
     //
-    if (move.captured != Piece.noPiece) {
+    if (move.removed != Piece.noPiece) {
       halfMove = 0;
     } else {
       halfMove++;
@@ -59,8 +59,8 @@ class MillRecorder {
 
     _history.add(move);
 
-    if (move.captured != Piece.noPiece) {
-      lastCapturedPosition = position.fen();
+    if (move.removed != Piece.noPiece) {
+      lastPositionWithRemove = position.fen();
     }
   }
 
@@ -71,12 +71,12 @@ class MillRecorder {
 
   get last => _history.isEmpty ? null : _history.last;
 
-  List<Move> reverseMovesToPrevCapture() {
+  List<Move> reverseMovesToPrevRemove() {
     //
     List<Move> moves = [];
 
     for (var i = _history.length - 1; i >= 0; i--) {
-      if (_history[i].captured != Piece.noPiece) break;
+      if (_history[i].removed != Piece.noPiece) break;
       moves.add(_history[i]);
     }
 
@@ -101,7 +101,7 @@ class MillRecorder {
 
   Move stepAt(int index) => _history[index];
 
-  get stepsCount => _history.length;
+  get movesCount => _history.length;
 
   @override
   String toString() {

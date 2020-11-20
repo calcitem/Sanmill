@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/common/misc.dart';
+import 'package:sanmill/common/algorithm.dart';
 
 enum MoveType { place, move, remove }
 
@@ -91,13 +91,20 @@ const lineDirectionNumber = 3;
 enum File { A, B, C }
 
 const fileNumber = 3;
+const fileExNumber = fileNumber + 2;
 
 enum Rank { rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8 }
 
 const rankNumber = 8;
 
 bool isOk(int sq) {
-  return sq == 0 || (sq >= 8 && sq <= 31); // TODO: SQ_NONE?
+  bool ret = (sq == 0 || (sq >= 8 && sq <= 31));
+
+  if (ret == false) {
+    print("$sq is not OK");
+  }
+
+  return ret; // TODO: SQ_NONE?
 }
 
 int fileOf(int sq) {
@@ -118,20 +125,6 @@ int toSq(int move) {
   return (move & 0x00FF);
 }
 
-MoveType typeOf(int move) {
-  if (move < 0) {
-    return MoveType.remove;
-  } else if (move & 0x1f00 > 0) {
-    return MoveType.move;
-  }
-
-  return MoveType.place; // m & 0x00ff
-}
-
-int makeMove(int fromSq, int toSq) {
-  return (fromSq << 8) + toSq;
-}
-
-int reverseMove(int move) {
-  return makeMove(toSq(move), fromSq(move));
+int makeMove(int from, int to) {
+  return (from << 8) + to;
 }

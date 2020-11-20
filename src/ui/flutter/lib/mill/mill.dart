@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/common/types.dart';
+import 'types.dart';
 
 Map<int, int> squareToIndex = {
   8: 17,
@@ -56,7 +56,6 @@ int makeSquare(int file, int rank) {
 enum GameResult { pending, win, lose, draw }
 
 class Color {
-  //
   static const none = '*';
   static const black = '@';
   static const white = 'O';
@@ -85,24 +84,19 @@ class Color {
 }
 
 class Piece {
-  //
-  static const noPiece = '*';
-  //
-  static const blackStone = '@';
-  static const whiteStone = 'O';
-  static const ban = 'X';
+  static const noPiece = Color.none;
+  static const blackStone = Color.black;
+  static const whiteStone = Color.white;
+  static const ban = Color.ban;
 
-  static bool isBlack(String c) => '@'.contains(c);
-
-  static bool isWhite(String c) => 'O'.contains(c);
-
-  static bool isBan(String c) => 'X'.contains(c);
-
-  static bool isEmpty(String c) => '*'.contains(c);
+  static bool isEmpty(String c) => noPiece.contains(c);
+  static bool isBlack(String c) => blackStone.contains(c);
+  static bool isWhite(String c) => whiteStone.contains(c);
+  static bool isBan(String c) => ban.contains(c);
 }
 
 class Move {
-  static const invalidValue = -1;
+  static const invalidMove = -1;
 
   // Square
   int from = 0;
@@ -118,7 +112,7 @@ class Move {
   int fromIndex = 0;
   int toIndex = 0;
 
-  String captured;
+  String removed;
 
   // 'move' is the UCI engine's move-string
   String move;
@@ -129,13 +123,13 @@ class Move {
   String counterMarks;
 
   parse() {
-    if (!validateEngineMove(move)) {
+    if (!legal(move)) {
       throw "Error: Invalid Move: $move";
     }
 
     if (move[0] == '-' && move.length == "-(1,2)".length) {
       type = MoveType.remove;
-      from = fromFile = fromRank = fromIndex = invalidValue;
+      from = fromFile = fromRank = fromIndex = invalidMove;
       toFile = int.parse(move[2]);
       toRank = int.parse(move[4]);
       //captured = Piece.noPiece;
@@ -147,13 +141,13 @@ class Move {
       fromIndex = squareToIndex[from];
       toFile = int.parse(move[8]);
       toRank = int.parse(move[10]);
-      captured = Piece.noPiece;
+      removed = Piece.noPiece;
     } else if (move.length == "(1,2)".length) {
       type = MoveType.place;
-      from = fromFile = fromRank = fromIndex = invalidValue;
+      from = fromFile = fromRank = fromIndex = invalidMove;
       toFile = int.parse(move[1]);
       toRank = int.parse(move[3]);
-      captured = Piece.noPiece;
+      removed = Piece.noPiece;
     } else if (move == "draw") {
       // TODO
       print("Computer request draw");
@@ -169,44 +163,24 @@ class Move {
     parse();
   }
 
-  /*
-  Move(this.from, this.to,
-      {this.captured = Piece.noPiece, this.counterMarks = '0 0'}) {
-    //
-    fx = from % 9;
-    fy = from ~/ 9;
-
-    tx = to % 9;
-    ty = to ~/ 9;
-
-    if (fx < 0 || fx > 8 || fy < 0 || fy > 9) {
-      throw "Error: Invalid Step (from:$from, to:$to)";
-    }
-
-    move = String.fromCharCode('a'.codeUnitAt(0) + fx) + (9 - fy).toString();
-    move += String.fromCharCode('a'.codeUnitAt(0) + tx) + (9 - ty).toString();
-  }
-  */
-
   /// 引擎返回的招法用是如此表示的，例如:
   /// 落子：(1,2)
   /// 吃子：-(1,2)
   /// 走子：(3,1)->(2,1)
 
-  Move.fromEngineMove(String move) {
-    //
+  Move.set(String move) {
     this.move = move;
     parse();
   }
 
-  static bool validateEngineMove(String move) {
+  static bool legal(String move) {
     if (move == "draw") {
       return true; // TODO
     }
 
     if (move == null || move.length > "(3,1)->(2,1)".length) return false;
 
-    String sets = "0123456789(,)->";
+    String range = "0123456789(,)->";
 
     if (!(move[0] == '(' || move[0] == '-')) {
       return false;
@@ -217,7 +191,13 @@ class Move {
     }
 
     for (int i = 0; i < move.length; i++) {
-      if (!sets.contains(move[i])) return false;
+      if (!range.contains(move[i])) return false;
+    }
+
+    if (move.length == "(3,1)->(2,1)".length) {
+      if (move.substring(0, 4) == move.substring(7, 11)) {
+        return false;
+      }
     }
 
     return true;

@@ -18,34 +18,16 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/widgets/board.dart';
 
-import '../common/properties.dart';
+abstract class PiecesBasePainter extends CustomPainter {
+  final double width;
 
-class WordsOnBoard extends StatelessWidget {
-  //
-  static const digitsFontSize = 18.0;
+  final thePaint = Paint();
+  final gridWidth;
+  final squareWidth;
 
-  @override
-  Widget build(BuildContext context) {
-    final bChildren = <Widget>[], rChildren = <Widget>[];
-
-    for (var i = 0; i < 7; i++) {
-      if (i < 8) {
-        bChildren.add(Expanded(child: SizedBox()));
-        rChildren.add(Expanded(child: SizedBox()));
-      }
-    }
-
-    return DefaultTextStyle(
-      child: Column(
-        children: <Widget>[
-          Row(children: bChildren),
-          Expanded(child: SizedBox()),
-          Expanded(child: SizedBox()),
-          Row(children: rChildren),
-        ],
-      ),
-      style: TextStyle(color: Properties.boardTipsColor),
-    );
-  }
+  PiecesBasePainter({@required this.width})
+      : gridWidth = (width - Board.padding * 2),
+        squareWidth = (width - Board.padding * 2) / 7;
 }

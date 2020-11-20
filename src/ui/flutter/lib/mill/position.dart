@@ -18,11 +18,11 @@
 */
 
 import 'package:flutter/cupertino.dart';
+import 'package:sanmill/mill/mill.dart';
+import 'package:sanmill/mill/recorder.dart';
+import 'package:sanmill/mill/rule.dart';
 
-import '../common/types.dart';
-import '../mill/mill.dart';
-import '../mill/recorder.dart';
-import '../mill/rule.dart';
+import 'types.dart';
 
 class StateInfo {
   /*
@@ -44,10 +44,10 @@ class Position {
 
   GameResult result = GameResult.pending;
 
-  List<String> board = List<String>(40);
-  List<String> _grid = List<String>(49); // 7  *  7
+  List<String> board = List<String>(sqNumber);
+  List<String> _grid = List<String>(7 * 7);
 
-  MillRecorder _recorder;
+  GameRecorder _recorder;
 
   Map<String, int> pieceCountInHand = {Color.black: 12, Color.white: 12};
   Map<String, int> pieceCountOnBoard = {Color.black: 0, Color.white: 0};
@@ -64,6 +64,7 @@ class Position {
   String us = Color.black;
   String them = Color.white;
   String winner = Color.nobody;
+
   GameOverReason gameOverReason = GameOverReason.noReason;
 
   Phase phase = Phase.none;
@@ -145,57 +146,9 @@ class Position {
     return pieceOn(fromSq(move));
   }
 
-  bool selectPieceFR(int file, int rank) {
-    return selectPieceSQ(makeSquare(file, rank));
-  }
-
-  bool putPieceFR(int file, int rank) {
-    bool ret = putPieceSQ(makeSquare(file, rank));
-
-    if (ret) {
-      updateScore();
-    }
-
-    return ret;
-  }
-
-  bool movePieceFR(int file1, int rank1, int file2, int rank2) {
-    return movePieceSQ(makeSquare(file1, rank1), makeSquare(file2, rank2));
-  }
-
-  bool removePieceFR(int file, int rank) {
-    bool ret = removePieceSQ(makeSquare(file, rank));
-
-    if (ret) {
-      updateScore();
-    }
-
-    return ret;
-  }
-
-  bool selectPieceSQ(int sq) {
-    // TODO
-    return false;
-  }
-
-  bool putPieceSQ(int sq) {
-    // TODO
-    return false;
-  }
-
-  bool movePieceSQ(int fromSq, int toSq) {
-    // TODO
-    return false;
-  }
-
-  bool removePieceSQ(int sq) {
-    // TODO
-    return false;
-  }
-
-  bool movePiece(int fromSq, int toSq) {
-    if (selectPiece(fromSq)) {
-      return putPiece(toSq);
+  bool movePiece(int from, int to) {
+    if (selectPiece(from)) {
+      return putPiece(to);
     }
 
     return false;
@@ -219,47 +172,12 @@ class Position {
 
     // TODO
 
-    _recorder = MillRecorder(lastCapturedPosition: fen());
+    _recorder = GameRecorder(lastPositionWithRemove: fen());
   }
 
   Position() {
     score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
     init();
-  }
-
-  void set(String fenStr) {
-    /*
-       A FEN string defines a particular position using only the ASCII character set.
-
-       A FEN string contains six fields separated by a space. The fields are:
-
-       1) Piece placement. Each rank is described, starting
-          with rank 1 and ending with rank 8. Within each rank, the contents of each
-          square are described from file A through file C. Following the Standard
-          Algebraic Notation (SAN), each piece is identified by a single letter taken
-          from the standard English names. White pieces are designated using "O"
-          whilst Black uses "@". Blank uses "*". Banned uses "X".
-          noted using digits 1 through 8 (the number of blank squares), and "/"
-          separates ranks.
-
-       2) Active color. "w" means white moves next, "b" means black.
-
-       3) Phrase.
-
-       4) Action.
-
-       5) Black on board/Black in hand/White on board/White in hand/need to remove
-
-       6) Halfmove clock. This is the number of halfmoves since the last
-          capture. This is used to determine if a draw can be claimed under the
-          fifty-move rule.
-
-       7) Fullmove number. The number of the full move. It starts at 1, and is
-          incremented after Black's move.
-    */
-
-    // TODO
-    return;
   }
 
   /// fen() returns a FEN representation of the position.
@@ -354,19 +272,19 @@ class Position {
 
   /// Position::legal() tests whether a pseudo-legal move is legal
 
-  bool legal(int move) {
-    assert(isOk(move));
+  bool legal(Move move) {
+    if (!isOk(move.from) || !isOk(move.to)) return false;
 
     String us = _sideToMove;
-    int fromSQ = fromSq(move);
-    int toSQ = toSq(move);
 
-    if (fromSQ == toSQ) {
+    if (move.from == move.to) {
+      print("Move $move.move from == to");
       return false; // TODO: Same with is_ok(m)
     }
 
-    if (phase == Phase.moving && typeOf(move) != MoveType.remove) {
-      if (movedPiece(move) != us) {
+    if (move.type == MoveType.remove) {
+      if (movedPiece(move.to) != us) {
+        print("Move $move.to to != us");
         return false;
       }
     }
@@ -376,20 +294,10 @@ class Position {
     return true;
   }
 
-  /// Position::pseudo_legal() takes a random move and tests whether the move is
-  /// pseudo legal. It is used to validate moves from TT that can be corrupted
-  /// due to SMP concurrent access or hash position key aliasing.
-
-  bool pseudoLegal(int move) {
-    // TODO
-    return legal(move);
-  }
-
   void doMove(Move m) {
-    //
-    //if (!validateMove(m)) return null;
-
-    //final move = Move(m);
+    if (!legal(m)) {
+      return null;
+    }
 
     bool ret = false;
 
@@ -421,22 +329,11 @@ class Position {
 
     this.move = m;
 
-    //StepName.translate(this, move);
-    _recorder.stepIn(move, this);
-
-    // 交换走棋方
-    //_sideToMove = Color.opponent(_sideToMove);
-  }
-
-  void doNullMove() {
-    changeSideToMove();
-  }
-
-  void undoNullMove() {
-    changeSideToMove();
+    _recorder.moveIn(move, this);
   }
 
   bool posIsOk() {
+    // TODO
     return true;
   }
 
@@ -445,9 +342,9 @@ class Position {
   int piecesOnBoardCount() {
     pieceCountOnBoard[Color.black] = pieceCountOnBoard[Color.white] = 0;
 
-    for (int f = 1; f < 3 + 2; f++) {
-      for (int r = 0; r < 8; r++) {
-        int s = f * 8 + r;
+    for (int f = 1; f < fileExNumber; f++) {
+      for (int r = 0; r < rankNumber; r++) {
+        int s = f * rankNumber + r;
         if (board[s] == Piece.blackStone) {
           pieceCountOnBoard[Color.black]++;
         } else if (board[s] == Piece.whiteStone) {
@@ -473,6 +370,16 @@ class Position {
     return pieceCountOnBoard[Color.black] + pieceCountOnBoard[Color.white];
   }
 
+  void clearBoard() {
+    for (int i = 0; i < _grid.length; i++) {
+      _grid[i] = Piece.noPiece;
+    }
+
+    for (int i = 0; i < board.length; i++) {
+      board[i] = Piece.noPiece;
+    }
+  }
+
   int setPosition(Rule newRule) {
     result = GameResult.pending;
 
@@ -490,13 +397,7 @@ class Position {
 
     cmdline = "";
 
-    for (int i = 0; i < _grid.length; i++) {
-      _grid[i] = Piece.noPiece;
-    }
-
-    for (int i = 0; i < board.length; i++) {
-      board[i] = Piece.noPiece;
-    }
+    clearBoard();
 
     if (piecesOnBoardCount() == -1) {
       return -1;
@@ -509,6 +410,7 @@ class Position {
     createMoveTable();
     createMillTable();
     currentSquare = 0;
+
     return -1;
   }
 
@@ -523,13 +425,7 @@ class Position {
     winner = Color.nobody;
     gameOverReason = GameOverReason.noReason;
 
-    for (int i = 0; i < _grid.length; i++) {
-      _grid[i] = Piece.noPiece;
-    }
-
-    for (int i = 0; i < board.length; i++) {
-      board[i] = Piece.noPiece;
-    }
+    clearBoard();
 
     pieceCountOnBoard[Color.black] = pieceCountOnBoard[Color.white] = 0;
     pieceCountInHand[Color.black] =
@@ -761,13 +657,13 @@ class Position {
     return true;
   }
 
-  bool selectPiece(int s) {
+  bool selectPiece(int sq) {
     if (phase != Phase.moving) return false;
 
     if (action != Act.select && action != Act.place) return false;
 
-    if (board[s] == sideToMove()) {
-      currentSquare = s;
+    if (board[sq] == sideToMove()) {
+      currentSquare = sq;
       action = Act.place;
 
       return true;
@@ -793,18 +689,19 @@ class Position {
   bool command(String cmd) {
     // TODO
     /*
-  if (sscanf(cmd, "r%1u s%3d t%2u", &ruleIndex, &step, &t) == 3) {
-    if (ruleIndex <= 0 || ruleIndex > N_RULES) {
-      return false;
-    }
+    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleIndex, &step, &t) == 3) {
+      if (ruleIndex <= 0 || ruleIndex > N_RULES) {
+        return false;
+      }
 
-    return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
-  }
+      return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
+    }
   */
     print("position: command = $cmd");
 
-    if (cmd.length > 6 && cmd.substring(0, 5) == "Player") {
-      if (cmd[6] == '1') {
+    if (cmd.length > "Player".length &&
+        cmd.substring(0, "Player".length - 1) == "Player") {
+      if (cmd["Player".length] == '1') {
         return resign(Color.black);
       } else {
         return resign(Color.white);
@@ -1449,7 +1346,7 @@ class Position {
 
   int inHowManyMills(int s, String c, {int squareSelected = 0}) {
     int n = 0;
-    String locbak = Piece.noPiece;
+    String ptBak = Piece.noPiece;
 
     assert(0 <= squareSelected && squareSelected < sqNumber);
 
@@ -1458,20 +1355,19 @@ class Position {
     }
 
     if (squareSelected != 0) {
-      locbak = board[squareSelected];
+      ptBak = board[squareSelected];
       board[squareSelected] =
           _grid[squareToIndex[squareSelected]] = Piece.noPiece;
     }
 
     for (int l = 0; l < lineDirectionNumber; l++) {
-      // TODO: right?
       if (c == board[millTable[s][l][0]] && c == board[millTable[s][l][1]]) {
         n++;
       }
     }
 
     if (squareSelected != 0) {
-      board[squareSelected] = _grid[squareToIndex[squareSelected]] = locbak;
+      board[squareSelected] = _grid[squareToIndex[squareSelected]] = ptBak;
     }
 
     return n;
@@ -1490,7 +1386,6 @@ class Position {
       idx[2] = millTable[s][i][1];
 
       // no mill
-      // TODO: right?
       if (!(m == board[idx[1]] && m == board[idx[2]])) {
         continue;
       }
@@ -1571,45 +1466,37 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// 验证移动棋子的着法是否合法
-  bool validateMove(int from, int to) {
-    // 移动的棋子的选手，应该是当前方
-    //if (Color.of(_board[from]) != _sideToMove) return false;
-    return true;
-    //(StepValidate.validate(this, Move(from, to)));
-  }
-
   bool regret() {
     // TODO
     final lastMove = _recorder.removeLast();
     if (lastMove == null) return false;
 
     _grid[lastMove.from] = _grid[lastMove.to];
-    _grid[lastMove.to] = lastMove.captured;
+    _grid[lastMove.to] = lastMove.removed;
     board[lastMove.from] = board[lastMove.to];
-    board[lastMove.to] = lastMove.captured;
+    board[lastMove.to] = lastMove.removed;
 
     changeSideToMove();
 
-    final counterMarks = MillRecorder.fromCounterMarks(lastMove.counterMarks);
+    final counterMarks = GameRecorder.fromCounterMarks(lastMove.counterMarks);
     _recorder.halfMove = counterMarks.halfMove;
     _recorder.fullMove = counterMarks.fullMove;
 
-    if (lastMove.captured != Piece.noPiece) {
+    if (lastMove.removed != Piece.noPiece) {
       //
       // 查找上一个吃子局面（或开局），NativeEngine 需要
       final tempPosition = Position.clone(this);
 
-      final moves = _recorder.reverseMovesToPrevCapture();
+      final moves = _recorder.reverseMovesToPrevRemove();
       moves.forEach((move) {
         //
         tempPosition._grid[move.from] = tempPosition._grid[move.to];
-        tempPosition._grid[move.to] = move.captured;
+        tempPosition._grid[move.to] = move.removed;
 
         tempPosition._sideToMove = Color.opponent(tempPosition._sideToMove);
       });
 
-      _recorder.lastCapturedPosition = tempPosition.fen();
+      _recorder.lastPositionWithRemove = tempPosition.fen();
     }
 
     result = GameResult.pending;
@@ -1617,20 +1504,20 @@ class Position {
     return true;
   }
 
-  String movesSinceLastCaptured() {
+  String movesSinceLastRemove() {
     //
-    var steps = '', posAfterLastCaptured = 0;
+    var moves = '', posAfterLastRemove = 0;
 
-    for (var i = _recorder.stepsCount - 1; i >= 0; i--) {
-      if (_recorder.stepAt(i).captured != Piece.noPiece) break;
-      posAfterLastCaptured = i;
+    for (var i = _recorder.movesCount - 1; i >= 0; i--) {
+      if (_recorder.stepAt(i).removed != Piece.noPiece) break;
+      posAfterLastRemove = i;
     }
 
-    for (var i = posAfterLastCaptured; i < _recorder.stepsCount; i++) {
-      steps += ' ${_recorder.stepAt(i).move}';
+    for (var i = posAfterLastRemove; i < _recorder.movesCount; i++) {
+      moves += ' ${_recorder.stepAt(i).move}';
     }
 
-    return steps.length > 0 ? steps.substring(1) : '';
+    return moves.length > 0 ? moves.substring(1) : '';
   }
 
   get manualText => _recorder.buildManualText();
@@ -1649,5 +1536,5 @@ class Position {
 
   get lastMove => _recorder.last;
 
-  get lastCapturedPosition => _recorder.lastCapturedPosition;
+  get lastPositionWithRemove => _recorder.lastPositionWithRemove;
 }

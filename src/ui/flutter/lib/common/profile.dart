@@ -23,18 +23,16 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class Profile {
-  //
-  static const DefaultFileName = 'default-profile.json';
+  static const defaultFileName = 'default-profile.json';
   static Profile _shared;
 
   File _file;
   Map<String, dynamic> _values = {};
 
   static shared() async {
-    //
     if (_shared == null) {
       _shared = Profile();
-      await _shared._load(DefaultFileName);
+      await _shared._load(defaultFileName);
     }
 
     return _shared;
@@ -45,7 +43,6 @@ class Profile {
   operator []=(String key, dynamic value) => _values[key] = value;
 
   Future<bool> commit() async {
-    //
     _file.create(recursive: true);
 
     try {
@@ -60,7 +57,6 @@ class Profile {
   }
 
   Future<bool> _load(String fileName) async {
-    //
     final docDir = await getApplicationDocumentsDirectory();
     _file = File('${docDir.path}/$fileName');
 

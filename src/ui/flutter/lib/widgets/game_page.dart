@@ -18,53 +18,49 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/engine/analyze.dart';
+import 'package:sanmill/engine/engine.dart';
+import 'package:sanmill/engine/native_engine.dart';
+import 'package:sanmill/main.dart';
+import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/mill.dart';
+import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/services/player.dart';
+import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/style/toast.dart';
 
-import '../board/board_widget.dart';
-import '../common/properties.dart';
-import '../common/toast.dart';
-import '../common/types.dart';
-import '../engine/analysis.dart';
-import '../engine/engine.dart';
-import '../engine/native_engine.dart';
-import '../game/battle.dart';
-import '../main.dart';
-import '../mill/mill.dart';
-import '../services/player.dart';
+import 'board.dart';
 import 'settings_page.dart';
 
-class BattlePage extends StatefulWidget {
+class GamePage extends StatefulWidget {
   //
   static double boardMargin = 10.0, screenPaddingH = 10.0;
 
   final EngineType engineType;
   final AiEngine engine;
 
-  BattlePage(this.engineType) : engine = NativeEngine();
+  GamePage(this.engineType) : engine = NativeEngine();
 
   @override
-  _BattlePageState createState() => _BattlePageState();
+  _GamePageState createState() => _GamePageState();
 }
 
-class _BattlePageState extends State<BattlePage> {
+class _GamePageState extends State<GamePage> {
   //
   String _status = '';
-  bool _analysising = false;
-
-  //static int flag = 0;
+  bool _searching = false;
 
   @override
   void initState() {
-    //
     super.initState();
-    Battle.shared.init();
-
+    Game.shared.init();
     widget.engine.startup();
   }
 
   changeStatus(String status) => setState(() => _status = status);
 
   onBoardTap(BuildContext context, int index) {
-    final position = Battle.shared.position;
+    final position = Game.shared.position;
 
     int sq = indexToSquare[index];
 
@@ -75,13 +71,13 @@ class _BattlePageState extends State<BattlePage> {
     }
 
     // AI 走棋或正在搜索时，点击无效
-    if (Battle.shared.isAIsTurn() || Battle.shared.aiIsSearching()) {
+    if (Game.shared.isAiToMove() || Game.shared.aiIsSearching()) {
       return false;
     }
 
     // 如果未开局则开局
     if (position.phase == Phase.ready) {
-      Battle.shared.gameStart();
+      Game.shared.start();
     }
 
     // 判断执行选子、落子或去子
@@ -92,11 +88,11 @@ class _BattlePageState extends State<BattlePage> {
         if (position.putPiece(sq)) {
           if (position.action == Act.remove) {
             // 播放成三音效
-            //playSound(GAME_SOUND_MILL, position.side_to_move());
+            //Audios.playTone('mill.mp3');
             changeStatus('请吃子');
           } else {
             // 播放移动棋子音效
-            //playSound(GAME_SOUND_DROG, position.side_to_move());
+            //Audios.playTone('put.mp3');
             changeStatus('已落子');
           }
           result = true;
@@ -112,19 +108,16 @@ class _BattlePageState extends State<BattlePage> {
         continue select;
       select:
       case Act.select:
-        //piece = qgraphicsitem_cast<PieceItem *>(item);
-        //if (!piece)
-        //break;
         if (position.selectPiece(sq)) {
           // 播放选子音效
-          //playSound(GAME_SOUND_SELECT, position.side_to_move());
-          Battle.shared.select(index);
+          //Audios.playTone('select.mp3');
+          Game.shared.select(index);
           result = true;
           print("selectPiece: [$sq]");
           changeStatus('请落子');
         } else {
           // 播放禁止音效
-          //playSound(GAME_SOUND_BANNED, position.side_to_move());
+          //Audios.playTone('banned.mp3');
           print("selectPiece: skip [$sq]");
           changeStatus('选择的子不对');
         }
@@ -133,13 +126,13 @@ class _BattlePageState extends State<BattlePage> {
       case Act.remove:
         if (position.removePiece(sq)) {
           // 播放音效
-          //playSound(GAME_SOUND_REMOVE, position.side_to_move());
+          //Audios.playTone('remove.mp3');
           result = true;
           print("removePiece: [$sq]");
           changeStatus('已吃子');
         } else {
           // 播放禁止音效
-          //playSound(GAME_SOUND_BANNED, position.side_to_move());
+          //Audios.playTone('banned.mp3');
           print("removePiece: skip [$sq]");
           changeStatus('不能吃这个子');
         }
@@ -151,135 +144,46 @@ class _BattlePageState extends State<BattlePage> {
     }
 
     if (result) {
-      Battle.shared.cmdlist.add(position.cmdline);
+      Game.shared.moveHistory.add(position.cmdline);
 
       // 发信号更新状态栏
       setState(() {});
-      //message = QString::fromStdString(getTips());
-      //emit statusBarChanged(message);
-
-      // 将新增的棋谱行插入到ListModel
-      /*
-    currentRow = manualListModel.rowCount() - 1;
-    int k = 0;
-
-    // 输出命令行
-    for (const auto & i : *(cmd_list())) {
-    // 跳过已添加的，因标准list容器没有下标
-    if (k++ <= currentRow)
-    continue;
-    manualListModel.insertRow(++currentRow);
-    manualListModel.setData(manualListModel.index(currentRow), i.c_str());
-    }
-     */
-
-      // 播放胜利或失败音效
-      /*
-      String winner = position.winner;
-      if (winner != Color.nobody &&
-          (manualListModel.data(manualListModel.index(currentRow - 1)))
-              .toString()
-              .contains("Time over.")) playSound(GAME_SOUND_WIN, winner);
-       */
 
       // AI设置
       // 如果还未决出胜负
       if (position.winner == Color.nobody) {
-        // Color.black is TODO
-        //resumeAiThreads(position.sideToMove());
         engineToGo();
       }
     }
 
-    Battle.shared.sideToMove = position.sideToMove();
+    Game.shared.sideToMove = position.sideToMove();
 
     setState(() {});
 
     return result;
-
-    // TODO:
-
-    // 仅 Position 中的 side 指示一方能动棋
-    //if (position.side != Color.black) return;
-
-    final tapedPiece = position.pieceOnGrid(index);
-    print("Tap piece $tapedPiece at <$index>");
-
-    switch (position.phase) {
-      case Phase.placing:
-        engineToGo();
-        break;
-      case Phase.moving:
-        // 之前已经有棋子被选中了
-        if (Battle.shared.focusIndex != Move.invalidValue &&
-            Color.of(position.pieceOnGrid(Battle.shared.focusIndex)) ==
-                Color.black) {
-          //
-          // 当前点击的棋子和之前已经选择的是同一个位置
-          if (Battle.shared.focusIndex == index) return;
-
-          // 之前已经选择的棋子和现在点击的棋子是同一边的，说明是选择另外一个棋子
-          final focusPiece = position.pieceOnGrid(Battle.shared.focusIndex);
-
-          if (Color.isSameColor(focusPiece, tapedPiece)) {
-            //
-            Battle.shared.select(index);
-            //
-          } else if (Battle.shared.move(Battle.shared.focusIndex, index)) {
-            // 现在点击的棋子和上一次选择棋子不同边，要么是吃子，要么是移动棋子到空白处
-            final result = Battle.shared.scanBattleResult();
-
-            switch (result) {
-              case GameResult.pending:
-                engineToGo();
-                break;
-              case GameResult.win:
-                gotWin();
-                break;
-              case GameResult.lose:
-                gotLose();
-                break;
-              case GameResult.draw:
-                gotDraw();
-                break;
-            }
-          }
-          //
-        } else {
-          // 之前未选择棋子，现在点击就是选择棋子
-          if (tapedPiece != Piece.noPiece) Battle.shared.select(index);
-        }
-
-        break;
-      default:
-        break;
-    }
-
-    setState(() {});
   }
 
   engineToGo() async {
     // TODO
-    while (Battle.shared.position.sideToMove() == Color.white) {
-      changeStatus('电脑思考中...');
+    while (Game.shared.position.sideToMove() == Color.white) {
+      changeStatus('对方思考中...');
 
-      final response = await widget.engine.search(Battle.shared.position);
+      final response = await widget.engine.search(Game.shared.position);
 
       if (response.type == 'move') {
-        //
         Move mv = response.value;
         final Move move = new Move(mv.move);
 
         //Battle.shared.move = move;
-        Battle.shared.command(move.move);
+        Game.shared.command(move.move);
 
-        final winner = Battle.shared.position.winner;
+        final winner = Game.shared.position.winner;
 
         switch (winner) {
           case Color.nobody:
-            if (Battle.shared.position.phase == Phase.placing) {
+            if (Game.shared.position.phase == Phase.placing) {
               changeStatus('请摆子');
-            } else if (Battle.shared.position.phase == Phase.moving) {
+            } else if (Game.shared.position.phase == Phase.moving) {
               changeStatus('请走子');
             }
             break;
@@ -296,28 +200,22 @@ class _BattlePageState extends State<BattlePage> {
             gotDraw();
             break;
         }
-        //
       } else {
-        //
         changeStatus('Error: ${response.type}');
       }
     }
   }
 
   newGame() {
-    //
     confirm() {
       Navigator.of(context).pop();
-      Battle.shared.newGame();
-      //setState(() {});
+      Game.shared.newGame();
       changeStatus('新游戏');
 
-      if (Battle.shared.isAIsTurn()) {
+      if (Game.shared.isAiToMove()) {
         print("New Game: AI's turn.");
         engineToGo();
       }
-
-      //setState(() {});
     }
 
     cancel() => Navigator.of(context).pop();
@@ -326,7 +224,7 @@ class _BattlePageState extends State<BattlePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('新局？', style: TextStyle(color: Properties.primaryColor)),
+          title: Text('新局？', style: TextStyle(color: UIColors.primaryColor)),
           content: SingleChildScrollView(child: Text('开始新局？')),
           actions: <Widget>[
             FlatButton(child: Text('确定'), onPressed: confirm),
@@ -337,33 +235,32 @@ class _BattlePageState extends State<BattlePage> {
     );
   }
 
-  analysisPosition() async {
+  analyzePosition() async {
     //
     Toast.toast(context, msg: '正在分析局面...', position: ToastPostion.bottom);
 
-    setState(() => _analysising = true);
+    setState(() => _searching = true);
 
     try {} catch (e) {
       Toast.toast(context, msg: '错误: $e', position: ToastPostion.bottom);
     } finally {
-      setState(() => _analysising = false);
+      setState(() => _searching = false);
     }
   }
 
-  showAnalysisItems(
+  showAnalyzeItems(
     BuildContext context, {
     String title,
-    List<AnalysisItem> items,
-    Function(AnalysisItem item) callback,
+    List<AnalyzeItem> items,
+    Function(AnalyzeItem item) callback,
   }) {
-    //
     final List<Widget> children = [];
 
     for (var item in items) {
       children.add(
         ListTile(
-          title: Text(item.stepName, style: TextStyle(fontSize: 18)),
-          subtitle: Text('胜率：${item.winrate}%'),
+          title: Text(item.moveName, style: TextStyle(fontSize: 18)),
+          subtitle: Text('胜率：${item.winRate}%'),
           trailing: Text('分数：${item.score}'),
           onTap: () => callback(item),
         ),
@@ -384,7 +281,7 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotWin() {
     //
-    Battle.shared.position.result = GameResult.win;
+    Game.shared.position.result = GameResult.win;
     //Audios.playTone('win.mp3');
 
     showDialog(
@@ -392,7 +289,7 @@ class _BattlePageState extends State<BattlePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('赢了', style: TextStyle(color: Properties.primaryColor)),
+          title: Text('赢了', style: TextStyle(color: UIColors.primaryColor)),
           content: Text('恭喜您取得了伟大的胜利！'),
           actions: <Widget>[
             FlatButton(child: Text('再来一盘'), onPressed: newGame),
@@ -407,12 +304,12 @@ class _BattlePageState extends State<BattlePage> {
     if (widget.engineType == EngineType.Cloud)
       Player.shared.increaseWinCloudEngine();
     else
-      Player.shared.increaseWinPhoneAi();
+      Player.shared.increaseWinAi();
   }
 
   void gotLose() {
     //
-    Battle.shared.position.result = GameResult.lose;
+    Game.shared.position.result = GameResult.lose;
     //Audios.playTone('lose.mp3');
 
     showDialog(
@@ -420,7 +317,7 @@ class _BattlePageState extends State<BattlePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('输了', style: TextStyle(color: Properties.primaryColor)),
+          title: Text('输了', style: TextStyle(color: UIColors.primaryColor)),
           content: Text('勇士！坚定战斗，虽败犹荣！'),
           actions: <Widget>[
             FlatButton(child: Text('再来一盘'), onPressed: newGame),
@@ -435,14 +332,14 @@ class _BattlePageState extends State<BattlePage> {
 
   void gotDraw() {
     //
-    Battle.shared.position.result = GameResult.draw;
+    Game.shared.position.result = GameResult.draw;
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('和���', style: TextStyle(color: Properties.primaryColor)),
+          title: Text('和棋', style: TextStyle(color: UIColors.primaryColor)),
           content: Text('您用自己的力量捍卫了和平！'),
           actions: <Widget>[
             FlatButton(child: Text('再来一盘'), onPressed: newGame),
@@ -463,17 +360,17 @@ class _BattlePageState extends State<BattlePage> {
 
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
-      BattlePage.screenPaddingH =
-          (windowSize.width - width) / 2 - BattlePage.boardMargin;
+      GamePage.screenPaddingH =
+          (windowSize.width - width) / 2 - GamePage.boardMargin;
     }
   }
 
   Widget createPageHeader() {
     //
     final titleStyle =
-        TextStyle(fontSize: 28, color: Properties.darkTextPrimaryColor);
+        TextStyle(fontSize: 28, color: UIColors.darkTextPrimaryColor);
     final subTitleStyle =
-        TextStyle(fontSize: 16, color: Properties.darkTextSecondaryColor);
+        TextStyle(fontSize: 16, color: UIColors.darkTextSecondaryColor);
 
     return Container(
       margin: EdgeInsets.only(top: SanmillApp.StatusBarHeight),
@@ -483,7 +380,7 @@ class _BattlePageState extends State<BattlePage> {
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.arrow_back,
-                    color: Properties.darkTextPrimaryColor),
+                    color: UIColors.darkTextPrimaryColor),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               Expanded(child: SizedBox()),
@@ -493,8 +390,8 @@ class _BattlePageState extends State<BattlePage> {
                   style: titleStyle),
               Expanded(child: SizedBox()),
               IconButton(
-                icon: Icon(Icons.settings,
-                    color: Properties.darkTextPrimaryColor),
+                icon:
+                    Icon(Icons.settings, color: UIColors.darkTextPrimaryColor),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SettingsPage()),
                 ),
@@ -506,7 +403,7 @@ class _BattlePageState extends State<BattlePage> {
             width: 180,
             margin: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: Properties.boardBackgroundColor,
+              color: UIColors.boardBackgroundColor,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -523,12 +420,11 @@ class _BattlePageState extends State<BattlePage> {
     //
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: BattlePage.screenPaddingH,
-        vertical: BattlePage.boardMargin,
+        horizontal: GamePage.screenPaddingH,
+        vertical: GamePage.boardMargin,
       ),
-      child: BoardWidget(
-        width:
-            MediaQuery.of(context).size.width - BattlePage.screenPaddingH * 2,
+      child: Board(
+        width: MediaQuery.of(context).size.width - GamePage.screenPaddingH * 2,
         onBoardTap: onBoardTap,
       ),
     );
@@ -536,14 +432,14 @@ class _BattlePageState extends State<BattlePage> {
 
   Widget createOperatorBar() {
     //
-    final buttonStyle = TextStyle(color: Properties.primaryColor, fontSize: 20);
+    final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: Properties.boardBackgroundColor,
+        color: UIColors.boardBackgroundColor,
       ),
-      margin: EdgeInsets.symmetric(horizontal: BattlePage.screenPaddingH),
+      margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Row(children: <Widget>[
         Expanded(child: SizedBox()),
@@ -552,14 +448,14 @@ class _BattlePageState extends State<BattlePage> {
         FlatButton(
           child: Text('悔棋', style: buttonStyle),
           onPressed: () {
-            Battle.shared.regret(steps: 2);
+            Game.shared.regret(steps: 2);
             setState(() {});
           },
         ),
         Expanded(child: SizedBox()),
         FlatButton(
           child: Text('分析', style: buttonStyle),
-          onPressed: _analysising ? null : analysisPosition,
+          onPressed: _searching ? null : analyzePosition,
         ),
         Expanded(child: SizedBox()),
       ]),
@@ -570,12 +466,12 @@ class _BattlePageState extends State<BattlePage> {
     //
     final size = MediaQuery.of(context).size;
 
-    final manualText = Battle.shared.position.manualText;
+    final manualText = Game.shared.position.manualText;
 
     if (size.height / size.width > 16 / 9) {
       return buildManualPanel(manualText);
     } else {
-      return buildExpandableManaulPanel(manualText);
+      return buildExpandableRecordPanel(manualText);
     }
   }
 
@@ -583,7 +479,7 @@ class _BattlePageState extends State<BattlePage> {
     //
     final manualStyle = TextStyle(
       fontSize: 18,
-      color: Properties.darkTextSecondaryColor,
+      color: UIColors.darkTextSecondaryColor,
       height: 1.5,
     );
 
@@ -595,20 +491,19 @@ class _BattlePageState extends State<BattlePage> {
     );
   }
 
-  Widget buildExpandableManaulPanel(String text) {
+  Widget buildExpandableRecordPanel(String text) {
     //
     final manualStyle = TextStyle(fontSize: 18, height: 1.5);
 
     return Expanded(
       child: IconButton(
-        icon: Icon(Icons.expand_less, color: Properties.darkTextPrimaryColor),
+        icon: Icon(Icons.expand_less, color: UIColors.darkTextPrimaryColor),
         onPressed: () => showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
-              title:
-                  Text('棋谱', style: TextStyle(color: Properties.primaryColor)),
+              title: Text('棋谱', style: TextStyle(color: UIColors.primaryColor)),
               content:
                   SingleChildScrollView(child: Text(text, style: manualStyle)),
               actions: <Widget>[
@@ -635,7 +530,7 @@ class _BattlePageState extends State<BattlePage> {
     final footer = buildFooter();
 
     return Scaffold(
-      backgroundColor: Properties.darkBackgroundColor,
+      backgroundColor: UIColors.darkBackgroundColor,
       body: Column(children: <Widget>[header, board, operatorBar, footer]),
     );
   }

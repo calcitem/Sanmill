@@ -18,25 +18,23 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/widgets/board.dart';
 
-import '../board/painter_base.dart';
-import '../common/properties.dart';
-import 'board_widget.dart';
+import 'painter_base.dart';
 
-class BoardPainter extends PainterBase {
-  //
+class BoardPainter extends PiecesBasePainter {
   BoardPainter({@required double width}) : super(width: width);
 
   @override
   void paint(Canvas canvas, Size size) {
-    //
     doPaint(
       canvas,
       thePaint,
       gridWidth,
       squareWidth,
-      offsetX: BoardWidget.padding + squareWidth / 2,
-      offsetY: BoardWidget.padding + BoardWidget.digitsHeight + squareWidth / 2,
+      offsetX: Board.padding + squareWidth / 2,
+      offsetY: Board.padding + Board.digitsHeight + squareWidth / 2,
     );
   }
 
@@ -53,8 +51,7 @@ class BoardPainter extends PainterBase {
     double offsetX,
     double offsetY,
   }) {
-    //
-    paint.color = Properties.boardLineColor;
+    paint.color = UIColors.boardLineColor;
     paint.style = PaintingStyle.stroke;
 
     const double borderLineWidth = 2.0;

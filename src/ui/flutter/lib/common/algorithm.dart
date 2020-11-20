@@ -20,7 +20,6 @@
 abs(value) => value > 0 ? value : -value;
 
 int binarySearch(List<int> array, int start, int end, int key) {
-  //
   if (start > end) return -1;
 
   if (array[start] == key) return start;

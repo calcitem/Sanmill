@@ -19,7 +19,7 @@
 
 import 'package:flutter/material.dart';
 
-class Properties {
+class UIColors {
   //
   static const logoColor = Color(0xFF6D000D);
 

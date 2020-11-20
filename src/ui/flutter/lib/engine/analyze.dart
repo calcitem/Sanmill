@@ -17,41 +17,37 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class AnalysisItem {
-  //
-  String move, stepName;
+class AnalyzeItem {
+  String move, moveName;
   int score;
-  double winrate;
+  double winRate;
 
-  AnalysisItem({this.move, this.score, this.winrate});
+  AnalyzeItem({this.move, this.score, this.winRate});
 
   @override
   String toString() {
-    return '{move: ${stepName ?? move}, score: $score, winrate: $winrate}';
+    return '{move: ${moveName ?? move}, score: $score, winRate: $winRate}';
   }
 }
 
-class AnalysisFetcher {
-  //
-  static List<AnalysisItem> fetch(String response, {limit = 5}) {
-    //
+class AnalyzeFetcher {
+  static List<AnalyzeItem> fetch(String response, {limit = 5}) {
     final segments = response.split('|');
 
-    List<AnalysisItem> result = [];
+    List<AnalyzeItem> result = [];
 
-    final regx = RegExp(r'move:(.{4}).+score:(\-?\d+).+winrate:(\d+.?\d*)');
+    final regExp = RegExp(r'move:(.{4}).+score:(\-?\d+).+winRate:(\d+.?\d*)');
 
     for (var segment in segments) {
-      //
-      final match = regx.firstMatch(segment);
+      final match = regExp.firstMatch(segment);
 
       if (match == null) break;
 
       final move = match.group(1);
       final score = int.parse(match.group(2));
-      final winrate = double.parse(match.group(3));
+      final winRate = double.parse(match.group(3));
 
-      result.add(AnalysisItem(move: move, score: score, winrate: winrate));
+      result.add(AnalyzeItem(move: move, score: score, winRate: winRate));
       if (result.length == limit) break;
     }
 

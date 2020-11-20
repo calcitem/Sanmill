@@ -23,33 +23,33 @@ import 'dart:io';
 class RankItem {
   //
   String name;
-  int winCloudEngine, winPhoneAi;
+  int winCloudEngine, winAi;
 
   RankItem(Map<String, dynamic> values) {
     name = values['name'] ?? '无名英雄';
     winCloudEngine = values['win_cloud_engine'] ?? 0;
-    winPhoneAi = values['win_phone_ai'] ?? 0;
+    winAi = values['win_ai'] ?? 0;
   }
 
   RankItem.empty() {
     name = '无名英雄';
     winCloudEngine = 0;
-    winPhoneAi = 0;
+    winAi = 0;
   }
 
   RankItem.mock() {
     name = '我是英雄';
     winCloudEngine = 3;
-    winPhoneAi = 12;
+    winAi = 12;
   }
 
   Map<String, dynamic> toMap() => {
         'name': name,
         'win_cloud_engine': winCloudEngine,
-        'win_phone_ai': winPhoneAi,
+        'win_ai': winAi,
       };
 
-  get score => winCloudEngine * 30 + winPhoneAi * 5;
+  get score => winCloudEngine * 30 + winAi * 5;
 }
 
 class Ranks {
@@ -113,7 +113,7 @@ class Ranks {
           'uuid': uuid,
           'name': rank.name,
           'win_cloud_engine': '${rank.winCloudEngine}',
-          'win_phone_ai': '${rank.winPhoneAi}',
+          'win_ai': '${rank.winAi}',
         });
 
     final httpClient = HttpClient();

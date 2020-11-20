@@ -18,30 +18,25 @@
 */
 
 import 'package:flutter/services.dart';
+import 'package:sanmill/mill/mill.dart';
+import 'package:sanmill/mill/position.dart';
 
-import '../mill/mill.dart';
-import '../mill/position.dart';
 import 'engine.dart';
 
 class NativeEngine extends AiEngine {
-  //
   static const platform = const MethodChannel('com.calcitem.sanmill/engine');
 
   Future<void> startup() async {
-    //
     try {
       await platform.invokeMethod('startup');
     } catch (e) {
       print('Native startup Error: $e');
     }
 
-    //await setBookFile();
-
     await waitResponse(['uciok'], sleep: 1, times: 30);
   }
 
   Future<void> send(String command) async {
-    //
     try {
       print("send: $command");
       await platform.invokeMethod('send', command);
@@ -51,7 +46,6 @@ class NativeEngine extends AiEngine {
   }
 
   Future<String> read() async {
-    //
     try {
       return await platform.invokeMethod('read');
     } catch (e) {
@@ -62,7 +56,6 @@ class NativeEngine extends AiEngine {
   }
 
   Future<void> shutdown() async {
-    //
     try {
       await platform.invokeMethod('shutdown');
     } catch (e) {
@@ -71,7 +64,6 @@ class NativeEngine extends AiEngine {
   }
 
   Future<bool> isReady() async {
-    //
     try {
       return await platform.invokeMethod('isReady');
     } catch (e) {
@@ -82,7 +74,6 @@ class NativeEngine extends AiEngine {
   }
 
   Future<bool> isThinking() async {
-    //
     try {
       return await platform.invokeMethod('isThinking');
     } catch (e) {
@@ -92,32 +83,11 @@ class NativeEngine extends AiEngine {
     return null;
   }
 
-/*
-  Future setBookFile() async {
-    //
-    final docDir = await getApplicationDocumentsDirectory();
-    final bookFile = File('${docDir.path}/book.dat');
-
-    try {
-      if (!await bookFile.exists()) {
-        await bookFile.create(recursive: true);
-        final bytes = await rootBundle.load("assets/book.dat");
-        await bookFile.writeAsBytes(bytes.buffer.asUint8List());
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    await send("setoption bookfiles ${bookFile.path}");
-  }
-  */
-
   @override
   Future<EngineResponse> search(Position position, {bool byUser = true}) async {
-    //
     if (await isThinking()) await stopSearching();
 
-    send(buildPositionCommand(position));
+    send(getPositionFen(position));
     send('go');
 
     final response = await waitResponse(['bestmove', 'nobestmove']);
@@ -125,13 +95,12 @@ class NativeEngine extends AiEngine {
     print("response: $response");
 
     if (response.startsWith('bestmove')) {
-      //
-      var step = response.substring('bestmove'.length + 1);
+      var best = response.substring('bestmove'.length + 1);
 
-      final pos = step.indexOf(' ');
-      if (pos > -1) step = step.substring(0, pos);
+      final pos = best.indexOf(' ');
+      if (pos > -1) best = best.substring(0, pos);
 
-      return EngineResponse('move', value: Move.fromEngineMove(step));
+      return EngineResponse('move', value: Move.set(best));
     }
 
     if (response.startsWith('nobestmove')) {
@@ -143,7 +112,6 @@ class NativeEngine extends AiEngine {
 
   Future<String> waitResponse(List<String> prefixes,
       {sleep = 100, times = 100}) async {
-    //
     if (times <= 0) return '';
 
     final response = await read();
@@ -164,7 +132,7 @@ class NativeEngine extends AiEngine {
     await send('stop');
   }
 
-  String buildPositionCommand(Position position) {
+  String getPositionFen(Position position) {
     /*
     final startPosition = position.lastCapturedPosition;
     final moves = position.movesSinceLastCaptured();

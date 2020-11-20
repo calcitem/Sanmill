@@ -18,11 +18,11 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/engine/engine.dart';
+import 'package:sanmill/main.dart';
+import 'package:sanmill/style/colors.dart';
 
-import '../common/properties.dart';
-import '../engine/engine.dart';
-import '../main.dart';
-import 'battle_page.dart';
+import 'game_page.dart';
 import 'settings_page.dart';
 
 class MainMenu extends StatefulWidget {
@@ -31,13 +31,11 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
-  //
   AnimationController inController, shadowController;
   Animation inAnimation, shadowAnimation;
 
   @override
   void initState() {
-    //
     super.initState();
 
     inController = AnimationController(
@@ -78,7 +76,6 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
   }
 
   navigateTo(Widget page) async {
-    //
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => page));
 
@@ -108,7 +105,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
     );
     final menuItemStyle = TextStyle(
       fontSize: 28,
-      color: Properties.primaryColor,
+      color: UIColors.primaryColor,
       shadows: [menuItemShadow],
     );
 
@@ -123,7 +120,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
           Expanded(child: SizedBox()),
           FlatButton(
             child: Text('人机对战', style: menuItemStyle),
-            onPressed: () => navigateTo(BattlePage(EngineType.Native)),
+            onPressed: () => navigateTo(GamePage(EngineType.Native)),
           ),
           Expanded(child: SizedBox()),
           Text('Calcitem',
@@ -134,7 +131,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
     );
 
     return Scaffold(
-      backgroundColor: Properties.lightBackgroundColor,
+      backgroundColor: UIColors.lightBackgroundColor,
       body: Stack(
         children: <Widget>[
           menuItems,
@@ -142,7 +139,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
             top: SanmillApp.StatusBarHeight,
             left: 10,
             child: IconButton(
-              icon: Icon(Icons.settings, color: Properties.primaryColor),
+              icon: Icon(Icons.settings, color: UIColors.primaryColor),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => SettingsPage()),
               ),

@@ -22,9 +22,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import './routes/main_menu.dart';
 import 'services/audios.dart';
 import 'services/player.dart';
+import 'widgets/main_menu.dart';
 
 void main() {
   //

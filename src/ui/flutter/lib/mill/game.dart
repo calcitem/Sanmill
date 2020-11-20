@@ -17,14 +17,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/common/types.dart';
+import 'package:sanmill/mill/types.dart';
 
-import '../mill/mill.dart';
-import '../mill/position.dart';
+import 'mill.dart';
+import 'position.dart';
 
-class Battle {
-  //
-  static Battle _instance;
+class Game {
+  static Game _instance;
 
   Position _position;
   int _focusIndex, _blurIndex;
@@ -32,21 +31,16 @@ class Battle {
   String sideToMove = Color.black;
 
   // 是否黑白反转
-  bool isInverted;
+  bool isColorInverted;
 
-  Map<String, bool> isAiPlayer = {Color.black: false, Color.white: true};
-  Map<String, bool> isAiSearching = {Color.black: false, Color.white: false};
-
-  Battle() {
-    //cmdlist = new List;
-  }
+  Map<String, bool> isAi = {Color.black: false, Color.white: true};
+  Map<String, bool> isSearching = {Color.black: false, Color.white: false};
 
   bool aiIsSearching() {
-    return isAiSearching[Color.black] == true ||
-        isAiSearching[Color.white] == true;
+    return isSearching[Color.black] == true || isSearching[Color.white] == true;
   }
 
-  void gameStart() {
+  void start() {
     position.start();
   }
 
@@ -60,7 +54,7 @@ class Battle {
   static bool hasSound = true;
 
   // 是否必败时认输
-  bool resignIfMostLose_ = false;
+  bool resignIfMostLose = false;
 
   // 是否自动交换先后手
   bool isAutoChangeFirstMove = false;
@@ -74,34 +68,34 @@ class Battle {
   // 提示语
   String tips;
 
-  List<String> cmdlist = [""];
+  List<String> moveHistory = [""];
 
   String getTips() => tips;
 
-  bool isAIsTurn() {
-    return isAiPlayer[sideToMove];
+  bool isAiToMove() {
+    return isAi[sideToMove];
   }
 
   static get shared {
-    _instance ??= Battle();
+    _instance ??= Game();
     return _instance;
   }
 
   init() {
     _position = Position();
-    _focusIndex = _blurIndex = Move.invalidValue;
+    _focusIndex = _blurIndex = Move.invalidMove;
   }
 
   newGame() {
-    Battle.shared.position.init();
-    _focusIndex = _blurIndex = Move.invalidValue;
-    cmdlist = [""];
+    Game.shared.position.init();
+    _focusIndex = _blurIndex = Move.invalidMove;
+    moveHistory = [""];
     sideToMove = Color.black;
   }
 
   select(int pos) {
     _focusIndex = pos;
-    _blurIndex = Move.invalidValue;
+    _blurIndex = Move.invalidMove;
     //Audios.playTone('click.mp3');
   }
 
@@ -112,30 +106,23 @@ class Battle {
     _blurIndex = from;
     _focusIndex = to;
 
-    /*
-    if (ChessRules.checked(position)) {
-      //Audios.playTone('check.mp3');
-    } else {
-      //Audios.playTone(captured != Piece.Empty ? 'capture.mp3' : 'move.mp3');
-    }
-     */
-
     return true;
   }
 
-  bool regret({steps = 2}) {
+  bool regret({moves = 2}) {
     //
     // 轮到自己走棋的时候，才能悔棋
+    // TODO
     if (_position.side != Color.white) {
       //Audios.playTone('invalid.mp3');
       return false;
     }
 
-    var regreted = false;
+    var regretted = false;
 
     /// 悔棋一回合（两步），才能撤回自己上一次的动棋
 
-    for (var i = 0; i < steps; i++) {
+    for (var i = 0; i < moves; i++) {
       //
       if (!_position.regret()) break;
 
@@ -148,13 +135,13 @@ class Battle {
         //
       } else {
         //
-        _blurIndex = _focusIndex = Move.invalidValue;
+        _blurIndex = _focusIndex = Move.invalidMove;
       }
 
-      regreted = true;
+      regretted = true;
     }
 
-    if (regreted) {
+    if (regretted) {
       //Audios.playTone('regret.mp3');
       return true;
     }
@@ -164,7 +151,7 @@ class Battle {
   }
 
   clear() {
-    _blurIndex = _focusIndex = Move.invalidValue;
+    _blurIndex = _focusIndex = Move.invalidMove;
   }
 
   GameResult scanBattleResult() {
@@ -196,12 +183,12 @@ class Battle {
 
     // 如果未开局则开局
     if (position.phase == Phase.ready) {
-      gameStart();
+      start();
     }
 
     print("Computer: $cmd");
 
-    cmdlist.add(cmd);
+    moveHistory.add(cmd);
 
     if (!position.command(cmd)) {
       return false;
@@ -209,30 +196,6 @@ class Battle {
 
     sideToMove = position.sideToMove();
 
-    String winner = position.winner;
-
-    if (winner != Color.nobody) {
-      //resumeAiThreads(position.sideToMove());
-      // TODO
-    } else {
-      // pauseThreads();
-
-      /*
-                  if (gameOptions.getAutoRestart()) {
-                saveScore();
-
-                gameReset();
-                gameStart();
-
-                if (isAiPlayer[BLACK]) {
-                    setEngine(BLACK, true);
-                }
-                if (isAiPlayer[WHITE]) {
-                    setEngine(WHITE, true);
-                }
-            }
-       */
-    }
     total = position.score[Color.black] +
         position.score[Color.white] +
         position.score[Color.draw];
@@ -247,7 +210,7 @@ class Battle {
       drawRate = position.score[Color.draw] * 100 / total;
     }
 
-    String outStr = "Score: " +
+    String stat = "Score: " +
         position.score[Color.black].toString() +
         " : " +
         position.score[Color.white].toString() +
@@ -264,7 +227,7 @@ class Battle {
         "%" +
         "\n";
 
-    print(outStr);
+    print(stat);
     return true;
   }
 }

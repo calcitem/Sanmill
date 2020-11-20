@@ -29,7 +29,6 @@ class Audios {
     //
     try {
       if (_bgmPlayer == null) {
-        //
         _fixedBgmPlayer = AudioPlayer();
         _bgmPlayer =
             AudioCache(prefix: 'audios/', fixedPlayer: _fixedBgmPlayer);
@@ -43,7 +42,6 @@ class Audios {
   }
 
   static playTone(String fileName) async {
-    //
     try {
       if (_tonePlayer == null) {
         //
