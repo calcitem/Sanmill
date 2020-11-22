@@ -59,6 +59,32 @@ class _GamePageState extends State<GamePage> {
 
   changeStatus(String status) => setState(() => _status = status);
 
+  void showTips() {
+    final winner = Game.shared.position.winner;
+
+    switch (winner) {
+      case Color.nobody:
+        if (Game.shared.position.phase == Phase.placing) {
+          changeStatus('请摆子');
+        } else if (Game.shared.position.phase == Phase.moving) {
+          changeStatus('请走子');
+        }
+        break;
+      case Color.black:
+        changeStatus('黑方胜');
+        gotWin();
+        break;
+      case Color.white:
+        changeStatus('白方胜');
+        gotLose();
+        break;
+      case Color.draw:
+        changeStatus('和棋');
+        gotDraw();
+        break;
+    }
+  }
+
   onBoardTap(BuildContext context, int index) {
     final position = Game.shared.position;
 
@@ -165,6 +191,8 @@ class _GamePageState extends State<GamePage> {
       // 如果还未决出胜负
       if (position.winner == Color.nobody) {
         engineToGo();
+      } else {
+        showTips();
       }
     }
 
@@ -188,30 +216,7 @@ class _GamePageState extends State<GamePage> {
 
         //Battle.shared.move = move;
         Game.shared.doMove(move.move);
-
-        final winner = Game.shared.position.winner;
-
-        switch (winner) {
-          case Color.nobody:
-            if (Game.shared.position.phase == Phase.placing) {
-              changeStatus('请摆子');
-            } else if (Game.shared.position.phase == Phase.moving) {
-              changeStatus('请走子');
-            }
-            break;
-          case Color.black:
-            changeStatus('黑方胜');
-            gotLose();
-            break;
-          case Color.white: // TODO
-            changeStatus('白方胜');
-            gotWin();
-            break;
-          case Color.draw:
-            changeStatus('平局');
-            gotDraw();
-            break;
-        }
+        showTips();
       } else {
         changeStatus('Error: ${response.type}');
       }
