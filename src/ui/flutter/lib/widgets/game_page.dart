@@ -205,7 +205,8 @@ class _GamePageState extends State<GamePage> {
 
   engineToGo() async {
     // TODO
-    while (Game.shared.position.sideToMove() == Color.white) {
+    while (Game.shared.position.winner == Color.nobody &&
+        Game.shared.position.sideToMove() == Color.white) {
       changeStatus('对方思考中...');
 
       final response = await widget.engine.search(Game.shared.position);
