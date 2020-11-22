@@ -98,7 +98,7 @@ enum Rank { rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8 }
 const rankNumber = 8;
 
 bool isOk(int sq) {
-  bool ret = (sq == 0 || (sq >= 8 && sq <= 31));
+  bool ret = (sq == 0 || (sq >= sqBegin && sq < sqEnd));
 
   if (ret == false) {
     print("$sq is not OK");

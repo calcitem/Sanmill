@@ -186,9 +186,8 @@ class Position {
     var ss = '';
 
     // Piece placement data
-    for (var file = 1; file <= 3; file++) {
-      for (var rank = 1; rank <= 8; rank++) {
-        //
+    for (var file = 1; file <= fileNumber; file++) {
+      for (var rank = 1; rank <= rankNumber; rank++) {
         final piece = pieceOnGrid(squareToIndex[makeSquare(file, rank)]);
         ss += piece;
       }
@@ -327,6 +326,7 @@ class Position {
       phase = Phase.gameOver;
       winner = Color.draw;
       score[Color.draw]++;
+      // TODO
       gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
       return true;
     }
