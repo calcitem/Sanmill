@@ -81,7 +81,7 @@ class _GamePageState extends State<GamePage> {
     }
 
     // 判断执行选子、落子或去子
-    bool result = false;
+    bool ret = false;
 
     switch (position.action) {
       case Act.place:
@@ -95,7 +95,7 @@ class _GamePageState extends State<GamePage> {
             //Audios.playTone('put.mp3');
             changeStatus('已落子');
           }
-          result = true;
+          ret = true;
           print("putPiece: [$sq]");
           break;
         } else {
@@ -112,7 +112,7 @@ class _GamePageState extends State<GamePage> {
           // 播放选子音效
           //Audios.playTone('select.mp3');
           Game.shared.select(index);
-          result = true;
+          ret = true;
           print("selectPiece: [$sq]");
           changeStatus('请落子');
         } else {
@@ -127,7 +127,7 @@ class _GamePageState extends State<GamePage> {
         if (position.removePiece(sq)) {
           // 播放音效
           //Audios.playTone('remove.mp3');
-          result = true;
+          ret = true;
           print("removePiece: [$sq]");
           changeStatus('已吃子');
         } else {
@@ -143,8 +143,20 @@ class _GamePageState extends State<GamePage> {
         break;
     }
 
-    if (result) {
+    if (ret) {
       Game.shared.moveHistory.add(position.cmdline);
+
+      // TODO: Need Others?
+      // Increment ply counters. In particular, rule50 will be reset to zero later on
+      // in case of a capture.
+      ++position.gamePly;
+      ++position.rule50;
+      ++position.pliesFromNull;
+
+      //position.move = m;
+
+      Move m = Move(position.cmdline);
+      position.recorder.moveIn(m, position);
 
       // 发信号更新状态栏
       setState(() {});
@@ -160,7 +172,7 @@ class _GamePageState extends State<GamePage> {
 
     setState(() {});
 
-    return result;
+    return ret;
   }
 
   engineToGo() async {
@@ -175,7 +187,7 @@ class _GamePageState extends State<GamePage> {
         final Move move = new Move(mv.move);
 
         //Battle.shared.move = move;
-        Game.shared.command(move.move);
+        Game.shared.doMove(move.move);
 
         final winner = Game.shared.position.winner;
 

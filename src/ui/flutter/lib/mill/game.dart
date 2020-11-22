@@ -177,7 +177,7 @@ class Game {
 
   get blurIndex => _blurIndex;
 
-  bool command(String cmd) {
+  bool doMove(String move) {
     int total;
     double blackWinRate, whiteWinRate, drawRate;
 
@@ -186,11 +186,11 @@ class Game {
       start();
     }
 
-    print("Computer: $cmd");
+    print("Computer: $move");
 
-    moveHistory.add(cmd);
+    moveHistory.add(move);
 
-    if (!position.command(cmd)) {
+    if (!position.doMove(move)) {
       return false;
     }
 

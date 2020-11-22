@@ -19,6 +19,7 @@
 
 import 'mill.dart';
 import 'position.dart';
+import 'types.dart';
 
 class GameRecorder {
   //
@@ -43,9 +44,10 @@ class GameRecorder {
       throw 'Error: Invalid Counter Marks: $marks';
     }
   }
+
   void moveIn(Move move, Position position) {
     //
-    if (move.removed != Piece.noPiece) {
+    if (move.type == MoveType.remove) {
       halfMove = 0;
     } else {
       halfMove++;
@@ -59,7 +61,7 @@ class GameRecorder {
 
     _history.add(move);
 
-    if (move.removed != Piece.noPiece) {
+    if (move.type == MoveType.remove) {
       lastPositionWithRemove = position.fen();
     }
   }
@@ -76,7 +78,7 @@ class GameRecorder {
     List<Move> moves = [];
 
     for (var i = _history.length - 1; i >= 0; i--) {
-      if (_history[i].removed != Piece.noPiece) break;
+      if (_history[i].type == MoveType.remove) break;
       moves.add(_history[i]);
     }
 
@@ -99,7 +101,7 @@ class GameRecorder {
     return manualText;
   }
 
-  Move stepAt(int index) => _history[index];
+  Move moveAt(int index) => _history[index];
 
   get movesCount => _history.length;
 

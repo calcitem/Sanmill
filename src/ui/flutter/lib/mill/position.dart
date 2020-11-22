@@ -47,7 +47,7 @@ class Position {
   List<String> board = List<String>(sqNumber);
   List<String> _grid = List<String>(7 * 7);
 
-  GameRecorder _recorder;
+  GameRecorder recorder;
 
   Map<String, int> pieceCountInHand = {Color.black: 12, Color.white: 12};
   Map<String, int> pieceCountOnBoard = {Color.black: 0, Color.white: 0};
@@ -103,7 +103,7 @@ class Position {
     board = List<String>();
     other.board.forEach((piece) => board.add(piece));
 
-    _recorder = other._recorder;
+    recorder = other.recorder;
 
     pieceCountInHand = other.pieceCountInHand;
     pieceCountOnBoard = other.pieceCountOnBoard;
@@ -172,7 +172,7 @@ class Position {
 
     // TODO
 
-    _recorder = GameRecorder(lastPositionWithRemove: fen());
+    recorder = GameRecorder(lastPositionWithRemove: fen());
   }
 
   Position() {
@@ -263,7 +263,7 @@ class Position {
         rule50.toString() + " " + (1 + (gamePly - sideIsBlack) ~/ 2).toString();
 
     // step counter
-    //ss += '${_recorder?.halfMove ?? 0} ${_recorder?.fullMove ?? 0}';
+    //ss += '${recorder?.halfMove ?? 0} ${recorder?.fullMove ?? 0}';
 
     print("fen = " + ss);
 
@@ -294,23 +294,55 @@ class Position {
     return true;
   }
 
-  void doMove(Move m) {
-    if (!legal(m)) {
-      return null;
-    }
+  bool doMove(String move) {
+    // TODO
+    /*
+    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleIndex, &step, &t) == 3) {
+      if (ruleIndex <= 0 || ruleIndex > N_RULES) {
+        return false;
+      }
 
+      return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
+    }
+  */
     bool ret = false;
 
+    print("position: command = $move");
+
+    if (move.length > "Player".length &&
+        move.substring(0, "Player".length - 1) == "Player") {
+      if (move["Player".length] == '1') {
+        return resign(Color.black);
+      } else {
+        return resign(Color.white);
+      }
+    }
+
+    // TODO
+    if (move == "Threefold Repetition. Draw!") {
+      return true;
+    }
+
+    if (move == "draw") {
+      phase = Phase.gameOver;
+      winner = Color.draw;
+      score[Color.draw]++;
+      gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
+      return true;
+    }
+
+    Move m = Move(move);
+
     switch (m.type) {
-      case MoveType.remove:
-        rule50 = 0;
-        ret = removePiece(m.to);
-        break;
       case MoveType.move:
         ret = movePiece(m.from, m.to);
         break;
       case MoveType.place:
         ret = putPiece(m.to);
+        break;
+      case MoveType.remove:
+        rule50 = 0;
+        ret = removePiece(m.to);
         break;
       default:
         assert(false);
@@ -318,7 +350,7 @@ class Position {
     }
 
     if (!ret) {
-      return;
+      return false;
     }
 
     // Increment ply counters. In particular, rule50 will be reset to zero later on
@@ -329,7 +361,9 @@ class Position {
 
     this.move = m;
 
-    _recorder.moveIn(move, this);
+    recorder.moveIn(m, this);
+
+    return true;
   }
 
   bool posIsOk() {
@@ -684,61 +718,6 @@ class Position {
     updateScore();
 
     return true;
-  }
-
-  bool command(String cmd) {
-    // TODO
-    /*
-    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleIndex, &step, &t) == 3) {
-      if (ruleIndex <= 0 || ruleIndex > N_RULES) {
-        return false;
-      }
-
-      return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
-    }
-  */
-    print("position: command = $cmd");
-
-    if (cmd.length > "Player".length &&
-        cmd.substring(0, "Player".length - 1) == "Player") {
-      if (cmd["Player".length] == '1') {
-        return resign(Color.black);
-      } else {
-        return resign(Color.white);
-      }
-    }
-
-    // TODO
-    if (cmd == "Threefold Repetition. Draw!") {
-      return true;
-    }
-
-    if (cmd == "draw") {
-      phase = Phase.gameOver;
-      winner = Color.draw;
-      score[Color.draw]++;
-      gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
-      return true;
-    }
-
-    Move move = Move(cmd);
-
-    switch (move.type) {
-      case MoveType.move:
-        return movePiece(move.from, move.to);
-        break;
-      case MoveType.place:
-        return putPiece(move.to);
-        break;
-      case MoveType.remove:
-        return removePiece(move.to);
-        break;
-      default:
-        assert(false);
-        break;
-    }
-
-    return false;
   }
 
   String getWinner() {
@@ -1468,7 +1447,7 @@ class Position {
 
   bool regret() {
     // TODO
-    final lastMove = _recorder.removeLast();
+    final lastMove = recorder.removeLast();
     if (lastMove == null) return false;
 
     _grid[lastMove.from] = _grid[lastMove.to];
@@ -1479,15 +1458,15 @@ class Position {
     changeSideToMove();
 
     final counterMarks = GameRecorder.fromCounterMarks(lastMove.counterMarks);
-    _recorder.halfMove = counterMarks.halfMove;
-    _recorder.fullMove = counterMarks.fullMove;
+    recorder.halfMove = counterMarks.halfMove;
+    recorder.fullMove = counterMarks.fullMove;
 
     if (lastMove.removed != Piece.noPiece) {
       //
       // 查找上一个吃子局面（或开局），NativeEngine 需要
       final tempPosition = Position.clone(this);
 
-      final moves = _recorder.reverseMovesToPrevRemove();
+      final moves = recorder.reverseMovesToPrevRemove();
       moves.forEach((move) {
         //
         tempPosition._grid[move.from] = tempPosition._grid[move.to];
@@ -1496,7 +1475,7 @@ class Position {
         tempPosition._sideToMove = Color.opponent(tempPosition._sideToMove);
       });
 
-      _recorder.lastPositionWithRemove = tempPosition.fen();
+      recorder.lastPositionWithRemove = tempPosition.fen();
     }
 
     result = GameResult.pending;
@@ -1506,21 +1485,26 @@ class Position {
 
   String movesSinceLastRemove() {
     //
-    var moves = '', posAfterLastRemove = 0;
+    String moves = "";
+    int posAfterLastRemove = 0;
 
-    for (var i = _recorder.movesCount - 1; i >= 0; i--) {
-      if (_recorder.stepAt(i).removed != Piece.noPiece) break;
+    print("recorder.movesCount = ${recorder.movesCount}");
+
+    for (int i = recorder.movesCount - 1; i >= 0; i--) {
+      if (recorder.moveAt(i).type == MoveType.remove) break;
       posAfterLastRemove = i;
     }
 
-    for (var i = posAfterLastRemove; i < _recorder.movesCount; i++) {
-      moves += ' ${_recorder.stepAt(i).move}';
+    print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
+
+    for (int i = posAfterLastRemove; i < recorder.movesCount; i++) {
+      moves += " ${recorder.moveAt(i).move}";
     }
 
     return moves.length > 0 ? moves.substring(1) : '';
   }
 
-  get manualText => _recorder.buildManualText();
+  get manualText => recorder.buildManualText();
 
   get side => _sideToMove;
 
@@ -1530,11 +1514,11 @@ class Position {
     print("Change sideToMove to $_sideToMove");
   }
 
-  get halfMove => _recorder.halfMove;
+  get halfMove => recorder.halfMove;
 
-  get fullMove => _recorder.fullMove;
+  get fullMove => recorder.fullMove;
 
-  get lastMove => _recorder.last;
+  get lastMove => recorder.last;
 
-  get lastPositionWithRemove => _recorder.lastPositionWithRemove;
+  get lastPositionWithRemove => recorder.lastPositionWithRemove;
 }

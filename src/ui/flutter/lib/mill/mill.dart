@@ -112,7 +112,7 @@ class Move {
   int fromIndex = 0;
   int toIndex = 0;
 
-  String removed;
+  String removed = Piece.noPiece;
 
   // 'move' is the UCI engine's move-string
   String move;

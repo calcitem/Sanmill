@@ -133,17 +133,19 @@ class NativeEngine extends AiEngine {
   }
 
   String getPositionFen(Position position) {
-    /*
-    final startPosition = position.lastCapturedPosition;
-    final moves = position.movesSinceLastCaptured();
+    final startPosition = position.lastPositionWithRemove;
+    final moves = position.movesSinceLastRemove();
 
-    if (moves.isEmpty) return 'position fen $startPosition';
+    String posFenStr;
 
-    return 'position fen $startPosition moves $moves';
-    */
+    if (moves.isEmpty) {
+      posFenStr = "position fen $startPosition";
+    } else {
+      posFenStr = "position fen $startPosition moves $moves";
+    }
 
-    String fenStr = position.fen();
+    print("posFenStr: $posFenStr");
 
-    return "position fen $fenStr";
+    return posFenStr;
   }
 }
