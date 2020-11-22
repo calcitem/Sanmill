@@ -75,6 +75,8 @@ void position(Position *pos, istringstream &is)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
         pos->do_move(m);
     }
+
+    Threads.main()->us = pos->sideToMove;
 }
 
 
@@ -314,13 +316,10 @@ string UCI::move(Move m)
 
 
 /// UCI::to_move() converts a string representing a move in coordinate notation
-/// (g1f3, a7a8q) to the corresponding legal Move, if any.
+/// to the corresponding legal Move, if any.
 
 Move UCI::to_move(Position *pos, string &str)
 {
-    if (str.length() == 5) // Junior could send promotion piece in uppercase
-        str[4] = char(tolower(str[4]));
-
     for (const auto &m : MoveList<LEGAL>(*pos))
         if (str == UCI::move(m))
             return m;

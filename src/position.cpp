@@ -238,7 +238,6 @@ Position &Position::set(const string &fenStr, Thread *th)
     // 2. Active color
     ss >> token;
     sideToMove = (token == 'b' ? BLACK : WHITE);
-    th->us = sideToMove;
 
     // 3. Phrase
     ss >> token;
