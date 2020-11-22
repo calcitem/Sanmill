@@ -18,13 +18,12 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
-import 'package:sanmill/style/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'edit_page.dart';
 
@@ -46,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
     //
     final packageInfo = await PackageInfo.fromPlatform();
     setState(() {
-      _version = 'Version ${packageInfo.version} (${packageInfo.buildNumber})';
+      _version = '${packageInfo.version} (${packageInfo.buildNumber})';
     });
   }
 
@@ -143,6 +142,14 @@ class _SettingsPageState extends State<SettingsPage> {
     Player.shared.saveAndUpload();
   }
 
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   showAbout() {
     //
     showDialog(
@@ -155,21 +162,78 @@ class _SettingsPageState extends State<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 5),
-            Text('版本', style: TextStyle(fontFamily: '')),
-            Text('$_version', style: TextStyle(fontFamily: '')),
+            Text('版本: $_version', style: TextStyle(fontFamily: '')),
             SizedBox(height: 15),
-            Text('官网', style: TextStyle(fontFamily: '')),
-            GestureDetector(
-              onTap: () {
-                Clipboard.setData(
-                  ClipboardData(text: 'http://www.calcitem.com'),
-                );
-                Toast.toast(context, msg: '网址已复制！');
-              },
-              child: Text(
-                "http://www.calcitem.com",
-                style: TextStyle(fontFamily: '', color: Colors.blue),
-              ),
+            InkWell(
+              child: Text('依照 GPLv3 协议发布',
+                  style: TextStyle(
+                      fontFamily: '',
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline)),
+              onTap: () =>
+                  _launchURL('https://www.gnu.org/licenses/gpl-3.0.html'),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              child: Text('官方网站',
+                  style: TextStyle(
+                      fontFamily: '',
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline)),
+              onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
+            ),
+            InkWell(
+              child: Text('新版变化',
+                  style: TextStyle(
+                      fontFamily: '',
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline)),
+              onTap: () => _launchURL(
+                  'https://github.com/calcitem/Sanmill/commits/master'),
+            ),
+            InkWell(
+              child: Text('快速更新通道',
+                  style: TextStyle(
+                      fontFamily: '',
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline)),
+              onTap: () => _launchURL(
+                  'https://github.com/calcitem/Sanmill/actions?query=workflow%3AFlutter+is%3Asuccess'),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              child: Text('致谢'),
+            ),
+            InkWell(
+              child: Text('直棋 离不开以下人员的无私贡献，感激不尽!\n'
+                  '代码贡献者: Calcitem\n'
+                  '开源库: '
+                  '所基于的开源库太多，难以罗列，在这里仅列出主要的几项，同时也感谢其他默默无闻为开源事业做出贡献的人们：'),
+            ),
+            InkWell(
+              child: Text('Stockfish - UCI chess engine',
+                  style: TextStyle(
+                      fontFamily: '',
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline)),
+              onTap: () =>
+                  _launchURL('https://github.com/official-stockfish/Stockfish'),
+            ),
+            InkWell(
+              child: Text('ChessRoad (棋路) by He Zhaoyun',
+                  style: TextStyle(
+                      fontFamily: '',
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline)),
+              onTap: () => _launchURL('https://github.com/hezhaoyun/chessroad'),
+            ),
+            InkWell(
+              child: Text('NineChess (九联棋) by liuweilhy',
+                  style: TextStyle(
+                      fontFamily: '',
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline)),
+              onTap: () => _launchURL('https://github.com/liuweilhy/NineChess'),
             ),
           ],
         ),
