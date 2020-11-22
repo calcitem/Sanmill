@@ -154,23 +154,6 @@ class Game {
     _blurIndex = _focusIndex = Move.invalidMove;
   }
 
-  GameResult scanBattleResult() {
-    //
-    final forPerson = (_position.side == Color.white);
-
-    if (scanLongCatch()) {
-      // born 'repeat' position by oppo
-      return forPerson ? GameResult.win : GameResult.lose;
-    }
-
-    return (_position.halfMove > 120) ? GameResult.draw : GameResult.pending;
-  }
-
-  scanLongCatch() {
-    // todo:
-    return false;
-  }
-
   get position => _position;
 
   get focusIndex => _focusIndex;
