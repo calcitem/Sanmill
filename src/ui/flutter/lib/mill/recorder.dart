@@ -59,6 +59,10 @@ class GameRecorder {
       fullMove++;
     }
 
+    if (_history.length > 0) {
+      assert(_history[_history.length - 1].move != move.move);
+    }
+
     _history.add(move);
 
     if (move.type == MoveType.remove) {
