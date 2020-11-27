@@ -78,6 +78,9 @@ void Search::clear()
     Threads.clear();
 }
 
+#ifdef THREEFOLD_REPETITION
+int nRepetition;
+#endif // THREEFOLD_REPETITION
 
 /// Thread::search() is the main iterative deepening loop. It calls search()
 /// repeatedly with increasing depth until the allocated thinking time has been
@@ -105,8 +108,6 @@ int Thread::search()
 #endif
 
 #ifdef THREEFOLD_REPETITION
-    static int nRepetition = 0;
-
     if (rootPos->get_phase() == PHASE_MOVING) {
         Key key = rootPos->key();
 

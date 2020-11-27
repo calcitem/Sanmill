@@ -41,6 +41,11 @@ using namespace std;
 
 extern vector<string> setup_bench(Position *, istream &);
 
+#ifdef THREEFOLD_REPETITION
+extern int nRepetition;
+extern vector<Key> moveHistory;
+#endif // THREEFOLD_REPETITION
+
 namespace
 {
 
@@ -69,11 +74,19 @@ void position(Position *pos, istringstream &is)
     else
         return;
 
+#ifdef THREEFOLD_REPETITION
+    nRepetition = 0;
+    moveHistory.clear();
+#endif // THREEFOLD_REPETITION
+    
     pos->set(fen, Threads.main());
 
     // Parse move list (if any)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
         pos->do_move(m);
+#ifdef THREEFOLD_REPETITION
+        moveHistory.push_back(pos->key());
+#endif // THREEFOLD_REPETITION
     }
 
     Threads.main()->us = pos->sideToMove;
@@ -113,6 +126,11 @@ void go(Position *pos)
 #ifdef UCI_AUTO_RE_GO
     begin:
 #endif
+
+#ifdef THREEFOLD_REPETITION
+    nRepetition = 0;
+#endif // THREEFOLD_REPETITION
+
     Threads.start_thinking(pos);
 
     if (pos->get_phase() == PHASE_GAMEOVER)

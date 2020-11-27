@@ -744,8 +744,16 @@ int Position::set_position(const struct Rule *newRule)
     return -1;
 }
 
+#ifdef THREEFOLD_REPETITION
+extern int nRepetition;
+#endif // THREEFOLD_REPETITION
+
 bool Position::reset()
 {
+#ifdef THREEFOLD_REPETITION
+    nRepetition = 0;
+#endif // THREEFOLD_REPETITION
+
     gamePly = 0;
     st.rule50 = 0;
 
