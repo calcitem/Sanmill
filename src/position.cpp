@@ -561,16 +561,6 @@ void Position::undo_move(Sanmill::Stack<Position> &ss)
     ss.pop();
 }
 
-void Position::do_null_move()
-{
-    change_side_to_move();
-}
-
-void Position::undo_null_move()
-{
-    change_side_to_move();
-}
-
 
 /// Position::key_after() computes the new hash key after the given move. Needed
 /// for speculative prefetch. It doesn't recognize special moves like (need remove)
