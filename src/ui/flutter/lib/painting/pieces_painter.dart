@@ -140,13 +140,6 @@ class PiecesPainter extends PiecesBasePainter {
           break;
         case Piece.ban:
           print("pps.piece is Ban");
-          paint.color = UIColors.banBorderColor;
-          // TODO
-          paint.color = UIColors.banColor;
-          canvas.drawLine(new Offset(0, 0),
-              new Offset(pieceInnerRadius, pieceInnerRadius), paint);
-          canvas.drawLine(new Offset(pieceInnerRadius, 0),
-              new Offset(0, pieceInnerRadius), paint);
           break;
         default:
           assert(false);
