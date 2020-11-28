@@ -111,15 +111,22 @@ int Thread::search()
     if (rootPos->get_phase() == PHASE_MOVING) {
         Key key = rootPos->key();
 
-        if (std::find(moveHistory.begin(), moveHistory.end(), key) != moveHistory.end()) {
-            nRepetition++;
-            if (nRepetition == 3) {
-                nRepetition = 0;
-                return 3;
+        for (auto i : moveHistory) {
+            if (key == i)
+            {
+                nRepetition++;
+                if (nRepetition == 3) {
+                    nRepetition = 0;
+                    return 3;
+                }
             }
         }
 
         moveHistory.push_back(key);
+
+        //sync_cout << "moveHistory Size = " << moveHistory.size();
+        //std::cout << sync_endl;
+        assert(moveHistory.size() < 256);
     }
 
     if (rootPos->get_phase() == PHASE_PLACING) {

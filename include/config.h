@@ -136,4 +136,8 @@
 #define likely(expr)    (__builtin_expect(!!(expr), 1))
 #define unlikely(expr)  (__builtin_expect(!!(expr), 0))
 
+#ifdef FLUTTER_UI
+#include "base.h"
+#endif // FLUTTER_UI
+
 #endif // CONFIG_H

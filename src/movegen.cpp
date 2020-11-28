@@ -118,6 +118,9 @@ ExtMove *generate<LEGAL>(/* const */ Position &pos, ExtMove *moveList)
         break;
 
     default:
+#ifdef FLUTTER_UI
+        LOGD("generate(): action = %d\n", pos.get_action());
+#endif
         assert(0);
         break;
     }
