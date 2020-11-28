@@ -117,9 +117,9 @@ int Thread::search()
                 nRepetition = 0;
                 return 3;
             }
-        } else {
-            moveHistory.push_back(key);
         }
+
+        moveHistory.push_back(key);
     }
 
     if (rootPos->get_phase() == PHASE_PLACING) {
