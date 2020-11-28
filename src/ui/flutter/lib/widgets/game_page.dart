@@ -228,7 +228,7 @@ class _GamePageState extends State<GamePage> {
     confirm() {
       Navigator.of(context).pop();
       Game.shared.newGame();
-      changeStatus('新游戏');
+      changeStatus('游戏开始 请摆子');
 
       if (Game.shared.isAiToMove()) {
         print("New Game: AI's turn.");
@@ -243,7 +243,7 @@ class _GamePageState extends State<GamePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('新局？', style: TextStyle(color: UIColors.primaryColor)),
-          content: SingleChildScrollView(child: Text('开始新局？')),
+          content: SingleChildScrollView(child: Text('重新开局？')),
           actions: <Widget>[
             FlatButton(child: Text('确定'), onPressed: confirm),
             FlatButton(child: Text('取消'), onPressed: cancel),
@@ -297,6 +297,47 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  String getGameOverReasonString(GameOverReason reason, String winner) {
+    String loseReasonStr;
+    String winnerStr = winner == Color.black ? "黑方" : "白方";
+    String loserStr = winner == Color.black ? "白方" : "黑方";
+
+    switch (Game.shared.position.gameOverReason) {
+      case GameOverReason.loseReasonlessThanThree:
+        loseReasonStr = "$loserStr剩余棋子少于3枚。";
+        break;
+      case GameOverReason.loseReasonResign:
+        loseReasonStr = "$loserStr认输了。";
+        break;
+      case GameOverReason.loseReasonNoWay:
+        loseReasonStr = "$loserStr被闷杀。";
+        break;
+      case GameOverReason.loseReasonBoardIsFull:
+        loseReasonStr = "棋盘摆满，$loserStr无路可走。";
+        break;
+      case GameOverReason.loseReasonTimeOver:
+        loseReasonStr = "$loserStr超时判负。";
+        break;
+      case GameOverReason.drawReasonRule50:
+        loseReasonStr = "连续超过50步未吃子，判和。";
+        break;
+      case GameOverReason.drawReasonRule50:
+        loseReasonStr = "连续超过50步未吃子，判和。";
+        break;
+      case GameOverReason.drawReasonBoardIsFull:
+        loseReasonStr = "棋盘摆满，无路可走，判和。";
+        break;
+      case GameOverReason.drawReasonThreefoldRepetition:
+        loseReasonStr = "三次重复局面和。";
+        break;
+      default:
+        loseReasonStr = "未知原因，棋局结束。";
+        break;
+    }
+
+    return loseReasonStr;
+  }
+
   void gotWin() {
     //
     Game.shared.position.result = GameResult.win;
@@ -307,12 +348,13 @@ class _GamePageState extends State<GamePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('赢了', style: TextStyle(color: UIColors.primaryColor)),
-          content: Text('恭喜您取得了伟大的胜利！'),
+          title: Text('恭喜你赢了', style: TextStyle(color: UIColors.primaryColor)),
+          content: Text(getGameOverReasonString(
+              Game.shared.position.gameOverReason,
+              Game.shared.position.winner)),
           actions: <Widget>[
-            FlatButton(child: Text('再来一盘'), onPressed: newGame),
             FlatButton(
-                child: Text('关闭'),
+                child: Text('好的'),
                 onPressed: () => Navigator.of(context).pop()),
           ],
         );
@@ -335,12 +377,13 @@ class _GamePageState extends State<GamePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('输了', style: TextStyle(color: UIColors.primaryColor)),
-          content: Text('勇士！坚定战斗，虽败犹荣！'),
+          title: Text('你输了', style: TextStyle(color: UIColors.primaryColor)),
+          content: Text(getGameOverReasonString(
+              Game.shared.position.gameOverReason,
+              Game.shared.position.winner)),
           actions: <Widget>[
-            FlatButton(child: Text('再来一盘'), onPressed: newGame),
             FlatButton(
-                child: Text('关闭'),
+                child: Text('好的'),
                 onPressed: () => Navigator.of(context).pop()),
           ],
         );
@@ -358,11 +401,12 @@ class _GamePageState extends State<GamePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('和棋', style: TextStyle(color: UIColors.primaryColor)),
-          content: Text('您用自己的力量捍卫了和平！'),
+          content: Text(getGameOverReasonString(
+              Game.shared.position.gameOverReason,
+              Game.shared.position.winner)),
           actions: <Widget>[
-            FlatButton(child: Text('再来一盘'), onPressed: newGame),
             FlatButton(
-                child: Text('关闭'),
+                child: Text('好的'),
                 onPressed: () => Navigator.of(context).pop()),
           ],
         );
