@@ -728,6 +728,7 @@ class Position {
     phase = Phase.gameOver;
     gameOverReason = reason;
     winner = w;
+    print("Game over, $w win, becase of $reason");
   }
 
   void updateScore() {
