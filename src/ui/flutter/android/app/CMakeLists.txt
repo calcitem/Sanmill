@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-add_definitions(-D FLUTTER_UI)
+add_definitions(-g -O2 -D FLUTTER_UI)
 
 add_library( # Sets the name of the library.
         engine
