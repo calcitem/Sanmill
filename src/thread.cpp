@@ -513,10 +513,6 @@ void Thread::clearTT()
         //clearEndgameHashMap();
         //endgameList.clear();
 #endif // ENDGAME_LEARNING
-
-#ifdef THREEFOLD_REPETITION
-        moveHistory.clear();
-#endif
     }
 }
 
