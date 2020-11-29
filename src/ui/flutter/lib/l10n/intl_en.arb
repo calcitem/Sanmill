@@ -250,5 +250,17 @@
   "leaderBoard": "Leader Board",
   "@leaderBoard": {
     "description": "Leader Board"
+  },
+  "whoMovesFirst": "Who moves first",
+  "@whoMovesFirst": {
+    "description": "Who moves First"
+  },
+  "human": "Human",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
   }
 }

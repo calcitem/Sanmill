@@ -160,6 +160,7 @@ class _GamePageState extends State<GamePage> {
     }
 
     if (ret) {
+      Game.shared.sideToMove = position.sideToMove();
       Game.shared.moveHistory.add(position.cmdline);
 
       // TODO: Need Others?
@@ -193,7 +194,7 @@ class _GamePageState extends State<GamePage> {
   engineToGo() async {
     // TODO
     while (Game.shared.position.winner == Color.nobody &&
-        Game.shared.position.sideToMove() == Color.white) {
+        Game.shared.isAiToMove()) {
       changeStatus(S.of(context).thinking);
 
       final response = await widget.engine.search(Game.shared.position);

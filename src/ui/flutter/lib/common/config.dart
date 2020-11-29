@@ -17,12 +17,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/mill/game.dart';
+
 import 'profile.dart';
 
 class Config {
   static bool bgmEnabled = false;
   static bool toneEnabled = true;
   static int thinkingTime = 5000;
+  static PlayerType whoMovesFirst = PlayerType.human;
 
   static Future<void> loadProfile() async {
     final profile = await Profile.shared();
@@ -30,6 +33,7 @@ class Config {
     Config.bgmEnabled = profile['bgm-enabled'] ?? false;
     Config.toneEnabled = profile['tone-enabled'] ?? true;
     Config.thinkingTime = profile['thinking-time'] ?? 5000;
+    Config.whoMovesFirst = profile['who-moves-first'] ?? PlayerType.human;
 
     return true;
   }
@@ -40,6 +44,7 @@ class Config {
     profile['bgm-enabled'] = Config.bgmEnabled;
     profile['tone-enabled'] = Config.toneEnabled;
     profile['thinking-time'] = Config.thinkingTime;
+    profile['who-moves-first'] = Config.whoMovesFirst;
 
     profile.commit();
 

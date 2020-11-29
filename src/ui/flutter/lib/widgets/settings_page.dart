@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
@@ -97,6 +98,14 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
     );
+  }
+
+  switchWhoMovesFirst(bool value) async {
+    setState(() {
+      Config.whoMovesFirst = value == true ? PlayerType.human : PlayerType.AI;
+    });
+
+    Config.save();
   }
 
   switchMusic(bool value) async {
@@ -306,6 +315,26 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.toneEnabled,
                     title: Text(S.of(context).tone, style: itemStyle),
                     onChanged: switchTone,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(S.of(context).whoMovesFirst, style: headerStyle),
+            Card(
+              color: UIColors.boardBackgroundColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.whoMovesFirst == PlayerType.human,
+                    title: Text(
+                        Config.whoMovesFirst == PlayerType.human
+                            ? S.of(context).human
+                            : S.of(context).ai,
+                        style: itemStyle),
+                    onChanged: switchWhoMovesFirst,
                   ),
                 ],
               ),

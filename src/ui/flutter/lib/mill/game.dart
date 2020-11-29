@@ -17,10 +17,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/types.dart';
 
 import 'mill.dart';
 import 'position.dart';
+
+enum PlayerType { human, AI }
 
 class Game {
   static Game _instance;
@@ -30,7 +33,7 @@ class Game {
 
   String sideToMove = Color.black;
 
-  bool isColorInverted;
+  bool isColorInverted = false;
 
   Map<String, bool> isAi = {Color.black: false, Color.white: true};
   Map<String, bool> isSearching = {Color.black: false, Color.white: false};
@@ -40,7 +43,16 @@ class Game {
   }
 
   void start() {
-    position.start();
+    position.reset();
+
+    // TDOO
+    if (Config.whoMovesFirst == PlayerType.human) {
+      isAi[Color.black] = false;
+      isAi[Color.white] = true;
+    } else {
+      isAi[Color.black] = true;
+      isAi[Color.white] = false;
+    }
   }
 
   bool hasAnimation;
@@ -78,9 +90,12 @@ class Game {
   }
 
   newGame() {
+    Game.shared.position.phase = Phase.ready;
+    Game.shared.start();
     Game.shared.position.init();
     _focusIndex = _blurIndex = Move.invalidMove;
     moveHistory = [""];
+    // TODO
     sideToMove = Color.black;
   }
 

@@ -61,5 +61,8 @@
   "level": "游戏难度",
   "sound": "声音",
   "tone": "提示音效",
-  "leaderBoard": "排行榜"
+  "leaderBoard": "排行榜",
+  "whoMovesFirst": "谁先行",
+  "human": "人类",
+  "ai": "机器"
 }
