@@ -361,7 +361,7 @@ class _GamePageState extends State<GamePage> {
       },
     );
 
-    if (widget.engineType == EngineType.Cloud)
+    if (widget.engineType == EngineType.humanVsCloud)
       Player.shared.increaseWinCloudEngine();
     else
       Player.shared.increaseWinAi();
@@ -448,7 +448,10 @@ class _GamePageState extends State<GamePage> {
               Expanded(child: SizedBox()),
               Hero(tag: 'logo', child: Image.asset('images/logo-mini.png')),
               SizedBox(width: 10),
-              Text(widget.engineType == EngineType.Cloud ? '挑战云主机' : '人机对战',
+              Text(
+                  widget.engineType == EngineType.humanVsCloud
+                      ? '挑战云主机'
+                      : '人机对战',
                   style: titleStyle),
               Expanded(child: SizedBox()),
               IconButton(
