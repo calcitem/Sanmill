@@ -73,15 +73,15 @@ class _GamePageState extends State<GamePage> {
         break;
       case Color.black:
         changeStatus(S.of(context).blackWin);
-        gotWin();
+        showGameResult(GameResult.win);
         break;
       case Color.white:
         changeStatus(S.of(context).whiteWin);
-        gotLose();
+        showGameResult(GameResult.lose);
         break;
       case Color.draw:
         changeStatus(S.of(context).draw);
-        gotDraw();
+        showGameResult(GameResult.draw);
         break;
     }
   }
@@ -329,18 +329,38 @@ class _GamePageState extends State<GamePage> {
     return loseReasonStr;
   }
 
-  void gotWin() {
+  void showGameResult(GameResult result) {
     //
-    Game.shared.position.result = GameResult.win;
-    //Audios.playTone('win.mp3');
+    Game.shared.position.result = result;
+
+    switch (result) {
+      case GameResult.win:
+        //Audios.playTone('win.mp3');
+        break;
+      case GameResult.lose:
+        //Audios.playTone('lose.mp3');
+        break;
+      case GameResult.draw:
+        break;
+      default:
+        break;
+    }
+
+    Map<GameResult, String> retMap = {
+      GameResult.win: S.of(context).youWin,
+      GameResult.lose: S.of(context).youLose,
+      GameResult.draw: S.of(context).draw
+    };
+
+    var dialogTitle = retMap[result];
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S.of(context).youWin,
-              style: TextStyle(color: UIColors.primaryColor)),
+          title:
+              Text(dialogTitle, style: TextStyle(color: UIColors.primaryColor)),
           content: Text(getGameOverReasonString(
               Game.shared.position.gameOverReason,
               Game.shared.position.winner)),
@@ -353,59 +373,12 @@ class _GamePageState extends State<GamePage> {
       },
     );
 
-    if (widget.engineType == EngineType.humanVsCloud)
-      Player.shared.increaseWinCloudEngine();
-    else
-      Player.shared.increaseWinAi();
-  }
-
-  void gotLose() {
-    //
-    Game.shared.position.result = GameResult.lose;
-    //Audios.playTone('lose.mp3');
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(S.of(context).youLose,
-              style: TextStyle(color: UIColors.primaryColor)),
-          content: Text(getGameOverReasonString(
-              Game.shared.position.gameOverReason,
-              Game.shared.position.winner)),
-          actions: <Widget>[
-            FlatButton(
-                child: Text(S.of(context).ok),
-                onPressed: () => Navigator.of(context).pop()),
-          ],
-        );
-      },
-    );
-  }
-
-  void gotDraw() {
-    //
-    Game.shared.position.result = GameResult.draw;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(S.of(context).draw,
-              style: TextStyle(color: UIColors.primaryColor)),
-          content: Text(getGameOverReasonString(
-              Game.shared.position.gameOverReason,
-              Game.shared.position.winner)),
-          actions: <Widget>[
-            FlatButton(
-                child: Text(S.of(context).ok),
-                onPressed: () => Navigator.of(context).pop()),
-          ],
-        );
-      },
-    );
+    if (result == GameResult.win) {
+      if (widget.engineType == EngineType.humanVsCloud)
+        Player.shared.increaseWinCloudEngine();
+      else
+        Player.shared.increaseWinAi();
+    }
   }
 
   void calcScreenPaddingH() {
