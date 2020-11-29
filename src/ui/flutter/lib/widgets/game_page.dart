@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/engine/analyze.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/engine/native_engine.dart';
+import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
@@ -428,7 +429,13 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget createPageHeader() {
-    //
+    Map<EngineType, String> engineTypeToString = {
+      EngineType.humanVsAi: S.of(context).humanVsAi,
+      EngineType.humanVsHuman: S.of(context).humanVsHuman,
+      EngineType.aiVsAi: S.of(context).aiVsAi,
+      EngineType.humanVsCloud: S.of(context).humanVsCloud,
+    };
+
     final titleStyle =
         TextStyle(fontSize: 28, color: UIColors.darkTextPrimaryColor);
     final subTitleStyle =
@@ -448,11 +455,7 @@ class _GamePageState extends State<GamePage> {
               Expanded(child: SizedBox()),
               Hero(tag: 'logo', child: Image.asset('images/logo-mini.png')),
               SizedBox(width: 10),
-              Text(
-                  widget.engineType == EngineType.humanVsCloud
-                      ? '挑战云主机'
-                      : '人机对战',
-                  style: titleStyle),
+              Text(engineTypeToString[widget.engineType], style: titleStyle),
               Expanded(child: SizedBox()),
               IconButton(
                 icon:

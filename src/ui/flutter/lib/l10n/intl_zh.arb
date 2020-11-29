@@ -1,3 +1,7 @@
 {
-  "appName": "直棋"
+  "appName": "直棋",
+  "humanVsAi": "人机对战",
+  "humanVsHuman": "双人对战",
+  "aiVsAi": "机器对战",
+  "humanVsCloud": "挑战云端"
 }

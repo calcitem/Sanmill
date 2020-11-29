@@ -19,7 +19,7 @@
 
 import 'package:sanmill/mill/position.dart';
 
-enum EngineType { humanVsCloud, humanVsAi, humanVsHuman, aiVsAi }
+enum EngineType { humanVsAi, humanVsHuman, aiVsAi, humanVsCloud }
 
 class EngineResponse {
   final String type;

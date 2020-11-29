@@ -121,29 +121,29 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
           ),
           Expanded(child: SizedBox()),
           FlatButton(
-            child: Text('人机对战', style: menuItemStyle),
+            child: Text(S.of(context).humanVsAi, style: menuItemStyle),
             onPressed: () => navigateTo(GamePage(EngineType.humanVsAi)),
           ),
           Expanded(child: SizedBox()),
           FlatButton(
-            child: Text('双人对战', style: menuItemStyle),
+            child: Text(S.of(context).humanVsHuman, style: menuItemStyle),
             onPressed: () => navigateTo(GamePage(EngineType.humanVsHuman)),
           ),
           Expanded(child: SizedBox()),
           FlatButton(
-            child: Text('机器对战', style: menuItemStyle),
+            child: Text(S.of(context).aiVsAi, style: menuItemStyle),
             onPressed: () => navigateTo(GamePage(EngineType.aiVsAi)),
           ),
           Expanded(child: SizedBox()),
           Text(
-              '              健康游戏忠告\n'
-              '抵制不良游戏，拒绝盗版游戏。\n'
-              '注意自我保护，谨防受骗上当。\n'
-              '适度游戏益脑，沉迷游戏伤身。\n'
-              '合理安排时间，享受健康生活。',
+              '              ??????\n'
+              '??????,???????\n'
+              '??????,???????\n'
+              '??????,???????\n'
+              '??????,???????',
               style: TextStyle(color: Colors.black54, fontSize: 16)),
           Expanded(child: SizedBox()),
-          Text('Copyright © 2019-2020 The Sanmill Authors',
+          Text('Copyright � 2019-2020 The Sanmill Authors',
               style: TextStyle(color: Colors.black54, fontSize: 16)),
           Expanded(child: SizedBox()),
         ],

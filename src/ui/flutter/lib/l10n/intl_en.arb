@@ -2,5 +2,21 @@
   "appName": "Mill Game",
   "@appName": {
     "description": "The App name"
+  },
+  "humanVsAi": "Human Vs AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Human Vs Human",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Human Vs Cloud",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
   }
 }
