@@ -20,7 +20,6 @@
 import 'mill.dart';
 import 'position.dart';
 import 'types.dart';
-import 'package:sanmill/generated/l10n.dart';
 
 class GameRecorder {
   int halfMove, fullMove;
@@ -59,7 +58,9 @@ class GameRecorder {
     }
 
     if (_history.length > 0) {
-      assert(_history[_history.length - 1].move != move.move);
+      if (_history[_history.length - 1].move == move.move) {
+        assert(false);
+      }
     }
 
     _history.add(move);
