@@ -73,17 +73,16 @@ class _GamePageState extends State<GamePage> {
         break;
       case Color.black:
         changeStatus(S.of(context).blackWin);
-        showGameResult(GameResult.win);
         break;
       case Color.white:
         changeStatus(S.of(context).whiteWin);
-        showGameResult(GameResult.lose);
         break;
       case Color.draw:
         changeStatus(S.of(context).draw);
-        showGameResult(GameResult.draw);
         break;
     }
+
+    showGameResult(winner);
   }
 
   onBoardTap(BuildContext context, int index) {
@@ -329,8 +328,36 @@ class _GamePageState extends State<GamePage> {
     return loseReasonStr;
   }
 
-  void showGameResult(GameResult result) {
-    //
+  GameResult getGameResult(var winner) {
+    if (isAi[Color.black] && isAi[Color.white]) {
+      return GameResult.none;
+    }
+
+    if (winner == Color.black) {
+      if (isAi[Color.black]) {
+        return GameResult.lose;
+      } else {
+        return GameResult.win;
+      }
+    }
+
+    if (winner == Color.white) {
+      if (isAi[Color.white]) {
+        return GameResult.lose;
+      } else {
+        return GameResult.win;
+      }
+    }
+
+    if (winner == Color.draw) {
+      return GameResult.draw;
+    }
+
+    return GameResult.none;
+  }
+
+  void showGameResult(var winner) {
+    GameResult result = getGameResult(winner);
     Game.shared.position.result = result;
 
     switch (result) {
@@ -353,6 +380,10 @@ class _GamePageState extends State<GamePage> {
     };
 
     var dialogTitle = retMap[result];
+
+    if (dialogTitle == null) {
+      return;
+    }
 
     showDialog(
       context: context,

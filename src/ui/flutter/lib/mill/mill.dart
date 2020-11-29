@@ -52,7 +52,7 @@ int makeSquare(int file, int rank) {
   return (file << 3) + rank - 1;
 }
 
-enum GameResult { pending, win, lose, draw }
+enum GameResult { pending, win, lose, draw, none }
 
 class Color {
   static const none = '*';

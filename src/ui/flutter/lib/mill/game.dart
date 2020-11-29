@@ -24,6 +24,7 @@ import 'mill.dart';
 import 'position.dart';
 
 enum PlayerType { human, AI }
+Map<String, bool> isAi = {Color.black: false, Color.white: true};
 
 class Game {
   static Game _instance;
@@ -35,7 +36,6 @@ class Game {
 
   bool isColorInverted = false;
 
-  Map<String, bool> isAi = {Color.black: false, Color.white: true};
   Map<String, bool> isSearching = {Color.black: false, Color.white: false};
 
   bool aiIsSearching() {
