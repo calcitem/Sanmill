@@ -9,20 +9,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^0.1.2
   audioplayers: ^0.14.0
   path_provider: ^1.6.1
   package_info: ^0.4.0+16
   uuid: ^2.0.4
   url_launcher: ^5.7.10
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-
-  uses-material-design: true
+  generate: true
+  uses-material-design: true  
 
   assets:
     - images/logo.png
@@ -41,3 +44,5 @@ flutter:
     #- assets/audios/win.mp3
 
     #- assets/book.dat
+flutter_intl:
+  enabled: true

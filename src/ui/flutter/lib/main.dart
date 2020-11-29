@@ -21,13 +21,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sanmill/generated/l10n.dart';
 
 import 'services/audios.dart';
 import 'services/player.dart';
 import 'widgets/main_menu.dart';
 
 void main() {
-  //
   runApp(SanmillApp());
 
   SystemChrome.setPreferredOrientations(
@@ -64,6 +65,19 @@ class _SanmillAppState extends State<SanmillApp> {
   Widget build(BuildContext context) {
     //
     return MaterialApp(
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''), // English, no country code
+        const Locale.fromSubtags(
+            languageCode: 'zh'), // Chinese *See Advanced Locales below*
+        // ... other locales the app supports
+      ],
       theme: ThemeData(primarySwatch: Colors.brown),
       debugShowCheckedModeBanner: false,
       home: WillPopScope(

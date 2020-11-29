@@ -19,6 +19,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/engine/engine.dart';
+import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/style/colors.dart';
 
@@ -115,7 +116,8 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
           Expanded(child: SizedBox()),
           Transform.scale(
             scale: inAnimation.value,
-            child: Text('直棋', style: nameStyle, textAlign: TextAlign.center),
+            child: Text(S.of(context).appName,
+                style: nameStyle, textAlign: TextAlign.center),
           ),
           Expanded(child: SizedBox()),
           FlatButton(
