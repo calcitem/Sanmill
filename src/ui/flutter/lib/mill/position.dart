@@ -1491,7 +1491,8 @@ class Position {
     print("recorder.movesCount = ${recorder.movesCount}");
 
     for (int i = recorder.movesCount - 1; i >= 0; i--) {
-      if (recorder.moveAt(i).type == MoveType.remove) break;
+      //if (recorder.moveAt(i).type == MoveType.remove) break;
+      if (recorder.moveAt(i).move[0] == '-') break;
       posAfterLastRemove = i;
     }
 
