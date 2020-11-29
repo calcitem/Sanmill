@@ -1,16 +1,16 @@
 ﻿/*
-  Fishmill, a UCI Mill Game playing engine derived from Stockfish
+  Sanmill, a UCI Mill Game playing engine derived from Stockfish
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad (Stockfish author)
   Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Stockfish author)
   Copyright (C) 2020 Calcitem <calcitem@outlook.com>
 
-  Fishmill is free software: you can redistribute it and/or modify
+  Sanmill is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  Fishmill is distributed in the hope that it will be useful,
+  Sanmill is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
@@ -149,9 +149,9 @@ public:
 
 } // namespace
 
-/// engine_info() returns the full name of the current Fishmill version. This
-/// will be either "Fishmill <Tag> DD-MM-YY" (where DD-MM-YY is the date when
-/// the program was compiled) or "Fishmill <Version>", depending on whether
+/// engine_info() returns the full name of the current Sanmill version. This
+/// will be either "Sanmill <Tag> DD-MM-YY" (where DD-MM-YY is the date when
+/// the program was compiled) or "Sanmill <Version>", depending on whether
 /// Version is empty.
 
 const string engine_info(bool to_uci)
@@ -160,7 +160,7 @@ const string engine_info(bool to_uci)
     string month, day, year;
     stringstream ss, date(__DATE__); // From compiler, format is "Sep 21 2008"
 
-    ss << "Fishmill " << Version << setfill('0');
+    ss << "Sanmill " << Version << setfill('0');
 
     if (Version.empty()) {
         date >> month >> day >> year;
@@ -170,7 +170,7 @@ const string engine_info(bool to_uci)
     ss << (Is64Bit ? " 64" : "")
         << (HasPext ? " BMI2" : (HasPopCnt ? " POPCNT" : ""))
         << (to_uci ? "\nid author " : " by ")
-        << "Calcitem Team, T. Romstad, M. Costalba, J. Kiiski, G. Linscott";
+        << "The Sanmill Authors";
 
     return ss.str();
 }
