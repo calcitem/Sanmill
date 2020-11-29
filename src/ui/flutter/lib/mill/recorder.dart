@@ -20,10 +20,9 @@
 import 'mill.dart';
 import 'position.dart';
 import 'types.dart';
+import 'package:sanmill/generated/l10n.dart';
 
 class GameRecorder {
-  //
-  // 无吃子步数、总回合数
   int halfMove, fullMove;
   String lastPositionWithRemove;
   final _history = <Move>[];
@@ -99,7 +98,7 @@ class GameRecorder {
     }
 
     if (manualText.isEmpty) {
-      manualText = '<暂无招法>';
+      manualText = "";
     }
 
     return manualText;

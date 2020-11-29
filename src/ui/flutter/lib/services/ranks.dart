@@ -26,19 +26,19 @@ class RankItem {
   int winCloudEngine, winAi;
 
   RankItem(Map<String, dynamic> values) {
-    name = values['name'] ?? '无名英雄';
+    name = values['name'] ?? 'Anonymous';
     winCloudEngine = values['win_cloud_engine'] ?? 0;
     winAi = values['win_ai'] ?? 0;
   }
 
   RankItem.empty() {
-    name = '无名英雄';
+    name = 'Anonymous';
     winCloudEngine = 0;
     winAi = 0;
   }
 
   RankItem.mock() {
-    name = '我是英雄';
+    name = 'I am a hero';
     winCloudEngine = 3;
     winAi = 12;
   }

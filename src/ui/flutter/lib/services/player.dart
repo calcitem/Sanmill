@@ -52,7 +52,7 @@ class Player extends RankItem {
       final playerInfoJson = profile['_rank-player-info'] ?? '{}';
       final values = jsonDecode(playerInfoJson);
 
-      name = values['name'] ?? '无名英雄';
+      name = values['name'] ?? 'Anonymous';
       winCloudEngine = values['win_cloud_engine'] ?? 0;
       winAi = values['win_ai'] ?? 0;
     }

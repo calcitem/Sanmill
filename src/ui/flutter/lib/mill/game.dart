@@ -30,7 +30,6 @@ class Game {
 
   String sideToMove = Color.black;
 
-  // 是否黑白反转
   bool isColorInverted;
 
   Map<String, bool> isAi = {Color.black: false, Color.white: true};
@@ -44,28 +43,20 @@ class Game {
     position.start();
   }
 
-  // 是否有落子动画
   bool hasAnimation;
 
-  // 动画持续时间
-  int durationTime;
+  int animationDurationTime;
 
-  // 是否有落子音效
   static bool hasSound = true;
 
-  // 是否必败时认输
   bool resignIfMostLose = false;
 
-  // 是否自动交换先后手
   bool isAutoChangeFirstMove = false;
 
-  // AI 是否为先手
   bool isAiFirstMove = false;
 
-  // 规则号
   int ruleIndex;
 
-  // 提示语
   String tips;
 
   List<String> moveHistory = [""];
@@ -111,7 +102,7 @@ class Game {
 
   bool regret({moves = 2}) {
     //
-    // 轮到自己走棋的时候，才能悔棋
+    // Can regret only our turn
     // TODO
     if (_position.side != Color.white) {
       //Audios.playTone('invalid.mp3');
@@ -120,7 +111,7 @@ class Game {
 
     var regretted = false;
 
-    /// 悔棋一回合（两步），才能撤回自己上一次的动棋
+    /// Regret 2 step
 
     for (var i = 0; i < moves; i++) {
       //
@@ -164,7 +155,6 @@ class Game {
     int total;
     double blackWinRate, whiteWinRate, drawRate;
 
-    // 如果未开局则开局
     if (position.phase == Phase.ready) {
       start();
     }

@@ -66,21 +66,21 @@ class _GamePageState extends State<GamePage> {
     switch (winner) {
       case Color.nobody:
         if (Game.shared.position.phase == Phase.placing) {
-          changeStatus('请摆子');
+          changeStatus(S.of(context).tipPlace);
         } else if (Game.shared.position.phase == Phase.moving) {
-          changeStatus('请走子');
+          changeStatus(S.of(context).tipMove);
         }
         break;
       case Color.black:
-        changeStatus('黑方胜');
+        changeStatus(S.of(context).blackWin);
         gotWin();
         break;
       case Color.white:
-        changeStatus('白方胜');
+        changeStatus(S.of(context).whiteWin);
         gotLose();
         break;
       case Color.draw:
-        changeStatus('和棋');
+        changeStatus(S.of(context).draw);
         gotDraw();
         break;
     }
@@ -91,82 +91,71 @@ class _GamePageState extends State<GamePage> {
 
     int sq = indexToSquare[index];
 
-    // 点击非落子点，不执行
     if (sq == null) {
       print("putPiece skip index: $index");
       return;
     }
 
-    // AI 走棋或正在搜索时，点击无效
     if (Game.shared.isAiToMove() || Game.shared.aiIsSearching()) {
       return false;
     }
 
-    // 如果未开局则开局
     if (position.phase == Phase.ready) {
       Game.shared.start();
     }
 
-    // 判断执行选子、落子或去子
     bool ret = false;
 
     switch (position.action) {
       case Act.place:
         if (position.putPiece(sq)) {
           if (position.action == Act.remove) {
-            // 播放成三音效
             //Audios.playTone('mill.mp3');
-            changeStatus('请吃子');
+            changeStatus(S.of(context).tipRemove);
           } else {
-            // 播放移动棋子音效
             //Audios.playTone('put.mp3');
-            changeStatus('已落子');
+            changeStatus(S.of(context).tipPlaced);
           }
           ret = true;
           print("putPiece: [$sq]");
           break;
         } else {
           print("putPiece: skip [$sq]");
-          changeStatus('不能落在此处');
+          changeStatus(S.of(context).tipBanPlace);
         }
 
-        // 如果移子不成功，尝试重新选子，这里不break
+        // If cannot move, retry select, do not break
         //[[fallthrough]];
         continue select;
       select:
       case Act.select:
         if (position.selectPiece(sq)) {
-          // 播放选子音效
           //Audios.playTone('select.mp3');
           Game.shared.select(index);
           ret = true;
           print("selectPiece: [$sq]");
-          changeStatus('请落子');
+          changeStatus(S.of(context).tipPlace);
         } else {
-          // 播放禁止音效
           //Audios.playTone('banned.mp3');
           print("selectPiece: skip [$sq]");
-          changeStatus('选择的子不对');
+          changeStatus(S.of(context).tipSelectWrong);
         }
         break;
 
       case Act.remove:
         if (position.removePiece(sq)) {
-          // 播放音效
           //Audios.playTone('remove.mp3');
           ret = true;
           print("removePiece: [$sq]");
-          changeStatus('已吃子');
+          changeStatus(S.of(context).tipRemoved);
         } else {
-          // 播放禁止音效
           //Audios.playTone('banned.mp3');
           print("removePiece: skip [$sq]");
-          changeStatus('不能吃这个子');
+          changeStatus(S.of(context).tipBanRemove);
         }
         break;
 
       default:
-        // 如果是结局状态，不做任何响应
         break;
     }
 
@@ -185,11 +174,8 @@ class _GamePageState extends State<GamePage> {
       Move m = Move(position.cmdline);
       position.recorder.moveIn(m, position);
 
-      // 发信号更新状态栏
       setState(() {});
 
-      // AI设置
-      // 如果还未决出胜负
       if (position.winner == Color.nobody) {
         engineToGo();
       } else {
@@ -208,7 +194,7 @@ class _GamePageState extends State<GamePage> {
     // TODO
     while (Game.shared.position.winner == Color.nobody &&
         Game.shared.position.sideToMove() == Color.white) {
-      changeStatus('对方思考中...');
+      changeStatus(S.of(context).thinking);
 
       final response = await widget.engine.search(Game.shared.position);
 
@@ -229,7 +215,7 @@ class _GamePageState extends State<GamePage> {
     confirm() {
       Navigator.of(context).pop();
       Game.shared.newGame();
-      changeStatus('游戏开始 请摆子');
+      changeStatus(S.of(context).gameStarted);
 
       if (Game.shared.isAiToMove()) {
         print("New Game: AI's turn.");
@@ -243,11 +229,13 @@ class _GamePageState extends State<GamePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('新局？', style: TextStyle(color: UIColors.primaryColor)),
-          content: SingleChildScrollView(child: Text('重新开局？')),
+          title: Text(S.of(context).newGame,
+              style: TextStyle(color: UIColors.primaryColor)),
+          content:
+              SingleChildScrollView(child: Text(S.of(context).restartGame)),
           actions: <Widget>[
-            FlatButton(child: Text('确定'), onPressed: confirm),
-            FlatButton(child: Text('取消'), onPressed: cancel),
+            FlatButton(child: Text(S.of(context).ok), onPressed: confirm),
+            FlatButton(child: Text(S.of(context).cancel), onPressed: cancel),
           ],
         );
       },
@@ -256,12 +244,14 @@ class _GamePageState extends State<GamePage> {
 
   analyzePosition() async {
     //
-    Toast.toast(context, msg: '正在分析局面...', position: ToastPostion.bottom);
+    Toast.toast(context,
+        msg: S.of(context).analyzing, position: ToastPostion.bottom);
 
     setState(() => _searching = true);
 
     try {} catch (e) {
-      Toast.toast(context, msg: '错误: $e', position: ToastPostion.bottom);
+      Toast.toast(context,
+          msg: S.of(context).error + ": $e", position: ToastPostion.bottom);
     } finally {
       setState(() => _searching = false);
     }
@@ -279,8 +269,8 @@ class _GamePageState extends State<GamePage> {
       children.add(
         ListTile(
           title: Text(item.moveName, style: TextStyle(fontSize: 18)),
-          subtitle: Text('胜率：${item.winRate}%'),
-          trailing: Text('分数：${item.score}'),
+          subtitle: Text(S.of(context).winRate + ": ${item.winRate}%"),
+          trailing: Text(S.of(context).score + ": ${item.score}'"),
           onTap: () => callback(item),
         ),
       );
@@ -300,39 +290,38 @@ class _GamePageState extends State<GamePage> {
 
   String getGameOverReasonString(GameOverReason reason, String winner) {
     String loseReasonStr;
-    String winnerStr = winner == Color.black ? "黑方" : "白方";
-    String loserStr = winner == Color.black ? "白方" : "黑方";
+    String winnerStr =
+        winner == Color.black ? S.of(context).black : S.of(context).white;
+    String loserStr =
+        winner == Color.black ? S.of(context).white : S.of(context).black;
 
     switch (Game.shared.position.gameOverReason) {
       case GameOverReason.loseReasonlessThanThree:
-        loseReasonStr = "$loserStr剩余棋子少于3枚。";
+        loseReasonStr = loserStr + S.of(context).loseReasonlessThanThree;
         break;
       case GameOverReason.loseReasonResign:
-        loseReasonStr = "$loserStr认输了。";
+        loseReasonStr = loserStr + S.of(context).loseReasonResign;
         break;
       case GameOverReason.loseReasonNoWay:
-        loseReasonStr = "$loserStr被闷杀。";
+        loseReasonStr = loserStr + S.of(context).loseReasonNoWay;
         break;
       case GameOverReason.loseReasonBoardIsFull:
-        loseReasonStr = "棋盘摆满，$loserStr无路可走。";
+        loseReasonStr = loserStr + S.of(context).loseReasonBoardIsFull;
         break;
       case GameOverReason.loseReasonTimeOver:
-        loseReasonStr = "$loserStr超时判负。";
+        loseReasonStr = loserStr + S.of(context).loseReasonTimeOver;
         break;
       case GameOverReason.drawReasonRule50:
-        loseReasonStr = "连续超过50步未吃子，判和。";
-        break;
-      case GameOverReason.drawReasonRule50:
-        loseReasonStr = "连续超过50步未吃子，判和。";
+        loseReasonStr = S.of(context).drawReasonRule50;
         break;
       case GameOverReason.drawReasonBoardIsFull:
-        loseReasonStr = "棋盘摆满，无路可走，判和。";
+        loseReasonStr = S.of(context).drawReasonBoardIsFull;
         break;
       case GameOverReason.drawReasonThreefoldRepetition:
-        loseReasonStr = "三次重复局面和。";
+        loseReasonStr = S.of(context).drawReasonThreefoldRepetition;
         break;
       default:
-        loseReasonStr = "未知原因，棋局结束。";
+        loseReasonStr = S.of(context).gameOverUnknownReason;
         break;
     }
 
@@ -349,13 +338,14 @@ class _GamePageState extends State<GamePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('恭喜你赢了', style: TextStyle(color: UIColors.primaryColor)),
+          title: Text(S.of(context).youWin,
+              style: TextStyle(color: UIColors.primaryColor)),
           content: Text(getGameOverReasonString(
               Game.shared.position.gameOverReason,
               Game.shared.position.winner)),
           actions: <Widget>[
             FlatButton(
-                child: Text('好的'),
+                child: Text(S.of(context).ok),
                 onPressed: () => Navigator.of(context).pop()),
           ],
         );
@@ -378,13 +368,14 @@ class _GamePageState extends State<GamePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('你输了', style: TextStyle(color: UIColors.primaryColor)),
+          title: Text(S.of(context).youLose,
+              style: TextStyle(color: UIColors.primaryColor)),
           content: Text(getGameOverReasonString(
               Game.shared.position.gameOverReason,
               Game.shared.position.winner)),
           actions: <Widget>[
             FlatButton(
-                child: Text('好的'),
+                child: Text(S.of(context).ok),
                 onPressed: () => Navigator.of(context).pop()),
           ],
         );
@@ -401,13 +392,14 @@ class _GamePageState extends State<GamePage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('和棋', style: TextStyle(color: UIColors.primaryColor)),
+          title: Text(S.of(context).draw,
+              style: TextStyle(color: UIColors.primaryColor)),
           content: Text(getGameOverReasonString(
               Game.shared.position.gameOverReason,
               Game.shared.position.winner)),
           actions: <Widget>[
             FlatButton(
-                child: Text('好的'),
+                child: Text(S.of(context).ok),
                 onPressed: () => Navigator.of(context).pop()),
           ],
         );
@@ -417,7 +409,7 @@ class _GamePageState extends State<GamePage> {
 
   void calcScreenPaddingH() {
     //
-    // 当屏幕的纵横比小于16/9时，限制棋盘的宽度
+    // when screen's height/width rate is less than 16/9, limit witdh of board
     final windowSize = MediaQuery.of(context).size;
     double height = windowSize.height, width = windowSize.width;
 
@@ -511,10 +503,12 @@ class _GamePageState extends State<GamePage> {
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Row(children: <Widget>[
         Expanded(child: SizedBox()),
-        FlatButton(child: Text('新局', style: buttonStyle), onPressed: newGame),
+        FlatButton(
+            child: Text(S.of(context).newGame, style: buttonStyle),
+            onPressed: newGame),
         Expanded(child: SizedBox()),
         FlatButton(
-          child: Text('悔棋', style: buttonStyle),
+          child: Text(S.of(context).regret, style: buttonStyle),
           onPressed: () {
             Game.shared.regret(steps: 2);
             setState(() {});
@@ -522,7 +516,7 @@ class _GamePageState extends State<GamePage> {
         ),
         Expanded(child: SizedBox()),
         FlatButton(
-          child: Text('分析', style: buttonStyle),
+          child: Text(S.of(context).analyze, style: buttonStyle),
           onPressed: _searching ? null : analyzePosition,
         ),
         Expanded(child: SizedBox()),
@@ -571,12 +565,13 @@ class _GamePageState extends State<GamePage> {
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('棋谱', style: TextStyle(color: UIColors.primaryColor)),
+              title: Text(S.of(context).gameRecord,
+                  style: TextStyle(color: UIColors.primaryColor)),
               content:
                   SingleChildScrollView(child: Text(text, style: manualStyle)),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('好的'),
+                  child: Text(S.of(context).ok),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],

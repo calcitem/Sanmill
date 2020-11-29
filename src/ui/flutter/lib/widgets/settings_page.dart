@@ -20,6 +20,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
@@ -70,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
           SizedBox(height: 10),
           RadioListTile(
             activeColor: UIColors.primaryColor,
-            title: Text('初级'),
+            title: Text('L1'),
             groupValue: Config.thinkingTime,
             value: 5000,
             onChanged: callback,
@@ -78,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Divider(),
           RadioListTile(
             activeColor: UIColors.primaryColor,
-            title: Text('中级'),
+            title: Text('L2'),
             groupValue: Config.thinkingTime,
             value: 15000,
             onChanged: callback,
@@ -86,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Divider(),
           RadioListTile(
             activeColor: UIColors.primaryColor,
-            title: Text('高级'),
+            title: Text('L3'),
             groupValue: Config.thinkingTime,
             value: 30000,
             onChanged: callback,
@@ -126,8 +127,8 @@ class _SettingsPageState extends State<SettingsPage> {
     //
     final newName = await Navigator.of(context).push(
       MaterialPageRoute(
-          builder: (context) =>
-              EditPage('棋手姓名', initValue: Player.shared.name)),
+          builder: (context) => EditPage(S.of(context).playerName,
+              initValue: Player.shared.name)),
     );
 
     if (newName != null) nameChanged(newName);
@@ -156,16 +157,18 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('关于「直棋 」', style: TextStyle(color: UIColors.primaryColor)),
+        title: Text(S.of(context).about + S.of(context).appName,
+            style: TextStyle(color: UIColors.primaryColor)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 5),
-            Text('版本: $_version', style: TextStyle(fontFamily: '')),
+            Text(S.of(context).version + ": $_version",
+                style: TextStyle(fontFamily: '')),
             SizedBox(height: 15),
             InkWell(
-              child: Text('依照 GPLv3 协议发布',
+              child: Text(S.of(context).releaseBaseOn,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -175,7 +178,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SizedBox(height: 15),
             InkWell(
-              child: Text('官方网站',
+              child: Text(S.of(context).webSite,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -183,7 +186,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
             ),
             InkWell(
-              child: Text('新版变化',
+              child: Text(S.of(context).whatsNew,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -192,7 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   'https://github.com/calcitem/Sanmill/commits/master'),
             ),
             InkWell(
-              child: Text('快速更新通道',
+              child: Text(S.of(context).fastUpdateChannel,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -202,16 +205,13 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SizedBox(height: 15),
             InkWell(
-              child: Text('致谢'),
+              child: Text(S.of(context).thanks),
             ),
             InkWell(
-              child: Text('直棋 离不开以下人员的无私贡献，感激不尽!\n'
-                  '代码贡献者: Calcitem\n'
-                  '开源库: '
-                  '所基于的开源库太多，难以罗列，在这里仅列出主要的几项，同时也感谢其他默默无闻为开源事业做出贡献的人们：'),
+              child: Text(S.of(context).thankWho),
             ),
             InkWell(
-              child: Text('Stockfish - UCI chess engine',
+              child: Text(S.of(context).stockfish,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -220,7 +220,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   _launchURL('https://github.com/official-stockfish/Stockfish'),
             ),
             InkWell(
-              child: Text('ChessRoad (棋路) by He Zhaoyun',
+              child: Text(S.of(context).chessRoad,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -228,7 +228,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () => _launchURL('https://github.com/hezhaoyun/chessroad'),
             ),
             InkWell(
-              child: Text('NineChess (九联棋) by liuweilhy',
+              child: Text(S.of(context).nineChess,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -239,7 +239,8 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         actions: <Widget>[
           FlatButton(
-              child: Text('好的'), onPressed: () => Navigator.of(context).pop()),
+              child: Text(S.of(context).ok),
+              onPressed: () => Navigator.of(context).pop()),
         ],
       ),
     );
@@ -254,14 +255,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
-      appBar: AppBar(title: Text('设置')),
+      appBar: AppBar(title: Text(S.of(context).settings)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 10.0),
-            Text("人机难度", style: headerStyle),
+            Text(S.of(context).level, style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
               color: UIColors.boardBackgroundColor,
@@ -270,14 +271,14 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text("游戏难度", style: itemStyle),
+                    title: Text(S.of(context).level, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.thinkingTime <= 5000
-                          ? '初级'
+                          ? 'L1'
                           : Config.thinkingTime <= 15000
-                              ? '中级'
-                              : '高级'),
+                              ? 'L2'
+                              : 'L3'),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
@@ -287,7 +288,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text("声音", style: headerStyle),
+            Text(S.of(context).sound, style: headerStyle),
             Card(
               color: UIColors.boardBackgroundColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -296,28 +297,28 @@ class _SettingsPageState extends State<SettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.bgmEnabled,
-                    title: Text("背景音乐", style: itemStyle),
+                    title: Text(S.of(context).sound, style: itemStyle),
                     onChanged: switchMusic,
                   ),
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.toneEnabled,
-                    title: Text("提示音效", style: itemStyle),
+                    title: Text(S.of(context).tone, style: itemStyle),
                     onChanged: switchTone,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            Text("排行榜", style: headerStyle),
+            Text(S.of(context).leaderBoard, style: headerStyle),
             Card(
               color: UIColors.boardBackgroundColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text("棋手姓名", style: itemStyle),
+                    title: Text(S.of(context).playerName, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Player.shared.name),
@@ -330,14 +331,15 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text("关于", style: headerStyle),
+            Text(S.of(context).about, style: headerStyle),
             Card(
               color: UIColors.boardBackgroundColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text("关于「直棋」", style: itemStyle),
+                    title: Text(S.of(context).about + S.of(context).appName,
+                        style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(_version ?? ''),

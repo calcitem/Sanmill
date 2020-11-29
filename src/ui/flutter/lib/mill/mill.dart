@@ -52,7 +52,6 @@ int makeSquare(int file, int rank) {
   return (file << 3) + rank - 1;
 }
 
-/// 对战结果：未决、赢、输、和
 enum GameResult { pending, win, lose, draw }
 
 class Color {
@@ -119,7 +118,7 @@ class Move {
 
   MoveType type;
 
-  // 这一步走完后的 FEN 记数，用于悔棋时恢复 FEN 步数 Counter
+  // Used to restore fen step conter when regreting
   String counterMarks;
 
   parse() {
@@ -163,10 +162,10 @@ class Move {
     parse();
   }
 
-  /// 引擎返回的招法用是如此表示的，例如:
-  /// 落子：(1,2)
-  /// 吃子：-(1,2)
-  /// 走子：(3,1)->(2,1)
+  /// Format:
+  /// Place: (1,2)
+  /// Remove: -(1,2)
+  /// Move: (3,1)->(2,1)
 
   Move.set(String move) {
     this.move = move;

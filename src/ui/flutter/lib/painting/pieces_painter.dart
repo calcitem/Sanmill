@@ -44,7 +44,7 @@ class PiecesPainter extends PiecesBasePainter {
     this.blurIndex = Move.invalidMove,
   }) : super(width: width) {
     //
-    pieceWidth = squareWidth * 0.9; // 棋子大小
+    pieceWidth = squareWidth * 0.9; // size of square
   }
 
   @override
@@ -56,7 +56,6 @@ class PiecesPainter extends PiecesBasePainter {
       gridWidth: gridWidth,
       squareWidth: squareWidth,
       pieceWidth: pieceWidth,
-      // 棋子放在线上中央
       offsetX: Board.padding + squareWidth / 2,
       offsetY: Board.padding + Board.digitsHeight + squareWidth / 2,
       focusIndex: focusIndex,
@@ -66,7 +65,6 @@ class PiecesPainter extends PiecesBasePainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    // 每次重建 Painter 时都要重画
     return true;
   }
 
@@ -89,11 +87,12 @@ class PiecesPainter extends PiecesBasePainter {
     final shadowPath = Path();
     final piecesToDraw = <PiecePaintPair>[];
 
-    // 在棋盘上画棋子
+    // Draw pieces on board
     for (var row = 0; row < 7; row++) {
       for (var col = 0; col < 7; col++) {
         //
-        final piece = position.pieceOnGrid(row * 7 + col); // 初始状态无棋子
+        final piece =
+            position.pieceOnGrid(row * 7 + col); // No Pieces when initial
 
         if (piece == Piece.noPiece) continue;
 
@@ -107,7 +106,7 @@ class PiecesPainter extends PiecesBasePainter {
       }
     }
 
-    // 棋子下绘制阴影
+    // Draw shadow of piece
     canvas.drawShadow(shadowPath, Colors.black, 2, true);
 
     paint.style = PaintingStyle.fill;
@@ -122,19 +121,19 @@ class PiecesPainter extends PiecesBasePainter {
 
     piecesToDraw.forEach((pps) {
       var pieceRadius = pieceWidth / 2;
-      var pieceInnerRadius = pieceRadius * 0.99; // 决定棋子外圈有宽
+      var pieceInnerRadius = pieceRadius * 0.99;
 
-      // 绘制棋子边界
+      // Draw Border of Piece
       switch (pps.piece) {
         case Piece.blackStone:
           paint.color = UIColors.blackPieceBorderColor;
-          canvas.drawCircle(pps.pos, pieceRadius, paint); // 临时调试用
+          canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
           paint.color = UIColors.blackPieceColor;
           canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
           break;
         case Piece.whiteStone:
           paint.color = UIColors.whitePieceBorderColor;
-          canvas.drawCircle(pps.pos, pieceRadius, paint); // 临时调试用
+          canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
           paint.color = UIColors.whitePieceColor;
           canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
           break;

@@ -18,7 +18,7 @@
 */
 
 class Rule {
-  String name = "打三棋";
+  String name = "Da San Qi";
   String description;
   int nTotalPiecesEachSide = 12; // 9 or 12
   int nPiecesAtLeast = 3; // Default is 3

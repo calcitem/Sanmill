@@ -1464,7 +1464,7 @@ class Position {
 
     if (lastMove.removed != Piece.noPiece) {
       //
-      // 查找上一个吃子局面（或开局），NativeEngine 需要
+      // Find last remove position (or opening), NativeEngine need
       final tempPosition = Position.clone(this);
 
       final moves = recorder.reverseMovesToPrevRemove();

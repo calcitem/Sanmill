@@ -18,5 +18,237 @@
   "humanVsCloud": "Human Vs Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
+  },
+  "gameRecord": "Game Record",
+  "@gameRecord": {
+    "description": "Game Record"
+  },
+  "noGameRecord": "No record",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {
+    "description": "Da San Qi"
+  },
+  "copyright": "Copyright © 2019-2020 The Sanmill Authors",
+  "@copyright": {
+    "description": "Copyright"
+  },
+  "gameWarning": "",
+  "@gameWarning": {
+    "description": "Game Warning"
+  },
+  "tipSelectWrong": "Select wrong piece",
+  "@tipSelectWrong": {
+    "description": "Select wrong piece"
+  },
+  "tipPlace": "Please place",
+  "@tipPlace": {
+    "description": "Please place"
+  },
+  "tipBanPlace": "Cannot place here",
+  "@tipBanPlace": {
+    "description": "Cannot place here"
+  },
+  "tipPlaced": "Placed",
+  "@tipPlaced": {
+    "description": "Placed"
+  },
+  "tipRemove": "Please remove",
+  "@tipRemove": {
+    "description": "Please remove"
+  },
+  "tipBanRemove": "Cannot remove",
+  "@tipBanRemove": {
+    "description": "Cannot remove"
+  },
+  "tipRemoved": "Removed",
+  "@tipRemoved": {
+    "description": "Removed"
+  },
+  "tipMove": "Please move",
+  "@tipMove": {
+    "description": "Please move"
+  },
+  "blackWin": "Black win",
+  "@blackWin": {
+    "description": "Black win"
+  },
+  "whiteWin": "White win",
+  "@whiteWin": {
+    "description": "White win"
+  },
+  "draw": "Draw",
+  "@draw": {
+    "description": "Draw"
+  },
+  "thinking": "Thinking ...",
+  "@thinking": {
+    "description": "Thinking ..."
+  },
+  "newGame": "New Game",
+  "@newGame": {
+    "description": "New Game"
+  },
+  "restartGame": "Restart Game?",
+  "@restartGame": {
+    "description": "Restart Game?"
+  },
+  "gameStarted": "Game started, please place",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analyzing ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Win Rate",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Score",
+  "@score": {
+    "description": "Score"
+  },
+  "black": "Black",
+  "@black": {
+    "description": "Black"
+  },
+  "white": "White",
+  "@white": {
+    "description": "White"
+  },
+  "loseReasonlessThanThree": " piece count is less than three.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": " resign.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": " is no way to go.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "The board is full, no way to go.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Time Over",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Rule50",
+  "@drawReasonRule50": {
+    "description": "Rule50"
+  },
+  "drawReasonBoardIsFull": "Draw, because the board is full",
+  "@drawReasonBoardIsFull": {
+    "description": "Draw, because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Draw, because three fold repetition.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "Draw, because three fold repetition."
+  },
+  "gameOverUnknownReason": "Game Over! Unknown reason.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "youWin": "You win! Congratulations!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "youLose": "You Lose!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "regret": "Regret",
+  "@regret": {
+    "description": "Regret"
+  },
+  "analyze": "Analyze",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "Player Name",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Version"
+  },
+  "releaseBaseOn": "Release base On GPLv3",
+  "@releaseBaseOn": {
+    "description": "Release base On GPLv3"
+  },
+  "webSite": "Website",
+  "@webSite": {
+    "description": "Web Site"
+  },
+  "whatsNew": "What's New",
+  "@whatsNew": {
+    "description": "What's New"
+  },
+  "fastUpdateChannel": "Fast Update Channel",
+  "@fastUpdateChannel": {
+    "description": "Fast Update Channel"
+  },
+  "thanks": "Thanks",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "thankWho": "Thanks to following programmers and teams:",
+  "@thankWho": {
+    "description": "Thank who"
+  },
+  "stockfish": "Stockfish - UCI chess engine",
+  "@stockfish": {
+    "description": "Stockfish - UCI chess engine"
+  },
+  "chessRoad": "ChessRoad by He Zhaoyun",
+  "@chessRoad": {
+    "description": "ChessRoad"
+  },
+  "nineChess": "NineChess by liuweilhy",
+  "@nineChess": {
+    "description": "NineChess"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings"
+  },
+  "level": "Level",
+  "@level": {
+    "description": "Level"
+  },
+  "sound": "Sound",
+  "@sound": {
+    "description": "Sound"
+  },
+  "tone": "Tone",
+  "@tone": {
+    "description": "Tone"
+  },
+  "leaderBoard": "Leader Board",
+  "@leaderBoard": {
+    "description": "Leader Board"
   }
 }

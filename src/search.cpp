@@ -230,7 +230,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #endif
 
 #ifdef ENDGAME_LEARNING
-    // 检索残局库
     Endgame endgame;
 
     if (gameOptions.getLearnEndgameEnabled() &&
@@ -269,7 +268,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         bestValue = probeVal;
 
 #if 0
-        // TODO: 有必要针对深度微调 value?
+        // TODO: Need adjust value?
         if (position->turn == BLACK)
             bestValue += tte.depth - depth;
         else

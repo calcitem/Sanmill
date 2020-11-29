@@ -19,6 +19,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/generated/l10n.dart';
 
 class EditPage extends StatefulWidget {
   //
@@ -65,7 +66,7 @@ class _EditPageState extends State<EditPage> {
         title: Text(widget.title, style: TextStyle(fontFamily: '')),
         actions: <Widget>[
           FlatButton(
-            child: Text('确定',
+            child: Text(S.of(context).ok,
                 style: TextStyle(fontFamily: '', color: Colors.white)),
             onPressed: () => onSubmit(_textController.text),
           )
