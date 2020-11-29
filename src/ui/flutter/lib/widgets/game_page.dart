@@ -63,23 +63,20 @@ class _GamePageState extends State<GamePage> {
   void showTips() {
     final winner = Game.shared.position.winner;
 
-    switch (winner) {
-      case Color.nobody:
-        if (Game.shared.position.phase == Phase.placing) {
-          changeStatus(S.of(context).tipPlace);
-        } else if (Game.shared.position.phase == Phase.moving) {
-          changeStatus(S.of(context).tipMove);
-        }
-        break;
-      case Color.black:
-        changeStatus(S.of(context).blackWin);
-        break;
-      case Color.white:
-        changeStatus(S.of(context).whiteWin);
-        break;
-      case Color.draw:
-        changeStatus(S.of(context).draw);
-        break;
+    Map<String, String> colorWinStrings = {
+      Color.black: S.of(context).blackWin,
+      Color.white: S.of(context).whiteWin,
+      Color.draw: S.of(context).draw
+    };
+
+    if (winner == Color.nobody) {
+      if (Game.shared.position.phase == Phase.placing) {
+        changeStatus(S.of(context).tipPlace);
+      } else if (Game.shared.position.phase == Phase.moving) {
+        changeStatus(S.of(context).tipMove);
+      }
+    } else {
+      changeStatus(colorWinStrings[winner]);
     }
 
     showGameResult(winner);
