@@ -18,6 +18,7 @@
 */
 
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/types.dart';
 
 import 'mill.dart';
@@ -38,21 +39,44 @@ class Game {
 
   Map<String, bool> isSearching = {Color.black: false, Color.white: false};
 
+  EngineType engineType;
+
   bool aiIsSearching() {
     return isSearching[Color.black] == true || isSearching[Color.white] == true;
+  }
+
+  void setWhoIsAi(EngineType type) {
+    engineType = type;
+
+    switch (type) {
+      case EngineType.humanVsAi:
+        if (Config.whoMovesFirst == PlayerType.human) {
+          isAi[Color.black] = false;
+          isAi[Color.white] = true;
+        } else if (Config.whoMovesFirst == PlayerType.AI) {
+          isAi[Color.black] = true;
+          isAi[Color.white] = false;
+        }
+        break;
+      case EngineType.humanVsHuman:
+        isAi[Color.black] = false;
+        isAi[Color.white] = false;
+        break;
+      case EngineType.aiVsAi:
+        isAi[Color.black] = true;
+        isAi[Color.white] = true;
+        break;
+      case EngineType.humanVsCloud:
+        break;
+      default:
+        break;
+    }
   }
 
   void start() {
     position.reset();
 
-    // TDOO
-    if (Config.whoMovesFirst == PlayerType.human) {
-      isAi[Color.black] = false;
-      isAi[Color.white] = true;
-    } else {
-      isAi[Color.black] = true;
-      isAi[Color.white] = false;
-    }
+    setWhoIsAi(engineType);
   }
 
   bool hasAnimation;

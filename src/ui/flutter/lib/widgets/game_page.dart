@@ -53,6 +53,10 @@ class _GamePageState extends State<GamePage> {
 
   @override
   void initState() {
+    print("engineType = ${widget.engineType}");
+
+    Game.shared.setWhoIsAi(widget.engineType);
+
     super.initState();
     Game.shared.init();
     widget.engine.startup();
