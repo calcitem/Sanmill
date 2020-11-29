@@ -176,7 +176,7 @@ class Position {
   }
 
   Position() {
-    score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
+    //score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
     init();
   }
 
@@ -715,8 +715,6 @@ class Position {
 
     setGameOver(Color.opponent(loser), GameOverReason.loseReasonResign);
 
-    updateScore();
-
     return true;
   }
 
@@ -729,6 +727,7 @@ class Position {
     gameOverReason = reason;
     winner = w;
     print("Game over, $w win, becase of $reason");
+    updateScore();
   }
 
   void updateScore() {
@@ -1501,6 +1500,8 @@ class Position {
     for (int i = posAfterLastRemove; i < recorder.movesCount; i++) {
       moves += " ${recorder.moveAt(i).move}";
     }
+
+    print("moves = $moves");
 
     return moves.length > 0 ? moves.substring(1) : '';
   }
