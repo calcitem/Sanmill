@@ -27,6 +27,15 @@ class Config {
   static int thinkingTime = 5000;
   static PlayerType whoMovesFirst = PlayerType.human;
 
+  static bool isAutoRestart = false;
+  static bool isAutoChangeFirstMove = false;
+  static bool resignIfMostLose = false;
+  static bool randomMoveEnabled = true;
+  static bool learnEndgame = false;
+  static bool idsEnabled = false;
+  static bool depthExtension = true;
+  static bool openingBook = false;
+
   static Future<void> loadProfile() async {
     final profile = await Profile.shared();
 
@@ -34,6 +43,15 @@ class Config {
     Config.toneEnabled = profile['tone-enabled'] ?? true;
     Config.thinkingTime = profile['thinking-time'] ?? 5000;
     Config.whoMovesFirst = profile['who-moves-first'] ?? PlayerType.human;
+
+    Config.isAutoRestart = profile['isAutoRestart'] ?? false;
+    Config.isAutoChangeFirstMove = profile['isAutoChangeFirstMove'] ?? false;
+    Config.resignIfMostLose = profile['resignIfMostLose'] ?? false;
+    Config.randomMoveEnabled = profile['randomMoveEnabled'] ?? false;
+    Config.learnEndgame = profile['learnEndgame'] ?? false;
+    Config.idsEnabled = profile['idsEnabled'] ?? false;
+    Config.depthExtension = profile['depthExtension'] ?? false;
+    Config.openingBook = profile['openingBook'] ?? false;
 
     return true;
   }
@@ -45,6 +63,15 @@ class Config {
     profile['tone-enabled'] = Config.toneEnabled;
     profile['thinking-time'] = Config.thinkingTime;
     profile['who-moves-first'] = Config.whoMovesFirst;
+
+    profile['isAutoRestart'] = Config.isAutoRestart;
+    profile['isAutoChangeFirstMove'] = Config.isAutoChangeFirstMove;
+    profile['resignIfMostLose'] = Config.resignIfMostLose;
+    profile['randomMoveEnabled'] = Config.randomMoveEnabled;
+    profile['learnEndgame'] = Config.learnEndgame;
+    profile['idsEnabled'] = Config.idsEnabled;
+    profile['depthExtension'] = Config.depthExtension;
+    profile['openingBook'] = Config.openingBook;
 
     profile.commit();
 

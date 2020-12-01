@@ -64,5 +64,13 @@
   "leaderBoard": "排行榜",
   "whoMovesFirst": "谁先行",
   "human": "人类",
-  "ai": "机器"
+  "ai": "机器",
+  "isAutoRestart": "棋局结束时自动重新开局",
+  "isAutoChangeFirstMove": "开局时自动交换先后手",
+  "resignIfMostLose": "机器明显劣势时自动认输",
+  "randomMoveEnabled": "机器随机走子",
+  "learnEndgame": "残局库自学习",
+  "idsEnabled": "迭代加深",
+  "depthExtension": "深度扩展",
+  "openingBook": "使用开局库"
 }

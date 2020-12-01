@@ -262,5 +262,37 @@
   "ai": "AI",
   "@ai": {
     "description": "AI"
+  },
+  "isAutoRestart": "Auto Restart Game",
+  "@isAutoRestart": {
+    "description": "Auto Restart Game"
+  },
+  "isAutoChangeFirstMove": "Auto Change First Move",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "AI Resign if Most Lose",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "randomMoveEnabled": "AI Random Move",
+  "@randomMoveEnabled": {
+    "description": "AI Random Move"
+  },
+  "learnEndgame": "Learn Endgame",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "idsEnabled": "IDS",
+  "@idsEnabled": {
+    "description": "IDS"
+  },
+  "depthExtension": "Depth Extension",
+  "@depthExtension": {
+    "description": "Depth Extension"
+  },
+  "openingBook": "Opening Book",
+  "@openingBook": {
+    "description": "Opening Book"
   }
 }

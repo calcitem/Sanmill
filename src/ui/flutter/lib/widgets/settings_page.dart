@@ -108,6 +108,70 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
+  switchIsAutoRestart(bool value) async {
+    setState(() {
+      Config.isAutoRestart = value;
+    });
+
+    Config.save();
+  }
+
+  switchIsAutoChangeFirstMove(bool value) async {
+    setState(() {
+      Config.isAutoChangeFirstMove = value;
+    });
+
+    Config.save();
+  }
+
+  switchResignIfMostLose(bool value) async {
+    setState(() {
+      Config.resignIfMostLose = value;
+    });
+
+    Config.save();
+  }
+
+  switchRandomMoveEnabled(bool value) async {
+    setState(() {
+      Config.randomMoveEnabled = value;
+    });
+
+    Config.save();
+  }
+
+  switchLearnEndgame(bool value) async {
+    setState(() {
+      Config.learnEndgame = value;
+    });
+
+    Config.save();
+  }
+
+  switchIdsEnabled(bool value) async {
+    setState(() {
+      Config.idsEnabled = value;
+    });
+
+    Config.save();
+  }
+
+  switchDepthExtension(bool value) async {
+    setState(() {
+      Config.depthExtension = value;
+    });
+
+    Config.save();
+  }
+
+  switchOpeningBook(bool value) async {
+    setState(() {
+      Config.openingBook = value;
+    });
+
+    Config.save();
+  }
+
   switchMusic(bool value) async {
     //
     setState(() {
@@ -335,6 +399,22 @@ class _SettingsPageState extends State<SettingsPage> {
                             : S.of(context).ai,
                         style: itemStyle),
                     onChanged: switchWhoMovesFirst,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(S.of(context).isAutoRestart, style: headerStyle),
+            Card(
+              color: UIColors.boardBackgroundColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.isAutoRestart,
+                    title: Text(S.of(context).isAutoRestart, style: itemStyle),
+                    onChanged: switchIsAutoRestart,
                   ),
                 ],
               ),

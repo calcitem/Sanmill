@@ -18,6 +18,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/analyze.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/engine/native_engine.dart';
@@ -193,7 +194,8 @@ class _GamePageState extends State<GamePage> {
 
   engineToGo() async {
     // TODO
-    while (Game.shared.position.winner == Color.nobody &&
+    while ((Config.isAutoRestart == true ||
+            Game.shared.position.winner == Color.nobody) &&
         Game.shared.isAiToMove()) {
       changeStatus(S.of(context).thinking);
 
@@ -208,6 +210,11 @@ class _GamePageState extends State<GamePage> {
         showTips();
       } else {
         changeStatus('Error: ${response.type}');
+      }
+
+      if (Config.isAutoRestart == true &&
+          Game.shared.position.winner != Color.nobody) {
+        Game.shared.newGame();
       }
     }
   }
