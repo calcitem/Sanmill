@@ -197,7 +197,17 @@ class _GamePageState extends State<GamePage> {
     while ((Config.isAutoRestart == true ||
             Game.shared.position.winner == Color.nobody) &&
         Game.shared.isAiToMove()) {
-      changeStatus(S.of(context).thinking);
+      if (widget.engineType == EngineType.aiVsAi) {
+        String score = Game.shared.position.score[Color.black].toString() +
+            " : " +
+            Game.shared.position.score[Color.white].toString() +
+            " : " +
+            Game.shared.position.score[Color.draw].toString();
+
+        changeStatus(score);
+      } else {
+        changeStatus(S.of(context).thinking);
+      }
 
       final response = await widget.engine.search(Game.shared.position);
 
