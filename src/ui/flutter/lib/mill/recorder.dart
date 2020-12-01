@@ -59,7 +59,9 @@ class GameRecorder {
 
     if (_history.length > 0) {
       if (_history[_history.length - 1].move == move.move) {
-        assert(false);
+        //assert(false);
+        // TODO: WAR
+        return;
       }
     }
 
