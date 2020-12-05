@@ -122,7 +122,9 @@ int Thread::search()
             }
         }
 
+#ifdef UCI_DO_BEST_MOVE
         moveHistory.push_back(key);
+#endif // UCI_DO_BEST_MOVE
 
         //sync_cout << "moveHistory Size = " << moveHistory.size();
         //std::cout << sync_endl;
