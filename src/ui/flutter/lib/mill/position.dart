@@ -767,7 +767,9 @@ class Position {
       return true;
     }
 
-    if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
+    bool isNoWay = isAllSurrounded();
+    print("phase = $phase, action = $action, isAllSurrounded = $isNoWay");
+    if (phase == Phase.moving && action == Act.select && isNoWay) {
       if (rule.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
             Color.opponent(sideToMove()), GameOverReason.loseReasonNoWay);
@@ -1435,7 +1437,7 @@ class Position {
 
       for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
         moveSquare = moveTable[s][d];
-        if (moveSquare != 0 && board[moveSquare] != Piece.noPiece) {
+        if (moveSquare != 0 && board[moveSquare] == Piece.noPiece) {
           return false;
         }
       }
