@@ -20,6 +20,8 @@
 #ifndef COMMAND_QUEUE_H
 #define COMMAND_QUEUE_H
 
+#include <mutex>
+
 class CommandQueue
 {
     enum
@@ -30,6 +32,8 @@ class CommandQueue
 
     char commands[MAX_COMMAND_COUNT][COMMAND_LENGTH];
     int readIndex, writeIndex;
+
+    std::mutex mutex;
 
 public:
     CommandQueue();

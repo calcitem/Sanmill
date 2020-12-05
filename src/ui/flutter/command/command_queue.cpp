@@ -19,6 +19,7 @@
 
 #include <cstring>
 #include "command_queue.h"
+#include "base.h"
 
 CommandQueue::CommandQueue()
 {
@@ -32,6 +33,8 @@ CommandQueue::CommandQueue()
 
 bool CommandQueue::write(const char *command)
 {
+    std::unique_lock<std::mutex> lk(mutex);
+
     if (strlen(commands[writeIndex]) != 0) {
         return false;
     }
@@ -51,6 +54,8 @@ bool CommandQueue::write(const char *command)
 
 bool CommandQueue::read(char *dest)
 {
+    std::unique_lock<std::mutex> lk(mutex);
+
     if (readIndex == -1) {
         return false;
     }
