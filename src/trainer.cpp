@@ -18,22 +18,22 @@
 */
 
 #ifdef TRAINING_MODE
-#include "gamecontroller.h"
+#include "game.h"
 #include "trainer.h"
 
 int main(int argc, char *argv[])
 {
     loggerDebug("Training start...\n");
 
-    GameController *gameController = new GameController();
+    Game *game = new Game();
     
-    gameController->gameReset();
-    gameController->gameStart();
+    game->gameReset();
+    game->gameStart();
 
-    gameController->isAiPlayer[BLACK] = gameController->isAiPlayer[WHITE] = true;
+    game->isAiPlayer[BLACK] = game->isAiPlayer[WHITE] = true;
 
-    gameController->setEngine(1, true);
-    gameController->setEngine(2, true);
+    game->setEngine(1, true);
+    game->setEngine(2, true);
 
 #ifdef WIN32
     system("pause");

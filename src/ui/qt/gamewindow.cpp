@@ -39,7 +39,7 @@
 #include <QDesktopWidget>
 
 #include "gamewindow.h"
-#include "gamecontroller.h"
+#include "game.h"
 #include "gamescene.h"
 #include "graphicsconst.h"
 #include "server.h"
@@ -116,9 +116,9 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
 
 MillGameWindow::~MillGameWindow()
 {
-    if (gameController) {
-        gameController->disconnect();
-        gameController->deleteLater();
+    if (game) {
+        game->disconnect();
+        game->deleteLater();
     }
 
     qDeleteAll(ruleActionList);
@@ -156,18 +156,18 @@ bool MillGameWindow::eventFilter(QObject *watched, QEvent *event)
 void MillGameWindow::initialize()
 {
     // 初始化函数，仅执行一次
-    if (gameController)
+    if (game)
         return;
 
 #ifndef TRAINING_MODE
     // 开辟一个新的游戏控制器
-    gameController = new GameController(*scene, this);
+    game = new Game(*scene, this);
 #else
-    gameController = new GameController(this);
+    game = new Game(this);
 #endif // TRAINING_MODE
 
     // 添加新菜单栏动作
-    map<int, QStringList> actions = gameController->getActions();
+    map<int, QStringList> actions = game->getActions();
 
     for (auto i = actions.begin(); i != actions.end(); i++) {
         // map的key存放int索引值，value存放规则名称和规则提示
@@ -191,18 +191,18 @@ void MillGameWindow::initialize()
     // 关联主窗口动作信号和控制器的槽
 
     connect(ui.actionResign_G, SIGNAL(triggered()),
-            gameController, SLOT(resign()));
+            game, SLOT(resign()));
 
 #ifdef MOBILE_APP_UI
     connect(ui.pushButton_resign, SIGNAL(released()),
-            gameController, SLOT(resign()));
+            game, SLOT(resign()));
 #endif
 
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
-            gameController, SLOT(setEngineBlack(bool)));
+            game, SLOT(setEngineBlack(bool)));
 
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
-            gameController, SLOT(setEngineWhite(bool)));
+            game, SLOT(setEngineWhite(bool)));
 
 #ifdef TEST_MODE    
     //ui.actionEngine1_T->setChecked(false);
@@ -210,106 +210,106 @@ void MillGameWindow::initialize()
 #endif // TEST_MODE
 
     connect(ui.actionSound_S, SIGNAL(toggled(bool)),
-            gameController, SLOT(setSound(bool)));
+            game, SLOT(setSound(bool)));
 
 #ifdef TEST_MODE
     ui.actionSound_S->setChecked(false);
 #endif // TEST_MODE
 
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
-            gameController, SLOT(setAnimation(bool)));
+            game, SLOT(setAnimation(bool)));
     
     connect(ui.actionResignIfMostLose_G, SIGNAL(toggled(bool)),
-            gameController, SLOT(setResignIfMostLose(bool)));
+            game, SLOT(setResignIfMostLose(bool)));
 
 #ifdef TEST_MODE
     //ui.actionResignIfMostLose_G->setChecked(true);
 #endif // TEST_MODE
 
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)),
-            gameController, SLOT(setAutoRestart(bool)));
+            game, SLOT(setAutoRestart(bool)));
 
 #ifdef TEST_MODE
     ui.actionAutoRestart_A->setChecked(true);
 #endif // TEST_MODE
 
     connect(ui.actionAutoChangeFirstMove_C, SIGNAL(toggled(bool)),
-            gameController, SLOT(setAutoChangeFirstMove(bool)));
+            game, SLOT(setAutoChangeFirstMove(bool)));
 
     connect(ui.actionRandomMove_R, SIGNAL(toggled(bool)),
-            gameController, SLOT(setRandomMove(bool)));
+            game, SLOT(setRandomMove(bool)));
 
     connect(ui.actionLearnEndgame_E, SIGNAL(toggled(bool)),
-            gameController, SLOT(setLearnEndgame(bool)));
+            game, SLOT(setLearnEndgame(bool)));
 
     connect(ui.actionIDS_I, SIGNAL(toggled(bool)),
-            gameController, SLOT(setIDS(bool)));
+            game, SLOT(setIDS(bool)));
 
     // DepthExtension
     connect(ui.actionDepthExtension_D, SIGNAL(toggled(bool)),
-            gameController, SLOT(setDepthExtension(bool)));
+            game, SLOT(setDepthExtension(bool)));
 
     //  OpeningBook
     connect(ui.actionOpeningBook_O, SIGNAL(toggled(bool)),
-            gameController, SLOT(setOpeningBook(bool)));
+            game, SLOT(setOpeningBook(bool)));
 
     // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
-            gameController, &GameController::flip);
+            game, &Game::flip);
 
     // 视图左右镜像
     connect(ui.actionMirror_M, &QAction::triggered,
-            gameController, &GameController::mirror);
+            game, &Game::mirror);
 
     // 视图须时针旋转90°
     connect(ui.actionTurnRight_R, &QAction::triggered,
-            gameController, &GameController::turnRight);
+            game, &Game::turnRight);
 
     // 视图逆时针旋转90°
     connect(ui.actionTurnLeftt_L, &QAction::triggered,
-            gameController, &GameController::turnLeft);
+            game, &Game::turnLeft);
 
     // 关联控制器的信号和主窗口控件的槽
 
     // 更新LCD，显示总盘数
-    connect(gameController, SIGNAL(nGamesPlayedChanged(QString)),
+    connect(game, SIGNAL(nGamesPlayedChanged(QString)),
             ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
 
     // 更新LCD，显示玩家1赢盘数
-    connect(gameController, SIGNAL(score1Changed(QString)),
+    connect(game, SIGNAL(score1Changed(QString)),
             ui.scoreLcdNumber_1, SLOT(display(QString)));
 
     // 更新LCD，显示玩家2赢盘数
-    connect(gameController, SIGNAL(score2Changed(QString)),
+    connect(game, SIGNAL(score2Changed(QString)),
             ui.scoreLcdNumber_2, SLOT(display(QString)));
 
     // 更新LCD，显示和棋数
-    connect(gameController, SIGNAL(scoreDrawChanged(QString)),
+    connect(game, SIGNAL(scoreDrawChanged(QString)),
             ui.scoreLcdNumber_draw, SLOT(display(QString)));
 
     // 更新LCD，显示玩家1赢盘率
-    connect(gameController, SIGNAL(winningRate1Changed(QString)),
+    connect(game, SIGNAL(winningRate1Changed(QString)),
             ui.winningRateLcdNumber_1, SLOT(display(QString)));
 
     // 更新LCD，显示玩家2赢盘率
-    connect(gameController, SIGNAL(winningRate2Changed(QString)),
+    connect(game, SIGNAL(winningRate2Changed(QString)),
             ui.winningRateLcdNumber_2, SLOT(display(QString)));
 
     // 更新LCD，显示和棋率
-    connect(gameController, SIGNAL(winningRateDrawChanged(QString)),
+    connect(game, SIGNAL(winningRateDrawChanged(QString)),
             ui.winningRateLcdNumber_draw, SLOT(display(QString)));
 
     // 更新LCD1，显示玩家1用时
-    connect(gameController, SIGNAL(time1Changed(QString)),
+    connect(game, SIGNAL(time1Changed(QString)),
             ui.lcdNumber_1, SLOT(display(QString)));
 
     // 更新LCD2，显示玩家2用时
-    connect(gameController, SIGNAL(time2Changed(QString)),
+    connect(game, SIGNAL(time2Changed(QString)),
             ui.lcdNumber_2, SLOT(display(QString)));
 
     // 关联场景的信号和控制器的槽
     connect(scene, SIGNAL(mouseReleased(QPointF)),
-            gameController, SLOT(actionPiece(QPointF)));
+            game, SLOT(actionPiece(QPointF)));
 
     // 为状态栏添加一个正常显示的标签
     auto *statusBarlabel = new QLabel(this);
@@ -319,7 +319,7 @@ void MillGameWindow::initialize()
     ui.statusBar->addWidget(statusBarlabel);
 
     // 更新状态栏
-    connect(gameController, SIGNAL(statusBarChanged(QString)),
+    connect(game, SIGNAL(statusBarChanged(QString)),
             statusBarlabel, SLOT(setText(QString)));
 
     // 默认规则
@@ -327,13 +327,13 @@ void MillGameWindow::initialize()
     ruleActionList[ruleNo]->setChecked(true);
 
     // 重置游戏规则
-    gameController->setRule(ruleNo);
+    game->setRule(ruleNo);
 
     // 更新规则显示
     ruleInfo();
 
     // 关联列表视图和字符串列表模型
-    ui.listView->setModel(gameController->getManualListModel());
+    ui.listView->setModel(game->getManualListModel());
 
     // 因为QListView的rowsInserted在setModel之后才能启动，
     // 第一次需手动初始化选中listView第一项
@@ -424,8 +424,8 @@ void MillGameWindow::ctxMenu(const QPoint &pos)
 
 void MillGameWindow::ruleInfo()
 {
-    int s = gameController->getStepsLimit();
-    int t = gameController->getTimeLimit();
+    int s = game->getStepsLimit();
+    int t = game->getTimeLimit();
 
     QString tl(" 不限时");
     QString sl(" 不限步");
@@ -487,8 +487,8 @@ void MillGameWindow::on_actionLimited_T_triggered()
      * 还要写与主窗口的接口，费劲
      * 于是手写QDialog界面
      */
-    int gStep = gameController->getStepsLimit();
-    int gTime = gameController->getTimeLimit();
+    int gStep = game->getStepsLimit();
+    int gTime = game->getTimeLimit();
 
     // 定义新对话框
     auto *dialog = new QDialog(this);
@@ -551,7 +551,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             // 重置游戏规则
-            gameController->setRule(ruleNo, static_cast<int>(dStep), dTime);
+            game->setRule(ruleNo, static_cast<int>(dStep), dTime);
         }
     }
 
@@ -578,7 +578,7 @@ void MillGameWindow::actionRules_triggered()
     ruleNo = action->data().toInt();
 
     // 如果游戏规则没变化，则返回
-    if (ruleNo == gameController->getRuleIndex())
+    if (ruleNo == game->getRuleIndex())
         return;
 
     // 取消AI设定
@@ -586,7 +586,7 @@ void MillGameWindow::actionRules_triggered()
     ui.actionEngine2_R->setChecked(false);
 
     // 重置游戏规则
-    gameController->setRule(ruleNo);
+    game->setRule(ruleNo);
 
     // 更新规则显示
     ruleInfo();
@@ -598,17 +598,17 @@ void MillGameWindow::on_actionNew_N_triggered()
 
     // 棋未下完，且已经走了若干步以上，则算对手得分
     if (strlist->stringList().size() > 12) {
-        gameController->humanResign();
+        game->humanResign();
     }
 
-    gameController->saveScore();
+    game->saveScore();
 
 #ifdef SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
     QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_hhmmss");
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QString whoWin;
 
-    switch (gameController->getPosition()->get_winner()) {
+    switch (game->getPosition()->get_winner()) {
     case BLACK:
         whoWin = "Black-Win";
         break;
@@ -638,7 +638,7 @@ void MillGameWindow::on_actionNew_N_triggered()
     ui.actionAutoRun_A->setChecked(false);    
 
     // 重置游戏规则
-    gameController->gameReset();
+    game->gameReset();
 
     // 重设AI设定
     if (ui.actionEngine2_R->isChecked()) {
@@ -691,7 +691,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
     cmd = textStream.readLine();
 
     // 读取并显示棋谱时，不必刷新棋局场景
-    if (!(gameController->command(cmd.toStdString(), false))) {
+    if (!(game->command(cmd.toStdString(), false))) {
         // 定义新对话框
         QMessageBox msgBox(QMessageBox::Warning, tr("文件错误"), tr("不是正确的棋谱文件"), QMessageBox::Ok);
         msgBox.exec();
@@ -700,11 +700,11 @@ void MillGameWindow::on_actionOpen_O_triggered()
 
     while (!textStream.atEnd()) {
         cmd = textStream.readLine();
-        gameController->command(cmd.toStdString(), false);
+        game->command(cmd.toStdString(), false);
     }
 
     // 最后刷新棋局场景
-    gameController->updateScence();
+    game->updateScence();
 }
 
 void MillGameWindow::on_actionSave_S_triggered()
@@ -760,7 +760,7 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
     }
 
     // 让控制器改变棋子颜色
-    gameController->setInvert(arg1);
+    game->setInvert(arg1);
 }
 
 // 前后招的公共槽
@@ -824,7 +824,7 @@ void MillGameWindow::on_actionRowChange()
     }
 
     // 更新局面
-    gameController->phaseChange(currentRow);
+    game->phaseChange(currentRow);
 
 #if 0
     // 下面的代码全部取消，改用QTimer的方式实现
@@ -893,7 +893,7 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
     }
 
     // 更新局面
-    gameController->phaseChange(currentRow);
+    game->phaseChange(currentRow);
 }
 
 // 自动运行
@@ -905,7 +905,7 @@ void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)
         ui.gameView->setEnabled(false);
 
         // 启动定时器
-        autoRunTimer.start(gameController->getDurationTime() * 10 + 50);
+        autoRunTimer.start(game->getDurationTime() * 10 + 50);
     } else {
         // 关闭定时器
         autoRunTimer.stop();
@@ -922,7 +922,7 @@ void MillGameWindow::on_actionLocal_L_triggered()
     ui.actionEngineFight_E->setChecked(false);
     ui.actionInternet_I->setChecked(false);
 
-    gameController->getTest()->stop();
+    game->getTest()->stop();
 }
 
 void MillGameWindow::on_actionInternet_I_triggered()
@@ -932,9 +932,9 @@ void MillGameWindow::on_actionInternet_I_triggered()
     ui.actionEngineFight_E->setChecked(false);
     ui.actionInternet_I->setChecked(true);
 
-    gameController->getTest()->stop();
+    game->getTest()->stop();
 
-    gameController->showNetworkWindow();
+    game->showNetworkWindow();
 #endif
 }
 
@@ -944,7 +944,7 @@ void MillGameWindow::on_actionEngineFight_E_triggered()
     ui.actionEngineFight_E->setChecked(true);
     ui.actionInternet_I->setChecked(false);
 
-    gameController->showTestWindow();
+    game->showTestWindow();
 }
 
 void MillGameWindow::on_actionEngine_E_triggered()
@@ -1005,7 +1005,7 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
     // 目前数据
     int time1, time2;
-    gameController->getAiDepthTime(time1, time2);
+    game->getAiDepthTime(time1, time2);
     spinBox_time1->setValue(time1);
     spinBox_time2->setValue(time2);
 
@@ -1019,7 +1019,7 @@ void MillGameWindow::on_actionEngine_E_triggered()
         if (time1 != time1_new ||
             time2 != time2_new) {
             // 重置AI
-            gameController->setAiDepthTime(time1_new, time2_new);
+            game->setAiDepthTime(time1_new, time2_new);
         }
     }
 

@@ -43,7 +43,7 @@ SOURCES += \
     src/ui/qt/pieceitem.cpp \
     src/ui/qt/server.cpp \
     src/ui/qt/boarditem.cpp \
-    src/ui/qt/gamecontroller.cpp \
+    src/ui/qt/game.cpp \
     src/ui/qt/gamescene.cpp \
     src/ui/qt/gameview.cpp \
     src/ui/qt/client.cpp \
@@ -75,7 +75,7 @@ HEADERS  += \
     src/types.h \
     src/test/test.h \
     src/ui/qt/client.h \
-    src/ui/qt/gamecontroller.h \
+    src/ui/qt/game.h \
     src/ui/qt/gamescene.h \
     src/ui/qt/gameview.h \
     src/ui/qt/gamewindow.h \

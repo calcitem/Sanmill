@@ -33,7 +33,7 @@
 #include <QThread>
 #include <iomanip>
 
-#include "gamecontroller.h"
+#include "game.h"
 #include "graphicsconst.h"
 #include "boarditem.h"
 #include "server.h"
@@ -42,7 +42,7 @@
 
 using namespace std;
 
-GameController::GameController(
+Game::Game(
 #ifndef TRAINING_MODE
     GameScene & scene,
 #endif
@@ -119,7 +119,7 @@ GameController::GameController(
     //scene.installEventFilter(this);    
 }
 
-GameController::~GameController()
+Game::~Game()
 {
     // 停止计时器
     if (timeID != 0)
@@ -138,7 +138,7 @@ GameController::~GameController()
     cmdlist.clear();
 }
 
-const map<int, QStringList> GameController::getActions()
+const map<int, QStringList> Game::getActions()
 {
     // 主窗口更新菜单栏
     // 之所以不用信号和槽的模式，是因为发信号的时候槽还来不及关联
@@ -162,7 +162,7 @@ extern deque<int> openingBookDeque;
 extern deque<int> openingBookDequeBak;
 #endif
 
-void GameController::gameStart()
+void Game::gameStart()
 {
     //cmdlist.clear();
     position.start();
@@ -184,7 +184,7 @@ void GameController::gameStart()
 #endif
 }
 
-void GameController::gameReset()
+void Game::gameReset()
 {
     while (aiThread[BLACK]->searching || aiThread[WHITE]->searching) {
         loggerDebug(".");
@@ -310,14 +310,14 @@ void GameController::gameReset()
 #endif // TRAINING_MODE
 }
 
-void GameController::setEditing(bool arg)
+void Game::setEditing(bool arg)
 {
 #ifndef TRAINING_MODE
     isEditing = arg;
 #endif
 }
 
-void GameController::setInvert(bool arg)
+void Game::setInvert(bool arg)
 {
 #ifndef TRAINING_MODE
     isInverted = arg;
@@ -340,7 +340,7 @@ void GameController::setInvert(bool arg)
 #endif // TRAINING_MODE
 }
 
-void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
+void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
 {
     // 更新规则，原限时和限步不变
     if (ruleNo < 0 || ruleNo >= N_RULES)
@@ -368,7 +368,7 @@ void GameController::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimit
     gameReset();
 }
 
-void GameController::setEngine(Color color, bool enabled)
+void Game::setEngine(Color color, bool enabled)
 {
     isAiPlayer[color] = enabled;
 
@@ -381,17 +381,17 @@ void GameController::setEngine(Color color, bool enabled)
     }
 }
 
-void GameController::setEngineBlack(bool enabled)
+void Game::setEngineBlack(bool enabled)
 {
     setEngine(BLACK, enabled);
 }
 
-void GameController::setEngineWhite(bool enabled)
+void Game::setEngineWhite(bool enabled)
 {
     setEngine(WHITE, enabled);
 }
 
-void GameController::setAiDepthTime(int time1, int time2)
+void Game::setAiDepthTime(int time1, int time2)
 {
     stopAndWaitAiThreads();
 
@@ -401,13 +401,13 @@ void GameController::setAiDepthTime(int time1, int time2)
     startAiThreads();
 }
 
-void GameController::getAiDepthTime(int &time1, int &time2)
+void Game::getAiDepthTime(int &time1, int &time2)
 {
     time1 = aiThread[BLACK]->getTimeLimit();
     time2 = aiThread[WHITE]->getTimeLimit();
 }
 
-void GameController::setAnimation(bool arg)
+void Game::setAnimation(bool arg)
 {
 #ifndef TRAINING_MODE
     hasAnimation = arg;
@@ -420,14 +420,14 @@ void GameController::setAnimation(bool arg)
 #endif // TRAINING_MODE
 }
 
-void GameController::setSound(bool arg)
+void Game::setSound(bool arg)
 {
 #ifndef TRAINING_MODE
     hasSound = arg;
 #endif // TRAINING_MODE
 }
 
-void GameController::playSound(sound_t soundType, Color c)
+void Game::playSound(sound_t soundType, Color c)
 {
     string soundDir = ":/sound/resources/sound/";
     string sideStr = c == BLACK ? "B" : "W";
@@ -531,27 +531,27 @@ void GameController::playSound(sound_t soundType, Color c)
 #endif // TRAINING_MODE
 }
 
-void GameController::setResignIfMostLose(bool enabled)
+void Game::setResignIfMostLose(bool enabled)
 {
     gameOptions.setResignIfMostLose(enabled);
 }
 
-void GameController::setAutoRestart(bool enabled)
+void Game::setAutoRestart(bool enabled)
 {
     gameOptions.setAutoRestart(enabled);
 }
 
-void GameController::setAutoChangeFirstMove(bool enabled)
+void Game::setAutoChangeFirstMove(bool enabled)
 {
     gameOptions.setAutoChangeFirstMove(enabled);
 }
 
-void GameController::setRandomMove(bool enabled)
+void Game::setRandomMove(bool enabled)
 {
     gameOptions.setRandomMoveEnabled(enabled);
 }
 
-void GameController::setLearnEndgame(bool enabled)
+void Game::setLearnEndgame(bool enabled)
 {
     gameOptions.setLearnEndgameEnabled(enabled);
 
@@ -562,25 +562,25 @@ void GameController::setLearnEndgame(bool enabled)
 #endif
 }
 
-void GameController::setIDS(bool enabled)
+void Game::setIDS(bool enabled)
 {
     gameOptions.setIDSEnabled(enabled);
 }
 
 // DepthExtension
-void GameController::setDepthExtension(bool enabled)
+void Game::setDepthExtension(bool enabled)
 {
     gameOptions.setDepthExtension(enabled);
 }
 
 // OpeningBook
-void GameController::setOpeningBook(bool enabled)
+void Game::setOpeningBook(bool enabled)
 {
     gameOptions.setOpeningBook(enabled);
 }
 
 // 上下翻转
-void GameController::flip()
+void Game::flip()
 {
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
@@ -606,7 +606,7 @@ void GameController::flip()
 }
 
 // 左右镜像
-void GameController::mirror()
+void Game::mirror()
 {
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
@@ -634,7 +634,7 @@ void GameController::mirror()
 }
 
 // 视图须时针旋转90°
-void GameController::turnRight()
+void Game::turnRight()
 {
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
@@ -660,7 +660,7 @@ void GameController::turnRight()
 }
 
 // 视图逆时针旋转90°
-void GameController::turnLeft()
+void Game::turnLeft()
 {
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
@@ -681,7 +681,7 @@ void GameController::turnLeft()
 #endif // TRAINING_MODE
 }
 
-void GameController::updateTime()
+void Game::updateTime()
 {
     int timePoint = -1;
     time_t *ourSeconds = &elapsedSeconds[sideToMove];
@@ -701,7 +701,7 @@ void GameController::updateTime()
     }
 }
 
-void GameController::timerEvent(QTimerEvent *event)
+void Game::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
     static QTime qt1, qt2;
@@ -772,13 +772,13 @@ void GameController::timerEvent(QTimerEvent *event)
 #endif
 }
 
-bool GameController::isAIsTurn()
+bool Game::isAIsTurn()
 {
     return isAiPlayer[sideToMove];
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
-bool GameController::actionPiece(QPointF pos)
+bool Game::actionPiece(QPointF pos)
 {
 #ifndef TRAINING_MODE
     // 点击非落子点，不执行
@@ -943,7 +943,7 @@ bool GameController::actionPiece(QPointF pos)
 }
 
 
-bool GameController::resign()
+bool Game::resign()
 {
     bool result = position.resign(position.sideToMove);
         
@@ -975,7 +975,7 @@ bool GameController::resign()
 }
 
 // 关键槽函数，棋谱的命令行执行，与actionPiece独立
-bool GameController::command(const string &cmd, bool update /* = true */)
+bool Game::command(const string &cmd, bool update /* = true */)
 {
     int total;
     float bwinrate, wwinrate, drawrate;
@@ -1186,7 +1186,7 @@ bool GameController::command(const string &cmd, bool update /* = true */)
 }
 
 // 浏览历史局面，通过command函数刷新局面显示
-bool GameController::phaseChange(int row, bool forceUpdate)
+bool Game::phaseChange(int row, bool forceUpdate)
 {
 #ifndef TRAINING_MODE
     // 如果row是当前浏览的棋谱行，则不需要刷新
@@ -1215,7 +1215,7 @@ bool GameController::phaseChange(int row, bool forceUpdate)
     return true;
 }
 
-bool GameController::updateScence()
+bool Game::updateScence()
 {
 #ifndef TRAINING_MODE
     return updateScence(position);
@@ -1224,7 +1224,7 @@ bool GameController::updateScence()
 #endif
 }
 
-bool GameController::updateScence(Position &p)
+bool Game::updateScence(Position &p)
 {
 #ifndef TRAINING_MODE
     const Piece *board = p.get_board();
@@ -1380,7 +1380,7 @@ bool GameController::updateScence(Position &p)
 }
 
 #ifdef NET_FIGHT_SUPPORT
-void GameController::showNetworkWindow()
+void Game::showNetworkWindow()
 {
 #ifndef TRAINING_MODE
     getServer()->show();
@@ -1389,19 +1389,19 @@ void GameController::showNetworkWindow()
 }
 #endif
 
-void GameController::showTestWindow()
+void Game::showTestWindow()
 {
     gameTest->show();
 }
 
-void GameController::humanResign()
+void Game::humanResign()
 {
     if (position.get_winner() == NOBODY) {
         resign();
     }
 }
 
-void GameController::saveScore()
+void Game::saveScore()
 {
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     qint64 pid = QCoreApplication::applicationPid();
@@ -1463,12 +1463,12 @@ out:
     file.close();
 }
 
-inline char GameController::color_to_char(Color color)
+inline char Game::color_to_char(Color color)
 {
     return static_cast<char>('0' + color);
 }
 
-inline std::string GameController::char_to_string(char ch)
+inline std::string Game::char_to_string(char ch)
 {
     if (ch == '1') {
         return "黑方";
@@ -1477,7 +1477,7 @@ inline std::string GameController::char_to_string(char ch)
     }
 }
 
-void GameController::appendGameOverReasonToCmdlist()
+void Game::appendGameOverReasonToCmdlist()
 {
     if (position.phase != PHASE_GAMEOVER) {
         return;
@@ -1518,7 +1518,7 @@ void GameController::appendGameOverReasonToCmdlist()
     cmdlist.emplace_back(cmdline);
 }
 
-void GameController::setTips()
+void Game::setTips()
 {
     Position &p = position;
 
@@ -1599,7 +1599,7 @@ void GameController::setTips()
     }
 }
 
-time_t GameController::get_elapsed_time(int us)
+time_t Game::get_elapsed_time(int us)
 {
     return elapsedSeconds[us];
 }

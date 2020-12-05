@@ -258,9 +258,6 @@
     <QtMoc Include="src\ui\qt\client.h">
       <Filter>Qt Files</Filter>
     </QtMoc>
-    <QtMoc Include="src\ui\qt\gamecontroller.h">
-      <Filter>Qt Files</Filter>
-    </QtMoc>
     <QtMoc Include="src\ui\qt\gamescene.h">
       <Filter>Qt Files</Filter>
     </QtMoc>
@@ -281,6 +278,9 @@
     </QtMoc>
     <QtMoc Include="src\thread.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\ui\qt\game.h">
+      <Filter>Qt Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +332,6 @@
     <ClCompile Include="src\ui\qt\client.cpp">
       <Filter>Qt Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\qt\gamecontroller.cpp">
-      <Filter>Qt Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ui\qt\gamescene.cpp">
       <Filter>Qt Files</Filter>
     </ClCompile>
@@ -364,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\qt\game.cpp">
+      <Filter>Qt Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

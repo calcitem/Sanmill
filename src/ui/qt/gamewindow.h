@@ -38,7 +38,7 @@
 using namespace std;
 
 class GameScene;
-class GameController;
+class Game;
 
 class MillGameWindow : public QMainWindow
 {
@@ -120,7 +120,7 @@ private:
     GameScene *scene {nullptr};
 
     // 控制器
-    GameController *gameController {nullptr};
+    Game *game {nullptr};
 
     // 动态增加的菜单栏动作列表
     vector<QAction *> ruleActionList;

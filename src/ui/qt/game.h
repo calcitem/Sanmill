@@ -76,18 +76,18 @@ enum sound_t
     GAME_SOUND_WIN_AND_LOSSES_ARE_OBVIOUS
 };
 
-class GameController : public QObject
+class Game : public QObject
 {
     Q_OBJECT
 
 public:
-    GameController(
+    Game(
 #ifndef TRAINING_MODE
         GameScene &scene,
 #endif
         QObject *parent = nullptr
     );
-    ~GameController() override;
+    ~Game() override;
 
     //主窗口菜单栏明细
     const map<int, QStringList> getActions();
@@ -489,12 +489,12 @@ private:
     std::vector <std::string> cmdlist;
 };
 
-inline time_t GameController::start_timeb() const
+inline time_t Game::start_timeb() const
 {
     return startTime;
 }
 
-inline void GameController::set_start_time(int stimeb)
+inline void Game::set_start_time(int stimeb)
 {
     startTime = stimeb;
 }
