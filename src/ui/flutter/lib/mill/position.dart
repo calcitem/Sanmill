@@ -726,7 +726,7 @@ class Position {
     phase = Phase.gameOver;
     gameOverReason = reason;
     winner = w;
-    print("Game over, $w win, becase of $reason");
+    print("Game over, $w win, because of $reason");
     updateScore();
   }
 
@@ -742,6 +742,8 @@ class Position {
   }
 
   bool checkGameOverCondition() {
+    print("Checking game over condition ...");
+
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
     }
@@ -750,6 +752,7 @@ class Position {
       winner = Color.draw;
       phase = Phase.gameOver;
       gameOverReason = GameOverReason.drawReasonRule50;
+      print("Game over, draw, because of $gameOverReason");
       return true;
     }
 
@@ -771,10 +774,12 @@ class Position {
         return true;
       } else {
         changeSideToMove(); // TODO: Need?
+        print("Game is not over");
         return false;
       }
     }
 
+    print("Game is NOT over");
     return false;
   }
 
@@ -1409,11 +1414,15 @@ class Position {
   bool isAllSurrounded() {
     // Full
     if (pieceCountOnBoard[Color.black] + pieceCountOnBoard[Color.white] >=
-        rankNumber * fileNumber) return true;
+        rankNumber * fileNumber) {
+      print("Board is full.");
+      return true;
+    }
 
     // Can fly
     if (pieceCountOnBoard[sideToMove()] <= rule.nPiecesAtLeast &&
         rule.allowFlyWhenRemainThreePieces) {
+      print("Can fly.");
       return false;
     }
 
@@ -1432,6 +1441,7 @@ class Position {
       }
     }
 
+    print("No way.");
     return true;
   }
 
