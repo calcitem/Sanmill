@@ -1494,16 +1494,19 @@ class Position {
   }
 
   String movesSinceLastRemove() {
-    //
+    int i;
     String moves = "";
     int posAfterLastRemove = 0;
 
     print("recorder.movesCount = ${recorder.movesCount}");
 
-    for (int i = recorder.movesCount - 1; i >= 0; i--) {
+    for (i = recorder.movesCount - 1; i >= 0; i--) {
       //if (recorder.moveAt(i).type == MoveType.remove) break;
       if (recorder.moveAt(i).move[0] == '-') break;
-      posAfterLastRemove = i;
+    }
+
+    if (i >= 0) {
+      posAfterLastRemove = i + 1;
     }
 
     print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
@@ -1513,6 +1516,12 @@ class Position {
     }
 
     print("moves = $moves");
+
+    var idx = moves.indexOf('-(');
+    if (idx != -1) {
+      print("moves[$idx] is -(");
+      assert(false);
+    }
 
     return moves.length > 0 ? moves.substring(1) : '';
   }
