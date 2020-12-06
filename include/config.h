@@ -28,7 +28,6 @@
 
 //#undef QT_GUI_LIB
 
-//#define DISABLE_RANDOM_MOVE
 //#define UCI_AUTO_RE_GO
 //#define UCI_AUTO_RESTART
 //#define UCI_DO_BEST_MOVE

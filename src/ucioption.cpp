@@ -29,6 +29,7 @@
 #include "thread.h"
 #include "tt.h"
 #include "uci.h"
+#include "option.h"
 
 using std::string;
 
@@ -42,19 +43,27 @@ void on_clear_hash(const Option &)
 {
     Search::clear();
 }
+
 void on_hash_size(const Option &o)
 {
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.resize((size_t)o);
 #endif
 }
+
 void on_logger(const Option &o)
 {
     start_logger(o);
 }
+
 void on_threads(const Option &o)
 {
     Threads.set((size_t)o);
+}
+
+void on_random_move(const Option &o)
+{
+    gameOptions.setRandomMoveEnabled((bool)o);
 }
 
 
@@ -90,6 +99,8 @@ void init(OptionsMap &o)
     o["UCI_AnalyseMode"] << Option(false);
     o["UCI_LimitStrength"] << Option(false);
     o["UCI_Elo"] << Option(1350, 1350, 2850);
+
+    o["RandomMove"] << Option(true, on_random_move);
 }
 
 
