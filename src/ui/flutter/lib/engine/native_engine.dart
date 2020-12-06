@@ -134,11 +134,28 @@ class NativeEngine extends AiEngine {
   }
 
   Future<void> setOptions() async {
-    if (Config.randomMoveEnabled) {
-      await send('setoption name RandomMove value true');
-    } else {
-      await send('setoption name RandomMove value false');
-    }
+    await send('setoption name RandomMove value ${Config.randomMoveEnabled}');
+    await send(
+        'setoption name nTotalPiecesEachSide value ${Config.nTotalPiecesEachSide}');
+    await send('setoption name nPiecesAtLeast value ${Config.nPiecesAtLeast}');
+    await send(
+        'setoption name hasObliqueLines value ${Config.hasObliqueLines}');
+    await send(
+        'setoption name hasBannedLocations value ${Config.hasBannedLocations}');
+    await send(
+        'setoption name isDefenderMoveFirst value ${Config.isDefenderMoveFirst}');
+    await send(
+        'setoption name allowRemoveMultiPiecesWhenCloseMultiMill value ${Config.allowRemoveMultiPiecesWhenCloseMultiMill}');
+    await send(
+        'setoption name allowRemovePieceInMill value ${Config.allowRemovePieceInMill}');
+    await send(
+        'setoption name isBlackLoseButNotDrawWhenBoardFull value ${Config.isBlackLoseButNotDrawWhenBoardFull}');
+    await send(
+        'setoption name isLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
+    await send(
+        'setoption name allowFlyWhenRemainThreePieces value ${Config.allowFlyWhenRemainThreePieces}');
+    await send(
+        'setoption name maxStepsLedToDraw value ${Config.maxStepsLedToDraw}');
   }
 
   String getPositionFen(Position position) {

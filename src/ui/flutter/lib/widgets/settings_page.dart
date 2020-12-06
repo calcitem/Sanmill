@@ -196,6 +196,157 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
+  // Rules
+
+  setNTotalPiecesEachSide() {
+    //
+    callback(int nTotalPiecesEachSide) async {
+      //
+      Navigator.of(context).pop();
+
+      setState(() {
+        Game.shared.position.rule.nTotalPiecesEachSide =
+            Config.nTotalPiecesEachSide = nTotalPiecesEachSide;
+      });
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(height: 10),
+          RadioListTile(
+            activeColor: UIColors.primaryColor,
+            title: Text('6'),
+            groupValue: Config.nTotalPiecesEachSide,
+            value: 6,
+            onChanged: callback,
+          ),
+          Divider(),
+          RadioListTile(
+            activeColor: UIColors.primaryColor,
+            title: Text('9'),
+            groupValue: Config.nTotalPiecesEachSide,
+            value: 9,
+            onChanged: callback,
+          ),
+          Divider(),
+          RadioListTile(
+            activeColor: UIColors.primaryColor,
+            title: Text('12'),
+            groupValue: Config.nTotalPiecesEachSide,
+            value: 12,
+            onChanged: callback,
+          ),
+          Divider(),
+          SizedBox(height: 56),
+        ],
+      ),
+    );
+  }
+
+  setNPiecesAtLeast(int value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.nPiecesAtLeast = Config.nPiecesAtLeast = value;
+    });
+
+    Config.save();
+  }
+
+  switchHasObliqueLines(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.hasObliqueLines =
+          Config.hasObliqueLines = value;
+    });
+
+    Config.save();
+  }
+
+  switchHasBannedLocations(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.hasBannedLocations =
+          Config.hasBannedLocations = value;
+    });
+
+    Config.save();
+  }
+
+  switchIsDefenderMoveFirst(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.isDefenderMoveFirst =
+          Config.isDefenderMoveFirst = value;
+    });
+
+    Config.save();
+  }
+
+  switchAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.allowRemoveMultiPiecesWhenCloseMultiMill =
+          Config.allowRemoveMultiPiecesWhenCloseMultiMill = value;
+    });
+
+    Config.save();
+  }
+
+  switchAllowRemovePieceInMill(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.allowRemovePieceInMill =
+          Config.allowRemovePieceInMill = value;
+    });
+
+    Config.save();
+  }
+
+  switchIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.isBlackLoseButNotDrawWhenBoardFull =
+          Config.isBlackLoseButNotDrawWhenBoardFull = value;
+    });
+
+    Config.save();
+  }
+
+  switchIsLoseButNotChangeSideWhenNoWay(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.isLoseButNotChangeSideWhenNoWay =
+          Config.isLoseButNotChangeSideWhenNoWay = value;
+    });
+
+    Config.save();
+  }
+
+  switchAllowFlyWhenRemainThreePieces(bool value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.allowFlyWhenRemainThreePieces =
+          Config.allowFlyWhenRemainThreePieces = value;
+    });
+
+    Config.save();
+  }
+
+  setMaxStepsLedToDraw(int value) async {
+    //
+    setState(() {
+      Game.shared.position.rule.maxStepsLedToDraw =
+          Config.maxStepsLedToDraw = value;
+    });
+
+    Config.save();
+  }
+
   changeName() async {
     //
     final newName = await Navigator.of(context).push(
@@ -400,6 +551,108 @@ class _SettingsPageState extends State<SettingsPage> {
                         style: itemStyle),
                     onChanged: switchWhoMovesFirst,
                   ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(S.of(context).rules, style: headerStyle),
+            Card(
+              color: UIColors.boardBackgroundColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(S.of(context).nTotalPiecesEachSide,
+                        style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(Config.nTotalPiecesEachSide == 6
+                          ? '6'
+                          : Config.nTotalPiecesEachSide == 9
+                              ? '9'
+                              : '12'),
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: setNTotalPiecesEachSide,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.hasObliqueLines,
+                    title:
+                        Text(S.of(context).hasObliqueLines, style: itemStyle),
+                    onChanged: switchHasObliqueLines,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.hasBannedLocations,
+                    title: Text(S.of(context).hasBannedLocations,
+                        style: itemStyle),
+                    onChanged: switchHasBannedLocations,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.isDefenderMoveFirst,
+                    title: Text(S.of(context).isDefenderMoveFirst,
+                        style: itemStyle),
+                    onChanged: switchIsDefenderMoveFirst,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.allowRemoveMultiPiecesWhenCloseMultiMill,
+                    title: Text(
+                        S.of(context).allowRemoveMultiPiecesWhenCloseMultiMill,
+                        style: itemStyle),
+                    onChanged: switchAllowRemoveMultiPiecesWhenCloseMultiMill,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.allowRemovePieceInMill,
+                    title: Text(S.of(context).allowRemovePieceInMill,
+                        style: itemStyle),
+                    onChanged: switchAllowRemovePieceInMill,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.isBlackLoseButNotDrawWhenBoardFull,
+                    title: Text(
+                        S.of(context).isBlackLoseButNotDrawWhenBoardFull,
+                        style: itemStyle),
+                    onChanged: switchIsBlackLoseButNotDrawWhenBoardFull,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.isLoseButNotChangeSideWhenNoWay,
+                    title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
+                        style: itemStyle),
+                    onChanged: switchIsLoseButNotChangeSideWhenNoWay,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.allowFlyWhenRemainThreePieces,
+                    title: Text(S.of(context).allowFlyWhenRemainThreePieces,
+                        style: itemStyle),
+                    onChanged: switchAllowFlyWhenRemainThreePieces,
+                  ),
+                  _buildDivider(),
+                  /*
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.maxStepsLedToDraw,
+                    title:
+                    Text(S.of(context).maxStepsLedToDraw, style: itemStyle),
+                    onChanged: setMaxStepsLedToDraw,
+                  ),
+                  _buildDivider(),
+                  */
                 ],
               ),
             ),

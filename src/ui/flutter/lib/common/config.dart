@@ -36,6 +36,19 @@ class Config {
   static bool depthExtension = true;
   static bool openingBook = false;
 
+  // Rules
+  static int nTotalPiecesEachSide = 12;
+  static int nPiecesAtLeast = 3;
+  static bool hasObliqueLines = true;
+  static bool hasBannedLocations = true;
+  static bool isDefenderMoveFirst = true;
+  static bool allowRemoveMultiPiecesWhenCloseMultiMill = false;
+  static bool allowRemovePieceInMill = true;
+  static bool isBlackLoseButNotDrawWhenBoardFull = true;
+  static bool isLoseButNotChangeSideWhenNoWay = true;
+  static bool allowFlyWhenRemainThreePieces = false;
+  static int maxStepsLedToDraw = 50;
+
   static Future<void> loadProfile() async {
     final profile = await Profile.shared();
 
@@ -52,6 +65,34 @@ class Config {
     Config.idsEnabled = profile['idsEnabled'] ?? false;
     Config.depthExtension = profile['depthExtension'] ?? false;
     Config.openingBook = profile['openingBook'] ?? false;
+
+    // Rules
+    Game.shared.position.rule.nTotalPiecesEachSide =
+        Config.nTotalPiecesEachSide = profile['nTotalPiecesEachSide'] ?? 12;
+    Game.shared.position.rule.nPiecesAtLeast =
+        Config.nPiecesAtLeast = profile['nPiecesAtLeast'] ?? 3;
+    Game.shared.position.rule.hasObliqueLines =
+        Config.hasObliqueLines = profile['hasObliqueLines'] ?? true;
+    Game.shared.position.rule.hasBannedLocations =
+        Config.hasBannedLocations = profile['hasBannedLocations'] ?? true;
+    Game.shared.position.rule.isDefenderMoveFirst =
+        Config.isDefenderMoveFirst = profile['isDefenderMoveFirst'] ?? true;
+    Game.shared.position.rule.allowRemoveMultiPiecesWhenCloseMultiMill =
+        Config.allowRemoveMultiPiecesWhenCloseMultiMill =
+            profile['allowRemoveMultiPiecesWhenCloseMultiMill'] ?? false;
+    Game.shared.position.rule.allowRemovePieceInMill = Config
+        .allowRemovePieceInMill = profile['allowRemovePieceInMill'] ?? true;
+    Game.shared.position.rule.isBlackLoseButNotDrawWhenBoardFull =
+        Config.isBlackLoseButNotDrawWhenBoardFull =
+            profile['isBlackLoseButNotDrawWhenBoardFull'] ?? true;
+    Game.shared.position.rule.isLoseButNotChangeSideWhenNoWay =
+        Config.isLoseButNotChangeSideWhenNoWay =
+            profile['isLoseButNotChangeSideWhenNoWay'] ?? true;
+    Game.shared.position.rule.allowFlyWhenRemainThreePieces =
+        Config.allowFlyWhenRemainThreePieces =
+            profile['allowFlyWhenRemainThreePieces'] ?? false;
+    Game.shared.position.rule.maxStepsLedToDraw =
+        Config.maxStepsLedToDraw = profile['maxStepsLedToDraw'] ?? 50;
 
     return true;
   }
@@ -72,6 +113,23 @@ class Config {
     profile['idsEnabled'] = Config.idsEnabled;
     profile['depthExtension'] = Config.depthExtension;
     profile['openingBook'] = Config.openingBook;
+
+    // Rules
+    profile['nTotalPiecesEachSide'] = Config.nTotalPiecesEachSide;
+    profile['nPiecesAtLeast'] = Config.nPiecesAtLeast;
+    profile['hasObliqueLines'] = Config.hasObliqueLines;
+    profile['hasBannedLocations'] = Config.hasBannedLocations;
+    profile['isDefenderMoveFirst'] = Config.isDefenderMoveFirst;
+    profile['allowRemoveMultiPiecesWhenCloseMultiMill'] =
+        Config.allowRemoveMultiPiecesWhenCloseMultiMill;
+    profile['allowRemovePieceInMill'] = Config.allowRemovePieceInMill;
+    profile['isBlackLoseButNotDrawWhenBoardFull'] =
+        Config.isBlackLoseButNotDrawWhenBoardFull;
+    profile['isLoseButNotChangeSideWhenNoWay'] =
+        Config.isLoseButNotChangeSideWhenNoWay;
+    profile['allowFlyWhenRemainThreePieces'] =
+        Config.allowFlyWhenRemainThreePieces;
+    profile['maxStepsLedToDraw'] = Config.maxStepsLedToDraw;
 
     profile.commit();
 

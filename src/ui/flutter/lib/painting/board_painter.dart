@@ -18,6 +18,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/board.dart';
 
@@ -148,6 +149,10 @@ class BoardPainter extends PiecesBasePainter {
       Offset(left + squareWidth * 3, top + squareWidth * 6),
       paint,
     );
+
+    if (!Config.hasObliqueLines) {
+      return;
+    }
 
     // top left oblique line
     canvas.drawLine(

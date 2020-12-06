@@ -298,5 +298,61 @@
   "misc": "Miscellaneous",
   "@misc": {
     "description": "Miscellaneous"
+  },
+  "rules": "Rules",
+  "@rules": {
+    "description": "Rules"
+  },
+  "nTotalPiecesEachSide": "Total Pieces Each Side",
+  "@nTotalPiecesEachSide": {
+    "description": "Total Pieces Each Side"
+  },
+  "ninePieces": "Nine Pieces",
+  "@ninePieces": {
+    "description": "Nine Pieces"
+  },
+  "twelvePieces": "Twelve Pieces",
+  "@twelvePieces": {
+    "description": "Twelve Pieces"
+  },
+  "nPiecesAtLeast": "Pieces At Least",
+  "@nPiecesAtLeast": {
+    "description": "Pieces At Least"
+  },
+  "hasObliqueLines": "Has Oblique Lines",
+  "@hasObliqueLines": {
+    "description": "Has Oblique Lines"
+  },
+  "hasBannedLocations": "Has Banned Locations",
+  "@hasBannedLocations": {
+    "description": "Has Banned Locations"
+  },
+  "isDefenderMoveFirst": "Defender Move First",
+  "@isDefenderMoveFirst": {
+    "description": "Defender Move First"
+  },
+  "allowRemoveMultiPiecesWhenCloseMultiMill": "Allow Remove Multi Pieces When Close Multi Mill",
+  "@allowRemoveMultiPiecesWhenCloseMultiMill": {
+    "description": "Allow Remove Multi Pieces When Close Multi Mill"
+  },
+  "allowRemovePieceInMill": "Allow Remove Piece In Mill",
+  "@allowRemovePieceInMill": {
+    "description": "Allow Remove Piece In Mill"
+  },
+  "isBlackLoseButNotDrawWhenBoardFull": "Black Lose But Not Draw When Board Full",
+  "@isBlackLoseButNotDrawWhenBoardFull": {
+    "description": "Black Lose But Not Draw When Board Full"
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Lose But Not Change Side When No Way",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose But Not Change Side When No Way"
+  },
+  "allowFlyWhenRemainThreePieces": "Allow Fly When Remain Three Pieces",
+  "@allowFlyWhenRemainThreePieces": {
+    "description": "Allow Fly When Remain Three Pieces"
+  },
+  "maxStepsLedToDraw": "Max Steps Led To Draw",
+  "@maxStepsLedToDraw": {
+    "description": "Max Steps Led To Draw"
   }
 }

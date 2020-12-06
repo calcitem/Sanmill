@@ -708,7 +708,7 @@ int Position::pieces_in_hand_count()
     return pieceCountInHand[BLACK] + pieceCountInHand[WHITE];
 }
 
-int Position::set_position(const struct Rule *newRule)
+int Position::set_position(/* const */ struct Rule *newRule)
 {
     rule = newRule;
 

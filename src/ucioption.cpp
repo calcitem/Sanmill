@@ -35,6 +35,8 @@ using std::string;
 
 UCI::OptionsMap Options; // Global object
 
+extern struct Rule *rule;
+
 namespace UCI
 {
 
@@ -66,6 +68,62 @@ void on_random_move(const Option &o)
     gameOptions.setRandomMoveEnabled((bool)o);
 }
 
+// Rules
+
+void on_nTotalPiecesEachSide(const Option &o)
+{
+    rule->nTotalPiecesEachSide = (int)o;
+}
+
+void on_nPiecesAtLeast(const Option &o)
+{
+    rule->nPiecesAtLeast = (int)o;
+}
+
+void on_hasObliqueLines(const Option &o)
+{
+    rule->hasObliqueLines = (bool)o;
+}
+
+void on_hasBannedLocations(const Option &o)
+{
+    rule->hasBannedLocations = (bool)o;
+}
+
+void on_isDefenderMoveFirst(const Option &o)
+{
+    rule->isDefenderMoveFirst = (bool)o;
+}
+
+void on_allowRemoveMultiPiecesWhenCloseMultiMill(const Option &o)
+{
+    rule->allowRemoveMultiPiecesWhenCloseMultiMill = (bool)o;
+}
+
+void on_allowRemovePieceInMill(const Option &o)
+{
+    rule->allowRemovePieceInMill = (bool)o;
+}
+
+void on_isBlackLoseButNotDrawWhenBoardFull(const Option &o)
+{
+    rule->isBlackLoseButNotDrawWhenBoardFull = (bool)o;
+}
+
+void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
+{
+    rule->isLoseButNotChangeSideWhenNoWay = (bool)o;
+}
+
+void on_allowFlyWhenRemainThreePieces(const Option &o)
+{
+    rule->allowFlyWhenRemainThreePieces = (bool)o;
+}
+
+void on_maxStepsLedToDraw(const Option &o)
+{
+    rule->maxStepsLedToDraw = (int)o;
+}
 
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator() (const string &s1, const string &s2) const
@@ -101,6 +159,20 @@ void init(OptionsMap &o)
     o["UCI_Elo"] << Option(1350, 1350, 2850);
 
     o["RandomMove"] << Option(true, on_random_move);
+
+    // Rules
+    o["nTotalPiecesEachSide"] << Option(12, 6, 12, on_nTotalPiecesEachSide);
+    o["nPiecesAtLeast"] << Option(3, 3, 5, on_nPiecesAtLeast);
+    o["hasObliqueLines"] << Option(true, on_hasObliqueLines);
+    o["hasBannedLocations"] << Option(true, on_hasBannedLocations);
+    o["isDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);
+    o["allowRemoveMultiPiecesWhenCloseMultiMill"] << Option(false, on_allowRemoveMultiPiecesWhenCloseMultiMill);
+    o["allowRemovePieceInMill"] << Option(true, on_allowRemovePieceInMill);
+    o["isBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
+    o["isLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
+    o["allowFlyWhenRemainThreePieces"] << Option(false, on_allowFlyWhenRemainThreePieces);
+    o["maxStepsLedToDraw"] << Option(50, on_maxStepsLedToDraw);
+
 }
 
 

@@ -20,9 +20,10 @@
 #include "rule.h"
 #include "types.h"
 
-const struct Rule *rule;
+/* const */ struct Rule *rule;
 
-const struct Rule RULES[N_RULES] = {
+// TODO
+/* const */ struct Rule RULES[N_RULES] = {
     {
         "成三棋",   // 成三棋
         // 规则说明
