@@ -80,13 +80,13 @@ class Board extends StatelessWidget {
 
         final column = (dx - padding) ~/ squareWidth;
         if (column < 0 || column > 6) {
-          print("Tap on column $column skip");
+          print("Tap on column $column (ignored).");
           return;
         }
 
         final row = (dy - padding - digitsHeight) ~/ squareWidth;
         if (row < 0 || row > 6) {
-          print("Tap on row $row skip");
+          print("Tap on row $row (ignored).");
           return;
         }
 

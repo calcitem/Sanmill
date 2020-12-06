@@ -54,7 +54,7 @@ class _GamePageState extends State<GamePage> {
 
   @override
   void initState() {
-    print("engineType = ${widget.engineType}");
+    print("Engine type: ${widget.engineType}");
 
     Game.shared.setWhoIsAi(widget.engineType);
 
@@ -65,7 +65,7 @@ class _GamePageState extends State<GamePage> {
 
   changeStatus(String status) {
     if (context == null) {
-      print("[changeStatus] context == null, return");
+      //print("[changeStatus] context == null, return");
       return;
     }
 
@@ -74,7 +74,7 @@ class _GamePageState extends State<GamePage> {
 
   void showTips() {
     if (context == null) {
-      print("[showTips] context == null, return");
+      //print("[showTips] context == null, return");
       return;
     }
 
@@ -105,7 +105,7 @@ class _GamePageState extends State<GamePage> {
     int sq = indexToSquare[index];
 
     if (sq == null) {
-      print("putPiece skip index: $index");
+      //print("putPiece skip index: $index");
       return;
     }
 
@@ -251,7 +251,7 @@ class _GamePageState extends State<GamePage> {
       changeStatus(S.of(context).gameStarted);
 
       if (Game.shared.isAiToMove()) {
-        print("New Game: AI's turn.");
+        print("New game, AI to move.");
         engineToGo();
       }
     }

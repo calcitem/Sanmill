@@ -138,7 +138,7 @@ class PiecesPainter extends PiecesBasePainter {
           canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
           break;
         case Piece.ban:
-          print("pps.piece is Ban");
+          //print("pps.piece is Ban");
           break;
         default:
           assert(false);

@@ -264,7 +264,7 @@ class Position {
     // step counter
     //ss += '${recorder?.halfMove ?? 0} ${recorder?.fullMove ?? 0}';
 
-    print("fen = " + ss);
+    //print("fen = " + ss);
 
     return ss;
   }
@@ -306,7 +306,7 @@ class Position {
   */
     bool ret = false;
 
-    print("position: command = $move");
+    //print("doMove $move");
 
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
@@ -578,7 +578,7 @@ class Position {
 
         // not in moveTable
         if (md == moveDirectionNumber) {
-          print("putPiece: [$s] is not in [$currentSquare]'s moveTable");
+          print("putPiece: [$s] is not in [$currentSquare]'s move table.");
           return false;
         }
       }
@@ -742,7 +742,7 @@ class Position {
   }
 
   bool checkGameOverCondition() {
-    print("Checking game over condition ...");
+    //print("Is game over?");
 
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
@@ -752,7 +752,7 @@ class Position {
       winner = Color.draw;
       phase = Phase.gameOver;
       gameOverReason = GameOverReason.drawReasonRule50;
-      print("Game over, draw, because of $gameOverReason");
+      print("Game over, draw, because of $gameOverReason.");
       return true;
     }
 
@@ -768,7 +768,7 @@ class Position {
     }
 
     bool isNoWay = isAllSurrounded();
-    print("phase = $phase, action = $action, isAllSurrounded = $isNoWay");
+    //print("phase = $phase, action = $action, isAllSurrounded = $isNoWay");
     if (phase == Phase.moving && action == Act.select && isNoWay) {
       if (rule.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
@@ -776,12 +776,12 @@ class Position {
         return true;
       } else {
         changeSideToMove(); // TODO: Need?
-        print("Game is not over");
+        //print("Game is not over");
         return false;
       }
     }
 
-    print("Game is NOT over");
+    //print("Game is NOT over");
     return false;
   }
 
@@ -1417,14 +1417,14 @@ class Position {
     // Full
     if (pieceCountOnBoard[Color.black] + pieceCountOnBoard[Color.white] >=
         rankNumber * fileNumber) {
-      print("Board is full.");
+      //print("Board is full.");
       return true;
     }
 
     // Can fly
     if (pieceCountOnBoard[sideToMove()] <= rule.nPiecesAtLeast &&
         rule.allowFlyWhenRemainThreePieces) {
-      print("Can fly.");
+      //print("Can fly.");
       return false;
     }
 
@@ -1443,7 +1443,7 @@ class Position {
       }
     }
 
-    print("No way.");
+    //print("No way.");
     return true;
   }
 
@@ -1500,7 +1500,7 @@ class Position {
     String moves = "";
     int posAfterLastRemove = 0;
 
-    print("recorder.movesCount = ${recorder.movesCount}");
+    //print("recorder.movesCount = ${recorder.movesCount}");
 
     for (i = recorder.movesCount - 1; i >= 0; i--) {
       //if (recorder.moveAt(i).type == MoveType.remove) break;
@@ -1511,17 +1511,17 @@ class Position {
       posAfterLastRemove = i + 1;
     }
 
-    print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
+    //print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
 
     for (int i = posAfterLastRemove; i < recorder.movesCount; i++) {
       moves += " ${recorder.moveAt(i).move}";
     }
 
-    print("moves = $moves");
+    //print("moves = $moves");
 
     var idx = moves.indexOf('-(');
     if (idx != -1) {
-      print("moves[$idx] is -(");
+      //print("moves[$idx] is -(");
       assert(false);
     }
 
@@ -1535,7 +1535,7 @@ class Position {
   void changeSideToMove() {
     them = _sideToMove;
     _sideToMove = Color.opponent(_sideToMove);
-    print("Change sideToMove to $_sideToMove");
+    print("$_sideToMove to move.");
   }
 
   get halfMove => recorder.halfMove;
