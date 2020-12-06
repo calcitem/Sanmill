@@ -122,7 +122,7 @@ int Thread::search()
             }
         }
 
-#ifdef UCI_DO_BEST_MOVE
+#if defined(UCI_DO_BEST_MOVE) || defined(QT_GUI_LIB)
         moveHistory.push_back(key);
 #endif // UCI_DO_BEST_MOVE
 
