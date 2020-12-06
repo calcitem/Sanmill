@@ -63,9 +63,21 @@ class _GamePageState extends State<GamePage> {
     widget.engine.startup();
   }
 
-  changeStatus(String status) => setState(() => _status = status);
+  changeStatus(String status) {
+    if (context == null) {
+      print("[changeStatus] context == null, return");
+      return;
+    }
+
+    setState(() => _status = status);
+  }
 
   void showTips() {
+    if (context == null) {
+      print("[showTips] context == null, return");
+      return;
+    }
+
     final winner = Game.shared.position.winner;
 
     Map<String, String> colorWinStrings = {
@@ -196,7 +208,8 @@ class _GamePageState extends State<GamePage> {
     // TODO
     while ((Config.isAutoRestart == true ||
             Game.shared.position.winner == Color.nobody) &&
-        Game.shared.isAiToMove()) {
+        Game.shared.isAiToMove() &&
+        context != null) {
       if (widget.engineType == EngineType.aiVsAi) {
         String score = Game.shared.position.score[Color.black].toString() +
             " : " +
@@ -206,7 +219,9 @@ class _GamePageState extends State<GamePage> {
 
         changeStatus(score);
       } else {
-        changeStatus(S.of(context).thinking);
+        if (context != null) {
+          changeStatus(S.of(context).thinking);
+        }
       }
 
       final response = await widget.engine.search(Game.shared.position);
