@@ -300,8 +300,11 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #endif
 
-    if (unlikely(pos->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash and requiredQuit
-        depth <= 0) {
+    // Check for aborted search
+    // TODO: and immediate draw
+    if (unlikely(pos->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash
+        depth <= 0 ||
+        Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
         // For win quickly
@@ -397,6 +400,13 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         pos->undo_move(ss);
 
         assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
+
+        // Check for a new best move
+        // Finished searching the move. If a stop occurred, the return value of
+        // the search cannot be trusted, and we return immediately without
+        // updating best move, PV and TT.
+        if (Threads.stop.load(std::memory_order_relaxed))
+            return VALUE_ZERO;
 
         if (value >= bestValue) {
             bestValue = value;
