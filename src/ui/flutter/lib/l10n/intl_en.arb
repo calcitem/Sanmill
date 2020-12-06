@@ -294,5 +294,9 @@
   "openingBook": "Opening Book",
   "@openingBook": {
     "description": "Opening Book"
+  },
+  "misc": "Miscellaneous",
+  "@misc": {
+    "description": "Miscellaneous"
   }
 }

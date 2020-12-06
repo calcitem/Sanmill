@@ -44,6 +44,8 @@ void main() {
   SystemChrome.setEnabledSystemUIOverlays([]);
 }
 
+RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 class SanmillApp extends StatefulWidget {
   //
   static const StatusBarHeight = 28.0;
@@ -65,6 +67,7 @@ class _SanmillAppState extends State<SanmillApp> {
   Widget build(BuildContext context) {
     //
     return MaterialApp(
+      navigatorObservers: [routeObserver],
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
         S.delegate,

@@ -47,7 +47,7 @@ class GamePage extends StatefulWidget {
   _GamePageState createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _GamePageState extends State<GamePage> with RouteAware {
   //
   String _status = '';
   bool _searching = false;
@@ -621,6 +621,12 @@ class _GamePageState extends State<GamePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
   Widget build(BuildContext context) {
     //
     calcScreenPaddingH();
@@ -640,5 +646,33 @@ class _GamePageState extends State<GamePage> {
   void dispose() {
     widget.engine.shutdown();
     super.dispose();
+    routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPush() {
+    final route = ModalRoute.of(context).settings.name;
+    print('Game Page didPush route: $route');
+    widget.engine.setOptions();
+  }
+
+  @override
+  void didPopNext() {
+    final route = ModalRoute.of(context).settings.name;
+    print('Game Page didPopNext route: $route');
+    widget.engine.setOptions();
+  }
+
+  @override
+  void didPushNext() {
+    final route = ModalRoute.of(context).settings.name;
+    print('Game Page didPushNext route: $route');
+    widget.engine.setOptions();
+  }
+
+  @override
+  void didPop() {
+    final route = ModalRoute.of(context).settings.name;
+    print('Game Page didPop route: $route');
   }
 }

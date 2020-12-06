@@ -47,7 +47,7 @@ class Config {
     Config.isAutoRestart = profile['isAutoRestart'] ?? false;
     Config.isAutoChangeFirstMove = profile['isAutoChangeFirstMove'] ?? false;
     Config.resignIfMostLose = profile['resignIfMostLose'] ?? false;
-    Config.randomMoveEnabled = profile['randomMoveEnabled'] ?? false;
+    Config.randomMoveEnabled = profile['randomMoveEnabled'] ?? true;
     Config.learnEndgame = profile['learnEndgame'] ?? false;
     Config.idsEnabled = profile['idsEnabled'] ?? false;
     Config.depthExtension = profile['depthExtension'] ?? false;

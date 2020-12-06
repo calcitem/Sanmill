@@ -404,7 +404,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).isAutoRestart, style: headerStyle),
+            Text(S.of(context).misc, style: headerStyle),
             Card(
               color: UIColors.boardBackgroundColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -415,6 +415,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.isAutoRestart,
                     title: Text(S.of(context).isAutoRestart, style: itemStyle),
                     onChanged: switchIsAutoRestart,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.randomMoveEnabled,
+                    title:
+                        Text(S.of(context).randomMoveEnabled, style: itemStyle),
+                    onChanged: switchRandomMoveEnabled,
                   ),
                 ],
               ),

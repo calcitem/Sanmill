@@ -18,6 +18,7 @@
 */
 
 import 'package:flutter/services.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/position.dart';
 
@@ -130,6 +131,14 @@ class NativeEngine extends AiEngine {
 
   Future<void> stopSearching() async {
     await send('stop');
+  }
+
+  Future<void> setOptions() async {
+    if (Config.randomMoveEnabled) {
+      await send('setoption name RandomMove value true');
+    } else {
+      await send('setoption name RandomMove value false');
+    }
   }
 
   String getPositionFen(Position position) {

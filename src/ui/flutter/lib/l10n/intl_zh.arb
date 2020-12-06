@@ -72,5 +72,6 @@
   "learnEndgame": "残局库自学习",
   "idsEnabled": "迭代加深",
   "depthExtension": "深度扩展",
-  "openingBook": "使用开局库"
+  "openingBook": "使用开局库",
+  "misc": "其他"
 }

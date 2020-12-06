@@ -28,6 +28,7 @@ class EngineResponse {
 }
 
 abstract class AiEngine {
+  Future<void> setOptions() async {}
   Future<void> startup() async {}
   Future<void> shutdown() async {}
   Future<EngineResponse> search(Position position, {bool byUser = true});
