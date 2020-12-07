@@ -4,6 +4,8 @@
   "humanVsHuman": "双人对战",
   "aiVsAi": "机器对战",
   "humanVsCloud": "挑战云端",
+  "humanVsLAN": "联网对战",
+  "testViaLAN": "联网测试",
   "gameRecord": "棋谱",
   "noGameRecord": "暂无招法",
   "ok": "好的",

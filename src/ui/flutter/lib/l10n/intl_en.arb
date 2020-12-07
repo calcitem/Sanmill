@@ -19,6 +19,14 @@
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
+  "humanVsLAN": "Human Vs LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test Via LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
   "gameRecord": "Game Record",
   "@gameRecord": {
     "description": "Game Record"

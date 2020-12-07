@@ -50,6 +50,7 @@ class Game {
 
     switch (type) {
       case EngineType.humanVsAi:
+      case EngineType.testViaLAN:
         if (Config.whoMovesFirst == PlayerType.human) {
           isAi[Color.black] = false;
           isAi[Color.white] = true;
@@ -59,6 +60,7 @@ class Game {
         }
         break;
       case EngineType.humanVsHuman:
+      case EngineType.humanVsLAN:
         isAi[Color.black] = false;
         isAi[Color.white] = false;
         break;

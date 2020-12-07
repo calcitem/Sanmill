@@ -18,6 +18,7 @@ dependencies:
   uuid: ^2.0.4
   url_launcher: ^5.7.10
   intl: ^0.16.1
+  flutter_socket_io: ^0.6.0
 
 dev_dependencies:
   flutter_test:

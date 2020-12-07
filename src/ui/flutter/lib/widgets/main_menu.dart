@@ -135,6 +135,11 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
             onPressed: () => navigateTo(GamePage(EngineType.aiVsAi)),
           ),
           Expanded(child: SizedBox()),
+          FlatButton(
+            child: Text(S.of(context).testViaLAN, style: menuItemStyle),
+            onPressed: () => navigateTo(GamePage(EngineType.testViaLAN)),
+          ),
+          Expanded(child: SizedBox()),
           Text(S.of(context).gameWarning,
               style: TextStyle(color: Colors.black54, fontSize: 16)),
           Expanded(child: SizedBox()),

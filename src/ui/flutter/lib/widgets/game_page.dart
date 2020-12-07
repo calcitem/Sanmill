@@ -100,6 +100,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   onBoardTap(BuildContext context, int index) {
+    if (Game.shared.engineType == EngineType.testViaLAN) {
+      return false;
+    }
+
     final position = Game.shared.position;
 
     int sq = indexToSquare[index];
@@ -464,6 +468,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
       EngineType.humanVsHuman: S.of(context).humanVsHuman,
       EngineType.aiVsAi: S.of(context).aiVsAi,
       EngineType.humanVsCloud: S.of(context).humanVsCloud,
+      EngineType.humanVsLAN: S.of(context).humanVsLAN,
+      EngineType.testViaLAN: S.of(context).testViaLAN,
     };
 
     final titleStyle =
