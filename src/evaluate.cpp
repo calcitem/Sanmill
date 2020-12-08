@@ -124,21 +124,21 @@ Value Evaluation<T>::value()
     case PHASE_GAMEOVER:
         if (pos.pieces_count_on_board(BLACK) + pos.pieces_count_on_board(WHITE) >=
             RANK_NB * FILE_NB) {
-            if (rule->isBlackLoseButNotDrawWhenBoardFull) {
+            if (rule.isBlackLoseButNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
                 value = VALUE_DRAW;
             }
         } else if (pos.get_action() == ACTION_SELECT &&
                    pos.is_all_surrounded() &&
-                   rule->isLoseButNotChangeSideWhenNoWay) {
+                   rule.isLoseButNotChangeSideWhenNoWay) {
             Value delta = pos.side_to_move() == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
 
-        else if (pos.pieces_count_on_board(BLACK) < rule->nPiecesAtLeast) {
+        else if (pos.pieces_count_on_board(BLACK) < rule.nPiecesAtLeast) {
             value -= VALUE_MATE;
-        } else if (pos.pieces_count_on_board(WHITE) < rule->nPiecesAtLeast) {
+        } else if (pos.pieces_count_on_board(WHITE) < rule.nPiecesAtLeast) {
             value += VALUE_MATE;
         }
 

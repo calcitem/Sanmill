@@ -24,8 +24,8 @@
 
 struct Rule
 {
-    const char *name;
-    const char *description;
+    const char name[32];
+    const char description[512];
     int nTotalPiecesEachSide;   // 9 or 12
     int nPiecesAtLeast; // Default is 3
     bool hasObliqueLines;
@@ -40,7 +40,7 @@ struct Rule
 };
 
 #define N_RULES 4
-extern /* const */ struct Rule RULES[N_RULES];  // TODO
-extern /* const */ struct Rule *rule;
+extern const struct Rule RULES[N_RULES];
+extern struct Rule rule;
 
 #endif /* RULE_H */

@@ -35,7 +35,7 @@ using std::string;
 
 UCI::OptionsMap Options; // Global object
 
-extern struct Rule *rule;
+extern struct Rule rule;
 
 namespace UCI
 {
@@ -72,57 +72,57 @@ void on_random_move(const Option &o)
 
 void on_nTotalPiecesEachSide(const Option &o)
 {
-    rule->nTotalPiecesEachSide = (int)o;
+    rule.nTotalPiecesEachSide = (int)o;
 }
 
 void on_nPiecesAtLeast(const Option &o)
 {
-    rule->nPiecesAtLeast = (int)o;
+    rule.nPiecesAtLeast = (int)o;
 }
 
 void on_hasObliqueLines(const Option &o)
 {
-    rule->hasObliqueLines = (bool)o;
+    rule.hasObliqueLines = (bool)o;
 }
 
 void on_hasBannedLocations(const Option &o)
 {
-    rule->hasBannedLocations = (bool)o;
+    rule.hasBannedLocations = (bool)o;
 }
 
 void on_isDefenderMoveFirst(const Option &o)
 {
-    rule->isDefenderMoveFirst = (bool)o;
+    rule.isDefenderMoveFirst = (bool)o;
 }
 
 void on_allowRemoveMultiPiecesWhenCloseMultiMill(const Option &o)
 {
-    rule->allowRemoveMultiPiecesWhenCloseMultiMill = (bool)o;
+    rule.allowRemoveMultiPiecesWhenCloseMultiMill = (bool)o;
 }
 
 void on_allowRemovePieceInMill(const Option &o)
 {
-    rule->allowRemovePieceInMill = (bool)o;
+    rule.allowRemovePieceInMill = (bool)o;
 }
 
 void on_isBlackLoseButNotDrawWhenBoardFull(const Option &o)
 {
-    rule->isBlackLoseButNotDrawWhenBoardFull = (bool)o;
+    rule.isBlackLoseButNotDrawWhenBoardFull = (bool)o;
 }
 
 void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
 {
-    rule->isLoseButNotChangeSideWhenNoWay = (bool)o;
+    rule.isLoseButNotChangeSideWhenNoWay = (bool)o;
 }
 
 void on_allowFlyWhenRemainThreePieces(const Option &o)
 {
-    rule->allowFlyWhenRemainThreePieces = (bool)o;
+    rule.allowFlyWhenRemainThreePieces = (bool)o;
 }
 
 void on_maxStepsLedToDraw(const Option &o)
 {
-    rule->maxStepsLedToDraw = (int)o;
+    rule.maxStepsLedToDraw = (int)o;
 }
 
 /// Our case insensitive less() function as required by UCI protocol
@@ -171,7 +171,7 @@ void init(OptionsMap &o)
     o["isBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
     o["isLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["allowFlyWhenRemainThreePieces"] << Option(false, on_allowFlyWhenRemainThreePieces);
-    o["maxStepsLedToDraw"] << Option(50, on_maxStepsLedToDraw);
+    o["maxStepsLedToDraw"] << Option(50, 30, 50, on_maxStepsLedToDraw);
 
 }
 

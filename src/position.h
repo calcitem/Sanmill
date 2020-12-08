@@ -104,7 +104,7 @@ public:
 
     /// Mill Game
 
-    int set_position(/* const */ struct Rule *rule);
+    int set_position(int ruleNo);
 
     Piece *get_board();
     Square current_square() const;

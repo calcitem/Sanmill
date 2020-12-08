@@ -73,8 +73,8 @@ ExtMove *generate<LEGAL>(/* const */ Position &pos, ExtMove *moveList)
                     continue;
                 }
 
-                if (pos.pieces_count_on_board(pos.side_to_move()) > rule->nPiecesAtLeast ||
-                    !rule->allowFlyWhenRemainThreePieces) {
+                if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
+                    !rule.allowFlyWhenRemainThreePieces) {
                     for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
                         newSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[oldSquare][direction]);
                         if (newSquare && !pos.get_board()[newSquare]) {
@@ -110,7 +110,7 @@ ExtMove *generate<LEGAL>(/* const */ Position &pos, ExtMove *moveList)
         for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
             s = MoveList<LEGAL>::movePriorityTable[i];
             if (pos.get_board()[s] & make_piece(them)) {
-                if (rule->allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
+                if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
                     *cur++ = (Move)-s;
                 }
             }
@@ -228,7 +228,7 @@ void MoveList<LEGAL>::create()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    if (rule->hasObliqueLines) {
+    if (rule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
     } else {
         memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
@@ -259,7 +259,7 @@ void MoveList<LEGAL>::shuffle()
     std::array<Square, 4> movePriorityTable2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
     std::array<Square, 8> movePriorityTable3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
 
-    if (rule->nTotalPiecesEachSide == 9)
+    if (rule.nTotalPiecesEachSide == 9)
     {
         movePriorityTable0 = { SQ_16, SQ_18, SQ_20, SQ_22 };
         movePriorityTable1 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
