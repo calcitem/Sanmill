@@ -140,7 +140,11 @@ namespace CTSL //Concurrent Thread Safe Library
                     return;
                 }
 
+#ifdef TRANSPOSITION_TABLE_64BIT_KEY
                 hashSize = size;
+#else
+                hashSize = (uint32_t)size;
+#endif // TRANSPOSITION_TABLE_64BIT_KEY
                 return;
             }
 

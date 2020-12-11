@@ -99,11 +99,11 @@ constexpr bool Is64Bit = true;
 constexpr bool Is64Bit = false;
 #endif
 
-#ifdef TRANSPOSITION_TABLE_CUTDOWN
-typedef uint32_t Key;
-#else
+#ifdef TRANSPOSITION_TABLE_64BIT_KEY
 typedef uint64_t Key;
-#endif /* TRANSPOSITION_TABLE_CUTDOWN */
+#else
+typedef uint32_t Key;
+#endif /* TRANSPOSITION_TABLE_64BIT_KEY */
 
 typedef uint32_t Bitboard;
 
