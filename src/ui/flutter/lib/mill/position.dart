@@ -40,8 +40,6 @@ class StateInfo {
 }
 
 class Position {
-  Rule rule;
-
   GameResult result = GameResult.pending;
 
   List<String> board = List<String>(sqNumber);
@@ -416,8 +414,6 @@ class Position {
 
   int setPosition(Rule newRule) {
     result = GameResult.pending;
-
-    rule = new Rule(); // TODO
 
     gamePly = 0;
     rule50 = 0;
