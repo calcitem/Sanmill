@@ -17,6 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstring>
+
 #include "rule.h"
 #include "types.h"
 
@@ -132,8 +134,8 @@ bool set_rule(int ruleIdx)
         return false;
     }
 
-    memset(&rule, 0, sizeof(Rule));
-    memcpy(&rule, &RULES[ruleIdx], sizeof(Rule));
+    std::memset(&rule, 0, sizeof(Rule));
+    std::memcpy(&rule, &RULES[ruleIdx], sizeof(Rule));
 
     return true;
 }
