@@ -42,5 +42,6 @@ struct Rule
 #define N_RULES 4
 extern const struct Rule RULES[N_RULES];
 extern struct Rule rule;
+extern bool set_rule(int ruleIdx);
 
 #endif /* RULE_H */

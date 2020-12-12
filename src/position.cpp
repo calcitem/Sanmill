@@ -169,8 +169,7 @@ Position::Position()
 {
     construct_key();
     
-    // TODO: Do not need to set again
-    set_position(DEFAULT_RULE_NUMBER);
+    reset();
 
     score[BLACK] = score[WHITE] = score_draw = nPlayed = 0;
 
@@ -708,43 +707,6 @@ int Position::pieces_in_hand_count()
     return pieceCountInHand[BLACK] + pieceCountInHand[WHITE];
 }
 
-int Position::set_position(int ruleNo)
-{
-    memset(&rule, 0, sizeof(Rule));
-    memcpy(&rule, &RULES[ruleNo], sizeof(Rule));
-
-    gamePly = 0;
-    st.rule50 = 0;
-
-    phase = PHASE_READY;
-    set_side_to_move(BLACK);
-    action = ACTION_PLACE;
-
-    memset(board, 0, sizeof(board));
-    st.key = 0;
-    memset(byTypeBB, 0, sizeof(byTypeBB));
-
-    if (pieces_on_board_count() == -1) {
-        return -1;
-    }
-
-    pieces_in_hand_count();
-    pieceCountNeedRemove = 0;
-    millListSize = 0;
-    winner = NOBODY;
-    MoveList<LEGAL>::create();
-    create_mill_table();
-    currentSquare = SQ_0;
-
-    int r;
-    for (r = 0; r < N_RULES; r++) {
-        if (strcmp(rule.name, RULES[r].name) == 0)
-            return r;
-    }
-
-    return -1;
-}
-
 #ifdef THREEFOLD_REPETITION
 extern int nRepetition;
 #endif // THREEFOLD_REPETITION
@@ -773,6 +735,9 @@ bool Position::reset()
     pieceCountInHand[BLACK] = pieceCountInHand[WHITE] = rule.nTotalPiecesEachSide;
     pieceCountNeedRemove = 0;
     millListSize = 0;
+
+    MoveList<LEGAL>::create();
+    create_mill_table();
     currentSquare = SQ_0;
 
 #ifdef ENDGAME_LEARNING
@@ -781,15 +746,14 @@ bool Position::reset()
     }
 #endif /* ENDGAME_LEARNING */
 
-    int i;
-
-    for (i = 0; i < N_RULES; i++) {
-        if (strcmp(rule.name, RULES[i].name) == 0)
+    int r;
+    for (r = 0; r < N_RULES; r++) {
+        if (strcmp(rule.name, RULES[r].name) == 0)
             break;
     }
 
     if (sprintf(cmdline, "r%1u s%03u t%02u",
-                i + 1, rule.maxStepsLedToDraw, 0) > 0) {
+                r + 1, rule.maxStepsLedToDraw, 0) > 0) {
         return true;
     }
 
@@ -1073,11 +1037,11 @@ bool Position::command(const char *cmd)
     int args = 0;
 
     if (sscanf(cmd, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
-        if (ruleNo <= 0 || ruleNo > N_RULES) {
+        if (set_rule(ruleNo - 1) == false) {
             return false;
         }
 
-        return set_position(ruleNo - 1) >= 0 ? true : false;
+        return reset();
     }
 
     args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned*)&file1, (unsigned*)&rank1, (unsigned*)&file2, (unsigned*)&rank2);

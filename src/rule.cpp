@@ -125,3 +125,15 @@ const struct Rule RULES[N_RULES] = {
         50          // 50步
     }
 };
+
+bool set_rule(int ruleIdx)
+{
+    if (ruleIdx <= 0 || ruleIdx > N_RULES) {
+        return false;
+    }
+
+    memset(&rule, 0, sizeof(Rule));
+    memcpy(&rule, &RULES[ruleIdx], sizeof(Rule));
+
+    return true;
+}

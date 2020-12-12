@@ -353,7 +353,11 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
     }
 
     // 设置模型规则，重置游戏
-    int r = position.set_position(ruleNo);
+    if (set_rule(ruleNo) == false) {
+        return;
+    }
+
+    int r = ruleNo;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     char cmdline[64] = { 0 };
