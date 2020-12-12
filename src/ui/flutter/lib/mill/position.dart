@@ -49,7 +49,7 @@ class Position {
 
   GameRecorder recorder;
 
-  Map<String, int> pieceCountInHand = {Color.black: 12, Color.white: 12};
+  Map<String, int> pieceCountInHand = {Color.black: -1, Color.white: -1};
   Map<String, int> pieceCountOnBoard = {Color.black: 0, Color.white: 0};
   int pieceCountNeedRemove = 0;
 
