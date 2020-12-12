@@ -33,4 +33,6 @@ class Rule {
   int maxStepsLedToDraw = 0;
 }
 
+Rule rule = Rule();
+
 const ruleNumber = 4;

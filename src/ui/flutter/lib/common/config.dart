@@ -18,6 +18,7 @@
 */
 
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/rule.dart';
 
 import 'profile.dart';
 
@@ -67,31 +68,30 @@ class Config {
     Config.openingBook = profile['openingBook'] ?? false;
 
     // Rules
-    Game.shared.position.rule.nTotalPiecesEachSide =
+    rule.nTotalPiecesEachSide =
         Config.nTotalPiecesEachSide = profile['nTotalPiecesEachSide'] ?? 12;
-    Game.shared.position.rule.nPiecesAtLeast =
+    rule.nPiecesAtLeast =
         Config.nPiecesAtLeast = profile['nPiecesAtLeast'] ?? 3;
-    Game.shared.position.rule.hasObliqueLines =
+    rule.hasObliqueLines =
         Config.hasObliqueLines = profile['hasObliqueLines'] ?? true;
-    Game.shared.position.rule.hasBannedLocations =
+    rule.hasBannedLocations =
         Config.hasBannedLocations = profile['hasBannedLocations'] ?? true;
-    Game.shared.position.rule.isDefenderMoveFirst =
+    rule.isDefenderMoveFirst =
         Config.isDefenderMoveFirst = profile['isDefenderMoveFirst'] ?? true;
-    Game.shared.position.rule.allowRemoveMultiPiecesWhenCloseMultiMill =
+    rule.allowRemoveMultiPiecesWhenCloseMultiMill =
         Config.allowRemoveMultiPiecesWhenCloseMultiMill =
             profile['allowRemoveMultiPiecesWhenCloseMultiMill'] ?? false;
-    Game.shared.position.rule.allowRemovePieceInMill = Config
-        .allowRemovePieceInMill = profile['allowRemovePieceInMill'] ?? true;
-    Game.shared.position.rule.isBlackLoseButNotDrawWhenBoardFull =
+    rule.allowRemovePieceInMill = Config.allowRemovePieceInMill =
+        profile['allowRemovePieceInMill'] ?? true;
+    rule.isBlackLoseButNotDrawWhenBoardFull =
         Config.isBlackLoseButNotDrawWhenBoardFull =
             profile['isBlackLoseButNotDrawWhenBoardFull'] ?? true;
-    Game.shared.position.rule.isLoseButNotChangeSideWhenNoWay =
+    rule.isLoseButNotChangeSideWhenNoWay =
         Config.isLoseButNotChangeSideWhenNoWay =
             profile['isLoseButNotChangeSideWhenNoWay'] ?? true;
-    Game.shared.position.rule.allowFlyWhenRemainThreePieces =
-        Config.allowFlyWhenRemainThreePieces =
-            profile['allowFlyWhenRemainThreePieces'] ?? false;
-    Game.shared.position.rule.maxStepsLedToDraw =
+    rule.allowFlyWhenRemainThreePieces = Config.allowFlyWhenRemainThreePieces =
+        profile['allowFlyWhenRemainThreePieces'] ?? false;
+    rule.maxStepsLedToDraw =
         Config.maxStepsLedToDraw = profile['maxStepsLedToDraw'] ?? 50;
 
     return true;

@@ -22,6 +22,7 @@ import 'package:package_info/package_info.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
@@ -205,7 +206,7 @@ class _SettingsPageState extends State<SettingsPage> {
       Navigator.of(context).pop();
 
       setState(() {
-        Game.shared.position.rule.nTotalPiecesEachSide =
+        rule.nTotalPiecesEachSide =
             Config.nTotalPiecesEachSide = nTotalPiecesEachSide;
       });
 
@@ -251,7 +252,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setNPiecesAtLeast(int value) async {
     //
     setState(() {
-      Game.shared.position.rule.nPiecesAtLeast = Config.nPiecesAtLeast = value;
+      rule.nPiecesAtLeast = Config.nPiecesAtLeast = value;
     });
 
     Config.save();
@@ -260,8 +261,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchHasObliqueLines(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.hasObliqueLines =
-          Config.hasObliqueLines = value;
+      rule.hasObliqueLines = Config.hasObliqueLines = value;
     });
 
     Config.save();
@@ -270,8 +270,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchHasBannedLocations(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.hasBannedLocations =
-          Config.hasBannedLocations = value;
+      rule.hasBannedLocations = Config.hasBannedLocations = value;
     });
 
     Config.save();
@@ -280,8 +279,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchIsDefenderMoveFirst(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.isDefenderMoveFirst =
-          Config.isDefenderMoveFirst = value;
+      rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
     });
 
     Config.save();
@@ -290,7 +288,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.allowRemoveMultiPiecesWhenCloseMultiMill =
+      rule.allowRemoveMultiPiecesWhenCloseMultiMill =
           Config.allowRemoveMultiPiecesWhenCloseMultiMill = value;
     });
 
@@ -300,8 +298,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchAllowRemovePieceInMill(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.allowRemovePieceInMill =
-          Config.allowRemovePieceInMill = value;
+      rule.allowRemovePieceInMill = Config.allowRemovePieceInMill = value;
     });
 
     Config.save();
@@ -310,7 +307,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.isBlackLoseButNotDrawWhenBoardFull =
+      rule.isBlackLoseButNotDrawWhenBoardFull =
           Config.isBlackLoseButNotDrawWhenBoardFull = value;
     });
 
@@ -320,7 +317,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchIsLoseButNotChangeSideWhenNoWay(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.isLoseButNotChangeSideWhenNoWay =
+      rule.isLoseButNotChangeSideWhenNoWay =
           Config.isLoseButNotChangeSideWhenNoWay = value;
     });
 
@@ -330,7 +327,7 @@ class _SettingsPageState extends State<SettingsPage> {
   switchAllowFlyWhenRemainThreePieces(bool value) async {
     //
     setState(() {
-      Game.shared.position.rule.allowFlyWhenRemainThreePieces =
+      rule.allowFlyWhenRemainThreePieces =
           Config.allowFlyWhenRemainThreePieces = value;
     });
 
@@ -340,8 +337,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setMaxStepsLedToDraw(int value) async {
     //
     setState(() {
-      Game.shared.position.rule.maxStepsLedToDraw =
-          Config.maxStepsLedToDraw = value;
+      rule.maxStepsLedToDraw = Config.maxStepsLedToDraw = value;
     });
 
     Config.save();
