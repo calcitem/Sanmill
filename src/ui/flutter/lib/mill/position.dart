@@ -1448,7 +1448,7 @@ class Position {
   }
 
   bool isStarSquare(int s) {
-    if (rule.nTotalPiecesEachSide == 12) {
+    if (rule.hasObliqueLines == true) {
       return (s == 17 || s == 19 || s == 21 || s == 23);
     }
 

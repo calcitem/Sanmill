@@ -1624,7 +1624,7 @@ bool Position::is_all_surrounded() const
 
 bool Position::is_star_square(Square s)
 {
-    if (rule->nTotalPiecesEachSide == 12) {
+    if (rule->hasObliqueLines == true) {
         return (s == 17 ||
                 s == 19 ||
                 s == 21 ||
