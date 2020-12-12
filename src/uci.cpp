@@ -220,11 +220,12 @@ void UCI::loop(int argc, char *argv[])
     do {
 #ifdef FLUTTER_UI
         static const int LINE_INPUT_MAX_CHAR = 1024;
-        char szLineStr[LINE_INPUT_MAX_CHAR];
+        char line[LINE_INPUT_MAX_CHAR];
         CommandChannel *channel = CommandChannel::getInstance();
-        while (!channel->popupCommand(szLineStr)) Idle();
-        cmd = szLineStr;
-        LOGD("szLine = %s\n", szLineStr);
+        while (!channel->popupCommand(line))
+            Idle();
+        cmd = line;
+        LOGD("[uci] input: %s\n", line);
 #else
         if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
             cmd = "quit";
