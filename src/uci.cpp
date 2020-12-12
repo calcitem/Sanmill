@@ -89,6 +89,7 @@ void position(Position *pos, istringstream &is)
 #endif // THREEFOLD_REPETITION
     }
 
+    // TODO: Stockfish does not have this
     Threads.main()->us = pos->sideToMove;
 }
 
