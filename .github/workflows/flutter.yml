@@ -26,11 +26,17 @@ jobs:
         with:
           channel: 'stable' # or: 'dev' or 'beta'
 
+      - name: Export environment valiables
+        run: export
+
+      - name: Create App version
+        run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
+
       - name: Print Flutter SDK version
         run: flutter --version
 
       - name: Install dependencies
-        run: ./version.sh; cd src/ui/flutter; flutter pub get; flutter pub global activate intl_utils; flutter --no-color pub global run intl_utils:generate
+        run: cd src/ui/flutter; flutter pub get; flutter pub global activate intl_utils; flutter --no-color pub global run intl_utils:generate
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting
@@ -41,7 +47,7 @@ jobs:
       # want to change this to 'flutter test'.
       #- name: Run tests
       #  run: dart test
-    
+
       # Build
       - name: Build apk
         run: cd src/ui/flutter; flutter build apk
