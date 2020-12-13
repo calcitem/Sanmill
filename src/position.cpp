@@ -1153,7 +1153,7 @@ int Position::get_mobility_diff(bool includeFobidden)
     int diff = 0;
     int n = 0;
 
-    for (Square i = SQ_BEGIN; i < SQ_END; i = static_cast<Square>(i + 1)) {
+    for (Square i = SQ_BEGIN; i < SQ_END; ++i) {
         n = surrounded_empty_squares_count(i, includeFobidden);
 
         if (board[i] & B_STONE) {
@@ -1488,7 +1488,7 @@ int Position::add_mills(Square s)
 
 bool Position::is_all_in_mills(Color c)
 {
-    for (Square i = SQ_BEGIN; i < SQ_END; i = static_cast<Square>(i + 1)) {
+    for (Square i = SQ_BEGIN; i < SQ_END; ++i) {
         if (board[i] & ((uint8_t)make_piece(c))) {
             if (!in_how_many_mills(i, NOBODY)) {
                 return false;

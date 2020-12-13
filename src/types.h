@@ -294,7 +294,7 @@ enum : int
     DEPTH_OFFSET = DEPTH_NONE
 };
 
-enum Square : int32_t
+enum Square : int
 {
     SQ_0 = 0, SQ_1 = 1, SQ_2 = 2, SQ_3 = 3, SQ_4 = 4, SQ_5 = 5, SQ_6 = 6, SQ_7 = 7,
     SQ_8 = 8, SQ_9 = 9, SQ_10 = 10, SQ_11 = 11, SQ_12 = 12, SQ_13 = 13, SQ_14 = 14, SQ_15 = 15,
