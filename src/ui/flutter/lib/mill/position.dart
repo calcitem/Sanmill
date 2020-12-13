@@ -1400,7 +1400,7 @@ class Position {
   bool isAllInMills(String c) {
     for (int i = sqBegin; i < sqEnd; i++) {
       if (board[i] == c) {
-        if (inHowManyMills(i, Color.nobody) > 0) {
+        if (inHowManyMills(i, Color.nobody) == 0) {
           return false;
         }
       }
