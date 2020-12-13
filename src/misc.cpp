@@ -1,9 +1,6 @@
 ﻿/*
-  Sanmill, a UCI Mill Game playing engine derived from Stockfish
-  Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
-  Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad (Stockfish author)
-  Copyright (C) 2015-2020 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad (Stockfish author)
-  Copyright (C) 2020 Calcitem <calcitem@outlook.com>
+  This file is part of Sanmill.
+  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
   Sanmill is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
