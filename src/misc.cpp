@@ -47,10 +47,16 @@ extern "C" {
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <cstdlib>
 
 #if defined(__linux__) && !defined(__ANDROID__)
 #include <stdlib.h>
 #include <sys/mman.h>
+#endif
+
+#if defined(__APPLE__) || defined(__ANDROID__) || defined(__OpenBSD__) || (defined(__GLIBCXX__) && !defined(_GLIBCXX_HAVE_ALIGNED_ALLOC) && !defined(_WIN32))
+#define POSIXALIGNEDALLOC
+#include <stdlib.h>
 #endif
 
 #include "misc.h"
@@ -149,6 +155,7 @@ public:
 
 } // namespace
 
+
 /// engine_info() returns the full name of the current Sanmill version. This
 /// will be either "Sanmill <Tag> DD-MM-YY" (where DD-MM-YY is the date when
 /// the program was compiled) or "Sanmill <Version>", depending on whether
@@ -167,10 +174,8 @@ const string engine_info(bool to_uci)
         ss << setw(2) << day << setw(2) << (1 + months.find(month) / 4) << year.substr(2);
     }
 
-    ss << (Is64Bit ? " 64" : "")
-        << (HasPext ? " BMI2" : (HasPopCnt ? " POPCNT" : ""))
-        << (to_uci ? "\nid author " : " by ")
-        << "The Sanmill Authors";
+    ss << (to_uci ? "\nid author " : " by ")
+       << "the Sanmill developers (see AUTHORS file)";
 
     return ss.str();
 }
@@ -236,7 +241,40 @@ const std::string compiler_info()
     compiler += " on unknown system";
 #endif
 
-    compiler += "\n __VERSION__ macro expands to: ";
+    compiler += "\nCompilation settings include: ";
+    compiler += (Is64Bit ? " 64bit" : " 32bit");
+#if defined(USE_VNNI)
+    compiler += " VNNI";
+#endif
+#if defined(USE_AVX512)
+    compiler += " AVX512";
+#endif
+    compiler += (HasPext ? " BMI2" : "");
+#if defined(USE_AVX2)
+    compiler += " AVX2";
+#endif
+#if defined(USE_SSE41)
+    compiler += " SSE41";
+#endif
+#if defined(USE_SSSE3)
+    compiler += " SSSE3";
+#endif
+#if defined(USE_SSE2)
+    compiler += " SSE2";
+#endif
+    compiler += (HasPopCnt ? " POPCNT" : "");
+#if defined(USE_MMX)
+    compiler += " MMX";
+#endif
+#if defined(USE_NEON)
+    compiler += " NEON";
+#endif
+
+#if !defined(NDEBUG)
+    compiler += " DEBUG";
+#endif
+
+    compiler += "\n__VERSION__ macro expands to: ";
 #ifdef __VERSION__
     compiler += __VERSION__;
 #else
@@ -346,31 +384,139 @@ void prefetch_range(void *addr, size_t len)
 #endif
 
 
-/// aligned_ttmem_alloc will return suitably aligned memory, and if possible use large pages.
-/// The returned pointer is the aligned one, while the mem argument is the one that needs to be passed to free.
-/// With c++17 some of this functionality can be simplified.
-#if defined(__linux__) && !defined(__ANDROID__)
+/// std_aligned_alloc() is our wrapper for systems where the c++17 implementation
+/// does not guarantee the availability of aligned_alloc(). Memory allocated with
+/// std_aligned_alloc() must be freed with std_aligned_free().
 
-void *aligned_ttmem_alloc(size_t allocSize, void *&mem)
+void *std_aligned_alloc(size_t alignment, size_t size)
 {
 
-    constexpr size_t alignment = 2 * 1024 * 1024; // assumed 2MB page sizes
-    size_t size = ((allocSize + alignment - 1) / alignment) * alignment; // multiple of alignment
-    if (posix_memalign(&mem, alignment, size))
-        mem = nullptr;
-    madvise(mem, allocSize, MADV_HUGEPAGE);
+#if defined(POSIXALIGNEDALLOC)
+    void *mem;
+    return posix_memalign(&mem, alignment, size) ? nullptr : mem;
+#elif defined(_WIN32)
+    return _mm_malloc(size, alignment);
+#else
+    return std::aligned_alloc(alignment, size);
+#endif
+}
+
+void std_aligned_free(void *ptr)
+{
+
+#if defined(POSIXALIGNEDALLOC)
+    free(ptr);
+#elif defined(_WIN32)
+    _mm_free(ptr);
+#else
+    free(ptr);
+#endif
+}
+
+/// aligned_large_pages_alloc() will return suitably aligned memory, if possible using large pages.
+
+#if defined(_WIN32)
+
+static void *aligned_large_pages_alloc_win(size_t allocSize)
+{
+
+    HANDLE hProcessToken{ };
+    LUID luid{ };
+    void *mem = nullptr;
+
+    const size_t largePageSize = GetLargePageMinimum();
+    if (!largePageSize)
+        return nullptr;
+
+    // We need SeLockMemoryPrivilege, so try to enable it for the process
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hProcessToken))
+        return nullptr;
+
+    if (LookupPrivilegeValue(NULL, SE_LOCK_MEMORY_NAME, &luid)) {
+        TOKEN_PRIVILEGES tp{ };
+        TOKEN_PRIVILEGES prevTp{ };
+        DWORD prevTpLen = 0;
+
+        tp.PrivilegeCount = 1;
+        tp.Privileges[0].Luid = luid;
+        tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+        // Try to enable SeLockMemoryPrivilege. Note that even if AdjustTokenPrivileges() succeeds,
+        // we still need to query GetLastError() to ensure that the privileges were actually obtained.
+        if (AdjustTokenPrivileges(
+            hProcessToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &prevTp, &prevTpLen) &&
+            GetLastError() == ERROR_SUCCESS) {
+            // Round up size to full pages and allocate
+            allocSize = (allocSize + largePageSize - 1) & ~size_t(largePageSize - 1);
+            mem = VirtualAlloc(
+                NULL, allocSize, MEM_RESERVE | MEM_COMMIT | MEM_LARGE_PAGES, PAGE_READWRITE);
+
+            // Privilege no longer needed, restore previous state
+            AdjustTokenPrivileges(hProcessToken, FALSE, &prevTp, 0, NULL, NULL);
+        }
+    }
+
+    CloseHandle(hProcessToken);
+
+    return mem;
+}
+
+void *aligned_large_pages_alloc(size_t allocSize)
+{
+
+    // Try to allocate large pages
+    void *mem = aligned_large_pages_alloc_win(allocSize);
+
+    // Fall back to regular, page aligned, allocation if necessary
+    if (!mem)
+        mem = VirtualAlloc(NULL, allocSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+
     return mem;
 }
 
 #else
 
-void *aligned_ttmem_alloc(size_t allocSize, void *&mem)
+void *aligned_large_pages_alloc(size_t allocSize)
 {
-    constexpr size_t alignment = 64; // assumed cache line size
-    size_t size = allocSize + alignment - 1; // allocate some extra space
-    mem = malloc(size);
-    void *ret = reinterpret_cast<void *>((uintptr_t(mem) + alignment - 1) & ~uintptr_t(alignment - 1));
-    return ret;
+
+#if defined(__linux__)
+    constexpr size_t alignment = 2 * 1024 * 1024; // assumed 2MB page size
+#else
+    constexpr size_t alignment = 4096; // assumed small page size
+#endif
+
+  // round up to multiples of alignment
+    size_t size = ((allocSize + alignment - 1) / alignment) * alignment;
+    void *mem = std_aligned_alloc(alignment, size);
+#if defined(MADV_HUGEPAGE)
+    madvise(mem, size, MADV_HUGEPAGE);
+#endif
+    return mem;
+}
+
+#endif
+
+
+/// aligned_large_pages_free() will free the previously allocated ttmem
+
+#if defined(_WIN32)
+
+void aligned_large_pages_free(void *mem)
+{
+
+    if (mem && !VirtualFree(mem, 0, MEM_RELEASE)) {
+        DWORD err = GetLastError();
+        std::cerr << "Failed to free transposition table. Error code: 0x" <<
+            std::hex << err << std::dec << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+#else
+
+void aligned_large_pages_free(void *mem)
+{
+    std_aligned_free(mem);
 }
 
 #endif
@@ -389,7 +535,7 @@ void bindThisThread(size_t)
 
 /// best_group() retrieves logical processor information using Windows specific
 /// API and returns the best group id for the thread with index idx. Original
-/// code from Texel by Peter Österlund.
+/// code from Texel by Peter Ã–sterlund.
 
 int best_group(size_t idx)
 {
@@ -475,10 +621,69 @@ void bindThisThread(size_t idx)
         return;
 
     GROUP_AFFINITY affinity;
-    if (fun2((USHORT)group, &affinity))
+    if (fun2(group, &affinity))
         fun3(GetCurrentThread(), &affinity, nullptr);
 }
 
 #endif
 
 } // namespace WinProcGroup
+
+#ifdef _WIN32
+#include <direct.h>
+#define GETCWD _getcwd
+#else
+#include <unistd.h>
+#define GETCWD getcwd
+#endif
+
+namespace CommandLine
+{
+
+string argv0;            // path+name of the executable binary, as given by argv[0]
+string binaryDirectory;  // path of the executable directory
+string workingDirectory; // path of the working directory
+
+void init(int argc, char *argv[])
+{
+    (void)argc;
+    string pathSeparator;
+
+    // extract the path+name of the executable binary
+    argv0 = argv[0];
+
+#ifdef _WIN32
+    pathSeparator = "\\";
+#ifdef _MSC_VER
+    // Under windows argv[0] may not have the extension. Also _get_pgmptr() had
+    // issues in some windows 10 versions, so check returned values carefully.
+    char *pgmptr = nullptr;
+    if (!_get_pgmptr(&pgmptr) && pgmptr != nullptr && *pgmptr)
+        argv0 = pgmptr;
+#endif
+#else
+    pathSeparator = "/";
+#endif
+
+    // extract the working directory
+    workingDirectory = "";
+    char buff[40000];
+    char *cwd = GETCWD(buff, 40000);
+    if (cwd)
+        workingDirectory = cwd;
+
+    // extract the binary directory path from argv0
+    binaryDirectory = argv0;
+    size_t pos = binaryDirectory.find_last_of("\\/");
+    if (pos == std::string::npos)
+        binaryDirectory = "." + pathSeparator;
+    else
+        binaryDirectory.resize(pos + 1);
+
+    // pattern replacement: "./" at the start of path is replaced by the working directory
+    if (binaryDirectory.find("." + pathSeparator) == 0)
+        binaryDirectory.replace(0, 1, workingDirectory);
+}
+
+
+} // namespace CommandLine

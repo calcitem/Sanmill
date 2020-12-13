@@ -654,7 +654,7 @@ void ThreadPool::set(size_t requested)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new threadpool size
-        TT.resize((size_t)Options["Hash"]);
+        TT.resize(size_t(Options["Hash"]));
 #endif
 
         // Init thread number dependent search params.
@@ -670,6 +670,7 @@ void ThreadPool::clear()
         th->clear();
 }
 
+
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
 /// returns immediately. Main thread will wake up other threads and start the search.
 
@@ -683,11 +684,9 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
 
     // We use Position::set() to set root position across threads. But there are
     // some StateInfo fields (previous, pliesFromNull, capturedPiece) that cannot
-    // be deduced from a fen string, so set() clears them and to not lose the info
-    // we need to backup and later restore setupStates->back(). Note that setupStates
-    // is shared by threads but is accessed in read-only mode.
-    //StateInfo tmp = setupStates->back();
-
+    // be deduced from a fen string, so set() clears them and they are set from
+    // setupStates->back() later. The rootState is per thread, earlier states are shared
+    // since they are read-only.
     for (Thread *th : *this) {
         // TODO
         //th->rootPos->set(pos->fen(), &setupStates->back(), th);

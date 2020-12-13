@@ -41,7 +41,6 @@
 
 #include <cassert>
 #include <cctype>
-#include <climits>
 #include <cstdint>
 #include <cstdlib>
 #include <algorithm>
@@ -60,6 +59,12 @@
 /// _MSC_VER           Compiler is MSVC or Intel on Windows
 /// _WIN32             Building on Windows (any)
 /// _WIN64             Building on Windows 64 bit
+
+#if defined(__GNUC__ ) && (__GNUC__ < 9 || (__GNUC__ == 9 && __GNUC_MINOR__ <= 2)) && defined(_WIN32) && !defined(__clang__)
+#define ALIGNAS_ON_STACK_VARIABLES_BROKEN
+#endif
+
+#define ASSERT_ALIGNED(ptr, alignment) assert(reinterpret_cast<uintptr_t>(ptr) % alignment == 0)
 
 #if defined(_WIN64) && defined(_MSC_VER) // No Makefile used
 #  include <intrin.h> // Microsoft header for _BitScanForward64()
@@ -311,6 +316,7 @@ enum Square : int
 
     EFFECTIVE_SQUARE_NB = 24,
 
+    SQUARE_ZERO = 0,
     SQUARE_NB = 40,
 
     SQ_BEGIN = SQ_8,
@@ -359,11 +365,11 @@ enum Score : int
 
 
 #define ENABLE_BASE_OPERATORS_ON(T)                                \
-constexpr T operator+(T d1, T d2) { return T(int(d1) + int(d2)); } \
-constexpr T operator-(T d1, T d2) { return T(int(d1) - int(d2)); } \
+constexpr T operator+(T d1, int d2) { return T(int(d1) + d2); }    \
+constexpr T operator-(T d1, int d2) { return T(int(d1) - d2); }    \
 constexpr T operator-(T d) { return T(-int(d)); }                  \
-inline T& operator+=(T& d1, T d2) { return d1 = d1 + d2; }         \
-inline T& operator-=(T& d1, T d2) { return d1 = d1 - d2; }
+inline T& operator+=(T& d1, int d2) { return d1 = d1 + d2; }       \
+inline T& operator-=(T& d1, int d2) { return d1 = d1 - d2; }
 
 #define ENABLE_INCR_OPERATORS_ON(T)                                \
 inline T& operator++(T& d) { return d = T(int(d) + 1); }           \
@@ -380,8 +386,8 @@ inline T& operator/=(T& d, int i) { return d = T(int(d) / i); }
 
 ENABLE_FULL_OPERATORS_ON(Value)
 
-ENABLE_INCR_OPERATORS_ON(PieceType)
 ENABLE_INCR_OPERATORS_ON(Piece)
+ENABLE_INCR_OPERATORS_ON(PieceType)
 ENABLE_INCR_OPERATORS_ON(Square)
 ENABLE_INCR_OPERATORS_ON(File)
 ENABLE_INCR_OPERATORS_ON(Rank)
@@ -389,27 +395,6 @@ ENABLE_INCR_OPERATORS_ON(Rank)
 #undef ENABLE_FULL_OPERATORS_ON
 #undef ENABLE_INCR_OPERATORS_ON
 #undef ENABLE_BASE_OPERATORS_ON
-
-// Additional operators to add integers to a Value
-constexpr Value operator+(Value v, int i)
-{
-    return Value(int(v) + i);
-}
-
-constexpr Value operator-(Value v, int i)
-{
-    return Value(int(v) - i);
-}
-
-inline Value &operator+=(Value &v, int i)
-{
-    return v = v + i;
-}
-
-inline Value &operator-=(Value &v, int i)
-{
-    return v = v - i;
-}
 
 constexpr Color operator~(Color c)
 {
@@ -525,6 +510,11 @@ constexpr Move reverse_move(Move m)
 constexpr bool is_ok(Move m)
 {
     return from_sq(m) != to_sq(m); // Catch MOVE_NULL and MOVE_NONE
+}
+
+/// Based on a congruential pseudo random number generator
+constexpr Key make_key(uint64_t seed) {
+    return seed * 6364136223846793005ULL + 1442695040888963407ULL;
 }
 
 #endif // #ifndef TYPES_H_INCLUDED

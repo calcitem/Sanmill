@@ -17,8 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ENDGAME_H
-#define ENDGAME_H
+#ifndef ENDGAME_H_INCLUDED
+#define ENDGAME_H_INCLUDED
 
 #include "config.h"
 
@@ -52,4 +52,4 @@ extern HashMap<key_t, Endgame> endgameHashMap;
 
 #endif // ENDGAME_LEARNING
 
-#endif // ENDGAME_H
+#endif // #ifndef ENDGAME_H_INCLUDED

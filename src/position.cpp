@@ -149,8 +149,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
 }
 
 
-/// Position::init() initializes at startup the various arrays used to compute
-/// hash keys.
+/// Position::init() initializes at startup the various arrays used to compute hash keys
 
 void Position::init()
 {

@@ -27,6 +27,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 #include "types.h"
 
@@ -35,7 +36,10 @@ const std::string compiler_info();
 void prefetch(void *addr);
 void prefetch_range(void *addr, size_t len);
 void start_logger(const std::string &fname);
-void *aligned_ttmem_alloc(size_t size, void *&mem);
+void* std_aligned_alloc(size_t alignment, size_t size);
+void std_aligned_free(void* ptr);
+void* aligned_large_pages_alloc(size_t size); // memory aligned by page size, min alignment: 4096 bytes
+void aligned_large_pages_free(void* mem); // nop if mem == nullptr
 
 void dbg_hit_on(bool b);
 void dbg_hit_on(bool c, bool b);
@@ -74,15 +78,16 @@ std::ostream &operator<<(std::ostream &, SyncCout);
 #define sync_cout std::cout << IO_LOCK
 #define sync_endl std::endl << IO_UNLOCK
 
-namespace Utility
+// `ptr` must point to an array of size at least
+// `sizeof(T) * N + alignment` bytes, where `N` is the
+// number of elements in the array.
+template <uintptr_t Alignment, typename T>
+T* align_ptr_up(T* ptr)
 {
+    static_assert(alignof(T) < Alignment);
 
-/// Clamp a value between lo and hi. Available in c++17.
-template<class T> constexpr const T &clamp(const T &v, const T &lo, const T &hi)
-{
-    return v < lo ? lo : v > hi ? hi : v;
-}
-
+    const uintptr_t ptrint = reinterpret_cast<uintptr_t>(reinterpret_cast<char*>(ptr));
+    return reinterpret_cast<T*>(reinterpret_cast<char*>((ptrint + (Alignment - 1)) / Alignment * Alignment));
 }
 
 /// xorshift64star Pseudo-Random Number Generator
@@ -129,16 +134,35 @@ public:
     }
 };
 
+inline uint64_t mul_hi64(uint64_t a, uint64_t b) {
+#if defined(__GNUC__) && defined(IS_64BIT)
+    __extension__ typedef unsigned __int128 uint128;
+    return ((uint128)a * (uint128)b) >> 64;
+#else
+    uint64_t aL = (uint32_t)a, aH = a >> 32;
+    uint64_t bL = (uint32_t)b, bH = b >> 32;
+    uint64_t c1 = (aL * bL) >> 32;
+    uint64_t c2 = aH * bL + c1;
+    uint64_t c3 = aL * bH + (uint32_t)c2;
+    return aH * bH + (c2 >> 32) + (c3 >> 32);
+#endif
+}
 
 /// Under Windows it is not possible for a process to run on more than one
 /// logical processor group. This usually means to be limited to use max 64
 /// cores. To overcome this, some special platform specific API should be
 /// called to set group affinity for each thread. Original code from Texel by
-/// Peter Österlund.
+/// Peter Ã–sterlund.
 
-namespace WinProcGroup
-{
-void bindThisThread(size_t idx);
+namespace WinProcGroup {
+    void bindThisThread(size_t idx);
+}
+
+namespace CommandLine {
+    void init(int argc, char* argv[]);
+
+    extern std::string binaryDirectory;  // path of the executable directory
+    extern std::string workingDirectory; // path of the working directory
 }
 
 #endif // #ifndef MISC_H_INCLUDED
