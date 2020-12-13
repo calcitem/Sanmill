@@ -2,6 +2,7 @@
 
 VERSION_H=include/version.h
 TEMPLATE_FILE=include/version.h.template
+PUBSPEC_YAML_FILE=src/ui/flutter/pubspec.yaml
 GIT_BRANCH=master
 
 rm -f $VERSION_H
@@ -21,6 +22,7 @@ if [ "$LOCALVER" -gt "1" ] ; then
     fi
     VER="$VER g$(git rev-list HEAD -n 1 | cut -c 1-7)"
     GIT_VERSION="$TAG r$VER"
+	APP_VERSION="${TAG:1}+${LOCALVER-VER}"
 else
     GIT_VERSION=
     VER="x"
@@ -32,8 +34,11 @@ sed "s/\$FULL_VERSION/$GIT_VERSION/g" < $TEMPLATE_FILE > $VERSION_H
 
 git update-index --assume-unchanged $VERSION_H
 
+echo "App Version: ${APP_VERSION}"
+echo
 echo "Generated $VERSION_H"
 echo
 cat $VERSION_H
 
-
+sed -i '/version:/d' ${PUBSPEC_YAML_FILE}
+sed -i "4i\version: ${APP_VERSION}" ${PUBSPEC_YAML_FILE}
