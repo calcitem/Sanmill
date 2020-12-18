@@ -53,10 +53,13 @@ const std::string Bitboards::pretty(Bitboard b)
 
 void Bitboards::init()
 {
-
     for (unsigned i = 0; i < (1 << 16); ++i)
         PopCnt16[i] = (uint8_t)std::bitset<16>(i).count();
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s)
         SquareBB[s] = (1UL << s);
+
+    for (Square s1 = SQ_A1; s1 <= SQ_C8; ++s1)
+        for (Square s2 = SQ_A1; s2 <= SQ_C8; ++s2)
+            SquareDistance[s1][s2] = std::max(distance<File>(s1, s2), distance<Rank>(s1, s2));
 }
