@@ -172,6 +172,7 @@ public:
     // Data members
     Piece board[SQUARE_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
+    Bitboard byColorBB[COLOR_NB];
     // TODO: [0] is sum of Black and White
     int pieceCountInHand[COLOR_NB]{ 0, 12, 12 }; // TODO
     int pieceCountOnBoard[COLOR_NB]{ 0, 0, 0 };
@@ -299,9 +300,8 @@ inline bool Position::select_piece(File f, Rank r)
 inline void Position::put_piece(Piece pc, Square s)
 {
     board[s] = pc;
-    byTypeBB[ALL_PIECES] |= s;
-    byTypeBB[type_of(pc)] |= s;
-    //byColorBB[color_of(pc)] |= s;
+    byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
+    byColorBB[color_of(pc)] |= s;
     //index[s] = pieceCount[pc]++;
     //pieceList[pc][index[s]] = s;
     //pieceCount[make_piece(color_of(pc), ALL_PIECES)]++;
@@ -341,22 +341,10 @@ inline bool Position::undo_move_piece(Square from, Square to)
 
 inline bool Position::move_piece(Square from, Square to)
 {
-#if 0
-    // index[from] is not updated and becomes stale. This works as long as index[]
-    // is accessed just by known occupied squares.
-    Piece pc = board[from];
-    Bitboard fromTo = from | to;
-    byTypeBB[ALL_PIECES] ^= fromTo;
-    byTypeBB[type_of(pc)] ^= fromTo;
-    byColorBB[color_of(pc)] ^= fromTo;
-    board[from] = NO_PIECE;
-    board[to] = pc;
-    index[to] = index[from];
-    pieceList[pc][index[to]] = to;
-#endif
-
     if (select_piece(from)) {
-        return put_piece(to);
+        if (put_piece(to)) {
+            return true;
+        }
     }
 
     return false;

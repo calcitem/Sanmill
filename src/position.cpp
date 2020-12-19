@@ -728,6 +728,7 @@ bool Position::reset()
     memset(board, 0, sizeof(board));
     st.key = 0;
     memset(byTypeBB, 0, sizeof(byTypeBB));
+    memset(byColorBB, 0, sizeof(byColorBB));
 
     pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
     pieceCountInHand[BLACK] = pieceCountInHand[WHITE] = rule.nTotalPiecesEachSide;
@@ -784,8 +785,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     Piece piece = NO_PIECE;
     int us = sideToMove;
 
-    Bitboard fromTo;
-
     if (phase == PHASE_GAMEOVER ||
         action != ACTION_PLACE ||
         !onBoard[s] || board[s]) {
@@ -801,12 +800,11 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         pieceCountInHand[us]--;
         pieceCountOnBoard[us]++;
 
-        board[s]= piece;
+        Piece pc = board[s] = piece;
+        byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
+        byColorBB[color_of(pc)] |= s;   // TODO: Put ban?
 
         update_key(s);
-
-        byTypeBB[ALL_PIECES] |= s;
-        byTypeBB[us] |= s;
 
         if (updateCmdlist) {
             sprintf(cmdline, "(%1u,%1u)", file_of(s), rank_of(s));
@@ -876,11 +874,12 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             st.rule50++;
         }
 
-        fromTo = square_bb(currentSquare) | square_bb(s);
-        byTypeBB[ALL_PIECES] ^= fromTo;
-        byTypeBB[us] ^= fromTo;
+        Piece pc = board[s] = board[currentSquare];
 
-        board[s] = board[currentSquare];
+        Bitboard fromTo = currentSquare | s;
+        byTypeBB[ALL_PIECES] ^= fromTo;
+        byTypeBB[type_of(pc)] ^= fromTo;
+        byColorBB[color_of(pc)] ^= fromTo;
 
         update_key(s);
         revert_key(currentSquare);
@@ -934,14 +933,20 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     revert_key(s);
 
     if (rule.hasBannedLocations && phase == PHASE_PLACING) {
-        board[s]= BAN_STONE;
+        // Remove and put ban
+        Piece pc = board[s];
+        byTypeBB[type_of(pc)] ^= s;
+        byColorBB[color_of(pc)] ^= s;
+        pc = board[s] = BAN_STONE;
         update_key(s);
-        byTypeBB[them] ^= s;
-        byTypeBB[BAN] |= s;
-    } else { // Remove
-        board[s]= NO_PIECE;
+        byTypeBB[type_of(pc)] |= s;
+        //byColorBB[color_of(pc)] |= s;
+    } else {
+        // Remove only
+        Piece pc = board[s] = NO_PIECE;
         byTypeBB[ALL_PIECES] ^= s;
-        byTypeBB[them] ^= s;
+        byTypeBB[type_of(pc)] ^= s;
+        byColorBB[color_of(pc)] ^= s;
     }
 
     if (updateCmdlist) {
@@ -1176,10 +1181,12 @@ void Position::remove_ban_stones()
         for (int r = 0; r < RANK_NB; r++) {
             s = static_cast<Square>(f * RANK_NB + r);
 
-            if (board[s] == BAN_STONE) {
-                revert_key(s);
+            if (board[s] == BAN_STONE) {                
+                Piece pc = board[s];
+                byTypeBB[ALL_PIECES] ^= s;
+                byTypeBB[type_of(pc)] ^= s;
                 board[s] = NO_PIECE;
-                byTypeBB[ALL_PIECES] ^= s;   // Need to remove?
+                revert_key(s);
             }
         }
     }
@@ -1250,6 +1257,7 @@ Position &Position::operator= (const Position &other)
 
     memcpy(this->board, other.board, sizeof(this->board));
     memcpy(this->byTypeBB, other.byTypeBB, sizeof(this->byTypeBB));
+    memcpy(this->byColorBB, other.byColorBB, sizeof(this->byColorBB));
 
     memcpy(&millList, &other.millList, sizeof(millList));
     millListSize = other.millListSize;

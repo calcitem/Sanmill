@@ -247,8 +247,6 @@ enum PieceType : uint16_t
     ALL_PIECES = 0,
     PIECE_TYPE_NB = 4,
 
-    STONE  = 5,
-
     IN_HAND = 0x10,
     ON_BOARD = 0x20,
 };
@@ -429,22 +427,26 @@ constexpr Piece make_piece(Color c, PieceType pt)
     return NO_PIECE;
 }
 
+inline Color color_of(Piece pc)
+{
+    return Color(pc >> 4);
+}
+
 constexpr PieceType type_of(Piece pc)
 {
-    if (pc & 0x30) {
-        //return STONE; // TODO
-    }
-
     if (pc == BAN_STONE) {
         return BAN;
     }
 
-    return NO_PIECE_TYPE;
-}
+    if (color_of(pc) == BLACK) {
+        return BLACK_STONE;
+    }
 
-inline Color color_of(Piece pc)
-{
-    return Color(pc >> 4);
+    if (color_of(pc) == WHITE) {
+        return WHITE_STONE;
+    }
+
+    return NO_PIECE_TYPE;
 }
 
 constexpr bool is_ok(Square s)
