@@ -193,8 +193,6 @@ public:
     int score[COLOR_NB] { 0 };
     int score_draw { 0 };
 
-    static const int onBoard[SQUARE_NB];
-
     // Relate to Rule
     static int millTable[SQUARE_NB][LD_NB][FILE_NB - 1];
 
