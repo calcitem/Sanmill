@@ -23,6 +23,9 @@
 
 #include "types.h"
 
+#define	SET_BIT(x, bit)     (x |= (1 << bit))	
+#define	CLEAR_BIT(x, bit)   (x &= ~(1 << bit))
+
 namespace Bitboards
 {
 
