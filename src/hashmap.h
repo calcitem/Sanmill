@@ -56,7 +56,12 @@ namespace CTSL //Concurrent Thread Safe Library
             HashMap(hashFn hashSize_ = HASH_SIZE_DEFAULT) : hashSize(hashSize_)
             {
 #ifdef DISABLE_HASHBUCKET
+#ifdef ALIGNED_LARGE_PAGES
+                hashTable = (HashNode<K, V>*)aligned_large_pages_alloc(sizeof(HashNode<K, V>) * hashSize);
+#else
                 hashTable = new HashNode<K, V>[hashSize]; //create the key table as an array of key nodes
+#endif // ALIGNED_LARGE_PAGES
+                
                 memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
 #else
                 hashTable = new HashBucket<K, V>[hashSize]; //create the key table as an array of key buckets
@@ -65,7 +70,11 @@ namespace CTSL //Concurrent Thread Safe Library
 
             ~HashMap()
             {
+#ifdef ALIGNED_LARGE_PAGES
+                aligned_large_pages_free(hashTable);
+#else
                 delete [] hashTable;
+#endif
             }
             //Copy and Move of the HashMap are not supported at this moment
             HashMap(const HashMap&) = delete;

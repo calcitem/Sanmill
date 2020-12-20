@@ -130,6 +130,8 @@
 
 #define HASHMAP_NOLOCK
 
+//#define ALIGNED_LARGE_PAGES
+
 #ifdef WIN32
 #define sscanf sscanf_s
 #define sprintf sprintf_s

@@ -410,6 +410,8 @@ void std_aligned_free(void *ptr)
 #endif
 }
 
+#ifdef ALIGNED_LARGE_PAGES
+
 /// aligned_large_pages_alloc() will return suitably aligned memory, if possible using large pages.
 
 #if defined(_WIN32)
@@ -517,7 +519,7 @@ void aligned_large_pages_free(void *mem)
 }
 
 #endif
-
+#endif // ALIGNED_LARGE_PAGES
 
 namespace WinProcGroup
 {
