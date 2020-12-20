@@ -428,7 +428,7 @@ constexpr Piece make_piece(Color c, PieceType pt)
     return NO_PIECE;
 }
 
-inline Color color_of(Piece pc)
+constexpr Color color_of(Piece pc)
 {
     return Color(pc >> 4);
 }
