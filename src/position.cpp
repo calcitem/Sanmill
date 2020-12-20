@@ -1597,18 +1597,23 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
 #endif
     }
 
-    for (int l = 0; l < LD_NB; l++) {
-#ifdef DISABLE_BITBOARD
-        bool b = make_piece(c) &
-            board[millTable[s][l][0]] &
-            board[millTable[s][l][1]];
-#else
-        bool b = ((byColorBB[c] & millTableBB[s][l]) == millTableBB[s][l]);
+#ifndef DISABLE_BITBOARD
+    Bitboard bc = byColorBB[c];
+    Bitboard *mt = millTableBB[s];
 #endif
 
-        if (b) {
+    for (int l = 0; l < LD_NB; l++) {
+#ifdef DISABLE_BITBOARD
+        if (make_piece(c) &
+            board[millTable[s][l][0]] &
+            board[millTable[s][l][1]]) {
             n++;
         }
+#else
+        if ((bc & mt[l]) == mt[l]) {
+            n++;
+        }
+#endif
     }
 
     if (squareSelected != SQ_0) {
@@ -1629,10 +1634,10 @@ int Position::add_mills(Square s)
 
 #ifdef DISABLE_BITBOARD
     int idx[3], min, temp;
-#endif
-
+#else
     Bitboard bc = byColorBB[color_on(s)];
     Bitboard *mt = millTableBB[s];
+#endif
 
     for (int i = 0; i < 3; i++) {
 
