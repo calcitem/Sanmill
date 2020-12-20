@@ -1597,7 +1597,7 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
             board[millTable[s][l][0]] &
             board[millTable[s][l][1]];
 #else
-        bool b = popcount(byColorBB[c] & millTableBB[s][l]) == (3 - 1);
+        bool b = (millTableBB[s][l] && ((byColorBB[c] & millTableBB[s][l]) == millTableBB[s][l]));
 #endif
 
         if (b) {
@@ -1660,7 +1660,7 @@ int Position::add_mills(Square s)
         }
 #else
         // no mill
-        if (popcount(byColorBB[m] & millTableBB[s][i]) < (3 - 1)) {
+        if (millTableBB[s][i] == 0 || ((byColorBB[m] & millTableBB[s][i]) != millTableBB[s][i])) {
             continue;
         }
 #endif
