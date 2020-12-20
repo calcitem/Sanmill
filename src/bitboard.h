@@ -178,7 +178,7 @@ inline int edge_distance(Rank r)
 
 inline int popcount(Bitboard b)
 {
-#ifndef USE_POPCNT
+#ifdef DONOT_USE_POPCNT
 
     union
     {

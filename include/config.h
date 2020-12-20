@@ -87,9 +87,13 @@
 
 //#define DISABLE_PREFETCH
 
-#define DISABLE_BITBOARD
+//#define DISABLE_BITBOARD
 //#define BITBOARD_DEBUG
 #define USE_POPCNT
+
+#ifndef USE_POPCNT
+#define DONOT_USE_POPCNT
+#endif
 
 // WIP, Debugging only
 //#define OPENING_BOOK
