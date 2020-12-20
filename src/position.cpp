@@ -1757,12 +1757,13 @@ bool Position::is_all_surrounded() const
         return false;
     }
 
-    Square moveSquare;
-
     for (Square s = SQ_BEGIN; s < SQ_END; s = (Square)(s + 1)) {
         if (!(sideToMove & color_on(s))) {
             continue;
         }
+
+#ifdef DISABLE_BITBOARD
+        Square moveSquare;
 
         for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
             moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
@@ -1770,6 +1771,11 @@ bool Position::is_all_surrounded() const
                 return false;
             }
         }
+#else
+        if ((byTypeBB[ALL_PIECES] & MoveList<LEGAL>::moveTableBB[s]) != MoveList<LEGAL>::moveTableBB[s]) {
+            return false;
+        }
+#endif
     }
 
     return true;
