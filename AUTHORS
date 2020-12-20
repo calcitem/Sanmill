@@ -1,9 +1,9 @@
-# List of authors for Sanmill, as of December 14, 2020
+# List of authors for Sanmill, as of December 21, 2020
 
 # Founders of the Sanmill project
 Calcitem (calcitem)
 
-# Additionally, Sanmill is derived from Stockfish, NineChess and ChessRoad.
+# Some of the code has been adapted and modified on the basis of Stockfish, NineChess and ChessRoad etc.
 
 # Authors of Stockfish
 Tord Romstad (romstad)
@@ -16,3 +16,6 @@ Liu Wei (liuweilhy)
 
 # Authors of ChessRoad
 He Zhaoyun (hezhaoyun)
+
+# Authors of hash map
+Kaushik Basu (kshk123)
