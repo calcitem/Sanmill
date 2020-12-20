@@ -1392,32 +1392,32 @@ void Position::create_mill_table()
         /* 6 */ {0, 0, 0},
         /* 7 */ {0, 0, 0},
 
-        /*  8 */ {square_bb(SQ_16) | square_bb(SQ_24), square_bb(SQ_9) | square_bb(SQ_15), 0},
-        /*  9 */ {0, square_bb(SQ_15) | square_bb(SQ_8), square_bb(SQ_10) | square_bb(SQ_11)},
-        /* 10 */ {square_bb(SQ_18) | square_bb(SQ_26), square_bb(SQ_11) | square_bb(SQ_9), 0},
-        /* 11 */ {0, square_bb(SQ_9) | square_bb(SQ_10), square_bb(SQ_12) | square_bb(SQ_13)},
-        /* 12 */ {square_bb(SQ_20) | square_bb(SQ_28), square_bb(SQ_13) | square_bb(SQ_11), 0},
-        /* 13 */ {0, square_bb(SQ_11) | square_bb(SQ_12), square_bb(SQ_14) | square_bb(SQ_15)},
-        /* 14 */ {square_bb(SQ_22) | square_bb(SQ_30), square_bb(SQ_15) | square_bb(SQ_13), 0},
-        /* 15 */ {0, square_bb(SQ_13) | square_bb(SQ_14), square_bb(SQ_8) | square_bb(SQ_9)},
+        /*  8 */ {square_bb(SQ_16) | square_bb(SQ_24), square_bb(SQ_9) | square_bb(SQ_15), ~0U},
+        /*  9 */ {~0U, square_bb(SQ_15) | square_bb(SQ_8), square_bb(SQ_10) | square_bb(SQ_11)},
+        /* 10 */ {square_bb(SQ_18) | square_bb(SQ_26), square_bb(SQ_11) | square_bb(SQ_9), ~0U},
+        /* 11 */ {~0U, square_bb(SQ_9) | square_bb(SQ_10), square_bb(SQ_12) | square_bb(SQ_13)},
+        /* 12 */ {square_bb(SQ_20) | square_bb(SQ_28), square_bb(SQ_13) | square_bb(SQ_11), ~0U},
+        /* 13 */ {~0U, square_bb(SQ_11) | square_bb(SQ_12), square_bb(SQ_14) | square_bb(SQ_15)},
+        /* 14 */ {square_bb(SQ_22) | square_bb(SQ_30), square_bb(SQ_15) | square_bb(SQ_13), ~0U},
+        /* 15 */ {~0U, square_bb(SQ_13) | square_bb(SQ_14), square_bb(SQ_8) | square_bb(SQ_9)},
 
-        /* 16 */ {square_bb(SQ_8) | square_bb(SQ_24), square_bb(SQ_17) | square_bb(SQ_23), 0},
-        /* 17 */ {0, square_bb(SQ_23) | square_bb(SQ_16), square_bb(SQ_18) | square_bb(SQ_19)},
-        /* 18 */ {square_bb(SQ_10) | square_bb(SQ_26), square_bb(SQ_19) | square_bb(SQ_17), 0},
-        /* 19 */ {0, square_bb(SQ_17) | square_bb(SQ_18), square_bb(SQ_20) | square_bb(SQ_21)},
-        /* 20 */ {square_bb(SQ_12) | square_bb(SQ_28), square_bb(SQ_21) | square_bb(SQ_19), 0},
-        /* 21 */ {0, square_bb(SQ_19) | square_bb(SQ_20), square_bb(SQ_22) | square_bb(SQ_23)},
-        /* 22 */ {square_bb(SQ_14) | square_bb(SQ_30), square_bb(SQ_23) | square_bb(SQ_21), 0},
-        /* 23 */ {0, square_bb(SQ_21) | square_bb(SQ_22), square_bb(SQ_16) | square_bb(SQ_17)},
+        /* 16 */ {square_bb(SQ_8) | square_bb(SQ_24), square_bb(SQ_17) | square_bb(SQ_23), ~0U},
+        /* 17 */ {~0U, square_bb(SQ_23) | square_bb(SQ_16), square_bb(SQ_18) | square_bb(SQ_19)},
+        /* 18 */ {square_bb(SQ_10) | square_bb(SQ_26), square_bb(SQ_19) | square_bb(SQ_17), ~0U},
+        /* 19 */ {~0U, square_bb(SQ_17) | square_bb(SQ_18), square_bb(SQ_20) | square_bb(SQ_21)},
+        /* 20 */ {square_bb(SQ_12) | square_bb(SQ_28), square_bb(SQ_21) | square_bb(SQ_19), ~0U},
+        /* 21 */ {~0U, square_bb(SQ_19) | square_bb(SQ_20), square_bb(SQ_22) | square_bb(SQ_23)},
+        /* 22 */ {square_bb(SQ_14) | square_bb(SQ_30), square_bb(SQ_23) | square_bb(SQ_21), ~0U},
+        /* 23 */ {~0U, square_bb(SQ_21) | square_bb(SQ_22), square_bb(SQ_16) | square_bb(SQ_17)},
 
-        /* 24 */ {square_bb(SQ_8) | square_bb(SQ_16), square_bb(SQ_25) | square_bb(SQ_31), 0},
-        /* 25 */ {0, square_bb(SQ_31) | square_bb(SQ_24), square_bb(SQ_26) | square_bb(SQ_27)},
-        /* 26 */ {square_bb(SQ_10) | square_bb(SQ_18), square_bb(SQ_27) | square_bb(SQ_25), 0},
-        /* 27 */ {0, square_bb(SQ_25) | square_bb(SQ_26), square_bb(SQ_28) | square_bb(SQ_29)},
-        /* 28 */ {square_bb(SQ_12) | square_bb(SQ_20), square_bb(SQ_29) | square_bb(SQ_27), 0},
-        /* 29 */ {0, square_bb(SQ_27) | square_bb(SQ_28), square_bb(SQ_30) | square_bb(SQ_31)},
-        /* 30 */ {square_bb(SQ_14) | square_bb(SQ_22), square_bb(SQ_31) | square_bb(SQ_29), 0},
-        /* 31 */ {0, square_bb(SQ_29) | square_bb(SQ_30), square_bb(SQ_24) | square_bb(SQ_25)},
+        /* 24 */ {square_bb(SQ_8) | square_bb(SQ_16), square_bb(SQ_25) | square_bb(SQ_31), ~0U},
+        /* 25 */ {~0U, square_bb(SQ_31) | square_bb(SQ_24), square_bb(SQ_26) | square_bb(SQ_27)},
+        /* 26 */ {square_bb(SQ_10) | square_bb(SQ_18), square_bb(SQ_27) | square_bb(SQ_25), ~0U},
+        /* 27 */ {~0U, square_bb(SQ_25) | square_bb(SQ_26), square_bb(SQ_28) | square_bb(SQ_29)},
+        /* 28 */ {square_bb(SQ_12) | square_bb(SQ_20), square_bb(SQ_29) | square_bb(SQ_27), ~0U},
+        /* 29 */ {~0U, square_bb(SQ_27) | square_bb(SQ_28), square_bb(SQ_30) | square_bb(SQ_31)},
+        /* 30 */ {square_bb(SQ_14) | square_bb(SQ_22), square_bb(SQ_31) | square_bb(SQ_29), ~0U},
+        /* 31 */ {~0U, square_bb(SQ_29) | square_bb(SQ_30), square_bb(SQ_24) | square_bb(SQ_25)},
 
         /* 32 */ {0, 0, 0},
         /* 33 */ {0, 0, 0},
@@ -1439,31 +1439,31 @@ void Position::create_mill_table()
         /* 6 */ {0, 0, 0},
         /* 7 */ {0, 0, 0},
 
-        /* 8 */  {square_bb(SQ_16) | square_bb(SQ_24), square_bb(SQ_9)  | square_bb(SQ_15), 0},
+        /* 8 */  {square_bb(SQ_16) | square_bb(SQ_24), square_bb(SQ_9) | square_bb(SQ_15), ~0U},
         /* 9 */  {square_bb(SQ_17) | square_bb(SQ_25), square_bb(SQ_15) | square_bb(SQ_8),  square_bb(SQ_10) | square_bb(SQ_11)},
-        /* 10 */ {square_bb(SQ_18) | square_bb(SQ_26), square_bb(SQ_11) | square_bb(SQ_9), 0},
-        /* 11 */ {square_bb(SQ_19) | square_bb(SQ_27), square_bb(SQ_9)  | square_bb(SQ_10), square_bb(SQ_12) | square_bb(SQ_13)},
-        /* 12 */ {square_bb(SQ_20) | square_bb(SQ_28), square_bb(SQ_13) | square_bb(SQ_11), 0},
+        /* 10 */ {square_bb(SQ_18) | square_bb(SQ_26), square_bb(SQ_11) | square_bb(SQ_9), ~0U},
+        /* 11 */ {square_bb(SQ_19) | square_bb(SQ_27), square_bb(SQ_9) | square_bb(SQ_10), square_bb(SQ_12) | square_bb(SQ_13)},
+        /* 12 */ {square_bb(SQ_20) | square_bb(SQ_28), square_bb(SQ_13) | square_bb(SQ_11), ~0U},
         /* 13 */ {square_bb(SQ_21) | square_bb(SQ_29), square_bb(SQ_11) | square_bb(SQ_12), square_bb(SQ_14) | square_bb(SQ_15)},
-        /* 14 */ {square_bb(SQ_22) | square_bb(SQ_30), square_bb(SQ_15) | square_bb(SQ_13), 0},
+        /* 14 */ {square_bb(SQ_22) | square_bb(SQ_30), square_bb(SQ_15) | square_bb(SQ_13), ~0U},
         /* 15 */ {square_bb(SQ_23) | square_bb(SQ_31), square_bb(SQ_13) | square_bb(SQ_14),  square_bb(SQ_8) | square_bb(SQ_9)},
 
-        /* 16 */ {square_bb(SQ_8)  | square_bb(SQ_24), square_bb(SQ_17) | square_bb(SQ_23), 0},
-        /* 17 */ {square_bb(SQ_9)  | square_bb(SQ_25), square_bb(SQ_23) | square_bb(SQ_16), square_bb(SQ_18) | square_bb(SQ_19)},
-        /* 18 */ {square_bb(SQ_10) | square_bb(SQ_26), square_bb(SQ_19) | square_bb(SQ_17), 0},
+        /* 16 */ {square_bb(SQ_8) | square_bb(SQ_24), square_bb(SQ_17) | square_bb(SQ_23), ~0U},
+        /* 17 */ {square_bb(SQ_9) | square_bb(SQ_25), square_bb(SQ_23) | square_bb(SQ_16), square_bb(SQ_18) | square_bb(SQ_19)},
+        /* 18 */ {square_bb(SQ_10) | square_bb(SQ_26), square_bb(SQ_19) | square_bb(SQ_17), ~0U},
         /* 19 */ {square_bb(SQ_11) | square_bb(SQ_27), square_bb(SQ_17) | square_bb(SQ_18), square_bb(SQ_20) | square_bb(SQ_21)},
-        /* 20 */ {square_bb(SQ_12) | square_bb(SQ_28), square_bb(SQ_21) | square_bb(SQ_19), 0},
+        /* 20 */ {square_bb(SQ_12) | square_bb(SQ_28), square_bb(SQ_21) | square_bb(SQ_19), ~0U},
         /* 21 */ {square_bb(SQ_13) | square_bb(SQ_29), square_bb(SQ_19) | square_bb(SQ_20), square_bb(SQ_22) | square_bb(SQ_23)},
-        /* 22 */ {square_bb(SQ_14) | square_bb(SQ_30), square_bb(SQ_23) | square_bb(SQ_21), 0},
+        /* 22 */ {square_bb(SQ_14) | square_bb(SQ_30), square_bb(SQ_23) | square_bb(SQ_21), ~0U},
         /* 23 */ {square_bb(SQ_15) | square_bb(SQ_31), square_bb(SQ_21) | square_bb(SQ_22), square_bb(SQ_16) | square_bb(SQ_17)},
 
-        /* 24 */ {square_bb(SQ_8)  | square_bb(SQ_16), square_bb(SQ_25) | square_bb(SQ_31), 0},
-        /* 25 */ {square_bb(SQ_9)  | square_bb(SQ_17), square_bb(SQ_31) | square_bb(SQ_24), square_bb(SQ_26) | square_bb(SQ_27)},
-        /* 26 */ {square_bb(SQ_10) | square_bb(SQ_18), square_bb(SQ_27) | square_bb(SQ_25), 0},
+        /* 24 */ {square_bb(SQ_8) | square_bb(SQ_16), square_bb(SQ_25) | square_bb(SQ_31), ~0U},
+        /* 25 */ {square_bb(SQ_9) | square_bb(SQ_17), square_bb(SQ_31) | square_bb(SQ_24), square_bb(SQ_26) | square_bb(SQ_27)},
+        /* 26 */ {square_bb(SQ_10) | square_bb(SQ_18), square_bb(SQ_27) | square_bb(SQ_25), ~0U},
         /* 27 */ {square_bb(SQ_11) | square_bb(SQ_19), square_bb(SQ_25) | square_bb(SQ_26), square_bb(SQ_28) | square_bb(SQ_29)},
-        /* 28 */ {square_bb(SQ_12) | square_bb(SQ_20), square_bb(SQ_29) | square_bb(SQ_27), 0},
+        /* 28 */ {square_bb(SQ_12) | square_bb(SQ_20), square_bb(SQ_29) | square_bb(SQ_27), ~0U},
         /* 29 */ {square_bb(SQ_13) | square_bb(SQ_21), square_bb(SQ_27) | square_bb(SQ_28), square_bb(SQ_30) | square_bb(SQ_31)},
-        /* 30 */ {square_bb(SQ_14) | square_bb(SQ_22), square_bb(SQ_31) | square_bb(SQ_29), 0},
+        /* 30 */ {square_bb(SQ_14) | square_bb(SQ_22), square_bb(SQ_31) | square_bb(SQ_29), ~0U},
         /* 31 */ {square_bb(SQ_15) | square_bb(SQ_23), square_bb(SQ_29) | square_bb(SQ_30), square_bb(SQ_24) | square_bb(SQ_25)},
 
         /* 32 */ {0, 0, 0},
@@ -1597,7 +1597,7 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
             board[millTable[s][l][0]] &
             board[millTable[s][l][1]];
 #else
-        bool b = (millTableBB[s][l] && ((byColorBB[c] & millTableBB[s][l]) == millTableBB[s][l]));
+        bool b = ((byColorBB[c] & millTableBB[s][l]) == millTableBB[s][l]);
 #endif
 
         if (b) {
@@ -1660,7 +1660,7 @@ int Position::add_mills(Square s)
         }
 #else
         // no mill
-        if (millTableBB[s][i] == 0 || ((byColorBB[m] & millTableBB[s][i]) != millTableBB[s][i])) {
+        if (((byColorBB[m] & millTableBB[s][i]) != millTableBB[s][i])) {
             continue;
         }
 #endif
