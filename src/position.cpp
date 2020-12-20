@@ -1631,7 +1631,8 @@ int Position::add_mills(Square s)
     int idx[3], min, temp;
 #endif
 
-    Color m = color_on(s);
+    Bitboard bc = byColorBB[color_on(s)];
+    Bitboard *mt = millTableBB[s];
 
     for (int i = 0; i < 3; i++) {
 
@@ -1666,7 +1667,7 @@ int Position::add_mills(Square s)
         }
 #else
         // no mill
-        if (((byColorBB[m] & millTableBB[s][i]) != millTableBB[s][i])) {
+        if (((bc & mt[i]) != mt[i])) {
             continue;
         }
 #endif
