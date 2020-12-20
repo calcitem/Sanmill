@@ -171,11 +171,13 @@ Position::Position()
 
     score[BLACK] = score[WHITE] = score_draw = nPlayed = 0;
 
+#if 0
 #ifndef DISABLE_PREFETCH
 #ifdef DISABLE_BITBOARD
     prefetch_range(millTable, sizeof(millTable));
 #else
     prefetch_range(millTableBB, sizeof(millTableBB));
+#endif
 #endif
 #endif
 }
