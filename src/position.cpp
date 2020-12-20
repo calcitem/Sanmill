@@ -1764,7 +1764,7 @@ bool Position::is_all_surrounded() const
             continue;
         }
 
-        for (MoveDirection d = MD_BEGIN; d < MD_NB; d = ++d) {
+        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
             moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
             if (moveSquare && !board[moveSquare]) {
                 return false;
