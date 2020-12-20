@@ -1694,7 +1694,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
     if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
         !rule.allowFlyWhenRemainThreePieces) {
         Square moveSquare;
-        for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
+        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
             moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
             if (moveSquare) {
                 if (board[moveSquare] == 0x00 ||
@@ -1712,7 +1712,7 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
 {
     Square moveSquare;
 
-    for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
+    for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
         moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
 
         if (!moveSquare) {
@@ -1758,7 +1758,7 @@ bool Position::is_all_surrounded() const
             continue;
         }
 
-        for (MoveDirection d = MD_BEGIN; d < MD_NB; d = (MoveDirection)(d + 1)) {
+        for (MoveDirection d = MD_BEGIN; d < MD_NB; d = ++d) {
             moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
             if (moveSquare && !board[moveSquare]) {
                 return false;
