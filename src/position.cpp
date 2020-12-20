@@ -858,6 +858,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         // if illegal
         if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
             !rule.allowFlyWhenRemainThreePieces) {
+#ifdef DISABLE_BITBOARD
             int md;
 
             for (md = 0; md < MD_NB; md++) {
@@ -869,6 +870,11 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             if (md == MD_NB) {
                 return false;
             }
+#else
+            if ((square_bb(s) & MoveList<LEGAL>::moveTableBB[currentSquare]) == 0) {
+                return false;
+            }
+#endif
         }
 
         if (updateCmdlist) {

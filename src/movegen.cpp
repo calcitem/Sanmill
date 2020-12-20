@@ -24,6 +24,7 @@
 #include "movegen.h"
 #include "position.h"
 #include "misc.h"
+#include "bitboard.h"
 #include "option.h"
 
 /// generate<LEGAL> generates all the legal moves in the given position
@@ -227,11 +228,113 @@ void MoveList<LEGAL>::create()
         /* 39 */ {0, 0, 0, 0},
     };
 
+    const Bitboard moveTableBB_obliqueLine[SQUARE_NB] = {
+        /*  0 */ 0,
+        /*  1 */ 0,
+        /*  2 */ 0,
+        /*  3 */ 0,
+        /*  4 */ 0,
+        /*  5 */ 0,
+        /*  6 */ 0,
+        /*  7 */ 0,
+
+        /*  8 */ square_bb(SQ_9) | square_bb(SQ_15) | square_bb(SQ_16),
+        /*  9 */ square_bb(SQ_17) | square_bb(SQ_8) | square_bb(SQ_10),
+        /* 10 */ square_bb(SQ_9) | square_bb(SQ_11) | square_bb(SQ_18),
+        /* 11 */ square_bb(SQ_19) | square_bb(SQ_10) | square_bb(SQ_12),
+        /* 12 */ square_bb(SQ_11) | square_bb(SQ_13) | square_bb(SQ_20),
+        /* 13 */ square_bb(SQ_21) | square_bb(SQ_12) | square_bb(SQ_14),
+        /* 14 */ square_bb(SQ_13) | square_bb(SQ_15) | square_bb(SQ_22),
+        /* 15 */ square_bb(SQ_23) | square_bb(SQ_8) | square_bb(SQ_14),
+
+        /* 16 */ square_bb(SQ_17) | square_bb(SQ_23) | square_bb(SQ_8) | square_bb(SQ_24),
+        /* 17 */ square_bb(SQ_9) | square_bb(SQ_25) | square_bb(SQ_16) | square_bb(SQ_18),
+        /* 18 */ square_bb(SQ_17) | square_bb(SQ_19) | square_bb(SQ_10) | square_bb(SQ_26),
+        /* 19 */ square_bb(SQ_11) | square_bb(SQ_27) | square_bb(SQ_18) | square_bb(SQ_20),
+        /* 20 */ square_bb(SQ_19) | square_bb(SQ_21) | square_bb(SQ_12) | square_bb(SQ_28),
+        /* 21 */ square_bb(SQ_13) | square_bb(SQ_29) | square_bb(SQ_20) | square_bb(SQ_22),
+        /* 22 */ square_bb(SQ_21) | square_bb(SQ_23) | square_bb(SQ_14) | square_bb(SQ_30),
+        /* 23 */ square_bb(SQ_15) | square_bb(SQ_31) | square_bb(SQ_16) | square_bb(SQ_22),
+
+        /* 24 */ square_bb(SQ_25) | square_bb(SQ_31) | square_bb(SQ_16),
+        /* 25 */ square_bb(SQ_17) | square_bb(SQ_24) | square_bb(SQ_26),
+        /* 26 */ square_bb(SQ_25) | square_bb(SQ_27) | square_bb(SQ_18),
+        /* 27 */ square_bb(SQ_19) | square_bb(SQ_26) | square_bb(SQ_28),
+        /* 28 */ square_bb(SQ_27) | square_bb(SQ_29) | square_bb(SQ_20),
+        /* 29 */ square_bb(SQ_21) | square_bb(SQ_28) | square_bb(SQ_30),
+        /* 30 */ square_bb(SQ_29) | square_bb(SQ_31) | square_bb(SQ_22),
+        /* 31 */ square_bb(SQ_23) | square_bb(SQ_24) | square_bb(SQ_30),
+
+        /* 32 */ 0,
+        /* 33 */ 0,
+        /* 34 */ 0,
+        /* 35 */ 0,
+        /* 36 */ 0,
+        /* 37 */ 0,
+        /* 38 */ 0,
+        /* 39 */ 0,
+    };
+
+    const Bitboard moveTableBB_noObliqueLine[SQUARE_NB] = {
+        /*  0 */ 0,
+        /*  1 */ 0,
+        /*  2 */ 0,
+        /*  3 */ 0,
+        /*  4 */ 0,
+        /*  5 */ 0,
+        /*  6 */ 0,
+        /*  7 */ 0,
+
+        /*  8 */ square_bb(SQ_16) | square_bb(SQ_9) | square_bb(SQ_15),
+        /*  9 */ square_bb(SQ_10) | square_bb(SQ_8),
+        /* 10 */ square_bb(SQ_18) | square_bb(SQ_11) | square_bb(SQ_9),
+        /* 11 */ square_bb(SQ_12) | square_bb(SQ_10),
+        /* 12 */ square_bb(SQ_20) | square_bb(SQ_13) | square_bb(SQ_11),
+        /* 13 */ square_bb(SQ_14) | square_bb(SQ_12),
+        /* 14 */ square_bb(SQ_22) | square_bb(SQ_15) | square_bb(SQ_13),
+        /* 15 */ square_bb(SQ_8) | square_bb(SQ_14),
+
+        /* 16 */ square_bb(SQ_8) | square_bb(SQ_24) | square_bb(SQ_17) | square_bb(SQ_23),
+        /* 17 */ square_bb(SQ_18) | square_bb(SQ_16),
+        /* 18 */ square_bb(SQ_10) | square_bb(SQ_26) | square_bb(SQ_19) | square_bb(SQ_17),
+        /* 19 */ square_bb(SQ_20) | square_bb(SQ_18),
+        /* 20 */ square_bb(SQ_12) | square_bb(SQ_28) | square_bb(SQ_21) | square_bb(SQ_19),
+        /* 21 */ square_bb(SQ_22) | square_bb(SQ_20),
+        /* 22 */ square_bb(SQ_14) | square_bb(SQ_30) | square_bb(SQ_23) | square_bb(SQ_21),
+        /* 23 */ square_bb(SQ_16) | square_bb(SQ_22),
+
+        /* 24 */ square_bb(SQ_16) | square_bb(SQ_25) | square_bb(SQ_31),
+        /* 25 */ square_bb(SQ_26) | square_bb(SQ_24),
+        /* 26 */ square_bb(SQ_18) | square_bb(SQ_27) | square_bb(SQ_25),
+        /* 27 */ square_bb(SQ_28) | square_bb(SQ_26),
+        /* 28 */ square_bb(SQ_20) | square_bb(SQ_29) | square_bb(SQ_27),
+        /* 29 */ square_bb(SQ_30) | square_bb(SQ_28),
+        /* 30 */ square_bb(SQ_22) | square_bb(SQ_31) | square_bb(SQ_29),
+        /* 31 */ square_bb(SQ_24) | square_bb(SQ_30),
+
+        /* 32 */ 0,
+        /* 33 */ 0,
+        /* 34 */ 0,
+        /* 35 */ 0,
+        /* 36 */ 0,
+        /* 37 */ 0,
+        /* 38 */ 0,
+        /* 39 */ 0,
+    };
+
+//#ifdef DISABLE_BITBOARD
     if (rule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
     } else {
         memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
     }
+//#else
+    if (rule.hasObliqueLines) {
+        memcpy(moveTableBB, moveTableBB_obliqueLine, sizeof(moveTableBB));
+    } else {
+        memcpy(moveTableBB, moveTableBB_noObliqueLine, sizeof(moveTableBB));
+    }
+//#endif
 
 #ifdef DEBUG_MODE
     int sum = 0;
