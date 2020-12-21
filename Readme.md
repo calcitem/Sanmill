@@ -5,29 +5,27 @@
 
 [Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful UCI-like N men's morris program with CUI, Flutter GUI and Qt GUI.
 
-[**Nine men's morris**](https://en.wikipedia.org/wiki/Nine_men%27s_morris) is a [strategy](https://en.wikipedia.org/wiki/Abstract_strategy_game) [board game](https://en.wikipedia.org/wiki/Board_games) for two players dating at least to the [Roman Empire](https://en.wikipedia.org/wiki/Roman_Empire). The game is also known as **nine-man morris**, **mill**, **mills**, **the mill game**, **merels**, **merrills**, **merelles**, **marelles**, **morelles**, and **ninepenny marl** in English. 
-
+[**Nine men's morris**](https://en.wikipedia.org/wiki/Nine_men%27s_morris) is a [strategy](https://en.wikipedia.org/wiki/Abstract_strategy_game) [board game](https://en.wikipedia.org/wiki/Board_games) for two players dating at least to the [Roman Empire](https://en.wikipedia.org/wiki/Roman_Empire). The game is also known as **nine-man morris**, **mill**, **mills**, **the mill game**, **merels**, **merrills**, **merelles**, **marelles**, **morelles**, and **ninepenny marl** in English.
 
 ## Files
 
 This distribution of Sanmill consists of the following files:
 
-  * Readme.md, the file you are currently reading.
-  * Copying.txt, a text file containing the GNU General Public License version 3.
-  * src, a subdirectory containing the full source code, including a Makefile
-    that can be used to compile Sanmill CUI on Unix-like systems.
-  * src/ui/flutter, a subdirectory containing a Flutter frontend.
-  * src/ui/qt, a subdirectory containing a Qt frontend.
+* Readme.md, the file you are currently reading.
+
+* Copying.txt, a text file containing the GNU General Public License version 3.
+
+* src, a subdirectory containing the full source code, including a Makefile that can be used to compile Sanmill CUI on Unix-like systems.
+
+* src/ui/flutter, a subdirectory containing a Flutter frontend.
+
+* src/ui/qt, a subdirectory containing a Qt frontend.
 
 ## Compiling Sanmill CUI yourself from the sources
 
-Sanmill CUI has support for 32 or 64-bit CPUs, certain hardware
-instructions, big-endian machines such as Power PC, and other platforms.
+Sanmill CUI has support for 32 or 64-bit CPUs, certain hardware instructions, big-endian machines such as Power PC, and other platforms.
 
-On Unix-like systems, it should be easy to compile Sanmill
-directly from the source code with the included Makefile in the folder
-`src`. In general it is recommended to run `make help` to see a list of make
-targets with corresponding descriptions.
+On Unix-like systems, it should be easy to compile Sanmill directly from the source code with the included Makefile in the folder `src`. In general it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
 
 ```shell
     cd src
@@ -35,9 +33,7 @@ targets with corresponding descriptions.
     make build ARCH=x86-64-modern
 ```
 
-When reporting an issue or a bug, please tell us which version and
-compiler you used to create your executable. These informations can
-be found by typing the following commands in a console:
+When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. These informations can be found by typing the following commands in a console:
 
 ```shell
     ./sanmill compiler
@@ -45,19 +41,17 @@ be found by typing the following commands in a console:
 
 ## Understanding the code base and participating in the project
 
-Sanmill's improvement over the last couple of years has been a great
-community effort. There are a few ways to help contribute to its growth.
+Sanmill's improvement over the last couple of years has been a great community effort. There are a few ways to help contribute to its growth.
 
 ### Improving the code
 
 If you want to help improve the code, there are several valuable resources:
 
-* [In this wiki,](https://github.com/calcitem/Sanmill/wiki) many techniques used in
-Sanmill are explained with a lot of background information.
+* [In this wiki,](https://github.com/calcitem/Sanmill/wiki) many techniques used in Sanmill are explained with a lot of background information.
 
 * The latest source can always be found on [GitHub](https://github.com/calcitem/Sanmill).
-Discussions about Sanmill take place in the [Discussions](https://github.com/calcitem/Sanmill/discussions).
 
+* Discussions about Sanmill take place in the [Discussions](https://github.com/calcitem/Sanmill/discussions).
 
 ## Terms of use
 
