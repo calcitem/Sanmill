@@ -1837,6 +1837,18 @@ void Position::print_board()
     }
 }
 
+void Position::reset_bb()
+{
+    memset(byTypeBB, 0, sizeof(byTypeBB));
+    memset(byColorBB, 0, sizeof(byColorBB));
+
+    for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
+        Piece pc = board[s];
+        byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
+        byColorBB[color_of(pc)] |= s;
+    }
+}
+
 void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
 {
     Piece ch;
@@ -1850,6 +1862,8 @@ void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
             board[(f + 1) * RANK_NB - r] = ch;
         }
     }
+
+    reset_bb();
 
     uint64_t llp[3] = { 0 };
 
@@ -1955,6 +1969,8 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
         board[RANK_NB + r] = board[RANK_NB * FILE_NB + r];
         board[RANK_NB * FILE_NB + r] = ch;
     }
+
+    reset_bb();
 
     uint64_t llp[3] = { 0 };
 
@@ -2155,6 +2171,8 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
     } else {
         return;
     }
+
+    reset_bb();
 
     uint64_t llp[3] = { 0 };
 

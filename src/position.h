@@ -129,6 +129,8 @@ public:
     void turn(std::vector <std::string> &cmdlist, bool cmdChange = true);
     void rotate(std::vector <std::string> &cmdlist, int degrees, bool cmdChange = true);
 
+    void reset_bb();
+
     void create_mill_table();
     int add_mills(Square s);
     int in_how_many_mills(Square s, Color c, Square squareSelected = SQ_0);
