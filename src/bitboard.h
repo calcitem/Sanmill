@@ -35,7 +35,6 @@ const std::string pretty(Bitboard b);
 }
 
 constexpr Bitboard AllSquares = ~Bitboard(0);
-//constexpr Bitboard starSquares12 = 0xAA55AA55AA55AA55UL; // TODO
 
 constexpr Bitboard FileABB = 0x0000FF00;
 constexpr Bitboard FileBBB = FileABB << (8 * 1);
@@ -56,9 +55,8 @@ extern uint8_t SquareDistance[SQ_32][SQ_32];
 extern Bitboard SquareBB[SQ_32];
 extern Bitboard LineBB[EFFECTIVE_SQUARE_NB][SQ_32];
 
-// TODO
-const Bitboard Star9 = SquareBB[17] | SquareBB[19] | SquareBB[21] | SquareBB[23];
-const Bitboard Star12 = SquareBB[16] | SquareBB[18] | SquareBB[20] | SquareBB[22];
+extern Bitboard StarSquare9BB;
+extern Bitboard StarSquare12BB;
 
 inline Bitboard square_bb(Square s)
 {
@@ -66,6 +64,15 @@ inline Bitboard square_bb(Square s)
     return SquareBB[s];
 }
 
+inline Bitboard star_square_bb_9()
+{
+    return StarSquare9BB;
+}
+
+inline Bitboard star_square_bb_12()
+{
+    return StarSquare12BB;
+}
 
 /// Overloads of bitwise operators between a Bitboard and a Square for testing
 /// whether a given bit is set in a bitboard, and for setting and clearing bits.

@@ -28,6 +28,9 @@ uint8_t SquareDistance[SQ_32][SQ_32];
 Bitboard SquareBB[SQ_32];
 Bitboard LineBB[EFFECTIVE_SQUARE_NB][SQ_32];
 
+Bitboard StarSquare9BB;
+Bitboard StarSquare12BB;
+
 /// Bitboards::pretty() returns an ASCII representation of a bitboard suitable
 /// to be printed to standard output. Useful for debugging.
 
@@ -58,6 +61,9 @@ void Bitboards::init()
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s)
         SquareBB[s] = (1UL << s);
+
+    StarSquare9BB = square_bb(SQ_16) | square_bb(SQ_18) | square_bb(SQ_20) | square_bb(SQ_22);
+    StarSquare12BB = square_bb(SQ_17) | square_bb(SQ_19) | square_bb(SQ_21) | square_bb(SQ_23);
 
     for (Square s1 = SQ_A1; s1 <= SQ_C8; ++s1)
         for (Square s2 = SQ_A1; s2 <= SQ_C8; ++s2)
