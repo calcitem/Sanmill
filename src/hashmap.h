@@ -26,7 +26,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
-#include "HashNode.h"
+#include "hashnode.h"
 #include "misc.h"
 #include "types.h"
 #include "config.h"

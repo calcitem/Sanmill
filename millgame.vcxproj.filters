@@ -72,7 +72,7 @@
     <ClInclude Include="src\hashmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\HashNode.h">
+    <ClInclude Include="src\hashnode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\misc.h">

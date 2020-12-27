@@ -465,7 +465,7 @@
     <ClInclude Include="src\tt.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\hashmap.h" />
-    <ClInclude Include="src\HashNode.h" />
+    <ClInclude Include="src\hashnode.h" />
     <ClInclude Include="src\misc.h" />
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="src\stopwatch.h" />

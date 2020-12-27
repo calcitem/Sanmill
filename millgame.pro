@@ -60,7 +60,7 @@ HEADERS  += \
     src/thread.h \
     src/trainer.h \
     src/tt.h \
-    src/HashNode.h \
+    src/hashnode.h \
     src/debug.h \
     src/hashMap.h \
     src/misc.h \
