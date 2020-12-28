@@ -29,18 +29,18 @@ Bitboard SquareBB[SQ_32];
 Bitboard StarSquareBB9;
 Bitboard StarSquareBB12;
 
+
 /// Bitboards::pretty() returns an ASCII representation of a bitboard suitable
 /// to be printed to standard output. Useful for debugging.
 
-// TODO: Pretty
 const std::string Bitboards::pretty(Bitboard b)
 {
-
     std::string str = "+---+---+---+---+---+---+---+---+\n";
+    for (File file = FILE_A; file <= FILE_C; ++file) {
+        for (Rank rank = RANK_1; rank <= RANK_8; ++rank) {
 
-    for (Rank rank = RANK_1; rank <= RANK_8; rank = (Rank)(rank + 1)) {
-        for (File file = FILE_A; file <= FILE_C; file = (File)(file + 1))
             str += b & make_square(file, rank) ? "| X " : "|   ";
+        }
 
         str += "|\n+---+---+---+---+---+---+---+---+\n";
     }
