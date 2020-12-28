@@ -458,6 +458,7 @@
     </CustomBuild>
     <ClInclude Include="src\endgame.h" />
     <ClInclude Include="src\evaluate.h" />
+    <ClInclude Include="src\mills.h" />
     <ClInclude Include="src\movegen.h" />
     <ClInclude Include="src\movepick.h" />
     <ClInclude Include="src\search.h" />
@@ -729,6 +730,7 @@
     <ClCompile Include="src\endgame.cpp" />
     <ClCompile Include="src\evaluate.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mills.cpp" />
     <ClCompile Include="src\movegen.cpp" />
     <ClCompile Include="src\movepick.cpp" />
     <ClCompile Include="src\search.cpp" />

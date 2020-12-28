@@ -123,6 +123,9 @@
     <ClInclude Include="src\thread_win32_osx.h">
       <Filter>Qt Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\mills.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="src\ui\qt\game.cpp">
       <Filter>Qt Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mills.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
