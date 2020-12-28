@@ -23,7 +23,6 @@
 #include "misc.h"
 
 uint8_t PopCnt16[1 << 16];
-uint8_t SquareDistance[SQ_32][SQ_32];
 
 Bitboard SquareBB[SQ_32];
 Bitboard LineBB[EFFECTIVE_SQUARE_NB][SQ_32];
@@ -64,8 +63,4 @@ void Bitboards::init()
 
     StarSquare9BB = square_bb(SQ_16) | square_bb(SQ_18) | square_bb(SQ_20) | square_bb(SQ_22);
     StarSquare12BB = square_bb(SQ_17) | square_bb(SQ_19) | square_bb(SQ_21) | square_bb(SQ_23);
-
-    for (Square s1 = SQ_A1; s1 <= SQ_C8; ++s1)
-        for (Square s2 = SQ_A1; s2 <= SQ_C8; ++s2)
-            SquareDistance[s1][s2] = std::max(distance<File>(s1, s2), distance<Rank>(s1, s2));
 }

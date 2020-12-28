@@ -50,7 +50,6 @@ constexpr Bitboard Rank7BB = Rank1BB << 6;
 constexpr Bitboard Rank8BB = Rank1BB << 7;
 
 extern uint8_t PopCnt16[1 << 16];
-extern uint8_t SquareDistance[SQ_32][SQ_32];
 
 extern Bitboard SquareBB[SQ_32];
 extern Bitboard LineBB[EFFECTIVE_SQUARE_NB][SQ_32];
@@ -149,36 +148,6 @@ inline Bitboard file_bb(File f)
 inline Bitboard file_bb(Square s)
 {
     return file_bb(file_of(s));
-}
-
-/// distance() functions return the distance between x and y, defined as the
-/// number of steps for a king in x to reach y.
-
-template<typename T1 = Square> inline int distance(Square x, Square y);
-
-template<> inline int distance<File>(Square x, Square y)
-{
-    return std::abs(file_of(x) - file_of(y));
-}
-
-template<> inline int distance<Rank>(Square x, Square y)
-{
-    return std::abs(rank_of(x) - rank_of(y));
-}
-
-template<> inline int distance<Square>(Square x, Square y)
-{
-    return SquareDistance[x][y];
-}
-
-inline int edge_distance(File f)
-{
-    return std::min(f, File(FILE_C - f));
-}
-
-inline int edge_distance(Rank r)
-{
-    return std::min(r, Rank(RANK_8 - r));
 }
 
 /// popcount() counts the number of non-zero bits in a bitboard
