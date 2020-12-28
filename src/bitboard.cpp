@@ -25,7 +25,6 @@
 uint8_t PopCnt16[1 << 16];
 
 Bitboard SquareBB[SQ_32];
-Bitboard LineBB[EFFECTIVE_SQUARE_NB][SQ_32];
 
 Bitboard StarSquare9BB;
 Bitboard StarSquare12BB;

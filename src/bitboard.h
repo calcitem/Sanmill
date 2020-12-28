@@ -52,7 +52,6 @@ constexpr Bitboard Rank8BB = Rank1BB << 7;
 extern uint8_t PopCnt16[1 << 16];
 
 extern Bitboard SquareBB[SQ_32];
-extern Bitboard LineBB[EFFECTIVE_SQUARE_NB][SQ_32];
 
 extern Bitboard StarSquare9BB;
 extern Bitboard StarSquare12BB;
