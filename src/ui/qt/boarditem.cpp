@@ -177,7 +177,7 @@ QPointF BoardItem::polar2pos(File file, Rank rank)
 bool BoardItem::pos2polar(QPointF pos, File &file, Rank &rank)
 {
     // 寻找最近的落子点
-    for (int i = 0; i < FILE_NB * RANK_NB; i++) {
+    for (int i = 0; i < EFFECTIVE_SQUARE_NB; i++) {
         // 如果pos点在落子点附近
         if (QLineF(pos, position[i]).length() < PIECE_SIZE / 6) {
             file = File(i / RANK_NB + 1);

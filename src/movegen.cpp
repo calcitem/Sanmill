@@ -51,13 +51,10 @@ template<>
 ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 {
     Square newSquare, oldSquare;
-
-    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
-
     ExtMove *cur = moveList;
 
     // move piece that location weak first
-    for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+    for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
         oldSquare = MoveList<LEGAL>::movePriorityTable[i];
 
         if (!pos.select_piece(oldSquare)) {
@@ -97,12 +94,10 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     Color us = pos.side_to_move();
     Color them = ~us;
 
-    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
-
     ExtMove *cur = moveList;
 
     if (pos.is_all_in_mills(them)) {
-        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+        for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
             s = MoveList<LEGAL>::movePriorityTable[i];
             if (pos.get_board()[s] & make_piece(them)) {
                 *cur++ = (Move)-s;
@@ -112,7 +107,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     }
 
     // not is all in mills
-    for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+    for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
         s = MoveList<LEGAL>::movePriorityTable[i];
         if (pos.get_board()[s] & make_piece(them)) {
             if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
@@ -129,8 +124,6 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 template<>
 ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
 {
-    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
-
     ExtMove *cur = moveList;
 
     switch (pos.get_action()) {

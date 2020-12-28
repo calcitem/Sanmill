@@ -1154,7 +1154,7 @@ bool Position::check_gameover_condition()
         return true;
     }
 
-    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB) {
+    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= EFFECTIVE_SQUARE_NB) {
         if (rule.isBlackLoseButNotDrawWhenBoardFull) {
             set_gameover(WHITE, LOSE_REASON_BOARD_IS_FULL);
         } else {
@@ -1756,7 +1756,7 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
 bool Position::is_all_surrounded() const
 {
     // Full
-    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= RANK_NB * FILE_NB)
+    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= EFFECTIVE_SQUARE_NB)
         return true;
 
     // Can fly
@@ -1966,8 +1966,8 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
 
     for (r = 0; r < RANK_NB; r++) {
         ch = board[RANK_NB + r];
-        board[RANK_NB + r] = board[RANK_NB * FILE_NB + r];
-        board[RANK_NB * FILE_NB + r] = ch;
+        board[RANK_NB + r] = board[EFFECTIVE_SQUARE_NB + r];
+        board[EFFECTIVE_SQUARE_NB + r] = ch;
     }
 
     reset_bb();

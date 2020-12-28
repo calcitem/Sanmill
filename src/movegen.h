@@ -69,18 +69,22 @@ struct MoveList
     explicit MoveList(/* const */  Position &pos) : last(generate<T>(pos, moveList))
     {
     }
+
     const ExtMove *begin() const
     {
         return moveList;
     }
+
     const ExtMove *end() const
     {
         return last;
     }
+
     size_t size() const
     {
         return last - moveList;
     }
+
     bool contains(Move move) const
     {
         return std::find(begin(), end(), move) != end();
@@ -89,7 +93,7 @@ struct MoveList
     static void create();
     static void shuffle();
 
-    inline static std::array<Square, FILE_NB *RANK_NB> movePriorityTable {
+    inline static std::array<Square, EFFECTIVE_SQUARE_NB> movePriorityTable {
         SQ_8, SQ_9, SQ_10, SQ_11, SQ_12, SQ_13, SQ_14, SQ_15,
         SQ_16, SQ_17, SQ_18, SQ_19, SQ_20, SQ_21, SQ_22, SQ_23,
         SQ_24, SQ_25, SQ_26, SQ_27, SQ_28, SQ_29, SQ_30, SQ_31,

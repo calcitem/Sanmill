@@ -75,7 +75,7 @@ private:
     int sizeShadow {5};
 
     // 24个落子点
-    QPointF position[FILE_NB * RANK_NB];
+    QPointF position[EFFECTIVE_SQUARE_NB];
 
     // 是否有斜线
     bool hasObliqueLine {false};

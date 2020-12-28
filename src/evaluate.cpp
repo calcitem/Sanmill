@@ -121,8 +121,7 @@ Value Evaluation<T>::value()
         break;
 
     case PHASE_GAMEOVER:
-        if (pos.pieces_count_on_board(BLACK) + pos.pieces_count_on_board(WHITE) >=
-            RANK_NB * FILE_NB) {
+        if (pos.pieces_count_on_board(BLACK) + pos.pieces_count_on_board(WHITE) >= EFFECTIVE_SQUARE_NB) {
             if (rule.isBlackLoseButNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
