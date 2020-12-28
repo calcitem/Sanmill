@@ -26,8 +26,8 @@ uint8_t PopCnt16[1 << 16];
 
 Bitboard SquareBB[SQ_32];
 
-Bitboard StarSquare9BB;
-Bitboard StarSquare12BB;
+Bitboard StarSquareBB9;
+Bitboard StarSquareBB12;
 
 /// Bitboards::pretty() returns an ASCII representation of a bitboard suitable
 /// to be printed to standard output. Useful for debugging.
@@ -60,6 +60,6 @@ void Bitboards::init()
     for (Square s = SQ_BEGIN; s < SQ_END; ++s)
         SquareBB[s] = (1UL << s);
 
-    StarSquare9BB = square_bb(SQ_16) | square_bb(SQ_18) | square_bb(SQ_20) | square_bb(SQ_22);
-    StarSquare12BB = square_bb(SQ_17) | square_bb(SQ_19) | square_bb(SQ_21) | square_bb(SQ_23);
+    StarSquareBB9 = square_bb(SQ_16) | square_bb(SQ_18) | square_bb(SQ_20) | square_bb(SQ_22);
+    StarSquareBB12 = square_bb(SQ_17) | square_bb(SQ_19) | square_bb(SQ_21) | square_bb(SQ_23);
 }
