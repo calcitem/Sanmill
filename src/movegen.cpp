@@ -65,7 +65,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
         if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
             !rule.allowFlyWhenRemainThreePieces) {
             for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
-                newSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[oldSquare][direction]);
+                newSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[oldSquare][direction]);
                 if (newSquare && !pos.get_board()[newSquare]) {
                     Move m = make_move(oldSquare, newSquare);
                     *cur++ = (Move)m;

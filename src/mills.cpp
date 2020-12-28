@@ -28,7 +28,7 @@ namespace Mills
 void adjacent_squares_init()
 {
     // Note: Not follow order of MoveDirection array
-    const int moveTable12[SQUARE_NB][MD_NB] = {
+    const int adjacentSquares12[SQUARE_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -75,7 +75,7 @@ void adjacent_squares_init()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable9[SQUARE_NB][MD_NB] = {
+    const int adjacentSquares9[SQUARE_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -122,7 +122,7 @@ void adjacent_squares_init()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const Bitboard moveTableBB12[SQUARE_NB] = {
+    const Bitboard adjacentSquaresBB12[SQUARE_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -169,7 +169,7 @@ void adjacent_squares_init()
         /* 39 */ 0,
     };
 
-    const Bitboard moveTableBB9[SQUARE_NB] = {
+    const Bitboard adjacentSquaresBB9[SQUARE_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -218,11 +218,11 @@ void adjacent_squares_init()
 
 
     if (rule.hasObliqueLines) {
-        memcpy(MoveList<LEGAL>::moveTable, moveTable12, sizeof(MoveList<LEGAL>::moveTable));
-        memcpy(MoveList<LEGAL>::moveTableBB, moveTableBB12, sizeof(MoveList<LEGAL>::moveTableBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares12, sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB12, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     } else {
-        memcpy(MoveList<LEGAL>::moveTable, moveTable9, sizeof(MoveList<LEGAL>::moveTable));
-        memcpy(MoveList<LEGAL>::moveTableBB, moveTableBB9, sizeof(MoveList<LEGAL>::moveTableBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares9, sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB9, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     }
 
 #ifdef DEBUG_MODE
@@ -231,10 +231,10 @@ void adjacent_squares_init()
         loggerDebug("/* %d */ {", i);
         for (int j = 0; j < MD_NB; j++) {
             if (j == MD_NB - 1)
-                loggerDebug("%d", moveTable[i][j]);
+                loggerDebug("%d", adjacentSquares[i][j]);
             else
-                loggerDebug("%d, ", moveTable[i][j]);
-            sum += moveTable[i][j];
+                loggerDebug("%d, ", adjacentSquares[i][j]);
+            sum += adjacentSquares[i][j];
         }
         loggerDebug("},\n");
     }

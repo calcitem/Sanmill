@@ -850,7 +850,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         // if illegal
         if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
             !rule.allowFlyWhenRemainThreePieces) {
-            if ((square_bb(s) & MoveList<LEGAL>::moveTableBB[currentSquare]) == 0) {
+            if ((square_bb(s) & MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
                 return false;
             }
         }
@@ -1491,7 +1491,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
         !rule.allowFlyWhenRemainThreePieces) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-            moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
+            moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
             if (moveSquare) {
                 if (board[moveSquare] == 0x00 ||
                     (includeFobidden && board[moveSquare] == BAN_STONE)) {
@@ -1509,7 +1509,7 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
     Square moveSquare;
 
     for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-        moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
+        moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
 
         if (!moveSquare) {
             continue;
@@ -1552,7 +1552,7 @@ bool Position::is_all_surrounded() const
             continue;
         }
 
-        if ((byTypeBB[ALL_PIECES] & MoveList<LEGAL>::moveTableBB[s]) != MoveList<LEGAL>::moveTableBB[s]) {
+        if ((byTypeBB[ALL_PIECES] & MoveList<LEGAL>::adjacentSquaresBB[s]) != MoveList<LEGAL>::adjacentSquaresBB[s]) {
             return false;
         }
     }
