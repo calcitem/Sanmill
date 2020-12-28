@@ -159,7 +159,7 @@ template<>
 void MoveList<LEGAL>::create()
 {
     // Note: Not follow order of MoveDirection array
-    const int moveTable_obliqueLine[SQUARE_NB][MD_NB] = {
+    const int moveTable12[SQUARE_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -206,7 +206,7 @@ void MoveList<LEGAL>::create()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int moveTable_noObliqueLine[SQUARE_NB][MD_NB] = {
+    const int moveTable9[SQUARE_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -253,7 +253,7 @@ void MoveList<LEGAL>::create()
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const Bitboard moveTableBB_obliqueLine[SQUARE_NB] = {
+    const Bitboard moveTableBB12[SQUARE_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -300,7 +300,7 @@ void MoveList<LEGAL>::create()
         /* 39 */ 0,
     };
 
-    const Bitboard moveTableBB_noObliqueLine[SQUARE_NB] = {
+    const Bitboard moveTableBB9[SQUARE_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -349,11 +349,11 @@ void MoveList<LEGAL>::create()
 
 
     if (rule.hasObliqueLines) {
-        memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
-        memcpy(moveTableBB, moveTableBB_obliqueLine, sizeof(moveTableBB));
+        memcpy(moveTable, moveTable12, sizeof(moveTable));
+        memcpy(moveTableBB, moveTableBB12, sizeof(moveTableBB));
     } else {
-        memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
-        memcpy(moveTableBB, moveTableBB_noObliqueLine, sizeof(moveTableBB));
+        memcpy(moveTable, moveTable9, sizeof(moveTable));
+        memcpy(moveTableBB, moveTableBB9, sizeof(moveTableBB));
     }
 
 #ifdef DEBUG_MODE

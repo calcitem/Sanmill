@@ -1257,7 +1257,7 @@ Position &Position::operator= (const Position &other)
 
 void Position::create_mill_table()
 {
-    const Bitboard millTableBB_noObliqueLine[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB9[SQUARE_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},
@@ -1304,7 +1304,7 @@ void Position::create_mill_table()
         /* 39 */ {0, 0, 0},
     };
 
-    const Bitboard millTableBB_hasObliqueLines[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB12[SQUARE_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},
@@ -1353,9 +1353,9 @@ void Position::create_mill_table()
 
     // TODO: change to ptr?
     if (rule.hasObliqueLines) {
-        memcpy(millTableBB, millTableBB_hasObliqueLines, sizeof(millTableBB));
+        memcpy(millTableBB, millTableBB12, sizeof(millTableBB));
     } else {
-        memcpy(millTableBB, millTableBB_noObliqueLine, sizeof(millTableBB));
+        memcpy(millTableBB, millTableBB9, sizeof(millTableBB));
     }
 }
 
