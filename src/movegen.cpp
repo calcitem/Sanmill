@@ -50,14 +50,7 @@ ExtMove *generate<LEGAL>(/* const */ Position &pos, ExtMove *moveList)
                     continue;
                 }
 
-#ifdef FIRST_MOVE_STAR_PREFERRED
-                if (Position::is_star_square(s)) {
-                    moves.push_back((Move)s);
-                }
-#else
                 *cur++ = (Move)i;
-#endif
-
             }
             break;
         }

@@ -67,8 +67,6 @@
 
 //#define NULL_MOVE
 
-//#define FIRST_MOVE_STAR_PREFERRED
-
 //#define TIME_STAT
 //#define CYCLE_STAT
 
