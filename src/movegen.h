@@ -99,11 +99,8 @@ struct MoveList
         SQ_24, SQ_25, SQ_26, SQ_27, SQ_28, SQ_29, SQ_30, SQ_31,
     };
 
-//#ifdef DISABLE_BITBOARD
     inline static Square moveTable[SQUARE_NB][MD_NB] = { {SQ_0} };
-//#else
     inline static Bitboard moveTableBB[SQUARE_NB] = { 0 };
-//#endif
 
 private:
     ExtMove moveList[MAX_MOVES] { {MOVE_NONE, 0} };

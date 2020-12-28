@@ -85,7 +85,6 @@
 
 //#define DISABLE_PREFETCH
 
-//#define DISABLE_BITBOARD
 //#define BITBOARD_DEBUG
 #define USE_POPCNT
 

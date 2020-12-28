@@ -152,9 +152,7 @@ public:
 
     static bool is_star_square(Square s);
 
-#ifndef DISABLE_BITBOARD
     bool bitboard_is_ok();
-#endif
 
 // private:
       // Initialization helpers (used while setting up a position)
@@ -200,11 +198,7 @@ public:
     int score_draw { 0 };
 
     // Relate to Rule
-#ifdef DISABLE_BITBOARD
-    static int millTable[SQUARE_NB][LD_NB][FILE_NB - 1];
-#else
     static Bitboard millTableBB[SQUARE_NB][LD_NB];
-#endif
 
     Square currentSquare;
     int nPlayed { 0 };

@@ -170,16 +170,6 @@ Position::Position()
     reset();
 
     score[BLACK] = score[WHITE] = score_draw = nPlayed = 0;
-
-#if 0
-#ifndef DISABLE_PREFETCH
-#ifdef DISABLE_BITBOARD
-    prefetch_range(millTable, sizeof(millTable));
-#else
-    prefetch_range(millTableBB, sizeof(millTableBB));
-#endif
-#endif
-#endif
 }
 
 
@@ -860,23 +850,9 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         // if illegal
         if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
             !rule.allowFlyWhenRemainThreePieces) {
-#ifdef DISABLE_BITBOARD
-            int md;
-
-            for (md = 0; md < MD_NB; md++) {
-                if (s == MoveList<LEGAL>::moveTable[currentSquare][md])
-                    break;
-            }
-
-            // not in moveTable
-            if (md == MD_NB) {
-                return false;
-            }
-#else
             if ((square_bb(s) & MoveList<LEGAL>::moveTableBB[currentSquare]) == 0) {
                 return false;
             }
-#endif
         }
 
         if (updateCmdlist) {
@@ -894,7 +870,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         board[currentSquare] = NO_PIECE;
 
-#ifndef DISABLE_BITBOARD
         CLEAR_BIT(byTypeBB[ALL_PIECES], currentSquare);
         CLEAR_BIT(byTypeBB[type_of(pc)], currentSquare);
         CLEAR_BIT(byColorBB[color_of(pc)], currentSquare);
@@ -902,7 +877,6 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         SET_BIT(byTypeBB[ALL_PIECES], s);
         SET_BIT(byTypeBB[type_of(pc)], s);
         SET_BIT(byColorBB[color_of(pc)], s);
-#endif
 
         currentSquare = s;
         int n = add_mills(currentSquare);
@@ -954,26 +928,20 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         // Remove and put ban
         Piece pc = board[s];
 
-#ifndef DISABLE_BITBOARD
         CLEAR_BIT(byTypeBB[type_of(pc)], s);    // TODO
         CLEAR_BIT(byColorBB[color_of(pc)], s);
-#endif
 
         pc = board[s] = BAN_STONE;
         update_key(s);
 
-#ifndef DISABLE_BITBOARD
         SET_BIT(byTypeBB[type_of(pc)], s);
-#endif
     } else {
         // Remove only
         Piece pc = board[s];
 
-#ifndef DISABLE_BITBOARD
         CLEAR_BIT(byTypeBB[ALL_PIECES], s);
         CLEAR_BIT(byTypeBB[type_of(pc)], s);
         CLEAR_BIT(byColorBB[color_of(pc)], s);
-#endif
 
         pc = board[s] = NO_PIECE;
     }
@@ -1268,11 +1236,7 @@ Key Position::update_key_misc()
 #include "movegen.h"
 #include "misc.h"
 
-#ifdef DISABLE_BITBOARD
-int Position::millTable[SQUARE_NB][LD_NB][FILE_NB - 1] = { {{0}} };
-#else
 Bitboard Position::millTableBB[SQUARE_NB][LD_NB] = {{0}};
-#endif
 
 #if 0
 Position &Position::operator= (const Position &other)
@@ -1293,103 +1257,6 @@ Position &Position::operator= (const Position &other)
 
 void Position::create_mill_table()
 {
-#ifdef DISABLE_BITBOARD
-    const int millTable_noObliqueLine[SQUARE_NB][LD_NB][2] = {
-        /* 0 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 1 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 2 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 3 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 4 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 5 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 6 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 7 */ {{0, 0}, {0, 0}, {0, 0}},
-
-        /* 8 */ {{16, 24}, {9, 15}, {0, 0}},
-        /* 9 */ {{0, 0}, {15, 8}, {10, 11}},
-        /* 10 */ {{18, 26}, {11, 9}, {0, 0}},
-        /* 11 */ {{0, 0}, {9, 10}, {12, 13}},
-        /* 12 */ {{20, 28}, {13, 11}, {0, 0}},
-        /* 13 */ {{0, 0}, {11, 12}, {14, 15}},
-        /* 14 */ {{22, 30}, {15, 13}, {0, 0}},
-        /* 15 */ {{0, 0}, {13, 14}, {8, 9}},
-
-        /* 16 */ {{8, 24}, {17, 23}, {0, 0}},
-        /* 17 */ {{0, 0}, {23, 16}, {18, 19}},
-        /* 18 */ {{10, 26}, {19, 17}, {0, 0}},
-        /* 19 */ {{0, 0}, {17, 18}, {20, 21}},
-        /* 20 */ {{12, 28}, {21, 19}, {0, 0}},
-        /* 21 */ {{0, 0}, {19, 20}, {22, 23}},
-        /* 22 */ {{14, 30}, {23, 21}, {0, 0}},
-        /* 23 */ {{0, 0}, {21, 22}, {16, 17}},
-
-        /* 24 */ {{8, 16}, {25, 31}, {0, 0}},
-        /* 25 */ {{0, 0}, {31, 24}, {26, 27}},
-        /* 26 */ {{10, 18}, {27, 25}, {0, 0}},
-        /* 27 */ {{0, 0}, {25, 26}, {28, 29}},
-        /* 28 */ {{12, 20}, {29, 27}, {0, 0}},
-        /* 29 */ {{0, 0}, {27, 28}, {30, 31}},
-        /* 30 */ {{14, 22}, {31, 29}, {0, 0}},
-        /* 31 */ {{0, 0}, {29, 30}, {24, 25}},
-
-        /* 32 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 33 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 34 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 35 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 36 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 37 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 38 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 39 */ {{0, 0}, {0, 0}, {0, 0}}
-    };
-
-    const int millTable_hasObliqueLines[SQUARE_NB][LD_NB][2] = {
-        /*  0 */ {{0, 0}, {0, 0}, {0, 0}},
-        /*  1 */ {{0, 0}, {0, 0}, {0, 0}},
-        /*  2 */ {{0, 0}, {0, 0}, {0, 0}},
-        /*  3 */ {{0, 0}, {0, 0}, {0, 0}},
-        /*  4 */ {{0, 0}, {0, 0}, {0, 0}},
-        /*  5 */ {{0, 0}, {0, 0}, {0, 0}},
-        /*  6 */ {{0, 0}, {0, 0}, {0, 0}},
-        /*  7 */ {{0, 0}, {0, 0}, {0, 0}},
-
-        /*  8 */ {{16, 24}, {9, 15}, {0, 0}},
-        /*  9 */ {{17, 25}, {15, 8}, {10, 11}},
-        /* 10 */ {{18, 26}, {11, 9}, {0, 0}},
-        /* 11 */ {{19, 27}, {9, 10}, {12, 13}},
-        /* 12 */ {{20, 28}, {13, 11}, {0, 0}},
-        /* 13 */ {{21, 29}, {11, 12}, {14, 15}},
-        /* 14 */ {{22, 30}, {15, 13}, {0, 0}},
-        /* 15 */ {{23, 31}, {13, 14}, {8, 9}},
-
-        /* 16 */ {{8, 24}, {17, 23}, {0, 0}},
-        /* 17 */ {{9, 25}, {23, 16}, {18, 19}},
-        /* 18 */ {{10, 26}, {19, 17}, {0, 0}},
-        /* 19 */ {{11, 27}, {17, 18}, {20, 21}},
-        /* 20 */ {{12, 28}, {21, 19}, {0, 0}},
-        /* 21 */ {{13, 29}, {19, 20}, {22, 23}},
-        /* 22 */ {{14, 30}, {23, 21}, {0, 0}},
-        /* 23 */ {{15, 31}, {21, 22}, {16, 17}},
-
-        /* 24 */ {{8, 16}, {25, 31}, {0, 0}},
-        /* 25 */ {{9, 17}, {31, 24}, {26, 27}},
-        /* 26 */ {{10, 18}, {27, 25}, {0, 0}},
-        /* 27 */ {{11, 19}, {25, 26}, {28, 29}},
-        /* 28 */ {{12, 20}, {29, 27}, {0, 0}},
-        /* 29 */ {{13, 21}, {27, 28}, {30, 31}},
-        /* 30 */ {{14, 22}, {31, 29}, {0, 0}},
-        /* 31 */ {{15, 23}, {29, 30}, {24, 25}},
-
-        /* 32 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 33 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 34 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 35 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 36 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 37 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 38 */ {{0, 0}, {0, 0}, {0, 0}},
-        /* 39 */ {{0, 0}, {0, 0}, {0, 0}}
-    };
-
-#else
-
     const Bitboard millTableBB_noObliqueLine[SQUARE_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
@@ -1483,46 +1350,13 @@ void Position::create_mill_table()
         /* 38 */ {0, 0, 0},
         /* 39 */ {0, 0, 0},
     };
-#endif
 
     // TODO: change to ptr?
     if (rule.hasObliqueLines) {
-#ifdef DISABLE_BITBOARD
-        memcpy(millTable, millTable_hasObliqueLines, sizeof(millTable));
-#else
         memcpy(millTableBB, millTableBB_hasObliqueLines, sizeof(millTableBB));
-#endif
     } else {
-#ifdef DISABLE_BITBOARD
-        memcpy(millTable, millTable_noObliqueLine, sizeof(millTable));
-#else
         memcpy(millTableBB, millTableBB_noObliqueLine, sizeof(millTableBB));
-#endif
     }
-
-#ifdef DEBUG_MODE
-    for (int i = 0; i < SQUARE_NB; i++) {
-        loggerDebug("/* %d */ {", i);
-        for (int j = 0; j < MD_NB; j++) {
-            loggerDebug("{");
-            for (int k = 0; k < 2; k++) {
-                if (k == 0) {
-                    loggerDebug("%d, ", millTable[i][j][k]);
-                } else {
-                    loggerDebug("%d", millTable[i][j][k]);
-                }
-
-            }
-            if (j == 2)
-                loggerDebug("}");
-            else
-                loggerDebug("}, ");
-        }
-        loggerDebug("},\n");
-    }
-
-    loggerDebug("======== millTable End =========\n");
-#endif /* DEBUG_MODE */
 }
 
 Color Position::color_on(Square s) const
@@ -1530,7 +1364,6 @@ Color Position::color_on(Square s) const
     return color_of(board[s]);
 }
 
-#ifndef DISABLE_BITBOARD
 bool Position::bitboard_is_ok()
 {
 #ifdef BITBOARD_DEBUG
@@ -1575,7 +1408,6 @@ bool Position::bitboard_is_ok()
 
     return true;
 }
-#endif
 
 int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
 {
@@ -1592,39 +1424,26 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
         locbak = board[squareSelected];
         board[squareSelected] = NO_PIECE;
 
-#ifndef DISABLE_BITBOARD
         CLEAR_BIT(byTypeBB[ALL_PIECES], squareSelected);
         CLEAR_BIT(byTypeBB[type_of(locbak)], squareSelected);
         CLEAR_BIT(byColorBB[color_of(locbak)], squareSelected);
-#endif
     }
 
-#ifndef DISABLE_BITBOARD
     Bitboard bc = byColorBB[c];
     Bitboard *mt = millTableBB[s];
-#endif
 
     for (int l = 0; l < LD_NB; l++) {
-#ifdef DISABLE_BITBOARD
-        if (make_piece(c) &
-            board[millTable[s][l][0]] &
-            board[millTable[s][l][1]]) {
-            n++;
-        }
-#else
         if ((bc & mt[l]) == mt[l]) {
             n++;
         }
-#endif
     }
 
     if (squareSelected != SQ_0) {
         board[squareSelected] = locbak;
-#ifndef DISABLE_BITBOARD
+
         SET_BIT(byTypeBB[ALL_PIECES], squareSelected);
         SET_BIT(byTypeBB[type_of(locbak)], squareSelected);
         SET_BIT(byColorBB[color_of(locbak)], squareSelected);
-#endif
     }
 
     return n;
@@ -1634,51 +1453,14 @@ int Position::add_mills(Square s)
 {
     int n = 0;
 
-#ifdef DISABLE_BITBOARD
-    int idx[3], min, temp;
-#else
     Bitboard bc = byColorBB[color_on(s)];
     Bitboard *mt = millTableBB[s];
-#endif
 
     for (int i = 0; i < 3; i++) {
-
-#ifdef DISABLE_BITBOARD
-        idx[0] = s;
-        idx[1] = millTable[s][i][0];
-        idx[2] = millTable[s][i][1];
-
-        // no mill
-        if (!(make_piece(m) & board[idx[1]] & board[idx[2]])) {
-            continue;
-        }
-
-        // close mill
-
-        // sort // TODO: Why? Commit e66ef36
-        for (int j = 0; j < 2; j++) {
-            min = j;
-
-            for (int k = j + 1; k < 3; k++) {
-                if (idx[min] > idx[k])
-                    min = k;
-            }
-
-            if (min == j) {
-                continue;
-            }
-
-            temp = idx[min];
-            idx[min] = idx[j];
-            idx[j] = temp;
-        }
-#else
         // no mill
         if (((bc & mt[i]) != mt[i])) {
             continue;
         }
-#endif
-
         n++;
     }
 
@@ -1770,20 +1552,9 @@ bool Position::is_all_surrounded() const
             continue;
         }
 
-#ifdef DISABLE_BITBOARD
-        Square moveSquare;
-
-        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-            moveSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[s][d]);
-            if (moveSquare && !board[moveSquare]) {
-                return false;
-            }
-        }
-#else
         if ((byTypeBB[ALL_PIECES] & MoveList<LEGAL>::moveTableBB[s]) != MoveList<LEGAL>::moveTableBB[s]) {
             return false;
         }
-#endif
     }
 
     return true;

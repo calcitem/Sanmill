@@ -347,19 +347,14 @@ void MoveList<LEGAL>::create()
         /* 39 */ 0,
     };
 
-//#ifdef DISABLE_BITBOARD
+
     if (rule.hasObliqueLines) {
         memcpy(moveTable, moveTable_obliqueLine, sizeof(moveTable));
-    } else {
-        memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
-    }
-//#else
-    if (rule.hasObliqueLines) {
         memcpy(moveTableBB, moveTableBB_obliqueLine, sizeof(moveTableBB));
     } else {
+        memcpy(moveTable, moveTable_noObliqueLine, sizeof(moveTable));
         memcpy(moveTableBB, moveTableBB_noObliqueLine, sizeof(moveTableBB));
     }
-//#endif
 
 #ifdef DEBUG_MODE
     int sum = 0;
