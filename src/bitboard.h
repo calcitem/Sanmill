@@ -100,22 +100,22 @@ inline Bitboard &operator^=(Bitboard &b, Square s)
     return b ^= square_bb(s);
 }
 
-inline Bitboard  operator&(Square s, Bitboard b)
+inline Bitboard operator&(Square s, Bitboard b)
 {
     return b & s;
 }
 
-inline Bitboard  operator|(Square s, Bitboard b)
+inline Bitboard operator|(Square s, Bitboard b)
 {
     return b | s;
 }
 
-inline Bitboard  operator^(Square s, Bitboard b)
+inline Bitboard operator^(Square s, Bitboard b)
 {
     return b ^ s;
 }
 
-inline Bitboard  operator|(Square s1, Square s2)
+inline Bitboard operator|(Square s1, Square s2)
 {
     return square_bb(s1) | s2;
 }
@@ -171,99 +171,6 @@ inline int popcount(Bitboard b)
     return __builtin_popcount(b);
 
 #endif
-}
-
-
-/// lsb() and msb() return the least/most significant bit in a non-zero bitboard
-
-#if defined(__GNUC__)  // GCC, Clang, ICC
-
-inline Square lsb(Bitboard b)
-{
-    assert(b);
-    return Square(__builtin_ctz(b));
-}
-
-inline Square msb(Bitboard b)
-{
-    assert(b);
-    return Square(31 ^ __builtin_clz(b));
-}
-
-#elif defined(_MSC_VER)  // MSVC
-
-#ifdef _WIN64  // MSVC, WIN64
-
-inline Square lsb(Bitboard b)
-{
-    assert(b);
-    unsigned long idx;
-    _BitScanForward(&idx, b);
-    return (Square)idx;
-}
-
-inline Square msb(Bitboard b)
-{
-    assert(b);
-    unsigned long idx;
-    _BitScanReverse(&idx, b);
-    return (Square)idx;
-}
-
-#else  // MSVC, WIN32
-
-inline Square lsb(Bitboard b)
-{
-    assert(b);
-    unsigned long idx;
-
-    if (b & 0xffffffff) {
-        _BitScanForward(&idx, int32_t(b));
-        return Square(idx);
-    } else {
-        _BitScanForward(&idx, int32_t(b >> 32));
-        return Square(idx + 32);
-    }
-}
-
-inline Square msb(Bitboard b)
-{
-    assert(b);
-    unsigned long idx;
-
-    if (b >> 32) {
-        _BitScanReverse(&idx, int32_t(b >> 32));
-        return Square(idx + 32);
-    } else {
-        _BitScanReverse(&idx, int32_t(b));
-        return Square(idx);
-    }
-}
-
-#endif
-
-#else  // Compiler is neither GCC nor MSVC compatible
-
-#error "Compiler not supported."
-
-#endif
-
-
-/// pop_lsb() finds and clears the least significant bit in a non-zero bitboard
-
-inline Square pop_lsb(Bitboard *b)
-{
-    const Square s = lsb(*b);
-    *b &= *b - 1;
-    return s;
-}
-
-
-/// frontmost_sq() returns the most advanced square for the given color,
-/// requires a non-zero bitboard.
-inline Square frontmost_sq(Color c, Bitboard b)
-{
-    return c == WHITE ? msb(b) : lsb(b);
 }
 
 #endif // #ifndef BITBOARD_H_INCLUDED
