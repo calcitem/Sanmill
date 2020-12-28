@@ -28,9 +28,9 @@ class Position;
 
 enum GenType
 {
-    CAPTURES,
-    QUIETS,
-    NON_EVASIONS,
+    PLACE,
+    MOVE,
+    REMOVE,
     LEGAL
 };
 

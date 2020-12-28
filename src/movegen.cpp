@@ -27,10 +27,70 @@
 #include "bitboard.h"
 #include "option.h"
 
-/// generate<LEGAL> generates all the legal moves in the given position
-
+/// generate<PLACE> generates all places.
+/// Returns a pointer to the end of the move list.
 template<>
-ExtMove *generate<LEGAL>(/* const */ Position &pos, ExtMove *moveList)
+ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
+{
+    ExtMove *cur = moveList;
+
+    for (auto i : MoveList<LEGAL>::movePriorityTable) {
+        if (pos.get_board()[i]) {
+            continue;
+        }
+
+        *cur++ = (Move)i;
+    }
+
+    return cur;
+}
+
+/// generate<PLACE> generates all places.
+/// Returns a pointer to the end of the move moves.
+template<>
+ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
+{
+    Square newSquare, oldSquare;
+
+    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
+
+    ExtMove *cur = moveList;
+
+    // move piece that location weak first
+    for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+        oldSquare = MoveList<LEGAL>::movePriorityTable[i];
+
+        if (!pos.select_piece(oldSquare)) {
+            continue;
+        }
+
+        if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
+            !rule.allowFlyWhenRemainThreePieces) {
+            for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
+                newSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[oldSquare][direction]);
+                if (newSquare && !pos.get_board()[newSquare]) {
+                    Move m = make_move(oldSquare, newSquare);
+                    *cur++ = (Move)m;
+                }
+            }
+        } else {
+            // piece count < 3£¬and allow fly, if is empty point, that's ok, do not need in move list
+            for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
+                if (!pos.get_board()[newSquare]) {
+                    Move m = make_move(oldSquare, newSquare);
+                    *cur++ = (Move)m;
+                }
+            }
+        }
+    }
+
+    return cur;
+}
+
+/// generate<PLACE> generates all removes.
+/// Returns a pointer to the end of the move moves.
+template<>
+ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 {
     Square s;
 
@@ -41,74 +101,53 @@ ExtMove *generate<LEGAL>(/* const */ Position &pos, ExtMove *moveList)
 
     ExtMove *cur = moveList;
 
+    if (pos.is_all_in_mills(them)) {
+        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+            s = MoveList<LEGAL>::movePriorityTable[i];
+            if (pos.get_board()[s] & make_piece(them)) {
+                *cur++ = (Move)-s;
+            }
+        }
+        return cur;
+    }
+
+    // not is all in mills
+    for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
+        s = MoveList<LEGAL>::movePriorityTable[i];
+        if (pos.get_board()[s] & make_piece(them)) {
+            if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
+                *cur++ = (Move)-s;
+            }
+        }
+    }
+
+    return cur;
+}
+
+/// generate<LEGAL> generates all the legal moves in the given position
+
+template<>
+ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
+{
+    const int MOVE_PRIORITY_TABLE_SIZE = FILE_NB * RANK_NB;
+
+    ExtMove *cur = moveList;
+
     switch (pos.get_action()) {
     case ACTION_SELECT:
     case ACTION_PLACE:
         if (pos.get_phase() & (PHASE_PLACING | PHASE_READY)) {
-            for (auto i : MoveList<LEGAL>::movePriorityTable) {
-                if (pos.get_board()[i]) {
-                    continue;
-                }
-
-                *cur++ = (Move)i;
-            }
-            break;
+            return generate<PLACE>(pos, moveList);
         }
 
         if (pos.get_phase() & PHASE_MOVING) {
-            Square newSquare, oldSquare;
-
-            // move piece that location weak first
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                oldSquare = MoveList<LEGAL>::movePriorityTable[i];
-
-                if (!pos.select_piece(oldSquare)) {
-                    continue;
-                }
-
-                if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
-                    !rule.allowFlyWhenRemainThreePieces) {
-                    for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
-                        newSquare = static_cast<Square>(MoveList<LEGAL>::moveTable[oldSquare][direction]);
-                        if (newSquare && !pos.get_board()[newSquare]) {
-                            Move m = make_move(oldSquare, newSquare);
-                            *cur++ = (Move)m;
-                        }
-                    }
-                } else {
-                    // piece count < 3£¬and allow fly, if is empty point, that's ok, do not need in move list
-                    for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
-                        if (!pos.get_board()[newSquare]) {
-                            Move m = make_move(oldSquare, newSquare);
-                            *cur++ = (Move)m;
-                        }
-                    }
-                }
-            }
+            return generate<MOVE>(pos, moveList);
         }
+
         break;
 
     case ACTION_REMOVE:
-        if (pos.is_all_in_mills(them)) {
-            for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-                s = MoveList<LEGAL>::movePriorityTable[i];
-                if (pos.get_board()[s] & make_piece(them)) {
-                    *cur++ = (Move)-s;
-                }
-            }
-            break;
-        }
-
-        // not is all in mills
-        for (int i = MOVE_PRIORITY_TABLE_SIZE - 1; i >= 0; i--) {
-            s = MoveList<LEGAL>::movePriorityTable[i];
-            if (pos.get_board()[s] & make_piece(them)) {
-                if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
-                    *cur++ = (Move)-s;
-                }
-            }
-        }
-        break;
+        return generate<REMOVE>(pos, moveList);
 
     default:
 #ifdef FLUTTER_UI
