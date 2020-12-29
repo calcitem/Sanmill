@@ -294,7 +294,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #if 0
-    if (position->phase == Phase::placing && depth == 1 && pos->remainingPiecesNeedRemove > 0) {
+    if (position->phase == Phase::placing && depth == 1 && pos->piecesNeedRemove > 0) {
         depth--;
     }
 #endif
