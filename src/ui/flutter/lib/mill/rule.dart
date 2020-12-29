@@ -28,7 +28,7 @@ class Rule {
   bool allowRemovePieceInMill = true;
   bool isBlackLoseButNotDrawWhenBoardFull = true;
   bool isLoseButNotChangeSideWhenNoWay = true;
-  bool allowFlyWhenRemainThreePieces = false;
+  bool flyingAllowed = false;
   int maxStepsLedToDraw = 0;
 }
 

@@ -323,11 +323,10 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  setAllowFlyWhenRemainThreePieces(bool value) async {
+  setAllowFlyingAllowed(bool value) async {
     //
     setState(() {
-      rule.allowFlyWhenRemainThreePieces =
-          Config.allowFlyWhenRemainThreePieces = value;
+      rule.flyingAllowed = Config.flyingAllowed = value;
     });
 
     Config.save();
@@ -632,10 +631,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.allowFlyWhenRemainThreePieces,
-                    title: Text(S.of(context).allowFlyWhenRemainThreePieces,
-                        style: itemStyle),
-                    onChanged: setAllowFlyWhenRemainThreePieces,
+                    value: Config.flyingAllowed,
+                    title: Text(S.of(context).flyingAllowed, style: itemStyle),
+                    onChanged: setAllowFlyingAllowed,
                   ),
                   _buildDivider(),
                   /*

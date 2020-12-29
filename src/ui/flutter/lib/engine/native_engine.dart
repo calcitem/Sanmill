@@ -151,8 +151,7 @@ class NativeEngine extends AiEngine {
         'setoption name isBlackLoseButNotDrawWhenBoardFull value ${Config.isBlackLoseButNotDrawWhenBoardFull}');
     await send(
         'setoption name isLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
-    await send(
-        'setoption name allowFlyWhenRemainThreePieces value ${Config.allowFlyWhenRemainThreePieces}');
+    await send('setoption name flyingAllowed value ${Config.flyingAllowed}');
     await send(
         'setoption name maxStepsLedToDraw value ${Config.maxStepsLedToDraw}');
   }

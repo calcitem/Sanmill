@@ -355,8 +355,8 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose But Not Change Side When No Way"
   },
-  "allowFlyWhenRemainThreePieces": "Allow Fly When Remain Three Pieces",
-  "@allowFlyWhenRemainThreePieces": {
+  "flyingAllowed": "Allow Fly When Remain Three Pieces",
+  "@flyingAllowed": {
     "description": "Allow Fly When Remain Three Pieces"
   },
   "maxStepsLedToDraw": "Max Steps Led To Draw",

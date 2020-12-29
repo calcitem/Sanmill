@@ -112,9 +112,9 @@ void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
     rule.isLoseButNotChangeSideWhenNoWay = (bool)o;
 }
 
-void on_allowFlyWhenRemainThreePieces(const Option &o)
+void on_flyingAllowed(const Option &o)
 {
-    rule.allowFlyWhenRemainThreePieces = (bool)o;
+    rule.flyingAllowed = (bool)o;
 }
 
 void on_maxStepsLedToDraw(const Option &o)
@@ -165,7 +165,7 @@ void init(OptionsMap &o)
     o["allowRemovePieceInMill"] << Option(true, on_allowRemovePieceInMill);
     o["isBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
     o["isLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
-    o["allowFlyWhenRemainThreePieces"] << Option(false, on_allowFlyWhenRemainThreePieces);
+    o["flyingAllowed"] << Option(false, on_flyingAllowed);
     o["maxStepsLedToDraw"] << Option(50, 30, 50, on_maxStepsLedToDraw);
 
 }

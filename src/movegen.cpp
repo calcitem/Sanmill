@@ -61,7 +61,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
         }
 
         if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
-            !rule.allowFlyWhenRemainThreePieces) {
+            !rule.flyingAllowed) {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
                 to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
                 if (to && !pos.get_board()[to]) {
@@ -69,7 +69,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                 }
             }
         } else {
-            // piece count < 3£¬and allow fly, if is empty point, that's ok, do not need in move list
+            // piece count < 3 and allow fly, if is empty point, that's ok, do not need in move list
             for (to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!pos.get_board()[to]) {
                     *cur++ = make_move(from, to);

@@ -24,17 +24,30 @@
 struct Rule
 {
     const char name[32];
+
     const char description[512];
+
     int nTotalPiecesEachSide;   // 9 or 12
+
     int nPiecesAtLeast; // Default is 3
+
     bool hasObliqueLines;
+
     bool hasBannedLocations;
+
     bool isDefenderMoveFirst;
+
     bool allowRemoveMultiPiecesWhenCloseMultiMill;
+
     bool allowRemovePieceInMill;
+
     bool isBlackLoseButNotDrawWhenBoardFull;
+
     bool isLoseButNotChangeSideWhenNoWay;
-    bool allowFlyWhenRemainThreePieces;
+
+    // Specifies if jumps are allowed when a player remains with three pieces on the board.
+    bool flyingAllowed;
+
     int maxStepsLedToDraw;
 };
 

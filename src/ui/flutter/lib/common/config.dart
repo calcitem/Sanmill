@@ -46,7 +46,7 @@ class Config {
   static bool allowRemovePieceInMill = true;
   static bool isBlackLoseButNotDrawWhenBoardFull = true;
   static bool isLoseButNotChangeSideWhenNoWay = true;
-  static bool allowFlyWhenRemainThreePieces = false;
+  static bool flyingAllowed = false;
   static int maxStepsLedToDraw = 50;
 
   static Future<void> loadProfile() async {
@@ -88,8 +88,8 @@ class Config {
     rule.isLoseButNotChangeSideWhenNoWay =
         Config.isLoseButNotChangeSideWhenNoWay =
             profile['isLoseButNotChangeSideWhenNoWay'] ?? true;
-    rule.allowFlyWhenRemainThreePieces = Config.allowFlyWhenRemainThreePieces =
-        profile['allowFlyWhenRemainThreePieces'] ?? false;
+    rule.flyingAllowed =
+        Config.flyingAllowed = profile['flyingAllowed'] ?? false;
     rule.maxStepsLedToDraw =
         Config.maxStepsLedToDraw = profile['maxStepsLedToDraw'] ?? 50;
 
@@ -126,8 +126,7 @@ class Config {
         Config.isBlackLoseButNotDrawWhenBoardFull;
     profile['isLoseButNotChangeSideWhenNoWay'] =
         Config.isLoseButNotChangeSideWhenNoWay;
-    profile['allowFlyWhenRemainThreePieces'] =
-        Config.allowFlyWhenRemainThreePieces;
+    profile['flyingAllowed'] = Config.flyingAllowed;
     profile['maxStepsLedToDraw'] = Config.maxStepsLedToDraw;
 
     profile.commit();

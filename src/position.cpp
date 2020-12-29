@@ -849,7 +849,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         // if illegal
         if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
-            !rule.allowFlyWhenRemainThreePieces) {
+            !rule.flyingAllowed) {
             if ((square_bb(s) & MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
                 return false;
             }
@@ -1487,7 +1487,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
     int n = 0;
 
     if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
-        !rule.allowFlyWhenRemainThreePieces) {
+        !rule.flyingAllowed) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
             moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
@@ -1542,7 +1542,7 @@ bool Position::is_all_surrounded() const
 
     // Can fly
     if (pieceCountOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
-        rule.allowFlyWhenRemainThreePieces) {
+        rule.flyingAllowed) {
         return false;
     }
 

@@ -88,6 +88,6 @@
   "allowRemovePieceInMill": "允许吃三中的子",
   "isBlackLoseButNotDrawWhenBoardFull": "当棋盘摆满时先摆子的输棋",
   "isLoseButNotChangeSideWhenNoWay": "当无路可走时输棋",
-  "allowFlyWhenRemainThreePieces": "剩余三颗子时飞棋",
+  "flyingAllowed": "剩余三颗子时飞棋",
   "maxStepsLedToDraw": "连续多少步无吃子则和棋"
 }

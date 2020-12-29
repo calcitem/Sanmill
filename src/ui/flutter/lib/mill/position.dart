@@ -564,7 +564,7 @@ class Position {
 
       // if illegal
       if (pieceCountOnBoard[sideToMove()] > rule.nPiecesAtLeast ||
-          !rule.allowFlyWhenRemainThreePieces) {
+          !rule.flyingAllowed) {
         int md;
 
         for (md = 0; md < moveDirectionNumber; md++) {
@@ -1418,7 +1418,7 @@ class Position {
 
     // Can fly
     if (pieceCountOnBoard[sideToMove()] <= rule.nPiecesAtLeast &&
-        rule.allowFlyWhenRemainThreePieces) {
+        rule.flyingAllowed) {
       //print("Can fly.");
       return false;
     }

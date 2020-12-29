@@ -468,7 +468,7 @@ Depth Thread::adjustDepth()
         }
 
         // Can fly
-        if (rule.allowFlyWhenRemainThreePieces) {
+        if (rule.flyingAllowed) {
             if (pb == rule.nPiecesAtLeast ||
                 pw == rule.nPiecesAtLeast) {
                 d = flyingDepth;
