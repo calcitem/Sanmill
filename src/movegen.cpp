@@ -35,12 +35,12 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 {
     ExtMove *cur = moveList;
 
-    for (auto i : MoveList<LEGAL>::movePriorityTable) {
-        if (pos.get_board()[i]) {
+    for (auto s : MoveList<LEGAL>::movePriorityList) {
+        if (pos.get_board()[s]) {
             continue;
         }
 
-        *cur++ = (Move)i;
+        *cur++ = (Move)s;
     }
 
     return cur;
@@ -51,32 +51,30 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 template<>
 ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 {
-    Square newSquare, oldSquare;
+    Square from, to;
     ExtMove *cur = moveList;
 
     // move piece that location weak first
     for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
-        oldSquare = MoveList<LEGAL>::movePriorityTable[i];
+        from = MoveList<LEGAL>::movePriorityList[i];
 
-        if (!pos.select_piece(oldSquare)) {
+        if (!pos.select_piece(from)) {
             continue;
         }
 
         if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
             !rule.allowFlyWhenRemainThreePieces) {
             for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
-                newSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[oldSquare][direction]);
-                if (newSquare && !pos.get_board()[newSquare]) {
-                    Move m = make_move(oldSquare, newSquare);
-                    *cur++ = (Move)m;
+                to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
+                if (to && !pos.get_board()[to]) {
+                    *cur++ = make_move(from, to);
                 }
             }
         } else {
             // piece count < 3£¬and allow fly, if is empty point, that's ok, do not need in move list
-            for (newSquare = SQ_BEGIN; newSquare < SQ_END; newSquare = static_cast<Square>(newSquare + 1)) {
-                if (!pos.get_board()[newSquare]) {
-                    Move m = make_move(oldSquare, newSquare);
-                    *cur++ = (Move)m;
+            for (to = SQ_BEGIN; to < SQ_END; ++to) {
+                if (!pos.get_board()[to]) {
+                    *cur++ = make_move(from, to);
                 }
             }
         }
@@ -99,7 +97,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     if (pos.is_all_in_mills(them)) {
         for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
-            s = MoveList<LEGAL>::movePriorityTable[i];
+            s = MoveList<LEGAL>::movePriorityList[i];
             if (pos.get_board()[s] & make_piece(them)) {
                 *cur++ = (Move)-s;
             }
@@ -109,7 +107,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     // not is all in mills
     for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
-        s = MoveList<LEGAL>::movePriorityTable[i];
+        s = MoveList<LEGAL>::movePriorityList[i];
         if (pos.get_board()[s] & make_piece(them)) {
             if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
                 *cur++ = (Move)-s;
@@ -154,7 +152,6 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     return cur;
 }
 
-///////////////////////////////////////////////////////////////////////////////
 
 template<>
 void MoveList<LEGAL>::create()
@@ -165,42 +162,5 @@ void MoveList<LEGAL>::create()
 template<>
 void MoveList<LEGAL>::shuffle()
 {
-    std::array<Square, 4> movePriorityTable0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
-    std::array<Square, 8> movePriorityTable1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
-    std::array<Square, 4> movePriorityTable2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
-    std::array<Square, 8> movePriorityTable3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
-
-    if (rule.nTotalPiecesEachSide == 9)
-    {
-        movePriorityTable0 = { SQ_16, SQ_18, SQ_20, SQ_22 };
-        movePriorityTable1 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
-        movePriorityTable2 = { SQ_17, SQ_19, SQ_21, SQ_23 };
-        movePriorityTable3 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
-    }
-
-
-    if (gameOptions.getRandomMoveEnabled()) {
-        uint32_t seed = static_cast<uint32_t>(now());
-
-        std::shuffle(movePriorityTable0.begin(), movePriorityTable0.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityTable1.begin(), movePriorityTable1.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityTable2.begin(), movePriorityTable2.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityTable3.begin(), movePriorityTable3.end(), std::default_random_engine(seed));
-    }
-
-    for (size_t i = 0; i < 4; i++) {
-        movePriorityTable[i + 0] = movePriorityTable0[i];
-    }
-
-    for (size_t i = 0; i < 8; i++) {
-        movePriorityTable[i + 4] = movePriorityTable1[i];
-    }
-
-    for (size_t i = 0; i < 4; i++) {
-        movePriorityTable[i + 12] = movePriorityTable2[i];
-    }
-
-    for (size_t i = 0; i < 8; i++) {
-        movePriorityTable[i + 16] = movePriorityTable3[i];
-    }
+    Mills::move_priority_list_shuffle();
 }

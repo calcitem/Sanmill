@@ -43,6 +43,7 @@ struct ExtMove
     {
         return move;
     }
+
     void operator=(Move m)
     {
         move = m;
@@ -59,14 +60,14 @@ inline bool operator<(const ExtMove &f, const ExtMove &s)
 }
 
 template<GenType>
-ExtMove *generate(/* const */ Position &pos, ExtMove *moveList);
+ExtMove *generate(Position &pos, ExtMove *moveList);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.
 template<GenType T>
 struct MoveList
 {
-    explicit MoveList(/* const */  Position &pos) : last(generate<T>(pos, moveList))
+    explicit MoveList(Position &pos) : last(generate<T>(pos, moveList))
     {
     }
 
@@ -93,13 +94,9 @@ struct MoveList
     static void create();
     static void shuffle();
 
-    inline static std::array<Square, EFFECTIVE_SQUARE_NB> movePriorityTable {
-        SQ_8, SQ_9, SQ_10, SQ_11, SQ_12, SQ_13, SQ_14, SQ_15,
-        SQ_16, SQ_17, SQ_18, SQ_19, SQ_20, SQ_21, SQ_22, SQ_23,
-        SQ_24, SQ_25, SQ_26, SQ_27, SQ_28, SQ_29, SQ_30, SQ_31,
-    };
+    inline static std::array<Square, EFFECTIVE_SQUARE_NB> movePriorityList {SQ_NONE};
 
-    inline static Square adjacentSquares[SQUARE_NB][MD_NB] = { {SQ_0} };
+    inline static Square adjacentSquares[SQUARE_NB][MD_NB] = { {SQ_NONE} };
     inline static Bitboard adjacentSquaresBB[SQUARE_NB] = { 0 };
 
 private:

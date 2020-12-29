@@ -17,13 +17,30 @@
 */
 
 #include <cstring>
+#include <random>
 #include "bitboard.h"
 #include "rule.h"
 #include "movegen.h"
 #include "mills.h"
+#include "misc.h"
+#include "option.h"
 
 namespace Mills
 {
+
+/*
+    31 ----- 24 ----- 25
+    | \       |      / |
+    |  23 -- 16 -- 17  |
+    |  | \    |   / |  |
+    |  |  15 08 09  |  |
+    30-22-14    10-18-26
+    |  |  13 12 11  |  |
+    |  | /    |   \ |  |
+    |  21 -- 20 -- 19  |
+    | /       |     \  |
+    29 ----- 28 ----- 27
+*/
 
 void adjacent_squares_init()
 {
@@ -248,6 +265,51 @@ void adjacent_squares_init()
     loggerDebug("sum = %d\n", sum);
 #endif
 
+}
+
+void move_priority_list_shuffle()
+{
+    std::array<Square, 4> movePriorityList0;
+    std::array<Square, 8> movePriorityList1;
+    std::array<Square, 4> movePriorityList2;
+    std::array<Square, 8> movePriorityList3;
+
+    if (rule.nTotalPiecesEachSide == 9) {
+        movePriorityList0 = { SQ_16, SQ_18, SQ_20, SQ_22 };
+        movePriorityList1 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
+        movePriorityList2 = { SQ_17, SQ_19, SQ_21, SQ_23 };
+        movePriorityList3 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
+    } else if (rule.nTotalPiecesEachSide == 12) {
+        movePriorityList0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
+        movePriorityList1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
+        movePriorityList2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
+        movePriorityList3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
+    }
+
+    if (gameOptions.getRandomMoveEnabled()) {
+        uint32_t seed = static_cast<uint32_t>(now());
+
+        std::shuffle(movePriorityList0.begin(), movePriorityList0.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityList1.begin(), movePriorityList1.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityList2.begin(), movePriorityList2.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityList3.begin(), movePriorityList3.end(), std::default_random_engine(seed));
+    }
+
+    for (size_t i = 0; i < 4; i++) {
+        MoveList<LEGAL>::movePriorityList[i + 0] = movePriorityList0[i];
+    }
+
+    for (size_t i = 0; i < 8; i++) {
+        MoveList<LEGAL>::movePriorityList[i + 4] = movePriorityList1[i];
+    }
+
+    for (size_t i = 0; i < 4; i++) {
+        MoveList<LEGAL>::movePriorityList[i + 12] = movePriorityList2[i];
+    }
+
+    for (size_t i = 0; i < 8; i++) {
+        MoveList<LEGAL>::movePriorityList[i + 16] = movePriorityList3[i];
+    }
 }
 
 }

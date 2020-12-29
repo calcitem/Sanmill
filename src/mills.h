@@ -26,7 +26,7 @@ namespace Mills
 {
 
 void adjacent_squares_init();
-
+void move_priority_list_shuffle();
 }
 
 #endif // #ifndef MILL_H_INCLUDED
