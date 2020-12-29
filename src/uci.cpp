@@ -131,7 +131,7 @@ void go(Position *pos)
 
     Threads.start_thinking(pos);
 
-    if (pos->get_phase() == PHASE_GAMEOVER)
+    if (pos->get_phase() == Phase::gameOver)
     {
 #ifdef UCI_AUTO_RESTART
         // TODO

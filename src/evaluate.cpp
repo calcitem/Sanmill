@@ -70,10 +70,10 @@ Value Evaluation<T>::value()
     int pieceCountNeedRemove;
 
     switch (pos.get_phase()) {
-    case PHASE_READY:
+    case Phase::ready:
         break;
 
-    case PHASE_PLACING:
+    case Phase::placing:
         nPiecesInHandDiff = pos.pieces_count_in_hand(BLACK) - pos.pieces_count_in_hand(WHITE);
         value += nPiecesInHandDiff * VALUE_EACH_PIECE_INHAND;
 
@@ -96,7 +96,7 @@ Value Evaluation<T>::value()
 
         break;
 
-    case PHASE_MOVING:
+    case Phase::moving:
         value = pos.pieces_count_on_board(BLACK) * VALUE_EACH_PIECE_ONBOARD -
             pos.pieces_count_on_board(WHITE) * VALUE_EACH_PIECE_ONBOARD;
 
@@ -120,7 +120,7 @@ Value Evaluation<T>::value()
 
         break;
 
-    case PHASE_GAMEOVER:
+    case Phase::gameOver:
         if (pos.pieces_count_on_board(BLACK) + pos.pieces_count_on_board(WHITE) >= EFFECTIVE_SQUARE_NB) {
             if (rule.isBlackLoseButNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;

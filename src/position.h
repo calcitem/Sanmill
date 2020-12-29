@@ -191,7 +191,7 @@ public:
     Color winner;
     GameOverReason gameoverReason { NO_REASON };
 
-    enum Phase phase {PHASE_NONE};
+    enum Phase phase {Phase::none};
     enum Action action;
 
     int score[COLOR_NB] { 0 };

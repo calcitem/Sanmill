@@ -690,7 +690,7 @@ void Game::updateTime()
     time_t *ourSeconds = &elapsedSeconds[sideToMove];
     time_t theirSeconds = elapsedSeconds[~sideToMove];
 
-//     if (!(phase & PHASE_PLAYING)) {
+//     if (!(phase == Phase::placing || phase == Phase::moving)) {
 //         return;
 //     }
 
@@ -842,7 +842,7 @@ bool Game::actionPiece(QPointF pos)
     }
 
     // 如果未开局则开局
-    if (position.get_phase() == PHASE_READY)
+    if (position.get_phase() == Phase::ready)
         gameStart();
 
     // 判断执行选子、落子或去子
@@ -1014,7 +1014,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif
 
     // 如果未开局则开局
-    if (position.get_phase() == PHASE_READY) {
+    if (position.get_phase() == Phase::ready) {
         gameStart();
     }
 
@@ -1296,7 +1296,7 @@ bool Game::updateScence(Position &p)
                 deletedPiece = piece;
 
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
-                if (position.get_phase() == PHASE_MOVING) {
+                if (position.get_phase() == Phase::moving) {
 #endif
                     QPropertyAnimation *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
@@ -1314,7 +1314,7 @@ bool Game::updateScence(Position &p)
     }
 
     // 添加摆棋阶段禁子点
-    if (rule.hasBannedLocations && p.get_phase() == PHASE_PLACING) {
+    if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
         for (int j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == BAN_STONE) {
                 pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
@@ -1333,7 +1333,7 @@ bool Game::updateScence(Position &p)
     }
 
     // 走棋阶段清除禁子点
-    if (rule.hasBannedLocations && p.get_phase() != PHASE_PLACING) {
+    if (rule.hasBannedLocations && p.get_phase() != Phase::placing) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();
@@ -1482,7 +1482,7 @@ inline std::string Game::char_to_string(char ch)
 
 void Game::appendGameOverReasonToCmdlist()
 {
-    if (position.phase != PHASE_GAMEOVER) {
+    if (position.phase != Phase::gameOver) {
         return;
     }
 
@@ -1536,12 +1536,12 @@ void Game::setTips()
     
 
     switch (p.phase) {
-    case PHASE_READY:
+    case Phase::ready:
         tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceCountInHand[BLACK]) + "子" +
             "  比分 " + to_string(p.score[BLACK]) + ":" + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);
         break;
 
-    case PHASE_PLACING:
+    case Phase::placing:
         if (p.action == ACTION_PLACE) {
             tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceCountInHand[p.sideToMove]) + "子";
         } else if (p.action == ACTION_REMOVE) {
@@ -1549,7 +1549,7 @@ void Game::setTips()
         }
         break;
 
-    case PHASE_MOVING:
+    case Phase::moving:
         if (p.action == ACTION_PLACE || p.action == ACTION_SELECT) {
             tips = "轮到" + turnStr + "选子移动";
         } else if (p.action == ACTION_REMOVE) {
@@ -1557,7 +1557,7 @@ void Game::setTips()
         }
         break;
 
-    case PHASE_GAMEOVER:
+    case Phase::gameOver:
         appendGameOverReasonToCmdlist();
 
         scoreStr = "比分 " + to_string(p.score[BLACK]) + " : " + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);        

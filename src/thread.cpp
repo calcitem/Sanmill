@@ -272,13 +272,13 @@ void Thread::analyze(Color c)
     cout << std::dec;
 
     switch (p->get_phase()) {
-    case PHASE_PLACING:
+    case Phase::placing:
         cout << "摆子阶段" << endl;
         break;
-    case PHASE_MOVING:
+    case Phase::moving:
         cout << "走子阶段" << endl;
         break;
-    case PHASE_GAMEOVER:
+    case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "和棋" << endl;
             ndraw += 0.5;   // TODO
@@ -291,7 +291,7 @@ void Thread::analyze(Color c)
         }
         goto out;
         break;
-    case PHASE_NONE:
+    case Phase::none:
         cout << "无棋局" << endl;
         break;
     default:
@@ -438,7 +438,7 @@ Depth Thread::adjustDepth()
 
     const Depth flyingDepth = 9;
 
-    if (rootPos->phase & PHASE_PLACING) {
+    if (rootPos->phase == Phase::placing) {
         int index = rule.nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE);
 
         if (rule.nTotalPiecesEachSide == 12) {
@@ -450,7 +450,7 @@ Depth Thread::adjustDepth()
         }
     }
 
-    if (rootPos->phase & PHASE_MOVING) {
+    if (rootPos->phase == Phase::moving) {
         int pb = rootPos->count<ON_BOARD>(BLACK);
         int pw = rootPos->count<ON_BOARD>(WHITE);
 

@@ -238,19 +238,19 @@ Position &Position::set(const string &fenStr, Thread *th)
 
     switch (token) {
     case 'r':
-        phase = PHASE_READY;
+        phase = Phase::ready;
         break;
     case 'p':
-        phase = PHASE_PLACING;
+        phase = Phase::placing;
         break;
     case 'm':
-        phase = PHASE_MOVING;
+        phase = Phase::moving;
         break;
     case 'o':
-        phase = PHASE_GAMEOVER;
+        phase = Phase::gameOver;
         break;
     default:
-        phase = PHASE_NONE;
+        phase = Phase::none;
     }
 
     // 4. Action
@@ -320,19 +320,19 @@ const string Position::fen() const
 
     // Phrase
     switch (phase) {
-    case PHASE_NONE:
+    case Phase::none:
         ss << "n";
         break;
-    case PHASE_READY:
+    case Phase::ready:
         ss << "r";
         break;
-    case PHASE_PLACING:
+    case Phase::placing:
         ss << "p";
         break;
-    case PHASE_MOVING:
+    case Phase::moving:
         ss << "m";
         break;
-    case PHASE_GAMEOVER:
+    case Phase::gameOver:
         ss << "o";
         break;
     default:
@@ -384,7 +384,7 @@ bool Position::legal(Move m) const
         return false;   // TODO: Same with is_ok(m)
     }
 
-    if (phase == PHASE_MOVING && type_of(move) != MOVETYPE_REMOVE) {
+    if (phase == Phase::moving && type_of(move) != MOVETYPE_REMOVE) {
         if (color_of(moved_piece(m)) != us) {
             return false;
         }
@@ -567,7 +567,7 @@ Key Position::key_after(Move m) const
     if (mt == MOVETYPE_REMOVE) {
         k ^= Zobrist::psq[~side_to_move()][s];
 
-        if (rule.hasBannedLocations && phase == PHASE_PLACING) {
+        if (rule.hasBannedLocations && phase == Phase::placing) {
             k ^= Zobrist::psq[BAN][s];
         }
 
@@ -714,7 +714,7 @@ bool Position::reset()
     gamePly = 0;
     st.rule50 = 0;
 
-    phase = PHASE_READY;
+    phase = Phase::ready;
     set_side_to_move(BLACK);
     action = ACTION_PLACE;
 
@@ -762,14 +762,14 @@ bool Position::start()
     gameoverReason = NO_REASON;
 
     switch (phase) {
-    case PHASE_PLACING:
-    case PHASE_MOVING:
+    case Phase::placing:
+    case Phase::moving:
         return false;
-    case PHASE_GAMEOVER:
+    case Phase::gameOver:
         reset();
         [[fallthrough]];
-    case PHASE_READY:
-        phase = PHASE_PLACING;
+    case Phase::ready:
+        phase = Phase::placing;
         return true;
     default:
         return false;
@@ -781,17 +781,17 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     Piece piece = NO_PIECE;
     int us = sideToMove;
 
-    if (phase == PHASE_GAMEOVER ||
+    if (phase == Phase::gameOver ||
         action != ACTION_PLACE ||
         !(SQ_BEGIN <= s && s < SQ_END) || board[s]) {
         return false;
     }
 
-    if (phase == PHASE_READY) {
+    if (phase == Phase::ready) {
         start();
     }
 
-    if (phase == PHASE_PLACING) {
+    if (phase == Phase::placing) {
         piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
         pieceCountInHand[us]--;
         pieceCountOnBoard[us]++;
@@ -818,7 +818,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                     return true;
                 }
 
-                phase = PHASE_MOVING;
+                phase = Phase::moving;
                 action = ACTION_SELECT;
 
                 if (rule.hasBannedLocations) {
@@ -841,7 +841,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             action = ACTION_REMOVE;
         } 
 
-    } else if (phase == PHASE_MOVING) {
+    } else if (phase == Phase::moving) {
 
         if (check_gameover_condition()) {
             return true;
@@ -903,7 +903,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
 bool Position::remove_piece(Square s, bool updateCmdlist)
 {
-    if (phase & PHASE_NOTPLAYING)
+    if (phase == Phase::ready || phase == Phase::gameOver)
         return false;
 
     if (action != ACTION_REMOVE)
@@ -924,7 +924,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
 
     revert_key(s);
 
-    if (rule.hasBannedLocations && phase == PHASE_PLACING) {
+    if (rule.hasBannedLocations && phase == Phase::placing) {
         // Remove and put ban
         Piece pc = board[s];
 
@@ -967,9 +967,9 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         return true;
     }
 
-    if (phase == PHASE_PLACING) {
+    if (phase == Phase::placing) {
         if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
-            phase = PHASE_MOVING;
+            phase = Phase::moving;
             action = ACTION_SELECT;
 
             if (rule.hasBannedLocations) {
@@ -996,7 +996,7 @@ check:
 
 bool Position::select_piece(Square s)
 {
-    if (phase != PHASE_MOVING)
+    if (phase != Phase::moving)
         return false;
 
     if (action != ACTION_SELECT && action != ACTION_PLACE)
@@ -1014,8 +1014,9 @@ bool Position::select_piece(Square s)
 
 bool Position::resign(Color loser)
 {
-    if (phase & PHASE_NOTPLAYING ||
-        phase == PHASE_NONE) {
+    if (phase == Phase::ready ||
+        phase == Phase::gameOver ||
+        phase == Phase::none) {
         return false;
     }
 
@@ -1072,7 +1073,7 @@ bool Position::command(const char *cmd)
     }
 
     if (!strcmp(cmd, "draw")) {
-        phase = PHASE_GAMEOVER;
+        phase = Phase::gameOver;
         winner = DRAW;
         score_draw++;
         gameoverReason = DRAW_REASON_THREEFOLD_REPETITION;
@@ -1091,14 +1092,14 @@ Color Position::get_winner() const
 
 inline void Position::set_gameover(Color w, GameOverReason reason)
 {
-    phase = PHASE_GAMEOVER;
+    phase = Phase::gameOver;
     gameoverReason = reason;
     winner = w;
 }
 
 void Position::update_score()
 {
-    if (phase == PHASE_GAMEOVER) {
+    if (phase == Phase::gameOver) {
         if (winner == DRAW) {
             score_draw++;
             return;
@@ -1110,14 +1111,14 @@ void Position::update_score()
 
 bool Position::check_gameover_condition()
 {
-    if (phase & PHASE_NOTPLAYING) {
+    if (phase == Phase::ready || phase == Phase::gameOver) {
         return true;
     }
 
     if (rule.maxStepsLedToDraw > 0 &&
         st.rule50 > rule.maxStepsLedToDraw) {
         winner = DRAW;
-        phase = PHASE_GAMEOVER;
+        phase = Phase::gameOver;
         gameoverReason = DRAW_REASON_RULE_50;
         return true;
     }
@@ -1132,7 +1133,7 @@ bool Position::check_gameover_condition()
         return true;
     }
 
-    if (phase == PHASE_MOVING && action == ACTION_SELECT && is_all_surrounded()) {
+    if (phase == Phase::moving && action == ACTION_SELECT && is_all_surrounded()) {
         if (rule.isLoseButNotChangeSideWhenNoWay) {
             set_gameover(~sideToMove, LOSE_REASON_NO_WAY);
             return true;

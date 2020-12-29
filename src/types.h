@@ -140,15 +140,13 @@ enum Color : uint8_t
     NOBODY = 8
 };
 
-enum Phase : uint16_t
+enum class Phase : uint16_t
 {
-    PHASE_NONE = 0,
-    PHASE_READY = 1,
-    PHASE_PLACING = 1 << 1,
-    PHASE_MOVING = 1 << 2,
-    PHASE_GAMEOVER = 1 << 3,
-    PHASE_PLAYING = PHASE_PLACING | PHASE_MOVING,
-    PHASE_NOTPLAYING = PHASE_READY | PHASE_GAMEOVER,
+    none,
+    ready,
+    placing,
+    moving,
+    gameOver
 };
 
 enum Action : uint16_t

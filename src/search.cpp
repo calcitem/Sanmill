@@ -107,7 +107,7 @@ int Thread::search()
 #endif
 
 #ifdef THREEFOLD_REPETITION
-    if (rootPos->get_phase() == PHASE_MOVING) {
+    if (rootPos->get_phase() == Phase::moving) {
         Key key = rootPos->key();
 
         for (auto i : moveHistory) {
@@ -130,7 +130,7 @@ int Thread::search()
         assert(moveHistory.size() < 256);
     }
 
-    if (rootPos->get_phase() == PHASE_PLACING) {
+    if (rootPos->get_phase() == Phase::placing) {
         moveHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
@@ -294,14 +294,14 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
 #if 0
-    if (position->phase == PHASE_PLACING && depth == 1 && pos->pieceCountNeedRemove > 0) {
+    if (position->phase == Phase::placing && depth == 1 && pos->pieceCountNeedRemove > 0) {
         depth--;
     }
 #endif
 
     // Check for aborted search
     // TODO: and immediate draw
-    if (unlikely(pos->phase == PHASE_GAMEOVER) ||   // TODO: Deal with hash
+    if (unlikely(pos->phase == Phase::gameOver) ||   // TODO: Deal with hash
         depth <= 0 ||
         Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
