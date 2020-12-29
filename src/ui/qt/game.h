@@ -46,33 +46,33 @@
 
 using namespace std;
 
-enum sound_t
+enum class GameSound
 {
-    GAME_SOUND_NONE,
-    GAME_SOUND_BLOCK_MILL,
-    GAME_SOUND_REMOVE,
-    GAME_SOUND_SELECT,
-    GAME_SOUND_DRAW,
-    GAME_SOUND_DROG,
-    GAME_SOUND_BANNED,
-    GAME_SOUND_GAME_START,
-    GAME_SOUND_RESIGN,
-    GAME_SOUND_LOSS,
-    GAME_SOUND_MILL,
-    GAME_SOUND_MILL_REPEATLY,
-    GAME_SOUND_MOVE,
-    GAME_SOUND_NEW_GAME,
-    GAME_SOUND_NEXT_MILL,
-    GAME_SOUND_OBVIOUS,
-    GAME_SOUND_REPEAT_THREE_DRAW,
-    GAME_SOUND_SIDE,
-    GAME_SOUND_STAR,
-    GAME_SOUND_SUFFOCATED,
-    GAME_SOUND_VANTAGE,
-    GAME_SOUND_VERY,
-    GAME_SOUND_WARNING,
-    GAME_SOUND_WIN,
-    GAME_SOUND_WIN_AND_LOSSES_ARE_OBVIOUS
+    none,
+    blockMill,
+    remove,
+    select,
+    draw,
+    drog,
+    banned,
+    gameStart,
+    resign,
+    loss,
+    mill,
+    millRepeatly,
+    move,
+    newGame,
+    nextMill,
+    obvious,
+    repeatThreeDraw,
+    side,
+    star,
+    suffocated,
+    vantage,
+    very,
+    warning,
+    win,
+    winAndLossesAreObvious
 };
 
 class Game : public QObject
@@ -227,7 +227,7 @@ public slots:
     void setSound(bool arg = true);
 
     // 播放声音
-    static void playSound(sound_t soundType, Color c);
+    static void playSound(GameSound soundType, Color c);
 
     // 是否必败时认输
     void setResignIfMostLose(bool enabled);
