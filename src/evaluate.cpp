@@ -81,11 +81,11 @@ Value Evaluation<T>::value()
         value += nPiecesOnBoardDiff * VALUE_EACH_PIECE_ONBOARD;
 
         switch (pos.get_action()) {
-        case Act::select:
-        case Act::place:
+        case Action::select:
+        case Action::place:
             break;
 
-        case Act::remove:
+        case Action::remove:
             remainingPiecesNeedRemove = (pos.side_to_move() == BLACK) ?
                 pos.remaining_pieces_need_remove() : -(pos.remaining_pieces_need_remove());
             value += remainingPiecesNeedRemove * VALUE_EACH_PIECE_PLACING_NEEDREMOVE;
@@ -105,11 +105,11 @@ Value Evaluation<T>::value()
 #endif  /* EVALUATE_MOBILITY */
 
         switch (pos.get_action()) {
-        case Act::select:
-        case Act::place:
+        case Action::select:
+        case Action::place:
             break;
 
-        case Act::remove:
+        case Action::remove:
             remainingPiecesNeedRemove = (pos.side_to_move() == BLACK) ?
                 pos.remaining_pieces_need_remove() : -(pos.remaining_pieces_need_remove());
             value += remainingPiecesNeedRemove * VALUE_EACH_PIECE_MOVING_NEEDREMOVE;
@@ -127,7 +127,7 @@ Value Evaluation<T>::value()
             } else {
                 value = VALUE_DRAW;
             }
-        } else if (pos.get_action() == Act::select &&
+        } else if (pos.get_action() == Action::select &&
                    pos.is_all_surrounded() &&
                    rule.isLoseButNotChangeSideWhenNoWay) {
             Value delta = pos.side_to_move() == BLACK ? -VALUE_MATE : VALUE_MATE;

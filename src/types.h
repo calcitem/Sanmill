@@ -149,12 +149,21 @@ enum class Phase : uint16_t
     gameOver
 };
 
-enum class Act : uint16_t
+// enum class that represents an action that one player can take when it's
+// his turn at the board. The can be on of the following:
+//   - select a piece on the board;
+//   - place a piece on the board;
+//   - move a piece on the board:
+//       - slide a piece between two adjacent locations;
+//       - 'jump' a piece to any empty location if the player has less than
+//         three pieces and flyingAllowed is |true|;
+//   - remove an opponent's piece after successfully closing a mill;
+enum class Action : uint16_t
 {
-    none = 0x0000,
-    select = 0x0100,
-    place = 0x0200,
-    remove = 0x0400
+    none,
+    select,
+    place,
+    remove
 };
 
 enum class GameOverReason

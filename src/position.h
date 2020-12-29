@@ -106,7 +106,7 @@ public:
     Piece *get_board();
     Square current_square() const;
     enum Phase get_phase() const;
-    enum Act get_action() const;
+    enum Action get_action() const;
     const char *cmd_line() const;
 
     int get_mobility_diff(bool includeFobidden);
@@ -192,7 +192,7 @@ public:
     GameOverReason gameOverReason { GameOverReason::noReason };
 
     enum Phase phase {Phase::none};
-    enum Act action;
+    enum Action action;
 
     int score[COLOR_NB] { 0 };
     int score_draw { 0 };
@@ -370,7 +370,7 @@ inline enum Phase Position::get_phase() const
     return phase;
 }
 
-inline enum Act Position::get_action() const
+inline enum Action Position::get_action() const
 {
     return action;
 }

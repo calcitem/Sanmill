@@ -197,7 +197,7 @@ Position &Position::set(const string &fenStr, Thread *th)
 
        3) Phrase.
 
-       4) Act.
+       4) Action.
 
        5) Black on board/Black in hand/White on board/White in hand/need to remove
 
@@ -253,22 +253,22 @@ Position &Position::set(const string &fenStr, Thread *th)
         phase = Phase::none;
     }
 
-    // 4. Act
+    // 4. Action
     ss >> token;
     ss >> token;
 
     switch (token) {
     case 'p':
-        action = Act::place;
+        action = Action::place;
         break;
     case 's':
-        action = Act::select;
+        action = Action::select;
         break;
     case 'r':
-        action = Act::remove;
+        action = Action::remove;
         break;
     default:
-        action = Act::none;
+        action = Action::none;
     }
     
     // 5. Black on board / Black in hand / White on board / White in hand / need to remove
@@ -342,15 +342,15 @@ const string Position::fen() const
 
     ss << " ";
 
-    // Act
+    // Action
     switch (action) {
-    case Act::place:
+    case Action::place:
         ss << "p";
         break;
-    case Act::select:
+    case Action::select:
         ss << "s";
         break;
-    case Act::remove:
+    case Action::remove:
         ss << "r";
         break;
     default:
@@ -716,7 +716,7 @@ bool Position::reset()
 
     phase = Phase::ready;
     set_side_to_move(BLACK);
-    action = Act::place;
+    action = Action::place;
 
     winner = NOBODY;
     gameOverReason = GameOverReason::noReason;
@@ -782,7 +782,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     int us = sideToMove;
 
     if (phase == Phase::gameOver ||
-        action != Act::place ||
+        action != Action::place ||
         !(SQ_BEGIN <= s && s < SQ_END) || board[s]) {
         return false;
     }
@@ -819,7 +819,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 }
 
                 phase = Phase::moving;
-                action = Act::select;
+                action = Action::select;
 
                 if (rule.hasBannedLocations) {
                     remove_ban_stones();
@@ -838,7 +838,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         } else {
             remainingPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             update_key_misc();
-            action = Act::remove;
+            action = Action::remove;
         } 
 
     } else if (phase == Phase::moving) {
@@ -883,7 +883,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         // midgame
         if (n == 0) {
-            action = Act::select;
+            action = Action::select;
             change_side_to_move();
 
             if (check_if_game_is_over()) {
@@ -892,7 +892,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         } else {
             remainingPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             update_key_misc();
-            action = Act::remove;
+            action = Action::remove;
         }
     } else {
         assert(0);
@@ -906,7 +906,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (phase == Phase::ready || phase == Phase::gameOver)
         return false;
 
-    if (action != Act::remove)
+    if (action != Action::remove)
         return false;
 
     if (remainingPiecesNeedRemove <= 0)
@@ -970,7 +970,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (phase == Phase::placing) {
         if (remainingPiecesInHand[BLACK] == 0 && remainingPiecesInHand[WHITE] == 0) {
             phase = Phase::moving;
-            action = Act::select;
+            action = Action::select;
 
             if (rule.hasBannedLocations) {
                 remove_ban_stones();
@@ -980,10 +980,10 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
                 goto check;
             }
         } else {
-            action = Act::place;
+            action = Action::place;
         }
     } else {
-        action = Act::select;
+        action = Action::select;
     }
 
     change_side_to_move();
@@ -999,12 +999,12 @@ bool Position::select_piece(Square s)
     if (phase != Phase::moving)
         return false;
 
-    if (action != Act::select && action != Act::place)
+    if (action != Action::select && action != Action::place)
         return false;
 
     if (board[s] & make_piece(sideToMove)) {
         currentSquare = s;
-        action = Act::place;
+        action = Action::place;
 
         return true;
     }
@@ -1133,7 +1133,7 @@ bool Position::check_if_game_is_over()
         return true;
     }
 
-    if (phase == Phase::moving && action == Act::select && is_all_surrounded()) {
+    if (phase == Phase::moving && action == Action::select && is_all_surrounded()) {
         if (rule.isLoseButNotChangeSideWhenNoWay) {
             set_gameover(~sideToMove, GameOverReason::loseReasonNoWay);
             return true;

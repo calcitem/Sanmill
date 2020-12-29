@@ -851,9 +851,9 @@ bool Game::actionPiece(QPointF pos)
     QGraphicsItem *item = scene.itemAt(pos, QTransform());
 
     switch (position.get_action()) {
-    case Act::place:
+    case Action::place:
         if (position.put_piece(file, rank)) { 
-            if (position.get_action() == Act::remove) {
+            if (position.get_action() == Action::remove) {
                 // 播放成三音效
                 playSound(GameSound::mill, position.side_to_move());
             } else {
@@ -867,7 +867,7 @@ bool Game::actionPiece(QPointF pos)
      // 如果移子不成功，尝试重新选子，这里不break
         [[fallthrough]];
 
-    case Act::select:
+    case Action::select:
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
@@ -881,7 +881,7 @@ bool Game::actionPiece(QPointF pos)
         }
         break;
 
-    case Act::remove:
+    case Action::remove:
         if (position.remove_piece(file, rank)) {
             // 播放音效
             playSound(GameSound::remove, position.side_to_move());
@@ -1001,11 +1001,11 @@ bool Game::command(const string &cmd, bool update /* = true */)
     GameSound soundType = GameSound::none;
 
     switch (position.get_action()) {
-    case Act::select:
-    case Act::place:
+    case Action::select:
+    case Action::place:
         soundType = GameSound::drog;
         break;
-    case Act::remove:
+    case Action::remove:
         soundType = GameSound::remove;
         break;
     default:
@@ -1028,7 +1028,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     sideToMove = position.side_to_move();
 
 #ifndef TRAINING_MODE
-    if (soundType == GameSound::drog && position.get_action() == Act::remove) {
+    if (soundType == GameSound::drog && position.get_action() == Action::remove) {
         soundType = GameSound::mill;
     }
 
@@ -1542,17 +1542,17 @@ void Game::setTips()
         break;
 
     case Phase::placing:
-        if (p.action == Act::place) {
+        if (p.action == Action::place) {
             tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.remainingPiecesInHand[p.sideToMove]) + "子";
-        } else if (p.action == Act::remove) {
+        } else if (p.action == Action::remove) {
             tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.remainingPiecesNeedRemove) + "子";
         }
         break;
 
     case Phase::moving:
-        if (p.action == Act::place || p.action == Act::select) {
+        if (p.action == Action::place || p.action == Action::select) {
             tips = "轮到" + turnStr + "选子移动";
-        } else if (p.action == Act::remove) {
+        } else if (p.action == Action::remove) {
             tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.remainingPiecesNeedRemove) + "子";
         }
         break;
