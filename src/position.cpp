@@ -273,9 +273,9 @@ Position &Position::set(const string &fenStr, Thread *th)
     
     // 5. Black on board / Black in hand / White on board / White in hand / need to remove
     ss >> std::skipws
-        >> pieceCountOnBoard[BLACK] >> pieceCountInHand[BLACK]
-        >> pieceCountOnBoard[WHITE] >> pieceCountInHand[WHITE]
-        >> pieceCountNeedRemove;
+        >> remainingPiecesOnBoard[BLACK] >> remainingPiecesInHand[BLACK]
+        >> remainingPiecesOnBoard[WHITE] >> remainingPiecesInHand[WHITE]
+        >> remainingPiecesNeedRemove;
 
 
     // 6-7. Halfmove clock and fullmove number
@@ -360,9 +360,9 @@ const string Position::fen() const
 
     ss << " ";
 
-    ss << pieceCountOnBoard[BLACK] << " " << pieceCountInHand[BLACK] << " "
-        << pieceCountOnBoard[WHITE] << " " << pieceCountInHand[WHITE] << " "
-        << pieceCountNeedRemove << " ";
+    ss << remainingPiecesOnBoard[BLACK] << " " << remainingPiecesInHand[BLACK] << " "
+        << remainingPiecesOnBoard[WHITE] << " " << remainingPiecesInHand[WHITE] << " "
+        << remainingPiecesNeedRemove << " ";
 
     ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
@@ -535,9 +535,9 @@ void Position::undo_move(Move m)
     }
 
     // TODO: Adjust
-    //int pieceCountInHand[COLOR_NB]{ 0 };
-    //int pieceCountOnBoard[COLOR_NB]{ 0 };
-    //int pieceCountNeedRemove{ 0 };
+    //int remainingPiecesInHand[COLOR_NB]{ 0 };
+    //int remainingPiecesOnBoard[COLOR_NB]{ 0 };
+    //int remainingPiecesNeedRemove{ 0 };
 
     // TODO End
 
@@ -668,15 +668,15 @@ bool Position::pos_is_ok() const
 
 int Position::pieces_on_board_count()
 {
-    pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
+    remainingPiecesOnBoard[BLACK] = remainingPiecesOnBoard[WHITE] = 0;
 
     for (int f = 1; f < FILE_NB + 2; f++) {
         for (int r = 0; r < RANK_NB; r++) {
             Square s = static_cast<Square>(f * RANK_NB + r);
             if (board[s] & B_STONE) {
-                pieceCountOnBoard[BLACK]++;
+                remainingPiecesOnBoard[BLACK]++;
             } else if (board[s] & W_STONE) {
-                pieceCountOnBoard[WHITE]++;
+                remainingPiecesOnBoard[WHITE]++;
             }
 #if 0
             else if (board[s] & BAN_STONE) {
@@ -685,20 +685,20 @@ int Position::pieces_on_board_count()
         }
     }
 
-    if (pieceCountOnBoard[BLACK] > rule.nTotalPiecesEachSide ||
-        pieceCountOnBoard[WHITE] > rule.nTotalPiecesEachSide) {
+    if (remainingPiecesOnBoard[BLACK] > rule.nTotalPiecesEachSide ||
+        remainingPiecesOnBoard[WHITE] > rule.nTotalPiecesEachSide) {
         return -1;
     }
 
-    return pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE];
+    return remainingPiecesOnBoard[BLACK] + remainingPiecesOnBoard[WHITE];
 }
 
 int Position::pieces_in_hand_count()
 {
-    pieceCountInHand[BLACK] = rule.nTotalPiecesEachSide - pieceCountOnBoard[BLACK];
-    pieceCountInHand[WHITE] = rule.nTotalPiecesEachSide - pieceCountOnBoard[WHITE];
+    remainingPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - remainingPiecesOnBoard[BLACK];
+    remainingPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - remainingPiecesOnBoard[WHITE];
 
-    return pieceCountInHand[BLACK] + pieceCountInHand[WHITE];
+    return remainingPiecesInHand[BLACK] + remainingPiecesInHand[WHITE];
 }
 
 #ifdef THREEFOLD_REPETITION
@@ -726,9 +726,9 @@ bool Position::reset()
     memset(byTypeBB, 0, sizeof(byTypeBB));
     memset(byColorBB, 0, sizeof(byColorBB));
 
-    pieceCountOnBoard[BLACK] = pieceCountOnBoard[WHITE] = 0;
-    pieceCountInHand[BLACK] = pieceCountInHand[WHITE] = rule.nTotalPiecesEachSide;
-    pieceCountNeedRemove = 0;
+    remainingPiecesOnBoard[BLACK] = remainingPiecesOnBoard[WHITE] = 0;
+    remainingPiecesInHand[BLACK] = remainingPiecesInHand[WHITE] = rule.nTotalPiecesEachSide;
+    remainingPiecesNeedRemove = 0;
     millListSize = 0;
 
     MoveList<LEGAL>::create();
@@ -792,9 +792,9 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     }
 
     if (phase == Phase::placing) {
-        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.nTotalPiecesEachSide - pieceCountInHand[us]);
-        pieceCountInHand[us]--;
-        pieceCountOnBoard[us]++;
+        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.nTotalPiecesEachSide - remainingPiecesInHand[us]);
+        remainingPiecesInHand[us]--;
+        remainingPiecesOnBoard[us]++;
 
         Piece pc = board[s] = piece;
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
@@ -811,9 +811,9 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         int n = add_mills(currentSquare);
 
         if (n == 0) {
-            assert(pieceCountInHand[BLACK] >= 0 && pieceCountInHand[WHITE] >= 0);     
+            assert(remainingPiecesInHand[BLACK] >= 0 && remainingPiecesInHand[WHITE] >= 0);     
 
-            if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
+            if (remainingPiecesInHand[BLACK] == 0 && remainingPiecesInHand[WHITE] == 0) {
                 if (check_if_game_is_over()) {
                     return true;
                 }
@@ -836,7 +836,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 change_side_to_move();
             }
         } else {
-            pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            remainingPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             update_key_misc();
             action = Act::remove;
         } 
@@ -848,7 +848,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         }
 
         // if illegal
-        if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
+        if (remainingPiecesOnBoard[sideToMove] > rule.nPiecesAtLeast ||
             !rule.flyingAllowed) {
             if ((square_bb(s) & MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
                 return false;
@@ -890,7 +890,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 return true;
             }
         } else {
-            pieceCountNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            remainingPiecesNeedRemove = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
             update_key_misc();
             action = Act::remove;
         }
@@ -909,7 +909,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (action != Act::remove)
         return false;
 
-    if (pieceCountNeedRemove <= 0)
+    if (remainingPiecesNeedRemove <= 0)
         return false;
 
     // if piece is not their
@@ -951,24 +951,24 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         st.rule50 = 0;     // TODO: Need to move out?
     }
 
-    pieceCountOnBoard[them]--;
+    remainingPiecesOnBoard[them]--;
 
-    if (pieceCountOnBoard[them] + pieceCountInHand[them] < rule.nPiecesAtLeast) {
+    if (remainingPiecesOnBoard[them] + remainingPiecesInHand[them] < rule.nPiecesAtLeast) {
         set_gameover(sideToMove, GameOverReason::loseReasonlessThanThree);
         return true;
     }
 
     currentSquare = SQ_0;
 
-    pieceCountNeedRemove--;
+    remainingPiecesNeedRemove--;
     update_key_misc();
 
-    if (pieceCountNeedRemove > 0) {
+    if (remainingPiecesNeedRemove > 0) {
         return true;
     }
 
     if (phase == Phase::placing) {
-        if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
+        if (remainingPiecesInHand[BLACK] == 0 && remainingPiecesInHand[WHITE] == 0) {
             phase = Phase::moving;
             action = Act::select;
 
@@ -1123,7 +1123,7 @@ bool Position::check_if_game_is_over()
         return true;
     }
 
-    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= EFFECTIVE_SQUARE_NB) {
+    if (remainingPiecesOnBoard[BLACK] + remainingPiecesOnBoard[WHITE] >= EFFECTIVE_SQUARE_NB) {
         if (rule.isBlackLoseButNotDrawWhenBoardFull) {
             set_gameover(WHITE, GameOverReason::loseReasonBoardIsFull);
         } else {
@@ -1227,7 +1227,7 @@ Key Position::update_key_misc()
 {
     st.key = st.key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
-    st.key |= static_cast<Key>(pieceCountNeedRemove) << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
+    st.key |= static_cast<Key>(remainingPiecesNeedRemove) << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
     return st.key;
 }
@@ -1486,7 +1486,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
 
     int n = 0;
 
-    if (pieceCountOnBoard[sideToMove] > rule.nPiecesAtLeast ||
+    if (remainingPiecesOnBoard[sideToMove] > rule.nPiecesAtLeast ||
         !rule.flyingAllowed) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
@@ -1537,11 +1537,11 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
 bool Position::is_all_surrounded() const
 {
     // Full
-    if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= EFFECTIVE_SQUARE_NB)
+    if (remainingPiecesOnBoard[BLACK] + remainingPiecesOnBoard[WHITE] >= EFFECTIVE_SQUARE_NB)
         return true;
 
     // Can fly
-    if (pieceCountOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
+    if (remainingPiecesOnBoard[sideToMove] <= rule.nPiecesAtLeast &&
         rule.flyingAllowed) {
         return false;
     }

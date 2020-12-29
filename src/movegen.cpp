@@ -60,7 +60,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             continue;
         }
 
-        if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
+        if (pos.remaining_pieces_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
             !rule.flyingAllowed) {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
                 to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
