@@ -55,7 +55,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
     ExtMove *cur = moveList;
 
     // move piece that location weak first
-    for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
+    for (auto i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
         from = MoveList<LEGAL>::movePriorityList[i];
 
         if (!pos.select_piece(from)) {
@@ -64,7 +64,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 
         if (pos.pieces_count_on_board(pos.side_to_move()) > rule.nPiecesAtLeast ||
             !rule.allowFlyWhenRemainThreePieces) {
-            for (int direction = MD_BEGIN; direction < MD_NB; direction++) {
+            for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
                 to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
                 if (to && !pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
@@ -96,7 +96,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     ExtMove *cur = moveList;
 
     if (pos.is_all_in_mills(them)) {
-        for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
+        for (auto i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
             s = MoveList<LEGAL>::movePriorityList[i];
             if (pos.get_board()[s] & make_piece(them)) {
                 *cur++ = (Move)-s;
@@ -106,7 +106,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     }
 
     // not is all in mills
-    for (int i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
+    for (auto i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
         s = MoveList<LEGAL>::movePriorityList[i];
         if (pos.get_board()[s] & make_piece(them)) {
             if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
