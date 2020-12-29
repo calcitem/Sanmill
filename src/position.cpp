@@ -1457,12 +1457,10 @@ int Position::add_mills(Square s)
     Bitboard bc = byColorBB[color_on(s)];
     Bitboard *mt = millTableBB[s];
 
-    for (int i = 0; i < 3; i++) {
-        // no mill
-        if (((bc & mt[i]) != mt[i])) {
-            continue;
-        }
-        n++;
+    for (auto i = 0; i < LD_NB; ++i) {
+        if (((bc & mt[i]) == mt[i])) {
+            n++;
+        }        
     }
 
     return n;
@@ -1549,11 +1547,8 @@ bool Position::is_all_surrounded() const
     }
 
     for (Square s = SQ_BEGIN; s < SQ_END; s = (Square)(s + 1)) {
-        if (!(sideToMove & color_on(s))) {
-            continue;
-        }
-
-        if ((byTypeBB[ALL_PIECES] & MoveList<LEGAL>::adjacentSquaresBB[s]) != MoveList<LEGAL>::adjacentSquaresBB[s]) {
+        if ((sideToMove & color_on(s)) &&
+            (byTypeBB[ALL_PIECES] & MoveList<LEGAL>::adjacentSquaresBB[s]) != MoveList<LEGAL>::adjacentSquaresBB[s]) {
             return false;
         }
     }

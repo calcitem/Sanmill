@@ -36,11 +36,9 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
     ExtMove *cur = moveList;
 
     for (auto s : MoveList<LEGAL>::movePriorityList) {
-        if (pos.get_board()[s]) {
-            continue;
-        }
-
-        *cur++ = (Move)s;
+        if (!pos.get_board()[s]) {
+            *cur++ = (Move)s;
+        }        
     }
 
     return cur;
