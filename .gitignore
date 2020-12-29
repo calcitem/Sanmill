@@ -339,3 +339,7 @@ enc_temp_folder
 
 # Executable files
 src/fishmill
+
+# Sourcetrail files
+*.srctrl*
+compile_commands.json
