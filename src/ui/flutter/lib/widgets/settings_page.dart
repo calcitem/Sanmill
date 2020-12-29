@@ -100,7 +100,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  switchWhoMovesFirst(bool value) async {
+  setWhoMovesFirst(bool value) async {
     setState(() {
       Config.whoMovesFirst = value == true ? PlayerType.human : PlayerType.AI;
     });
@@ -108,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchIsAutoRestart(bool value) async {
+  setIsAutoRestart(bool value) async {
     setState(() {
       Config.isAutoRestart = value;
     });
@@ -116,7 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchIsAutoChangeFirstMove(bool value) async {
+  setIsAutoChangeFirstMove(bool value) async {
     setState(() {
       Config.isAutoChangeFirstMove = value;
     });
@@ -124,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchResignIfMostLose(bool value) async {
+  setResignIfMostLose(bool value) async {
     setState(() {
       Config.resignIfMostLose = value;
     });
@@ -132,7 +132,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchShufflingEnabled(bool value) async {
+  setShufflingEnabled(bool value) async {
     setState(() {
       Config.shufflingEnabled = value;
     });
@@ -140,7 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchLearnEndgame(bool value) async {
+  setLearnEndgame(bool value) async {
     setState(() {
       Config.learnEndgame = value;
     });
@@ -148,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchIdsEnabled(bool value) async {
+  setIdsEnabled(bool value) async {
     setState(() {
       Config.idsEnabled = value;
     });
@@ -156,7 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchDepthExtension(bool value) async {
+  setDepthExtension(bool value) async {
     setState(() {
       Config.depthExtension = value;
     });
@@ -164,7 +164,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchOpeningBook(bool value) async {
+  setOpeningBook(bool value) async {
     setState(() {
       Config.openingBook = value;
     });
@@ -172,7 +172,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchMusic(bool value) async {
+  setMusic(bool value) async {
     //
     setState(() {
       Config.bgmEnabled = value;
@@ -187,7 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchTone(bool value) async {
+  setTone(bool value) async {
     //
     setState(() {
       Config.toneEnabled = value;
@@ -257,7 +257,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchHasObliqueLines(bool value) async {
+  setHasObliqueLines(bool value) async {
     //
     setState(() {
       rule.hasObliqueLines = Config.hasObliqueLines = value;
@@ -266,7 +266,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchHasBannedLocations(bool value) async {
+  setHasBannedLocations(bool value) async {
     //
     setState(() {
       rule.hasBannedLocations = Config.hasBannedLocations = value;
@@ -275,7 +275,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchIsDefenderMoveFirst(bool value) async {
+  setIsDefenderMoveFirst(bool value) async {
     //
     setState(() {
       rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
@@ -284,7 +284,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
+  setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
     //
     setState(() {
       rule.allowRemoveMultiPiecesWhenCloseMultiMill =
@@ -294,7 +294,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchAllowRemovePieceInMill(bool value) async {
+  setAllowRemovePieceInMill(bool value) async {
     //
     setState(() {
       rule.allowRemovePieceInMill = Config.allowRemovePieceInMill = value;
@@ -303,7 +303,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
+  setIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
     //
     setState(() {
       rule.isBlackLoseButNotDrawWhenBoardFull =
@@ -313,7 +313,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchIsLoseButNotChangeSideWhenNoWay(bool value) async {
+  setIsLoseButNotChangeSideWhenNoWay(bool value) async {
     //
     setState(() {
       rule.isLoseButNotChangeSideWhenNoWay =
@@ -323,7 +323,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchAllowFlyWhenRemainThreePieces(bool value) async {
+  setAllowFlyWhenRemainThreePieces(bool value) async {
     //
     setState(() {
       rule.allowFlyWhenRemainThreePieces =
@@ -517,14 +517,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     activeColor: UIColors.primaryColor,
                     value: Config.bgmEnabled,
                     title: Text(S.of(context).sound, style: itemStyle),
-                    onChanged: switchMusic,
+                    onChanged: setMusic,
                   ),
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.toneEnabled,
                     title: Text(S.of(context).tone, style: itemStyle),
-                    onChanged: switchTone,
+                    onChanged: setTone,
                   ),
                 ],
               ),
@@ -544,7 +544,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ? S.of(context).human
                             : S.of(context).ai,
                         style: itemStyle),
-                    onChanged: switchWhoMovesFirst,
+                    onChanged: setWhoMovesFirst,
                   ),
                 ],
               ),
@@ -577,7 +577,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.hasObliqueLines,
                     title:
                         Text(S.of(context).hasObliqueLines, style: itemStyle),
-                    onChanged: switchHasObliqueLines,
+                    onChanged: setHasObliqueLines,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -585,7 +585,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.hasBannedLocations,
                     title: Text(S.of(context).hasBannedLocations,
                         style: itemStyle),
-                    onChanged: switchHasBannedLocations,
+                    onChanged: setHasBannedLocations,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -593,7 +593,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.isDefenderMoveFirst,
                     title: Text(S.of(context).isDefenderMoveFirst,
                         style: itemStyle),
-                    onChanged: switchIsDefenderMoveFirst,
+                    onChanged: setIsDefenderMoveFirst,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -602,7 +602,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text(
                         S.of(context).allowRemoveMultiPiecesWhenCloseMultiMill,
                         style: itemStyle),
-                    onChanged: switchAllowRemoveMultiPiecesWhenCloseMultiMill,
+                    onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -610,7 +610,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.allowRemovePieceInMill,
                     title: Text(S.of(context).allowRemovePieceInMill,
                         style: itemStyle),
-                    onChanged: switchAllowRemovePieceInMill,
+                    onChanged: setAllowRemovePieceInMill,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -619,7 +619,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: Text(
                         S.of(context).isBlackLoseButNotDrawWhenBoardFull,
                         style: itemStyle),
-                    onChanged: switchIsBlackLoseButNotDrawWhenBoardFull,
+                    onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -627,7 +627,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.isLoseButNotChangeSideWhenNoWay,
                     title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
                         style: itemStyle),
-                    onChanged: switchIsLoseButNotChangeSideWhenNoWay,
+                    onChanged: setIsLoseButNotChangeSideWhenNoWay,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -635,7 +635,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.allowFlyWhenRemainThreePieces,
                     title: Text(S.of(context).allowFlyWhenRemainThreePieces,
                         style: itemStyle),
-                    onChanged: switchAllowFlyWhenRemainThreePieces,
+                    onChanged: setAllowFlyWhenRemainThreePieces,
                   ),
                   _buildDivider(),
                   /*
@@ -662,7 +662,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     activeColor: UIColors.primaryColor,
                     value: Config.isAutoRestart,
                     title: Text(S.of(context).isAutoRestart, style: itemStyle),
-                    onChanged: switchIsAutoRestart,
+                    onChanged: setIsAutoRestart,
                   ),
                   _buildDivider(),
                   SwitchListTile(
@@ -670,7 +670,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: Config.shufflingEnabled,
                     title:
                         Text(S.of(context).shufflingEnabled, style: itemStyle),
-                    onChanged: switchShufflingEnabled,
+                    onChanged: setShufflingEnabled,
                   ),
                 ],
               ),
