@@ -46,7 +46,7 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
     //setAcceptHoverEvents(true);
 
     // 默认模型为没有棋子
-    model = noPiece;
+    model = Models::noPiece;
 
     // 棋子尺寸
     size = PIECE_SIZE;
@@ -93,7 +93,7 @@ void PieceItem::paint(QPainter *painter,
     // 空模型不画棋子
 
     switch (model) {
-    case blackPiece:
+    case Models::blackPiece:
         // 如果模型为黑色，则画黑色棋子
 #ifdef MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
@@ -105,7 +105,7 @@ void PieceItem::paint(QPainter *painter,
 #endif /* MOBILE_APP_UI */
         break;
 
-    case whitePiece:
+    case Models::whitePiece:
         // 如果模型为白色，则画白色棋子
 #ifdef MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
@@ -123,11 +123,11 @@ void PieceItem::paint(QPainter *painter,
     // 如果模型要求显示序号
     if (showNum) {
         // 如果模型为黑色，用白色笔画序号
-        if (model == blackPiece)
+        if (model == Models::blackPiece)
             painter->setPen(QColor(255, 255, 255));
 
         // 如果模型为白色，用白色笔画序号
-        if (model == whitePiece)
+        if (model == Models::whitePiece)
             painter->setPen(QColor(0, 0, 0));
 
         // 字体

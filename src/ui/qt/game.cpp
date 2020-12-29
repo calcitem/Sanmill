@@ -235,7 +235,7 @@ void Game::gameReset()
 
     for (int i = 0; i < rule.nTotalPiecesEachSide; i++) {
         // 先手的棋子
-        md = isInverted ? PieceItem::whitePiece : PieceItem::blackPiece;
+        md = isInverted ? PieceItem::Models::whitePiece : PieceItem::Models::blackPiece;
         newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
@@ -246,7 +246,7 @@ void Game::gameReset()
         scene.addItem(newP);
 
         // 后手的棋子
-        md = isInverted ? PieceItem::blackPiece : PieceItem::whitePiece;
+        md = isInverted ? PieceItem::Models::blackPiece : PieceItem::Models::whitePiece;
         newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p2);
@@ -325,12 +325,12 @@ void Game::setInvert(bool arg)
     for (PieceItem *pieceItem : pieceList) {
         if (pieceItem) {
             // 黑子变白
-            if (pieceItem->getModel() == PieceItem::blackPiece)
-                pieceItem->setModel(PieceItem::whitePiece);
+            if (pieceItem->getModel() == PieceItem::Models::blackPiece)
+                pieceItem->setModel(PieceItem::Models::whitePiece);
 
             // 白子变黑
-            else if (pieceItem->getModel() == PieceItem::whitePiece)
-                pieceItem->setModel(PieceItem::blackPiece);
+            else if (pieceItem->getModel() == PieceItem::Models::whitePiece)
+                pieceItem->setModel(PieceItem::Models::blackPiece);
 
             // 刷新棋子显示
             pieceItem->update();

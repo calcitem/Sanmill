@@ -57,7 +57,7 @@ public:
     }
 
     // 模型状态枚举，用位运算标明
-    enum Models
+    enum class Models
     {
         noPiece = 0x1,      // 空棋子
         blackPiece = 0x2,   // 黑色棋子
@@ -94,7 +94,7 @@ public:
         deleted = del;
 
         if (deleted)
-            this->model = noPiece;
+            this->model = Models::noPiece;
 
         update(boundingRect());
     }
