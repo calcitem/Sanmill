@@ -1487,29 +1487,29 @@ void Game::appendGameOverReasonToCmdlist()
     }
 
     char cmdline[64] = { 0 };
-    switch (position.gameoverReason) {
-    case LOSE_REASON_NO_WAY:
+    switch (position.gameOverReason) {
+    case GameOverReason::loseReasonNoWay:
         sprintf(cmdline, "Player%d no way to go. Player%d win!", position.sideToMove, position.winner);
         break;
-    case LOSE_REASON_TIME_OVER:
+    case GameOverReason::loseReasonTimeOver:
         sprintf(cmdline, "Time over. Player%d win!", position.winner);
         break;
-    case DRAW_REASON_THREEFOLD_REPETITION:
+    case GameOverReason::drawReasonThreefoldRepetition:
         sprintf(cmdline, "Threefold Repetition. Draw!");
         break;
-    case DRAW_REASON_RULE_50:
+    case GameOverReason::drawReasonRule50:
         sprintf(cmdline, "Steps over. In draw!");
         break;
-    case LOSE_REASON_BOARD_IS_FULL:
+    case GameOverReason::loseReasonBoardIsFull:
         sprintf(cmdline, "Player2 win!");
         break;
-    case DRAW_REASON_BOARD_IS_FULL:
+    case GameOverReason::drawReasonBoardIsFull:
         sprintf(cmdline, "Full. In draw!");
         break;
-    case LOSE_REASON_LESS_THAN_THREE:
+    case GameOverReason::loseReasonlessThanThree:
         sprintf(cmdline, "Player%d win!", position.winner);
         break;
-    case LOSE_REASON_RESIGN:
+    case GameOverReason::loseReasonResign:
         sprintf(cmdline, "Player%d give up!", ~position.winner);
         break;
     default:
@@ -1575,19 +1575,19 @@ void Game::setTips()
             break;
         }
 
-        switch (p.gameoverReason) {
-        case LOSE_REASON_LESS_THAN_THREE:
+        switch (p.gameOverReason) {
+        case GameOverReason::loseReasonlessThanThree:
             break;
-        case  LOSE_REASON_NO_WAY:
+        case GameOverReason::loseReasonNoWay:
             reasonStr = turnStr + "无子可走被闷。";
             break;
-        case LOSE_REASON_RESIGN:
+        case GameOverReason::loseReasonResign:
             reasonStr = turnStr + "投子认负。";
             break;
-        case LOSE_REASON_TIME_OVER:
+        case GameOverReason::loseReasonTimeOver:
             reasonStr = turnStr + "超时判负。";
             break;
-        case DRAW_REASON_THREEFOLD_REPETITION:
+        case GameOverReason::drawReasonThreefoldRepetition:
             tips = "三次重复局面判和。";
             break;
         default:

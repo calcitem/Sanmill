@@ -719,7 +719,7 @@ bool Position::reset()
     action = ACTION_PLACE;
 
     winner = NOBODY;
-    gameoverReason = NO_REASON;
+    gameOverReason = GameOverReason::noReason;
 
     memset(board, 0, sizeof(board));
     st.key = 0;
@@ -759,7 +759,7 @@ bool Position::reset()
 
 bool Position::start()
 {
-    gameoverReason = NO_REASON;
+    gameOverReason = GameOverReason::noReason;
 
     switch (phase) {
     case Phase::placing:
@@ -954,7 +954,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     pieceCountOnBoard[them]--;
 
     if (pieceCountOnBoard[them] + pieceCountInHand[them] < rule.nPiecesAtLeast) {
-        set_gameover(sideToMove, LOSE_REASON_LESS_THAN_THREE);
+        set_gameover(sideToMove, GameOverReason::loseReasonlessThanThree);
         return true;
     }
 
@@ -1020,7 +1020,7 @@ bool Position::resign(Color loser)
         return false;
     }
 
-    set_gameover(~loser, LOSE_REASON_RESIGN);
+    set_gameover(~loser, GameOverReason::loseReasonResign);
 
     //sprintf(cmdline, "Player%d give up!", loser);
     update_score();
@@ -1076,7 +1076,7 @@ bool Position::command(const char *cmd)
         phase = Phase::gameOver;
         winner = DRAW;
         score_draw++;
-        gameoverReason = DRAW_REASON_THREEFOLD_REPETITION;
+        gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
         //sprintf(cmdline, "Threefold Repetition. Draw!");
         return true;
     }
@@ -1093,7 +1093,7 @@ Color Position::get_winner() const
 inline void Position::set_gameover(Color w, GameOverReason reason)
 {
     phase = Phase::gameOver;
-    gameoverReason = reason;
+    gameOverReason = reason;
     winner = w;
 }
 
@@ -1119,15 +1119,15 @@ bool Position::check_gameover_condition()
         st.rule50 > rule.maxStepsLedToDraw) {
         winner = DRAW;
         phase = Phase::gameOver;
-        gameoverReason = DRAW_REASON_RULE_50;
+        gameOverReason = GameOverReason::drawReasonRule50;
         return true;
     }
 
     if (pieceCountOnBoard[BLACK] + pieceCountOnBoard[WHITE] >= EFFECTIVE_SQUARE_NB) {
         if (rule.isBlackLoseButNotDrawWhenBoardFull) {
-            set_gameover(WHITE, LOSE_REASON_BOARD_IS_FULL);
+            set_gameover(WHITE, GameOverReason::loseReasonBoardIsFull);
         } else {
-            set_gameover(DRAW, DRAW_REASON_BOARD_IS_FULL);
+            set_gameover(DRAW, GameOverReason::drawReasonBoardIsFull);
         }
 
         return true;
@@ -1135,7 +1135,7 @@ bool Position::check_gameover_condition()
 
     if (phase == Phase::moving && action == ACTION_SELECT && is_all_surrounded()) {
         if (rule.isLoseButNotChangeSideWhenNoWay) {
-            set_gameover(~sideToMove, LOSE_REASON_NO_WAY);
+            set_gameover(~sideToMove, GameOverReason::loseReasonNoWay);
             return true;
         } else {
             change_side_to_move();  // TODO: Need?

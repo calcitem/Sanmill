@@ -561,7 +561,7 @@ string Thread::nextMove()
 
     if (gameOptions.getResignIfMostLose() == true) {
         if (root->value <= -VALUE_MATE) {
-            gameoverReason = LOSE_REASON_RESIGN;
+            gameOverReason = loseReasonResign;
             //sprintf(cmdline, "Player%d give up!", position->sideToMove);
             return cmdline;
         }

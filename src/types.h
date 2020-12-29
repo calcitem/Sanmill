@@ -157,17 +157,17 @@ enum Action : uint16_t
     ACTION_REMOVE = 0x0400
 };
 
-enum GameOverReason
+enum class GameOverReason
 {
-    NO_REASON,
-    LOSE_REASON_LESS_THAN_THREE,
-    LOSE_REASON_NO_WAY,
-    LOSE_REASON_BOARD_IS_FULL,
-    LOSE_REASON_RESIGN,
-    LOSE_REASON_TIME_OVER,
-    DRAW_REASON_THREEFOLD_REPETITION,
-    DRAW_REASON_RULE_50,
-    DRAW_REASON_BOARD_IS_FULL,
+    noReason,
+    loseReasonlessThanThree,
+    loseReasonNoWay,
+    loseReasonBoardIsFull,
+    loseReasonResign,
+    loseReasonTimeOver,
+    drawReasonThreefoldRepetition,
+    drawReasonRule50,
+    drawReasonBoardIsFull,
 };
 
 enum Bound : uint8_t
