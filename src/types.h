@@ -149,12 +149,12 @@ enum class Phase : uint16_t
     gameOver
 };
 
-enum Action : uint16_t
+enum class Act : uint16_t
 {
-    ACTION_NONE = 0x0000,
-    ACTION_SELECT = 0x0100,
-    ACTION_PLACE = 0x0200,
-    ACTION_REMOVE = 0x0400
+    none = 0x0000,
+    select = 0x0100,
+    place = 0x0200,
+    remove = 0x0400
 };
 
 enum class GameOverReason

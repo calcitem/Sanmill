@@ -126,8 +126,8 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     ExtMove *cur = moveList;
 
     switch (pos.get_action()) {
-    case ACTION_SELECT:
-    case ACTION_PLACE:
+    case Act::select:
+    case Act::place:
         if (pos.get_phase() == Phase::placing || pos.get_phase() == Phase::ready) {
             return generate<PLACE>(pos, moveList);
         }
@@ -138,7 +138,7 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
 
         break;
 
-    case ACTION_REMOVE:
+    case Act::remove:
         return generate<REMOVE>(pos, moveList);
 
     default:

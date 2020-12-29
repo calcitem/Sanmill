@@ -851,9 +851,9 @@ bool Game::actionPiece(QPointF pos)
     QGraphicsItem *item = scene.itemAt(pos, QTransform());
 
     switch (position.get_action()) {
-    case ACTION_PLACE:
+    case Act::place:
         if (position.put_piece(file, rank)) { 
-            if (position.get_action() == ACTION_REMOVE) {
+            if (position.get_action() == Act::remove) {
                 // 播放成三音效
                 playSound(GAME_SOUND_MILL, position.side_to_move());
             } else {
@@ -867,7 +867,7 @@ bool Game::actionPiece(QPointF pos)
      // 如果移子不成功，尝试重新选子，这里不break
         [[fallthrough]];
 
-    case ACTION_SELECT:
+    case Act::select:
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
@@ -881,7 +881,7 @@ bool Game::actionPiece(QPointF pos)
         }
         break;
 
-    case ACTION_REMOVE:
+    case Act::remove:
         if (position.remove_piece(file, rank)) {
             // 播放音效
             playSound(GAME_SOUND_REMOVE, position.side_to_move());
@@ -1001,11 +1001,11 @@ bool Game::command(const string &cmd, bool update /* = true */)
     sound_t soundType = GAME_SOUND_NONE;
 
     switch (position.get_action()) {
-    case ACTION_SELECT:
-    case ACTION_PLACE:
+    case Act::select:
+    case Act::place:
         soundType = GAME_SOUND_DROG;
         break;
-    case ACTION_REMOVE:
+    case Act::remove:
         soundType = GAME_SOUND_REMOVE;
         break;
     default:
@@ -1028,7 +1028,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     sideToMove = position.side_to_move();
 
 #ifndef TRAINING_MODE
-    if (soundType == GAME_SOUND_DROG && position.get_action() == ACTION_REMOVE) {
+    if (soundType == GAME_SOUND_DROG && position.get_action() == Act::remove) {
         soundType = GAME_SOUND_MILL;
     }
 
@@ -1542,17 +1542,17 @@ void Game::setTips()
         break;
 
     case Phase::placing:
-        if (p.action == ACTION_PLACE) {
+        if (p.action == Act::place) {
             tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceCountInHand[p.sideToMove]) + "子";
-        } else if (p.action == ACTION_REMOVE) {
+        } else if (p.action == Act::remove) {
             tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceCountNeedRemove) + "子";
         }
         break;
 
     case Phase::moving:
-        if (p.action == ACTION_PLACE || p.action == ACTION_SELECT) {
+        if (p.action == Act::place || p.action == Act::select) {
             tips = "轮到" + turnStr + "选子移动";
-        } else if (p.action == ACTION_REMOVE) {
+        } else if (p.action == Act::remove) {
             tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceCountNeedRemove) + "子";
         }
         break;
