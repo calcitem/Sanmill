@@ -122,6 +122,10 @@ void adjacent_squares_init()
         /* 39 */ {0, 0, 0, 0},
     };
 
+#define S2(a, b)        (square_bb(SQ_##a) | square_bb(SQ_##b))
+#define S3(a, b, c)     (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
+#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+
     const Bitboard adjacentSquaresBB12[SQUARE_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
@@ -132,32 +136,32 @@ void adjacent_squares_init()
         /*  6 */ 0,
         /*  7 */ 0,
 
-        /*  8 */ square_bb(SQ_9) | square_bb(SQ_15) | square_bb(SQ_16),
-        /*  9 */ square_bb(SQ_17) | square_bb(SQ_8) | square_bb(SQ_10),
-        /* 10 */ square_bb(SQ_9) | square_bb(SQ_11) | square_bb(SQ_18),
-        /* 11 */ square_bb(SQ_19) | square_bb(SQ_10) | square_bb(SQ_12),
-        /* 12 */ square_bb(SQ_11) | square_bb(SQ_13) | square_bb(SQ_20),
-        /* 13 */ square_bb(SQ_21) | square_bb(SQ_12) | square_bb(SQ_14),
-        /* 14 */ square_bb(SQ_13) | square_bb(SQ_15) | square_bb(SQ_22),
-        /* 15 */ square_bb(SQ_23) | square_bb(SQ_8) | square_bb(SQ_14),
+        /*  8 */ S3(9, 15, 16),
+        /*  9 */ S3(17, 8, 10),
+        /* 10 */ S3(9, 11, 18),
+        /* 11 */ S3(19, 10, 12),
+        /* 12 */ S3(11, 13, 20),
+        /* 13 */ S3(21, 12, 14),
+        /* 14 */ S3(13, 15, 22),
+        /* 15 */ S3(23, 8, 14),
 
-        /* 16 */ square_bb(SQ_17) | square_bb(SQ_23) | square_bb(SQ_8) | square_bb(SQ_24),
-        /* 17 */ square_bb(SQ_9) | square_bb(SQ_25) | square_bb(SQ_16) | square_bb(SQ_18),
-        /* 18 */ square_bb(SQ_17) | square_bb(SQ_19) | square_bb(SQ_10) | square_bb(SQ_26),
-        /* 19 */ square_bb(SQ_11) | square_bb(SQ_27) | square_bb(SQ_18) | square_bb(SQ_20),
-        /* 20 */ square_bb(SQ_19) | square_bb(SQ_21) | square_bb(SQ_12) | square_bb(SQ_28),
-        /* 21 */ square_bb(SQ_13) | square_bb(SQ_29) | square_bb(SQ_20) | square_bb(SQ_22),
-        /* 22 */ square_bb(SQ_21) | square_bb(SQ_23) | square_bb(SQ_14) | square_bb(SQ_30),
-        /* 23 */ square_bb(SQ_15) | square_bb(SQ_31) | square_bb(SQ_16) | square_bb(SQ_22),
+        /* 16 */ S4(17, 23, 8, 24),
+        /* 17 */ S4(9, 25, 16, 18),
+        /* 18 */ S4(17, 19, 10, 26),
+        /* 19 */ S4(11, 27, 18, 20),
+        /* 20 */ S4(19, 21, 12, 28),
+        /* 21 */ S4(13, 29, 20, 22),
+        /* 22 */ S4(21, 23, 14, 30),
+        /* 23 */ S4(15, 31, 16, 22),
 
-        /* 24 */ square_bb(SQ_25) | square_bb(SQ_31) | square_bb(SQ_16),
-        /* 25 */ square_bb(SQ_17) | square_bb(SQ_24) | square_bb(SQ_26),
-        /* 26 */ square_bb(SQ_25) | square_bb(SQ_27) | square_bb(SQ_18),
-        /* 27 */ square_bb(SQ_19) | square_bb(SQ_26) | square_bb(SQ_28),
-        /* 28 */ square_bb(SQ_27) | square_bb(SQ_29) | square_bb(SQ_20),
-        /* 29 */ square_bb(SQ_21) | square_bb(SQ_28) | square_bb(SQ_30),
-        /* 30 */ square_bb(SQ_29) | square_bb(SQ_31) | square_bb(SQ_22),
-        /* 31 */ square_bb(SQ_23) | square_bb(SQ_24) | square_bb(SQ_30),
+        /* 24 */ S3(25, 31, 16),
+        /* 25 */ S3(17, 24, 26),
+        /* 26 */ S3(25, 27, 18),
+        /* 27 */ S3(19, 26, 28),
+        /* 28 */ S3(27, 29, 20),
+        /* 29 */ S3(21, 28, 30),
+        /* 30 */ S3(29, 31, 22),
+        /* 31 */ S3(23, 24, 30),
 
         /* 32 */ 0,
         /* 33 */ 0,
@@ -179,32 +183,32 @@ void adjacent_squares_init()
         /*  6 */ 0,
         /*  7 */ 0,
 
-        /*  8 */ square_bb(SQ_16) | square_bb(SQ_9) | square_bb(SQ_15),
-        /*  9 */ square_bb(SQ_10) | square_bb(SQ_8),
-        /* 10 */ square_bb(SQ_18) | square_bb(SQ_11) | square_bb(SQ_9),
-        /* 11 */ square_bb(SQ_12) | square_bb(SQ_10),
-        /* 12 */ square_bb(SQ_20) | square_bb(SQ_13) | square_bb(SQ_11),
-        /* 13 */ square_bb(SQ_14) | square_bb(SQ_12),
-        /* 14 */ square_bb(SQ_22) | square_bb(SQ_15) | square_bb(SQ_13),
-        /* 15 */ square_bb(SQ_8) | square_bb(SQ_14),
+        /*  8 */ S3(16, 9, 15),
+        /*  9 */ S2(10, 8),
+        /* 10 */ S3(18, 11, 9),
+        /* 11 */ S2(12, 10),
+        /* 12 */ S3(20, 13, 11),
+        /* 13 */ S2(14, 12),
+        /* 14 */ S3(22, 15, 13),
+        /* 15 */ S2(8, 14),
 
-        /* 16 */ square_bb(SQ_8) | square_bb(SQ_24) | square_bb(SQ_17) | square_bb(SQ_23),
-        /* 17 */ square_bb(SQ_18) | square_bb(SQ_16),
-        /* 18 */ square_bb(SQ_10) | square_bb(SQ_26) | square_bb(SQ_19) | square_bb(SQ_17),
-        /* 19 */ square_bb(SQ_20) | square_bb(SQ_18),
-        /* 20 */ square_bb(SQ_12) | square_bb(SQ_28) | square_bb(SQ_21) | square_bb(SQ_19),
-        /* 21 */ square_bb(SQ_22) | square_bb(SQ_20),
-        /* 22 */ square_bb(SQ_14) | square_bb(SQ_30) | square_bb(SQ_23) | square_bb(SQ_21),
-        /* 23 */ square_bb(SQ_16) | square_bb(SQ_22),
+        /* 16 */ S4(8, 24, 17, 23),
+        /* 17 */ S2(18, 16),
+        /* 18 */ S4(10, 26, 19, 17),
+        /* 19 */ S2(20, 18),
+        /* 20 */ S4(12, 28, 21, 19),
+        /* 21 */ S2(22, 20),
+        /* 22 */ S4(14, 30, 23, 21),
+        /* 23 */ S2(16, 22),
 
-        /* 24 */ square_bb(SQ_16) | square_bb(SQ_25) | square_bb(SQ_31),
-        /* 25 */ square_bb(SQ_26) | square_bb(SQ_24),
-        /* 26 */ square_bb(SQ_18) | square_bb(SQ_27) | square_bb(SQ_25),
-        /* 27 */ square_bb(SQ_28) | square_bb(SQ_26),
-        /* 28 */ square_bb(SQ_20) | square_bb(SQ_29) | square_bb(SQ_27),
-        /* 29 */ square_bb(SQ_30) | square_bb(SQ_28),
-        /* 30 */ square_bb(SQ_22) | square_bb(SQ_31) | square_bb(SQ_29),
-        /* 31 */ square_bb(SQ_24) | square_bb(SQ_30),
+        /* 24 */ S3(16, 25, 31),
+        /* 25 */ S2(26, 24),
+        /* 26 */ S3(18, 27, 25),
+        /* 27 */ S2(28, 26),
+        /* 28 */ S3(20, 29, 27),
+        /* 29 */ S2(30, 28),
+        /* 30 */ S3(22, 31, 29),
+        /* 31 */ S2(24, 30),
 
         /* 32 */ 0,
         /* 33 */ 0,
@@ -216,6 +220,9 @@ void adjacent_squares_init()
         /* 39 */ 0,
     };
 
+#undef S2
+#undef S3
+#undef S4
 
     if (rule.hasObliqueLines) {
         memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares12, sizeof(MoveList<LEGAL>::adjacentSquares));
