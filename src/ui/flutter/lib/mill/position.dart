@@ -531,7 +531,7 @@ class Position {
 
         if (pieceCountInHand[Color.black] == 0 &&
             pieceCountInHand[Color.white] == 0) {
-          if (checkGameOverCondition()) {
+          if (checkIfGameIsOver()) {
             return true;
           }
 
@@ -546,7 +546,7 @@ class Position {
             changeSideToMove();
           }
 
-          if (checkGameOverCondition()) {
+          if (checkIfGameIsOver()) {
             return true;
           }
         } else {
@@ -558,7 +558,7 @@ class Position {
         action = Act.remove;
       }
     } else if (phase == Phase.moving) {
-      if (checkGameOverCondition()) {
+      if (checkIfGameIsOver()) {
         return true;
       }
 
@@ -602,7 +602,7 @@ class Position {
         action = Act.select;
         changeSideToMove();
 
-        if (checkGameOverCondition()) {
+        if (checkIfGameIsOver()) {
           return true;
         }
       } else {
@@ -670,7 +670,7 @@ class Position {
         }
 
         if (rule.isDefenderMoveFirst) {
-          checkGameOverCondition();
+          checkIfGameIsOver();
           return true;
         }
       } else {
@@ -681,7 +681,7 @@ class Position {
     }
 
     changeSideToMove();
-    checkGameOverCondition();
+    checkIfGameIsOver();
 
     return true;
   }
@@ -736,7 +736,7 @@ class Position {
     }
   }
 
-  bool checkGameOverCondition() {
+  bool checkIfGameIsOver() {
     //print("Is game over?");
 
     if (phase == Phase.ready || phase == Phase.gameOver) {

@@ -117,7 +117,7 @@ public:
     bool command(const char *cmd);
     void update();
     void update_score();
-    bool check_gameover_condition();
+    bool check_if_game_is_over();
     void remove_ban_stones();
     void set_side_to_move(Color c);
   

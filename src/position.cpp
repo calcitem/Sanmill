@@ -814,7 +814,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             assert(pieceCountInHand[BLACK] >= 0 && pieceCountInHand[WHITE] >= 0);     
 
             if (pieceCountInHand[BLACK] == 0 && pieceCountInHand[WHITE] == 0) {
-                if (check_gameover_condition()) {
+                if (check_if_game_is_over()) {
                     return true;
                 }
 
@@ -829,7 +829,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                     change_side_to_move();
                 }
 
-                if (check_gameover_condition()) {
+                if (check_if_game_is_over()) {
                     return true;
                 }
             } else {
@@ -843,7 +843,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
     } else if (phase == Phase::moving) {
 
-        if (check_gameover_condition()) {
+        if (check_if_game_is_over()) {
             return true;
         }
 
@@ -886,7 +886,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             action = Act::select;
             change_side_to_move();
 
-            if (check_gameover_condition()) {
+            if (check_if_game_is_over()) {
                 return true;
             }
         } else {
@@ -989,7 +989,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     change_side_to_move();
 
 check:
-    check_gameover_condition();    
+    check_if_game_is_over();    
 
     return true;
 }
@@ -1109,7 +1109,7 @@ void Position::update_score()
     }
 }
 
-bool Position::check_gameover_condition()
+bool Position::check_if_game_is_over()
 {
     if (phase == Phase::ready || phase == Phase::gameOver) {
         return true;
