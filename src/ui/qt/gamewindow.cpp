@@ -235,8 +235,8 @@ void MillGameWindow::initialize()
     connect(ui.actionAutoChangeFirstMove_C, SIGNAL(toggled(bool)),
             game, SLOT(setAutoChangeFirstMove(bool)));
 
-    connect(ui.actionRandomMove_R, SIGNAL(toggled(bool)),
-            game, SLOT(setRandomMove(bool)));
+    connect(ui.actionShuffling_R, SIGNAL(toggled(bool)),
+            game, SLOT(setShuffling(bool)));
 
     connect(ui.actionLearnEndgame_E, SIGNAL(toggled(bool)),
             game, SLOT(setLearnEndgame(bool)));

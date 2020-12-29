@@ -70,7 +70,7 @@
   "isAutoRestart": "棋局结束时自动重新开局",
   "isAutoChangeFirstMove": "开局时自动交换先后手",
   "resignIfMostLose": "机器明显劣势时自动认输",
-  "randomMoveEnabled": "机器随机走子",
+  "shufflingEnabled": "机器随机走子",
   "learnEndgame": "残局库自学习",
   "idsEnabled": "迭代加深",
   "depthExtension": "深度扩展",

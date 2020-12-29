@@ -239,7 +239,7 @@ public slots:
     void setAutoChangeFirstMove(bool enabled = false);
 
     // AI 是否随机走子
-    void setRandomMove(bool enabled);
+    void setShuffling(bool enabled);
 
     // AI 是否记录残局库
     void setLearnEndgame(bool enabled);

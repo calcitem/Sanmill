@@ -295,7 +295,7 @@
     <addaction name="separator"/>
     <addaction name="actionResignIfMostLose_G"/>
     <addaction name="actionAutoRestart_A"/>
-    <addaction name="actionRandomMove_R"/>
+    <addaction name="actionShuffling_R"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -1211,7 +1211,7 @@
     <string>自动重新开局(&amp;A)</string>
    </property>
   </action>
-  <action name="actionRandomMove_R">
+  <action name="actionShuffling_R">
    <property name="checkable">
     <bool>true</bool>
    </property>

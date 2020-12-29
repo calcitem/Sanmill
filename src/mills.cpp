@@ -286,7 +286,7 @@ void move_priority_list_shuffle()
         movePriorityList3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
     }
 
-    if (gameOptions.getRandomMoveEnabled()) {
+    if (gameOptions.getShufflingEnabled()) {
         uint32_t seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityList0.begin(), movePriorityList0.end(), std::default_random_engine(seed));

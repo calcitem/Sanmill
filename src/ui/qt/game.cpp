@@ -549,9 +549,9 @@ void Game::setAutoChangeFirstMove(bool enabled)
     gameOptions.setAutoChangeFirstMove(enabled);
 }
 
-void Game::setRandomMove(bool enabled)
+void Game::setShuffling(bool enabled)
 {
-    gameOptions.setRandomMoveEnabled(enabled);
+    gameOptions.setShufflingEnabled(enabled);
 }
 
 void Game::setLearnEndgame(bool enabled)

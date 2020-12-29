@@ -132,9 +132,9 @@ class _SettingsPageState extends State<SettingsPage> {
     Config.save();
   }
 
-  switchRandomMoveEnabled(bool value) async {
+  switchShufflingEnabled(bool value) async {
     setState(() {
-      Config.randomMoveEnabled = value;
+      Config.shufflingEnabled = value;
     });
 
     Config.save();
@@ -667,10 +667,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.randomMoveEnabled,
+                    value: Config.shufflingEnabled,
                     title:
-                        Text(S.of(context).randomMoveEnabled, style: itemStyle),
-                    onChanged: switchRandomMoveEnabled,
+                        Text(S.of(context).shufflingEnabled, style: itemStyle),
+                    onChanged: switchShufflingEnabled,
                   ),
                 ],
               ),

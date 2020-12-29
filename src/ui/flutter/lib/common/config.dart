@@ -30,7 +30,7 @@ class Config {
   static bool isAutoRestart = false;
   static bool isAutoChangeFirstMove = false;
   static bool resignIfMostLose = false;
-  static bool randomMoveEnabled = true;
+  static bool shufflingEnabled = true;
   static bool learnEndgame = false;
   static bool idsEnabled = false;
   static bool depthExtension = true;
@@ -60,7 +60,7 @@ class Config {
     Config.isAutoRestart = profile['isAutoRestart'] ?? false;
     Config.isAutoChangeFirstMove = profile['isAutoChangeFirstMove'] ?? false;
     Config.resignIfMostLose = profile['resignIfMostLose'] ?? false;
-    Config.randomMoveEnabled = profile['randomMoveEnabled'] ?? true;
+    Config.shufflingEnabled = profile['shufflingEnabled'] ?? true;
     Config.learnEndgame = profile['learnEndgame'] ?? false;
     Config.idsEnabled = profile['idsEnabled'] ?? false;
     Config.depthExtension = profile['depthExtension'] ?? false;
@@ -107,7 +107,7 @@ class Config {
     profile['isAutoRestart'] = Config.isAutoRestart;
     profile['isAutoChangeFirstMove'] = Config.isAutoChangeFirstMove;
     profile['resignIfMostLose'] = Config.resignIfMostLose;
-    profile['randomMoveEnabled'] = Config.randomMoveEnabled;
+    profile['shufflingEnabled'] = Config.shufflingEnabled;
     profile['learnEndgame'] = Config.learnEndgame;
     profile['idsEnabled'] = Config.idsEnabled;
     profile['depthExtension'] = Config.depthExtension;

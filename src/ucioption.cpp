@@ -62,7 +62,7 @@ void on_threads(const Option &o)
 
 void on_random_move(const Option &o)
 {
-    gameOptions.setRandomMoveEnabled((bool)o);
+    gameOptions.setShufflingEnabled((bool)o);
 }
 
 // Rules
@@ -153,7 +153,7 @@ void init(OptionsMap &o)
     o["UCI_LimitStrength"] << Option(false);
     o["UCI_Elo"] << Option(1350, 1350, 2850);
 
-    o["RandomMove"] << Option(true, on_random_move);
+    o["Shuffling"] << Option(true, on_random_move);
 
     // Rules
     o["nTotalPiecesEachSide"] << Option(12, 6, 12, on_nTotalPiecesEachSide);

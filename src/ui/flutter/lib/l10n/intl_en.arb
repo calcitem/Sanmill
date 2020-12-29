@@ -283,8 +283,8 @@
   "@resignIfMostLose": {
     "description": "AI Resign if Most Lose"
   },
-  "randomMoveEnabled": "AI Random Move",
-  "@randomMoveEnabled": {
+  "shufflingEnabled": "AI Random Move",
+  "@shufflingEnabled": {
     "description": "AI Random Move"
   },
   "learnEndgame": "Learn Endgame",

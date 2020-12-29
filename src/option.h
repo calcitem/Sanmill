@@ -24,31 +24,103 @@
 class GameOptions
 {
 public:
-    void setAutoRestart(bool enabled);
-    bool getAutoRestart();
+    void setAutoRestart(bool enabled)
+    {
+        isAutoRestart = enabled;
+    }
 
-    void setAutoChangeFirstMove(bool enabled);
-    bool getAutoChangeFirstMove();
+    bool getAutoRestart()
+    {
+        return isAutoRestart;
+    }
 
-    void setResignIfMostLose(bool enabled);
-    bool getResignIfMostLose();
+    void setAutoChangeFirstMove(bool enabled)
+    {
+        isAutoChangeFirstMove = enabled;
+    }
 
-    void setRandomMoveEnabled(bool enabled);
-    bool getRandomMoveEnabled();
+    bool getAutoChangeFirstMove()
+    {
+        return isAutoChangeFirstMove;
+    }
 
-    void setLearnEndgameEnabled(bool enabled);
-    bool getLearnEndgameEnabled();
+    void setResignIfMostLose(bool enabled)
+    {
+        resignIfMostLose = enabled;
+    }
 
-    void setIDSEnabled(bool enabled);
-    bool getIDSEnabled();
+    bool getResignIfMostLose()
+    {
+        return resignIfMostLose;
+    }
+
+    // Specify whether the successors of a given state should be shuffled if a
+    // re-evaluation is required so that the AI algorithm is not favoring one
+    // state if multiple ones have equal evaluations. This introduces some
+    // variation between different games against an opponent that tries to do the
+    // same sequence of moves. By default, shuffling is enabled.
+
+    bool getShufflingEnabled()
+    {
+        return shufflingEnabled;
+    }
+
+    void setShufflingEnabled(bool enabled)
+    {
+        shufflingEnabled = enabled;
+    }
+
+    void setLearnEndgameEnabled(bool enabled)
+    {
+#ifdef ENDGAME_LEARNING_FORCE
+        learnEndgame = true;
+#else
+        learnEndgame = enabled;
+#endif
+    }
+
+    bool getLearnEndgameEnabled()
+    {
+#ifdef ENDGAME_LEARNING_FORCE
+        return  true;
+#else
+        return learnEndgame;
+#endif
+    }
+
+    void setIDSEnabled(bool enabled)
+    {
+        IDSEnabled = enabled;
+    }
+
+    bool getIDSEnabled()
+    {
+        return IDSEnabled;
+    }
 
     // DepthExtension
-    void setDepthExtension(bool enabled);
-    bool getDepthExtension();
+
+    void setDepthExtension(bool enabled)
+    {
+        depthExtension = enabled;
+    }
+
+    bool getDepthExtension()
+    {
+        return depthExtension;
+    }
 
     // OpeningBook
-    void setOpeningBook(bool enabled);
-    bool getOpeningBook();
+
+    void setOpeningBook(bool enabled)
+    {
+        openingBook = enabled;
+    }
+
+    bool getOpeningBook()
+    {
+        return openingBook;
+    }
 
 protected:
 
@@ -56,7 +128,7 @@ private:
     bool isAutoRestart { false };
     bool isAutoChangeFirstMove { false };
     bool resignIfMostLose { false };
-    bool randomMoveEnabled { true };
+    bool shufflingEnabled { true };
 #ifdef ENDGAME_LEARNING_FORCE
     bool learnEndgame { true };
 #else
