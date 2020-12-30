@@ -20,7 +20,7 @@ class Rule {
   String name = "Da San Qi";
   String description;
   int nTotalPiecesEachSide = 12; // 9 or 12
-  int nPiecesAtLeast = 3; // Default is 3
+  int piecesAtLeastCount = 3; // Default is 3
   bool hasObliqueLines = true;
   bool hasBannedLocations = true;
   bool isDefenderMoveFirst = true;

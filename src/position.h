@@ -142,13 +142,13 @@ public:
 
     static void print_board();
 
-    int n_pieces_on_board_count();
-    int get_n_pieces_in_hand();
+    int piece_on_board_count_count();
+    int get_piece_in_hand_count();
 
-    int n_pieces_on_board(Color c);
-    int n_pieces_in_hand(Color c);
+    int piece_on_board_count(Color c);
+    int piece_in_hand_count(Color c);
 
-    int n_pieces_to_remove();
+    int piece_to_remove_count();
 
     static bool is_star_square(Square s);
 
@@ -178,9 +178,9 @@ public:
     Bitboard byTypeBB[PIECE_TYPE_NB];
     Bitboard byColorBB[COLOR_NB];
     // TODO: [0] is sum of Black and White
-    int nPiecesInHand[COLOR_NB]{ 0, 12, 12 }; // TODO
-    int nPiecesOnBoard[COLOR_NB]{ 0, 0, 0 };
-    int nPiecesNeedRemove{ 0 };
+    int pieceInHandCount[COLOR_NB]{ 0, 12, 12 }; // TODO
+    int pieceOnBoardCount[COLOR_NB]{ 0, 0, 0 };
+    int pieceToRemoveCount{ 0 };
     int gamePly { 0 };
     Color sideToMove { NOCOLOR };
     Thread *thisThread;
@@ -261,9 +261,9 @@ inline Piece Position::moved_piece(Move m) const
 template<PieceType Pt> inline int Position::count(Color c) const
 {
     if (Pt == ON_BOARD) {
-        return nPiecesOnBoard[c];
+        return pieceOnBoardCount[c];
     } else if (Pt == IN_HAND) {
-        return nPiecesInHand[c];
+        return pieceInHandCount[c];
     }
 
     return 0;
@@ -380,19 +380,19 @@ inline const char *Position::cmd_line() const
     return cmdline;
 }
 
-inline int Position::n_pieces_on_board(Color c)
+inline int Position::piece_on_board_count(Color c)
 {
-    return nPiecesOnBoard[c];
+    return pieceOnBoardCount[c];
 }
 
-inline int Position::n_pieces_in_hand(Color c)
+inline int Position::piece_in_hand_count(Color c)
 {
-    return nPiecesInHand[c];
+    return pieceInHandCount[c];
 }
 
-inline int Position::n_pieces_to_remove()
+inline int Position::piece_to_remove_count()
 {
-    return nPiecesNeedRemove;
+    return pieceToRemoveCount;
 }
 
 #endif // #ifndef POSITION_H_INCLUDED

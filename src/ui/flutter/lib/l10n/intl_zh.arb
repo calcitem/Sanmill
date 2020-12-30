@@ -80,7 +80,7 @@
   "nTotalPiecesEachSide": "棋子数",
   "ninePieces": "九子",
   "twelvePieces": "十二子",
-  "nPiecesAtLeast": "少于几个子则输棋",
+  "piecesAtLeastCount": "少于几个子则输棋",
   "hasObliqueLines": "斜线",
   "hasBannedLocations": "禁点",
   "isDefenderMoveFirst": "后摆子的先走子",

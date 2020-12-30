@@ -46,9 +46,9 @@ class Position {
 
   GameRecorder recorder;
 
-  Map<String, int> nPiecesInHand = {Color.black: -1, Color.white: -1};
-  Map<String, int> nPiecesOnBoard = {Color.black: 0, Color.white: 0};
-  int nPiecesNeedRemove = 0;
+  Map<String, int> pieceInHandCount = {Color.black: -1, Color.white: -1};
+  Map<String, int> pieceOnBoardCount = {Color.black: 0, Color.white: 0};
+  int pieceToRemoveCount = 0;
 
   int gamePly = 0;
   String _sideToMove = Color.black;
@@ -102,9 +102,9 @@ class Position {
 
     recorder = other.recorder;
 
-    nPiecesInHand = other.nPiecesInHand;
-    nPiecesOnBoard = other.nPiecesOnBoard;
-    nPiecesNeedRemove = other.nPiecesNeedRemove;
+    pieceInHandCount = other.pieceInHandCount;
+    pieceOnBoardCount = other.pieceOnBoardCount;
+    pieceToRemoveCount = other.pieceToRemoveCount;
 
     gamePly = other.gamePly;
 
@@ -242,15 +242,15 @@ class Position {
 
     ss += " ";
 
-    ss += nPiecesOnBoard[Color.black].toString() +
+    ss += pieceOnBoardCount[Color.black].toString() +
         " " +
-        nPiecesInHand[Color.black].toString() +
+        pieceInHandCount[Color.black].toString() +
         " " +
-        nPiecesOnBoard[Color.white].toString() +
+        pieceOnBoardCount[Color.white].toString() +
         " " +
-        nPiecesInHand[Color.white].toString() +
+        pieceInHandCount[Color.white].toString() +
         " " +
-        nPiecesNeedRemove.toString() +
+        pieceToRemoveCount.toString() +
         " ";
 
     int sideIsBlack = _sideToMove == Color.black ? 1 : 0;
@@ -370,35 +370,35 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  int nPiecesOnBoardCount() {
-    nPiecesOnBoard[Color.black] = nPiecesOnBoard[Color.white] = 0;
+  int pieceOnBoardCountCount() {
+    pieceOnBoardCount[Color.black] = pieceOnBoardCount[Color.white] = 0;
 
     for (int f = 1; f < fileExNumber; f++) {
       for (int r = 0; r < rankNumber; r++) {
         int s = f * rankNumber + r;
         if (board[s] == Piece.blackStone) {
-          nPiecesOnBoard[Color.black]++;
+          pieceOnBoardCount[Color.black]++;
         } else if (board[s] == Piece.whiteStone) {
-          nPiecesOnBoard[Color.black]++;
+          pieceOnBoardCount[Color.black]++;
         }
       }
     }
 
-    if (nPiecesOnBoard[Color.black] > rule.nTotalPiecesEachSide ||
-        nPiecesOnBoard[Color.white] > rule.nTotalPiecesEachSide) {
+    if (pieceOnBoardCount[Color.black] > rule.nTotalPiecesEachSide ||
+        pieceOnBoardCount[Color.white] > rule.nTotalPiecesEachSide) {
       return -1;
     }
 
-    return nPiecesOnBoard[Color.black] + nPiecesOnBoard[Color.white];
+    return pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white];
   }
 
   int GetNPiecesInHand() {
-    nPiecesInHand[Color.black] =
-        rule.nTotalPiecesEachSide - nPiecesOnBoard[Color.black];
-    nPiecesInHand[Color.white] =
-        rule.nTotalPiecesEachSide - nPiecesOnBoard[Color.white];
+    pieceInHandCount[Color.black] =
+        rule.nTotalPiecesEachSide - pieceOnBoardCount[Color.black];
+    pieceInHandCount[Color.white] =
+        rule.nTotalPiecesEachSide - pieceOnBoardCount[Color.white];
 
-    return nPiecesOnBoard[Color.black] + nPiecesOnBoard[Color.white];
+    return pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white];
   }
 
   void clearBoard() {
@@ -428,12 +428,12 @@ class Position {
 
     clearBoard();
 
-    if (nPiecesOnBoardCount() == -1) {
+    if (pieceOnBoardCountCount() == -1) {
       return -1;
     }
 
     GetNPiecesInHand();
-    nPiecesNeedRemove = 0;
+    pieceToRemoveCount = 0;
 
     winner = Color.nobody;
     createMoveTable();
@@ -456,10 +456,10 @@ class Position {
 
     clearBoard();
 
-    nPiecesOnBoard[Color.black] = nPiecesOnBoard[Color.white] = 0;
-    nPiecesInHand[Color.black] =
-        nPiecesInHand[Color.white] = rule.nTotalPiecesEachSide;
-    nPiecesNeedRemove = 0;
+    pieceOnBoardCount[Color.black] = pieceOnBoardCount[Color.white] = 0;
+    pieceInHandCount[Color.black] =
+        pieceInHandCount[Color.white] = rule.nTotalPiecesEachSide;
+    pieceToRemoveCount = 0;
 
     currentSquare = 0;
     int i = 0; // TODO: rule
@@ -513,8 +513,8 @@ class Position {
 
     if (phase == Phase.placing) {
       piece = sideToMove();
-      nPiecesInHand[us]--;
-      nPiecesOnBoard[us]++;
+      pieceInHandCount[us]--;
+      pieceOnBoardCount[us]++;
 
       _grid[index] = piece;
       board[s] = piece;
@@ -526,11 +526,11 @@ class Position {
       int n = addMills(currentSquare);
 
       if (n == 0) {
-        assert(
-            nPiecesInHand[Color.black] >= 0 && nPiecesInHand[Color.white] >= 0);
+        assert(pieceInHandCount[Color.black] >= 0 &&
+            pieceInHandCount[Color.white] >= 0);
 
-        if (nPiecesInHand[Color.black] == 0 &&
-            nPiecesInHand[Color.white] == 0) {
+        if (pieceInHandCount[Color.black] == 0 &&
+            pieceInHandCount[Color.white] == 0) {
           if (checkIfGameIsOver()) {
             return true;
           }
@@ -553,7 +553,7 @@ class Position {
           changeSideToMove();
         }
       } else {
-        nPiecesNeedRemove =
+        pieceToRemoveCount =
             rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
         action = Act.remove;
       }
@@ -563,7 +563,7 @@ class Position {
       }
 
       // if illegal
-      if (nPiecesOnBoard[sideToMove()] > rule.nPiecesAtLeast ||
+      if (pieceOnBoardCount[sideToMove()] > rule.piecesAtLeastCount ||
           !rule.flyingAllowed) {
         int md;
 
@@ -606,7 +606,7 @@ class Position {
           return true;
         }
       } else {
-        nPiecesNeedRemove =
+        pieceToRemoveCount =
             rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
         action = Act.remove;
       }
@@ -622,7 +622,7 @@ class Position {
 
     if (action != Act.remove) return false;
 
-    if (nPiecesNeedRemove <= 0) return false;
+    if (pieceToRemoveCount <= 0) return false;
 
     // if piece is not their
     if (!(Color.opponent(sideToMove()) == board[s])) return false;
@@ -643,23 +643,25 @@ class Position {
     cmdline = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
     rule50 = 0; // TODO: Need to move out?
 
-    nPiecesOnBoard[them]--;
+    pieceOnBoardCount[them]--;
 
-    if (nPiecesOnBoard[them] + nPiecesInHand[them] < rule.nPiecesAtLeast) {
+    if (pieceOnBoardCount[them] + pieceInHandCount[them] <
+        rule.piecesAtLeastCount) {
       setGameOver(sideToMove(), GameOverReason.loseReasonlessThanThree);
       return true;
     }
 
     currentSquare = 0;
 
-    nPiecesNeedRemove--;
+    pieceToRemoveCount--;
 
-    if (nPiecesNeedRemove > 0) {
+    if (pieceToRemoveCount > 0) {
       return true;
     }
 
     if (phase == Phase.placing) {
-      if (nPiecesInHand[Color.black] == 0 && nPiecesInHand[Color.white] == 0) {
+      if (pieceInHandCount[Color.black] == 0 &&
+          pieceInHandCount[Color.white] == 0) {
         phase = Phase.moving;
         action = Act.select;
 
@@ -749,7 +751,7 @@ class Position {
       return true;
     }
 
-    if (nPiecesOnBoard[Color.black] + nPiecesOnBoard[Color.white] >=
+    if (pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white] >=
         rankNumber * fileNumber) {
       if (rule.isBlackLoseButNotDrawWhenBoardFull) {
         setGameOver(Color.white, GameOverReason.loseReasonBoardIsFull);
@@ -1408,14 +1410,14 @@ class Position {
 
   bool isAllSurrounded() {
     // Full
-    if (nPiecesOnBoard[Color.black] + nPiecesOnBoard[Color.white] >=
+    if (pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white] >=
         rankNumber * fileNumber) {
       //print("Board is full.");
       return true;
     }
 
     // Can fly
-    if (nPiecesOnBoard[sideToMove()] <= rule.nPiecesAtLeast &&
+    if (pieceOnBoardCount[sideToMove()] <= rule.piecesAtLeastCount &&
         rule.flyingAllowed) {
       //print("Can fly.");
       return false;

@@ -29,7 +29,7 @@ struct Rule
 
     int nTotalPiecesEachSide;   // 9 or 12
 
-    int nPiecesAtLeast; // Default is 3
+    int piecesAtLeastCount; // Default is 3
 
     bool hasObliqueLines;
 

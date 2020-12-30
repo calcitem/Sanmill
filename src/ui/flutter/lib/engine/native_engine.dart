@@ -136,7 +136,8 @@ class NativeEngine extends AiEngine {
     await send('setoption name Shuffling value ${Config.shufflingEnabled}');
     await send(
         'setoption name nTotalPiecesEachSide value ${Config.nTotalPiecesEachSide}');
-    await send('setoption name nPiecesAtLeast value ${Config.nPiecesAtLeast}');
+    await send(
+        'setoption name piecesAtLeastCount value ${Config.piecesAtLeastCount}');
     await send(
         'setoption name hasObliqueLines value ${Config.hasObliqueLines}');
     await send(

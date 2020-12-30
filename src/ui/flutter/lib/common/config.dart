@@ -38,7 +38,7 @@ class Config {
 
   // Rules
   static int nTotalPiecesEachSide = 12;
-  static int nPiecesAtLeast = 3;
+  static int piecesAtLeastCount = 3;
   static bool hasObliqueLines = true;
   static bool hasBannedLocations = true;
   static bool isDefenderMoveFirst = true;
@@ -69,8 +69,8 @@ class Config {
     // Rules
     rule.nTotalPiecesEachSide =
         Config.nTotalPiecesEachSide = profile['nTotalPiecesEachSide'] ?? 12;
-    rule.nPiecesAtLeast =
-        Config.nPiecesAtLeast = profile['nPiecesAtLeast'] ?? 3;
+    rule.piecesAtLeastCount =
+        Config.piecesAtLeastCount = profile['piecesAtLeastCount'] ?? 3;
     rule.hasObliqueLines =
         Config.hasObliqueLines = profile['hasObliqueLines'] ?? true;
     rule.hasBannedLocations =
@@ -115,7 +115,7 @@ class Config {
 
     // Rules
     profile['nTotalPiecesEachSide'] = Config.nTotalPiecesEachSide;
-    profile['nPiecesAtLeast'] = Config.nPiecesAtLeast;
+    profile['piecesAtLeastCount'] = Config.piecesAtLeastCount;
     profile['hasObliqueLines'] = Config.hasObliqueLines;
     profile['hasBannedLocations'] = Config.hasBannedLocations;
     profile['isDefenderMoveFirst'] = Config.isDefenderMoveFirst;

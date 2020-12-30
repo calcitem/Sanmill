@@ -251,7 +251,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setNPiecesAtLeast(int value) async {
     //
     setState(() {
-      rule.nPiecesAtLeast = Config.nPiecesAtLeast = value;
+      rule.piecesAtLeastCount = Config.piecesAtLeastCount = value;
     });
 
     Config.save();

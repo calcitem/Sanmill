@@ -72,9 +72,9 @@ void on_nTotalPiecesEachSide(const Option &o)
     rule.nTotalPiecesEachSide = (int)o;
 }
 
-void on_nPiecesAtLeast(const Option &o)
+void on_piecesAtLeastCount(const Option &o)
 {
-    rule.nPiecesAtLeast = (int)o;
+    rule.piecesAtLeastCount = (int)o;
 }
 
 void on_hasObliqueLines(const Option &o)
@@ -157,7 +157,7 @@ void init(OptionsMap &o)
 
     // Rules
     o["nTotalPiecesEachSide"] << Option(12, 6, 12, on_nTotalPiecesEachSide);
-    o["nPiecesAtLeast"] << Option(3, 3, 5, on_nPiecesAtLeast);
+    o["piecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
     o["hasObliqueLines"] << Option(true, on_hasObliqueLines);
     o["hasBannedLocations"] << Option(true, on_hasBannedLocations);
     o["isDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);

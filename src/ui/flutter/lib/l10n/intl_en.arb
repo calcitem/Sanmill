@@ -323,8 +323,8 @@
   "@twelvePieces": {
     "description": "Twelve Pieces"
   },
-  "nPiecesAtLeast": "Pieces At Least",
-  "@nPiecesAtLeast": {
+  "piecesAtLeastCount": "Pieces At Least",
+  "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
   "hasObliqueLines": "Has Oblique Lines",
