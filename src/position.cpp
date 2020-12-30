@@ -808,7 +808,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         currentSquare = s;
 
-        int n = add_mills(currentSquare);
+        int n = mills_count(currentSquare);
 
         if (n == 0) {
             assert(pieceInHandCount[BLACK] >= 0 && pieceInHandCount[WHITE] >= 0);     
@@ -879,7 +879,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
         SET_BIT(byColorBB[color_of(pc)], s);
 
         currentSquare = s;
-        int n = add_mills(currentSquare);
+        int n = mills_count(currentSquare);
 
         // midgame
         if (n == 0) {
@@ -1450,7 +1450,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     return n;
 }
 
-int Position::add_mills(Square s)
+int Position::mills_count(Square s)
 {
     int n = 0;
 

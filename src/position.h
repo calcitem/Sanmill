@@ -132,7 +132,7 @@ public:
     void reset_bb();
 
     void create_mill_table();
-    int add_mills(Square s);
+    int mills_count(Square s);
 
     // The number of mills that would be closed by the given move.
     int potential_mills_count(Square to, Color c, Square from = SQ_0);

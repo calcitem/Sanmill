@@ -523,7 +523,7 @@ class Position {
 
       currentSquare = s;
 
-      int n = addMills(currentSquare);
+      int n = millsCount(currentSquare);
 
       if (n == 0) {
         assert(pieceInHandCount[Color.black] >= 0 &&
@@ -594,7 +594,7 @@ class Position {
           _grid[squareToIndex[currentSquare]] = Piece.noPiece;
 
       currentSquare = s;
-      int n = addMills(currentSquare);
+      int n = millsCount(currentSquare);
 
       // midgame
       if (n == 0) {
@@ -1351,7 +1351,7 @@ class Position {
     return n;
   }
 
-  int addMills(int s) {
+  int millsCount(int s) {
     int n = 0;
     List<int> idx = [0, 0, 0];
     int min;
