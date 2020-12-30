@@ -666,7 +666,7 @@ bool Position::pos_is_ok() const
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int Position::piece_on_board_count_count()
+int Position::piece_on_board_count()
 {
     pieceOnBoardCount[BLACK] = pieceOnBoardCount[WHITE] = 0;
 
