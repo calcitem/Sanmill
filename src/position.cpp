@@ -693,7 +693,7 @@ int Position::n_pieces_on_board_count()
     return nPiecesOnBoard[BLACK] + nPiecesOnBoard[WHITE];
 }
 
-int Position::n_pieces_in_hand_count()
+int Position::get_n_pieces_in_hand()
 {
     nPiecesInHand[BLACK] = rule.nTotalPiecesEachSide - nPiecesOnBoard[BLACK];
     nPiecesInHand[WHITE] = rule.nTotalPiecesEachSide - nPiecesOnBoard[WHITE];

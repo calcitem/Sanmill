@@ -143,7 +143,7 @@ public:
     static void print_board();
 
     int n_pieces_on_board_count();
-    int n_pieces_in_hand_count();
+    int get_n_pieces_in_hand();
 
     int n_pieces_on_board(Color c);
     int n_pieces_in_hand(Color c);
