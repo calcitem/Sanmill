@@ -92,14 +92,14 @@ void on_isDefenderMoveFirst(const Option &o)
     rule.isDefenderMoveFirst = (bool)o;
 }
 
-void on_mayTakeMultiple(const Option &o)
+void on_mayRemoveMultiple(const Option &o)
 {
-    rule.mayTakeMultiple = (bool)o;
+    rule.mayRemoveMultiple = (bool)o;
 }
 
-void on_mayTakeFromMillsAlways(const Option &o)
+void on_mayRemoveFromMillsAlways(const Option &o)
 {
-    rule.mayTakeFromMillsAlways = (bool)o;
+    rule.mayRemoveFromMillsAlways = (bool)o;
 }
 
 void on_isBlackLoseButNotDrawWhenBoardFull(const Option &o)
@@ -161,8 +161,8 @@ void init(OptionsMap &o)
     o["hasObliqueLines"] << Option(true, on_hasObliqueLines);
     o["hasBannedLocations"] << Option(true, on_hasBannedLocations);
     o["isDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);
-    o["mayTakeMultiple"] << Option(false, on_mayTakeMultiple);
-    o["mayTakeFromMillsAlways"] << Option(true, on_mayTakeFromMillsAlways);
+    o["mayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
+    o["mayRemoveFromMillsAlways"] << Option(true, on_mayRemoveFromMillsAlways);
     o["isBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
     o["isLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["mayFly"] << Option(false, on_mayFly);

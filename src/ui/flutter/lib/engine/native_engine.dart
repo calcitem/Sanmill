@@ -144,9 +144,9 @@ class NativeEngine extends AiEngine {
     await send(
         'setoption name isDefenderMoveFirst value ${Config.isDefenderMoveFirst}');
     await send(
-        'setoption name mayTakeMultiple value ${Config.mayTakeMultiple}');
+        'setoption name mayRemoveMultiple value ${Config.mayRemoveMultiple}');
     await send(
-        'setoption name mayTakeFromMillsAlways value ${Config.mayTakeFromMillsAlways}');
+        'setoption name mayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}');
     await send(
         'setoption name isBlackLoseButNotDrawWhenBoardFull value ${Config.isBlackLoseButNotDrawWhenBoardFull}');
     await send(

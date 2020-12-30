@@ -65,7 +65,7 @@ void MovePicker::score()
         int nTheirMills = 0;
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
-        // TODO: rule.mayTakeMultiple adapt other rules
+        // TODO: rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
             if (nOurMills > 0) {

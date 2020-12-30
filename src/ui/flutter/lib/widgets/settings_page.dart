@@ -286,7 +286,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
     //
     setState(() {
-      rule.mayTakeMultiple = Config.mayTakeMultiple = value;
+      rule.mayRemoveMultiple = Config.mayRemoveMultiple = value;
     });
 
     Config.save();
@@ -295,7 +295,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setAllowRemovePieceInMill(bool value) async {
     //
     setState(() {
-      rule.mayTakeFromMillsAlways = Config.mayTakeFromMillsAlways = value;
+      rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways = value;
     });
 
     Config.save();
@@ -594,16 +594,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.mayTakeMultiple,
+                    value: Config.mayRemoveMultiple,
                     title:
-                        Text(S.of(context).mayTakeMultiple, style: itemStyle),
+                        Text(S.of(context).mayRemoveMultiple, style: itemStyle),
                     onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
                   ),
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.mayTakeFromMillsAlways,
-                    title: Text(S.of(context).mayTakeFromMillsAlways,
+                    value: Config.mayRemoveFromMillsAlways,
+                    title: Text(S.of(context).mayRemoveFromMillsAlways,
                         style: itemStyle),
                     onChanged: setAllowRemovePieceInMill,
                   ),

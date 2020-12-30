@@ -24,8 +24,8 @@ class Rule {
   bool hasObliqueLines = true;
   bool hasBannedLocations = true;
   bool isDefenderMoveFirst = true;
-  bool mayTakeMultiple = false;
-  bool mayTakeFromMillsAlways = true;
+  bool mayRemoveMultiple = false;
+  bool mayRemoveFromMillsAlways = true;
   bool isBlackLoseButNotDrawWhenBoardFull = true;
   bool isLoseButNotChangeSideWhenNoWay = true;
   bool mayFly = false;

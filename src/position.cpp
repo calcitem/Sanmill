@@ -836,7 +836,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 change_side_to_move();
             }
         } else {
-            pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
+            pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
             update_key_misc();
             action = Action::remove;
         } 
@@ -890,7 +890,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 return true;
             }
         } else {
-            pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
+            pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
             update_key_misc();
             action = Action::remove;
         }
@@ -916,7 +916,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (!(make_piece(~side_to_move()) & board[s]))
         return false;
 
-    if (!rule.mayTakeFromMillsAlways &&
+    if (!rule.mayRemoveFromMillsAlways &&
         potential_mills_count(s, NOBODY) &&
         !is_all_in_mills(~sideToMove)) {
         return false;

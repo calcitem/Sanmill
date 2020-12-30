@@ -42,8 +42,8 @@ class Config {
   static bool hasObliqueLines = true;
   static bool hasBannedLocations = true;
   static bool isDefenderMoveFirst = true;
-  static bool mayTakeMultiple = false;
-  static bool mayTakeFromMillsAlways = true;
+  static bool mayRemoveMultiple = false;
+  static bool mayRemoveFromMillsAlways = true;
   static bool isBlackLoseButNotDrawWhenBoardFull = true;
   static bool isLoseButNotChangeSideWhenNoWay = true;
   static bool mayFly = false;
@@ -76,10 +76,10 @@ class Config {
         Config.hasBannedLocations = profile['hasBannedLocations'] ?? true;
     rule.isDefenderMoveFirst =
         Config.isDefenderMoveFirst = profile['isDefenderMoveFirst'] ?? true;
-    rule.mayTakeMultiple =
-        Config.mayTakeMultiple = profile['mayTakeMultiple'] ?? false;
-    rule.mayTakeFromMillsAlways = Config.mayTakeFromMillsAlways =
-        profile['mayTakeFromMillsAlways'] ?? true;
+    rule.mayRemoveMultiple =
+        Config.mayRemoveMultiple = profile['mayRemoveMultiple'] ?? false;
+    rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways =
+        profile['mayRemoveFromMillsAlways'] ?? true;
     rule.isBlackLoseButNotDrawWhenBoardFull =
         Config.isBlackLoseButNotDrawWhenBoardFull =
             profile['isBlackLoseButNotDrawWhenBoardFull'] ?? true;
@@ -116,8 +116,8 @@ class Config {
     profile['hasObliqueLines'] = Config.hasObliqueLines;
     profile['hasBannedLocations'] = Config.hasBannedLocations;
     profile['isDefenderMoveFirst'] = Config.isDefenderMoveFirst;
-    profile['mayTakeMultiple'] = Config.mayTakeMultiple;
-    profile['mayTakeFromMillsAlways'] = Config.mayTakeFromMillsAlways;
+    profile['mayRemoveMultiple'] = Config.mayRemoveMultiple;
+    profile['mayRemoveFromMillsAlways'] = Config.mayRemoveFromMillsAlways;
     profile['isBlackLoseButNotDrawWhenBoardFull'] =
         Config.isBlackLoseButNotDrawWhenBoardFull;
     profile['isLoseButNotChangeSideWhenNoWay'] =

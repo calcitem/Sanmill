@@ -339,12 +339,12 @@
   "@isDefenderMoveFirst": {
     "description": "Defender Move First"
   },
-  "mayTakeMultiple": "Allow Remove Multi Pieces When Close Multi Mill",
-  "@mayTakeMultiple": {
+  "mayRemoveMultiple": "Allow Remove Multi Pieces When Close Multi Mill",
+  "@mayRemoveMultiple": {
     "description": "Allow Remove Multi Pieces When Close Multi Mill"
   },
-  "mayTakeFromMillsAlways": "Allow Remove Piece In Mill",
-  "@mayTakeFromMillsAlways": {
+  "mayRemoveFromMillsAlways": "Allow Remove Piece In Mill",
+  "@mayRemoveFromMillsAlways": {
     "description": "Allow Remove Piece In Mill"
   },
   "isBlackLoseButNotDrawWhenBoardFull": "Black Lose But Not Draw When Board Full",

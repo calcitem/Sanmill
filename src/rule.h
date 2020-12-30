@@ -39,11 +39,11 @@ struct Rule
 
     bool isDefenderMoveFirst;
 
-    // When closing more than one mill at once, may also take several opponent pieces.
-    bool mayTakeMultiple;
+    // When closing more than one mill at once, may also remove several opponent pieces.
+    bool mayRemoveMultiple;
 
-    // May take from mills even if there are other pieces available.
-    bool mayTakeFromMillsAlways;
+    // May remove from mills even if there are other pieces available.
+    bool mayRemoveFromMillsAlways;
 
     bool isBlackLoseButNotDrawWhenBoardFull;
 

@@ -553,7 +553,7 @@ class Position {
           changeSideToMove();
         }
       } else {
-        pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
+        pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
       }
     } else if (phase == Phase.moving) {
@@ -605,7 +605,7 @@ class Position {
           return true;
         }
       } else {
-        pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
+        pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
       }
     } else {
@@ -625,7 +625,7 @@ class Position {
     // if piece is not their
     if (!(Color.opponent(sideToMove()) == board[s])) return false;
 
-    if (!rule.mayTakeFromMillsAlways &&
+    if (!rule.mayRemoveFromMillsAlways &&
         potentialMillsCount(s, Color.nobody) > 0 &&
         !isAllInMills(Color.opponent(sideToMove()))) {
       return false;
