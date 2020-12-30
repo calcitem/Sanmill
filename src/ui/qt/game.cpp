@@ -233,7 +233,7 @@ void Game::gameReset()
     PieceItem::Models md;
     PieceItem *newP;
 
-    for (int i = 0; i < rule.nTotalPiecesEachSide; i++) {
+    for (int i = 0; i < rule.piecesCount; i++) {
         // 先手的棋子
         md = isInverted ? PieceItem::Models::whitePiece : PieceItem::Models::blackPiece;
         newP = new PieceItem;
@@ -1237,7 +1237,7 @@ bool Game::updateScence(Position &p)
     int key;
 
     // 棋子总数
-    int nTotalPieces = rule.nTotalPiecesEachSide * 2;
+    int nTotalPieces = rule.piecesCount * 2;
 
     // 动画组
     auto *animationGroup = new QParallelAnimationGroup;

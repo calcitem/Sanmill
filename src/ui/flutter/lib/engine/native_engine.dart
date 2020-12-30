@@ -134,8 +134,7 @@ class NativeEngine extends AiEngine {
 
   Future<void> setOptions() async {
     await send('setoption name Shuffling value ${Config.shufflingEnabled}');
-    await send(
-        'setoption name nTotalPiecesEachSide value ${Config.nTotalPiecesEachSide}');
+    await send('setoption name piecesCount value ${Config.piecesCount}');
     await send(
         'setoption name piecesAtLeastCount value ${Config.piecesAtLeastCount}');
     await send(
@@ -145,14 +144,14 @@ class NativeEngine extends AiEngine {
     await send(
         'setoption name isDefenderMoveFirst value ${Config.isDefenderMoveFirst}');
     await send(
-        'setoption name allowRemoveMultiPiecesWhenCloseMultiMill value ${Config.allowRemoveMultiPiecesWhenCloseMultiMill}');
+        'setoption name mayTakeMultiple value ${Config.mayTakeMultiple}');
     await send(
-        'setoption name allowRemovePieceInMill value ${Config.allowRemovePieceInMill}');
+        'setoption name mayTakeFromMillsAlways value ${Config.mayTakeFromMillsAlways}');
     await send(
         'setoption name isBlackLoseButNotDrawWhenBoardFull value ${Config.isBlackLoseButNotDrawWhenBoardFull}');
     await send(
         'setoption name isLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
-    await send('setoption name flyingAllowed value ${Config.flyingAllowed}');
+    await send('setoption name mayFly value ${Config.mayFly}');
     await send(
         'setoption name maxStepsLedToDraw value ${Config.maxStepsLedToDraw}');
   }

@@ -61,7 +61,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
         }
 
         if (pos.piece_on_board_count(pos.side_to_move()) > rule.piecesAtLeastCount ||
-            !rule.flyingAllowed) {
+            !rule.mayFly) {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
                 to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
                 if (to && !pos.get_board()[to]) {
@@ -107,7 +107,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     for (auto i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
         s = MoveList<LEGAL>::movePriorityList[i];
         if (pos.get_board()[s] & make_piece(them)) {
-            if (rule.allowRemovePieceInMill || !pos.in_how_many_mills(s, NOBODY)) {
+            if (rule.mayTakeFromMillsAlways || !pos.in_how_many_mills(s, NOBODY)) {
                 *cur++ = (Move)-s;
             }
         }

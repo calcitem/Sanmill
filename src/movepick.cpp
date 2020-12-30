@@ -65,7 +65,7 @@ void MovePicker::score()
         int nTheirMills = 0;
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
-        // TODO: rule.allowRemoveMultiPiecesWhenCloseMultiMill adapt other rules
+        // TODO: rule.mayTakeMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
             if (nOurMills > 0) {
@@ -90,7 +90,7 @@ void MovePicker::score()
 
                     if (sq % 2 == 0 && nTheirPieces == 3) {
                         cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
-                    } else if (sq % 2 == 1 && nTheirPieces == 2 && rule.nTotalPiecesEachSide == 12) {
+                    } else if (sq % 2 == 1 && nTheirPieces == 2 && rule.piecesCount == 12) {
                         cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
                     }
                 }
@@ -100,7 +100,7 @@ void MovePicker::score()
             //cur->value += nBanned;  // placing phrase, place nearby ban point
 
             // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)   
-            if (rule.nTotalPiecesEachSide == 12 &&
+            if (rule.piecesCount == 12 &&
                 pos.count<ON_BOARD>(WHITE) < 2 &&    // patch: only when white's 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;

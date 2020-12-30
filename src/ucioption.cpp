@@ -67,9 +67,9 @@ void on_random_move(const Option &o)
 
 // Rules
 
-void on_nTotalPiecesEachSide(const Option &o)
+void on_piecesCount(const Option &o)
 {
-    rule.nTotalPiecesEachSide = (int)o;
+    rule.piecesCount = (int)o;
 }
 
 void on_piecesAtLeastCount(const Option &o)
@@ -92,14 +92,14 @@ void on_isDefenderMoveFirst(const Option &o)
     rule.isDefenderMoveFirst = (bool)o;
 }
 
-void on_allowRemoveMultiPiecesWhenCloseMultiMill(const Option &o)
+void on_mayTakeMultiple(const Option &o)
 {
-    rule.allowRemoveMultiPiecesWhenCloseMultiMill = (bool)o;
+    rule.mayTakeMultiple = (bool)o;
 }
 
-void on_allowRemovePieceInMill(const Option &o)
+void on_mayTakeFromMillsAlways(const Option &o)
 {
-    rule.allowRemovePieceInMill = (bool)o;
+    rule.mayTakeFromMillsAlways = (bool)o;
 }
 
 void on_isBlackLoseButNotDrawWhenBoardFull(const Option &o)
@@ -112,9 +112,9 @@ void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
     rule.isLoseButNotChangeSideWhenNoWay = (bool)o;
 }
 
-void on_flyingAllowed(const Option &o)
+void on_mayFly(const Option &o)
 {
-    rule.flyingAllowed = (bool)o;
+    rule.mayFly = (bool)o;
 }
 
 void on_maxStepsLedToDraw(const Option &o)
@@ -156,16 +156,16 @@ void init(OptionsMap &o)
     o["Shuffling"] << Option(true, on_random_move);
 
     // Rules
-    o["nTotalPiecesEachSide"] << Option(12, 6, 12, on_nTotalPiecesEachSide);
+    o["piecesCount"] << Option(12, 6, 12, on_piecesCount);
     o["piecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
     o["hasObliqueLines"] << Option(true, on_hasObliqueLines);
     o["hasBannedLocations"] << Option(true, on_hasBannedLocations);
     o["isDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);
-    o["allowRemoveMultiPiecesWhenCloseMultiMill"] << Option(false, on_allowRemoveMultiPiecesWhenCloseMultiMill);
-    o["allowRemovePieceInMill"] << Option(true, on_allowRemovePieceInMill);
+    o["mayTakeMultiple"] << Option(false, on_mayTakeMultiple);
+    o["mayTakeFromMillsAlways"] << Option(true, on_mayTakeFromMillsAlways);
     o["isBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
     o["isLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
-    o["flyingAllowed"] << Option(false, on_flyingAllowed);
+    o["mayFly"] << Option(false, on_mayFly);
     o["maxStepsLedToDraw"] << Option(50, 30, 50, on_maxStepsLedToDraw);
 
 }

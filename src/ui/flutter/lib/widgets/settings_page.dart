@@ -200,13 +200,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   setNTotalPiecesEachSide() {
     //
-    callback(int nTotalPiecesEachSide) async {
+    callback(int piecesCount) async {
       //
       Navigator.of(context).pop();
 
       setState(() {
-        rule.nTotalPiecesEachSide =
-            Config.nTotalPiecesEachSide = nTotalPiecesEachSide;
+        rule.piecesCount = Config.piecesCount = piecesCount;
       });
 
       Config.save();
@@ -221,7 +220,7 @@ class _SettingsPageState extends State<SettingsPage> {
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('6'),
-            groupValue: Config.nTotalPiecesEachSide,
+            groupValue: Config.piecesCount,
             value: 6,
             onChanged: callback,
           ),
@@ -229,7 +228,7 @@ class _SettingsPageState extends State<SettingsPage> {
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('9'),
-            groupValue: Config.nTotalPiecesEachSide,
+            groupValue: Config.piecesCount,
             value: 9,
             onChanged: callback,
           ),
@@ -237,7 +236,7 @@ class _SettingsPageState extends State<SettingsPage> {
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('12'),
-            groupValue: Config.nTotalPiecesEachSide,
+            groupValue: Config.piecesCount,
             value: 12,
             onChanged: callback,
           ),
@@ -287,8 +286,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
     //
     setState(() {
-      rule.allowRemoveMultiPiecesWhenCloseMultiMill =
-          Config.allowRemoveMultiPiecesWhenCloseMultiMill = value;
+      rule.mayTakeMultiple = Config.mayTakeMultiple = value;
     });
 
     Config.save();
@@ -297,7 +295,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setAllowRemovePieceInMill(bool value) async {
     //
     setState(() {
-      rule.allowRemovePieceInMill = Config.allowRemovePieceInMill = value;
+      rule.mayTakeFromMillsAlways = Config.mayTakeFromMillsAlways = value;
     });
 
     Config.save();
@@ -326,7 +324,7 @@ class _SettingsPageState extends State<SettingsPage> {
   setAllowFlyingAllowed(bool value) async {
     //
     setState(() {
-      rule.flyingAllowed = Config.flyingAllowed = value;
+      rule.mayFly = Config.mayFly = value;
     });
 
     Config.save();
@@ -556,13 +554,12 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).nTotalPiecesEachSide,
-                        style: itemStyle),
+                    title: Text(S.of(context).piecesCount, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.nTotalPiecesEachSide == 6
+                      Text(Config.piecesCount == 6
                           ? '6'
-                          : Config.nTotalPiecesEachSide == 9
+                          : Config.piecesCount == 9
                               ? '9'
                               : '12'),
                       Icon(Icons.keyboard_arrow_right,
@@ -597,17 +594,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.allowRemoveMultiPiecesWhenCloseMultiMill,
-                    title: Text(
-                        S.of(context).allowRemoveMultiPiecesWhenCloseMultiMill,
-                        style: itemStyle),
+                    value: Config.mayTakeMultiple,
+                    title:
+                        Text(S.of(context).mayTakeMultiple, style: itemStyle),
                     onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
                   ),
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.allowRemovePieceInMill,
-                    title: Text(S.of(context).allowRemovePieceInMill,
+                    value: Config.mayTakeFromMillsAlways,
+                    title: Text(S.of(context).mayTakeFromMillsAlways,
                         style: itemStyle),
                     onChanged: setAllowRemovePieceInMill,
                   ),
@@ -631,8 +627,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.flyingAllowed,
-                    title: Text(S.of(context).flyingAllowed, style: itemStyle),
+                    value: Config.mayFly,
+                    title: Text(S.of(context).mayFly, style: itemStyle),
                     onChanged: setAllowFlyingAllowed,
                   ),
                   _buildDivider(),

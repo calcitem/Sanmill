@@ -37,16 +37,16 @@ class Config {
   static bool openingBook = false;
 
   // Rules
-  static int nTotalPiecesEachSide = 12;
+  static int piecesCount = 12;
   static int piecesAtLeastCount = 3;
   static bool hasObliqueLines = true;
   static bool hasBannedLocations = true;
   static bool isDefenderMoveFirst = true;
-  static bool allowRemoveMultiPiecesWhenCloseMultiMill = false;
-  static bool allowRemovePieceInMill = true;
+  static bool mayTakeMultiple = false;
+  static bool mayTakeFromMillsAlways = true;
   static bool isBlackLoseButNotDrawWhenBoardFull = true;
   static bool isLoseButNotChangeSideWhenNoWay = true;
-  static bool flyingAllowed = false;
+  static bool mayFly = false;
   static int maxStepsLedToDraw = 50;
 
   static Future<void> loadProfile() async {
@@ -67,8 +67,7 @@ class Config {
     Config.openingBook = profile['openingBook'] ?? false;
 
     // Rules
-    rule.nTotalPiecesEachSide =
-        Config.nTotalPiecesEachSide = profile['nTotalPiecesEachSide'] ?? 12;
+    rule.piecesCount = Config.piecesCount = profile['piecesCount'] ?? 12;
     rule.piecesAtLeastCount =
         Config.piecesAtLeastCount = profile['piecesAtLeastCount'] ?? 3;
     rule.hasObliqueLines =
@@ -77,19 +76,17 @@ class Config {
         Config.hasBannedLocations = profile['hasBannedLocations'] ?? true;
     rule.isDefenderMoveFirst =
         Config.isDefenderMoveFirst = profile['isDefenderMoveFirst'] ?? true;
-    rule.allowRemoveMultiPiecesWhenCloseMultiMill =
-        Config.allowRemoveMultiPiecesWhenCloseMultiMill =
-            profile['allowRemoveMultiPiecesWhenCloseMultiMill'] ?? false;
-    rule.allowRemovePieceInMill = Config.allowRemovePieceInMill =
-        profile['allowRemovePieceInMill'] ?? true;
+    rule.mayTakeMultiple =
+        Config.mayTakeMultiple = profile['mayTakeMultiple'] ?? false;
+    rule.mayTakeFromMillsAlways = Config.mayTakeFromMillsAlways =
+        profile['mayTakeFromMillsAlways'] ?? true;
     rule.isBlackLoseButNotDrawWhenBoardFull =
         Config.isBlackLoseButNotDrawWhenBoardFull =
             profile['isBlackLoseButNotDrawWhenBoardFull'] ?? true;
     rule.isLoseButNotChangeSideWhenNoWay =
         Config.isLoseButNotChangeSideWhenNoWay =
             profile['isLoseButNotChangeSideWhenNoWay'] ?? true;
-    rule.flyingAllowed =
-        Config.flyingAllowed = profile['flyingAllowed'] ?? false;
+    rule.mayFly = Config.mayFly = profile['mayFly'] ?? false;
     rule.maxStepsLedToDraw =
         Config.maxStepsLedToDraw = profile['maxStepsLedToDraw'] ?? 50;
 
@@ -114,19 +111,18 @@ class Config {
     profile['openingBook'] = Config.openingBook;
 
     // Rules
-    profile['nTotalPiecesEachSide'] = Config.nTotalPiecesEachSide;
+    profile['piecesCount'] = Config.piecesCount;
     profile['piecesAtLeastCount'] = Config.piecesAtLeastCount;
     profile['hasObliqueLines'] = Config.hasObliqueLines;
     profile['hasBannedLocations'] = Config.hasBannedLocations;
     profile['isDefenderMoveFirst'] = Config.isDefenderMoveFirst;
-    profile['allowRemoveMultiPiecesWhenCloseMultiMill'] =
-        Config.allowRemoveMultiPiecesWhenCloseMultiMill;
-    profile['allowRemovePieceInMill'] = Config.allowRemovePieceInMill;
+    profile['mayTakeMultiple'] = Config.mayTakeMultiple;
+    profile['mayTakeFromMillsAlways'] = Config.mayTakeFromMillsAlways;
     profile['isBlackLoseButNotDrawWhenBoardFull'] =
         Config.isBlackLoseButNotDrawWhenBoardFull;
     profile['isLoseButNotChangeSideWhenNoWay'] =
         Config.isLoseButNotChangeSideWhenNoWay;
-    profile['flyingAllowed'] = Config.flyingAllowed;
+    profile['mayFly'] = Config.mayFly;
     profile['maxStepsLedToDraw'] = Config.maxStepsLedToDraw;
 
     profile.commit();

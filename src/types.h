@@ -156,7 +156,7 @@ enum class Phase : uint16_t
 //   - move a piece on the board:
 //       - slide a piece between two adjacent locations;
 //       - 'jump' a piece to any empty location if the player has less than
-//         three pieces and flyingAllowed is |true|;
+//         three pieces and mayFly is |true|;
 //   - remove an opponent's piece after successfully closing a mill;
 enum class Action : uint16_t
 {

@@ -439,9 +439,9 @@ Depth Thread::adjustDepth()
     const Depth flyingDepth = 9;
 
     if (rootPos->phase == Phase::placing) {
-        int index = rule.nTotalPiecesEachSide * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE);
+        int index = rule.piecesCount * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE);
 
-        if (rule.nTotalPiecesEachSide == 12) {
+        if (rule.piecesCount == 12) {
             assert(0 <= index && index <= 24);
             d = placingDepthTable_12[index];
         } else {
@@ -468,7 +468,7 @@ Depth Thread::adjustDepth()
         }
 
         // Can fly
-        if (rule.flyingAllowed) {
+        if (rule.mayFly) {
             if (pb == rule.piecesAtLeastCount ||
                 pw == rule.piecesAtLeastCount) {
                 d = flyingDepth;

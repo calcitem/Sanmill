@@ -384,8 +384,8 @@ class Position {
       }
     }
 
-    if (pieceOnBoardCount[Color.black] > rule.nTotalPiecesEachSide ||
-        pieceOnBoardCount[Color.white] > rule.nTotalPiecesEachSide) {
+    if (pieceOnBoardCount[Color.black] > rule.piecesCount ||
+        pieceOnBoardCount[Color.white] > rule.piecesCount) {
       return -1;
     }
 
@@ -394,9 +394,9 @@ class Position {
 
   int GetNPiecesInHand() {
     pieceInHandCount[Color.black] =
-        rule.nTotalPiecesEachSide - pieceOnBoardCount[Color.black];
+        rule.piecesCount - pieceOnBoardCount[Color.black];
     pieceInHandCount[Color.white] =
-        rule.nTotalPiecesEachSide - pieceOnBoardCount[Color.white];
+        rule.piecesCount - pieceOnBoardCount[Color.white];
 
     return pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white];
   }
@@ -458,7 +458,7 @@ class Position {
 
     pieceOnBoardCount[Color.black] = pieceOnBoardCount[Color.white] = 0;
     pieceInHandCount[Color.black] =
-        pieceInHandCount[Color.white] = rule.nTotalPiecesEachSide;
+        pieceInHandCount[Color.white] = rule.piecesCount;
     pieceToRemoveCount = 0;
 
     currentSquare = 0;
@@ -553,8 +553,7 @@ class Position {
           changeSideToMove();
         }
       } else {
-        pieceToRemoveCount =
-            rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+        pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
         action = Act.remove;
       }
     } else if (phase == Phase.moving) {
@@ -564,7 +563,7 @@ class Position {
 
       // if illegal
       if (pieceOnBoardCount[sideToMove()] > rule.piecesAtLeastCount ||
-          !rule.flyingAllowed) {
+          !rule.mayFly) {
         int md;
 
         for (md = 0; md < moveDirectionNumber; md++) {
@@ -606,8 +605,7 @@ class Position {
           return true;
         }
       } else {
-        pieceToRemoveCount =
-            rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+        pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
         action = Act.remove;
       }
     } else {
@@ -627,7 +625,7 @@ class Position {
     // if piece is not their
     if (!(Color.opponent(sideToMove()) == board[s])) return false;
 
-    if (!rule.allowRemovePieceInMill &&
+    if (!rule.mayTakeFromMillsAlways &&
         inHowManyMills(s, Color.nobody) > 0 &&
         !isAllInMills(Color.opponent(sideToMove()))) {
       return false;
@@ -1418,7 +1416,7 @@ class Position {
 
     // Can fly
     if (pieceOnBoardCount[sideToMove()] <= rule.piecesAtLeastCount &&
-        rule.flyingAllowed) {
+        rule.mayFly) {
       //print("Can fly.");
       return false;
     }

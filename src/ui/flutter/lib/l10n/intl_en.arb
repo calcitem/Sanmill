@@ -311,8 +311,8 @@
   "@rules": {
     "description": "Rules"
   },
-  "nTotalPiecesEachSide": "Total Pieces Each Side",
-  "@nTotalPiecesEachSide": {
+  "piecesCount": "Total Pieces Each Side",
+  "@piecesCount": {
     "description": "Total Pieces Each Side"
   },
   "ninePieces": "Nine Pieces",
@@ -339,12 +339,12 @@
   "@isDefenderMoveFirst": {
     "description": "Defender Move First"
   },
-  "allowRemoveMultiPiecesWhenCloseMultiMill": "Allow Remove Multi Pieces When Close Multi Mill",
-  "@allowRemoveMultiPiecesWhenCloseMultiMill": {
+  "mayTakeMultiple": "Allow Remove Multi Pieces When Close Multi Mill",
+  "@mayTakeMultiple": {
     "description": "Allow Remove Multi Pieces When Close Multi Mill"
   },
-  "allowRemovePieceInMill": "Allow Remove Piece In Mill",
-  "@allowRemovePieceInMill": {
+  "mayTakeFromMillsAlways": "Allow Remove Piece In Mill",
+  "@mayTakeFromMillsAlways": {
     "description": "Allow Remove Piece In Mill"
   },
   "isBlackLoseButNotDrawWhenBoardFull": "Black Lose But Not Draw When Board Full",
@@ -355,8 +355,8 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose But Not Change Side When No Way"
   },
-  "flyingAllowed": "Allow Fly When Remain Three Pieces",
-  "@flyingAllowed": {
+  "mayFly": "Allow Fly When Remain Three Pieces",
+  "@mayFly": {
     "description": "Allow Fly When Remain Three Pieces"
   },
   "maxStepsLedToDraw": "Max Steps Led To Draw",

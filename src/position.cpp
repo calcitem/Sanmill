@@ -685,8 +685,8 @@ int Position::piece_on_board_count_count()
         }
     }
 
-    if (pieceOnBoardCount[BLACK] > rule.nTotalPiecesEachSide ||
-        pieceOnBoardCount[WHITE] > rule.nTotalPiecesEachSide) {
+    if (pieceOnBoardCount[BLACK] > rule.piecesCount ||
+        pieceOnBoardCount[WHITE] > rule.piecesCount) {
         return -1;
     }
 
@@ -695,8 +695,8 @@ int Position::piece_on_board_count_count()
 
 int Position::get_piece_in_hand_count()
 {
-    pieceInHandCount[BLACK] = rule.nTotalPiecesEachSide - pieceOnBoardCount[BLACK];
-    pieceInHandCount[WHITE] = rule.nTotalPiecesEachSide - pieceOnBoardCount[WHITE];
+    pieceInHandCount[BLACK] = rule.piecesCount - pieceOnBoardCount[BLACK];
+    pieceInHandCount[WHITE] = rule.piecesCount - pieceOnBoardCount[WHITE];
 
     return pieceInHandCount[BLACK] + pieceInHandCount[WHITE];
 }
@@ -727,7 +727,7 @@ bool Position::reset()
     memset(byColorBB, 0, sizeof(byColorBB));
 
     pieceOnBoardCount[BLACK] = pieceOnBoardCount[WHITE] = 0;
-    pieceInHandCount[BLACK] = pieceInHandCount[WHITE] = rule.nTotalPiecesEachSide;
+    pieceInHandCount[BLACK] = pieceInHandCount[WHITE] = rule.piecesCount;
     pieceToRemoveCount = 0;
     millListSize = 0;
 
@@ -792,7 +792,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     }
 
     if (phase == Phase::placing) {
-        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.nTotalPiecesEachSide - pieceInHandCount[us]);
+        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.piecesCount - pieceInHandCount[us]);
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;
 
@@ -836,7 +836,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 change_side_to_move();
             }
         } else {
-            pieceToRemoveCount = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
             update_key_misc();
             action = Action::remove;
         } 
@@ -849,7 +849,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         // if illegal
         if (pieceOnBoardCount[sideToMove] > rule.piecesAtLeastCount ||
-            !rule.flyingAllowed) {
+            !rule.mayFly) {
             if ((square_bb(s) & MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
                 return false;
             }
@@ -890,7 +890,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
                 return true;
             }
         } else {
-            pieceToRemoveCount = rule.allowRemoveMultiPiecesWhenCloseMultiMill ? n : 1;
+            pieceToRemoveCount = rule.mayTakeMultiple ? n : 1;
             update_key_misc();
             action = Action::remove;
         }
@@ -916,7 +916,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
     if (!(make_piece(~side_to_move()) & board[s]))
         return false;
 
-    if (!rule.allowRemovePieceInMill &&
+    if (!rule.mayTakeFromMillsAlways &&
         in_how_many_mills(s, NOBODY) &&
         !is_all_in_mills(~sideToMove)) {
         return false;
@@ -1487,7 +1487,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
     int n = 0;
 
     if (pieceOnBoardCount[sideToMove] > rule.piecesAtLeastCount ||
-        !rule.flyingAllowed) {
+        !rule.mayFly) {
         Square moveSquare;
         for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
             moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
@@ -1542,7 +1542,7 @@ bool Position::is_all_surrounded() const
 
     // Can fly
     if (pieceOnBoardCount[sideToMove] <= rule.piecesAtLeastCount &&
-        rule.flyingAllowed) {
+        rule.mayFly) {
         return false;
     }
 
@@ -1573,7 +1573,7 @@ bool Position::is_star_square(Square s)
 
 void Position::print_board()
 {
-    if (rule.nTotalPiecesEachSide == 12) {
+    if (rule.piecesCount == 12) {
         printf("\n"
                     "31 ----- 24 ----- 25\n"
                     "| \\       |      / |\n"

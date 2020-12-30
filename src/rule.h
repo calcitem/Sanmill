@@ -21,13 +21,15 @@
 
 #include "types.h"
 
+// The rule struct manages the various variants of the rules.
 struct Rule
 {
     const char name[32];
 
     const char description[512];
 
-    int nTotalPiecesEachSide;   // 9 or 12
+    // Number of pieces each player has at the beginning.
+    int piecesCount;
 
     int piecesAtLeastCount; // Default is 3
 
@@ -37,16 +39,18 @@ struct Rule
 
     bool isDefenderMoveFirst;
 
-    bool allowRemoveMultiPiecesWhenCloseMultiMill;
+    // When closing more than one mill at once, may also take several opponent pieces.
+    bool mayTakeMultiple;
 
-    bool allowRemovePieceInMill;
+    // May take from mills even if there are other pieces available.
+    bool mayTakeFromMillsAlways;
 
     bool isBlackLoseButNotDrawWhenBoardFull;
 
     bool isLoseButNotChangeSideWhenNoWay;
 
-    // Specifies if jumps are allowed when a player remains with three pieces on the board.
-    bool flyingAllowed;
+    // Player may fly if he is down to three pieces.
+    bool mayFly;
 
     int maxStepsLedToDraw;
 };
