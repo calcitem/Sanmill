@@ -133,7 +133,9 @@ public:
 
     void create_mill_table();
     int add_mills(Square s);
-    int in_how_many_mills(Square s, Color c, Square squareSelected = SQ_0);
+
+    // The number of mills that would be closed by the given move.
+    int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
     int surrounded_empty_squares_count(Square s, bool includeFobidden);

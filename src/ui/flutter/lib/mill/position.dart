@@ -626,7 +626,7 @@ class Position {
     if (!(Color.opponent(sideToMove()) == board[s])) return false;
 
     if (!rule.mayTakeFromMillsAlways &&
-        inHowManyMills(s, Color.nobody) > 0 &&
+        potentialMillsCount(s, Color.nobody) > 0 &&
         !isAllInMills(Color.opponent(sideToMove()))) {
       return false;
     }
@@ -1323,30 +1323,29 @@ class Position {
     return board[sq];
   }
 
-  int inHowManyMills(int s, String c, {int squareSelected = 0}) {
+  int potentialMillsCount(int to, String c, {int from = 0}) {
     int n = 0;
     String ptBak = Piece.noPiece;
 
-    assert(0 <= squareSelected && squareSelected < sqNumber);
+    assert(0 <= from && from < sqNumber);
 
     if (c == Color.nobody) {
-      c = colorOn(s);
+      c = colorOn(to);
     }
 
-    if (squareSelected != 0) {
-      ptBak = board[squareSelected];
-      board[squareSelected] =
-          _grid[squareToIndex[squareSelected]] = Piece.noPiece;
+    if (from != 0) {
+      ptBak = board[from];
+      board[from] = _grid[squareToIndex[from]] = Piece.noPiece;
     }
 
     for (int l = 0; l < lineDirectionNumber; l++) {
-      if (c == board[millTable[s][l][0]] && c == board[millTable[s][l][1]]) {
+      if (c == board[millTable[to][l][0]] && c == board[millTable[to][l][1]]) {
         n++;
       }
     }
 
-    if (squareSelected != 0) {
-      board[squareSelected] = _grid[squareToIndex[squareSelected]] = ptBak;
+    if (from != 0) {
+      board[from] = _grid[squareToIndex[from]] = ptBak;
     }
 
     return n;
@@ -1397,7 +1396,7 @@ class Position {
   bool isAllInMills(String c) {
     for (int i = sqBegin; i < sqEnd; i++) {
       if (board[i] == c) {
-        if (inHowManyMills(i, Color.nobody) == 0) {
+        if (potentialMillsCount(i, Color.nobody) == 0) {
           return false;
         }
       }

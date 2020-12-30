@@ -917,7 +917,7 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         return false;
 
     if (!rule.mayTakeFromMillsAlways &&
-        in_how_many_mills(s, NOBODY) &&
+        potential_mills_count(s, NOBODY) &&
         !is_all_in_mills(~sideToMove)) {
         return false;
     }
@@ -1410,28 +1410,28 @@ bool Position::bitboard_is_ok()
     return true;
 }
 
-int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
+int Position::potential_mills_count(Square to, Color c, Square from)
 {
     int n = 0;
     Piece locbak = NO_PIECE;
 
-    assert(SQ_0 <= squareSelected && squareSelected < SQUARE_NB);
+    assert(SQ_0 <= from && from < SQUARE_NB);
 
     if (c == NOBODY) {
-        c = color_on(s);
+        c = color_on(to);
     }
 
-    if (squareSelected != SQ_0) {
-        locbak = board[squareSelected];
-        board[squareSelected] = NO_PIECE;
+    if (from != SQ_0) {
+        locbak = board[from];
+        board[from] = NO_PIECE;
 
-        CLEAR_BIT(byTypeBB[ALL_PIECES], squareSelected);
-        CLEAR_BIT(byTypeBB[type_of(locbak)], squareSelected);
-        CLEAR_BIT(byColorBB[color_of(locbak)], squareSelected);
+        CLEAR_BIT(byTypeBB[ALL_PIECES], from);
+        CLEAR_BIT(byTypeBB[type_of(locbak)], from);
+        CLEAR_BIT(byColorBB[color_of(locbak)], from);
     }
 
     Bitboard bc = byColorBB[c];
-    Bitboard *mt = millTableBB[s];
+    Bitboard *mt = millTableBB[to];
 
     for (int l = 0; l < LD_NB; l++) {
         if ((bc & mt[l]) == mt[l]) {
@@ -1439,12 +1439,12 @@ int Position::in_how_many_mills(Square s, Color c, Square squareSelected)
         }
     }
 
-    if (squareSelected != SQ_0) {
-        board[squareSelected] = locbak;
+    if (from != SQ_0) {
+        board[from] = locbak;
 
-        SET_BIT(byTypeBB[ALL_PIECES], squareSelected);
-        SET_BIT(byTypeBB[type_of(locbak)], squareSelected);
-        SET_BIT(byColorBB[color_of(locbak)], squareSelected);
+        SET_BIT(byTypeBB[ALL_PIECES], from);
+        SET_BIT(byTypeBB[type_of(locbak)], from);
+        SET_BIT(byColorBB[color_of(locbak)], from);
     }
 
     return n;
@@ -1470,7 +1470,7 @@ bool Position::is_all_in_mills(Color c)
 {
     for (Square i = SQ_BEGIN; i < SQ_END; ++i) {
         if (board[i] & ((uint8_t)make_piece(c))) {
-            if (!in_how_many_mills(i, NOBODY)) {
+            if (!potential_mills_count(i, NOBODY)) {
                 return false;
             }
         }

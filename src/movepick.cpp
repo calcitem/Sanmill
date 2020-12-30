@@ -57,11 +57,11 @@ void MovePicker::score()
     while (cur++->move != MOVE_NONE) {
         Move m = cur->move;
 
-        Square sq = to_sq(m);
-        Square sqsrc = from_sq(m);
+        Square to = to_sq(m);
+        Square from = from_sq(m);
 
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need sqsrc to judge
-        int nOurMills = pos.in_how_many_mills(sq, pos.side_to_move(), sqsrc);
+        int nOurMills = pos.potential_mills_count(to, pos.side_to_move(), from);
         int nTheirMills = 0;
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
@@ -72,13 +72,13 @@ void MovePicker::score()
                 cur->value += RATING_ONE_MILL * nOurMills;
             } else if (pos.get_phase() == Phase::placing) {
                 // placing phrase, check if place sq can block their close mill
-                nTheirMills = pos.in_how_many_mills(sq, ~pos.side_to_move());
+                nTheirMills = pos.potential_mills_count(to, ~pos.side_to_move());
                 cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
             }
 #if 1
             else if (pos.get_phase() == Phase::moving) {
                 // moving phrase, check if place sq can block their close mill
-                nTheirMills = pos.in_how_many_mills(sq, ~pos.side_to_move());
+                nTheirMills = pos.potential_mills_count(to, ~pos.side_to_move());
 
                 if (nTheirMills) {
                     int nOurPieces = 0;
@@ -86,11 +86,11 @@ void MovePicker::score()
                     int nBanned = 0;
                     int nEmpty = 0;
 
-                    pos.surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
+                    pos.surrounded_pieces_count(to, nOurPieces, nTheirPieces, nBanned, nEmpty);
 
-                    if (sq % 2 == 0 && nTheirPieces == 3) {
+                    if (to % 2 == 0 && nTheirPieces == 3) {
                         cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
-                    } else if (sq % 2 == 1 && nTheirPieces == 2 && rule.piecesCount == 12) {
+                    } else if (to % 2 == 1 && nTheirPieces == 2 && rule.piecesCount == 12) {
                         cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
                     }
                 }
@@ -111,7 +111,7 @@ void MovePicker::score()
             int nBanned = 0;
             int nEmpty = 0;
 
-            pos.surrounded_pieces_count(sq, nOurPieces, nTheirPieces, nBanned, nEmpty);
+            pos.surrounded_pieces_count(to, nOurPieces, nTheirPieces, nBanned, nEmpty);
 
             if (nOurMills > 0) {
                 // remove point is in our mill
@@ -128,7 +128,7 @@ void MovePicker::score()
             }
 
             // remove point is in their mill
-            nTheirMills = pos.in_how_many_mills(sq, ~pos.side_to_move());
+            nTheirMills = pos.potential_mills_count(to, ~pos.side_to_move());
             if (nTheirMills) {
                 if (nTheirPieces >= 2) {
                     // if nearby their piece, prefer do not remove
