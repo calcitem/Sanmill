@@ -1537,15 +1537,15 @@ void Game::setTips()
 
     switch (p.phase) {
     case Phase::ready:
-        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.piecesInHand[BLACK]) + "子" +
+        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.nPiecesInHand[BLACK]) + "子" +
             "  比分 " + to_string(p.score[BLACK]) + ":" + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);
         break;
 
     case Phase::placing:
         if (p.action == Action::place) {
-            tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.piecesInHand[p.sideToMove]) + "子";
+            tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.nPiecesInHand[p.sideToMove]) + "子";
         } else if (p.action == Action::remove) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.piecesNeedRemove) + "子";
+            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.nPiecesNeedRemove) + "子";
         }
         break;
 
@@ -1553,7 +1553,7 @@ void Game::setTips()
         if (p.action == Action::place || p.action == Action::select) {
             tips = "轮到" + turnStr + "选子移动";
         } else if (p.action == Action::remove) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.piecesNeedRemove) + "子";
+            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.nPiecesNeedRemove) + "子";
         }
         break;
 

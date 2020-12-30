@@ -28,6 +28,9 @@
 namespace Mills
 {
 
+// Morris boards have concentric square rings joined by edges and an empty middle.
+// Morris games are typically played on the vertices not the cells.
+
 /*
     31 ----- 24 ----- 25
     | \       |      / |
