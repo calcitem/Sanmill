@@ -26,6 +26,11 @@
 #define	SET_BIT(x, bit)     (x |= (1 << bit))	
 #define	CLEAR_BIT(x, bit)   (x &= ~(1 << bit))
 
+#define S2(a, b)        (square_bb(SQ_##a) | square_bb(SQ_##b))
+#define S3(a, b, c)     (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
+#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+
 namespace Bitboards
 {
 

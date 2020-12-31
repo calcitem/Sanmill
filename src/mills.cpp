@@ -142,10 +142,6 @@ void adjacent_squares_init()
         /* 39 */ {0, 0, 0, 0},
     };
 
-#define S2(a, b)        (square_bb(SQ_##a) | square_bb(SQ_##b))
-#define S3(a, b, c)     (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
-#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
-
     const Bitboard adjacentSquaresBB12[SQUARE_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
@@ -239,10 +235,6 @@ void adjacent_squares_init()
         /* 38 */ 0,
         /* 39 */ 0,
     };
-
-#undef S2
-#undef S3
-#undef S4
 
     if (rule.hasObliqueLines) {
         memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares12, sizeof(MoveList<LEGAL>::adjacentSquares));
