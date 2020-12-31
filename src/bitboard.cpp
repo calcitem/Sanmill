@@ -60,6 +60,8 @@ void Bitboards::init()
     for (Square s = SQ_BEGIN; s < SQ_END; ++s)
         SquareBB[s] = (1UL << s);
 
-    StarSquareBB9 = square_bb(SQ_16) | square_bb(SQ_18) | square_bb(SQ_20) | square_bb(SQ_22);
-    StarSquareBB12 = square_bb(SQ_17) | square_bb(SQ_19) | square_bb(SQ_21) | square_bb(SQ_23);
+#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+    StarSquareBB9 = S4(16, 18, 20,  22);
+    StarSquareBB12 = S4(17, 19, 21, 23);
+#undef S4
 }
