@@ -1504,7 +1504,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
     return n;
 }
 
-void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty)
+void Position::surrounded_pieces_count(Square s, int &ourPieceCount, int &theirPieceCount, int &bannedCount, int &emptyCount)
 {
     Square moveSquare;
 
@@ -1519,16 +1519,16 @@ void Position::surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPie
 
         switch (pieceType) {
         case NO_PIECE:
-            nEmpty++;
+            emptyCount++;
             break;
         case BAN_STONE:
-            nBanned++;
+            bannedCount++;
             break;
         default:
             if (color_of(pieceType) == sideToMove) {
-                nOurPieces++;
+                ourPieceCount++;
             } else {
-                nTheirPieces++;
+                theirPieceCount++;
             }
             break;
         }

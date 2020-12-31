@@ -44,7 +44,6 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
 MovePicker::MovePicker(Position &p)
     : pos(p)
 {
-
 }
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
@@ -53,51 +52,56 @@ template<GenType Type>
 void MovePicker::score()
 {
     cur = moves;
+    Square from, to;
+    Move m;
+
+    int ourMillsCount = 0;
+    int theirMillsCount = 0;
+    int ourPieceCount = 0;
+    int theirPiecesCount = 0;
+    int bannedCount = 0;
+    int emptyCount = 0;
 
     while (cur++->move != MOVE_NONE) {
-        Move m = cur->move;
+        m = cur->move;
 
-        Square to = to_sq(m);
-        Square from = from_sq(m);
+        to = to_sq(m);
+        from = from_sq(m);
 
-        // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need sqsrc to judge
-        int nOurMills = pos.potential_mills_count(to, pos.side_to_move(), from);
-        int nTheirMills = 0;
+        // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need |from| to judge
+        ourMillsCount = pos.potential_mills_count(to, pos.side_to_move(), from);
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
         // TODO: rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
-            if (nOurMills > 0) {
-                cur->value += RATING_ONE_MILL * nOurMills;
+            if (ourMillsCount > 0) {
+                cur->value += RATING_ONE_MILL * ourMillsCount;
             } else if (pos.get_phase() == Phase::placing) {
                 // placing phrase, check if place sq can block their close mill
-                nTheirMills = pos.potential_mills_count(to, ~pos.side_to_move());
-                cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
+                theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
+                cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
             }
 #if 1
             else if (pos.get_phase() == Phase::moving) {
                 // moving phrase, check if place sq can block their close mill
-                nTheirMills = pos.potential_mills_count(to, ~pos.side_to_move());
+                theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
 
-                if (nTheirMills) {
-                    int nOurPieces = 0;
-                    int nTheirPieces = 0;
-                    int nBanned = 0;
-                    int nEmpty = 0;
+                if (theirMillsCount) {
+                    ourPieceCount = theirPiecesCount = bannedCount = emptyCount = 0;
 
-                    pos.surrounded_pieces_count(to, nOurPieces, nTheirPieces, nBanned, nEmpty);
+                    pos.surrounded_pieces_count(to, ourPieceCount, theirPiecesCount, bannedCount, emptyCount);
 
-                    if (to % 2 == 0 && nTheirPieces == 3) {
-                        cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
-                    } else if (to % 2 == 1 && nTheirPieces == 2 && rule.piecesCount == 12) {
-                        cur->value += RATING_BLOCK_ONE_MILL * nTheirMills;
+                    if (to % 2 == 0 && theirPiecesCount == 3) {
+                        cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
+                    } else if (to % 2 == 1 && theirPiecesCount == 2 && rule.piecesCount == 12) {
+                        cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
                     }
                 }
             }
 #endif
 
-            //cur->value += nBanned;  // placing phrase, place nearby ban point
+            //cur->value += bannedCount;  // placing phrase, place nearby ban point
 
             // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)   
             if (rule.piecesCount == 12 &&
@@ -106,35 +110,32 @@ void MovePicker::score()
                 cur->value += RATING_STAR_SQUARE;
             }
         } else { // Remove
-            int nOurPieces = 0;
-            int nTheirPieces = 0;
-            int nBanned = 0;
-            int nEmpty = 0;
+            ourPieceCount = theirPiecesCount = bannedCount = emptyCount = 0;
 
-            pos.surrounded_pieces_count(to, nOurPieces, nTheirPieces, nBanned, nEmpty);
+            pos.surrounded_pieces_count(to, ourPieceCount, theirPiecesCount, bannedCount, emptyCount);
 
-            if (nOurMills > 0) {
+            if (ourMillsCount > 0) {
                 // remove point is in our mill
-                //cur->value += RATING_REMOVE_ONE_MILL * nOurMills;
+                //cur->value += RATING_REMOVE_ONE_MILL * ourMillsCount;
 
-                if (nTheirPieces == 0) {
+                if (theirPiecesCount == 0) {
                     // if remove point nearby has no their stone, preferred.
                     cur->value += 1;
-                    if (nOurPieces > 0) {
+                    if (ourPieceCount > 0) {
                         // if remove point nearby our stone, preferred
-                        cur->value += nOurPieces;
+                        cur->value += ourPieceCount;
                     }
                 }
             }
 
             // remove point is in their mill
-            nTheirMills = pos.potential_mills_count(to, ~pos.side_to_move());
-            if (nTheirMills) {
-                if (nTheirPieces >= 2) {
+            theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
+            if (theirMillsCount) {
+                if (theirPiecesCount >= 2) {
                     // if nearby their piece, prefer do not remove
-                    cur->value -= nTheirPieces;
+                    cur->value -= theirPiecesCount;
 
-                    if (nOurPieces == 0) {
+                    if (ourPieceCount == 0) {
                         // if nearby has no our piece, more prefer do not remove
                         cur->value -= 1;
                     }
@@ -142,28 +143,12 @@ void MovePicker::score()
             }
 
             // prefer remove piece that mobility is strong 
-            cur->value += nEmpty;
+            cur->value += emptyCount;
         }
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
     }
 }
 
-/// MovePicker::select() returns the next move satisfying a predicate function.
-/// It never returns the TT move.
-template<MovePicker::PickType T, typename Pred>
-Move MovePicker::select(Pred filter)
-{
-    while (cur < endMoves) {
-        if (T == Best)
-            std::swap(*cur, *std::max_element(cur, endMoves));
-
-        if (*cur != ttMove && filter())
-            return *cur++;
-
-        cur++;
-    }
-    return MOVE_NONE;
-}
 
 /// MovePicker::next_move() is the most important method of the MovePicker class. It
 /// returns a new pseudo legal move every time it is called until there are no more
@@ -174,7 +159,7 @@ Move MovePicker::next_move()
     moveCount = int(endMoves - moves);
 
     score<LEGAL>();
-    partial_insertion_sort(moves, endMoves, -100);    // TODO: limit = -3000 * depth
+    partial_insertion_sort(moves, endMoves, INT_MIN);
 
     return *moves;
 }

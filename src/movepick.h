@@ -41,11 +41,6 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit);
 /// to get a cut-off first.
 class MovePicker
 {
-    enum PickType
-    {
-        Next, Best
-    };
-
 public:
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
@@ -53,7 +48,6 @@ public:
 
     Move next_move();
 
-    template<PickType T, typename Pred> Move select(Pred);
     template<GenType> void score();
 
     ExtMove *begin()
@@ -70,9 +64,9 @@ public:
     Move ttMove { MOVE_NONE };
     ExtMove *cur { nullptr };
     ExtMove *endMoves { nullptr };
-    ExtMove moves[MAX_MOVES]{ {MOVE_NONE, 0} };
+    ExtMove moves[MAX_MOVES] { {MOVE_NONE, 0} };
 
-    int moveCount{ 0 };
+    int moveCount { 0 };
 
     int move_count()
     {
