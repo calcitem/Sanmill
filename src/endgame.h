@@ -47,7 +47,7 @@ struct Endgame
 };
 //#pragma pack(pop)  
 
-extern HashMap<key_t, Endgame> endgameHashMap;
+extern HashMap<Key, Endgame> endgameHashMap;
 
 #endif // ENDGAME_LEARNING
 

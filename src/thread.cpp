@@ -553,7 +553,7 @@ string Thread::nextMove()
             Endgame endgame;
             endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
                 ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
-            key_t endgameHash = position->key(); // TODO: Do not generate hash repeately
+            Key endgameHash = position->key(); // TODO: Do not generate hash repeately
             recordEndgameHash(endgameHash, endgame);
         }
     }
@@ -591,15 +591,15 @@ string Thread::nextMove()
 }
 
 #ifdef ENDGAME_LEARNING
-bool Thread::findEndgameHash(key_t posKey, Endgame &endgame)
+bool Thread::findEndgameHash(Key posKey, Endgame &endgame)
 {
     return endgameHashMap.find(posKey, endgame);
 }
 
-int Thread::recordEndgameHash(key_t posKey, const Endgame &endgame)
+int Thread::recordEndgameHash(Key posKey, const Endgame &endgame)
 {
     //hashMapMutex.lock();
-    key_t hashValue = endgameHashMap.insert(posKey, endgame);
+    Key hashValue = endgameHashMap.insert(posKey, endgame);
     unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
     //hashMapMutex.unlock();
 
@@ -617,7 +617,7 @@ void Thread::clearEndgameHashMap()
 
 void Thread::recordEndgameHashMapToFile()
 {
-    const QString filename = "endgame.txt";
+    const string filename = "endgame.txt";
     endgameHashMap.dump(filename);
 
     loggerDebug("[endgame] Dump hash map to file\n");
@@ -625,7 +625,7 @@ void Thread::recordEndgameHashMapToFile()
 
 void Thread::loadEndgameFileToHashMap()
 {
-    const QString filename = "endgame.txt";
+    const string filename = "endgame.txt";
     endgameHashMap.load(filename);
 }
 

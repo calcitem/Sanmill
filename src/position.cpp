@@ -737,7 +737,7 @@ bool Position::reset()
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.getLearnEndgameEnabled() && nPlayed != 0 && nPlayed % 256 == 0) {
-        AIAlgorithm::recordEndgameHashMapToFile();
+        Thread::recordEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
 

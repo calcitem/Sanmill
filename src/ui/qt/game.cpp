@@ -130,7 +130,7 @@ Game::~Game()
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.getLearnEndgameEnabled()) {
-        AIAlgorithm::recordEndgameHashMapToFile();
+        Thread::recordEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
 
@@ -560,7 +560,7 @@ void Game::setLearnEndgame(bool enabled)
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.getLearnEndgameEnabled()) {
-        AIAlgorithm::loadEndgameFileToHashMap();
+        Thread::loadEndgameFileToHashMap();
     }
 #endif
 }

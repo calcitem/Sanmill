@@ -234,7 +234,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     Endgame endgame;
 
     if (gameOptions.getLearnEndgameEnabled() &&
-        findEndgameHash(posKey, endgame)) {
+        Thread::findEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case ENDGAME_PLAYER_BLACK_WIN:
             bestValue = VALUE_MATE;

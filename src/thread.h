@@ -94,8 +94,8 @@ public:
 #endif
 
 #ifdef ENDGAME_LEARNING
-    bool findEndgameHash(key_t key, Endgame &endgame);
-    static int recordEndgameHash(key_t key, const Endgame &endgame);
+    static bool findEndgameHash(Key key, Endgame &endgame);
+    static int recordEndgameHash(Key key, const Endgame &endgame);
     void clearEndgameHashMap();
     static void recordEndgameHashMapToFile();
     static void loadEndgameFileToHashMap();

@@ -20,12 +20,12 @@
 
 #ifdef ENDGAME_LEARNING
 static constexpr int endgameHashsize = 0x1000000; // 16M
-HashMap<key_t, Endgame> endgameHashMap(endgameHashsize);
+HashMap<Key, Endgame> endgameHashMap(endgameHashsize);
 
-void mergeEndgameFile(QString file1, QString file2, QString mergedFile)
+void mergeEndgameFile(string file1, string file2, string mergedFile)
 {
-    HashMap<key_t, Endgame> map1(endgameHashsize);
-    HashMap<key_t, Endgame> map2(endgameHashsize);
+    HashMap<Key, Endgame> map1(endgameHashsize);
+    HashMap<Key, Endgame> map2(endgameHashsize);
 
     map1.load(file1);
     map2.load(file2);
@@ -35,17 +35,17 @@ void mergeEndgameFile(QString file1, QString file2, QString mergedFile)
     map1.dump(mergedFile);
 
     loggerDebug("[endgame] Merge %s to %s and save to %s\n",
-                file2.toStdString().c_str(),
-                file1.toStdString().c_str(),
-                mergedFile.toStdString().c_str());
+                file2.c_str(),
+                file1.c_str(),
+                mergedFile.c_str());
 }
 
 int mergeEndgameFile_main()
 {
-    QString filename;
+    string filename;
 
-    for (int i = 1; i <= 12; i++) {
-        filename = QString::number(i, 10) + "/endgame.txt";
+    for (char ch = '0'; ch <= '9'; ch++) {
+        filename = ch + "/endgame.txt";
         mergeEndgameFile("endgame.txt", filename, "endgame.txt");
     }
 
