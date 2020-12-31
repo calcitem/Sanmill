@@ -381,7 +381,7 @@ bool Position::legal(Move m) const
     Square to = to_sq(m);
 
     if (from == to) {
-        return false;   // TODO: Same with is_ok(m)
+        return false;
     }
 
     if (phase == Phase::moving && type_of(move) != MOVETYPE_REMOVE) {
@@ -389,8 +389,6 @@ bool Position::legal(Move m) const
             return false;
         }
     }
-
-    // TODO: Add more
 
     return true;
 }
@@ -1363,7 +1361,7 @@ bool Position::bitboard_is_ok()
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
 
-        if (board[s] == NO_PIECE)
+        if (empty(s))
         {
             if (blackBB & (1 << s)) {
                 return false;
