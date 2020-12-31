@@ -92,7 +92,6 @@ public:
     Thread *this_thread() const;
     int rule50_count() const;
 
-    void flip();
 
     /// Mill Game
 
