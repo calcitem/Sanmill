@@ -26,21 +26,9 @@
 #include "evaluate.h"
 #include "thread.h"
 
-namespace Trace
-{
-
-enum Tracing
-{
-    NO_TRACE, TRACE
-};
-
-}
-
-using namespace Trace;
-
 namespace
 {
-template<Tracing T>
+
 class Evaluation
 {
 public:
@@ -60,8 +48,7 @@ private:
 // parts of the evaluation and returns the value of the position from the point
 // of view of the side to move.
 
-template<Tracing T>
-Value Evaluation<T>::value()
+Value Evaluation::value()
 {
     Value value = VALUE_ZERO;
 
@@ -161,23 +148,6 @@ Value Evaluation<T>::value()
 
 Value Eval::evaluate(Position &pos)
 {
-    return Evaluation<NO_TRACE>(pos).value();
+    return Evaluation(pos).value();
 }
 
-
-/// trace() is like evaluate(), but instead of returning a value, it returns
-/// a string (suitable for outputting to stdout) that contains the detailed
-/// descriptions and values of each evaluation term. Useful for debugging.
-
-std::string Eval::trace(Position &pos)
-{
-    Value v = Evaluation<TRACE>(pos).value();
-
-    v = pos.side_to_move() == BLACK ? v : -v; // Trace scores are from black's point of view
-
-    std::stringstream ss;
-
-    ss << "\nTotal evaluation: " << v << " (black side)\n";
-
-    return ss.str();
-}
