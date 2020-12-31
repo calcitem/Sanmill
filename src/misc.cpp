@@ -86,14 +86,17 @@ struct Tie : public streambuf
     {
         return logBuf->pubsync(), buf->pubsync();
     }
+
     int overflow(int c) override
     {
         return log(buf->sputc((char)c), "<< ");
     }
+
     int underflow() override
     {
         return buf->sgetc();
     }
+
     int uflow() override
     {
         return log(buf->sbumpc(), ">> ");
@@ -119,6 +122,7 @@ class Logger
     Logger() : in(cin.rdbuf(), file.rdbuf()), out(cout.rdbuf(), file.rdbuf())
     {
     }
+
     ~Logger()
     {
         start("");
@@ -182,7 +186,6 @@ const string engine_info(bool to_uci)
 
 const std::string compiler_info()
 {
-
 #define stringify2(x) #x
 #define stringify(x) stringify2(x)
 #define make_version_string(major, minor, patch) stringify(major) "." stringify(minor) "." stringify(patch)
@@ -290,10 +293,12 @@ void dbg_hit_on(bool b)
 {
     ++hits[0]; if (b) ++hits[1];
 }
+
 void dbg_hit_on(bool c, bool b)
 {
     if (c) dbg_hit_on(b);
 }
+
 void dbg_mean_of(int v)
 {
     ++means[0]; means[1] += v;
@@ -387,7 +392,6 @@ void prefetch_range(void *addr, size_t len)
 
 void *std_aligned_alloc(size_t alignment, size_t size)
 {
-
 #if defined(POSIXALIGNEDALLOC)
     void *mem;
     return posix_memalign(&mem, alignment, size) ? nullptr : mem;
@@ -400,7 +404,6 @@ void *std_aligned_alloc(size_t alignment, size_t size)
 
 void std_aligned_free(void *ptr)
 {
-
 #if defined(POSIXALIGNEDALLOC)
     free(ptr);
 #elif defined(_WIN32)
@@ -418,7 +421,6 @@ void std_aligned_free(void *ptr)
 
 static void *aligned_large_pages_alloc_win(size_t allocSize)
 {
-
     HANDLE hProcessToken{ };
     LUID luid{ };
     void *mem = nullptr;
@@ -462,7 +464,6 @@ static void *aligned_large_pages_alloc_win(size_t allocSize)
 
 void *aligned_large_pages_alloc(size_t allocSize)
 {
-
     // Try to allocate large pages
     void *mem = aligned_large_pages_alloc_win(allocSize);
 
@@ -477,7 +478,6 @@ void *aligned_large_pages_alloc(size_t allocSize)
 
 void *aligned_large_pages_alloc(size_t allocSize)
 {
-
 #if defined(__linux__)
     constexpr size_t alignment = 2 * 1024 * 1024; // assumed 2MB page size
 #else
@@ -502,7 +502,6 @@ void *aligned_large_pages_alloc(size_t allocSize)
 
 void aligned_large_pages_free(void *mem)
 {
-
     if (mem && !VirtualFree(mem, 0, MEM_RELEASE)) {
         DWORD err = GetLastError();
         std::cerr << "Failed to free transposition table. Error code: 0x" <<
@@ -538,7 +537,6 @@ void bindThisThread(size_t)
 
 int best_group(size_t idx)
 {
-
     int threads = 0;
     int nodes = 0;
     int cores = 0;

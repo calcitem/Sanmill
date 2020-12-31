@@ -267,7 +267,6 @@ void adjacent_squares_init()
     }
     loggerDebug("sum = %d\n", sum);
 #endif
-
 }
 
 void move_priority_list_shuffle()
