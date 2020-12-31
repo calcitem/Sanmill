@@ -806,12 +806,12 @@ bool Game::actionPiece(QPointF pos)
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setMinimumSize(600, 400);
-        msgBox.setText(tr("当前正在浏览历史局面。"));
-        msgBox.setInformativeText(tr("您确定要悔棋？"));
+        msgBox.setText(tr("You are looking back at an old position."));
+        msgBox.setInformativeText(tr("Do you want to retract your moves?"));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
-        (msgBox.button(QMessageBox::Ok))->setText(tr("确定"));
-        (msgBox.button(QMessageBox::Cancel))->setText(tr("取消"));
+        (msgBox.button(QMessageBox::Ok))->setText(tr("Yes"));
+        (msgBox.button(QMessageBox::Cancel))->setText(tr("No"));
 
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !MOBILE_APP_UI */

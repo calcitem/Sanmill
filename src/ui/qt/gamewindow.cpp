@@ -493,7 +493,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
     auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
-    dialog->setWindowTitle(tr("步数和时间限制"));
+    dialog->setWindowTitle(tr("Levels"));
     dialog->resize(256, 108);
     dialog->setModal(true);
 
@@ -514,22 +514,22 @@ void MillGameWindow::on_actionLimited_T_triggered()
     buttonBox->setObjectName(QStringLiteral("buttonBox"));
 #endif
     // 设置各个控件数据
-    label_step->setText(tr("超出限制步数判和："));
-    label_time->setText(tr("任意一方超时判负："));
-    comboBox_step->addItem(tr("无限制"), 0);
-    comboBox_step->addItem(tr("50步"), 50);
-    comboBox_step->addItem(tr("100步"), 100);
-    comboBox_step->addItem(tr("200步"), 200);
-    comboBox_time->addItem(tr("无限制"), 0);
-    comboBox_time->addItem(tr("5分钟"), 5);
-    comboBox_time->addItem(tr("10分钟"), 10);
-    comboBox_time->addItem(tr("20分钟"), 20);
+    label_step->setText(tr("If the number of moves exceeds the limit, it will get a draw:"));
+    label_time->setText(tr("Either side loses if it times out:"));
+    comboBox_step->addItem(tr("Infinite"), 0);
+    comboBox_step->addItem(tr("50 Moves"), 50);
+    comboBox_step->addItem(tr("100 Moves"), 100);
+    comboBox_step->addItem(tr("200 Moves"), 200);
+    comboBox_time->addItem(tr("Infinite"), 0);
+    comboBox_time->addItem(tr("5 Minutes"), 5);
+    comboBox_time->addItem(tr("10 Minutes"), 10);
+    comboBox_time->addItem(tr("20 Minutes"), 20);
     comboBox_step->setCurrentIndex(comboBox_step->findData(gStep));
     comboBox_time->setCurrentIndex(comboBox_time->findData(gTime));
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("确定"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("取消"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     // 布局
     formLayout->setSpacing(6);
@@ -952,7 +952,7 @@ void MillGameWindow::on_actionEngine_E_triggered()
     auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
-    dialog->setWindowTitle(tr("AI设置"));
+    dialog->setWindowTitle(tr("Configure AI"));
     dialog->resize(256, 188);
     dialog->setModal(true);
 
@@ -972,20 +972,20 @@ void MillGameWindow::on_actionEngine_E_triggered()
     auto *buttonBox = new QDialogButtonBox(dialog);
 
     // 设置各个控件数据
-    groupBox1->setTitle(tr("玩家1 AI设置"));
-    label_time1->setText(tr("限时"));
+    groupBox1->setTitle(tr("Player1 AI Settings"));
+    label_time1->setText(tr("Time limit"));
     spinBox_time1->setMinimum(1);
     spinBox_time1->setMaximum(3600);
 
-    groupBox2->setTitle(tr("玩家2 AI设置"));
-    label_time2->setText(tr("限时"));
+    groupBox2->setTitle(tr("Player2 AI Settings"));
+    label_time2->setText(tr("Time limit"));
     spinBox_time2->setMinimum(1);
     spinBox_time2->setMaximum(3600);
 
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("确定"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("取消"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     // 布局控件
     vLayout->addWidget(groupBox1);
@@ -1043,7 +1043,7 @@ void MillGameWindow::on_actionAbout_A_triggered()
 
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("aboutDialog"));
-    dialog->setWindowTitle(tr("直棋"));
+    dialog->setWindowTitle(tr("The Mill Game"));
     dialog->setModal(true);
 
     // 生成各个控件

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>直棋</string>
+   <string>The Mill Game</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
@@ -68,14 +68,14 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>玩家:</string>
+         <string>Player:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>电脑:</string>
+         <string>AI:</string>
         </property>
        </widget>
       </item>
@@ -112,7 +112,7 @@
        <widget class="QPushButton" name="pushButton_newGame">
         <property name="font">
          <font>
-          <family>黑体</family>
+          <family>Arial</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -120,7 +120,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>新局</string>
+         <string>New Game</string>
         </property>
         <property name="icon">
          <iconset resource="gamewindow.qrc">
@@ -141,7 +141,7 @@
        <widget class="QPushButton" name="pushButton_resign">
         <property name="font">
          <font>
-          <family>黑体</family>
+          <family>Arial</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -149,7 +149,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>认输</string>
+         <string>Resign</string>
         </property>
         <property name="icon">
          <iconset resource="gamewindow.qrc">
@@ -167,7 +167,7 @@
        <widget class="QPushButton" name="pushButton_retractMove">
         <property name="font">
          <font>
-          <family>黑体</family>
+          <family>Arial</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -175,7 +175,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>悔棋</string>
+         <string>Retract Move</string>
         </property>
         <property name="icon">
          <iconset resource="gamewindow.qrc">
@@ -193,7 +193,7 @@
        <widget class="QPushButton" name="pushButton_hint">
         <property name="font">
          <font>
-          <family>黑体</family>
+          <family>Arial</family>
           <pointsize>12</pointsize>
           <strikeout>false</strikeout>
           <stylestrategy>PreferDefault</stylestrategy>
@@ -203,7 +203,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>提示</string>
+         <string>Hint</string>
         </property>
         <property name="icon">
          <iconset resource="gamewindow.qrc">
@@ -232,7 +232,7 @@
    </property>
    <widget class="QMenu" name="menu_F">
     <property name="title">
-     <string>文件(&amp;F)</string>
+     <string>File</string>
     </property>
     <addaction name="actionNew_N"/>
     <addaction name="actionOpen_O"/>
@@ -243,7 +243,7 @@
    </widget>
    <widget class="QMenu" name="menu_C">
     <property name="title">
-     <string>棋局(&amp;C)</string>
+     <string>Position</string>
     </property>
     <addaction name="actionEdit_E"/>
     <addaction name="separator"/>
@@ -255,7 +255,7 @@
    </widget>
    <widget class="QMenu" name="menu_M">
     <property name="title">
-     <string>着法(&amp;M)</string>
+     <string>Step</string>
     </property>
     <addaction name="actionBegin_S"/>
     <addaction name="actionPrevious_B"/>
@@ -268,7 +268,7 @@
    </widget>
    <widget class="QMenu" name="menu_E">
     <property name="title">
-     <string>引擎(&amp;E)</string>
+     <string>Engines</string>
     </property>
     <addaction name="actionEngine_E"/>
     <addaction name="actionLocal_L"/>
@@ -282,7 +282,7 @@
    </widget>
    <widget class="QMenu" name="menu_O">
     <property name="title">
-     <string>选项(&amp;O)</string>
+     <string>Options</string>
     </property>
     <addaction name="actionSetting_O"/>
     <addaction name="separator"/>
@@ -299,7 +299,7 @@
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
-     <string>帮助(&amp;H)</string>
+     <string>Help</string>
     </property>
     <addaction name="actionViewHelp_V"/>
     <addaction name="actionWeb_W"/>
@@ -307,7 +307,7 @@
    </widget>
    <widget class="QMenu" name="menu_R">
     <property name="title">
-     <string>规则(&amp;R)</string>
+     <string>Rules</string>
     </property>
     <addaction name="separator"/>
     <addaction name="actionLimited_T"/>
@@ -315,7 +315,7 @@
    </widget>
    <widget class="QMenu" name="menu_A">
     <property name="title">
-     <string>算法(&amp;A)</string>
+     <string>AI</string>
     </property>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
@@ -333,7 +333,7 @@
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="windowTitle">
-    <string>工具栏</string>
+    <string>Tool Bar</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -381,7 +381,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>对战记录</string>
+    <string>Move History</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -452,12 +452,12 @@
              </property>
              <property name="font">
               <font>
-               <family>微软雅黑</family>
+               <family>Arial</family>
                <pointsize>9</pointsize>
               </font>
              </property>
              <property name="text">
-              <string>玩家1 (先手)</string>
+              <string>Player1 (Black)</string>
              </property>
             </widget>
            </item>
@@ -533,12 +533,12 @@
              </property>
              <property name="font">
               <font>
-               <family>微软雅黑</family>
+               <family>Arial</family>
                <pointsize>9</pointsize>
               </font>
              </property>
              <property name="text">
-              <string>玩家2 (后手)</string>
+              <string>Player2 (White)</string>
              </property>
             </widget>
            </item>
@@ -576,12 +576,12 @@
           <widget class="QLabel" name="labelGamesPlayed">
            <property name="font">
             <font>
-             <family>黑体</family>
+             <family>Arial</family>
              <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>盘数:</string>
+            <string>Played:</string>
            </property>
           </widget>
          </item>
@@ -611,12 +611,12 @@
           <widget class="QLabel" name="labelScore">
            <property name="font">
             <font>
-             <family>黑体</family>
+             <family>Arial</family>
              <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>比分:</string>
+            <string>Score:</string>
            </property>
           </widget>
          </item>
@@ -684,12 +684,12 @@
           <widget class="QLabel" name="labelWinningRate">
            <property name="font">
             <font>
-             <family>黑体</family>
+             <family>Arial</family>
              <pointsize>9</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>胜率:</string>
+            <string>Win Rate:</string>
            </property>
           </widget>
          </item>
@@ -803,7 +803,7 @@
      <normaloff>:/icon/resources/icon/DocumentHS.png</normaloff>:/icon/resources/icon/DocumentHS.png</iconset>
    </property>
    <property name="text">
-    <string>新建(&amp;N)</string>
+    <string>New Game</string>
    </property>
    <property name="statusTip">
     <string/>
@@ -818,7 +818,7 @@
      <normaloff>:/icon/resources/icon/OpenHS.png</normaloff>:/icon/resources/icon/OpenHS.png</iconset>
    </property>
    <property name="text">
-    <string>打开(&amp;O)...</string>
+    <string>Load Game...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -830,7 +830,7 @@
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
-    <string>保存(&amp;S)</string>
+    <string>Save Game...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -842,12 +842,12 @@
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
-    <string>另存为(&amp;A)...</string>
+    <string>Save Game As...</string>
    </property>
   </action>
   <action name="actionExit_X">
    <property name="text">
-    <string>退出(&amp;X)</string>
+    <string>Exit</string>
    </property>
   </action>
   <action name="actionEdit_E">
@@ -859,7 +859,7 @@
      <normaloff>:/icon/resources/icon/EditTableHS.png</normaloff>:/icon/resources/icon/EditTableHS.png</iconset>
    </property>
    <property name="text">
-    <string>编辑棋局(&amp;E)</string>
+    <string>Set-up a Position</string>
    </property>
   </action>
   <action name="actionFlip_F">
@@ -868,7 +868,7 @@
      <normaloff>:/icon/resources/icon/FlipVerticalHS.png</normaloff>:/icon/resources/icon/FlipVerticalHS.png</iconset>
    </property>
    <property name="text">
-    <string>上下翻转(&amp;F)</string>
+    <string>Flip</string>
    </property>
   </action>
   <action name="actionMirror_M">
@@ -877,7 +877,7 @@
      <normaloff>:/icon/resources/icon/FlipHorizontalHS.png</normaloff>:/icon/resources/icon/FlipHorizontalHS.png</iconset>
    </property>
    <property name="text">
-    <string>左右翻转(&amp;M)</string>
+    <string>Mirror</string>
    </property>
   </action>
   <action name="actionTurnRight_R">
@@ -886,10 +886,10 @@
      <normaloff>:/icon/resources/icon/RightHS.png</normaloff>:/icon/resources/icon/RightHS.png</iconset>
    </property>
    <property name="text">
-    <string>顺时针旋转90°(&amp;R)</string>
+    <string>Turn Right</string>
    </property>
    <property name="toolTip">
-    <string>顺时针旋转90°(R)</string>
+    <string>Turn Left</string>
    </property>
   </action>
   <action name="actionTurnLeftt_L">
@@ -898,10 +898,10 @@
      <normaloff>:/icon/resources/icon/LeftHS.png</normaloff>:/icon/resources/icon/LeftHS.png</iconset>
    </property>
    <property name="text">
-    <string>逆时针旋转90°(&amp;L)</string>
+    <string>Turn Left</string>
    </property>
    <property name="toolTip">
-    <string>逆时针旋转90°(L)</string>
+    <string>Turn Left</string>
    </property>
   </action>
   <action name="actionInvert_I">
@@ -916,7 +916,7 @@
      <normaloff>:/icon/resources/icon/Invert.png</normaloff>:/icon/resources/icon/Invert.png</iconset>
    </property>
    <property name="text">
-    <string>黑白反转(&amp;B)</string>
+    <string>Invert</string>
    </property>
   </action>
   <action name="actionBegin_S">
@@ -925,10 +925,10 @@
      <normaloff>:/icon/resources/icon/First.png</normaloff>:/icon/resources/icon/First.png</iconset>
    </property>
    <property name="text">
-    <string>初始局面(&amp;S)</string>
+    <string>Back to Start</string>
    </property>
    <property name="toolTip">
-    <string>初始局面(S)</string>
+    <string>Back to Start</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Up</string>
@@ -940,7 +940,7 @@
      <normaloff>:/icon/resources/icon/Previous.png</normaloff>:/icon/resources/icon/Previous.png</iconset>
    </property>
    <property name="text">
-    <string>前一招(&amp;B)</string>
+    <string>Backward</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Left</string>
@@ -952,10 +952,10 @@
      <normaloff>:/icon/resources/icon/Next.png</normaloff>:/icon/resources/icon/Next.png</iconset>
    </property>
    <property name="text">
-    <string>后一招(&amp;F)</string>
+    <string>Forward</string>
    </property>
    <property name="toolTip">
-    <string>后一招(F)</string>
+    <string>Forward</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Right</string>
@@ -967,7 +967,7 @@
      <normaloff>:/icon/resources/icon/Last.png</normaloff>:/icon/resources/icon/Last.png</iconset>
    </property>
    <property name="text">
-    <string>最后局面(&amp;E)</string>
+    <string>Forward to End</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Down</string>
@@ -982,10 +982,10 @@
      <normaloff>:/icon/resources/icon/Play.png</normaloff>:/icon/resources/icon/Play.png</iconset>
    </property>
    <property name="text">
-    <string>自动演示(&amp;A)</string>
+    <string>Replay</string>
    </property>
    <property name="toolTip">
-    <string>自动演示(A)</string>
+    <string>Replay</string>
    </property>
   </action>
   <action name="actionResign_G">
@@ -994,7 +994,7 @@
      <normaloff>:/icon/resources/icon/BreakpointHS.png</normaloff>:/icon/resources/icon/BreakpointHS.png</iconset>
    </property>
    <property name="text">
-    <string>认输(&amp;G)</string>
+    <string>Resign</string>
    </property>
   </action>
   <action name="actionLimited_T">
@@ -1002,10 +1002,10 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>限制步数和时间(&amp;T)...</string>
+    <string>Step/Time Control...</string>
    </property>
    <property name="toolTip">
-    <string>限制步数和时间(T)</string>
+    <string>Step/Time Control</string>
    </property>
   </action>
   <action name="actionLocal_L">
@@ -1020,10 +1020,10 @@
      <normaloff>:/icon/resources/icon/FullScreenHS.png</normaloff>:/icon/resources/icon/FullScreenHS.png</iconset>
    </property>
    <property name="text">
-    <string>本机对战(&amp;L)</string>
+    <string>Play Locally</string>
    </property>
    <property name="toolTip">
-    <string>本机对战(L)</string>
+    <string>Play Locally</string>
    </property>
   </action>
   <action name="actionInternet_I">
@@ -1038,10 +1038,10 @@
      <normaloff>:/icon/resources/icon/Web.png</normaloff>:/icon/resources/icon/Web.png</iconset>
    </property>
    <property name="text">
-    <string>网络对战(&amp;I)</string>
+    <string>Play via Network</string>
    </property>
    <property name="toolTip">
-    <string>网络对战(I)</string>
+    <string>Play via Network</string>
    </property>
   </action>
   <action name="actionEngine_E">
@@ -1050,10 +1050,10 @@
      <normaloff>:/icon/resources/icon/OptionsHS.png</normaloff>:/icon/resources/icon/OptionsHS.png</iconset>
    </property>
    <property name="text">
-    <string>引擎设置(&amp;E)...</string>
+    <string>...</string>
    </property>
    <property name="toolTip">
-    <string>引擎设置(E)</string>
+    <string>Engine Settings</string>
    </property>
   </action>
   <action name="actionEngine1_T">
@@ -1068,10 +1068,10 @@
      <normaloff>:/icon/resources/icon/Black.png</normaloff>:/icon/resources/icon/Black.png</iconset>
    </property>
    <property name="text">
-    <string>电脑执先手(&amp;T)</string>
+    <string>AI Moves First</string>
    </property>
    <property name="toolTip">
-    <string>电脑执先手(T)</string>
+    <string>AI Moves First</string>
    </property>
   </action>
   <action name="actionEngine2_R">
@@ -1083,10 +1083,10 @@
      <normaloff>:/icon/resources/icon/White.png</normaloff>:/icon/resources/icon/White.png</iconset>
    </property>
    <property name="text">
-    <string>电脑执后手(&amp;R)</string>
+    <string>AI Moves Second</string>
    </property>
    <property name="toolTip">
-    <string>电脑执白(R)</string>
+    <string>AI Moves Second</string>
    </property>
   </action>
   <action name="actionSetting_O">
@@ -1098,7 +1098,7 @@
      <normaloff>:/icon/resources/icon/PrimaryKeyHS.png</normaloff>:/icon/resources/icon/PrimaryKeyHS.png</iconset>
    </property>
    <property name="text">
-    <string>设置(&amp;O)...</string>
+    <string>Options...</string>
    </property>
   </action>
   <action name="actionToolBar_T">
@@ -1109,7 +1109,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>工具栏(&amp;T)</string>
+    <string>Tool Bar</string>
    </property>
   </action>
   <action name="actionDockBar_D">
@@ -1120,7 +1120,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>信息栏(&amp;D)</string>
+    <string>Move History</string>
    </property>
   </action>
   <action name="actionMusic_M">
@@ -1131,7 +1131,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>背景音乐(&amp;M)</string>
+    <string>Music</string>
    </property>
    <property name="visible">
     <bool>false</bool>
@@ -1145,7 +1145,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>落子音效(&amp;S)</string>
+    <string>Sound</string>
    </property>
   </action>
   <action name="actionAnimation_A">
@@ -1156,10 +1156,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>落子动画(&amp;A)</string>
+    <string>Animation</string>
    </property>
    <property name="toolTip">
-    <string>落子动画(A)</string>
+    <string>Animation</string>
    </property>
   </action>
   <action name="actionViewHelp_V">
@@ -1171,7 +1171,7 @@
      <normaloff>:/icon/resources/icon/Help.png</normaloff>:/icon/resources/icon/Help.png</iconset>
    </property>
    <property name="text">
-    <string>查看帮助(&amp;V)</string>
+    <string>Help</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -1186,10 +1186,10 @@
      <normaloff>:/icon/resources/icon/HomeHS.png</normaloff>:/icon/resources/icon/HomeHS.png</iconset>
    </property>
    <property name="text">
-    <string>作者主页(&amp;W)</string>
+    <string>Homepage</string>
    </property>
    <property name="toolTip">
-    <string>作者主页(W)</string>
+    <string>Homepage</string>
    </property>
   </action>
   <action name="actionAbout_A">
@@ -1197,10 +1197,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>关于(&amp;A)...</string>
+    <string>About...</string>
    </property>
    <property name="toolTip">
-    <string>关于(A)</string>
+    <string>About</string>
    </property>
   </action>
   <action name="actionAutoRestart_A">
@@ -1208,7 +1208,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>自动重新开局(&amp;A)</string>
+    <string>Auto Restart Game</string>
    </property>
   </action>
   <action name="actionShuffling_R">
@@ -1219,7 +1219,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>电脑着法随机(&amp;R)</string>
+    <string>Shuffle</string>
    </property>
   </action>
   <action name="actionResignIfMostLose_G">
@@ -1230,7 +1230,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>必败时认输(&amp;G)</string>
+    <string>Auto Resign</string>
    </property>
   </action>
   <action name="actionLearnEndgame_E">
@@ -1241,13 +1241,12 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>残局自学习
-(&amp;E)</string>
+    <string>Endgame Learning</string>
    </property>
   </action>
   <action name="actionEngineFight_E">
    <property name="text">
-    <string>引擎对战(&amp;F)</string>
+    <string>Play via Shared Memory</string>
    </property>
   </action>
   <action name="actionAutoChangeFirstMove_C">
@@ -1261,7 +1260,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>先后手轮替(&amp;C)</string>
+    <string>Auto Change Who Play First</string>
    </property>
   </action>
   <action name="actionIDS_I">
@@ -1269,7 +1268,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>迭代加深(&amp;I)</string>
+    <string>IDS</string>
    </property>
   </action>
   <action name="actionDepthExtension_D">
@@ -1280,7 +1279,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>深度延伸(&amp;D)</string>
+    <string>Depth Extension</string>
    </property>
   </action>
   <action name="actionOpeningBook_O">
@@ -1288,7 +1287,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>开局库(&amp;O)</string>
+    <string>Opening Book</string>
    </property>
   </action>
  </widget>
