@@ -111,7 +111,7 @@ Game::Game(
     }
 #endif
 
-    cmdlist.reserve(256);
+    gameRecords.reserve(256);
 
     // 安装事件过滤器监视scene的各个事件，
     // 由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
@@ -134,7 +134,7 @@ Game::~Game()
     }
 #endif /* ENDGAME_LEARNING */
 
-    cmdlist.clear();
+    gameRecords.clear();
 }
 
 const map<int, QStringList> Game::getActions()
@@ -163,7 +163,7 @@ extern deque<int> openingBookDequeBak;
 
 void Game::gameStart()
 {
-    //cmdlist.clear();
+    //gameRecords.clear();
     position.start();
     startTime = time(nullptr);
 
@@ -201,10 +201,10 @@ void Game::gameReset()
 
     // 重置游戏
     // WAR
-    if (cmdlist.size() > 1) {
-        string bak = cmdlist[0];
-        cmdlist.clear();
-        cmdlist.emplace_back(bak);
+    if (gameRecords.size() > 1) {
+        string bak = gameRecords[0];
+        gameRecords.clear();
+        gameRecords.emplace_back(bak);
     }    
 
     position.reset();
@@ -272,7 +272,7 @@ void Game::gameReset()
     // 更新棋谱
     manualListModel.removeRows(0, manualListModel.rowCount());
     manualListModel.insertRow(0);
-    manualListModel.setData(manualListModel.index(0), position.cmd_line());
+    manualListModel.setData(manualListModel.index(0), position.get_record());
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
@@ -359,13 +359,13 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
     int r = ruleNo;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
-    char cmdline[64] = { 0 };
-    if (sprintf(cmdline, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
+    char record[64] = { 0 };
+    if (sprintf(record, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
         assert(0);
     }
-    string cmd(cmdline);
-    cmdlist.clear();
-    cmdlist.emplace_back(cmd);
+    string cmd(record);
+    gameRecords.clear();
+    gameRecords.emplace_back(cmd);
 
     // 重置游戏
     gameReset();
@@ -588,12 +588,12 @@ void Game::flip()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror(cmdlist);
-    position.rotate(cmdlist, 180);
+    position.mirror(gameRecords);
+    position.rotate(gameRecords, 180);
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(cmd_list())) {
+    for (const auto &str : *(game_records())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -614,12 +614,12 @@ void Game::mirror()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror(cmdlist);
+    position.mirror(gameRecords);
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(cmd_list())) {
+    for (const auto &str : *(game_records())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -642,12 +642,12 @@ void Game::turnRight()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(cmdlist, -90);
+    position.rotate(gameRecords, -90);
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(cmd_list())) {
+    for (const auto &str : *(game_records())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -668,11 +668,11 @@ void Game::turnLeft()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(cmdlist, 90);
+    position.rotate(gameRecords, 90);
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(cmd_list())) {
+    for (const auto &str : *(game_records())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -820,7 +820,7 @@ bool Game::actionPiece(QPointF pos)
             manualListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
 
             for (int i = 0; i < removeCount; i++) {
-                cmdlist.pop_back();
+                gameRecords.pop_back();
             }
 
             // 如果再决出胜负后悔棋，则重新启动计时
@@ -898,7 +898,7 @@ bool Game::actionPiece(QPointF pos)
     }
 
     if (result) {
-        cmdlist.emplace_back(position.cmdline);
+        gameRecords.emplace_back(position.record);
 
         // 发信号更新状态栏
         updateScence();
@@ -910,7 +910,7 @@ bool Game::actionPiece(QPointF pos)
         int k = 0;
 
         // 输出命令行        
-        for (const auto & i : *(cmd_list())) {
+        for (const auto & i : *(game_records())) {
             // 跳过已添加的，因标准list容器没有下标
             if (k++ <= currentRow)
                 continue;
@@ -961,7 +961,7 @@ bool Game::resign()
     int k = 0;
 
     // 输出命令行
-    for (const auto & i : *(cmd_list())) {
+    for (const auto & i : *(game_records())) {
         // 跳过已添加的，因标准list容器没有下标
         if (k++ <= currentRow)
             continue;
@@ -1020,7 +1020,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     loggerDebug("Computer: %s\n\n", cmd.c_str());
 
-    cmdlist.emplace_back(cmd);
+    gameRecords.emplace_back(cmd);
 
     if (!position.command(cmd.c_str()))
         return false;
@@ -1043,23 +1043,23 @@ bool Game::command(const string &cmd, bool update /* = true */)
     emit statusBarChanged(message);
 
     // 对于新开局
-    if (cmd_list()->size() <= 1) {
+    if (game_records()->size() <= 1) {
         manualListModel.removeRows(0, manualListModel.rowCount());
         manualListModel.insertRow(0);
-        manualListModel.setData(manualListModel.index(0), position.cmd_line());
+        manualListModel.setData(manualListModel.index(0), position.get_record());
         currentRow = 0;
     }
     // 对于当前局
     else {
         currentRow = manualListModel.rowCount() - 1;
         // 跳过已添加行,迭代器不支持+运算符,只能一个个++
-        auto i = (cmd_list()->begin());
-        for (int r = 0; i != (cmd_list())->end(); i++) {
+        auto i = (game_records()->begin());
+        for (int r = 0; i != (game_records())->end(); i++) {
             if (r++ > currentRow)
                 break;
         }
         // 将新增的棋谱行插入到ListModel
-        while (i != cmd_list()->end()) {
+        while (i != game_records()->end()) {
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());
         }
@@ -1480,45 +1480,45 @@ inline std::string Game::char_to_string(char ch)
     }
 }
 
-void Game::appendGameOverReasonToCmdlist()
+void Game::appendGameOverReasonTogameRecords()
 {
     if (position.phase != Phase::gameOver) {
         return;
     }
 
-    char cmdline[64] = { 0 };
+    char record[64] = { 0 };
     switch (position.gameOverReason) {
     case GameOverReason::loseReasonNoWay:
-        sprintf(cmdline, "Player%d no way to go. Player%d win!", position.sideToMove, position.winner);
+        sprintf(record, "Player%d no way to go. Player%d win!", position.sideToMove, position.winner);
         break;
     case GameOverReason::loseReasonTimeOver:
-        sprintf(cmdline, "Time over. Player%d win!", position.winner);
+        sprintf(record, "Time over. Player%d win!", position.winner);
         break;
     case GameOverReason::drawReasonThreefoldRepetition:
-        sprintf(cmdline, "Threefold Repetition. Draw!");
+        sprintf(record, "Threefold Repetition. Draw!");
         break;
     case GameOverReason::drawReasonRule50:
-        sprintf(cmdline, "Steps over. In draw!");
+        sprintf(record, "Steps over. In draw!");
         break;
     case GameOverReason::loseReasonBoardIsFull:
-        sprintf(cmdline, "Player2 win!");
+        sprintf(record, "Player2 win!");
         break;
     case GameOverReason::drawReasonBoardIsFull:
-        sprintf(cmdline, "Full. In draw!");
+        sprintf(record, "Full. In draw!");
         break;
     case GameOverReason::loseReasonlessThanThree:
-        sprintf(cmdline, "Player%d win!", position.winner);
+        sprintf(record, "Player%d win!", position.winner);
         break;
     case GameOverReason::loseReasonResign:
-        sprintf(cmdline, "Player%d give up!", ~position.winner);
+        sprintf(record, "Player%d give up!", ~position.winner);
         break;
     default:
         loggerDebug("No Game Over Reason");
         break;
     }
 
-    loggerDebug("%s\n", cmdline);
-    cmdlist.emplace_back(cmdline);
+    loggerDebug("%s\n", record);
+    gameRecords.emplace_back(record);
 }
 
 void Game::setTips()
@@ -1558,7 +1558,7 @@ void Game::setTips()
         break;
 
     case Phase::gameOver:
-        appendGameOverReasonToCmdlist();
+        appendGameOverReasonTogameRecords();
 
         scoreStr = "比分 " + to_string(p.score[BLACK]) + " : " + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);        
 

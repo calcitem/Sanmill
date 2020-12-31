@@ -558,12 +558,12 @@ bool Position::reset()
             break;
     }
 
-    if (sprintf(cmdline, "r%1u s%03u t%02u",
+    if (sprintf(record, "r%1u s%03u t%02u",
                 r + 1, rule.maxStepsLedToDraw, 0) > 0) {
         return true;
     }
 
-    cmdline[0] = '\0';
+    record[0] = '\0';
 
     return false;
 }
@@ -587,7 +587,7 @@ bool Position::start()
     }
 }
 
-bool Position::put_piece(Square s, bool updateCmdlist)
+bool Position::put_piece(Square s, bool updateRecord)
 {
     Piece piece = NO_PIECE;
     int us = sideToMove;
@@ -613,8 +613,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
 
         update_key(s);
 
-        if (updateCmdlist) {
-            sprintf(cmdline, "(%1u,%1u)", file_of(s), rank_of(s));
+        if (updateRecord) {
+            sprintf(record, "(%1u,%1u)", file_of(s), rank_of(s));
         }
 
         currentSquare = s;
@@ -666,8 +666,8 @@ bool Position::put_piece(Square s, bool updateCmdlist)
             }
         }
 
-        if (updateCmdlist) {
-            sprintf(cmdline, "(%1u,%1u)->(%1u,%1u)",
+        if (updateRecord) {
+            sprintf(record, "(%1u,%1u)->(%1u,%1u)",
                     file_of(currentSquare), rank_of(currentSquare),
                     file_of(s), rank_of(s));
             st.rule50++;
@@ -712,7 +712,7 @@ bool Position::put_piece(Square s, bool updateCmdlist)
     return true;
 }
 
-bool Position::remove_piece(Square s, bool updateCmdlist)
+bool Position::remove_piece(Square s, bool updateRecord)
 {
     if (phase == Phase::ready || phase == Phase::gameOver)
         return false;
@@ -757,8 +757,8 @@ bool Position::remove_piece(Square s, bool updateCmdlist)
         pc = board[s] = NO_PIECE;
     }
 
-    if (updateCmdlist) {
-        sprintf(cmdline, "-(%1u,%1u)", file_of(s), rank_of(s));
+    if (updateRecord) {
+        sprintf(record, "-(%1u,%1u)", file_of(s), rank_of(s));
         st.rule50 = 0;     // TODO: Need to move out?
     }
 
@@ -833,7 +833,7 @@ bool Position::resign(Color loser)
 
     set_gameover(~loser, GameOverReason::loseReasonResign);
 
-    //sprintf(cmdline, "Player%d give up!", loser);
+    //sprintf(record, "Player%d give up!", loser);
     update_score();
 
     return true;
@@ -888,7 +888,7 @@ bool Position::command(const char *cmd)
         winner = DRAW;
         score_draw++;
         gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
-        //sprintf(cmdline, "Threefold Repetition. Draw!");
+        //sprintf(record, "Threefold Repetition. Draw!");
         return true;
     }
 #endif /* THREEFOLD_REPETITION */
@@ -1312,7 +1312,7 @@ void Position::reset_bb()
     }
 }
 
-void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
+void Position::mirror(vector <string> &moveRecords, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1377,27 +1377,27 @@ void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
         unsigned r1, s1, r2, s2;
         int args = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
         if (args >= 4) {
             s1 = (RANK_NB - s1 + 1) % RANK_NB;
             s2 = (RANK_NB - s2 + 1) % RANK_NB;
-            cmdline[3] = '1' + static_cast<char>(s1);
-            cmdline[10] = '1' + static_cast<char>(s2);
+            record[3] = '1' + static_cast<char>(s1);
+            record[10] = '1' + static_cast<char>(s2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u)", &r1, &s1);
+            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
             if (args >= 2) {
                 s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                cmdline[4] = '1' + static_cast<char>(s1);
+                record[4] = '1' + static_cast<char>(s1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u)", &r1, &s1);
+                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
                 if (args >= 2) {
                     s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                    cmdline[3] = '1' + static_cast<char>(s1);
+                    record[3] = '1' + static_cast<char>(s1);
                 }
             }
         }
 
-        for (auto &iter : cmdlist) {
+        for (auto &iter : moveRecords) {
             args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
             if (args >= 4) {
                 s1 = (RANK_NB - s1 + 1) % RANK_NB;
@@ -1421,7 +1421,7 @@ void Position::mirror(vector <string> &cmdlist, bool cmdChange /*= true*/)
     }
 }
 
-void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
+void Position::turn(vector <string> &gameRecords, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1504,7 +1504,7 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
         unsigned r1, s1, r2, s2;
         int args = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)",
+        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)",
                       &r1, &s1, &r2, &s2);
 
         if (args >= 4) {
@@ -1518,29 +1518,29 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
             else if (r2 == FILE_NB)
                 r2 = 1;
 
-            cmdline[1] = '0' + static_cast<char>(r1);
-            cmdline[8] = '0' + static_cast<char>(r2);
+            record[1] = '0' + static_cast<char>(r1);
+            record[8] = '0' + static_cast<char>(r2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u)", &r1, &s1);
+            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
             if (args >= 2) {
                 if (r1 == 1)
                     r1 = FILE_NB;
                 else if (r1 == FILE_NB)
                     r1 = 1;
-                cmdline[2] = '0' + static_cast<char>(r1);
+                record[2] = '0' + static_cast<char>(r1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u)", &r1, &s1);
+                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
                 if (args >= 2) {
                     if (r1 == 1)
                         r1 = FILE_NB;
                     else if (r1 == FILE_NB)
                         r1 = 1;
-                    cmdline[1] = '0' + static_cast<char>(r1);
+                    record[1] = '0' + static_cast<char>(r1);
                 }
             }
         }
 
-        for (auto &iter : cmdlist) {
+        for (auto &iter : gameRecords) {
             args = sscanf(iter.c_str(),
                           "(%1u,%1u)->(%1u,%1u)",
                           &r1, &s1, &r2, &s2);
@@ -1583,7 +1583,7 @@ void Position::turn(vector <string> &cmdlist, bool cmdChange /*= true*/)
     }
 }
 
-void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= true*/)
+void Position::rotate(vector <string> &gameRecords, int degrees, bool cmdChange /*= true*/)
 {
     degrees = degrees % 360;
 
@@ -1685,29 +1685,29 @@ void Position::rotate(vector <string> &cmdlist, int degrees, bool cmdChange /*= 
         unsigned r1, s1, r2, s2;
         int args = 0;
 
-        args = sscanf(cmdline, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
         if (args >= 4) {
             s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
             s2 = (s2 - 1 + RANK_NB - degrees) % RANK_NB;
-            cmdline[3] = '1' + static_cast<char>(s1);
-            cmdline[10] = '1' + static_cast<char>(s2);
+            record[3] = '1' + static_cast<char>(s1);
+            record[10] = '1' + static_cast<char>(s2);
         } else {
-            args = sscanf(cmdline, "-(%1u,%1u)", &r1, &s1);
+            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
 
             if (args >= 2) {
                 s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                cmdline[4] = '1' + static_cast<char>(s1);
+                record[4] = '1' + static_cast<char>(s1);
             } else {
-                args = sscanf(cmdline, "(%1u,%1u)", &r1, &s1);
+                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
 
                 if (args >= 2) {
                     s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                    cmdline[3] = '1' + static_cast<char>(s1);
+                    record[3] = '1' + static_cast<char>(s1);
                 }
             }
         }
 
-        for (auto &iter : cmdlist) {
+        for (auto &iter : gameRecords) {
             args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
 
             if (args >= 4) {

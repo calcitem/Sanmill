@@ -160,21 +160,21 @@ void Test::detach()
     }
 }
 
-void Test::writeToMemory(const QString &cmdline)
+void Test::writeToMemory(const QString &record)
 {
     if (!isTestMode) {
         return;
     }
 
-    if (cmdline == readStr) {
+    if (record == readStr) {
         return;
     }
 
     char from[BUFSIZ] = { 0 };
 #ifdef _WIN32
-    strcpy_s(from, cmdline.toStdString().c_str());
+    strcpy_s(from, record.toStdString().c_str());
 #else
-    strcpy(from, cmdline.toStdString().c_str());
+    strcpy(from, record.toStdString().c_str());
 #endif
 
     while (true) {

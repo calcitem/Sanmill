@@ -99,7 +99,7 @@ public:
     Square current_square() const;
     enum Phase get_phase() const;
     enum Action get_action() const;
-    const char *cmd_line() const;
+    const char *get_record() const;
 
     int get_mobility_diff(bool includeBanned);
 
@@ -116,9 +116,9 @@ public:
     Color get_winner() const;
     void set_gameover(Color w, GameOverReason reason);
 
-    void mirror(std::vector <std::string> &cmdlist, bool cmdChange = true);
-    void turn(std::vector <std::string> &cmdlist, bool cmdChange = true);
-    void rotate(std::vector <std::string> &cmdlist, int degrees, bool cmdChange = true);
+    void mirror(std::vector <std::string> &gameRecords, bool cmdChange = true);
+    void turn(std::vector <std::string> &gameRecords, bool cmdChange = true);
+    void rotate(std::vector <std::string> &gameRecords, int degrees, bool cmdChange = true);
 
     void reset_bb();
 
@@ -150,10 +150,10 @@ public:
 
     void put_piece(Piece pc, Square s);
     bool put_piece(File file, Rank rank);
-    bool put_piece(Square s, bool updateCmdlist = false);
+    bool put_piece(Square s, bool updategameRecords = false);
 
     bool remove_piece(File file, Rank rank);
-    bool remove_piece(Square s, bool updateCmdlist = false);
+    bool remove_piece(Square s, bool updategameRecords = false);
 
     bool move_piece(File f1, Rank r1, File f2, Rank r2);
     bool move_piece(Square from, Square to);
@@ -189,7 +189,7 @@ public:
     Square currentSquare;
     int gamesPlayedCount { 0 };
 
-    char cmdline[64] { '\0' };
+    char record[64] { '\0' };
 
     /*
         0x   00     00     00    00    00    00    00    00
@@ -360,9 +360,9 @@ inline enum Action Position::get_action() const
     return action;
 }
 
-inline const char *Position::cmd_line() const
+inline const char *Position::get_record() const
 {
-    return cmdline;
+    return record;
 }
 
 inline int Position::piece_on_board_count(Color c)

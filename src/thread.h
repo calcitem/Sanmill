@@ -138,7 +138,7 @@ signals:
         void emitCommand();
 #endif // QT_GUI_LIB
 
-    void command(const string &cmdline, bool update = true);
+    void command(const string &record, bool update = true);
 };
 
 
