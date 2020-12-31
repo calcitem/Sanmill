@@ -1084,22 +1084,6 @@ Key Position::update_key_misc()
 
 Bitboard Position::millTableBB[SQUARE_NB][LD_NB] = {{0}};
 
-#if 0
-Position &Position::operator= (const Position &other)
-{
-    if (this == &other)
-        return *this;
-
-    memcpy(this->board, other.board, sizeof(this->board));
-    memcpy(this->byTypeBB, other.byTypeBB, sizeof(this->byTypeBB));
-    memcpy(this->byColorBB, other.byColorBB, sizeof(this->byColorBB));
-
-    memcpy(&millList, &other.millList, sizeof(millList));
-    millListSize = other.millListSize;
-
-    return *this;
-}
-#endif
 
 void Position::create_mill_table()
 {
