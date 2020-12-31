@@ -27,9 +27,8 @@ class Position;
 
 namespace Eval {
 
-std::string trace(Position &pos);
-
 Value evaluate(Position &pos);
+
 }
 
 #endif // #ifndef EVALUATE_H_INCLUDED
