@@ -78,7 +78,7 @@ void Search::clear()
 }
 
 #ifdef THREEFOLD_REPETITION
-int nRepetition;
+int repetition;
 #endif // THREEFOLD_REPETITION
 
 /// Thread::search() is the main iterative deepening loop. It calls search()
@@ -113,9 +113,9 @@ int Thread::search()
         for (auto i : moveHistory) {
             if (key == i)
             {
-                nRepetition++;
-                if (nRepetition == 3) {
-                    nRepetition = 0;
+                repetition++;
+                if (repetition == 3) {
+                    repetition = 0;
                     return 3;
                 }
             }

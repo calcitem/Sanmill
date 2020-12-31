@@ -547,13 +547,13 @@ int Position::piece_in_hand_count()
 }
 
 #ifdef THREEFOLD_REPETITION
-extern int nRepetition;
+extern int repetition;
 #endif // THREEFOLD_REPETITION
 
 bool Position::reset()
 {
 #ifdef THREEFOLD_REPETITION
-    nRepetition = 0;
+    repetition = 0;
 #endif // THREEFOLD_REPETITION
 
     gamePly = 0;

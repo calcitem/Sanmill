@@ -39,7 +39,7 @@ using namespace std;
 extern vector<string> setup_bench(Position *, istream &);
 
 #ifdef THREEFOLD_REPETITION
-extern int nRepetition;
+extern int repetition;
 extern vector<Key> moveHistory;
 #endif // THREEFOLD_REPETITION
 
@@ -72,7 +72,7 @@ void position(Position *pos, istringstream &is)
         return;
 
 #ifdef THREEFOLD_REPETITION
-    nRepetition = 0;
+    repetition = 0;
     moveHistory.clear();
 #endif // THREEFOLD_REPETITION
     
@@ -126,7 +126,7 @@ void go(Position *pos)
 #endif
 
 #ifdef THREEFOLD_REPETITION
-    nRepetition = 0;
+    repetition = 0;
 #endif // THREEFOLD_REPETITION
 
     Threads.start_thinking(pos);
