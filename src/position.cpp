@@ -287,8 +287,6 @@ Position &Position::set(const string &fenStr, Thread *th)
 
     thisThread = th;
 
-    assert(pos_is_ok());
-
     return *this;
 }
 
@@ -545,47 +543,6 @@ void Position::flip()
 #endif
 }
 
-
-/// Position::pos_is_ok() performs some consistency checks for the
-/// position object and raises an asserts if something wrong is detected.
-/// This is meant to be helpful when debugging.
-
-bool Position::pos_is_ok() const
-{
-#if 0
-    constexpr bool Fast = true; // Quick (default) or full check?
-
-    if (Fast)
-        return true;
-
-    if ((pieces(WHITE) & pieces(BLACK))
-        || (pieces(WHITE) | pieces(BLACK)) != pieces()
-        || popcount(pieces(WHITE)) > 16
-        || popcount(pieces(BLACK)) > 16)
-        assert(0 && "pos_is_ok: Bitboards");
-
-    for (PieceType p1 = BAN; p1 <= STONE; ++p1)
-        for (PieceType p2 = BAN; p2 <= STONE; ++p2)
-            if (p1 != p2 && (pieces(p1) & pieces(p2)))
-                assert(0 && "pos_is_ok: Bitboards");
-
-    StateInfo si = *st;
-    set_state(&si);
-    if (std::memcmp(&si, st, sizeof(StateInfo)))
-        assert(0 && "pos_is_ok: State");
-
-    for (Piece pc : Pieces) {
-        if (pieceCount[pc] != popcount(pieces(color_of(pc), type_of(pc)))
-            || pieceCount[pc] != std::count(board, board + SQUARE_NB, pc))
-            assert(0 && "pos_is_ok: Pieces");
-
-        for (int i = 0; i < pieceCount[pc]; ++i)
-            if (board[pieceList[pc][i]] != pc || index[pieceList[pc][i]] != i)
-                assert(0 && "pos_is_ok: Index");
-    }
-#endif
-    return true;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 

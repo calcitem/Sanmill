@@ -92,8 +92,6 @@ public:
     Thread *this_thread() const;
     int rule50_count() const;
 
-    // Position consistency check, for debugging
-    bool pos_is_ok() const;
     void flip();
 
     /// Mill Game
