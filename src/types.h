@@ -144,8 +144,9 @@ enum class Phase : uint16_t
 {
     none,
     ready,
-    placing,
-    moving,
+    placing,    // Placing men on vacant points
+    moving,     // Moving men to adjacent points or 
+                // (optional) Moving men to any vacant point when the player has been reduced to three men
     gameOver
 };
 
@@ -169,9 +170,15 @@ enum class Action : uint16_t
 enum class GameOverReason
 {
     noReason,
+    
+    // A player wins by reducing the opponent to two pieces
+    // (where they could no longer form mills and thus be unable to win)
     loseReasonlessThanThree,
+
+    // A player wins by leaving them without a legal move. 
     loseReasonNoWay,
     loseReasonBoardIsFull,
+
     loseReasonResign,
     loseReasonTimeOver,
     drawReasonThreefoldRepetition,
@@ -319,7 +326,7 @@ enum Square : int
 
     SQ_NONE = 0,
 
-    EFFECTIVE_SQUARE_NB = 24,
+    EFFECTIVE_SQUARE_NB = 24,   // The board consists of a grid with twenty-four intersections or points.
 
     SQUARE_ZERO = 0,
     SQUARE_NB = 40,
@@ -459,7 +466,7 @@ constexpr PieceType type_of(Piece pc)
 
 constexpr bool is_ok(Square s)
 {
-    return s == SQ_NONE || (s >= SQ_A1 && s <= SQ_C8);  // TODO: SQ_NONE?
+    return s == SQ_NONE || (s >= SQ_BEGIN && s < SQ_END);  // TODO: SQ_NONE?
 }
 
 constexpr File file_of(Square s)
