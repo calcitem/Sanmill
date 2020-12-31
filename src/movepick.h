@@ -33,79 +33,6 @@ struct ExtMove;
 void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit);
 
 
-/// StatsEntry stores the stat table value. It is usually a number but could
-/// be a move or even a nested history. We use a class instead of naked value
-/// to directly call history update operator<<() on the entry so to use stats
-/// tables at caller sites as simple multi-dim arrays.
-template<typename T, int D>
-class StatsEntry
-{
-    T entry;
-
-public:
-    void operator=(const T &v)
-    {
-        entry = v;
-    }
-    T *operator&()
-    {
-        return &entry;
-    }
-    T *operator->()
-    {
-        return &entry;
-    }
-    operator const T &() const
-    {
-        return entry;
-    }
-
-    void operator<<(int bonus)
-    {
-        assert(abs(bonus) <= D); // Ensure range is [-D, D]
-        static_assert(D <= std::numeric_limits<T>::max(), "D overflows T");
-
-        entry += T(bonus - entry * abs(bonus) / D);
-
-        assert(abs(entry) <= D);
-    }
-};
-
-/// Stats is a generic N-dimensional array used to store various statistics.
-/// The first template parameter T is the base type of the array, the second
-/// template parameter D limits the range of updates in [-D, D] when we update
-/// values with the << operator, while the last parameters (Size and Sizes)
-/// encode the dimensions of the array.
-template <typename T, int D, int Size, int... Sizes>
-struct Stats : public std::array<Stats<T, D, Sizes...>, Size>
-{
-    typedef Stats<T, D, Size, Sizes...> stats;
-
-    void fill(const T &v)
-    {
-
-        // For standard-layout 'this' points to first struct member
-        assert(std::is_standard_layout<stats>::value);
-
-        typedef StatsEntry<T, D> entry;
-        entry *p = reinterpret_cast<entry *>(this);
-        std::fill(p, p + sizeof(*this) / sizeof(entry), v);
-    }
-};
-
-template <typename T, int D, int Size>
-struct Stats<T, D, Size> : public std::array<StatsEntry<T, D>, Size> {};
-
-/// In stats table, D=0 means that the template parameter is not used
-enum StatsParams
-{
-    NOT_USED = 0
-};
-enum StatsType
-{
-    NoCaptures, Captures
-};
-
 /// MovePicker class is used to pick one pseudo legal move at a time from the
 /// current position. The most important method is next_move(), which returns a
 /// new pseudo legal move each time it is called, until there are no moves left,
@@ -128,6 +55,7 @@ public:
 
     template<PickType T, typename Pred> Move select(Pred);
     template<GenType> void score();
+
     ExtMove *begin()
     {
         return cur;
