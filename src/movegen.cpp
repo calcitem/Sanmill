@@ -107,7 +107,8 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     for (auto i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
         s = MoveList<LEGAL>::movePriorityList[i];
         if (pos.get_board()[s] & make_piece(them)) {
-            if (rule.mayRemoveFromMillsAlways || !pos.potential_mills_count(s, NOBODY)) {
+            if (rule.mayRemoveFromMillsAlways ||
+                !pos.potential_mills_count(s, NOBODY)) {
                 *cur++ = (Move)-s;
             }
         }
@@ -126,7 +127,8 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     switch (pos.get_action()) {
     case Action::select:
     case Action::place:
-        if (pos.get_phase() == Phase::placing || pos.get_phase() == Phase::ready) {
+        if (pos.get_phase() == Phase::placing ||
+            pos.get_phase() == Phase::ready) {
             return generate<PLACE>(pos, moveList);
         }
 
