@@ -233,14 +233,14 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #ifdef ENDGAME_LEARNING
     Endgame endgame;
 
-    if (gameOptions.getLearnEndgameEnabled() &&
-        Thread::findEndgameHash(posKey, endgame)) {
+    if (gameOptions.isEndgameLearningEnabled() &&
+        Thread::probeEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
-        case ENDGAME_PLAYER_BLACK_WIN:
+        case EndGameType::blackWin:
             bestValue = VALUE_MATE;
             bestValue += depth;
             break;
-        case ENDGAME_PLAYER_WHITE_WIN:
+        case EndGameType::whiteWin:
             bestValue = -VALUE_MATE;
             bestValue -= depth;
             break;

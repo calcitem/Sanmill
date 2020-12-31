@@ -94,10 +94,10 @@ public:
 #endif
 
 #ifdef ENDGAME_LEARNING
-    static bool findEndgameHash(Key key, Endgame &endgame);
-    static int recordEndgameHash(Key key, const Endgame &endgame);
+    static bool probeEndgameHash(Key key, Endgame &endgame);
+    static int saveEndgameHash(Key key, const Endgame &endgame);
     void clearEndgameHashMap();
-    static void recordEndgameHashMapToFile();
+    static void saveEndgameHashMapToFile();
     static void loadEndgameFileToHashMap();
 #endif // ENDGAME_LEARNING
 

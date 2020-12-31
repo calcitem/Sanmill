@@ -424,15 +424,15 @@ Depth Thread::adjustDepth()
 
 #ifdef ENDGAME_LEARNING
     const Depth movingDiffDepthTable[] = {
-        0, 0, 0,               /* 0 ~ 2 */
-        0, 0, 0, 0, 0,       /* 3 ~ 7 */
-        0, 0, 0, 0, 0          /* 8 ~ 12 */
+        0, 0, 0,                /* 0 ~ 2 */
+        0, 0, 0, 0, 0,          /* 3 ~ 7 */
+        0, 0, 0, 0, 0           /* 8 ~ 12 */
     };
 #else
     const Depth movingDiffDepthTable[] = {
-        0, 0, 0,               /* 0 ~ 2 */
+        0, 0, 0,                /* 0 ~ 2 */
         11, 11, 10, 9, 8,       /* 3 ~ 7 */
-        7, 6, 5, 4, 3          /* 8 ~ 12 */
+        7, 6, 5, 4, 3           /* 8 ~ 12 */
     };
 #endif /* ENDGAME_LEARNING */
 
@@ -506,12 +506,6 @@ void Thread::clearTT()
 #ifdef TRANSPOSITION_TABLE_ENABLE
         TranspositionTable::clear();
 #endif // TRANSPOSITION_TABLE_ENABLE
-
-#ifdef ENDGAME_LEARNING
-        // TODO: ??????????
-        //clearEndgameHashMap();
-        //endgameList.clear();
-#endif // ENDGAME_LEARNING
     }
 }
 
@@ -548,13 +542,13 @@ string Thread::nextMove()
 
 #ifdef ENDGAME_LEARNING
     // Check if very weak
-    if (gameOptions.getLearnEndgameEnabled()) {
+    if (gameOptions.isEndgameLearningEnabled()) {
         if (bestValue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
             endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
-                ENDGAME_PLAYER_WHITE_WIN : ENDGAME_PLAYER_BLACK_WIN;
+                whiteWin : blackWin;
             Key endgameHash = position->key(); // TODO: Do not generate hash repeately
-            recordEndgameHash(endgameHash, endgame);
+            saveEndgameHash(endgameHash, endgame);
         }
     }
 #endif /* ENDGAME_LEARNING */
@@ -591,31 +585,28 @@ string Thread::nextMove()
 }
 
 #ifdef ENDGAME_LEARNING
-bool Thread::findEndgameHash(Key posKey, Endgame &endgame)
+bool Thread::probeEndgameHash(Key posKey, Endgame &endgame)
 {
     return endgameHashMap.find(posKey, endgame);
 }
 
-int Thread::recordEndgameHash(Key posKey, const Endgame &endgame)
+int Thread::saveEndgameHash(Key posKey, const Endgame &endgame)
 {
-    //hashMapMutex.lock();
     Key hashValue = endgameHashMap.insert(posKey, endgame);
     unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
-    //hashMapMutex.unlock();
 
-    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame Hash map, TTEntry: 0x%08I32x, Address: 0x%08I32x\n", posKey, endgame.type, hashValue, addr);
+    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: 0x%08I32x, Address: 0x%08I32x\n",
+                posKey, endgame.type, hashValue, addr);
 
     return 0;
 }
 
 void Thread::clearEndgameHashMap()
 {
-    //hashMapMutex.lock();
     endgameHashMap.clear();
-    //hashMapMutex.unlock();
 }
 
-void Thread::recordEndgameHashMapToFile()
+void Thread::saveEndgameHashMapToFile()
 {
     const string filename = "endgame.txt";
     endgameHashMap.dump(filename);

@@ -169,7 +169,7 @@ Position::Position()
     
     reset();
 
-    score[BLACK] = score[WHITE] = score_draw = nPlayed = 0;
+    score[BLACK] = score[WHITE] = score_draw = gamesPlayedCount = 0;
 }
 
 
@@ -693,7 +693,7 @@ int Position::piece_on_board_count()
     return pieceOnBoardCount[BLACK] + pieceOnBoardCount[WHITE];
 }
 
-int Position::get_piece_in_hand_count()
+int Position::piece_in_hand_count()
 {
     pieceInHandCount[BLACK] = rule.piecesCount - pieceOnBoardCount[BLACK];
     pieceInHandCount[WHITE] = rule.piecesCount - pieceOnBoardCount[WHITE];
@@ -736,8 +736,9 @@ bool Position::reset()
     currentSquare = SQ_0;
 
 #ifdef ENDGAME_LEARNING
-    if (gameOptions.getLearnEndgameEnabled() && nPlayed != 0 && nPlayed % 256 == 0) {
-        Thread::recordEndgameHashMapToFile();
+    if (gameOptions.isEndgameLearningEnabled() &&
+        gamesPlayedCount > 0 && gamesPlayedCount % SAVE_ENDGAME_EVERY_N_GAMES == 0) {
+        Thread::saveEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
 

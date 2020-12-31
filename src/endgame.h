@@ -31,21 +31,20 @@
 using namespace std;
 using namespace CTSL;
 
-// TODO: uint8_t
-enum endgame_t : uint32_t
+static const int SAVE_ENDGAME_EVERY_N_GAMES = 256;
+
+enum class EndGameType : uint32_t
 {
-    ENDGAME_NONE,
-    ENDGAME_PLAYER_BLACK_WIN,
-    ENDGAME_PLAYER_WHITE_WIN,
-    ENDGAME_DRAW,
+    none,
+    blackWin,
+    whiteWin,
+    draw,
 };
 
-//#pragma pack (push, 1)  
 struct Endgame
 {
-    endgame_t type;
+    EndGameType type;
 };
-//#pragma pack(pop)  
 
 extern HashMap<Key, Endgame> endgameHashMap;
 

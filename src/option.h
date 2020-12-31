@@ -79,7 +79,7 @@ public:
 #endif
     }
 
-    bool getLearnEndgameEnabled()
+    bool isEndgameLearningEnabled()
     {
 #ifdef ENDGAME_LEARNING_FORCE
         return  true;

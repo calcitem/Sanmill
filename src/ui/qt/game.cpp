@@ -106,8 +106,8 @@ Game::Game(
 #endif // NET_FIGHT_SUPPORT
 
 #ifdef ENDGAME_LEARNING_FORCE
-    if (gameOptions.getLearnEndgameEnabled()) {
-        AIAlgorithm::loadEndgameFileToHashMap();
+    if (gameOptions.isEndgameLearningEnabled()) {
+        Thread::loadEndgameFileToHashMap();
     }
 #endif
 
@@ -129,8 +129,8 @@ Game::~Game()
     deleteAiThreads();
 
 #ifdef ENDGAME_LEARNING
-    if (gameOptions.getLearnEndgameEnabled()) {
-        Thread::recordEndgameHashMapToFile();
+    if (gameOptions.isEndgameLearningEnabled()) {
+        Thread::saveEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
 
@@ -286,18 +286,18 @@ void Game::gameReset()
     emit statusBarChanged(message);
 
     // 更新比分 LCD 显示
-    emit nGamesPlayedChanged(QString::number(position.nPlayed, 10));
+    emit nGamesPlayedChanged(QString::number(position.gamesPlayedCount, 10));
     emit score1Changed(QString::number(position.score[BLACK], 10));
     emit score2Changed(QString::number(position.score[WHITE], 10));
     emit scoreDrawChanged(QString::number(position.score_draw, 10));
 
     // 更新胜率 LCD 显示
-    position.nPlayed = position.score[BLACK] + position.score[WHITE] + position.score_draw;
+    position.gamesPlayedCount = position.score[BLACK] + position.score[WHITE] + position.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
-    if (position.nPlayed != 0) {
-        winningRate_1 = position.score[BLACK] * 10000 / position.nPlayed;
-        winningRate_2 = position.score[WHITE] * 10000 / position.nPlayed;
-        winningRate_draw = position.score_draw * 10000 / position.nPlayed;
+    if (position.gamesPlayedCount != 0) {
+        winningRate_1 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
+        winningRate_2 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_draw = position.score_draw * 10000 / position.gamesPlayedCount;
     }
     
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -559,7 +559,7 @@ void Game::setLearnEndgame(bool enabled)
     gameOptions.setLearnEndgameEnabled(enabled);
 
 #ifdef ENDGAME_LEARNING
-    if (gameOptions.getLearnEndgameEnabled()) {
+    if (gameOptions.isEndgameLearningEnabled()) {
         Thread::loadEndgameFileToHashMap();
     }
 #endif
@@ -1364,12 +1364,12 @@ bool Game::updateScence(Position &p)
     emit scoreDrawChanged(QString::number(p.score_draw, 10));
 
     // 更新胜率 LCD 显示
-    position.nPlayed = position.score[BLACK] + position.score[WHITE] + position.score_draw;
+    position.gamesPlayedCount = position.score[BLACK] + position.score[WHITE] + position.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
-    if (position.nPlayed != 0) {
-        winningRate_1 = position.score[BLACK] * 10000 / position.nPlayed;
-        winningRate_2 = position.score[WHITE] * 10000 / position.nPlayed;
-        winningRate_draw = position.score_draw * 10000 / position.nPlayed;
+    if (position.gamesPlayedCount != 0) {
+        winningRate_1 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
+        winningRate_2 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_draw = position.score_draw * 10000 / position.gamesPlayedCount;
     }
 
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -1450,16 +1450,16 @@ void Game::saveScore()
 
     textStream << "" << endl;
 
-    position.nPlayed = position.score[BLACK] + position.score[WHITE] + position.score_draw;
+    position.gamesPlayedCount = position.score[BLACK] + position.score[WHITE] + position.score_draw;
 
-    if (position.nPlayed == 0) {
+    if (position.gamesPlayedCount == 0) {
         goto out;
     }
 
-    textStream << "Sum\t" + QString::number(position.nPlayed) << endl;
-    textStream << "Black\t" + QString::number(position.score[BLACK])  + "\t" + QString::number(position.score[BLACK] * 10000 / position.nPlayed) << endl;
-    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" + QString::number(position.score[WHITE] * 10000 / position.nPlayed) << endl;
-    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" + QString::number(position.score_draw * 10000 / position.nPlayed)  << endl;
+    textStream << "Sum\t" + QString::number(position.gamesPlayedCount) << endl;
+    textStream << "Black\t" + QString::number(position.score[BLACK])  + "\t" + QString::number(position.score[BLACK] * 10000 / position.gamesPlayedCount) << endl;
+    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" + QString::number(position.score[WHITE] * 10000 / position.gamesPlayedCount) << endl;
+    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" + QString::number(position.score_draw * 10000 / position.gamesPlayedCount)  << endl;
 
 out:
     file.flush();

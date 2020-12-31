@@ -145,7 +145,7 @@ public:
     static void print_board();
 
     int piece_on_board_count();
-    int get_piece_in_hand_count();
+    int piece_in_hand_count();
 
     int piece_on_board_count(Color c);
     int piece_in_hand_count(Color c);
@@ -203,7 +203,7 @@ public:
     static Bitboard millTableBB[SQUARE_NB][LD_NB];
 
     Square currentSquare;
-    int nPlayed { 0 };
+    int gamesPlayedCount { 0 };
 
     char cmdline[64] { '\0' };
 
