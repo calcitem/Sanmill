@@ -21,7 +21,6 @@ INCLUDEPATH += src/test
 INCLUDEPATH += src/ui/qt
 
 SOURCES += \
-    src/benchmark.cpp \
     src/endgame.cpp \
     src/evaluate.cpp \
     src/movegen.cpp \

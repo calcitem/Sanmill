@@ -13,7 +13,6 @@ add_library( # Sets the name of the library.
         ../../command/command_channel.cpp
         ../../command/command_queue.cpp
         ../../command/engine_main.cpp
-        ../../../../benchmark.cpp
         ../../../../bitboard.cpp
         ../../../../endgame.cpp
         ../../../../evaluate.cpp

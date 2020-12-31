@@ -154,48 +154,6 @@ void go(Position *pos)
 #endif
 }
 
-
-// bench() is called when engine receives the "bench" command. Firstly
-// a list of UCI commands is setup according to bench parameters, then
-// it is run one by one printing a summary at the end.
-
-void bench(Position *pos, istream &args)
-{
-    string token;
-    uint64_t num, cnt = 1;
-
-    vector<string> list = setup_bench(pos, args);
-    num = count_if(list.begin(), list.end(), [](string s) { return s.find("go ") == 0 || s.find("eval") == 0; });
-
-    TimePoint elapsed = now();
-
-    for (const auto &cmd : list) {
-        istringstream is(cmd);
-        is >> skipws >> token;
-
-        if (token == "go" || token == "eval") {
-            cerr << "\nPosition: " << cnt++ << '/' << num << endl;
-            if (token == "go") {
-                go(pos);
-                Threads.main()->wait_for_search_finished();
-            } else
-                sync_cout << "\n" << Eval::trace(*pos) << sync_endl;
-        } else if (token == "setoption")  setoption(is);
-        else if (token == "position")   position(pos, is);
-        else if (token == "ucinewgame") {
-            Search::clear(); elapsed = now();
-        } // Search::clear() may take some while
-    }
-
-    elapsed = now() - elapsed + 1; // Ensure positivity to avoid a 'divide by zero'
-
-    dbg_print(); // Just before exiting
-
-    cerr << "\n==========================="
-        << "\nTotal time (ms) : " << elapsed
-        << endl;
-}
-
 } // namespace
 
 
@@ -259,7 +217,6 @@ void UCI::loop(int argc, char *argv[])
         // Additional custom non-UCI commands, mainly for debugging.
         // Do not use these commands during a search!
         else if (token == "flip")     pos->flip();
-        else if (token == "bench")    bench(pos, is);
         else if (token == "d")        sync_cout << *pos << sync_endl;
         else if (token == "eval")     sync_cout << Eval::trace(*pos) << sync_endl;
         else if (token == "compiler") sync_cout << compiler_info() << sync_endl;

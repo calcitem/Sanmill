@@ -726,7 +726,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\benchmark.cpp" />
     <ClCompile Include="src\endgame.cpp" />
     <ClCompile Include="src\evaluate.cpp" />
     <ClCompile Include="src\main.cpp" />
