@@ -76,7 +76,6 @@ public:
 
     // Doing and undoing moves
     void do_move(Move m);
-    void undo_move(Move m);
     void undo_move(Sanmill::Stack<Position> &ss);
 
     // Accessing hash keys
