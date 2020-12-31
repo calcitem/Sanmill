@@ -135,9 +135,6 @@ public:
 
     static void print_board();
 
-    int piece_on_board_count();
-    int piece_in_hand_count();
-
     int piece_on_board_count(Color c);
     int piece_in_hand_count(Color c);
 
@@ -200,7 +197,6 @@ public:
     */
 
     uint64_t millList[4];
-    int millListSize { 0 };
 
     /*
         0x   00    00

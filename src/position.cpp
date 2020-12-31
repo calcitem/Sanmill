@@ -509,42 +509,7 @@ out:
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
-
-int Position::piece_on_board_count()
-{
-    pieceOnBoardCount[BLACK] = pieceOnBoardCount[WHITE] = 0;
-
-    for (int f = 1; f < FILE_NB + 2; f++) {
-        for (int r = 0; r < RANK_NB; r++) {
-            Square s = static_cast<Square>(f * RANK_NB + r);
-            if (board[s] & B_STONE) {
-                pieceOnBoardCount[BLACK]++;
-            } else if (board[s] & W_STONE) {
-                pieceOnBoardCount[WHITE]++;
-            }
-#if 0
-            else if (board[s] & BAN_STONE) {
-            }
-#endif
-        }
-    }
-
-    if (pieceOnBoardCount[BLACK] > rule.piecesCount ||
-        pieceOnBoardCount[WHITE] > rule.piecesCount) {
-        return -1;
-    }
-
-    return pieceOnBoardCount[BLACK] + pieceOnBoardCount[WHITE];
-}
-
-int Position::piece_in_hand_count()
-{
-    pieceInHandCount[BLACK] = rule.piecesCount - pieceOnBoardCount[BLACK];
-    pieceInHandCount[WHITE] = rule.piecesCount - pieceOnBoardCount[WHITE];
-
-    return pieceInHandCount[BLACK] + pieceInHandCount[WHITE];
-}
+/// Mill Game
 
 #ifdef THREEFOLD_REPETITION
 extern int repetition;
@@ -567,14 +532,14 @@ bool Position::reset()
     gameOverReason = GameOverReason::noReason;
 
     memset(board, 0, sizeof(board));
-    st.key = 0;
     memset(byTypeBB, 0, sizeof(byTypeBB));
     memset(byColorBB, 0, sizeof(byColorBB));
+
+    st.key = 0;
 
     pieceOnBoardCount[BLACK] = pieceOnBoardCount[WHITE] = 0;
     pieceInHandCount[BLACK] = pieceInHandCount[WHITE] = rule.piecesCount;
     pieceToRemoveCount = 0;
-    millListSize = 0;
 
     MoveList<LEGAL>::create();
     create_mill_table();
