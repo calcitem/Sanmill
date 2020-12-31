@@ -991,7 +991,7 @@ bool Position::check_if_game_is_over()
     return false;
 }
 
-int Position::get_mobility_diff(bool includeFobidden)
+int Position::get_mobility_diff(bool includeBanned)
 {
     // TODO: Deal with rule is no ban location
     int mobilityBlack = 0;
@@ -1000,7 +1000,7 @@ int Position::get_mobility_diff(bool includeFobidden)
     int n = 0;
 
     for (Square i = SQ_BEGIN; i < SQ_END; ++i) {
-        n = surrounded_empty_squares_count(i, includeFobidden);
+        n = surrounded_empty_squares_count(i, includeBanned);
 
         if (board[i] & B_STONE) {
             mobilityBlack += n;
@@ -1325,9 +1325,9 @@ bool Position::is_all_in_mills(Color c)
 }
 
 // Stat include ban
-int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
+int Position::surrounded_empty_squares_count(Square s, bool includeBanned)
 {
-    //assert(rule.hasBannedLocations == includeFobidden);
+    //assert(rule.hasBannedLocations == includeBanned);
 
     int n = 0;
 
@@ -1338,7 +1338,7 @@ int Position::surrounded_empty_squares_count(Square s, bool includeFobidden)
             moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
             if (moveSquare) {
                 if (board[moveSquare] == 0x00 ||
-                    (includeFobidden && board[moveSquare] == BAN_STONE)) {
+                    (includeBanned && board[moveSquare] == BAN_STONE)) {
                     n++;
                 }
             }

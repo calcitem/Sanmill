@@ -101,13 +101,12 @@ public:
     enum Action get_action() const;
     const char *cmd_line() const;
 
-    int get_mobility_diff(bool includeFobidden);
+    int get_mobility_diff(bool includeBanned);
 
     bool reset();
     bool start();
     bool resign(Color loser);
     bool command(const char *cmd);
-    void update();
     void update_score();
     bool check_if_game_is_over();
     void remove_ban_stones();
@@ -130,7 +129,7 @@ public:
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
-    int surrounded_empty_squares_count(Square s, bool includeFobidden);
+    int surrounded_empty_squares_count(Square s, bool includeBanned);
     void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
     bool is_all_surrounded() const;
 
@@ -147,10 +146,6 @@ public:
     static bool is_star_square(Square s);
 
     bool bitboard_is_ok();
-
-// private:
-      // Initialization helpers (used while setting up a position)
-    void set_state(StateInfo *si) const;
 
     // Other helpers
     bool select_piece(Square s);
