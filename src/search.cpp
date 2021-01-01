@@ -110,7 +110,7 @@ int Thread::search()
     if (rootPos->get_phase() == Phase::moving) {
         Key key = rootPos->key();
 
-        for (auto i : moveHistory) {
+        for (auto i : posKeyHistory) {
             if (key == i)
             {
                 repetition++;
@@ -122,16 +122,16 @@ int Thread::search()
         }
 
 #if defined(UCI_DO_BEST_MOVE) || defined(QT_GUI_LIB)
-        moveHistory.push_back(key);
+        posKeyHistory.push_back(key);
 #endif // UCI_DO_BEST_MOVE
 
-        //sync_cout << "moveHistory Size = " << moveHistory.size();
+        //sync_cout << "posKeyHistory Size = " << posKeyHistory.size();
         //std::cout << sync_endl;
-        assert(moveHistory.size() < 256);
+        assert(posKeyHistory.size() < 256);
     }
 
     if (rootPos->get_phase() == Phase::placing) {
-        moveHistory.clear();
+        posKeyHistory.clear();
     }
 #endif // THREEFOLD_REPETITION
 
@@ -213,7 +213,7 @@ int Thread::search()
 
 extern ThreadPool Threads;
 
-vector<Key> moveHistory;
+vector<Key> posKeyHistory;
 
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {

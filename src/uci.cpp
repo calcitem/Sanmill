@@ -40,7 +40,7 @@ extern vector<string> setup_bench(Position *, istream &);
 
 #ifdef THREEFOLD_REPETITION
 extern int repetition;
-extern vector<Key> moveHistory;
+extern vector<Key> posKeyHistory;
 #endif // THREEFOLD_REPETITION
 
 namespace
@@ -73,7 +73,7 @@ void position(Position *pos, istringstream &is)
 
 #ifdef THREEFOLD_REPETITION
     repetition = 0;
-    moveHistory.clear();
+    posKeyHistory.clear();
 #endif // THREEFOLD_REPETITION
     
     pos->set(fen, Threads.main());
@@ -82,7 +82,7 @@ void position(Position *pos, istringstream &is)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
         pos->do_move(m);
 #ifdef THREEFOLD_REPETITION
-        moveHistory.push_back(pos->key());
+        posKeyHistory.push_back(pos->key());
 #endif // THREEFOLD_REPETITION
     }
 
