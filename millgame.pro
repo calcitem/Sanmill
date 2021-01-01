@@ -98,6 +98,8 @@ DISTFILES += \
 
 RC_FILE += millgame.rc
 
+TRANSLATIONS += millgame-qt_zh_CN.ts
+
 # Mobile App support
 #DEFINES += MOBILE_APP_UI
 

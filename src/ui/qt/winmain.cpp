@@ -27,6 +27,7 @@ QString APP_FILENAME_DEFAULT = "MillGame";
 #include <QtWidgets/QApplication>
 #include <QDesktopWidget>
 #include <QCoreApplication>
+#include <QTranslator>
 
 #ifndef TRAINING_MODE
 #ifndef UCT_DEMO
@@ -46,6 +47,9 @@ int main(int argc, char *argv[])
     Position::init();
 
     QApplication a(argc, argv);
+    QTranslator translator;
+    translator.load("millgame-qt_zh_CN");
+    a.installTranslator(&translator);
     MillGameWindow w;   
     w.show();
 
