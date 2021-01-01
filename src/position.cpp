@@ -558,7 +558,7 @@ bool Position::reset()
             break;
     }
 
-    if (sprintf(record, "r%1u s%03u t%02u",
+    if (snprintf(record, RECORD_LEN_MAX, "r%1u s%03u t%02u",
                 r + 1, rule.maxStepsLedToDraw, 0) > 0) {
         return true;
     }
@@ -590,7 +590,7 @@ bool Position::start()
 bool Position::put_piece(Square s, bool updateRecord)
 {
     Piece piece = NO_PIECE;
-    int us = sideToMove;
+    Color us = sideToMove;
 
     if (phase == Phase::gameOver ||
         action != Action::place ||
@@ -614,7 +614,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         update_key(s);
 
         if (updateRecord) {
-            sprintf(record, "(%1u,%1u)", file_of(s), rank_of(s));
+            snprintf(record, RECORD_LEN_MAX, "(%1u,%1u)", file_of(s), rank_of(s));
         }
 
         currentSquare = s;
@@ -667,7 +667,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
         if (updateRecord) {
-            sprintf(record, "(%1u,%1u)->(%1u,%1u)",
+            snprintf(record, RECORD_LEN_MAX, "(%1u,%1u)->(%1u,%1u)",
                     file_of(currentSquare), rank_of(currentSquare),
                     file_of(s), rank_of(s));
             st.rule50++;
@@ -758,7 +758,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     }
 
     if (updateRecord) {
-        sprintf(record, "-(%1u,%1u)", file_of(s), rank_of(s));
+        snprintf(record, RECORD_LEN_MAX, "-(%1u,%1u)", file_of(s), rank_of(s));
         st.rule50 = 0;     // TODO: Need to move out?
     }
 
@@ -833,7 +833,7 @@ bool Position::resign(Color loser)
 
     set_gameover(~loser, GameOverReason::loseReasonResign);
 
-    //sprintf(record, "Player%d give up!", loser);
+    //snprintf(record, RECORD_LEN_MAX, "Player%d give up!", loser);
     update_score();
 
     return true;
@@ -888,7 +888,7 @@ bool Position::command(const char *cmd)
         winner = DRAW;
         score_draw++;
         gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
-        //sprintf(record, "Threefold Repetition. Draw!");
+        //snprintf(record, RECORD_LEN_MAX, "Threefold Repetition. Draw!");
         return true;
     }
 #endif /* THREEFOLD_REPETITION */

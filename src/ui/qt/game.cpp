@@ -359,7 +359,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     char record[64] = { 0 };
-    if (sprintf(record, "r%1d s%03d t%02d", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
+    if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03d t%02d", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
         assert(0);
     }
     string cmd(record);
@@ -1488,28 +1488,28 @@ void Game::appendGameOverReasonToMoveHistory()
     char record[64] = { 0 };
     switch (position.gameOverReason) {
     case GameOverReason::loseReasonNoWay:
-        sprintf(record, "Player%d no way to go. Player%d win!", position.sideToMove, position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, "Player%d no way to go. Player%d win!", position.sideToMove, position.winner);
         break;
     case GameOverReason::loseReasonTimeOver:
-        sprintf(record, "Time over. Player%d win!", position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, "Time over. Player%d win!", position.winner);
         break;
     case GameOverReason::drawReasonThreefoldRepetition:
-        sprintf(record, "Threefold Repetition. Draw!");
+        snprintf(record, Position::RECORD_LEN_MAX, "Threefold Repetition. Draw!");
         break;
     case GameOverReason::drawReasonRule50:
-        sprintf(record, "Steps over. In draw!");
+        snprintf(record, Position::RECORD_LEN_MAX, "Steps over. In draw!");
         break;
     case GameOverReason::loseReasonBoardIsFull:
-        sprintf(record, "Player2 win!");
+        snprintf(record, Position::RECORD_LEN_MAX, "Player2 win!");
         break;
     case GameOverReason::drawReasonBoardIsFull:
-        sprintf(record, "Full. In draw!");
+        snprintf(record, Position::RECORD_LEN_MAX, "Full. In draw!");
         break;
     case GameOverReason::loseReasonlessThanThree:
-        sprintf(record, "Player%d win!", position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, "Player%d win!", position.winner);
         break;
     case GameOverReason::loseReasonResign:
-        sprintf(record, "Player%d give up!", ~position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, "Player%d give up!", ~position.winner);
         break;
     default:
         loggerDebug("No Game Over Reason");

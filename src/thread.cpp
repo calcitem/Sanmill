@@ -237,9 +237,9 @@ void sq2str(char *str)
     rank = rank_of(sq);
 
     if (sig == 1) {
-        sprintf_s(str, 16, "(%d,%d)", file, rank);
+        snprintf(str, Position::RECORD_LEN_MAX, 16, "(%d,%d)", file, rank);
     } else {
-        sprintf_s(str, 16, "-(%d,%d)", file, rank);
+        snprintf(str, Position::RECORD_LEN_MAX, "-(%d,%d)", file, rank);
     }
 }
 #endif // OPENING_BOOK
@@ -366,7 +366,7 @@ void Thread::analyze(Color c)
 #ifndef QT_GUI_LIB
     total = nbwin + nwwin + ndraw;
 
-    if (total == 0) {
+    if (total < 0.01) {
         bwinrate = 0;
         wwinrate = 0;
         drawrate = 0;
@@ -556,7 +556,7 @@ string Thread::nextMove()
     if (gameOptions.getResignIfMostLose() == true) {
         if (root->value <= -VALUE_MATE) {
             gameOverReason = loseReasonResign;
-            //sprintf(record, "Player%d give up!", position->sideToMove);
+            //snprintf(record, Position::RECORD_LEN_MAX, "Player%d give up!", position->sideToMove);
             return record;
         }
     }

@@ -23,7 +23,7 @@
 CommandQueue::CommandQueue()
 {
     for (int i = 0; i < MAX_COMMAND_COUNT; i++) {
-        strcpy(commands[i], "");
+        commands[i][0] = '\0';
     }
 
     writeIndex = 0;
@@ -38,7 +38,7 @@ bool CommandQueue::write(const char *command)
         return false;
     }
 
-    strcpy(commands[writeIndex], command);
+    strncpy(commands[writeIndex], command, COMMAND_LENGTH);
 
     if (readIndex == -1) {
         readIndex = writeIndex;
@@ -59,8 +59,8 @@ bool CommandQueue::read(char *dest)
         return false;
     }
 
-    strcpy(dest, commands[readIndex]);
-    strcpy(commands[readIndex], "");
+    strncpy(dest, commands[readIndex], COMMAND_LENGTH);
+    strncpy(commands[readIndex], "", COMMAND_LENGTH);
 
     if (++readIndex == MAX_COMMAND_COUNT) {
         readIndex = 0;

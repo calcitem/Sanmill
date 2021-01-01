@@ -32,7 +32,7 @@ void println(const char *str, ...) {
     va_start(args, str);
 
     char buffer[256] = {0};
-    vsprintf(buffer, str, args);
+    vsnprintf(buffer, 256, str, args);
 
     va_end(args);
 

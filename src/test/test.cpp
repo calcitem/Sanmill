@@ -171,11 +171,7 @@ void Test::writeToMemory(const QString &record)
     }
 
     char from[BUFSIZ] = { 0 };
-#ifdef _WIN32
-    strcpy_s(from, record.toStdString().c_str());
-#else
-    strcpy(from, record.toStdString().c_str());
-#endif
+    strncpy(from, record.toStdString().c_str(), BUFSIZ);
 
     while (true) {
         sharedMemory.lock();
