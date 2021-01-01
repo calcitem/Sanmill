@@ -191,32 +191,6 @@ public:
 
     char record[64] { '\0' };
 
-    /*
-        0x   00     00     00    00    00    00    00    00
-           unused unused piece1 square1 piece2 square2 piece3 square3
-    */
-
-    uint64_t millList[4];
-
-    /*
-        0x   00    00
-            square1  square2
-        Placing:0x00??,?? is place location
-        Moving:0x__??,__ is from,?? is to
-        Removing:0xFF??,?? is neg
-
-        31 ----- 24 ----- 25
-        | \       |      / |
-        |  23 -- 16 -- 17  |
-        |  | \    |   / |  |
-        |  |  15 08 09  |  |
-        30-22-14    10-18-26
-        |  |  13 12 11  |  |
-        |  | /    |   \ |  |
-        |  21 -- 20 -- 19  |
-        | /       |     \  |
-        29 ----- 28 ----- 27
-    */
     Move move { MOVE_NONE };
 };
 

@@ -1356,23 +1356,6 @@ void Position::mirror(vector <string> &moveHistory, bool cmdChange /*= true*/)
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
-
-    for (auto &mill : millList) {
-        llp[0] = (mill & 0x000000ff00000000) >> 32;
-        llp[1] = (mill & 0x0000000000ff0000) >> 16;
-        llp[2] = (mill & 0x00000000000000ff);
-
-        for (i = 0; i < 3; i++) {
-            f = static_cast<int>(llp[i]) / RANK_NB;
-            r = static_cast<int>(llp[i]) % RANK_NB;
-            r = (RANK_NB - r) % RANK_NB;
-            llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
-        }
-
-        mill &= 0xffffff00ff00ff00;
-        mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
-    }
-
     if (cmdChange) {
         unsigned r1, s1, r2, s2;
         int args = 0;
@@ -1478,28 +1461,6 @@ void Position::turn(vector <string> &moveHistory, bool cmdChange /*= true*/)
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
 
-    for (auto &mill : millList) {
-        llp[0] = (mill & 0x000000ff00000000) >> 32;
-        llp[1] = (mill & 0x0000000000ff0000) >> 16;
-        llp[2] = (mill & 0x00000000000000ff);
-
-        for (i = 0; i < 3; i++) {
-            f = static_cast<int>(llp[i]) / RANK_NB;
-            r = static_cast<int>(llp[i]) % RANK_NB;
-
-            if (f == 1)
-                f = FILE_NB;
-            else if (f == FILE_NB)
-                f = 1;
-
-            llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
-        }
-
-        mill &= 0xffffff00ff00ff00;
-        mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
-    }
-
-    // 命令行解析
     if (cmdChange) {
         unsigned r1, s1, r2, s2;
         int args = 0;
@@ -1597,7 +1558,6 @@ void Position::rotate(vector <string> &moveHistory, int degrees, bool cmdChange 
 
     Piece ch1, ch2;
     int f, r;
-    int i;
 
     if (degrees == 2) {
         for (f = 1; f <= FILE_NB; f++) {
@@ -1663,22 +1623,6 @@ void Position::rotate(vector <string> &moveHistory, int degrees, bool cmdChange 
         r = currentSquare % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
         currentSquare = static_cast<Square>(f * RANK_NB + r);
-    }
-
-    for (auto &mill : millList) {
-        llp[0] = (mill & 0x000000ff00000000) >> 32;
-        llp[1] = (mill & 0x0000000000ff0000) >> 16;
-        llp[2] = (mill & 0x00000000000000ff);
-
-        for (i = 0; i < 3; i++) {
-            f = static_cast<int>(llp[i]) / RANK_NB;
-            r = static_cast<int>(llp[i]) % RANK_NB;
-            r = (r + RANK_NB - degrees) % RANK_NB;
-            llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
-        }
-
-        mill &= 0xffffff00ff00ff00;
-        mill |= (llp[0] << 32) | (llp[1] << 16) | llp[2];
     }
 
     if (cmdChange) {
