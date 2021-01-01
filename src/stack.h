@@ -105,7 +105,7 @@ public:
         return p + 1;
     }
 
-    inline size_t length()
+    inline size_t length() const
     {
         return (sizeof(T) * size());
     }

@@ -1098,26 +1098,26 @@ void MillGameWindow::on_actionAbout_A_triggered()
 }
 
 #ifdef MOBILE_APP_UI
-void MillGameWindow::mousePressEvent(QMouseEvent *event)
+void MillGameWindow::mousePressEvent(QMouseEvent *mouseEvent)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (mouseEvent->button() == Qt::LeftButton) {
         m_move = true;
-        m_startPoint = event->globalPos();
+        m_startPoint = mouseEvent->globalPos();
         m_windowPoint = this->frameGeometry().topLeft();
     }
 }
 
-void MillGameWindow::mouseMoveEvent(QMouseEvent *event)
+void MillGameWindow::mouseMoveEvent(QMouseEvent *mouseEvent)
 {
-    if (event->buttons() & Qt::LeftButton) {
-        QPoint relativePos = event->globalPos() - m_startPoint;
+    if (mouseEvent->buttons() & Qt::LeftButton) {
+        QPoint relativePos = mouseEvent->globalPos() - m_startPoint;
         this->move(m_windowPoint + relativePos );
     }
 }
 
-void MillGameWindow::mouseReleaseEvent(QMouseEvent *event)
+void MillGameWindow::mouseReleaseEvent(QMouseEvent *mouseEvent)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (mouseEvent->button() == Qt::LeftButton) {
         m_move = false;
     }
 }

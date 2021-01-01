@@ -55,12 +55,12 @@ void MovePicker::score()
     Square from, to;
     Move m;
 
-    int ourMillsCount = 0;
-    int theirMillsCount = 0;
-    int ourPieceCount = 0;
-    int theirPiecesCount = 0;
-    int bannedCount = 0;
-    int emptyCount = 0;
+    int ourMillsCount;
+    int theirMillsCount;
+    int ourPieceCount;
+    int theirPiecesCount;
+    int bannedCount;
+    int emptyCount;
 
     while (cur++->move != MOVE_NONE) {
         m = cur->move;

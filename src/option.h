@@ -29,7 +29,7 @@ public:
         isAutoRestart = enabled;
     }
 
-    bool getAutoRestart()
+    bool getAutoRestart() const
     {
         return isAutoRestart;
     }
@@ -39,7 +39,7 @@ public:
         isAutoChangeFirstMove = enabled;
     }
 
-    bool getAutoChangeFirstMove()
+    bool getAutoChangeFirstMove() const
     {
         return isAutoChangeFirstMove;
     }
@@ -49,7 +49,7 @@ public:
         resignIfMostLose = enabled;
     }
 
-    bool getResignIfMostLose()
+    bool getResignIfMostLose() const
     {
         return resignIfMostLose;
     }
@@ -60,7 +60,7 @@ public:
     // variation between different games against an opponent that tries to do the
     // same sequence of moves. By default, shuffling is enabled.
 
-    bool getShufflingEnabled()
+    bool getShufflingEnabled() const
     {
         return shufflingEnabled;
     }
@@ -79,7 +79,7 @@ public:
 #endif
     }
 
-    bool isEndgameLearningEnabled()
+    bool isEndgameLearningEnabled() const
     {
 #ifdef ENDGAME_LEARNING_FORCE
         return  true;
@@ -93,7 +93,7 @@ public:
         IDSEnabled = enabled;
     }
 
-    bool getIDSEnabled()
+    bool getIDSEnabled() const
     {
         return IDSEnabled;
     }
@@ -105,7 +105,7 @@ public:
         depthExtension = enabled;
     }
 
-    bool getDepthExtension()
+    bool getDepthExtension() const
     {
         return depthExtension;
     }
@@ -117,7 +117,7 @@ public:
         openingBook = enabled;
     }
 
-    bool getOpeningBook()
+    bool getOpeningBook() const
     {
         return openingBook;
     }

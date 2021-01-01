@@ -135,10 +135,10 @@ public:
 
     static void print_board();
 
-    int piece_on_board_count(Color c);
-    int piece_in_hand_count(Color c);
+    int piece_on_board_count(Color c) const;
+    int piece_in_hand_count(Color c) const;
 
-    int piece_to_remove_count();
+    int piece_to_remove_count() const;
 
     static bool is_star_square(Square s);
 
@@ -146,13 +146,13 @@ public:
 
     // Other helpers
     bool select_piece(Square s);
-    bool select_piece(File file, Rank rank);
+    bool select_piece(File f, Rank r);
 
     void put_piece(Piece pc, Square s);
-    bool put_piece(File file, Rank rank);
+    bool put_piece(File f, Rank r);
     bool put_piece(Square s, bool updategameRecords = false);
 
-    bool remove_piece(File file, Rank rank);
+    bool remove_piece(File f, Rank r);
     bool remove_piece(Square s, bool updategameRecords = false);
 
     bool move_piece(File f1, Rank r1, File f2, Rank r2);
@@ -169,7 +169,7 @@ public:
     int pieceToRemoveCount{ 0 };
     int gamePly { 0 };
     Color sideToMove { NOCOLOR };
-    Thread *thisThread;
+    Thread *thisThread {nullptr};
     StateInfo st;
 
     /// Mill Game
@@ -342,7 +342,7 @@ inline bool Position::move_piece(Square from, Square to)
 
 inline Piece *Position::get_board()
 {
-    return (Piece *)board;
+    return static_cast<Piece *>(board);
 }
 
 inline Square Position::current_square() const
@@ -365,17 +365,17 @@ inline const char *Position::get_record() const
     return record;
 }
 
-inline int Position::piece_on_board_count(Color c)
+inline int Position::piece_on_board_count(Color c) const
 {
     return pieceOnBoardCount[c];
 }
 
-inline int Position::piece_in_hand_count(Color c)
+inline int Position::piece_in_hand_count(Color c) const
 {
     return pieceInHandCount[c];
 }
 
-inline int Position::piece_to_remove_count()
+inline int Position::piece_to_remove_count() const
 {
     return pieceToRemoveCount;
 }

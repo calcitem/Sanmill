@@ -80,7 +80,7 @@ class Game : public QObject
     Q_OBJECT
 
 public:
-    Game(
+    explicit Game(
 #ifndef TRAINING_MODE
         GameScene &scene,
 #endif
@@ -356,7 +356,7 @@ public slots:
 
     // 更新棋局显示，每步后执行才能刷新局面
     bool updateScence();
-    bool updateScence(Position &position);
+    bool updateScence(Position &p);
 
 #ifdef NET_FIGHT_SUPPORT
     // 显示网络配置窗口

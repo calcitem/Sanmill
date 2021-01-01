@@ -36,7 +36,7 @@ void start_logger(const std::string &fname);
 void* std_aligned_alloc(size_t alignment, size_t size);
 void std_aligned_free(void* ptr);
 #ifdef ALIGNED_LARGE_PAGES
-void* aligned_large_pages_alloc(size_t size); // memory aligned by page size, min alignment: 4096 bytes
+void* aligned_large_pages_alloc(size_t allocSize); // memory aligned by page size, min alignment: 4096 bytes
 void aligned_large_pages_free(void* mem); // nop if mem == nullptr
 #endif // ALIGNED_LARGE_PAGES
 
@@ -116,7 +116,7 @@ class PRNG
     }
 
 public:
-    PRNG(uint64_t seed) : s(seed)
+    explicit PRNG(uint64_t seed) : s(seed)
     {
         assert(seed);
     }

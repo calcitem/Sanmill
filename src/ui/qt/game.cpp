@@ -231,12 +231,11 @@ void Game::gameReset()
     // 2：先手第2子； 3：后手第2子
     // ......
     PieceItem::Models md;
-    PieceItem *newP;
 
     for (int i = 0; i < rule.piecesCount; i++) {
         // 先手的棋子
         md = isInverted ? PieceItem::Models::whitePiece : PieceItem::Models::blackPiece;
-        newP = new PieceItem;
+        PieceItem *newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
         newP->setNum(i + 1);
@@ -360,7 +359,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     char record[64] = { 0 };
-    if (sprintf(record, "r%1u s%03u t%02u", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
+    if (sprintf(record, "r%1d s%03d t%02d", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
         assert(0);
     }
     string cmd(record);
@@ -519,6 +518,7 @@ void Game::playSound(GameSound soundType, Color c)
         break;
     };
 
+#ifndef DONOT_PLAY_SOUND
     QString soundPath = QString::fromStdString(soundDir + filename);
 
 #ifndef TRAINING_MODE
@@ -526,7 +526,6 @@ void Game::playSound(GameSound soundType, Color c)
         return;
     }
 
-#ifndef DONOT_PLAY_SOUND
     if (hasSound) {
         QSound::play(soundPath);
     }
@@ -781,14 +780,14 @@ bool Game::isAIsTurn()
 }
 
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
-bool Game::actionPiece(QPointF pos)
+bool Game::actionPiece(QPointF p)
 {
 #ifndef TRAINING_MODE
     // 点击非落子点，不执行
-    File file;
-    Rank rank;
+    File f;
+    Rank r;
 
-    if (!scene.pos2polar(pos, file, rank)) {
+    if (!scene.pos2polar(p, f, r)) {
         return false;
     }
 
@@ -848,11 +847,11 @@ bool Game::actionPiece(QPointF pos)
     // 判断执行选子、落子或去子
     bool result = false;
     PieceItem *piece = nullptr;
-    QGraphicsItem *item = scene.itemAt(pos, QTransform());
+    QGraphicsItem *item = scene.itemAt(p, QTransform());
 
     switch (position.get_action()) {
     case Action::place:
-        if (position.put_piece(file, rank)) { 
+        if (position.put_piece(f, r)) { 
             if (position.get_action() == Action::remove) {
                 // 播放成三音效
                 playSound(GameSound::mill, position.side_to_move());
@@ -871,7 +870,7 @@ bool Game::actionPiece(QPointF pos)
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (position.select_piece(file, rank)) {
+        if (position.select_piece(f, r)) {
             // 播放选子音效
             playSound(GameSound::select, position.side_to_move());
             result = true;
@@ -882,7 +881,7 @@ bool Game::actionPiece(QPointF pos)
         break;
 
     case Action::remove:
-        if (position.remove_piece(file, rank)) {
+        if (position.remove_piece(f, r)) {
             // 播放音效
             playSound(GameSound::remove, position.side_to_move());
             result = true;
@@ -1344,7 +1343,7 @@ bool Game::updateScence(Position &p)
     int ipos = p.current_square();
     if (ipos) {
         key = board[p.current_square()];
-        ipos = key & B_STONE ? (key - B_STONE_1) * 2 : (key - W_STONE_1) * 2 + 1;
+        ipos = (key & B_STONE) ? (key - B_STONE_1) * 2 : (key - W_STONE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);
@@ -1588,7 +1587,7 @@ void Game::setTips()
             reasonStr = turnStr + "超时判负。";
             break;
         case GameOverReason::drawReasonThreefoldRepetition:
-            tips = "三次重复局面判和。";
+            reasonStr = "三次重复局面判和。";
             break;
         default:
             break;

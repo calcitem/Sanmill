@@ -129,7 +129,7 @@ const struct Rule RULES[N_RULES] = {
 
 bool set_rule(int ruleIdx)
 {
-    if (ruleIdx <= 0 || ruleIdx > N_RULES) {
+    if (ruleIdx <= 0 || ruleIdx >= N_RULES) {
         return false;
     }
 

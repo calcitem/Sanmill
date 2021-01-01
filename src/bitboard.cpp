@@ -36,10 +36,10 @@ Bitboard StarSquareBB12;
 const std::string Bitboards::pretty(Bitboard b)
 {
     std::string str = "+---+---+---+---+---+---+---+---+\n";
-    for (File file = FILE_A; file <= FILE_C; ++file) {
-        for (Rank rank = RANK_1; rank <= RANK_8; ++rank) {
+    for (File f = FILE_A; f <= FILE_C; ++f) {
+        for (Rank r = RANK_1; r <= RANK_8; ++r) {
 
-            str += b & make_square(file, rank) ? "| X " : "|   ";
+            str += b & make_square(f, r) ? "| X " : "|   ";
         }
 
         str += "|\n+---+---+---+---+---+---+---+---+\n";

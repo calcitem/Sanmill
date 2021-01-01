@@ -37,7 +37,7 @@ class Test : public QDialog
     Q_OBJECT
 
 public:
-    explicit Test(QWidget *parent = nullptr, QString key = "Key0");
+    explicit Test(QWidget *parent = nullptr, QString k = "Key0");
     ~Test();
 
     void setKey(QString k)

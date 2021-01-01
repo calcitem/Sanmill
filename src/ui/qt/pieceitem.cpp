@@ -168,21 +168,21 @@ void PieceItem::paint(QPainter *painter,
     }
 }
 
-void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // 鼠标按下时变为握住的手形
     setCursor(Qt::ClosedHandCursor);
-    QGraphicsItem::mousePressEvent(event);
+    QGraphicsItem::mousePressEvent(mouseEvent);
 }
 
-void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    QGraphicsItem::mouseMoveEvent(event);
+    QGraphicsItem::mouseMoveEvent(mouseEvent);
 }
 
-void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // 鼠标松开时变为伸开的手形
     setCursor(Qt::OpenHandCursor);
-    QGraphicsItem::mouseReleaseEvent(event);
+    QGraphicsItem::mouseReleaseEvent(mouseEvent);
 }

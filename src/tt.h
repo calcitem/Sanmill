@@ -53,14 +53,14 @@ struct TTEntry
 private:
     friend class TranspositionTable;
 
-    int8_t  value8;
-    int8_t  depth8;
-    uint8_t genBound8;
+    int8_t  value8 {0};
+    int8_t  depth8 {0};
+    uint8_t genBound8 {0};
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    uint8_t age8;
+    uint8_t age8 {0};
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TT_MOVE_ENABLE
-    Move ttMove;
+    Move ttMove {MOVE_NONE};
 #endif // TT_MOVE_ENABLE
 };
 

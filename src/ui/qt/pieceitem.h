@@ -114,10 +114,10 @@ private:
     enum Models model;
 
     // 棋子序号，黑白都从1开始
-    int num = 1;
+    int num  {1};
 
     // 棋子尺寸
-    int size;
+    int size {0};
 
     // 有无删除线
     bool deleted {false};
@@ -126,10 +126,10 @@ private:
     bool showNum {false};
 
     // 选中子标识线宽度
-    int selectLineWeight;
+    int selectLineWeight {0};
 
     // 删除线宽度
-    int removeLineWeight;
+    int removeLineWeight {0};
 
     // 选中线颜色
     QColor selectLineColor;

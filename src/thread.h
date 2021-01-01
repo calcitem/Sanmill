@@ -77,7 +77,7 @@ public:
     string nextMove();
     Depth adjustDepth();
 
-    int getTimeLimit()
+    int getTimeLimit() const
     {
         return timeLimit;
     }

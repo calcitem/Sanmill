@@ -44,7 +44,7 @@ class MovePicker
 public:
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-    MovePicker(Position &position);
+    explicit MovePicker(Position &p);
 
     Move next_move();
 
@@ -68,7 +68,7 @@ public:
 
     int moveCount { 0 };
 
-    int move_count()
+    int move_count() const
     {
         return moveCount;
     }
