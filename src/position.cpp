@@ -1312,7 +1312,7 @@ void Position::reset_bb()
     }
 }
 
-void Position::mirror(vector <string> &moveRecords, bool cmdChange /*= true*/)
+void Position::mirror(vector <string> &moveHistory, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1397,7 +1397,7 @@ void Position::mirror(vector <string> &moveRecords, bool cmdChange /*= true*/)
             }
         }
 
-        for (auto &iter : moveRecords) {
+        for (auto &iter : moveHistory) {
             args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
             if (args >= 4) {
                 s1 = (RANK_NB - s1 + 1) % RANK_NB;
@@ -1421,7 +1421,7 @@ void Position::mirror(vector <string> &moveRecords, bool cmdChange /*= true*/)
     }
 }
 
-void Position::turn(vector <string> &gameRecords, bool cmdChange /*= true*/)
+void Position::turn(vector <string> &moveHistory, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
@@ -1540,7 +1540,7 @@ void Position::turn(vector <string> &gameRecords, bool cmdChange /*= true*/)
             }
         }
 
-        for (auto &iter : gameRecords) {
+        for (auto &iter : moveHistory) {
             args = sscanf(iter.c_str(),
                           "(%1u,%1u)->(%1u,%1u)",
                           &r1, &s1, &r2, &s2);
@@ -1583,7 +1583,7 @@ void Position::turn(vector <string> &gameRecords, bool cmdChange /*= true*/)
     }
 }
 
-void Position::rotate(vector <string> &gameRecords, int degrees, bool cmdChange /*= true*/)
+void Position::rotate(vector <string> &moveHistory, int degrees, bool cmdChange /*= true*/)
 {
     degrees = degrees % 360;
 
@@ -1707,7 +1707,7 @@ void Position::rotate(vector <string> &gameRecords, int degrees, bool cmdChange 
             }
         }
 
-        for (auto &iter : gameRecords) {
+        for (auto &iter : moveHistory) {
             args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
 
             if (args >= 4) {

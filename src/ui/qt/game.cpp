@@ -111,7 +111,7 @@ Game::Game(
     }
 #endif
 
-    gameRecords.reserve(256);
+    moveHistory.reserve(256);
 
     // 安装事件过滤器监视scene的各个事件，
     // 由于我重载了QGraphicsScene，相关事件在重载函数中已设定，不必安装监视器。
@@ -134,7 +134,7 @@ Game::~Game()
     }
 #endif /* ENDGAME_LEARNING */
 
-    gameRecords.clear();
+    moveHistory.clear();
 }
 
 const map<int, QStringList> Game::getActions()
@@ -163,7 +163,7 @@ extern deque<int> openingBookDequeBak;
 
 void Game::gameStart()
 {
-    //gameRecords.clear();
+    //moveHistory.clear();
     position.start();
     startTime = time(nullptr);
 
@@ -201,10 +201,10 @@ void Game::gameReset()
 
     // 重置游戏
     // WAR
-    if (gameRecords.size() > 1) {
-        string bak = gameRecords[0];
-        gameRecords.clear();
-        gameRecords.emplace_back(bak);
+    if (moveHistory.size() > 1) {
+        string bak = moveHistory[0];
+        moveHistory.clear();
+        moveHistory.emplace_back(bak);
     }    
 
     position.reset();
@@ -363,8 +363,8 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
         assert(0);
     }
     string cmd(record);
-    gameRecords.clear();
-    gameRecords.emplace_back(cmd);
+    moveHistory.clear();
+    moveHistory.emplace_back(cmd);
 
     // 重置游戏
     gameReset();
@@ -587,12 +587,12 @@ void Game::flip()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror(gameRecords);
-    position.rotate(gameRecords, 180);
+    position.mirror(moveHistory);
+    position.rotate(moveHistory, 180);
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(game_records())) {
+    for (const auto &str : *(move_hostory())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -613,12 +613,12 @@ void Game::mirror()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.mirror(gameRecords);
+    position.mirror(moveHistory);
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(game_records())) {
+    for (const auto &str : *(move_hostory())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -641,12 +641,12 @@ void Game::turnRight()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(gameRecords, -90);
+    position.rotate(moveHistory, -90);
 
     // 更新棋谱
     int row = 0;
 
-    for (const auto &str : *(game_records())) {
+    for (const auto &str : *(move_hostory())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -667,11 +667,11 @@ void Game::turnLeft()
 #ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
-    position.rotate(gameRecords, 90);
+    position.rotate(moveHistory, 90);
 
     // 更新棋谱
     int row = 0;
-    for (const auto &str : *(game_records())) {
+    for (const auto &str : *(move_hostory())) {
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
@@ -819,7 +819,7 @@ bool Game::actionPiece(QPointF p)
             manualListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
 
             for (int i = 0; i < removeCount; i++) {
-                gameRecords.pop_back();
+                moveHistory.pop_back();
             }
 
             // 如果再决出胜负后悔棋，则重新启动计时
@@ -897,7 +897,7 @@ bool Game::actionPiece(QPointF p)
     }
 
     if (result) {
-        gameRecords.emplace_back(position.record);
+        moveHistory.emplace_back(position.record);
 
         // 发信号更新状态栏
         updateScence();
@@ -909,7 +909,7 @@ bool Game::actionPiece(QPointF p)
         int k = 0;
 
         // 输出命令行        
-        for (const auto & i : *(game_records())) {
+        for (const auto & i : *(move_hostory())) {
             // 跳过已添加的，因标准list容器没有下标
             if (k++ <= currentRow)
                 continue;
@@ -960,7 +960,7 @@ bool Game::resign()
     int k = 0;
 
     // 输出命令行
-    for (const auto & i : *(game_records())) {
+    for (const auto & i : *(move_hostory())) {
         // 跳过已添加的，因标准list容器没有下标
         if (k++ <= currentRow)
             continue;
@@ -1019,7 +1019,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     loggerDebug("Computer: %s\n\n", cmd.c_str());
 
-    gameRecords.emplace_back(cmd);
+    moveHistory.emplace_back(cmd);
 
     if (!position.command(cmd.c_str()))
         return false;
@@ -1042,7 +1042,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     emit statusBarChanged(message);
 
     // 对于新开局
-    if (game_records()->size() <= 1) {
+    if (move_hostory()->size() <= 1) {
         manualListModel.removeRows(0, manualListModel.rowCount());
         manualListModel.insertRow(0);
         manualListModel.setData(manualListModel.index(0), position.get_record());
@@ -1052,13 +1052,13 @@ bool Game::command(const string &cmd, bool update /* = true */)
     else {
         currentRow = manualListModel.rowCount() - 1;
         // 跳过已添加行,迭代器不支持+运算符,只能一个个++
-        auto i = (game_records()->begin());
-        for (int r = 0; i != (game_records())->end(); i++) {
+        auto i = (move_hostory()->begin());
+        for (int r = 0; i != (move_hostory())->end(); i++) {
             if (r++ > currentRow)
                 break;
         }
         // 将新增的棋谱行插入到ListModel
-        while (i != game_records()->end()) {
+        while (i != move_hostory()->end()) {
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());
         }
@@ -1479,7 +1479,7 @@ inline std::string Game::char_to_string(char ch)
     }
 }
 
-void Game::appendGameOverReasonTogameRecords()
+void Game::appendGameOverReasonToMoveHistory()
 {
     if (position.phase != Phase::gameOver) {
         return;
@@ -1517,7 +1517,7 @@ void Game::appendGameOverReasonTogameRecords()
     }
 
     loggerDebug("%s\n", record);
-    gameRecords.emplace_back(record);
+    moveHistory.emplace_back(record);
 }
 
 void Game::setTips()
@@ -1557,7 +1557,7 @@ void Game::setTips()
         break;
 
     case Phase::gameOver:
-        appendGameOverReasonTogameRecords();
+        appendGameOverReasonToMoveHistory();
 
         scoreStr = "比分 " + to_string(p.score[BLACK]) + " : " + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);        
 

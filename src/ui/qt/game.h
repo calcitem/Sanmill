@@ -138,12 +138,12 @@ public:
 
     char color_to_char(Color color);
     std::string char_to_string(char ch);
-    void appendGameOverReasonTogameRecords();
+    void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    inline const std::vector<std::string> *game_records() const
+    inline const std::vector<std::string> *move_hostory() const
     {
-        return &gameRecords;
+        return &moveHistory;
     }
 
     time_t get_elapsed_time(int us);
@@ -485,7 +485,7 @@ private:
     // 提示语
     string tips;
 
-    std::vector <std::string> gameRecords;
+    std::vector <std::string> moveHistory;
 };
 
 inline time_t Game::start_timeb() const

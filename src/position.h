@@ -116,9 +116,9 @@ public:
     Color get_winner() const;
     void set_gameover(Color w, GameOverReason reason);
 
-    void mirror(std::vector <std::string> &gameRecords, bool cmdChange = true);
-    void turn(std::vector <std::string> &gameRecords, bool cmdChange = true);
-    void rotate(std::vector <std::string> &gameRecords, int degrees, bool cmdChange = true);
+    void mirror(std::vector <std::string> &moveHistory, bool cmdChange = true);
+    void turn(std::vector <std::string> &moveHistory, bool cmdChange = true);
+    void rotate(std::vector <std::string> &moveHistory, int degrees, bool cmdChange = true);
 
     void reset_bb();
 
@@ -150,10 +150,10 @@ public:
 
     void put_piece(Piece pc, Square s);
     bool put_piece(File f, Rank r);
-    bool put_piece(Square s, bool updategameRecords = false);
+    bool put_piece(Square s, bool updateRecord = false);
 
     bool remove_piece(File f, Rank r);
-    bool remove_piece(Square s, bool updategameRecords = false);
+    bool remove_piece(Square s, bool updateRecord = false);
 
     bool move_piece(File f1, Rank r1, File f2, Rank r2);
     bool move_piece(Square from, Square to);
