@@ -261,8 +261,8 @@ void Thread::analyze(Color c)
     bool lose = v <= -VALUE_MATE;
     int np = v / VALUE_EACH_PIECE;
 
-    string strUs = (c == BLACK ? "黑方" : "白方");
-    string strThem = (c == BLACK ? "白方" : "黑方");
+    string strUs = (c == BLACK ? "Black" : "White");
+    string strThem = (c == BLACK ? "White" : "Black");
 
     loggerDebug("Depth: %d\n\n", adjustedDepth);
 
@@ -273,94 +273,94 @@ void Thread::analyze(Color c)
 
     switch (p->get_phase()) {
     case Phase::placing:
-        cout << "摆子阶段" << endl;
+        cout << "Placing phrase" << endl;
         break;
     case Phase::moving:
-        cout << "走子阶段" << endl;
+        cout << "Moving phase" << endl;
         break;
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
-            cout << "和棋" << endl;
+            cout << "Draw" << endl;
             ndraw += 0.5;   // TODO
         } else if (p->get_winner() == BLACK) {
-            cout << "黑方胜" << endl;
+            cout << "Black wins" << endl;
             nbwin += 0.5;  // TODO
         } else if (p->get_winner() == WHITE) {
-            cout << "白方胜" << endl;
+            cout << "White wins" << endl;
             nwwin += 0.5;    // TODO
         }
         goto out;
         break;
     case Phase::none:
-        cout << "无棋局" << endl;
+        cout << "None phase" << endl;
         break;
     default:
-        cout << "未知阶段" << endl;
+        cout << "Known phase" << endl;
     }
 
     if (v == VALUE_UNIQUE) {
-        cout << "唯一着法" << endl << endl << endl;
+        cout << "Unique move" << endl << endl << endl;
         return;
     }
 
     if (lv < -VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << "坏棋, 被" << strUs << "拉回均势!" << endl;
+        cout << strThem << " made a bad move, " << strUs << "pulled back the balance of power!" << endl;
     }
 
     if (lv < 0 && v > 0) {
-        cout << strThem << "坏棋, 被" << strUs << "翻转了局势!" << endl;
+        cout << strThem << " made a bad move, " << strUs << "reversed the situation!" << endl;
     }
 
     if (lv == 0 && v > VALUE_EACH_PIECE) {
-        cout << strThem << "败着!" << endl;
+        cout << strThem << "Bad move!" << endl;
     }
 
     if (lv > VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << "好棋, 拉回均势!" << endl;
+        cout << strThem << "Good move, pulled back the balance of power" << endl;
     }
 
     if (lv > 0 && v < 0) {
-        cout << strThem << "好棋, 翻转了局势!" << endl;
+        cout << strThem << "Good move, reversed the situation!" << endl;
     }
 
     if (lv == 0 && v < -VALUE_EACH_PIECE) {
-        cout << strThem << "秒棋!" << endl;
+        cout << strThem << "made a good move!" << endl;
     }
 
     if (lv != v) {
         if (lv < 0 && v < 0) {
             if (abs(lv) < abs(v)) {
-                cout << strThem << "领先幅度扩大" << endl;
+                cout << strThem << " has expanded its lead" << endl;
             } else if (abs(lv) > abs(v)) {
-                cout << strThem << "领先幅度缩小" << endl;
+                cout << strThem << " has narrowed its lead" << endl;
             }
         }
 
         if (lv > 0 && v > 0) {
             if (abs(lv) < abs(v)) {
-                cout << strThem << "落后幅度扩大" << endl;
+                cout << strThem << " has expanded its lead" << endl;
             } else if (abs(lv) > abs(v)) {
-                cout << strThem << "落后幅度缩小" << endl;
+                cout << strThem << " has narrowed its backwardness" << endl;
             }
         }
     }
 
     if (win) {
-        cout << strThem << "将在 " << d << " 步后输棋!" << endl;
+        cout << strThem << " will lose in " << d << " moves!" << endl;
     } else if (lose) {
-        cout << strThem << "将在 " << d << " 步后赢棋!" << endl;
+        cout << strThem << " will win in " << d << " moves!" << endl;
     } else if (np == 0) {
-        cout << "将在 " << d << " 步后双方保持均势" << endl;
+        cout << "The two sides will maintain a balance of power after " << d << " moves" << endl;
     } else if (np > 0) {
-        cout << strThem << "将在 " << d << " 步后落后 " << np << " 子" << endl;
+        cout << strThem << " after " << d << " moves will backward " << np << " pieces" << endl;
     } else if (np < 0) {
-        cout << strThem << "将在 " << d << " 步后领先 " << -np << " 子" << endl;
+        cout << strThem << " after " << d << " moves will lead " << -np << " pieces" << endl;
     }
 
     if (p->side_to_move() == BLACK) {
-        cout << "轮到黑方行棋" << endl;
+        cout << "Black to move" << endl;
     } else {
-        cout << "轮到白方行棋" << endl;
+        cout << "White to move" << endl;
     }
 
 #ifndef QT_GUI_LIB
@@ -376,7 +376,7 @@ void Thread::analyze(Color c)
         drawrate = (float)ndraw * 100 / total;
     }
 
-    cout << "比分: " << (int)nbwin << " : " << (int)nwwin << " : " << (int)ndraw << "\ttotal: " << (int)total << endl;
+    cout << "Score: " << (int)nbwin << " : " << (int)nwwin << " : " << (int)ndraw << "\ttotal: " << (int)total << endl;
     cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
 #endif // !QT_GUI_LIB
 
