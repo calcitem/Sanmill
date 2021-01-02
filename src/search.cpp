@@ -45,17 +45,6 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
 
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
-namespace
-{
-
-// Different node types, used as a template parameter
-enum NodeType
-{
-    NonPV, PV
-};
-
-} // namespace
-
 
 /// Search::init() is called at startup to initialize various lookup tables
 
