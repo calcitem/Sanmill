@@ -462,6 +462,7 @@
     <ClInclude Include="src\movegen.h" />
     <ClInclude Include="src\movepick.h" />
     <ClInclude Include="src\search.h" />
+    <ClInclude Include="src\thread_win32_osx.h" />
     <ClInclude Include="src\tt.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\hashmap.h" />
@@ -476,7 +477,6 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_CONSOLE;UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;QT_MULTIMEDIAWIDGETS_LIB;QT_NETWORK_LIB;QT_NETWORKAUTH_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtNetworkAuth;$(QTDIR)\include\QtWidgets</IncludePath>
     </QtMoc>
-    <ClInclude Include="src\thread_win32_osx.h" />
     <ClInclude Include="src\uci.h" />
     <ClInclude Include="src\bitboard.h" />
     <ClInclude Include="src\option.h" />

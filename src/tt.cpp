@@ -136,8 +136,6 @@ int TranspositionTable::save(const Value &value,
 
     TT.insert(key, tte);
 
-    //hashMapMutex.unlock();
-
     return 0;
 }
 

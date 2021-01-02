@@ -117,10 +117,10 @@
     <ClInclude Include="src\uci.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\thread_win32_osx.h">
-      <Filter>Qt Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\mills.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thread_win32_osx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
