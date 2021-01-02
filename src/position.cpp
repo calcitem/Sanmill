@@ -300,8 +300,8 @@ const string Position::fen() const
     std::ostringstream ss;
 
     // Piece placement data
-    for (File f = FILE_A; f <= FILE_C; f = (File)(f + 1)) {
-        for (Rank r = RANK_1; r <= RANK_8; r = (Rank)(r + 1)) {
+    for (File f = FILE_A; f <= FILE_C; ++f) {
+        for (Rank r = RANK_1; r <= RANK_8; ++r) {
             ss << PieceToChar(piece_on(make_square(f, r)));
         }
 
