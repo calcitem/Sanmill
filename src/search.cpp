@@ -114,8 +114,6 @@ int Thread::search()
         posKeyHistory.push_back(key);
 #endif // UCI_DO_BEST_MOVE
 
-        //sync_cout << "posKeyHistory Size = " << posKeyHistory.size();
-        //std::cout << sync_endl;
         assert(posKeyHistory.size() < 256);
     }
 

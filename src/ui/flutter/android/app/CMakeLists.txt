@@ -26,7 +26,6 @@ add_library( # Sets the name of the library.
         ../../../../rule.cpp
         ../../../../search.cpp
         ../../../../thread.cpp
-        ../../../../trainer.cpp
         ../../../../tt.cpp
         ../../../../uci.cpp
         ../../../../ucioption.cpp)

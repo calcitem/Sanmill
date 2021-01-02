@@ -462,7 +462,6 @@
     <ClInclude Include="src\movegen.h" />
     <ClInclude Include="src\movepick.h" />
     <ClInclude Include="src\search.h" />
-    <ClInclude Include="src\trainer.h" />
     <ClInclude Include="src\tt.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\hashmap.h" />
@@ -733,7 +732,6 @@
     <ClCompile Include="src\movegen.cpp" />
     <ClCompile Include="src\movepick.cpp" />
     <ClCompile Include="src\search.cpp" />
-    <ClCompile Include="src\trainer.cpp" />
     <ClCompile Include="src\tt.cpp" />
     <ClCompile Include="src\misc.cpp" />
     <ClCompile Include="src\thread.cpp" />

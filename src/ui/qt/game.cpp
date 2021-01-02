@@ -42,15 +42,11 @@
 using namespace std;
 
 Game::Game(
-#ifndef TRAINING_MODE
     GameScene & scene,
-#endif
     QObject * parent
 ) :
     QObject(parent),
-#ifndef TRAINING_MODE
     scene(scene),
-#endif
     currentPiece(nullptr),
     currentRow(-1),
     isEditing(false),
@@ -94,7 +90,6 @@ Game::Game(
 #endif // QT_GUI_LIB
 
 #ifdef NET_FIGHT_SUPPORT
-#ifndef TRAINING_MODE
     server = new Server(nullptr, 30001);    // TODO: WARNING: ThreadSanitizer: data race
     uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
     client = new Client(nullptr, clientPort);
@@ -102,7 +97,6 @@ Game::Game(
     // 关联AI和网络类的着法命令行
     connect(getClient(), SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
-#endif  // TRAINING_MODE
 #endif // NET_FIGHT_SUPPORT
 
 #ifdef ENDGAME_LEARNING_FORCE
@@ -143,7 +137,6 @@ const map<int, QStringList> Game::getActions()
     // 之所以不用信号和槽的模式，是因为发信号的时候槽还来不及关联
     map<int, QStringList> actions;
 
-#ifndef TRAINING_MODE
     for (int i = 0; i < N_RULES; i++) {
         // map的key存放int索引值，value存放规则名称和规则提示
         QStringList strlist;
@@ -151,7 +144,6 @@ const map<int, QStringList> Game::getActions()
         strlist.append(tr(RULES[i].description));
         actions.insert(map<int, QStringList>::value_type(i, strlist));
     }
-#endif // TRAINING_MODE
 
     return actions;
 }
@@ -217,7 +209,6 @@ void Game::gameReset()
         resetAiPlayers();
     }
 
-#ifndef TRAINING_MODE
     // 清除棋子
     qDeleteAll(pieceList);
     pieceList.clear();
@@ -305,19 +296,15 @@ void Game::gameReset()
 
     // 播放音效
     //playSound(":/sound/resources/sound/newgame.wav");
-#endif // TRAINING_MODE
 }
 
 void Game::setEditing(bool arg)
 {
-#ifndef TRAINING_MODE
     isEditing = arg;
-#endif
 }
 
 void Game::setInvert(bool arg)
 {
-#ifndef TRAINING_MODE
     isInverted = arg;
 
     // 遍历所有棋子
@@ -335,7 +322,6 @@ void Game::setInvert(bool arg)
             pieceItem->update();
         }
     }
-#endif // TRAINING_MODE
 }
 
 void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
@@ -411,7 +397,6 @@ void Game::getAiDepthTime(int &time1, int &time2)
 
 void Game::setAnimation(bool arg)
 {
-#ifndef TRAINING_MODE
     hasAnimation = arg;
 
     // 默认动画时间500ms
@@ -419,14 +404,11 @@ void Game::setAnimation(bool arg)
         durationTime = 500;
     else
         durationTime = 0;
-#endif // TRAINING_MODE
 }
 
 void Game::setSound(bool arg)
 {
-#ifndef TRAINING_MODE
     hasSound = arg;
-#endif // TRAINING_MODE
 }
 
 void Game::playSound(GameSound soundType, Color c)
@@ -521,7 +503,6 @@ void Game::playSound(GameSound soundType, Color c)
 #ifndef DONOT_PLAY_SOUND
     QString soundPath = QString::fromStdString(soundDir + filename);
 
-#ifndef TRAINING_MODE
     if (soundPath == "") {
         return;
     }
@@ -530,7 +511,6 @@ void Game::playSound(GameSound soundType, Color c)
         QSound::play(soundPath);
     }
 #endif /* ! DONOT_PLAY_SOUND */
-#endif // TRAINING_MODE
 }
 
 void Game::setResignIfMostLose(bool enabled)
@@ -584,7 +564,6 @@ void Game::setOpeningBook(bool enabled)
 // 上下翻转
 void Game::flip()
 {
-#ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
     position.mirror(moveHistory);
@@ -604,13 +583,11 @@ void Game::flip()
 
     threadsSetAi(&position);
     startAiThreads();
-#endif // TRAINING_MODE
 }
 
 // 左右镜像
 void Game::mirror()
 {
-#ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
     position.mirror(moveHistory);
@@ -632,13 +609,11 @@ void Game::mirror()
 
     threadsSetAi(&position);
     startAiThreads();
-#endif // TRAINING_MODE
 }
 
 // 视图须时针旋转90°
 void Game::turnRight()
 {
-#ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
     position.rotate(moveHistory, -90);
@@ -658,13 +633,11 @@ void Game::turnRight()
 
     threadsSetAi(&position);
     startAiThreads();
-#endif
 }
 
 // 视图逆时针旋转90°
 void Game::turnLeft()
 {
-#ifndef TRAINING_MODE
     stopAndWaitAiThreads();
 
     position.rotate(moveHistory, 90);
@@ -680,7 +653,6 @@ void Game::turnLeft()
 
     threadsSetAi(&position);
     startAiThreads();
-#endif // TRAINING_MODE
 }
 
 void Game::updateTime()
@@ -735,7 +707,6 @@ void Game::timerEvent(QTimerEvent *event)
         // 定时器ID为0
         timeID = 0;
 
-#ifndef TRAINING_MODE
         // 发信号更新状态栏
         updateScence();
         message = QString::fromStdString(getTips());
@@ -748,7 +719,6 @@ void Game::timerEvent(QTimerEvent *event)
 #ifndef DONOT_PLAY_WIN_SOUND
         playSound(GameSound::win, winner);
 #endif
-#endif // TRAINING_MODE
     }
 
     // 测试用代码
@@ -782,7 +752,6 @@ bool Game::isAIsTurn()
 // 关键槽函数，根据QGraphicsScene的信号和状态来执行选子、落子或去子
 bool Game::actionPiece(QPointF p)
 {
-#ifndef TRAINING_MODE
     // 点击非落子点，不执行
     File f;
     Rank r;
@@ -939,9 +908,6 @@ bool Game::actionPiece(QPointF p)
     sideToMove = position.side_to_move();
     updateScence();
     return result;
-#else
-    return true;
-#endif // TRAINING_MODE
 }
 
 
@@ -952,8 +918,6 @@ bool Game::resign()
     if (!result) {
         return false;
     }
-
-#ifndef TRAINING_MODE
 
     // 将新增的棋谱行插入到ListModel
     currentRow = manualListModel.rowCount() - 1;
@@ -971,7 +935,6 @@ bool Game::resign()
     if (position.get_winner() != NOBODY) {
         playSound(GameSound::resign, position.side_to_move());
     }
-#endif // TRAINING_MODE
 
     return result;
 }
@@ -982,9 +945,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     int total;
     float bwinrate, wwinrate, drawrate;
 
-#ifndef TRAINING_MODE
     Q_UNUSED(hasSound)
-#endif
 
 #ifdef QT_GUI_LIB
     // 防止接收滞后结束的线程发送的指令
@@ -995,7 +956,6 @@ bool Game::command(const string &cmd, bool update /* = true */)
         return false;
 #endif // QT_GUI_LIB
 
-#ifndef TRAINING_MODE
     // 声音
     GameSound soundType = GameSound::none;
 
@@ -1010,7 +970,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     default:
         break;
     }
-#endif
+//#endif
 
     // 如果未开局则开局
     if (position.get_phase() == Phase::ready) {
@@ -1026,7 +986,6 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     sideToMove = position.side_to_move();
 
-#ifndef TRAINING_MODE
     if (soundType == GameSound::drog && position.get_action() == Action::remove) {
         soundType = GameSound::mill;
     }
@@ -1072,7 +1031,6 @@ bool Game::command(const string &cmd, bool update /* = true */)
         playSound(GameSound::win, winner);
     }
 #endif
-#endif // TRAINING_MODE
 
     // AI设置
     // 如果还未决出胜负
@@ -1157,10 +1115,8 @@ bool Game::command(const string &cmd, bool update /* = true */)
     gameTest->writeToMemory(QString::fromStdString(cmd));
 
 #ifdef NET_FIGHT_SUPPORT
-#ifndef TRAINING_MODE
     // 网络: 将着法放到服务器的发送列表中
     getServer()->setAction(QString::fromStdString(cmd));
-#endif // TRAINING_MODE
 #endif
 
     if (isAiPlayer[WHITE]) {
@@ -1190,7 +1146,6 @@ bool Game::command(const string &cmd, bool update /* = true */)
 // 浏览历史局面，通过command函数刷新局面显示
 bool Game::phaseChange(int row, bool forceUpdate)
 {
-#ifndef TRAINING_MODE
     // 如果row是当前浏览的棋谱行，则不需要刷新
     if (currentRow == row && !forceUpdate)
         return false;
@@ -1212,23 +1167,17 @@ bool Game::phaseChange(int row, bool forceUpdate)
 
     // 刷新棋局场景
     updateScence(position);
-#endif // TRAINING_MODE
 
     return true;
 }
 
 bool Game::updateScence()
 {
-#ifndef TRAINING_MODE
     return updateScence(position);
-#else
-    return true;
-#endif
 }
 
 bool Game::updateScence(Position &p)
 {
-#ifndef TRAINING_MODE
     const Piece *board = p.get_board();
     QPointF pos;
 
@@ -1377,17 +1326,14 @@ bool Game::updateScence(Position &p)
 
     setTips();
 
-#endif // !TRAINING_MODE
     return true;
 }
 
 #ifdef NET_FIGHT_SUPPORT
 void Game::showNetworkWindow()
 {
-#ifndef TRAINING_MODE
     getServer()->show();
     getClient()->show();
-#endif // TRAINING_MODE
 }
 #endif
 

@@ -29,7 +29,6 @@ QString APP_FILENAME_DEFAULT = "MillGame";
 #include <QCoreApplication>
 #include <QTranslator>
 
-#ifndef TRAINING_MODE
 #ifndef UCT_DEMO
 
 QString getAppFileName()
@@ -63,5 +62,4 @@ int main(int argc, char *argv[])
 }
 
 #endif // !UCT_DEMO
-#endif // !TRAINING_MODE
 #endif // QT_GUI_LIB

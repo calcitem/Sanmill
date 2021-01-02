@@ -45,8 +45,6 @@
 
 //#define MOBILE_APP_UI
 
-//#define TRAINING_MODE
-
 //#define TEST_MODE
 
 //#define UCT_DEMO

@@ -81,9 +81,7 @@ class Game : public QObject
 
 public:
     explicit Game(
-#ifndef TRAINING_MODE
         GameScene &scene,
-#endif
         QObject *parent = nullptr
     );
     ~Game() override;
@@ -390,10 +388,8 @@ private:
     // 2个AI的线程
     Thread *aiThread[COLOR_NB];
 
-#ifndef TRAINING_MODE
     // 棋局的场景类
     GameScene &scene;
-#endif
 
     // 所有棋子
     vector<PieceItem *> pieceList;

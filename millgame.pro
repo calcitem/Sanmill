@@ -26,7 +26,6 @@ SOURCES += \
     src/movegen.cpp \
     src/movepick.cpp \
     src/thread.cpp \
-    src/trainer.cpp \
     src/tt.cpp \
     src/misc.cpp \
     src/uci.cpp \
@@ -58,7 +57,6 @@ HEADERS  += \
     src/movegen.h \
     src/movepick.h \
     src/thread.h \
-    src/trainer.h \
     src/tt.h \
     src/hashnode.h \
     src/debug.h \
