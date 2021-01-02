@@ -123,7 +123,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
     | X - X - X |
     |/    |    \|
     X --- X --- X
-*/
+    */
 
 #define P(s) PieceToChar(pos.piece_on(Square(s)))
 
@@ -156,7 +156,7 @@ void Position::init()
     PRNG rng(1070372);
 
     for (PieceType pt : PieceTypes)
-        for (Square s = SQ_0; s < SQUARE_NB; ++s)
+        for (Square s = SQ_BEGIN; s < SQ_END; ++s)
             Zobrist::psq[pt][s] = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
     Zobrist::side = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
