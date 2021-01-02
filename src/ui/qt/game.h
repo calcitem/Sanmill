@@ -89,27 +89,27 @@ public:
     //主窗口菜单栏明细
     const map<int, QStringList> getActions();
 
-    int getRuleIndex()
+    int getRuleIndex() noexcept
     {
         return ruleIndex;
     }
 
-    int getTimeLimit()
+    int getTimeLimit() noexcept
     {
         return timeLimit;
     }
 
-    int getStepsLimit()
+    int getStepsLimit() noexcept
     {
         return stepsLimit;
     }
 
-    bool isAnimation()
+    bool isAnimation() noexcept
     {
         return hasAnimation;
     }
 
-    void setDurationTime(int i)
+    void setDurationTime(int i) noexcept
     {
         durationTime = i;
     }
@@ -129,7 +129,7 @@ public:
 
     void humanResign();
 
-    Position *getPosition()
+    Position *getPosition() noexcept
     {
         return &position;
     }
@@ -208,7 +208,7 @@ public slots:
     void gameReset();
 
     // 设置编辑棋局状态
-    void setEditing(bool arg = true);
+    void setEditing(bool arg = true) noexcept;
 
     // 设置黑白反转状态
     void setInvert(bool arg = true);
@@ -219,10 +219,10 @@ public slots:
     void setEngineWhite(bool enabled);
 
     // 是否有落子动画
-    void setAnimation(bool arg = true);
+    void setAnimation(bool arg = true) noexcept;
 
     // 是否有落子音效
-    void setSound(bool arg = true);
+    void setSound(bool arg = true) noexcept;
 
     // 播放声音
     static void playSound(GameSound soundType, Color c);

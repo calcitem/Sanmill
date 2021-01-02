@@ -43,11 +43,11 @@ public:
     explicit Server(QWidget *parent = nullptr, uint16_t port = 33333);
     ~Server();
     void setAction(const QString &a);
-    void setPort(uint16_t p)
+    void setPort(uint16_t p) noexcept
     {
         port = p;
     }
-    uint16_t getPort()
+    uint16_t getPort() noexcept
     {
         return port;
     }

@@ -40,12 +40,12 @@ public:
     explicit Test(QWidget *parent = nullptr, QString k = "Key0");
     ~Test();
 
-    void setKey(QString k)
+    void setKey(QString k) noexcept
     {
         key = k;
     }
 
-    QString getKey()
+    QString getKey() noexcept
     {
         return key;
     }

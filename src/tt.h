@@ -35,17 +35,17 @@ using namespace CTSL;
 
 struct TTEntry
 {
-    Value value() const
+    Value value() const noexcept
     {
         return (Value)value8;
     }
 
-    Depth depth() const
+    Depth depth() const noexcept
     {
         return (Depth)depth8 + DEPTH_OFFSET;
     }
 
-    Bound bound() const
+    Bound bound() const noexcept
     {
         return (Bound)(genBound8);
     }

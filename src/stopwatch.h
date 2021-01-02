@@ -48,7 +48,7 @@ struct rdtscp_clock {
     return time_point(duration((static_cast<std::uint64_t>(hi) << 32) | lo));
 #endif // WIN32
 #else
-      unsigned int ui = 0;
+      constexpr unsigned int ui = 0;
       return time_point(duration((static_cast<std::uint64_t>(ui))));
 #endif
   }  

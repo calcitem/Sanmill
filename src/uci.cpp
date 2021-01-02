@@ -266,7 +266,7 @@ string UCI::move(Move m)
 {
     string move;
 
-    Square to = to_sq(m);
+    const Square to = to_sq(m);
 
     if (m == MOVE_NONE)
         return "(none)";
@@ -277,7 +277,7 @@ string UCI::move(Move m)
     if (m < 0) {
         move = "-" + UCI::square(to);
     } else if (m & 0x7f00) {
-        Square from = from_sq(m);
+        const Square from = from_sq(m);
         move = UCI::square(from) + "->" + UCI::square(to);
     } else {
         move = UCI::square(to);

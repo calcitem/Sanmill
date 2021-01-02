@@ -289,17 +289,17 @@ const std::string compiler_info()
 /// Debug functions used mainly to collect run-time statistics
 static std::atomic<int64_t> hits[2], means[2];
 
-void dbg_hit_on(bool b)
+void dbg_hit_on(bool b) noexcept
 {
     ++hits[0]; if (b) ++hits[1];
 }
 
-void dbg_hit_on(bool c, bool b)
+void dbg_hit_on(bool c, bool b) noexcept
 {
     if (c) dbg_hit_on(b);
 }
 
-void dbg_mean_of(int v)
+void dbg_mean_of(int v) noexcept
 {
     ++means[0]; means[1] += v;
 }
@@ -376,8 +376,8 @@ void prefetch(void *addr)
 
 void prefetch_range(void *addr, size_t len)
 {
-    char *cp;
-    char *end = (char *)addr + len;
+    char *cp = nullptr;
+    const char *end = (char *)addr + len;
 
     for (cp = (char *)addr; cp < end; cp += PREFETCH_STRIDE)
         prefetch(cp);
@@ -609,7 +609,7 @@ int best_group(size_t idx)
 void bindThisThread(size_t idx)
 {
     // Use only local variables to be thread-safe
-    int group = best_group(idx);
+    const int group = best_group(idx);
 
     if (group == -1)
         return;
@@ -648,7 +648,7 @@ string argv0;            // path+name of the executable binary, as given by argv
 string binaryDirectory;  // path of the executable directory
 string workingDirectory; // path of the working directory
 
-void init(int argc, char *argv[])
+void init(int argc, const char *argv[])
 {
     (void)argc;
     string pathSeparator;
@@ -672,13 +672,13 @@ void init(int argc, char *argv[])
     // extract the working directory
     workingDirectory = "";
     char buff[40000];
-    char *cwd = GETCWD(buff, 40000);
+    const char *cwd = GETCWD(buff, 40000);
     if (cwd)
         workingDirectory = cwd;
 
     // extract the binary directory path from argv0
     binaryDirectory = argv0;
-    size_t pos = binaryDirectory.find_last_of("\\/");
+    const size_t pos = binaryDirectory.find_last_of("\\/");
     if (pos == std::string::npos)
         binaryDirectory = "." + pathSeparator;
     else

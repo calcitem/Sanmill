@@ -36,7 +36,7 @@ using namespace std;
 namespace Search
 {
 
-void init();
+void init() noexcept;
 void clear();
 
 } // namespace Search

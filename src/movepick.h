@@ -30,7 +30,7 @@
 class Position;
 struct ExtMove;
 
-void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit);
+void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit);
 
 
 /// MovePicker class is used to pick one pseudo legal move at a time from the
@@ -44,18 +44,18 @@ class MovePicker
 public:
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-    explicit MovePicker(Position &p);
+    explicit MovePicker(Position &p) noexcept;
 
     Move next_move();
 
     template<GenType> void score();
 
-    ExtMove *begin()
+    ExtMove *begin() noexcept
     {
         return cur;
     }
 
-    ExtMove *end()
+    ExtMove *end() noexcept
     {
         return endMoves;
     }
@@ -68,7 +68,7 @@ public:
 
     int moveCount { 0 };
 
-    int move_count() const
+    int move_count() const noexcept
     {
         return moveCount;
     }

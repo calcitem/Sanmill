@@ -39,7 +39,7 @@ using std::string;
 
 namespace Zobrist
 {
-const int KEY_MISC_BIT = 2;
+constexpr int KEY_MISC_BIT = 2;
 Key psq[PIECE_TYPE_NB][SQUARE_NB];
 Key side;
 }
@@ -67,7 +67,7 @@ const string  PieceToChar(Piece p)
     return "*";
 }
 
-Piece CharToPiece(char ch)
+Piece CharToPiece(char ch) noexcept
 {
 
     if (ch == '*') {
@@ -210,7 +210,7 @@ Position &Position::set(const string &fenStr, Thread *th)
           incremented after Black's move.
     */
 
-    unsigned char token;
+    unsigned char token = '\0';
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
@@ -375,9 +375,9 @@ bool Position::legal(Move m) const
 {
     assert(is_ok(m));
 
-    Color us = sideToMove;
-    Square from = from_sq(m);
-    Square to = to_sq(m);
+    const Color us = sideToMove;
+    const Square from = from_sq(m);
+    const Square to = to_sq(m);
 
     if (from == to) {
         return false;
@@ -401,7 +401,7 @@ void Position::do_move(Move m)
 {
     bool ret = false;
 
-    MoveType mt = type_of(m);
+    const MoveType mt = type_of(m);
 
     switch (mt) {
     case MOVETYPE_REMOVE:
@@ -449,8 +449,8 @@ void Position::undo_move(Sanmill::Stack<Position> &ss)
 Key Position::key_after(Move m) const
 {
     Key k = st.key;
-    Square s = static_cast<Square>(to_sq(m));;
-    MoveType mt = type_of(m);
+    const Square s = static_cast<Square>(to_sq(m));;
+    const MoveType mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
         k ^= Zobrist::psq[~side_to_move()][s];
@@ -524,7 +524,7 @@ bool Position::reset()
             break;
     }
 
-    if (snprintf(record, RECORD_LEN_MAX, "r%1u s%03u t%02u",
+    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03d t%02d",
                 r + 1, rule.maxStepsLedToDraw, 0) > 0) {
         return true;
     }
@@ -573,7 +573,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;
 
-        Piece pc = board[s] = piece;
+        const Piece pc = board[s] = piece;
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
         byColorBB[color_of(pc)] |= s;   // TODO: Put ban?
 
@@ -585,7 +585,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         currentSquare = s;
 
-        int n = mills_count(currentSquare);
+        const int n = mills_count(currentSquare);
 
         if (n == 0) {
             assert(pieceInHandCount[BLACK] >= 0 && pieceInHandCount[WHITE] >= 0);     
@@ -639,7 +639,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             st.rule50++;
         }
 
-        Piece pc = board[currentSquare];
+        const Piece pc = board[currentSquare];
 
         board[s] = pc;
         update_key(s);
@@ -656,9 +656,8 @@ bool Position::put_piece(Square s, bool updateRecord)
         SET_BIT(byColorBB[color_of(pc)], s);
 
         currentSquare = s;
-        int n = mills_count(currentSquare);
+        const int n = mills_count(currentSquare);
 
-        // midgame
         if (n == 0) {
             action = Action::select;
             change_side_to_move();
@@ -714,13 +713,13 @@ bool Position::remove_piece(Square s, bool updateRecord)
         SET_BIT(byTypeBB[type_of(pc)], s);
     } else {
         // Remove only
-        Piece pc = board[s];
+        const Piece pc = board[s];
 
         CLEAR_BIT(byTypeBB[ALL_PIECES], s);
         CLEAR_BIT(byTypeBB[type_of(pc)], s);
         CLEAR_BIT(byColorBB[color_of(pc)], s);
 
-        pc = board[s] = NO_PIECE;
+        board[s] = NO_PIECE;
     }
 
     if (updateRecord) {
@@ -807,11 +806,11 @@ bool Position::resign(Color loser)
 
 bool Position::command(const char *cmd)
 {
-    unsigned int ruleNo;
-    unsigned t;
-    int step;
-    File file1, file2;
-    Rank rank1, rank2;
+    unsigned int ruleNo = 0;
+    unsigned t = 0;
+    int step = 0;
+    File file1 = FILE_A, file2 = FILE_A;
+    Rank rank1 = RANK_1, rank2 = RANK_1;
     int args = 0;
 
     if (sscanf(cmd, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
@@ -862,7 +861,7 @@ bool Position::command(const char *cmd)
     return false;
 }
 
-Color Position::get_winner() const
+Color Position::get_winner() const noexcept
 {
     return winner;
 }
@@ -957,7 +956,7 @@ void Position::remove_ban_stones()
             s = static_cast<Square>(f * RANK_NB + r);
 
             if (board[s] == BAN_STONE) {                
-                Piece pc = board[s];
+                const Piece pc = board[s];
                 byTypeBB[ALL_PIECES] ^= s;
                 byTypeBB[type_of(pc)] ^= s;
                 board[s] = NO_PIECE;
@@ -985,7 +984,7 @@ inline Key Position::update_key(Square s)
     // PieceType is board[s]
 
     // 0b00 - no piece, 0b01 = 1 black, 0b10 = 2 white, 0b11 = 3 ban
-    int pieceType = color_on(s);
+    const int pieceType = color_on(s);
     // TODO: this is std, but current code can work
     //Location loc = board[s];
     //int pieceType = loc == 0x0f? 3 : loc >> 4;
@@ -1092,8 +1091,8 @@ int Position::potential_mills_count(Square to, Color c, Square from)
         CLEAR_BIT(byColorBB[color_of(locbak)], from);
     }
 
-    Bitboard bc = byColorBB[c];
-    Bitboard *mt = millTableBB[to];
+    const Bitboard bc = byColorBB[c];
+    const Bitboard *mt = millTableBB[to];
 
     for (int l = 0; l < LD_NB; l++) {
         if ((bc & mt[l]) == mt[l]) {
@@ -1116,8 +1115,8 @@ int Position::mills_count(Square s)
 {
     int n = 0;
 
-    Bitboard bc = byColorBB[color_on(s)];
-    Bitboard *mt = millTableBB[s];
+    const Bitboard bc = byColorBB[color_on(s)];
+    const Bitboard *mt = millTableBB[s];
 
     for (auto i = 0; i < LD_NB; ++i) {
         if (((bc & mt[i]) == mt[i])) {
@@ -1176,7 +1175,7 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount, int &theirP
             continue;
         }
 
-        enum Piece pieceType = static_cast<Piece>(board[moveSquare]);
+        const enum Piece pieceType = static_cast<Piece>(board[moveSquare]);
 
         switch (pieceType) {
         case NO_PIECE:
@@ -1272,7 +1271,7 @@ void Position::reset_bb()
     memset(byColorBB, 0, sizeof(byColorBB));
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-        Piece pc = board[s];
+        const Piece pc = board[s];
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
         byColorBB[color_of(pc)] |= s;
     }

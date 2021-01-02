@@ -44,7 +44,7 @@ public:
         Type = UserType + 1
     };
 
-    int type() const override
+    int type() const noexcept override
     {
         return Type;
     }

@@ -24,32 +24,32 @@
 class GameOptions
 {
 public:
-    void setAutoRestart(bool enabled)
+    void setAutoRestart(bool enabled) noexcept
     {
         isAutoRestart = enabled;
     }
 
-    bool getAutoRestart() const
+    bool getAutoRestart() const noexcept
     {
         return isAutoRestart;
     }
 
-    void setAutoChangeFirstMove(bool enabled)
+    void setAutoChangeFirstMove(bool enabled) noexcept
     {
         isAutoChangeFirstMove = enabled;
     }
 
-    bool getAutoChangeFirstMove() const
+    bool getAutoChangeFirstMove() const noexcept
     {
         return isAutoChangeFirstMove;
     }
 
-    void setResignIfMostLose(bool enabled)
+    void setResignIfMostLose(bool enabled) noexcept
     {
         resignIfMostLose = enabled;
     }
 
-    bool getResignIfMostLose() const
+    bool getResignIfMostLose() const noexcept
     {
         return resignIfMostLose;
     }
@@ -60,17 +60,17 @@ public:
     // variation between different games against an opponent that tries to do the
     // same sequence of moves. By default, shuffling is enabled.
 
-    bool getShufflingEnabled() const
+    bool getShufflingEnabled() const noexcept
     {
         return shufflingEnabled;
     }
 
-    void setShufflingEnabled(bool enabled)
+    void setShufflingEnabled(bool enabled) noexcept
     {
         shufflingEnabled = enabled;
     }
 
-    void setLearnEndgameEnabled(bool enabled)
+    void setLearnEndgameEnabled(bool enabled) noexcept
     {
 #ifdef ENDGAME_LEARNING_FORCE
         learnEndgame = true;
@@ -79,7 +79,7 @@ public:
 #endif
     }
 
-    bool isEndgameLearningEnabled() const
+    bool isEndgameLearningEnabled() const noexcept
     {
 #ifdef ENDGAME_LEARNING_FORCE
         return  true;
@@ -88,36 +88,36 @@ public:
 #endif
     }
 
-    void setIDSEnabled(bool enabled)
+    void setIDSEnabled(bool enabled) noexcept
     {
         IDSEnabled = enabled;
     }
 
-    bool getIDSEnabled() const
+    bool getIDSEnabled() const noexcept
     {
         return IDSEnabled;
     }
 
     // DepthExtension
 
-    void setDepthExtension(bool enabled)
+    void setDepthExtension(bool enabled) noexcept
     {
         depthExtension = enabled;
     }
 
-    bool getDepthExtension() const
+    bool getDepthExtension() const noexcept
     {
         return depthExtension;
     }
 
     // OpeningBook
 
-    void setOpeningBook(bool enabled)
+    void setOpeningBook(bool enabled) noexcept
     {
         openingBook = enabled;
     }
 
-    bool getOpeningBook() const
+    bool getOpeningBook() const noexcept
     {
         return openingBook;
     }

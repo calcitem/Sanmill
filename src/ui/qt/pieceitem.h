@@ -51,7 +51,7 @@ public:
         Type = UserType + 2
     };
 
-    int type() const override
+    int type() const noexcept override
     {
         return Type;
     }
@@ -64,27 +64,27 @@ public:
         whitePiece = 0x4,   // 白色棋子
     };
 
-    enum Models getModel()
+    enum Models getModel() noexcept
     {
         return model;
     }
 
-    void setModel(enum Models m)
+    void setModel(enum Models m) noexcept
     {
         this->model = m;
     }
 
-    int getNum()
+    int getNum() noexcept
     {
         return num;
     }
 
-    void setNum(int n)
+    void setNum(int n) noexcept
     {
         num = n;
     }
 
-    bool isDeleted()
+    bool isDeleted() noexcept
     {
         return deleted;
     }
@@ -99,7 +99,7 @@ public:
         update(boundingRect());
     }
 
-    void setShowNum(bool show = true)
+    void setShowNum(bool show = true) noexcept
     {
         this->showNum = show;
     }

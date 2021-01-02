@@ -92,8 +92,8 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
 
     // 主窗口居中显示
     QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
-    int unitw = (deskTopRect.width() - width()) / 2;
-    int unith = (deskTopRect.height() - height()) / 2;
+    const int unitw = (deskTopRect.width() - width()) / 2;
+    const int unith = (deskTopRect.height() - height()) / 2;
     this->move(unitw, unith);
 
 #if defined(_DEBUG) || defined(TEST_MODE)
@@ -141,7 +141,7 @@ bool MillGameWindow::eventFilter(QObject *watched, QEvent *event)
     // 重载这个函数只是为了让规则菜单（动态）显示提示
     if (watched == ui.menu_R &&
         event->type() == QEvent::ToolTip) {
-        auto *he = dynamic_cast <QHelpEvent *> (event);
+        const auto *he = dynamic_cast <QHelpEvent *> (event);
         QAction *action = ui.menu_R->actionAt(he->pos());
         if (action) {
             QToolTip::showText(he->globalPos(), action->toolTip(), this);
@@ -380,7 +380,7 @@ void MillGameWindow::initialize()
     const int screen_iPhone_SE[] = {640, 1136};
     this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
 #else /* MOBILE_APP_UI */
-    int h = QApplication::desktop()->height();
+    const int h = QApplication::desktop()->height();
     this->resize(QSize(h * 3/4, h * 3/4));
 
     ui.pushButton_back->setVisible(false);
@@ -419,8 +419,8 @@ void MillGameWindow::ctxMenu(const QPoint &pos)
 
 void MillGameWindow::ruleInfo()
 {
-    int s = game->getStepsLimit();
-    int t = game->getTimeLimit();
+    const int s = game->getStepsLimit();
+    const int t = game->getTimeLimit();
 
     QString tl(" 不限时");
     QString sl(" 不限步");

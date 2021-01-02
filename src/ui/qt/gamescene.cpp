@@ -92,7 +92,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 
     // 如果是棋盘
-    QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
+    const QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
 
     if (!item || item->type() == BoardItem::Type) {
         QPointF p = mouseEvent->scenePos();

@@ -33,7 +33,7 @@ class Evaluation
 {
 public:
     Evaluation() = delete;
-    explicit Evaluation(Position &p) : pos(p)
+    explicit Evaluation(Position &p) noexcept : pos(p)
     {
     }
     Evaluation &operator=(const Evaluation &) = delete;
@@ -119,7 +119,7 @@ Value Evaluation::value()
         } else if (pos.get_action() == Action::select &&
                    pos.is_all_surrounded() &&
                    rule.isLoseButNotChangeSideWhenNoWay) {
-            Value delta = pos.side_to_move() == BLACK ? -VALUE_MATE : VALUE_MATE;
+            const Value delta = pos.side_to_move() == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
         else if (pos.piece_on_board_count(BLACK) < rule.piecesAtLeastCount) {

@@ -52,10 +52,10 @@ Thread::Thread(size_t n
                , QObject *parent
 #endif
 ) :
-    idx(n), stdThread(&Thread::idle_loop, this),
 #ifdef QT_GUI_LIB
     QObject(parent),
 #endif
+    idx(n), stdThread(&Thread::idle_loop, this),
     timeLimit(3600)
 {
     wait_for_search_finished();
@@ -76,7 +76,7 @@ Thread::~Thread()
 
 /// Thread::clear() reset histories, usually before a new game
 
-void Thread::clear()
+void Thread::clear() noexcept
 {
     // TODO
 }
@@ -254,19 +254,19 @@ void Thread::analyze(Color c)
     float bwinrate, wwinrate, drawrate;
 #endif // !QT_GUI_LIB
 
-    int d = (int)originDepth;
-    int v = (int)bestvalue;
-    int lv = (int)lastvalue;
-    bool win = v >= VALUE_MATE;
-    bool lose = v <= -VALUE_MATE;
-    int np = v / VALUE_EACH_PIECE;
+    const int d = (int)originDepth;
+    const int v = (int)bestvalue;
+    const int lv = (int)lastvalue;
+    const bool win = v >= VALUE_MATE;
+    const bool lose = v <= -VALUE_MATE;
+    const int np = v / VALUE_EACH_PIECE;
 
     string strUs = (c == BLACK ? "Black" : "White");
     string strThem = (c == BLACK ? "White" : "Black");
 
     loggerDebug("Depth: %d\n\n", adjustedDepth);
 
-    Position *p = rootPos;
+    const Position *p = rootPos;
 
     cout << *p << "\n" << endl;
     cout << std::dec;
@@ -389,7 +389,7 @@ Depth Thread::adjustDepth()
     Depth d = 0;
 
 #ifdef _DEBUG
-    Depth reduce = 0;
+    constexpr Depth reduce = 0;
 #else
     Depth reduce = 0;
 #endif
@@ -436,10 +436,10 @@ Depth Thread::adjustDepth()
     };
 #endif /* ENDGAME_LEARNING */
 
-    const Depth flyingDepth = 9;
+    constexpr Depth flyingDepth = 9;
 
     if (rootPos->phase == Phase::placing) {
-        int index = rule.piecesCount * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE);
+        const int index = rule.piecesCount * 2 - rootPos->count<IN_HAND>(BLACK) - rootPos->count<IN_HAND>(WHITE);
 
         if (rule.piecesCount == 12) {
             assert(0 <= index && index <= 24);
@@ -451,10 +451,10 @@ Depth Thread::adjustDepth()
     }
 
     if (rootPos->phase == Phase::moving) {
-        int pb = rootPos->count<ON_BOARD>(BLACK);
-        int pw = rootPos->count<ON_BOARD>(WHITE);
+        const int pb = rootPos->count<ON_BOARD>(BLACK);
+        const int pw = rootPos->count<ON_BOARD>(WHITE);
 
-        int pieces = pb + pw;
+        const int pieces = pb + pw;
         int diff = pb - pw;
 
         if (diff < 0) {

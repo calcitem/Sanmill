@@ -39,7 +39,7 @@ class ManualListView : public QListView
     Q_OBJECT
 
 public:
-    ManualListView(QWidget *parent = nullptr) : QListView(parent)
+    ManualListView(QWidget *parent = nullptr)  noexcept : QListView(parent)
     {
         Q_UNUSED(parent)
     }
@@ -98,7 +98,7 @@ protected slots:
         // 如果包含model
         if (model()) {
             // 判断
-            QModelIndex square = model()->index(model()->rowCount() - 1, 0);
+            const QModelIndex square = model()->index(model()->rowCount() - 1, 0);
             if (square == bottomRight && newEmptyRow) {
                 setCurrentIndex(square);
                 QAbstractItemView::scrollToBottom();

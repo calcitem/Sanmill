@@ -46,7 +46,7 @@ namespace Mills
     29 ----- 28 ----- 27
 */
 
-void adjacent_squares_init()
+void adjacent_squares_init() noexcept
 {
     // Note: Not follow order of MoveDirection array
     const int adjacentSquares12[SQUARE_NB][MD_NB] = {
@@ -386,7 +386,7 @@ void move_priority_list_shuffle()
     }
 
     if (gameOptions.getShufflingEnabled()) {
-        uint32_t seed = static_cast<uint32_t>(now());
+        const uint32_t seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityList0.begin(), movePriorityList0.end(), std::default_random_engine(seed));
         std::shuffle(movePriorityList1.begin(), movePriorityList1.end(), std::default_random_engine(seed));

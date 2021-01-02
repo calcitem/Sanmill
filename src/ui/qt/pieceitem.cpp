@@ -146,7 +146,7 @@ void PieceItem::paint(QPainter *painter,
     if (isSelected()) {
         QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
-        int xy = (size - selectLineWeight) / 2;
+        const int xy = (size - selectLineWeight) / 2;
 
         painter->drawLine(-xy, -xy, -xy, -xy / 2);
         painter->drawLine(-xy, -xy, -xy / 2, -xy);

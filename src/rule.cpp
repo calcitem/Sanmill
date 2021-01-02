@@ -127,7 +127,7 @@ const struct Rule RULES[N_RULES] = {
     }
 };
 
-bool set_rule(int ruleIdx)
+bool set_rule(int ruleIdx) noexcept
 {
     if (ruleIdx <= 0 || ruleIdx >= N_RULES) {
         return false;

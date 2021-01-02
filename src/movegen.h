@@ -39,12 +39,12 @@ struct ExtMove
     Move move;
     int value;
 
-    operator Move() const
+    operator Move() const noexcept
     {
         return move;
     }
 
-    void operator=(Move m)
+    void operator=(Move m) noexcept
     {
         move = m;
     }
@@ -54,7 +54,7 @@ struct ExtMove
     operator float() const = delete;
 };
 
-inline bool operator<(const ExtMove &f, const ExtMove &s)
+inline bool operator<(const ExtMove &f, const ExtMove &s) noexcept
 {
     return f.value < s.value;
 }

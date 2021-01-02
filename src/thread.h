@@ -57,7 +57,7 @@ public:
     );
     virtual ~Thread();
     int search();
-    void clear();
+    void clear() noexcept;
     void idle_loop();
     void start_searching();
     void wait_for_search_finished();
@@ -172,7 +172,7 @@ struct ThreadPool : public std::vector<Thread *>
     std::atomic_bool stop, increaseDepth;
 
 private:
-    uint64_t accumulate(std::atomic<uint64_t> Thread:: *member) const
+    uint64_t accumulate(std::atomic<uint64_t> Thread:: *member) const noexcept
     {
         uint64_t sum = 0;
         for (Thread *th : *this)

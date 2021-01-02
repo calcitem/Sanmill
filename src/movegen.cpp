@@ -49,7 +49,7 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 template<>
 ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 {
-    Square from, to;
+    Square from = SQ_0, to = SQ_0;
     ExtMove *cur = moveList;
 
     // move piece that location weak first
@@ -88,8 +88,8 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 {
     Square s;
 
-    Color us = pos.side_to_move();
-    Color them = ~us;
+    const Color us = pos.side_to_move();
+    const Color them = ~us;
 
     ExtMove *cur = moveList;
 

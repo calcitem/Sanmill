@@ -79,7 +79,7 @@ public:
     void undo_move(Sanmill::Stack<Position> &ss);
 
     // Accessing hash keys
-    Key key() const;
+    Key key() const noexcept;
     Key key_after(Move m) const;
     void construct_key();
     Key revert_key(Square s);
@@ -95,7 +95,7 @@ public:
 
     /// Mill Game
 
-    Piece *get_board();
+    Piece *get_board() noexcept;
     Square current_square() const;
     enum Phase get_phase() const;
     enum Action get_action() const;
@@ -113,7 +113,7 @@ public:
     void set_side_to_move(Color c);
   
     void change_side_to_move();
-    Color get_winner() const;
+    Color get_winner() const noexcept;
     void set_gameover(Color w, GameOverReason reason);
 
     void mirror(std::vector <std::string> &moveHistory, bool cmdChange = true);
@@ -229,7 +229,7 @@ template<PieceType Pt> inline int Position::count(Color c) const
     return 0;
 }
 
-inline Key Position::key() const
+inline Key Position::key() const noexcept
 {
     return st.key;
 }
@@ -271,7 +271,7 @@ inline void Position::put_piece(Piece pc, Square s)
 
 inline bool Position::put_piece(File f, Rank r)
 {
-    bool ret = put_piece(make_square(f, r), true);
+    const bool ret = put_piece(make_square(f, r), true);
 
     if (ret) {
         update_score();
@@ -287,7 +287,7 @@ inline bool Position::move_piece(File f1, Rank r1, File f2, Rank r2)
 
 inline bool Position::remove_piece(File f, Rank r)
 {
-    bool ret = remove_piece(make_square(f, r), true);
+    const bool ret = remove_piece(make_square(f, r), true);
 
     if (ret) {
         update_score();
@@ -315,7 +315,7 @@ inline bool Position::move_piece(Square from, Square to)
 
 /// Mill Game
 
-inline Piece *Position::get_board()
+inline Piece *Position::get_board() noexcept
 {
     return static_cast<Piece *>(board);
 }

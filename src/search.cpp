@@ -48,7 +48,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
 /// Search::init() is called at startup to initialize various lookup tables
 
-void Search::init()
+void Search::init() noexcept
 {
     return;
 }
@@ -80,10 +80,10 @@ int Thread::search()
 
     Value value = VALUE_ZERO;
 
-    Depth d = adjustDepth();
+    const Depth d = adjustDepth();
     adjustedDepth = d;
 
-    time_t time0 = time(nullptr);
+    const time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
 
 #ifdef TIME_STAT
@@ -97,7 +97,7 @@ int Thread::search()
 
 #ifdef THREEFOLD_REPETITION
     if (rootPos->get_phase() == Phase::moving) {
-        Key key = rootPos->key();
+        const Key key = rootPos->key();
 
         for (auto i : posKeyHistory) {
             if (key == i)
@@ -132,7 +132,7 @@ int Thread::search()
     if (gameOptions.getIDSEnabled()) {
         loggerDebug("IDS: ");
 
-        Depth depthBegin = 2;
+        const Depth depthBegin = 2;
         Value lastValue = VALUE_ZERO;
 
         loggerDebug("\n==============================\n");
@@ -204,7 +204,7 @@ vector<Key> posKeyHistory;
 
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
-    Value value;
+    Value value = VALUE_ZERO;
     Value bestValue = -VALUE_INFINITE;
 
     Depth epsilon;
@@ -214,7 +214,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #endif // TT_MOVE_ENABLE
 
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
-    Key posKey = pos->key();
+    const Key posKey = pos->key();
 #endif
 
 #ifdef ENDGAME_LEARNING
@@ -242,7 +242,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #ifdef TRANSPOSITION_TABLE_ENABLE
     Bound type = BOUND_NONE;
 
-    Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
+    const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
                                                , ttMove
 #endif // TT_MOVE_ENABLE                                     
@@ -316,7 +316,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
     MovePicker mp(*pos);
     Move nextMove = mp.next_move();
-    int moveCount = mp.move_count();
+    const int moveCount = mp.move_count();
 
     if (moveCount == 1 && depth == originDepth) {
         bestMove = nextMove;
@@ -340,10 +340,10 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
     for (int i = 0; i < moveCount; i++) {
         ss.push(*(pos));
-        Color before = pos->sideToMove;
+        const Color before = pos->sideToMove;
         Move move = mp.moves[i].move;
         pos->do_move(move);
-        Color after = pos->sideToMove;
+        const Color after = pos->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && moveCount == 1) {
             epsilon = 1;

@@ -22,7 +22,7 @@
 
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
-void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
+void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
 {
     for (ExtMove *sortedEnd = begin, *p = begin + 1; p < end; ++p)
         if (p->value >= limit) {
@@ -41,7 +41,7 @@ void partial_insertion_sort(ExtMove *begin, ExtMove *end, int limit)
 /// ordering is at the current node.
 
 /// MovePicker constructor for the main search
-MovePicker::MovePicker(Position &p)
+MovePicker::MovePicker(Position &p) noexcept
     : pos(p)
 {
 }
@@ -52,15 +52,15 @@ template<GenType Type>
 void MovePicker::score()
 {
     cur = moves;
-    Square from, to;
-    Move m;
+    Square from = SQ_0, to = SQ_0;
+    Move m = MOVE_NONE;
 
-    int ourMillsCount;
-    int theirMillsCount;
-    int ourPieceCount;
-    int theirPiecesCount;
-    int bannedCount;
-    int emptyCount;
+    int ourMillsCount = 0;
+    int theirMillsCount = 0;
+    int ourPieceCount = 0;
+    int theirPiecesCount = 0;
+    int bannedCount = 0;
+    int emptyCount = 0;
 
     while (cur++->move != MOVE_NONE) {
         m = cur->move;

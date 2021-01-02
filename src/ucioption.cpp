@@ -127,7 +127,7 @@ bool CaseInsensitiveLess::operator() (const string &s1, const string &s2) const
 {
 
     return std::lexicographical_compare(s1.begin(), s1.end(), s2.begin(), s2.end(),
-                                        [](char c1, char c2) { return tolower(c1) < tolower(c2); });
+                                        [](char c1, char c2) noexcept { return tolower(c1) < tolower(c2); });
 }
 
 

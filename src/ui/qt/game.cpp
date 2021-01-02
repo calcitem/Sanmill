@@ -266,7 +266,7 @@ void Game::gameReset()
     currentRow = 0;
 
     // 发出信号通知主窗口更新LCD显示
-    QTime qtime = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
+    const QTime qtime = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
     emit time1Changed(qtime.toString("hh:mm:ss"));
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
@@ -298,7 +298,7 @@ void Game::gameReset()
     //playSound(":/sound/resources/sound/newgame.wav");
 }
 
-void Game::setEditing(bool arg)
+void Game::setEditing(bool arg) noexcept
 {
     isEditing = arg;
 }
@@ -341,7 +341,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
         return;
     }
 
-    int r = ruleNo;
+    const int r = ruleNo;
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     char record[64] = { 0 };
@@ -395,7 +395,7 @@ void Game::getAiDepthTime(int &time1, int &time2)
     time2 = aiThread[WHITE]->getTimeLimit();
 }
 
-void Game::setAnimation(bool arg)
+void Game::setAnimation(bool arg) noexcept
 {
     hasAnimation = arg;
 
@@ -406,7 +406,7 @@ void Game::setAnimation(bool arg)
         durationTime = 0;
 }
 
-void Game::setSound(bool arg)
+void Game::setSound(bool arg) noexcept
 {
     hasSound = arg;
 }
@@ -699,7 +699,7 @@ void Game::timerEvent(QTimerEvent *event)
     emit time2Changed(qt2.toString("hh:mm:ss"));
 
     // 如果胜负已分
-    Color winner = position.get_winner();
+   const Color winner = position.get_winner();
     if (winner != NOBODY) {
         // 停止计时
         killTimer(timeID);
@@ -783,8 +783,8 @@ bool Game::actionPiece(QPointF p)
 
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !MOBILE_APP_UI */
-            int rowCount = manualListModel.rowCount();
-            int removeCount = rowCount - currentRow - 1;
+            const int rowCount = manualListModel.rowCount();
+            const int removeCount = rowCount - currentRow - 1;
             manualListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
 
             for (int i = 0; i < removeCount; i++) {
@@ -888,7 +888,7 @@ bool Game::actionPiece(QPointF p)
 
         // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-        Color winner = position.get_winner();
+        const Color winner = position.get_winner();
         if (winner != NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
             playSound(GameSound::win, winner);
@@ -913,7 +913,7 @@ bool Game::actionPiece(QPointF p)
 
 bool Game::resign()
 {
-    bool result = position.resign(position.sideToMove);
+    const bool result = position.resign(position.sideToMove);
         
     if (!result) {
         return false;
@@ -942,8 +942,8 @@ bool Game::resign()
 // 关键槽函数，棋谱的命令行执行，与actionPiece独立
 bool Game::command(const string &cmd, bool update /* = true */)
 {
-    int total;
-    float bwinrate, wwinrate, drawrate;
+    int total = 0;
+    float bwinrate = 0.0f, wwinrate = 0.0f, drawrate = 0.0f;
 
     Q_UNUSED(hasSound)
 
@@ -1025,7 +1025,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     // 播放胜利或失败音效
 #ifndef DONOT_PLAY_WIN_SOUND
-    Color winner = position.get_winner();
+    const Color winner = position.get_winner();
     if (winner != NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
         playSound(GameSound::win, winner);
