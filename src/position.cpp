@@ -1083,7 +1083,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
         c = color_on(to);
     }
 
-    if (from != SQ_0) {
+    if (from != SQ_0 && from >= SQ_BEGIN && from < SQ_END) {
         locbak = board[from];
         board[from] = NO_PIECE;
 
@@ -1101,7 +1101,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
         }
     }
 
-    if (from != SQ_0) {
+    if (from != SQ_0 && from >= SQ_BEGIN && from < SQ_END) {
         board[from] = locbak;
 
         SET_BIT(byTypeBB[ALL_PIECES], from);

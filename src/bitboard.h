@@ -63,7 +63,9 @@ extern Bitboard StarSquareBB12;
 
 inline Bitboard square_bb(Square s)
 {
-    assert(SQ_BEGIN <= s && s < SQ_END);
+    if (!(SQ_BEGIN <= s && s < SQ_END))
+        return 0;
+
     return SquareBB[s];
 }
 
