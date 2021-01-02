@@ -399,20 +399,6 @@ bool Position::legal(Move m) const
 
 void Position::do_move(Move m)
 {
-#if 0
-    assert(is_ok(m));
-    assert(&newSt != st);
-
-    thisThread->nodes.fetch_add(1, std::memory_order_relaxed);
-
-    // Copy some fields of the old state to our new StateInfo object except the
-    // ones which are going to be recalculated from scratch anyway and then switch
-    // our state pointer to point to the new (ready to be updated) state.
-    std::memcpy(&newSt, st, offsetof(StateInfo, key));
-    newSt.previous = st;
-    st = &newSt;
-#endif
-
     bool ret = false;
 
     MoveType mt = type_of(m);
@@ -444,26 +430,6 @@ void Position::do_move(Move m)
     ++st.pliesFromNull;
     
     move = m;
-
-#if 0
-    // Calculate the repetition info. It is the ply distance from the previous
-    // occurrence of the same position, negative in the 3-fold case, or zero
-    // if the position was not repeated.
-    st.repetition = 0;
-    int end = std::min(st.rule50, st.pliesFromNull);
-    if (end >= 4) {
-        StateInfo *stp = st.previous->previous;
-        for (int i = 4; i <= end; i += 2) {
-            stp = stp->previous->previous;
-            if (stp->key == st.key) {
-                st.repetition = stp->repetition ? -i : i;
-                break;
-            }
-        }
-    }
-
-    assert(pos_is_ok());
-#endif
 }
 
 
