@@ -90,30 +90,6 @@ out:
 bool TranspositionTable::search(const Key &key, TTEntry &tte)
 {
     return TT.find(key, tte);
-
-    // TODO: Change position
-#if 0
-    if (iter != hashmap.end())
-        return iter;
-
-    // 变换局面，查找 key (废弃)
-    tempStateShift = st;
-    for (int i = 0; i < 2; i++) {
-        if (i)
-            tempStateShift.mirror(false);
-
-        for (int j = 0; j < 2; j++) {
-            if (j)
-                tempStateShift.turn(false);
-            for (int k = 0; k < 4; k++) {
-                tempStateShift.rotate(k * 90, false);
-                iter = hashmap.find(tempStateShift.getHash());
-                if (iter != hashmap.end())
-                    return iter;
-            }
-        }
-    }
-#endif
 }
 
 void TranspositionTable::prefetch(const Key &key)
