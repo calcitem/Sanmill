@@ -16,16 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* 
- * QListView派生类
- * 之所以要派生这个类，重载sizeHint函数
- * 只是为了让停靠栏（父窗口）在初始时不至于过宽难看
- * QDockWidget没有很好的控制初始大小的方法，resize函数没效果
- * 如果不用派生类，使用固定宽度也可以，如下所示
- * ui.listView->setFixedWidth(108);
- * 但调节停靠栏宽度后就不好看了
- */
-
 #ifndef MANUALLISTVIEW
 #define MANUALLISTVIEW
 
@@ -33,6 +23,16 @@
 #include <QMouseEvent>
 
 #include "config.h"
+
+/*
+ * QlistView derived class
+ * The reason for deriving this class is to overload the sizeHint function
+ * Just to make the docking bar(parent window) not too wide and ugly at the beginning
+ * QDockWidget does not have a good way to control the initial size, and the reset function has no effect
+ * If you don't use derived classes, you can use a fixed width, as shown below
+ * ui.listView->setFixedWidth(108);
+ * But it doesn't look good after adjusting the width of the dock
+*/
 
 class ManualListView : public QListView
 {
@@ -48,21 +48,22 @@ public:
     {
         QSize size = QListView::sizeHint();
 
-        // 缺省宽度设为128，这样就不太宽了
+        // The default width is 128, so it's not too wide
         size.setWidth(128);
 
         return size;
     }
 
 signals:
-    // 需要一个currentChanged信号，但默认没有，需要把这个槽改造成信号
+    // A currentChanged signal is required, but not by default. 
+    // This slot needs to be transformed into a signal
     void currentChangedSignal(const QModelIndex &current, const QModelIndex &previous);
 
 protected slots:
-    // 屏蔽掉双击编辑功能
+    // Block double-click editing feature
     void mouseDoubleClickEvent(QMouseEvent *mouseEvent) override
     {
-        //屏蔽双击事件
+        // Block double click events
         mouseEvent->accept();
     }
 
@@ -74,30 +75,13 @@ protected slots:
             newEmptyRow = true;
     }
 
-#if 0
-    /* 本来重载rowsInserted函数用于在插入新行后自动选中最后一行，
-    但是，在关联Model的insertRow执行后rowsInserted会被立即执行，
-    此时，Model的setData还未被执行，会选中一个空行。
-    所以不再采用这种方式，而是在控制模块中指定。*/
-    void rowsInserted(const QModelIndex &parent, int start, int end) {
-        // 调用父类函数，为使滚动条更新，否则scrollToBottom不能正确执行。
-        QListView::rowsInserted(parent, start, end);
-        QModelIndex color = model()->square(end, 0);
-        setCurrentIndex(color);
-        scrollToBottom();
-    }
-#endif
-
-    // 采用判断最后一个元素是否改变来选中之
+    // Select by judging whether the last element has changed
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
                      const QVector<int> &roles = QVector<int>()) override
     {
-        // 调用父类默认函数
         QListView::dataChanged(topLeft, bottomRight, roles);
 
-        // 如果包含model
         if (model()) {
-            // 判断
             const QModelIndex square = model()->index(model()->rowCount() - 1, 0);
             if (square == bottomRight && newEmptyRow) {
                 setCurrentIndex(square);
@@ -107,8 +91,10 @@ protected slots:
         }
     }
 
-    // 需要一个currentChanged信号，但默认没有，需要把这个槽改造成信号
-    // activated信号需要按下回车才发出，selectedChanged和clicked信号也不合适
+    // A currentChanged signal is required, but not by default. 
+    // This slot needs to be transformed into a signal
+    // The activated signal needs to press enter to send out, 
+    // and the selectedChanged and clicked signals are not appropriate
     void currentChanged(const QModelIndex &current, const QModelIndex &previous) override
     {
         QListView::currentChanged(current, previous);
@@ -116,7 +102,7 @@ protected slots:
     }
 
 private:
-    // 添加了新空行的标识
+    // The identity of the new blank line is added
     bool newEmptyRow {false};
 };
 

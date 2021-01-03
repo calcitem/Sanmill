@@ -57,37 +57,35 @@ protected:
 #endif /* MOBILE_APP_UI */
 
 private slots:
-    // 初始化
     void initialize();
 
 #ifdef MOBILE_APP_UI
-    // 上下文菜单
     void ctxMenu(const QPoint &pos);
 #endif /* MOBILE_APP_UI */
 
-    // 动态增加的菜单栏动作的槽函数
     void actionRules_triggered();
 
-    // 更新规则标签
     void ruleInfo();
 
-    // 自动运行定时处理函数
     void onAutoRunTimeOut(QPrivateSignal signal);
 
-    // 下面是各动作的槽函数
-    // 注释掉的是已在UI管理器或主窗口初始化函数中连接好的
+    // The slot function for each action
+    // Remove functions have been connected in UI manager or main window initialization function
     void on_actionNew_N_triggered();
     void on_actionOpen_O_triggered();
     void on_actionSave_S_triggered();
     void on_actionSaveAs_A_triggered();
-    //void on_actionExit_X_triggered();
+#if 0
+    void on_actionExit_X_triggered();
+#endif
     void on_actionEdit_E_toggled(bool arg1);
-    //void on_actionFlip_F_triggered();
-    //void on_actionMirror_M_triggered();
-    //void on_actionTurnRight_R_triggered();
-    //void on_actionTurnLeftt_L_triggered();
+#if 0
+    void on_actionFlip_F_triggered();
+    void on_actionMirror_M_triggered();
+    void on_actionTurnRight_R_triggered();
+    void on_actionTurnLeftt_L_triggered();
+#endif
     void on_actionInvert_I_toggled(bool arg1);
-    // 前后招的公共槽
     void on_actionRowChange();
     void on_actionAutoRun_A_toggled(bool arg1);
     //void on_actionResign_G_triggered();
@@ -96,14 +94,16 @@ private slots:
     void on_actionEngineFight_E_triggered();
     void on_actionInternet_I_triggered();
     void on_actionEngine_E_triggered();
-    //void on_actionEngine1_R_toggled(bool arg1);
-    //void on_actionEngine2_T_toggled(bool arg1);
-    //void on_actionSetting_O_triggered();
-    //void on_actionToolBar_T_toggled(bool arg1);
-    //void on_actionDockBar_D_toggled(bool arg1);
-    //void on_actionSound_S_toggled(bool arg1);
-    //void on_actionAnimation_A_toggled(bool arg1);
-    //void on_actionAutoRestart_A_triggered();
+#if 0
+    void on_actionEngine1_R_toggled(bool arg1);
+    void on_actionEngine2_T_toggled(bool arg1);
+    void on_actionSetting_O_triggered();
+    void on_actionToolBar_T_toggled(bool arg1);
+    void on_actionDockBar_D_toggled(bool arg1);
+    void on_actionSound_S_toggled(bool arg1);
+    void on_actionAnimation_A_toggled(bool arg1);
+    void on_actionAutoRestart_A_triggered();
+#endif
     void on_actionViewHelp_V_triggered();
     void on_actionWeb_W_triggered();
     void on_actionAbout_A_triggered();
@@ -112,25 +112,12 @@ protected:
     void saveBook(const QString &path);
 
 private:
-    // 界面文件
     Ui::MillGameWindowClass ui {};
-
-    // 视图场景
     GameScene *scene {nullptr};
-
-    // 控制器
     Game *game {nullptr};
-
-    // 动态增加的菜单栏动作列表
     vector<QAction *> ruleActionList;
-
-    // 游戏的规则号，涉及菜单项和对话框，所以要有
     int ruleNo {-1};
-
-    // 文件
     QFile file;
-
-    // 定时器
     QTimer autoRunTimer;
 
 #ifdef MOBILE_APP_UI

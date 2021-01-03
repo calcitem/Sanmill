@@ -24,36 +24,31 @@ GameView::GameView(QWidget *parent) :
     QGraphicsView(parent)
 {
     Q_UNUSED(parent)
-        /* 不使用下面的方法
-        // 初始化缩放因子为1.0
-        sx = 1.0;
-        sy = 1.0;
-        */
 }
 
 GameView::~GameView() = default;
 
 void GameView::flip()
 {
-    // 视图上下翻转
-    /* 以下用到了很多图形变换矩阵方面的知识
-     * 不要用scale方法，Qt的图形变换是针对坐标系的
-     * 缩放矩阵为
+    // Flip view up and down
+    /* The following uses a lot of knowledge about graphic transformation matrix
+     * Do not use the scale method, QT graphics transformation is for the coordinate system
+     * Scale matrix to
      *     ┌sx  0  0┐
      * S = │ 0 sy  0│
      *     └ 0  0  1┘
-     * 上下翻转应在原变换矩阵基础上乘以一个如下的矩阵：
+     * The up and down flip should be multiplied by the following matrix on the basis of the original transformation matrix:
      * ┌1  0  0┐
      * │0 -1  0│
      * └0  0  1┘
      */
 
-     // 方法一: 直接在原变换矩阵基础上乘以上面的矩阵
-     // QMatrix只对变换矩阵前两列赋值
+    // Method 1: directly multiply the original transformation matrix by the above matrix
+    // QMatrix only assigns values to the first two columns of the transformation matrix
     setMatrix(matrix() * QMatrix(1, 0, 0, -1, 0, 0));
 
-    /* 方法二: 人工计算好新的变换矩阵后再对场景赋值
-     * 这个方法的效率未必高，还需要人工计算
+    /* Method 2: manually calculate the new transformation matrix and then assign a value to the scene
+     * The efficiency of this method is not necessarily high, and manual calculation is needed
     QMatrix mt = matrix();
     mt.setMatrix(-mt.m11(), mt.m12(), -mt.m21(), mt.m22(), -mt.dx(), mt.dy());
     setMatrix(mt);
@@ -62,8 +57,9 @@ void GameView::flip()
 
 void GameView::mirror()
 {
-    // 视图左右镜像
-    /* 左右镜像应在原变换矩阵基础上乘以一个如下的矩阵：
+    // Left and right mirror of view
+    /* The left and right mirror images shall be multiplied by the following matrix
+       on the basis of the original transformation matrix:
      * ┌-1  0  0┐
      * │ 0  1  0│
      * └ 0  0  1┘
@@ -73,13 +69,15 @@ void GameView::mirror()
 
 void GameView::turnRight()
 {
-    // 视图须时针旋转90°
-    /* 不要用scale方法，视图镜像或翻转后它的转向会反过来
-     * 旋转矩阵为
+     // The view must be rotated 90 degree clockwise
+    /*  Don't use the scale method. 
+        After the view is mirrored or flipped, its steering will be reversed
+     *  The rotation matrix is
      *     ┌ cos(α)  sin(α)  0┐
      * R = │-sin(α)  cos(α)  0│
      *     └   0       0     1┘
-     * 视图须时针旋转90°应在原变换矩阵基础上乘以一个如下的矩阵：
+     * The view must be rotated 90 degree clockwise and multiplied by
+     * the following matrix on the basis of the original transformation matrix:
      * ┌ 0  1  0┐
      * │-1  0  0│
      * └ 0  0  1┘
@@ -89,8 +87,10 @@ void GameView::turnRight()
 
 void GameView::turnLeft()
 {
-    // 视图逆时针旋转90°
-    /* 视图逆时针旋转90°应在原变换矩阵基础上乘以一个如下的矩阵：
+    // View rotated 90 ° counterclockwise
+    /* When the view is rotated 90 degree counterclockwise, 
+     * it should be multiplied by the following matrix
+     * on the basis of the original transformation matrix:
      * ┌0 -1  0┐
      * │1  0  0│
      * └0  0  1┘
@@ -101,23 +101,6 @@ void GameView::turnLeft()
 
 void GameView::resizeEvent(QResizeEvent *event)
 {
-#if 0
-    // 不使用下面的形式了
-    // 让场景适合视图
-    if (sceneRect().width() <= 0 || sceneRect().height() <= 0)
-        return;
-    // 恢复缩放前的大小
-    scale(1 / sx, 1 / sy);
-    // 设置缩放因子
-    sx = width() / sceneRect().width();
-    sy = height() / sceneRect().height();
-    sx = sx < sy ? sx : sy;
-    sy = sx;
-    // 缩放视图适合场景大小
-    scale(sx, sy);
-#endif
-
-    // 使用如下形式，更简洁
     QGraphicsView::resizeEvent(event);
     fitInView(sceneRect(), Qt::KeepAspectRatio);
 }

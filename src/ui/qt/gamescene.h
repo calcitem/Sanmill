@@ -33,19 +33,16 @@ public:
     explicit GameScene(QObject *parent = nullptr);
     ~GameScene() override;
 
-    // 将模型的圈、位转化为落子点坐标
     QPointF polar2pos(File file, Rank rank);
 
-    // 将落子点坐标转化为模型用的圈、位
     bool pos2polar(QPointF pos, File &file, Rank &rank);
 
-    // 设置棋盘斜线
     void setDiagonal(bool arg = true);
 
-    // 玩家1的己方棋盒及对方棋盒位置
+    // Position of player 1's own board and opponent's board
     const QPointF pos_p1, pos_p1_g;
 
-    // 玩家2的己方棋盒及对方棋盒位置
+    // Position of player 2's own board and opponent's board
     const QPointF pos_p2, pos_p2_g;
 
 protected:
@@ -60,7 +57,6 @@ signals:
 public slots:
 
 private:
-    // 棋盘对象
     BoardItem *board {nullptr};
 
 };

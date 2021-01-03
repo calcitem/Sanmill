@@ -52,45 +52,47 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
 {
     ui.setupUi(this);
 
-    // 去掉标题栏
+    // Remove the title bar
     //setWindowFlags(Qt::FramelessWindowHint);
 
-    // 设置透明(窗体标题栏不透明,背景透明，如果不去掉标题栏，背景就变为黑色)
+    // Set transparency
+    // (the title bar of the form is opaque and the background is transparent. 
+    // If the title bar is not removed, the background will turn black)
     //setAttribute(Qt::WA_TranslucentBackground);
 
-    // 设置全体透明度系数
+    // Set the overall transparency factor
     //setWindowOpacity(0.7);
 
-    // 设置场景
+    // Set up the scene
     scene = new GameScene(this);
 
-    // 设置场景尺寸大小为棋盘大小的1.08倍
+    // Set the scene size to 1.08 times the board size
     scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54,
                         BOARD_SIZE * 1.08, BOARD_SIZE * 1.08);
 
-    // 初始化各个控件
+    // Initialize the controls
 
-    // 关联视图和场景
+    // Associate views and scenes
     ui.gameView->setScene(scene);
 
-    // 视图反走样
+    // View anti aliasing
     ui.gameView->setRenderHint(QPainter::Antialiasing, true);
 
-    // 视图反锯齿
+    // View anti aliasing
     ui.gameView->setRenderHint(QPainter::Antialiasing);
 
-    // 因功能限制，使部分功能不可用，将来再添加
+    // Due to function limitation, some functions are not available and will be added in the future
     ui.actionInternet_I->setDisabled(false);
     ui.actionSetting_O->setDisabled(true);
 
-    // 初始化游戏规则菜单
+    // Initialize game rules menu
     ui.menu_R->installEventFilter(this);
 
-    // 关联自动运行定时器
+    // Associated auto run timer
     connect(&autoRunTimer, SIGNAL(timeout()),
             this, SLOT(onAutoRunTimeOut()));
 
-    // 主窗口居中显示
+    // Center primary window
     QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
     const int unitw = (deskTopRect.width() - width()) / 2;
     const int unith = (deskTopRect.height() - height()) / 2;
@@ -102,14 +104,14 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
 #endif
 
 #ifdef MOBILE_APP_UI
-    // 隐藏菜单栏、工具栏、状态栏等
+    // Hide menu bar, toolbar, status bar, etc
     ui.menuBar->setVisible(false);
     ui.mainToolBar->setVisible(false);
     ui.dockWidget->setVisible(false);
     ui.statusBar->setVisible(false);
 #endif
 
-    // 游戏初始化
+    // Game initialization
     initialize();
 }
 
@@ -128,7 +130,7 @@ void MillGameWindow::closeEvent(QCloseEvent *event)
     if (file.isOpen())
         file.close();
 
-    // 取消自动运行
+    // Cancel auto run
     ui.actionAutoRun_A->setChecked(false);
 
     loggerDebug("closed\n");
@@ -138,7 +140,7 @@ void MillGameWindow::closeEvent(QCloseEvent *event)
 
 bool MillGameWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    // 重载这个函数只是为了让规则菜单（动态）显示提示
+    // This function is overridded just to make the rules menu (dynamic) display prompts
     if (watched == ui.menu_R &&
         event->type() == QEvent::ToolTip) {
         const auto *he = dynamic_cast <QHelpEvent *> (event);
@@ -154,36 +156,36 @@ bool MillGameWindow::eventFilter(QObject *watched, QEvent *event)
 
 void MillGameWindow::initialize()
 {
-    // 初始化函数，仅执行一次
+    // Initialize the function and execute it only once
     if (game)
         return;
 
-    // 开辟一个新的游戏控制器
+    // New a new game controller
     game = new Game(*scene, this);
 
-    // 添加新菜单栏动作
+    // Add a new menu bar action
     map<int, QStringList> actions = game->getActions();
 
     for (auto i = actions.begin(); i != actions.end(); i++) {
-        // map的key存放int索引值，value存放规则名称和规则提示
+        // The key of map stores int index value, and value stores rule name and rule prompt
         auto *ruleAction = new QAction(i->second.at(0), this);
         ruleAction->setToolTip(i->second.at(1));
         ruleAction->setCheckable(true);
 
-        // 索引值放在QAction的Data里
+        // The index value is put in the data of QAction
         ruleAction->setData(i->first);
 
-        // 添加到动作列表
+        // Add to action list
         ruleActionList.push_back(ruleAction);
 
-        // 添加到“规则”菜单
+        // Add to rules menu
         ui.menu_R->addAction(ruleAction);
 
         connect(ruleAction, SIGNAL(triggered()),
                 this, SLOT(actionRules_triggered()));
     }
 
-    // 关联主窗口动作信号和控制器的槽
+    // The main window controller is associated with the action of the signal slot
 
     connect(ui.actionResign_G, SIGNAL(triggered()),
             game, SLOT(resign()));
@@ -248,93 +250,74 @@ void MillGameWindow::initialize()
     connect(ui.actionOpeningBook_O, SIGNAL(toggled(bool)),
             game, SLOT(setOpeningBook(bool)));
 
-    // 视图上下翻转
     connect(ui.actionFlip_F, &QAction::triggered,
             game, &Game::flip);
 
-    // 视图左右镜像
     connect(ui.actionMirror_M, &QAction::triggered,
             game, &Game::mirror);
 
-    // 视图须时针旋转90°
     connect(ui.actionTurnRight_R, &QAction::triggered,
             game, &Game::turnRight);
 
-    // 视图逆时针旋转90°
     connect(ui.actionTurnLeftt_L, &QAction::triggered,
             game, &Game::turnLeft);
 
-    // 关联控制器的信号和主窗口控件的槽
-
-    // 更新LCD，显示总盘数
     connect(game, SIGNAL(nGamesPlayedChanged(QString)),
             ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
 
-    // 更新LCD，显示玩家1赢盘数
     connect(game, SIGNAL(score1Changed(QString)),
             ui.scoreLcdNumber_1, SLOT(display(QString)));
 
-    // 更新LCD，显示玩家2赢盘数
     connect(game, SIGNAL(score2Changed(QString)),
             ui.scoreLcdNumber_2, SLOT(display(QString)));
 
-    // 更新LCD，显示和棋数
     connect(game, SIGNAL(scoreDrawChanged(QString)),
             ui.scoreLcdNumber_draw, SLOT(display(QString)));
 
-    // 更新LCD，显示玩家1赢盘率
     connect(game, SIGNAL(winningRate1Changed(QString)),
             ui.winningRateLcdNumber_1, SLOT(display(QString)));
 
-    // 更新LCD，显示玩家2赢盘率
     connect(game, SIGNAL(winningRate2Changed(QString)),
             ui.winningRateLcdNumber_2, SLOT(display(QString)));
 
-    // 更新LCD，显示和棋率
     connect(game, SIGNAL(winningRateDrawChanged(QString)),
             ui.winningRateLcdNumber_draw, SLOT(display(QString)));
 
-    // 更新LCD1，显示玩家1用时
     connect(game, SIGNAL(time1Changed(QString)),
             ui.lcdNumber_1, SLOT(display(QString)));
 
-    // 更新LCD2，显示玩家2用时
     connect(game, SIGNAL(time2Changed(QString)),
             ui.lcdNumber_2, SLOT(display(QString)));
 
-    // 关联场景的信号和控制器的槽
     connect(scene, SIGNAL(mouseReleased(QPointF)),
             game, SLOT(actionPiece(QPointF)));
 
-    // 为状态栏添加一个正常显示的标签
+    // Add a normal display label to the status bar
     auto *statusBarlabel = new QLabel(this);
     QFont statusBarFont;
     statusBarFont.setPointSize(16);
     statusBarlabel->setFont(statusBarFont);
     ui.statusBar->addWidget(statusBarlabel);
 
-    // 更新状态栏
-    connect(game, SIGNAL(statusBarChanged(QString)),
+     connect(game, SIGNAL(statusBarChanged(QString)),
             statusBarlabel, SLOT(setText(QString)));
 
-    // 默认规则
     ruleNo = DEFAULT_RULE_NUMBER;
     ruleActionList[ruleNo]->setChecked(true);
 
-    // 重置游戏规则
     game->setRule(ruleNo);
 
-    // 更新规则显示
+    // Update rule display
     ruleInfo();
 
-    // 关联列表视图和字符串列表模型
+    // List of associated models and string views
     ui.listView->setModel(game->getManualListModel());
 
-    // 因为QListView的rowsInserted在setModel之后才能启动，
-    // 第一次需手动初始化选中listView第一项
+    // Because QListView's rowsInserted can only be started after setModel,
+    // The first time you need to manually initialize, select the first item of listView
     ui.listView->setCurrentIndex(ui.listView->model()->index(0, 0));
 
-    // 初始局面、前一步、后一步、最终局面的槽
+    // //The slot of the initial situation, the previous step, the next step and the final situation
 
     connect(ui.actionBegin_S, &QAction::triggered,
             this, &MillGameWindow::on_actionRowChange);
@@ -356,14 +339,14 @@ void MillGameWindow::initialize()
     connect(ui.actionEnd_E, &QAction::triggered,
             this, &MillGameWindow::on_actionRowChange);
 
-    // 手动在listView里选择着法后更新的槽
+    // Manually select the updated slot in listView
     connect(ui.listView, &ManualListView::currentChangedSignal,
             this, &MillGameWindow::on_actionRowChange);
 
-    // 更新四个键的状态
+    // Update the status of the four keys
     on_actionRowChange();
 
-    // 设置窗体大小
+    // Set form size
 #ifdef MOBILE_APP_UI
 #if 0
     const int screen_iPhone_XS_Max[] = {1242, 2688};
@@ -393,7 +376,6 @@ void MillGameWindow::initialize()
     ui.pushButton_hint->setVisible(false);
 #endif /* MOBILE_APP_UI */
 
-    // 窗口最大化
 #ifdef SHOW_MAXIMIZED_ON_LOAD
     showMaximized();
     QWidget::setWindowFlags(Qt::WindowMaximizeButtonHint |
@@ -422,18 +404,18 @@ void MillGameWindow::ruleInfo()
     const int s = game->getStepsLimit();
     const int t = game->getTimeLimit();
 
-    QString tl(" 不限时");
-    QString sl(" 不限步");
+    QString tl(" No Time Limit");
+    QString sl(" No Steps Limit");
 
     if (s > 0)
-        sl = " 限" + QString::number(s) + "步";
+        sl = " Limit" + QString::number(s) + "steps";
     if (t > 0)
-        tl = " 限时" + QString::number(s) + "分";
+        tl = " Limit" + QString::number(s) + "min";
 
-    // 规则显示
+    // Rule display
     ui.labelRule->setText(tl + sl);
 
-    // 规则提示
+    // Rule tips
     ui.labelInfo->setToolTip(QString(RULES[ruleNo].name) + "\n" +
                              RULES[ruleNo].description);
 
@@ -455,15 +437,12 @@ void MillGameWindow::saveBook(const QString &path)
         file.close();
     }
 
-    // 文件对象
     file.setFileName(path);
 
-    // 打开文件,只写方式打开
     if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
         return;
     }
 
-    // 写文件
     QTextStream textStream(&file);
     auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
 
@@ -476,16 +455,9 @@ void MillGameWindow::saveBook(const QString &path)
 
 void MillGameWindow::on_actionLimited_T_triggered()
 {
-    /* 
-     * 其实本来可以用设计器做个ui，然后从QDialog派生个自己的对话框
-     * 但我不想再派生新类了，又要多出一个类和两个文件
-     * 还要写与主窗口的接口，费劲
-     * 于是手写QDialog界面
-     */
     int gStep = game->getStepsLimit();
     int gTime = game->getTimeLimit();
 
-    // 定义新对话框
     auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
@@ -493,15 +465,14 @@ void MillGameWindow::on_actionLimited_T_triggered()
     dialog->resize(256, 108);
     dialog->setModal(true);
 
-    // 生成各个控件
     auto *formLayout = new QFormLayout(dialog);
     auto *label_step = new QLabel(dialog);
     auto *label_time = new QLabel(dialog);
     auto *comboBox_step = new QComboBox(dialog);
     auto *comboBox_time = new QComboBox(dialog);
     auto *buttonBox = new QDialogButtonBox(dialog);
+
 #if 0
-    // 设置各个控件ObjectName，不设也没关系
     formLayout->setObjectName(QStringLiteral("formLayout"));
     label_step->setObjectName(QStringLiteral("label_step"));
     label_time->setObjectName(QStringLiteral("label_time"));
@@ -509,7 +480,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
     comboBox_time->setObjectName(QStringLiteral("comboBox_time"));
     buttonBox->setObjectName(QStringLiteral("buttonBox"));
 #endif
-    // 设置各个控件数据
+
     label_step->setText(tr("If the number of moves exceeds the limit, it will get a draw:"));
     label_time->setText(tr("Either side loses if it times out:"));
     comboBox_step->addItem(tr("Infinite"), 0);
@@ -527,7 +498,6 @@ void MillGameWindow::on_actionLimited_T_triggered()
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    // 布局
     formLayout->setSpacing(6);
     formLayout->setContentsMargins(11, 11, 11, 11);
     formLayout->setWidget(0, QFormLayout::LabelRole, label_step);
@@ -536,54 +506,46 @@ void MillGameWindow::on_actionLimited_T_triggered()
     formLayout->setWidget(1, QFormLayout::FieldRole, comboBox_time);
     formLayout->setWidget(2, QFormLayout::SpanningRole, buttonBox);
 
-    // 关联信号和槽函数
     connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
-    // 收集数据
     if (dialog->exec() == QDialog::Accepted) {
         int dStep = comboBox_step->currentData().toInt();
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
-            // 重置游戏规则
             game->setRule(ruleNo, static_cast<int>(dStep), dTime);
         }
     }
 
-    // 删除对话框，子控件会一并删除
     dialog->disconnect();
     delete dialog;
 
-    // 更新规则显示
     ruleInfo();
 }
 
 void MillGameWindow::actionRules_triggered()
 {
-    // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);
 
-    // 取消其它规则的选择
+    // Cancel the selection of other rules
     for (QAction *action : ruleActionList)
         action->setChecked(false);
 
-    // 选择当前规则
+    // Select current rule
     auto *action = dynamic_cast<QAction *>(sender());
     action->setChecked(true);
     ruleNo = action->data().toInt();
 
-    // 如果游戏规则没变化，则返回
+    // If the rules of the game have not changed, return
     if (ruleNo == game->getRuleIndex())
         return;
 
-    // 取消AI设定
+    // Cancel AI setting
     ui.actionEngine1_T->setChecked(false);
     ui.actionEngine2_R->setChecked(false);
 
-    // 重置游戏规则
     game->setRule(ruleNo);
 
-    // 更新规则显示
     ruleInfo();
 }
 
@@ -591,7 +553,8 @@ void MillGameWindow::on_actionNew_N_triggered()
 {
     auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
 
-    // 棋未下完，且已经走了若干步以上，则算对手得分
+    // If you have not finished playing game and have already taken more than a few steps, 
+    // you will be lost
     if (strlist->stringList().size() > 12) {
         game->humanResign();
     }
@@ -623,19 +586,16 @@ void MillGameWindow::on_actionNew_N_triggered()
         + whoWin + "_" + strDateTime
         + ".txt";
 
-    // 下了一定步数之后新建游戏时才保存棋谱
+    // After a certain number of steps, save the score when creating a new game
     if (strlist->stringList().size() > 18) {
         saveBook(path);
     }
 #endif /* SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED */
 
-    // 取消自动运行
     ui.actionAutoRun_A->setChecked(false);    
 
-    // 重置游戏规则
     game->gameReset();
 
-    // 重设AI设定
     if (ui.actionEngine2_R->isChecked()) {
         ui.actionEngine2_R->setChecked(false);
         ui.actionEngine2_R->setChecked(true);
@@ -649,7 +609,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 
 void MillGameWindow::on_actionOpen_O_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(this, tr("打开棋谱文件"), QDir::currentPath(), "TXT(*.txt)");
+    QString path = QFileDialog::getOpenFileName(this, tr("Open the move history file"), QDir::currentPath(), "TXT(*.txt)");
 
     if (path.isEmpty()) {
         return;
@@ -659,36 +619,31 @@ void MillGameWindow::on_actionOpen_O_triggered()
         file.close();
     }
 
-    // 文件对象
     file.setFileName(path);
 
-    // 不支持 1MB 以上的文件
+    // Files larger than 1MB are not supported
     if (file.size() > 0x100000) {
         // 定义新对话框
         QMessageBox msgBox(QMessageBox::Warning,
-            tr("文件过大"), tr("不支持 1MB 以上文件"), QMessageBox::Ok);
+            tr("The file is too large"), tr("Files larger than 1MB are not supported"), QMessageBox::Ok);
         msgBox.exec();
         return;
     }
 
-    // 打开文件,只读方式打开
     if (!(file.open(QFileDevice::ReadOnly | QFileDevice::Text))) {
         return;
     }
 
-    // 取消AI设定
     ui.actionEngine1_T->setChecked(false);
     ui.actionEngine2_R->setChecked(false);
 
-    // 读文件
     QTextStream textStream(&file);
     QString cmd;
     cmd = textStream.readLine();
 
-    // 读取并显示棋谱时，不必刷新棋局场景
+    // When reading and displaying the move history, there is no need to refresh the scene
     if (!(game->command(cmd.toStdString(), false))) {
-        // 定义新对话框
-        QMessageBox msgBox(QMessageBox::Warning, tr("文件错误"), tr("不是正确的棋谱文件"), QMessageBox::Ok);
+        QMessageBox msgBox(QMessageBox::Warning, tr("File error"), tr("Not the correct move hisory file"), QMessageBox::Ok);
         msgBox.exec();
         return;
     }
@@ -698,7 +653,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
         game->command(cmd.toStdString(), false);
     }
 
-    // 最后刷新棋局场景
+    // Finally, refresh the scene
     game->updateScence();
 }
 
@@ -707,9 +662,7 @@ void MillGameWindow::on_actionSave_S_triggered()
     if (file.isOpen()) {
         file.close();
 
-        // 打开文件,只写方式打开
         if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
-            // 写文件
             QTextStream textStream(&file);
             auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
             for (const QString &cmd : strlist->stringList())
@@ -726,8 +679,8 @@ void MillGameWindow::on_actionSave_S_triggered()
 void MillGameWindow::on_actionSaveAs_A_triggered()
 {
     QString path = QFileDialog::getSaveFileName(this,
-        tr("打开棋谱文件"),
-        QDir::currentPath() + tr("棋谱_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t())+ ".txt", "TXT(*.txt)");
+        tr("Open the move history file"),
+        QDir::currentPath() + tr("MoveHistory_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t())+ ".txt", "TXT(*.txt)");
 
     saveBook(path);
 }
@@ -739,26 +692,23 @@ void MillGameWindow::on_actionEdit_E_toggled(bool arg1)
 
 void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
 {
-    // 如果黑白反转
+    // If black and white are reversed
     if (arg1) {
-        // 设置玩家1和玩家2的标识图
         ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/White.png"));
         ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
         ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
         ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
     } else {
-        // 设置玩家1和玩家2的标识图
         ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
         ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/White.png"));
         ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
         ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
     }
 
-    // 让控制器改变棋子颜色
+    // Let the controller change the color of the pieces
     game->setInvert(arg1);
 }
 
-// 前后招的公共槽
 void MillGameWindow::on_actionRowChange()
 {
     QAbstractItemModel *model = ui.listView->model();
@@ -789,7 +739,7 @@ void MillGameWindow::on_actionRowChange()
         currentRow = ui.listView->currentIndex().row();
     }
 
-    // 更新动作状态
+    // Update action status
     if (rows <= 1) {
         ui.actionBegin_S->setEnabled(false);
         ui.actionPrevious_B->setEnabled(false);
@@ -818,29 +768,8 @@ void MillGameWindow::on_actionRowChange()
         }
     }
 
-    // 更新局面
+    // Update phrase
     game->phaseChange(currentRow);
-
-#if 0
-    // 下面的代码全部取消，改用QTimer的方式实现
-    // 更新局面
-    bool changed = state->phaseChange(currentRow);
-    // 处理自动播放时的动画
-    if (changed && state->isAnimation()) {
-        // 不使用processEvents函数进行非阻塞延时，频繁调用占用CPU较多
-        //QElapsedTimer et;
-        //et.start();
-        //while (et.elapsed() < waitTime) {
-        //    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-        //}
-
-        int waitTime = state->getDurationTime() + 50;
-        // 使用QEventLoop进行非阻塞延时，CPU占用低
-        QEventLoop loop;
-        QTimer::singleShot(waitTime, &loop, SLOT(quit()));
-        loop.exec();
-    }
-#endif // 0
 }
 
 void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
@@ -854,7 +783,7 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
         return;
     }
 
-    // 执行“下一招”
+    // Do the "next move"
     if (currentRow >= rows - 1) {
         ui.actionAutoRun_A->setChecked(false);
         return;
@@ -866,7 +795,7 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
 
     currentRow = ui.listView->currentIndex().row();
 
-    // 更新动作状态
+    // Update action status
     if (currentRow <= 0) {
         ui.actionBegin_S->setEnabled(false);
         ui.actionPrevious_B->setEnabled(false);
@@ -887,25 +816,20 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
         ui.actionAutoRun_A->setEnabled(true);
     }
 
-    // 更新局面
+    // Renew the situation
     game->phaseChange(currentRow);
 }
 
-// 自动运行
 void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)
 {
     if (arg1) {
-        // 自动运行前禁用控件
         ui.dockWidget->setEnabled(false);
         ui.gameView->setEnabled(false);
 
-        // 启动定时器
         autoRunTimer.start(game->getDurationTime() * 10 + 50);
     } else {
-        // 关闭定时器
         autoRunTimer.stop();
 
-        // 自动运行结束后启用控件
         ui.dockWidget->setEnabled(true);
         ui.gameView->setEnabled(true);
     }
@@ -944,7 +868,6 @@ void MillGameWindow::on_actionEngineFight_E_triggered()
 
 void MillGameWindow::on_actionEngine_E_triggered()
 {
-    // 定义新对话框
     auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
@@ -952,7 +875,6 @@ void MillGameWindow::on_actionEngine_E_triggered()
     dialog->resize(256, 188);
     dialog->setModal(true);
 
-    // 生成各个控件
     auto *vLayout = new QVBoxLayout(dialog);
     auto *groupBox1 = new QGroupBox(dialog);
     auto *groupBox2 = new QGroupBox(dialog);
@@ -967,7 +889,6 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
     auto *buttonBox = new QDialogButtonBox(dialog);
 
-    // 设置各个控件数据
     groupBox1->setTitle(tr("Player1 AI Settings"));
     label_time1->setText(tr("Time limit"));
     spinBox_time1->setMinimum(1);
@@ -983,7 +904,6 @@ void MillGameWindow::on_actionEngine_E_triggered()
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    // 布局控件
     vLayout->addWidget(groupBox1);
     vLayout->addWidget(groupBox2);
     vLayout->addWidget(buttonBox);
@@ -994,17 +914,14 @@ void MillGameWindow::on_actionEngine_E_triggered()
     hLayout2->addWidget(label_time2);
     hLayout2->addWidget(spinBox_time2);
 
-    // 关联信号和槽函数
     connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
-    // 目前数据
     int time1, time2;
     game->getAiDepthTime(time1, time2);
     spinBox_time1->setValue(time1);
     spinBox_time2->setValue(time2);
 
-    // 新设数据
     if (dialog->exec() == QDialog::Accepted) {
         int time1_new, time2_new;
 
@@ -1013,12 +930,10 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
         if (time1 != time1_new ||
             time2 != time2_new) {
-            // 重置AI
             game->setAiDepthTime(time1_new, time2_new);
         }
     }
 
-    // 删除对话框，子控件会一并删除
     dialog->disconnect();
     delete dialog;
 }
@@ -1042,7 +957,6 @@ void MillGameWindow::on_actionAbout_A_triggered()
     dialog->setWindowTitle(tr("The Mill Game"));
     dialog->setModal(true);
 
-    // 生成各个控件
     auto *vLayout = new QVBoxLayout(dialog);
     auto *hLayout = new QHBoxLayout;
     //QLabel *label_icon1 = new QLabel(dialog);
@@ -1053,15 +967,16 @@ void MillGameWindow::on_actionAbout_A_triggered()
     auto *label_text = new QLabel(dialog);
     auto *label_image = new QLabel(dialog);
 
-    // 设置各个控件数据
-    //label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
-    //label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
-    //label_icon1->setAlignment(Qt::AlignCenter);
-    //label_icon2->setAlignment(Qt::AlignCenter);
-    //label_icon1->setFixedSize(32, 32);
-    //label_icon2->setFixedSize(32, 32);
-    //label_icon1->setScaledContents(true);
-    //label_icon2->setScaledContents(true);
+#if 0
+    label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
+    label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
+    label_icon1->setAlignment(Qt::AlignCenter);
+    label_icon2->setAlignment(Qt::AlignCenter);
+    label_icon1->setFixedSize(32, 32);
+    label_icon2->setFixedSize(32, 32);
+    label_icon1->setScaledContents(true);
+    label_icon2->setScaledContents(true);
+#endif
 
     //date_text->setText(__DATE__);
     QString versionText;
@@ -1075,7 +990,6 @@ void MillGameWindow::on_actionAbout_A_triggered()
     version_text->setText(versionText);
     version_text->setAlignment(Qt::AlignLeft);
 
-    // 布局
     vLayout->addLayout(hLayout);
     //hLayout->addWidget(label_icon1);
     //hLayout->addWidget(label_icon2);
@@ -1085,10 +999,8 @@ void MillGameWindow::on_actionAbout_A_triggered()
     vLayout->addWidget(donate_text);
     vLayout->addWidget(label_image);
 
-    // 运行对话框
     dialog->exec();
 
-    // 删除对话框
     dialog->disconnect();
     delete dialog;
 }

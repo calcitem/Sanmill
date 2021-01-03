@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// 派生这个类主要是为了让视图适应场景大小及图像旋转镜像操作
 #ifndef GRAPHICSVIEW_H
 #define GRAPHICSVIEW_H
 
@@ -24,6 +23,8 @@
 
 #include "config.h"
 
+// This class is mainly derived to make the view adapt to
+// the scene size and image rotation mirror operation
 class GameView : public QGraphicsView
 {
     Q_OBJECT
@@ -40,10 +41,6 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
-
-private:
-    // 缩放因子，代码更新后不使用了
-    // qreal sx, sy;
 };
 
 #endif // GRAPHICSVIEW_H

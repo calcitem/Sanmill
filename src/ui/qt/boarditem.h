@@ -37,8 +37,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
 
-    // 用UserType+1表示棋子，用qgraphicsitem_cast()判断是否为BoardItem类的对象
-    // 还有一个方式是把类名放在Data的0key位置setData(0, "BoardItem")，然后用data(0)来判断
+    // Use UserType + 1 to represent chess pieces, and use qgraphicsitem_cast() determines whether it is an object of the boarditem class
+    // Another way is to put the class name in the 0key position of data, SetData(0, "BoardItem"), and then use data(0) to judge
     enum
     {
         Type = UserType + 1
@@ -49,35 +49,26 @@ public:
         return Type;
     }
 
-    // 设置有无斜线
+    //Set with or without slash
     void setDiagonal(bool arg = true);
 
-    // 返回最近的落子点
+    //Return to the nearest drop point
     QPointF nearestPosition(QPointF pos);
 
-    // 将模型的圈、位转化为落子点坐标
+    // The circle and position of the model are transformed into the point coordinates
     QPointF polar2pos(File file, Rank rank);
 
-    // 将落子点坐标转化为模型用的圈、位
+    // The coordinates of the falling point are transformed into circles and positions for the model
     bool pos2polar(QPointF pos, File &file, Rank &rank);
 
-    // 3圈，禁止修改！
     static const uint8_t FILE_NB = 3;
 
-    // 8位，禁止修改！
     static const uint8_t RANK_NB = 8;
 
 private:
-    // 棋盘尺寸
-    int size;
-
-    // 影子尺寸
+    int size;    // board size
     int sizeShadow {5};
-
-    // 24个落子点
-    QPointF position[EFFECTIVE_SQUARE_NB];
-
-    // 是否有斜线
+    QPointF position[EFFECTIVE_SQUARE_NB];    // 24 points
     bool hasObliqueLine {false};
 };
 

@@ -13,14 +13,15 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  along with this program.  If not, see <http:// www.gnu.org/licenses/>.
 */
 
-/* 这个类处理场景对象QGraphicsScene
- * 它是本程序MVC模型中唯一的控制模块
- * 它不对主窗口中的控件做任何操作，只向主窗口发出信号
- * 本来可以重载QGraphicsScene实现它，还能省去写事件过滤器的麻烦
- * 但用一个场景类做那么多控制模块的操作看上去不太好
+/* 
+ * This class deals with the scene object QGraphicsScene
+ * It is the only control module in MVC model of this program
+ * It doesn't do any operation on the controls in the main window, only signals the main window
+ * You could have overloaded QGraphicsScene to implement it and saved the trouble of writing event filters
+ * But it doesn't look good to use one scene class to do so many control module operations
  */
 
 #ifndef GAMECONTROLLER_H
@@ -86,7 +87,7 @@ public:
     );
     ~Game() override;
 
-    //主窗口菜单栏明细
+    //  Main window menu bar details
     const map<int, QStringList> getActions();
 
     int getRuleIndex() noexcept
@@ -166,101 +167,101 @@ public:
 
 signals:
 
-    // 总盘数改变的信号
+    // Signal of total disk number change
     void nGamesPlayedChanged(const QString &score);
 
-    // 玩家1(先手）赢盘数改变的信号
+    // Player 1 (first hand) signal to change the number of winning sets
     void score1Changed(const QString &score);
 
-    // 玩家2(后手）赢盘数改变的信号
+    // Signal for player 2 (backhand) to change the number of winning sets
     void score2Changed(const QString &score);
 
-    // 和棋数改变的信号
+    // The signal of the change of draw number
     void scoreDrawChanged(const QString &score);
 
-    // 玩家1(先手）胜率改变的信号
+    // Signal of player 1 (first hand) winning rate change
     void winningRate1Changed(const QString &score);
 
-    // 玩家2(后手）胜率改变的信号
+    // Signal of player 2 (backhand) winning rate change
     void winningRate2Changed(const QString &score);
 
-    // 和棋率改变的信号
+    // Signal of change of draw rate
     void winningRateDrawChanged(const QString &score);
 
-    // 玩家1(先手）用时改变的信号
+    // Player 1 (first hand) time changed signal
     void time1Changed(const QString &time);
 
-    // 玩家2(后手）用时改变的信号
+    // Player 2 (backhand) time changed signal
     void time2Changed(const QString &time);
 
-    // 通知主窗口更新状态栏的信号
+    // A signal that tells the main window to update the status bar
     void statusBarChanged(const QString &message);
 
 public slots:
 
-    // 设置规则
+    // Set rules
     void setRule(int ruleNo, int stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = -1);
 
-    // 游戏开始
+    // The game begins
     void gameStart();
 
-    // 游戏重置
+    // Game reset
     void gameReset();
 
-    // 设置编辑棋局状态
+    // Set edit chess state
     void setEditing(bool arg = true) noexcept;
 
-    // 设置黑白反转状态
+    // Set black and white inversion state
     void setInvert(bool arg = true);
 
-    // id为1时让电脑执先手, id为2时让的电脑执后手
+    // If Id is 1, let the computer take the lead; if Id is 2, let the computer take the second place
     void setEngine(Color color, bool enabled = true);
     void setEngineBlack(bool enabled);
     void setEngineWhite(bool enabled);
 
-    // 是否有落子动画
+    // Is there a falling animation
     void setAnimation(bool arg = true) noexcept;
 
-    // 是否有落子音效
+    // Is there a drop sound effect
     void setSound(bool arg = true) noexcept;
 
-    // 播放声音
+    // Play the sound
     static void playSound(GameSound soundType, Color c);
 
-    // 是否必败时认输
+    // Do you admit defeat when you lose
     void setResignIfMostLose(bool enabled);
 
-    // 是否自动开局
+    // Auto start or not
     void setAutoRestart(bool enabled = false);
 
-    // 是否开局自动改变先后手
+    // Is the start automatically changed to the first before the second
     void setAutoChangeFirstMove(bool enabled = false);
 
-    // AI 是否随机走子
+    // Is AI random
     void setShuffling(bool enabled);
 
-    // AI 是否记录残局库
+    // Does AI record the game library
     void setLearnEndgame(bool enabled);
 
-    // Alpha-Beta 搜索时是否迭代加深
+    // Does alpha beta search deepen iteratively
     void setIDS(bool enabled);
 
-    // DepthExtension
+    //  DepthExtension
     void setDepthExtension(bool enabled);
 
-    // OpeningBook
+    //  OpeningBook
     void setOpeningBook(bool enabled);
 
-    // 上下翻转
+    // Flip up and down
     void flip();
 
-    // 左右镜像
+    // Left and right mirror images
     void mirror();
 
-    // 视图须时针旋转90°
+    // The view must be rotated 90 ° clockwise
     void turnRight();
 
-    // 视图逆时针旋转90°
+    // View rotated 90 degree counterclockwise
     void turnLeft();
 
     bool isAIsTurn();
@@ -340,28 +341,28 @@ public slots:
         delete aiThread[WHITE];
     }
 
-    // 根据QGraphicsScene的信号和状态来执行选子、落子或去子
+    // According to the signal and state of qgraphics scene, select, drop or delete the sub objects
     bool actionPiece(QPointF p);
 
-    // 认输
+    // Admit defeat
     bool resign();
 
-    // 棋谱的命令行执行
+    // Command line execution of chess score
     bool command(const string &cmd, bool update = true);
 
-    // 历史局面及局面改变
+    // Historical situation and situation change
     bool phaseChange(int row, bool forceUpdate = false);
 
-    // 更新棋局显示，每步后执行才能刷新局面
+    // Update the chess game display. Only after each step can the situation be refreshed
     bool updateScence();
     bool updateScence(Position &p);
 
 #ifdef NET_FIGHT_SUPPORT
-    // 显示网络配置窗口
+    // The network configuration window is displayed
     void showNetworkWindow();
 #endif
 
-    // 显示引擎对战窗口
+    // Show engine vs. window
     void showTestWindow();
 
     void saveScore();
@@ -372,42 +373,46 @@ public slots:
     }
 
 protected:
-    //bool eventFilter(QObject * watched, QEvent * event);
-    // 定时器
+    // bool eventFilter(QObject * watched, QEvent * event);
+
+    // Timer
     void timerEvent(QTimerEvent *event) override;
 
 private:
-    // 棋对象的数据模型
+
+    // Data model of chess object
     Position position;
     Color sideToMove;
 
-    // 测试
+    // Testing
     Test *gameTest;
 
 private:
-    // 2个AI的线程
+
+    // 2 AI threads
     Thread *aiThread[COLOR_NB];
 
-    // 棋局的场景类
+    // The scene class of chess game
     GameScene &scene;
 
-    // 所有棋子
+    // All the pieces
     vector<PieceItem *> pieceList;
 
-    // 当前棋子
+    // Current chess pieces
     PieceItem *currentPiece;
 
-    // 当前浏览的棋谱行
+    // Current browsing chess score line
     int currentRow;
 
-    // 是否处于“编辑棋局”状态
+    // Is it in "Edit chess game" state
     bool isEditing;
 
-    // 是否黑白反转
+    // Reverse black and white
     bool isInverted;
 
 public:
-    // 电脑执先手时为 true
+
+    // True when the computer takes the lead
     bool isAiPlayer[COLOR_NB];
 
     string getTips()
@@ -416,69 +421,70 @@ public:
     }
 
 private:
-    // 是否有落子动画
+
+    // Is there a falling animation
     bool hasAnimation;
 
-    // 动画持续时间
+    // Animation duration
     int durationTime;
 
-    // 游戏开始时间
+    // Game start time
     TimePoint gameStartTime;
 
-    // 游戏结束时间
+    // Game end time
     TimePoint gameEndTime;
 
-    // 游戏持续时间
+    // Game duration
     TimePoint gameDurationTime;
 
-    // 游戏开始周期
+    // Game start cycle
     stopwatch::rdtscp_clock::time_point gameStartCycle;
 
-    // 游戏结束周期
+    // Game end cycle
     stopwatch::rdtscp_clock::time_point gameEndCycle;
 
-    // 游戏持续周期
+    // Game duration
     stopwatch::rdtscp_clock::duration gameDurationCycle;
 
-    // 时间相关
+    // Time dependent
     time_t startTime;
     time_t currentTime;
     time_t elapsedSeconds[COLOR_NB];
 
-    // 是否有落子音效
+    // Is there a drop sound effect
     inline static bool hasSound {true};
 
-    // 是否必败时认输
+    // Do you admit defeat when you lose
     bool resignIfMostLose_ {false};
 
-    // 是否自动交换先后手
+    // Do you want to exchange first before second
     bool isAutoChangeFirstMove { false };
 
-    // AI 是否为先手
+    // Is ai the first
     bool isAiFirstMove { false };
 
-    // 定时器ID
+    // Timer ID
     int timeID;
 
-    // 规则号
+    // Rule number
     int ruleIndex;
 
-    // 规则限时（分钟）
+    // Rule time limit (minutes)
     int timeLimit;
 
-    // 规则限步数
+    // Rule step limit
     int stepsLimit;
 
-    // 玩家剩余时间（秒）
+    // Player's remaining time (seconds)
     time_t remainingTime[COLOR_NB];
 
-    // 用于主窗口状态栏显示的字符串
+    // String used to display the status bar of the main window
     QString message;
 
-    // 棋谱字符串列表模型
+    // String list model of chess score
     QStringListModel manualListModel;
 
-    // 提示语
+    // Hint
     string tips;
 
     std::vector <std::string> moveHistory;

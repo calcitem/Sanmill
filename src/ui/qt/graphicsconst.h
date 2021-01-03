@@ -16,22 +16,21 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// 定义绘图相关常量的头文件
 #ifndef GRAPHICSCONST
 #define GRAPHICSCONST
 
 #include "config.h"
 
 #ifdef MOBILE_APP_UI
-constexpr short BOARD_SIZE = 500;     // 棋盘大小
+constexpr short BOARD_SIZE = 500;
 #else
-constexpr short BOARD_SIZE = 600;     // 棋盘大小
+constexpr short BOARD_SIZE = 600;
 #endif /* MOBILE_APP_UI */
 
-constexpr short BOARD_MINISIZE = 150; // 最小宽高，即1/4大小
-constexpr short PIECE_SIZE = 56;      // 棋子大小
-constexpr short LINE_INTERVAL = 72;   // 线间距
-constexpr short LINE_WEIGHT = 3;      // 线宽
+constexpr short BOARD_MINISIZE = 150; // Minimum width and height, i.e. 1 / 4 Size
+constexpr short PIECE_SIZE = 56;
+constexpr short LINE_INTERVAL = 72;
+constexpr short LINE_WEIGHT = 3;
 
 #endif // GRAPHICSCONST
 

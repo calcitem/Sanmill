@@ -27,44 +27,33 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
     num(0)
 {
     Q_UNUSED(parent)
-        // 允许选择和移动
         setFlags(ItemIsSelectable
                  // | ItemIsMovable
         );
 
-    // 设置缓存模式
     setCacheMode(DeviceCoordinateCache);
 
-    // 鼠标放在棋子上时显示为伸开的手形
     setCursor(Qt::OpenHandCursor);
 
-    // 只接受左键事件
     //setAcceptedMouseButtons(Qt::LeftButton);
 
-    // 不接受鼠标事件
     setAcceptedMouseButtons(nullptr);
     //setAcceptHoverEvents(true);
 
-    // 默认模型为没有棋子
     model = Models::noPiece;
 
-    // 棋子尺寸
     size = PIECE_SIZE;
 
-    // 选中子标识线宽度
     selectLineWeight = LINE_WEIGHT;
 
-    // 删除线宽度
     removeLineWeight = LINE_WEIGHT * 5;
 
-    // 选中线为黄色
 #ifdef MOBILE_APP_UI
     selectLineColor = Qt::gray;
 #else
     selectLineColor = Qt::darkYellow;
 #endif /* MOBILE_APP_UI */
 
-    // 删除线颜色
     removeLineColor = QColor(227, 23, 13);
     removeLineColor.setAlphaF(0.9);
 }
@@ -90,11 +79,11 @@ void PieceItem::paint(QPainter *painter,
     Q_UNUSED(option)
         Q_UNUSED(widget)
 
-    // 空模型不画棋子
+    // Empty models don't draw pieces
 
     switch (model) {
     case Models::blackPiece:
-        // 如果模型为黑色，则画黑色棋子
+        // If the model is black, draw black pieces
 #ifdef MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(0, 93, 172));
@@ -106,7 +95,7 @@ void PieceItem::paint(QPainter *painter,
         break;
 
     case Models::whitePiece:
-        // 如果模型为白色，则画白色棋子
+        // If the model is white, draw white pieces
 #ifdef MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(231, 36, 46));
@@ -120,29 +109,25 @@ void PieceItem::paint(QPainter *painter,
         break;
     }
 
-    // 如果模型要求显示序号
+    // If the model requires the serial number to be displayed
     if (showNum) {
-        // 如果模型为黑色，用白色笔画序号
         if (model == Models::blackPiece)
             painter->setPen(QColor(255, 255, 255));
 
-        // 如果模型为白色，用白色笔画序号
         if (model == Models::whitePiece)
             painter->setPen(QColor(0, 0, 0));
 
-        // 字体
         QFont font;
         font.setFamily("Arial");
         font.setPointSize(size / 3);
         painter->setFont(font);
 
-        // 画序号，默认中间位置偏下，需微调
         painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12),
                             Qt::AlignCenter, QString::number(num));
 
     }
 
-    // 如果模型为选中状态，则画上四个小直角
+    // If the model is selected, draw four small right angles
     if (isSelected()) {
         QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
@@ -158,7 +143,7 @@ void PieceItem::paint(QPainter *painter,
         painter->drawLine(-xy, xy, -xy / 2, xy);
     }
 
-    // 如果模型为删除状态，则画上叉号
+    // If the model is deleted, cross it
     if (deleted) {
         QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
@@ -170,7 +155,7 @@ void PieceItem::paint(QPainter *painter,
 
 void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    // 鼠标按下时变为握住的手形
+    // When the mouse is pressed, it becomes the shape of the hand it holds
     setCursor(Qt::ClosedHandCursor);
     QGraphicsItem::mousePressEvent(mouseEvent);
 }
@@ -182,7 +167,7 @@ void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    // 鼠标松开时变为伸开的手形
+    // When the mouse is released, it becomes an extended hand
     setCursor(Qt::OpenHandCursor);
     QGraphicsItem::mouseReleaseEvent(mouseEvent);
 }
