@@ -24,7 +24,7 @@
 #ifdef MOBILE_APP_UI
 constexpr short BOARD_SIZE = 500;
 #else
-constexpr short BOARD_SIZE = 600;
+constexpr short BOARD_SIZE = 550;
 #endif /* MOBILE_APP_UI */
 
 constexpr short BOARD_MINISIZE = 150; // Minimum width and height, i.e. 1 / 4 Size
