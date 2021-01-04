@@ -26,10 +26,10 @@ BoardItem::BoardItem(QGraphicsItem *parent) :
 {
     Q_UNUSED(parent)
 
-        // The center of the board is in the center of the scene
+        // Put center of the board in the center of the scene
         setPos(0, 0);
 
-    // Initialize 24 drop points
+    // Initialize 24 points
     for (int r = 0; r < FILE_NB; r++) {
         // The first position is the 12 o'clock direction of the inner ring, which is sorted clockwise
         // Then there is the middle ring and the outer ring
@@ -178,7 +178,7 @@ bool BoardItem::pos2polar(QPointF pos, File &file, Rank &rank)
 {
     // Look for the nearest spot
     for (int i = 0; i < EFFECTIVE_SQUARE_NB; i++) {
-        // If the pos point is near the falling point
+        // If the pos point is near the placing point
         if (QLineF(pos, position[i]).length() < PIECE_SIZE / 6) {
             file = File(i / RANK_NB + 1);
             rank = Rank(i % RANK_NB + 1);

@@ -49,10 +49,10 @@ public:
         return Type;
     }
 
-    //Set with or without slash
+    // Set with or without diagonal
     void setDiagonal(bool arg = true);
 
-    //Return to the nearest drop point
+    // Return to the nearest placing point
     QPointF nearestPosition(QPointF pos);
 
     // The circle and position of the model are transformed into the point coordinates
