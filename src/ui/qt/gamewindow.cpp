@@ -215,6 +215,10 @@ void MillGameWindow::initialize()
 
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             game, SLOT(setAnimation(bool)));
+
+#ifdef TEST_MODE
+    ui.actionAnimation_A->setChecked(false);
+#endif // TEST_MODE
     
     connect(ui.actionResignIfMostLose_G, SIGNAL(toggled(bool)),
             game, SLOT(setResignIfMostLose(bool)));
