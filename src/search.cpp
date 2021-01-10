@@ -197,6 +197,19 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
     Depth epsilon;
 
+#ifdef THREEFOLD_REPETITION
+    // Check if we have an upcoming move which draws by repetition, or
+    // if the opponent had an alternative move earlier to this position.
+    if (/* alpha < VALUE_DRAW && */
+        depth != originDepth &&
+        pos->has_repeated(ss)) {
+        alpha = VALUE_DRAW;
+        if (alpha >= beta) {
+            return alpha;
+        }
+    }
+#endif // THREEFOLD_REPETITION
+
 #ifdef TT_MOVE_ENABLE
     Move ttMove = MOVE_NONE;
 #endif // TT_MOVE_ENABLE
@@ -301,16 +314,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
         return bestValue;
     }
-
-#ifdef THREEFOLD_REPETITION
-    // if this isn't the root of the search tree (where we have
-    // to pick a move and can't simply return VALUE_DRAW) then check to
-    // see if the position is a repeat. if so, we can assume that
-    // this line is a draw and return VALUE_DRAW.
-    if (depth != originDepth && pos->has_repeated(ss)) {
-        return VALUE_DRAW;
-    }
-#endif // THREEFOLD_REPETITION
 
     MovePicker mp(*pos);
     Move nextMove = mp.next_move();
