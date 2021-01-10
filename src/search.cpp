@@ -314,6 +314,32 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         return bestValue;
     }
 
+#ifdef THREEFOLD_REPETITION
+    // if this isn't the root of the search tree (where we have
+    // to pick a move and can't simply return VALUE_DRAW) then check to
+    // see if the position is a repeat. if so, we can assume that
+    // this line is a draw and return VALUE_DRAW.
+
+    if (depth != originDepth) {
+        for (int i = (int)posKeyHistory.size() - 2; i >= 0; i--) {
+            if (posKey == posKeyHistory[i]) {
+                return VALUE_DRAW;
+            }
+        }
+
+        int size = ss.size();
+
+        for (int i = size - 1; i >= 0; i--) {
+            if (type_of(ss[i].move) == MOVETYPE_REMOVE) {
+                break;
+            }
+            if (posKey == ss[i].st.key) {
+                return VALUE_DRAW;
+            }
+        }
+    }
+#endif // THREEFOLD_REPETITION
+
     MovePicker mp(*pos);
     Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
