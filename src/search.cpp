@@ -66,9 +66,6 @@ void Search::clear()
     Threads.clear();
 }
 
-#ifdef THREEFOLD_REPETITION
-int repetition;
-#endif // THREEFOLD_REPETITION
 
 /// Thread::search() is the main iterative deepening loop. It calls search()
 /// repeatedly with increasing depth until the allocated thinking time has been
@@ -97,21 +94,12 @@ int Thread::search()
 
 #ifdef THREEFOLD_REPETITION
     if (rootPos->get_phase() == Phase::moving) {
-        const Key key = rootPos->key();
-
-        for (auto i : posKeyHistory) {
-            if (key == i)
-            {
-                repetition++;
-                if (repetition == 3) {
-                    repetition = 0;
-                    return 3;
-                }
-            }
+        if (rootPos->has_game_cycle()) {
+            return 3;
         }
 
 #if defined(UCI_DO_BEST_MOVE) || defined(QT_GUI_LIB)
-        posKeyHistory.push_back(key);
+        posKeyHistory.push_back(rootPos->key());
 #endif // UCI_DO_BEST_MOVE
 
         assert(posKeyHistory.size() < 256);
@@ -319,24 +307,8 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     // to pick a move and can't simply return VALUE_DRAW) then check to
     // see if the position is a repeat. if so, we can assume that
     // this line is a draw and return VALUE_DRAW.
-
-    if (depth != originDepth) {
-        for (int i = (int)posKeyHistory.size() - 2; i >= 0; i--) {
-            if (posKey == posKeyHistory[i]) {
-                return VALUE_DRAW;
-            }
-        }
-
-        int size = ss.size();
-
-        for (int i = size - 1; i >= 0; i--) {
-            if (type_of(ss[i].move) == MOVETYPE_REMOVE) {
-                break;
-            }
-            if (posKey == ss[i].st.key) {
-                return VALUE_DRAW;
-            }
-        }
+    if (depth != originDepth && pos->has_repeated(ss)) {
+        return VALUE_DRAW;
     }
 #endif // THREEFOLD_REPETITION
 

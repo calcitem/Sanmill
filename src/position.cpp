@@ -475,6 +475,54 @@ out:
 }
 
 
+#ifdef THREEFOLD_REPETITION
+// Position::has_repeated() tests whether there has been at least one repetition
+// of positions since the last remove.
+
+bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
+{
+    for (int i = (int)posKeyHistory.size() - 2; i >= 0; i--) {
+        if (key() == posKeyHistory[i]) {
+            return true;
+        }
+    }
+
+    int size = ss.size();
+
+    for (int i = size - 1; i >= 0; i--) {
+        if (type_of(ss[i].move) == MOVETYPE_REMOVE) {
+            break;
+        }
+        if (key() == ss[i].st.key) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+/// Position::has_game_cycle() tests if the position has a move which draws by repetition.
+
+int repetition;
+
+bool Position::has_game_cycle() const
+{
+    for (auto i : posKeyHistory) {
+        if (key() == i) {
+            repetition++;
+            if (repetition == 3) {
+                repetition = 0;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+#endif // THREEFOLD_REPETITION
+
+
 /// Mill Game
 
 #ifdef THREEFOLD_REPETITION

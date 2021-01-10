@@ -90,6 +90,10 @@ public:
     Color side_to_move() const;
     int game_ply() const;
     Thread *this_thread() const;
+#ifdef THREEFOLD_REPETITION
+    bool has_game_cycle() const;
+    bool has_repeated(Sanmill::Stack<Position> &ss) const;
+#endif // THREEFOLD_REPETITION
     int rule50_count() const;
 
 
