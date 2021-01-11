@@ -93,6 +93,9 @@ int Thread::search()
 #endif
 
     if (rootPos->get_phase() == Phase::moving) {
+        if (posKeyHistory.size() > rule.maxStepsLedToDraw) {
+            return 99;
+        }
 #ifdef THREEFOLD_REPETITION
         if (rootPos->has_game_cycle()) {
             return 3;

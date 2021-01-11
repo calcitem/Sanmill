@@ -935,7 +935,7 @@ bool Position::check_if_game_is_over()
     }
 
     if (rule.maxStepsLedToDraw > 0 &&
-        rule50_count() > rule.maxStepsLedToDraw) {
+        posKeyHistory.size() > rule.maxStepsLedToDraw) {
         winner = DRAW;
         phase = Phase::gameOver;
         gameOverReason = GameOverReason::drawReasonRule50;
