@@ -44,8 +44,6 @@ void clear();
 
 #include "tt.h"
 
-#ifdef THREEFOLD_REPETITION
 extern vector<Key> posKeyHistory;
-#endif
 
 #endif // #ifndef SEARCH_H_INCLUDED

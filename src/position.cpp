@@ -363,7 +363,7 @@ const string Position::fen() const
         << pieceOnBoardCount[WHITE] << " " << pieceInHandCount[WHITE] << " "
         << pieceToRemoveCount << " ";
 
-    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
+    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == WHITE)) / 2;
 
     return ss.str();
 }
@@ -424,7 +424,7 @@ void Position::do_move(Move m)
     }
 
     // Increment ply counters. In particular, rule50 will be reset to zero later on
-    // in case of a capture.
+    // in case of a remove.
     ++gamePly;
     ++st.rule50;
     ++st.pliesFromNull;
@@ -474,6 +474,7 @@ out:
     return k;
 }
 
+int repetition;
 
 #ifdef THREEFOLD_REPETITION
 // Position::has_repeated() tests whether there has been at least one repetition
@@ -504,8 +505,6 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
 
 /// Position::has_game_cycle() tests if the position has a move which draws by repetition.
 
-int repetition;
-
 bool Position::has_game_cycle() const
 {
     for (auto i : posKeyHistory) {
@@ -525,15 +524,11 @@ bool Position::has_game_cycle() const
 
 /// Mill Game
 
-#ifdef THREEFOLD_REPETITION
 extern int repetition;
-#endif // THREEFOLD_REPETITION
 
 bool Position::reset()
 {
-#ifdef THREEFOLD_REPETITION
     repetition = 0;
-#endif // THREEFOLD_REPETITION
 
     gamePly = 0;
     st.rule50 = 0;
@@ -940,7 +935,7 @@ bool Position::check_if_game_is_over()
     }
 
     if (rule.maxStepsLedToDraw > 0 &&
-        st.rule50 > rule.maxStepsLedToDraw) {
+        rule50_count() > rule.maxStepsLedToDraw) {
         winner = DRAW;
         phase = Phase::gameOver;
         gameOverReason = GameOverReason::drawReasonRule50;

@@ -92,11 +92,12 @@ int Thread::search()
     chrono::steady_clock::time_point cycleEnd;
 #endif
 
-#ifdef THREEFOLD_REPETITION
     if (rootPos->get_phase() == Phase::moving) {
+#ifdef THREEFOLD_REPETITION
         if (rootPos->has_game_cycle()) {
             return 3;
         }
+#endif // THREEFOLD_REPETITION
 
 #if defined(UCI_DO_BEST_MOVE) || defined(QT_GUI_LIB)
         posKeyHistory.push_back(rootPos->key());
@@ -108,7 +109,7 @@ int Thread::search()
     if (rootPos->get_phase() == Phase::placing) {
         posKeyHistory.clear();
     }
-#endif // THREEFOLD_REPETITION
+
 
     MoveList<LEGAL>::shuffle();
 

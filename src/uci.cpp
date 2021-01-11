@@ -38,10 +38,8 @@ using namespace std;
 
 extern vector<string> setup_bench(Position *, istream &);
 
-#ifdef THREEFOLD_REPETITION
 extern int repetition;
 extern vector<Key> posKeyHistory;
-#endif // THREEFOLD_REPETITION
 
 namespace
 {
@@ -71,19 +69,15 @@ void position(Position *pos, istringstream &is)
     else
         return;
 
-#ifdef THREEFOLD_REPETITION
     repetition = 0;
     posKeyHistory.clear();
-#endif // THREEFOLD_REPETITION
     
     pos->set(fen, Threads.main());
 
     // Parse move list (if any)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
         pos->do_move(m);
-#ifdef THREEFOLD_REPETITION
         posKeyHistory.push_back(pos->key());
-#endif // THREEFOLD_REPETITION
     }
 
     // TODO: Stockfish does not have this
@@ -125,9 +119,7 @@ void go(Position *pos)
     begin:
 #endif
 
-#ifdef THREEFOLD_REPETITION
     repetition = 0;
-#endif // THREEFOLD_REPETITION
 
     Threads.start_thinking(pos);
 
