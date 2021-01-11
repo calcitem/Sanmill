@@ -103,7 +103,7 @@ int Thread::search()
 #endif // THREEFOLD_REPETITION
 
 #if defined(UCI_DO_BEST_MOVE) || defined(QT_GUI_LIB)
-        posKeyHistory.push_back(rootPos->key());
+        //posKeyHistory.push_back(rootPos->key());
 #endif // UCI_DO_BEST_MOVE
 
         assert(posKeyHistory.size() < 256);

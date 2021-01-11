@@ -77,7 +77,11 @@ void position(Position *pos, istringstream &is)
     // Parse move list (if any)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
         pos->do_move(m);
-        posKeyHistory.push_back(pos->key());
+        if (type_of(m) == MOVETYPE_MOVE) {
+            posKeyHistory.push_back(pos->key());
+        } else {
+            posKeyHistory.clear();
+        }
     }
 
     // TODO: Stockfish does not have this

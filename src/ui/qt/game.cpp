@@ -852,6 +852,12 @@ bool Game::actionPiece(QPointF p)
     if (result) {
         moveHistory.emplace_back(position.record);
 
+        if (strlen(position.record) > strlen("-(1,2)")) {
+            posKeyHistory.push_back(position.key());
+        } else {
+            posKeyHistory.clear();
+        }
+
         // Signal update status bar
         updateScence();
         message = QString::fromStdString(getTips());
@@ -962,6 +968,12 @@ bool Game::command(const string &cmd, bool update /* = true */)
     loggerDebug("Computer: %s\n\n", cmd.c_str());
 
     moveHistory.emplace_back(cmd);
+
+    if (cmd.size() > strlen("-(1,2)")) {
+        posKeyHistory.push_back(position.key());
+    } else {
+        posKeyHistory.clear();
+    }
 
     if (!position.command(cmd.c_str()))
         return false;
