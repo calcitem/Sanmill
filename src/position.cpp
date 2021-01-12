@@ -405,15 +405,24 @@ void Position::do_move(Move m)
 
     switch (mt) {
     case MOVETYPE_REMOVE:
-        // Reset rule 50 counter
-        st.rule50 = 0;
         ret = remove_piece(to_sq(m));
+        if (ret) {
+            // Reset rule 50 counter
+            st.rule50 = 0;
+        }
         break;
     case MOVETYPE_MOVE:
         ret = move_piece(from_sq(m), to_sq(m));
+        if (ret) {
+            ++st.rule50;
+        }
         break;
     case MOVETYPE_PLACE:
         ret = put_piece(to_sq(m));
+        if (ret) {
+            // Reset rule 50 counter
+            st.rule50 = 0;
+        }
         break;
     default:
         break;
@@ -423,10 +432,8 @@ void Position::do_move(Move m)
         return;
     }
 
-    // Increment ply counters. In particular, rule50 will be reset to zero later on
-    // in case of a remove.
+    // Increment ply counters. In particular
     ++gamePly;
-    ++st.rule50;
     ++st.pliesFromNull;
     
     move = m;
