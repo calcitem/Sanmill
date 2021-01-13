@@ -941,6 +941,7 @@ bool Position::check_if_game_is_over()
         return true;
     }
 
+#ifdef RULE_50
     if (rule.maxStepsLedToDraw > 0 &&
         posKeyHistory.size() > rule.maxStepsLedToDraw) {
         winner = DRAW;
@@ -948,6 +949,7 @@ bool Position::check_if_game_is_over()
         gameOverReason = GameOverReason::drawReasonRule50;
         return true;
     }
+#endif // RULE_50
 
     if (pieceOnBoardCount[BLACK] + pieceOnBoardCount[WHITE] >= EFFECTIVE_SQUARE_NB) {
         if (rule.isBlackLoseButNotDrawWhenBoardFull) {

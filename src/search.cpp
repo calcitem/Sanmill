@@ -93,9 +93,12 @@ int Thread::search()
 #endif
 
     if (rootPos->get_phase() == Phase::moving) {
+#ifdef RULE_50
         if (posKeyHistory.size() > rule.maxStepsLedToDraw) {
             return 99;
         }
+#endif // RULE_50
+
 #ifdef THREEFOLD_REPETITION
         if (rootPos->has_game_cycle()) {
             return 3;
@@ -204,12 +207,14 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
     Depth epsilon;
 
+#ifdef RULE_50
     if (pos->rule50_count() > 99) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;
         }
     }
+#endif // RULE_50
 
 #ifdef THREEFOLD_REPETITION_TEST
     // Check if we have an upcoming move which draws by repetition, or

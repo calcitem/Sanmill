@@ -97,6 +97,7 @@
 //#define ENDGAME_LEARNING_FORCE
 
 #define THREEFOLD_REPETITION
+#define RULE_50
 
 //#define MESSAGEBOX_ENABLE
 
