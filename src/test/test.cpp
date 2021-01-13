@@ -31,7 +31,9 @@
 #include "test.h"
 
 #ifdef TEST_MODE
+#ifdef QT_GUI_LIB
 QString getAppFileName();
+#endif
 #endif /* TEST_MODE */
 
 extern QString APP_FILENAME_DEFAULT;
@@ -70,10 +72,12 @@ Test::Test(QWidget *parent, QString k)
     keyCombo->addItem(QString("KeyF"));
 
 #ifdef TEST_MODE
+#ifdef QT_GUI_LIB
     QString appFileName = getAppFileName();
     if (appFileName != APP_FILENAME_DEFAULT) {
         keyCombo->addItem(QString(appFileName));
     }
+#endif // QT_GUI_LIB
 #endif // TEST_MODE
 
     auto keyLabel = new QLabel(tr("&Key:"));
