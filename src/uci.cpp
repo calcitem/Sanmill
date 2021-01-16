@@ -28,6 +28,7 @@
 #include "thread.h"
 #include "tt.h"
 #include "uci.h"
+#include "rule.h"
 
 #ifdef FLUTTER_UI
 #include "command_channel.h"
@@ -45,8 +46,9 @@ namespace
 {
 
 // FEN string of the initial position, normal mill game
-const char *StartFEN = "********/********/******** b p p 0 12 0 12 0 0 1";
-
+const char *StartFEN12 = "********/********/******** b p p 0 12 0 12 0 0 1";
+const char *StartFEN9 = "********/********/******** b p p 0 9 0 9 0 0 1";
+char StartFEN[BUFSIZ];
 
 // position() is called when engine receives the "position" UCI command.
 // The function sets up the position described in the given FEN string ("fen")
@@ -163,6 +165,12 @@ void UCI::loop(int argc, char *argv[])
 {
     Position *pos = new Position;
     string token, cmd;
+
+    if (rule.piecesCount == 9) {
+        strncpy(StartFEN, StartFEN9, BUFSIZ);
+    } else if (rule.piecesCount == 12) {
+        strncpy(StartFEN, StartFEN12, BUFSIZ);
+    }
 
     pos->set(StartFEN, Threads.main());
 
