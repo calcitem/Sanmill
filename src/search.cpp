@@ -95,7 +95,7 @@ int Thread::search()
     if (rootPos->get_phase() == Phase::moving) {
 #ifdef RULE_50
         if (posKeyHistory.size() > rule.maxStepsLedToDraw) {
-            return 99;
+            return 50;
         }
 #endif // RULE_50
 
