@@ -199,6 +199,12 @@ void Thread::emitCommand()
 #ifdef UCI_DO_BEST_MOVE
     rootPos->command(strCommand.c_str());
     us = rootPos->side_to_move();
+
+    if (strCommand.size() > strlen("-(1,2)")) {
+        posKeyHistory.push_back(rootPos->key());
+    } else {
+        posKeyHistory.clear();
+    }
 #endif
 
 #ifdef ANALYZE_POSITION
