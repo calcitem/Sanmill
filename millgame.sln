@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "millgame", "millgame.vcxproj", "{D6EBE2B6-17F9-30EA-AE68-9CD0BB526200}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "perfect", "src\perfect\perfect.vcxproj", "{EDB1E279-1476-443B-84FA-150A5D3B5A10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,12 +23,20 @@ Global
 		{D6EBE2B6-17F9-30EA-AE68-9CD0BB526200}.Release|x64.Build.0 = Release|x64
 		{D6EBE2B6-17F9-30EA-AE68-9CD0BB526200}.Release|x86.ActiveCfg = Release|Win32
 		{D6EBE2B6-17F9-30EA-AE68-9CD0BB526200}.Release|x86.Build.0 = Release|Win32
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Debug|x64.ActiveCfg = Debug|x64
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Debug|x64.Build.0 = Debug|x64
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Debug|x86.ActiveCfg = Debug|Win32
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Debug|x86.Build.0 = Debug|Win32
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Release|x64.ActiveCfg = Release|x64
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Release|x64.Build.0 = Release|x64
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Release|x86.ActiveCfg = Release|Win32
+		{EDB1E279-1476-443B-84FA-150A5D3B5A10}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {401C61DF-0B94-45A9-96C1-9BD069796A84}
 		Qt5Version = Qt5.13.0
+		SolutionGuid = {401C61DF-0B94-45A9-96C1-9BD069796A84}
 	EndGlobalSection
 EndGlobal
