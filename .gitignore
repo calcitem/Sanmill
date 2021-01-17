@@ -337,6 +337,11 @@ desktop.ini
 *.diagsession
 enc_temp_folder
 
+# Database
+plyInfo.dat
+preCalculatedVars.dat
+shortKnotValue.dat
+
 # Executable files
 src/fishmill
 
