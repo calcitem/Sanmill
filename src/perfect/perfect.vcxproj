@@ -159,7 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bufferedFile.cpp" />
-    <ClCompile Include="console.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="cyclicArray.cpp" />
     <ClCompile Include="miniMax.cpp" />
     <ClCompile Include="miniMax_alphaBetaAlgorithmn.cpp" />
