@@ -1,12 +1,12 @@
 /*********************************************************************
-	muehleKI.cpp
+	millAI.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#include "muehleKI.h"
+#include "millAI.h"
 
 using namespace std;
 

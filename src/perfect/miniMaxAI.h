@@ -1,5 +1,5 @@
 /*********************************************************************\
-	minMaxKI.h
+	miniMaxAI.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -12,7 +12,7 @@
 #include <iostream>
 #include <cstdio>
 #include <math.h>
-#include "muehleKI.h"
+#include "millAI.h"
 #include "miniMax.h"
 
 //using namespace std;
@@ -21,7 +21,7 @@
 #define VALUE_GAME_WON	     1000.0f
 
 /*** Klassen *********************************************************/
-class minMaxKI : public muehleKI, miniMax
+class miniMaxAI : public millAI, miniMax
 {
 protected:
 
@@ -139,8 +139,8 @@ protected:
 
 public:
 	// Constructor / destructor
-	minMaxKI();
-	~minMaxKI();
+	miniMaxAI();
+	~miniMaxAI();
 
 	// Functions
 	void			play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo);

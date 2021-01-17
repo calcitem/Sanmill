@@ -1,18 +1,18 @@
 /*********************************************************************
-	muehle.cpp
+	Mill.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#include "muehle.h"
+#include "mill.h"
 
 //-----------------------------------------------------------------------------
-// Name: muehle()
-// Desc: muehle class constructor
+// Name: Mill()
+// Desc: Mill class constructor
 //-----------------------------------------------------------------------------
-muehle::muehle()
+Mill::Mill()
 {
 	srand((unsigned)time(nullptr));
 
@@ -27,19 +27,19 @@ muehle::muehle()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~muehle()
-// Desc: muehle class destructor
+// Name: ~Mill()
+// Desc: Mill class destructor
 //-----------------------------------------------------------------------------
-muehle::~muehle()
+Mill::~Mill()
 {
 	deleteArrays();
 }
 
 //-----------------------------------------------------------------------------
 // Name: deleteArrays()
-// Desc: Deletes all arrays the muehle class has created.
+// Desc: Deletes all arrays the Mill class has created.
 //-----------------------------------------------------------------------------
-void muehle::deleteArrays()
+void Mill::deleteArrays()
 {
 	SAFE_DELETE_ARRAY(moveLogFrom);
 	SAFE_DELETE_ARRAY(moveLogTo);
@@ -50,9 +50,9 @@ void muehle::deleteArrays()
 
 //-----------------------------------------------------------------------------
 // Name: beginNewGame()
-// Desc: Reinitializes the muehle object.
+// Desc: Reinitializes the Mill object.
 //-----------------------------------------------------------------------------
-void muehle::beginNewGame(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI, int currentPlayer)
+void Mill::beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer)
 {
 	// free mem
 	deleteArrays();
@@ -85,7 +85,7 @@ void muehle::beginNewGame(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI, int
 // Name: startSettingPhase()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool muehle::startSettingPhase(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI, int currentPlayer, bool settingPhase)
+bool Mill::startSettingPhase(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer, bool settingPhase)
 {
 	beginNewGame(firstPlayerKI, secondPlayerKI, currentPlayer);
 
@@ -98,7 +98,7 @@ bool muehle::startSettingPhase(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI
 // Name: setUpCalcPossibleMoves()
 // Desc: Calculates and set the number of possible moves for the passed player considering the game state stored in the 'field' variable.
 //-----------------------------------------------------------------------------
-void muehle::setUpCalcPossibleMoves(playerStruct *player)
+void Mill::setUpCalcPossibleMoves(playerStruct *player)
 {
 	// locals
 	unsigned int i, j, k, movingDirection;
@@ -132,7 +132,7 @@ void muehle::setUpCalcPossibleMoves(playerStruct *player)
 // Name: setUpSetWarningAndMill()
 // Desc: 
 //-----------------------------------------------------------------------------
-void muehle::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
+void Mill::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
 {
 	// locals
 	int				rowOwner = field.field[stone];
@@ -150,7 +150,7 @@ void muehle::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighb
 // Name: putStone()
 // Desc: Put a stone onto the field during the setting phase.
 //-----------------------------------------------------------------------------
-bool muehle::putStone(unsigned int pos, int player)
+bool Mill::putStone(unsigned int pos, int player)
 {
 	// locals
 	unsigned int i;
@@ -221,7 +221,7 @@ bool muehle::putStone(unsigned int pos, int player)
 // Name: settingPhaseHasFinished()
 // Desc: This function has to be called when the setting phase has finished.
 //-----------------------------------------------------------------------------
-bool muehle::settingPhaseHasFinished()
+bool Mill::settingPhaseHasFinished()
 {
 	// remember initialField
 	field.copyField(&initialField);
@@ -233,7 +233,7 @@ bool muehle::settingPhaseHasFinished()
 // Name: getField()
 // Desc: Copy the current field state into the array 'pField'.
 //-----------------------------------------------------------------------------
-bool muehle::getField(int *pField)
+bool Mill::getField(int *pField)
 {
 	unsigned int index;
 
@@ -252,7 +252,7 @@ bool muehle::getField(int *pField)
 // Name: getLog()
 // Desc: Copy the whole history of moves into the passed arrays, which must be of size [MAX_NUM_MOVES].
 //-----------------------------------------------------------------------------
-void muehle::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *to)
+void Mill::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *to)
 {
 	unsigned int index;
 
@@ -268,7 +268,7 @@ void muehle::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int
 // Name: setNextPlayer()
 // Desc: Current player and opponent player are switched in the field struct.
 //-----------------------------------------------------------------------------
-void muehle::setNextPlayer()
+void Mill::setNextPlayer()
 {
 	playerStruct *tmpPlayer;
 
@@ -281,7 +281,7 @@ void muehle::setNextPlayer()
 // Name: isCurrentPlayerHuman()
 // Desc: Returns true if the current player is not assigned to an AI.
 //-----------------------------------------------------------------------------
-bool muehle::isCurrentPlayerHuman()
+bool Mill::isCurrentPlayerHuman()
 {
 	if (field.curPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
 	else										return (playerTwoKI == nullptr) ? true : false;
@@ -291,7 +291,7 @@ bool muehle::isCurrentPlayerHuman()
 // Name: isOpponentPlayerHuman()
 // Desc: Returns true if the opponent player is not assigned to an AI.
 //-----------------------------------------------------------------------------
-bool muehle::isOpponentPlayerHuman()
+bool Mill::isOpponentPlayerHuman()
 {
 	if (field.oppPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
 	else										return (playerTwoKI == nullptr) ? true : false;
@@ -301,7 +301,7 @@ bool muehle::isOpponentPlayerHuman()
 // Name: setKI()
 // Desc: Assigns an AI to a player.
 //-----------------------------------------------------------------------------
-void muehle::setKI(int player, muehleKI *KI)
+void Mill::setKI(int player, millAI *KI)
 {
 	if (player == field.playerOne) {
 		playerOneKI = KI;
@@ -315,7 +315,7 @@ void muehle::setKI(int player, muehleKI *KI)
 // Name: getChoiceOfSpecialKI()
 // Desc: Returns the move the passed AI would do.
 //-----------------------------------------------------------------------------
-void muehle::getChoiceOfSpecialKI(muehleKI *KI, unsigned int *pushFrom, unsigned int *pushTo)
+void Mill::getChoiceOfSpecialKI(millAI *KI, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
 	*pushFrom = field.size;
@@ -330,7 +330,7 @@ void muehle::getChoiceOfSpecialKI(muehleKI *KI, unsigned int *pushFrom, unsigned
 // Name: getComputersChoice()
 // Desc: Returns the move the AI of the current player would do.
 //-----------------------------------------------------------------------------
-void muehle::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
+void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
 	*pushFrom = field.size;
@@ -353,7 +353,7 @@ void muehle::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 // Name: isNormalMovePossible()
 // Desc: 'Normal' in this context means, by moving the stone along a connection without jumping.
 //-----------------------------------------------------------------------------
-bool muehle::isNormalMovePossible(unsigned int from, unsigned int to, playerStruct *player)
+bool Mill::isNormalMovePossible(unsigned int from, unsigned int to, playerStruct *player)
 {
 	// locals
 	unsigned int movingDirection, i;
@@ -386,7 +386,7 @@ bool muehle::isNormalMovePossible(unsigned int from, unsigned int to, playerStru
 // Name: calcPossibleMoves()
 // Desc: ...
 //-----------------------------------------------------------------------------
-void muehle::calcPossibleMoves(playerStruct *player)
+void Mill::calcPossibleMoves(playerStruct *player)
 {
 	// locals
 	unsigned int i, j;
@@ -419,7 +419,7 @@ void muehle::calcPossibleMoves(playerStruct *player)
 // Name: setWarningAndMill()
 // Desc: 
 //-----------------------------------------------------------------------------
-void muehle::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone)
+void Mill::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone)
 {
 	// locals
 	int				rowOwner = field.field[stone];
@@ -443,7 +443,7 @@ void muehle::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, 
 // Name: updateMillsAndWarnings()
 // Desc: 
 //-----------------------------------------------------------------------------
-void muehle::updateMillsAndWarnings(unsigned int newStone)
+void Mill::updateMillsAndWarnings(unsigned int newStone)
 {
 	// locals
 	unsigned int	i;
@@ -473,7 +473,7 @@ void muehle::updateMillsAndWarnings(unsigned int newStone)
 // Name: moveStone()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool muehle::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
+bool Mill::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
 {
 	// avoid index override
 	if (movesDone >= MAX_NUM_MOVES)
@@ -600,7 +600,7 @@ bool muehle::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
 // Name: setCurrentGameState()
 // Desc: Set an arbitrary game state as the current one.
 //-----------------------------------------------------------------------------
-bool muehle::setCurrentGameState(fieldStruct *curState)
+bool Mill::setCurrentGameState(fieldStruct *curState)
 {
 	curState->copyField(&field);
 
@@ -618,7 +618,7 @@ bool muehle::setCurrentGameState(fieldStruct *curState)
 // Name: compareWithField()
 // Desc: Compares the current 'field' variable with the passed one. 'stoneMoveAble[]' is ignored.
 //-----------------------------------------------------------------------------
-bool muehle::compareWithField(fieldStruct *compareField)
+bool Mill::compareWithField(fieldStruct *compareField)
 {
 	unsigned int i, j;
 	bool ret = true;
@@ -671,7 +671,7 @@ bool muehle::compareWithField(fieldStruct *compareField)
 // Name: comparePlayers()
 // Desc: Compares the two passed players and returns false if they differ.
 //-----------------------------------------------------------------------------
-bool muehle::comparePlayers(playerStruct *playerA, playerStruct *playerB)
+bool Mill::comparePlayers(playerStruct *playerA, playerStruct *playerB)
 {
 	//	unsigned int i;
 	bool ret = true;
@@ -703,7 +703,7 @@ bool muehle::comparePlayers(playerStruct *playerA, playerStruct *playerB)
 // Desc: Calls the printField() function of the current field.
 //       Prints the current game state on the screen.
 //-----------------------------------------------------------------------------
-void muehle::printField()
+void Mill::printField()
 {
 	field.printField();
 }
@@ -712,7 +712,7 @@ void muehle::printField()
 // Name: undoLastMove()
 // Desc: Sets the initial field as the current one and apply all (minus one) moves from the move history.
 //-----------------------------------------------------------------------------
-void muehle::undoLastMove(void)
+void Mill::undoLastMove(void)
 {
 	// locals
 	unsigned int *moveLogFrom_bak = new unsigned int[movesDone];
@@ -749,7 +749,7 @@ void muehle::undoLastMove(void)
 // Name: calcNumberOfRestingStones()
 // Desc: 
 //-----------------------------------------------------------------------------
-void muehle::calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting)
+void Mill::calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting)
 {
 	if (getCurrentPlayer() == fieldStruct::playerTwo) {
 		numWhiteStonesResting = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;

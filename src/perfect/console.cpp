@@ -1,10 +1,10 @@
 #include <cstdio>
 #include <iostream>
 #include <windows.h>
-#include "muehle.h"
-#include "minMaxKI.h"
-#include "randomKI.h"
-#include "perfectKI.h"
+#include "mill.h"
+#include "miniMaxAI.h"
+#include "randomAI.h"
+#include "perfectAI.h"
 
 using namespace std;
 
@@ -24,8 +24,8 @@ void main(void)
     bool			playerTwoHuman = false;
     char			tmpChar[100];
     unsigned int	pushFrom, pushTo;
-    muehle *myGame = new muehle();
-    perfectKI *myKI = new perfectKI(databaseDirectory);
+    Mill *myGame = new Mill();
+    perfectAI *myKI = new perfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
     srand(GetTickCount());

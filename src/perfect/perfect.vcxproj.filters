@@ -21,21 +21,6 @@
     <ClInclude Include="cyclicArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="minMaxKI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="muehle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="muehleKI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="perfectKI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="randomKI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="strLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,6 +36,21 @@
     <ClInclude Include="miniMaxWin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="perfectAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="millAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="miniMaxAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="randomAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bufferedFile.cpp">
@@ -63,18 +63,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="minMaxKI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="muehle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="muehleKI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="perfectKI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="randomKI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="strLib.cpp">
@@ -99,6 +87,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="miniMax_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="perfectAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mill.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="millAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="randomAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

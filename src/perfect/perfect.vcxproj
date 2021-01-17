@@ -149,11 +149,11 @@
     <ClInclude Include="miniMax.h" />
     <ClInclude Include="miniMaxWin.h" />
     <ClInclude Include="miniMax_retroAnalysis.h" />
-    <ClInclude Include="minMaxKI.h" />
-    <ClInclude Include="muehle.h" />
-    <ClInclude Include="muehleKI.h" />
-    <ClInclude Include="perfectKI.h" />
-    <ClInclude Include="randomKI.h" />
+    <ClInclude Include="miniMaxAI.h" />
+    <ClInclude Include="mill.h" />
+    <ClInclude Include="millAI.h" />
+    <ClInclude Include="perfectAI.h" />
+    <ClInclude Include="randomAI.h" />
     <ClInclude Include="strLib.h" />
     <ClInclude Include="threadManager.h" />
   </ItemGroup>
@@ -168,10 +168,10 @@
     <ClCompile Include="miniMax_statistics.cpp" />
     <ClCompile Include="miniMax_test.cpp" />
     <ClCompile Include="minMaxKI.cpp" />
-    <ClCompile Include="muehle.cpp" />
-    <ClCompile Include="muehleKI.cpp" />
-    <ClCompile Include="perfectKI.cpp" />
-    <ClCompile Include="randomKI.cpp" />
+    <ClCompile Include="mill.cpp" />
+    <ClCompile Include="millAI.cpp" />
+    <ClCompile Include="perfectAI.cpp" />
+    <ClCompile Include="randomAI.cpp" />
     <ClCompile Include="strLib.cpp" />
     <ClCompile Include="threadManager.cpp" />
   </ItemGroup>

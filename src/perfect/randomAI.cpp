@@ -1,28 +1,28 @@
 /*********************************************************************
-	randomKI.cpp
+	randomAI.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#include "randomKI.h"
+#include "randomAI.h"
 
 //-----------------------------------------------------------------------------
-// Name: randomKI()
-// Desc: randomKI class constructor
+// Name: randomAI()
+// Desc: randomAI class constructor
 //-----------------------------------------------------------------------------
-randomKI::randomKI()
+randomAI::randomAI()
 {
 	// Init
 	srand((unsigned)time(nullptr));
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~randomKI()
-// Desc: randomKI class destructor
+// Name: ~randomAI()
+// Desc: randomAI class destructor
 //-----------------------------------------------------------------------------
-randomKI::~randomKI()
+randomAI::~randomAI()
 {
 	// Locals
 
@@ -32,7 +32,7 @@ randomKI::~randomKI()
 // Name: play()
 // Desc: 
 //-----------------------------------------------------------------------------
-void randomKI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
+void randomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	// locals
 	unsigned int	from, to, direction;

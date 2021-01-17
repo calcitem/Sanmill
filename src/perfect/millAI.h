@@ -1,5 +1,5 @@
 /*********************************************************************\
-	muehleKI.h
+	millAI.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -77,18 +77,18 @@ private:
 	void						setNeighbour(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1);
 };
 
-class muehleKI abstract
+class millAI abstract
 {
 protected:
 	fieldStruct					dummyField;
 
 public:
 	// Constructor / destructor
-	muehleKI()
+	millAI()
 	{
 		dummyField.createField();
 	};
-	~muehleKI()
+	~millAI()
 	{
 		dummyField.deleteField();
 	};

@@ -1,5 +1,5 @@
 /*********************************************************************\
-	randomKI.h
+	randomAI.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -11,16 +11,16 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include "muehleKI.h"
+#include "millAI.h"
 
 /*** Klassen *********************************************************/
 
-class randomKI : public muehleKI
+class randomAI : public millAI
 {
 public:
 	// Constructor / destructor
-	randomKI();
-	~randomKI();
+	randomAI();
+	~randomAI();
 
 	// Functions
 	void play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo);

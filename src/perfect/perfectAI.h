@@ -12,7 +12,7 @@
 #include <iostream>
 #include <cstdio>
 #include <math.h>
-#include "muehleKI.h"
+#include "millAI.h"
 #include "miniMax.h"
 
 //using namespace std;
@@ -75,7 +75,7 @@
 #define NUM_SYM_OPERATIONS				16
 
 /*** Klassen *********************************************************/
-class perfectKI : public muehleKI, public miniMax
+class perfectAI : public millAI, public miniMax
 {
 protected:
 
@@ -162,7 +162,7 @@ protected:
 		unsigned int *idPossibilities;			// returned pointer of getPossibilities()-function
 		backupStruct *oldStates;					// for undo()-function	
 		possibilityStruct *possibilities;				// for getPossNormalMove()-function
-		perfectKI *parent;						// 
+		perfectAI *parent;						// 
 
 		// constructor
 		threadVarsStruct();
@@ -227,8 +227,8 @@ protected:
 
 public:
 	// Constructor / destructor
-	perfectKI(const char *directory);
-	~perfectKI();
+	perfectAI(const char *directory);
+	~perfectAI();
 
 	// Functions
 	bool				setDatabasePath(const char *directory);
