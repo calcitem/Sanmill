@@ -1,9 +1,11 @@
 /*********************************************************************\
-	threadManager.h												  
- 	Copyright (c) Thomas Weber. All rights reserved.				
+	threadManager.h
+	Copyright (c) Thomas Weber. All rights reserved.
+	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
+
 #ifndef THREADMANAGER_H
 #define THREADMANAGER_H
 
@@ -37,7 +39,7 @@ using namespace std;										// use standard library namespace
 class threadManagerClass
 {
 private:
-	
+
 	// structures
 	struct forLoopStruct
 	{
@@ -45,27 +47,27 @@ private:
 		int					inkrement;
 		int					initialValue;
 		int					finalValue;
-		void *				pParameter;
-		DWORD				(*threadProc)(void* pParameter, int index);		// pointer to the user function to be executed by the threads
+		void *pParameter;
+		DWORD(*threadProc)(void *pParameter, int index);		// pointer to the user function to be executed by the threads
 		threadManagerClass *threadManager;
 	};
-	
+
 	// Variables
 	unsigned int			numThreads;										// number of threads
-	HANDLE	*				hThread;										// array of size 'numThreads' containing the thread handles
-	DWORD	*				threadId;										// array of size 'numThreads' containing the thread ids
+	HANDLE *hThread;										// array of size 'numThreads' containing the thread handles
+	DWORD *threadId;										// array of size 'numThreads' containing the thread ids
 	bool					termineAllThreads;
 	bool					executionPaused;								// switch for the 
 	bool					executionCancelled;								// true when cancelExecution() was called
 
 	// barier stuff
-	HANDLE					hEventBarrierPassedByEveryBody;				
-	HANDLE	*				hBarrier;										// array of size 'numThreads' containing the event handles for the barrier
+	HANDLE					hEventBarrierPassedByEveryBody;
+	HANDLE *hBarrier;										// array of size 'numThreads' containing the event handles for the barrier
 	unsigned int			numThreadsPassedBarrier;
 	CRITICAL_SECTION		csBarrier;
 
 	// functions
-	static DWORD WINAPI		threadForLoop					(LPVOID lpParameter);
+	static DWORD WINAPI		threadForLoop(LPVOID lpParameter);
 
 public:
 
@@ -74,40 +76,46 @@ public:
 	public:
 		unsigned int									curThreadNo;
 
-		virtual void									initializeElement () {};
-		virtual void									destroyElement	  () {};
-		virtual void									reduce			  () {};
+		virtual void									initializeElement()
+		{
+		};
+		virtual void									destroyElement()
+		{
+		};
+		virtual void									reduce()
+		{
+		};
 	};
 
 	template <class varType> class threadVarsArray
 	{
 	public:
 		unsigned int									numberOfThreads;
-		varType *										item;
+		varType *item;
 
-		threadVarsArray(unsigned int numberOfThreads, varType& master)
+		threadVarsArray(unsigned int numberOfThreads, varType &master)
 		{
-			this->numberOfThreads	= numberOfThreads;
-			this->item				= new varType[numberOfThreads];
+			this->numberOfThreads = numberOfThreads;
+			this->item = new varType[numberOfThreads];
 
-			for (unsigned int threadCounter=0; threadCounter<numberOfThreads; threadCounter++) {
-				item[threadCounter].curThreadNo		= threadCounter;
+			for (unsigned int threadCounter = 0; threadCounter < numberOfThreads; threadCounter++) {
+				item[threadCounter].curThreadNo = threadCounter;
 				item[threadCounter].initializeElement(master);
-				item[threadCounter].curThreadNo		= threadCounter;		// if 'curThreadNo' is overwritten in 'initializeElement()'
+				item[threadCounter].curThreadNo = threadCounter;		// if 'curThreadNo' is overwritten in 'initializeElement()'
 			}
 		};
 
 		~threadVarsArray()
 		{
-			for (unsigned int threadCounter=0; threadCounter<numberOfThreads; threadCounter++) {
+			for (unsigned int threadCounter = 0; threadCounter < numberOfThreads; threadCounter++) {
 				item[threadCounter].destroyElement();
 			}
-			delete [] item;
+			delete[] item;
 		};
 
-		void *	getPointerToArray() 
+		void *getPointerToArray()
 		{
-			return (void*) item;
+			return (void *)item;
 		};
 
 		unsigned int getSizeOfArray()
@@ -117,31 +125,31 @@ public:
 
 		void reduce()
 		{
-			for (unsigned int threadCounter=0; threadCounter<numberOfThreads; threadCounter++) {
+			for (unsigned int threadCounter = 0; threadCounter < numberOfThreads; threadCounter++) {
 				item[threadCounter].reduce();
 			}
-		};	
+		};
 	};
 
-    // Constructor / destructor
-    threadManagerClass();
-    ~threadManagerClass();
+	// Constructor / destructor
+	threadManagerClass();
+	~threadManagerClass();
 
 	// Functions
-	unsigned int			getThreadNumber					();
-	unsigned int			getNumThreads					();
-	
-	bool					setNumThreads					(unsigned int newNumThreads);
-	void					waitForOtherThreads				(unsigned int threadNo);
-	void					pauseExecution					();		// un-/suspend all threads
-	void					cancelExecution					();		// termineAllThreads auf true
-	bool					wasExecutionCancelled			();
-	void					uncancelExecution				();		// sets executionCancelled	to false, otherwise executeParellelLoop returns immediatelly
+	unsigned int			getThreadNumber();
+	unsigned int			getNumThreads();
+
+	bool					setNumThreads(unsigned int newNumThreads);
+	void					waitForOtherThreads(unsigned int threadNo);
+	void					pauseExecution();		// un-/suspend all threads
+	void					cancelExecution();		// termineAllThreads auf true
+	bool					wasExecutionCancelled();
+	void					uncancelExecution();		// sets executionCancelled	to false, otherwise executeParellelLoop returns immediatelly
 //... void					setCallBackFunction				(void userFunction(void* pUser), void* pUser, DWORD milliseconds);		// a user function which is called every x-milliseconds during execution between two iterations
-	
+
 	// execute
-	unsigned int 			executeInParallel				(DWORD threadProc(void* pParameter			 ), void *pParameter, unsigned int parameterStructSize);
-	unsigned int			executeParallelLoop				(DWORD threadProc(void* pParameter, int index), void *pParameter, unsigned int parameterStructSize, unsigned int scheduleType, int initialValue, int finalValue, int inkrement);
+	unsigned int 			executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize);
+	unsigned int			executeParallelLoop(DWORD threadProc(void *pParameter, int index), void *pParameter, unsigned int parameterStructSize, unsigned int scheduleType, int initialValue, int finalValue, int inkrement);
 };
 
 #endif

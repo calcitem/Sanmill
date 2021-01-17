@@ -1,9 +1,11 @@
 /*********************************************************************\
-	muehleKI.h													  
- 	Copyright (c) Thomas Weber. All rights reserved.				
+	muehleKI.h
+	Copyright (c) Thomas Weber. All rights reserved.
+	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
+
 #ifndef MUEHLE_KI_H
 #define MUEHLE_KI_H
 
@@ -26,28 +28,28 @@ public:
 	unsigned int 				numStones;						// number of stones of this player on the field
 	unsigned int 				numStonesMissing;				// number of stones, which where stolen by the opponent
 	unsigned int 				numPossibleMoves;				// amount of possible moves
-	unsigned int 				posTo  [MAX_NUM_POS_MOVES];		// target field position of a possible move
+	unsigned int 				posTo[MAX_NUM_POS_MOVES];		// target field position of a possible move
 	unsigned int 				posFrom[MAX_NUM_POS_MOVES];		// source field position of a possible move
 
-	void						copyPlayer						(playerStruct *destination);
+	void						copyPlayer(playerStruct *destination);
 };
 
 class fieldStruct
 {
 public:
 	// constants
-	static const int 			squareIsFree					=  0;		// trivial
-	static const int 			playerOne						= -1;		// so rowOwner can be calculated easy
-	static const int 			playerTwo						=  1;
-	static const int 			playerBlack						= -1;		// so rowOwner can be calculated easy
-	static const int 			playerWhite						=  1;
-	static const unsigned int 	noWarning						=  0;		// so the bitwise or-operation can be applied, without interacting with playerOne & Two
-	static const unsigned int 	playerOneWarning				=  2;		
-	static const unsigned int 	playerTwoWarning				=  4;
-	static const unsigned int 	playerBothWarning				=  6;
-	static const unsigned int	numStonesPerPlayer				=  9;
-	static const unsigned int	size							= 24;		// number of squares
-	static const int			gameDrawn						=  3;		// only a nonzero value
+	static const int 			squareIsFree = 0;		// trivial
+	static const int 			playerOne = -1;		// so rowOwner can be calculated easy
+	static const int 			playerTwo = 1;
+	static const int 			playerBlack = -1;		// so rowOwner can be calculated easy
+	static const int 			playerWhite = 1;
+	static const unsigned int 	noWarning = 0;		// so the bitwise or-operation can be applied, without interacting with playerOne & Two
+	static const unsigned int 	playerOneWarning = 2;
+	static const unsigned int 	playerTwoWarning = 4;
+	static const unsigned int 	playerBothWarning = 6;
+	static const unsigned int	numStonesPerPlayer = 9;
+	static const unsigned int	size = 24;		// number of squares
+	static const int			gameDrawn = 3;		// only a nonzero value
 
 	// variables
 	int			 				field[size];					// one of the values above for each field position
@@ -59,20 +61,20 @@ public:
 	unsigned int 				stonesSet;						// number of stones set in the setting phase
 	bool		 				settingPhase;					// true if stonesSet < 18
 	unsigned int 				stoneMustBeRemoved;				// number of stones which must be removed by the current player
-	playerStruct				*curPlayer, *oppPlayer;			// pointers to the current and opponent player
+	playerStruct *curPlayer, *oppPlayer;			// pointers to the current and opponent player
 
 	// useful functions
-	void						printField						();
-	void						copyField						(fieldStruct  *destination);
-	void						createField						();
-	void						deleteField						();
+	void						printField();
+	void						copyField(fieldStruct *destination);
+	void						createField();
+	void						deleteField();
 
 private:
 
 	// helper functions
-	char						GetCharFromStone				(int stone);
-	void						setConnection					(unsigned int index, int firstDirection, int secondDirection, int thirdDirection, int fourthDirection);
-	void						setNeighbour					(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1);
+	char						GetCharFromStone(int stone);
+	void						setConnection(unsigned int index, int firstDirection, int secondDirection, int thirdDirection, int fourthDirection);
+	void						setNeighbour(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1);
 };
 
 class muehleKI abstract
@@ -81,12 +83,18 @@ protected:
 	fieldStruct					dummyField;
 
 public:
-    // Constructor / destructor
-								muehleKI()						{ dummyField.createField(); };
-								~muehleKI()						{ dummyField.deleteField(); };
+	// Constructor / destructor
+	muehleKI()
+	{
+		dummyField.createField();
+	};
+	~muehleKI()
+	{
+		dummyField.deleteField();
+	};
 
 	// Functions
-	virtual void				play							(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo) = 0;
+	virtual void				play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo) = 0;
 };
 
 #endif

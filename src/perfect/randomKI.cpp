@@ -1,6 +1,7 @@
 /*********************************************************************
-	randomKI.cpp													  
- 	Copyright (c) Thomas Weber. All rights reserved.				
+	randomKI.cpp
+	Copyright (c) Thomas Weber. All rights reserved.
+	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
@@ -14,7 +15,7 @@
 randomKI::randomKI()
 {
 	// Init
-	srand( (unsigned)time( NULL ) );
+	srand((unsigned)time(NULL));
 }
 
 //-----------------------------------------------------------------------------
@@ -42,24 +43,24 @@ void randomKI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 
 		// search a stone from the enemy
 		do {
-			from	= rand() % theField->size;
-			to		= theField->size;
+			from = rand() % theField->size;
+			to = theField->size;
 		} while (theField->field[from] != theField->oppPlayer->id || theField->stonePartOfMill[from]);
-	
-	// still in setting phase ?
+
+		// still in setting phase ?
 	} else if (theField->settingPhase) {
 
 		// search a free square
 		do {
-			from	= theField->size;
-			to		= rand() % theField->size;
+			from = theField->size;
+			to = rand() % theField->size;
 		} while (theField->field[to] != theField->squareIsFree);
-	
-	// try to push randomly
+
+		// try to push randomly
 	} else {
 
 		do {
-		// search an own stone
+			// search an own stone
 			do {
 				from = rand() % theField->size;
 			} while (theField->field[from] != theField->curPlayer->id);
@@ -67,20 +68,20 @@ void randomKI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 			// select a free square
 			if (allowedToSpring) {
 				do {
-					to	= rand() % theField->size;
+					to = rand() % theField->size;
 				} while (theField->field[to] != theField->squareIsFree);
-				
-			// select a connected square
-			} else { 
+
+				// select a connected square
+			} else {
 				do {
-					direction	= rand() % 4; 
-					to			= theField->connectedSquare[from][direction];
+					direction = rand() % 4;
+					to = theField->connectedSquare[from][direction];
 				} while (to == theField->size);
 			}
 
 		} while (theField->field[to] != theField->squareIsFree);
 	}
-	
-	*pushFrom	= from;
-	*pushTo		= to;
+
+	*pushFrom = from;
+	*pushTo = to;
 }

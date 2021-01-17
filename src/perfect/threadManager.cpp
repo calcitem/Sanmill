@@ -1,6 +1,7 @@
 /*********************************************************************
-	threadManager.cpp													  
- 	Copyright (c) Thomas Weber. All rights reserved.				
+	threadManager.cpp
+	Copyright (c) Thomas Weber. All rights reserved.
+	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
@@ -15,26 +16,26 @@ threadManagerClass::threadManagerClass()
 {
 	// locals
 	unsigned int	curThreadNo;
-	SYSTEM_INFO		m_si		= {0};
+	SYSTEM_INFO		m_si = { 0 };
 
 	GetSystemInfo(&m_si);
 
 	// init default values
-	executionPaused			= false;	
-	executionCancelled		= false;
-	numThreads				= m_si.dwNumberOfProcessors;
-	hThread					= new HANDLE[numThreads];
-	threadId				= new DWORD [numThreads];
-	hBarrier				= new HANDLE[numThreads];
-	numThreadsPassedBarrier	= 0;
+	executionPaused = false;
+	executionCancelled = false;
+	numThreads = m_si.dwNumberOfProcessors;
+	hThread = new HANDLE[numThreads];
+	threadId = new DWORD[numThreads];
+	hBarrier = new HANDLE[numThreads];
+	numThreadsPassedBarrier = 0;
 
 	InitializeCriticalSection(&csBarrier);
 	hEventBarrierPassedByEveryBody = CreateEvent(NULL, true, false, NULL);
 
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
-		hThread[curThreadNo]	= NULL;
-		threadId[curThreadNo]	= 0;
-		hBarrier[curThreadNo]	= CreateEvent(NULL, false, false, NULL);
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+		hThread[curThreadNo] = NULL;
+		threadId[curThreadNo] = 0;
+		hBarrier[curThreadNo] = CreateEvent(NULL, false, false, NULL);
 	}
 }
 
@@ -47,16 +48,16 @@ threadManagerClass::~threadManagerClass()
 	// locals
 	unsigned int	curThreadNo;
 
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		CloseHandle(hBarrier[curThreadNo]);
 	}
 
 	DeleteCriticalSection(&csBarrier);
 	CloseHandle(hEventBarrierPassedByEveryBody);
 
-	if (hBarrier != NULL) delete [] hBarrier;  hBarrier  = NULL;
-	if (hThread  != NULL) delete [] hThread;  hThread  = NULL;
-	if (threadId != NULL) delete [] threadId; threadId = NULL;
+	if (hBarrier != NULL) delete[] hBarrier;  hBarrier = NULL;
+	if (hThread != NULL) delete[] hThread;  hThread = NULL;
+	if (threadId != NULL) delete[] threadId; threadId = NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -67,7 +68,7 @@ void threadManagerClass::waitForOtherThreads(unsigned int threadNo)
 {
 	// wait if other threads are still waiting at the barrier
 //cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "while (numThreadsPassedBarrier>0)";
-	if (numThreadsPassedBarrier>0) {
+	if (numThreadsPassedBarrier > 0) {
 		WaitForSingleObject(hEventBarrierPassedByEveryBody, INFINITE);
 	}
 
@@ -81,25 +82,25 @@ void threadManagerClass::waitForOtherThreads(unsigned int threadNo)
 //cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "EnterCriticalSection()";
 	EnterCriticalSection(&csBarrier);
 
-		// if the first one which entered, then wait until other threads
-		if (numThreadsPassedBarrier==0) {
-//cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "WaitForMultipleObjects()";
-			WaitForMultipleObjects(numThreads, hBarrier, TRUE, INFINITE);
-			ResetEvent(hEventBarrierPassedByEveryBody);
-		}
+	// if the first one which entered, then wait until other threads
+	if (numThreadsPassedBarrier == 0) {
+		//cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "WaitForMultipleObjects()";
+		WaitForMultipleObjects(numThreads, hBarrier, TRUE, INFINITE);
+		ResetEvent(hEventBarrierPassedByEveryBody);
+	}
 
-		// count threads which passed the barrier
+	// count threads which passed the barrier
 //cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "numThreadsPassedBarrier++";
-		numThreadsPassedBarrier++;
+	numThreadsPassedBarrier++;
 
-		// the last one closes the door
+	// the last one closes the door
 //cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "if (numThreadsPassedBarrier == numThreads) numThreadsPassedBarrier = 0";
-		if (numThreadsPassedBarrier == numThreads) {
-			numThreadsPassedBarrier = 0;
-			SetEvent(hEventBarrierPassedByEveryBody);
-		}
+	if (numThreadsPassedBarrier == numThreads) {
+		numThreadsPassedBarrier = 0;
+		SetEvent(hEventBarrierPassedByEveryBody);
+	}
 
-//cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "LeaveCriticalSection()";
+	//cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "LeaveCriticalSection()";
 	LeaveCriticalSection(&csBarrier);
 }
 
@@ -120,15 +121,15 @@ bool threadManagerClass::setNumThreads(unsigned int newNumThreads)
 {
 	// cancel if any thread running
 	EnterCriticalSection(&csBarrier);
-	for (unsigned int curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		if (hThread[curThreadNo]) return false;
 	}
-	for (unsigned int curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		CloseHandle(hBarrier[curThreadNo]);
 	}
 	numThreads = newNumThreads;
-	for (unsigned int curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
-		hBarrier[curThreadNo]	= CreateEvent(NULL, false, false, NULL);
+	for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+		hBarrier[curThreadNo] = CreateEvent(NULL, false, false, NULL);
 	}
 	LeaveCriticalSection(&csBarrier);
 	return true;
@@ -140,12 +141,12 @@ bool threadManagerClass::setNumThreads(unsigned int newNumThreads)
 //-----------------------------------------------------------------------------
 void threadManagerClass::pauseExecution()
 {
-	for (unsigned int curThread=0; curThread<numThreads; curThread++) {
-		
+	for (unsigned int curThread = 0; curThread < numThreads; curThread++) {
+
 		// unsuspend all threads
 		if (!executionPaused) {
 			SuspendThread(hThread[curThread]);
-		// suspend all threads
+			// suspend all threads
 		} else {
 			ResumeThread(hThread[curThread]);
 		}
@@ -160,7 +161,7 @@ void threadManagerClass::pauseExecution()
 //-----------------------------------------------------------------------------
 void threadManagerClass::cancelExecution()
 {
-	termineAllThreads  = true;
+	termineAllThreads = true;
 	executionCancelled = true;
 	if (executionPaused) {
 		pauseExecution();
@@ -195,7 +196,7 @@ unsigned int threadManagerClass::getThreadNumber()
 	DWORD			curThreadId = GetCurrentThreadId();
 	unsigned int	curThreadNo;
 
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		if (curThreadId == threadId[curThreadNo]) {
 			return curThreadNo;
 		}
@@ -207,35 +208,35 @@ unsigned int threadManagerClass::getThreadNumber()
 // Name: executeInParallel()
 // Desc: lpParameter is an array of size numThreads.
 //-----------------------------------------------------------------------------
-unsigned int  threadManagerClass::executeInParallel(DWORD threadProc(void* pParameter), void *pParameter, unsigned int parameterStructSize)
+unsigned int  threadManagerClass::executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize)
 {
 	// locals
 	unsigned int	curThreadNo;
-	SIZE_T			dwStackSize		= 0;
+	SIZE_T			dwStackSize = 0;
 
 	// parameters ok?
 	if (pParameter == NULL)	return TM_RETURN_VALUE_INVALID_PARAM;
 
 	// globals
-	termineAllThreads	= false;
+	termineAllThreads = false;
 
 	// create threads
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
-		
-		hThread[curThreadNo] = CreateThread(NULL, dwStackSize, (LPTHREAD_START_ROUTINE) threadProc, (void*) (((char *) pParameter) + curThreadNo * parameterStructSize), CREATE_SUSPENDED, &threadId[curThreadNo]);
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+
+		hThread[curThreadNo] = CreateThread(NULL, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc, (void *)(((char *)pParameter) + curThreadNo * parameterStructSize), CREATE_SUSPENDED, &threadId[curThreadNo]);
 		SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
-		
+
 		if (hThread[curThreadNo] == NULL) {
-			for (curThreadNo; curThreadNo>0; curThreadNo--) {
-				CloseHandle(hThread[curThreadNo-1]);
-				hThread[curThreadNo-1] = NULL;
+			for (curThreadNo; curThreadNo > 0; curThreadNo--) {
+				CloseHandle(hThread[curThreadNo - 1]);
+				hThread[curThreadNo - 1] = NULL;
 			}
 			return TM_RETURN_VALUE_UNEXPECTED_ERROR;
 		}
 	}
 
 	// start threads
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		if (!executionPaused) ResumeThread(hThread[curThreadNo]);
 	}
 
@@ -243,10 +244,10 @@ unsigned int  threadManagerClass::executeInParallel(DWORD threadProc(void* pPara
 	WaitForMultipleObjects(numThreads, hThread, TRUE, INFINITE);
 
 	// Close all thread handles upon completion.
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		CloseHandle(hThread[curThreadNo]);
-		hThread[curThreadNo]	= NULL;
-		threadId[curThreadNo]	= 0;
+		hThread[curThreadNo] = NULL;
+		threadId[curThreadNo] = 0;
 	}
 
 	// everything ok
@@ -263,50 +264,49 @@ unsigned int  threadManagerClass::executeInParallel(DWORD threadProc(void* pPara
 // lpParameter - an array of size numThreads
 // finalValue  - this value is part of the iteration, meaning that index ranges from initialValue to finalValue including both border values
 //-----------------------------------------------------------------------------
-unsigned int threadManagerClass::executeParallelLoop(	DWORD 			threadProc(void* pParameter, int index), 
-														void *			pParameter, 
-														unsigned int	parameterStructSize, 
-														unsigned int	scheduleType, 
-														int				initialValue, 
-														int				finalValue, 
-														int				inkrement)
+unsigned int threadManagerClass::executeParallelLoop(DWORD 			threadProc(void *pParameter, int index),
+													 void *pParameter,
+													 unsigned int	parameterStructSize,
+													 unsigned int	scheduleType,
+													 int				initialValue,
+													 int				finalValue,
+													 int				inkrement)
 {
 	// parameters ok?
 	if (executionCancelled == true)						return TM_RETURN_VALUE_EXECUTION_CANCELLED;
-	if (pParameter   == NULL)							return TM_RETURN_VALUE_INVALID_PARAM;
+	if (pParameter == NULL)							return TM_RETURN_VALUE_INVALID_PARAM;
 	if (scheduleType >= TM_SCHEDULE_NUM_TYPES)			return TM_RETURN_VALUE_INVALID_PARAM;
-	if (inkrement	 == 0)								return TM_RETURN_VALUE_INVALID_PARAM;
-	if (abs(finalValue-initialValue)==abs(inkrement))	return TM_RETURN_VALUE_INVALID_PARAM;
+	if (inkrement == 0)								return TM_RETURN_VALUE_INVALID_PARAM;
+	if (abs(finalValue - initialValue) == abs(inkrement))	return TM_RETURN_VALUE_INVALID_PARAM;
 
 	// locals
 	unsigned int	curThreadNo;														// the threads are enumerated from 0 to numThreads-1
-	int				numIterations		= (finalValue - initialValue) / inkrement + 1;	// total number of iterations
-	int				chunkSize			= 0;											// number of iterations per chunk
-	SIZE_T			dwStackSize			= 0;											// initital stack size of each thread. 0 means default size ~1MB
-	forLoopStruct *	forLoopParameters	= new forLoopStruct[numThreads];				//
+	int				numIterations = (finalValue - initialValue) / inkrement + 1;	// total number of iterations
+	int				chunkSize = 0;											// number of iterations per chunk
+	SIZE_T			dwStackSize = 0;											// initital stack size of each thread. 0 means default size ~1MB
+	forLoopStruct *forLoopParameters = new forLoopStruct[numThreads];				//
 
 	// globals
-	termineAllThreads	= false;
+	termineAllThreads = false;
 
 	// create threads
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
-		
-		forLoopParameters[curThreadNo].pParameter			= (pParameter!=NULL ? (void*) (((char *) pParameter) + curThreadNo * parameterStructSize) : NULL);
-		forLoopParameters[curThreadNo].threadManager		= this;
-		forLoopParameters[curThreadNo].threadProc			= threadProc;
-		forLoopParameters[curThreadNo].inkrement			= inkrement;
-		forLoopParameters[curThreadNo].scheduleType			= scheduleType;
-		
-		switch (scheduleType)
-		{
-		case TM_SCHEDULE_STATIC: 
-			chunkSize										= numIterations / numThreads + (curThreadNo<numIterations%numThreads ? 1 : 0);
-			if (curThreadNo==0) { 
-				forLoopParameters[curThreadNo].initialValue	= initialValue;
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+
+		forLoopParameters[curThreadNo].pParameter = (pParameter != NULL ? (void *)(((char *)pParameter) + curThreadNo * parameterStructSize) : NULL);
+		forLoopParameters[curThreadNo].threadManager = this;
+		forLoopParameters[curThreadNo].threadProc = threadProc;
+		forLoopParameters[curThreadNo].inkrement = inkrement;
+		forLoopParameters[curThreadNo].scheduleType = scheduleType;
+
+		switch (scheduleType) {
+		case TM_SCHEDULE_STATIC:
+			chunkSize = numIterations / numThreads + (curThreadNo < numIterations %numThreads ? 1 : 0);
+			if (curThreadNo == 0) {
+				forLoopParameters[curThreadNo].initialValue = initialValue;
 			} else {
-				forLoopParameters[curThreadNo].initialValue	= forLoopParameters[curThreadNo-1].finalValue + 1;
+				forLoopParameters[curThreadNo].initialValue = forLoopParameters[curThreadNo - 1].finalValue + 1;
 			}
-			forLoopParameters[curThreadNo].finalValue		= forLoopParameters[curThreadNo].initialValue + chunkSize - 1;
+			forLoopParameters[curThreadNo].finalValue = forLoopParameters[curThreadNo].initialValue + chunkSize - 1;
 			break;
 		case TM_SCHEDULE_DYNAMIC:
 			return TM_RETURN_VALUE_INVALID_PARAM;
@@ -320,12 +320,12 @@ unsigned int threadManagerClass::executeParallelLoop(	DWORD 			threadProc(void* 
 		}
 
 		// create suspended thread
-		hThread[curThreadNo] = CreateThread(NULL, dwStackSize, threadForLoop, (LPVOID) (&forLoopParameters[curThreadNo]), CREATE_SUSPENDED, &threadId[curThreadNo]);
+		hThread[curThreadNo] = CreateThread(NULL, dwStackSize, threadForLoop, (LPVOID)(&forLoopParameters[curThreadNo]), CREATE_SUSPENDED, &threadId[curThreadNo]);
 		SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
 		if (hThread[curThreadNo] == NULL) {
-			for (curThreadNo; curThreadNo>0; curThreadNo--) {
-				CloseHandle(hThread[curThreadNo-1]);
-				hThread[curThreadNo-1] = NULL;
+			for (curThreadNo; curThreadNo > 0; curThreadNo--) {
+				CloseHandle(hThread[curThreadNo - 1]);
+				hThread[curThreadNo - 1] = NULL;
 			}
 			return TM_RETURN_VALUE_UNEXPECTED_ERROR;
 		}
@@ -334,7 +334,7 @@ unsigned int threadManagerClass::executeParallelLoop(	DWORD 			threadProc(void* 
 	}
 
 	// start threads, but don't resume if in pause mode
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		if (!executionPaused) ResumeThread(hThread[curThreadNo]);
 	}
 
@@ -342,12 +342,12 @@ unsigned int threadManagerClass::executeParallelLoop(	DWORD 			threadProc(void* 
 	WaitForMultipleObjects(numThreads, hThread, TRUE, INFINITE);
 
 	// Close all thread handles upon completion.
-	for (curThreadNo=0; curThreadNo<numThreads; curThreadNo++) {
+	for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 		CloseHandle(hThread[curThreadNo]);
-		hThread[curThreadNo]	= NULL;
-		threadId[curThreadNo]	= 0;
+		hThread[curThreadNo] = NULL;
+		threadId[curThreadNo] = 0;
 	}
-	delete [] forLoopParameters;
+	delete[] forLoopParameters;
 
 	// everything ok
 	if (executionCancelled) {
@@ -364,15 +364,13 @@ unsigned int threadManagerClass::executeParallelLoop(	DWORD 			threadProc(void* 
 DWORD WINAPI threadManagerClass::threadForLoop(LPVOID lpParameter)
 {
 	// locals
-	forLoopStruct *		forLoopParameters		= (forLoopStruct *) lpParameter;
+	forLoopStruct *forLoopParameters = (forLoopStruct *)lpParameter;
 	int					index;
 
-	switch (forLoopParameters->scheduleType)
-	{
-	case TM_SCHEDULE_STATIC: 
-		for (index=forLoopParameters->initialValue; (forLoopParameters->inkrement<0) ? index >= forLoopParameters->finalValue : index <= forLoopParameters->finalValue; index += forLoopParameters->inkrement) {
-			switch (forLoopParameters->threadProc(forLoopParameters->pParameter, index)) 
-			{
+	switch (forLoopParameters->scheduleType) {
+	case TM_SCHEDULE_STATIC:
+		for (index = forLoopParameters->initialValue; (forLoopParameters->inkrement < 0) ? index >= forLoopParameters->finalValue : index <= forLoopParameters->finalValue; index += forLoopParameters->inkrement) {
+			switch (forLoopParameters->threadProc(forLoopParameters->pParameter, index)) {
 			case TM_RETURN_VALUE_OK:
 				break;
 			case TM_RETURN_VALUE_TERMINATE_ALL_THREADS:

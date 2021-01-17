@@ -1,6 +1,7 @@
 /*********************************************************************
-	muehle.cpp													  
- 	Copyright (c) Thomas Weber. All rights reserved.				
+	muehle.cpp
+	Copyright (c) Thomas Weber. All rights reserved.
+	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
@@ -13,13 +14,13 @@
 //-----------------------------------------------------------------------------
 muehle::muehle()
 {
-	srand( (unsigned)time( NULL ) );
+	srand((unsigned)time(NULL));
 
-	moveLogFrom					= NULL;
-	moveLogTo					= NULL;
-	playerOneKI					= NULL;
-	playerTwoKI					= NULL;
-	movesDone					= 0;
+	moveLogFrom = NULL;
+	moveLogTo = NULL;
+	playerOneKI = NULL;
+	playerTwoKI = NULL;
+	movesDone = 0;
 
 	field.createField();
 	initialField.createField();
@@ -40,8 +41,8 @@ muehle::~muehle()
 //-----------------------------------------------------------------------------
 void muehle::deleteArrays()
 {
-	SAFE_DELETE_ARRAY	(moveLogFrom);
-	SAFE_DELETE_ARRAY	(moveLogTo	);
+	SAFE_DELETE_ARRAY(moveLogFrom);
+	SAFE_DELETE_ARRAY(moveLogTo);
 
 	field.deleteField();
 	initialField.deleteField();
@@ -62,19 +63,19 @@ void muehle::beginNewGame(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI, int
 
 	// calc beginning player
 	if (currentPlayer == field.playerOne || currentPlayer == field.playerTwo) {
-		beginningPlayer					= currentPlayer;
+		beginningPlayer = currentPlayer;
 	} else {
-		beginningPlayer					= (rand() % 2) ? field.playerOne : field.playerTwo;
+		beginningPlayer = (rand() % 2) ? field.playerOne : field.playerTwo;
 	}
-	field.curPlayer->id					= beginningPlayer;
-	field.oppPlayer->id					= (field.curPlayer->id == field.playerTwo) ? field.playerOne : field.playerTwo;
+	field.curPlayer->id = beginningPlayer;
+	field.oppPlayer->id = (field.curPlayer->id == field.playerTwo) ? field.playerOne : field.playerTwo;
 
-	winner								= 0;	
-	movesDone							= 0;
-	playerOneKI							= firstPlayerKI;
-	playerTwoKI							= secondPlayerKI;
-	moveLogFrom							= new unsigned int[MAX_NUM_MOVES];
-	moveLogTo							= new unsigned int[MAX_NUM_MOVES];
+	winner = 0;
+	movesDone = 0;
+	playerOneKI = firstPlayerKI;
+	playerTwoKI = secondPlayerKI;
+	moveLogFrom = new unsigned int[MAX_NUM_MOVES];
+	moveLogTo = new unsigned int[MAX_NUM_MOVES];
 
 	// remember initialField
 	field.copyField(&initialField);
@@ -86,11 +87,11 @@ void muehle::beginNewGame(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI, int
 //-----------------------------------------------------------------------------
 bool muehle::startSettingPhase(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI, int currentPlayer, bool settingPhase)
 {
-    beginNewGame(firstPlayerKI, secondPlayerKI, currentPlayer);
+	beginNewGame(firstPlayerKI, secondPlayerKI, currentPlayer);
 
-    field.settingPhase = settingPhase;
+	field.settingPhase = settingPhase;
 
-    return true;
+	return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -100,29 +101,31 @@ bool muehle::startSettingPhase(muehleKI *firstPlayerKI, muehleKI *secondPlayerKI
 void muehle::setUpCalcPossibleMoves(playerStruct *player)
 {
 	// locals
-	unsigned int i, j , k, movingDirection;	
+	unsigned int i, j, k, movingDirection;
 
-	for (player->numPossibleMoves=0, i=0; i<fieldStruct::size; i++) { for (j=0; j<fieldStruct::size; j++) {	
+	for (player->numPossibleMoves = 0, i = 0; i < fieldStruct::size; i++) {
+		for (j = 0; j < fieldStruct::size; j++) {
 
-		// is stone from player ?
-		if (field.field[i] != player->id)					continue;
-		
-		// is destination free ?
-		if (field.field[j] != field.squareIsFree)			continue;
+			// is stone from player ?
+			if (field.field[i] != player->id)					continue;
 
-		// when current player has only 3 stones he is allowed to spring his stone
-		if (player->numStones > 3 || field.settingPhase) {
+			// is destination free ?
+			if (field.field[j] != field.squareIsFree)			continue;
 
-			// determine moving direction
-			for (k=0, movingDirection=4; k<4; k++) if (field.connectedSquare[i][k] == j) movingDirection = k;
+			// when current player has only 3 stones he is allowed to spring his stone
+			if (player->numStones > 3 || field.settingPhase) {
 
-			// are both squares connected ?
-			if (movingDirection == 4)	continue;
+				// determine moving direction
+				for (k = 0, movingDirection = 4; k < 4; k++) if (field.connectedSquare[i][k] == j) movingDirection = k;
+
+				// are both squares connected ?
+				if (movingDirection == 4)	continue;
+			}
+
+			// everything is ok
+			player->numPossibleMoves++;
 		}
-
-		// everything is ok
-		player->numPossibleMoves++;
-	}}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -132,11 +135,11 @@ void muehle::setUpCalcPossibleMoves(playerStruct *player)
 void muehle::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
 {
 	// locals
-	int				rowOwner		= field.field[stone];
+	int				rowOwner = field.field[stone];
 
 	// mill closed ?
 	if (rowOwner != field.squareIsFree && field.field[firstNeighbour] == rowOwner && field.field[secondNeighbour] == rowOwner) {
-					
+
 		field.stonePartOfMill[stone]++;
 		field.stonePartOfMill[firstNeighbour]++;
 		field.stonePartOfMill[secondNeighbour]++;
@@ -149,66 +152,66 @@ void muehle::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighb
 //-----------------------------------------------------------------------------
 bool muehle::putStone(unsigned int pos, int player)
 {
-    // locals
-    unsigned int i;
-    unsigned int numberOfMillsCurrentPlayer = 0, numberOfMillsOpponentPlayer = 0;
-    playerStruct *myPlayer = (player == field.curPlayer->id) ? field.curPlayer : field.oppPlayer;
+	// locals
+	unsigned int i;
+	unsigned int numberOfMillsCurrentPlayer = 0, numberOfMillsOpponentPlayer = 0;
+	playerStruct *myPlayer = (player == field.curPlayer->id) ? field.curPlayer : field.oppPlayer;
 
-    // check parameters
-    if (player != fieldStruct::playerOne && player != fieldStruct::playerTwo) return false;
-    if (pos    >= fieldStruct::size)                                          return false;
-    if (field.field[pos] != field.squareIsFree)	                              return false;
+	// check parameters
+	if (player != fieldStruct::playerOne && player != fieldStruct::playerTwo) return false;
+	if (pos >= fieldStruct::size)                                          return false;
+	if (field.field[pos] != field.squareIsFree)	                              return false;
 
 	// set stone
 	field.field[pos] = player;
-    myPlayer->numStones++;
+	myPlayer->numStones++;
 	field.stonesSet++;
 
 	// setting phase finished ?
 	if (field.stonesSet == 18) field.settingPhase = false;
 
-    // calc possible moves
-    setUpCalcPossibleMoves(field.curPlayer);
-    setUpCalcPossibleMoves(field.oppPlayer);
+	// calc possible moves
+	setUpCalcPossibleMoves(field.curPlayer);
+	setUpCalcPossibleMoves(field.oppPlayer);
 
-    // zero
-    for (i=0; i<fieldStruct::size; i++) field.stonePartOfMill[i]	= 0;
+	// zero
+	for (i = 0; i < fieldStruct::size; i++) field.stonePartOfMill[i] = 0;
 
-    // go in every direction
-    for (i=0; i<fieldStruct::size; i++) {
-	    setUpSetWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1]);
-	    setUpSetWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1]);
-    }
+	// go in every direction
+	for (i = 0; i < fieldStruct::size; i++) {
+		setUpSetWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1]);
+		setUpSetWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1]);
+	}
 
-    // since every mill was detected 3 times
-    for (i=0; i<fieldStruct::size; i++) field.stonePartOfMill[i] /= 3;
+	// since every mill was detected 3 times
+	for (i = 0; i < fieldStruct::size; i++) field.stonePartOfMill[i] /= 3;
 
 	// count completed mills
-	for (i=0; i<fieldStruct::size; i++) {
-		if (field.field[i] == field.curPlayer->id) numberOfMillsCurrentPlayer  += field.stonePartOfMill[i];
+	for (i = 0; i < fieldStruct::size; i++) {
+		if (field.field[i] == field.curPlayer->id) numberOfMillsCurrentPlayer += field.stonePartOfMill[i];
 		else									   numberOfMillsOpponentPlayer += field.stonePartOfMill[i];
 	}
-	numberOfMillsCurrentPlayer  /= 3;
+	numberOfMillsCurrentPlayer /= 3;
 	numberOfMillsOpponentPlayer /= 3;
 
-    // stonesSet & numStonesMissing
-    if (field.settingPhase) {
-// ... This calculation is not correct! It is possible that some mills did not cause a stone removal.
-	    field.curPlayer->numStonesMissing	= numberOfMillsOpponentPlayer;
-	    field.oppPlayer->numStonesMissing	= numberOfMillsCurrentPlayer - field.stoneMustBeRemoved;
-	    field.stonesSet					    = field.curPlayer->numStones + field.oppPlayer->numStones + field.curPlayer->numStonesMissing + field.oppPlayer->numStonesMissing;
-    } else {
-	    field.stonesSet					    = 18;
-	    field.curPlayer->numStonesMissing	= 9 - field.curPlayer->numStones;
-	    field.oppPlayer->numStonesMissing	= 9 - field.oppPlayer->numStones;
-    }
+	// stonesSet & numStonesMissing
+	if (field.settingPhase) {
+		// ... This calculation is not correct! It is possible that some mills did not cause a stone removal.
+		field.curPlayer->numStonesMissing = numberOfMillsOpponentPlayer;
+		field.oppPlayer->numStonesMissing = numberOfMillsCurrentPlayer - field.stoneMustBeRemoved;
+		field.stonesSet = field.curPlayer->numStones + field.oppPlayer->numStones + field.curPlayer->numStonesMissing + field.oppPlayer->numStonesMissing;
+	} else {
+		field.stonesSet = 18;
+		field.curPlayer->numStonesMissing = 9 - field.curPlayer->numStones;
+		field.oppPlayer->numStonesMissing = 9 - field.oppPlayer->numStones;
+	}
 
-    // when opponent is unable to move than current player has won
-         if ((!field.curPlayer->numPossibleMoves) && (!field.settingPhase) 
-         && (!field.stoneMustBeRemoved) && (field.curPlayer->numStones > 3))     winner = field.oppPlayer->id;
-    else if ((field.curPlayer->numStones < 3) && (!field.settingPhase))          winner = field.oppPlayer->id;                                                  
-    else if ((field.oppPlayer->numStones < 3) && (!field.settingPhase))          winner = field.curPlayer->id;                                                             
-    else                                                                         winner = 0;
+	// when opponent is unable to move than current player has won
+	if ((!field.curPlayer->numPossibleMoves) && (!field.settingPhase)
+		&& (!field.stoneMustBeRemoved) && (field.curPlayer->numStones > 3))     winner = field.oppPlayer->id;
+	else if ((field.curPlayer->numStones < 3) && (!field.settingPhase))          winner = field.oppPlayer->id;
+	else if ((field.oppPlayer->numStones < 3) && (!field.settingPhase))          winner = field.curPlayer->id;
+	else                                                                         winner = 0;
 
 	// everything is ok
 	return true;
@@ -223,7 +226,7 @@ bool muehle::settingPhaseHasFinished()
 	// remember initialField
 	field.copyField(&initialField);
 
-    return true;
+	return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -233,12 +236,12 @@ bool muehle::settingPhaseHasFinished()
 bool muehle::getField(int *pField)
 {
 	unsigned int index;
-	
+
 	// if no log is available than no game is in progress and field is invalid
 	if (moveLogFrom == NULL) return false;
 
-	for (index=0; index<field.size; index++) {
-		if (field.warnings[index] != field.noWarning)	pField[index] = (int) field.warnings[index];
+	for (index = 0; index < field.size; index++) {
+		if (field.warnings[index] != field.noWarning)	pField[index] = (int)field.warnings[index];
 		else											pField[index] = field.field[index];
 	}
 
@@ -255,9 +258,9 @@ void muehle::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int
 
 	numMovesDone = movesDone;
 
-	for (index=0; index<movesDone; index++) {
+	for (index = 0; index < movesDone; index++) {
 		from[index] = moveLogFrom[index];
-		to  [index] = moveLogTo  [index];
+		to[index] = moveLogTo[index];
 	}
 }
 
@@ -267,11 +270,11 @@ void muehle::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int
 //-----------------------------------------------------------------------------
 void muehle::setNextPlayer()
 {
-	playerStruct	*tmpPlayer;
-	
-	tmpPlayer		= field.curPlayer;
-	field.curPlayer	= field.oppPlayer;
-	field.oppPlayer	= tmpPlayer;
+	playerStruct *tmpPlayer;
+
+	tmpPlayer = field.curPlayer;
+	field.curPlayer = field.oppPlayer;
+	field.oppPlayer = tmpPlayer;
 }
 
 //-----------------------------------------------------------------------------
@@ -300,8 +303,12 @@ bool muehle::isOpponentPlayerHuman()
 //-----------------------------------------------------------------------------
 void muehle::setKI(int player, muehleKI *KI)
 {
-	if (player == field.playerOne) { playerOneKI = KI; }
-	if (player == field.playerTwo) { playerTwoKI = KI; }
+	if (player == field.playerOne) {
+		playerOneKI = KI;
+	}
+	if (player == field.playerTwo) {
+		playerTwoKI = KI;
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -311,8 +318,8 @@ void muehle::setKI(int player, muehleKI *KI)
 void muehle::getChoiceOfSpecialKI(muehleKI *KI, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
-	*pushFrom						= field.size;
-	*pushTo							= field.size;
+	*pushFrom = field.size;
+	*pushTo = field.size;
 	theField.createField();
 	field.copyField(&theField);
 	if (KI != NULL && (field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) KI->play(&theField, pushFrom, pushTo);
@@ -326,15 +333,18 @@ void muehle::getChoiceOfSpecialKI(muehleKI *KI, unsigned int *pushFrom, unsigned
 void muehle::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
-	*pushFrom						= field.size;
-	*pushTo							= field.size;
+	*pushFrom = field.size;
+	*pushTo = field.size;
 	theField.createField();
 	field.copyField(&theField);
-	
-    if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) {
-	    if (field.curPlayer->id == field.playerOne)	{ if (playerOneKI != NULL) playerOneKI->play(&theField, pushFrom, pushTo); }
-	    else										{ if (playerTwoKI != NULL) playerTwoKI->play(&theField, pushFrom, pushTo); }
-    }
+
+	if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) {
+		if (field.curPlayer->id == field.playerOne) {
+			if (playerOneKI != NULL) playerOneKI->play(&theField, pushFrom, pushTo);
+		} else {
+			if (playerTwoKI != NULL) playerTwoKI->play(&theField, pushFrom, pushTo);
+		}
+	}
 
 	theField.deleteField();
 }
@@ -350,11 +360,11 @@ bool muehle::isNormalMovePossible(unsigned int from, unsigned int to, playerStru
 
 	// parameter ok ?
 	if (from >= field.size) return false;
-	if (to	 >= field.size) return false;
+	if (to >= field.size) return false;
 
 	// is stone from player ?
 	if (field.field[from] != player->id)				return false;
-	
+
 	// is destination free ?
 	if (field.field[to] != field.squareIsFree)			return false;
 
@@ -362,7 +372,7 @@ bool muehle::isNormalMovePossible(unsigned int from, unsigned int to, playerStru
 	if (player->numStones > 3 || field.settingPhase) {
 
 		// determine moving direction
-		for (i=0, movingDirection=4; i<4; i++) if (field.connectedSquare[from][i] == to) movingDirection = i;
+		for (i = 0, movingDirection = 4; i < 4; i++) if (field.connectedSquare[from][i] == to) movingDirection = i;
 
 		// are both squares connected ?
 		if (movingDirection == 4)	return false;
@@ -377,26 +387,32 @@ bool muehle::isNormalMovePossible(unsigned int from, unsigned int to, playerStru
 // Desc: ...
 //-----------------------------------------------------------------------------
 void muehle::calcPossibleMoves(playerStruct *player)
-{	
+{
 	// locals
 	unsigned int i, j;
 
 	// zero
-	for (i=0; i<MAX_NUM_POS_MOVES; i++) player->posTo[i]	= field.size;
-	for (i=0; i<MAX_NUM_POS_MOVES; i++) player->posFrom[i]	= field.size;
+	for (i = 0; i < MAX_NUM_POS_MOVES; i++) player->posTo[i] = field.size;
+	for (i = 0; i < MAX_NUM_POS_MOVES; i++) player->posFrom[i] = field.size;
 
 	// calc
-	for (player->numPossibleMoves=0, i=0; i<field.size; i++) { for (j=0; j<field.size; j++) {	if (isNormalMovePossible(i, j, player)) {
-		player->posFrom[player->numPossibleMoves]	= i;
-		player->posTo  [player->numPossibleMoves]	= j;
-		player->numPossibleMoves++;
-	}}}
+	for (player->numPossibleMoves = 0, i = 0; i < field.size; i++) {
+		for (j = 0; j < field.size; j++) {
+			if (isNormalMovePossible(i, j, player)) {
+				player->posFrom[player->numPossibleMoves] = i;
+				player->posTo[player->numPossibleMoves] = j;
+				player->numPossibleMoves++;
+			}
+		}
+	}
 
 	// stoneMoveAble
-	for (i=0; i<field.size; i++) { for (j=0; j<4; j++) {
-		if (field.field[i] == player->id) field.stoneMoveAble[i][j] = isNormalMovePossible(i, field.connectedSquare[i][j], player);
-		else							  field.stoneMoveAble[i][j] = false;
-	}}
+	for (i = 0; i < field.size; i++) {
+		for (j = 0; j < 4; j++) {
+			if (field.field[i] == player->id) field.stoneMoveAble[i][j] = isNormalMovePossible(i, field.connectedSquare[i][j], player);
+			else							  field.stoneMoveAble[i][j] = false;
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -406,12 +422,12 @@ void muehle::calcPossibleMoves(playerStruct *player)
 void muehle::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone)
 {
 	// locals
-	int				rowOwner		= field.field[stone];
-	unsigned int	rowOwnerWarning	= (rowOwner == field.playerOne) ? field.playerOneWarning :  field.playerTwoWarning;
+	int				rowOwner = field.field[stone];
+	unsigned int	rowOwnerWarning = (rowOwner == field.playerOne) ? field.playerOneWarning : field.playerTwoWarning;
 
 	// mill closed ?
 	if (rowOwner != field.squareIsFree && field.field[firstNeighbour] == rowOwner && field.field[secondNeighbour] == rowOwner) {
-					
+
 		field.stonePartOfMill[stone]++;
 		field.stonePartOfMill[firstNeighbour]++;
 		field.stonePartOfMill[secondNeighbour]++;
@@ -419,8 +435,8 @@ void muehle::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, 
 	}
 
 	//warning ?
-	if (rowOwner != field.squareIsFree && field.field[firstNeighbour ] == field.squareIsFree && field.field[secondNeighbour] == rowOwner) field.warnings[firstNeighbour ] |= rowOwnerWarning;
-	if (rowOwner != field.squareIsFree && field.field[secondNeighbour] == field.squareIsFree && field.field[firstNeighbour ] == rowOwner) field.warnings[secondNeighbour] |= rowOwnerWarning;
+	if (rowOwner != field.squareIsFree && field.field[firstNeighbour] == field.squareIsFree && field.field[secondNeighbour] == rowOwner) field.warnings[firstNeighbour] |= rowOwnerWarning;
+	if (rowOwner != field.squareIsFree && field.field[secondNeighbour] == field.squareIsFree && field.field[firstNeighbour] == rowOwner) field.warnings[secondNeighbour] |= rowOwnerWarning;
 }
 
 //-----------------------------------------------------------------------------
@@ -434,22 +450,22 @@ void muehle::updateMillsAndWarnings(unsigned int newStone)
 	bool			atLeastOneStoneRemoveAble;
 
 	// zero
-	for (i=0; i<field.size; i++) field.stonePartOfMill[i]	= 0;
-	for (i=0; i<field.size; i++) field.warnings[i]			= field.noWarning;
-	field.stoneMustBeRemoved	= 0;
+	for (i = 0; i < field.size; i++) field.stonePartOfMill[i] = 0;
+	for (i = 0; i < field.size; i++) field.warnings[i] = field.noWarning;
+	field.stoneMustBeRemoved = 0;
 
 	// go in every direction
-	for (i=0; i<field.size; i++) {
+	for (i = 0; i < field.size; i++) {
 
 		setWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1], i == newStone);
 		setWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1], i == newStone);
 	}
-	
+
 	// since every mill was detected 3 times
-	for (i=0; i<field.size; i++) field.stonePartOfMill[i] /= 3;
+	for (i = 0; i < field.size; i++) field.stonePartOfMill[i] /= 3;
 
 	// no stone must be removed if each belongs to a mill
-	for (atLeastOneStoneRemoveAble = false, i=0; i<field.size; i++) if (field.stonePartOfMill[i] == 0 && field.field[i] == field.oppPlayer->id) atLeastOneStoneRemoveAble = true;
+	for (atLeastOneStoneRemoveAble = false, i = 0; i < field.size; i++) if (field.stonePartOfMill[i] == 0 && field.field[i] == field.oppPlayer->id) atLeastOneStoneRemoveAble = true;
 	if (!atLeastOneStoneRemoveAble) field.stoneMustBeRemoved = 0;
 }
 
@@ -458,9 +474,9 @@ void muehle::updateMillsAndWarnings(unsigned int newStone)
 // Desc: 
 //-----------------------------------------------------------------------------
 bool muehle::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
-{	
+{
 	// avoid index override
-	if (movesDone >= MAX_NUM_MOVES) 
+	if (movesDone >= MAX_NUM_MOVES)
 		return false;
 
 	// is game still running ?
@@ -471,21 +487,21 @@ bool muehle::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
 	if (field.stoneMustBeRemoved) {
 
 		// parameter ok ?
-		if (pushFrom >= field.size)							
+		if (pushFrom >= field.size)
 			return false;
 
 		// is it stone from the opponent ?
-		if (field.field[pushFrom] != field.oppPlayer->id)	
+		if (field.field[pushFrom] != field.oppPlayer->id)
 			return false;
-		
+
 		// is stone not part of mill?
-		if (field.stonePartOfMill[pushFrom])				
+		if (field.stonePartOfMill[pushFrom])
 			return false;
 
 		// remove stone
-		moveLogFrom[movesDone]		= pushFrom;
-		moveLogTo  [movesDone]		= field.size;
-		field.field[pushFrom]		= field.squareIsFree;
+		moveLogFrom[movesDone] = pushFrom;
+		moveLogTo[movesDone] = field.size;
+		field.field[pushFrom] = field.squareIsFree;
 		field.oppPlayer->numStonesMissing++;
 		field.oppPlayer->numStones--;
 		field.stoneMustBeRemoved--;
@@ -510,21 +526,21 @@ bool muehle::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
 		// everything is ok
 		return true;
 
-	// handle setting phase
+		// handle setting phase
 	} else if (field.settingPhase) {
-		
+
 		// parameter ok ?
-		if (pushTo	 >= field.size) 
+		if (pushTo >= field.size)
 			return false;
 
 		// is destination free ?
-		if (field.field[pushTo] != field.squareIsFree)		
+		if (field.field[pushTo] != field.squareIsFree)
 			return false;
 
 		// set stone
-		moveLogFrom[movesDone]		= field.size;
-		moveLogTo  [movesDone]		= pushTo;
-		field.field[pushTo]			= field.curPlayer->id;
+		moveLogFrom[movesDone] = field.size;
+		moveLogTo[movesDone] = pushTo;
+		field.field[pushTo] = field.curPlayer->id;
 		field.curPlayer->numStones++;
 		field.stonesSet++;
 		movesDone++;
@@ -544,22 +560,22 @@ bool muehle::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
 
 		// next player
 		if (!field.stoneMustBeRemoved) setNextPlayer();
-		
+
 		// everything is ok
 		return true;
 
-	// normal move
+		// normal move
 	} else {
 
 		// is move possible ?
-		if (!isNormalMovePossible(pushFrom, pushTo, field.curPlayer)) 
+		if (!isNormalMovePossible(pushFrom, pushTo, field.curPlayer))
 			return false;
 
 		// move stone
-		moveLogFrom[movesDone]		= pushFrom;
-		moveLogTo  [movesDone]		= pushTo;
-		field.field[pushFrom]		= field.squareIsFree;
-		field.field[pushTo]			= field.curPlayer->id;
+		moveLogFrom[movesDone] = pushFrom;
+		moveLogTo[movesDone] = pushTo;
+		field.field[pushFrom] = field.squareIsFree;
+		field.field[pushTo] = field.curPlayer->id;
 		movesDone++;
 
 		// update warnings & mills
@@ -587,12 +603,12 @@ bool muehle::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
 bool muehle::setCurrentGameState(fieldStruct *curState)
 {
 	curState->copyField(&field);
-	
-	winner		= 0;
-	movesDone	= 0;
 
-	if ((field.curPlayer->numStones < 3)		 && (!field.settingPhase))	winner = field.oppPlayer->id;
-	if ((field.oppPlayer->numStones < 3)		 && (!field.settingPhase))	winner = field.curPlayer->id;
+	winner = 0;
+	movesDone = 0;
+
+	if ((field.curPlayer->numStones < 3) && (!field.settingPhase))	winner = field.oppPlayer->id;
+	if ((field.oppPlayer->numStones < 3) && (!field.settingPhase))	winner = field.curPlayer->id;
 	if ((field.curPlayer->numPossibleMoves == 0) && (!field.settingPhase))	winner = field.oppPlayer->id;
 
 	return true;
@@ -607,25 +623,46 @@ bool muehle::compareWithField(fieldStruct *compareField)
 	unsigned int i, j;
 	bool ret = true;
 
-	if (!comparePlayers(field.curPlayer, compareField->curPlayer))					{ cout << "error - curPlayer differs!"			<< endl; ret = false; }
-	if (!comparePlayers(field.oppPlayer, compareField->oppPlayer))					{ cout << "error - oppPlayer differs!"			<< endl; ret = false; }
+	if (!comparePlayers(field.curPlayer, compareField->curPlayer)) {
+		cout << "error - curPlayer differs!" << endl; ret = false;
+	}
+	if (!comparePlayers(field.oppPlayer, compareField->oppPlayer)) {
+		cout << "error - oppPlayer differs!" << endl; ret = false;
+	}
 
-	if (field.stonesSet						!= compareField->stonesSet)				{ cout << "error - stonesSet differs!"			<< endl; ret = false; }
-	if (field.settingPhase					!= compareField->settingPhase)			{ cout << "error - settingPhase differs!"		<< endl; ret = false; }
-	if (field.stoneMustBeRemoved			!= compareField->stoneMustBeRemoved)	{ cout << "error - stoneMustBeRemoved differs!" << endl; ret = false; }
-		
-	for (i=0; i<field.size; i++) {
+	if (field.stonesSet != compareField->stonesSet) {
+		cout << "error - stonesSet differs!" << endl; ret = false;
+	}
+	if (field.settingPhase != compareField->settingPhase) {
+		cout << "error - settingPhase differs!" << endl; ret = false;
+	}
+	if (field.stoneMustBeRemoved != compareField->stoneMustBeRemoved) {
+		cout << "error - stoneMustBeRemoved differs!" << endl; ret = false;
+	}
 
-		if (field.field[i]					!= compareField->field[i])				{ cout << "error - field[] differs!"			<< endl; ret = false; }
-		if (field.warnings[i]				!= compareField->warnings[i])			{ cout << "error - warnings[] differs!"			<< endl; ret = false; }
-		if (field.stonePartOfMill[i]		!= compareField->stonePartOfMill[i])	{ cout << "error - stonePart[] differs!"		<< endl; ret = false; }
+	for (i = 0; i < field.size; i++) {
 
-		for (j=0; j<4; j++) {
+		if (field.field[i] != compareField->field[i]) {
+			cout << "error - field[] differs!" << endl; ret = false;
+		}
+		if (field.warnings[i] != compareField->warnings[i]) {
+			cout << "error - warnings[] differs!" << endl; ret = false;
+		}
+		if (field.stonePartOfMill[i] != compareField->stonePartOfMill[i]) {
+			cout << "error - stonePart[] differs!" << endl; ret = false;
+		}
 
-			if (field.connectedSquare[i][j]	!= compareField->connectedSquare[i][j]) { cout << "error - connectedSquare[] differs!"	<< endl; ret = false; }
-//			if (field.stoneMoveAble[i][j]	!= compareField->stoneMoveAble[i][j])	{ cout << "error - stoneMoveAble differs!"		<< endl; ret = false; }
-			if (field.neighbour[i][j/2][j%2]!= compareField->neighbour[i][j/2][j%2]){ cout << "error - neighbour differs!"			<< endl; ret = false; }
-	}}
+		for (j = 0; j < 4; j++) {
+
+			if (field.connectedSquare[i][j] != compareField->connectedSquare[i][j]) {
+				cout << "error - connectedSquare[] differs!" << endl; ret = false;
+			}
+			//			if (field.stoneMoveAble[i][j]	!= compareField->stoneMoveAble[i][j])	{ cout << "error - stoneMoveAble differs!"		<< endl; ret = false; }
+			if (field.neighbour[i][j / 2][j % 2] != compareField->neighbour[i][j / 2][j % 2]) {
+				cout << "error - neighbour differs!" << endl; ret = false;
+			}
+		}
+	}
 
 	return ret;
 }
@@ -636,17 +673,27 @@ bool muehle::compareWithField(fieldStruct *compareField)
 //-----------------------------------------------------------------------------
 bool muehle::comparePlayers(playerStruct *playerA, playerStruct *playerB)
 {
-//	unsigned int i;
+	//	unsigned int i;
 	bool ret = true;
 
-	if (playerA->numStonesMissing	!= playerB->numStonesMissing)					{ cout << "error - numStonesMissing differs!"	<< endl; ret = false; }
-	if (playerA->numStones			!= playerB->numStones)							{ cout << "error - numStones differs!"			<< endl; ret = false; }
-	if (playerA->id					!= playerB->id)									{ cout << "error - id differs!"					<< endl; ret = false; }
-	if (playerA->warning			!= playerB->warning)							{ cout << "error - warning differs!"			<< endl; ret = false; }
-	if (playerA->numPossibleMoves	!= playerB->numPossibleMoves)					{ cout << "error - numPossibleMoves differs!"	<< endl; ret = false; }
+	if (playerA->numStonesMissing != playerB->numStonesMissing) {
+		cout << "error - numStonesMissing differs!" << endl; ret = false;
+	}
+	if (playerA->numStones != playerB->numStones) {
+		cout << "error - numStones differs!" << endl; ret = false;
+	}
+	if (playerA->id != playerB->id) {
+		cout << "error - id differs!" << endl; ret = false;
+	}
+	if (playerA->warning != playerB->warning) {
+		cout << "error - warning differs!" << endl; ret = false;
+	}
+	if (playerA->numPossibleMoves != playerB->numPossibleMoves) {
+		cout << "error - numPossibleMoves differs!" << endl; ret = false;
+	}
 
-//	for (i=0; i<MAX_NUM_POS_MOVES; i++) if (playerA->posFrom[i]	= playerB->posFrom[i]) return false;
-//	for (i=0; i<MAX_NUM_POS_MOVES; i++) if (playerA->posTo  [i]	= playerB->posTo  [i]) return false;
+	//	for (i=0; i<MAX_NUM_POS_MOVES; i++) if (playerA->posFrom[i]	= playerB->posFrom[i]) return false;
+	//	for (i=0; i<MAX_NUM_POS_MOVES; i++) if (playerA->posTo  [i]	= playerB->posTo  [i]) return false;
 
 	return ret;
 }
@@ -669,33 +716,33 @@ void muehle::undoLastMove(void)
 {
 	// locals
 	unsigned int *moveLogFrom_bak = new unsigned int[movesDone];
-	unsigned int *moveLogTo_bak   = new unsigned int[movesDone];
-	unsigned int movesDone_bak	  = movesDone;
+	unsigned int *moveLogTo_bak = new unsigned int[movesDone];
+	unsigned int movesDone_bak = movesDone;
 	unsigned int i;
-	
+
 	// at least one move must be done
 	if (movesDone) {
 
 		// make backup of log
-		for (i=0; i<movesDone; i++) {
-			moveLogFrom_bak[i]	= moveLogFrom[i];
-			moveLogTo_bak[i]	= moveLogTo[i];
+		for (i = 0; i < movesDone; i++) {
+			moveLogFrom_bak[i] = moveLogFrom[i];
+			moveLogTo_bak[i] = moveLogTo[i];
 		}
 
 		// reset
 		initialField.copyField(&field);
-		winner								= 0;	
-		movesDone							= 0;
+		winner = 0;
+		movesDone = 0;
 
 		// and play again
-		for (i=0; i<movesDone_bak-1; i++) {
+		for (i = 0; i < movesDone_bak - 1; i++) {
 			moveStone(moveLogFrom_bak[i], moveLogTo_bak[i]);
 		}
 	}
 
 	// free mem
-	delete [] moveLogFrom_bak;
-	delete [] moveLogTo_bak;
+	delete[] moveLogFrom_bak;
+	delete[] moveLogTo_bak;
 }
 
 //-----------------------------------------------------------------------------
@@ -705,10 +752,10 @@ void muehle::undoLastMove(void)
 void muehle::calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting)
 {
 	if (getCurrentPlayer() == fieldStruct::playerTwo) {
-		numWhiteStonesResting  = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
-		numBlackStonesResting  = fieldStruct::numStonesPerPlayer - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
+		numWhiteStonesResting = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
+		numBlackStonesResting = fieldStruct::numStonesPerPlayer - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
 	} else {
-		numWhiteStonesResting  = fieldStruct::numStonesPerPlayer - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
-		numBlackStonesResting  = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
+		numWhiteStonesResting = fieldStruct::numStonesPerPlayer - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
+		numBlackStonesResting = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
 	}
 }
