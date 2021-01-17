@@ -75,7 +75,7 @@ void minMaxKI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 	delete[] possibilities;
 
 	// release memory
-	field = NULL;
+	field = nullptr;
 }
 
 //-----------------------------------------------------------------------------
@@ -120,7 +120,7 @@ unsigned int *minMaxKI::getPossSettingPhase(unsigned int *numPossibilities, void
 	}
 
 	// possibility code is simple
-	*pPossibilities = NULL;
+	*pPossibilities = nullptr;
 
 	return idPossibility;
 }
@@ -204,7 +204,7 @@ unsigned int *minMaxKI::getPossStoneRemove(unsigned int *numPossibilities, void 
 	}
 
 	// possibility code is simple
-	*pPossibilities = NULL;
+	*pPossibilities = nullptr;
 
 	return idPossibility;
 }

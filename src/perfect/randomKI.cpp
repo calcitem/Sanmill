@@ -15,7 +15,7 @@
 randomKI::randomKI()
 {
 	// Init
-	srand((unsigned)time(NULL));
+	srand((unsigned)time(nullptr));
 }
 
 //-----------------------------------------------------------------------------

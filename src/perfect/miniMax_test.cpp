@@ -19,7 +19,7 @@ bool miniMax::testLayer(unsigned int layerNumber)
 	unsigned int	returnValue;
 
 	// database open?
-	if (hFileShortKnotValues == NULL || hFilePlyInfo == NULL) {
+	if (hFileShortKnotValues == nullptr || hFilePlyInfo == nullptr) {
 		PRINT(0, this, "ERROR: Database file not open!");
 		return falseOrStop();
 	}
@@ -490,12 +490,12 @@ bool miniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 	plyInfoVarType  numPliesTillCurState;
 	plyInfoVarType  numPliesTillSymState;
 	unsigned int	stateNumber = 0;
-	unsigned int *symStateNumbers = NULL;
+	unsigned int *symStateNumbers = nullptr;
 	unsigned int	numSymmetricStates;
 	unsigned int	i;
 
 	// database open?
-	if (hFileShortKnotValues == NULL || hFilePlyInfo == NULL) {
+	if (hFileShortKnotValues == nullptr || hFilePlyInfo == nullptr) {
 		PRINT(0, this, "ERROR: Database files not open!");
 		layerNumber = 0;
 		goto errorInDatabase;

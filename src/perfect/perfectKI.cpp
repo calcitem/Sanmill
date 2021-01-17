@@ -215,35 +215,35 @@ perfectKI::perfectKI(const char *directory)
 	if (strlen(directory) && PathFileExistsA(directory)) {
 		ssPreCalcVarsFilePath << directory << "\\";
 	} ssPreCalcVarsFilePath << "preCalculatedVars.dat";
-	hFilePreCalcVars = CreateFileA(ssPreCalcVarsFilePath.str().c_str(), GENERIC_READ /*| GENERIC_WRITE*/, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	ReadFile(hFilePreCalcVars, &preCalcVarsHeader, sizeof(preCalcedVarsFileHeaderStruct), &dwBytesRead, NULL);
+	hFilePreCalcVars = CreateFileA(ssPreCalcVarsFilePath.str().c_str(), GENERIC_READ /*| GENERIC_WRITE*/, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	ReadFile(hFilePreCalcVars, &preCalcVarsHeader, sizeof(preCalcedVarsFileHeaderStruct), &dwBytesRead, nullptr);
 
 	// vars already stored in file?
 	if (dwBytesRead) {
 
 		// Read from file
-		ReadFile(hFilePreCalcVars, layer, sizeof(layerStruct) * NUM_LAYERS, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, plyInfoForOutput, sizeof(plyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesRead, NULL);
-		ReadFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesRead, NULL);
+		ReadFile(hFilePreCalcVars, layer, sizeof(layerStruct) * NUM_LAYERS, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, plyInfoForOutput, sizeof(plyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
 
 		// process originalStateAB[][]
 		for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
 			for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
 				if (a + b > numSquaresGroupA + numSquaresGroupB) continue;
 				originalStateAB[a][b] = new unsigned int[anzahlStellungenAB[a][b]];
-				ReadFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesRead, NULL);
+				ReadFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesRead, nullptr);
 			}
 		}
 
@@ -252,7 +252,7 @@ perfectKI::perfectKI(const char *directory)
 			for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
 				if (a + b > numSquaresGroupC + numSquaresGroupD) continue;
 				originalStateCD[a][b] = new unsigned int[anzahlStellungenCD[a][b]];
-				ReadFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesRead, NULL);
+				ReadFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesRead, nullptr);
 			}
 		}
 
@@ -587,28 +587,28 @@ perfectKI::perfectKI(const char *directory)
 		// write vars into file
 		preCalcVarsHeader.sizeInBytes = sizeof(preCalcedVarsFileHeaderStruct);
 
-		WriteFile(hFilePreCalcVars, &preCalcVarsHeader, preCalcVarsHeader.sizeInBytes, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, layer, sizeof(layerStruct) * NUM_LAYERS, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, plyInfoForOutput, sizeof(plyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, NULL);
-		WriteFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesWritten, NULL);
+		WriteFile(hFilePreCalcVars, &preCalcVarsHeader, preCalcVarsHeader.sizeInBytes, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, layer, sizeof(layerStruct) * NUM_LAYERS, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, plyInfoForOutput, sizeof(plyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
 
 		// process originalStateAB[][]
 		for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
 			for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
 				if (a + b > numSquaresGroupA + numSquaresGroupB) continue;
-				WriteFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesWritten, NULL);
+				WriteFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesWritten, nullptr);
 			}
 		}
 
@@ -616,7 +616,7 @@ perfectKI::perfectKI(const char *directory)
 		for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
 			for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
 				if (a + b > numSquaresGroupC + numSquaresGroupD) continue;
-				WriteFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesWritten, NULL);
+				WriteFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesWritten, nullptr);
 			}
 		}
 	}
@@ -764,7 +764,7 @@ bool perfectKI::testLayers(unsigned int startTestFromLayer, unsigned int endTest
 //-----------------------------------------------------------------------------
 bool perfectKI::setDatabasePath(const char *directory)
 {
-	if (directory == NULL) {
+	if (directory == nullptr) {
 		return false;
 	} else {
 		cout << "Path to database set to: " << directory << endl;
@@ -793,17 +793,17 @@ void perfectKI::prepareBestChoiceCalculation()
 //-----------------------------------------------------------------------------
 perfectKI::threadVarsStruct::threadVarsStruct()
 {
-	field = NULL;
+	field = nullptr;
 	floatValue = 0;
 	shortValue = 0;
 	gameHasFinished = false;
 	ownId = 0;
 	curSearchDepth = 0;
 	depthOfFullTree = 0;
-	idPossibilities = NULL;
-	oldStates = NULL;
-	possibilities = NULL;
-	parent = NULL;
+	idPossibilities = nullptr;
+	oldStates = nullptr;
+	possibilities = nullptr;
+	parent = nullptr;
 
 }
 
@@ -849,7 +849,7 @@ unsigned int *perfectKI::threadVarsStruct::getPossSettingPhase(unsigned int *num
 	}
 
 	// possibility code is simple
-	if (pPossibilities != NULL) *pPossibilities = NULL;
+	if (pPossibilities != nullptr) *pPossibilities = nullptr;
 
 	return idPossibility;
 }
@@ -908,7 +908,7 @@ unsigned int *perfectKI::threadVarsStruct::getPossNormalMove(unsigned int *numPo
 	}
 
 	// pass possibilities
-	if (pPossibilities != NULL) *pPossibilities = (void *)possibility;
+	if (pPossibilities != nullptr) *pPossibilities = (void *)possibility;
 
 	return idPossibility;
 }
@@ -935,7 +935,7 @@ unsigned int *perfectKI::threadVarsStruct::getPossStoneRemove(unsigned int *numP
 	}
 
 	// possibility code is simple
-	if (pPossibilities != NULL) *pPossibilities = NULL;
+	if (pPossibilities != nullptr) *pPossibilities = nullptr;
 
 	return idPossibility;
 }
@@ -1828,7 +1828,7 @@ void perfectKI::getField(unsigned int layerNum, unsigned int stateNumber, fieldS
 
 	// copy content of fieldStruct
 	threadVars[0].field->copyField(field);
-	if (gameHasFinished != NULL) *gameHasFinished = threadVars[0].gameHasFinished;
+	if (gameHasFinished != nullptr) *gameHasFinished = threadVars[0].gameHasFinished;
 }
 
 

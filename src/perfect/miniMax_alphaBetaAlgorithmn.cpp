@@ -47,7 +47,7 @@ bool miniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 void miniMax::alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue, plyInfoVarType plyValue, bool invertValue)
 {
 	// locals
-	unsigned int *symStateNumbers = NULL;
+	unsigned int *symStateNumbers = nullptr;
 	unsigned int	numSymmetricStates;
 	unsigned int	sysStateNumber;
 	unsigned int	i;
@@ -98,7 +98,7 @@ bool miniMax::initAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
 	ssInvArrayFilePath.str("");  ssInvArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "invalidStates\\invalidStatesOfLayer" << alphaBetaVars.layerNumber << ".dat";
 
 	// does initialization file exist ?
-	CreateDirectoryA(ssInvArrayDirectory.str().c_str(), NULL);
+	CreateDirectoryA(ssInvArrayDirectory.str().c_str(), nullptr);
 	invalidArray = new bufferedFileClass(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInvArrayFilePath.str().c_str());
 	if (invalidArray->getFileSize() == (LONGLONG)layerStats[alphaBetaVars.layerNumber].knotsInLayer) {
 		PRINT(2, this, "  Loading invalid states from file: " << ssInvArrayFilePath.str());
@@ -295,7 +295,7 @@ DWORD miniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 
 	} else {
 		// should not occur, because already tested by plyInfo == PLYINFO_VALUE_UNCALCULATED
-		MessageBoxW(NULL, L"This event should never occur. if (!m->setSituation())", L"ERROR", MB_OK);
+		MessageBoxW(nullptr, L"This event should never occur. if (!m->setSituation())", L"ERROR", MB_OK);
 	}
 	return TM_RETURN_VALUE_OK;
 }
@@ -396,7 +396,7 @@ bool miniMax::alphaBetaTryDataBase(knotStruct *knot, runAlphaBetaVars *rabVars, 
 	plyInfoVarType	plyInfo = PLYINFO_VALUE_UNCALCULATED;
 
 	// use database ?
-	if (hFilePlyInfo != NULL && hFileShortKnotValues != NULL && (calcDatabase || layerInDatabase)) {
+	if (hFilePlyInfo != nullptr && hFileShortKnotValues != nullptr && (calcDatabase || layerInDatabase)) {
 
 		// situation already existend in database ?
 		readKnotValueFromDatabase(rabVars->curThreadNo, layerNumber, stateNumber, shortKnotValue, invalidLayerOrStateNumber, subLayerInDatabaseAndCompleted);
@@ -469,7 +469,7 @@ void miniMax::alphaBetaTryPossibilites(knotStruct *knot, runAlphaBetaVars *rabVa
 			if (rabVars->freqValuesSubMoves[SKV_VALUE_GAME_WON] > maxWonfreqValuesSubMoves && knot->branches[curPoss].shortValue == SKV_VALUE_GAME_DRAWN) {
 				maxWonfreqValuesSubMoves = rabVars->freqValuesSubMoves[SKV_VALUE_GAME_WON];
 			}
-			if (hFileShortKnotValues != NULL && layerInDatabase) {
+			if (hFileShortKnotValues != nullptr && layerInDatabase) {
 				storeValueOfMove(rabVars->curThreadNo, idPossibility[curPoss], pPossibilities, knot->branches[curPoss].shortValue, rabVars->freqValuesSubMoves, knot->branches[curPoss].plyInfo);
 				PRINT(0, this, "\t: " << ((knot->branches[curPoss].shortValue == SKV_VALUE_GAME_WON) ? "WON" : ((knot->branches[curPoss].shortValue == SKV_VALUE_GAME_LOST) ? "LOST" : ((knot->branches[curPoss].shortValue == SKV_VALUE_GAME_DRAWN) ? "DRAW" : "INVALID"))) << endl);
 			} else {
@@ -480,8 +480,8 @@ void miniMax::alphaBetaTryPossibilites(knotStruct *knot, runAlphaBetaVars *rabVa
 		}
 
 		// don't use alpha beta if using database
-		if (hFileShortKnotValues != NULL && calcDatabase)						continue;
-		if (hFileShortKnotValues != NULL && tilLevel + 1 >= depthOfFullTree)	continue;
+		if (hFileShortKnotValues != nullptr && calcDatabase)						continue;
+		if (hFileShortKnotValues != nullptr && tilLevel + 1 >= depthOfFullTree)	continue;
 
 		// alpha beta algorithmn
 		if (!knot->isOpponentLevel) {
@@ -632,7 +632,7 @@ void miniMax::alphaBetaChooseBestMove(knotStruct *knot, runAlphaBetaVars *rabVar
 		for (numBestChoices = 0, i = 0; i < knot->numPossibilities; i++) {
 
 			// use information in database
-			if (layerInDatabase && hFileShortKnotValues != NULL) {
+			if (layerInDatabase && hFileShortKnotValues != nullptr) {
 
 				// selected move with equal knot value
 				if (knot->branches[i].shortValue == knot->shortValue) {

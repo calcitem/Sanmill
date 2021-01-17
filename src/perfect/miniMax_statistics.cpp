@@ -43,7 +43,7 @@ unsigned int miniMax::getLastCalculatedLayer()
 //-----------------------------------------------------------------------------
 bool miniMax::isLayerInDatabase(unsigned int layerNum)
 {
-	if (layerStats == NULL) return false;
+	if (layerStats == nullptr) return false;
 	return layerStats[layerNum].layerIsCompletedAndInFile;
 }
 
@@ -53,7 +53,7 @@ bool miniMax::isLayerInDatabase(unsigned int layerNum)
 //-----------------------------------------------------------------------------
 long long miniMax::getLayerSizeInBytes(unsigned int layerNum)
 {
-	if (plyInfos == NULL || layerStats == NULL) return 0;
+	if (plyInfos == nullptr || layerStats == nullptr) return 0;
 	return (long long)layerStats[layerNum].sizeInBytes + (long long)plyInfos[layerNum].sizeInBytes;
 }
 
@@ -63,7 +63,7 @@ long long miniMax::getLayerSizeInBytes(unsigned int layerNum)
 //-----------------------------------------------------------------------------
 miniMax::stateNumberVarType miniMax::getNumWonStates(unsigned int layerNum)
 {
-	if (layerStats == NULL) return 0;
+	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numWonStates;
 }
 
@@ -73,7 +73,7 @@ miniMax::stateNumberVarType miniMax::getNumWonStates(unsigned int layerNum)
 //-----------------------------------------------------------------------------
 miniMax::stateNumberVarType miniMax::getNumLostStates(unsigned int layerNum)
 {
-	if (layerStats == NULL) return 0;
+	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numLostStates;
 }
 
@@ -83,7 +83,7 @@ miniMax::stateNumberVarType miniMax::getNumLostStates(unsigned int layerNum)
 //-----------------------------------------------------------------------------
 miniMax::stateNumberVarType miniMax::getNumDrawnStates(unsigned int layerNum)
 {
-	if (layerStats == NULL) return 0;
+	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numDrawnStates;
 }
 
@@ -93,7 +93,7 @@ miniMax::stateNumberVarType miniMax::getNumDrawnStates(unsigned int layerNum)
 //-----------------------------------------------------------------------------
 miniMax::stateNumberVarType miniMax::getNumInvalidStates(unsigned int layerNum)
 {
-	if (layerStats == NULL) return 0;
+	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numInvalidStates;
 }
 
@@ -177,14 +177,14 @@ bool miniMax::calcLayerStatistics(char *statisticsFileName)
 	string				text("");
 
 	// database must be open
-	if (hFileShortKnotValues == NULL) return false;
+	if (hFileShortKnotValues == nullptr) return false;
 
 	// Open statistics file
-	statFile = CreateFileA(statisticsFileName, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	statFile = CreateFileA(statisticsFileName, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	// opened file succesfully?
 	if (statFile == INVALID_HANDLE_VALUE) {
-		statFile = NULL;
+		statFile = nullptr;
 		return false;
 	}
 
@@ -250,7 +250,7 @@ bool miniMax::calcLayerStatistics(char *statisticsFileName)
 	}
 
 	// write to file and close it
-	WriteFile(statFile, text.c_str(), (DWORD)text.length(), &dwBytesWritten, NULL);
+	WriteFile(statFile, text.c_str(), (DWORD)text.length(), &dwBytesWritten, nullptr);
 	CloseHandle(statFile);
 	SAFE_DELETE_ARRAY(statsValueCounter);
 	return true;
@@ -339,7 +339,7 @@ void miniMax::arrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
 	vectorArrays[layerNumber * arrayInfoStruct::numArrayTypes + type] = (--listArrays.end());
 
 	// update GUI
-	if (c->userPrintFunc != NULL) {
+	if (c->userPrintFunc != nullptr) {
 		c->userPrintFunc(c->pDataForUserPrintFunc);
 	}
 	LeaveCriticalSection(&c->csOsPrint);
@@ -365,7 +365,7 @@ void miniMax::arrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
 
 			// notify cahnge
 			arrayInfoChange	aic;
-			aic.arrayInfo = NULL;
+			aic.arrayInfo = nullptr;
 			aic.itemIndex = (unsigned int)std::distance(listArrays.begin(), itr);
 			arrayInfosToBeUpdated.push_back(aic);
 
@@ -375,7 +375,7 @@ void miniMax::arrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
 	}
 
 	// update GUI
-	if (c->userPrintFunc != NULL) {
+	if (c->userPrintFunc != nullptr) {
 		c->userPrintFunc(c->pDataForUserPrintFunc);
 	}
 	LeaveCriticalSection(&c->csOsPrint);
@@ -401,7 +401,7 @@ void miniMax::arrayInfoContainer::updateArray(unsigned int layerNumber, unsigned
 		arrayInfosToBeUpdated.push_back(aic);
 
 		// update GUI
-		if (c->userPrintFunc != NULL) {
+		if (c->userPrintFunc != nullptr) {
 			c->userPrintFunc(c->pDataForUserPrintFunc);
 		}
 		itr->updateCounter = 0;

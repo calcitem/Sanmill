@@ -26,11 +26,11 @@ cyclicArray::cyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlo
 	curWritingBlock = 0;
 
 	// Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-	hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	// opened file succesfully
 	if (hFile == INVALID_HANDLE_VALUE) {
-		hFile = NULL;
+		hFile = nullptr;
 		return;
 	}
 }
@@ -46,7 +46,7 @@ cyclicArray::~cyclicArray()
 	delete[] writingBlock;
 
 	// close file
-	if (hFile != NULL) CloseHandle(hFile);
+	if (hFile != nullptr) CloseHandle(hFile);
 }
 
 //-----------------------------------------------------------------------------
@@ -61,10 +61,10 @@ void cyclicArray::writeDataToFile(HANDLE hFile, long long offset, unsigned int s
 
 	liDistanceToMove.QuadPart = offset;
 
-	while (!SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN)) cout << endl << "SetFilePointerEx  failed!";
+	while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN)) cout << endl << "SetFilePointerEx  failed!";
 
 	while (restingBytes > 0) {
-		if (WriteFile(hFile, pData, sizeInBytes, &dwBytesWritten, NULL) == TRUE) {
+		if (WriteFile(hFile, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
 			restingBytes -= dwBytesWritten;
 			pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
 			if (restingBytes > 0) cout << endl << "Still " << restingBytes << " to write!";
@@ -86,10 +86,10 @@ void cyclicArray::readDataFromFile(HANDLE hFile, long long offset, unsigned int 
 
 	liDistanceToMove.QuadPart = offset;
 
-	while (!SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN)) cout << endl << "SetFilePointerEx failed!";
+	while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN)) cout << endl << "SetFilePointerEx failed!";
 
 	while (restingBytes > 0) {
-		if (ReadFile(hFile, pData, sizeInBytes, &dwBytesRead, NULL) == TRUE) {
+		if (ReadFile(hFile, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
 			restingBytes -= dwBytesRead;
 			pData = (void *)(((unsigned char *)pData) + dwBytesRead);
 			if (restingBytes > 0) cout << endl << "Still " << restingBytes << " to read!";
@@ -221,10 +221,10 @@ bool cyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
 	numBytesLoaded = 0;
 
 	// cyclic array file must be open
-	if (hFile == NULL) return false;
+	if (hFile == nullptr) return false;
 
 	// Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-	hLoadFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	hLoadFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	// opened file succesfully
 	if (hLoadFile == INVALID_HANDLE_VALUE) {
@@ -288,12 +288,12 @@ bool cyclicArray::saveFile(const char *fileName)
 	void *pointer;
 
 	// cyclic array file must be open
-	if (hFile == NULL) {
+	if (hFile == nullptr) {
 		return false;
 	}
 
 	// Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-	hSaveFile = CreateFileA(fileName, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hSaveFile = CreateFileA(fileName, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	// opened file succesfully
 	if (hSaveFile == INVALID_HANDLE_VALUE) {

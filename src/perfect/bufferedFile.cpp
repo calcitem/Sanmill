@@ -36,11 +36,11 @@ bufferedFileClass::bufferedFileClass(unsigned int numberOfThreads, unsigned int 
 	InitializeCriticalSection(&csIO);
 
 	// Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-	hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	// opened file succesfully
 	if (hFile == INVALID_HANDLE_VALUE) {
-		hFile = NULL;
+		hFile = nullptr;
 		return;
 	}
 
@@ -67,7 +67,7 @@ bufferedFileClass::~bufferedFileClass()
 	delete[] bytesInWriteBuffer;
 
 	// close file
-	if (hFile != NULL) CloseHandle(hFile);
+	if (hFile != nullptr) CloseHandle(hFile);
 }
 
 //-----------------------------------------------------------------------------
@@ -108,9 +108,9 @@ void bufferedFileClass::writeDataToFile(HANDLE hFile, long long offset, unsigned
 	liDistanceToMove.QuadPart = offset;
 
 	EnterCriticalSection(&csIO);
-	while (!SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN)) cout << endl << "SetFilePointerEx  failed!";
+	while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN)) cout << endl << "SetFilePointerEx  failed!";
 	while (restingBytes > 0) {
-		if (WriteFile(hFile, pData, sizeInBytes, &dwBytesWritten, NULL) == TRUE) {
+		if (WriteFile(hFile, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
 			restingBytes -= dwBytesWritten;
 			pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
 			if (restingBytes > 0) cout << endl << "Still " << restingBytes << " to write!";
@@ -134,9 +134,9 @@ void bufferedFileClass::readDataFromFile(HANDLE hFile, long long offset, unsigne
 	liDistanceToMove.QuadPart = offset;
 
 	EnterCriticalSection(&csIO);
-	while (!SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN)) cout << endl << "SetFilePointerEx failed!";
+	while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN)) cout << endl << "SetFilePointerEx failed!";
 	while (restingBytes > 0) {
-		if (ReadFile(hFile, pData, sizeInBytes, &dwBytesRead, NULL) == TRUE) {
+		if (ReadFile(hFile, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
 			restingBytes -= dwBytesRead;
 			pData = (void *)(((unsigned char *)pData) + dwBytesRead);
 			if (restingBytes > 0) cout << endl << "Still " << restingBytes << " to read!";
@@ -164,7 +164,7 @@ bool bufferedFileClass::writeBytes(unsigned int threadNo, long long positionInFi
 {
 	// parameters ok?
 	if (threadNo >= numThreads) return false;
-	if (pData == NULL)		return false;
+	if (pData == nullptr)		return false;
 
 	// locals
 
@@ -201,7 +201,7 @@ bool bufferedFileClass::readBytes(unsigned int threadNo, long long positionInFil
 {
 	// parameters ok?
 	if (threadNo >= numThreads) return false;
-	if (pData == NULL)		return false;
+	if (pData == nullptr)		return false;
 
 	// read from file into buffer if not enough data in buffer or if it is not an sequential reading operation?
 	if (positionInFile != curReadingPointer[threadNo] || bytesInReadBuffer[threadNo] < numBytes) {

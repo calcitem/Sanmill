@@ -85,8 +85,8 @@ database:				The database contains the arrays with the short knot values and the
 #define MM_ACTION_NONE					   8
 
 /*** Macros ***************************************************************************************************************************/
-#define SAFE_DELETE(p)			{ if(p) { delete (p);     (p)=NULL; } }
-#define SAFE_DELETE_ARRAY(p)	{ if(p) { delete[] (p);   (p)=NULL; } }
+#define SAFE_DELETE(p)			{ if(p) { delete (p);     (p)=nullptr; } }
+#define SAFE_DELETE_ARRAY(p)	{ if(p) { delete[] (p);   (p)=nullptr; } }
 
 // here a macro is used instead of a function because the text 't' is passed like "blabla" << endl << aVariable
 #define PRINT(v, c, t)										\
@@ -94,7 +94,7 @@ database:				The database contains the arrays with the short knot values and the
 	if (c->verbosity > v) {									\
 		EnterCriticalSection(&c->csOsPrint);				\
 		*c->osPrint << endl << t;							\
-		if (c->userPrintFunc != NULL) {						\
+		if (c->userPrintFunc != nullptr) {						\
 			c->userPrintFunc(c->pDataForUserPrintFunc);		\
 		}													\
 		LeaveCriticalSection(&c->csOsPrint);				\
@@ -480,8 +480,8 @@ private:
 
 	struct runAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public alphaBetaDefaultThreadVars
 	{
-		knotStruct *branchArray = NULL;					// array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for storage of the branches at each search depth
-		unsigned int *freqValuesSubMovesBranchWon = NULL;					// ...
+		knotStruct *branchArray = nullptr;					// array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for storage of the branches at each search depth
+		unsigned int *freqValuesSubMovesBranchWon = nullptr;					// ...
 		unsigned int		freqValuesSubMoves[4];								// ...
 
 		runAlphaBetaVars()
@@ -615,12 +615,12 @@ private:
 	int						verbosity = 2;			// output detail level. default is 2
 	unsigned char			skvPerspectiveMatrix[4][2];						// [short knot value][current or opponent player] - A winning situation is a loosing situation for the opponent and so on ...
 	bool					calcDatabase = false;		// true, if the database is currently beeing calculated
-	HANDLE					hFileShortKnotValues = NULL;			// handle of the file for the short knot value 
-	HANDLE					hFilePlyInfo = NULL;			// handle of the file for the ply info
+	HANDLE					hFileShortKnotValues = nullptr;			// handle of the file for the short knot value 
+	HANDLE					hFilePlyInfo = nullptr;			// handle of the file for the ply info
 	skvFileHeaderStruct		skvfHeader;										// short knot value file header
 	plyInfoFileHeaderStruct	plyInfoHeader;									// header of the ply info file
 	string					fileDirectory;									// path of the folder where the database files are located
-	ostream *osPrint = NULL;			// stream for output. default is cout
+	ostream *osPrint = nullptr;			// stream for output. default is cout
 	list<unsigned int>		lastCalculatedLayer;							// 
 	vector<unsigned int>	layersToCalculate;								// used in calcLayer() and getCurrentCalculatedLayers()
 	bool					onlyPrepareLayer = false;		// 
@@ -628,8 +628,8 @@ private:
 	threadManagerClass		threadManager;									//
 	CRITICAL_SECTION		csDatabase;										//
 	CRITICAL_SECTION		csOsPrint;										// for thread safety when output is passed to osPrint
-	void					(*userPrintFunc)(void *) = NULL;			// called every time output is passed to osPrint
-	void *pDataForUserPrintFunc = NULL;			// pointer passed when calling userPrintFunc
+	void					(*userPrintFunc)(void *) = nullptr;			// called every time output is passed to osPrint
+	void *pDataForUserPrintFunc = nullptr;			// pointer passed when calling userPrintFunc
 	arrayInfoContainer		arrayInfos;										// information about the arrays in memory
 
 	// thread specific or non-constant variables
@@ -640,12 +640,12 @@ private:
 	unsigned int			curCalculatedLayer = 0;			// id of the currently calculated layer
 	unsigned int			curCalculationActionId = 0;			// one of ...
 	bool					layerInDatabase = false;		// true if the current considered layer has already been calculated and stored in the database
-	void *pRootPossibilities = NULL;			// pointer to the structure passed by getPossibilities() for the state at which getBestChoice() has been called
-	layerStatsStruct *layerStats = NULL;			// array of size [] containing general layer information and the skv of all layers
-	plyInfoStruct *plyInfos = NULL;			// array of size [] containing ply information
+	void *pRootPossibilities = nullptr;			// pointer to the structure passed by getPossibilities() for the state at which getBestChoice() has been called
+	layerStatsStruct *layerStats = nullptr;			// array of size [] containing general layer information and the skv of all layers
+	plyInfoStruct *plyInfos = nullptr;			// array of size [] containing ply information
 
 	// variables concerning the compression of the database
-	// compressorClass		*	compressor						= NULL;
+	// compressorClass		*	compressor						= nullptr;
 	// unsigned int			compressionAlgorithmnId			= 0;			// 0 or one of the COMPRESSOR_ALG_... constants
 
 	// database io operations per second

@@ -15,19 +15,19 @@
 void miniMax::closeDatabase()
 {
 	// close database
-	if (hFileShortKnotValues != NULL) {
+	if (hFileShortKnotValues != nullptr) {
 		unloadAllLayers();
 		SAFE_DELETE_ARRAY(layerStats);
 		CloseHandle(hFileShortKnotValues);
-		hFileShortKnotValues = NULL;
+		hFileShortKnotValues = nullptr;
 	}
 
 	// close ply information file
-	if (hFilePlyInfo != NULL) {
+	if (hFilePlyInfo != nullptr) {
 		unloadAllPlyInfos();
 		SAFE_DELETE_ARRAY(plyInfos);
 		CloseHandle(hFilePlyInfo);
-		hFilePlyInfo = NULL;
+		hFilePlyInfo = nullptr;
 	}
 }
 
@@ -93,12 +93,12 @@ void miniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBy
 
 	liDistanceToMove.QuadPart = offset;
 
-	while (errorPrint = !SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN)) {
+	while (errorPrint = !SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN)) {
 		if (!errorPrint) PRINT(1, this, "ERROR: SetFilePointerEx  failed!");
 	}
 
 	while (restingBytes > 0) {
-		if (WriteFile(hFile, myPointer, restingBytes, &dwBytesWritten, NULL) == TRUE) {
+		if (WriteFile(hFile, myPointer, restingBytes, &dwBytesWritten, nullptr) == TRUE) {
 			restingBytes -= dwBytesWritten;
 			myPointer = (void *)(((unsigned char *)myPointer) + dwBytesWritten);
 			if (restingBytes > 0) PRINT(2, this, "Still " << restingBytes << " to write!");
@@ -123,12 +123,12 @@ void miniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int num
 
 	liDistanceToMove.QuadPart = offset;
 
-	while (errorPrint = !SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN)) {
+	while (errorPrint = !SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN)) {
 		if (!errorPrint) PRINT(0, this, "ERROR: SetFilePointerEx failed!");
 	}
 
 	while (restingBytes > 0) {
-		if (ReadFile(hFile, pBytes, restingBytes, &dwBytesRead, NULL) == TRUE) {
+		if (ReadFile(hFile, pBytes, restingBytes, &dwBytesRead, nullptr) == TRUE) {
 			restingBytes -= dwBytesRead;
 			myPointer = (void *)(((unsigned char *)myPointer) + dwBytesRead);
 			if (restingBytes > 0) {
@@ -149,7 +149,7 @@ bool miniMax::isCurrentStateInDatabase(unsigned int threadNo)
 {
 	unsigned int layerNum, stateNumber;
 
-	if (hFileShortKnotValues == NULL) {
+	if (hFileShortKnotValues == nullptr) {
 		return false;
 	} else {
 		getLayerAndStateNumber(threadNo, layerNum, stateNumber);
@@ -164,9 +164,9 @@ bool miniMax::isCurrentStateInDatabase(unsigned int threadNo)
 void miniMax::saveHeader(skvFileHeaderStruct *dbH, layerStatsStruct *lStats)
 {
 	DWORD dwBytesWritten;
-	SetFilePointer(hFileShortKnotValues, 0, NULL, FILE_BEGIN);
-	WriteFile(hFileShortKnotValues, dbH, sizeof(skvFileHeaderStruct), &dwBytesWritten, NULL);
-	WriteFile(hFileShortKnotValues, lStats, sizeof(layerStatsStruct) * dbH->numLayers, &dwBytesWritten, NULL);
+	SetFilePointer(hFileShortKnotValues, 0, nullptr, FILE_BEGIN);
+	WriteFile(hFileShortKnotValues, dbH, sizeof(skvFileHeaderStruct), &dwBytesWritten, nullptr);
+	WriteFile(hFileShortKnotValues, lStats, sizeof(layerStatsStruct) * dbH->numLayers, &dwBytesWritten, nullptr);
 }
 
 //-----------------------------------------------------------------------------
@@ -176,9 +176,9 @@ void miniMax::saveHeader(skvFileHeaderStruct *dbH, layerStatsStruct *lStats)
 void miniMax::saveHeader(plyInfoFileHeaderStruct *piH, plyInfoStruct *pInfo)
 {
 	DWORD dwBytesWritten;
-	SetFilePointer(hFilePlyInfo, 0, NULL, FILE_BEGIN);
-	WriteFile(hFilePlyInfo, piH, sizeof(plyInfoFileHeaderStruct), &dwBytesWritten, NULL);
-	WriteFile(hFilePlyInfo, pInfo, sizeof(plyInfoStruct) * piH->numLayers, &dwBytesWritten, NULL);
+	SetFilePointer(hFilePlyInfo, 0, nullptr, FILE_BEGIN);
+	WriteFile(hFilePlyInfo, piH, sizeof(plyInfoFileHeaderStruct), &dwBytesWritten, nullptr);
+	WriteFile(hFilePlyInfo, pInfo, sizeof(plyInfoStruct) * piH->numLayers, &dwBytesWritten, nullptr);
 }
 
 //-----------------------------------------------------------------------------
@@ -208,7 +208,7 @@ void miniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 	unsigned int	i;
 
 	// don't open file twice
-	if (hFileShortKnotValues != NULL) return;
+	if (hFileShortKnotValues != nullptr) return;
 
 	// remember directory name
 	fileDirectory.assign(directory);
@@ -216,11 +216,11 @@ void miniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 	PRINT(2, this, "Open short knot value file: " << fileDirectory << (strlen(directory) ? "\\" : "") << "shortKnotValue.dat" << endl);
 
 	// Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-	hFileShortKnotValues = CreateFileA(ssDatabaseFile.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFileShortKnotValues = CreateFileA(ssDatabaseFile.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	// opened file succesfully
 	if (hFileShortKnotValues == INVALID_HANDLE_VALUE) {
-		hFileShortKnotValues = NULL;
+		hFileShortKnotValues = nullptr;
 		return;
 	}
 
@@ -229,7 +229,7 @@ void miniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 	maxNumBranches = maximumNumberOfBranches;
 
 	// database complete ?
-	ReadFile(hFileShortKnotValues, &skvfHeader, sizeof(skvFileHeaderStruct), &dwBytesRead, NULL);
+	ReadFile(hFileShortKnotValues, &skvfHeader, sizeof(skvFileHeaderStruct), &dwBytesRead, nullptr);
 
 	// invalid file ?
 	if (dwBytesRead != sizeof(skvFileHeaderStruct) || skvfHeader.headerCode != SKV_FILE_HEADER_CODE) {
@@ -247,8 +247,8 @@ void miniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 			layerStats[i].partnerLayer = getPartnerLayer(i);
 			layerStats[i].knotsInLayer = getNumberOfKnotsInLayer(i);
 			layerStats[i].sizeInBytes = (layerStats[i].knotsInLayer + 3) / 4;
-			layerStats[i].shortKnotValueByte = NULL;
-			layerStats[i].skvCompressed = NULL;
+			layerStats[i].shortKnotValueByte = nullptr;
+			layerStats[i].skvCompressed = nullptr;
 			layerStats[i].layerIsLoaded = false;
 			layerStats[i].layerIsCompletedAndInFile = false;
 			layerStats[i].numWonStates = 0;
@@ -267,10 +267,10 @@ void miniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 		// read layer stats
 	} else {
 		layerStats = new layerStatsStruct[skvfHeader.numLayers];
-		ReadFile(hFileShortKnotValues, layerStats, sizeof(layerStatsStruct) * skvfHeader.numLayers, &dwBytesRead, NULL);
+		ReadFile(hFileShortKnotValues, layerStats, sizeof(layerStatsStruct) * skvfHeader.numLayers, &dwBytesRead, nullptr);
 		for (i = 0; i < skvfHeader.numLayers; i++) {
-			layerStats[i].shortKnotValueByte = NULL;
-			layerStats[i].skvCompressed = NULL;
+			layerStats[i].shortKnotValueByte = nullptr;
+			layerStats[i].skvCompressed = nullptr;
 		}
 	}
 }
@@ -287,18 +287,18 @@ void miniMax::openPlyInfoFile(const char *directory)
 	unsigned int	i;
 
 	// don't open file twice
-	if (hFilePlyInfo != NULL) return;
+	if (hFilePlyInfo != nullptr) return;
 
 	// remember directory name
 	ssFile << directory << (strlen(directory) ? "\\" : "") << "plyInfo.dat";
 	PRINT(2, this, "Open ply info file: " << ssFile.str() << endl << endl);
 
 	// Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-	hFilePlyInfo = CreateFileA(ssFile.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFilePlyInfo = CreateFileA(ssFile.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	// opened file succesfully
 	if (hFilePlyInfo == INVALID_HANDLE_VALUE) {
-		hFilePlyInfo = NULL;
+		hFilePlyInfo = nullptr;
 		return;
 	}
 
@@ -306,7 +306,7 @@ void miniMax::openPlyInfoFile(const char *directory)
 	plyInfoHeader.headerCode = 0;
 
 	// database complete ?
-	ReadFile(hFilePlyInfo, &plyInfoHeader, sizeof(plyInfoHeader), &dwBytesRead, NULL);
+	ReadFile(hFilePlyInfo, &plyInfoHeader, sizeof(plyInfoHeader), &dwBytesRead, nullptr);
 
 	// invalid file ?
 	if (dwBytesRead != sizeof(plyInfoHeader) || plyInfoHeader.headerCode != PLYINFO_HEADER_CODE) {
@@ -321,8 +321,8 @@ void miniMax::openPlyInfoFile(const char *directory)
 
 		for (i = 0; i < plyInfoHeader.numLayers; i++) {
 			plyInfos[i].knotsInLayer = getNumberOfKnotsInLayer(i);
-			plyInfos[i].plyInfo = NULL;
-			plyInfos[i].plyInfoCompressed = NULL;
+			plyInfos[i].plyInfo = nullptr;
+			plyInfos[i].plyInfoCompressed = nullptr;
 			plyInfos[i].plyInfoIsLoaded = false;
 			plyInfos[i].plyInfoIsCompletedAndInFile = false;
 			plyInfos[i].sizeInBytes = plyInfos[i].knotsInLayer * sizeof(plyInfoVarType);
@@ -338,10 +338,10 @@ void miniMax::openPlyInfoFile(const char *directory)
 		// read layer stats
 	} else {
 		plyInfos = new plyInfoStruct[plyInfoHeader.numLayers];
-		ReadFile(hFilePlyInfo, plyInfos, sizeof(plyInfoStruct) * plyInfoHeader.numLayers, &dwBytesRead, NULL);
+		ReadFile(hFilePlyInfo, plyInfos, sizeof(plyInfoStruct) * plyInfoHeader.numLayers, &dwBytesRead, nullptr);
 		for (i = 0; i < plyInfoHeader.numLayers; i++) {
-			plyInfos[i].plyInfo = NULL;
-			plyInfos[i].plyInfoCompressed = NULL;
+			plyInfos[i].plyInfo = nullptr;
+			plyInfos[i].plyInfoCompressed = nullptr;
 		}
 	}
 }

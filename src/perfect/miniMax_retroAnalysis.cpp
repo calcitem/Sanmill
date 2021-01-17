@@ -31,11 +31,11 @@ bool miniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalcul
 	// init retro vars
 	retroVars.thread.resize(threadManager.getNumThreads());
 	for (threadNo = 0; threadNo < threadManager.getNumThreads(); threadNo++) {
-		retroVars.thread[threadNo].statesToProcess.resize(PLYINFO_EXP_VALUE, NULL);
+		retroVars.thread[threadNo].statesToProcess.resize(PLYINFO_EXP_VALUE, nullptr);
 		retroVars.thread[threadNo].numStatesToProcess = 0;
 		retroVars.thread[threadNo].threadNo = threadNo;
 	}
-	retroVars.countArrays.resize(layersToCalculate.size(), NULL);
+	retroVars.countArrays.resize(layersToCalculate.size(), nullptr);
 	retroVars.layerInitialized.resize(skvfHeader.numLayers, false);
 	retroVars.layersToCalculate = layersToCalculate;
 	retroVars.pMiniMax = this;
@@ -91,7 +91,7 @@ freeMem:
 		}
 	}
 	for (curLayer = 0; curLayer < layersToCalculate.size(); curLayer++) {
-		if (retroVars.countArrays[curLayer] != NULL) {
+		if (retroVars.countArrays[curLayer] != nullptr) {
 			memoryUsed2 -= layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(countArrayVarType);
 			arrayInfos.removeArray(layersToCalculate[curLayer], arrayInfoStruct::arrayType_countArray, layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(countArrayVarType), 0);
 		}
@@ -128,7 +128,7 @@ bool miniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 		ssInitArrayFilePath.str("");	ssInitArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "initLayer\\initLayer" << layerNumber << ".dat";
 
 		// does initialization file exist ?
-		CreateDirectoryA(ssInitArrayPath.str().c_str(), NULL);
+		CreateDirectoryA(ssInitArrayPath.str().c_str(), nullptr);
 		initArray = new bufferedFileClass(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInitArrayFilePath.str().c_str());
 		if (initArray->getFileSize() == (LONGLONG)layerStats[layerNumber].knotsInLayer) {
 			PRINT(2, this, "    Loading init states from file: " << ssInitArrayFilePath.str());
@@ -266,7 +266,7 @@ bool miniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 	DWORD					dwWritten;
 	DWORD					dwRead;
 	LARGE_INTEGER			fileSize;
-	HANDLE					hFileCountArray = NULL;				// file handle for loading and saving the arrays in 'countArrays'
+	HANDLE					hFileCountArray = nullptr;				// file handle for loading and saving the arrays in 'countArrays'
 	stringstream			ssCountArrayPath;
 	stringstream			ssCountArrayFilePath;
 	stringstream			ssLayers;
@@ -279,8 +279,8 @@ bool miniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 	curCalculationActionId = MM_ACTION_PREPARE_COUNT_ARRAY;
 
 	// prepare count arrays
-	CreateDirectoryA(ssCountArrayPath.str().c_str(), NULL);
-	if ((hFileCountArray = CreateFileA(ssCountArrayFilePath.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)) == INVALID_HANDLE_VALUE) {
+	CreateDirectoryA(ssCountArrayPath.str().c_str(), nullptr);
+	if ((hFileCountArray = CreateFileA(ssCountArrayFilePath.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr)) == INVALID_HANDLE_VALUE) {
 		PRINT(0, this, "ERROR: Could not open File " << ssCountArrayFilePath.str() << "!");
 		return falseOrStop();
 	}
@@ -299,7 +299,7 @@ bool miniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 
 		for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
 			numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-			if (!ReadFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(countArrayVarType), &dwRead, NULL)) return falseOrStop();
+			if (!ReadFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(countArrayVarType), &dwRead, nullptr)) return falseOrStop();
 			if (dwRead != numKnotsInCurLayer * sizeof(countArrayVarType)) return falseOrStop();
 		}
 
@@ -323,7 +323,7 @@ bool miniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 		// save to file
 		for (curLayer = 0, dwWritten = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
 			numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-			if (!WriteFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(countArrayVarType), &dwWritten, NULL)) return falseOrStop();
+			if (!WriteFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(countArrayVarType), &dwWritten, nullptr)) return falseOrStop();
 			if (dwWritten != numKnotsInCurLayer * sizeof(countArrayVarType)) return falseOrStop();
 		}
 		PRINT(2, this, "  Count array saved to file: " << ssCountArrayFilePath.str());
@@ -595,7 +595,7 @@ DWORD miniMax::performRetroAnalysisThreadProc(void *pParameter)
 	for (numStatesProcessed = 0, curNumPlies = 0; curNumPlies < threadVars->statesToProcess.size(); curNumPlies++) {
 
 		// skip empty and uninitialized cyclic arrays
-		if (threadVars->statesToProcess[curNumPlies] != NULL) {
+		if (threadVars->statesToProcess[curNumPlies] != nullptr) {
 
 			if (threadNo == 0) {
 				PRINT(0, m, "    Current number of plies: " << (unsigned int)curNumPlies << "/" << threadVars->statesToProcess.size());
@@ -726,16 +726,16 @@ bool miniMax::addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, retroAn
 {
 	// resize vector if too small
 	if (plyNumber >= threadVars.statesToProcess.size()) {
-		threadVars.statesToProcess.resize(max(plyNumber + 1, 10 * threadVars.statesToProcess.size()), NULL);
+		threadVars.statesToProcess.resize(max(plyNumber + 1, 10 * threadVars.statesToProcess.size()), nullptr);
 		PRINT(4, this, "    statesToProcess resized to " << threadVars.statesToProcess.size());
 	}
 
 	// initialize cyclic array if necessary
-	if (threadVars.statesToProcess[plyNumber] == NULL) {
+	if (threadVars.statesToProcess[plyNumber] == nullptr) {
 		stringstream	ssStatesToProcessFilePath;
 		stringstream	ssStatesToProcessPath;
 		ssStatesToProcessPath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "statesToProcess";
-		CreateDirectoryA(ssStatesToProcessPath.str().c_str(), NULL);
+		CreateDirectoryA(ssStatesToProcessPath.str().c_str(), nullptr);
 		ssStatesToProcessFilePath.str("");
 		ssStatesToProcessFilePath << ssStatesToProcessPath.str() << "\\statesToProcessWithPlyCounter=" << plyNumber << "andThread=" << threadVars.threadNo << ".dat";
 		threadVars.statesToProcess[plyNumber] = new cyclicArray(BLOCK_SIZE_IN_CYCLIC_ARRAY * sizeof(stateAdressStruct), (unsigned int)(retroVars.totalNumKnots / BLOCK_SIZE_IN_CYCLIC_ARRAY) + 1, ssStatesToProcessFilePath.str().c_str());

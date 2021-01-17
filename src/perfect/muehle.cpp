@@ -14,12 +14,12 @@
 //-----------------------------------------------------------------------------
 muehle::muehle()
 {
-	srand((unsigned)time(NULL));
+	srand((unsigned)time(nullptr));
 
-	moveLogFrom = NULL;
-	moveLogTo = NULL;
-	playerOneKI = NULL;
-	playerTwoKI = NULL;
+	moveLogFrom = nullptr;
+	moveLogTo = nullptr;
+	playerOneKI = nullptr;
+	playerTwoKI = nullptr;
 	movesDone = 0;
 
 	field.createField();
@@ -238,7 +238,7 @@ bool muehle::getField(int *pField)
 	unsigned int index;
 
 	// if no log is available than no game is in progress and field is invalid
-	if (moveLogFrom == NULL) return false;
+	if (moveLogFrom == nullptr) return false;
 
 	for (index = 0; index < field.size; index++) {
 		if (field.warnings[index] != field.noWarning)	pField[index] = (int)field.warnings[index];
@@ -283,8 +283,8 @@ void muehle::setNextPlayer()
 //-----------------------------------------------------------------------------
 bool muehle::isCurrentPlayerHuman()
 {
-	if (field.curPlayer->id == field.playerOne)	return (playerOneKI == NULL) ? true : false;
-	else										return (playerTwoKI == NULL) ? true : false;
+	if (field.curPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
+	else										return (playerTwoKI == nullptr) ? true : false;
 }
 
 //-----------------------------------------------------------------------------
@@ -293,8 +293,8 @@ bool muehle::isCurrentPlayerHuman()
 //-----------------------------------------------------------------------------
 bool muehle::isOpponentPlayerHuman()
 {
-	if (field.oppPlayer->id == field.playerOne)	return (playerOneKI == NULL) ? true : false;
-	else										return (playerTwoKI == NULL) ? true : false;
+	if (field.oppPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
+	else										return (playerTwoKI == nullptr) ? true : false;
 }
 
 //-----------------------------------------------------------------------------
@@ -322,7 +322,7 @@ void muehle::getChoiceOfSpecialKI(muehleKI *KI, unsigned int *pushFrom, unsigned
 	*pushTo = field.size;
 	theField.createField();
 	field.copyField(&theField);
-	if (KI != NULL && (field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) KI->play(&theField, pushFrom, pushTo);
+	if (KI != nullptr && (field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) KI->play(&theField, pushFrom, pushTo);
 	theField.deleteField();
 }
 
@@ -340,9 +340,9 @@ void muehle::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 
 	if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) {
 		if (field.curPlayer->id == field.playerOne) {
-			if (playerOneKI != NULL) playerOneKI->play(&theField, pushFrom, pushTo);
+			if (playerOneKI != nullptr) playerOneKI->play(&theField, pushFrom, pushTo);
 		} else {
-			if (playerTwoKI != NULL) playerTwoKI->play(&theField, pushFrom, pushTo);
+			if (playerTwoKI != nullptr) playerTwoKI->play(&theField, pushFrom, pushTo);
 		}
 	}
 

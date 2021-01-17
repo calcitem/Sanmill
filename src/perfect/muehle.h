@@ -22,8 +22,8 @@ using namespace std;
 #define	MAX_NUM_MOVES	10000
 
 /*** Makros ******************************************************/
-#define SAFE_DELETE(p)			{ if(p) { delete (p);     (p)=NULL; } }
-#define SAFE_DELETE_ARRAY(p)	{ if(p) { delete[] (p);   (p)=NULL; } }
+#define SAFE_DELETE(p)			{ if(p) { delete (p);     (p)=nullptr; } }
+#define SAFE_DELETE_ARRAY(p)	{ if(p) { delete[] (p);   (p)=nullptr; } }
 
 /*** Klassen *********************************************************/
 

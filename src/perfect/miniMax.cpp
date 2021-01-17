@@ -15,8 +15,8 @@
 miniMax::miniMax()
 {
 	// init default values
-	hFileShortKnotValues = NULL;
-	hFilePlyInfo = NULL;
+	hFileShortKnotValues = nullptr;
+	hFilePlyInfo = nullptr;
 	memoryUsed2 = 0;
 	arrayInfos.c = this;
 	arrayInfos.arrayInfosToBeUpdated.clear();
@@ -26,10 +26,10 @@ miniMax::miniMax()
 	osPrint = &cout;
 	verbosity = 3;
 	stopOnCriticalError = true;
-	pDataForUserPrintFunc = NULL;
-	userPrintFunc = NULL;
-	layerStats = NULL;
-	plyInfos = NULL;
+	pDataForUserPrintFunc = nullptr;
+	userPrintFunc = nullptr;
+	layerStats = nullptr;
+	plyInfos = nullptr;
 	fileDirectory.assign("");
 	InitializeCriticalSection(&csDatabase);
 	InitializeCriticalSection(&csOsPrint);
@@ -108,7 +108,7 @@ void *miniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 	knotStruct				root;
 	alphaBetaGlobalVars		alphaBetaVars(this, getLayerNumber(0));
 	runAlphaBetaVars		tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
-	srand((unsigned int)time(NULL));
+	srand((unsigned int)time(nullptr));
 	tva.curThreadNo = 0;
 
 	// prepare the situation
@@ -143,7 +143,7 @@ void miniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 	prepareDatabaseCalculation();
 
 	// when database not completed then do it
-	if (hFileShortKnotValues != NULL && skvfHeader.completed == false) {
+	if (hFileShortKnotValues != nullptr && skvfHeader.completed == false) {
 
 		// reserve memory
 		lastCalculatedLayer.clear();
