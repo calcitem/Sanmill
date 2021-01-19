@@ -16,7 +16,7 @@
 #include <mutex>
 #include <condition_variable>
 
-class miniMaxGuiField
+class MiniMaxGuiField
 {
 public:
 	virtual void								setAlignment(wildWeasel::alignment &newAlignment)
@@ -35,7 +35,7 @@ public:
 |	-------------------------------------		---------------------------------	|
 |	|									|		|								|	|
 |	|									|		|								|	|
-|	|		pTreeViewInspect			|		|		miniMaxGuiField			|	|
+|	|		pTreeViewInspect			|		|		MiniMaxGuiField			|	|
 |	|									|		|								|	|
 |	|									|		|								|	|
 |	|									|		|								|	|
@@ -55,13 +55,13 @@ public:
 |																					|
 -----------------------------------------------------------------------------------*/
 
-class miniMaxWinInspectDb
+class MiniMaxWinInspectDb
 {
 protected:
 
 	// General Variables
 	MiniMax *pMiniMax = nullptr;					// pointer to perfect AI class granting the access to the database
-	miniMaxGuiField *pGuiField = nullptr;
+	MiniMaxGuiField *pGuiField = nullptr;
 	bool										showingInspectionControls = false;
 	unsigned int								curShowedLayer = 0;						// current showed layer
 	MiniMax::StateNumberVarType					curShowedState = 0;						// current showed state
@@ -70,8 +70,8 @@ protected:
 public:
 
 	// Constructor / destructor
-	miniMaxWinInspectDb(wildWeasel::masterMind *ww, MiniMax *pMiniMax, wildWeasel::alignment &amInspectDb, wildWeasel::font2D *font, wildWeasel::texture *textureLine, miniMaxGuiField &guiField);
-	~miniMaxWinInspectDb();
+	MiniMaxWinInspectDb(wildWeasel::masterMind *ww, MiniMax *pMiniMax, wildWeasel::alignment &amInspectDb, wildWeasel::font2D *font, wildWeasel::texture *textureLine, MiniMaxGuiField &guiField);
+	~MiniMaxWinInspectDb();
 
 	// Generals Functions
 	bool										createControls();
@@ -107,7 +107,7 @@ public:
 |	-------------------  -----------------  ----------------  ---------------		|
 -----------------------------------------------------------------------------------*/
 
-class miniMaxWinCalcDb
+class MiniMaxWinCalcDb
 {
 protected:
 
@@ -151,8 +151,8 @@ protected:
 public:
 
 	// Constructor / destructor
-	miniMaxWinCalcDb(wildWeasel::masterMind *ww, MiniMax *pMiniMax, wildWeasel::alignment &amCalculation, wildWeasel::font2D *font, wildWeasel::texture *textureLine);
-	~miniMaxWinCalcDb();
+	MiniMaxWinCalcDb(wildWeasel::masterMind *ww, MiniMax *pMiniMax, wildWeasel::alignment &amCalculation, wildWeasel::font2D *font, wildWeasel::texture *textureLine);
+	~MiniMaxWinCalcDb();
 
 	// Generals Functions
 	bool										createControls();

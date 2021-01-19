@@ -104,8 +104,8 @@ database:				The database contains the arrays with the short knot values and the
 /*** Klassen ***************************************************************************************************************************/
 class MiniMax
 {
-	friend class miniMaxWinInspectDb;
-	friend class miniMaxWinCalcDb;
+	friend class MiniMaxWinInspectDb;
+	friend class MiniMaxWinCalcDb;
 
 public:
 
