@@ -96,7 +96,7 @@ bool Position::startSettingPhase(millAI *firstPlayerAI, millAI *secondPlayerAI, 
 
 //-----------------------------------------------------------------------------
 // Name: setUpCalcPossibleMoves()
-// Desc: Calculates and set the number of possible moves for the passed player considering the game state stored in the 'field' variable.
+// Desc: Calculates and set the number of possible moves for the passed player considering the game state stored in the 'board' variable.
 //-----------------------------------------------------------------------------
 void Position::setUpCalcPossibleMoves(playerStruct *player)
 {
@@ -107,11 +107,11 @@ void Position::setUpCalcPossibleMoves(playerStruct *player)
 		for (j = 0; j < fieldStruct::size; j++) {
 
 			// is stone from player ?
-			if (field.field[i] != player->id)
+			if (field.board[i] != player->id)
 				continue;
 
 			// is destination free ?
-			if (field.field[j] != field.squareIsFree)
+			if (field.board[j] != field.squareIsFree)
 				continue;
 
 			// when current player has only 3 stones he is allowed to spring his stone
@@ -140,10 +140,10 @@ void Position::setUpCalcPossibleMoves(playerStruct *player)
 void Position::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
 {
 	// locals
-	int				rowOwner = field.field[stone];
+	int rowOwner = field.board[stone];
 
 	// mill closed ?
-	if (rowOwner != field.squareIsFree && field.field[firstNeighbour] == rowOwner && field.field[secondNeighbour] == rowOwner) {
+	if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == rowOwner && field.board[secondNeighbour] == rowOwner) {
 
 		field.stonePartOfMill[stone]++;
 		field.stonePartOfMill[firstNeighbour]++;
@@ -153,7 +153,7 @@ void Position::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeig
 
 //-----------------------------------------------------------------------------
 // Name: put_piece()
-// Desc: Put a stone onto the field during the setting phase.
+// Desc: Put a stone onto the board during the setting phase.
 //-----------------------------------------------------------------------------
 bool Position::put_piece(unsigned int pos, int player)
 {
@@ -165,10 +165,10 @@ bool Position::put_piece(unsigned int pos, int player)
 	// check parameters
 	if (player != fieldStruct::playerOne && player != fieldStruct::playerTwo) return false;
 	if (pos >= fieldStruct::size)                                          return false;
-	if (field.field[pos] != field.squareIsFree)	                              return false;
+	if (field.board[pos] != field.squareIsFree)	                              return false;
 
 	// set stone
-	field.field[pos] = player;
+	field.board[pos] = player;
 	myPlayer->numStones++;
 	field.stonesSet++;
 
@@ -193,7 +193,7 @@ bool Position::put_piece(unsigned int pos, int player)
 
 	// count completed mills
 	for (i = 0; i < fieldStruct::size; i++) {
-		if (field.field[i] == field.curPlayer->id) numberOfMillsCurrentPlayer += field.stonePartOfMill[i];
+		if (field.board[i] == field.curPlayer->id) numberOfMillsCurrentPlayer += field.stonePartOfMill[i];
 		else									   numberOfMillsOpponentPlayer += field.stonePartOfMill[i];
 	}
 	numberOfMillsCurrentPlayer /= 3;
@@ -236,18 +236,18 @@ bool Position::settingPhaseHasFinished()
 
 //-----------------------------------------------------------------------------
 // Name: getField()
-// Desc: Copy the current field state into the array 'pField'.
+// Desc: Copy the current board state into the array 'pField'.
 //-----------------------------------------------------------------------------
 bool Position::getField(int *pField)
 {
 	unsigned int index;
 
-	// if no log is available than no game is in progress and field is invalid
+	// if no log is available than no game is in progress and board is invalid
 	if (moveLogFrom == nullptr) return false;
 
 	for (index = 0; index < field.size; index++) {
 		if (field.warnings[index] != field.noWarning)	pField[index] = (int)field.warnings[index];
-		else											pField[index] = field.field[index];
+		else											pField[index] = field.board[index];
 	}
 
 	return true;
@@ -271,7 +271,7 @@ void Position::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned i
 
 //-----------------------------------------------------------------------------
 // Name: setNextPlayer()
-// Desc: Current player and opponent player are switched in the field struct.
+// Desc: Current player and opponent player are switched in the board struct.
 //-----------------------------------------------------------------------------
 void Position::setNextPlayer()
 {
@@ -368,10 +368,10 @@ bool Position::isNormalMovePossible(unsigned int from, unsigned int to, playerSt
 	if (to >= field.size) return false;
 
 	// is stone from player ?
-	if (field.field[from] != player->id)				return false;
+	if (field.board[from] != player->id)				return false;
 
 	// is destination free ?
-	if (field.field[to] != field.squareIsFree)			return false;
+	if (field.board[to] != field.squareIsFree)			return false;
 
 	// when current player has only 3 stones he is allowed to spring his stone
 	if (player->numStones > 3 || field.settingPhase) {
@@ -414,7 +414,7 @@ void Position::calcPossibleMoves(playerStruct *player)
 	// stoneMoveAble
 	for (i = 0; i < field.size; i++) {
 		for (j = 0; j < 4; j++) {
-			if (field.field[i] == player->id) field.stoneMoveAble[i][j] = isNormalMovePossible(i, field.connectedSquare[i][j], player);
+			if (field.board[i] == player->id) field.stoneMoveAble[i][j] = isNormalMovePossible(i, field.connectedSquare[i][j], player);
 			else							  field.stoneMoveAble[i][j] = false;
 		}
 	}
@@ -427,11 +427,11 @@ void Position::calcPossibleMoves(playerStruct *player)
 void Position::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone)
 {
 	// locals
-	int				rowOwner = field.field[stone];
+	int				rowOwner = field.board[stone];
 	unsigned int	rowOwnerWarning = (rowOwner == field.playerOne) ? field.playerOneWarning : field.playerTwoWarning;
 
 	// mill closed ?
-	if (rowOwner != field.squareIsFree && field.field[firstNeighbour] == rowOwner && field.field[secondNeighbour] == rowOwner) {
+	if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == rowOwner && field.board[secondNeighbour] == rowOwner) {
 
 		field.stonePartOfMill[stone]++;
 		field.stonePartOfMill[firstNeighbour]++;
@@ -440,8 +440,8 @@ void Position::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour
 	}
 
 	//warning ?
-	if (rowOwner != field.squareIsFree && field.field[firstNeighbour] == field.squareIsFree && field.field[secondNeighbour] == rowOwner) field.warnings[firstNeighbour] |= rowOwnerWarning;
-	if (rowOwner != field.squareIsFree && field.field[secondNeighbour] == field.squareIsFree && field.field[firstNeighbour] == rowOwner) field.warnings[secondNeighbour] |= rowOwnerWarning;
+	if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == field.squareIsFree && field.board[secondNeighbour] == rowOwner) field.warnings[firstNeighbour] |= rowOwnerWarning;
+	if (rowOwner != field.squareIsFree && field.board[secondNeighbour] == field.squareIsFree && field.board[firstNeighbour] == rowOwner) field.warnings[secondNeighbour] |= rowOwnerWarning;
 }
 
 //-----------------------------------------------------------------------------
@@ -470,7 +470,7 @@ void Position::updateMillsAndWarnings(unsigned int newStone)
 	for (i = 0; i < field.size; i++) field.stonePartOfMill[i] /= 3;
 
 	// no stone must be removed if each belongs to a mill
-	for (atLeastOneStoneRemoveAble = false, i = 0; i < field.size; i++) if (field.stonePartOfMill[i] == 0 && field.field[i] == field.oppPlayer->id) atLeastOneStoneRemoveAble = true;
+	for (atLeastOneStoneRemoveAble = false, i = 0; i < field.size; i++) if (field.stonePartOfMill[i] == 0 && field.board[i] == field.oppPlayer->id) atLeastOneStoneRemoveAble = true;
 	if (!atLeastOneStoneRemoveAble) field.stoneMustBeRemoved = 0;
 }
 
@@ -496,7 +496,7 @@ bool Position::do_move(unsigned int  pushFrom, unsigned int  pushTo)
 			return false;
 
 		// is it stone from the opponent ?
-		if (field.field[pushFrom] != field.oppPlayer->id)
+		if (field.board[pushFrom] != field.oppPlayer->id)
 			return false;
 
 		// is stone not part of mill?
@@ -506,7 +506,7 @@ bool Position::do_move(unsigned int  pushFrom, unsigned int  pushTo)
 		// remove stone
 		moveLogFrom[movesDone] = pushFrom;
 		moveLogTo[movesDone] = field.size;
-		field.field[pushFrom] = field.squareIsFree;
+		field.board[pushFrom] = field.squareIsFree;
 		field.oppPlayer->numStonesMissing++;
 		field.oppPlayer->numStones--;
 		field.stoneMustBeRemoved--;
@@ -539,13 +539,13 @@ bool Position::do_move(unsigned int  pushFrom, unsigned int  pushTo)
 			return false;
 
 		// is destination free ?
-		if (field.field[pushTo] != field.squareIsFree)
+		if (field.board[pushTo] != field.squareIsFree)
 			return false;
 
 		// set stone
 		moveLogFrom[movesDone] = field.size;
 		moveLogTo[movesDone] = pushTo;
-		field.field[pushTo] = field.curPlayer->id;
+		field.board[pushTo] = field.curPlayer->id;
 		field.curPlayer->numStones++;
 		field.stonesSet++;
 		movesDone++;
@@ -579,8 +579,8 @@ bool Position::do_move(unsigned int  pushFrom, unsigned int  pushTo)
 		// move stone
 		moveLogFrom[movesDone] = pushFrom;
 		moveLogTo[movesDone] = pushTo;
-		field.field[pushFrom] = field.squareIsFree;
-		field.field[pushTo] = field.curPlayer->id;
+		field.board[pushFrom] = field.squareIsFree;
+		field.board[pushTo] = field.curPlayer->id;
 		movesDone++;
 
 		// update warnings & mills
@@ -621,7 +621,7 @@ bool Position::setCurrentGameState(fieldStruct *curState)
 
 //-----------------------------------------------------------------------------
 // Name: compareWithField()
-// Desc: Compares the current 'field' variable with the passed one. 'stoneMoveAble[]' is ignored.
+// Desc: Compares the current 'board' variable with the passed one. 'stoneMoveAble[]' is ignored.
 //-----------------------------------------------------------------------------
 bool Position::compareWithField(fieldStruct *compareField)
 {
@@ -647,8 +647,8 @@ bool Position::compareWithField(fieldStruct *compareField)
 
 	for (i = 0; i < field.size; i++) {
 
-		if (field.field[i] != compareField->field[i]) {
-			cout << "error - field[] differs!" << endl; ret = false;
+		if (field.board[i] != compareField->board[i]) {
+			cout << "error - board[] differs!" << endl; ret = false;
 		}
 		if (field.warnings[i] != compareField->warnings[i]) {
 			cout << "error - warnings[] differs!" << endl; ret = false;
@@ -662,7 +662,7 @@ bool Position::compareWithField(fieldStruct *compareField)
 			if (field.connectedSquare[i][j] != compareField->connectedSquare[i][j]) {
 				cout << "error - connectedSquare[] differs!" << endl; ret = false;
 			}
-			//			if (field.stoneMoveAble[i][j]	!= compareField->stoneMoveAble[i][j])	{ cout << "error - stoneMoveAble differs!"		<< endl; ret = false; }
+			//			if (board.stoneMoveAble[i][j]	!= compareField->stoneMoveAble[i][j])	{ cout << "error - stoneMoveAble differs!"		<< endl; ret = false; }
 			if (field.neighbour[i][j / 2][j % 2] != compareField->neighbour[i][j / 2][j % 2]) {
 				cout << "error - neighbour differs!" << endl; ret = false;
 			}
@@ -705,7 +705,7 @@ bool Position::comparePlayers(playerStruct *playerA, playerStruct *playerB)
 
 //-----------------------------------------------------------------------------
 // Name: printField()
-// Desc: Calls the printField() function of the current field.
+// Desc: Calls the printField() function of the current board.
 //       Prints the current game state on the screen.
 //-----------------------------------------------------------------------------
 void Position::printField()
@@ -715,7 +715,7 @@ void Position::printField()
 
 //-----------------------------------------------------------------------------
 // Name: undo_move()
-// Desc: Sets the initial field as the current one and apply all (minus one) moves from the move history.
+// Desc: Sets the initial board as the current one and apply all (minus one) moves from the move history.
 //-----------------------------------------------------------------------------
 void Position::undo_move(void)
 {

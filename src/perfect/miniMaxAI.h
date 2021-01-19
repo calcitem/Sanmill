@@ -37,8 +37,8 @@ protected:
 		float			value;
 		bool			gameHasFinished;
 		bool			settingPhase;
-		int				fieldFrom, fieldTo;				// value of field
-		unsigned int	from, to;						// index of field
+		int				fieldFrom, fieldTo;				// value of board
+		unsigned int	from, to;						// index of board
 		unsigned int	curNumStones, oppNumStones;
 		unsigned int	curPosMoves, oppPosMoves;
 		unsigned int	curMissStones, oppMissStones;
@@ -50,9 +50,9 @@ protected:
 	};
 
 	// Variables
-	fieldStruct *field;							// pointer of the current field [changed by move()]
-	float			currentValue;					// value of current situation for field->currentPlayer
-	bool			gameHasFinished;				// someone has won or current field is full
+	fieldStruct *field;							// pointer of the current board [changed by move()]
+	float			currentValue;					// value of current situation for board->currentPlayer
+	bool			gameHasFinished;				// someone has won or current board is full
 
 	int				ownId;							// id of the player who called the play()-function
 	unsigned int	curSearchDepth;					// current level

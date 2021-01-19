@@ -112,7 +112,7 @@ unsigned int *miniMaxAI::getPossSettingPhase(unsigned int *numPossibilities, voi
 	for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
 
 		// move possible ?
-		if (field->field[i] == field->squareIsFree) {
+		if (field->board[i] == field->squareIsFree) {
 
 			idPossibility[*numPossibilities] = i;
 			(*numPossibilities)++;
@@ -146,7 +146,7 @@ unsigned int *miniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void 
 				to = field->connectedSquare[from][dir];
 
 				// move possible ?
-				if (to < field->size && field->field[from] == field->curPlayer->id && field->field[to] == field->squareIsFree) {
+				if (to < field->size && field->board[from] == field->curPlayer->id && field->board[to] == field->squareIsFree) {
 
 					// stone is moveable
 					idPossibility[*numPossibilities] = *numPossibilities;
@@ -164,7 +164,7 @@ unsigned int *miniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void 
 			for (to = 0; to < field->size; to++) {
 
 				// move possible ?
-				if (field->field[from] == field->curPlayer->id && field->field[to] == field->squareIsFree && *numPossibilities < MAX_NUM_POS_MOVES) {
+				if (field->board[from] == field->curPlayer->id && field->board[to] == field->squareIsFree && *numPossibilities < MAX_NUM_POS_MOVES) {
 
 					// stone is moveable
 					idPossibility[*numPossibilities] = *numPossibilities;
@@ -196,7 +196,7 @@ unsigned int *miniMaxAI::getPossStoneRemove(unsigned int *numPossibilities, void
 	for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
 
 		// move possible ?
-		if (field->field[i] == field->oppPlayer->id && !field->stonePartOfMill[i]) {
+		if (field->board[i] == field->oppPlayer->id && !field->stonePartOfMill[i]) {
 
 			idPossibility[*numPossibilities] = i;
 			(*numPossibilities)++;
@@ -273,8 +273,8 @@ void miniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opp
 	field->settingPhase = oldState->settingPhase;
 	field->stonesSet = oldState->stonesSet;
 	field->stoneMustBeRemoved = oldState->stoneMustBeRemoved;
-	field->field[oldState->from] = oldState->fieldFrom;
-	field->field[oldState->to] = oldState->fieldTo;
+	field->board[oldState->from] = oldState->fieldFrom;
+	field->board[oldState->to] = oldState->fieldTo;
 
 	// very expensive
 	for (int i = 0; i < field->size; i++) {
@@ -290,7 +290,7 @@ void miniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opp
 inline void miniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree)
 {
 	// if all 3 fields are occupied by current player than he closed a mill
-	if (field->field[stoneOne] == field->curPlayer->id && field->field[stoneTwo] == field->curPlayer->id && field->field[stoneThree] == field->curPlayer->id) {
+	if (field->board[stoneOne] == field->curPlayer->id && field->board[stoneTwo] == field->curPlayer->id && field->board[stoneThree] == field->curPlayer->id) {
 
 		field->stonePartOfMill[stoneOne]++;
 		field->stonePartOfMill[stoneTwo]++;
@@ -299,7 +299,7 @@ inline void miniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, 
 	}
 
 	// is a mill destroyed ?
-	if (field->field[stoneOne] == field->squareIsFree && field->stonePartOfMill[stoneOne] && field->stonePartOfMill[stoneTwo] && field->stonePartOfMill[stoneThree]) {
+	if (field->board[stoneOne] == field->squareIsFree && field->stonePartOfMill[stoneOne] && field->stonePartOfMill[stoneTwo] && field->stonePartOfMill[stoneThree]) {
 
 		field->stonePartOfMill[stoneOne]--;
 		field->stonePartOfMill[stoneTwo]--;
@@ -307,39 +307,39 @@ inline void miniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, 
 	}
 
 	// stone was set
-	if (field->field[stoneOne] == field->curPlayer->id) {
+	if (field->board[stoneOne] == field->curPlayer->id) {
 
 		// a warnig was destroyed
 		field->warnings[stoneOne] = field->noWarning;
 
 		// a warning is created
-		if (field->field[stoneTwo] == field->curPlayer->id && field->field[stoneThree] == field->squareIsFree) field->warnings[stoneThree] |= field->curPlayer->warning;
-		if (field->field[stoneThree] == field->curPlayer->id && field->field[stoneTwo] == field->squareIsFree) field->warnings[stoneTwo] |= field->curPlayer->warning;
+		if (field->board[stoneTwo] == field->curPlayer->id && field->board[stoneThree] == field->squareIsFree) field->warnings[stoneThree] |= field->curPlayer->warning;
+		if (field->board[stoneThree] == field->curPlayer->id && field->board[stoneTwo] == field->squareIsFree) field->warnings[stoneTwo] |= field->curPlayer->warning;
 
 		// stone was removed
-	} else if (field->field[stoneOne] == field->squareIsFree) {
+	} else if (field->board[stoneOne] == field->squareIsFree) {
 
 		// a warning is created
-		if (field->field[stoneTwo] == field->curPlayer->id && field->field[stoneThree] == field->curPlayer->id) field->warnings[stoneOne] |= field->curPlayer->warning;
-		if (field->field[stoneTwo] == field->oppPlayer->id && field->field[stoneThree] == field->oppPlayer->id) field->warnings[stoneOne] |= field->oppPlayer->warning;
+		if (field->board[stoneTwo] == field->curPlayer->id && field->board[stoneThree] == field->curPlayer->id) field->warnings[stoneOne] |= field->curPlayer->warning;
+		if (field->board[stoneTwo] == field->oppPlayer->id && field->board[stoneThree] == field->oppPlayer->id) field->warnings[stoneOne] |= field->oppPlayer->warning;
 
 		// a warning is destroyed
-		if (field->warnings[stoneTwo] && field->field[stoneThree] != field->squareIsFree) {
+		if (field->warnings[stoneTwo] && field->board[stoneThree] != field->squareIsFree) {
 
 			// reset warning if necessary
-			if (field->field[field->neighbour[stoneTwo][0][0]] == field->curPlayer->id && field->field[field->neighbour[stoneTwo][0][1]] == field->curPlayer->id)	field->warnings[stoneTwo] = field->curPlayer->warning;
-			else if (field->field[field->neighbour[stoneTwo][1][0]] == field->curPlayer->id && field->field[field->neighbour[stoneTwo][1][1]] == field->curPlayer->id)	field->warnings[stoneTwo] = field->curPlayer->warning;
-			else if (field->field[field->neighbour[stoneTwo][0][0]] == field->oppPlayer->id && field->field[field->neighbour[stoneTwo][0][1]] == field->oppPlayer->id)	field->warnings[stoneTwo] = field->oppPlayer->warning;
-			else if (field->field[field->neighbour[stoneTwo][1][0]] == field->oppPlayer->id && field->field[field->neighbour[stoneTwo][1][1]] == field->oppPlayer->id)	field->warnings[stoneTwo] = field->oppPlayer->warning;
+			if (field->board[field->neighbour[stoneTwo][0][0]] == field->curPlayer->id && field->board[field->neighbour[stoneTwo][0][1]] == field->curPlayer->id)	field->warnings[stoneTwo] = field->curPlayer->warning;
+			else if (field->board[field->neighbour[stoneTwo][1][0]] == field->curPlayer->id && field->board[field->neighbour[stoneTwo][1][1]] == field->curPlayer->id)	field->warnings[stoneTwo] = field->curPlayer->warning;
+			else if (field->board[field->neighbour[stoneTwo][0][0]] == field->oppPlayer->id && field->board[field->neighbour[stoneTwo][0][1]] == field->oppPlayer->id)	field->warnings[stoneTwo] = field->oppPlayer->warning;
+			else if (field->board[field->neighbour[stoneTwo][1][0]] == field->oppPlayer->id && field->board[field->neighbour[stoneTwo][1][1]] == field->oppPlayer->id)	field->warnings[stoneTwo] = field->oppPlayer->warning;
 			else																															field->warnings[stoneTwo] = field->noWarning;
 
-		} else if (field->warnings[stoneThree] && field->field[stoneTwo] != field->squareIsFree) {
+		} else if (field->warnings[stoneThree] && field->board[stoneTwo] != field->squareIsFree) {
 
 			// reset warning if necessary
-			if (field->field[field->neighbour[stoneThree][0][0]] == field->curPlayer->id && field->field[field->neighbour[stoneThree][0][1]] == field->curPlayer->id)	field->warnings[stoneThree] = field->curPlayer->warning;
-			else if (field->field[field->neighbour[stoneThree][1][0]] == field->curPlayer->id && field->field[field->neighbour[stoneThree][1][1]] == field->curPlayer->id)	field->warnings[stoneThree] = field->curPlayer->warning;
-			else if (field->field[field->neighbour[stoneThree][0][0]] == field->oppPlayer->id && field->field[field->neighbour[stoneThree][0][1]] == field->oppPlayer->id)	field->warnings[stoneThree] = field->oppPlayer->warning;
-			else if (field->field[field->neighbour[stoneThree][1][0]] == field->oppPlayer->id && field->field[field->neighbour[stoneThree][1][1]] == field->oppPlayer->id)	field->warnings[stoneThree] = field->oppPlayer->warning;
+			if (field->board[field->neighbour[stoneThree][0][0]] == field->curPlayer->id && field->board[field->neighbour[stoneThree][0][1]] == field->curPlayer->id)	field->warnings[stoneThree] = field->curPlayer->warning;
+			else if (field->board[field->neighbour[stoneThree][1][0]] == field->curPlayer->id && field->board[field->neighbour[stoneThree][1][1]] == field->curPlayer->id)	field->warnings[stoneThree] = field->curPlayer->warning;
+			else if (field->board[field->neighbour[stoneThree][0][0]] == field->oppPlayer->id && field->board[field->neighbour[stoneThree][0][1]] == field->oppPlayer->id)	field->warnings[stoneThree] = field->oppPlayer->warning;
+			else if (field->board[field->neighbour[stoneThree][1][0]] == field->oppPlayer->id && field->board[field->neighbour[stoneThree][1][1]] == field->oppPlayer->id)	field->warnings[stoneThree] = field->oppPlayer->warning;
 			else																																field->warnings[stoneThree] = field->noWarning;
 		}
 	}
@@ -361,7 +361,7 @@ inline void miniMaxAI::updateWarning(unsigned int firstStone, unsigned int secon
 	// no stone must be removed if each belongs to a mill
 	unsigned int	i;
 	bool			atLeastOneStoneRemoveAble = false;
-	if (field->stoneMustBeRemoved) for (i = 0; i < field->size; i++) if (field->stonePartOfMill[i] == 0 && field->field[i] == field->oppPlayer->id) {
+	if (field->stoneMustBeRemoved) for (i = 0; i < field->size; i++) if (field->stonePartOfMill[i] == 0 && field->board[i] == field->oppPlayer->id) {
 		atLeastOneStoneRemoveAble = true; break;
 	}
 	if (!atLeastOneStoneRemoveAble) field->stoneMustBeRemoved = 0;
@@ -388,13 +388,13 @@ inline void miniMaxAI::updatePossibleMoves(unsigned int stone, playerStruct *sto
 			if (ignoreStone == neighbor) continue;
 
 			// if there is no neighbour stone than it only affects the actual stone
-			if (field->field[neighbor] == field->squareIsFree) {
+			if (field->board[neighbor] == field->squareIsFree) {
 
 				if (stoneRemoved)	stoneOwner->numPossibleMoves--;
 				else				stoneOwner->numPossibleMoves++;
 
 				// if there is a neighbour stone than it effects only this one
-			} else if (field->field[neighbor] == field->curPlayer->id) {
+			} else if (field->board[neighbor] == field->curPlayer->id) {
 
 				if (stoneRemoved)	field->curPlayer->numPossibleMoves++;
 				else				field->curPlayer->numPossibleMoves--;
@@ -422,10 +422,10 @@ inline void	miniMaxAI::setStone(unsigned int to, backupStruct *backup)
 	backup->from = field->size;
 	backup->to = to;
 	backup->fieldFrom = field->size;
-	backup->fieldTo = field->field[to];
+	backup->fieldTo = field->board[to];
 
-	// set stone into field
-	field->field[to] = field->curPlayer->id;
+	// set stone into board
+	field->board[to] = field->curPlayer->id;
 	field->curPlayer->numStones++;
 	field->stonesSet++;
 
@@ -448,12 +448,12 @@ inline void	miniMaxAI::normalMove(unsigned int from, unsigned int to, backupStru
 	// backup
 	backup->from = from;
 	backup->to = to;
-	backup->fieldFrom = field->field[from];
-	backup->fieldTo = field->field[to];
+	backup->fieldFrom = field->board[from];
+	backup->fieldTo = field->board[to];
 
-	// set stone into field
-	field->field[from] = field->squareIsFree;
-	field->field[to] = field->curPlayer->id;
+	// set stone into board
+	field->board[from] = field->squareIsFree;
+	field->board[to] = field->curPlayer->id;
 
 	// update possible moves
 	updatePossibleMoves(from, field->curPlayer, true, to);
@@ -472,11 +472,11 @@ inline void miniMaxAI::removeStone(unsigned int from, backupStruct *backup)
 	// backup
 	backup->from = from;
 	backup->to = field->size;
-	backup->fieldFrom = field->field[from];
+	backup->fieldFrom = field->board[from];
 	backup->fieldTo = field->size;
 
 	// remove stone
-	field->field[from] = field->squareIsFree;
+	field->board[from] = field->squareIsFree;
 	field->oppPlayer->numStones--;
 	field->oppPlayer->numStonesMissing++;
 	field->stoneMustBeRemoved--;

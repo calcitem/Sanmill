@@ -20,7 +20,7 @@ void fieldStruct::printField()
 	unsigned int index;
 	char		 c[fieldStruct::size];
 
-	for (index = 0; index < fieldStruct::size; index++) c[index] = GetCharFromStone(this->field[index]);
+	for (index = 0; index < fieldStruct::size; index++) c[index] = GetCharFromStone(this->board[index]);
 
 	cout << "current player          : " << GetCharFromStone(this->curPlayer->id) << " has " << this->curPlayer->numStones << " stones\n";
 	cout << "opponent player         : " << GetCharFromStone(this->oppPlayer->id) << " has " << this->oppPlayer->numStones << " stones\n";
@@ -77,7 +77,7 @@ void fieldStruct::copyField(fieldStruct *destination)
 
 	for (i = 0; i < this->size; i++) {
 
-		destination->field[i] = this->field[i];
+		destination->board[i] = this->board[i];
 		destination->warnings[i] = this->warnings[i];
 		destination->stonePartOfMill[i] = this->stonePartOfMill[i];
 
@@ -111,7 +111,7 @@ void playerStruct::copyPlayer(playerStruct *destination)
 
 //-----------------------------------------------------------------------------
 // Name: createField()
-// Desc: Creates, but doesn't initialize, the arrays of the of the passed field structure.
+// Desc: Creates, but doesn't initialize, the arrays of the of the passed board structure.
 //-----------------------------------------------------------------------------
 void fieldStruct::createField()
 {
@@ -137,7 +137,7 @@ void fieldStruct::createField()
 
 	// zero
 	for (i = 0; i < size; i++) {
-		field[i] = squareIsFree;
+		board[i] = squareIsFree;
 		warnings[i] = noWarning;
 		stonePartOfMill[i] = 0;
 		stoneMoveAble[i][0] = false;

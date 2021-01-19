@@ -45,7 +45,7 @@ void randomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 		do {
 			from = rand() % theField->size;
 			to = theField->size;
-		} while (theField->field[from] != theField->oppPlayer->id || theField->stonePartOfMill[from]);
+		} while (theField->board[from] != theField->oppPlayer->id || theField->stonePartOfMill[from]);
 
 		// still in setting phase ?
 	} else if (theField->settingPhase) {
@@ -54,7 +54,7 @@ void randomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 		do {
 			from = theField->size;
 			to = rand() % theField->size;
-		} while (theField->field[to] != theField->squareIsFree);
+		} while (theField->board[to] != theField->squareIsFree);
 
 		// try to push randomly
 	} else {
@@ -63,13 +63,13 @@ void randomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 			// search an own stone
 			do {
 				from = rand() % theField->size;
-			} while (theField->field[from] != theField->curPlayer->id);
+			} while (theField->board[from] != theField->curPlayer->id);
 
 			// select a free square
 			if (allowedToSpring) {
 				do {
 					to = rand() % theField->size;
-				} while (theField->field[to] != theField->squareIsFree);
+				} while (theField->board[to] != theField->squareIsFree);
 
 				// select a connected square
 			} else {
@@ -79,7 +79,7 @@ void randomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 				} while (to == theField->size);
 			}
 
-		} while (theField->field[to] != theField->squareIsFree);
+		} while (theField->board[to] != theField->squareIsFree);
 	}
 
 	*pushFrom = from;

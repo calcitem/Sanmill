@@ -25,11 +25,11 @@ class playerStruct
 public:
 	int			 				id;								// static
 	unsigned int 				warning;						// static
-	unsigned int 				numStones;						// number of stones of this player on the field
+	unsigned int 				numStones;						// number of stones of this player on the board
 	unsigned int 				numStonesMissing;				// number of stones, which where stolen by the opponent
 	unsigned int 				numPossibleMoves;				// amount of possible moves
-	unsigned int 				posTo[MAX_NUM_POS_MOVES];		// target field position of a possible move
-	unsigned int 				posFrom[MAX_NUM_POS_MOVES];		// source field position of a possible move
+	unsigned int 				posTo[MAX_NUM_POS_MOVES];		// target board position of a possible move
+	unsigned int 				posFrom[MAX_NUM_POS_MOVES];		// source board position of a possible move
 
 	void						copyPlayer(playerStruct *destination);
 };
@@ -52,8 +52,8 @@ public:
 	static const int			gameDrawn = 3;		// only a nonzero value
 
 	// variables
-	int			 				field[size];					// one of the values above for each field position
-	unsigned int 				warnings[size];					// array containing the warnings for each field position
+	int			 				board[size];					// one of the values above for each board position
+	unsigned int 				warnings[size];					// array containing the warnings for each board position
 	bool						stoneMoveAble[size][4];			// true if stone can be moved in this direction
 	unsigned int 				stonePartOfMill[size];			// the number of mills, of which this stone is part of
 	unsigned int 				connectedSquare[size][4];		// static array containg the index of the neighbour or "size"

@@ -38,8 +38,8 @@ private:
 	unsigned int *moveLogFrom, *moveLogTo, movesDone;			// array containing the history of moves done
 	millAI *playerOneAI;									// class-pointer to the AI of player one
 	millAI *playerTwoAI;									// class-pointer to the AI of player two
-	fieldStruct		field;											// current field
-	fieldStruct		initialField;									// undo of the last move is done by setting the initial field und performing all moves saved in history
+	fieldStruct		field;											// current board
+	fieldStruct		initialField;									// undo of the last move is done by setting the initial board und performing all moves saved in history
 	int				winner;											// playerId of the player who has won the game. zero if game is still running.
 	int				beginningPlayer;								// playerId of the player who makes the first move
 

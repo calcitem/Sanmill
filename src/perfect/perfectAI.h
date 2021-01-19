@@ -37,7 +37,7 @@
 #define	NUM_STONES_PER_PLAYER			9
 #define	NUM_STONES_PER_PLAYER_PLUS_ONE	10
 
-// The Four Groups (the field position is divided in four groups A,B,C,D)
+// The Four Groups (the board position is divided in four groups A,B,C,D)
 #define numSquaresGroupA				 4
 #define numSquaresGroupB				 4
 #define numSquaresGroupC				 8
@@ -110,8 +110,8 @@ protected:
 		twoBit				shortValue;
 		bool				gameHasFinished;
 		bool				settingPhase;
-		int					fieldFrom, fieldTo;				// value of field
-		unsigned int		from, to;						// index of field
+		int					fieldFrom, fieldTo;				// value of board
+		unsigned int		from, to;						// index of board
 		unsigned int		curNumStones, oppNumStones;
 		unsigned int		curPosMoves, oppPosMoves;
 		unsigned int		curMissStones, oppMissStones;
@@ -152,10 +152,10 @@ protected:
 	class threadVarsStruct
 	{
 	public:
-		fieldStruct *field;						// pointer of the current field [changed by move()]
-		float				floatValue;					// value of current situation for field->currentPlayer
+		fieldStruct *field;						// pointer of the current board [changed by move()]
+		float				floatValue;					// value of current situation for board->currentPlayer
 		twoBit				shortValue;					// ''
-		bool				gameHasFinished;			// someone has won or current field is full
+		bool				gameHasFinished;			// someone has won or current board is full
 		int					ownId;						// id of the player who called the play()-function
 		unsigned int		curSearchDepth;				// current level
 		unsigned int		depthOfFullTree;			// search depth where the whole tree is explored

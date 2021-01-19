@@ -68,7 +68,7 @@ int main(void)
 
         // play
         do {
-            // print field
+            // print board
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
             myGame->getComputersChoice(&pushFrom, &pushTo);
             cout << "\n\n";
@@ -111,7 +111,7 @@ int main(void)
                         } while (!((myGame->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman)
                                    || (myGame->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
 
-                        // reprint field
+                        // reprint board
                         break;
                     }
 

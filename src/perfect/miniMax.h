@@ -30,7 +30,7 @@ using namespace std;										// use standard library namespace
 
 /*** Wiki ***************************************************************************************************************************
 player:
-layer:					The states are divided in layers. For example depending on number of stones on the field.
+layer:					The states are divided in layers. For example depending on number of stones on the board.
 state:					A unique game state reprensiting a current game situation.
 situation:				Used as synonym to state.
 knot:					Each knot of the graph corresponds to a game state. The knots are connected by possible valid moves.
