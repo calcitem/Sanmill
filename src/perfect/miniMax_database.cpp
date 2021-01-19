@@ -325,7 +325,7 @@ void MiniMax::openPlyInfoFile(const char *directory)
 			plyInfos[i].plyInfoCompressed = nullptr;
 			plyInfos[i].plyInfoIsLoaded = false;
 			plyInfos[i].plyInfoIsCompletedAndInFile = false;
-			plyInfos[i].sizeInBytes = plyInfos[i].knotsInLayer * sizeof(plyInfoVarType);
+			plyInfos[i].sizeInBytes = plyInfos[i].knotsInLayer * sizeof(PlyInfoVarType);
 		}
 
 		for (i = 1; i < plyInfoHeader.numLayers; i++) {
@@ -407,7 +407,7 @@ inline void MiniMax::measureIops(long long &numOperations, LARGE_INTEGER &interv
 // Name: readKnotValueFromDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, twoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted)
+void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, TwoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted)
 {
 	// get state number, since this is the address, where the value is saved
 	getLayerAndStateNumber(threadNo, layerNumber, stateNumber);
@@ -436,12 +436,12 @@ void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &lay
 // Name: readKnotValueFromDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, twoBit &knotValue)
+void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit &knotValue)
 {
 	// locals
-	twoBit				databaseByte;
+	TwoBit				databaseByte;
 	long long			bytesAllocated;
-	twoBit				defValue = SKV_WHOLE_BYTE_IS_INVALID;
+	TwoBit				defValue = SKV_WHOLE_BYTE_IS_INVALID;
 	LayerStats *myLss = &layerStats[layerNumber];
 
 	// valid state and layer number ?
@@ -502,11 +502,11 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
 // Name: readPlyInfoFromDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, plyInfoVarType &value)
+void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType &value)
 {
 	// locals
 	unsigned int	curKnot;
-	plyInfoVarType	defValue = PLYINFO_VALUE_UNCALCULATED;
+	PlyInfoVarType	defValue = PLYINFO_VALUE_UNCALCULATED;
 	long long		bytesAllocated;
 	PlyInfo *myPis = &plyInfos[layerNumber];
 
@@ -520,7 +520,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
 	// if database is complete get whole byte from file
 	if (plyInfoHeader.plyInfoCompleted || layerInDatabase || myPis->plyInfoIsCompletedAndInFile) {
 		EnterCriticalSection(&csDatabase);
-		loadBytesFromFile(hFilePlyInfo, plyInfoHeader.headerAndPlyInfosSize + myPis->layerOffset + sizeof(plyInfoVarType) * stateNumber, sizeof(plyInfoVarType), &value);
+		loadBytesFromFile(hFilePlyInfo, plyInfoHeader.headerAndPlyInfosSize + myPis->layerOffset + sizeof(PlyInfoVarType) * stateNumber, sizeof(PlyInfoVarType), &value);
 		LeaveCriticalSection(&csDatabase);
 	} else {
 
@@ -529,7 +529,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
 			EnterCriticalSection(&csDatabase);
 			if (!myPis->plyInfoIsLoaded) {
 				// if layer is in database and completed, then load layer from file into memory; set default value otherwise
-				myPis->plyInfo = new plyInfoVarType[myPis->knotsInLayer];
+				myPis->plyInfo = new PlyInfoVarType[myPis->knotsInLayer];
 				if (myPis->plyInfoIsCompletedAndInFile) {
 					loadBytesFromFile(hFilePlyInfo, plyInfoHeader.headerAndPlyInfosSize + myPis->layerOffset, myPis->sizeInBytes, myPis->plyInfo);
 				} else {
@@ -564,11 +564,11 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
 // Name: saveKnotValueInDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue)
+void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue)
 {
 	// locals
 	long long			bytesAllocated;
-	twoBit				defValue = SKV_WHOLE_BYTE_IS_INVALID;
+	TwoBit				defValue = SKV_WHOLE_BYTE_IS_INVALID;
 	LayerStats *myLss = &layerStats[layerNumber];
 
 	// valid state and layer number ?
@@ -589,7 +589,7 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
 		EnterCriticalSection(&csDatabase);
 		if (!myLss->layerIsLoaded) {
 			// reserve memory for this layer & create array for ply info with default value
-			myLss->shortKnotValueByte = new twoBit[myLss->sizeInBytes];
+			myLss->shortKnotValueByte = new TwoBit[myLss->sizeInBytes];
 			memset(myLss->shortKnotValueByte, SKV_WHOLE_BYTE_IS_INVALID, myLss->sizeInBytes);
 			bytesAllocated = myLss->sizeInBytes;
 			arrayInfos.addArray(layerNumber, ArrayInfo::arrayType_layerStats, myLss->sizeInBytes, 0);
@@ -627,11 +627,11 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
 // Name: savePlyInfoInDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int stateNumber, plyInfoVarType value)
+void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType value)
 {
 	// locals
 	unsigned int	curKnot;
-	plyInfoVarType	defValue = PLYINFO_VALUE_UNCALCULATED;
+	PlyInfoVarType	defValue = PLYINFO_VALUE_UNCALCULATED;
 	long long		bytesAllocated;
 	PlyInfo *myPis = &plyInfos[layerNumber];
 
@@ -653,7 +653,7 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int state
 		EnterCriticalSection(&csDatabase);
 		if (!myPis->plyInfoIsLoaded) {
 			// reserve memory for this layer & create array for ply info with default value
-			myPis->plyInfo = new plyInfoVarType[myPis->knotsInLayer];
+			myPis->plyInfo = new PlyInfoVarType[myPis->knotsInLayer];
 			for (curKnot = 0; curKnot < myPis->knotsInLayer; curKnot++) {
 				myPis->plyInfo[curKnot] = defValue;
 			}

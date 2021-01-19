@@ -40,8 +40,8 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 		tlVars[curThreadNo].pMiniMax = this;
 		tlVars[curThreadNo].layerNumber = layerNumber;
 		tlVars[curThreadNo].statesProcessed = 0;
-		tlVars[curThreadNo].subValueInDatabase = new twoBit[maxNumBranches];
-		tlVars[curThreadNo].subPlyInfos = new plyInfoVarType[maxNumBranches];
+		tlVars[curThreadNo].subValueInDatabase = new TwoBit[maxNumBranches];
+		tlVars[curThreadNo].subPlyInfos = new PlyInfoVarType[maxNumBranches];
 		tlVars[curThreadNo].hasCurPlayerChanged = new bool[maxNumBranches];
 	}
 
@@ -93,14 +93,14 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, int index)
 	unsigned int				layerNumber = tlVars->layerNumber;
 	unsigned int				stateNumber = index;
 	unsigned int				threadNo = tlVars->curThreadNo;
-	twoBit *subValueInDatabase = tlVars->subValueInDatabase;
-	plyInfoVarType *subPlyInfos = tlVars->subPlyInfos;
+	TwoBit *subValueInDatabase = tlVars->subValueInDatabase;
+	PlyInfoVarType *subPlyInfos = tlVars->subPlyInfos;
 	bool *hasCurPlayerChanged = tlVars->hasCurPlayerChanged;
-	twoBit						shortValueInDatabase;
-	plyInfoVarType				numPliesTillCurState;
-	twoBit						shortValueInGame;
+	TwoBit						shortValueInDatabase;
+	PlyInfoVarType				numPliesTillCurState;
+	TwoBit						shortValueInGame;
 	float						floatValueInGame;
-	plyInfoVarType				min, max;
+	PlyInfoVarType				min, max;
 	unsigned int				numPossibilities;
 	unsigned int				i, j;
 	unsigned int				tmpStateNumber, tmpLayerNumber;
@@ -319,8 +319,8 @@ bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 	tlVars.pMiniMax = this;
 	tlVars.layerNumber = layerNumber;
 	tlVars.statesProcessed = 0;
-	tlVars.subValueInDatabase = new twoBit[maxNumBranches];
-	tlVars.subPlyInfos = new plyInfoVarType[maxNumBranches];
+	tlVars.subValueInDatabase = new TwoBit[maxNumBranches];
+	tlVars.subPlyInfos = new PlyInfoVarType[maxNumBranches];
 	tlVars.hasCurPlayerChanged = new bool[maxNumBranches];
 
 	if (testLayerThreadProc(&tlVars, stateNumber) != TM_RETURN_VALUE_OK) result = false;
@@ -355,8 +355,8 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 		tlVars[curThreadNo].pMiniMax = this;
 		tlVars[curThreadNo].layerNumber = layerNumber;
 		tlVars[curThreadNo].statesProcessed = 0;
-		tlVars[curThreadNo].subValueInDatabase = new twoBit[maxNumBranches];
-		tlVars[curThreadNo].subPlyInfos = new plyInfoVarType[maxNumBranches];
+		tlVars[curThreadNo].subValueInDatabase = new TwoBit[maxNumBranches];
+		tlVars[curThreadNo].subPlyInfos = new PlyInfoVarType[maxNumBranches];
 		tlVars[curThreadNo].hasCurPlayerChanged = new bool[maxNumBranches];
 	}
 
@@ -413,7 +413,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
 	StateAdress			curState;
 	StateAdress			subState;
 	Node					knot;
-	twoBit						shortKnotValue = SKV_VALUE_GAME_DRAWN;
+	TwoBit						shortKnotValue = SKV_VALUE_GAME_DRAWN;
 	curState.layerNumber = tlVars->layerNumber;
 	curState.stateNumber = index;
 
@@ -485,10 +485,10 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 {
 	// Locals
 	unsigned int	threadNo = 0;
-	twoBit			shortValueInDatabase;
-	twoBit			shortValueOfSymState;
-	plyInfoVarType  numPliesTillCurState;
-	plyInfoVarType  numPliesTillSymState;
+	TwoBit			shortValueInDatabase;
+	TwoBit			shortValueOfSymState;
+	PlyInfoVarType  numPliesTillCurState;
+	PlyInfoVarType  numPliesTillSymState;
 	unsigned int	stateNumber = 0;
 	unsigned int *symStateNumbers = nullptr;
 	unsigned int	numSymmetricStates;

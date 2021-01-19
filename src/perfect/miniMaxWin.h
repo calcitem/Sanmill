@@ -25,7 +25,7 @@ public:
 	virtual void								setVisibility(bool visible)
 	{
 	};
-	virtual void								setState(unsigned int curShowedLayer, MiniMax::stateNumberVarType curShowedState)
+	virtual void								setState(unsigned int curShowedLayer, MiniMax::StateNumberVarType curShowedState)
 	{
 	};
 };
@@ -64,7 +64,7 @@ protected:
 	miniMaxGuiField *pGuiField = nullptr;
 	bool										showingInspectionControls = false;
 	unsigned int								curShowedLayer = 0;						// current showed layer
-	MiniMax::stateNumberVarType					curShowedState = 0;						// current showed state
+	MiniMax::StateNumberVarType					curShowedState = 0;						// current showed state
 	const unsigned int							scrollBarWidth = 20;
 
 public:

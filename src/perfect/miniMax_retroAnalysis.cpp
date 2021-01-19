@@ -92,8 +92,8 @@ freeMem:
 	}
 	for (curLayer = 0; curLayer < layersToCalculate.size(); curLayer++) {
 		if (retroVars.countArrays[curLayer] != nullptr) {
-			memoryUsed2 -= layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(countArrayVarType);
-			arrayInfos.removeArray(layersToCalculate[curLayer], ArrayInfo::arrayType_countArray, layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(countArrayVarType), 0);
+			memoryUsed2 -= layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(CountArrayVarType);
+			arrayInfos.removeArray(layersToCalculate[curLayer], ArrayInfo::arrayType_countArray, layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(CountArrayVarType), 0);
 		}
 		SAFE_DELETE_ARRAY(retroVars.countArrays[curLayer]);
 	}
@@ -191,7 +191,7 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
 	MiniMax *m = iraVars->pMiniMax;
 	float		  				floatValue;						// dummy variable for calls of getValueOfSituation()
 	StateAdress			curState;						// current state counter for loops
-	twoBit		  				curStateValue;					// for calls of getValueOfSituation()
+	TwoBit		  				curStateValue;					// for calls of getValueOfSituation()
 
 	curState.layerNumber = iraVars->layerNumber;
 	curState.stateNumber = index;
@@ -205,7 +205,7 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
 
 	// layer initialization already done ? if so, then read from file
 	if (iraVars->initAlreadyDone) {
-		if (!iraVars->bufferedFile->readBytes(iraVars->curThreadNo, index * sizeof(twoBit), sizeof(twoBit), (unsigned char *)&curStateValue)) {
+		if (!iraVars->bufferedFile->readBytes(iraVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char *)&curStateValue)) {
 			PRINT(0, m, "ERROR: initArray->takeBytes() failed");
 			return m->falseOrStop();
 		}
@@ -242,7 +242,7 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
 	// write data to file
 	if (!iraVars->initAlreadyDone) {
 		// curStateValue sollte 2 sein bei index == 1329322
-		if (!iraVars->bufferedFile->writeBytes(iraVars->curThreadNo, index * sizeof(twoBit), sizeof(twoBit), (unsigned char *)&curStateValue)) {
+		if (!iraVars->bufferedFile->writeBytes(iraVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char *)&curStateValue)) {
 			PRINT(0, m, "ERROR: bufferedFile->writeBytes failed!");
 			return m->falseOrStop();
 		}
@@ -262,7 +262,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 	unsigned int			numKnotsInCurLayer;
 	StateAdress		curState;									// current state counter for loops
 	unsigned int			curLayer = 0;				// Counter variable
-	countArrayVarType		defValue = 0;				// default counter array value
+	CountArrayVarType		defValue = 0;				// default counter array value
 	DWORD					dwWritten;
 	DWORD					dwRead;
 	LARGE_INTEGER			fileSize;
@@ -288,9 +288,9 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 	// allocate memory for count arrays
 	for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
 		numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-		retroVars.countArrays[curLayer] = new countArrayVarType[numKnotsInCurLayer];
-		memoryUsed2 += numKnotsInCurLayer * sizeof(countArrayVarType);
-		arrayInfos.addArray(retroVars.layersToCalculate[curLayer], ArrayInfo::arrayType_countArray, numKnotsInCurLayer * sizeof(countArrayVarType), 0);
+		retroVars.countArrays[curLayer] = new CountArrayVarType[numKnotsInCurLayer];
+		memoryUsed2 += numKnotsInCurLayer * sizeof(CountArrayVarType);
+		arrayInfos.addArray(retroVars.layersToCalculate[curLayer], ArrayInfo::arrayType_countArray, numKnotsInCurLayer * sizeof(CountArrayVarType), 0);
 	}
 
 	// load file if already existend
@@ -299,8 +299,8 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 
 		for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
 			numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-			if (!ReadFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(countArrayVarType), &dwRead, nullptr)) return falseOrStop();
-			if (dwRead != numKnotsInCurLayer * sizeof(countArrayVarType)) return falseOrStop();
+			if (!ReadFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(CountArrayVarType), &dwRead, nullptr)) return falseOrStop();
+			if (dwRead != numKnotsInCurLayer * sizeof(CountArrayVarType)) return falseOrStop();
 		}
 
 		// else calculate number of succedding states
@@ -323,8 +323,8 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 		// save to file
 		for (curLayer = 0, dwWritten = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
 			numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-			if (!WriteFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(countArrayVarType), &dwWritten, nullptr)) return falseOrStop();
-			if (dwWritten != numKnotsInCurLayer * sizeof(countArrayVarType)) return falseOrStop();
+			if (!WriteFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(CountArrayVarType), &dwWritten, nullptr)) return falseOrStop();
+			if (dwWritten != numKnotsInCurLayer * sizeof(CountArrayVarType)) return falseOrStop();
 		}
 		PRINT(2, this, "  Count array saved to file: " << ssCountArrayFilePath.str());
 	}
@@ -440,15 +440,15 @@ DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
 	unsigned int				curLayerId;				// current processed layer within 'layersToCalculate'
 	unsigned int				amountOfPred;
 	unsigned int				curPred;
-	countArrayVarType 			countValue;
+	CountArrayVarType 			countValue;
 	StateAdress			predState;
 	StateAdress			curState;
-	twoBit						curStateValue;
-	plyInfoVarType				numPlies;							// number of plies of the current considered succeding state
+	TwoBit						curStateValue;
+	PlyInfoVarType				numPlies;							// number of plies of the current considered succeding state
 	bool						cuStateAddedToProcessQueue = false;
 
 	curState.layerNumber = ansVars->layerNumber;
-	curState.stateNumber = (stateNumberVarType)index;
+	curState.stateNumber = (StateNumberVarType)index;
 
 	// print status
 	ansVars->statesProcessed++;
@@ -491,14 +491,14 @@ DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
 		}
 
 		// add this state as possible move
-		long *pCountValue = ((long *)ansVars->retroVars->countArrays[curLayerId]) + predState.stateNumber / (sizeof(long) / sizeof(countArrayVarType));
-		long					numBitsToShift = sizeof(countArrayVarType) * 8 * (predState.stateNumber % (sizeof(long) / sizeof(countArrayVarType)));	// little-endian byte-order
+		long *pCountValue = ((long *)ansVars->retroVars->countArrays[curLayerId]) + predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
+		long					numBitsToShift = sizeof(CountArrayVarType) * 8 * (predState.stateNumber % (sizeof(long) / sizeof(CountArrayVarType)));	// little-endian byte-order
 		long					mask = 0x000000ff << numBitsToShift;
 		long					curCountLong, newCountLong;
 
 		do {
 			curCountLong = *pCountValue;
-			countValue = (countArrayVarType)((curCountLong & mask) >> numBitsToShift);
+			countValue = (CountArrayVarType)((curCountLong & mask) >> numBitsToShift);
 			if (countValue == 255) {
 				PRINT(0, m, "ERROR: maximum value for Count[] reached!");
 				return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
@@ -521,7 +521,7 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
 	// locals
 	StateAdress		curState;									// current state counter for loops
-	twoBit		  			curStateValue;								// current state value
+	TwoBit		  			curStateValue;								// current state value
 	unsigned int			curLayerId;									// current processed layer within 'layersToCalculate'
 
 	PRINT(2, this, "  *** Begin Iteration ***");
@@ -576,21 +576,21 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
 	unsigned int				threadNo = m->threadManager.getThreadNumber();
 	RetroAnalysisThreadVars *threadVars = &retroVars->thread[threadNo];
 
-	twoBit						predStateValue;
+	TwoBit						predStateValue;
 	unsigned int				curLayerId;									// current processed layer within 'layersToCalculate'
 	unsigned int  				amountOfPred;								// total numbers of predecessors and current considered one
 	unsigned int				curPred;
 	unsigned int				threadCounter;
 	long long					numStatesProcessed;
 	long long					totalNumStatesToProcess;
-	plyInfoVarType				curNumPlies;
-	plyInfoVarType				numPliesTillCurState;
-	plyInfoVarType				numPliesTillPredState;
-	countArrayVarType			countValue;
+	PlyInfoVarType				curNumPlies;
+	PlyInfoVarType				numPliesTillCurState;
+	PlyInfoVarType				numPliesTillPredState;
+	CountArrayVarType			countValue;
 	StateAdress			predState;
 	StateAdress			curState;									// current state counter for while-loop
-	twoBit		  				curStateValue;								// current state value
-	retroAnalysisPredVars		predVars[MAX_NUM_PREDECESSORS];
+	TwoBit		  				curStateValue;								// current state value
+	RetroAnalysisPredVars		predVars[MAX_NUM_PREDECESSORS];
 
 	for (numStatesProcessed = 0, curNumPlies = 0; curNumPlies < threadVars->statesToProcess.size(); curNumPlies++) {
 
@@ -672,14 +672,14 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
 							// if current state is a won game, then this state is not an option any more for all predecessors
 						} else {
 							// reduce count value by one
-							long *pCountValue = ((long *)retroVars->countArrays[curLayerId]) + predState.stateNumber / (sizeof(long) / sizeof(countArrayVarType));
-							long					numBitsToShift = sizeof(countArrayVarType) * 8 * (predState.stateNumber % (sizeof(long) / sizeof(countArrayVarType)));	// little-endian byte-order
+							long *pCountValue = ((long *)retroVars->countArrays[curLayerId]) + predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
+							long					numBitsToShift = sizeof(CountArrayVarType) * 8 * (predState.stateNumber % (sizeof(long) / sizeof(CountArrayVarType)));	// little-endian byte-order
 							long					mask = 0x000000ff << numBitsToShift;
 							long					curCountLong, newCountLong;
 
 							do {
 								curCountLong = *pCountValue;
-								countValue = (countArrayVarType)((curCountLong & mask) >> numBitsToShift);
+								countValue = (CountArrayVarType)((curCountLong & mask) >> numBitsToShift);
 								if (countValue > 0) {
 									countValue--;
 									newCountLong = (curCountLong & (~mask)) + (countValue << numBitsToShift);

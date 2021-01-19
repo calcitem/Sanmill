@@ -1,5 +1,5 @@
 /*********************************************************************
-	miniMaxAI.cpp
+	MiniMaxAI.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -9,19 +9,19 @@
 #include "miniMaxAI.h"
 
 //-----------------------------------------------------------------------------
-// Name: miniMaxAI()
-// Desc: miniMaxAI class constructor
+// Name: MiniMaxAI()
+// Desc: MiniMaxAI class constructor
 //-----------------------------------------------------------------------------
-miniMaxAI::miniMaxAI()
+MiniMaxAI::MiniMaxAI()
 {
 	depthOfFullTree = 0;
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~miniMaxAI()
-// Desc: miniMaxAI class destructor
+// Name: ~MiniMaxAI()
+// Desc: MiniMaxAI class destructor
 //-----------------------------------------------------------------------------
-miniMaxAI::~miniMaxAI()
+MiniMaxAI::~MiniMaxAI()
 {
 }
 
@@ -29,7 +29,7 @@ miniMaxAI::~miniMaxAI()
 // Name: play()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
+void MiniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	// globals
 	field = theField;
@@ -49,15 +49,15 @@ void miniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
 	}
 
 	// Inform user about progress
-	cout << "miniMaxAI is thinking with a depth of " << searchDepth << " steps!\n\n\n";
+	cout << "MiniMaxAI is thinking with a depth of " << searchDepth << " steps!\n\n\n";
 
 	// reserve memory
-	possibilities = new possibilityStruct[searchDepth + 1];
-	oldStates = new backupStruct[searchDepth + 1];
+	possibilities = new Possibility[searchDepth + 1];
+	oldStates = new Backup[searchDepth + 1];
 	idPossibilities = new unsigned int[(searchDepth + 1) * MAX_NUM_POS_MOVES];
 
 	// start the miniMax-algorithmn
-	possibilityStruct *rootPossibilities = (possibilityStruct *)getBestChoice(searchDepth, &bestChoice, MAX_NUM_POS_MOVES);
+	Possibility *rootPossibilities = (Possibility *)getBestChoice(searchDepth, &bestChoice, MAX_NUM_POS_MOVES);
 
 	// decode the best choice
 	if (field->stoneMustBeRemoved) {
@@ -82,7 +82,7 @@ void miniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
 // Name: setSearchDepth()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::setSearchDepth(unsigned int depth)
+void MiniMaxAI::setSearchDepth(unsigned int depth)
 {
 	depthOfFullTree = depth;
 }
@@ -91,7 +91,7 @@ void miniMaxAI::setSearchDepth(unsigned int depth)
 // Name: prepareBestChoiceCalculation()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::prepareBestChoiceCalculation()
+void MiniMaxAI::prepareBestChoiceCalculation()
 {
 	// calculate current value
 	currentValue = 0;
@@ -102,7 +102,7 @@ void miniMaxAI::prepareBestChoiceCalculation()
 // Name: getPossSettingPhase()
 // Desc: 
 //-----------------------------------------------------------------------------
-unsigned int *miniMaxAI::getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities)
+unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities)
 {
 	// locals
 	unsigned int i;
@@ -129,12 +129,12 @@ unsigned int *miniMaxAI::getPossSettingPhase(unsigned int *numPossibilities, voi
 // Name: getPossNormalMove()
 // Desc: 
 //-----------------------------------------------------------------------------
-unsigned int *miniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void **pPossibilities)
+unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void **pPossibilities)
 {
 	// locals
 	unsigned int		from, to, dir;
 	unsigned int *idPossibility = &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
-	possibilityStruct *possibility = &possibilities[curSearchDepth];
+	Possibility *possibility = &possibilities[curSearchDepth];
 
 	// if he is not allowed to spring
 	if (field->curPlayer->numStones > 3) {
@@ -186,7 +186,7 @@ unsigned int *miniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void 
 // Name: getPossStoneRemove()
 // Desc: 
 //-----------------------------------------------------------------------------
-unsigned int *miniMaxAI::getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities)
+unsigned int *MiniMaxAI::getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities)
 {
 	// locals
 	unsigned int i;
@@ -213,7 +213,7 @@ unsigned int *miniMaxAI::getPossStoneRemove(unsigned int *numPossibilities, void
 // Name: getPossibilities()
 // Desc: 
 //-----------------------------------------------------------------------------
-unsigned int *miniMaxAI::getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities)
+unsigned int *MiniMaxAI::getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities)
 {
 	// set opponentsMove
 	*opponentsMove = (field->curPlayer->id == ownId) ? false : true;
@@ -234,7 +234,7 @@ unsigned int *miniMaxAI::getPossibilities(unsigned int threadNo, unsigned int *n
 // Name: getValueOfSituation()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::getValueOfSituation(unsigned int threadNo, float &floatValue, twoBit &shortValue)
+void MiniMaxAI::getValueOfSituation(unsigned int threadNo, float &floatValue, TwoBit &shortValue)
 {
 	floatValue = currentValue;
 	shortValue = 0;
@@ -244,7 +244,7 @@ void miniMaxAI::getValueOfSituation(unsigned int threadNo, float &floatValue, tw
 // Name: deletePossibilities()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::deletePossibilities(unsigned int threadNo, void *pPossibilities)
+void MiniMaxAI::deletePossibilities(unsigned int threadNo, void *pPossibilities)
 {
 }
 
@@ -252,10 +252,10 @@ void miniMaxAI::deletePossibilities(unsigned int threadNo, void *pPossibilities)
 // Name: undo()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities)
+void MiniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities)
 {
 	// locals
-	backupStruct *oldState = (backupStruct *)pBackup;
+	Backup *oldState = (Backup *)pBackup;
 
 	// reset old value
 	currentValue = oldState->value;
@@ -287,7 +287,7 @@ void miniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opp
 // Name: setWarning()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void miniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree)
+inline void MiniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree)
 {
 	// if all 3 fields are occupied by current player than he closed a mill
 	if (field->board[stoneOne] == field->curPlayer->id && field->board[stoneTwo] == field->curPlayer->id && field->board[stoneThree] == field->curPlayer->id) {
@@ -349,7 +349,7 @@ inline void miniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, 
 // Name: updateWarning()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void miniMaxAI::updateWarning(unsigned int firstStone, unsigned int secondStone)
+inline void MiniMaxAI::updateWarning(unsigned int firstStone, unsigned int secondStone)
 {
 	// set warnings
 	if (firstStone < field->size) setWarning(firstStone, field->neighbour[firstStone][0][0], field->neighbour[firstStone][0][1]);
@@ -371,7 +371,7 @@ inline void miniMaxAI::updateWarning(unsigned int firstStone, unsigned int secon
 // Name: updatePossibleMoves()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void miniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
+inline void MiniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
 {
 	// locals
 	unsigned int	neighbor, direction;
@@ -416,7 +416,7 @@ inline void miniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwne
 // Name: setStone()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void	miniMaxAI::setStone(unsigned int to, backupStruct *backup)
+inline void	MiniMaxAI::setStone(unsigned int to, Backup *backup)
 {
 	// backup
 	backup->from = field->size;
@@ -443,7 +443,7 @@ inline void	miniMaxAI::setStone(unsigned int to, backupStruct *backup)
 // Name: normalMove()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void	miniMaxAI::normalMove(unsigned int from, unsigned int to, backupStruct *backup)
+inline void	MiniMaxAI::normalMove(unsigned int from, unsigned int to, Backup *backup)
 {
 	// backup
 	backup->from = from;
@@ -467,7 +467,7 @@ inline void	miniMaxAI::normalMove(unsigned int from, unsigned int to, backupStru
 // Name: removeStone()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void miniMaxAI::removeStone(unsigned int from, backupStruct *backup)
+inline void MiniMaxAI::removeStone(unsigned int from, Backup *backup)
 {
 	// backup
 	backup->from = from;
@@ -495,11 +495,11 @@ inline void miniMaxAI::removeStone(unsigned int from, backupStruct *backup)
 // Name: move()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities)
+void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities)
 {
 	// locals
-	backupStruct *oldState = &oldStates[curSearchDepth];
-	possibilityStruct *tmpPossibility = (possibilityStruct *)pPossibilities;
+	Backup *oldState = &oldStates[curSearchDepth];
+	Possibility *tmpPossibility = (Possibility *)pPossibilities;
 	Player *tmpPlayer;
 	unsigned int		i;
 
@@ -558,10 +558,10 @@ void miniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 // Name: printMoveInformation()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities)
+void MiniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities)
 {
 	// locals
-	possibilityStruct *tmpPossibility = (possibilityStruct *)pPossibilities;
+	Possibility *tmpPossibility = (Possibility *)pPossibilities;
 
 	// move
 	if (field->stoneMustBeRemoved)	cout << "remove stone from " << (char)(idPossibility + 97);

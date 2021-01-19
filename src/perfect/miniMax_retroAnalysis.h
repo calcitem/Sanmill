@@ -8,8 +8,8 @@
 
 struct RetroAnalysisQueueState
 {
-	stateNumberVarType	stateNumber;					// state stored in the retro analysis queue. the queue is a buffer containing states to be passed to 'RetroAnalysisThreadVars::statesToProcess'
-	plyInfoVarType		numPliesTillCurState;			// ply number for the stored state
+	StateNumberVarType	stateNumber;					// state stored in the retro analysis queue. the queue is a buffer containing states to be passed to 'RetroAnalysisThreadVars::statesToProcess'
+	PlyInfoVarType		numPliesTillCurState;			// ply number for the stored state
 };
 
 struct RetroAnalysisThreadVars											// thread specific variables for each thread in the retro analysis
@@ -20,9 +20,9 @@ struct RetroAnalysisThreadVars											// thread specific variables for each t
 	unsigned int									threadNo;
 };
 
-struct retroAnalysisVars												// constant during calculation
+struct RetroAnalysisVars												// constant during calculation
 {
-	vector<countArrayVarType *>						countArrays;		// One count array for each layer in 'layersToCalculate'. (For the nine men's morris game two layers have to considered at once.)
+	vector<CountArrayVarType *>						countArrays;		// One count array for each layer in 'layersToCalculate'. (For the nine men's morris game two layers have to considered at once.)
 	vector<compressorClass::compressedArrayClass *>	countArraysCompr;	// '' but compressed
 	vector<bool>									layerInitialized;	// 
 	vector<unsigned int> 							layersToCalculate;	// layers which shall be calculated
@@ -39,7 +39,7 @@ struct InitRetroAnalysisVars
 	LONGLONG			statesProcessed;
 	unsigned int		statsValueCounter[SKV_NUM_VALUES];
 	BufferedFile *bufferedFile;
-	retroAnalysisVars *retroVars;
+	RetroAnalysisVars *retroVars;
 	bool				initAlreadyDone;								// true if the initialization information is already available in a file
 };
 
@@ -49,10 +49,10 @@ struct addSuccLayersVars
 	unsigned int		curThreadNo;
 	unsigned int		statsValueCounter[SKV_NUM_VALUES];
 	unsigned int		layerNumber;
-	retroAnalysisVars *retroVars;
+	RetroAnalysisVars *retroVars;
 };
 
-struct retroAnalysisPredVars
+struct RetroAnalysisPredVars
 {
 	unsigned int  		predStateNumbers;
 	unsigned int  		predLayerNumbers;
@@ -66,6 +66,6 @@ struct AddNumSuccedorsVars
 	unsigned int		curThreadNo;
 	unsigned int		layerNumber;
 	LONGLONG			statesProcessed;
-	retroAnalysisVars *retroVars;
-	retroAnalysisPredVars *predVars;
+	RetroAnalysisVars *retroVars;
+	RetroAnalysisPredVars *predVars;
 };

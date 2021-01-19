@@ -1,5 +1,5 @@
 /*********************************************************************\
-	miniMaxAI.h
+	MiniMaxAI.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -21,18 +21,18 @@
 #define VALUE_GAME_WON	     1000.0f
 
 /*** Klassen *********************************************************/
-class miniMaxAI : public MillAI, MiniMax
+class MiniMaxAI : public MillAI, MiniMax
 {
 protected:
 
 	// structs
-	struct possibilityStruct
+	struct Possibility
 	{
 		unsigned int from[MAX_NUM_POS_MOVES];
 		unsigned int to[MAX_NUM_POS_MOVES];
 	};
 
-	struct backupStruct
+	struct Backup
 	{
 		float			value;
 		bool			gameHasFinished;
@@ -58,8 +58,8 @@ protected:
 	unsigned int	curSearchDepth;					// current level
 	unsigned int	depthOfFullTree;				// search depth where the whole tree is explored
 	unsigned int *idPossibilities;				// returned pointer of getPossibilities()-function
-	backupStruct *oldStates;						// for undo()-function	
-	possibilityStruct *possibilities;				// for getPossNormalMove()-function
+	Backup *oldStates;						// for undo()-function	
+	Possibility *possibilities;				// for getPossNormalMove()-function
 
 	// Functions
 	unsigned int *getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities);
@@ -70,9 +70,9 @@ protected:
 	inline void		updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
 	inline void		updateWarning(unsigned int firstStone, unsigned int secondStone);
 	inline void		setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree);
-	inline void		removeStone(unsigned int from, backupStruct *backup);
-	inline void		setStone(unsigned int to, backupStruct *backup);
-	inline void		normalMove(unsigned int from, unsigned int to, backupStruct *backup);
+	inline void		removeStone(unsigned int from, Backup *backup);
+	inline void		setStone(unsigned int to, Backup *backup);
+	inline void		normalMove(unsigned int from, unsigned int to, Backup *backup);
 
 	// Virtual Functions
 	void			prepareBestChoiceCalculation();
@@ -80,7 +80,7 @@ protected:
 	void			deletePossibilities(unsigned int threadNo, void *pPossibilities);
 	void			move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities);
 	void			undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities);
-	void			getValueOfSituation(unsigned int threadNo, float &floatValue, twoBit &shortValue);
+	void			getValueOfSituation(unsigned int threadNo, float &floatValue, TwoBit &shortValue);
 	void			printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities);
 
 	unsigned int	getNumberOfLayers()
@@ -124,7 +124,7 @@ protected:
 	void			getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers)
 	{
 	};
-	void            getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, retroAnalysisPredVars *predVars)
+	void            getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
 	{
 	};
 	void			printField(unsigned int threadNo, unsigned char value)
@@ -139,8 +139,8 @@ protected:
 
 public:
 	// Constructor / destructor
-	miniMaxAI();
-	~miniMaxAI();
+	MiniMaxAI();
+	~MiniMaxAI();
 
 	// Functions
 	void			play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo);

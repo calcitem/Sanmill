@@ -61,7 +61,7 @@ long long MiniMax::getLayerSizeInBytes(unsigned int layerNum)
 // Name: getNumWonStates()
 // Desc: 
 //-----------------------------------------------------------------------------
-MiniMax::stateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
 {
 	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numWonStates;
@@ -71,7 +71,7 @@ MiniMax::stateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
 // Name: getNumLostStates()
 // Desc: 
 //-----------------------------------------------------------------------------
-MiniMax::stateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
 {
 	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numLostStates;
@@ -81,7 +81,7 @@ MiniMax::stateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
 // Name: getNumDrawnStates()
 // Desc: 
 //-----------------------------------------------------------------------------
-MiniMax::stateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
 {
 	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numDrawnStates;
@@ -91,7 +91,7 @@ MiniMax::stateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
 // Name: getNumInvalidStates()
 // Desc: 
 //-----------------------------------------------------------------------------
-MiniMax::stateNumberVarType MiniMax::getNumInvalidStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumInvalidStates(unsigned int layerNum)
 {
 	if (layerStats == nullptr) return 0;
 	return layerStats[layerNum].numInvalidStates;
@@ -137,7 +137,7 @@ void MiniMax::showLayerStats(unsigned int layerNumber)
 	// locals
 	StateAdress	curState;
 	unsigned int		statsValueCounter[] = { 0,0,0,0 };
-	twoBit		  		curStateValue;
+	TwoBit		  		curStateValue;
 
 	// calc and show statistics
 	for (curState.layerNumber = layerNumber, curState.stateNumber = 0; curState.stateNumber < layerStats[curState.layerNumber].knotsInLayer; curState.stateNumber++) {
@@ -172,7 +172,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
 	DWORD				dwBytesWritten;
 	StateAdress	curState;
 	unsigned int *statsValueCounter;
-	twoBit		  		curStateValue;
+	TwoBit		  		curStateValue;
 	char				line[10000];
 	string				text("");
 

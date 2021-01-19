@@ -44,7 +44,7 @@ bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 // Name: saveKnotValueInDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue, plyInfoVarType plyValue, bool invertValue)
+void MiniMax::alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue, PlyInfoVarType plyValue, bool invertValue)
 {
 	// locals
 	unsigned int *symStateNumbers = nullptr;
@@ -160,8 +160,8 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 	MiniMax *m = iabVars->pMiniMax;
 	float		  				floatValue;						// dummy variable for calls of getValueOfSituation()
 	StateAdress			curState;						// current state counter for loops
-	twoBit		  				curStateValue = 0;			// for calls of getValueOfSituation()
-	plyInfoVarType				plyInfo;						// depends on the curStateValue
+	TwoBit		  				curStateValue = 0;			// for calls of getValueOfSituation()
+	PlyInfoVarType				plyInfo;						// depends on the curStateValue
 
 	curState.layerNumber = iabVars->layerNumber;
 	curState.stateNumber = index;
@@ -175,7 +175,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 
 	// layer initialization already done ? if so, then read from file
 	if (iabVars->initAlreadyDone) {
-		if (!iabVars->bufferedFile->readBytes(iabVars->curThreadNo, index * sizeof(twoBit), sizeof(twoBit), (unsigned char *)&curStateValue)) {
+		if (!iabVars->bufferedFile->readBytes(iabVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char *)&curStateValue)) {
 			PRINT(0, m, "ERROR: initArray->takeBytes() failed");
 			return m->falseOrStop();
 		}
@@ -205,7 +205,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 
 	// write data to file
 	if (!iabVars->initAlreadyDone) {
-		if (!iabVars->bufferedFile->writeBytes(iabVars->curThreadNo, index * sizeof(twoBit), sizeof(twoBit), (unsigned char *)&curStateValue)) {
+		if (!iabVars->bufferedFile->writeBytes(iabVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char *)&curStateValue)) {
 			PRINT(0, m, "ERROR: bufferedFile->writeBytes failed!");
 			return m->falseOrStop();
 		}
@@ -271,7 +271,7 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 	MiniMax *m = rabVars->pMiniMax;
 	StateAdress			curState;						// current state counter for loops
 	Node					root;							// 
-	plyInfoVarType				plyInfo;						// depends on the curStateValue
+	PlyInfoVarType				plyInfo;						// depends on the curStateValue
 
 	curState.layerNumber = rabVars->layerNumber;
 	curState.stateNumber = index;
@@ -392,8 +392,8 @@ bool MiniMax::alphaBetaTryDataBase(Node *knot, RunAlphaBetaVars *rabVars, unsign
 	// locals
 	bool			invalidLayerOrStateNumber;
 	bool			subLayerInDatabaseAndCompleted;
-	twoBit			shortKnotValue = SKV_VALUE_INVALID;
-	plyInfoVarType	plyInfo = PLYINFO_VALUE_UNCALCULATED;
+	TwoBit			shortKnotValue = SKV_VALUE_INVALID;
+	PlyInfoVarType	plyInfo = PLYINFO_VALUE_UNCALCULATED;
 
 	// use database ?
 	if (hFilePlyInfo != nullptr && hFileShortKnotValues != nullptr && (calcDatabase || layerInDatabase)) {
@@ -553,8 +553,8 @@ void MiniMax::alphaBetaCalcPlyInfo(Node *knot)
 	// locals
 	unsigned int	i;
 	unsigned int	maxBranch;
-	plyInfoVarType  maxPlyInfo;
-	twoBit			shortKnotValue;
+	PlyInfoVarType  maxPlyInfo;
+	TwoBit			shortKnotValue;
 
 	// 
 	if (knot->shortValue == SKV_VALUE_GAME_DRAWN) {

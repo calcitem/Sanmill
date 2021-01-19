@@ -206,8 +206,8 @@ perfectAI::perfectAI(const char *directory)
 	for (unsigned int curThread = 0; curThread < getNumThreads(); curThread++) {
 		threadVars[curThread].parent = this;
 		threadVars[curThread].field = &dummyField;
-		threadVars[curThread].possibilities = new possibilityStruct[MAX_DEPTH_OF_TREE + 1];
-		threadVars[curThread].oldStates = new backupStruct[MAX_DEPTH_OF_TREE + 1];
+		threadVars[curThread].possibilities = new Possibility[MAX_DEPTH_OF_TREE + 1];
+		threadVars[curThread].oldStates = new Backup[MAX_DEPTH_OF_TREE + 1];
 		threadVars[curThread].idPossibilities = new unsigned int[(MAX_DEPTH_OF_TREE + 1) * MAX_NUM_POS_MOVES];
 	}
 
@@ -235,7 +235,7 @@ perfectAI::perfectAI(const char *directory)
 		ReadFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr);
 		ReadFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesRead, nullptr);
 		ReadFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
-		ReadFile(hFilePreCalcVars, plyInfoForOutput, sizeof(plyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
+		ReadFile(hFilePreCalcVars, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
 		ReadFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
 
 		// process originalStateAB[][]
@@ -601,7 +601,7 @@ perfectAI::perfectAI(const char *directory)
 		WriteFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
 		WriteFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesWritten, nullptr);
 		WriteFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
-		WriteFile(hFilePreCalcVars, plyInfoForOutput, sizeof(plyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
+		WriteFile(hFilePreCalcVars, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
 		WriteFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
 
 		// process originalStateAB[][]
@@ -683,7 +683,7 @@ void perfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
 	}
 
 	// start the miniMax-algorithmn
-	possibilityStruct *rootPossibilities = (possibilityStruct *)getBestChoice(threadVars[0].depthOfFullTree, &bestChoice, MAX_NUM_POS_MOVES);
+	Possibility *rootPossibilities = (Possibility *)getBestChoice(threadVars[0].depthOfFullTree, &bestChoice, MAX_NUM_POS_MOVES);
 
 	// decode the best choice
 	if (threadVars[0].field->stoneMustBeRemoved) {
@@ -863,7 +863,7 @@ unsigned int *perfectAI::threadVarsStruct::getPossNormalMove(unsigned int *numPo
 	// locals
 	unsigned int		from, to, dir;
 	unsigned int *idPossibility = &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
-	possibilityStruct *possibility = &possibilities[curSearchDepth];
+	Possibility *possibility = &possibilities[curSearchDepth];
 
 	// if he is not allowed to spring
 	if (field->curPlayer->numStones > 3) {
@@ -981,7 +981,7 @@ unsigned int *perfectAI::getPossibilities(unsigned int threadNo, unsigned int *n
 // Name: getValueOfSituation()
 // Desc: 
 //-----------------------------------------------------------------------------
-void perfectAI::getValueOfSituation(unsigned int threadNo, float &floatValue, twoBit &shortValue)
+void perfectAI::getValueOfSituation(unsigned int threadNo, float &floatValue, TwoBit &shortValue)
 {
 	threadVarsStruct *tv = &threadVars[threadNo];
 	floatValue = tv->floatValue;
@@ -1004,7 +1004,7 @@ void perfectAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opp
 {
 	// locals
 	threadVarsStruct *tv = &threadVars[threadNo];
-	backupStruct *oldState = (backupStruct *)pBackup;
+	Backup *oldState = (Backup *)pBackup;
 
 	// reset old value
 	tv->floatValue = oldState->floatValue;
@@ -1125,7 +1125,7 @@ inline void perfectAI::threadVarsStruct::updatePossibleMoves(unsigned int stone,
 // Name: setStone()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void	perfectAI::threadVarsStruct::setStone(unsigned int to, backupStruct *backup)
+inline void	perfectAI::threadVarsStruct::setStone(unsigned int to, Backup *backup)
 {
 	// backup
 	backup->from = field->size;
@@ -1152,7 +1152,7 @@ inline void	perfectAI::threadVarsStruct::setStone(unsigned int to, backupStruct 
 // Name: normalMove()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void	perfectAI::threadVarsStruct::normalMove(unsigned int from, unsigned int to, backupStruct *backup)
+inline void	perfectAI::threadVarsStruct::normalMove(unsigned int from, unsigned int to, Backup *backup)
 {
 	// backup
 	backup->from = from;
@@ -1176,7 +1176,7 @@ inline void	perfectAI::threadVarsStruct::normalMove(unsigned int from, unsigned 
 // Name: removeStone()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void perfectAI::threadVarsStruct::removeStone(unsigned int from, backupStruct *backup)
+inline void perfectAI::threadVarsStruct::removeStone(unsigned int from, Backup *backup)
 {
 	// backup
 	backup->from = from;
@@ -1208,8 +1208,8 @@ void perfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 {
 	// locals
 	threadVarsStruct *tv = &threadVars[threadNo];
-	backupStruct *oldState = &tv->oldStates[tv->curSearchDepth];
-	possibilityStruct *tmpPossibility = (possibilityStruct *)pPossibilities;
+	Backup *oldState = &tv->oldStates[tv->curSearchDepth];
+	Possibility *tmpPossibility = (Possibility *)pPossibilities;
 	Player *tmpPlayer;
 	unsigned int		i;
 
@@ -1274,12 +1274,12 @@ void perfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 // Name: storeValueOfMove()
 // Desc: 
 //-----------------------------------------------------------------------------
-void perfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, unsigned char value, unsigned int *freqValuesSubMoves, plyInfoVarType plyInfo)
+void perfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, unsigned char value, unsigned int *freqValuesSubMoves, PlyInfoVarType plyInfo)
 {
 	// locals
 	threadVarsStruct *tv = &threadVars[threadNo];
 	unsigned int		index;
-	possibilityStruct *tmpPossibility = (possibilityStruct *)pPossibilities;
+	Possibility *tmpPossibility = (Possibility *)pPossibilities;
 
 	if (tv->field->stoneMustBeRemoved)	index = idPossibility;
 	else if (tv->field->settingPhase)	index = idPossibility;
@@ -1297,7 +1297,7 @@ void perfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibili
 // Name: getValueOfMoves()
 // Desc: 
 //-----------------------------------------------------------------------------
-void perfectAI::getValueOfMoves(unsigned char *moveValue, unsigned int *freqValuesSubMoves, plyInfoVarType *plyInfo, unsigned int *moveQuality, unsigned char &knotValue, plyInfoVarType &bestAmountOfPlies)
+void perfectAI::getValueOfMoves(unsigned char *moveValue, unsigned int *freqValuesSubMoves, PlyInfoVarType *plyInfo, unsigned int *moveQuality, unsigned char &knotValue, PlyInfoVarType &bestAmountOfPlies)
 {
 	// locals
 	unsigned int	moveQualities[fieldStruct::size * fieldStruct::size];	// 0 is bad, 1 is good
@@ -1375,7 +1375,7 @@ void perfectAI::getValueOfMoves(unsigned char *moveValue, unsigned int *freqValu
 
 	// copy
 	memcpy(moveQuality, moveQualities, sizeof(unsigned int) * fieldStruct::size * fieldStruct::size);
-	memcpy(plyInfo, plyInfoForOutput, sizeof(plyInfoVarType) * fieldStruct::size * fieldStruct::size);
+	memcpy(plyInfo, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size);
 	memcpy(moveValue, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size);
 	memcpy(freqValuesSubMoves, incidencesValuesSubMoves, sizeof(unsigned int) * fieldStruct::size * fieldStruct::size * 4);
 }
@@ -1388,7 +1388,7 @@ void perfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossi
 {
 	// locals
 	threadVarsStruct *tv = &threadVars[threadNo];
-	possibilityStruct *tmpPossibility = (possibilityStruct *)pPossibilities;
+	Possibility *tmpPossibility = (Possibility *)pPossibilities;
 
 	// move
 	if (tv->field->stoneMustBeRemoved)	cout << "remove stone from " << (char)(idPossibility + 97);
@@ -2028,7 +2028,7 @@ bool perfectAI::isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation,
 // Name: storePredecessor()
 // Desc: 
 //-----------------------------------------------------------------------------
-void perfectAI::threadVarsStruct::storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, retroAnalysisPredVars *predVars)
+void perfectAI::threadVarsStruct::storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
 {
 	// locals
 	int			 originalField[fieldStruct::size];
@@ -2072,7 +2072,7 @@ void perfectAI::threadVarsStruct::storePredecessor(unsigned int numberOfMillsCur
 // Name: getPredecessors()
 // Desc: CAUTION: States musn't be returned twice.
 //-----------------------------------------------------------------------------
-void perfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, retroAnalysisPredVars *predVars)
+void perfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// the important variables, which much be updated for the getLayerAndStateNumber function are the following ones:
@@ -2397,7 +2397,7 @@ bool perfectAI::checkGetPossThanGetPred()
 	bool					isOpponentLevel;
 	void *pPossibilities;
 	void *pBackup;
-	retroAnalysisPredVars	predVars[MAX_NUM_PREDECESSORS];
+	RetroAnalysisPredVars	predVars[MAX_NUM_PREDECESSORS];
 	unsigned int			threadNo = 0;
 	threadVarsStruct *tv = &threadVars[threadNo];
 
@@ -2480,7 +2480,7 @@ bool perfectAI::checkGetPredThanGetPoss()
 	void *pPossibilities;
 	void *pBackup;
 	int						symField[fieldStruct::size];
-	retroAnalysisPredVars	predVars[MAX_NUM_PREDECESSORS];
+	RetroAnalysisPredVars	predVars[MAX_NUM_PREDECESSORS];
 
 	// test if each predecessor from getPredecessors() leads to the original state using getPossibilities()
 	for (layerNum = 0; layerNum < NUM_LAYERS; layerNum++) {
