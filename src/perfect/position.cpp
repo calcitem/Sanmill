@@ -32,14 +32,14 @@ Position::Position()
 //-----------------------------------------------------------------------------
 Position::~Position()
 {
-	deleteArrays();
+	exit();
 }
 
 //-----------------------------------------------------------------------------
 // Name: deleteArrays()
 // Desc: Deletes all arrays the Position class has created.
 //-----------------------------------------------------------------------------
-void Position::deleteArrays()
+void Position::exit()
 {
 	SAFE_DELETE_ARRAY(moveLogFrom);
 	SAFE_DELETE_ARRAY(moveLogTo);
@@ -55,7 +55,7 @@ void Position::deleteArrays()
 void Position::beginNewGame(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer)
 {
 	// free mem
-	deleteArrays();
+	exit();
 
 	// create arrays
 	field.createField();
@@ -107,19 +107,24 @@ void Position::setUpCalcPossibleMoves(playerStruct *player)
 		for (j = 0; j < fieldStruct::size; j++) {
 
 			// is stone from player ?
-			if (field.field[i] != player->id)					continue;
+			if (field.field[i] != player->id)
+				continue;
 
 			// is destination free ?
-			if (field.field[j] != field.squareIsFree)			continue;
+			if (field.field[j] != field.squareIsFree)
+				continue;
 
 			// when current player has only 3 stones he is allowed to spring his stone
 			if (player->numStones > 3 || field.settingPhase) {
 
 				// determine moving direction
-				for (k = 0, movingDirection = 4; k < 4; k++) if (field.connectedSquare[i][k] == j) movingDirection = k;
+				for (k = 0, movingDirection = 4; k < 4; k++)
+					if (field.connectedSquare[i][k] == j)
+						movingDirection = k;
 
 				// are both squares connected ?
-				if (movingDirection == 4)	continue;
+				if (movingDirection == 4)
+					continue;
 			}
 
 			// everything is ok
@@ -147,10 +152,10 @@ void Position::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeig
 }
 
 //-----------------------------------------------------------------------------
-// Name: putStone()
+// Name: put_piece()
 // Desc: Put a stone onto the field during the setting phase.
 //-----------------------------------------------------------------------------
-bool Position::putStone(unsigned int pos, int player)
+bool Position::put_piece(unsigned int pos, int player)
 {
 	// locals
 	unsigned int i;

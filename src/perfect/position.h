@@ -44,7 +44,7 @@ private:
 	int				beginningPlayer;								// playerId of the player who makes the first move
 
 	// Functions
-	void			deleteArrays();
+	void			exit();
 	void			setNextPlayer();
 	void			calcPossibleMoves(playerStruct *player);
 	void			updateMillsAndWarnings(unsigned int newStone);
@@ -67,7 +67,7 @@ public:
 	bool			comparePlayers(playerStruct *playerA, playerStruct *playerB);
 	void			printField();
 	bool            startSettingPhase(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer, bool settingPhase);
-	bool            putStone(unsigned int pos, int player);
+	bool            put_piece(unsigned int pos, int player);
 	bool            settingPhaseHasFinished();
 	void			getChoiceOfSpecialAI(millAI *AI, unsigned int *pushFrom, unsigned int *pushTo);
 	void			setUpCalcPossibleMoves(playerStruct *player);
