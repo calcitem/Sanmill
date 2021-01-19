@@ -19,7 +19,7 @@ char		databaseDirectory[] = "";
 #endif
 bool			calculateDatabase = false;
 
-void main(void)
+int main(void)
 {
     // locals
     bool			playerOneHuman = false;
@@ -139,4 +139,6 @@ void main(void)
  out:
     char end;
     cin >> end;
+
+    return 0;
 }
