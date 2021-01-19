@@ -145,7 +145,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 		retroVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
 		retroVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
 		retroVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-		threadManagerClass::threadVarsArray<InitRetroAnalysisVars> tva(threadManager.getNumThreads(), InitRetroAnalysisVars(this, &retroVars, layerNumber, initArray, initAlreadyDone));
+		ThreadManager::ThreadVarsArray<InitRetroAnalysisVars> tva(threadManager.getNumThreads(), InitRetroAnalysisVars(this, &retroVars, layerNumber, initArray, initAlreadyDone));
 
 		// process each state in the current layer
 		switch (threadManager.executeParallelLoop(initRetroAnalysisThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1)) {
@@ -360,7 +360,7 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 			// prepare parameters for multithreading
 			succCalculated[layerNumber] = true;
 			numStatesProcessed = 0;
-			threadManagerClass::threadVarsArray<AddNumSuccedorsVars> tva(threadManager.getNumThreads(), AddNumSuccedorsVars(this, &retroVars, layerNumber));
+			ThreadManager::ThreadVarsArray<AddNumSuccedorsVars> tva(threadManager.getNumThreads(), AddNumSuccedorsVars(this, &retroVars, layerNumber));
 
 			// process each state in the current layer
 			switch (threadManager.executeParallelLoop(addNumSuccedorsThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1)) {
@@ -402,7 +402,7 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 
 			// prepare parameters for multithreading
 			numStatesProcessed = 0;
-			threadManagerClass::threadVarsArray<AddNumSuccedorsVars> tva(threadManager.getNumThreads(), AddNumSuccedorsVars(this, &retroVars, succState.layerNumber));
+			ThreadManager::ThreadVarsArray<AddNumSuccedorsVars> tva(threadManager.getNumThreads(), AddNumSuccedorsVars(this, &retroVars, succState.layerNumber));
 
 			// process each state in the current layer
 			switch (threadManager.executeParallelLoop(addNumSuccedorsThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {

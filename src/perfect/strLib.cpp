@@ -12,7 +12,7 @@
 // Name: hibit()
 // Desc: 
 //-----------------------------------------------------------------------------
-int mystring::hibit(unsigned int n)
+int MyString::hibit(unsigned int n)
 {
 	n |= (n >> 1);
 	n |= (n >> 2);
@@ -23,36 +23,36 @@ int mystring::hibit(unsigned int n)
 }
 
 //-----------------------------------------------------------------------------
-// Name: mystring()
+// Name: MyString()
 // Desc: 
 //-----------------------------------------------------------------------------
-mystring::mystring()
+MyString::MyString()
 {
 }
 
 //-----------------------------------------------------------------------------
-// Name: mystring()
+// Name: MyString()
 // Desc: 
 //-----------------------------------------------------------------------------
-mystring::mystring(const char *cStr)
-{
-	assign(cStr);
-}
-
-//-----------------------------------------------------------------------------
-// Name: mystring()
-// Desc: 
-//-----------------------------------------------------------------------------
-mystring::mystring(const WCHAR *cStr)
+MyString::MyString(const char *cStr)
 {
 	assign(cStr);
 }
 
 //-----------------------------------------------------------------------------
-// Name: mystring()
+// Name: MyString()
 // Desc: 
 //-----------------------------------------------------------------------------
-mystring::~mystring()
+MyString::MyString(const WCHAR *cStr)
+{
+	assign(cStr);
+}
+
+//-----------------------------------------------------------------------------
+// Name: MyString()
+// Desc: 
+//-----------------------------------------------------------------------------
+MyString::~MyString()
 {
 	if (strA != nullptr) {
 		delete[] strA;	strA = nullptr;
@@ -70,7 +70,7 @@ mystring::~mystring()
 // Name: c_strA()
 // Desc: 
 //-----------------------------------------------------------------------------
-const char *mystring::c_strA()
+const char *MyString::c_strA()
 {
 	return strA;
 }
@@ -79,7 +79,7 @@ const char *mystring::c_strA()
 // Name: c_strW()
 // Desc: 
 //-----------------------------------------------------------------------------
-const WCHAR *mystring::c_strW()
+const WCHAR *MyString::c_strW()
 {
 	return strW;
 }
@@ -88,14 +88,14 @@ const WCHAR *mystring::c_strW()
 // Name: assign()
 // Desc: 
 //-----------------------------------------------------------------------------
-mystring &mystring::assign(const char *cStr)
+MyString &MyString::assign(const char *cStr)
 {
 	// locals
 	size_t convertedChars = 0;
 	size_t newLength = strlen(cStr);
 	size_t newReserved = (size_t)hibit((unsigned int)newLength) * 2;
 
-	if (reserved < newReserved) this->~mystring();
+	if (reserved < newReserved) this->~MyString();
 	if (strA == nullptr) strA = new char[newReserved];
 	if (strW == nullptr) strW = new WCHAR[newReserved];
 
@@ -112,14 +112,14 @@ mystring &mystring::assign(const char *cStr)
 // Name: assign()
 // Desc: 
 //-----------------------------------------------------------------------------
-mystring &mystring::assign(const WCHAR *cStr)
+MyString &MyString::assign(const WCHAR *cStr)
 {
 	// locals
 	size_t returnValue;
 	size_t newLength = wcslen(cStr);
 	size_t newReserved = (size_t)hibit((unsigned int)newLength) * 2;
 
-	if (reserved < newReserved) this->~mystring();
+	if (reserved < newReserved) this->~MyString();
 	if (strA == nullptr) strA = new char[newReserved];
 	if (strW == nullptr) strW = new WCHAR[newReserved];
 

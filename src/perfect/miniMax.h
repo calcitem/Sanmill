@@ -455,7 +455,7 @@ private:
 		};
 	};
 
-	struct InitAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public AlphaBetaDefaultThreadVars
+	struct InitAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem, public AlphaBetaDefaultThreadVars
 	{
 		BufferedFile *bufferedFile;
 		bool											initAlreadyDone;
@@ -478,7 +478,7 @@ private:
 		};
 	};
 
-	struct RunAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public AlphaBetaDefaultThreadVars
+	struct RunAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem, public AlphaBetaDefaultThreadVars
 	{
 		Node *branchArray = nullptr;					// array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for storage of the branches at each search depth
 		unsigned int *freqValuesSubMovesBranchWon = nullptr;					// ...
@@ -565,7 +565,7 @@ private:
 		};
 	};
 
-	struct InitRetroAnalysisVars : public threadManagerClass::threadVarsArrayItem, public RetroAnalysisDefaultThreadVars
+	struct InitRetroAnalysisVars : public ThreadManager::ThreadVarsArrayItem, public RetroAnalysisDefaultThreadVars
 	{
 		BufferedFile *bufferedFile;
 		bool											initAlreadyDone;
@@ -588,7 +588,7 @@ private:
 		};
 	};
 
-	struct AddNumSuccedorsVars : public threadManagerClass::threadVarsArrayItem, public RetroAnalysisDefaultThreadVars
+	struct AddNumSuccedorsVars : public ThreadManager::ThreadVarsArrayItem, public RetroAnalysisDefaultThreadVars
 	{
 		RetroAnalysisPredVars 							predVars[MAX_NUM_PREDECESSORS];
 
@@ -625,7 +625,7 @@ private:
 	vector<unsigned int>	layersToCalculate;								// used in calcLayer() and getCurrentCalculatedLayers()
 	bool					onlyPrepareLayer = false;		// 
 	bool					stopOnCriticalError = true;			// if true then process will stay in while loop
-	threadManagerClass		threadManager;									//
+	ThreadManager		threadManager;									//
 	CRITICAL_SECTION		csDatabase;										//
 	CRITICAL_SECTION		csOsPrint;										// for thread safety when output is passed to osPrint
 	void					(*userPrintFunc)(void *) = nullptr;			// called every time output is passed to osPrint

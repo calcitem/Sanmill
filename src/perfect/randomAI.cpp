@@ -1,5 +1,5 @@
 /*********************************************************************
-	randomAI.cpp
+	RandomAI.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -9,20 +9,20 @@
 #include "randomAI.h"
 
 //-----------------------------------------------------------------------------
-// Name: randomAI()
-// Desc: randomAI class constructor
+// Name: RandomAI()
+// Desc: RandomAI class constructor
 //-----------------------------------------------------------------------------
-randomAI::randomAI()
+RandomAI::RandomAI()
 {
 	// Init
 	srand((unsigned)time(nullptr));
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~randomAI()
-// Desc: randomAI class destructor
+// Name: ~RandomAI()
+// Desc: RandomAI class destructor
 //-----------------------------------------------------------------------------
-randomAI::~randomAI()
+RandomAI::~RandomAI()
 {
 	// Locals
 
@@ -32,7 +32,7 @@ randomAI::~randomAI()
 // Name: play()
 // Desc: 
 //-----------------------------------------------------------------------------
-void randomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
+void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	// locals
 	unsigned int	from, to, direction;

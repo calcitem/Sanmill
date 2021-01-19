@@ -1,5 +1,5 @@
 /*********************************************************************\
-	randomAI.h
+	RandomAI.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -15,12 +15,12 @@
 
 /*** Klassen *********************************************************/
 
-class randomAI : public MillAI
+class RandomAI : public MillAI
 {
 public:
 	// Constructor / destructor
-	randomAI();
-	~randomAI();
+	RandomAI();
+	~RandomAI();
 
 	// Functions
 	void play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo);

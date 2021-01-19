@@ -21,7 +21,7 @@ using namespace std;
 // general functions
 bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned char decimalSeperator, unsigned char columnSeparator);
 
-class mystring
+class MyString
 {
 private:
 
@@ -36,15 +36,15 @@ private:
 public:
 
 	// functions
-	mystring();
-	mystring(const char *cStr);
-	mystring(const WCHAR *cStr);
-	~mystring();
+	MyString();
+	MyString(const char *cStr);
+	MyString(const WCHAR *cStr);
+	~MyString();
 
 	const char *c_strA();
 	const WCHAR *c_strW();
-	mystring &assign(const char *cStr);
-	mystring &assign(const WCHAR *cStr);
+	MyString &assign(const char *cStr);
+	MyString &assign(const WCHAR *cStr);
 
 	static int		hibit(unsigned int n);
 };

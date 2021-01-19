@@ -36,8 +36,8 @@ CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlo
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~randomAI()
-// Desc: randomAI class destructor
+// Name: ~RandomAI()
+// Desc: RandomAI class destructor
 //-----------------------------------------------------------------------------
 CyclicArray::~CyclicArray()
 {

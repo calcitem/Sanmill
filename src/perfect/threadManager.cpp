@@ -9,10 +9,10 @@
 #include "threadManager.h"
 
 //-----------------------------------------------------------------------------
-// Name: threadManagerClass()
-// Desc: threadManagerClass class constructor
+// Name: ThreadManager()
+// Desc: ThreadManager class constructor
 //-----------------------------------------------------------------------------
-threadManagerClass::threadManagerClass()
+ThreadManager::ThreadManager()
 {
 	// locals
 	unsigned int	curThreadNo;
@@ -40,10 +40,10 @@ threadManagerClass::threadManagerClass()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~threadManagerClass()
-// Desc: threadManagerClass class destructor
+// Name: ~ThreadManager()
+// Desc: ThreadManager class destructor
 //-----------------------------------------------------------------------------
-threadManagerClass::~threadManagerClass()
+ThreadManager::~ThreadManager()
 {
 	// locals
 	unsigned int	curThreadNo;
@@ -64,7 +64,7 @@ threadManagerClass::~threadManagerClass()
 // Name: waitForOtherThreads()
 // Desc: 
 //-----------------------------------------------------------------------------
-void threadManagerClass::waitForOtherThreads(unsigned int threadNo)
+void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 {
 	// wait if other threads are still waiting at the barrier
 //cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": " << "while (numThreadsPassedBarrier>0)";
@@ -108,7 +108,7 @@ void threadManagerClass::waitForOtherThreads(unsigned int threadNo)
 // Name: getNumThreads()
 // Desc: 
 //-----------------------------------------------------------------------------
-unsigned int threadManagerClass::getNumThreads()
+unsigned int ThreadManager::getNumThreads()
 {
 	return numThreads;
 }
@@ -117,7 +117,7 @@ unsigned int threadManagerClass::getNumThreads()
 // Name: setNumThreads()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool threadManagerClass::setNumThreads(unsigned int newNumThreads)
+bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 {
 	// cancel if any thread running
 	EnterCriticalSection(&csBarrier);
@@ -139,7 +139,7 @@ bool threadManagerClass::setNumThreads(unsigned int newNumThreads)
 // Name: pauseExecution()
 // Desc: 
 //-----------------------------------------------------------------------------
-void threadManagerClass::pauseExecution()
+void ThreadManager::pauseExecution()
 {
 	for (unsigned int curThread = 0; curThread < numThreads; curThread++) {
 
@@ -159,7 +159,7 @@ void threadManagerClass::pauseExecution()
 // Desc: Stops executeParallelLoop() before the next iteration.
 //	     When executeInParallel() was called, user has to handle cancellation by himself.
 //-----------------------------------------------------------------------------
-void threadManagerClass::cancelExecution()
+void ThreadManager::cancelExecution()
 {
 	termineAllThreads = true;
 	executionCancelled = true;
@@ -172,7 +172,7 @@ void threadManagerClass::cancelExecution()
 // Name: uncancelExecution()
 // Desc: 
 //-----------------------------------------------------------------------------
-void threadManagerClass::uncancelExecution()
+void ThreadManager::uncancelExecution()
 {
 	executionCancelled = false;
 }
@@ -181,7 +181,7 @@ void threadManagerClass::uncancelExecution()
 // Name: wasExecutionCancelled()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool threadManagerClass::wasExecutionCancelled()
+bool ThreadManager::wasExecutionCancelled()
 {
 	return executionCancelled;
 }
@@ -190,7 +190,7 @@ bool threadManagerClass::wasExecutionCancelled()
 // Name: getThreadId()
 // Desc: Returns a number from 0 to 'numThreads'-1. Returns 0 if the function fails.
 //-----------------------------------------------------------------------------
-unsigned int threadManagerClass::getThreadNumber()
+unsigned int ThreadManager::getThreadNumber()
 {
 	// locals
 	DWORD			curThreadId = GetCurrentThreadId();
@@ -208,7 +208,7 @@ unsigned int threadManagerClass::getThreadNumber()
 // Name: executeInParallel()
 // Desc: lpParameter is an array of size numThreads.
 //-----------------------------------------------------------------------------
-unsigned int  threadManagerClass::executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize)
+unsigned int  ThreadManager::executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize)
 {
 	// locals
 	unsigned int	curThreadNo;
@@ -264,7 +264,7 @@ unsigned int  threadManagerClass::executeInParallel(DWORD threadProc(void *pPara
 // lpParameter - an array of size numThreads
 // finalValue  - this value is part of the iteration, meaning that index ranges from initialValue to finalValue including both border values
 //-----------------------------------------------------------------------------
-unsigned int threadManagerClass::executeParallelLoop(DWORD 			threadProc(void *pParameter, int index),
+unsigned int ThreadManager::executeParallelLoop(DWORD 			threadProc(void *pParameter, int index),
 													 void *pParameter,
 													 unsigned int	parameterStructSize,
 													 unsigned int	scheduleType,
@@ -284,7 +284,7 @@ unsigned int threadManagerClass::executeParallelLoop(DWORD 			threadProc(void *p
 	int				numIterations = (finalValue - initialValue) / inkrement + 1;	// total number of iterations
 	int				chunkSize = 0;											// number of iterations per chunk
 	SIZE_T			dwStackSize = 0;											// initital stack size of each thread. 0 means default size ~1MB
-	forLoopStruct *forLoopParameters = new forLoopStruct[numThreads];				//
+	ForLoop *forLoopParameters = new ForLoop[numThreads];				//
 
 	// globals
 	termineAllThreads = false;
@@ -361,10 +361,10 @@ unsigned int threadManagerClass::executeParallelLoop(DWORD 			threadProc(void *p
 // Name: threadForLoop()
 // Desc: 
 //-----------------------------------------------------------------------------
-DWORD WINAPI threadManagerClass::threadForLoop(LPVOID lpParameter)
+DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
 {
 	// locals
-	forLoopStruct *forLoopParameters = (forLoopStruct *)lpParameter;
+	ForLoop *forLoopParameters = (ForLoop *)lpParameter;
 	int					index;
 
 	switch (forLoopParameters->scheduleType) {

@@ -36,12 +36,12 @@ using namespace std;										// use standard library namespace
 
 /*** Klassen *********************************************************/
 
-class threadManagerClass
+class ThreadManager
 {
 private:
 
 	// structures
-	struct forLoopStruct
+	struct ForLoop
 	{
 		unsigned int		scheduleType;
 		int					inkrement;
@@ -49,7 +49,7 @@ private:
 		int					finalValue;
 		void *pParameter;
 		DWORD(*threadProc)(void *pParameter, int index);		// pointer to the user function to be executed by the threads
-		threadManagerClass *threadManager;
+		ThreadManager *threadManager;
 	};
 
 	// Variables
@@ -71,7 +71,7 @@ private:
 
 public:
 
-	class threadVarsArrayItem
+	class ThreadVarsArrayItem
 	{
 	public:
 		unsigned int									curThreadNo;
@@ -87,13 +87,13 @@ public:
 		};
 	};
 
-	template <class varType> class threadVarsArray
+	template <class varType> class ThreadVarsArray
 	{
 	public:
 		unsigned int									numberOfThreads;
 		varType *item;
 
-		threadVarsArray(unsigned int numberOfThreads, varType &master)
+		ThreadVarsArray(unsigned int numberOfThreads, varType &master)
 		{
 			this->numberOfThreads = numberOfThreads;
 			this->item = new varType[numberOfThreads];
@@ -105,7 +105,7 @@ public:
 			}
 		};
 
-		~threadVarsArray()
+		~ThreadVarsArray()
 		{
 			for (unsigned int threadCounter = 0; threadCounter < numberOfThreads; threadCounter++) {
 				item[threadCounter].destroyElement();
@@ -132,8 +132,8 @@ public:
 	};
 
 	// Constructor / destructor
-	threadManagerClass();
-	~threadManagerClass();
+	ThreadManager();
+	~ThreadManager();
 
 	// Functions
 	unsigned int			getThreadNumber();
