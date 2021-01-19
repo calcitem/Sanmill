@@ -27,7 +27,7 @@ int main(void)
     char			ch[100];
     unsigned int	pushFrom, pushTo;
     Position *myGame = new Position();
-    perfectAI *myKI = new perfectAI(databaseDirectory);
+    perfectAI *myAI = new perfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
     srand(GetTickCount());
@@ -37,24 +37,24 @@ int main(void)
     cout << "* Muehle                *" << endl;
     cout << "*************************" << endl << endl;
 
-    myKI->setDatabasePath(databaseDirectory);
+    myAI->setDatabasePath(databaseDirectory);
 
     // begin
 #ifdef SELF_PLAY
-    myGame->beginNewGame(myKI, myKI, fieldStruct::playerOne);
+    myGame->beginNewGame(myAI, myAI, fieldStruct::playerOne);
 #else
-    myGame->beginNewGame(myKI, myKI, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
+    myGame->beginNewGame(myAI, myAI, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
 #endif // SELF_PLAY
 
     if (calculateDatabase) {
 
         // calculate
-        myKI->calculateDatabase(MAX_DEPTH_OF_TREE, false);
+        myAI->calculateDatabase(MAX_DEPTH_OF_TREE, false);
 
         // test database
         cout << endl << "Begin test starting from layer: ";     startTestFromLayer;
         cout << endl << "End test at layer: ";                  endTestAtLayer;
-        myKI->testLayers(startTestFromLayer, endTestAtLayer);
+        myAI->testLayers(startTestFromLayer, endTestAtLayer);
 
     } else {
 

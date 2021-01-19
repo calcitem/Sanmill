@@ -6,8 +6,8 @@
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#ifndef MUEHLE_KI_H
-#define MUEHLE_KI_H
+#ifndef MUEHLE_AI_H
+#define MUEHLE_AI_H
 
 #include <iostream>
 #include <cstdio>

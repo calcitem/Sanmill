@@ -1,13 +1,13 @@
 /*********************************************************************\
-	perfectKI.h
+	perfectAI.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#ifndef PERFEKT_KI_H
-#define PERFEKT_KI_H
+#ifndef PERFEKT_AI_H
+#define PERFEKT_AI_H
 
 #include <iostream>
 #include <cstdio>

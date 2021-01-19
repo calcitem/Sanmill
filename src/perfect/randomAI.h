@@ -6,8 +6,8 @@
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#ifndef RANDOM_KI_H
-#define RANDOM_KI_H
+#ifndef RANDOM_AI_H
+#define RANDOM_AI_H
 
 #include <stdlib.h>
 #include <time.h>

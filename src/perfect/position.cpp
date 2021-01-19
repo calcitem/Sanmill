@@ -18,8 +18,8 @@ Position::Position()
 
 	moveLogFrom = nullptr;
 	moveLogTo = nullptr;
-	playerOneKI = nullptr;
-	playerTwoKI = nullptr;
+	playerOneAI = nullptr;
+	playerTwoAI = nullptr;
 	movesDone = 0;
 
 	field.createField();
@@ -52,7 +52,7 @@ void Position::deleteArrays()
 // Name: beginNewGame()
 // Desc: Reinitializes the Position object.
 //-----------------------------------------------------------------------------
-void Position::beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer)
+void Position::beginNewGame(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer)
 {
 	// free mem
 	deleteArrays();
@@ -72,8 +72,8 @@ void Position::beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int c
 
 	winner = 0;
 	movesDone = 0;
-	playerOneKI = firstPlayerKI;
-	playerTwoKI = secondPlayerKI;
+	playerOneAI = firstPlayerAI;
+	playerTwoAI = secondPlayerAI;
 	moveLogFrom = new unsigned int[MAX_NUM_MOVES];
 	moveLogTo = new unsigned int[MAX_NUM_MOVES];
 
@@ -85,9 +85,9 @@ void Position::beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int c
 // Name: startSettingPhase()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool Position::startSettingPhase(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer, bool settingPhase)
+bool Position::startSettingPhase(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer, bool settingPhase)
 {
-	beginNewGame(firstPlayerKI, secondPlayerKI, currentPlayer);
+	beginNewGame(firstPlayerAI, secondPlayerAI, currentPlayer);
 
 	field.settingPhase = settingPhase;
 
@@ -283,8 +283,8 @@ void Position::setNextPlayer()
 //-----------------------------------------------------------------------------
 bool Position::isCurrentPlayerHuman()
 {
-	if (field.curPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
-	else										return (playerTwoKI == nullptr) ? true : false;
+	if (field.curPlayer->id == field.playerOne)	return (playerOneAI == nullptr) ? true : false;
+	else										return (playerTwoAI == nullptr) ? true : false;
 }
 
 //-----------------------------------------------------------------------------
@@ -293,36 +293,36 @@ bool Position::isCurrentPlayerHuman()
 //-----------------------------------------------------------------------------
 bool Position::isOpponentPlayerHuman()
 {
-	if (field.oppPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
-	else										return (playerTwoKI == nullptr) ? true : false;
+	if (field.oppPlayer->id == field.playerOne)	return (playerOneAI == nullptr) ? true : false;
+	else										return (playerTwoAI == nullptr) ? true : false;
 }
 
 //-----------------------------------------------------------------------------
-// Name: setKI()
+// Name: setAI()
 // Desc: Assigns an AI to a player.
 //-----------------------------------------------------------------------------
-void Position::setKI(int player, millAI *KI)
+void Position::setAI(int player, millAI *AI)
 {
 	if (player == field.playerOne) {
-		playerOneKI = KI;
+		playerOneAI = AI;
 	}
 	if (player == field.playerTwo) {
-		playerTwoKI = KI;
+		playerTwoAI = AI;
 	}
 }
 
 //-----------------------------------------------------------------------------
-// Name: getChoiceOfSpecialKI()
+// Name: getChoiceOfSpecialAI()
 // Desc: Returns the move the passed AI would do.
 //-----------------------------------------------------------------------------
-void Position::getChoiceOfSpecialKI(millAI *KI, unsigned int *pushFrom, unsigned int *pushTo)
+void Position::getChoiceOfSpecialAI(millAI *AI, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
 	*pushFrom = field.size;
 	*pushTo = field.size;
 	theField.createField();
 	field.copyField(&theField);
-	if (KI != nullptr && (field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) KI->play(&theField, pushFrom, pushTo);
+	if (AI != nullptr && (field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) AI->play(&theField, pushFrom, pushTo);
 	theField.deleteField();
 }
 
@@ -340,9 +340,9 @@ void Position::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 
 	if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) {
 		if (field.curPlayer->id == field.playerOne) {
-			if (playerOneKI != nullptr) playerOneKI->play(&theField, pushFrom, pushTo);
+			if (playerOneAI != nullptr) playerOneAI->play(&theField, pushFrom, pushTo);
 		} else {
-			if (playerTwoKI != nullptr) playerTwoKI->play(&theField, pushFrom, pushTo);
+			if (playerTwoAI != nullptr) playerTwoAI->play(&theField, pushFrom, pushTo);
 		}
 	}
 

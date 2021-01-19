@@ -60,7 +60,7 @@ class miniMaxWinInspectDb
 protected:
 
 	// General Variables
-	miniMax *pMiniMax = nullptr;					// pointer to perfect KI class granting the access to the database
+	miniMax *pMiniMax = nullptr;					// pointer to perfect AI class granting the access to the database
 	miniMaxGuiField *pGuiField = nullptr;
 	bool										showingInspectionControls = false;
 	unsigned int								curShowedLayer = 0;						// current showed layer
@@ -113,7 +113,7 @@ protected:
 
 	// Calculation variables
 	wildWeasel::masterMind *ww = nullptr;					// pointer to engine
-	miniMax *pMiniMax = nullptr;					// pointer to perfect KI class granting the access to the database
+	miniMax *pMiniMax = nullptr;					// pointer to perfect AI class granting the access to the database
 	ostream *outputStream = nullptr;					// pointer to a stream for the console output of the calculation done by the class miniMax
 	stringbuf									outputStringBuf;												// buffer linked to the stream, for reading out of the stream into the buffer
 	locale										myLocale;														// for formatting the output

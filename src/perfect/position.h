@@ -36,8 +36,8 @@ class Position
 private:
 	// Variables
 	unsigned int *moveLogFrom, *moveLogTo, movesDone;			// array containing the history of moves done
-	millAI *playerOneKI;									// class-pointer to the AI of player one
-	millAI *playerTwoKI;									// class-pointer to the AI of player two
+	millAI *playerOneAI;									// class-pointer to the AI of player one
+	millAI *playerTwoAI;									// class-pointer to the AI of player two
 	fieldStruct		field;											// current field
 	fieldStruct		initialField;									// undo of the last move is done by setting the initial field und performing all moves saved in history
 	int				winner;											// playerId of the player who has won the game. zero if game is still running.
@@ -58,18 +58,18 @@ public:
 
 	// Functions
 	void			undo_move();
-	void			beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer);
-	void			setKI(int player, millAI *KI);
+	void			beginNewGame(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer);
+	void			setAI(int player, millAI *AI);
 	bool			do_move(unsigned int  pushFrom, unsigned int  pushTo);
 	void			getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
 	bool			setCurrentGameState(fieldStruct *curState);
 	bool			compareWithField(fieldStruct *compareField);
 	bool			comparePlayers(playerStruct *playerA, playerStruct *playerB);
 	void			printField();
-	bool            startSettingPhase(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer, bool settingPhase);
+	bool            startSettingPhase(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer, bool settingPhase);
 	bool            putStone(unsigned int pos, int player);
 	bool            settingPhaseHasFinished();
-	void			getChoiceOfSpecialKI(millAI *KI, unsigned int *pushFrom, unsigned int *pushTo);
+	void			getChoiceOfSpecialAI(millAI *AI, unsigned int *pushFrom, unsigned int *pushTo);
 	void			setUpCalcPossibleMoves(playerStruct *player);
 	void			setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
 	void			calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting);

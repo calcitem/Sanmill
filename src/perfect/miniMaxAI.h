@@ -6,8 +6,8 @@
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#ifndef MINIMAXKI_H
-#define MINIMAXKI_H
+#ifndef MINIMAXAI_H
+#define MINIMAXAI_H
 
 #include <iostream>
 #include <cstdio>

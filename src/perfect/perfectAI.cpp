@@ -1,5 +1,5 @@
 /*********************************************************************
-	perfectKI.cpp
+	perfectAI.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -183,8 +183,8 @@ unsigned int fieldPosIsOfGroup[] = { GROUP_C,                GROUP_D,           
 									 GROUP_C,                GROUP_D,                GROUP_C };
 
 //-----------------------------------------------------------------------------
-// Name: perfectKI()
-// Desc: perfectKI class constructor
+// Name: perfectAI()
+// Desc: perfectAI class constructor
 //-----------------------------------------------------------------------------
 perfectAI::perfectAI(const char *directory)
 {
@@ -626,8 +626,8 @@ perfectAI::perfectAI(const char *directory)
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~perfectKI()
-// Desc: perfectKI class destructor
+// Name: ~perfectAI()
+// Desc: perfectAI class destructor
 //-----------------------------------------------------------------------------
 perfectAI::~perfectAI()
 {
@@ -676,10 +676,10 @@ void perfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
 
 	// current state already calculated?
 	if (isCurrentStateInDatabase(0)) {
-		cout << "perfectKI is using database!\n\n\n";
+		cout << "perfectAI is using database!\n\n\n";
 		threadVars[0].depthOfFullTree = 3;
 	} else {
-		cout << "perfectKI is thinking thinking with a depth of " << threadVars[0].depthOfFullTree << " steps!\n\n\n";
+		cout << "perfectAI is thinking thinking with a depth of " << threadVars[0].depthOfFullTree << " steps!\n\n\n";
 	}
 
 	// start the miniMax-algorithmn
