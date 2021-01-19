@@ -171,7 +171,7 @@
     <ClCompile Include="miniMax_retroAnalysis.cpp" />
     <ClCompile Include="miniMax_statistics.cpp" />
     <ClCompile Include="miniMax_test.cpp" />
-    <ClCompile Include="minMaxKI.cpp" />
+    <ClCompile Include="minMaxAI.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="millAI.cpp" />
     <ClCompile Include="perfectAI.cpp" />
