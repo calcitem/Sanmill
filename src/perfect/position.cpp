@@ -22,8 +22,8 @@ Position::Position()
 	playerTwoAI = nullptr;
 	movesDone = 0;
 
-	field.createField();
-	initialField.createField();
+	field.createBoard();
+	initialField.createBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -44,8 +44,8 @@ void Position::exit()
 	SAFE_DELETE_ARRAY(moveLogFrom);
 	SAFE_DELETE_ARRAY(moveLogTo);
 
-	field.deleteField();
-	initialField.deleteField();
+	field.deleteBoard();
+	initialField.deleteBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -58,8 +58,8 @@ void Position::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int c
 	exit();
 
 	// create arrays
-	field.createField();
-	initialField.createField();
+	field.createBoard();
+	initialField.createBoard();
 
 	// calc beginning player
 	if (currentPlayer == field.playerOne || currentPlayer == field.playerTwo) {
@@ -78,7 +78,7 @@ void Position::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int c
 	moveLogTo = new unsigned int[MAX_NUM_MOVES];
 
 	// remember initialField
-	field.copyField(&initialField);
+	field.copyBoard(&initialField);
 }
 
 //-----------------------------------------------------------------------------
@@ -229,7 +229,7 @@ bool Position::put_piece(unsigned int pos, int player)
 bool Position::settingPhaseHasFinished()
 {
 	// remember initialField
-	field.copyField(&initialField);
+	field.copyBoard(&initialField);
 
 	return true;
 }
@@ -325,10 +325,10 @@ void Position::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned
 	fieldStruct theField;
 	*pushFrom = field.size;
 	*pushTo = field.size;
-	theField.createField();
-	field.copyField(&theField);
+	theField.createBoard();
+	field.copyBoard(&theField);
 	if (AI != nullptr && (field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) AI->play(&theField, pushFrom, pushTo);
-	theField.deleteField();
+	theField.deleteBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -340,8 +340,8 @@ void Position::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 	fieldStruct theField;
 	*pushFrom = field.size;
 	*pushTo = field.size;
-	theField.createField();
-	field.copyField(&theField);
+	theField.createBoard();
+	field.copyBoard(&theField);
 
 	if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) {
 		if (field.curPlayer->id == field.playerOne) {
@@ -351,7 +351,7 @@ void Position::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 		}
 	}
 
-	theField.deleteField();
+	theField.deleteBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -607,7 +607,7 @@ bool Position::do_move(unsigned int  pushFrom, unsigned int  pushTo)
 //-----------------------------------------------------------------------------
 bool Position::setCurrentGameState(fieldStruct *curState)
 {
-	curState->copyField(&field);
+	curState->copyBoard(&field);
 
 	winner = 0;
 	movesDone = 0;
@@ -704,13 +704,13 @@ bool Position::comparePlayers(Player *playerA, Player *playerB)
 }
 
 //-----------------------------------------------------------------------------
-// Name: printField()
-// Desc: Calls the printField() function of the current board.
+// Name: printBoard()
+// Desc: Calls the printBoard() function of the current board.
 //       Prints the current game state on the screen.
 //-----------------------------------------------------------------------------
-void Position::printField()
+void Position::printBoard()
 {
-	field.printField();
+	field.printBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -735,7 +735,7 @@ void Position::undo_move(void)
 		}
 
 		// reset
-		initialField.copyField(&field);
+		initialField.copyBoard(&field);
 		winner = 0;
 		movesDone = 0;
 

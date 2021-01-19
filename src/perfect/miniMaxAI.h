@@ -127,7 +127,7 @@ protected:
 	void            getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
 	{
 	};
-	void			printField(unsigned int threadNo, unsigned char value)
+	void			printBoard(unsigned int threadNo, unsigned char value)
 	{
 	};
 	void			prepareDatabaseCalculation()

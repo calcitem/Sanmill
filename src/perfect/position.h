@@ -65,7 +65,7 @@ public:
 	bool			setCurrentGameState(fieldStruct *curState);
 	bool			compareWithField(fieldStruct *compareField);
 	bool			comparePlayers(Player *playerA, Player *playerB);
-	void			printField();
+	void			printBoard();
 	bool            startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer, bool settingPhase);
 	bool            put_piece(unsigned int pos, int player);
 	bool            settingPhaseHasFinished();

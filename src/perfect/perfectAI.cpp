@@ -639,7 +639,7 @@ PerfectAI::~PerfectAI()
 		SAFE_DELETE_ARRAY(threadVars[curThread].oldStates);
 		SAFE_DELETE_ARRAY(threadVars[curThread].idPossibilities);
 		SAFE_DELETE_ARRAY(threadVars[curThread].possibilities);
-		threadVars[curThread].field->deleteField();
+		threadVars[curThread].field->deleteBoard();
 	}
 	SAFE_DELETE_ARRAY(threadVars);
 }
@@ -651,7 +651,7 @@ PerfectAI::~PerfectAI()
 void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	// ... trick 17
-	theField->copyField(&dummyField);
+	theField->copyBoard(&dummyField);
 
 	// locals
 	threadVars[0].field = theField;
@@ -711,7 +711,7 @@ void PerfectAI::prepareDatabaseCalculation()
 	// create a temporary board
 	for (curThread = 0; curThread < getNumThreads(); curThread++) {
 		threadVars[curThread].field = new fieldStruct();
-		threadVars[curThread].field->createField();
+		threadVars[curThread].field->createBoard();
 		setOpponentLevel(curThread, false);
 	}
 
@@ -730,7 +730,7 @@ void PerfectAI::wrapUpDatabaseCalculation(bool calculationAborted)
 
 	// release memory
 	for (curThread = 0; curThread < getNumThreads(); curThread++) {
-		threadVars[curThread].field->deleteField();
+		threadVars[curThread].field->deleteBoard();
 		SAFE_DELETE(threadVars[curThread].field);
 		threadVars[curThread].field = &dummyField;
 	}
@@ -1800,10 +1800,10 @@ string PerfectAI::getOutputInformation(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: printField()
+// Name: printBoard()
 // Desc: 
 //-----------------------------------------------------------------------------
-void PerfectAI::printField(unsigned int threadNo, unsigned char value)
+void PerfectAI::printBoard(unsigned int threadNo, unsigned char value)
 {
 	ThreadVars *tv = &threadVars[threadNo];
 	char  wonStr[] = "WON";
@@ -1814,7 +1814,7 @@ void PerfectAI::printField(unsigned int threadNo, unsigned char value)
 
 	cout << "\nstate value             : " << table[value];
 	cout << "\nstones set              : " << tv->field->stonesSet << "\n";
-	tv->field->printField();
+	tv->field->printBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -1827,7 +1827,7 @@ void PerfectAI::getField(unsigned int layerNum, unsigned int stateNumber, fieldS
 	setSituation(0, layerNum, stateNumber);
 
 	// copy content of fieldStruct
-	threadVars[0].field->copyField(field);
+	threadVars[0].field->copyBoard(field);
 	if (gameHasFinished != nullptr) *gameHasFinished = threadVars[0].gameHasFinished;
 }
 
@@ -2443,10 +2443,10 @@ bool PerfectAI::checkGetPossThanGetPred()
 					setSituation(threadNo, layerNum, stateNum);
 					cout << "current state" << endl;
 					cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					move(threadNo, idPossibility[i], isOpponentLevel, &pBackup, pPossibilities);
 					cout << "successor" << endl;
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					getPredecessors(threadNo, &amountOfPred, predVars);
 					getPredecessors(threadNo, &amountOfPred, predVars);
 				}
@@ -2513,7 +2513,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
 					for (k = 0; k < tv->field->size; k++) symField[k] = tv->field->stonePartOfMill[k];	applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
 					cout << "predecessor" << endl;
 					cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					if (predVars[j].playerToMoveChanged) {
 						k = tv->field->curPlayer->id;
 						tv->field->curPlayer->id = tv->field->oppPlayer->id;
@@ -2524,7 +2524,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
 					setSituation(threadNo, layerNum, stateNum);
 					cout << "current state" << endl;
 					cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					getPredecessors(threadNo, &amountOfPred, predVars);
 				}
 
@@ -2569,7 +2569,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
 					for (k = 0; k < tv->field->size; k++) symField[k] = tv->field->stonePartOfMill[k];	applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
 					cout << "predecessor" << endl;
 					cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					if (predVars[j].playerToMoveChanged) {
 						k = tv->field->curPlayer->id;
 						tv->field->curPlayer->id = tv->field->oppPlayer->id;
@@ -2580,7 +2580,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
 					setSituation(threadNo, layerNum, stateNum);
 					cout << "current state" << endl;
 					cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					getPredecessors(threadNo, &amountOfPred, predVars);
 
 					k = tv->field->curPlayer->id;
@@ -2590,10 +2590,10 @@ bool PerfectAI::checkGetPredThanGetPoss()
 					setSituation(threadNo, predVars[j].predLayerNumbers, predVars[j].predStateNumbers);
 					for (k = 0; k < tv->field->size; k++) symField[k] = tv->field->board[k];			applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
 					for (k = 0; k < tv->field->size; k++) symField[k] = tv->field->stonePartOfMill[k];	applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
 					move(threadNo, idPossibility[1], isOpponentLevel, &pBackup, pPossibilities);
-					printField(threadNo, 0);
+					printBoard(threadNo, 0);
 					getLayerAndStateNumber(threadNo, layerNumB, stateNumB);
 				}
 			}

@@ -219,7 +219,7 @@ protected:
 	void				printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities);
 	void				storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, unsigned char value, unsigned int *freqValuesSubMoves, PlyInfoVarType plyInfo);
 	void				getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers);
-	void				printField(unsigned int threadNo, unsigned char value);
+	void				printBoard(unsigned int threadNo, unsigned char value);
 	string				getOutputInformation(unsigned int layerNum);
 	unsigned int		getPartnerLayer(unsigned int layerNum);
 	void				prepareDatabaseCalculation();

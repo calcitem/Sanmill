@@ -26,8 +26,8 @@ int main(void)
     bool			playerTwoHuman = false;
     char			ch[100];
     unsigned int	pushFrom, pushTo;
-    Position *myGame = new Position();
-    PerfectAI *myAI = new PerfectAI(databaseDirectory);
+    Position *pos = new Position();
+    PerfectAI *ai = new PerfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
     srand(GetTickCount());
@@ -37,24 +37,24 @@ int main(void)
     cout << "* Muehle                *" << endl;
     cout << "*************************" << endl << endl;
 
-    myAI->setDatabasePath(databaseDirectory);
+    ai->setDatabasePath(databaseDirectory);
 
     // begin
 #ifdef SELF_PLAY
-    myGame->beginNewGame(myAI, myAI, fieldStruct::playerOne);
+    pos->beginNewGame(ai, ai, fieldStruct::playerOne);
 #else
-    myGame->beginNewGame(myAI, myAI, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
+    pos->beginNewGame(ai, ai, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
 #endif // SELF_PLAY
 
     if (calculateDatabase) {
 
         // calculate
-        myAI->calculateDatabase(MAX_DEPTH_OF_TREE, false);
+        ai->calculateDatabase(MAX_DEPTH_OF_TREE, false);
 
         // test database
         cout << endl << "Begin test starting from layer: ";     startTestFromLayer;
         cout << endl << "End test at layer: ";                  endTestAtLayer;
-        myAI->testLayers(startTestFromLayer, endTestAtLayer);
+        ai->testLayers(startTestFromLayer, endTestAtLayer);
 
     } else {
 
@@ -70,9 +70,9 @@ int main(void)
         do {
             // print board
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
-            myGame->getComputersChoice(&pushFrom, &pushTo);
+            pos->getComputersChoice(&pushFrom, &pushTo);
             cout << "\n\n";
-            cout << "\nlast move was from " << (char)(myGame->getLastMoveFrom() + 97) << " to " << (char)(myGame->getLastMoveTo() + 97) << "\n\n";
+            cout << "\nlast move was from " << (char)(pos->getLastMoveFrom() + 97) << " to " << (char)(pos->getLastMoveTo() + 97) << "\n\n";
 
 #ifdef SELF_PLAY
             moveCount++;
@@ -81,22 +81,22 @@ int main(void)
             }
 #endif // SELF_PLAY
 
-            myGame->printField();
+            pos->printBoard();
 
             // Human
-            if ((myGame->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman)
-                || (myGame->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)) {
+            if ((pos->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman)
+                || (pos->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)) {
                 do {
                     // Show text
-                    if (myGame->mustStoneBeRemoved())	cout << "\n   Which stone do you want to remove? [a-x]: \n\n\n";
-                    else if (myGame->inSettingPhase())	cout << "\n   Where are you going? [a-x]: \n\n\n";
+                    if (pos->mustStoneBeRemoved())	cout << "\n   Which stone do you want to remove? [a-x]: \n\n\n";
+                    else if (pos->inSettingPhase())	cout << "\n   Where are you going? [a-x]: \n\n\n";
                     else								cout << "\n   Your train? [a-x][a-x]: \n\n\n";
 
                     // get input
                     cin >> ch;
                     if ((ch[0] >= 'a') && (ch[0] <= 'x'))		pushFrom = ch[0] - 'a';	else pushFrom = fieldStruct::size;
 
-                    if (myGame->inSettingPhase()) {
+                    if (pos->inSettingPhase()) {
                         if ((ch[0] >= 'a') && (ch[0] <= 'x'))	pushTo = ch[0] - 'a';	else pushTo = fieldStruct::size;
                     } else {
                         if ((ch[1] >= 'a') && (ch[1] <= 'x'))	pushTo = ch[1] - 'a';	else pushTo = fieldStruct::size;
@@ -107,32 +107,32 @@ int main(void)
 
                         // undo moves until a human player shall move
                         do {
-                            myGame->undo_move();
-                        } while (!((myGame->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman)
-                                   || (myGame->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
+                            pos->undo_move();
+                        } while (!((pos->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman)
+                                   || (pos->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
 
                         // reprint board
                         break;
                     }
 
-                } while (myGame->do_move(pushFrom, pushTo) == false);
+                } while (pos->do_move(pushFrom, pushTo) == false);
 
                 // Computer
             } else {
                 cout << "\n";
-                myGame->do_move(pushFrom, pushTo);
+                pos->do_move(pushFrom, pushTo);
             }
 
-        } while (myGame->getWinner() == 0);
+        } while (pos->getWinner() == 0);
 
         // end
         cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
-        myGame->printField();
+        pos->printBoard();
 
-        if (myGame->getWinner() == fieldStruct::playerOne)	cout << "\n   Player 1 (o) won after " << myGame->getMovesDone() << " move.\n\n";
-        else if (myGame->getWinner() == fieldStruct::playerTwo)	cout << "\n   Player 2 (x) won after " << myGame->getMovesDone() << " move.\n\n";
-        else if (myGame->getWinner() == fieldStruct::gameDrawn)	cout << "\n   Draw!\n\n";
+        if (pos->getWinner() == fieldStruct::playerOne)	cout << "\n   Player 1 (o) won after " << pos->getMovesDone() << " move.\n\n";
+        else if (pos->getWinner() == fieldStruct::playerTwo)	cout << "\n   Player 2 (x) won after " << pos->getMovesDone() << " move.\n\n";
+        else if (pos->getWinner() == fieldStruct::gameDrawn)	cout << "\n   Draw!\n\n";
         else												    cout << "\n   A program error has occurred!\n\n";
     }
 

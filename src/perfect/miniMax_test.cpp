@@ -137,7 +137,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, int index)
 	// debug information
 	if (m->verbosity > 5) {
 		PRINT(5, m, "layer: " << layerNumber << " state: " << stateNumber);
-		m->printField(threadNo, shortValueInDatabase);
+		m->printBoard(threadNo, shortValueInDatabase);
 	}
 
 	// get number of possiblities
@@ -174,7 +174,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, int index)
 			// debug information
 			if (m->verbosity > 5) {
 				PRINT(5, m, "layer: " << tmpLayerNumber << " state: " << tmpStateNumber << " value: " << (int)subValueInDatabase[i]);
-				m->printField(threadNo, subValueInDatabase[i]);
+				m->printBoard(threadNo, subValueInDatabase[i]);
 			}
 
 			// if layer or state number is invalid then value of testes state must be invalid
@@ -543,12 +543,12 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 
 				PRINT(2, this, "current tested state " << stateNumber << " has value " << (int)shortValueInDatabase);
 				setSituation(threadNo, layerNumber, stateNumber);
-				printField(threadNo, shortValueInDatabase);
+				printBoard(threadNo, shortValueInDatabase);
 
 				PRINT(1, this, "");
 				PRINT(1, this, "symmetric state " << symStateNumbers[i] << " has value " << (int)shortValueOfSymState);
 				setSituation(threadNo, layerNumber, symStateNumbers[i]);
-				printField(threadNo, shortValueOfSymState);
+				printBoard(threadNo, shortValueOfSymState);
 
 				setSituation(threadNo, layerNumber, stateNumber);
 			}

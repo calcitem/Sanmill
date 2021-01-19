@@ -355,7 +355,7 @@ public:
 		while (true);
 	};
 
-	virtual void			printField(unsigned int threadNo, unsigned char value)
+	virtual void			printBoard(unsigned int threadNo, unsigned char value)
 	{
 		while (true);
 	};

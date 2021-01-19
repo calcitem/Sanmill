@@ -64,10 +64,10 @@ public:
 	Player *curPlayer, *oppPlayer;			// pointers to the current and opponent player
 
 	// useful functions
-	void						printField();
-	void						copyField(fieldStruct *destination);
-	void						createField();
-	void						deleteField();
+	void						printBoard();
+	void						copyBoard(fieldStruct *destination);
+	void						createBoard();
+	void						deleteBoard();
 
 private:
 
@@ -86,11 +86,11 @@ public:
 	// Constructor / destructor
 	MillAI()
 	{
-		dummyField.createField();
+		dummyField.createBoard();
 	};
 	~MillAI()
 	{
-		dummyField.deleteField();
+		dummyField.deleteBoard();
 	};
 
 	// Functions

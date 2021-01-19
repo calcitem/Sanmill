@@ -11,10 +11,10 @@
 using namespace std;
 
 //-----------------------------------------------------------------------------
-// Name: printField()
+// Name: printBoard()
 // Desc: 
 //-----------------------------------------------------------------------------
-void fieldStruct::printField()
+void fieldStruct::printBoard()
 {
 	// locals
 	unsigned int index;
@@ -61,10 +61,10 @@ char fieldStruct::GetCharFromStone(int stone)
 }
 
 //-----------------------------------------------------------------------------
-// Name: copyField()
+// Name: copyBoard()
 // Desc: Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void fieldStruct::copyField(fieldStruct *destination)
+void fieldStruct::copyBoard(fieldStruct *destination)
 {
 	unsigned int i, j;
 
@@ -110,10 +110,10 @@ void Player::copyPlayer(Player *destination)
 
 
 //-----------------------------------------------------------------------------
-// Name: createField()
+// Name: createBoard()
 // Desc: Creates, but doesn't initialize, the arrays of the of the passed board structure.
 //-----------------------------------------------------------------------------
-void fieldStruct::createField()
+void fieldStruct::createBoard()
 {
 	// locals
 	unsigned int i;
@@ -202,10 +202,10 @@ void fieldStruct::createField()
 }
 
 //-----------------------------------------------------------------------------
-// Name: deleteField()
+// Name: deleteBoard()
 // Desc: ... 
 //-----------------------------------------------------------------------------
-void fieldStruct::deleteField()
+void fieldStruct::deleteBoard()
 {
 	SAFE_DELETE(curPlayer);
 	SAFE_DELETE(oppPlayer);
