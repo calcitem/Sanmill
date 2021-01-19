@@ -27,7 +27,7 @@ int main(void)
     char			ch[100];
     unsigned int	pushFrom, pushTo;
     Position *myGame = new Position();
-    perfectAI *myAI = new perfectAI(databaseDirectory);
+    PerfectAI *myAI = new PerfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
     srand(GetTickCount());

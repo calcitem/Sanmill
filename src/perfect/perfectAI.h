@@ -1,5 +1,5 @@
 /*********************************************************************\
-	perfectAI.h
+	PerfectAI.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -75,12 +75,12 @@
 #define NUM_SYM_OPERATIONS				16
 
 /*** Klassen *********************************************************/
-class perfectAI : public MillAI, public MiniMax
+class PerfectAI : public MillAI, public MiniMax
 {
 protected:
 
 	// structs
-	struct subLayerStruct
+	struct SubLayer
 	{
 		unsigned int 		minIndex;
 		unsigned int 		maxIndex;
@@ -88,14 +88,14 @@ protected:
 		unsigned int 		numWhiteStonesGroupAB, numBlackStonesGroupAB;
 	};
 
-	struct layerStruct
+	struct Layer
 	{
 		unsigned int		numWhiteStones;
 		unsigned int		numBlackStones;
 		unsigned int		numSubLayers;
 		unsigned int		subLayerIndexAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
 		unsigned int		subLayerIndexCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-		subLayerStruct		subLayer[MAX_NUM_SUB_LAYERS];
+		SubLayer		subLayer[MAX_NUM_SUB_LAYERS];
 	};
 
 	struct Possibility
@@ -122,13 +122,13 @@ protected:
 	};
 
 	// preCalcedVars.dat
-	struct preCalcedVarsFileHeaderStruct
+	struct PreCalcedVarsFileHeader
 	{
 		unsigned int		sizeInBytes;
 	};
 
 	// constant variables for state addressing in the database
-	layerStruct				layer[NUM_LAYERS];															// the layers
+	Layer				layer[NUM_LAYERS];															// the layers
 	unsigned int			layerIndex[2][NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];	// indices of layer [moving/setting phase][number of white stones][number of black stones]
 	unsigned int			anzahlStellungenCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
 	unsigned int			anzahlStellungenAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
@@ -149,7 +149,7 @@ protected:
 	string					databaseDirectory;																					// directory containing the database files
 
 	// Variables used individually by each single thread
-	class threadVarsStruct
+	class ThreadVars
 	{
 	public:
 		fieldStruct *field;						// pointer of the current board [changed by move()]
@@ -162,10 +162,10 @@ protected:
 		unsigned int *idPossibilities;			// returned pointer of getPossibilities()-function
 		Backup *oldStates;					// for undo()-function	
 		Possibility *possibilities;				// for getPossNormalMove()-function
-		perfectAI *parent;						// 
+		PerfectAI *parent;						// 
 
 		// constructor
-		threadVarsStruct();
+		ThreadVars();
 
 		// Functions
 		unsigned int *getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities);
@@ -187,7 +187,7 @@ protected:
 		void				calcPossibleMoves(Player *player);
 		void				storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars);
 	};
-	threadVarsStruct *threadVars;
+	ThreadVars *threadVars;
 
 	// database functions
 	unsigned int		getNumberOfLayers();
@@ -227,8 +227,8 @@ protected:
 
 public:
 	// Constructor / destructor
-	perfectAI(const char *directory);
-	~perfectAI();
+	PerfectAI(const char *directory);
+	~PerfectAI();
 
 	// Functions
 	bool				setDatabasePath(const char *directory);
