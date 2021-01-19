@@ -42,9 +42,6 @@
     <ClInclude Include="millAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mill.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="miniMaxAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,6 +49,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,9 +92,6 @@
     <ClCompile Include="perfectAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mill.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="millAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

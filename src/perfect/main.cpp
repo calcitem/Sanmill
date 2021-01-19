@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <windows.h>
-#include "mill.h"
+#include "position.h"
 #include "miniMaxAI.h"
 #include "randomAI.h"
 #include "perfectAI.h"
@@ -26,7 +26,7 @@ int main(void)
     bool			playerTwoHuman = false;
     char			ch[100];
     unsigned int	pushFrom, pushTo;
-    Mill *myGame = new Mill();
+    Position *myGame = new Position();
     perfectAI *myKI = new perfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
@@ -107,7 +107,7 @@ int main(void)
 
                         // undo moves until a human player shall move
                         do {
-                            myGame->undoLastMove();
+                            myGame->undo_move();
                         } while (!((myGame->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman)
                                    || (myGame->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
 
@@ -115,12 +115,12 @@ int main(void)
                         break;
                     }
 
-                } while (myGame->moveStone(pushFrom, pushTo) == false);
+                } while (myGame->do_move(pushFrom, pushTo) == false);
 
                 // Computer
             } else {
                 cout << "\n";
-                myGame->moveStone(pushFrom, pushTo);
+                myGame->do_move(pushFrom, pushTo);
             }
 
         } while (myGame->getWinner() == 0);

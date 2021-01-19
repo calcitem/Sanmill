@@ -1,5 +1,5 @@
 /*********************************************************************\
-	Mill.h
+	Position.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -31,7 +31,7 @@ using namespace std;
 
 /*** Klassen *********************************************************/
 
-class Mill
+class Position
 {
 private:
 	// Variables
@@ -53,14 +53,14 @@ private:
 
 public:
 	// Constructor / destructor
-	Mill();
-	~Mill();
+	Position();
+	~Position();
 
 	// Functions
-	void			undoLastMove();
+	void			undo_move();
 	void			beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer);
 	void			setKI(int player, millAI *KI);
-	bool			moveStone(unsigned int  pushFrom, unsigned int  pushTo);
+	bool			do_move(unsigned int  pushFrom, unsigned int  pushTo);
 	void			getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
 	bool			setCurrentGameState(fieldStruct *curState);
 	bool			compareWithField(fieldStruct *compareField);

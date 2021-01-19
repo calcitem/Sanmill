@@ -1,18 +1,18 @@
 /*********************************************************************
-	Mill.cpp
+	Position.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
 	https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#include "mill.h"
+#include "position.h"
 
 //-----------------------------------------------------------------------------
-// Name: Mill()
-// Desc: Mill class constructor
+// Name: Position()
+// Desc: Position class constructor
 //-----------------------------------------------------------------------------
-Mill::Mill()
+Position::Position()
 {
 	srand((unsigned)time(nullptr));
 
@@ -27,19 +27,19 @@ Mill::Mill()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~Mill()
-// Desc: Mill class destructor
+// Name: ~Position()
+// Desc: Position class destructor
 //-----------------------------------------------------------------------------
-Mill::~Mill()
+Position::~Position()
 {
 	deleteArrays();
 }
 
 //-----------------------------------------------------------------------------
 // Name: deleteArrays()
-// Desc: Deletes all arrays the Mill class has created.
+// Desc: Deletes all arrays the Position class has created.
 //-----------------------------------------------------------------------------
-void Mill::deleteArrays()
+void Position::deleteArrays()
 {
 	SAFE_DELETE_ARRAY(moveLogFrom);
 	SAFE_DELETE_ARRAY(moveLogTo);
@@ -50,9 +50,9 @@ void Mill::deleteArrays()
 
 //-----------------------------------------------------------------------------
 // Name: beginNewGame()
-// Desc: Reinitializes the Mill object.
+// Desc: Reinitializes the Position object.
 //-----------------------------------------------------------------------------
-void Mill::beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer)
+void Position::beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer)
 {
 	// free mem
 	deleteArrays();
@@ -85,7 +85,7 @@ void Mill::beginNewGame(millAI *firstPlayerKI, millAI *secondPlayerKI, int curre
 // Name: startSettingPhase()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool Mill::startSettingPhase(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer, bool settingPhase)
+bool Position::startSettingPhase(millAI *firstPlayerKI, millAI *secondPlayerKI, int currentPlayer, bool settingPhase)
 {
 	beginNewGame(firstPlayerKI, secondPlayerKI, currentPlayer);
 
@@ -98,7 +98,7 @@ bool Mill::startSettingPhase(millAI *firstPlayerKI, millAI *secondPlayerKI, int 
 // Name: setUpCalcPossibleMoves()
 // Desc: Calculates and set the number of possible moves for the passed player considering the game state stored in the 'field' variable.
 //-----------------------------------------------------------------------------
-void Mill::setUpCalcPossibleMoves(playerStruct *player)
+void Position::setUpCalcPossibleMoves(playerStruct *player)
 {
 	// locals
 	unsigned int i, j, k, movingDirection;
@@ -132,7 +132,7 @@ void Mill::setUpCalcPossibleMoves(playerStruct *player)
 // Name: setUpSetWarningAndMill()
 // Desc: 
 //-----------------------------------------------------------------------------
-void Mill::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
+void Position::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
 {
 	// locals
 	int				rowOwner = field.field[stone];
@@ -150,7 +150,7 @@ void Mill::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbou
 // Name: putStone()
 // Desc: Put a stone onto the field during the setting phase.
 //-----------------------------------------------------------------------------
-bool Mill::putStone(unsigned int pos, int player)
+bool Position::putStone(unsigned int pos, int player)
 {
 	// locals
 	unsigned int i;
@@ -221,7 +221,7 @@ bool Mill::putStone(unsigned int pos, int player)
 // Name: settingPhaseHasFinished()
 // Desc: This function has to be called when the setting phase has finished.
 //-----------------------------------------------------------------------------
-bool Mill::settingPhaseHasFinished()
+bool Position::settingPhaseHasFinished()
 {
 	// remember initialField
 	field.copyField(&initialField);
@@ -233,7 +233,7 @@ bool Mill::settingPhaseHasFinished()
 // Name: getField()
 // Desc: Copy the current field state into the array 'pField'.
 //-----------------------------------------------------------------------------
-bool Mill::getField(int *pField)
+bool Position::getField(int *pField)
 {
 	unsigned int index;
 
@@ -252,7 +252,7 @@ bool Mill::getField(int *pField)
 // Name: getLog()
 // Desc: Copy the whole history of moves into the passed arrays, which must be of size [MAX_NUM_MOVES].
 //-----------------------------------------------------------------------------
-void Mill::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *to)
+void Position::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *to)
 {
 	unsigned int index;
 
@@ -268,7 +268,7 @@ void Mill::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *
 // Name: setNextPlayer()
 // Desc: Current player and opponent player are switched in the field struct.
 //-----------------------------------------------------------------------------
-void Mill::setNextPlayer()
+void Position::setNextPlayer()
 {
 	playerStruct *tmpPlayer;
 
@@ -281,7 +281,7 @@ void Mill::setNextPlayer()
 // Name: isCurrentPlayerHuman()
 // Desc: Returns true if the current player is not assigned to an AI.
 //-----------------------------------------------------------------------------
-bool Mill::isCurrentPlayerHuman()
+bool Position::isCurrentPlayerHuman()
 {
 	if (field.curPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
 	else										return (playerTwoKI == nullptr) ? true : false;
@@ -291,7 +291,7 @@ bool Mill::isCurrentPlayerHuman()
 // Name: isOpponentPlayerHuman()
 // Desc: Returns true if the opponent player is not assigned to an AI.
 //-----------------------------------------------------------------------------
-bool Mill::isOpponentPlayerHuman()
+bool Position::isOpponentPlayerHuman()
 {
 	if (field.oppPlayer->id == field.playerOne)	return (playerOneKI == nullptr) ? true : false;
 	else										return (playerTwoKI == nullptr) ? true : false;
@@ -301,7 +301,7 @@ bool Mill::isOpponentPlayerHuman()
 // Name: setKI()
 // Desc: Assigns an AI to a player.
 //-----------------------------------------------------------------------------
-void Mill::setKI(int player, millAI *KI)
+void Position::setKI(int player, millAI *KI)
 {
 	if (player == field.playerOne) {
 		playerOneKI = KI;
@@ -315,7 +315,7 @@ void Mill::setKI(int player, millAI *KI)
 // Name: getChoiceOfSpecialKI()
 // Desc: Returns the move the passed AI would do.
 //-----------------------------------------------------------------------------
-void Mill::getChoiceOfSpecialKI(millAI *KI, unsigned int *pushFrom, unsigned int *pushTo)
+void Position::getChoiceOfSpecialKI(millAI *KI, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
 	*pushFrom = field.size;
@@ -330,7 +330,7 @@ void Mill::getChoiceOfSpecialKI(millAI *KI, unsigned int *pushFrom, unsigned int
 // Name: getComputersChoice()
 // Desc: Returns the move the AI of the current player would do.
 //-----------------------------------------------------------------------------
-void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
+void Position::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
 	*pushFrom = field.size;
@@ -353,7 +353,7 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 // Name: isNormalMovePossible()
 // Desc: 'Normal' in this context means, by moving the stone along a connection without jumping.
 //-----------------------------------------------------------------------------
-bool Mill::isNormalMovePossible(unsigned int from, unsigned int to, playerStruct *player)
+bool Position::isNormalMovePossible(unsigned int from, unsigned int to, playerStruct *player)
 {
 	// locals
 	unsigned int movingDirection, i;
@@ -386,7 +386,7 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to, playerStruct
 // Name: calcPossibleMoves()
 // Desc: ...
 //-----------------------------------------------------------------------------
-void Mill::calcPossibleMoves(playerStruct *player)
+void Position::calcPossibleMoves(playerStruct *player)
 {
 	// locals
 	unsigned int i, j;
@@ -419,7 +419,7 @@ void Mill::calcPossibleMoves(playerStruct *player)
 // Name: setWarningAndMill()
 // Desc: 
 //-----------------------------------------------------------------------------
-void Mill::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone)
+void Position::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone)
 {
 	// locals
 	int				rowOwner = field.field[stone];
@@ -443,7 +443,7 @@ void Mill::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, un
 // Name: updateMillsAndWarnings()
 // Desc: 
 //-----------------------------------------------------------------------------
-void Mill::updateMillsAndWarnings(unsigned int newStone)
+void Position::updateMillsAndWarnings(unsigned int newStone)
 {
 	// locals
 	unsigned int	i;
@@ -470,10 +470,10 @@ void Mill::updateMillsAndWarnings(unsigned int newStone)
 }
 
 //-----------------------------------------------------------------------------
-// Name: moveStone()
+// Name: do_move()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool Mill::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
+bool Position::do_move(unsigned int  pushFrom, unsigned int  pushTo)
 {
 	// avoid index override
 	if (movesDone >= MAX_NUM_MOVES)
@@ -600,7 +600,7 @@ bool Mill::moveStone(unsigned int  pushFrom, unsigned int  pushTo)
 // Name: setCurrentGameState()
 // Desc: Set an arbitrary game state as the current one.
 //-----------------------------------------------------------------------------
-bool Mill::setCurrentGameState(fieldStruct *curState)
+bool Position::setCurrentGameState(fieldStruct *curState)
 {
 	curState->copyField(&field);
 
@@ -618,7 +618,7 @@ bool Mill::setCurrentGameState(fieldStruct *curState)
 // Name: compareWithField()
 // Desc: Compares the current 'field' variable with the passed one. 'stoneMoveAble[]' is ignored.
 //-----------------------------------------------------------------------------
-bool Mill::compareWithField(fieldStruct *compareField)
+bool Position::compareWithField(fieldStruct *compareField)
 {
 	unsigned int i, j;
 	bool ret = true;
@@ -671,7 +671,7 @@ bool Mill::compareWithField(fieldStruct *compareField)
 // Name: comparePlayers()
 // Desc: Compares the two passed players and returns false if they differ.
 //-----------------------------------------------------------------------------
-bool Mill::comparePlayers(playerStruct *playerA, playerStruct *playerB)
+bool Position::comparePlayers(playerStruct *playerA, playerStruct *playerB)
 {
 	//	unsigned int i;
 	bool ret = true;
@@ -703,16 +703,16 @@ bool Mill::comparePlayers(playerStruct *playerA, playerStruct *playerB)
 // Desc: Calls the printField() function of the current field.
 //       Prints the current game state on the screen.
 //-----------------------------------------------------------------------------
-void Mill::printField()
+void Position::printField()
 {
 	field.printField();
 }
 
 //-----------------------------------------------------------------------------
-// Name: undoLastMove()
+// Name: undo_move()
 // Desc: Sets the initial field as the current one and apply all (minus one) moves from the move history.
 //-----------------------------------------------------------------------------
-void Mill::undoLastMove(void)
+void Position::undo_move(void)
 {
 	// locals
 	unsigned int *moveLogFrom_bak = new unsigned int[movesDone];
@@ -736,7 +736,7 @@ void Mill::undoLastMove(void)
 
 		// and play again
 		for (i = 0; i < movesDone_bak - 1; i++) {
-			moveStone(moveLogFrom_bak[i], moveLogTo_bak[i]);
+			do_move(moveLogFrom_bak[i], moveLogTo_bak[i]);
 		}
 	}
 
@@ -749,7 +749,7 @@ void Mill::undoLastMove(void)
 // Name: calcNumberOfRestingStones()
 // Desc: 
 //-----------------------------------------------------------------------------
-void Mill::calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting)
+void Position::calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting)
 {
 	if (getCurrentPlayer() == fieldStruct::playerTwo) {
 		numWhiteStonesResting = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
