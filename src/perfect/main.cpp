@@ -36,7 +36,7 @@ int main(void)
     cout << "*************************" << endl;
     cout << "* Muehle                *" << endl;
     cout << "*************************" << endl
-         << endl;
+        << endl;
 
     ai->setDatabasePath(databaseDirectory);
 
@@ -47,23 +47,20 @@ int main(void)
     pos->beginNewGame(ai, ai, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
 #endif // SELF_PLAY
 
-    if (calculateDatabase)
-    {
+    if (calculateDatabase) {
 
         // calculate
         ai->calculateDatabase(MAX_DEPTH_OF_TREE, false);
 
         // test database
         cout << endl
-             << "Begin test starting from layer: ";
+            << "Begin test starting from layer: ";
         startTestFromLayer;
         cout << endl
-             << "End test at layer: ";
+            << "End test at layer: ";
         endTestAtLayer;
         ai->testLayers(startTestFromLayer, endTestAtLayer);
-    }
-    else
-    {
+    } else {
 
 #ifdef SELF_PLAY
         int moveCount = 0;
@@ -79,8 +76,7 @@ int main(void)
 #endif // SELF_PLAY
 
         // play
-        do
-        {
+        do {
             // print board
             cout << "\n\n\n\n\n\n\n\n\n\n\n";
             pos->getComputersChoice(&pushFrom, &pushTo);
@@ -89,8 +85,7 @@ int main(void)
 
 #ifdef SELF_PLAY
             moveCount++;
-            if (moveCount > 99)
-            {
+            if (moveCount > 99) {
                 goto out;
             }
 #endif // SELF_PLAY
@@ -98,10 +93,8 @@ int main(void)
             pos->printBoard();
 
             // Human
-            if ((pos->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (pos->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman))
-            {
-                do
-                {
+            if ((pos->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (pos->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)) {
+                do {
                     // Show text
                     if (pos->mustStoneBeRemoved())
                         cout << "\n   Which stone do you want to remove? [a-x]: \n\n\n";
@@ -117,15 +110,12 @@ int main(void)
                     else
                         pushFrom = fieldStruct::size;
 
-                    if (pos->inSettingPhase())
-                    {
+                    if (pos->inSettingPhase()) {
                         if ((ch[0] >= 'a') && (ch[0] <= 'x'))
                             pushTo = ch[0] - 'a';
                         else
                             pushTo = fieldStruct::size;
-                    }
-                    else
-                    {
+                    } else {
                         if ((ch[1] >= 'a') && (ch[1] <= 'x'))
                             pushTo = ch[1] - 'a';
                         else
@@ -133,12 +123,10 @@ int main(void)
                     }
 
                     // undo
-                    if (ch[0] == 'u' && ch[1] == 'n' && ch[2] == 'd' && ch[3] == 'o')
-                    {
+                    if (ch[0] == 'u' && ch[1] == 'n' && ch[2] == 'd' && ch[3] == 'o') {
 
                         // undo moves until a human player shall move
-                        do
-                        {
+                        do {
                             pos->undo_move();
                         } while (!((pos->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (pos->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
 
@@ -149,9 +137,7 @@ int main(void)
                 } while (pos->do_move(pushFrom, pushTo) == false);
 
                 // Computer
-            }
-            else
-            {
+            } else {
                 cout << "\n";
                 pos->do_move(pushFrom, pushTo);
             }

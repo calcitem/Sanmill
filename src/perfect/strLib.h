@@ -1,9 +1,9 @@
 /*********************************************************************\
-	strLib.h
-	Copyright (c) Thomas Weber. All rights reserved.
-	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
-	Licensed under the MIT License.
-	https://github.com/madweasel/madweasels-cpp
+    strLib.h
+    Copyright (c) Thomas Weber. All rights reserved.
+    Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
+    Licensed under the MIT License.
+    https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
 #ifndef STRLIB_H
@@ -24,27 +24,27 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned
 class MyString
 {
 private:
-	// variables
-	WCHAR *strW = nullptr;
-	char *strA = nullptr;
-	size_t length = 0;
-	size_t reserved = 0;
+    // variables
+    WCHAR *strW = nullptr;
+    char *strA = nullptr;
+    size_t length = 0;
+    size_t reserved = 0;
 
-	// functions
+    // functions
 
 public:
-	// functions
-	MyString();
-	MyString(const char *cStr);
-	MyString(const WCHAR *cStr);
-	~MyString();
+    // functions
+    MyString();
+    MyString(const char *cStr);
+    MyString(const WCHAR *cStr);
+    ~MyString();
 
-	const char *c_strA();
-	const WCHAR *c_strW();
-	MyString &assign(const char *cStr);
-	MyString &assign(const WCHAR *cStr);
+    const char *c_strA();
+    const WCHAR *c_strW();
+    MyString &assign(const char *cStr);
+    MyString &assign(const WCHAR *cStr);
 
-	static int hibit(unsigned int n);
+    static int hibit(unsigned int n);
 };
 
 #endif
