@@ -9,10 +9,10 @@
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
-// Name: ~miniMax()
-// Desc: miniMax class destructor
+// Name: ~MiniMax()
+// Desc: MiniMax class destructor
 //-----------------------------------------------------------------------------
-void miniMax::closeDatabase()
+void MiniMax::closeDatabase()
 {
 	// close database
 	if (hFileShortKnotValues != nullptr) {
@@ -35,7 +35,7 @@ void miniMax::closeDatabase()
 // Name: unloadPlyInfo()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::unloadPlyInfo(unsigned int layerNumber)
+void MiniMax::unloadPlyInfo(unsigned int layerNumber)
 {
 	plyInfoStruct *myPis = &plyInfos[layerNumber];
 	memoryUsed2 -= myPis->sizeInBytes;
@@ -48,7 +48,7 @@ void miniMax::unloadPlyInfo(unsigned int layerNumber)
 // Name: unloadLayer()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::unloadLayer(unsigned int layerNumber)
+void MiniMax::unloadLayer(unsigned int layerNumber)
 {
 	layerStatsStruct *myLss = &layerStats[layerNumber];
 	SAFE_DELETE_ARRAY(myLss->shortKnotValueByte);
@@ -61,7 +61,7 @@ void miniMax::unloadLayer(unsigned int layerNumber)
 // Name: unloadAllPlyInfos()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::unloadAllPlyInfos()
+void MiniMax::unloadAllPlyInfos()
 {
 	for (unsigned int i = 0; i < plyInfoHeader.numLayers; i++) {
 		unloadPlyInfo(i);
@@ -72,7 +72,7 @@ void miniMax::unloadAllPlyInfos()
 // Name: unloadAllLayers()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::unloadAllLayers()
+void MiniMax::unloadAllLayers()
 {
 	for (unsigned int i = 0; i < skvfHeader.numLayers; i++) {
 		unloadLayer(i);
@@ -83,7 +83,7 @@ void miniMax::unloadAllLayers()
 // Name: saveBytesToFile()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
+void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
 {
 	DWORD			dwBytesWritten;
 	LARGE_INTEGER	liDistanceToMove;
@@ -113,7 +113,7 @@ void miniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBy
 // Name: loadBytesFromFile()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
+void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
 {
 	DWORD			dwBytesRead;
 	LARGE_INTEGER	liDistanceToMove;
@@ -145,7 +145,7 @@ void miniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int num
 // Name: isCurrentStateInDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::isCurrentStateInDatabase(unsigned int threadNo)
+bool MiniMax::isCurrentStateInDatabase(unsigned int threadNo)
 {
 	unsigned int layerNum, stateNumber;
 
@@ -161,7 +161,7 @@ bool miniMax::isCurrentStateInDatabase(unsigned int threadNo)
 // Name: saveHeader()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::saveHeader(skvFileHeaderStruct *dbH, layerStatsStruct *lStats)
+void MiniMax::saveHeader(skvFileHeaderStruct *dbH, layerStatsStruct *lStats)
 {
 	DWORD dwBytesWritten;
 	SetFilePointer(hFileShortKnotValues, 0, nullptr, FILE_BEGIN);
@@ -173,7 +173,7 @@ void miniMax::saveHeader(skvFileHeaderStruct *dbH, layerStatsStruct *lStats)
 // Name: saveHeader()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::saveHeader(plyInfoFileHeaderStruct *piH, plyInfoStruct *pInfo)
+void MiniMax::saveHeader(plyInfoFileHeaderStruct *piH, plyInfoStruct *pInfo)
 {
 	DWORD dwBytesWritten;
 	SetFilePointer(hFilePlyInfo, 0, nullptr, FILE_BEGIN);
@@ -185,7 +185,7 @@ void miniMax::saveHeader(plyInfoFileHeaderStruct *piH, plyInfoStruct *pInfo)
 // Name: openDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::openDatabase(const char *directory, unsigned int maximumNumberOfBranches)
+bool MiniMax::openDatabase(const char *directory, unsigned int maximumNumberOfBranches)
 {
 	if (strlen(directory) && !PathFileExistsA(directory)) {
 		PRINT(0, this, "ERROR: Database path " << directory << " not valid!");
@@ -200,7 +200,7 @@ bool miniMax::openDatabase(const char *directory, unsigned int maximumNumberOfBr
 // Name: openSkvFile()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBranches)
+void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBranches)
 {
 	// locals
 	stringstream	ssDatabaseFile;
@@ -279,7 +279,7 @@ void miniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 // Name: openPlyInfoFile()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::openPlyInfoFile(const char *directory)
+void MiniMax::openPlyInfoFile(const char *directory)
 {
 	// locals
 	stringstream	ssFile;
@@ -350,7 +350,7 @@ void miniMax::openPlyInfoFile(const char *directory)
 // Name: saveLayerToFile()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::saveLayerToFile(unsigned int layerNumber)
+void MiniMax::saveLayerToFile(unsigned int layerNumber)
 {
 	// don't save layer and header when only preparing layers
 	plyInfoStruct *myPis = &plyInfos[layerNumber];
@@ -375,7 +375,7 @@ void miniMax::saveLayerToFile(unsigned int layerNumber)
 // Name: measureIops()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void miniMax::measureIops(long long &numOperations, LARGE_INTEGER &interval, LARGE_INTEGER &curTimeBefore, char text[])
+inline void MiniMax::measureIops(long long &numOperations, LARGE_INTEGER &interval, LARGE_INTEGER &curTimeBefore, char text[])
 {
 	// locals
 	LARGE_INTEGER curTimeAfter;
@@ -407,7 +407,7 @@ inline void miniMax::measureIops(long long &numOperations, LARGE_INTEGER &interv
 // Name: readKnotValueFromDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, twoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted)
+void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, twoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted)
 {
 	// get state number, since this is the address, where the value is saved
 	getLayerAndStateNumber(threadNo, layerNumber, stateNumber);
@@ -436,7 +436,7 @@ void miniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &lay
 // Name: readKnotValueFromDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, twoBit &knotValue)
+void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, twoBit &knotValue)
 {
 	// locals
 	twoBit				databaseByte;
@@ -502,7 +502,7 @@ void miniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
 // Name: readPlyInfoFromDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, plyInfoVarType &value)
+void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, plyInfoVarType &value)
 {
 	// locals
 	unsigned int	curKnot;
@@ -564,7 +564,7 @@ void miniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
 // Name: saveKnotValueInDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue)
+void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue)
 {
 	// locals
 	long long			bytesAllocated;
@@ -627,7 +627,7 @@ void miniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
 // Name: savePlyInfoInDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int stateNumber, plyInfoVarType value)
+void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int stateNumber, plyInfoVarType value)
 {
 	// locals
 	unsigned int	curKnot;

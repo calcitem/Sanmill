@@ -1,5 +1,5 @@
 /*********************************************************************
-	miniMax.cpp
+	MiniMax.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -9,10 +9,10 @@
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
-// Name: miniMax()
-// Desc: miniMax class constructor
+// Name: MiniMax()
+// Desc: MiniMax class constructor
 //-----------------------------------------------------------------------------
-miniMax::miniMax()
+MiniMax::MiniMax()
 {
 	// init default values
 	hFileShortKnotValues = nullptr;
@@ -72,10 +72,10 @@ miniMax::miniMax()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~miniMax()
-// Desc: miniMax class destructor
+// Name: ~MiniMax()
+// Desc: MiniMax class destructor
 //-----------------------------------------------------------------------------
-miniMax::~miniMax()
+MiniMax::~MiniMax()
 {
 	closeDatabase();
 	DeleteCriticalSection(&csOsPrint);
@@ -86,7 +86,7 @@ miniMax::~miniMax()
 // Name: falseOrStop()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::falseOrStop()
+bool MiniMax::falseOrStop()
 {
 	if (stopOnCriticalError) WaitForSingleObject(GetCurrentProcess(), INFINITE);
 	return false;
@@ -96,7 +96,7 @@ bool miniMax::falseOrStop()
 // Name: getBestChoice()
 // Desc: Returns the best choice if the database has been opened and calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
-void *miniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsigned int maximumNumberOfBranches)
+void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsigned int maximumNumberOfBranches)
 {
 	// set global vars
 	depthOfFullTree = tilLevel;
@@ -128,7 +128,7 @@ void *miniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 // Name: calculateDatabase()
 // Desc: Calculates the database, which must be already open.
 //-----------------------------------------------------------------------------
-void miniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer)
+void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer)
 {
 	// locals
 	bool			abortCalculation = false;
@@ -210,7 +210,7 @@ void miniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 // Name: calcLayer()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::calcLayer(unsigned int layerNumber)
+bool MiniMax::calcLayer(unsigned int layerNumber)
 {
 	// locals
 	vector <unsigned int> layersToCalculate;
@@ -265,7 +265,7 @@ bool miniMax::calcLayer(unsigned int layerNumber)
 // Name: pauseDatabaseCalculation()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::pauseDatabaseCalculation()
+void MiniMax::pauseDatabaseCalculation()
 {
 	threadManager.pauseExecution();
 }
@@ -274,7 +274,7 @@ void miniMax::pauseDatabaseCalculation()
 // Name: cancelDatabaseCalculation()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::cancelDatabaseCalculation()
+void MiniMax::cancelDatabaseCalculation()
 {
 	// when returning from executeParallelLoop() all function shall quit immediatelly up to calculateDatabase()
 	threadManager.cancelExecution();
@@ -284,7 +284,7 @@ void miniMax::cancelDatabaseCalculation()
 // Name: wasDatabaseCalculationCancelled()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::wasDatabaseCalculationCancelled()
+bool MiniMax::wasDatabaseCalculationCancelled()
 {
 	return threadManager.wasExecutionCancelled();
 }

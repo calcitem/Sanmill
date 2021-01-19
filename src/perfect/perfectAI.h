@@ -75,7 +75,7 @@
 #define NUM_SYM_OPERATIONS				16
 
 /*** Klassen *********************************************************/
-class perfectAI : public MillAI, public miniMax
+class perfectAI : public MillAI, public MiniMax
 {
 protected:
 

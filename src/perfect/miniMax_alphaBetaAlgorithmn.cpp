@@ -12,7 +12,7 @@
 // Name: calcKnotValuesByAlphaBeta()
 // Desc: return value is true if calculation is stopped either by user or by an error
 //-----------------------------------------------------------------------------
-bool miniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
+bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 {
 	// locals
 	alphaBetaGlobalVars	alphaBetaVars(this, layerNumber);						// multi-thread vars
@@ -44,7 +44,7 @@ bool miniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 // Name: saveKnotValueInDatabase()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue, plyInfoVarType plyValue, bool invertValue)
+void MiniMax::alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue, plyInfoVarType plyValue, bool invertValue)
 {
 	// locals
 	unsigned int *symStateNumbers = nullptr;
@@ -82,7 +82,7 @@ void miniMax::alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerN
 // Name: initAlphaBeta()
 // Desc: The function setSituation is called for each state to mark the invalid ones.
 //-----------------------------------------------------------------------------
-bool miniMax::initAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
+bool MiniMax::initAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
 {
 	// locals
 	BufferedFile *invalidArray;					// 
@@ -153,11 +153,11 @@ bool miniMax::initAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
 // Name: initAlphaBetaThreadProc()
 // Desc: set short knot value to SKV_VALUE_INVALID, ply info to PLYINFO_VALUE_INVALID and knotAlreadyCalculated to true or false, whether setSituation() returns true or false
 //-----------------------------------------------------------------------------
-DWORD miniMax::initAlphaBetaThreadProc(void *pParameter, int index)
+DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 {
 	// locals
 	initAlphaBetaVars *iabVars = (initAlphaBetaVars *)pParameter;
-	miniMax *m = iabVars->pMiniMax;
+	MiniMax *m = iabVars->pMiniMax;
 	float		  				floatValue;						// dummy variable for calls of getValueOfSituation()
 	stateAdressStruct			curState;						// current state counter for loops
 	twoBit		  				curStateValue = 0;			// for calls of getValueOfSituation()
@@ -219,7 +219,7 @@ DWORD miniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 // Name: runAlphaBeta()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::runAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
+bool MiniMax::runAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
 {
 	// prepare parameters
 	PRINT(1, this, "  Calculate layer " << alphaBetaVars.layerNumber << " with function letTheTreeGrow():");
@@ -264,11 +264,11 @@ bool miniMax::runAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
 // Name: runAlphaBetaThreadProc()
 // Desc: 
 //-----------------------------------------------------------------------------
-DWORD miniMax::runAlphaBetaThreadProc(void *pParameter, int index)
+DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 {
 	// locals
 	runAlphaBetaVars *rabVars = (runAlphaBetaVars *)pParameter;
-	miniMax *m = rabVars->pMiniMax;
+	MiniMax *m = rabVars->pMiniMax;
 	stateAdressStruct			curState;						// current state counter for loops
 	knotStruct					root;							// 
 	plyInfoVarType				plyInfo;						// depends on the curStateValue
@@ -304,7 +304,7 @@ DWORD miniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 // Name: letTheTreeGrow()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::letTheTreeGrow(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta)
+void MiniMax::letTheTreeGrow(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta)
 {
 	// Locals
 	void *pPossibilities;
@@ -387,7 +387,7 @@ void miniMax::letTheTreeGrow(knotStruct *knot, runAlphaBetaVars *rabVars, unsign
 // 2 - Look into database if knot value and ply info are already calculated. If so sets knot->shortValue, knot->floatValue and knot->plyInfo.
 // CAUTION: knot->isOpponentLevel must be set and valid.
 //-----------------------------------------------------------------------------
-bool miniMax::alphaBetaTryDataBase(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber)
+bool MiniMax::alphaBetaTryDataBase(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber)
 {
 	// locals
 	bool			invalidLayerOrStateNumber;
@@ -437,7 +437,7 @@ bool miniMax::alphaBetaTryDataBase(knotStruct *knot, runAlphaBetaVars *rabVars, 
 // Name: alphaBetaTryPossibilites()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::alphaBetaTryPossibilites(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta)
+void MiniMax::alphaBetaTryPossibilites(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta)
 {
 	// locals
 	void *pBackup;
@@ -513,7 +513,7 @@ void miniMax::alphaBetaTryPossibilites(knotStruct *knot, runAlphaBetaVars *rabVa
 // Name: alphaBetaCalcKnotValue()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::alphaBetaCalcKnotValue(knotStruct *knot)
+void MiniMax::alphaBetaCalcKnotValue(knotStruct *knot)
 {
 	// locals
 	float			maxValue = knot->branches[0].floatValue;
@@ -548,7 +548,7 @@ void miniMax::alphaBetaCalcKnotValue(knotStruct *knot)
 // Name: alphaBetaCalcPlyInfo()
 // Desc: 
 //-----------------------------------------------------------------------------
-void miniMax::alphaBetaCalcPlyInfo(knotStruct *knot)
+void MiniMax::alphaBetaCalcPlyInfo(knotStruct *knot)
 {
 	// locals
 	unsigned int	i;
@@ -616,7 +616,7 @@ void miniMax::alphaBetaCalcPlyInfo(knotStruct *knot)
 // Name: alphaBetaChooseBestMove()
 // Desc: select randomly one of the best moves, if they are equivalent
 //-----------------------------------------------------------------------------
-void miniMax::alphaBetaChooseBestMove(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves)
+void MiniMax::alphaBetaChooseBestMove(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves)
 {
 	// locals
 	float			dif;

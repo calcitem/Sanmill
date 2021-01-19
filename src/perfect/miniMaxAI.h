@@ -21,7 +21,7 @@
 #define VALUE_GAME_WON	     1000.0f
 
 /*** Klassen *********************************************************/
-class miniMaxAI : public MillAI, miniMax
+class miniMaxAI : public MillAI, MiniMax
 {
 protected:
 

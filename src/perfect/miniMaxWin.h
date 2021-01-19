@@ -25,7 +25,7 @@ public:
 	virtual void								setVisibility(bool visible)
 	{
 	};
-	virtual void								setState(unsigned int curShowedLayer, miniMax::stateNumberVarType curShowedState)
+	virtual void								setState(unsigned int curShowedLayer, MiniMax::stateNumberVarType curShowedState)
 	{
 	};
 };
@@ -60,17 +60,17 @@ class miniMaxWinInspectDb
 protected:
 
 	// General Variables
-	miniMax *pMiniMax = nullptr;					// pointer to perfect AI class granting the access to the database
+	MiniMax *pMiniMax = nullptr;					// pointer to perfect AI class granting the access to the database
 	miniMaxGuiField *pGuiField = nullptr;
 	bool										showingInspectionControls = false;
 	unsigned int								curShowedLayer = 0;						// current showed layer
-	miniMax::stateNumberVarType					curShowedState = 0;						// current showed state
+	MiniMax::stateNumberVarType					curShowedState = 0;						// current showed state
 	const unsigned int							scrollBarWidth = 20;
 
 public:
 
 	// Constructor / destructor
-	miniMaxWinInspectDb(wildWeasel::masterMind *ww, miniMax *pMiniMax, wildWeasel::alignment &amInspectDb, wildWeasel::font2D *font, wildWeasel::texture *textureLine, miniMaxGuiField &guiField);
+	miniMaxWinInspectDb(wildWeasel::masterMind *ww, MiniMax *pMiniMax, wildWeasel::alignment &amInspectDb, wildWeasel::font2D *font, wildWeasel::texture *textureLine, miniMaxGuiField &guiField);
 	~miniMaxWinInspectDb();
 
 	// Generals Functions
@@ -113,8 +113,8 @@ protected:
 
 	// Calculation variables
 	wildWeasel::masterMind *ww = nullptr;					// pointer to engine
-	miniMax *pMiniMax = nullptr;					// pointer to perfect AI class granting the access to the database
-	ostream *outputStream = nullptr;					// pointer to a stream for the console output of the calculation done by the class miniMax
+	MiniMax *pMiniMax = nullptr;					// pointer to perfect AI class granting the access to the database
+	ostream *outputStream = nullptr;					// pointer to a stream for the console output of the calculation done by the class MiniMax
 	stringbuf									outputStringBuf;												// buffer linked to the stream, for reading out of the stream into the buffer
 	locale										myLocale;														// for formatting the output
 	queue<unsigned int>							layersToTest;													// layer numbers to be tested
@@ -144,14 +144,14 @@ protected:
 	void										lvSelectedLayerChanged(unsigned int row, unsigned int col, wildWeasel::guiElemEvFol *guiElem, void *pUser);
 	static void									updateOutputControls(void *pUser);
 	void										updateListItemLayer(unsigned int layerNumber);
-	void										updateListItemArray(miniMax::arrayInfoChange infoChange);
+	void										updateListItemArray(MiniMax::arrayInfoChange infoChange);
 	void										threadSolve();
 	void										threadProcTestLayer();
 
 public:
 
 	// Constructor / destructor
-	miniMaxWinCalcDb(wildWeasel::masterMind *ww, miniMax *pMiniMax, wildWeasel::alignment &amCalculation, wildWeasel::font2D *font, wildWeasel::texture *textureLine);
+	miniMaxWinCalcDb(wildWeasel::masterMind *ww, MiniMax *pMiniMax, wildWeasel::alignment &amCalculation, wildWeasel::font2D *font, wildWeasel::texture *textureLine);
 	~miniMaxWinCalcDb();
 
 	// Generals Functions
@@ -159,7 +159,7 @@ public:
 	void										resize(wildWeasel::alignment &amNewArea);
 	bool										showControls(bool visible);
 	bool										isCalculationOngoing();
-	miniMax *getMinimaxPointer()
+	MiniMax *getMinimaxPointer()
 	{
 		return pMiniMax;
 	};

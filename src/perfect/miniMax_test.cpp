@@ -12,7 +12,7 @@
 // Name: testLayer()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::testLayer(unsigned int layerNumber)
+bool MiniMax::testLayer(unsigned int layerNumber)
 {
 	// Locals
 	unsigned int	curThreadNo;
@@ -85,11 +85,11 @@ bool miniMax::testLayer(unsigned int layerNumber)
 // Name: testLayerThreadProc()
 // Desc: 
 //-----------------------------------------------------------------------------
-DWORD miniMax::testLayerThreadProc(void *pParameter, int index)
+DWORD MiniMax::testLayerThreadProc(void *pParameter, int index)
 {
 	// locals
 	testLayersVars *tlVars = (testLayersVars *)pParameter;
-	miniMax *m = tlVars->pMiniMax;
+	MiniMax *m = tlVars->pMiniMax;
 	unsigned int				layerNumber = tlVars->layerNumber;
 	unsigned int				stateNumber = index;
 	unsigned int				threadNo = tlVars->curThreadNo;
@@ -308,7 +308,7 @@ errorInDatabase:
 // Name: testState()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
+bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 {
 	// locals
 	testLayersVars 	tlVars;
@@ -336,7 +336,7 @@ bool miniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 // Name: testSetSituationAndGetPoss()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
+bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 {
 	// Locals
 	unsigned int	curThreadNo;
@@ -400,11 +400,11 @@ bool miniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 // Name: testSetSituationThreadProc()
 // Desc: 
 //-----------------------------------------------------------------------------
-DWORD miniMax::testSetSituationThreadProc(void *pParameter, int index)
+DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
 {
 	// locals
 	testLayersVars *tlVars = (testLayersVars *)pParameter;
-	miniMax *m = tlVars->pMiniMax;
+	MiniMax *m = tlVars->pMiniMax;
 	unsigned int *idPossibility;
 	void *pPossibilities;
 	void *pBackup;
@@ -481,7 +481,7 @@ DWORD miniMax::testSetSituationThreadProc(void *pParameter, int index)
 // Name: testIfSymStatesHaveSameValue()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
+bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 {
 	// Locals
 	unsigned int	threadNo = 0;

@@ -33,7 +33,7 @@ struct retroAnalysisVars												// constant during calculation
 
 struct initRetroAnalysisVars
 {
-	miniMax *pMiniMax;
+	MiniMax *pMiniMax;
 	unsigned int		curThreadNo;
 	unsigned int		layerNumber;
 	LONGLONG			statesProcessed;
@@ -45,7 +45,7 @@ struct initRetroAnalysisVars
 
 struct addSuccLayersVars
 {
-	miniMax *pMiniMax;
+	MiniMax *pMiniMax;
 	unsigned int		curThreadNo;
 	unsigned int		statsValueCounter[SKV_NUM_VALUES];
 	unsigned int		layerNumber;
@@ -62,7 +62,7 @@ struct retroAnalysisPredVars
 
 struct addNumSuccedorsVars
 {
-	miniMax *pMiniMax;
+	MiniMax *pMiniMax;
 	unsigned int		curThreadNo;
 	unsigned int		layerNumber;
 	LONGLONG			statesProcessed;

@@ -17,7 +17,7 @@ s\*********************************************************************/
 // Each time the short knot value of a game state has been determined, the state will be added to 'statesToProcess'.
 // This list is like a queue of states, which still has to be processed.
 //-----------------------------------------------------------------------------
-bool miniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalculate)
+bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalculate)
 {
 	// locals
 	bool					abortCalculation = false;
@@ -105,7 +105,7 @@ freeMem:
 // Name: initRetroAnalysis()
 // Desc: The state values for all game situations in the database are marked as invalid, as undecided, as won or as  lost by using the function getValueOfSituation().
 //-----------------------------------------------------------------------------
-bool miniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
+bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
 	// locals
 	unsigned int				curLayerId;						// current processed layer within 'layersToCalculate'
@@ -184,11 +184,11 @@ bool miniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 // Name: initRetroAnalysisParallelSub()
 // Desc: 
 //-----------------------------------------------------------------------------
-DWORD miniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
+DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
 {
 	// locals
 	initRetroAnalysisVars *iraVars = (initRetroAnalysisVars *)pParameter;
-	miniMax *m = iraVars->pMiniMax;
+	MiniMax *m = iraVars->pMiniMax;
 	float		  				floatValue;						// dummy variable for calls of getValueOfSituation()
 	stateAdressStruct			curState;						// current state counter for loops
 	twoBit		  				curStateValue;					// for calls of getValueOfSituation()
@@ -256,7 +256,7 @@ DWORD miniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
 // Name: prepareCountArrays()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
+bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 {
 	// locals
 	unsigned int			numKnotsInCurLayer;
@@ -338,7 +338,7 @@ bool miniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 // Name: calcNumSuccedors()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
+bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 {
 	// locals
 	unsigned int			curLayerId;											// current processed layer within 'layersToCalculate'
@@ -431,11 +431,11 @@ bool miniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 // Name: addNumSuccedorsThreadProc()
 // Desc: 
 //-----------------------------------------------------------------------------
-DWORD miniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
+DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
 {
 	// locals
 	addNumSuccedorsVars *ansVars = (addNumSuccedorsVars *)pParameter;
-	miniMax *m = ansVars->pMiniMax;
+	MiniMax *m = ansVars->pMiniMax;
 	unsigned int				numLayersToCalculate = (unsigned int)ansVars->retroVars->layersToCalculate.size();
 	unsigned int				curLayerId;				// current processed layer within 'layersToCalculate'
 	unsigned int				amountOfPred;
@@ -517,7 +517,7 @@ DWORD miniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
 // Name: performRetroAnalysis()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
+bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
 	// locals
 	stateAdressStruct		curState;									// current state counter for loops
@@ -568,11 +568,11 @@ bool miniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 // Name: performRetroAnalysisThreadProc()
 // Desc: 
 //-----------------------------------------------------------------------------
-DWORD miniMax::performRetroAnalysisThreadProc(void *pParameter)
+DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
 {
 	// locals
 	retroAnalysisGlobalVars *retroVars = (retroAnalysisGlobalVars *)pParameter;
-	miniMax *m = retroVars->pMiniMax;
+	MiniMax *m = retroVars->pMiniMax;
 	unsigned int				threadNo = m->threadManager.getThreadNumber();
 	retroAnalysisThreadVars *threadVars = &retroVars->thread[threadNo];
 
@@ -722,7 +722,7 @@ DWORD miniMax::performRetroAnalysisThreadProc(void *pParameter)
 // Name: addStateToProcessQueue()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool miniMax::addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, retroAnalysisThreadVars &threadVars, unsigned int plyNumber, stateAdressStruct *pState)
+bool MiniMax::addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, retroAnalysisThreadVars &threadVars, unsigned int plyNumber, stateAdressStruct *pState)
 {
 	// resize vector if too small
 	if (plyNumber >= threadVars.statesToProcess.size()) {

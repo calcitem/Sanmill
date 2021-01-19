@@ -102,7 +102,7 @@ database:				The database contains the arrays with the short knot values and the
 }
 
 /*** Klassen ***************************************************************************************************************************/
-class miniMax
+class MiniMax
 {
 	friend class miniMaxWinInspectDb;
 	friend class miniMaxWinCalcDb;
@@ -216,7 +216,7 @@ public:
 
 	struct arrayInfoContainer
 	{
-		miniMax *c;
+		MiniMax *c;
 		list<arrayInfoChange>						arrayInfosToBeUpdated;		//
 		list<arrayInfoStruct>						listArrays;					// [itemIndex]
 		vector<list<arrayInfoStruct>::iterator>		vectorArrays;				// [layerNumber*arrayInfoStruct::numArrayTypes + type]
@@ -230,8 +230,8 @@ public:
 	/*** public functions ***************************************************************************************************************************/
 
 	// Constructor / destructor
-	miniMax();
-	~miniMax();
+	MiniMax();
+	~MiniMax();
 
 	// Testing functions
 	bool					testState(unsigned int layerNumber, unsigned int stateNumber);
@@ -379,7 +379,7 @@ private:
 
 	struct testLayersVars
 	{
-		miniMax *pMiniMax;
+		MiniMax *pMiniMax;
 		unsigned int									curThreadNo;
 		unsigned int									layerNumber;
 		LONGLONG										statesProcessed;
@@ -403,9 +403,9 @@ private:
 		long long										numKnotsToCalc;		// number of knots of all layers to be calculated
 		vector<alphaBetaThreadVars>						thread;
 		unsigned int									statsValueCounter[SKV_NUM_VALUES];
-		miniMax *pMiniMax;
+		MiniMax *pMiniMax;
 
-		alphaBetaGlobalVars(miniMax *pMiniMax, unsigned int layerNumber)
+		alphaBetaGlobalVars(MiniMax *pMiniMax, unsigned int layerNumber)
 		{
 			this->thread.resize(pMiniMax->threadManager.getNumThreads());
 			for (unsigned int threadNo = 0; threadNo < pMiniMax->threadManager.getNumThreads(); threadNo++) {
@@ -427,7 +427,7 @@ private:
 
 	struct alphaBetaDefaultThreadVars
 	{
-		miniMax *pMiniMax;
+		MiniMax *pMiniMax;
 		alphaBetaGlobalVars *alphaBetaVars;
 		unsigned int									layerNumber;
 		LONGLONG										statesProcessed;
@@ -436,7 +436,7 @@ private:
 		alphaBetaDefaultThreadVars()
 		{
 		};
-		alphaBetaDefaultThreadVars(miniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber)
+		alphaBetaDefaultThreadVars(MiniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber)
 		{
 			this->statesProcessed = 0;
 			this->layerNumber = layerNumber;
@@ -463,7 +463,7 @@ private:
 		initAlphaBetaVars()
 		{
 		};
-		initAlphaBetaVars(miniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
+		initAlphaBetaVars(MiniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
 		{
 			this->bufferedFile = initArray;
 			this->initAlreadyDone = initAlreadyDone;
@@ -487,7 +487,7 @@ private:
 		runAlphaBetaVars()
 		{
 		};
-		runAlphaBetaVars(miniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
+		runAlphaBetaVars(MiniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
 		{
 			initializeElement(*this);
 		};
@@ -532,12 +532,12 @@ private:
 		long long										numKnotsToCalc;		// number of knots of all layers to be calculated
 		vector<retroAnalysisThreadVars>					thread;
 		unsigned int									statsValueCounter[SKV_NUM_VALUES];
-		miniMax *pMiniMax;
+		MiniMax *pMiniMax;
 	};
 
 	struct retroAnalysisDefaultThreadVars
 	{
-		miniMax *pMiniMax;
+		MiniMax *pMiniMax;
 		retroAnalysisGlobalVars *retroVars;
 		unsigned int									layerNumber;
 		LONGLONG										statesProcessed;
@@ -546,7 +546,7 @@ private:
 		retroAnalysisDefaultThreadVars()
 		{
 		};
-		retroAnalysisDefaultThreadVars(miniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber)
+		retroAnalysisDefaultThreadVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber)
 		{
 			this->statesProcessed = 0;
 			this->layerNumber = layerNumber;
@@ -573,7 +573,7 @@ private:
 		initRetroAnalysisVars()
 		{
 		};
-		initRetroAnalysisVars(miniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+		initRetroAnalysisVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
 		{
 			this->bufferedFile = initArray;
 			this->initAlreadyDone = initAlreadyDone;
@@ -595,7 +595,7 @@ private:
 		addNumSuccedorsVars()
 		{
 		};
-		addNumSuccedorsVars(miniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+		addNumSuccedorsVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
 		{
 		};
 		void											initializeElement(addNumSuccedorsVars &master)
