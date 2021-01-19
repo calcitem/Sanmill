@@ -34,7 +34,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 	numStatesProcessed = 0;
 	curCalculatedLayer = layerNumber;
 	curCalculationActionId = MM_ACTION_TESTING_LAYER;
-	testLayersVars *tlVars = new testLayersVars[threadManager.getNumThreads()];
+	TestLayersVars *tlVars = new TestLayersVars[threadManager.getNumThreads()];
 	for (curThreadNo = 0; curThreadNo < threadManager.getNumThreads(); curThreadNo++) {
 		tlVars[curThreadNo].curThreadNo = curThreadNo;
 		tlVars[curThreadNo].pMiniMax = this;
@@ -46,7 +46,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 	}
 
 	// process each state in the current layer
-	returnValue = threadManager.executeParallelLoop(testLayerThreadProc, (void *)tlVars, sizeof(testLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
+	returnValue = threadManager.executeParallelLoop(testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
 	switch (returnValue) {
 	case TM_RETURN_VALUE_OK:
 	case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -88,7 +88,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 DWORD MiniMax::testLayerThreadProc(void *pParameter, int index)
 {
 	// locals
-	testLayersVars *tlVars = (testLayersVars *)pParameter;
+	TestLayersVars *tlVars = (TestLayersVars *)pParameter;
 	MiniMax *m = tlVars->pMiniMax;
 	unsigned int				layerNumber = tlVars->layerNumber;
 	unsigned int				stateNumber = index;
@@ -311,7 +311,7 @@ errorInDatabase:
 bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 {
 	// locals
-	testLayersVars 	tlVars;
+	TestLayersVars 	tlVars;
 	bool			result;
 
 	// prepare parameters for multithreading
@@ -349,7 +349,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 	// prepare parameters for multithreading
 	numStatesProcessed = 0;
 	curCalculationActionId = MM_ACTION_TESTING_LAYER;
-	testLayersVars *tlVars = new testLayersVars[threadManager.getNumThreads()];
+	TestLayersVars *tlVars = new TestLayersVars[threadManager.getNumThreads()];
 	for (curThreadNo = 0; curThreadNo < threadManager.getNumThreads(); curThreadNo++) {
 		tlVars[curThreadNo].curThreadNo = curThreadNo;
 		tlVars[curThreadNo].pMiniMax = this;
@@ -361,7 +361,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 	}
 
 	// process each state in the current layer
-	returnValue = threadManager.executeParallelLoop(testSetSituationThreadProc, (void *)tlVars, sizeof(testLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
+	returnValue = threadManager.executeParallelLoop(testSetSituationThreadProc, (void *)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
 	switch (returnValue) {
 	case TM_RETURN_VALUE_OK:
 	case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -403,16 +403,16 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
 {
 	// locals
-	testLayersVars *tlVars = (testLayersVars *)pParameter;
+	TestLayersVars *tlVars = (TestLayersVars *)pParameter;
 	MiniMax *m = tlVars->pMiniMax;
 	unsigned int *idPossibility;
 	void *pPossibilities;
 	void *pBackup;
 	unsigned int				curPoss;
 	float						floatValue;
-	stateAdressStruct			curState;
-	stateAdressStruct			subState;
-	knotStruct					knot;
+	StateAdress			curState;
+	StateAdress			subState;
+	Node					knot;
 	twoBit						shortKnotValue = SKV_VALUE_GAME_DRAWN;
 	curState.layerNumber = tlVars->layerNumber;
 	curState.stateNumber = index;

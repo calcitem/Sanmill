@@ -105,9 +105,9 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 	calcDatabase = false;
 
 	// Locals
-	knotStruct				root;
-	alphaBetaGlobalVars		alphaBetaVars(this, getLayerNumber(0));
-	runAlphaBetaVars		tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
+	Node				root;
+	AlphaBetaGlobalVars		alphaBetaVars(this, getLayerNumber(0));
+	RunAlphaBetaVars		tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
 	srand((unsigned int)time(nullptr));
 	tva.curThreadNo = 0;
 
@@ -151,7 +151,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 		layerInDatabase = false;
 		calcDatabase = true;
 		threadManager.uncancelExecution();
-		arrayInfos.vectorArrays.resize(arrayInfoStruct::numArrayTypes * skvfHeader.numLayers, arrayInfos.listArrays.end());
+		arrayInfos.vectorArrays.resize(ArrayInfo::numArrayTypes * skvfHeader.numLayers, arrayInfos.listArrays.end());
 
 		// calc layer after layer, beginning with the last one
 		for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers; curCalculatedLayer++) {

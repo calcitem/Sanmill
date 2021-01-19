@@ -135,7 +135,7 @@ void MiniMax::setOutputStream(ostream *theStream, void(*printFunc)(void *pUserDa
 void MiniMax::showLayerStats(unsigned int layerNumber)
 {
 	// locals
-	stateAdressStruct	curState;
+	StateAdress	curState;
 	unsigned int		statsValueCounter[] = { 0,0,0,0 };
 	twoBit		  		curStateValue;
 
@@ -170,7 +170,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
 	// locals
 	HANDLE				statFile;
 	DWORD				dwBytesWritten;
-	stateAdressStruct	curState;
+	StateAdress	curState;
 	unsigned int *statsValueCounter;
 	twoBit		  		curStateValue;
 	char				line[10000];
@@ -269,9 +269,9 @@ bool MiniMax::anyArrawInfoToUpdate()
 // Name: getArrayInfoForUpdate()
 // Desc: called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-MiniMax::arrayInfoChange MiniMax::getArrayInfoForUpdate()
+MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
 {
-	MiniMax::arrayInfoChange tmp = arrayInfos.arrayInfosToBeUpdated.front();
+	MiniMax::ArrayInfoChange tmp = arrayInfos.arrayInfosToBeUpdated.front();
 	arrayInfos.arrayInfosToBeUpdated.pop_front();
 	return tmp;
 }
@@ -313,15 +313,15 @@ void MiniMax::getCurrentCalculatedLayer(vector<unsigned int> &layers)
 }
 
 //-----------------------------------------------------------------------------
-// Name: arrayInfoContainer::addArray()
+// Name: ArrayInfoContainer::addArray()
 // Desc: Caution: layerNumber and type must be a unique pair!
 //       called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::arrayInfoContainer::addArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
+void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
 {
 	// create new info object and add to list
 	EnterCriticalSection(&c->csOsPrint);
-	arrayInfoStruct ais;
+	ArrayInfo ais;
 	ais.belongsToLayer = layerNumber;
 	ais.compressedSizeInBytes = compressedSize;
 	ais.sizeInBytes = size;
@@ -330,13 +330,13 @@ void MiniMax::arrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
 	listArrays.push_back(ais);
 
 	// notify cahnge
-	arrayInfoChange	aic;
+	ArrayInfoChange	aic;
 	aic.arrayInfo = &listArrays.back();
 	aic.itemIndex = (unsigned int)listArrays.size() - 1;
 	arrayInfosToBeUpdated.push_back(aic);
 
 	// save pointer of info in vector for direct access
-	vectorArrays[layerNumber * arrayInfoStruct::numArrayTypes + type] = (--listArrays.end());
+	vectorArrays[layerNumber * ArrayInfo::numArrayTypes + type] = (--listArrays.end());
 
 	// update GUI
 	if (c->userPrintFunc != nullptr) {
@@ -346,16 +346,16 @@ void MiniMax::arrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
 }
 
 //-----------------------------------------------------------------------------
-// Name: arrayInfoContainer::removeArray()
+// Name: ArrayInfoContainer::removeArray()
 // Desc: called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::arrayInfoContainer::removeArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
+void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
 {
 	// find info object in list
 	EnterCriticalSection(&c->csOsPrint);
 
-	if (vectorArrays.size() > layerNumber * arrayInfoStruct::numArrayTypes + type) {
-		list<arrayInfoStruct>::iterator itr = vectorArrays[layerNumber * arrayInfoStruct::numArrayTypes + type];
+	if (vectorArrays.size() > layerNumber * ArrayInfo::numArrayTypes + type) {
+		list<ArrayInfo>::iterator itr = vectorArrays[layerNumber * ArrayInfo::numArrayTypes + type];
 		if (itr != listArrays.end()) {
 
 			// does sizes fit?
@@ -364,7 +364,7 @@ void MiniMax::arrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
 			}
 
 			// notify cahnge
-			arrayInfoChange	aic;
+			ArrayInfoChange	aic;
 			aic.arrayInfo = nullptr;
 			aic.itemIndex = (unsigned int)std::distance(listArrays.begin(), itr);
 			arrayInfosToBeUpdated.push_back(aic);
@@ -382,20 +382,20 @@ void MiniMax::arrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
 }
 
 //-----------------------------------------------------------------------------
-// Name: arrayInfoContainer::updateArray()
+// Name: ArrayInfoContainer::updateArray()
 // Desc: called by mltiple CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::arrayInfoContainer::updateArray(unsigned int layerNumber, unsigned int type)
+void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned int type)
 {
 	// find info object in list
-	list<arrayInfoStruct>::iterator itr = vectorArrays[layerNumber * arrayInfoStruct::numArrayTypes + type];
+	list<ArrayInfo>::iterator itr = vectorArrays[layerNumber * ArrayInfo::numArrayTypes + type];
 
 	itr->updateCounter++;
-	if (itr->updateCounter > arrayInfoStruct::updateCounterThreshold) {
+	if (itr->updateCounter > ArrayInfo::updateCounterThreshold) {
 
 		// notify cahnge
 		EnterCriticalSection(&c->csOsPrint);
-		arrayInfoChange	aic;
+		ArrayInfoChange	aic;
 		aic.arrayInfo = &(*itr);
 		aic.itemIndex = (unsigned int)std::distance(listArrays.begin(), itr);
 		arrayInfosToBeUpdated.push_back(aic);

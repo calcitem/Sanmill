@@ -144,7 +144,7 @@ protected:
 	void										lvSelectedLayerChanged(unsigned int row, unsigned int col, wildWeasel::guiElemEvFol *guiElem, void *pUser);
 	static void									updateOutputControls(void *pUser);
 	void										updateListItemLayer(unsigned int layerNumber);
-	void										updateListItemArray(MiniMax::arrayInfoChange infoChange);
+	void										updateListItemArray(MiniMax::ArrayInfoChange infoChange);
 	void										threadSolve();
 	void										threadProcTestLayer();
 

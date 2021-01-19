@@ -117,7 +117,7 @@ public:
 
 	/*** protected structures ********************************************************************************************************************/
 
-	struct skvFileHeaderStruct								// header of the short knot value file
+	struct SkvFileHeader								// header of the short knot value file
 	{
 		bool				completed;						// true if all states have been calculated
 		unsigned int		numLayers;						// number of layers
@@ -125,7 +125,7 @@ public:
 		unsigned int		headerAndStatsSize;				// size in bytes of this struct plus the stats
 	};
 
-	struct plyInfoFileHeaderStruct
+	struct PlyInfoFileHeader
 	{
 		bool				plyInfoCompleted;				// true if ply innformation has been calculated for all game states
 		unsigned int		numLayers;						// number of layers
@@ -133,7 +133,7 @@ public:
 		unsigned int		headerAndPlyInfosSize;			// size in bytes of this struct plus ...
 	};
 
-	struct plyInfoStruct									// this struct is created for each layer
+	struct PlyInfo									// this struct is created for each layer
 	{
 		bool				plyInfoIsLoaded;				// the array plyInfo[] exists in memory. does not necessary mean that it contains only valid values
 		bool				plyInfoIsCompletedAndInFile;	// the array plyInfo[] contains only fully calculated valid values
@@ -145,7 +145,7 @@ public:
 		void *plyInfoCompressed;				// dummy pointer for padding
 	};
 
-	struct layerStatsStruct
+	struct LayerStats
 	{
 		bool				layerIsLoaded;					// the array shortKnotValueByte[] exists in memory. does not necessary mean that it contains only valid values
 		bool				layerIsCompletedAndInFile;		// the array shortKnotValueByte[] contains only fully calculated valid values
@@ -164,13 +164,13 @@ public:
 		void *skvCompressed;					// dummy pointer for padding
 	};
 
-	struct stateAdressStruct
+	struct StateAdress
 	{
 		stateNumberVarType	stateNumber;					// state id within the corresponding layer
 		unsigned char		layerNumber;					// layer id
 	};
 
-	struct knotStruct
+	struct Node
 	{
 		bool				isOpponentLevel;				// the current considered knot belongs to an opponent game state
 		float				floatValue;						// Value of knot (for normal mode)
@@ -179,7 +179,7 @@ public:
 		unsigned int		bestBranch;						// branch with highest value
 		unsigned int		numPossibilities;				// number of branches
 		plyInfoVarType		plyInfo;						// number of moves till win/lost
-		knotStruct *branches;						// pointer to branches
+		Node *branches;						// pointer to branches
 	};
 
 	struct retroAnalysisPredVars
@@ -190,7 +190,7 @@ public:
 		bool          		playerToMoveChanged;			//
 	};
 
-	struct arrayInfoStruct
+	struct ArrayInfo
 	{
 		unsigned int		type;							// 
 		long long			sizeInBytes;					//	
@@ -208,18 +208,18 @@ public:
 		static const unsigned int	updateCounterThreshold = 100;
 	};
 
-	struct arrayInfoChange
+	struct ArrayInfoChange
 	{
 		unsigned int		itemIndex;						//
-		arrayInfoStruct *arrayInfo;						//
+		ArrayInfo *arrayInfo;						//
 	};
 
-	struct arrayInfoContainer
+	struct ArrayInfoContainer
 	{
 		MiniMax *c;
-		list<arrayInfoChange>						arrayInfosToBeUpdated;		//
-		list<arrayInfoStruct>						listArrays;					// [itemIndex]
-		vector<list<arrayInfoStruct>::iterator>		vectorArrays;				// [layerNumber*arrayInfoStruct::numArrayTypes + type]
+		list<ArrayInfoChange>						arrayInfosToBeUpdated;		//
+		list<ArrayInfo>						listArrays;					// [itemIndex]
+		vector<list<ArrayInfo>::iterator>		vectorArrays;				// [layerNumber*ArrayInfo::numArrayTypes + type]
 
 		void				addArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize);
 		void				removeArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize);
@@ -253,7 +253,7 @@ public:
 	long long				getLayerSizeInBytes(unsigned int layerNum);
 	void					setOutputStream(ostream *theStream, void(*printFunc)(void *pUserData), void *pUserData);
 	bool					anyArrawInfoToUpdate();
-	arrayInfoChange 		getArrayInfoForUpdate();
+	ArrayInfoChange 		getArrayInfoForUpdate();
 	void		 			getCurrentCalculatedLayer(vector<unsigned int> &layers);
 	LPWSTR					getCurrentActionStr();
 
@@ -377,7 +377,7 @@ private:
 
 	/*** classes for testing  ********************************************************************************************************************/
 
-	struct testLayersVars
+	struct TestLayersVars
 	{
 		MiniMax *pMiniMax;
 		unsigned int									curThreadNo;
@@ -390,22 +390,22 @@ private:
 
 	/*** classes for the alpha beta algorithmn ********************************************************************************************************************/
 
-	struct alphaBetaThreadVars												// thread specific variables for each thread in the alpha beta algorithmn
+	struct AlphaBetaThreadVars												// thread specific variables for each thread in the alpha beta algorithmn
 	{
 		long long										numStatesToProcess;	// Number of states in 'statesToProcess' which have to be processed 
 		unsigned int									threadNo;
 	};
 
-	struct alphaBetaGlobalVars												// constant during calculation
+	struct AlphaBetaGlobalVars												// constant during calculation
 	{
 		unsigned int									layerNumber;		// layer number of the current process layer
 		long long										totalNumKnots;		// total numbers of knots which have to be stored in memory
 		long long										numKnotsToCalc;		// number of knots of all layers to be calculated
-		vector<alphaBetaThreadVars>						thread;
+		vector<AlphaBetaThreadVars>						thread;
 		unsigned int									statsValueCounter[SKV_NUM_VALUES];
 		MiniMax *pMiniMax;
 
-		alphaBetaGlobalVars(MiniMax *pMiniMax, unsigned int layerNumber)
+		AlphaBetaGlobalVars(MiniMax *pMiniMax, unsigned int layerNumber)
 		{
 			this->thread.resize(pMiniMax->threadManager.getNumThreads());
 			for (unsigned int threadNo = 0; threadNo < pMiniMax->threadManager.getNumThreads(); threadNo++) {
@@ -425,18 +425,18 @@ private:
 		}
 	};
 
-	struct alphaBetaDefaultThreadVars
+	struct AlphaBetaDefaultThreadVars
 	{
 		MiniMax *pMiniMax;
-		alphaBetaGlobalVars *alphaBetaVars;
+		AlphaBetaGlobalVars *alphaBetaVars;
 		unsigned int									layerNumber;
 		LONGLONG										statesProcessed;
 		unsigned int									statsValueCounter[SKV_NUM_VALUES];
 
-		alphaBetaDefaultThreadVars()
+		AlphaBetaDefaultThreadVars()
 		{
 		};
-		alphaBetaDefaultThreadVars(MiniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber)
+		AlphaBetaDefaultThreadVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber)
 		{
 			this->statesProcessed = 0;
 			this->layerNumber = layerNumber;
@@ -455,20 +455,20 @@ private:
 		};
 	};
 
-	struct initAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public alphaBetaDefaultThreadVars
+	struct InitAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public AlphaBetaDefaultThreadVars
 	{
 		BufferedFile *bufferedFile;
 		bool											initAlreadyDone;
 
-		initAlphaBetaVars()
+		InitAlphaBetaVars()
 		{
 		};
-		initAlphaBetaVars(MiniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
+		InitAlphaBetaVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
 		{
 			this->bufferedFile = initArray;
 			this->initAlreadyDone = initAlreadyDone;
 		};
-		void											initializeElement(initAlphaBetaVars &master)
+		void											initializeElement(InitAlphaBetaVars &master)
 		{
 			*this = master;
 		};
@@ -478,20 +478,20 @@ private:
 		};
 	};
 
-	struct runAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public alphaBetaDefaultThreadVars
+	struct RunAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public AlphaBetaDefaultThreadVars
 	{
-		knotStruct *branchArray = nullptr;					// array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for storage of the branches at each search depth
+		Node *branchArray = nullptr;					// array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for storage of the branches at each search depth
 		unsigned int *freqValuesSubMovesBranchWon = nullptr;					// ...
 		unsigned int		freqValuesSubMoves[4];								// ...
 
-		runAlphaBetaVars()
+		RunAlphaBetaVars()
 		{
 		};
-		runAlphaBetaVars(MiniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
+		RunAlphaBetaVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
 		{
 			initializeElement(*this);
 		};
-		~runAlphaBetaVars()
+		~RunAlphaBetaVars()
 		{
 			SAFE_DELETE_ARRAY(branchArray); SAFE_DELETE_ARRAY(freqValuesSubMovesBranchWon);
 		}
@@ -499,26 +499,26 @@ private:
 		{
 			reduceDefault();
 		};
-		void											initializeElement(runAlphaBetaVars &master)
+		void											initializeElement(RunAlphaBetaVars &master)
 		{
 			*this = master;
-			branchArray = new knotStruct[alphaBetaVars->pMiniMax->maxNumBranches * alphaBetaVars->pMiniMax->depthOfFullTree];
+			branchArray = new Node[alphaBetaVars->pMiniMax->maxNumBranches * alphaBetaVars->pMiniMax->depthOfFullTree];
 			freqValuesSubMovesBranchWon = new unsigned int[alphaBetaVars->pMiniMax->maxNumBranches];
 		};
 	};
 
 	/*** classes for the retro analysis ***************************************************************************************************************************/
 
-	struct retroAnalysisQueueState
+	struct RetroAnalysisQueueState
 	{
-		stateNumberVarType								stateNumber;					// state stored in the retro analysis queue. the queue is a buffer containing states to be passed to 'retroAnalysisThreadVars::statesToProcess'
+		stateNumberVarType								stateNumber;					// state stored in the retro analysis queue. the queue is a buffer containing states to be passed to 'RetroAnalysisThreadVars::statesToProcess'
 		plyInfoVarType									numPliesTillCurState;			// ply number for the stored state
 	};
 
-	struct retroAnalysisThreadVars											// thread specific variables for each thread in the retro analysis
+	struct RetroAnalysisThreadVars											// thread specific variables for each thread in the retro analysis
 	{
 		vector<CyclicArray *>							statesToProcess;	// vector-queue containing the states, whose short knot value are known for sure. they have to be processed. if processed the state will be removed from list. indexing: [threadNo][plyNumber]
-		vector<vector<retroAnalysisQueueState>>			stateQueue;			// Queue containing states, whose 'count value' shall be increased by one. Before writing 'count value' to 'count array' the writing positions are sorted for faster processing.
+		vector<vector<RetroAnalysisQueueState>>			stateQueue;			// Queue containing states, whose 'count value' shall be increased by one. Before writing 'count value' to 'count array' the writing positions are sorted for faster processing.
 		long long										numStatesToProcess;	// Number of states in 'statesToProcess' which have to be processed 
 		unsigned int									threadNo;
 	};
@@ -530,12 +530,12 @@ private:
 		vector<unsigned int> 							layersToCalculate;	// layers which shall be calculated
 		long long										totalNumKnots;		// total numbers of knots which have to be stored in memory
 		long long										numKnotsToCalc;		// number of knots of all layers to be calculated
-		vector<retroAnalysisThreadVars>					thread;
+		vector<RetroAnalysisThreadVars>					thread;
 		unsigned int									statsValueCounter[SKV_NUM_VALUES];
 		MiniMax *pMiniMax;
 	};
 
-	struct retroAnalysisDefaultThreadVars
+	struct RetroAnalysisDefaultThreadVars
 	{
 		MiniMax *pMiniMax;
 		retroAnalysisGlobalVars *retroVars;
@@ -543,10 +543,10 @@ private:
 		LONGLONG										statesProcessed;
 		unsigned int									statsValueCounter[SKV_NUM_VALUES];
 
-		retroAnalysisDefaultThreadVars()
+		RetroAnalysisDefaultThreadVars()
 		{
 		};
-		retroAnalysisDefaultThreadVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber)
+		RetroAnalysisDefaultThreadVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber)
 		{
 			this->statesProcessed = 0;
 			this->layerNumber = layerNumber;
@@ -565,20 +565,20 @@ private:
 		};
 	};
 
-	struct initRetroAnalysisVars : public threadManagerClass::threadVarsArrayItem, public retroAnalysisDefaultThreadVars
+	struct InitRetroAnalysisVars : public threadManagerClass::threadVarsArrayItem, public RetroAnalysisDefaultThreadVars
 	{
 		BufferedFile *bufferedFile;
 		bool											initAlreadyDone;
 
-		initRetroAnalysisVars()
+		InitRetroAnalysisVars()
 		{
 		};
-		initRetroAnalysisVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+		InitRetroAnalysisVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
 		{
 			this->bufferedFile = initArray;
 			this->initAlreadyDone = initAlreadyDone;
 		};
-		void											initializeElement(initRetroAnalysisVars &master)
+		void											initializeElement(InitRetroAnalysisVars &master)
 		{
 			*this = master;
 		};
@@ -588,17 +588,17 @@ private:
 		};
 	};
 
-	struct addNumSuccedorsVars : public threadManagerClass::threadVarsArrayItem, public retroAnalysisDefaultThreadVars
+	struct AddNumSuccedorsVars : public threadManagerClass::threadVarsArrayItem, public RetroAnalysisDefaultThreadVars
 	{
 		retroAnalysisPredVars 							predVars[MAX_NUM_PREDECESSORS];
 
-		addNumSuccedorsVars()
+		AddNumSuccedorsVars()
 		{
 		};
-		addNumSuccedorsVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+		AddNumSuccedorsVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
 		{
 		};
-		void											initializeElement(addNumSuccedorsVars &master)
+		void											initializeElement(AddNumSuccedorsVars &master)
 		{
 			*this = master;
 		};
@@ -617,8 +617,8 @@ private:
 	bool					calcDatabase = false;		// true, if the database is currently beeing calculated
 	HANDLE					hFileShortKnotValues = nullptr;			// handle of the file for the short knot value 
 	HANDLE					hFilePlyInfo = nullptr;			// handle of the file for the ply info
-	skvFileHeaderStruct		skvfHeader;										// short knot value file header
-	plyInfoFileHeaderStruct	plyInfoHeader;									// header of the ply info file
+	SkvFileHeader		skvfHeader;										// short knot value file header
+	PlyInfoFileHeader	plyInfoHeader;									// header of the ply info file
 	string					fileDirectory;									// path of the folder where the database files are located
 	ostream *osPrint = nullptr;			// stream for output. default is cout
 	list<unsigned int>		lastCalculatedLayer;							// 
@@ -630,7 +630,7 @@ private:
 	CRITICAL_SECTION		csOsPrint;										// for thread safety when output is passed to osPrint
 	void					(*userPrintFunc)(void *) = nullptr;			// called every time output is passed to osPrint
 	void *pDataForUserPrintFunc = nullptr;			// pointer passed when calling userPrintFunc
-	arrayInfoContainer		arrayInfos;										// information about the arrays in memory
+	ArrayInfoContainer		arrayInfos;										// information about the arrays in memory
 
 	// thread specific or non-constant variables
 	LONGLONG				memoryUsed2 = 0;			// memory in bytes used for storing: ply information, short knot value and ...
@@ -641,8 +641,8 @@ private:
 	unsigned int			curCalculationActionId = 0;			// one of ...
 	bool					layerInDatabase = false;		// true if the current considered layer has already been calculated and stored in the database
 	void *pRootPossibilities = nullptr;			// pointer to the structure passed by getPossibilities() for the state at which getBestChoice() has been called
-	layerStatsStruct *layerStats = nullptr;			// array of size [] containing general layer information and the skv of all layers
-	plyInfoStruct *plyInfos = nullptr;			// array of size [] containing ply information
+	LayerStats *layerStats = nullptr;			// array of size [] containing general layer information and the skv of all layers
+	PlyInfo *plyInfos = nullptr;			// array of size [] containing ply information
 
 	// variables concerning the compression of the database
 	// compressorClass		*	compressor						= nullptr;
@@ -667,8 +667,8 @@ private:
 	bool					calcLayer(unsigned int layerNumber);
 	void					unloadPlyInfo(unsigned int layerNumber);
 	void                    unloadLayer(unsigned int layerNumber);
-	void					saveHeader(skvFileHeaderStruct *dbH, layerStatsStruct *lStats);
-	void					saveHeader(plyInfoFileHeaderStruct *piH, plyInfoStruct *pInfo);
+	void					saveHeader(SkvFileHeader *dbH, LayerStats *lStats);
+	void					saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo);
 	void					readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, twoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted);
 	void					readKnotValueFromDatabase(unsigned int layerNumber, unsigned int  stateNumber, twoBit &knotValue);
 	void					readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int  stateNumber, plyInfoVarType &value);
@@ -685,14 +685,14 @@ private:
 
 	// Alpha-Beta-Algorithmn
 	bool					calcKnotValuesByAlphaBeta(unsigned int layerNumber);
-	bool					initAlphaBeta(alphaBetaGlobalVars &retroVars);
-	bool					runAlphaBeta(alphaBetaGlobalVars &retroVars);
-	void					letTheTreeGrow(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta);
-	bool					alphaBetaTryDataBase(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber);
-	void					alphaBetaTryPossibilites(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta);
-	void					alphaBetaCalcPlyInfo(knotStruct *knot);
-	void					alphaBetaCalcKnotValue(knotStruct *knot);
-	void					alphaBetaChooseBestMove(knotStruct *knot, runAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves);
+	bool					initAlphaBeta(AlphaBetaGlobalVars &retroVars);
+	bool					runAlphaBeta(AlphaBetaGlobalVars &retroVars);
+	void					letTheTreeGrow(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta);
+	bool					alphaBetaTryDataBase(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber);
+	void					alphaBetaTryPossibilites(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta);
+	void					alphaBetaCalcPlyInfo(Node *knot);
+	void					alphaBetaCalcKnotValue(Node *knot);
+	void					alphaBetaChooseBestMove(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves);
 	void					alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerNumber, unsigned int stateNumber, twoBit knotValue, plyInfoVarType plyValue, bool invertValue);
 	static DWORD			initAlphaBetaThreadProc(void *pParameter, int index);
 	static DWORD			runAlphaBetaThreadProc(void *pParameter, int index);
@@ -703,8 +703,8 @@ private:
 	bool					prepareCountArrays(retroAnalysisGlobalVars &retroVars);
 	bool					calcNumSuccedors(retroAnalysisGlobalVars &retroVars);
 	bool					performRetroAnalysis(retroAnalysisGlobalVars &retroVars);
-	bool					addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, retroAnalysisThreadVars &threadVars, unsigned int plyNumber, stateAdressStruct *pState);
-	static bool				retroAnalysisQueueStateComp(const retroAnalysisQueueState &a, const retroAnalysisQueueState &b)
+	bool					addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, RetroAnalysisThreadVars &threadVars, unsigned int plyNumber, StateAdress *pState);
+	static bool				retroAnalysisQueueStateComp(const RetroAnalysisQueueState &a, const RetroAnalysisQueueState &b)
 	{
 		return a.stateNumber < b.stateNumber;
 	};
