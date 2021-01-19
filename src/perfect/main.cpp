@@ -11,7 +11,7 @@ using namespace std;
 unsigned int	startTestFromLayer = 0;
 unsigned int	endTestAtLayer = NUM_LAYERS - 1;
 #ifdef _DEBUG
-char		databaseDirectory[] = ".";
+char		databaseDirectory[] = "D:\\database";
 #elif _RELEASE_X64
 char		databaseDirectory[] = "";
 #endif
