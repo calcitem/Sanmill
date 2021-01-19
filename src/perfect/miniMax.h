@@ -186,7 +186,7 @@ public:
         unsigned char layerNumber;		// layer id
     };
 
-    struct Node
+    struct Knot
     {
         bool isOpponentLevel;		   // the current considered knot belongs to an opponent game state
         float floatValue;			   // Value of knot (for normal mode)
@@ -195,7 +195,7 @@ public:
         unsigned int bestBranch;	   // branch with highest value
         unsigned int numPossibilities; // number of branches
         PlyInfoVarType plyInfo;		   // number of moves till win/lost
-        Node *branches;				   // pointer to branches
+        Knot *branches;				   // pointer to branches
     };
 
     struct RetroAnalysisPredVars
@@ -525,7 +525,7 @@ private:
 
     struct RunAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem, public AlphaBetaDefaultThreadVars
     {
-        Node *branchArray = nullptr;						 // array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for storage of the branches at each search depth
+        Knot *branchArray = nullptr;						 // array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for storage of the branches at each search depth
         unsigned int *freqValuesSubMovesBranchWon = nullptr; // ...
         unsigned int freqValuesSubMoves[4];					 // ...
 
@@ -548,7 +548,7 @@ private:
         void initializeElement(RunAlphaBetaVars &master)
         {
             *this = master;
-            branchArray = new Node[alphaBetaVars->pMiniMax->maxNumBranches * alphaBetaVars->pMiniMax->depthOfFullTree];
+            branchArray = new Knot[alphaBetaVars->pMiniMax->maxNumBranches * alphaBetaVars->pMiniMax->depthOfFullTree];
             freqValuesSubMovesBranchWon = new unsigned int[alphaBetaVars->pMiniMax->maxNumBranches];
         };
     };
@@ -732,12 +732,12 @@ private:
     bool calcKnotValuesByAlphaBeta(unsigned int layerNumber);
     bool initAlphaBeta(AlphaBetaGlobalVars &retroVars);
     bool runAlphaBeta(AlphaBetaGlobalVars &retroVars);
-    void letTheTreeGrow(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta);
-    bool alphaBetaTryDataBase(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber);
-    void alphaBetaTryPossibilites(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta);
-    void alphaBetaCalcPlyInfo(Node *knot);
-    void alphaBetaCalcKnotValue(Node *knot);
-    void alphaBetaChooseBestMove(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves);
+    void letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta);
+    bool alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber);
+    void alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta);
+    void alphaBetaCalcPlyInfo(Knot *knot);
+    void alphaBetaCalcKnotValue(Knot *knot);
+    void alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves);
     void alphaBetaSaveInDatabase(unsigned int threadNo, unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue, PlyInfoVarType plyValue, bool invertValue);
     static DWORD initAlphaBetaThreadProc(void *pParameter, int index);
     static DWORD runAlphaBetaThreadProc(void *pParameter, int index);

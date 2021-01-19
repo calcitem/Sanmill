@@ -423,7 +423,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
     float floatValue;
     StateAdress curState;
     StateAdress subState;
-    Node knot;
+    Knot knot;
     TwoBit shortKnotValue = SKV_VALUE_GAME_DRAWN;
     curState.layerNumber = tlVars->layerNumber;
     curState.stateNumber = index;

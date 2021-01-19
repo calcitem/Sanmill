@@ -277,7 +277,7 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
     RunAlphaBetaVars *rabVars = (RunAlphaBetaVars *)pParameter;
     MiniMax *m = rabVars->pMiniMax;
     StateAdress curState;	// current state counter for loops
-    Node root;				//
+    Knot root;				//
     PlyInfoVarType plyInfo; // depends on the curStateValue
 
     curState.layerNumber = rabVars->layerNumber;
@@ -311,7 +311,7 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 // Name: letTheTreeGrow()
 // Desc:
 //-----------------------------------------------------------------------------
-void MiniMax::letTheTreeGrow(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta)
+void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta)
 {
     // Locals
     void *pPossibilities;
@@ -397,7 +397,7 @@ void MiniMax::letTheTreeGrow(Node *knot, RunAlphaBetaVars *rabVars, unsigned int
 // 2 - Look into database if knot value and ply info are already calculated. If so sets knot->shortValue, knot->floatValue and knot->plyInfo.
 // CAUTION: knot->isOpponentLevel must be set and valid.
 //-----------------------------------------------------------------------------
-bool MiniMax::alphaBetaTryDataBase(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber)
+bool MiniMax::alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber)
 {
     // locals
     bool invalidLayerOrStateNumber;
@@ -446,7 +446,7 @@ bool MiniMax::alphaBetaTryDataBase(Node *knot, RunAlphaBetaVars *rabVars, unsign
 // Name: alphaBetaTryPossibilites()
 // Desc:
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaTryPossibilites(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta)
+void MiniMax::alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta)
 {
     // locals
     void *pBackup;
@@ -524,7 +524,7 @@ void MiniMax::alphaBetaTryPossibilites(Node *knot, RunAlphaBetaVars *rabVars, un
 // Name: alphaBetaCalcKnotValue()
 // Desc:
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaCalcKnotValue(Node *knot)
+void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
 {
     // locals
     float maxValue = knot->branches[0].floatValue;
@@ -559,7 +559,7 @@ void MiniMax::alphaBetaCalcKnotValue(Node *knot)
 // Name: alphaBetaCalcPlyInfo()
 // Desc:
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaCalcPlyInfo(Node *knot)
+void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 {
     // locals
     unsigned int i;
@@ -627,7 +627,7 @@ void MiniMax::alphaBetaCalcPlyInfo(Node *knot)
 // Name: alphaBetaChooseBestMove()
 // Desc: select randomly one of the best moves, if they are equivalent
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaChooseBestMove(Node *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves)
+void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves)
 {
     // locals
     float dif;

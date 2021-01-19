@@ -106,7 +106,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
     calcDatabase = false;
 
     // Locals
-    Node root;
+    Knot root;
     AlphaBetaGlobalVars alphaBetaVars(this, getLayerNumber(0));
     RunAlphaBetaVars tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
     srand((unsigned int)time(nullptr));
