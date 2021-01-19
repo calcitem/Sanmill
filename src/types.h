@@ -202,7 +202,7 @@ enum Value : int8_t
     VALUE_UNIQUE = 60,
     VALUE_MATE = 80,
     VALUE_INFINITE = 125,
-    VALUE_UNKNOWN = std::numeric_limits<int8_t>::min(),
+    VALUE_UNKNOWN = INT8_MIN,
     VALUE_NONE = VALUE_UNKNOWN,
 
     VALUE_TB_WIN_IN_MAX_PLY = VALUE_MATE - 2 * MAX_PLY,
@@ -249,7 +249,7 @@ enum Rating : int8_t
     RATING_REMOVE_THEIR_THREE_MILLS = -RATING_REMOVE_THREE_MILLS,
 
     RATING_TT = 100,
-    RATING_MAX = std::numeric_limits<int8_t>::max(),
+    RATING_MAX = INT8_MAX,
 };
 
 enum PieceType : uint16_t
@@ -531,7 +531,7 @@ constexpr bool is_ok(Move m)
 
 /// Based on a congruential pseudo random number generator
 constexpr Key make_key(uint64_t seed) {
-    return seed * 6364136223846793005ULL + 1442695040888963407ULL;
+    return Key(seed * 6364136223846793005ULL + 1442695040888963407ULL);
 }
 
 #endif // #ifndef TYPES_H_INCLUDED
