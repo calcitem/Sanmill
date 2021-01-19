@@ -21,16 +21,16 @@ class CyclicArray
 {
 private:
 	// Variables
-	HANDLE			hFile;								// Handle of the file
-	unsigned char *readingBlock;						// Array of size [blockSize] containing the data of the block, where reading is taking place
-	unsigned char *writingBlock;						//			''
-	unsigned char *curReadingPointer;					// pointer to the byte which is currently read
-	unsigned char *curWritingPointer;					//			''
-	unsigned int	blockSize;							// size in bytes of a block
-	unsigned int	curReadingBlock;					// index of the block, where reading is taking place
-	unsigned int	curWritingBlock;					// index of the block, where writing is taking place
-	unsigned int	numBlocks;							// amount of blocks
-	bool			readWriteInSameRound;				// true if curReadingBlock > curWritingBlock, false otherwise
+	HANDLE hFile;					  // Handle of the file
+	unsigned char *readingBlock;	  // Array of size [blockSize] containing the data of the block, where reading is taking place
+	unsigned char *writingBlock;	  //			''
+	unsigned char *curReadingPointer; // pointer to the byte which is currently read
+	unsigned char *curWritingPointer; //			''
+	unsigned int blockSize;			  // size in bytes of a block
+	unsigned int curReadingBlock;	  // index of the block, where reading is taking place
+	unsigned int curWritingBlock;	  // index of the block, where writing is taking place
+	unsigned int numBlocks;			  // amount of blocks
+	bool readWriteInSameRound;		  // true if curReadingBlock > curWritingBlock, false otherwise
 
 	// Functions
 	void writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData);
@@ -42,11 +42,11 @@ public:
 	~CyclicArray();
 
 	// Functions
-	bool	addBytes(unsigned int numBytes, unsigned char *pData);
-	bool	takeBytes(unsigned int numBytes, unsigned char *pData);
-	bool	loadFile(const char *fileName, LONGLONG &numBytesLoaded);
-	bool	saveFile(const char *fileName);
-	bool	bytesAvailable();
+	bool addBytes(unsigned int numBytes, unsigned char *pData);
+	bool takeBytes(unsigned int numBytes, unsigned char *pData);
+	bool loadFile(const char *fileName, LONGLONG &numBytesLoaded);
+	bool saveFile(const char *fileName);
+	bool bytesAvailable();
 };
 
 #endif

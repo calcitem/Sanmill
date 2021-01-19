@@ -44,12 +44,15 @@ MiniMax::MiniMax()
 	numWriteSkvOperations = 0;
 	numReadPlyOperations = 0;
 	numWritePlyOperations = 0;
-	if (MEASURE_ONLY_IO) {
+	if (MEASURE_ONLY_IO)
+	{
 		readSkvInterval.QuadPart = 0;
 		writeSkvInterval.QuadPart = 0;
 		readPlyInterval.QuadPart = 0;
 		writePlyInterval.QuadPart = 0;
-	} else {
+	}
+	else
+	{
 		QueryPerformanceCounter(&readSkvInterval);
 		QueryPerformanceCounter(&writeSkvInterval);
 		QueryPerformanceCounter(&readPlyInterval);
@@ -61,11 +64,11 @@ MiniMax::MiniMax()
 	// PL_TO_MOVE_CHANGED   means that in the predecessor state the player to move has changed to the other player.
 	// PL_TO_MOVE_UNCHANGED means that the player to move is still the one who shall move.
 	unsigned char skvPerspectiveMatrixTmp[4][2] = {
-		//  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED           
-			SKV_VALUE_INVALID,       SKV_VALUE_INVALID,       // SKV_VALUE_INVALID    
-			SKV_VALUE_GAME_WON,      SKV_VALUE_GAME_LOST,     // SKV_VALUE_GAME_LOST	
-			SKV_VALUE_GAME_DRAWN,    SKV_VALUE_GAME_DRAWN,    // SKV_VALUE_GAME_DRAWN 
-			SKV_VALUE_GAME_LOST,     SKV_VALUE_GAME_WON       // SKV_VALUE_GAME_WON	
+		//  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED
+		SKV_VALUE_INVALID, SKV_VALUE_INVALID,		// SKV_VALUE_INVALID
+		SKV_VALUE_GAME_WON, SKV_VALUE_GAME_LOST,	// SKV_VALUE_GAME_LOST
+		SKV_VALUE_GAME_DRAWN, SKV_VALUE_GAME_DRAWN, // SKV_VALUE_GAME_DRAWN
+		SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_WON		// SKV_VALUE_GAME_WON
 	};
 
 	memcpy(skvPerspectiveMatrix, skvPerspectiveMatrixTmp, 4 * 2);
@@ -84,11 +87,12 @@ MiniMax::~MiniMax()
 
 //-----------------------------------------------------------------------------
 // Name: falseOrStop()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 bool MiniMax::falseOrStop()
 {
-	if (stopOnCriticalError) WaitForSingleObject(GetCurrentProcess(), INFINITE);
+	if (stopOnCriticalError)
+		WaitForSingleObject(GetCurrentProcess(), INFINITE);
 	return false;
 }
 
@@ -105,9 +109,9 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 	calcDatabase = false;
 
 	// Locals
-	Node				root;
-	AlphaBetaGlobalVars		alphaBetaVars(this, getLayerNumber(0));
-	RunAlphaBetaVars		tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
+	Node root;
+	AlphaBetaGlobalVars alphaBetaVars(this, getLayerNumber(0));
+	RunAlphaBetaVars tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
 	srand((unsigned int)time(nullptr));
 	tva.curThreadNo = 0;
 
@@ -131,7 +135,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer)
 {
 	// locals
-	bool			abortCalculation = false;
+	bool abortCalculation = false;
 	this->onlyPrepareLayer = onlyPrepareLayer;
 	lastCalculatedLayer.clear();
 
@@ -143,7 +147,8 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 	prepareDatabaseCalculation();
 
 	// when database not completed then do it
-	if (hFileShortKnotValues != nullptr && skvfHeader.completed == false) {
+	if (hFileShortKnotValues != nullptr && skvfHeader.completed == false)
+	{
 
 		// reserve memory
 		lastCalculatedLayer.clear();
@@ -154,13 +159,16 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 		arrayInfos.vectorArrays.resize(ArrayInfo::numArrayTypes * skvfHeader.numLayers, arrayInfos.listArrays.end());
 
 		// calc layer after layer, beginning with the last one
-		for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers; curCalculatedLayer++) {
+		for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers; curCalculatedLayer++)
+		{
 
 			// layer already calculated?
-			if (layerStats[curCalculatedLayer].layerIsCompletedAndInFile) continue;
+			if (layerStats[curCalculatedLayer].layerIsCompletedAndInFile)
+				continue;
 
 			// don't calc if neither the layer nor the partner layer has any knots
-			if (layerStats[curCalculatedLayer].knotsInLayer == 0 && layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0) continue;
+			if (layerStats[curCalculatedLayer].knotsInLayer == 0 && layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0)
+				continue;
 
 			// calc
 			abortCalculation = (!calcLayer(curCalculatedLayer));
@@ -170,17 +178,21 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 			unloadAllPlyInfos();
 
 			// don't save layer and header when only preparing layers
-			if (onlyPrepareLayer) return;
-			if (abortCalculation) break;
+			if (onlyPrepareLayer)
+				return;
+			if (abortCalculation)
+				break;
 
 			// save header
 			saveHeader(&skvfHeader, layerStats);
 			saveHeader(&plyInfoHeader, plyInfos);
 		}
 
-		// don't save layer and header when only preparing layers or when 
-		if (onlyPrepareLayer) return;
-		if (!abortCalculation) {
+		// don't save layer and header when only preparing layers or when
+		if (onlyPrepareLayer)
+			return;
+		if (!abortCalculation)
+		{
 
 			// calc layer statistics
 			calcLayerStatistics("statistics.txt");
@@ -194,7 +206,9 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 
 		// free mem
 		curCalculationActionId = MM_ACTION_NONE;
-	} else {
+	}
+	else
+	{
 		PRINT(1, this, "\nThe database is already fully calculated.\n");
 	}
 
@@ -208,43 +222,53 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 
 //-----------------------------------------------------------------------------
 // Name: calcLayer()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 bool MiniMax::calcLayer(unsigned int layerNumber)
 {
 	// locals
-	vector <unsigned int> layersToCalculate;
+	vector<unsigned int> layersToCalculate;
 
 	// moves can be done reverse, leading to too depth searching trees
-	if (shallRetroAnalysisBeUsed(layerNumber)) {
+	if (shallRetroAnalysisBeUsed(layerNumber))
+	{
 
 		// calc values for all states of layer
 		layersToCalculate.push_back(layerNumber);
-		if (layerNumber != layerStats[layerNumber].partnerLayer) layersToCalculate.push_back(layerStats[layerNumber].partnerLayer);
-		if (!calcKnotValuesByRetroAnalysis(layersToCalculate)) return false;
+		if (layerNumber != layerStats[layerNumber].partnerLayer)
+			layersToCalculate.push_back(layerStats[layerNumber].partnerLayer);
+		if (!calcKnotValuesByRetroAnalysis(layersToCalculate))
+			return false;
 
 		// save partner layer
-		if (layerStats[layerNumber].partnerLayer != layerNumber) {
+		if (layerStats[layerNumber].partnerLayer != layerNumber)
+		{
 			saveLayerToFile(layerStats[layerNumber].partnerLayer);
 		}
 
 		// use minimax-algorithm
-	} else {
-		if (!calcKnotValuesByAlphaBeta(layerNumber)) return false;
+	}
+	else
+	{
+		if (!calcKnotValuesByAlphaBeta(layerNumber))
+			return false;
 	}
 
 	// save layer
 	saveLayerToFile(layerNumber);
 
 	// test layer
-	if (!testLayer(layerNumber)) {
+	if (!testLayer(layerNumber))
+	{
 		PRINT(0, this, "ERROR: Layer calculation cancelled or failed!" << endl);
 		return false;
 	}
 
 	// test partner layer if retro-analysis has been used
-	if (shallRetroAnalysisBeUsed(layerNumber) && layerStats[layerNumber].partnerLayer != layerNumber) {
-		if (!testLayer(layerStats[layerNumber].partnerLayer)) {
+	if (shallRetroAnalysisBeUsed(layerNumber) && layerStats[layerNumber].partnerLayer != layerNumber)
+	{
+		if (!testLayer(layerStats[layerNumber].partnerLayer))
+		{
 			PRINT(0, this, "ERROR: Layer calculation cancelled or failed!" << endl);
 			return false;
 		}
@@ -252,7 +276,8 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 
 	// update output information
 	EnterCriticalSection(&csOsPrint);
-	if (shallRetroAnalysisBeUsed(layerNumber) && layerNumber != layerStats[layerNumber].partnerLayer) {
+	if (shallRetroAnalysisBeUsed(layerNumber) && layerNumber != layerStats[layerNumber].partnerLayer)
+	{
 		lastCalculatedLayer.push_back(layerStats[layerNumber].partnerLayer);
 	}
 	lastCalculatedLayer.push_back(layerNumber);
@@ -263,7 +288,7 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 
 //-----------------------------------------------------------------------------
 // Name: pauseDatabaseCalculation()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 void MiniMax::pauseDatabaseCalculation()
 {
@@ -272,7 +297,7 @@ void MiniMax::pauseDatabaseCalculation()
 
 //-----------------------------------------------------------------------------
 // Name: cancelDatabaseCalculation()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 void MiniMax::cancelDatabaseCalculation()
 {
@@ -282,7 +307,7 @@ void MiniMax::cancelDatabaseCalculation()
 
 //-----------------------------------------------------------------------------
 // Name: wasDatabaseCalculationCancelled()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 bool MiniMax::wasDatabaseCalculationCancelled()
 {

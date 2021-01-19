@@ -25,55 +25,68 @@ RandomAI::RandomAI()
 RandomAI::~RandomAI()
 {
 	// Locals
-
 }
 
 //-----------------------------------------------------------------------------
 // Name: play()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	// locals
-	unsigned int	from, to, direction;
-	bool			allowedToSpring = (theField->curPlayer->numStones == 3) ? true : false;
+	unsigned int from, to, direction;
+	bool allowedToSpring = (theField->curPlayer->numStones == 3) ? true : false;
 
 	// must stone be removed ?
-	if (theField->stoneMustBeRemoved) {
+	if (theField->stoneMustBeRemoved)
+	{
 
 		// search a stone from the enemy
-		do {
+		do
+		{
 			from = rand() % theField->size;
 			to = theField->size;
 		} while (theField->board[from] != theField->oppPlayer->id || theField->stonePartOfMill[from]);
 
 		// still in setting phase ?
-	} else if (theField->settingPhase) {
+	}
+	else if (theField->settingPhase)
+	{
 
 		// search a free square
-		do {
+		do
+		{
 			from = theField->size;
 			to = rand() % theField->size;
 		} while (theField->board[to] != theField->squareIsFree);
 
 		// try to push randomly
-	} else {
+	}
+	else
+	{
 
-		do {
+		do
+		{
 			// search an own stone
-			do {
+			do
+			{
 				from = rand() % theField->size;
 			} while (theField->board[from] != theField->curPlayer->id);
 
 			// select a free square
-			if (allowedToSpring) {
-				do {
+			if (allowedToSpring)
+			{
+				do
+				{
 					to = rand() % theField->size;
 				} while (theField->board[to] != theField->squareIsFree);
 
 				// select a connected square
-			} else {
-				do {
+			}
+			else
+			{
+				do
+				{
 					direction = rand() % 4;
 					to = theField->connectedSquare[from][direction];
 				} while (to == theField->size);

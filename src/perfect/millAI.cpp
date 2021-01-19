@@ -12,15 +12,16 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 // Name: printBoard()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 void fieldStruct::printBoard()
 {
 	// locals
 	unsigned int index;
-	char		 c[fieldStruct::size];
+	char c[fieldStruct::size];
 
-	for (index = 0; index < fieldStruct::size; index++) c[index] = GetCharFromStone(this->board[index]);
+	for (index = 0; index < fieldStruct::size; index++)
+		c[index] = GetCharFromStone(this->board[index]);
 
 	cout << "current player          : " << GetCharFromStone(this->curPlayer->id) << " has " << this->curPlayer->numStones << " stones\n";
 	cout << "opponent player         : " << GetCharFromStone(this->oppPlayer->id) << " has " << this->oppPlayer->numStones << " stones\n";
@@ -28,34 +29,51 @@ void fieldStruct::printBoard()
 	cout << "setting phase           : " << (this->settingPhase ? "true" : "false");
 	cout << "\n";
 	cout << "\n   a-----b-----c   " << c[0] << "-----" << c[1] << "-----" << c[2];
-	cout << "\n   |     |     |   " << "|     |     |";
-	cout << "\n   | d---e---f |   " << "| " << c[3] << "---" << c[4] << "---" << c[5] << " |";
-	cout << "\n   | |   |   | |   " << "| |   |   | |";
-	cout << "\n   | | g-h-i | |   " << "| | " << c[6] << "-" << c[7] << "-" << c[8] << " | |";
-	cout << "\n   | | | | | | |   " << "| | |   | | |";
+	cout << "\n   |     |     |   "
+		 << "|     |     |";
+	cout << "\n   | d---e---f |   "
+		 << "| " << c[3] << "---" << c[4] << "---" << c[5] << " |";
+	cout << "\n   | |   |   | |   "
+		 << "| |   |   | |";
+	cout << "\n   | | g-h-i | |   "
+		 << "| | " << c[6] << "-" << c[7] << "-" << c[8] << " | |";
+	cout << "\n   | | | | | | |   "
+		 << "| | |   | | |";
 	cout << "\n   j-k-l   m-n-o   " << c[9] << "-" << c[10] << "-" << c[11] << "   " << c[12] << "-" << c[13] << "-" << c[14];
-	cout << "\n   | | | | | | |   " << "| | |   | | |";
-	cout << "\n   | | p-q-r | |   " << "| | " << c[15] << "-" << c[16] << "-" << c[17] << " | |";
-	cout << "\n   | |   |   | |   " << "| |   |   | |";
-	cout << "\n   | s---t---u |   " << "| " << c[18] << "---" << c[19] << "---" << c[20] << " |";
-	cout << "\n   |     |     |   " << "|     |     |";
+	cout << "\n   | | | | | | |   "
+		 << "| | |   | | |";
+	cout << "\n   | | p-q-r | |   "
+		 << "| | " << c[15] << "-" << c[16] << "-" << c[17] << " | |";
+	cout << "\n   | |   |   | |   "
+		 << "| |   |   | |";
+	cout << "\n   | s---t---u |   "
+		 << "| " << c[18] << "---" << c[19] << "---" << c[20] << " |";
+	cout << "\n   |     |     |   "
+		 << "|     |     |";
 	cout << "\n   v-----w-----x   " << c[21] << "-----" << c[22] << "-----" << c[23];
 	cout << "\n";
 }
 
 //-----------------------------------------------------------------------------
 // Name: GetCharFromStone()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 char fieldStruct::GetCharFromStone(int stone)
 {
-	switch (stone) {
-	case fieldStruct::playerOne:			return 'o';
-	case fieldStruct::playerTwo:			return 'x';
-	case fieldStruct::playerOneWarning:		return '1';
-	case fieldStruct::playerTwoWarning:		return '2';
-	case fieldStruct::playerBothWarning:	return '3';
-	case fieldStruct::squareIsFree:			return ' ';
+	switch (stone)
+	{
+	case fieldStruct::playerOne:
+		return 'o';
+	case fieldStruct::playerTwo:
+		return 'x';
+	case fieldStruct::playerOneWarning:
+		return '1';
+	case fieldStruct::playerTwoWarning:
+		return '2';
+	case fieldStruct::playerBothWarning:
+		return '3';
+	case fieldStruct::squareIsFree:
+		return ' ';
 	}
 	return 'f';
 }
@@ -75,13 +93,15 @@ void fieldStruct::copyBoard(fieldStruct *destination)
 	destination->settingPhase = this->settingPhase;
 	destination->stoneMustBeRemoved = this->stoneMustBeRemoved;
 
-	for (i = 0; i < this->size; i++) {
+	for (i = 0; i < this->size; i++)
+	{
 
 		destination->board[i] = this->board[i];
 		destination->warnings[i] = this->warnings[i];
 		destination->stonePartOfMill[i] = this->stonePartOfMill[i];
 
-		for (j = 0; j < 4; j++) {
+		for (j = 0; j < 4; j++)
+		{
 
 			destination->connectedSquare[i][j] = this->connectedSquare[i][j];
 			destination->stoneMoveAble[i][j] = this->stoneMoveAble[i][j];
@@ -104,10 +124,11 @@ void Player::copyPlayer(Player *destination)
 	destination->warning = this->warning;
 	destination->numPossibleMoves = this->numPossibleMoves;
 
-	for (i = 0; i < MAX_NUM_POS_MOVES; i++) destination->posFrom[i] = this->posFrom[i];
-	for (i = 0; i < MAX_NUM_POS_MOVES; i++) destination->posTo[i] = this->posTo[i];
+	for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+		destination->posFrom[i] = this->posFrom[i];
+	for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+		destination->posTo[i] = this->posTo[i];
 }
-
 
 //-----------------------------------------------------------------------------
 // Name: createBoard()
@@ -136,7 +157,8 @@ void fieldStruct::createBoard()
 	oppPlayer->numStonesMissing = 0;
 
 	// zero
-	for (i = 0; i < size; i++) {
+	for (i = 0; i < size; i++)
+	{
 		board[i] = squareIsFree;
 		warnings[i] = noWarning;
 		stonePartOfMill[i] = 0;
@@ -203,7 +225,7 @@ void fieldStruct::createBoard()
 
 //-----------------------------------------------------------------------------
 // Name: deleteBoard()
-// Desc: ... 
+// Desc: ...
 //-----------------------------------------------------------------------------
 void fieldStruct::deleteBoard()
 {
@@ -213,7 +235,7 @@ void fieldStruct::deleteBoard()
 
 //-----------------------------------------------------------------------------
 // Name: setConnection()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setConnection(unsigned int index, int firstDirection, int secondDirection, int thirdDirection, int fourthDirection)
 {
@@ -225,7 +247,7 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection, i
 
 //-----------------------------------------------------------------------------
 // Name: setNeighbour()
-// Desc: 
+// Desc:
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setNeighbour(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1)
 {
