@@ -75,7 +75,7 @@
 #define NUM_SYM_OPERATIONS				16
 
 /*** Klassen *********************************************************/
-class perfectAI : public millAI, public miniMax
+class perfectAI : public MillAI, public miniMax
 {
 protected:
 
@@ -118,7 +118,7 @@ protected:
 		unsigned int		stonesSet;
 		unsigned int		stoneMustBeRemoved;
 		unsigned int		stonePartOfMill[fieldStruct::size];
-		playerStruct *curPlayer, *oppPlayer;
+		Player *curPlayer, *oppPlayer;
 	};
 
 	// preCalcedVars.dat
@@ -173,7 +173,7 @@ protected:
 		unsigned int *getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities);
 
 		// move functions
-		inline void			updatePossibleMoves(unsigned int stone, playerStruct *stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
+		inline void			updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
 		inline void			updateWarning(unsigned int firstStone, unsigned int secondStone);
 		inline void			setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree);
 		inline void			removeStone(unsigned int from, backupStruct *backup);
@@ -184,7 +184,7 @@ protected:
 		unsigned int		getLayerAndStateNumber(unsigned int &layerNum, unsigned int &stateNumber);
 		void				setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
 		bool				fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer);
-		void				calcPossibleMoves(playerStruct *player);
+		void				calcPossibleMoves(Player *player);
 		void				storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, retroAnalysisPredVars *predVars);
 	};
 	threadVarsStruct *threadVars;

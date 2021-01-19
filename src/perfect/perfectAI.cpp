@@ -1080,7 +1080,7 @@ inline void perfectAI::threadVarsStruct::updateWarning(unsigned int firstStone, 
 // Name: updatePossibleMoves()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void perfectAI::threadVarsStruct::updatePossibleMoves(unsigned int stone, playerStruct *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
+inline void perfectAI::threadVarsStruct::updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
 {
 	// locals
 	unsigned int	neighbor, direction;
@@ -1210,7 +1210,7 @@ void perfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 	threadVarsStruct *tv = &threadVars[threadNo];
 	backupStruct *oldState = &tv->oldStates[tv->curSearchDepth];
 	possibilityStruct *tmpPossibility = (possibilityStruct *)pPossibilities;
-	playerStruct *tmpPlayer;
+	Player *tmpPlayer;
 	unsigned int		i;
 
 	// calculate place of stone
@@ -1740,7 +1740,7 @@ bool perfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
 // Name: calcPossibleMoves()
 // Desc: 
 //-----------------------------------------------------------------------------
-void perfectAI::threadVarsStruct::calcPossibleMoves(playerStruct *player)
+void perfectAI::threadVarsStruct::calcPossibleMoves(Player *player)
 {
 	// locals
 	unsigned int i, j, k, movingDirection;
@@ -2089,7 +2089,7 @@ void perfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
 	bool         aStoneCanBeRemovedFromCurPlayer;
 	bool         millWasClosed;
 	unsigned int from, to, dir, i;
-	playerStruct *tmpPlayer;
+	Player *tmpPlayer;
 	unsigned int numberOfMillsCurrentPlayer = 0;
 	unsigned int numberOfMillsOpponentPlayer = 0;
 

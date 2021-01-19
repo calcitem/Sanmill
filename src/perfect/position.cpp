@@ -52,7 +52,7 @@ void Position::exit()
 // Name: beginNewGame()
 // Desc: Reinitializes the Position object.
 //-----------------------------------------------------------------------------
-void Position::beginNewGame(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer)
+void Position::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer)
 {
 	// free mem
 	exit();
@@ -85,7 +85,7 @@ void Position::beginNewGame(millAI *firstPlayerAI, millAI *secondPlayerAI, int c
 // Name: startSettingPhase()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool Position::startSettingPhase(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer, bool settingPhase)
+bool Position::startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer, bool settingPhase)
 {
 	beginNewGame(firstPlayerAI, secondPlayerAI, currentPlayer);
 
@@ -98,7 +98,7 @@ bool Position::startSettingPhase(millAI *firstPlayerAI, millAI *secondPlayerAI, 
 // Name: setUpCalcPossibleMoves()
 // Desc: Calculates and set the number of possible moves for the passed player considering the game state stored in the 'board' variable.
 //-----------------------------------------------------------------------------
-void Position::setUpCalcPossibleMoves(playerStruct *player)
+void Position::setUpCalcPossibleMoves(Player *player)
 {
 	// locals
 	unsigned int i, j, k, movingDirection;
@@ -160,7 +160,7 @@ bool Position::put_piece(unsigned int pos, int player)
 	// locals
 	unsigned int i;
 	unsigned int numberOfMillsCurrentPlayer = 0, numberOfMillsOpponentPlayer = 0;
-	playerStruct *myPlayer = (player == field.curPlayer->id) ? field.curPlayer : field.oppPlayer;
+	Player *myPlayer = (player == field.curPlayer->id) ? field.curPlayer : field.oppPlayer;
 
 	// check parameters
 	if (player != fieldStruct::playerOne && player != fieldStruct::playerTwo) return false;
@@ -275,7 +275,7 @@ void Position::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned i
 //-----------------------------------------------------------------------------
 void Position::setNextPlayer()
 {
-	playerStruct *tmpPlayer;
+	Player *tmpPlayer;
 
 	tmpPlayer = field.curPlayer;
 	field.curPlayer = field.oppPlayer;
@@ -306,7 +306,7 @@ bool Position::isOpponentPlayerHuman()
 // Name: setAI()
 // Desc: Assigns an AI to a player.
 //-----------------------------------------------------------------------------
-void Position::setAI(int player, millAI *AI)
+void Position::setAI(int player, MillAI *AI)
 {
 	if (player == field.playerOne) {
 		playerOneAI = AI;
@@ -320,7 +320,7 @@ void Position::setAI(int player, millAI *AI)
 // Name: getChoiceOfSpecialAI()
 // Desc: Returns the move the passed AI would do.
 //-----------------------------------------------------------------------------
-void Position::getChoiceOfSpecialAI(millAI *AI, unsigned int *pushFrom, unsigned int *pushTo)
+void Position::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned int *pushTo)
 {
 	fieldStruct theField;
 	*pushFrom = field.size;
@@ -358,7 +358,7 @@ void Position::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 // Name: isNormalMovePossible()
 // Desc: 'Normal' in this context means, by moving the stone along a connection without jumping.
 //-----------------------------------------------------------------------------
-bool Position::isNormalMovePossible(unsigned int from, unsigned int to, playerStruct *player)
+bool Position::isNormalMovePossible(unsigned int from, unsigned int to, Player *player)
 {
 	// locals
 	unsigned int movingDirection, i;
@@ -391,7 +391,7 @@ bool Position::isNormalMovePossible(unsigned int from, unsigned int to, playerSt
 // Name: calcPossibleMoves()
 // Desc: ...
 //-----------------------------------------------------------------------------
-void Position::calcPossibleMoves(playerStruct *player)
+void Position::calcPossibleMoves(Player *player)
 {
 	// locals
 	unsigned int i, j;
@@ -676,7 +676,7 @@ bool Position::compareWithField(fieldStruct *compareField)
 // Name: comparePlayers()
 // Desc: Compares the two passed players and returns false if they differ.
 //-----------------------------------------------------------------------------
-bool Position::comparePlayers(playerStruct *playerA, playerStruct *playerB)
+bool Position::comparePlayers(Player *playerA, Player *playerB)
 {
 	//	unsigned int i;
 	bool ret = true;

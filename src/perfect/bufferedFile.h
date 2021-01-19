@@ -17,7 +17,7 @@ using namespace std;
 
 /*** Klassen *********************************************************/
 
-class bufferedFileClass
+class BufferedFile
 {
 private:
 	// Variables
@@ -39,8 +39,8 @@ private:
 
 public:
 	// Constructor / destructor
-	bufferedFileClass(unsigned int numThreads, unsigned int bufferSizeInBytes, const char *fileName);
-	~bufferedFileClass();
+	BufferedFile(unsigned int numThreads, unsigned int bufferSizeInBytes, const char *fileName);
+	~BufferedFile();
 
 	// Functions
 	bool		flushBuffers();

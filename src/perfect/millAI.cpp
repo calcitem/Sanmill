@@ -94,7 +94,7 @@ void fieldStruct::copyField(fieldStruct *destination)
 // Name: copyPlayer()
 // Desc: Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void playerStruct::copyPlayer(playerStruct *destination)
+void Player::copyPlayer(Player *destination)
 {
 	unsigned int i;
 
@@ -118,8 +118,8 @@ void fieldStruct::createField()
 	// locals
 	unsigned int i;
 
-	curPlayer = new playerStruct;
-	oppPlayer = new playerStruct;
+	curPlayer = new Player;
+	oppPlayer = new Player;
 
 	curPlayer->id = playerOne;
 	stonesSet = 0;

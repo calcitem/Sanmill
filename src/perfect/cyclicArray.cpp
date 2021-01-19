@@ -1,5 +1,5 @@
 /*********************************************************************
-	cyclicArray.cpp
+	CyclicArray.cpp
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -9,10 +9,10 @@
 #include "cyclicArray.h"
 
 //-----------------------------------------------------------------------------
-// Name: cyclicArray()
+// Name: CyclicArray()
 // Desc: Creates a cyclic array. The passed file is used as temporary data buffer for the cyclic array.
 //-----------------------------------------------------------------------------
-cyclicArray::cyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks, const char *fileName)
+CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks, const char *fileName)
 {
 	// Init blocks
 	blockSize = blockSizeInBytes;
@@ -39,7 +39,7 @@ cyclicArray::cyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlo
 // Name: ~randomAI()
 // Desc: randomAI class destructor
 //-----------------------------------------------------------------------------
-cyclicArray::~cyclicArray()
+CyclicArray::~CyclicArray()
 {
 	// delete arrays
 	delete[] readingBlock;
@@ -53,7 +53,7 @@ cyclicArray::~cyclicArray()
 // Name: writeDataToFile()
 // Desc: Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
-void cyclicArray::writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void CyclicArray::writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
 {
 	DWORD			dwBytesWritten;
 	LARGE_INTEGER	liDistanceToMove;
@@ -78,7 +78,7 @@ void cyclicArray::writeDataToFile(HANDLE hFile, long long offset, unsigned int s
 // Name: readDataFromFile()
 // Desc: Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
-void cyclicArray::readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void CyclicArray::readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
 {
 	DWORD			dwBytesRead;
 	LARGE_INTEGER	liDistanceToMove;
@@ -104,7 +104,7 @@ void cyclicArray::readDataFromFile(HANDLE hFile, long long offset, unsigned int 
 // Desc: Add the passed data to the cyclic array. If the writing pointer reaches the end of a block, 
 //       the data of the whole block is written to the file and the next block is considered for writing.
 //-----------------------------------------------------------------------------
-bool cyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
+bool CyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
 {
 	// locals
 	unsigned int	bytesWritten = 0;
@@ -148,7 +148,7 @@ bool cyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
 // Name: bytesAvailable()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool cyclicArray::bytesAvailable()
+bool CyclicArray::bytesAvailable()
 {
 	if (curReadingBlock == curWritingBlock && curReadingPointer == curWritingPointer && readWriteInSameRound)	return false;
 	else																										return true;
@@ -159,7 +159,7 @@ bool cyclicArray::bytesAvailable()
 // Desc: Load data from the cyclic array. If the reading pointer reaches the end of a block, 
 //       the data of the next whole block is read from the file.
 //-----------------------------------------------------------------------------
-bool cyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
+bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
 {
 	// locals
 	unsigned int bytesRead = 0;
@@ -207,7 +207,7 @@ bool cyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
 // Desc: Load the passed file into the cyclic array.
 //       The passed filename must be different than the passed filename to the constructor cyclicarray().
 //-----------------------------------------------------------------------------
-bool cyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
+bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
 {
 	// locals
 	HANDLE			hLoadFile;
@@ -277,7 +277,7 @@ bool cyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
 // Desc: Writes the whole current content of the cyclic array to the passed file.
 //       The passed filename must be different than the passed filename to the constructor cyclicarray().
 //-----------------------------------------------------------------------------
-bool cyclicArray::saveFile(const char *fileName)
+bool CyclicArray::saveFile(const char *fileName)
 {
 	// locals
 	unsigned char *dataInFile;

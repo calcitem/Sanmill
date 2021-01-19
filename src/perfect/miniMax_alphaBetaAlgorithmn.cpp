@@ -85,7 +85,7 @@ void miniMax::alphaBetaSaveInDatabase(unsigned int	threadNo, unsigned int layerN
 bool miniMax::initAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
 {
 	// locals
-	bufferedFileClass *invalidArray;					// 
+	BufferedFile *invalidArray;					// 
 	bool						initAlreadyDone = false;	// true if the initialization information is already available in a file
 	stringstream				ssInvArrayDirectory;			// 
 	stringstream				ssInvArrayFilePath;				// 
@@ -99,7 +99,7 @@ bool miniMax::initAlphaBeta(alphaBetaGlobalVars &alphaBetaVars)
 
 	// does initialization file exist ?
 	CreateDirectoryA(ssInvArrayDirectory.str().c_str(), nullptr);
-	invalidArray = new bufferedFileClass(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInvArrayFilePath.str().c_str());
+	invalidArray = new BufferedFile(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInvArrayFilePath.str().c_str());
 	if (invalidArray->getFileSize() == (LONGLONG)layerStats[alphaBetaVars.layerNumber].knotsInLayer) {
 		PRINT(2, this, "  Loading invalid states from file: " << ssInvArrayFilePath.str());
 		initAlreadyDone = true;

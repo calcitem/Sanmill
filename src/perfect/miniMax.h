@@ -457,13 +457,13 @@ private:
 
 	struct initAlphaBetaVars : public threadManagerClass::threadVarsArrayItem, public alphaBetaDefaultThreadVars
 	{
-		bufferedFileClass *bufferedFile;
+		BufferedFile *bufferedFile;
 		bool											initAlreadyDone;
 
 		initAlphaBetaVars()
 		{
 		};
-		initAlphaBetaVars(miniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, bufferedFileClass *initArray, bool initAlreadyDone) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
+		initAlphaBetaVars(miniMax *pMiniMax, alphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : alphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
 		{
 			this->bufferedFile = initArray;
 			this->initAlreadyDone = initAlreadyDone;
@@ -517,7 +517,7 @@ private:
 
 	struct retroAnalysisThreadVars											// thread specific variables for each thread in the retro analysis
 	{
-		vector<cyclicArray *>							statesToProcess;	// vector-queue containing the states, whose short knot value are known for sure. they have to be processed. if processed the state will be removed from list. indexing: [threadNo][plyNumber]
+		vector<CyclicArray *>							statesToProcess;	// vector-queue containing the states, whose short knot value are known for sure. they have to be processed. if processed the state will be removed from list. indexing: [threadNo][plyNumber]
 		vector<vector<retroAnalysisQueueState>>			stateQueue;			// Queue containing states, whose 'count value' shall be increased by one. Before writing 'count value' to 'count array' the writing positions are sorted for faster processing.
 		long long										numStatesToProcess;	// Number of states in 'statesToProcess' which have to be processed 
 		unsigned int									threadNo;
@@ -567,13 +567,13 @@ private:
 
 	struct initRetroAnalysisVars : public threadManagerClass::threadVarsArrayItem, public retroAnalysisDefaultThreadVars
 	{
-		bufferedFileClass *bufferedFile;
+		BufferedFile *bufferedFile;
 		bool											initAlreadyDone;
 
 		initRetroAnalysisVars()
 		{
 		};
-		initRetroAnalysisVars(miniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, bufferedFileClass *initArray, bool initAlreadyDone) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+		initRetroAnalysisVars(miniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : retroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
 		{
 			this->bufferedFile = initArray;
 			this->initAlreadyDone = initAlreadyDone;

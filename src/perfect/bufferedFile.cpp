@@ -12,7 +12,7 @@
 // Name: bufferedFile()
 // Desc: Creates a cyclic array. The passed file is used as temporary data buffer for the cyclic array.
 //-----------------------------------------------------------------------------
-bufferedFileClass::bufferedFileClass(unsigned int numberOfThreads, unsigned int bufferSizeInBytes, const char *fileName)
+BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSizeInBytes, const char *fileName)
 {
 	// locals
 	unsigned int	curThread;
@@ -49,10 +49,10 @@ bufferedFileClass::bufferedFileClass(unsigned int numberOfThreads, unsigned int 
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~bufferedFileClass()
-// Desc: bufferedFileClass class destructor
+// Name: ~BufferedFile()
+// Desc: BufferedFile class destructor
 //-----------------------------------------------------------------------------
-bufferedFileClass::~bufferedFileClass()
+BufferedFile::~BufferedFile()
 {
 	// flush buffers
 	flushBuffers();
@@ -74,7 +74,7 @@ bufferedFileClass::~bufferedFileClass()
 // Name: getFileSize()
 // Desc: 
 //-----------------------------------------------------------------------------
-long long bufferedFileClass::getFileSize()
+long long BufferedFile::getFileSize()
 {
 	LARGE_INTEGER liFileSize;
 	GetFileSizeEx(hFile, &liFileSize);
@@ -86,7 +86,7 @@ long long bufferedFileClass::getFileSize()
 // Name: flushBuffers()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool bufferedFileClass::flushBuffers()
+bool BufferedFile::flushBuffers()
 {
 	for (unsigned int threadNo = 0; threadNo < numThreads; threadNo++) {
 		writeDataToFile(hFile, curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], bytesInWriteBuffer[threadNo], &writeBuffer[threadNo * bufferSize + 0]);
@@ -99,7 +99,7 @@ bool bufferedFileClass::flushBuffers()
 // Name: writeDataToFile()
 // Desc: Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
-void bufferedFileClass::writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void BufferedFile::writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
 {
 	DWORD			dwBytesWritten;
 	LARGE_INTEGER	liDistanceToMove;
@@ -125,7 +125,7 @@ void bufferedFileClass::writeDataToFile(HANDLE hFile, long long offset, unsigned
 // Name: readDataFromFile()
 // Desc: Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
-void bufferedFileClass::readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void BufferedFile::readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
 {
 	DWORD			dwBytesRead;
 	LARGE_INTEGER	liDistanceToMove;
@@ -151,7 +151,7 @@ void bufferedFileClass::readDataFromFile(HANDLE hFile, long long offset, unsigne
 // Name: writeBytes()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool bufferedFileClass::writeBytes(unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(unsigned int numBytes, unsigned char *pData)
 {
 	return writeBytes(0, curWritingPointer[0], numBytes, pData);
 }
@@ -160,7 +160,7 @@ bool bufferedFileClass::writeBytes(unsigned int numBytes, unsigned char *pData)
 // Name: writeBytes()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool bufferedFileClass::writeBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
 {
 	// parameters ok?
 	if (threadNo >= numThreads) return false;
@@ -188,7 +188,7 @@ bool bufferedFileClass::writeBytes(unsigned int threadNo, long long positionInFi
 // Name: takeBytes()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool bufferedFileClass::readBytes(unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::readBytes(unsigned int numBytes, unsigned char *pData)
 {
 	return readBytes(0, curReadingPointer[0], numBytes, pData);
 }
@@ -197,7 +197,7 @@ bool bufferedFileClass::readBytes(unsigned int numBytes, unsigned char *pData)
 // Name: takeBytes()
 // Desc: 
 //-----------------------------------------------------------------------------
-bool bufferedFileClass::readBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::readBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
 {
 	// parameters ok?
 	if (threadNo >= numThreads) return false;

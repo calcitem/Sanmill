@@ -20,7 +20,7 @@
 
 /*** Klassen *********************************************************/
 
-class playerStruct
+class Player
 {
 public:
 	int			 				id;								// static
@@ -31,7 +31,7 @@ public:
 	unsigned int 				posTo[MAX_NUM_POS_MOVES];		// target board position of a possible move
 	unsigned int 				posFrom[MAX_NUM_POS_MOVES];		// source board position of a possible move
 
-	void						copyPlayer(playerStruct *destination);
+	void						copyPlayer(Player *destination);
 };
 
 class fieldStruct
@@ -61,7 +61,7 @@ public:
 	unsigned int 				stonesSet;						// number of stones set in the setting phase
 	bool		 				settingPhase;					// true if stonesSet < 18
 	unsigned int 				stoneMustBeRemoved;				// number of stones which must be removed by the current player
-	playerStruct *curPlayer, *oppPlayer;			// pointers to the current and opponent player
+	Player *curPlayer, *oppPlayer;			// pointers to the current and opponent player
 
 	// useful functions
 	void						printField();
@@ -77,18 +77,18 @@ private:
 	void						setNeighbour(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1);
 };
 
-class millAI abstract
+class MillAI abstract
 {
 protected:
 	fieldStruct					dummyField;
 
 public:
 	// Constructor / destructor
-	millAI()
+	MillAI()
 	{
 		dummyField.createField();
 	};
-	~millAI()
+	~MillAI()
 	{
 		dummyField.deleteField();
 	};

@@ -112,7 +112,7 @@ bool miniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 	unsigned int				layerNumber;					// layer number of the current process layer
 	stringstream				ssInitArrayPath;				// path of the working directory
 	stringstream				ssInitArrayFilePath;			// filename corresponding to a cyclic array file which is used for storage
-	bufferedFileClass *initArray;						// 
+	BufferedFile *initArray;						// 
 	bool						initAlreadyDone = false;	// true if the initialization information is already available in a file
 
 	// process each layer
@@ -129,7 +129,7 @@ bool miniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 
 		// does initialization file exist ?
 		CreateDirectoryA(ssInitArrayPath.str().c_str(), nullptr);
-		initArray = new bufferedFileClass(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInitArrayFilePath.str().c_str());
+		initArray = new BufferedFile(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInitArrayFilePath.str().c_str());
 		if (initArray->getFileSize() == (LONGLONG)layerStats[layerNumber].knotsInLayer) {
 			PRINT(2, this, "    Loading init states from file: " << ssInitArrayFilePath.str());
 			initAlreadyDone = true;
@@ -738,7 +738,7 @@ bool miniMax::addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, retroAn
 		CreateDirectoryA(ssStatesToProcessPath.str().c_str(), nullptr);
 		ssStatesToProcessFilePath.str("");
 		ssStatesToProcessFilePath << ssStatesToProcessPath.str() << "\\statesToProcessWithPlyCounter=" << plyNumber << "andThread=" << threadVars.threadNo << ".dat";
-		threadVars.statesToProcess[plyNumber] = new cyclicArray(BLOCK_SIZE_IN_CYCLIC_ARRAY * sizeof(stateAdressStruct), (unsigned int)(retroVars.totalNumKnots / BLOCK_SIZE_IN_CYCLIC_ARRAY) + 1, ssStatesToProcessFilePath.str().c_str());
+		threadVars.statesToProcess[plyNumber] = new CyclicArray(BLOCK_SIZE_IN_CYCLIC_ARRAY * sizeof(stateAdressStruct), (unsigned int)(retroVars.totalNumKnots / BLOCK_SIZE_IN_CYCLIC_ARRAY) + 1, ssStatesToProcessFilePath.str().c_str());
 		PRINT(4, this, "    Created cyclic array: " << ssStatesToProcessFilePath.str());
 	}
 

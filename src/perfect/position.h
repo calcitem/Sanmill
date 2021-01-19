@@ -36,8 +36,8 @@ class Position
 private:
 	// Variables
 	unsigned int *moveLogFrom, *moveLogTo, movesDone;			// array containing the history of moves done
-	millAI *playerOneAI;									// class-pointer to the AI of player one
-	millAI *playerTwoAI;									// class-pointer to the AI of player two
+	MillAI *playerOneAI;									// class-pointer to the AI of player one
+	MillAI *playerTwoAI;									// class-pointer to the AI of player two
 	fieldStruct		field;											// current board
 	fieldStruct		initialField;									// undo of the last move is done by setting the initial board und performing all moves saved in history
 	int				winner;											// playerId of the player who has won the game. zero if game is still running.
@@ -46,9 +46,9 @@ private:
 	// Functions
 	void			exit();
 	void			setNextPlayer();
-	void			calcPossibleMoves(playerStruct *player);
+	void			calcPossibleMoves(Player *player);
 	void			updateMillsAndWarnings(unsigned int newStone);
-	bool			isNormalMovePossible(unsigned int from, unsigned int to, playerStruct *player);
+	bool			isNormalMovePossible(unsigned int from, unsigned int to, Player *player);
 	void			setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone);
 
 public:
@@ -58,19 +58,19 @@ public:
 
 	// Functions
 	void			undo_move();
-	void			beginNewGame(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer);
-	void			setAI(int player, millAI *AI);
+	void			beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer);
+	void			setAI(int player, MillAI *AI);
 	bool			do_move(unsigned int  pushFrom, unsigned int  pushTo);
 	void			getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
 	bool			setCurrentGameState(fieldStruct *curState);
 	bool			compareWithField(fieldStruct *compareField);
-	bool			comparePlayers(playerStruct *playerA, playerStruct *playerB);
+	bool			comparePlayers(Player *playerA, Player *playerB);
 	void			printField();
-	bool            startSettingPhase(millAI *firstPlayerAI, millAI *secondPlayerAI, int currentPlayer, bool settingPhase);
+	bool            startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer, bool settingPhase);
 	bool            put_piece(unsigned int pos, int player);
 	bool            settingPhaseHasFinished();
-	void			getChoiceOfSpecialAI(millAI *AI, unsigned int *pushFrom, unsigned int *pushTo);
-	void			setUpCalcPossibleMoves(playerStruct *player);
+	void			getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned int *pushTo);
+	void			setUpCalcPossibleMoves(Player *player);
 	void			setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
 	void			calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting);
 

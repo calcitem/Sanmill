@@ -371,7 +371,7 @@ inline void miniMaxAI::updateWarning(unsigned int firstStone, unsigned int secon
 // Name: updatePossibleMoves()
 // Desc: 
 //-----------------------------------------------------------------------------
-inline void miniMaxAI::updatePossibleMoves(unsigned int stone, playerStruct *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
+inline void miniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
 {
 	// locals
 	unsigned int	neighbor, direction;
@@ -500,7 +500,7 @@ void miniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 	// locals
 	backupStruct *oldState = &oldStates[curSearchDepth];
 	possibilityStruct *tmpPossibility = (possibilityStruct *)pPossibilities;
-	playerStruct *tmpPlayer;
+	Player *tmpPlayer;
 	unsigned int		i;
 
 	// calculate place of stone

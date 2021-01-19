@@ -15,7 +15,7 @@
 
 /*** Klassen *********************************************************/
 
-class randomAI : public millAI
+class randomAI : public MillAI
 {
 public:
 	// Constructor / destructor

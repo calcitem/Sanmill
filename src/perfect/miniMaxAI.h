@@ -21,7 +21,7 @@
 #define VALUE_GAME_WON	     1000.0f
 
 /*** Klassen *********************************************************/
-class miniMaxAI : public millAI, miniMax
+class miniMaxAI : public MillAI, miniMax
 {
 protected:
 
@@ -46,7 +46,7 @@ protected:
 		unsigned int	stoneMustBeRemoved;
 		unsigned int	stonePartOfMill[fieldStruct::size];
 		unsigned int	warnings[fieldStruct::size];
-		playerStruct *curPlayer, *oppPlayer;
+		Player *curPlayer, *oppPlayer;
 	};
 
 	// Variables
@@ -67,7 +67,7 @@ protected:
 	unsigned int *getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities);
 
 	// move functions
-	inline void		updatePossibleMoves(unsigned int stone, playerStruct *stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
+	inline void		updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
 	inline void		updateWarning(unsigned int firstStone, unsigned int secondStone);
 	inline void		setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree);
 	inline void		removeStone(unsigned int from, backupStruct *backup);

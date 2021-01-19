@@ -1,5 +1,5 @@
 /*********************************************************************\
-	cyclicArray.h
+	CyclicArray.h
 	Copyright (c) Thomas Weber. All rights reserved.
 	Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
 	Licensed under the MIT License.
@@ -17,7 +17,7 @@ using namespace std;
 
 /*** Klassen *********************************************************/
 
-class cyclicArray
+class CyclicArray
 {
 private:
 	// Variables
@@ -38,8 +38,8 @@ private:
 
 public:
 	// Constructor / destructor
-	cyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks, const char *fileName);
-	~cyclicArray();
+	CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks, const char *fileName);
+	~CyclicArray();
 
 	// Functions
 	bool	addBytes(unsigned int numBytes, unsigned char *pData);

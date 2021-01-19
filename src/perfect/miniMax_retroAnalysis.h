@@ -14,7 +14,7 @@ struct retroAnalysisQueueState
 
 struct retroAnalysisThreadVars											// thread specific variables for each thread in the retro analysis
 {
-	vector<cyclicArray *>							statesToProcess;	// vector-queue containing the states, whose short knot value are known for sure. they have to be processed. if processed the state will be removed from list. indexing: [threadNo][plyNumber]
+	vector<CyclicArray *>							statesToProcess;	// vector-queue containing the states, whose short knot value are known for sure. they have to be processed. if processed the state will be removed from list. indexing: [threadNo][plyNumber]
 	vector<vector<retroAnalysisQueueState>>			stateQueue;			// Queue containing states, whose 'count value' shall be increased by one. Before writing 'count value' to 'count array' the writing positions are sorted for faster processing.
 	long long										numStatesToProcess;	// Number of states in 'statesToProcess' which have to be processed 
 	unsigned int									threadNo;
@@ -38,7 +38,7 @@ struct initRetroAnalysisVars
 	unsigned int		layerNumber;
 	LONGLONG			statesProcessed;
 	unsigned int		statsValueCounter[SKV_NUM_VALUES];
-	bufferedFileClass *bufferedFile;
+	BufferedFile *bufferedFile;
 	retroAnalysisVars *retroVars;
 	bool				initAlreadyDone;								// true if the initialization information is already available in a file
 };
