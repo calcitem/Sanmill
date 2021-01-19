@@ -24,7 +24,7 @@ int main(void)
     // locals
     bool			playerOneHuman = false;
     bool			playerTwoHuman = false;
-    char			tmpChar[100];
+    char			ch[100];
     unsigned int	pushFrom, pushTo;
     Mill *myGame = new Mill();
     perfectAI *myKI = new perfectAI(databaseDirectory);
@@ -62,8 +62,8 @@ int main(void)
 #ifdef SELF_PLAY
         int moveCount = 0;
 #else
-        cout << "Is Player 1 human? (y/n):"; cin >> tmpChar;	if (tmpChar[0] == 'y') playerOneHuman = true;
-        cout << "Is Player 2 human? (y/n):"; cin >> tmpChar;	if (tmpChar[0] == 'y') playerTwoHuman = true;
+        cout << "Is Player 1 human? (y/n):"; cin >> ch;	if (ch[0] == 'y') playerOneHuman = true;
+        cout << "Is Player 2 human? (y/n):"; cin >> ch;	if (ch[0] == 'y') playerTwoHuman = true;
 #endif // SELF_PLAY
 
         // play
@@ -93,17 +93,17 @@ int main(void)
                     else								cout << "\n   Your train? [a-x][a-x]: \n\n\n";
 
                     // get input
-                    cin >> tmpChar;
-                    if ((tmpChar[0] >= 'a') && (tmpChar[0] <= 'x'))		pushFrom = tmpChar[0] - 'a';	else pushFrom = fieldStruct::size;
+                    cin >> ch;
+                    if ((ch[0] >= 'a') && (ch[0] <= 'x'))		pushFrom = ch[0] - 'a';	else pushFrom = fieldStruct::size;
 
                     if (myGame->inSettingPhase()) {
-                        if ((tmpChar[0] >= 'a') && (tmpChar[0] <= 'x'))	pushTo = tmpChar[0] - 'a';	else pushTo = fieldStruct::size;
+                        if ((ch[0] >= 'a') && (ch[0] <= 'x'))	pushTo = ch[0] - 'a';	else pushTo = fieldStruct::size;
                     } else {
-                        if ((tmpChar[1] >= 'a') && (tmpChar[1] <= 'x'))	pushTo = tmpChar[1] - 'a';	else pushTo = fieldStruct::size;
+                        if ((ch[1] >= 'a') && (ch[1] <= 'x'))	pushTo = ch[1] - 'a';	else pushTo = fieldStruct::size;
                     }
 
                     // undo
-                    if (tmpChar[0] == 'u' && tmpChar[1] == 'n' && tmpChar[2] == 'd' && tmpChar[3] == 'o') {
+                    if (ch[0] == 'u' && ch[1] == 'n' && ch[2] == 'd' && ch[3] == 'o') {
 
                         // undo moves until a human player shall move
                         do {
