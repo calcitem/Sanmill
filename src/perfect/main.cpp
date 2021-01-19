@@ -6,6 +6,8 @@
 #include "randomAI.h"
 #include "perfectAI.h"
 
+#include "config.h"
+
 using namespace std;
 
 unsigned int	startTestFromLayer = 0;
@@ -38,7 +40,11 @@ void main(void)
     myKI->setDatabasePath(databaseDirectory);
 
     // begin
+#ifdef SELF_PLAY
+    myGame->beginNewGame(myKI, myKI, fieldStruct::playerOne);
+#else
     myGame->beginNewGame(myKI, myKI, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
+#endif // SELF_PLAY
 
     if (calculateDatabase) {
 
@@ -52,8 +58,13 @@ void main(void)
 
     } else {
 
+
+#ifdef SELF_PLAY
+        int moveCount = 0;
+#else
         cout << "Is Player 1 human? (y/n):"; cin >> tmpChar;	if (tmpChar[0] == 'y') playerOneHuman = true;
         cout << "Is Player 2 human? (y/n):"; cin >> tmpChar;	if (tmpChar[0] == 'y') playerTwoHuman = true;
+#endif // SELF_PLAY
 
         // play
         do {
@@ -62,6 +73,13 @@ void main(void)
             myGame->getComputersChoice(&pushFrom, &pushTo);
             cout << "\n\n";
             cout << "\nlast move was from " << (char)(myGame->getLastMoveFrom() + 97) << " to " << (char)(myGame->getLastMoveTo() + 97) << "\n\n";
+
+#ifdef SELF_PLAY
+            moveCount++;
+            if (moveCount > 99) {
+                goto out;
+            }
+#endif // SELF_PLAY
 
             myGame->printField();
 
@@ -118,6 +136,7 @@ void main(void)
         else												    cout << "\n   A program error has occurred!\n\n";
     }
 
+ out:
     char end;
     cin >> end;
 }
