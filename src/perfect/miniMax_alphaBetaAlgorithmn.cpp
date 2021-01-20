@@ -118,7 +118,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-    ThreadManager::ThreadVarsArray<InitAlphaBetaVars> tva(threadManager.getNumThreads(), InitAlphaBetaVars(this, &alphaBetaVars, alphaBetaVars.layerNumber, invalidArray, initAlreadyDone));
+    ThreadManager::ThreadVarsArray<InitAlphaBetaVars> tva(threadManager.getNumThreads(), (InitAlphaBetaVars &)InitAlphaBetaVars(this, &alphaBetaVars, alphaBetaVars.layerNumber, invalidArray, initAlreadyDone));
 
     // process each state in the current layer
     switch (threadManager.executeParallelLoop(initAlphaBetaThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[alphaBetaVars.layerNumber].knotsInLayer - 1, 1)) {
@@ -236,7 +236,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-    ThreadManager::ThreadVarsArray<RunAlphaBetaVars> tva(threadManager.getNumThreads(), RunAlphaBetaVars(this, &alphaBetaVars, alphaBetaVars.layerNumber));
+    ThreadManager::ThreadVarsArray<RunAlphaBetaVars> tva(threadManager.getNumThreads(), (RunAlphaBetaVars &)RunAlphaBetaVars(this, &alphaBetaVars, alphaBetaVars.layerNumber));
 
     // so far no multi-threadin implemented
     threadManager.setNumThreads(1);

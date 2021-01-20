@@ -46,6 +46,9 @@
     <Filter Include="Qt Files\test">
       <UniqueIdentifier>{944f132b-1dc6-4222-a345-79e3d2c821e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Perfect AI Files">
+      <UniqueIdentifier>{d93d8682-a140-4172-a71d-d32ed65560cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -122,6 +125,42 @@
     </ClInclude>
     <ClInclude Include="src\thread_win32_osx.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\bufferedFile.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\cyclicArray.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\mill.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\millAI.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\miniMax.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\miniMax_retroAnalysis.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\miniMaxAI.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\miniMaxWin.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\perfectAI.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\randomAI.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\strLib.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect\threadManager.h">
+      <Filter>Perfect AI Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +400,51 @@
     </ClCompile>
     <ClCompile Include="src\mills.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\bufferedFile.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\cyclicArray.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\mill.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\millAI.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\miniMax.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\miniMax_alphaBetaAlgorithmn.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\miniMax_database.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\miniMax_retroAnalysis.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\miniMax_statistics.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\miniMax_test.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\minMaxAI.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\perfectAI.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\randomAI.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\strLib.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\threadManager.cpp">
+      <Filter>Perfect AI Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

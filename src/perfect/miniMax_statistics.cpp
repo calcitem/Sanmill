@@ -281,15 +281,15 @@ MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
 LPWSTR MiniMax::getCurrentActionStr()
 {
     switch (curCalculationActionId) {
-    case MM_ACTION_INIT_RETRO_ANAL:	return L"initiating retro-analysis";
-    case MM_ACTION_PREPARE_COUNT_ARRAY:	return L"preparing count arrays";
-    case MM_ACTION_PERFORM_RETRO_ANAL:	return L"performing retro analysis";
-    case MM_ACTION_PERFORM_ALPHA_BETA:	return L"performing alpha-beta-algorithmn";
-    case MM_ACTION_TESTING_LAYER:	return L"testing calculated layer";
-    case MM_ACTION_SAVING_LAYER_TO_FILE:	return L"saving layer to file";
-    case MM_ACTION_CALC_LAYER_STATS:	return L"making layer statistics";
-    case MM_ACTION_NONE:	return L"none";
-    default:								return L"undefined";
+    case MM_ACTION_INIT_RETRO_ANAL:	return (LPWSTR)L"initiating retro-analysis";
+    case MM_ACTION_PREPARE_COUNT_ARRAY:	return (LPWSTR)L"preparing count arrays";
+    case MM_ACTION_PERFORM_RETRO_ANAL:	return (LPWSTR)L"performing retro analysis";
+    case MM_ACTION_PERFORM_ALPHA_BETA:	return (LPWSTR)L"performing alpha-beta-algorithmn";
+    case MM_ACTION_TESTING_LAYER:	return (LPWSTR)L"testing calculated layer";
+    case MM_ACTION_SAVING_LAYER_TO_FILE:	return (LPWSTR)L"saving layer to file";
+    case MM_ACTION_CALC_LAYER_STATS:	return (LPWSTR)L"making layer statistics";
+    case MM_ACTION_NONE:	return (LPWSTR)L"none";
+    default:								return (LPWSTR)L"undefined";
     }
 }
 

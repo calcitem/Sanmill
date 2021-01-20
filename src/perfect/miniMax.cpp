@@ -190,7 +190,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 
         if (!abortCalculation) {
             // calc layer statistics
-            calcLayerStatistics("statistics.txt");
+            calcLayerStatistics((char *)"statistics.txt");
 
             // save header
             skvfHeader.completed = true;

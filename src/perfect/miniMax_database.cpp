@@ -503,7 +503,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
         databaseByte = myLss->shortKnotValueByte[stateNumber / 4];
 
         // measure io-operations per second
-        measureIops(numReadSkvOperations, readSkvInterval, curTimeBefore, "Read  knot value ");
+        measureIops(numReadSkvOperations, readSkvInterval, curTimeBefore, (char *)"Read  knot value ");
     }
 
     // make half byte
@@ -567,7 +567,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
         value = myPis->plyInfo[stateNumber];
 
         // measure io-operations per second
-        measureIops(numReadPlyOperations, readPlyInterval, curTimeBefore, "Read  ply info   ");
+        measureIops(numReadPlyOperations, readPlyInterval, curTimeBefore, (char *)"Read  ply info   ");
     }
 }
 
@@ -630,7 +630,7 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
     } while (InterlockedCompareExchange(pShortKnotValue, newShortKnotValueLong, curShortKnotValueLong) != curShortKnotValueLong);
 
     // measure io-operations per second
-    measureIops(numWriteSkvOperations, writeSkvInterval, curTimeBefore, "Write knot value ");
+    measureIops(numWriteSkvOperations, writeSkvInterval, curTimeBefore, (char *)"Write knot value ");
 }
 
 //-----------------------------------------------------------------------------
@@ -689,5 +689,5 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int state
     myPis->plyInfo[stateNumber] = value;
 
     // measure io-operations per second
-    measureIops(numWritePlyOperations, writePlyInterval, curTimeBefore, "Write ply info   ");
+    measureIops(numWritePlyOperations, writePlyInterval, curTimeBefore, (char *)"Write ply info   ");
 }

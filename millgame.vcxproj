@@ -284,7 +284,7 @@
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>qtmaind.lib;shell32.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Multimediad.lib;Qt5MultimediaWidgetsd.lib;Qt5Networkd.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;shell32.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Multimediad.lib;Qt5MultimediaWidgetsd.lib;Qt5Networkd.lib;Qt5Widgetsd.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\openssl\lib;C:\Utils\my_sql\my_sql\lib;C:\Utils\postgresql\pgsql\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -461,6 +461,18 @@
     <ClInclude Include="src\mills.h" />
     <ClInclude Include="src\movegen.h" />
     <ClInclude Include="src\movepick.h" />
+    <ClInclude Include="src\perfect\bufferedFile.h" />
+    <ClInclude Include="src\perfect\cyclicArray.h" />
+    <ClInclude Include="src\perfect\mill.h" />
+    <ClInclude Include="src\perfect\millAI.h" />
+    <ClInclude Include="src\perfect\miniMax.h" />
+    <ClInclude Include="src\perfect\miniMaxAI.h" />
+    <ClInclude Include="src\perfect\miniMaxWin.h" />
+    <ClInclude Include="src\perfect\miniMax_retroAnalysis.h" />
+    <ClInclude Include="src\perfect\perfectAI.h" />
+    <ClInclude Include="src\perfect\randomAI.h" />
+    <ClInclude Include="src\perfect\strLib.h" />
+    <ClInclude Include="src\perfect\threadManager.h" />
     <ClInclude Include="src\search.h" />
     <ClInclude Include="src\thread_win32_osx.h" />
     <ClInclude Include="src\tt.h" />
@@ -731,6 +743,21 @@
     <ClCompile Include="src\mills.cpp" />
     <ClCompile Include="src\movegen.cpp" />
     <ClCompile Include="src\movepick.cpp" />
+    <ClCompile Include="src\perfect\bufferedFile.cpp" />
+    <ClCompile Include="src\perfect\cyclicArray.cpp" />
+    <ClCompile Include="src\perfect\mill.cpp" />
+    <ClCompile Include="src\perfect\millAI.cpp" />
+    <ClCompile Include="src\perfect\miniMax.cpp" />
+    <ClCompile Include="src\perfect\miniMax_alphaBetaAlgorithmn.cpp" />
+    <ClCompile Include="src\perfect\miniMax_database.cpp" />
+    <ClCompile Include="src\perfect\miniMax_retroAnalysis.cpp" />
+    <ClCompile Include="src\perfect\miniMax_statistics.cpp" />
+    <ClCompile Include="src\perfect\miniMax_test.cpp" />
+    <ClCompile Include="src\perfect\minMaxAI.cpp" />
+    <ClCompile Include="src\perfect\perfectAI.cpp" />
+    <ClCompile Include="src\perfect\randomAI.cpp" />
+    <ClCompile Include="src\perfect\strLib.cpp" />
+    <ClCompile Include="src\perfect\threadManager.cpp" />
     <ClCompile Include="src\search.cpp" />
     <ClCompile Include="src\tt.cpp" />
     <ClCompile Include="src\misc.cpp" />
