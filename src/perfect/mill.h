@@ -68,7 +68,7 @@ public:
     ~Mill();
 
     // Functions
-    void undo_move();
+    void undoMove();
     void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer);
     void setAI(int player, MillAI *AI);
     bool doMove(unsigned int pushFrom, unsigned int pushTo);

@@ -16,6 +16,7 @@
 
 /*** Konstanten ******************************************************/
 #define MAX_NUM_POS_MOVES (3 * 18) // not (9 * 4) = 36 since the possibilities with 3 stones are more
+
 #define SAFE_DELETE(p)     \
 	{                      \
 		if (p)             \

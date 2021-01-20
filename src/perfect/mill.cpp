@@ -795,10 +795,10 @@ void Mill::printBoard()
 }
 
 //-----------------------------------------------------------------------------
-// Name: undo_move()
+// Name: undoMove()
 // Desc: Sets the initial board as the current one and apply all (minus one) moves from the move history.
 //-----------------------------------------------------------------------------
-void Mill::undo_move(void)
+void Mill::undoMove(void)
 {
     // locals
     unsigned int *moveLogFrom_bak = new unsigned int[movesDone];
