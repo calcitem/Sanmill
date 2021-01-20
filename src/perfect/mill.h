@@ -1,13 +1,13 @@
 /*********************************************************************\
-    Position.h
+    Mill.h
     Copyright (c) Thomas Weber. All rights reserved.
     Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
     Licensed under the MIT License.
     https://github.com/madweasel/madweasels-cpp
 \*********************************************************************/
 
-#ifndef MUEHLE_H
-#define MUEHLE_H
+#ifndef MILL_H
+#define MILL_H
 
 #include <iostream>
 #include <cstdio>
@@ -42,7 +42,7 @@ using namespace std;
 
 /*** Klassen *********************************************************/
 
-class Position
+class Mill
 {
 private:
     // Variables
@@ -64,21 +64,21 @@ private:
 
 public:
     // Constructor / destructor
-    Position();
-    ~Position();
+    Mill();
+    ~Mill();
 
     // Functions
     void undo_move();
     void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer);
     void setAI(int player, MillAI *AI);
-    bool do_move(unsigned int pushFrom, unsigned int pushTo);
+    bool doMove(unsigned int pushFrom, unsigned int pushTo);
     void getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
     bool setCurrentGameState(fieldStruct *curState);
     bool compareWithField(fieldStruct *compareField);
     bool comparePlayers(Player *playerA, Player *playerB);
     void printBoard();
     bool startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer, bool settingPhase);
-    bool put_piece(unsigned int pos, int player);
+    bool putPiece(unsigned int pos, int player);
     bool settingPhaseHasFinished();
     void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned int *pushTo);
     void setUpCalcPossibleMoves(Player *player);
@@ -90,46 +90,57 @@ public:
     bool getField(int *pField);
     bool isCurrentPlayerHuman();
     bool isOpponentPlayerHuman();
+
     bool inSettingPhase()
     {
         return field.settingPhase;
     }
+
     unsigned int mustStoneBeRemoved()
     {
         return field.stoneMustBeRemoved;
     }
+
     int getWinner()
     {
         return winner;
     }
+
     int getCurrentPlayer()
     {
         return field.curPlayer->id;
     }
+
     unsigned int getLastMoveFrom()
     {
         return (movesDone ? moveLogFrom[movesDone - 1] : field.size);
     }
+
     unsigned int getLastMoveTo()
     {
         return (movesDone ? moveLogTo[movesDone - 1] : field.size);
     }
+
     unsigned int getMovesDone()
     {
         return movesDone;
     }
+
     unsigned int getNumStonesSet()
     {
         return field.stonesSet;
     }
+
     int getBeginningPlayer()
     {
         return beginningPlayer;
     }
+
     unsigned int getNumStonOfCurPlayer()
     {
         return field.curPlayer->numStones;
     }
+
     unsigned int getNumStonOfOppPlayer()
     {
         return field.oppPlayer->numStones;

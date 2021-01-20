@@ -58,10 +58,12 @@ MyString::~MyString()
         delete[] strA;
         strA = nullptr;
     }
+
     if (strW != nullptr) {
         delete[] strW;
         strW = nullptr;
     }
+
     strW = nullptr;
     strA = nullptr;
     length = 0;
@@ -99,8 +101,10 @@ MyString &MyString::assign(const char *cStr)
 
     if (reserved < newReserved)
         this->~MyString();
+
     if (strA == nullptr)
         strA = new char[newReserved];
+
     if (strW == nullptr)
         strW = new WCHAR[newReserved];
 
@@ -126,8 +130,10 @@ MyString &MyString::assign(const WCHAR *cStr)
 
     if (reserved < newReserved)
         this->~MyString();
+
     if (strA == nullptr)
         strA = new char[newReserved];
+
     if (strW == nullptr)
         strW = new WCHAR[newReserved];
 
@@ -179,7 +185,6 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned
 
     // read each value
     do {
-
         // read from buffer if necessary
         if (curBufferPos >= bufferSize - maxValueLengthInBytes) {
             memcpy(&buffer[0], &buffer[curBufferPos], bufferSize - curBufferPos);
@@ -352,9 +357,11 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned
                 if (decimalPos) {
                     (*pData) += fractionalValue * fractionalFactor[decimalPos];
                 }
+
                 if (valIsNegativ) {
                     (*pData) *= -1;
                 }
+
                 if (exponent) {
                     (*pData) *= pow(10, expIsNegativ ? -1 * exponentialValue : 1);
                 }

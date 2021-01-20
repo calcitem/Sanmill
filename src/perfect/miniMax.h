@@ -292,25 +292,30 @@ public:
         while (true)
             ;
     }; // is called once before building the tree
+
     virtual unsigned int *getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities)
     {
         while (true)
             ;
         return 0;
     }; // returns a pointer to the possibility-IDs
+
     virtual void deletePossibilities(unsigned int threadNo, void *pPossibilities)
     {
         while (true)
             ;
     };
+
     virtual void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, TwoBit value, unsigned int *freqValuesSubMoves, PlyInfoVarType plyInfo)
     {
     };
+
     virtual void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities)
     {
         while (true)
             ;
     };
+
     virtual void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities)
     {
         while (true)
@@ -321,29 +326,34 @@ public:
     {
         return false;
     };
+
     virtual unsigned int getNumberOfLayers()
     {
         while (true)
             ;
         return 0;
     };
+
     virtual unsigned int getNumberOfKnotsInLayer(unsigned int layerNum)
     {
         while (true)
             ;
         return 0;
     };
+
     virtual void getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers, unsigned int *succLayers)
     {
         while (true)
             ;
     };
+
     virtual unsigned int getPartnerLayer(unsigned int layerNum)
     {
         while (true)
             ;
         return 0;
     };
+
     virtual string getOutputInformation(unsigned int layerNum)
     {
         while (true)
@@ -356,6 +366,7 @@ public:
         while (true)
             ;
     };
+
     virtual bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
     {
         while (true)
@@ -386,11 +397,13 @@ public:
             ;
         return 0;
     };
+
     virtual void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers)
     {
         while (true)
             ;
     };
+
     virtual void getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
     {
         while (true)
@@ -413,6 +426,7 @@ public:
         while (true)
             ;
     };
+
     virtual void wrapUpDatabaseCalculation(bool calculationAborted)
     {
         while (true)
@@ -481,6 +495,7 @@ private:
         AlphaBetaDefaultThreadVars()
         {
         };
+
         AlphaBetaDefaultThreadVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber)
         {
             this->statesProcessed = 0;
@@ -491,6 +506,7 @@ private:
                 this->statsValueCounter[curStateValue] = 0;
             }
         };
+
         void reduceDefault()
         {
             pMiniMax->numStatesProcessed += this->statesProcessed;
@@ -508,15 +524,18 @@ private:
         InitAlphaBetaVars()
         {
         };
+
         InitAlphaBetaVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
         };
+
         void initializeElement(InitAlphaBetaVars &master)
         {
             *this = master;
         };
+
         void reduce()
         {
             reduceDefault();
@@ -532,19 +551,23 @@ private:
         RunAlphaBetaVars()
         {
         };
+
         RunAlphaBetaVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
         {
             initializeElement(*this);
         };
+
         ~RunAlphaBetaVars()
         {
             SAFE_DELETE_ARRAY(branchArray);
             SAFE_DELETE_ARRAY(freqValuesSubMovesBranchWon);
         }
+
         void reduce()
         {
             reduceDefault();
         };
+
         void initializeElement(RunAlphaBetaVars &master)
         {
             *this = master;
@@ -592,6 +615,7 @@ private:
         RetroAnalysisDefaultThreadVars()
         {
         };
+
         RetroAnalysisDefaultThreadVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber)
         {
             this->statesProcessed = 0;
@@ -602,6 +626,7 @@ private:
                 this->statsValueCounter[curStateValue] = 0;
             }
         };
+
         void reduceDefault()
         {
             pMiniMax->numStatesProcessed += this->statesProcessed;
@@ -619,15 +644,18 @@ private:
         InitRetroAnalysisVars()
         {
         };
+
         InitRetroAnalysisVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
         };
+
         void initializeElement(InitRetroAnalysisVars &master)
         {
             *this = master;
         };
+
         void reduce()
         {
             reduceDefault();
@@ -641,13 +669,16 @@ private:
         AddNumSuccedorsVars()
         {
         };
+
         AddNumSuccedorsVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         {
         };
+
         void initializeElement(AddNumSuccedorsVars &master)
         {
             *this = master;
         };
+
         void reduce()
         {
             reduceDefault();

@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <windows.h>
-#include "position.h"
+#include "mill.h"
 #include "miniMaxAI.h"
 #include "randomAI.h"
 #include "perfectAI.h"
@@ -26,7 +26,7 @@ int main(void)
     bool playerTwoHuman = false;
     char ch[100];
     unsigned int pushFrom, pushTo;
-    Position *pos = new Position();
+    Mill *pos = new Mill();
     PerfectAI *ai = new PerfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
@@ -48,17 +48,20 @@ int main(void)
 #endif // SELF_PLAY
 
     if (calculateDatabase) {
-
         // calculate
         ai->calculateDatabase(MAX_DEPTH_OF_TREE, false);
 
         // test database
         cout << endl
             << "Begin test starting from layer: ";
+
         startTestFromLayer;
+
         cout << endl
             << "End test at layer: ";
+
         endTestAtLayer;
+
         ai->testLayers(startTestFromLayer, endTestAtLayer);
     } else {
 
@@ -134,12 +137,12 @@ int main(void)
                         break;
                     }
 
-                } while (pos->do_move(pushFrom, pushTo) == false);
+                } while (pos->doMove(pushFrom, pushTo) == false);
 
                 // Computer
             } else {
                 cout << "\n";
-                pos->do_move(pushFrom, pushTo);
+                pos->doMove(pushFrom, pushTo);
             }
 
         } while (pos->getWinner() == 0);

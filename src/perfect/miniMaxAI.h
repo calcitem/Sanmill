@@ -86,52 +86,66 @@ protected:
     {
         return 0;
     };
+
     unsigned int getNumberOfKnotsInLayer(unsigned int layerNum)
     {
         return 0;
     };
+
     void getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers, unsigned int *succLayers)
     {
     };
+
     unsigned int getPartnerLayer(unsigned int layerNum)
     {
         return 0;
     };
+
     string getOutputInformation(unsigned int layerNum)
     {
         return string("");
     };
+
     void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
     {
     };
+
     bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
     {
         return false;
     };
+
     bool getOpponentLevel(unsigned int threadNo)
     {
         return false;
     };
+
     unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int &layerNum, unsigned int &stateNumber)
     {
         return 0;
     };
+
     unsigned int getLayerNumber(unsigned int threadNo)
     {
         return 0;
     };
+
     void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers)
     {
     };
+
     void getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
     {
     };
+
     void printBoard(unsigned int threadNo, unsigned char value)
     {
     };
+
     void prepareDatabaseCalculation()
     {
     };
+
     void wrapUpDatabaseCalculation(bool calculationAborted)
     {
     };

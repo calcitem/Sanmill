@@ -33,6 +33,7 @@ BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSize
         bytesInReadBuffer[curThread] = 0;
         bytesInWriteBuffer[curThread] = 0;
     }
+
     InitializeCriticalSection(&csIO);
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
@@ -80,6 +81,7 @@ long long BufferedFile::getFileSize()
     LARGE_INTEGER liFileSize;
     GetFileSizeEx(hFile, &liFileSize);
     fileSize = liFileSize.QuadPart;
+
     return fileSize;
 }
 
@@ -93,6 +95,7 @@ bool BufferedFile::flushBuffers()
         writeDataToFile(hFile, curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], bytesInWriteBuffer[threadNo], &writeBuffer[threadNo * bufferSize + 0]);
         bytesInWriteBuffer[threadNo] = 0;
     }
+
     return true;
 }
 
@@ -109,9 +112,11 @@ void BufferedFile::writeDataToFile(HANDLE hFile, long long offset, unsigned int 
     liDistanceToMove.QuadPart = offset;
 
     EnterCriticalSection(&csIO);
+
     while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
         << "SetFilePointerEx  failed!";
+
     while (restingBytes > 0) {
         if (WriteFile(hFile, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
@@ -124,6 +129,7 @@ void BufferedFile::writeDataToFile(HANDLE hFile, long long offset, unsigned int 
                 << "WriteFile Failed!";
         }
     }
+
     LeaveCriticalSection(&csIO);
 }
 
@@ -140,9 +146,11 @@ void BufferedFile::readDataFromFile(HANDLE hFile, long long offset, unsigned int
     liDistanceToMove.QuadPart = offset;
 
     EnterCriticalSection(&csIO);
+
     while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
         << "SetFilePointerEx failed!";
+
     while (restingBytes > 0) {
         if (ReadFile(hFile, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
@@ -155,6 +163,7 @@ void BufferedFile::readDataFromFile(HANDLE hFile, long long offset, unsigned int
                 << "ReadFile Failed!";
         }
     }
+
     LeaveCriticalSection(&csIO);
 }
 
@@ -176,6 +185,7 @@ bool BufferedFile::writeBytes(unsigned int threadNo, long long positionInFile, u
     // parameters ok?
     if (threadNo >= numThreads)
         return false;
+
     if (pData == nullptr)
         return false;
 
@@ -215,6 +225,7 @@ bool BufferedFile::readBytes(unsigned int threadNo, long long positionInFile, un
     // parameters ok?
     if (threadNo >= numThreads)
         return false;
+
     if (pData == nullptr)
         return false;
 
@@ -225,6 +236,7 @@ bool BufferedFile::readBytes(unsigned int threadNo, long long positionInFile, un
             return false;
         readDataFromFile(hFile, positionInFile, bytesInReadBuffer[threadNo], &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]]);
     }
+
     memcpy(pData, &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]], numBytes);
     bytesInReadBuffer[threadNo] -= numBytes;
     curReadingPointer[threadNo] = positionInFile + numBytes;

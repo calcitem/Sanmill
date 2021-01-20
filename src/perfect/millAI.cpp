@@ -123,6 +123,7 @@ void Player::copyPlayer(Player *destination)
 
     for (i = 0; i < MAX_NUM_POS_MOVES; i++)
         destination->posFrom[i] = this->posFrom[i];
+
     for (i = 0; i < MAX_NUM_POS_MOVES; i++)
         destination->posTo[i] = this->posTo[i];
 }

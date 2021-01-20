@@ -116,7 +116,6 @@ unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *numPossibilities, voi
 
     // possibilities with cut off
     for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
-
         // move possible ?
         if (field->board[i] == field->squareIsFree) {
 
@@ -144,7 +143,6 @@ unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void 
 
     // if he is not allowed to spring
     if (field->curPlayer->numStones > 3) {
-
         for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
             for (dir = 0; dir < 4; dir++) {
 
@@ -165,7 +163,6 @@ unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void 
             }
         }
     } else {
-
         for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
             for (to = 0; to < field->size; to++) {
 
@@ -387,12 +384,14 @@ inline void MiniMaxAI::updateWarning(unsigned int firstStone, unsigned int secon
     // no stone must be removed if each belongs to a mill
     unsigned int i;
     bool atLeastOneStoneRemoveAble = false;
+
     if (field->stoneMustBeRemoved)
         for (i = 0; i < field->size; i++)
             if (field->stonePartOfMill[i] == 0 && field->board[i] == field->oppPlayer->id) {
                 atLeastOneStoneRemoveAble = true;
                 break;
             }
+
     if (!atLeastOneStoneRemoveAble)
         field->stoneMustBeRemoved = 0;
 }
@@ -413,14 +412,12 @@ inline void MiniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwne
 
         // neighbor must exist
         if (neighbor < field->size) {
-
             // relevant when moving from one square to another connected square
             if (ignoreStone == neighbor)
                 continue;
 
             // if there is no neighbour stone than it only affects the actual stone
             if (field->board[neighbor] == field->squareIsFree) {
-
                 if (stoneRemoved)
                     stoneOwner->numPossibleMoves--;
                 else
@@ -428,13 +425,11 @@ inline void MiniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwne
 
                 // if there is a neighbour stone than it effects only this one
             } else if (field->board[neighbor] == field->curPlayer->id) {
-
                 if (stoneRemoved)
                     field->curPlayer->numPossibleMoves++;
                 else
                     field->curPlayer->numPossibleMoves--;
             } else {
-
                 if (stoneRemoved)
                     field->oppPlayer->numPossibleMoves++;
                 else
@@ -588,6 +583,7 @@ void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
     // when game has finished - perfect for the current player
     if (gameHasFinished && !opponentsMove)
         currentValue = VALUE_GAME_WON - curSearchDepth;
+
     if (gameHasFinished && opponentsMove)
         currentValue = VALUE_GAME_LOST + curSearchDepth;
 

@@ -44,6 +44,7 @@ MiniMax::MiniMax()
     numWriteSkvOperations = 0;
     numReadPlyOperations = 0;
     numWritePlyOperations = 0;
+
     if (MEASURE_ONLY_IO) {
         readSkvInterval.QuadPart = 0;
         writeSkvInterval.QuadPart = 0;
@@ -90,6 +91,7 @@ bool MiniMax::falseOrStop()
 {
     if (stopOnCriticalError)
         WaitForSingleObject(GetCurrentProcess(), INFINITE);
+
     return false;
 }
 
@@ -145,7 +147,6 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 
     // when database not completed then do it
     if (hFileShortKnotValues != nullptr && skvfHeader.completed == false) {
-
         // reserve memory
         lastCalculatedLayer.clear();
         depthOfFullTree = maxDepthOfTree;
@@ -186,8 +187,8 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
         // don't save layer and header when only preparing layers or when
         if (onlyPrepareLayer)
             return;
-        if (!abortCalculation) {
 
+        if (!abortCalculation) {
             // calc layer statistics
             calcLayerStatistics("statistics.txt");
 
@@ -223,7 +224,6 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 
     // moves can be done reverse, leading to too depth searching trees
     if (shallRetroAnalysisBeUsed(layerNumber)) {
-
         // calc values for all states of layer
         layersToCalculate.push_back(layerNumber);
         if (layerNumber != layerStats[layerNumber].partnerLayer)

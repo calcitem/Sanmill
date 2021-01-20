@@ -8,149 +8,166 @@
 
 #include "perfectAI.h"
 
+
 unsigned int soTableTurnLeft[] = {
-    2, 14, 23,
-    5, 13, 20,
-    8, 12, 17,
-    1, 4, 7, 16, 19, 22,
-    6, 11, 15,
-    3, 10, 18,
-    0, 9, 21 };
+ 2,      14,      23,
+    5,   13,   20,
+       8,12,17,
+ 1, 4, 7,   16,19,22,
+       6,11,15,
+    3,   10,   18,
+ 0,       9,      21
+};
 
 unsigned int soTableDoNothing[] = {
-    0, 1, 2,
-    3, 4, 5,
-    6, 7, 8,
-    9, 10, 11, 12, 13, 14,
-    15, 16, 17,
-    18, 19, 20,
-    21, 22, 23 };
+ 0,       1,       2,
+    3,    4,    5,
+       6, 7, 8,
+ 9,10,11,   12,13,14,
+      15,16,17,
+   18,   19,   20,
+21,      22,      23
+};
 
 unsigned int soTableMirrorHori[] = {
-    21, 22, 23,
-    18, 19, 20,
-    15, 16, 17,
-    9, 10, 11, 12, 13, 14,
-    6, 7, 8,
-    3, 4, 5,
-    0, 1, 2 };
+21,      22,      23,
+   18,   19,   20,
+      15,16,17,
+ 9,10,11,   12,13,14,
+       6, 7, 8,
+    3,    4,    5,
+ 0,       1,       2
+};
 
 unsigned int soTableTurn180[] = {
-    23, 22, 21,
-    20, 19, 18,
-    17, 16, 15,
-    14, 13, 12, 11, 10, 9,
-    8, 7, 6,
-    5, 4, 3,
-    2, 1, 0 };
+ 23,      22,      21,
+    20,   19,   18,
+       17,16,15,
+ 14,13,12,   11,10, 9,
+        8, 7, 6,
+     5,    4,    3,
+  2,       1,       0
+};
 
 unsigned int soTableInvert[] = {
-    6, 7, 8,
-    3, 4, 5,
-    0, 1, 2,
-    11, 10, 9, 14, 13, 12,
-    21, 22, 23,
-    18, 19, 20,
-    15, 16, 17 };
+  6,       7,       8,
+     3,    4,    5,
+        0, 1, 2,
+ 11,10, 9,   14,13,12,
+       21,22,23,
+    18,   19,   20,
+ 15,      16,      17
+};
 
 unsigned int soTableInvMirHori[] = {
-    15, 16, 17,
-    18, 19, 20,
-    21, 22, 23,
-    11, 10, 9, 14, 13, 12,
-    0, 1, 2,
-    3, 4, 5,
-    6, 7, 8 };
+ 15,      16,      17,
+    18,   19,   20,
+       21,22,23,
+ 11,10, 9,   14,13,12,
+        0, 1, 2,
+     3,    4,    5,
+  6,       7,       8
+};
 
 unsigned int soTableInvMirVert[] = {
-    8, 7, 6,
-    5, 4, 3,
-    2, 1, 0,
-    12, 13, 14, 9, 10, 11,
-    23, 22, 21,
-    20, 19, 18,
-    17, 16, 15 };
+  8,       7,       6,
+     5,    4,    3,
+        2, 1, 0,
+ 12,13,14,    9,10,11,
+       23,22,21,
+    20,   19,   18,
+ 17,      16,      15
+};
 
 unsigned int soTableInvMirDiag1[] = {
-    17, 12, 8,
-    20, 13, 5,
-    23, 14, 2,
-    16, 19, 22, 1, 4, 7,
-    21, 9, 0,
-    18, 10, 3,
-    15, 11, 6 };
+ 17,      12,       8,
+    20,   13,    5,
+       23,14, 2,
+ 16,19,22,    1, 4, 7,
+       21, 9, 0,
+    18,   10,    3,
+ 15,      11,       6
+};
 
 unsigned int soTableInvMirDiag2[] = {
-    6, 11, 15,
-    3, 10, 18,
-    0, 9, 21,
-    7, 4, 1, 22, 19, 16,
-    2, 14, 23,
-    5, 13, 20,
-    8, 12, 17 };
+  6,      11,      15,
+     3,   10,   18,
+        0, 9,21,
+  7, 4, 1,   22,19,16,
+        2,14,23,
+     5,   13,   20,
+  8,      12,      17
+};
 
 unsigned int soTableInvLeft[] = {
-    8, 12, 17,
-    5, 13, 20,
-    2, 14, 23,
-    7, 4, 1, 22, 19, 16,
-    0, 9, 21,
-    3, 10, 18,
-    6, 11, 15 };
+  8,      12,      17,
+     5,   13,   20,
+        2,14,23,
+  7, 4, 1,   22,19,16,
+        0, 9,21,
+     3,   10,   18,
+  6,      11,      15
+};
 
 unsigned int soTableInvRight[] = {
-    15, 11, 6,
-    18, 10, 3,
-    21, 9, 0,
-    16, 19, 22, 1, 4, 7,
-    23, 14, 2,
-    20, 13, 5,
-    17, 12, 8 };
+ 15,      11,       6,
+    18,   10,    3,
+       21, 9, 0,
+ 16,19,22,    1, 4, 7,
+       23,14, 2,
+    20,   13,    5,
+ 17,      12,       8
+};
 
 unsigned int soTableInv180[] = {
-    17, 16, 15,
-    20, 19, 18,
-    23, 22, 21,
-    12, 13, 14, 9, 10, 11,
-    2, 1, 0,
-    5, 4, 3,
-    8, 7, 6 };
+ 17,      16,      15,
+    20,   19,   18,
+       23,22,21,
+ 12,13,14,    9,10,11,
+        2, 1, 0,
+     5,    4,    3,
+  8,       7,       6
+};
 
 unsigned int soTableMirrorDiag1[] = {
-    0, 9, 21,
-    3, 10, 18,
-    6, 11, 15,
-    1, 4, 7, 16, 19, 22,
-    8, 12, 17,
-    5, 13, 20,
-    2, 14, 23 };
+  0,       9,      21,
+     3,   10,   18,
+        6,11,15,
+  1, 4, 7,   16,19,22,
+        8,12,17,
+     5,   13,   20,
+  2,      14,      23
+};
 
 unsigned int soTableTurnRight[] = {
-    21, 9, 0,
-    18, 10, 3,
-    15, 11, 6,
-    22, 19, 16, 7, 4, 1,
-    17, 12, 8,
-    20, 13, 5,
-    23, 14, 2 };
+  21,       9,       0,
+     18,   10,    3,
+        15,11, 6,
+  22,19,16,    7, 4, 1,
+        17,12, 8,
+     20,   13,    5,
+  23,      14,       2
+};
 
 unsigned int soTableMirrorVert[] = {
-    2, 1, 0,
-    5, 4, 3,
-    8, 7, 6,
-    14, 13, 12, 11, 10, 9,
-    17, 16, 15,
-    20, 19, 18,
-    23, 22, 21 };
+   2,       1,       0,
+      5,    4,    3,
+         8, 7, 6,
+  14,13,12,   11,10, 9,
+        17,16,15,
+     20,   19,   18,
+  23,      22,      21
+};
 
 unsigned int soTableMirrorDiag2[] = {
-    23, 14, 2,
-    20, 13, 5,
-    17, 12, 8,
-    22, 19, 16, 7, 4, 1,
-    15, 11, 6,
-    18, 10, 3,
-    21, 9, 0 };
+  23,      14,       2,
+     20,   13,    5,
+        17,12, 8,
+  22,19,16,    7, 4, 1,
+        15,11, 6,
+     18,   10,    3,
+  21,       9,       0
+};
 
 // define the four groups
 unsigned int squareIndexGroupA[] = { 3, 5, 20, 18 };
@@ -187,6 +204,7 @@ PerfectAI::PerfectAI(const char *directory)
 
     //
     threadVars = new ThreadVars[getNumThreads()];
+
     for (unsigned int curThread = 0; curThread < getNumThreads(); curThread++) {
         threadVars[curThread].parent = this;
         threadVars[curThread].field = &dummyField;
@@ -199,13 +217,13 @@ PerfectAI::PerfectAI(const char *directory)
     if (strlen(directory) && PathFileExistsA(directory)) {
         ssPreCalcVarsFilePath << directory << "\\";
     }
+
     ssPreCalcVarsFilePath << "preCalculatedVars.dat";
     hFilePreCalcVars = CreateFileA(ssPreCalcVarsFilePath.str().c_str(), GENERIC_READ /*| GENERIC_WRITE*/, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
     ReadFile(hFilePreCalcVars, &preCalcVarsHeader, sizeof(PreCalcedVarsFileHeader), &dwBytesRead, nullptr);
 
     // vars already stored in file?
     if (dwBytesRead) {
-
         // Read from file
         ReadFile(hFilePreCalcVars, layer, sizeof(Layer) * NUM_LAYERS, &dwBytesRead, nullptr);
         ReadFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr);
@@ -308,7 +326,6 @@ PerfectAI::PerfectAI(const char *directory)
         // concatenated symmetry operations
         for (a = 0; a < NUM_SYM_OPERATIONS; a++) {
             for (b = 0; b < NUM_SYM_OPERATIONS; b++) {
-
                 // test each symmetry operation
                 for (c = 0; c < NUM_SYM_OPERATIONS; c++) {
 
@@ -353,7 +370,6 @@ PerfectAI::PerfectAI(const char *directory)
             indexAB[stateAB] = NOT_INDEXED;
 
         for (stateAB = 0; stateAB < MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B; stateAB++) {
-
             // new state ?
             if (indexAB[stateAB] == NOT_INDEXED) {
 
@@ -399,7 +415,8 @@ PerfectAI::PerfectAI(const char *directory)
             for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
                 if (a + b > numSquaresGroupC + numSquaresGroupD)
                     continue;
-                originalStateCD_tmp[a][b] = new unsigned int[mOverN[numSquaresGroupC + numSquaresGroupD][a] * mOverN[numSquaresGroupC + numSquaresGroupD - a][b]];
+                originalStateCD_tmp[a][b] =
+                    new unsigned int[mOverN[numSquaresGroupC + numSquaresGroupD][a] * mOverN[numSquaresGroupC + numSquaresGroupD - a][b]];
                 anzahlStellungenCD[a][b] = 0;
             }
         }
@@ -408,7 +425,6 @@ PerfectAI::PerfectAI(const char *directory)
         memset(indexCD, NOT_INDEXED, 4 * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D);
 
         for (stateCD = 0; stateCD < MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D; stateCD++) {
-
             // new state ?
             if (indexCD[stateCD] == NOT_INDEXED) {
 
@@ -2289,6 +2305,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
                     }
                 }
             }
+
         } else if (!tv->gameHasFinished) {
 
             // test each destination
@@ -2371,7 +2388,6 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
 
                     // stone mustn't be part of mill
                     if ((!(tv->field->board[tv->field->neighbour[from][0][0]] == tv->field->curPlayer->id && tv->field->board[tv->field->neighbour[from][0][1]] == tv->field->curPlayer->id)) && (!(tv->field->board[tv->field->neighbour[from][1][0]] == tv->field->curPlayer->id && tv->field->board[tv->field->neighbour[from][1][1]] == tv->field->curPlayer->id))) {
-
                         // put back stone
                         tv->field->stoneMustBeRemoved = 1;
                         tv->field->board[from] = tv->field->curPlayer->id;
@@ -2456,12 +2472,14 @@ bool PerfectAI::checkMoveAndSetSituation()
                 // count completed mills
                 numberOfMillsCurrentPlayer = 0;
                 numberOfMillsOpponentPlayer = 0;
+
                 for (i = 0; i < fieldStruct::size; i++) {
                     if (tv->field->board[i] == tv->field->curPlayer->id)
                         numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[i];
                     else
                         numberOfMillsOpponentPlayer += tv->field->stonePartOfMill[i];
                 }
+
                 numberOfMillsCurrentPlayer /= 3;
                 numberOfMillsOpponentPlayer /= 3;
 
@@ -2634,13 +2652,17 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     // perform several commands to see in debug mode where the error occurs
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
+
                     applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->stonePartOfMill[k];
+
                     applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
                     cout << "predecessor" << endl;
                     cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
                     printBoard(threadNo, 0);
+
                     if (predVars[j].playerToMoveChanged) {
                         k = tv->field->curPlayer->id;
                         tv->field->curPlayer->id = tv->field->oppPlayer->id;
@@ -2648,6 +2670,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         for (k = 0; k < tv->field->size; k++)
                             tv->field->board[k] = -1 * tv->field->board[k];
                     }
+
                     idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
                     setSituation(threadNo, layerNum, stateNum);
                     cout << "current state" << endl;
@@ -2659,10 +2682,14 @@ bool PerfectAI::checkGetPredThanGetPoss()
                 // regard used symmetry operation
                 for (k = 0; k < tv->field->size; k++)
                     symField[k] = tv->field->board[k];
+
                 applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+
                 for (k = 0; k < tv->field->size; k++)
                     symField[k] = tv->field->stonePartOfMill[k];
+
                 applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+
                 if (predVars[j].playerToMoveChanged) {
                     k = tv->field->curPlayer->id;
                     tv->field->curPlayer->id = tv->field->oppPlayer->id;
@@ -2676,7 +2703,6 @@ bool PerfectAI::checkGetPredThanGetPoss()
 
                 // go to each successor state
                 for (i = 0; i < numPossibilities; i++) {
-
                     // move
                     move(threadNo, idPossibility[i], isOpponentLevel, &pBackup, pPossibilities);
 
@@ -2693,22 +2719,28 @@ bool PerfectAI::checkGetPredThanGetPoss()
 
                 // error?
                 if (i == numPossibilities) {
-
                     cout << endl
                         << "ERROR: Not all predecessors lead to state " << stateNum << " calling move()" << endl;
                     //return false;
 
                     // perform several commands to see in debug mode where the error occurs
                     setSituation(threadNo, predVars[j].predLayerNumbers, predVars[j].predStateNumbers);
+
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
+
                     applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->stonePartOfMill[k];
+
                     applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+
                     cout << "predecessor" << endl;
                     cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
+
                     printBoard(threadNo, 0);
+
                     if (predVars[j].playerToMoveChanged) {
                         k = tv->field->curPlayer->id;
                         tv->field->curPlayer->id = tv->field->oppPlayer->id;
@@ -2716,6 +2748,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         for (k = 0; k < tv->field->size; k++)
                             tv->field->board[k] = -1 * tv->field->board[k];
                     }
+
                     idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
                     setSituation(threadNo, layerNum, stateNum);
                     cout << "current state" << endl;
@@ -2726,15 +2759,22 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     k = tv->field->curPlayer->id;
                     tv->field->curPlayer->id = tv->field->oppPlayer->id;
                     tv->field->oppPlayer->id = k;
+
                     for (k = 0; k < tv->field->size; k++)
                         tv->field->board[k] = -1 * tv->field->board[k];
+
                     setSituation(threadNo, predVars[j].predLayerNumbers, predVars[j].predStateNumbers);
+
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
+
                     applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->stonePartOfMill[k];
+
                     applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+
                     printBoard(threadNo, 0);
                     idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
                     move(threadNo, idPossibility[1], isOpponentLevel, &pBackup, pPossibilities);

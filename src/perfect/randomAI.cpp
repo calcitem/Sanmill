@@ -39,7 +39,6 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 
     // must stone be removed ?
     if (theField->stoneMustBeRemoved) {
-
         // search a stone from the enemy
         do {
             from = rand() % theField->size;
@@ -48,7 +47,6 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 
         // still in setting phase ?
     } else if (theField->settingPhase) {
-
         // search a free square
         do {
             from = theField->size;
@@ -57,7 +55,6 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int 
 
         // try to push randomly
     } else {
-
         do {
             // search an own stone
             do {

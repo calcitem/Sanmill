@@ -141,7 +141,6 @@ void MiniMax::showLayerStats(unsigned int layerNumber)
 
     // calc and show statistics
     for (curState.layerNumber = layerNumber, curState.stateNumber = 0; curState.stateNumber < layerStats[curState.layerNumber].knotsInLayer; curState.stateNumber++) {
-
         // get state value
         readKnotValueFromDatabase(curState.layerNumber, curState.stateNumber, curStateValue);
         statsValueCounter[curStateValue]++;
@@ -220,7 +219,6 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
 
         // only calc stats of completed layers
         if (layerStats[curState.layerNumber].layerIsCompletedAndInFile) {
-
             for (curState.stateNumber = 0; curState.stateNumber < layerStats[curState.layerNumber].knotsInLayer; curState.stateNumber++) {
 
                 // get state value
@@ -321,6 +319,7 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
 {
     // create new info object and add to list
     EnterCriticalSection(&c->csOsPrint);
+
     ArrayInfo ais;
     ais.belongsToLayer = layerNumber;
     ais.compressedSizeInBytes = compressedSize;
@@ -342,6 +341,7 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
     if (c->userPrintFunc != nullptr) {
         c->userPrintFunc(c->pDataForUserPrintFunc);
     }
+
     LeaveCriticalSection(&c->csOsPrint);
 }
 
@@ -378,6 +378,7 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
     if (c->userPrintFunc != nullptr) {
         c->userPrintFunc(c->pDataForUserPrintFunc);
     }
+
     LeaveCriticalSection(&c->csOsPrint);
 }
 
@@ -395,6 +396,7 @@ void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned
 
         // notify cahnge
         EnterCriticalSection(&c->csOsPrint);
+
         ArrayInfoChange	aic;
         aic.arrayInfo = &(*itr);
         aic.itemIndex = (unsigned int)std::distance(listArrays.begin(), itr);
@@ -405,6 +407,7 @@ void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned
             c->userPrintFunc(c->pDataForUserPrintFunc);
         }
         itr->updateCounter = 0;
+
         LeaveCriticalSection(&c->csOsPrint);
     }
 }

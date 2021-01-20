@@ -78,9 +78,11 @@ public:
         virtual void initializeElement()
         {
         };
+
         virtual void destroyElement()
         {
         };
+
         virtual void reduce()
         {
         };

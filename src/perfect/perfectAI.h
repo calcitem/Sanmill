@@ -186,6 +186,7 @@ protected:
         void calcPossibleMoves(Player *player);
         void storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars);
     };
+
     ThreadVars *threadVars;
 
     // database functions

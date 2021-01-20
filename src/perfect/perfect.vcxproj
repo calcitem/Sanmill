@@ -154,7 +154,7 @@
     <ClInclude Include="miniMaxWin.h" />
     <ClInclude Include="miniMax_retroAnalysis.h" />
     <ClInclude Include="miniMaxAI.h" />
-    <ClInclude Include="position.h" />
+    <ClInclude Include="mill.h" />
     <ClInclude Include="millAI.h" />
     <ClInclude Include="perfectAI.h" />
     <ClInclude Include="randomAI.h" />
@@ -172,7 +172,7 @@
     <ClCompile Include="miniMax_statistics.cpp" />
     <ClCompile Include="miniMax_test.cpp" />
     <ClCompile Include="minMaxAI.cpp" />
-    <ClCompile Include="position.cpp" />
+    <ClCompile Include="mill.cpp" />
     <ClCompile Include="millAI.cpp" />
     <ClCompile Include="perfectAI.cpp" />
     <ClCompile Include="randomAI.cpp" />

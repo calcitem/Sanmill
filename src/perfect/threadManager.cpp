@@ -58,9 +58,11 @@ ThreadManager::~ThreadManager()
     if (hBarrier != nullptr)
         delete[] hBarrier;
     hBarrier = nullptr;
+
     if (hThread != nullptr)
         delete[] hThread;
     hThread = nullptr;
+
     if (threadId != nullptr)
         delete[] threadId;
     threadId = nullptr;
@@ -127,18 +129,24 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 {
     // cancel if any thread running
     EnterCriticalSection(&csBarrier);
+
     for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
         if (hThread[curThreadNo])
             return false;
     }
+
     for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
         CloseHandle(hBarrier[curThreadNo]);
     }
+
     numThreads = newNumThreads;
+
     for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
         hBarrier[curThreadNo] = CreateEvent(nullptr, false, false, nullptr);
     }
+
     LeaveCriticalSection(&csBarrier);
+
     return true;
 }
 
@@ -149,7 +157,6 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 void ThreadManager::pauseExecution()
 {
     for (unsigned int curThread = 0; curThread < numThreads; curThread++) {
-
         // unsuspend all threads
         if (!executionPaused) {
             SuspendThread(hThread[curThread]);
@@ -158,6 +165,7 @@ void ThreadManager::pauseExecution()
             ResumeThread(hThread[curThread]);
         }
     }
+
     executionPaused = (!executionPaused);
 }
 
@@ -170,6 +178,7 @@ void ThreadManager::cancelExecution()
 {
     termineAllThreads = true;
     executionCancelled = true;
+
     if (executionPaused) {
         pauseExecution();
     }
@@ -208,6 +217,7 @@ unsigned int ThreadManager::getThreadNumber()
             return curThreadNo;
         }
     }
+
     return 0;
 }
 
@@ -284,12 +294,16 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
     // parameters ok?
     if (executionCancelled == true)
         return TM_RETURN_VALUE_EXECUTION_CANCELLED;
+
     if (pParameter == nullptr)
         return TM_RETURN_VALUE_INVALID_PARAM;
+
     if (scheduleType >= TM_SCHEDULE_NUM_TYPES)
         return TM_RETURN_VALUE_INVALID_PARAM;
+
     if (inkrement == 0)
         return TM_RETURN_VALUE_INVALID_PARAM;
+
     if (abs(finalValue - initialValue) == abs(inkrement))
         return TM_RETURN_VALUE_INVALID_PARAM;
 
@@ -305,7 +319,6 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
 
     // create threads
     for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
-
         forLoopParameters[curThreadNo].pParameter = (pParameter != nullptr ? (void *)(((char *)pParameter) + curThreadNo * parameterStructSize) : nullptr);
         forLoopParameters[curThreadNo].threadManager = this;
         forLoopParameters[curThreadNo].threadProc = threadProc;
@@ -335,14 +348,18 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
 
         // create suspended thread
         hThread[curThreadNo] = CreateThread(nullptr, dwStackSize, threadForLoop, (LPVOID)(&forLoopParameters[curThreadNo]), CREATE_SUSPENDED, &threadId[curThreadNo]);
+
         SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
+
         if (hThread[curThreadNo] == nullptr) {
             for (curThreadNo; curThreadNo > 0; curThreadNo--) {
                 CloseHandle(hThread[curThreadNo - 1]);
                 hThread[curThreadNo - 1] = nullptr;
             }
+
             return TM_RETURN_VALUE_UNEXPECTED_ERROR;
         }
+
         //DWORD dwThreadAffinityMask = 1 << curThreadNo;
         //SetThreadAffinityMask(hThread[curThreadNo], &dwThreadAffinityMask);
     }

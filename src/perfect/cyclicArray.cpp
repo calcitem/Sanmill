@@ -148,6 +148,7 @@ bool CyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
             // set pointer to beginnig of writing block
             curWritingPointer = writingBlock;
             curWritingBlock = (curWritingBlock + 1) % numBlocks;
+
             if (curWritingBlock == 0)
                 readWriteInSameRound = false;
         }
@@ -194,7 +195,6 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
 
         // load next block?
         if (curReadingPointer == readingBlock + blockSize) {
-
             // go to next block
             curReadingBlock = (curReadingBlock + 1) % numBlocks;
             if (curReadingBlock == 0)
@@ -204,7 +204,6 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
             if (curReadingBlock == curWritingBlock) {
                 curReadingPointer = writingBlock;
             } else {
-
                 // set pointer to beginnig of reading block
                 curReadingPointer = readingBlock;
 
@@ -269,7 +268,6 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
 
     //
     for (curBlock = 0; curBlock < numBlocksInFile - 1; curBlock++, curOffset += blockSize) {
-
         // load data from file
         readDataFromFile(hLoadFile, curOffset, blockSize, dataInFile);
 
@@ -323,7 +321,6 @@ bool CyclicArray::saveFile(const char *fileName)
     dataInFile = new unsigned char[blockSize];
 
     do {
-
         // copy current block
         if (curBlock == curWritingBlock && curBlock == curReadingBlock) {
             pointer = curReadingPointer;

@@ -106,6 +106,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     // does initialization file exist ?
     CreateDirectoryA(ssInvArrayDirectory.str().c_str(), nullptr);
     invalidArray = new BufferedFile(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInvArrayFilePath.str().c_str());
+
     if (invalidArray->getFileSize() == (LONGLONG)layerStats[alphaBetaVars.layerNumber].knotsInLayer) {
         PRINT(2, this, "  Loading invalid states from file: " << ssInvArrayFilePath.str());
         initAlreadyDone = true;
@@ -216,6 +217,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
             return m->falseOrStop();
         }
     }
+
     iabVars->statsValueCounter[curStateValue]++;
 
     return TM_RETURN_VALUE_OK;
@@ -251,6 +253,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     case TM_RETURN_VALUE_UNEXPECTED_ERROR:
         return falseOrStop();
     }
+
     threadManager.setNumThreads(4);
 
     // reduce and delete thread specific data
@@ -292,6 +295,7 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 
     // Version 10: state already calculated? if so leave.
     m->readPlyInfoFromDatabase(curState.layerNumber, curState.stateNumber, plyInfo);
+
     if (plyInfo != PLYINFO_VALUE_UNCALCULATED)
         return TM_RETURN_VALUE_OK;
 
@@ -354,7 +358,6 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
 
         // unable to move
         if (knot->numPossibilities == 0) {
-
             // if unable to move a final state is reached
             knot->plyInfo = 0;
             getValueOfSituation(rabVars->curThreadNo, knot->floatValue, knot->shortValue);
@@ -370,7 +373,6 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
 
             // movement is possible
         } else {
-
             // move, letTreeGroe, undo
             alphaBetaTryPossibilites(knot, rabVars, tilLevel, idPossibility, pPossibilities, maxWonfreqValuesSubMoves, alpha, beta);
 
@@ -407,7 +409,6 @@ bool MiniMax::alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsign
 
     // use database ?
     if (hFilePlyInfo != nullptr && hFileShortKnotValues != nullptr && (calcDatabase || layerInDatabase)) {
-
         // situation already existend in database ?
         readKnotValueFromDatabase(rabVars->curThreadNo, layerNumber, stateNumber, shortKnotValue, invalidLayerOrStateNumber, subLayerInDatabaseAndCompleted);
         readPlyInfoFromDatabase(layerNumber, stateNumber, plyInfo);
@@ -453,7 +454,6 @@ void MiniMax::alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, un
     unsigned int curPoss;
 
     for (curPoss = 0; curPoss < knot->numPossibilities; curPoss++) {
-
         // output
         if (tilLevel == depthOfFullTree && !calcDatabase) {
             printMoveInformation(rabVars->curThreadNo, idPossibility[curPoss], pPossibilities);
@@ -491,6 +491,7 @@ void MiniMax::alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, un
         // don't use alpha beta if using database
         if (hFileShortKnotValues != nullptr && calcDatabase)
             continue;
+
         if (hFileShortKnotValues != nullptr && tilLevel + 1 >= depthOfFullTree)
             continue;
 
@@ -581,7 +582,6 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 
         // when current knot is a won state
         if (shortKnotValue == SKV_VALUE_GAME_WON) {
-
             for (i = 0; i < knot->numPossibilities; i++) {
 
                 // invert knot value if necessary
@@ -600,9 +600,7 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 
             // current state is a lost state
         } else {
-
             for (i = 0; i < knot->numPossibilities; i++) {
-
                 // invert knot value if necessary
                 shortKnotValue = (knot->branches[i].isOpponentLevel) ? skvPerspectiveMatrix[knot->branches[i].shortValue][PL_TO_MOVE_UNCHANGED] : knot->branches[i].shortValue;
 
@@ -638,7 +636,6 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars, uns
 
     // select randomly one of the best moves, if they are equivalent
     if (tilLevel == depthOfFullTree && !calcDatabase) {
-
         // check every possible move
         for (numBestChoices = 0, i = 0; i < knot->numPossibilities; i++) {
 

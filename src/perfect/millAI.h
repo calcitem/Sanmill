@@ -94,6 +94,7 @@ public:
     {
         dummyField.createBoard();
     };
+
     ~MillAI()
     {
         dummyField.deleteBoard();

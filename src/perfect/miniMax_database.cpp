@@ -318,7 +318,6 @@ void MiniMax::openPlyInfoFile(const char *directory)
 
     // invalid file ?
     if (dwBytesRead != sizeof(plyInfoHeader) || plyInfoHeader.headerCode != PLYINFO_HEADER_CODE) {
-
         // create default header
         plyInfoHeader.plyInfoCompleted = false;
         plyInfoHeader.numLayers = getNumberOfLayers();
@@ -363,6 +362,7 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
     // don't save layer and header when only preparing layers
     PlyInfo *myPis = &plyInfos[layerNumber];
     LayerStats *myLss = &layerStats[layerNumber];
+
     if (onlyPrepareLayer)
         return;
 
@@ -472,6 +472,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
         if (!myLss->layerIsLoaded) {
 
             EnterCriticalSection(&csDatabase);
+
             if (!myLss->layerIsLoaded) {
                 // if layer is in database and completed, then load layer from file into memory, set default value otherwise
                 myLss->shortKnotValueByte = new unsigned char[myLss->sizeInBytes];
@@ -488,6 +489,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
                 memoryUsed2 += bytesAllocated;
                 PRINT(3, this, "Allocated " << bytesAllocated << " bytes in memory for knot values of layer " << layerNumber << ", which is " << (myLss->layerIsCompletedAndInFile ? "" : " NOT ") << " fully calculated, due to read operation.");
             }
+
             LeaveCriticalSection(&csDatabase);
         }
 
@@ -533,7 +535,6 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
         loadBytesFromFile(hFilePlyInfo, plyInfoHeader.headerAndPlyInfosSize + myPis->layerOffset + sizeof(PlyInfoVarType) * stateNumber, sizeof(PlyInfoVarType), &value);
         LeaveCriticalSection(&csDatabase);
     } else {
-
         // is layer already in memory?
         if (!myPis->plyInfoIsLoaded) {
             EnterCriticalSection(&csDatabase);
@@ -595,7 +596,6 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
 
     // is layer already loaded?
     if (!myLss->layerIsLoaded) {
-
         EnterCriticalSection(&csDatabase);
         if (!myLss->layerIsLoaded) {
             // reserve memory for this layer & create array for ply info with default value
@@ -659,20 +659,23 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int state
 
     // is layer already loaded
     if (!myPis->plyInfoIsLoaded) {
-
         EnterCriticalSection(&csDatabase);
+
         if (!myPis->plyInfoIsLoaded) {
             // reserve memory for this layer & create array for ply info with default value
             myPis->plyInfo = new PlyInfoVarType[myPis->knotsInLayer];
+
             for (curKnot = 0; curKnot < myPis->knotsInLayer; curKnot++) {
                 myPis->plyInfo[curKnot] = defValue;
             }
+
             bytesAllocated = myPis->sizeInBytes;
             arrayInfos.addArray(layerNumber, ArrayInfo::arrayType_plyInfos, myPis->sizeInBytes, 0);
             myPis->plyInfoIsLoaded = true;
             memoryUsed2 += bytesAllocated;
             PRINT(3, this, "Allocated " << bytesAllocated << " bytes in memory for ply info of layer " << layerNumber << " due to write operation!");
         }
+
         LeaveCriticalSection(&csDatabase);
     }
 

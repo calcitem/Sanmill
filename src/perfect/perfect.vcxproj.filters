@@ -51,7 +51,7 @@
     <ClInclude Include="config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="position.h">
+    <ClInclude Include="mill.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,10 +98,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="position.cpp">
+    <ClCompile Include="minMaxAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="minMaxAI.cpp">
+    <ClCompile Include="mill.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
