@@ -29,9 +29,6 @@
 #include "search.h"
 #include "thread_win32_osx.h"
 
-#include "perfect/mill.h"
-#include "perfect/perfectAI.h"
-
 #include "config.h"
 
 #ifdef QT_GUI_LIB
@@ -53,10 +50,6 @@ public:
     size_t idx;
     bool exit = false, searching = true; // Set before starting std::thread
     NativeThread stdThread;
-
-    // Perfect AI
-    Mill *mill;
-    PerfectAI *ai;
 
     explicit Thread(size_t n
 #ifdef QT_GUI_LIB
@@ -91,15 +84,6 @@ public:
     }
 
     void analyze(Color c);
-
-    // Perfect AI
-    int perfect_init(void);
-    Square perfect_sq_to_sq(unsigned int sq);
-    Move perfect_move_to_move(unsigned int from, unsigned int to);
-    unsigned sq_to_perfect_sq(Square sq);
-    void move_to_perfect_move(Move move, unsigned int &from, unsigned int &to);
-    int perfect_search();
-    bool perfect_do_move(Move move);
 
 #ifdef TIME_STAT
     TimePoint sortTime{ 0 };

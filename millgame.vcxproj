@@ -264,7 +264,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtNetworkAuth;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 /D_HAS_STD_BYTE=0 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -469,6 +469,7 @@
     <ClInclude Include="src\perfect\miniMaxAI.h" />
     <ClInclude Include="src\perfect\miniMaxWin.h" />
     <ClInclude Include="src\perfect\miniMax_retroAnalysis.h" />
+    <ClInclude Include="src\perfect\perfect.h" />
     <ClInclude Include="src\perfect\perfectAI.h" />
     <ClInclude Include="src\perfect\randomAI.h" />
     <ClInclude Include="src\perfect\strLib.h" />
@@ -754,6 +755,7 @@
     <ClCompile Include="src\perfect\miniMax_statistics.cpp" />
     <ClCompile Include="src\perfect\miniMax_test.cpp" />
     <ClCompile Include="src\perfect\minMaxAI.cpp" />
+    <ClCompile Include="src\perfect\perfect.cpp" />
     <ClCompile Include="src\perfect\perfectAI.cpp" />
     <ClCompile Include="src\perfect\randomAI.cpp" />
     <ClCompile Include="src\perfect\strLib.cpp" />

@@ -162,6 +162,9 @@
     <ClInclude Include="src\perfect\threadManager.h">
       <Filter>Perfect AI Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\perfect\perfect.h">
+      <Filter>Perfect AI Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -444,6 +447,9 @@
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
     <ClCompile Include="src\perfect\threadManager.cpp">
+      <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect\perfect.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
   </ItemGroup>
