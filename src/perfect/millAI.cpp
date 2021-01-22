@@ -23,8 +23,10 @@ void fieldStruct::printBoard()
     for (index = 0; index < fieldStruct::size; index++)
         c[index] = GetCharFromStone(this->board[index]);
 
-    cout << "current player          : " << GetCharFromStone(this->curPlayer->id) << " has " << this->curPlayer->numStones << " stones\n";
-    cout << "opponent player         : " << GetCharFromStone(this->oppPlayer->id) << " has " << this->oppPlayer->numStones << " stones\n";
+    cout << "current player          : " <<
+        GetCharFromStone(this->curPlayer->id) << " has " << this->curPlayer->numStones << " stones\n";
+    cout << "opponent player         : " <<
+        GetCharFromStone(this->oppPlayer->id) << " has " << this->oppPlayer->numStones << " stones\n";
     cout << "Num Stones to be removed: " << this->stoneMustBeRemoved << "\n";
     cout << "setting phase           : " << (this->settingPhase ? "true" : "false");
     cout << "\n";
@@ -234,7 +236,11 @@ void fieldStruct::deleteBoard()
 // setConnection()
 // 
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setConnection(unsigned int index, int firstDirection, int secondDirection, int thirdDirection, int fourthDirection)
+inline void fieldStruct::setConnection(unsigned int index, 
+                                       int firstDirection, 
+                                       int secondDirection, 
+                                       int thirdDirection, 
+                                       int fourthDirection)
 {
     connectedSquare[index][0] = firstDirection;
     connectedSquare[index][1] = secondDirection;
@@ -246,7 +252,11 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection, i
 // setNeighbour()
 // 
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setNeighbour(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1)
+inline void fieldStruct::setNeighbour(unsigned int index, 
+                                      unsigned int firstNeighbour0, 
+                                      unsigned int secondNeighbour0, 
+                                      unsigned int firstNeighbour1, 
+                                      unsigned int secondNeighbour1)
 {
     neighbour[index][0][0] = firstNeighbour0;
     neighbour[index][0][1] = secondNeighbour0;

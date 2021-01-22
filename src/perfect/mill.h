@@ -58,7 +58,10 @@ private:
     void calcPossibleMoves(Player *player);
     void updateMillsAndWarnings(unsigned int newStone);
     bool isNormalMovePossible(unsigned int from, unsigned int to, Player *player);
-    void setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone);
+    void setWarningAndMill(unsigned int stone, 
+                           unsigned int firstNeighbour, 
+                           unsigned int secondNeighbour, 
+                           bool isNewStone);
 
 public:
     // Constructor / destructor

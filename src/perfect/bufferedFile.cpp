@@ -37,7 +37,8 @@ BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSize
     InitializeCriticalSection(&csIO);
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hFile = CreateFileA(fileName, 
+                        GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file successfully
     if (hFile == INVALID_HANDLE_VALUE) {
@@ -92,7 +93,10 @@ long long BufferedFile::getFileSize()
 bool BufferedFile::flushBuffers()
 {
     for (unsigned int threadNo = 0; threadNo < numThreads; threadNo++) {
-        writeDataToFile(hFile, curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], bytesInWriteBuffer[threadNo], &writeBuffer[threadNo * bufferSize + 0]);
+        writeDataToFile(hFile, 
+                        curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], 
+                        bytesInWriteBuffer[threadNo], 
+                        &writeBuffer[threadNo * bufferSize + 0]);
         bytesInWriteBuffer[threadNo] = 0;
     }
 
@@ -180,7 +184,10 @@ bool BufferedFile::writeBytes(unsigned int numBytes, unsigned char *pData)
 // writeBytes()
 // 
 //-----------------------------------------------------------------------------
-bool BufferedFile::writeBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(unsigned int threadNo, 
+                              long long positionInFile, 
+                              unsigned int numBytes, 
+                              unsigned char *pData)
 {
     // parameters ok?
     if (threadNo >= numThreads)
@@ -192,9 +199,13 @@ bool BufferedFile::writeBytes(unsigned int threadNo, long long positionInFile, u
     // locals
 
     // if buffer full or not sequential write operation write buffer to file
-    if (bytesInWriteBuffer[threadNo] && (positionInFile != curWritingPointer[threadNo] || bytesInWriteBuffer[threadNo] + numBytes >= bufferSize)) {
+    if (bytesInWriteBuffer[threadNo] && 
+        (positionInFile != curWritingPointer[threadNo] || bytesInWriteBuffer[threadNo] + numBytes >= bufferSize)) {
 
-        writeDataToFile(hFile, curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], bytesInWriteBuffer[threadNo], &writeBuffer[threadNo * bufferSize + 0]);
+        writeDataToFile(hFile, 
+                        curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], 
+                        bytesInWriteBuffer[threadNo], 
+                        &writeBuffer[threadNo * bufferSize + 0]);
         bytesInWriteBuffer[threadNo] = 0;
     }
 
@@ -220,7 +231,10 @@ bool BufferedFile::readBytes(unsigned int numBytes, unsigned char *pData)
 // takeBytes()
 // 
 //-----------------------------------------------------------------------------
-bool BufferedFile::readBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::readBytes(unsigned int threadNo, 
+                             long long positionInFile, 
+                             unsigned int numBytes, 
+                             unsigned char *pData)
 {
     // parameters ok?
     if (threadNo >= numThreads)
@@ -231,10 +245,12 @@ bool BufferedFile::readBytes(unsigned int threadNo, long long positionInFile, un
 
     // read from file into buffer if not enough data in buffer or if it is not an sequential reading operation?
     if (positionInFile != curReadingPointer[threadNo] || bytesInReadBuffer[threadNo] < numBytes) {
-        bytesInReadBuffer[threadNo] = ((positionInFile + bufferSize <= fileSize) ? bufferSize : (unsigned int)(fileSize - positionInFile));
+        bytesInReadBuffer[threadNo] = 
+            ((positionInFile + bufferSize <= fileSize) ? bufferSize : (unsigned int)(fileSize - positionInFile));
         if (bytesInReadBuffer[threadNo] < numBytes)
             return false;
-        readDataFromFile(hFile, positionInFile, bytesInReadBuffer[threadNo], &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]]);
+        readDataFromFile(hFile, positionInFile, bytesInReadBuffer[threadNo], 
+                         &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]]);
     }
 
     memcpy(pData, &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]], numBytes);

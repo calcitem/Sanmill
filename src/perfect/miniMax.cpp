@@ -97,7 +97,8 @@ bool MiniMax::falseOrStop()
 
 //-----------------------------------------------------------------------------
 // getBestChoice()
-// Returns the best choice if the database has been opened and calculates the best choice for that if database is not open.
+// Returns the best choice if the database has been opened and 
+// calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
 void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsigned int maximumNumberOfBranches)
 {
@@ -155,21 +156,22 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         threadManager.uncancelExecution();
         arrayInfos.vectorArrays.resize(ArrayInfo::numArrayTypes * skvfHeader.numLayers, arrayInfos.listArrays.end());
 
-        // calc layer after layer, beginning with the last one
+        // calculate layer after layer, beginning with the last one
         for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers; curCalculatedLayer++) {
 
             // layer already calculated?
             if (layerStats[curCalculatedLayer].layerIsCompletedAndInFile)
                 continue;
 
-            // don't calc if neither the layer nor the partner layer has any knots
-            if (layerStats[curCalculatedLayer].knotsInLayer == 0 && layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0)
+            // don't calculate if neither the layer nor the partner layer has any knots
+            if (layerStats[curCalculatedLayer].knotsInLayer == 0 && 
+                layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0)
                 continue;
 
-            // calc
+            // calculate
             abortCalculation = (!calcLayer(curCalculatedLayer));
 
-            // relase memory
+            // release memory
             unloadAllLayers();
             unloadAllPlyInfos();
 
@@ -189,7 +191,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
             return;
 
         if (!abortCalculation) {
-            // calc layer statistics
+            // calculate layer statistics
             calcLayerStatistics((char *)"statistics.txt");
 
             // save header
@@ -199,7 +201,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
             saveHeader(&plyInfoHeader, plyInfos);
         }
 
-        // free mem
+        // free memory
         curCalculationActionId = MM_ACTION_NONE;
     } else {
         PRINT(1, this, "\nThe database is already fully calculated.\n");
@@ -224,7 +226,7 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 
     // moves can be done reverse, leading to too depth searching trees
     if (shallRetroAnalysisBeUsed(layerNumber)) {
-        // calc values for all states of layer
+        // calculate values for all states of layer
         layersToCalc.push_back(layerNumber);
         if (layerNumber != layerStats[layerNumber].partnerLayer)
             layersToCalc.push_back(layerStats[layerNumber].partnerLayer);

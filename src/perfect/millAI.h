@@ -80,8 +80,16 @@ public:
 private:
     // helper functions
     char GetCharFromStone(int stone);
-    void setConnection(unsigned int index, int firstDirection, int secondDirection, int thirdDirection, int fourthDirection);
-    void setNeighbour(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1);
+    void setConnection(unsigned int index, 
+                       int firstDirection, 
+                       int secondDirection, 
+                       int thirdDirection, 
+                       int fourthDirection);
+    void setNeighbour(unsigned int index, 
+                      unsigned int firstNeighbour0,
+                      unsigned int secondNeighbour0, 
+                      unsigned int firstNeighbour1, 
+                      unsigned int secondNeighbour1);
 };
 
 class MillAI abstract

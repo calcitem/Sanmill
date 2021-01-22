@@ -247,7 +247,7 @@ public:
         void updateArray(unsigned int layerNumber, unsigned int type);
     };
 
-    /*** public functions ***************************************************************************************************************************/
+    /*** public functions *********************************************************************************************/
 
     // Constructor / destructor
     MiniMax();
@@ -298,7 +298,10 @@ public:
             ;
     }; // is called once before building the tree
 
-    virtual unsigned int *getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities)
+    virtual unsigned int *getPossibilities(unsigned int threadNo,
+                                           unsigned int *numPossibilities,
+                                           bool *opponentsMove,
+                                           void **pPossibilities)
     {
         while (true)
             ;
@@ -311,17 +314,30 @@ public:
             ;
     };
 
-    virtual void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, TwoBit value, unsigned int *freqValuesSubMoves, PlyInfoVarType plyInfo)
+    virtual void storeValueOfMove(unsigned int threadNo,
+                                  unsigned int idPossibility,
+                                  void *pPossibilities,
+                                  TwoBit value,
+                                  unsigned int *freqValuesSubMoves,
+                                  PlyInfoVarType plyInfo)
     {
     };
 
-    virtual void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities)
+    virtual void move(unsigned int threadNo,
+                      unsigned int idPossibility,
+                      bool opponentsMove,
+                      void **pBackup,
+                      void *pPossibilities)
     {
         while (true)
             ;
     };
 
-    virtual void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities)
+    virtual void undo(unsigned int threadNo,
+                      unsigned int idPossibility,
+                      bool opponentsMove,
+                      void *pBackup,
+                      void *pPossibilities)
     {
         while (true)
             ;
@@ -384,13 +400,17 @@ public:
         while (true)
             ;
     }; // value of situation for the initial current player
+
     virtual bool getOpponentLevel(unsigned int threadNo)
     {
         while (true)
             ;
         return false;
     };
-    virtual unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int &layerNum, unsigned int &stateNumber)
+
+    virtual unsigned int getLayerAndStateNumber(unsigned int threadNo,
+                                                unsigned int &layerNum,
+                                                unsigned int &stateNumber)
     {
         while (true)
             ;
@@ -403,7 +423,9 @@ public:
         return 0;
     };
 
-    virtual void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers)
+    virtual void getSymStateNumWithDoubles(unsigned int threadNo,
+                                           unsigned int *numSymmetricStates,
+                                           unsigned int **symStateNumbers)
     {
         while (true)
             ;
@@ -440,7 +462,7 @@ public:
     };
 
 private:
-    /*** classes for testing  ********************************************************************************************************************/
+    /*** classes for testing  *****************************************************************************************/
 
     struct TestLayersVars
     {
@@ -453,9 +475,9 @@ private:
         bool *hasCurPlayerChanged;
     };
 
-    /*** classes for the alpha beta algorithmn ********************************************************************************************************************/
+    /*** classes for the alpha beta algorithmn ************************************************************************/
 
-    struct AlphaBetaThreadVars // thread specific variables for each thread in the alpha beta algorithmn
+    struct AlphaBetaThreadVars // thread specific variables for each thread in the alpha beta algorithm
     {
         long long numStatesToProcess; // Number of states in 'statesToProcess' which have to be processed
         unsigned int threadNo;
@@ -531,7 +553,11 @@ private:
         {
         };
 
-        InitAlphaBetaVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
+        InitAlphaBetaVars(MiniMax *pMiniMax,
+                          AlphaBetaGlobalVars *alphaBetaVars,
+                          unsigned int layerNumber,
+                          BufferedFile *initArray,
+                          bool initAlreadyDone) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
@@ -558,7 +584,9 @@ private:
         {
         };
 
-        RunAlphaBetaVars(MiniMax *pMiniMax, AlphaBetaGlobalVars *alphaBetaVars, unsigned int layerNumber) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
+        RunAlphaBetaVars(MiniMax *pMiniMax,
+                         AlphaBetaGlobalVars *alphaBetaVars,
+                         unsigned int layerNumber) : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
         {
             initializeElement(*this);
         };
@@ -582,7 +610,7 @@ private:
         };
     };
 
-    /*** classes for the retro analysis ***************************************************************************************************************************/
+    /*** classes for the retro analysis *******************************************************************************/
 
     struct RetroAnalysisQueueState
     {
@@ -651,7 +679,11 @@ private:
         {
         };
 
-        InitRetroAnalysisVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber, BufferedFile *initArray, bool initAlreadyDone) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+        InitRetroAnalysisVars(MiniMax *pMiniMax,
+                              retroAnalysisGlobalVars *retroVars,
+                              unsigned int layerNumber,
+                              BufferedFile *initArray,
+                              bool initAlreadyDone) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
@@ -676,7 +708,9 @@ private:
         {
         };
 
-        AddNumSuccedorsVars(MiniMax *pMiniMax, retroAnalysisGlobalVars *retroVars, unsigned int layerNumber) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+        AddNumSuccedorsVars(MiniMax *pMiniMax,
+                            retroAnalysisGlobalVars *retroVars,
+                            unsigned int layerNumber) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         {
         };
 
@@ -691,7 +725,7 @@ private:
         };
     };
 
-    /*** private variables ***************************************************************************************************************************/
+    /*** private variables ********************************************************************************************/
 
     // variables, which are constant during database calculation
     int verbosity = 2;						  // output detail level. default is 2
@@ -730,7 +764,7 @@ private:
     // compressorClass		*	compressor						= nullptr;
     // unsigned int			compressionAlgorithmnId			= 0;			// 0 or one of the COMPRESSOR_ALG_... constants
 
-    // database io operations per second
+    // database I/O operations per second
     long long numReadSkvOperations = 0;	 // number of read operations done since start of the program
     long long numWriteSkvOperations = 0; // number of write operations done since start of the program
     long long numReadPlyOperations = 0;	 // number of read operations done since start of the program
@@ -751,7 +785,12 @@ private:
     void unloadLayer(unsigned int layerNumber);
     void saveHeader(SkvFileHeader *dbH, LayerStats *lStats);
     void saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo);
-    void readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, TwoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted);
+    void readKnotValueFromDatabase(unsigned int threadNo,
+                                   unsigned int &layerNumber,
+                                   unsigned int &stateNumber,
+                                   TwoBit &knotValue,
+                                   bool &invalidLayerOrStateNumber,
+                                   bool &layerInDatabaseAndCompleted);
     void readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit &knotValue);
     void readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType &value);
     void saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue);
@@ -765,17 +804,36 @@ private:
     static DWORD testLayerThreadProc(void *pParameter, int index);
     static DWORD testSetSituationThreadProc(void *pParameter, int index);
 
-    // Alpha-Beta-Algorithmn
+    // Alpha-Beta-Algorithm
     bool calcKnotValuesByAlphaBeta(unsigned int layerNumber);
     bool initAlphaBeta(AlphaBetaGlobalVars &retroVars);
     bool runAlphaBeta(AlphaBetaGlobalVars &retroVars);
     void letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta);
-    bool alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber);
-    void alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta);
+    bool alphaBetaTryDataBase(Knot *knot,
+                              RunAlphaBetaVars *rabVars,
+                              unsigned int tilLevel,
+                              unsigned int &layerNumber, unsigned int &stateNumber);
+    void alphaBetaTryPossibilites(Knot *knot,
+                                  RunAlphaBetaVars *rabVars,
+                                  unsigned int tilLevel,
+                                  unsigned int *idPossibility,
+                                  void *pPossibilities,
+                                  unsigned int &maxWonfreqValuesSubMoves,
+                                  float &alpha,
+                                  float &beta);
     void alphaBetaCalcPlyInfo(Knot *knot);
     void alphaBetaCalcKnotValue(Knot *knot);
-    void alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves);
-    void alphaBetaSaveInDatabase(unsigned int threadNo, unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue, PlyInfoVarType plyValue, bool invertValue);
+    void alphaBetaChooseBestMove(Knot *knot,
+                                 RunAlphaBetaVars *rabVars,
+                                 unsigned int tilLevel,
+                                 unsigned int *idPossibility,
+                                 unsigned int maxWonfreqValuesSubMoves);
+    void alphaBetaSaveInDatabase(unsigned int threadNo,
+                                 unsigned int layerNumber,
+                                 unsigned int stateNumber,
+                                 TwoBit knotValue,
+                                 PlyInfoVarType plyValue,
+                                 bool invertValue);
     static DWORD initAlphaBetaThreadProc(void *pParameter, int index);
     static DWORD runAlphaBetaThreadProc(void *pParameter, int index);
 
@@ -785,7 +843,10 @@ private:
     bool prepareCountArrays(retroAnalysisGlobalVars &retroVars);
     bool calcNumSuccedors(retroAnalysisGlobalVars &retroVars);
     bool performRetroAnalysis(retroAnalysisGlobalVars &retroVars);
-    bool addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, RetroAnalysisThreadVars &threadVars, unsigned int plyNumber, StateAdress *pState);
+    bool addStateToProcessQueue(retroAnalysisGlobalVars &retroVars,
+                                RetroAnalysisThreadVars &threadVars,
+                                unsigned int plyNumber,
+                                StateAdress *pState);
     static bool retroAnalysisQueueStateComp(const RetroAnalysisQueueState &a, const RetroAnalysisQueueState &b)
     {
         return a.stateNumber < b.stateNumber;

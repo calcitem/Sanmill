@@ -26,7 +26,9 @@ CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlo
     curWritingBlock = 0;
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hFile = CreateFileA(fileName, 
+                        GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 
+                        nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file succesfully
     if (hFile == INVALID_HANDLE_VALUE) {
@@ -240,7 +242,8 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
         return false;
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hLoadFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hLoadFile = CreateFileA(fileName, 
+                            GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file succesfully
     if (hLoadFile == INVALID_HANDLE_VALUE) {
@@ -308,7 +311,8 @@ bool CyclicArray::saveFile(const char *fileName)
     }
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hSaveFile = CreateFileA(fileName, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hSaveFile = CreateFileA(fileName, 
+                            GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file succesfully
     if (hSaveFile == INVALID_HANDLE_VALUE) {

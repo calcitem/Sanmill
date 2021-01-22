@@ -27,7 +27,7 @@ bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
         return false;
     }
 
-    // run alpha-beta algorithmn
+    // run alpha-beta algorithm
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2 << endl);
     if (!runAlphaBeta(alphaBetaVars)) {
         return false;
@@ -44,7 +44,12 @@ bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 // saveKnotValueInDatabase()
 // 
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo, unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue, PlyInfoVarType plyValue, bool invertValue)
+void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo, 
+                                      unsigned int layerNumber, 
+                                      unsigned int stateNumber, 
+                                      TwoBit knotValue, 
+                                      PlyInfoVarType plyValue, 
+                                      bool invertValue)
 {
     // locals
     unsigned int *symStateNumbers = nullptr;
@@ -107,7 +112,8 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     ssInvArrayDirectory.str("");
     ssInvArrayDirectory << fileDirectory << (fileDirectory.size() ? "\\" : "") << "invalidStates";
     ssInvArrayFilePath.str("");
-    ssInvArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "invalidStates\\invalidStatesOfLayer" << alphaBetaVars.layerNumber << ".dat";
+    ssInvArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "") << 
+        "invalidStates\\invalidStatesOfLayer" << alphaBetaVars.layerNumber << ".dat";
 
     // does initialization file exist ?
     CreateDirectoryA(ssInvArrayDirectory.str().c_str(), nullptr);
@@ -124,10 +130,21 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-    ThreadManager::ThreadVarsArray<InitAlphaBetaVars> tva(threadManager.getNumThreads(), (InitAlphaBetaVars &)InitAlphaBetaVars(this, &alphaBetaVars, alphaBetaVars.layerNumber, invalidArray, initAlreadyDone));
+    ThreadManager::ThreadVarsArray<InitAlphaBetaVars> tva(threadManager.getNumThreads(), 
+                                                          (InitAlphaBetaVars &)InitAlphaBetaVars(this, 
+                                                                                                 &alphaBetaVars, 
+                                                                                                 alphaBetaVars.layerNumber, 
+                                                                                                 invalidArray, 
+                                                                                                 initAlreadyDone));
 
     // process each state in the current layer
-    switch (threadManager.executeParallelLoop(initAlphaBetaThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[alphaBetaVars.layerNumber].knotsInLayer - 1, 1)) {
+    switch (threadManager.executeParallelLoop(initAlphaBetaThreadProc, 
+                                              tva.getPointerToArray(), 
+                                              tva.getSizeOfArray(), 
+                                              TM_SCHEDULE_STATIC, 
+                                              0, 
+                                              layerStats[alphaBetaVars.layerNumber].knotsInLayer - 1, 
+                                              1)) {
     case TM_RETURN_VALUE_OK:
         break;
     case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -183,12 +200,16 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
     // print status
     if (iabVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
         m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
-        PRINT(2, m, "Already initialized " << m->numStatesProcessed << " of " << m->layerStats[curState.layerNumber].knotsInLayer << " states");
+        PRINT(2, m, "Already initialized " << m->numStatesProcessed << " of " <<
+              m->layerStats[curState.layerNumber].knotsInLayer << " states");
     }
 
     // layer initialization already done ? if so, then read from file
     if (iabVars->initAlreadyDone) {
-        if (!iabVars->bufferedFile->readBytes(iabVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char *)&curStateValue)) {
+        if (!iabVars->bufferedFile->readBytes(iabVars->curThreadNo, 
+                                              index * sizeof(TwoBit), 
+                                              sizeof(TwoBit), 
+                                              (unsigned char *)&curStateValue)) {
             PRINT(0, m, "ERROR: initArray->takeBytes() failed");
             return m->falseOrStop();
         }
@@ -218,7 +239,10 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 
     // write data to file
     if (!iabVars->initAlreadyDone) {
-        if (!iabVars->bufferedFile->writeBytes(iabVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char *)&curStateValue)) {
+        if (!iabVars->bufferedFile->writeBytes(iabVars->curThreadNo, 
+                                               index * sizeof(TwoBit), 
+                                               sizeof(TwoBit), 
+                                               (unsigned char *)&curStateValue)) {
             PRINT(0, m, "ERROR: bufferedFile->writeBytes failed!");
             return m->falseOrStop();
         }
@@ -242,13 +266,21 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-    ThreadManager::ThreadVarsArray<RunAlphaBetaVars> tva(threadManager.getNumThreads(), (RunAlphaBetaVars &)RunAlphaBetaVars(this, &alphaBetaVars, alphaBetaVars.layerNumber));
+    ThreadManager::ThreadVarsArray<RunAlphaBetaVars> tva(threadManager.getNumThreads(), 
+                                                         (RunAlphaBetaVars &)RunAlphaBetaVars(this, 
+                                                                                              &alphaBetaVars, 
+                                                                                              alphaBetaVars.layerNumber));
 
     // so far no multi-threadin implemented
     threadManager.setNumThreads(1);
 
     // process each state in the current layer
-    switch (threadManager.executeParallelLoop(runAlphaBetaThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[alphaBetaVars.layerNumber].knotsInLayer - 1, 1)) {
+    switch (threadManager.executeParallelLoop(runAlphaBetaThreadProc, 
+                                              tva.getPointerToArray(), 
+                                              tva.getSizeOfArray(), 
+                                              TM_SCHEDULE_STATIC, 
+                                              0, 
+                                              layerStats[alphaBetaVars.layerNumber].knotsInLayer - 1, 1)) {
     case TM_RETURN_VALUE_OK:
         break;
     case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -296,7 +328,9 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
     // print status
     if (rabVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
         m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
-        PRINT(2, m, "  Processed " << m->numStatesProcessed << " of " << m->layerStats[curState.layerNumber].knotsInLayer << " states");
+        PRINT(2, m, 
+              "  Processed " << m->numStatesProcessed << " of " << 
+              m->layerStats[curState.layerNumber].knotsInLayer << " states");
     }
 
     // Version 10: state already calculated? if so leave.
@@ -360,7 +394,10 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
             return;
 
         // get number of possibilities
-        idPossibility = getPossibilities(rabVars->curThreadNo, &knot->numPossibilities, &knot->isOpponentLevel, &pPossibilities);
+        idPossibility = getPossibilities(rabVars->curThreadNo, 
+                                         &knot->numPossibilities, 
+                                         &knot->isOpponentLevel, 
+                                         &pPossibilities);
 
         // unable to move
         if (knot->numPossibilities == 0) {
@@ -380,7 +417,14 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
             // movement is possible
         } else {
             // move, letTreeGroe, undo
-            alphaBetaTryPossibilites(knot, rabVars, tilLevel, idPossibility, pPossibilities, maxWonfreqValuesSubMoves, alpha, beta);
+            alphaBetaTryPossibilites(knot, 
+                                     rabVars, 
+                                     tilLevel, 
+                                     idPossibility, 
+                                     pPossibilities, 
+                                     maxWonfreqValuesSubMoves, 
+                                     alpha, 
+                                     beta);
 
             // calculate value of knot - its the value of the best branch
             alphaBetaCalcKnotValue(knot);
@@ -394,7 +438,12 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
 
         // save value and best branch into database and set value as valid
         if (calcDatabase && hFileShortKnotValues && hFilePlyInfo)
-            alphaBetaSaveInDatabase(rabVars->curThreadNo, layerNumber, stateNumber, knot->shortValue, knot->plyInfo, knot->isOpponentLevel);
+            alphaBetaSaveInDatabase(rabVars->curThreadNo, 
+                                    layerNumber, 
+                                    stateNumber, 
+                                    knot->shortValue, 
+                                    knot->plyInfo, 
+                                    knot->isOpponentLevel);
     }
 }
 
@@ -405,7 +454,11 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
 // 2 - Look into database if knot value and ply info are already calculated. If so sets knot->shortValue, knot->floatValue and knot->plyInfo.
 // CAUTION: knot->isOpponentLevel must be set and valid.
 //-----------------------------------------------------------------------------
-bool MiniMax::alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int &layerNumber, unsigned int &stateNumber)
+bool MiniMax::alphaBetaTryDataBase(Knot *knot, 
+                                   RunAlphaBetaVars *rabVars, 
+                                   unsigned int tilLevel, 
+                                   unsigned int &layerNumber,
+                                   unsigned int &stateNumber)
 {
     // locals
     bool invalidLayerOrStateNumber;
@@ -416,12 +469,19 @@ bool MiniMax::alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsign
     // use database ?
     if (hFilePlyInfo != nullptr && hFileShortKnotValues != nullptr && (calcDatabase || layerInDatabase)) {
         // situation already existed in database ?
-        readKnotValueFromDatabase(rabVars->curThreadNo, layerNumber, stateNumber, shortKnotValue, invalidLayerOrStateNumber, subLayerInDatabaseAndCompleted);
+        readKnotValueFromDatabase(rabVars->curThreadNo, 
+                                  layerNumber, 
+                                  stateNumber, 
+                                  shortKnotValue, 
+                                  invalidLayerOrStateNumber, 
+                                  subLayerInDatabaseAndCompleted);
         readPlyInfoFromDatabase(layerNumber, stateNumber, plyInfo);
 
         // it was possible to achieve an invalid state using move(),
         // so the original state was an invalid one
-        if ((tilLevel < depthOfFullTree && invalidLayerOrStateNumber) || (tilLevel < depthOfFullTree && shortKnotValue == SKV_VALUE_INVALID && subLayerInDatabaseAndCompleted) || (tilLevel < depthOfFullTree && shortKnotValue == SKV_VALUE_INVALID && plyInfo != PLYINFO_VALUE_UNCALCULATED)) { // version 22: replaced:  curCalculatedLayer == layerNumber && knot->plyInfo != PLYINFO_VALUE_UNCALCULATED)) {
+        if ((tilLevel < depthOfFullTree && invalidLayerOrStateNumber) || 
+            (tilLevel < depthOfFullTree && shortKnotValue == SKV_VALUE_INVALID && subLayerInDatabaseAndCompleted) || 
+            (tilLevel < depthOfFullTree && shortKnotValue == SKV_VALUE_INVALID && plyInfo != PLYINFO_VALUE_UNCALCULATED)) { // version 22: replaced:  curCalculatedLayer == layerNumber && knot->plyInfo != PLYINFO_VALUE_UNCALCULATED)) {
             knot->shortValue = SKV_VALUE_INVALID;
             knot->plyInfo = PLYINFO_VALUE_INVALID;
             knot->floatValue = (float)knot->shortValue;
@@ -430,11 +490,20 @@ bool MiniMax::alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsign
 
         // print out put, if not calculating database, but requesting a knot value
         if (shortKnotValue != SKV_VALUE_INVALID && tilLevel == depthOfFullTree && !calcDatabase && subLayerInDatabaseAndCompleted) {
-            PRINT(2, this, "This state is marked as " << ((shortKnotValue == SKV_VALUE_GAME_WON) ? "WON" : ((shortKnotValue == SKV_VALUE_GAME_LOST) ? "LOST" : ((shortKnotValue == SKV_VALUE_GAME_DRAWN) ? "DRAW" : "INVALID"))) << endl);
+            PRINT(2, this, "This state is marked as " << 
+                  ((shortKnotValue == SKV_VALUE_GAME_WON) ? "WON" : 
+                   ((shortKnotValue == SKV_VALUE_GAME_LOST) ? "LOST" : 
+                    ((shortKnotValue == SKV_VALUE_GAME_DRAWN) ? "DRAW" : "INVALID"))) << endl);
         }
 
         // when knot value is valid then return best branch
-        if (calcDatabase && tilLevel < depthOfFullTree && shortKnotValue != SKV_VALUE_INVALID && plyInfo != PLYINFO_VALUE_UNCALCULATED || !calcDatabase && tilLevel < depthOfFullTree - 1 && shortKnotValue != SKV_VALUE_INVALID) {
+        if (calcDatabase && 
+            tilLevel < depthOfFullTree && 
+            shortKnotValue != SKV_VALUE_INVALID && 
+            plyInfo != PLYINFO_VALUE_UNCALCULATED || 
+            !calcDatabase && 
+            tilLevel < depthOfFullTree - 1 && 
+            shortKnotValue != SKV_VALUE_INVALID) {
 
             // switch if is not opponent level
             if (knot->isOpponentLevel)

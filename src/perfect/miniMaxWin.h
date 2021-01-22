@@ -10,7 +10,7 @@
 #define MINIMAXWIN_H
 
 // Windows Header Files:
-#include "miniMax\\miniMax.h"
+#include "miniMax.h"
 #include <queue>
 #include <thread>
 #include <mutex>
