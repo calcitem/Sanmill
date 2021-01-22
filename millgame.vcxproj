@@ -754,7 +754,6 @@
     <ClCompile Include="src\perfect\miniMax_statistics.cpp" />
     <ClCompile Include="src\perfect\miniMax_test.cpp" />
     <ClCompile Include="src\perfect\minMaxAI.cpp" />
-    <ClCompile Include="src\perfect\perfect.cpp" />
     <ClCompile Include="src\perfect\perfectAI.cpp" />
     <ClCompile Include="src\perfect\randomAI.cpp" />
     <ClCompile Include="src\perfect\strLib.cpp" />

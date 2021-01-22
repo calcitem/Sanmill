@@ -446,9 +446,6 @@
     <ClCompile Include="src\perfect\threadManager.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\perfect\perfect.cpp">
-      <Filter>Perfect AI Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="millgame.rc">
