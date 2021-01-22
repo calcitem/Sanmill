@@ -54,14 +54,14 @@ void Mill::exit()
 //-----------------------------------------------------------------------------
 void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer)
 {
-    // free mem
+    // free memory
     exit();
 
     // create arrays
     field.createBoard();
     initialField.createBoard();
 
-    // calc beginning player
+    // calculate beginning player
     if (currentPlayer == field.playerOne || currentPlayer == field.playerTwo) {
         beginningPlayer = currentPlayer;
     } else {
