@@ -27,6 +27,8 @@
 #include "tt.h"
 #include "option.h"
 
+#include "perfect/perfect.h"
+
 #ifdef FLUTTER_UI
 #include "engine_main.h"
 #endif
@@ -58,7 +60,7 @@ Thread::Thread(size_t n
     idx(n), stdThread(&Thread::idle_loop, this),
     timeLimit(3600)
 {
-   // perfect_init();
+    perfect_init();
 
     wait_for_search_finished();
 }
