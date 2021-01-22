@@ -3,7 +3,7 @@
     Copyright (c) Thomas Weber. All rights reserved.
     Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
-    https://github.com/madweasel/madweasels-cpp
+    https://github.com/madweasel/Muehle
 \*********************************************************************/
 
 #include "millAI.h"
