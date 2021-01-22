@@ -9,8 +9,8 @@
 #include "threadManager.h"
 
 //-----------------------------------------------------------------------------
-// Name: ThreadManager()
-// Desc: ThreadManager class constructor
+// ThreadManager()
+// ThreadManager class constructor
 //-----------------------------------------------------------------------------
 ThreadManager::ThreadManager()
 {
@@ -40,8 +40,8 @@ ThreadManager::ThreadManager()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~ThreadManager()
-// Desc: ThreadManager class destructor
+// ~ThreadManager()
+// ThreadManager class destructor
 //-----------------------------------------------------------------------------
 ThreadManager::~ThreadManager()
 {
@@ -69,8 +69,8 @@ ThreadManager::~ThreadManager()
 }
 
 //-----------------------------------------------------------------------------
-// Name: waitForOtherThreads()
-// Desc:
+// waitForOtherThreads()
+// 
 //-----------------------------------------------------------------------------
 void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 {
@@ -113,8 +113,8 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getNumThreads()
-// Desc:
+// getNumThreads()
+// 
 //-----------------------------------------------------------------------------
 unsigned int ThreadManager::getNumThreads()
 {
@@ -122,8 +122,8 @@ unsigned int ThreadManager::getNumThreads()
 }
 
 //-----------------------------------------------------------------------------
-// Name: setNumThreads()
-// Desc:
+// setNumThreads()
+// 
 //-----------------------------------------------------------------------------
 bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 {
@@ -151,8 +151,8 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 }
 
 //-----------------------------------------------------------------------------
-// Name: pauseExecution()
-// Desc:
+// pauseExecution()
+// 
 //-----------------------------------------------------------------------------
 void ThreadManager::pauseExecution()
 {
@@ -170,8 +170,8 @@ void ThreadManager::pauseExecution()
 }
 
 //-----------------------------------------------------------------------------
-// Name: cancelExecution()
-// Desc: Stops executeParallelLoop() before the next iteration.
+// cancelExecution()
+// Stops executeParallelLoop() before the next iteration.
 //	     When executeInParallel() was called, user has to handle cancellation by himself.
 //-----------------------------------------------------------------------------
 void ThreadManager::cancelExecution()
@@ -185,8 +185,8 @@ void ThreadManager::cancelExecution()
 }
 
 //-----------------------------------------------------------------------------
-// Name: uncancelExecution()
-// Desc:
+// uncancelExecution()
+// 
 //-----------------------------------------------------------------------------
 void ThreadManager::uncancelExecution()
 {
@@ -194,8 +194,8 @@ void ThreadManager::uncancelExecution()
 }
 
 //-----------------------------------------------------------------------------
-// Name: wasExecutionCancelled()
-// Desc:
+// wasExecutionCancelled()
+// 
 //-----------------------------------------------------------------------------
 bool ThreadManager::wasExecutionCancelled()
 {
@@ -203,8 +203,8 @@ bool ThreadManager::wasExecutionCancelled()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getThreadId()
-// Desc: Returns a number from 0 to 'numThreads'-1. Returns 0 if the function fails.
+// getThreadId()
+// Returns a number from 0 to 'numThreads'-1. Returns 0 if the function fails.
 //-----------------------------------------------------------------------------
 unsigned int ThreadManager::getThreadNumber()
 {
@@ -222,8 +222,8 @@ unsigned int ThreadManager::getThreadNumber()
 }
 
 //-----------------------------------------------------------------------------
-// Name: executeInParallel()
-// Desc: lpParameter is an array of size numThreads.
+// executeInParallel()
+// lpParameter is an array of size numThreads.
 //-----------------------------------------------------------------------------
 unsigned int ThreadManager::executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize)
 {
@@ -278,8 +278,8 @@ unsigned int ThreadManager::executeInParallel(DWORD threadProc(void *pParameter)
 }
 
 //-----------------------------------------------------------------------------
-// Name: executeInParallel()
-// Desc:
+// executeInParallel()
+// 
 // lpParameter - an array of size numThreads
 // finalValue  - this value is part of the iteration, meaning that index ranges from initialValue to finalValue including both border values
 //-----------------------------------------------------------------------------
@@ -390,8 +390,8 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
 }
 
 //-----------------------------------------------------------------------------
-// Name: threadForLoop()
-// Desc:
+// threadForLoop()
+// 
 //-----------------------------------------------------------------------------
 DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
 {
@@ -430,6 +430,6 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
 }
 
 /*** To Do's ********************************************************************************
-- Beschr�nkung auf 'int' kann zu �berlauf f�hren, wenn mehr states in einer layer vorliegen.
-    ==> Vielleicht mit class templates arbeiten
+- Restriction to 'int' can lead to overflow if there are more states in a layer.
+     ==> Maybe work with class templates
 *********************************************************************************************/

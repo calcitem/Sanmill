@@ -15,8 +15,6 @@
 
 using namespace std;
 
-/*** Klassen *********************************************************/
-
 class CyclicArray
 {
 private:

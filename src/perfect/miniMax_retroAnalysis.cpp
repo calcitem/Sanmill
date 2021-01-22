@@ -9,8 +9,8 @@ s\*********************************************************************/
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
-// Name: calcKnotValuesByRetroAnalysis()
-// Desc:
+// calcKnotValuesByRetroAnalysis()
+// 
 // The COUNT-ARRAY is the main element of the algorithmn. It contains the number of succeding states for the drawn gamestates,
 // whose short knot value has to be determined. If all succeding states (branches representing possible moves) are for example won than,
 // a state can be marked as lost, since no branch will lead to a drawn or won situation any more.
@@ -115,8 +115,8 @@ freeMem:
 }
 
 //-----------------------------------------------------------------------------
-// Name: initRetroAnalysis()
-// Desc: The state values for all game situations in the database are marked as invalid, as undecided, as won or as  lost by using the function getValueOfSituation().
+// initRetroAnalysis()
+// The state values for all game situations in the database are marked as invalid, as undecided, as won or as  lost by using the function getValueOfSituation().
 //-----------------------------------------------------------------------------
 bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
@@ -199,8 +199,8 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 }
 
 //-----------------------------------------------------------------------------
-// Name: initRetroAnalysisParallelSub()
-// Desc:
+// initRetroAnalysisParallelSub()
+// 
 //-----------------------------------------------------------------------------
 DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
 {
@@ -269,8 +269,8 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
 }
 
 //-----------------------------------------------------------------------------
-// Name: prepareCountArrays()
-// Desc:
+// prepareCountArrays()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 {
@@ -359,8 +359,8 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 }
 
 //-----------------------------------------------------------------------------
-// Name: calcNumSuccedors()
-// Desc:
+// calcNumSuccedors()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 {
@@ -457,8 +457,8 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 }
 
 //-----------------------------------------------------------------------------
-// Name: addNumSuccedorsThreadProc()
-// Desc:
+// addNumSuccedorsThreadProc()
+// 
 //-----------------------------------------------------------------------------
 DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
 {
@@ -497,7 +497,7 @@ DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
         return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
     }
 
-    // get list with statenumbers of predecessors
+    // get list with state numbers of predecessors
     m->getPredecessors(ansVars->curThreadNo, &amountOfPred, ansVars->predVars);
 
     // iteration
@@ -546,8 +546,8 @@ DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
 }
 
 //-----------------------------------------------------------------------------
-// Name: performRetroAnalysis()
-// Desc:
+// performRetroAnalysis()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
@@ -601,8 +601,8 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 }
 
 //-----------------------------------------------------------------------------
-// Name: performRetroAnalysisThreadProc()
-// Desc:
+// performRetroAnalysisThreadProc()
+// 
 //-----------------------------------------------------------------------------
 DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
 {
@@ -640,7 +640,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
             }
 
             while (threadVars->statesToProcess[curNumPlies]->takeBytes(sizeof(StateAdress), (unsigned char *)&curState)) {
-                // execution cancelled by user?
+                // execution canceled by user?
                 if (m->threadManager.wasExecutionCancelled()) {
                     PRINT(0, m, "\n****************************************\nSub-thread no. " << threadNo << ": Execution cancelled by user!\n****************************************\n");
                     return TM_RETURN_VALUE_EXECUTION_CANCELLED;
@@ -672,7 +672,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
                     return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
                 }
 
-                // get list with statenumbers of predecessors
+                // get list with state numbers of predecessors
                 m->getPredecessors(threadNo, &amountOfPred, predVars);
 
                 // iteration
@@ -753,8 +753,8 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
 }
 
 //-----------------------------------------------------------------------------
-// Name: addStateToProcessQueue()
-// Desc:
+// addStateToProcessQueue()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::addStateToProcessQueue(retroAnalysisGlobalVars &retroVars, RetroAnalysisThreadVars &threadVars, unsigned int plyNumber, StateAdress *pState)
 {

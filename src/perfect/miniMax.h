@@ -35,11 +35,11 @@ using namespace std; // use standard library namespace
 /*** Wiki ***************************************************************************************************************************
 player:
 layer:					The states are divided in layers. For example depending on number of stones on the board.
-state:					A unique game state reprensiting a current game situation.
+state:					A unique game state representing a current game situation.
 situation:				Used as synonym to state.
 knot:					Each knot of the graph corresponds to a game state. The knots are connected by possible valid moves.
 ply info:				Number of plies/moves necessary to win the game.
-state adress:			A state is identified by the corresponding layer and the state number within the layer.
+state address:			A state is identified by the corresponding layer and the state number within the layer.
 short knot value:		Each knot/state can have the value SKV_VALUE_INVALID, SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_DRAWN or SKV_VALUE_GAME_WON.
 float point knot value:	Each knot/state can be evaluated by a floating point value. High positive values represents winning situations. Negative values stand for loosing situations.
 database:				The database contains the arrays with the short knot values and the ply infos.
@@ -133,7 +133,7 @@ public:
     /*** typedefines ***************************************************************************************************************************/
     typedef unsigned char TwoBit;			 // 2-Bit variable ranging from 0 to 3
     typedef unsigned short PlyInfoVarType;	 // 2 Bytes for saving the ply info
-    typedef unsigned char CountArrayVarType; // 1 Byte for counting predesseccors
+    typedef unsigned char CountArrayVarType; // 1 Byte for counting predecessors
     typedef unsigned int StateNumberVarType; // 4 Bytes for addressing states within a layer
 
     /*** protected structures ********************************************************************************************************************/
@@ -148,7 +148,7 @@ public:
 
     struct PlyInfoFileHeader
     {
-        bool plyInfoCompleted;				// true if ply innformation has been calculated for all game states
+        bool plyInfoCompleted;				// true if ply information has been calculated for all game states
         unsigned int numLayers;				// number of layers
         unsigned int headerCode;			// = PLYINFO_HEADER_CODE
         unsigned int headerAndPlyInfosSize; // size in bytes of this struct plus ...
@@ -171,8 +171,8 @@ public:
         bool layerIsLoaded;							  // the array shortKnotValueByte[] exists in memory. does not necessary mean that it contains only valid values
         bool layerIsCompletedAndInFile;				  // the array shortKnotValueByte[] contains only fully calculated valid values
         long long layerOffset;						  // position of this struct in the short knot value file
-        unsigned int numSuccLayers;					  // number of succeding layers. states of other layers are connected by a move of a player
-        unsigned int succLayers[MAX_NUM_PRED_LAYERS]; // array containg the layer ids of the succeding layers
+        unsigned int numSuccLayers;					  // number of succeeding layers. states of other layers are connected by a move of a player
+        unsigned int succLayers[MAX_NUM_PRED_LAYERS]; // array containing the layer ids of the succeeding layers
         unsigned int partnerLayer;					  // layer id relevant when switching current and opponent player
         StateNumberVarType knotsInLayer;			  // number of knots of the corresponding layer
         StateNumberVarType numWonStates;			  // number of won states in this layer
@@ -180,7 +180,7 @@ public:
         StateNumberVarType numDrawnStates;			  // number of drawn states in this layer
         StateNumberVarType numInvalidStates;		  // number of invalid states in this layer
         unsigned int sizeInBytes;					  // (knotsInLayer + 3) / 4
-        TwoBit *shortKnotValueByte;					  // array of size [sizeInBytes] containg the short knot values
+        TwoBit *shortKnotValueByte;					  // array of size [sizeInBytes] containing the short knot values
         //compressorClass::compressedArrayClass *	skvCompressed;			// compressed array containing the short knot values
         void *skvCompressed; // dummy pointer for padding
     };
@@ -696,7 +696,7 @@ private:
     // variables, which are constant during database calculation
     int verbosity = 2;						  // output detail level. default is 2
     unsigned char skvPerspectiveMatrix[4][2]; // [short knot value][current or opponent player] - A winning situation is a loosing situation for the opponent and so on ...
-    bool calcDatabase = false;				  // true, if the database is currently beeing calculated
+    bool calcDatabase = false;				  // true, if the database is currently being calculated
     HANDLE hFileShortKnotValues = nullptr;	  // handle of the file for the short knot value
     HANDLE hFilePlyInfo = nullptr;			  // handle of the file for the ply info
     SkvFileHeader skvfHeader;				  // short knot value file header
@@ -718,7 +718,7 @@ private:
     LONGLONG memoryUsed2 = 0;				 // memory in bytes used for storing: ply information, short knot value and ...
     LONGLONG numStatesProcessed = 0;		 //
     unsigned int maxNumBranches = 0;		 // maximum number of branches/moves
-    unsigned int depthOfFullTree = 0;		 // maxumim search depth
+    unsigned int depthOfFullTree = 0;		 // maximum search depth
     unsigned int curCalculatedLayer = 0;	 // id of the currently calculated layer
     unsigned int curCalculationActionId = 0; // one of ...
     bool layerInDatabase = false;			 // true if the current considered layer has already been calculated and stored in the database
@@ -731,10 +731,10 @@ private:
     // unsigned int			compressionAlgorithmnId			= 0;			// 0 or one of the COMPRESSOR_ALG_... constants
 
     // database io operations per second
-    long long numReadSkvOperations = 0;	 // number of read operations done since start of the programm
-    long long numWriteSkvOperations = 0; // number of write operations done since start of the programm
-    long long numReadPlyOperations = 0;	 // number of read operations done since start of the programm
-    long long numWritePlyOperations = 0; // number of write operations done since start of the programm
+    long long numReadSkvOperations = 0;	 // number of read operations done since start of the program
+    long long numWriteSkvOperations = 0; // number of write operations done since start of the program
+    long long numReadPlyOperations = 0;	 // number of read operations done since start of the program
+    long long numWritePlyOperations = 0; // number of write operations done since start of the program
     LARGE_INTEGER readSkvInterval;		 // time of interval for read operations
     LARGE_INTEGER writeSkvInterval;		 //  ''
     LARGE_INTEGER readPlyInterval;		 //  ''

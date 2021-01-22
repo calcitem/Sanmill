@@ -74,7 +74,7 @@
 #define SO_INV_MIR_DIAG_2 15
 #define NUM_SYM_OPERATIONS 16
 
-/*** Klassen *********************************************************/
+
 class PerfectAI : public MillAI, public MiniMax
 {
 protected:

@@ -9,8 +9,8 @@
 #include "randomAI.h"
 
 //-----------------------------------------------------------------------------
-// Name: RandomAI()
-// Desc: RandomAI class constructor
+// RandomAI()
+// RandomAI class constructor
 //-----------------------------------------------------------------------------
 RandomAI::RandomAI()
 {
@@ -19,8 +19,8 @@ RandomAI::RandomAI()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~RandomAI()
-// Desc: RandomAI class destructor
+// ~RandomAI()
+// RandomAI class destructor
 //-----------------------------------------------------------------------------
 RandomAI::~RandomAI()
 {
@@ -28,8 +28,8 @@ RandomAI::~RandomAI()
 }
 
 //-----------------------------------------------------------------------------
-// Name: play()
-// Desc:
+// play()
+// 
 //-----------------------------------------------------------------------------
 void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {

@@ -9,8 +9,8 @@
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
-// Name: calcKnotValuesByAlphaBeta()
-// Desc: return value is true if calculation is stopped either by user or by an error
+// calcKnotValuesByAlphaBeta()
+// return value is true if calculation is stopped either by user or by an error
 //-----------------------------------------------------------------------------
 bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 {
@@ -41,8 +41,8 @@ bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: saveKnotValueInDatabase()
-// Desc:
+// saveKnotValueInDatabase()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo, unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue, PlyInfoVarType plyValue, bool invertValue)
 {
@@ -83,8 +83,8 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo, unsigned int layerN
 }
 
 //-----------------------------------------------------------------------------
-// Name: initAlphaBeta()
-// Desc: The function setSituation is called for each state to mark the invalid ones.
+// initAlphaBeta()
+// The function setSituation is called for each state to mark the invalid ones.
 //-----------------------------------------------------------------------------
 bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
@@ -95,7 +95,13 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     stringstream ssInvArrayFilePath;  //
 
     // set current processed layer number
-    PRINT(1, this, endl << "  *** Signing of invalid states for layer " << alphaBetaVars.layerNumber << " (" << (getOutputInformation(alphaBetaVars.layerNumber)) << ") which has " << layerStats[alphaBetaVars.layerNumber].knotsInLayer << " knots ***");
+    PRINT(1, this, 
+          endl << 
+          "  *** Signing of invalid states for layer " << 
+          alphaBetaVars.layerNumber << " (" << 
+          (getOutputInformation(alphaBetaVars.layerNumber)) << 
+          ") which has " << layerStats[alphaBetaVars.layerNumber].knotsInLayer << 
+          " knots ***");
 
     // file names
     ssInvArrayDirectory.str("");
@@ -157,8 +163,8 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 }
 
 //-----------------------------------------------------------------------------
-// Name: initAlphaBetaThreadProc()
-// Desc: set short knot value to SKV_VALUE_INVALID, ply info to PLYINFO_VALUE_INVALID and knotAlreadyCalculated to true or false, whether setSituation() returns true or false
+// initAlphaBetaThreadProc()
+// set short knot value to SKV_VALUE_INVALID, ply info to PLYINFO_VALUE_INVALID and knotAlreadyCalculated to true or false, whether setSituation() returns true or false
 //-----------------------------------------------------------------------------
 DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 {
@@ -224,8 +230,8 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
 }
 
 //-----------------------------------------------------------------------------
-// Name: runAlphaBeta()
-// Desc:
+// runAlphaBeta()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
@@ -271,8 +277,8 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 }
 
 //-----------------------------------------------------------------------------
-// Name: runAlphaBetaThreadProc()
-// Desc:
+// runAlphaBetaThreadProc()
+// 
 //-----------------------------------------------------------------------------
 DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 {
@@ -312,8 +318,8 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
 }
 
 //-----------------------------------------------------------------------------
-// Name: letTheTreeGrow()
-// Desc:
+// letTheTreeGrow()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, float alpha, float beta)
 {
@@ -353,7 +359,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
         if (alphaBetaTryDataBase(knot, rabVars, tilLevel, layerNumber, stateNumber))
             return;
 
-        // get number of possiblities
+        // get number of possibilities
         idPossibility = getPossibilities(rabVars->curThreadNo, &knot->numPossibilities, &knot->isOpponentLevel, &pPossibilities);
 
         // unable to move
@@ -379,7 +385,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
             // calculate value of knot - its the value of the best branch
             alphaBetaCalcKnotValue(knot);
 
-            // calc ply info
+            // calculate ply info
             alphaBetaCalcPlyInfo(knot);
 
             // select randomly one of the best moves, if they are equivalent
@@ -393,8 +399,8 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
 }
 
 //-----------------------------------------------------------------------------
-// Name: alphaBetaTryDataBase()
-// Desc:
+// alphaBetaTryDataBase()
+// 
 // 1 - Determines layerNumber and stateNumber for the given game situation.
 // 2 - Look into database if knot value and ply info are already calculated. If so sets knot->shortValue, knot->floatValue and knot->plyInfo.
 // CAUTION: knot->isOpponentLevel must be set and valid.
@@ -409,7 +415,7 @@ bool MiniMax::alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsign
 
     // use database ?
     if (hFilePlyInfo != nullptr && hFileShortKnotValues != nullptr && (calcDatabase || layerInDatabase)) {
-        // situation already existend in database ?
+        // situation already existed in database ?
         readKnotValueFromDatabase(rabVars->curThreadNo, layerNumber, stateNumber, shortKnotValue, invalidLayerOrStateNumber, subLayerInDatabaseAndCompleted);
         readPlyInfoFromDatabase(layerNumber, stateNumber, plyInfo);
 
@@ -444,8 +450,8 @@ bool MiniMax::alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars, unsign
 }
 
 //-----------------------------------------------------------------------------
-// Name: alphaBetaTryPossibilites()
-// Desc:
+// alphaBetaTryPossibilites()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta)
 {
@@ -495,7 +501,7 @@ void MiniMax::alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, un
         if (hFileShortKnotValues != nullptr && tilLevel + 1 >= depthOfFullTree)
             continue;
 
-        // alpha beta algorithmn
+        // alpha beta algorithm
         if (!knot->isOpponentLevel) {
             if (knot->branches[curPoss].floatValue >= beta) {
                 knot->numPossibilities = curPoss + 1;
@@ -522,8 +528,8 @@ void MiniMax::alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, un
 }
 
 //-----------------------------------------------------------------------------
-// Name: alphaBetaCalcKnotValue()
-// Desc:
+// alphaBetaCalcKnotValue()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
 {
@@ -557,8 +563,8 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
 }
 
 //-----------------------------------------------------------------------------
-// Name: alphaBetaCalcPlyInfo()
-// Desc:
+// alphaBetaCalcPlyInfo()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 {
@@ -622,8 +628,8 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 }
 
 //-----------------------------------------------------------------------------
-// Name: alphaBetaChooseBestMove()
-// Desc: select randomly one of the best moves, if they are equivalent
+// alphaBetaChooseBestMove()
+// select randomly one of the best moves, if they are equivalent
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, unsigned int maxWonfreqValuesSubMoves)
 {
@@ -660,7 +666,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars, uns
                         }
                     }
                 }
-                // conventionell mini-max algorithm
+                // conventional mini-max algorithm
             } else {
                 dif = knot->branches[i].floatValue - knot->floatValue;
                 dif = (dif > 0) ? dif : -1.0f * dif;

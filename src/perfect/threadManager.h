@@ -16,7 +16,7 @@
 
 using namespace std; // use standard library namespace
 
-/*** Konstanten ******************************************************/
+
 #define TM_SCHEDULE_USER_DEFINED 0
 #define TM_SCHEDULE_STATIC 1
 #define TM_SCHEDULE_DYNAMIC 2
@@ -30,11 +30,11 @@ using namespace std; // use standard library namespace
 #define TM_RETURN_VALUE_INVALID_PARAM 3
 #define TM_RETURN_VALUE_UNEXPECTED_ERROR 4
 
-/*** Makros ******************************************************/
+
 
 /*** Strukturen ******************************************************/
 
-/*** Klassen *********************************************************/
+
 
 class ThreadManager
 {

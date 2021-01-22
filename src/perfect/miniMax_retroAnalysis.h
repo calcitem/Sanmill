@@ -6,6 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "miniMax.h"
+
 struct RetroAnalysisQueueState
 {
     StateNumberVarType stateNumber;		 // state stored in the retro analysis queue. the queue is a buffer containing states to be passed to 'RetroAnalysisThreadVars::statesToProcess'

@@ -19,10 +19,8 @@
 
 using namespace std;
 
-/*** Konstanten ******************************************************/
 #define MAX_NUM_MOVES 10000
 
-/*** Makros ******************************************************/
 #define SAFE_DELETE(p)     \
 	{                      \
 		if (p)             \
@@ -31,6 +29,7 @@ using namespace std;
 			(p) = nullptr; \
 		}                  \
 	}
+
 #define SAFE_DELETE_ARRAY(p) \
 	{                        \
 		if (p)               \
@@ -40,7 +39,6 @@ using namespace std;
 		}                    \
 	}
 
-/*** Klassen *********************************************************/
 
 class Mill
 {

@@ -9,8 +9,8 @@
 #include "strLib.h"
 
 //-----------------------------------------------------------------------------
-// Name: hibit()
-// Desc:
+// hibit()
+// 
 //-----------------------------------------------------------------------------
 int MyString::hibit(unsigned int n)
 {
@@ -23,16 +23,16 @@ int MyString::hibit(unsigned int n)
 }
 
 //-----------------------------------------------------------------------------
-// Name: MyString()
-// Desc:
+// MyString()
+// 
 //-----------------------------------------------------------------------------
 MyString::MyString()
 {
 }
 
 //-----------------------------------------------------------------------------
-// Name: MyString()
-// Desc:
+// MyString()
+// 
 //-----------------------------------------------------------------------------
 MyString::MyString(const char *cStr)
 {
@@ -40,8 +40,8 @@ MyString::MyString(const char *cStr)
 }
 
 //-----------------------------------------------------------------------------
-// Name: MyString()
-// Desc:
+// MyString()
+// 
 //-----------------------------------------------------------------------------
 MyString::MyString(const WCHAR *cStr)
 {
@@ -49,8 +49,8 @@ MyString::MyString(const WCHAR *cStr)
 }
 
 //-----------------------------------------------------------------------------
-// Name: MyString()
-// Desc:
+// MyString()
+// 
 //-----------------------------------------------------------------------------
 MyString::~MyString()
 {
@@ -71,8 +71,8 @@ MyString::~MyString()
 }
 
 //-----------------------------------------------------------------------------
-// Name: c_strA()
-// Desc:
+// c_strA()
+// 
 //-----------------------------------------------------------------------------
 const char *MyString::c_strA()
 {
@@ -80,8 +80,8 @@ const char *MyString::c_strA()
 }
 
 //-----------------------------------------------------------------------------
-// Name: c_strW()
-// Desc:
+// c_strW()
+// 
 //-----------------------------------------------------------------------------
 const WCHAR *MyString::c_strW()
 {
@@ -89,8 +89,8 @@ const WCHAR *MyString::c_strW()
 }
 
 //-----------------------------------------------------------------------------
-// Name: assign()
-// Desc:
+// assign()
+// 
 //-----------------------------------------------------------------------------
 MyString &MyString::assign(const char *cStr)
 {
@@ -118,8 +118,8 @@ MyString &MyString::assign(const char *cStr)
 }
 
 //-----------------------------------------------------------------------------
-// Name: assign()
-// Desc:
+// assign()
+// 
 //-----------------------------------------------------------------------------
 MyString &MyString::assign(const WCHAR *cStr)
 {
@@ -147,8 +147,8 @@ MyString &MyString::assign(const WCHAR *cStr)
 }
 
 //-----------------------------------------------------------------------------
-// Name: readAsciiData()
-// Desc: This functions reads in a table of floating point values faster than "cin".
+// readAsciiData()
+// This functions reads in a table of floating point values faster than "cin".
 //-----------------------------------------------------------------------------
 bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned char decimalSeperator, unsigned char columnSeparator)
 {

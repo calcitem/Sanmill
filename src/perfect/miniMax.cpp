@@ -9,8 +9,8 @@
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
-// Name: MiniMax()
-// Desc: MiniMax class constructor
+// MiniMax()
+// MiniMax class constructor
 //-----------------------------------------------------------------------------
 MiniMax::MiniMax()
 {
@@ -73,8 +73,8 @@ MiniMax::MiniMax()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~MiniMax()
-// Desc: MiniMax class destructor
+// ~MiniMax()
+// MiniMax class destructor
 //-----------------------------------------------------------------------------
 MiniMax::~MiniMax()
 {
@@ -84,8 +84,8 @@ MiniMax::~MiniMax()
 }
 
 //-----------------------------------------------------------------------------
-// Name: falseOrStop()
-// Desc:
+// falseOrStop()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::falseOrStop()
 {
@@ -96,8 +96,8 @@ bool MiniMax::falseOrStop()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getBestChoice()
-// Desc: Returns the best choice if the database has been opened and calculates the best choice for that if database is not open.
+// getBestChoice()
+// Returns the best choice if the database has been opened and calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
 void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsigned int maximumNumberOfBranches)
 {
@@ -128,8 +128,8 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 }
 
 //-----------------------------------------------------------------------------
-// Name: calculateDatabase()
-// Desc: Calculates the database, which must be already open.
+// calculateDatabase()
+// Calculates the database, which must be already open.
 //-----------------------------------------------------------------------------
 void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 {
@@ -214,8 +214,8 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 }
 
 //-----------------------------------------------------------------------------
-// Name: calcLayer()
-// Desc:
+// calcLayer()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::calcLayer(unsigned int layerNumber)
 {
@@ -271,8 +271,8 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: pauseDatabaseCalculation()
-// Desc:
+// pauseDatabaseCalculation()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::pauseDatabaseCalculation()
 {
@@ -280,8 +280,8 @@ void MiniMax::pauseDatabaseCalculation()
 }
 
 //-----------------------------------------------------------------------------
-// Name: cancelDatabaseCalculation()
-// Desc:
+// cancelDatabaseCalculation()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::cancelDatabaseCalculation()
 {
@@ -290,8 +290,8 @@ void MiniMax::cancelDatabaseCalculation()
 }
 
 //-----------------------------------------------------------------------------
-// Name: wasDatabaseCalculationCancelled()
-// Desc:
+// wasDatabaseCalculationCancelled()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::wasDatabaseCalculationCancelled()
 {

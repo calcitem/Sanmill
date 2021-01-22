@@ -9,8 +9,8 @@
 #include "miniMaxAI.h"
 
 //-----------------------------------------------------------------------------
-// Name: MiniMaxAI()
-// Desc: MiniMaxAI class constructor
+// MiniMaxAI()
+// MiniMaxAI class constructor
 //-----------------------------------------------------------------------------
 MiniMaxAI::MiniMaxAI()
 {
@@ -18,16 +18,16 @@ MiniMaxAI::MiniMaxAI()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~MiniMaxAI()
-// Desc: MiniMaxAI class destructor
+// ~MiniMaxAI()
+// MiniMaxAI class destructor
 //-----------------------------------------------------------------------------
 MiniMaxAI::~MiniMaxAI()
 {
 }
 
 //-----------------------------------------------------------------------------
-// Name: play()
-// Desc:
+// play()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {
@@ -85,8 +85,8 @@ void MiniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
 }
 
 //-----------------------------------------------------------------------------
-// Name: setSearchDepth()
-// Desc:
+// setSearchDepth()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::setSearchDepth(unsigned int depth)
 {
@@ -94,8 +94,8 @@ void MiniMaxAI::setSearchDepth(unsigned int depth)
 }
 
 //-----------------------------------------------------------------------------
-// Name: prepareBestChoiceCalculation()
-// Desc:
+// prepareBestChoiceCalculation()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::prepareBestChoiceCalculation()
 {
@@ -105,8 +105,8 @@ void MiniMaxAI::prepareBestChoiceCalculation()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossSettingPhase()
-// Desc:
+// getPossSettingPhase()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities)
 {
@@ -131,8 +131,8 @@ unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *numPossibilities, voi
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossNormalMove()
-// Desc:
+// getPossNormalMove()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void **pPossibilities)
 {
@@ -186,8 +186,8 @@ unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities, void 
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossStoneRemove()
-// Desc:
+// getPossStoneRemove()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *MiniMaxAI::getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities)
 {
@@ -213,8 +213,8 @@ unsigned int *MiniMaxAI::getPossStoneRemove(unsigned int *numPossibilities, void
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossibilities()
-// Desc:
+// getPossibilities()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *MiniMaxAI::getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities)
 {
@@ -237,8 +237,8 @@ unsigned int *MiniMaxAI::getPossibilities(unsigned int threadNo, unsigned int *n
 }
 
 //-----------------------------------------------------------------------------
-// Name: getValueOfSituation()
-// Desc:
+// getValueOfSituation()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::getValueOfSituation(unsigned int threadNo, float &floatValue, TwoBit &shortValue)
 {
@@ -247,16 +247,16 @@ void MiniMaxAI::getValueOfSituation(unsigned int threadNo, float &floatValue, Tw
 }
 
 //-----------------------------------------------------------------------------
-// Name: deletePossibilities()
-// Desc:
+// deletePossibilities()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::deletePossibilities(unsigned int threadNo, void *pPossibilities)
 {
 }
 
 //-----------------------------------------------------------------------------
-// Name: undo()
-// Desc:
+// undo()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities)
 {
@@ -290,8 +290,8 @@ void MiniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opp
 }
 
 //-----------------------------------------------------------------------------
-// Name: setWarning()
-// Desc:
+// setWarning()
+// 
 //-----------------------------------------------------------------------------
 inline void MiniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree)
 {
@@ -365,8 +365,8 @@ inline void MiniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, 
 }
 
 //-----------------------------------------------------------------------------
-// Name: updateWarning()
-// Desc:
+// updateWarning()
+// 
 //-----------------------------------------------------------------------------
 inline void MiniMaxAI::updateWarning(unsigned int firstStone, unsigned int secondStone)
 {
@@ -397,8 +397,8 @@ inline void MiniMaxAI::updateWarning(unsigned int firstStone, unsigned int secon
 }
 
 //-----------------------------------------------------------------------------
-// Name: updatePossibleMoves()
-// Desc:
+// updatePossibleMoves()
+// 
 //-----------------------------------------------------------------------------
 inline void MiniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
 {
@@ -446,8 +446,8 @@ inline void MiniMaxAI::updatePossibleMoves(unsigned int stone, Player *stoneOwne
 }
 
 //-----------------------------------------------------------------------------
-// Name: setStone()
-// Desc:
+// setStone()
+// 
 //-----------------------------------------------------------------------------
 inline void MiniMaxAI::setStone(unsigned int to, Backup *backup)
 {
@@ -474,8 +474,8 @@ inline void MiniMaxAI::setStone(unsigned int to, Backup *backup)
 }
 
 //-----------------------------------------------------------------------------
-// Name: normalMove()
-// Desc:
+// normalMove()
+// 
 //-----------------------------------------------------------------------------
 inline void MiniMaxAI::normalMove(unsigned int from, unsigned int to, Backup *backup)
 {
@@ -498,8 +498,8 @@ inline void MiniMaxAI::normalMove(unsigned int from, unsigned int to, Backup *ba
 }
 
 //-----------------------------------------------------------------------------
-// Name: removeStone()
-// Desc:
+// removeStone()
+// 
 //-----------------------------------------------------------------------------
 inline void MiniMaxAI::removeStone(unsigned int from, Backup *backup)
 {
@@ -527,8 +527,8 @@ inline void MiniMaxAI::removeStone(unsigned int from, Backup *backup)
 }
 
 //-----------------------------------------------------------------------------
-// Name: move()
-// Desc:
+// move()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities)
 {
@@ -596,8 +596,8 @@ void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 }
 
 //-----------------------------------------------------------------------------
-// Name: printMoveInformation()
-// Desc:
+// printMoveInformation()
+// 
 //-----------------------------------------------------------------------------
 void MiniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities)
 {

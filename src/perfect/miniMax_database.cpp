@@ -12,8 +12,8 @@
 #pragma warning(disable: 4706)
 
 //-----------------------------------------------------------------------------
-// Name: ~MiniMax()
-// Desc: MiniMax class destructor
+// ~MiniMax()
+// MiniMax class destructor
 //-----------------------------------------------------------------------------
 void MiniMax::closeDatabase()
 {
@@ -35,8 +35,8 @@ void MiniMax::closeDatabase()
 }
 
 //-----------------------------------------------------------------------------
-// Name: unloadPlyInfo()
-// Desc:
+// unloadPlyInfo()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::unloadPlyInfo(unsigned int layerNumber)
 {
@@ -48,8 +48,8 @@ void MiniMax::unloadPlyInfo(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: unloadLayer()
-// Desc:
+// unloadLayer()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::unloadLayer(unsigned int layerNumber)
 {
@@ -61,8 +61,8 @@ void MiniMax::unloadLayer(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: unloadAllPlyInfos()
-// Desc:
+// unloadAllPlyInfos()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::unloadAllPlyInfos()
 {
@@ -72,8 +72,8 @@ void MiniMax::unloadAllPlyInfos()
 }
 
 //-----------------------------------------------------------------------------
-// Name: unloadAllLayers()
-// Desc:
+// unloadAllLayers()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::unloadAllLayers()
 {
@@ -83,8 +83,8 @@ void MiniMax::unloadAllLayers()
 }
 
 //-----------------------------------------------------------------------------
-// Name: saveBytesToFile()
-// Desc:
+// saveBytesToFile()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
 {
@@ -116,8 +116,8 @@ void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBy
 }
 
 //-----------------------------------------------------------------------------
-// Name: loadBytesFromFile()
-// Desc:
+// loadBytesFromFile()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
 {
@@ -150,8 +150,8 @@ void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int num
 }
 
 //-----------------------------------------------------------------------------
-// Name: isCurrentStateInDatabase()
-// Desc:
+// isCurrentStateInDatabase()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::isCurrentStateInDatabase(unsigned int threadNo)
 {
@@ -166,8 +166,8 @@ bool MiniMax::isCurrentStateInDatabase(unsigned int threadNo)
 }
 
 //-----------------------------------------------------------------------------
-// Name: saveHeader()
-// Desc:
+// saveHeader()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::saveHeader(SkvFileHeader *dbH, LayerStats *lStats)
 {
@@ -178,8 +178,8 @@ void MiniMax::saveHeader(SkvFileHeader *dbH, LayerStats *lStats)
 }
 
 //-----------------------------------------------------------------------------
-// Name: saveHeader()
-// Desc:
+// saveHeader()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
 {
@@ -190,8 +190,8 @@ void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
 }
 
 //-----------------------------------------------------------------------------
-// Name: openDatabase()
-// Desc:
+// openDatabase()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::openDatabase(const char *directory, unsigned int maximumNumberOfBranches)
 {
@@ -205,8 +205,8 @@ bool MiniMax::openDatabase(const char *directory, unsigned int maximumNumberOfBr
 }
 
 //-----------------------------------------------------------------------------
-// Name: openSkvFile()
-// Desc:
+// openSkvFile()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBranches)
 {
@@ -285,8 +285,8 @@ void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 }
 
 //-----------------------------------------------------------------------------
-// Name: openPlyInfoFile()
-// Desc:
+// openPlyInfoFile()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::openPlyInfoFile(const char *directory)
 {
@@ -357,8 +357,8 @@ void MiniMax::openPlyInfoFile(const char *directory)
 }
 
 //-----------------------------------------------------------------------------
-// Name: saveLayerToFile()
-// Desc:
+// saveLayerToFile()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::saveLayerToFile(unsigned int layerNumber)
 {
@@ -384,8 +384,8 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: measureIops()
-// Desc:
+// measureIops()
+// 
 //-----------------------------------------------------------------------------
 inline void MiniMax::measureIops(long long &numOperations, LARGE_INTEGER &interval, LARGE_INTEGER &curTimeBefore, char text[])
 {
@@ -417,8 +417,8 @@ inline void MiniMax::measureIops(long long &numOperations, LARGE_INTEGER &interv
 }
 
 //-----------------------------------------------------------------------------
-// Name: readKnotValueFromDatabase()
-// Desc:
+// readKnotValueFromDatabase()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, TwoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted)
 {
@@ -446,8 +446,8 @@ void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &lay
 }
 
 //-----------------------------------------------------------------------------
-// Name: readKnotValueFromDatabase()
-// Desc:
+// readKnotValueFromDatabase()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit &knotValue)
 {
@@ -514,8 +514,8 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
 }
 
 //-----------------------------------------------------------------------------
-// Name: readPlyInfoFromDatabase()
-// Desc:
+// readPlyInfoFromDatabase()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType &value)
 {
@@ -575,8 +575,8 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
 }
 
 //-----------------------------------------------------------------------------
-// Name: saveKnotValueInDatabase()
-// Desc:
+// saveKnotValueInDatabase()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue)
 {
@@ -637,8 +637,8 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
 }
 
 //-----------------------------------------------------------------------------
-// Name: savePlyInfoInDatabase()
-// Desc:
+// savePlyInfoInDatabase()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType value)
 {

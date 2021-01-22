@@ -9,8 +9,8 @@
 #include "mill.h"
 
 //-----------------------------------------------------------------------------
-// Name: Mill()
-// Desc: Mill class constructor
+// Mill()
+// Mill class constructor
 //-----------------------------------------------------------------------------
 Mill::Mill()
 {
@@ -27,8 +27,8 @@ Mill::Mill()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~Mill()
-// Desc: Mill class destructor
+// ~Mill()
+// Mill class destructor
 //-----------------------------------------------------------------------------
 Mill::~Mill()
 {
@@ -36,8 +36,8 @@ Mill::~Mill()
 }
 
 //-----------------------------------------------------------------------------
-// Name: deleteArrays()
-// Desc: Deletes all arrays the Mill class has created.
+// deleteArrays()
+// Deletes all arrays the Mill class has created.
 //-----------------------------------------------------------------------------
 void Mill::exit()
 {
@@ -49,8 +49,8 @@ void Mill::exit()
 }
 
 //-----------------------------------------------------------------------------
-// Name: beginNewGame()
-// Desc: Reinitializes the Mill object.
+// beginNewGame()
+// Reinitializes the Mill object.
 //-----------------------------------------------------------------------------
 void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer)
 {
@@ -83,8 +83,8 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int curre
 }
 
 //-----------------------------------------------------------------------------
-// Name: startSettingPhase()
-// Desc:
+// startSettingPhase()
+// 
 //-----------------------------------------------------------------------------
 bool Mill::startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer, bool settingPhase)
 {
@@ -96,8 +96,8 @@ bool Mill::startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int 
 }
 
 //-----------------------------------------------------------------------------
-// Name: setUpCalcPossibleMoves()
-// Desc: Calculates and set the number of possible moves for the passed player considering the game state stored in the 'board' variable.
+// setUpCalcPossibleMoves()
+// Calculates and set the number of possible moves for the passed player considering the game state stored in the 'board' variable.
 //-----------------------------------------------------------------------------
 void Mill::setUpCalcPossibleMoves(Player *player)
 {
@@ -135,8 +135,8 @@ void Mill::setUpCalcPossibleMoves(Player *player)
 }
 
 //-----------------------------------------------------------------------------
-// Name: setUpSetWarningAndMill()
-// Desc:
+// setUpSetWarningAndMill()
+// 
 //-----------------------------------------------------------------------------
 void Mill::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
 {
@@ -153,8 +153,8 @@ void Mill::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbou
 }
 
 //-----------------------------------------------------------------------------
-// Name: putPiece()
-// Desc: Put a stone onto the board during the setting phase.
+// putPiece()
+// Put a stone onto the board during the setting phase.
 //-----------------------------------------------------------------------------
 bool Mill::putPiece(unsigned int pos, int player)
 {
@@ -235,8 +235,8 @@ bool Mill::putPiece(unsigned int pos, int player)
 }
 
 //-----------------------------------------------------------------------------
-// Name: settingPhaseHasFinished()
-// Desc: This function has to be called when the setting phase has finished.
+// settingPhaseHasFinished()
+// This function has to be called when the setting phase has finished.
 //-----------------------------------------------------------------------------
 bool Mill::settingPhaseHasFinished()
 {
@@ -247,8 +247,8 @@ bool Mill::settingPhaseHasFinished()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getField()
-// Desc: Copy the current board state into the array 'pField'.
+// getField()
+// Copy the current board state into the array 'pField'.
 //-----------------------------------------------------------------------------
 bool Mill::getField(int *pField)
 {
@@ -269,8 +269,8 @@ bool Mill::getField(int *pField)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getLog()
-// Desc: Copy the whole history of moves into the passed arrays, which must be of size [MAX_NUM_MOVES].
+// getLog()
+// Copy the whole history of moves into the passed arrays, which must be of size [MAX_NUM_MOVES].
 //-----------------------------------------------------------------------------
 void Mill::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *to)
 {
@@ -285,8 +285,8 @@ void Mill::getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *
 }
 
 //-----------------------------------------------------------------------------
-// Name: setNextPlayer()
-// Desc: Current player and opponent player are switched in the board struct.
+// setNextPlayer()
+// Current player and opponent player are switched in the board struct.
 //-----------------------------------------------------------------------------
 void Mill::setNextPlayer()
 {
@@ -298,8 +298,8 @@ void Mill::setNextPlayer()
 }
 
 //-----------------------------------------------------------------------------
-// Name: isCurrentPlayerHuman()
-// Desc: Returns true if the current player is not assigned to an AI.
+// isCurrentPlayerHuman()
+// Returns true if the current player is not assigned to an AI.
 //-----------------------------------------------------------------------------
 bool Mill::isCurrentPlayerHuman()
 {
@@ -310,8 +310,8 @@ bool Mill::isCurrentPlayerHuman()
 }
 
 //-----------------------------------------------------------------------------
-// Name: isOpponentPlayerHuman()
-// Desc: Returns true if the opponent player is not assigned to an AI.
+// isOpponentPlayerHuman()
+// Returns true if the opponent player is not assigned to an AI.
 //-----------------------------------------------------------------------------
 bool Mill::isOpponentPlayerHuman()
 {
@@ -322,8 +322,8 @@ bool Mill::isOpponentPlayerHuman()
 }
 
 //-----------------------------------------------------------------------------
-// Name: setAI()
-// Desc: Assigns an AI to a player.
+// setAI()
+// Assigns an AI to a player.
 //-----------------------------------------------------------------------------
 void Mill::setAI(int player, MillAI *AI)
 {
@@ -336,8 +336,8 @@ void Mill::setAI(int player, MillAI *AI)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getChoiceOfSpecialAI()
-// Desc: Returns the move the passed AI would do.
+// getChoiceOfSpecialAI()
+// Returns the move the passed AI would do.
 //-----------------------------------------------------------------------------
 void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned int *pushTo)
 {
@@ -352,8 +352,8 @@ void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned int
 }
 
 //-----------------------------------------------------------------------------
-// Name: getComputersChoice()
-// Desc: Returns the move the AI of the current player would do.
+// getComputersChoice()
+// Returns the move the AI of the current player would do.
 //-----------------------------------------------------------------------------
 void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 {
@@ -377,8 +377,8 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 }
 
 //-----------------------------------------------------------------------------
-// Name: isNormalMovePossible()
-// Desc: 'Normal' in this context means, by moving the stone along a connection without jumping.
+// isNormalMovePossible()
+// 'Normal' in this context means, by moving the stone along a connection without jumping.
 //-----------------------------------------------------------------------------
 bool Mill::isNormalMovePossible(unsigned int from, unsigned int to, Player *player)
 {
@@ -417,8 +417,8 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to, Player *play
 }
 
 //-----------------------------------------------------------------------------
-// Name: calcPossibleMoves()
-// Desc: ...
+// calcPossibleMoves()
+// ...
 //-----------------------------------------------------------------------------
 void Mill::calcPossibleMoves(Player *player)
 {
@@ -454,8 +454,8 @@ void Mill::calcPossibleMoves(Player *player)
 }
 
 //-----------------------------------------------------------------------------
-// Name: setWarningAndMill()
-// Desc:
+// setWarningAndMill()
+// 
 //-----------------------------------------------------------------------------
 void Mill::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour, bool isNewStone)
 {
@@ -481,8 +481,8 @@ void Mill::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, un
 }
 
 //-----------------------------------------------------------------------------
-// Name: updateMillsAndWarnings()
-// Desc:
+// updateMillsAndWarnings()
+// 
 //-----------------------------------------------------------------------------
 void Mill::updateMillsAndWarnings(unsigned int newStone)
 {
@@ -519,8 +519,8 @@ void Mill::updateMillsAndWarnings(unsigned int newStone)
 }
 
 //-----------------------------------------------------------------------------
-// Name: doMove()
-// Desc:
+// doMove()
+// 
 //-----------------------------------------------------------------------------
 bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 {
@@ -654,8 +654,8 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 }
 
 //-----------------------------------------------------------------------------
-// Name: setCurrentGameState()
-// Desc: Set an arbitrary game state as the current one.
+// setCurrentGameState()
+// Set an arbitrary game state as the current one.
 //-----------------------------------------------------------------------------
 bool Mill::setCurrentGameState(fieldStruct *curState)
 {
@@ -677,8 +677,8 @@ bool Mill::setCurrentGameState(fieldStruct *curState)
 }
 
 //-----------------------------------------------------------------------------
-// Name: compareWithField()
-// Desc: Compares the current 'board' variable with the passed one. 'stoneMoveAble[]' is ignored.
+// compareWithField()
+// Compares the current 'board' variable with the passed one. 'stoneMoveAble[]' is ignored.
 //-----------------------------------------------------------------------------
 bool Mill::compareWithField(fieldStruct *compareField)
 {
@@ -745,8 +745,8 @@ bool Mill::compareWithField(fieldStruct *compareField)
 }
 
 //-----------------------------------------------------------------------------
-// Name: comparePlayers()
-// Desc: Compares the two passed players and returns false if they differ.
+// comparePlayers()
+// Compares the two passed players and returns false if they differ.
 //-----------------------------------------------------------------------------
 bool Mill::comparePlayers(Player *playerA, Player *playerB)
 {
@@ -785,8 +785,8 @@ bool Mill::comparePlayers(Player *playerA, Player *playerB)
 }
 
 //-----------------------------------------------------------------------------
-// Name: printBoard()
-// Desc: Calls the printBoard() function of the current board.
+// printBoard()
+// Calls the printBoard() function of the current board.
 //       Prints the current game state on the screen.
 //-----------------------------------------------------------------------------
 void Mill::printBoard()
@@ -795,8 +795,8 @@ void Mill::printBoard()
 }
 
 //-----------------------------------------------------------------------------
-// Name: undoMove()
-// Desc: Sets the initial board as the current one and apply all (minus one) moves from the move history.
+// undoMove()
+// Sets the initial board as the current one and apply all (minus one) moves from the move history.
 //-----------------------------------------------------------------------------
 void Mill::undoMove(void)
 {
@@ -832,8 +832,8 @@ void Mill::undoMove(void)
 }
 
 //-----------------------------------------------------------------------------
-// Name: calcNumberOfRestingStones()
-// Desc:
+// calcNumberOfRestingStones()
+// 
 //-----------------------------------------------------------------------------
 void Mill::calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting)
 {

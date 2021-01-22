@@ -13,7 +13,7 @@
 #include <time.h>
 #include "millAI.h"
 
-/*** Klassen *********************************************************/
+
 
 class RandomAI : public MillAI
 {

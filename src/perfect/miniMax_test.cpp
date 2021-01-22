@@ -9,8 +9,8 @@
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
-// Name: testLayer()
-// Desc:
+// testLayer()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::testLayer(unsigned int layerNumber)
 {
@@ -84,8 +84,8 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: testLayerThreadProc()
-// Desc:
+// testLayerThreadProc()
+// 
 //-----------------------------------------------------------------------------
 DWORD MiniMax::testLayerThreadProc(void *pParameter, int index)
 {
@@ -312,8 +312,8 @@ errorInDatabase:
 }
 
 //-----------------------------------------------------------------------------
-// Name: testState()
-// Desc:
+// testState()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 {
@@ -341,8 +341,8 @@ bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: testSetSituationAndGetPoss()
-// Desc:
+// testSetSituationAndGetPoss()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 {
@@ -408,8 +408,8 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: testSetSituationThreadProc()
-// Desc:
+// testSetSituationThreadProc()
+// 
 //-----------------------------------------------------------------------------
 DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
 {
@@ -491,8 +491,8 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
 }
 
 //-----------------------------------------------------------------------------
-// Name: testIfSymStatesHaveSameValue()
-// Desc:
+// testIfSymStatesHaveSameValue()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 {

@@ -9,8 +9,8 @@
 #include "bufferedFile.h"
 
 //-----------------------------------------------------------------------------
-// Name: bufferedFile()
-// Desc: Creates a cyclic array. The passed file is used as temporary data buffer for the cyclic array.
+// bufferedFile()
+// Creates a cyclic array. The passed file is used as temporary data buffer for the cyclic array.
 //-----------------------------------------------------------------------------
 BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSizeInBytes, const char *fileName)
 {
@@ -39,7 +39,7 @@ BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSize
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
     hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-    // opened file succesfully
+    // opened file successfully
     if (hFile == INVALID_HANDLE_VALUE) {
         hFile = nullptr;
         return;
@@ -50,8 +50,8 @@ BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSize
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~BufferedFile()
-// Desc: BufferedFile class destructor
+// ~BufferedFile()
+// BufferedFile class destructor
 //-----------------------------------------------------------------------------
 BufferedFile::~BufferedFile()
 {
@@ -73,8 +73,8 @@ BufferedFile::~BufferedFile()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getFileSize()
-// Desc:
+// getFileSize()
+// 
 //-----------------------------------------------------------------------------
 long long BufferedFile::getFileSize()
 {
@@ -86,8 +86,8 @@ long long BufferedFile::getFileSize()
 }
 
 //-----------------------------------------------------------------------------
-// Name: flushBuffers()
-// Desc:
+// flushBuffers()
+// 
 //-----------------------------------------------------------------------------
 bool BufferedFile::flushBuffers()
 {
@@ -100,8 +100,8 @@ bool BufferedFile::flushBuffers()
 }
 
 //-----------------------------------------------------------------------------
-// Name: writeDataToFile()
-// Desc: Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
+// writeDataToFile()
+// Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
 void BufferedFile::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
 {
@@ -134,8 +134,8 @@ void BufferedFile::writeDataToFile(HANDLE fd, long long offset, unsigned int siz
 }
 
 //-----------------------------------------------------------------------------
-// Name: readDataFromFile()
-// Desc: Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
+// readDataFromFile()
+// Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
 void BufferedFile::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
 {
@@ -168,8 +168,8 @@ void BufferedFile::readDataFromFile(HANDLE fd, long long offset, unsigned int si
 }
 
 //-----------------------------------------------------------------------------
-// Name: writeBytes()
-// Desc:
+// writeBytes()
+// 
 //-----------------------------------------------------------------------------
 bool BufferedFile::writeBytes(unsigned int numBytes, unsigned char *pData)
 {
@@ -177,8 +177,8 @@ bool BufferedFile::writeBytes(unsigned int numBytes, unsigned char *pData)
 }
 
 //-----------------------------------------------------------------------------
-// Name: writeBytes()
-// Desc:
+// writeBytes()
+// 
 //-----------------------------------------------------------------------------
 bool BufferedFile::writeBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
 {
@@ -208,8 +208,8 @@ bool BufferedFile::writeBytes(unsigned int threadNo, long long positionInFile, u
 }
 
 //-----------------------------------------------------------------------------
-// Name: takeBytes()
-// Desc:
+// takeBytes()
+// 
 //-----------------------------------------------------------------------------
 bool BufferedFile::readBytes(unsigned int numBytes, unsigned char *pData)
 {
@@ -217,8 +217,8 @@ bool BufferedFile::readBytes(unsigned int numBytes, unsigned char *pData)
 }
 
 //-----------------------------------------------------------------------------
-// Name: takeBytes()
-// Desc:
+// takeBytes()
+// 
 //-----------------------------------------------------------------------------
 bool BufferedFile::readBytes(unsigned int threadNo, long long positionInFile, unsigned int numBytes, unsigned char *pData)
 {

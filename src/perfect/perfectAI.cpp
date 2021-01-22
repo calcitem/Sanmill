@@ -184,8 +184,8 @@ unsigned int fieldPosIsOfGroup[] = { GROUP_C, GROUP_D, GROUP_C,
                                     GROUP_C, GROUP_D, GROUP_C };
 
 //-----------------------------------------------------------------------------
-// Name: PerfectAI()
-// Desc: PerfectAI class constructor
+// PerfectAI()
+// PerfectAI class constructor
 //-----------------------------------------------------------------------------
 PerfectAI::PerfectAI(const char *directory)
 {
@@ -653,8 +653,8 @@ PerfectAI::PerfectAI(const char *directory)
 }
 
 //-----------------------------------------------------------------------------
-// Name: ~PerfectAI()
-// Desc: PerfectAI class destructor
+// ~PerfectAI()
+// PerfectAI class destructor
 //-----------------------------------------------------------------------------
 PerfectAI::~PerfectAI()
 {
@@ -672,8 +672,8 @@ PerfectAI::~PerfectAI()
 }
 
 //-----------------------------------------------------------------------------
-// Name: play()
-// Desc:
+// play()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
 {
@@ -731,8 +731,8 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
 }
 
 //-----------------------------------------------------------------------------
-// Name: prepareDatabaseCalculation()
-// Desc:
+// prepareDatabaseCalculation()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::prepareDatabaseCalculation()
 {
@@ -751,8 +751,8 @@ void PerfectAI::prepareDatabaseCalculation()
 }
 
 //-----------------------------------------------------------------------------
-// Name: wrapUpDatabaseCalculation()
-// Desc:
+// wrapUpDatabaseCalculation()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::wrapUpDatabaseCalculation(bool calculationAborted)
 {
@@ -768,8 +768,8 @@ void PerfectAI::wrapUpDatabaseCalculation(bool calculationAborted)
 }
 
 //-----------------------------------------------------------------------------
-// Name: testLayers()
-// Desc:
+// testLayers()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::testLayers(unsigned int startTestFromLayer, unsigned int endTestAtLayer)
 {
@@ -793,8 +793,8 @@ bool PerfectAI::testLayers(unsigned int startTestFromLayer, unsigned int endTest
 }
 
 //-----------------------------------------------------------------------------
-// Name: setDatabasePath()
-// Desc:
+// setDatabasePath()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::setDatabasePath(const char *directory)
 {
@@ -808,8 +808,8 @@ bool PerfectAI::setDatabasePath(const char *directory)
 }
 
 //-----------------------------------------------------------------------------
-// Name: prepareBestChoiceCalculation()
-// Desc:
+// prepareBestChoiceCalculation()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::prepareBestChoiceCalculation()
 {
@@ -822,8 +822,8 @@ void PerfectAI::prepareBestChoiceCalculation()
 }
 
 //-----------------------------------------------------------------------------
-// Name: ThreadVars()
-// Desc:
+// ThreadVars()
+// 
 //-----------------------------------------------------------------------------
 PerfectAI::ThreadVars::ThreadVars()
 {
@@ -841,8 +841,8 @@ PerfectAI::ThreadVars::ThreadVars()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossSettingPhase()
-// Desc:
+// getPossSettingPhase()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *PerfectAI::ThreadVars::getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities)
 {
@@ -890,8 +890,8 @@ unsigned int *PerfectAI::ThreadVars::getPossSettingPhase(unsigned int *numPossib
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossNormalMove()
-// Desc:
+// getPossNormalMove()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *PerfectAI::ThreadVars::getPossNormalMove(unsigned int *numPossibilities, void **pPossibilities)
 {
@@ -950,8 +950,8 @@ unsigned int *PerfectAI::ThreadVars::getPossNormalMove(unsigned int *numPossibil
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossStoneRemove()
-// Desc:
+// getPossStoneRemove()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *PerfectAI::ThreadVars::getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities)
 {
@@ -978,8 +978,8 @@ unsigned int *PerfectAI::ThreadVars::getPossStoneRemove(unsigned int *numPossibi
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPossibilities()
-// Desc:
+// getPossibilities()
+// 
 //-----------------------------------------------------------------------------
 unsigned int *PerfectAI::getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities)
 {
@@ -1021,8 +1021,8 @@ unsigned int *PerfectAI::getPossibilities(unsigned int threadNo, unsigned int *n
 }
 
 //-----------------------------------------------------------------------------
-// Name: getValueOfSituation()
-// Desc:
+// getValueOfSituation()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::getValueOfSituation(unsigned int threadNo, float &floatValue, TwoBit &shortValue)
 {
@@ -1032,16 +1032,16 @@ void PerfectAI::getValueOfSituation(unsigned int threadNo, float &floatValue, Tw
 }
 
 //-----------------------------------------------------------------------------
-// Name: deletePossibilities()
-// Desc:
+// deletePossibilities()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::deletePossibilities(unsigned int threadNo, void *pPossibilities)
 {
 }
 
 //-----------------------------------------------------------------------------
-// Name: undo()
-// Desc:
+// undo()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities)
 {
@@ -1076,8 +1076,8 @@ void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opp
 }
 
 //-----------------------------------------------------------------------------
-// Name: setWarning()
-// Desc:
+// setWarning()
+// 
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree)
 {
@@ -1098,8 +1098,8 @@ inline void PerfectAI::ThreadVars::setWarning(unsigned int stoneOne, unsigned in
 }
 
 //-----------------------------------------------------------------------------
-// Name: updateWarning()
-// Desc:
+// updateWarning()
+// 
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::updateWarning(unsigned int firstStone, unsigned int secondStone)
 {
@@ -1128,8 +1128,8 @@ inline void PerfectAI::ThreadVars::updateWarning(unsigned int firstStone, unsign
 }
 
 //-----------------------------------------------------------------------------
-// Name: updatePossibleMoves()
-// Desc:
+// updatePossibleMoves()
+// 
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
 {
@@ -1181,8 +1181,8 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int stone, Playe
 }
 
 //-----------------------------------------------------------------------------
-// Name: setStone()
-// Desc:
+// setStone()
+// 
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::setStone(unsigned int to, Backup *backup)
 {
@@ -1209,8 +1209,8 @@ inline void PerfectAI::ThreadVars::setStone(unsigned int to, Backup *backup)
 }
 
 //-----------------------------------------------------------------------------
-// Name: normalMove()
-// Desc:
+// normalMove()
+// 
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::normalMove(unsigned int from, unsigned int to, Backup *backup)
 {
@@ -1233,8 +1233,8 @@ inline void PerfectAI::ThreadVars::normalMove(unsigned int from, unsigned int to
 }
 
 //-----------------------------------------------------------------------------
-// Name: removeStone()
-// Desc:
+// removeStone()
+// 
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::removeStone(unsigned int from, Backup *backup)
 {
@@ -1262,8 +1262,8 @@ inline void PerfectAI::ThreadVars::removeStone(unsigned int from, Backup *backup
 }
 
 //-----------------------------------------------------------------------------
-// Name: move()
-// Desc:
+// move()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities)
 {
@@ -1339,8 +1339,8 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 }
 
 //-----------------------------------------------------------------------------
-// Name: storeValueOfMove()
-// Desc:
+// storeValueOfMove()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, unsigned char value, unsigned int *freqValuesSubMoves, PlyInfoVarType plyInfo)
 {
@@ -1365,8 +1365,8 @@ void PerfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibili
 }
 
 //-----------------------------------------------------------------------------
-// Name: getValueOfMoves()
-// Desc:
+// getValueOfMoves()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::getValueOfMoves(unsigned char *moveValue, unsigned int *freqValuesSubMoves, PlyInfoVarType *plyInfo, unsigned int *moveQuality, unsigned char &knotValue, PlyInfoVarType &bestAmountOfPlies)
 {
@@ -1450,8 +1450,8 @@ void PerfectAI::getValueOfMoves(unsigned char *moveValue, unsigned int *freqValu
 }
 
 //-----------------------------------------------------------------------------
-// Name: printMoveInformation()
-// Desc:
+// printMoveInformation()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities)
 {
@@ -1469,8 +1469,8 @@ void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossi
 }
 
 //-----------------------------------------------------------------------------
-// Name: getNumberOfLayers()
-// Desc: called one time
+// getNumberOfLayers()
+// called one time
 //-----------------------------------------------------------------------------
 unsigned int PerfectAI::getNumberOfLayers()
 {
@@ -1478,8 +1478,8 @@ unsigned int PerfectAI::getNumberOfLayers()
 }
 
 //-----------------------------------------------------------------------------
-// Name: shallRetroAnalysisBeUsed()
-// Desc: called one time for each layer time
+// shallRetroAnalysisBeUsed()
+// called one time for each layer time
 //-----------------------------------------------------------------------------
 bool PerfectAI::shallRetroAnalysisBeUsed(unsigned int layerNum)
 {
@@ -1490,8 +1490,8 @@ bool PerfectAI::shallRetroAnalysisBeUsed(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getNumberOfKnotsInLayer()
-// Desc: called one time
+// getNumberOfKnotsInLayer()
+// called one time
 //-----------------------------------------------------------------------------
 unsigned int PerfectAI::getNumberOfKnotsInLayer(unsigned int layerNum)
 {
@@ -1511,8 +1511,8 @@ unsigned int PerfectAI::getNumberOfKnotsInLayer(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: nOverN()
-// Desc: called seldom
+// nOverN()
+// called seldom
 //-----------------------------------------------------------------------------
 long long PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
 {
@@ -1544,8 +1544,8 @@ long long PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
 }
 
 //-----------------------------------------------------------------------------
-// Name: applySymmetrieOperationOnField()
-// Desc: called very often
+// applySymmetrieOperationOnField()
+// called very often
 //-----------------------------------------------------------------------------
 void PerfectAI::applySymmetrieOperationOnField(unsigned char symmetryOperationNumber, unsigned int *sourceField, unsigned int *destField)
 {
@@ -1555,8 +1555,8 @@ void PerfectAI::applySymmetrieOperationOnField(unsigned char symmetryOperationNu
 }
 
 //-----------------------------------------------------------------------------
-// Name: getLayerNumber()
-// Desc:
+// getLayerNumber()
+// 
 //-----------------------------------------------------------------------------
 unsigned int PerfectAI::getLayerNumber(unsigned int threadNo)
 {
@@ -1568,8 +1568,8 @@ unsigned int PerfectAI::getLayerNumber(unsigned int threadNo)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getLayerAndStateNumber()
-// Desc:
+// getLayerAndStateNumber()
+// 
 //-----------------------------------------------------------------------------
 unsigned int PerfectAI::getLayerAndStateNumber(unsigned int threadNo, unsigned int &layerNum, unsigned int &stateNumber)
 {
@@ -1578,8 +1578,8 @@ unsigned int PerfectAI::getLayerAndStateNumber(unsigned int threadNo, unsigned i
 }
 
 //-----------------------------------------------------------------------------
-// Name: getLayerAndStateNumber()
-// Desc: Current player has white stones, the opponent the black ones.
+// getLayerAndStateNumber()
+// Current player has white stones, the opponent the black ones.
 //-----------------------------------------------------------------------------
 unsigned int PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum, unsigned int &stateNumber)
 {
@@ -1631,8 +1631,8 @@ unsigned int PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNu
 }
 
 //-----------------------------------------------------------------------------
-// Name: setSituation()
-// Desc: Current player has white stones, the opponent the black ones.
+// setSituation()
+// Current player has white stones, the opponent the black ones.
 //		 Sets up the game situation corresponding to the passed layer number and state.
 //-----------------------------------------------------------------------------
 bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
@@ -1801,8 +1801,8 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
 }
 
 //-----------------------------------------------------------------------------
-// Name: calcPossibleMoves()
-// Desc:
+// calcPossibleMoves()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::ThreadVars::calcPossibleMoves(Player *player)
 {
@@ -1840,8 +1840,8 @@ void PerfectAI::ThreadVars::calcPossibleMoves(Player *player)
 }
 
 //-----------------------------------------------------------------------------
-// Name: setWarningAndMill()
-// Desc:
+// setWarningAndMill()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::ThreadVars::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
 {
@@ -1858,8 +1858,8 @@ void PerfectAI::ThreadVars::setWarningAndMill(unsigned int stone, unsigned int f
 }
 
 //-----------------------------------------------------------------------------
-// Name: getOutputInformation()
-// Desc:
+// getOutputInformation()
+// 
 //-----------------------------------------------------------------------------
 string PerfectAI::getOutputInformation(unsigned int layerNum)
 {
@@ -1869,8 +1869,8 @@ string PerfectAI::getOutputInformation(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: printBoard()
-// Desc:
+// printBoard()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::printBoard(unsigned int threadNo, unsigned char value)
 {
@@ -1887,8 +1887,8 @@ void PerfectAI::printBoard(unsigned int threadNo, unsigned char value)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getField()
-// Desc:
+// getField()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::getField(unsigned int layerNum, unsigned int stateNumber, fieldStruct *field, bool *gameHasFinished)
 {
@@ -1902,8 +1902,8 @@ void PerfectAI::getField(unsigned int layerNum, unsigned int stateNumber, fieldS
 }
 
 //-----------------------------------------------------------------------------
-// Name: getLayerAndStateNumber()
-// Desc:
+// getLayerAndStateNumber()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::getLayerAndStateNumber(unsigned int &layerNum, unsigned int &stateNumber /*, unsigned int& symmetryOperation*/)
 {
@@ -1911,8 +1911,8 @@ void PerfectAI::getLayerAndStateNumber(unsigned int &layerNum, unsigned int &sta
 }
 
 //-----------------------------------------------------------------------------
-// Name: setOpponentLevel()
-// Desc:
+// setOpponentLevel()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
 {
@@ -1921,8 +1921,8 @@ void PerfectAI::setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getOpponentLevel()
-// Desc:
+// getOpponentLevel()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::getOpponentLevel(unsigned int threadNo)
 {
@@ -1931,8 +1931,8 @@ bool PerfectAI::getOpponentLevel(unsigned int threadNo)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPartnerLayer()
-// Desc:
+// getPartnerLayer()
+// 
 //-----------------------------------------------------------------------------
 unsigned int PerfectAI::getPartnerLayer(unsigned int layerNum)
 {
@@ -1946,8 +1946,8 @@ unsigned int PerfectAI::getPartnerLayer(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getSuccLayers()
-// Desc:
+// getSuccLayers()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers, unsigned int *succLayers)
 {
@@ -1976,8 +1976,8 @@ void PerfectAI::getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccL
 }
 
 //-----------------------------------------------------------------------------
-// Name: getSymStateNumWithDoubles()
-// Desc:
+// getSymStateNumWithDoubles()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers)
 {
@@ -2017,8 +2017,8 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *n
 }
 
 //-----------------------------------------------------------------------------
-// Name: fieldIntegrityOK()
-// Desc:
+// fieldIntegrityOK()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::ThreadVars::fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer)
 {
@@ -2067,8 +2067,8 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(unsigned int numberOfMillsCurrentPl
 }
 
 //-----------------------------------------------------------------------------
-// Name: isSymOperationInvariantOnGroupCD()
-// Desc:
+// isSymOperationInvariantOnGroupCD()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation, int *theField)
 {
@@ -2128,8 +2128,8 @@ bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation,
 }
 
 //-----------------------------------------------------------------------------
-// Name: storePredecessor()
-// Desc:
+// storePredecessor()
+// 
 //-----------------------------------------------------------------------------
 void PerfectAI::ThreadVars::storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
 {
@@ -2177,8 +2177,8 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int numberOfMillsCurrentPl
 }
 
 //-----------------------------------------------------------------------------
-// Name: getPredecessors()
-// Desc: CAUTION: States musn't be returned twice.
+// getPredecessors()
+// CAUTION: States musn't be returned twice.
 //-----------------------------------------------------------------------------
 void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
 {
@@ -2421,8 +2421,8 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
 }
 
 //-----------------------------------------------------------------------------
-// Name: checkMoveAndSetSituation()
-// Desc:
+// checkMoveAndSetSituation()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::checkMoveAndSetSituation()
 {
@@ -2512,8 +2512,8 @@ bool PerfectAI::checkMoveAndSetSituation()
 }
 
 //-----------------------------------------------------------------------------
-// Name: checkGetPossThanGetPred()
-// Desc:
+// checkGetPossThanGetPred()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::checkGetPossThanGetPred()
 {
@@ -2601,8 +2601,8 @@ bool PerfectAI::checkGetPossThanGetPred()
 }
 
 //-----------------------------------------------------------------------------
-// Name: checkGetPredThanGetPoss()
-// Desc:
+// checkGetPredThanGetPoss()
+// 
 //-----------------------------------------------------------------------------
 bool PerfectAI::checkGetPredThanGetPoss()
 {
@@ -2797,7 +2797,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
 }
 
 /*** To Do's ***************************************
-- Wom�glich alle cyclicArrays in einer Datei speichern. Besser sogar noch kompromieren (auf Windows oder Programm-Ebene?), was gut gehen sollte da ja eh blockweise gearbeitet wird.
-  Da Gr��e vorher unbekannt muss eine table her. M�glicher Klassenname "compressedCyclicArray(blockSize, numBlocks, numArrays, filePath)".
-- initFileReader implementieren
+- Possibly save all cyclicArrays in a file. Better to even compress it (at Windows or program level?), Which should work fine because you work in blocks anyway.
+  Since the size was previously unknown, a table must be produced. Possible class name "compressedCyclicArray (blockSize, numBlocks, numArrays, filePath)".
+- Implement initFileReader
 ***************************************************/

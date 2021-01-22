@@ -9,8 +9,8 @@
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
-// Name: showMemoryStatus()
-// Desc: 
+// showMemoryStatus()
+// 
 //-----------------------------------------------------------------------------
 unsigned int MiniMax::getNumThreads()
 {
@@ -18,8 +18,8 @@ unsigned int MiniMax::getNumThreads()
 }
 
 //-----------------------------------------------------------------------------
-// Name: anyFreshlyCalculatedLayer()
-// Desc: called by MAIN-thread in pMiniMax->csOsPrint critical-section
+// anyFreshlyCalculatedLayer()
+// called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
 bool MiniMax::anyFreshlyCalculatedLayer()
 {
@@ -27,8 +27,8 @@ bool MiniMax::anyFreshlyCalculatedLayer()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getLastCalculatedLayer()
-// Desc: called by MAIN-thread in pMiniMax->csOsPrint critical-section
+// getLastCalculatedLayer()
+// called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
 unsigned int MiniMax::getLastCalculatedLayer()
 {
@@ -38,8 +38,8 @@ unsigned int MiniMax::getLastCalculatedLayer()
 }
 
 //-----------------------------------------------------------------------------
-// Name: isLayerInDatabase()
-// Desc: 
+// isLayerInDatabase()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::isLayerInDatabase(unsigned int layerNum)
 {
@@ -48,8 +48,8 @@ bool MiniMax::isLayerInDatabase(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getLayerSizeInBytes()
-// Desc:
+// getLayerSizeInBytes()
+// 
 //-----------------------------------------------------------------------------
 long long MiniMax::getLayerSizeInBytes(unsigned int layerNum)
 {
@@ -58,8 +58,8 @@ long long MiniMax::getLayerSizeInBytes(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getNumWonStates()
-// Desc: 
+// getNumWonStates()
+// 
 //-----------------------------------------------------------------------------
 MiniMax::StateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
 {
@@ -68,8 +68,8 @@ MiniMax::StateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getNumLostStates()
-// Desc: 
+// getNumLostStates()
+// 
 //-----------------------------------------------------------------------------
 MiniMax::StateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
 {
@@ -78,8 +78,8 @@ MiniMax::StateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getNumDrawnStates()
-// Desc: 
+// getNumDrawnStates()
+// 
 //-----------------------------------------------------------------------------
 MiniMax::StateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
 {
@@ -88,8 +88,8 @@ MiniMax::StateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: getNumInvalidStates()
-// Desc: 
+// getNumInvalidStates()
+// 
 //-----------------------------------------------------------------------------
 MiniMax::StateNumberVarType MiniMax::getNumInvalidStates(unsigned int layerNum)
 {
@@ -98,8 +98,8 @@ MiniMax::StateNumberVarType MiniMax::getNumInvalidStates(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// Name: showMemoryStatus()
-// Desc: 
+// showMemoryStatus()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::showMemoryStatus()
 {
@@ -118,8 +118,8 @@ void MiniMax::showMemoryStatus()
 }
 
 //-----------------------------------------------------------------------------
-// Name: setOutputStream()
-// Desc: 
+// setOutputStream()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::setOutputStream(ostream *theStream, void(*printFunc)(void *pUserData), void *pUserData)
 {
@@ -129,8 +129,8 @@ void MiniMax::setOutputStream(ostream *theStream, void(*printFunc)(void *pUserDa
 }
 
 //-----------------------------------------------------------------------------
-// Name: showLayerStats()
-// Desc: 
+// showLayerStats()
+// 
 //-----------------------------------------------------------------------------
 void MiniMax::showLayerStats(unsigned int layerNumber)
 {
@@ -161,8 +161,8 @@ void MiniMax::showLayerStats(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// Name: calcLayerStatistics()
-// Desc: 
+// calcLayerStatistics()
+// 
 //-----------------------------------------------------------------------------
 bool MiniMax::calcLayerStatistics(char *statisticsFileName)
 {
@@ -255,8 +255,8 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
 }
 
 //-----------------------------------------------------------------------------
-// Name: anyArrawInfoToUpdate()
-// Desc: called by MAIN-thread in pMiniMax->csOsPrint critical-section
+// anyArrawInfoToUpdate()
+// called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
 bool MiniMax::anyArrawInfoToUpdate()
 {
@@ -264,8 +264,8 @@ bool MiniMax::anyArrawInfoToUpdate()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getArrayInfoForUpdate()
-// Desc: called by MAIN-thread in pMiniMax->csOsPrint critical-section
+// getArrayInfoForUpdate()
+// called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
 MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
 {
@@ -275,8 +275,8 @@ MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getCurrentActionStr()
-// Desc: called by MAIN-thread in pMiniMax->csOsPrint critical-section
+// getCurrentActionStr()
+// called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
 LPWSTR MiniMax::getCurrentActionStr()
 {
@@ -294,8 +294,8 @@ LPWSTR MiniMax::getCurrentActionStr()
 }
 
 //-----------------------------------------------------------------------------
-// Name: getCurrentCalculatedLayer()
-// Desc: called by MAIN-thread in pMiniMax->csOsPrint critical-section
+// getCurrentCalculatedLayer()
+// called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
 void MiniMax::getCurrentCalculatedLayer(vector<unsigned int> &layers)
 {
@@ -311,8 +311,8 @@ void MiniMax::getCurrentCalculatedLayer(vector<unsigned int> &layers)
 }
 
 //-----------------------------------------------------------------------------
-// Name: ArrayInfoContainer::addArray()
-// Desc: Caution: layerNumber and type must be a unique pair!
+// ArrayInfoContainer::addArray()
+// Caution: layerNumber and type must be a unique pair!
 //       called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
 void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
@@ -346,8 +346,8 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
 }
 
 //-----------------------------------------------------------------------------
-// Name: ArrayInfoContainer::removeArray()
-// Desc: called by single CALCULATION-thread
+// ArrayInfoContainer::removeArray()
+// called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
 void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
 {
@@ -383,8 +383,8 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
 }
 
 //-----------------------------------------------------------------------------
-// Name: ArrayInfoContainer::updateArray()
-// Desc: called by mltiple CALCULATION-thread
+// ArrayInfoContainer::updateArray()
+// called by mltiple CALCULATION-thread
 //-----------------------------------------------------------------------------
 void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned int type)
 {

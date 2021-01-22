@@ -11,8 +11,8 @@
 using namespace std;
 
 //-----------------------------------------------------------------------------
-// Name: printBoard()
-// Desc:
+// printBoard()
+// 
 //-----------------------------------------------------------------------------
 void fieldStruct::printBoard()
 {
@@ -55,8 +55,8 @@ void fieldStruct::printBoard()
 }
 
 //-----------------------------------------------------------------------------
-// Name: GetCharFromStone()
-// Desc:
+// GetCharFromStone()
+// 
 //-----------------------------------------------------------------------------
 char fieldStruct::GetCharFromStone(int stone)
 {
@@ -78,8 +78,8 @@ char fieldStruct::GetCharFromStone(int stone)
 }
 
 //-----------------------------------------------------------------------------
-// Name: copyBoard()
-// Desc: Only copies the values without array creation.
+// copyBoard()
+// Only copies the values without array creation.
 //-----------------------------------------------------------------------------
 void fieldStruct::copyBoard(fieldStruct *destination)
 {
@@ -108,8 +108,8 @@ void fieldStruct::copyBoard(fieldStruct *destination)
 }
 
 //-----------------------------------------------------------------------------
-// Name: copyPlayer()
-// Desc: Only copies the values without array creation.
+// copyPlayer()
+// Only copies the values without array creation.
 //-----------------------------------------------------------------------------
 void Player::copyPlayer(Player *destination)
 {
@@ -129,8 +129,8 @@ void Player::copyPlayer(Player *destination)
 }
 
 //-----------------------------------------------------------------------------
-// Name: createBoard()
-// Desc: Creates, but doesn't initialize, the arrays of the of the passed board structure.
+// createBoard()
+// Creates, but doesn't initialize, the arrays of the of the passed board structure.
 //-----------------------------------------------------------------------------
 void fieldStruct::createBoard()
 {
@@ -221,8 +221,8 @@ void fieldStruct::createBoard()
 }
 
 //-----------------------------------------------------------------------------
-// Name: deleteBoard()
-// Desc: ...
+// deleteBoard()
+// ...
 //-----------------------------------------------------------------------------
 void fieldStruct::deleteBoard()
 {
@@ -231,8 +231,8 @@ void fieldStruct::deleteBoard()
 }
 
 //-----------------------------------------------------------------------------
-// Name: setConnection()
-// Desc:
+// setConnection()
+// 
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setConnection(unsigned int index, int firstDirection, int secondDirection, int thirdDirection, int fourthDirection)
 {
@@ -243,8 +243,8 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection, i
 }
 
 //-----------------------------------------------------------------------------
-// Name: setNeighbour()
-// Desc:
+// setNeighbour()
+// 
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setNeighbour(unsigned int index, unsigned int firstNeighbour0, unsigned int secondNeighbour0, unsigned int firstNeighbour1, unsigned int secondNeighbour1)
 {
