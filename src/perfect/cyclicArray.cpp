@@ -54,7 +54,7 @@ CyclicArray::~CyclicArray()
 // Name: writeDataToFile()
 // Desc: Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
-void CyclicArray::writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
@@ -62,12 +62,12 @@ void CyclicArray::writeDataToFile(HANDLE hFile, long long offset, unsigned int s
 
     liDistanceToMove.QuadPart = offset;
 
-    while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN))
+    while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
         << "SetFilePointerEx  failed!";
 
     while (restingBytes > 0) {
-        if (WriteFile(hFile, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
+        if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
             pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
             if (restingBytes > 0)
@@ -84,7 +84,7 @@ void CyclicArray::writeDataToFile(HANDLE hFile, long long offset, unsigned int s
 // Name: readDataFromFile()
 // Desc: Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
-void CyclicArray::readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
@@ -92,12 +92,12 @@ void CyclicArray::readDataFromFile(HANDLE hFile, long long offset, unsigned int 
 
     liDistanceToMove.QuadPart = offset;
 
-    while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN))
+    while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
         << "SetFilePointerEx failed!";
 
     while (restingBytes > 0) {
-        if (ReadFile(hFile, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
+        if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
             pData = (void *)(((unsigned char *)pData) + dwBytesRead);
             if (restingBytes > 0)

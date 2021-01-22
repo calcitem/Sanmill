@@ -17,7 +17,7 @@ s\*********************************************************************/
 // Each time the short knot value of a game state has been determined, the state will be added to 'statesToProcess'.
 // This list is like a queue of states, which still has to be processed.
 //-----------------------------------------------------------------------------
-bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalculate)
+bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalc)
 {
     // locals
     bool abortCalculation = false;
@@ -35,29 +35,29 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalcul
         retroVars.thread[threadNo].numStatesToProcess = 0;
         retroVars.thread[threadNo].threadNo = threadNo;
     }
-    retroVars.countArrays.resize(layersToCalculate.size(), nullptr);
+    retroVars.countArrays.resize(layersToCalc.size(), nullptr);
     retroVars.layerInitialized.resize(skvfHeader.numLayers, false);
-    retroVars.layersToCalculate = layersToCalculate;
+    retroVars.layersToCalculate = layersToCalc;
     retroVars.pMiniMax = this;
 
-    for (retroVars.totalNumKnots = 0, retroVars.numKnotsToCalc = 0, curLayer = 0; curLayer < layersToCalculate.size(); curLayer++) {
-        retroVars.numKnotsToCalc += layerStats[layersToCalculate[curLayer]].knotsInLayer;
-        retroVars.totalNumKnots += layerStats[layersToCalculate[curLayer]].knotsInLayer;
-        retroVars.layerInitialized[layersToCalculate[curLayer]] = true;
-        for (curSubLayer = 0; curSubLayer < layerStats[layersToCalculate[curLayer]].numSuccLayers; curSubLayer++) {
-            if (retroVars.layerInitialized[layerStats[layersToCalculate[curLayer]].succLayers[curSubLayer]])
+    for (retroVars.totalNumKnots = 0, retroVars.numKnotsToCalc = 0, curLayer = 0; curLayer < layersToCalc.size(); curLayer++) {
+        retroVars.numKnotsToCalc += layerStats[layersToCalc[curLayer]].knotsInLayer;
+        retroVars.totalNumKnots += layerStats[layersToCalc[curLayer]].knotsInLayer;
+        retroVars.layerInitialized[layersToCalc[curLayer]] = true;
+        for (curSubLayer = 0; curSubLayer < layerStats[layersToCalc[curLayer]].numSuccLayers; curSubLayer++) {
+            if (retroVars.layerInitialized[layerStats[layersToCalc[curLayer]].succLayers[curSubLayer]])
                 continue;
             else
-                retroVars.layerInitialized[layerStats[layersToCalculate[curLayer]].succLayers[curSubLayer]] = true;
-            retroVars.totalNumKnots += layerStats[layerStats[layersToCalculate[curLayer]].succLayers[curSubLayer]].knotsInLayer;
+                retroVars.layerInitialized[layerStats[layersToCalc[curLayer]].succLayers[curSubLayer]] = true;
+            retroVars.totalNumKnots += layerStats[layerStats[layersToCalc[curLayer]].succLayers[curSubLayer]].knotsInLayer;
         }
     }
 
     retroVars.layerInitialized.assign(skvfHeader.numLayers, false);
 
     // output & filenames
-    for (curLayer = 0; curLayer < layersToCalculate.size(); curLayer++)
-        ssLayers << " " << layersToCalculate[curLayer];
+    for (curLayer = 0; curLayer < layersToCalc.size(); curLayer++)
+        ssLayers << " " << layersToCalc[curLayer];
     PRINT(0, this, "*** Calculate layers" << ssLayers.str() << " by retro analysis ***");
 
     // initialization
@@ -87,8 +87,8 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalcul
 
     // show output
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2);
-    for (curLayer = 0; curLayer < layersToCalculate.size(); curLayer++) {
-        showLayerStats(layersToCalculate[curLayer]);
+    for (curLayer = 0; curLayer < layersToCalc.size(); curLayer++) {
+        showLayerStats(layersToCalc[curLayer]);
     }
     PRINT(2, this, "");
 
@@ -100,10 +100,10 @@ freeMem:
         }
     }
 
-    for (curLayer = 0; curLayer < layersToCalculate.size(); curLayer++) {
+    for (curLayer = 0; curLayer < layersToCalc.size(); curLayer++) {
         if (retroVars.countArrays[curLayer] != nullptr) {
-            memoryUsed2 -= layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(CountArrayVarType);
-            arrayInfos.removeArray(layersToCalculate[curLayer], ArrayInfo::arrayType_countArray, layerStats[layersToCalculate[curLayer]].knotsInLayer * sizeof(CountArrayVarType), 0);
+            memoryUsed2 -= layerStats[layersToCalc[curLayer]].knotsInLayer * sizeof(CountArrayVarType);
+            arrayInfos.removeArray(layersToCalc[curLayer], ArrayInfo::arrayType_countArray, layerStats[layersToCalc[curLayer]].knotsInLayer * sizeof(CountArrayVarType), 0);
         }
         SAFE_DELETE_ARRAY(retroVars.countArrays[curLayer]);
     }

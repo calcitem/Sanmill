@@ -131,11 +131,11 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 // Name: calculateDatabase()
 // Desc: Calculates the database, which must be already open.
 //-----------------------------------------------------------------------------
-void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer)
+void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 {
     // locals
     bool abortCalculation = false;
-    this->onlyPrepareLayer = onlyPrepareLayer;
+    this->onlyPrepareLayer = onlyPrepLayer;
     lastCalculatedLayer.clear();
 
     PRINT(1, this, "*************************");
@@ -174,7 +174,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
             unloadAllPlyInfos();
 
             // don't save layer and header when only preparing layers
-            if (onlyPrepareLayer)
+            if (onlyPrepLayer)
                 return;
             if (abortCalculation)
                 break;
@@ -185,7 +185,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
         }
 
         // don't save layer and header when only preparing layers or when
-        if (onlyPrepareLayer)
+        if (onlyPrepLayer)
             return;
 
         if (!abortCalculation) {
@@ -220,15 +220,15 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLay
 bool MiniMax::calcLayer(unsigned int layerNumber)
 {
     // locals
-    vector<unsigned int> layersToCalculate;
+    vector<unsigned int> layersToCalc;
 
     // moves can be done reverse, leading to too depth searching trees
     if (shallRetroAnalysisBeUsed(layerNumber)) {
         // calc values for all states of layer
-        layersToCalculate.push_back(layerNumber);
+        layersToCalc.push_back(layerNumber);
         if (layerNumber != layerStats[layerNumber].partnerLayer)
-            layersToCalculate.push_back(layerStats[layerNumber].partnerLayer);
-        if (!calcKnotValuesByRetroAnalysis(layersToCalculate))
+            layersToCalc.push_back(layerStats[layerNumber].partnerLayer);
+        if (!calcKnotValuesByRetroAnalysis(layersToCalc))
             return false;
 
         // save partner layer

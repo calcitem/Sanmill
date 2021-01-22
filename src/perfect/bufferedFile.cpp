@@ -103,7 +103,7 @@ bool BufferedFile::flushBuffers()
 // Name: writeDataToFile()
 // Desc: Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
-void BufferedFile::writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void BufferedFile::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
@@ -113,12 +113,12 @@ void BufferedFile::writeDataToFile(HANDLE hFile, long long offset, unsigned int 
 
     EnterCriticalSection(&csIO);
 
-    while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN))
+    while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
         << "SetFilePointerEx  failed!";
 
     while (restingBytes > 0) {
-        if (WriteFile(hFile, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
+        if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
             pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
             if (restingBytes > 0)
@@ -137,7 +137,7 @@ void BufferedFile::writeDataToFile(HANDLE hFile, long long offset, unsigned int 
 // Name: readDataFromFile()
 // Desc: Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
-void BufferedFile::readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData)
+void BufferedFile::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
@@ -147,12 +147,12 @@ void BufferedFile::readDataFromFile(HANDLE hFile, long long offset, unsigned int
 
     EnterCriticalSection(&csIO);
 
-    while (!SetFilePointerEx(hFile, liDistanceToMove, nullptr, FILE_BEGIN))
+    while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
         << "SetFilePointerEx failed!";
 
     while (restingBytes > 0) {
-        if (ReadFile(hFile, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
+        if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
             pData = (void *)(((unsigned char *)pData) + dwBytesRead);
             if (restingBytes > 0)

@@ -220,26 +220,27 @@ PerfectAI::PerfectAI(const char *directory)
 
     ssPreCalcVarsFilePath << "preCalculatedVars.dat";
     hFilePreCalcVars = CreateFileA(ssPreCalcVarsFilePath.str().c_str(), GENERIC_READ /*| GENERIC_WRITE*/, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-    ReadFile(hFilePreCalcVars, &preCalcVarsHeader, sizeof(PreCalcedVarsFileHeader), &dwBytesRead, nullptr);
+    if (!ReadFile(hFilePreCalcVars, &preCalcVarsHeader, sizeof(PreCalcedVarsFileHeader), &dwBytesRead, nullptr))
+        return;
 
     // vars already stored in file?
     if (dwBytesRead) {
         // Read from file
-        ReadFile(hFilePreCalcVars, layer, sizeof(Layer) * NUM_LAYERS, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
-        ReadFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr);
+        if (!ReadFile(hFilePreCalcVars, layer, sizeof(Layer) * NUM_LAYERS, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr)) return;
 
         // process originalStateAB[][]
         for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
@@ -247,7 +248,7 @@ PerfectAI::PerfectAI(const char *directory)
                 if (a + b > numSquaresGroupA + numSquaresGroupB)
                     continue;
                 originalStateAB[a][b] = new unsigned int[anzahlStellungenAB[a][b]];
-                ReadFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesRead, nullptr);
+                if (!ReadFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesRead, nullptr)) return;
             }
         }
 
@@ -257,7 +258,7 @@ PerfectAI::PerfectAI(const char *directory)
                 if (a + b > numSquaresGroupC + numSquaresGroupD)
                     continue;
                 originalStateCD[a][b] = new unsigned int[anzahlStellungenCD[a][b]];
-                ReadFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesRead, nullptr);
+                if (!ReadFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesRead, nullptr)) return;
             }
         }
 
@@ -1654,7 +1655,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
     unsigned int numBlackStones = layer[layerNum].numBlackStones;
     unsigned int numberOfMillsCurrentPlayer = 0;
     unsigned int numberOfMillsOpponentPlayer = 0;
-    unsigned int wCD, bCD, wAB, bAB;
+    unsigned int wCD = 0, bCD = 0, wAB = 0, bAB = 0;
     unsigned int i;
     bool aStoneCanBeRemovedFromCurPlayer;
 
@@ -2526,7 +2527,7 @@ bool PerfectAI::checkGetPossThanGetPred()
     void *pBackup;
     RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
     unsigned int threadNo = 0;
-    ThreadVars *tv = &threadVars[threadNo];
+    //ThreadVars *tv = &threadVars[threadNo];
 
     // test if each successor from getPossibilities() leads to the original state using getPredecessors()
     for (layerNum = 0; layerNum < NUM_LAYERS; layerNum++) {
@@ -2572,6 +2573,7 @@ bool PerfectAI::checkGetPossThanGetPred()
                         << "ERROR: STATE " << stateNum << " NOT FOUND IN PREDECESSOR LIST";
                     return false;
 
+#if 0
                     // perform several commands to see in debug mode where the error occurs
                     undo(threadNo, idPossibility[i], isOpponentLevel, pBackup, pPossibilities);
                     setSituation(threadNo, layerNum, stateNum);
@@ -2583,6 +2585,7 @@ bool PerfectAI::checkGetPossThanGetPred()
                     printBoard(threadNo, 0);
                     getPredecessors(threadNo, &amountOfPred, predVars);
                     getPredecessors(threadNo, &amountOfPred, predVars);
+#endif
                 }
 
                 // undo move
@@ -2649,6 +2652,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         << "ERROR SETTING SITUATION";
                     return false;
 
+#if 0
                     // perform several commands to see in debug mode where the error occurs
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
@@ -2677,6 +2681,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
                     printBoard(threadNo, 0);
                     getPredecessors(threadNo, &amountOfPred, predVars);
+#endif
                 }
 
                 // regard used symmetry operation

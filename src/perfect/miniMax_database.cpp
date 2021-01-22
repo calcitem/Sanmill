@@ -8,6 +8,9 @@
 
 #include "miniMax.h"
 
+#pragma warning(disable: 4127)
+#pragma warning(disable: 4706)
+
 //-----------------------------------------------------------------------------
 // Name: ~MiniMax()
 // Desc: MiniMax class destructor
@@ -451,7 +454,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
     // locals
     TwoBit databaseByte;
     long long bytesAllocated;
-    TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
+    //TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
     LayerStats *myLss = &layerStats[layerNumber];
 
     // valid state and layer number ?
@@ -579,7 +582,7 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
 {
     // locals
     long long bytesAllocated;
-    TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
+    //TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
     LayerStats *myLss = &layerStats[layerNumber];
 
     // valid state and layer number ?

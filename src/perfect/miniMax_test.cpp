@@ -319,7 +319,7 @@ bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 {
     // locals
     TestLayersVars tlVars;
-    bool result;
+    bool result = false;
 
     // prepare parameters for multithreading
     tlVars.curThreadNo = 0;
@@ -487,7 +487,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
 
     //errorInDatabase:
     // terminate all threads
-    return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+    //return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
 }
 
 //-----------------------------------------------------------------------------

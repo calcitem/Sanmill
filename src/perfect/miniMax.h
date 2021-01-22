@@ -24,6 +24,10 @@
 #include "threadManager.h"
 #include "bufferedFile.h"
 
+#pragma warning(disable: 4100)
+#pragma warning(disable: 4238)
+#pragma warning(disable: 4244)
+
 #pragma intrinsic(_rotl8, _rotr8) // for shifting bits
 
 using namespace std; // use standard library namespace
@@ -93,6 +97,7 @@ database:				The database contains the arrays with the short knot values and the
 			(p) = nullptr; \
 		}                  \
 	}
+
 #define SAFE_DELETE_ARRAY(p) \
 	{                        \
 		if (p)               \
@@ -415,6 +420,7 @@ public:
         while (true)
             ;
     };
+
     virtual void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities)
     {
         while (true)
