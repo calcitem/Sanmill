@@ -1,10 +1,11 @@
 #ifndef PERFECT_H
 #define PERFECT_H
 
-
 #include "mill.h"
 #include "perfectAI.h"
 #include "types.h"
+
+static const char databaseDirectory[] = "D:\\database";
 
 extern Mill *mill;
 extern PerfectAI *ai;

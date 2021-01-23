@@ -40,6 +40,7 @@ QString getAppFileName()
     return filename;
 }
 
+#ifndef PERFECT_AI_TEST
 int main(int argc, char *argv[])
 {
     Bitboards::init();
@@ -60,6 +61,7 @@ int main(int argc, char *argv[])
 
     return QApplication::exec();
 }
+#endif // !PERFECT_AI_TEST
 
 #endif // !UCT_DEMO
 #endif // QT_GUI_LIB

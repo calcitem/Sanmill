@@ -5,32 +5,34 @@
 #include "miniMaxAI.h"
 #include "randomAI.h"
 #include "perfectAI.h"
+#include "perfect.h"
 
 #include "config.h"
 
 using namespace std;
 
+extern Mill *mill;
+extern PerfectAI *ai;
+
 unsigned int startTestFromLayer = 0;
 
 unsigned int endTestAtLayer = NUM_LAYERS - 1;
 
-#ifdef _DEBUG
-char databaseDirectory[] = "D:\\database";
-#elif _RELEASE_X64
-char databaseDirectory[] = "";
-#endif
-
 bool calculateDatabase = false;
 
+#ifdef PERFECT_AI_TEST
 int main(void)
+#else
+int perfect_main(void)
+#endif
 {
     // locals
     bool playerOneHuman = false;
     bool playerTwoHuman = false;
     char ch[100];
     unsigned int from, to;
-    Mill *mill = new Mill();
-    PerfectAI *ai = new PerfectAI(databaseDirectory);
+    mill = new Mill();
+    ai = new PerfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
     srand(GetTickCount());
@@ -173,7 +175,6 @@ int main(void)
             cout << "\n   A program error has occurred!\n\n";
     }
 
-out:
     char end;
     cin >> end;
 

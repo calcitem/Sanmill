@@ -1,6 +1,7 @@
 #include "perfect.h"
 #include "position.h"
 #include "misc.h"
+#include "config.h"
 
 // Perfect AI
 Mill *mill = nullptr;
@@ -8,12 +9,6 @@ PerfectAI *ai = nullptr;
 
 int perfect_init(void)
 {
-#ifdef _DEBUG
-    char databaseDirectory[] = "D:\\database";
-#elif _RELEASE_X64
-    char databaseDirectory[] = "";
-#endif
-
     if (mill != nullptr || ai != nullptr) {
         return 0;
     }
@@ -197,6 +192,7 @@ bool perfect_command(const char *cmd)
 
     return false;
 
+#if 0
     args = sscanf(cmd, "Player%1u give up!", &t);
 
 //     if (args == 1) {
@@ -219,6 +215,7 @@ bool perfect_command(const char *cmd)
 #endif /* THREEFOLD_REPETITION */
 
     return false;
+#endif
 }
 
 // mill->getWinner() == 0

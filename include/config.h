@@ -53,6 +53,8 @@
 #define MTDF_AI
 //#define PERFECT_AI
 
+//#define PERFECT_AI_TEST
+
 #ifdef TEST_MODE
 #define DONOT_PLAY_SOUND
 #endif // TEST_MODE
