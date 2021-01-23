@@ -2,8 +2,8 @@
 
 
 // Perfect AI
-Mill *mill;
-PerfectAI *ai;
+Mill *mill = nullptr;
+PerfectAI *ai = nullptr;
 
 int perfect_init(void)
 {
@@ -12,6 +12,10 @@ int perfect_init(void)
 #elif _RELEASE_X64
     char databaseDirectory[] = "";
 #endif
+
+    if (mill != nullptr) {
+        return 0;
+    }
 
     mill = new Mill();
     ai = new PerfectAI(databaseDirectory);
