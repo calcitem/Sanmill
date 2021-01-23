@@ -1181,10 +1181,12 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif
 
 #ifdef ANALYZE_POSITION
-    if (isAiPlayer[WHITE]) {
-        aiThread[WHITE]->analyze(WHITE);
-    } else if (isAiPlayer[BLACK]) {
-        aiThread[BLACK]->analyze(BLACK);
+    if (!gameOptions.getPerfectAiEnabled()) {
+        if (isAiPlayer[WHITE]) {
+            aiThread[WHITE]->analyze(WHITE);
+        } else if (isAiPlayer[BLACK]) {
+            aiThread[BLACK]->analyze(BLACK);
+        }
     }
 #endif // ANALYZE_POSITION
 
