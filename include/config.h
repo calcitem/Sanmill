@@ -51,7 +51,6 @@
 
 //#define PVS_AI
 #define MTDF_AI
-//#define PERFECT_AI
 
 //#define PERFECT_AI_TEST
 

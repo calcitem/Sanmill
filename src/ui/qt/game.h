@@ -244,6 +244,9 @@ public slots:
     // Does AI record the game library
     void setLearnEndgame(bool enabled);
 
+    // Does Perfect AI (See https://www.mad-weasel.de/morris.html)
+    void setPerfectAi(bool enabled);
+
     // Does alpha beta search deepen iteratively
     void setIDS(bool enabled);
 

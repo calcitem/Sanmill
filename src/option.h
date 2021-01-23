@@ -93,6 +93,16 @@ public:
 #endif
     }
 
+    void setPerfectAiEnabled(bool enabled) noexcept
+    {
+        perfectAiEnabled = enabled;
+    }
+
+    bool getPerfectAiEnabled() const noexcept
+    {
+        return perfectAiEnabled;
+    }
+
     void setIDSEnabled(bool enabled) noexcept
     {
         IDSEnabled = enabled;
@@ -139,6 +149,7 @@ private:
 #else
     bool learnEndgame { false };
 #endif
+    bool perfectAiEnabled { false };
     bool IDSEnabled { false };
     bool depthExtension {true};
     bool openingBook { false };

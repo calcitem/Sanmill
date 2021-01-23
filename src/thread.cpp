@@ -119,7 +119,7 @@ void Thread::idle_loop()
 
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
-        searching = false;  
+        searching = false;
 
         cv.notify_one(); // Wake up anyone waiting for search finished
         cv.wait(lk, [&] { return searching; });
@@ -136,39 +136,39 @@ void Thread::idle_loop()
 
         clearTT();
 
-#ifdef PERFECT_AI
-        bestMove = perfect_search();
-        assert(bestMove != MOVE_NONE);
-        strCommand = nextMove();
-        if (strCommand != "" && strCommand != "error!") {
-            emitCommand();
-        }
-#else // PERFECT_AI
-#ifdef OPENING_BOOK
-        // gameOptions.getOpeningBook()
-        if (!openingBookDeque.empty()) {
-            char obc[16] = { 0 };
-            sq2str(obc);
-            strCommand = obc;
-            emitCommand();
+        if (gameOptions.getPerfectAiEnabled()) {
+            bestMove = perfect_search();
+            assert(bestMove != MOVE_NONE);
+            strCommand = nextMove();
+            if (strCommand != "" && strCommand != "error!") {
+                emitCommand();
+            }
         } else {
-#endif
-            int ret = search();
-
-            if (ret == 3 || ret == 50) {
-                loggerDebug("Draw\n\n");
-                strCommand = "draw";
+#ifdef OPENING_BOOK
+            // gameOptions.getOpeningBook()
+            if (!openingBookDeque.empty()) {
+                char obc[16] = { 0 };
+                sq2str(obc);
+                strCommand = obc;
                 emitCommand();
             } else {
-                strCommand = nextMove();
-                if (strCommand != "" && strCommand != "error!") {
-                    emitCommand();
-                }
-            }
-#ifdef OPENING_BOOK
-        }
 #endif
-#endif // PERFECT_AI
+                int ret = search();
+
+                if (ret == 3 || ret == 50) {
+                    loggerDebug("Draw\n\n");
+                    strCommand = "draw";
+                    emitCommand();
+                } else {
+                    strCommand = nextMove();
+                    if (strCommand != "" && strCommand != "error!") {
+                        emitCommand();
+                    }
+                }
+#ifdef OPENING_BOOK
+            }
+#endif
+        }
     }
 }
 

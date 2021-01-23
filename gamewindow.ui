@@ -317,6 +317,7 @@
     <property name="title">
      <string>AI</string>
     </property>
+    <addaction name="actionPerfect_AI"/>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
     <addaction name="actionOpeningBook_O"/>
@@ -1288,6 +1289,14 @@
    </property>
    <property name="text">
     <string>Opening Book</string>
+   </property>
+  </action>
+  <action name="actionPerfect_AI">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Perfect AI</string>
    </property>
   </action>
  </widget>

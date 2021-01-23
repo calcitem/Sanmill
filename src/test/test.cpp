@@ -28,6 +28,7 @@
 #include <random>
 
 #include "misc.h"
+#include "option.h"
 #include "test.h"
 
 #include "perfect/perfect.h"
@@ -218,9 +219,11 @@ void Test::readFromMemory()
             memset(to, 0, SHARED_MEMORY_SIZE);
             sharedMemory.unlock();
             readStr = str;
-#ifdef PERFECT_AI
-            perfect_command(str.toStdString().c_str());
-#endif
+
+            if (gameOptions.getPerfectAiEnabled()) {
+                perfect_command(str.toStdString().c_str());
+            }
+
             emit command(str.toStdString());
         }
     }

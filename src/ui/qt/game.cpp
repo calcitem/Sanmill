@@ -134,6 +134,7 @@ void Game::loadSettings()
     setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
     setOpeningBook(empty ? false : settings->value("Options/OpeningBook").toBool());
     setLearnEndgame(empty ? false : settings->value("Options/LearnEndgameEnabled").toBool());
+    setPerfectAi(empty ? false : settings->value("Options/PerfectAI").toBool());
     setIDS(empty ? false : settings->value("Options/IDS").toBool());
     setDepthExtension(empty ? true : settings->value("Options/DepthExtension").toBool());
     setAutoRestart(empty ? false : settings->value("Options/AutoRestart").toBool());
@@ -228,9 +229,10 @@ void Game::gameReset()
         moveHistory.emplace_back(bak);
     }    
 
-#ifdef PERFECT_AI
-    perfect_reset();
-#endif
+    if (gameOptions.getPerfectAiEnabled()) {
+        perfect_reset();
+    }
+
     position.reset();
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
     sideToMove = position.side_to_move();
@@ -588,6 +590,14 @@ void Game::setLearnEndgame(bool enabled)
 #endif
 }
 
+void Game::setPerfectAi(bool enabled)
+{
+    gameOptions.setPerfectAiEnabled(enabled);
+    settings->setValue("Options/PerfectAI", enabled);
+
+    perfect_reset();
+}
+
 void Game::setIDS(bool enabled)
 {
     gameOptions.setIDSEnabled(enabled);
@@ -903,9 +913,10 @@ bool Game::actionPiece(QPointF p)
     }
 
     if (result) {
-#ifdef PERFECT_AI
-        perfect_command((char*)position.record);
-#endif // PERFECT_AI
+        if (gameOptions.getPerfectAiEnabled()) {
+            perfect_command((char *)position.record);
+        }
+
         moveHistory.emplace_back(position.record);
 
         if (strlen(position.record) > strlen("-(1,2)")) {

@@ -243,6 +243,9 @@ void MillGameWindow::initialize()
     connect(ui.actionLearnEndgame_E, SIGNAL(toggled(bool)),
             game, SLOT(setLearnEndgame(bool)));
 
+    connect(ui.actionPerfect_AI, SIGNAL(toggled(bool)),
+            game, SLOT(setPerfectAi(bool)));
+
     connect(ui.actionIDS_I, SIGNAL(toggled(bool)),
             game, SLOT(setIDS(bool)));
 
@@ -396,6 +399,7 @@ void MillGameWindow::initialize()
     ui.actionAnimation_A->setChecked(game->animationEnabled());
 
     ui.actionShuffling_R->setChecked(gameOptions.getShufflingEnabled());
+    ui.actionPerfect_AI->setChecked(gameOptions.getPerfectAiEnabled());
     ui.actionIDS_I->setChecked(gameOptions.getIDSEnabled());
     ui.actionDepthExtension_D->setChecked(gameOptions.getDepthExtension());
     ui.actionResignIfMostLose_G->setChecked(gameOptions.getResignIfMostLose());
