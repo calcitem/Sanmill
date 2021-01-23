@@ -380,6 +380,10 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
         }
     }
 
+    if (*pushFrom == 24 && *pushTo == 24) {
+        assert(false);
+    }
+
     theField.deleteBoard();
 }
 

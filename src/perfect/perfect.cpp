@@ -127,7 +127,6 @@ Move perfect_search()
     //sync_cout << "========================" << sync_endl;
 
     mill->getComputersChoice(&from, &to);
-    assert(!(from == 24 && to == 24));
 
     ret = mill->doMove(from, to);
     assert(ret == true);

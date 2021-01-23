@@ -137,7 +137,6 @@ void Thread::idle_loop()
         clearTT();
 
 #ifdef PERFECT_AI
-        rootPos;
         bestMove = perfect_search();
         assert(bestMove != MOVE_NONE);
         strCommand = nextMove();

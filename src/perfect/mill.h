@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "millAI.h"
 
-#include "types.h"
+#include "../types.h"
 
 using namespace std;
 
