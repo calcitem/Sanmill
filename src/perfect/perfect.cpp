@@ -1,5 +1,6 @@
 #include "perfect.h"
-
+#include "position.h"
+#include "misc.h"
 
 // Perfect AI
 Mill *mill = nullptr;
@@ -25,7 +26,7 @@ int perfect_init(void)
     return 0;
 }
 
-Square perfect_sq_to_sq(unsigned int sq)
+Square from_perfect_sq(unsigned int sq)
 {
     Square map[] = {
         SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15, SQ_8,
@@ -36,17 +37,25 @@ Square perfect_sq_to_sq(unsigned int sq)
     return map[sq];
 }
 
-Move perfect_move_to_move(unsigned int from, unsigned int to)
+Move from_perfect_move(unsigned int from, unsigned int to)
 {
-    if (mill->mustStoneBeRemoved())
-        return (Move)-perfect_sq_to_sq(to);
-    else if (mill->inSettingPhase())
-        return (Move)perfect_sq_to_sq(to);
+    Move ret = MOVE_NONE;
+
+    if (to == 24)
+        ret = (Move)-from_perfect_sq(from);
+    else if (from == 24)
+        ret = (Move)from_perfect_sq(to);
     else
-        return (Move)(make_move(perfect_sq_to_sq(from), perfect_sq_to_sq(to)));
+        ret = (Move)(make_move(from_perfect_sq(from), from_perfect_sq(to)));
+
+    if (ret == MOVE_NONE) {
+        assert(false);
+    }
+
+    return ret;
 }
 
-unsigned sq_to_perfect_sq(Square sq)
+unsigned to_perfect_sq(Square sq)
 {
     int map[] = {
         -1, -1, -1, -1, -1, -1, -1, -1,
@@ -59,33 +68,54 @@ unsigned sq_to_perfect_sq(Square sq)
     return map[sq];
 }
 
-void move_to_perfect_move(Move move, unsigned int &from, unsigned int &to)
+void to_perfect_move(Move move, unsigned int &from, unsigned int &to)
 {
     Square f = from_sq(move);
     Square t = to_sq(move);
 
     if (mill->mustStoneBeRemoved()) {
         from = fieldStruct::size;
-        to = sq_to_perfect_sq(t);
+        to = to_perfect_sq(t);
     } else if (mill->inSettingPhase()) {
         from = fieldStruct::size;
-        to = sq_to_perfect_sq(t);
+        to = to_perfect_sq(t);
     } else {
-        from = sq_to_perfect_sq(f);
-        to = sq_to_perfect_sq(t);
+        from = to_perfect_sq(f);
+        to = to_perfect_sq(t);
     }
+}
+
+void to_perfect_postition(Position &pos)
+{
+
 }
 
 Move perfect_search()
 {
-    unsigned int from, to;
-    mill->getComputersChoice(&from, &to);
+    bool ret = false;
+    unsigned int from = 24, to = 24;
+    //sync_cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << sync_endl;
+    //mill->printBoard();
+    //sync_cout << "========================" << sync_endl;
 
-    cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a') << " to " << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
+    mill->getComputersChoice(&from, &to);
+    ret = mill->doMove(from, to);
+    assert(ret == true);
 
     mill->printBoard();
+    //sync_cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << sync_endl;
 
-   return perfect_move_to_move(mill->getLastMoveFrom(), mill->getLastMoveTo());
+    sync_cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a') << " to " << (char)(mill->getLastMoveTo() + 'a') << sync_endl;
+    //sync_cout << "\nlast move was from " << (char)(from + 'a') << " to " << (char)(to + 'a') << sync_endl;
+
+    //ret = mill->doMove(mill->getLastMoveFrom(), mill->getLastMoveTo());
+    
+
+    //return from_perfect_move(from, to);
+    return from_perfect_move(mill->getLastMoveFrom(), mill->getLastMoveTo());
+
+    //cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a') << " to " << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
+    // return from_perfect_move(mill->getLastMoveFrom(), mill->getLastMoveTo());
 }
 
 bool perfect_do_move(Move move)
@@ -93,10 +123,76 @@ bool perfect_do_move(Move move)
     bool ret;
     unsigned int from, to;
 
-    move_to_perfect_move(move, from, to);
+    to_perfect_move(move, from, to);
 
     ret = mill->doMove(from, to);
     return ret;
+}
+
+bool perfect_reset()
+{
+    return false;
+}
+
+bool perfect_command(const char *cmd)
+{
+    unsigned int ruleNo = 0;
+    unsigned t = 0;
+    int step = 0;
+    File file1 = FILE_A, file2 = FILE_A;
+    Rank rank1 = RANK_1, rank2 = RANK_1;
+    int args = 0;
+    Move move = MOVE_NONE;
+
+    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
+        if (set_rule(ruleNo - 1) == false) {
+            return false;
+        }
+
+        return perfect_reset();
+    }
+
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1, (unsigned *)&file2, (unsigned *)&rank2);
+
+    if (args >= 4) {
+        move = make_move(make_square(file1, rank1), make_square(file2, rank2));
+        
+    }
+
+    args = sscanf(cmd, "-(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
+    if (args >= 2) {
+        move = (Move)-make_move(SQ_0, make_square(file1, rank1));
+    }
+
+    args = sscanf(cmd, "(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
+    if (args >= 2) {
+        move = make_move(SQ_0, make_square(file1, rank1));
+    }
+
+    return perfect_do_move(move);
+
+    args = sscanf(cmd, "Player%1u give up!", &t);
+
+//     if (args == 1) {
+//         return resign((Color)t);
+//     }
+
+#ifdef THREEFOLD_REPETITION
+    if (!strcmp(cmd, "Threefold Repetition. Draw!")) {
+        return true;
+    }
+
+    if (!strcmp(cmd, "draw")) {
+        phase = Phase::gameOver;
+        winner = DRAW;
+        score_draw++;
+        gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
+        //snprintf(record, RECORD_LEN_MAX, "Threefold Repetition. Draw!");
+        return true;
+    }
+#endif /* THREEFOLD_REPETITION */
+
+    return false;
 }
 
 // mill->getWinner() == 0

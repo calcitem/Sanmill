@@ -30,7 +30,7 @@
 //#define UCI_AUTO_RE_GO
 //#define UCI_AUTO_RESTART
 //#define UCI_DO_BEST_MOVE
-#define ANALYZE_POSITION
+//#define ANALYZE_POSITION
 
 #ifdef FLUTTER_UI
 #undef QT_GUI_LIB
@@ -51,6 +51,7 @@
 
 //#define PVS_AI
 #define MTDF_AI
+#define PERFECT_AI
 
 #ifdef TEST_MODE
 #define DONOT_PLAY_SOUND

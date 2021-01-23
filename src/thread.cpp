@@ -138,6 +138,15 @@ void Thread::idle_loop()
 
         clearTT();
 
+#ifdef PERFECT_AI
+        rootPos;
+        bestMove = perfect_search();
+        assert(bestMove != MOVE_NONE);
+        strCommand = nextMove();
+        if (strCommand != "" && strCommand != "error!") {
+            emitCommand();
+        }
+#else // PERFECT_AI
 #ifdef OPENING_BOOK
         // gameOptions.getOpeningBook()
         if (!openingBookDeque.empty()) {
@@ -162,6 +171,7 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
         }
 #endif
+#endif // PERFECT_AI
     }
 }
 

@@ -39,6 +39,8 @@
 #include "client.h"
 #include "option.h"
 
+#include "perfect/perfect.h"
+
 using namespace std;
 
 Game::Game(
@@ -325,7 +327,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
         return;
     this->ruleIndex = ruleNo;
 
-    if (stepLimited != std::numeric_limits<uint16_t>::max() && timeLimited != -1) {
+    if (stepLimited != INT_MAX && timeLimited != -1) {
         stepsLimit = stepLimited;
         timeLimit = timeLimited;
     }
@@ -850,6 +852,9 @@ bool Game::actionPiece(QPointF p)
     }
 
     if (result) {
+#ifdef PERFECT_AI
+        perfect_command((char*)position.record);
+#endif // PERFECT_AI
         moveHistory.emplace_back(position.record);
 
         if (strlen(position.record) > strlen("-(1,2)")) {
@@ -1112,11 +1117,13 @@ bool Game::command(const string &cmd, bool update /* = true */)
     getServer()->setAction(QString::fromStdString(cmd));
 #endif
 
+#ifdef ANALYZE_POSITION
     if (isAiPlayer[WHITE]) {
         aiThread[WHITE]->analyze(WHITE);
     } else if (isAiPlayer[BLACK]) {
         aiThread[BLACK]->analyze(BLACK);
     }
+#endif // ANALYZE_POSITION
 
     total = position.score[BLACK] + position.score[WHITE] + position.score_draw;  
 
