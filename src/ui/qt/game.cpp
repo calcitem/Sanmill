@@ -596,7 +596,11 @@ void Game::setPerfectAi(bool enabled)
     gameOptions.setPerfectAiEnabled(enabled);
     settings->setValue("Options/PerfectAI", enabled);
 
-    perfect_reset();
+    if (enabled) {
+        perfect_reset();
+    } else {
+        perfect_exit();
+    }
 }
 
 void Game::setIDS(bool enabled)
