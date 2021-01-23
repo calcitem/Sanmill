@@ -306,10 +306,8 @@ void MillGameWindow::initialize()
      connect(game, SIGNAL(statusBarChanged(QString)),
             statusBarlabel, SLOT(setText(QString)));
 
-    ruleNo = DEFAULT_RULE_NUMBER;
-    ruleActionList[ruleNo]->setChecked(true);
-
-    game->setRule(ruleNo);
+    ruleActionList[game->getRuleIndex()]->setChecked(true);
+    game->setRule(game->getRuleIndex());
 
     // Update rule display
     ruleInfo();
@@ -391,7 +389,19 @@ void MillGameWindow::initialize()
     connect(ui.pushButton_option, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ctxMenu(const QPoint &)));
 #endif /* MOBILE_APP_UI */
 
-    ui.actionEngine2_R->setChecked(true);
+    ui.actionEngine1_T->setChecked(game->isAiPlayer[BLACK]);
+    ui.actionEngine2_R->setChecked(game->isAiPlayer[WHITE]);    
+
+    ui.actionSound_S->setChecked(game->soundEnabled());
+    ui.actionAnimation_A->setChecked(game->animationEnabled());
+
+    ui.actionShuffling_R->setChecked(gameOptions.getShufflingEnabled());
+    ui.actionIDS_I->setChecked(gameOptions.getIDSEnabled());
+    ui.actionDepthExtension_D->setChecked(gameOptions.getDepthExtension());
+    ui.actionResignIfMostLose_G->setChecked(gameOptions.getResignIfMostLose());
+    ui.actionAutoRestart_A->setChecked(gameOptions.getAutoRestart());
+    ui.actionOpeningBook_O->setChecked(gameOptions.getOpeningBook());
+    ui.actionLearnEndgame_E->setChecked(gameOptions.getLearnEndgameEnabled());
 }
 
 #ifdef MOBILE_APP_UI

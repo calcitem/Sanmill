@@ -342,6 +342,9 @@ plyInfo.dat
 preCalculatedVars.dat
 shortKnotValue.dat
 
+# Settings
+settings.ini
+
 # Executable files
 src/fishmill
 

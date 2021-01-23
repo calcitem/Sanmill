@@ -70,6 +70,11 @@ public:
         shufflingEnabled = enabled;
     }
 
+    bool getLearnEndgameEnabled() const noexcept
+    {
+        return learnEndgame;
+    }
+
     void setLearnEndgameEnabled(bool enabled) noexcept
     {
 #ifdef ENDGAME_LEARNING_FORCE

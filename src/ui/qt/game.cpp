@@ -29,6 +29,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QDir>
+#include <QFileInfo>
 #include <QThread>
 #include <iomanip>
 
@@ -109,6 +110,35 @@ Game::Game(
 #endif
 
     moveHistory.reserve(256);
+
+    loadSettings();
+}
+
+void Game::loadSettings()
+{
+    bool empty = false;
+
+    QFileInfo file(SETTINGS_FILE);
+    if (!file.exists()) {
+        cout << SETTINGS_FILE.toStdString() << " is not exists, create it." << endl;
+        empty = true;
+    }
+
+    settings = new QSettings(SETTINGS_FILE, QSettings::IniFormat);
+
+    setEngineBlack(empty? false : settings->value("Options/blackIsAiPlayer").toBool());
+    setEngineWhite(empty ? true : settings->value("Options/whiteIsAiPlayer").toBool());
+    setSound(empty ? true : settings->value("Options/Sound").toBool());
+    setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
+    setRule(empty ? DEFAULT_RULE_NUMBER : settings->value("Options/ruleNo").toInt());
+    setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
+    setOpeningBook(empty ? false : settings->value("Options/OpeningBook").toBool());
+    setLearnEndgame(empty ? false : settings->value("Options/LearnEndgameEnabled").toBool());
+    setIDS(empty ? false : settings->value("Options/IDS").toBool());
+    setDepthExtension(empty ? true : settings->value("Options/DepthExtension").toBool());
+    setAutoRestart(empty ? false : settings->value("Options/AutoRestart").toBool());
+    setAutoChangeFirstMove(empty ? false : settings->value("Options/AutoChangeFirstMove").toBool());
+    setAnimation(empty ? true : settings->value("Options/Animation").toBool());
 }
 
 Game::~Game()
@@ -126,6 +156,9 @@ Game::~Game()
 #endif /* ENDGAME_LEARNING */
 
     moveHistory.clear();
+
+    delete settings;
+    settings = nullptr;
 }
 
 const map<int, QStringList> Game::getActions()
@@ -205,7 +238,7 @@ void Game::gameReset()
     // Stop threads
     if (!gameOptions.getAutoRestart()) {
         pauseThreads();
-        resetAiPlayers();
+        //resetAiPlayers();
     }
 
     // Clear pieces
@@ -353,6 +386,8 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
 
     // Reset game
     gameReset();
+
+    settings->setValue("Options/ruleNo", ruleNo);
 }
 
 void Game::setEngine(Color color, bool enabled)
@@ -371,11 +406,13 @@ void Game::setEngine(Color color, bool enabled)
 void Game::setEngineBlack(bool enabled)
 {
     setEngine(BLACK, enabled);
+    settings->setValue("Options/blackIsAiPlayer", enabled);
 }
 
 void Game::setEngineWhite(bool enabled)
 {
     setEngine(WHITE, enabled);
+    settings->setValue("Options/whiteIsAiPlayer", enabled);
 }
 
 void Game::setAiDepthTime(int time1, int time2)
@@ -403,11 +440,14 @@ void Game::setAnimation(bool arg) noexcept
         durationTime = 500;
     else
         durationTime = 0;
+
+    settings->setValue("Options/Animation", arg);
 }
 
 void Game::setSound(bool arg) noexcept
 {
     hasSound = arg;
+    settings->setValue("Options/Sound", arg);
 }
 
 void Game::playSound(GameSound soundType, Color c)
@@ -515,26 +555,31 @@ void Game::playSound(GameSound soundType, Color c)
 void Game::setResignIfMostLose(bool enabled)
 {
     gameOptions.setResignIfMostLose(enabled);
+    settings->setValue("Options/ResignIfMostLose", enabled);
 }
 
 void Game::setAutoRestart(bool enabled)
 {
     gameOptions.setAutoRestart(enabled);
+    settings->setValue("Options/AutoRestart", enabled);
 }
 
 void Game::setAutoChangeFirstMove(bool enabled)
 {
     gameOptions.setAutoChangeFirstMove(enabled);
+    settings->setValue("Options/AutoChangeFirstMove", enabled);
 }
 
 void Game::setShuffling(bool enabled)
 {
     gameOptions.setShufflingEnabled(enabled);
+    settings->setValue("Options/Shuffling", enabled);
 }
 
 void Game::setLearnEndgame(bool enabled)
 {
     gameOptions.setLearnEndgameEnabled(enabled);
+    settings->setValue("Options/LearnEndgameEnabled", enabled);
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled()) {
@@ -546,18 +591,21 @@ void Game::setLearnEndgame(bool enabled)
 void Game::setIDS(bool enabled)
 {
     gameOptions.setIDSEnabled(enabled);
+    settings->setValue("Options/IDS", enabled);
 }
 
 // DepthExtension
 void Game::setDepthExtension(bool enabled)
 {
     gameOptions.setDepthExtension(enabled);
+    settings->setValue("Options/DepthExtension", enabled);
 }
 
 // OpeningBook
 void Game::setOpeningBook(bool enabled)
 {
     gameOptions.setOpeningBook(enabled);
+    settings->setValue("Options/OpeningBook", enabled);
 }
 
 void Game::flip()

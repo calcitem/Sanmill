@@ -35,6 +35,7 @@
 #include <QTextStream>
 #include <QStringListModel>
 #include <QModelIndex>
+#include <QSettings> 
 
 #include "position.h"
 #include "gamescene.h"
@@ -411,6 +412,20 @@ private:
     bool isInverted;
 
 public:
+    const QString SETTINGS_FILE = "settings.ini";
+    QSettings *settings {nullptr};
+
+    void loadSettings();
+
+    bool soundEnabled()
+    {
+        return hasSound;
+    }
+
+    bool animationEnabled()
+    {
+        return hasAnimation;
+    }
 
     // True when the computer takes the lead
     bool isAiPlayer[COLOR_NB];
