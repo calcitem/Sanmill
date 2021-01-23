@@ -11,6 +11,8 @@ extern PerfectAI *ai;
 
 // Perfect AI
 int perfect_init(void);
+int perfect_exit(void);
+int perfect_reset(void);
 Square from_perfect_sq(unsigned int sq);
 Move from_perfect_move(unsigned int from, unsigned int to);
 unsigned to_perfect_sq(Square sq);

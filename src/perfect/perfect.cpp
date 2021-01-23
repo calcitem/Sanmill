@@ -14,7 +14,7 @@ int perfect_init(void)
     char databaseDirectory[] = "";
 #endif
 
-    if (mill != nullptr) {
+    if (mill != nullptr || ai != nullptr) {
         return 0;
     }
 
@@ -22,6 +22,33 @@ int perfect_init(void)
     ai = new PerfectAI(databaseDirectory);
     ai->setDatabasePath(databaseDirectory);
     mill->beginNewGame(ai, ai, fieldStruct::playerOne);
+
+    return 0;
+}
+
+int perfect_exit(void)
+{
+    if (mill == nullptr) {
+        return 0;
+    }
+
+    delete mill;
+    mill = nullptr;
+
+    if (ai == nullptr) {
+        return 0;
+    }
+
+    delete ai;
+    ai = nullptr;
+
+    return 0;
+}
+
+int perfect_reset(void)
+{
+    perfect_exit();
+    perfect_init();
 
     return 0;
 }
@@ -72,11 +99,12 @@ void to_perfect_move(Move move, unsigned int &from, unsigned int &to)
 {
     Square f = from_sq(move);
     Square t = to_sq(move);
+    MoveType type = type_of(move);
 
-    if (mill->mustStoneBeRemoved()) {
-        from = fieldStruct::size;
-        to = to_perfect_sq(t);
-    } else if (mill->inSettingPhase()) {
+    if (type == MOVETYPE_REMOVE) {
+        from = to_perfect_sq(t);
+        to = fieldStruct::size;
+    } else if (type == MOVETYPE_PLACE) {
         from = fieldStruct::size;
         to = to_perfect_sq(t);
     } else {
@@ -99,6 +127,8 @@ Move perfect_search()
     //sync_cout << "========================" << sync_endl;
 
     mill->getComputersChoice(&from, &to);
+    assert(!(from == 24 && to == 24));
+
     ret = mill->doMove(from, to);
     assert(ret == true);
 
@@ -129,11 +159,6 @@ bool perfect_do_move(Move move)
     return ret;
 }
 
-bool perfect_reset()
-{
-    return false;
-}
-
 bool perfect_command(const char *cmd)
 {
     unsigned int ruleNo = 0;
@@ -156,20 +181,22 @@ bool perfect_command(const char *cmd)
 
     if (args >= 4) {
         move = make_move(make_square(file1, rank1), make_square(file2, rank2));
-        
+        return perfect_do_move(move);
     }
 
     args = sscanf(cmd, "-(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
     if (args >= 2) {
         move = (Move)-make_move(SQ_0, make_square(file1, rank1));
+        return perfect_do_move(move);
     }
 
     args = sscanf(cmd, "(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
     if (args >= 2) {
         move = make_move(SQ_0, make_square(file1, rank1));
+        return perfect_do_move(move);
     }
 
-    return perfect_do_move(move);
+    return false;
 
     args = sscanf(cmd, "Player%1u give up!", &t);
 

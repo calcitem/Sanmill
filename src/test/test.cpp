@@ -30,6 +30,8 @@
 #include "misc.h"
 #include "test.h"
 
+#include "perfect/perfect.h"
+
 #ifdef TEST_MODE
 #ifdef QT_GUI_LIB
 QString getAppFileName();
@@ -216,6 +218,9 @@ void Test::readFromMemory()
             memset(to, 0, SHARED_MEMORY_SIZE);
             sharedMemory.unlock();
             readStr = str;
+#ifdef PERFECT_AI
+            perfect_command(str.toStdString().c_str());
+#endif
             emit command(str.toStdString());
         }
     }

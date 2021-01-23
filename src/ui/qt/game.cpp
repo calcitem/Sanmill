@@ -195,6 +195,9 @@ void Game::gameReset()
         moveHistory.emplace_back(bak);
     }    
 
+#ifdef PERFECT_AI
+    perfect_reset();
+#endif
     position.reset();
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
     sideToMove = position.side_to_move();
