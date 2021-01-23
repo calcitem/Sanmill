@@ -23,27 +23,26 @@ int perfect_init(void)
 
 int perfect_exit(void)
 {
-    if (mill == nullptr) {
-        return 0;
+    if (mill != nullptr) {
+        delete mill;
+        mill = nullptr;
     }
 
-    delete mill;
-    mill = nullptr;
-
-    if (ai == nullptr) {
-        return 0;
+    if (ai != nullptr) {
+        delete ai;
+        ai = nullptr;
     }
-
-    delete ai;
-    ai = nullptr;
 
     return 0;
 }
 
 int perfect_reset(void)
 {
-    perfect_exit();
-    perfect_init();
+    if (mill == nullptr || ai == nullptr) {
+        perfect_init();
+    } else {
+        mill->beginNewGame(ai, ai, fieldStruct::playerOne);
+    }
 
     return 0;
 }

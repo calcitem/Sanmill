@@ -73,8 +73,10 @@ Game::Game(
     scene.setBackgroundBrush(QColor(239, 239, 239));
 #endif /* MOBILE_APP_UI */
 
-    resetAiPlayers();
+    //resetAiPlayers();
     createAiThreads();
+
+    loadSettings();
 
     gameReset();
 
@@ -110,8 +112,6 @@ Game::Game(
 #endif
 
     moveHistory.reserve(256);
-
-    loadSettings();
 }
 
 void Game::loadSettings()
@@ -129,8 +129,8 @@ void Game::loadSettings()
     setEngineBlack(empty? false : settings->value("Options/blackIsAiPlayer").toBool());
     setEngineWhite(empty ? true : settings->value("Options/whiteIsAiPlayer").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
+    setAnimation(empty ? true : settings->value("Options/Animation").toBool());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
-    setRule(empty ? DEFAULT_RULE_NUMBER : settings->value("Options/ruleNo").toInt());
     setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
     setOpeningBook(empty ? false : settings->value("Options/OpeningBook").toBool());
     setLearnEndgame(empty ? false : settings->value("Options/LearnEndgameEnabled").toBool());
@@ -139,7 +139,8 @@ void Game::loadSettings()
     setDepthExtension(empty ? true : settings->value("Options/DepthExtension").toBool());
     setAutoRestart(empty ? false : settings->value("Options/AutoRestart").toBool());
     setAutoChangeFirstMove(empty ? false : settings->value("Options/AutoChangeFirstMove").toBool());
-    setAnimation(empty ? true : settings->value("Options/Animation").toBool());
+
+    setRule(empty ? DEFAULT_RULE_NUMBER : settings->value("Options/ruleNo").toInt());
 }
 
 Game::~Game()
