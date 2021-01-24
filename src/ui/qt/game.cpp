@@ -1508,28 +1508,28 @@ void Game::appendGameOverReasonToMoveHistory()
     char record[64] = { 0 };
     switch (position.gameOverReason) {
     case GameOverReason::loseReasonNoWay:
-        snprintf(record, Position::RECORD_LEN_MAX, "Player%d no way to go. Player%d win!", position.sideToMove, position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonNoWayStr, position.sideToMove, position.winner);
         break;
     case GameOverReason::loseReasonTimeOver:
-        snprintf(record, Position::RECORD_LEN_MAX, "Time over. Player%d win!", position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonTimeOverStr, position.winner);
         break;
     case GameOverReason::drawReasonThreefoldRepetition:
-        snprintf(record, Position::RECORD_LEN_MAX, "Threefold Repetition. Draw!");
+        snprintf(record, Position::RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
         break;
     case GameOverReason::drawReasonRule50:
-        snprintf(record, Position::RECORD_LEN_MAX, "Fifty-move rule. Draw!");
+        snprintf(record, Position::RECORD_LEN_MAX, drawReasonRule50Str);
         break;
     case GameOverReason::loseReasonBoardIsFull:
-        snprintf(record, Position::RECORD_LEN_MAX, "Player2 win!");
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonBoardIsFullStr);
         break;
     case GameOverReason::drawReasonBoardIsFull:
-        snprintf(record, Position::RECORD_LEN_MAX, "Full. In draw!");
+        snprintf(record, Position::RECORD_LEN_MAX, drawReasonBoardIsFullStr);
         break;
     case GameOverReason::loseReasonlessThanThree:
-        snprintf(record, Position::RECORD_LEN_MAX, "Player%d win!", position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonlessThanThreeStr, position.winner);
         break;
     case GameOverReason::loseReasonResign:
-        snprintf(record, Position::RECORD_LEN_MAX, "Player%d give up!", ~position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr, ~position.winner);
         break;
     default:
         loggerDebug("No Game Over Reason");
@@ -1608,6 +1608,12 @@ void Game::setTips()
             break;
         case GameOverReason::drawReasonThreefoldRepetition:
             reasonStr = "三次重复局面判和。";
+            break;
+        case GameOverReason::drawReasonRule50:
+            reasonStr = "连续50回合无吃子判和。";
+            break;
+        case GameOverReason::drawReasonBoardIsFull:
+            reasonStr = "棋盘满判和。";
             break;
         default:
             break;

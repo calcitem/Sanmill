@@ -277,10 +277,6 @@ inline bool Position::put_piece(File f, Rank r)
 {
     const bool ret = put_piece(make_square(f, r), true);
 
-    if (ret) {
-        update_score();
-    }
-
     return ret;
 }
 
@@ -292,10 +288,6 @@ inline bool Position::move_piece(File f1, Rank r1, File f2, Rank r2)
 inline bool Position::remove_piece(File f, Rank r)
 {
     const bool ret = remove_piece(make_square(f, r), true);
-
-    if (ret) {
-        update_score();
-    }
 
     return ret;
 }

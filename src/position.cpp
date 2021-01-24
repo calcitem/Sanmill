@@ -874,8 +874,7 @@ bool Position::resign(Color loser)
 
     set_gameover(~loser, GameOverReason::loseReasonResign);
 
-    //snprintf(record, RECORD_LEN_MAX, "Player%d give up!", loser);
-    update_score();
+    //snprintf(record, RECORD_LEN_MAX, loseReasonResignStr, loser);
 
     return true;
 }
@@ -920,16 +919,13 @@ bool Position::command(const char *cmd)
     }
 
 #ifdef THREEFOLD_REPETITION
-    if (!strcmp(cmd, "Threefold Repetition. Draw!")) {
+    if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
         return true;
     }
 
     if (!strcmp(cmd, "draw")) {
-        phase = Phase::gameOver;
-        winner = DRAW;
-        score_draw++;
-        gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
-        //snprintf(record, RECORD_LEN_MAX, "Threefold Repetition. Draw!");
+        set_gameover(DRAW, GameOverReason::drawReasonThreefoldRepetition);
+        //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
         return true;
     }
 #endif /* THREEFOLD_REPETITION */
@@ -947,6 +943,8 @@ inline void Position::set_gameover(Color w, GameOverReason reason)
     phase = Phase::gameOver;
     gameOverReason = reason;
     winner = w;
+
+    update_score();
 }
 
 void Position::update_score()
@@ -970,9 +968,7 @@ bool Position::check_if_game_is_over()
 #ifdef RULE_50
     if (rule.maxStepsLedToDraw > 0 &&
         posKeyHistory.size() > rule.maxStepsLedToDraw) {
-        winner = DRAW;
-        phase = Phase::gameOver;
-        gameOverReason = GameOverReason::drawReasonRule50;
+        set_gameover(DRAW, GameOverReason::drawReasonRule50);
         return true;
     }
 #endif // RULE_50

@@ -199,7 +199,7 @@ bool perfect_command(const char *cmd)
 //     }
 
 #ifdef THREEFOLD_REPETITION
-    if (!strcmp(cmd, "Threefold Repetition. Draw!")) {
+    if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
         return true;
     }
 
@@ -208,7 +208,7 @@ bool perfect_command(const char *cmd)
         winner = DRAW;
         score_draw++;
         gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
-        //snprintf(record, RECORD_LEN_MAX, "Threefold Repetition. Draw!");
+        //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
         return true;
     }
 #endif /* THREEFOLD_REPETITION */

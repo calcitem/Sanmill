@@ -44,6 +44,7 @@
 #include "server.h"
 #include "client.h"
 #include "stopwatch.h"
+#include "mills.h"
 #include "test.h"
 
 using namespace std;
