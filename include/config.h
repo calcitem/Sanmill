@@ -52,7 +52,7 @@
 //#define PVS_AI
 #define MTDF_AI
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #define PERFECT_AI_SUPPORT
 #endif
 

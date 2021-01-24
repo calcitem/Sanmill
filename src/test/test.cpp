@@ -31,7 +31,9 @@
 #include "option.h"
 #include "test.h"
 
+#ifdef PERFECT_AI_SUPPORT
 #include "perfect/perfect.h"
+#endif
 
 #ifdef TEST_MODE
 #ifdef QT_GUI_LIB
@@ -220,9 +222,11 @@ void Test::readFromMemory()
             sharedMemory.unlock();
             readStr = str;
 
+#ifdef PERFECT_AI_SUPPORT
             if (gameOptions.getPerfectAiEnabled()) {
                 perfect_command(str.toStdString().c_str());
             }
+#endif
 
             emit command(str.toStdString());
         }

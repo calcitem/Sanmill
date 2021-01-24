@@ -40,7 +40,9 @@
 #include "client.h"
 #include "option.h"
 
+#ifdef PERFECT_AI_SUPPORT
 #include "perfect/perfect.h"
+#endif
 
 using namespace std;
 
@@ -230,9 +232,11 @@ void Game::gameReset()
         moveHistory.emplace_back(bak);
     }    
 
+#ifdef PERFECT_AI_SUPPORT
     if (gameOptions.getPerfectAiEnabled()) {
         perfect_reset();
     }
+#endif
 
     position.reset();
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
@@ -596,11 +600,13 @@ void Game::setPerfectAi(bool enabled)
     gameOptions.setPerfectAiEnabled(enabled);
     settings->setValue("Options/PerfectAI", enabled);
 
+#ifdef PERFECT_AI_SUPPORT
     if (enabled) {
         perfect_reset();
     } else {
         perfect_exit();
     }
+#endif
 }
 
 void Game::setIDS(bool enabled)
@@ -918,9 +924,11 @@ bool Game::actionPiece(QPointF p)
     }
 
     if (result) {
+#ifdef PERFECT_AI_SUPPORT
         if (gameOptions.getPerfectAiEnabled()) {
             perfect_command((char *)position.record);
         }
+#endif
 
         moveHistory.emplace_back(position.record);
 
