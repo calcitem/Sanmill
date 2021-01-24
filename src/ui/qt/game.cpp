@@ -1517,7 +1517,7 @@ void Game::appendGameOverReasonToMoveHistory()
         snprintf(record, Position::RECORD_LEN_MAX, "Threefold Repetition. Draw!");
         break;
     case GameOverReason::drawReasonRule50:
-        snprintf(record, Position::RECORD_LEN_MAX, "Steps over. In draw!");
+        snprintf(record, Position::RECORD_LEN_MAX, "Fifty-move rule. Draw!");
         break;
     case GameOverReason::loseReasonBoardIsFull:
         snprintf(record, Position::RECORD_LEN_MAX, "Player2 win!");
