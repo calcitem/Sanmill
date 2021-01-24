@@ -52,6 +52,10 @@
 //#define PVS_AI
 #define MTDF_AI
 
+#ifdef WIN32
+#define PERFECT_AI_SUPPORT
+#endif
+
 //#define PERFECT_AI_TEST
 
 #ifdef TEST_MODE

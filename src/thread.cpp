@@ -27,7 +27,9 @@
 #include "tt.h"
 #include "option.h"
 
+#ifdef PERFECT_AI_SUPPORT
 #include "perfect/perfect.h"
+#endif
 
 #ifdef FLUTTER_UI
 #include "engine_main.h"
@@ -136,6 +138,7 @@ void Thread::idle_loop()
 
         clearTT();
 
+#ifdef PERFECT_AI_SUPPORT
         if (gameOptions.getPerfectAiEnabled()) {
             bestMove = perfect_search();
             assert(bestMove != MOVE_NONE);
@@ -144,6 +147,7 @@ void Thread::idle_loop()
                 emitCommand();
             }
         } else {
+#endif // PERFECT_AI_SUPPORT
 #ifdef OPENING_BOOK
             // gameOptions.getOpeningBook()
             if (!openingBookDeque.empty()) {
@@ -168,7 +172,9 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
             }
 #endif
+#ifdef PERFECT_AI_SUPPORT
         }
+#endif // PERFECT_AI_SUPPORT
     }
 }
 
