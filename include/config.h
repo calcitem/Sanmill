@@ -55,6 +55,10 @@
 #ifndef DISABLE_PERFECT_AI
 #ifdef _MSC_VER
 #define PERFECT_AI_SUPPORT
+
+#ifdef PERFECT_AI_SUPPORT
+#define MUEHLE_NMM
+#endif
 #endif
 #endif
 

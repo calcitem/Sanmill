@@ -652,7 +652,11 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         const int n = mills_count(currentSquare);
 
-        if (n == 0) {
+        if (n == 0
+#ifdef MUEHLE_NMM
+            || is_all_in_mills(them)
+#endif
+            ) {
             assert(pieceInHandCount[BLACK] >= 0 && pieceInHandCount[WHITE] >= 0);     
 
             if (pieceInHandCount[BLACK] == 0 && pieceInHandCount[WHITE] == 0) {
@@ -723,7 +727,11 @@ bool Position::put_piece(Square s, bool updateRecord)
         currentSquare = s;
         const int n = mills_count(currentSquare);
 
-        if (n == 0) {
+        if (n == 0
+#ifdef MUEHLE_NMM
+            || is_all_in_mills(them)
+#endif
+            ) {
             action = Action::select;
             change_side_to_move();
 
@@ -758,8 +766,11 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return false;
 
     if (!rule.mayRemoveFromMillsAlways &&
-        potential_mills_count(s, NOBODY) &&
-        !is_all_in_mills(~sideToMove)) {
+        potential_mills_count(s, NOBODY)
+#ifndef MUEHLE_NMM
+        && !is_all_in_mills(~sideToMove)
+#endif
+       ) {
         return false;
     }
 
