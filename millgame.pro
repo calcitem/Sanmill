@@ -98,6 +98,8 @@ RC_FILE += millgame.rc
 
 TRANSLATIONS += millgame-qt_zh_CN.ts
 
+DEFINES += DISABLE_PERFECT_AI
+
 # Mobile App support
 #DEFINES += MOBILE_APP_UI
 

@@ -52,8 +52,10 @@
 //#define PVS_AI
 #define MTDF_AI
 
+#ifndef DISABLE_PERFECT_AI
 #ifdef _MSC_VER
 #define PERFECT_AI_SUPPORT
+#endif
 #endif
 
 //#define PERFECT_AI_TEST
