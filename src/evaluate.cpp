@@ -117,7 +117,7 @@ Value Evaluation::value()
                 value = VALUE_DRAW;
             }
         } else if (pos.get_action() == Action::select &&
-                   pos.is_all_surrounded() &&
+                   pos.is_all_surrounded(pos.side_to_move()) &&
                    rule.isLoseButNotChangeSideWhenNoWay) {
             const Value delta = pos.side_to_move() == BLACK ? -VALUE_MATE : VALUE_MATE;
             value += delta;

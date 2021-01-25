@@ -1045,18 +1045,24 @@ bool Game::command(const string &cmd, bool update /* = true */)
         gameStart();
     }
 
-    loggerDebug("Computer: %s\n\n", cmd.c_str());
+#ifdef MUEHLE_NMM
+    if (position.get_phase() != Phase::gameOver) {
+#endif // MUEHLE_NMM
+        loggerDebug("Computer: %s\n\n", cmd.c_str());
 
-    moveHistory.emplace_back(cmd);
+        moveHistory.emplace_back(cmd);
 
-    if (cmd.size() > strlen("-(1,2)")) {
-        posKeyHistory.push_back(position.key());
-    } else {
-        posKeyHistory.clear();
+        if (cmd.size() > strlen("-(1,2)")) {
+            posKeyHistory.push_back(position.key());
+        } else {
+            posKeyHistory.clear();
+        }
+
+        if (!position.command(cmd.c_str()))
+            return false;
+#ifdef MUEHLE_NMM
     }
-
-    if (!position.command(cmd.c_str()))
-        return false;
+#endif // MUEHLE_NMM
 
     sideToMove = position.side_to_move();
 
@@ -1598,6 +1604,13 @@ void Game::setTips()
         case GameOverReason::loseReasonlessThanThree:
             break;
         case GameOverReason::loseReasonNoWay:
+#ifdef MUEHLE_NMM
+            if (!isInverted) {
+                turnStr = char_to_string(color_to_char(~p.sideToMove));
+            } else {
+                turnStr = char_to_string(color_to_char(p.sideToMove));
+            }
+#endif
             reasonStr = turnStr + "无子可走被闷。";
             break;
         case GameOverReason::loseReasonResign:

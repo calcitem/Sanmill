@@ -650,6 +650,16 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         currentSquare = s;
 
+#ifdef MUEHLE_NMM
+        if (pieceInHandCount[BLACK] == 0 &&
+            pieceInHandCount[WHITE] == 0 &&
+            is_all_surrounded(~sideToMove, SQ_0, s)) {
+            set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
+            //change_side_to_move();
+            return false;
+        }
+#endif
+
         const int n = mills_count(currentSquare);
 
         if (n == 0
@@ -689,9 +699,15 @@ bool Position::put_piece(Square s, bool updateRecord)
 
     } else if (phase == Phase::moving) {
 
+#ifdef MUEHLE_NMM
+        if (is_all_surrounded(~sideToMove, currentSquare, s)) {
+            set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
+        }
+#else
         if (check_if_game_is_over()) {
             return true;
         }
+#endif // MUEHLE_NMM
 
         // if illegal
         if (pieceOnBoardCount[sideToMove] > rule.piecesAtLeastCount ||
@@ -983,7 +999,7 @@ bool Position::check_if_game_is_over()
         return true;
     }
 
-    if (phase == Phase::moving && action == Action::select && is_all_surrounded()) {
+    if (phase == Phase::moving && action == Action::select && is_all_surrounded(sideToMove)) {        
         if (rule.isLoseButNotChangeSideWhenNoWay) {
             set_gameover(~sideToMove, GameOverReason::loseReasonNoWay);
             return true;
@@ -991,7 +1007,7 @@ bool Position::check_if_game_is_over()
             change_side_to_move();  // TODO: Need?
             return false;
         }
-    }
+    } 
 
     return false;
 }
@@ -1269,21 +1285,28 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount, int &theirP
     }
 }
 
-bool Position::is_all_surrounded() const
+bool Position::is_all_surrounded(Color c, Square from, Square to) const
 {
     // Full
     if (pieceOnBoardCount[BLACK] + pieceOnBoardCount[WHITE] >= EFFECTIVE_SQUARE_NB)
         return true;
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove] <= rule.piecesAtLeastCount &&
+    if (pieceOnBoardCount[c] <= rule.piecesAtLeastCount &&
         rule.mayFly) {
         return false;
     }
 
-    for (Square s = SQ_BEGIN; s < SQ_END; s = (Square)(s + 1)) {
-        if ((sideToMove & color_on(s)) &&
-            (byTypeBB[ALL_PIECES] & MoveList<LEGAL>::adjacentSquaresBB[s]) != MoveList<LEGAL>::adjacentSquaresBB[s]) {
+    Bitboard bb = byTypeBB[ALL_PIECES];
+
+#ifdef MUEHLE_NMM
+    CLEAR_BIT(bb, from);
+    SET_BIT(bb, to);
+#endif // MUEHLE_NMM
+
+    for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
+        if ((c & color_on(s)) &&
+            (bb & MoveList<LEGAL>::adjacentSquaresBB[s]) != MoveList<LEGAL>::adjacentSquaresBB[s]) {
             return false;
         }
     }

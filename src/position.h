@@ -135,7 +135,7 @@ public:
 
     int surrounded_empty_squares_count(Square s, bool includeBanned);
     void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
-    bool is_all_surrounded() const;
+    bool is_all_surrounded(Color c, Square from = SQ_0, Square to = SQ_0) const;
 
     static void print_board();
 
