@@ -171,7 +171,7 @@ unsigned int soTableMirrorDiag2[] = {
 
 // define the four groups
 unsigned int squareIndexGroupA[] = { 3, 5, 20, 18 };
-unsigned int squareIndexGroupB[] = { 4, 13, 19, 10 };
+unsigned int squareIndexGroupB[8] = { 4, 13, 19, 10 };
 unsigned int squareIndexGroupC[] = { 0, 2, 23, 21, 6, 8, 17, 15 };
 unsigned int squareIndexGroupD[] = { 1, 7, 14, 12, 22, 16, 9, 11 };
 
