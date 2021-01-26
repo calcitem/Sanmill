@@ -70,6 +70,7 @@ public:
 
     // Functions
     void undoMove();
+    void resetGame();
     void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer);
     void setAI(int player, MillAI *AI);
     bool doMove(unsigned int pushFrom, unsigned int pushTo);

@@ -41,7 +41,7 @@ int perfect_reset(void)
     if (mill == nullptr || ai == nullptr) {
         perfect_init();
     } else {
-        mill->beginNewGame(ai, ai, fieldStruct::playerOne);
+        mill->resetGame();
     }
 
     return 0;

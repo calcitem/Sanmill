@@ -49,6 +49,20 @@ void Mill::exit()
 }
 
 //-----------------------------------------------------------------------------
+// resetGame()
+// Reset the Mill object.
+//-----------------------------------------------------------------------------
+void Mill::resetGame()
+{
+    std::memset(moveLogFrom, 0, sizeof(moveLogFrom));
+    std::memset(moveLogTo, 0, sizeof(moveLogTo));
+    initialField.copyBoard(&field);
+
+    winner = 0;
+    movesDone = 0;
+}
+
+//-----------------------------------------------------------------------------
 // beginNewGame()
 // Reinitializes the Mill object.
 //-----------------------------------------------------------------------------
