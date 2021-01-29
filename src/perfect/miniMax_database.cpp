@@ -227,7 +227,7 @@ void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
     hFileShortKnotValues = CreateFileA(ssDatabaseFile.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-    // opened file succesfully
+    // opened file successfully
     if (hFileShortKnotValues == INVALID_HANDLE_VALUE) {
         hFileShortKnotValues = nullptr;
         return;
@@ -238,7 +238,7 @@ void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
     maxNumBranches = maximumNumberOfBranches;
 
     // database complete ?
-    ReadFile(hFileShortKnotValues, &skvfHeader, sizeof(SkvFileHeader), &dwBytesRead, nullptr);
+    if (!ReadFile(hFileShortKnotValues, &skvfHeader, sizeof(SkvFileHeader), &dwBytesRead, nullptr)) return;
 
     // invalid file ?
     if (dwBytesRead != sizeof(SkvFileHeader) || skvfHeader.headerCode != SKV_FILE_HEADER_CODE) {
@@ -276,7 +276,7 @@ void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
         // read layer stats
     } else {
         layerStats = new LayerStats[skvfHeader.numLayers];
-        ReadFile(hFileShortKnotValues, layerStats, sizeof(LayerStats) * skvfHeader.numLayers, &dwBytesRead, nullptr);
+        if (!ReadFile(hFileShortKnotValues, layerStats, sizeof(LayerStats) * skvfHeader.numLayers, &dwBytesRead, nullptr)) return;
         for (i = 0; i < skvfHeader.numLayers; i++) {
             layerStats[i].shortKnotValueByte = nullptr;
             layerStats[i].skvCompressed = nullptr;
@@ -317,7 +317,7 @@ void MiniMax::openPlyInfoFile(const char *directory)
     plyInfoHeader.headerCode = 0;
 
     // database complete ?
-    ReadFile(hFilePlyInfo, &plyInfoHeader, sizeof(plyInfoHeader), &dwBytesRead, nullptr);
+    if (!ReadFile(hFilePlyInfo, &plyInfoHeader, sizeof(plyInfoHeader), &dwBytesRead, nullptr)) return;
 
     // invalid file ?
     if (dwBytesRead != sizeof(plyInfoHeader) || plyInfoHeader.headerCode != PLYINFO_HEADER_CODE) {
@@ -348,7 +348,7 @@ void MiniMax::openPlyInfoFile(const char *directory)
         // read layer stats
     } else {
         plyInfos = new PlyInfo[plyInfoHeader.numLayers];
-        ReadFile(hFilePlyInfo, plyInfos, sizeof(PlyInfo) * plyInfoHeader.numLayers, &dwBytesRead, nullptr);
+        if (!ReadFile(hFilePlyInfo, plyInfos, sizeof(PlyInfo) * plyInfoHeader.numLayers, &dwBytesRead, nullptr)) return;
         for (i = 0; i < plyInfoHeader.numLayers; i++) {
             plyInfos[i].plyInfo = nullptr;
             plyInfos[i].plyInfoCompressed = nullptr;

@@ -188,7 +188,7 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned
         // read from buffer if necessary
         if (curBufferPos >= bufferSize - maxValueLengthInBytes) {
             memcpy(&buffer[0], &buffer[curBufferPos], bufferSize - curBufferPos);
-            ReadFile(hFile, &buffer[bufferSize - curBufferPos], curBufferPos, &dwBytesRead, nullptr);
+            if (!ReadFile(hFile, &buffer[bufferSize - curBufferPos], curBufferPos, &dwBytesRead, nullptr)) return false;
             actualBufferSize = bufferSize - curBufferPos + dwBytesRead;
             curBufferPos = 0;
             curByte = &buffer[curBufferPos];
