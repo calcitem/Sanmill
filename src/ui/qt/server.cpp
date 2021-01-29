@@ -118,11 +118,11 @@ void Server::sessionOpened()
     if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
         port++;
         if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
-#ifndef TEST_MODE
+#ifndef QT_UI_TEST_MODE
             QMessageBox::critical(this, tr("Server"),
                                   tr("Unable to start the server: %1.")
                                   .arg(tcpServer->errorString()));
-#endif // !TEST_MODE
+#endif // !QT_UI_TEST_MODE
             close();
             return;
         }

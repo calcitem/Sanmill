@@ -45,7 +45,7 @@
 
 //#define MOBILE_APP_UI
 
-//#define TEST_MODE
+//#define QT_UI_TEST_MODE
 
 //#define UCT_DEMO
 
@@ -63,10 +63,6 @@
 #endif
 
 //#define PERFECT_AI_TEST
-
-#ifdef TEST_MODE
-#define DONOT_PLAY_SOUND
-#endif // TEST_MODE
 
 //#define DEBUG_MODE
 
