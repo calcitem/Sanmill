@@ -27,6 +27,7 @@ QString APP_FILENAME_DEFAULT = "MillGame";
 #include <QtWidgets/QApplication>
 #include <QDesktopWidget>
 #include <QCoreApplication>
+#include <QResource>
 #include <QTranslator>
 
 #ifndef UCT_DEMO
@@ -45,6 +46,8 @@ int main(int argc, char *argv[])
 {
     Bitboards::init();
     Position::init();
+
+    QResource::registerResource("gamewindow.rcc");
 
     QApplication a(argc, argv);
     QTranslator translator;
