@@ -132,8 +132,10 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
     EnterCriticalSection(&csBarrier);
 
     for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
-        if (hThread[curThreadNo])
+        if (hThread[curThreadNo]) {
+            LeaveCriticalSection(&csBarrier);
             return false;
+        }
     }
 
     for (unsigned int curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
@@ -243,7 +245,10 @@ unsigned int ThreadManager::executeInParallel(DWORD threadProc(void *pParameter)
     for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 
         hThread[curThreadNo] = CreateThread(nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc, (void *)(((char *)pParameter) + curThreadNo * parameterStructSize), CREATE_SUSPENDED, &threadId[curThreadNo]);
-        SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
+        
+        if (hThread[curThreadNo] != nullptr) {
+            SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
+        }
 
         if (hThread[curThreadNo] == nullptr) {
             for (curThreadNo; curThreadNo > 0; curThreadNo--) {
@@ -350,7 +355,9 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
         // create suspended thread
         hThread[curThreadNo] = CreateThread(nullptr, dwStackSize, threadForLoop, (LPVOID)(&forLoopParameters[curThreadNo]), CREATE_SUSPENDED, &threadId[curThreadNo]);
 
-        SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
+        if (hThread[curThreadNo] != nullptr) {
+            SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
+        }
 
         if (hThread[curThreadNo] == nullptr) {
             for (curThreadNo; curThreadNo > 0; curThreadNo--) {

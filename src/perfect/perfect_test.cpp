@@ -35,7 +35,7 @@ int perfect_main(void)
     ai = new PerfectAI(databaseDirectory);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
-    srand(GetTickCount());
+    srand(GetTickCount64());
 
     // intro
     cout << "*************************" << endl;
