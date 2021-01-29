@@ -971,7 +971,21 @@ bool Game::actionPiece(QPointF p)
         }
         // If it's decided
         else {
-            pauseThreads();
+            if (gameOptions.getAutoRestart()) {
+                saveScore();
+
+                gameReset();
+                gameStart();
+
+                if (isAiPlayer[BLACK]) {
+                    setEngine(BLACK, true);
+                }
+                if (isAiPlayer[WHITE]) {
+                    setEngine(WHITE, true);
+                }
+            } else {
+                pauseThreads();
+            }
         }
     }
 
