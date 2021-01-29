@@ -15,6 +15,15 @@
 MiniMaxAI::MiniMaxAI()
 {
     depthOfFullTree = 0;
+
+    field = nullptr;
+    currentValue = 0.0f;
+    gameHasFinished = false;
+    ownId = 0;
+    curSearchDepth = 0;
+    idPossibilities = nullptr;
+    oldStates = nullptr;
+    possibilities = nullptr;
 }
 
 //-----------------------------------------------------------------------------

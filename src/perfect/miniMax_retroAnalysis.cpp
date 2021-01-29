@@ -202,7 +202,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 // initRetroAnalysisParallelSub()
 // 
 //-----------------------------------------------------------------------------
-DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, int index)
+DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, unsigned int index)
 {
     // locals
     InitRetroAnalysisVars *iraVars = (InitRetroAnalysisVars *)pParameter;
@@ -460,7 +460,7 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 // addNumSuccedorsThreadProc()
 // 
 //-----------------------------------------------------------------------------
-DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, int index)
+DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, unsigned int index)
 {
     // locals
     AddNumSuccedorsVars *ansVars = (AddNumSuccedorsVars *)pParameter;

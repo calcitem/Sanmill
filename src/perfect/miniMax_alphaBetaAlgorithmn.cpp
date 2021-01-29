@@ -183,7 +183,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 // initAlphaBetaThreadProc()
 // set short knot value to SKV_VALUE_INVALID, ply info to PLYINFO_VALUE_INVALID and knotAlreadyCalculated to true or false, whether setSituation() returns true or false
 //-----------------------------------------------------------------------------
-DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, int index)
+DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, unsigned int index)
 {
     // locals
     InitAlphaBetaVars *iabVars = (InitAlphaBetaVars *)pParameter;
@@ -312,7 +312,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 // runAlphaBetaThreadProc()
 // 
 //-----------------------------------------------------------------------------
-DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, int index)
+DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, unsigned int index)
 {
     // locals
     RunAlphaBetaVars *rabVars = (RunAlphaBetaVars *)pParameter;
@@ -497,13 +497,8 @@ bool MiniMax::alphaBetaTryDataBase(Knot *knot,
         }
 
         // when knot value is valid then return best branch
-        if (calcDatabase && 
-            tilLevel < depthOfFullTree && 
-            shortKnotValue != SKV_VALUE_INVALID && 
-            plyInfo != PLYINFO_VALUE_UNCALCULATED || 
-            !calcDatabase && 
-            tilLevel < depthOfFullTree - 1 && 
-            shortKnotValue != SKV_VALUE_INVALID) {
+        if ((calcDatabase && tilLevel < depthOfFullTree && shortKnotValue != SKV_VALUE_INVALID && plyInfo != PLYINFO_VALUE_UNCALCULATED) || 
+            (!calcDatabase && tilLevel < depthOfFullTree - 1 && shortKnotValue != SKV_VALUE_INVALID)) {
 
             // switch if is not opponent level
             if (knot->isOpponentLevel)

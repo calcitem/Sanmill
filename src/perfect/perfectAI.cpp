@@ -1503,7 +1503,7 @@ unsigned int PerfectAI::getNumberOfKnotsInLayer(unsigned int layerNum)
 
     // return zero if layer is not reachable
     if (((layer[layerNum].numBlackStones < 2 || layer[layerNum].numWhiteStones < 2) && layerNum < 100) // moving phase
-        || (layer[layerNum].numBlackStones == 2 && layer[layerNum].numWhiteStones == 2 && layerNum < 100) || (layerNum == 100))
+        || (layerNum < NUM_LAYERS && layer[layerNum].numBlackStones == 2 && layer[layerNum].numWhiteStones == 2 && layerNum < 100) || (layerNum == 100))
         return 0;
 
     // another way
@@ -2236,7 +2236,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
         if ((tv->field->stoneMustBeRemoved && tv->field->curPlayer->numStones > 3) || (!tv->field->stoneMustBeRemoved && tv->field->oppPlayer->numStones > 3)) {
 
             // when game has finished then because current player can't move anymore or has less then 3 stones
-            if (!tv->gameHasFinished || (tv->gameHasFinished && tv->field->curPlayer->numPossibleMoves == 0)) {
+            if (!tv->gameHasFinished || tv->field->curPlayer->numPossibleMoves == 0) {
 
                 // test each destination
                 for (to = 0; to < tv->field->size; to++) {

@@ -87,7 +87,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 // testLayerThreadProc()
 // 
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testLayerThreadProc(void *pParameter, int index)
+DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
 {
     // locals
     TestLayersVars *tlVars = (TestLayersVars *)pParameter;
@@ -411,7 +411,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 // testSetSituationThreadProc()
 // 
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testSetSituationThreadProc(void *pParameter, int index)
+DWORD MiniMax::testSetSituationThreadProc(void *pParameter, unsigned int index)
 {
     // locals
     TestLayersVars *tlVars = (TestLayersVars *)pParameter;

@@ -48,7 +48,7 @@ private:
         int finalValue;
         void *pParameter;
         DWORD(*threadProc)
-            (void *pParameter, int index); // pointer to the user function to be executed by the threads
+            (void *pParameter, unsigned int index); // pointer to the user function to be executed by the threads
         ThreadManager *threadManager;
     };
 
@@ -151,7 +151,7 @@ public:
 
     // execute
     unsigned int executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize);
-    unsigned int executeParallelLoop(DWORD threadProc(void *pParameter, int index), void *pParameter, unsigned int parameterStructSize, unsigned int scheduleType, int initialValue, int finalValue, int inkrement);
+    unsigned int executeParallelLoop(DWORD threadProc(void *pParameter, unsigned int index), void *pParameter, unsigned int parameterStructSize, unsigned int scheduleType, int initialValue, int finalValue, int inkrement);
 };
 
 #endif

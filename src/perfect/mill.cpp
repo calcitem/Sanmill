@@ -22,6 +22,9 @@ Mill::Mill()
     playerTwoAI = nullptr;
     movesDone = 0;
 
+    winner = 0;
+    beginningPlayer = 0;
+
     field.createBoard();
     initialField.createBoard();
 }
@@ -54,8 +57,8 @@ void Mill::exit()
 //-----------------------------------------------------------------------------
 void Mill::resetGame()
 {
-    std::memset(moveLogFrom, 0, sizeof(moveLogFrom));
-    std::memset(moveLogTo, 0, sizeof(moveLogTo));
+    std::memset(moveLogFrom, 0, MAX_NUM_MOVES);
+    std::memset(moveLogTo, 0, MAX_NUM_MOVES);
     initialField.copyBoard(&field);
 
     winner = 0;

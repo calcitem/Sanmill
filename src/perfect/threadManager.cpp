@@ -28,6 +28,7 @@ ThreadManager::ThreadManager()
     threadId = new DWORD[numThreads];
     hBarrier = new HANDLE[numThreads];
     numThreadsPassedBarrier = 0;
+    termineAllThreads = false;
 
     InitializeCriticalSection(&csBarrier);
     hEventBarrierPassedByEveryBody = CreateEvent(nullptr, true, false, nullptr);
@@ -283,7 +284,7 @@ unsigned int ThreadManager::executeInParallel(DWORD threadProc(void *pParameter)
 // lpParameter - an array of size numThreads
 // finalValue  - this value is part of the iteration, meaning that index ranges from initialValue to finalValue including both border values
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParameter, int index),
+unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParameter, unsigned index),
                                                 void *pParameter,
                                                 unsigned int parameterStructSize,
                                                 unsigned int scheduleType,
