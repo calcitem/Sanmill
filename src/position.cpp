@@ -656,7 +656,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             is_all_surrounded(~sideToMove, SQ_0, s)) {
             set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
             //change_side_to_move();
-            return false;
+            return true;
         }
 #endif
 
