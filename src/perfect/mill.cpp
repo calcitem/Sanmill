@@ -6,6 +6,7 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include <cassert>
 #include "mill.h"
 
 //-----------------------------------------------------------------------------
@@ -385,15 +386,21 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
     *pushFrom = field.size;
     *pushTo = field.size;
     theField.createBoard();
+    //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
+
     field.copyBoard(&theField);
+
+    //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
 
     if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) {
         if (field.curPlayer->id == field.playerOne) {
             if (playerOneAI != nullptr)
                 playerOneAI->play(&theField, pushFrom, pushTo);
+            //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
         } else {
             if (playerTwoAI != nullptr)
                 playerTwoAI->play(&theField, pushFrom, pushTo);
+            //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
         }
     }
 

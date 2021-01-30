@@ -972,6 +972,12 @@ void Position::update_score()
         }
 
         score[winner]++;
+
+        // Test Point
+        if (winner == BLACK)
+        {
+            winner = winner;
+        }
     }
 }
 

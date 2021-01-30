@@ -6,6 +6,7 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include <cassert>
 #include "perfectAI.h"
 
 
@@ -679,11 +680,14 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
 {
     // ... trick 17
     theField->copyBoard(&dummyField);
+    //assert(dummyField.oppPlayer->id >= -1 && dummyField.oppPlayer->id <= 1);
 
     // locals
     threadVars[0].field = theField;
     threadVars[0].ownId = threadVars[0].field->curPlayer->id;
     unsigned int bestChoice, i;
+
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // reset
     for (i = 0; i < fieldStruct::size * fieldStruct::size; i++) {
@@ -695,13 +699,19 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
         incidencesValuesSubMoves[i][SKV_VALUE_GAME_WON] = 0;
     }
 
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+
     // open database file
     openDatabase(databaseDirectory.c_str(), MAX_NUM_POS_MOVES);
+
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     if (theField->settingPhase)
         threadVars[0].depthOfFullTree = 2;
     else
         threadVars[0].depthOfFullTree = 2;
+
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // current state already calculated?
     if (isCurrentStateInDatabase(0)) {
@@ -711,8 +721,12 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
         cout << "PerfectAI is thinking thinking with a depth of " << threadVars[0].depthOfFullTree << " steps!\n\n\n";
     }
 
-    // start the miniMax-algorithmn
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+
+    // start the miniMax-algorithm
     Possibility *rootPossibilities = (Possibility *)getBestChoice(threadVars[0].depthOfFullTree, &bestChoice, MAX_NUM_POS_MOVES);
+
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // decode the best choice
     if (threadVars[0].field->stoneMustBeRemoved) {
@@ -726,8 +740,12 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
         *pushTo = rootPossibilities->to[bestChoice];
     }
 
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+
     // release memory
     threadVars[0].field = &dummyField;
+
+    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 }
 
 //-----------------------------------------------------------------------------
