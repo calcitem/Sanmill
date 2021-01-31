@@ -105,7 +105,7 @@ public:
     enum Action get_action() const;
     const char *get_record() const;
 
-    int get_mobility_diff(bool includeBanned);
+    int get_mobility_diff();
 
     bool reset();
     bool start();
@@ -133,7 +133,6 @@ public:
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
-    int surrounded_empty_squares_count(Square s, bool includeBanned);
     void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
     bool is_all_surrounded(Color c, Square from = SQ_0, Square to = SQ_0) const;
 

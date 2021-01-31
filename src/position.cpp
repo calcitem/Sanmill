@@ -1018,27 +1018,30 @@ bool Position::check_if_game_is_over()
     return false;
 }
 
-int Position::get_mobility_diff(bool includeBanned)
+int Position::get_mobility_diff()
 {
     // TODO: Deal with rule is no ban location
     int mobilityBlack = 0;
     int mobilityWhite = 0;
-    int diff = 0;
-    int n = 0;
 
-    for (Square i = SQ_BEGIN; i < SQ_END; ++i) {
-        n = surrounded_empty_squares_count(i, includeBanned);
-
-        if (board[i] & B_STONE) {
-            mobilityBlack += n;
-        } else if (board[i] & W_STONE) {
-            mobilityWhite += n;
-        }
+    for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
+        if (board[s] == NO_PIECE || board[s] == BAN_STONE) {
+            Square moveSquare;
+            for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
+                moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
+                if (moveSquare) {
+                    if (board[moveSquare] & B_STONE) {
+                        mobilityBlack++;
+                    }
+                    if (board[moveSquare] & W_STONE) {
+                        mobilityWhite++;
+                    }
+                }
+            }
+        } 
     }
 
-    diff = mobilityBlack - mobilityWhite;
-
-    return diff;
+    return mobilityBlack - mobilityWhite;
 }
 
 void Position::remove_ban_stones()
@@ -1234,30 +1237,6 @@ bool Position::is_all_in_mills(Color c)
     }
 
     return true;
-}
-
-// Stat include ban
-int Position::surrounded_empty_squares_count(Square s, bool includeBanned)
-{
-    //assert(rule.hasBannedLocations == includeBanned);
-
-    int n = 0;
-
-    if (pieceOnBoardCount[sideToMove] > rule.piecesAtLeastCount ||
-        !rule.mayFly) {
-        Square moveSquare;
-        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-            moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
-            if (moveSquare) {
-                if (board[moveSquare] == 0x00 ||
-                    (includeBanned && board[moveSquare] == BAN_STONE)) {
-                    n++;
-                }
-            }
-        }
-    }
-
-    return n;
 }
 
 void Position::surrounded_pieces_count(Square s, int &ourPieceCount, int &theirPieceCount, int &bannedCount, int &emptyCount)

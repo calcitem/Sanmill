@@ -87,10 +87,7 @@ Value Evaluation::value()
         value = (pos.piece_on_board_count(BLACK) - pos.piece_on_board_count(WHITE)) * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
-        value += pos.get_mobility_diff(position->turn, 
-                                       position->pieceInHandCount[BLACK],
-                                       position->pieceInHandCount[WHITE], 
-                                       false) * 10;
+        value += pos.get_mobility_diff() / 5;
 #endif  /* EVALUATE_MOBILITY */
 
         switch (pos.get_action()) {
