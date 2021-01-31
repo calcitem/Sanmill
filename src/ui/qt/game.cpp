@@ -130,6 +130,7 @@ void Game::loadSettings()
 
     setEngineBlack(empty? false : settings->value("Options/blackIsAiPlayer").toBool());
     setEngineWhite(empty ? true : settings->value("Options/whiteIsAiPlayer").toBool());
+    setFixWindowSize(empty ? false : settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
@@ -436,6 +437,12 @@ void Game::getAiDepthTime(int &time1, int &time2)
 {
     time1 = aiThread[BLACK]->getTimeLimit();
     time2 = aiThread[WHITE]->getTimeLimit();
+}
+
+void Game::setFixWindowSize(bool arg) noexcept
+{
+    fixWindowSize = arg;
+    settings->setValue("Options/FixWindowSize", arg);
 }
 
 void Game::setAnimation(bool arg) noexcept

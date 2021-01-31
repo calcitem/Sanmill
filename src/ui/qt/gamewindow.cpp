@@ -98,11 +98,6 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
     const int unith = (deskTopRect.height() - height()) / 2;
     this->move(unitw, unith);
 
-#if defined(_DEBUG) || defined(QT_UI_TEST_MODE)
-    this->setFixedWidth(width());
-    this->setFixedHeight(height());
-#endif
-
 #ifdef MOBILE_APP_UI
     // Hide menu bar, toolbar, status bar, etc
     ui.menuBar->setVisible(false);
@@ -200,6 +195,9 @@ void MillGameWindow::initialize()
 
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
             game, SLOT(setEngineWhite(bool)));
+
+    connect(ui.actionFixWindowSize, SIGNAL(toggled(bool)),
+            game, SLOT(setFixWindowSize(bool)));
 
     connect(ui.actionSound_S, SIGNAL(toggled(bool)),
             game, SLOT(setSound(bool)));
@@ -347,8 +345,15 @@ void MillGameWindow::initialize()
     const int screen_iPhone_SE[] = {640, 1136};
     this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
 #else /* MOBILE_APP_UI */
-    const int h = QApplication::desktop()->height();
-    this->resize(QSize(h * 3/4, h * 3/4));
+
+    // Fix window size
+    if (game->fixWindowSizeEnabled()) {
+        setFixedWidth(width());
+        setFixedHeight(height());
+    } else {
+        const int h = QApplication::desktop()->height();
+        this->resize(QSize(h * 3 / 4, h * 3 / 4));
+    }
 
     ui.pushButton_back->setVisible(false);
     ui.pushButton_option->setVisible(false);
@@ -374,6 +379,7 @@ void MillGameWindow::initialize()
     ui.actionEngine1_T->setChecked(game->isAiPlayer[BLACK]);
     ui.actionEngine2_R->setChecked(game->isAiPlayer[WHITE]);    
 
+    ui.actionFixWindowSize->setChecked(game->fixWindowSizeEnabled());
     ui.actionSound_S->setChecked(game->soundEnabled());
     ui.actionAnimation_A->setChecked(game->animationEnabled());
 

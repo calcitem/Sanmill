@@ -220,6 +220,9 @@ public slots:
     void setEngine(Color color, bool enabled = true);
     void setEngineBlack(bool enabled);
     void setEngineWhite(bool enabled);
+    
+    // Fix Window Size 
+    void setFixWindowSize(bool arg) noexcept;
 
     // Is there a falling animation
     void setAnimation(bool arg = true) noexcept;
@@ -421,6 +424,11 @@ public:
 
     void loadSettings();
 
+    bool fixWindowSizeEnabled()
+    {
+        return fixWindowSize;
+    }
+
     bool soundEnabled()
     {
         return hasSound;
@@ -440,6 +448,9 @@ public:
     }
 
 private:
+
+    // Fix Windows Size
+    bool fixWindowSize;
 
     // Is there a falling animation
     bool hasAnimation;

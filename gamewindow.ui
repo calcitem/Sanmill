@@ -286,6 +286,7 @@
     </property>
     <addaction name="actionSetting_O"/>
     <addaction name="separator"/>
+    <addaction name="actionFixWindowSize"/>
     <addaction name="actionToolBar_T"/>
     <addaction name="actionDockBar_D"/>
     <addaction name="actionMusic_M"/>
@@ -1100,6 +1101,17 @@
    </property>
    <property name="text">
     <string>Options...</string>
+   </property>
+  </action>
+  <action name="actionFixWindowSize">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fix Window Size</string>
    </property>
   </action>
   <action name="actionToolBar_T">
