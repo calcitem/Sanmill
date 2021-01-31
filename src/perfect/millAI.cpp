@@ -228,8 +228,12 @@ void fieldStruct::createBoard()
 //-----------------------------------------------------------------------------
 void fieldStruct::deleteBoard()
 {
-    SAFE_DELETE(curPlayer);
-    SAFE_DELETE(oppPlayer);
+    try {
+        SAFE_DELETE(curPlayer);
+        SAFE_DELETE(oppPlayer);
+    } catch (const char *msg) {
+        cerr << msg << endl;
+    }
 }
 
 //-----------------------------------------------------------------------------
