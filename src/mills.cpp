@@ -409,6 +409,12 @@ void move_priority_list_shuffle()
     for (size_t i = 0; i < 8; i++) {
         MoveList<LEGAL>::movePriorityList[i + 16] = movePriorityList3[i];
     }
+#if 0
+    if (rule.piecesCount == 9 && gameOptions.getShufflingEnabled()) {
+        const uint32_t seed = static_cast<uint32_t>(now());
+        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
+    }
+#endif
 }
 
 }

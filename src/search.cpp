@@ -37,6 +37,8 @@
 #include "types.h"
 #include "option.h"
 
+#include <random>
+
 using std::string;
 using Eval::evaluate;
 using namespace Search;
@@ -121,6 +123,15 @@ int Thread::search()
 
 
     MoveList<LEGAL>::shuffle();
+
+#if 0
+    // TODO: Only NMM
+    if (rootPos->piece_on_board_count(BLACK) + rootPos->piece_on_board_count(WHITE) <= 1 &&
+        rule.piecesCount == 9 && gameOptions.getShufflingEnabled()) {
+        const uint32_t seed = static_cast<uint32_t>(now());
+        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
+    }
+#endif
 
 #ifndef MTDF_AI
     Value alpha = -VALUE_INFINITE;
