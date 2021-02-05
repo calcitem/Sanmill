@@ -247,6 +247,7 @@ Position &Position::set(const string &fenStr, Thread *th)
     // 2. Active color
     ss >> token;
     sideToMove = (token == 'b' ? BLACK : WHITE);
+    them = ~sideToMove;    // Stockfish do not need to set them
 
     // 3. Phrase
     ss >> token;
