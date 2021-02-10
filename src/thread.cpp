@@ -26,6 +26,7 @@
 #include "uci.h"
 #include "tt.h"
 #include "option.h"
+#include "mills.h"
 
 #ifdef PERFECT_AI_SUPPORT
 #include "perfect/perfect.h"
@@ -578,17 +579,15 @@ string Thread::nextMove()
     }
 #endif /* ENDGAME_LEARNING */
 
+#endif
+
     if (gameOptions.getResignIfMostLose() == true) {
-        if (root->value <= -VALUE_MATE) {
-            gameOverReason = loseReasonResign;
-            //snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr, position->sideToMove);
-            return record;
+        if (bestvalue <= -VALUE_MATE) {
+            rootPos->set_gameover(~rootPos->sideToMove, GameOverReason::loseReasonResign);
+            snprintf(rootPos->record, Position::RECORD_LEN_MAX, loseReasonResignStr, rootPos->sideToMove);
+            return rootPos->record;
         }
     }
-
-    nodeCount = 0;
-
-#endif
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG

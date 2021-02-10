@@ -891,7 +891,7 @@ bool Position::resign(Color loser)
 
     set_gameover(~loser, GameOverReason::loseReasonResign);
 
-    //snprintf(record, RECORD_LEN_MAX, loseReasonResignStr, loser);
+    snprintf(record, RECORD_LEN_MAX, loseReasonResignStr, loser);
 
     return true;
 }
