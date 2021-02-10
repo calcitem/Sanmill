@@ -134,7 +134,11 @@ public:
     bool is_all_in_mills(Color c);
 
     void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
-    bool is_all_surrounded(Color c, Square from = SQ_0, Square to = SQ_0) const;
+    bool is_all_surrounded(Color c
+#ifdef MUEHLE_NMM
+                           , Square from = SQ_0, Square to = SQ_0
+#endif // MUEHLE_NMM
+    ) const;
 
     static void print_board();
 

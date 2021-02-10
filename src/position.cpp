@@ -1271,7 +1271,11 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount, int &theirP
     }
 }
 
-bool Position::is_all_surrounded(Color c, Square from, Square to) const
+bool Position::is_all_surrounded(Color c
+#ifdef MUEHLE_NMM
+                                 , Square from, Square to
+#endif // MUEHLE_NMM
+                                ) const
 {
     // Full
     if (pieceOnBoardCount[BLACK] + pieceOnBoardCount[WHITE] >= EFFECTIVE_SQUARE_NB)
