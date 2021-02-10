@@ -537,49 +537,18 @@ void Thread::clearTT()
 
 string Thread::nextMove()
 {
-#if 0
-    char charSelect = '*';
-
-    Position::print_board();
-
-    int moveIndex = 0;
-    bool foundBest = false;
-
-    int cs = root->childrenSize;
-    for (int i = 0; i < cs; i++) {
-        if (root->children[i]->move != bestMove) {
-            charSelect = ' ';
-        } else {
-            charSelect = '*';
-            foundBest = true;
-        }
-
-        loggerDebug("[%.2d] %d\t%s\t%d\t%u %c\n", moveIndex,
-                    root->children[i]->move,
-                    UCI::move(root->children[i]->move).c_str();
-        root->children[i]->value,
-            0,
-            charSelect);
-
-        moveIndex++;
-    }
-
-    Color side = position->sideToMove;
-
 #ifdef ENDGAME_LEARNING
     // Check if very weak
     if (gameOptions.isEndgameLearningEnabled()) {
-        if (bestValue <= -VALUE_KNOWN_WIN) {
+        if (bestvalue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
-            endgame.type = state->position->playerSideToMove == PLAYER_BLACK ?
-                whiteWin : blackWin;
-            Key endgameHash = position->key(); // TODO: Do not generate hash repeately
+            endgame.type = rootPos->side_to_move() == BLACK ?
+                EndGameType::whiteWin : EndGameType::blackWin;
+            Key endgameHash = rootPos->key(); // TODO: Do not generate hash repeatedly
             saveEndgameHash(endgameHash, endgame);
         }
     }
 #endif /* ENDGAME_LEARNING */
-
-#endif
 
     if (gameOptions.getResignIfMostLose() == true) {
         if (bestvalue <= -VALUE_MATE) {
