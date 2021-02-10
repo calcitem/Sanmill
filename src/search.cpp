@@ -252,6 +252,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     Endgame endgame;
 
     if (gameOptions.isEndgameLearningEnabled() &&
+        posKey &&
         Thread::probeEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case EndGameType::blackWin:
