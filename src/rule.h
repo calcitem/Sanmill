@@ -52,7 +52,7 @@ struct Rule
     // Player may fly if he is down to three pieces.
     bool mayFly;
 
-    int maxStepsLedToDraw;
+    size_t maxStepsLedToDraw;
 };
 
 #define N_RULES 4

@@ -22,14 +22,14 @@
 #include "types.h"
 #include "config.h"
 
-static const char *loseReasonNoWayStr = "Player%d no way to go. Player%d win!";
-static const char *loseReasonTimeOverStr = "Time over. Player%d win!";
-static const char *drawReasonThreefoldRepetitionStr = "Threefold Repetition. Draw!";
-static const char *drawReasonRule50Str = "Fifty-move rule. Draw!";
-static const char *loseReasonBoardIsFullStr = "Full. Player2 win!";
-static const char *drawReasonBoardIsFullStr = "Full. In draw!";
-static const char *loseReasonlessThanThreeStr = "Player%d win!";
-static const char *loseReasonResignStr = "Player%d give up!";
+extern const char *loseReasonNoWayStr;
+extern const char *loseReasonTimeOverStr;
+extern const char *drawReasonThreefoldRepetitionStr;
+extern const char *drawReasonRule50Str;
+extern const char *loseReasonBoardIsFullStr;
+extern const char *drawReasonBoardIsFullStr;
+extern const char *loseReasonlessThanThreeStr;
+extern const char *loseReasonResignStr;
 
 namespace Mills
 {

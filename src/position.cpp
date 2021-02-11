@@ -590,7 +590,7 @@ bool Position::reset()
             break;
     }
 
-    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03d t%02d",
+    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03zu t%02d",
                 r + 1, rule.maxStepsLedToDraw, 0) > 0) {
         return true;
     }
@@ -955,7 +955,7 @@ Color Position::get_winner() const noexcept
     return winner;
 }
 
-inline void Position::set_gameover(Color w, GameOverReason reason)
+void Position::set_gameover(Color w, GameOverReason reason)
 {
     phase = Phase::gameOver;
     gameOverReason = reason;

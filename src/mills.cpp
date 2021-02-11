@@ -26,6 +26,15 @@
 #include "option.h"
 #include "position.h"
 
+const char *loseReasonNoWayStr = "Player%d no way to go. Player%d win!";
+const char *loseReasonTimeOverStr = "Time over. Player%d win!";
+const char *drawReasonThreefoldRepetitionStr = "Threefold Repetition. Draw!";
+const char *drawReasonRule50Str = "Fifty-move rule. Draw!";
+const char *loseReasonBoardIsFullStr = "Full. Player2 win!";
+const char *drawReasonBoardIsFullStr = "Full. In draw!";
+const char *loseReasonlessThanThreeStr = "Player%d win!";
+const char *loseReasonResignStr = "Player%d give up!";
+
 namespace Mills
 {
 

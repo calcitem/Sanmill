@@ -385,7 +385,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
     elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
 
     char record[64] = { 0 };
-    if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03d t%02d", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
+    if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03zu t%02d", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
         assert(0);
     }
     string cmd(record);

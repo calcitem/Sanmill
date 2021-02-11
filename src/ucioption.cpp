@@ -119,7 +119,7 @@ void on_mayFly(const Option &o)
 
 void on_maxStepsLedToDraw(const Option &o)
 {
-    rule.maxStepsLedToDraw = (int)o;
+    rule.maxStepsLedToDraw = (size_t)o;
 }
 
 /// Our case insensitive less() function as required by UCI protocol
