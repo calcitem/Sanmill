@@ -392,7 +392,7 @@ class Position {
     return pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white];
   }
 
-  int GetNPiecesInHand() {
+  int getNPiecesInHand() {
     pieceInHandCount[Color.black] =
         rule.piecesCount - pieceOnBoardCount[Color.black];
     pieceInHandCount[Color.white] =
@@ -432,7 +432,7 @@ class Position {
       return -1;
     }
 
-    GetNPiecesInHand();
+    getNPiecesInHand();
     pieceToRemoveCount = 0;
 
     winner = Color.nobody;

@@ -326,8 +326,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   String getGameOverReasonString(GameOverReason reason, String winner) {
     String loseReasonStr;
-    String winnerStr =
-        winner == Color.black ? S.of(context).black : S.of(context).white;
+    //String winnerStr =
+    //    winner == Color.black ? S.of(context).black : S.of(context).white;
     String loserStr =
         winner == Color.black ? S.of(context).white : S.of(context).black;
 
