@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/player.dart';
@@ -102,7 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   setWhoMovesFirst(bool value) async {
     setState(() {
-      Config.whoMovesFirst = value == true ? PlayerType.human : PlayerType.AI;
+      Config.aiMovesFirst = !value;
     });
 
     Config.save();
@@ -535,11 +534,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: <Widget>[
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.whoMovesFirst == PlayerType.human,
+                    value: !Config.aiMovesFirst,
                     title: Text(
-                        Config.whoMovesFirst == PlayerType.human
-                            ? S.of(context).human
-                            : S.of(context).ai,
+                        Config.aiMovesFirst
+                            ? S.of(context).ai
+                            : S.of(context).human,
                         style: itemStyle),
                     onChanged: setWhoMovesFirst,
                   ),

@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/rule.dart';
 
 import 'profile.dart';
@@ -25,7 +24,7 @@ class Config {
   static bool bgmEnabled = false;
   static bool toneEnabled = true;
   static int thinkingTime = 5000;
-  static PlayerType whoMovesFirst = PlayerType.human;
+  static bool aiMovesFirst = false;
 
   static bool isAutoRestart = false;
   static bool isAutoChangeFirstMove = false;
@@ -55,7 +54,7 @@ class Config {
     Config.bgmEnabled = profile['bgm-enabled'] ?? false;
     Config.toneEnabled = profile['tone-enabled'] ?? true;
     Config.thinkingTime = profile['thinking-time'] ?? 5000;
-    Config.whoMovesFirst = profile['who-moves-first'] ?? PlayerType.human;
+    Config.aiMovesFirst = profile['ai-moves-first'] ?? false;
 
     Config.isAutoRestart = profile['isAutoRestart'] ?? false;
     Config.isAutoChangeFirstMove = profile['isAutoChangeFirstMove'] ?? false;
@@ -99,7 +98,7 @@ class Config {
     profile['bgm-enabled'] = Config.bgmEnabled;
     profile['tone-enabled'] = Config.toneEnabled;
     profile['thinking-time'] = Config.thinkingTime;
-    profile['who-moves-first'] = Config.whoMovesFirst;
+    profile['ai-moves-first'] = Config.aiMovesFirst;
 
     profile['isAutoRestart'] = Config.isAutoRestart;
     profile['isAutoChangeFirstMove'] = Config.isAutoChangeFirstMove;

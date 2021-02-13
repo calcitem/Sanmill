@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/animation.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/types.dart';
@@ -50,12 +51,12 @@ class Game {
     switch (type) {
       case EngineType.humanVsAi:
       case EngineType.testViaLAN:
-        if (Config.whoMovesFirst == PlayerType.human) {
-          isAi[Color.black] = false;
-          isAi[Color.white] = true;
-        } else if (Config.whoMovesFirst == PlayerType.AI) {
+        if (Config.aiMovesFirst) {
           isAi[Color.black] = true;
           isAi[Color.white] = false;
+        } else if (!Config.aiMovesFirst) {
+          isAi[Color.black] = false;
+          isAi[Color.white] = true;
         }
         break;
       case EngineType.humanVsHuman:
