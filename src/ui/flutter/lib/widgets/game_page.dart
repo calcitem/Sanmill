@@ -484,7 +484,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.arrow_back,
-                    color: UIColors.darkTextPrimaryColor),
+                    color: UIColors.darkTextSecondaryColor),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               Expanded(child: SizedBox()),
@@ -492,7 +492,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               Expanded(child: SizedBox()),
               IconButton(
                 icon: Icon(Icons.menu /* more_vert */,
-                    color: UIColors.darkTextPrimaryColor),
+                    color: UIColors.darkTextSecondaryColor),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SettingsPage()),
                 ),
