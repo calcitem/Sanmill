@@ -493,8 +493,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
               Text(engineTypeToString[widget.engineType], style: titleStyle),
               Expanded(child: SizedBox()),
               IconButton(
-                icon:
-                    Icon(Icons.settings, color: UIColors.darkTextPrimaryColor),
+                icon: Icon(Icons.menu /* more_vert */,
+                    color: UIColors.darkTextPrimaryColor),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SettingsPage()),
                 ),

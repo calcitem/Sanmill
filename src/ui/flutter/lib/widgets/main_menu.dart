@@ -158,7 +158,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
             top: SanmillApp.StatusBarHeight,
             left: 10,
             child: IconButton(
-              icon: Icon(Icons.settings, color: UIColors.primaryColor),
+              icon: Icon(Icons.menu, color: UIColors.primaryColor),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => SettingsPage()),
               ),
