@@ -30,7 +30,6 @@ flutter:
 
   assets:
     - images/logo.png
-    - images/logo-mini.png
 
     #- assets/audios/bg_music.mp3
     #- assets/audios/capture.mp3

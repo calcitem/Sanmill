@@ -488,8 +488,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               Expanded(child: SizedBox()),
-              Hero(tag: 'logo', child: Image.asset('images/logo-mini.png')),
-              SizedBox(width: 10),
               Text(engineTypeToString[widget.engineType], style: titleStyle),
               Expanded(child: SizedBox()),
               IconButton(
