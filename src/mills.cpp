@@ -426,4 +426,120 @@ void move_priority_list_shuffle()
 #endif
 }
 
+Depth getSearchDepth(const Position *pos)
+{
+    Depth d = 0;
+
+#ifdef _DEBUG
+    constexpr Depth reduce = 0;
+#else
+    Depth reduce = 0;
+#endif
+
+    const Depth placingDepthTable_12[] = {
+         +1,  2,  +2,  4,     /* 0 ~ 3 */
+         +4, 12, +12, 18,     /* 4 ~ 7 */
+        +12, 16, +16, 16,     /* 8 ~ 11 */
+        +16, 16, +16, 17,     /* 12 ~ 15 */
+        +17, 16, +16, 15,     /* 16 ~ 19 */
+        +15, 14, +14, 14,     /* 20 ~ 23 */
+        +14                   /* 24 */
+    };
+
+    const Depth placingDepthTable_9[] = {
+         +1, 7,  +7,  10,     /* 0 ~ 3 */
+        +10, 12, +12, 12,     /* 4 ~ 7 */
+        +12, 13, +13, 13,     /* 8 ~ 11 */
+        +13, 13, +13, 13,     /* 12 ~ 15 */
+        +13, 13, +13,         /* 16 ~ 18 */
+        +13                   /* 19 */
+    };
+
+    const Depth movingDepthTable[] = {
+         1,  1,  1,  1,     /* 0 ~ 3 */
+         1,  1, 11, 11,     /* 4 ~ 7 */
+        11, 11, 11, 11,     /* 8 ~ 11 */
+        11, 11, 11, 11,     /* 12 ~ 15 */
+        11, 11, 12, 12,     /* 16 ~ 19 */
+        12, 12, 13, 14,     /* 20 ~ 23 */
+    };
+
+#ifdef ENDGAME_LEARNING
+    const Depth movingDiffDepthTable[] = {
+        0, 0, 0,                /* 0 ~ 2 */
+        0, 0, 0, 0, 0,          /* 3 ~ 7 */
+        0, 0, 0, 0, 0           /* 8 ~ 12 */
+    };
+#else
+    const Depth movingDiffDepthTable[] = {
+        0, 0, 0,                /* 0 ~ 2 */
+        11, 11, 10, 9, 8,       /* 3 ~ 7 */
+        7, 6, 5, 4, 3           /* 8 ~ 12 */
+    };
+#endif /* ENDGAME_LEARNING */
+
+    constexpr Depth flyingDepth = 9;
+
+    if (pos->phase == Phase::placing) {
+        const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE);
+
+        if (rule.piecesCount == 12) {
+            assert(0 <= index && index <= 24);
+            d = placingDepthTable_12[index];
+        } else {
+            assert(0 <= index && index <= 19);
+            d = placingDepthTable_9[index];
+        }
+    }
+
+    if (pos->phase == Phase::moving) {
+        const int pb = pos->count<ON_BOARD>(BLACK);
+        const int pw = pos->count<ON_BOARD>(WHITE);
+
+        const int pieces = pb + pw;
+        int diff = pb - pw;
+
+        if (diff < 0) {
+            diff = -diff;
+        }
+
+        d = movingDiffDepthTable[diff];
+
+        if (d == 0) {
+            d = movingDepthTable[pieces];
+        }
+
+        // Can fly
+        if (rule.mayFly) {
+            if (pb == rule.piecesAtLeastCount ||
+                pw == rule.piecesAtLeastCount) {
+                d = flyingDepth;
+            }
+
+            if (pb == rule.piecesAtLeastCount &&
+                pw == rule.piecesAtLeastCount) {
+                d = flyingDepth / 2;
+            }
+        }
+    }
+
+    if (unlikely(d > reduce)) {
+        d -= reduce;
+    }
+
+    d += DEPTH_ADJUST;
+
+    d = d >= 1 ? d : 1;
+
+#if defined(FIX_DEPTH)
+    d = FIX_DEPTH;
+#endif
+
+    assert(d <= 32);
+
+    //loggerDebug("Depth: %d\n", d);
+
+    return d;
+}
+
 }

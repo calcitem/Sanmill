@@ -76,7 +76,7 @@ public:
 
     void clearTT();
     string nextMove();
-    Depth adjustDepth();
+    Depth getDepth();
 
     int getTimeLimit() const
     {

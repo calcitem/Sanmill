@@ -37,6 +37,7 @@ namespace Mills
 void adjacent_squares_init() noexcept;
 void mill_table_init();
 void move_priority_list_shuffle();
+Depth getSearchDepth(const Position *pos);
 
 }
 

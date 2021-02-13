@@ -79,7 +79,7 @@ int Thread::search()
 
     Value value = VALUE_ZERO;
 
-    const Depth d = adjustDepth();
+    const Depth d = getDepth();
     adjustedDepth = d;
 
     const time_t time0 = time(nullptr);
