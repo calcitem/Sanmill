@@ -544,20 +544,20 @@ class _GamePageState extends State<GamePage> with RouteAware {
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Row(children: <Widget>[
         Expanded(child: SizedBox()),
-        FlatButton(
-            child: Text(S.of(context).newGame, style: buttonStyle),
+        IconButton(
+            icon: Icon(Icons.motion_photos_on, color: UIColors.secondaryColor),
             onPressed: newGame),
         Expanded(child: SizedBox()),
-        FlatButton(
-          child: Text(S.of(context).regret, style: buttonStyle),
+        IconButton(
+          icon: Icon(Icons.restore, color: UIColors.secondaryColor),
           onPressed: () {
             Game.shared.regret(steps: 2);
             setState(() {});
           },
         ),
         Expanded(child: SizedBox()),
-        FlatButton(
-          child: Text(S.of(context).analyze, style: buttonStyle),
+        IconButton(
+          icon: Icon(Icons.analytics_outlined, color: UIColors.secondaryColor),
           onPressed: _searching ? null : analyzePosition,
         ),
         Expanded(child: SizedBox()),
