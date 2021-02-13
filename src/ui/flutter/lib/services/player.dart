@@ -20,6 +20,7 @@ import 'dart:convert';
 
 import 'package:uuid/uuid.dart';
 
+import '../common/config.dart';
 import '../common/profile.dart';
 import 'ranks.dart';
 
@@ -41,6 +42,8 @@ class Player extends RankItem {
 
   _load() async {
     final profile = await Profile.shared();
+
+    await Config.loadProfile();
 
     _uuid = profile['player-uuid'];
 
