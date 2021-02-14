@@ -20,6 +20,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/services/audios.dart';
 
 import 'types.dart';
 
@@ -532,6 +533,7 @@ class Position {
         if (pieceInHandCount[Color.black] == 0 &&
             pieceInHandCount[Color.white] == 0) {
           if (checkIfGameIsOver()) {
+            //Audios.playTone('mill.mp3');
             return true;
           }
 
@@ -547,17 +549,21 @@ class Position {
           }
 
           if (checkIfGameIsOver()) {
+            //Audios.playTone('mill.mp3');
             return true;
           }
         } else {
           changeSideToMove();
         }
+        Audios.playTone('place.mp3');
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
+        Audios.playTone('mill.mp3');
       }
     } else if (phase == Phase.moving) {
       if (checkIfGameIsOver()) {
+        //Audios.playTone('mill.mp3');
         return true;
       }
 
@@ -602,11 +608,15 @@ class Position {
         changeSideToMove();
 
         if (checkIfGameIsOver()) {
+          //Audios.playTone('mill.mp3');
           return true;
+        } else {
+          Audios.playTone('place.mp3');
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
+        Audios.playTone('mill.mp3');
       }
     } else {
       assert(false);
@@ -630,6 +640,8 @@ class Position {
         !isAllInMills(Color.opponent(sideToMove()))) {
       return false;
     }
+
+    Audios.playTone('remove.mp3');
 
     if (rule.hasBannedLocations && phase == Phase.placing) {
       board[s] = _grid[squareToIndex[s]] = Piece.ban;
@@ -692,6 +704,7 @@ class Position {
     if (board[sq] == sideToMove()) {
       currentSquare = sq;
       action = Act.place;
+      //Audios.playTone('select.mp3');
 
       return true;
     }

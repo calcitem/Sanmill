@@ -67,8 +67,9 @@ class Audios {
         ]);
       }
 
-      _fixedTonePlayer.stop();
-      _tonePlayer.play(fileName);
+      await _fixedTonePlayer.stop();
+      //await release();
+      await _tonePlayer.play(fileName);
     } catch (e) {}
   }
 

@@ -399,10 +399,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     switch (result) {
       case GameResult.win:
-        Audios.playTone('win.mp3');
+        //Audios.playTone('win.mp3');
         break;
       case GameResult.lose:
-        Audios.playTone('lose.mp3');
+        //Audios.playTone('lose.mp3');
         break;
       case GameResult.draw:
         break;
