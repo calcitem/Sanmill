@@ -26,6 +26,7 @@ import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/style/toast.dart';
@@ -126,10 +127,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
       case Act.place:
         if (position.putPiece(sq)) {
           if (position.action == Act.remove) {
-            //Audios.playTone('mill.mp3');
+            Audios.playTone('mill.mp3');
             changeStatus(S.of(context).tipRemove);
           } else {
-            //Audios.playTone('put.mp3');
+            Audios.playTone('place.mp3');
             changeStatus(S.of(context).tipPlaced);
           }
           ret = true;
@@ -146,13 +147,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
       select:
       case Act.select:
         if (position.selectPiece(sq)) {
-          //Audios.playTone('select.mp3');
+          Audios.playTone('select.mp3');
           Game.shared.select(index);
           ret = true;
           print("selectPiece: [$sq]");
           changeStatus(S.of(context).tipPlace);
         } else {
-          //Audios.playTone('banned.mp3');
+          Audios.playTone('illegal.mp3');
           print("selectPiece: skip [$sq]");
           changeStatus(S.of(context).tipSelectWrong);
         }
@@ -160,12 +161,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
       case Act.remove:
         if (position.removePiece(sq)) {
-          //Audios.playTone('remove.mp3');
+          Audios.playTone('remove.mp3');
           ret = true;
           print("removePiece: [$sq]");
           changeStatus(S.of(context).tipRemoved);
         } else {
-          //Audios.playTone('banned.mp3');
+          Audios.playTone('illegal.mp3');
           print("removePiece: skip [$sq]");
           changeStatus(S.of(context).tipBanRemove);
         }
@@ -398,10 +399,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     switch (result) {
       case GameResult.win:
-        //Audios.playTone('win.mp3');
+        Audios.playTone('win.mp3');
         break;
       case GameResult.lose:
-        //Audios.playTone('lose.mp3');
+        Audios.playTone('lose.mp3');
         break;
       case GameResult.draw:
         break;

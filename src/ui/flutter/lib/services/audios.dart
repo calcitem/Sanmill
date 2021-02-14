@@ -18,6 +18,7 @@
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:sanmill/common/config.dart';
 
 class Audios {
   //
@@ -41,26 +42,29 @@ class Audios {
   }
 
   static playTone(String fileName) async {
+    if (!Config.toneEnabled) {
+      return;
+    }
+
     try {
       if (_tonePlayer == null) {
         //
         _fixedTonePlayer = AudioPlayer();
         _tonePlayer =
             AudioCache(prefix: 'audios/', fixedPlayer: _fixedTonePlayer);
-/*
+
         await _tonePlayer.loadAll([
-          'capture.mp3',
-          'check.mp3',
-          'click.mp3',
-          'regret.mp3',
           'draw.mp3',
-          'tips.mp3',
-          'invalid.mp3',
+          'go.mp3',
+          'illegal.mp3',
+          'mill.mp3',
+          'fly.mp3',
           'lose.mp3',
-          'move.mp3',
+          'place.mp3',
+          'remove.mp3',
+          'select.mp3',
           'win.mp3',
         ]);
-*/
       }
 
       _fixedTonePlayer.stop();

@@ -30,7 +30,16 @@ flutter:
 
   assets:
     - images/logo.png
-
+    - assets/audios/draw.mp3
+    - assets/audios/fly.mp3
+    - assets/audios/go.mp3
+    - assets/audios/illegal.mp3
+    - assets/audios/lose.mp3
+    - assets/audios/mill.mp3
+    - assets/audios/place.mp3
+    - assets/audios/remove.mp3
+    - assets/audios/select.mp3
+    - assets/audios/win.mp3
     #- assets/audios/bg_music.mp3
     #- assets/audios/capture.mp3
     #- assets/audios/check.mp3
