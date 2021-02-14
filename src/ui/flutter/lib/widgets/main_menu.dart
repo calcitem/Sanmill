@@ -87,7 +87,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     //
-    final nameShadow = Shadow(
+    final appNameShadow = Shadow(
       color: Color.fromARGB(0x99, 66, 0, 0),
       offset: Offset(0, shadowAnimation.value / 2),
       blurRadius: shadowAnimation.value,
@@ -98,11 +98,12 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
       blurRadius: shadowAnimation.value / 3,
     );
 
-    final nameStyle = TextStyle(
-      fontSize: 64,
+    final appNameStyle = TextStyle(
+      fontSize: 48,
       color: Colors.black,
-      shadows: [nameShadow],
+      shadows: [appNameShadow],
     );
+
     final menuItemStyle = TextStyle(
       fontSize: 28,
       color: UIColors.primaryColor,
@@ -116,7 +117,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
           Transform.scale(
             scale: inAnimation.value,
             child: Text(S.of(context).appName,
-                style: nameStyle, textAlign: TextAlign.center),
+                style: appNameStyle, textAlign: TextAlign.center),
           ),
           Expanded(child: SizedBox()),
           FlatButton(
