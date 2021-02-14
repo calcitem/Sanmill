@@ -19,7 +19,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/main.dart';
 import 'package:sanmill/style/colors.dart';
 
 import 'game_page.dart';
@@ -136,8 +135,10 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
           ),
           Expanded(child: SizedBox()),
           FlatButton(
-            child: Text(S.of(context).testViaLAN, style: menuItemStyle),
-            onPressed: () => navigateTo(GamePage(EngineType.testViaLAN)),
+            child: Text(S.of(context).settings, style: menuItemStyle),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SettingsPage()),
+            ),
           ),
           Expanded(child: SizedBox()),
           Text(S.of(context).gameWarning,
@@ -156,6 +157,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
       body: Stack(
         children: <Widget>[
           menuItems,
+          /*
           Positioned(
             top: SanmillApp.StatusBarHeight,
             left: 10,
@@ -166,6 +168,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
               ),
             ),
           ),
+          */
         ],
       ),
     );
