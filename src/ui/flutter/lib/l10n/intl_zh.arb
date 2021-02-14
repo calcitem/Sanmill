@@ -1,4 +1,5 @@
 {
+  "@@locale": "zh",
   "appName": "直棋",
   "humanVsAi": "人机对战",
   "humanVsHuman": "双人对战",
