@@ -535,6 +535,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
   Widget createOperatorBar() {
     //
     final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
+    final text = Game.shared.position.manualText;
+
+    final manualStyle = TextStyle(
+      fontSize: 18,
+      height: 1.5,
+    );
 
     return Container(
       decoration: BoxDecoration(
@@ -558,25 +564,34 @@ class _GamePageState extends State<GamePage> with RouteAware {
         ),
         Expanded(child: SizedBox()),
         IconButton(
-          icon: Icon(Icons.analytics_outlined, color: UIColors.secondaryColor),
+          icon: Icon(Icons.list_alt, color: UIColors.secondaryColor),
+          onPressed: () => showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(S.of(context).gameRecord,
+                    style: TextStyle(color: UIColors.primaryColor)),
+                content: SingleChildScrollView(
+                    child: Text(text, style: manualStyle)),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(S.of(context).ok),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        Expanded(child: SizedBox()),
+        IconButton(
+          icon: Icon(Icons.dashboard_outlined, color: UIColors.secondaryColor),
           onPressed: _searching ? null : analyzePosition,
         ),
         Expanded(child: SizedBox()),
       ]),
     );
-  }
-
-  Widget buildFooter() {
-    //
-    final size = MediaQuery.of(context).size;
-
-    final manualText = Game.shared.position.manualText;
-
-    if (size.height / size.width > 16 / 9) {
-      return buildManualPanel(manualText);
-    } else {
-      return buildExpandableRecordPanel(manualText);
-    }
   }
 
   Widget buildManualPanel(String text) {
@@ -595,35 +610,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
   }
 
-  Widget buildExpandableRecordPanel(String text) {
-    //
-    final manualStyle = TextStyle(fontSize: 18, height: 1.5);
-
-    return Expanded(
-      child: IconButton(
-        icon: Icon(Icons.expand_less, color: UIColors.darkTextPrimaryColor),
-        onPressed: () => showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(S.of(context).gameRecord,
-                  style: TextStyle(color: UIColors.primaryColor)),
-              content:
-                  SingleChildScrollView(child: Text(text, style: manualStyle)),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(S.of(context).ok),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -638,11 +624,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final header = createPageHeader();
     final board = createBoard();
     final operatorBar = createOperatorBar();
-    final footer = buildFooter();
 
     return Scaffold(
       backgroundColor: UIColors.darkBackgroundColor,
-      body: Column(children: <Widget>[header, board, operatorBar, footer]),
+      body: Column(children: <Widget>[header, board, operatorBar]),
     );
   }
 
