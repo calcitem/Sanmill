@@ -19,19 +19,25 @@
 import 'package:flutter/material.dart';
 
 class UIColors {
-  //
+  // see:
+  // https://www.color-hex.com/color-palette/8548
+  // https://applecolors.com/palette/30822-chess-board-logo
+  static const asparagusColor = Color.fromARGB(0xFF, 118, 150, 86);
+  static const athsSpecialColor = Color.fromARGB(0xFF, 238, 238, 210);
+  static const turmericColor = Color.fromARGB(0xFF, 186, 202, 68);
+
   static const logoColor = Color(0xFF6D000D);
 
   static const primaryColor = Color(0xFF461220);
   static const secondaryColor = Color(0x99461220);
 
-  static const darkBackgroundColor = Colors.brown;
+  static const darkBackgroundColor = asparagusColor;
   static const lightBackgroundColor = Color(0xFFEEE0CB);
 
-  static const boardBackgroundColor = Color(0xFFEBC38D);
+  static const boardBackgroundColor = athsSpecialColor;
 
   static const darkTextPrimaryColor = Colors.white;
-  static const darkTextSecondaryColor = Color(0x99FFFFFF);
+  static const darkTextSecondaryColor = Colors.white;
 
   static const boardLineColor = Color(0x996D000D);
   static const boardTipsColor = Color(0x666D000D);

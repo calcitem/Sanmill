@@ -80,7 +80,7 @@ class _SanmillAppState extends State<SanmillApp> {
             languageCode: 'zh'), // Chinese *See Advanced Locales below*
         // ... other locales the app supports
       ],
-      theme: ThemeData(primarySwatch: Colors.brown),
+      theme: ThemeData(primarySwatch: Colors.green),
       debugShowCheckedModeBanner: false,
       home: WillPopScope(
         onWillPop: () async {
