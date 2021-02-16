@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
@@ -24,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 import 'services/audios.dart';
 import 'services/player.dart';
@@ -103,7 +105,9 @@ class _SanmillAppState extends State<SanmillApp> {
   @override
   void initState() {
     super.initState();
-    Player.loadProfile();
+    Chain.capture(() {
+      Player.loadProfile();
+    });
   }
 
   @override

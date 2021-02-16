@@ -20,6 +20,7 @@ dependencies:
   intl: ^0.16.1
   flutter_socket_io: ^0.6.0
   catcher: ^0.4.1
+  stack_trace: ^1.9.6
 
 dev_dependencies:
   flutter_test:
