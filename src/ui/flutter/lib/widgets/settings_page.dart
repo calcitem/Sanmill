@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/common/config.dart';
@@ -367,12 +368,22 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   showAbout() {
-    //
+    String mode;
+    if (kDebugMode) {
+      mode = "(Debug)";
+    } else if (kProfileMode) {
+      mode = "Profile";
+    } else if (kReleaseMode) {
+      mode = "";
+    } else {
+      mode = "Test";
+    }
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text(S.of(context).about + S.of(context).appName,
+        title: Text(S.of(context).about + S.of(context).appName + " " + mode,
             style: TextStyle(color: UIColors.primaryColor)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
