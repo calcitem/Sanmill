@@ -22,13 +22,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'services/audios.dart';
 import 'services/player.dart';
 import 'widgets/main_menu.dart';
 
-void main() {
-  runApp(SanmillApp());
+Future<void> main() async {
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://62c565096ba146a6b70bc57dbb72386c@o525088.ingest.sentry.io/5638585';
+    },
+    appRunner: () => runApp(SanmillApp()),
+  );
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
