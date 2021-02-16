@@ -18,6 +18,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,13 +30,17 @@ import 'services/player.dart';
 import 'widgets/main_menu.dart';
 
 Future<void> main() async {
-  await SentryFlutter.init(
-    (options) {
-      options.dsn =
-          'https://62c565096ba146a6b70bc57dbb72386c@o525088.ingest.sentry.io/5638585';
-    },
-    appRunner: () => runApp(SanmillApp()),
-  );
+  if (kReleaseMode) {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn =
+            'https://62c565096ba146a6b70bc57dbb72386c@o525088.ingest.sentry.io/5638585';
+      },
+      appRunner: () => runApp(SanmillApp()),
+    );
+  } else {
+    runApp(SanmillApp());
+  }
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
