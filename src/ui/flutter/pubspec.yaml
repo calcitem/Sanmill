@@ -21,6 +21,7 @@ dependencies:
   flutter_socket_io: ^0.6.0
   catcher: ^0.4.1
   stack_trace: ^1.9.6
+# sentry_flutter: ^4.0.4
 
 dev_dependencies:
   flutter_test:

@@ -31,6 +31,8 @@ import 'services/audios.dart';
 import 'services/player.dart';
 import 'widgets/main_menu.dart';
 
+//import 'package:sentry_flutter/sentry_flutter.dart';
+
 Future<void> main() async {
   var catcher = Catcher(rootWidget: SanmillApp(), ensureInitialized: true);
 
@@ -47,11 +49,16 @@ Future<void> main() async {
   /// in console.
   //CatcherOptions debugOptions = CatcherOptions(
   //    PageReportMode(showStackTrace: true), [ConsoleHandler()]);
+  //SentryOptions sopt = new SentryOptions();
+  //sopt.dsn =
+  //    "https://62c565096ba146a6b70bc57dbb72386c@o525088.ingest.sentry.io/5638585";
+
   CatcherOptions debugOptions =
       CatcherOptions(PageReportMode(showStackTrace: true), [
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
+    //SentryHandler(SentryClient(sopt))
   ]);
 
   /// Release configuration.
