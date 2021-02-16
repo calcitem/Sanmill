@@ -27,60 +27,29 @@ class NativeEngine extends AiEngine {
   static const platform = const MethodChannel('com.calcitem.sanmill/engine');
 
   Future<void> startup() async {
-    try {
-      await platform.invokeMethod('startup');
-    } catch (e) {
-      print('Native startup Error: $e');
-    }
-
+    await platform.invokeMethod('startup');
     await waitResponse(['uciok'], sleep: 1, times: 30);
   }
 
   Future<void> send(String command) async {
-    try {
-      print("send: $command");
-      await platform.invokeMethod('send', command);
-    } catch (e) {
-      print('Native sendCommand Error: $e');
-    }
+    print("send: $command");
+    await platform.invokeMethod('send', command);
   }
 
   Future<String> read() async {
-    try {
-      return await platform.invokeMethod('read');
-    } catch (e) {
-      print('Native readResponse Error: $e');
-    }
-
-    return null;
+    return await platform.invokeMethod('read');
   }
 
   Future<void> shutdown() async {
-    try {
-      await platform.invokeMethod('shutdown');
-    } catch (e) {
-      print('Native shutdown Error: $e');
-    }
+    await platform.invokeMethod('shutdown');
   }
 
   Future<bool> isReady() async {
-    try {
-      return await platform.invokeMethod('isReady');
-    } catch (e) {
-      print('Native readResponse Error: $e');
-    }
-
-    return null;
+    return await platform.invokeMethod('isReady');
   }
 
   Future<bool> isThinking() async {
-    try {
-      return await platform.invokeMethod('isThinking');
-    } catch (e) {
-      print('Native readResponse Error: $e');
-    }
-
-    return null;
+    return await platform.invokeMethod('isThinking');
   }
 
   @override

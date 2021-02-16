@@ -18,29 +18,62 @@
 
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'services/audios.dart';
 import 'services/player.dart';
 import 'widgets/main_menu.dart';
 
 Future<void> main() async {
-  if (kReleaseMode) {
-    await SentryFlutter.init(
-      (options) {
-        options.dsn =
-            'https://62c565096ba146a6b70bc57dbb72386c@o525088.ingest.sentry.io/5638585';
-      },
-      appRunner: () => runApp(SanmillApp()),
-    );
-  } else {
-    runApp(SanmillApp());
-  }
+  var catcher = Catcher(rootWidget: SanmillApp(), ensureInitialized: true);
+
+  //DateTime now = DateTime.now();
+  //String formattedDate = DateFormat('yyyy-MM-dd_kk-mm').format(now);
+  Directory externalDir = await getExternalStorageDirectory();
+  String path = externalDir.path.toString() + "/sanmill-crash-logs.txt";
+  print("ExternalStorageDirectory: " + externalDir.path.toString());
+  String recipients = "calcitem@outlook.com";
+
+  /// Create catcher configuration.
+  /// Debug configuration with dialog report mode and console handler.
+  /// It will show dialog and once user accepts it, error will be shown
+  /// in console.
+  //CatcherOptions debugOptions = CatcherOptions(
+  //    PageReportMode(showStackTrace: true), [ConsoleHandler()]);
+  CatcherOptions debugOptions =
+      CatcherOptions(PageReportMode(showStackTrace: true), [
+    ConsoleHandler(),
+    FileHandler(File(path), printLogs: true),
+    EmailManualHandler([recipients], printLogs: true)
+  ]);
+
+  /// Release configuration.
+  /// Same as above, but once user accepts dialog,
+  /// user will be prompted to send email with crash to support.
+  CatcherOptions releaseOptions =
+      CatcherOptions(PageReportMode(showStackTrace: true), [
+    FileHandler(File(path), printLogs: true),
+    EmailManualHandler([recipients], printLogs: true)
+  ]);
+
+  CatcherOptions profileOptions =
+      CatcherOptions(PageReportMode(showStackTrace: true), [
+    ConsoleHandler(),
+    FileHandler(File(path), printLogs: true),
+    EmailManualHandler([recipients], printLogs: true)
+  ]);
+
+  /// Pass root widget (MyApp) along with Catcher configuration:
+  catcher.updateConfig(
+    debugConfig: debugOptions,
+    releaseConfig: releaseOptions,
+    profileConfig: profileOptions,
+  );
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -70,14 +103,15 @@ class _SanmillAppState extends State<SanmillApp> {
   @override
   void initState() {
     super.initState();
-    //Audios.loopBgm('bg_music.mp3');
     Player.loadProfile();
   }
 
   @override
   Widget build(BuildContext context) {
-    //
     return MaterialApp(
+      /// Add navigator key from Catcher.
+      /// It will be used to navigate user to report page or to show dialog.
+      navigatorKey: Catcher.navigatorKey,
       navigatorObservers: [routeObserver],
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here

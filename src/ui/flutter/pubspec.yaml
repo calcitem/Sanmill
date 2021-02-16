@@ -19,7 +19,7 @@ dependencies:
   url_launcher: ^5.7.10
   intl: ^0.16.1
   flutter_socket_io: ^0.6.0
-  sentry_flutter: ^4.0.4
+  catcher: ^0.4.1
 
 dev_dependencies:
   flutter_test:

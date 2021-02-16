@@ -285,13 +285,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
         msg: S.of(context).analyzing, position: ToastPostion.bottom);
 
     setState(() => _searching = true);
-
-    try {} catch (e) {
-      Toast.toast(context,
-          msg: S.of(context).error + ": $e", position: ToastPostion.bottom);
-    } finally {
-      setState(() => _searching = false);
-    }
   }
 
   showAnalyzeItems(

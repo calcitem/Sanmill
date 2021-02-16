@@ -26,19 +26,15 @@ class Audios {
   static AudioCache _bgmPlayer, _tonePlayer;
 
   static loopBgm(String fileName) async {
-    //
-    try {
-      if (_bgmPlayer == null) {
-        _fixedBgmPlayer = AudioPlayer();
-        _bgmPlayer =
-            AudioCache(prefix: 'audios/', fixedPlayer: _fixedBgmPlayer);
+    if (_bgmPlayer == null) {
+      _fixedBgmPlayer = AudioPlayer();
+      _bgmPlayer = AudioCache(prefix: 'audios/', fixedPlayer: _fixedBgmPlayer);
 
-        //await _bgmPlayer.loadAll(['bg_music.mp3']);
-      }
+      //await _bgmPlayer.loadAll(['bg_music.mp3']);
+    }
 
-      _fixedBgmPlayer.stop();
-      _bgmPlayer.loop(fileName);
-    } catch (e) {}
+    _fixedBgmPlayer.stop();
+    _bgmPlayer.loop(fileName);
   }
 
   static playTone(String fileName) async {
@@ -46,49 +42,43 @@ class Audios {
       return;
     }
 
-    try {
-      if (_tonePlayer == null) {
-        //
-        _fixedTonePlayer = AudioPlayer();
-        _tonePlayer =
-            AudioCache(prefix: 'audios/', fixedPlayer: _fixedTonePlayer);
+    if (_tonePlayer == null) {
+      //
+      _fixedTonePlayer = AudioPlayer();
+      _tonePlayer =
+          AudioCache(prefix: 'audios/', fixedPlayer: _fixedTonePlayer);
 
-        await _tonePlayer.loadAll([
-          'draw.mp3',
-          'go.mp3',
-          'illegal.mp3',
-          'mill.mp3',
-          'fly.mp3',
-          'lose.mp3',
-          'place.mp3',
-          'remove.mp3',
-          'select.mp3',
-          'win.mp3',
-        ]);
-      }
+      await _tonePlayer.loadAll([
+        'draw.mp3',
+        'go.mp3',
+        'illegal.mp3',
+        'mill.mp3',
+        'fly.mp3',
+        'lose.mp3',
+        'place.mp3',
+        'remove.mp3',
+        'select.mp3',
+        'win.mp3',
+      ]);
+    }
 
-      //await _fixedTonePlayer.stop();
-      await _fixedTonePlayer.pause();
-      await _fixedTonePlayer.seek(Duration.zero);
-      //await release();
-      await _tonePlayer.play(fileName);
-    } catch (e) {}
+    //await _fixedTonePlayer.stop();
+    await _fixedTonePlayer.pause();
+    await _fixedTonePlayer.seek(Duration.zero);
+    //await release();
+    await _tonePlayer.play(fileName);
   }
 
   static stopBgm() {
-    try {
-      if (_fixedBgmPlayer != null) _fixedBgmPlayer.stop();
-    } catch (e) {}
+    if (_fixedBgmPlayer != null) _fixedBgmPlayer.stop();
   }
 
   static Future<void> release() async {
-    try {
-      if (_fixedBgmPlayer != null) {
-        await _fixedBgmPlayer.release();
-      }
-      if (_fixedTonePlayer != null) {
-        await _fixedTonePlayer.release();
-      }
-    } catch (e) {}
+    if (_fixedBgmPlayer != null) {
+      await _fixedBgmPlayer.release();
+    }
+    if (_fixedTonePlayer != null) {
+      await _fixedTonePlayer.release();
+    }
   }
 }

@@ -58,17 +58,13 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
       if (status == AnimationStatus.completed) shadowController.reverse();
     });
 
-    /// use 'try...catch' to avoid exception -
+    /// TODO: use 'try...catch' to avoid exception -
     /// 'setState() or markNeedsBuild() called during build.'
     inAnimation.addListener(() {
-      try {
-        setState(() {});
-      } catch (e) {}
+      setState(() {});
     });
     shadowAnimation.addListener(() {
-      try {
-        setState(() {});
-      } catch (e) {}
+      setState(() {});
     });
 
     inController.forward();

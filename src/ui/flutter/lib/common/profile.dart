@@ -44,13 +44,8 @@ class Profile {
   Future<bool> commit() async {
     _file.create(recursive: true);
 
-    try {
-      final contents = jsonEncode(_values);
-      await _file.writeAsString(contents);
-    } catch (e) {
-      print('Error: $e');
-      return false;
-    }
+    final contents = jsonEncode(_values);
+    await _file.writeAsString(contents);
 
     return true;
   }
@@ -59,12 +54,8 @@ class Profile {
     final docDir = await getApplicationDocumentsDirectory();
     _file = File('${docDir.path}/$fileName');
 
-    try {
-      final contents = await _file.readAsString();
-      _values = jsonDecode(contents);
-    } catch (e) {
-      return false;
-    }
+    final contents = await _file.readAsString();
+    _values = jsonDecode(contents);
 
     return true;
   }
