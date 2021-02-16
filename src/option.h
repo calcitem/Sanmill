@@ -24,6 +24,16 @@
 class GameOptions
 {
 public:
+    void setSkillLevel(int val) noexcept
+    {
+        skillLevel = val;
+    }
+
+    int getSkillLevel() const noexcept
+    {
+        return skillLevel;
+    }
+
     void setAutoRestart(bool enabled) noexcept
     {
         isAutoRestart = enabled;
@@ -140,6 +150,7 @@ public:
 protected:
 
 private:
+    int skillLevel { 20 };
     bool isAutoRestart { false };
     bool isAutoChangeFirstMove { false };
     bool resignIfMostLose { false };

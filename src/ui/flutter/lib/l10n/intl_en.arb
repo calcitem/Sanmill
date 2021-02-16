@@ -244,9 +244,9 @@
   "@settings": {
     "description": "Settings"
   },
-  "level": "Level",
-  "@level": {
-    "description": "Level"
+  "skillLevel": "skill Level",
+  "@skillLevel": {
+    "description": "skillLevel"
   },
   "sound": "Sound",
   "@sound": {

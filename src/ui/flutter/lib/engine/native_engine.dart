@@ -102,6 +102,7 @@ class NativeEngine extends AiEngine {
   }
 
   Future<void> setOptions() async {
+    await send('setoption name SkillLevel value ${Config.skillLevel}');
     await send('setoption name Shuffling value ${Config.shufflingEnabled}');
     await send('setoption name piecesCount value ${Config.piecesCount}');
     await send(

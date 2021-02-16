@@ -233,6 +233,9 @@ public slots:
     // Play the sound
     static void playSound(GameSound soundType, Color c);
 
+    // Skill Level
+    void setSkillLevel(int val);
+
     // Do you admit defeat when you lose
     void setResignIfMostLose(bool enabled);
 

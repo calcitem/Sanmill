@@ -51,14 +51,14 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
-  changeDifficult() {
+  setSkillLevel() async {
     //
-    callback(int thinkingTime) async {
+    callback(int skillLevel) async {
       //
       Navigator.of(context).pop();
 
       setState(() {
-        Config.thinkingTime = thinkingTime;
+        Config.skillLevel = skillLevel;
       });
 
       Config.save();
@@ -73,24 +73,24 @@ class _SettingsPageState extends State<SettingsPage> {
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('L1'),
-            groupValue: Config.thinkingTime,
-            value: 5000,
+            groupValue: Config.skillLevel,
+            value: 10,
             onChanged: callback,
           ),
           Divider(),
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('L2'),
-            groupValue: Config.thinkingTime,
-            value: 15000,
+            groupValue: Config.skillLevel,
+            value: 20,
             onChanged: callback,
           ),
           Divider(),
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('L3'),
-            groupValue: Config.thinkingTime,
-            value: 30000,
+            groupValue: Config.skillLevel,
+            value: 30,
             onChanged: callback,
           ),
           Divider(),
@@ -488,7 +488,7 @@ class _SettingsPageState extends State<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 10.0),
-            Text(S.of(context).level, style: headerStyle),
+            Text(S.of(context).skillLevel, style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
               color: UIColors.boardBackgroundColor,
@@ -497,18 +497,18 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).level, style: itemStyle),
+                    title: Text(S.of(context).skillLevel, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.thinkingTime <= 5000
+                      Text(Config.skillLevel == 10
                           ? 'L1'
-                          : Config.thinkingTime <= 15000
+                          : Config.skillLevel == 20
                               ? 'L2'
                               : 'L3'),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
-                    onTap: changeDifficult,
+                    onTap: setSkillLevel,
                   ),
                 ],
               ),

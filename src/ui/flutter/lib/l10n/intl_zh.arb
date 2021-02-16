@@ -61,7 +61,7 @@
   "chessRoad": "ChessRoad (棋路) by He Zhaoyun",
   "nineChess": "NineChess (九联棋) by liuweilhy",
   "settings": "游戏设置",
-  "level": "游戏难度",
+  "skillLevel": "游戏难度",
   "sound": "声音",
   "tone": "提示音效",
   "leaderBoard": "排行榜",

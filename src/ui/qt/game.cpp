@@ -133,6 +133,7 @@ void Game::loadSettings()
     setFixWindowSize(empty ? false : settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
+    setSkillLevel(empty ? true : settings->value("Options/SkillLevel").toInt());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
     setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
     setOpeningBook(empty ? false : settings->value("Options/OpeningBook").toBool());
@@ -564,6 +565,12 @@ void Game::playSound(GameSound soundType, Color c)
         QSound::play(soundPath);
     }
 #endif /* ! DONOT_PLAY_SOUND */
+}
+
+void Game::setSkillLevel(int val)
+{
+    gameOptions.setSkillLevel(val);
+    settings->setValue("Options/SkillLevel", val);
 }
 
 void Game::setResignIfMostLose(bool enabled)

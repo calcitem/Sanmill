@@ -60,6 +60,11 @@ void on_threads(const Option &o)
     Threads.set((size_t)o);
 }
 
+void on_skill_level(const Option &o)
+{
+    gameOptions.setSkillLevel((int)o);
+}
+
 void on_random_move(const Option &o)
 {
     gameOptions.setShufflingEnabled((bool)o);
@@ -145,7 +150,7 @@ void init(OptionsMap &o)
     o["Clear Hash"] << Option(on_clear_hash);
     o["Ponder"] << Option(false);
     o["MultiPV"] << Option(1, 1, 500);
-    o["Skill Level"] << Option(20, 0, 20);
+    o["SkillLevel"] << Option(20, 0, 20, on_skill_level);
     o["Move Overhead"] << Option(10, 0, 5000);
     o["Slow Mover"] << Option(100, 10, 1000);
     o["nodestime"] << Option(0, 0, 10000);

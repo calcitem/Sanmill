@@ -523,8 +523,30 @@ Depth getSearchDepth(const Position *pos)
         }
     }
 
+    // For debugging
     if (unlikely(d > reduce)) {
         d -= reduce;
+    }
+
+    assert(d <= 32);
+
+    // Make sure opening is OK
+    if (d <= 4) {
+        return d;
+    }
+
+    // Adjust depth for Skill Level
+    if (gameOptions.getSkillLevel() < 20) { // TODO
+        d -= gameOptions.getSkillLevel();
+    }
+
+    if (gameOptions.getSkillLevel() > 20) { // TODO
+        d += (gameOptions.getSkillLevel() - 25);
+    }
+
+    // Do not too weak
+    if (d <= 4) {
+        d == 4;
     }
 
     d += DEPTH_ADJUST;
