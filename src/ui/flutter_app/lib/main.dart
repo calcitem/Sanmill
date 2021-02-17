@@ -38,9 +38,16 @@ Future<void> main() async {
 
   //DateTime now = DateTime.now();
   //String formattedDate = DateFormat('yyyy-MM-dd_kk-mm').format(now);
-  Directory externalDir = await getExternalStorageDirectory();
-  String path = externalDir.path.toString() + "/sanmill-crash-logs.txt";
-  print("ExternalStorageDirectory: " + externalDir.path.toString());
+  String externalDirStr;
+  try {
+    Directory externalDir = await getExternalStorageDirectory();
+    externalDirStr = externalDir.path.toString();
+  } catch (e) {
+    print(e);
+    externalDirStr = ".";
+  }
+  String path = externalDirStr + "/sanmill-crash-logs.txt";
+  print("ExternalStorageDirectory: " + externalDirStr);
   String recipients = "calcitem@outlook.com";
 
   /// Create catcher configuration.

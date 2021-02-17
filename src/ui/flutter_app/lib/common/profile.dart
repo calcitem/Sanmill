@@ -54,8 +54,13 @@ class Profile {
     final docDir = await getApplicationDocumentsDirectory();
     _file = File('${docDir.path}/$fileName');
 
-    final contents = await _file.readAsString();
-    _values = jsonDecode(contents);
+    try {
+      final contents = await _file.readAsString();
+      _values = jsonDecode(contents);
+    } catch (e) {
+      print(e);
+      return false;
+    }
 
     return true;
   }
