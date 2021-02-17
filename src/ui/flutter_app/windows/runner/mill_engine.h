@@ -16,13 +16,20 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ENGINE_STATE_H
-#define ENGINE_STATE_H
+#include <string>
 
-enum class EngineState
+class MillEngine
 {
-    STATE_READY,
-    STATE_THINKING
-};
+public:
+    int startup();
 
-#endif /* ENGINE_STATE_H */
+    int send(const char *arguments);
+
+    std::string read();
+
+    int shutdown();
+
+    bool isReady();
+
+    bool isThinking();
+};

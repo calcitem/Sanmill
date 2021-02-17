@@ -1,13 +1,35 @@
+/*
+  This file is part of Sanmill.
+  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+
+  Sanmill is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Sanmill is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef RUNNER_FLUTTER_WINDOW_H_
 #define RUNNER_FLUTTER_WINDOW_H_
 
 #include <flutter/dart_project.h>
 #include <flutter/flutter_view_controller.h>
+#include "flutter/method_channel.h"
+#include "flutter/standard_method_codec.h"
 
 #include <memory>
 
 #include "run_loop.h"
 #include "win32_window.h"
+
+#include "mill_engine.h"
 
 // A window that does nothing but host a Flutter view.
 class FlutterWindow : public Win32Window {
@@ -34,6 +56,13 @@ class FlutterWindow : public Win32Window {
 
   // The Flutter instance hosted by this window.
   std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
+
+  // Mill Engine
+  MillEngine *engine {nullptr};
+
+  // Called when a method is called on plugin channel;
+  void HandleMethodCall(const flutter::MethodCall<> &method_call,
+                        std::unique_ptr<flutter::MethodResult<>> result);
 };
 
 #endif  // RUNNER_FLUTTER_WINDOW_H_

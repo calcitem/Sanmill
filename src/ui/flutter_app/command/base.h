@@ -28,7 +28,10 @@
 #endif
 #include <string.h>
 
+#ifdef _WIN32
+#else // TODO: __ANDROID__
 #include <android/log.h>
+#endif
 
 #ifdef _WIN32
 
@@ -45,10 +48,18 @@ inline void Idle(void) {
 
 #define LOG_TAG   "MillEngine"
 
+#ifdef _WIN32
+#define LOGD(...)  printf(__VA_ARGS__)
+#define LOGI(...)  printf(__VA_ARGS__)
+#define LOGW(...)  printf(__VA_ARGS__)
+#define LOGE(...)  printf(__VA_ARGS__)
+#define LOGF(...)  printf(__VA_ARGS__)
+#else
 #define LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #define LOGW(...)  __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 #define LOGF(...)  __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
+#endif
 
 #endif

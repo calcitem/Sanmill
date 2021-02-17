@@ -326,6 +326,7 @@ CMakeLists.txt.user*
 
 # Text files
 *.txt
+!CMakeLists.txt
 
 # Other files
 .depend
