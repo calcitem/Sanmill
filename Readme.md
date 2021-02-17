@@ -21,7 +21,9 @@ This distribution of Sanmill consists of the following files:
 
 * src/ui/qt, a subdirectory containing a Qt frontend.
 
-## Compiling Sanmill CUI yourself from the sources
+## How to Build
+
+### CUI
 
 Sanmill CUI has support for 32 or 64-bit CPUs, certain hardware instructions, big-endian machines such as Power PC, and other platforms.
 
@@ -33,11 +35,19 @@ On Unix-like systems, it should be easy to compile Sanmill directly from the sou
     make build ARCH=x86-64-modern
 ```
 
-When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. These informations can be found by typing the following commands in a console:
+When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. These information can be found by typing the following commands in a console:
 
 ```shell
     ./sanmill compiler
 ```
+
+### Qt Application
+
+Use Qt Creator to open `millgame.pro` , or use Visual Studio to open `millgame.sln` to build Qt Application.
+
+### Flutter App
+
+Run `./flutter-init.sh` , and then use Android Studio or  Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
 
 ## Understanding the code base and participating in the project
 
