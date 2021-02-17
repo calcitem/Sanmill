@@ -17,7 +17,7 @@ This distribution of Sanmill consists of the following files:
 
 * src, a subdirectory containing the full source code, including a Makefile that can be used to compile Sanmill CUI on Unix-like systems.
 
-* src/ui/flutter, a subdirectory containing a Flutter frontend.
+* src/ui/flutter_app, a subdirectory containing a Flutter frontend.
 
 * src/ui/qt, a subdirectory containing a Qt frontend.
 

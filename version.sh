@@ -2,7 +2,7 @@
 
 VERSION_H=include/version.h
 TEMPLATE_FILE=include/version.h.template
-PUBSPEC_YAML_FILE=src/ui/flutter/pubspec.yaml
+PUBSPEC_YAML_FILE=src/ui/flutter_app/pubspec.yaml
 GIT_BRANCH=master
 
 rm -f $VERSION_H
