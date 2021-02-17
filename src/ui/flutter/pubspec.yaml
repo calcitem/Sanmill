@@ -4,7 +4,7 @@ description: A new Flutter project.
 version: 0.18.0+1446
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -43,18 +43,6 @@ flutter:
     - assets/audios/remove.mp3
     - assets/audios/select.mp3
     - assets/audios/win.mp3
-    #- assets/audios/bg_music.mp3
-    #- assets/audios/capture.mp3
-    #- assets/audios/check.mp3
-    #- assets/audios/click.mp3
-    #- assets/audios/regret.mp3
-    #- assets/audios/draw.mp3
-    #- assets/audios/tips.mp3
-    #- assets/audios/invalid.mp3
-    #- assets/audios/lose.mp3
-    #- assets/audios/move.mp3
-    #- assets/audios/win.mp3
 
-    #- assets/book.dat
 flutter_intl:
   enabled: true
