@@ -138,7 +138,6 @@
 //#define ALIGNED_LARGE_PAGES
 
 #ifdef WIN32
-#define strncpy strncpy_s
 #define sscanf sscanf_s
 #define sprintf sprintf_s
 #endif

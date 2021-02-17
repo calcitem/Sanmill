@@ -625,7 +625,7 @@ void bindThisThread(size_t idx)
         return;
 
     GROUP_AFFINITY affinity;
-    if (fun2(group, &affinity))
+    if (fun2((USHORT)group, &affinity))
         fun3(GetCurrentThread(), &affinity, nullptr);
 }
 
