@@ -34,6 +34,11 @@ import 'widgets/main_menu.dart';
 //import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
+  if (!(Platform.isAndroid || Platform.isIOS)) {
+    runApp(SanmillApp());
+    return;
+  }
+
   var catcher = Catcher(rootWidget: SanmillApp(), ensureInitialized: true);
 
   //DateTime now = DateTime.now();

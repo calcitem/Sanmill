@@ -38,7 +38,7 @@ extern "C" {
 EngineState state = EngineState::STATE_READY;
 pthread_t thread_id = nullptr;
 
-void *engineThread(void *)
+DWORD WINAPI engineThread(LPVOID lpParam)
 {
     printf("Engine Think Thread enter.\n");
 
@@ -46,7 +46,7 @@ void *engineThread(void *)
 
     printf("Engine Think Thread exit.\n");
 
-    return nullptr;
+    return 0;
 }
 
 int MillEngine::startup()

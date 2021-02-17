@@ -53,15 +53,19 @@ bool FlutterWindow::OnCreate() {
   }
   RegisterPlugins(flutter_controller_->engine());
 
-  engine = new MillEngine();
-  auto channel = std::make_unique<flutter::MethodChannel<>>(
-      flutter_controller_->engine()->messenger(), "com.calcitem.sanmill/engine",
-      &flutter::StandardMethodCodec::GetInstance());
-  channel->SetMethodCallHandler(
-      [this](const auto &call, auto result) {
-          HandleMethodCall(call, std::move(result));
-      }
-  );
+  if (engine == nullptr) {
+      engine = new MillEngine();
+
+      auto channel = std::make_unique<flutter::MethodChannel<>>(
+          flutter_controller_->engine()->messenger(), "com.calcitem.sanmill/engine",
+          &flutter::StandardMethodCodec::GetInstance());
+
+      channel->SetMethodCallHandler(
+          [this](const auto &call, auto result) {
+              HandleMethodCall(call, std::move(result));
+          }
+      );
+  }
 
   run_loop_->RegisterFlutterInstance(flutter_controller_->engine());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
