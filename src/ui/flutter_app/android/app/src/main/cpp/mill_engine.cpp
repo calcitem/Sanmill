@@ -28,7 +28,7 @@
 
 extern "C" {
 
-State state = STATE_READY;
+EngineState state = EngineState::STATE_READY;
 pthread_t thread_id = 0;
 
 void *engineThread(void *)
@@ -73,7 +73,8 @@ Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command)
 {
     const char *pCommand = env->GetStringUTFChars(command, JNI_FALSE);
 
-    if (pCommand[0] == 'g' && pCommand[1] == 'o') state = STATE_THINKING;
+    if (pCommand[0] == 'g' && pCommand[1] == 'o')
+        state = EngineState::STATE_THINKING;
 
     CommandChannel *channel = CommandChannel::getInstance();
 
@@ -103,7 +104,7 @@ Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env, jobject)
         strstr(line, "bestmove") ||
         strstr(line, "nobestmove")) {
 
-        state = STATE_READY;
+        state = EngineState::STATE_READY;
     }
 
     return env->NewStringUTF(line);
@@ -124,13 +125,13 @@ Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *env, jobject obj)
 JNIEXPORT jboolean JNICALL
 Java_com_calcitem_sanmill_MillEngine_isReady(JNIEnv *, jobject)
 {
-    return static_cast<jboolean>(state == STATE_READY);
+    return static_cast<jboolean>(state == EngineState::STATE_READY);
 }
 
 JNIEXPORT jboolean JNICALL
 Java_com_calcitem_sanmill_MillEngine_isThinking(JNIEnv *, jobject)
 {
-    return static_cast<jboolean>(state == STATE_THINKING);
+    return static_cast<jboolean>(state == EngineState::STATE_THINKING);
 }
 
 }
