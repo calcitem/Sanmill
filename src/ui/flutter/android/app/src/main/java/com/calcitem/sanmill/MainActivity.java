@@ -198,7 +198,7 @@ public class MainActivity extends FlutterActivity {
             if (writer != null) {
                 try {
                     writer.close();
-                    Log.d(TAG_XCRASH, "xCrash log written");
+                    Log.d(TAG_XCRASH, "xCrash log files have been written");
                 } catch (Exception ignored) {
                 }
             }
