@@ -17,7 +17,7 @@ dependencies:
   package_info: ^0.4.0+16
   uuid: ^2.0.4
   url_launcher: ^5.7.10
-  intl: ^0.16.1
+  intl: ^0.17.0
   flutter_socket_io: ^0.6.0
   catcher: ^0.4.1
   stack_trace: ^1.9.6
