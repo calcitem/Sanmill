@@ -168,13 +168,13 @@ void UCI::loop(int argc, char *argv[])
 
     if (rule.piecesCount == 9) {
 #ifdef WIN32
-        strncpy_s(StartFEN, sizeof(StartFEN), StartFEN9, BUFSIZ);
+        strncpy_s(StartFEN, 256, StartFEN9, BUFSIZ);
 #else
         strncpy(StartFEN, StartFEN9, BUFSIZ);
 #endif
     } else if (rule.piecesCount == 12) {
 #ifdef WIN32
-        strncpy_s(StartFEN, sizeof(StartFEN), StartFEN12, BUFSIZ);
+        strncpy_s(StartFEN, 256, StartFEN12, BUFSIZ);
 #else
         strncpy(StartFEN, StartFEN12, BUFSIZ);
 #endif

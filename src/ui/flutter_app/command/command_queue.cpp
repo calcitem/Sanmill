@@ -65,7 +65,7 @@ bool CommandQueue::read(char *dest)
     }
 
 #ifdef _WIN32
-    strncpy_s(dest, sizeof(dest), commands[readIndex], 1024);   // See  uci.cpp LINE_INPUT_MAX_CHAR
+    strncpy_s(dest, 256, commands[readIndex], 1024);   // See  uci.cpp LINE_INPUT_MAX_CHAR
     strncpy_s(commands[readIndex], sizeof(commands[readIndex]), "", COMMAND_LENGTH);
 #else
     strncpy(dest, commands[readIndex], 1024);   // See  uci.cpp LINE_INPUT_MAX_CHAR
