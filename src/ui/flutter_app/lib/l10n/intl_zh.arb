@@ -90,5 +90,7 @@
   "isBlackLoseButNotDrawWhenBoardFull": "当棋盘摆满时先摆子的输棋",
   "isLoseButNotChangeSideWhenNoWay": "当无路可走时输棋",
   "mayFly": "剩余三颗子时飞棋",
-  "maxStepsLedToDraw": "连续多少步无吃子则和棋"
+  "maxStepsLedToDraw": "连续多少步无吃子则和棋",
+  "copy": "复制",
+  "moveHistoryCopied": "棋谱已复制到剪贴板"
 }

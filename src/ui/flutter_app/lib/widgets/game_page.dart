@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/analyze.dart';
 import 'package:sanmill/engine/engine.dart';
@@ -530,10 +531,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
     final text = Game.shared.position.manualText;
 
-    final manualStyle = TextStyle(
-      fontSize: 18,
-      height: 1.5,
-    );
+    final manualStyle =
+        TextStyle(fontSize: 18, height: 1.5, color: Colors.yellow);
 
     return Container(
       decoration: BoxDecoration(
@@ -563,13 +562,22 @@ class _GamePageState extends State<GamePage> with RouteAware {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
+                backgroundColor: Colors.transparent,
                 title: Text(S.of(context).gameRecord,
-                    style: TextStyle(color: UIColors.primaryColor)),
+                    style: TextStyle(color: Colors.yellow)),
                 content: SingleChildScrollView(
                     child: Text(text, style: manualStyle)),
                 actions: <Widget>[
-                  FlatButton(
-                    child: Text(S.of(context).ok),
+                  TextButton(
+                    child: Text(S.of(context).copy, style: manualStyle),
+                    onPressed: () =>
+                        Clipboard.setData(ClipboardData(text: text)).then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(S.of(context).moveHistoryCopied)));
+                    }),
+                  ),
+                  TextButton(
+                    child: Text(S.of(context).cancel, style: manualStyle),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],

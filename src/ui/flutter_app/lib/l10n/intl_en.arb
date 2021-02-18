@@ -363,5 +363,13 @@
   "maxStepsLedToDraw": "Max Steps Led To Draw",
   "@maxStepsLedToDraw": {
     "description": "Max Steps Led To Draw"
+  },
+  "copy": "Copy",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Move history copied to clipboard",
+  "@copy": {
+    "description": "Move history copied to clipboard"
   }
 }
