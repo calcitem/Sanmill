@@ -138,8 +138,7 @@
 //#define ALIGNED_LARGE_PAGES
 
 #ifdef WIN32
-#define sscanf sscanf_s
-#define sprintf sprintf_s
+#pragma warning(disable: 4996)
 #endif
 
 #ifndef  __GNUC__

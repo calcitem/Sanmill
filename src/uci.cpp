@@ -167,17 +167,9 @@ void UCI::loop(int argc, char *argv[])
     string token, cmd;
 
     if (rule.piecesCount == 9) {
-#ifdef WIN32
-        strncpy_s(StartFEN, 256, StartFEN9, BUFSIZ);
-#else
         strncpy(StartFEN, StartFEN9, BUFSIZ);
-#endif
     } else if (rule.piecesCount == 12) {
-#ifdef WIN32
-        strncpy_s(StartFEN, 256, StartFEN12, BUFSIZ);
-#else
         strncpy(StartFEN, StartFEN12, BUFSIZ);
-#endif
     }
 
     pos->set(StartFEN, Threads.main());
