@@ -369,7 +369,27 @@
     "description": "Copy"
   },
   "moveHistoryCopied": "Move history copied to clipboard",
-  "@copy": {
+  "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
+  },
+  "help": "Help",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "FeedBack",
+  "@feedback": {
+    "description": "FeedBack"
+  },
+  "inviteFriend": "Invite Friend",
+  "@inviteFriend": {
+    "description": "Invite Friend"
+  },
+  "rateTheApp": "Rate The App",
+  "@rateTheApp": {
+    "description": "Rate The App"
+  },
+  "exit": "Exit",
+  "@exit": {
+    "description": "Exit"
   }
 }

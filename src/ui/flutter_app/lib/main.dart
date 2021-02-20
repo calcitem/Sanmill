@@ -25,11 +25,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/widgets/navigation_home_screen.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'services/audios.dart';
 import 'services/player.dart';
-import 'widgets/main_menu.dart';
 
 //import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -156,7 +156,7 @@ class _SanmillAppState extends State<SanmillApp> {
           Audios.release();
           return true;
         },
-        child: MainMenu(),
+        child: NavigationHomeScreen(),
       ),
     );
   }

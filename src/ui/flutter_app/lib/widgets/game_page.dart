@@ -33,7 +33,6 @@ import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/style/toast.dart';
 
 import 'board.dart';
-import 'settings_page.dart';
 
 class GamePage extends StatefulWidget {
   //
@@ -74,7 +73,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   void showTips() {
-    if (context == null) {
+    if (!mounted || context == null) {
       //print("[showTips] context == null, return");
       return;
     }
@@ -214,6 +213,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     while ((Config.isAutoRestart == true ||
             Game.shared.position.winner == Color.nobody) &&
         Game.shared.isAiToMove() &&
+        mounted &&
         context != null) {
       if (widget.engineType == EngineType.aiVsAi) {
         String score = Game.shared.position.score[Color.black].toString() +
@@ -477,14 +477,17 @@ class _GamePageState extends State<GamePage> with RouteAware {
         children: <Widget>[
           Row(
             children: <Widget>[
+              /*
               IconButton(
                 icon: Icon(Icons.arrow_back,
                     color: UIColors.darkTextSecondaryColor),
                 onPressed: () => Navigator.of(context).pop(),
               ),
+               */
               Expanded(child: SizedBox()),
               Text(engineTypeToString[widget.engineType], style: titleStyle),
               Expanded(child: SizedBox()),
+              /*
               IconButton(
                 icon: Icon(Icons.menu /* more_vert */,
                     color: UIColors.darkTextSecondaryColor),
@@ -492,6 +495,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
                   MaterialPageRoute(builder: (context) => SettingsPage()),
                 ),
               ),
+               */
             ],
           ),
           Container(

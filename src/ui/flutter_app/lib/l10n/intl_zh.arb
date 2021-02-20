@@ -92,5 +92,10 @@
   "mayFly": "剩余三颗子时飞棋",
   "maxStepsLedToDraw": "连续多少步无吃子则和棋",
   "copy": "复制",
-  "moveHistoryCopied": "棋谱已复制到剪贴板"
+  "moveHistoryCopied": "棋谱已复制到剪贴板",
+  "help": "帮助",
+  "feedback": "反馈",
+  "inviteFriend": "邀请",
+  "rateTheApp": "投票",
+  "exit": "退出"
 }

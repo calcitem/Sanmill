@@ -481,7 +481,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
-      appBar: AppBar(title: Text(S.of(context).settings)),
+      appBar: AppBar(centerTitle: true, title: Text(S.of(context).settings)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
