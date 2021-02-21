@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:io';
+
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sanmill/common/config.dart';
@@ -39,6 +41,12 @@ class Audios {
 
   static playTone(String fileName) async {
     if (!Config.toneEnabled) {
+      return;
+    }
+
+    if (Platform.isWindows) {
+      print(
+          "audioplayers is not support Windows. See: https://pub.dev/packages/audioplayers");
       return;
     }
 

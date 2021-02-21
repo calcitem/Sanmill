@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -44,11 +46,16 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   loadVersionInfo() async {
-    // if (!(Platform.isAndroid || Platform.isIOS)) {
-    final packageInfo = await PackageInfo.fromPlatform();
-    setState(() {
-      _version = '${packageInfo.version} (${packageInfo.buildNumber})';
-    });
+    if (Platform.isWindows) {
+      setState(() {
+        _version = 'Unknown version';
+      });
+    } else {
+      final packageInfo = await PackageInfo.fromPlatform();
+      setState(() {
+        _version = '${packageInfo.version} (${packageInfo.buildNumber})';
+      });
+    }
   }
 
   setSkillLevel() async {
