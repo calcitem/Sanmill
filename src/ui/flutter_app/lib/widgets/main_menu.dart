@@ -22,7 +22,7 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/colors.dart';
 
 import 'game_page.dart';
-import 'settings_page.dart';
+import 'game_settings_page.dart';
 
 class MainMenu extends StatefulWidget {
   @override
@@ -133,7 +133,7 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
           FlatButton(
             child: Text(S.of(context).settings, style: menuItemStyle),
             onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => SettingsPage()),
+              MaterialPageRoute(builder: (context) => GameSettingsPage()),
             ),
           ),
           Expanded(child: SizedBox()),

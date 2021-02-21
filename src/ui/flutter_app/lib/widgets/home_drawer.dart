@@ -49,6 +49,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
         icon: Icon(Icons.settings),
       ),
       DrawerList(
+        index: DrawerIndex.ruleSettings,
+        labelName: S.of(context).ruleSettings,
+        icon: Icon(Icons.rule),
+      ),
+      DrawerList(
         index: DrawerIndex.Help,
         labelName: S.of(context).help,
         icon: Icon(Icons.help),
@@ -297,6 +302,7 @@ enum DrawerIndex {
   humanVsHuman,
   aiVsAi,
   settings,
+  ruleSettings,
   FeedBack,
   Help,
   Share,

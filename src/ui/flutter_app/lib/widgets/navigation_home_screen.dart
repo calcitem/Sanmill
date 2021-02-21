@@ -8,7 +8,8 @@ import 'package:sanmill/widgets/help_screen.dart';
 import 'package:sanmill/widgets/home_drawer.dart';
 
 import 'game_page.dart';
-import 'settings_page.dart';
+import 'game_settings_page.dart';
+import 'rule_settings_page.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   @override
@@ -70,7 +71,11 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         });
       } else if (drawerIndex == DrawerIndex.settings) {
         setState(() {
-          screenView = SettingsPage();
+          screenView = GameSettingsPage();
+        });
+      } else if (drawerIndex == DrawerIndex.ruleSettings) {
+        setState(() {
+          screenView = RuleSettingsPage();
         });
       } else if (drawerIndex == DrawerIndex.Help) {
         setState(() {

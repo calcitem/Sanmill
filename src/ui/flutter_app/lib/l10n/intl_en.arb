@@ -391,5 +391,9 @@
   "exit": "Exit",
   "@exit": {
     "description": "Exit"
+  },
+  "ruleSettings": "Rule Settings",
+  "@ruleSettings": {
+    "description": "Rule Settings"
   }
 }
