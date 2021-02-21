@@ -11,11 +11,11 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.0
   audioplayers: ^0.17.4
   path_provider: ^1.6.27
   package_info: ^0.4.3+4
-  uuid: ^2.0.4
+  uuid: ^2.2.2
   url_launcher: ^5.7.10
   intl: ^0.17.0
   flutter_socket_io: ^0.6.0
