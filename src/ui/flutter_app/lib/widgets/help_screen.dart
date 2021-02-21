@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/style/colors.dart';
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -19,16 +20,10 @@ class _HelpScreenState extends State<HelpScreen> {
       child: SafeArea(
         top: false,
         child: Scaffold(
-          backgroundColor: AppTheme.nearlyWhite,
+          backgroundColor: UIColors.asparagusColor,
           body: Column(
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top,
-                    left: 16,
-                    right: 16),
-                child: Icon(Icons.help),
-              ),
+              const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
@@ -36,6 +31,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
+                    color: UIColors.athsSpecialColor,
                   ),
                 ),
               ),
@@ -46,6 +42,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
+                    color: UIColors.athsSpecialColor,
                   ),
                 ),
               ),
@@ -57,7 +54,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       width: 140,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: UIColors.primaryColor,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(4.0)),
                         boxShadow: <BoxShadow>[
