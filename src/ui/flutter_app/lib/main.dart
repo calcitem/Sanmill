@@ -111,6 +111,8 @@ Future<void> main() async {
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
+final globalScaffoldKey = GlobalKey<ScaffoldState>();
+
 class SanmillApp extends StatefulWidget {
   //
   static const StatusBarHeight = 28.0;
@@ -135,6 +137,7 @@ class _SanmillAppState extends State<SanmillApp> {
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
       navigatorKey: Catcher.navigatorKey,
+      key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
