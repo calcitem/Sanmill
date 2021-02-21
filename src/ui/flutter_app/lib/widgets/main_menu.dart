@@ -115,22 +115,22 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
                 style: appNameStyle, textAlign: TextAlign.center),
           ),
           Expanded(child: SizedBox()),
-          FlatButton(
+          TextButton(
             child: Text(S.of(context).humanVsAi, style: menuItemStyle),
             onPressed: () => navigateTo(GamePage(EngineType.humanVsAi)),
           ),
           Expanded(child: SizedBox()),
-          FlatButton(
+          TextButton(
             child: Text(S.of(context).humanVsHuman, style: menuItemStyle),
             onPressed: () => navigateTo(GamePage(EngineType.humanVsHuman)),
           ),
           Expanded(child: SizedBox()),
-          FlatButton(
+          TextButton(
             child: Text(S.of(context).aiVsAi, style: menuItemStyle),
             onPressed: () => navigateTo(GamePage(EngineType.aiVsAi)),
           ),
           Expanded(child: SizedBox()),
-          FlatButton(
+          TextButton(
             child: Text(S.of(context).settings, style: menuItemStyle),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => GameSettingsPage()),

@@ -64,7 +64,7 @@ class _EditPageState extends State<EditPage> {
       appBar: AppBar(
         title: Text(widget.title, style: TextStyle(fontFamily: '')),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(S.of(context).ok,
                 style: TextStyle(fontFamily: '', color: Colors.white)),
             onPressed: () => onSubmit(_textController.text),

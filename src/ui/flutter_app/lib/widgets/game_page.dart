@@ -272,8 +272,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
           content:
               SingleChildScrollView(child: Text(S.of(context).restartGame)),
           actions: <Widget>[
-            FlatButton(child: Text(S.of(context).ok), onPressed: confirm),
-            FlatButton(child: Text(S.of(context).cancel), onPressed: cancel),
+            TextButton(child: Text(S.of(context).ok), onPressed: confirm),
+            TextButton(child: Text(S.of(context).cancel), onPressed: cancel),
           ],
         );
       },
@@ -427,7 +427,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               Game.shared.position.gameOverReason,
               Game.shared.position.winner)),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
                 child: Text(S.of(context).ok),
                 onPressed: () => Navigator.of(context).pop()),
           ],
