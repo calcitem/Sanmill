@@ -197,7 +197,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
         splashColor: Colors.grey.withOpacity(0.1),
         highlightColor: Colors.transparent,
         onTap: () {
-          navigationtoScreen(listData.index);
+          navigationToScreen(listData.index);
         },
         child: Stack(
           children: <Widget>[
@@ -292,7 +292,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
-  Future<void> navigationtoScreen(DrawerIndex indexScreen) async {
+  Future<void> navigationToScreen(DrawerIndex indexScreen) async {
     widget.callBackIndex(indexScreen);
   }
 }
@@ -303,12 +303,8 @@ enum DrawerIndex {
   aiVsAi,
   settings,
   ruleSettings,
-  FeedBack,
   Help,
-  Share,
-  About,
-  Invite,
-  Testing,
+  About
 }
 
 class DrawerList {

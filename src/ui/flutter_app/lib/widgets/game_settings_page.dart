@@ -16,17 +16,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'edit_page.dart';
 
@@ -36,25 +31,9 @@ class GameSettingsPage extends StatefulWidget {
 }
 
 class _GameSettingsPageState extends State<GameSettingsPage> {
-  String _version = "";
-
   @override
   void initState() {
     super.initState();
-    loadVersionInfo();
-  }
-
-  loadVersionInfo() async {
-    if (Platform.isWindows) {
-      setState(() {
-        _version = 'Unknown version';
-      });
-    } else {
-      final packageInfo = await PackageInfo.fromPlatform();
-      setState(() {
-        _version = '${packageInfo.version} (${packageInfo.buildNumber})';
-      });
-    }
   }
 
   setSkillLevel() async {
@@ -222,119 +201,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Player.shared.saveAndUpload();
   }
 
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  showAbout() {
-    String mode;
-    if (kDebugMode) {
-      mode = "(Debug)";
-    } else if (kProfileMode) {
-      mode = "Profile";
-    } else if (kReleaseMode) {
-      mode = "";
-    } else {
-      mode = "Test";
-    }
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(S.of(context).about + S.of(context).appName + " " + mode,
-            style: TextStyle(color: UIColors.primaryColor)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 5),
-            Text(S.of(context).version + ": $_version",
-                style: TextStyle(fontFamily: '')),
-            SizedBox(height: 15),
-            InkWell(
-              child: Text(S.of(context).releaseBaseOn,
-                  style: TextStyle(
-                      fontFamily: '',
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline)),
-              onTap: () =>
-                  _launchURL('https://www.gnu.org/licenses/gpl-3.0.html'),
-            ),
-            SizedBox(height: 15),
-            InkWell(
-              child: Text(S.of(context).webSite,
-                  style: TextStyle(
-                      fontFamily: '',
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline)),
-              onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
-            ),
-            InkWell(
-              child: Text(S.of(context).whatsNew,
-                  style: TextStyle(
-                      fontFamily: '',
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline)),
-              onTap: () => _launchURL(
-                  'https://github.com/calcitem/Sanmill/commits/master'),
-            ),
-            InkWell(
-              child: Text(S.of(context).fastUpdateChannel,
-                  style: TextStyle(
-                      fontFamily: '',
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline)),
-              onTap: () => _launchURL(
-                  'https://github.com/calcitem/Sanmill/actions?query=workflow%3AFlutter+is%3Asuccess'),
-            ),
-            SizedBox(height: 15),
-            InkWell(
-              child: Text(S.of(context).thanks),
-            ),
-            InkWell(
-              child: Text(S.of(context).thankWho),
-            ),
-            InkWell(
-              child: Text(S.of(context).stockfish,
-                  style: TextStyle(
-                      fontFamily: '',
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline)),
-              onTap: () =>
-                  _launchURL('https://github.com/official-stockfish/Stockfish'),
-            ),
-            InkWell(
-              child: Text(S.of(context).chessRoad,
-                  style: TextStyle(
-                      fontFamily: '',
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline)),
-              onTap: () => _launchURL('https://github.com/hezhaoyun/chessroad'),
-            ),
-            InkWell(
-              child: Text(S.of(context).nineChess,
-                  style: TextStyle(
-                      fontFamily: '',
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline)),
-              onTap: () => _launchURL('https://github.com/liuweilhy/NineChess'),
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          FlatButton(
-              child: Text(S.of(context).ok),
-              onPressed: () => Navigator.of(context).pop()),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     //
@@ -464,26 +330,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).about, style: headerStyle),
-            Card(
-              color: UIColors.boardBackgroundColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(S.of(context).about + S.of(context).appName,
-                        style: itemStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(_version ?? ''),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
-                    onTap: showAbout,
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 60.0),
           ],
         ),
