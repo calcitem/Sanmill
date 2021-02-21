@@ -22,8 +22,6 @@ import 'package:sanmill/painting/board_painter.dart';
 import 'package:sanmill/painting/pieces_painter.dart';
 import 'package:sanmill/style/colors.dart';
 
-import 'words_on_board.dart';
-
 class Board extends StatelessWidget {
   //
   static const padding = 5.0;
@@ -58,11 +56,8 @@ class Board extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.symmetric(
             vertical: padding,
-            horizontal: (width - padding * 2) / 6 / 2 +
-                padding -
-                WordsOnBoard.digitsFontSize / 2,
+            horizontal: (width - padding * 2) / 6 / 2 + padding,
           ),
-          //child: WordsOnBoard(),
         ),
       ),
     );

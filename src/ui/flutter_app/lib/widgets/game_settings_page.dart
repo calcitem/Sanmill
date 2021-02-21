@@ -20,10 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
-
-import 'edit_page.dart';
 
 class GameSettingsPage extends StatefulWidget {
   @override
@@ -181,26 +178,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  changeName() async {
-    //
-    final newName = await Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) => EditPage(S.of(context).playerName,
-              initValue: Player.shared.name)),
-    );
-
-    if (newName != null) nameChanged(newName);
-  }
-
-  nameChanged(String newName) async {
-    //
-    setState(() {
-      Player.shared.name = newName;
-    });
-
-    Player.shared.saveAndUpload();
-  }
-
   @override
   Widget build(BuildContext context) {
     //
@@ -310,27 +287,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).leaderBoard, style: headerStyle),
-            Card(
-              color: UIColors.boardBackgroundColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(S.of(context).playerName, style: itemStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Player.shared.name),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
-                    onTap: changeName,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            const SizedBox(height: 60.0),
           ],
         ),
       ),

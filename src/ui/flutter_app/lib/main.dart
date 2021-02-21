@@ -28,8 +28,8 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 import 'package:stack_trace/stack_trace.dart';
 
+import 'common/config.dart';
 import 'services/audios.dart';
-import 'services/player.dart';
 
 //import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -127,7 +127,7 @@ class _SanmillAppState extends State<SanmillApp> {
   void initState() {
     super.initState();
     Chain.capture(() {
-      Player.loadProfile();
+      Config.loadProfile();
     });
   }
 

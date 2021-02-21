@@ -28,7 +28,6 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/services/player.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/style/toast.dart';
 
@@ -434,13 +433,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
         );
       },
     );
-
-    if (result == GameResult.win) {
-      if (widget.engineType == EngineType.humanVsCloud)
-        Player.shared.increaseWinCloudEngine();
-      else
-        Player.shared.increaseWinAi();
-    }
   }
 
   void calcScreenPaddingH() {

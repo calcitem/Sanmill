@@ -185,7 +185,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
-      appBar: AppBar(centerTitle: true, title: Text(S.of(context).settings)),
+      appBar:
+          AppBar(centerTitle: true, title: Text(S.of(context).ruleSettings)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
