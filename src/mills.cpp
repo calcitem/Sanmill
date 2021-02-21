@@ -531,7 +531,7 @@ Depth getSearchDepth(const Position *pos)
     assert(d <= 32);
 
     // Make sure opening is OK
-    if (d <= 4) {
+    if (d != 0 && d <= 4) {
         return d;
     }
 
