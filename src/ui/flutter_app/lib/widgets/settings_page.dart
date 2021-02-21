@@ -44,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   loadVersionInfo() async {
-    //
+    // if (!(Platform.isAndroid || Platform.isIOS)) {
     final packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       _version = '${packageInfo.version} (${packageInfo.buildNumber})';

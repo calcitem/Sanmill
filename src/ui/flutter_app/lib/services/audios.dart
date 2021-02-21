@@ -46,7 +46,7 @@ class Audios {
       //
       _fixedTonePlayer = AudioPlayer();
       _tonePlayer =
-          AudioCache(prefix: 'audios/', fixedPlayer: _fixedTonePlayer);
+          AudioCache(prefix: 'assets/audios/', fixedPlayer: _fixedTonePlayer);
 
       await _tonePlayer.loadAll([
         'draw.mp3',
