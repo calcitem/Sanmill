@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/services/audios.dart';
@@ -28,9 +29,114 @@ class GameSettingsPage extends StatefulWidget {
 }
 
 class _GameSettingsPageState extends State<GameSettingsPage> {
+  // create some values
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+
   @override
   void initState() {
     super.initState();
+  }
+
+  // ValueChanged<Color> callback
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
+
+  showBoardColorDialog() async {
+    AlertDialog alert = AlertDialog(
+      title: const Text('Pick a color!'),
+      content: SingleChildScrollView(
+        child: ColorPicker(
+          pickerColor: pickerColor,
+          onColorChanged: changeColor,
+          showLabel: true,
+          //pickerAreaHeightPercent: 0.8,
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Confirm'),
+          onPressed: () {
+            setState(() => currentColor = pickerColor);
+            UIColors.boardBackgroundColor = pickerColor;
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showBackgroundColorDialog() async {
+    AlertDialog alert = AlertDialog(
+      title: const Text('Pick a color!'),
+      content: SingleChildScrollView(
+        child: ColorPicker(
+          pickerColor: pickerColor,
+          onColorChanged: changeColor,
+          showLabel: true,
+          //pickerAreaHeightPercent: 0.8,
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Confirm'),
+          onPressed: () {
+            setState(() => currentColor = pickerColor);
+            UIColors.darkBackgroundColor = pickerColor;
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showBoardLineColorDialog() async {
+    AlertDialog alert = AlertDialog(
+      title: const Text('Pick a color!'),
+      content: SingleChildScrollView(
+        child: ColorPicker(
+          pickerColor: pickerColor,
+          onColorChanged: changeColor,
+          showLabel: true,
+          //pickerAreaHeightPercent: 0.8,
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Confirm'),
+          onPressed: () {
+            setState(() => currentColor = pickerColor);
+            UIColors.boardLineColor = pickerColor;
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   setSkillLevel() async {
@@ -287,6 +393,50 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
+            Text(S.of(context).color, style: headerStyle),
+            Card(
+              color: UIColors.boardBackgroundColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(S.of(context).boardColor, style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(UIColors.boardBackgroundColor
+                          .toString()
+                          .substring(5)),
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: showBoardColorDialog,
+                  ),
+                  _buildDivider(),
+                  ListTile(
+                    title: Text(S.of(context).backgroudColor, style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(
+                          UIColors.darkBackgroundColor.toString().substring(5)),
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: showBackgroundColorDialog,
+                  ),
+                  _buildDivider(),
+                  ListTile(
+                    title: Text(S.of(context).lineColor, style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(UIColors.boardLineColor.toString().substring(5)),
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: showBoardLineColorDialog,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

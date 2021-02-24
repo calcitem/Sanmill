@@ -19,6 +19,7 @@ dependencies:
   url_launcher: ^5.7.10
   intl: ^0.17.0
   flutter_socket_io: ^0.6.0
+  flutter_colorpicker: ^0.3.5
   catcher: ^0.4.1
   stack_trace: ^1.9.6
 # sentry_flutter: ^4.0.4

@@ -31,15 +31,15 @@ class UIColors {
   static const primaryColor = Color(0xFF461220);
   static const secondaryColor = Color(0x99461220);
 
-  static const darkBackgroundColor = crusoeColor;
+  static var darkBackgroundColor = crusoeColor;
   static const lightBackgroundColor = Color(0xFFEEE0CB);
 
-  static const boardBackgroundColor = burlyWoodColor;
+  static var boardBackgroundColor = burlyWoodColor;
 
   static const darkTextPrimaryColor = Colors.white;
   static const darkTextSecondaryColor = Colors.white;
 
-  static const boardLineColor = Color(0x996D000D);
+  static var boardLineColor = Color(0x996D000D);
   static const boardTipsColor = Color(0x666D000D);
 
   static const lightLineColor = Color(0x336D000D);

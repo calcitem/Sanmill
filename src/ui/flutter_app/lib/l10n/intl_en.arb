@@ -395,5 +395,25 @@
   "ruleSettings": "Rule Settings",
   "@ruleSettings": {
     "description": "Rule Settings"
+  },
+  "color": "Color",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Board Color",
+  "@boardColor": {
+    "description": "Board Color"
+  },
+  "pieceColor": "Piece Color",
+  "@pieceColor": {
+    "description": "Piece Color"
+  },
+  "backgroudColor": "Background Color",
+  "@backgroudColor": {
+    "description": "Background Color"
+  },
+  "lineColor": "Line Color",
+  "@lineColor": {
+    "description": "Line Color"
   }
 }

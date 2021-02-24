@@ -98,5 +98,10 @@
   "inviteFriend": "邀请",
   "rateTheApp": "投票",
   "exit": "退出",
-  "ruleSettings": "规则设置"
+  "ruleSettings": "规则设置",
+  "color": "颜色",
+  "boardColor": "棋盘颜色",
+  "pieceColor": "棋子颜色",
+  "backgroudColor": "背景颜色",
+  "lineColor": "线条颜色"
 }
