@@ -55,7 +55,7 @@ class BoardPainter extends PiecesBasePainter {
     paint.style = PaintingStyle.stroke;
 
     const double borderLineWidth = 2.0;
-    const double innerLineWidth = 1.0;
+    const double innerLineWidth = 1.5;
 
     var left = offsetX;
     var top = offsetY;
