@@ -20,7 +20,7 @@ class _HelpScreenState extends State<HelpScreen> {
       child: SafeArea(
         top: false,
         child: Scaffold(
-          backgroundColor: UIColors.asparagusColor,
+          backgroundColor: UIColors.crusoeColor,
           body: Column(
             children: <Widget>[
               const SizedBox(height: 16),
@@ -31,7 +31,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: UIColors.athsSpecialColor,
+                    color: UIColors.burlyWoodColor,
                   ),
                 ),
               ),
@@ -42,7 +42,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: UIColors.athsSpecialColor,
+                    color: UIColors.burlyWoodColor,
                   ),
                 ),
               ),

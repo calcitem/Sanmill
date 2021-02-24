@@ -22,8 +22,8 @@ class UIColors {
   // see:
   // https://www.color-hex.com/color-palette/8548
   // https://applecolors.com/palette/30822-chess-board-logo
-  static const asparagusColor = Color.fromARGB(0xFF, 118, 150, 86); // 769656
-  static const athsSpecialColor = Color.fromARGB(0xFF, 238, 238, 210); // eeeed2
+  static const crusoeColor = Color(0xFF165B31);
+  static const burlyWoodColor = Color(0xFFDEB887);
   static const turmericColor = Color.fromARGB(0xFF, 186, 202, 68);
 
   static const logoColor = Color(0xFF6D000D);
@@ -31,10 +31,10 @@ class UIColors {
   static const primaryColor = Color(0xFF461220);
   static const secondaryColor = Color(0x99461220);
 
-  static const darkBackgroundColor = asparagusColor;
+  static const darkBackgroundColor = crusoeColor;
   static const lightBackgroundColor = Color(0xFFEEE0CB);
 
-  static const boardBackgroundColor = athsSpecialColor;
+  static const boardBackgroundColor = burlyWoodColor;
 
   static const darkTextPrimaryColor = Colors.white;
   static const darkTextSecondaryColor = Colors.white;
