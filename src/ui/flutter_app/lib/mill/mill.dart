@@ -53,7 +53,7 @@ int makeSquare(int file, int rank) {
 
 enum GameResult { pending, win, lose, draw, none }
 
-class Color {
+class PieceColor {
   static const none = '*';
   static const black = '@';
   static const white = 'O';
@@ -82,10 +82,10 @@ class Color {
 }
 
 class Piece {
-  static const noPiece = Color.none;
-  static const blackStone = Color.black;
-  static const whiteStone = Color.white;
-  static const ban = Color.ban;
+  static const noPiece = PieceColor.none;
+  static const blackStone = PieceColor.black;
+  static const whiteStone = PieceColor.white;
+  static const ban = PieceColor.ban;
 
   static bool isEmpty(String c) => noPiece.contains(c);
   static bool isBlack(String c) => blackStone.contains(c);

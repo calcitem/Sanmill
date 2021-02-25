@@ -17,10 +17,10 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/painting/board_painter.dart';
 import 'package:sanmill/painting/pieces_painter.dart';
-import 'package:sanmill/style/colors.dart';
 
 class Board extends StatelessWidget {
   //
@@ -43,7 +43,7 @@ class Board extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(boardBorderRadius),
-        color: UIColors.boardBackgroundColor,
+        color: Color(Config.boardBackgroundColor),
       ),
       child: CustomPaint(
         painter: BoardPainter(width: width),

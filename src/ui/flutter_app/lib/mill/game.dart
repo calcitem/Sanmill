@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/animation.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/types.dart';
@@ -25,7 +24,7 @@ import 'mill.dart';
 import 'position.dart';
 
 enum PlayerType { human, AI }
-Map<String, bool> isAi = {Color.black: false, Color.white: true};
+Map<String, bool> isAi = {PieceColor.black: false, PieceColor.white: true};
 
 class Game {
   static Game _instance;
@@ -33,16 +32,20 @@ class Game {
   Position _position;
   int _focusIndex, _blurIndex;
 
-  String sideToMove = Color.black;
+  String sideToMove = PieceColor.black;
 
   bool isColorInverted = false;
 
-  Map<String, bool> isSearching = {Color.black: false, Color.white: false};
+  Map<String, bool> isSearching = {
+    PieceColor.black: false,
+    PieceColor.white: false
+  };
 
   EngineType engineType;
 
   bool aiIsSearching() {
-    return isSearching[Color.black] == true || isSearching[Color.white] == true;
+    return isSearching[PieceColor.black] == true ||
+        isSearching[PieceColor.white] == true;
   }
 
   void setWhoIsAi(EngineType type) {
@@ -52,21 +55,21 @@ class Game {
       case EngineType.humanVsAi:
       case EngineType.testViaLAN:
         if (Config.aiMovesFirst) {
-          isAi[Color.black] = true;
-          isAi[Color.white] = false;
+          isAi[PieceColor.black] = true;
+          isAi[PieceColor.white] = false;
         } else if (!Config.aiMovesFirst) {
-          isAi[Color.black] = false;
-          isAi[Color.white] = true;
+          isAi[PieceColor.black] = false;
+          isAi[PieceColor.white] = true;
         }
         break;
       case EngineType.humanVsHuman:
       case EngineType.humanVsLAN:
-        isAi[Color.black] = false;
-        isAi[Color.white] = false;
+        isAi[PieceColor.black] = false;
+        isAi[PieceColor.white] = false;
         break;
       case EngineType.aiVsAi:
-        isAi[Color.black] = true;
-        isAi[Color.white] = true;
+        isAi[PieceColor.black] = true;
+        isAi[PieceColor.white] = true;
         break;
       case EngineType.humanVsCloud:
         break;
@@ -122,7 +125,7 @@ class Game {
     _focusIndex = _blurIndex = Move.invalidMove;
     moveHistory = [""];
     // TODO
-    sideToMove = Color.black;
+    sideToMove = PieceColor.black;
   }
 
   select(int pos) {
@@ -145,7 +148,7 @@ class Game {
     //
     // Can regret only our turn
     // TODO
-    if (_position.side != Color.white) {
+    if (_position.side != PieceColor.white) {
       //Audios.playTone('invalid.mp3');
       return false;
     }
@@ -210,26 +213,26 @@ class Game {
 
     sideToMove = position.sideToMove();
 
-    total = position.score[Color.black] +
-        position.score[Color.white] +
-        position.score[Color.draw];
+    total = position.score[PieceColor.black] +
+        position.score[PieceColor.white] +
+        position.score[PieceColor.draw];
 
     if (total == 0) {
       blackWinRate = 0;
       whiteWinRate = 0;
       drawRate = 0;
     } else {
-      blackWinRate = position.score[Color.black] * 100 / total;
-      whiteWinRate = position.score[Color.white] * 100 / total;
-      drawRate = position.score[Color.draw] * 100 / total;
+      blackWinRate = position.score[PieceColor.black] * 100 / total;
+      whiteWinRate = position.score[PieceColor.white] * 100 / total;
+      drawRate = position.score[PieceColor.draw] * 100 / total;
     }
 
     String stat = "Score: " +
-        position.score[Color.black].toString() +
+        position.score[PieceColor.black].toString() +
         " : " +
-        position.score[Color.white].toString() +
+        position.score[PieceColor.white].toString() +
         " : " +
-        position.score[Color.draw].toString() +
+        position.score[PieceColor.draw].toString() +
         "\ttotal: " +
         total.toString() +
         "\n" +

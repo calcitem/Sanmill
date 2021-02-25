@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/cupertino.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
@@ -47,28 +46,38 @@ class Position {
 
   GameRecorder recorder;
 
-  Map<String, int> pieceInHandCount = {Color.black: -1, Color.white: -1};
-  Map<String, int> pieceOnBoardCount = {Color.black: 0, Color.white: 0};
+  Map<String, int> pieceInHandCount = {
+    PieceColor.black: -1,
+    PieceColor.white: -1
+  };
+  Map<String, int> pieceOnBoardCount = {
+    PieceColor.black: 0,
+    PieceColor.white: 0
+  };
   int pieceToRemoveCount = 0;
 
   int gamePly = 0;
-  String _sideToMove = Color.black;
+  String _sideToMove = PieceColor.black;
 
   int rule50 = 0;
   int pliesFromNull = 0;
 
   StateInfo st;
 
-  String us = Color.black;
-  String them = Color.white;
-  String winner = Color.nobody;
+  String us = PieceColor.black;
+  String them = PieceColor.white;
+  String winner = PieceColor.nobody;
 
   GameOverReason gameOverReason = GameOverReason.noReason;
 
   Phase phase = Phase.none;
   Act action = Act.none;
 
-  Map<String, int> score = {Color.black: 0, Color.white: 0, Color.draw: 0};
+  Map<String, int> score = {
+    PieceColor.black: 0,
+    PieceColor.white: 0,
+    PieceColor.draw: 0
+  };
 
   int currentSquare = 0;
   int nPlayed = 0;
@@ -137,7 +146,7 @@ class Position {
   void setSideToMove(String color) {
     _sideToMove = color;
     us = _sideToMove;
-    them = Color.opponent(us);
+    them = PieceColor.opponent(us);
   }
 
   String movedPiece(int move) {
@@ -197,7 +206,7 @@ class Position {
     }
 
     // Active color
-    ss += _sideToMove == Color.black ? "b" : "w";
+    ss += _sideToMove == PieceColor.black ? "b" : "w";
 
     ss += " ";
 
@@ -243,18 +252,18 @@ class Position {
 
     ss += " ";
 
-    ss += pieceOnBoardCount[Color.black].toString() +
+    ss += pieceOnBoardCount[PieceColor.black].toString() +
         " " +
-        pieceInHandCount[Color.black].toString() +
+        pieceInHandCount[PieceColor.black].toString() +
         " " +
-        pieceOnBoardCount[Color.white].toString() +
+        pieceOnBoardCount[PieceColor.white].toString() +
         " " +
-        pieceInHandCount[Color.white].toString() +
+        pieceInHandCount[PieceColor.white].toString() +
         " " +
         pieceToRemoveCount.toString() +
         " ";
 
-    int sideIsBlack = _sideToMove == Color.black ? 1 : 0;
+    int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
     ss +=
         rule50.toString() + " " + (1 + (gamePly - sideIsBlack) ~/ 2).toString();
@@ -309,9 +318,9 @@ class Position {
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
       if (move["Player".length] == '1') {
-        return resign(Color.black);
+        return resign(PieceColor.black);
       } else {
-        return resign(Color.white);
+        return resign(PieceColor.white);
       }
     }
 
@@ -322,8 +331,8 @@ class Position {
 
     if (move == "draw") {
       phase = Phase.gameOver;
-      winner = Color.draw;
-      score[Color.draw]++;
+      winner = PieceColor.draw;
+      score[PieceColor.draw]++;
       // TODO
       gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
       return true;
@@ -372,34 +381,37 @@ class Position {
 ///////////////////////////////////////////////////////////////////////////////
 
   int pieceOnBoardCountCount() {
-    pieceOnBoardCount[Color.black] = pieceOnBoardCount[Color.white] = 0;
+    pieceOnBoardCount[PieceColor.black] =
+        pieceOnBoardCount[PieceColor.white] = 0;
 
     for (int f = 1; f < fileExNumber; f++) {
       for (int r = 0; r < rankNumber; r++) {
         int s = f * rankNumber + r;
         if (board[s] == Piece.blackStone) {
-          pieceOnBoardCount[Color.black]++;
+          pieceOnBoardCount[PieceColor.black]++;
         } else if (board[s] == Piece.whiteStone) {
-          pieceOnBoardCount[Color.black]++;
+          pieceOnBoardCount[PieceColor.black]++;
         }
       }
     }
 
-    if (pieceOnBoardCount[Color.black] > rule.piecesCount ||
-        pieceOnBoardCount[Color.white] > rule.piecesCount) {
+    if (pieceOnBoardCount[PieceColor.black] > rule.piecesCount ||
+        pieceOnBoardCount[PieceColor.white] > rule.piecesCount) {
       return -1;
     }
 
-    return pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white];
+    return pieceOnBoardCount[PieceColor.black] +
+        pieceOnBoardCount[PieceColor.white];
   }
 
   int getNPiecesInHand() {
-    pieceInHandCount[Color.black] =
-        rule.piecesCount - pieceOnBoardCount[Color.black];
-    pieceInHandCount[Color.white] =
-        rule.piecesCount - pieceOnBoardCount[Color.white];
+    pieceInHandCount[PieceColor.black] =
+        rule.piecesCount - pieceOnBoardCount[PieceColor.black];
+    pieceInHandCount[PieceColor.white] =
+        rule.piecesCount - pieceOnBoardCount[PieceColor.white];
 
-    return pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white];
+    return pieceOnBoardCount[PieceColor.black] +
+        pieceOnBoardCount[PieceColor.white];
   }
 
   void clearBoard() {
@@ -421,7 +433,7 @@ class Position {
 
     gameOverReason = GameOverReason.noReason;
     phase = Phase.placing;
-    setSideToMove(Color.black);
+    setSideToMove(PieceColor.black);
     action = Act.place;
     currentSquare = 0;
 
@@ -436,7 +448,7 @@ class Position {
     getNPiecesInHand();
     pieceToRemoveCount = 0;
 
-    winner = Color.nobody;
+    winner = PieceColor.nobody;
     createMoveTable();
     createMillTable();
     currentSquare = 0;
@@ -449,17 +461,18 @@ class Position {
     rule50 = 0;
 
     phase = Phase.ready;
-    setSideToMove(Color.black);
+    setSideToMove(PieceColor.black);
     action = Act.place;
 
-    winner = Color.nobody;
+    winner = PieceColor.nobody;
     gameOverReason = GameOverReason.noReason;
 
     clearBoard();
 
-    pieceOnBoardCount[Color.black] = pieceOnBoardCount[Color.white] = 0;
-    pieceInHandCount[Color.black] =
-        pieceInHandCount[Color.white] = rule.piecesCount;
+    pieceOnBoardCount[PieceColor.black] =
+        pieceOnBoardCount[PieceColor.white] = 0;
+    pieceInHandCount[PieceColor.black] =
+        pieceInHandCount[PieceColor.white] = rule.piecesCount;
     pieceToRemoveCount = 0;
 
     currentSquare = 0;
@@ -527,11 +540,11 @@ class Position {
       int n = millsCount(currentSquare);
 
       if (n == 0) {
-        assert(pieceInHandCount[Color.black] >= 0 &&
-            pieceInHandCount[Color.white] >= 0);
+        assert(pieceInHandCount[PieceColor.black] >= 0 &&
+            pieceInHandCount[PieceColor.white] >= 0);
 
-        if (pieceInHandCount[Color.black] == 0 &&
-            pieceInHandCount[Color.white] == 0) {
+        if (pieceInHandCount[PieceColor.black] == 0 &&
+            pieceInHandCount[PieceColor.white] == 0) {
           if (checkIfGameIsOver()) {
             //Audios.playTone('mill.mp3');
             return true;
@@ -633,11 +646,11 @@ class Position {
     if (pieceToRemoveCount <= 0) return false;
 
     // if piece is not their
-    if (!(Color.opponent(sideToMove()) == board[s])) return false;
+    if (!(PieceColor.opponent(sideToMove()) == board[s])) return false;
 
     if (!rule.mayRemoveFromMillsAlways &&
-        potentialMillsCount(s, Color.nobody) > 0 &&
-        !isAllInMills(Color.opponent(sideToMove()))) {
+        potentialMillsCount(s, PieceColor.nobody) > 0 &&
+        !isAllInMills(PieceColor.opponent(sideToMove()))) {
       return false;
     }
 
@@ -670,8 +683,8 @@ class Position {
     }
 
     if (phase == Phase.placing) {
-      if (pieceInHandCount[Color.black] == 0 &&
-          pieceInHandCount[Color.white] == 0) {
+      if (pieceInHandCount[PieceColor.black] == 0 &&
+          pieceInHandCount[PieceColor.white] == 0) {
         phase = Phase.moving;
         action = Act.select;
 
@@ -719,7 +732,7 @@ class Position {
       return false;
     }
 
-    setGameOver(Color.opponent(loser), GameOverReason.loseReasonResign);
+    setGameOver(PieceColor.opponent(loser), GameOverReason.loseReasonResign);
 
     return true;
   }
@@ -738,8 +751,8 @@ class Position {
 
   void updateScore() {
     if (phase == Phase.gameOver) {
-      if (winner == Color.draw) {
-        score[Color.draw]++;
+      if (winner == PieceColor.draw) {
+        score[PieceColor.draw]++;
         return;
       }
 
@@ -755,19 +768,20 @@ class Position {
     }
 
     if (rule.maxStepsLedToDraw > 0 && rule50 > rule.maxStepsLedToDraw) {
-      winner = Color.draw;
+      winner = PieceColor.draw;
       phase = Phase.gameOver;
       gameOverReason = GameOverReason.drawReasonRule50;
       print("Game over, draw, because of $gameOverReason.");
       return true;
     }
 
-    if (pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white] >=
+    if (pieceOnBoardCount[PieceColor.black] +
+            pieceOnBoardCount[PieceColor.white] >=
         rankNumber * fileNumber) {
       if (rule.isBlackLoseButNotDrawWhenBoardFull) {
-        setGameOver(Color.white, GameOverReason.loseReasonBoardIsFull);
+        setGameOver(PieceColor.white, GameOverReason.loseReasonBoardIsFull);
       } else {
-        setGameOver(Color.draw, GameOverReason.drawReasonBoardIsFull);
+        setGameOver(PieceColor.draw, GameOverReason.drawReasonBoardIsFull);
       }
 
       return true;
@@ -778,7 +792,7 @@ class Position {
     if (phase == Phase.moving && action == Act.select && isNoWay) {
       if (rule.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
-            Color.opponent(sideToMove()), GameOverReason.loseReasonNoWay);
+            PieceColor.opponent(sideToMove()), GameOverReason.loseReasonNoWay);
         return true;
       } else {
         changeSideToMove(); // TODO: Need?
@@ -1342,7 +1356,7 @@ class Position {
 
     assert(0 <= from && from < sqNumber);
 
-    if (c == Color.nobody) {
+    if (c == PieceColor.nobody) {
       c = colorOn(to);
     }
 
@@ -1409,7 +1423,7 @@ class Position {
   bool isAllInMills(String c) {
     for (int i = sqBegin; i < sqEnd; i++) {
       if (board[i] == c) {
-        if (potentialMillsCount(i, Color.nobody) == 0) {
+        if (potentialMillsCount(i, PieceColor.nobody) == 0) {
           return false;
         }
       }
@@ -1420,7 +1434,8 @@ class Position {
 
   bool isAllSurrounded() {
     // Full
-    if (pieceOnBoardCount[Color.black] + pieceOnBoardCount[Color.white] >=
+    if (pieceOnBoardCount[PieceColor.black] +
+            pieceOnBoardCount[PieceColor.white] >=
         rankNumber * fileNumber) {
       //print("Board is full.");
       return true;
@@ -1489,7 +1504,8 @@ class Position {
         tempPosition._grid[move.from] = tempPosition._grid[move.to];
         tempPosition._grid[move.to] = move.removed;
 
-        tempPosition._sideToMove = Color.opponent(tempPosition._sideToMove);
+        tempPosition._sideToMove =
+            PieceColor.opponent(tempPosition._sideToMove);
       });
 
       recorder.lastPositionWithRemove = tempPosition.fen();
@@ -1539,7 +1555,7 @@ class Position {
 
   void changeSideToMove() {
     them = _sideToMove;
-    _sideToMove = Color.opponent(_sideToMove);
+    _sideToMove = PieceColor.opponent(_sideToMove);
     print("$_sideToMove to move.");
   }
 

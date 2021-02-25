@@ -19,9 +19,6 @@
 import 'package:flutter/material.dart';
 
 class UIColors {
-  // see:
-  // https://www.color-hex.com/color-palette/8548
-  // https://applecolors.com/palette/30822-chess-board-logo
   static const crusoeColor = Color(0xFF165B31);
   static const burlyWoodColor = Color(0xFFDEB887);
   static const turmericColor = Color.fromARGB(0xFF, 186, 202, 68);

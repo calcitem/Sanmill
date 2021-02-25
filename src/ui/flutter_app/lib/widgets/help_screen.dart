@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
 
@@ -20,7 +21,7 @@ class _HelpScreenState extends State<HelpScreen> {
       child: SafeArea(
         top: false,
         child: Scaffold(
-          backgroundColor: UIColors.crusoeColor,
+          backgroundColor: Color(Config.darkBackgroundColor),
           body: Column(
             children: <Widget>[
               const SizedBox(height: 16),

@@ -195,7 +195,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).rules, style: headerStyle),
             Card(
-              color: UIColors.boardBackgroundColor,
+              color: Color(Config.boardBackgroundColor),
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[

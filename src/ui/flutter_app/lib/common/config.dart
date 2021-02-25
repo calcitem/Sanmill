@@ -17,6 +17,7 @@
 */
 
 import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/style/colors.dart';
 
 import 'profile.dart';
 
@@ -34,6 +35,11 @@ class Config {
   static bool idsEnabled = false;
   static bool depthExtension = true;
   static bool openingBook = false;
+
+  // Color
+  static int boardLineColor = UIColors.boardLineColor.value;
+  static int darkBackgroundColor = UIColors.darkBackgroundColor.value;
+  static int boardBackgroundColor = UIColors.boardBackgroundColor.value;
 
   // Rules
   static int piecesCount = 12;
@@ -64,6 +70,14 @@ class Config {
     Config.idsEnabled = profile['idsEnabled'] ?? false;
     Config.depthExtension = profile['depthExtension'] ?? false;
     Config.openingBook = profile['openingBook'] ?? false;
+
+    // Color
+    Config.boardLineColor =
+        profile['boardLineColor'] ?? UIColors.boardLineColor.value;
+    Config.darkBackgroundColor =
+        profile['darkBackgroundColor'] ?? UIColors.darkBackgroundColor.value;
+    Config.boardBackgroundColor =
+        profile['boardBackgroundColor'] ?? UIColors.boardBackgroundColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount = profile['piecesCount'] ?? 12;
@@ -108,6 +122,11 @@ class Config {
     profile['idsEnabled'] = Config.idsEnabled;
     profile['depthExtension'] = Config.depthExtension;
     profile['openingBook'] = Config.openingBook;
+
+    // Color
+    profile['boardLineColor'] = Config.boardLineColor;
+    profile['darkBackgroundColor'] = Config.darkBackgroundColor;
+    profile['boardBackgroundColor'] = Config.boardBackgroundColor;
 
     // Rules
     profile['piecesCount'] = Config.piecesCount;

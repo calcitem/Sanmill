@@ -125,10 +125,10 @@ class _SanmillAppState extends State<SanmillApp> {
   //
   @override
   void initState() {
-    super.initState();
     Chain.capture(() {
       Config.loadProfile();
     });
+    super.initState();
   }
 
   @override

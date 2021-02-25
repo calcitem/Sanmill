@@ -80,12 +80,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final winner = Game.shared.position.winner;
 
     Map<String, String> colorWinStrings = {
-      Color.black: S.of(context).blackWin,
-      Color.white: S.of(context).whiteWin,
-      Color.draw: S.of(context).draw
+      PieceColor.black: S.of(context).blackWin,
+      PieceColor.white: S.of(context).whiteWin,
+      PieceColor.draw: S.of(context).draw
     };
 
-    if (winner == Color.nobody) {
+    if (winner == PieceColor.nobody) {
       if (Game.shared.position.phase == Phase.placing) {
         changeStatus(S.of(context).tipPlace);
       } else if (Game.shared.position.phase == Phase.moving) {
@@ -193,7 +193,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
       setState(() {});
 
-      if (position.winner == Color.nobody) {
+      if (position.winner == PieceColor.nobody) {
         engineToGo();
       } else {
         showTips();
@@ -210,16 +210,16 @@ class _GamePageState extends State<GamePage> with RouteAware {
   engineToGo() async {
     // TODO
     while ((Config.isAutoRestart == true ||
-            Game.shared.position.winner == Color.nobody) &&
+            Game.shared.position.winner == PieceColor.nobody) &&
         Game.shared.isAiToMove() &&
         mounted &&
         context != null) {
       if (widget.engineType == EngineType.aiVsAi) {
-        String score = Game.shared.position.score[Color.black].toString() +
+        String score = Game.shared.position.score[PieceColor.black].toString() +
             " : " +
-            Game.shared.position.score[Color.white].toString() +
+            Game.shared.position.score[PieceColor.white].toString() +
             " : " +
-            Game.shared.position.score[Color.draw].toString();
+            Game.shared.position.score[PieceColor.draw].toString();
 
         changeStatus(score);
       } else {
@@ -242,7 +242,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
 
       if (Config.isAutoRestart == true &&
-          Game.shared.position.winner != Color.nobody) {
+          Game.shared.position.winner != PieceColor.nobody) {
         Game.shared.newGame();
       }
     }
@@ -323,7 +323,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     //String winnerStr =
     //    winner == Color.black ? S.of(context).black : S.of(context).white;
     String loserStr =
-        winner == Color.black ? S.of(context).white : S.of(context).black;
+        winner == PieceColor.black ? S.of(context).white : S.of(context).black;
 
     switch (Game.shared.position.gameOverReason) {
       case GameOverReason.loseReasonlessThanThree:
@@ -359,27 +359,27 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   GameResult getGameResult(var winner) {
-    if (isAi[Color.black] && isAi[Color.white]) {
+    if (isAi[PieceColor.black] && isAi[PieceColor.white]) {
       return GameResult.none;
     }
 
-    if (winner == Color.black) {
-      if (isAi[Color.black]) {
+    if (winner == PieceColor.black) {
+      if (isAi[PieceColor.black]) {
         return GameResult.lose;
       } else {
         return GameResult.win;
       }
     }
 
-    if (winner == Color.white) {
-      if (isAi[Color.white]) {
+    if (winner == PieceColor.white) {
+      if (isAi[PieceColor.white]) {
         return GameResult.lose;
       } else {
         return GameResult.win;
       }
     }
 
-    if (winner == Color.draw) {
+    if (winner == PieceColor.draw) {
       return GameResult.draw;
     }
 
@@ -495,7 +495,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             width: 180,
             margin: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: UIColors.boardBackgroundColor,
+              color: Color(Config.boardBackgroundColor),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -540,7 +540,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: UIColors.boardBackgroundColor,
+        color: Color(Config.boardBackgroundColor),
       ),
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: EdgeInsets.symmetric(vertical: 2),
@@ -629,7 +629,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final operatorBar = createOperatorBar();
 
     return Scaffold(
-      backgroundColor: UIColors.darkBackgroundColor,
+      backgroundColor: Color(Config.darkBackgroundColor),
       body: Column(children: <Widget>[header, board, operatorBar]),
     );
   }

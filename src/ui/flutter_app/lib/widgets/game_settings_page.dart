@@ -59,7 +59,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           child: const Text('Confirm'),
           onPressed: () {
             setState(() => currentColor = pickerColor);
-            UIColors.boardBackgroundColor = pickerColor;
+            Config.boardBackgroundColor = pickerColor.value;
+            Config.save();
             Navigator.of(context).pop();
           },
         ),
@@ -91,7 +92,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           child: const Text('Confirm'),
           onPressed: () {
             setState(() => currentColor = pickerColor);
-            UIColors.darkBackgroundColor = pickerColor;
+            Config.darkBackgroundColor = pickerColor.value;
+            Config.save();
             Navigator.of(context).pop();
           },
         ),
@@ -123,7 +125,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           child: const Text('Confirm'),
           onPressed: () {
             setState(() => currentColor = pickerColor);
-            UIColors.boardLineColor = pickerColor;
+            Config.boardLineColor = pickerColor.value;
+            Config.save();
             Navigator.of(context).pop();
           },
         ),
@@ -303,7 +306,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             Text(S.of(context).skillLevel, style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
-              color: UIColors.boardBackgroundColor,
+              color: Color(Config.boardBackgroundColor),
               elevation: 0.5,
               margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0),
               child: Column(
@@ -328,7 +331,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).sound, style: headerStyle),
             Card(
-              color: UIColors.boardBackgroundColor,
+              color: Color(Config.boardBackgroundColor),
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -351,7 +354,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).whoMovesFirst, style: headerStyle),
             Card(
-              color: UIColors.boardBackgroundColor,
+              color: Color(Config.boardBackgroundColor),
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -371,7 +374,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).misc, style: headerStyle),
             Card(
-              color: UIColors.boardBackgroundColor,
+              color: Color(Config.boardBackgroundColor),
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -395,7 +398,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).color, style: headerStyle),
             Card(
-              color: UIColors.boardBackgroundColor,
+              color: Color(Config.boardBackgroundColor),
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -403,9 +406,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).boardColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(UIColors.boardBackgroundColor
-                          .toString()
-                          .substring(5)),
+                      Text(Config.boardBackgroundColor.toRadixString(16)),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
@@ -416,8 +417,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).backgroudColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(
-                          UIColors.darkBackgroundColor.toString().substring(5)),
+                      Text(Config.darkBackgroundColor.toRadixString(16)),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
@@ -428,7 +428,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).lineColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(UIColors.boardLineColor.toString().substring(5)),
+                      Text(Config.boardLineColor.toRadixString(16)),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),

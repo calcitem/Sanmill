@@ -18,7 +18,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/board.dart';
 
 import 'painter_base.dart';
@@ -51,7 +50,7 @@ class BoardPainter extends PiecesBasePainter {
     double offsetX,
     double offsetY,
   }) {
-    paint.color = UIColors.boardLineColor;
+    paint.color = Color(Config.boardLineColor);
     paint.style = PaintingStyle.stroke;
 
     const double borderLineWidth = 2.0;
