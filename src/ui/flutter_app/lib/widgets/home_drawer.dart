@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:sanmill/generated/l10n.dart';
@@ -122,13 +123,30 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
-                    child: Text(
-                      S.of(context).appName,
-                      style: TextStyle(
+                    child: ColorizeAnimatedTextKit(
+                      onTap: () {
+                        print("ColorizeAnimatedTextKit Tap Event");
+                      },
+                      text: [
+                        S.of(context).appName,
+                        S.of(context).appName,
+                        S.of(context).appName,
+                      ],
+                      textStyle: TextStyle(
+                        fontSize: 24.0,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.grey,
-                        fontSize: 24,
                       ),
+                      colors: [
+                        Colors.black,
+                        Colors.blue,
+                        Colors.yellow,
+                        Colors.red,
+                      ],
+                      speed: const Duration(milliseconds: 3000),
+                      pause: const Duration(milliseconds: 30000),
+                      repeatForever: true,
+                      stopPauseOnTap: true,
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ],
