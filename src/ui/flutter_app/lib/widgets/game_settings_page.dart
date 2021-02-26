@@ -289,14 +289,17 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    //
     final TextStyle headerStyle =
-        TextStyle(color: UIColors.secondaryColor, fontSize: 20.0);
-    final TextStyle itemStyle = TextStyle(color: UIColors.primaryColor);
+        TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
+    final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
+    final cardColor = UIColors.floralWhiteColor;
 
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
-      appBar: AppBar(centerTitle: true, title: Text(S.of(context).settings)),
+      appBar: AppBar(
+          centerTitle: true,
+          title: Text(S.of(context).settings),
+          backgroundColor: UIColors.primaryColor),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -306,7 +309,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             Text(S.of(context).skillLevel, style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
-              color: Color(Config.boardBackgroundColor),
+              color: cardColor,
               elevation: 0.5,
               margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0),
               child: Column(
@@ -331,7 +334,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).sound, style: headerStyle),
             Card(
-              color: Color(Config.boardBackgroundColor),
+              color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -354,7 +357,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).whoMovesFirst, style: headerStyle),
             Card(
-              color: Color(Config.boardBackgroundColor),
+              color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -374,7 +377,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).misc, style: headerStyle),
             Card(
-              color: Color(Config.boardBackgroundColor),
+              color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
@@ -398,7 +401,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).color, style: headerStyle),
             Card(
-              color: Color(Config.boardBackgroundColor),
+              color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[

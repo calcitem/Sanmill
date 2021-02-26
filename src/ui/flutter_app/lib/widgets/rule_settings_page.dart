@@ -178,10 +178,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    //
     final TextStyle headerStyle =
-        TextStyle(color: UIColors.secondaryColor, fontSize: 20.0);
-    final TextStyle itemStyle = TextStyle(color: UIColors.primaryColor);
+        TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
+    final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
+    final cardColor = UIColors.floralWhiteColor;
 
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
@@ -195,7 +195,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).rules, style: headerStyle),
             Card(
-              color: Color(Config.boardBackgroundColor),
+              color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[

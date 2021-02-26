@@ -19,17 +19,20 @@
 import 'package:flutter/material.dart';
 
 class UIColors {
+  static const floralWhiteColor = Color(0xFFFFFAF0);
   static const crusoeColor = Color(0xFF165B31);
   static const burlyWoodColor = Color(0xFFDEB887);
+  static const papayaWhipColor = Color(0xFFFFEFD5);
+  static const forestGreenColor = Color(0xFF228B22);
   static const turmericColor = Color.fromARGB(0xFF, 186, 202, 68);
 
   static const logoColor = Color(0xFF6D000D);
 
-  static const primaryColor = Color(0xFF461220);
+  static const primaryColor = Colors.green;
   static const secondaryColor = Color(0x99461220);
 
   static var darkBackgroundColor = crusoeColor;
-  static const lightBackgroundColor = Color(0xFFEEE0CB);
+  static const lightBackgroundColor = papayaWhipColor;
 
   static var boardBackgroundColor = burlyWoodColor;
 
