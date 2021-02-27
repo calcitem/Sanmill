@@ -18,6 +18,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/mill.dart';
+import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/board.dart';
 
 import 'painter_base.dart';
@@ -60,6 +64,31 @@ class BoardPainter extends PiecesBasePainter {
     var top = offsetY;
 
     paint.strokeWidth = borderLineWidth;
+
+    var pieceInHandCount =
+        Game.shared.position.pieceInHandCount[PieceColor.white];
+
+    var pieceInHandCountStr = "";
+
+    if (Game.shared.position.phase == Phase.placing) {
+      pieceInHandCountStr = pieceInHandCount.toString();
+    }
+
+    TextSpan textSpan = TextSpan(
+        style: TextStyle(fontSize: 36, color: UIColors.boardLineColor), // TODO
+        text: pieceInHandCountStr);
+
+    TextPainter textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr);
+
+    textPainter.layout();
+
+    textPainter.paint(
+        canvas,
+        Offset(left + squareWidth * 3 - textPainter.width / 2,
+            top + squareWidth * 3 - textPainter.height / 2));
 
     canvas.drawRect(
       Rect.fromLTWH(left, top, squareWidth * 6, squareWidth * 6),
