@@ -133,7 +133,7 @@ void Game::loadSettings()
     setFixWindowSize(empty ? false : settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
-    setSkillLevel(empty ? true : settings->value("Options/SkillLevel").toInt());
+    setSkillLevel(empty ? 20 : settings->value("Options/SkillLevel").toInt());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
     setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
     setOpeningBook(empty ? false : settings->value("Options/OpeningBook").toBool());
