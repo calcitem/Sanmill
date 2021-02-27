@@ -60,42 +60,42 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   }
 
   void changeIndex(DrawerIndex drawerIndexdata) {
-    if (drawerIndex != drawerIndexdata) {
-      drawerIndex = drawerIndexdata;
-      if (drawerIndex == DrawerIndex.humanVsAi) {
-        setState(() {
-          Game.shared.setWhoIsAi(EngineType.humanVsAi);
-          screenView = GamePage(EngineType.humanVsAi);
-        });
-      } else if (drawerIndex == DrawerIndex.humanVsHuman) {
-        setState(() {
-          Game.shared.setWhoIsAi(EngineType.humanVsHuman);
-          screenView = GamePage(EngineType.humanVsHuman);
-        });
-      } else if (drawerIndex == DrawerIndex.aiVsAi) {
-        setState(() {
-          Game.shared.setWhoIsAi(EngineType.aiVsAi);
-          screenView = GamePage(EngineType.aiVsAi);
-        });
-      } else if (drawerIndex == DrawerIndex.settings) {
-        setState(() {
-          screenView = GameSettingsPage();
-        });
-      } else if (drawerIndex == DrawerIndex.ruleSettings) {
-        setState(() {
-          screenView = RuleSettingsPage();
-        });
-      } else if (drawerIndex == DrawerIndex.Help) {
-        setState(() {
-          screenView = HelpScreen();
-        });
-      } else if (drawerIndex == DrawerIndex.About) {
-        setState(() {
-          showAbout();
-        });
-      } else {
-        //do in your way......
-      }
+    if (drawerIndex == drawerIndexdata) {
+      return;
+    }
+
+    var drawerMap = {
+      DrawerIndex.humanVsAi: EngineType.humanVsAi,
+      DrawerIndex.humanVsHuman: EngineType.humanVsHuman,
+      DrawerIndex.aiVsAi: EngineType.aiVsAi,
+    };
+
+    drawerIndex = drawerIndexdata;
+
+    var engineType = drawerMap[drawerIndex];
+    if (engineType != null) {
+      setState(() {
+        Game.shared.setWhoIsAi(engineType);
+        screenView = GamePage(engineType);
+      });
+    } else if (drawerIndex == DrawerIndex.settings) {
+      setState(() {
+        screenView = GameSettingsPage();
+      });
+    } else if (drawerIndex == DrawerIndex.ruleSettings) {
+      setState(() {
+        screenView = RuleSettingsPage();
+      });
+    } else if (drawerIndex == DrawerIndex.Help) {
+      setState(() {
+        screenView = HelpScreen();
+      });
+    } else if (drawerIndex == DrawerIndex.About) {
+      setState(() {
+        showAbout();
+      });
+    } else {
+      //do in your way......
     }
   }
 
