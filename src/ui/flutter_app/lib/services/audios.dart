@@ -21,6 +21,7 @@ import 'dart:io';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 class Audios {
   //
@@ -74,7 +75,9 @@ class Audios {
     await _fixedTonePlayer.pause();
     await _fixedTonePlayer.seek(Duration.zero);
     //await release();
-    await _tonePlayer.play(fileName);
+    Chain.capture(() {
+      _tonePlayer.play(fileName);
+    });
   }
 
   static stopBgm() {
