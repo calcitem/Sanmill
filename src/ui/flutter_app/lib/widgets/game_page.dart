@@ -30,6 +30,7 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/style/toast.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
 
@@ -121,94 +122,96 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
 
     bool ret = false;
-
-    switch (position.action) {
-      case Act.place:
-        if (position.putPiece(sq)) {
-          if (position.action == Act.remove) {
-            Audios.playTone('mill.mp3');
-            changeStatus(S.of(context).tipRemove);
+    Chain.capture(() {
+      switch (position.action) {
+        case Act.place:
+          if (position.putPiece(sq)) {
+            if (position.action == Act.remove) {
+              Audios.playTone('mill.mp3');
+              changeStatus(S.of(context).tipRemove);
+            } else {
+              Audios.playTone('place.mp3');
+              changeStatus(S.of(context).tipPlaced);
+            }
+            ret = true;
+            print("putPiece: [$sq]");
+            break;
           } else {
-            Audios.playTone('place.mp3');
-            changeStatus(S.of(context).tipPlaced);
+            print("putPiece: skip [$sq]");
+            changeStatus(S.of(context).tipBanPlace);
           }
-          ret = true;
-          print("putPiece: [$sq]");
+
+          // If cannot move, retry select, do not break
+          //[[fallthrough]];
+          continue select;
+        select:
+        case Act.select:
+          if (position.selectPiece(sq)) {
+            Audios.playTone('select.mp3');
+            Game.shared.select(index);
+            ret = true;
+            print("selectPiece: [$sq]");
+            changeStatus(S.of(context).tipPlace);
+          } else {
+            Audios.playTone('illegal.mp3');
+            print("selectPiece: skip [$sq]");
+            changeStatus(S.of(context).tipSelectWrong);
+          }
           break;
+
+        case Act.remove:
+          if (position.removePiece(sq)) {
+            Audios.playTone('remove.mp3');
+            ret = true;
+            print("removePiece: [$sq]");
+            changeStatus(S.of(context).tipRemoved);
+          } else {
+            Audios.playTone('illegal.mp3');
+            print("removePiece: skip [$sq]");
+            changeStatus(S.of(context).tipBanRemove);
+          }
+          break;
+
+        default:
+          break;
+      }
+
+      if (ret) {
+        Game.shared.sideToMove = position.sideToMove();
+        Game.shared.moveHistory.add(position.cmdline);
+
+        // TODO: Need Others?
+        // Increment ply counters. In particular, rule50 will be reset to zero later on
+        // in case of a capture.
+        ++position.gamePly;
+        ++position.rule50;
+        ++position.pliesFromNull;
+
+        //position.move = m;
+
+        Move m = Move(position.cmdline);
+        position.recorder.moveIn(m, position);
+
+        setState(() {});
+
+        if (position.winner == PieceColor.nobody) {
+          engineToGo();
         } else {
-          print("putPiece: skip [$sq]");
-          changeStatus(S.of(context).tipBanPlace);
+          showTips();
         }
+      }
 
-        // If cannot move, retry select, do not break
-        //[[fallthrough]];
-        continue select;
-      select:
-      case Act.select:
-        if (position.selectPiece(sq)) {
-          Audios.playTone('select.mp3');
-          Game.shared.select(index);
-          ret = true;
-          print("selectPiece: [$sq]");
-          changeStatus(S.of(context).tipPlace);
-        } else {
-          Audios.playTone('illegal.mp3');
-          print("selectPiece: skip [$sq]");
-          changeStatus(S.of(context).tipSelectWrong);
-        }
-        break;
-
-      case Act.remove:
-        if (position.removePiece(sq)) {
-          Audios.playTone('remove.mp3');
-          ret = true;
-          print("removePiece: [$sq]");
-          changeStatus(S.of(context).tipRemoved);
-        } else {
-          Audios.playTone('illegal.mp3');
-          print("removePiece: skip [$sq]");
-          changeStatus(S.of(context).tipBanRemove);
-        }
-        break;
-
-      default:
-        break;
-    }
-
-    if (ret) {
       Game.shared.sideToMove = position.sideToMove();
-      Game.shared.moveHistory.add(position.cmdline);
-
-      // TODO: Need Others?
-      // Increment ply counters. In particular, rule50 will be reset to zero later on
-      // in case of a capture.
-      ++position.gamePly;
-      ++position.rule50;
-      ++position.pliesFromNull;
-
-      //position.move = m;
-
-      Move m = Move(position.cmdline);
-      position.recorder.moveIn(m, position);
 
       setState(() {});
-
-      if (position.winner == PieceColor.nobody) {
-        engineToGo();
-      } else {
-        showTips();
-      }
-    }
-
-    Game.shared.sideToMove = position.sideToMove();
-
-    setState(() {});
+    });
 
     return ret;
   }
 
   engineToGo() async {
     // TODO
+
     while ((Config.isAutoRestart == true ||
             Game.shared.position.winner == PieceColor.nobody) &&
         Game.shared.isAiToMove() &&
@@ -229,22 +232,23 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
 
       final response = await widget.engine.search(Game.shared.position);
+      Chain.capture(() {
+        if (response.type == 'move') {
+          Move mv = response.value;
+          final Move move = new Move(mv.move);
 
-      if (response.type == 'move') {
-        Move mv = response.value;
-        final Move move = new Move(mv.move);
+          //Battle.shared.move = move;
+          Game.shared.doMove(move.move);
+          showTips();
+        } else {
+          changeStatus('Error: ${response.type}');
+        }
 
-        //Battle.shared.move = move;
-        Game.shared.doMove(move.move);
-        showTips();
-      } else {
-        changeStatus('Error: ${response.type}');
-      }
-
-      if (Config.isAutoRestart == true &&
-          Game.shared.position.winner != PieceColor.nobody) {
-        Game.shared.newGame();
-      }
+        if (Config.isAutoRestart == true &&
+            Game.shared.position.winner != PieceColor.nobody) {
+          Game.shared.newGame();
+        }
+      });
     }
   }
 
