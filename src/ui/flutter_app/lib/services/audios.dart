@@ -18,27 +18,12 @@
 
 import 'dart:io';
 
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:stack_trace/stack_trace.dart';
 
 class Audios {
   //
-  static AudioPlayer _fixedBgmPlayer, _fixedTonePlayer;
-  static AudioCache _bgmPlayer, _tonePlayer;
-
-  static loopBgm(String fileName) async {
-    if (_bgmPlayer == null) {
-      _fixedBgmPlayer = AudioPlayer();
-      _bgmPlayer = AudioCache(prefix: 'audios/', fixedPlayer: _fixedBgmPlayer);
-
-      //await _bgmPlayer.loadAll(['bg_music.mp3']);
-    }
-
-    _fixedBgmPlayer.stop();
-    _bgmPlayer.loop(fileName);
-  }
+  static AudioPlayer _player;
 
   static playTone(String fileName) async {
     if (!Config.toneEnabled) {
@@ -47,49 +32,45 @@ class Audios {
 
     if (Platform.isWindows) {
       print(
-          "audioplayers is not support Windows. See: https://pub.dev/packages/audioplayers");
+          "audio players is not support Windows. See: https://pub.dev/packages/just_audio");
       return;
     }
 
-    if (_tonePlayer == null) {
-      //
-      _fixedTonePlayer = AudioPlayer();
-      _tonePlayer =
-          AudioCache(prefix: 'assets/audios/', fixedPlayer: _fixedTonePlayer);
+    try {
+      if (_player == null) {
+        _player = AudioPlayer();
+      }
 
-      await _tonePlayer.loadAll([
-        'draw.mp3',
-        'go.mp3',
-        'illegal.mp3',
-        'mill.mp3',
-        'fly.mp3',
-        'lose.mp3',
-        'place.mp3',
-        'remove.mp3',
-        'select.mp3',
-        'win.mp3',
-      ]);
+      await _player.pause();
+      await _player.seek(Duration.zero);
+
+      var duration = await _player.setAsset("assets/audios/" + fileName);
+
+      _player.play();
+    } on PlayerException catch (e) {
+      // iOS/macOS: maps to NSError.code
+      // Android: maps to ExoPlayerException.type
+      // Web: maps to MediaError.code
+      print("Error code: ${e.code}");
+      // iOS/macOS: maps to NSError.localizedDescription
+      // Android: maps to ExoPlaybackException.getMessage()
+      // Web: a generic message
+      print("Error message: ${e.message}");
+    } on PlayerInterruptedException catch (e) {
+      // This call was interrupted since another audio source was loaded or the
+      // player was stopped or disposed before this audio source could complete
+      // loading.
+      print("Connection aborted: ${e.message}");
+    } catch (e) {
+      // Fallback for all errors
+      print(e);
     }
-
-    //await _fixedTonePlayer.stop();
-    await _fixedTonePlayer.pause();
-    await _fixedTonePlayer.seek(Duration.zero);
-    //await release();
-    Chain.capture(() {
-      _tonePlayer.play(fileName);
-    });
-  }
-
-  static stopBgm() {
-    if (_fixedBgmPlayer != null) _fixedBgmPlayer.stop();
   }
 
   static Future<void> release() async {
-    if (_fixedBgmPlayer != null) {
-      await _fixedBgmPlayer.release();
-    }
-    if (_fixedTonePlayer != null) {
-      await _fixedTonePlayer.release();
+    if (_player != null) {
+      await _player.stop();
+      await _player.dispose();
     }
   }
 }

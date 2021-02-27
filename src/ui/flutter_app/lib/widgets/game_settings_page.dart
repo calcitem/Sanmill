@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/colors.dart';
 
 class GameSettingsPage extends StatefulWidget {
@@ -263,21 +262,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setMusic(bool value) async {
-    //
-    setState(() {
-      Config.bgmEnabled = value;
-    });
-
-    if (Config.bgmEnabled) {
-      //Audios.loopBgm('bg_music.mp3');
-    } else {
-      Audios.stopBgm();
-    }
-
-    Config.save();
-  }
-
   setTone(bool value) async {
     //
     setState(() {
@@ -338,13 +322,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
-                    value: Config.bgmEnabled,
-                    title: Text(S.of(context).sound, style: itemStyle),
-                    onChanged: setMusic,
-                  ),
-                  _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.toneEnabled,
