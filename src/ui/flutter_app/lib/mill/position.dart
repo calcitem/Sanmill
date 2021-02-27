@@ -41,8 +41,8 @@ class StateInfo {
 class Position {
   GameResult result = GameResult.pending;
 
-  List<String> board = List<String>(sqNumber);
-  List<String> _grid = List<String>(7 * 7);
+  List<String> board = List.filled(sqNumber, "");
+  List<String> _grid = List.filled(7 * 7, "");
 
   GameRecorder recorder;
 
@@ -90,24 +90,24 @@ class Position {
   Move move;
 
   Position.boardToGrid() {
-    _grid = List<String>();
+    _grid = [];
     for (int sq = 0; sq < board.length; sq++) {
       _grid[squareToIndex[sq]] = board[sq];
     }
   }
 
   Position.gridToBoard() {
-    board = List<String>();
+    board = [];
     for (int i = 0; i < _grid.length; i++) {
       board[indexToSquare[i]] = _grid[i];
     }
   }
 
   Position.clone(Position other) {
-    _grid = List<String>();
+    _grid = [];
     other._grid.forEach((piece) => _grid.add(piece));
 
-    board = List<String>();
+    board = [];
     other.board.forEach((piece) => board.add(piece));
 
     recorder = other.recorder;

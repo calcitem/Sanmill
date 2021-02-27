@@ -526,8 +526,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
   }
 
-  void showSnackbar(String message) {
-    var currentScaffold = globalScaffoldKey.currentState;
+  void showSnackBar(String message) {
+    //var currentScaffold = globalScaffoldKey.currentState;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
@@ -535,7 +535,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   Widget createOperatorBar() {
     //
-    final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
+    //final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
     final text = Game.shared.position.manualText;
 
     final manualStyle =
@@ -579,7 +579,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
                     child: Text(S.of(context).copy, style: manualStyle),
                     onPressed: () =>
                         Clipboard.setData(ClipboardData(text: text)).then((_) {
-                      showSnackbar(S.of(context).moveHistoryCopied);
+                      showSnackBar(S.of(context).moveHistoryCopied);
                     }),
                   ),
                   TextButton(

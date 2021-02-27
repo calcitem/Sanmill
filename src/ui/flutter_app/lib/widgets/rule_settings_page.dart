@@ -28,8 +28,6 @@ class RuleSettingsPage extends StatefulWidget {
 }
 
 class _RuleSettingsPageState extends State<RuleSettingsPage> {
-  String _version = "";
-
   @override
   void initState() {
     super.initState();
