@@ -116,7 +116,6 @@ public:
 
 public:
     Depth originDepth { 0 };
-    Depth adjustedDepth { 0 };
 
     Move bestMove { MOVE_NONE };
     Value bestvalue { VALUE_ZERO };

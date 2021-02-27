@@ -415,5 +415,9 @@
   "lineColor": "Line Color",
   "@lineColor": {
     "description": "Line Color"
+  },
+  "aiIsLazy": "AI is Lazy",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
   }
 }

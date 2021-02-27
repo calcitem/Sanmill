@@ -103,5 +103,6 @@
   "boardColor": "棋盘颜色",
   "pieceColor": "棋子颜色",
   "backgroudColor": "背景颜色",
-  "lineColor": "线条颜色"
+  "lineColor": "线条颜色",
+  "aiIsLazy": "机器领先时懒惰"
 }

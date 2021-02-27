@@ -236,6 +236,9 @@ public slots:
     // Skill Level
     void setSkillLevel(int val);
 
+    // AI is Lazy
+    void setAiIsLazy(bool enabled);
+
     // Do you admit defeat when you lose
     void setResignIfMostLose(bool enabled);
 

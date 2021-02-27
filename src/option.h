@@ -34,6 +34,16 @@ public:
         return skillLevel;
     }
 
+    void setAiIsLazy(bool enabled) noexcept
+    {
+        aiIsLazy = enabled;
+    }
+
+    bool getAiIsLazy() const noexcept
+    {
+        return aiIsLazy;
+    }
+
     void setAutoRestart(bool enabled) noexcept
     {
         isAutoRestart = enabled;
@@ -151,6 +161,7 @@ protected:
 
 private:
     int skillLevel { 20 };
+    bool aiIsLazy { false };
     bool isAutoRestart { false };
     bool isAutoChangeFirstMove { false };
     bool resignIfMostLose { false };

@@ -198,6 +198,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
+  setAiIsLazy(bool value) async {
+    setState(() {
+      Config.aiIsLazy = value;
+    });
+
+    Config.save();
+  }
+
   setIsAutoRestart(bool value) async {
     setState(() {
       Config.isAutoRestart = value;
@@ -311,6 +319,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                           color: UIColors.secondaryColor),
                     ]),
                     onTap: setSkillLevel,
+                  ),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.aiIsLazy,
+                    title: Text(S.of(context).aiIsLazy, style: itemStyle),
+                    onChanged: setAiIsLazy,
                   ),
                 ],
               ),

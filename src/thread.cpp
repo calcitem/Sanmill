@@ -290,7 +290,7 @@ void Thread::analyze(Color c)
     string strUs = (c == BLACK ? "Black" : "White");
     string strThem = (c == BLACK ? "White" : "Black");
 
-    loggerDebug("Depth: %d\n\n", adjustedDepth);
+    loggerDebug("Depth: %d\n\n", originDepth);
 
     const Position *p = rootPos;
 

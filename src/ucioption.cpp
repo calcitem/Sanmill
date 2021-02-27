@@ -65,6 +65,11 @@ void on_skill_level(const Option &o)
     gameOptions.setSkillLevel((int)o);
 }
 
+void on_aiIsLazy(const Option &o)
+{
+    gameOptions.setAiIsLazy((bool)o);
+}
+
 void on_random_move(const Option &o)
 {
     gameOptions.setShufflingEnabled((bool)o);
@@ -151,6 +156,7 @@ void init(OptionsMap &o)
     o["Ponder"] << Option(false);
     o["MultiPV"] << Option(1, 1, 500);
     o["SkillLevel"] << Option(20, 0, 20, on_skill_level);
+    o["AiIsLazy"] << Option(false, on_aiIsLazy);
     o["Move Overhead"] << Option(10, 0, 5000);
     o["Slow Mover"] << Option(100, 10, 1000);
     o["nodestime"] << Option(0, 0, 10000);

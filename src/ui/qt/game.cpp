@@ -134,6 +134,7 @@ void Game::loadSettings()
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
     setSkillLevel(empty ? 20 : settings->value("Options/SkillLevel").toInt());
+    setAiIsLazy(empty ? false : settings->value("Options/AiIsLazy").toBool());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
     setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
     setOpeningBook(empty ? false : settings->value("Options/OpeningBook").toBool());
@@ -571,6 +572,12 @@ void Game::setSkillLevel(int val)
 {
     gameOptions.setSkillLevel(val);
     settings->setValue("Options/SkillLevel", val);
+}
+
+void Game::setAiIsLazy(bool enabled)
+{
+    gameOptions.setAiIsLazy(enabled);
+    settings->setValue("Options/AiIsLazy", enabled);
 }
 
 void Game::setResignIfMostLose(bool enabled)

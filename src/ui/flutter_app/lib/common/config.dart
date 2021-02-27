@@ -26,6 +26,7 @@ class Config {
   static bool toneEnabled = true;
   static int thinkingTime = 5000;
   static bool aiMovesFirst = false;
+  static bool aiIsLazy = false;
   static int skillLevel = 20;
   static bool isAutoRestart = false;
   static bool isAutoChangeFirstMove = false;
@@ -61,6 +62,7 @@ class Config {
     Config.toneEnabled = profile['tone-enabled'] ?? true;
     Config.thinkingTime = profile['thinking-time'] ?? 5000;
     Config.aiMovesFirst = profile['ai-moves-first'] ?? false;
+    Config.aiIsLazy = profile['aiIsLazy'] ?? false;
     Config.skillLevel = profile['skillLevel'] ?? 20;
     Config.isAutoRestart = profile['isAutoRestart'] ?? false;
     Config.isAutoChangeFirstMove = profile['isAutoChangeFirstMove'] ?? false;
@@ -113,6 +115,7 @@ class Config {
     profile['tone-enabled'] = Config.toneEnabled;
     profile['thinking-time'] = Config.thinkingTime;
     profile['ai-moves-first'] = Config.aiMovesFirst;
+    profile['aiIsLazy'] = Config.aiIsLazy;
     profile['skillLevel'] = Config.skillLevel;
     profile['isAutoRestart'] = Config.isAutoRestart;
     profile['isAutoChangeFirstMove'] = Config.isAutoChangeFirstMove;

@@ -321,6 +321,7 @@
     <addaction name="actionPerfect_AI"/>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
+    <addaction name="actionAiIsLazy"/>
     <addaction name="actionOpeningBook_O"/>
     <addaction name="actionLearnEndgame_E"/>
    </widget>
@@ -1309,6 +1310,14 @@
    </property>
    <property name="text">
     <string>Perfect AI</string>
+   </property>
+  </action>
+  <action name="actionAiIsLazy">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lazy Mode</string>
    </property>
   </action>
  </widget>

@@ -79,8 +79,17 @@ int Thread::search()
 
     Value value = VALUE_ZERO;
 
-    const Depth d = getDepth();
-    adjustedDepth = d;
+    if (gameOptions.getAiIsLazy()) {
+        int np = bestvalue / VALUE_EACH_PIECE;
+        if (np > 1) {
+            cout << "Lazy Mode: " << np << endl;
+            originDepth = 4;
+        } else {
+            originDepth = getDepth();
+        }
+    } else {
+        originDepth = getDepth();
+    }
 
     const time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
@@ -148,7 +157,7 @@ int Thread::search()
         loggerDebug("==============================\n");
         loggerDebug("==============================\n");
 
-        for (Depth i = depthBegin; i < d; i += 1) {
+        for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
             TranspositionTable::clear();
@@ -185,10 +194,8 @@ int Thread::search()
     }
 #endif
 
-    originDepth = d;
-
 #ifdef MTDF_AI
-    value = MTDF(rootPos, ss, value, d, originDepth, bestMove);
+    value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
 #else
     value = search(rootPos, ss, d, originDepth, alpha, beta, bestMove);
 #endif

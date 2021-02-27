@@ -205,6 +205,9 @@ void MillGameWindow::initialize()
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             game, SLOT(setAnimation(bool)));
 
+    connect(ui.actionAiIsLazy, SIGNAL(toggled(bool)),
+            game, SLOT(setAiIsLazy(bool)));
+
     connect(ui.actionResignIfMostLose_G, SIGNAL(toggled(bool)),
             game, SLOT(setResignIfMostLose(bool)));
 
@@ -383,6 +386,7 @@ void MillGameWindow::initialize()
     ui.actionSound_S->setChecked(game->soundEnabled());
     ui.actionAnimation_A->setChecked(game->animationEnabled());
 
+    ui.actionAiIsLazy->setChecked(gameOptions.getAiIsLazy());
     ui.actionShuffling_R->setChecked(gameOptions.getShufflingEnabled());
     ui.actionPerfect_AI->setChecked(gameOptions.getPerfectAiEnabled());
     ui.actionIDS_I->setChecked(gameOptions.getIDSEnabled());
