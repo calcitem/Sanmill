@@ -127,10 +127,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
         case Act.place:
           if (position.putPiece(sq)) {
             if (position.action == Act.remove) {
-              Audios.playTone('mill.mp3');
+              //Audios.playTone('mill.mp3');
               changeStatus(S.of(context).tipRemove);
             } else {
-              Audios.playTone('place.mp3');
+              //Audios.playTone('place.mp3');
               changeStatus(S.of(context).tipPlaced);
             }
             ret = true;
@@ -161,7 +161,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
         case Act.remove:
           if (position.removePiece(sq)) {
-            Audios.playTone('remove.mp3');
+            //Audios.playTone('remove.mp3');
             ret = true;
             print("removePiece: [$sq]");
             changeStatus(S.of(context).tipRemoved);
