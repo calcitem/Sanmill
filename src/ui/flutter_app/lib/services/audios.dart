@@ -41,11 +41,8 @@ class Audios {
         _player = AudioPlayer();
       }
 
-      await _player.pause();
-      await _player.seek(Duration.zero);
-
-      var duration = await _player.setAsset("assets/audios/" + fileName);
-
+      await _player.stop();
+      await _player.setAsset("assets/audios/" + fileName);
       _player.play();
     } on PlayerException catch (e) {
       // iOS/macOS: maps to NSError.code
