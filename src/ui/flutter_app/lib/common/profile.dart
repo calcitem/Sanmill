@@ -57,6 +57,7 @@ class Profile {
     try {
       final contents = await _file.readAsString();
       _values = jsonDecode(contents);
+      print(_values);
     } catch (e) {
       print(e);
       return false;
