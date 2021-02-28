@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/common/algorithm.dart';
+abs(value) => value > 0 ? value : -value;
 
 enum MoveType { place, move, remove }
 
