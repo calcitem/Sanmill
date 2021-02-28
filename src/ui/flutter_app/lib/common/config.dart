@@ -57,9 +57,9 @@ class Config {
   static Future<void> loadProfile() async {
     final profile = await Profile.shared();
 
-    Config.toneEnabled = profile['tone-enabled'] ?? true;
-    Config.thinkingTime = profile['thinking-time'] ?? 5000;
-    Config.aiMovesFirst = profile['ai-moves-first'] ?? false;
+    Config.toneEnabled = profile['toneEnabled'] ?? true;
+    Config.thinkingTime = profile['thinkingTime'] ?? 5000;
+    Config.aiMovesFirst = profile['aiMovesFirst'] ?? false;
     Config.aiIsLazy = profile['aiIsLazy'] ?? false;
     Config.skillLevel = profile['skillLevel'] ?? 20;
     Config.isAutoRestart = profile['isAutoRestart'] ?? false;
@@ -109,9 +109,9 @@ class Config {
   static Future<bool> save() async {
     final profile = await Profile.shared();
 
-    profile['tone-enabled'] = Config.toneEnabled;
-    profile['thinking-time'] = Config.thinkingTime;
-    profile['ai-moves-first'] = Config.aiMovesFirst;
+    profile['toneEnabled'] = Config.toneEnabled;
+    profile['thinkingTime'] = Config.thinkingTime;
+    profile['aiMovesFirst'] = Config.aiMovesFirst;
     profile['aiIsLazy'] = Config.aiIsLazy;
     profile['skillLevel'] = Config.skillLevel;
     profile['isAutoRestart'] = Config.isAutoRestart;
