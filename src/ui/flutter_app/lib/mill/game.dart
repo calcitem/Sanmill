@@ -54,22 +54,15 @@ class Game {
     switch (type) {
       case EngineType.humanVsAi:
       case EngineType.testViaLAN:
-        if (Config.aiMovesFirst) {
-          isAi[PieceColor.black] = true;
-          isAi[PieceColor.white] = false;
-        } else if (!Config.aiMovesFirst) {
-          isAi[PieceColor.black] = false;
-          isAi[PieceColor.white] = true;
-        }
+        isAi[PieceColor.black] = Config.aiMovesFirst;
+        isAi[PieceColor.white] = !Config.aiMovesFirst;
         break;
       case EngineType.humanVsHuman:
       case EngineType.humanVsLAN:
-        isAi[PieceColor.black] = false;
-        isAi[PieceColor.white] = false;
+        isAi[PieceColor.black] = isAi[PieceColor.white] = false;
         break;
       case EngineType.aiVsAi:
-        isAi[PieceColor.black] = true;
-        isAi[PieceColor.white] = true;
+        isAi[PieceColor.black] = isAi[PieceColor.white] = true;
         break;
       case EngineType.humanVsCloud:
         break;
