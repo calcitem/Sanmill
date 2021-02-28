@@ -142,50 +142,24 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   }
 
   setSkillLevel() async {
-    //
-    callback(int skillLevel) async {
-      //
-      Navigator.of(context).pop();
-
-      setState(() {
-        Config.skillLevel = skillLevel;
-      });
-
-      Config.save();
-    }
-
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SizedBox(height: 10),
-          RadioListTile(
-            activeColor: UIColors.primaryColor,
-            title: Text('L1'),
-            groupValue: Config.skillLevel,
-            value: 10,
-            onChanged: callback,
-          ),
-          Divider(),
-          RadioListTile(
-            activeColor: UIColors.primaryColor,
-            title: Text('L2'),
-            groupValue: Config.skillLevel,
-            value: 20,
-            onChanged: callback,
-          ),
-          Divider(),
-          RadioListTile(
-            activeColor: UIColors.primaryColor,
-            title: Text('L3'),
-            groupValue: Config.skillLevel,
-            value: 30,
-            onChanged: callback,
-          ),
-          Divider(),
-          SizedBox(height: 56),
-        ],
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Slider(
+            value: Config.skillLevel.toDouble(),
+            min: 1,
+            max: 20,
+            divisions: 19,
+            label: Config.skillLevel.round().toString(),
+            onChanged: (double value) {
+              setState(() {
+                Config.skillLevel = value.toInt();
+                Config.save();
+              });
+            },
+          );
+        },
       ),
     );
   }
@@ -310,11 +284,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).skillLevel, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.skillLevel == 10
-                          ? 'L1'
-                          : Config.skillLevel == 20
-                              ? 'L2'
-                              : 'L3'),
+                      Text(""), // TODO
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
