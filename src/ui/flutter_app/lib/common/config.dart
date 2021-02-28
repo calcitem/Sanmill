@@ -22,7 +22,6 @@ import 'package:sanmill/style/colors.dart';
 import 'profile.dart';
 
 class Config {
-  static bool bgmEnabled = false;
   static bool toneEnabled = true;
   static int thinkingTime = 5000;
   static bool aiMovesFirst = false;
@@ -58,7 +57,6 @@ class Config {
   static Future<void> loadProfile() async {
     final profile = await Profile.shared();
 
-    Config.bgmEnabled = profile['bgm-enabled'] ?? false;
     Config.toneEnabled = profile['tone-enabled'] ?? true;
     Config.thinkingTime = profile['thinking-time'] ?? 5000;
     Config.aiMovesFirst = profile['ai-moves-first'] ?? false;
@@ -111,7 +109,6 @@ class Config {
   static Future<bool> save() async {
     final profile = await Profile.shared();
 
-    profile['bgm-enabled'] = Config.bgmEnabled;
     profile['tone-enabled'] = Config.toneEnabled;
     profile['thinking-time'] = Config.thinkingTime;
     profile['ai-moves-first'] = Config.aiMovesFirst;
