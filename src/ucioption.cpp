@@ -167,17 +167,17 @@ void init(OptionsMap &o)
     o["Shuffling"] << Option(true, on_random_move);
 
     // Rules
-    o["piecesCount"] << Option(12, 6, 12, on_piecesCount);
-    o["piecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
-    o["hasObliqueLines"] << Option(true, on_hasObliqueLines);
-    o["hasBannedLocations"] << Option(true, on_hasBannedLocations);
-    o["isDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);
-    o["mayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
-    o["mayRemoveFromMillsAlways"] << Option(true, on_mayRemoveFromMillsAlways);
-    o["isBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
-    o["isLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
-    o["mayFly"] << Option(false, on_mayFly);
-    o["maxStepsLedToDraw"] << Option(50, 30, 50, on_maxStepsLedToDraw);
+    o["PiecesCount"] << Option(12, 6, 12, on_piecesCount);
+    o["PiecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
+    o["HasObliqueLines"] << Option(true, on_hasObliqueLines);
+    o["HasBannedLocations"] << Option(true, on_hasBannedLocations);
+    o["IsDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);
+    o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
+    o["MayRemoveFromMillsAlways"] << Option(true, on_mayRemoveFromMillsAlways);
+    o["IsBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
+    o["IsLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
+    o["MayFly"] << Option(false, on_mayFly);
+    o["MaxStepsLedToDraw"] << Option(50, 30, 50, on_maxStepsLedToDraw);
 
 }
 

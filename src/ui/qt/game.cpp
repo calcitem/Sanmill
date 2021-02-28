@@ -128,8 +128,8 @@ void Game::loadSettings()
 
     settings = new QSettings(SETTINGS_FILE, QSettings::IniFormat);
 
-    setEngineBlack(empty? false : settings->value("Options/blackIsAiPlayer").toBool());
-    setEngineWhite(empty ? true : settings->value("Options/whiteIsAiPlayer").toBool());
+    setEngineBlack(empty? false : settings->value("Options/BlackIsAiPlayer").toBool());
+    setEngineWhite(empty ? true : settings->value("Options/WhiteIsAiPlayer").toBool());
     setFixWindowSize(empty ? false : settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
@@ -145,7 +145,7 @@ void Game::loadSettings()
     setAutoRestart(empty ? false : settings->value("Options/AutoRestart").toBool());
     setAutoChangeFirstMove(empty ? false : settings->value("Options/AutoChangeFirstMove").toBool());
 
-    setRule(empty ? DEFAULT_RULE_NUMBER : settings->value("Options/ruleNo").toInt());
+    setRule(empty ? DEFAULT_RULE_NUMBER : settings->value("Options/RuleNo").toInt());
 }
 
 Game::~Game()
@@ -397,7 +397,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*
     // Reset game
     gameReset();
 
-    settings->setValue("Options/ruleNo", ruleNo);
+    settings->setValue("Options/RuleNo", ruleNo);
 }
 
 void Game::setEngine(Color color, bool enabled)
@@ -416,13 +416,13 @@ void Game::setEngine(Color color, bool enabled)
 void Game::setEngineBlack(bool enabled)
 {
     setEngine(BLACK, enabled);
-    settings->setValue("Options/blackIsAiPlayer", enabled);
+    settings->setValue("Options/BlackIsAiPlayer", enabled);
 }
 
 void Game::setEngineWhite(bool enabled)
 {
     setEngine(WHITE, enabled);
-    settings->setValue("Options/whiteIsAiPlayer", enabled);
+    settings->setValue("Options/WhiteIsAiPlayer", enabled);
 }
 
 void Game::setAiDepthTime(int time1, int time2)

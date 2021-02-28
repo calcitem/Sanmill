@@ -105,26 +105,26 @@ class NativeEngine extends AiEngine {
     await send('setoption name SkillLevel value ${Config.skillLevel}');
     await send('setoption name AiIsLazy value ${Config.aiIsLazy}');
     await send('setoption name Shuffling value ${Config.shufflingEnabled}');
-    await send('setoption name piecesCount value ${Config.piecesCount}');
+    await send('setoption name PiecesCount value ${Config.piecesCount}');
     await send(
-        'setoption name piecesAtLeastCount value ${Config.piecesAtLeastCount}');
+        'setoption name PiecesAtLeastCount value ${Config.piecesAtLeastCount}');
     await send(
-        'setoption name hasObliqueLines value ${Config.hasObliqueLines}');
+        'setoption name HasObliqueLines value ${Config.hasObliqueLines}');
     await send(
-        'setoption name hasBannedLocations value ${Config.hasBannedLocations}');
+        'setoption name HasBannedLocations value ${Config.hasBannedLocations}');
     await send(
-        'setoption name isDefenderMoveFirst value ${Config.isDefenderMoveFirst}');
+        'setoption name IsDefenderMoveFirst value ${Config.isDefenderMoveFirst}');
     await send(
-        'setoption name mayRemoveMultiple value ${Config.mayRemoveMultiple}');
+        'setoption name MayRemoveMultiple value ${Config.mayRemoveMultiple}');
     await send(
-        'setoption name mayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}');
+        'setoption name MayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}');
     await send(
-        'setoption name isBlackLoseButNotDrawWhenBoardFull value ${Config.isBlackLoseButNotDrawWhenBoardFull}');
+        'setoption name IsBlackLoseButNotDrawWhenBoardFull value ${Config.isBlackLoseButNotDrawWhenBoardFull}');
     await send(
-        'setoption name isLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
-    await send('setoption name mayFly value ${Config.mayFly}');
+        'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
+    await send('setoption name MayFly value ${Config.mayFly}');
     await send(
-        'setoption name maxStepsLedToDraw value ${Config.maxStepsLedToDraw}');
+        'setoption name MaxStepsLedToDraw value ${Config.maxStepsLedToDraw}');
   }
 
   String getPositionFen(Position position) {
