@@ -75,7 +75,7 @@ class BoardPainter extends PiecesBasePainter {
     }
 
     TextSpan textSpan = TextSpan(
-        style: TextStyle(fontSize: 36, color: UIColors.boardLineColor), // TODO
+        style: TextStyle(fontSize: 48, color: UIColors.boardLineColor), // TODO
         text: pieceInHandCountStr);
 
     TextPainter textPainter = TextPainter(
