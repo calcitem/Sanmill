@@ -112,6 +112,10 @@
   "@restartGame": {
     "description": "Restart Game?"
   },
+  "restart": "Restart",
+  "@restart": {
+    "description": "Restart"
+  },
   "gameStarted": "Game started, please place",
   "@gameStarted": {
     "description": "Game started, please place"

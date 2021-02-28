@@ -28,6 +28,7 @@
   "thinking": "对方思考中...",
   "newGame": "新局",
   "restartGame": "重新开局？",
+  "restart": "重开局",
   "gameStarted": "游戏开始 请落子",
   "analyzing": "正在分析局面...",
   "error": "错误",

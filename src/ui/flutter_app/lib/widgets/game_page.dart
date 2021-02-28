@@ -275,7 +275,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           content:
               SingleChildScrollView(child: Text(S.of(context).restartGame)),
           actions: <Widget>[
-            TextButton(child: Text(S.of(context).ok), onPressed: confirm),
+            TextButton(child: Text(S.of(context).restart), onPressed: confirm),
             TextButton(child: Text(S.of(context).cancel), onPressed: cancel),
           ],
         );
