@@ -141,24 +141,51 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
+  SliderTheme _sliderTheme(context, setState) {
+    return SliderTheme(
+      data: SliderThemeData(
+        trackHeight: 20,
+        activeTrackColor: Colors.green,
+        inactiveTrackColor: Colors.grey,
+        disabledActiveTrackColor: Colors.yellow,
+        disabledInactiveTrackColor: Colors.cyan,
+        activeTickMarkColor: Colors.black,
+        inactiveTickMarkColor: Colors.green,
+        overlayColor: Colors.yellow,
+        overlappingShapeStrokeColor: Colors.black,
+        overlayShape: RoundSliderOverlayShape(),
+        valueIndicatorColor: Colors.green,
+        showValueIndicator: ShowValueIndicator.always,
+        minThumbSeparation: 100,
+        thumbShape: RoundSliderThumbShape(
+            enabledThumbRadius: 20.0, disabledThumbRadius: 1.0),
+        rangeTrackShape: RoundedRectRangeSliderTrackShape(),
+        tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
+        valueIndicatorTextStyle: TextStyle(fontSize: 24),
+      ),
+      child: Slider(
+        value: Config.skillLevel.toDouble(),
+        min: 1,
+        max: 20,
+        divisions: 19,
+        label: Config.skillLevel.round().toString(),
+        onChanged: (value) {
+          setState(() {
+            print("Slider value: $value");
+            Config.skillLevel = value.toInt();
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
   setSkillLevel() async {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) => StatefulBuilder(
         builder: (context, setState) {
-          return Slider(
-            value: Config.skillLevel.toDouble(),
-            min: 1,
-            max: 20,
-            divisions: 19,
-            label: Config.skillLevel.round().toString(),
-            onChanged: (double value) {
-              setState(() {
-                Config.skillLevel = value.toInt();
-                Config.save();
-              });
-            },
-          );
+          return _sliderTheme(context, setState);
         },
       ),
     );
