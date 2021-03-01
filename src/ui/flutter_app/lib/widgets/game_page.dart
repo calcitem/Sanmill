@@ -419,24 +419,53 @@ class _GamePageState extends State<GamePage> with RouteAware {
       return;
     }
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title:
-              Text(dialogTitle, style: TextStyle(color: UIColors.primaryColor)),
-          content: Text(getGameOverReasonString(
-              Game.shared.position.gameOverReason,
-              Game.shared.position.winner)),
-          actions: <Widget>[
-            TextButton(
-                child: Text(S.of(context).ok),
-                onPressed: () => Navigator.of(context).pop()),
-          ],
-        );
-      },
-    );
+    if (result == GameResult.win) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(dialogTitle,
+                style: TextStyle(color: UIColors.primaryColor)),
+            content: Text(getGameOverReasonString(
+                    Game.shared.position.gameOverReason,
+                    Game.shared.position.winner) +
+                S.of(context).challengeHarderLevel),
+            actions: <Widget>[
+              TextButton(
+                  child: Text(S.of(context).yes),
+                  onPressed: () {
+                    Config.skillLevel++;
+                    Config.save();
+                    Navigator.of(context).pop();
+                  }),
+              TextButton(
+                  child: Text(S.of(context).no),
+                  onPressed: () => Navigator.of(context).pop()),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(dialogTitle,
+                style: TextStyle(color: UIColors.primaryColor)),
+            content: Text(getGameOverReasonString(
+                Game.shared.position.gameOverReason,
+                Game.shared.position.winner)),
+            actions: <Widget>[
+              TextButton(
+                  child: Text(S.of(context).ok),
+                  onPressed: () => Navigator.of(context).pop()),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void calcScreenPaddingH() {

@@ -4,6 +4,14 @@
   "@appName": {
     "description": "The App name"
   },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No"
+  },
   "humanVsAi": "Human Vs AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
@@ -183,6 +191,10 @@
   "youWin": "You win! Congratulations!",
   "@youWin": {
     "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Challenge harder level?",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
   },
   "youLose": "You Lose!",
   "@youLose": {

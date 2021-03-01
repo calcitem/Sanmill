@@ -1,6 +1,8 @@
 {
   "@@locale": "zh",
   "appName": "直棋",
+  "yes": "是",
+  "no": "否",
   "humanVsAi": "人机对战",
   "humanVsHuman": "双人对战",
   "aiVsAi": "机器对战",
@@ -46,6 +48,7 @@
   "drawReasonThreefoldRepetition": "三次重复局面和。",
   "gameOverUnknownReason": "游戏结束，原因未知！",
   "youWin": "恭喜你赢了",
+  "challengeHarderLevel": "后续提升难度吗？",
   "youLose": "你输了",
   "regret": "悔棋",
   "analyze": "分析",
