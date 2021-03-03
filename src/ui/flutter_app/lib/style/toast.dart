@@ -45,8 +45,6 @@ class Toast {
     double pdHorizontal = 20.0,
     double pdVertical = 10.0,
   }) async {
-    assert(msg != null);
-
     _msg = msg;
     _startedTime = DateTime.now();
     _showTime = showTimeMs;

@@ -102,8 +102,6 @@ class Config {
     rule.mayFly = Config.mayFly = profile['MayFly'] ?? false;
     rule.maxStepsLedToDraw =
         Config.maxStepsLedToDraw = profile['MaxStepsLedToDraw'] ?? 50;
-
-    return true;
   }
 
   static Future<bool> save() async {

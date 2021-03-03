@@ -47,13 +47,13 @@ class GameRecorder {
     if (move.type == MoveType.remove) {
       halfMove = 0;
     } else {
-      halfMove++;
+      if (halfMove != null) halfMove = halfMove + 1;
     }
 
     if (fullMove == 0) {
-      fullMove++;
+      if (halfMove != null) halfMove = halfMove + 1;
     } else if (position.side != PieceColor.black) {
-      fullMove++;
+      if (halfMove != null) halfMove = halfMove + 1;
     }
 
     if (_history.length > 0) {

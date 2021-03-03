@@ -177,9 +177,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                                 child: widget.menuView != null
                                     ? widget.menuView
                                     : AnimatedIcon(
-                                        icon: widget.animatedIconData != null
-                                            ? widget.animatedIconData
-                                            : AnimatedIcons.arrow_menu,
+                                        icon: widget.animatedIconData,
                                         color: Colors.white,
                                         progress: iconAnimationController),
                               ),

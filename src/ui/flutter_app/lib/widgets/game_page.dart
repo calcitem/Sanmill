@@ -64,16 +64,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   changeStatus(String status) {
-    if (context == null) {
-      //print("[changeStatus] context == null, return");
-      return;
-    }
-
     setState(() => _status = status);
   }
 
   void showTips() {
-    if (!mounted || context == null) {
+    if (!mounted) {
       //print("[showTips] context == null, return");
       return;
     }
@@ -215,8 +210,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     while ((Config.isAutoRestart == true ||
             Game.shared.position.winner == PieceColor.nobody) &&
         Game.shared.isAiToMove() &&
-        mounted &&
-        context != null) {
+        mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
         String score = Game.shared.position.score[PieceColor.black].toString() +
             " : " +
@@ -226,9 +220,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
         changeStatus(score);
       } else {
-        if (context != null) {
-          changeStatus(S.of(context).thinking);
-        }
+        changeStatus(S.of(context).thinking);
       }
 
       final response = await widget.engine.search(Game.shared.position);
@@ -649,7 +641,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context));
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
   }
 
   @override

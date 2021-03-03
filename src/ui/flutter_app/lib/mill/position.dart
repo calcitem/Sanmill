@@ -332,7 +332,10 @@ class Position {
     if (move == "draw") {
       phase = Phase.gameOver;
       winner = PieceColor.draw;
-      score[PieceColor.draw]++;
+      if (score[PieceColor.draw] != null) {
+        score[PieceColor.draw] = score[PieceColor.draw] + 1;
+      }
+
       // TODO
       gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
       return true;
@@ -388,9 +391,15 @@ class Position {
       for (int r = 0; r < rankNumber; r++) {
         int s = f * rankNumber + r;
         if (board[s] == Piece.blackStone) {
-          pieceOnBoardCount[PieceColor.black]++;
+          if (pieceOnBoardCount[PieceColor.black] != null) {
+            pieceOnBoardCount[PieceColor.black] =
+                pieceOnBoardCount[PieceColor.black] + 1;
+          }
         } else if (board[s] == Piece.whiteStone) {
-          pieceOnBoardCount[PieceColor.black]++;
+          if (pieceOnBoardCount[PieceColor.white] != null) {
+            pieceOnBoardCount[PieceColor.white] =
+                pieceOnBoardCount[PieceColor.white] + 1;
+          }
         }
       }
     }
@@ -506,8 +515,6 @@ class Position {
       default:
         return false;
     }
-
-    return false;
   }
 
   bool putPiece(int s) {
@@ -527,8 +534,13 @@ class Position {
 
     if (phase == Phase.placing) {
       piece = sideToMove();
-      pieceInHandCount[us]--;
-      pieceOnBoardCount[us]++;
+      if (pieceInHandCount[us] != null) {
+        pieceInHandCount[us] = pieceInHandCount[us] - 1;
+      }
+
+      if (pieceOnBoardCount[us] != null) {
+        pieceOnBoardCount[us] = pieceOnBoardCount[us] + 1;
+      }
 
       _grid[index] = piece;
       board[s] = piece;
@@ -666,7 +678,9 @@ class Position {
     cmdline = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
     rule50 = 0; // TODO: Need to move out?
 
-    pieceOnBoardCount[them]--;
+    if (pieceOnBoardCount[them] != null) {
+      pieceOnBoardCount[them] = pieceOnBoardCount[them] - 1;
+    }
 
     if (pieceOnBoardCount[them] + pieceInHandCount[them] <
         rule.piecesAtLeastCount) {
@@ -752,11 +766,16 @@ class Position {
   void updateScore() {
     if (phase == Phase.gameOver) {
       if (winner == PieceColor.draw) {
-        score[PieceColor.draw]++;
+        if (score[PieceColor.draw] != null) {
+          score[PieceColor.draw] = score[PieceColor.draw] + 1;
+        }
+
         return;
       }
 
-      score[winner]++;
+      if (score[winner] != null) {
+        score[winner] = score[winner] + 1;
+      }
     }
   }
 

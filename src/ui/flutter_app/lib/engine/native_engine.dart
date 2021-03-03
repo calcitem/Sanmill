@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/mill.dart';
@@ -48,7 +50,7 @@ class NativeEngine extends AiEngine {
     return await platform.invokeMethod('isReady');
   }
 
-  Future<bool> isThinking() async {
+  FutureOr<bool> isThinking() async {
     return await platform.invokeMethod('isThinking');
   }
 
