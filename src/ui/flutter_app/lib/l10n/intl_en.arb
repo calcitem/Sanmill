@@ -443,5 +443,13 @@
   "display": "Display",
   "@display": {
     "description": "Display"
+  },
+  "boardBorderLineWidth": "Board Border Line Width",
+  "@boardBorderLineWidth": {
+    "description": "Board Border Line Width"
+  },
+  "boardInnerLineWidth": "Board Inner Line Width",
+  "@boardInnerLineWidth": {
+    "description": "Board Inner Line Width"
   }
 }

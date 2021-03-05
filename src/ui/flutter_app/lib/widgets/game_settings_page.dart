@@ -141,7 +141,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
-  SliderTheme _sliderTheme(context, setState) {
+  SliderTheme _SkillLevelSliderTheme(context, setState) {
     return SliderTheme(
       data: SliderThemeData(
         trackHeight: 20,
@@ -185,7 +185,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       context: context,
       builder: (BuildContext context) => StatefulBuilder(
         builder: (context, setState) {
-          return _sliderTheme(context, setState);
+          return _SkillLevelSliderTheme(context, setState);
         },
       ),
     );
@@ -288,6 +288,106 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     });
 
     Config.save();
+  }
+
+  SliderTheme _boardBorderLineWidthSliderTheme(context, setState) {
+    return SliderTheme(
+      data: SliderThemeData(
+        trackHeight: 20,
+        activeTrackColor: Colors.green,
+        inactiveTrackColor: Colors.grey,
+        disabledActiveTrackColor: Colors.yellow,
+        disabledInactiveTrackColor: Colors.cyan,
+        activeTickMarkColor: Colors.black,
+        inactiveTickMarkColor: Colors.green,
+        //overlayColor: Colors.yellow,
+        overlappingShapeStrokeColor: Colors.black,
+        //overlayShape: RoundSliderOverlayShape(),
+        valueIndicatorColor: Colors.green,
+        showValueIndicator: ShowValueIndicator.always,
+        minThumbSeparation: 100,
+        thumbShape: RoundSliderThumbShape(
+            enabledThumbRadius: 2.0, disabledThumbRadius: 1.0),
+        rangeTrackShape: RoundedRectRangeSliderTrackShape(),
+        tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
+        valueIndicatorTextStyle: TextStyle(fontSize: 24),
+      ),
+      child: Slider(
+        value: Config.boardBorderLineWidth.toDouble(),
+        min: 0.0,
+        max: 20.0,
+        divisions: 200,
+        label: Config.boardBorderLineWidth.toStringAsFixed(1),
+        onChanged: (value) {
+          setState(() {
+            print("BoardBorderLineWidth value: $value");
+            Config.boardBorderLineWidth = value;
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
+  setBoardBorderLineWidth() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _boardBorderLineWidthSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
+  SliderTheme _boardInnerLineWidthSliderTheme(context, setState) {
+    return SliderTheme(
+      data: SliderThemeData(
+        trackHeight: 20,
+        activeTrackColor: Colors.green,
+        inactiveTrackColor: Colors.grey,
+        disabledActiveTrackColor: Colors.yellow,
+        disabledInactiveTrackColor: Colors.cyan,
+        activeTickMarkColor: Colors.black,
+        inactiveTickMarkColor: Colors.green,
+        //overlayColor: Colors.yellow,
+        overlappingShapeStrokeColor: Colors.black,
+        //overlayShape: RoundSliderOverlayShape(),
+        valueIndicatorColor: Colors.green,
+        showValueIndicator: ShowValueIndicator.always,
+        minThumbSeparation: 100,
+        thumbShape: RoundSliderThumbShape(
+            enabledThumbRadius: 2.0, disabledThumbRadius: 1.0),
+        rangeTrackShape: RoundedRectRangeSliderTrackShape(),
+        tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
+        valueIndicatorTextStyle: TextStyle(fontSize: 24),
+      ),
+      child: Slider(
+        value: Config.boardInnerLineWidth.toDouble(),
+        min: 0.0,
+        max: 20.0,
+        divisions: 200,
+        label: Config.boardInnerLineWidth.toStringAsFixed(1),
+        onChanged: (value) {
+          setState(() {
+            print("BoardInnerLineWidth value: $value");
+            Config.boardInnerLineWidth = value;
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
+  setBoardInnerLineWidth() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _boardInnerLineWidthSliderTheme(context, setState);
+        },
+      ),
+    );
   }
 
   @override
@@ -411,6 +511,29 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     onChanged: setIsPieceCountInHandShown,
                   ),
                   _buildDivider(),
+                  ListTile(
+                    title: Text(S.of(context).boardBorderLineWidth,
+                        style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(""), // TODO
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: setBoardBorderLineWidth,
+                  ),
+                  _buildDivider(),
+                  ListTile(
+                    title: Text(S.of(context).boardInnerLineWidth,
+                        style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(""), // TODO
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: setBoardInnerLineWidth,
+                  ),
                 ],
               ),
             ),

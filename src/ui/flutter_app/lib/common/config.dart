@@ -38,6 +38,8 @@ class Config {
 
   // Display
   static bool isPieceCountInHandShown = false;
+  static double boardBorderLineWidth = 2.0;
+  static double boardInnerLineWidth = 2.0;
 
   // Color
   static int boardLineColor = UIColors.boardLineColor.value;
@@ -77,6 +79,8 @@ class Config {
     // Display
     Config.isPieceCountInHandShown =
         profile['IsPieceCountInHandShown'] ?? false;
+    Config.boardBorderLineWidth = profile['BoardBorderLineWidth'] ?? 2;
+    Config.boardInnerLineWidth = profile['BoardInnerLineWidth'] ?? 2;
 
     // Color
     Config.boardLineColor =
@@ -130,6 +134,8 @@ class Config {
 
     // Display
     profile['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
+    profile['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
+    profile['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
 
     // Color
     profile['BoardLineColor'] = Config.boardLineColor;

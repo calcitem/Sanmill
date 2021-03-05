@@ -57,13 +57,10 @@ class BoardPainter extends PiecesBasePainter {
     paint.color = Color(Config.boardLineColor);
     paint.style = PaintingStyle.stroke;
 
-    const double borderLineWidth = 2.0;
-    const double innerLineWidth = 1.5;
-
     var left = offsetX;
     var top = offsetY;
 
-    paint.strokeWidth = borderLineWidth;
+    paint.strokeWidth = Config.boardBorderLineWidth;
 
     if (Config.isPieceCountInHandShown) {
       var pieceInHandCount =
@@ -98,7 +95,7 @@ class BoardPainter extends PiecesBasePainter {
       paint,
     );
 
-    paint.strokeWidth = innerLineWidth;
+    paint.strokeWidth = Config.boardInnerLineWidth;
 
     // Horizontal lines (Top to Bottom)
 
