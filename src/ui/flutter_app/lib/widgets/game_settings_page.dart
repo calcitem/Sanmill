@@ -16,9 +16,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/profile.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/colors.dart';
 
@@ -390,6 +393,38 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
+  // Restore
+
+  restoreFactoryDefaultSettings() async {
+    confirm() async {
+      Navigator.of(context).pop();
+      final profile = await Profile.shared();
+      await profile.restore();
+      exit(0);
+    }
+
+    cancel() => Navigator.of(context).pop();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).restore,
+              style: TextStyle(color: UIColors.primaryColor)),
+          content: SingleChildScrollView(
+            child: Text(S.of(context).restoreDefaultSettings +
+                "?\n" +
+                S.of(context).exitApp),
+          ),
+          actions: <Widget>[
+            TextButton(child: Text(S.of(context).ok), onPressed: confirm),
+            TextButton(child: Text(S.of(context).cancel), onPressed: cancel),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextStyle headerStyle =
@@ -576,6 +611,27 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: showBoardLineColorDialog,
                   ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(S.of(context).restore, style: headerStyle),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(S.of(context).restoreDefaultSettings,
+                        style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: restoreFactoryDefaultSettings,
+                  ),
+                  _buildDivider(),
                 ],
               ),
             ),

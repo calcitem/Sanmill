@@ -32,6 +32,7 @@ class Profile {
     if (_shared == null) {
       _shared = Profile();
       await _shared._load(defaultFileName);
+      print("defaultFileName: $defaultFileName");
     }
 
     return _shared;
@@ -64,5 +65,16 @@ class Profile {
     }
 
     return true;
+  }
+
+  Future<void> restore() async {
+    print("Restoring Settings...");
+
+    if (_file.existsSync()) {
+      _file.deleteSync();
+      print("$_file deleted");
+    } else {
+      print("$_file does not exist");
+    }
   }
 }

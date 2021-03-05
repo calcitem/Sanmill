@@ -451,5 +451,17 @@
   "boardInnerLineWidth": "Board Inner Line Width",
   "@boardInnerLineWidth": {
     "description": "Board Inner Line Width"
+  },
+  "restore": "Restore",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Restore Default Settings",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "The App will exit.",
+  "@exitApp": {
+    "description": "The App will exit."
   }
 }
