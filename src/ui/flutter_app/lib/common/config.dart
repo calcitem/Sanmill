@@ -36,6 +36,9 @@ class Config {
   static bool depthExtension = true;
   static bool openingBook = false;
 
+  // Display
+  static bool isPieceCountInHandShown = false;
+
   // Color
   static int boardLineColor = UIColors.boardLineColor.value;
   static int darkBackgroundColor = UIColors.darkBackgroundColor.value;
@@ -70,6 +73,10 @@ class Config {
     Config.idsEnabled = profile['IdsEnabled'] ?? false;
     Config.depthExtension = profile['DepthExtension'] ?? false;
     Config.openingBook = profile['OpeningBook'] ?? false;
+
+    // Display
+    Config.isPieceCountInHandShown =
+        profile['IsPieceCountInHandShown'] ?? false;
 
     // Color
     Config.boardLineColor =
@@ -120,6 +127,9 @@ class Config {
     profile['IdsEnabled'] = Config.idsEnabled;
     profile['DepthExtension'] = Config.depthExtension;
     profile['OpeningBook'] = Config.openingBook;
+
+    // Display
+    profile['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
 
     // Color
     profile['BoardLineColor'] = Config.boardLineColor;

@@ -280,6 +280,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
+  // Display
+
+  setIsPieceCountInHandShown(bool value) async {
+    setState(() {
+      Config.isPieceCountInHandShown = value;
+    });
+
+    Config.save();
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextStyle headerStyle =
@@ -383,6 +393,24 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         Text(S.of(context).shufflingEnabled, style: itemStyle),
                     onChanged: setShufflingEnabled,
                   ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(S.of(context).display, style: headerStyle),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.isPieceCountInHandShown,
+                    title: Text(S.of(context).isPieceCountInHandShown,
+                        style: itemStyle),
+                    onChanged: setIsPieceCountInHandShown,
+                  ),
+                  _buildDivider(),
                 ],
               ),
             ),

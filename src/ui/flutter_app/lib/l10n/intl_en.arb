@@ -435,5 +435,13 @@
   "aiIsLazy": "AI is Lazy",
   "@aiIsLazy": {
     "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Show Piece in Hand Count",
+  "@isPieceCountInHandShown": {
+    "description": "Show Piece in Hand Count"
+  },
+  "display": "Display",
+  "@display": {
+    "description": "Display"
   }
 }
