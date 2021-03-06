@@ -94,7 +94,7 @@ class Config {
     Config.blackPieceColor =
         profile['BlackPieceColor'] ?? UIColors.blackPieceColor.value;
     Config.whitePieceColor =
-        profile['whitePieceColor'] ?? UIColors.whitePieceColor.value;
+        profile['WhitePieceColor'] ?? UIColors.whitePieceColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount = profile['PiecesCount'] ?? 12;
