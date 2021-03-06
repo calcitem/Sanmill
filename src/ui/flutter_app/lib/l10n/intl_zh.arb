@@ -109,6 +109,8 @@
   "pieceColor": "棋子颜色",
   "backgroudColor": "背景颜色",
   "lineColor": "线条颜色",
+  "blackPieceColor": "先手方棋子颜色",
+  "whitePieceColor": "后手方棋子颜色",
   "aiIsLazy": "机器领先时懒惰",
   "isPieceCountInHandShown": "显示手中剩余棋子数",
   "display": "显示",

@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/style/colors.dart';
@@ -127,13 +128,13 @@ class PiecesPainter extends PiecesBasePainter {
         case Piece.blackStone:
           paint.color = UIColors.blackPieceBorderColor;
           canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
-          paint.color = UIColors.blackPieceColor;
+          paint.color = Color(Config.blackPieceColor);
           canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
           break;
         case Piece.whiteStone:
           paint.color = UIColors.whitePieceBorderColor;
           canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
-          paint.color = UIColors.whitePieceColor;
+          paint.color = Color(Config.whitePieceColor);
           canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
           break;
         case Piece.ban:

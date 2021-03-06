@@ -162,6 +162,84 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
+  showBlackPieceColorDialog() async {
+    AlertDialog alert = AlertDialog(
+      title: Text(S.of(context).pick + S.of(context).blackPieceColor),
+      content: SingleChildScrollView(
+        child: ColorPicker(
+          pickerColor: Color(Config.blackPieceColor),
+          onColorChanged: changeColor,
+          showLabel: true,
+          //pickerAreaHeightPercent: 0.8,
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(S.of(context).confirm),
+          onPressed: () {
+            setState(() => currentColor = pickerColor);
+            Config.blackPieceColor = pickerColor.value;
+            Config.save();
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text(S.of(context).cancel),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showWhitePieceColorDialog() async {
+    AlertDialog alert = AlertDialog(
+      title: Text(S.of(context).pick + S.of(context).whitePieceColor),
+      content: SingleChildScrollView(
+        child: ColorPicker(
+          pickerColor: Color(Config.whitePieceColor),
+          onColorChanged: changeColor,
+          showLabel: true,
+          //pickerAreaHeightPercent: 0.8,
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(S.of(context).confirm),
+          onPressed: () {
+            setState(() => currentColor = pickerColor);
+            Config.whitePieceColor = pickerColor.value;
+            Config.save();
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text(S.of(context).cancel),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   SliderTheme _SkillLevelSliderTheme(context, setState) {
     return SliderTheme(
       data: SliderThemeData(
@@ -628,6 +706,30 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                           color: UIColors.secondaryColor),
                     ]),
                     onTap: showBoardLineColorDialog,
+                  ),
+                  _buildDivider(),
+                  ListTile(
+                    title:
+                        Text(S.of(context).blackPieceColor, style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(Config.blackPieceColor.toRadixString(16)),
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: showBlackPieceColorDialog,
+                  ),
+                  _buildDivider(),
+                  ListTile(
+                    title:
+                        Text(S.of(context).whitePieceColor, style: itemStyle),
+                    trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Text(Config.whitePieceColor.toRadixString(16)),
+                      Icon(Icons.keyboard_arrow_right,
+                          color: UIColors.secondaryColor),
+                    ]),
+                    onTap: showWhitePieceColorDialog,
                   ),
                 ],
               ),

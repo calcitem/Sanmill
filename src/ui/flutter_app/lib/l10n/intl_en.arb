@@ -436,6 +436,14 @@
   "@lineColor": {
     "description": "Line Color"
   },
+   "blackPieceColor": "Player1 Piece Color",
+  "@blackPieceColor": {
+    "description": "Player1 Piece Color"
+  },
+  "whitePieceColor": "Player2 Piece Color",
+  "@whitePieceColor": {
+    "description": "Player2 Piece Color"
+  },
   "aiIsLazy": "AI is Lazy",
   "@aiIsLazy": {
     "description": "AI is Lazy"

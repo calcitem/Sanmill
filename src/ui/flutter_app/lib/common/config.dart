@@ -45,6 +45,8 @@ class Config {
   static int boardLineColor = UIColors.boardLineColor.value;
   static int darkBackgroundColor = UIColors.darkBackgroundColor.value;
   static int boardBackgroundColor = UIColors.boardBackgroundColor.value;
+  static int blackPieceColor = UIColors.blackPieceColor.value;
+  static int whitePieceColor = UIColors.whitePieceColor.value;
 
   // Rules
   static int piecesCount = 12;
@@ -89,6 +91,10 @@ class Config {
         profile['DarkBackgroundColor'] ?? UIColors.darkBackgroundColor.value;
     Config.boardBackgroundColor =
         profile['BoardBackgroundColor'] ?? UIColors.boardBackgroundColor.value;
+    Config.blackPieceColor =
+        profile['BlackPieceColor'] ?? UIColors.blackPieceColor.value;
+    Config.whitePieceColor =
+        profile['whitePieceColor'] ?? UIColors.whitePieceColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount = profile['PiecesCount'] ?? 12;
@@ -141,6 +147,8 @@ class Config {
     profile['BoardLineColor'] = Config.boardLineColor;
     profile['DarkBackgroundColor'] = Config.darkBackgroundColor;
     profile['BoardBackgroundColor'] = Config.boardBackgroundColor;
+    profile['BlackPieceColor'] = Config.blackPieceColor;
+    profile['WhitePieceColor'] = Config.whitePieceColor;
 
     // Rules
     profile['PiecesCount'] = Config.piecesCount;
