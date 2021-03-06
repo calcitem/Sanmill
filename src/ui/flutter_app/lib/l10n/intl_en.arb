@@ -48,6 +48,10 @@
   "@ok": {
     "description": "OK"
   },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm"
+  },
   "cancel": "Cancel",
   "@cancel": {
     "description": "Cancel"
@@ -463,5 +467,9 @@
   "exitApp": "The App will exit.",
   "@exitApp": {
     "description": "The App will exit."
+  },
+  "pick": "Pick",
+  "@pick": {
+    "description": "Pick "
   }
 }

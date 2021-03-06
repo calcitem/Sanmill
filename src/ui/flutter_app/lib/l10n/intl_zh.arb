@@ -12,6 +12,7 @@
   "gameRecord": "棋谱",
   "noGameRecord": "暂无招法",
   "ok": "好的",
+  "confirm": "确认",
   "cancel": "取消",
   "daSanQi": "打三棋",
   "copyright": "版权所有 © 2021 Calcitem Studio",
@@ -115,5 +116,6 @@
   "boardInnerLineWidth": "棋盘内部线宽",
   "restore": "重置",
   "restoreDefaultSettings": "恢复默认设置",
-  "exitApp": "App 将退出。"
+  "exitApp": "App 将退出。",
+  "pick": "选择"
 }

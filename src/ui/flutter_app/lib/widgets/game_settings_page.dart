@@ -32,8 +32,8 @@ class GameSettingsPage extends StatefulWidget {
 
 class _GameSettingsPageState extends State<GameSettingsPage> {
   // create some values
-  Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
+  Color pickerColor = Color(0xFF808080);
+  Color currentColor = Color(0xFF808080);
 
   @override
   void initState() {
@@ -47,10 +47,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showBoardColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: const Text('Pick a color!'),
+      title: Text(S.of(context).pick + S.of(context).boardColor),
       content: SingleChildScrollView(
         child: ColorPicker(
-          pickerColor: pickerColor,
+          pickerColor: Color(Config.boardBackgroundColor),
           onColorChanged: changeColor,
           showLabel: true,
           //pickerAreaHeightPercent: 0.8,
@@ -58,11 +58,17 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Confirm'),
+          child: Text(S.of(context).confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.boardBackgroundColor = pickerColor.value;
             Config.save();
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text(S.of(context).cancel),
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),
@@ -80,10 +86,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showBackgroundColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: const Text('Pick a color!'),
+      title: Text(S.of(context).pick + S.of(context).backgroudColor),
       content: SingleChildScrollView(
         child: ColorPicker(
-          pickerColor: pickerColor,
+          pickerColor: Color(Config.darkBackgroundColor),
           onColorChanged: changeColor,
           showLabel: true,
           //pickerAreaHeightPercent: 0.8,
@@ -91,11 +97,17 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Confirm'),
+          child: Text(S.of(context).confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.darkBackgroundColor = pickerColor.value;
             Config.save();
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text(S.of(context).cancel),
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),
@@ -113,10 +125,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showBoardLineColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: const Text('Pick a color!'),
+      title: Text(S.of(context).pick + S.of(context).lineColor),
       content: SingleChildScrollView(
         child: ColorPicker(
-          pickerColor: pickerColor,
+          pickerColor: Color(Config.boardLineColor),
           onColorChanged: changeColor,
           showLabel: true,
           //pickerAreaHeightPercent: 0.8,
@@ -124,11 +136,17 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Confirm'),
+          child: Text(S.of(context).confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.boardLineColor = pickerColor.value;
             Config.save();
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text(S.of(context).cancel),
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),
