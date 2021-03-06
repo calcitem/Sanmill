@@ -44,9 +44,6 @@ class UIColors {
 
   static const lightLineColor = Color(0x336D000D);
 
-  static const focusPositionColor = Color(0x99FFFFFF);
-  static const blurPositionColor = Color(0x99FFFFFF);
-
   static const blackPieceColor = Color.fromARGB(0xFF, 0x00, 0x00, 0x00);
   static const blackPieceBorderColor = Color.fromARGB(0xFF, 0x22, 0x22, 0x22);
 

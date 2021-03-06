@@ -87,6 +87,9 @@ class PiecesPainter extends PiecesBasePainter {
     final shadowPath = Path();
     final piecesToDraw = <PiecePaintPair>[];
 
+    Color blurPositionColor;
+    Color focusPositionColor;
+
     // Draw pieces on board
     for (var row = 0; row < 7; row++) {
       for (var col = 0; col < 7; col++) {
@@ -130,12 +133,14 @@ class PiecesPainter extends PiecesBasePainter {
           canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
           paint.color = Color(Config.blackPieceColor);
           canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
+          blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
           break;
         case Piece.whiteStone:
           paint.color = UIColors.whitePieceBorderColor;
           canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
           paint.color = Color(Config.whitePieceColor);
           canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
+          blurPositionColor = Color(Config.whitePieceColor).withOpacity(0.1);
           break;
         case Piece.ban:
           //print("pps.piece is Ban");
@@ -149,10 +154,24 @@ class PiecesPainter extends PiecesBasePainter {
     // draw focus and blur position
 
     if (focusIndex != Move.invalidMove) {
-      //
       final int row = focusIndex ~/ 7, column = focusIndex % 7;
 
-      paint.color = UIColors.focusPositionColor;
+      focusPositionColor = Color.fromARGB(
+              (Color(Config.blackPieceColor).alpha +
+                      Color(Config.whitePieceColor).alpha) ~/
+                  2,
+              (Color(Config.blackPieceColor).red +
+                      Color(Config.whitePieceColor).red) ~/
+                  2,
+              (Color(Config.blackPieceColor).green +
+                      Color(Config.whitePieceColor).green) ~/
+                  2,
+              (Color(Config.blackPieceColor).blue +
+                      Color(Config.whitePieceColor).blue) ~/
+                  2)
+          .withOpacity(0.5);
+
+      paint.color = focusPositionColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
@@ -166,7 +185,7 @@ class PiecesPainter extends PiecesBasePainter {
     if (blurIndex != Move.invalidMove) {
       final row = blurIndex ~/ 7, column = blurIndex % 7;
 
-      paint.color = UIColors.blurPositionColor;
+      paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(
