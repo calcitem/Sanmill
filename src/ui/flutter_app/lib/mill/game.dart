@@ -131,9 +131,6 @@ class Game {
     //
     position.move(from, to);
 
-    _blurIndex = from;
-    _focusIndex = to;
-
     return true;
   }
 
@@ -185,8 +182,10 @@ class Game {
   get position => _position;
 
   get focusIndex => _focusIndex;
+  set focusIndex(index) => _focusIndex = index;
 
   get blurIndex => _blurIndex;
+  set blurIndex(index) => _blurIndex = index;
 
   bool doMove(String move) {
     int total;
