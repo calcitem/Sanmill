@@ -679,7 +679,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).boardColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.boardBackgroundColor.toRadixString(16)),
+                      Text(Config.boardBackgroundColor.toRadixString(16),
+                          style: TextStyle(
+                              backgroundColor:
+                                  Color(Config.boardBackgroundColor))),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
@@ -690,7 +693,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).backgroudColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.darkBackgroundColor.toRadixString(16)),
+                      Text(Config.darkBackgroundColor.toRadixString(16),
+                          style: TextStyle(
+                              backgroundColor:
+                                  Color(Config.darkBackgroundColor))),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
@@ -701,7 +707,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).lineColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.boardLineColor.toRadixString(16)),
+                      Text(Config.boardLineColor.toRadixString(16),
+                          style: TextStyle(
+                              backgroundColor: Color(Config.boardLineColor))),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
@@ -713,7 +721,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         Text(S.of(context).blackPieceColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.blackPieceColor.toRadixString(16)),
+                      Text(Config.blackPieceColor.toRadixString(16),
+                          style: TextStyle(
+                              backgroundColor: Color(Config.blackPieceColor))),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
@@ -725,7 +735,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         Text(S.of(context).whitePieceColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.whitePieceColor.toRadixString(16)),
+                      Text(Config.whitePieceColor.toRadixString(16),
+                          style: TextStyle(
+                              backgroundColor: Color(Config.whitePieceColor))),
                       Icon(Icons.keyboard_arrow_right,
                           color: UIColors.secondaryColor),
                     ]),
