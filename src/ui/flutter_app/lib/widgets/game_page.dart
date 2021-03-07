@@ -48,7 +48,7 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> with RouteAware {
   // TODO: null-safety
   String? _status = '';
-  bool _searching = false;
+  //bool _searching = false;
 
   @override
   void initState() {
@@ -277,8 +277,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
     String loseReasonStr;
     //String winnerStr =
     //    winner == Color.black ? S.of(context).black : S.of(context).white;
-    String loserStr =
-        winner == PieceColor.black ? S.of(context)!.white : S.of(context)!.black;
+    String loserStr = winner == PieceColor.black
+        ? S.of(context)!.white
+        : S.of(context)!.black;
 
     switch (Game.shared.position.gameOverReason) {
       case GameOverReason.loseReasonlessThanThree:
@@ -433,6 +434,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   Widget createPageHeader() {
+    /*
     Map<EngineType, String> engineTypeToString = {
       EngineType.humanVsAi: S.of(context)!.humanVsAi,
       EngineType.humanVsHuman: S.of(context)!.humanVsHuman,
@@ -441,6 +443,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       EngineType.humanVsLAN: S.of(context)!.humanVsLAN,
       EngineType.testViaLAN: S.of(context)!.testViaLAN,
     };
+    */
 
     Map<EngineType, IconData> engineTypeToIconLeft = {
       EngineType.humanVsAi: Config.aiMovesFirst ? Icons.computer : Icons.person,
@@ -488,8 +491,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
     }
 
-    final titleStyle =
-        TextStyle(fontSize: 16, color: UIColors.darkTextPrimaryColor);
+    //final titleStyle =
+    //    TextStyle(fontSize: 16, color: UIColors.darkTextPrimaryColor);
     final subTitleStyle =
         TextStyle(fontSize: 16, color: UIColors.darkTextSecondaryColor);
 

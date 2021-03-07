@@ -240,7 +240,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
-  SliderTheme _SkillLevelSliderTheme(context, setState) {
+  SliderTheme _skillLevelSliderTheme(context, setState) {
     return SliderTheme(
       data: SliderThemeData(
         trackHeight: 20,
@@ -284,7 +284,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       context: context,
       builder: (BuildContext context) => StatefulBuilder(
         builder: (context, setState) {
-          return _SkillLevelSliderTheme(context, setState);
+          return _skillLevelSliderTheme(context, setState);
         },
       ),
     );
@@ -690,7 +690,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   _buildDivider(),
                   ListTile(
-                    title: Text(S.of(context)!.backgroudColor, style: itemStyle),
+                    title:
+                        Text(S.of(context)!.backgroudColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.darkBackgroundColor.toRadixString(16),
