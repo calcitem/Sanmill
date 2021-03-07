@@ -1,27 +1,30 @@
 name: sanmill
 description: A new Flutter project.
 
-version: 0.18.0+1446
+version: 0.19.0+1533
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cupertino_icons: ^1.0.0
-  just_audio: ^0.6.14+1
-  path_provider: ^1.6.27
-  package_info: ^0.4.3+4
-  uuid: ^2.2.2
-  url_launcher: ^5.7.10
+  cupertino_icons: ^1.0.2
+  just_audio: ^0.7.0
+  path_provider: ^2.0.1
+  package_info: ^2.0.0
+  uuid: ^3.0.1
+  url_launcher: ^6.0.2
   intl: ^0.17.0
-  animated_text_kit: ^3.1.2
-  flutter_colorpicker: ^0.3.5
-  catcher: ^0.4.1
-  stack_trace: ^1.9.6
+  animated_text_kit: ^4.0.0
+  flutter_colorpicker: ^0.4.0-nullsafety.0
+  catcher:
+    git:
+      url: https://github.com/jhomlala/catcher
+      ref: feature/nullsafety
+  stack_trace: ^1.10.0
 
 dev_dependencies:
   flutter_test:
