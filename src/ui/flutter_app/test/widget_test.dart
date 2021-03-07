@@ -16,32 +16,34 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-//import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-//import '../lib/main.dart';
+import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/widgets/navigation_home_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    //await tester.pumpWidget(SanmillApp());
+  Widget makeTestableWidget({@required Widget child, @required Locale locale}) {
+    return MaterialApp(
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: locale,
+      home: child,
+    );
+  }
 
-    // Verify that our counter starts at 0.
-    //expect(find.text('0'), findsOneWidget);
-    //expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    //await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
-
-    // Verify that our counter has incremented.
-    //expect(find.text('0'), findsNothing);
-    //expect(find.text('1'), findsOneWidget);
+  testWidgets('Widget', (WidgetTester tester) async {
+    NavigationHomeScreen screen = NavigationHomeScreen();
+    await tester.pumpWidget(makeTestableWidget(
+      child: screen,
+      locale: const Locale('en'),
+    ));
+    await tester.pump();
+    expect(find.text(S.current.appName), findsOneWidget);
   });
 }
