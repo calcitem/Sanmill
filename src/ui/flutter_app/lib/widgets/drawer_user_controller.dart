@@ -28,9 +28,9 @@ class DrawerUserController extends StatefulWidget {
 
 class _DrawerUserControllerState extends State<DrawerUserController>
     with TickerProviderStateMixin {
-  ScrollController? scrollController;
-  AnimationController? iconAnimationController;
-  AnimationController? animationController;
+  late ScrollController scrollController;
+  late AnimationController iconAnimationController;
+  late AnimationController animationController;
 
   double scrolloffset = 0.0;
 
@@ -121,10 +121,10 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                             ? DrawerIndex.humanVsAi
                             : widget.screenIndex,
                         iconAnimationController: iconAnimationController,
-                        callBackIndex: (DrawerIndex indexType) {
+                        callBackIndex: (DrawerIndex? indexType) {
                           onDrawerClick();
                           try {
-                            widget.onDrawerCall!(indexType);
+                            widget.onDrawerCall!(indexType!);
                           } catch (e) {}
                         },
                       ),

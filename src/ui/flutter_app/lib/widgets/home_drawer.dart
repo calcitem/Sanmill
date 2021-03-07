@@ -107,8 +107,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     animation: widget.iconAnimationController!,
                     builder: (BuildContext context, Widget? child) {
                       return ScaleTransition(
-                        scale: AlwaysStoppedAnimation<double>(
-                            1.0 - (widget.iconAnimationController!.value) * 0.2),
+                        scale: AlwaysStoppedAnimation<double>(1.0 -
+                            (widget.iconAnimationController!.value) * 0.2),
                         child: RotationTransition(
                           turns: AlwaysStoppedAnimation<double>(Tween<double>(
                                       begin: 0.0, end: 24.0)

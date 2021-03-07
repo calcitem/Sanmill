@@ -44,6 +44,6 @@ void main() {
       locale: const Locale('en'),
     ));
     await tester.pump();
-    expect(find.text(S.current.appName), findsOneWidget);
+    expect(find.text(S.current!.appName), findsOneWidget);
   });
 }

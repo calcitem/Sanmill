@@ -50,13 +50,14 @@ class NativeEngine extends AiEngine {
     return await platform.invokeMethod('isReady');
   }
 
-  FutureOr<bool?> isThinking() async {
+  FutureOr<bool> isThinking() async {
     return await platform.invokeMethod('isThinking');
   }
 
   @override
-  Future<EngineResponse> search(Position? position, {bool byUser = true}) async {
-    if (await (isThinking() as FutureOr<bool>)) await stopSearching();
+  Future<EngineResponse> search(Position? position,
+      {bool byUser = true}) async {
+    if (await isThinking()) await stopSearching();
 
     send(getPositionFen(position!));
     send('go');

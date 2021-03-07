@@ -17,7 +17,7 @@ dependencies:
   package_info: ^2.0.0
   uuid: ^3.0.1
   url_launcher: ^6.0.2
-  intl: ^0.17.0
+  intl: 0.17.0
   animated_text_kit: ^4.0.0
   flutter_colorpicker: ^0.4.0-nullsafety.0
   catcher:
