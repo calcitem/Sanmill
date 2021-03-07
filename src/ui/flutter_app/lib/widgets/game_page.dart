@@ -483,8 +483,54 @@ class _GamePageState extends State<GamePage> with RouteAware {
       EngineType.testViaLAN: S.of(context).testViaLAN,
     };
 
+    Map<EngineType, IconData> engineTypeToIconLeft = {
+      EngineType.humanVsAi: Config.aiMovesFirst ? Icons.computer : Icons.person,
+      EngineType.humanVsHuman: Icons.person,
+      EngineType.aiVsAi: Icons.computer,
+      EngineType.humanVsCloud: Icons.person,
+      EngineType.humanVsLAN: Icons.person,
+      EngineType.testViaLAN: Icons.cast,
+    };
+
+    Map<EngineType, IconData> engineTypeToIconRight = {
+      EngineType.humanVsAi: Config.aiMovesFirst ? Icons.person : Icons.computer,
+      EngineType.humanVsHuman: Icons.person,
+      EngineType.aiVsAi: Icons.computer,
+      EngineType.humanVsCloud: Icons.cloud,
+      EngineType.humanVsLAN: Icons.cast,
+      EngineType.testViaLAN: Icons.cast,
+    };
+
+    IconData iconArrow = Icons.code;
+
+    switch (Game.shared.sideToMove) {
+      case PieceColor.black:
+        iconArrow = Icons.keyboard_arrow_left;
+        break;
+      case PieceColor.white:
+        iconArrow = Icons.keyboard_arrow_right;
+        break;
+      default:
+        iconArrow = Icons.code;
+        break;
+    }
+
+    if (Game.shared.position.phase == Phase.gameOver) {
+      switch (Game.shared.position.winner) {
+        case PieceColor.black:
+          iconArrow = Icons.toggle_off_outlined;
+          break;
+        case PieceColor.white:
+          iconArrow = Icons.toggle_on_outlined;
+          break;
+        default:
+          iconArrow = Icons.thumbs_up_down_outlined;
+          break;
+      }
+    }
+
     final titleStyle =
-        TextStyle(fontSize: 28, color: UIColors.darkTextPrimaryColor);
+        TextStyle(fontSize: 16, color: UIColors.darkTextPrimaryColor);
     final subTitleStyle =
         TextStyle(fontSize: 16, color: UIColors.darkTextSecondaryColor);
 
@@ -502,7 +548,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
               ),
                */
               Expanded(child: SizedBox()),
-              Text(engineTypeToString[widget.engineType], style: titleStyle),
+              Icon(engineTypeToIconLeft[widget.engineType],
+                  color: UIColors.darkTextPrimaryColor),
+              Icon(iconArrow, color: UIColors.darkTextPrimaryColor),
+              Icon(engineTypeToIconRight[widget.engineType],
+                  color: UIColors.darkTextPrimaryColor),
               Expanded(child: SizedBox()),
               /*
               IconButton(
