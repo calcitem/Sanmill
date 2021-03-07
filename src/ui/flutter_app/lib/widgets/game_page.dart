@@ -19,7 +19,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/engine/analyze.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/engine/native_engine.dart';
 import 'package:sanmill/generated/l10n.dart';
@@ -281,37 +280,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
         msg: S.of(context).analyzing, position: ToastPostion.bottom);
 
     setState(() => _searching = true);
-  }
-
-  showAnalyzeItems(
-    BuildContext context, {
-    String title,
-    List<AnalyzeItem> items,
-    Function(AnalyzeItem item) callback,
-  }) {
-    final List<Widget> children = [];
-
-    for (var item in items) {
-      children.add(
-        ListTile(
-          title: Text(item.moveName, style: TextStyle(fontSize: 18)),
-          subtitle: Text(S.of(context).winRate + ": ${item.winRate}%"),
-          trailing: Text(S.of(context).score + ": ${item.score}'"),
-          onTap: () => callback(item),
-        ),
-      );
-      children.add(Divider());
-    }
-
-    children.insert(0, SizedBox(height: 10));
-    children.add(SizedBox(height: 56));
-
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) => SingleChildScrollView(
-        child: Column(mainAxisSize: MainAxisSize.min, children: children),
-      ),
-    );
   }
 
   String getGameOverReasonString(GameOverReason reason, String winner) {
