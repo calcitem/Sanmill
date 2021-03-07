@@ -48,7 +48,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         ScrollController(initialScrollOffset: widget.drawerWidth);
     scrollController
       ..addListener(() {
-        if (scrollController!.offset <= 0) {
+        if (scrollController.offset <= 0) {
           if (scrolloffset != 1.0) {
             setState(() {
               scrolloffset = 1.0;
@@ -57,13 +57,13 @@ class _DrawerUserControllerState extends State<DrawerUserController>
               } catch (_) {}
             });
           }
-          iconAnimationController!.animateTo(0.0,
+          iconAnimationController.animateTo(0.0,
               duration: const Duration(milliseconds: 0),
               curve: Curves.fastOutSlowIn);
-        } else if (scrollController!.offset > 0 &&
-            scrollController!.offset < widget.drawerWidth.floor()) {
-          iconAnimationController!.animateTo(
-              (scrollController!.offset * 100 / (widget.drawerWidth)) / 100,
+        } else if (scrollController.offset > 0 &&
+            scrollController.offset < widget.drawerWidth.floor()) {
+          iconAnimationController.animateTo(
+              (scrollController.offset * 100 / (widget.drawerWidth)) / 100,
               duration: const Duration(milliseconds: 0),
               curve: Curves.fastOutSlowIn);
         } else {
@@ -75,7 +75,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
               } catch (_) {}
             });
           }
-          iconAnimationController!.animateTo(1.0,
+          iconAnimationController.animateTo(1.0,
               duration: const Duration(milliseconds: 0),
               curve: Curves.fastOutSlowIn);
         }
@@ -85,7 +85,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
   }
 
   Future<bool> getInitState() async {
-    scrollController!.jumpTo(
+    scrollController.jumpTo(
       widget.drawerWidth,
     );
     return true;
@@ -110,12 +110,12 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                 //we divided first drawer Width with HomeDrawer and second full-screen Width with all home screen, we called screen View
                 height: MediaQuery.of(context).size.height,
                 child: AnimatedBuilder(
-                  animation: iconAnimationController!,
+                  animation: iconAnimationController,
                   builder: (BuildContext context, Widget? child) {
                     return Transform(
                       //transform we use for the stable drawer  we, not need to move with scroll view
                       transform: Matrix4.translationValues(
-                          scrollController!.offset, 0.0, 0.0),
+                          scrollController.offset, 0.0, 0.0),
                       child: HomeDrawer(
                         screenIndex: widget.screenIndex == null
                             ? DrawerIndex.humanVsAi
@@ -179,7 +179,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                                     : AnimatedIcon(
                                         icon: widget.animatedIconData,
                                         color: Colors.white,
-                                        progress: iconAnimationController!),
+                                        progress: iconAnimationController),
                               ),
                               onTap: () {
                                 FocusScope.of(context)
@@ -203,14 +203,14 @@ class _DrawerUserControllerState extends State<DrawerUserController>
 
   void onDrawerClick() {
     //if scrollcontroller.offset != 0.0 then we set to closed the drawer(with animation to offset zero position) if is not 1 then open the drawer
-    if (scrollController!.offset != 0.0) {
-      scrollController!.animateTo(
+    if (scrollController.offset != 0.0) {
+      scrollController.animateTo(
         0.0,
         duration: const Duration(milliseconds: 400),
         curve: Curves.fastOutSlowIn,
       );
     } else {
-      scrollController!.animateTo(
+      scrollController.animateTo(
         widget.drawerWidth,
         duration: const Duration(milliseconds: 400),
         curve: Curves.fastOutSlowIn,

@@ -125,7 +125,7 @@ class Game {
   }
 
   select(int pos) {
-    _focusIndex = pos ?? Move.invalidMove;
+    _focusIndex = pos;
     _blurIndex = Move.invalidMove;
     //Audios.playTone('click.mp3');
   }
