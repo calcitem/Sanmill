@@ -607,7 +607,28 @@ class _GamePageState extends State<GamePage> with RouteAware {
   Widget createOperatorBar() {
     //
     //final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
-    final text = Game.shared.position.manualText;
+    final manualText = Game.shared.position.manualText;
+
+    // TODO:
+    final analyzeText = "Score: " +
+        Game.shared.position.score[PieceColor.black].toString() +
+        " : " +
+        Game.shared.position.score[PieceColor.white].toString() +
+        " : " +
+        Game.shared.position.score[PieceColor.draw].toString() +
+        "\n" +
+        "Black has: " +
+        Game.shared.position.pieceInHandCount[PieceColor.black].toString() +
+        " pieces in hand\n" +
+        "White has: " +
+        Game.shared.position.pieceInHandCount[PieceColor.white].toString() +
+        " pieces in hand\n" +
+        "Black has: " +
+        Game.shared.position.pieceOnBoardCount[PieceColor.black].toString() +
+        " pieces on board\n" +
+        "White has: " +
+        Game.shared.position.pieceOnBoardCount[PieceColor.white].toString() +
+        " pieces on board\n";
 
     final manualStyle =
         TextStyle(fontSize: 18, height: 1.5, color: Colors.yellow);
@@ -644,12 +665,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
                 title: Text(S.of(context).gameRecord,
                     style: TextStyle(color: Colors.yellow)),
                 content: SingleChildScrollView(
-                    child: Text(text, style: manualStyle)),
+                    child: Text(manualText, style: manualStyle)),
                 actions: <Widget>[
                   TextButton(
                     child: Text(S.of(context).copy, style: manualStyle),
                     onPressed: () =>
-                        Clipboard.setData(ClipboardData(text: text)).then((_) {
+                        Clipboard.setData(ClipboardData(text: manualText))
+                            .then((_) {
                       showSnackBar(S.of(context).moveHistoryCopied);
                     }),
                   ),
@@ -662,10 +684,28 @@ class _GamePageState extends State<GamePage> with RouteAware {
             },
           ),
         ),
-        Expanded(child: SizedBox()),
+        Expanded(child: SizedBox()), //dashboard_outlined
         IconButton(
           icon: Icon(Icons.dashboard_outlined, color: UIColors.secondaryColor),
-          onPressed: _searching ? null : analyzePosition,
+          onPressed: () => showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Colors.transparent,
+                title: Text(S.of(context).analyze,
+                    style: TextStyle(color: Colors.yellow)),
+                content: SingleChildScrollView(
+                    child: Text(analyzeText, style: manualStyle)),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(S.of(context).ok, style: manualStyle),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
         Expanded(child: SizedBox()),
       ]),
