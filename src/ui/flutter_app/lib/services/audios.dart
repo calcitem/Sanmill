@@ -23,7 +23,7 @@ import 'package:sanmill/common/config.dart';
 
 class Audios {
   //
-  static AudioPlayer _player;
+  static AudioPlayer? _player;
 
   static playTone(String fileName) async {
     if (!Config.toneEnabled) {
@@ -41,9 +41,9 @@ class Audios {
         _player = AudioPlayer();
       }
 
-      await _player.stop();
-      await _player.setAsset("assets/audios/" + fileName);
-      _player.play();
+      await _player!.stop();
+      await _player!.setAsset("assets/audios/" + fileName);
+      _player!.play();
     } on PlayerException catch (e) {
       // iOS/macOS: maps to NSError.code
       // Android: maps to ExoPlayerException.type
@@ -66,8 +66,8 @@ class Audios {
 
   static Future<void> release() async {
     if (_player != null) {
-      await _player.stop();
-      await _player.dispose();
+      await _player!.stop();
+      await _player!.dispose();
     }
   }
 }

@@ -27,7 +27,7 @@ enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.black: false, PieceColor.white: true};
 
 class Game {
-  static Game _instance;
+  static Game? _instance;
 
   Position _position = Position();
   int _focusIndex = Move.invalidMove;
@@ -100,7 +100,7 @@ class Game {
 
   String getTips() => tips;
 
-  bool isAiToMove() {
+  bool? isAiToMove() {
     return isAi[sideToMove];
   }
 

@@ -45,7 +45,7 @@ class Position {
   List<String> board = List.filled(sqNumber, "");
   List<String> _grid = List.filled(7 * 7, "");
 
-  GameRecorder recorder;
+  GameRecorder? recorder;
 
   Map<String, int> pieceInHandCount = {
     PieceColor.black: -1,
@@ -64,7 +64,7 @@ class Position {
   int pliesFromNull = 0;
 
   // TODO
-  StateInfo st;
+  StateInfo? st;
 
   String us = PieceColor.black;
   String them = PieceColor.white;
@@ -84,25 +84,25 @@ class Position {
   int currentSquare = 0;
   int nPlayed = 0;
 
-  String cmdline;
+  String? cmdline;
 
-  var millTable;
-  var moveTable;
+  late var millTable;
+  late var moveTable;
 
   // TODO: null-safety
-  Move move;
+  Move? move;
 
   Position.boardToGrid() {
     _grid = [];
     for (int sq = 0; sq < board.length; sq++) {
-      _grid[squareToIndex[sq]] = board[sq];
+      _grid[squareToIndex[sq]!] = board[sq];
     }
   }
 
   Position.gridToBoard() {
     board = [];
     for (int i = 0; i < _grid.length; i++) {
-      board[indexToSquare[i]] = _grid[i];
+      board[indexToSquare[i]!] = _grid[i];
     }
   }
 
@@ -198,7 +198,7 @@ class Position {
     // Piece placement data
     for (var file = 1; file <= fileNumber; file++) {
       for (var rank = 1; rank <= rankNumber; rank++) {
-        final piece = pieceOnGrid(squareToIndex[makeSquare(file, rank)]);
+        final piece = pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
         ss += piece;
       }
 
@@ -336,7 +336,7 @@ class Position {
       phase = Phase.gameOver;
       winner = PieceColor.draw;
       if (score[PieceColor.draw] != null) {
-        score[PieceColor.draw] = score[PieceColor.draw] + 1;
+        score[PieceColor.draw] = score[PieceColor.draw]! + 1;
       }
 
       // TODO
@@ -374,7 +374,7 @@ class Position {
 
     this.move = m;
 
-    recorder.moveIn(m, this);
+    recorder!.moveIn(m, this);
 
     return true;
   }
@@ -396,34 +396,34 @@ class Position {
         if (board[s] == Piece.blackStone) {
           if (pieceOnBoardCount[PieceColor.black] != null) {
             pieceOnBoardCount[PieceColor.black] =
-                pieceOnBoardCount[PieceColor.black] + 1;
+                pieceOnBoardCount[PieceColor.black]! + 1;
           }
         } else if (board[s] == Piece.whiteStone) {
           if (pieceOnBoardCount[PieceColor.white] != null) {
             pieceOnBoardCount[PieceColor.white] =
-                pieceOnBoardCount[PieceColor.white] + 1;
+                pieceOnBoardCount[PieceColor.white]! + 1;
           }
         }
       }
     }
 
-    if (pieceOnBoardCount[PieceColor.black] > rule.piecesCount ||
-        pieceOnBoardCount[PieceColor.white] > rule.piecesCount) {
+    if (pieceOnBoardCount[PieceColor.black]! > rule.piecesCount ||
+        pieceOnBoardCount[PieceColor.white]! > rule.piecesCount) {
       return -1;
     }
 
-    return pieceOnBoardCount[PieceColor.black] +
-        pieceOnBoardCount[PieceColor.white];
+    return pieceOnBoardCount[PieceColor.black]! +
+        pieceOnBoardCount[PieceColor.white]!;
   }
 
   int getNPiecesInHand() {
     pieceInHandCount[PieceColor.black] =
-        rule.piecesCount - pieceOnBoardCount[PieceColor.black];
+        rule.piecesCount - pieceOnBoardCount[PieceColor.black]!;
     pieceInHandCount[PieceColor.white] =
-        rule.piecesCount - pieceOnBoardCount[PieceColor.white];
+        rule.piecesCount - pieceOnBoardCount[PieceColor.white]!;
 
-    return pieceOnBoardCount[PieceColor.black] +
-        pieceOnBoardCount[PieceColor.white];
+    return pieceOnBoardCount[PieceColor.black]! +
+        pieceOnBoardCount[PieceColor.white]!;
   }
 
   void clearBoard() {
@@ -538,14 +538,14 @@ class Position {
     if (phase == Phase.placing) {
       piece = sideToMove();
       if (pieceInHandCount[us] != null) {
-        pieceInHandCount[us] = pieceInHandCount[us] - 1;
+        pieceInHandCount[us] = pieceInHandCount[us]! - 1;
       }
 
       if (pieceOnBoardCount[us] != null) {
-        pieceOnBoardCount[us] = pieceOnBoardCount[us] + 1;
+        pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
       }
 
-      _grid[index] = piece;
+      _grid[index!] = piece;
       board[s] = piece;
 
       cmdline = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
@@ -555,8 +555,8 @@ class Position {
       int n = millsCount(currentSquare);
 
       if (n == 0) {
-        assert(pieceInHandCount[PieceColor.black] >= 0 &&
-            pieceInHandCount[PieceColor.white] >= 0);
+        assert(pieceInHandCount[PieceColor.black]! >= 0 &&
+            pieceInHandCount[PieceColor.white]! >= 0);
 
         if (pieceInHandCount[PieceColor.black] == 0 &&
             pieceInHandCount[PieceColor.white] == 0) {
@@ -598,7 +598,7 @@ class Position {
       }
 
       // if illegal
-      if (pieceOnBoardCount[sideToMove()] > rule.piecesAtLeastCount ||
+      if (pieceOnBoardCount[sideToMove()]! > rule.piecesAtLeastCount ||
           !rule.mayFly) {
         int md;
 
@@ -625,9 +625,9 @@ class Position {
 
       rule50++;
 
-      board[s] = _grid[squareToIndex[s]] = board[currentSquare];
+      board[s] = _grid[squareToIndex[s]!] = board[currentSquare];
       board[currentSquare] =
-          _grid[squareToIndex[currentSquare]] = Piece.noPiece;
+          _grid[squareToIndex[currentSquare]!] = Piece.noPiece;
 
       currentSquare = s;
       int n = millsCount(currentSquare);
@@ -676,20 +676,20 @@ class Position {
     Audios.playTone('remove.mp3');
 
     if (rule.hasBannedLocations && phase == Phase.placing) {
-      board[s] = _grid[squareToIndex[s]] = Piece.ban;
+      board[s] = _grid[squareToIndex[s]!] = Piece.ban;
     } else {
       // Remove
-      board[s] = _grid[squareToIndex[s]] = Piece.noPiece;
+      board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
     }
 
     cmdline = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
     rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[them] != null) {
-      pieceOnBoardCount[them] = pieceOnBoardCount[them] - 1;
+      pieceOnBoardCount[them] = pieceOnBoardCount[them]! - 1;
     }
 
-    if (pieceOnBoardCount[them] + pieceInHandCount[them] <
+    if (pieceOnBoardCount[them]! + pieceInHandCount[them]! <
         rule.piecesAtLeastCount) {
       setGameOver(sideToMove(), GameOverReason.loseReasonlessThanThree);
       return true;
@@ -775,14 +775,14 @@ class Position {
     if (phase == Phase.gameOver) {
       if (winner == PieceColor.draw) {
         if (score[PieceColor.draw] != null) {
-          score[PieceColor.draw] = score[PieceColor.draw] + 1;
+          score[PieceColor.draw] = score[PieceColor.draw]! + 1;
         }
 
         return;
       }
 
       if (score[winner] != null) {
-        score[winner] = score[winner] + 1;
+        score[winner] = score[winner]! + 1;
       }
     }
   }
@@ -802,8 +802,8 @@ class Position {
       return true;
     }
 
-    if (pieceOnBoardCount[PieceColor.black] +
-            pieceOnBoardCount[PieceColor.white] >=
+    if (pieceOnBoardCount[PieceColor.black]! +
+            pieceOnBoardCount[PieceColor.white]! >=
         rankNumber * fileNumber) {
       if (rule.isBlackLoseButNotDrawWhenBoardFull) {
         setGameOver(PieceColor.white, GameOverReason.loseReasonBoardIsFull);
@@ -842,7 +842,7 @@ class Position {
         s = f * rankNumber + r;
 
         if (board[s] == Piece.ban) {
-          board[s] = _grid[squareToIndex[s]] = Piece.noPiece;
+          board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
         }
       }
     }
@@ -1389,7 +1389,7 @@ class Position {
 
     if (from != 0) {
       ptBak = board[from];
-      board[from] = _grid[squareToIndex[from]] = Piece.noPiece;
+      board[from] = _grid[squareToIndex[from]!] = Piece.noPiece;
     }
 
     for (int l = 0; l < lineDirectionNumber; l++) {
@@ -1399,7 +1399,7 @@ class Position {
     }
 
     if (from != 0) {
-      board[from] = _grid[squareToIndex[from]] = ptBak;
+      board[from] = _grid[squareToIndex[from]!] = ptBak;
     }
 
     return n;
@@ -1407,9 +1407,9 @@ class Position {
 
   int millsCount(int s) {
     int n = 0;
-    List<int> idx = [0, 0, 0];
+    List<int?> idx = [0, 0, 0];
     int min = 0;
-    int temp = 0;
+    int? temp = 0;
     String m = colorOn(s);
 
     for (int i = 0; i < idx.length; i++) {
@@ -1418,7 +1418,7 @@ class Position {
       idx[2] = millTable[s][i][1];
 
       // no mill
-      if (!(m == board[idx[1]] && m == board[idx[2]])) {
+      if (!(m == board[idx[1]!] && m == board[idx[2]!])) {
         continue;
       }
 
@@ -1429,7 +1429,7 @@ class Position {
         min = j;
 
         for (int k = j + 1; k < 3; k++) {
-          if (idx[min] > idx[k]) min = k;
+          if (idx[min]! > idx[k]!) min = k;
         }
 
         if (min == j) {
@@ -1461,21 +1461,21 @@ class Position {
 
   bool isAllSurrounded() {
     // Full
-    if (pieceOnBoardCount[PieceColor.black] +
-            pieceOnBoardCount[PieceColor.white] >=
+    if (pieceOnBoardCount[PieceColor.black]! +
+            pieceOnBoardCount[PieceColor.white]! >=
         rankNumber * fileNumber) {
       //print("Board is full.");
       return true;
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove()] <= rule.piecesAtLeastCount &&
+    if (pieceOnBoardCount[sideToMove()]! <= rule.piecesAtLeastCount &&
         rule.mayFly) {
       //print("Can fly.");
       return false;
     }
 
-    int moveSquare;
+    int? moveSquare;
 
     for (int s = sqBegin; s < sqEnd; s++) {
       if (!(sideToMove() == colorOn(s))) {
@@ -1484,7 +1484,7 @@ class Position {
 
       for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
         moveSquare = moveTable[s][d];
-        if (moveSquare != 0 && board[moveSquare] == Piece.noPiece) {
+        if (moveSquare != 0 && board[moveSquare!] == Piece.noPiece) {
           return false;
         }
       }
@@ -1506,7 +1506,7 @@ class Position {
 
   bool regret() {
     // TODO
-    final lastMove = recorder.removeLast();
+    final lastMove = recorder!.removeLast();
     if (lastMove == null) return false;
 
     _grid[lastMove.from] = _grid[lastMove.to];
@@ -1517,15 +1517,15 @@ class Position {
     changeSideToMove();
 
     final counterMarks = GameRecorder.fromCounterMarks(lastMove.counterMarks);
-    recorder.halfMove = counterMarks.halfMove;
-    recorder.fullMove = counterMarks.fullMove;
+    recorder!.halfMove = counterMarks.halfMove;
+    recorder!.fullMove = counterMarks.fullMove;
 
     if (lastMove.removed != Piece.noPiece) {
       //
       // Find last remove position (or opening), NativeEngine need
       final tempPosition = Position.clone(this);
 
-      final moves = recorder.reverseMovesToPrevRemove();
+      final moves = recorder!.reverseMovesToPrevRemove();
       moves.forEach((move) {
         //
         tempPosition._grid[move.from] = tempPosition._grid[move.to];
@@ -1535,7 +1535,7 @@ class Position {
             PieceColor.opponent(tempPosition._sideToMove);
       });
 
-      recorder.lastPositionWithRemove = tempPosition.fen();
+      recorder!.lastPositionWithRemove = tempPosition.fen();
     }
 
     result = GameResult.pending;
@@ -1544,15 +1544,15 @@ class Position {
   }
 
   String movesSinceLastRemove() {
-    int i = 0;
+    int? i = 0;
     String moves = "";
     int posAfterLastRemove = 0;
 
     //print("recorder.movesCount = ${recorder.movesCount}");
 
-    for (i = recorder.movesCount - 1; i >= 0; i--) {
+    for (i = recorder!.movesCount - 1; i! >= 0; i--) {
       //if (recorder.moveAt(i).type == MoveType.remove) break;
-      if (recorder.moveAt(i).move[0] == '-') break;
+      if (recorder!.moveAt(i).move![0] == '-') break;
     }
 
     if (i >= 0) {
@@ -1561,8 +1561,8 @@ class Position {
 
     //print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
 
-    for (int i = posAfterLastRemove; i < recorder.movesCount; i++) {
-      moves += " ${recorder.moveAt(i).move}";
+    for (int i = posAfterLastRemove; i < recorder!.movesCount; i++) {
+      moves += " ${recorder!.moveAt(i).move}";
     }
 
     //print("moves = $moves");
@@ -1576,7 +1576,7 @@ class Position {
     return moves.length > 0 ? moves.substring(1) : '';
   }
 
-  get manualText => recorder.buildManualText();
+  get manualText => recorder!.buildManualText();
 
   get side => _sideToMove;
 
@@ -1586,11 +1586,11 @@ class Position {
     print("$_sideToMove to move.");
   }
 
-  get halfMove => recorder.halfMove;
+  get halfMove => recorder!.halfMove;
 
-  get fullMove => recorder.fullMove;
+  get fullMove => recorder!.fullMove;
 
-  get lastMove => recorder.last;
+  get lastMove => recorder!.last;
 
-  get lastPositionWithRemove => recorder.lastPositionWithRemove;
+  get lastPositionWithRemove => recorder!.lastPositionWithRemove;
 }

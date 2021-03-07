@@ -47,7 +47,7 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> with RouteAware {
   // TODO: null-safety
-  String _status = '';
+  String? _status = '';
   bool _searching = false;
 
   @override
@@ -61,7 +61,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     widget.engine.startup();
   }
 
-  changeStatus(String status) {
+  changeStatus(String? status) {
     setState(() => _status = status);
   }
 
@@ -74,16 +74,16 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final winner = Game.shared.position.winner;
 
     Map<String, String> colorWinStrings = {
-      PieceColor.black: S.of(context).blackWin,
-      PieceColor.white: S.of(context).whiteWin,
-      PieceColor.draw: S.of(context).draw
+      PieceColor.black: S.of(context)!.blackWin,
+      PieceColor.white: S.of(context)!.whiteWin,
+      PieceColor.draw: S.of(context)!.draw
     };
 
     if (winner == PieceColor.nobody) {
       if (Game.shared.position.phase == Phase.placing) {
-        changeStatus(S.of(context).tipPlace);
+        changeStatus(S.of(context)!.tipPlace);
       } else if (Game.shared.position.phase == Phase.moving) {
-        changeStatus(S.of(context).tipMove);
+        changeStatus(S.of(context)!.tipMove);
       }
     } else {
       changeStatus(colorWinStrings[winner]);
@@ -99,7 +99,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     final position = Game.shared.position;
 
-    int sq = indexToSquare[index];
+    int? sq = indexToSquare[index];
 
     if (sq == null) {
       //print("putPiece skip index: $index");
@@ -121,17 +121,17 @@ class _GamePageState extends State<GamePage> with RouteAware {
           if (position.putPiece(sq)) {
             if (position.action == Act.remove) {
               //Audios.playTone('mill.mp3');
-              changeStatus(S.of(context).tipRemove);
+              changeStatus(S.of(context)!.tipRemove);
             } else {
               //Audios.playTone('place.mp3');
-              changeStatus(S.of(context).tipPlaced);
+              changeStatus(S.of(context)!.tipPlaced);
             }
             ret = true;
             print("putPiece: [$sq]");
             break;
           } else {
             print("putPiece: skip [$sq]");
-            changeStatus(S.of(context).tipBanPlace);
+            changeStatus(S.of(context)!.tipBanPlace);
           }
 
           // If cannot move, retry select, do not break
@@ -144,11 +144,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
             Game.shared.select(index);
             ret = true;
             print("selectPiece: [$sq]");
-            changeStatus(S.of(context).tipPlace);
+            changeStatus(S.of(context)!.tipPlace);
           } else {
             Audios.playTone('illegal.mp3');
             print("selectPiece: skip [$sq]");
-            changeStatus(S.of(context).tipSelectWrong);
+            changeStatus(S.of(context)!.tipSelectWrong);
           }
           break;
 
@@ -157,11 +157,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
             //Audios.playTone('remove.mp3');
             ret = true;
             print("removePiece: [$sq]");
-            changeStatus(S.of(context).tipRemoved);
+            changeStatus(S.of(context)!.tipRemoved);
           } else {
             Audios.playTone('illegal.mp3');
             print("removePiece: skip [$sq]");
-            changeStatus(S.of(context).tipBanRemove);
+            changeStatus(S.of(context)!.tipBanRemove);
           }
           break;
 
@@ -218,7 +218,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
         changeStatus(score);
       } else {
-        changeStatus(S.of(context).thinking);
+        changeStatus(S.of(context)!.thinking);
       }
 
       final response = await widget.engine.search(Game.shared.position);
@@ -246,7 +246,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     confirm() {
       Navigator.of(context).pop();
       Game.shared.newGame();
-      changeStatus(S.of(context).gameStarted);
+      changeStatus(S.of(context)!.gameStarted);
 
       if (Game.shared.isAiToMove()) {
         print("New game, AI to move.");
@@ -260,53 +260,53 @@ class _GamePageState extends State<GamePage> with RouteAware {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S.of(context).newGame,
+          title: Text(S.of(context)!.newGame,
               style: TextStyle(color: UIColors.primaryColor)),
           content:
-              SingleChildScrollView(child: Text(S.of(context).restartGame)),
+              SingleChildScrollView(child: Text(S.of(context)!.restartGame)),
           actions: <Widget>[
-            TextButton(child: Text(S.of(context).restart), onPressed: confirm),
-            TextButton(child: Text(S.of(context).cancel), onPressed: cancel),
+            TextButton(child: Text(S.of(context)!.restart), onPressed: confirm),
+            TextButton(child: Text(S.of(context)!.cancel), onPressed: cancel),
           ],
         );
       },
     );
   }
 
-  String getGameOverReasonString(GameOverReason reason, String winner) {
+  String getGameOverReasonString(GameOverReason? reason, String? winner) {
     String loseReasonStr;
     //String winnerStr =
     //    winner == Color.black ? S.of(context).black : S.of(context).white;
     String loserStr =
-        winner == PieceColor.black ? S.of(context).white : S.of(context).black;
+        winner == PieceColor.black ? S.of(context)!.white : S.of(context)!.black;
 
     switch (Game.shared.position.gameOverReason) {
       case GameOverReason.loseReasonlessThanThree:
-        loseReasonStr = loserStr + S.of(context).loseReasonlessThanThree;
+        loseReasonStr = loserStr + S.of(context)!.loseReasonlessThanThree;
         break;
       case GameOverReason.loseReasonResign:
-        loseReasonStr = loserStr + S.of(context).loseReasonResign;
+        loseReasonStr = loserStr + S.of(context)!.loseReasonResign;
         break;
       case GameOverReason.loseReasonNoWay:
-        loseReasonStr = loserStr + S.of(context).loseReasonNoWay;
+        loseReasonStr = loserStr + S.of(context)!.loseReasonNoWay;
         break;
       case GameOverReason.loseReasonBoardIsFull:
-        loseReasonStr = loserStr + S.of(context).loseReasonBoardIsFull;
+        loseReasonStr = loserStr + S.of(context)!.loseReasonBoardIsFull;
         break;
       case GameOverReason.loseReasonTimeOver:
-        loseReasonStr = loserStr + S.of(context).loseReasonTimeOver;
+        loseReasonStr = loserStr + S.of(context)!.loseReasonTimeOver;
         break;
       case GameOverReason.drawReasonRule50:
-        loseReasonStr = S.of(context).drawReasonRule50;
+        loseReasonStr = S.of(context)!.drawReasonRule50;
         break;
       case GameOverReason.drawReasonBoardIsFull:
-        loseReasonStr = S.of(context).drawReasonBoardIsFull;
+        loseReasonStr = S.of(context)!.drawReasonBoardIsFull;
         break;
       case GameOverReason.drawReasonThreefoldRepetition:
-        loseReasonStr = S.of(context).drawReasonThreefoldRepetition;
+        loseReasonStr = S.of(context)!.drawReasonThreefoldRepetition;
         break;
       default:
-        loseReasonStr = S.of(context).gameOverUnknownReason;
+        loseReasonStr = S.of(context)!.gameOverUnknownReason;
         break;
     }
 
@@ -314,12 +314,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   GameResult getGameResult(var winner) {
-    if (isAi[PieceColor.black] && isAi[PieceColor.white]) {
+    if (isAi[PieceColor.black]! && isAi[PieceColor.white]!) {
       return GameResult.none;
     }
 
     if (winner == PieceColor.black) {
-      if (isAi[PieceColor.black]) {
+      if (isAi[PieceColor.black]!) {
         return GameResult.lose;
       } else {
         return GameResult.win;
@@ -327,7 +327,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
 
     if (winner == PieceColor.white) {
-      if (isAi[PieceColor.white]) {
+      if (isAi[PieceColor.white]!) {
         return GameResult.lose;
       } else {
         return GameResult.win;
@@ -359,9 +359,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
 
     Map<GameResult, String> retMap = {
-      GameResult.win: S.of(context).youWin,
-      GameResult.lose: S.of(context).youLose,
-      GameResult.draw: S.of(context).draw
+      GameResult.win: S.of(context)!.youWin,
+      GameResult.lose: S.of(context)!.youLose,
+      GameResult.draw: S.of(context)!.draw
     };
 
     var dialogTitle = retMap[result];
@@ -381,17 +381,17 @@ class _GamePageState extends State<GamePage> with RouteAware {
             content: Text(getGameOverReasonString(
                     Game.shared.position.gameOverReason,
                     Game.shared.position.winner) +
-                S.of(context).challengeHarderLevel),
+                S.of(context)!.challengeHarderLevel),
             actions: <Widget>[
               TextButton(
-                  child: Text(S.of(context).yes),
+                  child: Text(S.of(context)!.yes),
                   onPressed: () {
                     Config.skillLevel++;
                     Config.save();
                     Navigator.of(context).pop();
                   }),
               TextButton(
-                  child: Text(S.of(context).no),
+                  child: Text(S.of(context)!.no),
                   onPressed: () => Navigator.of(context).pop()),
             ],
           );
@@ -410,7 +410,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
                 Game.shared.position.winner)),
             actions: <Widget>[
               TextButton(
-                  child: Text(S.of(context).ok),
+                  child: Text(S.of(context)!.ok),
                   onPressed: () => Navigator.of(context).pop()),
             ],
           );
@@ -434,12 +434,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   Widget createPageHeader() {
     Map<EngineType, String> engineTypeToString = {
-      EngineType.humanVsAi: S.of(context).humanVsAi,
-      EngineType.humanVsHuman: S.of(context).humanVsHuman,
-      EngineType.aiVsAi: S.of(context).aiVsAi,
-      EngineType.humanVsCloud: S.of(context).humanVsCloud,
-      EngineType.humanVsLAN: S.of(context).humanVsLAN,
-      EngineType.testViaLAN: S.of(context).testViaLAN,
+      EngineType.humanVsAi: S.of(context)!.humanVsAi,
+      EngineType.humanVsHuman: S.of(context)!.humanVsHuman,
+      EngineType.aiVsAi: S.of(context)!.aiVsAi,
+      EngineType.humanVsCloud: S.of(context)!.humanVsCloud,
+      EngineType.humanVsLAN: S.of(context)!.humanVsLAN,
+      EngineType.testViaLAN: S.of(context)!.testViaLAN,
     };
 
     Map<EngineType, IconData> engineTypeToIconLeft = {
@@ -535,7 +535,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(_status, maxLines: 1, style: subTitleStyle),
+            child: Text(_status!, maxLines: 1, style: subTitleStyle),
           ),
         ],
       ),
@@ -621,21 +621,21 @@ class _GamePageState extends State<GamePage> with RouteAware {
             builder: (BuildContext context) {
               return AlertDialog(
                 backgroundColor: Colors.transparent,
-                title: Text(S.of(context).gameRecord,
+                title: Text(S.of(context)!.gameRecord,
                     style: TextStyle(color: Colors.yellow)),
                 content: SingleChildScrollView(
                     child: Text(manualText, style: manualStyle)),
                 actions: <Widget>[
                   TextButton(
-                    child: Text(S.of(context).copy, style: manualStyle),
+                    child: Text(S.of(context)!.copy, style: manualStyle),
                     onPressed: () =>
                         Clipboard.setData(ClipboardData(text: manualText))
                             .then((_) {
-                      showSnackBar(S.of(context).moveHistoryCopied);
+                      showSnackBar(S.of(context)!.moveHistoryCopied);
                     }),
                   ),
                   TextButton(
-                    child: Text(S.of(context).cancel, style: manualStyle),
+                    child: Text(S.of(context)!.cancel, style: manualStyle),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -652,13 +652,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
             builder: (BuildContext context) {
               return AlertDialog(
                 backgroundColor: Colors.transparent,
-                title: Text(S.of(context).analyze,
+                title: Text(S.of(context)!.analyze,
                     style: TextStyle(color: Colors.yellow)),
                 content: SingleChildScrollView(
                     child: Text(analyzeText, style: manualStyle)),
                 actions: <Widget>[
                   TextButton(
-                    child: Text(S.of(context).ok, style: manualStyle),
+                    child: Text(S.of(context)!.ok, style: manualStyle),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -717,28 +717,28 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   @override
   void didPush() {
-    final route = ModalRoute.of(context).settings.name;
+    final route = ModalRoute.of(context)!.settings.name;
     print('Game Page didPush route: $route');
     widget.engine.setOptions();
   }
 
   @override
   void didPopNext() {
-    final route = ModalRoute.of(context).settings.name;
+    final route = ModalRoute.of(context)!.settings.name;
     print('Game Page didPopNext route: $route');
     widget.engine.setOptions();
   }
 
   @override
   void didPushNext() {
-    final route = ModalRoute.of(context).settings.name;
+    final route = ModalRoute.of(context)!.settings.name;
     print('Game Page didPushNext route: $route');
     widget.engine.setOptions();
   }
 
   @override
   void didPop() {
-    final route = ModalRoute.of(context).settings.name;
+    final route = ModalRoute.of(context)!.settings.name;
     print('Game Page didPop route: $route');
   }
 }

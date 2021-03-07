@@ -113,7 +113,7 @@ class Move {
   String removed = Piece.noPiece;
 
   // 'move' is the UCI engine's move-string
-  String move = "";
+  String? move = "";
 
   MoveType type = MoveType.none;
 
@@ -125,26 +125,26 @@ class Move {
       throw "Error: Invalid Move: $move";
     }
 
-    if (move[0] == '-' && move.length == "-(1,2)".length) {
+    if (move![0] == '-' && move!.length == "-(1,2)".length) {
       type = MoveType.remove;
       from = fromFile = fromRank = fromIndex = invalidMove;
-      toFile = int.parse(move[2]);
-      toRank = int.parse(move[4]);
+      toFile = int.parse(move![2]);
+      toRank = int.parse(move![4]);
       //captured = Piece.noPiece;
-    } else if (move.length == "(1,2)->(3,4)".length) {
+    } else if (move!.length == "(1,2)->(3,4)".length) {
       type = MoveType.move;
-      fromFile = int.parse(move[1]);
-      fromRank = int.parse(move[3]);
+      fromFile = int.parse(move![1]);
+      fromRank = int.parse(move![3]);
       from = makeSquare(fromFile, fromRank);
       fromIndex = squareToIndex[from] ?? invalidMove;
-      toFile = int.parse(move[8]);
-      toRank = int.parse(move[10]);
+      toFile = int.parse(move![8]);
+      toRank = int.parse(move![10]);
       removed = Piece.noPiece;
-    } else if (move.length == "(1,2)".length) {
+    } else if (move!.length == "(1,2)".length) {
       type = MoveType.place;
       from = fromFile = fromRank = fromIndex = invalidMove;
-      toFile = int.parse(move[1]);
-      toRank = int.parse(move[3]);
+      toFile = int.parse(move![1]);
+      toRank = int.parse(move![3]);
       removed = Piece.noPiece;
     } else if (move == "draw") {
       // TODO
@@ -171,7 +171,7 @@ class Move {
     parse();
   }
 
-  static bool legal(String move) {
+  static bool legal(String? move) {
     if (move == "draw") {
       return true; // TODO
     }

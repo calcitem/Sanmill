@@ -27,21 +27,21 @@ import 'painter_base.dart';
 
 class PiecePaintPair {
   // TODO: null-safety
-  final String piece;
-  final Offset pos;
+  final String? piece;
+  final Offset? pos;
   PiecePaintPair({this.piece, this.pos});
 }
 
 class PiecesPainter extends PiecesBasePainter {
-  final Position position;
-  final int focusIndex, blurIndex;
+  final Position? position;
+  final int? focusIndex, blurIndex;
 
   // TODO: null-safety
-  double pieceWidth = 0.0;
+  double? pieceWidth = 0.0;
 
   PiecesPainter({
-    @required double width,
-    @required this.position,
+    required double width,
+    required this.position,
     this.focusIndex = Move.invalidMove,
     this.blurIndex = Move.invalidMove,
   }) : super(width: width) {
@@ -73,14 +73,14 @@ class PiecesPainter extends PiecesBasePainter {
   static doPaint(
     Canvas canvas,
     Paint paint, {
-    Position position,
-    double gridWidth,
-    double squareWidth,
-    double pieceWidth,
-    double offsetX,
-    double offsetY,
-    int focusIndex = Move.invalidMove,
-    int blurIndex = Move.invalidMove,
+    Position? position,
+    double? gridWidth,
+    double? squareWidth,
+    double? pieceWidth,
+    double? offsetX,
+    double? offsetY,
+    int? focusIndex = Move.invalidMove,
+    int? blurIndex = Move.invalidMove,
   }) {
     //
     final left = offsetX;
@@ -90,7 +90,7 @@ class PiecesPainter extends PiecesBasePainter {
     final piecesToDraw = <PiecePaintPair>[];
 
     // TODO: null-safety
-    Color blurPositionColor;
+    Color? blurPositionColor;
     Color focusPositionColor;
 
     // Draw pieces on board
@@ -98,16 +98,16 @@ class PiecesPainter extends PiecesBasePainter {
       for (var col = 0; col < 7; col++) {
         //
         final piece =
-            position.pieceOnGrid(row * 7 + col); // No Pieces when initial
+            position!.pieceOnGrid(row * 7 + col); // No Pieces when initial
 
         if (piece == Piece.noPiece) continue;
 
-        var pos = Offset(left + squareWidth * col, top + squareWidth * row);
+        var pos = Offset(left! + squareWidth! * col, top! + squareWidth * row);
 
         piecesToDraw.add(PiecePaintPair(piece: piece, pos: pos));
 
         shadowPath.addOval(
-          Rect.fromCenter(center: pos, width: pieceWidth, height: pieceWidth),
+          Rect.fromCenter(center: pos, width: pieceWidth!, height: pieceWidth),
         );
       }
     }
@@ -126,23 +126,23 @@ class PiecesPainter extends PiecesBasePainter {
     */
 
     piecesToDraw.forEach((pps) {
-      var pieceRadius = pieceWidth / 2;
+      var pieceRadius = pieceWidth! / 2;
       var pieceInnerRadius = pieceRadius * 0.99;
 
       // Draw Border of Piece
       switch (pps.piece) {
         case Piece.blackStone:
           paint.color = UIColors.blackPieceBorderColor;
-          canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
+          canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
           paint.color = Color(Config.blackPieceColor);
-          canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
+          canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
           blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
           break;
         case Piece.whiteStone:
           paint.color = UIColors.whitePieceBorderColor;
-          canvas.drawCircle(pps.pos, pieceRadius, paint); // For debugging
+          canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
           paint.color = Color(Config.whitePieceColor);
-          canvas.drawCircle(pps.pos, pieceInnerRadius, paint);
+          canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
           blurPositionColor = Color(Config.whitePieceColor).withOpacity(0.1);
           break;
         case Piece.ban:
@@ -157,7 +157,7 @@ class PiecesPainter extends PiecesBasePainter {
     // draw focus and blur position
 
     if (focusIndex != Move.invalidMove) {
-      final int row = focusIndex ~/ 7, column = focusIndex % 7;
+      final int row = focusIndex! ~/ 7, column = focusIndex % 7;
 
       focusPositionColor = Color.fromARGB(
               (Color(Config.blackPieceColor).alpha +
@@ -179,21 +179,21 @@ class PiecesPainter extends PiecesBasePainter {
       paint.strokeWidth = 2;
 
       canvas.drawCircle(
-        Offset(left + column * squareWidth, top + row * squareWidth),
-        pieceWidth / 2,
+        Offset(left! + column * squareWidth!, top! + row * squareWidth),
+        pieceWidth! / 2,
         paint,
       );
     }
 
     if (blurIndex != Move.invalidMove) {
-      final row = blurIndex ~/ 7, column = blurIndex % 7;
+      final row = blurIndex! ~/ 7, column = blurIndex % 7;
 
-      paint.color = blurPositionColor;
+      paint.color = blurPositionColor!;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(
-        Offset(left + column * squareWidth, top + row * squareWidth),
-        pieceWidth / 2 * 0.8,
+        Offset(left! + column * squareWidth!, top! + row * squareWidth),
+        pieceWidth! / 2 * 0.8,
         paint,
       );
     }

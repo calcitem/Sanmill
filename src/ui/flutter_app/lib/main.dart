@@ -45,7 +45,7 @@ Future<void> main() async {
   //String formattedDate = DateFormat('yyyy-MM-dd_kk-mm').format(now);
   String externalDirStr;
   try {
-    Directory externalDir = await getExternalStorageDirectory();
+    Directory externalDir = await (getExternalStorageDirectory() as FutureOr<Directory>);
     externalDirStr = externalDir.path.toString();
   } catch (e) {
     print(e);

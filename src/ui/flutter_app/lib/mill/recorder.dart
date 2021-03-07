@@ -21,8 +21,8 @@ import 'position.dart';
 import 'types.dart';
 
 class GameRecorder {
-  int halfMove, fullMove;
-  String lastPositionWithRemove = "";
+  int? halfMove, fullMove;
+  String? lastPositionWithRemove = "";
   final _history = <Move>[];
 
   GameRecorder(
@@ -47,13 +47,13 @@ class GameRecorder {
     if (move.type == MoveType.remove) {
       halfMove = 0;
     } else {
-      if (halfMove != null) halfMove = halfMove + 1;
+      if (halfMove != null) halfMove = halfMove! + 1;
     }
 
     if (fullMove == 0) {
-      if (halfMove != null) halfMove = halfMove + 1;
+      if (halfMove != null) halfMove = halfMove! + 1;
     } else if (position.side != PieceColor.black) {
-      if (halfMove != null) halfMove = halfMove + 1;
+      if (halfMove != null) halfMove = halfMove! + 1;
     }
 
     if (_history.length > 0) {
@@ -71,7 +71,7 @@ class GameRecorder {
     }
   }
 
-  Move removeLast() {
+  Move? removeLast() {
     if (_history.isEmpty) return null;
     return _history.removeLast();
   }

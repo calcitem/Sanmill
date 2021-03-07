@@ -38,7 +38,7 @@ class NativeEngine extends AiEngine {
     await platform.invokeMethod('send', command);
   }
 
-  Future<String> read() async {
+  Future<String?> read() async {
     return await platform.invokeMethod('read');
   }
 
@@ -46,19 +46,19 @@ class NativeEngine extends AiEngine {
     await platform.invokeMethod('shutdown');
   }
 
-  Future<bool> isReady() async {
+  Future<bool?> isReady() async {
     return await platform.invokeMethod('isReady');
   }
 
-  FutureOr<bool> isThinking() async {
+  FutureOr<bool?> isThinking() async {
     return await platform.invokeMethod('isThinking');
   }
 
   @override
-  Future<EngineResponse> search(Position position, {bool byUser = true}) async {
-    if (await isThinking()) await stopSearching();
+  Future<EngineResponse> search(Position? position, {bool byUser = true}) async {
+    if (await (isThinking() as FutureOr<bool>)) await stopSearching();
 
-    send(getPositionFen(position));
+    send(getPositionFen(position!));
     send('go');
 
     final response = await waitResponse(['bestmove', 'nobestmove']);

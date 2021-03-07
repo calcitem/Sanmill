@@ -26,7 +26,7 @@ abstract class PiecesBasePainter extends CustomPainter {
   final gridWidth;
   final squareWidth;
 
-  PiecesBasePainter({@required this.width})
+  PiecesBasePainter({required this.width})
       : gridWidth = (width - Board.padding * 2),
         squareWidth = (width - Board.padding * 2) / 7;
 }

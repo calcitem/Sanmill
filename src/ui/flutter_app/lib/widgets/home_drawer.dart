@@ -6,22 +6,22 @@ import 'package:sanmill/style/app_theme.dart';
 
 class HomeDrawer extends StatefulWidget {
   const HomeDrawer(
-      {Key key,
+      {Key? key,
       this.screenIndex,
       this.iconAnimationController,
       this.callBackIndex})
       : super(key: key);
 
-  final AnimationController iconAnimationController;
-  final DrawerIndex screenIndex;
-  final Function(DrawerIndex) callBackIndex;
+  final AnimationController? iconAnimationController;
+  final DrawerIndex? screenIndex;
+  final Function(DrawerIndex?)? callBackIndex;
 
   @override
   _HomeDrawerState createState() => _HomeDrawerState();
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
-  List<DrawerList> drawerList;
+  late List<DrawerList> drawerList;
   @override
   void initState() {
     super.initState();
@@ -31,32 +31,32 @@ class _HomeDrawerState extends State<HomeDrawer> {
     drawerList = <DrawerList>[
       DrawerList(
         index: DrawerIndex.humanVsAi,
-        labelName: S.of(context).humanVsAi,
+        labelName: S.of(context)!.humanVsAi,
         icon: Icon(Icons.person),
       ),
       DrawerList(
         index: DrawerIndex.humanVsHuman,
-        labelName: S.of(context).humanVsHuman,
+        labelName: S.of(context)!.humanVsHuman,
         icon: Icon(Icons.group),
       ),
       DrawerList(
         index: DrawerIndex.aiVsAi,
-        labelName: S.of(context).aiVsAi,
+        labelName: S.of(context)!.aiVsAi,
         icon: Icon(Icons.computer),
       ),
       DrawerList(
         index: DrawerIndex.settings,
-        labelName: S.of(context).settings,
+        labelName: S.of(context)!.settings,
         icon: Icon(Icons.settings),
       ),
       DrawerList(
         index: DrawerIndex.ruleSettings,
-        labelName: S.of(context).ruleSettings,
+        labelName: S.of(context)!.ruleSettings,
         icon: Icon(Icons.rule),
       ),
       DrawerList(
         index: DrawerIndex.Help,
-        labelName: S.of(context).help,
+        labelName: S.of(context)!.help,
         icon: Icon(Icons.help),
       ),
       /*
@@ -78,7 +78,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       */
       DrawerList(
         index: DrawerIndex.About,
-        labelName: S.of(context).about,
+        labelName: S.of(context)!.about,
         icon: Icon(Icons.info),
       ),
     ];
@@ -104,16 +104,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   AnimatedBuilder(
-                    animation: widget.iconAnimationController,
-                    builder: (BuildContext context, Widget child) {
+                    animation: widget.iconAnimationController!,
+                    builder: (BuildContext context, Widget? child) {
                       return ScaleTransition(
                         scale: AlwaysStoppedAnimation<double>(
-                            1.0 - (widget.iconAnimationController.value) * 0.2),
+                            1.0 - (widget.iconAnimationController!.value) * 0.2),
                         child: RotationTransition(
                           turns: AlwaysStoppedAnimation<double>(Tween<double>(
                                       begin: 0.0, end: 24.0)
                                   .animate(CurvedAnimation(
-                                      parent: widget.iconAnimationController,
+                                      parent: widget.iconAnimationController!,
                                       curve: Curves.fastOutSlowIn))
                                   .value /
                               360),
@@ -128,9 +128,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                         print("ColorizeAnimatedTextKit Tap Event");
                       },
                       text: [
-                        S.of(context).appName,
-                        S.of(context).appName,
-                        S.of(context).appName,
+                        S.of(context)!.appName,
+                        S.of(context)!.appName,
+                        S.of(context)!.appName,
                       ],
                       textStyle: TextStyle(
                         fontSize: 24.0,
@@ -250,7 +250,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   ? Colors.blue
                                   : AppTheme.nearlyBlack),
                         )
-                      : Icon(listData.icon.icon,
+                      : Icon(listData.icon!.icon,
                           color: widget.screenIndex == listData.index
                               ? Colors.blue
                               : AppTheme.nearlyBlack),
@@ -273,13 +273,13 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ),
             widget.screenIndex == listData.index
                 ? AnimatedBuilder(
-                    animation: widget.iconAnimationController,
-                    builder: (BuildContext context, Widget child) {
+                    animation: widget.iconAnimationController!,
+                    builder: (BuildContext context, Widget? child) {
                       return Transform(
                         transform: Matrix4.translationValues(
                             (MediaQuery.of(context).size.width * 0.75 - 64) *
                                 (1.0 -
-                                    widget.iconAnimationController.value -
+                                    widget.iconAnimationController!.value -
                                     1.0),
                             0.0,
                             0.0),
@@ -310,8 +310,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
-  Future<void> navigationToScreen(DrawerIndex indexScreen) async {
-    widget.callBackIndex(indexScreen);
+  Future<void> navigationToScreen(DrawerIndex? indexScreen) async {
+    widget.callBackIndex!(indexScreen);
   }
 }
 
@@ -335,8 +335,8 @@ class DrawerList {
   });
 
   String labelName;
-  Icon icon;
+  Icon? icon;
   bool isAssetsImage;
   String imageName;
-  DrawerIndex index;
+  DrawerIndex? index;
 }

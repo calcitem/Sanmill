@@ -23,7 +23,7 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 
 void main() {
-  Widget makeTestableWidget({@required Widget child, @required Locale locale}) {
+  Widget makeTestableWidget({required Widget child, required Locale locale}) {
     return MaterialApp(
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         S.delegate,

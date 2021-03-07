@@ -27,7 +27,7 @@ import 'package:sanmill/widgets/board.dart';
 import 'painter_base.dart';
 
 class BoardPainter extends PiecesBasePainter {
-  BoardPainter({@required double width}) : super(width: width);
+  BoardPainter({required double width}) : super(width: width);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -51,8 +51,8 @@ class BoardPainter extends PiecesBasePainter {
     Paint paint,
     double gridWidth,
     double squareWidth, {
-    double offsetX,
-    double offsetY,
+    required double offsetX,
+    required double offsetY,
   }) {
     paint.color = Color(Config.boardLineColor);
     paint.style = PaintingStyle.stroke;

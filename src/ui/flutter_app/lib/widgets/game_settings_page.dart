@@ -47,7 +47,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showBoardColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).boardColor),
+      title: Text(S.of(context)!.pick + S.of(context)!.boardColor),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: Color(Config.boardBackgroundColor),
@@ -58,7 +58,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).confirm),
+          child: Text(S.of(context)!.confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.boardBackgroundColor = pickerColor.value;
@@ -67,7 +67,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(S.of(context)!.cancel),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -86,7 +86,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showBackgroundColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).backgroudColor),
+      title: Text(S.of(context)!.pick + S.of(context)!.backgroudColor),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: Color(Config.darkBackgroundColor),
@@ -97,7 +97,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).confirm),
+          child: Text(S.of(context)!.confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.darkBackgroundColor = pickerColor.value;
@@ -106,7 +106,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(S.of(context)!.cancel),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -125,7 +125,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showBoardLineColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).lineColor),
+      title: Text(S.of(context)!.pick + S.of(context)!.lineColor),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: Color(Config.boardLineColor),
@@ -136,7 +136,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).confirm),
+          child: Text(S.of(context)!.confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.boardLineColor = pickerColor.value;
@@ -145,7 +145,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(S.of(context)!.cancel),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -164,7 +164,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showBlackPieceColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).blackPieceColor),
+      title: Text(S.of(context)!.pick + S.of(context)!.blackPieceColor),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: Color(Config.blackPieceColor),
@@ -175,7 +175,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).confirm),
+          child: Text(S.of(context)!.confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.blackPieceColor = pickerColor.value;
@@ -184,7 +184,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(S.of(context)!.cancel),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -203,7 +203,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   showWhitePieceColorDialog() async {
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).whitePieceColor),
+      title: Text(S.of(context)!.pick + S.of(context)!.whitePieceColor),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: Color(Config.whitePieceColor),
@@ -214,7 +214,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).confirm),
+          child: Text(S.of(context)!.confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
             Config.whitePieceColor = pickerColor.value;
@@ -223,7 +223,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(S.of(context)!.cancel),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -505,16 +505,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S.of(context).restore,
+          title: Text(S.of(context)!.restore,
               style: TextStyle(color: UIColors.primaryColor)),
           content: SingleChildScrollView(
-            child: Text(S.of(context).restoreDefaultSettings +
+            child: Text(S.of(context)!.restoreDefaultSettings +
                 "?\n" +
-                S.of(context).exitApp),
+                S.of(context)!.exitApp),
           ),
           actions: <Widget>[
-            TextButton(child: Text(S.of(context).ok), onPressed: confirm),
-            TextButton(child: Text(S.of(context).cancel), onPressed: cancel),
+            TextButton(child: Text(S.of(context)!.ok), onPressed: confirm),
+            TextButton(child: Text(S.of(context)!.cancel), onPressed: cancel),
           ],
         );
       },
@@ -532,7 +532,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       backgroundColor: UIColors.lightBackgroundColor,
       appBar: AppBar(
           centerTitle: true,
-          title: Text(S.of(context).settings),
+          title: Text(S.of(context)!.settings),
           backgroundColor: UIColors.primaryColor),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -540,7 +540,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 10.0),
-            Text(S.of(context).skillLevel, style: headerStyle),
+            Text(S.of(context)!.skillLevel, style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
               color: cardColor,
@@ -549,7 +549,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).skillLevel, style: itemStyle),
+                    title: Text(S.of(context)!.skillLevel, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(""), // TODO
@@ -561,14 +561,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.aiIsLazy,
-                    title: Text(S.of(context).aiIsLazy, style: itemStyle),
+                    title: Text(S.of(context)!.aiIsLazy, style: itemStyle),
                     onChanged: setAiIsLazy,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).sound, style: headerStyle),
+            Text(S.of(context)!.sound, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -577,14 +577,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.toneEnabled,
-                    title: Text(S.of(context).tone, style: itemStyle),
+                    title: Text(S.of(context)!.tone, style: itemStyle),
                     onChanged: setTone,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).whoMovesFirst, style: headerStyle),
+            Text(S.of(context)!.whoMovesFirst, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -595,8 +595,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     value: !Config.aiMovesFirst,
                     title: Text(
                         Config.aiMovesFirst
-                            ? S.of(context).ai
-                            : S.of(context).human,
+                            ? S.of(context)!.ai
+                            : S.of(context)!.human,
                         style: itemStyle),
                     onChanged: setWhoMovesFirst,
                   ),
@@ -604,7 +604,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).misc, style: headerStyle),
+            Text(S.of(context)!.misc, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -613,7 +613,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.isAutoRestart,
-                    title: Text(S.of(context).isAutoRestart, style: itemStyle),
+                    title: Text(S.of(context)!.isAutoRestart, style: itemStyle),
                     onChanged: setIsAutoRestart,
                   ),
                   _buildDivider(),
@@ -621,14 +621,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     activeColor: UIColors.primaryColor,
                     value: Config.shufflingEnabled,
                     title:
-                        Text(S.of(context).shufflingEnabled, style: itemStyle),
+                        Text(S.of(context)!.shufflingEnabled, style: itemStyle),
                     onChanged: setShufflingEnabled,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).display, style: headerStyle),
+            Text(S.of(context)!.display, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -637,13 +637,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.isPieceCountInHandShown,
-                    title: Text(S.of(context).isPieceCountInHandShown,
+                    title: Text(S.of(context)!.isPieceCountInHandShown,
                         style: itemStyle),
                     onChanged: setIsPieceCountInHandShown,
                   ),
                   _buildDivider(),
                   ListTile(
-                    title: Text(S.of(context).boardBorderLineWidth,
+                    title: Text(S.of(context)!.boardBorderLineWidth,
                         style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -655,7 +655,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   _buildDivider(),
                   ListTile(
-                    title: Text(S.of(context).boardInnerLineWidth,
+                    title: Text(S.of(context)!.boardInnerLineWidth,
                         style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -669,14 +669,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).color, style: headerStyle),
+            Text(S.of(context)!.color, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).boardColor, style: itemStyle),
+                    title: Text(S.of(context)!.boardColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.boardBackgroundColor.toRadixString(16),
@@ -690,7 +690,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   _buildDivider(),
                   ListTile(
-                    title: Text(S.of(context).backgroudColor, style: itemStyle),
+                    title: Text(S.of(context)!.backgroudColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.darkBackgroundColor.toRadixString(16),
@@ -704,7 +704,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   _buildDivider(),
                   ListTile(
-                    title: Text(S.of(context).lineColor, style: itemStyle),
+                    title: Text(S.of(context)!.lineColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.boardLineColor.toRadixString(16),
@@ -718,7 +718,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   _buildDivider(),
                   ListTile(
                     title:
-                        Text(S.of(context).blackPieceColor, style: itemStyle),
+                        Text(S.of(context)!.blackPieceColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.blackPieceColor.toRadixString(16),
@@ -732,7 +732,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   _buildDivider(),
                   ListTile(
                     title:
-                        Text(S.of(context).whitePieceColor, style: itemStyle),
+                        Text(S.of(context)!.whitePieceColor, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.whitePieceColor.toRadixString(16),
@@ -747,14 +747,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).restore, style: headerStyle),
+            Text(S.of(context)!.restore, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).restoreDefaultSettings,
+                    title: Text(S.of(context)!.restoreDefaultSettings,
                         style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[

@@ -33,7 +33,7 @@ class Board extends StatelessWidget {
   final double height;
   final Function(BuildContext, int) onBoardTap;
 
-  Board({@required this.width, @required this.onBoardTap}) : height = width;
+  Board({required this.width, required this.onBoardTap}) : height = width;
 
   @override
   Widget build(BuildContext context) {
