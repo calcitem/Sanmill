@@ -26,6 +26,7 @@ import 'package:sanmill/widgets/board.dart';
 import 'painter_base.dart';
 
 class PiecePaintPair {
+  // TODO: null-safety
   final String piece;
   final Offset pos;
   PiecePaintPair({this.piece, this.pos});
@@ -35,7 +36,8 @@ class PiecesPainter extends PiecesBasePainter {
   final Position position;
   final int focusIndex, blurIndex;
 
-  double pieceWidth;
+  // TODO: null-safety
+  double pieceWidth = 0.0;
 
   PiecesPainter({
     @required double width,
@@ -87,6 +89,7 @@ class PiecesPainter extends PiecesBasePainter {
     final shadowPath = Path();
     final piecesToDraw = <PiecePaintPair>[];
 
+    // TODO: null-safety
     Color blurPositionColor;
     Color focusPositionColor;
 

@@ -29,8 +29,9 @@ Map<String, bool> isAi = {PieceColor.black: false, PieceColor.white: true};
 class Game {
   static Game _instance;
 
-  Position _position;
-  int _focusIndex, _blurIndex;
+  Position _position = Position();
+  int _focusIndex = Move.invalidMove;
+  int _blurIndex = Move.invalidMove;
 
   String sideToMove = PieceColor.black;
 
@@ -41,7 +42,7 @@ class Game {
     PieceColor.white: false
   };
 
-  EngineType engineType;
+  EngineType engineType = EngineType.none;
 
   bool aiIsSearching() {
     return isSearching[PieceColor.black] == true ||
@@ -77,9 +78,10 @@ class Game {
     setWhoIsAi(engineType);
   }
 
-  bool hasAnimation;
-
-  int animationDurationTime;
+  // TODO
+  bool hasAnimation = true;
+  // TODO
+  int animationDurationTime = 1;
 
   static bool hasSound = true;
 
@@ -89,9 +91,10 @@ class Game {
 
   bool isAiFirstMove = false;
 
-  int ruleIndex;
-
-  String tips;
+  // TODO
+  int ruleIndex = 0;
+  // TODO
+  String tips = "";
 
   List<String> moveHistory = [""];
 
@@ -122,7 +125,7 @@ class Game {
   }
 
   select(int pos) {
-    _focusIndex = pos;
+    _focusIndex = pos ?? Move.invalidMove;
     _blurIndex = Move.invalidMove;
     //Audios.playTone('click.mp3');
   }
@@ -155,8 +158,8 @@ class Game {
 
       if (lastMove != null) {
         //
-        _blurIndex = lastMove.from;
-        _focusIndex = lastMove.to;
+        _blurIndex = lastMove.from ?? Move.invalidMove;
+        _focusIndex = lastMove.to ?? Move.invalidMove;
         //
       } else {
         //
@@ -188,8 +191,10 @@ class Game {
   set blurIndex(index) => _blurIndex = index;
 
   bool doMove(String move) {
-    int total;
-    double blackWinRate, whiteWinRate, drawRate;
+    int total = 0;
+    double blackWinRate = 0;
+    double whiteWinRate = 0;
+    double drawRate = 0;
 
     if (position.phase == Phase.ready) {
       start();
@@ -203,20 +208,21 @@ class Game {
       return false;
     }
 
-    sideToMove = position.sideToMove();
+    sideToMove = position.sideToMove() ?? PieceColor.nobody;
 
     total = position.score[PieceColor.black] +
-        position.score[PieceColor.white] +
-        position.score[PieceColor.draw];
+            position.score[PieceColor.white] +
+            position.score[PieceColor.draw] ??
+        0;
 
     if (total == 0) {
       blackWinRate = 0;
       whiteWinRate = 0;
       drawRate = 0;
     } else {
-      blackWinRate = position.score[PieceColor.black] * 100 / total;
-      whiteWinRate = position.score[PieceColor.white] * 100 / total;
-      drawRate = position.score[PieceColor.draw] * 100 / total;
+      blackWinRate = position.score[PieceColor.black] * 100 / total ?? 0;
+      whiteWinRate = position.score[PieceColor.white] * 100 / total ?? 0;
+      drawRate = position.score[PieceColor.draw] * 100 / total ?? 0;
     }
 
     String stat = "Score: " +

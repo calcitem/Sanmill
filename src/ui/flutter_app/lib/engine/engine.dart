@@ -24,7 +24,8 @@ enum EngineType {
   aiVsAi,
   humanVsCloud, // Not Implemented
   humanVsLAN, // Not Implemented
-  testViaLAN // Not Implemented
+  testViaLAN, // Not Implemented
+  none
 }
 
 class EngineResponse {

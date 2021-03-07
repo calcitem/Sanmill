@@ -36,11 +36,12 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   setNTotalPiecesEachSide() {
     //
     callback(int piecesCount) async {
-      //
+      print("piecesCount = $piecesCount");
+
       Navigator.of(context).pop();
 
       setState(() {
-        rule.piecesCount = Config.piecesCount = piecesCount;
+        rule.piecesCount = Config.piecesCount = piecesCount ?? 9;
       });
 
       Config.save();

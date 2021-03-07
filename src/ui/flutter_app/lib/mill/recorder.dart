@@ -22,7 +22,7 @@ import 'types.dart';
 
 class GameRecorder {
   int halfMove, fullMove;
-  String lastPositionWithRemove;
+  String lastPositionWithRemove = "";
   final _history = <Move>[];
 
   GameRecorder(

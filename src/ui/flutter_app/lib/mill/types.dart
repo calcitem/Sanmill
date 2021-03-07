@@ -18,7 +18,7 @@
 
 abs(value) => value > 0 ? value : -value;
 
-enum MoveType { place, move, remove }
+enum MoveType { place, move, remove, none }
 
 enum Phase { none, ready, placing, moving, gameOver }
 

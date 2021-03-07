@@ -113,12 +113,12 @@ class Move {
   String removed = Piece.noPiece;
 
   // 'move' is the UCI engine's move-string
-  String move;
+  String move = "";
 
-  MoveType type;
+  MoveType type = MoveType.none;
 
   // Used to restore fen step conter when regreting
-  String counterMarks;
+  String counterMarks = "";
 
   parse() {
     if (!legal(move)) {
@@ -136,7 +136,7 @@ class Move {
       fromFile = int.parse(move[1]);
       fromRank = int.parse(move[3]);
       from = makeSquare(fromFile, fromRank);
-      fromIndex = squareToIndex[from];
+      fromIndex = squareToIndex[from] ?? invalidMove;
       toFile = int.parse(move[8]);
       toRank = int.parse(move[10]);
       removed = Piece.noPiece;
@@ -154,7 +154,7 @@ class Move {
     }
 
     to = makeSquare(toFile, toRank);
-    toIndex = squareToIndex[to];
+    toIndex = squareToIndex[to] ?? invalidMove;
   }
 
   Move(this.move) {

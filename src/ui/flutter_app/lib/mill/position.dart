@@ -63,6 +63,7 @@ class Position {
   int rule50 = 0;
   int pliesFromNull = 0;
 
+  // TODO
   StateInfo st;
 
   String us = PieceColor.black;
@@ -88,6 +89,7 @@ class Position {
   var millTable;
   var moveTable;
 
+  // TODO: null-safety
   Move move;
 
   Position.boardToGrid() {
@@ -581,12 +583,12 @@ class Position {
         } else {
           changeSideToMove();
         }
-        Game.shared.focusIndex = squareToIndex[s];
+        Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
         Audios.playTone('place.mp3');
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
-        Game.shared.focusIndex = squareToIndex[s];
+        Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
         Audios.playTone('mill.mp3');
       }
     } else if (phase == Phase.moving) {
@@ -639,13 +641,13 @@ class Position {
           //Audios.playTone('mill.mp3');
           return true;
         } else {
-          Game.shared.focusIndex = squareToIndex[s];
+          Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
           Audios.playTone('place.mp3');
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
-        Game.shared.focusIndex = squareToIndex[s];
+        Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
         Audios.playTone('mill.mp3');
       }
     } else {
@@ -1406,8 +1408,8 @@ class Position {
   int millsCount(int s) {
     int n = 0;
     List<int> idx = [0, 0, 0];
-    int min;
-    int temp;
+    int min = 0;
+    int temp = 0;
     String m = colorOn(s);
 
     for (int i = 0; i < idx.length; i++) {
@@ -1542,7 +1544,7 @@ class Position {
   }
 
   String movesSinceLastRemove() {
-    int i;
+    int i = 0;
     String moves = "";
     int posAfterLastRemove = 0;
 

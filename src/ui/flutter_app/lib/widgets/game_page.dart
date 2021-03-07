@@ -28,7 +28,6 @@ import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/colors.dart';
-import 'package:sanmill/style/toast.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
@@ -47,7 +46,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> with RouteAware {
-  //
+  // TODO: null-safety
   String _status = '';
   bool _searching = false;
 
@@ -171,7 +170,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
 
       if (ret) {
-        Game.shared.sideToMove = position.sideToMove();
+        Game.shared.sideToMove = position.sideToMove() ?? PieceColor.nobody;
         Game.shared.moveHistory.add(position.cmdline);
 
         // TODO: Need Others?
@@ -195,7 +194,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         }
       }
 
-      Game.shared.sideToMove = position.sideToMove();
+      Game.shared.sideToMove = position.sideToMove() ?? PieceColor.nobody;
 
       setState(() {});
     });
@@ -272,14 +271,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
         );
       },
     );
-  }
-
-  analyzePosition() async {
-    //
-    Toast.toast(context,
-        msg: S.of(context).analyzing, position: ToastPostion.bottom);
-
-    setState(() => _searching = true);
   }
 
   String getGameOverReasonString(GameOverReason reason, String winner) {
