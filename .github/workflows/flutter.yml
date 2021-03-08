@@ -22,6 +22,9 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
+      - run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       - uses: subosito/flutter-action@v1
         with:
           channel: 'dev' # or: 'dev' or 'beta'
@@ -51,6 +54,11 @@ jobs:
       # Build
       - name: Build apk
         run: cd src/ui/flutter_app; flutter build apk
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_PATH: key.jks
 
       # Archive
       - name: Archive production artifacts
