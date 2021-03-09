@@ -604,20 +604,51 @@ class _GamePageState extends State<GamePage> with RouteAware {
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Row(children: <Widget>[
         Expanded(child: SizedBox()),
-        IconButton(
-            icon: Icon(Icons.motion_photos_on, color: UIColors.secondaryColor),
-            onPressed: newGame),
+        TextButton(
+          child: Column(
+            // Replace with a Row for horizontal icon + text
+            children: <Widget>[
+              Icon(
+                Icons.motion_photos_on,
+                color: UIColors.secondaryColor,
+              ),
+              Text(S.of(context)!.newGame,
+                  style: TextStyle(color: UIColors.secondaryColor)),
+            ],
+          ),
+          onPressed: newGame,
+        ),
         Expanded(child: SizedBox()),
-        IconButton(
-          icon: Icon(Icons.restore, color: UIColors.secondaryColor),
+        TextButton(
+          child: Column(
+            // Replace with a Row for horizontal icon + text
+            children: <Widget>[
+              Icon(
+                Icons.restore,
+                color: UIColors.secondaryColor,
+              ),
+              Text(S.of(context)!.regret,
+                  style: TextStyle(color: UIColors.secondaryColor)),
+            ],
+          ),
           onPressed: () {
             Game.shared.regret(steps: 2);
             setState(() {});
           },
         ),
         Expanded(child: SizedBox()),
-        IconButton(
-          icon: Icon(Icons.list_alt, color: UIColors.secondaryColor),
+        TextButton(
+          child: Column(
+            // Replace with a Row for horizontal icon + text
+            children: <Widget>[
+              Icon(
+                Icons.list_alt,
+                color: UIColors.secondaryColor,
+              ),
+              Text(S.of(context)!.gameRecord,
+                  style: TextStyle(color: UIColors.secondaryColor)),
+            ],
+          ),
           onPressed: () => showDialog(
             context: context,
             barrierDismissible: false,
@@ -647,8 +678,18 @@ class _GamePageState extends State<GamePage> with RouteAware {
           ),
         ),
         Expanded(child: SizedBox()), //dashboard_outlined
-        IconButton(
-          icon: Icon(Icons.dashboard_outlined, color: UIColors.secondaryColor),
+        TextButton(
+          child: Column(
+            // Replace with a Row for horizontal icon + text
+            children: <Widget>[
+              Icon(
+                Icons.dashboard_outlined,
+                color: UIColors.secondaryColor,
+              ),
+              Text(S.of(context)!.hint,
+                  style: TextStyle(color: UIColors.secondaryColor)),
+            ],
+          ),
           onPressed: () => showDialog(
             context: context,
             barrierDismissible: false,

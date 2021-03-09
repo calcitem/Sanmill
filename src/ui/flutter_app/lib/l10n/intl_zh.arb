@@ -119,5 +119,6 @@
   "restore": "重置",
   "restoreDefaultSettings": "恢复默认设置",
   "exitApp": "App 将退出。",
-  "pick": "选择"
+  "pick": "选择",
+  "hint": "提示"
 }

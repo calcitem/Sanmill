@@ -479,5 +479,9 @@
   "pick": "Pick",
   "@pick": {
     "description": "Pick "
+  },
+  "hint": "Hint",
+  "@hint": {
+    "description": "Hint"
   }
 }
