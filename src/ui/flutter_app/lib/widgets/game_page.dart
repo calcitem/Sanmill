@@ -361,7 +361,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     Map<GameResult, String> retMap = {
       GameResult.win: S.of(context)!.youWin,
-      GameResult.lose: S.of(context)!.youLose,
+      GameResult.lose: S.of(context)!.gameOver,
       GameResult.draw: S.of(context)!.draw
     };
 
@@ -411,7 +411,19 @@ class _GamePageState extends State<GamePage> with RouteAware {
                 Game.shared.position.winner)),
             actions: <Widget>[
               TextButton(
-                  child: Text(S.of(context)!.ok),
+                  child: Text(S.of(context)!.restart),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Game.shared.newGame();
+                    changeStatus(S.of(context)!.gameStarted);
+
+                    if (Game.shared.isAiToMove()) {
+                      print("New game, AI to move.");
+                      engineToGo();
+                    }
+                  }),
+              TextButton(
+                  child: Text(S.of(context)!.cancel),
                   onPressed: () => Navigator.of(context).pop()),
             ],
           );

@@ -192,6 +192,10 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
+  "gameOver": "Game Over",
+  "@gameOver": {
+    "description": "Game Over"
+  },
   "youWin": "You win! Congratulations!",
   "@youWin": {
     "description": "You win! Congratulations!"

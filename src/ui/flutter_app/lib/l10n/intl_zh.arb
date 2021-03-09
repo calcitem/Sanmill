@@ -48,6 +48,7 @@
   "drawReasonBoardIsFull": "棋盘摆满，无路可走，判和。",
   "drawReasonThreefoldRepetition": "三次重复局面和。",
   "gameOverUnknownReason": "游戏结束，原因未知！",
+  "gameOver": "游戏结束",
   "youWin": "恭喜你赢了",
   "challengeHarderLevel": "后续提升难度吗？",
   "youLose": "你输了",
