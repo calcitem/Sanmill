@@ -284,9 +284,13 @@
   "@settings": {
     "description": "Settings"
   },
-  "skillLevel": "Skill Level",
+  "skillLevel": "Difficulty Level",
   "@skillLevel": {
-    "description": "Skill Level"
+    "description": "Difficulty Level"
+  },
+  "difficulty": "Difficulty",
+  "@difficulty": {
+    "description": "Difficulty"
   },
   "playSounds": "Play sounds",
   "@playSounds": {
@@ -308,6 +312,10 @@
   "@whoMovesFirst": {
     "description": "Who moves First"
   },
+  "firstMove": "First move",
+  "@firstMove": {
+    "description": "First move"
+  },
   "human": "Human",
   "@human": {
     "description": "Human"
@@ -315,6 +323,10 @@
   "ai": "AI",
   "@ai": {
     "description": "AI"
+  },
+  "alternate": "Alternate",
+  "@alternate": {
+    "description": "Alternate"
   },
   "isAutoRestart": "Auto Restart Game",
   "@isAutoRestart": {
@@ -384,9 +396,13 @@
   "@isDefenderMoveFirst": {
     "description": "Defender Move First"
   },
-  "mayRemoveMultiple": "Allow Remove Multi Pieces When Close Multi Mill",
+  "mayRemoveMultiple": "Multi-remove",
   "@mayRemoveMultiple": {
-    "description": "Allow Remove Multi Pieces When Close Multi Mill"
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "If a player close more than one mill at once, she will be able to remove the number of mills she closed.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player close more than one mill at once, she will be able to remove the number of mills she closed."
   },
   "mayRemoveFromMillsAlways": "Allow Remove Piece In Mill",
   "@mayRemoveFromMillsAlways": {
@@ -400,9 +416,13 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose But Not Change Side When No Way"
   },
-  "mayFly": "Allow Fly When Remain Three Pieces",
+  "mayFly": "Flying",
   "@mayFly": {
-    "description": "Allow Fly When Remain Three Pieces"
+    "description": "Flying"
+  },
+  "mayFly_Detail": "If a player has only three pieces left, she is allowed to move the piece to any free point.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three pieces left, she is allowed to move the piece to any free point."
   },
   "maxStepsLedToDraw": "Max Steps Led To Draw",
   "@maxStepsLedToDraw": {
@@ -579,5 +599,45 @@
   "privacyPolicy": "Privacy Policy",
   "@privacyPolicy": {
     "description": "Privacy Policy"
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "Undo option",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "It is possible to undo a move.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "crackMill": "Crack-mill",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "If a player has only pieces in mills, the pieces in the mills will not locked to remove.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not locked to remove."
+  },
+  "haveFunPlaying": "Have fun playing!",
+  "@haveFunPlaying": {
+    "description": "Have fun playing!"
+  },
+  "animationSpeed": "Animation speed",
+  "@animationSpeed": {
+    "description": "Animation speed"
+  },
+  "slow": "Slow",
+  "@slow": {
+    "description": "Slow"
+  },
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium"
+  },
+  "fast": "Fast",
+  "@fast": {
+    "description": "Fast"
   }
 }
