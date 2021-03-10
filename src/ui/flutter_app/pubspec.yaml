@@ -20,10 +20,7 @@ dependencies:
   intl: 0.17.0
   animated_text_kit: ^4.0.0
   flutter_colorpicker: ^0.4.0-nullsafety.0
-  catcher:
-    git:
-      url: https://github.com/jhomlala/catcher
-      ref: feature/nullsafety
+  catcher: ^0.5.0
   stack_trace: ^1.10.0
 
 dev_dependencies:
