@@ -136,18 +136,18 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text(S.of(context)!.about + S.of(context)!.appName + " " + mode,
+        title: Text(S.of(context).about + S.of(context).appName + " " + mode,
             style: TextStyle(color: UIColors.primaryColor)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 5),
-            Text(S.of(context)!.version + ": $_version",
+            Text(S.of(context).version + ": $_version",
                 style: TextStyle(fontFamily: '')),
             SizedBox(height: 15),
             InkWell(
-              child: Text(S.of(context)!.releaseBaseOn,
+              child: Text(S.of(context).releaseBaseOn,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -157,7 +157,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
             ),
             SizedBox(height: 15),
             InkWell(
-              child: Text(S.of(context)!.webSite,
+              child: Text(S.of(context).webSite,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -165,7 +165,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
               onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
             ),
             InkWell(
-              child: Text(S.of(context)!.whatsNew,
+              child: Text(S.of(context).whatsNew,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -174,7 +174,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
                   'https://github.com/calcitem/Sanmill/commits/master'),
             ),
             InkWell(
-              child: Text(S.of(context)!.fastUpdateChannel,
+              child: Text(S.of(context).fastUpdateChannel,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -184,13 +184,13 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
             ),
             SizedBox(height: 15),
             InkWell(
-              child: Text(S.of(context)!.thanks),
+              child: Text(S.of(context).thanks),
             ),
             InkWell(
-              child: Text(S.of(context)!.thankWho),
+              child: Text(S.of(context).thankWho),
             ),
             InkWell(
-              child: Text(S.of(context)!.stockfish,
+              child: Text(S.of(context).stockfish,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -199,7 +199,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
                   _launchURL('https://github.com/official-stockfish/Stockfish'),
             ),
             InkWell(
-              child: Text(S.of(context)!.chessRoad,
+              child: Text(S.of(context).chessRoad,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -207,7 +207,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
               onTap: () => _launchURL('https://github.com/hezhaoyun/chessroad'),
             ),
             InkWell(
-              child: Text(S.of(context)!.nineChess,
+              child: Text(S.of(context).nineChess,
                   style: TextStyle(
                       fontFamily: '',
                       color: Colors.blue,
@@ -218,7 +218,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         ),
         actions: <Widget>[
           TextButton(
-              child: Text(S.of(context)!.ok),
+              child: Text(S.of(context).ok),
               onPressed: () => Navigator.of(context).pop()),
         ],
       ),

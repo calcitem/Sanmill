@@ -31,32 +31,32 @@ class _HomeDrawerState extends State<HomeDrawer> {
     drawerList = <DrawerList>[
       DrawerList(
         index: DrawerIndex.humanVsAi,
-        labelName: S.of(context)!.humanVsAi,
+        labelName: S.of(context).humanVsAi,
         icon: Icon(Icons.person),
       ),
       DrawerList(
         index: DrawerIndex.humanVsHuman,
-        labelName: S.of(context)!.humanVsHuman,
+        labelName: S.of(context).humanVsHuman,
         icon: Icon(Icons.group),
       ),
       DrawerList(
         index: DrawerIndex.aiVsAi,
-        labelName: S.of(context)!.aiVsAi,
+        labelName: S.of(context).aiVsAi,
         icon: Icon(Icons.computer),
       ),
       DrawerList(
         index: DrawerIndex.settings,
-        labelName: S.of(context)!.settings,
+        labelName: S.of(context).settings,
         icon: Icon(Icons.settings),
       ),
       DrawerList(
         index: DrawerIndex.ruleSettings,
-        labelName: S.of(context)!.ruleSettings,
+        labelName: S.of(context).ruleSettings,
         icon: Icon(Icons.rule),
       ),
       DrawerList(
         index: DrawerIndex.Help,
-        labelName: S.of(context)!.help,
+        labelName: S.of(context).help,
         icon: Icon(Icons.help),
       ),
       /*
@@ -78,7 +78,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       */
       DrawerList(
         index: DrawerIndex.About,
-        labelName: S.of(context)!.about,
+        labelName: S.of(context).about,
         icon: Icon(Icons.info),
       ),
     ];
@@ -128,9 +128,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                         print("ColorizeAnimatedTextKit Tap Event");
                       },
                       text: [
-                        S.of(context)!.appName,
-                        S.of(context)!.appName,
-                        S.of(context)!.appName,
+                        S.of(context).appName,
+                        S.of(context).appName,
+                        S.of(context).appName,
                       ],
                       textStyle: TextStyle(
                         fontSize: 24.0,

@@ -185,21 +185,21 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
       appBar:
-          AppBar(centerTitle: true, title: Text(S.of(context)!.ruleSettings)),
+          AppBar(centerTitle: true, title: Text(S.of(context).ruleSettings)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 16),
-            Text(S.of(context)!.rules, style: headerStyle),
+            Text(S.of(context).rules, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context)!.piecesCount, style: itemStyle),
+                    title: Text(S.of(context).piecesCount, style: itemStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.piecesCount == 6
@@ -217,14 +217,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     activeColor: UIColors.primaryColor,
                     value: Config.hasObliqueLines,
                     title:
-                        Text(S.of(context)!.hasObliqueLines, style: itemStyle),
+                        Text(S.of(context).hasObliqueLines, style: itemStyle),
                     onChanged: setHasObliqueLines,
                   ),
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.hasBannedLocations,
-                    title: Text(S.of(context)!.hasBannedLocations,
+                    title: Text(S.of(context).hasBannedLocations,
                         style: itemStyle),
                     onChanged: setHasBannedLocations,
                   ),
@@ -232,7 +232,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.isDefenderMoveFirst,
-                    title: Text(S.of(context)!.isDefenderMoveFirst,
+                    title: Text(S.of(context).isDefenderMoveFirst,
                         style: itemStyle),
                     onChanged: setIsDefenderMoveFirst,
                   ),
@@ -241,14 +241,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     activeColor: UIColors.primaryColor,
                     value: Config.mayRemoveMultiple,
                     title:
-                        Text(S.of(context)!.mayRemoveMultiple, style: itemStyle),
+                        Text(S.of(context).mayRemoveMultiple, style: itemStyle),
                     onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
                   ),
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.mayRemoveFromMillsAlways,
-                    title: Text(S.of(context)!.mayRemoveFromMillsAlways,
+                    title: Text(S.of(context).mayRemoveFromMillsAlways,
                         style: itemStyle),
                     onChanged: setAllowRemovePieceInMill,
                   ),
@@ -257,7 +257,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     activeColor: UIColors.primaryColor,
                     value: Config.isBlackLoseButNotDrawWhenBoardFull,
                     title: Text(
-                        S.of(context)!.isBlackLoseButNotDrawWhenBoardFull,
+                        S.of(context).isBlackLoseButNotDrawWhenBoardFull,
                         style: itemStyle),
                     onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
                   ),
@@ -265,7 +265,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.isLoseButNotChangeSideWhenNoWay,
-                    title: Text(S.of(context)!.isLoseButNotChangeSideWhenNoWay,
+                    title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
                         style: itemStyle),
                     onChanged: setIsLoseButNotChangeSideWhenNoWay,
                   ),
@@ -273,7 +273,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.mayFly,
-                    title: Text(S.of(context)!.mayFly, style: itemStyle),
+                    title: Text(S.of(context).mayFly, style: itemStyle),
                     onChanged: setAllowFlyingAllowed,
                   ),
                   _buildDivider(),
