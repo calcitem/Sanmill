@@ -72,9 +72,9 @@
   "@tipSelectWrong": {
     "description": "Select wrong piece"
   },
-  "tipPlace": "Please place",
+  "tipPlace": "Place a piece",
   "@tipPlace": {
-    "description": "Please place"
+    "description": "Place a piece"
   },
   "tipBanPlace": "Cannot place here",
   "@tipBanPlace": {
@@ -84,9 +84,9 @@
   "@tipPlaced": {
     "description": "Placed"
   },
-  "tipRemove": "Please remove",
+  "tipRemove": "Remove a piece",
   "@tipRemove": {
-    "description": "Please remove"
+    "description": "Remove a piece"
   },
   "tipBanRemove": "Cannot remove",
   "@tipBanRemove": {
@@ -96,9 +96,9 @@
   "@tipRemoved": {
     "description": "Removed"
   },
-  "tipMove": "Please move",
+  "tipMove": "Move a piece",
   "@tipMove": {
-    "description": "Please move"
+    "description": "Move a piece"
   },
   "blackWin": "Black win",
   "@blackWin": {
@@ -107,6 +107,18 @@
   "whiteWin": "White win",
   "@whiteWin": {
     "description": "White win"
+  },
+  "won": "Won",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Lost",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "Aborted",
+  "@aborted": {
+    "description": "Aborted"
   },
   "draw": "Draw",
   "@draw": {
@@ -120,9 +132,13 @@
   "@newGame": {
     "description": "New Game"
   },
-  "restartGame": "Restart Game?",
+  "startNewGame": "Start new game",
+  "@startNewGame": {
+    "description": "Start new game"
+  },
+  "restartGame": "Restart current Game?",
   "@restartGame": {
-    "description": "Restart Game?"
+    "description": "Restart current Game?"
   },
   "restart": "Restart",
   "@restart": {
@@ -268,13 +284,17 @@
   "@settings": {
     "description": "Settings"
   },
-  "skillLevel": "skill Level",
+  "skillLevel": "Skill Level",
   "@skillLevel": {
-    "description": "skillLevel"
+    "description": "Skill Level"
   },
-  "sound": "Sound",
-  "@sound": {
-    "description": "Sound"
+  "playSounds": "Play sounds",
+  "@playSounds": {
+    "description": "Play sounds"
+  },
+  "playSoundsInTheGame": "Play sounds in the game",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
   },
   "tone": "Tone",
   "@tone": {
@@ -487,5 +507,77 @@
   "hint": "Hint",
   "@hint": {
     "description": "Hint"
+  },
+  "player": "player",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Player 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Player 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "How to play",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Tap on any available point to place the piece.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Tap on a piece to move it.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Tap on point connected to piece to move it.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Tap on opponent's one piece to remove.",
+  "@toRemovePiece": {
+    "description": "Tap on opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "You need to create a mill first, before you are allowed to remove a piece.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first, before you are allowed to remove a piece."
+  },
+  "needToPlayWithOwnPieces": "You need to play with your own pieces.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your own pieces."
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Total games",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Results",
+  "@results": {
+    "description": "Results"
+  },
+  "easy": "Easy",
+  "@easy": {
+    "description": "Easy"
+  },
+  "difficult": "Difficult",
+  "@difficult": {
+    "description": "Difficult"
+  },
+  "cannotRemoveFromMill": "Can not remove from mill.",
+  "@cannotRemoveFromMill": {
+    "description": "Can not remove from mill."
+  },
+  "left": "left",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
   }
 }

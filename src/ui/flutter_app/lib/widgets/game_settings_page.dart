@@ -568,7 +568,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).sound, style: headerStyle),
+            Text(S.of(context).playSounds, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -577,7 +577,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.toneEnabled,
-                    title: Text(S.of(context).tone, style: itemStyle),
+                    title: Text(S.of(context).playSoundsInTheGame,
+                        style: itemStyle),
                     onChanged: setTone,
                   ),
                 ],
