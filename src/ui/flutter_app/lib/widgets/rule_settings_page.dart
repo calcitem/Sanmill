@@ -226,6 +226,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     value: Config.hasBannedLocations,
                     title: Text(S.of(context).hasBannedLocations,
                         style: itemStyle),
+                    subtitle: Text('Sample',
+                        style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setHasBannedLocations,
                   ),
                   _buildDivider(),
