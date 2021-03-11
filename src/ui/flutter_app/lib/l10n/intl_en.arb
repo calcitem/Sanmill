@@ -639,5 +639,13 @@
   "fast": "Fast",
   "@fast": {
     "description": "Fast"
+  },
+  "none": "None",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme"
   }
 }
