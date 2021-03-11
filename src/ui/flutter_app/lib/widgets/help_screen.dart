@@ -22,13 +22,13 @@ class _HelpScreenState extends State<HelpScreen> {
         top: false,
         child: Scaffold(
           backgroundColor: Color(Config.darkBackgroundColor),
-          body: Column(
+          body: ListView(
             children: <Widget>[
               const SizedBox(height: 16),
               Container(
-                padding: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.only(top: 32),
                 child: Text(
-                  'How can we help you?',
+                  'How to play',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -39,8 +39,41 @@ class _HelpScreenState extends State<HelpScreen> {
               Container(
                 padding: const EdgeInsets.only(top: 16),
                 child: const Text(
-                  'It looks like you are experiencing problems\nwith our sign up process. We are here to\nhelp so please get in touch with us',
-                  textAlign: TextAlign.center,
+                  'The aim of the game is to leave the opponent with fewer than three pieces or no legal moves.\n'
+                  '\n'
+                  'The game is automatically drawn if a position occurs for the third time, or if no remove has been made in the last fifty moves.\n'
+                  '\n'
+                  'The game proceeds in three phases:\n'
+                  '\n'
+                  '1. Placing pieces on vacant points\n'
+                  '2. Moving pieces to adjacent points\n'
+                  '3. (optional phase) Moving pieces to any vacant point when the player has been reduced to three pieces\n'
+                  '\n'
+                  'Placing\n'
+                  '\n'
+                  'The game begins with an empty board, which consists of a grid with twenty-four points.'
+                  'Players take turns placing their pieces on vacant points until each player has placed all pieces on the board.'
+                  'If a player is able to place three of his pieces in a straight line, he has a \"mill\" and may remove one of his opponent\'s pieces from the board.\n'
+                  '\n'
+                  'In some variants of rules, players must remove any other pieces first before removing a piece from a formed mill.\n'
+                  '\n'
+                  'In some variants of rules, all the points of removed pieces may not be placed again in the placing phrase.\n'
+                  '\n'
+                  'Once all pieces have been used players take turns moving.\n'
+                  '\n'
+                  'Moving\n'
+                  '\n'
+                  'To move, a player moves one of his pieces along a board line to a vacant adjacent point. '
+                  'If he cannot do so, he has lost the game. '
+                  'As in the placing phase, a player who aligns three of his pieces on a board line has a mill and may remove one of his opponent\'s pieces. '
+                  'Any player reduces to two pieces and has no option to form new mills and thus loses the game. '
+                  'A player can also lose with more than three pieces, if his opponent blocks them so that they cannot be moved.\n'
+                  '\n'
+                  'Flying\n'
+                  '\n'
+                  'In some variants of rules, once a player has only three pieces left, his pieces may \"fly\", \"hop\", or \"jump\" to any vacant points, not only adjacent ones.\n'
+                  '\n',
+                  textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 16,
                     color: UIColors.burlyWoodColor,
@@ -50,41 +83,6 @@ class _HelpScreenState extends State<HelpScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Container(
-                      width: 140,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: UIColors.primaryColor,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4.0)),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.grey.withOpacity(0.6),
-                              offset: const Offset(4, 4),
-                              blurRadius: 8.0),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                'Chat with Us',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
               )
             ],
