@@ -539,7 +539,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 10.0),
             Text(S.of(context).difficulty, style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
