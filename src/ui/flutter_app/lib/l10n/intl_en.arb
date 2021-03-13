@@ -268,18 +268,6 @@
   "@thankWho": {
     "description": "Thank who"
   },
-  "stockfish": "Stockfish - UCI chess engine",
-  "@stockfish": {
-    "description": "Stockfish - UCI chess engine"
-  },
-  "chessRoad": "ChessRoad by He Zhaoyun",
-  "@chessRoad": {
-    "description": "ChessRoad"
-  },
-  "nineChess": "NineChess by liuweilhy",
-  "@nineChess": {
-    "description": "NineChess"
-  },
   "settings": "Settings",
   "@settings": {
     "description": "Settings"
@@ -659,6 +647,14 @@
   "versionInfo": "Version info",
   "@versionInfo": {
     "description": "Version info"
+  },
+  "license": "License",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Source code",
+  "@sourceCode": {
+    "description": "Source code"
   },
   "openSourceLicenses": "Open source licenses",
   "@openSourceLicenses": {
