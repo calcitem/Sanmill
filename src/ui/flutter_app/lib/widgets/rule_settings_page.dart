@@ -191,8 +191,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 16),
-            Text(S.of(context).rules, style: headerStyle),
+            Text(S.of(context).general, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -223,57 +222,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.hasBannedLocations,
-                    title: Text(S.of(context).hasBannedLocations,
-                        style: itemStyle),
-                    onChanged: setHasBannedLocations,
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
-                    value: Config.isDefenderMoveFirst,
-                    title: Text(S.of(context).isDefenderMoveFirst,
-                        style: itemStyle),
-                    onChanged: setIsDefenderMoveFirst,
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
-                    value: Config.mayRemoveMultiple,
-                    title:
-                        Text(S.of(context).mayRemoveMultiple, style: itemStyle),
-                    subtitle: Text(S.of(context).mayRemoveMultiple_Detail,
-                        style: TextStyle(color: UIColors.secondaryColor)),
-                    onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
-                    value: Config.mayRemoveFromMillsAlways,
-                    title: Text(S.of(context).mayRemoveFromMillsAlways,
-                        style: itemStyle),
-                    onChanged: setAllowRemovePieceInMill,
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
-                    value: Config.isBlackLoseButNotDrawWhenBoardFull,
-                    title: Text(
-                        S.of(context).isBlackLoseButNotDrawWhenBoardFull,
-                        style: itemStyle),
-                    onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
-                    value: Config.isLoseButNotChangeSideWhenNoWay,
-                    title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
-                        style: itemStyle),
-                    onChanged: setIsLoseButNotChangeSideWhenNoWay,
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
                     value: Config.mayFly,
                     title: Text(S.of(context).mayFly, style: itemStyle),
                     subtitle: Text(S.of(context).mayFly_Detail,
@@ -281,6 +229,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     onChanged: setAllowFlyingAllowed,
                   ),
                   _buildDivider(),
+
                   /*
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
@@ -295,6 +244,88 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
+            Text(S.of(context).placing, style: headerStyle),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(children: <Widget>[
+                SwitchListTile(
+                  activeColor: UIColors.primaryColor,
+                  value: Config.hasBannedLocations,
+                  title:
+                      Text(S.of(context).hasBannedLocations, style: itemStyle),
+                  subtitle: Text(S.of(context).hasBannedLocations_Detail,
+                      style: TextStyle(color: UIColors.secondaryColor)),
+                  onChanged: setHasBannedLocations,
+                ),
+                _buildDivider(),
+              ]),
+            ),
+            Text(S.of(context).moving, style: headerStyle),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(children: <Widget>[
+                SwitchListTile(
+                  activeColor: UIColors.primaryColor,
+                  value: Config.isDefenderMoveFirst,
+                  title:
+                      Text(S.of(context).isDefenderMoveFirst, style: itemStyle),
+                  onChanged: setIsDefenderMoveFirst,
+                ),
+                _buildDivider(),
+              ]),
+            ),
+            Text(S.of(context).removing, style: headerStyle),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(children: <Widget>[
+                SwitchListTile(
+                  activeColor: UIColors.primaryColor,
+                  value: Config.mayRemoveFromMillsAlways,
+                  title: Text(S.of(context).mayRemoveFromMillsAlways,
+                      style: itemStyle),
+                  subtitle: Text(S.of(context).mayRemoveFromMillsAlways_Detail,
+                      style: TextStyle(color: UIColors.secondaryColor)),
+                  onChanged: setAllowRemovePieceInMill,
+                ),
+                _buildDivider(),
+                SwitchListTile(
+                  activeColor: UIColors.primaryColor,
+                  value: Config.mayRemoveMultiple,
+                  title:
+                      Text(S.of(context).mayRemoveMultiple, style: itemStyle),
+                  subtitle: Text(S.of(context).mayRemoveMultiple_Detail,
+                      style: TextStyle(color: UIColors.secondaryColor)),
+                  onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
+                ),
+                _buildDivider(),
+              ]),
+            ),
+            Text(S.of(context).gameOverCondition, style: headerStyle),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(children: <Widget>[
+                SwitchListTile(
+                  activeColor: UIColors.primaryColor,
+                  value: Config.isLoseButNotChangeSideWhenNoWay,
+                  title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
+                      style: itemStyle),
+                  onChanged: setIsLoseButNotChangeSideWhenNoWay,
+                ),
+                _buildDivider(),
+                SwitchListTile(
+                  activeColor: UIColors.primaryColor,
+                  value: Config.isBlackLoseButNotDrawWhenBoardFull,
+                  title: Text(S.of(context).isBlackLoseButNotDrawWhenBoardFull,
+                      style: itemStyle),
+                  onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
+                ),
+                _buildDivider(),
+              ]),
+            ),
           ],
         ),
       ),

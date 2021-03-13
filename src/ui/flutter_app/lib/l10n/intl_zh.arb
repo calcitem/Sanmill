@@ -95,10 +95,12 @@
   "piecesAtLeastCount": "少于几个子则输棋",
   "hasObliqueLines": "斜线",
   "hasBannedLocations": "禁点",
+  "hasBannedLocations_Detail": "在摆子阶段，被吃掉的棋子的位置将不能再落子，除非进入走子阶段。",
   "isDefenderMoveFirst": "后摆子的先走子",
   "mayRemoveMultiple": "吃多子",
   "mayRemoveMultiple_Detail": "若一方落子后同时形成多个三连，则形成几个三连就吃对方几个子。",
   "mayRemoveFromMillsAlways": "允许吃三中的子",
+  "mayRemoveFromMillsAlways_Detail": "默认情况下，不能吃三连中的子，除非对方所有子都在三连中。打开此选项可解除此限制。",
   "isBlackLoseButNotDrawWhenBoardFull": "当棋盘摆满时先摆子的输棋",
   "isLoseButNotChangeSideWhenNoWay": "当无路可走时输棋",
   "mayFly": "飞棋",
@@ -168,5 +170,11 @@
   "thirdPartyNotices": "第三方声明",
   "termOfUse": "使用条款",
   "servicesAgreement": "服务协议",
-  "appVersion": "应用版本"
+  "appVersion": "应用版本",
+  "general": "常规",
+  "advanced": "高级",
+  "placing": "摆子",
+  "moving": "走子",
+  "removing": "吃子",
+  "gameOverCondition": "终局条件"
 }
