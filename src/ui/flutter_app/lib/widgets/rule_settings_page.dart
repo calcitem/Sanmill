@@ -199,6 +199,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 children: <Widget>[
                   ListTile(
                     title: Text(S.of(context).piecesCount, style: itemStyle),
+                    subtitle: Text(S.of(context).piecesCount_Detail,
+                        style: TextStyle(color: UIColors.secondaryColor)),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.piecesCount == 6
@@ -217,6 +219,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     value: Config.hasDiagonalLines,
                     title:
                         Text(S.of(context).hasDiagonalLines, style: itemStyle),
+                    subtitle: Text(S.of(context).hasDiagonalLines_Detail,
+                        style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setHasDiagonalLines,
                   ),
                   _buildDivider(),
@@ -271,6 +275,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   value: Config.isDefenderMoveFirst,
                   title:
                       Text(S.of(context).isDefenderMoveFirst, style: itemStyle),
+                  subtitle: Text(S.of(context).isDefenderMoveFirst_Detail,
+                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsDefenderMoveFirst,
                 ),
                 _buildDivider(),

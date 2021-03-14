@@ -360,6 +360,10 @@
   "@piecesCount": {
     "description": "Total Pieces Each Side"
   },
+  "piecesCount_Detail": "How many pieces does each player have?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
   "ninePieces": "Nine Pieces",
   "@ninePieces": {
     "description": "Nine Pieces"
@@ -376,6 +380,10 @@
   "@hasDiagonalLines": {
     "description": "Has Diagonal Lines"
   },
+  "hasDiagonalLines_Detail": "Add four diagonal lines to the board.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
   "hasBannedLocations": "Has Banned Locations",
   "@hasBannedLocations": {
     "description": "Has Banned Locations"
@@ -387,6 +395,10 @@
   "isDefenderMoveFirst": "Defender Move First",
   "@isDefenderMoveFirst": {
     "description": "Defender Move First"
+  },
+  "isDefenderMoveFirst_Detail": "The player who moves second in the placing phrase moves first in the moving phrase.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phrase moves first in the moving phrase."
   },
   "mayRemoveMultiple": "Multi-remove",
   "@mayRemoveMultiple": {
