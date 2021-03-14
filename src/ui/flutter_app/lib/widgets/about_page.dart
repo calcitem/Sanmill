@@ -236,7 +236,7 @@ class _LicensePageState extends State<LicensePage> {
                   top: 16, left: 16, right: 16, bottom: 16),
               child: Text(
                 _data != "" ? _data : 'Nothing to show',
-                style: TextStyle(fontSize: 8),
+                style: TextStyle(fontFamily: 'Monospace', fontSize: 7),
                 textAlign: TextAlign.left,
               ))
         ],
