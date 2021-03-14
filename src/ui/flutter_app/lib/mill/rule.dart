@@ -21,7 +21,7 @@ class Rule {
   String description = "";
   int piecesCount = 12; // 9 or 12
   int piecesAtLeastCount = 3; // Default is 3
-  bool hasObliqueLines = true;
+  bool hasDiagonalLines = true;
   bool hasBannedLocations = true;
   bool isDefenderMoveFirst = true;
   bool mayRemoveMultiple = false;

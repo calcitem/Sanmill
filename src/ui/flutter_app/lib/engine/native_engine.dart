@@ -112,7 +112,7 @@ class NativeEngine extends AiEngine {
     await send(
         'setoption name PiecesAtLeastCount value ${Config.piecesAtLeastCount}');
     await send(
-        'setoption name HasObliqueLines value ${Config.hasObliqueLines}');
+        'setoption name HasDiagonalLines value ${Config.hasDiagonalLines}');
     await send(
         'setoption name HasBannedLocations value ${Config.hasBannedLocations}');
     await send(

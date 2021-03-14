@@ -33,7 +33,7 @@ struct Rule
 
     int piecesAtLeastCount; // Default is 3
 
-    bool hasObliqueLines;
+    bool hasDiagonalLines;
 
     bool hasBannedLocations;
 

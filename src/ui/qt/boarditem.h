@@ -69,7 +69,7 @@ private:
     int size;    // board size
     int sizeShadow {5};
     QPointF position[EFFECTIVE_SQUARE_NB];    // 24 points
-    bool hasObliqueLine {false};
+    bool hasDiagonalLine {false};
 };
 
 #endif // BOARDITEM_H

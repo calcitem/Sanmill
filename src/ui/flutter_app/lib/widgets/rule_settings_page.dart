@@ -92,10 +92,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     Config.save();
   }
 
-  setHasObliqueLines(bool value) async {
+  setHasDiagonalLines(bool value) async {
     //
     setState(() {
-      rule.hasObliqueLines = Config.hasObliqueLines = value;
+      rule.hasDiagonalLines = Config.hasDiagonalLines = value;
     });
 
     Config.save();
@@ -214,10 +214,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   _buildDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
-                    value: Config.hasObliqueLines,
+                    value: Config.hasDiagonalLines,
                     title:
-                        Text(S.of(context).hasObliqueLines, style: itemStyle),
-                    onChanged: setHasObliqueLines,
+                        Text(S.of(context).hasDiagonalLines, style: itemStyle),
+                    onChanged: setHasDiagonalLines,
                   ),
                   _buildDivider(),
                   SwitchListTile(

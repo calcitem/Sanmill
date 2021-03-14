@@ -93,7 +93,7 @@
   "ninePieces": "九子",
   "twelvePieces": "十二子",
   "piecesAtLeastCount": "少于几个子则输棋",
-  "hasObliqueLines": "斜线",
+  "hasDiagonalLines": "斜线",
   "hasBannedLocations": "禁点",
   "hasBannedLocations_Detail": "在摆子阶段，被吃掉的棋子的位置将不能再落子，除非进入走子阶段。",
   "isDefenderMoveFirst": "后摆子的先走子",

@@ -177,32 +177,32 @@ class BoardPainter extends PiecesBasePainter {
       paint,
     );
 
-    if (!Config.hasObliqueLines) {
+    if (!Config.hasDiagonalLines) {
       return;
     }
 
-    // top left oblique line
+    // top left diagonal line
     canvas.drawLine(
       Offset(left + 0, top),
       Offset(left + squareWidth * 2, top + squareWidth * 2),
       paint,
     );
 
-    // lower right oblique line
+    // lower right diagonal line
     canvas.drawLine(
       Offset(left + squareWidth * 4, top + squareWidth * 4),
       Offset(left + squareWidth * 6, top + squareWidth * 6),
       paint,
     );
 
-    // top right oblique line
+    // top right diagonal line
     canvas.drawLine(
       Offset(left + squareWidth * 6, top),
       Offset(left + squareWidth * 4, top + squareWidth * 2),
       paint,
     );
 
-    // lower left oblique line
+    // lower left diagonal line
     canvas.drawLine(
       Offset(left + squareWidth * 2, top + squareWidth * 4),
       Offset(left + squareWidth * 0, top + squareWidth * 6),

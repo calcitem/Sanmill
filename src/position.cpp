@@ -127,7 +127,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
 
 #define P(s) PieceToChar(pos.piece_on(Square(s)))
 
-    if (rule.hasObliqueLines) {
+    if (rule.hasDiagonalLines) {
         os << "\n";
         os << P(31) << " --- " << P(24) << " --- " << P(25) << "\n";
         os << "|\\    |    /|\n";
@@ -1306,7 +1306,7 @@ bool Position::is_all_surrounded(Color c
 
 bool Position::is_star_square(Square s)
 {
-    if (rule.hasObliqueLines == true) {
+    if (rule.hasDiagonalLines == true) {
         return (s == 17 ||
                 s == 19 ||
                 s == 21 ||

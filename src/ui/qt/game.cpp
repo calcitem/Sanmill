@@ -257,7 +257,7 @@ void Game::gameReset()
     currentPiece = nullptr;
 
     // Redraw pieces
-    scene.setDiagonal(rule.hasObliqueLines);
+    scene.setDiagonal(rule.hasDiagonalLines);
 
     // Draw all the pieces and put them in the starting position
     // 0: the first piece in the first hand; 1: the first piece in the second hand

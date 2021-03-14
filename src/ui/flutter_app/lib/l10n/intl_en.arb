@@ -372,9 +372,9 @@
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
-  "hasObliqueLines": "Has Oblique Lines",
-  "@hasObliqueLines": {
-    "description": "Has Oblique Lines"
+  "hasDiagonalLines": "Has Diagonal Lines",
+  "@hasDiagonalLines": {
+    "description": "Has Diagonal Lines"
   },
   "hasBannedLocations": "Has Banned Locations",
   "@hasBannedLocations": {

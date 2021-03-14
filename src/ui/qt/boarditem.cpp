@@ -78,7 +78,7 @@ QPainterPath BoardItem::shape() const
 
 void BoardItem::setDiagonal(bool arg)
 {
-    hasObliqueLine = arg;
+    hasDiagonalLine = arg;
     update(boundingRect());
 }
 
@@ -127,7 +127,7 @@ void BoardItem::paint(QPainter *painter,
         painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);
     }
 
-    if (hasObliqueLine) {
+    if (hasDiagonalLine) {
         // Draw 4 diagonal lines
         for (int i = 1; i  < RANK_NB; i += 2) {
             painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);

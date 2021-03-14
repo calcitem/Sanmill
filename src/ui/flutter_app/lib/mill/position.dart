@@ -849,7 +849,7 @@ class Position {
   }
 
   void createMillTable() {
-    const millTable_noObliqueLine = [
+    const millTable_noDiagonalLine = [
       /* 0 */ [
         [0, 0],
         [0, 0],
@@ -1056,7 +1056,7 @@ class Position {
       ]
     ];
 
-    const millTable_hasObliqueLines = [
+    const millTable_hasDiagonalLines = [
       /*  0 */ [
         [0, 0],
         [0, 0],
@@ -1263,16 +1263,16 @@ class Position {
       ]
     ];
 
-    if (rule.hasObliqueLines) {
-      millTable = millTable_hasObliqueLines;
+    if (rule.hasDiagonalLines) {
+      millTable = millTable_hasDiagonalLines;
     } else {
-      millTable = millTable_noObliqueLine;
+      millTable = millTable_noDiagonalLine;
     }
   }
 
   void createMoveTable() {
     // Note: Not follow order of MoveDirection array
-    const moveTable_obliqueLine = [
+    const moveTable_diagonalLine = [
       /*  0 */ [0, 0, 0, 0],
       /*  1 */ [0, 0, 0, 0],
       /*  2 */ [0, 0, 0, 0],
@@ -1319,7 +1319,7 @@ class Position {
       /* 39 */ [0, 0, 0, 0],
     ];
 
-    const moveTable_noObliqueLine = [
+    const moveTable_noDiagonalLine = [
       /*  0 */ [0, 0, 0, 0],
       /*  1 */ [0, 0, 0, 0],
       /*  2 */ [0, 0, 0, 0],
@@ -1366,10 +1366,10 @@ class Position {
       /* 39 */ [0, 0, 0, 0],
     ];
 
-    if (rule.hasObliqueLines) {
-      moveTable = moveTable_obliqueLine;
+    if (rule.hasDiagonalLines) {
+      moveTable = moveTable_diagonalLine;
     } else {
-      moveTable = moveTable_noObliqueLine;
+      moveTable = moveTable_noDiagonalLine;
     }
   }
 
@@ -1495,7 +1495,7 @@ class Position {
   }
 
   bool isStarSquare(int s) {
-    if (rule.hasObliqueLines == true) {
+    if (rule.hasDiagonalLines == true) {
       return (s == 17 || s == 19 || s == 21 || s == 23);
     }
 

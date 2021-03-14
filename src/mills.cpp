@@ -246,7 +246,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ 0,
     };
 
-    if (rule.hasObliqueLines) {
+    if (rule.hasDiagonalLines) {
         memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares12, sizeof(MoveList<LEGAL>::adjacentSquares));
         memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB12, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     } else {
@@ -368,7 +368,7 @@ void mill_table_init()
     };
 
     // TODO: change to ptr?
-    if (rule.hasObliqueLines) {
+    if (rule.hasDiagonalLines) {
         memcpy(Position::millTableBB, millTableBB12, sizeof(Position::millTableBB));
     } else {
         memcpy(Position::millTableBB, millTableBB9, sizeof(Position::millTableBB));
