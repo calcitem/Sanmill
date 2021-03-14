@@ -694,7 +694,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             // Replace with a Row for horizontal icon + text
             children: <Widget>[
               Icon(
-                Icons.dashboard_outlined,
+                Icons.lightbulb_outline,
                 color: UIColors.secondaryColor,
               ),
               Text(S.of(context).hint,
