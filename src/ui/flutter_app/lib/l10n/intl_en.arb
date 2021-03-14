@@ -420,9 +420,17 @@
   "@isBlackLoseButNotDrawWhenBoardFull": {
     "description": "Black Lose But Not Draw When Board Full"
   },
+  "isBlackLoseButNotDrawWhenBoardFull_Detail": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw.",
+  "@isBlackLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
   "isLoseButNotChangeSideWhenNoWay": "Lose But Not Change Side When No Way",
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose But Not Change Side When No Way"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
   },
   "mayFly": "Flying",
   "@mayFly": {

@@ -319,6 +319,9 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   value: Config.isLoseButNotChangeSideWhenNoWay,
                   title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
                       style: itemStyle),
+                  subtitle: Text(
+                      S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
+                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsLoseButNotChangeSideWhenNoWay,
                 ),
                 _buildDivider(),
@@ -327,6 +330,9 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   value: Config.isBlackLoseButNotDrawWhenBoardFull,
                   title: Text(S.of(context).isBlackLoseButNotDrawWhenBoardFull,
                       style: itemStyle),
+                  subtitle: Text(
+                      S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
+                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
                 ),
                 _buildDivider(),
