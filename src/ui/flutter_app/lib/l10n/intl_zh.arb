@@ -97,7 +97,7 @@
   "hasDiagonalLines": "斜线",
   "hasDiagonalLines_Detail": "在棋盘上增加四条斜线。",
   "hasBannedLocations": "禁点",
-  "hasBannedLocations_Detail": "摆子阶段，被吃的子的位置将不能再摆子，除非进入走子阶段。",
+  "hasBannedLocations_Detail": "摆子阶段，被吃的子都被标记起来，暂不移除。双方摆完棋子后，再统一将被标记的棋子全部移除，然后进入走子阶段。",
   "isDefenderMoveFirst": "后摆子的先走子",
   "isDefenderMoveFirst_Detail": "在摆子阶段先摆子的一方，在走子阶段先走子。",
   "mayRemoveMultiple": "吃多子",
@@ -181,5 +181,8 @@
   "placing": "摆子",
   "moving": "走子",
   "removing": "吃子",
-  "gameOverCondition": "终局条件"
+  "gameOverCondition": "终局条件",
+  "aisPlayStyle": "机器的棋风",
+  "passive": "消极被动",
+  "automaticBehavior": "自动行为"
 }

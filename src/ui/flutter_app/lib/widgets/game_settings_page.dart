@@ -557,11 +557,29 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: setSkillLevel,
                   ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(S.of(context).aisPlayStyle, style: headerStyle),
+            Card(
+              color: cardColor,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.aiIsLazy,
-                    title: Text(S.of(context).aiIsLazy, style: itemStyle),
+                    title: Text(S.of(context).passive, style: itemStyle),
                     onChanged: setAiIsLazy,
+                  ),
+                  _buildDivider(),
+                  SwitchListTile(
+                    activeColor: UIColors.primaryColor,
+                    value: Config.shufflingEnabled,
+                    title:
+                        Text(S.of(context).shufflingEnabled, style: itemStyle),
+                    onChanged: setShufflingEnabled,
                   ),
                 ],
               ),
@@ -604,7 +622,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(S.of(context).misc, style: headerStyle),
+            Text(S.of(context).automaticBehavior, style: headerStyle),
             Card(
               color: cardColor,
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -615,14 +633,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     value: Config.isAutoRestart,
                     title: Text(S.of(context).isAutoRestart, style: itemStyle),
                     onChanged: setIsAutoRestart,
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    activeColor: UIColors.primaryColor,
-                    value: Config.shufflingEnabled,
-                    title:
-                        Text(S.of(context).shufflingEnabled, style: itemStyle),
-                    onChanged: setShufflingEnabled,
                   ),
                 ],
               ),

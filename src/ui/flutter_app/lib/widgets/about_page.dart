@@ -65,7 +65,7 @@ class _AboutPageState extends State<AboutPage> {
       backgroundColor: UIColors.lightBackgroundColor,
       appBar: AppBar(
           centerTitle: true,
-          title: Text(S.of(context).about + S.of(context).appName)),
+          title: Text(S.of(context).about + " " + S.of(context).appName)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

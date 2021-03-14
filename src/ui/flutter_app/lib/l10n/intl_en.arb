@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appName": "Mill Game",
+  "appName": "Mill",
   "@appName": {
     "description": "The App name"
   },
@@ -36,9 +36,9 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "gameRecord": "Game Record",
+  "gameRecord": "Moves",
   "@gameRecord": {
-    "description": "Game Record"
+    "description": "Moves"
   },
   "noGameRecord": "No record",
   "@noGameRecord": {
@@ -128,9 +128,9 @@
   "@thinking": {
     "description": "Thinking ..."
   },
-  "newGame": "New Game",
+  "newGame": "Start",
   "@newGame": {
-    "description": "New Game"
+    "description": "Start"
   },
   "startNewGame": "Start new game",
   "@startNewGame": {
@@ -224,9 +224,9 @@
   "@youLose": {
     "description": "You Lose!"
   },
-  "regret": "Regret",
+  "regret": "Undo",
   "@regret": {
-    "description": "Regret"
+    "description": "Undo"
   },
   "analyze": "Analyze",
   "@analyze": {
@@ -268,9 +268,9 @@
   "@thankWho": {
     "description": "Thank who"
   },
-  "settings": "Settings",
+  "settings": "Perferences",
   "@settings": {
-    "description": "Settings"
+    "description": "Perferences"
   },
   "skillLevel": "Difficulty Level",
   "@skillLevel": {
@@ -280,9 +280,9 @@
   "@difficulty": {
     "description": "Difficulty"
   },
-  "playSounds": "Play sounds",
+  "playSounds": "Sound effects",
   "@playSounds": {
-    "description": "Play sounds"
+    "description": "Sound effects"
   },
   "playSoundsInTheGame": "Play sounds in the game",
   "@playSoundsInTheGame": {
@@ -296,9 +296,9 @@
   "@leaderBoard": {
     "description": "Leader Board"
   },
-  "whoMovesFirst": "Who moves first",
+  "whoMovesFirst": "First move",
   "@whoMovesFirst": {
-    "description": "Who moves First"
+    "description": "First move"
   },
   "firstMove": "First move",
   "@firstMove": {
@@ -316,9 +316,9 @@
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "Auto Restart Game",
+  "isAutoRestart": "Auto restart game when game over",
   "@isAutoRestart": {
-    "description": "Auto Restart Game"
+    "description": "Auto restart game when game over"
   },
   "isAutoChangeFirstMove": "Auto Change First Move",
   "@isAutoChangeFirstMove": {
@@ -328,9 +328,9 @@
   "@resignIfMostLose": {
     "description": "AI Resign if Most Lose"
   },
-  "shufflingEnabled": "AI Random Move",
+  "shufflingEnabled": "Random move",
   "@shufflingEnabled": {
-    "description": "AI Random Move"
+    "description": "Random move"
   },
   "learnEndgame": "Learn Endgame",
   "@learnEndgame": {
@@ -356,9 +356,9 @@
   "@rules": {
     "description": "Rules"
   },
-  "piecesCount": "Total Pieces Each Side",
+  "piecesCount": "The number of pieces each player has",
   "@piecesCount": {
-    "description": "Total Pieces Each Side"
+    "description": "The number of pieces each player has"
   },
   "piecesCount_Detail": "How many pieces does each player have?",
   "@piecesCount_Detail": {
@@ -376,25 +376,25 @@
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
-  "hasDiagonalLines": "Has Diagonal Lines",
+  "hasDiagonalLines": "Diagonal lines",
   "@hasDiagonalLines": {
-    "description": "Has Diagonal Lines"
+    "description": "Diagonal lines"
   },
   "hasDiagonalLines_Detail": "Add four diagonal lines to the board.",
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Has Banned Locations",
+  "hasBannedLocations": "Mark and delay removing pieces",
   "@hasBannedLocations": {
-    "description": "Has Banned Locations"
+    "description": "Mark and delay removing pieces"
   },
   "hasBannedLocations_Detail": "In the placing phase, the points of removed pieces will no longer be able to place. ",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to place unless moving phase is entered."
   },
-  "isDefenderMoveFirst": "Defender Move First",
+  "isDefenderMoveFirst": "The second player moves first",
   "@isDefenderMoveFirst": {
-    "description": "Defender Move First"
+    "description": "The second player moves first"
   },
   "isDefenderMoveFirst_Detail": "The player who moves second in the placing phrase moves first in the moving phrase.",
   "@isDefenderMoveFirst_Detail": {
@@ -408,25 +408,25 @@
   "@mayRemoveMultiple_Detail": {
     "description": "If a player close more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "Allow Remove Piece In Mill",
+  "mayRemoveFromMillsAlways": "Destroy mills",
   "@mayRemoveFromMillsAlways": {
-    "description": "Allow Remove Piece In Mill"
+    "description": "Destroy mills"
   },
   "mayRemoveFromMillsAlways_Detail": "By default, players must remove any other pieces first before removing a piece from a formed mill. Enable this option to disable the limitation.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isBlackLoseButNotDrawWhenBoardFull": "Black Lose But Not Draw When Board Full",
+  "isBlackLoseButNotDrawWhenBoardFull": "Second player loses when board full",
   "@isBlackLoseButNotDrawWhenBoardFull": {
-    "description": "Black Lose But Not Draw When Board Full"
+    "description": "Second player loses when board full"
   },
   "isBlackLoseButNotDrawWhenBoardFull_Detail": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw.",
   "@isBlackLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
-  "isLoseButNotChangeSideWhenNoWay": "Lose But Not Change Side When No Way",
+  "isLoseButNotChangeSideWhenNoWay": "Lose when no legal moves",
   "@isLoseButNotChangeSideWhenNoWay": {
-    "description": "Lose But Not Change Side When No Way"
+    "description": "Lose when no legal moves"
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
@@ -456,9 +456,9 @@
   "@help": {
     "description": "Help"
   },
-  "feedback": "FeedBack",
+  "feedback": "Feedback",
   "@feedback": {
-    "description": "FeedBack"
+    "description": "Feedback"
   },
   "inviteFriend": "Invite Friend",
   "@inviteFriend": {
@@ -480,55 +480,55 @@
   "@color": {
     "description": "Color"
   },
-  "boardColor": "Board Color",
+  "boardColor": "Board color",
   "@boardColor": {
-    "description": "Board Color"
+    "description": "Board color"
   },
-  "pieceColor": "Piece Color",
+  "pieceColor": "Piece color",
   "@pieceColor": {
-    "description": "Piece Color"
+    "description": "Piece color"
   },
-  "backgroudColor": "Background Color",
+  "backgroudColor": "Background color",
   "@backgroudColor": {
-    "description": "Background Color"
+    "description": "Background color"
   },
-  "lineColor": "Line Color",
+  "lineColor": "Board line color",
   "@lineColor": {
-    "description": "Line Color"
+    "description": "Board linecolor"
   },
-   "blackPieceColor": "Player1 Piece Color",
+   "blackPieceColor": "Player1 piece color",
   "@blackPieceColor": {
-    "description": "Player1 Piece Color"
+    "description": "Player1 piece color"
   },
-  "whitePieceColor": "Player2 Piece Color",
+  "whitePieceColor": "Player2 piece color",
   "@whitePieceColor": {
-    "description": "Player2 Piece Color"
+    "description": "Player2 piece color"
   },
   "aiIsLazy": "AI is Lazy",
   "@aiIsLazy": {
     "description": "AI is Lazy"
   },
-  "isPieceCountInHandShown": "Show Piece in Hand Count",
+  "isPieceCountInHandShown": "Show count of pieces in hand",
   "@isPieceCountInHandShown": {
-    "description": "Show Piece in Hand Count"
+    "description": "Show count of pieces in hand"
   },
   "display": "Display",
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Board Border Line Width",
+  "boardBorderLineWidth": "Board border line width",
   "@boardBorderLineWidth": {
-    "description": "Board Border Line Width"
+    "description": "Board border line width"
   },
-  "boardInnerLineWidth": "Board Inner Line Width",
+  "boardInnerLineWidth": "Board inner line width",
   "@boardInnerLineWidth": {
-    "description": "Board Inner Line Width"
+    "description": "Board inner line width"
   },
   "restore": "Restore",
   "@restore": {
     "description": "Restore"
   },
-  "restoreDefaultSettings": "Restore Default Settings",
+  "restoreDefaultSettings": "Restore default settings",
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
@@ -727,5 +727,17 @@
   "gameOverCondition": "Game over condition",
   "@gameOverCondition": {
     "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI's play style",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Passive",
+  "@passive": {
+    "description": "Passive"
+  },
+  "automaticBehavior": "Automatic behavior",
+  "@automaticBehavior": {
+    "description": "Automatic behavior"
   }
 }
