@@ -19,6 +19,7 @@
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/painting/pieces_painter.dart';
 
 import 'mill.dart';
 import 'position.dart';
@@ -30,8 +31,8 @@ class Game {
   static Game? _instance;
 
   Position _position = Position();
-  int _focusIndex = Move.invalidMove;
-  int _blurIndex = Move.invalidMove;
+  int _focusIndex = PiecesPainter.invalidIndex;
+  int _blurIndex = PiecesPainter.invalidIndex;
 
   String sideToMove = PieceColor.black;
 
@@ -111,14 +112,14 @@ class Game {
 
   init() {
     _position = Position();
-    _focusIndex = _blurIndex = Move.invalidMove;
+    _focusIndex = _blurIndex = PiecesPainter.invalidIndex;
   }
 
   newGame() {
     Game.shared.position.phase = Phase.ready;
     Game.shared.start();
     Game.shared.position.init();
-    _focusIndex = _blurIndex = Move.invalidMove;
+    _focusIndex = _blurIndex = PiecesPainter.invalidIndex;
     moveHistory = [""];
     // TODO
     sideToMove = PieceColor.black;
@@ -126,7 +127,7 @@ class Game {
 
   select(int pos) {
     _focusIndex = pos;
-    _blurIndex = Move.invalidMove;
+    _blurIndex = PiecesPainter.invalidIndex;
     //Audios.playTone('click.mp3');
   }
 
@@ -158,12 +159,12 @@ class Game {
 
       if (lastMove != null) {
         //
-        _blurIndex = lastMove.from ?? Move.invalidMove;
-        _focusIndex = lastMove.to ?? Move.invalidMove;
+        _blurIndex = lastMove.from ?? PiecesPainter.invalidIndex;
+        _focusIndex = lastMove.to ?? PiecesPainter.invalidIndex;
         //
       } else {
         //
-        _blurIndex = _focusIndex = Move.invalidMove;
+        _blurIndex = _focusIndex = PiecesPainter.invalidIndex;
       }
 
       regretted = true;
@@ -179,7 +180,7 @@ class Game {
   }
 
   clear() {
-    _blurIndex = _focusIndex = Move.invalidMove;
+    _blurIndex = _focusIndex = PiecesPainter.invalidIndex;
   }
 
   get position => _position;

@@ -20,6 +20,7 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/painting/pieces_painter.dart';
 import 'package:sanmill/services/audios.dart';
 
 import 'types.dart';
@@ -583,12 +584,12 @@ class Position {
         } else {
           changeSideToMove();
         }
-        Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
+        Game.shared.focusIndex = squareToIndex[s] ?? PiecesPainter.invalidIndex;
         Audios.playTone('place.mp3');
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
-        Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
+        Game.shared.focusIndex = squareToIndex[s] ?? PiecesPainter.invalidIndex;
         Audios.playTone('mill.mp3');
       }
     } else if (phase == Phase.moving) {
@@ -641,13 +642,14 @@ class Position {
           //Audios.playTone('mill.mp3');
           return true;
         } else {
-          Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
+          Game.shared.focusIndex =
+              squareToIndex[s] ?? PiecesPainter.invalidIndex;
           Audios.playTone('place.mp3');
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
-        Game.shared.focusIndex = squareToIndex[s] ?? Move.invalidMove;
+        Game.shared.focusIndex = squareToIndex[s] ?? PiecesPainter.invalidIndex;
         Audios.playTone('mill.mp3');
       }
     } else {

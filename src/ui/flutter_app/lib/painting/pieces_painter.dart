@@ -33,6 +33,7 @@ class PiecePaintPair {
 }
 
 class PiecesPainter extends PiecesBasePainter {
+  static const int invalidIndex = -1;
   final Position? position;
   final int? focusIndex, blurIndex;
 
@@ -42,8 +43,8 @@ class PiecesPainter extends PiecesBasePainter {
   PiecesPainter({
     required double width,
     required this.position,
-    this.focusIndex = Move.invalidMove,
-    this.blurIndex = Move.invalidMove,
+    this.focusIndex = invalidIndex,
+    this.blurIndex = invalidIndex,
   }) : super(width: width) {
     //
     pieceWidth = squareWidth * 0.9; // size of square
@@ -79,8 +80,8 @@ class PiecesPainter extends PiecesBasePainter {
     double? pieceWidth,
     double? offsetX,
     double? offsetY,
-    int? focusIndex = Move.invalidMove,
-    int? blurIndex = Move.invalidMove,
+    int? focusIndex = invalidIndex,
+    int? blurIndex = invalidIndex,
   }) {
     //
     final left = offsetX;
@@ -156,7 +157,7 @@ class PiecesPainter extends PiecesBasePainter {
 
     // draw focus and blur position
 
-    if (focusIndex != Move.invalidMove) {
+    if (focusIndex != invalidIndex) {
       final int row = focusIndex! ~/ 7, column = focusIndex % 7;
 
       focusPositionColor = Color.fromARGB(
@@ -185,7 +186,7 @@ class PiecesPainter extends PiecesBasePainter {
       );
     }
 
-    if (blurIndex != Move.invalidMove) {
+    if (blurIndex != invalidIndex) {
       final row = blurIndex! ~/ 7, column = blurIndex % 7;
 
       paint.color = blurPositionColor!;
