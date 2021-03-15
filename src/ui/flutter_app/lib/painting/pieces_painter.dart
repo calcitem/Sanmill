@@ -60,7 +60,7 @@ class PiecesPainter extends PiecesBasePainter {
       squareWidth: squareWidth,
       pieceWidth: pieceWidth,
       offsetX: Board.padding + squareWidth / 2,
-      offsetY: Board.padding + Board.digitsHeight + squareWidth / 2,
+      offsetY: Board.padding + squareWidth / 2,
       focusIndex: focusIndex,
       blurIndex: blurIndex,
     );

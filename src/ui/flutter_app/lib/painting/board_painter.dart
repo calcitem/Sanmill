@@ -37,7 +37,7 @@ class BoardPainter extends PiecesBasePainter {
       gridWidth,
       squareWidth,
       offsetX: Board.padding + squareWidth / 2,
-      offsetY: Board.padding + Board.digitsHeight + squareWidth / 2,
+      offsetY: Board.padding + squareWidth / 2,
     );
   }
 

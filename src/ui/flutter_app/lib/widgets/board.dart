@@ -25,7 +25,6 @@ import 'package:sanmill/painting/pieces_painter.dart';
 class Board extends StatelessWidget {
   //
   static const padding = 5.0;
-  static const digitsHeight = 0.0;
 
   static const double boardBorderRadius = 5;
 
@@ -68,7 +67,6 @@ class Board extends StatelessWidget {
         //
         final gridWidth = (width - padding * 2);
         final squareWidth = gridWidth / 7;
-
         final dx = d.localPosition.dx;
         final dy = d.localPosition.dy;
 
@@ -78,7 +76,7 @@ class Board extends StatelessWidget {
           return;
         }
 
-        final row = (dy - padding - digitsHeight) ~/ squareWidth;
+        final row = (dy - padding) ~/ squareWidth;
         if (row < 0 || row > 6) {
           print("Tap on row $row (ignored).");
           return;
