@@ -47,7 +47,7 @@ Use Qt Creator to open `millgame.pro` , or use Visual Studio to open `millgame.s
 
 ### Flutter App
 
-Run `./flutter-init.sh` , and then use Android Studio or  Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
+Run `./flutter-init.sh` , copy `src/ui/flutter_app/android/key.properties.example` to `src/ui/flutter_app/android/key.properties`, modify it, and then use Android Studio or  Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
 
 ## Understanding the code base and participating in the project
 
