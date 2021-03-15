@@ -46,10 +46,7 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     String mode = "";
 
-    final TextStyle headerStyle =
-        TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
     final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
-    final cardColor = UIColors.floralWhiteColor;
 
     if (kDebugMode) {
       mode = "- debug";
