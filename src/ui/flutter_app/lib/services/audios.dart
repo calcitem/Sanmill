@@ -20,48 +20,51 @@ import 'dart:io';
 
 import 'package:just_audio/just_audio.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 class Audios {
-  //
   static AudioPlayer? _player;
 
   static playTone(String fileName) async {
-    if (!Config.toneEnabled) {
-      return;
-    }
-
-    if (Platform.isWindows) {
-      print(
-          "audio players is not support Windows. See: https://pub.dev/packages/just_audio");
-      return;
-    }
-
-    try {
-      if (_player == null) {
-        _player = AudioPlayer();
+    Chain.capture(() {
+      if (!Config.toneEnabled) {
+        return;
       }
 
-      await _player!.stop();
-      await _player!.setAsset("assets/audios/" + fileName);
-      _player!.play();
-    } on PlayerException catch (e) {
-      // iOS/macOS: maps to NSError.code
-      // Android: maps to ExoPlayerException.type
-      // Web: maps to MediaError.code
-      print("Error code: ${e.code}");
-      // iOS/macOS: maps to NSError.localizedDescription
-      // Android: maps to ExoPlaybackException.getMessage()
-      // Web: a generic message
-      print("Error message: ${e.message}");
-    } on PlayerInterruptedException catch (e) {
-      // This call was interrupted since another audio source was loaded or the
-      // player was stopped or disposed before this audio source could complete
-      // loading.
-      print("Connection aborted: ${e.message}");
-    } catch (e) {
-      // Fallback for all errors
-      print(e);
-    }
+      if (Platform.isWindows) {
+        print(
+            "audio players is not support Windows. See: https://pub.dev/packages/just_audio");
+        return;
+      }
+
+      try {
+        if (_player == null) {
+          _player = AudioPlayer();
+        }
+
+        _player!.stop();
+        _player!.setAsset("assets/audios/" + fileName);
+
+        _player!.play();
+      } on PlayerException catch (e) {
+        // iOS/macOS: maps to NSError.code
+        // Android: maps to ExoPlayerException.type
+        // Web: maps to MediaError.code
+        print("Error code: ${e.code}");
+        // iOS/macOS: maps to NSError.localizedDescription
+        // Android: maps to ExoPlaybackException.getMessage()
+        // Web: a generic message
+        print("Error message: ${e.message}");
+      } on PlayerInterruptedException catch (e) {
+        // This call was interrupted since another audio source was loaded or the
+        // player was stopped or disposed before this audio source could complete
+        // loading.
+        print("Connection aborted: ${e.message}");
+      } catch (e) {
+        // Fallback for all errors
+        print(e);
+      }
+    });
   }
 
   static Future<void> release() async {
