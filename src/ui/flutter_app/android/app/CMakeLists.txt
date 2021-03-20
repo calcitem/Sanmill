@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.4.1)
 add_definitions(-g -O2 -std=c++17 -D FLUTTER_UI)
 
 add_library( # Sets the name of the library.
-        engine
+        sanmill
 
         # Sets the library as a shared library.
         SHARED
@@ -45,7 +45,7 @@ find_library( # Sets the name of the path variable.
 
 
 target_link_libraries( # Specifies the target library.
-        engine
+        sanmill
 
         # Links the target library to the log library
         # included in the NDK.
