@@ -27,7 +27,7 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       - uses: subosito/flutter-action@v1
         with:
-          channel: 'dev' # or: 'dev' or 'beta'
+          channel: 'stable' # or: 'dev' or 'beta'
 
       - name: Export environment valiables
         run: export
@@ -53,16 +53,23 @@ jobs:
 
       # Build
       - name: Build apk
-        run: cd src/ui/flutter_app; flutter build apk
+        run: cd src/ui/flutter_app; flutter build apk; flutter build appbundle
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           ALIAS: ${{ secrets.ALIAS }}
           KEY_PATH: key.jks
 
-      # Archive
-      - name: Archive production artifacts
+      # Archive apk
+      - name: Archive apk
         uses: actions/upload-artifact@v2
         with:
           name: sanmill-flutter-apk-release
           path: src/ui/flutter_app/build/app/outputs/flutter-apk/app-release.apk
+
+      # Archive aab
+      - name: Archive aab
+        uses: actions/upload-artifact@v2
+        with:
+          name: sanmill-flutter-aab-release
+          path: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
