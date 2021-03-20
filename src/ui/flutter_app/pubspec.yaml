@@ -32,7 +32,6 @@ flutter:
   uses-material-design: true  
 
   assets:
-    - images/logo.png
     - assets/licenses/GPL-3.0.txt
     - assets/audios/draw.mp3
     - assets/audios/fly.mp3
