@@ -29,10 +29,14 @@ def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 } else {
-    keystoreProperties.setProperty('storePassword', System.getenv('KEY_STORE_PASSWORD'));
-    keystoreProperties.setProperty('keyPassword', System.getenv('KEY_PASSWORD'));
-    keystoreProperties.setProperty('keyAlias', System.getenv('ALIAS'));
-    keystoreProperties.setProperty('storeFile', System.getenv('KEY_PATH'));
+    if (System.getenv('KEY_STORE_PASSWORD')) {
+        keystoreProperties.setProperty('storePassword', System.getenv('KEY_STORE_PASSWORD'));
+        keystoreProperties.setProperty('keyPassword', System.getenv('KEY_PASSWORD'));
+        keystoreProperties.setProperty('keyAlias', System.getenv('ALIAS'));
+        keystoreProperties.setProperty('storeFile', System.getenv('KEY_PATH'));
+	} else {
+	    throw new GradleException("key.properties not found. Copy key.properties.example to key.properties and modify it to suit your needs.")
+	}
 }
 
 android {
@@ -43,7 +47,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.calcitem.sanmill"
         minSdkVersion 23
         targetSdkVersion 30
