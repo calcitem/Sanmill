@@ -21,18 +21,18 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
-class Profile {
-  static const defaultFileName = 'default-profile.json';
-  static Profile? _shared;
+class Settings {
+  static const settingsFileName = 'settings.json';
+  static Settings? _shared;
 
   late File _file;
   Map<String, dynamic>? _values = {};
 
   static shared() async {
     if (_shared == null) {
-      _shared = Profile();
-      await _shared!._load(defaultFileName);
-      print("defaultFileName: $defaultFileName");
+      _shared = Settings();
+      await _shared!._load(settingsFileName);
+      print("defaultFileName: $settingsFileName");
     }
 
     return _shared;

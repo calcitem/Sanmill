@@ -21,7 +21,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/profile.dart';
+import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/colors.dart';
 
@@ -494,7 +494,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   restoreFactoryDefaultSettings() async {
     confirm() async {
       Navigator.of(context).pop();
-      final profile = await Profile.shared();
+      final profile = await Settings.shared();
       await profile.restore();
       exit(0);
     }

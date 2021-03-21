@@ -19,7 +19,7 @@
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/colors.dart';
 
-import 'profile.dart';
+import 'settings.dart';
 
 class Config {
   static bool toneEnabled = true;
@@ -62,110 +62,110 @@ class Config {
   static int maxStepsLedToDraw = 50;
 
   static Future<void> loadProfile() async {
-    final profile = await Profile.shared();
+    final settings = await Settings.shared();
 
-    Config.toneEnabled = profile['ToneEnabled'] ?? true;
-    Config.thinkingTime = profile['ThinkingTime'] ?? 5000;
-    Config.aiMovesFirst = profile['AiMovesFirst'] ?? false;
-    Config.aiIsLazy = profile['AiIsLazy'] ?? false;
-    Config.skillLevel = profile['SkillLevel'] ?? 20;
-    Config.isAutoRestart = profile['IsAutoRestart'] ?? false;
-    Config.isAutoChangeFirstMove = profile['IsAutoChangeFirstMove'] ?? false;
-    Config.resignIfMostLose = profile['ResignIfMostLose'] ?? false;
-    Config.shufflingEnabled = profile['ShufflingEnabled'] ?? true;
-    Config.learnEndgame = profile['LearnEndgame'] ?? false;
-    Config.idsEnabled = profile['IdsEnabled'] ?? false;
-    Config.depthExtension = profile['DepthExtension'] ?? false;
-    Config.openingBook = profile['OpeningBook'] ?? false;
+    Config.toneEnabled = settings['ToneEnabled'] ?? true;
+    Config.thinkingTime = settings['ThinkingTime'] ?? 5000;
+    Config.aiMovesFirst = settings['AiMovesFirst'] ?? false;
+    Config.aiIsLazy = settings['AiIsLazy'] ?? false;
+    Config.skillLevel = settings['SkillLevel'] ?? 20;
+    Config.isAutoRestart = settings['IsAutoRestart'] ?? false;
+    Config.isAutoChangeFirstMove = settings['IsAutoChangeFirstMove'] ?? false;
+    Config.resignIfMostLose = settings['ResignIfMostLose'] ?? false;
+    Config.shufflingEnabled = settings['ShufflingEnabled'] ?? true;
+    Config.learnEndgame = settings['LearnEndgame'] ?? false;
+    Config.idsEnabled = settings['IdsEnabled'] ?? false;
+    Config.depthExtension = settings['DepthExtension'] ?? false;
+    Config.openingBook = settings['OpeningBook'] ?? false;
 
     // Display
     Config.isPieceCountInHandShown =
-        profile['IsPieceCountInHandShown'] ?? false;
-    Config.boardBorderLineWidth = profile['BoardBorderLineWidth'] ?? 2;
-    Config.boardInnerLineWidth = profile['BoardInnerLineWidth'] ?? 2;
+        settings['IsPieceCountInHandShown'] ?? false;
+    Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
+    Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
 
     // Color
     Config.boardLineColor =
-        profile['BoardLineColor'] ?? UIColors.boardLineColor.value;
+        settings['BoardLineColor'] ?? UIColors.boardLineColor.value;
     Config.darkBackgroundColor =
-        profile['DarkBackgroundColor'] ?? UIColors.darkBackgroundColor.value;
+        settings['DarkBackgroundColor'] ?? UIColors.darkBackgroundColor.value;
     Config.boardBackgroundColor =
-        profile['BoardBackgroundColor'] ?? UIColors.boardBackgroundColor.value;
+        settings['BoardBackgroundColor'] ?? UIColors.boardBackgroundColor.value;
     Config.blackPieceColor =
-        profile['BlackPieceColor'] ?? UIColors.blackPieceColor.value;
+        settings['BlackPieceColor'] ?? UIColors.blackPieceColor.value;
     Config.whitePieceColor =
-        profile['WhitePieceColor'] ?? UIColors.whitePieceColor.value;
+        settings['WhitePieceColor'] ?? UIColors.whitePieceColor.value;
 
     // Rules
-    rule.piecesCount = Config.piecesCount = profile['PiecesCount'] ?? 9;
+    rule.piecesCount = Config.piecesCount = settings['PiecesCount'] ?? 9;
     rule.piecesAtLeastCount =
-        Config.piecesAtLeastCount = profile['PiecesAtLeastCount'] ?? 3;
+        Config.piecesAtLeastCount = settings['PiecesAtLeastCount'] ?? 3;
     rule.hasDiagonalLines =
-        Config.hasDiagonalLines = profile['HasDiagonalLines'] ?? false;
+        Config.hasDiagonalLines = settings['HasDiagonalLines'] ?? false;
     rule.hasBannedLocations =
-        Config.hasBannedLocations = profile['HasBannedLocations'] ?? false;
+        Config.hasBannedLocations = settings['HasBannedLocations'] ?? false;
     rule.isDefenderMoveFirst =
-        Config.isDefenderMoveFirst = profile['IsDefenderMoveFirst'] ?? false;
+        Config.isDefenderMoveFirst = settings['IsDefenderMoveFirst'] ?? false;
     rule.mayRemoveMultiple =
-        Config.mayRemoveMultiple = profile['MayRemoveMultiple'] ?? false;
+        Config.mayRemoveMultiple = settings['MayRemoveMultiple'] ?? false;
     rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways =
-        profile['MayRemoveFromMillsAlways'] ?? false;
+        settings['MayRemoveFromMillsAlways'] ?? false;
     rule.isBlackLoseButNotDrawWhenBoardFull =
         Config.isBlackLoseButNotDrawWhenBoardFull =
-            profile['IsBlackLoseButNotDrawWhenBoardFull'] ?? true;
+            settings['IsBlackLoseButNotDrawWhenBoardFull'] ?? true;
     rule.isLoseButNotChangeSideWhenNoWay =
         Config.isLoseButNotChangeSideWhenNoWay =
-            profile['IsLoseButNotChangeSideWhenNoWay'] ?? true;
-    rule.mayFly = Config.mayFly = profile['MayFly'] ?? true;
+            settings['IsLoseButNotChangeSideWhenNoWay'] ?? true;
+    rule.mayFly = Config.mayFly = settings['MayFly'] ?? true;
     rule.maxStepsLedToDraw =
-        Config.maxStepsLedToDraw = profile['MaxStepsLedToDraw'] ?? 50;
+        Config.maxStepsLedToDraw = settings['MaxStepsLedToDraw'] ?? 50;
   }
 
   static Future<bool> save() async {
-    final profile = await Profile.shared();
+    final settings = await Settings.shared();
 
-    profile['ToneEnabled'] = Config.toneEnabled;
-    profile['ThinkingTime'] = Config.thinkingTime;
-    profile['AiMovesFirst'] = Config.aiMovesFirst;
-    profile['AiIsLazy'] = Config.aiIsLazy;
-    profile['SkillLevel'] = Config.skillLevel;
-    profile['IsAutoRestart'] = Config.isAutoRestart;
-    profile['IsAutoChangeFirstMove'] = Config.isAutoChangeFirstMove;
-    profile['ResignIfMostLose'] = Config.resignIfMostLose;
-    profile['ShufflingEnabled'] = Config.shufflingEnabled;
-    profile['LearnEndgame'] = Config.learnEndgame;
-    profile['IdsEnabled'] = Config.idsEnabled;
-    profile['DepthExtension'] = Config.depthExtension;
-    profile['OpeningBook'] = Config.openingBook;
+    settings['ToneEnabled'] = Config.toneEnabled;
+    settings['ThinkingTime'] = Config.thinkingTime;
+    settings['AiMovesFirst'] = Config.aiMovesFirst;
+    settings['AiIsLazy'] = Config.aiIsLazy;
+    settings['SkillLevel'] = Config.skillLevel;
+    settings['IsAutoRestart'] = Config.isAutoRestart;
+    settings['IsAutoChangeFirstMove'] = Config.isAutoChangeFirstMove;
+    settings['ResignIfMostLose'] = Config.resignIfMostLose;
+    settings['ShufflingEnabled'] = Config.shufflingEnabled;
+    settings['LearnEndgame'] = Config.learnEndgame;
+    settings['IdsEnabled'] = Config.idsEnabled;
+    settings['DepthExtension'] = Config.depthExtension;
+    settings['OpeningBook'] = Config.openingBook;
 
     // Display
-    profile['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
-    profile['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
-    profile['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
+    settings['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
+    settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
+    settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
 
     // Color
-    profile['BoardLineColor'] = Config.boardLineColor;
-    profile['DarkBackgroundColor'] = Config.darkBackgroundColor;
-    profile['BoardBackgroundColor'] = Config.boardBackgroundColor;
-    profile['BlackPieceColor'] = Config.blackPieceColor;
-    profile['WhitePieceColor'] = Config.whitePieceColor;
+    settings['BoardLineColor'] = Config.boardLineColor;
+    settings['DarkBackgroundColor'] = Config.darkBackgroundColor;
+    settings['BoardBackgroundColor'] = Config.boardBackgroundColor;
+    settings['BlackPieceColor'] = Config.blackPieceColor;
+    settings['WhitePieceColor'] = Config.whitePieceColor;
 
     // Rules
-    profile['PiecesCount'] = Config.piecesCount;
-    profile['PiecesAtLeastCount'] = Config.piecesAtLeastCount;
-    profile['HasDiagonalLines'] = Config.hasDiagonalLines;
-    profile['HasBannedLocations'] = Config.hasBannedLocations;
-    profile['IsDefenderMoveFirst'] = Config.isDefenderMoveFirst;
-    profile['MayRemoveMultiple'] = Config.mayRemoveMultiple;
-    profile['MayRemoveFromMillsAlways'] = Config.mayRemoveFromMillsAlways;
-    profile['IsBlackLoseButNotDrawWhenBoardFull'] =
+    settings['PiecesCount'] = Config.piecesCount;
+    settings['PiecesAtLeastCount'] = Config.piecesAtLeastCount;
+    settings['HasDiagonalLines'] = Config.hasDiagonalLines;
+    settings['HasBannedLocations'] = Config.hasBannedLocations;
+    settings['IsDefenderMoveFirst'] = Config.isDefenderMoveFirst;
+    settings['MayRemoveMultiple'] = Config.mayRemoveMultiple;
+    settings['MayRemoveFromMillsAlways'] = Config.mayRemoveFromMillsAlways;
+    settings['IsBlackLoseButNotDrawWhenBoardFull'] =
         Config.isBlackLoseButNotDrawWhenBoardFull;
-    profile['IsLoseButNotChangeSideWhenNoWay'] =
+    settings['IsLoseButNotChangeSideWhenNoWay'] =
         Config.isLoseButNotChangeSideWhenNoWay;
-    profile['MayFly'] = Config.mayFly;
-    profile['MaxStepsLedToDraw'] = Config.maxStepsLedToDraw;
+    settings['MayFly'] = Config.mayFly;
+    settings['MaxStepsLedToDraw'] = Config.maxStepsLedToDraw;
 
-    profile.commit();
+    settings.commit();
 
     return true;
   }
