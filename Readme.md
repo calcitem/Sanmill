@@ -30,18 +30,24 @@ Sanmill CUI has support for 32 or 64-bit CPUs, certain hardware instructions, bi
 On Unix-like systems, it should be easy to compile Sanmill directly from the source code with the included Makefile in the folder `src`. In general it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
 
 ```shell
-    cd src
-    make help
-    make build ARCH=x86-64-modern
+cd src
+make help
+make build ARCH=x86-64-modern
 ```
 
 When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. These information can be found by typing the following commands in a console:
 
 ```shell
-    ./sanmill compiler
+./sanmill compiler
 ```
 
 ### Qt Application
+
+If you have started using Ubuntu or any Ubuntu-based Linux distribution, you must install Qt by running the following command as root:
+
+```shell
+sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
+```
 
 Use Qt Creator to open `millgame.pro` , or use Visual Studio to open `millgame.sln` to build Qt Application.
 
