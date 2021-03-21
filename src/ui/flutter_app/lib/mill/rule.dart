@@ -17,19 +17,19 @@
 */
 
 class Rule {
-  String name = "Da San Qi";
+  String name = "Nine Men's Morris";
   String description = "";
-  int piecesCount = 12; // 9 or 12
+  int piecesCount = 9; // 9 or 12
   int piecesAtLeastCount = 3; // Default is 3
-  bool hasDiagonalLines = true;
-  bool hasBannedLocations = true;
-  bool isDefenderMoveFirst = true;
+  bool hasDiagonalLines = false;
+  bool hasBannedLocations = false;
+  bool isDefenderMoveFirst = false;
   bool mayRemoveMultiple = false;
-  bool mayRemoveFromMillsAlways = true;
+  bool mayRemoveFromMillsAlways = false;
   bool isBlackLoseButNotDrawWhenBoardFull = true;
   bool isLoseButNotChangeSideWhenNoWay = true;
-  bool mayFly = false;
-  int maxStepsLedToDraw = 0;
+  bool mayFly = true;
+  int maxStepsLedToDraw = 50;
 }
 
 Rule rule = Rule();

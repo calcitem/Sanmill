@@ -49,16 +49,16 @@ class Config {
   static int whitePieceColor = UIColors.whitePieceColor.value;
 
   // Rules
-  static int piecesCount = 12;
+  static int piecesCount = 9;
   static int piecesAtLeastCount = 3;
-  static bool hasDiagonalLines = true;
-  static bool hasBannedLocations = true;
-  static bool isDefenderMoveFirst = true;
+  static bool hasDiagonalLines = false;
+  static bool hasBannedLocations = false;
+  static bool isDefenderMoveFirst = false;
   static bool mayRemoveMultiple = false;
-  static bool mayRemoveFromMillsAlways = true;
+  static bool mayRemoveFromMillsAlways = false;
   static bool isBlackLoseButNotDrawWhenBoardFull = true;
   static bool isLoseButNotChangeSideWhenNoWay = true;
-  static bool mayFly = false;
+  static bool mayFly = true;
   static int maxStepsLedToDraw = 50;
 
   static Future<void> loadProfile() async {
@@ -97,26 +97,26 @@ class Config {
         profile['WhitePieceColor'] ?? UIColors.whitePieceColor.value;
 
     // Rules
-    rule.piecesCount = Config.piecesCount = profile['PiecesCount'] ?? 12;
+    rule.piecesCount = Config.piecesCount = profile['PiecesCount'] ?? 9;
     rule.piecesAtLeastCount =
         Config.piecesAtLeastCount = profile['PiecesAtLeastCount'] ?? 3;
     rule.hasDiagonalLines =
-        Config.hasDiagonalLines = profile['HasDiagonalLines'] ?? true;
+        Config.hasDiagonalLines = profile['HasDiagonalLines'] ?? false;
     rule.hasBannedLocations =
-        Config.hasBannedLocations = profile['HasBannedLocations'] ?? true;
+        Config.hasBannedLocations = profile['HasBannedLocations'] ?? false;
     rule.isDefenderMoveFirst =
-        Config.isDefenderMoveFirst = profile['IsDefenderMoveFirst'] ?? true;
+        Config.isDefenderMoveFirst = profile['IsDefenderMoveFirst'] ?? false;
     rule.mayRemoveMultiple =
         Config.mayRemoveMultiple = profile['MayRemoveMultiple'] ?? false;
     rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways =
-        profile['MayRemoveFromMillsAlways'] ?? true;
+        profile['MayRemoveFromMillsAlways'] ?? false;
     rule.isBlackLoseButNotDrawWhenBoardFull =
         Config.isBlackLoseButNotDrawWhenBoardFull =
             profile['IsBlackLoseButNotDrawWhenBoardFull'] ?? true;
     rule.isLoseButNotChangeSideWhenNoWay =
         Config.isLoseButNotChangeSideWhenNoWay =
             profile['IsLoseButNotChangeSideWhenNoWay'] ?? true;
-    rule.mayFly = Config.mayFly = profile['MayFly'] ?? false;
+    rule.mayFly = Config.mayFly = profile['MayFly'] ?? true;
     rule.maxStepsLedToDraw =
         Config.maxStepsLedToDraw = profile['MaxStepsLedToDraw'] ?? 50;
   }
