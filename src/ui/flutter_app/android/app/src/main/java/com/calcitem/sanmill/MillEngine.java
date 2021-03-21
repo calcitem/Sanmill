@@ -21,7 +21,7 @@ package com.calcitem.sanmill;
 public class MillEngine {
 
     static {
-        System.loadLibrary("sanmill");
+        System.loadLibrary("sanmill");  // libsanmill.so
     }
 
     public native int startup();

@@ -60,33 +60,25 @@ public class MainActivity extends FlutterActivity {
                 new MethodChannel(fe.getDartExecutor(), ENGINE_CHANNEL);
 
         methodChannel.setMethodCallHandler((call, result) -> {
-
                     switch (call.method) {
-
                         case "startup":
                             result.success(engine.startup());
                             break;
-
                         case "send":
                             result.success(engine.send(call.arguments.toString()));
                             break;
-
                         case "read":
                             result.success(engine.read());
                             break;
-
                         case "shutdown":
                             result.success(engine.shutdown());
                             break;
-
                         case "isReady":
                             result.success(engine.isReady());
                             break;
-
                         case "isThinking":
                             result.success(engine.isThinking());
                             break;
-
                         default:
                             result.notImplemented();
                             break;
@@ -97,7 +89,6 @@ public class MainActivity extends FlutterActivity {
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
-
         GeneratedPluginRegistrant.registerWith(flutterEngine);
     }
 
@@ -109,7 +100,9 @@ public class MainActivity extends FlutterActivity {
         ICrashCallback callback = new ICrashCallback() {
             @Override
             public void onCrash(String logPath, String emergency) {
-                Log.d(TAG_XCRASH, "xCrash log path: " + (logPath != null ? logPath : "(null)") + ", emergency: " + (emergency != null ? emergency : "(null)"));
+                Log.d(TAG_XCRASH,
+                        "xCrash log path: " + (logPath != null ? logPath : "(null)") + ", " +
+                                "emergency: " + (emergency != null ? emergency : "(null)"));
 
                 if (emergency != null) {
                     debug(logPath, emergency);
@@ -119,9 +112,10 @@ public class MainActivity extends FlutterActivity {
                 } else {
                     // Add some expanded sections. Send crash report at the next time APP startup.
 
-                    // OK
-                    TombstoneManager.appendSection(logPath, "expanded_key_1", "expanded_content");
-                    TombstoneManager.appendSection(logPath, "expanded_key_2", "expanded_content_row_1\nexpanded_content_row_2");
+                    TombstoneManager.appendSection(logPath,
+                            "expanded_key_1", "expanded_content");
+                    TombstoneManager.appendSection(logPath,
+                            "expanded_key_2", "expanded_content_row_1\nexpanded_content_row_2");
 
                     // Invalid. (Do NOT include multiple consecutive newline characters ("\n\n") in the content string.)
                     // TombstoneManager.appendSection(logPath, "expanded_key_3", "expanded_content_row_1\n\nexpanded_content_row_2");
@@ -135,7 +129,7 @@ public class MainActivity extends FlutterActivity {
 
         // Initialize xCrash.
         XCrash.init(this, new XCrash.InitParameters()
-                .setAppVersion("0.0.0") // TODO
+                .setAppVersion("3.0.0") // TODO
                 .setJavaRethrow(true)
                 .setJavaLogCountMax(10)
                 .setJavaDumpAllThreadsWhiteList(new String[]{"^main$", "^Binder:.*", ".*Finalizer.*"})
@@ -143,7 +137,12 @@ public class MainActivity extends FlutterActivity {
                 .setJavaCallback(callback)
                 .setNativeRethrow(true)
                 .setNativeLogCountMax(10)
-                .setNativeDumpAllThreadsWhiteList(new String[]{"^xcrash\\.sample$", "^Signal Catcher$", "^Jit thread pool$", ".*mill.*", ".*engine.*"})   // TODO
+                .setNativeDumpAllThreadsWhiteList(new String[]{
+                        "^xcrash\\.sample$",
+                        "^Signal Catcher$",
+                        "^Jit thread pool$",
+                        ".*mill.*",
+                        ".*engine.*"})   // TODO
                 .setNativeDumpAllThreadsCountMax(10)
                 .setNativeCallback(callback)
                 .setAnrRethrow(true)

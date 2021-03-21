@@ -25,26 +25,24 @@
   #include <pthread.h>
   #include <stdlib.h>
   #include <unistd.h>
-#endif
+#endif  // _WIN32
+
 #include <string.h>
 
 #ifdef _WIN32
 #else // TODO: __ANDROID__
 #include <android/log.h>
-#endif
+#endif // _WIN32
 
 #ifdef _WIN32
-
 inline void Idle(void) {
   Sleep(1);
 }
-
 #else
-
 inline void Idle(void) {
   usleep(1000);
 }
-#endif
+#endif  // _WIN32
 
 #define LOG_TAG   "MillEngine"
 
@@ -60,6 +58,6 @@ inline void Idle(void) {
 #define LOGW(...)  __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 #define LOGF(...)  __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
-#endif
+#endif  // _WIN32
 
-#endif
+#endif  // BASE2_H

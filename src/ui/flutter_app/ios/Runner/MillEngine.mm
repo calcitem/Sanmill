@@ -54,7 +54,6 @@
     operationQueue = [[NSOperationQueue alloc] init];
     [operationQueue setMaxConcurrentOperationCount:1];
 
-    // getInstance() 有并发问题，这里首先主动建立实例，避免后续创建重复
     CommandChannel::getInstance();
     usleep(10);
 
