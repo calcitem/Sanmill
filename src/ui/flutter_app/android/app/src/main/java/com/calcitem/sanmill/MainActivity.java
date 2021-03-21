@@ -167,7 +167,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void sendThenDeleteCrashLog(String logPath, String emergency) {
-        Log.d(TAG_XCRASH, "Skip sendThenDeleteCrashLog");
+        Log.d(TAG_XCRASH, "Skip sendThenDeleteCrashLog(" + logPath + ", " + emergency);
         // Parse
         //Map<String, String> map = TombstoneParser.parse(logPath, emergency);
         //String crashReport = new JSONObject(map).toString();
