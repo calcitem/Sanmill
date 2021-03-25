@@ -30,6 +30,12 @@ add_library( # Sets the name of the library.
         ../../../../uci.cpp
         ../../../../ucioption.cpp)
 
+#target_compile_options(sanmill PUBLIC -fsanitize=hwaddress -fno-omit-frame-pointer)
+#set_target_properties(sanmill PROPERTIES LINK_FLAGS -fsanitize=hwaddress)
+
+#target_compile_options(sanmill PUBLIC -fsanitize=address -fno-omit-frame-pointer)
+#set_target_properties(sanmill PROPERTIES LINK_FLAGS -fsanitize=address)
+
 include_directories(
         ../../command
         ../../../../../include
@@ -42,7 +48,6 @@ find_library( # Sets the name of the path variable.
         # Specifies the name of the NDK library that
         # you want CMake to locate.
         log)
-
 
 target_link_libraries( # Specifies the target library.
         sanmill
