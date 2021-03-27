@@ -239,7 +239,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
           changeStatus(S.of(context).timeout);
           assert(false);
           return;
-          break;
         default:
           changeStatus('Error: ${response.type}');
           break;
