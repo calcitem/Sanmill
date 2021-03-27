@@ -112,9 +112,21 @@ class _GamePageState extends State<GamePage> with RouteAware {
         position.pieceOnBoardCount[PieceColor.black] == 0 &&
         position.pieceOnBoardCount[PieceColor.white] == 0) {
       Game.shared.newGame();
+
+      if (Game.shared.isAiToMove()) {
+        if (Game.shared.aiIsSearching()) {
+          print("AI is thinking, skip tapping.");
+          return false;
+        } else {
+          print("AI is not thinking. AI is to move.");
+          engineToGo();
+          return false;
+        }
+      }
     }
 
     if (Game.shared.isAiToMove() || Game.shared.aiIsSearching()) {
+      print("AI's turn, skip tapping.");
       return false;
     }
 
