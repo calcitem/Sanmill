@@ -12,14 +12,14 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  just_audio: ^0.7.1
+  just_audio: ^0.7.2
   path_provider: ^2.0.1
   package_info: ^2.0.0
-  uuid: ^3.0.1
-  url_launcher: ^6.0.2
+  uuid: ^3.0.2
+  url_launcher: ^6.0.3
   intl: 0.17.0
-  animated_text_kit: ^4.0.0
-  flutter_colorpicker: ^0.4.0-nullsafety.0
+  animated_text_kit: ^4.1.1
+  flutter_colorpicker: ^0.4.0
   catcher: ^0.6.3
   stack_trace: ^1.10.0
 
