@@ -184,5 +184,6 @@
   "gameOverCondition": "终局条件",
   "aisPlayStyle": "机器的棋风",
   "passive": "消极被动",
-  "automaticBehavior": "自动行为"
+  "automaticBehavior": "自动行为",
+  "timeout": "超时"
 }

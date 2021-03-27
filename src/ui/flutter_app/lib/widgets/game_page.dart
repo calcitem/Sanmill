@@ -204,6 +204,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   engineToGo() async {
     // TODO
+    print("Engine to go");
 
     while ((Config.isAutoRestart == true ||
             Game.shared.position.winner == PieceColor.nobody) &&
@@ -221,24 +222,33 @@ class _GamePageState extends State<GamePage> with RouteAware {
         changeStatus(S.of(context).thinking);
       }
 
+      print("Waiting for engine's response...");
       final response = await widget.engine.search(Game.shared.position);
-      Chain.capture(() {
-        if (response.type == 'move') {
+      print("Engine response type: ${response.type}");
+
+      switch (response.type) {
+        case 'move':
           Move mv = response.value;
           final Move move = new Move(mv.move);
 
           //Battle.shared.move = move;
           Game.shared.doMove(move.move);
           showTips();
-        } else {
+          break;
+        case 'timeout':
+          changeStatus(S.of(context).timeout);
+          assert(false);
+          return;
+          break;
+        default:
           changeStatus('Error: ${response.type}');
-        }
+          break;
+      }
 
-        if (Config.isAutoRestart == true &&
-            Game.shared.position.winner != PieceColor.nobody) {
-          Game.shared.newGame();
-        }
-      });
+      if (Config.isAutoRestart == true &&
+          Game.shared.position.winner != PieceColor.nobody) {
+        Game.shared.newGame();
+      }
     }
   }
 

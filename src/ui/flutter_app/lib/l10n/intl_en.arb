@@ -739,5 +739,9 @@
   "automaticBehavior": "Automatic behavior",
   "@automaticBehavior": {
     "description": "Automatic behavior"
+  },
+  "timeout": "Timeout",
+  "@timeout": {
+    "description": "Timeout"
   }
 }

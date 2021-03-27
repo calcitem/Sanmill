@@ -90,7 +90,11 @@ class NativeEngine extends AiEngine {
 
     if (response != null) {
       for (var prefix in prefixes) {
-        if (response.startsWith(prefix)) return response;
+        if (response.startsWith(prefix)) {
+          return response;
+        } else {
+          print("Unexpected engine response: $response");
+        }
       }
     }
 

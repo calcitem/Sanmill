@@ -23,7 +23,7 @@ import 'settings.dart';
 
 class Config {
   static bool toneEnabled = true;
-  static int thinkingTime = 5000;
+  static int thinkingTime = 10000; // TODO: waitResponse
   static bool aiMovesFirst = false;
   static bool aiIsLazy = false;
   static int skillLevel = 20;
@@ -65,7 +65,8 @@ class Config {
     final settings = await Settings.shared();
 
     Config.toneEnabled = settings['ToneEnabled'] ?? true;
-    Config.thinkingTime = settings['ThinkingTime'] ?? 5000;
+    Config.thinkingTime =
+        settings['ThinkingTime'] ?? 10000; // TODO: waitResponse
     Config.aiMovesFirst = settings['AiMovesFirst'] ?? false;
     Config.aiIsLazy = settings['AiIsLazy'] ?? false;
     Config.skillLevel = settings['SkillLevel'] ?? 20;
