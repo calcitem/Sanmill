@@ -93,6 +93,7 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
 //-----------------------------------------------------------------------------
 bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
+#ifndef __clang__   // TODO
     // locals
     BufferedFile *invalidArray;		  //
     bool initAlreadyDone = false;	  // true if the initialization information is already available in a file
@@ -175,7 +176,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     PRINT(2, this, "    lost    states: " << alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST]);
     PRINT(2, this, "    draw    states: " << alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN]);
     PRINT(2, this, "    invalid states: " << alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID]);
-
+#endif // __clang__
     return true;
 }
 
@@ -259,6 +260,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, unsigned int index)
 //-----------------------------------------------------------------------------
 bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
+#ifndef __clang__   // TODO
     // prepare parameters
     PRINT(1, this, "  Calculate layer " << alphaBetaVars.layerNumber << " with function letTheTreeGrow():");
     numStatesProcessed = 0;
@@ -304,7 +306,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     PRINT(2, this, "    lost    states: " << alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST]);
     PRINT(2, this, "    draw    states: " << alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN]);
     PRINT(2, this, "    invalid states: " << alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID]);
-
+#endif // __clang__
     return true;
 }
 

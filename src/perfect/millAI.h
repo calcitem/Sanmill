@@ -92,7 +92,11 @@ private:
                       unsigned int secondNeighbour1);
 };
 
+#ifdef __clang__    // TODO
+class MillAI
+#else
 class MillAI abstract
+#endif
 {
 protected:
     fieldStruct dummyField;

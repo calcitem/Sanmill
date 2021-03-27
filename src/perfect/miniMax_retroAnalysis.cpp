@@ -120,6 +120,7 @@ freeMem:
 //-----------------------------------------------------------------------------
 bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
+#ifndef __clang__   // TODO
     // locals
     unsigned int curLayerId;		  // current processed layer within 'layersToCalculate'
     unsigned int layerNumber;		  // layer number of the current process layer
@@ -195,6 +196,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
         PRINT(2, this, "    draw    states: " << retroVars.statsValueCounter[SKV_VALUE_GAME_DRAWN]);
         PRINT(2, this, "    invalid states: " << retroVars.statsValueCounter[SKV_VALUE_INVALID]);
     }
+#endif // __clang__
     return true;
 }
 
@@ -364,6 +366,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 //-----------------------------------------------------------------------------
 bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 {
+#ifndef __clang__   // TODO
     // locals
     unsigned int curLayerId;								  // current processed layer within 'layersToCalculate'
     unsigned int layerNumber;								  // layer number of the current process layer
@@ -451,6 +454,7 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
                 return falseOrStop();
         }
     }
+#endif // __clang__
 
     // everything fine
     return true;
