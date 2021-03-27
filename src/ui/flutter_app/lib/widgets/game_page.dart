@@ -106,6 +106,14 @@ class _GamePageState extends State<GamePage> with RouteAware {
       return;
     }
 
+    // TODO
+    // WAR: Fix first tap response slow when piece count changed
+    if (position.phase == Phase.placing &&
+        position.pieceOnBoardCount[PieceColor.black] == 0 &&
+        position.pieceOnBoardCount[PieceColor.white] == 0) {
+      Game.shared.newGame();
+    }
+
     if (Game.shared.isAiToMove() || Game.shared.aiIsSearching()) {
       return false;
     }
