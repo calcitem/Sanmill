@@ -88,6 +88,18 @@ class _HomeDrawerState extends State<HomeDrawer> {
   Widget build(BuildContext context) {
     setDrawerListArray();
 
+    const colorizeColors = [
+      Colors.black,
+      Colors.blue,
+      Colors.yellow,
+      Colors.red,
+    ];
+
+    const colorizeTextStyle = TextStyle(
+      fontSize: 24.0,
+      fontWeight: FontWeight.w600,
+    );
+
     return Scaffold(
       backgroundColor: AppTheme.notWhite.withOpacity(0.5),
       body: Column(
@@ -123,30 +135,19 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
-                    child: ColorizeAnimatedTextKit(
-                      onTap: () {
-                        print("ColorizeAnimatedTextKit Tap Event");
-                      },
-                      text: [
-                        S.of(context).appName,
-                        S.of(context).appName,
-                        S.of(context).appName,
+                    child: AnimatedTextKit(
+                      animatedTexts: [
+                        ColorizeAnimatedText(
+                          S.of(context).appName,
+                          textStyle: colorizeTextStyle,
+                          colors: colorizeColors,
+                          textAlign: TextAlign.start,
+                          speed: const Duration(milliseconds: 3000),
+                        ),
                       ],
-                      textStyle: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      colors: [
-                        Colors.black,
-                        Colors.blue,
-                        Colors.yellow,
-                        Colors.red,
-                      ],
-                      speed: const Duration(milliseconds: 3000),
                       pause: const Duration(milliseconds: 30000),
                       repeatForever: true,
                       stopPauseOnTap: true,
-                      textAlign: TextAlign.start,
                     ),
                   ),
                 ],
