@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 
@@ -175,7 +177,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
             height: 1,
             color: AppTheme.grey.withOpacity(0.6),
           ),
-/*
           Column(
             children: <Widget>[
               ListTile(
@@ -203,7 +204,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
               )
             ],
           ),
-*/
         ],
       ),
     );
