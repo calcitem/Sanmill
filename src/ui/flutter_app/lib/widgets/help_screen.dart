@@ -25,7 +25,7 @@ class _HelpScreenState extends State<HelpScreen> {
           backgroundColor: Color(Config.darkBackgroundColor),
           body: ListView(
             children: <Widget>[
-              const SizedBox(height: 16),
+              AppTheme.sizedBox,
               Container(
                 padding: const EdgeInsets.only(
                     top: 48, left: 16, right: 16, bottom: 16),

@@ -94,6 +94,8 @@ class AppTheme {
     color: lightText, // was lightText
   );
 
+  static const SizedBox sizedBox = SizedBox(height: 16);
+
   static const cardColor = UIColors.floralWhiteColor;
   static const cardMargin =
       const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0);

@@ -55,7 +55,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       builder: (BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(height: 10),
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('6'),
@@ -80,7 +79,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             onChanged: callback,
           ),
           ListItemDivider(),
-          SizedBox(height: 56),
         ],
       ),
     );
@@ -249,7 +247,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).placing, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -277,7 +275,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ),
               ]),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).moving, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -305,7 +303,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ),
               ]),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).removing, style: headerStyle),
             Card(
               color: AppTheme.cardColor,

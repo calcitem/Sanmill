@@ -542,7 +542,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(S.of(context).difficulty, style: headerStyle),
-            const SizedBox(height: 10.0),
             Card(
               color: AppTheme.cardColor,
               elevation: 0.5,
@@ -562,7 +561,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).aisPlayStyle, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -586,7 +585,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).playSounds, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -603,7 +602,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).whoMovesFirst, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -623,7 +622,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).automaticBehavior, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -639,7 +638,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).display, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -680,7 +679,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).color, style: headerStyle),
             Card(
               color: AppTheme.cardColor,
@@ -758,7 +757,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            AppTheme.sizedBox,
             Text(S.of(context).restore, style: headerStyle),
             Card(
               color: AppTheme.cardColor,

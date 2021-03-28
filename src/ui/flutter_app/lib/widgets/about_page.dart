@@ -22,6 +22,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -157,10 +158,10 @@ class _AboutPageState extends State<AboutPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 5),
             Text(S.of(context).version + ": $_version",
                 style: TextStyle(fontFamily: '')),
-            SizedBox(height: 15),
+            AppTheme.sizedBox,
+            AppTheme.sizedBox,
             Text(S.of(context).copyright,
                 style: TextStyle(fontFamily: '', fontSize: 12)),
           ],
