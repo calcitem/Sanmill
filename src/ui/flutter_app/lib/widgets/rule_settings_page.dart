@@ -204,7 +204,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                         : Config.piecesCount == 9
                             ? '9'
                             : '12',
-                    trailingColor: null,
                     onTap: setNTotalPiecesEachSide,
                   ),
                   ListItemDivider(),

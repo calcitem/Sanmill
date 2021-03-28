@@ -553,9 +553,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).skillLevel,
-                    subtitleString: null,
-                    trailingString: null,
-                    trailingColor: null,
                     onTap: setSkillLevel,
                   ),
                 ],
@@ -574,7 +571,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     value: Config.aiIsLazy,
                     onChanged: setAiIsLazy,
                     titleString: S.of(context).passive,
-                    subtitleString: null,
                   ),
                   ListItemDivider(),
                   SettingsSwitchListTile(
@@ -582,7 +578,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     value: Config.shufflingEnabled,
                     onChanged: setShufflingEnabled,
                     titleString: S.of(context).shufflingEnabled,
-                    subtitleString: null,
                   ),
                 ],
               ),
@@ -599,7 +594,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     value: Config.toneEnabled,
                     onChanged: setTone,
                     titleString: S.of(context).playSoundsInTheGame,
-                    subtitleString: null,
                   ),
                 ],
               ),
@@ -619,7 +613,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     titleString: Config.aiMovesFirst
                         ? S.of(context).ai
                         : S.of(context).human,
-                    subtitleString: null,
                   ),
                 ],
               ),
@@ -637,7 +630,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     value: Config.isAutoRestart,
                     onChanged: setIsAutoRestart,
                     titleString: S.of(context).isAutoRestart,
-                    subtitleString: null,
                   ),
                 ],
               ),
@@ -654,23 +646,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     value: Config.isPieceCountInHandShown,
                     onChanged: setIsPieceCountInHandShown,
                     titleString: S.of(context).isPieceCountInHandShown,
-                    subtitleString: null,
                   ),
                   ListItemDivider(),
                   SettingsListTile(
                       context: context,
                       titleString: S.of(context).boardBorderLineWidth,
-                      subtitleString: null,
-                      trailingString: null,
-                      trailingColor: null,
                       onTap: setBoardBorderLineWidth),
                   ListItemDivider(),
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).boardInnerLineWidth,
-                    subtitleString: null,
-                    trailingString: null,
-                    trailingColor: null,
                     onTap: setBoardInnerLineWidth,
                   ),
                 ],
@@ -686,8 +671,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).boardColor,
-                    subtitleString: null,
-                    trailingString: null,
                     trailingColor: Config.boardBackgroundColor,
                     onTap: showBoardColorDialog,
                   ),
@@ -695,8 +678,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).backgroudColor,
-                    subtitleString: null,
-                    trailingString: null,
                     trailingColor: Config.darkBackgroundColor,
                     onTap: showBackgroundColorDialog,
                   ),
@@ -704,8 +685,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).lineColor,
-                    subtitleString: null,
-                    trailingString: null,
                     trailingColor: Config.boardLineColor,
                     onTap: showBoardLineColorDialog,
                   ),
@@ -713,8 +692,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).blackPieceColor,
-                    subtitleString: null,
-                    trailingString: null,
                     trailingColor: Config.blackPieceColor,
                     onTap: showBlackPieceColorDialog,
                   ),
@@ -722,8 +699,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).whitePieceColor,
-                    subtitleString: null,
-                    trailingString: null,
                     trailingColor: Config.whitePieceColor,
                     onTap: showWhitePieceColorDialog,
                   ),
@@ -740,9 +715,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SettingsListTile(
                     context: context,
                     titleString: S.of(context).restoreDefaultSettings,
-                    subtitleString: null,
-                    trailingString: null,
-                    trailingColor: null,
                     onTap: restoreFactoryDefaultSettings,
                   ),
                   ListItemDivider(),

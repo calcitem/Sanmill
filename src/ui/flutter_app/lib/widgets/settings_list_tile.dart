@@ -25,9 +25,9 @@ class SettingsListTile extends StatelessWidget {
     Key? key,
     required this.context,
     required this.titleString,
-    required this.subtitleString,
-    required this.trailingString,
-    required this.trailingColor,
+    this.subtitleString,
+    this.trailingString,
+    this.trailingColor,
     required this.onTap,
   }) : super(key: key);
 
