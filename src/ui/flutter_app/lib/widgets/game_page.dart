@@ -756,6 +756,28 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
   }
 
+  Widget buildManualPanel(String text) {
+    //
+    final manualStyle = TextStyle(
+      fontSize: 18,
+      color: UIColors.darkTextSecondaryColor,
+      height: 1.5,
+    );
+
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 16),
+        child: SingleChildScrollView(child: Text(text, style: manualStyle)),
+      ),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+  }
+
   @override
   Widget build(BuildContext context) {
     //
@@ -776,5 +798,32 @@ class _GamePageState extends State<GamePage> with RouteAware {
     widget.engine.shutdown();
     super.dispose();
     routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPush() {
+    final route = ModalRoute.of(context)!.settings.name;
+    print('Game Page didPush route: $route');
+    widget.engine.setOptions();
+  }
+
+  @override
+  void didPopNext() {
+    final route = ModalRoute.of(context)!.settings.name;
+    print('Game Page didPopNext route: $route');
+    widget.engine.setOptions();
+  }
+
+  @override
+  void didPushNext() {
+    final route = ModalRoute.of(context)!.settings.name;
+    print('Game Page didPushNext route: $route');
+    widget.engine.setOptions();
+  }
+
+  @override
+  void didPop() {
+    final route = ModalRoute.of(context)!.settings.name;
+    print('Game Page didPop route: $route');
   }
 }
