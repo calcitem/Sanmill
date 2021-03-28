@@ -189,123 +189,126 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(S.of(context).general, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).piecesCount,
-                  subtitleString: S.of(context).piecesCount_Detail,
-                  trailingString: Config.piecesCount == 6
-                      ? '6'
-                      : Config.piecesCount == 9
-                          ? '9'
-                          : '12',
-                  onTap: setNTotalPiecesEachSide,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.hasDiagonalLines,
-                  onChanged: setHasDiagonalLines,
-                  titleString: S.of(context).hasDiagonalLines,
-                  subtitleString: S.of(context).hasDiagonalLines_Detail,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.mayFly,
-                  onChanged: setAllowFlyingAllowed,
-                  titleString: S.of(context).mayFly,
-                  subtitleString: S.of(context).mayFly_Detail,
-                ),
-                ListItemDivider(),
-
-                /*
-                  SettingsSwitchListTile(
-                    context: context,
-                    value: Config.maxStepsLedToDraw,
-                    onChanged: setMaxStepsLedToDraw,
-                    titleString: S.of(context).maxStepsLedToDraw,
-                  ),
-                  ListItemDivider(),
-                  */
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.hasBannedLocations,
-                  onChanged: setHasBannedLocations,
-                  titleString: S.of(context).hasBannedLocations,
-                  subtitleString: S.of(context).hasBannedLocations_Detail,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.isBlackLoseButNotDrawWhenBoardFull,
-                  onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
-                  titleString: S.of(context).isBlackLoseButNotDrawWhenBoardFull,
-                  subtitleString:
-                      S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.isDefenderMoveFirst,
-                  onChanged: setIsDefenderMoveFirst,
-                  titleString: S.of(context).isDefenderMoveFirst,
-                  subtitleString: S.of(context).isDefenderMoveFirst_Detail,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.isLoseButNotChangeSideWhenNoWay,
-                  onChanged: setIsLoseButNotChangeSideWhenNoWay,
-                  titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
-                  subtitleString:
-                      S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.mayRemoveFromMillsAlways,
-                  onChanged: setAllowRemovePieceInMill,
-                  titleString: S.of(context).mayRemoveFromMillsAlways,
-                  subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.mayRemoveMultiple,
-                  onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
-                  titleString: S.of(context).mayRemoveMultiple,
-                  subtitleString: S.of(context).mayRemoveMultiple_Detail,
-                ),
-                ListItemDivider(),
-              ],
-            ),
-          ],
+          children: children(context),
         ),
       ),
     );
+  }
+
+  List<Widget> children(BuildContext context) {
+    return <Widget>[
+      Text(S.of(context).general, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).piecesCount,
+            subtitleString: S.of(context).piecesCount_Detail,
+            trailingString: Config.piecesCount == 6
+                ? '6'
+                : Config.piecesCount == 9
+                    ? '9'
+                    : '12',
+            onTap: setNTotalPiecesEachSide,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.hasDiagonalLines,
+            onChanged: setHasDiagonalLines,
+            titleString: S.of(context).hasDiagonalLines,
+            subtitleString: S.of(context).hasDiagonalLines_Detail,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.mayFly,
+            onChanged: setAllowFlyingAllowed,
+            titleString: S.of(context).mayFly,
+            subtitleString: S.of(context).mayFly_Detail,
+          ),
+          ListItemDivider(),
+          /*
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.maxStepsLedToDraw,
+            onChanged: setMaxStepsLedToDraw,
+            titleString: S.of(context).maxStepsLedToDraw,
+          ),
+          ListItemDivider(),
+          */
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.hasBannedLocations,
+            onChanged: setHasBannedLocations,
+            titleString: S.of(context).hasBannedLocations,
+            subtitleString: S.of(context).hasBannedLocations_Detail,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.isBlackLoseButNotDrawWhenBoardFull,
+            onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
+            titleString: S.of(context).isBlackLoseButNotDrawWhenBoardFull,
+            subtitleString:
+                S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.isDefenderMoveFirst,
+            onChanged: setIsDefenderMoveFirst,
+            titleString: S.of(context).isDefenderMoveFirst,
+            subtitleString: S.of(context).isDefenderMoveFirst_Detail,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.isLoseButNotChangeSideWhenNoWay,
+            onChanged: setIsLoseButNotChangeSideWhenNoWay,
+            titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
+            subtitleString:
+                S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.mayRemoveFromMillsAlways,
+            onChanged: setAllowRemovePieceInMill,
+            titleString: S.of(context).mayRemoveFromMillsAlways,
+            subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.mayRemoveMultiple,
+            onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
+            titleString: S.of(context).mayRemoveMultiple,
+            subtitleString: S.of(context).mayRemoveMultiple_Detail,
+          ),
+          ListItemDivider(),
+        ],
+      ),
+    ];
   }
 }

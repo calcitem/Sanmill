@@ -539,163 +539,164 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).skillLevel,
-                  onTap: setSkillLevel,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).aisPlayStyle,
-                style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.aiIsLazy,
-                  onChanged: setAiIsLazy,
-                  titleString: S.of(context).passive,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.shufflingEnabled,
-                  onChanged: setShufflingEnabled,
-                  titleString: S.of(context).shufflingEnabled,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.toneEnabled,
-                  onChanged: setTone,
-                  titleString: S.of(context).playSoundsInTheGame,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).whoMovesFirst,
-                style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: !Config.aiMovesFirst,
-                  onChanged: setWhoMovesFirst,
-                  titleString: Config.aiMovesFirst
-                      ? S.of(context).ai
-                      : S.of(context).human,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).automaticBehavior,
-                style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.isAutoRestart,
-                  onChanged: setIsAutoRestart,
-                  titleString: S.of(context).isAutoRestart,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.isPieceCountInHandShown,
-                  onChanged: setIsPieceCountInHandShown,
-                  titleString: S.of(context).isPieceCountInHandShown,
-                ),
-                ListItemDivider(),
-                SettingsListTile(
-                    context: context,
-                    titleString: S.of(context).boardBorderLineWidth,
-                    onTap: setBoardBorderLineWidth),
-                ListItemDivider(),
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).boardInnerLineWidth,
-                  onTap: setBoardInnerLineWidth,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).boardColor,
-                  trailingColor: Config.boardBackgroundColor,
-                  onTap: showBoardColorDialog,
-                ),
-                ListItemDivider(),
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).backgroudColor,
-                  trailingColor: Config.darkBackgroundColor,
-                  onTap: showBackgroundColorDialog,
-                ),
-                ListItemDivider(),
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).lineColor,
-                  trailingColor: Config.boardLineColor,
-                  onTap: showBoardLineColorDialog,
-                ),
-                ListItemDivider(),
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).blackPieceColor,
-                  trailingColor: Config.blackPieceColor,
-                  onTap: showBlackPieceColorDialog,
-                ),
-                ListItemDivider(),
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).whitePieceColor,
-                  trailingColor: Config.whitePieceColor,
-                  onTap: showWhitePieceColorDialog,
-                ),
-              ],
-            ),
-            AppTheme.sizedBox,
-            Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
-            SettingsCard(
-              context: context,
-              widgets: <Widget>[
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).restoreDefaultSettings,
-                  onTap: restoreFactoryDefaultSettings,
-                ),
-                ListItemDivider(),
-              ],
-            ),
-          ],
+          children: children(context),
         ),
       ),
     );
+  }
+
+  List<Widget> children(BuildContext context) {
+    return <Widget>[
+      Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).skillLevel,
+            onTap: setSkillLevel,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).aisPlayStyle, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.aiIsLazy,
+            onChanged: setAiIsLazy,
+            titleString: S.of(context).passive,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.shufflingEnabled,
+            onChanged: setShufflingEnabled,
+            titleString: S.of(context).shufflingEnabled,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.toneEnabled,
+            onChanged: setTone,
+            titleString: S.of(context).playSoundsInTheGame,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: !Config.aiMovesFirst,
+            onChanged: setWhoMovesFirst,
+            titleString:
+                Config.aiMovesFirst ? S.of(context).ai : S.of(context).human,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).automaticBehavior,
+          style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.isAutoRestart,
+            onChanged: setIsAutoRestart,
+            titleString: S.of(context).isAutoRestart,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.isPieceCountInHandShown,
+            onChanged: setIsPieceCountInHandShown,
+            titleString: S.of(context).isPieceCountInHandShown,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+              context: context,
+              titleString: S.of(context).boardBorderLineWidth,
+              onTap: setBoardBorderLineWidth),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).boardInnerLineWidth,
+            onTap: setBoardInnerLineWidth,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).boardColor,
+            trailingColor: Config.boardBackgroundColor,
+            onTap: showBoardColorDialog,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).backgroudColor,
+            trailingColor: Config.darkBackgroundColor,
+            onTap: showBackgroundColorDialog,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).lineColor,
+            trailingColor: Config.boardLineColor,
+            onTap: showBoardLineColorDialog,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).blackPieceColor,
+            trailingColor: Config.blackPieceColor,
+            onTap: showBlackPieceColorDialog,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).whitePieceColor,
+            trailingColor: Config.whitePieceColor,
+            onTap: showWhitePieceColorDialog,
+          ),
+        ],
+      ),
+      AppTheme.sizedBox,
+      Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        widgets: <Widget>[
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).restoreDefaultSettings,
+            onTap: restoreFactoryDefaultSettings,
+          ),
+          ListItemDivider(),
+        ],
+      ),
+    ];
   }
 }
