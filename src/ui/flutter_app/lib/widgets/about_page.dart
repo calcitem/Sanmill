@@ -16,17 +16,16 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:async';
-import 'dart:async' show Future;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'license_page.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -38,7 +37,7 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   void initState() {
-    loadVersionInfo();
+    _loadVersionInfo();
     super.initState();
   }
 
@@ -71,7 +70,7 @@ class _AboutPageState extends State<AboutPage> {
               title: Text(S.of(context).versionInfo, style: itemStyle),
               subtitle: Text("Sanmill " + "$_version" + " " + mode,
                   style: TextStyle(color: UIColors.secondaryColor)),
-              onTap: showVersionInfo,
+              onTap: _showVersionInfo,
             ),
             _buildDivider(),
             /*
@@ -95,7 +94,7 @@ class _AboutPageState extends State<AboutPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LicensePage(),
+                      builder: (context) => LicenseAgreementPage(),
                     ),
                   );
                 }),
@@ -138,7 +137,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  loadVersionInfo() async {
+  _loadVersionInfo() async {
     if (Platform.isWindows) {
       setState(() {
         _version = 'Unknown version';
@@ -155,7 +154,7 @@ class _AboutPageState extends State<AboutPage> {
     await launch(url);
   }
 
-  showVersionInfo() {
+  _showVersionInfo() {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -178,44 +177,6 @@ class _AboutPageState extends State<AboutPage> {
           TextButton(
               child: Text(S.of(context).ok),
               onPressed: () => Navigator.of(context).pop()),
-        ],
-      ),
-    );
-  }
-}
-
-class LicensePage extends StatefulWidget {
-  @override
-  _LicensePageState createState() => _LicensePageState();
-}
-
-class _LicensePageState extends State<LicensePage> {
-  String _data = "";
-
-  Future<void> _loadData() async {
-    final _loadedData =
-        await rootBundle.loadString('assets/licenses/GPL-3.0.txt');
-    setState(() {
-      _data = _loadedData;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _loadData();
-
-    return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).license), centerTitle: true),
-      body: ListView(
-        children: <Widget>[
-          Container(
-              padding: const EdgeInsets.only(
-                  top: 16, left: 16, right: 16, bottom: 16),
-              child: Text(
-                _data != "" ? _data : 'Nothing to show',
-                style: TextStyle(fontFamily: 'Monospace', fontSize: 12),
-                textAlign: TextAlign.left,
-              ))
         ],
       ),
     );
