@@ -22,6 +22,7 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
 import 'list_item_divider.dart';
@@ -194,21 +195,16 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    title: Text(S.of(context).piecesCount,
-                        style: AppTheme.switchListTileTitleStyle),
-                    subtitle: Text(S.of(context).piecesCount_Detail,
-                        style: TextStyle(color: UIColors.secondaryColor)),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.piecesCount == 6
-                          ? '6'
-                          : Config.piecesCount == 9
-                              ? '9'
-                              : '12'),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).piecesCount,
+                    subtitleString: S.of(context).piecesCount_Detail,
+                    trailingString: Config.piecesCount == 6
+                        ? '6'
+                        : Config.piecesCount == 9
+                            ? '9'
+                            : '12',
+                    trailingColor: null,
                     onTap: setNTotalPiecesEachSide,
                   ),
                   ListItemDivider(),

@@ -25,6 +25,7 @@ import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
 import 'list_item_divider.dart';
@@ -549,15 +550,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    title: Text(S.of(context).skillLevel,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(""), // TODO
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).skillLevel,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: null,
                     onTap: setSkillLevel,
                   ),
                 ],
@@ -659,27 +657,20 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     subtitleString: null,
                   ),
                   ListItemDivider(),
-                  ListTile(
-                    title: Text(S.of(context).boardBorderLineWidth,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(""), // TODO
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
-                    onTap: setBoardBorderLineWidth,
-                  ),
+                  SettingsListTile(
+                      context: context,
+                      titleString: S.of(context).boardBorderLineWidth,
+                      subtitleString: null,
+                      trailingString: null,
+                      trailingColor: null,
+                      onTap: setBoardBorderLineWidth),
                   ListItemDivider(),
-                  ListTile(
-                    title: Text(S.of(context).boardInnerLineWidth,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(""), // TODO
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).boardInnerLineWidth,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: null,
                     onTap: setBoardInnerLineWidth,
                   ),
                 ],
@@ -692,75 +683,48 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    title: Text(S.of(context).boardColor,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.boardBackgroundColor.toRadixString(16),
-                          style: TextStyle(
-                              backgroundColor:
-                                  Color(Config.boardBackgroundColor))),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).boardColor,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: Config.boardBackgroundColor,
                     onTap: showBoardColorDialog,
                   ),
                   ListItemDivider(),
-                  ListTile(
-                    title: Text(S.of(context).backgroudColor,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.darkBackgroundColor.toRadixString(16),
-                          style: TextStyle(
-                              backgroundColor:
-                                  Color(Config.darkBackgroundColor))),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).backgroudColor,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: Config.darkBackgroundColor,
                     onTap: showBackgroundColorDialog,
                   ),
                   ListItemDivider(),
-                  ListTile(
-                    title: Text(S.of(context).lineColor,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.boardLineColor.toRadixString(16),
-                          style: TextStyle(
-                              backgroundColor: Color(Config.boardLineColor))),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).lineColor,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: Config.boardLineColor,
                     onTap: showBoardLineColorDialog,
                   ),
                   ListItemDivider(),
-                  ListTile(
-                    title: Text(S.of(context).blackPieceColor,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.blackPieceColor.toRadixString(16),
-                          style: TextStyle(
-                              backgroundColor: Color(Config.blackPieceColor))),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).blackPieceColor,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: Config.blackPieceColor,
                     onTap: showBlackPieceColorDialog,
                   ),
                   ListItemDivider(),
-                  ListTile(
-                    title: Text(S.of(context).whitePieceColor,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Text(Config.whitePieceColor.toRadixString(16),
-                          style: TextStyle(
-                              backgroundColor: Color(Config.whitePieceColor))),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).whitePieceColor,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: Config.whitePieceColor,
                     onTap: showWhitePieceColorDialog,
                   ),
                 ],
@@ -773,14 +737,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    title: Text(S.of(context).restoreDefaultSettings,
-                        style: AppTheme.switchListTileTitleStyle),
-                    trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Icon(Icons.keyboard_arrow_right,
-                          color: UIColors.secondaryColor),
-                    ]),
+                  SettingsListTile(
+                    context: context,
+                    titleString: S.of(context).restoreDefaultSettings,
+                    subtitleString: null,
+                    trailingString: null,
+                    trailingColor: null,
                     onTap: restoreFactoryDefaultSettings,
                   ),
                   ListItemDivider(),
