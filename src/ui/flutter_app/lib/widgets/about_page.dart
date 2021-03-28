@@ -71,8 +71,6 @@ class _AboutPageState extends State<AboutPage> {
               title: Text(S.of(context).versionInfo, style: itemStyle),
               subtitle: Text("Sanmill " + "$_version" + " " + mode,
                   style: TextStyle(color: UIColors.secondaryColor)),
-              trailing:
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
               onTap: showVersionInfo,
             ),
             _buildDivider(),
@@ -80,8 +78,6 @@ class _AboutPageState extends State<AboutPage> {
             ListTile(
               title:
                   Text(S.of(context).viewInGooglePlayStore, style: itemStyle),
-              trailing:
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
               onTap: () => _launchURL(
                   'https://play.google.com/store/apps/details?id=com.calcitem.sanmill'),
             ),
@@ -89,16 +85,12 @@ class _AboutPageState extends State<AboutPage> {
              */
             ListTile(
               title: Text(S.of(context).feedback, style: itemStyle),
-              trailing:
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
               onTap: () =>
                   _launchURL('https://github.com/calcitem/Sanmill/issues'),
             ),
             _buildDivider(),
             ListTile(
                 title: Text(S.of(context).license, style: itemStyle),
-                trailing:
-                    Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -110,31 +102,23 @@ class _AboutPageState extends State<AboutPage> {
             _buildDivider(),
             ListTile(
               title: Text(S.of(context).sourceCode, style: itemStyle),
-              trailing:
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
               onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
             ),
             _buildDivider(),
             ListTile(
               title: Text(S.of(context).privacyPolicy, style: itemStyle),
-              trailing:
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
               onTap: () => _launchURL(
                   'https://github.com/calcitem/Sanmill/wiki/privacy_policy'),
             ),
             _buildDivider(),
             ListTile(
               title: Text(S.of(context).thirdPartyNotices, style: itemStyle),
-              trailing:
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
               onTap: () => _launchURL(
                   'https://github.com/calcitem/Sanmill/wiki/third-party_notices'),
             ),
             _buildDivider(),
             ListTile(
               title: Text(S.of(context).thanks, style: itemStyle),
-              trailing:
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[]),
               onTap: () =>
                   _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks'),
             ),
