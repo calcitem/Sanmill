@@ -584,12 +584,14 @@ class Position {
         } else {
           changeSideToMove();
         }
-        Game.shared.focusIndex = squareToIndex[s] ?? PiecesPainter.invalidIndex;
+        Game.instance.focusIndex =
+            squareToIndex[s] ?? PiecesPainter.invalidIndex;
         Audios.playTone('place.mp3');
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
-        Game.shared.focusIndex = squareToIndex[s] ?? PiecesPainter.invalidIndex;
+        Game.instance.focusIndex =
+            squareToIndex[s] ?? PiecesPainter.invalidIndex;
         Audios.playTone('mill.mp3');
       }
     } else if (phase == Phase.moving) {
@@ -642,14 +644,15 @@ class Position {
           //Audios.playTone('mill.mp3');
           return true;
         } else {
-          Game.shared.focusIndex =
+          Game.instance.focusIndex =
               squareToIndex[s] ?? PiecesPainter.invalidIndex;
           Audios.playTone('place.mp3');
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         action = Act.remove;
-        Game.shared.focusIndex = squareToIndex[s] ?? PiecesPainter.invalidIndex;
+        Game.instance.focusIndex =
+            squareToIndex[s] ?? PiecesPainter.invalidIndex;
         Audios.playTone('mill.mp3');
       }
     } else {
@@ -741,7 +744,7 @@ class Position {
       currentSquare = sq;
       action = Act.place;
       //Audios.playTone('select.mp3');
-      Game.shared.blurIndex = squareToIndex[sq];
+      Game.instance.blurIndex = squareToIndex[sq];
 
       return true;
     }

@@ -105,7 +105,7 @@ class Game {
     return isAi[sideToMove];
   }
 
-  static get shared {
+  static get instance {
     _instance ??= Game();
     return _instance;
   }
@@ -116,9 +116,9 @@ class Game {
   }
 
   newGame() {
-    Game.shared.position.phase = Phase.ready;
-    Game.shared.start();
-    Game.shared.position.init();
+    Game.instance.position.phase = Phase.ready;
+    Game.instance.start();
+    Game.instance.position.init();
     _focusIndex = _blurIndex = PiecesPainter.invalidIndex;
     moveHistory = [""];
     // TODO

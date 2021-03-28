@@ -54,10 +54,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
   void initState() {
     print("Engine type: ${widget.engineType}");
 
-    Game.shared.setWhoIsAi(widget.engineType);
+    Game.instance.setWhoIsAi(widget.engineType);
 
     super.initState();
-    Game.shared.init();
+    Game.instance.init();
     widget.engine.startup();
   }
 
@@ -71,7 +71,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       return;
     }
 
-    final winner = Game.shared.position.winner;
+    final winner = Game.instance.position.winner;
 
     Map<String, String> colorWinStrings = {
       PieceColor.black: S.of(context).blackWin,
@@ -80,9 +80,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
     };
 
     if (winner == PieceColor.nobody) {
-      if (Game.shared.position.phase == Phase.placing) {
+      if (Game.instance.position.phase == Phase.placing) {
         changeStatus(S.of(context).tipPlace);
-      } else if (Game.shared.position.phase == Phase.moving) {
+      } else if (Game.instance.position.phase == Phase.moving) {
         changeStatus(S.of(context).tipMove);
       }
     } else {
@@ -93,11 +93,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   onBoardTap(BuildContext context, int index) {
-    if (Game.shared.engineType == EngineType.testViaLAN) {
+    if (Game.instance.engineType == EngineType.testViaLAN) {
       return false;
     }
 
-    final position = Game.shared.position;
+    final position = Game.instance.position;
 
     int? sq = indexToSquare[index];
 
@@ -111,10 +111,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
     if (position.phase == Phase.placing &&
         position.pieceOnBoardCount[PieceColor.black] == 0 &&
         position.pieceOnBoardCount[PieceColor.white] == 0) {
-      Game.shared.newGame();
+      Game.instance.newGame();
 
-      if (Game.shared.isAiToMove()) {
-        if (Game.shared.aiIsSearching()) {
+      if (Game.instance.isAiToMove()) {
+        if (Game.instance.aiIsSearching()) {
           print("AI is thinking, skip tapping.");
           return false;
         } else {
@@ -125,13 +125,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
     }
 
-    if (Game.shared.isAiToMove() || Game.shared.aiIsSearching()) {
+    if (Game.instance.isAiToMove() || Game.instance.aiIsSearching()) {
       print("AI's turn, skip tapping.");
       return false;
     }
 
     if (position.phase == Phase.ready) {
-      Game.shared.start();
+      Game.instance.start();
     }
 
     bool ret = false;
@@ -161,7 +161,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         case Act.select:
           if (position.selectPiece(sq)) {
             Audios.playTone('select.mp3');
-            Game.shared.select(index);
+            Game.instance.select(index);
             ret = true;
             print("selectPiece: [$sq]");
             changeStatus(S.of(context).tipPlace);
@@ -190,8 +190,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
 
       if (ret) {
-        Game.shared.sideToMove = position.sideToMove() ?? PieceColor.nobody;
-        Game.shared.moveHistory.add(position.cmdline);
+        Game.instance.sideToMove = position.sideToMove() ?? PieceColor.nobody;
+        Game.instance.moveHistory.add(position.cmdline);
 
         // TODO: Need Others?
         // Increment ply counters. In particular, rule50 will be reset to zero later on
@@ -214,7 +214,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         }
       }
 
-      Game.shared.sideToMove = position.sideToMove() ?? PieceColor.nobody;
+      Game.instance.sideToMove = position.sideToMove() ?? PieceColor.nobody;
 
       setState(() {});
     });
@@ -227,15 +227,16 @@ class _GamePageState extends State<GamePage> with RouteAware {
     print("Engine to go");
 
     while ((Config.isAutoRestart == true ||
-            Game.shared.position.winner == PieceColor.nobody) &&
-        Game.shared.isAiToMove() &&
+            Game.instance.position.winner == PieceColor.nobody) &&
+        Game.instance.isAiToMove() &&
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
-        String score = Game.shared.position.score[PieceColor.black].toString() +
-            " : " +
-            Game.shared.position.score[PieceColor.white].toString() +
-            " : " +
-            Game.shared.position.score[PieceColor.draw].toString();
+        String score =
+            Game.instance.position.score[PieceColor.black].toString() +
+                " : " +
+                Game.instance.position.score[PieceColor.white].toString() +
+                " : " +
+                Game.instance.position.score[PieceColor.draw].toString();
 
         changeStatus(score);
       } else {
@@ -243,7 +244,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
 
       print("Waiting for engine's response...");
-      final response = await widget.engine.search(Game.shared.position);
+      final response = await widget.engine.search(Game.instance.position);
       print("Engine response type: ${response.type}");
 
       switch (response.type) {
@@ -251,8 +252,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
           Move mv = response.value;
           final Move move = new Move(mv.move);
 
-          //Battle.shared.move = move;
-          Game.shared.doMove(move.move);
+          //Battle.instance.move = move;
+          Game.instance.doMove(move.move);
           showTips();
           break;
         case 'timeout':
@@ -265,8 +266,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
 
       if (Config.isAutoRestart == true &&
-          Game.shared.position.winner != PieceColor.nobody) {
-        Game.shared.newGame();
+          Game.instance.position.winner != PieceColor.nobody) {
+        Game.instance.newGame();
       }
     }
   }
@@ -274,10 +275,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
   newGame() {
     confirm() {
       Navigator.of(context).pop();
-      Game.shared.newGame();
+      Game.instance.newGame();
       changeStatus(S.of(context).gameStarted);
 
-      if (Game.shared.isAiToMove()) {
+      if (Game.instance.isAiToMove()) {
         print("New game, AI to move.");
         engineToGo();
       }
@@ -309,7 +310,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     String loserStr =
         winner == PieceColor.black ? S.of(context).white : S.of(context).black;
 
-    switch (Game.shared.position.gameOverReason) {
+    switch (Game.instance.position.gameOverReason) {
       case GameOverReason.loseReasonlessThanThree:
         loseReasonStr = loserStr + S.of(context).loseReasonlessThanThree;
         break;
@@ -372,7 +373,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   void showGameResult(var winner) {
     GameResult result = getGameResult(winner);
-    Game.shared.position.result = result;
+    Game.instance.position.result = result;
 
     switch (result) {
       case GameResult.win:
@@ -408,8 +409,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
             title: Text(dialogTitle,
                 style: TextStyle(color: UIColors.primaryColor)),
             content: Text(getGameOverReasonString(
-                    Game.shared.position.gameOverReason,
-                    Game.shared.position.winner) +
+                    Game.instance.position.gameOverReason,
+                    Game.instance.position.winner) +
                 S.of(context).challengeHarderLevel),
             actions: <Widget>[
               TextButton(
@@ -435,17 +436,17 @@ class _GamePageState extends State<GamePage> with RouteAware {
             title: Text(dialogTitle,
                 style: TextStyle(color: UIColors.primaryColor)),
             content: Text(getGameOverReasonString(
-                Game.shared.position.gameOverReason,
-                Game.shared.position.winner)),
+                Game.instance.position.gameOverReason,
+                Game.instance.position.winner)),
             actions: <Widget>[
               TextButton(
                   child: Text(S.of(context).restart),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Game.shared.newGame();
+                    Game.instance.newGame();
                     changeStatus(S.of(context).gameStarted);
 
-                    if (Game.shared.isAiToMove()) {
+                    if (Game.instance.isAiToMove()) {
                       print("New game, AI to move.");
                       engineToGo();
                     }
@@ -505,7 +506,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     IconData iconArrow = Icons.code;
 
-    switch (Game.shared.sideToMove) {
+    switch (Game.instance.sideToMove) {
       case PieceColor.black:
         iconArrow = Icons.keyboard_arrow_left;
         break;
@@ -517,8 +518,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
         break;
     }
 
-    if (Game.shared.position.phase == Phase.gameOver) {
-      switch (Game.shared.position.winner) {
+    if (Game.instance.position.phase == Phase.gameOver) {
+      switch (Game.instance.position.winner) {
         case PieceColor.black:
           iconArrow = Icons.toggle_off_outlined;
           break;
@@ -609,27 +610,27 @@ class _GamePageState extends State<GamePage> with RouteAware {
   Widget createOperatorBar() {
     //
     //final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
-    final manualText = Game.shared.position.manualText;
+    final manualText = Game.instance.position.manualText;
 
     // TODO:
     final analyzeText = "Score: " +
-        Game.shared.position.score[PieceColor.black].toString() +
+        Game.instance.position.score[PieceColor.black].toString() +
         " : " +
-        Game.shared.position.score[PieceColor.white].toString() +
+        Game.instance.position.score[PieceColor.white].toString() +
         " : " +
-        Game.shared.position.score[PieceColor.draw].toString() +
+        Game.instance.position.score[PieceColor.draw].toString() +
         "\n" +
         "Black has: " +
-        Game.shared.position.pieceInHandCount[PieceColor.black].toString() +
+        Game.instance.position.pieceInHandCount[PieceColor.black].toString() +
         " pieces in hand\n" +
         "White has: " +
-        Game.shared.position.pieceInHandCount[PieceColor.white].toString() +
+        Game.instance.position.pieceInHandCount[PieceColor.white].toString() +
         " pieces in hand\n" +
         "Black has: " +
-        Game.shared.position.pieceOnBoardCount[PieceColor.black].toString() +
+        Game.instance.position.pieceOnBoardCount[PieceColor.black].toString() +
         " pieces on board\n" +
         "White has: " +
-        Game.shared.position.pieceOnBoardCount[PieceColor.white].toString() +
+        Game.instance.position.pieceOnBoardCount[PieceColor.white].toString() +
         " pieces on board\n";
 
     final manualStyle =
@@ -672,7 +673,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             ],
           ),
           onPressed: () {
-            Game.shared.regret(steps: 2);
+            Game.instance.regret(steps: 2);
             setState(() {});
           },
         ),

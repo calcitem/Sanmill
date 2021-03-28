@@ -64,11 +64,11 @@ class BoardPainter extends PiecesBasePainter {
 
     if (Config.isPieceCountInHandShown) {
       var pieceInHandCount =
-          Game.shared.position.pieceInHandCount[PieceColor.white];
+          Game.instance.position.pieceInHandCount[PieceColor.white];
 
       var pieceInHandCountStr = "";
 
-      if (Game.shared.position.phase == Phase.placing) {
+      if (Game.instance.position.phase == Phase.placing) {
         pieceInHandCountStr = pieceInHandCount.toString();
       }
 

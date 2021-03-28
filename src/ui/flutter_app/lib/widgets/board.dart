@@ -48,9 +48,9 @@ class Board extends StatelessWidget {
         painter: BoardPainter(width: width),
         foregroundPainter: PiecesPainter(
           width: width,
-          position: Game.shared.position,
-          focusIndex: Game.shared.focusIndex,
-          blurIndex: Game.shared.blurIndex,
+          position: Game.instance.position,
+          focusIndex: Game.instance.focusIndex,
+          blurIndex: Game.instance.blurIndex,
         ),
         child: Container(
           margin: EdgeInsets.symmetric(

@@ -67,7 +67,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
     var engineType = drawerMap[drawerIndex!];
     if (engineType != null) {
       setState(() {
-        Game.shared.setWhoIsAi(engineType);
+        Game.instance.setWhoIsAi(engineType);
         screenView = GamePage(engineType);
       });
     } else if (drawerIndex == DrawerIndex.settings) {

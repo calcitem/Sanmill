@@ -23,19 +23,19 @@ import 'package:path_provider/path_provider.dart';
 
 class Settings {
   static const settingsFileName = 'settings.json';
-  static Settings? _shared;
+  static Settings? _instance;
 
   late File _file;
   Map<String, dynamic>? _values = {};
 
-  static shared() async {
-    if (_shared == null) {
-      _shared = Settings();
-      await _shared!._load(settingsFileName);
+  static instance() async {
+    if (_instance == null) {
+      _instance = Settings();
+      await _instance!._load(settingsFileName);
       print("defaultFileName: $settingsFileName");
     }
 
-    return _shared;
+    return _instance;
   }
 
   operator [](String key) => _values![key];

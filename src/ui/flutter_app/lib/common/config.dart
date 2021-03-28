@@ -62,7 +62,7 @@ class Config {
   static int maxStepsLedToDraw = 50;
 
   static Future<void> loadProfile() async {
-    final settings = await Settings.shared();
+    final settings = await Settings.instance();
 
     Config.toneEnabled = settings['ToneEnabled'] ?? true;
     Config.thinkingTime =
@@ -123,7 +123,7 @@ class Config {
   }
 
   static Future<bool> save() async {
-    final settings = await Settings.shared();
+    final settings = await Settings.instance();
 
     settings['ToneEnabled'] = Config.toneEnabled;
     settings['ThinkingTime'] = Config.thinkingTime;

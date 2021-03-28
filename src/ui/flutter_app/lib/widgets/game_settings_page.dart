@@ -494,7 +494,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   restoreFactoryDefaultSettings() async {
     confirm() async {
       Navigator.of(context).pop();
-      final profile = await Settings.shared();
+      final profile = await Settings.instance();
       await profile.restore();
       exit(0);
     }
