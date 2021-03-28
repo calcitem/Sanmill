@@ -15,6 +15,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 import 'package:flutter/material.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
@@ -44,8 +45,10 @@ class SettingsSwitchListTile extends StatelessWidget {
       title: Text(titleString, style: AppTheme.switchListTileTitleStyle),
       subtitle: subtitleString == null
           ? null
-          : Text(subtitleString!,
-              style: TextStyle(color: UIColors.secondaryColor)),
+          : Text(
+              subtitleString!,
+              style: TextStyle(color: UIColors.secondaryColor),
+            ),
     );
   }
 }

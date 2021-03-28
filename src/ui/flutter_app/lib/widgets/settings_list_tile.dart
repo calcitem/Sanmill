@@ -44,20 +44,25 @@ class SettingsListTile extends StatelessWidget {
       title: Text(titleString, style: AppTheme.switchListTileTitleStyle),
       subtitle: subtitleString == null
           ? null
-          : Text(subtitleString!,
-              style: TextStyle(color: UIColors.secondaryColor)),
-      trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        Text(
-          trailingColor == null
-              ? (trailingString == null ? "" : trailingString!)
-              : trailingColor!.toRadixString(16),
-          style: TextStyle(
-            backgroundColor:
-                trailingColor == null ? null : Color(trailingColor!),
+          : Text(
+              subtitleString!,
+              style: TextStyle(color: UIColors.secondaryColor),
+            ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            trailingColor == null
+                ? (trailingString == null ? "" : trailingString!)
+                : trailingColor!.toRadixString(16),
+            style: TextStyle(
+              backgroundColor:
+                  trailingColor == null ? null : Color(trailingColor!),
+            ),
           ),
-        ),
-        Icon(Icons.keyboard_arrow_right, color: UIColors.secondaryColor),
-      ]),
+          Icon(Icons.keyboard_arrow_right, color: UIColors.secondaryColor),
+        ],
+      ),
       onTap: onTap,
     );
   }
