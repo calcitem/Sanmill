@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
 
 import 'list_item_divider.dart';
@@ -182,7 +183,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     final TextStyle headerStyle =
         TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
     final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
-    final cardColor = UIColors.floralWhiteColor;
 
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
@@ -195,8 +195,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           children: <Widget>[
             Text(S.of(context).general, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   ListTile(
@@ -252,8 +252,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).placing, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
                 SwitchListTile(
                   activeColor: UIColors.primaryColor,
@@ -277,10 +277,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ),
               ]),
             ),
+            const SizedBox(height: 16),
             Text(S.of(context).moving, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
                 SwitchListTile(
                   activeColor: UIColors.primaryColor,
@@ -304,10 +305,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ),
               ]),
             ),
+            const SizedBox(height: 16),
             Text(S.of(context).removing, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
                 SwitchListTile(
                   activeColor: UIColors.primaryColor,

@@ -23,6 +23,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
 
 import 'list_item_divider.dart';
@@ -528,7 +529,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     final TextStyle headerStyle =
         TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
     final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
-    final cardColor = UIColors.floralWhiteColor;
 
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
@@ -544,9 +544,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             Text(S.of(context).difficulty, style: headerStyle),
             const SizedBox(height: 10.0),
             Card(
-              color: cardColor,
+              color: AppTheme.cardColor,
               elevation: 0.5,
-              margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0),
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   ListTile(
@@ -565,8 +565,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).aisPlayStyle, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
@@ -589,8 +589,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).playSounds, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
@@ -606,8 +606,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).whoMovesFirst, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
@@ -626,8 +626,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).automaticBehavior, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
@@ -642,8 +642,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).display, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
@@ -683,8 +683,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).color, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   ListTile(
@@ -761,8 +761,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             const SizedBox(height: 16),
             Text(S.of(context).restore, style: headerStyle),
             Card(
-              color: cardColor,
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              color: AppTheme.cardColor,
+              margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   ListTile(
