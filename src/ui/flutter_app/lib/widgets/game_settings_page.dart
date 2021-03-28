@@ -25,6 +25,7 @@ import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
 import 'list_item_divider.dart';
 
@@ -570,20 +571,20 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.aiIsLazy,
-                    title: Text(S.of(context).passive,
-                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setAiIsLazy,
+                    titleString: S.of(context).passive,
+                    subtitleString: null,
                   ),
                   ListItemDivider(),
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.shufflingEnabled,
-                    title: Text(S.of(context).shufflingEnabled,
-                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setShufflingEnabled,
+                    titleString: S.of(context).shufflingEnabled,
+                    subtitleString: null,
                   ),
                 ],
               ),
@@ -595,12 +596,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.toneEnabled,
-                    title: Text(S.of(context).playSoundsInTheGame,
-                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setTone,
+                    titleString: S.of(context).playSoundsInTheGame,
+                    subtitleString: null,
                   ),
                 ],
               ),
@@ -613,15 +614,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: !Config.aiMovesFirst,
-                    title: Text(
-                        Config.aiMovesFirst
-                            ? S.of(context).ai
-                            : S.of(context).human,
-                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setWhoMovesFirst,
+                    titleString: Config.aiMovesFirst
+                        ? S.of(context).ai
+                        : S.of(context).human,
+                    subtitleString: null,
                   ),
                 ],
               ),
@@ -634,12 +634,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.isAutoRestart,
-                    title: Text(S.of(context).isAutoRestart,
-                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setIsAutoRestart,
+                    titleString: S.of(context).isAutoRestart,
+                    subtitleString: null,
                   ),
                 ],
               ),
@@ -651,12 +651,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.isPieceCountInHandShown,
-                    title: Text(S.of(context).isPieceCountInHandShown,
-                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setIsPieceCountInHandShown,
+                    titleString: S.of(context).isPieceCountInHandShown,
+                    subtitleString: null,
                   ),
                   ListItemDivider(),
                   ListTile(

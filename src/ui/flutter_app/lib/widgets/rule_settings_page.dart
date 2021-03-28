@@ -22,6 +22,7 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
 import 'list_item_divider.dart';
 
@@ -211,24 +212,20 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     onTap: setNTotalPiecesEachSide,
                   ),
                   ListItemDivider(),
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.hasDiagonalLines,
-                    title: Text(S.of(context).hasDiagonalLines,
-                        style: AppTheme.switchListTileTitleStyle),
-                    subtitle: Text(S.of(context).hasDiagonalLines_Detail,
-                        style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setHasDiagonalLines,
+                    titleString: S.of(context).hasDiagonalLines,
+                    subtitleString: S.of(context).hasDiagonalLines_Detail,
                   ),
                   ListItemDivider(),
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.mayFly,
-                    title: Text(S.of(context).mayFly,
-                        style: AppTheme.switchListTileTitleStyle),
-                    subtitle: Text(S.of(context).mayFly_Detail,
-                        style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setAllowFlyingAllowed,
+                    titleString: S.of(context).mayFly,
+                    subtitleString: S.of(context).mayFly_Detail,
                   ),
                   ListItemDivider(),
 
@@ -251,25 +248,21 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
-                SwitchListTile(
-                  activeColor: AppTheme.switchListTileActiveColor,
+                SettingsSwitchListTile(
+                  context: context,
                   value: Config.hasBannedLocations,
-                  title: Text(S.of(context).hasBannedLocations,
-                      style: AppTheme.switchListTileTitleStyle),
-                  subtitle: Text(S.of(context).hasBannedLocations_Detail,
-                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setHasBannedLocations,
+                  titleString: S.of(context).hasBannedLocations,
+                  subtitleString: S.of(context).hasBannedLocations_Detail,
                 ),
                 ListItemDivider(),
-                SwitchListTile(
-                  activeColor: AppTheme.switchListTileActiveColor,
+                SettingsSwitchListTile(
+                  context: context,
                   value: Config.isBlackLoseButNotDrawWhenBoardFull,
-                  title: Text(S.of(context).isBlackLoseButNotDrawWhenBoardFull,
-                      style: AppTheme.switchListTileTitleStyle),
-                  subtitle: Text(
-                      S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
-                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
+                  titleString: S.of(context).isBlackLoseButNotDrawWhenBoardFull,
+                  subtitleString:
+                      S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
                 ),
               ]),
             ),
@@ -279,25 +272,21 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
-                SwitchListTile(
-                  activeColor: AppTheme.switchListTileActiveColor,
+                SettingsSwitchListTile(
+                  context: context,
                   value: Config.isDefenderMoveFirst,
-                  title: Text(S.of(context).isDefenderMoveFirst,
-                      style: AppTheme.switchListTileTitleStyle),
-                  subtitle: Text(S.of(context).isDefenderMoveFirst_Detail,
-                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsDefenderMoveFirst,
+                  titleString: S.of(context).isDefenderMoveFirst,
+                  subtitleString: S.of(context).isDefenderMoveFirst_Detail,
                 ),
                 ListItemDivider(),
-                SwitchListTile(
-                  activeColor: AppTheme.switchListTileActiveColor,
+                SettingsSwitchListTile(
+                  context: context,
                   value: Config.isLoseButNotChangeSideWhenNoWay,
-                  title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
-                      style: AppTheme.switchListTileTitleStyle),
-                  subtitle: Text(
-                      S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
-                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsLoseButNotChangeSideWhenNoWay,
+                  titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
+                  subtitleString:
+                      S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
                 ),
               ]),
             ),
@@ -307,24 +296,20 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
-                SwitchListTile(
-                  activeColor: AppTheme.switchListTileActiveColor,
+                SettingsSwitchListTile(
+                  context: context,
                   value: Config.mayRemoveFromMillsAlways,
-                  title: Text(S.of(context).mayRemoveFromMillsAlways,
-                      style: AppTheme.switchListTileTitleStyle),
-                  subtitle: Text(S.of(context).mayRemoveFromMillsAlways_Detail,
-                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setAllowRemovePieceInMill,
+                  titleString: S.of(context).mayRemoveFromMillsAlways,
+                  subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
                 ),
                 ListItemDivider(),
-                SwitchListTile(
-                  activeColor: AppTheme.switchListTileActiveColor,
+                SettingsSwitchListTile(
+                  context: context,
                   value: Config.mayRemoveMultiple,
-                  title: Text(S.of(context).mayRemoveMultiple,
-                      style: AppTheme.switchListTileTitleStyle),
-                  subtitle: Text(S.of(context).mayRemoveMultiple_Detail,
-                      style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
+                  titleString: S.of(context).mayRemoveMultiple,
+                  subtitleString: S.of(context).mayRemoveMultiple_Detail,
                 ),
                 ListItemDivider(),
               ]),
