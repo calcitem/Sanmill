@@ -22,6 +22,7 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/widgets/settings_card.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
@@ -190,59 +191,54 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(S.of(context).general, style: AppTheme.settingsHeaderStyle),
-            Card(
-              color: AppTheme.cardColor,
-              margin: AppTheme.cardMargin,
-              child: Column(
-                children: <Widget>[
-                  SettingsListTile(
-                    context: context,
-                    titleString: S.of(context).piecesCount,
-                    subtitleString: S.of(context).piecesCount_Detail,
-                    trailingString: Config.piecesCount == 6
-                        ? '6'
-                        : Config.piecesCount == 9
-                            ? '9'
-                            : '12',
-                    onTap: setNTotalPiecesEachSide,
-                  ),
-                  ListItemDivider(),
-                  SettingsSwitchListTile(
-                    context: context,
-                    value: Config.hasDiagonalLines,
-                    onChanged: setHasDiagonalLines,
-                    titleString: S.of(context).hasDiagonalLines,
-                    subtitleString: S.of(context).hasDiagonalLines_Detail,
-                  ),
-                  ListItemDivider(),
-                  SettingsSwitchListTile(
-                    context: context,
-                    value: Config.mayFly,
-                    onChanged: setAllowFlyingAllowed,
-                    titleString: S.of(context).mayFly,
-                    subtitleString: S.of(context).mayFly_Detail,
-                  ),
-                  ListItemDivider(),
+            SettingsCard(
+              context: context,
+              widgets: <Widget>[
+                SettingsListTile(
+                  context: context,
+                  titleString: S.of(context).piecesCount,
+                  subtitleString: S.of(context).piecesCount_Detail,
+                  trailingString: Config.piecesCount == 6
+                      ? '6'
+                      : Config.piecesCount == 9
+                          ? '9'
+                          : '12',
+                  onTap: setNTotalPiecesEachSide,
+                ),
+                ListItemDivider(),
+                SettingsSwitchListTile(
+                  context: context,
+                  value: Config.hasDiagonalLines,
+                  onChanged: setHasDiagonalLines,
+                  titleString: S.of(context).hasDiagonalLines,
+                  subtitleString: S.of(context).hasDiagonalLines_Detail,
+                ),
+                ListItemDivider(),
+                SettingsSwitchListTile(
+                  context: context,
+                  value: Config.mayFly,
+                  onChanged: setAllowFlyingAllowed,
+                  titleString: S.of(context).mayFly,
+                  subtitleString: S.of(context).mayFly_Detail,
+                ),
+                ListItemDivider(),
 
-                  /*
-                  SwitchListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
+                /*
+                  SettingsSwitchListTile(
+                    context: context,
                     value: Config.maxStepsLedToDraw,
-                    title:
-                    Text(S.of(context).maxStepsLedToDraw, style: AppTheme.switchListTileTitleStyle),
                     onChanged: setMaxStepsLedToDraw,
+                    titleString: S.of(context).maxStepsLedToDraw,
                   ),
                   ListItemDivider(),
                   */
-                ],
-              ),
+              ],
             ),
             AppTheme.sizedBox,
             Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
-            Card(
-              color: AppTheme.cardColor,
-              margin: AppTheme.cardMargin,
-              child: Column(children: <Widget>[
+            SettingsCard(
+              context: context,
+              widgets: <Widget>[
                 SettingsSwitchListTile(
                   context: context,
                   value: Config.hasBannedLocations,
@@ -259,14 +255,13 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   subtitleString:
                       S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
                 ),
-              ]),
+              ],
             ),
             AppTheme.sizedBox,
             Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
-            Card(
-              color: AppTheme.cardColor,
-              margin: AppTheme.cardMargin,
-              child: Column(children: <Widget>[
+            SettingsCard(
+              context: context,
+              widgets: <Widget>[
                 SettingsSwitchListTile(
                   context: context,
                   value: Config.isDefenderMoveFirst,
@@ -283,14 +278,13 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   subtitleString:
                       S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
                 ),
-              ]),
+              ],
             ),
             AppTheme.sizedBox,
             Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
-            Card(
-              color: AppTheme.cardColor,
-              margin: AppTheme.cardMargin,
-              child: Column(children: <Widget>[
+            SettingsCard(
+              context: context,
+              widgets: <Widget>[
                 SettingsSwitchListTile(
                   context: context,
                   value: Config.mayRemoveFromMillsAlways,
@@ -307,7 +301,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   subtitleString: S.of(context).mayRemoveMultiple_Detail,
                 ),
                 ListItemDivider(),
-              ]),
+              ],
             ),
           ],
         ),
