@@ -24,6 +24,7 @@ import 'package:package_info/package_info.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'license_page.dart';
@@ -67,74 +68,77 @@ class _AboutPageState extends State<AboutPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
-          children: <Widget>[
-            ListTile(
-              title: Text(S.of(context).versionInfo,
-                  style: AppTheme.switchListTileTitleStyle),
-              subtitle: Text("Sanmill " + "$_version" + " " + mode,
-                  style: TextStyle(color: UIColors.secondaryColor)),
-              onTap: _showVersionInfo,
-            ),
-            ListItemDivider(),
-            /*
-            ListTile(
-              title:
-                  Text(S.of(context).viewInGooglePlayStore, style: AppTheme.switchListTileTitleStyle),
-              onTap: () => _launchURL(
-                  'https://play.google.com/store/apps/details?id=com.calcitem.sanmill'),
-            ),
-            ListItemDivider(),
-             */
-            ListTile(
-              title: Text(S.of(context).feedback,
-                  style: AppTheme.switchListTileTitleStyle),
-              onTap: () =>
-                  _launchURL('https://github.com/calcitem/Sanmill/issues'),
-            ),
-            ListItemDivider(),
-            ListTile(
-                title: Text(S.of(context).license,
-                    style: AppTheme.switchListTileTitleStyle),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LicenseAgreementPage(),
-                    ),
-                  );
-                }),
-            ListItemDivider(),
-            ListTile(
-              title: Text(S.of(context).sourceCode,
-                  style: AppTheme.switchListTileTitleStyle),
-              onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
-            ),
-            ListItemDivider(),
-            ListTile(
-              title: Text(S.of(context).privacyPolicy,
-                  style: AppTheme.switchListTileTitleStyle),
-              onTap: () => _launchURL(
-                  'https://github.com/calcitem/Sanmill/wiki/privacy_policy'),
-            ),
-            ListItemDivider(),
-            ListTile(
-              title: Text(S.of(context).thirdPartyNotices,
-                  style: AppTheme.switchListTileTitleStyle),
-              onTap: () => _launchURL(
-                  'https://github.com/calcitem/Sanmill/wiki/third-party_notices'),
-            ),
-            ListItemDivider(),
-            ListTile(
-              title: Text(S.of(context).thanks,
-                  style: AppTheme.switchListTileTitleStyle),
-              onTap: () =>
-                  _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks'),
-            ),
-            ListItemDivider(),
-          ],
+          children: children(context, mode),
         ),
       ),
     );
+  }
+
+  List<Widget> children(BuildContext context, String mode) {
+    return <Widget>[
+      SettingsListTile(
+        context: context,
+        titleString: S.of(context).versionInfo,
+        subtitleString: "Sanmill " + "$_version" + " " + mode,
+        onTap: _showVersionInfo,
+      ),
+      ListItemDivider(),
+      /*
+      ListTile(
+        title: Text(S.of(context).viewInGooglePlayStore,
+            style: AppTheme.switchListTileTitleStyle),
+        onTap: () => _launchURL(
+            'https://play.google.com/store/apps/details?id=com.calcitem.sanmill'),
+      ),
+      ListItemDivider(),
+      */
+      SettingsListTile(
+        context: context,
+        titleString: S.of(context).feedback,
+        onTap: () => _launchURL('https://github.com/calcitem/Sanmill/issues'),
+      ),
+      ListItemDivider(),
+      SettingsListTile(
+        context: context,
+        titleString: S.of(context).license,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LicenseAgreementPage(),
+            ),
+          );
+        },
+      ),
+      ListItemDivider(),
+      SettingsListTile(
+        context: context,
+        titleString: S.of(context).sourceCode,
+        onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
+      ),
+      ListItemDivider(),
+      SettingsListTile(
+        context: context,
+        titleString: S.of(context).privacyPolicy,
+        onTap: () => _launchURL(
+            'https://github.com/calcitem/Sanmill/wiki/privacy_policy'),
+      ),
+      ListItemDivider(),
+      SettingsListTile(
+        context: context,
+        titleString: S.of(context).thirdPartyNotices,
+        onTap: () => _launchURL(
+            'https://github.com/calcitem/Sanmill/wiki/third-party_notices'),
+      ),
+      ListItemDivider(),
+      SettingsListTile(
+        context: context,
+        titleString: S.of(context).thanks,
+        onTap: () =>
+            _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks'),
+      ),
+      ListItemDivider(),
+    ];
   }
 
   _loadVersionInfo() async {
@@ -158,27 +162,38 @@ class _AboutPageState extends State<AboutPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(S.of(context).appName,
-            style: TextStyle(color: UIColors.primaryColor)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(S.of(context).version + ": $_version",
-                style: TextStyle(fontFamily: '')),
-            AppTheme.sizedBox,
-            AppTheme.sizedBox,
-            Text(S.of(context).copyright,
-                style: TextStyle(fontFamily: '', fontSize: 12)),
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-              child: Text(S.of(context).ok),
-              onPressed: () => Navigator.of(context).pop()),
+      builder: (context) => alertDialog(context),
+    );
+  }
+
+  AlertDialog alertDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        S.of(context).appName,
+        style: TextStyle(color: UIColors.primaryColor),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            S.of(context).version + ": $_version",
+            style: TextStyle(fontFamily: ''),
+          ),
+          AppTheme.sizedBox,
+          AppTheme.sizedBox,
+          Text(
+            S.of(context).copyright,
+            style: TextStyle(fontFamily: '', fontSize: 12),
+          ),
         ],
       ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(S.of(context).ok),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
     );
   }
 }
