@@ -569,14 +569,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.aiIsLazy,
                     title: Text(S.of(context).passive, style: itemStyle),
                     onChanged: setAiIsLazy,
                   ),
                   ListItemDivider(),
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.shufflingEnabled,
                     title:
                         Text(S.of(context).shufflingEnabled, style: itemStyle),
@@ -593,7 +593,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.toneEnabled,
                     title: Text(S.of(context).playSoundsInTheGame,
                         style: itemStyle),
@@ -610,7 +610,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: !Config.aiMovesFirst,
                     title: Text(
                         Config.aiMovesFirst
@@ -630,7 +630,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.isAutoRestart,
                     title: Text(S.of(context).isAutoRestart, style: itemStyle),
                     onChanged: setIsAutoRestart,
@@ -646,7 +646,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Column(
                 children: <Widget>[
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.isPieceCountInHandShown,
                     title: Text(S.of(context).isPieceCountInHandShown,
                         style: itemStyle),

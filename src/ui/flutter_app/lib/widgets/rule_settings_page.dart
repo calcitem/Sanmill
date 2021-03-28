@@ -56,7 +56,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            activeColor: UIColors.primaryColor,
+            activeColor: AppTheme.switchListTileActiveColor,
             title: Text('6'),
             groupValue: Config.piecesCount,
             value: 6,
@@ -64,7 +64,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ),
           ListItemDivider(),
           RadioListTile(
-            activeColor: UIColors.primaryColor,
+            activeColor: AppTheme.switchListTileActiveColor,
             title: Text('9'),
             groupValue: Config.piecesCount,
             value: 9,
@@ -72,7 +72,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ),
           ListItemDivider(),
           RadioListTile(
-            activeColor: UIColors.primaryColor,
+            activeColor: AppTheme.switchListTileActiveColor,
             title: Text('12'),
             groupValue: Config.piecesCount,
             value: 12,
@@ -215,7 +215,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   ),
                   ListItemDivider(),
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.hasDiagonalLines,
                     title:
                         Text(S.of(context).hasDiagonalLines, style: itemStyle),
@@ -225,7 +225,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   ),
                   ListItemDivider(),
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.mayFly,
                     title: Text(S.of(context).mayFly, style: itemStyle),
                     subtitle: Text(S.of(context).mayFly_Detail,
@@ -236,7 +236,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
                   /*
                   SwitchListTile(
-                    activeColor: UIColors.primaryColor,
+                    activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.maxStepsLedToDraw,
                     title:
                     Text(S.of(context).maxStepsLedToDraw, style: itemStyle),
@@ -254,7 +254,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
                 SwitchListTile(
-                  activeColor: UIColors.primaryColor,
+                  activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.hasBannedLocations,
                   title:
                       Text(S.of(context).hasBannedLocations, style: itemStyle),
@@ -264,7 +264,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ),
                 ListItemDivider(),
                 SwitchListTile(
-                  activeColor: UIColors.primaryColor,
+                  activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.isBlackLoseButNotDrawWhenBoardFull,
                   title: Text(S.of(context).isBlackLoseButNotDrawWhenBoardFull,
                       style: itemStyle),
@@ -282,7 +282,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
                 SwitchListTile(
-                  activeColor: UIColors.primaryColor,
+                  activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.isDefenderMoveFirst,
                   title:
                       Text(S.of(context).isDefenderMoveFirst, style: itemStyle),
@@ -292,7 +292,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ),
                 ListItemDivider(),
                 SwitchListTile(
-                  activeColor: UIColors.primaryColor,
+                  activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.isLoseButNotChangeSideWhenNoWay,
                   title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
                       style: itemStyle),
@@ -310,7 +310,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               margin: AppTheme.cardMargin,
               child: Column(children: <Widget>[
                 SwitchListTile(
-                  activeColor: UIColors.primaryColor,
+                  activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.mayRemoveFromMillsAlways,
                   title: Text(S.of(context).mayRemoveFromMillsAlways,
                       style: itemStyle),
@@ -320,7 +320,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 ),
                 ListItemDivider(),
                 SwitchListTile(
-                  activeColor: UIColors.primaryColor,
+                  activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.mayRemoveMultiple,
                   title:
                       Text(S.of(context).mayRemoveMultiple, style: itemStyle),

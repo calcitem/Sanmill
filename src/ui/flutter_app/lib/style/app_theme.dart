@@ -99,4 +99,6 @@ class AppTheme {
   static const cardColor = UIColors.floralWhiteColor;
   static const cardMargin =
       const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0);
+
+  static const switchListTileActiveColor = UIColors.primaryColor;
 }
