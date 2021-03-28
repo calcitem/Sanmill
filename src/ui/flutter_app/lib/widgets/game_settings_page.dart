@@ -529,10 +529,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle headerStyle =
-        TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
-    final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
-
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
       appBar: AppBar(
