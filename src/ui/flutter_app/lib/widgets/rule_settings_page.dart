@@ -178,10 +178,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle headerStyle =
-        TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
-    final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
-
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
       appBar:
@@ -191,14 +187,15 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).general, style: headerStyle),
+            Text(S.of(context).general, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).piecesCount, style: itemStyle),
+                    title: Text(S.of(context).piecesCount,
+                        style: AppTheme.switchListTileTitleStyle),
                     subtitle: Text(S.of(context).piecesCount_Detail,
                         style: TextStyle(color: UIColors.secondaryColor)),
                     trailing:
@@ -217,8 +214,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   SwitchListTile(
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.hasDiagonalLines,
-                    title:
-                        Text(S.of(context).hasDiagonalLines, style: itemStyle),
+                    title: Text(S.of(context).hasDiagonalLines,
+                        style: AppTheme.switchListTileTitleStyle),
                     subtitle: Text(S.of(context).hasDiagonalLines_Detail,
                         style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setHasDiagonalLines,
@@ -227,7 +224,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   SwitchListTile(
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.mayFly,
-                    title: Text(S.of(context).mayFly, style: itemStyle),
+                    title: Text(S.of(context).mayFly,
+                        style: AppTheme.switchListTileTitleStyle),
                     subtitle: Text(S.of(context).mayFly_Detail,
                         style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setAllowFlyingAllowed,
@@ -239,7 +237,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.maxStepsLedToDraw,
                     title:
-                    Text(S.of(context).maxStepsLedToDraw, style: itemStyle),
+                    Text(S.of(context).maxStepsLedToDraw, style: AppTheme.switchListTileTitleStyle),
                     onChanged: setMaxStepsLedToDraw,
                   ),
                   ListItemDivider(),
@@ -248,7 +246,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).placing, style: headerStyle),
+            Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -256,8 +254,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 SwitchListTile(
                   activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.hasBannedLocations,
-                  title:
-                      Text(S.of(context).hasBannedLocations, style: itemStyle),
+                  title: Text(S.of(context).hasBannedLocations,
+                      style: AppTheme.switchListTileTitleStyle),
                   subtitle: Text(S.of(context).hasBannedLocations_Detail,
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setHasBannedLocations,
@@ -267,7 +265,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.isBlackLoseButNotDrawWhenBoardFull,
                   title: Text(S.of(context).isBlackLoseButNotDrawWhenBoardFull,
-                      style: itemStyle),
+                      style: AppTheme.switchListTileTitleStyle),
                   subtitle: Text(
                       S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
                       style: TextStyle(color: UIColors.secondaryColor)),
@@ -276,7 +274,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               ]),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).moving, style: headerStyle),
+            Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -284,8 +282,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 SwitchListTile(
                   activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.isDefenderMoveFirst,
-                  title:
-                      Text(S.of(context).isDefenderMoveFirst, style: itemStyle),
+                  title: Text(S.of(context).isDefenderMoveFirst,
+                      style: AppTheme.switchListTileTitleStyle),
                   subtitle: Text(S.of(context).isDefenderMoveFirst_Detail,
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsDefenderMoveFirst,
@@ -295,7 +293,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.isLoseButNotChangeSideWhenNoWay,
                   title: Text(S.of(context).isLoseButNotChangeSideWhenNoWay,
-                      style: itemStyle),
+                      style: AppTheme.switchListTileTitleStyle),
                   subtitle: Text(
                       S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
                       style: TextStyle(color: UIColors.secondaryColor)),
@@ -304,7 +302,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               ]),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).removing, style: headerStyle),
+            Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -313,7 +311,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                   activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.mayRemoveFromMillsAlways,
                   title: Text(S.of(context).mayRemoveFromMillsAlways,
-                      style: itemStyle),
+                      style: AppTheme.switchListTileTitleStyle),
                   subtitle: Text(S.of(context).mayRemoveFromMillsAlways_Detail,
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setAllowRemovePieceInMill,
@@ -322,8 +320,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 SwitchListTile(
                   activeColor: AppTheme.switchListTileActiveColor,
                   value: Config.mayRemoveMultiple,
-                  title:
-                      Text(S.of(context).mayRemoveMultiple, style: itemStyle),
+                  title: Text(S.of(context).mayRemoveMultiple,
+                      style: AppTheme.switchListTileTitleStyle),
                   subtitle: Text(S.of(context).mayRemoveMultiple_Detail,
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,

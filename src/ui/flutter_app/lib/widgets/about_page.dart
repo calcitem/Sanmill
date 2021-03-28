@@ -69,7 +69,8 @@ class _AboutPageState extends State<AboutPage> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text(S.of(context).versionInfo, style: itemStyle),
+              title: Text(S.of(context).versionInfo,
+                  style: AppTheme.switchListTileTitleStyle),
               subtitle: Text("Sanmill " + "$_version" + " " + mode,
                   style: TextStyle(color: UIColors.secondaryColor)),
               onTap: _showVersionInfo,
@@ -78,20 +79,22 @@ class _AboutPageState extends State<AboutPage> {
             /*
             ListTile(
               title:
-                  Text(S.of(context).viewInGooglePlayStore, style: itemStyle),
+                  Text(S.of(context).viewInGooglePlayStore, style: AppTheme.switchListTileTitleStyle),
               onTap: () => _launchURL(
                   'https://play.google.com/store/apps/details?id=com.calcitem.sanmill'),
             ),
             ListItemDivider(),
              */
             ListTile(
-              title: Text(S.of(context).feedback, style: itemStyle),
+              title: Text(S.of(context).feedback,
+                  style: AppTheme.switchListTileTitleStyle),
               onTap: () =>
                   _launchURL('https://github.com/calcitem/Sanmill/issues'),
             ),
             ListItemDivider(),
             ListTile(
-                title: Text(S.of(context).license, style: itemStyle),
+                title: Text(S.of(context).license,
+                    style: AppTheme.switchListTileTitleStyle),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -102,24 +105,28 @@ class _AboutPageState extends State<AboutPage> {
                 }),
             ListItemDivider(),
             ListTile(
-              title: Text(S.of(context).sourceCode, style: itemStyle),
+              title: Text(S.of(context).sourceCode,
+                  style: AppTheme.switchListTileTitleStyle),
               onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
             ),
             ListItemDivider(),
             ListTile(
-              title: Text(S.of(context).privacyPolicy, style: itemStyle),
+              title: Text(S.of(context).privacyPolicy,
+                  style: AppTheme.switchListTileTitleStyle),
               onTap: () => _launchURL(
                   'https://github.com/calcitem/Sanmill/wiki/privacy_policy'),
             ),
             ListItemDivider(),
             ListTile(
-              title: Text(S.of(context).thirdPartyNotices, style: itemStyle),
+              title: Text(S.of(context).thirdPartyNotices,
+                  style: AppTheme.switchListTileTitleStyle),
               onTap: () => _launchURL(
                   'https://github.com/calcitem/Sanmill/wiki/third-party_notices'),
             ),
             ListItemDivider(),
             ListTile(
-              title: Text(S.of(context).thanks, style: itemStyle),
+              title: Text(S.of(context).thanks,
+                  style: AppTheme.switchListTileTitleStyle),
               onTap: () =>
                   _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks'),
             ),

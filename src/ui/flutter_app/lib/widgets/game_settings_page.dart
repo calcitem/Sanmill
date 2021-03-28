@@ -541,7 +541,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).difficulty, style: headerStyle),
+            Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               elevation: 0.5,
@@ -549,7 +549,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).skillLevel, style: itemStyle),
+                    title: Text(S.of(context).skillLevel,
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(""), // TODO
@@ -562,7 +563,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).aisPlayStyle, style: headerStyle),
+            Text(S.of(context).aisPlayStyle,
+                style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -571,22 +573,23 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SwitchListTile(
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.aiIsLazy,
-                    title: Text(S.of(context).passive, style: itemStyle),
+                    title: Text(S.of(context).passive,
+                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setAiIsLazy,
                   ),
                   ListItemDivider(),
                   SwitchListTile(
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.shufflingEnabled,
-                    title:
-                        Text(S.of(context).shufflingEnabled, style: itemStyle),
+                    title: Text(S.of(context).shufflingEnabled,
+                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setShufflingEnabled,
                   ),
                 ],
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).playSounds, style: headerStyle),
+            Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -596,14 +599,15 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.toneEnabled,
                     title: Text(S.of(context).playSoundsInTheGame,
-                        style: itemStyle),
+                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setTone,
                   ),
                 ],
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).whoMovesFirst, style: headerStyle),
+            Text(S.of(context).whoMovesFirst,
+                style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -616,14 +620,15 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         Config.aiMovesFirst
                             ? S.of(context).ai
                             : S.of(context).human,
-                        style: itemStyle),
+                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setWhoMovesFirst,
                   ),
                 ],
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).automaticBehavior, style: headerStyle),
+            Text(S.of(context).automaticBehavior,
+                style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -632,14 +637,15 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   SwitchListTile(
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.isAutoRestart,
-                    title: Text(S.of(context).isAutoRestart, style: itemStyle),
+                    title: Text(S.of(context).isAutoRestart,
+                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setIsAutoRestart,
                   ),
                 ],
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).display, style: headerStyle),
+            Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -649,13 +655,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     activeColor: AppTheme.switchListTileActiveColor,
                     value: Config.isPieceCountInHandShown,
                     title: Text(S.of(context).isPieceCountInHandShown,
-                        style: itemStyle),
+                        style: AppTheme.switchListTileTitleStyle),
                     onChanged: setIsPieceCountInHandShown,
                   ),
                   ListItemDivider(),
                   ListTile(
                     title: Text(S.of(context).boardBorderLineWidth,
-                        style: itemStyle),
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(""), // TODO
@@ -667,7 +673,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ListItemDivider(),
                   ListTile(
                     title: Text(S.of(context).boardInnerLineWidth,
-                        style: itemStyle),
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(""), // TODO
@@ -680,14 +686,15 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).color, style: headerStyle),
+            Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(S.of(context).boardColor, style: itemStyle),
+                    title: Text(S.of(context).boardColor,
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.boardBackgroundColor.toRadixString(16),
@@ -701,7 +708,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   ListItemDivider(),
                   ListTile(
-                    title: Text(S.of(context).backgroudColor, style: itemStyle),
+                    title: Text(S.of(context).backgroudColor,
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.darkBackgroundColor.toRadixString(16),
@@ -715,7 +723,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   ListItemDivider(),
                   ListTile(
-                    title: Text(S.of(context).lineColor, style: itemStyle),
+                    title: Text(S.of(context).lineColor,
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.boardLineColor.toRadixString(16),
@@ -728,8 +737,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   ListItemDivider(),
                   ListTile(
-                    title:
-                        Text(S.of(context).blackPieceColor, style: itemStyle),
+                    title: Text(S.of(context).blackPieceColor,
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.blackPieceColor.toRadixString(16),
@@ -742,8 +751,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   ),
                   ListItemDivider(),
                   ListTile(
-                    title:
-                        Text(S.of(context).whitePieceColor, style: itemStyle),
+                    title: Text(S.of(context).whitePieceColor,
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Text(Config.whitePieceColor.toRadixString(16),
@@ -758,7 +767,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               ),
             ),
             AppTheme.sizedBox,
-            Text(S.of(context).restore, style: headerStyle),
+            Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
             Card(
               color: AppTheme.cardColor,
               margin: AppTheme.cardMargin,
@@ -766,7 +775,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 children: <Widget>[
                   ListTile(
                     title: Text(S.of(context).restoreDefaultSettings,
-                        style: itemStyle),
+                        style: AppTheme.switchListTileTitleStyle),
                     trailing:
                         Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                       Icon(Icons.keyboard_arrow_right,

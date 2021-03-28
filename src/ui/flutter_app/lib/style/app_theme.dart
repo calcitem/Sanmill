@@ -100,5 +100,10 @@ class AppTheme {
   static const cardMargin =
       const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0);
 
+  static const settingsHeaderStyle =
+      TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
+
   static const switchListTileActiveColor = UIColors.primaryColor;
+  static const switchListTileTitleStyle =
+      TextStyle(color: UIColors.crusoeColor);
 }
