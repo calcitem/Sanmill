@@ -26,6 +26,7 @@ import 'package:sanmill/style/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'license_page.dart';
+import 'list_item_divider.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -72,7 +73,7 @@ class _AboutPageState extends State<AboutPage> {
                   style: TextStyle(color: UIColors.secondaryColor)),
               onTap: _showVersionInfo,
             ),
-            _buildDivider(),
+            ListItemDivider(),
             /*
             ListTile(
               title:
@@ -80,14 +81,14 @@ class _AboutPageState extends State<AboutPage> {
               onTap: () => _launchURL(
                   'https://play.google.com/store/apps/details?id=com.calcitem.sanmill'),
             ),
-            _buildDivider(),
+            ListItemDivider(),
              */
             ListTile(
               title: Text(S.of(context).feedback, style: itemStyle),
               onTap: () =>
                   _launchURL('https://github.com/calcitem/Sanmill/issues'),
             ),
-            _buildDivider(),
+            ListItemDivider(),
             ListTile(
                 title: Text(S.of(context).license, style: itemStyle),
                 onTap: () {
@@ -98,42 +99,33 @@ class _AboutPageState extends State<AboutPage> {
                     ),
                   );
                 }),
-            _buildDivider(),
+            ListItemDivider(),
             ListTile(
               title: Text(S.of(context).sourceCode, style: itemStyle),
               onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
             ),
-            _buildDivider(),
+            ListItemDivider(),
             ListTile(
               title: Text(S.of(context).privacyPolicy, style: itemStyle),
               onTap: () => _launchURL(
                   'https://github.com/calcitem/Sanmill/wiki/privacy_policy'),
             ),
-            _buildDivider(),
+            ListItemDivider(),
             ListTile(
               title: Text(S.of(context).thirdPartyNotices, style: itemStyle),
               onTap: () => _launchURL(
                   'https://github.com/calcitem/Sanmill/wiki/third-party_notices'),
             ),
-            _buildDivider(),
+            ListItemDivider(),
             ListTile(
               title: Text(S.of(context).thanks, style: itemStyle),
               onTap: () =>
                   _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks'),
             ),
-            _buildDivider(),
+            ListItemDivider(),
           ],
         ),
       ),
-    );
-  }
-
-  Container _buildDivider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      width: double.infinity,
-      height: 1.0,
-      color: UIColors.lightLineColor,
     );
   }
 

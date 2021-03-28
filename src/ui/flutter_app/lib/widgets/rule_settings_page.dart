@@ -22,6 +22,8 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/colors.dart';
 
+import 'list_item_divider.dart';
+
 class RuleSettingsPage extends StatefulWidget {
   @override
   _RuleSettingsPageState createState() => _RuleSettingsPageState();
@@ -60,7 +62,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             value: 6,
             onChanged: callback,
           ),
-          Divider(),
+          ListItemDivider(),
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('9'),
@@ -68,7 +70,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             value: 9,
             onChanged: callback,
           ),
-          Divider(),
+          ListItemDivider(),
           RadioListTile(
             activeColor: UIColors.primaryColor,
             title: Text('12'),
@@ -76,7 +78,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             value: 12,
             onChanged: callback,
           ),
-          Divider(),
+          ListItemDivider(),
           SizedBox(height: 56),
         ],
       ),
@@ -213,7 +215,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     ]),
                     onTap: setNTotalPiecesEachSide,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.hasDiagonalLines,
@@ -223,7 +225,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                         style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setHasDiagonalLines,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.mayFly,
@@ -232,7 +234,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                         style: TextStyle(color: UIColors.secondaryColor)),
                     onChanged: setAllowFlyingAllowed,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
 
                   /*
                   SwitchListTile(
@@ -242,7 +244,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                     Text(S.of(context).maxStepsLedToDraw, style: itemStyle),
                     onChanged: setMaxStepsLedToDraw,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   */
                 ],
               ),
@@ -262,7 +264,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setHasBannedLocations,
                 ),
-                _buildDivider(),
+                ListItemDivider(),
                 SwitchListTile(
                   activeColor: UIColors.primaryColor,
                   value: Config.isBlackLoseButNotDrawWhenBoardFull,
@@ -289,7 +291,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setIsDefenderMoveFirst,
                 ),
-                _buildDivider(),
+                ListItemDivider(),
                 SwitchListTile(
                   activeColor: UIColors.primaryColor,
                   value: Config.isLoseButNotChangeSideWhenNoWay,
@@ -316,7 +318,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setAllowRemovePieceInMill,
                 ),
-                _buildDivider(),
+                ListItemDivider(),
                 SwitchListTile(
                   activeColor: UIColors.primaryColor,
                   value: Config.mayRemoveMultiple,
@@ -326,21 +328,12 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                       style: TextStyle(color: UIColors.secondaryColor)),
                   onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
                 ),
-                _buildDivider(),
+                ListItemDivider(),
               ]),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Container _buildDivider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      width: double.infinity,
-      height: 1.0,
-      color: UIColors.lightLineColor,
     );
   }
 }

@@ -25,6 +25,8 @@ import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/colors.dart';
 
+import 'list_item_divider.dart';
+
 class GameSettingsPage extends StatefulWidget {
   @override
   _GameSettingsPageState createState() => _GameSettingsPageState();
@@ -573,7 +575,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     title: Text(S.of(context).passive, style: itemStyle),
                     onChanged: setAiIsLazy,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   SwitchListTile(
                     activeColor: UIColors.primaryColor,
                     value: Config.shufflingEnabled,
@@ -651,7 +653,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                         style: itemStyle),
                     onChanged: setIsPieceCountInHandShown,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   ListTile(
                     title: Text(S.of(context).boardBorderLineWidth,
                         style: itemStyle),
@@ -663,7 +665,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: setBoardBorderLineWidth,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   ListTile(
                     title: Text(S.of(context).boardInnerLineWidth,
                         style: itemStyle),
@@ -698,7 +700,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: showBoardColorDialog,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   ListTile(
                     title: Text(S.of(context).backgroudColor, style: itemStyle),
                     trailing:
@@ -712,7 +714,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: showBackgroundColorDialog,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   ListTile(
                     title: Text(S.of(context).lineColor, style: itemStyle),
                     trailing:
@@ -725,7 +727,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: showBoardLineColorDialog,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   ListTile(
                     title:
                         Text(S.of(context).blackPieceColor, style: itemStyle),
@@ -739,7 +741,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: showBlackPieceColorDialog,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                   ListTile(
                     title:
                         Text(S.of(context).whitePieceColor, style: itemStyle),
@@ -773,22 +775,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                     ]),
                     onTap: restoreFactoryDefaultSettings,
                   ),
-                  _buildDivider(),
+                  ListItemDivider(),
                 ],
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Container _buildDivider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      width: double.infinity,
-      height: 1.0,
-      color: UIColors.lightLineColor,
     );
   }
 }
