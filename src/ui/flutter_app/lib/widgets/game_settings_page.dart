@@ -51,12 +51,20 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     setState(() => pickerColor = color);
   }
 
-  showBoardColorDialog() async {
+  showColorDialog(String colorString) async {
+    Map<String, int> colorStrToVal = {
+      S.of(context).boardColor: Config.boardBackgroundColor,
+      S.of(context).backgroudColor: Config.darkBackgroundColor,
+      S.of(context).lineColor: Config.boardLineColor,
+      S.of(context).blackPieceColor: Config.blackPieceColor,
+      S.of(context).whitePieceColor: Config.whitePieceColor,
+    };
+
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).boardColor),
+      title: Text(S.of(context).pick + colorString),
       content: SingleChildScrollView(
         child: ColorPicker(
-          pickerColor: Color(Config.boardBackgroundColor),
+          pickerColor: Color(colorStrToVal[colorString]!),
           onColorChanged: changeColor,
           showLabel: true,
           //pickerAreaHeightPercent: 0.8,
@@ -67,163 +75,19 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           child: Text(S.of(context).confirm),
           onPressed: () {
             setState(() => currentColor = pickerColor);
-            Config.boardBackgroundColor = pickerColor.value;
-            Config.save();
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: Text(S.of(context).cancel),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
+            if (colorString == S.of(context).boardColor) {
+              Config.boardBackgroundColor = pickerColor.value;
+            } else if (colorString == S.of(context).backgroudColor) {
+              Config.darkBackgroundColor = pickerColor.value;
+            } else if (colorString == S.of(context).lineColor) {
+              Config.boardLineColor = pickerColor.value;
+            } else if (colorString == S.of(context).blackPieceColor) {
+              Config.blackPieceColor = pickerColor.value;
+            } else if (colorString == S.of(context).whitePieceColor) {
+              Config.whitePieceColor = pickerColor.value;
+            }
 
-  showBackgroundColorDialog() async {
-    AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).backgroudColor),
-      content: SingleChildScrollView(
-        child: ColorPicker(
-          pickerColor: Color(Config.darkBackgroundColor),
-          onColorChanged: changeColor,
-          showLabel: true,
-          //pickerAreaHeightPercent: 0.8,
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(S.of(context).confirm),
-          onPressed: () {
-            setState(() => currentColor = pickerColor);
-            Config.darkBackgroundColor = pickerColor.value;
-            Config.save();
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: Text(S.of(context).cancel),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  showBoardLineColorDialog() async {
-    AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).lineColor),
-      content: SingleChildScrollView(
-        child: ColorPicker(
-          pickerColor: Color(Config.boardLineColor),
-          onColorChanged: changeColor,
-          showLabel: true,
-          //pickerAreaHeightPercent: 0.8,
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(S.of(context).confirm),
-          onPressed: () {
-            setState(() => currentColor = pickerColor);
-            Config.boardLineColor = pickerColor.value;
-            Config.save();
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: Text(S.of(context).cancel),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  showBlackPieceColorDialog() async {
-    AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).blackPieceColor),
-      content: SingleChildScrollView(
-        child: ColorPicker(
-          pickerColor: Color(Config.blackPieceColor),
-          onColorChanged: changeColor,
-          showLabel: true,
-          //pickerAreaHeightPercent: 0.8,
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(S.of(context).confirm),
-          onPressed: () {
-            setState(() => currentColor = pickerColor);
-            Config.blackPieceColor = pickerColor.value;
-            Config.save();
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: Text(S.of(context).cancel),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  showWhitePieceColorDialog() async {
-    AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + S.of(context).whitePieceColor),
-      content: SingleChildScrollView(
-        child: ColorPicker(
-          pickerColor: Color(Config.whitePieceColor),
-          onColorChanged: changeColor,
-          showLabel: true,
-          //pickerAreaHeightPercent: 0.8,
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(S.of(context).confirm),
-          onPressed: () {
-            setState(() => currentColor = pickerColor);
-            Config.whitePieceColor = pickerColor.value;
             Config.save();
             Navigator.of(context).pop();
           },
@@ -652,35 +516,35 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             context: context,
             titleString: S.of(context).boardColor,
             trailingColor: Config.boardBackgroundColor,
-            onTap: showBoardColorDialog,
+            onTap: () => showColorDialog(S.of(context).boardColor),
           ),
           ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).backgroudColor,
             trailingColor: Config.darkBackgroundColor,
-            onTap: showBackgroundColorDialog,
+            onTap: () => showColorDialog(S.of(context).backgroudColor),
           ),
           ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).lineColor,
             trailingColor: Config.boardLineColor,
-            onTap: showBoardLineColorDialog,
+            onTap: () => showColorDialog(S.of(context).lineColor),
           ),
           ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).blackPieceColor,
             trailingColor: Config.blackPieceColor,
-            onTap: showBlackPieceColorDialog,
+            onTap: () => showColorDialog(S.of(context).blackPieceColor),
           ),
           ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).whitePieceColor,
             trailingColor: Config.whitePieceColor,
-            onTap: showWhitePieceColorDialog,
+            onTap: () => showColorDialog(S.of(context).whitePieceColor),
           ),
         ],
       ),
