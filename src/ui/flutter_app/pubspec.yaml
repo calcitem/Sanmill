@@ -22,6 +22,7 @@ dependencies:
   flutter_colorpicker: ^0.4.0
   catcher: ^0.6.3
   stack_trace: ^1.10.0
+  device_info_plus_platform_interface: ^1.0.1
 
 dev_dependencies:
   flutter_test:
