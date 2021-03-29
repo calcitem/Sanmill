@@ -36,7 +36,24 @@ class Board extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //
+    var container = Container(
+      margin: EdgeInsets.symmetric(
+        vertical: padding,
+        horizontal: (width - padding * 2) / 6 / 2 + padding,
+      ),
+    );
+
+    var customPaint = CustomPaint(
+      painter: BoardPainter(width: width),
+      foregroundPainter: PiecesPainter(
+        width: width,
+        position: Game.instance.position,
+        focusIndex: Game.instance.focusIndex,
+        blurIndex: Game.instance.blurIndex,
+      ),
+      child: container,
+    );
+
     final boardContainer = Container(
       width: width,
       height: height,
@@ -44,21 +61,7 @@ class Board extends StatelessWidget {
         borderRadius: BorderRadius.circular(boardBorderRadius),
         color: Color(Config.boardBackgroundColor),
       ),
-      child: CustomPaint(
-        painter: BoardPainter(width: width),
-        foregroundPainter: PiecesPainter(
-          width: width,
-          position: Game.instance.position,
-          focusIndex: Game.instance.focusIndex,
-          blurIndex: Game.instance.blurIndex,
-        ),
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            vertical: padding,
-            horizontal: (width - padding * 2) / 6 / 2 + padding,
-          ),
-        ),
-      ),
+      child: customPaint,
     );
 
     return GestureDetector(

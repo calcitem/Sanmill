@@ -475,17 +475,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   Widget createPageHeader() {
-    /*
-    Map<EngineType, String> engineTypeToString = {
-      EngineType.humanVsAi: S.of(context).humanVsAi,
-      EngineType.humanVsHuman: S.of(context).humanVsHuman,
-      EngineType.aiVsAi: S.of(context).aiVsAi,
-      EngineType.humanVsCloud: S.of(context).humanVsCloud,
-      EngineType.humanVsLAN: S.of(context).humanVsLAN,
-      EngineType.testViaLAN: S.of(context).testViaLAN,
-    };
-    */
-
     Map<EngineType, IconData> engineTypeToIconLeft = {
       EngineType.humanVsAi: Config.aiMovesFirst ? Icons.computer : Icons.person,
       EngineType.humanVsHuman: Icons.person,
@@ -504,70 +493,28 @@ class _GamePageState extends State<GamePage> with RouteAware {
       EngineType.testViaLAN: Icons.cast,
     };
 
-    IconData iconArrow = Icons.code;
+    IconData iconArrow = getIconArrow();
 
-    switch (Game.instance.sideToMove) {
-      case PieceColor.black:
-        iconArrow = Icons.keyboard_arrow_left;
-        break;
-      case PieceColor.white:
-        iconArrow = Icons.keyboard_arrow_right;
-        break;
-      default:
-        iconArrow = Icons.code;
-        break;
-    }
-
-    if (Game.instance.position.phase == Phase.gameOver) {
-      switch (Game.instance.position.winner) {
-        case PieceColor.black:
-          iconArrow = Icons.toggle_off_outlined;
-          break;
-        case PieceColor.white:
-          iconArrow = Icons.toggle_on_outlined;
-          break;
-        default:
-          iconArrow = Icons.thumbs_up_down_outlined;
-          break;
-      }
-    }
-
-    //final titleStyle =
-    //    TextStyle(fontSize: 16, color: UIColors.darkTextPrimaryColor);
     final subTitleStyle =
         TextStyle(fontSize: 16, color: UIColors.darkTextSecondaryColor);
+
+    var iconColor = UIColors.darkTextPrimaryColor;
+
+    var iconRow = Row(
+      children: <Widget>[
+        Expanded(child: SizedBox()),
+        Icon(engineTypeToIconLeft[widget.engineType], color: iconColor),
+        Icon(iconArrow, color: iconColor),
+        Icon(engineTypeToIconRight[widget.engineType], color: iconColor),
+        Expanded(child: SizedBox()),
+      ],
+    );
 
     return Container(
       margin: EdgeInsets.only(top: SanmillApp.StatusBarHeight),
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              /*
-              IconButton(
-                icon: Icon(Icons.arrow_back,
-                    color: UIColors.darkTextSecondaryColor),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-               */
-              Expanded(child: SizedBox()),
-              Icon(engineTypeToIconLeft[widget.engineType],
-                  color: UIColors.darkTextPrimaryColor),
-              Icon(iconArrow, color: UIColors.darkTextPrimaryColor),
-              Icon(engineTypeToIconRight[widget.engineType],
-                  color: UIColors.darkTextPrimaryColor),
-              Expanded(child: SizedBox()),
-              /*
-              IconButton(
-                icon: Icon(Icons.menu /* more_vert */,
-                    color: UIColors.darkTextSecondaryColor),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                ),
-              ),
-               */
-            ],
-          ),
+          iconRow,
           Container(
             height: 4,
             width: 180,
@@ -586,8 +533,39 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
   }
 
+  IconData getIconArrow() {
+    IconData iconArrow = Icons.code;
+
+    if (Game.instance.position.phase == Phase.gameOver) {
+      switch (Game.instance.position.winner) {
+        case PieceColor.black:
+          iconArrow = Icons.toggle_off_outlined;
+          break;
+        case PieceColor.white:
+          iconArrow = Icons.toggle_on_outlined;
+          break;
+        default:
+          iconArrow = Icons.thumbs_up_down_outlined;
+          break;
+      }
+    } else {
+      switch (Game.instance.sideToMove) {
+        case PieceColor.black:
+          iconArrow = Icons.keyboard_arrow_left;
+          break;
+        case PieceColor.white:
+          iconArrow = Icons.keyboard_arrow_right;
+          break;
+        default:
+          iconArrow = Icons.code;
+          break;
+      }
+    }
+
+    return iconArrow;
+  }
+
   Widget createBoard() {
-    //
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: GamePage.screenPaddingH,
@@ -601,15 +579,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   void showSnackBar(String message) {
-    //var currentScaffold = globalScaffoldKey.currentState;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  Widget createOperatorBar() {
-    //
-    //final buttonStyle = TextStyle(color: UIColors.primaryColor, fontSize: 20);
+  Widget createToolbar() {
     final manualText = Game.instance.position.manualText;
 
     // TODO:
@@ -636,6 +611,113 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final manualStyle =
         TextStyle(fontSize: 18, height: 1.5, color: Colors.yellow);
 
+    var newGameButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.motion_photos_on,
+            color: UIColors.secondaryColor,
+          ),
+          Text(S.of(context).newGame,
+              style: TextStyle(color: UIColors.secondaryColor)),
+        ],
+      ),
+      onPressed: newGame,
+    );
+
+    var undoButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.restore,
+            color: UIColors.secondaryColor,
+          ),
+          Text(S.of(context).regret,
+              style: TextStyle(color: UIColors.secondaryColor)),
+        ],
+      ),
+      onPressed: () {
+        Game.instance.regret(steps: 2);
+        setState(() {});
+      },
+    );
+
+    var moveHistoryButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.list_alt,
+            color: UIColors.secondaryColor,
+          ),
+          Text(S.of(context).gameRecord,
+              style: TextStyle(color: UIColors.secondaryColor)),
+        ],
+      ),
+      onPressed: () => showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            title: Text(S.of(context).gameRecord,
+                style: TextStyle(color: Colors.yellow)),
+            content: SingleChildScrollView(
+                child: Text(manualText, style: manualStyle)),
+            actions: <Widget>[
+              TextButton(
+                child: Text(S.of(context).copy, style: manualStyle),
+                onPressed: () =>
+                    Clipboard.setData(ClipboardData(text: manualText))
+                        .then((_) {
+                  showSnackBar(S.of(context).moveHistoryCopied);
+                }),
+              ),
+              TextButton(
+                child: Text(S.of(context).cancel, style: manualStyle),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    var hintButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.lightbulb_outline,
+            color: UIColors.secondaryColor,
+          ),
+          Text(S.of(context).hint,
+              style: TextStyle(color: UIColors.secondaryColor)),
+        ],
+      ),
+      onPressed: () => showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            title: Text(S.of(context).analyze,
+                style: TextStyle(color: Colors.yellow)),
+            content: SingleChildScrollView(
+                child: Text(analyzeText, style: manualStyle)),
+            actions: <Widget>[
+              TextButton(
+                child: Text(S.of(context).ok, style: manualStyle),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
@@ -645,119 +727,19 @@ class _GamePageState extends State<GamePage> with RouteAware {
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Row(children: <Widget>[
         Expanded(child: SizedBox()),
-        TextButton(
-          child: Column(
-            // Replace with a Row for horizontal icon + text
-            children: <Widget>[
-              Icon(
-                Icons.motion_photos_on,
-                color: UIColors.secondaryColor,
-              ),
-              Text(S.of(context).newGame,
-                  style: TextStyle(color: UIColors.secondaryColor)),
-            ],
-          ),
-          onPressed: newGame,
-        ),
+        newGameButton,
         Expanded(child: SizedBox()),
-        TextButton(
-          child: Column(
-            // Replace with a Row for horizontal icon + text
-            children: <Widget>[
-              Icon(
-                Icons.restore,
-                color: UIColors.secondaryColor,
-              ),
-              Text(S.of(context).regret,
-                  style: TextStyle(color: UIColors.secondaryColor)),
-            ],
-          ),
-          onPressed: () {
-            Game.instance.regret(steps: 2);
-            setState(() {});
-          },
-        ),
+        undoButton,
         Expanded(child: SizedBox()),
-        TextButton(
-          child: Column(
-            // Replace with a Row for horizontal icon + text
-            children: <Widget>[
-              Icon(
-                Icons.list_alt,
-                color: UIColors.secondaryColor,
-              ),
-              Text(S.of(context).gameRecord,
-                  style: TextStyle(color: UIColors.secondaryColor)),
-            ],
-          ),
-          onPressed: () => showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: Colors.transparent,
-                title: Text(S.of(context).gameRecord,
-                    style: TextStyle(color: Colors.yellow)),
-                content: SingleChildScrollView(
-                    child: Text(manualText, style: manualStyle)),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(S.of(context).copy, style: manualStyle),
-                    onPressed: () =>
-                        Clipboard.setData(ClipboardData(text: manualText))
-                            .then((_) {
-                      showSnackBar(S.of(context).moveHistoryCopied);
-                    }),
-                  ),
-                  TextButton(
-                    child: Text(S.of(context).cancel, style: manualStyle),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+        moveHistoryButton,
         Expanded(child: SizedBox()), //dashboard_outlined
-        TextButton(
-          child: Column(
-            // Replace with a Row for horizontal icon + text
-            children: <Widget>[
-              Icon(
-                Icons.lightbulb_outline,
-                color: UIColors.secondaryColor,
-              ),
-              Text(S.of(context).hint,
-                  style: TextStyle(color: UIColors.secondaryColor)),
-            ],
-          ),
-          onPressed: () => showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: Colors.transparent,
-                title: Text(S.of(context).analyze,
-                    style: TextStyle(color: Colors.yellow)),
-                content: SingleChildScrollView(
-                    child: Text(analyzeText, style: manualStyle)),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(S.of(context).ok, style: manualStyle),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+        hintButton,
         Expanded(child: SizedBox()),
       ]),
     );
   }
 
-  Widget buildManualPanel(String text) {
-    //
+  Widget buildMoveHistoryPanel(String text) {
     final manualStyle = TextStyle(
       fontSize: 18,
       color: UIColors.darkTextSecondaryColor,
@@ -780,16 +762,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    //
     calcScreenPaddingH();
 
     final header = createPageHeader();
     final board = createBoard();
-    final operatorBar = createOperatorBar();
+    final toolbar = createToolbar();
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
-      body: Column(children: <Widget>[header, board, operatorBar]),
+      body: Column(children: <Widget>[header, board, toolbar]),
     );
   }
 
