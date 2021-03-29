@@ -550,7 +550,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsListTile(
             context: context,
             titleString: S.of(context).skillLevel,
@@ -562,7 +562,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Text(S.of(context).aisPlayStyle, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: Config.aiIsLazy,
@@ -582,7 +582,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: Config.toneEnabled,
@@ -595,7 +595,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: !Config.aiMovesFirst,
@@ -610,7 +610,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: Config.isAutoRestart,
@@ -623,7 +623,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: Config.isPieceCountInHandShown,
@@ -647,7 +647,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsListTile(
             context: context,
             titleString: S.of(context).boardColor,
@@ -688,7 +688,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsListTile(
             context: context,
             titleString: S.of(context).restoreDefaultSettings,

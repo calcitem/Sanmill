@@ -200,7 +200,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Text(S.of(context).general, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsListTile(
             context: context,
             titleString: S.of(context).piecesCount,
@@ -244,7 +244,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: Config.hasBannedLocations,
@@ -267,7 +267,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: Config.isDefenderMoveFirst,
@@ -290,7 +290,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
-        widgets: <Widget>[
+        children: <Widget>[
           SettingsSwitchListTile(
             context: context,
             value: Config.mayRemoveFromMillsAlways,

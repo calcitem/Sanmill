@@ -23,18 +23,18 @@ class SettingsCard extends StatelessWidget {
   const SettingsCard({
     Key? key,
     required this.context,
-    required this.widgets,
+    required this.children,
   }) : super(key: key);
 
   final BuildContext context;
-  final widgets;
+  final children;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       color: AppTheme.cardColor,
       margin: AppTheme.cardMargin,
-      child: Column(children: widgets),
+      child: Column(children: children),
     );
   }
 }
