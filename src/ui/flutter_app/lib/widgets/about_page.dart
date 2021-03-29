@@ -48,8 +48,6 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     String mode = "";
 
-    final TextStyle itemStyle = TextStyle(color: UIColors.crusoeColor);
-
     if (kDebugMode) {
       mode = "- debug";
     } else if (kProfileMode) {
