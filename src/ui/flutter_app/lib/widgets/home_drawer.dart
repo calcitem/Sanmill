@@ -102,6 +102,40 @@ class _HomeDrawerState extends State<HomeDrawer> {
       fontWeight: FontWeight.w600,
     );
 
+    var animatedBuilder = AnimatedBuilder(
+      animation: widget.iconAnimationController!,
+      builder: (BuildContext context, Widget? child) {
+        return ScaleTransition(
+          scale: AlwaysStoppedAnimation<double>(
+              1.0 - (widget.iconAnimationController!.value) * 0.2),
+          child: RotationTransition(
+            turns: AlwaysStoppedAnimation<double>(
+                Tween<double>(begin: 0.0, end: 24.0)
+                        .animate(CurvedAnimation(
+                            parent: widget.iconAnimationController!,
+                            curve: Curves.fastOutSlowIn))
+                        .value /
+                    360),
+          ),
+        );
+      },
+    );
+
+    var animatedTextKit = AnimatedTextKit(
+      animatedTexts: [
+        ColorizeAnimatedText(
+          S.of(context).appName,
+          textStyle: colorizeTextStyle,
+          colors: colorizeColors,
+          textAlign: TextAlign.start,
+          speed: const Duration(milliseconds: 3000),
+        ),
+      ],
+      pause: const Duration(milliseconds: 30000),
+      repeatForever: true,
+      stopPauseOnTap: true,
+    );
+
     return Scaffold(
       backgroundColor: AppTheme.notWhite.withOpacity(0.5),
       body: Column(
@@ -117,40 +151,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  AnimatedBuilder(
-                    animation: widget.iconAnimationController!,
-                    builder: (BuildContext context, Widget? child) {
-                      return ScaleTransition(
-                        scale: AlwaysStoppedAnimation<double>(1.0 -
-                            (widget.iconAnimationController!.value) * 0.2),
-                        child: RotationTransition(
-                          turns: AlwaysStoppedAnimation<double>(Tween<double>(
-                                      begin: 0.0, end: 24.0)
-                                  .animate(CurvedAnimation(
-                                      parent: widget.iconAnimationController!,
-                                      curve: Curves.fastOutSlowIn))
-                                  .value /
-                              360),
-                        ),
-                      );
-                    },
-                  ),
+                  animatedBuilder,
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
-                    child: AnimatedTextKit(
-                      animatedTexts: [
-                        ColorizeAnimatedText(
-                          S.of(context).appName,
-                          textStyle: colorizeTextStyle,
-                          colors: colorizeColors,
-                          textAlign: TextAlign.start,
-                          speed: const Duration(milliseconds: 3000),
-                        ),
-                      ],
-                      pause: const Duration(milliseconds: 30000),
-                      repeatForever: true,
-                      stopPauseOnTap: true,
-                    ),
+                    child: animatedTextKit,
                   ),
                 ],
               ),
@@ -210,6 +214,97 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Widget inkwell(DrawerList listData) {
+    var animatedBuilder = AnimatedBuilder(
+      animation: widget.iconAnimationController!,
+      builder: (BuildContext context, Widget? child) {
+        return Transform(
+          transform: Matrix4.translationValues(
+              (MediaQuery.of(context).size.width * 0.75 - 64) *
+                  (1.0 - widget.iconAnimationController!.value - 1.0),
+              0.0,
+              0.0),
+          child: Padding(
+            padding: EdgeInsets.only(top: 8, bottom: 8),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.75 - 64,
+              height: 46,
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.2),
+                borderRadius: new BorderRadius.only(
+                  topLeft: Radius.circular(0),
+                  topRight: Radius.circular(28),
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(28),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    var listDataText = Text(
+      listData.labelName,
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+        color: widget.screenIndex == listData.index
+            ? Colors.blue
+            : AppTheme.nearlyBlack,
+      ),
+      textAlign: TextAlign.left,
+    );
+
+    var listDataIcon = Icon(listData.icon!.icon,
+        color: widget.screenIndex == listData.index
+            ? Colors.blue
+            : AppTheme.nearlyBlack);
+
+    var children3 = <Widget>[
+      Container(
+        width: 6.0,
+        height: 46.0,
+        // decoration: BoxDecoration(
+        //   color: widget.screenIndex == listData.index
+        //       ? Colors.blue
+        //       : Colors.transparent,
+        //   borderRadius: new BorderRadius.only(
+        //     topLeft: Radius.circular(0),
+        //     topRight: Radius.circular(16),
+        //     bottomLeft: Radius.circular(0),
+        //     bottomRight: Radius.circular(16),
+        //   ),
+        // ),
+      ),
+      const Padding(
+        padding: EdgeInsets.all(4.0),
+      ),
+      listData.isAssetsImage
+          ? Container(
+              width: 24,
+              height: 24,
+              child: Image.asset(listData.imageName,
+                  color: widget.screenIndex == listData.index
+                      ? Colors.blue
+                      : AppTheme.nearlyBlack),
+            )
+          : listDataIcon,
+      const Padding(
+        padding: EdgeInsets.all(4.0),
+      ),
+      listDataText,
+    ];
+
+    var children2 = <Widget>[
+      Container(
+        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        child: Row(
+          children: children3,
+        ),
+      ),
+      widget.screenIndex == listData.index ? animatedBuilder : const SizedBox()
+    ];
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -219,93 +314,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           navigationToScreen(listData.index);
         },
         child: Stack(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: 6.0,
-                    height: 46.0,
-                    // decoration: BoxDecoration(
-                    //   color: widget.screenIndex == listData.index
-                    //       ? Colors.blue
-                    //       : Colors.transparent,
-                    //   borderRadius: new BorderRadius.only(
-                    //     topLeft: Radius.circular(0),
-                    //     topRight: Radius.circular(16),
-                    //     bottomLeft: Radius.circular(0),
-                    //     bottomRight: Radius.circular(16),
-                    //   ),
-                    // ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(4.0),
-                  ),
-                  listData.isAssetsImage
-                      ? Container(
-                          width: 24,
-                          height: 24,
-                          child: Image.asset(listData.imageName,
-                              color: widget.screenIndex == listData.index
-                                  ? Colors.blue
-                                  : AppTheme.nearlyBlack),
-                        )
-                      : Icon(listData.icon!.icon,
-                          color: widget.screenIndex == listData.index
-                              ? Colors.blue
-                              : AppTheme.nearlyBlack),
-                  const Padding(
-                    padding: EdgeInsets.all(4.0),
-                  ),
-                  Text(
-                    listData.labelName,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: widget.screenIndex == listData.index
-                          ? Colors.blue
-                          : AppTheme.nearlyBlack,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ],
-              ),
-            ),
-            widget.screenIndex == listData.index
-                ? AnimatedBuilder(
-                    animation: widget.iconAnimationController!,
-                    builder: (BuildContext context, Widget? child) {
-                      return Transform(
-                        transform: Matrix4.translationValues(
-                            (MediaQuery.of(context).size.width * 0.75 - 64) *
-                                (1.0 -
-                                    widget.iconAnimationController!.value -
-                                    1.0),
-                            0.0,
-                            0.0),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 8, bottom: 8),
-                          child: Container(
-                            width:
-                                MediaQuery.of(context).size.width * 0.75 - 64,
-                            height: 46,
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.2),
-                              borderRadius: new BorderRadius.only(
-                                topLeft: Radius.circular(0),
-                                topRight: Radius.circular(28),
-                                bottomLeft: Radius.circular(0),
-                                bottomRight: Radius.circular(28),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : const SizedBox()
-          ],
+          children: children2,
         ),
       ),
     );

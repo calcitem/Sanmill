@@ -194,7 +194,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
         Game.instance.moveHistory.add(position.cmdline);
 
         // TODO: Need Others?
-        // Increment ply counters. In particular, rule50 will be reset to zero later on
+        // Increment ply counters. In particular,
+        // rule50 will be reset to zero later on
         // in case of a capture.
         ++position.gamePly;
         ++position.rule50;

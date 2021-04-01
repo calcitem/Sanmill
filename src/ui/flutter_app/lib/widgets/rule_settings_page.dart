@@ -40,7 +40,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setNTotalPiecesEachSide() {
-    //
     callback(int? piecesCount) async {
       print("piecesCount = $piecesCount");
 
@@ -88,7 +87,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setNPiecesAtLeast(int value) async {
-    //
     setState(() {
       rule.piecesAtLeastCount = Config.piecesAtLeastCount = value;
     });
@@ -97,7 +95,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setHasDiagonalLines(bool value) async {
-    //
     setState(() {
       rule.hasDiagonalLines = Config.hasDiagonalLines = value;
     });
@@ -106,7 +103,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setHasBannedLocations(bool value) async {
-    //
     setState(() {
       rule.hasBannedLocations = Config.hasBannedLocations = value;
     });
@@ -115,7 +111,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setIsDefenderMoveFirst(bool value) async {
-    //
     setState(() {
       rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
     });
@@ -124,7 +119,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
-    //
     setState(() {
       rule.mayRemoveMultiple = Config.mayRemoveMultiple = value;
     });
@@ -133,7 +127,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setAllowRemovePieceInMill(bool value) async {
-    //
     setState(() {
       rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways = value;
     });
@@ -142,7 +135,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
-    //
     setState(() {
       rule.isBlackLoseButNotDrawWhenBoardFull =
           Config.isBlackLoseButNotDrawWhenBoardFull = value;
@@ -152,7 +144,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setIsLoseButNotChangeSideWhenNoWay(bool value) async {
-    //
     setState(() {
       rule.isLoseButNotChangeSideWhenNoWay =
           Config.isLoseButNotChangeSideWhenNoWay = value;
@@ -162,7 +153,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setAllowFlyingAllowed(bool value) async {
-    //
     setState(() {
       rule.mayFly = Config.mayFly = value;
     });
@@ -171,7 +161,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   setMaxStepsLedToDraw(int value) async {
-    //
     setState(() {
       rule.maxStepsLedToDraw = Config.maxStepsLedToDraw = value;
     });
