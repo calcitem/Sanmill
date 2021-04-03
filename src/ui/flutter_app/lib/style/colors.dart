@@ -34,6 +34,8 @@ class UIColors {
   static var darkBackgroundColor = crusoeColor;
   static const lightBackgroundColor = papayaWhipColor;
 
+  static var appBarColor = UIColors.primaryColor;
+
   static var boardBackgroundColor = burlyWoodColor;
 
   static const darkTextPrimaryColor = Colors.white;

@@ -175,9 +175,9 @@ class _PersonalizationSettingsPageState
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
       appBar: AppBar(
-          centerTitle: true,
-          title: Text(S.of(context).personalization),
-          backgroundColor: UIColors.primaryColor),
+        centerTitle: true,
+        title: Text(S.of(context).personalization),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

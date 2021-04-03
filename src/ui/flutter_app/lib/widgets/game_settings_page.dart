@@ -102,9 +102,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     return Scaffold(
       backgroundColor: UIColors.lightBackgroundColor,
       appBar: AppBar(
-          centerTitle: true,
-          title: Text(S.of(context).settings),
-          backgroundColor: UIColors.primaryColor),
+        centerTitle: true,
+        title: Text(S.of(context).settings),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
