@@ -744,4 +744,9 @@
   "@timeout": {
     "description": "Timeout"
   }
+  ,
+  "personalization": "Personalization",
+  "@personalization": {
+    "description": "Personalization"
+  }
 }

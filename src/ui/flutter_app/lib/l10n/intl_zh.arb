@@ -185,5 +185,6 @@
   "aisPlayStyle": "机器的棋风",
   "passive": "消极被动",
   "automaticBehavior": "自动行为",
-  "timeout": "超时"
+  "timeout": "超时",
+  "personalization": "外观设置"
 }
