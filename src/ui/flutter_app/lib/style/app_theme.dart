@@ -41,11 +41,11 @@ class AppTheme {
   static var drawerColor = Colors.white;
   static var drawerBackgroundColor = UIColors.notWhite.withOpacity(0.5); // TODO
   static var drawerHighlightItemColor =
-      drawerHighlightTextColor.withOpacity(0.2);
+      UIColors.freeSpeechGreen.withOpacity(0.2);
   static var drawerDividerColor = UIColors.grey.withOpacity(0.6);
   static var drawerBoxerShadowColor = UIColors.grey.withOpacity(0.6);
   static var drawerTextColor = UIColors.nearlyBlack;
-  static var drawerHighlightTextColor = Colors.blue;
+  static var drawerHighlightTextColor = UIColors.nearlyBlack;
   static var exitTextColor = UIColors.nearlyBlack;
   static var drawerIconColor = drawerTextColor;
   static var drawerHighlightIconColor = drawerHighlightTextColor;

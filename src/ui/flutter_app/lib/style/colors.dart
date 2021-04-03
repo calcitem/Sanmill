@@ -19,6 +19,8 @@
 import 'package:flutter/material.dart';
 
 class UIColors {
+  // https://www.htmlcsscolor.com
+
   static const white = Color(0xFFFFFFFF);
   static const notWhite = Color(0xFFEDF0F2);
   static const nearlyWhite = Color(0xFFFEFEFE);
@@ -29,9 +31,11 @@ class UIColors {
   static const grey = Color(0xFF3A5160);
   static const darkGrey = Color(0xFF313A44);
 
+  static const burlyWood = Color(0xFFDEB887);
+  static const crusoe = Color(0xFF165B31);
+  static const forestGreen = Color(0xFF228B22);
+  static const freeSpeechGreen = Color(0xFF09F911);
+  static const oasis = Color.fromARGB(0xFF, 253, 239, 194);
   static const papayaWhip = Color(0xFFFFEFD5);
   static const turmeric = Color.fromARGB(0xFF, 186, 202, 68);
-  static const burlyWood = Color(0xFFDEB887);
-  static const forestGreen = Color(0xFF228B22);
-  static const crusoe = Color(0xFF165B31);
 }
