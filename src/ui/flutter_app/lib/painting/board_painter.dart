@@ -22,7 +22,7 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/style/colors.dart';
-import 'package:sanmill/widgets/board.dart';
+import 'package:sanmill/style/app_theme.dart';
 
 import 'painter_base.dart';
 
@@ -36,8 +36,8 @@ class BoardPainter extends PiecesBasePainter {
       thePaint,
       gridWidth,
       squareWidth,
-      offsetX: Board.padding + squareWidth / 2,
-      offsetY: Board.padding + squareWidth / 2,
+      offsetX: AppTheme.boardPadding + squareWidth / 2,
+      offsetY: AppTheme.boardPadding + squareWidth / 2,
     );
   }
 

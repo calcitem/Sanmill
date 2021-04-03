@@ -106,4 +106,42 @@ class AppTheme {
   static const switchListTileActiveColor = UIColors.primaryColor;
   static const switchListTileTitleStyle =
       TextStyle(color: UIColors.crusoeColor);
+
+  static const aboutPageBackgroundColor = UIColors.lightBackgroundColor;
+
+  static const double copyrightFontSize = 12;
+  static const versionDialogAppNameTextStyle =
+      TextStyle(color: UIColors.primaryColor);
+  static const versionDialogCopyrightTextStyle = TextStyle(
+    fontSize: AppTheme.copyrightFontSize,
+  );
+
+  static const double boardBorderRadius = 5;
+  static const boardPadding = 5.0;
+
+  static const double drawerWidth = 250;
+
+  static const double boardMargin = 10.0;
+  static const boardScreenPaddingH = 10.0;
+
+  static const sliderThemeData = SliderThemeData(
+    trackHeight: 20,
+    activeTrackColor: Colors.green,
+    inactiveTrackColor: Colors.grey,
+    disabledActiveTrackColor: Colors.yellow,
+    disabledInactiveTrackColor: Colors.cyan,
+    activeTickMarkColor: Colors.black,
+    inactiveTickMarkColor: Colors.green,
+    //overlayColor: Colors.yellow,
+    overlappingShapeStrokeColor: Colors.black,
+    //overlayShape: RoundSliderOverlayShape(),
+    valueIndicatorColor: Colors.green,
+    showValueIndicator: ShowValueIndicator.always,
+    minThumbSeparation: 100,
+    thumbShape: RoundSliderThumbShape(
+        enabledThumbRadius: 2.0, disabledThumbRadius: 1.0),
+    rangeTrackShape: RoundedRectRangeSliderTrackShape(),
+    tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
+    valueIndicatorTextStyle: TextStyle(fontSize: 24),
+  );
 }

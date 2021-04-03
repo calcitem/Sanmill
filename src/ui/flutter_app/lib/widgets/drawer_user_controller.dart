@@ -5,7 +5,7 @@ import 'package:sanmill/widgets/home_drawer.dart';
 class DrawerUserController extends StatefulWidget {
   const DrawerUserController({
     Key? key,
-    this.drawerWidth = 250,
+    this.drawerWidth = AppTheme.drawerWidth,
     this.onDrawerCall,
     this.screenView,
     this.animatedIconData = AnimatedIcons.arrow_menu,

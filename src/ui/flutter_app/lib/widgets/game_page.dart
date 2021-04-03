@@ -29,12 +29,13 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:stack_trace/stack_trace.dart';
+import 'package:sanmill/style/app_theme.dart';
 
 import 'board.dart';
 
 class GamePage extends StatefulWidget {
-  //
-  static double boardMargin = 10.0, screenPaddingH = 10.0;
+  static double boardMargin = AppTheme.boardMargin;
+  static double screenPaddingH = AppTheme.boardScreenPaddingH;
 
   final EngineType engineType;
   final AiEngine engine;
@@ -67,7 +68,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   void showTips() {
     if (!mounted) {
-      //print("[showTips] context == null, return");
       return;
     }
 
@@ -471,7 +471,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
       GamePage.screenPaddingH =
-          (windowSize.width - width) / 2 - GamePage.boardMargin;
+          (windowSize.width - width) / 2 - AppTheme.boardMargin;
     }
   }
 

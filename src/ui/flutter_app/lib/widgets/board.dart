@@ -21,13 +21,9 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/painting/board_painter.dart';
 import 'package:sanmill/painting/pieces_painter.dart';
+import 'package:sanmill/style/app_theme.dart';
 
 class Board extends StatelessWidget {
-  //
-  static const padding = 5.0;
-
-  static const double boardBorderRadius = 5;
-
   final double width;
   final double height;
   final Function(BuildContext, int) onBoardTap;
@@ -36,6 +32,8 @@ class Board extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var padding = AppTheme.boardPadding;
+
     var container = Container(
       margin: EdgeInsets.symmetric(
         vertical: padding,
@@ -58,7 +56,7 @@ class Board extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(boardBorderRadius),
+        borderRadius: BorderRadius.circular(AppTheme.boardBorderRadius),
         color: Color(Config.boardBackgroundColor),
       ),
       child: customPaint,
@@ -67,7 +65,6 @@ class Board extends StatelessWidget {
     return GestureDetector(
       child: boardContainer,
       onTapUp: (d) {
-        //
         final gridWidth = (width - padding * 2);
         final squareWidth = gridWidth / 7;
         final dx = d.localPosition.dx;

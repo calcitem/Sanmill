@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,22 +43,27 @@ class _AboutPageState extends State<AboutPage> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    String mode = "";
-
+  String getMode() {
+    late String ret;
     if (kDebugMode) {
-      mode = "- debug";
+      ret = "- debug";
     } else if (kProfileMode) {
-      mode = "- profile";
+      ret = "- profile";
     } else if (kReleaseMode) {
-      mode = "";
+      ret = "";
     } else {
-      mode = "-test";
+      ret = "-test";
     }
 
+    return ret;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String mode = getMode();
+
     return Scaffold(
-      backgroundColor: UIColors.lightBackgroundColor,
+      backgroundColor: AppTheme.aboutPageBackgroundColor,
       appBar: AppBar(
           centerTitle: true,
           title: Text(S.of(context).about + " " + S.of(context).appName)),
@@ -168,21 +172,18 @@ class _AboutPageState extends State<AboutPage> {
     return AlertDialog(
       title: Text(
         S.of(context).appName,
-        style: TextStyle(color: UIColors.primaryColor),
+        style: AppTheme.versionDialogAppNameTextStyle,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            S.of(context).version + ": $_version",
-            style: TextStyle(fontFamily: ''),
-          ),
+          Text(S.of(context).version + ": $_version"),
           AppTheme.sizedBox,
           AppTheme.sizedBox,
           Text(
             S.of(context).copyright,
-            style: TextStyle(fontFamily: '', fontSize: 12),
+            style: AppTheme.versionDialogCopyrightTextStyle,
           ),
         ],
       ),

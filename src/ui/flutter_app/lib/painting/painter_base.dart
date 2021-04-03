@@ -17,7 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/widgets/board.dart';
+import 'package:sanmill/style/app_theme.dart';
 
 abstract class PiecesBasePainter extends CustomPainter {
   final double width;
@@ -27,6 +27,6 @@ abstract class PiecesBasePainter extends CustomPainter {
   final squareWidth;
 
   PiecesBasePainter({required this.width})
-      : gridWidth = (width - Board.padding * 2),
-        squareWidth = (width - Board.padding * 2) / 7;
+      : gridWidth = (width - AppTheme.boardPadding * 2),
+        squareWidth = (width - AppTheme.boardPadding * 2) / 7;
 }

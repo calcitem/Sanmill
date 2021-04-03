@@ -67,7 +67,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           pickerColor: Color(colorStrToVal[colorString]!),
           onColorChanged: changeColor,
           showLabel: true,
-          //pickerAreaHeightPercent: 0.8,
         ),
       ),
       actions: <Widget>[
@@ -112,26 +111,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   SliderTheme _skillLevelSliderTheme(context, setState) {
     return SliderTheme(
-      data: SliderThemeData(
-        trackHeight: 20,
-        activeTrackColor: Colors.green,
-        inactiveTrackColor: Colors.grey,
-        disabledActiveTrackColor: Colors.yellow,
-        disabledInactiveTrackColor: Colors.cyan,
-        activeTickMarkColor: Colors.black,
-        inactiveTickMarkColor: Colors.green,
-        //overlayColor: Colors.yellow,
-        overlappingShapeStrokeColor: Colors.black,
-        //overlayShape: RoundSliderOverlayShape(),
-        valueIndicatorColor: Colors.green,
-        showValueIndicator: ShowValueIndicator.always,
-        minThumbSeparation: 100,
-        thumbShape: RoundSliderThumbShape(
-            enabledThumbRadius: 2.0, disabledThumbRadius: 1.0),
-        rangeTrackShape: RoundedRectRangeSliderTrackShape(),
-        tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
-        valueIndicatorTextStyle: TextStyle(fontSize: 24),
-      ),
+      data: AppTheme.sliderThemeData,
       child: Slider(
         value: Config.skillLevel.toDouble(),
         min: 1,
@@ -149,138 +129,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
-  setSkillLevel() async {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _skillLevelSliderTheme(context, setState);
-        },
-      ),
-    );
-  }
-
-  setWhoMovesFirst(bool value) async {
-    setState(() {
-      Config.aiMovesFirst = !value;
-    });
-
-    Config.save();
-  }
-
-  setAiIsLazy(bool value) async {
-    setState(() {
-      Config.aiIsLazy = value;
-    });
-
-    Config.save();
-  }
-
-  setIsAutoRestart(bool value) async {
-    setState(() {
-      Config.isAutoRestart = value;
-    });
-
-    Config.save();
-  }
-
-  setIsAutoChangeFirstMove(bool value) async {
-    setState(() {
-      Config.isAutoChangeFirstMove = value;
-    });
-
-    Config.save();
-  }
-
-  setResignIfMostLose(bool value) async {
-    setState(() {
-      Config.resignIfMostLose = value;
-    });
-
-    Config.save();
-  }
-
-  setShufflingEnabled(bool value) async {
-    setState(() {
-      Config.shufflingEnabled = value;
-    });
-
-    Config.save();
-  }
-
-  setLearnEndgame(bool value) async {
-    setState(() {
-      Config.learnEndgame = value;
-    });
-
-    Config.save();
-  }
-
-  setIdsEnabled(bool value) async {
-    setState(() {
-      Config.idsEnabled = value;
-    });
-
-    Config.save();
-  }
-
-  setDepthExtension(bool value) async {
-    setState(() {
-      Config.depthExtension = value;
-    });
-
-    Config.save();
-  }
-
-  setOpeningBook(bool value) async {
-    setState(() {
-      Config.openingBook = value;
-    });
-
-    Config.save();
-  }
-
-  setTone(bool value) async {
-    //
-    setState(() {
-      Config.toneEnabled = value;
-    });
-
-    Config.save();
-  }
-
-  // Display
-
-  setIsPieceCountInHandShown(bool value) async {
-    setState(() {
-      Config.isPieceCountInHandShown = value;
-    });
-
-    Config.save();
-  }
-
   SliderTheme _boardBorderLineWidthSliderTheme(context, setState) {
     return SliderTheme(
-      data: SliderThemeData(
-        trackHeight: 20,
-        activeTrackColor: Colors.green,
-        inactiveTrackColor: Colors.grey,
-        disabledActiveTrackColor: Colors.yellow,
-        disabledInactiveTrackColor: Colors.cyan,
-        activeTickMarkColor: Colors.black,
-        inactiveTickMarkColor: Colors.green,
-        //overlayColor: Colors.yellow,
-        overlappingShapeStrokeColor: Colors.black,
-        //overlayShape: RoundSliderOverlayShape(),
-        valueIndicatorColor: Colors.green,
-        showValueIndicator: ShowValueIndicator.always,
-        minThumbSeparation: 100,
-        thumbShape: RoundSliderThumbShape(
-            enabledThumbRadius: 2.0, disabledThumbRadius: 1.0),
-        rangeTrackShape: RoundedRectRangeSliderTrackShape(),
-        tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
-        valueIndicatorTextStyle: TextStyle(fontSize: 24),
-      ),
+      data: AppTheme.sliderThemeData,
       child: Slider(
         value: Config.boardBorderLineWidth.toDouble(),
         min: 0.0,
@@ -311,26 +162,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   SliderTheme _boardInnerLineWidthSliderTheme(context, setState) {
     return SliderTheme(
-      data: SliderThemeData(
-        trackHeight: 20,
-        activeTrackColor: Colors.green,
-        inactiveTrackColor: Colors.grey,
-        disabledActiveTrackColor: Colors.yellow,
-        disabledInactiveTrackColor: Colors.cyan,
-        activeTickMarkColor: Colors.black,
-        inactiveTickMarkColor: Colors.green,
-        //overlayColor: Colors.yellow,
-        overlappingShapeStrokeColor: Colors.black,
-        //overlayShape: RoundSliderOverlayShape(),
-        valueIndicatorColor: Colors.green,
-        showValueIndicator: ShowValueIndicator.always,
-        minThumbSeparation: 100,
-        thumbShape: RoundSliderThumbShape(
-            enabledThumbRadius: 2.0, disabledThumbRadius: 1.0),
-        rangeTrackShape: RoundedRectRangeSliderTrackShape(),
-        tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
-        valueIndicatorTextStyle: TextStyle(fontSize: 24),
-      ),
+      data: AppTheme.sliderThemeData,
       child: Slider(
         value: Config.boardInnerLineWidth.toDouble(),
         min: 0.0,
@@ -562,5 +394,114 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         ],
       ),
     ];
+  }
+
+  setSkillLevel() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _skillLevelSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
+  setWhoMovesFirst(bool value) async {
+    setState(() {
+      Config.aiMovesFirst = !value;
+    });
+
+    Config.save();
+  }
+
+  setAiIsLazy(bool value) async {
+    setState(() {
+      Config.aiIsLazy = value;
+    });
+
+    Config.save();
+  }
+
+  setIsAutoRestart(bool value) async {
+    setState(() {
+      Config.isAutoRestart = value;
+    });
+
+    Config.save();
+  }
+
+  setIsAutoChangeFirstMove(bool value) async {
+    setState(() {
+      Config.isAutoChangeFirstMove = value;
+    });
+
+    Config.save();
+  }
+
+  setResignIfMostLose(bool value) async {
+    setState(() {
+      Config.resignIfMostLose = value;
+    });
+
+    Config.save();
+  }
+
+  setShufflingEnabled(bool value) async {
+    setState(() {
+      Config.shufflingEnabled = value;
+    });
+
+    Config.save();
+  }
+
+  setLearnEndgame(bool value) async {
+    setState(() {
+      Config.learnEndgame = value;
+    });
+
+    Config.save();
+  }
+
+  setIdsEnabled(bool value) async {
+    setState(() {
+      Config.idsEnabled = value;
+    });
+
+    Config.save();
+  }
+
+  setDepthExtension(bool value) async {
+    setState(() {
+      Config.depthExtension = value;
+    });
+
+    Config.save();
+  }
+
+  setOpeningBook(bool value) async {
+    setState(() {
+      Config.openingBook = value;
+    });
+
+    Config.save();
+  }
+
+  setTone(bool value) async {
+    setState(() {
+      Config.toneEnabled = value;
+    });
+
+    Config.save();
+  }
+
+  // Display
+
+  setIsPieceCountInHandShown(bool value) async {
+    setState(() {
+      Config.isPieceCountInHandShown = value;
+    });
+
+    Config.save();
   }
 }
