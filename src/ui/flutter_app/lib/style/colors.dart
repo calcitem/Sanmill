@@ -19,41 +19,19 @@
 import 'package:flutter/material.dart';
 
 class UIColors {
-  static const floralWhiteColor = Color(0xFFFFFAF0);
-  static const crusoeColor = Color(0xFF165B31);
-  static const burlyWoodColor = Color(0xFFDEB887);
-  static const papayaWhipColor = Color(0xFFFFEFD5);
-  static const forestGreenColor = Color(0xFF228B22);
-  static const turmericColor = Color.fromARGB(0xFF, 186, 202, 68);
+  static const white = Color(0xFFFFFFFF);
+  static const notWhite = Color(0xFFEDF0F2);
+  static const nearlyWhite = Color(0xFFFEFEFE);
+  static const floralWhite = Color(0xFFFFFAF0);
 
-  static const logoColor = Color(0xFF6D000D);
+  static const nearlyBlack = Color(0xFF213333);
 
-  static const primaryColor = Colors.green;
-  static const secondaryColor = Color(0x99461220);
+  static const grey = Color(0xFF3A5160);
+  static const darkGrey = Color(0xFF313A44);
 
-  static var darkBackgroundColor = crusoeColor;
-  static const lightBackgroundColor = papayaWhipColor;
-
-  static var appBarColor = UIColors.primaryColor;
-
-  static var boardBackgroundColor = burlyWoodColor;
-
-  static const darkTextPrimaryColor = Colors.white;
-  static const darkTextSecondaryColor = Colors.white;
-
-  static var boardLineColor = Color(0x996D000D);
-  static const boardTipsColor = Color(0x666D000D);
-
-  static const lightLineColor = Color(0x336D000D);
-
-  static const blackPieceColor = Color.fromARGB(0xFF, 0x00, 0x00, 0x00);
-  static const blackPieceBorderColor = Color.fromARGB(0xFF, 0x22, 0x22, 0x22);
-
-  static const whitePieceColor = Color.fromARGB(0xFF, 0xFF, 0xFF, 0xFF);
-  static const whitePieceBorderColor = Color.fromARGB(0xFF, 0x66, 0x00, 0x00);
-
-  static const banColor = Color.fromARGB(0xFF, 0xFF, 0x00, 0x00);
-  static const banBorderColor = Color.fromARGB(0x80, 0xFF, 0x00, 0x00);
-
-  static const pieceTextColor = Color.fromARGB(0xCC, 0xFF, 0xFF, 0xFF);
+  static const papayaWhip = Color(0xFFFFEFD5);
+  static const turmeric = Color.fromARGB(0xFF, 186, 202, 68);
+  static const burlyWood = Color(0xFFDEB887);
+  static const forestGreen = Color(0xFF228B22);
+  static const crusoe = Color(0xFF165B31);
 }

@@ -18,7 +18,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/style/colors.dart';
 
 class SettingsSwitchListTile extends StatelessWidget {
   const SettingsSwitchListTile({
@@ -47,7 +46,7 @@ class SettingsSwitchListTile extends StatelessWidget {
           ? null
           : Text(
               subtitleString!,
-              style: TextStyle(color: UIColors.secondaryColor),
+              style: TextStyle(color: AppTheme.listTileSubtitleColor),
             ),
     );
   }

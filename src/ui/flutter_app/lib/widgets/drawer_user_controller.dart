@@ -106,7 +106,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             ? widget.menuView
             : AnimatedIcon(
                 icon: widget.animatedIconData,
-                color: Colors.white,
+                color: AppTheme.drawerAnimationIconColor,
                 progress: iconAnimationController),
       ),
       onTap: () {
@@ -186,9 +186,9 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         //full-screen Width with widget.screenView
         child: Container(
           decoration: BoxDecoration(
-            color: AppTheme.white,
+            color: AppTheme.drawerColor,
             boxShadow: <BoxShadow>[
-              BoxShadow(color: AppTheme.grey.withOpacity(0.6), blurRadius: 24),
+              BoxShadow(color: AppTheme.drawerBoxerShadowColor, blurRadius: 24),
             ],
           ),
           child: Stack(
@@ -199,7 +199,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
     ];
 
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: AppTheme.drawerColor,
       body: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.horizontal,

@@ -4,125 +4,99 @@ import 'package:sanmill/style/colors.dart';
 class AppTheme {
   AppTheme._();
 
-  static const Color notWhite = Color(0xFFEDF0F2);
-  static const Color nearlyWhite = Color(0xFFFEFEFE);
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color nearlyBlack = Color(0xFF213333);
-  static const Color grey = Color(0xFF3A5160);
-  static const Color dark_grey = Color(0xFF313A44);
+  // Color
 
-  static const Color darkText = Color(0xFF253840);
-  static const Color darkerText = Color(0xFF17262A);
-  static const Color lightText = Color(0xFF4A6572);
-  static const Color deactivatedText = Color(0xFF767676);
-  static const Color dismissibleBackground = Color(0xFF364A54);
-  static const Color chipBackground = Color(0xFFEEF1F3);
-  static const Color spacer = Color(0xFFF2F2F2);
-  static const String fontName = 'WorkSans';
+  static var appPrimaryColor = Colors.green; // Appbar & Dialog button
+  static var dialogTitleColor = appPrimaryColor;
 
-  static const TextTheme textTheme = TextTheme(
-    headline4: display1,
-    headline5: headline,
-    headline6: title,
-    subtitle2: subtitle,
-    bodyText2: body2,
-    bodyText1: body1,
-    caption: caption,
-  );
+  /// Game page
+  static var gamePageHeaderIconColor = Colors.white;
+  static var tipTextColor = Colors.white;
+  static var boardBackgroundColor = UIColors.burlyWood;
+  static var boardLineColor = Color(0x996D000D);
+  static var blackPieceColor = Color.fromARGB(0xFF, 0x00, 0x00, 0x00);
+  static var blackPieceBorderColor = Color.fromARGB(0xFF, 0x22, 0x22, 0x22);
+  static var whitePieceColor = Color.fromARGB(0xFF, 0xFF, 0xFF, 0xFF);
+  static var whitePieceBorderColor = Color.fromARGB(0xFF, 0x66, 0x00, 0x00);
+  static var banColor = Color.fromARGB(0xFF, 0xFF, 0x00, 0x00); // unused
+  static var banBorderColor = Color.fromARGB(0x80, 0xFF, 0x00, 0x00); // unused
+  static var toolbarIconColor = listTileSubtitleColor;
+  static var toolbarTextColor = toolbarIconColor;
+  static var moveHistoryTextColor = Colors.yellow;
+  static var moveHistoryDialogBackgroundColor = Colors.transparent;
+  static var hintDialogackgroundColor = moveHistoryDialogBackgroundColor;
+  static var hintTextColor = moveHistoryTextColor;
 
-  static const TextStyle display1 = TextStyle(
-    // h4 -> display1
-    fontFamily: fontName,
-    fontWeight: FontWeight.bold,
-    fontSize: 36,
-    letterSpacing: 0.4,
-    height: 0.9,
-    color: darkerText,
-  );
+  /// Settings page
+  static var darkBackgroundColor = UIColors.crusoe;
+  static var lightBackgroundColor = UIColors.papayaWhip;
+  static var listTileSubtitleColor = Color(0x99461220);
+  static var listItemDividerColor = Color(0x336D000D);
 
-  static const TextStyle headline = TextStyle(
-    // h5 -> headline
-    fontFamily: fontName,
-    fontWeight: FontWeight.bold,
-    fontSize: 24,
-    letterSpacing: 0.27,
-    color: darkerText,
-  );
+  /// Help page
+  static var helpBackgroundColor = boardBackgroundColor;
+  static var helpTextColor = boardBackgroundColor;
 
-  static const TextStyle title = TextStyle(
-    // h6 -> title
-    fontFamily: fontName,
-    fontWeight: FontWeight.bold,
-    fontSize: 16,
-    letterSpacing: 0.18,
-    color: darkerText,
-  );
+  /// Drawer
+  static var drawerColor = Colors.white;
+  static var drawerBackgroundColor = UIColors.notWhite.withOpacity(0.5); // TODO
+  static var drawerHighlightItemColor =
+      drawerHighlightTextColor.withOpacity(0.2);
+  static var drawerDividerColor = UIColors.grey.withOpacity(0.6);
+  static var drawerBoxerShadowColor = UIColors.grey.withOpacity(0.6);
+  static var drawerTextColor = UIColors.nearlyBlack;
+  static var drawerHighlightTextColor = Colors.blue;
+  static var exitTextColor = UIColors.nearlyBlack;
+  static var drawerIconColor = drawerTextColor;
+  static var drawerHighlightIconColor = drawerHighlightTextColor;
+  static var drawerAnimationIconColor = Colors.white;
+  static var exitIconColor = Colors.red;
+  static var drawerSplashColor = Colors.grey.withOpacity(0.1); // TODO: no use?
+  static var drawerHightlightColor = Colors.transparent; // TODO: no use?
+  static var navigationHomeScreenBackgroundColor =
+      UIColors.nearlyWhite; // TODO: no use?
 
-  static const TextStyle subtitle = TextStyle(
-    // subtitle2 -> subtitle
-    fontFamily: fontName,
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
-    letterSpacing: -0.04,
-    color: darkText,
-  );
+  static const animatedTextsColors = [
+    Colors.black,
+    Colors.blue,
+    Colors.yellow,
+    Colors.red,
+  ];
 
-  static const TextStyle body2 = TextStyle(
-    // body1 -> body2
-    fontFamily: fontName,
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
-    letterSpacing: 0.2,
-    color: darkText,
-  );
+  // Style
 
-  static const TextStyle body1 = TextStyle(
-    // body2 -> body1
-    fontFamily: fontName,
-    fontWeight: FontWeight.w400,
-    fontSize: 16,
-    letterSpacing: -0.05,
-    color: darkText,
-  );
+  static var gamePageTipStyle = TextStyle(fontSize: 16, color: tipTextColor);
 
-  static const TextStyle caption = TextStyle(
-    // Caption -> caption
-    fontFamily: fontName,
-    fontWeight: FontWeight.w400,
-    fontSize: 12,
-    letterSpacing: 0.2,
-    color: lightText, // was lightText
-  );
-
-  static const SizedBox sizedBox = SizedBox(height: 16);
-
-  static const cardColor = UIColors.floralWhiteColor;
+  static const cardColor = UIColors.floralWhite;
   static const cardMargin =
       const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0);
 
   static const settingsHeaderStyle =
-      TextStyle(color: UIColors.crusoeColor, fontSize: 20.0);
+      TextStyle(color: UIColors.crusoe, fontSize: 20.0);
 
-  static const switchListTileActiveColor = UIColors.primaryColor;
-  static const switchListTileTitleStyle =
-      TextStyle(color: UIColors.crusoeColor);
+  static var switchListTileActiveColor = dialogTitleColor;
+  static var switchListTileTitleStyle = TextStyle(color: UIColors.crusoe);
 
-  static const aboutPageBackgroundColor = UIColors.lightBackgroundColor;
+  static var moveHistoryTextStyle =
+      TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);
 
-  static const double copyrightFontSize = 12;
-  static const versionDialogAppNameTextStyle =
-      TextStyle(color: UIColors.primaryColor);
-  static const versionDialogCopyrightTextStyle = TextStyle(
+  static var aboutPageBackgroundColor = lightBackgroundColor;
+
+  static double copyrightFontSize = 12;
+  static var versionDialogAppNameTextStyle = TextStyle(color: dialogTitleColor);
+  static var versionDialogCopyrightTextStyle = TextStyle(
     fontSize: AppTheme.copyrightFontSize,
   );
 
-  static const double boardBorderRadius = 5;
-  static const boardPadding = 5.0;
+  static double boardBorderRadius = 5;
+  static var boardPadding = 5.0;
 
   static const double drawerWidth = 250;
 
-  static const double boardMargin = 10.0;
-  static const boardScreenPaddingH = 10.0;
+  static double boardMargin = 10.0;
+  static var boardScreenPaddingH = 10.0;
+
+  // Theme
 
   static const sliderThemeData = SliderThemeData(
     trackHeight: 20,
@@ -144,4 +118,7 @@ class AppTheme {
     tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2.0),
     valueIndicatorTextStyle: TextStyle(fontSize: 24),
   );
+
+  // Misc
+  static const SizedBox sizedBox = SizedBox(height: 16);
 }

@@ -21,7 +21,6 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/style/app_theme.dart';
 
 import 'painter_base.dart';
@@ -74,7 +73,7 @@ class BoardPainter extends PiecesBasePainter {
 
       TextSpan textSpan = TextSpan(
           style:
-              TextStyle(fontSize: 48, color: UIColors.boardLineColor), // TODO
+              TextStyle(fontSize: 48, color: AppTheme.boardLineColor), // TODO
           text: pieceInHandCountStr);
 
       TextPainter textPainter = TextPainter(

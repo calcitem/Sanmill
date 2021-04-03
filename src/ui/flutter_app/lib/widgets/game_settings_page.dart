@@ -23,7 +23,6 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/settings_card.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
@@ -82,7 +81,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(S.of(context).restore,
-              style: TextStyle(color: UIColors.primaryColor)),
+              style: TextStyle(color: AppTheme.dialogTitleColor)),
           content: SingleChildScrollView(
             child: Text(S.of(context).restoreDefaultSettings +
                 "?\n" +
@@ -100,7 +99,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: UIColors.lightBackgroundColor,
+      backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
         title: Text(S.of(context).settings),

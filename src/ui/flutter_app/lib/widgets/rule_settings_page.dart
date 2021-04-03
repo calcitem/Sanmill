@@ -21,7 +21,6 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/settings_card.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
@@ -171,7 +170,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: UIColors.lightBackgroundColor,
+      backgroundColor: AppTheme.lightBackgroundColor,
       appBar:
           AppBar(centerTitle: true, title: Text(S.of(context).ruleSettings)),
       body: SingleChildScrollView(

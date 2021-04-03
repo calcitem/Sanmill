@@ -17,7 +17,7 @@
 */
 
 import 'package:sanmill/mill/rule.dart';
-import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/style/app_theme.dart';
 
 import 'settings.dart';
 
@@ -42,11 +42,11 @@ class Config {
   static double boardInnerLineWidth = 2.0;
 
   // Color
-  static int boardLineColor = UIColors.boardLineColor.value;
-  static int darkBackgroundColor = UIColors.darkBackgroundColor.value;
-  static int boardBackgroundColor = UIColors.boardBackgroundColor.value;
-  static int blackPieceColor = UIColors.blackPieceColor.value;
-  static int whitePieceColor = UIColors.whitePieceColor.value;
+  static int boardLineColor = AppTheme.boardLineColor.value;
+  static int darkBackgroundColor = AppTheme.darkBackgroundColor.value;
+  static int boardBackgroundColor = AppTheme.boardBackgroundColor.value;
+  static int blackPieceColor = AppTheme.blackPieceColor.value;
+  static int whitePieceColor = AppTheme.whitePieceColor.value;
 
   // Rules
   static int piecesCount = 9;
@@ -87,15 +87,15 @@ class Config {
 
     // Color
     Config.boardLineColor =
-        settings['BoardLineColor'] ?? UIColors.boardLineColor.value;
+        settings['BoardLineColor'] ?? AppTheme.boardLineColor.value;
     Config.darkBackgroundColor =
-        settings['DarkBackgroundColor'] ?? UIColors.darkBackgroundColor.value;
+        settings['DarkBackgroundColor'] ?? AppTheme.darkBackgroundColor.value;
     Config.boardBackgroundColor =
-        settings['BoardBackgroundColor'] ?? UIColors.boardBackgroundColor.value;
+        settings['BoardBackgroundColor'] ?? AppTheme.boardBackgroundColor.value;
     Config.blackPieceColor =
-        settings['BlackPieceColor'] ?? UIColors.blackPieceColor.value;
+        settings['BlackPieceColor'] ?? AppTheme.blackPieceColor.value;
     Config.whitePieceColor =
-        settings['WhitePieceColor'] ?? UIColors.whitePieceColor.value;
+        settings['WhitePieceColor'] ?? AppTheme.whitePieceColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount = settings['PiecesCount'] ?? 9;

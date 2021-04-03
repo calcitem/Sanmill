@@ -25,7 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 import 'package:stack_trace/stack_trace.dart';
 
@@ -157,7 +157,7 @@ class _SanmillAppState extends State<SanmillApp> {
             languageCode: 'zh'), // Chinese *See Advanced Locales below*
         // ... other locales the app supports
       ],
-      theme: ThemeData(primarySwatch: UIColors.appBarColor),
+      theme: ThemeData(primarySwatch: AppTheme.appPrimaryColor),
       debugShowCheckedModeBanner: false,
       home: WillPopScope(
         onWillPop: () async {

@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/position.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/style/app_theme.dart';
 
 import 'painter_base.dart';
@@ -133,14 +132,14 @@ class PiecesPainter extends PiecesBasePainter {
       // Draw Border of Piece
       switch (pps.piece) {
         case Piece.blackStone:
-          paint.color = UIColors.blackPieceBorderColor;
+          paint.color = AppTheme.blackPieceBorderColor;
           canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
           paint.color = Color(Config.blackPieceColor);
           canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
           blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
           break;
         case Piece.whiteStone:
-          paint.color = UIColors.whitePieceBorderColor;
+          paint.color = AppTheme.whitePieceBorderColor;
           canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
           paint.color = Color(Config.whitePieceColor);
           canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);

@@ -17,7 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/style/colors.dart';
+import 'package:sanmill/style/app_theme.dart';
 
 class ListItemDivider extends StatelessWidget {
   const ListItemDivider({
@@ -30,7 +30,7 @@ class ListItemDivider extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       width: double.infinity,
       height: 1.0,
-      color: UIColors.lightLineColor,
+      color: AppTheme.listItemDividerColor,
     );
   }
 }

@@ -18,7 +18,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/style/colors.dart';
 
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
@@ -46,7 +45,7 @@ class SettingsListTile extends StatelessWidget {
           ? null
           : Text(
               subtitleString!,
-              style: TextStyle(color: UIColors.secondaryColor),
+              style: TextStyle(color: AppTheme.listTileSubtitleColor),
             ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
@@ -60,7 +59,8 @@ class SettingsListTile extends StatelessWidget {
                   trailingColor == null ? null : Color(trailingColor!),
             ),
           ),
-          Icon(Icons.keyboard_arrow_right, color: UIColors.secondaryColor),
+          Icon(Icons.keyboard_arrow_right,
+              color: AppTheme.listTileSubtitleColor),
         ],
       ),
       onTap: onTap,

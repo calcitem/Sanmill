@@ -18,7 +18,7 @@ class _HelpScreenState extends State<HelpScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.nearlyWhite,
+      color: UIColors.nearlyWhite,
       child: SafeArea(
         top: false,
         child: Scaffold(
@@ -34,7 +34,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: UIColors.burlyWoodColor,
+                    color: AppTheme.helpTextColor,
                   ),
                 ),
               ),
@@ -46,7 +46,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 16,
-                    color: UIColors.burlyWoodColor,
+                    color: AppTheme.helpTextColor,
                   ),
                 ),
               ),

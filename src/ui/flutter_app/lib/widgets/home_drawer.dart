@@ -95,12 +95,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   Widget build(BuildContext context) {
     setDrawerListArray();
 
-    const colorizeColors = [
-      Colors.black,
-      Colors.blue,
-      Colors.yellow,
-      Colors.red,
-    ];
+    const colorizeColors = AppTheme.animatedTextsColors;
 
     const colorizeTextStyle = TextStyle(
       fontSize: 24.0,
@@ -142,7 +137,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
 
     return Scaffold(
-      backgroundColor: AppTheme.notWhite.withOpacity(0.5),
+      backgroundColor: AppTheme.drawerBackgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -170,7 +165,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           ),
           Divider(
             height: 1,
-            color: AppTheme.grey.withOpacity(0.6),
+            color: AppTheme.drawerDividerColor,
           ),
           Expanded(
             child: ListView.builder(
@@ -184,7 +179,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           ),
           Divider(
             height: 1,
-            color: AppTheme.grey.withOpacity(0.6),
+            color: AppTheme.drawerDividerColor,
           ),
           Column(
             children: <Widget>[
@@ -192,16 +187,15 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 title: Text(
                   S.of(context).exit,
                   style: TextStyle(
-                    fontFamily: AppTheme.fontName,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color: AppTheme.darkText,
+                    color: AppTheme.exitTextColor,
                   ),
                   textAlign: TextAlign.left,
                 ),
                 trailing: Icon(
                   Icons.power_settings_new,
-                  color: Colors.red,
+                  color: AppTheme.exitIconColor,
                 ),
                 onTap: () async {
                   await SystemChannels.platform
@@ -234,7 +228,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
               width: MediaQuery.of(context).size.width * 0.75 - 64,
               height: 46,
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.2),
+                color: AppTheme.drawerHighlightItemColor,
                 borderRadius: new BorderRadius.only(
                   topLeft: Radius.circular(0),
                   topRight: Radius.circular(28),
@@ -254,44 +248,33 @@ class _HomeDrawerState extends State<HomeDrawer> {
         fontWeight: FontWeight.w500,
         fontSize: 16,
         color: widget.screenIndex == listData.index
-            ? Colors.blue
-            : AppTheme.nearlyBlack,
+            ? AppTheme.drawerHighlightTextColor
+            : AppTheme.drawerTextColor,
       ),
       textAlign: TextAlign.left,
     );
 
     var listDataIcon = Icon(listData.icon!.icon,
         color: widget.screenIndex == listData.index
-            ? Colors.blue
-            : AppTheme.nearlyBlack);
+            ? AppTheme.drawerHighlightIconColor
+            : AppTheme.drawerIconColor);
 
     var children3 = <Widget>[
       Container(
         width: 6.0,
         height: 46.0,
-        // decoration: BoxDecoration(
-        //   color: widget.screenIndex == listData.index
-        //       ? Colors.blue
-        //       : Colors.transparent,
-        //   borderRadius: new BorderRadius.only(
-        //     topLeft: Radius.circular(0),
-        //     topRight: Radius.circular(16),
-        //     bottomLeft: Radius.circular(0),
-        //     bottomRight: Radius.circular(16),
-        //   ),
-        // ),
       ),
       const Padding(
         padding: EdgeInsets.all(4.0),
       ),
-      listData.isAssetsImage
+      listData.isAssetsImage // TODO
           ? Container(
               width: 24,
               height: 24,
               child: Image.asset(listData.imageName,
                   color: widget.screenIndex == listData.index
-                      ? Colors.blue
-                      : AppTheme.nearlyBlack),
+                      ? AppTheme.drawerHighlightIconColor
+                      : AppTheme.drawerIconColor),
             )
           : listDataIcon,
       const Padding(
@@ -313,8 +296,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        splashColor: Colors.grey.withOpacity(0.1),
-        highlightColor: Colors.transparent,
+        splashColor: AppTheme.drawerSplashColor,
+        highlightColor: AppTheme.drawerHightlightColor,
         onTap: () {
           navigationToScreen(listData.index);
         },

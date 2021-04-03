@@ -27,7 +27,6 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:sanmill/style/app_theme.dart';
 
@@ -292,7 +291,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(S.of(context).newGame,
-              style: TextStyle(color: UIColors.primaryColor)),
+              style: TextStyle(color: AppTheme.dialogTitleColor)),
           content:
               SingleChildScrollView(child: Text(S.of(context).restartGame)),
           actions: <Widget>[
@@ -408,7 +407,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(dialogTitle,
-                style: TextStyle(color: UIColors.primaryColor)),
+                style: TextStyle(color: AppTheme.dialogTitleColor)),
             content: Text(getGameOverReasonString(
                     Game.instance.position.gameOverReason,
                     Game.instance.position.winner) +
@@ -435,7 +434,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(dialogTitle,
-                style: TextStyle(color: UIColors.primaryColor)),
+                style: TextStyle(color: AppTheme.dialogTitleColor)),
             content: Text(getGameOverReasonString(
                 Game.instance.position.gameOverReason,
                 Game.instance.position.winner)),
@@ -496,10 +495,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     IconData iconArrow = getIconArrow();
 
-    final subTitleStyle =
-        TextStyle(fontSize: 16, color: UIColors.darkTextSecondaryColor);
-
-    var iconColor = UIColors.darkTextPrimaryColor;
+    var iconColor = AppTheme.gamePageHeaderIconColor;
 
     var iconRow = Row(
       children: <Widget>[
@@ -527,7 +523,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(_status!, maxLines: 1, style: subTitleStyle),
+            child:
+                Text(_status!, maxLines: 1, style: AppTheme.gamePageTipStyle),
           ),
         ],
       ),
@@ -609,19 +606,16 @@ class _GamePageState extends State<GamePage> with RouteAware {
         Game.instance.position.pieceOnBoardCount[PieceColor.white].toString() +
         " pieces on board\n";
 
-    final manualStyle =
-        TextStyle(fontSize: 18, height: 1.5, color: Colors.yellow);
-
     var newGameButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
             Icons.motion_photos_on,
-            color: UIColors.secondaryColor,
+            color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).newGame,
-              style: TextStyle(color: UIColors.secondaryColor)),
+              style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
       onPressed: newGame,
@@ -633,10 +627,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
         children: <Widget>[
           Icon(
             Icons.restore,
-            color: UIColors.secondaryColor,
+            color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).regret,
-              style: TextStyle(color: UIColors.secondaryColor)),
+              style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
       onPressed: () {
@@ -651,10 +645,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
         children: <Widget>[
           Icon(
             Icons.list_alt,
-            color: UIColors.secondaryColor,
+            color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).gameRecord,
-              style: TextStyle(color: UIColors.secondaryColor)),
+              style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
       onPressed: () => showDialog(
@@ -662,14 +656,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.transparent,
+            backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
             title: Text(S.of(context).gameRecord,
-                style: TextStyle(color: Colors.yellow)),
+                style: TextStyle(color: AppTheme.moveHistoryTextColor)),
             content: SingleChildScrollView(
-                child: Text(manualText, style: manualStyle)),
+                child: Text(manualText, style: AppTheme.moveHistoryTextStyle)),
             actions: <Widget>[
               TextButton(
-                child: Text(S.of(context).copy, style: manualStyle),
+                child: Text(S.of(context).copy,
+                    style: AppTheme.moveHistoryTextStyle),
                 onPressed: () =>
                     Clipboard.setData(ClipboardData(text: manualText))
                         .then((_) {
@@ -677,7 +672,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
                 }),
               ),
               TextButton(
-                child: Text(S.of(context).cancel, style: manualStyle),
+                child: Text(S.of(context).cancel,
+                    style: AppTheme.moveHistoryTextStyle),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],
@@ -692,10 +688,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
         children: <Widget>[
           Icon(
             Icons.lightbulb_outline,
-            color: UIColors.secondaryColor,
+            color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).hint,
-              style: TextStyle(color: UIColors.secondaryColor)),
+              style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
       onPressed: () => showDialog(
@@ -703,14 +699,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.transparent,
+            backgroundColor: AppTheme.hintDialogackgroundColor,
             title: Text(S.of(context).analyze,
-                style: TextStyle(color: Colors.yellow)),
+                style: TextStyle(color: AppTheme.hintTextColor)),
             content: SingleChildScrollView(
-                child: Text(analyzeText, style: manualStyle)),
+                child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle)),
             actions: <Widget>[
               TextButton(
-                child: Text(S.of(context).ok, style: manualStyle),
+                child: Text(S.of(context).ok,
+                    style: AppTheme.moveHistoryTextStyle),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],
@@ -741,16 +738,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   Widget buildMoveHistoryPanel(String text) {
-    final manualStyle = TextStyle(
-      fontSize: 18,
-      color: UIColors.darkTextSecondaryColor,
-      height: 1.5,
-    );
-
     return Expanded(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 16),
-        child: SingleChildScrollView(child: Text(text, style: manualStyle)),
+        child: SingleChildScrollView(
+            child: Text(text, style: AppTheme.moveHistoryTextStyle)),
       ),
     );
   }

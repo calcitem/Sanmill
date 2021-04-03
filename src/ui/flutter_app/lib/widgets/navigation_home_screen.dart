@@ -6,6 +6,7 @@ import 'package:sanmill/widgets/about_page.dart';
 import 'package:sanmill/widgets/drawer_user_controller.dart';
 import 'package:sanmill/widgets/help_screen.dart';
 import 'package:sanmill/widgets/home_drawer.dart';
+import 'package:sanmill/style/colors.dart';
 
 import 'game_page.dart';
 import 'game_settings_page.dart';
@@ -31,12 +32,12 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.nearlyWhite,
+      color: UIColors.nearlyWhite,
       child: SafeArea(
         top: false,
         bottom: false,
         child: Scaffold(
-          backgroundColor: AppTheme.nearlyWhite,
+          backgroundColor: AppTheme.navigationHomeScreenBackgroundColor,
           body: DrawerUserController(
             screenIndex: drawerIndex,
             drawerWidth: MediaQuery.of(context).size.width * 0.75,
