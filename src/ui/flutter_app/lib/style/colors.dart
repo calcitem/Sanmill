@@ -32,10 +32,14 @@ class UIColors {
   static const darkGrey = Color(0xFF313A44);
 
   static const burlyWood = Color(0xFFDEB887);
+  static const cottonCandy = Color.fromARGB(0xFF, 255, 189, 219);
+  static const turkishRose = Color.fromARGB(0xFF, 163, 109, 173);
   static const crusoe = Color(0xFF165B31);
   static const forestGreen = Color(0xFF228B22);
   static const freeSpeechGreen = Color(0xFF09F911);
   static const oasis = Color.fromARGB(0xFF, 253, 239, 194);
   static const papayaWhip = Color(0xFFFFEFD5);
+  static const stormGrey = Color.fromARGB(0xFF, 119, 121, 131);
   static const turmeric = Color.fromARGB(0xFF, 186, 202, 68);
+  static const LavenderBlush = Color.fromARGB(0xFF, 255, 240, 246);
 }
