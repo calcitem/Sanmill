@@ -228,7 +228,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           */
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -251,7 +251,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -274,7 +274,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,

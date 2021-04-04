@@ -32,10 +32,17 @@ class AppTheme {
   static var lightBackgroundColor = UIColors.papayaWhip;
   static var listTileSubtitleColor = Color(0x99461220);
   static var listItemDividerColor = Color(0x336D000D);
+  static var switchListTileActiveColor = dialogTitleColor;
+  static var switchListTileTitleColor = UIColors.crusoe;
+  static const cardColor = UIColors.floralWhite;
+  static const settingsHeaderTextColor = UIColors.crusoe;
 
   /// Help page
   static var helpBackgroundColor = boardBackgroundColor;
   static var helpTextColor = boardBackgroundColor;
+
+  /// About
+  static var aboutPageBackgroundColor = lightBackgroundColor;
 
   /// Drawer
   static var drawerColor = Colors.white;
@@ -63,39 +70,6 @@ class AppTheme {
     Colors.red,
   ];
 
-  // Style
-
-  static var gamePageTipStyle = TextStyle(fontSize: 16, color: tipTextColor);
-
-  static const cardColor = UIColors.floralWhite;
-  static const cardMargin =
-      const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0);
-
-  static const settingsHeaderStyle =
-      TextStyle(color: UIColors.crusoe, fontSize: 20.0);
-
-  static var switchListTileActiveColor = dialogTitleColor;
-  static var switchListTileTitleStyle = TextStyle(color: UIColors.crusoe);
-
-  static var moveHistoryTextStyle =
-      TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);
-
-  static var aboutPageBackgroundColor = lightBackgroundColor;
-
-  static double copyrightFontSize = 12;
-  static var versionDialogAppNameTextStyle = TextStyle(color: dialogTitleColor);
-  static var versionDialogCopyrightTextStyle = TextStyle(
-    fontSize: AppTheme.copyrightFontSize,
-  );
-
-  static double boardBorderRadius = 5;
-  static var boardPadding = 5.0;
-
-  static const double drawerWidth = 250;
-
-  static double boardMargin = 10.0;
-  static var boardScreenPaddingH = 10.0;
-
   // Theme
 
   static const sliderThemeData = SliderThemeData(
@@ -119,6 +93,27 @@ class AppTheme {
     valueIndicatorTextStyle: TextStyle(fontSize: 24),
   );
 
-  // Misc
-  static const SizedBox sizedBox = SizedBox(height: 16);
+  // Style
+
+  static var moveHistoryTextStyle =
+      TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);
+
+  static double boardMargin = 10.0;
+  static double boardScreenPaddingH = 10.0;
+  static double boardBorderRadius = 5.0;
+  static double boardPadding = 5.0;
+
+  static var gamePageTipStyle = TextStyle(fontSize: 16, color: tipTextColor);
+
+  static const settingsHeaderStyle =
+      TextStyle(color: settingsHeaderTextColor, fontSize: 20.0);
+
+  static const cardMargin =
+      const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0);
+
+  static const double drawerWidth = 250.0;
+
+  static const double sizedBoxHeight = 16.0;
+
+  static double copyrightFontSize = 12;
 }

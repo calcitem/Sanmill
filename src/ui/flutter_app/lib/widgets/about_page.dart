@@ -88,7 +88,7 @@ class _AboutPageState extends State<AboutPage> {
       /*
       ListTile(
         title: Text(S.of(context).viewInGooglePlayStore,
-            style: AppTheme.switchListTileTitleStyle),
+            style: TextStyle(color: AppTheme.switchListTileTitleColor)),
         onTap: () => _launchURL(
             'https://play.google.com/store/apps/details?id=com.calcitem.sanmill'),
       ),
@@ -172,18 +172,20 @@ class _AboutPageState extends State<AboutPage> {
     return AlertDialog(
       title: Text(
         S.of(context).appName,
-        style: AppTheme.versionDialogAppNameTextStyle,
+        style: TextStyle(color: AppTheme.dialogTitleColor),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(S.of(context).version + ": $_version"),
-          AppTheme.sizedBox,
-          AppTheme.sizedBox,
+          SizedBox(height: AppTheme.sizedBoxHeight),
+          SizedBox(height: AppTheme.sizedBoxHeight),
           Text(
             S.of(context).copyright,
-            style: AppTheme.versionDialogCopyrightTextStyle,
+            style: TextStyle(
+              fontSize: AppTheme.copyrightFontSize,
+            ),
           ),
         ],
       ),

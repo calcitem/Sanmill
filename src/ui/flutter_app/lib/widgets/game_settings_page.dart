@@ -127,7 +127,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).aisPlayStyle, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -147,7 +147,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -160,7 +160,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -174,7 +174,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).automaticBehavior,
           style: AppTheme.settingsHeaderStyle),
       SettingsCard(
@@ -188,7 +188,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,

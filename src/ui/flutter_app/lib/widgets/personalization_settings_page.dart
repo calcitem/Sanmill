@@ -212,7 +212,7 @@ class _PersonalizationSettingsPageState
           ),
         ],
       ),
-      AppTheme.sizedBox,
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,

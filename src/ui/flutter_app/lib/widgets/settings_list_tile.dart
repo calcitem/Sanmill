@@ -40,7 +40,8 @@ class SettingsListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(titleString, style: AppTheme.switchListTileTitleStyle),
+      title: Text(titleString,
+          style: TextStyle(color: AppTheme.switchListTileTitleColor)),
       subtitle: subtitleString == null
           ? null
           : Text(

@@ -41,7 +41,8 @@ class SettingsSwitchListTile extends StatelessWidget {
       value: value,
       onChanged: onChanged,
       activeColor: AppTheme.switchListTileActiveColor,
-      title: Text(titleString, style: AppTheme.switchListTileTitleStyle),
+      title: Text(titleString,
+          style: TextStyle(color: AppTheme.switchListTileTitleColor)),
       subtitle: subtitleString == null
           ? null
           : Text(
