@@ -98,6 +98,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
 
   @override
   Widget build(BuildContext context) {
+    // this just menu and arrow icon animation
     var inkWell = InkWell(
       borderRadius: BorderRadius.circular(AppBar().preferredSize.height),
       child: Center(
@@ -157,13 +158,12 @@ class _DrawerUserControllerState extends State<DrawerUserController>
               onDrawerClick();
             },
           ),
-        // this just menu and arrow icon animation
         Padding(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 8, left: 8),
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 0),
           child: SizedBox(
-            width: AppBar().preferredSize.height - 8,
-            height: AppBar().preferredSize.height - 8,
+            width: AppBar().preferredSize.height,
+            height: AppBar().preferredSize.height,
             child: Material(
               color: Colors.transparent,
               child: inkWell,
