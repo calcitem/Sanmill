@@ -22,6 +22,8 @@ import 'package:sanmill/style/app_theme.dart';
 import 'settings.dart';
 
 class Config {
+  static bool settingsLoaded = false;
+
   static bool toneEnabled = true;
   static int thinkingTime = 10000; // TODO: waitResponse
   static bool aiMovesFirst = false;
@@ -123,6 +125,7 @@ class Config {
     rule.maxStepsLedToDraw =
         Config.maxStepsLedToDraw = settings['MaxStepsLedToDraw'] ?? 50;
 
+    settingsLoaded = true;
     print("Loading settings done!");
   }
 

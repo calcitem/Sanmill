@@ -27,9 +27,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
-import 'package:stack_trace/stack_trace.dart';
+//import 'package:stack_trace/stack_trace.dart';
 
-import 'common/config.dart';
+//import 'common/config.dart';
 import 'services/audios.dart';
 
 //import 'package:sentry_flutter/sentry_flutter.dart';
@@ -127,12 +127,11 @@ class SanmillApp extends StatefulWidget {
 }
 
 class _SanmillAppState extends State<SanmillApp> {
-  //
   @override
   void initState() {
-    Chain.capture(() {
-      Config.loadSettings();
-    });
+    //Chain.capture(() {
+    //  Config.loadSettings();
+    //});
     super.initState();
   }
 
