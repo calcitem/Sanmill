@@ -94,6 +94,10 @@ class AppTheme {
   );
 
   // Style
+  static const colorizeTextStyle = TextStyle(
+    fontSize: 24.0,
+    fontWeight: FontWeight.w600,
+  );
 
   static var moveHistoryTextStyle =
       TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);

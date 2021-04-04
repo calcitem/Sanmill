@@ -1,3 +1,21 @@
+/*
+  This file is part of Sanmill.
+  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+
+  Sanmill is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Sanmill is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -5,6 +23,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
+
+enum DrawerIndex {
+  humanVsAi,
+  humanVsHuman,
+  aiVsAi,
+  settings,
+  ruleSettings,
+  personalization,
+  Help,
+  About
+}
+
+class DrawerListItem {
+  DrawerListItem({this.index, this.title = '', this.icon});
+
+  DrawerIndex? index;
+  String title;
+  Icon? icon;
+}
 
 class HomeDrawer extends StatefulWidget {
   const HomeDrawer(
@@ -23,101 +60,75 @@ class HomeDrawer extends StatefulWidget {
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
-  late List<DrawerList> drawerList;
   @override
   void initState() {
     super.initState();
   }
 
-  void setDrawerListArray() {
-    drawerList = <DrawerList>[
-      DrawerList(
+  @override
+  Widget build(BuildContext context) {
+    List<DrawerListItem> drawerList = <DrawerListItem>[
+      DrawerListItem(
         index: DrawerIndex.humanVsAi,
-        labelName: S.of(context).humanVsAi,
+        title: S.of(context).humanVsAi,
         icon: Icon(Icons.person),
       ),
-      DrawerList(
+      DrawerListItem(
         index: DrawerIndex.humanVsHuman,
-        labelName: S.of(context).humanVsHuman,
+        title: S.of(context).humanVsHuman,
         icon: Icon(Icons.group),
       ),
-      DrawerList(
+      DrawerListItem(
         index: DrawerIndex.aiVsAi,
-        labelName: S.of(context).aiVsAi,
+        title: S.of(context).aiVsAi,
         icon: Icon(Icons.computer),
       ),
-      DrawerList(
+      DrawerListItem(
         index: DrawerIndex.settings,
-        labelName: S.of(context).settings,
+        title: S.of(context).settings,
         icon: Icon(Icons.settings),
       ),
-      DrawerList(
+      DrawerListItem(
         index: DrawerIndex.ruleSettings,
-        labelName: S.of(context).ruleSettings,
+        title: S.of(context).ruleSettings,
         icon: Icon(Icons.rule),
       ),
-      DrawerList(
+      DrawerListItem(
         index: DrawerIndex.personalization,
-        labelName: S.of(context).personalization,
+        title: S.of(context).personalization,
         icon: Icon(Icons.color_lens),
       ),
-      DrawerList(
+      DrawerListItem(
         index: DrawerIndex.Help,
-        labelName: S.of(context).help,
+        title: S.of(context).help,
         icon: Icon(Icons.help),
       ),
-      /*
-      DrawerList(
-        index: DrawerIndex.FeedBack,
-        labelName: S.of(context).feedback,
-        icon: Icon(Icons.feedback),
-      ),
-      DrawerList(
-        index: DrawerIndex.Invite,
-        labelName: S.of(context).inviteFriend,
-        icon: Icon(Icons.group),
-      ),
-      DrawerList(
-        index: DrawerIndex.Share,
-        labelName: S.of(context).rateTheApp,
-        icon: Icon(Icons.share),
-      ),
-      */
-      DrawerList(
+      DrawerListItem(
         index: DrawerIndex.About,
-        labelName: S.of(context).about,
+        title: S.of(context).about,
         icon: Icon(Icons.info),
       ),
     ];
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    setDrawerListArray();
+    var rotationTransition = RotationTransition(
+      turns: AlwaysStoppedAnimation<double>(Tween<double>(begin: 0.0, end: 24.0)
+              .animate(CurvedAnimation(
+                  parent: widget.iconAnimationController!,
+                  curve: Curves.fastOutSlowIn))
+              .value /
+          360),
+    );
 
-    const colorizeColors = AppTheme.animatedTextsColors;
-
-    const colorizeTextStyle = TextStyle(
-      fontSize: 24.0,
-      fontWeight: FontWeight.w600,
+    var scaleTransition = ScaleTransition(
+      scale: AlwaysStoppedAnimation<double>(
+          1.0 - (widget.iconAnimationController!.value) * 0.2),
+      child: rotationTransition,
     );
 
     var animatedBuilder = AnimatedBuilder(
       animation: widget.iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
-        return ScaleTransition(
-          scale: AlwaysStoppedAnimation<double>(
-              1.0 - (widget.iconAnimationController!.value) * 0.2),
-          child: RotationTransition(
-            turns: AlwaysStoppedAnimation<double>(
-                Tween<double>(begin: 0.0, end: 24.0)
-                        .animate(CurvedAnimation(
-                            parent: widget.iconAnimationController!,
-                            curve: Curves.fastOutSlowIn))
-                        .value /
-                    360),
-          ),
-        );
+        return scaleTransition;
       },
     );
 
@@ -125,8 +136,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
       animatedTexts: [
         ColorizeAnimatedText(
           S.of(context).appName,
-          textStyle: colorizeTextStyle,
-          colors: colorizeColors,
+          textStyle: AppTheme.colorizeTextStyle,
+          colors: AppTheme.animatedTextsColors,
           textAlign: TextAlign.start,
           speed: const Duration(milliseconds: 3000),
         ),
@@ -136,83 +147,84 @@ class _HomeDrawerState extends State<HomeDrawer> {
       stopPauseOnTap: true,
     );
 
-    return Scaffold(
+    var drawerHeader = Container(
+      width: double.infinity,
+      padding: const EdgeInsets.only(top: 0.0),
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            animatedBuilder,
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 4),
+              child: animatedTextKit,
+            ),
+          ],
+        ),
+      ),
+    );
+
+    var exitListTile = ListTile(
+      title: Text(
+        S.of(context).exit,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          color: AppTheme.exitTextColor,
+        ),
+        textAlign: TextAlign.left,
+      ),
+      trailing: Icon(
+        Icons.power_settings_new,
+        color: AppTheme.exitIconColor,
+      ),
+      onTap: () async {
+        await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+      },
+    );
+
+    var drawFooter = Column(
+      children: <Widget>[
+        exitListTile,
+        SizedBox(height: MediaQuery.of(context).padding.bottom)
+      ],
+    );
+
+    var scaffold = Scaffold(
       backgroundColor: AppTheme.drawerBackgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 0.0),
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  animatedBuilder,
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 4),
-                    child: animatedTextKit,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 4,
-          ),
-          Divider(
-            height: 1,
-            color: AppTheme.drawerDividerColor,
-          ),
+          drawerHeader,
+          const SizedBox(height: 4),
+          Divider(height: 1, color: AppTheme.drawerDividerColor),
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(0.0),
               itemCount: drawerList.length,
               itemBuilder: (BuildContext context, int index) {
-                return inkwell(drawerList[index]);
+                return buildInkwell(drawerList[index]);
               },
             ),
           ),
-          Divider(
-            height: 1,
-            color: AppTheme.drawerDividerColor,
-          ),
-          Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  S.of(context).exit,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: AppTheme.exitTextColor,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                trailing: Icon(
-                  Icons.power_settings_new,
-                  color: AppTheme.exitIconColor,
-                ),
-                onTap: () async {
-                  await SystemChannels.platform
-                      .invokeMethod<void>('SystemNavigator.pop');
-                },
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).padding.bottom,
-              )
-            ],
-          ),
+          Divider(height: 1, color: AppTheme.drawerDividerColor),
+          drawFooter,
         ],
       ),
     );
+
+    return scaffold;
   }
 
-  Widget inkwell(DrawerList listData) {
+  Future<void> navigationToScreen(DrawerIndex? index) async {
+    widget.callBackIndex!(index);
+  }
+
+  Widget buildInkwell(DrawerListItem listItem) {
     var animatedBuilder = AnimatedBuilder(
       animation: widget.iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
@@ -242,56 +254,47 @@ class _HomeDrawerState extends State<HomeDrawer> {
       },
     );
 
-    var listDataText = Text(
-      listData.labelName,
-      style: TextStyle(
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
-        color: widget.screenIndex == listData.index
-            ? AppTheme.drawerHighlightTextColor
-            : AppTheme.drawerTextColor,
-      ),
-      textAlign: TextAlign.left,
-    );
-
-    var listDataIcon = Icon(listData.icon!.icon,
-        color: widget.screenIndex == listData.index
+    var listItemIcon = Icon(listItem.icon!.icon,
+        color: widget.screenIndex == listItem.index
             ? AppTheme.drawerHighlightIconColor
             : AppTheme.drawerIconColor);
 
-    var children3 = <Widget>[
-      Container(
-        width: 6.0,
-        height: 46.0,
-      ),
-      const Padding(
-        padding: EdgeInsets.all(4.0),
-      ),
-      listData.isAssetsImage // TODO
-          ? Container(
-              width: 24,
-              height: 24,
-              child: Image.asset(listData.imageName,
-                  color: widget.screenIndex == listData.index
-                      ? AppTheme.drawerHighlightIconColor
-                      : AppTheme.drawerIconColor),
-            )
-          : listDataIcon,
-      const Padding(
-        padding: EdgeInsets.all(4.0),
-      ),
-      listDataText,
-    ];
-
-    var children2 = <Widget>[
-      Container(
-        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-        child: Row(
-          children: children3,
+    var stack = Stack(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 6.0,
+                height: 46.0,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(4.0),
+              ),
+              listItemIcon,
+              const Padding(
+                padding: EdgeInsets.all(4.0),
+              ),
+              Text(
+                listItem.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: widget.screenIndex == listItem.index
+                      ? AppTheme.drawerHighlightTextColor
+                      : AppTheme.drawerTextColor,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ],
+          ),
         ),
-      ),
-      widget.screenIndex == listData.index ? animatedBuilder : const SizedBox()
-    ];
+        widget.screenIndex == listItem.index
+            ? animatedBuilder
+            : const SizedBox()
+      ],
+    );
 
     return Material(
       color: Colors.transparent,
@@ -299,43 +302,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
         splashColor: AppTheme.drawerSplashColor,
         highlightColor: AppTheme.drawerHightlightColor,
         onTap: () {
-          navigationToScreen(listData.index);
+          navigationToScreen(listItem.index);
         },
-        child: Stack(
-          children: children2,
-        ),
+        child: stack,
       ),
     );
   }
-
-  Future<void> navigationToScreen(DrawerIndex? indexScreen) async {
-    widget.callBackIndex!(indexScreen);
-  }
-}
-
-enum DrawerIndex {
-  humanVsAi,
-  humanVsHuman,
-  aiVsAi,
-  settings,
-  ruleSettings,
-  personalization,
-  Help,
-  About
-}
-
-class DrawerList {
-  DrawerList({
-    this.isAssetsImage = false,
-    this.labelName = '',
-    this.icon,
-    this.index,
-    this.imageName = '',
-  });
-
-  String labelName;
-  Icon? icon;
-  bool isAssetsImage;
-  String imageName;
-  DrawerIndex? index;
 }
