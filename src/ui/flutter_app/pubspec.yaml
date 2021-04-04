@@ -30,7 +30,7 @@ dev_dependencies:
 
 flutter:
   generate: true
-  uses-material-design: true  
+  uses-material-design: true
 
   assets:
     - assets/licenses/GPL-3.0.txt
