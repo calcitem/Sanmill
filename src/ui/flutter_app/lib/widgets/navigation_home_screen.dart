@@ -41,23 +41,22 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
           body: DrawerUserController(
             screenIndex: drawerIndex,
             drawerWidth: MediaQuery.of(context).size.width * 0.75,
-            onDrawerCall: (DrawerIndex drawerIndexData) {
-              changeIndex(drawerIndexData);
+            onDrawerCall: (DrawerIndex index) {
               // callback from drawer for replace screen
               // as user need with passing DrawerIndex (Enum index)
+              changeIndex(index);
             },
-            screenView: screenView,
             // we replace screen view as
             // we need on navigate starting screens
-            // like MyHomePage, HelpScreen, FeedbackScreen, etc...
+            screenView: screenView,
           ),
         ),
       ),
     );
   }
 
-  void changeIndex(DrawerIndex drawerIndexdata) {
-    if (drawerIndex == drawerIndexdata) {
+  void changeIndex(DrawerIndex index) {
+    if (drawerIndex == index) {
       return;
     }
 
@@ -67,7 +66,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       DrawerIndex.aiVsAi: EngineType.aiVsAi,
     };
 
-    drawerIndex = drawerIndexdata;
+    drawerIndex = index;
 
     var engineType = drawerMap[drawerIndex!];
     if (engineType != null) {
