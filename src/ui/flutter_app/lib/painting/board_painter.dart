@@ -96,6 +96,7 @@ class BoardPainter extends PiecesBasePainter {
     );
 
     paint.strokeWidth = Config.boardInnerLineWidth;
+    double bias = paint.strokeWidth / 2;
 
     // File B
     canvas.drawRect(
@@ -114,28 +115,28 @@ class BoardPainter extends PiecesBasePainter {
     // Middle horizontal lines (Left to Right)
 
     canvas.drawLine(
-      Offset(left, top + squareWidth * 3),
-      Offset(left + squareWidth * 2, top + squareWidth * 3),
+      Offset(left - bias, top + squareWidth * 3),
+      Offset(left + squareWidth * 2 + bias, top + squareWidth * 3),
       paint,
     );
 
     canvas.drawLine(
-      Offset(left + squareWidth * 4, top + squareWidth * 3),
-      Offset(left + squareWidth * 6, top + squareWidth * 3),
+      Offset(left + squareWidth * 4 - bias, top + squareWidth * 3),
+      Offset(left + squareWidth * 6 + bias, top + squareWidth * 3),
       paint,
     );
 
     // Middle horizontal lines (Top to Bottom)
 
     canvas.drawLine(
-      Offset(left + squareWidth * 3, top),
-      Offset(left + squareWidth * 3, top + squareWidth * 2),
+      Offset(left + squareWidth * 3, top - bias),
+      Offset(left + squareWidth * 3, top + squareWidth * 2 + bias),
       paint,
     );
 
     canvas.drawLine(
-      Offset(left + squareWidth * 3, top + squareWidth * 4),
-      Offset(left + squareWidth * 3, top + squareWidth * 6),
+      Offset(left + squareWidth * 3, top + squareWidth * 4 - bias),
+      Offset(left + squareWidth * 3, top + squareWidth * 6 + bias),
       paint,
     );
 
