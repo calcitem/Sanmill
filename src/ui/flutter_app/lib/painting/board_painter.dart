@@ -89,6 +89,7 @@ class BoardPainter extends PiecesBasePainter {
               top + squareWidth * 3 - textPainter.height / 2));
     }
 
+    // File C
     canvas.drawRect(
       Rect.fromLTWH(left, top, squareWidth * 6, squareWidth * 6),
       paint,
@@ -96,29 +97,17 @@ class BoardPainter extends PiecesBasePainter {
 
     paint.strokeWidth = Config.boardInnerLineWidth;
 
-    // Horizontal lines (Top to Bottom)
-
-    canvas.drawLine(
-      Offset(left + squareWidth * 1, top + squareWidth * 1),
-      Offset(left + squareWidth * 5, top + squareWidth * 1),
+    // File B
+    canvas.drawRect(
+      Rect.fromLTWH(left + squareWidth * 1, top + squareWidth * 1,
+          squareWidth * 4, squareWidth * 4),
       paint,
     );
 
-    canvas.drawLine(
-      Offset(left + squareWidth * 2, top + squareWidth * 2),
-      Offset(left + squareWidth * 4, top + squareWidth * 2),
-      paint,
-    );
-
-    canvas.drawLine(
-      Offset(left + squareWidth * 2, top + squareWidth * 4),
-      Offset(left + squareWidth * 4, top + squareWidth * 4),
-      paint,
-    );
-
-    canvas.drawLine(
-      Offset(left + squareWidth * 1, top + squareWidth * 5),
-      Offset(left + squareWidth * 5, top + squareWidth * 5),
+    // File A
+    canvas.drawRect(
+      Rect.fromLTWH(left + squareWidth * 2, top + squareWidth * 2,
+          squareWidth * 2, squareWidth * 2),
       paint,
     );
 
@@ -133,32 +122,6 @@ class BoardPainter extends PiecesBasePainter {
     canvas.drawLine(
       Offset(left + squareWidth * 4, top + squareWidth * 3),
       Offset(left + squareWidth * 6, top + squareWidth * 3),
-      paint,
-    );
-
-    // Ordinate Lines (Left to Right)
-
-    canvas.drawLine(
-      Offset(left + squareWidth * 1, top + squareWidth * 1),
-      Offset(left + squareWidth * 1, top + squareWidth * 5),
-      paint,
-    );
-
-    canvas.drawLine(
-      Offset(left + squareWidth * 2, top + squareWidth * 2),
-      Offset(left + squareWidth * 2, top + squareWidth * 4),
-      paint,
-    );
-
-    canvas.drawLine(
-      Offset(left + squareWidth * 4, top + squareWidth * 2),
-      Offset(left + squareWidth * 4, top + squareWidth * 4),
-      paint,
-    );
-
-    canvas.drawLine(
-      Offset(left + squareWidth * 5, top + squareWidth * 1),
-      Offset(left + squareWidth * 5, top + squareWidth * 5),
       paint,
     );
 
