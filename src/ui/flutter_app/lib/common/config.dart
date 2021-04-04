@@ -61,7 +61,9 @@ class Config {
   static bool mayFly = true;
   static int maxStepsLedToDraw = 50;
 
-  static Future<void> loadProfile() async {
+  static Future<void> loadSettings() async {
+    print("Loading settings...");
+
     final settings = await Settings.instance();
 
     Config.toneEnabled = settings['ToneEnabled'] ?? true;
@@ -120,6 +122,8 @@ class Config {
     rule.mayFly = Config.mayFly = settings['MayFly'] ?? true;
     rule.maxStepsLedToDraw =
         Config.maxStepsLedToDraw = settings['MaxStepsLedToDraw'] ?? 50;
+
+    print("Loading settings done!");
   }
 
   static Future<bool> save() async {
