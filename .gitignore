@@ -348,7 +348,7 @@ shortKnotValue.dat
 settings.ini
 
 # Executable files
-src/fishmill
+src/sanmill
 
 # Sourcetrail files
 *.srctrl*
