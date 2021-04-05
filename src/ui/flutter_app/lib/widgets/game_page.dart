@@ -531,7 +531,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
 
     return Container(
-      margin: EdgeInsets.only(top: SanmillApp.StatusBarHeight),
+      margin: EdgeInsets.only(top: AppTheme.gamePageTopMargin),
       child: Column(
         children: <Widget>[
           iconRow,

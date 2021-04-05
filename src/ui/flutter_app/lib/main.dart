@@ -119,9 +119,6 @@ RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final globalScaffoldKey = GlobalKey<ScaffoldState>();
 
 class SanmillApp extends StatefulWidget {
-  //
-  static const StatusBarHeight = 28.0;
-
   @override
   _SanmillAppState createState() => _SanmillAppState();
 }

@@ -102,6 +102,7 @@ class AppTheme {
   static var moveHistoryTextStyle =
       TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);
 
+  static double gamePageTopMargin = 28.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;
   static double boardBorderRadius = 5.0;
