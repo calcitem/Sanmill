@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
@@ -49,6 +51,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
   // TODO: null-safety
   String? _status = '';
   //bool _searching = false;
+  bool isReady = false;
+  late Timer timer;
 
   @override
   void initState() {
@@ -59,6 +63,20 @@ class _GamePageState extends State<GamePage> with RouteAware {
     super.initState();
     Game.instance.init();
     widget.engine.startup();
+
+    timer = Timer.periodic(Duration(microseconds: 100), (Timer t) {
+      _setReadyState();
+    });
+  }
+
+  _setReadyState() async {
+    print("Check if need to set Ready state...");
+    if (!isReady && mounted && Config.settingsLoaded) {
+      print("Set Ready State...");
+      setState(() {});
+      isReady = true;
+      timer.cancel();
+    }
   }
 
   changeStatus(String? status) {
@@ -92,6 +110,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   onBoardTap(BuildContext context, int index) {
+    if (!isReady) {
+      print("Not ready, skip onBoardTap.");
+      return false;
+    }
+
     if (Game.instance.engineType == EngineType.testViaLAN) {
       return false;
     }
