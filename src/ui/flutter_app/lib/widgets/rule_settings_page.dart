@@ -38,135 +38,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     super.initState();
   }
 
-  setNTotalPiecesEachSide() {
-    callback(int? piecesCount) async {
-      print("piecesCount = $piecesCount");
-
-      Navigator.of(context).pop();
-
-      setState(() {
-        rule.piecesCount = Config.piecesCount = piecesCount ?? 9;
-      });
-
-      Config.save();
-    }
-
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('6'),
-            groupValue: Config.piecesCount,
-            value: 6,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('9'),
-            groupValue: Config.piecesCount,
-            value: 9,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('12'),
-            groupValue: Config.piecesCount,
-            value: 12,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-        ],
-      ),
-    );
-  }
-
-  setNPiecesAtLeast(int value) async {
-    setState(() {
-      rule.piecesAtLeastCount = Config.piecesAtLeastCount = value;
-    });
-
-    Config.save();
-  }
-
-  setHasDiagonalLines(bool value) async {
-    setState(() {
-      rule.hasDiagonalLines = Config.hasDiagonalLines = value;
-    });
-
-    Config.save();
-  }
-
-  setHasBannedLocations(bool value) async {
-    setState(() {
-      rule.hasBannedLocations = Config.hasBannedLocations = value;
-    });
-
-    Config.save();
-  }
-
-  setIsDefenderMoveFirst(bool value) async {
-    setState(() {
-      rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
-    });
-
-    Config.save();
-  }
-
-  setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
-    setState(() {
-      rule.mayRemoveMultiple = Config.mayRemoveMultiple = value;
-    });
-
-    Config.save();
-  }
-
-  setAllowRemovePieceInMill(bool value) async {
-    setState(() {
-      rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways = value;
-    });
-
-    Config.save();
-  }
-
-  setIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
-    setState(() {
-      rule.isBlackLoseButNotDrawWhenBoardFull =
-          Config.isBlackLoseButNotDrawWhenBoardFull = value;
-    });
-
-    Config.save();
-  }
-
-  setIsLoseButNotChangeSideWhenNoWay(bool value) async {
-    setState(() {
-      rule.isLoseButNotChangeSideWhenNoWay =
-          Config.isLoseButNotChangeSideWhenNoWay = value;
-    });
-
-    Config.save();
-  }
-
-  setAllowFlyingAllowed(bool value) async {
-    setState(() {
-      rule.mayFly = Config.mayFly = value;
-    });
-
-    Config.save();
-  }
-
-  setMaxStepsLedToDraw(int value) async {
-    setState(() {
-      rule.maxStepsLedToDraw = Config.maxStepsLedToDraw = value;
-    });
-
-    Config.save();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -298,5 +169,144 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         ],
       ),
     ];
+  }
+
+  // General
+
+  setNTotalPiecesEachSide() {
+    callback(int? piecesCount) async {
+      print("piecesCount = $piecesCount");
+
+      Navigator.of(context).pop();
+
+      setState(() {
+        rule.piecesCount = Config.piecesCount = piecesCount ?? 9;
+      });
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('6'),
+            groupValue: Config.piecesCount,
+            value: 6,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('9'),
+            groupValue: Config.piecesCount,
+            value: 9,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('12'),
+            groupValue: Config.piecesCount,
+            value: 12,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+        ],
+      ),
+    );
+  }
+
+  setHasDiagonalLines(bool value) async {
+    setState(() {
+      rule.hasDiagonalLines = Config.hasDiagonalLines = value;
+    });
+
+    Config.save();
+  }
+
+  setAllowFlyingAllowed(bool value) async {
+    setState(() {
+      rule.mayFly = Config.mayFly = value;
+    });
+
+    Config.save();
+  }
+
+  // Placing
+
+  setHasBannedLocations(bool value) async {
+    setState(() {
+      rule.hasBannedLocations = Config.hasBannedLocations = value;
+    });
+
+    Config.save();
+  }
+
+  setIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
+    setState(() {
+      rule.isBlackLoseButNotDrawWhenBoardFull =
+          Config.isBlackLoseButNotDrawWhenBoardFull = value;
+    });
+
+    Config.save();
+  }
+
+  // Moving
+
+  setIsDefenderMoveFirst(bool value) async {
+    setState(() {
+      rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
+    });
+
+    Config.save();
+  }
+
+  setIsLoseButNotChangeSideWhenNoWay(bool value) async {
+    setState(() {
+      rule.isLoseButNotChangeSideWhenNoWay =
+          Config.isLoseButNotChangeSideWhenNoWay = value;
+    });
+
+    Config.save();
+  }
+
+  // Removing
+
+  setAllowRemovePieceInMill(bool value) async {
+    setState(() {
+      rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways = value;
+    });
+
+    Config.save();
+  }
+
+  setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
+    setState(() {
+      rule.mayRemoveMultiple = Config.mayRemoveMultiple = value;
+    });
+
+    Config.save();
+  }
+
+  // Unused
+
+  setMaxStepsLedToDraw(int value) async {
+    setState(() {
+      rule.maxStepsLedToDraw = Config.maxStepsLedToDraw = value;
+    });
+
+    Config.save();
+  }
+
+  setNPiecesAtLeast(int value) async {
+    setState(() {
+      rule.piecesAtLeastCount = Config.piecesAtLeastCount = value;
+    });
+
+    Config.save();
   }
 }
