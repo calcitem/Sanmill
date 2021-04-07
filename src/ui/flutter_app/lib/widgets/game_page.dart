@@ -246,6 +246,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   engineToGo() async {
+    if (!mounted) {
+      print("!mounted, skip engineToGo.");
+      return;
+    }
+
     // TODO
     print("Engine to go");
 
