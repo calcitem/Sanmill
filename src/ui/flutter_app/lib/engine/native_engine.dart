@@ -114,6 +114,7 @@ class NativeEngine extends AiEngine {
       await Config.loadSettings();
     }
 
+    await send('setoption name DeveloperMode value ${Config.developerMode}');
     await send('setoption name SkillLevel value ${Config.skillLevel}');
     await send('setoption name AiIsLazy value ${Config.aiIsLazy}');
     await send('setoption name Shuffling value ${Config.shufflingEnabled}');

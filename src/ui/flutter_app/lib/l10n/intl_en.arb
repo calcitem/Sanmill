@@ -743,10 +743,17 @@
   "timeout": "Timeout",
   "@timeout": {
     "description": "Timeout"
-  }
-  ,
+  },
   "personalization": "Personalization",
   "@personalization": {
     "description": "Personalization"
+  },
+  "forDevelopers": "For developers",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "Developer mode",
+  "@developerMode": {
+    "description": "Developer mode"
   }
 }

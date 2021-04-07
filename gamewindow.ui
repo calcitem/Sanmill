@@ -297,6 +297,8 @@
     <addaction name="actionResignIfMostLose_G"/>
     <addaction name="actionAutoRestart_A"/>
     <addaction name="actionShuffling_R"/>
+    <addaction name="separator"/>
+    <addaction name="actionDeveloperMode"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -1318,6 +1320,17 @@
    </property>
    <property name="text">
     <string>Lazy Mode</string>
+   </property>
+  </action>
+  <action name="actionDeveloperMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Developer Mode</string>
    </property>
   </action>
  </widget>

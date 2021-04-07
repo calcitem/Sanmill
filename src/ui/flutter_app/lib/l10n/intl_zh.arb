@@ -186,5 +186,7 @@
   "passive": "消极被动",
   "automaticBehavior": "自动行为",
   "timeout": "超时",
-  "personalization": "外观设置"
+  "personalization": "外观设置",
+  "forDevelopers": "开发者选项",
+  "developerMode": "开发者模式"
 }

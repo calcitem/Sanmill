@@ -144,6 +144,7 @@ void Game::loadSettings()
     setDepthExtension(empty ? true : settings->value("Options/DepthExtension").toBool());
     setAutoRestart(empty ? false : settings->value("Options/AutoRestart").toBool());
     setAutoChangeFirstMove(empty ? false : settings->value("Options/AutoChangeFirstMove").toBool());
+    setDeveloperMode(empty ? false : settings->value("Options/DeveloperMode").toBool());
 
     setRule(empty ? DEFAULT_RULE_NUMBER : settings->value("Options/RuleNo").toInt());
 }
@@ -648,6 +649,12 @@ void Game::setOpeningBook(bool enabled)
 {
     gameOptions.setOpeningBook(enabled);
     settings->setValue("Options/OpeningBook", enabled);
+}
+
+void Game::setDeveloperMode(bool enabled)
+{
+    gameOptions.setDeveloperMode(enabled);
+    settings->setValue("Options/DeveloperMode", enabled);
 }
 
 void Game::flip()

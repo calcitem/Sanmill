@@ -75,6 +75,11 @@ void on_random_move(const Option &o)
     gameOptions.setShufflingEnabled((bool)o);
 }
 
+void on_developerMode(const Option &o)
+{
+    gameOptions.setDeveloperMode((bool)o);
+}
+
 // Rules
 
 void on_piecesCount(const Option &o)
@@ -165,6 +170,7 @@ void init(OptionsMap &o)
     o["UCI_Elo"] << Option(1350, 1350, 2850);
 
     o["Shuffling"] << Option(true, on_random_move);
+    o["DeveloperMode"] << Option(true, on_developerMode);
 
     // Rules
     o["PiecesCount"] << Option(12, 6, 12, on_piecesCount);

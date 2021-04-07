@@ -37,6 +37,7 @@ class Config {
   static bool idsEnabled = false;
   static bool depthExtension = true;
   static bool openingBook = false;
+  static bool developerMode = false;
 
   // Display
   static bool isPieceCountInHandShown = false;
@@ -82,6 +83,7 @@ class Config {
     Config.idsEnabled = settings['IdsEnabled'] ?? false;
     Config.depthExtension = settings['DepthExtension'] ?? false;
     Config.openingBook = settings['OpeningBook'] ?? false;
+    Config.developerMode = settings['DeveloperMode'] ?? false;
 
     // Display
     Config.isPieceCountInHandShown =
@@ -145,6 +147,7 @@ class Config {
     settings['IdsEnabled'] = Config.idsEnabled;
     settings['DepthExtension'] = Config.depthExtension;
     settings['OpeningBook'] = Config.openingBook;
+    settings['DeveloperMode'] = Config.developerMode;
 
     // Display
     settings['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;

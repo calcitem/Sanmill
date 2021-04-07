@@ -157,6 +157,16 @@ public:
         return openingBook;
     }
 
+    void setDeveloperMode(bool enabled) noexcept
+    {
+        developerMode = enabled;
+    }
+
+    bool getDeveloperMode() const noexcept
+    {
+        return developerMode;
+    }
+
 protected:
 
 private:
@@ -175,6 +185,7 @@ private:
     bool IDSEnabled { false };
     bool depthExtension {true};
     bool openingBook { false };
+    bool developerMode { false };
 };
 
 extern GameOptions gameOptions;

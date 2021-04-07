@@ -237,6 +237,9 @@ void MillGameWindow::initialize()
     connect(ui.actionOpeningBook_O, SIGNAL(toggled(bool)),
             game, SLOT(setOpeningBook(bool)));
 
+    connect(ui.actionDeveloperMode, SIGNAL(toggled(bool)),
+            game, SLOT(setDeveloperMode(bool)));
+
     connect(ui.actionFlip_F, &QAction::triggered,
             game, &Game::flip);
 
@@ -395,6 +398,7 @@ void MillGameWindow::initialize()
     ui.actionAutoRestart_A->setChecked(gameOptions.getAutoRestart());
     ui.actionOpeningBook_O->setChecked(gameOptions.getOpeningBook());
     ui.actionLearnEndgame_E->setChecked(gameOptions.getLearnEndgameEnabled());
+    ui.actionDeveloperMode->setChecked(gameOptions.getDeveloperMode());
 }
 
 #ifdef MOBILE_APP_UI

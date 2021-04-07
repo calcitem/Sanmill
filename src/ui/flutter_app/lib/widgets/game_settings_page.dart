@@ -189,6 +189,19 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
+      Text(S.of(context).forDevelopers, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        children: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.developerMode,
+            onChanged: setDeveloperMode,
+            titleString: S.of(context).developerMode,
+          ),
+        ],
+      ),
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -298,6 +311,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   setTone(bool value) async {
     setState(() {
       Config.toneEnabled = value;
+    });
+
+    Config.save();
+  }
+
+  setDeveloperMode(bool value) async {
+    setState(() {
+      Config.developerMode = value;
     });
 
     Config.save();

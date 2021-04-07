@@ -266,6 +266,9 @@ public slots:
     //  OpeningBook
     void setOpeningBook(bool enabled);
 
+    //  DeveloperMode
+    void setDeveloperMode(bool enabled);
+
     // Flip up and down
     void flip();
 
