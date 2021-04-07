@@ -446,6 +446,16 @@ Depth getSearchDepth(const Position *pos)
         +14                   /* 24 */
     };
 
+    const Depth placingDepthTable_12_special[] = {
+         +1,  2,  +2,  4,     /* 0 ~ 3 */
+         +4, 12, +12, 12,     /* 4 ~ 7 */
+        +12, 13, +13, 13,     /* 8 ~ 11 */
+        +13, 13, +13, 13,     /* 12 ~ 15 */
+        +13, 13, +13, 13,     /* 16 ~ 19 */
+        +13, 13, +13, 13,     /* 20 ~ 23 */
+        +13                   /* 24 */
+    };
+
     const Depth placingDepthTable_9[] = {
          +1, 7,  +7,  10,     /* 0 ~ 3 */
         +10, 12, +12, 12,     /* 4 ~ 7 */
@@ -485,7 +495,11 @@ Depth getSearchDepth(const Position *pos)
 
         if (rule.piecesCount == 12) {
             assert(0 <= index && index <= 24);
-            d = placingDepthTable_12[index];
+            if (!rule.hasBannedLocations && !rule.hasDiagonalLines) {
+                d = placingDepthTable_12_special[index];
+            } else {
+                d = placingDepthTable_12[index];
+            }            
         } else {
             assert(0 <= index && index <= 19);
             d = placingDepthTable_9[index];
