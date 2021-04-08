@@ -80,6 +80,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   changeStatus(String? status) {
+    if (!mounted) return;
+
     setState(() => _status = status);
   }
 
