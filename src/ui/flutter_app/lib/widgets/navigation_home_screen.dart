@@ -19,6 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/about_page.dart';
 import 'package:sanmill/widgets/drawer_user_controller.dart';
@@ -104,11 +105,11 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       setState(() {
         screenView = PersonalizationSettingsPage();
       });
-    } else if (drawerIndex == DrawerIndex.Help) {
+    } else if (drawerIndex == DrawerIndex.Help && !Config.developerMode) {
       setState(() {
         screenView = HelpScreen();
       });
-    } else if (drawerIndex == DrawerIndex.About) {
+    } else if (drawerIndex == DrawerIndex.About && !Config.developerMode) {
       setState(() {
         screenView = AboutPage();
       });

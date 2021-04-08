@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/common/config.dart';
 
 enum DrawerIndex {
   humanVsAi,
@@ -181,6 +182,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
         color: AppTheme.exitIconColor,
       ),
       onTap: () async {
+        if (Config.developerMode) {
+          return;
+        }
+
         await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
       },
     );

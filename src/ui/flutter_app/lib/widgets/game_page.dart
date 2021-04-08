@@ -662,6 +662,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         ],
       ),
       onPressed: () {
+        if (Config.developerMode) return;
         Game.instance.regret(steps: 2);
         setState(() {});
       },

@@ -69,6 +69,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   restoreFactoryDefaultSettings() async {
     confirm() async {
       Navigator.of(context).pop();
+      if (Config.developerMode) return;
       final profile = await Settings.instance();
       await profile.restore();
       exit(0);
@@ -189,19 +190,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
-      Text(S.of(context).forDevelopers, style: AppTheme.settingsHeaderStyle),
-      SettingsCard(
-        context: context,
-        children: <Widget>[
-          SettingsSwitchListTile(
-            context: context,
-            value: Config.developerMode,
-            onChanged: setDeveloperMode,
-            titleString: S.of(context).developerMode,
-          ),
-        ],
-      ),
-      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -212,6 +200,19 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             onTap: restoreFactoryDefaultSettings,
           ),
           ListItemDivider(),
+        ],
+      ),
+      SizedBox(height: AppTheme.sizedBoxHeight),
+      Text(S.of(context).forDevelopers, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        children: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.developerMode,
+            onChanged: setDeveloperMode,
+            titleString: S.of(context).developerMode,
+          ),
         ],
       ),
     ];
