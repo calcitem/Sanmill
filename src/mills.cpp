@@ -561,6 +561,13 @@ Depth getSearchDepth(const Position *pos)
         d = 4;
     }
 
+    // WAR: Limit depth if change side when no way
+    if (!rule.isLoseButNotChangeSideWhenNoWay) {
+        if (d > 9) {
+            d = 9;
+        }
+    }
+
     d += DEPTH_ADJUST;
 
     d = d >= 1 ? d : 1;
