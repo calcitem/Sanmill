@@ -336,40 +336,37 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   String getGameOverReasonString(GameOverReason? reason, String? winner) {
-    String loseReasonStr;
     //String winnerStr =
     //    winner == Color.black ? S.of(context).black : S.of(context).white;
     String loserStr =
         winner == PieceColor.black ? S.of(context).white : S.of(context).black;
 
-    switch (Game.instance.position.gameOverReason) {
-      case GameOverReason.loseReasonlessThanThree:
-        loseReasonStr = loserStr + S.of(context).loseReasonlessThanThree;
-        break;
-      case GameOverReason.loseReasonResign:
-        loseReasonStr = loserStr + S.of(context).loseReasonResign;
-        break;
-      case GameOverReason.loseReasonNoWay:
-        loseReasonStr = loserStr + S.of(context).loseReasonNoWay;
-        break;
-      case GameOverReason.loseReasonBoardIsFull:
-        loseReasonStr = loserStr + S.of(context).loseReasonBoardIsFull;
-        break;
-      case GameOverReason.loseReasonTimeOver:
-        loseReasonStr = loserStr + S.of(context).loseReasonTimeOver;
-        break;
-      case GameOverReason.drawReasonRule50:
-        loseReasonStr = S.of(context).drawReasonRule50;
-        break;
-      case GameOverReason.drawReasonBoardIsFull:
-        loseReasonStr = S.of(context).drawReasonBoardIsFull;
-        break;
-      case GameOverReason.drawReasonThreefoldRepetition:
-        loseReasonStr = S.of(context).drawReasonThreefoldRepetition;
-        break;
-      default:
-        loseReasonStr = S.of(context).gameOverUnknownReason;
-        break;
+    Map<GameOverReason, String> resonMap = {
+      GameOverReason.loseReasonlessThanThree:
+          loserStr + S.of(context).loseReasonlessThanThree,
+      GameOverReason.loseReasonResign:
+          loserStr + S.of(context).loseReasonResign,
+      GameOverReason.loseReasonNoWay: loserStr + S.of(context).loseReasonNoWay,
+      GameOverReason.loseReasonBoardIsFull:
+          loserStr + S.of(context).loseReasonBoardIsFull,
+      GameOverReason.loseReasonTimeOver:
+          loserStr + S.of(context).loseReasonTimeOver,
+      GameOverReason.drawReasonRule50: S.of(context).drawReasonRule50,
+      GameOverReason.drawReasonBoardIsFull: S.of(context).drawReasonBoardIsFull,
+      GameOverReason.drawReasonThreefoldRepetition:
+          S.of(context).drawReasonThreefoldRepetition,
+    };
+
+    print("Game over reason: ${Game.instance.position.gameOverReason}");
+
+    String? loseReasonStr = resonMap[Game.instance.position.gameOverReason];
+
+    if (loseReasonStr == null) {
+      loseReasonStr = S.of(context).gameOverUnknownReason;
+      print("Game over reason string: $loseReasonStr");
+      if (Config.developerMode) {
+        assert(false);
+      }
     }
 
     return loseReasonStr;
