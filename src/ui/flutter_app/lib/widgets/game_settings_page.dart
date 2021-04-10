@@ -311,6 +311,11 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   }
 
   setDeveloperMode(bool value) async {
+    if (Config.developerMode && value == false) {
+      print("You must uninstall me to disable developer mode!");
+      return;
+    }
+
     setState(() {
       Config.developerMode = value;
     });
