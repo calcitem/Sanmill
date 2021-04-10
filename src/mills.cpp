@@ -499,7 +499,7 @@ Depth getSearchDepth(const Position *pos)
                 d = placingDepthTable_12_special[index];
             } else {
                 d = placingDepthTable_12[index];
-            }            
+            }
         } else {
             assert(0 <= index && index <= 19);
             d = placingDepthTable_9[index];
@@ -572,6 +572,10 @@ Depth getSearchDepth(const Position *pos)
     assert(d <= 32);
 
     //loggerDebug("Depth: %d\n", d);
+
+#ifdef FLUTTER_UI
+    LOGD("Search depth: %d\n", d);
+#endif // FLUTTER_UI
 
     return d;
 }
