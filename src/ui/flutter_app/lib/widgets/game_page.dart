@@ -29,8 +29,8 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:stack_trace/stack_trace.dart';
 import 'package:sanmill/style/app_theme.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
 
@@ -108,7 +108,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
       changeStatus(colorWinStrings[winner]);
     }
 
-    showGameResult(winner);
+    if (!Config.isAutoRestart) {
+      showGameResult(winner);
+    }
   }
 
   onBoardTap(BuildContext context, int index) {
