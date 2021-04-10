@@ -341,7 +341,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     String loserStr =
         winner == PieceColor.black ? S.of(context).white : S.of(context).black;
 
-    Map<GameOverReason, String> resonMap = {
+    Map<GameOverReason, String> reasonMap = {
       GameOverReason.loseReasonlessThanThree:
           loserStr + S.of(context).loseReasonlessThanThree,
       GameOverReason.loseReasonResign:
@@ -359,7 +359,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     print("Game over reason: ${Game.instance.position.gameOverReason}");
 
-    String? loseReasonStr = resonMap[Game.instance.position.gameOverReason];
+    String? loseReasonStr = reasonMap[Game.instance.position.gameOverReason];
 
     if (loseReasonStr == null) {
       loseReasonStr = S.of(context).gameOverUnknownReason;
