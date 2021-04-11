@@ -169,6 +169,37 @@ class _PersonalizationSettingsPageState
     );
   }
 
+  SliderTheme _boardTopSliderTheme(context, setState) {
+    return SliderTheme(
+      data: AppTheme.sliderThemeData,
+      child: Slider(
+        value: Config.boardTop.toDouble(),
+        min: 0.0,
+        max: 288.0,
+        divisions: 10,
+        label: Config.boardTop.toStringAsFixed(1),
+        onChanged: (value) {
+          setState(() {
+            print("BoardTop value: $value");
+            Config.boardTop = value;
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
+  setBoardTop() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _boardTopSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,6 +240,12 @@ class _PersonalizationSettingsPageState
             context: context,
             titleString: S.of(context).boardInnerLineWidth,
             onTap: setBoardInnerLineWidth,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).boardTop,
+            onTap: setBoardTop,
           ),
         ],
       ),

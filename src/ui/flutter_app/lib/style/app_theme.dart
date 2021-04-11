@@ -109,7 +109,7 @@ class AppTheme {
       TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);
 
   static double simpleDialogOptionFontSize = 20.0;
-  static double gamePageTopMargin = 28.0;
+  static double boardTop = 28.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;
   static double boardBorderRadius = 5.0;

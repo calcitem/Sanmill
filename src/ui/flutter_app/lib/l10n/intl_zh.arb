@@ -195,5 +195,6 @@
   "developerMode": "开发者模式",
   "pieceCount": "棋子数",
   "inHand": "手上",
-  "onBoard": "棋盘上"
+  "onBoard": "棋盘上",
+  "boardTop": "棋盘和上边缘的间距"
 }

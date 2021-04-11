@@ -538,7 +538,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
 
     return Container(
-      margin: EdgeInsets.only(top: AppTheme.gamePageTopMargin),
+      margin: EdgeInsets.only(top: Config.boardTop),
       child: Column(
         children: <Widget>[
           iconRow,

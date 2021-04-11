@@ -43,6 +43,7 @@ class Config {
   static bool isPieceCountInHandShown = false;
   static double boardBorderLineWidth = 2.0;
   static double boardInnerLineWidth = 2.0;
+  static double boardTop = 28.0;
 
   // Color
   static int boardLineColor = AppTheme.boardLineColor.value;
@@ -90,6 +91,7 @@ class Config {
         settings['IsPieceCountInHandShown'] ?? false;
     Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
+    Config.boardTop = settings['BoardTop'] ?? 28;
 
     // Color
     Config.boardLineColor =
@@ -153,6 +155,7 @@ class Config {
     settings['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
     settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
+    settings['BoardTop'] = Config.boardTop;
 
     // Color
     settings['BoardLineColor'] = Config.boardLineColor;
