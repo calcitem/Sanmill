@@ -176,7 +176,7 @@ class _PersonalizationSettingsPageState
         value: Config.boardTop.toDouble(),
         min: 0.0,
         max: 288.0,
-        divisions: 10,
+        divisions: 288,
         label: Config.boardTop.toStringAsFixed(1),
         onChanged: (value) {
           setState(() {
