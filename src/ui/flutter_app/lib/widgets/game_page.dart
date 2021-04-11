@@ -318,8 +318,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
     }
 
-    cancel() => Navigator.of(context).pop();
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -642,10 +640,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.motion_photos_on,
+            Icons.casino_outlined,
             color: AppTheme.toolbarIconColor,
           ),
-          Text(S.of(context).newGame,
+          Text(S.of(context).game,
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
@@ -657,14 +655,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.restore,
+            Icons.room_preferences_outlined,
             color: AppTheme.toolbarIconColor,
           ),
-          Text(S.of(context).regret,
+          Text(S.of(context).options,
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
       onPressed: () {
+        // TODO: Options
         if (Config.developerMode) return;
         Game.instance.regret(steps: 2);
         setState(() {});
@@ -679,7 +678,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             Icons.list_alt,
             color: AppTheme.toolbarIconColor,
           ),
-          Text(S.of(context).gameRecord,
+          Text(S.of(context).move,
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
@@ -689,7 +688,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
-            title: Text(S.of(context).gameRecord,
+            title: Text(S.of(context).moveList,
                 style: TextStyle(color: AppTheme.moveHistoryTextColor)),
             content: SingleChildScrollView(
                 child: Text(manualText, style: AppTheme.moveHistoryTextStyle)),

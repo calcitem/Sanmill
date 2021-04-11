@@ -12,6 +12,10 @@
   "@no": {
     "description": "No"
   },
+  "game": "Game",
+  "@game": {
+    "description": "Game"
+  },
   "humanVsAi": "Human Vs AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
@@ -36,9 +40,13 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "gameRecord": "Moves",
-  "@gameRecord": {
-    "description": "Moves"
+  "move": "Move",
+  "@move": {
+    "description": "Move"
+  },
+  "moveList": "Move list",
+  "@moveList": {
+    "description": "Move list"
   },
   "noGameRecord": "No record",
   "@noGameRecord": {
@@ -268,8 +276,16 @@
   "@thankWho": {
     "description": "Thank who"
   },
-  "settings": "Perferences",
+  "settings": "Settings",
   "@settings": {
+    "description": "Settings"
+  },
+  "options": "Options",
+  "@options": {
+    "description": "Options"
+  },
+  "perferences": "Perferences",
+  "@perferences": {
     "description": "Perferences"
   },
   "skillLevel": "Difficulty Level",
