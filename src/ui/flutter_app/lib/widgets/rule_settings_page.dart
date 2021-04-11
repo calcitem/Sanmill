@@ -64,11 +64,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             context: context,
             titleString: S.of(context).piecesCount,
             subtitleString: S.of(context).piecesCount_Detail,
-            trailingString: Config.piecesCount == 6
-                ? '6'
-                : Config.piecesCount == 9
-                    ? '9'
-                    : '12',
+            trailingString: Config.piecesCount == 9 ? '9' : '12',
             onTap: setNTotalPiecesEachSide,
           ),
           ListItemDivider(),
@@ -191,14 +187,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       builder: (BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('6'),
-            groupValue: Config.piecesCount,
-            value: 6,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
             title: Text('9'),
