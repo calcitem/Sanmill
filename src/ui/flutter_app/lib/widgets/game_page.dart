@@ -33,6 +33,7 @@ import 'package:sanmill/style/app_theme.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
+import 'game_settings_page.dart';
 
 class GamePage extends StatefulWidget {
   static double boardMargin = AppTheme.boardMargin;
@@ -663,10 +664,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
         ],
       ),
       onPressed: () {
-        // TODO: Options
-        if (Config.developerMode) return;
-        Game.instance.regret(steps: 2);
-        setState(() {});
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GameSettingsPage()),
+        );
       },
     );
 

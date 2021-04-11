@@ -17,20 +17,20 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
-import 'package:sanmill/common/config.dart';
 import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/about_page.dart';
 import 'package:sanmill/widgets/drawer_user_controller.dart';
 import 'package:sanmill/widgets/help_screen.dart';
 import 'package:sanmill/widgets/home_drawer.dart';
-import 'package:sanmill/style/colors.dart';
 
 import 'game_page.dart';
 import 'game_settings_page.dart';
-import 'rule_settings_page.dart';
 import 'personalization_settings_page.dart';
+import 'rule_settings_page.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   @override
@@ -93,7 +93,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         Game.instance.setWhoIsAi(engineType);
         screenView = GamePage(engineType);
       });
-    } else if (drawerIndex == DrawerIndex.settings) {
+    } else if (drawerIndex == DrawerIndex.perferences) {
       setState(() {
         screenView = GameSettingsPage();
       });
