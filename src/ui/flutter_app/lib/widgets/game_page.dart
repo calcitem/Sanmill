@@ -612,29 +612,54 @@ class _GamePageState extends State<GamePage> with RouteAware {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
+  String getHintText() {
+    String ret = S.of(context).score +
+        "\n" +
+        S.of(context).player1 +
+        ": " +
+        Game.instance.position.score[PieceColor.black].toString() +
+        "\n" +
+        S.of(context).player2 +
+        ": " +
+        Game.instance.position.score[PieceColor.white].toString() +
+        "\n" +
+        S.of(context).draw +
+        ": " +
+        Game.instance.position.score[PieceColor.draw].toString() +
+        "\n\n" +
+        S.of(context).pieceCount +
+        "\n" +
+        S.of(context).player1 +
+        " " +
+        S.of(context).inHand +
+        ": " +
+        Game.instance.position.pieceInHandCount[PieceColor.black].toString() +
+        "\n" +
+        S.of(context).player2 +
+        " " +
+        S.of(context).inHand +
+        ": " +
+        Game.instance.position.pieceInHandCount[PieceColor.white].toString() +
+        "\n" +
+        S.of(context).player1 +
+        " " +
+        S.of(context).onBoard +
+        ": " +
+        Game.instance.position.pieceOnBoardCount[PieceColor.black].toString() +
+        "\n" +
+        S.of(context).player2 +
+        " " +
+        S.of(context).onBoard +
+        ": " +
+        Game.instance.position.pieceOnBoardCount[PieceColor.white].toString() +
+        "\n";
+    return ret;
+  }
+
   Widget createToolbar() {
     final manualText = Game.instance.position.manualText;
 
-    // TODO:
-    final analyzeText = "Score: " +
-        Game.instance.position.score[PieceColor.black].toString() +
-        " : " +
-        Game.instance.position.score[PieceColor.white].toString() +
-        " : " +
-        Game.instance.position.score[PieceColor.draw].toString() +
-        "\n" +
-        "Black has: " +
-        Game.instance.position.pieceInHandCount[PieceColor.black].toString() +
-        " pieces in hand\n" +
-        "White has: " +
-        Game.instance.position.pieceInHandCount[PieceColor.white].toString() +
-        " pieces in hand\n" +
-        "Black has: " +
-        Game.instance.position.pieceOnBoardCount[PieceColor.black].toString() +
-        " pieces on board\n" +
-        "White has: " +
-        Game.instance.position.pieceOnBoardCount[PieceColor.white].toString() +
-        " pieces on board\n";
+    final analyzeText = getHintText();
 
     var newGameButton = TextButton(
       child: Column(
@@ -732,8 +757,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: AppTheme.hintDialogackgroundColor,
-            title: Text(S.of(context).analyze,
-                style: TextStyle(color: AppTheme.hintTextColor)),
             content: SingleChildScrollView(
                 child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle)),
             actions: <Widget>[

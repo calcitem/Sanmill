@@ -564,13 +564,13 @@
   "@player": {
     "description": "player"
   },
-  "player1": "Player 1",
+  "player1": "Player1",
   "@player1": {
-    "description": "Player 1"
+    "description": "Player1"
   },
-  "player2": "Player 2",
+  "player2": "Player2",
   "@player2": {
-    "description": "Player 2"
+    "description": "Player2"
   },
   "howToPlay": "How to play",
   "@howToPlay": {
@@ -771,5 +771,17 @@
   "developerMode": "Developer mode",
   "@developerMode": {
     "description": "Developer mode"
+  },
+  "pieceCount": "Piece count",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "in hand",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "on board",
+  "@onBoard": {
+    "description": "on board"
   }
 }
