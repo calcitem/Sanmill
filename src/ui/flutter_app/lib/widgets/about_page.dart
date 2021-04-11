@@ -163,7 +163,7 @@ class _AboutPageState extends State<AboutPage> {
   _showVersionInfo() {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) => alertDialog(context),
     );
   }

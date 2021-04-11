@@ -434,7 +434,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     if (result == GameResult.win) {
       showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(dialogTitle,
@@ -461,7 +461,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     } else {
       showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(dialogTitle,
@@ -685,7 +685,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       ),
       onPressed: () => showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
@@ -728,7 +728,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       ),
       onPressed: () => showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: AppTheme.hintDialogackgroundColor,
