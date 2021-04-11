@@ -323,14 +323,14 @@ class _GamePageState extends State<GamePage> with RouteAware {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(S.of(context).newGame,
-              style: TextStyle(color: AppTheme.dialogTitleColor)),
-          content:
-              SingleChildScrollView(child: Text(S.of(context).restartGame)),
-          actions: <Widget>[
-            TextButton(child: Text(S.of(context).restart), onPressed: confirm),
-            TextButton(child: Text(S.of(context).cancel), onPressed: cancel),
+        return SimpleDialog(
+          children: <Widget>[
+            SimpleDialogOption(
+                child: Text(
+                  S.of(context).startNewGame,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                ),
+                onPressed: confirm),
           ],
         );
       },

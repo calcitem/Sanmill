@@ -26,6 +26,7 @@ class AppTheme {
   static var moveHistoryDialogBackgroundColor = Colors.transparent;
   static var hintDialogackgroundColor = moveHistoryDialogBackgroundColor;
   static var hintTextColor = moveHistoryTextColor;
+  static var simpleDialogOptionTextColor = appPrimaryColor;
 
   /// Settings page
   static var darkBackgroundColor = UIColors.crusoe;
@@ -99,9 +100,15 @@ class AppTheme {
     fontWeight: FontWeight.w600,
   );
 
+  static var simpleDialogOptionTextStyle = TextStyle(
+    fontSize: AppTheme.simpleDialogOptionFontSize,
+    color: AppTheme.simpleDialogOptionTextColor,
+  );
+
   static var moveHistoryTextStyle =
       TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);
 
+  static double simpleDialogOptionFontSize = 20.0;
   static double gamePageTopMargin = 28.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;

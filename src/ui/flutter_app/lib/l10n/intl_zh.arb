@@ -33,7 +33,7 @@
   "draw": "和棋",
   "thinking": "对方思考中...",
   "newGame": "新局",
-  "startNewGame": "重新开局",
+  "startNewGame": "开始新局",
   "restartGame": "重新开局？",
   "restart": "重开局",
   "gameStarted": "游戏开始 请落子",
