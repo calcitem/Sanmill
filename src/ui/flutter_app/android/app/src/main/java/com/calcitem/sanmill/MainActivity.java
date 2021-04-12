@@ -30,6 +30,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 import org.json.JSONObject;
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import java.io.File;
 import java.io.FileWriter;
@@ -125,35 +126,39 @@ public class MainActivity extends FlutterActivity {
             }
         };
 
-        Log.d(TAG_XCRASH, "xCrash SDK init: start");
-
         // Initialize xCrash.
-        XCrash.init(this, new XCrash.InitParameters()
-                .setAppVersion("3.0.0") // TODO
-                .setJavaRethrow(true)
-                .setJavaLogCountMax(10)
-                .setJavaDumpAllThreadsWhiteList(new String[]{"^main$", "^Binder:.*", ".*Finalizer.*"})
-                .setJavaDumpAllThreadsCountMax(10)
-                .setJavaCallback(callback)
-                .setNativeRethrow(true)
-                .setNativeLogCountMax(10)
-                .setNativeDumpAllThreadsWhiteList(new String[]{
-                        "^xcrash\\.sample$",
-                        "^Signal Catcher$",
-                        "^Jit thread pool$",
-                        ".*mill.*",
-                        ".*engine.*"})   // TODO
-                .setNativeDumpAllThreadsCountMax(10)
-                .setNativeCallback(callback)
-                .setAnrRethrow(true)
-                .setAnrLogCountMax(10)
-                .setAnrCallback(callback)
-                .setPlaceholderCountMax(3)
-                .setPlaceholderSizeKb(512)
-                .setLogDir(getExternalFilesDir("xcrash").toString())
-                .setLogFileMaintainDelayMs(1000));
+        if (Build.VERSION.SDK_INT >= 19) {
+            Log.d(TAG_XCRASH, "xCrash SDK init: start");
 
-        Log.d(TAG_XCRASH, "xCrash SDK init: end");
+            XCrash.init(this, new XCrash.InitParameters()
+                    .setAppVersion("3.0.0") // TODO
+                    .setJavaRethrow(true)
+                    .setJavaLogCountMax(10)
+                    .setJavaDumpAllThreadsWhiteList(new String[]{"^main$", "^Binder:.*", ".*Finalizer.*"})
+                    .setJavaDumpAllThreadsCountMax(10)
+                    .setJavaCallback(callback)
+                    .setNativeRethrow(true)
+                    .setNativeLogCountMax(10)
+                    .setNativeDumpAllThreadsWhiteList(new String[]{
+                            "^xcrash\\.sample$",
+                            "^Signal Catcher$",
+                            "^Jit thread pool$",
+                            ".*mill.*",
+                            ".*engine.*"})   // TODO
+                    .setNativeDumpAllThreadsCountMax(10)
+                    .setNativeCallback(callback)
+                    .setAnrRethrow(true)
+                    .setAnrLogCountMax(10)
+                    .setAnrCallback(callback)
+                    .setPlaceholderCountMax(3)
+                    .setPlaceholderSizeKb(512)
+                    .setLogDir(getExternalFilesDir("xcrash").toString())
+                    .setLogFileMaintainDelayMs(1000));
+
+            Log.d(TAG_XCRASH, "xCrash SDK init: end");
+        } else {
+            Log.d(TAG_XCRASH, "Skip xCrash SDK init because API minSdkVersion >= 19.");
+        }
 
         // Send all pending crash log files.
         new Thread(new Runnable() {
