@@ -29,10 +29,9 @@
 
 #include <string.h>
 
-#ifdef _WIN32
-#else // TODO: __ANDROID__
+#ifdef __ANDROID__
 #include <android/log.h>
-#endif // _WIN32
+#endif // __ANDROID__
 
 #ifdef _WIN32
 inline void Idle(void) {

@@ -79,27 +79,7 @@ class Game {
     setWhoIsAi(engineType);
   }
 
-  // TODO
-  bool hasAnimation = true;
-  // TODO
-  int animationDurationTime = 1;
-
-  static bool hasSound = true;
-
-  bool resignIfMostLose = false;
-
-  bool isAutoChangeFirstMove = false;
-
-  bool isAiFirstMove = false;
-
-  // TODO
-  int ruleIndex = 0;
-  // TODO
-  String tips = "";
-
   List<String> moveHistory = [""];
-
-  String getTips() => tips;
 
   bool? isAiToMove() {
     return isAi[sideToMove];
@@ -121,7 +101,6 @@ class Game {
     Game.instance.position.init();
     _focusIndex = _blurIndex = PiecesPainter.invalidIndex;
     moveHistory = [""];
-    // TODO
     sideToMove = PieceColor.black;
   }
 
