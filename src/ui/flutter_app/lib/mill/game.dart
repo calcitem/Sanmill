@@ -18,11 +18,10 @@
 
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
-import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/painting/pieces_painter.dart';
 
 import 'mill.dart';
 import 'position.dart';
+import 'types.dart';
 
 enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.black: false, PieceColor.white: true};
@@ -31,8 +30,9 @@ class Game {
   static Game? _instance;
 
   Position _position = Position();
-  int _focusIndex = PiecesPainter.invalidIndex;
-  int _blurIndex = PiecesPainter.invalidIndex;
+
+  int _focusIndex = invalidIndex;
+  int _blurIndex = invalidIndex;
 
   String sideToMove = PieceColor.black;
 
@@ -92,21 +92,21 @@ class Game {
 
   init() {
     _position = Position();
-    _focusIndex = _blurIndex = PiecesPainter.invalidIndex;
+    _focusIndex = _blurIndex = invalidIndex;
   }
 
   newGame() {
     Game.instance.position.phase = Phase.ready;
     Game.instance.start();
     Game.instance.position.init();
-    _focusIndex = _blurIndex = PiecesPainter.invalidIndex;
+    _focusIndex = _blurIndex = invalidIndex;
     moveHistory = [""];
     sideToMove = PieceColor.black;
   }
 
   select(int pos) {
     _focusIndex = pos;
-    _blurIndex = PiecesPainter.invalidIndex;
+    _blurIndex = invalidIndex;
     //Audios.playTone('click.mp3');
   }
 
@@ -138,12 +138,12 @@ class Game {
 
       if (lastMove != null) {
         //
-        _blurIndex = lastMove.from ?? PiecesPainter.invalidIndex;
-        _focusIndex = lastMove.to ?? PiecesPainter.invalidIndex;
+        _blurIndex = lastMove.from ?? invalidIndex;
+        _focusIndex = lastMove.to ?? invalidIndex;
         //
       } else {
         //
-        _blurIndex = _focusIndex = PiecesPainter.invalidIndex;
+        _blurIndex = _focusIndex = invalidIndex;
       }
 
       regretted = true;
@@ -159,7 +159,7 @@ class Game {
   }
 
   clear() {
-    _blurIndex = _focusIndex = PiecesPainter.invalidIndex;
+    _blurIndex = _focusIndex = invalidIndex;
   }
 
   get position => _position;
