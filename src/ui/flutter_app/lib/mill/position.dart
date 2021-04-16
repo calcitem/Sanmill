@@ -22,12 +22,18 @@ import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/services/audios.dart';
 
+import 'mills.dart';
 import 'types.dart';
+
+int repetition = 0;
 
 class StateInfo {
   // Copied when making a move
   int rule50 = 0;
   int pliesFromNull = 0;
+
+  // Not copied when making a move (will be recomputed anyhow)
+  int key = 0;
 }
 
 class Position {
@@ -71,26 +77,12 @@ class Position {
   int currentSquare = 0;
   int nPlayed = 0;
 
-  String? cmdline;
+  String? record;
 
-  late var millTable;
-  late var moveTable;
+  static late var millTable;
+  static late var adjacentSquares;
 
   late Move move;
-
-  Position.boardToGrid() {
-    _grid = [];
-    for (int sq = 0; sq < board.length; sq++) {
-      _grid[squareToIndex[sq]!] = board[sq];
-    }
-  }
-
-  Position.gridToBoard() {
-    board = [];
-    for (int i = 0; i < _grid.length; i++) {
-      board[indexToSquare[i]!] = _grid[i];
-    }
-  }
 
   Position.clone(Position other) {
     _grid = [];
@@ -132,12 +124,6 @@ class Position {
 
   String sideToMove() => _sideToMove;
 
-  void setSideToMove(String color) {
-    _sideToMove = color;
-    us = _sideToMove;
-    them = PieceColor.opponent(us);
-  }
-
   String movedPiece(int move) {
     return pieceOn(fromSq(move));
   }
@@ -161,18 +147,13 @@ class Position {
 
     phase = Phase.placing;
 
-    //const DEFAULT_RULE_NUMBER = 1;
-
-    //setPosition(rules[DEFAULT_RULE_NUMBER]);
     setPosition(rule); // TODO
 
     // TODO
-
     recorder = GameRecorder(lastPositionWithRemove: fen());
   }
 
   Position() {
-    //score[Color.black] = score[Color.white] = score[Color.draw] = nPlayed = 0;
     init();
   }
 
@@ -258,11 +239,6 @@ class Position {
         " " +
         (1 + (gamePly - sideIsBlack) ~/ 2).toString();
 
-    // step counter
-    //ss += '${recorder?.halfMove ?? 0} ${recorder?.fullMove ?? 0}';
-
-    //print("fen = " + ss);
-
     return ss;
   }
 
@@ -275,7 +251,7 @@ class Position {
 
     if (move.from == move.to) {
       print("Move $move.move from == to");
-      return false; // TODO: Same with is_ok(m)
+      return false;
     }
 
     if (move.type == MoveType.remove) {
@@ -285,26 +261,10 @@ class Position {
       }
     }
 
-    // TODO: Add more
-
     return true;
   }
 
   bool doMove(String move) {
-    // TODO
-    /*
-    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleIndex, &step, &t) == 3) {
-      if (ruleIndex <= 0 || ruleIndex > N_RULES) {
-        return false;
-      }
-
-      return set_position(&RULES[ruleIndex - 1]) >= 0 ? true : false;
-    }
-  */
-    bool ret = false;
-
-    //print("doMove $move");
-
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
       if (move["Player".length] == '1') {
@@ -331,18 +291,32 @@ class Position {
       return true;
     }
 
+    // TODO: Above is diff from position.cpp
+
+    bool ret = false;
+
     Move m = Move(move);
 
     switch (m.type) {
+      case MoveType.remove:
+        ret = removePiece(m.to);
+        if (ret) {
+          // Reset rule 50 counter
+          st.rule50 = 0;
+        }
+        break;
       case MoveType.move:
         ret = movePiece(m.from, m.to);
+        if (ret) {
+          ++st.rule50;
+        }
         break;
       case MoveType.place:
         ret = putPiece(m.to);
-        break;
-      case MoveType.remove:
-        st.rule50 = 0;
-        ret = removePiece(m.to);
+        if (ret) {
+          // Reset rule 50 counter
+          st.rule50 = 0;
+        }
         break;
       default:
         assert(false);
@@ -356,106 +330,24 @@ class Position {
     // Increment ply counters. In particular, rule50 will be reset to zero later on
     // in case of a capture.
     ++gamePly;
-    ++st.rule50;
     ++st.pliesFromNull;
 
     this.move = m;
 
-    recorder!.moveIn(m, this);
+    recorder!.moveIn(m, this); // TODO: Is Right?
 
     return true;
   }
 
-  bool posIsOk() {
-    // TODO
-    return true;
-  }
+  // TODO: THREEFOLD_REPETITION
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  int pieceOnBoardCountCount() {
-    pieceOnBoardCount[PieceColor.black] =
-        pieceOnBoardCount[PieceColor.white] = 0;
-
-    for (int f = 1; f < fileExNumber; f++) {
-      for (int r = 0; r < rankNumber; r++) {
-        int s = f * rankNumber + r;
-        if (board[s] == Piece.blackStone) {
-          if (pieceOnBoardCount[PieceColor.black] != null) {
-            pieceOnBoardCount[PieceColor.black] =
-                pieceOnBoardCount[PieceColor.black]! + 1;
-          }
-        } else if (board[s] == Piece.whiteStone) {
-          if (pieceOnBoardCount[PieceColor.white] != null) {
-            pieceOnBoardCount[PieceColor.white] =
-                pieceOnBoardCount[PieceColor.white]! + 1;
-          }
-        }
-      }
-    }
-
-    if (pieceOnBoardCount[PieceColor.black]! > rule.piecesCount ||
-        pieceOnBoardCount[PieceColor.white]! > rule.piecesCount) {
-      return -1;
-    }
-
-    return pieceOnBoardCount[PieceColor.black]! +
-        pieceOnBoardCount[PieceColor.white]!;
-  }
-
-  int getNPiecesInHand() {
-    pieceInHandCount[PieceColor.black] =
-        rule.piecesCount - pieceOnBoardCount[PieceColor.black]!;
-    pieceInHandCount[PieceColor.white] =
-        rule.piecesCount - pieceOnBoardCount[PieceColor.white]!;
-
-    return pieceOnBoardCount[PieceColor.black]! +
-        pieceOnBoardCount[PieceColor.white]!;
-  }
-
-  void clearBoard() {
-    for (int i = 0; i < _grid.length; i++) {
-      _grid[i] = Piece.noPiece;
-    }
-
-    for (int i = 0; i < board.length; i++) {
-      board[i] = Piece.noPiece;
-    }
-  }
-
-  int setPosition(Rule newRule) {
-    result = GameResult.pending;
-
-    gamePly = 0;
-    st.rule50 = 0;
-    st.pliesFromNull = 0;
-
-    gameOverReason = GameOverReason.noReason;
-    phase = Phase.placing;
-    setSideToMove(PieceColor.black);
-    action = Act.place;
-    currentSquare = 0;
-
-    cmdline = "";
-
-    clearBoard();
-
-    if (pieceOnBoardCountCount() == -1) {
-      return -1;
-    }
-
-    getNPiecesInHand();
-    pieceToRemoveCount = 0;
-
-    winner = PieceColor.nobody;
-    createMoveTable();
-    createMillTable();
-    currentSquare = 0;
-
-    return -1;
-  }
+  /// Mill Game
 
   bool reset() {
+    repetition = 0;
+
     gamePly = 0;
     st.rule50 = 0;
 
@@ -468,6 +360,8 @@ class Position {
 
     clearBoard();
 
+    st.key = 0;
+
     pieceOnBoardCount[PieceColor.black] =
         pieceOnBoardCount[PieceColor.white] = 0;
     pieceInHandCount[PieceColor.black] =
@@ -475,17 +369,10 @@ class Position {
     pieceToRemoveCount = 0;
 
     currentSquare = 0;
-    int i = 0; // TODO: rule
 
-    cmdline = "r" +
-        (i + 1).toString() +
-        " " +
-        "s" +
-        rule.maxStepsLedToDraw.toString() +
-        " t" +
-        0.toString();
+    record = "";
 
-    return false;
+    return true;
   }
 
   bool start() {
@@ -508,12 +395,12 @@ class Position {
   }
 
   bool putPiece(int s) {
-    var index = squareToIndex[s];
-    var piece = _sideToMove;
+    var piece = Piece.noPiece;
     var us = _sideToMove;
 
     if (phase == Phase.gameOver ||
         action != Act.place ||
+        !(sqBegin <= s && s < sqEnd) ||
         board[s] != Piece.noPiece) {
       return false;
     }
@@ -532,10 +419,10 @@ class Position {
         pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
       }
 
-      _grid[index!] = piece;
+      _grid[squareToIndex[s]!] = piece;
       board[s] = piece;
 
-      cmdline = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+      record = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
 
       currentSquare = s;
 
@@ -548,7 +435,6 @@ class Position {
         if (pieceInHandCount[PieceColor.black] == 0 &&
             pieceInHandCount[PieceColor.white] == 0) {
           if (checkIfGameIsOver()) {
-            //Audios.playTone('mill.mp3');
             return true;
           }
 
@@ -564,7 +450,6 @@ class Position {
           }
 
           if (checkIfGameIsOver()) {
-            //Audios.playTone('mill.mp3');
             return true;
           }
         } else {
@@ -580,7 +465,6 @@ class Position {
       }
     } else if (phase == Phase.moving) {
       if (checkIfGameIsOver()) {
-        //Audios.playTone('mill.mp3');
         return true;
       }
 
@@ -590,7 +474,7 @@ class Position {
         int md;
 
         for (md = 0; md < moveDirectionNumber; md++) {
-          if (s == moveTable[currentSquare][md]) break;
+          if (s == adjacentSquares[currentSquare][md]) break;
         }
 
         // not in moveTable
@@ -600,7 +484,7 @@ class Position {
         }
       }
 
-      cmdline = "(" +
+      record = "(" +
           fileOf(currentSquare).toString() +
           "," +
           rankOf(currentSquare).toString() +
@@ -625,7 +509,6 @@ class Position {
         changeSideToMove();
 
         if (checkIfGameIsOver()) {
-          //Audios.playTone('mill.mp3');
           return true;
         } else {
           Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
@@ -663,13 +546,14 @@ class Position {
     Audios.playTone('remove.mp3');
 
     if (rule.hasBannedLocations && phase == Phase.placing) {
+      // Remove and put ban
       board[s] = _grid[squareToIndex[s]!] = Piece.ban;
     } else {
-      // Remove
+      // Remove only
       board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
     }
 
-    cmdline = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+    record = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
     st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[them] != null) {
@@ -725,7 +609,6 @@ class Position {
     if (board[sq] == sideToMove()) {
       currentSquare = sq;
       action = Act.place;
-      //Audios.playTone('select.mp3');
       Game.instance.blurIndex = squareToIndex[sq];
 
       return true;
@@ -746,14 +629,11 @@ class Position {
     return true;
   }
 
-  String getWinner() {
-    return winner;
-  }
-
   void setGameOver(String w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
     winner = w;
+
     print("Game over, $w win, because of $reason");
     updateScore();
   }
@@ -775,17 +655,13 @@ class Position {
   }
 
   bool checkIfGameIsOver() {
-    //print("Is game over?");
-
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
     }
 
+    // TOOD: cpp: posKeyHistory.size() > rule.maxStepsLedToDraw
     if (rule.maxStepsLedToDraw > 0 && st.rule50 > rule.maxStepsLedToDraw) {
-      winner = PieceColor.draw;
-      phase = Phase.gameOver;
-      gameOverReason = GameOverReason.drawReasonRule50;
-      print("Game over, draw, because of $gameOverReason.");
+      setGameOver(PieceColor.draw, GameOverReason.drawReasonRule50);
       return true;
     }
 
@@ -810,12 +686,10 @@ class Position {
         return true;
       } else {
         changeSideToMove(); // TODO: Need?
-        //print("Game is not over");
         return false;
       }
     }
 
-    //print("Game is NOT over");
     return false;
   }
 
@@ -835,529 +709,46 @@ class Position {
     }
   }
 
-  void createMillTable() {
-    const millTable_noDiagonalLine = [
-      /* 0 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 1 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 2 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 3 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 4 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 5 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 6 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 7 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-
-      /* 8 */ [
-        [16, 24],
-        [9, 15],
-        [0, 0]
-      ],
-      /* 9 */ [
-        [0, 0],
-        [15, 8],
-        [10, 11]
-      ],
-      /* 10 */ [
-        [18, 26],
-        [11, 9],
-        [0, 0]
-      ],
-      /* 11 */ [
-        [0, 0],
-        [9, 10],
-        [12, 13]
-      ],
-      /* 12 */ [
-        [20, 28],
-        [13, 11],
-        [0, 0]
-      ],
-      /* 13 */ [
-        [0, 0],
-        [11, 12],
-        [14, 15]
-      ],
-      /* 14 */ [
-        [22, 30],
-        [15, 13],
-        [0, 0]
-      ],
-      /* 15 */ [
-        [0, 0],
-        [13, 14],
-        [8, 9]
-      ],
-
-      /* 16 */ [
-        [8, 24],
-        [17, 23],
-        [0, 0]
-      ],
-      /* 17 */ [
-        [0, 0],
-        [23, 16],
-        [18, 19]
-      ],
-      /* 18 */ [
-        [10, 26],
-        [19, 17],
-        [0, 0]
-      ],
-      /* 19 */ [
-        [0, 0],
-        [17, 18],
-        [20, 21]
-      ],
-      /* 20 */ [
-        [12, 28],
-        [21, 19],
-        [0, 0]
-      ],
-      /* 21 */ [
-        [0, 0],
-        [19, 20],
-        [22, 23]
-      ],
-      /* 22 */ [
-        [14, 30],
-        [23, 21],
-        [0, 0]
-      ],
-      /* 23 */ [
-        [0, 0],
-        [21, 22],
-        [16, 17]
-      ],
-
-      /* 24 */ [
-        [8, 16],
-        [25, 31],
-        [0, 0]
-      ],
-      /* 25 */ [
-        [0, 0],
-        [31, 24],
-        [26, 27]
-      ],
-      /* 26 */ [
-        [10, 18],
-        [27, 25],
-        [0, 0]
-      ],
-      /* 27 */ [
-        [0, 0],
-        [25, 26],
-        [28, 29]
-      ],
-      /* 28 */ [
-        [12, 20],
-        [29, 27],
-        [0, 0]
-      ],
-      /* 29 */ [
-        [0, 0],
-        [27, 28],
-        [30, 31]
-      ],
-      /* 30 */ [
-        [14, 22],
-        [31, 29],
-        [0, 0]
-      ],
-      /* 31 */ [
-        [0, 0],
-        [29, 30],
-        [24, 25]
-      ],
-
-      /* 32 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 33 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 34 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 35 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 36 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 37 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 38 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 39 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ]
-    ];
-
-    const millTable_hasDiagonalLines = [
-      /*  0 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /*  1 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /*  2 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /*  3 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /*  4 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /*  5 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /*  6 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /*  7 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-
-      /*  8 */ [
-        [16, 24],
-        [9, 15],
-        [0, 0]
-      ],
-      /*  9 */ [
-        [17, 25],
-        [15, 8],
-        [10, 11]
-      ],
-      /* 10 */ [
-        [18, 26],
-        [11, 9],
-        [0, 0]
-      ],
-      /* 11 */ [
-        [19, 27],
-        [9, 10],
-        [12, 13]
-      ],
-      /* 12 */ [
-        [20, 28],
-        [13, 11],
-        [0, 0]
-      ],
-      /* 13 */ [
-        [21, 29],
-        [11, 12],
-        [14, 15]
-      ],
-      /* 14 */ [
-        [22, 30],
-        [15, 13],
-        [0, 0]
-      ],
-      /* 15 */ [
-        [23, 31],
-        [13, 14],
-        [8, 9]
-      ],
-
-      /* 16 */ [
-        [8, 24],
-        [17, 23],
-        [0, 0]
-      ],
-      /* 17 */ [
-        [9, 25],
-        [23, 16],
-        [18, 19]
-      ],
-      /* 18 */ [
-        [10, 26],
-        [19, 17],
-        [0, 0]
-      ],
-      /* 19 */ [
-        [11, 27],
-        [17, 18],
-        [20, 21]
-      ],
-      /* 20 */ [
-        [12, 28],
-        [21, 19],
-        [0, 0]
-      ],
-      /* 21 */ [
-        [13, 29],
-        [19, 20],
-        [22, 23]
-      ],
-      /* 22 */ [
-        [14, 30],
-        [23, 21],
-        [0, 0]
-      ],
-      /* 23 */ [
-        [15, 31],
-        [21, 22],
-        [16, 17]
-      ],
-
-      /* 24 */ [
-        [8, 16],
-        [25, 31],
-        [0, 0]
-      ],
-      /* 25 */ [
-        [9, 17],
-        [31, 24],
-        [26, 27]
-      ],
-      /* 26 */ [
-        [10, 18],
-        [27, 25],
-        [0, 0]
-      ],
-      /* 27 */ [
-        [11, 19],
-        [25, 26],
-        [28, 29]
-      ],
-      /* 28 */ [
-        [12, 20],
-        [29, 27],
-        [0, 0]
-      ],
-      /* 29 */ [
-        [13, 21],
-        [27, 28],
-        [30, 31]
-      ],
-      /* 30 */ [
-        [14, 22],
-        [31, 29],
-        [0, 0]
-      ],
-      /* 31 */ [
-        [15, 23],
-        [29, 30],
-        [24, 25]
-      ],
-
-      /* 32 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 33 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 34 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 35 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 36 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 37 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 38 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      /* 39 */ [
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ]
-    ];
-
-    if (rule.hasDiagonalLines) {
-      millTable = millTable_hasDiagonalLines;
-    } else {
-      millTable = millTable_noDiagonalLine;
-    }
+  void setSideToMove(String color) {
+    _sideToMove = color;
+    us = _sideToMove;
+    them = PieceColor.opponent(us);
   }
 
-  void createMoveTable() {
-    // Note: Not follow order of MoveDirection array
-    const moveTable_diagonalLine = [
-      /*  0 */ [0, 0, 0, 0],
-      /*  1 */ [0, 0, 0, 0],
-      /*  2 */ [0, 0, 0, 0],
-      /*  3 */ [0, 0, 0, 0],
-      /*  4 */ [0, 0, 0, 0],
-      /*  5 */ [0, 0, 0, 0],
-      /*  6 */ [0, 0, 0, 0],
-      /*  7 */ [0, 0, 0, 0],
+  void changeSideToMove() {
+    them = _sideToMove;
+    _sideToMove = PieceColor.opponent(_sideToMove);
+    print("$_sideToMove to move.");
+  }
 
-      /*  8 */ [9, 15, 16, 0],
-      /*  9 */ [17, 8, 10, 0],
-      /* 10 */ [9, 11, 18, 0],
-      /* 11 */ [19, 10, 12, 0],
-      /* 12 */ [11, 13, 20, 0],
-      /* 13 */ [21, 12, 14, 0],
-      /* 14 */ [13, 15, 22, 0],
-      /* 15 */ [23, 8, 14, 0],
+  int pieceOnBoardCountCount() {
+    pieceOnBoardCount[PieceColor.black] =
+        pieceOnBoardCount[PieceColor.white] = 0;
 
-      /* 16 */ [17, 23, 8, 24],
-      /* 17 */ [9, 25, 16, 18],
-      /* 18 */ [17, 19, 10, 26],
-      /* 19 */ [11, 27, 18, 20],
-      /* 20 */ [19, 21, 12, 28],
-      /* 21 */ [13, 29, 20, 22],
-      /* 22 */ [21, 23, 14, 30],
-      /* 23 */ [15, 31, 16, 22],
-
-      /* 24 */ [25, 31, 16, 0],
-      /* 25 */ [17, 24, 26, 0],
-      /* 26 */ [25, 27, 18, 0],
-      /* 27 */ [19, 26, 28, 0],
-      /* 28 */ [27, 29, 20, 0],
-      /* 29 */ [21, 28, 30, 0],
-      /* 30 */ [29, 31, 22, 0],
-      /* 31 */ [23, 24, 30, 0],
-
-      /* 32 */ [0, 0, 0, 0],
-      /* 33 */ [0, 0, 0, 0],
-      /* 34 */ [0, 0, 0, 0],
-      /* 35 */ [0, 0, 0, 0],
-      /* 36 */ [0, 0, 0, 0],
-      /* 37 */ [0, 0, 0, 0],
-      /* 38 */ [0, 0, 0, 0],
-      /* 39 */ [0, 0, 0, 0],
-    ];
-
-    const moveTable_noDiagonalLine = [
-      /*  0 */ [0, 0, 0, 0],
-      /*  1 */ [0, 0, 0, 0],
-      /*  2 */ [0, 0, 0, 0],
-      /*  3 */ [0, 0, 0, 0],
-      /*  4 */ [0, 0, 0, 0],
-      /*  5 */ [0, 0, 0, 0],
-      /*  6 */ [0, 0, 0, 0],
-      /*  7 */ [0, 0, 0, 0],
-
-      /*  8 */ [16, 9, 15, 0],
-      /*  9 */ [10, 8, 0, 0],
-      /* 10 */ [18, 11, 9, 0],
-      /* 11 */ [12, 10, 0, 0],
-      /* 12 */ [20, 13, 11, 0],
-      /* 13 */ [14, 12, 0, 0],
-      /* 14 */ [22, 15, 13, 0],
-      /* 15 */ [8, 14, 0, 0],
-
-      /* 16 */ [8, 24, 17, 23],
-      /* 17 */ [18, 16, 0, 0],
-      /* 18 */ [10, 26, 19, 17],
-      /* 19 */ [20, 18, 0, 0],
-      /* 20 */ [12, 28, 21, 19],
-      /* 21 */ [22, 20, 0, 0],
-      /* 22 */ [14, 30, 23, 21],
-      /* 23 */ [16, 22, 0, 0],
-
-      /* 24 */ [16, 25, 31, 0],
-      /* 25 */ [26, 24, 0, 0],
-      /* 26 */ [18, 27, 25, 0],
-      /* 27 */ [28, 26, 0, 0],
-      /* 28 */ [20, 29, 27, 0],
-      /* 29 */ [30, 28, 0, 0],
-      /* 30 */ [22, 31, 29, 0],
-      /* 31 */ [24, 30, 0, 0],
-
-      /* 32 */ [0, 0, 0, 0],
-      /* 33 */ [0, 0, 0, 0],
-      /* 34 */ [0, 0, 0, 0],
-      /* 35 */ [0, 0, 0, 0],
-      /* 36 */ [0, 0, 0, 0],
-      /* 37 */ [0, 0, 0, 0],
-      /* 38 */ [0, 0, 0, 0],
-      /* 39 */ [0, 0, 0, 0],
-    ];
-
-    if (rule.hasDiagonalLines) {
-      moveTable = moveTable_diagonalLine;
-    } else {
-      moveTable = moveTable_noDiagonalLine;
+    for (int f = 1; f < fileExNumber; f++) {
+      for (int r = 0; r < rankNumber; r++) {
+        int s = f * rankNumber + r;
+        if (board[s] == Piece.blackStone) {
+          if (pieceOnBoardCount[PieceColor.black] != null) {
+            pieceOnBoardCount[PieceColor.black] =
+                pieceOnBoardCount[PieceColor.black]! + 1;
+          }
+        } else if (board[s] == Piece.whiteStone) {
+          if (pieceOnBoardCount[PieceColor.white] != null) {
+            pieceOnBoardCount[PieceColor.white] =
+                pieceOnBoardCount[PieceColor.white]! + 1;
+          }
+        }
+      }
     }
+
+    if (pieceOnBoardCount[PieceColor.black]! > rule.piecesCount ||
+        pieceOnBoardCount[PieceColor.white]! > rule.piecesCount) {
+      return -1;
+    }
+
+    return pieceOnBoardCount[PieceColor.black]! +
+        pieceOnBoardCount[PieceColor.white]!;
   }
 
   String colorOn(int sq) {
@@ -1366,7 +757,7 @@ class Position {
 
   int potentialMillsCount(int to, String c, {int from = 0}) {
     int n = 0;
-    String ptBak = Piece.noPiece;
+    String locbak = Piece.noPiece;
 
     assert(0 <= from && from < sqNumber);
 
@@ -1374,8 +765,8 @@ class Position {
       c = colorOn(to);
     }
 
-    if (from != 0) {
-      ptBak = board[from];
+    if (from != 0 && from >= sqBegin && from < sqEnd) {
+      locbak = board[from];
       board[from] = _grid[squareToIndex[from]!] = Piece.noPiece;
     }
 
@@ -1386,7 +777,7 @@ class Position {
     }
 
     if (from != 0) {
-      board[from] = _grid[squareToIndex[from]!] = ptBak;
+      board[from] = _grid[squareToIndex[from]!] = locbak;
     }
 
     return n;
@@ -1446,19 +837,19 @@ class Position {
     return true;
   }
 
+  // TODO: surrounded_pieces_count
+
   bool isAllSurrounded() {
     // Full
     if (pieceOnBoardCount[PieceColor.black]! +
             pieceOnBoardCount[PieceColor.white]! >=
         rankNumber * fileNumber) {
-      //print("Board is full.");
       return true;
     }
 
     // Can fly
     if (pieceOnBoardCount[sideToMove()]! <= rule.piecesAtLeastCount &&
         rule.mayFly) {
-      //print("Can fly.");
       return false;
     }
 
@@ -1470,14 +861,13 @@ class Position {
       }
 
       for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
-        moveSquare = moveTable[s][d];
+        moveSquare = adjacentSquares[s][d];
         if (moveSquare != 0 && board[moveSquare!] == Piece.noPiece) {
           return false;
         }
       }
     }
 
-    //print("No way.");
     return true;
   }
 
@@ -1487,6 +877,62 @@ class Position {
     }
 
     return (s == 16 || s == 18 || s == 20 || s == 22);
+  }
+
+  int getNPiecesInHand() {
+    pieceInHandCount[PieceColor.black] =
+        rule.piecesCount - pieceOnBoardCount[PieceColor.black]!;
+    pieceInHandCount[PieceColor.white] =
+        rule.piecesCount - pieceOnBoardCount[PieceColor.white]!;
+
+    return pieceOnBoardCount[PieceColor.black]! +
+        pieceOnBoardCount[PieceColor.white]!;
+  }
+
+  void clearBoard() {
+    for (int i = 0; i < _grid.length; i++) {
+      _grid[i] = Piece.noPiece;
+    }
+
+    for (int i = 0; i < board.length; i++) {
+      board[i] = Piece.noPiece;
+    }
+  }
+
+  int setPosition(Rule newRule) {
+    result = GameResult.pending;
+
+    gamePly = 0;
+    st.rule50 = 0;
+    st.pliesFromNull = 0;
+
+    gameOverReason = GameOverReason.noReason;
+    phase = Phase.placing;
+    setSideToMove(PieceColor.black);
+    action = Act.place;
+    currentSquare = 0;
+
+    record = "";
+
+    clearBoard();
+
+    if (pieceOnBoardCountCount() == -1) {
+      return -1;
+    }
+
+    getNPiecesInHand();
+    pieceToRemoveCount = 0;
+
+    winner = PieceColor.nobody;
+    Mills.adjacentSquaresInit();
+    Mills.millTableInit();
+    currentSquare = 0;
+
+    return -1;
+  }
+
+  String getWinner() {
+    return winner;
   }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1566,12 +1012,6 @@ class Position {
   get manualText => recorder!.buildManualText();
 
   get side => _sideToMove;
-
-  void changeSideToMove() {
-    them = _sideToMove;
-    _sideToMove = PieceColor.opponent(_sideToMove);
-    print("$_sideToMove to move.");
-  }
 
   get halfMove => recorder!.halfMove;
 

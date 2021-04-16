@@ -217,7 +217,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
       if (ret) {
         Game.instance.sideToMove = position.sideToMove() ?? PieceColor.nobody;
-        Game.instance.moveHistory.add(position.cmdline);
+        Game.instance.moveHistory.add(position.record);
 
         // TODO: Need Others?
         // Increment ply counters. In particular,
@@ -229,7 +229,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
         //position.move = m;
 
-        Move m = Move(position.cmdline);
+        Move m = Move(position.record);
         position.recorder.moveIn(m, position);
 
         setState(() {});
