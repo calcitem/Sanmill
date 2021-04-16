@@ -20,7 +20,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/mill/mill.dart';
+import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/position.dart';
 
 import 'engine.dart';

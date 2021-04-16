@@ -17,7 +17,7 @@
 */
 
 import 'package:sanmill/mill/game.dart';
-import 'package:sanmill/mill/mill.dart';
+import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/services/audios.dart';

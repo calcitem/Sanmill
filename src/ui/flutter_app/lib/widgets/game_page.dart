@@ -26,7 +26,6 @@ import 'package:sanmill/engine/native_engine.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
-import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';

@@ -19,7 +19,6 @@
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
 
-import 'mill.dart';
 import 'position.dart';
 import 'types.dart';
 
