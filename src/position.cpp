@@ -69,7 +69,6 @@ const string  PieceToChar(Piece p)
 
 Piece CharToPiece(char ch) noexcept
 {
-
     if (ch == '*') {
         return NO_PIECE;
     }
@@ -98,6 +97,20 @@ constexpr PieceType PieceTypes[] = { NO_PIECE_TYPE, BLACK_STONE, WHITE_STONE, BA
 std::ostream &operator<<(std::ostream &os, const Position &pos)
 {
     /*
+        X --- X --- X
+        |\    |    /|
+        | X - X - X |
+        | |\  |  /| |
+        | | X-X-X | |
+        X-X-X   X-X-X
+        | | X-X-X | |
+        | |/  |  \| |
+        | X - X - X |
+        |/    |    \|
+        X --- X --- X
+    */
+
+    /*
         31 ----- 24 ----- 25
         | \       |      / |
         |  23 -- 16 -- 17  |
@@ -109,20 +122,6 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
         |  21 -- 20 -- 19  |
         | /       |     \  |
         29 ----- 28 ----- 27
-    */
-
-    /*
-    X --- X --- X
-    |\    |    /|
-    | X - X - X |
-    | |\  |  /| |
-    | | X-X-X | |
-    X-X-X   X-X-X
-    | | X-X-X | |
-    | |/  |  \| |
-    | X - X - X |
-    |/    |    \|
-    X --- X --- X
     */
 
 #define P(s) PieceToChar(pos.piece_on(Square(s)))
@@ -182,7 +181,7 @@ void Position::init()
 Position::Position()
 {
     construct_key();
-    
+
     reset();
 
     score[BLACK] = score[WHITE] = score_draw = gamesPlayedCount = 0;
@@ -287,7 +286,7 @@ Position &Position::set(const string &fenStr, Thread *th)
     default:
         action = Action::none;
     }
-    
+
     // 5. Black on board / Black in hand / White on board / White in hand / need to remove
     ss >> std::skipws
         >> pieceOnBoardCount[BLACK] >> pieceInHandCount[BLACK]
@@ -325,7 +324,7 @@ const string Position::fen() const
             ss << " ";
         } else {
             ss << "/";
-        }        
+        }
     }
 
     // Active color
@@ -451,7 +450,7 @@ void Position::do_move(Move m)
     // Increment ply counters. In particular
     ++gamePly;
     ++st.pliesFromNull;
-    
+
     move = m;
 }
 
@@ -1055,7 +1054,7 @@ void Position::remove_ban_stones()
         for (int r = 0; r < RANK_NB; r++) {
             s = static_cast<Square>(f * RANK_NB + r);
 
-            if (board[s] == BAN_STONE) {                
+            if (board[s] == BAN_STONE) {
                 const Piece pc = board[s];
                 byTypeBB[ALL_PIECES] ^= s;
                 byTypeBB[type_of(pc)] ^= s;
@@ -1221,7 +1220,7 @@ int Position::mills_count(Square s)
     for (auto i = 0; i < LD_NB; ++i) {
         if (((bc & mt[i]) == mt[i])) {
             n++;
-        }        
+        }
     }
 
     return n;
