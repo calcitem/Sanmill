@@ -120,11 +120,11 @@ class Game {
 
     print("Computer: $move");
 
-    moveHistory.add(move);
-
     if (!position.doMove(move)) {
       return false;
     }
+
+    moveHistory.add(move);
 
     sideToMove = position.sideToMove() ?? PieceColor.nobody;
 
