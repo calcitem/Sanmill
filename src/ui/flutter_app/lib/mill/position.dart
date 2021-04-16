@@ -25,18 +25,9 @@ import 'package:sanmill/services/audios.dart';
 import 'types.dart';
 
 class StateInfo {
-  /*
   // Copied when making a move
   int rule50 = 0;
   int pliesFromNull = 0;
-
-
-  get rule50 => _rule50;
-  set rule50(int value) => _rule50 = value;
-
-  get pliesFromNull => _pliesFromNull;
-  set pliesFromNull(int value) => _pliesFromNull = value;
-  */
 }
 
 class Position {
@@ -60,11 +51,7 @@ class Position {
   int gamePly = 0;
   String _sideToMove = PieceColor.black;
 
-  int rule50 = 0;
-  int pliesFromNull = 0;
-
-  // TODO
-  StateInfo? st;
+  StateInfo st = StateInfo();
 
   String us = PieceColor.black;
   String them = PieceColor.white;
@@ -123,8 +110,8 @@ class Position {
 
     _sideToMove = other._sideToMove;
 
-    rule50 = other.rule50;
-    pliesFromNull = other.pliesFromNull;
+    st.rule50 = other.st.rule50;
+    st.pliesFromNull = other.st.pliesFromNull;
 
     them = other.them;
     winner = other.winner;
@@ -268,8 +255,9 @@ class Position {
 
     int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
-    ss +=
-        rule50.toString() + " " + (1 + (gamePly - sideIsBlack) ~/ 2).toString();
+    ss += st.rule50.toString() +
+        " " +
+        (1 + (gamePly - sideIsBlack) ~/ 2).toString();
 
     // step counter
     //ss += '${recorder?.halfMove ?? 0} ${recorder?.fullMove ?? 0}';
@@ -354,7 +342,7 @@ class Position {
         ret = putPiece(m.to);
         break;
       case MoveType.remove:
-        rule50 = 0;
+        st.rule50 = 0;
         ret = removePiece(m.to);
         break;
       default:
@@ -369,8 +357,8 @@ class Position {
     // Increment ply counters. In particular, rule50 will be reset to zero later on
     // in case of a capture.
     ++gamePly;
-    ++rule50;
-    ++pliesFromNull;
+    ++st.rule50;
+    ++st.pliesFromNull;
 
     this.move = m;
 
@@ -440,8 +428,8 @@ class Position {
     result = GameResult.pending;
 
     gamePly = 0;
-    rule50 = 0;
-    pliesFromNull = 0;
+    st.rule50 = 0;
+    st.pliesFromNull = 0;
 
     gameOverReason = GameOverReason.noReason;
     phase = Phase.placing;
@@ -470,7 +458,7 @@ class Position {
 
   bool reset() {
     gamePly = 0;
-    rule50 = 0;
+    st.rule50 = 0;
 
     phase = Phase.ready;
     setSideToMove(PieceColor.black);
@@ -623,7 +611,7 @@ class Position {
           rankOf(s).toString() +
           ")";
 
-      rule50++;
+      st.rule50++;
 
       board[s] = _grid[squareToIndex[s]!] = board[currentSquare];
       board[currentSquare] =
@@ -683,7 +671,7 @@ class Position {
     }
 
     cmdline = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
-    rule50 = 0; // TODO: Need to move out?
+    st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[them] != null) {
       pieceOnBoardCount[them] = pieceOnBoardCount[them]! - 1;
@@ -794,7 +782,7 @@ class Position {
       return true;
     }
 
-    if (rule.maxStepsLedToDraw > 0 && rule50 > rule.maxStepsLedToDraw) {
+    if (rule.maxStepsLedToDraw > 0 && st.rule50 > rule.maxStepsLedToDraw) {
       winner = PieceColor.draw;
       phase = Phase.gameOver;
       gameOverReason = GameOverReason.drawReasonRule50;

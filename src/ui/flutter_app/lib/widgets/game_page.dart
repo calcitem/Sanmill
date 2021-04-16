@@ -224,8 +224,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
         // rule50 will be reset to zero later on
         // in case of a capture.
         ++position.gamePly;
-        ++position.rule50;
-        ++position.pliesFromNull;
+        ++position.st.rule50;
+        ++position.st.pliesFromNull;
 
         //position.move = m;
 
