@@ -76,8 +76,7 @@ class Position {
   late var millTable;
   late var moveTable;
 
-  // TODO: null-safety
-  Move? move;
+  late Move move;
 
   Position.boardToGrid() {
     _grid = [];
