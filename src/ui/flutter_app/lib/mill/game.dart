@@ -29,26 +29,62 @@ Map<String, bool> isAi = {PieceColor.black: false, PieceColor.white: true};
 class Game {
   static Game? _instance;
 
+  static get instance {
+    _instance ??= Game();
+    return _instance;
+  }
+
+  init() {
+    _position = Position();
+    _focusIndex = _blurIndex = invalidIndex;
+  }
+
+  start() {
+    position.reset();
+
+    setWhoIsAi(engineType);
+  }
+
+  newGame() {
+    position.phase = Phase.ready;
+    start();
+    position.init();
+    _focusIndex = _blurIndex = invalidIndex;
+    moveHistory = [""];
+    sideToMove = PieceColor.black;
+  }
+
+  String sideToMove = PieceColor.black;
+
+  bool? isAiToMove() {
+    return isAi[sideToMove];
+  }
+
+  List<String> moveHistory = [""];
+
   Position _position = Position();
+  get position => _position;
 
   int _focusIndex = invalidIndex;
   int _blurIndex = invalidIndex;
 
-  String sideToMove = PieceColor.black;
+  get focusIndex => _focusIndex;
+  set focusIndex(index) => _focusIndex = index;
 
-  bool isColorInverted = false;
+  get blurIndex => _blurIndex;
+  set blurIndex(index) => _blurIndex = index;
 
   Map<String, bool> isSearching = {
     PieceColor.black: false,
     PieceColor.white: false
   };
 
-  EngineType engineType = EngineType.none;
-
   bool aiIsSearching() {
     return isSearching[PieceColor.black] == true ||
         isSearching[PieceColor.white] == true;
   }
+
+  EngineType engineType = EngineType.none;
 
   void setWhoIsAi(EngineType type) {
     engineType = type;
@@ -61,58 +97,38 @@ class Game {
         break;
       case EngineType.humanVsHuman:
       case EngineType.humanVsLAN:
+      case EngineType.humanVsCloud:
         isAi[PieceColor.black] = isAi[PieceColor.white] = false;
         break;
       case EngineType.aiVsAi:
         isAi[PieceColor.black] = isAi[PieceColor.white] = true;
-        break;
-      case EngineType.humanVsCloud:
         break;
       default:
         break;
     }
   }
 
-  void start() {
-    position.reset();
-
-    setWhoIsAi(engineType);
-  }
-
-  List<String> moveHistory = [""];
-
-  bool? isAiToMove() {
-    return isAi[sideToMove];
-  }
-
-  static get instance {
-    _instance ??= Game();
-    return _instance;
-  }
-
-  init() {
-    _position = Position();
-    _focusIndex = _blurIndex = invalidIndex;
-  }
-
-  newGame() {
-    Game.instance.position.phase = Phase.ready;
-    Game.instance.start();
-    Game.instance.position.init();
-    _focusIndex = _blurIndex = invalidIndex;
-    moveHistory = [""];
-    sideToMove = PieceColor.black;
-  }
-
   select(int pos) {
     _focusIndex = pos;
     _blurIndex = invalidIndex;
-    //Audios.playTone('click.mp3');
   }
 
-  bool move(int from, int to) {
-    //
-    position.move(from, to);
+  bool doMove(String move) {
+    if (position.phase == Phase.ready) {
+      start();
+    }
+
+    print("Computer: $move");
+
+    moveHistory.add(move);
+
+    if (!position.doMove(move)) {
+      return false;
+    }
+
+    sideToMove = position.sideToMove() ?? PieceColor.nobody;
+
+    printStat();
 
     return true;
   }
@@ -158,39 +174,12 @@ class Game {
     return false;
   }
 
-  clear() {
-    _blurIndex = _focusIndex = invalidIndex;
-  }
-
-  get position => _position;
-
-  get focusIndex => _focusIndex;
-  set focusIndex(index) => _focusIndex = index;
-
-  get blurIndex => _blurIndex;
-  set blurIndex(index) => _blurIndex = index;
-
-  bool doMove(String move) {
-    int total = 0;
+  printStat() {
     double blackWinRate = 0;
     double whiteWinRate = 0;
     double drawRate = 0;
 
-    if (position.phase == Phase.ready) {
-      start();
-    }
-
-    print("Computer: $move");
-
-    moveHistory.add(move);
-
-    if (!position.doMove(move)) {
-      return false;
-    }
-
-    sideToMove = position.sideToMove() ?? PieceColor.nobody;
-
-    total = position.score[PieceColor.black] +
+    int total = position.score[PieceColor.black] +
             position.score[PieceColor.white] +
             position.score[PieceColor.draw] ??
         0;
@@ -205,7 +194,7 @@ class Game {
       drawRate = position.score[PieceColor.draw] * 100 / total ?? 0;
     }
 
-    String stat = "Score: " +
+    String scoreInfo = "Score: " +
         position.score[PieceColor.black].toString() +
         " : " +
         position.score[PieceColor.white].toString() +
@@ -222,7 +211,6 @@ class Game {
         "%" +
         "\n";
 
-    print(stat);
-    return true;
+    print(scoreInfo);
   }
 }
