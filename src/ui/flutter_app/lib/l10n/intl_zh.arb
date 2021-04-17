@@ -50,7 +50,7 @@
   "loseReasonNoWay": "被闷杀。",
   "loseReasonBoardIsFull": "因棋盘摆满而无路可走。",
   "loseReasonTimeOver": "超时判负。",
-  "drawReasonRule50": "连续超过50步未吃子，判和。",
+  "drawReasonRule50": "走子阶段连续50步未吃子，判和。",
   "drawReasonBoardIsFull": "棋盘摆满，无路可走，判和。",
   "drawReasonThreefoldRepetition": "三次重复局面和。",
   "gameOverUnknownReason": "游戏结束，原因未知！",

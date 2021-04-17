@@ -26,6 +26,7 @@ import 'package:sanmill/engine/native_engine.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -226,6 +227,16 @@ class _GamePageState extends State<GamePage> with RouteAware {
         ++position.gamePly;
         ++position.st.rule50;
         ++position.st.pliesFromNull;
+
+        if (position.record.length > "-(1,2)".length) {
+          if (posKeyHistory.length == 0 ||
+              (posKeyHistory.length > 0 &&
+                  position.st.key != posKeyHistory[posKeyHistory.length - 1])) {
+            posKeyHistory.add(position.st.key);
+          }
+        } else {
+          posKeyHistory.clear();
+        }
 
         //position.move = m;
 

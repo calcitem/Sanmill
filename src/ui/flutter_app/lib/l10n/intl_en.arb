@@ -200,9 +200,9 @@
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "Rule50",
+  "drawReasonRule50": "In moving phase, no piece has been removed in the last fifty moves.",
   "@drawReasonRule50": {
-    "description": "Rule50"
+    "description": "In moving phase, no piece has been removed in the last fifty moves."
   },
   "drawReasonBoardIsFull": "Draw, because the board is full",
   "@drawReasonBoardIsFull": {

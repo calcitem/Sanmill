@@ -27,7 +27,7 @@ import 'types.dart';
 import 'zobrist.dart';
 
 int repetition = 0;
-late List<int> posKeyHistory;
+List<int> posKeyHistory = [];
 
 class StateInfo {
   // Copied when making a move
@@ -333,6 +333,16 @@ class Position {
     // in case of a capture.
     ++gamePly;
     ++st.pliesFromNull;
+
+    if (record != null && record!.length > "-(1,2)".length) {
+      if (posKeyHistory.length == 0 ||
+          (posKeyHistory.length > 0 &&
+              st.key != posKeyHistory[posKeyHistory.length - 1])) {
+        posKeyHistory.add(st.key);
+      }
+    } else {
+      posKeyHistory.clear();
+    }
 
     this.move = m;
 
@@ -715,8 +725,8 @@ class Position {
       return true;
     }
 
-    // TOOD: cpp: posKeyHistory.size() > rule.maxStepsLedToDraw
-    if (rule.maxStepsLedToDraw > 0 && st.rule50 > rule.maxStepsLedToDraw) {
+    if (rule.maxStepsLedToDraw > 0 &&
+        posKeyHistory.length > rule.maxStepsLedToDraw) {
       setGameOver(PieceColor.draw, GameOverReason.drawReasonRule50);
       return true;
     }
