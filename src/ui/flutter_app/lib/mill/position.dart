@@ -24,8 +24,10 @@ import 'package:sanmill/services/audios.dart';
 
 import 'mills.dart';
 import 'types.dart';
+import 'zobrist.dart';
 
 int repetition = 0;
+late List<int> posKeyHistory;
 
 class StateInfo {
   // Copied when making a move
@@ -233,11 +235,11 @@ class Position {
         pieceToRemoveCount.toString() +
         " ";
 
-    int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
+    int sideIsWhite = _sideToMove == PieceColor.white ? 1 : 0;
 
     ss += st.rule50.toString() +
         " " +
-        (1 + (gamePly - sideIsBlack) ~/ 2).toString();
+        (1 + (gamePly - sideIsWhite) ~/ 2).toString();
 
     return ss;
   }
@@ -339,7 +341,42 @@ class Position {
     return true;
   }
 
-  // TODO: THREEFOLD_REPETITION
+  bool hasRepeated(List<Position> ss) {
+    for (int i = posKeyHistory.length - 2; i >= 0; i--) {
+      if (st.key == posKeyHistory[i]) {
+        return true;
+      }
+    }
+
+    int size = ss.length;
+
+    for (int i = size - 1; i >= 0; i--) {
+      if (ss[i].move.type == MoveType.remove) {
+        break;
+      }
+      if (st.key == ss[i].st.key) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /// hasGameCycle() tests if the position has a move which draws by repetition.
+
+  bool hasGameCycle() {
+    for (var i in posKeyHistory) {
+      if (st.key == i) {
+        repetition++;
+        if (repetition == 3) {
+          repetition = 0;
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -367,6 +404,10 @@ class Position {
     pieceInHandCount[PieceColor.black] =
         pieceInHandCount[PieceColor.white] = rule.piecesCount;
     pieceToRemoveCount = 0;
+
+    // TODO:
+    // MoveList<LEGAL>::create();
+    // create_mill_table();
 
     currentSquare = 0;
 
@@ -424,6 +465,8 @@ class Position {
 
       record = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
 
+      updateKey(s);
+
       currentSquare = s;
 
       int n = millsCount(currentSquare);
@@ -459,6 +502,7 @@ class Position {
         Audios.playTone('place.mp3');
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
+        updateKeyMisc();
         action = Act.remove;
         Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone('mill.mp3');
@@ -497,6 +541,9 @@ class Position {
       st.rule50++;
 
       board[s] = _grid[squareToIndex[s]!] = board[currentSquare];
+      updateKey(s);
+      revertKey(currentSquare);
+
       board[currentSquare] =
           _grid[squareToIndex[currentSquare]!] = Piece.noPiece;
 
@@ -516,6 +563,7 @@ class Position {
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
+        updateKeyMisc();
         action = Act.remove;
         Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone('mill.mp3');
@@ -543,11 +591,14 @@ class Position {
       return false;
     }
 
+    revertKey(s);
+
     Audios.playTone('remove.mp3');
 
     if (rule.hasBannedLocations && phase == Phase.placing) {
       // Remove and put ban
       board[s] = _grid[squareToIndex[s]!] = Piece.ban;
+      updateKey(s);
     } else {
       // Remove only
       board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
@@ -569,6 +620,7 @@ class Position {
     currentSquare = 0;
 
     pieceToRemoveCount--;
+    updateKeyMisc();
 
     if (pieceToRemoveCount > 0) {
       return true;
@@ -629,6 +681,10 @@ class Position {
     return true;
   }
 
+  String getWinner() {
+    return winner;
+  }
+
   void setGameOver(String w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
@@ -677,9 +733,7 @@ class Position {
       return true;
     }
 
-    bool isNoWay = isAllSurrounded();
-    //print("phase = $phase, action = $action, isAllSurrounded = $isNoWay");
-    if (phase == Phase.moving && action == Act.select && isNoWay) {
+    if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
       if (rule.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
             PieceColor.opponent(sideToMove()), GameOverReason.loseReasonNoWay);
@@ -704,6 +758,7 @@ class Position {
 
         if (board[s] == Piece.ban) {
           board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
+          revertKey(s);
         }
       }
     }
@@ -711,45 +766,37 @@ class Position {
 
   void setSideToMove(String color) {
     _sideToMove = color;
-    us = _sideToMove;
-    them = PieceColor.opponent(us);
+    //us = color;
+    them = PieceColor.opponent(_sideToMove);
   }
 
   void changeSideToMove() {
-    them = _sideToMove;
-    _sideToMove = PieceColor.opponent(_sideToMove);
+    setSideToMove(PieceColor.opponent(_sideToMove));
+    st.key ^= Zobrist.side;
     print("$_sideToMove to move.");
   }
 
-  int pieceOnBoardCountCount() {
-    pieceOnBoardCount[PieceColor.black] =
-        pieceOnBoardCount[PieceColor.white] = 0;
+  int updateKey(int s) {
+    String pieceType = colorOn(s);
 
-    for (int f = 1; f < fileExNumber; f++) {
-      for (int r = 0; r < rankNumber; r++) {
-        int s = f * rankNumber + r;
-        if (board[s] == Piece.blackStone) {
-          if (pieceOnBoardCount[PieceColor.black] != null) {
-            pieceOnBoardCount[PieceColor.black] =
-                pieceOnBoardCount[PieceColor.black]! + 1;
-          }
-        } else if (board[s] == Piece.whiteStone) {
-          if (pieceOnBoardCount[PieceColor.white] != null) {
-            pieceOnBoardCount[PieceColor.white] =
-                pieceOnBoardCount[PieceColor.white]! + 1;
-          }
-        }
-      }
-    }
+    st.key ^= Zobrist.psq[pieceColorIndex[pieceType]!][s];
 
-    if (pieceOnBoardCount[PieceColor.black]! > rule.piecesCount ||
-        pieceOnBoardCount[PieceColor.white]! > rule.piecesCount) {
-      return -1;
-    }
-
-    return pieceOnBoardCount[PieceColor.black]! +
-        pieceOnBoardCount[PieceColor.white]!;
+    return st.key;
   }
+
+  int revertKey(int s) {
+    return updateKey(s);
+  }
+
+  int updateKeyMisc() {
+    st.key = st.key << Zobrist.KEY_MISC_BIT >> Zobrist.KEY_MISC_BIT;
+
+    st.key |= (pieceToRemoveCount) << (32 - Zobrist.KEY_MISC_BIT);
+
+    return st.key;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
 
   String colorOn(int sq) {
     return board[sq];
@@ -837,8 +884,6 @@ class Position {
     return true;
   }
 
-  // TODO: surrounded_pieces_count
-
   bool isAllSurrounded() {
     // Full
     if (pieceOnBoardCount[PieceColor.black]! +
@@ -878,6 +923,8 @@ class Position {
 
     return (s == 16 || s == 18 || s == 20 || s == 22);
   }
+
+  ///////////////////////////////////////////////////////////////////////////////
 
   int getNPiecesInHand() {
     pieceInHandCount[PieceColor.black] =
@@ -931,8 +978,34 @@ class Position {
     return -1;
   }
 
-  String getWinner() {
-    return winner;
+  int pieceOnBoardCountCount() {
+    pieceOnBoardCount[PieceColor.black] =
+        pieceOnBoardCount[PieceColor.white] = 0;
+
+    for (int f = 1; f < fileExNumber; f++) {
+      for (int r = 0; r < rankNumber; r++) {
+        int s = f * rankNumber + r;
+        if (board[s] == Piece.blackStone) {
+          if (pieceOnBoardCount[PieceColor.black] != null) {
+            pieceOnBoardCount[PieceColor.black] =
+                pieceOnBoardCount[PieceColor.black]! + 1;
+          }
+        } else if (board[s] == Piece.whiteStone) {
+          if (pieceOnBoardCount[PieceColor.white] != null) {
+            pieceOnBoardCount[PieceColor.white] =
+                pieceOnBoardCount[PieceColor.white]! + 1;
+          }
+        }
+      }
+    }
+
+    if (pieceOnBoardCount[PieceColor.black]! > rule.piecesCount ||
+        pieceOnBoardCount[PieceColor.white]! > rule.piecesCount) {
+      return -1;
+    }
+
+    return pieceOnBoardCount[PieceColor.black]! +
+        pieceOnBoardCount[PieceColor.white]!;
   }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -155,6 +155,13 @@ class PieceColor {
   String operator -(String c) => opponent(c);
 }
 
+Map<String, int> pieceColorIndex = {
+  PieceColor.none: 0,
+  PieceColor.black: 1,
+  PieceColor.white: 2,
+  PieceColor.ban: 3
+};
+
 enum Phase { none, ready, placing, moving, gameOver }
 
 enum Act { none, select, place, remove }
@@ -234,7 +241,7 @@ enum LineDirection { horizontal, vertical, slash }
 
 const lineDirectionNumber = 3;
 
-enum File { A, B, C }
+enum File { none, A, B, C }
 
 const fileNumber = 3;
 const fileExNumber = fileNumber + 2;
