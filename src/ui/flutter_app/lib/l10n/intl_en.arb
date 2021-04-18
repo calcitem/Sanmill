@@ -785,7 +785,7 @@
     "description": "on board"
   },
   "boardTop": "Board offset from the top",
-  "@onBoard": {
+  "@boardTop": {
     "description": "Board offset from the top"
   }
 }
