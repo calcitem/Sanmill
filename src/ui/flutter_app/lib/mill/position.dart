@@ -26,7 +26,6 @@ import 'mills.dart';
 import 'types.dart';
 import 'zobrist.dart';
 
-int repetition = 0;
 List<int> posKeyHistory = [];
 
 class StateInfo {
@@ -339,6 +338,10 @@ class Position {
           (posKeyHistory.length > 0 &&
               st.key != posKeyHistory[posKeyHistory.length - 1])) {
         posKeyHistory.add(st.key);
+        if (hasGameCycle()) {
+          setGameOver(
+              PieceColor.draw, GameOverReason.drawReasonThreefoldRepetition);
+        }
       }
     } else {
       posKeyHistory.clear();
@@ -375,11 +378,11 @@ class Position {
   /// hasGameCycle() tests if the position has a move which draws by repetition.
 
   bool hasGameCycle() {
+    int repetition = 0; // Note: Engine is global val
     for (var i in posKeyHistory) {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
-          repetition = 0;
           return true;
         }
       }
@@ -393,8 +396,6 @@ class Position {
   /// Mill Game
 
   bool reset() {
-    repetition = 0;
-
     gamePly = 0;
     st.rule50 = 0;
 

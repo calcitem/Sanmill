@@ -233,6 +233,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
               (posKeyHistory.length > 0 &&
                   position.st.key != posKeyHistory[posKeyHistory.length - 1])) {
             posKeyHistory.add(position.st.key);
+            if (position.hasGameCycle()) {
+              position.setGameOver(PieceColor.draw,
+                  GameOverReason.drawReasonThreefoldRepetition);
+            }
           }
         } else {
           posKeyHistory.clear();
