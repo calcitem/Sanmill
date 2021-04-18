@@ -24,6 +24,7 @@ import 'package:package_info/package_info.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
+import 'package:devicelocale/devicelocale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'license_page.dart';
@@ -120,11 +121,11 @@ class _AboutPageState extends State<AboutPage> {
       ),
       ListItemDivider(),
       SettingsListTile(
-        context: context,
-        titleString: S.of(context).privacyPolicy,
-        onTap: () => _launchURL(
-            'https://github.com/calcitem/Sanmill/wiki/privacy_policy'),
-      ),
+          context: context,
+          titleString: S.of(context).privacyPolicy,
+          onTap: () {
+            _launchPrivacyPolicy();
+          }),
       ListItemDivider(),
       SettingsListTile(
         context: context,
@@ -158,6 +159,17 @@ class _AboutPageState extends State<AboutPage> {
 
   _launchURL(String url) async {
     await launch(url);
+  }
+
+  _launchPrivacyPolicy() async {
+    String? locale = await Devicelocale.currentLocale;
+
+    print("local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      _launchURL('https://gitee.com/calcitem/Sanmill/wikis/privacy_policy_zh');
+    } else {
+      _launchURL('https://github.com/calcitem/Sanmill/wiki/privacy_policy');
+    }
   }
 
   _showVersionInfo() {
