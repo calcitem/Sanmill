@@ -587,7 +587,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           iconArrow = Icons.toggle_on_outlined;
           break;
         default:
-          iconArrow = Icons.thumbs_up_down_outlined;
+          iconArrow = Icons.view_agenda;
           break;
       }
     } else {
