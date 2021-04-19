@@ -101,12 +101,18 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     if (winner == PieceColor.nobody) {
       if (Game.instance.position.phase == Phase.placing) {
-        changeStatus(S.of(context).tipPlace);
+        if (mounted) {
+          changeStatus(S.of(context).tipPlace);
+        }
       } else if (Game.instance.position.phase == Phase.moving) {
-        changeStatus(S.of(context).tipMove);
+        if (mounted) {
+          changeStatus(S.of(context).tipMove);
+        }
       }
     } else {
-      changeStatus(colorWinStrings[winner]);
+      if (mounted) {
+        changeStatus(colorWinStrings[winner]);
+      }
     }
 
     if (!Config.isAutoRestart) {
@@ -168,17 +174,23 @@ class _GamePageState extends State<GamePage> with RouteAware {
           if (position.putPiece(sq)) {
             if (position.action == Act.remove) {
               //Audios.playTone('mill.mp3');
-              changeStatus(S.of(context).tipRemove);
+              if (mounted) {
+                changeStatus(S.of(context).tipRemove);
+              }
             } else {
               //Audios.playTone('place.mp3');
-              changeStatus(S.of(context).tipPlaced);
+              if (mounted) {
+                changeStatus(S.of(context).tipPlaced);
+              }
             }
             ret = true;
             print("putPiece: [$sq]");
             break;
           } else {
             print("putPiece: skip [$sq]");
-            changeStatus(S.of(context).tipBanPlace);
+            if (mounted) {
+              changeStatus(S.of(context).tipBanPlace);
+            }
           }
 
           // If cannot move, retry select, do not break
@@ -191,11 +203,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
             Game.instance.select(index);
             ret = true;
             print("selectPiece: [$sq]");
-            changeStatus(S.of(context).tipPlace);
+            if (mounted) {
+              changeStatus(S.of(context).tipPlace);
+            }
           } else {
             Audios.playTone('illegal.mp3');
             print("selectPiece: skip [$sq]");
-            changeStatus(S.of(context).tipSelectWrong);
+            if (mounted) {
+              changeStatus(S.of(context).tipSelectWrong);
+            }
           }
           break;
 
@@ -204,11 +220,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
             //Audios.playTone('remove.mp3');
             ret = true;
             print("removePiece: [$sq]");
-            changeStatus(S.of(context).tipRemoved);
+            if (mounted) {
+              changeStatus(S.of(context).tipRemoved);
+            }
           } else {
             Audios.playTone('illegal.mp3');
             print("removePiece: skip [$sq]");
-            changeStatus(S.of(context).tipBanRemove);
+            if (mounted) {
+              changeStatus(S.of(context).tipBanRemove);
+            }
           }
           break;
 
@@ -287,7 +307,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
         changeStatus(score);
       } else {
-        changeStatus(S.of(context).thinking);
+        if (mounted) {
+          changeStatus(S.of(context).thinking);
+        }
       }
 
       print("Waiting for engine's response...");
@@ -304,7 +326,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
           showTips();
           break;
         case 'timeout':
-          changeStatus(S.of(context).timeout);
+          if (mounted) {
+            changeStatus(S.of(context).timeout);
+          }
+
           if (Config.developerMode) {
             assert(false);
           }
@@ -325,7 +350,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
     confirm() {
       Navigator.of(context).pop();
       Game.instance.newGame();
-      changeStatus(S.of(context).gameStarted);
+      if (mounted) {
+        changeStatus(S.of(context).gameStarted);
+      }
 
       if (Game.instance.isAiToMove()) {
         print("New game, AI to move.");
@@ -488,7 +515,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
                   onPressed: () {
                     Navigator.of(context).pop();
                     Game.instance.newGame();
-                    changeStatus(S.of(context).gameStarted);
+                    if (mounted) {
+                      changeStatus(S.of(context).gameStarted);
+                    }
 
                     if (Game.instance.isAiToMove()) {
                       print("New game, AI to move.");
