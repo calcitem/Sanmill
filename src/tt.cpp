@@ -139,6 +139,16 @@ int TranspositionTable::save(const Value &value,
     return 0;
 }
 
+Bound TranspositionTable::boundType(Value value, Value alpha, Value beta)
+{
+    if (value <= alpha)
+        return BOUND_UPPER;
+    if (value >= beta)
+        return BOUND_LOWER;
+
+    return BOUND_EXACT;
+}
+
 void TranspositionTable::clear()
 {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN

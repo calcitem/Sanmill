@@ -88,6 +88,8 @@ public:
 #endif // TT_MOVE_ENABLE
                          );
 
+    static inline Bound boundType(Value value, Value alpha, Value beta);
+
     static void clear();
 
     static void prefetch(const Key &key);
