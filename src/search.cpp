@@ -278,6 +278,8 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #endif /* ENDGAME_LEARNING */
 
+    const bool atRoot = (originDepth == depth);
+
 #ifdef TRANSPOSITION_TABLE_ENABLE
     Bound type = BOUND_NONE;
 
@@ -325,6 +327,8 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #endif
 
+    // process leaves
+
     // Check for aborted search
     // TODO: and immediate draw
     if (unlikely(pos->phase == Phase::gameOver) ||   // TODO: Deal with hash
@@ -363,6 +367,8 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #endif // THREEFOLD_REPETITION
 
+    // recurse
+
     MovePicker mp(*pos);
     Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
@@ -372,6 +378,13 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         bestValue = VALUE_UNIQUE;
         return bestValue;
     }
+
+#if 0
+    // Follow morris, do not save to TT
+    if (moveCount == 0) {
+        return -VALUE_INFINITE;
+    }
+#endif
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH
@@ -443,6 +456,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
+        // TODO: Not follow morris
         if (value >= bestValue) {
             bestValue = value;
 
