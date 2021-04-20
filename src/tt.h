@@ -50,6 +50,13 @@ struct TTEntry
         return (Bound)(genBound8);
     }
 
+#ifdef TT_MOVE_ENABLE
+    Move tt_move() const noexcept
+    {
+        return (Move)(ttMove);
+    }
+#endif // TT_MOVE_ENABLE
+
 private:
     friend class TranspositionTable;
 
@@ -88,7 +95,7 @@ public:
 #endif // TT_MOVE_ENABLE
                          );
 
-    static inline Bound boundType(Value value, Value alpha, Value beta);
+    static Bound boundType(Value value, Value alpha, Value beta);
 
     static void clear();
 
