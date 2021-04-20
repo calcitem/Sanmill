@@ -348,17 +348,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
             bestValue -= depth;
         }
 
-#ifdef TRANSPOSITION_TABLE_ENABLE
-        TranspositionTable::save(bestValue,
-                                 depth,
-                                 BOUND_EXACT,
-                                 posKey
-#ifdef TT_MOVE_ENABLE
-                                 , MOVE_NONE
-#endif // TT_MOVE_ENABLE
-        );
-#endif
-
         return bestValue;
     }
 
