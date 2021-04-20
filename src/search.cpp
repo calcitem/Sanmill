@@ -281,6 +281,11 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     const bool atRoot = (originDepth == depth);
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
+
+    // check transposition-table
+
+    const Value oldAlpha = alpha;
+
     Bound type = BOUND_NONE;
 
     const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
@@ -473,7 +478,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TranspositionTable::save(bestValue,
                              depth,
-                             TranspositionTable::boundType(bestValue, alpha, beta),
+                             TranspositionTable::boundType(bestValue, oldAlpha, beta),
                              posKey
 #ifdef TT_MOVE_ENABLE
                              , bestMove
