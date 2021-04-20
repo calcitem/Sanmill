@@ -473,8 +473,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TranspositionTable::save(bestValue,
                              depth,
-                             bestValue >= beta ? BOUND_LOWER :
-                             BOUND_UPPER,
+                             TranspositionTable::boundType(bestValue, alpha, beta),
                              posKey
 #ifdef TT_MOVE_ENABLE
                              , bestMove
