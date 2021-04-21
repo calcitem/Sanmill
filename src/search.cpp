@@ -157,6 +157,9 @@ int Thread::search()
         loggerDebug("==============================\n");
         loggerDebug("==============================\n");
 
+        auto startTime = now();
+        timeLimit = 1000.0;
+
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
@@ -165,14 +168,21 @@ int Thread::search()
 #endif
 
 #ifdef MTDF_AI
-            value = MTDF(rootPos, ss, value, i, originDepth, bestMove);
+            value = MTDF(rootPos, ss, value, i, i, bestMove);
 #else
-            value = search(rootPos, ss, i, originDepth, alpha, beta, bestMove);
+            value = search(rootPos, ss, i, i, alpha, beta, bestMove);
 #endif
 
             loggerDebug("%d(%d) ", value, value - lastValue);
 
             lastValue = value;
+
+            auto elapsedTime = now() - startTime;
+
+            if (elapsedTime > timeLimit) {
+               loggerDebug("\nTimeout. originDepth = %d, depth = %d, elapsedTime = %lld\n", originDepth, i, elapsedTime);
+               goto out;
+            }
         }
 
 #ifdef TIME_STAT
@@ -199,6 +209,8 @@ int Thread::search()
 #else
     value = search(rootPos, ss, d, originDepth, alpha, beta, bestMove);
 #endif
+
+out:
 
 #ifdef TIME_STAT
     timeEnd = chrono::steady_clock::now();
@@ -379,6 +391,18 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         return -VALUE_INFINITE;
     }
 #endif
+
+#if 0
+    // TODO: weak
+    if (bestMove != MOVE_NONE) {
+        for (int i = 0; i < moveCount; i++) {
+            if (mp.moves[i].move == bestMove) {    // TODO: need to write value?
+                std::swap(mp.moves[0], mp.moves[i]);
+                break;
+            }
+        }
+    }
+#endif // TT_MOVE_ENABLE
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH
