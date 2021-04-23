@@ -465,7 +465,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
         pos->undo_move(ss);
 
-        assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
+        //assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
 
         // Check for a new best move
         // Finished searching the move. If a stop occurred, the return value of
@@ -499,7 +499,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-    assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+    //assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
 
     return bestValue;
 }
