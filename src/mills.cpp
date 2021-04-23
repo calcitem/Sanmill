@@ -428,6 +428,10 @@ void move_priority_list_shuffle()
 
 Depth getSearchDepth(const Position *pos)
 {
+#if defined(FIX_DEPTH)
+    return FIX_DEPTH;
+#endif
+
     Depth d = 0;
 
 #ifdef _DEBUG
@@ -571,10 +575,6 @@ Depth getSearchDepth(const Position *pos)
     d += DEPTH_ADJUST;
 
     d = d >= 1 ? d : 1;
-
-#if defined(FIX_DEPTH)
-    d = FIX_DEPTH;
-#endif
 
     assert(d <= 32);
 
