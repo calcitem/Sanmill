@@ -147,7 +147,7 @@ int Thread::search()
     Value beta = VALUE_INFINITE;
 #endif
 
-    if (gameOptions.getIDSEnabled()) {
+    if (gameOptions.getMoveTime() > 0 || gameOptions.getIDSEnabled()) {
         loggerDebug("IDS: ");
 
         const Depth depthBegin = 2;
@@ -179,8 +179,7 @@ int Thread::search()
 
             auto elapsedTime = now() - startTime;
 
-            if (gameOptions.getMoveTime() > 0 && 
-                elapsedTime > timeLimit) {
+            if (elapsedTime > timeLimit) {
                 loggerDebug("\nTimeout. originDepth = %d, depth = %d, elapsedTime = %lld\n",
                             originDepth, i, elapsedTime);
                 goto out;    
