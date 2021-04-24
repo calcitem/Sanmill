@@ -428,9 +428,9 @@ void move_priority_list_shuffle()
 
 Depth getSearchDepth(const Position *pos)
 {
-#if defined(FIX_DEPTH)
-    return FIX_DEPTH;
-#endif
+    if (!gameOptions.getDeveloperMode()) {
+        return gameOptions.getSkillLevel();
+    }
 
     Depth d = 0;
 
