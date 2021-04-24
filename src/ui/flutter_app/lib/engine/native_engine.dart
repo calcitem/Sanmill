@@ -83,9 +83,21 @@ class NativeEngine extends AiEngine {
   }
 
   Future<String> waitResponse(List<String> prefixes,
-      {sleep = 1000, times = 0}) async {
-    // TODO: moveTime * 3
-    if (times > Config.moveTime * 3) return '';
+      {sleep = 100, times = 0}) async {
+    var timeLimit = Config.developerMode ? 100 : 6000;
+
+    if (Config.moveTime > 0) {
+      // TODO: Accurate timeLimit
+      timeLimit = Config.moveTime * 10 * 3 + 10;
+    }
+
+    if (times > timeLimit) {
+      print("Timeout. sleep = $sleep, times = $times");
+      if (Config.developerMode) {
+        throw ("Exception: waitResponse timeout.");
+      }
+      return '';
+    }
 
     final response = await read();
 
