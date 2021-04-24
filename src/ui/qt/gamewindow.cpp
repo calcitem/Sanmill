@@ -528,7 +528,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             game->setRule(ruleNo, static_cast<int>(dStep), dTime);
-            gameOptions.setMoveTime(dTime);
+            game->setMoveTime(dTime); 
         }
     }
 
