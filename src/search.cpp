@@ -47,6 +47,7 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
 
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
+bool is_timeout(TimePoint startTime);
 
 /// Search::init() is called at startup to initialize various lookup tables
 
@@ -153,12 +154,7 @@ int Thread::search()
         const Depth depthBegin = 2;
         Value lastValue = VALUE_ZERO;
 
-        loggerDebug("\n==============================\n");
-        loggerDebug("==============================\n");
-        loggerDebug("==============================\n");
-
-        auto startTime = now();
-        timeLimit = gameOptions.getMoveTime() * 1000;
+        TimePoint startTime = now();
 
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -177,14 +173,10 @@ int Thread::search()
 
             lastValue = value;
 
-            auto elapsedTime = now() - startTime;
-
-            if (elapsedTime > timeLimit) {
-                loggerDebug("\nTimeout. originDepth = %d, depth = %d, elapsedTime = %lld\n",
-                            originDepth, i, elapsedTime);
+            if (is_timeout(startTime)) {
+                loggerDebug("originDepth = %d, depth = %d\n", originDepth, i);
                 goto out;    
             }
-
         }
 
 #ifdef TIME_STAT
@@ -530,4 +522,17 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
     }
 
     return g;
+}
+
+bool is_timeout(TimePoint startTime)
+{
+    auto limit = gameOptions.getMoveTime() * 1000;
+    TimePoint elapsed = now() - startTime;
+
+    if (elapsed > limit) {
+        loggerDebug("\nTimeout. elapsed = %lld\n", elapsed);
+        return true;
+    }
+
+    return false;
 }
