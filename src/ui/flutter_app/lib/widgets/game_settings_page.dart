@@ -64,6 +64,26 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
+  SliderTheme _moveTimeSliderTheme(context, setState) {
+    return SliderTheme(
+      data: AppTheme.sliderThemeData,
+      child: Slider(
+        value: Config.moveTime.toDouble(),
+        min: 0,
+        max: 60,
+        divisions: 60,
+        label: Config.moveTime.round().toString(),
+        onChanged: (value) {
+          setState(() {
+            print("Slider value: $value");
+            Config.moveTime = value.toInt();
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
   // Restore
 
   restoreFactoryDefaultSettings() async {
@@ -125,6 +145,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             context: context,
             titleString: S.of(context).skillLevel,
             onTap: setSkillLevel,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).moveTime,
+            onTap: setMoveTime,
           ),
         ],
       ),
@@ -217,6 +243,17 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       builder: (BuildContext context) => StatefulBuilder(
         builder: (context, setState) {
           return _skillLevelSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
+  setMoveTime() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _moveTimeSliderTheme(context, setState);
         },
       ),
     );

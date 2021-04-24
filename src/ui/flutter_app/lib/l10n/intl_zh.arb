@@ -74,6 +74,7 @@
   "perferences": "游戏设置",
   "difficulty": "游戏难度",
   "skillLevel": "难度等级",
+  "moveTime": "机器思考时间",
   "playSounds": "声音",
   "playSoundsInTheGame": "行棋时播放声音",
   "tone": "提示音效",

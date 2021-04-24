@@ -29,6 +29,7 @@ class Config {
   static bool aiMovesFirst = false;
   static bool aiIsLazy = false;
   static int skillLevel = 20;
+  static int moveTime = 1;
   static bool isAutoRestart = false;
   static bool isAutoChangeFirstMove = false;
   static bool resignIfMostLose = false;
@@ -76,6 +77,7 @@ class Config {
     Config.aiMovesFirst = settings['AiMovesFirst'] ?? false;
     Config.aiIsLazy = settings['AiIsLazy'] ?? false;
     Config.skillLevel = settings['SkillLevel'] ?? 20;
+    Config.moveTime = settings['MoveTime'] ?? 1;
     Config.isAutoRestart = settings['IsAutoRestart'] ?? false;
     Config.isAutoChangeFirstMove = settings['IsAutoChangeFirstMove'] ?? false;
     Config.resignIfMostLose = settings['ResignIfMostLose'] ?? false;
@@ -141,6 +143,7 @@ class Config {
     settings['AiMovesFirst'] = Config.aiMovesFirst;
     settings['AiIsLazy'] = Config.aiIsLazy;
     settings['SkillLevel'] = Config.skillLevel;
+    settings['MoveTime'] = Config.moveTime;
     settings['IsAutoRestart'] = Config.isAutoRestart;
     settings['IsAutoChangeFirstMove'] = Config.isAutoChangeFirstMove;
     settings['ResignIfMostLose'] = Config.resignIfMostLose;

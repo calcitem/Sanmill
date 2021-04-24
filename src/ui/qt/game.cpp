@@ -64,7 +64,7 @@ Game::Game(
     gameDurationCycle(0),
     timeID(0),
     ruleIndex(-1),
-    timeLimit(0),
+    timeLimit(gameOptions.getMoveTime()),
     stepsLimit(50)
 {
     // The background has been added to the style sheet of view, but not to scene
@@ -134,6 +134,7 @@ void Game::loadSettings()
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
     setSkillLevel(empty ? 20 : settings->value("Options/SkillLevel").toInt());
+    setMoveTime(empty ? 1 : settings->value("Options/MoveTime").toInt());
     setAiIsLazy(empty ? false : settings->value("Options/AiIsLazy").toBool());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
     setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
@@ -290,8 +291,7 @@ void Game::gameReset()
         scene.addItem(newP);
     }
 
-    // Read rule time limit requirement
-    timeLimit = 0; // TODO: rule.maxTimeLedToLose;
+    timeLimit = gameOptions.getMoveTime();
 
     // If the rule does not require timing, time1 and time2 represent the time used
     if (timeLimit <= 0) {
@@ -299,7 +299,7 @@ void Game::gameReset()
         remainingTime[BLACK] = remainingTime[WHITE] = 0;
     } else {
         // Set the player's remaining time to a limited time
-        remainingTime[BLACK] = remainingTime[WHITE] = timeLimit * 60;
+        remainingTime[BLACK] = remainingTime[WHITE] = timeLimit;
     }
 
     // Update move history
@@ -367,14 +367,14 @@ void Game::setInvert(bool arg)
     }
 }
 
-void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= -1*/)
+void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0*/)
 {
     // Update the rule, the original time limit and step limit remain unchanged
     if (ruleNo < 0 || ruleNo >= N_RULES)
         return;
     this->ruleIndex = ruleNo;
 
-    if (stepLimited != INT_MAX && timeLimited != -1) {
+    if (stepLimited != INT_MAX && timeLimited != 0) {
         stepsLimit = stepLimited;
         timeLimit = timeLimited;
     }
@@ -573,6 +573,12 @@ void Game::setSkillLevel(int val)
 {
     gameOptions.setSkillLevel(val);
     settings->setValue("Options/SkillLevel", val);
+}
+
+void Game::setMoveTime(int val)
+{
+    gameOptions.setMoveTime(val);
+    settings->setValue("Options/MoveTime", val);
 }
 
 void Game::setAiIsLazy(bool enabled)
@@ -780,8 +786,8 @@ void Game::timerEvent(QTimerEvent *event)
     // If the rule requires a timer, time1 and time2 indicate a countdown
     if (timeLimit > 0) {
         // Player's remaining time
-        remainingTime[BLACK] = timeLimit * 60 - remainingTime[BLACK];
-        remainingTime[WHITE] = timeLimit * 60 - remainingTime[WHITE];
+        remainingTime[BLACK] = timeLimit - remainingTime[BLACK];
+        remainingTime[WHITE] = timeLimit - remainingTime[WHITE];
     }
 
     qt1 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));

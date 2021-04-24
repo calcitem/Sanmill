@@ -202,7 +202,7 @@ signals:
 public slots:
 
     // Set rules
-    void setRule(int ruleNo, int stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = -1);
+    void setRule(int ruleNo, int stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = 0);
 
     // The game begins
     void gameStart();
@@ -235,6 +235,9 @@ public slots:
 
     // Skill Level
     void setSkillLevel(int val);
+
+    // Move Time
+    void setMoveTime(int val);
 
     // AI is Lazy
     void setAiIsLazy(bool enabled);
@@ -508,7 +511,7 @@ private:
     // Rule number
     int ruleIndex;
 
-    // Rule time limit (minutes)
+    // Rule time limit (seconds)
     int timeLimit;
 
     // Rule step limit

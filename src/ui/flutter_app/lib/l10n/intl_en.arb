@@ -292,6 +292,10 @@
   "@skillLevel": {
     "description": "Difficulty Level"
   },
+  "moveTime": "AI thinking time",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
   "difficulty": "Difficulty",
   "@difficulty": {
     "description": "Difficulty"

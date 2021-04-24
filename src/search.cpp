@@ -158,7 +158,7 @@ int Thread::search()
         loggerDebug("==============================\n");
 
         auto startTime = now();
-        timeLimit = 1000.0;
+        timeLimit = gameOptions.getMoveTime() * 1000;
 
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -179,10 +179,13 @@ int Thread::search()
 
             auto elapsedTime = now() - startTime;
 
-            if (elapsedTime > timeLimit) {
-               loggerDebug("\nTimeout. originDepth = %d, depth = %d, elapsedTime = %lld\n", originDepth, i, elapsedTime);
-               goto out;
+            if (gameOptions.getMoveTime() > 0 && 
+                elapsedTime > timeLimit) {
+                loggerDebug("\nTimeout. originDepth = %d, depth = %d, elapsedTime = %lld\n",
+                            originDepth, i, elapsedTime);
+                goto out;    
             }
+
         }
 
 #ifdef TIME_STAT

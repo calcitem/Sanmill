@@ -34,6 +34,16 @@ public:
         return skillLevel;
     }
 
+    void setMoveTime(int val) noexcept
+    {
+        moveTime = val;
+    }
+
+    int getMoveTime() const noexcept
+    {
+        return moveTime;
+    }
+
     void setAiIsLazy(bool enabled) noexcept
     {
         aiIsLazy = enabled;
@@ -171,6 +181,7 @@ protected:
 
 private:
     int skillLevel { 20 };
+    int moveTime { 1 };
     bool aiIsLazy { false };
     bool isAutoRestart { false };
     bool isAutoChangeFirstMove { false };

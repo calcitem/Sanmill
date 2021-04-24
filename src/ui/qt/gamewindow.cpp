@@ -493,17 +493,20 @@ void MillGameWindow::on_actionLimited_T_triggered()
 #endif
 
     label_step->setText(tr("If the number of moves exceeds the limit, it will get a draw:"));
-    label_time->setText(tr("Either side loses if it times out:"));
+
     comboBox_step->addItem(tr("Infinite"), 0);
     comboBox_step->addItem(tr("50 Moves"), 50);
     comboBox_step->addItem(tr("100 Moves"), 100);
     comboBox_step->addItem(tr("200 Moves"), 200);
-    comboBox_time->addItem(tr("Infinite"), 0);
-    comboBox_time->addItem(tr("5 Minutes"), 5);
-    comboBox_time->addItem(tr("10 Minutes"), 10);
-    comboBox_time->addItem(tr("20 Minutes"), 20);
     comboBox_step->setCurrentIndex(comboBox_step->findData(gStep));
-    comboBox_time->setCurrentIndex(comboBox_time->findData(gTime));
+
+    label_time->setText(tr("Either side loses if it times out:"));
+    comboBox_time->addItem(tr("Infinite"), 0);
+    comboBox_time->addItem(tr("1s"), 1);
+    comboBox_time->addItem(tr("5s"), 5);
+    comboBox_time->addItem(tr("60s"), 60);
+    comboBox_time->setCurrentIndex(comboBox_time->findData(gTime));    
+
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -525,6 +528,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             game->setRule(ruleNo, static_cast<int>(dStep), dTime);
+            gameOptions.setMoveTime(dTime);
         }
     }
 
