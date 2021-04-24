@@ -20,8 +20,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/mill/types.dart';
 
 import 'engine.dart';
 
@@ -30,7 +30,7 @@ class NativeEngine extends AiEngine {
 
   Future<void> startup() async {
     await platform.invokeMethod('startup');
-    await waitResponse(['uciok'], sleep: 1, times: 30);
+    await waitResponse(['uciok'], sleep: 100, times: 0);
   }
 
   Future<void> send(String command) async {
@@ -83,8 +83,9 @@ class NativeEngine extends AiEngine {
   }
 
   Future<String> waitResponse(List<String> prefixes,
-      {sleep = 100, times = 100}) async {
-    if (times <= 0) return '';
+      {sleep = 1000, times = 0}) async {
+    // TODO: moveTime * 3
+    if (times > Config.moveTime * 3) return '';
 
     final response = await read();
 
@@ -100,7 +101,7 @@ class NativeEngine extends AiEngine {
 
     return Future<String>.delayed(
       Duration(milliseconds: sleep),
-      () => waitResponse(prefixes, times: times - 1),
+      () => waitResponse(prefixes, times: times + 1),
     );
   }
 
