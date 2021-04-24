@@ -88,7 +88,7 @@ class NativeEngine extends AiEngine {
 
     if (Config.moveTime > 0) {
       // TODO: Accurate timeLimit
-      timeLimit = Config.moveTime * 10 * 3 + 10;
+      timeLimit = Config.moveTime * 10 * 64 + 10;
     }
 
     if (times > timeLimit) {
