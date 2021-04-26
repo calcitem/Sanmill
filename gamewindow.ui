@@ -175,7 +175,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>Retract Move</string>
+         <string>Undo Move</string>
         </property>
         <property name="icon">
          <iconset resource="gamewindow.qrc">
@@ -1257,7 +1257,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Endgame Learning</string>
+    <string>Endgame Learning (WIP)</string>
    </property>
   </action>
   <action name="actionEngineFight_E">
@@ -1267,16 +1267,16 @@
   </action>
   <action name="actionAutoChangeFirstMove_C">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="checked">
     <bool>false</bool>
    </property>
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
-    <string>Auto Change Who Play First</string>
+    <string>Auto Change Who Play First (WIP)</string>
    </property>
   </action>
   <action name="actionIDS_I">
@@ -1300,10 +1300,13 @@
   </action>
   <action name="actionOpeningBook_O">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
    </property>
    <property name="text">
-    <string>Opening Book</string>
+    <string>Opening Book (WIP)</string>
    </property>
   </action>
   <action name="actionPerfect_AI">
