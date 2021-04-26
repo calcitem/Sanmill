@@ -412,16 +412,17 @@ void MillGameWindow::ctxMenu(const QPoint &pos)
 
 void MillGameWindow::ruleInfo()
 {
+#if 0
     const int s = game->getStepsLimit();
     const int t = game->getTimeLimit();
 
-    QString tl(" No Time Limit");
-    QString sl(" No Steps Limit");
+    QString tl(" No Time limit");
+    QString sl(" No 50 moves rule");
 
     if (s > 0)
-        sl = " Limit" + QString::number(s) + "steps";
+        sl = QString::number(s) + " Moves rule ";
     if (t > 0)
-        tl = " Limit" + QString::number(s) + "min";
+        tl = " Limit " + QString::number(t) + "s ";
 
     // Rule display
     ui.labelRule->setText(tl + sl);
@@ -436,6 +437,10 @@ void MillGameWindow::ruleInfo()
     QString tip_Rule = QString("%1\n%2").arg(tr(RULES[ruleNo].name))
         .arg(tr(RULES[ruleNo].info));
 #endif
+#else
+    ui.labelRule->setText("Move list");
+#endif
+    return;
 }
 
 void MillGameWindow::saveBook(const QString &path)
