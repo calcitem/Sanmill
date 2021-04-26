@@ -492,15 +492,16 @@ void MillGameWindow::on_actionLimited_T_triggered()
     buttonBox->setObjectName(QStringLiteral("buttonBox"));
 #endif
 
-    label_step->setText(tr("If the number of moves exceeds the limit, it will get a draw:"));
+    label_step->setText(tr("N-Move Rule:"));
 
-    comboBox_step->addItem(tr("Infinite"), 0);
+    // TODO: Implement N Moves Limit
+    //comboBox_step->addItem(tr("Infinite"), 0);
     comboBox_step->addItem(tr("50 Moves"), 50);
-    comboBox_step->addItem(tr("100 Moves"), 100);
-    comboBox_step->addItem(tr("200 Moves"), 200);
+    //comboBox_step->addItem(tr("100 Moves"), 100);
+    //comboBox_step->addItem(tr("200 Moves"), 200);
     comboBox_step->setCurrentIndex(comboBox_step->findData(gStep));
 
-    label_time->setText(tr("Either side loses if it times out:"));
+    label_time->setText(tr("Max. time:"));
     comboBox_time->addItem(tr("Infinite"), 0);
     comboBox_time->addItem(tr("1s"), 1);
     comboBox_time->addItem(tr("5s"), 5);
