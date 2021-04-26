@@ -19,8 +19,8 @@
 class Rule {
   String name = "Nine Men's Morris";
   String description = "";
-  int piecesCount = 9; // 9 or 12
-  int piecesAtLeastCount = 3; // Default is 3
+  int piecesCount = 9;
+  int piecesAtLeastCount = 3;
   bool hasDiagonalLines = false;
   bool hasBannedLocations = false;
   bool isDefenderMoveFirst = false;

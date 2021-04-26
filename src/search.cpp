@@ -84,12 +84,12 @@ int Thread::search()
         int np = bestvalue / VALUE_EACH_PIECE;
         if (np > 1) {
             cout << "Lazy Mode: " << np << endl;
-            originDepth = 4;
+            originDepth = 4;    // TODO
         } else {
-            originDepth = getDepth();
+            originDepth = get_depth();
         }
     } else {
-        originDepth = getDepth();
+        originDepth = get_depth();
     }
 
     const time_t time0 = time(nullptr);
@@ -116,10 +116,6 @@ int Thread::search()
             return 3;
         }
 #endif // THREEFOLD_REPETITION
-
-#if defined(UCI_DO_BEST_MOVE) || defined(QT_GUI_LIB)
-        //posKeyHistory.push_back(rootPos->key());
-#endif // UCI_DO_BEST_MOVE
 
         assert(posKeyHistory.size() < 256);
     }
@@ -175,7 +171,7 @@ int Thread::search()
 
             if (is_timeout(startTime)) {
                 loggerDebug("originDepth = %d, depth = %d\n", originDepth, i);
-                goto out;    
+                goto out;
             }
         }
 
@@ -284,8 +280,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #endif /* ENDGAME_LEARNING */
 
-    const bool atRoot = (originDepth == depth);
-
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
     // check transposition-table
@@ -297,7 +291,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
                                                , ttMove
-#endif // TT_MOVE_ENABLE                                     
+#endif // TT_MOVE_ENABLE
     );
 
     if (probeVal != VALUE_UNKNOWN) {
@@ -307,20 +301,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
         bestValue = probeVal;
 
-#if 0
-        // TODO: Need adjust value?
-        if (position->turn == BLACK)
-            bestValue += tte.depth - depth;
-        else
-            bestValue -= tte.depth - depth;
-#endif
-
-#ifdef TT_MOVE_ENABLE
-        //         if (ttMove != MOVE_NONE) {
-        //             bestMove = ttMove;
-        //         }
-#endif // TT_MOVE_ENABLE
-
         return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
@@ -329,14 +309,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #endif
 
-    //hashMapMutex.unlock();
 #endif /* TRANSPOSITION_TABLE_ENABLE */
-
-#if 0
-    if (position->phase == Phase::placing && depth == 1 && pos->pieceToRemoveCount > 0) {
-        depth--;
-    }
-#endif
 
     // process leaves
 
@@ -380,14 +353,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 
 #if 0
-    // Follow morris, do not save to TT
-    if (moveCount == 0) {
-        return -VALUE_INFINITE;
-    }
-#endif
-
-#if 0
-    // TODO: weak
+    // TODO: Weak
     if (bestMove != MOVE_NONE) {
         for (int i = 0; i < moveCount; i++) {
             if (mp.moves[i].move == bestMove) {    // TODO: need to write value?
@@ -468,7 +434,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
-        // TODO: Not follow morris
         if (value >= bestValue) {
             bestValue = value;
 
@@ -530,7 +495,9 @@ bool is_timeout(TimePoint startTime)
     TimePoint elapsed = now() - startTime;
 
     if (elapsed > limit) {
+#ifdef _WIN32
         loggerDebug("\nTimeout. elapsed = %lld\n", elapsed);
+#endif
         return true;
     }
 

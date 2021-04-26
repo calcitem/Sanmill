@@ -39,7 +39,7 @@
 /// per-thread pawn and material hash tables so that once we get a
 /// pointer to an entry its life time is unlimited and we don't have
 /// to care about someone changing the entry under our feet.
-class Thread 
+class Thread
 #ifdef QT_GUI_LIB
     : public QObject
 #endif
@@ -74,9 +74,9 @@ public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    void clearTT();
-    string nextMove();
-    Depth getDepth();
+    void clear_tt();
+    string next_move();
+    Depth get_depth();
 
     int getTimeLimit() const
     {
@@ -104,15 +104,15 @@ public:
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    size_t tteCount{ 0 };
-    size_t ttHitCount{ 0 };
-    size_t ttMissCount{ 0 };
-    size_t ttInsertNewCount{ 0 };
-    size_t ttAddrHitCount{ 0 };
-    size_t ttReplaceCozDepthCount{ 0 };
-    size_t ttReplaceCozHashCount{ 0 };
-#endif
-#endif
+    size_t tteCount { 0 };
+    size_t ttHitCount { 0 };
+    size_t ttMissCount { 0 };
+    size_t ttInsertNewCount { 0 };
+    size_t ttAddrHitCount { 0 };
+    size_t ttReplaceCozDepthCount { 0 };
+    size_t ttReplaceCozHashCount { 0 };
+#endif // TRANSPOSITION_TABLE_DEBUG
+#endif // TRANSPOSITION_TABLE_ENABLE
 
 public:
     Depth originDepth { 0 };
@@ -164,7 +164,7 @@ struct ThreadPool : public std::vector<Thread *>
     void clear();
     void set(size_t);
 
-    MainThread *main()        const
+    MainThread *main() const
     {
         return static_cast<MainThread *>(front());
     }

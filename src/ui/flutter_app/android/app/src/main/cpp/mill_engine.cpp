@@ -56,7 +56,6 @@ Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env, jobject obj)
         pthread_join(thread_id, NULL);
     }
 
-    // getInstance() 有并发问题，这里首先主动建立实例，避免后续创建重复
     CommandChannel::getInstance();
 
     usleep(10);
@@ -82,7 +81,6 @@ Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command)
     if (success) printf(">>> %s\n", pCommand);
 
     env->ReleaseStringUTFChars(command, pCommand);
-
 
     return success ? 0 : -1;
 }

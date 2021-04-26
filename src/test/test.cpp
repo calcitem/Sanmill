@@ -16,8 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
-
 #include <QBuffer>
 #include <QUuid>
 #include <QDataStream>
@@ -30,6 +28,8 @@
 #include "misc.h"
 #include "option.h"
 #include "test.h"
+
+#include "config.h"
 
 #ifdef PERFECT_AI_SUPPORT
 #include "perfect/perfect.h"

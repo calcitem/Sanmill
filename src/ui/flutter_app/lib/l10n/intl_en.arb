@@ -408,7 +408,7 @@
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
-  "hasBannedLocations_Detail": "In the placing phase, the points of removed pieces will no longer be able to place. ",
+  "hasBannedLocations_Detail": "In the placing phase, the points of removed pieces will no longer be able to place.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to place unless moving phase is entered."
   },

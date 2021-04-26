@@ -36,11 +36,11 @@
 struct StateInfo
 {
     // Copied when making a move
-    int    rule50 {0};
-    int    pliesFromNull;
+    int rule50 {0};
+    int pliesFromNull;
 
     // Not copied when making a move (will be recomputed anyhow)
-    Key        key;
+    Key key;
 };
 
 
@@ -115,7 +115,7 @@ public:
     bool check_if_game_is_over();
     void remove_ban_stones();
     void set_side_to_move(Color c);
-  
+
     void change_side_to_move();
     Color get_winner() const noexcept;
     void set_gameover(Color w, GameOverReason reason);
@@ -133,7 +133,7 @@ public:
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
-    void surrounded_pieces_count(Square s, int &nOurPieces, int &nTheirPieces, int &nBanned, int &nEmpty);
+    void surrounded_pieces_count(Square s, int &ourPieceCount, int &theirPieceCount, int &bannedCount, int &emptyCount);
     bool is_all_surrounded(Color c
 #ifdef MUEHLE_NMM
                            , Square from = SQ_0, Square to = SQ_0
@@ -164,15 +164,13 @@ public:
 
     bool move_piece(File f1, Rank r1, File f2, Rank r2);
     bool move_piece(Square from, Square to);
-    bool undo_move_piece(Square from, Square to);
 
     // Data members
     Piece board[SQUARE_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
     Bitboard byColorBB[COLOR_NB];
-    // TODO: [0] is sum of Black and White
-    int pieceInHandCount[COLOR_NB]{ 0, 12, 12 }; // TODO
-    int pieceOnBoardCount[COLOR_NB]{ 0, 0, 0 };
+    int pieceInHandCount[COLOR_NB] { 0, 12, 12 };
+    int pieceOnBoardCount[COLOR_NB] { 0, 0, 0 };
     int pieceToRemoveCount{ 0 };
     int gamePly { 0 };
     Color sideToMove { NOCOLOR };
@@ -271,9 +269,6 @@ inline void Position::put_piece(Piece pc, Square s)
     board[s] = pc;
     byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
     byColorBB[color_of(pc)] |= s;
-    //index[s] = pieceCount[pc]++;
-    //pieceList[pc][index[s]] = s;
-    //pieceCount[make_piece(color_of(pc), ALL_PIECES)]++;
 }
 
 inline bool Position::put_piece(File f, Rank r)
@@ -293,11 +288,6 @@ inline bool Position::remove_piece(File f, Rank r)
     const bool ret = remove_piece(make_square(f, r), true);
 
     return ret;
-}
-
-inline bool Position::undo_move_piece(Square from, Square to)
-{
-    return move_piece(to, from);    // TODO
 }
 
 inline bool Position::move_piece(Square from, Square to)

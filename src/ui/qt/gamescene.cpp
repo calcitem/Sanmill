@@ -93,7 +93,7 @@ bool GameScene::pos2polar(QPointF pos, File &file, Rank &rank)
     return board->pos2polar(pos, file, rank);
 }
 
-void GameScene::setDiagonal(bool arg /*= true*/)
+void GameScene::setDiagonal(bool arg)
 {
     if (board) {
         board->setDiagonal(arg);

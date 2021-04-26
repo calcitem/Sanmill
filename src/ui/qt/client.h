@@ -51,10 +51,12 @@ private slots:
     void displayError(QAbstractSocket::SocketError socketError);
     void enableGetActionButton();
     void sessionOpened();
+
     void setPort(uint16_t p) noexcept
     {
         this->port = p;
     }
+
     uint16_t getPort() noexcept
     {
         return port;

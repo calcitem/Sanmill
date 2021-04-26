@@ -103,7 +103,7 @@ void MovePicker::score()
 
             //cur->value += bannedCount;  // placing phrase, place nearby ban point
 
-            // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)   
+            // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)
             if (rule.piecesCount == 12 &&
                 pos.count<ON_BOARD>(WHITE) < 2 &&    // patch: only when white's 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
@@ -142,7 +142,7 @@ void MovePicker::score()
                 }
             }
 
-            // prefer remove piece that mobility is strong 
+            // prefer remove piece that mobility is strong
             cur->value += emptyCount;
         }
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES

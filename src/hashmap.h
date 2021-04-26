@@ -34,16 +34,17 @@
 #define HASH_KEY_DISABLE
 
 constexpr size_t HASH_SIZE_DEFAULT = 1031; // A prime number as key size gives a better distribution of values in buckets
-namespace CTSL //Concurrent Thread Safe Library
+
+namespace CTSL // Concurrent Thread Safe Library
 {
-    //The class represting the key map.
-    //It is expected for user defined types, the key function will be provided.
-    //By default, the std::key function will be used
-    //If the key size is not provided, then a defult size of 1031 will be used
-    //The key table itself consists of an array of key buckets.
-    //Each key bucket is implemented as singly linked list with the head as a dummy node created
-    //during the creation of the bucket. All the key buckets are created during the construction of the map.
-    //Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the key map
+    // The class representing the key map.
+    // It is expected for user defined types, the key function will be provided.
+    // By default, the std::key function will be used
+    // If the key size is not provided, then a default size of 1031 will be used
+    // The key table itself consists of an array of key buckets.
+    // Each key bucket is implemented as singly linked list with the head as a dummy node created
+    // during the creation of the bucket. All the key buckets are created during the construction of the map.
+    // Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the key map
 #ifdef HASH_KEY_DISABLE
     #define hashFn Key
     template <typename K, typename V>
@@ -59,9 +60,9 @@ namespace CTSL //Concurrent Thread Safe Library
 #ifdef ALIGNED_LARGE_PAGES
                 hashTable = (HashNode<K, V>*)aligned_large_pages_alloc(sizeof(HashNode<K, V>) * hashSize);
 #else
-                hashTable = new HashNode<K, V>[hashSize]; //create the key table as an array of key nodes
+                hashTable = new HashNode<K, V>[hashSize]; // Create the key table as an array of key nodes
 #endif // ALIGNED_LARGE_PAGES
-                
+
                 memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
 #else
                 hashTable = new HashBucket<K, V>[hashSize]; //create the key table as an array of key buckets
@@ -76,15 +77,15 @@ namespace CTSL //Concurrent Thread Safe Library
                 delete [] hashTable;
 #endif
             }
-            //Copy and Move of the HashMap are not supported at this moment
+            // Copy and Move of the HashMap are not supported at this moment
             HashMap(const HashMap&) = delete;
             HashMap(HashMap&&) = delete;
             HashMap& operator=(const HashMap&) = delete;
             HashMap& operator=(HashMap&&) = delete;
 
-            //Function to find an entry in the key map matching the key.
-            //If key is found, the corresponding value is copied into the parameter "value" and function returns true.
-            //If key is not found, function returns false.
+            // Function to find an entry in the key map matching the key.
+            // If key is found, the corresponding value is copied into the parameter "value" and function returns true.
+            // If key is not found, function returns false.
             bool find(const K &key, V &value) const
             {
                 K hashValue = hashFn(key) & (hashSize - 1) ;
@@ -113,8 +114,8 @@ namespace CTSL //Concurrent Thread Safe Library
                 prefetch((void *)addr);
             }
 
-            //Function to insert into the key map.
-            //If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
+            // Function to insert into the key map.
+            // If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
             K insert(const K &key, const V &value)
             {
                 K hashValue = hashFn(key) & (hashSize - 1);
@@ -130,7 +131,7 @@ namespace CTSL //Concurrent Thread Safe Library
                 return hashValue;
             }
 
-            //Function to remove an entry from the bucket, if found
+            // Function to remove an entry from the bucket, if found
             void erase(
 #ifndef DISABLE_HASHBUCKET
                 const K &key
@@ -146,7 +147,7 @@ namespace CTSL //Concurrent Thread Safe Library
             }
 
 
-            //Function to clean up the hasp map, i.e., remove all entries from it
+            // Function to clean up the hasp map, i.e., remove all entries from it
             void clear()
             {
 #ifdef DISABLE_HASHBUCKET
@@ -161,7 +162,7 @@ namespace CTSL //Concurrent Thread Safe Library
 
             void resize(size_t size)
             {
-                // TODO
+                // TODO: Resize
                 if (size < 0x1000000) {
                     // New size is too small, do not resize
                     return;
@@ -175,7 +176,7 @@ namespace CTSL //Concurrent Thread Safe Library
                 return;
             }
 
-            //Function to dump the key map to file
+            // Function to dump the key map to file
             void dump(const std::string &filename)
             {
 #ifdef DISABLE_HASHBUCKET
@@ -282,5 +283,5 @@ namespace CTSL //Concurrent Thread Safe Library
 #endif
     };
 }
-#endif
+#endif  // HASH_MAP_H_
 

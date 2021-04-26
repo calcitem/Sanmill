@@ -57,13 +57,6 @@ public:
                 memcmp(arr, other.arr, size()));
     }
 
-#if 0
-    T operator*(const Stack<T> &obj)
-    {
-        return (obj.arr);
-    };
-#endif
-
     T &operator[](int i)
     {
         return arr[i];
@@ -141,7 +134,7 @@ public:
 
 private:
     T *arr;
-    int p{ -1 };
+    int p { -1 };
 };
 
 }

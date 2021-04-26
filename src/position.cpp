@@ -246,7 +246,7 @@ Position &Position::set(const string &fenStr, Thread *th)
     // 2. Active color
     ss >> token;
     sideToMove = (token == 'b' ? BLACK : WHITE);
-    them = ~sideToMove;    // Stockfish do not need to set them
+    them = ~sideToMove;    // Note: Stockfish do not need to set them
 
     // 3. Phrase
     ss >> token;
@@ -667,7 +667,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             || is_all_in_mills(them)
 #endif
             ) {
-            assert(pieceInHandCount[BLACK] >= 0 && pieceInHandCount[WHITE] >= 0);     
+            assert(pieceInHandCount[BLACK] >= 0 && pieceInHandCount[WHITE] >= 0);
 
             if (pieceInHandCount[BLACK] == 0 && pieceInHandCount[WHITE] == 0) {
                 if (check_if_game_is_over()) {
@@ -695,7 +695,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
             update_key_misc();
             action = Action::remove;
-        } 
+        }
 
     } else if (phase == Phase::moving) {
 
@@ -709,7 +709,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 #endif // MUEHLE_NMM
 
-        // if illegal
+        // If illegal
         if (pieceOnBoardCount[sideToMove] > rule.piecesAtLeastCount ||
             !rule.mayFly) {
             if ((square_bb(s) & MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
@@ -857,7 +857,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     change_side_to_move();
 
 check:
-    check_if_game_is_over();    
+    check_if_game_is_over();
 
     return true;
 }
@@ -972,18 +972,13 @@ void Position::update_score()
         }
 
         score[winner]++;
-
-        // Test Point
-        if (winner == BLACK)
-        {
-            winner = winner;
-        }
     }
 }
 
 bool Position::check_if_game_is_over()
 {
-    if (phase == Phase::ready || phase == Phase::gameOver) {
+    if (phase == Phase::ready ||
+        phase == Phase::gameOver) {
         return true;
     }
 
@@ -1005,7 +1000,7 @@ bool Position::check_if_game_is_over()
         return true;
     }
 
-    if (phase == Phase::moving && action == Action::select && is_all_surrounded(sideToMove)) {        
+    if (phase == Phase::moving && action == Action::select && is_all_surrounded(sideToMove)) {
         if (rule.isLoseButNotChangeSideWhenNoWay) {
             set_gameover(~sideToMove, GameOverReason::loseReasonNoWay);
             return true;
@@ -1013,7 +1008,7 @@ bool Position::check_if_game_is_over()
             change_side_to_move();  // TODO: Need?
             return false;
         }
-    } 
+    }
 
     return false;
 }
@@ -1038,7 +1033,7 @@ int Position::get_mobility_diff()
                     }
                 }
             }
-        } 
+        }
     }
 
     return mobilityBlack - mobilityWhite;
@@ -1080,13 +1075,7 @@ inline void Position::change_side_to_move()
 
 inline Key Position::update_key(Square s)
 {
-    // PieceType is board[s]
-
-    // 0b00 - no piece, 0b01 = 1 black, 0b10 = 2 white, 0b11 = 3 ban
     const int pieceType = color_on(s);
-    // TODO: this is std, but current code can work
-    //Location loc = board[s];
-    //int pieceType = loc == 0x0f? 3 : loc >> 4;
 
     st.key ^= Zobrist::psq[pieceType][s];
 

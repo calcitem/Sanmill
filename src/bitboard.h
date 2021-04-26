@@ -23,7 +23,7 @@
 
 #include "types.h"
 
-#define	SET_BIT(x, bit)     (x |= (1 << bit))	
+#define	SET_BIT(x, bit)     (x |= (1 << bit))
 #define	CLEAR_BIT(x, bit)   (x &= ~(1 << bit))
 
 #define S2(a, b)        (square_bb(SQ_##a) | square_bb(SQ_##b))
@@ -82,17 +82,17 @@ inline Bitboard star_square_bb_12() noexcept
 /// Overloads of bitwise operators between a Bitboard and a Square for testing
 /// whether a given bit is set in a bitboard, and for setting and clearing bits.
 
-inline Bitboard  operator&(Bitboard  b, Square s) noexcept
+inline Bitboard operator&(Bitboard  b, Square s) noexcept
 {
     return b & square_bb(s);
 }
 
-inline Bitboard  operator|(Bitboard  b, Square s) noexcept
+inline Bitboard operator|(Bitboard  b, Square s) noexcept
 {
     return b | square_bb(s);
 }
 
-inline Bitboard  operator^(Bitboard  b, Square s) noexcept
+inline Bitboard operator^(Bitboard  b, Square s) noexcept
 {
     return b ^ square_bb(s);
 }

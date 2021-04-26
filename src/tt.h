@@ -28,10 +28,10 @@ using namespace CTSL;
 
 /// TTEntry struct is the 4 bytes transposition table entry, defined as below:
 ///
-/// value       8 bit
-/// depth       8 bit
-/// type        8 bit
-/// age         8 bit
+/// value               8 bit
+/// depth               8 bit
+/// bound type          8 bit
+/// age                 8 bit
 
 struct TTEntry
 {
@@ -76,6 +76,7 @@ class TranspositionTable
 {
 public:
     static bool search(const Key &key, TTEntry &tte);
+
     static Value probe(const Key &key,
                             const Depth &depth,
                             const Value &alpha,

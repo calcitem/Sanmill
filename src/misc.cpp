@@ -106,7 +106,6 @@ struct Tie : public streambuf
 
     int log(int c, const char *prefix)
     {
-
         static int last = '\n'; // Single log file
 
         if (last == '\n')
@@ -118,7 +117,6 @@ struct Tie : public streambuf
 
 class Logger
 {
-
     Logger() : in(cin.rdbuf(), file.rdbuf()), out(cout.rdbuf(), file.rdbuf())
     {
     }

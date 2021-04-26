@@ -22,7 +22,7 @@
 #include "types.h"
 
 struct Rule rule = {
-            "打三棋(12连棋)",           // 打三棋
+        "打三棋(12连棋)",           // 打三棋
         // 规则说明
         "1. 双方各12颗子，棋盘有斜线；\n"
         "2. 摆棋阶段被提子的位置不能再摆子，直到走棋阶段；\n"
@@ -43,7 +43,6 @@ struct Rule rule = {
         99          // 99半步即50回合
 };
 
-// TODO
 const struct Rule RULES[N_RULES] = {
     {
         "成三棋",   // 成三棋

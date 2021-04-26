@@ -27,18 +27,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
-//import 'package:stack_trace/stack_trace.dart';
 
 //import 'common/config.dart';
 import 'services/audios.dart';
 
-//import 'package:sentry_flutter/sentry_flutter.dart';
-
 Future<void> main() async {
   var catcher = Catcher(rootWidget: SanmillApp(), ensureInitialized: true);
 
-  //DateTime now = DateTime.now();
-  //String formattedDate = DateFormat('yyyy-MM-dd_kk-mm').format(now);
   String externalDirStr;
   try {
     Directory? externalDir = await getExternalStorageDirectory();
@@ -54,16 +49,6 @@ Future<void> main() async {
   String path = externalDirStr + "/sanmill-crash-logs.txt";
   print("ExternalStorageDirectory: " + externalDirStr);
   String recipients = "calcitem@outlook.com";
-
-  /// Create catcher configuration.
-  /// Debug configuration with dialog report mode and console handler.
-  /// It will show dialog and once user accepts it, error will be shown
-  /// in console.
-  //CatcherOptions debugOptions = CatcherOptions(
-  //    PageReportMode(showStackTrace: true), [ConsoleHandler()]);
-  //SentryOptions sopt = new SentryOptions();
-  //sopt.dsn =
-  //    "https://62c565096ba146a6b70bc57dbb72386c@o525088.ingest.sentry.io/5638585";
 
   CatcherOptions debugOptions =
       CatcherOptions(PageReportMode(showStackTrace: true), [
@@ -121,9 +106,6 @@ class SanmillApp extends StatefulWidget {
 class _SanmillAppState extends State<SanmillApp> {
   @override
   void initState() {
-    //Chain.capture(() {
-    //  Config.loadSettings();
-    //});
     super.initState();
   }
 

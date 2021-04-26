@@ -19,6 +19,7 @@
 import 'position.dart';
 import 'types.dart';
 
+// TODO
 class GameRecorder {
   int? halfMove, fullMove;
   String? lastPositionWithRemove = "";

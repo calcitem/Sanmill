@@ -759,10 +759,6 @@ void Game::updateTime()
     time_t *ourSeconds = &elapsedSeconds[sideToMove];
     time_t theirSeconds = elapsedSeconds[~sideToMove];
 
-//     if (!(phase == Phase::placing || phase == Phase::moving)) {
-//         return;
-//     }
-
     currentTime = time(NULL);
 
     if (timePoint >= *ourSeconds) {
@@ -809,8 +805,6 @@ void Game::timerEvent(QTimerEvent *event)
         updateScence();
         message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
-
-        //QMessageBox::about(NULL, "游戏结果", message);
 
 #ifndef DONOT_PLAY_WIN_SOUND
         playSound(GameSound::win, winner);
@@ -977,7 +971,7 @@ bool Game::actionPiece(QPointF p)
         message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
 
-        // Insert the new chess score line into listmodel
+        // Insert the new chess score line into list model
         currentRow = manualListModel.rowCount() - 1;
         int k = 0;
 
@@ -1028,7 +1022,6 @@ bool Game::actionPiece(QPointF p)
     return result;
 }
 
-
 bool Game::resign()
 {
     const bool result = position.resign(position.sideToMove);
@@ -1037,7 +1030,7 @@ bool Game::resign()
         return false;
     }
 
-    // Insert the new record line into listmodel
+    // Insert the new record line into list model
     currentRow = manualListModel.rowCount() - 1;
     int k = 0;
 
@@ -1087,7 +1080,6 @@ bool Game::command(const string &cmd, bool update /* = true */)
     default:
         break;
     }
-//#endif
 
     if (position.get_phase() == Phase::ready) {
         gameStart();
@@ -1144,7 +1136,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
             if (r++ > currentRow)
                 break;
         }
-        // Insert the new chess score line into listmodel
+        // Insert the new chess score line into list model
         while (i != move_hostory()->end()) {
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());

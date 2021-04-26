@@ -73,7 +73,7 @@ void position(Position *pos, istringstream &is)
 
     repetition = 0;
     posKeyHistory.clear();
-    
+
     pos->set(fen, Threads.main());
 
     // Parse move list (if any)

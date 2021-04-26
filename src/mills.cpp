@@ -426,7 +426,7 @@ void move_priority_list_shuffle()
 #endif
 }
 
-Depth getSearchDepth(const Position *pos)
+Depth get_search_depth(const Position *pos)
 {
     if (!gameOptions.getDeveloperMode()) {
         return (Depth)gameOptions.getSkillLevel();
@@ -577,8 +577,6 @@ Depth getSearchDepth(const Position *pos)
     d = d >= 1 ? d : 1;
 
     assert(d <= 32);
-
-    //loggerDebug("Depth: %d\n", d);
 
 #ifdef FLUTTER_UI
     LOGD("Search depth: %d\n", d);

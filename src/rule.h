@@ -28,30 +28,41 @@ struct Rule
 
     const char description[512];
 
-    // Number of pieces each player has at the beginning.
+    // The number of pieces each player has
     int piecesCount;
 
     int piecesAtLeastCount; // Default is 3
 
+    // Add four diagonal lines to the board.
     bool hasDiagonalLines;
 
+    // In the placing phase, the points of removed pieces will no longer be able to place.
     bool hasBannedLocations;
 
+    // The player who moves second in the placing phrase moves first in the moving phrase.
     bool isDefenderMoveFirst;
 
-    // When closing more than one mill at once, may also remove several opponent pieces.
+    // If a player close more than one mill at once,
+    // she will be able to remove the number of mills she closed.
     bool mayRemoveMultiple;
 
-    // May remove from mills even if there are other pieces available.
+    // By default, players must remove any other pieces first before removing a piece from a formed mill.
+    // Enable this option to disable the limitation.
     bool mayRemoveFromMillsAlways;
 
+    // At the end of the placing phase, when the board is full,
+    // the side that places first loses the game, otherwise, the game is a draw.
     bool isBlackLoseButNotDrawWhenBoardFull;
 
+    // The player will lose if his opponent blocks them so that they cannot be moved.
+    // Change side to move if this option is disabled.
     bool isLoseButNotChangeSideWhenNoWay;
 
     // Player may fly if he is down to three pieces.
     bool mayFly;
 
+    // If a player has only three pieces left,
+    // she is allowed to move the piece to any free point.
     size_t maxStepsLedToDraw;
 };
 

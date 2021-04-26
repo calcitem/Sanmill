@@ -135,7 +135,7 @@ void MillGameWindow::closeEvent(QCloseEvent *event)
 
 bool MillGameWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    // This function is overridded just to make the rules menu (dynamic) display prompts
+    // This function is overridden just to make the rules menu (dynamic) display prompts
     if (watched == ui.menu_R &&
         event->type() == QEvent::ToolTip) {
         const auto *he = dynamic_cast <QHelpEvent *> (event);
@@ -644,7 +644,6 @@ void MillGameWindow::on_actionOpen_O_triggered()
 
     // Files larger than 1MB are not supported
     if (file.size() > 0x100000) {
-        // 定义新对话框
         QMessageBox msgBox(QMessageBox::Warning,
             tr("The file is too large"), tr("Files larger than 1MB are not supported"), QMessageBox::Ok);
         msgBox.exec();

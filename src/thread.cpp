@@ -71,7 +71,7 @@ Thread::Thread(size_t n
 /// for its termination. Thread should be already waiting.
 
 Thread::~Thread()
-{    
+{
     assert(!searching);
 
     exit = true;
@@ -79,12 +79,15 @@ Thread::~Thread()
     stdThread.join();
 }
 
+
 /// Thread::clear() reset histories, usually before a new game
 
 void Thread::clear() noexcept
 {
-    // TODO
+    // TODO: Do nothing
+    return;
 }
+
 
 /// Thread::start_searching() wakes up the thread that will start the search
 
@@ -97,11 +100,11 @@ void Thread::start_searching()
 
 void Thread::pause()
 {
-    // TODO: Can work?
     std::lock_guard<std::mutex> lk(mutex);
     searching = false;
     cv.notify_one(); // Wake up the thread in idle_loop()
 }
+
 
 /// Thread::wait_for_search_finished() blocks on the condition variable
 /// until the thread has finished searching.
@@ -118,8 +121,6 @@ void Thread::wait_for_search_finished()
 
 void Thread::idle_loop()
 {
-    //bestvalue = lastvalue = VALUE_ZERO;
-
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
         searching = false;
@@ -132,18 +133,18 @@ void Thread::idle_loop()
 
         lk.unlock();
 
-        // TODO: Stockfish doesn't have this
+        // Note: Stockfish doesn't have this
         if (rootPos == nullptr || rootPos->side_to_move() != us) {
             continue;
         }
 
-        clearTT();
+        clear_tt();
 
 #ifdef PERFECT_AI_SUPPORT
         if (gameOptions.getPerfectAiEnabled()) {
             bestMove = perfect_search();
             assert(bestMove != MOVE_NONE);
-            strCommand = nextMove();
+            strCommand = next_move();
             if (strCommand != "" && strCommand != "error!") {
                 emitCommand();
             }
@@ -165,7 +166,7 @@ void Thread::idle_loop()
                     strCommand = "draw";
                     emitCommand();
                 } else {
-                    strCommand = nextMove();
+                    strCommand = next_move();
                     if (strCommand != "" && strCommand != "error!") {
                         emitCommand();
                     }
@@ -330,11 +331,11 @@ void Thread::analyze(Color c)
     }
 
     if (lv < -VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << " made a bad move, " << strUs << "pulled back the balance of power!" << endl;
+        cout << strThem << " made a bad move, " << strUs << " pulled back the balance of power!" << endl;
     }
 
     if (lv < 0 && v > 0) {
-        cout << strThem << " made a bad move, " << strUs << "reversed the situation!" << endl;
+        cout << strThem << " made a bad move, " << strUs << " reversed the situation!" << endl;
     }
 
     if (lv == 0 && v > VALUE_EACH_PIECE) {
@@ -342,15 +343,15 @@ void Thread::analyze(Color c)
     }
 
     if (lv > VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << "Good move, pulled back the balance of power" << endl;
+        cout << strThem << "made a good move, pulled back the balance of power" << endl;
     }
 
     if (lv > 0 && v < 0) {
-        cout << strThem << "Good move, reversed the situation!" << endl;
+        cout << strThem << "made a good move, reversed the situation!" << endl;
     }
 
     if (lv == 0 && v < -VALUE_EACH_PIECE) {
-        cout << strThem << "made a good move!" << endl;
+        cout << strThem << " made a good move!" << endl;
     }
 
     if (lv != v) {
@@ -410,12 +411,12 @@ out:
     cout << endl << endl;
 }
 
-Depth Thread::getDepth()
+Depth Thread::get_depth()
 {
-    return Mills::getSearchDepth(rootPos);
+    return Mills::get_search_depth(rootPos);
 }
 
-void Thread::clearTT()
+void Thread::clear_tt()
 {
     if (strcmp(rule.name, rule.name) != 0) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -424,7 +425,7 @@ void Thread::clearTT()
     }
 }
 
-string Thread::nextMove()
+string Thread::next_move()
 {
 #ifdef ENDGAME_LEARNING
     // Check if very weak
@@ -456,12 +457,6 @@ string Thread::nextMove()
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
-
-#if 0
-    if (foundBest == false) {
-        loggerDebug("Warning: Best Move NOT Found\n");
-    }
-#endif
 
     return UCI::move(bestMove);
 }
@@ -525,7 +520,7 @@ void ThreadPool::set(size_t requested)
         clear();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-        // Reallocate the hash with the new threadpool size
+        // Reallocate the hash with the new thread pool size
         TT.resize(size_t(Options["Hash"]));
 #endif
 
@@ -560,8 +555,6 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
     // setupStates->back() later. The rootState is per thread, earlier states are shared
     // since they are read-only.
     for (Thread *th : *this) {
-        // TODO
-        //th->rootPos->set(pos->fen(), &setupStates->back(), th);
         th->rootPos = pos;
     }
 

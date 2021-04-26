@@ -42,7 +42,7 @@ class Move {
 
   MoveType type = MoveType.none;
 
-  // Used to restore fen step conter when regreting
+  // Used to restore fen step counter when undoing move
   String counterMarks = "";
 
   parse() {

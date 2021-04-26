@@ -25,7 +25,7 @@
 #include <cstdint>
 #include <ratio>
 #ifdef _WIN32
-#include <intrin.h> 
+#include <intrin.h>
 #endif
 
 namespace stopwatch {
@@ -51,7 +51,7 @@ struct rdtscp_clock {
       constexpr unsigned int ui = 0;
       return time_point(duration((static_cast<std::uint64_t>(ui))));
 #endif
-  }  
+  }
 };
 
 // A timer using the specified clock.

@@ -26,8 +26,8 @@ BoardItem::BoardItem(QGraphicsItem *parent) :
 {
     Q_UNUSED(parent)
 
-        // Put center of the board in the center of the scene
-        setPos(0, 0);
+    // Put center of the board in the center of the scene
+    setPos(0, 0);
 
     // Initialize 24 points
     for (int r = 0; r < FILE_NB; r++) {

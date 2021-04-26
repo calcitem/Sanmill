@@ -50,7 +50,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
   late AnimationController iconAnimationController;
   late AnimationController animationController;
 
-  double scrolloffset = 0.0;
+  double scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -71,9 +71,9 @@ class _DrawerUserControllerState extends State<DrawerUserController>
     scrollController
       ..addListener(() {
         if (scrollController.offset <= 0) {
-          if (scrolloffset != 1.0) {
+          if (scrollOffset != 1.0) {
             setState(() {
-              scrolloffset = 1.0;
+              scrollOffset = 1.0;
               try {
                 widget.drawerIsOpen!(true);
               } catch (_) {}
@@ -89,9 +89,9 @@ class _DrawerUserControllerState extends State<DrawerUserController>
               duration: const Duration(milliseconds: 0),
               curve: Curves.fastOutSlowIn);
         } else {
-          if (scrolloffset != 0.0) {
+          if (scrollOffset != 0.0) {
             setState(() {
-              scrolloffset = 0.0;
+              scrollOffset = 0.0;
               try {
                 widget.drawerIsOpen!(false);
               } catch (_) {}
@@ -164,13 +164,13 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         // for example scrolloffset == 1
         // means drawer is close we just allow touching all widget.screen View
         IgnorePointer(
-          ignoring: scrolloffset == 1 || false,
+          ignoring: scrollOffset == 1 || false,
           child: widget.screenView,
         ),
         // alternative touch(user Interface) for widget.screen,
         // for example, drawer is close we need to
         // tap on a few home screen area and close the drawer
-        if (scrolloffset == 1.0)
+        if (scrollOffset == 1.0)
           InkWell(
             onTap: () {
               onDrawerClick();
@@ -237,7 +237,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
   }
 
   void onDrawerClick() {
-    // if scrollcontroller.offset != 0.0
+    // if scrollController.offset != 0.0
     // then we set to closed the drawer(with animation to offset zero position)
     // if is not 1 then open the drawer
     scrollController.animateTo(

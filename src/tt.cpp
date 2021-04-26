@@ -19,6 +19,7 @@
 #include "tt.h"
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
+
 static constexpr int TRANSPOSITION_TABLE_SIZE = 0x1000000; // 8-128M:102s, 4-64M:93s 2-32M:91s 1-16M: 冲突
 HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 
@@ -66,7 +67,7 @@ Value TranspositionTable::probe(const Key &key,
         break;
     case BOUND_UPPER:
         if (tte.value8 <= alpha) {
-            return alpha;   // TODO: https://github.com/calcitem/Sanmill/issues/25
+            return alpha;
         }
         break;
     case BOUND_LOWER:
@@ -106,7 +107,6 @@ int TranspositionTable::save(const Value &value,
 #endif // TT_MOVE_ENABLE
                   )
 {
-    //hashMapMutex.lock();
     TTEntry tte {};
 
     if (search(key, tte)) {

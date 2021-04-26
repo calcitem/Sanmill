@@ -115,8 +115,6 @@ typedef uint32_t Bitboard;
 constexpr int MAX_MOVES = 64;
 constexpr int MAX_PLY = 48;
 
-
-
 enum Move : int32_t
 {
     MOVE_NONE,
@@ -145,20 +143,20 @@ enum class Phase : uint16_t
     none,
     ready,
     placing,    // Placing men on vacant points
-    moving,     // Moving men to adjacent points or 
+    moving,     // Moving men to adjacent points or
                 // (optional) Moving men to any vacant point when the player has been reduced to three men
     gameOver
 };
 
 // enum class that represents an action that one player can take when it's
 // his turn at the board. The can be on of the following:
-//   - select a piece on the board;
-//   - place a piece on the board;
-//   - move a piece on the board:
-//       - slide a piece between two adjacent locations;
-//       - 'jump' a piece to any empty location if the player has less than
+//   - Select a piece on the board;
+//   - Place a piece on the board;
+//   - Move a piece on the board:
+//       - Slide a piece between two adjacent locations;
+//       - 'Jump' a piece to any empty location if the player has less than
 //         three pieces and mayFly is |true|;
-//   - remove an opponent's piece after successfully closing a mill;
+//   - Remove an opponent's piece after successfully closing a mill.
 enum class Action : uint16_t
 {
     none,
@@ -170,12 +168,12 @@ enum class Action : uint16_t
 enum class GameOverReason
 {
     noReason,
-    
+
     // A player wins by reducing the opponent to two pieces
     // (where they could no longer form mills and thus be unable to win)
     loseReasonlessThanThree,
 
-    // A player wins by leaving them without a legal move. 
+    // A player wins by leaving them without a legal move.
     loseReasonNoWay,
     loseReasonBoardIsFull,
 
@@ -222,7 +220,6 @@ enum Value : int8_t
 
     VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_PLACING_NEEDREMOVE + (VALUE_EACH_PIECE_ONBOARD - VALUE_EACH_PIECE_INHAND) + 1,
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1,
-
 };
 
 enum Rating : int8_t
@@ -307,7 +304,7 @@ using Depth = int8_t;
 
 enum : int
 {
-    DEPTH_NONE = 0, // TODO: -6,
+    DEPTH_NONE = 0,
     DEPTH_OFFSET = DEPTH_NONE
 };
 
@@ -363,19 +360,6 @@ enum Rank : int
     RANK_1 = 1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NB = 8
 };
 
-
-#if 0
-/// Score enum stores a middlegame and an endgame value in a single integer (enum).
-/// The least significant 16 bits are used to store the middlegame value and the
-/// upper 16 bits are used to store the endgame value. We have to take care to
-/// avoid left-shifting a signed int to avoid undefined behavior.
-enum Score : int
-{
-    SCORE_ZERO
-};
-#endif
-
-
 #define ENABLE_BASE_OPERATORS_ON(T)                                \
 constexpr T operator+(T d1, int d2) { return T(int(d1) + d2); }    \
 constexpr T operator-(T d1, int d2) { return T(int(d1) - d2); }    \
@@ -413,11 +397,6 @@ constexpr Color operator~(Color c)
 {
     return Color(c ^ 3); // Toggle color
 }
-
-// constexpr Piece operator~(Piece p)
-// {
-//     return Piece(p ^ 8);   // Swap color of piece
-// }
 
 constexpr Square make_square(File f, Rank r)
 {
@@ -466,7 +445,7 @@ constexpr PieceType type_of(Piece pc)
 
 constexpr bool is_ok(Square s)
 {
-    return s == SQ_NONE || (s >= SQ_BEGIN && s < SQ_END);  // TODO: SQ_NONE?
+    return s == SQ_NONE || (s >= SQ_BEGIN && s < SQ_END);
 }
 
 constexpr File file_of(Square s)
@@ -493,14 +472,6 @@ constexpr Square to_sq(Move m)
         m = (Move)-m;
 
     return Square(m & 0x00FF);
-}
-
-constexpr int from_to(Move m)
-{
-#if 0
-    return m & 0xFFF;
-#endif
-    return m & 0xFFFF;   // TODO
 }
 
 constexpr MoveType type_of(Move m)
