@@ -1,7 +1,7 @@
 name: sanmill
 description: A new Flutter project.
 
-version: 0.20.0+1681
+version: 1.0.0+1723
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
