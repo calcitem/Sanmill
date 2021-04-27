@@ -12,7 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  just_audio: ^0.7.3
+  just_audio: ^0.7.4
   path_provider: ^2.0.1
   package_info: ^2.0.0
   uuid: ^3.0.3
