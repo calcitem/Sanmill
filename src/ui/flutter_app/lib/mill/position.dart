@@ -17,9 +17,9 @@
 */
 
 import 'package:sanmill/mill/game.dart';
-import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 
 import 'mills.dart';
@@ -510,13 +510,13 @@ class Position {
           changeSideToMove();
         }
         Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
-        Audios.playTone('place.mp3');
+        Audios.playTone(Audios.placeSoundId);
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
         action = Act.remove;
         Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
-        Audios.playTone('mill.mp3');
+        Audios.playTone(Audios.millSoundId);
       }
     } else if (phase == Phase.moving) {
       if (checkIfGameIsOver()) {
@@ -570,14 +570,14 @@ class Position {
           return true;
         } else {
           Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
-          Audios.playTone('place.mp3');
+          Audios.playTone(Audios.placeSoundId);
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
         action = Act.remove;
         Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
-        Audios.playTone('mill.mp3');
+        Audios.playTone(Audios.millSoundId);
       }
     } else {
       assert(false);
@@ -604,7 +604,7 @@ class Position {
 
     revertKey(s);
 
-    Audios.playTone('remove.mp3');
+    Audios.playTone(Audios.removeSoundId);
 
     if (rule.hasBannedLocations && phase == Phase.placing) {
       // Remove and put ban

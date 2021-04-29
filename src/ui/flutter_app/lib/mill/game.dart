@@ -137,7 +137,7 @@ class Game {
     // Can regret only our turn
     // TODO
     if (_position.side != PieceColor.white) {
-      //Audios.playTone('invalid.mp3');
+      //Audios.playTone(Audios.invalidSoundId);
       return false;
     }
 
@@ -165,11 +165,11 @@ class Game {
     }
 
     if (regretted) {
-      //Audios.playTone('regret.mp3');
+      //Audios.playTone(Audios.regretSoundId);
       return true;
     }
 
-    //Audios.playTone('invalid.mp3');
+    //Audios.playTone(Audios.invalidSoundId);
     return false;
   }
 

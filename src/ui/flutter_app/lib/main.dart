@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 
@@ -107,6 +108,7 @@ class _SanmillAppState extends State<SanmillApp> {
   @override
   void initState() {
     super.initState();
+    Audios.loadSounds();
   }
 
   @override
@@ -134,7 +136,7 @@ class _SanmillAppState extends State<SanmillApp> {
       debugShowCheckedModeBanner: false,
       home: WillPopScope(
         onWillPop: () async {
-          Audios.release();
+          Audios.disposePool();
           return true;
         },
         child: NavigationHomeScreen(),

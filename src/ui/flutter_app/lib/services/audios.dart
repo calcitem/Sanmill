@@ -18,15 +18,73 @@
 
 import 'dart:io';
 
-import 'package:just_audio/just_audio.dart';
+import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 class Audios {
-  static AudioPlayer? _player;
+  //static AudioPlayer? _player;
+  static Soundpool? _soundpool;
+  static int? _alarmSoundStreamId;
+  static var drawSoundId;
+  static var flySoundId;
+  static var goSoundId;
+  static var illegalSoundId;
+  static var loseSoundId;
+  static var millSoundId;
+  static var placeSoundId;
+  static var removeSoundId;
+  static var selectSoundId;
+  static var winSoundId;
 
-  static playTone(String fileName) async {
-    Chain.capture(() {
+  static Future<void> loadSounds() async {
+    _soundpool ??= Soundpool();
+
+    drawSoundId ??=
+        await _soundpool!.load(await rootBundle.load("assets/audios/draw.mp3"));
+    flySoundId ??=
+        await _soundpool!.load(await rootBundle.load("assets/audios/fly.mp3"));
+    goSoundId ??=
+        await _soundpool!.load(await rootBundle.load("assets/audios/go.mp3"));
+    illegalSoundId = await _soundpool!
+        .load(await rootBundle.load("assets/audios/illegal.mp3"));
+    loseSoundId ??=
+        await _soundpool!.load(await rootBundle.load("assets/audios/lose.mp3"));
+    millSoundId ??=
+        await _soundpool!.load(await rootBundle.load("assets/audios/mill.mp3"));
+    placeSoundId ??= await _soundpool!
+        .load(await rootBundle.load("assets/audios/place.mp3"));
+    removeSoundId ??= await _soundpool!
+        .load(await rootBundle.load("assets/audios/remove.mp3"));
+    selectSoundId ??= await _soundpool!
+        .load(await rootBundle.load("assets/audios/select.mp3"));
+    winSoundId ??=
+        await _soundpool!.load(await rootBundle.load("assets/audios/win.mp3"));
+  }
+
+  static Future<void> _playSound(var soundId) async {
+    _alarmSoundStreamId = await _soundpool!.play(await soundId);
+  }
+
+  static Future<void> _pauseSound() async {
+    if (_alarmSoundStreamId != null && _alarmSoundStreamId! > 0) {
+      await _soundpool!.pause(_alarmSoundStreamId!);
+    }
+  }
+
+  static Future<void> _stopSound() async {
+    if (_alarmSoundStreamId != null && _alarmSoundStreamId! > 0) {
+      await _soundpool!.stop(_alarmSoundStreamId!);
+    }
+  }
+
+  static Future<void> disposePool() async {
+    _soundpool!.dispose();
+  }
+
+  static playTone(var soundId) async {
+    Chain.capture(() async {
       if (!Config.toneEnabled) {
         return;
       }
@@ -38,39 +96,17 @@ class Audios {
       }
 
       try {
-        if (_player == null) {
-          _player = AudioPlayer();
+        if (_soundpool == null) {
+          await loadSounds();
         }
 
-        _player!.stop();
-        _player!.setAsset("assets/audios/" + fileName);
+        await _stopSound();
 
-        _player!.play();
-      } on PlayerException catch (e) {
-        // iOS/macOS: maps to NSError.code
-        // Android: maps to ExoPlayerException.type
-        // Web: maps to MediaError.code
-        print("Error code: ${e.code}");
-        // iOS/macOS: maps to NSError.localizedDescription
-        // Android: maps to ExoPlaybackException.getMessage()
-        // Web: a generic message
-        print("Error message: ${e.message}");
-      } on PlayerInterruptedException catch (e) {
-        // This call was interrupted since another audio source was loaded or the
-        // player was stopped or disposed before this audio source could complete
-        // loading.
-        print("Connection aborted: ${e.message}");
+        _playSound(soundId);
       } catch (e) {
         // Fallback for all errors
         print(e);
       }
     });
-  }
-
-  static Future<void> release() async {
-    if (_player != null) {
-      await _player!.stop();
-      await _player!.dispose();
-    }
   }
 }
