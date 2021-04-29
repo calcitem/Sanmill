@@ -27,7 +27,7 @@ class Config {
   static bool toneEnabled = true;
   static bool aiMovesFirst = false;
   static bool aiIsLazy = false;
-  static int skillLevel = 20;
+  static int skillLevel = 1;
   static int moveTime = 1;
   static bool isAutoRestart = false;
   static bool isAutoChangeFirstMove = false;
@@ -73,7 +73,7 @@ class Config {
     Config.toneEnabled = settings['ToneEnabled'] ?? true;
     Config.aiMovesFirst = settings['AiMovesFirst'] ?? false;
     Config.aiIsLazy = settings['AiIsLazy'] ?? false;
-    Config.skillLevel = settings['SkillLevel'] ?? 20;
+    Config.skillLevel = settings['SkillLevel'] ?? 1;
     Config.moveTime = settings['MoveTime'] ?? 1;
     Config.isAutoRestart = settings['IsAutoRestart'] ?? false;
     Config.isAutoChangeFirstMove = settings['IsAutoChangeFirstMove'] ?? false;

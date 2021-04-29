@@ -165,7 +165,7 @@ void init(OptionsMap &o)
     o["Clear Hash"] << Option(on_clear_hash);
     o["Ponder"] << Option(false);
     o["MultiPV"] << Option(1, 1, 500);
-    o["SkillLevel"] << Option(20, 0, 20, on_skill_level);
+    o["SkillLevel"] << Option(1, 0, 20, on_skill_level);
     o["MoveTime"] << Option(1, 0, 60, on_move_time);
     o["AiIsLazy"] << Option(false, on_aiIsLazy);
     o["Move Overhead"] << Option(10, 0, 5000);

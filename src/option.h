@@ -180,7 +180,7 @@ public:
 protected:
 
 private:
-    int skillLevel { 20 };
+    int skillLevel { 1 };
     int moveTime { 1 };
     bool aiIsLazy { false };
     bool isAutoRestart { false };
