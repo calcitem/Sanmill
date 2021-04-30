@@ -30,7 +30,9 @@ import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
 import 'list_item_divider.dart';
 
-bool developerModeEnabled = false;
+class Developer {
+  static bool developerModeEnabled = false;
+}
 
 class GameSettingsPage extends StatefulWidget {
   @override
@@ -296,11 +298,11 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
-      developerModeEnabled
+      Developer.developerModeEnabled
           ? Text(S.of(context).forDevelopers,
               style: AppTheme.settingsHeaderStyle)
           : SizedBox(height: 1),
-      developerModeEnabled
+      Developer.developerModeEnabled
           ? SettingsCard(
               context: context,
               children: <Widget>[

@@ -24,6 +24,7 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/widgets/game_settings_page.dart';
 
 enum DrawerIndex {
   humanVsAi,
@@ -61,6 +62,8 @@ class HomeDrawer extends StatefulWidget {
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
+  DateTime? lastTapTime;
+
   @override
   void initState() {
     super.initState();
@@ -134,19 +137,29 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
 
     var animatedTextKit = AnimatedTextKit(
-      animatedTexts: [
-        ColorizeAnimatedText(
-          S.of(context).appName,
-          textStyle: AppTheme.colorizeTextStyle,
-          colors: AppTheme.animatedTextsColors,
-          textAlign: TextAlign.start,
-          speed: const Duration(milliseconds: 3000),
-        ),
-      ],
-      pause: const Duration(milliseconds: 30000),
-      repeatForever: true,
-      stopPauseOnTap: true,
-    );
+        animatedTexts: [
+          ColorizeAnimatedText(
+            S.of(context).appName,
+            textStyle: AppTheme.colorizeTextStyle,
+            colors: AppTheme.animatedTextsColors,
+            textAlign: TextAlign.start,
+            speed: const Duration(milliseconds: 3000),
+          ),
+        ],
+        pause: const Duration(milliseconds: 30000),
+        repeatForever: true,
+        stopPauseOnTap: true,
+        onTap: () {
+          if (lastTapTime == null ||
+              DateTime.now().difference(lastTapTime!) > Duration(seconds: 1)) {
+            lastTapTime = DateTime.now();
+            print("Tap again in one second to enable developer mode.");
+          } else {
+            lastTapTime = DateTime.now();
+            Developer.developerModeEnabled = true;
+            print("Developer mode enabled.");
+          }
+        });
 
     var drawerHeader = Container(
       width: double.infinity,
