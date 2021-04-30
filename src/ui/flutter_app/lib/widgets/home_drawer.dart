@@ -217,7 +217,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ),
           ),
           Divider(height: 1, color: AppTheme.drawerDividerColor),
-          drawFooter,
+          //drawFooter,
         ],
       ),
     );
