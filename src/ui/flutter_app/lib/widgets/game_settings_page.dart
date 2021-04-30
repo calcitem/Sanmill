@@ -16,9 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
@@ -35,13 +36,93 @@ class GameSettingsPage extends StatefulWidget {
 }
 
 class _GameSettingsPageState extends State<GameSettingsPage> {
-  // create some values
   Color pickerColor = Color(0xFF808080);
   Color currentColor = Color(0xFF808080);
+
+  int _counter = 0;
+  late StreamController<int> _events;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _events = StreamController<int>.broadcast();
+    _events.add(10);
+  }
+
+  void _startTimer() {
+    _counter = 10;
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      (_counter > 0) ? _counter-- : _timer!.cancel();
+      _events.add(_counter);
+    });
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _restore() async {
+    final profile = await Settings.instance();
+    await profile.restore();
+  }
+
+  void showCountdownDialog(BuildContext ctx) {
+    var alert = AlertDialog(
+        content: StreamBuilder<int>(
+            stream: _events.stream,
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+              print("Count down: " + snapshot.data.toString());
+
+              if (snapshot.data == 0) {
+                _restore();
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              }
+
+              return Container(
+                height: 128,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                        snapshot.data != null
+                            ? '${snapshot.data.toString()}'
+                            : "10",
+                        style: TextStyle(
+                          fontSize: 64,
+                        )),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          S.of(ctx).cancel,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        )),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }));
+    showDialog(
+        context: ctx,
+        builder: (BuildContext c) {
+          return alert;
+        });
   }
 
   SliderTheme _skillLevelSliderTheme(context, setState) {
@@ -89,10 +170,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   restoreFactoryDefaultSettings() async {
     confirm() async {
       Navigator.of(context).pop();
-      if (Config.developerMode) return;
-      final profile = await Settings.instance();
-      await profile.restore();
-      exit(0);
+      _startTimer();
+      showCountdownDialog(context);
     }
 
     cancel() => Navigator.of(context).pop();
