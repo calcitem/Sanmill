@@ -172,7 +172,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             if (position.action == Act.remove) {
               //Audios.playTone(Audios.millSoundId);
               if (mounted) {
-                changeStatus(S.of(context).tipRemove);
+                changeStatus(S.of(context).tipMill);
               }
             } else {
               //Audios.playTone(Audios.placeSoundId);
@@ -195,38 +195,90 @@ class _GamePageState extends State<GamePage> with RouteAware {
           continue select;
         select:
         case Act.select:
-          if (position.selectPiece(sq)) {
-            Audios.playTone(Audios.selectSoundId);
-            Game.instance.select(index);
-            ret = true;
-            print("selectPiece: [$sq]");
+          if (position.phase == Phase.placing) {
             if (mounted) {
-              changeStatus(S.of(context).tipPlace);
+              changeStatus(S.of(context).tipCannotPlace);
             }
-          } else {
-            Audios.playTone(Audios.illegalSoundId);
-            print("selectPiece: skip [$sq]");
-            if (mounted) {
-              changeStatus(S.of(context).tipSelectWrong);
-            }
+            break;
           }
+          int selectRet = position.selectPiece(sq);
+          switch (selectRet) {
+            case 0:
+              Audios.playTone(Audios.selectSoundId);
+              Game.instance.select(index);
+              ret = true;
+              print("selectPiece: [$sq]");
+              if (mounted) {
+                changeStatus(S.of(context).tipPlace);
+              }
+              break;
+            case -2:
+              Audios.playTone(Audios.illegalSoundId);
+              print("selectPiece: skip [$sq]");
+              if (mounted && position.phase != Phase.gameOver) {
+                changeStatus(S.of(context).tipCannotMove);
+              }
+              break;
+            case -3:
+              Audios.playTone(Audios.illegalSoundId);
+              print("selectPiece: skip [$sq]");
+              if (mounted) {
+                changeStatus(S.of(context).tipCanMoveOnePoint);
+              }
+              break;
+            case -4:
+              Audios.playTone(Audios.illegalSoundId);
+              print("selectPiece: skip [$sq]");
+              if (mounted) {
+                changeStatus(S.of(context).tipSelectPieceToMove);
+              }
+              break;
+            default:
+              Audios.playTone(Audios.illegalSoundId);
+              print("selectPiece: skip [$sq]");
+              if (mounted) {
+                changeStatus(S.of(context).tipSelectWrong);
+              }
+              break;
+          }
+
           break;
 
         case Act.remove:
-          if (position.removePiece(sq)) {
-            //Audios.playTone(Audios.removeSoundId);
-            ret = true;
-            print("removePiece: [$sq]");
-            if (mounted) {
-              changeStatus(S.of(context).tipRemoved);
-            }
-          } else {
-            Audios.playTone(Audios.illegalSoundId);
-            print("removePiece: skip [$sq]");
-            if (mounted) {
-              changeStatus(S.of(context).tipBanRemove);
-            }
+          int removeRet = position.removePiece(sq);
+
+          switch (removeRet) {
+            case 0:
+              //Audios.playTone(Audios.removeSoundId);
+              ret = true;
+              print("removePiece: [$sq]");
+              if (mounted) {
+                changeStatus(S.of(context).tipRemoved);
+              }
+              break;
+            case -2:
+              Audios.playTone(Audios.illegalSoundId);
+              print("removePiece: Cannot Remove our pieces, skip [$sq]");
+              if (mounted) {
+                changeStatus(S.of(context).tipSelectOpponentsPiece);
+              }
+              break;
+            case -3:
+              Audios.playTone(Audios.illegalSoundId);
+              print("removePiece: Cannot remove piece from Mill, skip [$sq]");
+              if (mounted) {
+                changeStatus(S.of(context).tipCannotRemovePieceFromMill);
+              }
+              break;
+            default:
+              Audios.playTone(Audios.illegalSoundId);
+              print("removePiece: skip [$sq]");
+              if (mounted && position.phase != Phase.gameOver) {
+                changeStatus(S.of(context).tipBanRemove);
+              }
+              break;
           }
+
           break;
 
         default:

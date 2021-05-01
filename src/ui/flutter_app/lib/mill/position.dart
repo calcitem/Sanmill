@@ -130,7 +130,7 @@ class Position {
   }
 
   bool movePiece(int from, int to) {
-    if (selectPiece(from)) {
+    if (selectPiece(from) == 0) {
       return putPiece(to);
     }
 
@@ -272,7 +272,7 @@ class Position {
 
     switch (m.type) {
       case MoveType.remove:
-        ret = removePiece(m.to);
+        ret = (removePiece(m.to) == 0);
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
@@ -558,20 +558,20 @@ class Position {
     return true;
   }
 
-  bool removePiece(int s) {
-    if (phase == Phase.ready || phase == Phase.gameOver) return false;
+  int removePiece(int s) {
+    if (phase == Phase.ready || phase == Phase.gameOver) return -1;
 
-    if (action != Act.remove) return false;
+    if (action != Act.remove) return -1;
 
-    if (pieceToRemoveCount <= 0) return false;
+    if (pieceToRemoveCount <= 0) return -1;
 
     // if piece is not their
-    if (!(PieceColor.opponent(sideToMove()) == board[s])) return false;
+    if (!(PieceColor.opponent(sideToMove()) == board[s])) return -2;
 
     if (!rule.mayRemoveFromMillsAlways &&
         potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !isAllInMills(PieceColor.opponent(sideToMove()))) {
-      return false;
+      return -3;
     }
 
     revertKey(s);
@@ -597,7 +597,7 @@ class Position {
     if (pieceOnBoardCount[them]! + pieceInHandCount[them]! <
         rule.piecesAtLeastCount) {
       setGameOver(sideToMove(), GameOverReason.loseReasonlessThanThree);
-      return true;
+      return 0;
     }
 
     currentSquare = 0;
@@ -606,7 +606,7 @@ class Position {
     updateKeyMisc();
 
     if (pieceToRemoveCount > 0) {
-      return true;
+      return 0;
     }
 
     if (phase == Phase.placing) {
@@ -621,7 +621,7 @@ class Position {
 
         if (rule.isDefenderMoveFirst) {
           checkIfGameIsOver();
-          return true;
+          return 0;
         }
       } else {
         action = Act.place;
@@ -633,23 +633,27 @@ class Position {
     changeSideToMove();
     checkIfGameIsOver();
 
-    return true;
+    return 0;
   }
 
-  bool selectPiece(int sq) {
-    if (phase != Phase.moving) return false;
+  int selectPiece(int sq) {
+    if (phase != Phase.moving) return -2;
 
-    if (action != Act.select && action != Act.place) return false;
+    if (action != Act.select && action != Act.place) return -1;
 
-    if (board[sq] == sideToMove()) {
-      currentSquare = sq;
-      action = Act.place;
-      Game.instance.blurIndex = squareToIndex[sq];
-
-      return true;
+    if (board[sq] == PieceColor.none) {
+      return -3;
     }
 
-    return false;
+    if (!(board[sq] == sideToMove())) {
+      return -4;
+    }
+
+    currentSquare = sq;
+    action = Act.place;
+    Game.instance.blurIndex = squareToIndex[sq];
+
+    return 0;
   }
 
   bool resign(String loser) {

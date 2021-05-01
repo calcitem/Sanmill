@@ -76,37 +76,81 @@
   "@gameWarning": {
     "description": "Game Warning"
   },
-  "tipSelectWrong": "Select wrong piece",
+  "tipSelectWrong": "Select wrong piece.",
   "@tipSelectWrong": {
-    "description": "Select wrong piece"
+    "description": "Select wrong piece."
   },
-  "tipPlace": "Place a piece",
+  "tipPlace": "Place your pieces.",
   "@tipPlace": {
-    "description": "Place a piece"
+    "description": "Place your pieces."
   },
-  "tipBanPlace": "Cannot place here",
+  "tipBanPlace": "Cannot place here.",
   "@tipBanPlace": {
-    "description": "Cannot place here"
+    "description": "Cannot place here."
   },
-  "tipPlaced": "Placed",
+  "tipPlaced": "Placed.",
   "@tipPlaced": {
-    "description": "Placed"
+    "description": "Placed."
   },
-  "tipRemove": "Remove a piece",
+  "tipRemove": "Remove a piece.",
   "@tipRemove": {
-    "description": "Remove a piece"
+    "description": "Remove a piece."
   },
-  "tipBanRemove": "Cannot remove",
+  "tipBanRemove": "Cannot remove.",
   "@tipBanRemove": {
-    "description": "Cannot remove"
+    "description": "Cannot remove."
   },
-  "tipRemoved": "Removed",
+  "tipRemoved": "Removed.",
   "@tipRemoved": {
-    "description": "Removed"
+    "description": "Removed."
   },
-  "tipMove": "Move a piece",
+  "tipMove": "Move a piece.",
   "@tipMove": {
-    "description": "Move a piece"
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "You can't place your piece here.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "You can't move your piece here.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mill! Take your opponent's piece.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Select one of your opponent's pieces.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "You cannot remove a piece from a Mill.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a Mill."
+  },
+  "tipCanMoveOnePoint": "A piece can move 1 point.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "You can't move your opponent's pieces.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "There are 3 pieces in a line.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "Select your piece to move.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Your have 3 pieces left.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "Your have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "You can move to any point you like.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
   },
   "blackWin": "Black win",
   "@blackWin": {
@@ -132,9 +176,9 @@
   "@draw": {
     "description": "Draw"
   },
-  "thinking": "Thinking ...",
+  "thinking": "Thinking...",
   "@thinking": {
-    "description": "Thinking ..."
+    "description": "Thinking..."
   },
   "newGame": "Start",
   "@newGame": {
@@ -288,9 +332,9 @@
   "@perferences": {
     "description": "Perferences"
   },
-  "skillLevel": "Difficulty Level",
+  "skillLevel": "Difficulty level",
   "@skillLevel": {
-    "description": "Difficulty Level"
+    "description": "Difficulty level"
   },
   "moveTime": "AI thinking time",
   "@moveTime": {
