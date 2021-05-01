@@ -16,15 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
-#include <cassert>
-#include <ostream>
 #include <sstream>
 
-#include "misc.h"
-#include "search.h"
+//#include "misc.h"
 #include "thread.h"
-#include "tt.h"
 #include "uci.h"
 #include "option.h"
 

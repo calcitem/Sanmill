@@ -19,9 +19,6 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <cstdlib>
-#include <cassert>
-
 namespace Sanmill
 {
 

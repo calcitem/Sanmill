@@ -16,15 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
-
-#include <algorithm> // For std::count
 #include <iomanip>
-#include "movegen.h"
-#include "search.h"
+
 #include "thread.h"
 #include "uci.h"
-#include "tt.h"
 #include "option.h"
 #include "mills.h"
 
@@ -84,7 +79,7 @@ Thread::~Thread()
 
 void Thread::clear() noexcept
 {
-    // TODO: Do nothing
+    // TODO: Reset histories
     return;
 }
 
@@ -549,11 +544,7 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
     increaseDepth = true;
     main()->ponder = ponderMode;
 
-    // We use Position::set() to set root position across threads. But there are
-    // some StateInfo fields (previous, pliesFromNull, capturedPiece) that cannot
-    // be deduced from a fen string, so set() clears them and they are set from
-    // setupStates->back() later. The rootState is per thread, earlier states are shared
-    // since they are read-only.
+    // We use Position::set() to set root position across threads.
     for (Thread *th : *this) {
         th->rootPos = pos;
     }

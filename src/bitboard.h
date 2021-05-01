@@ -69,15 +69,6 @@ inline Bitboard square_bb(Square s) noexcept
     return SquareBB[s];
 }
 
-inline Bitboard star_square_bb_9() noexcept
-{
-    return StarSquareBB9;
-}
-
-inline Bitboard star_square_bb_12() noexcept
-{
-    return StarSquareBB12;
-}
 
 /// Overloads of bitwise operators between a Bitboard and a Square for testing
 /// whether a given bit is set in a bitboard, and for setting and clearing bits.

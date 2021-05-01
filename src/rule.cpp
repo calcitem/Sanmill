@@ -19,7 +19,6 @@
 #include <cstring>
 
 #include "rule.h"
-#include "types.h"
 
 struct Rule rule = {
         "打三棋(12连棋)",           // 打三棋

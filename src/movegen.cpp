@@ -16,16 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
-#include <random>
-#include <array>
-#include <cstring>
-
 #include "movegen.h"
 #include "position.h"
-#include "misc.h"
-#include "bitboard.h"
-#include "option.h"
 #include "mills.h"
 
 /// generate<PLACE> generates all places.
@@ -44,7 +36,7 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
     return cur;
 }
 
-/// generate<PLACE> generates all places.
+/// generate<MOVE> generates all moves.
 /// Returns a pointer to the end of the move moves.
 template<>
 ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
@@ -81,7 +73,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
     return cur;
 }
 
-/// generate<PLACE> generates all removes.
+/// generate<REMOVE> generates all removes.
 /// Returns a pointer to the end of the move moves.
 template<>
 ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
@@ -145,7 +137,7 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
 
     default:
 #ifdef FLUTTER_UI
-        LOGD("generate(): action = %d\n", pos.get_action());
+        LOGD("generate(): action = %hu\n", pos.get_action());
 #endif
         assert(0);
         break;

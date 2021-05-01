@@ -16,28 +16,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
-#include <cassert>
-#include <cmath>
-#include <cstring>   // For std::memset
-#include <iostream>
-#include <sstream>
-
 #include "evaluate.h"
-#include "misc.h"
-#include "movegen.h"
-#include "movepick.h"
-#include "position.h"
-#include "search.h"
 #include "thread.h"
-#include "tt.h"
-#include "uci.h"
+//#include "uci.h"
 
 #include "endgame.h"
-#include "types.h"
 #include "option.h"
-
-#include <random>
 
 using std::string;
 using Eval::evaluate;
@@ -49,7 +33,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
 bool is_timeout(TimePoint startTime);
 
-/// Search::init() is called at startup to initialize various lookup tables
+/// Search::init() is called at startup
 
 void Search::init() noexcept
 {
@@ -437,7 +421,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         // Check for a new best move
         // Finished searching the move. If a stop occurred, the return value of
         // the search cannot be trusted, and we return immediately without
-        // updating best move, PV and TT.
+        // updating best move and TT.
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 

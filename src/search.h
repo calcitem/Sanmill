@@ -21,11 +21,7 @@
 
 #include <vector>
 
-#include "stack.h"
-#include "tt.h"
 #include "endgame.h"
-#include "movepick.h"
-#include "types.h"
 
 #ifdef CYCLE_STAT
 #include "stopwatch.h"

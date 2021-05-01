@@ -16,8 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
-
 #include "movepick.h"
 
 // partial_insertion_sort() sorts moves in descending order up to and including
@@ -34,11 +32,7 @@ void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
         }
 }
 
-/// Constructors of the MovePicker class. As arguments we pass information
-/// to help it to return the (presumably) good moves first, to decide which
-/// moves to return (in the quiescence search, for instance, we only want to
-/// search captures, promotions, and some checks) and how important good move
-/// ordering is at the current node.
+/// Constructors of the MovePicker class.
 
 /// MovePicker constructor for the main search
 MovePicker::MovePicker(Position &p) noexcept

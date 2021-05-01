@@ -16,19 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
-#include <iostream>
 #include <sstream>
-#include <string>
 
-#include "evaluate.h"
-#include "movegen.h"
-#include "position.h"
-#include "search.h"
 #include "thread.h"
-#include "tt.h"
 #include "uci.h"
-#include "rule.h"
 
 #ifdef FLUTTER_UI
 #include "command_channel.h"
