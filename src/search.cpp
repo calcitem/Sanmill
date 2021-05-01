@@ -140,7 +140,7 @@ int Thread::search()
 #if 0
     // TODO: Only NMM
     if (rootPos->piece_on_board_count(BLACK) + rootPos->piece_on_board_count(WHITE) <= 1 &&
-        rule.piecesCount == 9 && gameOptions.getShufflingEnabled()) {
+        !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
         std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
     }

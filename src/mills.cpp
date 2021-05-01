@@ -378,12 +378,12 @@ void move_priority_list_shuffle()
     std::array<Square, 4> movePriorityList2;
     std::array<Square, 8> movePriorityList3;
 
-    if (rule.piecesCount == 9) {
+    if (!rule.hasDiagonalLines) {
         movePriorityList0 = { SQ_16, SQ_18, SQ_20, SQ_22 };
         movePriorityList1 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
         movePriorityList2 = { SQ_17, SQ_19, SQ_21, SQ_23 };
         movePriorityList3 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
-    } else if (rule.piecesCount == 12) {
+    } else if (rule.hasDiagonalLines) {
         movePriorityList0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
         movePriorityList1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
         movePriorityList2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
@@ -415,7 +415,7 @@ void move_priority_list_shuffle()
         MoveList<LEGAL>::movePriorityList[i + 16] = movePriorityList3[i];
     }
 #if 0
-    if (rule.piecesCount == 9 && gameOptions.getShufflingEnabled()) {
+    if (!rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
         std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
     }

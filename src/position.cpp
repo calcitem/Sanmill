@@ -1309,7 +1309,7 @@ bool Position::is_star_square(Square s)
 
 void Position::print_board()
 {
-    if (rule.piecesCount == 12) {
+    if (rule.hasDiagonalLines) {
         printf("\n"
                     "31 ----- 24 ----- 25\n"
                     "| \\       |      / |\n"

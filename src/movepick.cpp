@@ -94,7 +94,7 @@ void MovePicker::score()
 
                     if (to % 2 == 0 && theirPiecesCount == 3) {
                         cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
-                    } else if (to % 2 == 1 && theirPiecesCount == 2 && rule.piecesCount == 12) {
+                    } else if (to % 2 == 1 && theirPiecesCount == 2 && rule.hasDiagonalLines) {
                         cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
                     }
                 }
@@ -103,9 +103,9 @@ void MovePicker::score()
 
             //cur->value += bannedCount;  // placing phrase, place nearby ban point
 
-            // for 12 men, white 's 2nd move place star point is as important as close mill (TODO)
-            if (rule.piecesCount == 12 &&
-                pos.count<ON_BOARD>(WHITE) < 2 &&    // patch: only when white's 2nd move
+            // for 12 men's morris (has diagonal), white 2nd move place star point is as important as close mill (TODO)
+            if (rule.hasDiagonalLines &&
+                pos.count<ON_BOARD>(WHITE) < 2 &&    // patch: only when white 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
             }
