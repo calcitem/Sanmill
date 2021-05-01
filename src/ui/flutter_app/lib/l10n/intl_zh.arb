@@ -27,7 +27,7 @@
   "tipBanRemove": "不能吃这颗子",
   "tipRemoved": "已吃子",
   "tipMove": "请走子",
-  "tipCannotPlace": "不可在已落子处落子",
+  "tipCannotPlace": "不可在此处落子",
   "tipCannotMove": "不可移到此处",
   "tipMill": "三子连珠 请吃子",
   "tipSelectOpponentsPiece": "请选择对方的棋子",
