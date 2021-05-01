@@ -508,7 +508,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
 
     Map<GameResult, String> retMap = {
-      GameResult.win: S.of(context).youWin,
+      GameResult.win: Game.instance.engineType == EngineType.humanVsAi
+          ? S.of(context).youWin
+          : S.of(context).gameOver,
       GameResult.lose: S.of(context).gameOver,
       GameResult.draw: S.of(context).draw
     };
