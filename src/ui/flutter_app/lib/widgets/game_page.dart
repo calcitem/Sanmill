@@ -40,7 +40,7 @@ class GamePage extends StatefulWidget {
   static double screenPaddingH = AppTheme.boardScreenPaddingH;
 
   final EngineType engineType;
-  final AiEngine engine;
+  final Engine engine;
 
   GamePage(this.engineType) : engine = NativeEngine();
 

@@ -25,7 +25,7 @@ import 'package:sanmill/mill/types.dart';
 
 import 'engine.dart';
 
-class NativeEngine extends AiEngine {
+class NativeEngine extends Engine {
   static const platform = const MethodChannel('com.calcitem.sanmill/engine');
 
   Future<void> startup() async {
@@ -55,8 +55,7 @@ class NativeEngine extends AiEngine {
   }
 
   @override
-  Future<EngineResponse> search(Position? position,
-      {bool byUser = true}) async {
+  Future<EngineResponse> search(Position? position) async {
     if (await isThinking()) await stopSearching();
 
     send(getPositionFen(position!));

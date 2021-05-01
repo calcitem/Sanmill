@@ -34,9 +34,9 @@ class EngineResponse {
   EngineResponse(this.type, {this.value});
 }
 
-abstract class AiEngine {
+abstract class Engine {
   Future<void> setOptions() async {}
   Future<void> startup() async {}
   Future<void> shutdown() async {}
-  Future<EngineResponse> search(Position? position, {bool byUser = true});
+  Future<EngineResponse> search(Position? position);
 }
