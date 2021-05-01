@@ -29,7 +29,6 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 
-//import 'common/config.dart';
 import 'services/audios.dart';
 
 Future<void> main() async {
@@ -108,7 +107,12 @@ class _SanmillAppState extends State<SanmillApp> {
   @override
   void initState() {
     super.initState();
-    Audios.loadSounds();
+    if (Platform.isWindows) {
+      print("audio players is not support Windows.");
+      return;
+    } else {
+      Audios.loadSounds();
+    }
   }
 
   @override

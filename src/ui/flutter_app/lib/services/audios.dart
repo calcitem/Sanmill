@@ -90,8 +90,7 @@ class Audios {
       }
 
       if (Platform.isWindows) {
-        print(
-            "audio players is not support Windows. See: https://pub.dev/packages/just_audio");
+        print("audio players is not support Windows.");
         return;
       }
 
