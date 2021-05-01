@@ -16,11 +16,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
 #include <bitset>
 
 #include "bitboard.h"
-#include "misc.h"
 
 uint8_t PopCnt16[1 << 16];
 
@@ -36,9 +34,9 @@ Bitboard StarSquareBB12;
 const std::string Bitboards::pretty(Bitboard b)
 {
     std::string str = "+---+---+---+---+---+---+---+---+\n";
+
     for (File f = FILE_A; f <= FILE_C; ++f) {
         for (Rank r = RANK_1; r <= RANK_8; ++r) {
-
             str += b & make_square(f, r) ? "| X " : "|   ";
         }
 

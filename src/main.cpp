@@ -16,14 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-
 #include "bitboard.h"
-#include "endgame.h"
 #include "position.h"
 #include "search.h"
 #include "thread.h"
-#include "tt.h"
 #include "uci.h"
 
 #ifdef FLUTTER_UI

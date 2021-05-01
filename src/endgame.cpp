@@ -19,13 +19,13 @@
 #include "endgame.h"
 
 #ifdef ENDGAME_LEARNING
-static constexpr int endgameHashsize = 0x1000000; // 16M
-HashMap<Key, Endgame> endgameHashMap(endgameHashsize);
+static constexpr int endgameHashSize = 0x1000000;   // 16M
+HashMap<Key, Endgame> endgameHashMap(endgameHashSize);
 
-void mergeEndgameFile(string file1, string file2, string mergedFile)
+void mergeEndgameFile(const string &file1, const string &file2, const string &mergedFile)
 {
-    HashMap<Key, Endgame> map1(endgameHashsize);
-    HashMap<Key, Endgame> map2(endgameHashsize);
+    HashMap<Key, Endgame> map1(endgameHashSize);
+    HashMap<Key, Endgame> map2(endgameHashSize);
 
     map1.load(file1);
     map2.load(file2);

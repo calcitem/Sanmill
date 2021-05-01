@@ -16,12 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
-#include <cassert>
-#include <cstring>   // For std::memset
-#include <iomanip>
-#include <sstream>
-
 #include "bitboard.h"
 #include "evaluate.h"
 #include "thread.h"
@@ -148,4 +142,3 @@ Value Eval::evaluate(Position &pos)
 {
     return Evaluation(pos).value();
 }
-
