@@ -553,6 +553,7 @@ Depth get_search_depth(const Position *pos)
         return d;
     }
 
+#if 0
     // Adjust depth for Skill Level
     Depth depthLimit = (Depth)gameOptions.getSkillLevel();
 
@@ -564,6 +565,7 @@ Depth get_search_depth(const Position *pos)
     if (depthLimit == 20 && d <= 4) {   // TODO
         d = 4;
     }
+#endif
 
     // WAR: Limit depth if change side when no way
     if (!rule.isLoseButNotChangeSideWhenNoWay) {
