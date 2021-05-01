@@ -27,6 +27,7 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -208,9 +209,19 @@ class _GamePageState extends State<GamePage> with RouteAware {
               Game.instance.select(index);
               ret = true;
               print("selectPiece: [$sq]");
-              if (mounted) {
+
+              var us = Game.instance.sideToMove;
+              if (position.phase == Phase.moving &&
+                  rule.mayFly &&
+                  Game.instance.position.pieceOnBoardCount[us] == 3) {
+                print("May fly.");
+                if (mounted) {
+                  changeStatus(S.of(context).tipCanMoveToAnyPoint);
+                }
+              } else if (mounted) {
                 changeStatus(S.of(context).tipPlace);
               }
+
               break;
             case -2:
               Audios.playTone(Audios.illegalSoundId);

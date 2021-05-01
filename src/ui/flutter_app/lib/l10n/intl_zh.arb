@@ -37,7 +37,7 @@
   "tipThreePiecesInLine": "三颗棋子排成一线",
   "tipSelectPieceToMove": "请选择要移动的己方棋子",
   "tipHaveThreePiecesLeft": "只剩下3颗棋子了",
-  "tipCanMoveToAnyPoint": "可以移动棋子到任意空位",
+  "tipCanMoveToAnyPoint": "可飞子到任意空位",
   "blackWin": "黑方胜",
   "whiteWin": "白方胜",
   "won": "胜",
