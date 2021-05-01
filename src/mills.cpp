@@ -16,12 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstring>
 #include <random>
+
 #include "bitboard.h"
-#include "rule.h"
 #include "movegen.h"
-#include "mills.h"
 #include "misc.h"
 #include "option.h"
 #include "position.h"
@@ -57,55 +55,7 @@ namespace Mills
 
 void adjacent_squares_init() noexcept
 {
-    // Note: Not follow order of MoveDirection array
-    const int adjacentSquares12[SQUARE_NB][MD_NB] = {
-        /*  0 */ {0, 0, 0, 0},
-        /*  1 */ {0, 0, 0, 0},
-        /*  2 */ {0, 0, 0, 0},
-        /*  3 */ {0, 0, 0, 0},
-        /*  4 */ {0, 0, 0, 0},
-        /*  5 */ {0, 0, 0, 0},
-        /*  6 */ {0, 0, 0, 0},
-        /*  7 */ {0, 0, 0, 0},
-
-        /*  8 */ {9, 15, 16, 0},
-        /*  9 */ {17, 8, 10, 0},
-        /* 10 */ {9, 11, 18, 0},
-        /* 11 */ {19, 10, 12, 0},
-        /* 12 */ {11, 13, 20, 0},
-        /* 13 */ {21, 12, 14, 0},
-        /* 14 */ {13, 15, 22, 0},
-        /* 15 */ {23, 8, 14, 0},
-
-        /* 16 */ {17, 23, 8, 24},
-        /* 17 */ {9, 25, 16, 18},
-        /* 18 */ {17, 19, 10, 26},
-        /* 19 */ {11, 27, 18, 20},
-        /* 20 */ {19, 21, 12, 28},
-        /* 21 */ {13, 29, 20, 22},
-        /* 22 */ {21, 23, 14, 30},
-        /* 23 */ {15, 31, 16, 22},
-
-        /* 24 */ {25, 31, 16, 0},
-        /* 25 */ {17, 24, 26, 0},
-        /* 26 */ {25, 27, 18, 0},
-        /* 27 */ {19, 26, 28, 0},
-        /* 28 */ {27, 29, 20, 0},
-        /* 29 */ {21, 28, 30, 0},
-        /* 30 */ {29, 31, 22, 0},
-        /* 31 */ {23, 24, 30, 0},
-
-        /* 32 */ {0, 0, 0, 0},
-        /* 33 */ {0, 0, 0, 0},
-        /* 34 */ {0, 0, 0, 0},
-        /* 35 */ {0, 0, 0, 0},
-        /* 36 */ {0, 0, 0, 0},
-        /* 37 */ {0, 0, 0, 0},
-        /* 38 */ {0, 0, 0, 0},
-        /* 39 */ {0, 0, 0, 0},
-    };
-
-    const int adjacentSquares9[SQUARE_NB][MD_NB] = {
+    const int adjacentSquares[SQUARE_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -152,54 +102,54 @@ void adjacent_squares_init() noexcept
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const Bitboard adjacentSquaresBB12[SQUARE_NB] = {
-        /*  0 */ 0,
-        /*  1 */ 0,
-        /*  2 */ 0,
-        /*  3 */ 0,
-        /*  4 */ 0,
-        /*  5 */ 0,
-        /*  6 */ 0,
-        /*  7 */ 0,
+    const int adjacentSquares_diagonal[SQUARE_NB][MD_NB] = {
+        /*  0 */ {0, 0, 0, 0},
+        /*  1 */ {0, 0, 0, 0},
+        /*  2 */ {0, 0, 0, 0},
+        /*  3 */ {0, 0, 0, 0},
+        /*  4 */ {0, 0, 0, 0},
+        /*  5 */ {0, 0, 0, 0},
+        /*  6 */ {0, 0, 0, 0},
+        /*  7 */ {0, 0, 0, 0},
 
-        /*  8 */ S3(9, 15, 16),
-        /*  9 */ S3(17, 8, 10),
-        /* 10 */ S3(9, 11, 18),
-        /* 11 */ S3(19, 10, 12),
-        /* 12 */ S3(11, 13, 20),
-        /* 13 */ S3(21, 12, 14),
-        /* 14 */ S3(13, 15, 22),
-        /* 15 */ S3(23, 8, 14),
+        /*  8 */ {9, 15, 16, 0},
+        /*  9 */ {17, 8, 10, 0},
+        /* 10 */ {9, 11, 18, 0},
+        /* 11 */ {19, 10, 12, 0},
+        /* 12 */ {11, 13, 20, 0},
+        /* 13 */ {21, 12, 14, 0},
+        /* 14 */ {13, 15, 22, 0},
+        /* 15 */ {23, 8, 14, 0},
 
-        /* 16 */ S4(17, 23, 8, 24),
-        /* 17 */ S4(9, 25, 16, 18),
-        /* 18 */ S4(17, 19, 10, 26),
-        /* 19 */ S4(11, 27, 18, 20),
-        /* 20 */ S4(19, 21, 12, 28),
-        /* 21 */ S4(13, 29, 20, 22),
-        /* 22 */ S4(21, 23, 14, 30),
-        /* 23 */ S4(15, 31, 16, 22),
+        /* 16 */ {17, 23, 8, 24},
+        /* 17 */ {9, 25, 16, 18},
+        /* 18 */ {17, 19, 10, 26},
+        /* 19 */ {11, 27, 18, 20},
+        /* 20 */ {19, 21, 12, 28},
+        /* 21 */ {13, 29, 20, 22},
+        /* 22 */ {21, 23, 14, 30},
+        /* 23 */ {15, 31, 16, 22},
 
-        /* 24 */ S3(25, 31, 16),
-        /* 25 */ S3(17, 24, 26),
-        /* 26 */ S3(25, 27, 18),
-        /* 27 */ S3(19, 26, 28),
-        /* 28 */ S3(27, 29, 20),
-        /* 29 */ S3(21, 28, 30),
-        /* 30 */ S3(29, 31, 22),
-        /* 31 */ S3(23, 24, 30),
+        /* 24 */ {25, 31, 16, 0},
+        /* 25 */ {17, 24, 26, 0},
+        /* 26 */ {25, 27, 18, 0},
+        /* 27 */ {19, 26, 28, 0},
+        /* 28 */ {27, 29, 20, 0},
+        /* 29 */ {21, 28, 30, 0},
+        /* 30 */ {29, 31, 22, 0},
+        /* 31 */ {23, 24, 30, 0},
 
-        /* 32 */ 0,
-        /* 33 */ 0,
-        /* 34 */ 0,
-        /* 35 */ 0,
-        /* 36 */ 0,
-        /* 37 */ 0,
-        /* 38 */ 0,
-        /* 39 */ 0,
+        /* 32 */ {0, 0, 0, 0},
+        /* 33 */ {0, 0, 0, 0},
+        /* 34 */ {0, 0, 0, 0},
+        /* 35 */ {0, 0, 0, 0},
+        /* 36 */ {0, 0, 0, 0},
+        /* 37 */ {0, 0, 0, 0},
+        /* 38 */ {0, 0, 0, 0},
+        /* 39 */ {0, 0, 0, 0},
     };
 
-    const Bitboard adjacentSquaresBB9[SQUARE_NB] = {
+    const Bitboard adjacentSquaresBB[SQUARE_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -246,12 +196,59 @@ void adjacent_squares_init() noexcept
         /* 39 */ 0,
     };
 
+    const Bitboard adjacentSquaresBB_diagonal[SQUARE_NB] = {
+        /*  0 */ 0,
+        /*  1 */ 0,
+        /*  2 */ 0,
+        /*  3 */ 0,
+        /*  4 */ 0,
+        /*  5 */ 0,
+        /*  6 */ 0,
+        /*  7 */ 0,
+
+        /*  8 */ S3(9, 15, 16),
+        /*  9 */ S3(17, 8, 10),
+        /* 10 */ S3(9, 11, 18),
+        /* 11 */ S3(19, 10, 12),
+        /* 12 */ S3(11, 13, 20),
+        /* 13 */ S3(21, 12, 14),
+        /* 14 */ S3(13, 15, 22),
+        /* 15 */ S3(23, 8, 14),
+
+        /* 16 */ S4(17, 23, 8, 24),
+        /* 17 */ S4(9, 25, 16, 18),
+        /* 18 */ S4(17, 19, 10, 26),
+        /* 19 */ S4(11, 27, 18, 20),
+        /* 20 */ S4(19, 21, 12, 28),
+        /* 21 */ S4(13, 29, 20, 22),
+        /* 22 */ S4(21, 23, 14, 30),
+        /* 23 */ S4(15, 31, 16, 22),
+
+        /* 24 */ S3(25, 31, 16),
+        /* 25 */ S3(17, 24, 26),
+        /* 26 */ S3(25, 27, 18),
+        /* 27 */ S3(19, 26, 28),
+        /* 28 */ S3(27, 29, 20),
+        /* 29 */ S3(21, 28, 30),
+        /* 30 */ S3(29, 31, 22),
+        /* 31 */ S3(23, 24, 30),
+
+        /* 32 */ 0,
+        /* 33 */ 0,
+        /* 34 */ 0,
+        /* 35 */ 0,
+        /* 36 */ 0,
+        /* 37 */ 0,
+        /* 38 */ 0,
+        /* 39 */ 0,
+    };
+
     if (rule.hasDiagonalLines) {
-        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares12, sizeof(MoveList<LEGAL>::adjacentSquares));
-        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB12, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares_diagonal, sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB_diagonal, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     } else {
-        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares9, sizeof(MoveList<LEGAL>::adjacentSquares));
-        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB9, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares, sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     }
 
 #ifdef DEBUG_MODE
@@ -273,7 +270,7 @@ void adjacent_squares_init() noexcept
 
 void mill_table_init()
 {
-    const Bitboard millTableBB9[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB[SQUARE_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},
@@ -320,7 +317,7 @@ void mill_table_init()
         /* 39 */ {0, 0, 0},
     };
 
-    const Bitboard millTableBB12[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB_diagonal[SQUARE_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},
@@ -367,11 +364,10 @@ void mill_table_init()
         /* 39 */ {0, 0, 0},
     };
 
-    // TODO: change to ptr?
     if (rule.hasDiagonalLines) {
-        memcpy(Position::millTableBB, millTableBB12, sizeof(Position::millTableBB));
+        memcpy(Position::millTableBB, millTableBB_diagonal, sizeof(Position::millTableBB));
     } else {
-        memcpy(Position::millTableBB, millTableBB9, sizeof(Position::millTableBB));
+        memcpy(Position::millTableBB, millTableBB, sizeof(Position::millTableBB));
     }
 }
 
