@@ -79,17 +79,24 @@ int Thread::search()
     Sanmill::Stack<Position> ss;
 
     Value value = VALUE_ZERO;
+    Depth d = get_depth();
 
     if (gameOptions.getAiIsLazy()) {
+
         int np = bestvalue / VALUE_EACH_PIECE;
-        if (np > 1) {
-            cout << "Lazy Mode: " << np << endl;
-            originDepth = 4;    // TODO
+        if (np > 1) { 
+            if (d < 4) {
+                originDepth = 1;
+                sync_cout << "Lazy Mode: depth = " << originDepth << sync_endl;
+            } else {
+                originDepth = 4;
+                sync_cout << "Lazy Mode: depth = " << originDepth << sync_endl;
+            }            
         } else {
-            originDepth = get_depth();
+            originDepth = d;
         }
     } else {
-        originDepth = get_depth();
+        originDepth = d;
     }
 
     const time_t time0 = time(nullptr);
