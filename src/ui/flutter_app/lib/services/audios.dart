@@ -67,12 +67,6 @@ class Audios {
     _alarmSoundStreamId = await _soundpool!.play(await soundId);
   }
 
-  static Future<void> _pauseSound() async {
-    if (_alarmSoundStreamId != null && _alarmSoundStreamId! > 0) {
-      await _soundpool!.pause(_alarmSoundStreamId!);
-    }
-  }
-
   static Future<void> _stopSound() async {
     if (_alarmSoundStreamId != null && _alarmSoundStreamId! > 0) {
       await _soundpool!.stop(_alarmSoundStreamId!);

@@ -20,8 +20,6 @@ import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_settings_page.dart';
@@ -180,6 +178,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       ),
     );
 
+    /*
     var exitListTile = ListTile(
       title: Text(
         S.of(context).exit,
@@ -202,13 +201,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
         await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
       },
     );
+    */
 
+    /*
     var drawFooter = Column(
       children: <Widget>[
         exitListTile,
         SizedBox(height: MediaQuery.of(context).padding.bottom)
       ],
     );
+    */
 
     var scaffold = Scaffold(
       backgroundColor: AppTheme.drawerBackgroundColor,

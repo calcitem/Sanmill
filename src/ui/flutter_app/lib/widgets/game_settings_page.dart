@@ -65,12 +65,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     });
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   void _restore() async {
     final profile = await Settings.instance();
     await profile.restore();

@@ -49,9 +49,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> with RouteAware {
-  // TODO: null-safety
   String? _status = '';
-  //bool _searching = false;
   bool isReady = false;
   late Timer timer;
 
@@ -135,7 +133,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
     int? sq = indexToSquare[index];
 
     if (sq == null) {
-      //print("putPiece skip index: $index");
       return;
     }
 
@@ -243,7 +240,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         // TODO: Need Others?
         // Increment ply counters. In particular,
         // rule50 will be reset to zero later on
-        // in case of a capture.
+        // in case of a remove.
         ++position.gamePly;
         ++position.st.rule50;
         ++position.st.pliesFromNull;
@@ -321,7 +318,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
           Move mv = response.value;
           final Move move = new Move(mv.move);
 
-          //Battle.instance.move = move;
           Game.instance.doMove(move.move);
           showTips();
           break;
