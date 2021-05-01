@@ -533,7 +533,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
             content: Text(getGameOverReasonString(
                     Game.instance.position.gameOverReason,
                     Game.instance.position.winner) +
-                S.of(context).challengeHarderLevel),
+                S.of(context).challengeHarderLevel +
+                (Config.skillLevel + 1).toString() +
+                "!"),
             actions: <Widget>[
               TextButton(
                   child: Text(S.of(context).yes),

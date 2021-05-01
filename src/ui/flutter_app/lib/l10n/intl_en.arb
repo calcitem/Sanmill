@@ -268,7 +268,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Challenge harder level?",
+  "challengeHarderLevel": "Challenge harder level? The new level will be Level ",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
