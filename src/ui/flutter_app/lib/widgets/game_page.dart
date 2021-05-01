@@ -519,7 +519,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
       return;
     }
 
-    if (result == GameResult.win) {
+    if (result == GameResult.win &&
+        Game.instance.engineType == EngineType.humanVsAi) {
       showDialog(
         context: context,
         barrierDismissible: true,
