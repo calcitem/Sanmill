@@ -266,6 +266,39 @@ class Position {
   }
 
   bool doMove(String move) {
+    if (move.length > "Player".length &&
+        move.substring(0, "Player".length - 1) == "Player") {
+      if (move["Player".length] == '1') {
+        return resign(PieceColor.black);
+      } else {
+        return resign(PieceColor.white);
+      }
+    }
+
+    // TODO
+    if (move == "Threefold Repetition. Draw!") {
+      return true;
+    }
+
+    if (move == "draw") {
+      phase = Phase.gameOver;
+      winner = PieceColor.draw;
+      if (score[PieceColor.draw] != null) {
+        score[PieceColor.draw] = score[PieceColor.draw]! + 1;
+      }
+
+      // TODO: WAR to judge rule50
+      if (rule.maxStepsLedToDraw > 0 &&
+          posKeyHistory.length > rule.maxStepsLedToDraw - 1) {
+        gameOverReason = GameOverReason.drawReasonRule50;
+      } else {
+        gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
+      }
+      return true;
+    }
+
+    // TODO: Above is diff from position.cpp
+
     bool ret = false;
 
     Move m = Move(move);
