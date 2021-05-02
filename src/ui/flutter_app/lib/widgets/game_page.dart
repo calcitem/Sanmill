@@ -556,6 +556,17 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     if (result == GameResult.win &&
         Game.instance.engineType == EngineType.humanVsAi) {
+      bool isTopLevel = (Config.skillLevel == 20); // TODO: 20
+      var contentStr = getGameOverReasonString(
+          Game.instance.position.gameOverReason, Game.instance.position.winner);
+
+      if (!isTopLevel) {
+        contentStr += "\n\n" +
+            S.of(context).challengeHarderLevel +
+            (Config.skillLevel + 1).toString() +
+            "!";
+      }
+
       showDialog(
         context: context,
         barrierDismissible: true,
@@ -563,17 +574,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
           return AlertDialog(
             title: Text(dialogTitle,
                 style: TextStyle(color: AppTheme.dialogTitleColor)),
-            content: Text(getGameOverReasonString(
-                    Game.instance.position.gameOverReason,
-                    Game.instance.position.winner) +
-                S.of(context).challengeHarderLevel +
-                (Config.skillLevel + 1).toString() +
-                "!"),
+            content: Text(contentStr),
             actions: <Widget>[
               TextButton(
                   child: Text(S.of(context).yes),
                   onPressed: () {
-                    Config.skillLevel++;
+                    if (!isTopLevel) Config.skillLevel++;
                     Config.save();
                     Navigator.of(context).pop();
                   }),
