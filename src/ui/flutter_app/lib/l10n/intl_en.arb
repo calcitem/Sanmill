@@ -160,13 +160,13 @@
   "@tipToMove": {
     "description": " to move."
   },
-  "blackWin": "Player 1 win",
+  "blackWin": "Player 1 win!",
   "@blackWin": {
-    "description": "Player 1 win"
+    "description": "Player 1 win!"
   },
-  "whiteWin": "Player 2 win",
+  "whiteWin": "Player 2 win!",
   "@whiteWin": {
-    "description": "Player 2 win"
+    "description": "Player 2 win!"
   },
   "won": "Won",
   "@won": {
@@ -182,7 +182,7 @@
   },
   "draw": "Draw",
   "@draw": {
-    "description": "Draw"
+    "description": "Draw!"
   },
   "thinking": "Thinking...",
   "@thinking": {
