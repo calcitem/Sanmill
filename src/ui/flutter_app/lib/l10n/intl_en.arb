@@ -160,13 +160,13 @@
   "@tipToMove": {
     "description": " to move."
   },
-  "blackWin": "Black win",
+  "blackWin": "Player 1 win",
   "@blackWin": {
-    "description": "Black win"
+    "description": "Player 1 win"
   },
-  "whiteWin": "White win",
+  "whiteWin": "Player 2 win",
   "@whiteWin": {
-    "description": "White win"
+    "description": "Player 2 win"
   },
   "won": "Won",
   "@won": {
@@ -224,13 +224,13 @@
   "@score": {
     "description": "Score"
   },
-  "black": "Black",
+  "black": "Player 1",
   "@black": {
-    "description": "Black"
+    "description": "Player 1"
   },
-  "white": "White",
+  "white": "Player 2",
   "@white": {
-    "description": "White"
+    "description": "Player 2"
   },
   "loseReasonlessThanThree": " piece count is less than three.",
   "@loseReasonlessThanThree": {
