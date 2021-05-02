@@ -120,6 +120,10 @@
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
+  "tipContinueMill": "Continue to take your opponent's piece.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
   "tipSelectOpponentsPiece": "Select one of your opponent's pieces.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
@@ -151,6 +155,10 @@
   "tipCanMoveToAnyPoint": "You can move to any point you like.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
+  },
+  "tipToMove": " to move.",
+  "@tipToMove": {
+    "description": " to move."
   },
   "blackWin": "Black win",
   "@blackWin": {

@@ -177,8 +177,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
               }
             } else {
               //Audios.playTone(Audios.placeSoundId);
-              if (mounted) {
+              if (Game.instance.engineType == EngineType.humanVsAi && mounted) {
                 changeStatus(S.of(context).tipPlaced);
+              } else if (mounted) {
+                var side = Game.instance.sideToMove == PieceColor.black
+                    ? S.of(context).white
+                    : S.of(context).black;
+                changeStatus(side + S.of(context).tipToMove);
               }
             }
             ret = true;
@@ -263,8 +268,25 @@ class _GamePageState extends State<GamePage> with RouteAware {
               //Audios.playTone(Audios.removeSoundId);
               ret = true;
               print("removePiece: [$sq]");
-              if (mounted) {
-                changeStatus(S.of(context).tipRemoved);
+              if (Game.instance.position.pieceToRemoveCount >= 1) {
+                if (mounted) {
+                  changeStatus(S.of(context).tipContinueMill);
+                }
+              } else {
+                if (Game.instance.engineType == EngineType.humanVsAi) {
+                  if (mounted) {
+                    changeStatus(S.of(context).tipRemoved);
+                  }
+                } else {
+                  if (mounted) {
+                    var them = Game.instance.sideToMove == PieceColor.black
+                        ? S.of(context).white
+                        : S.of(context).black;
+                    if (mounted) {
+                      changeStatus(them + S.of(context).tipToMove);
+                    }
+                  }
+                }
               }
               break;
             case -2:
