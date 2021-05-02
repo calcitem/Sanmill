@@ -59,7 +59,7 @@ class _PersonalizationSettingsPageState
     };
 
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + colorString),
+      title: Text(S.of(context).pick + " " + colorString),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: Color(colorStrToVal[colorString]!),
