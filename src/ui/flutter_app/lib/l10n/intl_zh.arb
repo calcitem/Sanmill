@@ -55,7 +55,7 @@
   "analyzing": "正在分析局面...",
   "error": "错误",
   "winRate": "胜率",
-  "score": "分数",
+  "score": "比分",
   "black": "先手方",
   "white": "后手方",
   "loseReasonlessThanThree": "剩余棋子少于3枚。",

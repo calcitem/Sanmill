@@ -568,13 +568,13 @@
   "@lineColor": {
     "description": "Board linecolor"
   },
-   "blackPieceColor": "Player1 piece color",
+   "blackPieceColor": "Player 1 piece color",
   "@blackPieceColor": {
-    "description": "Player1 piece color"
+    "description": "Player 1 piece color"
   },
-  "whitePieceColor": "Player2 piece color",
+  "whitePieceColor": "Player 2 piece color",
   "@whitePieceColor": {
-    "description": "Player2 piece color"
+    "description": "Player 2 piece color"
   },
   "aiIsLazy": "AI is Lazy",
   "@aiIsLazy": {
@@ -620,13 +620,13 @@
   "@player": {
     "description": "player"
   },
-  "player1": "Player1",
+  "player1": "Player 1",
   "@player1": {
-    "description": "Player1"
+    "description": "Player 1"
   },
-  "player2": "Player2",
+  "player2": "Player 2",
   "@player2": {
-    "description": "Player2"
+    "description": "Player 2"
   },
   "howToPlay": "How to play",
   "@howToPlay": {
