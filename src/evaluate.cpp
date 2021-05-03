@@ -48,7 +48,8 @@ Value Evaluation::value()
 
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
-    int pieceToRemoveCount;
+    int pieceToRemoveCount = (pos.side_to_move() == BLACK) ?
+        pos.piece_to_remove_count() : -pos.piece_to_remove_count();;
 
     switch (pos.get_phase()) {
     case Phase::ready:
@@ -67,8 +68,6 @@ Value Evaluation::value()
             break;
 
         case Action::remove:
-            pieceToRemoveCount = (pos.side_to_move() == BLACK) ?
-                pos.piece_to_remove_count() : -pos.piece_to_remove_count();
             value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE * pieceToRemoveCount;
             break;
         default:
@@ -90,8 +89,6 @@ Value Evaluation::value()
             break;
 
         case Action::remove:
-            pieceToRemoveCount = (pos.side_to_move() == BLACK) ?
-                pos.piece_to_remove_count() : -(pos.piece_to_remove_count());
             value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE * pieceToRemoveCount;
             break;
         default:
@@ -128,6 +125,28 @@ Value Evaluation::value()
     if (pos.side_to_move() == WHITE) {
         value = -value;
     }
+
+#if EVAL_DRAW_WHEN_NOT_KNOWN_WIN_IF_MAY_FLY
+    if (pos.get_phase() == Phase::moving && rule.mayFly && !rule.hasDiagonalLines) {
+        int piece_on_board_count_future_black = pos.piece_on_board_count(BLACK);
+        int piece_on_board_count_future_white = pos.piece_on_board_count(WHITE);
+
+        if (pos.side_to_move() == BLACK) {
+            piece_on_board_count_future_white -= pos.piece_to_remove_count();
+        }
+
+        if (pos.side_to_move() == WHITE) {
+            piece_on_board_count_future_black -= pos.piece_to_remove_count();
+        }
+
+
+        if (piece_on_board_count_future_white == 3 || piece_on_board_count_future_black == 3) {
+            if (abs(value) < VALUE_KNOWN_WIN) {
+                value = VALUE_DRAW;
+            }
+        }
+    }
+#endif
 
     return value;
 }
