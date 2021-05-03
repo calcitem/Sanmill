@@ -554,9 +554,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
       return;
     }
 
+    bool isTopLevel = (Config.skillLevel == 20); // TODO: 20
+
     if (result == GameResult.win &&
+        !isTopLevel &&
         Game.instance.engineType == EngineType.humanVsAi) {
-      bool isTopLevel = (Config.skillLevel == 20); // TODO: 20
       var contentStr = getGameOverReasonString(
           Game.instance.position.gameOverReason, Game.instance.position.winner);
 
