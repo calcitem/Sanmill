@@ -180,9 +180,9 @@
   "@aborted": {
     "description": "Aborted"
   },
-  "draw": "Draw",
+  "draw": "It is a Draw",
   "@draw": {
-    "description": "Draw!"
+    "description": "It is a Draw!"
   },
   "thinking": "Thinking...",
   "@thinking": {
@@ -256,13 +256,13 @@
   "@drawReasonRule50": {
     "description": "In moving phase, no piece has been removed in the last fifty moves."
   },
-  "drawReasonBoardIsFull": "Draw, because the board is full",
+  "drawReasonBoardIsFull": "It is a Draw, because the board is full",
   "@drawReasonBoardIsFull": {
-    "description": "Draw, because the board is full"
+    "description": "It is a Draw, because the board is full"
   },
-  "drawReasonThreefoldRepetition": "Draw, because three fold repetition.",
+  "drawReasonThreefoldRepetition": "It is a Draw, because three fold repetition.",
   "@drawReasonThreefoldRepetition": {
-    "description": "Draw, because three fold repetition."
+    "description": "It is a Draw, because three fold repetition."
   },
   "gameOverUnknownReason": "Game Over! Unknown reason.",
   "@gameOverUnknownReason": {
