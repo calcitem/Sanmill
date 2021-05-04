@@ -1,5 +1,7 @@
 ## Overview
 
+[![Google Play](https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png)](https://play.google.com/store/apps/details?id=com.calcitem.sanmill)
+
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a09e5b5ab4f04b1585acb478af0bd593)](https://app.codacy.com/manual/calcitem/Sanmill?utm_source=github.com&utm_medium=referral&utm_content=calcitem/Sanmill&utm_campaign=Badge_Grade_Settings)
 
