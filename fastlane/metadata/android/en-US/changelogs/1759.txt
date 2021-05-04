@@ -1,0 +1,3 @@
+v1.0.3
+
+* Show restart/cancel buttons instead of yes/no buttons on dialog when player win the top difficult level.

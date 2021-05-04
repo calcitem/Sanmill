@@ -326,6 +326,7 @@ CMakeLists.txt.user*
 
 # Text files
 *.txt
+!fastlane/**/*.txt
 !CMakeLists.txt
 
 # Other files
