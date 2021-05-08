@@ -18,13 +18,13 @@
 
 import 'dart:io';
 
+import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
-import 'package:devicelocale/devicelocale.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'license_page.dart';
@@ -98,7 +98,9 @@ class _AboutPageState extends State<AboutPage> {
       SettingsListTile(
         context: context,
         titleString: S.of(context).feedback,
-        onTap: () => _launchURL('https://github.com/calcitem/Sanmill/issues'),
+        onTap: () {
+          _launchFeedback();
+        },
       ),
       ListItemDivider(),
       SettingsListTile(
@@ -117,28 +119,33 @@ class _AboutPageState extends State<AboutPage> {
       SettingsListTile(
         context: context,
         titleString: S.of(context).sourceCode,
-        onTap: () => _launchURL('https://github.com/calcitem/Sanmill'),
+        onTap: () {
+          _launchSourceCode();
+        },
       ),
       ListItemDivider(),
       SettingsListTile(
-          context: context,
-          titleString: S.of(context).privacyPolicy,
-          onTap: () {
-            _launchPrivacyPolicy();
-          }),
+        context: context,
+        titleString: S.of(context).privacyPolicy,
+        onTap: () {
+          _launchPrivacyPolicy();
+        },
+      ),
       ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).thirdPartyNotices,
-        onTap: () => _launchURL(
-            'https://github.com/calcitem/Sanmill/wiki/third-party_notices'),
+        onTap: () {
+          _launchThirdPartyNotices();
+        },
       ),
       ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).thanks,
-        onTap: () =>
-            _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks'),
+        onTap: () {
+          _launchThanks();
+        },
       ),
       ListItemDivider(),
     ];
@@ -161,6 +168,41 @@ class _AboutPageState extends State<AboutPage> {
     await launch(url);
   }
 
+  _launchFeedback() async {
+    String? locale = await Devicelocale.currentLocale;
+
+    print("local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      _launchURL('https://gitee.com/calcitem/Sanmill/issues');
+    } else {
+      _launchURL('https://github.com/calcitem/Sanmill/issues');
+    }
+  }
+
+  _launchSourceCode() async {
+    String? locale = await Devicelocale.currentLocale;
+
+    print("local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      _launchURL('https://gitee.com/calcitem/Sanmill');
+    } else {
+      _launchURL('https://github.com/calcitem/Sanmill');
+    }
+  }
+
+  _launchThirdPartyNotices() async {
+    String? locale = await Devicelocale.currentLocale;
+
+    print("local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      _launchURL(
+          'https://gitee.com/calcitem/Sanmill/wikis/third-party_notices');
+    } else {
+      _launchURL(
+          'https://github.com/calcitem/Sanmill/wiki/third-party_notices');
+    }
+  }
+
   _launchPrivacyPolicy() async {
     String? locale = await Devicelocale.currentLocale;
 
@@ -169,6 +211,17 @@ class _AboutPageState extends State<AboutPage> {
       _launchURL('https://gitee.com/calcitem/Sanmill/wikis/privacy_policy_zh');
     } else {
       _launchURL('https://github.com/calcitem/Sanmill/wiki/privacy_policy');
+    }
+  }
+
+  _launchThanks() async {
+    String? locale = await Devicelocale.currentLocale;
+
+    print("local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      _launchURL('https://gitee.com/calcitem/Sanmill/wikis/thanks');
+    } else {
+      _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks');
     }
   }
 
