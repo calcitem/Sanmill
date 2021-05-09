@@ -15,12 +15,12 @@ dependencies:
   soundpool: ^2.0.0-nullsafety.0
   path_provider: ^2.0.1
   package_info: ^2.0.0
-  uuid: ^3.0.3
+  uuid: ^3.0.4
   url_launcher: ^6.0.3
   intl: 0.17.0
   animated_text_kit: ^4.1.1
   flutter_colorpicker: ^0.4.0
-  catcher: ^0.6.5
+  catcher: ^0.6.6
   stack_trace: ^1.10.0
   device_info_plus_platform_interface: ^1.0.1
   devicelocale: ^0.4.1
