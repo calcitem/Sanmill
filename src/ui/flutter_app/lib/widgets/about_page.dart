@@ -21,7 +21,7 @@ import 'dart:io';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
@@ -152,12 +152,13 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   _loadVersionInfo() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+
     if (Platform.isWindows) {
       setState(() {
-        _version = 'Unknown version';
+        _version = '${packageInfo.version}'; // TODO
       });
     } else {
-      final packageInfo = await PackageInfo.fromPlatform();
       setState(() {
         _version = '${packageInfo.version} (${packageInfo.buildNumber})';
       });
