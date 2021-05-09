@@ -39,6 +39,10 @@ class Audios {
   static var winSoundId;
 
   static Future<void> loadSounds() async {
+    if (Platform.isWindows) {
+      return;
+    }
+
     _soundpool ??= Soundpool();
 
     drawSoundId ??=
@@ -64,16 +68,28 @@ class Audios {
   }
 
   static Future<void> _playSound(var soundId) async {
+    if (Platform.isWindows) {
+      return;
+    }
+
     _alarmSoundStreamId = await _soundpool!.play(await soundId);
   }
 
   static Future<void> _stopSound() async {
+    if (Platform.isWindows) {
+      return;
+    }
+
     if (_alarmSoundStreamId != null && _alarmSoundStreamId! > 0) {
       await _soundpool!.stop(_alarmSoundStreamId!);
     }
   }
 
   static Future<void> disposePool() async {
+    if (Platform.isWindows) {
+      return;
+    }
+
     _soundpool!.dispose();
   }
 
