@@ -17,6 +17,7 @@
 */
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -251,9 +252,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      SizedBox(height: AppTheme.sizedBoxHeight),
-      Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
-      SettingsCard(
+      !Platform.isWindows
+          ? SizedBox(height: AppTheme.sizedBoxHeight)
+          : Container(height: 0.0, width: 0.0),
+      !Platform.isWindows
+          ? Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle)
+          : Container(height: 0.0, width: 0.0),
+      !Platform.isWindows? SettingsCard(
         context: context,
         children: <Widget>[
           SettingsSwitchListTile(
@@ -263,7 +268,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             titleString: S.of(context).playSoundsInTheGame,
           ),
         ],
-      ),
+      ): Container(height: 0.0, width: 0.0),
       SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
