@@ -24,6 +24,7 @@ dependencies:
   stack_trace: ^1.10.0
   device_info_plus_platform_interface: ^1.0.1
   devicelocale: ^0.4.1
+  msix: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -48,3 +49,6 @@ flutter:
 
 flutter_intl:
   enabled: true
+
+msix:
+  store: true
