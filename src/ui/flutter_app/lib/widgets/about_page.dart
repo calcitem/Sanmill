@@ -170,7 +170,11 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   _launchFeedback() async {
-    String? locale = await Devicelocale.currentLocale;
+    String? locale = "en_US";
+
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
 
     print("local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -181,7 +185,11 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   _launchSourceCode() async {
-    String? locale = await Devicelocale.currentLocale;
+    String? locale = "en_US";
+
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
 
     print("local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -192,7 +200,11 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   _launchThirdPartyNotices() async {
-    String? locale = await Devicelocale.currentLocale;
+    String? locale = "en_US";
+
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
 
     print("local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -205,7 +217,11 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   _launchPrivacyPolicy() async {
-    String? locale = await Devicelocale.currentLocale;
+    String? locale = "en_US";
+
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
 
     print("local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -216,7 +232,11 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   _launchThanks() async {
-    String? locale = await Devicelocale.currentLocale;
+    String? locale = "en_US";
+
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
 
     print("local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
