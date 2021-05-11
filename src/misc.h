@@ -31,11 +31,6 @@
 void prefetch(void *addr);
 void prefetch_range(void *addr, size_t len);
 
-void dbg_hit_on(bool b) noexcept;
-void dbg_hit_on(bool c, bool b) noexcept;
-void dbg_mean_of(int v) noexcept;
-void dbg_print();
-
 typedef std::chrono::milliseconds::rep TimePoint; // A value in milliseconds
 
 static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 bits");
