@@ -28,8 +28,6 @@
 
 using namespace std;
 
-extern vector<string> setup_bench(Position *, istream &);
-
 extern int repetition;
 extern vector<Key> posKeyHistory;
 
