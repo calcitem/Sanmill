@@ -213,28 +213,6 @@ void UCI::loop(int argc, char *argv[])
 }
 
 
-/// UCI::value() converts a Value to a string suitable for use with the UCI
-/// protocol specification:
-///
-/// cp <x>    The score from the engine's point of view in stones.
-/// mate <y>  Mate in y moves, not plies. If the engine is getting mated
-///           use negative values for y.
-
-string UCI::value(Value v)
-{
-    assert(-VALUE_INFINITE < v &&v < VALUE_INFINITE);
-
-    stringstream ss;
-
-    if (abs(v) < VALUE_MATE_IN_MAX_PLY)
-        ss << "cp " << v / StoneValue;
-    else
-        ss << "mate " << (v > 0 ? VALUE_MATE - v + 1 : -VALUE_MATE - v) / 2;
-
-    return ss.str();
-}
-
-
 /// UCI::square() converts a Square to a string in algebraic notation ((1,2), etc.)
 
 std::string UCI::square(Square s)

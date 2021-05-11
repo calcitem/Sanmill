@@ -64,8 +64,6 @@
 #define ALIGNAS_ON_STACK_VARIABLES_BROKEN
 #endif
 
-#define ASSERT_ALIGNED(ptr, alignment) assert(reinterpret_cast<uintptr_t>(ptr) % alignment == 0)
-
 #if defined(_WIN64) && defined(_MSC_VER) // No Makefile used
 #  include <intrin.h> // Microsoft header for _BitScanForward64()
 #  define IS_64BIT
@@ -77,25 +75,6 @@
 
 #if !defined(NO_PREFETCH) && (defined(__INTEL_COMPILER) || defined(_MSC_VER))
 #  include <xmmintrin.h> // Intel and Microsoft header for _mm_prefetch()
-#endif
-
-#if defined(USE_PEXT)
-#  include <immintrin.h> // Header for _pext_u64() intrinsic
-#  define pext(b, m) _pext_u64(b, m)
-#else
-#  define pext(b, m) 0
-#endif
-
-#ifdef USE_POPCNT
-constexpr bool HasPopCnt = true;
-#else
-constexpr bool HasPopCnt = false;
-#endif
-
-#ifdef USE_PEXT
-constexpr bool HasPext = true;
-#else
-constexpr bool HasPext = false;
 #endif
 
 #ifdef IS_64BIT
@@ -202,11 +181,6 @@ enum Value : int8_t
     VALUE_INFINITE = 125,
     VALUE_UNKNOWN = INT8_MIN,
     VALUE_NONE = VALUE_UNKNOWN,
-
-    VALUE_TB_WIN_IN_MAX_PLY = VALUE_MATE - 2 * MAX_PLY,
-    VALUE_TB_LOSS_IN_MAX_PLY = -VALUE_TB_WIN_IN_MAX_PLY,
-    VALUE_MATE_IN_MAX_PLY = VALUE_MATE - MAX_PLY,
-    VALUE_MATED_IN_MAX_PLY = -VALUE_MATE_IN_MAX_PLY,
 
     StoneValue = 5,
     VALUE_EACH_PIECE = StoneValue,
@@ -498,11 +472,6 @@ constexpr Move reverse_move(Move m)
 constexpr bool is_ok(Move m)
 {
     return from_sq(m) != to_sq(m); // Catch MOVE_NULL and MOVE_NONE
-}
-
-/// Based on a congruential pseudo random number generator
-constexpr Key make_key(uint64_t seed) {
-    return Key(seed * 6364136223846793005ULL + 1442695040888963407ULL);
 }
 
 #endif // #ifndef TYPES_H_INCLUDED
