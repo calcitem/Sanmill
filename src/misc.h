@@ -31,7 +31,6 @@
 const std::string engine_info(bool to_uci = false);
 void prefetch(void *addr);
 void prefetch_range(void *addr, size_t len);
-void start_logger(const std::string &fname);
 void* std_aligned_alloc(size_t alignment, size_t size);
 void std_aligned_free(void* ptr);
 #ifdef ALIGNED_LARGE_PAGES
