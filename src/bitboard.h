@@ -40,21 +40,6 @@ void init();
 
 constexpr Bitboard AllSquares = ~Bitboard(0);
 
-constexpr Bitboard FileABB = 0x0000FF00;
-constexpr Bitboard FileBBB = FileABB << (8 * 1);
-constexpr Bitboard FileCBB = FileABB << (8 * 2);
-
-constexpr Bitboard Rank1BB = 0x01010100;
-constexpr Bitboard Rank2BB = Rank1BB << 1;
-constexpr Bitboard Rank3BB = Rank1BB << 2;
-constexpr Bitboard Rank4BB = Rank1BB << 3;
-constexpr Bitboard Rank5BB = Rank1BB << 4;
-constexpr Bitboard Rank6BB = Rank1BB << 5;
-constexpr Bitboard Rank7BB = Rank1BB << 6;
-constexpr Bitboard Rank8BB = Rank1BB << 7;
-
-extern uint8_t PopCnt16[1 << 16];
-
 extern Bitboard SquareBB[SQ_32];
 
 extern Bitboard StarSquareBB9;
@@ -115,59 +100,6 @@ inline Bitboard operator^(Square s, Bitboard b) noexcept
 inline Bitboard operator|(Square s1, Square s2) noexcept
 {
     return square_bb(s1) | s2;
-}
-
-constexpr bool more_than_one(Bitboard b)
-{
-    return b & (b - 1);
-}
-
-
-/// rank_bb() and file_bb() return a bitboard representing all the squares on
-/// the given file or rank.
-
-constexpr Bitboard rank_bb(Rank r) noexcept
-{
-    return Rank1BB << (r - 1);
-}
-
-constexpr Bitboard rank_bb(Square s)
-{
-    return rank_bb(rank_of(s));
-}
-
-constexpr Bitboard file_bb(File f) noexcept
-{
-    return FileABB << (f - 1);
-}
-
-constexpr Bitboard file_bb(Square s)
-{
-    return file_bb(file_of(s));
-}
-
-/// popcount() counts the number of non-zero bits in a bitboard
-
-inline int popcount(Bitboard b) noexcept
-{
-#ifdef DONOT_USE_POPCNT
-
-    union
-    {
-        Bitboard bb; uint16_t u[2];
-    } v = { b };
-
-    return PopCnt16[v.u[0]] + PopCnt16[v.u[1]];
-
-#elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
-
-    return (int)_mm_popcnt_u32(b);
-
-#else // Assumed gcc or compatible compiler
-
-    return __builtin_popcount(b);
-
-#endif
 }
 
 #endif // #ifndef BITBOARD_H_INCLUDED
