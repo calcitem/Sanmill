@@ -41,18 +41,6 @@ inline TimePoint now()
         (std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
-template<class Entry, int Size>
-struct HashTable
-{
-    Entry *operator[](Key key)
-    {
-        return &table[(uint32_t)key & (Size - 1)];
-    }
-
-private:
-    std::vector<Entry> table = std::vector<Entry>(Size); // Allocate on the heap
-};
-
 
 enum SyncCout
 {
@@ -64,17 +52,6 @@ std::ostream &operator<<(std::ostream &, SyncCout);
 #define sync_cout std::cout << IO_LOCK
 #define sync_endl std::endl << IO_UNLOCK
 
-// `ptr` must point to an array of size at least
-// `sizeof(T) * N + alignment` bytes, where `N` is the
-// number of elements in the array.
-template <uintptr_t Alignment, typename T>
-T* align_ptr_up(T* ptr)
-{
-    static_assert(alignof(T) < Alignment);
-
-    const uintptr_t ptrint = reinterpret_cast<uintptr_t>(reinterpret_cast<char*>(ptr));
-    return reinterpret_cast<T*>(reinterpret_cast<char*>((ptrint + (Alignment - 1)) / Alignment * Alignment));
-}
 
 /// xorshift64star Pseudo-Random Number Generator
 /// This class is based on original code written and dedicated
@@ -119,19 +96,5 @@ public:
         return T(rand64() & rand64() & rand64());
     }
 };
-
-constexpr uint64_t mul_hi64(uint64_t a, uint64_t b) {
-#if defined(__GNUC__) && defined(IS_64BIT)
-    __extension__ typedef unsigned __int128 uint128;
-    return ((uint128)a * (uint128)b) >> 64;
-#else
-    const uint64_t aL = (uint32_t)a, aH = a >> 32;
-    const uint64_t bL = (uint32_t)b, bH = b >> 32;
-    const uint64_t c1 = (aL * bL) >> 32;
-    const uint64_t c2 = aH * bL + c1;
-    const uint64_t c3 = aL * bH + (uint32_t)c2;
-    return aH * bH + (c2 >> 32) + (c3 >> 32);
-#endif
-}
 
 #endif // #ifndef MISC_H_INCLUDED
