@@ -134,16 +134,6 @@ constexpr uint64_t mul_hi64(uint64_t a, uint64_t b) {
 #endif
 }
 
-/// Under Windows it is not possible for a process to run on more than one
-/// logical processor group. This usually means to be limited to use max 64
-/// cores. To overcome this, some special platform specific API should be
-/// called to set group affinity for each thread. Original code from Texel by
-/// Peter Ã–sterlund.
-
-namespace WinProcGroup {
-    void bindThisThread(size_t idx);
-}
-
 namespace CommandLine {
     void init(int argc, char* argv[]);
 
