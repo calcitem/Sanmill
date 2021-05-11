@@ -148,8 +148,6 @@ signals:
 struct MainThread : public Thread
 {
     using Thread::Thread;
-
-    int callsCnt;
 };
 
 
