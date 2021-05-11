@@ -30,12 +30,6 @@
 
 void prefetch(void *addr);
 void prefetch_range(void *addr, size_t len);
-void* std_aligned_alloc(size_t alignment, size_t size);
-void std_aligned_free(void* ptr);
-#ifdef ALIGNED_LARGE_PAGES
-void* aligned_large_pages_alloc(size_t allocSize); // memory aligned by page size, min alignment: 4096 bytes
-void aligned_large_pages_free(void* mem); // nop if mem == nullptr
-#endif // ALIGNED_LARGE_PAGES
 
 void dbg_hit_on(bool b) noexcept;
 void dbg_hit_on(bool c, bool b) noexcept;

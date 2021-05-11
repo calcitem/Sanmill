@@ -137,8 +137,6 @@
 
 #define HASHMAP_NOLOCK
 
-//#define ALIGNED_LARGE_PAGES
-
 #ifdef WIN32
 #pragma warning(disable: 4996)
 #endif
