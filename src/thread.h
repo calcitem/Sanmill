@@ -27,13 +27,14 @@
 #include "movepick.h"
 #include "position.h"
 #include "search.h"
-#include "thread_win32_osx.h"
 
 #include "config.h"
 
 #ifdef QT_GUI_LIB
 #include <QObject>
 #endif // QT_GUI_LIB
+
+typedef std::thread NativeThread;
 
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material hash tables so that once we get a
