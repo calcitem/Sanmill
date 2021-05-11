@@ -71,31 +71,6 @@ const string Version = "";
 } // namespace
 
 
-/// engine_info() returns the full name of the current Sanmill version. This
-/// will be either "Sanmill <Tag> DD-MM-YY" (where DD-MM-YY is the date when
-/// the program was compiled) or "Sanmill <Version>", depending on whether
-/// Version is empty.
-
-const string engine_info(bool to_uci)
-{
-    const string months("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec");
-    string month, day, year;
-    stringstream ss, date(__DATE__); // From compiler, format is "Sep 21 2008"
-
-    ss << "Sanmill " << Version << setfill('0');
-
-    if (Version.empty()) {
-        date >> month >> day >> year;
-        ss << setw(2) << day << setw(2) << (1 + months.find(month) / 4) << year.substr(2);
-    }
-
-    ss << (to_uci ? "\nid author " : " by ")
-       << "the Sanmill developers (see AUTHORS file)";
-
-    return ss.str();
-}
-
-
 /// Debug functions used mainly to collect run-time statistics
 static std::atomic<int64_t> hits[2], means[2];
 

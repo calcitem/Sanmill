@@ -199,8 +199,7 @@ void UCI::loop(int argc, char *argv[])
             Threads.main()->ponder = false; // Switch to normal search
 
         else if (token == "uci")
-            sync_cout << "id name " << engine_info(true)
-            << "\n" << Options
+            sync_cout << Options
             << "\nuciok" << sync_endl;
 
         else if (token == "setoption")  setoption(is);

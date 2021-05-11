@@ -28,7 +28,6 @@
 
 #include "types.h"
 
-const std::string engine_info(bool to_uci = false);
 void prefetch(void *addr);
 void prefetch_range(void *addr, size_t len);
 void* std_aligned_alloc(size_t alignment, size_t size);
