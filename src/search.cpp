@@ -33,13 +33,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
 bool is_timeout(TimePoint startTime);
 
-/// Search::init() is called at startup
-
-void Search::init() noexcept
-{
-    return;
-}
-
 
 /// Search::clear() resets search state to its initial value
 

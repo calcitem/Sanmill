@@ -32,7 +32,6 @@ using namespace std;
 namespace Search
 {
 
-void init() noexcept;
 void clear();
 
 } // namespace Search
