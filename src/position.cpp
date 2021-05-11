@@ -438,7 +438,6 @@ void Position::do_move(Move m)
 
     // Increment ply counters. In particular
     ++gamePly;
-    ++st.pliesFromNull;
 
     move = m;
 }

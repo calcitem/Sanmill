@@ -37,7 +37,6 @@ struct StateInfo
 {
     // Copied when making a move
     int rule50 {0};
-    int pliesFromNull;
 
     // Not copied when making a move (will be recomputed anyhow)
     Key key;
