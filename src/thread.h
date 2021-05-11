@@ -48,13 +48,12 @@ class Thread
 public:
     std::mutex mutex;
     std::condition_variable cv;
-    size_t idx;
     bool exit = false, searching = true; // Set before starting std::thread
     NativeThread stdThread;
 
-    explicit Thread(size_t n
+    explicit Thread(
 #ifdef QT_GUI_LIB
-                    , QObject *parent = nullptr
+                    QObject *parent = nullptr
 #endif
     );
     virtual ~Thread();
@@ -64,6 +63,10 @@ public:
     void wait_for_search_finished();
 
     Position *rootPos { nullptr };
+
+    void start_thinking(Position *);
+    void set(size_t);
+    std::atomic_bool stop;
 
     // Mill Game
 
@@ -150,23 +153,6 @@ struct MainThread : public Thread
 };
 
 
-/// ThreadPool struct handles all the threads-related stuff like init, starting,
-/// parking and, most importantly, launching a thread. All the access to threads
-/// is done through this class.
-
-struct ThreadPool : public std::vector<Thread *>
-{
-    void start_thinking(Position *);
-    void set(size_t);
-
-    MainThread *main() const
-    {
-        return static_cast<MainThread *>(front());
-    }
-
-    std::atomic_bool stop;
-};
-
-extern ThreadPool Threads;
+extern Thread *mainThread;
 
 #endif // #ifndef THREAD_H_INCLUDED

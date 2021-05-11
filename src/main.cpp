@@ -37,12 +37,15 @@ int main(int argc, char* argv[]) {
   UCI::init(Options);
   Bitboards::init();
   Position::init();
-  Threads.set(size_t(Options["Threads"]));
+  if (mainThread == nullptr) {
+      mainThread = new Thread();
+  }
+  mainThread->set(1);
   Search::clear(); // After threads are up
 
   UCI::loop(argc, argv);
 
-  Threads.set(0);
+  mainThread->set(0);
   return 0;
 }
 #endif

@@ -38,7 +38,7 @@ bool is_timeout(TimePoint startTime);
 
 void Search::clear()
 {
-    Threads.main()->wait_for_search_finished();
+    mainThread->wait_for_search_finished();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.clear();
@@ -199,7 +199,7 @@ out:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-extern ThreadPool Threads;
+extern Thread *mainThread;
 
 vector<Key> posKeyHistory;
 
@@ -279,7 +279,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 
     if (probeVal != VALUE_UNKNOWN) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
-        Threads.main()->ttHitCount++;
+        mainThread->ttHitCount++;
 #endif
 
         bestValue = probeVal;
@@ -288,7 +288,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
     else {
-        Threads.main()->ttMissCount++;
+        mainThread->ttMissCount++;
     }
 #endif
 
@@ -300,7 +300,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     // TODO: and immediate draw
     if (unlikely(pos->phase == Phase::gameOver) ||   // TODO: Deal with hash
         depth <= 0 ||
-        Threads.stop.load(std::memory_order_relaxed)) {
+        mainThread->stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
         // For win quickly
@@ -414,7 +414,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         // Finished searching the move. If a stop occurred, the return value of
         // the search cannot be trusted, and we return immediately without
         // updating best move and TT.
-        if (Threads.stop.load(std::memory_order_relaxed))
+        if (mainThread->stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
         if (value >= bestValue) {

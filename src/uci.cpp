@@ -65,7 +65,7 @@ void position(Position *pos, istringstream &is)
     repetition = 0;
     posKeyHistory.clear();
 
-    pos->set(fen, Threads.main());
+    pos->set(fen, mainThread);
 
     // Parse move list (if any)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
@@ -78,7 +78,7 @@ void position(Position *pos, istringstream &is)
     }
 
     // TODO: Stockfish does not have this
-    Threads.main()->us = pos->sideToMove;
+    mainThread->us = pos->sideToMove;
 }
 
 
@@ -118,19 +118,19 @@ void go(Position *pos)
 
     repetition = 0;
 
-    Threads.start_thinking(pos);
+    mainThread->start_thinking(pos);
 
     if (pos->get_phase() == Phase::gameOver)
     {
 #ifdef UCI_AUTO_RESTART
         // TODO
         while (true) {
-            if (Threads.main()->searching == true) {
+            if (mainThread->searching == true) {
                 continue;
             }
 
-            pos->set(StartFEN, Threads.main());
-            Threads.main()->us = BLACK; // WAR
+            pos->set(StartFEN, mainThread);
+            mainThread->us = BLACK; // WAR
             break;
         }
 #else
@@ -163,7 +163,7 @@ void UCI::loop(int argc, char *argv[])
         strncpy(StartFEN, StartFEN12, BUFSIZ);
     }
 
-    pos->set(StartFEN, Threads.main());
+    pos->set(StartFEN, mainThread);
 
     for (int i = 1; i < argc; ++i)
         cmd += std::string(argv[i]) + " ";
@@ -189,7 +189,7 @@ void UCI::loop(int argc, char *argv[])
 
         if (token == "quit"
             || token == "stop")
-            Threads.stop = true;
+            mainThread->stop = true;
 
         else if (token == "uci")
             sync_cout << Options

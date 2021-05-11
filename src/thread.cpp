@@ -31,7 +31,7 @@
 #include "engine_main.h"
 #endif
 
-ThreadPool Threads; // Global object
+Thread *mainThread; // Global object
 
 #ifdef OPENING_BOOK
 #include <deque>
@@ -47,15 +47,15 @@ using namespace std;
 /// Thread constructor launches the thread and waits until it goes to sleep
 /// in idle_loop(). Note that 'searching' and 'exit' should be already set.
 
-Thread::Thread(size_t n
+Thread::Thread(
 #ifdef QT_GUI_LIB
-               , QObject *parent
+               QObject *parent
 #endif
 ) :
 #ifdef QT_GUI_LIB
     QObject(parent),
 #endif
-    idx(n), stdThread(&Thread::idle_loop, this),
+    stdThread(&Thread::idle_loop, this),
     timeLimit(3600)
 {
     wait_for_search_finished();
@@ -478,24 +478,21 @@ void Thread::loadEndgameFileToHashMap()
 
 #endif // ENDGAME_LEARNING
 
-/// ThreadPool::set() creates/destroys threads to match the requested number.
-/// Created and launched threads will immediately go to sleep in idle_loop.
-/// Upon resizing, threads are recreated to allow for binding if necessary.
+/// Thread::set() creates/destroys thread
+/// Created and launched thread will immediately go to sleep in idle_loop.
+/// Upon resizing, thread are recreated to allow for binding if necessary.
 
-void ThreadPool::set(size_t requested)
+void Thread::set(size_t requested)
 {
-    if (size() > 0) { // destroy any existing thread(s)
-        main()->wait_for_search_finished();
+    if (mainThread != nullptr) { // destroy any existing thread(s)
+        wait_for_search_finished();
 
-        while (size() > 0)
-            delete back(), pop_back();
+        delete mainThread;
+        mainThread = nullptr;
     }
 
     if (requested > 0) { // create new thread(s)
-        push_back(new MainThread(0));
-
-        while (size() < requested)
-            push_back(new Thread(size()));
+        mainThread = new Thread();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new thread pool size
@@ -505,19 +502,13 @@ void ThreadPool::set(size_t requested)
 }
 
 
-/// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
-/// returns immediately. Main thread will wake up other threads and start the search.
+/// Thread::start_thinking() wakes up thread waiting in idle_loop() and
+/// returns immediately. Thread will wake up other threads and start the search.
 
-void ThreadPool::start_thinking(Position *pos)
+void Thread::start_thinking(Position *pos)
 {
-    main()->wait_for_search_finished();
-
+    wait_for_search_finished();
     stop = false;
-
-    // We use Position::set() to set root position across threads.
-    for (Thread *th : *this) {
-        th->rootPos = pos;
-    }
-
-    main()->start_searching();
+    rootPos = pos;
+    start_searching();
 }

@@ -47,7 +47,7 @@ void on_hash_size(const Option &o)
 
 void on_threads(const Option &o)
 {
-    Threads.set((size_t)o);
+    mainThread->set((size_t)o);
 }
 
 void on_skill_level(const Option &o)
@@ -147,7 +147,6 @@ void init(OptionsMap &o)
 {
     constexpr int MaxHashMB = Is64Bit ? 33554432 : 2048;
 
-    o["Threads"] << Option(1, 1, 512, on_threads);
     o["Hash"] << Option(16, 1, MaxHashMB, on_hash_size);
     o["Clear Hash"] << Option(on_clear_hash);
     o["SkillLevel"] << Option(1, 0, 20, on_skill_level);
