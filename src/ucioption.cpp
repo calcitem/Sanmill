@@ -147,22 +147,13 @@ void init(OptionsMap &o)
 {
     constexpr int MaxHashMB = Is64Bit ? 33554432 : 2048;
 
-    o["Contempt"] << Option(24, -100, 100);
-    o["Analysis Contempt"] << Option("Both var Off var White var Black var Both", "Both");
     o["Threads"] << Option(1, 1, 512, on_threads);
     o["Hash"] << Option(16, 1, MaxHashMB, on_hash_size);
     o["Clear Hash"] << Option(on_clear_hash);
     o["Ponder"] << Option(false);
-    o["MultiPV"] << Option(1, 1, 500);
     o["SkillLevel"] << Option(1, 0, 20, on_skill_level);
     o["MoveTime"] << Option(1, 0, 60, on_move_time);
     o["AiIsLazy"] << Option(false, on_aiIsLazy);
-    o["Move Overhead"] << Option(10, 0, 5000);
-    o["Slow Mover"] << Option(100, 10, 1000);
-    o["nodestime"] << Option(0, 0, 10000);
-    o["UCI_AnalyseMode"] << Option(false);
-    o["UCI_LimitStrength"] << Option(false);
-    o["UCI_Elo"] << Option(1350, 1350, 2850);
 
     o["Shuffling"] << Option(true, on_random_move);
     o["DeveloperMode"] << Option(true, on_developerMode);
