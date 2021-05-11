@@ -2,13 +2,13 @@ name: Flutter
 
 on:
   push:
-    branches: [ master ]
+    branches: [ windows ]
   pull_request:
-    branches: [ master ]
+    branches: [ windows ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     # Note that this workflow uses the latest stable version of the Dart SDK.
     # Docker images for other release channels - like dev and beta - are also
@@ -19,18 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      - run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable' # or: 'dev' or 'beta'
-
-      - name: Export environment valiables
-        run: export
 
       - name: Create App version
         run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
@@ -52,24 +43,12 @@ jobs:
       #  run: dart test
 
       # Build
-      - name: Build apk
-        run: cd src/ui/flutter_app; flutter build apk; flutter build appbundle
-        env:
-          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          ALIAS: ${{ secrets.ALIAS }}
-          KEY_PATH: key.jks
+      - name: Build Windows
+        run: cd src/ui/flutter_app; flutter config --enable-windows-desktop; flutter build windows; flutter pub run msix:create
 
-      # Archive apk
-      - name: Archive apk
+      # Archive msix
+      - name: Archive msix
         uses: actions/upload-artifact@v2
         with:
-          name: sanmill-flutter-apk-release
-          path: src/ui/flutter_app/build/app/outputs/flutter-apk/app-release.apk
-
-      # Archive aab
-      - name: Archive aab
-        uses: actions/upload-artifact@v2
-        with:
-          name: sanmill-flutter-aab-release
-          path: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
+          name: sanmill-flutter-msix-release
+          path: src/ui/flutter_app/build/windows/runner/Release/sanmill.msix
