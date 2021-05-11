@@ -35,7 +35,6 @@ namespace Bitboards
 {
 
 void init();
-const std::string pretty(Bitboard b);
 
 }
 

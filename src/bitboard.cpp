@@ -25,25 +25,6 @@ uint8_t PopCnt16[1 << 16];
 Bitboard SquareBB[SQ_32];
 
 
-/// Bitboards::pretty() returns an ASCII representation of a bitboard suitable
-/// to be printed to standard output. Useful for debugging.
-
-const std::string Bitboards::pretty(Bitboard b)
-{
-    std::string str = "+---+---+---+---+---+---+---+---+\n";
-
-    for (File f = FILE_A; f <= FILE_C; ++f) {
-        for (Rank r = RANK_1; r <= RANK_8; ++r) {
-            str += b & make_square(f, r) ? "| X " : "|   ";
-        }
-
-        str += "|\n+---+---+---+---+---+---+---+---+\n";
-    }
-
-    return str;
-}
-
-
 /// Bitboards::init() initializes various bitboard tables. It is called at
 /// startup and relies on global objects to be already zero-initialized.
 
