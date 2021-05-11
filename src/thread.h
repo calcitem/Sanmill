@@ -146,8 +146,6 @@ struct MainThread : public Thread
     using Thread::Thread;
 
     int callsCnt;
-    bool stopOnPonderhit;
-    std::atomic_bool ponder;
 };
 
 
@@ -157,7 +155,7 @@ struct MainThread : public Thread
 
 struct ThreadPool : public std::vector<Thread *>
 {
-    void start_thinking(Position *, bool = false);
+    void start_thinking(Position *);
     void set(size_t);
 
     MainThread *main() const

@@ -511,12 +511,11 @@ void ThreadPool::set(size_t requested)
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
 /// returns immediately. Main thread will wake up other threads and start the search.
 
-void ThreadPool::start_thinking(Position *pos, bool ponderMode)
+void ThreadPool::start_thinking(Position *pos)
 {
     main()->wait_for_search_finished();
 
-    main()->stopOnPonderhit = stop = false;
-    main()->ponder = ponderMode;
+    stop = false;
 
     // We use Position::set() to set root position across threads.
     for (Thread *th : *this) {

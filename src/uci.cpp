@@ -191,13 +191,6 @@ void UCI::loop(int argc, char *argv[])
             || token == "stop")
             Threads.stop = true;
 
-        // The GUI sends 'ponderhit' to tell us the user has played the expected move.
-        // So 'ponderhit' will be sent if we were told to ponder on the same move the
-        // user has played. We should continue searching but switch from pondering to
-        // normal search.
-        else if (token == "ponderhit")
-            Threads.main()->ponder = false; // Switch to normal search
-
         else if (token == "uci")
             sync_cout << Options
             << "\nuciok" << sync_endl;

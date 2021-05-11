@@ -150,7 +150,6 @@ void init(OptionsMap &o)
     o["Threads"] << Option(1, 1, 512, on_threads);
     o["Hash"] << Option(16, 1, MaxHashMB, on_hash_size);
     o["Clear Hash"] << Option(on_clear_hash);
-    o["Ponder"] << Option(false);
     o["SkillLevel"] << Option(1, 0, 20, on_skill_level);
     o["MoveTime"] << Option(1, 0, 60, on_move_time);
     o["AiIsLazy"] << Option(false, on_aiIsLazy);
