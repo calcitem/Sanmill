@@ -75,28 +75,12 @@ Thread::~Thread()
 }
 
 
-/// Thread::clear() reset histories, usually before a new game
-
-void Thread::clear() noexcept
-{
-    // TODO: Reset histories
-    return;
-}
-
-
 /// Thread::start_searching() wakes up the thread that will start the search
 
 void Thread::start_searching()
 {
     std::lock_guard<std::mutex> lk(mutex);
     searching = true;
-    cv.notify_one(); // Wake up the thread in idle_loop()
-}
-
-void Thread::pause()
-{
-    std::lock_guard<std::mutex> lk(mutex);
-    searching = false;
     cv.notify_one(); // Wake up the thread in idle_loop()
 }
 
@@ -512,7 +496,6 @@ void ThreadPool::set(size_t requested)
 
         while (size() < requested)
             push_back(new Thread(size()));
-        clear();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new thread pool size
@@ -524,14 +507,6 @@ void ThreadPool::set(size_t requested)
     }
 }
 
-/// ThreadPool::clear() sets threadPool data to initial values.
-
-void ThreadPool::clear()
-{
-    for (Thread *th : *this)
-        th->clear();
-}
-
 
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
 /// returns immediately. Main thread will wake up other threads and start the search.
@@ -541,7 +516,6 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
     main()->wait_for_search_finished();
 
     main()->stopOnPonderhit = stop = false;
-    increaseDepth = true;
     main()->ponder = ponderMode;
 
     // We use Position::set() to set root position across threads.

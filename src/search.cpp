@@ -50,7 +50,6 @@ void Search::clear()
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.clear();
 #endif
-    Threads.clear();
 }
 
 

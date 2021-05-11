@@ -58,7 +58,6 @@ public:
     );
     virtual ~Thread();
     int search();
-    void clear() noexcept;
     void idle_loop();
     void start_searching();
     void wait_for_search_finished();
@@ -68,8 +67,6 @@ public:
     // Mill Game
 
     string strCommand;
-
-    void pause();
 
     void setAi(Position *p);
     void setAi(Position *p, int time);
@@ -161,7 +158,6 @@ struct MainThread : public Thread
 struct ThreadPool : public std::vector<Thread *>
 {
     void start_thinking(Position *, bool = false);
-    void clear();
     void set(size_t);
 
     MainThread *main() const
@@ -169,16 +165,7 @@ struct ThreadPool : public std::vector<Thread *>
         return static_cast<MainThread *>(front());
     }
 
-    std::atomic_bool stop, increaseDepth;
-
-private:
-    uint64_t accumulate(std::atomic<uint64_t> Thread:: *member) const noexcept
-    {
-        uint64_t sum = 0;
-        for (Thread *th : *this)
-            sum += (th->*member).load(std::memory_order_relaxed);
-        return sum;
-    }
+    std::atomic_bool stop;
 };
 
 extern ThreadPool Threads;
