@@ -19,8 +19,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
-
 class Settings {
   static const settingsFileName = 'settings.json';
   static Settings? _instance;
@@ -52,8 +50,7 @@ class Settings {
   }
 
   Future<bool> _load(String fileName) async {
-    final docDir = await getApplicationDocumentsDirectory();
-    _file = File('${docDir.path}/$fileName');
+    _file = File('$fileName');
 
     try {
       final contents = await _file.readAsString();
