@@ -78,11 +78,12 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   List<Widget> children(BuildContext context, String mode) {
+    var appName = Platform.isWindows ? "Sanmill for Windows" : "Sanmill";
     return <Widget>[
       SettingsListTile(
         context: context,
         titleString: S.of(context).versionInfo,
-        subtitleString: "Sanmill " + "$_version" + " " + mode,
+        subtitleString: appName + " " + "$_version" + " " + mode,
         onTap: _showVersionInfo,
       ),
       ListItemDivider(),
@@ -131,22 +132,30 @@ class _AboutPageState extends State<AboutPage> {
           _launchPrivacyPolicy();
         },
       ),
-      ListItemDivider(),
-      SettingsListTile(
-        context: context,
-        titleString: S.of(context).thirdPartyNotices,
-        onTap: () {
-          _launchThirdPartyNotices();
-        },
-      ),
-      ListItemDivider(),
-      SettingsListTile(
-        context: context,
-        titleString: S.of(context).thanks,
-        onTap: () {
-          _launchThanks();
-        },
-      ),
+      Platform.isAndroid
+          ? ListItemDivider()
+          : Container(height: 0.0, width: 0.0),
+      Platform.isAndroid
+          ? SettingsListTile(
+              context: context,
+              titleString: S.of(context).thirdPartyNotices,
+              onTap: () {
+                _launchThirdPartyNotices();
+              },
+            )
+          : Container(height: 0.0, width: 0.0),
+      Platform.isAndroid
+          ? ListItemDivider()
+          : Container(height: 0.0, width: 0.0),
+      Platform.isAndroid
+          ? SettingsListTile(
+              context: context,
+              titleString: S.of(context).thanks,
+              onTap: () {
+                _launchThanks();
+              },
+            )
+          : Container(height: 0.0, width: 0.0),
       ListItemDivider(),
     ];
   }
@@ -192,10 +201,17 @@ class _AboutPageState extends State<AboutPage> {
     }
 
     print("local = $locale");
+
+    var branch = "/tree/master";
+
+    if (Platform.isWindows) {
+      branch = "/tree/windows";
+    }
+
     if (locale != null && locale.startsWith("zh_")) {
-      _launchURL('https://gitee.com/calcitem/Sanmill');
+      _launchURL('https://gitee.com/calcitem/Sanmill' + branch);
     } else {
-      _launchURL('https://github.com/calcitem/Sanmill');
+      _launchURL('https://github.com/calcitem/Sanmill' + branch);
     }
   }
 
