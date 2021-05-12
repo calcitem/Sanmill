@@ -1,7 +1,7 @@
 name: sanmill
 description: Sanmill is a open-source, powerful UCI-like Nine Men's Morris (and its variants) program.
 
-version: 1.0.4+1776
+version: 1.0.0+1812
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -54,7 +54,6 @@ msix_config:
   display_name: Sanmill
   publisher_display_name: Calcitem Studio
   identity_name: 25314CalcitemStudio.Sanmill
-  msix_version: 1.0.0.0
   publisher: CN=3413C020-B420-4E0A-8687-A2C35E878F3A
   capabilities: ''
   store: true
