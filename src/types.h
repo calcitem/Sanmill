@@ -464,11 +464,6 @@ constexpr Move make_move(Square from, Square to)
     return Move((from << 8) + to);
 }
 
-constexpr Move reverse_move(Move m)
-{
-    return make_move(to_sq(m), from_sq(m));
-}
-
 constexpr bool is_ok(Move m)
 {
     return from_sq(m) != to_sq(m); // Catch MOVE_NULL and MOVE_NONE
