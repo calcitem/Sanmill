@@ -80,7 +80,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
               if (snapshot.data == 0) {
                 _restore();
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                if (Platform.isAndroid) {
+                  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                } else {}
               }
 
               return Container(
