@@ -608,6 +608,10 @@
   "@exitApp": {
     "description": "The App will exit."
   },
+  "exitAppManually": "You have to close immediately and reopen App to take effect.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen App to take effect."
+  },
   "pick": "Pick",
   "@pick": {
     "description": "Pick "

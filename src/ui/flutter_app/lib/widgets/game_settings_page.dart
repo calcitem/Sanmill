@@ -171,11 +171,23 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   restoreFactoryDefaultSettings() async {
     confirm() async {
       Navigator.of(context).pop();
-      _startTimer();
-      showCountdownDialog(context);
+      if (Platform.isAndroid) {
+        _startTimer();
+        showCountdownDialog(context);
+      } else {
+        _restore();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(S.of(context).exitAppManually)));
+      }
     }
 
     cancel() => Navigator.of(context).pop();
+
+    var prompt = "";
+
+    if (Platform.isAndroid) {
+      prompt = S.of(context).exitApp;
+    }
 
     showDialog(
       context: context,
@@ -184,9 +196,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           title: Text(S.of(context).restore,
               style: TextStyle(color: AppTheme.dialogTitleColor)),
           content: SingleChildScrollView(
-            child: Text(S.of(context).restoreDefaultSettings +
-                "?\n" +
-                S.of(context).exitApp),
+            child: Text(S.of(context).restoreDefaultSettings + "?\n" + prompt),
           ),
           actions: <Widget>[
             TextButton(child: Text(S.of(context).ok), onPressed: confirm),
