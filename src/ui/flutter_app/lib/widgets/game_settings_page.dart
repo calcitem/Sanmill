@@ -96,7 +96,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                           fontSize: 64,
                         )),
                     SizedBox(
-                      height: 32,
+                      height: 20,
                     ),
                     InkWell(
                       onTap: () {
@@ -258,17 +258,19 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       !Platform.isWindows
           ? Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle)
           : Container(height: 0.0, width: 0.0),
-      !Platform.isWindows? SettingsCard(
-        context: context,
-        children: <Widget>[
-          SettingsSwitchListTile(
-            context: context,
-            value: Config.toneEnabled,
-            onChanged: setTone,
-            titleString: S.of(context).playSoundsInTheGame,
-          ),
-        ],
-      ): Container(height: 0.0, width: 0.0),
+      !Platform.isWindows
+          ? SettingsCard(
+              context: context,
+              children: <Widget>[
+                SettingsSwitchListTile(
+                  context: context,
+                  value: Config.toneEnabled,
+                  onChanged: setTone,
+                  titleString: S.of(context).playSoundsInTheGame,
+                ),
+              ],
+            )
+          : Container(height: 0.0, width: 0.0),
       SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
