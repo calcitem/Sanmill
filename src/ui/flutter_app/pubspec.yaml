@@ -51,10 +51,17 @@ flutter_intl:
   enabled: true
 
 msix_config:
-  display_name: Sanmill
+  display_name: Mill (N Men's Morris)
   publisher_display_name: Calcitem Studio
   identity_name: 25314CalcitemStudio.Sanmill
   msix_version: 1.0.5.0
+  certificate_path: sanmill.pfx
+  certificate_password: secret
   publisher: CN=3413C020-B420-4E0A-8687-A2C35E878F3A
+  logo_path: android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+  start_menu_icon_path: android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+  tile_icon_path: android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+  languages: en-us, zh-cn
   capabilities: ''
-  store: true
+  store: false
+

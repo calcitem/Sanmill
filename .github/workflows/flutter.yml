@@ -44,7 +44,7 @@ jobs:
 
       # Build
       - name: Build Windows
-        run: cd src/ui/flutter_app; flutter config --enable-windows-desktop; flutter build windows; flutter pub run msix:create
+        run: cd src/ui/flutter_app; flutter config --enable-windows-desktop; flutter build windows; flutter pub run msix:create --store
 
       # Archive msix
       - name: Archive msix
