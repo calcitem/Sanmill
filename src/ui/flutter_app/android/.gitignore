@@ -7,5 +7,6 @@ gradle-wrapper.jar
 GeneratedPluginRegistrant.java
 
 /key.properties
+/key.jks
 
 bt.txt
