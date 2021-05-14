@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 1,0,4
+#define VERSION_AS_NUMBER 1,0,5
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "1.0.4"
+#define VERSION_AS_STRING "1.0.5"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.calcitem" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "CompanyName", "Calcitem Studio" "\0"
+            VALUE "FileDescription", "Sanmill for Windows." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 com.calcitem. All rights reserved." "\0"
-            VALUE "OriginalFilename", "app.exe" "\0"
-            VALUE "ProductName", "app" "\0"
+            VALUE "InternalName", "Sanmill" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2021 Calcitem Studio" "\0"
+            VALUE "OriginalFilename", "Mill.exe" "\0"
+            VALUE "ProductName", "Mill (N Men's Morris)" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

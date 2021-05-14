@@ -1,0 +1,5 @@
+v1.0.5
+
+* Indicate white pieces as player 1 and black as player 2
+* Change text 'Hint' to 'Info'
+* Fix typo
