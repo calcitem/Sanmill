@@ -24,8 +24,8 @@ class AppTheme {
   static var toolbarTextColor = toolbarIconColor;
   static var moveHistoryTextColor = Colors.yellow;
   static var moveHistoryDialogBackgroundColor = Colors.transparent;
-  static var hintDialogackgroundColor = moveHistoryDialogBackgroundColor;
-  static var hintTextColor = moveHistoryTextColor;
+  static var infoDialogackgroundColor = moveHistoryDialogBackgroundColor;
+  static var infoTextColor = moveHistoryTextColor;
   static var simpleDialogOptionTextColor = appPrimaryColor;
 
   /// Settings page

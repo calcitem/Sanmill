@@ -749,7 +749,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  String getHintText() {
+  String getInfoText() {
     String ret = S.of(context).score +
         "\n" +
         S.of(context).player1 +
@@ -796,7 +796,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
   Widget createToolbar() {
     final manualText = Game.instance.position.manualText;
 
-    final analyzeText = getHintText();
+    final analyzeText = getInfoText();
 
     var newGameButton = TextButton(
       child: Column(
@@ -876,7 +876,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       ),
     );
 
-    var hintButton = TextButton(
+    var infoButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -884,7 +884,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             Icons.lightbulb_outline,
             color: AppTheme.toolbarIconColor,
           ),
-          Text(S.of(context).hint,
+          Text(S.of(context).info,
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
@@ -893,7 +893,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: AppTheme.hintDialogackgroundColor,
+            backgroundColor: AppTheme.infoDialogackgroundColor,
             content: SingleChildScrollView(
                 child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle)),
             actions: <Widget>[
@@ -923,7 +923,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         Expanded(child: SizedBox()),
         moveHistoryButton,
         Expanded(child: SizedBox()), //dashboard_outlined
-        hintButton,
+        infoButton,
         Expanded(child: SizedBox()),
       ]),
     );

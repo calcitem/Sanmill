@@ -154,6 +154,7 @@
   "exitApp": "App 将退出。",
   "exitAppManually": "您需要立即退出并重新打开本程序才能使默认配置生效。",
   "pick": "选择",
+  "info": "信息",
   "hint": "提示",
   "player": "玩家",
   "player1": "先手方",
