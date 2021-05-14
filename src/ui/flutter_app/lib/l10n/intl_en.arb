@@ -160,12 +160,12 @@
   "@tipToMove": {
     "description": " to move."
   },
-  "blackWin": "Player 1 win!",
-  "@blackWin": {
+  "whiteWin": "Player 1 win!",
+  "@whiteWin": {
     "description": "Player 1 win!"
   },
-  "whiteWin": "Player 2 win!",
-  "@whiteWin": {
+  "blackWin": "Player 2 win!",
+  "@blackWin": {
     "description": "Player 2 win!"
   },
   "won": "Won",
@@ -224,12 +224,12 @@
   "@score": {
     "description": "Score"
   },
-  "black": "Player 1",
-  "@black": {
+  "white": "Player 1",
+  "@white": {
     "description": "Player 1"
   },
-  "white": "Player 2",
-  "@white": {
+  "black": "Player 2",
+  "@black": {
     "description": "Player 2"
   },
   "loseReasonlessThanThree": " piece count is less than three.",
@@ -488,12 +488,12 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isBlackLoseButNotDrawWhenBoardFull": "Second player loses when board full",
-  "@isBlackLoseButNotDrawWhenBoardFull": {
+  "isWhiteLoseButNotDrawWhenBoardFull": "Second player loses when board full",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "Second player loses when board full"
   },
-  "isBlackLoseButNotDrawWhenBoardFull_Detail": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw.",
-  "@isBlackLoseButNotDrawWhenBoardFull_Detail": {
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
   "isLoseButNotChangeSideWhenNoWay": "Lose when no legal moves",
@@ -568,12 +568,12 @@
   "@lineColor": {
     "description": "Board linecolor"
   },
-   "blackPieceColor": "Player 1 piece color",
-  "@blackPieceColor": {
+   "whitePieceColor": "Player 1 piece color",
+  "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "whitePieceColor": "Player 2 piece color",
-  "@whitePieceColor": {
+  "blackPieceColor": "Player 2 piece color",
+  "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
   "aiIsLazy": "AI is Lazy",

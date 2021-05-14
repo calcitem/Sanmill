@@ -59,8 +59,8 @@ public:
     enum class Models
     {
         noPiece = 0x1,
-        blackPiece = 0x2,
-        whitePiece = 0x4,
+        whitePiece = 0x2,
+        blackPiece = 0x4,
     };
 
     enum Models getModel() noexcept
@@ -111,7 +111,7 @@ protected:
 private:
     enum Models model;
 
-    // Piece number, black and white all start from 1
+    // Piece number, white and black all start from 1
     int num  {1};
 
     int size {0};

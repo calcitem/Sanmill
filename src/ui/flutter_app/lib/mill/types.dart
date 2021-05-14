@@ -131,15 +131,15 @@ enum MoveType { place, move, remove, none }
 
 class PieceColor {
   static const none = '*';
-  static const black = '@';
   static const white = 'O';
+  static const black = '@';
   static const ban = 'X';
   static const nobody = '-';
   static const draw = '=';
 
   static String of(String piece) {
-    if (black.contains(piece)) return black;
     if (white.contains(piece)) return white;
+    if (black.contains(piece)) return black;
     if (ban.contains(piece)) return ban;
     return nobody;
   }
@@ -147,8 +147,8 @@ class PieceColor {
   static bool isSameColor(String p1, String p2) => of(p1) == of(p2);
 
   static String opponent(String color) {
-    if (color == white) return black;
     if (color == black) return white;
+    if (color == white) return black;
     return color;
   }
 
@@ -157,8 +157,8 @@ class PieceColor {
 
 Map<String, int> pieceColorIndex = {
   PieceColor.none: 0,
-  PieceColor.black: 1,
-  PieceColor.white: 2,
+  PieceColor.white: 1,
+  PieceColor.black: 2,
   PieceColor.ban: 3
 };
 
@@ -178,17 +178,17 @@ enum GameOverReason {
   drawReasonBoardIsFull
 }
 
-enum PieceType { none, blackStone, whiteStone, ban, count, stone }
+enum PieceType { none, whiteStone, blackStone, ban, count, stone }
 
 class Piece {
   static const noPiece = PieceColor.none;
-  static const blackStone = PieceColor.black;
   static const whiteStone = PieceColor.white;
+  static const blackStone = PieceColor.black;
   static const ban = PieceColor.ban;
 
   static bool isEmpty(String c) => noPiece.contains(c);
-  static bool isBlack(String c) => blackStone.contains(c);
   static bool isWhite(String c) => whiteStone.contains(c);
+  static bool isBlack(String c) => blackStone.contains(c);
   static bool isBan(String c) => ban.contains(c);
 }
 

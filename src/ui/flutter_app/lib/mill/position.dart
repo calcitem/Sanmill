@@ -46,22 +46,22 @@ class Position {
   GameRecorder? recorder;
 
   Map<String, int> pieceInHandCount = {
-    PieceColor.black: -1,
-    PieceColor.white: -1
+    PieceColor.white: -1,
+    PieceColor.black: -1
   };
   Map<String, int> pieceOnBoardCount = {
-    PieceColor.black: 0,
-    PieceColor.white: 0
+    PieceColor.white: 0,
+    PieceColor.black: 0
   };
   int pieceToRemoveCount = 0;
 
   int gamePly = 0;
-  String _sideToMove = PieceColor.black;
+  String _sideToMove = PieceColor.white;
 
   StateInfo st = StateInfo();
 
-  String us = PieceColor.black;
-  String them = PieceColor.white;
+  String us = PieceColor.white;
+  String them = PieceColor.black;
   String winner = PieceColor.nobody;
 
   GameOverReason gameOverReason = GameOverReason.noReason;
@@ -70,8 +70,8 @@ class Position {
   Act action = Act.none;
 
   Map<String, int> score = {
-    PieceColor.black: 0,
     PieceColor.white: 0,
+    PieceColor.black: 0,
     PieceColor.draw: 0
   };
 
@@ -177,7 +177,7 @@ class Position {
     }
 
     // Active color
-    ss += _sideToMove == PieceColor.black ? "b" : "w";
+    ss += _sideToMove == PieceColor.white ? "w" : "b";
 
     ss += " ";
 
@@ -223,22 +223,22 @@ class Position {
 
     ss += " ";
 
-    ss += pieceOnBoardCount[PieceColor.black].toString() +
-        " " +
-        pieceInHandCount[PieceColor.black].toString() +
-        " " +
-        pieceOnBoardCount[PieceColor.white].toString() +
+    ss += pieceOnBoardCount[PieceColor.white].toString() +
         " " +
         pieceInHandCount[PieceColor.white].toString() +
+        " " +
+        pieceOnBoardCount[PieceColor.black].toString() +
+        " " +
+        pieceInHandCount[PieceColor.black].toString() +
         " " +
         pieceToRemoveCount.toString() +
         " ";
 
-    int sideIsWhite = _sideToMove == PieceColor.white ? 1 : 0;
+    int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
     ss += st.rule50.toString() +
         " " +
-        (1 + (gamePly - sideIsWhite) ~/ 2).toString();
+        (1 + (gamePly - sideIsBlack) ~/ 2).toString();
 
     return ss;
   }
@@ -269,9 +269,9 @@ class Position {
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
       if (move["Player".length] == '1') {
-        return resign(PieceColor.black);
-      } else {
         return resign(PieceColor.white);
+      } else {
+        return resign(PieceColor.black);
       }
     }
 
@@ -405,7 +405,7 @@ class Position {
     st.rule50 = 0;
 
     phase = Phase.ready;
-    setSideToMove(PieceColor.black);
+    setSideToMove(PieceColor.white);
     action = Act.place;
 
     winner = PieceColor.nobody;
@@ -415,10 +415,10 @@ class Position {
 
     st.key = 0;
 
-    pieceOnBoardCount[PieceColor.black] =
-        pieceOnBoardCount[PieceColor.white] = 0;
-    pieceInHandCount[PieceColor.black] =
-        pieceInHandCount[PieceColor.white] = rule.piecesCount;
+    pieceOnBoardCount[PieceColor.white] =
+        pieceOnBoardCount[PieceColor.black] = 0;
+    pieceInHandCount[PieceColor.white] =
+        pieceInHandCount[PieceColor.black] = rule.piecesCount;
     pieceToRemoveCount = 0;
 
     // TODO:
@@ -488,11 +488,11 @@ class Position {
       int n = millsCount(currentSquare);
 
       if (n == 0) {
-        assert(pieceInHandCount[PieceColor.black]! >= 0 &&
-            pieceInHandCount[PieceColor.white]! >= 0);
+        assert(pieceInHandCount[PieceColor.white]! >= 0 &&
+            pieceInHandCount[PieceColor.black]! >= 0);
 
-        if (pieceInHandCount[PieceColor.black] == 0 &&
-            pieceInHandCount[PieceColor.white] == 0) {
+        if (pieceInHandCount[PieceColor.white] == 0 &&
+            pieceInHandCount[PieceColor.black] == 0) {
           if (checkIfGameIsOver()) {
             return true;
           }
@@ -643,8 +643,8 @@ class Position {
     }
 
     if (phase == Phase.placing) {
-      if (pieceInHandCount[PieceColor.black] == 0 &&
-          pieceInHandCount[PieceColor.white] == 0) {
+      if (pieceInHandCount[PieceColor.white] == 0 &&
+          pieceInHandCount[PieceColor.black] == 0) {
         phase = Phase.moving;
         action = Act.select;
 
@@ -741,11 +741,11 @@ class Position {
       return true;
     }
 
-    if (pieceOnBoardCount[PieceColor.black]! +
-            pieceOnBoardCount[PieceColor.white]! >=
+    if (pieceOnBoardCount[PieceColor.white]! +
+            pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
-      if (rule.isBlackLoseButNotDrawWhenBoardFull) {
-        setGameOver(PieceColor.white, GameOverReason.loseReasonBoardIsFull);
+      if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
+        setGameOver(PieceColor.black, GameOverReason.loseReasonBoardIsFull);
       } else {
         setGameOver(PieceColor.draw, GameOverReason.drawReasonBoardIsFull);
       }
@@ -906,8 +906,8 @@ class Position {
 
   bool isAllSurrounded() {
     // Full
-    if (pieceOnBoardCount[PieceColor.black]! +
-            pieceOnBoardCount[PieceColor.white]! >=
+    if (pieceOnBoardCount[PieceColor.white]! +
+            pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
       return true;
     }
@@ -947,13 +947,13 @@ class Position {
   ///////////////////////////////////////////////////////////////////////////////
 
   int getNPiecesInHand() {
-    pieceInHandCount[PieceColor.black] =
-        rule.piecesCount - pieceOnBoardCount[PieceColor.black]!;
     pieceInHandCount[PieceColor.white] =
         rule.piecesCount - pieceOnBoardCount[PieceColor.white]!;
+    pieceInHandCount[PieceColor.black] =
+        rule.piecesCount - pieceOnBoardCount[PieceColor.black]!;
 
-    return pieceOnBoardCount[PieceColor.black]! +
-        pieceOnBoardCount[PieceColor.white]!;
+    return pieceOnBoardCount[PieceColor.white]! +
+        pieceOnBoardCount[PieceColor.black]!;
   }
 
   void clearBoard() {
@@ -975,7 +975,7 @@ class Position {
 
     gameOverReason = GameOverReason.noReason;
     phase = Phase.placing;
-    setSideToMove(PieceColor.black);
+    setSideToMove(PieceColor.white);
     action = Act.place;
     currentSquare = 0;
 
@@ -999,33 +999,33 @@ class Position {
   }
 
   int pieceOnBoardCountCount() {
-    pieceOnBoardCount[PieceColor.black] =
-        pieceOnBoardCount[PieceColor.white] = 0;
+    pieceOnBoardCount[PieceColor.white] =
+        pieceOnBoardCount[PieceColor.black] = 0;
 
     for (int f = 1; f < fileExNumber; f++) {
       for (int r = 0; r < rankNumber; r++) {
         int s = f * rankNumber + r;
-        if (board[s] == Piece.blackStone) {
-          if (pieceOnBoardCount[PieceColor.black] != null) {
-            pieceOnBoardCount[PieceColor.black] =
-                pieceOnBoardCount[PieceColor.black]! + 1;
-          }
-        } else if (board[s] == Piece.whiteStone) {
+        if (board[s] == Piece.whiteStone) {
           if (pieceOnBoardCount[PieceColor.white] != null) {
             pieceOnBoardCount[PieceColor.white] =
                 pieceOnBoardCount[PieceColor.white]! + 1;
+          }
+        } else if (board[s] == Piece.blackStone) {
+          if (pieceOnBoardCount[PieceColor.black] != null) {
+            pieceOnBoardCount[PieceColor.black] =
+                pieceOnBoardCount[PieceColor.black]! + 1;
           }
         }
       }
     }
 
-    if (pieceOnBoardCount[PieceColor.black]! > rule.piecesCount ||
-        pieceOnBoardCount[PieceColor.white]! > rule.piecesCount) {
+    if (pieceOnBoardCount[PieceColor.white]! > rule.piecesCount ||
+        pieceOnBoardCount[PieceColor.black]! > rule.piecesCount) {
       return -1;
     }
 
-    return pieceOnBoardCount[PieceColor.black]! +
-        pieceOnBoardCount[PieceColor.white]!;
+    return pieceOnBoardCount[PieceColor.white]! +
+        pieceOnBoardCount[PieceColor.black]!;
   }
 
 ///////////////////////////////////////////////////////////////////////////////

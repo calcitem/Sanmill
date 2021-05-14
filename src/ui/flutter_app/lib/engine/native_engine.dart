@@ -145,7 +145,7 @@ class NativeEngine extends Engine {
     await send(
         'setoption name MayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}');
     await send(
-        'setoption name IsBlackLoseButNotDrawWhenBoardFull value ${Config.isBlackLoseButNotDrawWhenBoardFull}');
+        'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${Config.isWhiteLoseButNotDrawWhenBoardFull}');
     await send(
         'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
     await send('setoption name MayFly value ${Config.mayFly}');

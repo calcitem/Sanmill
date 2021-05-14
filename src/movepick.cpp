@@ -97,9 +97,9 @@ void MovePicker::score()
 
             //cur->value += bannedCount;  // placing phrase, place nearby ban point
 
-            // for 12 men's morris (has diagonal), white 2nd move place star point is as important as close mill (TODO)
+            // for 12 men's morris (has diagonal), black 2nd move place star point is as important as close mill (TODO)
             if (rule.hasDiagonalLines &&
-                pos.count<ON_BOARD>(WHITE) < 2 &&    // patch: only when white 2nd move
+                pos.count<ON_BOARD>(BLACK) < 2 &&    // patch: only when black 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
             }

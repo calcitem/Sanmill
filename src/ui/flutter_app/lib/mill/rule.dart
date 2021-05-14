@@ -26,7 +26,7 @@ class Rule {
   bool isDefenderMoveFirst = false;
   bool mayRemoveMultiple = false;
   bool mayRemoveFromMillsAlways = false;
-  bool isBlackLoseButNotDrawWhenBoardFull = true;
+  bool isWhiteLoseButNotDrawWhenBoardFull = true;
   bool isLoseButNotChangeSideWhenNoWay = true;
   bool mayFly = true;
   int maxStepsLedToDraw = 50;

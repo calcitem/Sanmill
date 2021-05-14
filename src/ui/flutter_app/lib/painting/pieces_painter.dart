@@ -112,7 +112,7 @@ class PiecesPainter extends PiecesBasePainter {
     }
 
     // Draw shadow of piece
-    canvas.drawShadow(shadowPath, Colors.black, 2, true);
+    canvas.drawShadow(shadowPath, Colors.white, 2, true);
 
     paint.style = PaintingStyle.fill;
 
@@ -130,19 +130,19 @@ class PiecesPainter extends PiecesBasePainter {
 
       // Draw Border of Piece
       switch (pps.piece) {
-        case Piece.blackStone:
-          paint.color = AppTheme.blackPieceBorderColor;
-          canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
-          paint.color = Color(Config.blackPieceColor);
-          canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
-          blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
-          break;
         case Piece.whiteStone:
           paint.color = AppTheme.whitePieceBorderColor;
           canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
           paint.color = Color(Config.whitePieceColor);
           canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
           blurPositionColor = Color(Config.whitePieceColor).withOpacity(0.1);
+          break;
+        case Piece.blackStone:
+          paint.color = AppTheme.blackPieceBorderColor;
+          canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
+          paint.color = Color(Config.blackPieceColor);
+          canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
+          blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
           break;
         case Piece.ban:
           //print("pps.piece is Ban");
@@ -159,17 +159,17 @@ class PiecesPainter extends PiecesBasePainter {
       final int row = focusIndex! ~/ 7, column = focusIndex % 7;
 
       focusPositionColor = Color.fromARGB(
-              (Color(Config.blackPieceColor).alpha +
-                      Color(Config.whitePieceColor).alpha) ~/
+              (Color(Config.whitePieceColor).alpha +
+                      Color(Config.blackPieceColor).alpha) ~/
                   2,
-              (Color(Config.blackPieceColor).red +
-                      Color(Config.whitePieceColor).red) ~/
+              (Color(Config.whitePieceColor).red +
+                      Color(Config.blackPieceColor).red) ~/
                   2,
-              (Color(Config.blackPieceColor).green +
-                      Color(Config.whitePieceColor).green) ~/
+              (Color(Config.whitePieceColor).green +
+                      Color(Config.blackPieceColor).green) ~/
                   2,
-              (Color(Config.blackPieceColor).blue +
-                      Color(Config.whitePieceColor).blue) ~/
+              (Color(Config.whitePieceColor).blue +
+                      Color(Config.blackPieceColor).blue) ~/
                   2)
           .withOpacity(0.5);
 

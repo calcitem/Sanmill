@@ -52,7 +52,7 @@ struct Rule
 
     // At the end of the placing phase, when the board is full,
     // the side that places first loses the game, otherwise, the game is a draw.
-    bool isBlackLoseButNotDrawWhenBoardFull;
+    bool isWhiteLoseButNotDrawWhenBoardFull;
 
     // The player will lose if his opponent blocks them so that they cannot be moved.
     // Change side to move if this option is disabled.

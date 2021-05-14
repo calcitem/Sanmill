@@ -82,27 +82,27 @@ void PieceItem::paint(QPainter *painter,
     // Empty models don't draw pieces
 
     switch (model) {
-    case Models::blackPiece:
-        // If the model is black, draw black pieces
+    case Models::whitePiece:
+        // If the model is white, draw white pieces
 #ifdef MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(0, 93, 172));
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
-            QPixmap(":/image/resources/image/black_piece.png"));
+            QPixmap(":/image/resources/image/white_piece.png"));
 #endif /* MOBILE_APP_UI */
         break;
 
-    case Models::whitePiece:
-        // If the model is white, draw white pieces
+    case Models::blackPiece:
+        // If the model is black, draw black pieces
 #ifdef MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(231, 36, 46));
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
-            QPixmap(":/image/resources/image/white_piece.png"));
+            QPixmap(":/image/resources/image/black_piece.png"));
 #endif /* MOBILE_APP_UI */
         break;
     default:
@@ -111,10 +111,10 @@ void PieceItem::paint(QPainter *painter,
 
     // If the model requires the serial number to be displayed
     if (showNum) {
-        if (model == Models::blackPiece)
+        if (model == Models::whitePiece)
             painter->setPen(QColor(255, 255, 255));
 
-        if (model == Models::whitePiece)
+        if (model == Models::blackPiece)
             painter->setPen(QColor(0, 0, 0));
 
         QFont font;

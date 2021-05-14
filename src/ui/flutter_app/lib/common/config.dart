@@ -49,8 +49,8 @@ class Config {
   static int boardLineColor = AppTheme.boardLineColor.value;
   static int darkBackgroundColor = AppTheme.darkBackgroundColor.value;
   static int boardBackgroundColor = AppTheme.boardBackgroundColor.value;
-  static int blackPieceColor = AppTheme.blackPieceColor.value;
   static int whitePieceColor = AppTheme.whitePieceColor.value;
+  static int blackPieceColor = AppTheme.blackPieceColor.value;
 
   // Rules
   static int piecesCount = 9;
@@ -60,7 +60,7 @@ class Config {
   static bool isDefenderMoveFirst = false;
   static bool mayRemoveMultiple = false;
   static bool mayRemoveFromMillsAlways = false;
-  static bool isBlackLoseButNotDrawWhenBoardFull = true;
+  static bool isWhiteLoseButNotDrawWhenBoardFull = true;
   static bool isLoseButNotChangeSideWhenNoWay = true;
   static bool mayFly = true;
   static int maxStepsLedToDraw = 50;
@@ -99,10 +99,10 @@ class Config {
         settings['DarkBackgroundColor'] ?? AppTheme.darkBackgroundColor.value;
     Config.boardBackgroundColor =
         settings['BoardBackgroundColor'] ?? AppTheme.boardBackgroundColor.value;
-    Config.blackPieceColor =
-        settings['BlackPieceColor'] ?? AppTheme.blackPieceColor.value;
     Config.whitePieceColor =
         settings['WhitePieceColor'] ?? AppTheme.whitePieceColor.value;
+    Config.blackPieceColor =
+        settings['BlackPieceColor'] ?? AppTheme.blackPieceColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount = settings['PiecesCount'] ?? 9;
@@ -118,9 +118,9 @@ class Config {
         Config.mayRemoveMultiple = settings['MayRemoveMultiple'] ?? false;
     rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways =
         settings['MayRemoveFromMillsAlways'] ?? false;
-    rule.isBlackLoseButNotDrawWhenBoardFull =
-        Config.isBlackLoseButNotDrawWhenBoardFull =
-            settings['IsBlackLoseButNotDrawWhenBoardFull'] ?? true;
+    rule.isWhiteLoseButNotDrawWhenBoardFull =
+        Config.isWhiteLoseButNotDrawWhenBoardFull =
+            settings['IsWhiteLoseButNotDrawWhenBoardFull'] ?? true;
     rule.isLoseButNotChangeSideWhenNoWay =
         Config.isLoseButNotChangeSideWhenNoWay =
             settings['IsLoseButNotChangeSideWhenNoWay'] ?? true;
@@ -160,8 +160,8 @@ class Config {
     settings['BoardLineColor'] = Config.boardLineColor;
     settings['DarkBackgroundColor'] = Config.darkBackgroundColor;
     settings['BoardBackgroundColor'] = Config.boardBackgroundColor;
-    settings['BlackPieceColor'] = Config.blackPieceColor;
     settings['WhitePieceColor'] = Config.whitePieceColor;
+    settings['BlackPieceColor'] = Config.blackPieceColor;
 
     // Rules
     settings['PiecesCount'] = Config.piecesCount;
@@ -171,8 +171,8 @@ class Config {
     settings['IsDefenderMoveFirst'] = Config.isDefenderMoveFirst;
     settings['MayRemoveMultiple'] = Config.mayRemoveMultiple;
     settings['MayRemoveFromMillsAlways'] = Config.mayRemoveFromMillsAlways;
-    settings['IsBlackLoseButNotDrawWhenBoardFull'] =
-        Config.isBlackLoseButNotDrawWhenBoardFull;
+    settings['IsWhiteLoseButNotDrawWhenBoardFull'] =
+        Config.isWhiteLoseButNotDrawWhenBoardFull;
     settings['IsLoseButNotChangeSideWhenNoWay'] =
         Config.isLoseButNotChangeSideWhenNoWay;
     settings['MayFly'] = Config.mayFly;

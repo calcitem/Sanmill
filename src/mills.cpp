@@ -492,7 +492,7 @@ Depth get_search_depth(const Position *pos)
     constexpr Depth flyingDepth = 9;
 
     if (pos->phase == Phase::placing) {
-        const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(BLACK) - pos->count<IN_HAND>(WHITE);
+        const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
 
         if (rule.piecesCount == 12) {
             assert(0 <= index && index <= 24);
@@ -508,8 +508,8 @@ Depth get_search_depth(const Position *pos)
     }
 
     if (pos->phase == Phase::moving) {
-        const int pb = pos->count<ON_BOARD>(BLACK);
-        const int pw = pos->count<ON_BOARD>(WHITE);
+        const int pb = pos->count<ON_BOARD>(WHITE);
+        const int pw = pos->count<ON_BOARD>(BLACK);
 
         const int pieces = pb + pw;
         int diff = pb - pw;

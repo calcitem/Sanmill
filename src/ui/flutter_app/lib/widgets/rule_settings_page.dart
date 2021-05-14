@@ -110,11 +110,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
-            value: Config.isBlackLoseButNotDrawWhenBoardFull,
-            onChanged: setIsBlackLoseButNotDrawWhenBoardFull,
-            titleString: S.of(context).isBlackLoseButNotDrawWhenBoardFull,
+            value: Config.isWhiteLoseButNotDrawWhenBoardFull,
+            onChanged: setIsWhiteLoseButNotDrawWhenBoardFull,
+            titleString: S.of(context).isWhiteLoseButNotDrawWhenBoardFull,
             subtitleString:
-                S.of(context).isBlackLoseButNotDrawWhenBoardFull_Detail,
+                S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
           ),
         ],
       ),
@@ -234,10 +234,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     Config.save();
   }
 
-  setIsBlackLoseButNotDrawWhenBoardFull(bool value) async {
+  setIsWhiteLoseButNotDrawWhenBoardFull(bool value) async {
     setState(() {
-      rule.isBlackLoseButNotDrawWhenBoardFull =
-          Config.isBlackLoseButNotDrawWhenBoardFull = value;
+      rule.isWhiteLoseButNotDrawWhenBoardFull =
+          Config.isWhiteLoseButNotDrawWhenBoardFull = value;
     });
 
     Config.save();

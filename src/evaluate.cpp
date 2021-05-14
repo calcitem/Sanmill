@@ -48,7 +48,7 @@ Value Evaluation::value()
 
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
-    int pieceToRemoveCount = (pos.side_to_move() == BLACK) ?
+    int pieceToRemoveCount = (pos.side_to_move() == WHITE) ?
         pos.piece_to_remove_count() : -pos.piece_to_remove_count();;
 
     switch (pos.get_phase()) {
@@ -56,10 +56,10 @@ Value Evaluation::value()
         break;
 
     case Phase::placing:
-        pieceInHandDiffCount = pos.piece_in_hand_count(BLACK) - pos.piece_in_hand_count(WHITE);
+        pieceInHandDiffCount = pos.piece_in_hand_count(WHITE) - pos.piece_in_hand_count(BLACK);
         value += VALUE_EACH_PIECE_INHAND * pieceInHandDiffCount;
 
-        pieceOnBoardDiffCount = pos.piece_on_board_count(BLACK) - pos.piece_on_board_count(WHITE);
+        pieceOnBoardDiffCount = pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK);
         value += VALUE_EACH_PIECE_ONBOARD * pieceOnBoardDiffCount;
 
         switch (pos.get_action()) {
@@ -77,7 +77,7 @@ Value Evaluation::value()
         break;
 
     case Phase::moving:
-        value = (pos.piece_on_board_count(BLACK) - pos.piece_on_board_count(WHITE)) * VALUE_EACH_PIECE_ONBOARD;
+        value = (pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK)) * VALUE_EACH_PIECE_ONBOARD;
 
 #ifdef EVALUATE_MOBILITY
         value += pos.get_mobility_diff() / 5;
@@ -98,8 +98,8 @@ Value Evaluation::value()
         break;
 
     case Phase::gameOver:
-        if (pos.piece_on_board_count(BLACK) + pos.piece_on_board_count(WHITE) >= EFFECTIVE_SQUARE_NB) {
-            if (rule.isBlackLoseButNotDrawWhenBoardFull) {
+        if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) >= EFFECTIVE_SQUARE_NB) {
+            if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
                 value = VALUE_DRAW;
@@ -107,12 +107,12 @@ Value Evaluation::value()
         } else if (pos.get_action() == Action::select &&
                    pos.is_all_surrounded(pos.side_to_move()) &&
                    rule.isLoseButNotChangeSideWhenNoWay) {
-            const Value delta = pos.side_to_move() == BLACK ? -VALUE_MATE : VALUE_MATE;
+            const Value delta = pos.side_to_move() == WHITE ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         }
-        else if (pos.piece_on_board_count(BLACK) < rule.piecesAtLeastCount) {
+        else if (pos.piece_on_board_count(WHITE) < rule.piecesAtLeastCount) {
             value -= VALUE_MATE;
-        } else if (pos.piece_on_board_count(WHITE) < rule.piecesAtLeastCount) {
+        } else if (pos.piece_on_board_count(BLACK) < rule.piecesAtLeastCount) {
             value += VALUE_MATE;
         }
 
@@ -122,25 +122,25 @@ Value Evaluation::value()
         break;
     }
 
-    if (pos.side_to_move() == WHITE) {
+    if (pos.side_to_move() == BLACK) {
         value = -value;
     }
 
 #if EVAL_DRAW_WHEN_NOT_KNOWN_WIN_IF_MAY_FLY
     if (pos.get_phase() == Phase::moving && rule.mayFly && !rule.hasDiagonalLines) {
-        int piece_on_board_count_future_black = pos.piece_on_board_count(BLACK);
         int piece_on_board_count_future_white = pos.piece_on_board_count(WHITE);
-
-        if (pos.side_to_move() == BLACK) {
-            piece_on_board_count_future_white -= pos.piece_to_remove_count();
-        }
+        int piece_on_board_count_future_black = pos.piece_on_board_count(BLACK);
 
         if (pos.side_to_move() == WHITE) {
             piece_on_board_count_future_black -= pos.piece_to_remove_count();
         }
 
+        if (pos.side_to_move() == BLACK) {
+            piece_on_board_count_future_white -= pos.piece_to_remove_count();
+        }
 
-        if (piece_on_board_count_future_white == 3 || piece_on_board_count_future_black == 3) {
+
+        if (piece_on_board_count_future_black == 3 || piece_on_board_count_future_white == 3) {
             if (abs(value) < VALUE_KNOWN_WIN) {
                 value = VALUE_DRAW;
             }

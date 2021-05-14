@@ -117,9 +117,9 @@ void on_mayRemoveFromMillsAlways(const Option &o)
     rule.mayRemoveFromMillsAlways = (bool)o;
 }
 
-void on_isBlackLoseButNotDrawWhenBoardFull(const Option &o)
+void on_isWhiteLoseButNotDrawWhenBoardFull(const Option &o)
 {
-    rule.isBlackLoseButNotDrawWhenBoardFull = (bool)o;
+    rule.isWhiteLoseButNotDrawWhenBoardFull = (bool)o;
 }
 
 void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
@@ -181,7 +181,7 @@ void init(OptionsMap &o)
     o["IsDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
     o["MayRemoveFromMillsAlways"] << Option(true, on_mayRemoveFromMillsAlways);
-    o["IsBlackLoseButNotDrawWhenBoardFull"] << Option(true, on_isBlackLoseButNotDrawWhenBoardFull);
+    o["IsWhiteLoseButNotDrawWhenBoardFull"] << Option(true, on_isWhiteLoseButNotDrawWhenBoardFull);
     o["IsLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["MayFly"] << Option(false, on_mayFly);
     o["MaxStepsLedToDraw"] << Option(50, 30, 50, on_maxStepsLedToDraw);

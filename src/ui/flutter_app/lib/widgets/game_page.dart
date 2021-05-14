@@ -93,8 +93,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final winner = Game.instance.position.winner;
 
     Map<String, String> colorWinStrings = {
-      PieceColor.black: S.of(context).blackWin,
       PieceColor.white: S.of(context).whiteWin,
+      PieceColor.black: S.of(context).blackWin,
       PieceColor.draw: S.of(context).draw
     };
 
@@ -140,8 +140,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
     // TODO
     // WAR: Fix first tap response slow when piece count changed
     if (position.phase == Phase.placing &&
-        position.pieceOnBoardCount[PieceColor.black] == 0 &&
-        position.pieceOnBoardCount[PieceColor.white] == 0) {
+        position.pieceOnBoardCount[PieceColor.white] == 0 &&
+        position.pieceOnBoardCount[PieceColor.black] == 0) {
       Game.instance.newGame();
 
       if (Game.instance.isAiToMove()) {
@@ -180,9 +180,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
               if (Game.instance.engineType == EngineType.humanVsAi && mounted) {
                 changeStatus(S.of(context).tipPlaced);
               } else if (mounted) {
-                var side = Game.instance.sideToMove == PieceColor.black
-                    ? S.of(context).white
-                    : S.of(context).black;
+                var side = Game.instance.sideToMove == PieceColor.white
+                    ? S.of(context).black
+                    : S.of(context).white;
                 changeStatus(side + S.of(context).tipToMove);
               }
             }
@@ -279,9 +279,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
                   }
                 } else {
                   if (mounted) {
-                    var them = Game.instance.sideToMove == PieceColor.black
-                        ? S.of(context).white
-                        : S.of(context).black;
+                    var them = Game.instance.sideToMove == PieceColor.white
+                        ? S.of(context).black
+                        : S.of(context).white;
                     if (mounted) {
                       changeStatus(them + S.of(context).tipToMove);
                     }
@@ -381,9 +381,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
         String score =
-            Game.instance.position.score[PieceColor.black].toString() +
+            Game.instance.position.score[PieceColor.white].toString() +
                 " : " +
-                Game.instance.position.score[PieceColor.white].toString() +
+                Game.instance.position.score[PieceColor.black].toString() +
                 " : " +
                 Game.instance.position.score[PieceColor.draw].toString();
 
@@ -460,9 +460,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   String getGameOverReasonString(GameOverReason? reason, String? winner) {
     //String winnerStr =
-    //    winner == Color.black ? S.of(context).black : S.of(context).white;
+    //    winner == Color.white ? S.of(context).white : S.of(context).black;
     String loserStr =
-        winner == PieceColor.black ? S.of(context).white : S.of(context).black;
+        winner == PieceColor.white ? S.of(context).black : S.of(context).white;
 
     Map<GameOverReason, String> reasonMap = {
       GameOverReason.loseReasonlessThanThree:
@@ -496,20 +496,20 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   GameResult getGameResult(var winner) {
-    if (isAi[PieceColor.black]! && isAi[PieceColor.white]!) {
+    if (isAi[PieceColor.white]! && isAi[PieceColor.black]!) {
       return GameResult.none;
     }
 
-    if (winner == PieceColor.black) {
-      if (isAi[PieceColor.black]!) {
+    if (winner == PieceColor.white) {
+      if (isAi[PieceColor.white]!) {
         return GameResult.lose;
       } else {
         return GameResult.win;
       }
     }
 
-    if (winner == PieceColor.white) {
-      if (isAi[PieceColor.white]!) {
+    if (winner == PieceColor.black) {
+      if (isAi[PieceColor.black]!) {
         return GameResult.lose;
       } else {
         return GameResult.win;
@@ -703,10 +703,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     if (Game.instance.position.phase == Phase.gameOver) {
       switch (Game.instance.position.winner) {
-        case PieceColor.black:
+        case PieceColor.white:
           iconArrow = Icons.toggle_off_outlined;
           break;
-        case PieceColor.white:
+        case PieceColor.black:
           iconArrow = Icons.toggle_on_outlined;
           break;
         default:
@@ -715,10 +715,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
     } else {
       switch (Game.instance.sideToMove) {
-        case PieceColor.black:
+        case PieceColor.white:
           iconArrow = Icons.keyboard_arrow_left;
           break;
-        case PieceColor.white:
+        case PieceColor.black:
           iconArrow = Icons.keyboard_arrow_right;
           break;
         default:
@@ -754,11 +754,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
         "\n" +
         S.of(context).player1 +
         ": " +
-        Game.instance.position.score[PieceColor.black].toString() +
+        Game.instance.position.score[PieceColor.white].toString() +
         "\n" +
         S.of(context).player2 +
         ": " +
-        Game.instance.position.score[PieceColor.white].toString() +
+        Game.instance.position.score[PieceColor.black].toString() +
         "\n" +
         S.of(context).draw +
         ": " +
@@ -770,25 +770,25 @@ class _GamePageState extends State<GamePage> with RouteAware {
         " " +
         S.of(context).inHand +
         ": " +
-        Game.instance.position.pieceInHandCount[PieceColor.black].toString() +
+        Game.instance.position.pieceInHandCount[PieceColor.white].toString() +
         "\n" +
         S.of(context).player2 +
         " " +
         S.of(context).inHand +
         ": " +
-        Game.instance.position.pieceInHandCount[PieceColor.white].toString() +
+        Game.instance.position.pieceInHandCount[PieceColor.black].toString() +
         "\n" +
         S.of(context).player1 +
         " " +
         S.of(context).onBoard +
         ": " +
-        Game.instance.position.pieceOnBoardCount[PieceColor.black].toString() +
+        Game.instance.position.pieceOnBoardCount[PieceColor.white].toString() +
         "\n" +
         S.of(context).player2 +
         " " +
         S.of(context).onBoard +
         ": " +
-        Game.instance.position.pieceOnBoardCount[PieceColor.white].toString() +
+        Game.instance.position.pieceOnBoardCount[PieceColor.black].toString() +
         "\n";
     return ret;
   }

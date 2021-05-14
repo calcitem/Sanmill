@@ -440,7 +440,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="gamewindow.qrc">:/icon/resources/icon/Black.png</pixmap>
+              <pixmap resource="gamewindow.qrc">:/icon/resources/icon/White.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -462,7 +462,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Player1 (Black)</string>
+              <string>Player 1</string>
              </property>
             </widget>
            </item>
@@ -521,7 +521,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="gamewindow.qrc">:/icon/resources/icon/White.png</pixmap>
+              <pixmap resource="gamewindow.qrc">:/icon/resources/icon/Black.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -543,7 +543,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Player2 (White)</string>
+              <string>Player 2</string>
              </property>
             </widget>
            </item>
@@ -1070,7 +1070,7 @@
    </property>
    <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/Black.png</normaloff>:/icon/resources/icon/Black.png</iconset>
+     <normaloff>:/icon/resources/icon/White.png</normaloff>:/icon/resources/icon/White.png</iconset>
    </property>
    <property name="text">
     <string>AI Moves First</string>
@@ -1085,7 +1085,7 @@
    </property>
    <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/White.png</normaloff>:/icon/resources/icon/White.png</iconset>
+     <normaloff>:/icon/resources/icon/Black.png</normaloff>:/icon/resources/icon/Black.png</iconset>
    </property>
    <property name="text">
     <string>AI Moves Second</string>

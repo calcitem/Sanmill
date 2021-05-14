@@ -88,9 +88,9 @@ Game::Game(
 
 #ifdef QT_GUI_LIB
     // The command line of AI and controller
-    connect(aiThread[BLACK], SIGNAL(command(const string &, bool)),
-            this, SLOT(command(const string &, bool)));
     connect(aiThread[WHITE], SIGNAL(command(const string &, bool)),
+            this, SLOT(command(const string &, bool)));
+    connect(aiThread[BLACK], SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
 
     connect(this->gameTest, SIGNAL(command(const string &, bool)),
@@ -128,8 +128,8 @@ void Game::loadSettings()
 
     settings = new QSettings(SETTINGS_FILE, QSettings::IniFormat);
 
-    setEngineBlack(empty? false : settings->value("Options/BlackIsAiPlayer").toBool());
-    setEngineWhite(empty ? true : settings->value("Options/WhiteIsAiPlayer").toBool());
+    setEngineWhite(empty? false : settings->value("Options/WhiteIsAiPlayer").toBool());
+    setEngineBlack(empty ? true : settings->value("Options/BlackIsAiPlayer").toBool());
     setFixWindowSize(empty ? false : settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
@@ -217,7 +217,7 @@ void Game::gameStart()
 
 void Game::gameReset()
 {
-    while (aiThread[BLACK]->searching || aiThread[WHITE]->searching) {
+    while (aiThread[WHITE]->searching || aiThread[BLACK]->searching) {
         loggerDebug(".");
         QThread::msleep(100);
     }
@@ -244,7 +244,7 @@ void Game::gameReset()
 #endif
 
     position.reset();
-    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
+    elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
     sideToMove = position.side_to_move();
 
     // Stop threads
@@ -269,7 +269,7 @@ void Game::gameReset()
 
     for (int i = 0; i < rule.piecesCount; i++) {
         // The first piece
-        md = isInverted ? PieceItem::Models::whitePiece : PieceItem::Models::blackPiece;
+        md = isInverted ? PieceItem::Models::blackPiece : PieceItem::Models::whitePiece;
         PieceItem *newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
@@ -280,7 +280,7 @@ void Game::gameReset()
         scene.addItem(newP);
 
         // Backhand piece
-        md = isInverted ? PieceItem::Models::blackPiece : PieceItem::Models::whitePiece;
+        md = isInverted ? PieceItem::Models::whitePiece : PieceItem::Models::blackPiece;
         newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p2);
@@ -296,10 +296,10 @@ void Game::gameReset()
     // If the rule does not require timing, time1 and time2 represent the time used
     if (timeLimit <= 0) {
         // Clear the player's used time
-        remainingTime[BLACK] = remainingTime[WHITE] = 0;
+        remainingTime[WHITE] = remainingTime[BLACK] = 0;
     } else {
         // Set the player's remaining time to a limited time
-        remainingTime[BLACK] = remainingTime[WHITE] = timeLimit;
+        remainingTime[WHITE] = remainingTime[BLACK] = timeLimit;
     }
 
     // Update move history
@@ -309,7 +309,7 @@ void Game::gameReset()
     currentRow = 0;
 
     // Signal the main window to update the LCD display
-    const QTime qtime = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
+    const QTime qtime = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
     emit time1Changed(qtime.toString("hh:mm:ss"));
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
@@ -320,16 +320,16 @@ void Game::gameReset()
 
     // Update LCD display
     emit nGamesPlayedChanged(QString::number(position.gamesPlayedCount, 10));
-    emit score1Changed(QString::number(position.score[BLACK], 10));
-    emit score2Changed(QString::number(position.score[WHITE], 10));
+    emit score1Changed(QString::number(position.score[WHITE], 10));
+    emit score2Changed(QString::number(position.score[BLACK], 10));
     emit scoreDrawChanged(QString::number(position.score_draw, 10));
 
     // Update winning rate LCD display
-    position.gamesPlayedCount = position.score[BLACK] + position.score[WHITE] + position.score_draw;
+    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] + position.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
     if (position.gamesPlayedCount != 0) {
-        winningRate_1 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
-        winningRate_2 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_1 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_2 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
         winningRate_draw = position.score_draw * 10000 / position.gamesPlayedCount;
     }
     
@@ -353,13 +353,13 @@ void Game::setInvert(bool arg)
     // For all pieces
     for (PieceItem *pieceItem : pieceList) {
         if (pieceItem) {
-            // Black -> White
-            if (pieceItem->getModel() == PieceItem::Models::blackPiece)
-                pieceItem->setModel(PieceItem::Models::whitePiece);
-
             // White -> Black
-            else if (pieceItem->getModel() == PieceItem::Models::whitePiece)
+            if (pieceItem->getModel() == PieceItem::Models::whitePiece)
                 pieceItem->setModel(PieceItem::Models::blackPiece);
+
+            // Black -> White
+            else if (pieceItem->getModel() == PieceItem::Models::blackPiece)
+                pieceItem->setModel(PieceItem::Models::whitePiece);
 
             // Refresh checkerboard display
             pieceItem->update();
@@ -385,7 +385,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0*/
     }
 
     const int r = ruleNo;
-    elapsedSeconds[BLACK] = elapsedSeconds[WHITE] = 0;
+    elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
 
     char record[64] = { 0 };
     if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03zu t%02d", r + 1, rule.maxStepsLedToDraw, 0) <= 0) {
@@ -414,32 +414,32 @@ void Game::setEngine(Color color, bool enabled)
     }
 }
 
-void Game::setEngineBlack(bool enabled)
-{
-    setEngine(BLACK, enabled);
-    settings->setValue("Options/BlackIsAiPlayer", enabled);
-}
-
 void Game::setEngineWhite(bool enabled)
 {
     setEngine(WHITE, enabled);
     settings->setValue("Options/WhiteIsAiPlayer", enabled);
 }
 
+void Game::setEngineBlack(bool enabled)
+{
+    setEngine(BLACK, enabled);
+    settings->setValue("Options/BlackIsAiPlayer", enabled);
+}
+
 void Game::setAiDepthTime(int time1, int time2)
 {
     stopAndWaitAiThreads();
 
-    aiThread[BLACK]->setAi(&position,  time1);
-    aiThread[WHITE]->setAi(&position, time2);
+    aiThread[WHITE]->setAi(&position,  time1);
+    aiThread[BLACK]->setAi(&position, time2);
 
     startAiThreads();
 }
 
 void Game::getAiDepthTime(int &time1, int &time2)
 {
-    time1 = aiThread[BLACK]->getTimeLimit();
-    time2 = aiThread[WHITE]->getTimeLimit();
+    time1 = aiThread[WHITE]->getTimeLimit();
+    time2 = aiThread[BLACK]->getTimeLimit();
 }
 
 void Game::setFixWindowSize(bool arg) noexcept
@@ -470,8 +470,8 @@ void Game::setSound(bool arg) noexcept
 void Game::playSound(GameSound soundType, Color c)
 {
     string soundDir = ":/sound/resources/sound/";
-    string sideStr = c == BLACK ? "B" : "W";
-    string oppenentStr = c == WHITE? "B" : "W";
+    string sideStr = c == WHITE ? "W" : "B";
+    string oppenentStr = c == BLACK? "W" : "B";
     string filename;
 
     switch (soundType) {
@@ -763,7 +763,7 @@ void Game::updateTime()
 
     if (timePoint >= *ourSeconds) {
         *ourSeconds = timePoint;
-        startTime = currentTime - (elapsedSeconds[BLACK] + elapsedSeconds[WHITE]);
+        startTime = currentTime - (elapsedSeconds[WHITE] + elapsedSeconds[BLACK]);
     } else {
         *ourSeconds = currentTime - startTime - theirSeconds;
     }
@@ -776,18 +776,18 @@ void Game::timerEvent(QTimerEvent *event)
 
     // Player's time spent
     updateTime();
-    remainingTime[BLACK] = get_elapsed_time(BLACK);
     remainingTime[WHITE] = get_elapsed_time(WHITE);
+    remainingTime[BLACK] = get_elapsed_time(BLACK);
 
     // If the rule requires a timer, time1 and time2 indicate a countdown
     if (timeLimit > 0) {
         // Player's remaining time
-        remainingTime[BLACK] = timeLimit - remainingTime[BLACK];
         remainingTime[WHITE] = timeLimit - remainingTime[WHITE];
+        remainingTime[BLACK] = timeLimit - remainingTime[BLACK];
     }
 
-    qt1 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
-    qt2 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
+    qt1 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
+    qt2 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
 
     emit time1Changed(qt1.toString("hh:mm:ss"));
     emit time2Changed(qt2.toString("hh:mm:ss"));
@@ -852,8 +852,8 @@ bool Game::actionPiece(QPointF p)
 
     // When the computer is playing chess or searching, the click is invalid
     if (isAIsTurn() ||
-        aiThread[BLACK]->searching ||
-        aiThread[WHITE]->searching) {
+        aiThread[WHITE]->searching ||
+        aiThread[BLACK]->searching) {
         return false;
     }
 
@@ -1005,11 +1005,11 @@ bool Game::actionPiece(QPointF p)
                 gameReset();
                 gameStart();
 
-                if (isAiPlayer[BLACK]) {
-                    setEngine(BLACK, true);
-                }
                 if (isAiPlayer[WHITE]) {
                     setEngine(WHITE, true);
+                }
+                if (isAiPlayer[BLACK]) {
+                    setEngine(BLACK, true);
                 }
             } else {
                 pauseThreads();
@@ -1060,10 +1060,10 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
 #ifdef QT_GUI_LIB
     // Prevents receiving instructions sent by threads that end late
-    if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK])
+    if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE])
         return false;
 
-    if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE])
+    if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK])
         return false;
 #endif // QT_GUI_LIB
 
@@ -1170,15 +1170,15 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
 #ifdef TIME_STAT
             loggerDebug("Sort Time: %I64d + %I64d = %I64dms\n",
-                        aiThread[BLACK]->sortTime, aiThread[WHITE]->sortTime,
-                        (aiThread[BLACK]->sortTime + aiThread[WHITE]->sortTime));
-            aiThread[BLACK]->sortTime = aiThread[WHITE]->sortTime = 0;
+                        aiThread[WHITE]->sortTime, aiThread[BLACK]->sortTime,
+                        (aiThread[WHITE]->sortTime + aiThread[BLACK]->sortTime));
+            aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
 #endif // TIME_STAT
 #ifdef CYCLE_STAT
             loggerDebug("Sort Cycle: %ld + %ld = %ld\n",
-                        aiThread[BLACK]->sortCycle, aiThread[WHITE]->sortCycle,
-                        (aiThread[BLACK]->sortCycle + aiThread[WHITE]->sortCycle));
-            aiThread[BLACK]->sortCycle = aiThread[WHITE]->sortCycle = 0;
+                        aiThread[WHITE]->sortCycle, aiThread[BLACK]->sortCycle,
+                        (aiThread[WHITE]->sortCycle + aiThread[BLACK]->sortCycle));
+            aiThread[WHITE]->sortCycle = aiThread[BLACK]->sortCycle = 0;
 #endif // CYCLE_STAT
 
 #if 0
@@ -1189,26 +1189,26 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif
 
 #ifdef TRANSPOSITION_TABLE_DEBUG                
-            size_t hashProbeCount_1 = aiThread[BLACK]->ttHitCount + aiThread[BLACK]->ttMissCount;
-            size_t hashProbeCount_2 = aiThread[WHITE]->ttHitCount + aiThread[WHITE]->ttMissCount;
+            size_t hashProbeCount_1 = aiThread[WHITE]->ttHitCount + aiThread[WHITE]->ttMissCount;
+            size_t hashProbeCount_2 = aiThread[BLACK]->ttHitCount + aiThread[BLACK]->ttMissCount;
                 
             loggerDebug("[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1,
-                        aiThread[BLACK]->ttHitCount,
-                        aiThread[BLACK]->ttMissCount,
-                        aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_1);
+                        aiThread[WHITE]->ttHitCount,
+                        aiThread[WHITE]->ttMissCount,
+                        aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_1);
 
             loggerDebug("[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_2,
-                        aiThread[WHITE]->ttHitCount,
-                        aiThread[WHITE]->ttMissCount,
-                        aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_2);
+                        aiThread[BLACK]->ttHitCount,
+                        aiThread[BLACK]->ttMissCount,
+                        aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_2);
 
             loggerDebug("[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
                         hashProbeCount_1 + hashProbeCount_2,
-                        aiThread[BLACK]->ttHitCount + aiThread[WHITE]->ttHitCount,
-                        aiThread[BLACK]->ttMissCount + aiThread[WHITE]->ttMissCount,
-                        (aiThread[BLACK]->ttHitCount + aiThread[WHITE]->ttHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
+                        aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount,
+                        aiThread[WHITE]->ttMissCount + aiThread[BLACK]->ttMissCount,
+                        (aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount ) * 100 / (hashProbeCount_1 + hashProbeCount_2));
 #endif // TRANSPOSITION_TABLE_DEBUG
 
             if (gameOptions.getAutoRestart()) {
@@ -1217,11 +1217,11 @@ bool Game::command(const string &cmd, bool update /* = true */)
                 gameReset();
                 gameStart();
 
-                if (isAiPlayer[BLACK]) {
-                    setEngine(BLACK, true);
-                }
                 if (isAiPlayer[WHITE]) {
                     setEngine(WHITE, true);
+                }
+                if (isAiPlayer[BLACK]) {
+                    setEngine(BLACK, true);
                 }
             }
 
@@ -1248,19 +1248,19 @@ bool Game::command(const string &cmd, bool update /* = true */)
     }
 #endif // ANALYZE_POSITION
 
-    total = position.score[BLACK] + position.score[WHITE] + position.score_draw;  
+    total = position.score[WHITE] + position.score[BLACK] + position.score_draw;  
 
     if (total == 0) {
         bwinrate = 0;
         wwinrate = 0;
         drawrate = 0;
     } else {
-        bwinrate = (float)position.score[BLACK] * 100 / total;
-        wwinrate = (float)position.score[WHITE] * 100 / total;
+        bwinrate = (float)position.score[WHITE] * 100 / total;
+        wwinrate = (float)position.score[BLACK] * 100 / total;
         drawrate = (float)position.score_draw * 100 / total;
     }
 
-    cout << "Score: " << position.score[BLACK] << " : " << position.score[WHITE] << " : " << position.score_draw << "\ttotal: " << total << endl;
+    cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << endl;
     cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
 
     return true;
@@ -1323,7 +1323,7 @@ bool Game::updateScence(Position &p)
         piece->setSelected(false);
 
         // Convert the subscript of pieceList to the chess code of game
-        key = (i % 2) ? (i / 2 + W_STONE_1) : (i / 2 + B_STONE_1);
+        key = (i % 2) ? (i / 2 + B_STONE_1) : (i / 2 + W_STONE_1);
 
         int j;
 
@@ -1354,11 +1354,11 @@ bool Game::updateScence(Position &p)
         // If not, place the pieces outside the chessboard
         if (j == (RANK_NB) * (FILE_NB + 1)) {
             // Judge whether it is a removing seed or an unplaced one
-            if (key & B_STONE) {
-                pos = (key - 0x11 < nTotalPieces / 2 - p.count<IN_HAND>(BLACK)) ?
+            if (key & W_STONE) {
+                pos = (key - 0x11 < nTotalPieces / 2 - p.count<IN_HAND>(WHITE)) ?
                         scene.pos_p2_g : scene.pos_p1;
             } else {
-                pos = (key - 0x21 < nTotalPieces / 2 - p.count<IN_HAND>(WHITE)) ?
+                pos = (key - 0x21 < nTotalPieces / 2 - p.count<IN_HAND>(BLACK)) ?
                         scene.pos_p1_g : scene.pos_p2;
             }
 
@@ -1415,7 +1415,7 @@ bool Game::updateScence(Position &p)
     int ipos = p.current_square();
     if (ipos) {
         key = board[p.current_square()];
-        ipos = (key & B_STONE) ? (key - B_STONE_1) * 2 : (key - W_STONE_1) * 2 + 1;
+        ipos = (key & W_STONE) ? (key - W_STONE_1) * 2 : (key - B_STONE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);
@@ -1430,16 +1430,16 @@ bool Game::updateScence(Position &p)
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     // Update LCD display
-    emit score1Changed(QString::number(p.score[BLACK], 10));
-    emit score2Changed(QString::number(p.score[WHITE], 10));
+    emit score1Changed(QString::number(p.score[WHITE], 10));
+    emit score2Changed(QString::number(p.score[BLACK], 10));
     emit scoreDrawChanged(QString::number(p.score_draw, 10));
 
     // Update winning rate LCD display
-    position.gamesPlayedCount = position.score[BLACK] + position.score[WHITE] + position.score_draw;
+    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] + position.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
     if (position.gamesPlayedCount != 0) {
-        winningRate_1 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
-        winningRate_2 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_1 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_2 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
         winningRate_draw = position.score_draw * 10000 / position.gamesPlayedCount;
     }
 
@@ -1501,29 +1501,29 @@ void Game::saveScore()
 
     textStream << gameTest->getKey() << endl << endl;
 
-    if (isAiPlayer[BLACK]) {
-        textStream << "Black:\tAI Player" << endl;
-    } else {
-        textStream << "Black:\tHuman Player" << endl;
-    }
-
     if (isAiPlayer[WHITE]) {
         textStream << "White:\tAI Player" << endl;
     } else {
         textStream << "White:\tHuman Player" << endl;
     }
 
+    if (isAiPlayer[BLACK]) {
+        textStream << "Black:\tAI Player" << endl;
+    } else {
+        textStream << "Black:\tHuman Player" << endl;
+    }
+
     textStream << "" << endl;
 
-    position.gamesPlayedCount = position.score[BLACK] + position.score[WHITE] + position.score_draw;
+    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] + position.score_draw;
 
     if (position.gamesPlayedCount == 0) {
         goto out;
     }
 
     textStream << "Sum\t" + QString::number(position.gamesPlayedCount) << endl;
-    textStream << "Black\t" + QString::number(position.score[BLACK])  + "\t" + QString::number(position.score[BLACK] * 10000 / position.gamesPlayedCount) << endl;
-    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" + QString::number(position.score[WHITE] * 10000 / position.gamesPlayedCount) << endl;
+    textStream << "White\t" + QString::number(position.score[WHITE])  + "\t" + QString::number(position.score[WHITE] * 10000 / position.gamesPlayedCount) << endl;
+    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" + QString::number(position.score[BLACK] * 10000 / position.gamesPlayedCount) << endl;
     textStream << "Draw\t" + QString::number(position.score_draw) + "\t" + QString::number(position.score_draw * 10000 / position.gamesPlayedCount)  << endl;
 
 out:
@@ -1539,9 +1539,9 @@ inline char Game::color_to_char(Color color)
 inline std::string Game::char_to_string(char ch)
 {
     if (ch == '1') {
-        return "黑方";
-    } else {
         return "白方";
+    } else {
+        return "黑方";
     }
 }
 
@@ -1602,8 +1602,8 @@ void Game::setTips()
 
     switch (p.phase) {
     case Phase::ready:
-        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceInHandCount[BLACK]) + "子" +
-            "  比分 " + to_string(p.score[BLACK]) + ":" + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);
+        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceInHandCount[WHITE]) + "子" +
+            "  比分 " + to_string(p.score[WHITE]) + ":" + to_string(p.score[BLACK]) + ", 和棋 " + to_string(p.score_draw);
         break;
 
     case Phase::placing:
@@ -1625,11 +1625,11 @@ void Game::setTips()
     case Phase::gameOver:
         appendGameOverReasonToMoveHistory();
 
-        scoreStr = "比分 " + to_string(p.score[BLACK]) + " : " + to_string(p.score[WHITE]) + ", 和棋 " + to_string(p.score_draw);        
+        scoreStr = "比分 " + to_string(p.score[WHITE]) + " : " + to_string(p.score[BLACK]) + ", 和棋 " + to_string(p.score_draw);        
 
         switch (p.winner) {
-        case BLACK:
         case WHITE:
+        case BLACK:
             winnerStr = char_to_string(color_to_char(p.winner));
             resultStr = winnerStr + "获胜！";
             break;

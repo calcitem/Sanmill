@@ -37,8 +37,8 @@ namespace
 {
 
 // FEN string of the initial position, normal mill game
-const char *StartFEN12 = "********/********/******** b p p 0 12 0 12 0 0 1";
-const char *StartFEN9 = "********/********/******** b p p 0 9 0 9 0 0 1";
+const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 1";
+const char *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 1";
 char StartFEN[BUFSIZ];
 
 // position() is called when engine receives the "position" UCI command.
@@ -130,7 +130,7 @@ void go(Position *pos)
             }
 
             pos->set(StartFEN, Threads.main());
-            Threads.main()->us = BLACK; // WAR
+            Threads.main()->us = WHITE; // WAR
             break;
         }
 #else

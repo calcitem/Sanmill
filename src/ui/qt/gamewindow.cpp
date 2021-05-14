@@ -191,10 +191,10 @@ void MillGameWindow::initialize()
 #endif
 
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)),
-            game, SLOT(setEngineBlack(bool)));
+            game, SLOT(setEngineWhite(bool)));
 
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)),
-            game, SLOT(setEngineWhite(bool)));
+            game, SLOT(setEngineBlack(bool)));
 
     connect(ui.actionFixWindowSize, SIGNAL(toggled(bool)),
             game, SLOT(setFixWindowSize(bool)));
@@ -382,8 +382,8 @@ void MillGameWindow::initialize()
     connect(ui.pushButton_option, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ctxMenu(const QPoint &)));
 #endif /* MOBILE_APP_UI */
 
-    ui.actionEngine1_T->setChecked(game->isAiPlayer[BLACK]);
-    ui.actionEngine2_R->setChecked(game->isAiPlayer[WHITE]);    
+    ui.actionEngine1_T->setChecked(game->isAiPlayer[WHITE]);
+    ui.actionEngine2_R->setChecked(game->isAiPlayer[BLACK]);    
 
     ui.actionFixWindowSize->setChecked(game->fixWindowSizeEnabled());
     ui.actionSound_S->setChecked(game->soundEnabled());
@@ -588,11 +588,11 @@ void MillGameWindow::on_actionNew_N_triggered()
     QString whoWin;
 
     switch (game->getPosition()->get_winner()) {
-    case BLACK:
-        whoWin = "Black-Win";
-        break;
     case WHITE:
         whoWin = "White-Win";
+        break;
+    case BLACK:
+        whoWin = "Black-Win";
         break;
     case DRAW:
         whoWin = "Draw";
@@ -712,17 +712,17 @@ void MillGameWindow::on_actionEdit_E_toggled(bool arg1)
 
 void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
 {
-    // If black and white are reversed
+    // If white and black are reversed
     if (arg1) {
-        ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/White.png"));
-        ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
-        ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
-        ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
-    } else {
         ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
         ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/White.png"));
         ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
         ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
+    } else {
+        ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/White.png"));
+        ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
+        ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
+        ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
     }
 
     // Let the controller change the color of the pieces
@@ -988,8 +988,8 @@ void MillGameWindow::on_actionAbout_A_triggered()
     auto *label_image = new QLabel(dialog);
 
 #if 0
-    label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
-    label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
+    label_icon1->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
+    label_icon2->setPixmap(QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
     label_icon1->setAlignment(Qt::AlignCenter);
     label_icon2->setAlignment(Qt::AlignCenter);
     label_icon1->setFixedSize(32, 32);

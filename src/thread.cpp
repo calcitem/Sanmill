@@ -283,8 +283,8 @@ void Thread::analyze(Color c)
     const bool lose = v <= -VALUE_MATE;
     const int np = v / VALUE_EACH_PIECE;
 
-    string strUs = (c == BLACK ? "Black" : "White");
-    string strThem = (c == BLACK ? "White" : "Black");
+    string strUs = (c == WHITE ? "White" : "Black");
+    string strThem = (c == WHITE ? "Black" : "White");
 
     loggerDebug("Depth: %d\n\n", originDepth);
 
@@ -304,11 +304,11 @@ void Thread::analyze(Color c)
         if (p->get_winner() == DRAW) {
             cout << "Draw" << endl;
             ndraw += 0.5;   // TODO
-        } else if (p->get_winner() == BLACK) {
-            cout << "Black wins" << endl;
-            nbwin += 0.5;  // TODO
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << endl;
+            nbwin += 0.5;  // TODO
+        } else if (p->get_winner() == BLACK) {
+            cout << "Black wins" << endl;
             nwwin += 0.5;    // TODO
         }
         goto out;
@@ -379,10 +379,10 @@ void Thread::analyze(Color c)
         cout << strThem << " after " << d << " moves will lead " << -np << " pieces" << endl;
     }
 
-    if (p->side_to_move() == BLACK) {
-        cout << "Black to move" << endl;
-    } else {
+    if (p->side_to_move() == WHITE) {
         cout << "White to move" << endl;
+    } else {
+        cout << "Black to move" << endl;
     }
 
 #ifndef QT_GUI_LIB
@@ -427,8 +427,8 @@ string Thread::next_move()
     if (gameOptions.isEndgameLearningEnabled()) {
         if (bestvalue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
-            endgame.type = rootPos->side_to_move() == BLACK ?
-                EndGameType::whiteWin : EndGameType::blackWin;
+            endgame.type = rootPos->side_to_move() == WHITE ?
+                EndGameType::blackWin : EndGameType::whiteWin;
             Key endgameHash = rootPos->key(); // TODO: Do not generate hash repeatedly
             saveEndgameHash(endgameHash, endgame);
         }

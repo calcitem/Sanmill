@@ -123,7 +123,7 @@ int Thread::search()
 
 #if 0
     // TODO: Only NMM
-    if (rootPos->piece_on_board_count(BLACK) + rootPos->piece_on_board_count(WHITE) <= 1 &&
+    if (rootPos->piece_on_board_count(WHITE) + rootPos->piece_on_board_count(BLACK) <= 1 &&
         !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
         std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
@@ -255,11 +255,11 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
         posKey &&
         Thread::probeEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
-        case EndGameType::blackWin:
+        case EndGameType::whiteWin:
             bestValue = VALUE_MATE;
             bestValue += depth;
             break;
-        case EndGameType::whiteWin:
+        case EndGameType::blackWin:
             bestValue = -VALUE_MATE;
             bestValue -= depth;
             break;

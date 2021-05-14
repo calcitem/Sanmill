@@ -45,12 +45,12 @@ const string  PieceToChar(Piece p)
         return "X";
     }
 
-    if (B_STONE <= p && p <= B_STONE_12) {
-        return "@";
-    }
-
     if (W_STONE <= p && p <= W_STONE_12) {
         return "O";
+    }
+
+    if (B_STONE <= p && p <= B_STONE_12) {
+        return "@";
     }
 
     return "*";
@@ -62,12 +62,12 @@ Piece CharToPiece(char ch) noexcept
         return NO_PIECE;
     }
 
-    if (ch == '@') {
-        return B_STONE;
-    }
-
     if (ch == 'O') {
         return W_STONE;
+    }
+
+    if (ch == '@') {
+        return B_STONE;
     }
 
     if (ch == 'X') {
@@ -77,7 +77,7 @@ Piece CharToPiece(char ch) noexcept
     return NO_PIECE;
 }
 
-constexpr PieceType PieceTypes[] = { NO_PIECE_TYPE, BLACK_STONE, WHITE_STONE, BAN };
+constexpr PieceType PieceTypes[] = { NO_PIECE_TYPE, WHITE_STONE, BLACK_STONE, BAN };
 } // namespace
 
 
@@ -173,7 +173,7 @@ Position::Position()
 
     reset();
 
-    score[BLACK] = score[WHITE] = score_draw = gamesPlayedCount = 0;
+    score[WHITE] = score[BLACK] = score_draw = gamesPlayedCount = 0;
 }
 
 
@@ -203,14 +203,14 @@ Position &Position::set(const string &fenStr, Thread *th)
 
        4) Action.
 
-       5) Black on board/Black in hand/White on board/White in hand/need to remove
+       5) White on board/White in hand/Black on board/Black in hand/need to remove
 
        6) Halfmove clock. This is the number of halfmoves since the last
           capture. This is used to determine if a draw can be claimed under the
           fifty-move rule.
 
        7) Fullmove number. The number of the full move. It starts at 1, and is
-          incremented after Black's move.
+          incremented after White's move.
     */
 
     unsigned char token = '\0';
@@ -223,7 +223,7 @@ Position &Position::set(const string &fenStr, Thread *th)
 
     // 1. Piece placement
     while ((ss >> token) && !isspace(token)) {
-        if (token == '@' || token == 'O' || token == 'X') {
+        if (token == 'O' || token == '@' || token == 'X') {
             put_piece(CharToPiece(token), sq);
             ++sq;
         }
@@ -234,7 +234,7 @@ Position &Position::set(const string &fenStr, Thread *th)
 
     // 2. Active color
     ss >> token;
-    sideToMove = (token == 'b' ? BLACK : WHITE);
+    sideToMove = (token == 'w' ? WHITE : BLACK);
     them = ~sideToMove;    // Note: Stockfish do not need to set them
 
     // 3. Phrase
@@ -276,10 +276,10 @@ Position &Position::set(const string &fenStr, Thread *th)
         action = Action::none;
     }
 
-    // 5. Black on board / Black in hand / White on board / White in hand / need to remove
+    // 5. White on board / White in hand / Black on board / Black in hand / need to remove
     ss >> std::skipws
-        >> pieceOnBoardCount[BLACK] >> pieceInHandCount[BLACK]
         >> pieceOnBoardCount[WHITE] >> pieceInHandCount[WHITE]
+        >> pieceOnBoardCount[BLACK] >> pieceInHandCount[BLACK]
         >> pieceToRemoveCount;
 
 
@@ -288,7 +288,7 @@ Position &Position::set(const string &fenStr, Thread *th)
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
     // handle also common incorrect FEN with fullmove = 0.
-    gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == WHITE);
+    gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == BLACK);
 
     thisThread = th;
 
@@ -363,11 +363,11 @@ const string Position::fen() const
 
     ss << " ";
 
-    ss << pieceOnBoardCount[BLACK] << " " << pieceInHandCount[BLACK] << " "
-        << pieceOnBoardCount[WHITE] << " " << pieceInHandCount[WHITE] << " "
+    ss << pieceOnBoardCount[WHITE] << " " << pieceInHandCount[WHITE] << " "
+        << pieceOnBoardCount[BLACK] << " " << pieceInHandCount[BLACK] << " "
         << pieceToRemoveCount << " ";
 
-    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == WHITE)) / 2;
+    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
     return ss.str();
 }
@@ -545,7 +545,7 @@ bool Position::reset()
     st.rule50 = 0;
 
     phase = Phase::ready;
-    set_side_to_move(BLACK);
+    set_side_to_move(WHITE);
     action = Action::place;
 
     winner = NOBODY;
@@ -557,8 +557,8 @@ bool Position::reset()
 
     st.key = 0;
 
-    pieceOnBoardCount[BLACK] = pieceOnBoardCount[WHITE] = 0;
-    pieceInHandCount[BLACK] = pieceInHandCount[WHITE] = rule.piecesCount;
+    pieceOnBoardCount[WHITE] = pieceOnBoardCount[BLACK] = 0;
+    pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.piecesCount;
     pieceToRemoveCount = 0;
 
     MoveList<LEGAL>::create();
@@ -640,8 +640,8 @@ bool Position::put_piece(Square s, bool updateRecord)
         currentSquare = s;
 
 #ifdef MUEHLE_NMM
-        if (pieceInHandCount[BLACK] == 0 &&
-            pieceInHandCount[WHITE] == 0 &&
+        if (pieceInHandCount[WHITE] == 0 &&
+            pieceInHandCount[BLACK] == 0 &&
             is_all_surrounded(~sideToMove, SQ_0, s)) {
             set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
             //change_side_to_move();
@@ -656,9 +656,9 @@ bool Position::put_piece(Square s, bool updateRecord)
             || is_all_in_mills(them)
 #endif
             ) {
-            assert(pieceInHandCount[BLACK] >= 0 && pieceInHandCount[WHITE] >= 0);
+            assert(pieceInHandCount[WHITE] >= 0 && pieceInHandCount[BLACK] >= 0);
 
-            if (pieceInHandCount[BLACK] == 0 && pieceInHandCount[WHITE] == 0) {
+            if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
                 if (check_if_game_is_over()) {
                     return true;
                 }
@@ -825,7 +825,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     }
 
     if (phase == Phase::placing) {
-        if (pieceInHandCount[BLACK] == 0 && pieceInHandCount[WHITE] == 0) {
+        if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
             phase = Phase::moving;
             action = Action::select;
 
@@ -979,9 +979,9 @@ bool Position::check_if_game_is_over()
     }
 #endif // RULE_50
 
-    if (pieceOnBoardCount[BLACK] + pieceOnBoardCount[WHITE] >= EFFECTIVE_SQUARE_NB) {
-        if (rule.isBlackLoseButNotDrawWhenBoardFull) {
-            set_gameover(WHITE, GameOverReason::loseReasonBoardIsFull);
+    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= EFFECTIVE_SQUARE_NB) {
+        if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
+            set_gameover(BLACK, GameOverReason::loseReasonBoardIsFull);
         } else {
             set_gameover(DRAW, GameOverReason::drawReasonBoardIsFull);
         }
@@ -1005,8 +1005,8 @@ bool Position::check_if_game_is_over()
 int Position::get_mobility_diff()
 {
     // TODO: Deal with rule is no ban location
-    int mobilityBlack = 0;
     int mobilityWhite = 0;
+    int mobilityBlack = 0;
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
         if (board[s] == NO_PIECE || board[s] == BAN_STONE) {
@@ -1014,18 +1014,18 @@ int Position::get_mobility_diff()
             for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
                 moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
                 if (moveSquare) {
-                    if (board[moveSquare] & B_STONE) {
-                        mobilityBlack++;
-                    }
                     if (board[moveSquare] & W_STONE) {
                         mobilityWhite++;
+                    }
+                    if (board[moveSquare] & B_STONE) {
+                        mobilityBlack++;
                     }
                 }
             }
         }
     }
 
-    return mobilityBlack - mobilityWhite;
+    return mobilityWhite - mobilityBlack;
 }
 
 void Position::remove_ban_stones()
@@ -1106,39 +1106,39 @@ Color Position::color_on(Square s) const
 bool Position::bitboard_is_ok()
 {
 #ifdef BITBOARD_DEBUG
-    Bitboard blackBB = byColorBB[BLACK];
     Bitboard whiteBB = byColorBB[WHITE];
+    Bitboard blackBB = byColorBB[BLACK];
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
 
         if (empty(s))
         {
+            if (whiteBB & (1 << s)) {
+                return false;
+            }
+
             if (blackBB & (1 << s)) {
                 return false;
             }
-
-            if (whiteBB & (1 << s)) {
-                return false;
-            }
         }
 
-        if (color_of(board[s]) == BLACK)
+        if (color_of(board[s]) == WHITE)
         {
-            if ((blackBB & (1 << s)) == 0) {
-                return false;
-            }
-
-            if (whiteBB & (1 << s)) {
-                return false;
-            }
-        }
-
-        if (color_of(board[s]) == WHITE) {
             if ((whiteBB & (1 << s)) == 0) {
                 return false;
             }
 
             if (blackBB & (1 << s)) {
+                return false;
+            }
+        }
+
+        if (color_of(board[s]) == BLACK) {
+            if ((blackBB & (1 << s)) == 0) {
+                return false;
+            }
+
+            if (whiteBB & (1 << s)) {
                 return false;
             }
         }
@@ -1255,7 +1255,7 @@ bool Position::is_all_surrounded(Color c
                                 ) const
 {
     // Full
-    if (pieceOnBoardCount[BLACK] + pieceOnBoardCount[WHITE] >= EFFECTIVE_SQUARE_NB)
+    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= EFFECTIVE_SQUARE_NB)
         return true;
 
     // Can fly

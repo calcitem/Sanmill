@@ -52,7 +52,7 @@ class GameRecorder {
 
     if (fullMove == 0) {
       if (halfMove != null) halfMove = halfMove! + 1;
-    } else if (position.side != PieceColor.black) {
+    } else if (position.side != PieceColor.white) {
       if (halfMove != null) halfMove = halfMove! + 1;
     }
 

@@ -131,8 +131,8 @@ enum MoveType
 enum Color : uint8_t
 {
     NOCOLOR = 0,
-    BLACK = 1,
-    WHITE = 2,
+    WHITE = 1,
+    BLACK = 2,
     COLOR_NB = 3,
     DRAW = 4,
     NOBODY = 8
@@ -252,8 +252,8 @@ enum Rating : int8_t
 enum PieceType : uint16_t
 {
     NO_PIECE_TYPE = 0,
-    BLACK_STONE = 1,
-    WHITE_STONE = 2,
+    WHITE_STONE = 1,
+    BLACK_STONE = 2,
     BAN = 3,
     ALL_PIECES = 0,
     PIECE_TYPE_NB = 4,
@@ -267,33 +267,33 @@ enum Piece : uint8_t
     NO_PIECE = 0x00,
     BAN_STONE = 0x0F,
 
-    B_STONE = 0x10,
-    B_STONE_1 = 0x11,
-    B_STONE_2 = 0x12,
-    B_STONE_3 = 0x13,
-    B_STONE_4 = 0x14,
-    B_STONE_5 = 0x15,
-    B_STONE_6 = 0x16,
-    B_STONE_7 = 0x17,
-    B_STONE_8 = 0x18,
-    B_STONE_9 = 0x19,
-    B_STONE_10 = 0x1A,
-    B_STONE_11 = 0x1B,
-    B_STONE_12 = 0x1C,
+    W_STONE = 0x10,
+    W_STONE_1 = 0x11,
+    W_STONE_2 = 0x12,
+    W_STONE_3 = 0x13,
+    W_STONE_4 = 0x14,
+    W_STONE_5 = 0x15,
+    W_STONE_6 = 0x16,
+    W_STONE_7 = 0x17,
+    W_STONE_8 = 0x18,
+    W_STONE_9 = 0x19,
+    W_STONE_10 = 0x1A,
+    W_STONE_11 = 0x1B,
+    W_STONE_12 = 0x1C,
 
-    W_STONE = 0x20,
-    W_STONE_1 = 0x21,
-    W_STONE_2 = 0x22,
-    W_STONE_3 = 0x23,
-    W_STONE_4 = 0x24,
-    W_STONE_5 = 0x25,
-    W_STONE_6 = 0x26,
-    W_STONE_7 = 0x27,
-    W_STONE_8 = 0x28,
-    W_STONE_9 = 0x29,
-    W_STONE_10 = 0x2A,
-    W_STONE_11 = 0x2B,
-    W_STONE_12 = 0x2C,
+    B_STONE = 0x20,
+    B_STONE_1 = 0x21,
+    B_STONE_2 = 0x22,
+    B_STONE_3 = 0x23,
+    B_STONE_4 = 0x24,
+    B_STONE_5 = 0x25,
+    B_STONE_6 = 0x26,
+    B_STONE_7 = 0x27,
+    B_STONE_8 = 0x28,
+    B_STONE_9 = 0x29,
+    B_STONE_10 = 0x2A,
+    B_STONE_11 = 0x2B,
+    B_STONE_12 = 0x2C,
 
     PIECE_NB = 64,  // Fix overflow
 };
@@ -410,7 +410,7 @@ constexpr Piece make_piece(Color c)
 
 constexpr Piece make_piece(Color c, PieceType pt)
 {
-    if (pt == BLACK_STONE || pt == WHITE_STONE) {
+    if (pt == WHITE_STONE || pt == BLACK_STONE) {
         return make_piece(c);
     }
 
@@ -432,12 +432,12 @@ constexpr PieceType type_of(Piece pc)
         return BAN;
     }
 
-    if (color_of(pc) == BLACK) {
-        return BLACK_STONE;
-    }
-
     if (color_of(pc) == WHITE) {
         return WHITE_STONE;
+    }
+
+    if (color_of(pc) == BLACK) {
+        return BLACK_STONE;
     }
 
     return NO_PIECE_TYPE;

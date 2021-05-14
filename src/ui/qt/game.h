@@ -213,13 +213,13 @@ public slots:
     // Set edit chess state
     void setEditing(bool arg = true) noexcept;
 
-    // Set black and white inversion state
+    // Set white and black inversion state
     void setInvert(bool arg = true);
 
     // If Id is 1, let the computer take the lead; if Id is 2, let the computer take the second place
     void setEngine(Color color, bool enabled = true);
-    void setEngineBlack(bool enabled);
     void setEngineWhite(bool enabled);
+    void setEngineBlack(bool enabled);
     
     // Fix Window Size 
     void setFixWindowSize(bool arg) noexcept;
@@ -288,58 +288,58 @@ public slots:
 
     void threadsSetAi(Position *p)
     {
-        aiThread[BLACK]->setAi(p);
         aiThread[WHITE]->setAi(p);
+        aiThread[BLACK]->setAi(p);
     }
 
     void resetAiPlayers()
     {
-        isAiPlayer[BLACK] = false;
         isAiPlayer[WHITE] = false;
+        isAiPlayer[BLACK] = false;
     }
 
     void createAiThreads()
     {
-        aiThread[BLACK] = new Thread(0);
-        aiThread[BLACK]->us = BLACK;
-
         aiThread[WHITE] = new Thread(0);
         aiThread[WHITE]->us = WHITE;
+
+        aiThread[BLACK] = new Thread(0);
+        aiThread[BLACK]->us = BLACK;
     }
 
     void startAiThreads()
     {
-        if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->start_searching();
-        }
-
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->start_searching();
+        }
+
+        if (isAiPlayer[BLACK]) {
+            aiThread[BLACK]->start_searching();
         }
     }
 
     void stopAndWaitAiThreads()
     {
-        if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->pause();
-            aiThread[BLACK]->wait_for_search_finished();
-        }
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->pause();
             aiThread[WHITE]->wait_for_search_finished();
+        }
+        if (isAiPlayer[BLACK]) {
+            aiThread[BLACK]->pause();
+            aiThread[BLACK]->wait_for_search_finished();
         }
     }
 
     void pauseThreads()
     {
-        aiThread[BLACK]->pause();
         aiThread[WHITE]->pause();
+        aiThread[BLACK]->pause();
     }
 
     void waitThreads()
     {
-        aiThread[BLACK]->wait_for_search_finished();
         aiThread[WHITE]->wait_for_search_finished();
+        aiThread[BLACK]->wait_for_search_finished();
     }
 
     void pauseAndWaitThreads()
@@ -357,8 +357,8 @@ public slots:
 
     void deleteAiThreads()
     {
-        delete aiThread[BLACK];
         delete aiThread[WHITE];
+        delete aiThread[BLACK];
     }
 
     // According to the signal and state of qgraphics scene, select, drop or delete the sub objects
@@ -427,7 +427,7 @@ private:
     // Is it in "Edit chess game" state
     bool isEditing;
 
-    // Reverse black and white
+    // Reverse white and black
     bool isInverted;
 
 public:

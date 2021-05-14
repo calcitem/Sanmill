@@ -23,7 +23,7 @@ import 'position.dart';
 import 'types.dart';
 
 enum PlayerType { human, AI }
-Map<String, bool> isAi = {PieceColor.black: false, PieceColor.white: true};
+Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
 
 class Game {
   static Game? _instance;
@@ -50,10 +50,10 @@ class Game {
     position.init();
     _focusIndex = _blurIndex = invalidIndex;
     moveHistory = [""];
-    sideToMove = PieceColor.black;
+    sideToMove = PieceColor.white;
   }
 
-  String sideToMove = PieceColor.black;
+  String sideToMove = PieceColor.white;
 
   bool? isAiToMove() {
     return isAi[sideToMove];
@@ -74,13 +74,13 @@ class Game {
   set blurIndex(index) => _blurIndex = index;
 
   Map<String, bool> isSearching = {
-    PieceColor.black: false,
-    PieceColor.white: false
+    PieceColor.white: false,
+    PieceColor.black: false
   };
 
   bool aiIsSearching() {
-    return isSearching[PieceColor.black] == true ||
-        isSearching[PieceColor.white] == true;
+    return isSearching[PieceColor.white] == true ||
+        isSearching[PieceColor.black] == true;
   }
 
   EngineType engineType = EngineType.none;
@@ -91,16 +91,16 @@ class Game {
     switch (type) {
       case EngineType.humanVsAi:
       case EngineType.testViaLAN:
-        isAi[PieceColor.black] = Config.aiMovesFirst;
-        isAi[PieceColor.white] = !Config.aiMovesFirst;
+        isAi[PieceColor.white] = Config.aiMovesFirst;
+        isAi[PieceColor.black] = !Config.aiMovesFirst;
         break;
       case EngineType.humanVsHuman:
       case EngineType.humanVsLAN:
       case EngineType.humanVsCloud:
-        isAi[PieceColor.black] = isAi[PieceColor.white] = false;
+        isAi[PieceColor.white] = isAi[PieceColor.black] = false;
         break;
       case EngineType.aiVsAi:
-        isAi[PieceColor.black] = isAi[PieceColor.white] = true;
+        isAi[PieceColor.white] = isAi[PieceColor.black] = true;
         break;
       default:
         break;
@@ -136,7 +136,7 @@ class Game {
     //
     // Can regret only our turn
     // TODO
-    if (_position.side != PieceColor.white) {
+    if (_position.side != PieceColor.black) {
       //Audios.playTone(Audios.invalidSoundId);
       return false;
     }
@@ -174,37 +174,37 @@ class Game {
   }
 
   printStat() {
-    double blackWinRate = 0;
     double whiteWinRate = 0;
+    double blackWinRate = 0;
     double drawRate = 0;
 
-    int total = position.score[PieceColor.black] +
-            position.score[PieceColor.white] +
+    int total = position.score[PieceColor.white] +
+            position.score[PieceColor.black] +
             position.score[PieceColor.draw] ??
         0;
 
     if (total == 0) {
-      blackWinRate = 0;
       whiteWinRate = 0;
+      blackWinRate = 0;
       drawRate = 0;
     } else {
-      blackWinRate = position.score[PieceColor.black] * 100 / total ?? 0;
       whiteWinRate = position.score[PieceColor.white] * 100 / total ?? 0;
+      blackWinRate = position.score[PieceColor.black] * 100 / total ?? 0;
       drawRate = position.score[PieceColor.draw] * 100 / total ?? 0;
     }
 
     String scoreInfo = "Score: " +
-        position.score[PieceColor.black].toString() +
-        " : " +
         position.score[PieceColor.white].toString() +
+        " : " +
+        position.score[PieceColor.black].toString() +
         " : " +
         position.score[PieceColor.draw].toString() +
         "\ttotal: " +
         total.toString() +
         "\n" +
-        blackWinRate.toString() +
-        "% : " +
         whiteWinRate.toString() +
+        "% : " +
+        blackWinRate.toString() +
         "% : " +
         drawRate.toString() +
         "%" +

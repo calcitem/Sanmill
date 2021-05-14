@@ -54,8 +54,8 @@ class _PersonalizationSettingsPageState
       S.of(context).boardColor: Config.boardBackgroundColor,
       S.of(context).backgroudColor: Config.darkBackgroundColor,
       S.of(context).lineColor: Config.boardLineColor,
-      S.of(context).blackPieceColor: Config.blackPieceColor,
       S.of(context).whitePieceColor: Config.whitePieceColor,
+      S.of(context).blackPieceColor: Config.blackPieceColor,
     };
 
     AlertDialog alert = AlertDialog(
@@ -79,10 +79,10 @@ class _PersonalizationSettingsPageState
               Config.darkBackgroundColor = pickerColor.value;
             } else if (colorString == S.of(context).lineColor) {
               Config.boardLineColor = pickerColor.value;
-            } else if (colorString == S.of(context).blackPieceColor) {
-              Config.blackPieceColor = pickerColor.value;
             } else if (colorString == S.of(context).whitePieceColor) {
               Config.whitePieceColor = pickerColor.value;
+            } else if (colorString == S.of(context).blackPieceColor) {
+              Config.blackPieceColor = pickerColor.value;
             }
 
             Config.save();
@@ -277,16 +277,16 @@ class _PersonalizationSettingsPageState
           ListItemDivider(),
           SettingsListTile(
             context: context,
-            titleString: S.of(context).blackPieceColor,
-            trailingColor: Config.blackPieceColor,
-            onTap: () => showColorDialog(S.of(context).blackPieceColor),
+            titleString: S.of(context).whitePieceColor,
+            trailingColor: Config.whitePieceColor,
+            onTap: () => showColorDialog(S.of(context).whitePieceColor),
           ),
           ListItemDivider(),
           SettingsListTile(
             context: context,
-            titleString: S.of(context).whitePieceColor,
-            trailingColor: Config.whitePieceColor,
-            onTap: () => showColorDialog(S.of(context).whitePieceColor),
+            titleString: S.of(context).blackPieceColor,
+            trailingColor: Config.blackPieceColor,
+            onTap: () => showColorDialog(S.of(context).blackPieceColor),
           ),
         ],
       ),

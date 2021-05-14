@@ -547,8 +547,8 @@
     </message>
     <message>
         <location filename="gamewindow.ui" line="1089"/>
-        <source>电脑执白(R)</source>
-        <translation>电脑执白(R)</translation>
+        <source>电脑执黑(B)</source>
+        <translation>电脑执黑(B)</translation>
     </message>
     <message>
         <location filename="gamewindow.ui" line="1101"/>

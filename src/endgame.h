@@ -36,8 +36,8 @@ static const int SAVE_ENDGAME_EVERY_N_GAMES = 256;
 enum class EndGameType : uint32_t
 {
     none,
-    blackWin,
     whiteWin,
+    blackWin,
     draw,
 };
 
