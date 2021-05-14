@@ -22,7 +22,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class Settings {
-  static const settingsFileName = 'settings.json';
+  static const settingsFileName = 'sanmill_settings.json';
   static Settings? _instance;
 
   late File _file;
@@ -52,8 +52,17 @@ class Settings {
   }
 
   Future<bool> _load(String fileName) async {
-    final docDir = await getApplicationDocumentsDirectory();
-    _file = File('${docDir.path}/$fileName');
+    late var docDir;
+
+    if (Platform.isAndroid) {
+      docDir = await getExternalStorageDirectory();
+      _file = File('${docDir.path}/$fileName');
+    } else if (Platform.isWindows) {
+      _file = File('$fileName');
+    } else {
+      docDir = await getApplicationDocumentsDirectory();
+      _file = File('${docDir.path}/$fileName');
+    }
 
     try {
       final contents = await _file.readAsString();
