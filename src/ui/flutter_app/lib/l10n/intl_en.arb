@@ -260,9 +260,9 @@
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw, because the board is full"
   },
-  "drawReasonThreefoldRepetition": "It is a Draw, because three fold repetition.",
+  "drawReasonThreefoldRepetition": "It is a Draw, because threefold repetition.",
   "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw, because three fold repetition."
+    "description": "It is a Draw, because threefold repetition."
   },
   "gameOverUnknownReason": "Game Over! Unknown reason.",
   "@gameOverUnknownReason": {
@@ -336,9 +336,9 @@
   "@options": {
     "description": "Options"
   },
-  "perferences": "Perferences",
-  "@perferences": {
-    "description": "Perferences"
+  "preferences": "Preferences",
+  "@preferences": {
+    "description": "Preferences"
   },
   "skillLevel": "Difficulty level",
   "@skillLevel": {
@@ -508,13 +508,13 @@
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "If a player has only three pieces left, she is allowed to move the piece to any free point.",
+  "mayFly_Detail": "If a player has only three pieces left, she can move the piece to any free point.",
   "@mayFly_Detail": {
-    "description": "If a player has only three pieces left, she is allowed to move the piece to any free point."
+    "description": "If a player has only three pieces left, she can move the piece to any free point."
   },
-  "maxStepsLedToDraw": "Max Steps Led To Draw",
+  "maxStepsLedToDraw": "Max Steps Led to Draw",
   "@maxStepsLedToDraw": {
-    "description": "Max Steps Led To Draw"
+    "description": "Max Steps Led to Draw"
   },
   "copy": "Copy",
   "@copy": {
@@ -536,9 +536,9 @@
   "@inviteFriend": {
     "description": "Invite Friend"
   },
-  "rateTheApp": "Rate The App",
+  "rateTheApp": "Rate the App",
   "@rateTheApp": {
-    "description": "Rate The App"
+    "description": "Rate the App"
   },
   "exit": "Exit",
   "@exit": {
@@ -652,9 +652,9 @@
   "@toRemovePiece": {
     "description": "Tap on opponent's one piece to remove."
   },
-  "needToCreateMillFirst": "You need to create a mill first, before you are allowed to remove a piece.",
+  "needToCreateMillFirst": "You need to create a mill first, before you can remove a piece.",
   "@needToCreateMillFirst": {
-    "description": "You need to create a mill first, before you are allowed to remove a piece."
+    "description": "You need to create a mill first, before you can remove a piece."
   },
   "needToPlayWithOwnPieces": "You need to play with your own pieces.",
   "@needToPlayWithOwnPieces": {
@@ -680,9 +680,9 @@
   "@difficult": {
     "description": "Difficult"
   },
-  "cannotRemoveFromMill": "Can not remove from mill.",
+  "cannotRemoveFromMill": "Cannot remove from mill.",
   "@cannotRemoveFromMill": {
-    "description": "Can not remove from mill."
+    "description": "Cannot remove from mill."
   },
   "left": "left",
   "@left": {
@@ -760,9 +760,9 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "openSourceLicenses": "Open source licenses",
+  "openSourceLicenses": "Open-source licenses",
   "@openSourceLicenses": {
-    "description": "Open source licenses"
+    "description": "Open-source licenses"
   },
   "thirdPartyNotices": "Third-party notices",
   "@thirdPartyNotices": {

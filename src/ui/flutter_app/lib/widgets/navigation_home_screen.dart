@@ -93,7 +93,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         Game.instance.setWhoIsAi(engineType);
         screenView = GamePage(engineType);
       });
-    } else if (drawerIndex == DrawerIndex.perferences) {
+    } else if (drawerIndex == DrawerIndex.preferences) {
       setState(() {
         screenView = GameSettingsPage();
       });

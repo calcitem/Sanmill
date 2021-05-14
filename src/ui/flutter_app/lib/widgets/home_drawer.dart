@@ -28,7 +28,7 @@ enum DrawerIndex {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
-  perferences,
+  preferences,
   ruleSettings,
   personalization,
   Help,
@@ -86,8 +86,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
         icon: Icon(Icons.computer),
       ),
       DrawerListItem(
-        index: DrawerIndex.perferences,
-        title: S.of(context).perferences,
+        index: DrawerIndex.preferences,
+        title: S.of(context).preferences,
         icon: Icon(Icons.settings),
       ),
       DrawerListItem(
