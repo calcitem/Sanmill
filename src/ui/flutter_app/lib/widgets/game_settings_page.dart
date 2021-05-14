@@ -213,7 +213,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(S.of(context).perferences),
+        title: Text(S.of(context).preferences),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
