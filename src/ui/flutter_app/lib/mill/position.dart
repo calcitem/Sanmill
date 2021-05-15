@@ -1102,7 +1102,7 @@ class Position {
     return moves.length > 0 ? moves.substring(1) : '';
   }
 
-  get manualText => recorder!.buildManualText();
+  get moveHistoryText => recorder!.buildMoveHistoryText();
 
   get side => _sideToMove;
 

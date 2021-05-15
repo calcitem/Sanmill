@@ -90,20 +90,20 @@ class GameRecorder {
     return moves;
   }
 
-  String buildManualText({cols = 2}) {
+  String buildMoveHistoryText({cols = 2}) {
     //
-    var manualText = '';
+    var moveHistoryText = '';
 
     for (var i = 0; i < _history.length; i++) {
-      manualText += '${i < 9 ? ' ' : ''}${i + 1}. ${_history[i].move}　';
-      if ((i + 1) % cols == 0) manualText += '\n';
+      moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${_history[i].move}　';
+      if ((i + 1) % cols == 0) moveHistoryText += '\n';
     }
 
-    if (manualText.isEmpty) {
-      manualText = "";
+    if (moveHistoryText.isEmpty) {
+      moveHistoryText = "";
     }
 
-    return manualText;
+    return moveHistoryText;
   }
 
   Move moveAt(int index) => _history[index];

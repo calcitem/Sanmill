@@ -794,7 +794,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   Widget createToolbar() {
-    final manualText = Game.instance.position.manualText;
+    final moveHistoryText = Game.instance.position.moveHistoryText;
 
     final analyzeText = getInfoText();
 
@@ -854,13 +854,14 @@ class _GamePageState extends State<GamePage> with RouteAware {
             title: Text(S.of(context).moveList,
                 style: TextStyle(color: AppTheme.moveHistoryTextColor)),
             content: SingleChildScrollView(
-                child: Text(manualText, style: AppTheme.moveHistoryTextStyle)),
+                child: Text(moveHistoryText,
+                    style: AppTheme.moveHistoryTextStyle)),
             actions: <Widget>[
               TextButton(
                 child: Text(S.of(context).copy,
                     style: AppTheme.moveHistoryTextStyle),
                 onPressed: () =>
-                    Clipboard.setData(ClipboardData(text: manualText))
+                    Clipboard.setData(ClipboardData(text: moveHistoryText))
                         .then((_) {
                   showSnackBar(S.of(context).moveHistoryCopied);
                 }),
