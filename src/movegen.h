@@ -94,7 +94,12 @@ struct MoveList
     static void create();
     static void shuffle();
 
-    inline static std::array<Square, EFFECTIVE_SQUARE_NB> movePriorityList {SQ_NONE};
+    inline static std::array<Square, EFFECTIVE_SQUARE_NB> movePriorityList {
+        SQ_16, SQ_18, SQ_20, SQ_22 ,
+        SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 ,
+        SQ_17, SQ_19, SQ_21, SQ_23,
+        SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15
+    };
 
     inline static Square adjacentSquares[SQUARE_NB][MD_NB] = { {SQ_NONE} };
     inline static Bitboard adjacentSquaresBB[SQUARE_NB] = { 0 };

@@ -58,8 +58,8 @@ class NativeEngine extends Engine {
   Future<EngineResponse> search(Position? position) async {
     if (await isThinking()) await stopSearching();
 
-    send(getPositionFen(position!));
-    send('go');
+    await send(getPositionFen(position!));
+    await send('go');
 
     final response = await waitResponse(['bestmove', 'nobestmove']);
 
