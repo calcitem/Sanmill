@@ -171,7 +171,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   setNTotalPiecesEachSide() {
     callback(int? piecesCount) async {
-      print("piecesCount = $piecesCount");
+      print("[config] piecesCount = $piecesCount");
 
       Navigator.of(context).pop();
 

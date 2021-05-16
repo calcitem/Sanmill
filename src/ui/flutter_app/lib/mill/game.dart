@@ -27,6 +27,7 @@ Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
 
 class Game {
   static Game? _instance;
+  final String tag = "[game]";
 
   static get instance {
     _instance ??= Game();
@@ -79,8 +80,8 @@ class Game {
   };
 
   bool aiIsSearching() {
-    print("White is searching? ${isSearching[PieceColor.white]}\n"
-        "Black is searching? ${isSearching[PieceColor.black]}\n");
+    print("$tag White is searching? ${isSearching[PieceColor.white]}\n"
+        "$tag Black is searching? ${isSearching[PieceColor.black]}\n");
 
     return isSearching[PieceColor.white] == true ||
         isSearching[PieceColor.black] == true;
@@ -109,8 +110,8 @@ class Game {
         break;
     }
 
-    print("White is AI? ${isAi[PieceColor.white]}\n"
-        "Black is AI? ${isAi[PieceColor.black]}\n");
+    print("$tag White is AI? ${isAi[PieceColor.white]}\n"
+        "$tag Black is AI? ${isAi[PieceColor.black]}\n");
   }
 
   select(int pos) {
@@ -123,7 +124,7 @@ class Game {
       start();
     }
 
-    print("Computer: $move");
+    print("$tag AI do move: $move");
 
     if (!position.doMove(move)) {
       return false;
@@ -216,6 +217,6 @@ class Game {
         "%" +
         "\n";
 
-    print(scoreInfo);
+    print("$tag $scoreInfo");
   }
 }

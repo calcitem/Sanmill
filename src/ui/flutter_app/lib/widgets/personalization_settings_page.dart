@@ -120,7 +120,7 @@ class _PersonalizationSettingsPageState
         label: Config.boardBorderLineWidth.toStringAsFixed(1),
         onChanged: (value) {
           setState(() {
-            print("BoardBorderLineWidth value: $value");
+            print("[config] BoardBorderLineWidth value: $value");
             Config.boardBorderLineWidth = value;
             Config.save();
           });
@@ -151,7 +151,7 @@ class _PersonalizationSettingsPageState
         label: Config.boardInnerLineWidth.toStringAsFixed(1),
         onChanged: (value) {
           setState(() {
-            print("BoardInnerLineWidth value: $value");
+            print("[config] BoardInnerLineWidth value: $value");
             Config.boardInnerLineWidth = value;
             Config.save();
           });
@@ -182,7 +182,7 @@ class _PersonalizationSettingsPageState
         label: Config.boardTop.toStringAsFixed(1),
         onChanged: (value) {
           setState(() {
-            print("BoardTop value: $value");
+            print("[config] BoardTop value: $value");
             Config.boardTop = value;
             Config.save();
           });

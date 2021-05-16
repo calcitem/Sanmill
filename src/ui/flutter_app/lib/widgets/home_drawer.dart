@@ -62,6 +62,8 @@ class HomeDrawer extends StatefulWidget {
 class _HomeDrawerState extends State<HomeDrawer> {
   DateTime? lastTapTime;
 
+  final String tag = "[home_drawer]";
+
   @override
   void initState() {
     super.initState();
@@ -151,11 +153,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
           if (lastTapTime == null ||
               DateTime.now().difference(lastTapTime!) > Duration(seconds: 1)) {
             lastTapTime = DateTime.now();
-            print("Tap again in one second to enable developer mode.");
+            print("$tag Tap again in one second to enable developer mode.");
           } else {
             lastTapTime = DateTime.now();
             Developer.developerModeEnabled = true;
-            print("Developer mode enabled.");
+            print("$tag Developer mode enabled.");
           }
         });
 

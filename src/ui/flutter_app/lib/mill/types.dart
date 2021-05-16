@@ -73,7 +73,7 @@ class Move {
       removed = Piece.noPiece;
     } else if (move == "draw") {
       // TODO
-      print("Computer request draw");
+      print("[TODO] Computer request draw");
     } else {
       assert(false);
     }
@@ -258,7 +258,7 @@ bool isOk(int sq) {
   bool ret = (sq == 0 || (sq >= sqBegin && sq < sqEnd));
 
   if (ret == false) {
-    print("$sq is not OK");
+    print("[types] $sq is not OK");
   }
 
   return ret; // TODO: SQ_NONE?

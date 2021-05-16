@@ -53,10 +53,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
   String? _tip = '';
   bool isReady = false;
   late Timer timer;
+  final String tag = "[game_page]";
 
   @override
   void initState() {
-    print("Engine type: ${widget.engineType}");
+    print("$tag Engine type: ${widget.engineType}");
 
     Game.instance.setWhoIsAi(widget.engineType);
 
@@ -70,9 +71,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   _setReadyState() async {
-    print("Check if need to set Ready state...");
+    print("$tag Check if need to set Ready state...");
     if (!isReady && mounted && Config.settingsLoaded) {
-      print("Set Ready State...");
+      print("$tag Set Ready State...");
       setState(() {});
       isReady = true;
       timer.cancel();
@@ -81,7 +82,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   showTip(String? tip) {
     if (!mounted) return;
-    if (tip != null) print("Tip: $tip");
+    if (tip != null) print("[tip] $tip");
 
     setState(() => _tip = tip);
   }
@@ -122,13 +123,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   onBoardTap(BuildContext context, int index) {
     if (!isReady) {
-      print("Not ready, ignore tapping.");
+      print("[tap] Not ready, ignore tapping.");
       return false;
     }
 
     if (Game.instance.engineType == EngineType.aiVsAi ||
         Game.instance.engineType == EngineType.testViaLAN) {
-      print("Engine type is no human, ignore tapping.");
+      print("$tag Engine type is no human, ignore tapping.");
       return false;
     }
 
@@ -137,7 +138,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     int? sq = indexToSquare[index];
 
     if (sq == null) {
-      print("sq is null, skip tapping.");
+      print("$tag sq is null, skip tapping.");
       return;
     }
 
@@ -150,10 +151,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
       if (Game.instance.isAiToMove()) {
         if (Game.instance.aiIsSearching()) {
-          print("AI is thinking, skip tapping.");
+          print("$tag AI is thinking, skip tapping.");
           return false;
         } else {
-          print("AI is not thinking. AI is to move.");
+          print("[tap] AI is not thinking. AI is to move.");
           engineToGo();
           return false;
         }
@@ -161,7 +162,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
 
     if (Game.instance.isAiToMove() || Game.instance.aiIsSearching()) {
-      print("AI's turn, skip tapping.");
+      print("[tap] AI's turn, skip tapping.");
       return false;
     }
 
@@ -191,10 +192,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
               }
             }
             ret = true;
-            print("putPiece: [$sq]");
+            print("[tap] putPiece: [$sq]");
             break;
           } else {
-            print("putPiece: skip [$sq]");
+            print("[tap] putPiece: skip [$sq]");
             if (mounted) {
               showTip(S.of(context).tipBanPlace);
             }
@@ -217,13 +218,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
               Audios.playTone(Audios.selectSoundId);
               Game.instance.select(index);
               ret = true;
-              print("selectPiece: [$sq]");
+              print("[tap] selectPiece: [$sq]");
 
               var us = Game.instance.sideToMove;
               if (position.phase == Phase.moving &&
                   rule.mayFly &&
                   Game.instance.position.pieceOnBoardCount[us] == 3) {
-                print("May fly.");
+                print("[tap] May fly.");
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);
                 }
@@ -234,28 +235,28 @@ class _GamePageState extends State<GamePage> with RouteAware {
               break;
             case -2:
               Audios.playTone(Audios.illegalSoundId);
-              print("selectPiece: skip [$sq]");
+              print("[tap] selectPiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipCannotMove);
               }
               break;
             case -3:
               Audios.playTone(Audios.illegalSoundId);
-              print("selectPiece: skip [$sq]");
+              print("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipCanMoveOnePoint);
               }
               break;
             case -4:
               Audios.playTone(Audios.illegalSoundId);
-              print("selectPiece: skip [$sq]");
+              print("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectPieceToMove);
               }
               break;
             default:
               Audios.playTone(Audios.illegalSoundId);
-              print("selectPiece: skip [$sq]");
+              print("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectWrong);
               }
@@ -271,7 +272,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             case 0:
               //Audios.playTone(Audios.removeSoundId);
               ret = true;
-              print("removePiece: [$sq]");
+              print("[tap] removePiece: [$sq]");
               if (Game.instance.position.pieceToRemoveCount >= 1) {
                 if (mounted) {
                   showTip(S.of(context).tipContinueMill);
@@ -295,21 +296,22 @@ class _GamePageState extends State<GamePage> with RouteAware {
               break;
             case -2:
               Audios.playTone(Audios.illegalSoundId);
-              print("removePiece: Cannot Remove our pieces, skip [$sq]");
+              print("[tap] removePiece: Cannot Remove our pieces, skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectOpponentsPiece);
               }
               break;
             case -3:
               Audios.playTone(Audios.illegalSoundId);
-              print("removePiece: Cannot remove piece from Mill, skip [$sq]");
+              print(
+                  "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipCannotRemovePieceFromMill);
               }
               break;
             default:
               Audios.playTone(Audios.illegalSoundId);
-              print("removePiece: skip [$sq]");
+              print("[tap] removePiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipBanRemove);
               }
@@ -372,12 +374,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   engineToGo() async {
     if (!mounted) {
-      print("!mounted, skip engineToGo.");
+      print("[engineToGo] !mounted, skip engineToGo.");
       return;
     }
 
     // TODO
-    print("Engine to go, engine type is ${widget.engineType}");
+    print("[engineToGo] engine type is ${widget.engineType}");
 
     while ((Config.isAutoRestart == true ||
             Game.instance.position.winner == PieceColor.nobody) &&
@@ -398,9 +400,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
         }
       }
 
-      print("Searching...");
+      print("[engineToGo] Searching...");
       final response = await widget.engine.search(Game.instance.position);
-      print("Engine response type: ${response.type}");
+      print("[engineToGo] Engine response type: ${response.type}");
 
       switch (response.type) {
         case 'move':
@@ -440,7 +442,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       }
 
       if (Game.instance.isAiToMove()) {
-        print("New game, AI to move.");
+        print("$tag New game, AI to move.");
         engineToGo();
       }
     }
@@ -484,13 +486,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
           S.of(context).drawReasonThreefoldRepetition,
     };
 
-    print("Game over reason: ${Game.instance.position.gameOverReason}");
+    print("$tag Game over reason: ${Game.instance.position.gameOverReason}");
 
     String? loseReasonStr = reasonMap[Game.instance.position.gameOverReason];
 
     if (loseReasonStr == null) {
       loseReasonStr = S.of(context).gameOverUnknownReason;
-      print("Game over reason string: $loseReasonStr");
+      print("$tag Game over reason string: $loseReasonStr");
       if (Config.developerMode) {
         assert(false);
       }
@@ -619,7 +621,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
                     }
 
                     if (Game.instance.isAiToMove()) {
-                      print("New game, AI to move.");
+                      print("$tag New game, AI to move.");
                       engineToGo();
                     }
                   }),
@@ -966,7 +968,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   @override
   void dispose() {
-    print("dipose");
+    print("$tag dipose");
     widget.engine.shutdown();
     super.dispose();
     routeObserver.unsubscribe(this);
@@ -975,27 +977,27 @@ class _GamePageState extends State<GamePage> with RouteAware {
   @override
   void didPush() {
     final route = ModalRoute.of(context)!.settings.name;
-    print('Game Page didPush route: $route');
+    print('$tag Game Page didPush route: $route');
     widget.engine.setOptions();
   }
 
   @override
   void didPopNext() {
     final route = ModalRoute.of(context)!.settings.name;
-    print('Game Page didPopNext route: $route');
+    print('$tag Game Page didPopNext route: $route');
     widget.engine.setOptions();
   }
 
   @override
   void didPushNext() {
     final route = ModalRoute.of(context)!.settings.name;
-    print('Game Page didPushNext route: $route');
+    print('$tag Game Page didPushNext route: $route');
     widget.engine.setOptions();
   }
 
   @override
   void didPop() {
     final route = ModalRoute.of(context)!.settings.name;
-    print('Game Page didPop route: $route');
+    print('$tag Game Page didPop route: $route');
   }
 }

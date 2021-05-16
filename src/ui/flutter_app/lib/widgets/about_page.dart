@@ -37,6 +37,7 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   String _version = "";
+  final String tag = "[about] ";
 
   @override
   void initState() {
@@ -176,7 +177,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("local = $locale");
+    print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL('https://gitee.com/calcitem/Sanmill/issues');
     } else {
@@ -191,7 +192,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("local = $locale");
+    print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL('https://gitee.com/calcitem/Sanmill');
     } else {
@@ -206,7 +207,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("local = $locale");
+    print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(
           'https://gitee.com/calcitem/Sanmill/wikis/third-party_notices');
@@ -223,7 +224,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("local = $locale");
+    print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL('https://gitee.com/calcitem/Sanmill/wikis/privacy_policy_zh');
     } else {
@@ -238,7 +239,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("local = $locale");
+    print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL('https://gitee.com/calcitem/Sanmill/wikis/thanks');
     } else {

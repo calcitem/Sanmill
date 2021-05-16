@@ -66,7 +66,7 @@ class Config {
   static int maxStepsLedToDraw = 50;
 
   static Future<void> loadSettings() async {
-    print("Loading settings...");
+    print("[config] Loading settings...");
 
     final settings = await Settings.instance();
 
@@ -129,7 +129,7 @@ class Config {
         Config.maxStepsLedToDraw = settings['MaxStepsLedToDraw'] ?? 50;
 
     settingsLoaded = true;
-    print("Loading settings done!");
+    print("[config] Loading settings done!");
   }
 
   static Future<bool> save() async {

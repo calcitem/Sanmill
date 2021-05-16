@@ -48,6 +48,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   late StreamController<int> _events;
   Timer? _timer;
 
+  final String tag = "[game_settings_page]";
+
   @override
   void initState() {
     super.initState();
@@ -137,7 +139,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         label: Config.skillLevel.round().toString(),
         onChanged: (value) {
           setState(() {
-            print("Slider value: $value");
+            print("[config] Slider value: $value");
             Config.skillLevel = value.toInt();
             Config.save();
           });
@@ -157,7 +159,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         label: Config.moveTime.round().toString(),
         onChanged: (value) {
           setState(() {
-            print("Slider value: $value");
+            print("[config] Slider value: $value");
             Config.moveTime = value.toInt();
             Config.save();
           });
@@ -472,7 +474,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   setDeveloperMode(bool value) async {
     if (Config.developerMode && value == false) {
-      print("You must uninstall me to disable developer mode!");
+      print("$tag You must uninstall me to disable developer mode!");
       return;
     }
 

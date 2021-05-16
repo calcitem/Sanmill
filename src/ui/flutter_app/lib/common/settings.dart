@@ -32,7 +32,7 @@ class Settings {
     if (_instance == null) {
       _instance = Settings();
       await _instance!._load(settingsFileName);
-      print("defaultFileName: $settingsFileName");
+      print("[settings] $settingsFileName loaded.");
     }
 
     return _instance;
@@ -66,7 +66,7 @@ class Settings {
       _file = File('${docDir.path}/$fileName');
     }
 
-    print("Loading $_file ...");
+    print("[settings] Loading $_file ...");
 
     try {
       final contents = await _file.readAsString();
@@ -81,13 +81,13 @@ class Settings {
   }
 
   Future<void> restore() async {
-    print("Restoring Settings...");
+    print("[settings] Restoring Settings...");
 
     if (_file.existsSync()) {
       _file.deleteSync();
-      print("$_file deleted");
+      print("[settings] $_file deleted");
     } else {
-      print("$_file does not exist");
+      print("[settings] $_file does not exist");
     }
   }
 }

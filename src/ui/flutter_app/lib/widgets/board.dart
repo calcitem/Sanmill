@@ -27,6 +27,7 @@ class Board extends StatelessWidget {
   final double width;
   final double height;
   final Function(BuildContext, int) onBoardTap;
+  final String tag = "[board]";
 
   Board({required this.width, required this.onBoardTap}) : height = width;
 
@@ -72,19 +73,19 @@ class Board extends StatelessWidget {
 
         final column = (dx - padding) ~/ squareWidth;
         if (column < 0 || column > 6) {
-          print("Tap on column $column (ignored).");
+          print("$tag Tap on column $column (ignored).");
           return;
         }
 
         final row = (dy - padding) ~/ squareWidth;
         if (row < 0 || row > 6) {
-          print("Tap on row $row (ignored).");
+          print("$tag Tap on row $row (ignored).");
           return;
         }
 
         final index = row * 7 + column;
 
-        print("Tap on ($row, $column) <$index>");
+        print("$tag Tap on ($row, $column) <$index>");
 
         onBoardTap(context, index);
       },

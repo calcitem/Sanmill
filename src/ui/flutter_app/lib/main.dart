@@ -47,7 +47,7 @@ Future<void> main() async {
     externalDirStr = ".";
   }
   String path = externalDirStr + "/sanmill-crash-logs.txt";
-  print("ExternalStorageDirectory: " + externalDirStr);
+  print("[env] ExternalStorageDirectory: " + externalDirStr);
   String recipients = "calcitem@outlook.com";
 
   CatcherOptions debugOptions =
@@ -108,7 +108,7 @@ class _SanmillAppState extends State<SanmillApp> {
   void initState() {
     super.initState();
     if (Platform.isWindows) {
-      print("audio players is not support Windows.");
+      print("[audio] Audio Player is not support Windows.");
       return;
     } else {
       Audios.loadSounds();

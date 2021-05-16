@@ -240,7 +240,7 @@ class Position {
         " " +
         (1 + (gamePly - sideIsBlack) ~/ 2).toString();
 
-    print("FEN is $ss");
+    //print("FEN is $ss");
 
     return ss;
   }
@@ -253,13 +253,13 @@ class Position {
     String us = _sideToMove;
 
     if (move.from == move.to) {
-      print("Move $move.move from == to");
+      print("[position] Move $move.move from == to");
       return false;
     }
 
     if (move.type == MoveType.remove) {
       if (movedPiece(move.to) != us) {
-        print("Move $move.to to != us");
+        print("[position] Move $move.to to != us");
         return false;
       }
     }
@@ -390,7 +390,7 @@ class Position {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
-          print("Has game cycle.");
+          print("[position] Has game cycle.");
           return true;
         }
       }
@@ -542,7 +542,8 @@ class Position {
 
         // not in moveTable
         if (md == moveDirectionNumber) {
-          print("putPiece: [$s] is not in [$currentSquare]'s move table.");
+          print(
+              "[position] putPiece: [$s] is not in [$currentSquare]'s move table.");
           return false;
         }
       }
@@ -713,7 +714,7 @@ class Position {
     gameOverReason = reason;
     winner = w;
 
-    print("Game over, $w win, because of $reason");
+    print("[position] Game over, $w win, because of $reason");
     updateScore();
   }
 
@@ -796,7 +797,7 @@ class Position {
   void changeSideToMove() {
     setSideToMove(PieceColor.opponent(_sideToMove));
     st.key ^= Zobrist.side;
-    print("$_sideToMove to move.");
+    print("[position] $_sideToMove to move.");
   }
 
   int updateKey(int s) {
