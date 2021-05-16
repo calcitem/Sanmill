@@ -587,6 +587,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
                   onPressed: () {
                     if (!isTopLevel) Config.skillLevel++;
                     Config.save();
+                    print("[config] skillLevel: ${Config.skillLevel}");
                     Navigator.of(context).pop();
                   }),
               TextButton(

@@ -179,6 +179,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         rule.piecesCount = Config.piecesCount = piecesCount ?? 9;
       });
 
+      print("[config] rule.piecesCount: ${rule.piecesCount}");
+
       Config.save();
     }
 
@@ -213,6 +215,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.hasDiagonalLines = Config.hasDiagonalLines = value;
     });
 
+    print("[config] rule.hasDiagonalLines: $value");
+
     Config.save();
   }
 
@@ -220,6 +224,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     setState(() {
       rule.mayFly = Config.mayFly = value;
     });
+
+    print("[config] rule.mayFly: $value");
 
     Config.save();
   }
@@ -231,6 +237,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.hasBannedLocations = Config.hasBannedLocations = value;
     });
 
+    print("[config] rule.hasBannedLocations: $value");
+
     Config.save();
   }
 
@@ -239,6 +247,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.isWhiteLoseButNotDrawWhenBoardFull =
           Config.isWhiteLoseButNotDrawWhenBoardFull = value;
     });
+
+    print("[config] rule.isWhiteLoseButNotDrawWhenBoardFull: $value");
 
     Config.save();
   }
@@ -250,6 +260,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
     });
 
+    print("[config] rule.isDefenderMoveFirst: $value");
+
     Config.save();
   }
 
@@ -258,6 +270,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.isLoseButNotChangeSideWhenNoWay =
           Config.isLoseButNotChangeSideWhenNoWay = value;
     });
+
+    print("[config] rule.isLoseButNotChangeSideWhenNoWay: $value");
 
     Config.save();
   }
@@ -269,6 +283,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways = value;
     });
 
+    print("[config] rule.mayRemoveFromMillsAlways: $value");
+
     Config.save();
   }
 
@@ -276,6 +292,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     setState(() {
       rule.mayRemoveMultiple = Config.mayRemoveMultiple = value;
     });
+
+    print("[config] rule.mayRemoveMultiple: $value");
 
     Config.save();
   }
@@ -287,6 +305,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.maxStepsLedToDraw = Config.maxStepsLedToDraw = value;
     });
 
+    print("[config] rule.maxStepsLedToDraw: $value");
+
     Config.save();
   }
 
@@ -294,6 +314,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     setState(() {
       rule.piecesAtLeastCount = Config.piecesAtLeastCount = value;
     });
+
+    print("[config] rule.piecesAtLeastCount: $value");
 
     Config.save();
   }

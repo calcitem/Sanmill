@@ -365,6 +365,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.aiMovesFirst = !value;
     });
 
+    print("[config] aiMovesFirst: ${Config.aiMovesFirst}");
+
     Config.save();
   }
 
@@ -372,6 +374,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     setState(() {
       Config.aiIsLazy = value;
     });
+
+    print("[config] aiMovesFirst: $value");
 
     Config.save();
   }
@@ -381,6 +385,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.isAutoRestart = value;
     });
 
+    print("[config] isAutoRestart: $value");
+
     Config.save();
   }
 
@@ -388,6 +394,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     setState(() {
       Config.isAutoChangeFirstMove = value;
     });
+
+    print("[config] isAutoChangeFirstMove: $value");
 
     Config.save();
   }
@@ -397,6 +405,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.resignIfMostLose = value;
     });
 
+    print("[config] resignIfMostLose: $value");
+
     Config.save();
   }
 
@@ -404,6 +414,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     setState(() {
       Config.shufflingEnabled = value;
     });
+
+    print("[config] shufflingEnabled: $value");
 
     Config.save();
   }
@@ -413,6 +425,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.learnEndgame = value;
     });
 
+    print("[config] learnEndgame: $value");
+
     Config.save();
   }
 
@@ -420,6 +434,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     setState(() {
       Config.idsEnabled = value;
     });
+
+    print("[config] idsEnabled: $value");
 
     Config.save();
   }
@@ -429,6 +445,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.depthExtension = value;
     });
 
+    print("[config] depthExtension: $value");
+
     Config.save();
   }
 
@@ -437,6 +455,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.openingBook = value;
     });
 
+    print("[config] openingBook: $value");
+
     Config.save();
   }
 
@@ -444,6 +464,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     setState(() {
       Config.toneEnabled = value;
     });
+
+    print("[config] toneEnabled: $value");
 
     Config.save();
   }
@@ -458,6 +480,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.developerMode = value;
     });
 
+    print("[config] developerMode: $value");
+
     Config.save();
   }
 
@@ -467,6 +491,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     setState(() {
       Config.isPieceCountInHandShown = value;
     });
+
+    print("[config] isPieceCountInHandShown: $value");
 
     Config.save();
   }

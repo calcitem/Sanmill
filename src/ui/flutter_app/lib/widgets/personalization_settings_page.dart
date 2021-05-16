@@ -73,6 +73,8 @@ class _PersonalizationSettingsPageState
           onPressed: () {
             setState(() => currentColor = pickerColor);
 
+            print("[config] pickerColor.value: ${pickerColor.value}");
+
             if (colorString == S.of(context).boardColor) {
               Config.boardBackgroundColor = pickerColor.value;
             } else if (colorString == S.of(context).backgroudColor) {

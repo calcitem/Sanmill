@@ -48,7 +48,7 @@ class Settings {
     final contents = jsonEncode(_values);
     await _file.writeAsString(contents);
 
-    print("Settings is committed.");
+    //print("Settings is committed.");
 
     return true;
   }
