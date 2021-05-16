@@ -121,6 +121,7 @@ class NativeEngine extends Engine {
 
   Future<void> stopSearching() async {
     isActive = false;
+    print("Stop current thinking...");
     await send('stop');
   }
 
@@ -168,8 +169,6 @@ class NativeEngine extends Engine {
     } else {
       posFenStr = "position fen $startPosition moves $moves";
     }
-
-    print("posFenStr: $posFenStr");
 
     return posFenStr;
   }

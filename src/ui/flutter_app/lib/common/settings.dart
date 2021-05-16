@@ -48,6 +48,8 @@ class Settings {
     final contents = jsonEncode(_values);
     await _file.writeAsString(contents);
 
+    print("Settings is committed.");
+
     return true;
   }
 
@@ -63,6 +65,8 @@ class Settings {
       docDir = await getApplicationDocumentsDirectory();
       _file = File('${docDir.path}/$fileName');
     }
+
+    print("Loading $_file ...");
 
     try {
       final contents = await _file.readAsString();

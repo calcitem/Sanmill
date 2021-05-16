@@ -81,6 +81,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   changeStatus(String? status) {
     if (!mounted) return;
+    if (status != null) print("changeStatus: $status");
 
     setState(() => _status = status);
   }
@@ -121,7 +122,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   onBoardTap(BuildContext context, int index) {
     if (!isReady) {
-      print("Not ready, skip onBoardTap.");
+      print("Not ready, ignore tapping.");
       return false;
     }
 
@@ -136,6 +137,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     int? sq = indexToSquare[index];
 
     if (sq == null) {
+      print("sq is null, skip tapping.");
       return;
     }
 
@@ -964,6 +966,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   @override
   void dispose() {
+    print("dipose");
     widget.engine.shutdown();
     super.dispose();
     routeObserver.unsubscribe(this);

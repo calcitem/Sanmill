@@ -79,6 +79,9 @@ class Game {
   };
 
   bool aiIsSearching() {
+    print("White is searching? ${isSearching[PieceColor.white]}\n"
+        "Black is searching? ${isSearching[PieceColor.black]}\n");
+
     return isSearching[PieceColor.white] == true ||
         isSearching[PieceColor.black] == true;
   }
@@ -105,6 +108,9 @@ class Game {
       default:
         break;
     }
+
+    print("White is AI? ${isAi[PieceColor.white]}\n"
+        "Black is AI? ${isAi[PieceColor.black]}\n");
   }
 
   select(int pos) {

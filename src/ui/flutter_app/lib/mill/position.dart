@@ -240,6 +240,8 @@ class Position {
         " " +
         (1 + (gamePly - sideIsBlack) ~/ 2).toString();
 
+    print("FEN is $ss");
+
     return ss;
   }
 
@@ -388,6 +390,7 @@ class Position {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
+          print("Has game cycle.");
           return true;
         }
       }
