@@ -27,6 +27,7 @@ import 'engine.dart';
 
 class NativeEngine extends Engine {
   static const platform = const MethodChannel('com.calcitem.sanmill/engine');
+  bool isActive = false;
 
   Future<void> startup() async {
     await platform.invokeMethod('startup');
@@ -43,6 +44,7 @@ class NativeEngine extends Engine {
   }
 
   Future<void> shutdown() async {
+    isActive = false;
     await platform.invokeMethod('shutdown');
   }
 
@@ -60,6 +62,7 @@ class NativeEngine extends Engine {
 
     await send(getPositionFen(position!));
     await send('go');
+    isActive = true;
 
     final response = await waitResponse(['bestmove', 'nobestmove']);
 
@@ -92,7 +95,7 @@ class NativeEngine extends Engine {
 
     if (times > timeLimit) {
       print("Timeout. sleep = $sleep, times = $times");
-      if (Config.developerMode) {
+      if (Config.developerMode && isActive) {
         throw ("Exception: waitResponse timeout.");
       }
       return '';
@@ -117,6 +120,7 @@ class NativeEngine extends Engine {
   }
 
   Future<void> stopSearching() async {
+    isActive = false;
     await send('stop');
   }
 
