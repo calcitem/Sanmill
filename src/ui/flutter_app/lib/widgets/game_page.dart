@@ -125,7 +125,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
       return false;
     }
 
-    if (Game.instance.engineType == EngineType.testViaLAN) {
+    if (Game.instance.engineType == EngineType.aiVsAi ||
+        Game.instance.engineType == EngineType.testViaLAN) {
+      print("Engine type is no human, ignore tapping.");
       return false;
     }
 
@@ -373,7 +375,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
 
     // TODO
-    print("Engine to go");
+    print("Engine to go, engine type is ${widget.engineType}");
 
     while ((Config.isAutoRestart == true ||
             Game.instance.position.winner == PieceColor.nobody) &&
@@ -394,7 +396,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         }
       }
 
-      print("Waiting for engine's response...");
+      print("Searching...");
       final response = await widget.engine.search(Game.instance.position);
       print("Engine response type: ${response.type}");
 
