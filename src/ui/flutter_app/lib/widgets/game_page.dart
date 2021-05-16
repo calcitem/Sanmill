@@ -50,7 +50,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> with RouteAware {
-  String? _status = '';
+  String? _tip = '';
   bool isReady = false;
   late Timer timer;
 
@@ -79,11 +79,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
   }
 
-  changeStatus(String? status) {
+  showTip(String? tip) {
     if (!mounted) return;
-    if (status != null) print("changeStatus: $status");
+    if (tip != null) print("Tip: $tip");
 
-    setState(() => _status = status);
+    setState(() => _tip = tip);
   }
 
   void showTips() {
@@ -102,16 +102,16 @@ class _GamePageState extends State<GamePage> with RouteAware {
     if (winner == PieceColor.nobody) {
       if (Game.instance.position.phase == Phase.placing) {
         if (mounted) {
-          changeStatus(S.of(context).tipPlace);
+          showTip(S.of(context).tipPlace);
         }
       } else if (Game.instance.position.phase == Phase.moving) {
         if (mounted) {
-          changeStatus(S.of(context).tipMove);
+          showTip(S.of(context).tipMove);
         }
       }
     } else {
       if (mounted) {
-        changeStatus(colorWinStrings[winner]);
+        showTip(colorWinStrings[winner]);
       }
     }
 
@@ -177,17 +177,17 @@ class _GamePageState extends State<GamePage> with RouteAware {
             if (position.action == Act.remove) {
               //Audios.playTone(Audios.millSoundId);
               if (mounted) {
-                changeStatus(S.of(context).tipMill);
+                showTip(S.of(context).tipMill);
               }
             } else {
               //Audios.playTone(Audios.placeSoundId);
               if (Game.instance.engineType == EngineType.humanVsAi && mounted) {
-                changeStatus(S.of(context).tipPlaced);
+                showTip(S.of(context).tipPlaced);
               } else if (mounted) {
                 var side = Game.instance.sideToMove == PieceColor.white
                     ? S.of(context).black
                     : S.of(context).white;
-                changeStatus(side + S.of(context).tipToMove);
+                showTip(side + S.of(context).tipToMove);
               }
             }
             ret = true;
@@ -196,7 +196,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           } else {
             print("putPiece: skip [$sq]");
             if (mounted) {
-              changeStatus(S.of(context).tipBanPlace);
+              showTip(S.of(context).tipBanPlace);
             }
           }
 
@@ -207,7 +207,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         case Act.select:
           if (position.phase == Phase.placing) {
             if (mounted) {
-              changeStatus(S.of(context).tipCannotPlace);
+              showTip(S.of(context).tipCannotPlace);
             }
             break;
           }
@@ -225,10 +225,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
                   Game.instance.position.pieceOnBoardCount[us] == 3) {
                 print("May fly.");
                 if (mounted) {
-                  changeStatus(S.of(context).tipCanMoveToAnyPoint);
+                  showTip(S.of(context).tipCanMoveToAnyPoint);
                 }
               } else if (mounted) {
-                changeStatus(S.of(context).tipPlace);
+                showTip(S.of(context).tipPlace);
               }
 
               break;
@@ -236,28 +236,28 @@ class _GamePageState extends State<GamePage> with RouteAware {
               Audios.playTone(Audios.illegalSoundId);
               print("selectPiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
-                changeStatus(S.of(context).tipCannotMove);
+                showTip(S.of(context).tipCannotMove);
               }
               break;
             case -3:
               Audios.playTone(Audios.illegalSoundId);
               print("selectPiece: skip [$sq]");
               if (mounted) {
-                changeStatus(S.of(context).tipCanMoveOnePoint);
+                showTip(S.of(context).tipCanMoveOnePoint);
               }
               break;
             case -4:
               Audios.playTone(Audios.illegalSoundId);
               print("selectPiece: skip [$sq]");
               if (mounted) {
-                changeStatus(S.of(context).tipSelectPieceToMove);
+                showTip(S.of(context).tipSelectPieceToMove);
               }
               break;
             default:
               Audios.playTone(Audios.illegalSoundId);
               print("selectPiece: skip [$sq]");
               if (mounted) {
-                changeStatus(S.of(context).tipSelectWrong);
+                showTip(S.of(context).tipSelectWrong);
               }
               break;
           }
@@ -274,12 +274,12 @@ class _GamePageState extends State<GamePage> with RouteAware {
               print("removePiece: [$sq]");
               if (Game.instance.position.pieceToRemoveCount >= 1) {
                 if (mounted) {
-                  changeStatus(S.of(context).tipContinueMill);
+                  showTip(S.of(context).tipContinueMill);
                 }
               } else {
                 if (Game.instance.engineType == EngineType.humanVsAi) {
                   if (mounted) {
-                    changeStatus(S.of(context).tipRemoved);
+                    showTip(S.of(context).tipRemoved);
                   }
                 } else {
                   if (mounted) {
@@ -287,7 +287,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
                         ? S.of(context).black
                         : S.of(context).white;
                     if (mounted) {
-                      changeStatus(them + S.of(context).tipToMove);
+                      showTip(them + S.of(context).tipToMove);
                     }
                   }
                 }
@@ -297,21 +297,21 @@ class _GamePageState extends State<GamePage> with RouteAware {
               Audios.playTone(Audios.illegalSoundId);
               print("removePiece: Cannot Remove our pieces, skip [$sq]");
               if (mounted) {
-                changeStatus(S.of(context).tipSelectOpponentsPiece);
+                showTip(S.of(context).tipSelectOpponentsPiece);
               }
               break;
             case -3:
               Audios.playTone(Audios.illegalSoundId);
               print("removePiece: Cannot remove piece from Mill, skip [$sq]");
               if (mounted) {
-                changeStatus(S.of(context).tipCannotRemovePieceFromMill);
+                showTip(S.of(context).tipCannotRemovePieceFromMill);
               }
               break;
             default:
               Audios.playTone(Audios.illegalSoundId);
               print("removePiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
-                changeStatus(S.of(context).tipBanRemove);
+                showTip(S.of(context).tipBanRemove);
               }
               break;
           }
@@ -391,10 +391,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
                 " : " +
                 Game.instance.position.score[PieceColor.draw].toString();
 
-        changeStatus(score);
+        showTip(score);
       } else {
         if (mounted) {
-          changeStatus(S.of(context).thinking);
+          showTip(S.of(context).thinking);
         }
       }
 
@@ -412,7 +412,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           break;
         case 'timeout':
           if (mounted) {
-            changeStatus(S.of(context).timeout);
+            showTip(S.of(context).timeout);
           }
 
           if (Config.developerMode) {
@@ -420,7 +420,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           }
           return;
         default:
-          changeStatus('Error: ${response.type}');
+          showTip('Error: ${response.type}');
           break;
       }
 
@@ -436,7 +436,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       Navigator.of(context).pop();
       Game.instance.newGame();
       if (mounted) {
-        changeStatus(S.of(context).gameStarted);
+        showTip(S.of(context).gameStarted);
       }
 
       if (Game.instance.isAiToMove()) {
@@ -614,7 +614,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
                     Navigator.of(context).pop();
                     Game.instance.newGame();
                     if (mounted) {
-                      changeStatus(S.of(context).gameStarted);
+                      showTip(S.of(context).gameStarted);
                     }
 
                     if (Game.instance.isAiToMove()) {
@@ -694,8 +694,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child:
-                Text(_status!, maxLines: 1, style: AppTheme.gamePageTipStyle),
+            child: Text(_tip!, maxLines: 1, style: AppTheme.gamePageTipStyle),
           ),
         ],
       ),
