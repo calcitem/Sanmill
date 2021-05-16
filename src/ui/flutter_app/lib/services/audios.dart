@@ -45,30 +45,125 @@ class Audios {
 
     _soundpool ??= Soundpool();
 
+    if (_soundpool == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: _soundpool is null.");
+      return;
+    }
+
     drawSoundId ??=
         await _soundpool!.load(await rootBundle.load("assets/audios/draw.mp3"));
+    if (drawSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: drawSoundId is null.");
+      return;
+    }
+
     flySoundId ??=
         await _soundpool!.load(await rootBundle.load("assets/audios/fly.mp3"));
+    if (flySoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: flySoundId is null.");
+      return;
+    }
+
     goSoundId ??=
         await _soundpool!.load(await rootBundle.load("assets/audios/go.mp3"));
+    if (goSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: goSoundId is null.");
+      return;
+    }
+
     illegalSoundId = await _soundpool!
         .load(await rootBundle.load("assets/audios/illegal.mp3"));
+    if (illegalSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: illegalSoundId is null.");
+      return;
+    }
+
     loseSoundId ??=
         await _soundpool!.load(await rootBundle.load("assets/audios/lose.mp3"));
+    if (loseSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: loseSoundId is null.");
+      return;
+    }
+
     millSoundId ??=
         await _soundpool!.load(await rootBundle.load("assets/audios/mill.mp3"));
+    if (millSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: millSoundId is null.");
+      return;
+    }
+
     placeSoundId ??= await _soundpool!
         .load(await rootBundle.load("assets/audios/place.mp3"));
+    if (placeSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: placeSoundId is null.");
+      return;
+    }
+
     removeSoundId ??= await _soundpool!
         .load(await rootBundle.load("assets/audios/remove.mp3"));
+    if (removeSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: removeSoundId is null.");
+      return;
+    }
+
     selectSoundId ??= await _soundpool!
         .load(await rootBundle.load("assets/audios/select.mp3"));
+    if (selectSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: selectSoundId is null.");
+      return;
+    }
+
     winSoundId ??=
         await _soundpool!.load(await rootBundle.load("assets/audios/win.mp3"));
+    if (winSoundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: winSoundId is null.");
+      return;
+    }
   }
 
   static Future<void> _playSound(var soundId) async {
     if (Platform.isWindows) {
+      return;
+    }
+
+    if (soundId == null) {
+      if (Config.developerMode) {
+        assert(false);
+      }
+      print("[audio] Error: soundId is null.");
       return;
     }
 
