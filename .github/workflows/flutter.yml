@@ -53,7 +53,7 @@ jobs:
 
       # Build
       - name: Build apk
-        run: cd src/ui/flutter_app; flutter build apk; flutter build appbundle
+        run: cd src/ui/flutter_app; flutter build apk -v; flutter build appbundle -v
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
