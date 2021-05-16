@@ -20,7 +20,7 @@
 #include "command_queue.h"
 #include "command_channel.h"
 
-CommandChannel *CommandChannel::instance = NULL;
+CommandChannel *CommandChannel::instance = nullptr;
 
 CommandChannel::CommandChannel()
 {
@@ -30,7 +30,7 @@ CommandChannel::CommandChannel()
 
 CommandChannel *CommandChannel::getInstance()
 {
-    if (instance == NULL) {
+    if (instance == nullptr) {
         instance = new CommandChannel();
     }
 
@@ -39,22 +39,22 @@ CommandChannel *CommandChannel::getInstance()
 
 void CommandChannel::release()
 {
-    if (instance != NULL) {
+    if (instance != nullptr) {
         delete instance;
-        instance = NULL;
+        instance = nullptr;
     }
 }
 
 CommandChannel::~CommandChannel()
 {
-    if (commandQueue != NULL) {
+    if (commandQueue != nullptr) {
         delete commandQueue;
-        commandQueue = NULL;
+        commandQueue = nullptr;
     }
 
-    if (responseQueue != NULL) {
+    if (responseQueue != nullptr) {
         delete responseQueue;
-        responseQueue = NULL;
+        responseQueue = nullptr;
     }
 }
 

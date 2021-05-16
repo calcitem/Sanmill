@@ -31,7 +31,7 @@
 #define pthread_t					HANDLE
 #define pthread_cancel(x)			TerminateThread((x), 0)
 #define pthread_exit(x)				_endthread
-#define pthread_join(x, NULL)		WaitForSingleObject((x), INFINITE)
+#define pthread_join(x, nullptr)	WaitForSingleObject((x), INFINITE)
 
 extern "C" {
 
@@ -53,7 +53,7 @@ int MillEngine::startup()
 {
     if (thread_id) {
         shutdown();
-        pthread_join(thread_id, NULL);
+        pthread_join(thread_id, nullptr);
     }
 
     CommandChannel::getInstance();
@@ -107,7 +107,7 @@ int MillEngine::shutdown()
 {
     send("quit");
 
-    pthread_join(thread_id, NULL);
+    pthread_join(thread_id, nullptr);
 
     thread_id = nullptr;
 
