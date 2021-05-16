@@ -149,6 +149,7 @@
   "display": "显示",
   "boardBorderLineWidth": "棋盘外框线宽",
   "boardInnerLineWidth": "棋盘内部线宽",
+  "standardNotation": "标准棋谱格式",
   "restore": "重置",
   "restoreDefaultSettings": "恢复默认设置",
   "exitApp": "App 将退出。",

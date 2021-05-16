@@ -596,6 +596,10 @@
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
+  "standardNotation": "Standard notation",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
   "restore": "Restore",
   "@restore": {
     "description": "Restore"

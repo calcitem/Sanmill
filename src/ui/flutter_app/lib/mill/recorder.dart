@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/common/config.dart';
+
 import 'position.dart';
 import 'types.dart';
 
@@ -91,12 +93,38 @@ class GameRecorder {
   }
 
   String buildMoveHistoryText({cols = 2}) {
-    //
     var moveHistoryText = '';
+    int k = 1;
+    String num = "";
 
     for (var i = 0; i < _history.length; i++) {
-      moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${_history[i].move}　';
-      if ((i + 1) % cols == 0) moveHistoryText += '\n';
+      if (Config.standardNotationEnabled) {
+        if (k % cols == 1) {
+          num = "${(k + 1) ~/ 2}.    ";
+          if (k < 9 * cols) {
+            num = " " + num + " ";
+          }
+        } else {
+          num = "";
+        }
+        if (i + 1 < _history.length &&
+            _history[i + 1].type == MoveType.remove) {
+          moveHistoryText +=
+              '$num${_history[i].notation}${_history[i + 1].notation}    ';
+          i++;
+        } else {
+          moveHistoryText += '$num${_history[i].notation}    ';
+        }
+        k++;
+      } else {
+        moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${_history[i].move}　';
+      }
+
+      if (Config.standardNotationEnabled) {
+        if ((k + 1) % cols == 0) moveHistoryText += '\n';
+      } else {
+        if ((i + 1) % cols == 0) moveHistoryText += '\n';
+      }
     }
 
     if (moveHistoryText.isEmpty) {

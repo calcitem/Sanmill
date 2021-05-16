@@ -40,6 +40,7 @@ class Config {
   static bool developerMode = false;
 
   // Display
+  static bool standardNotationEnabled = true;
   static bool isPieceCountInHandShown = false;
   static double boardBorderLineWidth = 2.0;
   static double boardInnerLineWidth = 2.0;
@@ -86,6 +87,8 @@ class Config {
     Config.developerMode = settings['DeveloperMode'] ?? false;
 
     // Display
+    Config.standardNotationEnabled =
+        settings['StandardNotationEnabled'] ?? true;
     Config.isPieceCountInHandShown =
         settings['IsPieceCountInHandShown'] ?? false;
     Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
@@ -151,6 +154,7 @@ class Config {
     settings['DeveloperMode'] = Config.developerMode;
 
     // Display
+    settings['StandardNotationEnabled'] = Config.standardNotationEnabled;
     settings['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
     settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;

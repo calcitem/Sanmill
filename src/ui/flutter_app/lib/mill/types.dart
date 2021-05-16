@@ -40,6 +40,9 @@ class Move {
   // 'move' is the UCI engine's move-string
   String? move = "";
 
+  // "notation" is Standard Notation
+  String? notation = "";
+
   MoveType type = MoveType.none;
 
   // Used to restore fen step counter when undoing move
@@ -55,6 +58,8 @@ class Move {
       from = fromFile = fromRank = fromIndex = invalidMove;
       toFile = int.parse(move![2]);
       toRank = int.parse(move![4]);
+      to = makeSquare(toFile, toRank);
+      notation = "x${squareToNotation[to]}";
       //captured = Piece.noPiece;
     } else if (move!.length == "(1,2)->(3,4)".length) {
       type = MoveType.move;
@@ -64,12 +69,16 @@ class Move {
       fromIndex = squareToIndex[from] ?? invalidMove;
       toFile = int.parse(move![8]);
       toRank = int.parse(move![10]);
+      to = makeSquare(toFile, toRank);
+      notation = "${squareToNotation[from]}-${squareToNotation[to]}";
       removed = Piece.noPiece;
     } else if (move!.length == "(1,2)".length) {
       type = MoveType.place;
       from = fromFile = fromRank = fromIndex = invalidMove;
       toFile = int.parse(move![1]);
       toRank = int.parse(move![3]);
+      to = makeSquare(toFile, toRank);
+      notation = "${squareToNotation[to]}";
       removed = Piece.noPiece;
     } else if (move == "draw") {
       // TODO
@@ -78,7 +87,6 @@ class Move {
       assert(false);
     }
 
-    to = makeSquare(toFile, toRank);
     toIndex = squareToIndex[to] ?? invalidMove;
   }
 
@@ -313,6 +321,48 @@ Map<int, int> squareToIndex = {
   29: 42,
   30: 21,
   31: 0
+};
+
+/*
+          a b c d e f g
+        7 X --- X --- X 7
+          |\    |    /|
+        6 | X - X - X | 6
+          | |\  |  /| |
+        5 | | X-X-X | | 5
+        4 X-X-X   X-X-X 4
+        3 | | X-X-X | | 3
+          | |/  |  \| |
+        2 | X - X - X | 2
+          |/    |    \|
+        1 X --- X --- X 1
+          a b c d e f g
+ */
+Map<int, String> squareToNotation = {
+  8: "d5",
+  9: "e5",
+  10: "e4",
+  11: "e3",
+  12: "d3",
+  13: "c3",
+  14: "c4",
+  15: "c5",
+  16: "d6",
+  17: "f6",
+  18: "f4",
+  19: "f2",
+  20: "d2",
+  21: "b2",
+  22: "b4",
+  23: "b6",
+  24: "d7",
+  25: "g7",
+  26: "g4",
+  27: "g1",
+  28: "d1",
+  29: "a1",
+  30: "a4",
+  31: "a7"
 };
 
 Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));

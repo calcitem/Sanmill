@@ -249,6 +249,13 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).boardTop,
             onTap: setBoardTop,
           ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.standardNotationEnabled,
+            onChanged: setStandardNotationEnabled,
+            titleString: S.of(context).standardNotation,
+          ),
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
@@ -301,6 +308,16 @@ class _PersonalizationSettingsPageState
     setState(() {
       Config.isPieceCountInHandShown = value;
     });
+
+    Config.save();
+  }
+
+  setStandardNotationEnabled(bool value) async {
+    setState(() {
+      Config.standardNotationEnabled = value;
+    });
+
+    print("[config] standardNotationEnabled: $value");
 
     Config.save();
   }

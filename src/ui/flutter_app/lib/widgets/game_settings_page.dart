@@ -498,4 +498,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
     Config.save();
   }
+
+  setStandardNotationEnabled(bool value) async {
+    setState(() {
+      Config.standardNotationEnabled = value;
+    });
+
+    print("[config] standardNotationEnabled: $value");
+
+    Config.save();
+  }
 }
