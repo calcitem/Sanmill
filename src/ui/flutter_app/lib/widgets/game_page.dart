@@ -417,9 +417,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
             showTip(S.of(context).timeout);
           }
 
-          if (Config.developerMode) {
-            assert(false);
-          }
+          //if (Config.developerMode) {
+          //assert(false);
+          //}
           return;
         default:
           showTip('Error: ${response.type}');
