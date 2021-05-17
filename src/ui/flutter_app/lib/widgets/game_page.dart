@@ -433,7 +433,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
   }
 
-  newGame() {
+  onGameButtonPressed() {
     confirm() {
       Navigator.of(context).pop();
       Game.instance.newGame();
@@ -458,6 +458,71 @@ class _GamePageState extends State<GamePage> with RouteAware {
                   style: AppTheme.simpleDialogOptionTextStyle,
                 ),
                 onPressed: confirm),
+          ],
+        );
+      },
+    );
+  }
+
+  onOptionButtonPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GameSettingsPage()),
+    );
+  }
+
+  onMoveButtonPressed() {
+    final moveHistoryText = Game.instance.position.moveHistoryText;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
+          title: Text(S.of(context).moveList,
+              style: TextStyle(color: AppTheme.moveHistoryTextColor)),
+          content: SingleChildScrollView(
+              child:
+                  Text(moveHistoryText, style: AppTheme.moveHistoryTextStyle)),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).copy,
+                  style: AppTheme.moveHistoryTextStyle),
+              onPressed: () =>
+                  Clipboard.setData(ClipboardData(text: moveHistoryText))
+                      .then((_) {
+                showSnackBar(S.of(context).moveHistoryCopied);
+              }),
+            ),
+            TextButton(
+              child: Text(S.of(context).cancel,
+                  style: AppTheme.moveHistoryTextStyle),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  onInfoButtonPressed() {
+    final analyzeText = getInfoText();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppTheme.infoDialogackgroundColor,
+          content: SingleChildScrollView(
+              child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle)),
+          actions: <Widget>[
+            TextButton(
+              child:
+                  Text(S.of(context).ok, style: AppTheme.moveHistoryTextStyle),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ],
         );
       },
@@ -800,11 +865,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   Widget createToolbar() {
-    final moveHistoryText = Game.instance.position.moveHistoryText;
-
-    final analyzeText = getInfoText();
-
-    var newGameButton = TextButton(
+    var gameButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -816,10 +877,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
-      onPressed: newGame,
+      onPressed: onGameButtonPressed,
     );
 
-    var undoButton = TextButton(
+    var optionsButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -831,15 +892,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GameSettingsPage()),
-        );
-      },
+      onPressed: onOptionButtonPressed,
     );
 
-    var moveHistoryButton = TextButton(
+    var moveButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -851,36 +907,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
-      onPressed: () => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
-            title: Text(S.of(context).moveList,
-                style: TextStyle(color: AppTheme.moveHistoryTextColor)),
-            content: SingleChildScrollView(
-                child: Text(moveHistoryText,
-                    style: AppTheme.moveHistoryTextStyle)),
-            actions: <Widget>[
-              TextButton(
-                child: Text(S.of(context).copy,
-                    style: AppTheme.moveHistoryTextStyle),
-                onPressed: () =>
-                    Clipboard.setData(ClipboardData(text: moveHistoryText))
-                        .then((_) {
-                  showSnackBar(S.of(context).moveHistoryCopied);
-                }),
-              ),
-              TextButton(
-                child: Text(S.of(context).cancel,
-                    style: AppTheme.moveHistoryTextStyle),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
-      ),
+      onPressed: onMoveButtonPressed,
     );
 
     var infoButton = TextButton(
@@ -895,24 +922,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               style: TextStyle(color: AppTheme.toolbarTextColor)),
         ],
       ),
-      onPressed: () => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: AppTheme.infoDialogackgroundColor,
-            content: SingleChildScrollView(
-                child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle)),
-            actions: <Widget>[
-              TextButton(
-                child: Text(S.of(context).ok,
-                    style: AppTheme.moveHistoryTextStyle),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
-      ),
+      onPressed: onInfoButtonPressed,
     );
 
     return Container(
@@ -924,11 +934,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Row(children: <Widget>[
         Expanded(child: SizedBox()),
-        newGameButton,
+        gameButton,
         Expanded(child: SizedBox()),
-        undoButton,
+        optionsButton,
         Expanded(child: SizedBox()),
-        moveHistoryButton,
+        moveButton,
         Expanded(child: SizedBox()), //dashboard_outlined
         infoButton,
         Expanded(child: SizedBox()),
