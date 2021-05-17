@@ -1,0 +1,3 @@
+v1.0.8
+
+* Support taking back. You can try to undo a bad move and make any other better move.
