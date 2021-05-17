@@ -35,6 +35,7 @@ import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
 import 'game_settings_page.dart';
+import 'list_item_divider.dart';
 
 class GamePage extends StatefulWidget {
   static double boardMargin = AppTheme.boardMargin;
@@ -52,6 +53,7 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> with RouteAware {
   String? _tip = '';
   bool isReady = false;
+  bool isTakingBack = false;
   late Timer timer;
   final String tag = "[game_page]";
 
@@ -472,7 +474,61 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   onMoveButtonPressed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          children: <Widget>[
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).takeBack,
+                style: AppTheme.simpleDialogOptionTextStyle,
+              ),
+              onPressed: onTakeBackButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            ListItemDivider(),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).moveList,
+                style: AppTheme.simpleDialogOptionTextStyle,
+              ),
+              onPressed: onMoveListButtonPressed,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  onTakeBackButtonPressed() async {
+    Navigator.of(context).pop();
+
+    if (mounted) {
+      showTip(S.of(context).takingBack);
+    }
+
+    if (isTakingBack) {
+      print("[TakeBack] Is taking back, ignore Take Back button press.");
+      return;
+    }
+
+    isTakingBack = true;
+    await Game.instance.position.takeBack();
+    isTakingBack = false;
+
+    //Audios.playTone(Audios.placeSoundId);
+
+    if (mounted) {
+      showTip(S.of(context).takeBack + " " + S.of(context).done);
+    }
+  }
+
+  onMoveListButtonPressed() {
     final moveHistoryText = Game.instance.position.moveHistoryText;
+
+    Navigator.of(context).pop();
 
     showDialog(
       context: context,

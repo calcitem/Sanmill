@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
@@ -1033,6 +1034,33 @@ class Position {
   }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+  void takeBack() async {
+    print("TODO: Take back");
+
+    if (recorder == null) {
+      print("[TakeBack] recorder is null.");
+      return;
+    }
+
+    // Backup context
+    var engineTypeBackup = Game.instance.engineType;
+
+    Game.instance.engineType = EngineType.humanVsHuman;
+    Game.instance.setWhoIsAi(EngineType.humanVsHuman);
+
+    var history = recorder!.getHistory();
+
+    await Game.instance.newGame();
+
+    for (var i = 0; i < history.length - 1; i++) {
+      Game.instance.doMove(history[i].move);
+    }
+
+    // Restore context
+    Game.instance.engineType = engineTypeBackup;
+    Game.instance.setWhoIsAi(engineTypeBackup);
+  }
 
   bool regret() {
     // TODO

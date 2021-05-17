@@ -29,6 +29,7 @@ class GameRecorder {
 
   GameRecorder(
       {this.halfMove = 0, this.fullMove = 0, this.lastPositionWithRemove});
+
   GameRecorder.fromCounterMarks(String marks) {
     //
     var segments = marks.split(' ');
@@ -42,6 +43,10 @@ class GameRecorder {
     if (halfMove == null || fullMove == null) {
       throw 'Error: Invalid Counter Marks: $marks';
     }
+  }
+
+  List<Move> getHistory() {
+    return _history;
   }
 
   void moveIn(Move move, Position position) {
