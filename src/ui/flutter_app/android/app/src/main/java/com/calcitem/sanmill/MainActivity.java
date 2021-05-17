@@ -95,7 +95,9 @@ public class MainActivity extends FlutterActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+        if (base != null) {
+            super.attachBaseContext(base);
+        }
 
         // Initialize xCrash.
         if (Build.VERSION.SDK_INT >= 19) {
