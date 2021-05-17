@@ -97,37 +97,37 @@ public class MainActivity extends FlutterActivity {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
-        // callback for java crash, native crash and ANR
-        ICrashCallback callback = new ICrashCallback() {
-            @Override
-            public void onCrash(String logPath, String emergency) {
-                Log.d(TAG_XCRASH,
-                        "xCrash log path: " + (logPath != null ? logPath : "(null)") + ", " +
-                                "emergency: " + (emergency != null ? emergency : "(null)"));
-
-                if (emergency != null) {
-                    debug(logPath, emergency);
-
-                    // Disk is exhausted, send crash report immediately.
-                    sendThenDeleteCrashLog(logPath, emergency);
-                } else {
-                    // Add some expanded sections. Send crash report at the next time APP startup.
-
-                    TombstoneManager.appendSection(logPath,
-                            "expanded_key_1", "expanded_content");
-                    TombstoneManager.appendSection(logPath,
-                            "expanded_key_2", "expanded_content_row_1\nexpanded_content_row_2");
-
-                    // Invalid. (Do NOT include multiple consecutive newline characters ("\n\n") in the content string.)
-                    // TombstoneManager.appendSection(logPath, "expanded_key_3", "expanded_content_row_1\n\nexpanded_content_row_2");
-
-                    debug(logPath, null);
-                }
-            }
-        };
-
         // Initialize xCrash.
         if (Build.VERSION.SDK_INT >= 19) {
+            // callback for java crash, native crash and ANR
+            ICrashCallback callback = new ICrashCallback() {
+                @Override
+                public void onCrash(String logPath, String emergency) {
+                    Log.d(TAG_XCRASH,
+                            "xCrash log path: " + (logPath != null ? logPath : "(null)") + ", " +
+                                    "emergency: " + (emergency != null ? emergency : "(null)"));
+
+                    if (emergency != null) {
+                        debug(logPath, emergency);
+
+                        // Disk is exhausted, send crash report immediately.
+                        sendThenDeleteCrashLog(logPath, emergency);
+                    } else {
+                        // Add some expanded sections. Send crash report at the next time APP startup.
+
+                        TombstoneManager.appendSection(logPath,
+                                "expanded_key_1", "expanded_content");
+                        TombstoneManager.appendSection(logPath,
+                                "expanded_key_2", "expanded_content_row_1\nexpanded_content_row_2");
+
+                        // Invalid. (Do NOT include multiple consecutive newline characters ("\n\n") in the content string.)
+                        // TombstoneManager.appendSection(logPath, "expanded_key_3", "expanded_content_row_1\n\nexpanded_content_row_2");
+
+                        debug(logPath, null);
+                    }
+                }
+            };
+
             Log.d(TAG_XCRASH, "xCrash SDK init: start");
 
             XCrash.init(this, new XCrash.InitParameters()
