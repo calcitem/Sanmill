@@ -58,12 +58,25 @@ class Settings {
 
     if (Platform.isAndroid) {
       docDir = await getExternalStorageDirectory();
-      _file = File('${docDir.path}/$fileName');
+      if (docDir != null) {
+        _file = File('${docDir.path}/$fileName');
+      } else {
+        docDir = await getApplicationDocumentsDirectory();
+        if (docDir != null) {
+          _file = File('${docDir.path}/$fileName');
+        } else {
+          _file = File('$fileName');
+        }
+      }
     } else if (Platform.isWindows) {
       _file = File('$fileName');
     } else {
       docDir = await getApplicationDocumentsDirectory();
-      _file = File('${docDir.path}/$fileName');
+      if (docDir != null) {
+        _file = File('${docDir.path}/$fileName');
+      } else {
+        _file = File('$fileName');
+      }
     }
 
     print("[settings] Loading $_file ...");
