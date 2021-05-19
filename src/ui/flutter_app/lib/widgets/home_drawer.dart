@@ -322,7 +322,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       color: Colors.transparent,
       child: InkWell(
         splashColor: AppTheme.drawerSplashColor,
-        highlightColor: AppTheme.drawerHightlightColor,
+        highlightColor: AppTheme.drawerHighlightColor,
         onTap: () {
           navigationToScreen(listItem.index);
         },

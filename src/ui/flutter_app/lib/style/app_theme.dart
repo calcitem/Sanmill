@@ -24,7 +24,7 @@ class AppTheme {
   static var toolbarTextColor = toolbarIconColor;
   static var moveHistoryTextColor = Colors.yellow;
   static var moveHistoryDialogBackgroundColor = Colors.transparent;
-  static var infoDialogackgroundColor = moveHistoryDialogBackgroundColor;
+  static var infoDialogBackgroundColor = moveHistoryDialogBackgroundColor;
   static var infoTextColor = moveHistoryTextColor;
   static var simpleDialogOptionTextColor = appPrimaryColor;
 
@@ -60,7 +60,7 @@ class AppTheme {
   static var drawerAnimationIconColor = Colors.white;
   static var exitIconColor = Colors.red;
   static var drawerSplashColor = Colors.grey.withOpacity(0.1); // TODO: no use?
-  static var drawerHightlightColor = Colors.transparent; // TODO: no use?
+  static var drawerHighlightColor = Colors.transparent; // TODO: no use?
   static var navigationHomeScreenBackgroundColor =
       UIColors.nearlyWhite; // TODO: no use?
 

@@ -572,7 +572,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: AppTheme.infoDialogackgroundColor,
+          backgroundColor: AppTheme.infoDialogBackgroundColor,
           content: SingleChildScrollView(
               child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle)),
           actions: <Widget>[
@@ -860,7 +860,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   Widget createBoard() {
-    boardWidth = MediaQuery.of(context).size.width - GamePage.screenPaddingH * 2;
+    boardWidth =
+        MediaQuery.of(context).size.width - GamePage.screenPaddingH * 2;
 
     return Container(
       margin: EdgeInsets.symmetric(
