@@ -1,0 +1,3 @@
+v1.0.9
+
+* Show notations on board (configurable).
