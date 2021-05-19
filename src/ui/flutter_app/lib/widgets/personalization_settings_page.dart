@@ -233,6 +233,13 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).isPieceCountInHandShown,
           ),
           ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.isNotationsShown,
+            onChanged: setIsNotationsShown,
+            titleString: S.of(context).isNotationsShown,
+          ),
+          ListItemDivider(),
           SettingsListTile(
               context: context,
               titleString: S.of(context).boardBorderLineWidth,
@@ -307,6 +314,14 @@ class _PersonalizationSettingsPageState
   setIsPieceCountInHandShown(bool value) async {
     setState(() {
       Config.isPieceCountInHandShown = value;
+    });
+
+    Config.save();
+  }
+
+  setIsNotationsShown(bool value) async {
+    setState(() {
+      Config.isNotationsShown = value;
     });
 
     Config.save();

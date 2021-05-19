@@ -42,6 +42,7 @@ class Config {
   // Display
   static bool standardNotationEnabled = true;
   static bool isPieceCountInHandShown = false;
+  static bool isNotationsShown = false;
   static double boardBorderLineWidth = 2.0;
   static double boardInnerLineWidth = 2.0;
   static double boardTop = 36.0;
@@ -91,6 +92,7 @@ class Config {
         settings['StandardNotationEnabled'] ?? true;
     Config.isPieceCountInHandShown =
         settings['IsPieceCountInHandShown'] ?? false;
+    Config.isNotationsShown = settings['IsNotationsShown'] ?? false;
     Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
     Config.boardTop = settings['BoardTop'] ?? 36;
@@ -156,6 +158,7 @@ class Config {
     // Display
     settings['StandardNotationEnabled'] = Config.standardNotationEnabled;
     settings['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
+    settings['IsNotationsShown'] = Config.isNotationsShown;
     settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
     settings['BoardTop'] = Config.boardTop;

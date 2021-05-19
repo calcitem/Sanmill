@@ -499,6 +499,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
+  setIsNotationsShown(bool value) async {
+    setState(() {
+      Config.isNotationsShown = value;
+    });
+
+    print("[config] isNotationsShown: $value");
+
+    Config.save();
+  }
+
   setStandardNotationEnabled(bool value) async {
     setState(() {
       Config.standardNotationEnabled = value;

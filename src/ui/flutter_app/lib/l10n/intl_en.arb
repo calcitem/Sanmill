@@ -584,6 +584,10 @@
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
+  "isNotationsShown": "Show notations on board",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
   "display": "Display",
   "@display": {
     "description": "Display"

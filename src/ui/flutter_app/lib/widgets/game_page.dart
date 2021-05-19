@@ -37,6 +37,8 @@ import 'board.dart';
 import 'game_settings_page.dart';
 import 'list_item_divider.dart';
 
+double boardWidth = 0.0;
+
 class GamePage extends StatefulWidget {
   static double boardMargin = AppTheme.boardMargin;
   static double screenPaddingH = AppTheme.boardScreenPaddingH;
@@ -858,13 +860,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   Widget createBoard() {
+    boardWidth = MediaQuery.of(context).size.width - GamePage.screenPaddingH * 2;
+
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: GamePage.screenPaddingH,
         vertical: GamePage.boardMargin,
       ),
       child: Board(
-        width: MediaQuery.of(context).size.width - GamePage.screenPaddingH * 2,
+        width: boardWidth,
         onBoardTap: onBoardTap,
       ),
     );

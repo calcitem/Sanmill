@@ -21,6 +21,7 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/widgets/game_page.dart';
 
 import 'painter_base.dart';
 
@@ -86,6 +87,75 @@ class BoardPainter extends PiecesBasePainter {
           canvas,
           Offset(left + squareWidth * 3 - textPainter.width / 2,
               top + squareWidth * 3 - textPainter.height / 2));
+    }
+
+    if (Config.isNotationsShown) {
+      String verticalNotations = "abcdefg";
+      String horizontalNotations = "7654321";
+      String notationV = "";
+      String notationH = "";
+
+      for (int i = 0; i < 7; i++) {
+        notationV = verticalNotations[i];
+        notationH = horizontalNotations[i];
+
+        TextSpan notationSpanV = TextSpan(
+          style:
+              TextStyle(fontSize: 20, color: AppTheme.boardLineColor), // TODO
+          text: notationV,
+        );
+
+        TextSpan notationSpanH = TextSpan(
+          style:
+              TextStyle(fontSize: 20, color: AppTheme.boardLineColor), // TODO
+          text: notationH,
+        );
+
+        TextPainter notationPainterV = TextPainter(
+          text: notationSpanV,
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+        );
+
+        TextPainter notationPainterH = TextPainter(
+          text: notationSpanH,
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+        );
+
+        notationPainterV.layout();
+        notationPainterH.layout();
+
+        var offset = (boardWidth - squareWidth * 6) / 4;
+
+        /* Show notations "a b c d e f" on board */
+
+        notationPainterV.paint(
+          canvas,
+          Offset(left + squareWidth * i - notationPainterV.width / 2,
+              top - offset - notationPainterV.height / 2),
+        );
+
+        notationPainterV.paint(
+          canvas,
+          Offset(left + squareWidth * i - notationPainterV.width / 2,
+              top + squareWidth * 6 + offset - notationPainterV.height / 2),
+        );
+
+        /* Show notations "1 2 3 4 5 6 7" on board */
+
+        notationPainterH.paint(
+          canvas,
+          Offset(left - offset - notationPainterH.width / 2,
+              top + squareWidth * i - notationPainterH.height / 2),
+        );
+
+        notationPainterH.paint(
+          canvas,
+          Offset(left + squareWidth * 6 + offset - notationPainterH.width / 2,
+              top + squareWidth * i - notationPainterH.height / 2),
+        );
+      }
     }
 
     // File C
