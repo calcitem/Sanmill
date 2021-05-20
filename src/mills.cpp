@@ -425,7 +425,15 @@ void move_priority_list_shuffle()
 
 Depth get_search_depth(const Position *pos)
 {
+    const int pb = pos->count<ON_BOARD>(WHITE);
+    const int pw = pos->count<ON_BOARD>(BLACK);
+
+    const int pieces = pb + pw;
+
     if (!gameOptions.getDeveloperMode()) {
+        if (pos->phase == Phase::placing && pieces <= 4) {
+            return 1;
+        }
         return (Depth)gameOptions.getSkillLevel();
     }
 
@@ -508,10 +516,6 @@ Depth get_search_depth(const Position *pos)
     }
 
     if (pos->phase == Phase::moving) {
-        const int pb = pos->count<ON_BOARD>(WHITE);
-        const int pw = pos->count<ON_BOARD>(BLACK);
-
-        const int pieces = pb + pw;
         int diff = pb - pw;
 
         if (diff < 0) {
