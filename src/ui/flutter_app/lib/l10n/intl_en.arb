@@ -284,10 +284,6 @@
   "@youLose": {
     "description": "You Lose!"
   },
-  "regret": "Undo",
-  "@regret": {
-    "description": "Undo"
-  },
   "analyze": "Analyze",
   "@analyze": {
     "description": "Analyze"

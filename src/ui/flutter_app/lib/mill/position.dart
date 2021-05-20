@@ -1062,45 +1062,6 @@ class Position {
     Game.instance.setWhoIsAi(engineTypeBackup);
   }
 
-  bool regret() {
-    // TODO
-    final lastMove = recorder!.removeLast();
-    if (lastMove == null) return false;
-
-    _grid[lastMove.from] = _grid[lastMove.to];
-    _grid[lastMove.to] = lastMove.removed;
-    board[lastMove.from] = board[lastMove.to];
-    board[lastMove.to] = lastMove.removed;
-
-    changeSideToMove();
-
-    final counterMarks = GameRecorder.fromCounterMarks(lastMove.counterMarks);
-    recorder!.halfMove = counterMarks.halfMove;
-    recorder!.fullMove = counterMarks.fullMove;
-
-    if (lastMove.removed != Piece.noPiece) {
-      //
-      // Find last remove position (or opening), NativeEngine need
-      final tempPosition = Position.clone(this);
-
-      final moves = recorder!.reverseMovesToPrevRemove();
-      moves.forEach((move) {
-        //
-        tempPosition._grid[move.from] = tempPosition._grid[move.to];
-        tempPosition._grid[move.to] = move.removed;
-
-        tempPosition._sideToMove =
-            PieceColor.opponent(tempPosition._sideToMove);
-      });
-
-      recorder!.lastPositionWithRemove = tempPosition.fen();
-    }
-
-    result = GameResult.pending;
-
-    return true;
-  }
-
   String movesSinceLastRemove() {
     int? i = 0;
     String moves = "";

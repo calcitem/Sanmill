@@ -139,47 +139,6 @@ class Game {
     return true;
   }
 
-  bool regret({moves = 2}) {
-    //
-    // Can regret only our turn
-    // TODO
-    if (_position.side != PieceColor.black) {
-      //Audios.playTone(Audios.invalidSoundId);
-      return false;
-    }
-
-    var regretted = false;
-
-    /// Regret 2 step
-
-    for (var i = 0; i < moves; i++) {
-      //
-      if (!_position.regret()) break;
-
-      final lastMove = _position.lastMove;
-
-      if (lastMove != null) {
-        //
-        _blurIndex = lastMove.from ?? invalidIndex;
-        _focusIndex = lastMove.to ?? invalidIndex;
-        //
-      } else {
-        //
-        _blurIndex = _focusIndex = invalidIndex;
-      }
-
-      regretted = true;
-    }
-
-    if (regretted) {
-      //Audios.playTone(Audios.regretSoundId);
-      return true;
-    }
-
-    //Audios.playTone(Audios.invalidSoundId);
-    return false;
-  }
-
   printStat() {
     double whiteWinRate = 0;
     double blackWinRate = 0;
