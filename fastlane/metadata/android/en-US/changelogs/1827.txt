@@ -1,0 +1,4 @@
+v1.0.10
+
+* Speed up thinking of first two moves.
+* Only show the notation on board on two sides.
