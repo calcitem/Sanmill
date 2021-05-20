@@ -130,11 +130,13 @@ class BoardPainter extends PiecesBasePainter {
 
         /* Show notations "a b c d e f" on board */
 
-        notationPainterV.paint(
-          canvas,
-          Offset(left + squareWidth * i - notationPainterV.width / 2,
-              top - offset - notationPainterV.height / 2),
-        );
+        if (Config.developerMode) {
+          notationPainterV.paint(
+            canvas,
+            Offset(left + squareWidth * i - notationPainterV.width / 2,
+                top - offset - notationPainterV.height / 2),
+          );
+        }
 
         notationPainterV.paint(
           canvas,
@@ -150,11 +152,13 @@ class BoardPainter extends PiecesBasePainter {
               top + squareWidth * i - notationPainterH.height / 2),
         );
 
-        notationPainterH.paint(
-          canvas,
-          Offset(left + squareWidth * 6 + offset - notationPainterH.width / 2,
-              top + squareWidth * i - notationPainterH.height / 2),
-        );
+        if (Config.developerMode) {
+          notationPainterH.paint(
+            canvas,
+            Offset(left + squareWidth * 6 + offset - notationPainterH.width / 2,
+                top + squareWidth * i - notationPainterH.height / 2),
+          );
+        }
       }
     }
 
