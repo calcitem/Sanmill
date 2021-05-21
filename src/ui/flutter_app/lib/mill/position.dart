@@ -1035,11 +1035,15 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  void takeBack() async {
-    print("TODO: Take back");
-
+  void _gotoHistory(int moveIndex) async {
     if (recorder == null) {
-      print("[TakeBack] recorder is null.");
+      print("[goto] recorder is null.");
+      return;
+    }
+
+    var history = recorder!.getHistory();
+    if (moveIndex < -1 || history.length <= moveIndex) {
+      print("[goto] moveIndex is out of range.");
       return;
     }
 
@@ -1049,17 +1053,35 @@ class Position {
     Game.instance.engineType = EngineType.humanVsHuman;
     Game.instance.setWhoIsAi(EngineType.humanVsHuman);
 
-    var history = recorder!.getHistory();
+    var historyBack = history;
 
     await Game.instance.newGame();
 
-    for (var i = 0; i < history.length - 1; i++) {
+    for (var i = 0; i <= moveIndex; i++) {
       Game.instance.doMove(history[i].move);
     }
 
     // Restore context
     Game.instance.engineType = engineTypeBackup;
     Game.instance.setWhoIsAi(engineTypeBackup);
+    recorder!.setHistory(historyBack);
+    recorder!.cur = moveIndex;
+  }
+
+  void takeBack() async {
+    _gotoHistory(recorder!.cur - 1);
+  }
+
+  void stepForward() async {
+    _gotoHistory(recorder!.cur + 1);
+  }
+
+  void takeBackAll() async {
+    _gotoHistory(-1);
+  }
+
+  void stepForwardAll() async {
+    _gotoHistory(recorder!.getHistory().length - 1);
   }
 
   String movesSinceLastRemove() {
@@ -1098,10 +1120,6 @@ class Position {
   get moveHistoryText => recorder!.buildMoveHistoryText();
 
   get side => _sideToMove;
-
-  get halfMove => recorder!.halfMove;
-
-  get fullMove => recorder!.fullMove;
 
   get lastMove => recorder!.last;
 

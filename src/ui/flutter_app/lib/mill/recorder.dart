@@ -23,46 +23,42 @@ import 'types.dart';
 
 // TODO
 class GameRecorder {
-  int? halfMove, fullMove;
+  int cur = -1;
   String? lastPositionWithRemove = "";
-  final _history = <Move>[];
+  var _history = <Move>[];
 
-  GameRecorder(
-      {this.halfMove = 0, this.fullMove = 0, this.lastPositionWithRemove});
-
-  GameRecorder.fromCounterMarks(String marks) {
-    //
-    var segments = marks.split(' ');
-    if (segments.length != 2) {
-      throw 'Error: Invalid Counter Marks: $marks';
-    }
-
-    halfMove = int.parse(segments[0]);
-    fullMove = int.parse(segments[1]);
-
-    if (halfMove == null || fullMove == null) {
-      throw 'Error: Invalid Counter Marks: $marks';
-    }
-  }
+  GameRecorder({this.cur = -1, this.lastPositionWithRemove});
 
   List<Move> getHistory() {
     return _history;
   }
 
+  void setHistory(List<Move> newHistory) {
+    _history = newHistory;
+  }
+
+  void jumpToHead() {
+    cur = 0;
+  }
+
+  void jumpToTail() {
+    cur = _history.length - 1;
+  }
+
+  void clear() {
+    _history.clear();
+    cur = 0;
+  }
+
+  void prune() {
+    if (cur == _history.length - 1) {
+      return;
+    }
+
+    _history.removeRange(cur + 1, _history.length);
+  }
+
   void moveIn(Move move, Position position) {
-    //
-    if (move.type == MoveType.remove) {
-      halfMove = 0;
-    } else {
-      if (halfMove != null) halfMove = halfMove! + 1;
-    }
-
-    if (fullMove == 0) {
-      if (halfMove != null) halfMove = halfMove! + 1;
-    } else if (position.side != PieceColor.white) {
-      if (halfMove != null) halfMove = halfMove! + 1;
-    }
-
     if (_history.length > 0) {
       if (_history[_history.length - 1].move == move.move) {
         //assert(false);
@@ -72,6 +68,7 @@ class GameRecorder {
     }
 
     _history.add(move);
+    cur++;
 
     if (move.type == MoveType.remove) {
       lastPositionWithRemove = position.fen();
@@ -85,24 +82,16 @@ class GameRecorder {
 
   get last => _history.isEmpty ? null : _history.last;
 
-  List<Move> reverseMovesToPrevRemove() {
-    //
-    List<Move> moves = [];
+  Move moveAt(int index) => _history[index];
 
-    for (var i = _history.length - 1; i >= 0; i--) {
-      if (_history[i].type == MoveType.remove) break;
-      moves.add(_history[i]);
-    }
-
-    return moves;
-  }
+  get movesCount => _history.length;
 
   String buildMoveHistoryText({cols = 2}) {
     var moveHistoryText = '';
     int k = 1;
     String num = "";
 
-    for (var i = 0; i < _history.length; i++) {
+    for (var i = 0; i <= cur; i++) {
       if (Config.standardNotationEnabled) {
         if (k % cols == 1) {
           num = "${(k + 1) ~/ 2}.    ";
@@ -112,8 +101,7 @@ class GameRecorder {
         } else {
           num = "";
         }
-        if (i + 1 < _history.length &&
-            _history[i + 1].type == MoveType.remove) {
+        if (i + 1 <= cur && _history[i + 1].type == MoveType.remove) {
           moveHistoryText +=
               '$num${_history[i].notation}${_history[i + 1].notation}    ';
           i++;
@@ -137,14 +125,5 @@ class GameRecorder {
     }
 
     return moveHistoryText;
-  }
-
-  Move moveAt(int index) => _history[index];
-
-  get movesCount => _history.length;
-
-  @override
-  String toString() {
-    return '$halfMove $fullMove';
   }
 }

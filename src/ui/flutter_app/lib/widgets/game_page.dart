@@ -55,7 +55,7 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> with RouteAware {
   String? _tip = '';
   bool isReady = false;
-  bool isTakingBack = false;
+  bool isGoingToHistory = false;
   late Timer timer;
   final String tag = "[game_page]";
 
@@ -357,6 +357,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         //position.move = m;
 
         Move m = Move(position.record);
+        position.recorder.prune();
         position.recorder.moveIn(m, position);
 
         setState(() {});
@@ -493,32 +494,107 @@ class _GamePageState extends State<GamePage> with RouteAware {
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
+                S.of(context).stepForward,
+                style: AppTheme.simpleDialogOptionTextStyle,
+              ),
+              onPressed: onStepForwardButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            ListItemDivider(),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).takeBackAll,
+                style: AppTheme.simpleDialogOptionTextStyle,
+              ),
+              onPressed: onTakeBackAllButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            ListItemDivider(),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).stepForwardAll,
+                style: AppTheme.simpleDialogOptionTextStyle,
+              ),
+              onPressed: onStepForwardAllButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            ListItemDivider(),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
                 S.of(context).moveList,
                 style: AppTheme.simpleDialogOptionTextStyle,
               ),
               onPressed: onMoveListButtonPressed,
             ),
+            /*
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            ListItemDivider(),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).moveNow,
+                style: AppTheme.simpleDialogOptionTextStyle,
+              ),
+              onPressed: onMoveNowButtonPressed,
+            ),
+            */
           ],
         );
       },
     );
   }
 
+  onGotoHistoryButtonsPressed(var func) async {
+    Navigator.of(context).pop();
+
+    if (mounted) {
+      showTip(S.of(context).waiting);
+    }
+
+    if (isGoingToHistory) {
+      print("[TakeBack] Is going to history, ignore Take Back button press.");
+      return;
+    }
+
+    isGoingToHistory = true;
+    await func;
+    isGoingToHistory = false;
+
+    if (mounted) {
+      showTip(S.of(context).done);
+    }
+  }
+
   onTakeBackButtonPressed() async {
+    onGotoHistoryButtonsPressed(Game.instance.position.takeBack());
+  }
+
+  onStepForwardButtonPressed() async {
+    onGotoHistoryButtonsPressed(Game.instance.position.stepForward());
+  }
+
+  onTakeBackAllButtonPressed() async {
+    onGotoHistoryButtonsPressed(Game.instance.position.takeBackAll());
+  }
+
+  onStepForwardAllButtonPressed() async {
     Navigator.of(context).pop();
 
     if (mounted) {
       showTip(S.of(context).takingBack);
     }
 
-    if (isTakingBack) {
+    if (isGoingToHistory) {
       print("[TakeBack] Is taking back, ignore Take Back button press.");
       return;
     }
 
-    isTakingBack = true;
-    await Game.instance.position.takeBack();
-    isTakingBack = false;
+    isGoingToHistory = true;
+    await Game.instance.position.stepForwardAll();
+    isGoingToHistory = false;
 
     //Audios.playTone(Audios.placeSoundId);
 
@@ -562,6 +638,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
         );
       },
     );
+  }
+
+  onMoveNowButtonPressed() async {
+    Navigator.of(context).pop();
+    /* Not implement */
   }
 
   onInfoButtonPressed() {

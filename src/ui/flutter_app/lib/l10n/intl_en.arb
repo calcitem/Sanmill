@@ -720,9 +720,29 @@
   "@takingBack": {
     "description": "Taking back..."
   },
-  "done": "done.",
+  "waiting": "Waiting...",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Step forward",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Take back all",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Step forward all",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Move now",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Done.",
   "@done": {
-    "description": "done."
+    "description": "Done."
   },
   "crackMill": "Crack-mill",
   "@crackMill": {
