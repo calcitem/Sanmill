@@ -1,0 +1,3 @@
+v1.0.11
+
+* Support Step forward & Take back all & Step forward all.
