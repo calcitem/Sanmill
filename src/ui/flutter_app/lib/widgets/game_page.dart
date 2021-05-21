@@ -456,11 +456,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
+          backgroundColor: Colors.transparent,
           children: <Widget>[
             SimpleDialogOption(
                 child: Text(
                   S.of(context).startNewGame,
                   style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
                 ),
                 onPressed: confirm),
           ],
@@ -477,15 +479,18 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   onMoveButtonPressed() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return SimpleDialog(
+          backgroundColor: Colors.transparent,
           children: <Widget>[
             SimpleDialogOption(
               child: Text(
                 S.of(context).takeBack,
                 style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
               ),
               onPressed: onTakeBackButtonPressed,
             ),
@@ -496,6 +501,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               child: Text(
                 S.of(context).stepForward,
                 style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
               ),
               onPressed: onStepForwardButtonPressed,
             ),
@@ -506,6 +512,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               child: Text(
                 S.of(context).takeBackAll,
                 style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
               ),
               onPressed: onTakeBackAllButtonPressed,
             ),
@@ -516,6 +523,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               child: Text(
                 S.of(context).stepForwardAll,
                 style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
               ),
               onPressed: onStepForwardAllButtonPressed,
             ),
@@ -526,6 +534,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               child: Text(
                 S.of(context).moveList,
                 style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
               ),
               onPressed: onMoveListButtonPressed,
             ),
@@ -537,6 +546,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
               child: Text(
                 S.of(context).moveNow,
                 style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
               ),
               onPressed: onMoveNowButtonPressed,
             ),
@@ -581,26 +591,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   onStepForwardAllButtonPressed() async {
-    Navigator.of(context).pop();
-
-    if (mounted) {
-      showTip(S.of(context).takingBack);
-    }
-
-    if (isGoingToHistory) {
-      print("[TakeBack] Is taking back, ignore Take Back button press.");
-      return;
-    }
-
-    isGoingToHistory = true;
-    await Game.instance.position.stepForwardAll();
-    isGoingToHistory = false;
-
-    //Audios.playTone(Audios.placeSoundId);
-
-    if (mounted) {
-      showTip(S.of(context).takeBack + " " + S.of(context).done);
-    }
+    onGotoHistoryButtonsPressed(Game.instance.position.stepForwardAll());
   }
 
   onMoveListButtonPressed() {

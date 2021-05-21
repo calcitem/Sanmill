@@ -26,7 +26,7 @@ class AppTheme {
   static var moveHistoryDialogBackgroundColor = Colors.transparent;
   static var infoDialogBackgroundColor = moveHistoryDialogBackgroundColor;
   static var infoTextColor = moveHistoryTextColor;
-  static var simpleDialogOptionTextColor = appPrimaryColor;
+  static var simpleDialogOptionTextColor = Colors.yellow;
 
   /// Settings page
   static var darkBackgroundColor = UIColors.crusoe;
