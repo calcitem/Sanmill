@@ -44,6 +44,10 @@
   "@move": {
     "description": "Move"
   },
+  "showMoveList": "Move list",
+  "@showMoveList": {
+    "description": "Move list"
+  },
   "moveList": "Move list",
   "@moveList": {
     "description": "Move list"

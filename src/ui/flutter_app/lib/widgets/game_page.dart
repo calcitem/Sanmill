@@ -532,7 +532,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
-                S.of(context).moveList,
+                S.of(context).showMoveList,
                 style: AppTheme.simpleDialogOptionTextStyle,
                 textAlign: TextAlign.center,
               ),
