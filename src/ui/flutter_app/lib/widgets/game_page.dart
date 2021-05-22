@@ -460,20 +460,27 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
   }
 
-  onGameButtonPressed() {
-    confirm() {
-      Navigator.of(context).pop();
-      Game.instance.newGame();
-      if (mounted) {
-        showTip(S.of(context).gameStarted);
-      }
-
-      if (Game.instance.isAiToMove()) {
-        print("$tag New game, AI to move.");
-        engineToGo(false);
-      }
+  onStartNewGameButtonPressed() async {
+    Navigator.of(context).pop();
+    Game.instance.newGame();
+    if (mounted) {
+      showTip(S.of(context).gameStarted);
     }
 
+    if (Game.instance.isAiToMove()) {
+      print("$tag New game, AI to move.");
+      engineToGo(false);
+    }
+  }
+
+  onAutoReplayButtonPressed() async {
+    Navigator.of(context).pop();
+
+    await onTakeBackAllButtonPressed(pop: false);
+    await onStepForwardAllButtonPressed(pop: false);
+  }
+
+  onGameButtonPressed() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -481,12 +488,24 @@ class _GamePageState extends State<GamePage> with RouteAware {
           backgroundColor: Colors.transparent,
           children: <Widget>[
             SimpleDialogOption(
-                child: Text(
-                  S.of(context).startNewGame,
-                  style: AppTheme.simpleDialogOptionTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-                onPressed: confirm),
+              child: Text(
+                S.of(context).startNewGame,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: onStartNewGameButtonPressed,
+            ),
+            /*
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).autoReplay,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: onAutoReplayButtonPressed,
+            ),
+            */
           ],
         );
       },
@@ -567,8 +586,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
   }
 
-  onGotoHistoryButtonsPressed(var func) async {
-    Navigator.of(context).pop();
+  onGotoHistoryButtonsPressed(var func, {bool pop = true}) async {
+    if (pop == true) {
+      Navigator.of(context).pop();
+    }
 
     if (mounted) {
       showTip(S.of(context).waiting);
@@ -588,20 +609,21 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
   }
 
-  onTakeBackButtonPressed() async {
-    onGotoHistoryButtonsPressed(Game.instance.position.takeBack());
+  onTakeBackButtonPressed({bool pop = true}) async {
+    onGotoHistoryButtonsPressed(Game.instance.position.takeBack(), pop: pop);
   }
 
-  onStepForwardButtonPressed() async {
-    onGotoHistoryButtonsPressed(Game.instance.position.stepForward());
+  onStepForwardButtonPressed({bool pop = true}) async {
+    onGotoHistoryButtonsPressed(Game.instance.position.stepForward(), pop: pop);
   }
 
-  onTakeBackAllButtonPressed() async {
-    onGotoHistoryButtonsPressed(Game.instance.position.takeBackAll());
+  onTakeBackAllButtonPressed({bool pop = true}) async {
+    onGotoHistoryButtonsPressed(Game.instance.position.takeBackAll(), pop: pop);
   }
 
-  onStepForwardAllButtonPressed() async {
-    onGotoHistoryButtonsPressed(Game.instance.position.stepForwardAll());
+  onStepForwardAllButtonPressed({bool pop = true}) async {
+    onGotoHistoryButtonsPressed(Game.instance.position.stepForwardAll(),
+        pop: pop);
   }
 
   onMoveListButtonPressed() {

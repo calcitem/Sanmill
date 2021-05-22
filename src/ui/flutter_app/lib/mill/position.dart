@@ -1059,6 +1059,8 @@ class Position {
 
     for (var i = 0; i <= moveIndex; i++) {
       Game.instance.doMove(history[i].move);
+      //await Future.delayed(Duration(seconds: 1));
+      //setState(() {});
     }
 
     // Restore context

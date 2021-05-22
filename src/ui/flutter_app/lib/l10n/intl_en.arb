@@ -899,5 +899,9 @@
   "aiIsNotThinking": "AI is not thinking.",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
+  },
+  "autoReplay": "Auto replay moves",
+  "@autoReplay": {
+    "description": "Auto replay moves"
   }
 }
