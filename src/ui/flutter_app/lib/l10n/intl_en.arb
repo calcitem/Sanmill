@@ -704,6 +704,18 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
+  "privacyPolicy_Detail_1": "Please read carefully and make sure you fully understand and agree with this ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". If you do not agree to this Policy, please do not use this App. Using the App implies that you accept these terms. We do occasionally update these terms so please refer back to them in the future.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "accept": "Accept",
+  "@accept": {
+    "description": "Accept"
+  },
   "undo": "Undo",
   "@undo": {
     "description": "Undo"

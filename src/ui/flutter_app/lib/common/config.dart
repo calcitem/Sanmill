@@ -24,6 +24,9 @@ import 'settings.dart';
 class Config {
   static bool settingsLoaded = false;
 
+  static bool isPrivacyPolicyAccepted = false;
+
+  // Preferences
   static bool toneEnabled = true;
   static bool aiMovesFirst = false;
   static bool aiIsLazy = false;
@@ -72,6 +75,10 @@ class Config {
 
     final settings = await Settings.instance();
 
+    Config.isPrivacyPolicyAccepted =
+        settings['IsPrivacyPolicyAccepted'] ?? false;
+
+    // Preferences
     Config.toneEnabled = settings['ToneEnabled'] ?? true;
     Config.aiMovesFirst = settings['AiMovesFirst'] ?? false;
     Config.aiIsLazy = settings['AiIsLazy'] ?? false;
@@ -140,6 +147,9 @@ class Config {
   static Future<bool> save() async {
     final settings = await Settings.instance();
 
+    settings['IsPrivacyPolicyAccepted'] = Config.isPrivacyPolicyAccepted;
+
+    // Preferences
     settings['ToneEnabled'] = Config.toneEnabled;
     settings['AiMovesFirst'] = Config.aiMovesFirst;
     settings['AiIsLazy'] = Config.aiIsLazy;

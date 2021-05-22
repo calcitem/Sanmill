@@ -17,7 +17,10 @@
 */
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:devicelocale/devicelocale.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
@@ -31,7 +34,9 @@ import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/widgets/game_settings_page.dart';
 import 'package:stack_trace/stack_trace.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'board.dart';
 import 'game_settings_page.dart';
@@ -80,6 +85,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
       setState(() {});
       isReady = true;
       timer.cancel();
+
+      if (!Config.isPrivacyPolicyAccepted) {
+        onShowPrivacyDialog();
+      }
     }
   }
 
@@ -674,7 +683,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   onInfoButtonPressed() {
     final analyzeText = getInfoText();
-
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -693,6 +701,84 @@ class _GamePageState extends State<GamePage> with RouteAware {
         );
       },
     );
+  }
+
+  setPrivacyPolicyAccepted(bool value) async {
+    setState(() {
+      Config.isPrivacyPolicyAccepted = value;
+    });
+
+    print("[config] isPrivacyPolicyAccepted: $value");
+
+    Config.save();
+  }
+
+  onShowPrivacyDialog() async {
+    String? locale = "en_US";
+    late String privacyPolicyURL;
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
+
+    print("[about] local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      privacyPolicyURL =
+          'https://gitee.com/calcitem/Sanmill/wikis/privacy_policy_zh';
+    } else {
+      privacyPolicyURL =
+          'https://github.com/calcitem/Sanmill/wiki/privacy_policy';
+    }
+
+    final ThemeData themeData = Theme.of(context);
+    final TextStyle? aboutTextStyle = themeData.textTheme.bodyText1;
+    final TextStyle linkStyle =
+        themeData.textTheme.bodyText1!.copyWith(color: themeData.accentColor);
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+              title: Text(
+                S.of(context).privacyPolicy,
+              ),
+              content: RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      style: aboutTextStyle,
+                      text: S.of(context).privacyPolicy_Detail_1,
+                    ),
+                    _LinkTextSpan(
+                      style: linkStyle,
+                      text: S.of(context).privacyPolicy,
+                      url: privacyPolicyURL,
+                    ),
+                    TextSpan(
+                      style: aboutTextStyle,
+                      text: S.of(context).privacyPolicy_Detail_2,
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                    child: Text(S.of(context).accept),
+                    onPressed: () {
+                      setPrivacyPolicyAccepted(true);
+                      Navigator.of(context).pop();
+                    }),
+                Platform.isAndroid
+                    ? TextButton(
+                        child: Text(S.of(context).exit),
+                        onPressed: () {
+                          setPrivacyPolicyAccepted(false);
+                          SystemChannels.platform
+                              .invokeMethod('SystemNavigator.pop');
+                        },
+                      )
+                    : Container(height: 0.0, width: 0.0),
+              ],
+            ));
   }
 
   String getGameOverReasonString(GameOverReason? reason, String? winner) {
@@ -1179,4 +1265,15 @@ class _GamePageState extends State<GamePage> with RouteAware {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPop route: $route');
   }
+}
+
+class _LinkTextSpan extends TextSpan {
+  _LinkTextSpan({TextStyle? style, required String url, String? text})
+      : super(
+            style: style,
+            text: text ?? url,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                launch(url, forceSafariVC: false);
+              });
 }
