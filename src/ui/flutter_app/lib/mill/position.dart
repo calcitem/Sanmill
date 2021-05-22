@@ -1035,16 +1035,23 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  void _gotoHistory(int moveIndex) async {
+  Future<bool> _gotoHistory(int moveIndex) async {
+    bool ret = false;
+
     if (recorder == null) {
       print("[goto] recorder is null.");
-      return;
+      return false;
     }
 
     var history = recorder!.getHistory();
     if (moveIndex < -1 || history.length <= moveIndex) {
       print("[goto] moveIndex is out of range.");
-      return;
+      return false;
+    }
+
+    if (recorder!.cur == moveIndex) {
+      print("[goto] cur is equal to moveIndex.");
+      return false;
     }
 
     // Backup context
@@ -1057,8 +1064,13 @@ class Position {
 
     await Game.instance.newGame();
 
+    if (moveIndex == -1) {
+      ret = true;
+    }
+
     for (var i = 0; i <= moveIndex; i++) {
       Game.instance.doMove(history[i].move);
+      ret = true;
       //await Future.delayed(Duration(seconds: 1));
       //setState(() {});
     }
@@ -1068,22 +1080,24 @@ class Position {
     Game.instance.setWhoIsAi(engineTypeBackup);
     recorder!.setHistory(historyBack);
     recorder!.cur = moveIndex;
+
+    return ret;
   }
 
-  void takeBack() async {
-    _gotoHistory(recorder!.cur - 1);
+  Future<bool> takeBack() async {
+    return _gotoHistory(recorder!.cur - 1);
   }
 
-  void stepForward() async {
-    _gotoHistory(recorder!.cur + 1);
+  Future<bool> stepForward() async {
+    return _gotoHistory(recorder!.cur + 1);
   }
 
-  void takeBackAll() async {
-    _gotoHistory(-1);
+  Future<bool> takeBackAll() async {
+    return _gotoHistory(-1);
   }
 
-  void stepForwardAll() async {
-    _gotoHistory(recorder!.getHistory().length - 1);
+  Future<bool> stepForwardAll() async {
+    return _gotoHistory(recorder!.getHistory().length - 1);
   }
 
   String movesSinceLastRemove() {

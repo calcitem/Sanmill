@@ -601,7 +601,11 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
 
     isGoingToHistory = true;
-    await func;
+
+    if (await func == false) {
+      showSnackBar(S.of(context).atEnd);
+    }
+
     isGoingToHistory = false;
 
     if (mounted) {

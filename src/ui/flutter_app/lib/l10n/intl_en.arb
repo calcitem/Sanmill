@@ -903,5 +903,9 @@
   "autoReplay": "Auto replay moves",
   "@autoReplay": {
     "description": "Auto replay moves"
+  },
+  "atEnd": "At the end of move list.",
+  "@atEnd": {
+    "description": "At the end of move list."
   }
 }

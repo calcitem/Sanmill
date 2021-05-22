@@ -225,5 +225,6 @@
   "boardTop": "棋盘和上边缘的间距",
   "notAIsTurn": "现在不是轮到电脑行棋",
   "aiIsNotThinking": "电脑并非正在思考中",
-  "autoReplay": "自动回放"
+  "autoReplay": "自动回放",
+  "atEnd": "已经到底了"
 }
