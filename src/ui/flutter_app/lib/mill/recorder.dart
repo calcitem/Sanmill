@@ -50,8 +50,12 @@ class GameRecorder {
     cur = 0;
   }
 
+  bool isClean() {
+    return cur == _history.length - 1;
+  }
+
   void prune() {
-    if (cur == _history.length - 1) {
+    if (isClean()) {
       return;
     }
 

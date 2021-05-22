@@ -222,5 +222,7 @@
   "pieceCount": "棋子数",
   "inHand": "手上",
   "onBoard": "棋盘上",
-  "boardTop": "棋盘和上边缘的间距"
+  "boardTop": "棋盘和上边缘的间距",
+  "notAIsTurn": "现在不是轮到电脑行棋",
+  "aiIsNotThinking": "电脑并非正在思考中"
 }

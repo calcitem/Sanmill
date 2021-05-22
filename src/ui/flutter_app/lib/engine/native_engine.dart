@@ -58,11 +58,17 @@ class NativeEngine extends Engine {
 
   @override
   Future<EngineResponse> search(Position? position) async {
-    if (await isThinking()) await stopSearching();
+    if (await isThinking()) {
+      await stopSearching();
+    }
 
-    await send(getPositionFen(position!));
-    await send('go');
-    isActive = true;
+    if (position != null) {
+      await send(getPositionFen(position));
+      await send('go');
+      isActive = true;
+    } else {
+      print("[engine] Move now");
+    }
 
     final response = await waitResponse(['bestmove', 'nobestmove']);
 

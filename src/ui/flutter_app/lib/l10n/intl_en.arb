@@ -891,5 +891,13 @@
   "boardTop": "Board offset from the top",
   "@boardTop": {
     "description": "Board offset from the top"
+  },
+  "notAIsTurn": "It is not AI's turn.",
+  "@notAIsTurn": {
+    "description": "It is not AI's turn."
+  },
+  "aiIsNotThinking": "AI is not thinking.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
   }
 }

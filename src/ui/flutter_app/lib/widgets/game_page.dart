@@ -35,7 +35,6 @@ import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
 import 'game_settings_page.dart';
-import 'list_item_divider.dart';
 
 double boardWidth = 0.0;
 
@@ -159,7 +158,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
           return false;
         } else {
           print("[tap] AI is not thinking. AI is to move.");
-          engineToGo();
+          engineToGo(false);
           return false;
         }
       }
@@ -363,7 +362,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
         setState(() {});
 
         if (position.winner == PieceColor.nobody) {
-          engineToGo();
+          engineToGo(false);
         } else {
           showTips();
         }
@@ -377,7 +376,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
     return ret;
   }
 
-  engineToGo() async {
+  engineToGo(bool isMoveNow) async {
     if (!mounted) {
       print("[engineToGo] !mounted, skip engineToGo.");
       return;
@@ -385,6 +384,20 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     // TODO
     print("[engineToGo] engine type is ${widget.engineType}");
+
+    if (isMoveNow == true) {
+      if (!Game.instance.isAiToMove()) {
+        print("[engineToGo] Human to Move. Cannot get search result now.");
+        showSnackBar(S.of(context).notAIsTurn);
+        return;
+      }
+      if (!Game.instance.position.recorder.isClean()) {
+        print(
+            "[engineToGo] History is not clean. Cannot get search result now.");
+        showSnackBar(S.of(context).aiIsNotThinking);
+        return;
+      }
+    }
 
     while ((Config.isAutoRestart == true ||
             Game.instance.position.winner == PieceColor.nobody) &&
@@ -405,8 +418,17 @@ class _GamePageState extends State<GamePage> with RouteAware {
         }
       }
 
-      print("[engineToGo] Searching...");
-      final response = await widget.engine.search(Game.instance.position);
+      late var response;
+
+      if (!isMoveNow) {
+        print("[engineToGo] Searching...");
+        response = await widget.engine.search(Game.instance.position);
+      } else {
+        print("[engineToGo] Get search result now...");
+        response = await widget.engine.search(null);
+        isMoveNow = false;
+      }
+
       print("[engineToGo] Engine response type: ${response.type}");
 
       switch (response.type) {
@@ -448,7 +470,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
       if (Game.instance.isAiToMove()) {
         print("$tag New game, AI to move.");
-        engineToGo();
+        engineToGo(false);
       }
     }
 
@@ -495,8 +517,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
               onPressed: onTakeBackButtonPressed,
             ),
             SizedBox(height: AppTheme.sizedBoxHeight),
-            ListItemDivider(),
-            SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
                 S.of(context).stepForward,
@@ -505,8 +525,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
               ),
               onPressed: onStepForwardButtonPressed,
             ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            ListItemDivider(),
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
@@ -517,8 +535,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
               onPressed: onTakeBackAllButtonPressed,
             ),
             SizedBox(height: AppTheme.sizedBoxHeight),
-            ListItemDivider(),
-            SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
                 S.of(context).stepForwardAll,
@@ -528,8 +544,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
               onPressed: onStepForwardAllButtonPressed,
             ),
             SizedBox(height: AppTheme.sizedBoxHeight),
-            ListItemDivider(),
-            SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
                 S.of(context).showMoveList,
@@ -538,9 +552,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
               ),
               onPressed: onMoveListButtonPressed,
             ),
-            /*
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            ListItemDivider(),
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
@@ -550,7 +561,6 @@ class _GamePageState extends State<GamePage> with RouteAware {
               ),
               onPressed: onMoveNowButtonPressed,
             ),
-            */
           ],
         );
       },
@@ -633,7 +643,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   onMoveNowButtonPressed() async {
     Navigator.of(context).pop();
-    /* Not implement */
+    await engineToGo(true);
   }
 
   onInfoButtonPressed() {
@@ -817,7 +827,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
                     if (Game.instance.isAiToMove()) {
                       print("$tag New game, AI to move.");
-                      engineToGo();
+                      engineToGo(false);
                     }
                   }),
               TextButton(
