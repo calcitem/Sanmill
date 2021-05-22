@@ -1,0 +1,3 @@
+v1.0.12
+
+* You can force AI to move now when AI is thinking.
