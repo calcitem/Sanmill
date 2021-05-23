@@ -20,6 +20,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -138,13 +139,21 @@ class _SanmillAppState extends State<SanmillApp> {
       ],
       theme: ThemeData(primarySwatch: AppTheme.appPrimaryColor),
       debugShowCheckedModeBanner: false,
-      home: WillPopScope(
-        onWillPop: () async {
-          Audios.disposePool();
-          return true;
-        },
-        child: NavigationHomeScreen(),
+      home: Scaffold(
+        body: DoubleBackToCloseApp(
+          child: NavigationHomeScreen(),
+          snackBar: const SnackBar(
+            content: Text('Tap back again to leave.'),
+          ),
+        ),
       ),
+      /*
+      WillPopScope(
+              onWillPop: () async {
+                Audios.disposePool();
+                return true;
+              },
+      */
     );
   }
 }

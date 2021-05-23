@@ -24,6 +24,7 @@ dependencies:
   stack_trace: ^1.10.0
   device_info_plus_platform_interface: ^1.0.1
   devicelocale: ^0.4.1
+  double_back_to_close_app: ^2.0.1
 
 dev_dependencies:
   flutter_test:

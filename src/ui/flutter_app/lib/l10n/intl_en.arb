@@ -919,5 +919,9 @@
   "atEnd": "At the end of move list.",
   "@atEnd": {
     "description": "At the end of move list."
+  },
+  "tapBackAgainToLeave": "Tap back again to leave.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
   }
 }
