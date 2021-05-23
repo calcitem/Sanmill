@@ -48,7 +48,7 @@
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Move list",
+  "moveList": "Zugliste",
   "@moveList": {
     "description": "Move list"
   },
