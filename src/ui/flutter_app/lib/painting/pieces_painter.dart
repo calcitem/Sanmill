@@ -112,7 +112,7 @@ class PiecesPainter extends PiecesBasePainter {
     }
 
     // Draw shadow of piece
-    canvas.drawShadow(shadowPath, Colors.white, 2, true);
+    canvas.drawShadow(shadowPath, Colors.black, 2, true);
 
     paint.style = PaintingStyle.fill;
 
