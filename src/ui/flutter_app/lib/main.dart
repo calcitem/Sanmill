@@ -134,7 +134,11 @@ class _SanmillAppState extends State<SanmillApp> {
       supportedLocales: [
         const Locale('en', ''), // English, no country code
         const Locale.fromSubtags(
-            languageCode: 'zh'), // Chinese *See Advanced Locales below*
+          languageCode: 'de',
+        ), // Deutsch *See Advanced Locales below*
+        const Locale.fromSubtags(
+          languageCode: 'zh',
+        ), // Chinese *See Advanced Locales below*
         // ... other locales the app supports
       ],
       theme: ThemeData(primarySwatch: AppTheme.appPrimaryColor),
