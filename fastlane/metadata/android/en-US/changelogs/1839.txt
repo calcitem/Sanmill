@@ -1,0 +1,4 @@
+v1.0.13
+
+* Double back to close App.
+* Popup Privacy Policy dialog when first run.
