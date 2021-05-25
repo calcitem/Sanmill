@@ -26,6 +26,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
@@ -146,8 +147,8 @@ class _SanmillAppState extends State<SanmillApp> {
       home: Scaffold(
         body: DoubleBackToCloseApp(
           child: NavigationHomeScreen(),
-          snackBar: const SnackBar(
-            content: Text('Tap back again to leave.'),
+          snackBar: SnackBar(
+            content: Text(Resources.of().strings.tapBackAgainToLeave),
           ),
         ),
       ),
