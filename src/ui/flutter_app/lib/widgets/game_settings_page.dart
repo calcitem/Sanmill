@@ -20,7 +20,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
@@ -29,6 +28,7 @@ import 'package:sanmill/widgets/settings_card.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
+import 'dialog.dart';
 import 'list_item_divider.dart';
 
 class Developer {
@@ -44,9 +44,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   Color pickerColor = Color(0xFF808080);
   Color currentColor = Color(0xFF808080);
 
-  int _counter = 0;
   late StreamController<int> _events;
-  Timer? _timer;
 
   final String tag = "[game_settings_page]";
 
@@ -57,75 +55,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     _events.add(10);
   }
 
-  void _startTimer() {
-    _counter = 10;
-    if (_timer != null) {
-      _timer!.cancel();
-    }
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      (_counter > 0) ? _counter-- : _timer!.cancel();
-      _events.add(_counter);
-    });
-  }
-
   void _restore() async {
-    final profile = await Settings.instance();
-    await profile.restore();
-  }
-
-  void showCountdownDialog(BuildContext ctx) {
-    var alert = AlertDialog(
-        content: StreamBuilder<int>(
-            stream: _events.stream,
-            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-              print("Count down: " + snapshot.data.toString());
-
-              if (snapshot.data == 0) {
-                _restore();
-                if (Platform.isAndroid) {
-                  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                } else {}
-              }
-
-              return Container(
-                height: 128,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                        snapshot.data != null
-                            ? '${snapshot.data.toString()}'
-                            : "10",
-                        style: TextStyle(
-                          fontSize: 64,
-                        )),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          S.of(ctx).cancel,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }));
-    showDialog(
-        context: ctx,
-        builder: (BuildContext c) {
-          return alert;
-        });
+    final settings = await Settings.instance();
+    await settings.restore();
   }
 
   SliderTheme _skillLevelSliderTheme(context, setState) {
@@ -174,8 +106,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     confirm() async {
       Navigator.of(context).pop();
       if (Platform.isAndroid) {
-        _startTimer();
-        showCountdownDialog(context);
+        showCountdownDialog(context, 10, _events, _restore);
       } else {
         _restore();
         ScaffoldMessenger.of(context).showSnackBar(
