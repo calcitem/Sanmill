@@ -1,0 +1,4 @@
+v1.0.10
+
+* Beschleunigen Sie das Denken an die ersten beiden Züge.
+* Zeigen Sie die Notation nur auf zwei Seiten an Bord.

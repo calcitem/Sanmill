@@ -1,0 +1,3 @@
+v1.0.11
+
+* Unterstützung Schritt vorwärts & Alle zurücknehmen & Schritt vorwärts alle.

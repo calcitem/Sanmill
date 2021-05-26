@@ -1,0 +1,4 @@
+v1.0.13
+
+* Doppelt zurück, um die App zu schließen.
+* Popup-Datenschutzrichtliniendialog beim ersten Ausführen.

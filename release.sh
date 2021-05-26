@@ -4,6 +4,7 @@ YAML_FILE=src/ui/flutter_app/pubspec.yaml
 QT_RC_FILE=millgame.rc
 FLUTTER_WINDOWS_RC_FILE=src/ui/flutter_app/windows/runner/Runner.rc
 EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
+DE_CHANGLOG_DIR=fastlane/metadata/android/de-DE/changelogs
 ZH_CHANGLOG_DIR=fastlane/metadata/android/zh-CN/changelogs
 
 # Update Build Number
@@ -75,13 +76,16 @@ echo "v$NEW_VERSION" >> ${BUILD_NUMBER}.txt
 echo >> ${BUILD_NUMBER}.txt
 
 cp ${BUILD_NUMBER}.txt $EN_CHANGLOG_DIR
+cp ${BUILD_NUMBER}.txt $DE_CHANGLOG_DIR
 cp ${BUILD_NUMBER}.txt $ZH_CHANGLOG_DIR
 rm -f ${BUILD_NUMBER}.txt
 
 echo "* Release notes." >> $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+echo "* Versionshinweise." >> $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "* 发布说明。" >> $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
 notepad $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+notepad $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 notepad $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
 # Git commit

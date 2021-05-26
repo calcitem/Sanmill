@@ -1,0 +1,3 @@
+v1.0.12
+
+* Sie können die KI jetzt zwingen, sich zu bewegen, wenn die KI denkt.

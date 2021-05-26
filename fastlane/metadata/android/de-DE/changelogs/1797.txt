@@ -1,0 +1,5 @@
+v1.0.5
+
+* Zeige weiße Steine als Spieler 1 und schwarze als Spieler 2 an
+* Ändern Sie den Text 'Hinweis' in 'Info'
+* Tippfehler beheben
