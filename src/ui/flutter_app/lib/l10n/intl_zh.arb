@@ -231,5 +231,6 @@
   "autoReplay": "自动回放",
   "atEnd": "已经到底了",
   "tapBackAgainToLeave": "再次按返回键退出应用",
-  "environmentVariables": "环境变量"
+  "environmentVariables": "环境变量",
+  "more": "更多"
 }

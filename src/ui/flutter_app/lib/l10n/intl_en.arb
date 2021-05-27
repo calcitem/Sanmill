@@ -927,5 +927,9 @@
   "environmentVariables": "Environment variables",
   "@environmentVariables": {
     "description": "Environment variables"
+  },
+  "more": "More",
+  "@more": {
+    "description": "More"
   }
 }

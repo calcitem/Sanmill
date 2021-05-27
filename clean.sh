@@ -8,4 +8,4 @@ git clean -fdx
 mv ../key.jks src/ui/flutter_app/android/
 mv ../key.properties src/ui/flutter_app/android/
 
-./flutter-init.sh
+./flutter-windows-init.sh

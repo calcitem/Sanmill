@@ -22,6 +22,7 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
@@ -251,11 +252,11 @@ class _AboutPageState extends State<AboutPage> {
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => alertDialog(context),
+      builder: (context) => versionDialog(context),
     );
   }
 
-  AlertDialog alertDialog(BuildContext context) {
+  AlertDialog versionDialog(BuildContext context) {
     return AlertDialog(
       title: Text(
         S.of(context).appName,
@@ -273,6 +274,44 @@ class _AboutPageState extends State<AboutPage> {
             style: TextStyle(
               fontSize: AppTheme.copyrightFontSize,
             ),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(S.of(context).more),
+          onPressed: () => _showFlutterVersionInfo(),
+        ),
+        TextButton(
+          child: Text(S.of(context).ok),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
+    );
+  }
+
+  _showFlutterVersionInfo() {
+    Navigator.of(context).pop();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => flutterVersionDialog(context),
+    );
+  }
+
+  AlertDialog flutterVersionDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        S.of(context).more,
+        style: TextStyle(color: AppTheme.dialogTitleColor),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "${flutterVersion.toString().replaceAll('{', '').replaceAll('}', '').replaceAll(', ', '\n')}",
           ),
         ],
       ),
