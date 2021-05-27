@@ -923,5 +923,9 @@
   "tapBackAgainToLeave": "Nochmal drücken um zu Beenden.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
+  },
+  "environmentVariables": "Umgebungsvariablen",
+  "@environmentVariables": {
+    "description": "Environment variables"
   }
 }

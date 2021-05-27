@@ -29,6 +29,7 @@ import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
 import 'dialog.dart';
+import 'env_page.dart';
 import 'list_item_divider.dart';
 
 class Developer {
@@ -264,7 +265,20 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   value: Config.isAutoRestart,
                   onChanged: setIsAutoRestart,
                   titleString: S.of(context).isAutoRestart,
-                )
+                ),
+                ListItemDivider(),
+                SettingsListTile(
+                  context: context,
+                  titleString: S.of(context).environmentVariables,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EnvironmentVariablesPage(),
+                      ),
+                    );
+                  },
+                ),
               ],
             )
           : SizedBox(height: 1),

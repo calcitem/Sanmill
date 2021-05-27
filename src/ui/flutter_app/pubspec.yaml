@@ -37,6 +37,7 @@ flutter:
 
   assets:
     - assets/licenses/GPL-3.0.txt
+    - assets/files/environment_variables.txt
     - assets/audios/draw.mp3
     - assets/audios/fly.mp3
     - assets/audios/go.mp3

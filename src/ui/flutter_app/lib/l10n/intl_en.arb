@@ -923,5 +923,9 @@
   "tapBackAgainToLeave": "Tap back again to leave.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
+  },
+  "environmentVariables": "Environment variables",
+  "@environmentVariables": {
+    "description": "Environment variables"
   }
 }
