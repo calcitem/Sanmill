@@ -600,6 +600,10 @@
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
+  "pieceWidth": "Piece width",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
   "standardNotation": "Standard notation",
   "@standardNotation": {
     "description": "Standard notation"

@@ -171,6 +171,37 @@ class _PersonalizationSettingsPageState
     );
   }
 
+  SliderTheme _pieceWidthSliderTheme(context, setState) {
+    return SliderTheme(
+      data: AppTheme.sliderThemeData,
+      child: Slider(
+        value: Config.pieceWidth.toDouble(),
+        min: 0.5,
+        max: 1.0,
+        divisions: 50,
+        label: Config.pieceWidth.toStringAsFixed(1),
+        onChanged: (value) {
+          setState(() {
+            print("[config] pieceWidth value: $value");
+            Config.pieceWidth = value;
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
+  setPieceWidth() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _pieceWidthSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
   SliderTheme _boardTopSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
@@ -249,6 +280,12 @@ class _PersonalizationSettingsPageState
             context: context,
             titleString: S.of(context).boardInnerLineWidth,
             onTap: setBoardInnerLineWidth,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).pieceWidth,
+            onTap: setPieceWidth,
           ),
           ListItemDivider(),
           SettingsListTile(

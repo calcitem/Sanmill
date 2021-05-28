@@ -48,6 +48,7 @@ class Config {
   static bool isNotationsShown = false;
   static double boardBorderLineWidth = 2.0;
   static double boardInnerLineWidth = 2.0;
+  static double pieceWidth = 0.9;
   static double boardTop = 36.0;
 
   // Color
@@ -102,6 +103,7 @@ class Config {
     Config.isNotationsShown = settings['IsNotationsShown'] ?? false;
     Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
+    Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
     Config.boardTop = settings['BoardTop'] ?? 36;
 
     // Color
@@ -171,6 +173,7 @@ class Config {
     settings['IsNotationsShown'] = Config.isNotationsShown;
     settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
+    settings['PieceWidth'] = Config.pieceWidth;
     settings['BoardTop'] = Config.boardTop;
 
     // Color

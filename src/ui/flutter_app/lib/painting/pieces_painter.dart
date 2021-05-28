@@ -44,8 +44,7 @@ class PiecesPainter extends PiecesBasePainter {
     this.focusIndex = invalidIndex,
     this.blurIndex = invalidIndex,
   }) : super(width: width) {
-    //
-    pieceWidth = squareWidth * 0.9; // size of square
+    pieceWidth = squareWidth * Config.pieceWidth;
   }
 
   @override
