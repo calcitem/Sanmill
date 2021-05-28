@@ -50,6 +50,12 @@
   "thinking": "对方思考中...",
   "newGame": "新局",
   "startNewGame": "开始新局",
+  "startRecording": "开始录制",
+  "recording": "录制中...",
+  "stopRecording": "停止录制",
+  "showRecording": "回放录制",
+  "noRecording": "没有可回放的",
+  "pleaseWait": "请稍候...",
   "restartGame": "重新开局？",
   "restart": "重开局",
   "gameStarted": "游戏开始 请落子",
@@ -233,5 +239,6 @@
   "atEnd": "已经到底了",
   "tapBackAgainToLeave": "再次按返回键退出应用",
   "environmentVariables": "环境变量",
-  "more": "更多"
+  "more": "更多",
+  "experimental": "此仍属实验性功能。"
 }

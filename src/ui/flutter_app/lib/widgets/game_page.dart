@@ -17,6 +17,7 @@
 */
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +33,7 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_settings_page.dart';
+import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
@@ -58,6 +60,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
   bool isReady = false;
   bool isGoingToHistory = false;
   late Timer timer;
+  ScreenRecorderController screenRecorderController = ScreenRecorderController(
+    pixelRatio: 1.0,
+    skipFramesBetweenCaptures: 0,
+  );
   final String tag = "[game_page]";
 
   @override
@@ -479,6 +485,75 @@ class _GamePageState extends State<GamePage> with RouteAware {
     }
   }
 
+  onStartRecordingButtonPressed() async {
+    Navigator.of(context).pop();
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        title: Text(
+          S.of(context).appName,
+          style: TextStyle(color: AppTheme.dialogTitleColor),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              S.of(context).experimental,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(S.of(context).ok),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+
+    screenRecorderController.start();
+    showSnackBar(
+      S.of(context).recording,
+      duration: Duration(seconds: 1 << 31),
+    );
+  }
+
+  onStopRecordingButtonPressed() async {
+    Navigator.of(context).pop();
+    screenRecorderController.stop();
+    showSnackBar(
+      S.of(context).stopRecording,
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  onShowRecordingButtonPressed() async {
+    Navigator.of(context).pop();
+    showSnackBar(
+      S.of(context).pleaseWait,
+      duration: Duration(seconds: 1 << 31),
+    );
+    var gif = await screenRecorderController.export();
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    if (gif == null) {
+      showSnackBar(S.of(context).noRecording);
+      return;
+    }
+
+    var image = Image.memory(
+      Uint8List.fromList(gif),
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(backgroundColor: Colors.black, content: image);
+      },
+    );
+  }
+
   onAutoReplayButtonPressed() async {
     Navigator.of(context).pop();
 
@@ -487,8 +562,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
   }
 
   onGameButtonPressed() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return SimpleDialog(
           backgroundColor: Colors.transparent,
@@ -500,6 +576,33 @@ class _GamePageState extends State<GamePage> with RouteAware {
                 textAlign: TextAlign.center,
               ),
               onPressed: onStartNewGameButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).startRecording,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: onStartRecordingButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).stopRecording,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: onStopRecordingButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).showRecording,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: onShowRecordingButtonPressed,
             ),
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),
@@ -1002,10 +1105,13 @@ class _GamePageState extends State<GamePage> with RouteAware {
     );
   }
 
-  void showSnackBar(String message) {
+  void showSnackBar(String message,
+      {Duration duration = const Duration(milliseconds: 4000)}) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      duration: duration,
+    ));
   }
 
   String getInfoText() {
@@ -1160,7 +1266,16 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
-      body: Column(children: <Widget>[header, board, toolbar]),
+      body: Column(children: <Widget>[
+        header,
+        ScreenRecorder(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width,
+          controller: screenRecorderController,
+          child: board,
+        ),
+        toolbar
+      ]),
     );
   }
 

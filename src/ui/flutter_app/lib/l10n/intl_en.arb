@@ -200,6 +200,30 @@
   "@startNewGame": {
     "description": "Start new game"
   },
+  "startRecording": "Start recording",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "Recording...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "Stop recording",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "Show recording",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "No recording.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "Please wait...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
   "restartGame": "Restart current Game?",
   "@restartGame": {
     "description": "Restart current Game?"
@@ -935,5 +959,9 @@
   "more": "More",
   "@more": {
     "description": "More"
+  },
+  "experimental": "This is an experimental feature.",
+  "@experimental": {
+    "description": "This is an experimental feature."
   }
 }

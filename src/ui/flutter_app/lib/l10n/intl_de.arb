@@ -200,6 +200,30 @@
   "@startNewGame": {
     "description": "Start new game"
   },
+  "startRecording": "Starte die Aufnahme",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "Aufzeichnung...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "Höre auf, aufzunehmen",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "Aufnahme anzeigen",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "Kein Aufnehmen.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "Warten Sie mal...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
   "restartGame": "Spiel neu beginnen?",
   "@restartGame": {
     "description": "Restart current Game?"
@@ -935,5 +959,9 @@
   "more": "Mehr",
   "@more": {
     "description": "More"
+  },
+  "experimental": "Dies ist eine experimentelle Funktion.",
+  "@experimental": {
+    "description": "Dies ist eine experimentelle Funktion."
   }
 }
