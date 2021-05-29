@@ -804,6 +804,10 @@
   "@animationSpeed": {
     "description": "Animation speed"
   },
+  "animationDuration": "Animationsdauer",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
   "slow": "Langsam",
   "@slow": {
     "description": "Slow"

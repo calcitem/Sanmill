@@ -233,6 +233,37 @@ class _PersonalizationSettingsPageState
     );
   }
 
+  SliderTheme _animationDurationSliderTheme(context, setState) {
+    return SliderTheme(
+      data: AppTheme.sliderThemeData,
+      child: Slider(
+        value: Config.animationDuration.toDouble(),
+        min: 0.0,
+        max: 5.0,
+        divisions: 50,
+        label: Config.animationDuration.toStringAsFixed(1),
+        onChanged: (value) {
+          setState(() {
+            print("[config] AnimationDuration value: $value");
+            Config.animationDuration = value;
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
+  setAnimationDuration() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _animationDurationSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,6 +323,12 @@ class _PersonalizationSettingsPageState
             context: context,
             titleString: S.of(context).boardTop,
             onTap: setBoardTop,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).animationDuration,
+            onTap: setAnimationDuration,
           ),
           ListItemDivider(),
           SettingsSwitchListTile(

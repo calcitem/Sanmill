@@ -201,6 +201,7 @@
   "crackMill_Detail": "若对方所有的子都在三连中, 也不允许吃子。",
   "haveFunPlaying": "祝您玩得愉快！",
   "animationSpeed": "动画速度",
+  "animationDuration": "动画持续时长",
   "slow": "慢速",
   "medium": "中速",
   "fast": "快速",

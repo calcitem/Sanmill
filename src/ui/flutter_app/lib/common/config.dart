@@ -51,6 +51,7 @@ class Config {
   static double boardInnerLineWidth = 2.0;
   static double pieceWidth = 0.9;
   static double boardTop = 36.0;
+  static double animationDuration = 0.0;
 
   // Color
   static int boardLineColor = AppTheme.boardLineColor.value;
@@ -107,6 +108,7 @@ class Config {
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
     Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
     Config.boardTop = settings['BoardTop'] ?? 36;
+    Config.animationDuration = settings['AnimationDuration'] ?? 0;
 
     // Color
     Config.boardLineColor =
@@ -178,6 +180,7 @@ class Config {
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
     settings['PieceWidth'] = Config.pieceWidth;
     settings['BoardTop'] = Config.boardTop;
+    settings['AnimationDuration'] = Config.animationDuration;
 
     // Color
     settings['BoardLineColor'] = Config.boardLineColor;
