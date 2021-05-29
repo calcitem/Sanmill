@@ -34,7 +34,6 @@ import 'list_item_divider.dart';
 
 class Developer {
   static bool developerModeEnabled = false;
-  static bool experimentsEnabled = false;
 }
 
 class GameSettingsPage extends StatefulWidget {

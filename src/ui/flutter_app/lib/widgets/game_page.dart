@@ -578,32 +578,42 @@ class _GamePageState extends State<GamePage> with RouteAware {
               onPressed: onStartNewGameButtonPressed,
             ),
             SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).startRecording,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onStartRecordingButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).stopRecording,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onStopRecordingButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).showRecording,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onShowRecordingButtonPressed,
-            ),
+            Config.experimentsEnabled
+                ? SimpleDialogOption(
+                    child: Text(
+                      S.of(context).startRecording,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: onStartRecordingButtonPressed,
+                  )
+                : SizedBox(height: 1),
+            Config.experimentsEnabled
+                ? SizedBox(height: AppTheme.sizedBoxHeight)
+                : SizedBox(height: 1),
+            Config.experimentsEnabled
+                ? SimpleDialogOption(
+                    child: Text(
+                      S.of(context).stopRecording,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: onStopRecordingButtonPressed,
+                  )
+                : SizedBox(height: 1),
+            Config.experimentsEnabled
+                ? SizedBox(height: AppTheme.sizedBoxHeight)
+                : SizedBox(height: 1),
+            Config.experimentsEnabled
+                ? SimpleDialogOption(
+                    child: Text(
+                      S.of(context).showRecording,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: onShowRecordingButtonPressed,
+                  )
+                : SizedBox(height: 1),
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
