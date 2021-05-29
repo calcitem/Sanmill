@@ -24,27 +24,32 @@ import 'package:sanmill/style/app_theme.dart';
 
 import 'painter_base.dart';
 
-class PiecePaintPair {
+class PiecePaintParam {
   // TODO: null-safety
   final String? piece;
   final Offset? pos;
-  PiecePaintPair({this.piece, this.pos});
+  final bool? animated;
+  PiecePaintParam({this.piece, this.pos, this.animated});
 }
 
 class PiecesPainter extends PiecesBasePainter {
   final Position? position;
   final int? focusIndex, blurIndex;
+  final animationValue;
 
   // TODO: null-safety
   double? pieceWidth = 0.0;
+  double? animatedPieceWidth = 0.0;
 
   PiecesPainter({
     required double width,
     required this.position,
     this.focusIndex = invalidIndex,
     this.blurIndex = invalidIndex,
+    required this.animationValue,
   }) : super(width: width) {
     pieceWidth = squareWidth * Config.pieceWidth;
+    animatedPieceWidth = squareWidth * Config.pieceWidth * animationValue;
   }
 
   @override
@@ -56,6 +61,7 @@ class PiecesPainter extends PiecesBasePainter {
       gridWidth: gridWidth,
       squareWidth: squareWidth,
       pieceWidth: pieceWidth,
+      animatedPieceWidth: animatedPieceWidth,
       offsetX: AppTheme.boardPadding + squareWidth / 2,
       offsetY: AppTheme.boardPadding + squareWidth / 2,
       focusIndex: focusIndex,
@@ -75,6 +81,7 @@ class PiecesPainter extends PiecesBasePainter {
     double? gridWidth,
     double? squareWidth,
     double? pieceWidth,
+    double? animatedPieceWidth,
     double? offsetX,
     double? offsetY,
     int? focusIndex = invalidIndex,
@@ -85,7 +92,7 @@ class PiecesPainter extends PiecesBasePainter {
     final top = offsetY;
 
     final shadowPath = Path();
-    final piecesToDraw = <PiecePaintPair>[];
+    final piecesToDraw = <PiecePaintParam>[];
 
     // TODO: null-safety
     Color? blurPositionColor;
@@ -94,15 +101,16 @@ class PiecesPainter extends PiecesBasePainter {
     // Draw pieces on board
     for (var row = 0; row < 7; row++) {
       for (var col = 0; col < 7; col++) {
-        //
-        final piece =
-            position!.pieceOnGrid(row * 7 + col); // No Pieces when initial
+        final index = row * 7 + col;
+        final piece = position!.pieceOnGrid(index); // No Pieces when initial
 
         if (piece == Piece.noPiece) continue;
 
         var pos = Offset(left! + squareWidth! * col, top! + squareWidth * row);
+        var animated = (focusIndex == index);
 
-        piecesToDraw.add(PiecePaintPair(piece: piece, pos: pos));
+        piecesToDraw
+            .add(PiecePaintParam(piece: piece, pos: pos, animated: animated));
 
         shadowPath.addOval(
           Rect.fromCenter(center: pos, width: pieceWidth!, height: pieceWidth),
@@ -127,20 +135,39 @@ class PiecesPainter extends PiecesBasePainter {
       var pieceRadius = pieceWidth! / 2;
       var pieceInnerRadius = pieceRadius * 0.99;
 
+      var animatedPieceRadius = animatedPieceWidth! / 2;
+      var animatedPieceInnerRadius = animatedPieceRadius * 0.99;
+
       // Draw Border of Piece
       switch (pps.piece) {
         case Piece.whiteStone:
           paint.color = AppTheme.whitePieceBorderColor;
-          canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
+          canvas.drawCircle(
+            pps.pos!,
+            pps.animated! ? animatedPieceRadius : pieceRadius,
+            paint,
+          );
           paint.color = Color(Config.whitePieceColor);
-          canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
+          canvas.drawCircle(
+            pps.pos!,
+            pps.animated! ? animatedPieceInnerRadius : pieceInnerRadius,
+            paint,
+          );
           blurPositionColor = Color(Config.whitePieceColor).withOpacity(0.1);
           break;
         case Piece.blackStone:
           paint.color = AppTheme.blackPieceBorderColor;
-          canvas.drawCircle(pps.pos!, pieceRadius, paint); // For debugging
+          canvas.drawCircle(
+            pps.pos!,
+            pps.animated! ? animatedPieceRadius : pieceRadius,
+            paint,
+          );
           paint.color = Color(Config.blackPieceColor);
-          canvas.drawCircle(pps.pos!, pieceInnerRadius, paint);
+          canvas.drawCircle(
+            pps.pos!,
+            pps.animated! ? animatedPieceInnerRadius : pieceInnerRadius,
+            paint,
+          );
           blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
           break;
         case Piece.ban:
@@ -178,7 +205,7 @@ class PiecesPainter extends PiecesBasePainter {
 
       canvas.drawCircle(
         Offset(left! + column * squareWidth!, top! + row * squareWidth),
-        pieceWidth! / 2,
+        animatedPieceWidth! / 2,
         paint,
       );
     }
@@ -191,7 +218,7 @@ class PiecesPainter extends PiecesBasePainter {
 
       canvas.drawCircle(
         Offset(left! + column * squareWidth!, top! + row * squareWidth),
-        pieceWidth! / 2 * 0.8,
+        animatedPieceWidth! / 2 * 0.8,
         paint,
       );
     }

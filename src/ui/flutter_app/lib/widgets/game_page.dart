@@ -55,7 +55,8 @@ class GamePage extends StatefulWidget {
   _GamePageState createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> with RouteAware {
+class _GamePageState extends State<GamePage>
+    with RouteAware, SingleTickerProviderStateMixin {
   String? _tip = '';
   bool isReady = false;
   bool isGoingToHistory = false;
@@ -64,6 +65,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
     pixelRatio: 1.0,
     skipFramesBetweenCaptures: 0,
   );
+  late AnimationController _animationController;
+  late Animation animation;
   final String tag = "[game_page]";
 
   @override
@@ -79,6 +82,8 @@ class _GamePageState extends State<GamePage> with RouteAware {
     timer = Timer.periodic(Duration(microseconds: 100), (Timer t) {
       _setReadyState();
     });
+
+    _initAnimation();
   }
 
   _setReadyState() async {
@@ -93,6 +98,32 @@ class _GamePageState extends State<GamePage> with RouteAware {
         onShowPrivacyDialog();
       }
     }
+  }
+
+  _initAnimation() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration:
+          Duration(milliseconds: (Config.animationDuration * 1000).toInt()),
+    );
+    _animationController.addListener(() {});
+
+    animation = Tween(
+      begin: 1.27, // sqrt(1.618) = 1.272
+      end: 1.0,
+    ).animate(_animationController)
+      ..addListener(() {
+        setState(() {});
+      });
+
+    _animationController.addStatusListener((state) {
+      if (state == AnimationStatus.completed ||
+          state == AnimationStatus.dismissed) {
+        _animationController.forward();
+      }
+    });
+
+    _animationController.forward();
   }
 
   showTip(String? tip) {
@@ -141,6 +172,10 @@ class _GamePageState extends State<GamePage> with RouteAware {
       print("[tap] Not ready, ignore tapping.");
       return false;
     }
+
+    _animationController.duration =
+        Duration(milliseconds: (Config.animationDuration * 1000).toInt());
+    _animationController.reset();
 
     if (Game.instance.engineType == EngineType.aiVsAi ||
         Game.instance.engineType == EngineType.testViaLAN) {
@@ -448,6 +483,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
           Move mv = response.value;
           final Move move = new Move(mv.move);
 
+          _animationController.duration =
+              Duration(milliseconds: (Config.animationDuration * 1000).toInt());
+          _animationController.reset();
           Game.instance.doMove(move.move);
           showTips();
           break;
@@ -1111,6 +1149,7 @@ class _GamePageState extends State<GamePage> with RouteAware {
       child: Board(
         width: boardWidth,
         onBoardTap: onBoardTap,
+        animationValue: animation.value,
       ),
     );
   }
@@ -1291,8 +1330,9 @@ class _GamePageState extends State<GamePage> with RouteAware {
 
   @override
   void dispose() {
-    print("$tag dipose");
+    print("$tag dispose");
     widget.engine.shutdown();
+    _animationController.dispose();
     super.dispose();
     routeObserver.unsubscribe(this);
   }

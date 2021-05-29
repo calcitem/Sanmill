@@ -27,9 +27,14 @@ class Board extends StatelessWidget {
   final double width;
   final double height;
   final Function(BuildContext, int) onBoardTap;
+  final animationValue;
   final String tag = "[board]";
 
-  Board({required this.width, required this.onBoardTap}) : height = width;
+  Board({
+    required this.width,
+    required this.onBoardTap,
+    required this.animationValue,
+  }) : height = width;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +54,7 @@ class Board extends StatelessWidget {
         position: Game.instance.position,
         focusIndex: Game.instance.focusIndex,
         blurIndex: Game.instance.blurIndex,
+        animationValue: animationValue,
       ),
       child: container,
     );
