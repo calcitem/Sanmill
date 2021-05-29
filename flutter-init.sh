@@ -8,6 +8,10 @@ FLUTTER_VERSION_FILE=$GEN_FILE_PATH/flutter_version.dart
 
 cd src/ui/flutter_app || exit
 
+flutter pub get
+flutter pub global activate intl_utils
+flutter --no-color pub global run intl_utils:generate
+
 mkdir -p $GEN_FILE_PATH || true
 
 echo "const Map<String, String> flutterVersion =" > $FLUTTER_VERSION_FILE
@@ -17,7 +21,3 @@ echo ";" >> $FLUTTER_VERSION_FILE
 mkdir -p $ENV_FILE_PATH || true
 touch $ENV_FILE
 export > $ENV_FILE
-
-flutter pub get
-flutter pub global activate intl_utils
-flutter --no-color pub global run intl_utils:generate
