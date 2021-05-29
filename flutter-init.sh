@@ -8,6 +8,8 @@ FLUTTER_VERSION_FILE=$GEN_FILE_PATH/flutter_version.dart
 
 cd src/ui/flutter_app || exit
 
+flutter config --no-analytics
+
 flutter pub get
 flutter pub global activate intl_utils
 flutter --no-color pub global run intl_utils:generate
