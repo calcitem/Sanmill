@@ -41,6 +41,7 @@ class Config {
   static bool depthExtension = true;
   static bool openingBook = false;
   static bool developerMode = false;
+  static bool experimentsEnabled = false;
 
   // Display
   static bool standardNotationEnabled = true;
@@ -94,6 +95,7 @@ class Config {
     Config.depthExtension = settings['DepthExtension'] ?? false;
     Config.openingBook = settings['OpeningBook'] ?? false;
     Config.developerMode = settings['DeveloperMode'] ?? false;
+    Config.experimentsEnabled = settings['ExperimentsEnabled'] ?? false;
 
     // Display
     Config.standardNotationEnabled =
@@ -166,6 +168,7 @@ class Config {
     settings['DepthExtension'] = Config.depthExtension;
     settings['OpeningBook'] = Config.openingBook;
     settings['DeveloperMode'] = Config.developerMode;
+    settings['ExperimentsEnabled'] = Config.experimentsEnabled;
 
     // Display
     settings['StandardNotationEnabled'] = Config.standardNotationEnabled;

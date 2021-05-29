@@ -963,5 +963,9 @@
   "experimental": "Dies ist eine experimentelle Funktion.",
   "@experimental": {
     "description": "Dies ist eine experimentelle Funktion."
+  },
+  "experiments": "Experimente",
+  "@experiments": {
+    "description": "Experimente"
   }
 }

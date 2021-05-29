@@ -34,6 +34,7 @@ import 'list_item_divider.dart';
 
 class Developer {
   static bool developerModeEnabled = false;
+  static bool experimentsEnabled = false;
 }
 
 class GameSettingsPage extends StatefulWidget {
@@ -262,6 +263,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ListItemDivider(),
                 SettingsSwitchListTile(
                   context: context,
+                  value: Config.experimentsEnabled,
+                  onChanged: setExperimentsEnabled,
+                  titleString: S.of(context).experiments,
+                ),
+                ListItemDivider(),
+                SettingsSwitchListTile(
+                  context: context,
                   value: Config.isAutoRestart,
                   onChanged: setIsAutoRestart,
                   titleString: S.of(context).isAutoRestart,
@@ -428,6 +436,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     });
 
     print("[config] developerMode: $value");
+
+    Config.save();
+  }
+
+  setExperimentsEnabled(bool value) async {
+    setState(() {
+      Config.experimentsEnabled = value;
+    });
+
+    print("[config] experimentsEnabled: $value");
 
     Config.save();
   }
