@@ -12,13 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  soundpool:
-    git:
-      url: https://github.com/calcitem/soundpool
-      path: soundpool
-      ref: issue/#67
-  soundpool_platform_interface: ^2.1.0
-  soundpool_web: ^2.0.0-nullsafety.0
+  soundpool: ^2.1.0
   path_provider: ^2.0.1
   package_info_plus: ^1.0.1
   uuid: ^3.0.4
