@@ -232,6 +232,19 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
+      Text(S.of(context).experiments, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        children: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.experimentsEnabled,
+            onChanged: setExperimentsEnabled,
+            titleString: S.of(context).experiments,
+          ),
+        ],
+      ),
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -258,13 +271,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   value: Config.developerMode,
                   onChanged: setDeveloperMode,
                   titleString: S.of(context).developerMode,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.experimentsEnabled,
-                  onChanged: setExperimentsEnabled,
-                  titleString: S.of(context).experiments,
                 ),
                 ListItemDivider(),
                 SettingsSwitchListTile(
