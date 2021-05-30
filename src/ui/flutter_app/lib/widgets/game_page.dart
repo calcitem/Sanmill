@@ -67,6 +67,7 @@ class _GamePageState extends State<GamePage>
   );
   late AnimationController _animationController;
   late Animation animation;
+  bool disposed = false;
   final String tag = "[game_page]";
 
   @override
@@ -119,11 +120,16 @@ class _GamePageState extends State<GamePage>
     _animationController.addStatusListener((state) {
       if (state == AnimationStatus.completed ||
           state == AnimationStatus.dismissed) {
+        if (disposed) {
+          return;
+        }
         _animationController.forward();
       }
     });
 
-    _animationController.forward();
+    if (!disposed) {
+      _animationController.forward();
+    }
   }
 
   showTip(String? tip) {
@@ -173,6 +179,7 @@ class _GamePageState extends State<GamePage>
       return false;
     }
 
+    disposed = false;
     _animationController.duration =
         Duration(milliseconds: (Config.animationDuration * 1000).toInt());
     _animationController.reset();
@@ -485,7 +492,14 @@ class _GamePageState extends State<GamePage>
 
           _animationController.duration =
               Duration(milliseconds: (Config.animationDuration * 1000).toInt());
-          _animationController.reset();
+
+          if (!disposed) {
+            _animationController.reset();
+          } else {
+            print(
+                "[engineToGo] Disposed, so do not reset animationController.");
+          }
+
           Game.instance.doMove(move.move);
           showTips();
           break;
@@ -1331,6 +1345,7 @@ class _GamePageState extends State<GamePage>
   @override
   void dispose() {
     print("$tag dispose");
+    disposed = true;
     widget.engine.shutdown();
     _animationController.dispose();
     super.dispose();
