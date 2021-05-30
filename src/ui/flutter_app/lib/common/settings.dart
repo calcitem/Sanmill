@@ -54,29 +54,13 @@ class Settings {
   }
 
   Future<bool> _load(String fileName) async {
-    late var docDir;
-
-    if (Platform.isAndroid) {
-      docDir = await getExternalStorageDirectory();
-      if (docDir != null) {
-        _file = File('${docDir.path}/$fileName');
-      } else {
-        docDir = await getApplicationDocumentsDirectory();
-        if (docDir != null) {
-          _file = File('${docDir.path}/$fileName');
-        } else {
-          _file = File('$fileName');
-        }
-      }
-    } else if (Platform.isWindows) {
-      _file = File('$fileName');
+    // TODO: main() ExternalStorage
+    // var docDir = await getExternalStorageDirectory();
+    var docDir = await getApplicationDocumentsDirectory();
+    if (docDir != null) {
+      _file = File('${docDir.path}/$fileName');
     } else {
-      docDir = await getApplicationDocumentsDirectory();
-      if (docDir != null) {
-        _file = File('${docDir.path}/$fileName');
-      } else {
-        _file = File('$fileName');
-      }
+      _file = File('$fileName');
     }
 
     print("[settings] Loading $_file ...");
