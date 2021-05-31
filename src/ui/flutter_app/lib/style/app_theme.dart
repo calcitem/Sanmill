@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/style/colors.dart';
 
 class AppTheme {
@@ -94,29 +95,26 @@ class AppTheme {
     valueIndicatorTextStyle: TextStyle(fontSize: 24),
   );
 
-  // Style
-  static const colorizeTextStyle = TextStyle(
-    fontSize: 24.0,
-    fontWeight: FontWeight.w600,
-  );
-
   static var simpleDialogOptionTextStyle = TextStyle(
-    fontSize: AppTheme.simpleDialogOptionFontSize,
+    fontSize: Config.fontSize + 4.0,
     color: AppTheme.simpleDialogOptionTextColor,
   );
 
-  static var moveHistoryTextStyle =
-      TextStyle(fontSize: 18, height: 1.5, color: moveHistoryTextColor);
+  static var moveHistoryTextStyle = TextStyle(
+      fontSize: Config.fontSize + 2.0,
+      height: 1.5,
+      color: moveHistoryTextColor);
 
-  static double simpleDialogOptionFontSize = 20.0;
   static double boardTop = 28.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;
   static double boardBorderRadius = 5.0;
   static double boardPadding = 5.0;
 
-  static const settingsHeaderStyle =
-      TextStyle(color: settingsHeaderTextColor, fontSize: 20.0);
+  static var settingsHeaderStyle =
+      TextStyle(color: settingsHeaderTextColor, fontSize: Config.fontSize + 4);
+
+  static var settingsTextStyle = TextStyle(fontSize: Config.fontSize);
 
   static const cardMargin =
       const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0);

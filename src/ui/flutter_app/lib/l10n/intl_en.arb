@@ -632,6 +632,10 @@
   "@pieceWidth": {
     "description": "Piece width"
   },
+  "fontSize": "Font size",
+  "@fontSize": {
+    "description": "Font size"
+  },
   "standardNotation": "Standard notation",
   "@standardNotation": {
     "description": "Standard notation"

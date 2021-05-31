@@ -23,6 +23,7 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -77,7 +78,7 @@ void showCountdownDialog(
                     S.of(ctx).cancel,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: Config.fontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   )),

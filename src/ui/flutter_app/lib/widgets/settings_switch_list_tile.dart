@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/style/app_theme.dart';
 
 class SettingsSwitchListTile extends StatelessWidget {
@@ -41,13 +42,21 @@ class SettingsSwitchListTile extends StatelessWidget {
       value: value,
       onChanged: onChanged,
       activeColor: AppTheme.switchListTileActiveColor,
-      title: Text(titleString,
-          style: TextStyle(color: AppTheme.switchListTileTitleColor)),
+      title: Text(
+        titleString,
+        style: TextStyle(
+          fontSize: Config.fontSize,
+          color: AppTheme.switchListTileTitleColor,
+        ),
+      ),
       subtitle: subtitleString == null
           ? null
           : Text(
               subtitleString!,
-              style: TextStyle(color: AppTheme.listTileSubtitleColor),
+              style: TextStyle(
+                fontSize: Config.fontSize,
+                color: AppTheme.listTileSubtitleColor,
+              ),
             ),
     );
   }

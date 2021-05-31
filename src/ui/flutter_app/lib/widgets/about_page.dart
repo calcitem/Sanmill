@@ -22,6 +22,7 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';

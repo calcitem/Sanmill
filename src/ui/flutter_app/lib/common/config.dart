@@ -50,6 +50,7 @@ class Config {
   static double boardBorderLineWidth = 2.0;
   static double boardInnerLineWidth = 2.0;
   static double pieceWidth = 0.9;
+  static double fontSize = 16.0;
   static double boardTop = 36.0;
   static double animationDuration = 0.0;
 
@@ -108,6 +109,7 @@ class Config {
     Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
     Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
+    Config.fontSize = settings['FontSize'] ?? 16.0;
     Config.boardTop = settings['BoardTop'] ?? 36;
     Config.animationDuration = settings['AnimationDuration'] ?? 0;
 
@@ -182,6 +184,7 @@ class Config {
     settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
     settings['PieceWidth'] = Config.pieceWidth;
+    settings['FontSize'] = Config.fontSize;
     settings['BoardTop'] = Config.boardTop;
     settings['AnimationDuration'] = Config.animationDuration;
 

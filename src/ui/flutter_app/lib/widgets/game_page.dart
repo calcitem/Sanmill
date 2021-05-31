@@ -545,7 +545,10 @@ class _GamePageState extends State<GamePage>
       builder: (context) => AlertDialog(
         title: Text(
           S.of(context).appName,
-          style: TextStyle(color: AppTheme.dialogTitleColor),
+          style: TextStyle(
+            color: AppTheme.dialogTitleColor,
+            fontSize: Config.fontSize + 4,
+          ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -553,12 +556,20 @@ class _GamePageState extends State<GamePage>
           children: <Widget>[
             Text(
               S.of(context).experimental,
+              style: TextStyle(
+                fontSize: Config.fontSize,
+              ),
             ),
           ],
         ),
         actions: <Widget>[
           TextButton(
-            child: Text(S.of(context).ok),
+            child: Text(
+              S.of(context).ok,
+              style: TextStyle(
+                fontSize: Config.fontSize,
+              ),
+            ),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -813,7 +824,10 @@ class _GamePageState extends State<GamePage>
         return AlertDialog(
           backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
           title: Text(S.of(context).moveList,
-              style: TextStyle(color: AppTheme.moveHistoryTextColor)),
+              style: TextStyle(
+                color: AppTheme.moveHistoryTextColor,
+                fontSize: Config.fontSize + 2.0,
+              )),
           content: SingleChildScrollView(
               child:
                   Text(moveHistoryText, style: AppTheme.moveHistoryTextStyle)),
@@ -996,11 +1010,24 @@ class _GamePageState extends State<GamePage>
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(dialogTitle,
-                style: TextStyle(color: AppTheme.dialogTitleColor)),
-            content: Text(contentStr),
+                style: TextStyle(
+                  color: AppTheme.dialogTitleColor,
+                  fontSize: Config.fontSize + 4,
+                )),
+            content: Text(
+              contentStr,
+              style: TextStyle(
+                fontSize: Config.fontSize,
+              ),
+            ),
             actions: <Widget>[
               TextButton(
-                  child: Text(S.of(context).yes),
+                  child: Text(
+                    S.of(context).yes,
+                    style: TextStyle(
+                      fontSize: Config.fontSize,
+                    ),
+                  ),
                   onPressed: () {
                     if (!isTopLevel) Config.skillLevel++;
                     Config.save();
@@ -1008,7 +1035,12 @@ class _GamePageState extends State<GamePage>
                     Navigator.of(context).pop();
                   }),
               TextButton(
-                  child: Text(S.of(context).no),
+                  child: Text(
+                    S.of(context).no,
+                    style: TextStyle(
+                      fontSize: Config.fontSize,
+                    ),
+                  ),
                   onPressed: () => Navigator.of(context).pop()),
             ],
           );
@@ -1021,13 +1053,25 @@ class _GamePageState extends State<GamePage>
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(dialogTitle,
-                style: TextStyle(color: AppTheme.dialogTitleColor)),
-            content: Text(getGameOverReasonString(
-                Game.instance.position.gameOverReason,
-                Game.instance.position.winner)),
+                style: TextStyle(
+                  color: AppTheme.dialogTitleColor,
+                  fontSize: Config.fontSize + 4,
+                )),
+            content: Text(
+              getGameOverReasonString(Game.instance.position.gameOverReason,
+                  Game.instance.position.winner),
+              style: TextStyle(
+                fontSize: Config.fontSize,
+              ),
+            ),
             actions: <Widget>[
               TextButton(
-                  child: Text(S.of(context).restart),
+                  child: Text(
+                    S.of(context).restart,
+                    style: TextStyle(
+                      fontSize: Config.fontSize,
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Game.instance.newGame();
@@ -1041,7 +1085,12 @@ class _GamePageState extends State<GamePage>
                     }
                   }),
               TextButton(
-                  child: Text(S.of(context).cancel),
+                  child: Text(
+                    S.of(context).cancel,
+                    style: TextStyle(
+                      fontSize: Config.fontSize,
+                    ),
+                  ),
                   onPressed: () => Navigator.of(context).pop()),
             ],
           );
@@ -1115,7 +1164,8 @@ class _GamePageState extends State<GamePage>
             child: Text(
               _tip!,
               maxLines: 1,
-              style: TextStyle(fontSize: 16, color: Color(Config.messageColor)),
+              style: TextStyle(
+                  fontSize: Config.fontSize, color: Color(Config.messageColor)),
             ), // TODO: Font Size
           ),
         ],
@@ -1176,7 +1226,12 @@ class _GamePageState extends State<GamePage>
       {Duration duration = const Duration(milliseconds: 4000)}) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(
+        message,
+        style: TextStyle(
+          fontSize: Config.fontSize,
+        ),
+      ),
       duration: duration,
     ));
   }

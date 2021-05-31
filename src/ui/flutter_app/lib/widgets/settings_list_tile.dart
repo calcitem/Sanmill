@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/style/app_theme.dart';
 
 class SettingsListTile extends StatelessWidget {
@@ -40,13 +41,21 @@ class SettingsListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(titleString,
-          style: TextStyle(color: AppTheme.switchListTileTitleColor)),
+      title: Text(
+        titleString,
+        style: TextStyle(
+          fontSize: Config.fontSize,
+          color: AppTheme.switchListTileTitleColor,
+        ),
+      ),
       subtitle: subtitleString == null
           ? null
           : Text(
               subtitleString!,
-              style: TextStyle(color: AppTheme.listTileSubtitleColor),
+              style: TextStyle(
+                fontSize: Config.fontSize,
+                color: AppTheme.listTileSubtitleColor,
+              ),
             ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
@@ -56,6 +65,7 @@ class SettingsListTile extends StatelessWidget {
                 ? (trailingString == null ? "" : trailingString!)
                 : trailingColor!.toRadixString(16),
             style: TextStyle(
+              fontSize: Config.fontSize,
               backgroundColor:
                   trailingColor == null ? null : Color(trailingColor!),
             ),

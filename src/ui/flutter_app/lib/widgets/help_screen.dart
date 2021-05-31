@@ -32,7 +32,7 @@ class _HelpScreenState extends State<HelpScreen> {
                 child: Text(
                   S.of(context).howToPlay,
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: Config.fontSize + 4,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.helpTextColor,
                   ),
@@ -45,7 +45,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   S.of(context).helpContent,
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: Config.fontSize,
                     color: AppTheme.helpTextColor,
                   ),
                 ),

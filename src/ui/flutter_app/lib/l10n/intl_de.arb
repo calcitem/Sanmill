@@ -632,6 +632,10 @@
   "@pieceWidth": {
     "description": "Board inner line width"
   },
+  "fontSize": "Schriftgröße",
+  "@fontSize": {
+    "description": "Font size"
+  },
   "standardNotation": "Standardnotation",
   "@standardNotation": {
     "description": "Standard notation"

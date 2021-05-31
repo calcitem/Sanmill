@@ -20,6 +20,7 @@ import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_settings_page.dart';
@@ -140,7 +141,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
         animatedTexts: [
           ColorizeAnimatedText(
             S.of(context).appName,
-            textStyle: AppTheme.colorizeTextStyle,
+            textStyle: TextStyle(
+              fontSize: Config.fontSize + 16,
+              fontWeight: FontWeight.w600,
+            ),
             colors: AppTheme.animatedTextsColors,
             textAlign: TextAlign.start,
             speed: const Duration(milliseconds: 3000),
@@ -302,7 +306,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 listItem.title,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 16,
+                  fontSize: Config.fontSize,
                   color: widget.screenIndex == listItem.index
                       ? AppTheme.drawerHighlightTextColor
                       : AppTheme.drawerTextColor,

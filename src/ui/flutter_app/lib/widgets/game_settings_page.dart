@@ -128,13 +128,35 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(S.of(context).restore,
-              style: TextStyle(color: AppTheme.dialogTitleColor)),
+              style: TextStyle(
+                color: AppTheme.dialogTitleColor,
+                fontSize: Config.fontSize + 4,
+              )),
           content: SingleChildScrollView(
-            child: Text(S.of(context).restoreDefaultSettings + "?\n" + prompt),
+            child: Text(
+              S.of(context).restoreDefaultSettings + "?\n" + prompt,
+              style: TextStyle(
+                fontSize: Config.fontSize,
+              ),
+            ),
           ),
           actions: <Widget>[
-            TextButton(child: Text(S.of(context).ok), onPressed: confirm),
-            TextButton(child: Text(S.of(context).cancel), onPressed: cancel),
+            TextButton(
+                child: Text(
+                  S.of(context).ok,
+                  style: TextStyle(
+                    fontSize: Config.fontSize,
+                  ),
+                ),
+                onPressed: confirm),
+            TextButton(
+                child: Text(
+                  S.of(context).cancel,
+                  style: TextStyle(
+                    fontSize: Config.fontSize,
+                  ),
+                ),
+                onPressed: cancel),
           ],
         );
       },

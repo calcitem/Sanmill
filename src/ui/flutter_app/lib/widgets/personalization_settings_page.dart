@@ -60,7 +60,12 @@ class _PersonalizationSettingsPageState
     };
 
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).pick + " " + colorString),
+      title: Text(
+        S.of(context).pick + " " + colorString,
+        style: TextStyle(
+          fontSize: Config.fontSize + 4,
+        ),
+      ),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: Color(colorStrToVal[colorString]!),
@@ -70,7 +75,12 @@ class _PersonalizationSettingsPageState
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).confirm),
+          child: Text(
+            S.of(context).confirm,
+            style: TextStyle(
+              fontSize: Config.fontSize,
+            ),
+          ),
           onPressed: () {
             setState(() => currentColor = pickerColor);
 
@@ -95,7 +105,12 @@ class _PersonalizationSettingsPageState
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(
+            S.of(context).cancel,
+            style: TextStyle(
+              fontSize: Config.fontSize,
+            ),
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -200,6 +215,37 @@ class _PersonalizationSettingsPageState
       builder: (BuildContext context) => StatefulBuilder(
         builder: (context, setState) {
           return _pieceWidthSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
+  SliderTheme _fontSizeSliderTheme(context, setState) {
+    return SliderTheme(
+      data: AppTheme.sliderThemeData,
+      child: Slider(
+        value: Config.fontSize.toDouble(),
+        min: 16,
+        max: 32,
+        divisions: 16,
+        label: Config.fontSize.toStringAsFixed(1),
+        onChanged: (value) {
+          setState(() {
+            print("[config] fontSize value: $value");
+            Config.fontSize = value;
+            Config.save();
+          });
+        },
+      ),
+    );
+  }
+
+  setFontSize() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _fontSizeSliderTheme(context, setState);
         },
       ),
     );
@@ -320,6 +366,12 @@ class _PersonalizationSettingsPageState
             context: context,
             titleString: S.of(context).pieceWidth,
             onTap: setPieceWidth,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).fontSize,
+            onTap: setFontSize,
           ),
           ListItemDivider(),
           SettingsListTile(
