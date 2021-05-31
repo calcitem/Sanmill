@@ -59,6 +59,7 @@ class Config {
   static int boardBackgroundColor = AppTheme.boardBackgroundColor.value;
   static int whitePieceColor = AppTheme.whitePieceColor.value;
   static int blackPieceColor = AppTheme.blackPieceColor.value;
+  static int messageColor = AppTheme.messageColor.value;
 
   // Rules
   static int piecesCount = 9;
@@ -121,6 +122,8 @@ class Config {
         settings['WhitePieceColor'] ?? AppTheme.whitePieceColor.value;
     Config.blackPieceColor =
         settings['BlackPieceColor'] ?? AppTheme.blackPieceColor.value;
+    Config.messageColor =
+        settings['MessageColor'] ?? AppTheme.messageColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount = settings['PiecesCount'] ?? 9;
@@ -188,6 +191,7 @@ class Config {
     settings['BoardBackgroundColor'] = Config.boardBackgroundColor;
     settings['WhitePieceColor'] = Config.whitePieceColor;
     settings['BlackPieceColor'] = Config.blackPieceColor;
+    settings['MessageColor'] = Config.messageColor;
 
     // Rules
     settings['PiecesCount'] = Config.piecesCount;

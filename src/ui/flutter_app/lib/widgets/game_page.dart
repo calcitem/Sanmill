@@ -1112,7 +1112,11 @@ class _GamePageState extends State<GamePage>
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(_tip!, maxLines: 1, style: AppTheme.gamePageTipStyle),
+            child: Text(
+              _tip!,
+              maxLines: 1,
+              style: TextStyle(fontSize: 16, color: Color(Config.messageColor)),
+            ), // TODO: Font Size
           ),
         ],
       ),

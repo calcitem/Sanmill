@@ -56,6 +56,7 @@ class _PersonalizationSettingsPageState
       S.of(context).lineColor: Config.boardLineColor,
       S.of(context).whitePieceColor: Config.whitePieceColor,
       S.of(context).blackPieceColor: Config.blackPieceColor,
+      S.of(context).messageColor: Config.messageColor,
     };
 
     AlertDialog alert = AlertDialog(
@@ -85,6 +86,8 @@ class _PersonalizationSettingsPageState
               Config.whitePieceColor = pickerColor.value;
             } else if (colorString == S.of(context).blackPieceColor) {
               Config.blackPieceColor = pickerColor.value;
+            } else if (colorString == S.of(context).messageColor) {
+              Config.messageColor = pickerColor.value;
             }
 
             Config.save();
@@ -377,6 +380,13 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).blackPieceColor,
             trailingColor: Config.blackPieceColor,
             onTap: () => showColorDialog(S.of(context).blackPieceColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).messageColor,
+            trailingColor: Config.messageColor,
+            onTap: () => showColorDialog(S.of(context).messageColor),
           ),
         ],
       ),

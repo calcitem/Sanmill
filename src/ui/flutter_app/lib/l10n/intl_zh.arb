@@ -150,6 +150,7 @@
   "lineColor": "线条颜色",
   "whitePieceColor": "先手方棋子颜色",
   "blackPieceColor": "后手方棋子颜色",
+  "messageColor": "提示信息颜色",
   "aiIsLazy": "机器领先时懒惰",
   "isPieceCountInHandShown": "显示手中剩余棋子数",
   "isNotationsShown": "棋盘边缘显示坐标",

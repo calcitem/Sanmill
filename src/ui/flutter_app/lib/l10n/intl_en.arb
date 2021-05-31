@@ -600,6 +600,10 @@
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
+  "messageColor": "Message color",
+  "@messageColor": {
+    "description": "Message color"
+  },
   "aiIsLazy": "AI is Lazy",
   "@aiIsLazy": {
     "description": "AI is Lazy"
