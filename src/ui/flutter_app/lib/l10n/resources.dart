@@ -41,6 +41,13 @@ class ChineseStrings extends Strings {
   String get tapBackAgainToLeave => '再次按返回键退出应用';
 }
 
+/// Farsi strings
+class FarsiStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave =>
+      'برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.';
+}
+
 class Resources {
   Resources();
 
@@ -51,6 +58,8 @@ class Resources {
         return GermanStrings();
       case 'zh':
         return ChineseStrings();
+      case 'fa':
+        return FarsiStrings();
       default:
         return EnglishStrings();
     }
