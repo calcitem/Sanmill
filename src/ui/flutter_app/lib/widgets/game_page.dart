@@ -784,9 +784,13 @@ class _GamePageState extends State<GamePage>
 
     isGoingToHistory = true;
 
+    Audios.isTemporaryMute = Config.keepMuteWhenTakingBack;
+
     if (await func == false) {
       showSnackBar(S.of(context).atEnd);
     }
+
+    Audios.isTemporaryMute = false;
 
     isGoingToHistory = false;
 

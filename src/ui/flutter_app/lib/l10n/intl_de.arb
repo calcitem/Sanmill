@@ -384,6 +384,10 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "keepMuteWhenTakingBack": "Beim Zurücknehmen stumm bleiben",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
   "tone": "Tone",
   "@tone": {
     "description": "Tone"

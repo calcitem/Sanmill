@@ -28,6 +28,7 @@ class Config {
 
   // Preferences
   static bool toneEnabled = true;
+  static bool keepMuteWhenTakingBack = true;
   static bool aiMovesFirst = false;
   static bool aiIsLazy = false;
   static int skillLevel = 1;
@@ -85,6 +86,7 @@ class Config {
 
     // Preferences
     Config.toneEnabled = settings['ToneEnabled'] ?? true;
+    Config.keepMuteWhenTakingBack = settings['KeepMuteWhenTakingBack'] ?? true;
     Config.aiMovesFirst = settings['AiMovesFirst'] ?? false;
     Config.aiIsLazy = settings['AiIsLazy'] ?? false;
     Config.skillLevel = settings['SkillLevel'] ?? 1;
@@ -162,6 +164,7 @@ class Config {
 
     // Preferences
     settings['ToneEnabled'] = Config.toneEnabled;
+    settings['KeepMuteWhenTakingBack'] = Config.keepMuteWhenTakingBack;
     settings['AiMovesFirst'] = Config.aiMovesFirst;
     settings['AiIsLazy'] = Config.aiIsLazy;
     settings['SkillLevel'] = Config.skillLevel;

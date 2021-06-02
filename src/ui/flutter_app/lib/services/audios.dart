@@ -37,6 +37,7 @@ class Audios {
   static var removeSoundId;
   static var selectSoundId;
   static var winSoundId;
+  static var isTemporaryMute = false;
 
   static Future<void> loadSounds() async {
     if (Platform.isWindows) {
@@ -190,7 +191,7 @@ class Audios {
 
   static playTone(var soundId) async {
     Chain.capture(() async {
-      if (!Config.toneEnabled) {
+      if (!Config.toneEnabled || isTemporaryMute) {
         return;
       }
 

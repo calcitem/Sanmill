@@ -236,6 +236,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   onChanged: setTone,
                   titleString: S.of(context).playSoundsInTheGame,
                 ),
+                ListItemDivider(),
+                SettingsSwitchListTile(
+                  context: context,
+                  value: Config.keepMuteWhenTakingBack,
+                  onChanged: setKeepMuteWhenTakingBack,
+                  titleString: S.of(context).keepMuteWhenTakingBack,
+                ),
               ],
             )
           : Container(height: 0.0, width: 0.0),
@@ -448,6 +455,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     });
 
     print("[config] toneEnabled: $value");
+
+    Config.save();
+  }
+
+  setKeepMuteWhenTakingBack(bool value) async {
+    setState(() {
+      Config.keepMuteWhenTakingBack = value;
+    });
+
+    print("[config] keepMuteWhenTakingBack: $value");
 
     Config.save();
   }

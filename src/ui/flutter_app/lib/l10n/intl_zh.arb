@@ -96,6 +96,7 @@
   "moveTime": "机器思考时间",
   "playSounds": "声音",
   "playSoundsInTheGame": "行棋时播放声音",
+  "keepMuteWhenTakingBack": "悔棋时保持静音",
   "tone": "提示音效",
   "leaderBoard": "排行榜",
   "whoMovesFirst": "先手",
