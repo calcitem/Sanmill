@@ -1,0 +1,4 @@
+v1.0.17
+
+* Support setting font size (Take effect after restarting the App).
+* Keep mute when taking back (configurable).
