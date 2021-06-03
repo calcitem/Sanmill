@@ -39,6 +39,7 @@ import 'package:stack_trace/stack_trace.dart';
 import 'board.dart';
 import 'dialog.dart';
 import 'game_settings_page.dart';
+import 'picker.dart';
 
 double boardWidth = 0.0;
 
@@ -816,6 +817,10 @@ class _GamePageState extends State<GamePage>
         pop: pop);
   }
 
+  onTakeBackNButtonPressed(int n, {bool pop = true}) async {
+    onGotoHistoryButtonsPressed(Game.instance.position.takeBackN(n), pop: pop);
+  }
+
   onMoveListButtonPressed() {
     final moveHistoryText = Game.instance.position.moveHistoryText;
 
@@ -836,6 +841,23 @@ class _GamePageState extends State<GamePage>
               child:
                   Text(moveHistoryText, style: AppTheme.moveHistoryTextStyle)),
           actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).rollback,
+                  style: AppTheme.moveHistoryTextStyle),
+              onPressed: () async {
+                int selectValue = await showPickerNumber(
+                  context,
+                  1,
+                  Game.instance.moveHistory.length - 1,
+                  1,
+                  S.of(context).moves,
+                );
+
+                if (selectValue != 0) {
+                  onTakeBackNButtonPressed(selectValue);
+                }
+              },
+            ),
             TextButton(
               child: Text(S.of(context).copy,
                   style: AppTheme.moveHistoryTextStyle),

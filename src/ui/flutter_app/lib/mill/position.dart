@@ -1084,6 +1084,14 @@ class Position {
     return ret;
   }
 
+  Future<bool> takeBackN(int n) async {
+    int index = recorder!.cur - n;
+    if (index < -1) {
+      index = -1;
+    }
+    return _gotoHistory(index);
+  }
+
   Future<bool> takeBack() async {
     return _gotoHistory(recorder!.cur - 1);
   }

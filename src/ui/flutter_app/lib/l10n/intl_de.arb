@@ -44,6 +44,10 @@
   "@move": {
     "description": "Move"
   },
+  "moves": " Zieht",
+  "@moves": {
+    "description": " Moves"
+  },
   "showMoveList": "Zugliste",
   "@showMoveList": {
     "description": "Move list"
@@ -543,6 +547,14 @@
   "maxStepsLedToDraw": "Maximale Schritte bis unentschieden",
   "@maxStepsLedToDraw": {
     "description": "Max Steps Led to Draw"
+  },
+  "rollback": "Rollback",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Bitte auswählen",
+  "@pleaseSelect": {
+    "description": "Please select"
   },
   "copy": "Kopieren",
   "@copy": {
