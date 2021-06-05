@@ -848,8 +848,12 @@ class _GamePageState extends State<GamePage>
                 fontSize: Config.fontSize + 2.0,
               )),
           content: SingleChildScrollView(
-              child:
-                  Text(moveHistoryText, style: AppTheme.moveHistoryTextStyle)),
+            child: Text(
+              moveHistoryText,
+              style: AppTheme.moveHistoryTextStyle,
+              textDirection: TextDirection.ltr,
+            ),
+          ),
           actions: <Widget>[
             end > 0
                 ? TextButton(
