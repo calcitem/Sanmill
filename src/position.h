@@ -169,7 +169,7 @@ public:
     Piece board[SQUARE_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
     Bitboard byColorBB[COLOR_NB];
-    int pieceInHandCount[COLOR_NB] { 0, 12, 12 };
+    int pieceInHandCount[COLOR_NB] { 0, 9, 9 };
     int pieceOnBoardCount[COLOR_NB] { 0, 0, 0 };
     int pieceToRemoveCount{ 0 };
     int gamePly { 0 };

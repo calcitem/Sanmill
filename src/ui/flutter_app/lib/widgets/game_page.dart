@@ -205,6 +205,8 @@ class _GamePageState extends State<GamePage>
       return;
     }
 
+    // If nobody has placed, start to go.
+
     // TODO
     // WAR: Fix first tap response slow when piece count changed
     if (position.phase == Phase.placing &&
@@ -232,6 +234,8 @@ class _GamePageState extends State<GamePage>
     if (position.phase == Phase.ready) {
       Game.instance.start();
     }
+
+    // Human to go
 
     bool ret = false;
     Chain.capture(() {
@@ -431,7 +435,7 @@ class _GamePageState extends State<GamePage>
       Game.instance.sideToMove = position.sideToMove() ?? PieceColor.nobody;
 
       setState(() {});
-    });
+    }); // Chain.capture
 
     return ret;
   }

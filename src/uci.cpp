@@ -37,8 +37,11 @@ namespace
 {
 
 // FEN string of the initial position, normal mill game
+const char  *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 1";
+const char *StartFEN10 = "********/********/******** w p p 0 10 0 10 0 0 1";
+const char *StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0 1";
 const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 1";
-const char *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 1";
+
 char StartFEN[BUFSIZ];
 
 // position() is called when engine receives the "position" UCI command.
@@ -157,10 +160,22 @@ void UCI::loop(int argc, char *argv[])
     Position *pos = new Position;
     string token, cmd;
 
-    if (rule.piecesCount == 9) {
+    switch (rule.piecesCount) {
+    case 9:
         strncpy(StartFEN, StartFEN9, BUFSIZ);
-    } else if (rule.piecesCount == 12) {
+        break;
+    case 10:
+        strncpy(StartFEN, StartFEN10, BUFSIZ);
+        break;
+    case 11:
+        strncpy(StartFEN, StartFEN11, BUFSIZ);
+        break;
+    case 12:
         strncpy(StartFEN, StartFEN12, BUFSIZ);
+        break;
+    default:
+        assert(0);
+        break;
     }
 
     pos->set(StartFEN, Threads.main());

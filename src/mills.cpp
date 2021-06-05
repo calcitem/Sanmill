@@ -502,16 +502,16 @@ Depth get_search_depth(const Position *pos)
     if (pos->phase == Phase::placing) {
         const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
 
-        if (rule.piecesCount == 12) {
-            assert(0 <= index && index <= 24);
+        if (rule.piecesCount == 9) {
+            assert(0 <= index && index <= 19);
+            d = placingDepthTable_9[index];
+        } else {
+            assert(0 <= index && index <= rule.piecesCount * 2);
             if (!rule.hasBannedLocations && !rule.hasDiagonalLines) {
                 d = placingDepthTable_12_special[index];
             } else {
                 d = placingDepthTable_12[index];
             }
-        } else {
-            assert(0 <= index && index <= 19);
-            d = placingDepthTable_9[index];
         }
     }
 

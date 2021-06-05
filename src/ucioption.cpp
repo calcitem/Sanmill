@@ -174,16 +174,16 @@ void init(OptionsMap &o)
     o["DeveloperMode"] << Option(true, on_developerMode);
 
     // Rules
-    o["PiecesCount"] << Option(12, 6, 12, on_piecesCount);
+    o["PiecesCount"] << Option(9, 9, 12, on_piecesCount);
     o["PiecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
-    o["HasDiagonalLines"] << Option(true, on_hasDiagonalLines);
-    o["HasBannedLocations"] << Option(true, on_hasBannedLocations);
-    o["IsDefenderMoveFirst"] << Option(true, on_isDefenderMoveFirst);
+    o["HasDiagonalLines"] << Option(false, on_hasDiagonalLines);
+    o["HasBannedLocations"] << Option(false, on_hasBannedLocations);
+    o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
-    o["MayRemoveFromMillsAlways"] << Option(true, on_mayRemoveFromMillsAlways);
+    o["MayRemoveFromMillsAlways"] << Option(false, on_mayRemoveFromMillsAlways);
     o["IsWhiteLoseButNotDrawWhenBoardFull"] << Option(true, on_isWhiteLoseButNotDrawWhenBoardFull);
     o["IsLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
-    o["MayFly"] << Option(false, on_mayFly);
+    o["MayFly"] << Option(true, on_mayFly);
     o["MaxStepsLedToDraw"] << Option(50, 30, 50, on_maxStepsLedToDraw);
 
 }

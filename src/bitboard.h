@@ -58,9 +58,6 @@ extern uint8_t PopCnt16[1 << 16];
 
 extern Bitboard SquareBB[SQ_32];
 
-extern Bitboard StarSquareBB9;
-extern Bitboard StarSquareBB12;
-
 inline Bitboard square_bb(Square s) noexcept
 {
     if (!(SQ_BEGIN <= s && s < SQ_END))

@@ -69,7 +69,7 @@
 
 //#define DEBUG_MODE
 
-#define DEFAULT_RULE_NUMBER 1
+#define DEFAULT_RULE_NUMBER 2
 
 #define DEPTH_ADJUST (0)
 

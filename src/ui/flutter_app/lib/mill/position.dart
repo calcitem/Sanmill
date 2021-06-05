@@ -799,6 +799,17 @@ class Position {
     setSideToMove(PieceColor.opponent(_sideToMove));
     st.key ^= Zobrist.side;
     print("[position] $_sideToMove to move.");
+
+    /*
+    if (phase == Phase.moving &&
+        !rule.isLoseButNotChangeSideWhenNoWay &&
+        isAllSurrounded() &&
+        !rule.mayFly &&
+        pieceOnBoardCount[sideToMove()]! >= rule.piecesAtLeastCount) {
+      print("[position] $_sideToMove is no way to go.");
+      changeSideToMove();
+    }
+    */
   }
 
   int updateKey(int s) {
