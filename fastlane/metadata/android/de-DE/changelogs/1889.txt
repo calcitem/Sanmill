@@ -1,0 +1,3 @@
+v1.0.19
+
+* Maschinelle Übersetzung in Farsi (Persisch) hinzufügen.
