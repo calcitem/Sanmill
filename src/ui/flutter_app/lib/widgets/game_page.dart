@@ -69,6 +69,7 @@ class _GamePageState extends State<GamePage>
   late AnimationController _animationController;
   late Animation animation;
   bool disposed = false;
+  bool ltr = true;
   final String tag = "[game_page]";
 
   @override
@@ -1205,10 +1206,12 @@ class _GamePageState extends State<GamePage>
     if (Game.instance.position.phase == Phase.gameOver) {
       switch (Game.instance.position.winner) {
         case PieceColor.white:
-          iconArrow = Icons.toggle_off_outlined;
+          iconArrow =
+              ltr ? Icons.toggle_off_outlined : Icons.toggle_on_outlined;
           break;
         case PieceColor.black:
-          iconArrow = Icons.toggle_on_outlined;
+          iconArrow =
+              ltr ? Icons.toggle_on_outlined : Icons.toggle_off_outlined;
           break;
         default:
           iconArrow = Icons.view_agenda;
@@ -1217,10 +1220,12 @@ class _GamePageState extends State<GamePage>
     } else {
       switch (Game.instance.sideToMove) {
         case PieceColor.white:
-          iconArrow = Icons.keyboard_arrow_left;
+          iconArrow =
+              ltr ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right;
           break;
         case PieceColor.black:
-          iconArrow = Icons.keyboard_arrow_right;
+          iconArrow =
+              ltr ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_left;
           break;
         default:
           iconArrow = Icons.code;
@@ -1406,6 +1411,16 @@ class _GamePageState extends State<GamePage>
 
   @override
   Widget build(BuildContext context) {
+    Locale currentLocale = Localizations.localeOf(context);
+    if (currentLocale.languageCode == "ar" ||
+        currentLocale.languageCode == "fa" ||
+        currentLocale.languageCode == "he" ||
+        currentLocale.languageCode == "ps" ||
+        currentLocale.languageCode == "ur") {
+      print("Bidirectionality: RTL");
+      ltr = false;
+    }
+
     calcScreenPaddingH();
 
     final header = createPageHeader();
