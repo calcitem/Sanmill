@@ -43,7 +43,6 @@ class _HelpScreenState extends State<HelpScreen> {
                     top: 16, left: 16, right: 16, bottom: 16),
                 child: Text(
                   S.of(context).helpContent,
-                  textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: Config.fontSize,
                     color: AppTheme.helpTextColor,

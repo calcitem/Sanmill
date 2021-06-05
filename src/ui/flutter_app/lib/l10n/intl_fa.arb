@@ -140,7 +140,7 @@
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a Mill."
   },
-  "tipCanMoveOnePoint": "یک قطعه می تواند 1 امتیاز را جابجا کند.",
+  "tipCanMoveOnePoint": "مهره را در فضای خالی مجاور قرار دهید.",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
@@ -696,7 +696,7 @@
   "@player2": {
     "description": "Player 2"
   },
-  "howToPlay": "نحوه بازی",
+  "howToPlay": "بازی دوز چیست ؟",
   "@howToPlay": {
     "description": "How to play"
   },
@@ -852,7 +852,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "The aim of the game is to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game is automatically drawn if a position occurs for the third time, or if no remove has been made in the last fifty moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when the player has been reduced to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player is able to place three of his pieces in a straight line, he has a \"mill\" and may remove one of his opponent\"s pieces from the board.\n\nIn some variants of rules, players must remove any other pieces first before removing a piece from a formed mill.\n\nIn some variants of rules, all the points of removed pieces may not be placed again in the placing phrase.\n\nOnce all pieces have been used players take turns moving.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot do so, he has lost the game. As in the placing phase, a player who aligns three of his pieces on a board line has a mill and may remove one of his opponent\"s pieces. Any player reduces to two pieces and has no option to form new mills and thus loses the game. A player can also lose with more than three pieces, if his opponent blocks them so that they cannot be moved.\n\nFlying\n\nIn some variants of rules, once a player has only three pieces left, his pieces may \"fly\", \"hop\", or \"jump\" to any vacant points, not only adjacent ones.\n\n",
+  "helpContent": "بازی دوز یکی از بازی هاي جذابی اسـت کـه در دسته بازی هاي فکری قرار می گیرد. این بازی با کمک یک شماره مقوا یا کاغذ و 24 شماره مهره دو رنگ بازی میشود. یک شماره طرح هندسی روی کاغذ کشیده می شود و بازیکنان تلاش میکنند تا 3 مهره را دریک ردیف بنشانند. بازیکنان حریف نیز تلاش می کنند تا جلوی موفقیت دیگران را بگیرند و تلاش کنند.\nتا مهره هاي خودرا روی دریک ردیف قرار بدهند. این بازی بـه روش ساده تری نیز انجام میشود کـه بازیکنان با داشتن تنها 3مهره سعی می کنند کـه مهره ها را بـه چینش مناسب برسانند. بازی دوز بـه صورت 9تایی و 12 تایی انجام می شود. این بازی قدمت طولانی دارد و مردم از زمان هاي قدیم نیز این بازی را در دسته بازی هاي جذاب فکر قرار داده بودند. در گذشته مردم بـه جای استفاده از مهره، از سنگ هاي رنگی و یا تیله استفاده می کردند. سنگ ها و تیله ها باید بـه تعداد مساوی ودر دو رنگ موجود می بود. گفته می شود کـه مردم تلاش میکردند کـه سنگ هایي گرد و بـه رنگ هاي سیاه و سفید بیابند و از آنها دراین بازی استفاده کنند.\nیک نفر اقدام به شروع بازی می کند و اولین مهره را گذاشته و مهره ها یک در میان در جایگاه خود قرار می گیرند. چنانچه کسی موفق به پر کردن ۳ خانه در یک راستا و یک خط شود می تواند یکی از مهره های حریف را از گود بازی حذف نماید. البته بایستی به این نکته توجه داشت که در بازی سه تایی با روی خط قرار گرفتن سه مهره بازی به اتمام میرسد و دلیل این اتفاق، آن است که مهره های حریف به عدد دو رسیده و دیگر نمی تواند بازی را ادامه دهد.\n",
   "@helpContent": {
     "description": "Help Content"
   },

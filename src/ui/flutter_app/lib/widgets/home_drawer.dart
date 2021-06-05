@@ -311,7 +311,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       ? AppTheme.drawerHighlightTextColor
                       : AppTheme.drawerTextColor,
                 ),
-                textAlign: TextAlign.left,
               ),
             ],
           ),
