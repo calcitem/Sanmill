@@ -158,6 +158,12 @@ class _DrawerUserControllerState extends State<DrawerUserController>
       },
     );
 
+    var tapOffset = 0;
+
+    if (Localizations.localeOf(context).languageCode == "fa") {
+      tapOffset = 10; // TODO: WAR
+    }
+
     var stack = Stack(
       children: <Widget>[
         // this IgnorePointer we use as touch(user Interface) widget.screen View,
@@ -177,8 +183,8 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             },
           ),
         Padding(
-          padding:
-              EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 0),
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + tapOffset, left: 0),
           child: SizedBox(
             width: AppBar().preferredSize.height,
             height: AppBar().preferredSize.height,
