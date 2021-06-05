@@ -1406,16 +1406,6 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  Widget buildMoveHistoryPanel(String text) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        child: SingleChildScrollView(
-            child: Text(text, style: AppTheme.moveHistoryTextStyle)),
-      ),
-    );
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
