@@ -530,13 +530,13 @@ Depth get_search_depth(const Position *pos)
 
         // Can fly
         if (rule.mayFly) {
-            if (pb == rule.piecesAtLeastCount ||
-                pw == rule.piecesAtLeastCount) {
+            if (pb <= rule.flyPieceCount ||
+                pw <= rule.flyPieceCount) {
                 d = flyingDepth;
             }
 
-            if (pb == rule.piecesAtLeastCount &&
-                pw == rule.piecesAtLeastCount) {
+            if (pb <= rule.flyPieceCount &&
+                pw <= rule.flyPieceCount) {
                 d = flyingDepth / 2;
             }
         }

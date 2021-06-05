@@ -699,7 +699,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 #endif // MUEHLE_NMM
 
         // If illegal
-        if (pieceOnBoardCount[sideToMove] > rule.piecesAtLeastCount ||
+        if (pieceOnBoardCount[sideToMove] > rule.flyPieceCount ||
             !rule.mayFly) {
             if ((square_bb(s) & MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
                 return false;
@@ -1259,7 +1259,7 @@ bool Position::is_all_surrounded(Color c
         return true;
 
     // Can fly
-    if (pieceOnBoardCount[c] <= rule.piecesAtLeastCount &&
+    if (pieceOnBoardCount[c] <= rule.flyPieceCount &&
         rule.mayFly) {
         return false;
     }

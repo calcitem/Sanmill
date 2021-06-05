@@ -20,6 +20,7 @@ class Rule {
   String name = "Nine Men's Morris";
   String description = "";
   int piecesCount = 9;
+  int flyPieceCount = 3;
   int piecesAtLeastCount = 3;
   bool hasDiagonalLines = false;
   bool hasBannedLocations = false;

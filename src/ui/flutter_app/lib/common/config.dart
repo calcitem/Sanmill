@@ -65,6 +65,7 @@ class Config {
 
   // Rules
   static int piecesCount = 9;
+  static int flyPieceCount = 3;
   static int piecesAtLeastCount = 3;
   static bool hasDiagonalLines = false;
   static bool hasBannedLocations = false;
@@ -131,6 +132,7 @@ class Config {
 
     // Rules
     rule.piecesCount = Config.piecesCount = settings['PiecesCount'] ?? 9;
+    rule.flyPieceCount = Config.flyPieceCount = settings['FlyPieceCount'] ?? 3;
     rule.piecesAtLeastCount =
         Config.piecesAtLeastCount = settings['PiecesAtLeastCount'] ?? 3;
     rule.hasDiagonalLines =
@@ -201,6 +203,7 @@ class Config {
 
     // Rules
     settings['PiecesCount'] = Config.piecesCount;
+    settings['FlyPieceCount'] = Config.flyPieceCount;
     settings['PiecesAtLeastCount'] = Config.piecesAtLeastCount;
     settings['HasDiagonalLines'] = Config.hasDiagonalLines;
     settings['HasBannedLocations'] = Config.hasBannedLocations;

@@ -533,7 +533,7 @@ class Position {
       }
 
       // if illegal
-      if (pieceOnBoardCount[sideToMove()]! > rule.piecesAtLeastCount ||
+      if (pieceOnBoardCount[sideToMove()]! > rule.flyPieceCount ||
           !rule.mayFly) {
         int md;
 
@@ -929,8 +929,7 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove()]! <= rule.piecesAtLeastCount &&
-        rule.mayFly) {
+    if (pieceOnBoardCount[sideToMove()]! <= rule.flyPieceCount && rule.mayFly) {
       return false;
     }
 

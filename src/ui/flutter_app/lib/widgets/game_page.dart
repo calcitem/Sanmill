@@ -290,7 +290,8 @@ class _GamePageState extends State<GamePage>
               var us = Game.instance.sideToMove;
               if (position.phase == Phase.moving &&
                   rule.mayFly &&
-                  Game.instance.position.pieceOnBoardCount[us] == 3) {
+                  (Game.instance.position.pieceOnBoardCount[us] ==
+                      Config.flyPieceCount || Game.instance.position.pieceOnBoardCount[us] == 3)) {
                 print("[tap] May fly.");
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);

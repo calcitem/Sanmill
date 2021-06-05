@@ -472,6 +472,14 @@
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
+  "flyPieceCount": "The number of flying piece",
+  "@flyPieceCount": {
+    "description": "The number of flying piece"
+  },
+  "flyPieceCount_Detail": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
   "ninePieces": "Nine Pieces",
   "@ninePieces": {
     "description": "Nine Pieces"
@@ -544,9 +552,9 @@
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "If a player has only three pieces left, she can move the piece to any free point.",
+  "mayFly_Detail": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point.",
   "@mayFly_Detail": {
-    "description": "If a player has only three pieces left, she can move the piece to any free point."
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
   "maxStepsLedToDraw": "Max Steps Led to Draw",
   "@maxStepsLedToDraw": {

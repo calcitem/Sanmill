@@ -31,6 +31,9 @@ struct Rule
     // The number of pieces each player has
     int piecesCount;
 
+    // When a player is reduced to N pieces, his pieces are free to move to any unoccupied point
+    int flyPieceCount;
+
     int piecesAtLeastCount; // Default is 3
 
     // Add four diagonal lines to the board.
@@ -58,7 +61,7 @@ struct Rule
     // Change side to move if this option is disabled.
     bool isLoseButNotChangeSideWhenNoWay;
 
-    // Player may fly if he is down to three pieces.
+    // Player may fly if he is down to three or four (configurable) pieces.
     bool mayFly;
 
     // If a player has only three pieces left,

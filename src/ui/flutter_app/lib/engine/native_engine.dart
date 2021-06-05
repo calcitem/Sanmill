@@ -143,6 +143,7 @@ class NativeEngine extends Engine {
     await send('setoption name AiIsLazy value ${Config.aiIsLazy}');
     await send('setoption name Shuffling value ${Config.shufflingEnabled}');
     await send('setoption name PiecesCount value ${Config.piecesCount}');
+    await send('setoption name FlyPieceCount value ${Config.flyPieceCount}');
     await send(
         'setoption name PiecesAtLeastCount value ${Config.piecesAtLeastCount}');
     await send(

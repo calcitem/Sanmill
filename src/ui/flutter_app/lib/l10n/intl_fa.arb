@@ -472,6 +472,14 @@
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
+  "flyPieceCount": "تعداد قطعه پرواز",
+  "@flyPieceCount": {
+    "description": "The number of flying piece"
+  },
+  "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که یک بازیکن به تعداد قطعه های خاص کاهش می یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، مانند سایر قسمت های بازی ، به هر نقطه اشغال نشده منتقل می شوند.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
   "ninePieces": "9 قطعه",
   "@ninePieces": {
     "description": "Nine Pieces"
@@ -544,9 +552,9 @@
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "اگر به بازیکنی فقط سه قطعه مانده باشد ، می تواند قطعه را به هر نقطه آزاد منتقل کند.",
+  "mayFly_Detail": "اگر به بازیکن فقط سه یا چهار قطعه (با قابلیت تنظیم) باقی مانده باشد ، می تواند قطعه را به هر نقطه آزاد منتقل کند.",
   "@mayFly_Detail": {
-    "description": "If a player has only three pieces left, she can move the piece to any free point."
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
   "maxStepsLedToDraw": "مراحل حداکثر منجر به قرعه کشی",
   "@maxStepsLedToDraw": {

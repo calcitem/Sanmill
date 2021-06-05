@@ -76,14 +76,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             subtitleString: S.of(context).hasDiagonalLines_Detail,
           ),
           ListItemDivider(),
-          SettingsSwitchListTile(
-            context: context,
-            value: Config.mayFly,
-            onChanged: setAllowFlyingAllowed,
-            titleString: S.of(context).mayFly,
-            subtitleString: S.of(context).mayFly_Detail,
-          ),
-          ListItemDivider(),
           /*
           SettingsSwitchListTile(
             context: context,
@@ -138,6 +130,28 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
             subtitleString:
                 S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
+          ),
+        ],
+      ),
+      SizedBox(height: AppTheme.sizedBoxHeight),
+      Text(S.of(context).mayFly, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        children: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.mayFly,
+            onChanged: setAllowFlyingAllowed,
+            titleString: S.of(context).mayFly,
+            subtitleString: S.of(context).mayFly_Detail,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).flyPieceCount,
+            subtitleString: S.of(context).flyPieceCount_Detail,
+            trailingString: Config.flyPieceCount.toString(),
+            onTap: setFlyPieceCount,
           ),
         ],
       ),
@@ -218,6 +232,49 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             title: Text('12'),
             groupValue: Config.piecesCount,
             value: 12,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+        ],
+      ),
+    );
+  }
+
+  // General
+
+  setFlyPieceCount() {
+    callback(int? flyPieceCount) async {
+      print("[config] flyPieceCount = $flyPieceCount");
+
+      Navigator.of(context).pop();
+
+      setState(() {
+        rule.flyPieceCount = Config.flyPieceCount = flyPieceCount ?? 3;
+      });
+
+      print("[config] rule.flyPieceCount: ${rule.flyPieceCount}");
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('3'),
+            groupValue: Config.flyPieceCount,
+            value: 3,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('4'),
+            groupValue: Config.flyPieceCount,
+            value: 4,
             onChanged: callback,
           ),
           ListItemDivider(),

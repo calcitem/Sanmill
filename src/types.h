@@ -112,7 +112,7 @@ typedef uint32_t Key;
 
 typedef uint32_t Bitboard;
 
-constexpr int MAX_MOVES = 64;
+constexpr int MAX_MOVES = 72;   // (24 - 4 - 3) * 4 = 68
 constexpr int MAX_PLY = 48;
 
 enum Move : int32_t
@@ -155,7 +155,7 @@ enum class Phase : uint16_t
 //   - Move a piece on the board:
 //       - Slide a piece between two adjacent locations;
 //       - 'Jump' a piece to any empty location if the player has less than
-//         three pieces and mayFly is |true|;
+//         three or four pieces and mayFly is |true|;
 //   - Remove an opponent's piece after successfully closing a mill.
 enum class Action : uint16_t
 {

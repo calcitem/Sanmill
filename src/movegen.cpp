@@ -52,18 +52,17 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             continue;
         }
 
-        if (pos.piece_on_board_count(pos.side_to_move()) > rule.piecesAtLeastCount ||
-            !rule.mayFly) {
-            for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
-                to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
-                if (to && !pos.get_board()[to]) {
+        if (rule.mayFly && pos.piece_on_board_count(pos.side_to_move()) <= rule.flyPieceCount) {
+            // piece count < 3 or 4 and allow fly, if is empty point, that's ok, do not need in move list
+            for (to = SQ_BEGIN; to < SQ_END; ++to) {
+                if (!pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }
             }
         } else {
-            // piece count < 3 and allow fly, if is empty point, that's ok, do not need in move list
-            for (to = SQ_BEGIN; to < SQ_END; ++to) {
-                if (!pos.get_board()[to]) {
+            for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
+                to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
+                if (to && !pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }
             }

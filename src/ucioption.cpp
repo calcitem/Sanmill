@@ -87,6 +87,11 @@ void on_piecesCount(const Option &o)
     rule.piecesCount = (int)o;
 }
 
+void on_flyPieceCount(const Option &o)
+{
+    rule.flyPieceCount = (int)o;
+}
+
 void on_piecesAtLeastCount(const Option &o)
 {
     rule.piecesAtLeastCount = (int)o;
@@ -175,6 +180,7 @@ void init(OptionsMap &o)
 
     // Rules
     o["PiecesCount"] << Option(9, 9, 12, on_piecesCount);
+    o["flyPieceCount"] << Option(3, 3, 4, on_flyPieceCount);
     o["PiecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
     o["HasDiagonalLines"] << Option(false, on_hasDiagonalLines);
     o["HasBannedLocations"] << Option(false, on_hasBannedLocations);

@@ -472,6 +472,14 @@
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
+  "flyPieceCount": "Anzahl der fliegenden Steine",
+  "@flyPieceCount": {
+    "description": "The number of flying piece"
+  },
+  "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
   "ninePieces": "Neun Steine",
   "@ninePieces": {
     "description": "Nine Pieces"
@@ -546,7 +554,7 @@
   },
   "mayFly_Detail": "Wenn ein Spieler nur noch drei Steine hat, darf ein Stein an beliebige Punkte gezogen werden.",
   "@mayFly_Detail": {
-    "description": "If a player has only three pieces left, she can move the piece to any free point."
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
   "maxStepsLedToDraw": "Maximale Schritte bis unentschieden",
   "@maxStepsLedToDraw": {
