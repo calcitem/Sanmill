@@ -1422,6 +1422,10 @@ class _GamePageState extends State<GamePage>
       ltr = false;
     }
 
+    if (_tip == '') {
+      _tip = S.of(context).welcome;
+    }
+
     calcScreenPaddingH();
 
     final header = createPageHeader();

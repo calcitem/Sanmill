@@ -4,6 +4,10 @@
   "@appName": {
     "description": "The App name"
   },
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome"
+  },
   "yes": "Yes",
   "@yes": {
     "description": "Yes"

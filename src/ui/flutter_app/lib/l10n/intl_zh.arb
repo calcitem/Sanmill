@@ -1,6 +1,7 @@
 {
   "@@locale": "zh",
   "appName": "直棋",
+  "welcome": "欢迎使用",
   "game": "游戏",
   "yes": "是",
   "no": "否",
