@@ -833,7 +833,7 @@ class _GamePageState extends State<GamePage>
 
   onMoveListButtonPressed() {
     final moveHistoryText = Game.instance.position.moveHistoryText;
-
+    var end = Game.instance.moveHistory.length - 1;
     Navigator.of(context).pop();
 
     showDialog(
@@ -851,23 +851,27 @@ class _GamePageState extends State<GamePage>
               child:
                   Text(moveHistoryText, style: AppTheme.moveHistoryTextStyle)),
           actions: <Widget>[
-            TextButton(
-              child: Text(S.of(context).rollback,
-                  style: AppTheme.moveHistoryTextStyle),
-              onPressed: () async {
-                int selectValue = await showPickerNumber(
-                  context,
-                  1,
-                  Game.instance.moveHistory.length - 1,
-                  1,
-                  S.of(context).moves,
-                );
+            end > 0
+                ? TextButton(
+                    child: Text(S.of(context).rollback,
+                        style: AppTheme.moveHistoryTextStyle),
+                    onPressed: () async {
+                      int selectValue = await showPickerNumber(
+                        context,
+                        1,
+                        end,
+                        1,
+                        S.of(context).moves,
+                      );
 
-                if (selectValue != 0) {
-                  onTakeBackNButtonPressed(selectValue);
-                }
-              },
-            ),
+                      if (selectValue != 0) {
+                        onTakeBackNButtonPressed(selectValue);
+                      }
+                    },
+                  )
+                : TextButton(
+                    child: Text(""),
+                    onPressed: () => Navigator.of(context).pop()),
             TextButton(
               child: Text(S.of(context).copy,
                   style: AppTheme.moveHistoryTextStyle),
