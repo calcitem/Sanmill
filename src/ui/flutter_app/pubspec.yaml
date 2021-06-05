@@ -25,8 +25,8 @@ dependencies:
   device_info_plus_platform_interface: ^1.0.1
   devicelocale: ^0.4.1
   double_back_to_close_app: ^2.0.1
-  screen_recorder: ^0.0.2
   flutter_picker: ^2.0.1
+  #screen_recorder: ^0.0.2
 
 dev_dependencies:
   flutter_test:

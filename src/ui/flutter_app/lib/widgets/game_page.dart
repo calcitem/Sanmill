@@ -17,7 +17,8 @@
 */
 
 import 'dart:async';
-import 'dart:typed_data';
+
+//import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,7 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_settings_page.dart';
-import 'package:screen_recorder/screen_recorder.dart';
+//import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
@@ -62,10 +63,12 @@ class _GamePageState extends State<GamePage>
   bool isReady = false;
   bool isGoingToHistory = false;
   late Timer timer;
+  /*
   ScreenRecorderController screenRecorderController = ScreenRecorderController(
     pixelRatio: 1.0,
     skipFramesBetweenCaptures: 0,
   );
+  */
   late AnimationController _animationController;
   late Animation animation;
   bool disposed = false;
@@ -540,6 +543,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
+  /*
   onStartRecordingButtonPressed() async {
     Navigator.of(context).pop();
     showDialog(
@@ -619,6 +623,7 @@ class _GamePageState extends State<GamePage>
       },
     );
   }
+  */
 
   onAutoReplayButtonPressed() async {
     Navigator.of(context).pop();
@@ -628,9 +633,10 @@ class _GamePageState extends State<GamePage>
   }
 
   onGameButtonPressed() {
-    showModalBottomSheet(
+    //showModalBottomSheet(
+    showDialog(
       context: context,
-      backgroundColor: Colors.transparent,
+      //backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return SimpleDialog(
           backgroundColor: Colors.transparent,
@@ -643,6 +649,7 @@ class _GamePageState extends State<GamePage>
               ),
               onPressed: onStartNewGameButtonPressed,
             ),
+            /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             Config.experimentsEnabled
                 ? SimpleDialogOption(
@@ -680,6 +687,7 @@ class _GamePageState extends State<GamePage>
                     onPressed: onShowRecordingButtonPressed,
                   )
                 : SizedBox(height: 1),
+            */
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
@@ -1434,6 +1442,8 @@ class _GamePageState extends State<GamePage>
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
+      body: Column(children: <Widget>[header, board, toolbar]),
+      /*
       body: Column(children: <Widget>[
         header,
         ScreenRecorder(
@@ -1444,6 +1454,7 @@ class _GamePageState extends State<GamePage>
         ),
         toolbar
       ]),
+      */
     );
   }
 
