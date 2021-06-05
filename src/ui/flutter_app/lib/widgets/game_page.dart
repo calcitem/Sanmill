@@ -97,7 +97,8 @@ class _GamePageState extends State<GamePage>
       isReady = true;
       timer.cancel();
 
-      if (!Config.isPrivacyPolicyAccepted) {
+      if (Localizations.localeOf(context).languageCode == "zh" &&
+          !Config.isPrivacyPolicyAccepted) {
         onShowPrivacyDialog();
       }
     }
