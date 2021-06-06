@@ -511,6 +511,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
+  setIsHistoryNavigationToolbarShown(bool value) async {
+    setState(() {
+      Config.isHistoryNavigationToolbarShown = value;
+    });
+
+    print("[config] isHistoryNavigationToolbarShown: $value");
+
+    Config.save();
+  }
+
   setStandardNotationEnabled(bool value) async {
     setState(() {
       Config.standardNotationEnabled = value;

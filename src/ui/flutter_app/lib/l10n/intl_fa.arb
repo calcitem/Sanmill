@@ -644,6 +644,10 @@
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
+  "isHistoryNavigationToolbarShown": "نمایش نوار ابزار پیمایش تاریخچه",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
   "display": "نمایش دادن",
   "@display": {
     "description": "Display"

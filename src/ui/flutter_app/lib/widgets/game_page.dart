@@ -291,7 +291,8 @@ class _GamePageState extends State<GamePage>
               if (position.phase == Phase.moving &&
                   rule.mayFly &&
                   (Game.instance.position.pieceOnBoardCount[us] ==
-                      Config.flyPieceCount || Game.instance.position.pieceOnBoardCount[us] == 3)) {
+                          Config.flyPieceCount ||
+                      Game.instance.position.pieceOnBoardCount[us] == 3)) {
                 print("[tap] May fly.");
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);
@@ -1415,6 +1416,80 @@ class _GamePageState extends State<GamePage>
     );
   }
 
+  Widget createHistoryNavigationToolbar() {
+    var takeBackAllButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.first_page,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onTakeBackAllButtonPressed(pop: false),
+    );
+
+    var takeBackButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            ltr ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onTakeBackButtonPressed(pop: false),
+    );
+
+    var stepForwardButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            ltr ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_left,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onStepForwardButtonPressed(pop: false),
+    );
+
+    var stepForwardAllButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.last_page,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onStepForwardAllButtonPressed(pop: false),
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Color(Config.boardBackgroundColor),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
+      padding: EdgeInsets.symmetric(vertical: 2),
+      child: Row(children: <Widget>[
+        Expanded(child: SizedBox()),
+        takeBackAllButton,
+        Expanded(child: SizedBox()),
+        takeBackButton,
+        Expanded(child: SizedBox()),
+        stepForwardButton,
+        Expanded(child: SizedBox()), //dashboard_outlined
+        stepForwardAllButton,
+        Expanded(child: SizedBox()),
+      ]),
+    );
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -1442,10 +1517,19 @@ class _GamePageState extends State<GamePage>
     final header = createPageHeader();
     final board = createBoard();
     final toolbar = createToolbar();
+    final historyNavToolbar = createHistoryNavigationToolbar();
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
-      body: Column(children: <Widget>[header, board, toolbar]),
+      body: Column(children: <Widget>[
+        header,
+        board,
+        Config.isHistoryNavigationToolbarShown
+            ? historyNavToolbar
+            : SizedBox(height: 0),
+        SizedBox(height: 1),
+        toolbar,
+      ]),
       /*
       body: Column(children: <Widget>[
         header,

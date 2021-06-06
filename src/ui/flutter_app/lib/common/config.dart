@@ -48,6 +48,7 @@ class Config {
   static bool standardNotationEnabled = true;
   static bool isPieceCountInHandShown = false;
   static bool isNotationsShown = false;
+  static bool isHistoryNavigationToolbarShown = false;
   static double boardBorderLineWidth = 2.0;
   static double boardInnerLineWidth = 2.0;
   static double pieceWidth = 0.9;
@@ -109,6 +110,8 @@ class Config {
     Config.isPieceCountInHandShown =
         settings['IsPieceCountInHandShown'] ?? false;
     Config.isNotationsShown = settings['IsNotationsShown'] ?? false;
+    Config.isHistoryNavigationToolbarShown =
+        settings['IsHistoryNavigationToolbarShown'] ?? false;
     Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
     Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
@@ -186,6 +189,8 @@ class Config {
     settings['StandardNotationEnabled'] = Config.standardNotationEnabled;
     settings['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
     settings['IsNotationsShown'] = Config.isNotationsShown;
+    settings['IsHistoryNavigationToolbarShown'] =
+        Config.isHistoryNavigationToolbarShown;
     settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
     settings['PieceWidth'] = Config.pieceWidth;

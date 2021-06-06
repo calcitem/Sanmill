@@ -644,6 +644,10 @@
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
+  "isHistoryNavigationToolbarShown": "Show history navigation toolbar",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
   "display": "Display",
   "@display": {
     "description": "Display"

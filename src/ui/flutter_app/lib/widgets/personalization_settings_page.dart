@@ -351,6 +351,13 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).isNotationsShown,
           ),
           ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.isHistoryNavigationToolbarShown,
+            onChanged: setIsHistoryNavigationToolbarShown,
+            titleString: S.of(context).isHistoryNavigationToolbarShown,
+          ),
+          ListItemDivider(),
           SettingsListTile(
               context: context,
               titleString: S.of(context).boardBorderLineWidth,
@@ -458,6 +465,14 @@ class _PersonalizationSettingsPageState
   setIsNotationsShown(bool value) async {
     setState(() {
       Config.isNotationsShown = value;
+    });
+
+    Config.save();
+  }
+
+  setIsHistoryNavigationToolbarShown(bool value) async {
+    setState(() {
+      Config.isHistoryNavigationToolbarShown = value;
     });
 
     Config.save();
