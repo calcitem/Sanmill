@@ -73,6 +73,8 @@ class _GamePageState extends State<GamePage>
   late Animation animation;
   bool disposed = false;
   bool ltr = true;
+  var setPositionPieceColor = PieceColor.white;
+  var pieceColorIcon = Icons.looks_one_outlined;
   final String tag = "[game_page]";
 
   @override
@@ -209,7 +211,8 @@ class _GamePageState extends State<GamePage>
 
     // TODO
     // WAR: Fix first tap response slow when piece count changed
-    if (position.phase == Phase.placing &&
+    if (Game.instance.engineType != EngineType.setPosition &&
+        position.phase == Phase.placing &&
         position.pieceOnBoardCount[PieceColor.white] == 0 &&
         position.pieceOnBoardCount[PieceColor.black] == 0) {
       Game.instance.newGame();
@@ -229,6 +232,13 @@ class _GamePageState extends State<GamePage>
     if (Game.instance.isAiToMove() || Game.instance.aiIsSearching()) {
       print("[tap] AI's turn, skip tapping.");
       return false;
+    }
+
+    // setPosition
+    if (Game.instance.engineType == EngineType.setPosition) {
+      print(
+          "$tag Engine type is set position. Put $setPositionPieceColor on $sq.");
+      return position.putPiece2(sq, setPositionPieceColor);
     }
 
     if (position.phase == Phase.ready) {
@@ -1167,6 +1177,7 @@ class _GamePageState extends State<GamePage>
       EngineType.humanVsAi: Config.aiMovesFirst ? Icons.computer : Icons.person,
       EngineType.humanVsHuman: Icons.person,
       EngineType.aiVsAi: Icons.computer,
+      EngineType.setPosition: Icons.add_circle,
       EngineType.humanVsCloud: Icons.person,
       EngineType.humanVsLAN: Icons.person,
       EngineType.testViaLAN: Icons.cast,
@@ -1176,6 +1187,7 @@ class _GamePageState extends State<GamePage>
       EngineType.humanVsAi: Config.aiMovesFirst ? Icons.person : Icons.computer,
       EngineType.humanVsHuman: Icons.person,
       EngineType.aiVsAi: Icons.computer,
+      EngineType.setPosition: Icons.add_circle_outline,
       EngineType.humanVsCloud: Icons.cloud,
       EngineType.humanVsLAN: Icons.cast,
       EngineType.testViaLAN: Icons.cast,
@@ -1490,6 +1502,109 @@ class _GamePageState extends State<GamePage>
     );
   }
 
+  Widget createSetPositionToolbar() {
+    var pieceColor = "White";
+    var phase = "Moving";
+
+    if (setPositionPieceColor == PieceColor.white) {
+      pieceColorIcon = Icons.looks_one_outlined;
+    } else if (setPositionPieceColor == PieceColor.black) {
+      pieceColorIcon = Icons.looks_two_outlined;
+    } else if (setPositionPieceColor == PieceColor.ban) {
+      pieceColorIcon = Icons.cancel_outlined;
+    }
+
+    var setPieceColorButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            pieceColorIcon,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onSetPieceColorButtonPressed(),
+    );
+
+    var setPhaseButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Game.instance.position.phase == Phase.moving
+                ? Icons.swipe
+                : Icons.touch_app,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onTakeBackButtonPressed(pop: false),
+    );
+
+    var undoButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.arrow_back,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onStepForwardButtonPressed(pop: false),
+    );
+
+    var clearButton = TextButton(
+      child: Column(
+        // Replace with a Row for horizontal icon + text
+        children: <Widget>[
+          Icon(
+            Icons.cleaning_services,
+            color: AppTheme.toolbarIconColor,
+          ),
+        ],
+      ),
+      onPressed: () => onStepForwardAllButtonPressed(pop: false),
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Color(Config.boardBackgroundColor),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
+      padding: EdgeInsets.symmetric(vertical: 2),
+      child: Row(children: <Widget>[
+        Expanded(child: SizedBox()),
+        setPieceColorButton,
+        Expanded(child: SizedBox()),
+        setPhaseButton,
+        Expanded(child: SizedBox()),
+        undoButton,
+        Expanded(child: SizedBox()), //dashboard_outlined
+        clearButton,
+        Expanded(child: SizedBox()),
+      ]),
+    );
+  }
+
+  onSetPieceColorButtonPressed() {
+    if (setPositionPieceColor == PieceColor.white) {
+      setPositionPieceColor = PieceColor.black;
+    } else if (setPositionPieceColor == PieceColor.black) {
+      if (rule.hasBannedLocations) {
+        setPositionPieceColor = PieceColor.ban;
+      } else {
+        setPositionPieceColor = PieceColor.white;
+      }
+    } else {
+      setPositionPieceColor = PieceColor.white;
+    }
+
+    setState(() {});
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -1518,6 +1633,7 @@ class _GamePageState extends State<GamePage>
     final board = createBoard();
     final toolbar = createToolbar();
     final historyNavToolbar = createHistoryNavigationToolbar();
+    final setPositionToolbar = createSetPositionToolbar();
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
@@ -1528,7 +1644,9 @@ class _GamePageState extends State<GamePage>
             ? historyNavToolbar
             : SizedBox(height: 0),
         SizedBox(height: 1),
-        toolbar,
+        Game.instance.engineType == EngineType.setPosition
+            ? setPositionToolbar
+            : toolbar,
       ]),
       /*
       body: Column(children: <Widget>[

@@ -22,6 +22,7 @@ enum EngineType {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
+  setPosition,
   humanVsCloud, // Not Implemented
   humanVsLAN, // Not Implemented
   testViaLAN, // Not Implemented

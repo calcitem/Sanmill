@@ -8,6 +8,7 @@
   "humanVsAi": "人机对战",
   "humanVsHuman": "双人对战",
   "aiVsAi": "机器对战",
+  "setPosition": "编辑局面",
   "humanVsCloud": "挑战云端",
   "humanVsLAN": "联网对战",
   "testViaLAN": "联网测试",

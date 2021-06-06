@@ -99,6 +99,7 @@ class Game {
         isAi[PieceColor.black] = !Config.aiMovesFirst;
         break;
       case EngineType.humanVsHuman:
+      case EngineType.setPosition:
       case EngineType.humanVsLAN:
       case EngineType.humanVsCloud:
         isAi[PieceColor.white] = isAi[PieceColor.black] = false;

@@ -83,6 +83,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       DrawerIndex.humanVsAi: EngineType.humanVsAi,
       DrawerIndex.humanVsHuman: EngineType.humanVsHuman,
       DrawerIndex.aiVsAi: EngineType.aiVsAi,
+      DrawerIndex.setPosition: EngineType.setPosition,
     };
 
     drawerIndex = index;

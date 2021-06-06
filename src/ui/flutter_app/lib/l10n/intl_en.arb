@@ -32,6 +32,10 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
+  "setPosition": "Set Position",
+  "@setPosition": {
+    "description": "Set Position"
+  },
   "humanVsCloud": "Human Vs Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"

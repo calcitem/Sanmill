@@ -455,6 +455,48 @@ class Position {
     }
   }
 
+  bool putPiece2(int s, String pt) {
+    var piece = pt;
+    var us = pt;
+
+    if (!(sqBegin <= s && s < sqEnd) || board[s] != Piece.noPiece) {
+      return false;
+    }
+
+    if (pieceOnBoardCount[us] != null) {
+      if (pieceOnBoardCount[us]! + 1 > rule.piecesCount) {
+        return false;
+      } else {
+        pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
+      }
+    }
+
+    if (pieceInHandCount[us] != null) {
+      pieceInHandCount[us] = pieceInHandCount[us]! - 1;
+
+      if (pieceInHandCount[us]! < 0) {
+        pieceInHandCount[us] = 0;
+      }
+    }
+
+    // TODO: Need?
+    if (phase == Phase.ready) {
+      start();
+    }
+
+    _grid[squareToIndex[s]!] = piece;
+    board[s] = piece;
+
+    record = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+
+    updateKey(s);
+
+    // TODO: need?
+    currentSquare = s;
+
+    return true;
+  }
+
   bool putPiece(int s) {
     var piece = Piece.noPiece;
     var us = _sideToMove;
