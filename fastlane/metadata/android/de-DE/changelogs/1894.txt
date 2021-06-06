@@ -1,0 +1,5 @@
+v1.0.20
+
+* Unterstützen Sie Ten / Eleven Men's Morris.
+* Sie können konfigurieren, wie viele Steine fliegen können
+* Symbolleiste für die Verlaufsnavigation hinzufügen.

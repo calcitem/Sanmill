@@ -1,0 +1,5 @@
+v1.0.20
+
+* Support Ten/Eleven Men's Morris.
+* You can set how many pieces left can fly.
+* Add History Navigation Toolbar.
