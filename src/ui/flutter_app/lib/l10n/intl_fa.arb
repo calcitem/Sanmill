@@ -208,6 +208,14 @@
   "@startNewGame": {
     "description": "Start new game"
   },
+  "importGame": "وارد کردن بازی",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "gameImported": "بازی از کلیپ بورد وارد شده است.",
+  "@gameImported": {
+    "description": "Game imported from clipboard."
+  },
   "startRecording": "شروع به ضبط کنید",
   "@startRecording": {
     "description": "Start recording"

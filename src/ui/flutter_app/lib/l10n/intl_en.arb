@@ -208,6 +208,14 @@
   "@startNewGame": {
     "description": "Start new game"
   },
+  "importGame": "Import game",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "gameImported": "Game imported from clipboard.",
+  "@gameImported": {
+    "description": "Game imported from clipboard."
+  },
   "startRecording": "Start recording",
   "@startRecording": {
     "description": "Start recording"

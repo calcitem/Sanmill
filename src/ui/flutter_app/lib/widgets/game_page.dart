@@ -549,6 +549,28 @@ class _GamePageState extends State<GamePage>
     }
   }
 
+  onImportGameButtonPressed() async {
+    Navigator.of(context).pop();
+
+    ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+
+    if (data == null || data.text == null) {
+      return;
+    }
+
+    String text = data.text!;
+
+    print("Clipboard text:");
+    print('$text');
+
+    await onTakeBackAllButtonPressed(pop: false);
+    await Game.instance.position.recorder.clear();
+    await Game.instance.position.recorder.import(text);
+    await onStepForwardAllButtonPressed(pop: false);
+
+    showTip(S.of(context).gameImported);
+  }
+
   /*
   onStartRecordingButtonPressed() async {
     Navigator.of(context).pop();
@@ -654,6 +676,15 @@ class _GamePageState extends State<GamePage>
                 textAlign: TextAlign.center,
               ),
               onPressed: onStartNewGameButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).importGame,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: onImportGameButtonPressed,
             ),
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),

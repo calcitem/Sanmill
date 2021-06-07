@@ -52,6 +52,8 @@
   "thinking": "对方思考中...",
   "newGame": "新局",
   "startNewGame": "开始新局",
+  "importGame": "导入棋谱",
+  "gameImported": "棋谱已从剪贴板导入",
   "startRecording": "开始录制",
   "recording": "录制中...",
   "stopRecording": "停止录制",

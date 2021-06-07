@@ -208,6 +208,14 @@
   "@startNewGame": {
     "description": "Start new game"
   },
+  "importGame": "Spiel importieren",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "gameImported": "Spiel aus der Zwischenablage importiert.",
+  "@gameImported": {
+    "description": "Game imported from clipboard."
+  },
   "startRecording": "Starte die Aufnahme",
   "@startRecording": {
     "description": "Start recording"

@@ -323,6 +323,8 @@ Map<int, int> squareToIndex = {
   31: 0
 };
 
+Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
+
 /*
           a b c d e f g
         7 X --- X --- X 7
@@ -365,6 +367,31 @@ Map<int, String> squareToNotation = {
   31: "a7"
 };
 
-Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
+Map<String, String> notationToMove = {
+  "d5": "(1,1)",
+  "e5": "(1,2)",
+  "e4": "(1,3)",
+  "e3": "(1,4)",
+  "d3": "(1,5)",
+  "c3": "(1,6)",
+  "c4": "(1,7)",
+  "c5": "(1,8)",
+  "d6": "(2,1)",
+  "f6": "(2,2)",
+  "f4": "(2,3)",
+  "f2": "(2,4)",
+  "d2": "(2,5)",
+  "b2": "(2,6)",
+  "b4": "(2,7)",
+  "b6": "(2,8)",
+  "d7": "(3,1)",
+  "g7": "(3,2)",
+  "g4": "(3,3)",
+  "g1": "(3,4)",
+  "d1": "(3,5)",
+  "a1": "(3,6)",
+  "a4": "(3,7)",
+  "a7": "(3,8)",
+};
 
 enum GameResult { pending, win, lose, draw, none }
