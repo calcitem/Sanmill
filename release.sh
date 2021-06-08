@@ -91,7 +91,7 @@ notepad $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 # Git commit
 git status -s
 git add .
-git commit -m "Sanmill v$NEW_VERSION" -m "Official release version of Sanmill v$NEW_VERSION" -s
+git commit -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION" -s
 git tag -d v$NEW_VERSION || true
 git tag v$NEW_VERSION
 git push origin v$NEW_VERSION -f
