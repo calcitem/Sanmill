@@ -212,6 +212,10 @@
   "@importGame": {
     "description": "Import game"
   },
+  "exportGame": "صادرات بازی",
+  "@exportGame": {
+    "description": "Export game"
+  },
   "gameImported": "بازی از کلیپ بورد وارد شده است.",
   "@gameImported": {
     "description": "Game imported from clipboard."

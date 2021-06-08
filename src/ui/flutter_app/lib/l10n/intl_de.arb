@@ -212,6 +212,10 @@
   "@importGame": {
     "description": "Import game"
   },
+  "exportGame": "Spiel exportieren",
+  "@exportGame": {
+    "description": "Export game"
+  },
   "gameImported": "Spiel aus der Zwischenablage importiert.",
   "@gameImported": {
     "description": "Game imported from clipboard."

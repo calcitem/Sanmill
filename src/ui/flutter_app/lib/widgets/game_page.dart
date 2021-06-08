@@ -571,6 +571,16 @@ class _GamePageState extends State<GamePage>
     showTip(S.of(context).gameImported);
   }
 
+  onExportGameButtonPressed() async {
+    Navigator.of(context).pop();
+
+    final moveHistoryText = Game.instance.position.moveHistoryText;
+
+    Clipboard.setData(ClipboardData(text: moveHistoryText)).then((_) {
+      showSnackBar(S.of(context).moveHistoryCopied);
+    });
+  }
+
   /*
   onStartRecordingButtonPressed() async {
     Navigator.of(context).pop();
@@ -685,6 +695,15 @@ class _GamePageState extends State<GamePage>
                 textAlign: TextAlign.center,
               ),
               onPressed: onImportGameButtonPressed,
+            ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              child: Text(
+                S.of(context).exportGame,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: onExportGameButtonPressed,
             ),
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),
