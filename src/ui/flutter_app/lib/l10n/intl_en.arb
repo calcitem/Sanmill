@@ -200,9 +200,9 @@
   "@thinking": {
     "description": "Thinking..."
   },
-  "newGame": "Start",
+  "newGame": "New game",
   "@newGame": {
-    "description": "Start"
+    "description": "New game"
   },
   "startNewGame": "Start new game",
   "@startNewGame": {

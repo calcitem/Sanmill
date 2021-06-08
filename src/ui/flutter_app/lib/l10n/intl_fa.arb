@@ -200,9 +200,9 @@
   "@thinking": {
     "description": "Thinking..."
   },
-  "newGame": "شروع کنید",
+  "newGame": "بازی جدید",
   "@newGame": {
-    "description": "Start"
+    "description": "New game"
   },
   "startNewGame": "شروع بازی جدید",
   "@startNewGame": {

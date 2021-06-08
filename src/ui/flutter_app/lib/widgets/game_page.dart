@@ -671,7 +671,7 @@ class _GamePageState extends State<GamePage>
           children: <Widget>[
             SimpleDialogOption(
               child: Text(
-                S.of(context).startNewGame,
+                S.of(context).newGame,
                 style: AppTheme.simpleDialogOptionTextStyle,
                 textAlign: TextAlign.center,
               ),
