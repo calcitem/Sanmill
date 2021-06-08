@@ -1,0 +1,3 @@
+v1.0.21
+
+* Unterstützen Sie das Exportieren und Importieren des Spiels.
