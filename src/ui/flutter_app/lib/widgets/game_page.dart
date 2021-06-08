@@ -671,10 +671,10 @@ class _GamePageState extends State<GamePage>
   }
 
   onGameButtonPressed() {
-    //showModalBottomSheet(
-    showDialog(
+    showModalBottomSheet(
+      //showDialog(
       context: context,
-      //backgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return SimpleDialog(
           backgroundColor: Colors.transparent,
