@@ -757,42 +757,58 @@ class _GamePageState extends State<GamePage>
         return SimpleDialog(
           backgroundColor: Colors.transparent,
           children: <Widget>[
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).takeBack,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onTakeBackButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).stepForward,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onStepForwardButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).takeBackAll,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onTakeBackAllButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).stepForwardAll,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onStepForwardAllButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SimpleDialogOption(
+                    child: Text(
+                      S.of(context).takeBack,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: onTakeBackButtonPressed,
+                  ),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SizedBox(height: AppTheme.sizedBoxHeight),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SimpleDialogOption(
+                    child: Text(
+                      S.of(context).stepForward,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: onStepForwardButtonPressed,
+                  ),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SizedBox(height: AppTheme.sizedBoxHeight),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SimpleDialogOption(
+                    child: Text(
+                      S.of(context).takeBackAll,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: onTakeBackAllButtonPressed,
+                  ),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SizedBox(height: AppTheme.sizedBoxHeight),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SimpleDialogOption(
+                    child: Text(
+                      S.of(context).stepForwardAll,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: onStepForwardAllButtonPressed,
+                  ),
+            Config.isHistoryNavigationToolbarShown
+                ? SizedBox(height: 1)
+                : SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
                 S.of(context).showMoveList,
