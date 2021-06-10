@@ -1,0 +1,3 @@
+v1.0.22
+
+* Fix white side attack so early from the sides at 3rd move.
