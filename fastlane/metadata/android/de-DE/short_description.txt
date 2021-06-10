@@ -1,1 +1,1 @@
-Mühle Spiel-Programm, das viele Regelvarianten unterstützt
+Mühle-Brettspielprogramm, das viele Regelvarianten unterstützt
