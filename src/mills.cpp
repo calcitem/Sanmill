@@ -425,19 +425,36 @@ void move_priority_list_shuffle()
 
 Depth get_search_depth(const Position *pos)
 {
-    const int pb = pos->count<ON_BOARD>(WHITE);
-    const int pw = pos->count<ON_BOARD>(BLACK);
+    Depth d = 0;
 
-    const int pieces = pb + pw;
+    const int pw = pos->count<ON_BOARD>(WHITE);
+    const int pb = pos->count<ON_BOARD>(BLACK);
+
+    const int pieces = pw + pb;
 
     if (!gameOptions.getDeveloperMode()) {
-        if (pos->phase == Phase::placing && pieces <= 4) {
-            return 1;
-        }
-        return (Depth)gameOptions.getSkillLevel();
+        if (pos->phase == Phase::placing) {
+            const Depth placingDepthTable[] = {
+                  +1, 1, +1,  1,     /* 0 ~ 3 */
+                  +3, 0  +0,  0,     /* 4 ~ 7 */
+                  +0, 0  +0,  0,     /* 8 ~ 11 */
+                  +0, 0  +0,  0,     /* 12 ~ 15 */
+                  +0, 0  +0,  0,     /* 16 ~ 19 */
+                  +0, 0  +0,  0,     /* 20 ~ 23 */
+                  +0                 /* 24 */
+            };
+
+            const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
+
+            d = placingDepthTable[index];
+            if (d == 0) {
+                return (Depth)gameOptions.getSkillLevel();
+            } else {
+                return d;
+            }
+        }        
     }
 
-    Depth d = 0;
 
 #ifdef _DEBUG
     constexpr Depth reduce = 0;
