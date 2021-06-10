@@ -57,11 +57,8 @@ class Settings {
     // TODO: main() ExternalStorage
     // var docDir = await getExternalStorageDirectory();
     var docDir = await getApplicationDocumentsDirectory();
-    if (docDir != null) {
-      _file = File('${docDir.path}/$fileName');
-    } else {
-      _file = File('$fileName');
-    }
+
+    _file = File('${docDir.path}/$fileName');
 
     print("[settings] Loading $_file ...");
 

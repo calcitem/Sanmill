@@ -1217,7 +1217,7 @@ class _GamePageState extends State<GamePage>
 
   void calcScreenPaddingH() {
     //
-    // when screen's height/width rate is less than 16/9, limit witdh of board
+    // when screen's height/width rate is less than 16/9, limit width of board
     final windowSize = MediaQuery.of(context).size;
     double height = windowSize.height, width = windowSize.width;
 
@@ -1570,7 +1570,7 @@ class _GamePageState extends State<GamePage>
         currentLocale.languageCode == "he" ||
         currentLocale.languageCode == "ps" ||
         currentLocale.languageCode == "ur") {
-      print("Bidirectionality: RTL");
+      print("bidirectionality: RTL");
       ltr = false;
     }
 

@@ -44,7 +44,7 @@ class Audios {
       return;
     }
 
-    _soundpool ??= Soundpool();
+    _soundpool ??= Soundpool.fromOptions();
 
     if (_soundpool == null) {
       if (Config.developerMode) {
