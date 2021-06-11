@@ -68,7 +68,12 @@ class GameRecorder {
 
   String import(String moveList) {
     List<Move> newHistory = [];
-    List<String> list = moveList.toLowerCase().replaceAll('\n', ' ').split(' ');
+    List<String> list = moveList
+        .toLowerCase()
+        .replaceAll('\n', ' ')
+        .replaceAll(',', ' ')
+        .replaceAll(';', ' ')
+        .split(' ');
 
     for (var i in list) {
       i = i.trim();
