@@ -220,6 +220,10 @@
   "@gameImported": {
     "description": "Game imported from clipboard."
   },
+  "cannotImport": "وارد کردن امکان پذیر نیست",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
   "startRecording": "شروع به ضبط کنید",
   "@startRecording": {
     "description": "Start recording"

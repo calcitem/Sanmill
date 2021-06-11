@@ -565,7 +565,13 @@ class _GamePageState extends State<GamePage>
 
     await onTakeBackAllButtonPressed(pop: false);
     await Game.instance.position.recorder.clear();
-    await Game.instance.position.recorder.import(text);
+    var importFailedStr = await Game.instance.position.recorder.import(text);
+
+    if (importFailedStr != "") {
+      showTip(S.of(context).cannotImport + " " + importFailedStr);
+      return;
+    }
+
     await onStepForwardAllButtonPressed(pop: false);
 
     showTip(S.of(context).gameImported);

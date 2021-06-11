@@ -66,7 +66,7 @@ class GameRecorder {
     return move;
   }
 
-  void import(String moveList) {
+  String import(String moveList) {
     List<Move> newHistory = [];
     List<String> list = moveList.toLowerCase().replaceAll('\n', ' ').split(' ');
 
@@ -78,26 +78,41 @@ class GameRecorder {
           String m1 = parseNotation(i.substring(0, 2));
           if (m1 != "") {
             newHistory.add(Move(m1));
+          } else {
+            print("Cannot import $i");
+            return i;
           }
           String m2 = parseNotation(i.substring(2));
           if (m2 != "") {
             newHistory.add(Move(m2));
+          } else {
+            print("Cannot import $i");
+            return i;
           }
         } else if (i.length == 8 && i[2] == '-' && i[5] == 'x') {
           // "a1-b2xc3"
           String m1 = parseNotation(i.substring(0, 5));
           if (m1 != "") {
             newHistory.add(Move(m1));
+          } else {
+            print("Cannot import $i");
+            return i;
           }
           String m2 = parseNotation(i.substring(5));
           if (m2 != "") {
             newHistory.add(Move(m2));
+          } else {
+            print("Cannot import $i");
+            return i;
           }
         } else {
           // no x
           String m = parseNotation(i);
           if (m != "") {
             newHistory.add(Move(m));
+          } else {
+            print("Cannot import $i");
+            return i;
           }
         }
       }
@@ -106,6 +121,8 @@ class GameRecorder {
     if (newHistory.length > 0) {
       setHistory(newHistory);
     }
+
+    return "";
   }
 
   void jumpToHead() {

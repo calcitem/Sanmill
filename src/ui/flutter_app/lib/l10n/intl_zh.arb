@@ -55,6 +55,7 @@
   "importGame": "导入棋局",
   "exportGame": "导出棋局",
   "gameImported": "棋谱已从剪贴板导入",
+  "cannotImport": "无法导入",
   "startRecording": "开始录制",
   "recording": "录制中...",
   "stopRecording": "停止录制",

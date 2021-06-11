@@ -220,6 +220,10 @@
   "@gameImported": {
     "description": "Game imported from clipboard."
   },
+  "cannotImport": "Cannot import",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
   "startRecording": "Start recording",
   "@startRecording": {
     "description": "Start recording"
