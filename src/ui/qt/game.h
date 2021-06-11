@@ -239,6 +239,9 @@ public slots:
     // Move Time
     void setMoveTime(int val);
 
+    // Draw on human experience
+    void setDrawOnHumanExperience(bool enabled);
+
     // AI is Lazy
     void setAiIsLazy(bool enabled);
 

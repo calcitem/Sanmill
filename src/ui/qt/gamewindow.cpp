@@ -205,6 +205,9 @@ void MillGameWindow::initialize()
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             game, SLOT(setAnimation(bool)));
 
+    connect(ui.actionDrawOnHumanExperience, SIGNAL(toggled(bool)),
+            game, SLOT(setDrawOnHumanExperience(bool)));
+
     connect(ui.actionAiIsLazy, SIGNAL(toggled(bool)),
             game, SLOT(setAiIsLazy(bool)));
 
@@ -389,6 +392,7 @@ void MillGameWindow::initialize()
     ui.actionSound_S->setChecked(game->soundEnabled());
     ui.actionAnimation_A->setChecked(game->animationEnabled());
 
+    ui.actionDrawOnHumanExperience->setChecked(gameOptions.getDrawOnHumanExperience());
     ui.actionAiIsLazy->setChecked(gameOptions.getAiIsLazy());
     ui.actionShuffling_R->setChecked(gameOptions.getShufflingEnabled());
     ui.actionPerfect_AI->setChecked(gameOptions.getPerfectAiEnabled());

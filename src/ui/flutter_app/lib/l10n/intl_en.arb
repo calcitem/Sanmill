@@ -980,6 +980,10 @@
   "@developerMode": {
     "description": "Developer mode"
   },
+  "drawOnHumanExperience": "Draw on human experience",
+  "@drawOnHumanExperience": {
+    "description": "Draw on human experience"
+  },
   "pieceCount": "Piece count",
   "@pieceCount": {
     "description": "Piece count"

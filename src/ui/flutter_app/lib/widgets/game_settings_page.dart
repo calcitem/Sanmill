@@ -207,6 +207,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         children: <Widget>[
           SettingsSwitchListTile(
             context: context,
+            value: Config.drawOnHumanExperience,
+            onChanged: setDrawOnHumanExperience,
+            titleString: S.of(context).drawOnHumanExperience,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
             value: Config.aiIsLazy,
             onChanged: setAiIsLazy,
             titleString: S.of(context).passive,
@@ -365,6 +372,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     });
 
     print("[config] aiMovesFirst: $value");
+
+    Config.save();
+  }
+
+  setDrawOnHumanExperience(bool value) async {
+    setState(() {
+      Config.drawOnHumanExperience = value;
+    });
+
+    print("[config] drawOnHumanExperience: $value");
 
     Config.save();
   }

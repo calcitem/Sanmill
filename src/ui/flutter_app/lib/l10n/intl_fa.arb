@@ -980,6 +980,10 @@
   "@developerMode": {
     "description": "Developer mode"
   },
+  "drawOnHumanExperience": "از تجربه بشر استفاده کنید",
+  "@drawOnHumanExperience": {
+    "description": "Draw on human experience"
+  },
   "pieceCount": "تعداد قطعه",
   "@pieceCount": {
     "description": "Piece count"

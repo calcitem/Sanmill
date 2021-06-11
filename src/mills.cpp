@@ -426,7 +426,7 @@ void move_priority_list_shuffle()
 bool is_star_squares_full(Position *pos)
 {
     bool ret = false;
-    
+
     if (rule.hasDiagonalLines) {
         ret = (pos->get_board()[SQ_17] &&
                pos->get_board()[SQ_19] &&
@@ -455,11 +455,11 @@ Depth get_search_depth(const Position *pos)
         if (pos->phase == Phase::placing) {
             const Depth placingDepthTable[] = {
                   +1, 1, +1,  1,     /* 0 ~ 3 */
-                  +3, 0  +0,  0,     /* 4 ~ 7 */
-                  +0, 0  +0,  0,     /* 8 ~ 11 */
-                  +0, 0  +0,  0,     /* 12 ~ 15 */
-                  +0, 0  +0,  0,     /* 16 ~ 19 */
-                  +0, 0  +0,  0,     /* 20 ~ 23 */
+                  +3, 0 + 0,  0,     /* 4 ~ 7 */
+                  +0, 0 + 0,  0,     /* 8 ~ 11 */
+                  +0, 0 + 0,  0,     /* 12 ~ 15 */
+                  +0, 0 + 0,  0,     /* 16 ~ 19 */
+                  +0, 0 + 0,  0,     /* 20 ~ 23 */
                   +0                 /* 24 */
             };
 
@@ -477,7 +477,7 @@ Depth get_search_depth(const Position *pos)
             } else {
                 return d;
             }
-        }        
+        }
     }
 
 

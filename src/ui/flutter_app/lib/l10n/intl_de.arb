@@ -980,6 +980,10 @@
   "@developerMode": {
     "description": "Developer mode"
   },
+  "drawOnHumanExperience": "Auf menschliche Erfahrung zurückgreifen",
+  "@drawOnHumanExperience": {
+    "description": "Draw on human experience"
+  },
   "pieceCount": "Anzahl Steine",
   "@pieceCount": {
     "description": "Piece count"

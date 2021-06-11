@@ -138,6 +138,8 @@ class NativeEngine extends Engine {
     }
 
     await send('setoption name DeveloperMode value ${Config.developerMode}');
+    await send(
+        'setoption name DrawOnHumanExperience value ${Config.drawOnHumanExperience}');
     await send('setoption name SkillLevel value ${Config.skillLevel}');
     await send('setoption name MoveTime value ${Config.moveTime}');
     await send('setoption name AiIsLazy value ${Config.aiIsLazy}');

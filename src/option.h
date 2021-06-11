@@ -167,6 +167,20 @@ public:
         return openingBook;
     }
 
+    // DrawOnHumanExperience
+
+    void setDrawOnHumanExperience(bool enabled) noexcept
+    {
+        drawOnHumanExperience = enabled;
+    }
+
+    bool getDrawOnHumanExperience() const noexcept
+    {
+        return drawOnHumanExperience;
+    }
+
+    // Developer Mode
+
     void setDeveloperMode(bool enabled) noexcept
     {
         developerMode = enabled;
@@ -196,6 +210,7 @@ private:
     bool IDSEnabled { false };
     bool depthExtension {true};
     bool openingBook { false };
+    bool drawOnHumanExperience { true };
     bool developerMode { false };
 };
 

@@ -321,6 +321,7 @@
      <string>AI</string>
     </property>
     <addaction name="actionPerfect_AI"/>
+    <addaction name="actionDrawOnHumanExperience"/>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
     <addaction name="actionAiIsLazy"/>
@@ -1323,6 +1324,17 @@
    </property>
    <property name="text">
     <string>Lazy Mode</string>
+   </property>
+  </action>
+  <action name="actionDrawOnHumanExperience">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Draw On Human Experience</string>
    </property>
   </action>
   <action name="actionDeveloperMode">
