@@ -75,12 +75,23 @@ class GameRecorder {
         .replaceAll(';', ' ')
         .replaceAll('!', ' ')
         .replaceAll('?', ' ')
+        .replaceAll('#', ' ')
+        .replaceAll('()', ' ')
         .replaceAll('white', ' ')
         .replaceAll('black', ' ')
         .replaceAll('win', ' ')
         .replaceAll('lose', ' ')
         .replaceAll('draw', ' ')
         .replaceAll('resign', ' ')
+        .replaceAll('-/x', 'x')
+        .replaceAll('/x', 'x')
+        .replaceAll('.a', '. a')
+        .replaceAll('.b', '. b')
+        .replaceAll('.c', '. c')
+        .replaceAll('.d', '. d')
+        .replaceAll('.e', '. e')
+        .replaceAll('.f', '. f')
+        .replaceAll('.g', '. g')
         .split(' ');
 
     for (var i in list) {
