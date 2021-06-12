@@ -85,6 +85,11 @@ class GameRecorder {
 
     for (var i in list) {
       i = i.trim();
+
+      if (int.tryParse(i) != null) {
+        i = i + '.';
+      }
+
       if (i.length > 0 && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == 'x') {
           // "a1xc3"
