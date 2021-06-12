@@ -538,7 +538,15 @@ class _GamePageState extends State<GamePage>
 
   onStartNewGameButtonPressed() async {
     Navigator.of(context).pop();
+
+    if (Game.instance.isAiToMove()) {
+      // TODO: Move now
+      //print("$tag New game, AI to move, move now.");
+      //await engineToGo(true);
+    }
+
     Game.instance.newGame();
+
     if (mounted) {
       showTip(S.of(context).gameStarted);
     }
