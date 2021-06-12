@@ -245,6 +245,8 @@ class GameRecorder {
       moveHistoryText = "";
     }
 
+    moveHistoryText = moveHistoryText.replaceAll('    \n', '\n');
+
     return moveHistoryText;
   }
 }
