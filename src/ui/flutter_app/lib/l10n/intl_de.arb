@@ -224,6 +224,10 @@
   "@cannotImport": {
     "description": "Cannot import"
   },
+  "movesAndRulesNotMatch": "Les mouvements et les règles ne correspondent pas.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
   "startRecording": "Starte die Aufnahme",
   "@startRecording": {
     "description": "Start recording"

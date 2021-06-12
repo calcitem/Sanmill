@@ -224,6 +224,10 @@
   "@cannotImport": {
     "description": "Cannot import"
   },
+  "movesAndRulesNotMatch": "حرکات و قوانین با هم مطابقت ندارند.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
   "startRecording": "شروع به ضبط کنید",
   "@startRecording": {
     "description": "Start recording"

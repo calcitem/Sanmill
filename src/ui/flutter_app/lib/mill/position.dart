@@ -1045,23 +1045,23 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  Future<bool> _gotoHistory(int moveIndex) async {
-    bool ret = false;
+  Future<String> _gotoHistory(int moveIndex) async {
+    String errString = "";
 
     if (recorder == null) {
       print("[goto] recorder is null.");
-      return false;
+      return "null";
     }
 
     var history = recorder!.getHistory();
     if (moveIndex < -1 || history.length <= moveIndex) {
       print("[goto] moveIndex is out of range.");
-      return false;
+      return "out-of-range";
     }
 
     if (recorder!.cur == moveIndex) {
       print("[goto] cur is equal to moveIndex.");
-      return false;
+      return "equal";
     }
 
     // Backup context
@@ -1075,12 +1075,15 @@ class Position {
     await Game.instance.newGame();
 
     if (moveIndex == -1) {
-      ret = true;
+      errString = "";
     }
 
     for (var i = 0; i <= moveIndex; i++) {
-      Game.instance.doMove(history[i].move);
-      ret = true;
+      if (Game.instance.doMove(history[i].move) == false) {
+        errString = history[i].move!;
+        break;
+      }
+
       //await Future.delayed(Duration(seconds: 1));
       //setState(() {});
     }
@@ -1091,10 +1094,10 @@ class Position {
     recorder!.setHistory(historyBack);
     recorder!.cur = moveIndex;
 
-    return ret;
+    return errString;
   }
 
-  Future<bool> takeBackN(int n) async {
+  Future<String> takeBackN(int n) async {
     int index = recorder!.cur - n;
     if (index < -1) {
       index = -1;
@@ -1102,19 +1105,19 @@ class Position {
     return _gotoHistory(index);
   }
 
-  Future<bool> takeBack() async {
+  Future<String> takeBack() async {
     return _gotoHistory(recorder!.cur - 1);
   }
 
-  Future<bool> stepForward() async {
+  Future<String> stepForward() async {
     return _gotoHistory(recorder!.cur + 1);
   }
 
-  Future<bool> takeBackAll() async {
+  Future<String> takeBackAll() async {
     return _gotoHistory(-1);
   }
 
-  Future<bool> stepForwardAll() async {
+  Future<String> stepForwardAll() async {
     return _gotoHistory(recorder!.getHistory().length - 1);
   }
 

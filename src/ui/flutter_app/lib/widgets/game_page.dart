@@ -875,8 +875,19 @@ class _GamePageState extends State<GamePage>
 
     Audios.isTemporaryMute = Config.keepMuteWhenTakingBack;
 
-    if (await func == false) {
-      showSnackBar(S.of(context).atEnd);
+    var errMove = await func;
+
+    switch (errMove) {
+      case "":
+        break;
+      case "null":
+      case "out-of-range":
+      case "equal":
+        showSnackBar(S.of(context).atEnd);
+        break;
+      default:
+        showSnackBar(S.of(context).movesAndRulesNotMatch);
+        break;
     }
 
     Audios.isTemporaryMute = false;

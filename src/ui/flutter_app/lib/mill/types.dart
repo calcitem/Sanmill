@@ -394,4 +394,7 @@ Map<String, String> notationToMove = {
   "a7": "(3,8)",
 };
 
+Map<String, String> moveToNotation =
+    notationToMove.map((k, v) => MapEntry(v, k));
+
 enum GameResult { pending, win, lose, draw, none }
