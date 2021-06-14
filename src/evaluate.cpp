@@ -19,6 +19,7 @@
 #include "bitboard.h"
 #include "evaluate.h"
 #include "thread.h"
+#include "option.h"
 
 namespace
 {
@@ -57,10 +58,12 @@ Value Evaluation::value()
 
     case Phase::placing:
 #ifdef EVALUATE_MOBILITY
-        if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) <= 5) {
-            value += (Value)pos.get_mobility_diff();
+        if (gameOptions.getDrawOnHumanExperience()) {
+            if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) <= 5) {
+                value += (Value)pos.get_mobility_diff();
+            }
+            //break;
         }
-        //break;
 #endif  /* EVALUATE_MOBILITY */
 
         pieceInHandDiffCount = pos.piece_in_hand_count(WHITE) - pos.piece_in_hand_count(BLACK);
