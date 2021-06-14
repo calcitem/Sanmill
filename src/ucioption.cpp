@@ -80,6 +80,11 @@ void on_drawOnHumanExperience(const Option &o)
     gameOptions.setDrawOnHumanExperience((bool)o);
 }
 
+void on_considerMobility(const Option &o)
+{
+    gameOptions.setConsiderMobility((bool)o);
+}
+
 void on_developerMode(const Option &o)
 {
     gameOptions.setDeveloperMode((bool)o);
@@ -182,6 +187,7 @@ void init(OptionsMap &o)
 
     o["Shuffling"] << Option(true, on_random_move);
     o["DrawOnHumanExperience"] << Option(true, on_drawOnHumanExperience);
+    o["ConsiderMobility"] << Option(true, on_considerMobility);
     o["DeveloperMode"] << Option(true, on_developerMode);
 
     // Rules

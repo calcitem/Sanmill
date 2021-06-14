@@ -42,6 +42,7 @@ class Config {
   static bool depthExtension = true;
   static bool openingBook = false;
   static bool drawOnHumanExperience = true;
+  static bool considerMobility = false;
   static bool developerMode = false;
   static bool experimentsEnabled = false;
 
@@ -103,6 +104,7 @@ class Config {
     Config.depthExtension = settings['DepthExtension'] ?? false;
     Config.openingBook = settings['OpeningBook'] ?? false;
     Config.drawOnHumanExperience = settings['DrawOnHumanExperience'] ?? true;
+    Config.considerMobility = settings['ConsiderMobility'] ?? false;
     Config.developerMode = settings['DeveloperMode'] ?? false;
     Config.experimentsEnabled = settings['ExperimentsEnabled'] ?? false;
 
@@ -185,6 +187,7 @@ class Config {
     settings['DepthExtension'] = Config.depthExtension;
     settings['OpeningBook'] = Config.openingBook;
     settings['DrawOnHumanExperience'] = Config.drawOnHumanExperience;
+    settings['ConsiderMobility'] = Config.considerMobility;
     settings['DeveloperMode'] = Config.developerMode;
     settings['ExperimentsEnabled'] = Config.experimentsEnabled;
 

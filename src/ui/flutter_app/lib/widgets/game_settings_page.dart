@@ -214,6 +214,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
+            value: Config.considerMobility,
+            onChanged: setConsiderMobility,
+            titleString: S.of(context).considerMobility,
+          ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
             value: Config.aiIsLazy,
             onChanged: setAiIsLazy,
             titleString: S.of(context).passive,
@@ -382,6 +389,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     });
 
     print("[config] drawOnHumanExperience: $value");
+
+    Config.save();
+  }
+
+  setConsiderMobility(bool value) async {
+    setState(() {
+      Config.considerMobility = value;
+    });
+
+    print("[config] considerMobility: $value");
 
     Config.save();
   }

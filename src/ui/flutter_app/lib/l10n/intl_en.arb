@@ -984,6 +984,10 @@
   "@drawOnHumanExperience": {
     "description": "Draw on human experience"
   },
+  "considerMobility": "Consider mobility of pieces",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
   "pieceCount": "Piece count",
   "@pieceCount": {
     "description": "Piece count"

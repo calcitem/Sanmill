@@ -242,6 +242,9 @@ public slots:
     // Draw on human experience
     void setDrawOnHumanExperience(bool enabled);
 
+    // Consider mobility of pieces
+    void setConsiderMobility(bool enabled);
+
     // AI is Lazy
     void setAiIsLazy(bool enabled);
 

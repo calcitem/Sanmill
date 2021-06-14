@@ -136,6 +136,7 @@ void Game::loadSettings()
     setSkillLevel(empty ? 1 : settings->value("Options/SkillLevel").toInt());
     setMoveTime(empty ? 1 : settings->value("Options/MoveTime").toInt());
     setDrawOnHumanExperience(empty ? true : settings->value("Options/DrawOnHumanExperience").toBool());
+    setConsiderMobility(empty ? false : settings->value("Options/ConsiderMobility").toBool());
     setAiIsLazy(empty ? false : settings->value("Options/AiIsLazy").toBool());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
     setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
@@ -586,6 +587,12 @@ void Game::setDrawOnHumanExperience(bool enabled)
 {
     gameOptions.setDrawOnHumanExperience(enabled);
     settings->setValue("Options/DrawOnHumanExperience", enabled);
+}
+
+void Game::setConsiderMobility(bool enabled)
+{
+    gameOptions.setConsiderMobility(enabled);
+    settings->setValue("Options/ConsiderMobility", enabled);
 }
 
 void Game::setAiIsLazy(bool enabled)

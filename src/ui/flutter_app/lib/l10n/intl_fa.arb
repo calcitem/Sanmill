@@ -984,6 +984,10 @@
   "@drawOnHumanExperience": {
     "description": "Draw on human experience"
   },
+  "considerMobility": "تحرک قطعات را در نظر بگیرید",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
   "pieceCount": "تعداد قطعه",
   "@pieceCount": {
     "description": "Piece count"

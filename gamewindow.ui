@@ -322,6 +322,7 @@
     </property>
     <addaction name="actionPerfect_AI"/>
     <addaction name="actionDrawOnHumanExperience"/>
+    <addaction name="actionConsiderMobility"/>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
     <addaction name="actionAiIsLazy"/>
@@ -1335,6 +1336,17 @@
    </property>
    <property name="text">
     <string>Draw On Human Experience</string>
+   </property>
+  </action>
+  <action name="actionConsiderMobility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Consider Mobility of Pieces</string>
    </property>
   </action>
   <action name="actionDeveloperMode">

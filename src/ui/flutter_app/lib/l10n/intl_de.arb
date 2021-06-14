@@ -984,6 +984,10 @@
   "@drawOnHumanExperience": {
     "description": "Draw on human experience"
   },
+  "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
   "pieceCount": "Anzahl Steine",
   "@pieceCount": {
     "description": "Piece count"

@@ -179,6 +179,18 @@ public:
         return drawOnHumanExperience;
     }
 
+    // ConsiderMobility
+
+    void setConsiderMobility(bool enabled) noexcept
+    {
+        considerMobility = enabled;
+    }
+
+    bool getConsiderMobility() const noexcept
+    {
+        return considerMobility;
+    }
+
     // Developer Mode
 
     void setDeveloperMode(bool enabled) noexcept
@@ -211,6 +223,7 @@ private:
     bool depthExtension {true};
     bool openingBook { false };
     bool drawOnHumanExperience { true };
+    bool considerMobility { false };
     bool developerMode { false };
 };
 
