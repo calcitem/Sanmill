@@ -561,6 +561,8 @@ bool Position::reset()
     pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.piecesCount;
     pieceToRemoveCount = 0;
 
+    mobilityDiff = 0;
+
     MoveList<LEGAL>::create();
     create_mill_table();
     currentSquare = SQ_0;
@@ -632,6 +634,8 @@ bool Position::put_piece(Square s, bool updateRecord)
         byColorBB[color_of(pc)] |= s;   // TODO: Put ban?
 
         update_key(s);
+
+        updateMobility(MOVETYPE_PLACE, s);
 
         if (updateRecord) {
             snprintf(record, RECORD_LEN_MAX, "(%1u,%1u)", file_of(s), rank_of(s));
@@ -719,7 +723,11 @@ bool Position::put_piece(Square s, bool updateRecord)
         update_key(s);
         revert_key(currentSquare);
 
+        updateMobility(MOVETYPE_PLACE, s);
+
         board[currentSquare] = NO_PIECE;
+
+        updateMobility(MOVETYPE_REMOVE, currentSquare);
 
         CLEAR_BIT(byTypeBB[ALL_PIECES], currentSquare);
         CLEAR_BIT(byTypeBB[type_of(pc)], currentSquare);
@@ -730,6 +738,9 @@ bool Position::put_piece(Square s, bool updateRecord)
         SET_BIT(byColorBB[color_of(pc)], s);
 
         currentSquare = s;
+
+        
+
         const int n = mills_count(currentSquare);
 
         if (n == 0
@@ -780,6 +791,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
     }
 
     revert_key(s);
+
+    updateMobility(MOVETYPE_REMOVE, s);
 
     if (rule.hasBannedLocations && phase == Phase::placing) {
         // Remove and put ban
@@ -1338,6 +1351,53 @@ void Position::reset_bb()
         const Piece pc = board[s];
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
         byColorBB[color_of(pc)] |= s;
+    }
+}
+
+void Position::updateMobility(MoveType mt, Square s)
+{
+    if (mt == MOVETYPE_PLACE) {
+        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
+            auto adjacentSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
+
+            if (!adjacentSquare) {
+                break;;
+            }
+            
+            if (board[adjacentSquare] & W_STONE) {
+                mobilityDiff--;
+            } else if (board[adjacentSquare] & B_STONE) {
+                mobilityDiff++;
+            } else {
+                if (side_to_move() == WHITE) {
+                    mobilityDiff++;
+                } else {
+                    mobilityDiff--;
+                }
+            }          
+        }
+    } else if (mt == MOVETYPE_REMOVE) {
+        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
+            auto adjacentSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
+
+            if (!adjacentSquare) {
+                break;
+            }
+
+            if (board[adjacentSquare] & W_STONE) {
+                mobilityDiff++;
+            } else if (board[adjacentSquare] & B_STONE) {
+                mobilityDiff--;
+            } else {
+                if (side_to_move() == WHITE) {
+                    mobilityDiff++;
+                } else {
+                    mobilityDiff--;
+                }
+            } 
+        }
+    } else {
+        assert(0);
     }
 }
 

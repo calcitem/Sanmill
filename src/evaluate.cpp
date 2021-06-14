@@ -59,10 +59,12 @@ Value Evaluation::value()
     case Phase::placing:
 #ifdef EVALUATE_MOBILITY
         if (gameOptions.getConsiderMobility()) {
-            value += (Value)pos.calculate_mobility_diff();
+            //value += (Value)pos.calculate_mobility_diff();
+            value += pos.get_mobility_diff();
         } else if (gameOptions.getDrawOnHumanExperience()) {
             if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) <= 5) {
-                value += (Value)pos.calculate_mobility_diff();
+                //value += (Value)pos.calculate_mobility_diff();
+                value += pos.get_mobility_diff();
             }
             //break;
         }

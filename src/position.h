@@ -145,6 +145,10 @@ public:
 
     int piece_to_remove_count() const;
 
+    int get_mobility(Color c) const;
+    int get_mobility_diff() const;
+    void updateMobility(MoveType mt, Square s);
+    //template <typename Mt> void updateMobility(Square from, Square to);
     int calculate_mobility_diff();
 
     static bool is_star_square(Square s);
@@ -172,6 +176,7 @@ public:
     int pieceInHandCount[COLOR_NB] { 0, 9, 9 };
     int pieceOnBoardCount[COLOR_NB] { 0, 0, 0 };
     int pieceToRemoveCount{ 0 };
+    int mobilityDiff { 0 };
     int gamePly { 0 };
     Color sideToMove { NOCOLOR };
     Thread *thisThread {nullptr};
@@ -342,6 +347,11 @@ inline int Position::piece_in_hand_count(Color c) const
 inline int Position::piece_to_remove_count() const
 {
     return pieceToRemoveCount;
+}
+
+inline int Position::get_mobility_diff() const
+{
+    return mobilityDiff;
 }
 
 #endif // #ifndef POSITION_H_INCLUDED
