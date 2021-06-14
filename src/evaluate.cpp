@@ -56,6 +56,13 @@ Value Evaluation::value()
         break;
 
     case Phase::placing:
+#ifdef EVALUATE_MOBILITY
+        if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) <= 5) {
+            value += (Value)pos.get_mobility_diff();
+        }
+        //break;
+#endif  /* EVALUATE_MOBILITY */
+
         pieceInHandDiffCount = pos.piece_in_hand_count(WHITE) - pos.piece_in_hand_count(BLACK);
         value += VALUE_EACH_PIECE_INHAND * pieceInHandDiffCount;
 
@@ -77,11 +84,12 @@ Value Evaluation::value()
         break;
 
     case Phase::moving:
-        value = (pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK)) * VALUE_EACH_PIECE_ONBOARD;
-
 #ifdef EVALUATE_MOBILITY
-        value += pos.get_mobility_diff() / 5;
+        //value += (Value)pos.get_mobility_diff();
+        //break;
 #endif  /* EVALUATE_MOBILITY */
+
+        value = (pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK)) * VALUE_EACH_PIECE_ONBOARD;
 
         switch (pos.get_action()) {
         case Action::select:

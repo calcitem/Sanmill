@@ -25,7 +25,7 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-//#define EVALUATE_MOBILITY
+#define EVALUATE_MOBILITY
 
 //#undef QT_GUI_LIB
 

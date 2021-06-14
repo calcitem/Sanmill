@@ -382,6 +382,8 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
             epsilon = 0;
         }
 
+        //epsilon += pos->piece_to_remove_count();
+
 #ifdef PVS_AI
         if (i == 0) {
             if (after != before) {

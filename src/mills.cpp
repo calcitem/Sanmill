@@ -423,6 +423,25 @@ void move_priority_list_shuffle()
 #endif
 }
 
+bool is_star_squares_full(Position *pos)
+{
+    bool ret = false;
+    
+    if (rule.hasDiagonalLines) {
+        ret = (pos->get_board()[SQ_17] &&
+               pos->get_board()[SQ_19] &&
+               pos->get_board()[SQ_21] &&
+               pos->get_board()[SQ_23]);
+    } else {
+        ret = (pos->get_board()[SQ_16] &&
+               pos->get_board()[SQ_18] &&
+               pos->get_board()[SQ_20] &&
+               pos->get_board()[SQ_22]);
+    }
+
+    return ret;
+}
+
 Depth get_search_depth(const Position *pos)
 {
     Depth d = 0;
@@ -447,6 +466,12 @@ Depth get_search_depth(const Position *pos)
             const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
 
             d = placingDepthTable[index];
+
+            if (index == 4 &&
+                is_star_squares_full((Position *)pos)) {
+                d = 1;  // In order to use Mobility
+            }
+
             if (d == 0) {
                 return (Depth)gameOptions.getSkillLevel();
             } else {
