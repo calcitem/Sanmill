@@ -719,28 +719,26 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         const Piece pc = board[currentSquare];
 
-        board[s] = pc;
-        update_key(s);
-        revert_key(currentSquare);
-
-        updateMobility(MOVETYPE_PLACE, s);
-
-        board[currentSquare] = NO_PIECE;
-
-        updateMobility(MOVETYPE_REMOVE, currentSquare);
-
         CLEAR_BIT(byTypeBB[ALL_PIECES], currentSquare);
         CLEAR_BIT(byTypeBB[type_of(pc)], currentSquare);
         CLEAR_BIT(byColorBB[color_of(pc)], currentSquare);
+
+        updateMobility(MOVETYPE_REMOVE, currentSquare);
 
         SET_BIT(byTypeBB[ALL_PIECES], s);
         SET_BIT(byTypeBB[type_of(pc)], s);
         SET_BIT(byColorBB[color_of(pc)], s);
 
+        updateMobility(MOVETYPE_PLACE, s);
+
+        board[s] = pc;
+        update_key(s);
+        revert_key(currentSquare);
+
+        board[currentSquare] = NO_PIECE;
+
         currentSquare = s;
-
         
-
         const int n = mills_count(currentSquare);
 
         if (n == 0
@@ -792,14 +790,14 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     revert_key(s);
 
-    updateMobility(MOVETYPE_REMOVE, s);
-
     if (rule.hasBannedLocations && phase == Phase::placing) {
         // Remove and put ban
         Piece pc = board[s];
 
         CLEAR_BIT(byTypeBB[type_of(pc)], s);    // TODO
         CLEAR_BIT(byColorBB[color_of(pc)], s);
+
+        updateMobility(MOVETYPE_REMOVE, s);
 
         pc = board[s] = BAN_STONE;
         update_key(s);
@@ -812,6 +810,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
         CLEAR_BIT(byTypeBB[ALL_PIECES], s);
         CLEAR_BIT(byTypeBB[type_of(pc)], s);
         CLEAR_BIT(byColorBB[color_of(pc)], s);
+
+        updateMobility(MOVETYPE_REMOVE, s);
 
         board[s] = NO_PIECE;
     }
@@ -1356,45 +1356,30 @@ void Position::reset_bb()
 
 void Position::updateMobility(MoveType mt, Square s)
 {
-    if (mt == MOVETYPE_PLACE) {
-        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-            auto adjacentSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
+    Bitboard adjacentWhiteBB = byColorBB[WHITE] & MoveList<LEGAL>::adjacentSquaresBB[s];
+    Bitboard adjacentBlackBB = byColorBB[BLACK] & MoveList<LEGAL>::adjacentSquaresBB[s];
+    Bitboard adjacentNoColorBB = (~(byColorBB[BLACK] | byColorBB[WHITE])) & MoveList<LEGAL>::adjacentSquaresBB[s];
+    int adjacentWhiteBBCount = popcount(adjacentWhiteBB);
+    int adjacentBlackBBCount = popcount(adjacentBlackBB);
+    int adjacentNoColorBBCount = popcount(adjacentNoColorBB);
 
-            if (!adjacentSquare) {
-                break;;
-            }
-            
-            if (board[adjacentSquare] & W_STONE) {
-                mobilityDiff--;
-            } else if (board[adjacentSquare] & B_STONE) {
-                mobilityDiff++;
-            } else {
-                if (side_to_move() == WHITE) {
-                    mobilityDiff++;
-                } else {
-                    mobilityDiff--;
-                }
-            }          
+    if (mt == MOVETYPE_PLACE) {
+        mobilityDiff -= adjacentWhiteBBCount;
+        mobilityDiff += adjacentBlackBBCount;
+
+        if (side_to_move() == WHITE) {
+            mobilityDiff += adjacentNoColorBBCount;
+        } else {
+            mobilityDiff -= adjacentNoColorBBCount;
         }
     } else if (mt == MOVETYPE_REMOVE) {
-        for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-            auto adjacentSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
+        mobilityDiff += adjacentWhiteBBCount;
+        mobilityDiff -= adjacentBlackBBCount;
 
-            if (!adjacentSquare) {
-                break;
-            }
-
-            if (board[adjacentSquare] & W_STONE) {
-                mobilityDiff++;
-            } else if (board[adjacentSquare] & B_STONE) {
-                mobilityDiff--;
-            } else {
-                if (side_to_move() == WHITE) {
-                    mobilityDiff++;
-                } else {
-                    mobilityDiff--;
-                }
-            } 
+        if ( color_of(board[s]) == WHITE) {
+            mobilityDiff -= adjacentNoColorBBCount;
+        } else {
+            mobilityDiff += adjacentNoColorBBCount;
         }
     } else {
         assert(0);
