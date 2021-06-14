@@ -1002,7 +1002,7 @@ bool Position::check_if_game_is_over()
     return false;
 }
 
-int Position::get_mobility_diff()
+int Position::calculate_mobility_diff()
 {
     // TODO: Deal with rule is no ban location
     int mobilityWhite = 0;

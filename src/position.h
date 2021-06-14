@@ -105,8 +105,6 @@ public:
     enum Action get_action() const;
     const char *get_record() const;
 
-    int get_mobility_diff();
-
     bool reset();
     bool start();
     bool resign(Color loser);
@@ -146,6 +144,8 @@ public:
     int piece_in_hand_count(Color c) const;
 
     int piece_to_remove_count() const;
+
+    int calculate_mobility_diff();
 
     static bool is_star_square(Square s);
 
