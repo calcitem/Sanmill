@@ -455,7 +455,7 @@ Depth get_search_depth(const Position *pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
-            const Depth placingDepthTable[] = {
+            const Depth placingDepthTable[25] = {
                   +1,  1,  +1,  1,   /* 0 ~ 3 */
                   +3, 15, +15,  0,   /* 4 ~ 7 */
                   +0, 0, +0,  0,     /* 8 ~ 11 */
@@ -495,7 +495,7 @@ Depth get_search_depth(const Position *pos)
     Depth reduce = 0;
 #endif
 
-    const Depth placingDepthTable_12[] = {
+    const Depth placingDepthTable_12[25] = {
          +1,  2,  +2,  4,     /* 0 ~ 3 */
          +4, 12, +12, 18,     /* 4 ~ 7 */
         +12, 16, +16, 16,     /* 8 ~ 11 */
@@ -505,7 +505,7 @@ Depth get_search_depth(const Position *pos)
         +14                   /* 24 */
     };
 
-    const Depth placingDepthTable_12_special[] = {
+    const Depth placingDepthTable_12_special[25] = {
          +1,  2,  +2,  4,     /* 0 ~ 3 */
          +4, 12, +12, 12,     /* 4 ~ 7 */
         +12, 13, +13, 13,     /* 8 ~ 11 */
@@ -515,7 +515,7 @@ Depth get_search_depth(const Position *pos)
         +13                   /* 24 */
     };
 
-    const Depth placingDepthTable_9[] = {
+    const Depth placingDepthTable_9[20] = {
          +1, 7,  +7,  10,     /* 0 ~ 3 */
         +10, 12, +12, 14,     /* 4 ~ 7 */
         +14, 14, +14, 14,     /* 8 ~ 11 */
@@ -524,7 +524,7 @@ Depth get_search_depth(const Position *pos)
         +14                   /* 19 */
     };
 
-    const Depth movingDepthTable[] = {
+    const Depth movingDepthTable[24] = {
          1,  1,  1,  1,     /* 0 ~ 3 */
          1,  1, 11, 11,     /* 4 ~ 7 */
         11, 11, 11, 11,     /* 8 ~ 11 */
@@ -534,13 +534,13 @@ Depth get_search_depth(const Position *pos)
     };
 
 #ifdef ENDGAME_LEARNING
-    const Depth movingDiffDepthTable[] = {
+    const Depth movingDiffDepthTable[13] = {
         0, 0, 0,                /* 0 ~ 2 */
         0, 0, 0, 0, 0,          /* 3 ~ 7 */
         0, 0, 0, 0, 0           /* 8 ~ 12 */
     };
 #else
-    const Depth movingDiffDepthTable[] = {
+    const Depth movingDiffDepthTable[13] = {
         0, 0, 0,                /* 0 ~ 2 */
         11, 11, 10, 9, 8,       /* 3 ~ 7 */
         7, 6, 5, 4, 3           /* 8 ~ 12 */
