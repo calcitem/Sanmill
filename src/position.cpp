@@ -23,6 +23,7 @@
 #include "position.h"
 #include "thread.h"
 #include "mills.h"
+#include "option.h"
 
 using std::string;
 
@@ -1356,6 +1357,10 @@ void Position::reset_bb()
 
 void Position::updateMobility(MoveType mt, Square s)
 {
+    if (!gameOptions.getConsiderMobility()) {
+        return;
+    }
+
     Bitboard adjacentWhiteBB = byColorBB[WHITE] & MoveList<LEGAL>::adjacentSquaresBB[s];
     Bitboard adjacentBlackBB = byColorBB[BLACK] & MoveList<LEGAL>::adjacentSquaresBB[s];
     Bitboard adjacentNoColorBB = (~(byColorBB[BLACK] | byColorBB[WHITE])) & MoveList<LEGAL>::adjacentSquaresBB[s];
