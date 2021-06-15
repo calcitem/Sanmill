@@ -446,6 +446,8 @@ Depth get_search_depth(const Position *pos)
 {
     Depth d = 0;
 
+    const int level = gameOptions.getSkillLevel();
+
     const int pw = pos->count<ON_BOARD>(WHITE);
     const int pb = pos->count<ON_BOARD>(BLACK);
 
@@ -455,11 +457,11 @@ Depth get_search_depth(const Position *pos)
         if (pos->phase == Phase::placing) {
             const Depth placingDepthTable[] = {
                   +1, 1, +1,  1,     /* 0 ~ 3 */
-                  +3, 0 + 0,  0,     /* 4 ~ 7 */
-                  +0, 0 + 0,  0,     /* 8 ~ 11 */
-                  +0, 0 + 0,  0,     /* 12 ~ 15 */
-                  +0, 0 + 0,  0,     /* 16 ~ 19 */
-                  +0, 0 + 0,  0,     /* 20 ~ 23 */
+                  +3, 0, +0,  0,     /* 4 ~ 7 */
+                  +0, 0, +0,  0,     /* 8 ~ 11 */
+                  +0, 0, +0,  0,     /* 12 ~ 15 */
+                  +0, 0, +0,  0,     /* 16 ~ 19 */
+                  +0, 0, +0,  0,     /* 20 ~ 23 */
                   +0                 /* 24 */
             };
 
@@ -475,9 +477,13 @@ Depth get_search_depth(const Position *pos)
             }
 
             if (d == 0) {
-                return (Depth)gameOptions.getSkillLevel();
+                return (Depth)level;
             } else {
-                return d;
+                if (level > d) {
+                    return d;
+                } else {
+                    return level;
+                }
             }
         }
     }
