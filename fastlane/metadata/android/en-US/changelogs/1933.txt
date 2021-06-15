@@ -1,0 +1,3 @@
+v1.0.24
+
+* Support considering mobility of pieces.
