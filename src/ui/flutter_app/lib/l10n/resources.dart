@@ -35,6 +35,13 @@ class GermanStrings extends Strings {
   String get tapBackAgainToLeave => 'Nochmal drücken um zu Beenden.';
 }
 
+/// Hungarian strings
+class HungarianStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave =>
+      'A kilépéshez kattintson ismételten a Vissza gombra.';
+}
+
 /// Chinese strings
 class ChineseStrings extends Strings {
   @override
@@ -56,6 +63,8 @@ class Resources {
     switch (deviceLanguage) {
       case 'de':
         return GermanStrings();
+      case 'hu':
+        return HungarianStrings();
       case 'zh':
         return ChineseStrings();
       case 'fa':
