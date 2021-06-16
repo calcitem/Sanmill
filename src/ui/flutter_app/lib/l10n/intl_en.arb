@@ -800,6 +800,10 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
+  "and": " and ",
+  "@": {
+    "description": " and "
+  },
   "accept": "Accept",
   "@accept": {
     "description": "Accept"
@@ -899,6 +903,10 @@
   "versionInfo": "Version info",
   "@versionInfo": {
     "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
   },
   "license": "License",
   "@license": {

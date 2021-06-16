@@ -107,6 +107,14 @@ class _AboutPageState extends State<AboutPage> {
       ListItemDivider(),
       SettingsListTile(
         context: context,
+        titleString: S.of(context).eula,
+        onTap: () {
+          _launchEULA();
+        },
+      ),
+      ListItemDivider(),
+      SettingsListTile(
+        context: context,
         titleString: S.of(context).license,
         onTap: () {
           Navigator.push(
@@ -183,6 +191,21 @@ class _AboutPageState extends State<AboutPage> {
       _launchURL('https://gitee.com/calcitem/Sanmill/issues');
     } else {
       _launchURL('https://github.com/calcitem/Sanmill/issues');
+    }
+  }
+
+  _launchEULA() async {
+    String? locale = "en_US";
+
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
+
+    print("$tag local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      _launchURL('https://gitee.com/calcitem/Sanmill/wikis/EULA_zh');
+    } else {
+      _launchURL('https://github.com/calcitem/Sanmill/wiki/EULA');
     }
   }
 

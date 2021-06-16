@@ -115,6 +115,7 @@ class _LinkTextSpan extends TextSpan {
 showPrivacyDialog(
     BuildContext context, setPrivacyPolicyAccepted(bool value)) async {
   String? locale = "en_US";
+  late String eulaURL;
   late String privacyPolicyURL;
   if (!Platform.isWindows) {
     locale = await Devicelocale.currentLocale;
@@ -122,9 +123,11 @@ showPrivacyDialog(
 
   print("[about] local = $locale");
   if (locale != null && locale.startsWith("zh_")) {
+    eulaURL = 'https://gitee.com/calcitem/Sanmill/wikis/EULA_zh';
     privacyPolicyURL =
         'https://gitee.com/calcitem/Sanmill/wikis/privacy_policy_zh';
   } else {
+    eulaURL = 'https://github.com/calcitem/Sanmill/wiki/EULA';
     privacyPolicyURL =
         'https://github.com/calcitem/Sanmill/wiki/privacy_policy';
   }
@@ -147,6 +150,15 @@ showPrivacyDialog(
             TextSpan(
               style: aboutTextStyle,
               text: S.of(context).privacyPolicy_Detail_1,
+            ),
+            _LinkTextSpan(
+              style: linkStyle,
+              text: S.of(context).eula,
+              url: eulaURL,
+            ),
+            TextSpan(
+              style: aboutTextStyle,
+              text: S.of(context).and,
             ),
             _LinkTextSpan(
               style: linkStyle,
