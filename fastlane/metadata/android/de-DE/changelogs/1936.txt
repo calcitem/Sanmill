@@ -1,0 +1,3 @@
+v1.0.25
+
+* EULA-Link hinzufügen.
