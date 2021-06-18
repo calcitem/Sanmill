@@ -38,8 +38,6 @@ class Config {
   static bool resignIfMostLose = false;
   static bool shufflingEnabled = true;
   static bool learnEndgame = false;
-  static bool idsEnabled = false;
-  static bool depthExtension = true;
   static bool openingBook = false;
   static bool drawOnHumanExperience = true;
   static bool considerMobility = false;
@@ -100,8 +98,6 @@ class Config {
     Config.resignIfMostLose = settings['ResignIfMostLose'] ?? false;
     Config.shufflingEnabled = settings['ShufflingEnabled'] ?? true;
     Config.learnEndgame = settings['LearnEndgame'] ?? false;
-    Config.idsEnabled = settings['IdsEnabled'] ?? false;
-    Config.depthExtension = settings['DepthExtension'] ?? false;
     Config.openingBook = settings['OpeningBook'] ?? false;
     Config.drawOnHumanExperience = settings['DrawOnHumanExperience'] ?? true;
     Config.considerMobility = settings['ConsiderMobility'] ?? false;
@@ -183,8 +179,6 @@ class Config {
     settings['ResignIfMostLose'] = Config.resignIfMostLose;
     settings['ShufflingEnabled'] = Config.shufflingEnabled;
     settings['LearnEndgame'] = Config.learnEndgame;
-    settings['IdsEnabled'] = Config.idsEnabled;
-    settings['DepthExtension'] = Config.depthExtension;
     settings['OpeningBook'] = Config.openingBook;
     settings['DrawOnHumanExperience'] = Config.drawOnHumanExperience;
     settings['ConsiderMobility'] = Config.considerMobility;

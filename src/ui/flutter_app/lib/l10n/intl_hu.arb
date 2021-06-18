@@ -76,17 +76,9 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {
-    "description": "Da San Qi"
-  },
   "copyright": "Szerzői jog © 2021 Calcitem Studio",
   "@copyright": {
     "description": "Copyright"
-  },
-  "gameWarning": "Játékokkal kapcsolatos figyelmeztetések\nBoycott káros játékok; utasítsa el a játékkalózkodást. \nAz önvédelem gyakorlása; kerülje a megtévesztést. \nA mértéktartás óvja az elme egészségét; a túlzott játékűzés károsítja a személyiséget. \n A jól megtervezett időhasználat egészséges életmódhoz vezet.",
-  "@gameWarning": {
-    "description": "Game Warning"
   },
   "tipSelectWrong": "Válasszon korongot.",
   "@tipSelectWrong": {
@@ -203,10 +195,6 @@
   "newGame": "Új játék",
   "@newGame": {
     "description": "New game"
-  },
-  "startNewGame": "Indítson új játékot",
-  "@startNewGame": {
-    "description": "Start new game"
   },
   "importGame": "Játék importálása",
   "@importGame": {
@@ -356,29 +344,9 @@
   "@version": {
     "description": "Version"
   },
-  "releaseBaseOn": "Kiadási alap a GPLv3-on",
-  "@releaseBaseOn": {
-    "description": "Release base On GPLv3"
-  },
-  "webSite": "Weboldal",
-  "@webSite": {
-    "description": "Web Site"
-  },
-  "whatsNew": "Mi újság",
-  "@whatsNew": {
-    "description": "What's New"
-  },
-  "fastUpdateChannel": "Csatorna gyors frissítése",
-  "@fastUpdateChannel": {
-    "description": "Fast Update Channel"
-  },
   "thanks": "Köszönöm",
   "@thanks": {
     "description": "Thanks"
-  },
-  "thankWho": "Köszönet mindenkinek:",
-  "@thankWho": {
-    "description": "Thank who"
   },
   "settings": "Beállítások",
   "@settings": {
@@ -420,16 +388,8 @@
   "@tone": {
     "description": "Tone"
   },
-  "leaderBoard": "Ranglista",
-  "@leaderBoard": {
-    "description": "Leader Board"
-  },
   "whoMovesFirst": "Első lépés",
   "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "firstMove": "Első lépés",
-  "@firstMove": {
     "description": "First move"
   },
   "human": "Személy",
@@ -464,14 +424,6 @@
   "@learnEndgame": {
     "description": "Learn Endgame"
   },
-  "idsEnabled": "IDS",
-  "@idsEnabled": {
-    "description": "IDS"
-  },
-  "depthExtension": "Mélység kiterjesztés",
-  "@depthExtension": {
-    "description": "Depth Extension"
-  },
   "openingBook": "Nyitókönyv",
   "@openingBook": {
     "description": "Opening Book"
@@ -499,14 +451,6 @@
   "flyPieceCount_Detail": "Az ugrálás bármely szabad mezőre akkor engedélyezett, ha egy játékos korongjainak száma előre meghatározott értékre csökkentek.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "ninePieces": "Kilenc korong",
-  "@ninePieces": {
-    "description": "Nine Pieces"
-  },
-  "twelvePieces": "Tizenkét korong",
-  "@twelvePieces": {
-    "description": "Twelve Pieces"
   },
   "piecesAtLeastCount": "Korongok legalábbis",
   "@piecesAtLeastCount": {
@@ -603,14 +547,6 @@
   "feedback": "Visszajelzés",
   "@feedback": {
     "description": "Feedback"
-  },
-  "inviteFriend": "Barát meghívása",
-  "@inviteFriend": {
-    "description": "Invite Friend"
-  },
-  "rateTheApp": "Értékeld az alkalmazást",
-  "@rateTheApp": {
-    "description": "Rate the App"
   },
   "exit": "Kilépés",
   "@exit": {
@@ -772,14 +708,6 @@
   "@results": {
     "description": "Results"
   },
-  "easy": "Könnyű",
-  "@easy": {
-    "description": "Easy"
-  },
-  "difficult": "Nehéz",
-  "@difficult": {
-    "description": "Difficult"
-  },
   "cannotRemoveFromMill": "Nem lehet eltávolítani a malomból.",
   "@cannotRemoveFromMill": {
     "description": "Cannot remove from mill."
@@ -796,7 +724,7 @@
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
-  "privacyPolicy_Detail_2": ". Ha nem ért egyet ezzel az irányelvvel, kérjük, ne használja ezt az alkalmazást. Az alkalmazás használata azt jelenti, hogy elfogadja ezeket a feltételeket. Időnként frissítjük ezeket a feltételeket, ezért kérjük, olvassa el őket a jövőben.",
+  "privacyPolicy_Detail_2": ". Ha nem ért egyet ezzel az irányelvvel, kérjük, ne használja ezt az alkalmazást. Az alkalmazás használata azt jelenti, hogy elfogadja ezeket a feltételeket.",
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
@@ -860,29 +788,9 @@
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not locked to remove."
   },
-  "haveFunPlaying": "Jó szórakozást!",
-  "@haveFunPlaying": {
-    "description": "Have fun playing!"
-  },
-  "animationSpeed": "Animációs sebesség",
-  "@animationSpeed": {
-    "description": "Animation speed"
-  },
   "animationDuration": "Az animáció időtartama",
   "@animationDuration": {
     "description": "Animation duration"
-  },
-  "slow": "Lassú",
-  "@slow": {
-    "description": "Slow"
-  },
-  "medium": "Közepes",
-  "@medium": {
-    "description": "Medium"
-  },
-  "fast": "Gyors",
-  "@fast": {
-    "description": "Fast"
   },
   "none": "Egyik sem",
   "@none": {
@@ -895,10 +803,6 @@
   "helpContent": "A játék célja, hogy az ellenfélnek kevesebb, mint három korongja maradjon, vagy beszoruljon, azaz ne tudjon legálisan lépni egyetlen koronggal sem.\n\nA játék automatikusan felfüggesztődik, ha egymás után háromszor ismétlődik ugyanaz a lépés, vagy ha ötven lépés alatt nem történik korongeltávolítás.\n\nA játék három szakaszban halad:\n\n1. Korongok felrakása a tábla üres mezőire\n2. Korongok lépegetése a táblán \n3. (opcionális szakasz) Ugrálás a táblán bármely üres mezőre, ha a játékosnak csak három korongja maradt.\n\nFelrakás\n\nA játék egy üres táblával kezdődik, amelyen egy huszonnégy mezőből álló rács van. A játékosok felváltva rakják a korongjaikat az üres mezőkre, amíg azok el nem fogynak. Ha egy játékos három korongját képes egyvonalba helyezni, akkor \"Malom\" van, és eltávolíthatja a tábláról ellenfelének egyik korongját.\n\nA szabályok egyes változataiban a játékosok az ellenfél malmából nem vehetnek el korongot, kivéve ha az ellenfél minden korongja malomban áll.\n\nA szabályok egyes változataiban az eltávolított korongok, ugyanazon játék közben, nem rakhatók vissza a táblára.\n\nMiután az összes korong felrakódott, a játékosok felváltva lépegetnek.\n\nLépegetés\n\nLépegetéskor a játékos az egyik korongját egy vonal mentén csakis a közvetlenül mellette levő üres mezőre tolhatja. Ha ezt egyetlen koronggal sem teheti, akkor beszorult és elveszítette a játékot. Akárcsak a felrakási fázisban, malmot létesít az a játékos is, akinek lépegetéssel egyvonalba sikerül elhelyezni három korongot, s így ezúttal is eltávolíthatja az ellenfél egyik korongját. Ha bármelyik játékosnak csak két korongja marad, tehát nincs lehetősége malmot létrehozni, elveszítette a játékot. Egy játékos háromnál több darabbal is veszíthet, ha ellenfele lezárja, azaz egyetlen koronggal sem léphet.\n\nUgrálás\n\nA szabályok egyes változataiban, ha egy játékosnak csak három korongja marad, akkor ezekkel nemcsak szomszédos, hanem bármely üres mezőre ugorhat.\n\n",
   "@helpContent": {
     "description": "Help Content"
-  },
-  "viewInGooglePlayStore": "Megtekintés a Google Play Áruházban",
-  "@viewInGooglePlayStore": {
-    "description": "View in Google Play Store"
   },
   "versionInfo": "Verzió információ",
   "@versionInfo": {
@@ -916,21 +820,9 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "openSourceLicenses": "Nyílt forráskódú licencek",
-  "@openSourceLicenses": {
-    "description": "Open-source licenses"
-  },
   "thirdPartyNotices": "Harmadik fél közleményei",
   "@thirdPartyNotices": {
     "description": "Third-party notices"
-  },
-  "termOfUse": "Használati feltételek",
-  "@termOfUse": {
-    "description": "Term of use"
-  },
-  "servicesAgreement": "Szolgáltatási egyezmény",
-  "@servicesAgreement": {
-    "description": "Services agreement"
   },
   "appVersion": "App verzió",
   "@appVersion": {
@@ -967,10 +859,6 @@
   "passive": "Passzív",
   "@passive": {
     "description": "Passive"
-  },
-  "automaticBehavior": "Automatikus viselkedés",
-  "@automaticBehavior": {
-    "description": "Automatic behavior"
   },
   "timeout": "Időtúllépés",
   "@timeout": {

@@ -76,17 +76,9 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {
-    "description": "Da San Qi"
-  },
   "copyright": "Copyright © 2021 Calcitem Studio",
   "@copyright": {
     "description": "Copyright"
-  },
-  "gameWarning": "Healthy Gaming Advisory\nBoycott harmful games; reject game piracy.\nExercise self-protection; avoid deception.\nModeration promotes brain health; excess play is harmful to the body.\nWell-planned use of your time will lead to a healthy lifestyle.",
-  "@gameWarning": {
-    "description": "Game Warning"
   },
   "tipSelectWrong": "قطعه اشتباه را انتخاب کنید.",
   "@tipSelectWrong": {
@@ -203,10 +195,6 @@
   "newGame": "بازی جدید",
   "@newGame": {
     "description": "New game"
-  },
-  "startNewGame": "شروع بازی جدید",
-  "@startNewGame": {
-    "description": "Start new game"
   },
   "importGame": "وارد کردن بازی",
   "@importGame": {
@@ -356,29 +344,9 @@
   "@version": {
     "description": "Version"
   },
-  "releaseBaseOn": "پایه را در GPLv3 آزاد کنید",
-  "@releaseBaseOn": {
-    "description": "Release base On GPLv3"
-  },
-  "webSite": "سایت اینترنتی",
-  "@webSite": {
-    "description": "Web Site"
-  },
-  "whatsNew": "What's New",
-  "@whatsNew": {
-    "description": "What's New"
-  },
-  "fastUpdateChannel": "کانال بروزرسانی سریع",
-  "@fastUpdateChannel": {
-    "description": "Fast Update Channel"
-  },
   "thanks": "با تشکر",
   "@thanks": {
     "description": "Thanks"
-  },
-  "thankWho": "با تشکر از برنامه نویسان و تیم های زیر:",
-  "@thankWho": {
-    "description": "Thank who"
   },
   "settings": "تنظیمات",
   "@settings": {
@@ -420,16 +388,8 @@
   "@tone": {
     "description": "Tone"
   },
-  "leaderBoard": "هیئت مدیره",
-  "@leaderBoard": {
-    "description": "Leader Board"
-  },
   "whoMovesFirst": "حرکت اول",
   "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "firstMove": "حرکت اول",
-  "@firstMove": {
     "description": "First move"
   },
   "human": "انسان",
@@ -464,14 +424,6 @@
   "@learnEndgame": {
     "description": "Learn Endgame"
   },
-  "idsEnabled": "IDS",
-  "@idsEnabled": {
-    "description": "IDS"
-  },
-  "depthExtension": "Depth Extension",
-  "@depthExtension": {
-    "description": "Depth Extension"
-  },
   "openingBook": "Opening Book",
   "@openingBook": {
     "description": "Opening Book"
@@ -499,14 +451,6 @@
   "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که یک بازیکن به تعداد قطعه های خاص کاهش می یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، مانند سایر قسمت های بازی ، به هر نقطه اشغال نشده منتقل می شوند.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "ninePieces": "9 قطعه",
-  "@ninePieces": {
-    "description": "Nine Pieces"
-  },
-  "twelvePieces": "12 قطعه",
-  "@twelvePieces": {
-    "description": "Twelve Pieces"
   },
   "piecesAtLeastCount": "Pieces At Least",
   "@piecesAtLeastCount": {
@@ -603,14 +547,6 @@
   "feedback": "بازخورد",
   "@feedback": {
     "description": "Feedback"
-  },
-  "inviteFriend": "Invite Friend",
-  "@inviteFriend": {
-    "description": "Invite Friend"
-  },
-  "rateTheApp": "Rate the App",
-  "@rateTheApp": {
-    "description": "Rate the App"
   },
   "exit": "خروج",
   "@exit": {
@@ -772,14 +708,6 @@
   "@results": {
     "description": "Results"
   },
-  "easy": "آسان",
-  "@easy": {
-    "description": "Easy"
-  },
-  "difficult": "دشوار",
-  "@difficult": {
-    "description": "Difficult"
-  },
   "cannotRemoveFromMill": "نمی توان از آسیاب حذف کرد.",
   "@cannotRemoveFromMill": {
     "description": "Cannot remove from mill."
@@ -860,29 +788,9 @@
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not locked to remove."
   },
-  "haveFunPlaying": "از بازی لذت ببرید!",
-  "@haveFunPlaying": {
-    "description": "Have fun playing!"
-  },
-  "animationSpeed": "سرعت انیمیشن",
-  "@animationSpeed": {
-    "description": "Animation speed"
-  },
   "animationDuration": "مدت زمان انیمیشن",
   "@animationDuration": {
     "description": "Animation duration"
-  },
-  "slow": "آهسته. تدریجی",
-  "@slow": {
-    "description": "Slow"
-  },
-  "medium": "متوسط",
-  "@medium": {
-    "description": "Medium"
-  },
-  "fast": "سریع",
-  "@fast": {
-    "description": "Fast"
   },
   "none": "هیچ یک",
   "@none": {
@@ -895,10 +803,6 @@
   "helpContent": "بازی دوز یکی از بازی هاي جذابی اسـت کـه در دسته بازی هاي فکری قرار می گیرد. این بازی با کمک یک شماره مقوا یا کاغذ و 24 شماره مهره دو رنگ بازی میشود. یک شماره طرح هندسی روی کاغذ کشیده می شود و بازیکنان تلاش میکنند تا 3 مهره را دریک ردیف بنشانند. بازیکنان حریف نیز تلاش می کنند تا جلوی موفقیت دیگران را بگیرند و تلاش کنند.\nتا مهره هاي خودرا روی دریک ردیف قرار بدهند. این بازی بـه روش ساده تری نیز انجام میشود کـه بازیکنان با داشتن تنها 3مهره سعی می کنند کـه مهره ها را بـه چینش مناسب برسانند. بازی دوز بـه صورت 9تایی و 12 تایی انجام می شود. این بازی قدمت طولانی دارد و مردم از زمان هاي قدیم نیز این بازی را در دسته بازی هاي جذاب فکر قرار داده بودند. در گذشته مردم بـه جای استفاده از مهره، از سنگ هاي رنگی و یا تیله استفاده می کردند. سنگ ها و تیله ها باید بـه تعداد مساوی ودر دو رنگ موجود می بود. گفته می شود کـه مردم تلاش میکردند کـه سنگ هایي گرد و بـه رنگ هاي سیاه و سفید بیابند و از آنها دراین بازی استفاده کنند.\nیک نفر اقدام به شروع بازی می کند و اولین مهره را گذاشته و مهره ها یک در میان در جایگاه خود قرار می گیرند. چنانچه کسی موفق به پر کردن ۳ خانه در یک راستا و یک خط شود می تواند یکی از مهره های حریف را از گود بازی حذف نماید. البته بایستی به این نکته توجه داشت که در بازی سه تایی با روی خط قرار گرفتن سه مهره بازی به اتمام میرسد و دلیل این اتفاق، آن است که مهره های حریف به عدد دو رسیده و دیگر نمی تواند بازی را ادامه دهد.\nیادآوری گرم: بازیکنان عزیز ، بسیار متاسفم ، ترجمه فارسی فعلی ترجمه ماشینی است که باعث دردسر شما شده است. ما صمیمانه از شما دعوت می کنیم که در ترجمه این برنامه بازی به نسخه اصلی فارسی به ما کمک کنید تا بازیکنان بیشتری بهره مند شوند ، بسیار ممنون!\nاگر در این برنامه هیچ قانونی با آن آشنا نیستید ، لطفاً برای ما بنویسید و ما تمام تلاش خود را می کنیم تا قوانینی جدید برای خدمت به بازیکنان بیشتر اضافه کنیم.",
   "@helpContent": {
     "description": "Help Content"
-  },
-  "viewInGooglePlayStore": "مشاهده در فروشگاه Google Play",
-  "@viewInGooglePlayStore": {
-    "description": "View in Google Play Store"
   },
   "versionInfo": "اطلاعات نسخه",
   "@versionInfo": {
@@ -916,21 +820,9 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "openSourceLicenses": "مجوزهای منبع باز",
-  "@openSourceLicenses": {
-    "description": "Open-source licenses"
-  },
   "thirdPartyNotices": "اعلامیه های شخص ثالث",
   "@thirdPartyNotices": {
     "description": "Third-party notices"
-  },
-  "termOfUse": "شرایط استفاده",
-  "@termOfUse": {
-    "description": "Term of use"
-  },
-  "servicesAgreement": "توافق نامه خدمات",
-  "@servicesAgreement": {
-    "description": "Services agreement"
   },
   "appVersion": "نسخه برنامه",
   "@appVersion": {
@@ -967,10 +859,6 @@
   "passive": "منفعل",
   "@passive": {
     "description": "Passive"
-  },
-  "automaticBehavior": "رفتار خودکار",
-  "@automaticBehavior": {
-    "description": "Automatic behavior"
   },
   "timeout": "مهلت زمانی",
   "@timeout": {

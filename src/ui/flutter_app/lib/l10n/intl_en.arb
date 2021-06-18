@@ -76,17 +76,9 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {
-    "description": "Da San Qi"
-  },
   "copyright": "Copyright © 2021 Calcitem Studio",
   "@copyright": {
     "description": "Copyright"
-  },
-  "gameWarning": "Healthy Gaming Advisory\nBoycott harmful games; reject game piracy.\nExercise self-protection; avoid deception.\nModeration promotes brain health; excess play is harmful to the body.\nWell-planned use of your time will lead to a healthy lifestyle.",
-  "@gameWarning": {
-    "description": "Game Warning"
   },
   "tipSelectWrong": "Select wrong piece.",
   "@tipSelectWrong": {
@@ -203,10 +195,6 @@
   "newGame": "New game",
   "@newGame": {
     "description": "New game"
-  },
-  "startNewGame": "Start new game",
-  "@startNewGame": {
-    "description": "Start new game"
   },
   "importGame": "Import game",
   "@importGame": {
@@ -356,29 +344,9 @@
   "@version": {
     "description": "Version"
   },
-  "releaseBaseOn": "Release base On GPLv3",
-  "@releaseBaseOn": {
-    "description": "Release base On GPLv3"
-  },
-  "webSite": "Website",
-  "@webSite": {
-    "description": "Web Site"
-  },
-  "whatsNew": "What's New",
-  "@whatsNew": {
-    "description": "What's New"
-  },
-  "fastUpdateChannel": "Fast Update Channel",
-  "@fastUpdateChannel": {
-    "description": "Fast Update Channel"
-  },
   "thanks": "Thanks",
   "@thanks": {
     "description": "Thanks"
-  },
-  "thankWho": "Thanks to following programmers and teams:",
-  "@thankWho": {
-    "description": "Thank who"
   },
   "settings": "Settings",
   "@settings": {
@@ -420,16 +388,8 @@
   "@tone": {
     "description": "Tone"
   },
-  "leaderBoard": "Leader Board",
-  "@leaderBoard": {
-    "description": "Leader Board"
-  },
   "whoMovesFirst": "First move",
   "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "firstMove": "First move",
-  "@firstMove": {
     "description": "First move"
   },
   "human": "Human",
@@ -464,14 +424,6 @@
   "@learnEndgame": {
     "description": "Learn Endgame"
   },
-  "idsEnabled": "IDS",
-  "@idsEnabled": {
-    "description": "IDS"
-  },
-  "depthExtension": "Depth Extension",
-  "@depthExtension": {
-    "description": "Depth Extension"
-  },
   "openingBook": "Opening Book",
   "@openingBook": {
     "description": "Opening Book"
@@ -499,14 +451,6 @@
   "flyPieceCount_Detail": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "ninePieces": "Nine Pieces",
-  "@ninePieces": {
-    "description": "Nine Pieces"
-  },
-  "twelvePieces": "Twelve Pieces",
-  "@twelvePieces": {
-    "description": "Twelve Pieces"
   },
   "piecesAtLeastCount": "Pieces At Least",
   "@piecesAtLeastCount": {
@@ -603,14 +547,6 @@
   "feedback": "Feedback",
   "@feedback": {
     "description": "Feedback"
-  },
-  "inviteFriend": "Invite Friend",
-  "@inviteFriend": {
-    "description": "Invite Friend"
-  },
-  "rateTheApp": "Rate the App",
-  "@rateTheApp": {
-    "description": "Rate the App"
   },
   "exit": "Exit",
   "@exit": {
@@ -772,14 +708,6 @@
   "@results": {
     "description": "Results"
   },
-  "easy": "Easy",
-  "@easy": {
-    "description": "Easy"
-  },
-  "difficult": "Difficult",
-  "@difficult": {
-    "description": "Difficult"
-  },
   "cannotRemoveFromMill": "Cannot remove from mill.",
   "@cannotRemoveFromMill": {
     "description": "Cannot remove from mill."
@@ -796,7 +724,7 @@
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
-  "privacyPolicy_Detail_2": ". If you do not agree to this Policy, please do not use this App. Using the App implies that you accept these terms. We do occasionally update these terms so please refer back to them in the future.",
+  "privacyPolicy_Detail_2": ". If you do not agree to this Policy, please do not use this App. Using the App implies that you accept these terms.",
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
@@ -860,29 +788,9 @@
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not locked to remove."
   },
-  "haveFunPlaying": "Have fun playing!",
-  "@haveFunPlaying": {
-    "description": "Have fun playing!"
-  },
-  "animationSpeed": "Animation speed",
-  "@animationSpeed": {
-    "description": "Animation speed"
-  },
   "animationDuration": "Animation duration",
   "@animationDuration": {
     "description": "Animation duration"
-  },
-  "slow": "Slow",
-  "@slow": {
-    "description": "Slow"
-  },
-  "medium": "Medium",
-  "@medium": {
-    "description": "Medium"
-  },
-  "fast": "Fast",
-  "@fast": {
-    "description": "Fast"
   },
   "none": "None",
   "@none": {
@@ -895,10 +803,6 @@
   "helpContent": "The aim of the game is to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game is automatically drawn if a position occurs for the third time, or if no remove has been made in the last fifty moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when the player has been reduced to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player is able to place three of his pieces in a straight line, he has a \"mill\" and may remove one of his opponent\"s pieces from the board.\n\nIn some variants of rules, players must remove any other pieces first before removing a piece from a formed mill.\n\nIn some variants of rules, all the points of removed pieces may not be placed again in the placing phrase.\n\nOnce all pieces have been used players take turns moving.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot do so, he has lost the game. As in the placing phase, a player who aligns three of his pieces on a board line has a mill and may remove one of his opponent\"s pieces. Any player reduces to two pieces and has no option to form new mills and thus loses the game. A player can also lose with more than three pieces, if his opponent blocks them so that they cannot be moved.\n\nFlying\n\nIn some variants of rules, once a player has only three pieces left, his pieces may \"fly\", \"hop\", or \"jump\" to any vacant points, not only adjacent ones.\n\n",
   "@helpContent": {
     "description": "Help Content"
-  },
-  "viewInGooglePlayStore": "View in Google Play Store",
-  "@viewInGooglePlayStore": {
-    "description": "View in Google Play Store"
   },
   "versionInfo": "Version info",
   "@versionInfo": {
@@ -916,21 +820,9 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "openSourceLicenses": "Open-source licenses",
-  "@openSourceLicenses": {
-    "description": "Open-source licenses"
-  },
   "thirdPartyNotices": "Third-party notices",
   "@thirdPartyNotices": {
     "description": "Third-party notices"
-  },
-  "termOfUse": "Term of use",
-  "@termOfUse": {
-    "description": "Term of use"
-  },
-  "servicesAgreement": "Services agreement",
-  "@servicesAgreement": {
-    "description": "Services agreement"
   },
   "appVersion": "App Version",
   "@appVersion": {
@@ -967,10 +859,6 @@
   "passive": "Passive",
   "@passive": {
     "description": "Passive"
-  },
-  "automaticBehavior": "Automatic behavior",
-  "@automaticBehavior": {
-    "description": "Automatic behavior"
   },
   "timeout": "Timeout",
   "@timeout": {

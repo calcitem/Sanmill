@@ -88,15 +88,6 @@ class _AboutPageState extends State<AboutPage> {
         onTap: _showVersionInfo,
       ),
       ListItemDivider(),
-      /*
-      ListTile(
-        title: Text(S.of(context).viewInGooglePlayStore,
-            style: TextStyle(color: AppTheme.switchListTileTitleColor)),
-        onTap: () => _launchURL(
-            'https://play.google.com/store/apps/details?id=com.calcitem.sanmill'),
-      ),
-      ListItemDivider(),
-      */
       SettingsListTile(
         context: context,
         titleString: S.of(context).feedback,

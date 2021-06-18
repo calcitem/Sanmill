@@ -76,17 +76,9 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {
-    "description": "Da San Qi"
-  },
   "copyright": "Copyright © 2021 Calcitem Studio",
   "@copyright": {
     "description": "Copyright"
-  },
-  "gameWarning": "Healthy Gaming Advisory\nBoycott harmful games; reject game piracy.\nExercise self-protection; avoid deception.\nModeration promotes brain health; excess play is harmful to the body.\nWell-planned use of your time will lead to a healthy lifestyle.",
-  "@gameWarning": {
-    "description": "Game Warning"
   },
   "tipSelectWrong": "Falscher Stein ausgewählt.",
   "@tipSelectWrong": {
@@ -203,10 +195,6 @@
   "newGame": "Neues Spiel",
   "@newGame": {
     "description": "New game"
-  },
-  "startNewGame": "Beginne ein neues Spiel",
-  "@startNewGame": {
-    "description": "Start new game"
   },
   "importGame": "Spiel importieren",
   "@importGame": {
@@ -356,29 +344,9 @@
   "@version": {
     "description": "Version"
   },
-  "releaseBaseOn": "Veröffentlicht unter der GPLv3",
-  "@releaseBaseOn": {
-    "description": "Release base On GPLv3"
-  },
-  "webSite": "Website",
-  "@webSite": {
-    "description": "Web Site"
-  },
-  "whatsNew": "Neuigkeiten",
-  "@whatsNew": {
-    "description": "What's New"
-  },
-  "fastUpdateChannel": "Schnellupdatekanal",
-  "@fastUpdateChannel": {
-    "description": "Fast Update Channel"
-  },
   "thanks": "Danksagung",
   "@thanks": {
     "description": "Thanks"
-  },
-  "thankWho": "Dank an die folgenden Programmierer und Teams:",
-  "@thankWho": {
-    "description": "Thank who"
   },
   "settings": "Einstellungen",
   "@settings": {
@@ -420,16 +388,8 @@
   "@tone": {
     "description": "Tone"
   },
-  "leaderBoard": "Bestenliste",
-  "@leaderBoard": {
-    "description": "Leader Board"
-  },
   "whoMovesFirst": "Erster Zug",
   "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "firstMove": "Erster Zug",
-  "@firstMove": {
     "description": "First move"
   },
   "human": "Mensch",
@@ -464,14 +424,6 @@
   "@learnEndgame": {
     "description": "Learn Endgame"
   },
-  "idsEnabled": "IDS",
-  "@idsEnabled": {
-    "description": "IDS"
-  },
-  "depthExtension": "Depth Extension",
-  "@depthExtension": {
-    "description": "Depth Extension"
-  },
   "openingBook": "Eröffnungsbuch",
   "@openingBook": {
     "description": "Opening Book"
@@ -499,14 +451,6 @@
   "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "ninePieces": "Neun Steine",
-  "@ninePieces": {
-    "description": "Nine Pieces"
-  },
-  "twelvePieces": "Zwölf Steine",
-  "@twelvePieces": {
-    "description": "Twelve Pieces"
   },
   "piecesAtLeastCount": "Steine mindestens",
   "@piecesAtLeastCount": {
@@ -603,14 +547,6 @@
   "feedback": "Feedback",
   "@feedback": {
     "description": "Feedback"
-  },
-  "inviteFriend": "Freund einladen",
-  "@inviteFriend": {
-    "description": "Invite Friend"
-  },
-  "rateTheApp": "App bewerten",
-  "@rateTheApp": {
-    "description": "Rate the App"
   },
   "exit": "Beenden",
   "@exit": {
@@ -772,14 +708,6 @@
   "@results": {
     "description": "Results"
   },
-  "easy": "Einfach",
-  "@easy": {
-    "description": "Easy"
-  },
-  "difficult": "Schwer",
-  "@difficult": {
-    "description": "Difficult"
-  },
   "cannotRemoveFromMill": "Kann nicht aus einer Mühle entfernen.",
   "@cannotRemoveFromMill": {
     "description": "Cannot remove from mill."
@@ -796,7 +724,7 @@
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
-  "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, daß du diesen Bestimmungen zustimmst. Wir ändern diese Bestimmungen ab und zu, also schau sie dir immer mal wieder an.",
+  "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, daß du diesen Bestimmungen zustimmst.",
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
@@ -860,29 +788,9 @@
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not locked to remove."
   },
-  "haveFunPlaying": "Viel Spaß beim Spielen!",
-  "@haveFunPlaying": {
-    "description": "Have fun playing!"
-  },
-  "animationSpeed": "Animationsgeschwindigkeit",
-  "@animationSpeed": {
-    "description": "Animation speed"
-  },
   "animationDuration": "Animationsdauer",
   "@animationDuration": {
     "description": "Animation duration"
-  },
-  "slow": "Langsam",
-  "@slow": {
-    "description": "Slow"
-  },
-  "medium": "Mittel",
-  "@medium": {
-    "description": "Medium"
-  },
-  "fast": "Schnell",
-  "@fast": {
-    "description": "Fast"
   },
   "none": "Kein",
   "@none": {
@@ -895,10 +803,6 @@
   "helpContent": "Das Ziel des Spiels ist es, daß der Gegner weniger als drei Steine hat oder sich nicht mehr bewegen kann.\n\nDas Spiel endet automatisch unentschieden, wenn eine Spielposition das dritte mal auftritt, oder wenn in den letzten fünfzig Zügen kein Stein entfernt wurde.\n\nDas Spiel läuft in drei Phasen ab:\n\n1. Steine auf freie Punkte setzen\n2. Steine auf angrenzende Punkte schieben\n3. (optionale Phase) Steine auf beliebige freie Punkte setzen wenn der Spieler nur noch drei Steine hat\n\nSetzphase\n\nDas Spiel beginnt mit einem leeren Spielbrett, das aus einem Gitter mit vierundzwanzig Punkten besteht. Die Spieler setzen abwechselnd Steine auf freie Punkte, bis jeder Spieler alle Steine gesetzt hat. Wenn ein Spieler drei Steine in einer geraden Linie setzt, dann hat er eine \"Mühle\" und darf einen gegnerischen Stein vom Spielbrett nehmen.\n\nIn einigen Regelvarianten müssen die Spieler alle anderen Steine entfernen, bevor ein Stein aus einer Mühle genommen werden kann.\n\nIn einigen Regelvarianten dürfen Steine in der Setzphase nicht wieder auf Punkte gesetzt werden, von denen bereits Steine genommen wurden.\n\nWenn alle Steine gesetzt worden sind, ziehen die Spieler abwechselnd einen Stein.\n\nZugphase\n\nBeim Ziehen bewegt ein Spieler einen seiner Steine entlang einer Linie zum nächsten freien Punkt. Wenn er das nicht kann, hat er verloren. Genau wie in der Setzphase führen drei Steine in einer Linie zu einer Mühle, und der Spieler darf einen der gegnerischen Steine entfernen. Ein Spieler mit nur zwei Steinen kann keine Mühlen mehr bekommen und verliert deshalb. Ein Spieler kann auch mit mehr als drei Steinen verlieren, wenn sein Gegner ihn so blockiert hat, daß er seine Steine nicht mehr bewegen kann.\n\nEndphase\n\nIn einigen Regelvarianten kann ein Spieler, dem nur noch drei Steine verbleiben, mit seinen Steinen auf jeden freien Punkt \"fliegen\", \"hüpfen\" oder \"springen\", nicht nur auf benachbarte.\n\n",
   "@helpContent": {
     "description": "Help Content"
-  },
-  "viewInGooglePlayStore": "Im Google Play Store anzeigen",
-  "@viewInGooglePlayStore": {
-    "description": "View in Google Play Store"
   },
   "versionInfo": "Versionsinformation",
   "@versionInfo": {
@@ -916,21 +820,9 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "openSourceLicenses": "Open-Source-Lizenzen",
-  "@openSourceLicenses": {
-    "description": "Open-source licenses"
-  },
   "thirdPartyNotices": "Drittanbieterhinweise",
   "@thirdPartyNotices": {
     "description": "Third-party notices"
-  },
-  "termOfUse": "Nutzungsbedingungen",
-  "@termOfUse": {
-    "description": "Term of use"
-  },
-  "servicesAgreement": "Dienstezustimmung",
-  "@servicesAgreement": {
-    "description": "Services agreement"
   },
   "appVersion": "App-Version",
   "@appVersion": {
@@ -967,10 +859,6 @@
   "passive": "Passiv",
   "@passive": {
     "description": "Passive"
-  },
-  "automaticBehavior": "Automatisch",
-  "@automaticBehavior": {
-    "description": "Automatic behavior"
   },
   "timeout": "Zeitlimit",
   "@timeout": {

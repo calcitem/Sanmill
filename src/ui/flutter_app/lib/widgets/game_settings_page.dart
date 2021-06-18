@@ -453,26 +453,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setIdsEnabled(bool value) async {
-    setState(() {
-      Config.idsEnabled = value;
-    });
-
-    print("[config] idsEnabled: $value");
-
-    Config.save();
-  }
-
-  setDepthExtension(bool value) async {
-    setState(() {
-      Config.depthExtension = value;
-    });
-
-    print("[config] depthExtension: $value");
-
-    Config.save();
-  }
-
   setOpeningBook(bool value) async {
     setState(() {
       Config.openingBook = value;
