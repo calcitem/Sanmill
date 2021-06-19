@@ -572,8 +572,8 @@
   "@pieceColor": {
     "description": "Piece color"
   },
-  "backgroudColor": "رنگ پس زمینه",
-  "@backgroudColor": {
+  "backgroundColor": "رنگ پس زمینه",
+  "@backgroundColor": {
     "description": "Background color"
   },
   "lineColor": "رنگ خط تخته",

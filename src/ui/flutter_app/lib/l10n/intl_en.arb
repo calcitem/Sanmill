@@ -572,8 +572,8 @@
   "@pieceColor": {
     "description": "Piece color"
   },
-  "backgroudColor": "Background color",
-  "@backgroudColor": {
+  "backgroundColor": "Background color",
+  "@backgroundColor": {
     "description": "Background color"
   },
   "lineColor": "Board line color",

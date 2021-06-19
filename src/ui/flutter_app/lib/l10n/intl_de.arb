@@ -572,8 +572,8 @@
   "@pieceColor": {
     "description": "Piece color"
   },
-  "backgroudColor": "Hintergrundfarbe",
-  "@backgroudColor": {
+  "backgroundColor": "Hintergrundfarbe",
+  "@backgroundColor": {
     "description": "Background color"
   },
   "lineColor": "Linienfarbe",

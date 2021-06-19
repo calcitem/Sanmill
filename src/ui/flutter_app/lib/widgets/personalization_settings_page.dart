@@ -52,7 +52,7 @@ class _PersonalizationSettingsPageState
   showColorDialog(String colorString) async {
     Map<String, int> colorStrToVal = {
       S.of(context).boardColor: Config.boardBackgroundColor,
-      S.of(context).backgroudColor: Config.darkBackgroundColor,
+      S.of(context).backgroundColor: Config.darkBackgroundColor,
       S.of(context).lineColor: Config.boardLineColor,
       S.of(context).whitePieceColor: Config.whitePieceColor,
       S.of(context).blackPieceColor: Config.blackPieceColor,
@@ -88,7 +88,7 @@ class _PersonalizationSettingsPageState
 
             if (colorString == S.of(context).boardColor) {
               Config.boardBackgroundColor = pickerColor.value;
-            } else if (colorString == S.of(context).backgroudColor) {
+            } else if (colorString == S.of(context).backgroundColor) {
               Config.darkBackgroundColor = pickerColor.value;
             } else if (colorString == S.of(context).lineColor) {
               Config.boardLineColor = pickerColor.value;
@@ -415,9 +415,9 @@ class _PersonalizationSettingsPageState
           ListItemDivider(),
           SettingsListTile(
             context: context,
-            titleString: S.of(context).backgroudColor,
+            titleString: S.of(context).backgroundColor,
             trailingColor: Config.darkBackgroundColor,
-            onTap: () => showColorDialog(S.of(context).backgroudColor),
+            onTap: () => showColorDialog(S.of(context).backgroundColor),
           ),
           ListItemDivider(),
           SettingsListTile(

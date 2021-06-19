@@ -572,8 +572,8 @@
   "@pieceColor": {
     "description": "Piece color"
   },
-  "backgroudColor": "Háttérszín",
-  "@backgroudColor": {
+  "backgroundColor": "Háttérszín",
+  "@backgroundColor": {
     "description": "Background color"
   },
   "lineColor": "Tábla vonalszíne",
