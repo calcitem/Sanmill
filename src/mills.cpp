@@ -482,7 +482,7 @@ Depth get_search_depth(const Position *pos)
                 if (level > d) {
                     return d;
                 } else {
-                    return level;
+                    return (Depth)level;
                 }
             }
         }
