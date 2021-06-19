@@ -38,29 +38,29 @@ class GameRecorder {
     _history = newHistory;
   }
 
-  String parseNotation(String ntt) {
+  String parseWmdNotation(String wmd) {
     String move = "";
 
-    if (ntt.length == 3 && ntt[0] == "x") {
-      if (notationToMove[ntt.substring(1, 3)] != null) {
-        move = '-' + notationToMove[ntt.substring(1, 3)]!;
+    if (wmd.length == 3 && wmd[0] == "x") {
+      if (wmdNotationToMove[wmd.substring(1, 3)] != null) {
+        move = '-' + wmdNotationToMove[wmd.substring(1, 3)]!;
       }
-    } else if (ntt.length == 2) {
-      if (notationToMove[ntt] != null) {
-        move = notationToMove[ntt]!;
+    } else if (wmd.length == 2) {
+      if (wmdNotationToMove[wmd] != null) {
+        move = wmdNotationToMove[wmd]!;
       }
-    } else if (ntt.length == 5 && ntt[2] == '-') {
-      if (notationToMove[(ntt.substring(0, 2))] != null &&
-          notationToMove[(ntt.substring(3, 5))] != null) {
-        move = notationToMove[(ntt.substring(0, 2))]! +
+    } else if (wmd.length == 5 && wmd[2] == '-') {
+      if (wmdNotationToMove[(wmd.substring(0, 2))] != null &&
+          wmdNotationToMove[(wmd.substring(3, 5))] != null) {
+        move = wmdNotationToMove[(wmd.substring(0, 2))]! +
             '->' +
-            notationToMove[(ntt.substring(3, 5))]!;
+            wmdNotationToMove[(wmd.substring(3, 5))]!;
       }
-    } else if ((ntt.length == 8 && ntt[2] == '-' && ntt[5] == 'x') ||
-        (ntt.length == 5 && ntt[2] == 'x')) {
+    } else if ((wmd.length == 8 && wmd[2] == '-' && wmd[5] == 'x') ||
+        (wmd.length == 5 && wmd[2] == 'x')) {
       print("$tag Not support parsing format oo-ooxo notation.");
     } else {
-      print("$tag Parse notation $ntt failed.");
+      print("$tag Parse notation $wmd failed.");
     }
 
     return move;
@@ -104,14 +104,14 @@ class GameRecorder {
       if (i.length > 0 && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == 'x') {
           // "a1xc3"
-          String m1 = parseNotation(i.substring(0, 2));
+          String m1 = parseWmdNotation(i.substring(0, 2));
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
             print("Cannot import $i");
             return i;
           }
-          String m2 = parseNotation(i.substring(2));
+          String m2 = parseWmdNotation(i.substring(2));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
@@ -120,14 +120,14 @@ class GameRecorder {
           }
         } else if (i.length == 8 && i[2] == '-' && i[5] == 'x') {
           // "a1-b2xc3"
-          String m1 = parseNotation(i.substring(0, 5));
+          String m1 = parseWmdNotation(i.substring(0, 5));
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
             print("Cannot import $i");
             return i;
           }
-          String m2 = parseNotation(i.substring(5));
+          String m2 = parseWmdNotation(i.substring(5));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
@@ -136,7 +136,7 @@ class GameRecorder {
           }
         } else {
           // no x
-          String m = parseNotation(i);
+          String m = parseWmdNotation(i);
           if (m != "") {
             newHistory.add(Move(m));
           } else {

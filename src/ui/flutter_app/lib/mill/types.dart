@@ -59,7 +59,7 @@ class Move {
       toFile = int.parse(move![2]);
       toRank = int.parse(move![4]);
       to = makeSquare(toFile, toRank);
-      notation = "x${squareToNotation[to]}";
+      notation = "x${squareToWmdNotation[to]}";
       //captured = Piece.noPiece;
     } else if (move!.length == "(1,2)->(3,4)".length) {
       type = MoveType.move;
@@ -70,7 +70,7 @@ class Move {
       toFile = int.parse(move![8]);
       toRank = int.parse(move![10]);
       to = makeSquare(toFile, toRank);
-      notation = "${squareToNotation[from]}-${squareToNotation[to]}";
+      notation = "${squareToWmdNotation[from]}-${squareToWmdNotation[to]}";
       removed = Piece.noPiece;
     } else if (move!.length == "(1,2)".length) {
       type = MoveType.place;
@@ -78,7 +78,7 @@ class Move {
       toFile = int.parse(move![1]);
       toRank = int.parse(move![3]);
       to = makeSquare(toFile, toRank);
-      notation = "${squareToNotation[to]}";
+      notation = "${squareToWmdNotation[to]}";
       removed = Piece.noPiece;
     } else if (move == "draw") {
       // TODO
@@ -340,7 +340,7 @@ Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
         1 X --- X --- X 1
           a b c d e f g
  */
-Map<int, String> squareToNotation = {
+Map<int, String> squareToWmdNotation = {
   8: "d5",
   9: "e5",
   10: "e4",
@@ -367,7 +367,7 @@ Map<int, String> squareToNotation = {
   31: "a7"
 };
 
-Map<String, String> notationToMove = {
+Map<String, String> wmdNotationToMove = {
   "d5": "(1,1)",
   "e5": "(1,2)",
   "e4": "(1,3)",
@@ -394,7 +394,7 @@ Map<String, String> notationToMove = {
   "a7": "(3,8)",
 };
 
-Map<String, String> moveToNotation =
-    notationToMove.map((k, v) => MapEntry(v, k));
+Map<String, String> moveToWmdNotation =
+    wmdNotationToMove.map((k, v) => MapEntry(v, k));
 
 enum GameResult { pending, win, lose, draw, none }

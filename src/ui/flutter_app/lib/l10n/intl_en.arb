@@ -628,7 +628,7 @@
   "@fontSize": {
     "description": "Font size"
   },
-  "standardNotation": "Standard notation",
+  "standardNotation": "WMD notation",
   "@standardNotation": {
     "description": "Standard notation"
   },
