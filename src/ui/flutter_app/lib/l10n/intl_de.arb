@@ -296,9 +296,9 @@
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "In der Bewegungsphase wurde in den letzten 50 Zügen kein Stein entfernt.",
+  "drawReasonRule50": "In der Bewegungsphase wurde in der letzten bestimmten Anzahl von Zügen kein Stein entfernt.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last fifty moves."
+    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
   },
   "drawReasonBoardIsFull": "Unentschieden weil das Brett voll ist.",
   "@drawReasonBoardIsFull": {
@@ -523,6 +523,10 @@
   "maxStepsLedToDraw": "Maximale Schritte bis unentschieden",
   "@maxStepsLedToDraw": {
     "description": "Max Steps Led to Draw"
+  },
+  "maxStepsLedToDraw_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
+  "@maxStepsLedToDraw_Detail": {
+    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
   },
   "rollback": "Rollback",
   "@rollback": {

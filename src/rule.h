@@ -62,10 +62,11 @@ struct Rule
     bool isLoseButNotChangeSideWhenNoWay;
 
     // Player may fly if he is down to three or four (configurable) pieces.
+    // If a player has only three or four (configurable) pieces left,
+    // she is allowed to move the piece to any free point.
     bool mayFly;
 
-    // If a player has only three pieces left,
-    // she is allowed to move the piece to any free point.
+    // The N-move rule in Mill states that if no remove has been made in the last N moves.
     size_t maxStepsLedToDraw;
 };
 

@@ -296,9 +296,9 @@
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "In moving phase, no piece has been removed in the last fifty moves.",
+  "drawReasonRule50": "In moving phase, no piece has been removed in the last specific number of moves.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last fifty moves."
+    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
   },
   "drawReasonBoardIsFull": "It is a Draw, because the board is full",
   "@drawReasonBoardIsFull": {
@@ -523,6 +523,10 @@
   "maxStepsLedToDraw": "Max Steps Led to Draw",
   "@maxStepsLedToDraw": {
     "description": "Max Steps Led to Draw"
+  },
+  "maxStepsLedToDraw_Detail": "The game is drawn if there has been no remove in a specific number of moves by each player.",
+  "@maxStepsLedToDraw_Detail": {
+    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
   },
   "rollback": "Rollback",
   "@rollback": {

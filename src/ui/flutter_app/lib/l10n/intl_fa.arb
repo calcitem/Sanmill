@@ -296,9 +296,9 @@
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "در مرحله متحرک ، هیچ قطعه ای در پنجاه حرکت گذشته برداشته نشده است.",
+  "drawReasonRule50": "در مرحله متحرک ، هیچ قطعه ای در آخرین تعداد حرکت خاص حذف نشده است.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last fifty moves."
+    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
   },
   "drawReasonBoardIsFull": "این مساوی است.چون تخته پر است.",
   "@drawReasonBoardIsFull": {
@@ -523,6 +523,10 @@
   "maxStepsLedToDraw": "مراحل حداکثر منجر به قرعه کشی",
   "@maxStepsLedToDraw": {
     "description": "Max Steps Led to Draw"
+  },
+  "maxStepsLedToDraw_Detail": "در صورتی که در تعداد حرکات خاصی از سوی هر بازیکن حذف نشده باشد ، بازی قرعه کشی می شود.",
+  "@maxStepsLedToDraw_Detail": {
+    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
   },
   "rollback": "بازگشت به عقب",
   "@rollback": {

@@ -296,9 +296,9 @@
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "A léphető fázisban az utolsó ötven lépés során egyetlen darabot sem távolítottak el.",
+  "drawReasonRule50": "A léphető fázisban az utolsó N lépés során egyetlen darabot sem távolítottak el.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last fifty moves."
+    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
   },
   "drawReasonBoardIsFull": "Ez egy döntetlen, mert a tábla megtelt",
   "@drawReasonBoardIsFull": {
@@ -523,6 +523,10 @@
   "maxStepsLedToDraw": "A lépések túl lassúak",
   "@maxStepsLedToDraw": {
     "description": "Max Steps Led to Draw"
+  },
+  "maxStepsLedToDraw_Detail": "A játék sorsolásra kerül, ha az egyes játékosok nem hajtottak végre bizonyos számú mozdulatot.",
+  "@maxStepsLedToDraw_Detail": {
+    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
   },
   "rollback": "Visszagörgetés",
   "@rollback": {

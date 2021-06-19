@@ -76,15 +76,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             subtitleString: S.of(context).hasDiagonalLines_Detail,
           ),
           ListItemDivider(),
-          /*
-          SettingsSwitchListTile(
+          SettingsListTile(
             context: context,
-            value: Config.maxStepsLedToDraw,
-            onChanged: setMaxStepsLedToDraw,
             titleString: S.of(context).maxStepsLedToDraw,
+            subtitleString: S.of(context).maxStepsLedToDraw_Detail,
+            trailingString: Config.maxStepsLedToDraw.toString(),
+            onTap: setMaxStepsLedToDraw,
           ),
           ListItemDivider(),
-          */
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
@@ -240,7 +239,63 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     );
   }
 
-  // General
+  setMaxStepsLedToDraw() {
+    callback(int? maxStepsLedToDraw) async {
+      print("[config] maxStepsLedToDraw = $maxStepsLedToDraw");
+
+      Navigator.of(context).pop();
+
+      setState(() {
+        rule.maxStepsLedToDraw =
+            Config.maxStepsLedToDraw = maxStepsLedToDraw ?? 50;
+      });
+
+      print("[config] rule.maxStepsLedToDraw: ${rule.maxStepsLedToDraw}");
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('30'),
+            groupValue: Config.maxStepsLedToDraw,
+            value: 30,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('50'),
+            groupValue: Config.maxStepsLedToDraw,
+            value: 50,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('100'),
+            groupValue: Config.maxStepsLedToDraw,
+            value: 100,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text('200'),
+            groupValue: Config.maxStepsLedToDraw,
+            value: 200,
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+        ],
+      ),
+    );
+  }
 
   setFlyPieceCount() {
     callback(int? flyPieceCount) async {
@@ -372,16 +427,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   // Unused
-
-  setMaxStepsLedToDraw(int value) async {
-    setState(() {
-      rule.maxStepsLedToDraw = Config.maxStepsLedToDraw = value;
-    });
-
-    print("[config] rule.maxStepsLedToDraw: $value");
-
-    Config.save();
-  }
 
   setNPiecesAtLeast(int value) async {
     setState(() {
