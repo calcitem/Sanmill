@@ -2,7 +2,7 @@
   "@@locale": "en",
   "appName": "Mill",
   "@appName": {
-    "description": "The App name"
+    "description": "The app name"
   },
   "welcome": "Welcome",
   "@welcome": {
@@ -80,17 +80,17 @@
   "@copyright": {
     "description": "Copyright"
   },
-  "tipSelectWrong": "Select wrong piece.",
+  "tipSelectWrong": "Select the wrong piece.",
   "@tipSelectWrong": {
-    "description": "Select wrong piece."
+    "description": "Select the wrong piece."
   },
   "tipPlace": "Place your pieces.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Cannot place here.",
+  "tipBanPlace": "Cannot place it here.",
   "@tipBanPlace": {
-    "description": "Cannot place here."
+    "description": "Cannot place it here."
   },
   "tipPlaced": "Placed.",
   "@tipPlaced": {
@@ -132,9 +132,9 @@
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "You cannot remove a piece from a Mill.",
+  "tipCannotRemovePieceFromMill": "You cannot remove a piece from a mill.",
   "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a Mill."
+    "description": "You cannot remove a piece from a mill."
   },
   "tipCanMoveOnePoint": "A piece can move 1 point.",
   "@tipCanMoveOnePoint": {
@@ -152,9 +152,9 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Your have 3 pieces left.",
+  "tipHaveThreePiecesLeft": "You have 3 pieces left.",
   "@tipHaveThreePiecesLeft": {
-    "description": "Your have 3 pieces left."
+    "description": "You have 3 pieces left."
   },
   "tipCanMoveToAnyPoint": "You can move to any point you like.",
   "@tipCanMoveToAnyPoint": {
@@ -164,13 +164,13 @@
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "Player 1 win!",
+  "whiteWin": "Player 1 wins!",
   "@whiteWin": {
-    "description": "Player 1 win!"
+    "description": "Player 1 wins!"
   },
-  "blackWin": "Player 2 win!",
+  "blackWin": "Player 2 wins!",
   "@blackWin": {
-    "description": "Player 2 win!"
+    "description": "Player 2 wins!"
   },
   "won": "Won",
   "@won": {
@@ -204,9 +204,9 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Game imported from clipboard.",
+  "gameImported": "Game imported from the clipboard.",
   "@gameImported": {
-    "description": "Game imported from clipboard."
+    "description": "Game imported from the clipboard."
   },
   "cannotImport": "Cannot import",
   "@cannotImport": {
@@ -240,9 +240,9 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Restart current Game?",
+  "restartGame": "Restart current game?",
   "@restartGame": {
-    "description": "Restart current Game?"
+    "description": "Restart current game?"
   },
   "restart": "Restart",
   "@restart": {
@@ -296,17 +296,17 @@
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "In moving phase, no piece has been removed in the last specific number of moves.",
+  "drawReasonRule50": "In the moving phase, no piece has been removed in the last specific number of moves.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "It is a Draw, because the board is full",
+  "drawReasonBoardIsFull": "It is a Draw because the board is full",
   "@drawReasonBoardIsFull": {
-    "description": "It is a Draw, because the board is full"
+    "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "It is a Draw, because threefold repetition.",
+  "drawReasonThreefoldRepetition": "It is a Draw because of threefold repetition.",
   "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw, because threefold repetition."
+    "description": "It is a Draw because of threefold repetition."
   },
   "gameOverUnknownReason": "Game Over! Unknown reason.",
   "@gameOverUnknownReason": {
@@ -404,9 +404,9 @@
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "Auto restart game when game over",
+  "isAutoRestart": "Auto-restart game when game over",
   "@isAutoRestart": {
-    "description": "Auto restart game when game over"
+    "description": "Auto-restart game when game over"
   },
   "isAutoChangeFirstMove": "Auto Change First Move",
   "@isAutoChangeFirstMove": {
@@ -444,13 +444,13 @@
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
-  "flyPieceCount": "The number of flying piece",
+  "flyPieceCount": "The number of the flying piece",
   "@flyPieceCount": {
-    "description": "The number of flying piece"
+    "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game.",
+  "flyPieceCount_Detail": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pieces At Least",
   "@piecesAtLeastCount": {
@@ -468,9 +468,9 @@
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
-  "hasBannedLocations_Detail": "In the placing phase, the points of removed pieces will no longer be able to place.",
+  "hasBannedLocations_Detail": "In the placing phase, the points of removed pieces will no longer be able to be placed.",
   "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to place unless moving phase is entered."
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
   "isDefenderMoveFirst": "The second player moves first",
   "@isDefenderMoveFirst": {
@@ -484,9 +484,9 @@
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "If a player close more than one mill at once, she will be able to remove the number of mills she closed.",
+  "mayRemoveMultiple_Detail": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed.",
   "@mayRemoveMultiple_Detail": {
-    "description": "If a player close more than one mill at once, she will be able to remove the number of mills she closed."
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
   "mayRemoveFromMillsAlways": "Destroy mills",
   "@mayRemoveFromMillsAlways": {
@@ -496,9 +496,9 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Second player loses when board full",
+  "isWhiteLoseButNotDrawWhenBoardFull": "The second player loses when the board is full",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
-    "description": "Second player loses when board full"
+    "description": "The second player loses when the board is full"
   },
   "isWhiteLoseButNotDrawWhenBoardFull_Detail": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw.",
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
@@ -524,9 +524,9 @@
   "@maxStepsLedToDraw": {
     "description": "Max Steps Led to Draw"
   },
-  "maxStepsLedToDraw_Detail": "The game is drawn if there has been no remove in a specific number of moves by each player.",
+  "maxStepsLedToDraw_Detail": "The game is drawn if there has been no removal in a specific number of moves by each player.",
   "@maxStepsLedToDraw_Detail": {
-    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "Rollback",
   "@rollback": {
@@ -578,7 +578,7 @@
   },
   "lineColor": "Board line color",
   "@lineColor": {
-    "description": "Board linecolor"
+    "description": "Board line color"
   },
    "whitePieceColor": "Player 1 piece color",
   "@whitePieceColor": {
@@ -612,9 +612,9 @@
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Board border line width",
+  "boardBorderLineWidth": "Board borderline width",
   "@boardBorderLineWidth": {
-    "description": "Board border line width"
+    "description": "Board borderline width"
   },
   "boardInnerLineWidth": "Board inner line width",
   "@boardInnerLineWidth": {
@@ -640,13 +640,13 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "The App will exit.",
+  "exitApp": "The app will exit.",
   "@exitApp": {
-    "description": "The App will exit."
+    "description": "The app will exit."
   },
-  "exitAppManually": "You have to close immediately and reopen App to take effect.",
+  "exitAppManually": "You have to close immediately and reopen the app to take effect.",
   "@exitAppManually": {
-    "description": "You have to close immediately and reopen App to take effect."
+    "description": "You have to close immediately and reopen the app to take effect."
   },
   "pick": "Pick",
   "@pick": {
@@ -688,17 +688,17 @@
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Tap on opponent's one piece to remove.",
+  "toRemovePiece": "Tap on the opponent's one piece to remove.",
   "@toRemovePiece": {
-    "description": "Tap on opponent's one piece to remove."
+    "description": "Tap on the opponent's one piece to remove."
   },
-  "needToCreateMillFirst": "You need to create a mill first, before you can remove a piece.",
+  "needToCreateMillFirst": "You need to create a mill first before you can remove a piece.",
   "@needToCreateMillFirst": {
-    "description": "You need to create a mill first, before you can remove a piece."
+    "description": "You need to create a mill first before you can remove a piece."
   },
-  "needToPlayWithOwnPieces": "You need to play with your own pieces.",
+  "needToPlayWithOwnPieces": "You need to play with your pieces.",
   "@needToPlayWithOwnPieces": {
-    "description": "You need to play with your own pieces."
+    "description": "You need to play with your pieces."
   },
   "statistics": "Statistics",
   "@statistics": {
@@ -712,9 +712,9 @@
   "@results": {
     "description": "Results"
   },
-  "cannotRemoveFromMill": "Cannot remove from mill.",
+  "cannotRemoveFromMill": "Cannot remove from the mill.",
   "@cannotRemoveFromMill": {
-    "description": "Cannot remove from mill."
+    "description": "Cannot remove from the mill."
   },
   "left": "left",
   "@left": {
@@ -788,9 +788,9 @@
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "If a player has only pieces in mills, the pieces in the mills will not locked to remove.",
+  "crackMill_Detail": "If a player has only pieces in mills, the pieces in the mills will not lock to remove.",
   "@crackMill_Detail": {
-    "description": "If a player has only pieces in mills, the pieces in the mills will not locked to remove."
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
   "animationDuration": "Animation duration",
   "@animationDuration": {
@@ -804,7 +804,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "The aim of the game is to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game is automatically drawn if a position occurs for the third time, or if no remove has been made in the last fifty moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when the player has been reduced to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player is able to place three of his pieces in a straight line, he has a \"mill\" and may remove one of his opponent\"s pieces from the board.\n\nIn some variants of rules, players must remove any other pieces first before removing a piece from a formed mill.\n\nIn some variants of rules, all the points of removed pieces may not be placed again in the placing phrase.\n\nOnce all pieces have been used players take turns moving.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot do so, he has lost the game. As in the placing phase, a player who aligns three of his pieces on a board line has a mill and may remove one of his opponent\"s pieces. Any player reduces to two pieces and has no option to form new mills and thus loses the game. A player can also lose with more than three pieces, if his opponent blocks them so that they cannot be moved.\n\nFlying\n\nIn some variants of rules, once a player has only three pieces left, his pieces may \"fly\", \"hop\", or \"jump\" to any vacant points, not only adjacent ones.\n\n",
+  "helpContent": "The game aims to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game is automatically drawn if a position occurs for the third time, or if no remove has been made in the last fifty moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when the player has been reduced to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player can place three of his pieces in a straight line, he has a \"mill\" and may remove one of his opponent's pieces from the board.\n\nIn some variants of rules, players must remove any other pieces first before removing a piece from a formed mill.\n\nIn some variants of rules, all the points of removed pieces may not be placed again in the placing phrase.\n\nOnce all pieces have been used, players take turns moving.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot do so, he has lost the game. As in the placing phase, a player who aligns three of his pieces on a board line has a mill and may remove one of his opponent\"s pieces. Any player reduces to two pieces and has no option to form new mills, and thus loses the game. A player can also lose with more than three pieces if his opponent blocks them so that they cannot be moved.\n\nFlying\n\nIn some variants of the rules, once a player has only three pieces left, his pieces may \"fly\", \"hop\", or \"jump\" to any vacant points, not only adjacent ones.\n\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -856,9 +856,9 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "AI's play style",
+  "aisPlayStyle": "AI's playstyle",
   "@aisPlayStyle": {
-    "description": "AI's play style"
+    "description": "AI's playstyle"
   },
   "passive": "Passive",
   "@passive": {
@@ -880,9 +880,9 @@
   "@developerMode": {
     "description": "Developer mode"
   },
-  "drawOnHumanExperience": "Draw on human experience",
+  "drawOnHumanExperience": "Draw on the human experience",
   "@drawOnHumanExperience": {
-    "description": "Draw on human experience"
+    "description": "Draw on the human experience"
   },
   "considerMobility": "Consider mobility of pieces",
   "@considerMobility": {
@@ -904,21 +904,21 @@
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "It is not AI's turn.",
+  "notAIsTurn": "It is not the AI's turn.",
   "@notAIsTurn": {
-    "description": "It is not AI's turn."
+    "description": "It is not the AI's turn."
   },
   "aiIsNotThinking": "AI is not thinking.",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Auto replay moves",
+  "autoReplay": "Auto re-play moves",
   "@autoReplay": {
-    "description": "Auto replay moves"
+    "description": "Auto re-play moves"
   },
-  "atEnd": "At the end of move list.",
+  "atEnd": "At the end of the move list.",
   "@atEnd": {
-    "description": "At the end of move list."
+    "description": "At the end of the move list."
   },
   "tapBackAgainToLeave": "Tap back again to leave.",
   "@tapBackAgainToLeave": {

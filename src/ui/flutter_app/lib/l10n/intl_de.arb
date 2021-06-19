@@ -2,7 +2,7 @@
   "@@locale": "de",
   "appName": "Mühle",
   "@appName": {
-    "description": "The App name"
+    "description": "The app name"
   },
   "welcome": "Herzlich willkommen",
   "@welcome": {
@@ -82,7 +82,7 @@
   },
   "tipSelectWrong": "Falscher Stein ausgewählt.",
   "@tipSelectWrong": {
-    "description": "Select wrong piece."
+    "description": "Select the wrong piece."
   },
   "tipPlace": "Setze deinen Stein.",
   "@tipPlace": {
@@ -90,7 +90,7 @@
   },
   "tipBanPlace": "Hier kannst du nicht hinsetzen.",
   "@tipBanPlace": {
-    "description": "Cannot place here."
+    "description": "Cannot place it here."
   },
   "tipPlaced": "Gesetzt.",
   "@tipPlaced": {
@@ -134,7 +134,7 @@
   },
   "tipCannotRemovePieceFromMill": "Du kannst keinen Stein aus einer Mühle nehmen.",
   "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a Mill."
+    "description": "You cannot remove a piece from a mill."
   },
   "tipCanMoveOnePoint": "Ein Stein kann nur 1 Feld weit gezogen werden.",
   "@tipCanMoveOnePoint": {
@@ -166,11 +166,11 @@
   },
   "whiteWin": "Spieler 1 gewinnt!",
   "@whiteWin": {
-    "description": "Player 1 win!"
+    "description": "Player 1 wins!"
   },
   "blackWin": "Spieler 2 gewinnt!",
   "@blackWin": {
-    "description": "Player 2 win!"
+    "description": "Player 2 wins!"
   },
   "won": "Gewonnen",
   "@won": {
@@ -206,7 +206,7 @@
   },
   "gameImported": "Spiel aus der Zwischenablage importiert.",
   "@gameImported": {
-    "description": "Game imported from clipboard."
+    "description": "Game imported from the clipboard."
   },
   "cannotImport": "Kann nicht importieren",
   "@cannotImport": {
@@ -242,7 +242,7 @@
   },
   "restartGame": "Spiel neu beginnen?",
   "@restartGame": {
-    "description": "Restart current Game?"
+    "description": "Restart current game?"
   },
   "restart": "Neustart",
   "@restart": {
@@ -298,7 +298,7 @@
   },
   "drawReasonRule50": "In der Bewegungsphase wurde in der letzten bestimmten Anzahl von Zügen kein Stein entfernt.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
   "drawReasonBoardIsFull": "Unentschieden weil das Brett voll ist.",
   "@drawReasonBoardIsFull": {
@@ -306,7 +306,7 @@
   },
   "drawReasonThreefoldRepetition": "Unentschieden wegen dreimaliger Wiederholung.",
   "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw, because threefold repetition."
+    "description": "It is a Draw because of threefold repetition."
   },
   "gameOverUnknownReason": "Spiel vorbei! Unbekannter Grund.",
   "@gameOverUnknownReason": {
@@ -406,7 +406,7 @@
   },
   "isAutoRestart": "Nach Spielende automatisch neustarten",
   "@isAutoRestart": {
-    "description": "Auto restart game when game over"
+    "description": "Auto-restart game when game over"
   },
   "isAutoChangeFirstMove": "Ersten Zug automatisch ändern",
   "@isAutoChangeFirstMove": {
@@ -446,11 +446,11 @@
   },
   "flyPieceCount": "Anzahl der fliegenden Steine",
   "@flyPieceCount": {
-    "description": "The number of flying piece"
+    "description": "The number of the flying piece"
   },
   "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Steine mindestens",
   "@piecesAtLeastCount": {
@@ -470,7 +470,7 @@
   },
   "hasBannedLocations_Detail": "In der Setzphase können keine Steine auf Punkte von entfernten Steinen gesetzt werden.",
   "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to place unless moving phase is entered."
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
   "isDefenderMoveFirst": "Der zweite Spieler zieht zuerst",
   "@isDefenderMoveFirst": {
@@ -486,7 +486,7 @@
   },
   "mayRemoveMultiple_Detail": "Wenn ein Spieler mehr als eine Mühle gleichzeitig schließt, darf er entsprechend viele Steine entfernen.",
   "@mayRemoveMultiple_Detail": {
-    "description": "If a player close more than one mill at once, she will be able to remove the number of mills she closed."
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
   "mayRemoveFromMillsAlways": "Mühlen zerstören",
   "@mayRemoveFromMillsAlways": {
@@ -526,7 +526,7 @@
   },
   "maxStepsLedToDraw_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
   "@maxStepsLedToDraw_Detail": {
-    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "Rollback",
   "@rollback": {
@@ -578,7 +578,7 @@
   },
   "lineColor": "Linienfarbe",
   "@lineColor": {
-    "description": "Board linecolor"
+    "description": "Board line color"
   },
    "whitePieceColor": "Steinfarbe Spieler 1",
   "@whitePieceColor": {
@@ -614,7 +614,7 @@
   },
   "boardBorderLineWidth": "Linienbreite Spielbrettrand",
   "@boardBorderLineWidth": {
-    "description": "Board border line width"
+    "description": "Board borderline width"
   },
   "boardInnerLineWidth": "Innere Linienbreite des Spielbrettes",
   "@boardInnerLineWidth": {
@@ -622,7 +622,7 @@
   },
   "pieceWidth": "Steingröße",
   "@pieceWidth": {
-    "description": "Board inner line width"
+    "description": "Piece width"
   },
   "fontSize": "Schriftgröße",
   "@fontSize": {
@@ -642,11 +642,11 @@
   },
   "exitApp": "Die App wird beendet.",
   "@exitApp": {
-    "description": "The App will exit."
+    "description": "The app will exit."
   },
   "exitAppManually": "Du musst die App sofort beenden und neustarten, damit die Einstellungen benutzt werden",
   "@exitAppManually": {
-    "description": "You have to close immediately and reopen App to take effect."
+    "description": "You have to close immediately and reopen the app to take effect."
   },
   "pick": "Nehmen",
   "@pick": {
@@ -690,7 +690,7 @@
   },
   "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
   "@toRemovePiece": {
-    "description": "Tap on opponent's one piece to remove."
+    "description": "Tap on the opponent's one piece to remove."
   },
   "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
   "@needToCreateMillFirst": {
@@ -714,7 +714,7 @@
   },
   "cannotRemoveFromMill": "Kann nicht aus einer Mühle entfernen.",
   "@cannotRemoveFromMill": {
-    "description": "Cannot remove from mill."
+    "description": "Cannot remove from the mill."
   },
   "left": "links",
   "@left": {
@@ -858,7 +858,7 @@
   },
   "aisPlayStyle": "Spielstil des Computers",
   "@aisPlayStyle": {
-    "description": "AI's play style"
+    "description": "AI's playstyle"
   },
   "passive": "Passiv",
   "@passive": {
@@ -882,7 +882,7 @@
   },
   "drawOnHumanExperience": "Auf menschliche Erfahrung zurückgreifen",
   "@drawOnHumanExperience": {
-    "description": "Draw on human experience"
+    "description": "Draw on the human experience"
   },
   "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
   "@considerMobility": {
@@ -906,7 +906,7 @@
   },
   "notAIsTurn": "Der Computer ist nicht am Zug",
   "@notAIsTurn": {
-    "description": "It is not AI's turn."
+    "description": "It is not the AI's turn."
   },
   "aiIsNotThinking": "Computer denkt nicht.",
   "@aiIsNotThinking": {
@@ -914,11 +914,11 @@
   },
   "autoReplay": "Spielzüge automatisch wiederholen",
   "@autoReplay": {
-    "description": "Auto replay moves"
+    "description": "Auto re-play moves"
   },
   "atEnd": "Am Ende der Spielzugliste",
   "@atEnd": {
-    "description": "At the end of move list."
+    "description": "At the end of the move list."
   },
   "tapBackAgainToLeave": "Nochmal drücken um zu Beenden.",
   "@tapBackAgainToLeave": {
@@ -934,10 +934,10 @@
   },
   "experimental": "Dies ist eine experimentelle Funktion.",
   "@experimental": {
-    "description": "Dies ist eine experimentelle Funktion."
+    "description": "This is an experimental feature."
   },
   "experiments": "Experimente",
   "@experiments": {
-    "description": "Experimente"
+    "description": "Experiments"
   }
 }

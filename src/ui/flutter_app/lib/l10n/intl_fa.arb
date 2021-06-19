@@ -2,7 +2,7 @@
   "@@locale": "fa",
   "appName": "دوز",
   "@appName": {
-    "description": "The App name"
+    "description": "The app name"
   },
   "welcome": "داوطلبان برای کمک به اصلاح مشکلات ترجمه خوش آمدید",
   "@welcome": {
@@ -82,7 +82,7 @@
   },
   "tipSelectWrong": "قطعه اشتباه را انتخاب کنید.",
   "@tipSelectWrong": {
-    "description": "Select wrong piece."
+    "description": "Select the wrong piece."
   },
   "tipPlace": "قطعات خود را قرار دهید.",
   "@tipPlace": {
@@ -90,7 +90,7 @@
   },
   "tipBanPlace": "نمی توان در اینجا قرار داد.",
   "@tipBanPlace": {
-    "description": "Cannot place here."
+    "description": "Cannot place it here."
   },
   "tipPlaced": "قرار داده شده.",
   "@tipPlaced": {
@@ -134,7 +134,7 @@
   },
   "tipCannotRemovePieceFromMill": "نمی توانید قطعه ای را از آسیاب بردارید.",
   "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a Mill."
+    "description": "You cannot remove a piece from a mill."
   },
   "tipCanMoveOnePoint": "مهره را در فضای خالی مجاور قرار دهید.",
   "@tipCanMoveOnePoint": {
@@ -166,11 +166,11 @@
   },
   "whiteWin": "بازیکن 1 برنده!",
   "@whiteWin": {
-    "description": "Player 1 win!"
+    "description": "Player 1 wins!"
   },
   "blackWin": "بازیکن 2 برنده!",
   "@blackWin": {
-    "description": "Player 2 win!"
+    "description": "Player 2 wins!"
   },
   "won": "برنده شد",
   "@won": {
@@ -206,7 +206,7 @@
   },
   "gameImported": "بازی از کلیپ بورد وارد شده است.",
   "@gameImported": {
-    "description": "Game imported from clipboard."
+    "description": "Game imported from the clipboard."
   },
   "cannotImport": "وارد کردن امکان پذیر نیست",
   "@cannotImport": {
@@ -242,7 +242,7 @@
   },
   "restartGame": "بازی فعلی را دوباره راه اندازی کنید؟",
   "@restartGame": {
-    "description": "Restart current Game?"
+    "description": "Restart current game?"
   },
   "restart": "راه اندازی مجدد",
   "@restart": {
@@ -298,7 +298,7 @@
   },
   "drawReasonRule50": "در مرحله متحرک ، هیچ قطعه ای در آخرین تعداد حرکت خاص حذف نشده است.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
   "drawReasonBoardIsFull": "این مساوی است.چون تخته پر است.",
   "@drawReasonBoardIsFull": {
@@ -306,7 +306,7 @@
   },
   "drawReasonThreefoldRepetition": "این یک قرعه کشی است ، زیرا تکرار سه برابر است.",
   "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw, because threefold repetition."
+    "description": "It is a Draw because of threefold repetition."
   },
   "gameOverUnknownReason": "بازی تمام شد! دلیل نامعلوم.",
   "@gameOverUnknownReason": {
@@ -406,7 +406,7 @@
   },
   "isAutoRestart": "وقتی بازی تمام شد بازی را دوباره راه اندازی کنید",
   "@isAutoRestart": {
-    "description": "Auto restart game when game over"
+    "description": "Auto-restart game when game over"
   },
   "isAutoChangeFirstMove": "تغییر خودکار حرکت اول",
   "@isAutoChangeFirstMove": {
@@ -446,11 +446,11 @@
   },
   "flyPieceCount": "تعداد قطعه پرواز",
   "@flyPieceCount": {
-    "description": "The number of flying piece"
+    "description": "The number of the flying piece"
   },
   "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که یک بازیکن به تعداد قطعه های خاص کاهش می یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، مانند سایر قسمت های بازی ، به هر نقطه اشغال نشده منتقل می شوند.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pieces At Least",
   "@piecesAtLeastCount": {
@@ -470,7 +470,7 @@
   },
   "hasBannedLocations_Detail": "در مرحله قرار دادن ، نقاط قطعات برداشته شده دیگر قادر به قرار دادن نخواهند بود.",
   "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to place unless moving phase is entered."
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
   "isDefenderMoveFirst": "بازیکن دوم ابتدا حرکت می کند",
   "@isDefenderMoveFirst": {
@@ -486,7 +486,7 @@
   },
   "mayRemoveMultiple_Detail": "اگر یک بازیکن یک باره بیش از یک آسیاب را ببندد ، می تواند تعداد آسیاب هایی را که بسته است از بین ببرد.",
   "@mayRemoveMultiple_Detail": {
-    "description": "If a player close more than one mill at once, she will be able to remove the number of mills she closed."
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
   "mayRemoveFromMillsAlways": "آسیاب ها را نابود کنید",
   "@mayRemoveFromMillsAlways": {
@@ -526,7 +526,7 @@
   },
   "maxStepsLedToDraw_Detail": "در صورتی که در تعداد حرکات خاصی از سوی هر بازیکن حذف نشده باشد ، بازی قرعه کشی می شود.",
   "@maxStepsLedToDraw_Detail": {
-    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "بازگشت به عقب",
   "@rollback": {
@@ -578,7 +578,7 @@
   },
   "lineColor": "رنگ خط تخته",
   "@lineColor": {
-    "description": "Board linecolor"
+    "description": "Board line color"
   },
    "whitePieceColor": "پخش کننده 1 قطعه رنگ",
   "@whitePieceColor": {
@@ -614,7 +614,7 @@
   },
   "boardBorderLineWidth": "عرض خط مرزی تخته",
   "@boardBorderLineWidth": {
-    "description": "Board border line width"
+    "description": "Board borderline width"
   },
   "boardInnerLineWidth": "عرض خط داخلی تخته",
   "@boardInnerLineWidth": {
@@ -642,11 +642,11 @@
   },
   "exitApp": "برنامه بسته خواهد شد",
   "@exitApp": {
-    "description": "The App will exit."
+    "description": "The app will exit."
   },
   "exitAppManually": "شما باید بلافاصله ببندید و برنامه را دوباره باز کنید تا اثر بگذارد.",
   "@exitAppManually": {
-    "description": "You have to close immediately and reopen App to take effect."
+    "description": "You have to close immediately and reopen the app to take effect."
   },
   "pick": "انتخاب",
   "@pick": {
@@ -690,7 +690,7 @@
   },
   "toRemovePiece": "برای برداشتن روی یک تکه حریف ضربه بزنید.",
   "@toRemovePiece": {
-    "description": "Tap on opponent's one piece to remove."
+    "description": "Tap on the opponent's one piece to remove."
   },
   "needToCreateMillFirst": "قبل از اینکه بتوانید قطعه ای را بردارید ، ابتدا باید یک آسیاب ایجاد کنید.",
   "@needToCreateMillFirst": {
@@ -714,7 +714,7 @@
   },
   "cannotRemoveFromMill": "نمی توان از آسیاب حذف کرد.",
   "@cannotRemoveFromMill": {
-    "description": "Cannot remove from mill."
+    "description": "Cannot remove from the mill."
   },
   "left": "ترک کرد",
   "@left": {
@@ -858,7 +858,7 @@
   },
   "aisPlayStyle": "سبک بازی کامپیوتر",
   "@aisPlayStyle": {
-    "description": "AI's play style"
+    "description": "AI's playstyle"
   },
   "passive": "منفعل",
   "@passive": {
@@ -882,7 +882,7 @@
   },
   "drawOnHumanExperience": "از تجربه بشر استفاده کنید",
   "@drawOnHumanExperience": {
-    "description": "Draw on human experience"
+    "description": "Draw on the human experience"
   },
   "considerMobility": "تحرک قطعات را در نظر بگیرید",
   "@considerMobility": {
@@ -906,7 +906,7 @@
   },
   "notAIsTurn": "نوبت به کامپیوتر نمی رسد.",
   "@notAIsTurn": {
-    "description": "It is not AI's turn."
+    "description": "It is not the AI's turn."
   },
   "aiIsNotThinking": "کامپیوتر فکر نمی کند.",
   "@aiIsNotThinking": {
@@ -914,11 +914,11 @@
   },
   "autoReplay": "پخش خودکار حرکت می کند",
   "@autoReplay": {
-    "description": "Auto replay moves"
+    "description": "Auto re-play moves"
   },
   "atEnd": "در پایین لیست تاریخچه.",
   "@atEnd": {
-    "description": "At the end of move list."
+    "description": "At the end of the move list."
   },
   "tapBackAgainToLeave": "برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.",
   "@tapBackAgainToLeave": {

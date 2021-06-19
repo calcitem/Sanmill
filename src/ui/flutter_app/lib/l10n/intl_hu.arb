@@ -2,7 +2,7 @@
   "@@locale": "hu",
   "appName": "Malom",
   "@appName": {
-    "description": "The App name"
+    "description": "The app name"
   },
   "welcome": "Üdvözöljük",
   "@welcome": {
@@ -82,7 +82,7 @@
   },
   "tipSelectWrong": "Válasszon korongot.",
   "@tipSelectWrong": {
-    "description": "Select wrong piece."
+    "description": "Select the wrong piece."
   },
   "tipPlace": "Rakjon le korongot.",
   "@tipPlace": {
@@ -90,7 +90,7 @@
   },
   "tipBanPlace": "Nem rakható ide.",
   "@tipBanPlace": {
-    "description": "Cannot place here."
+    "description": "Cannot place it here."
   },
   "tipPlaced": "Lerakva.",
   "@tipPlaced": {
@@ -134,7 +134,7 @@
   },
   "tipCannotRemovePieceFromMill": "Malomból nem lehet korongot levenni.",
   "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a Mill."
+    "description": "You cannot remove a piece from a mill."
   },
   "tipCanMoveOnePoint": "Egy korong vonal mentén csakis a következő mezőre léphet.",
   "@tipCanMoveOnePoint": {
@@ -166,11 +166,11 @@
   },
   "whiteWin": "1-es játékos nyer!",
   "@whiteWin": {
-    "description": "Player 1 win!"
+    "description": "Player 1 wins!"
   },
   "blackWin": "2-es játékos nyer!",
   "@blackWin": {
-    "description": "Player 2 win!"
+    "description": "Player 2 wins!"
   },
   "won": "Nyer",
   "@won": {
@@ -206,7 +206,7 @@
   },
   "gameImported": "Játék vágólapról importálva.",
   "@gameImported": {
-    "description": "Game imported from clipboard."
+    "description": "Game imported from the clipboard."
   },
   "cannotImport": "Nem lehet importálni",
   "@cannotImport": {
@@ -242,7 +242,7 @@
   },
   "restartGame": "Indítsa újra az aktuális játékot?",
   "@restartGame": {
-    "description": "Restart current Game?"
+    "description": "Restart current game?"
   },
   "restart": "Újraindítás",
   "@restart": {
@@ -298,7 +298,7 @@
   },
   "drawReasonRule50": "A léphető fázisban az utolsó N lépés során egyetlen darabot sem távolítottak el.",
   "@drawReasonRule50": {
-    "description": "In moving phase, no piece has been removed in the last specific number of  moves."
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
   "drawReasonBoardIsFull": "Ez egy döntetlen, mert a tábla megtelt",
   "@drawReasonBoardIsFull": {
@@ -306,7 +306,7 @@
   },
   "drawReasonThreefoldRepetition": "Ez egy döntetlen a háromszoros ismétlés miatt.",
   "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw, because threefold repetition."
+    "description": "It is a Draw because of threefold repetition."
   },
   "gameOverUnknownReason": "Játék vége! Ismeretlen ok.",
   "@gameOverUnknownReason": {
@@ -406,7 +406,7 @@
   },
   "isAutoRestart": "Automatikus újraindítás, játék végén",
   "@isAutoRestart": {
-    "description": "Auto restart game when game over"
+    "description": "Auto-restart game when game over"
   },
   "isAutoChangeFirstMove": "Automatikus váltás első lépés után",
   "@isAutoChangeFirstMove": {
@@ -446,11 +446,11 @@
   },
   "flyPieceCount": "Az ugrálható korongok száma",
   "@flyPieceCount": {
-    "description": "The number of flying piece"
+    "description": "The number of the flying piece"
   },
   "flyPieceCount_Detail": "Az ugrálás bármely szabad mezőre akkor engedélyezett, ha egy játékos korongjainak száma előre meghatározott értékre csökkentek.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Korongok legalábbis",
   "@piecesAtLeastCount": {
@@ -470,7 +470,7 @@
   },
   "hasBannedLocations_Detail": "A felrakási szakaszban az eltávolított korongok nem helyezhetők vissza a táblára.",
   "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to place unless moving phase is entered."
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
   "isDefenderMoveFirst": "A második játékos lép először",
   "@isDefenderMoveFirst": {
@@ -486,7 +486,7 @@
   },
   "mayRemoveMultiple_Detail": "Ha egy játékos minden lépésével malmot alakít ki (Csukogatás, csikicsuki), akkor eltávolíthatja ellenfelétől a bezárt malmai számával megegyező korongot.",
   "@mayRemoveMultiple_Detail": {
-    "description": "If a player close more than one mill at once, she will be able to remove the number of mills she closed."
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
   "mayRemoveFromMillsAlways": "Pusztítsd a malmokat",
   "@mayRemoveFromMillsAlways": {
@@ -526,7 +526,7 @@
   },
   "maxStepsLedToDraw_Detail": "A játék sorsolásra kerül, ha az egyes játékosok nem hajtottak végre bizonyos számú mozdulatot.",
   "@maxStepsLedToDraw_Detail": {
-    "description": "The game is drawn if there has been no remove in a specific number of moves by each player."
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "Visszagörgetés",
   "@rollback": {
@@ -578,7 +578,7 @@
   },
   "lineColor": "Tábla vonalszíne",
   "@lineColor": {
-    "description": "Board linecolor"
+    "description": "Board line color"
   },
    "whitePieceColor": "1-es játékos korongszíne",
   "@whitePieceColor": {
@@ -614,7 +614,7 @@
   },
   "boardBorderLineWidth": "A tábla határvonalának szélessége",
   "@boardBorderLineWidth": {
-    "description": "Board border line width"
+    "description": "Board borderline width"
   },
   "boardInnerLineWidth": "A tábla belső vonalának szélessége",
   "@boardInnerLineWidth": {
@@ -642,11 +642,11 @@
   },
   "exitApp": "Az alkalmazás kilép.",
   "@exitApp": {
-    "description": "The App will exit."
+    "description": "The app will exit."
   },
   "exitAppManually": "Azonnali bezárás után újra meg kell nyitnia az alkalmazást.",
   "@exitAppManually": {
-    "description": "You have to close immediately and reopen App to take effect."
+    "description": "You have to close immediately and reopen the app to take effect."
   },
   "pick": "Szed",
   "@pick": {
@@ -690,7 +690,7 @@
   },
   "toRemovePiece": "Eltávolítás végett érintse meg az ellenfél egy korongját.",
   "@toRemovePiece": {
-    "description": "Tap on opponent's one piece to remove."
+    "description": "Tap on the opponent's one piece to remove."
   },
   "needToCreateMillFirst": "Malmot kell alkotnia, mielőtt eltávolíthatna egy korongot.",
   "@needToCreateMillFirst": {
@@ -714,7 +714,7 @@
   },
   "cannotRemoveFromMill": "Nem lehet eltávolítani a malomból.",
   "@cannotRemoveFromMill": {
-    "description": "Cannot remove from mill."
+    "description": "Cannot remove from the mill."
   },
   "left": "bal",
   "@left": {
@@ -858,7 +858,7 @@
   },
   "aisPlayStyle": "Ai játékstílusa",
   "@aisPlayStyle": {
-    "description": "AI's play style"
+    "description": "AI's playstyle"
   },
   "passive": "Passzív",
   "@passive": {
@@ -882,7 +882,7 @@
   },
   "drawOnHumanExperience": "Használja a személyes tapasztalatokat",
   "@drawOnHumanExperience": {
-    "description": "Draw on human experience"
+    "description": "Draw on the human experience"
   },
   "considerMobility": "Fontolja meg a korongok mobilitását",
   "@considerMobility": {
@@ -906,7 +906,7 @@
   },
   "notAIsTurn": "Nem Ai van soron",
   "@notAIsTurn": {
-    "description": "It is not AI's turn."
+    "description": "It is not the AI's turn."
   },
   "aiIsNotThinking": "Az AI nem gondolkodik.",
   "@aiIsNotThinking": {
@@ -914,11 +914,11 @@
   },
   "autoReplay": "A lépegetés automatikus visszajátszása",
   "@autoReplay": {
-    "description": "Auto replay moves"
+    "description": "Auto re-play moves"
   },
   "atEnd": "A lépegetés lista végén.",
   "@atEnd": {
-    "description": "At the end of move list."
+    "description": "At the end of the move list."
   },
   "tapBackAgainToLeave": "Koppintson újra a távozáshoz.",
   "@tapBackAgainToLeave": {
