@@ -133,7 +133,7 @@ class GameRecorder {
       return true;
     }
 
-    if (text[0] == '[') {
+    if (text.length > 0 && text[0] == '[') {
       return true;
     }
 
