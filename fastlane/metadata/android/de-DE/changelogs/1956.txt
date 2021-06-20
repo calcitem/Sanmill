@@ -1,0 +1,4 @@
+v1.1.2
+
+* Fügen Sie maschinelle Übersetzung in die rumänische Sprache hinzu.
+* Stabilität des Imports/Exports verbessern.
