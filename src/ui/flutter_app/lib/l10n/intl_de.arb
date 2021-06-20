@@ -520,9 +520,9 @@
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "maxStepsLedToDraw": "Maximale Schritte bis unentschieden",
+  "maxStepsLedToDraw": "50-Züge-Regel",
   "@maxStepsLedToDraw": {
-    "description": "Max Steps Led to Draw"
+    "description": "N-move rule"
   },
   "maxStepsLedToDraw_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
   "@maxStepsLedToDraw_Detail": {

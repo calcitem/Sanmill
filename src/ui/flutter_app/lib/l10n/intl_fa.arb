@@ -520,9 +520,9 @@
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "maxStepsLedToDraw": "مراحل حداکثر منجر به قرعه کشی",
+  "maxStepsLedToDraw": "قانون N حرکت",
   "@maxStepsLedToDraw": {
-    "description": "Max Steps Led to Draw"
+    "description": "N-move rule"
   },
   "maxStepsLedToDraw_Detail": "در صورتی که در تعداد حرکات خاصی از سوی هر بازیکن حذف نشده باشد ، بازی قرعه کشی می شود.",
   "@maxStepsLedToDraw_Detail": {
