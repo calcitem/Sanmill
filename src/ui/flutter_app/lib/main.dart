@@ -141,6 +141,9 @@ class _SanmillAppState extends State<SanmillApp> {
           languageCode: 'hu',
         ),
         const Locale.fromSubtags(
+          languageCode: 'ro',
+        ),
+        const Locale.fromSubtags(
           languageCode: 'zh',
         ),
         const Locale.fromSubtags(

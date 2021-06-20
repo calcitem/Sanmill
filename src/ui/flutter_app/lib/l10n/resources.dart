@@ -42,6 +42,12 @@ class HungarianStrings extends Strings {
       'A kilépéshez kattintson ismételten a Vissza gombra.';
 }
 
+/// Romanian strings
+class RomanianStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => 'Atingeți din nou pentru a pleca.';
+}
+
 /// Chinese strings
 class ChineseStrings extends Strings {
   @override
@@ -65,6 +71,8 @@ class Resources {
         return GermanStrings();
       case 'hu':
         return HungarianStrings();
+      case 'ro':
+        return RomanianStrings();
       case 'zh':
         return ChineseStrings();
       case 'fa':
