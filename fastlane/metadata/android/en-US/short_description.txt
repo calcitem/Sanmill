@@ -1,1 +1,1 @@
-A Mill Game which supports many rule variants
+A Mill Game which supports many rule variants, written in Flutter.
