@@ -147,9 +147,9 @@ void on_mayFly(const Option &o)
     rule.mayFly = (bool)o;
 }
 
-void on_maxStepsLedToDraw(const Option &o)
+void on_nMoveRule(const Option &o)
 {
-    rule.maxStepsLedToDraw = (size_t)o;
+    rule.nMoveRule = (size_t)o;
 }
 
 /// Our case insensitive less() function as required by UCI protocol
@@ -202,7 +202,7 @@ void init(OptionsMap &o)
     o["IsWhiteLoseButNotDrawWhenBoardFull"] << Option(true, on_isWhiteLoseButNotDrawWhenBoardFull);
     o["IsLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["MayFly"] << Option(true, on_mayFly);
-    o["MaxStepsLedToDraw"] << Option(100, 10, 200, on_maxStepsLedToDraw);
+    o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
 }
 
 

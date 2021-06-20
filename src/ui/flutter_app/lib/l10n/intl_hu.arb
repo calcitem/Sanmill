@@ -520,12 +520,12 @@
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "maxStepsLedToDraw": "N lépéses szabály",
-  "@maxStepsLedToDraw": {
+  "nMoveRule": "N lépéses szabály",
+  "@nMoveRule": {
     "description": "N-move rule"
   },
-  "maxStepsLedToDraw_Detail": "A játék sorsolásra kerül, ha az egyes játékosok nem hajtottak végre bizonyos számú mozdulatot.",
-  "@maxStepsLedToDraw_Detail": {
+  "nMoveRule_Detail": "A játék sorsolásra kerül, ha az egyes játékosok nem hajtottak végre bizonyos számú mozdulatot.",
+  "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "Visszagörgetés",

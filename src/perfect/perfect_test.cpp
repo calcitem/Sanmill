@@ -100,7 +100,7 @@ int perfect_main(void)
 
 #ifdef SELF_PLAY
             moveCount++;
-            if (moveCount > rule.maxStepsLedToDraw) {
+            if (moveCount > rule.nMoveRule) {
                 goto out;
             }
 #endif // SELF_PLAY

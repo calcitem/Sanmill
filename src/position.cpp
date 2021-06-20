@@ -582,7 +582,7 @@ bool Position::reset()
     }
 
     if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03zu t%02d",
-                r + 1, rule.maxStepsLedToDraw, 0) > 0) {
+                r + 1, rule.nMoveRule, 0) > 0) {
         return true;
     }
 
@@ -986,8 +986,8 @@ bool Position::check_if_game_is_over()
     }
 
 #ifdef RULE_50
-    if (rule.maxStepsLedToDraw > 0 &&
-        posKeyHistory.size() > rule.maxStepsLedToDraw) {
+    if (rule.nMoveRule > 0 &&
+        posKeyHistory.size() > rule.nMoveRule) {
         set_gameover(DRAW, GameOverReason::drawReasonRule50);
         return true;
     }

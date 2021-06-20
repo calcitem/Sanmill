@@ -78,10 +78,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ListItemDivider(),
           SettingsListTile(
             context: context,
-            titleString: S.of(context).maxStepsLedToDraw,
-            subtitleString: S.of(context).maxStepsLedToDraw_Detail,
-            trailingString: Config.maxStepsLedToDraw.toString(),
-            onTap: setMaxStepsLedToDraw,
+            titleString: S.of(context).nMoveRule,
+            subtitleString: S.of(context).nMoveRule_Detail,
+            trailingString: Config.nMoveRule.toString(),
+            onTap: setNMoveRule,
           ),
           ListItemDivider(),
         ],
@@ -239,18 +239,17 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     );
   }
 
-  setMaxStepsLedToDraw() {
-    callback(int? maxStepsLedToDraw) async {
-      print("[config] maxStepsLedToDraw = $maxStepsLedToDraw");
+  setNMoveRule() {
+    callback(int? nMoveRule) async {
+      print("[config] nMoveRule = $nMoveRule");
 
       Navigator.of(context).pop();
 
       setState(() {
-        rule.maxStepsLedToDraw =
-            Config.maxStepsLedToDraw = maxStepsLedToDraw ?? 100;
+        rule.nMoveRule = Config.nMoveRule = nMoveRule ?? 100;
       });
 
-      print("[config] rule.maxStepsLedToDraw: ${rule.maxStepsLedToDraw}");
+      print("[config] rule.nMoveRule: ${rule.nMoveRule}");
 
       Config.save();
     }
@@ -263,7 +262,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
             title: Text('30'),
-            groupValue: Config.maxStepsLedToDraw,
+            groupValue: Config.nMoveRule,
             value: 30,
             onChanged: callback,
           ),
@@ -271,7 +270,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
             title: Text('50'),
-            groupValue: Config.maxStepsLedToDraw,
+            groupValue: Config.nMoveRule,
             value: 50,
             onChanged: callback,
           ),
@@ -279,7 +278,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
             title: Text('100'),
-            groupValue: Config.maxStepsLedToDraw,
+            groupValue: Config.nMoveRule,
             value: 100,
             onChanged: callback,
           ),
@@ -287,7 +286,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
             title: Text('200'),
-            groupValue: Config.maxStepsLedToDraw,
+            groupValue: Config.nMoveRule,
             value: 200,
             onChanged: callback,
           ),

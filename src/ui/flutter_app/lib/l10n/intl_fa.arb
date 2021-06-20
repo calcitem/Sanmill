@@ -520,12 +520,12 @@
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "maxStepsLedToDraw": "قانون N حرکت",
-  "@maxStepsLedToDraw": {
+  "nMoveRule": "قانون N حرکت",
+  "@nMoveRule": {
     "description": "N-move rule"
   },
-  "maxStepsLedToDraw_Detail": "در صورتی که در تعداد حرکات خاصی از سوی هر بازیکن حذف نشده باشد ، بازی قرعه کشی می شود.",
-  "@maxStepsLedToDraw_Detail": {
+  "nMoveRule_Detail": "در صورتی که در تعداد حرکات خاصی از سوی هر بازیکن حذف نشده باشد ، بازی قرعه کشی می شود.",
+  "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "بازگشت به عقب",

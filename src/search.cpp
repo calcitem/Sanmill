@@ -97,7 +97,7 @@ int Thread::search()
 
     if (rootPos->get_phase() == Phase::moving) {
 #ifdef RULE_50
-        if (posKeyHistory.size() > rule.maxStepsLedToDraw) {
+        if (posKeyHistory.size() > rule.nMoveRule) {
             return 50;
         }
 #endif // RULE_50
@@ -219,7 +219,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     Depth epsilon;
 
 #ifdef RULE_50
-    if (pos->rule50_count() > rule.maxStepsLedToDraw) {
+    if (pos->rule50_count() > rule.nMoveRule) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;

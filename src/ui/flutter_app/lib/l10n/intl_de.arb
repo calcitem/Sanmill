@@ -520,12 +520,12 @@
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "maxStepsLedToDraw": "50-Züge-Regel",
-  "@maxStepsLedToDraw": {
+  "nMoveRule": "N-Züge-Regel",
+  "@nMoveRule": {
     "description": "N-move rule"
   },
-  "maxStepsLedToDraw_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
-  "@maxStepsLedToDraw_Detail": {
+  "nMoveRule_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
+  "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "Rollback",

@@ -165,8 +165,7 @@ class NativeEngine extends Engine {
     await send(
         'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
     await send('setoption name MayFly value ${Config.mayFly}');
-    await send(
-        'setoption name MaxStepsLedToDraw value ${Config.maxStepsLedToDraw}');
+    await send('setoption name NMoveRule value ${Config.nMoveRule}');
   }
 
   String getPositionFen(Position position) {

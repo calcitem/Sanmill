@@ -520,12 +520,12 @@
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "maxStepsLedToDraw": "N-move rule",
-  "@maxStepsLedToDraw": {
+  "nMoveRule": "N-move rule",
+  "@nMoveRule": {
     "description": "N-move rule"
   },
-  "maxStepsLedToDraw_Detail": "The game is drawn if there has been no removal in a specific number of moves by each player.",
-  "@maxStepsLedToDraw_Detail": {
+  "nMoveRule_Detail": "The game is drawn if there has been no removal in a specific number of moves by each player.",
+  "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
   "rollback": "Rollback",
