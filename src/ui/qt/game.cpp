@@ -65,7 +65,7 @@ Game::Game(
     timeID(0),
     ruleIndex(-1),
     timeLimit(gameOptions.getMoveTime()),
-    stepsLimit(50)
+    stepsLimit(100)
 {
     // The background has been added to the style sheet of view, but not to scene
     // The difference is that the background in view does not change with the view transformation, 
@@ -369,8 +369,12 @@ void Game::setInvert(bool arg)
     }
 }
 
-void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0*/)
+void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 TODO: Unused */)
 {
+    rule.maxStepsLedToDraw = stepLimited;
+
+    // TODO
+    
     // Update the rule, the original time limit and step limit remain unchanged
     if (ruleNo < 0 || ruleNo >= N_RULES)
         return;

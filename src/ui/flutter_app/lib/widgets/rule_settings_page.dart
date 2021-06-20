@@ -247,7 +247,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
       setState(() {
         rule.maxStepsLedToDraw =
-            Config.maxStepsLedToDraw = maxStepsLedToDraw ?? 50;
+            Config.maxStepsLedToDraw = maxStepsLedToDraw ?? 100;
       });
 
       print("[config] rule.maxStepsLedToDraw: ${rule.maxStepsLedToDraw}");

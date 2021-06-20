@@ -76,7 +76,7 @@ class Config {
   static bool isWhiteLoseButNotDrawWhenBoardFull = true;
   static bool isLoseButNotChangeSideWhenNoWay = true;
   static bool mayFly = true;
-  static int maxStepsLedToDraw = 50;
+  static int maxStepsLedToDraw = 100;
 
   static Future<void> loadSettings() async {
     print("[config] Loading settings...");
@@ -156,7 +156,7 @@ class Config {
             settings['IsLoseButNotChangeSideWhenNoWay'] ?? true;
     rule.mayFly = Config.mayFly = settings['MayFly'] ?? true;
     rule.maxStepsLedToDraw =
-        Config.maxStepsLedToDraw = settings['MaxStepsLedToDraw'] ?? 50;
+        Config.maxStepsLedToDraw = settings['MaxStepsLedToDraw'] ?? 100;
 
     settingsLoaded = true;
     print("[config] Loading settings done!");

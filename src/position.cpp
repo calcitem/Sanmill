@@ -208,7 +208,7 @@ Position &Position::set(const string &fenStr, Thread *th)
 
        6) Halfmove clock. This is the number of halfmoves since the last
           capture. This is used to determine if a draw can be claimed under the
-          fifty-move rule.
+          N-move rule.
 
        7) Fullmove number. The number of the full move. It starts at 1, and is
           incremented after White's move.

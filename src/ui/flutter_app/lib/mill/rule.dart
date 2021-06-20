@@ -30,7 +30,7 @@ class Rule {
   bool isWhiteLoseButNotDrawWhenBoardFull = true;
   bool isLoseButNotChangeSideWhenNoWay = true;
   bool mayFly = true;
-  int maxStepsLedToDraw = 50;
+  int maxStepsLedToDraw = 100;
 }
 
 Rule rule = Rule();

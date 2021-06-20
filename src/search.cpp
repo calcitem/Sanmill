@@ -219,7 +219,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
     Depth epsilon;
 
 #ifdef RULE_50
-    if (pos->rule50_count() > 99) {
+    if (pos->rule50_count() > rule.maxStepsLedToDraw) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;

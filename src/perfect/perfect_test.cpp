@@ -7,6 +7,7 @@
 #include "perfectAI.h"
 #include "perfect.h"
 
+#include "rule.h"
 #include "config.h"
 
 using namespace std;
@@ -99,7 +100,7 @@ int perfect_main(void)
 
 #ifdef SELF_PLAY
             moveCount++;
-            if (moveCount > 99) {
+            if (moveCount > rule.maxStepsLedToDraw) {
                 goto out;
             }
 #endif // SELF_PLAY

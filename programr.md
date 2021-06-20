@@ -66,7 +66,7 @@ The entry point for a search is a routine called `Thread::search()`. This functi
 
 `search()` does some other special processing because it is at the top of the search tree. This function then calls `search()` to recursively process lower-depth nodes.
 
-The first step in search() is to check if the current board position is drawn, due to a 3-fold repetition of moves, or the 50-move rule.
+The first step in search() is to check if the current board position is drawn, due to a 3-fold repetition of moves, or the N-move rule.
 
 Sanmill will also terminate the search immediately if the absolute maximum ply depth is reached. This is quite unlikely.
 
