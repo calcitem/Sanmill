@@ -1,0 +1,3 @@
+v1.1.3
+
+* Make email sender work with Android 11 devices when crashing.

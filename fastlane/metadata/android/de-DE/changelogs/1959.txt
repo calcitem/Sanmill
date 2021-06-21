@@ -1,0 +1,3 @@
+v1.1.3
+
+* Lassen Sie den E-Mail-Sender bei einem Absturz mit Android 11-Geräten funktionieren.
