@@ -351,6 +351,10 @@ class GameRecorder {
   get movesCount => _history.length;
 
   String buildMoveHistoryText({cols = 2}) {
+    if (_history.length == 0) {
+      return '';
+    }
+
     var moveHistoryText = '';
     int k = 1;
     String num = "";
