@@ -234,5 +234,6 @@
   "environmentVariables": "环境变量",
   "more": "更多",
   "experimental": "此仍属实验性功能。",
-  "experiments": "实验性功能"
+  "experiments": "实验性功能",
+  "ossLicenses": "开放源代码许可"
 }

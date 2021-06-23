@@ -939,5 +939,9 @@
   "experiments": "Kísérletek",
   "@experiments": {
     "description": "Experiments"
+  },
+  "ossLicenses": "Nyílt forráskódú licencek",
+  "@ossLicenses": {
+    "description": "Open source licenses"
   }
 }

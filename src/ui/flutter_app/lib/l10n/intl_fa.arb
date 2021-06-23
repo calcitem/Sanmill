@@ -939,5 +939,9 @@
   "experiments": "آزمایش",
   "@experiments": {
     "description": "Experiments"
+  },
+  "ossLicenses": "Open Source Lizenzen",
+  "@ossLicenses": {
+    "description": "مجوزهای منبع آزاد"
   }
 }

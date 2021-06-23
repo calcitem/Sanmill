@@ -11,8 +11,12 @@ cd src/ui/flutter_app || exit
 flutter config --no-analytics
 
 flutter pub get
+
 flutter pub global activate intl_utils
 flutter --no-color pub global run intl_utils:generate
+
+flutter pub run flutter_oss_licenses:generate.dart
+mv lib/oss_licenses.dart lib/generated
 
 mkdir -p $GEN_FILE_PATH || true
 

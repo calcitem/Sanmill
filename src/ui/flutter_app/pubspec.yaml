@@ -29,6 +29,7 @@ dependencies:
   #screen_recorder: ^0.0.2
 
 dev_dependencies:
+  flutter_oss_licenses: ^1.0.1
   flutter_test:
     sdk: flutter
   msix: ^2.1.0

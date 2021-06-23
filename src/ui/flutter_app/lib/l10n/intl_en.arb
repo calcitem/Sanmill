@@ -939,5 +939,9 @@
   "experiments": "Experiments",
   "@experiments": {
     "description": "Experiments"
+  },
+  "ossLicenses": "Open source licenses",
+  "@ossLicenses": {
+    "description": "Open source licenses"
   }
 }

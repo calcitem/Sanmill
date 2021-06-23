@@ -30,6 +30,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'license_page.dart';
 import 'list_item_divider.dart';
+import 'oss_license_page.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -135,7 +136,7 @@ class _AboutPageState extends State<AboutPage> {
       ListItemDivider(),
       SettingsListTile(
         context: context,
-        titleString: S.of(context).thirdPartyNotices,
+        titleString: S.of(context).ossLicenses,
         onTap: () {
           _launchThirdPartyNotices();
         },
@@ -216,6 +217,12 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   _launchThirdPartyNotices() async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OssLicensesPage(),
+        ));
+    /*
     String? locale = "en_US";
 
     if (!Platform.isWindows) {
@@ -230,6 +237,7 @@ class _AboutPageState extends State<AboutPage> {
       _launchURL(
           'https://github.com/calcitem/Sanmill/wiki/third-party_notices');
     }
+    */
   }
 
   _launchPrivacyPolicy() async {
