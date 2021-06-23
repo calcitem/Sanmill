@@ -943,5 +943,13 @@
   "ossLicenses": "Open Source Lizenzen",
   "@ossLicenses": {
     "description": "Open source licenses"
+  },
+  "language": "Sprache",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Standardsprache",
+  "@defaultLanguage": {
+    "description": "Default language"
   }
 }

@@ -26,6 +26,7 @@ dependencies:
   devicelocale: ^0.4.1
   double_back_to_close_app: ^2.0.1
   flutter_picker: ^2.0.1
+  #pref: ^2.3.0
   #screen_recorder: ^0.0.2
 
 dev_dependencies:

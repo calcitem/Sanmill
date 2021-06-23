@@ -1647,24 +1647,34 @@ class _GamePageState extends State<GamePage>
   }
 
   @override
-  void didPush() {
+  void didPush() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPush route: $route');
-    widget.engine.setOptions();
+    await widget.engine.setOptions();
+    if (Config.language != "Default") {
+      S.load(Locale(Config.language));
+      setState(() {});
+    }
   }
 
   @override
-  void didPopNext() {
+  void didPopNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPopNext route: $route');
-    widget.engine.setOptions();
+    await widget.engine.setOptions();
+    if (Config.language != "Default") {
+      S.load(Locale(Config.language));
+    }
   }
 
   @override
-  void didPushNext() {
+  void didPushNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPushNext route: $route');
-    widget.engine.setOptions();
+    await widget.engine.setOptions();
+    if (Config.language != "Default") {
+      S.load(Locale(Config.language));
+    }
   }
 
   @override

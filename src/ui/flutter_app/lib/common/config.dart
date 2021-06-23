@@ -45,6 +45,7 @@ class Config {
   static bool experimentsEnabled = false;
 
   // Display
+  static String language = "Default";
   static bool standardNotationEnabled = true;
   static bool isPieceCountInHandShown = false;
   static bool isNotationsShown = false;
@@ -105,6 +106,7 @@ class Config {
     Config.experimentsEnabled = settings['ExperimentsEnabled'] ?? false;
 
     // Display
+    Config.language = settings['Language'] ?? "Default";
     Config.standardNotationEnabled =
         settings['StandardNotationEnabled'] ?? true;
     Config.isPieceCountInHandShown =
@@ -185,6 +187,7 @@ class Config {
     settings['ExperimentsEnabled'] = Config.experimentsEnabled;
 
     // Display
+    settings['Language'] = Config.language;
     settings['StandardNotationEnabled'] = Config.standardNotationEnabled;
     settings['IsPieceCountInHandShown'] = Config.isPieceCountInHandShown;
     settings['IsNotationsShown'] = Config.isNotationsShown;

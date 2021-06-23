@@ -16,10 +16,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_card.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
@@ -337,6 +340,14 @@ class _PersonalizationSettingsPageState
       SettingsCard(
         context: context,
         children: <Widget>[
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).language,
+            trailingString:
+                Config.language == "Default" ? "" : Config.language.toString(),
+            onTap: setLanguage,
+          ),
+          ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isPieceCountInHandShown,
@@ -453,6 +464,93 @@ class _PersonalizationSettingsPageState
   }
 
   // Display
+
+  setLanguage() async {
+    callback(var lang) async {
+      print("[config] language = $lang");
+
+      Navigator.of(context).pop();
+
+      setState(() {
+        Config.language = lang ?? "Default";
+
+        if (Config.language != "Default") {
+          S.load(Locale(Config.language));
+        } else {
+          S.load(Locale(Platform.localeName.substring(0, 2)));
+        }
+      });
+
+      print("[config] Config.language: ${Config.language}");
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text(S.of(context).defaultLanguage),
+            groupValue: Config.language,
+            value: "Default",
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text(languageMap["de"]!),
+            groupValue: Config.language,
+            value: "de",
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text(languageMap["en"]!),
+            groupValue: Config.language,
+            value: "en",
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text(languageMap["fa"]!),
+            groupValue: Config.language,
+            value: "fa",
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text(languageMap["hu"]!),
+            groupValue: Config.language,
+            value: "hu",
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text(languageMap["ro"]!),
+            groupValue: Config.language,
+            value: "ro",
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+          RadioListTile(
+            activeColor: AppTheme.switchListTileActiveColor,
+            title: Text(languageMap["zh"]!),
+            groupValue: Config.language,
+            value: "zh",
+            onChanged: callback,
+          ),
+          ListItemDivider(),
+        ],
+      ),
+    );
+  }
 
   setIsPieceCountInHandShown(bool value) async {
     setState(() {

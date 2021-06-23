@@ -943,5 +943,13 @@
   "ossLicenses": "Nyílt forráskódú licencek",
   "@ossLicenses": {
     "description": "Open source licenses"
+  },
+  "language": "Nyelv",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Alapértelmezett nyelv",
+  "@defaultLanguage": {
+    "description": "Default language"
   }
 }

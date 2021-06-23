@@ -505,6 +505,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   // Display
 
+  setLanguage(String value) async {
+    setState(() {
+      Config.language = value;
+    });
+
+    print("[config] language: $value");
+
+    Config.save();
+  }
+
   setIsPieceCountInHandShown(bool value) async {
     setState(() {
       Config.isPieceCountInHandShown = value;

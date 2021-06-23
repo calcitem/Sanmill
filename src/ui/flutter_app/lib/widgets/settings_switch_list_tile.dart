@@ -31,7 +31,7 @@ class SettingsSwitchListTile extends StatelessWidget {
   }) : super(key: key);
 
   final BuildContext context;
-  final bool value;
+  final value;
   final String titleString;
   final String? subtitleString;
   final onChanged;

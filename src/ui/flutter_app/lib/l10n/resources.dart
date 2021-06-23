@@ -18,6 +18,15 @@
 
 import 'dart:io';
 
+Map<String, String> languageMap = {
+  "de": "Deutsch",
+  "en": "English",
+  "fa": "فارسی",
+  "hu": "Magyar",
+  "ro": "Română",
+  "zh": "简体中文",
+};
+
 /// Interface strings
 abstract class Strings {
   String get tapBackAgainToLeave;
