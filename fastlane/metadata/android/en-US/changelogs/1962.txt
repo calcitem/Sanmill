@@ -1,0 +1,3 @@
+v1.1.4
+
+* Support setting languages to English, German, Persian, Hungarian, Romanian, and Chinese.

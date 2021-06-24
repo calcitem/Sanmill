@@ -1,0 +1,3 @@
+v1.1.4
+
+* Unterstützt die Einstellung von Sprachen auf Englisch, Deutsch, Persisch, Ungarisch, Rumänisch und Chinesisch.
