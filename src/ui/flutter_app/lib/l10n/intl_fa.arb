@@ -940,9 +940,9 @@
   "@experiments": {
     "description": "Experiments"
   },
-  "ossLicenses": "Open Source Lizenzen",
+  "ossLicenses": "مجوزهای منبع آزاد",
   "@ossLicenses": {
-    "description": "مجوزهای منبع آزاد"
+    "description": "Open source licenses"
   },
   "language": "زبان",
   "@language": {
