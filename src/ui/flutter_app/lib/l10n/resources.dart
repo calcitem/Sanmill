@@ -24,6 +24,9 @@ import 'package:sanmill/common/config.dart';
 final supportedLocales = [
   const Locale('en', ''),
   const Locale.fromSubtags(
+    languageCode: 'cs',
+  ),
+  const Locale.fromSubtags(
     languageCode: 'de',
   ),
   const Locale.fromSubtags(
@@ -41,6 +44,7 @@ final supportedLocales = [
 ];
 
 Map<String, String> languageCodeToName = {
+  "cs": "Čeština",
   "de": "Deutsch",
   "en": "English",
   "fa": "فارسی",
@@ -50,6 +54,7 @@ Map<String, String> languageCodeToName = {
 };
 
 Map<String, Strings> languageCodeToStrings = {
+  "cs": CzechStrings(),
   "de": GermanStrings(),
   "en": EnglishStrings(),
   "fa": FarsiStrings(),
@@ -61,6 +66,12 @@ Map<String, Strings> languageCodeToStrings = {
 /// Interface strings
 abstract class Strings {
   String get tapBackAgainToLeave;
+}
+
+/// cs
+class CzechStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => 'Opětovným klepnutím zpět odejdete.';
 }
 
 /// de
