@@ -507,10 +507,10 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   setLanguage(String value) async {
     setState(() {
-      Config.language = value;
+      Config.languageCode = value;
     });
 
-    print("[config] language: $value");
+    print("[config] languageCode: $value");
 
     Config.save();
   }

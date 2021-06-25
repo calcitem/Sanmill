@@ -16,8 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
@@ -343,8 +341,9 @@ class _PersonalizationSettingsPageState
           SettingsListTile(
             context: context,
             titleString: S.of(context).language,
-            trailingString:
-                Config.language == "Default" ? "" : Config.language.toString(),
+            trailingString: Config.languageCode == "Default"
+                ? ""
+                : Config.languageCode.toString(),
             onTap: setLanguage,
           ),
           ListItemDivider(),
@@ -466,22 +465,17 @@ class _PersonalizationSettingsPageState
   // Display
 
   setLanguage() async {
-    callback(var lang) async {
-      print("[config] language = $lang");
+    callback(var langCode) async {
+      print("[config] languageCode = $langCode");
 
       Navigator.of(context).pop();
 
       setState(() {
-        Config.language = lang ?? "Default";
-
-        if (Config.language != "Default") {
-          S.load(Locale(Config.language));
-        } else {
-          S.load(Locale(Platform.localeName.substring(0, 2)));
-        }
+        Config.languageCode = langCode ?? "Default";
+        S.load(Locale(Resources.of().languageCode));
       });
 
-      print("[config] Config.language: ${Config.language}");
+      print("[config] Config.languageCode: ${Config.languageCode}");
 
       Config.save();
     }
@@ -494,55 +488,55 @@ class _PersonalizationSettingsPageState
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
             title: Text(S.of(context).defaultLanguage),
-            groupValue: Config.language,
+            groupValue: Config.languageCode,
             value: "Default",
             onChanged: callback,
           ),
           ListItemDivider(),
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
-            title: Text(languageMap["de"]!),
-            groupValue: Config.language,
+            title: Text(languageCodeToName["de"]!),
+            groupValue: Config.languageCode,
             value: "de",
             onChanged: callback,
           ),
           ListItemDivider(),
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
-            title: Text(languageMap["en"]!),
-            groupValue: Config.language,
+            title: Text(languageCodeToName["en"]!),
+            groupValue: Config.languageCode,
             value: "en",
             onChanged: callback,
           ),
           ListItemDivider(),
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
-            title: Text(languageMap["fa"]!),
-            groupValue: Config.language,
+            title: Text(languageCodeToName["fa"]!),
+            groupValue: Config.languageCode,
             value: "fa",
             onChanged: callback,
           ),
           ListItemDivider(),
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
-            title: Text(languageMap["hu"]!),
-            groupValue: Config.language,
+            title: Text(languageCodeToName["hu"]!),
+            groupValue: Config.languageCode,
             value: "hu",
             onChanged: callback,
           ),
           ListItemDivider(),
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
-            title: Text(languageMap["ro"]!),
-            groupValue: Config.language,
+            title: Text(languageCodeToName["ro"]!),
+            groupValue: Config.languageCode,
             value: "ro",
             onChanged: callback,
           ),
           ListItemDivider(),
           RadioListTile(
             activeColor: AppTheme.switchListTileActiveColor,
-            title: Text(languageMap["zh"]!),
-            groupValue: Config.language,
+            title: Text(languageCodeToName["zh"]!),
+            groupValue: Config.languageCode,
             value: "zh",
             onChanged: callback,
           ),

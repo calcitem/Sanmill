@@ -132,24 +132,7 @@ class _SanmillAppState extends State<SanmillApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('en', ''),
-        const Locale.fromSubtags(
-          languageCode: 'de',
-        ),
-        const Locale.fromSubtags(
-          languageCode: 'hu',
-        ),
-        const Locale.fromSubtags(
-          languageCode: 'ro',
-        ),
-        const Locale.fromSubtags(
-          languageCode: 'zh',
-        ),
-        const Locale.fromSubtags(
-          languageCode: 'fa',
-        ),
-      ],
+      supportedLocales: supportedLocales,
       theme: ThemeData(primarySwatch: AppTheme.appPrimaryColor),
       debugShowCheckedModeBanner: false,
       home: Scaffold(

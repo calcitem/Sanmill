@@ -18,7 +18,29 @@
 
 import 'dart:io';
 
-Map<String, String> languageMap = {
+import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
+
+final supportedLocales = [
+  const Locale('en', ''),
+  const Locale.fromSubtags(
+    languageCode: 'de',
+  ),
+  const Locale.fromSubtags(
+    languageCode: 'fa',
+  ),
+  const Locale.fromSubtags(
+    languageCode: 'hu',
+  ),
+  const Locale.fromSubtags(
+    languageCode: 'ro',
+  ),
+  const Locale.fromSubtags(
+    languageCode: 'zh',
+  ),
+];
+
+Map<String, String> languageCodeToName = {
   "de": "Deutsch",
   "en": "English",
   "fa": "فارسی",
@@ -27,68 +49,77 @@ Map<String, String> languageMap = {
   "zh": "简体中文",
 };
 
+Map<String, Strings> languageCodeToStrings = {
+  "de": GermanStrings(),
+  "en": EnglishStrings(),
+  "fa": FarsiStrings(),
+  "hu": HungarianStrings(),
+  "ro": RomanianStrings(),
+  "zh": ChineseStrings(),
+};
+
 /// Interface strings
 abstract class Strings {
   String get tapBackAgainToLeave;
 }
 
-/// English strings
-class EnglishStrings extends Strings {
-  @override
-  String get tapBackAgainToLeave => 'Tap back again to leave.';
-}
-
-/// German strings
+/// de
 class GermanStrings extends Strings {
   @override
   String get tapBackAgainToLeave => 'Nochmal drücken um zu Beenden.';
 }
 
-/// Hungarian strings
-class HungarianStrings extends Strings {
+/// en
+class EnglishStrings extends Strings {
   @override
-  String get tapBackAgainToLeave =>
-      'A kilépéshez kattintson ismételten a Vissza gombra.';
+  String get tapBackAgainToLeave => 'Tap back again to leave.';
 }
 
-/// Romanian strings
-class RomanianStrings extends Strings {
-  @override
-  String get tapBackAgainToLeave => 'Atingeți din nou pentru a pleca.';
-}
-
-/// Chinese strings
-class ChineseStrings extends Strings {
-  @override
-  String get tapBackAgainToLeave => '再次按返回键退出应用';
-}
-
-/// Farsi strings
+/// fa
 class FarsiStrings extends Strings {
   @override
   String get tapBackAgainToLeave =>
       'برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.';
 }
 
+/// hu
+class HungarianStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave =>
+      'A kilépéshez kattintson ismételten a Vissza gombra.';
+}
+
+/// ro
+class RomanianStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => 'Atingeți din nou pentru a pleca.';
+}
+
+/// zh
+class ChineseStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => '再次按返回键退出应用';
+}
+
 class Resources {
   Resources();
 
-  Strings get strings {
-    String deviceLanguage = Platform.localeName.substring(0, 2);
-    switch (deviceLanguage) {
-      case 'de':
-        return GermanStrings();
-      case 'hu':
-        return HungarianStrings();
-      case 'ro':
-        return RomanianStrings();
-      case 'zh':
-        return ChineseStrings();
-      case 'fa':
-        return FarsiStrings();
-      default:
-        return EnglishStrings();
+  String get languageCode {
+    if (Config.languageCode == "Default") {
+      return Platform.localeName.substring(0, 2);
     }
+
+    return Config.languageCode;
+  }
+
+  Strings get strings {
+    Strings? ret = languageCodeToStrings[languageCode];
+
+    if (ret == null) {
+      return EnglishStrings();
+    }
+
+    return ret;
   }
 
   static Resources of() {
