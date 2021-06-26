@@ -18,6 +18,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 
 class LicenseAgreementPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _LicenseAgreementPageState extends State<LicenseAgreementPage> {
 
   Future<void> _loadData() async {
     final _loadedData =
-        await rootBundle.loadString('assets/licenses/GPL-3.0.txt');
+        await rootBundle.loadString(Constants.gplLicenseFilename);
     setState(() {
       _data = _loadedData;
     });

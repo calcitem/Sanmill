@@ -24,6 +24,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -123,13 +124,11 @@ showPrivacyDialog(
 
   print("[about] local = $locale");
   if (locale != null && locale.startsWith("zh_")) {
-    eulaURL = 'https://gitee.com/calcitem/Sanmill/wikis/EULA_zh';
-    privacyPolicyURL =
-        'https://gitee.com/calcitem/Sanmill/wikis/privacy_policy_zh';
+    eulaURL = Constants.giteeEulaURL;
+    privacyPolicyURL = Constants.giteePrivacyPolicyURL;
   } else {
-    eulaURL = 'https://github.com/calcitem/Sanmill/wiki/EULA';
-    privacyPolicyURL =
-        'https://github.com/calcitem/Sanmill/wiki/privacy_policy';
+    eulaURL = Constants.githubEulaURL;
+    privacyPolicyURL = Constants.githubPrivacyPolicyURL;
   }
 
   final ThemeData themeData = Theme.of(context);

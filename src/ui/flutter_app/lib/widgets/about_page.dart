@@ -26,6 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -97,7 +98,7 @@ class _AboutPageState extends State<AboutPage> {
       SettingsListTile(
         context: context,
         titleString: S.of(context).versionInfo,
-        subtitleString: "Sanmill " + "$_version" + " " + mode,
+        subtitleString: Constants.projectName + " $_version" + " " + mode,
         onTap: _showVersionInfo,
       ),
       ListItemDivider(),
@@ -116,8 +117,10 @@ class _AboutPageState extends State<AboutPage> {
 
                 final Email email = Email(
                   body: feedback.text,
-                  subject: "[Mill] Sanmill " + "$_version" + " Feedback",
-                  recipients: ['calcitem@outlook.com'],
+                  subject: Constants.feedbackSubjectPrefix +
+                      "$_version" +
+                      Constants.feedbackSubjectSuffix,
+                  recipients: [Constants.recipients],
                   attachmentPaths: [screenshotFilePath],
                   isHTML: false,
                 );
@@ -209,9 +212,9 @@ class _AboutPageState extends State<AboutPage> {
 
     print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
-      _launchURL('https://gitee.com/calcitem/Sanmill/issues');
+      _launchURL(Constants.giteeIssuesURL);
     } else {
-      _launchURL('https://github.com/calcitem/Sanmill/issues');
+      _launchURL(Constants.githubIssuesURL);
     }
   }
 
@@ -224,9 +227,9 @@ class _AboutPageState extends State<AboutPage> {
 
     print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
-      _launchURL('https://gitee.com/calcitem/Sanmill/wikis/EULA_zh');
+      _launchURL(Constants.giteeEulaURL);
     } else {
-      _launchURL('https://github.com/calcitem/Sanmill/wiki/EULA');
+      _launchURL(Constants.githubEulaURL);
     }
   }
 
@@ -239,9 +242,9 @@ class _AboutPageState extends State<AboutPage> {
 
     print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
-      _launchURL('https://gitee.com/calcitem/Sanmill');
+      _launchURL(Constants.giteeSourceCodeURL);
     } else {
-      _launchURL('https://github.com/calcitem/Sanmill');
+      _launchURL(Constants.githubSourceCodeURL);
     }
   }
 
@@ -260,11 +263,9 @@ class _AboutPageState extends State<AboutPage> {
 
     print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(
-          'https://gitee.com/calcitem/Sanmill/wikis/third-party_notices');
+      _launchURL(Constants.giteeThirdPartyNoticesURL);
     } else {
-      _launchURL(
-          'https://github.com/calcitem/Sanmill/wiki/third-party_notices');
+      _launchURL(Constants.githubThirdPartyNoticesURL);
     }
     */
   }
@@ -278,9 +279,9 @@ class _AboutPageState extends State<AboutPage> {
 
     print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
-      _launchURL('https://gitee.com/calcitem/Sanmill/wikis/privacy_policy_zh');
+      _launchURL(Constants.giteePrivacyPolicyURL);
     } else {
-      _launchURL('https://github.com/calcitem/Sanmill/wiki/privacy_policy');
+      _launchURL(Constants.githubPrivacyPolicyURL);
     }
   }
 
@@ -293,9 +294,9 @@ class _AboutPageState extends State<AboutPage> {
 
     print("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
-      _launchURL('https://gitee.com/calcitem/Sanmill/wikis/thanks');
+      _launchURL(Constants.giteeThanksURL);
     } else {
-      _launchURL('https://github.com/calcitem/Sanmill/wiki/thanks');
+      _launchURL(Constants.githubThanksURL);
     }
   }
 

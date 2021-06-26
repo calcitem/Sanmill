@@ -23,6 +23,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/engine/native_engine.dart';
 import 'package:sanmill/generated/l10n.dart';
@@ -1651,7 +1652,7 @@ class _GamePageState extends State<GamePage>
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPush route: $route');
     await widget.engine.setOptions();
-    if (Config.languageCode != "Default") {
+    if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
       setState(() {});
     }
@@ -1662,7 +1663,7 @@ class _GamePageState extends State<GamePage>
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPopNext route: $route');
     await widget.engine.setOptions();
-    if (Config.languageCode != "Default") {
+    if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
     }
   }
@@ -1672,7 +1673,7 @@ class _GamePageState extends State<GamePage>
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPushNext route: $route');
     await widget.engine.setOptions();
-    if (Config.languageCode != "Default") {
+    if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
     }
   }

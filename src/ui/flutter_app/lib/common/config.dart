@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
 
@@ -45,7 +46,7 @@ class Config {
   static bool experimentsEnabled = false;
 
   // Display
-  static String languageCode = "Default";
+  static String languageCode = Constants.defaultLanguageCodeName;
   static bool standardNotationEnabled = true;
   static bool isPieceCountInHandShown = false;
   static bool isNotationsShown = false;
@@ -106,7 +107,7 @@ class Config {
     Config.experimentsEnabled = settings['ExperimentsEnabled'] ?? false;
 
     // Display
-    Config.languageCode = settings['LanguageCode'] ?? "Default";
+    Config.languageCode = settings['LanguageCode'] ?? Constants.defaultLanguageCodeName;
     Config.standardNotationEnabled =
         settings['StandardNotationEnabled'] ?? true;
     Config.isPieceCountInHandShown =

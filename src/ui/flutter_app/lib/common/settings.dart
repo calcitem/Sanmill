@@ -20,9 +20,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:sanmill/common/constants.dart';
 
 class Settings {
-  static const settingsFileName = 'sanmill_settings.json';
+  static final settingsFileName = Constants.settingsFilename;
   static Settings? _instance;
 
   late File _file;

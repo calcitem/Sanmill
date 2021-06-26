@@ -18,11 +18,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 
 class EnvironmentVariablesPage extends StatefulWidget {
   @override
-  _EnvironmentVariablesPageState createState() => _EnvironmentVariablesPageState();
+  _EnvironmentVariablesPageState createState() =>
+      _EnvironmentVariablesPageState();
 }
 
 class _EnvironmentVariablesPageState extends State<EnvironmentVariablesPage> {
@@ -30,7 +32,7 @@ class _EnvironmentVariablesPageState extends State<EnvironmentVariablesPage> {
 
   Future<void> _loadData() async {
     final _loadedData =
-        await rootBundle.loadString('assets/files/environment_variables.txt');
+        await rootBundle.loadString(Constants.environmentVariablesFilename);
     setState(() {
       _data = _loadedData;
     });
@@ -41,7 +43,8 @@ class _EnvironmentVariablesPageState extends State<EnvironmentVariablesPage> {
     _loadData();
 
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).environmentVariables), centerTitle: true),
+      appBar: AppBar(
+          title: Text(S.of(context).environmentVariables), centerTitle: true),
       body: ListView(
         children: <Widget>[
           Container(

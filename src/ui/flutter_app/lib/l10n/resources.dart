@@ -20,6 +20,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
 
 final supportedLocales = [
   const Locale('en', ''),
@@ -193,7 +194,7 @@ class Resources {
   Resources();
 
   String get languageCode {
-    if (Config.languageCode == "Default") {
+    if (Config.languageCode == Constants.defaultLanguageCodeName) {
       return Platform.localeName.substring(0, 2);
     }
 

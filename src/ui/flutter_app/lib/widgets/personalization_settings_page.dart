@@ -19,6 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -341,7 +342,7 @@ class _PersonalizationSettingsPageState
           SettingsListTile(
             context: context,
             titleString: S.of(context).language,
-            trailingString: Config.languageCode == "Default"
+            trailingString: Config.languageCode == Constants.defaultLanguageCodeName
                 ? ""
                 : Config.languageCode.toString(),
             onTap: setLanguage,
@@ -471,7 +472,7 @@ class _PersonalizationSettingsPageState
       Navigator.of(context).pop();
 
       setState(() {
-        Config.languageCode = langCode ?? "Default";
+        Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;
         S.load(Locale(Resources.of().languageCode));
       });
 
@@ -494,7 +495,7 @@ class _PersonalizationSettingsPageState
                     activeColor: AppTheme.switchListTileActiveColor,
                     title: Text(S.of(context).defaultLanguage),
                     groupValue: Config.languageCode,
-                    value: "Default",
+                    value: Constants.defaultLanguageCodeName,
                     onChanged: callback,
                   ),
                   ListItemDivider(),
