@@ -20,7 +20,7 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Human Vs. AI",
+    "humanVsAi": "Uman Vs. AI",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
@@ -32,11 +32,11 @@
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "Human Vs. Cloud",
+    "humanVsCloud": "Uman Vs. Cloud",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "Human Vs. LAN",
+    "humanVsLAN": "Uman Vs. LAN",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
@@ -652,7 +652,7 @@
     "@pick": {
         "description": "Pick "
     },
-    "info": "Informații",
+    "info": "Info",
     "@info": {
         "description": "Info"
     },
