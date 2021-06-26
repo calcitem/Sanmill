@@ -21,6 +21,7 @@ import 'dart:io';
 
 import 'package:catcher/catcher.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -34,7 +35,11 @@ import 'package:sanmill/widgets/navigation_home_screen.dart';
 import 'services/audios.dart';
 
 Future<void> main() async {
-  var catcher = Catcher(rootWidget: SanmillApp(), ensureInitialized: true);
+  var catcher = Catcher(
+      rootWidget: BetterFeedback(
+        child: SanmillApp(),
+      ),
+      ensureInitialized: true);
 
   String externalDirStr;
   try {

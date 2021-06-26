@@ -17,11 +17,15 @@
 */
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:devicelocale/devicelocale.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -62,6 +66,14 @@ class _AboutPageState extends State<AboutPage> {
     return ret;
   }
 
+  Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
+    final Directory output = await getTemporaryDirectory();
+    final String screenshotFilePath = '${output.path}/sanmill-feedback.png';
+    final File screenshotFile = File(screenshotFilePath);
+    await screenshotFile.writeAsBytes(feedbackScreenshot);
+    return screenshotFilePath;
+  }
+
   @override
   Widget build(BuildContext context) {
     String mode = getMode();
@@ -90,12 +102,29 @@ class _AboutPageState extends State<AboutPage> {
       ),
       ListItemDivider(),
       SettingsListTile(
-        context: context,
-        titleString: S.of(context).feedback,
-        onTap: () {
-          _launchFeedback();
-        },
-      ),
+          context: context,
+          titleString: S.of(context).feedback,
+          onTap: () {
+            if (Platform.isWindows) {
+              // flutter_email_sender does not support Windows.
+              _launchFeedback();
+            } else {
+              BetterFeedback.of(context).show((feedback) async {
+                // draft an email and send to developer
+                final screenshotFilePath =
+                    await writeImageToStorage(feedback.screenshot);
+
+                final Email email = Email(
+                  body: feedback.text,
+                  subject: "[Mill] Sanmill " + "$_version" + " Feedback",
+                  recipients: ['calcitem@outlook.com'],
+                  attachmentPaths: [screenshotFilePath],
+                  isHTML: false,
+                );
+                await FlutterEmailSender.send(email);
+              });
+            }
+          }),
       ListItemDivider(),
       SettingsListTile(
         context: context,

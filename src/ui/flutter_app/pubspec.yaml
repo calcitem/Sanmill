@@ -26,6 +26,8 @@ dependencies:
   devicelocale: ^0.4.1
   double_back_to_close_app: ^2.0.1
   flutter_picker: ^2.0.1
+  flutter_email_sender: ^5.0.1
+  feedback: ^2.0.0
   #pref: ^2.3.0
   #screen_recorder: ^0.0.2
 
