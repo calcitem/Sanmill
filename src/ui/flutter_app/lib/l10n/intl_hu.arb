@@ -20,23 +20,23 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Személy Vs Ai",
+    "humanVsAi": "Személy Vs. AI",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "Személy Vs Személy",
+    "humanVsHuman": "Személy Vs. Személy",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "Ai Vs Ai",
+    "aiVsAi": "AI Vs. AI",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "Személy Vs Felhő",
+    "humanVsCloud": "Személy Vs. Felhő",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": " Személy Vs LAN",
+    "humanVsLAN": " Személy Vs. LAN",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
@@ -60,7 +60,7 @@
     "@moveList": {
         "description": "Move list"
     },
-    "noGameRecord": "Nincs játékjegyzet",
+    "noGameRecord": "Nincs játékrögzítés",
     "@noGameRecord": {
         "description": "No record"
     },
@@ -68,11 +68,11 @@
     "@ok": {
         "description": "OK"
     },
-    "confirm": "Megerősít",
+    "confirm": "Megerősítés",
     "@confirm": {
         "description": "Confirm"
     },
-    "cancel": "Visszavon",
+    "cancel": "Visszavonás",
     "@cancel": {
         "description": "Cancel"
     },
@@ -80,7 +80,7 @@
     "@copyright": {
         "description": "Copyright"
     },
-    "tipSelectWrong": "Válasszon korongot.",
+    "tipSelectWrong": "Helytelen korongot válasszon.",
     "@tipSelectWrong": {
         "description": "Select the wrong piece."
     },
@@ -112,7 +112,7 @@
     "@tipMove": {
         "description": "Move a piece."
     },
-    "tipCannotPlace": "Nem rakható ide.",
+    "tipCannotPlace": "Korongod nem rakható ide.",
     "@tipCannotPlace": {
         "description": "You can't place your piece here."
     },
@@ -144,7 +144,7 @@
     "@tipCannotMoveOpponentsPieces": {
         "description": "You can't move your opponent's pieces."
     },
-    "tipThreePiecesInLine": "3 korong van egyvonalú, egymást követő mezőn.",
+    "tipThreePiecesInLine": "3 korong van egyvonalban.",
     "@tipThreePiecesInLine": {
         "description": "There are 3 pieces in a line."
     },
@@ -156,7 +156,7 @@
     "@tipHaveThreePiecesLeft": {
         "description": "You have 3 pieces left."
     },
-    "tipCanMoveToAnyPoint": "Bármely tetszőleges mezőre léphet.",
+    "tipCanMoveToAnyPoint": "Bármely tetszőleges szabad mezőre léphet.",
     "@tipCanMoveToAnyPoint": {
         "description": "You can move to any point you like."
     },
@@ -180,7 +180,7 @@
     "@lost": {
         "description": "Lost"
     },
-    "aborted": "Megszakítva",
+    "aborted": "Feladva",
     "@aborted": {
         "description": "Aborted"
     },
@@ -212,7 +212,7 @@
     "@cannotImport": {
         "description": "Cannot import"
     },
-    "movesAndRulesNotMatch": "A lépések szabájyellenesek.",
+    "movesAndRulesNotMatch": "Mișcările și regulile nu se potrivesc.",
     "@movesAndRulesNotMatch": {
         "description": "Rules and moves do not match."
     },
@@ -280,7 +280,7 @@
     "@loseReasonlessThanThree": {
         "description": " piece count is less than three."
     },
-    "loseReasonResign": " felad.",
+    "loseReasonResign": " feladás",
     "@loseReasonResign": {
         "description": " resign."
     },
@@ -288,7 +288,7 @@
     "@loseReasonNoWay": {
         "description": " is no way to go."
     },
-    "loseReasonBoardIsFull": "Beszorult, nincs szabad út.",
+    "loseReasonBoardIsFull": "A játéktábla betelt, nincs szabad mező.",
     "@loseReasonBoardIsFull": {
         "description": "The board is full, no way to go."
     },
@@ -296,11 +296,11 @@
     "@loseReasonTimeOver": {
         "description": "Time Over"
     },
-    "drawReasonRule50": "A léphető fázisban az utolsó N lépés során egyetlen darabot sem távolítottak el.",
+    "drawReasonRule50": "Az utolsó N lépés során egyetlen korong sem lett eltávolítva.",
     "@drawReasonRule50": {
         "description": "In the moving phase, no piece has been removed in the last specific number of moves."
     },
-    "drawReasonBoardIsFull": "Ez egy döntetlen, mert a tábla megtelt",
+    "drawReasonBoardIsFull": "Ez egy döntetlen, mert a tábla megtelt.",
     "@drawReasonBoardIsFull": {
         "description": "It is a Draw because the board is full"
     },
@@ -320,7 +320,7 @@
     "@youWin": {
         "description": "You win! Congratulations!"
     },
-    "challengeHarderLevel": "Kihívás nehezebb szintre?\nAz új szint a Level lesz ",
+    "challengeHarderLevel": "Kihívás nehezebb szintre?\nAz új szint - Level ",
     "@challengeHarderLevel": {
         "description": "Challenge harder level?"
     },
@@ -328,7 +328,7 @@
     "@youLose": {
         "description": "You Lose!"
     },
-    "analyze": "Elemezze",
+    "analyze": "Elemezés",
     "@analyze": {
         "description": "Analyze"
     },
@@ -344,7 +344,7 @@
     "@version": {
         "description": "Version"
     },
-    "thanks": "Köszönöm",
+    "thanks": "Köszönet",
     "@thanks": {
         "description": "Thanks"
     },
@@ -364,7 +364,7 @@
     "@skillLevel": {
         "description": "Difficulty level"
     },
-    "moveTime": "Ai gondolkodik",
+    "moveTime": "AI gondolkodási ideje",
     "@moveTime": {
         "description": "AI thinking time"
     },
@@ -376,11 +376,11 @@
     "@playSounds": {
         "description": "Sound effects"
     },
-    "playSoundsInTheGame": "Hangok lejátszása játékban",
+    "playSoundsInTheGame": "Hangok lejátszása játék közben",
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
-    "keepMuteWhenTakingBack": "Tartsa némán, amikor visszagurul",
+    "keepMuteWhenTakingBack": "Visszanézéskor tartsa a némítást",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"
     },
@@ -396,7 +396,7 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "Ai",
+    "ai": "AI",
     "@ai": {
         "description": "AI"
     },
@@ -408,7 +408,7 @@
     "@isAutoRestart": {
         "description": "Auto-restart game when game over"
     },
-    "isAutoChangeFirstMove": "Automatikus váltás első lépés után",
+    "isAutoChangeFirstMove": "Automatikusan cserélődik az első játékos a játék végén",
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
     },
@@ -420,7 +420,7 @@
     "@shufflingEnabled": {
         "description": "Random move"
     },
-    "learnEndgame": "Végjáték stratégia",
+    "learnEndgame": "Tanulja meg a Végjátékot",
     "@learnEndgame": {
         "description": "Learn Endgame"
     },
@@ -444,15 +444,15 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
-    "flyPieceCount": "Az ugrálható korongok száma",
+    "flyPieceCount": "Az ugrálható (flying) korongok száma",
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
-    "flyPieceCount_Detail": "Az ugrálás bármely szabad mezőre akkor engedélyezett, ha egy játékos korongjainak száma előre meghatározott értékre csökkentek.",
+    "flyPieceCount_Detail": "Ha az ugrálás (Flying) aktiválva van és a játékos korongjainak száma előre meghatározott értékre csökkentek, ezek bármely szabad mezőre ugorhatnak.",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
-    "piecesAtLeastCount": "Korongok legalábbis",
+    "piecesAtLeastCount": "Legkevesebb korong",
     "@piecesAtLeastCount": {
         "description": "Pieces At Least"
     },
@@ -460,15 +460,15 @@
     "@hasDiagonalLines": {
         "description": "Diagonal lines"
     },
-    "hasDiagonalLines_Detail": "Tegyen négy átlós vonalat a táblára.",
+    "hasDiagonalLines_Detail": "Kösse össze négy átlóssal a játéktábla három koncentrikus négyszögének csúcsait.",
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
-    "hasBannedLocations": "Jelölje meg és késleltesse a darabok eltávolítását",
+    "hasBannedLocations": "Áthelyezésre tiltottként jelölje meg",
     "@hasBannedLocations": {
         "description": "Mark and delay removing pieces"
     },
-    "hasBannedLocations_Detail": "A felrakási szakaszban az eltávolított korongok nem helyezhetők vissza a táblára.",
+    "hasBannedLocations_Detail": "Az elhelyezési fázisban az eltávolított pontok már nem tudnak darabokat elhelyezni.",
     "@hasBannedLocations_Detail": {
         "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
     },
@@ -476,15 +476,15 @@
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "Az a játékos, aki a második helyen mozog a helyezési fázisban, először a mozgó fázisban mozog.",
+    "isDefenderMoveFirst_Detail": "Az a játékos, aki a második a lerakásban, lépésben első lesz.",
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
-    "mayRemoveMultiple": " Csukogatás, Csikicsuki",
+    "mayRemoveMultiple": "Csikicsuki",
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "Ha egy játékos minden lépésével malmot alakít ki (Csukogatás, csikicsuki), akkor eltávolíthatja ellenfelétől a bezárt malmai számával megegyező korongot.",
+    "mayRemoveMultiple_Detail": "Ha egy játékos ugyanazon koronggal több malmot alakít (csikicsuki), akkor az ellenféltől a létesített malmok számával megeggyező korongot távolíthat el.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
@@ -500,7 +500,7 @@
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "A kihelyezési szakasz végén, amikor a tábla megtelt, az az első helyezett játékos veszíti el a játékot, különben a játék döntetlen.",
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ha a lerakási szakasz végén, megtelik a tábla, az elsőként lerakó lesz a vesztes (nem tud lépni), helyezett játékos veszíti el a játékot, különben a játék döntetlen lenne.",
     "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
         "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
     },
@@ -516,7 +516,7 @@
     "@mayFly": {
         "description": "Flying"
     },
-    "mayFly_Detail": "Ha egy játékosnak csak három vagy négy (konfigurálható) korongja van hátra, akkor bármelyik szabad mezőre helyezheti korongjait.",
+    "mayFly_Detail": "Ha egy játékosnak csak három vagy négy (konfigurálható) korongja marad, akkor ezekkel bármelyik szabad mezőre ugrálhat.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
@@ -528,7 +528,7 @@
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
-    "rollback": "Visszagörgetés",
+    "rollback": "Visszaállítás",
     "@rollback": {
         "description": "Rollback"
     },
@@ -592,7 +592,7 @@
     "@messageColor": {
         "description": "Message color"
     },
-    "aiIsLazy": "Ai lusta",
+    "aiIsLazy": "AI szánalmat mutat",
     "@aiIsLazy": {
         "description": "AI is Lazy"
     },
@@ -604,7 +604,7 @@
     "@isNotationsShown": {
         "description": "Show notations on board"
     },
-    "isHistoryNavigationToolbarShown": "Az előzmények navigációs eszköztárának megjelenítése",
+    "isHistoryNavigationToolbarShown": "A navigációs előzmények eszköztárának megjelenítése",
     "@isHistoryNavigationToolbarShown": {
         "description": "Show history navigation toolbar"
     },
@@ -612,11 +612,11 @@
     "@display": {
         "description": "Display"
     },
-    "boardBorderLineWidth": "A tábla határvonalának szélessége",
+    "boardBorderLineWidth": "A játéktábla határvonalának szélessége",
     "@boardBorderLineWidth": {
         "description": "Board borderline width"
     },
-    "boardInnerLineWidth": "A tábla belső vonalának szélessége",
+    "boardInnerLineWidth": "A tábla belső vonalainak szélessége",
     "@boardInnerLineWidth": {
         "description": "Board inner line width"
     },
@@ -648,7 +648,7 @@
     "@exitAppManually": {
         "description": "You have to close immediately and reopen the app to take effect."
     },
-    "pick": "Szed",
+    "pick": "Válasszon",
     "@pick": {
         "description": "Pick "
     },
@@ -728,7 +728,7 @@
     "@privacyPolicy_Detail_1": {
         "description": "Privacy Policy Detail 1"
     },
-    "privacyPolicy_Detail_2": ". Ha nem ért egyet ezzel az irányelvvel, kérjük, ne használja ezt az alkalmazást. Az alkalmazás használata azt jelenti, hogy elfogadja ezeket a feltételeket.",
+    "privacyPolicy_Detail_2": ". Ha nem ért egyet ezzel az irányelvvel, kérjük, ne használja ezt az alkalmazást. Az alkalmazás használata kötelezi ezen feltételek elfogadására.",
     "@privacyPolicy_Detail_2": {
         "description": "Privacy Policy Detail 2"
     },
@@ -761,7 +761,7 @@
     "@waiting": {
         "description": "Waiting..."
     },
-    "stepForward": "Lépjen elő",
+    "stepForward": "Lépjen előre",
     "@stepForward": {
         "description": "Step forward"
     },
@@ -769,7 +769,7 @@
     "@takeBackAll": {
         "description": "Take back all"
     },
-    "stepForwardAll": "Lépjen előre",
+    "stepForwardAll": "Lépjen előre mindenek előtt",
     "@stepForwardAll": {
         "description": "Step forward all"
     },
@@ -785,7 +785,7 @@
     "@crackMill": {
         "description": "Crack-mill"
     },
-    "crackMill_Detail": "Ha a korongok nem záródnak malomba, hogy eltávolíthassanak egy ellenfél-korongot.",
+    "crackMill_Detail": "Ha egy játékos össszes korongja malomot alkot, ez nem jelenti, hogy ezek nem távolíthatóak el.",
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
     },
@@ -853,7 +853,7 @@
     "@gameOverCondition": {
         "description": "Game over condition"
     },
-    "aisPlayStyle": "Ai játékstílusa",
+    "aisPlayStyle": "AI játékstílusa",
     "@aisPlayStyle": {
         "description": "AI's playstyle"
     },
@@ -861,7 +861,7 @@
     "@passive": {
         "description": "Passive"
     },
-    "timeout": "Időtúllépés",
+    "timeout": "Időszünet",
     "@timeout": {
         "description": "Timeout"
     },
@@ -885,7 +885,7 @@
     "@considerMobility": {
         "description": "Consider mobility of pieces"
     },
-    "pieceCount": "korongszám",
+    "pieceCount": "Korongszám",
     "@pieceCount": {
         "description": "Piece count"
     },
@@ -893,19 +893,19 @@
     "@inHand": {
         "description": "in hand"
     },
-    "onBoard": "a fedélzeten",
+    "onBoard": "táblán",
     "@onBoard": {
         "description": "on board"
     },
-    "boardTop": "A tábla és a képernyő felső széle közötti távolság",
+    "boardTop": "A tábla eltolása felülről",
     "@boardTop": {
         "description": "Board offset from the top"
     },
-    "notAIsTurn": "Nem Ai van soron",
+    "notAIsTurn": "Nem AI van soron",
     "@notAIsTurn": {
         "description": "It is not the AI's turn."
     },
-    "aiIsNotThinking": "Az AI nem gondolkodik.",
+    "aiIsNotThinking": "AI nem gondolkodik.",
     "@aiIsNotThinking": {
         "description": "AI is not thinking."
     },
