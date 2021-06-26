@@ -175,7 +175,7 @@ class PortugueseStrings extends Strings {
 /// ro
 class RomanianStrings extends Strings {
   @override
-  String get tapBackAgainToLeave => 'Atingeți din nou pentru a pleca.';
+  String get tapBackAgainToLeave => 'Atingeți din nou pentru a putea muta.';
 }
 
 /// ru
