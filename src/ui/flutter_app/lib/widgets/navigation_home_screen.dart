@@ -16,8 +16,16 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -75,7 +83,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   }
 
   void changeIndex(DrawerIndex index) {
-    if (drawerIndex == index) {
+    if (drawerIndex == index && drawerIndex != DrawerIndex.feedback) {
       return;
     }
 
@@ -105,6 +113,33 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       setState(() {
         screenView = PersonalizationSettingsPage();
       });
+    } else if (drawerIndex == DrawerIndex.feedback) {
+      setState(() {
+        if (Platform.isWindows) {
+          print("flutter_email_sender does not support Windows.");
+          //_launchFeedback();
+        } else {
+          BetterFeedback.of(context).show((feedback) async {
+            // draft an email and send to developer
+            final screenshotFilePath =
+                await writeImageToStorage(feedback.screenshot);
+            final packageInfo = await PackageInfo.fromPlatform();
+            var _version =
+                '${packageInfo.version} (${packageInfo.buildNumber})';
+
+            final Email email = Email(
+              body: feedback.text,
+              subject: Constants.feedbackSubjectPrefix +
+                  "$_version" +
+                  Constants.feedbackSubjectSuffix,
+              recipients: [Constants.recipients],
+              attachmentPaths: [screenshotFilePath],
+              isHTML: false,
+            );
+            await FlutterEmailSender.send(email);
+          });
+        }
+      });
     } else if (drawerIndex == DrawerIndex.Help && !Config.developerMode) {
       setState(() {
         screenView = HelpScreen();
@@ -116,5 +151,13 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
     } else {
       //do in your way......
     }
+  }
+
+  Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
+    final Directory output = await getTemporaryDirectory();
+    final String screenshotFilePath = '${output.path}/sanmill-feedback.png';
+    final File screenshotFile = File(screenshotFilePath);
+    await screenshotFile.writeAsBytes(feedbackScreenshot);
+    return screenshotFilePath;
   }
 }

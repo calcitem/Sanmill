@@ -32,6 +32,7 @@ enum DrawerIndex {
   preferences,
   ruleSettings,
   personalization,
+  feedback,
   Help,
   About
 }
@@ -102,6 +103,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
         index: DrawerIndex.personalization,
         title: S.of(context).personalization,
         icon: Icon(Icons.color_lens),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.feedback,
+        title: S.of(context).feedback,
+        icon: Icon(Icons.feedback_outlined),
       ),
       DrawerListItem(
         index: DrawerIndex.Help,
