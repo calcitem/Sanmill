@@ -1,0 +1,3 @@
+v1.1.5
+
+* Add Arabic/Spanish/French/Japanese/Korean/Portuguese/Russian machine translations.
