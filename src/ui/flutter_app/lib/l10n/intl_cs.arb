@@ -628,7 +628,7 @@
     "@fontSize": {
         "description": "Font size"
     },
-    "standardNotation": "Zápis ZHN",
+    "standardNotation": "Zápis WMD",
     "@standardNotation": {
         "description": "Standard notation"
     },
