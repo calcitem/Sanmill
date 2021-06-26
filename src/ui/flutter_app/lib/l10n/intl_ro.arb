@@ -476,9 +476,9 @@
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "Jucătorul care se mișcă al doilea în fraza de plasare se mișcă primul în fraza în mișcare.",
+    "isDefenderMoveFirst_Detail": "Jucătorul care se mișcă al doilea în faza de plasare se mișcă primul în faza de mișcare.",
     "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phrase moves first in the moving phrase."
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
     "mayRemoveMultiple": "Eliminare multiplă",
     "@mayRemoveMultiple": {

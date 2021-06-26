@@ -476,9 +476,9 @@
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "Hráč, který se v umisťovací frázi pohybuje na druhém místě, se v pohybující se frázi pohybuje jako první.",
+    "isDefenderMoveFirst_Detail": "Hráč, který se ve fázi umístění pohybuje na druhém místě, se ve fázi pohybu pohybuje jako první.",
     "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phrase moves first in the moving phrase."
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
     "mayRemoveMultiple": "Vícenásobné odebrání",
     "@mayRemoveMultiple": {

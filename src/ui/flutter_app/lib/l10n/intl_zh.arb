@@ -478,7 +478,7 @@
     },
     "isDefenderMoveFirst_Detail": "在摆子阶段先摆子的一方，在走子阶段先走子。",
     "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phrase moves first in the moving phrase."
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
     "mayRemoveMultiple": "吃多子",
     "@mayRemoveMultiple": {

@@ -476,9 +476,9 @@
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "Az a játékos, aki a második helyen mozog az elhelyező mondatban, először mozog a mozgó kifejezésben.",
+    "isDefenderMoveFirst_Detail": "Az a játékos, aki a második helyen mozog a helyezési fázisban, először a mozgó fázisban mozog.",
     "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phrase moves first in the moving phrase."
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
     "mayRemoveMultiple": " Csukogatás, Csikicsuki",
     "@mayRemoveMultiple": {

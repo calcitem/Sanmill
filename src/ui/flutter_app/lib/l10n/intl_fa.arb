@@ -476,9 +476,9 @@
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "بازیکنی که در عبارت قرار دادن دوم حرکت می کند در عبارت متحرک اول حرکت می کند.",
+    "isDefenderMoveFirst_Detail": "بازیکنی که در مرحله قرارگیری دوم حرکت می کند در مرحله متحرک اول حرکت می کند.",
     "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phrase moves first in the moving phrase."
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
     "mayRemoveMultiple": "می تواند چند قطعه را حذف کند",
     "@mayRemoveMultiple": {

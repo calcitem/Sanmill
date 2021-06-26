@@ -478,7 +478,7 @@
     },
     "isDefenderMoveFirst_Detail": "Der in der Setzphase zweite Spieler zieht in der Zugphase zuerst.",
     "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phrase moves first in the moving phrase."
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
     "mayRemoveMultiple": "Mehrfaches Entfernen",
     "@mayRemoveMultiple": {
