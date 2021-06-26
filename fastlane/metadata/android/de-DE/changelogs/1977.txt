@@ -1,0 +1,4 @@
+v1.1.6
+
+* Geben Sie interaktives Feedback direkt in der App, indem Sie einen Screenshot der aktuellen Seite mit Anmerkungen versehen und Text hinzufügen.
+* Verbesserung der rumänischen und ungarischen Sprachübersetzungen.
