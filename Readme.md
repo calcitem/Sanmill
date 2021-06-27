@@ -15,6 +15,8 @@
 
 [**Nine men's morris**](https://en.wikipedia.org/wiki/Nine_men%27s_morris) is a [strategy](https://en.wikipedia.org/wiki/Abstract_strategy_game) [board game](https://en.wikipedia.org/wiki/Board_games) for two players dating at least to the [Roman Empire](https://en.wikipedia.org/wiki/Roman_Empire). The game is also known as **nine-man morris**, **mill**, **mills**, **the mill game**, **merels**, **merrills**, **merelles**, **marelles**, **morelles**, and **ninepenny marl** in English.
 
+![image](https://github.com/calcitem/calcitem/raw/master/Sanmill/res/sanmill.gif)
+
 ## Files
 
 This distribution of Sanmill consists of the following files:
