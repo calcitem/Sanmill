@@ -21,79 +21,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/constants.dart';
-
-final supportedLocales = [
-  const Locale('en', ''),
-  const Locale.fromSubtags(
-    languageCode: 'ar',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'cs',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'de',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'es',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'fa',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'fr',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'hi',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'hu',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'ja',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'ko',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'pl',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'pt',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'ro',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'ru',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'tr',
-  ),
-  const Locale.fromSubtags(
-    languageCode: 'zh',
-  ),
-];
-
-Map<String, String> languageCodeToName = {
-  "ar": "عربى",
-  "cs": "Čeština",
-  "de": "Deutsch",
-  "en": "English",
-  "es": "Español",
-  "fa": "فارسی",
-  "fr": "Français",
-  "hi": "हिंदी",
-  "hu": "Magyar",
-  "it": "Italiano",
-  "ja": "日本語",
-  "ko": "한국어",
-  "pl": "Polskie",
-  "pt": "Português",
-  "ro": "Română",
-  "ru": "Pусский",
-  "tr": "Türk",
-  "zh": "简体中文",
-};
+import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/widgets/list_item_divider.dart';
 
 Map<String, Strings> languageCodeToStrings = {
   "ar": ArabicStrings(),
@@ -118,11 +48,15 @@ Map<String, Strings> languageCodeToStrings = {
 
 /// Interface strings
 abstract class Strings {
+  String get languageName;
   String get tapBackAgainToLeave;
 }
 
 /// ar
 class ArabicStrings extends Strings {
+  @override
+  String get languageName => 'عربى';
+
   @override
   String get tapBackAgainToLeave => 'انقر مرة أخرى للمغادرة.';
 }
@@ -130,11 +64,17 @@ class ArabicStrings extends Strings {
 /// cs
 class CzechStrings extends Strings {
   @override
+  String get languageName => 'Čeština';
+
+  @override
   String get tapBackAgainToLeave => 'Opětovným klepnutím zpět odejdete.';
 }
 
 /// de
 class GermanStrings extends Strings {
+  @override
+  String get languageName => 'Deutsch';
+
   @override
   String get tapBackAgainToLeave => 'Nochmal drücken um zu Beenden.';
 }
@@ -142,17 +82,26 @@ class GermanStrings extends Strings {
 /// en
 class EnglishStrings extends Strings {
   @override
+  String get languageName => 'English';
+
+  @override
   String get tapBackAgainToLeave => 'Tap back again to leave.';
 }
 
 /// es
 class SpanishStrings extends Strings {
   @override
+  String get languageName => 'Español';
+
+  @override
   String get tapBackAgainToLeave => 'Vuelve a tocar para salir.';
 }
 
 /// fa
 class FarsiStrings extends Strings {
+  @override
+  String get languageName => 'فارسی';
+
   @override
   String get tapBackAgainToLeave =>
       'برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.';
@@ -161,17 +110,26 @@ class FarsiStrings extends Strings {
 /// fr
 class FrenchStrings extends Strings {
   @override
+  String get languageName => 'Français';
+
+  @override
   String get tapBackAgainToLeave => 'Tapez à nouveau pour quitter.';
 }
 
 /// hi
 class HindiStrings extends Strings {
   @override
+  String get languageName => 'हिंदी';
+
+  @override
   String get tapBackAgainToLeave => 'जाने के लिए फिर से टैप करें।';
 }
 
 /// hu
 class HungarianStrings extends Strings {
+  @override
+  String get languageName => 'Magyar';
+
   @override
   String get tapBackAgainToLeave =>
       'A kilépéshez kattintson ismételten a Vissza gombra.';
@@ -180,11 +138,17 @@ class HungarianStrings extends Strings {
 /// it
 class ItalianStrings extends Strings {
   @override
+  String get languageName => 'Italiano';
+
+  @override
   String get tapBackAgainToLeave => 'Tocca di nuovo per uscire.';
 }
 
 /// ja
 class JapaneseStrings extends Strings {
+  @override
+  String get languageName => '日本語';
+
   @override
   String get tapBackAgainToLeave => 'もう一度returnを押してアプリケーションを終了する';
 }
@@ -192,11 +156,17 @@ class JapaneseStrings extends Strings {
 /// ko
 class KoreanStrings extends Strings {
   @override
+  String get languageName => '한국어';
+
+  @override
   String get tapBackAgainToLeave => '애플리케이션을 종료하려면 리턴 키를 다시 누르십시오.';
 }
 
 /// pl
 class PolishStrings extends Strings {
+  @override
+  String get languageName => 'Polskie';
+
   @override
   String get tapBackAgainToLeave => 'Stuknij ponownie w tył, aby wyjść.';
 }
@@ -204,11 +174,17 @@ class PolishStrings extends Strings {
 /// pt
 class PortugueseStrings extends Strings {
   @override
+  String get languageName => 'Português';
+
+  @override
   String get tapBackAgainToLeave => 'Bater novamente para sair.';
 }
 
 /// ro
 class RomanianStrings extends Strings {
+  @override
+  String get languageName => 'Română';
+
   @override
   String get tapBackAgainToLeave => 'Atingeți din nou pentru a putea muta.';
 }
@@ -216,11 +192,17 @@ class RomanianStrings extends Strings {
 /// ru
 class RussianStrings extends Strings {
   @override
+  String get languageName => 'Pусский';
+
+  @override
   String get tapBackAgainToLeave => 'Нажмите назад еще раз, чтобы выйти.';
 }
 
 /// tr
 class TurkishStrings extends Strings {
+  @override
+  String get languageName => 'Türk';
+
   @override
   String get tapBackAgainToLeave => 'Tocca di nuovo per uscire.';
 }
@@ -228,8 +210,15 @@ class TurkishStrings extends Strings {
 /// zh
 class ChineseStrings extends Strings {
   @override
+  String get languageName => '简体中文';
+
+  @override
   String get tapBackAgainToLeave => '再次按返回键退出应用';
 }
+
+final supportedLocales = [
+  for (var i in languageCodeToStrings.keys) Locale.fromSubtags(languageCode: i),
+];
 
 class Resources {
   Resources();
@@ -255,4 +244,42 @@ class Resources {
   static Resources of() {
     return Resources();
   }
+}
+
+setLanguage(BuildContext context, var callback) async {
+  var languageColumn = Column(
+    mainAxisSize: MainAxisSize.min,
+    children: <Widget>[
+      RadioListTile(
+        activeColor: AppTheme.switchListTileActiveColor,
+        title: Text(S.of(context).defaultLanguage),
+        groupValue: Config.languageCode,
+        value: Constants.defaultLanguageCodeName,
+        onChanged: callback,
+      ),
+      ListItemDivider(),
+      for (var i in languageCodeToStrings.keys)
+        RadioListTile(
+          activeColor: AppTheme.switchListTileActiveColor,
+          title: Text(languageCodeToStrings[i]!.languageName),
+          groupValue: Config.languageCode,
+          value: i,
+          onChanged: callback,
+        ),
+    ],
+  );
+
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        scrollable: true,
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return languageColumn;
+          },
+        ),
+      );
+    },
+  );
 }

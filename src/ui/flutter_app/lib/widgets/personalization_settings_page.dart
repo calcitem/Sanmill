@@ -334,6 +334,21 @@ class _PersonalizationSettingsPageState
   }
 
   List<Widget> children(BuildContext context) {
+    langCallback(var langCode) async {
+      print("[config] languageCode = $langCode");
+
+      Navigator.of(context).pop();
+
+      setState(() {
+        Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;
+        S.load(Locale(Resources.of().languageCode));
+      });
+
+      print("[config] Config.languageCode: ${Config.languageCode}");
+
+      Config.save();
+    }
+
     return <Widget>[
       Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
@@ -346,7 +361,7 @@ class _PersonalizationSettingsPageState
                 Config.languageCode == Constants.defaultLanguageCodeName
                     ? ""
                     : Config.languageCode.toString(),
-            onTap: setLanguage,
+            onTap: () => setLanguage(context, langCallback),
           ),
           ListItemDivider(),
           SettingsSwitchListTile(
@@ -465,194 +480,6 @@ class _PersonalizationSettingsPageState
   }
 
   // Display
-
-  setLanguage() async {
-    callback(var langCode) async {
-      print("[config] languageCode = $langCode");
-
-      Navigator.of(context).pop();
-
-      setState(() {
-        Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;
-        S.load(Locale(Resources.of().languageCode));
-      });
-
-      print("[config] Config.languageCode: ${Config.languageCode}");
-
-      Config.save();
-    }
-
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          scrollable: true,
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(S.of(context).defaultLanguage),
-                    groupValue: Config.languageCode,
-                    value: Constants.defaultLanguageCodeName,
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["ar"]!),
-                    groupValue: Config.languageCode,
-                    value: "ar",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["cs"]!),
-                    groupValue: Config.languageCode,
-                    value: "cs",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["de"]!),
-                    groupValue: Config.languageCode,
-                    value: "de",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["en"]!),
-                    groupValue: Config.languageCode,
-                    value: "en",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["es"]!),
-                    groupValue: Config.languageCode,
-                    value: "es",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["fa"]!),
-                    groupValue: Config.languageCode,
-                    value: "fa",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["fr"]!),
-                    groupValue: Config.languageCode,
-                    value: "fr",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["hi"]!),
-                    groupValue: Config.languageCode,
-                    value: "hi",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["hu"]!),
-                    groupValue: Config.languageCode,
-                    value: "hu",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["it"]!),
-                    groupValue: Config.languageCode,
-                    value: "it",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["ja"]!),
-                    groupValue: Config.languageCode,
-                    value: "ja",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["ko"]!),
-                    groupValue: Config.languageCode,
-                    value: "ko",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["pl"]!),
-                    groupValue: Config.languageCode,
-                    value: "pl",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["pt"]!),
-                    groupValue: Config.languageCode,
-                    value: "pt",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["ro"]!),
-                    groupValue: Config.languageCode,
-                    value: "ro",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["ru"]!),
-                    groupValue: Config.languageCode,
-                    value: "ru",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["tr"]!),
-                    groupValue: Config.languageCode,
-                    value: "tr",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                  RadioListTile(
-                    activeColor: AppTheme.switchListTileActiveColor,
-                    title: Text(languageCodeToName["zh"]!),
-                    groupValue: Config.languageCode,
-                    value: "zh",
-                    onChanged: callback,
-                  ),
-                  ListItemDivider(),
-                ],
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
 
   setIsPieceCountInHandShown(bool value) async {
     setState(() {
