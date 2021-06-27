@@ -360,7 +360,8 @@ class _PersonalizationSettingsPageState
             trailingString:
                 Config.languageCode == Constants.defaultLanguageCodeName
                     ? ""
-                    : Config.languageCode.toString(),
+                    : languageCodeToStrings[Config.languageCode.toString()]!
+                        .languageName,
             onTap: () => setLanguage(context, langCallback),
           ),
           ListItemDivider(),
