@@ -548,7 +548,7 @@
     "@help": {
         "description": "Help"
     },
-    "feedback": "質問のフィードバック",
+    "feedback": "フィードバック",
     "@feedback": {
         "description": "Feedback"
     },
@@ -652,7 +652,7 @@
     "@pick": {
         "description": "Pick "
     },
-    "info": "インフォメーション",
+    "info": "インフォ",
     "@info": {
         "description": "Info"
     },
