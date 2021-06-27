@@ -1,1 +1,1 @@
-Mühle-Brettspielprogramm, das viele Regelvarianten unterstützt, gebaut mit Flutter.
+Flutter Mühle-Brettspielprogramm, das viele Regelvarianten unterstützt.
