@@ -39,6 +39,7 @@ Future<void> main() async {
   var catcher = Catcher(
       rootWidget: BetterFeedback(
         child: SanmillApp(),
+        //localeOverride: Locale(Resources.of().languageCode),
       ),
       ensureInitialized: true);
 
