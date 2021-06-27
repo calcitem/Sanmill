@@ -1,0 +1,3 @@
+v1.1.7
+
+* Hinzufügen von maschinellen Übersetzungen in Hindi/Italienisch/Polnisch/Türkisch.

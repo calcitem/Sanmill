@@ -1,0 +1,3 @@
+v1.1.7
+
+* Add Hindi/Italian/Polish/Turkish machine translations.
