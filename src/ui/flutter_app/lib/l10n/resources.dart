@@ -43,6 +43,9 @@ final supportedLocales = [
     languageCode: 'fr',
   ),
   const Locale.fromSubtags(
+    languageCode: 'hi',
+  ),
+  const Locale.fromSubtags(
     languageCode: 'hu',
   ),
   const Locale.fromSubtags(
@@ -52,6 +55,9 @@ final supportedLocales = [
     languageCode: 'ko',
   ),
   const Locale.fromSubtags(
+    languageCode: 'pl',
+  ),
+  const Locale.fromSubtags(
     languageCode: 'pt',
   ),
   const Locale.fromSubtags(
@@ -59,6 +65,9 @@ final supportedLocales = [
   ),
   const Locale.fromSubtags(
     languageCode: 'ru',
+  ),
+  const Locale.fromSubtags(
+    languageCode: 'tr',
   ),
   const Locale.fromSubtags(
     languageCode: 'zh',
@@ -73,12 +82,16 @@ Map<String, String> languageCodeToName = {
   "es": "Español",
   "fa": "فارسی",
   "fr": "Français",
+  "hi": "हिंदी",
   "hu": "Magyar",
+  "it": "Italiano",
   "ja": "日本語",
   "ko": "한국어",
+  "pl": "Polskie",
   "pt": "Português",
   "ro": "Română",
   "ru": "Pусский",
+  "tr": "Türk",
   "zh": "简体中文",
 };
 
@@ -90,12 +103,16 @@ Map<String, Strings> languageCodeToStrings = {
   "es": SpanishStrings(),
   "fa": FarsiStrings(),
   "fr": FrenchStrings(),
+  "hi": HindiStrings(),
   "hu": HungarianStrings(),
+  "it": ItalianStrings(),
   "ja": JapaneseStrings(),
   "ko": KoreanStrings(),
+  "pl": PolishStrings(),
   "pt": PortugueseStrings(),
   "ro": RomanianStrings(),
   "ru": RussianStrings(),
+  "tr": TurkishStrings(),
   "zh": ChineseStrings(),
 };
 
@@ -147,11 +164,23 @@ class FrenchStrings extends Strings {
   String get tapBackAgainToLeave => 'Tapez à nouveau pour quitter.';
 }
 
+/// hi
+class HindiStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => 'जाने के लिए फिर से टैप करें।';
+}
+
 /// hu
 class HungarianStrings extends Strings {
   @override
   String get tapBackAgainToLeave =>
       'A kilépéshez kattintson ismételten a Vissza gombra.';
+}
+
+/// it
+class ItalianStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => 'Tocca di nuovo per uscire.';
 }
 
 /// ja
@@ -164,6 +193,12 @@ class JapaneseStrings extends Strings {
 class KoreanStrings extends Strings {
   @override
   String get tapBackAgainToLeave => '애플리케이션을 종료하려면 리턴 키를 다시 누르십시오.';
+}
+
+/// pl
+class PolishStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => 'Stuknij ponownie w tył, aby wyjść.';
 }
 
 /// pt
@@ -182,6 +217,12 @@ class RomanianStrings extends Strings {
 class RussianStrings extends Strings {
   @override
   String get tapBackAgainToLeave => 'Нажмите назад еще раз, чтобы выйти.';
+}
+
+/// tr
+class TurkishStrings extends Strings {
+  @override
+  String get tapBackAgainToLeave => 'Tocca di nuovo per uscire.';
 }
 
 /// zh

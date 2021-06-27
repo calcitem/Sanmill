@@ -342,9 +342,10 @@ class _PersonalizationSettingsPageState
           SettingsListTile(
             context: context,
             titleString: S.of(context).language,
-            trailingString: Config.languageCode == Constants.defaultLanguageCodeName
-                ? ""
-                : Config.languageCode.toString(),
+            trailingString:
+                Config.languageCode == Constants.defaultLanguageCodeName
+                    ? ""
+                    : Config.languageCode.toString(),
             onTap: setLanguage,
           ),
           ListItemDivider(),
@@ -558,9 +559,25 @@ class _PersonalizationSettingsPageState
                   ListItemDivider(),
                   RadioListTile(
                     activeColor: AppTheme.switchListTileActiveColor,
+                    title: Text(languageCodeToName["hi"]!),
+                    groupValue: Config.languageCode,
+                    value: "hi",
+                    onChanged: callback,
+                  ),
+                  ListItemDivider(),
+                  RadioListTile(
+                    activeColor: AppTheme.switchListTileActiveColor,
                     title: Text(languageCodeToName["hu"]!),
                     groupValue: Config.languageCode,
                     value: "hu",
+                    onChanged: callback,
+                  ),
+                  ListItemDivider(),
+                  RadioListTile(
+                    activeColor: AppTheme.switchListTileActiveColor,
+                    title: Text(languageCodeToName["it"]!),
+                    groupValue: Config.languageCode,
+                    value: "it",
                     onChanged: callback,
                   ),
                   ListItemDivider(),
@@ -577,6 +594,14 @@ class _PersonalizationSettingsPageState
                     title: Text(languageCodeToName["ko"]!),
                     groupValue: Config.languageCode,
                     value: "ko",
+                    onChanged: callback,
+                  ),
+                  ListItemDivider(),
+                  RadioListTile(
+                    activeColor: AppTheme.switchListTileActiveColor,
+                    title: Text(languageCodeToName["pl"]!),
+                    groupValue: Config.languageCode,
+                    value: "pl",
                     onChanged: callback,
                   ),
                   ListItemDivider(),
@@ -601,6 +626,14 @@ class _PersonalizationSettingsPageState
                     title: Text(languageCodeToName["ru"]!),
                     groupValue: Config.languageCode,
                     value: "ru",
+                    onChanged: callback,
+                  ),
+                  ListItemDivider(),
+                  RadioListTile(
+                    activeColor: AppTheme.switchListTileActiveColor,
+                    title: Text(languageCodeToName["tr"]!),
+                    groupValue: Config.languageCode,
+                    value: "tr",
                     onChanged: callback,
                   ),
                   ListItemDivider(),
