@@ -3,10 +3,16 @@
 [![YouTube](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
 
 <a href="https://f-droid.org/packages/com.calcitem.sanmill/" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/get-it-on-github.png" alt="Get it on GitHub" height="80"/></a>
+
+<a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
 <a href="https://play.google.com/store/apps/details?id=com.calcitem.sanmill" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
+
+<a href="https://cafebazaar.ir/app/com.calcitem.sanmill" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on GitHub" height="54"/></a>
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a09e5b5ab4f04b1585acb478af0bd593)](https://app.codacy.com/manual/calcitem/Sanmill?utm_source=github.com&utm_medium=referral&utm_content=calcitem/Sanmill&utm_campaign=Badge_Grade_Settings)
