@@ -22,6 +22,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_settings_page.dart';
 
@@ -257,6 +258,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Widget buildInkwell(DrawerListItem listItem) {
+    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    double radius = 28.0;
     var animatedBuilder = AnimatedBuilder(
       animation: widget.iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
@@ -274,10 +277,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
               decoration: BoxDecoration(
                 color: AppTheme.drawerHighlightItemColor,
                 borderRadius: new BorderRadius.only(
-                  topLeft: Radius.circular(0),
-                  topRight: Radius.circular(28),
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(28),
+                  topLeft: Radius.circular(ltr ? 0 : radius),
+                  topRight: Radius.circular(ltr ? radius : 0),
+                  bottomLeft: Radius.circular(ltr ? 0 : radius),
+                  bottomRight: Radius.circular(ltr ? radius : 0),
                 ),
               ),
             ),
