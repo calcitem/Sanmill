@@ -283,3 +283,22 @@ setLanguage(BuildContext context, var callback) async {
     },
   );
 }
+
+enum Bidirectionality {
+  leftToRight,
+  rightToLeft,
+}
+
+Bidirectionality getBidirectionality(BuildContext context) {
+  Locale currentLocale = Localizations.localeOf(context);
+  if (currentLocale.languageCode == "ar" ||
+      currentLocale.languageCode == "fa" ||
+      currentLocale.languageCode == "he" ||
+      currentLocale.languageCode == "ps" ||
+      currentLocale.languageCode == "ur") {
+    print("bidirectionality: RTL");
+    return Bidirectionality.rightToLeft;
+  } else {
+    return Bidirectionality.leftToRight;
+  }
+}

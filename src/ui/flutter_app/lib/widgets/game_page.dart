@@ -27,6 +27,7 @@ import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/engine/native_engine.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
@@ -1590,15 +1591,7 @@ class _GamePageState extends State<GamePage>
 
   @override
   Widget build(BuildContext context) {
-    Locale currentLocale = Localizations.localeOf(context);
-    if (currentLocale.languageCode == "ar" ||
-        currentLocale.languageCode == "fa" ||
-        currentLocale.languageCode == "he" ||
-        currentLocale.languageCode == "ps" ||
-        currentLocale.languageCode == "ur") {
-      print("bidirectionality: RTL");
-      ltr = false;
-    }
+    ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
 
     if (_tip == '') {
       _tip = S.of(context).welcome;
