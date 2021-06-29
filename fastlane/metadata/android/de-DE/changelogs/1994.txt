@@ -1,0 +1,5 @@
+v1.1.8
+
+* Menü-UI-Problem mit Rechts-nach-Links beheben.
+* Verbesserung der englischen Übersetzungen.
+* Anzeige des Sprachnamens anstelle des Sprachcodes am Ende des Menüeintrags.

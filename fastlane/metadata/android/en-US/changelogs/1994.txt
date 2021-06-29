@@ -1,0 +1,5 @@
+v1.1.8
+
+* Fix menu UI problem with Right-To-Left.
+* Improve English translations.
+* Show language name instead of language code in trailing of menu item.
