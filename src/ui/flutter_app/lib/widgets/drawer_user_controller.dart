@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/home_drawer.dart';
 
@@ -116,6 +117,8 @@ class _DrawerUserControllerState extends State<DrawerUserController>
 
   @override
   Widget build(BuildContext context) {
+    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+
     // this just menu and arrow icon animation
     var inkWell = InkWell(
       borderRadius: BorderRadius.circular(AppBar().preferredSize.height),
@@ -160,7 +163,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
 
     var tapOffset = 0;
 
-    if (Localizations.localeOf(context).languageCode == "fa") {
+    if (!ltr) {
       tapOffset = 10; // TODO: WAR
     }
 
