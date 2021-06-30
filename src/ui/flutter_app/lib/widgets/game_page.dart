@@ -1495,7 +1495,7 @@ class _GamePageState extends State<GamePage>
       ),
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: EdgeInsets.symmetric(vertical: 2),
-      child: Row(children: <Widget>[
+      child: Row(textDirection: TextDirection.ltr, children: <Widget>[
         Expanded(child: SizedBox()),
         gameButton,
         Expanded(child: SizedBox()),
@@ -1515,7 +1515,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.first_page,
+            ltr ? Icons.first_page : Icons.last_page,
             color: AppTheme.toolbarIconColor,
           ),
         ],
@@ -1528,7 +1528,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            ltr ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
+            Icons.keyboard_arrow_left,
             color: AppTheme.toolbarIconColor,
           ),
         ],
@@ -1541,7 +1541,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            ltr ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_left,
+            Icons.keyboard_arrow_right,
             color: AppTheme.toolbarIconColor,
           ),
         ],
@@ -1554,7 +1554,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.last_page,
+            ltr ? Icons.last_page : Icons.first_page,
             color: AppTheme.toolbarIconColor,
           ),
         ],
@@ -1569,7 +1569,7 @@ class _GamePageState extends State<GamePage>
       ),
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: EdgeInsets.symmetric(vertical: 2),
-      child: Row(children: <Widget>[
+      child: Row(textDirection: TextDirection.ltr, children: <Widget>[
         Expanded(child: SizedBox()),
         takeBackAllButton,
         Expanded(child: SizedBox()),

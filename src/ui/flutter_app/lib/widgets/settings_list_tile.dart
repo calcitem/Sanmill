@@ -18,6 +18,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 
 class SettingsListTile extends StatelessWidget {
@@ -40,6 +41,7 @@ class SettingsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
     return ListTile(
       title: Text(
         titleString,
@@ -60,6 +62,10 @@ class SettingsListTile extends StatelessWidget {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          ltr
+              ? Icon(null)
+              : Icon(Icons.keyboard_arrow_left,
+                  color: AppTheme.listTileSubtitleColor),
           Text(
             trailingColor == null
                 ? (trailingString == null ? "" : trailingString!)
@@ -70,8 +76,10 @@ class SettingsListTile extends StatelessWidget {
                   trailingColor == null ? null : Color(trailingColor!),
             ),
           ),
-          Icon(Icons.keyboard_arrow_right,
-              color: AppTheme.listTileSubtitleColor),
+          ltr
+              ? Icon(Icons.keyboard_arrow_right,
+                  color: AppTheme.listTileSubtitleColor)
+              : Icon(null),
         ],
       ),
       onTap: onTap,
