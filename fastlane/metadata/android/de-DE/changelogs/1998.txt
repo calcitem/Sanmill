@@ -1,0 +1,5 @@
+v1.1.9
+
+* Verbessern Sie die Übersetzung von Farsi (persische Sprache) (WIP).
+* Behebung von Problemen mit Optionspfeilen und Navigationsschaltflächen in RTL-Sprachen.
+* Das Fix-Animationssymbol ist zu hoch, wenn das Gebietsschema arabisch ist.

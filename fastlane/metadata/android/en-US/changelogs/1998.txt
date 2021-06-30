@@ -1,0 +1,6 @@
+v1.1.9
+
+* Improve Farsi (Persian language) translation (WIP).
+* Fix options arrows and navigation buttons issues in RTL languages.
+* Fix animation icon is too high when the locale is Arabic.
+
