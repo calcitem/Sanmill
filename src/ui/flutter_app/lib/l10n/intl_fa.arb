@@ -4,7 +4,7 @@
     "@appName": {
         "description": "The app name"
     },
-    "welcome": "داوطلبان برای کمک به اصلاح مشکلات ترجمه خوش آمدید",
+    "welcome": "خوش آمدید!",
     "@welcome": {
         "description": "Welcome"
     },
@@ -20,7 +20,7 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "انسان در مقابل کامپیوتر",
+    "humanVsAi": "انسان در مقابل رایانه",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
@@ -32,11 +32,11 @@
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "Human Vs Cloud",
+    "humanVsCloud": "انسان در مقابل فضای ابری",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "Human Vs LAN",
+    "humanVsLAN": "انسان در مقابل LAN",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
@@ -48,7 +48,7 @@
     "@move": {
         "description": "Move"
     },
-    "moves": " حرکت می کند",
+    "moves": " اُمین حرکت",
     "@moves": {
         "description": " Moves"
     },
@@ -80,15 +80,15 @@
     "@copyright": {
         "description": "Copyright"
     },
-    "tipSelectWrong": "قطعه اشتباه را انتخاب کنید.",
+    "tipSelectWrong": "مهره اشتباه را انتخاب کنید.",
     "@tipSelectWrong": {
         "description": "Select the wrong piece."
     },
-    "tipPlace": "قطعات خود را قرار دهید.",
+    "tipPlace": "مهره‌های خود را قرار دهید.",
     "@tipPlace": {
         "description": "Place your pieces."
     },
-    "tipBanPlace": "نمی توان در اینجا قرار داد.",
+    "tipBanPlace": "نمی‌توان در اینجا قرار داد.",
     "@tipBanPlace": {
         "description": "Cannot place it here."
     },
@@ -96,7 +96,7 @@
     "@tipPlaced": {
         "description": "Placed."
     },
-    "tipRemove": "یک قطعه را بردارید.",
+    "tipRemove": "یک مهره را بردارید.",
     "@tipRemove": {
         "description": "Remove a piece."
     },
@@ -108,23 +108,23 @@
     "@tipRemoved": {
         "description": "Removed."
     },
-    "tipMove": "یک قطعه را حرکت دهید",
+    "tipMove": "یک مهره را حرکت دهید",
     "@tipMove": {
         "description": "Move a piece."
     },
-    "tipCannotPlace": "نمی توانید قطعه خود را اینجا قرار دهید.",
+    "tipCannotPlace": "نمی توانید مهره خود را اینجا قرار دهید.",
     "@tipCannotPlace": {
         "description": "You can't place your piece here."
     },
-    "tipCannotMove": "نمی توانید قطعه خود را به اینجا منتقل کنید.",
+    "tipCannotMove": "نمی توانید مهره خود را به اینجا منتقل کنید.",
     "@tipCannotMove": {
         "description": "You can't move your piece here."
     },
-    "tipMill": "شما می توانید قطعه حریف خود را حذف کنید",
+    "tipMill": "دوز! یک مهره حریف خود را بردارید.",
     "@tipMill": {
         "description": "Mill! Take your opponent's piece."
     },
-    "tipContinueMill": "ادامه گرفتن مهره حریف خود را ادامه دهید.",
+    "tipContinueMill": "برای برداشتن مهره حریف ادامه دهید.",
     "@tipContinueMill": {
         "description": "Continue to take your opponent's piece."
     },
@@ -132,31 +132,31 @@
     "@tipSelectOpponentsPiece": {
         "description": "Select one of your opponent's pieces."
     },
-    "tipCannotRemovePieceFromMill": "نمی توانید قطعه ای را از آسیاب بردارید.",
+    "tipCannotRemovePieceFromMill": "نمی‌توانید مهره‌ای از یک دوز را بردارید.",
     "@tipCannotRemovePieceFromMill": {
         "description": "You cannot remove a piece from a mill."
     },
-    "tipCanMoveOnePoint": "مهره را در فضای خالی مجاور قرار دهید.",
+    "tipCanMoveOnePoint": "میتوانید مهره‌ای را یک خانه حرکت دهید.",
     "@tipCanMoveOnePoint": {
         "description": "A piece can move 1 point."
     },
-    "tipCannotMoveOpponentsPieces": "شما نمی توانید مهره های حریف خود را حرکت دهید.",
+    "tipCannotMoveOpponentsPieces": "نمی‌توانید مهره های حریف را حرکت دهید.",
     "@tipCannotMoveOpponentsPieces": {
         "description": "You can't move your opponent's pieces."
     },
-    "tipThreePiecesInLine": "3 قطعه در یک خط وجود دارد.",
+    "tipThreePiecesInLine": "3 مهره در یک خط وجود دارد.",
     "@tipThreePiecesInLine": {
         "description": "There are 3 pieces in a line."
     },
-    "tipSelectPieceToMove": "قطعه خود را برای حرکت انتخاب کنید.",
+    "tipSelectPieceToMove": "مهره‌ای برای حرکت‌دادن انتخاب کنید.",
     "@tipSelectPieceToMove": {
         "description": "Select your piece to move."
     },
-    "tipHaveThreePiecesLeft": "شما 3 قطعه مانده است.",
+    "tipHaveThreePiecesLeft": "فقط ۳ مهره برای شما باقیمانده.",
     "@tipHaveThreePiecesLeft": {
         "description": "You have 3 pieces left."
     },
-    "tipCanMoveToAnyPoint": "می توانید به هر نقطه ای که دوست دارید بروید.",
+    "tipCanMoveToAnyPoint": "می توانید به هر خانه‌ای که دوست دارید بروید.",
     "@tipCanMoveToAnyPoint": {
         "description": "You can move to any point you like."
     },
@@ -164,11 +164,11 @@
     "@tipToMove": {
         "description": " to move."
     },
-    "whiteWin": "بازیکن 1 برنده!",
+    "whiteWin": "بازیکن ۱ برنده است!",
     "@whiteWin": {
         "description": "Player 1 wins!"
     },
-    "blackWin": "بازیکن 2 برنده!",
+    "blackWin": "بازیکن ۲ برنده است!",
     "@blackWin": {
         "description": "Player 2 wins!"
     },
@@ -176,11 +176,11 @@
     "@won": {
         "description": "Won"
     },
-    "lost": "از دست دادن",
+    "lost": "باخت",
     "@lost": {
         "description": "Lost"
     },
-    "aborted": "سقط شده",
+    "aborted": "صرف نظر شد",
     "@aborted": {
         "description": "Aborted"
     },
@@ -200,7 +200,7 @@
     "@importGame": {
         "description": "Import game"
     },
-    "exportGame": "صادرات بازی",
+    "exportGame": "صادر کردن بازی",
     "@exportGame": {
         "description": "Export game"
     },
@@ -216,7 +216,7 @@
     "@movesAndRulesNotMatch": {
         "description": "Rules and moves do not match."
     },
-    "startRecording": "شروع به ضبط کنید",
+    "startRecording": "آغاز ضبط کردن",
     "@startRecording": {
         "description": "Start recording"
     },
@@ -240,7 +240,7 @@
     "@pleaseWait": {
         "description": "Please wait..."
     },
-    "restartGame": "بازی فعلی را دوباره راه اندازی کنید؟",
+    "restartGame": "راه‌اندازی مجدد بازی فعلی؟",
     "@restartGame": {
         "description": "Restart current game?"
     },
@@ -248,7 +248,7 @@
     "@restart": {
         "description": "Restart"
     },
-    "gameStarted": "بازی شروع شده است ، لطفا قطعه را قرار دهید",
+    "gameStarted": "بازی شروع شده است ، لطفا مهره‌ای را قرار دهید",
     "@gameStarted": {
         "description": "Game started, please place"
     },
@@ -264,15 +264,15 @@
     "@winRate": {
         "description": "Win Rate"
     },
-    "score": "نمره",
+    "score": "امتیاز",
     "@score": {
         "description": "Score"
     },
-    "white": "پخش کننده 1",
+    "white": "بازیکن ۱",
     "@white": {
         "description": "Player 1"
     },
-    "black": "پخش کننده 2",
+    "black": "بازیکن ۲",
     "@black": {
         "description": "Player 2"
     },
@@ -288,7 +288,7 @@
     "@loseReasonNoWay": {
         "description": " is no way to go."
     },
-    "loseReasonBoardIsFull": "هیئت مدیره پر است ، راهی برای رفتن نیست.",
+    "loseReasonBoardIsFull": "صفحه بازی پر شده ، راهی برای رفتن نیست.",
     "@loseReasonBoardIsFull": {
         "description": "The board is full, no way to go."
     },
@@ -300,7 +300,7 @@
     "@drawReasonRule50": {
         "description": "In the moving phase, no piece has been removed in the last specific number of moves."
     },
-    "drawReasonBoardIsFull": "این مساوی است.چون تخته پر است.",
+    "drawReasonBoardIsFull": "نتیجه قرعه‌کشی مساوی است.چون تخته پر است.",
     "@drawReasonBoardIsFull": {
         "description": "It is a Draw because the board is full"
     },
