@@ -948,5 +948,13 @@
     "defaultLanguage": "زبان پیش فرض",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "مهره ها می توانند در مرحله قرارگیری حرکت کنند",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "هیچ مرحله مشخصی برای قرار دادن و حرکت وجود ندارد ، به عنوان مثال بازیکنان می توانند در هر حرکت تصمیم بگیرند که آیا می خواهند مهره ای را روی صفحه قرار دهند یا یکی از مهره های خود را حرکت دهند (به شرط اینکه مهره هایی برای قرار دادن باقی مانده باشد).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
 }

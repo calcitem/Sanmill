@@ -114,6 +114,16 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       SettingsCard(
         context: context,
         children: <Widget>[
+          Config.experimentsEnabled
+              ? SettingsSwitchListTile(
+                  context: context,
+                  value: Config.mayMoveInPlacingPhase,
+                  onChanged: setMayMoveInPlacingPhase,
+                  titleString: S.of(context).mayMoveInPlacingPhase,
+                  subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
+                )
+              : SizedBox(height: 1),
+          Config.experimentsEnabled ? ListItemDivider() : SizedBox(height: 1),
           SettingsSwitchListTile(
             context: context,
             value: Config.isDefenderMoveFirst,
@@ -381,6 +391,16 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   // Moving
+
+  setMayMoveInPlacingPhase(bool value) async {
+    setState(() {
+      rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase = value;
+    });
+
+    print("[config] rule.mayMoveInPlacingPhase: $value");
+
+    Config.save();
+  }
 
   setIsDefenderMoveFirst(bool value) async {
     setState(() {

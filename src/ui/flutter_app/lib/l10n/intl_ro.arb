@@ -948,5 +948,13 @@
     "defaultLanguage": "Limba implicita",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Piesele se pot deplasa în faza de plasare",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "Nu există faze distincte de plasare și de mutare, adică jucătorii pot decide la fiecare mutare dacă doresc să plaseze o piesă pe tablă sau să mute una dintre piesele lor (atâta timp cât mai au piese de plasat).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
 }

@@ -155,6 +155,8 @@ class NativeEngine extends Engine {
     await send(
         'setoption name HasBannedLocations value ${Config.hasBannedLocations}');
     await send(
+        'setoption name MayMoveInPlacingPhase value ${Config.mayMoveInPlacingPhase}');
+    await send(
         'setoption name IsDefenderMoveFirst value ${Config.isDefenderMoveFirst}');
     await send(
         'setoption name MayRemoveMultiple value ${Config.mayRemoveMultiple}');

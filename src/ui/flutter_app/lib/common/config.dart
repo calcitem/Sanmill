@@ -72,6 +72,7 @@ class Config {
   static int piecesAtLeastCount = 3;
   static bool hasDiagonalLines = false;
   static bool hasBannedLocations = false;
+  static bool mayMoveInPlacingPhase = false;
   static bool isDefenderMoveFirst = false;
   static bool mayRemoveMultiple = false;
   static bool mayRemoveFromMillsAlways = false;
@@ -107,7 +108,8 @@ class Config {
     Config.experimentsEnabled = settings['ExperimentsEnabled'] ?? false;
 
     // Display
-    Config.languageCode = settings['LanguageCode'] ?? Constants.defaultLanguageCodeName;
+    Config.languageCode =
+        settings['LanguageCode'] ?? Constants.defaultLanguageCodeName;
     Config.standardNotationEnabled =
         settings['StandardNotationEnabled'] ?? true;
     Config.isPieceCountInHandShown =
@@ -145,6 +147,8 @@ class Config {
         Config.hasDiagonalLines = settings['HasDiagonalLines'] ?? false;
     rule.hasBannedLocations =
         Config.hasBannedLocations = settings['HasBannedLocations'] ?? false;
+    rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase =
+        settings['MayMoveInPlacingPhase'] ?? false;
     rule.isDefenderMoveFirst =
         Config.isDefenderMoveFirst = settings['IsDefenderMoveFirst'] ?? false;
     rule.mayRemoveMultiple =
@@ -215,6 +219,7 @@ class Config {
     settings['PiecesAtLeastCount'] = Config.piecesAtLeastCount;
     settings['HasDiagonalLines'] = Config.hasDiagonalLines;
     settings['HasBannedLocations'] = Config.hasBannedLocations;
+    settings['MayMoveInPlacingPhase'] = Config.mayMoveInPlacingPhase;
     settings['IsDefenderMoveFirst'] = Config.isDefenderMoveFirst;
     settings['MayRemoveMultiple'] = Config.mayRemoveMultiple;
     settings['MayRemoveFromMillsAlways'] = Config.mayRemoveFromMillsAlways;

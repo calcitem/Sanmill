@@ -948,5 +948,13 @@
     "defaultLanguage": "默认语言",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "可以在摆子阶段走子",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "摆子阶段和走子阶段无严格界限。即，玩家可以在每一步棋中决定是要摆子还是走子（只要还有剩余的棋子可以摆子）。",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
 }

@@ -948,5 +948,13 @@
     "defaultLanguage": "Язык по умолчанию",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Фигуры могут перемещаться в фазе размещения",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "Не существует отдельных фаз размещения и перемещения, т.е. игроки могут решать на каждом ходу, хотят ли они разместить фигуру на доске или переместить одну из своих фигур (пока у них есть оставшиеся фигуры для размещения).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
 }

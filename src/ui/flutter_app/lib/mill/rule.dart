@@ -24,6 +24,7 @@ class Rule {
   int piecesAtLeastCount = 3;
   bool hasDiagonalLines = false;
   bool hasBannedLocations = false;
+  bool mayMoveInPlacingPhase = false;
   bool isDefenderMoveFirst = false;
   bool mayRemoveMultiple = false;
   bool mayRemoveFromMillsAlways = false;

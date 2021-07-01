@@ -948,5 +948,13 @@
     "defaultLanguage": "Idioma por defecto",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Las piezas pueden moverse en la fase de colocación",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "No hay fases distintas de colocación y movimiento, es decir, los jugadores pueden decidir en cada movimiento si quieren colocar una pieza en el tablero o mover una de sus piezas (siempre que les queden piezas por colocar).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
 }

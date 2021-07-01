@@ -117,6 +117,11 @@ void on_hasBannedLocations(const Option &o)
     rule.hasBannedLocations = (bool)o;
 }
 
+void on_mayMoveInPlacingPhase(const Option &o)
+{
+    rule.mayMoveInPlacingPhase = (bool)o;
+}
+
 void on_isDefenderMoveFirst(const Option &o)
 {
     rule.isDefenderMoveFirst = (bool)o;
@@ -196,6 +201,7 @@ void init(OptionsMap &o)
     o["PiecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
     o["HasDiagonalLines"] << Option(false, on_hasDiagonalLines);
     o["HasBannedLocations"] << Option(false, on_hasBannedLocations);
+    o["MayMoveInPlacingPhase"] << Option(false, on_mayMoveInPlacingPhase);
     o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
     o["MayRemoveFromMillsAlways"] << Option(false, on_mayRemoveFromMillsAlways);

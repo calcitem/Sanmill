@@ -948,5 +948,13 @@
     "defaultLanguage": "اللغة الافتراضية",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "يمكن أن تتحرك القطع في مرحلة الوضع",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "لا توجد مراحل وضع وتحريك مميزة ، أي يمكن للاعبين أن يقرروا في كل حركة ما إذا كانوا يريدون وضع قطعة على اللوحة أو نقل إحدى قطعهم (طالما أن لديهم قطعًا متبقية لوضعها).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
 }

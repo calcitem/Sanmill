@@ -42,6 +42,9 @@ struct Rule
     // In the placing phase, the points of removed pieces will no longer be able to place.
     bool hasBannedLocations;
 
+    // The pieces can move in the placing phase.
+    bool mayMoveInPlacingPhase;
+
     // The player who moves second in the placing phrase moves first in the moving phrase.
     bool isDefenderMoveFirst;
 
@@ -70,7 +73,7 @@ struct Rule
     size_t nMoveRule;
 };
 
-#define N_RULES 4
+#define N_RULES 5
 extern const struct Rule RULES[N_RULES];
 extern struct Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

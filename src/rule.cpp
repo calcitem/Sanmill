@@ -29,6 +29,7 @@ struct Rule rule = {
         3,          // 赛点子数为3
         false,      // 没有斜线
         false,      // 没有禁点，摆棋阶段被提子的点可以再摆子
+        false,      // Lasker Morris
         false,      // 先摆棋者先行棋
         false,      // 多个“三连”只能提一子
         false,      // 不能提对手的“三连”子，除非无子可提；
@@ -54,6 +55,7 @@ const struct Rule RULES[N_RULES] = {
         3,          // 赛点子数为3
         false,      // 没有斜线
         false,      // 没有禁点，摆棋阶段被提子的点可以再摆子
+        false,      // Lasker Morris
         false,      // 先摆棋者先行棋
         false,      // 多个“三连”只能提一子
         false,      // 不能提对手的“三连”子，除非无子可提；
@@ -76,6 +78,7 @@ const struct Rule RULES[N_RULES] = {
         3,          // 赛点子数为3
         true,       // 有斜线
         true,       // 有禁点，摆棋阶段被提子的点不能再摆子
+        false,      // Lasker Morris
         true,       // 后摆棋者先行棋
         false,      // 多个“三连”只能提一子
         true,       // 可以提对手的“三连”子
@@ -93,6 +96,7 @@ const struct Rule RULES[N_RULES] = {
         3,          // 赛点子数为3
         false,      // 没有斜线
         false,      // 没有禁点，摆棋阶段被提子的点可以再摆子
+        false,      // Lasker Morris
         false,      // 先摆棋者先行棋
         false,      // 多个“三连”只能提一子
         false,      // 不能提对手的“三连”子，除非无子可提；
@@ -115,6 +119,25 @@ const struct Rule RULES[N_RULES] = {
         3,          // 赛点子数为3
         true,       // 有斜线
         false,      // 没有禁点，摆棋阶段被提子的点可以再摆子
+        false,      // Lasker Morris
+        false,      // 先摆棋者先行棋
+        false,      // 多个“三连”只能提一子
+        false,      // 不能提对手的“三连”子，除非无子可提；
+        true,       // 摆棋满子（闷棋，只有12子棋才出现）算先手负
+        true,       // 走棋阶段不能行动（被“闷”）算负
+        true,       // 剩三子时可以飞棋
+        100         // 100着
+    },
+    {
+        "Lasker Morris",      // 莫里斯九子棋
+        // 规则说明
+        "规则与成三棋基本相同，只是在走子阶段，当一方仅剩3子时，他可以飞子到任意空位。",
+        10,         // 双方各9子
+        3,          // 飞子条件为剩余3颗子
+        3,          // 赛点子数为3
+        false,      // 没有斜线
+        false,      // 没有禁点，摆棋阶段被提子的点可以再摆子
+        true,       // Lasker Morris
         false,      // 先摆棋者先行棋
         false,      // 多个“三连”只能提一子
         false,      // 不能提对手的“三连”子，除非无子可提；
