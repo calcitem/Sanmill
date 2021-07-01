@@ -62,10 +62,6 @@ class SettingsListTile extends StatelessWidget {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ltr
-              ? Icon(null)
-              : Icon(Icons.keyboard_arrow_left,
-                  color: AppTheme.listTileSubtitleColor),
           Text(
             trailingColor == null
                 ? (trailingString == null ? "" : trailingString!)
@@ -76,10 +72,8 @@ class SettingsListTile extends StatelessWidget {
                   trailingColor == null ? null : Color(trailingColor!),
             ),
           ),
-          ltr
-              ? Icon(Icons.keyboard_arrow_right,
-                  color: AppTheme.listTileSubtitleColor)
-              : Icon(null),
+          Icon(ltr ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_left,
+              color: AppTheme.listTileSubtitleColor)
         ],
       ),
       onTap: onTap,
