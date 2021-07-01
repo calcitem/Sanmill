@@ -113,7 +113,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       setState(() {
         screenView = PersonalizationSettingsPage();
       });
-    } else if (drawerIndex == DrawerIndex.feedback) {
+    } else if (drawerIndex == DrawerIndex.feedback && !Config.developerMode) {
       setState(() {
         if (Platform.isWindows) {
           print("flutter_email_sender does not support Windows.");
