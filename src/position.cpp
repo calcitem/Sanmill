@@ -405,6 +405,7 @@ bool Position::legal(Move m) const
 void Position::do_move(Move m)
 {
     bool ret = false;
+    currentSquare = SQ_NONE;
 
     const MoveType mt = type_of(m);
 
@@ -625,7 +626,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         start();
     }
 
-    if (phase == Phase::placing) {
+    if (currentSquare == SQ_NONE) {
         piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.piecesCount - pieceInHandCount[us]);
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;
@@ -691,7 +692,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             action = Action::remove;
         }
 
-    } else if (phase == Phase::moving) {
+    } else if (currentSquare != SQ_NONE) {
 
 #ifdef MUEHLE_NMM
         if (is_all_surrounded(~sideToMove, currentSquare, s)) {

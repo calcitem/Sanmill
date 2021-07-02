@@ -36,7 +36,9 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             continue;
         }
 
-        if (rule.mayFly && pos.piece_on_board_count(pos.side_to_move()) <= rule.flyPieceCount) {
+        if (rule.mayFly &&
+            pos.piece_on_board_count(pos.side_to_move()) <= rule.flyPieceCount &&
+            pos.piece_in_hand_count(pos.side_to_move()) == 0) {
             // piece count < 3 or 4 and allow fly, if is empty point, that's ok, do not need in move list
             for (to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!pos.get_board()[to]) {
@@ -63,10 +65,16 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 {
     ExtMove *cur = moveList;
 
-    for (auto s : MoveList<LEGAL>::movePriorityList) {
-        if (!pos.get_board()[s]) {
-            *cur++ = (Move)s;
+    if (pos.piece_in_hand_count(pos.side_to_move()) > 0) {
+        for (auto s : MoveList<LEGAL>::movePriorityList) {
+            if (!pos.get_board()[s]) {
+                *cur++ = (Move)s;
+            }
         }
+    }
+
+    if (rule.mayMoveInPlacingPhase) {
+        return generate<MOVE>(pos, cur);
     }
 
     return cur;

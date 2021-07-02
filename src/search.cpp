@@ -112,8 +112,10 @@ int Thread::search()
     }
 
     if (rootPos->get_phase() == Phase::placing) {
-        posKeyHistory.clear();
-        rootPos->st.rule50 = 0;
+        if (!rule.mayMoveInPlacingPhase) {
+            posKeyHistory.clear();
+            rootPos->st.rule50 = 0;
+        }
     } else if (rootPos->get_phase() == Phase::moving) {
         rootPos->st.rule50 = (int)posKeyHistory.size();
     }
