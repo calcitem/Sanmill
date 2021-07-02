@@ -88,11 +88,11 @@
     "@tipPlace": {
         "description": "Place your pieces."
     },
-    "tipBanPlace": "Cannot place it here.",
+    "tipBanPlace": "You cannot place it here.",
     "@tipBanPlace": {
         "description": "Cannot place it here."
     },
-    "tipPlaced": "Placed.",
+    "tipPlaced": "You placed.",
     "@tipPlaced": {
         "description": "Placed."
     },
@@ -144,7 +144,7 @@
     "@tipCannotMoveOpponentsPieces": {
         "description": "You can't move your opponent's pieces."
     },
-    "tipThreePiecesInLine": "There are 3 pieces in a line.",
+    "tipThreePiecesInLine": "There are three pieces in a line.",
     "@tipThreePiecesInLine": {
         "description": "There are 3 pieces in a line."
     },
@@ -152,7 +152,7 @@
     "@tipSelectPieceToMove": {
         "description": "Select your piece to move."
     },
-    "tipHaveThreePiecesLeft": "You have 3 pieces left.",
+    "tipHaveThreePiecesLeft": "You have three pieces left.",
     "@tipHaveThreePiecesLeft": {
         "description": "You have 3 pieces left."
     },
@@ -236,11 +236,11 @@
     "@noRecording": {
         "description": "No recording."
     },
-    "pleaseWait": "Please wait...",
+    "pleaseWait": "Please wait.",
     "@pleaseWait": {
         "description": "Please wait..."
     },
-    "restartGame": "Restart current game?",
+    "restartGame": "Restart the current game?",
     "@restartGame": {
         "description": "Restart current game?"
     },
@@ -288,7 +288,7 @@
     "@loseReasonNoWay": {
         "description": " is no way to go."
     },
-    "loseReasonBoardIsFull": "The board is full, no way to go.",
+    "loseReasonBoardIsFull": "The board is full, and no way to go.",
     "@loseReasonBoardIsFull": {
         "description": "The board is full, no way to go."
     },
@@ -300,7 +300,7 @@
     "@drawReasonRule50": {
         "description": "In the moving phase, no piece has been removed in the last specific number of moves."
     },
-    "drawReasonBoardIsFull": "It is a Draw because the board is full",
+    "drawReasonBoardIsFull": "It is a Draw because the board is full.",
     "@drawReasonBoardIsFull": {
         "description": "It is a Draw because the board is full"
     },
@@ -320,7 +320,7 @@
     "@youWin": {
         "description": "You win! Congratulations!"
     },
-    "challengeHarderLevel": "Challenge harder level? The new level will be Level ",
+    "challengeHarderLevel": "Challenge harder level? The new level will be level ",
     "@challengeHarderLevel": {
         "description": "Challenge harder level?"
     },
@@ -484,7 +484,7 @@
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed.",
+    "mayRemoveMultiple_Detail": "If a player closes more than one mill at once, she will remove the number of mills she closed.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
@@ -500,7 +500,7 @@
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw.",
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "When the board is full at the end of the placing phase, the side that places first loses the game. Otherwise, the game is a draw.",
     "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
         "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
     },
@@ -684,7 +684,7 @@
     "@toSelectPiece": {
         "description": "Tap on a piece to move it."
     },
-    "toMovePiece": "Tap on point connected to piece to move it.",
+    "toMovePiece": "Tap on a point connected to piece to move it.",
     "@toMovePiece": {
         "description": "Tap on point connected to piece to move it."
     },
@@ -913,7 +913,7 @@
     "@autoReplay": {
         "description": "Auto re-play moves"
     },
-    "atEnd": "At the end of the move list.",
+    "atEnd": "You are at the end of the move list.",
     "@atEnd": {
         "description": "At the end of the move list."
     },
@@ -929,7 +929,7 @@
     "@more": {
         "description": "More"
     },
-    "experimental": "This is an experimental feature.",
+    "experimental": "It is an experimental feature.",
     "@experimental": {
         "description": "This is an experimental feature."
     },
@@ -953,7 +953,7 @@
     "@mayMoveInPlacingPhase": {
         "description": "The pieces can move in the placing phase"
     },
-    "mayMoveInPlacingPhase_Detail": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place).",
+    "mayMoveInPlacingPhase_Detail": "There are no distinct placing and moving phases, i.e., the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
