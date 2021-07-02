@@ -20,22 +20,6 @@
 #include "position.h"
 #include "mills.h"
 
-/// generate<PLACE> generates all places.
-/// Returns a pointer to the end of the move list.
-template<>
-ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
-{
-    ExtMove *cur = moveList;
-
-    for (auto s : MoveList<LEGAL>::movePriorityList) {
-        if (!pos.get_board()[s]) {
-            *cur++ = (Move)s;
-        }
-    }
-
-    return cur;
-}
-
 /// generate<MOVE> generates all moves.
 /// Returns a pointer to the end of the move moves.
 template<>
@@ -66,6 +50,22 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                     *cur++ = make_move(from, to);
                 }
             }
+        }
+    }
+
+    return cur;
+}
+
+/// generate<PLACE> generates all places.
+/// Returns a pointer to the end of the move list.
+template<>
+ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
+{
+    ExtMove *cur = moveList;
+
+    for (auto s : MoveList<LEGAL>::movePriorityList) {
+        if (!pos.get_board()[s]) {
+            *cur++ = (Move)s;
         }
     }
 
