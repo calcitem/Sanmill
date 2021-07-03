@@ -78,12 +78,12 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerListItem(
         index: DrawerIndex.humanVsAi,
         title: S.of(context).humanVsAi,
-        icon: Icon(Icons.person_outline),
+        icon: Icon(Icons.account_circle_outlined),
       ),
       DrawerListItem(
         index: DrawerIndex.humanVsHuman,
         title: S.of(context).humanVsHuman,
-        icon: Icon(Icons.people_outline),
+        icon: Icon(Icons.supervised_user_circle_outlined),
       ),
       DrawerListItem(
         index: DrawerIndex.aiVsAi,
