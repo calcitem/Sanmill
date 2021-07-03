@@ -20,23 +20,23 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Human Vs AI",
+    "humanVsAi": "Human Vs. AI",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "Human Vs Human",
+    "humanVsHuman": "Human Vs. Human",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "AI Vs AI",
+    "aiVsAi": "AI Vs. AI",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "Human Vs Cloud",
+    "humanVsCloud": "Human Vs. Cloud",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "Human Vs LAN",
+    "humanVsLAN": "Human Vs. LAN",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
@@ -248,7 +248,7 @@
     "@restart": {
         "description": "Restart"
     },
-    "gameStarted": "Game started, please place",
+    "gameStarted": "The Game started, please place",
     "@gameStarted": {
         "description": "Game started, please place"
     },
@@ -496,7 +496,7 @@
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull": "The second player loses when the board is full",
+    "isWhiteLoseButNotDrawWhenBoardFull": "The second player loses when the board is full.",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
@@ -524,7 +524,7 @@
     "@nMoveRule": {
         "description": "N-move rule"
     },
-    "nMoveRule_Detail": "The game is drawn if there has been no removal in a specific number of moves by each player.",
+    "nMoveRule_Detail": "The game is drawn if there has been no removal in a specific number of moves.",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
@@ -684,7 +684,7 @@
     "@toSelectPiece": {
         "description": "Tap on a piece to move it."
     },
-    "toMovePiece": "Tap on a point connected to piece to move it.",
+    "toMovePiece": "Tap on a point connected to a piece to move it.",
     "@toMovePiece": {
         "description": "Tap on point connected to piece to move it."
     },
@@ -712,7 +712,7 @@
     "@results": {
         "description": "Results"
     },
-    "cannotRemoveFromMill": "Cannot remove from the mill.",
+    "cannotRemoveFromMill": "You can not remove it from the mill.",
     "@cannotRemoveFromMill": {
         "description": "Cannot remove from the mill."
     },
@@ -728,7 +728,7 @@
     "@privacyPolicy_Detail_1": {
         "description": "Privacy Policy Detail 1"
     },
-    "privacyPolicy_Detail_2": ". If you do not agree to this Policy, please do not use this App. Using the App implies that you accept these terms.",
+    "privacyPolicy_Detail_2": ". If you do not agree to this Policy, please do not use this app. Using the app implies that you accept these terms.",
     "@privacyPolicy_Detail_2": {
         "description": "Privacy Policy Detail 2"
     },
@@ -801,7 +801,7 @@
     "@theme": {
         "description": "Theme"
     },
-    "helpContent": "The game aims to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game automatically draws if a position occurs for the third time or makes no remove in the last 100 (configurable) moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when reducing the player to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player can put three of his pieces straight, he has a \"mill\" and may remove one of his opponent's pieces from the board.\n\nIn some rules, players must remove any other pieces first before removing a piece from a formed mill.\n\nYou cannot place the pieces to the points of removed pieces again in the placing phase in some rules.\n\nOnce use all pieces, players take turns moving.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot do so, he has lost the game. As in the placing phase, a player who aligns three of his pieces on a board line has a mill and may remove one of his opponent's pieces. Any player reduces to two pieces, has no option to form new mills, and thus loses the game. A player can also lose when more than three pieces if his opponent blocks them from moving.\n\nFlying\n\nIn some variants of the rules, once a player has only three pieces left, his pieces can fly, hop, or jump to any vacant points, not only adjacent ones.\n",
+    "helpContent": "The game aims to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game automatically draws if a position occurs for the third time or makes no remove in the last 100 (configurable) moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when reducing the player to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player can put three of his pieces straight, he has a \"mill\" and may remove one of his opponent's pieces from the board.\n\nIn some rules, players must remove any other pieces first before removing a piece from a formed mill.\n\nYou cannot place the pieces to the points of removed pieces again in the placing phase in some rules.\n\nOnce use all pieces, players take turns moving.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot do so, he has lost the game. A player who aligns three of his pieces on a board line has a mill and may remove one of his opponent's pieces as in the placing phase. Any player reduces to two pieces, has no option to form new mills, and thus loses the game. A player can also lose when more than three pieces if his opponent blocks them from moving.\n\nFlying\n\nIn some variants of the rules, once a player has only three pieces left, his pieces can fly, hop, or jump to any vacant points, not only adjacent ones.\n",
     "@helpContent": {
         "description": "Help Content"
     },
@@ -937,7 +937,7 @@
     "@experiments": {
         "description": "Experiments"
     },
-    "ossLicenses": "Open source licenses",
+    "ossLicenses": "Open-source licenses",
     "@ossLicenses": {
         "description": "Open source licenses"
     },
