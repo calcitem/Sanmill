@@ -27,21 +27,42 @@ import 'package:sanmill/widgets/list_item_divider.dart';
 
 Map<String, Strings> languageCodeToStrings = {
   "ar": ArabicStrings(),
+  "bg": BulgarianStrings(),
+  "bn": BengaliStrings(),
   "cs": CzechStrings(),
+  "da": DanishStrings(),
   "de": GermanStrings(),
+  "el": GreekStrings(),
   "en": EnglishStrings(),
   "es": SpanishStrings(),
+  "et": EstonianStrings(),
   "fa": FarsiStrings(),
+  "fi": FinnishStrings(),
   "fr": FrenchStrings(),
+  "gu": GujaratiStrings(),
   "hi": HindiStrings(),
+  "hr": CroatianStrings(),
   "hu": HungarianStrings(),
+  "id": IndonesianStrings(),
   "it": ItalianStrings(),
   "ja": JapaneseStrings(),
   "ko": KoreanStrings(),
+  "lt": LithuanianStrings(),
+  "lv": LatvianStrings(),
+  "mk": MacedonianStrings(),
+  "ms": MalayStrings(),
+  "nl": DutchStrings(),
   "pl": PolishStrings(),
   "pt": PortugueseStrings(),
   "ro": RomanianStrings(),
   "ru": RussianStrings(),
+  "sk": SlovakStrings(),
+  "sl": SlovenianStrings(),
+  "sq": AlbanianStrings(),
+  "sr": SerbianStrings(),
+  "sv": SwedishStrings(),
+  "te": TeluguStrings(),
+  "th": ThaiStrings(),
   "tr": TurkishStrings(),
   "zh": ChineseStrings(),
 };
@@ -61,6 +82,24 @@ class ArabicStrings extends Strings {
   String get tapBackAgainToLeave => 'انقر مرة أخرى للمغادرة.';
 }
 
+/// bg
+class BulgarianStrings extends Strings {
+  @override
+  String get languageName => 'български';
+
+  @override
+  String get tapBackAgainToLeave => 'Докоснете отново назад, за да излезете.';
+}
+
+/// bn
+class BengaliStrings extends Strings {
+  @override
+  String get languageName => 'বাংলা';
+
+  @override
+  String get tapBackAgainToLeave => 'ছেড়ে যেতে আবার আলতো চাপুন।';
+}
+
 /// cs
 class CzechStrings extends Strings {
   @override
@@ -70,6 +109,15 @@ class CzechStrings extends Strings {
   String get tapBackAgainToLeave => 'Opětovným klepnutím zpět odejdete.';
 }
 
+/// da
+class DanishStrings extends Strings {
+  @override
+  String get languageName => 'Dansk';
+
+  @override
+  String get tapBackAgainToLeave => 'Tryk tilbage igen for at gå.';
+}
+
 /// de
 class GermanStrings extends Strings {
   @override
@@ -77,6 +125,15 @@ class GermanStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => 'Nochmal drücken um zu Beenden.';
+}
+
+/// el
+class GreekStrings extends Strings {
+  @override
+  String get languageName => 'Ελληνικά';
+
+  @override
+  String get tapBackAgainToLeave => 'Πατήστε ξανά πίσω για να φύγετε.';
 }
 
 /// en
@@ -97,6 +154,15 @@ class SpanishStrings extends Strings {
   String get tapBackAgainToLeave => 'Vuelve a tocar para salir.';
 }
 
+/// et
+class EstonianStrings extends Strings {
+  @override
+  String get languageName => 'Eestlane';
+
+  @override
+  String get tapBackAgainToLeave => 'Koputage uuesti tagasi, et lahkuda.';
+}
+
 /// fa
 class FarsiStrings extends Strings {
   @override
@@ -105,6 +171,15 @@ class FarsiStrings extends Strings {
   @override
   String get tapBackAgainToLeave =>
       'برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.';
+}
+
+/// fi
+class FinnishStrings extends Strings {
+  @override
+  String get languageName => 'Suomalainen';
+
+  @override
+  String get tapBackAgainToLeave => 'Poistu napauttamalla uudelleen takaisin.';
 }
 
 /// fr
@@ -116,6 +191,15 @@ class FrenchStrings extends Strings {
   String get tapBackAgainToLeave => 'Tapez à nouveau pour quitter.';
 }
 
+/// gu
+class GujaratiStrings extends Strings {
+  @override
+  String get languageName => 'ગુજરાતી';
+
+  @override
+  String get tapBackAgainToLeave => 'જવા માટે ફરીથી ટેપ કરો.';
+}
+
 /// hi
 class HindiStrings extends Strings {
   @override
@@ -123,6 +207,15 @@ class HindiStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => 'जाने के लिए फिर से टैप करें।';
+}
+
+/// hr
+class CroatianStrings extends Strings {
+  @override
+  String get languageName => 'Hrvatski';
+
+  @override
+  String get tapBackAgainToLeave => 'Ponovno dodirnite za napuštanje.';
 }
 
 /// hu
@@ -133,6 +226,15 @@ class HungarianStrings extends Strings {
   @override
   String get tapBackAgainToLeave =>
       'A kilépéshez kattintson ismételten a Vissza gombra.';
+}
+
+/// id
+class IndonesianStrings extends Strings {
+  @override
+  String get languageName => 'Indonesia';
+
+  @override
+  String get tapBackAgainToLeave => 'Ketuk kembali lagi untuk pergi.';
 }
 
 /// it
@@ -160,6 +262,52 @@ class KoreanStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => '애플리케이션을 종료하려면 리턴 키를 다시 누르십시오.';
+}
+
+/// lt
+class LithuanianStrings extends Strings {
+  @override
+  String get languageName => 'Lietuvis';
+
+  @override
+  String get tapBackAgainToLeave =>
+      'Dar kartą bakstelėkite atgal, kad išeitumėte.';
+}
+
+/// lv
+class LatvianStrings extends Strings {
+  @override
+  String get languageName => 'Latvietis';
+
+  @override
+  String get tapBackAgainToLeave => 'Pieskarieties atpakaļ, lai izietu.';
+}
+
+/// mk
+class MacedonianStrings extends Strings {
+  @override
+  String get languageName => 'Македонски';
+
+  @override
+  String get tapBackAgainToLeave => 'Допрете назад за да заминете.';
+}
+
+/// ms
+class MalayStrings extends Strings {
+  @override
+  String get languageName => 'Melayu';
+
+  @override
+  String get tapBackAgainToLeave => 'Ketik kembali sekali lagi untuk pergi.';
+}
+
+/// nl
+class DutchStrings extends Strings {
+  @override
+  String get languageName => 'Nederlands';
+
+  @override
+  String get tapBackAgainToLeave => 'Tik opnieuw om te vertrekken.';
 }
 
 /// pl
@@ -196,6 +344,70 @@ class RussianStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => 'Нажмите назад еще раз, чтобы выйти.';
+}
+
+/// sk
+class SlovakStrings extends Strings {
+  @override
+  String get languageName => 'Slovák';
+
+  @override
+  String get tapBackAgainToLeave => 'Ťuknutím na tlačidlo späť znova odíďte.';
+}
+
+/// sl
+class SlovenianStrings extends Strings {
+  @override
+  String get languageName => 'Slovenščina';
+
+  @override
+  String get tapBackAgainToLeave =>
+      'Ponovno se dotaknite nazaj, če želite oditi.';
+}
+
+/// sq
+class AlbanianStrings extends Strings {
+  @override
+  String get languageName => 'Shqiptare';
+
+  @override
+  String get tapBackAgainToLeave => 'Trokit përsëri përsëri për t\'u larguar.';
+}
+
+/// sr
+class SerbianStrings extends Strings {
+  @override
+  String get languageName => 'Српски';
+
+  @override
+  String get tapBackAgainToLeave => 'Додирните поново да бисте изашли.';
+}
+
+/// sv
+class SwedishStrings extends Strings {
+  @override
+  String get languageName => 'Svenska';
+
+  @override
+  String get tapBackAgainToLeave => 'Tryck tillbaka igen för att gå vidare.';
+}
+
+/// te
+class TeluguStrings extends Strings {
+  @override
+  String get languageName => 'తెలుగు';
+
+  @override
+  String get tapBackAgainToLeave => 'బయలుదేరడానికి మళ్ళీ నొక్కండి.';
+}
+
+/// th
+class ThaiStrings extends Strings {
+  @override
+  String get languageName => 'ไทย';
+
+  @override
+  String get tapBackAgainToLeave => 'แตะกลับอีกครั้งเพื่อออก';
 }
 
 /// tr
