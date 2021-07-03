@@ -1,0 +1,6 @@
+v1.1.10
+
+* Behebung von Problemen mit Optionspfeilen in RTL-Sprachen.
+* Verbesserung der Farsi-Übersetzung (persische Sprache) (WIP).
+* Verbessern der englischen Übersetzungen.
+* Hinzufügen von Bulgarisch/Bengalisch/Dänisch/Griechisch/Estnisch/Finnisch/Gujarati/Kroatisch/Indonesisch/Litauisch/Lateinisch/Mazedonisch/Malaiisch/Niederländisch/Slowakisch/Slowenisch/Albanisch/Serbisch/Schwedisch/Telugu/Thai Maschinenübersetzungen.

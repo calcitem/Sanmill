@@ -1,0 +1,6 @@
+v1.1.10
+
+* Fix options arrows issues in RTL languages.
+* Improve Farsi (Persian language) translation (WIP).
+* Improve English translations.
+* Add Bulgarian/Bengali/Danish/Greek/Estonian/Finnish/Gujarati/Croatian/Indonesian/Lithuanian/Latvian/Macedonian/Malay/Dutch/Slovak/Slovenian/Albanian/Serbian/Swedish/Telugu/Thai machine translations.
