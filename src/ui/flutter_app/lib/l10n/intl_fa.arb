@@ -20,23 +20,23 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "انسان در مقابل رایانه",
+    "humanVsAi": "انسان در برابر رایانه",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "انسان در مقابل انسان",
+    "humanVsHuman": "انسان در برابر انسان",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "رایانه در مقابل رایانه",
+    "aiVsAi": "رایانه در برابر رایانه",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "انسان در مقابل فضای ابری",
+    "humanVsCloud": "انسان در برابر فضای ابری",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "انسان در مقابل LAN",
+    "humanVsLAN": "انسان در برابر LAN",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
@@ -316,7 +316,7 @@
     "@gameOver": {
         "description": "Game Over"
     },
-    "youWin": "شما برنده می شوید! تبریک می گویم!",
+    "youWin": "تبریک! شما برنده شدید!",
     "@youWin": {
         "description": "You win! Congratulations!"
     },
@@ -336,7 +336,7 @@
     "@playerName": {
         "description": "Player Name"
     },
-    "about": "در باره",
+    "about": "درباره",
     "@about": {
         "description": "About"
     },
@@ -364,7 +364,7 @@
     "@skillLevel": {
         "description": "Difficulty level"
     },
-    "moveTime": "زمان تفکر رایانه ای",
+    "moveTime": "زمان تفکر رایانه‌ای",
     "@moveTime": {
         "description": "AI thinking time"
     },
@@ -372,11 +372,11 @@
     "@difficulty": {
         "description": "Difficulty"
     },
-    "playSounds": "جلوه های صوتی",
+    "playSounds": "جلوه‌های صوتی",
     "@playSounds": {
         "description": "Sound effects"
     },
-    "playSoundsInTheGame": "صداها را در بازی پخش کنید",
+    "playSoundsInTheGame": "پخش صداها را در بازی",
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
@@ -396,7 +396,7 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "کامپیوتر",
+    "ai": "هوش مصنوعی",
     "@ai": {
         "description": "AI"
     },
@@ -444,7 +444,7 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
-    "flyPieceCount": "تعداد قطعه پرواز",
+    "flyPieceCount": "تعداد مهره‌های پرواز",
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
@@ -452,7 +452,7 @@
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
-    "piecesAtLeastCount": "Pieces At Least",
+    "piecesAtLeastCount": "حداقل مهره‌ها",
     "@piecesAtLeastCount": {
         "description": "Pieces At Least"
     },
@@ -464,7 +464,7 @@
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
-    "hasBannedLocations": "برداشتن قطعات را علامت گذاری کرده و به تأخیر بیندازید",
+    "hasBannedLocations": "برداشتن مهره‌ها را علامت گذاری کرده و به تأخیر بیندازید",
     "@hasBannedLocations": {
         "description": "Mark and delay removing pieces"
     },
@@ -480,7 +480,7 @@
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
-    "mayRemoveMultiple": "می تواند چند قطعه را حذف کند",
+    "mayRemoveMultiple": "می تواند چند مهره را حذف کند",
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
@@ -488,7 +488,7 @@
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
-    "mayRemoveFromMillsAlways": "آسیاب ها را نابود کنید",
+    "mayRemoveFromMillsAlways": "دوز ها را نابود کنید",
     "@mayRemoveFromMillsAlways": {
         "description": "Destroy mills"
     },
@@ -556,7 +556,7 @@
     "@exit": {
         "description": "Exit"
     },
-    "ruleSettings": "تنظیمات قانون",
+    "ruleSettings": "تنظیمات قوانین",
     "@ruleSettings": {
         "description": "Rule Settings"
     },
@@ -580,11 +580,11 @@
     "@lineColor": {
         "description": "Board line color"
     },
-    "whitePieceColor": "پخش کننده 1 قطعه رنگ",
+    "whitePieceColor": "رنگ مهره بازیکن ۱",
     "@whitePieceColor": {
         "description": "Player 1 piece color"
     },
-    "blackPieceColor": "Player 2 piece color",
+    "blackPieceColor": "رنگ مهره بازیکن ۲",
     "@blackPieceColor": {
         "description": "Player 2 piece color"
     },
@@ -592,11 +592,11 @@
     "@messageColor": {
         "description": "Message color"
     },
-    "aiIsLazy": "کامپیوتر تنبل است",
+    "aiIsLazy": "هوش مصنوعی تنبل است",
     "@aiIsLazy": {
         "description": "AI is Lazy"
     },
-    "isPieceCountInHandShown": "تعداد قطعات موجود در دست را نشان دهید",
+    "isPieceCountInHandShown": "تعداد مهره‌های موجود در دست را نشان دهید",
     "@isPieceCountInHandShown": {
         "description": "Show count of pieces in hand"
     },
@@ -636,7 +636,7 @@
     "@restore": {
         "description": "Restore"
     },
-    "restoreDefaultSettings": "تنظیمات پیش فرض را بازیابی کنید",
+    "restoreDefaultSettings": "بازیابی به تنظیمات پیشفرض",
     "@restoreDefaultSettings": {
         "description": "Restore Default Settings"
     },
@@ -644,7 +644,7 @@
     "@exitApp": {
         "description": "The app will exit."
     },
-    "exitAppManually": "شما باید بلافاصله ببندید و برنامه را دوباره باز کنید تا اثر بگذارد.",
+    "exitAppManually": "شما باید برنامه را بلافاصله ببندید و دوباره باز کنید تا اثر بگذارد.",
     "@exitAppManually": {
         "description": "You have to close immediately and reopen the app to take effect."
     },
@@ -656,7 +656,7 @@
     "@info": {
         "description": "Info"
     },
-    "hint": "اشاره",
+    "hint": "راهنمایی",
     "@hint": {
         "description": "Hint"
     },
@@ -664,11 +664,11 @@
     "@player": {
         "description": "player"
     },
-    "player1": "بازیکن 1",
+    "player1": "بازیکن ۱",
     "@player1": {
         "description": "Player 1"
     },
-    "player2": "بازیکن 2",
+    "player2": "بازیکن ۲",
     "@player2": {
         "description": "Player 2"
     },
@@ -676,11 +676,11 @@
     "@howToPlay": {
         "description": "How to play"
     },
-    "toPlacePiece": "برای قرار دادن قطعه ، روی هر نقطه موجود ضربه بزنید.",
+    "toPlacePiece": "برای قرار دادن مهره ، روی هر خانه(نقطه) موجود ضربه بزنید.",
     "@toPlacePiece": {
         "description": "Tap on any available point to place the piece."
     },
-    "toSelectPiece": "برای حرکت دادن آن ، روی قطعه ضربه بزنید.",
+    "toSelectPiece": "برای حرکت دادن یه مهره رو آن ضربه بزنید.",
     "@toSelectPiece": {
         "description": "Tap on a piece to move it."
     },
