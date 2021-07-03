@@ -78,12 +78,12 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerListItem(
         index: DrawerIndex.humanVsAi,
         title: S.of(context).humanVsAi,
-        icon: Icon(Icons.person),
+        icon: Icon(Icons.person_outline),
       ),
       DrawerListItem(
         index: DrawerIndex.humanVsHuman,
         title: S.of(context).humanVsHuman,
-        icon: Icon(Icons.group),
+        icon: Icon(Icons.people_outline),
       ),
       DrawerListItem(
         index: DrawerIndex.aiVsAi,
@@ -93,7 +93,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerListItem(
         index: DrawerIndex.preferences,
         title: S.of(context).preferences,
-        icon: Icon(Icons.settings),
+        icon: Icon(Icons.settings_outlined),
       ),
       DrawerListItem(
         index: DrawerIndex.ruleSettings,
@@ -103,7 +103,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerListItem(
         index: DrawerIndex.personalization,
         title: S.of(context).personalization,
-        icon: Icon(Icons.color_lens),
+        icon: Icon(Icons.color_lens_outlined),
       ),
       DrawerListItem(
         index: DrawerIndex.feedback,
@@ -113,12 +113,12 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerListItem(
         index: DrawerIndex.Help,
         title: S.of(context).help,
-        icon: Icon(Icons.help),
+        icon: Icon(Icons.help_outline),
       ),
       DrawerListItem(
         index: DrawerIndex.About,
         title: S.of(context).about,
-        icon: Icon(Icons.info),
+        icon: Icon(Icons.info_outline),
       ),
     ];
 
