@@ -16,13 +16,11 @@ dependencies:
   path_provider: ^2.0.2
   package_info_plus: ^1.0.3
   uuid: ^3.0.4
-  url_launcher: ^6.0.7
+  url_launcher: ^6.0.8
   intl: 0.17.0
-  animated_text_kit: ^4.1.1
-  flutter_colorpicker: ^0.4.0
   catcher: ^0.6.6
   stack_trace: ^1.10.0
-  device_info_plus_platform_interface: ^1.0.1
+
   devicelocale: ^0.4.1
   double_back_to_close_app: ^2.0.1
   flutter_picker: ^2.0.2
@@ -30,6 +28,9 @@ dependencies:
   feedback:
     git:
       url: git://github.com/calcitem/feedback.git
+  animated_text_kit: ^4.1.1
+  flutter_colorpicker: ^0.4.0
+  device_info_plus_platform_interface: ^1.0.1
   #pref: ^2.3.0
   #screen_recorder: ^0.0.2
 
