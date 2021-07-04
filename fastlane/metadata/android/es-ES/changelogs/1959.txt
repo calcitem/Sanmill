@@ -1,0 +1,3 @@
+v1.1.3
+
+* Hacer que el remitente de correo electrónico funcione con los dispositivos Android 11 cuando se bloquea.

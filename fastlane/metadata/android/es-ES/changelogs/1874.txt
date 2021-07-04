@@ -1,0 +1,4 @@
+v1.0.17
+
+* Soporta el ajuste del tamaño de la fuente (Tiene efecto después de reiniciar la aplicación).
+* Mantener el silencio al tomar de nuevo (configurable).

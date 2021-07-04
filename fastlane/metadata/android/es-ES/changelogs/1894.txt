@@ -1,0 +1,5 @@
+v1.0.20
+
+* Apoyo Diez / Once hombres de Morris.
+* Se puede establecer cuántas piezas restantes pueden volar.
+* Añadir barra de herramientas de navegación de la historia.

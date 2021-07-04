@@ -1,0 +1,4 @@
+v1.0.13
+
+* Doble vuelta para cerrar la aplicación.
+* Diálogo de política de privacidad emergente cuando se ejecuta por primera vez.

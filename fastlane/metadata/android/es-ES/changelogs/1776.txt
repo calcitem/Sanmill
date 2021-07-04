@@ -1,0 +1,3 @@
+v1.0.4
+
+* Bloqueo de la orientación de la pantalla a la vertical.

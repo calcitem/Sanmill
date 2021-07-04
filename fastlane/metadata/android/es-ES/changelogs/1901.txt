@@ -1,0 +1,4 @@
+v1.0.21
+
+* Soporta la exportación e importación del juego.
+

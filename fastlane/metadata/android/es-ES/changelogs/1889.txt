@@ -1,0 +1,4 @@
+v1.0.19
+
+* Añadir traducción automática al farsi (idioma persa).
+

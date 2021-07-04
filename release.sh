@@ -5,6 +5,7 @@ QT_RC_FILE=millgame.rc
 FLUTTER_WINDOWS_RC_FILE=src/ui/flutter_app/windows/runner/Runner.rc
 EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
 DE_CHANGLOG_DIR=fastlane/metadata/android/de-DE/changelogs
+DE_CHANGLOG_DIR=fastlane/metadata/android/es-ES/changelogs
 ZH_CHANGLOG_DIR=fastlane/metadata/android/zh-CN/changelogs
 
 # Update Build Number

@@ -1,0 +1,5 @@
+v1.0.5
+
+* Indicar las piezas blancas como jugador 1 y las negras como jugador 2
+* Cambiar el texto 'Hint' a 'Info'
+* Corregir un error tipográfico

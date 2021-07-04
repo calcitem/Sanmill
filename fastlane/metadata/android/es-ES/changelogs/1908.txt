@@ -1,0 +1,4 @@
+v1.0.22
+
+* Arreglar el ataque del lado blanco tan temprano desde los lados en el 3er movimiento.
+

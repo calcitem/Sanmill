@@ -1,0 +1,3 @@
+v1.0.3
+
+* Mostrar los botones de reinicio/cancelación en lugar de los botones de sí/no en el diálogo cuando el jugador gana el nivel más difícil.

@@ -1,0 +1,5 @@
+v1.0.10
+
+* Acelerar el pensamiento de los dos primeros movimientos.
+* Sólo mostrar la notación en el tablero en dos lados.
+

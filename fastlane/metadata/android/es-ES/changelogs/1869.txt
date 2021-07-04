@@ -1,0 +1,3 @@
+v1.0.16
+
+* Apoyar el ajuste de la animación de la pieza.
