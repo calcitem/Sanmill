@@ -496,15 +496,15 @@
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull": "بازیکن دوم هنگام پر شدن صفحه از دست می رود",
+    "isWhiteLoseButNotDrawWhenBoardFull": "هنگامی که تخته پر میشود بازیکن دوم بازنده می‌شود",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "در پایان مرحله قرار دادن ، وقتی تخته پر است ، طرفی که ابتدا قرار می گیرد بازی را از دست می دهد ، در غیر این صورت بازی مساوی است.",
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "در پایان مرحله قرار دادن ، وقتی تخته پر است ، طرفی که ابتدا قرار می گیرد بازی را می‌بازد ، در غیر این صورت بازی مساوی است.",
     "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
         "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
     },
-    "isLoseButNotChangeSideWhenNoWay": "از دست دادن هنگامی که هیچ حرکت قانونی است",
+    "isLoseButNotChangeSideWhenNoWay": "وقتی حرکت قانونی وجود ندارد بازنده ای.",
     "@isLoseButNotChangeSideWhenNoWay": {
         "description": "Lose when no legal moves"
     },
@@ -516,7 +516,7 @@
     "@mayFly": {
         "description": "Flying"
     },
-    "mayFly_Detail": "اگر به بازیکن فقط سه یا چهار قطعه (با قابلیت تنظیم) باقی مانده باشد ، می تواند قطعه را به هر نقطه آزاد منتقل کند.",
+    "mayFly_Detail": "اگر بازیکن فقط سه یا چهار مهره (با قابلیت تنظیم) باقی داشته باشد ، می تواند مهره را به هر نقطه آزاد منتقل کند.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
@@ -568,7 +568,7 @@
     "@boardColor": {
         "description": "Board color"
     },
-    "pieceColor": "رنگ قطعه",
+    "pieceColor": "رنگ مهره",
     "@pieceColor": {
         "description": "Piece color"
     },
@@ -604,7 +604,7 @@
     "@isNotationsShown": {
         "description": "Show notations on board"
     },
-    "isHistoryNavigationToolbarShown": "نمایش نوار ابزار پیمایش تاریخچه",
+    "isHistoryNavigationToolbarShown": "نمایش تاریخچه نوار ابزار پیمایش",
     "@isHistoryNavigationToolbarShown": {
         "description": "Show history navigation toolbar"
     },
@@ -620,7 +620,7 @@
     "@boardInnerLineWidth": {
         "description": "Board inner line width"
     },
-    "pieceWidth": "عرض قطعه",
+    "pieceWidth": "عرض مهره",
     "@pieceWidth": {
         "description": "Piece width"
     },
@@ -636,7 +636,7 @@
     "@restore": {
         "description": "Restore"
     },
-    "restoreDefaultSettings": "بازیابی به تنظیمات پیشفرض",
+    "restoreDefaultSettings": "بازیابی تنظیمات پیشفرض",
     "@restoreDefaultSettings": {
         "description": "Restore Default Settings"
     },
@@ -680,23 +680,23 @@
     "@toPlacePiece": {
         "description": "Tap on any available point to place the piece."
     },
-    "toSelectPiece": "برای حرکت دادن یه مهره رو آن ضربه بزنید.",
+    "toSelectPiece": "برای حرکت دادن یک مهره روی آن ضربه بزنید.",
     "@toSelectPiece": {
         "description": "Tap on a piece to move it."
     },
-    "toMovePiece": "برای جابجایی آن روی نقطه مجاور قطعه ضربه بزنید.",
+    "toMovePiece": "برای حرکت دادن یک مهره روی خانه(نقطه) مجاور ضربه بزنید.",
     "@toMovePiece": {
         "description": "Tap on point connected to piece to move it."
     },
-    "toRemovePiece": "برای برداشتن روی یک تکه حریف ضربه بزنید.",
+    "toRemovePiece": "برای حذف کردن مهره حریف روی آن ضربه بزنید.",
     "@toRemovePiece": {
         "description": "Tap on the opponent's one piece to remove."
     },
-    "needToCreateMillFirst": "قبل از اینکه بتوانید قطعه ای را بردارید ، ابتدا باید یک آسیاب ایجاد کنید.",
+    "needToCreateMillFirst": "قبل از اینکه بتوانید مهره ای را حذف کنید ، ابتدا باید یک دوز ایجاد کنید.",
     "@needToCreateMillFirst": {
         "description": "You need to create a mill first before you can remove a piece."
     },
-    "needToPlayWithOwnPieces": "شما باید با قطعات خودتان بازی کنید.",
+    "needToPlayWithOwnPieces": "شما باید با مهره های خودتان بازی کنید.",
     "@needToPlayWithOwnPieces": {
         "description": "You need to play with your pieces."
     },
@@ -712,7 +712,7 @@
     "@results": {
         "description": "Results"
     },
-    "cannotRemoveFromMill": "نمی توان از آسیاب حذف کرد.",
+    "cannotRemoveFromMill": "شما نمیتوانید آن را از دوز حذف کنید.",
     "@cannotRemoveFromMill": {
         "description": "Cannot remove from the mill."
     },
@@ -724,7 +724,7 @@
     "@privacyPolicy": {
         "description": "Privacy Policy"
     },
-    "privacyPolicy_Detail_1": "لطفاً با دقت مطالعه کنید و مطمئن شوید که این موضوع را کاملاً درک کرده و با آن موافق هستید ",
+    "privacyPolicy_Detail_1": "لطفاً با دقت مطالعه کنید و اطمینان حاصل کنید که آن را کاملاً درک کرده و با آن موافق هستید ",
     "@privacyPolicy_Detail_1": {
         "description": "Privacy Policy Detail 1"
     },
