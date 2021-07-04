@@ -1,0 +1,1 @@
+Un juego de Molino que admite muchas variantes de reglas, escrito en Flutter

@@ -1,0 +1,15 @@
+Un programa de Nine Men's Morris (y sus variantes)
+
+Reglas:
+
+* Un jugador que alinea tres de sus piezas en una línea del tablero tiene un molino y puede eliminar la(s) pieza(s) de su oponente.
+* Cualquier jugador se reduce a dos piezas y no tiene opción de formar nuevos molinos y por tanto pierde la partida.
+* Si un jugador no puede mover una de sus piezas (está bloqueado), ha perdido la partida.
+
+Características:
+
+* Soporta muchas variantes de reglas, como el Morris de Nueve Hombres y el Morris de Doce Hombres, la regla de "Volar" o sin regla de "Volar".
+* Juega contra la IA, o juega con ambos bandos
+* Fuerza de juego ajustable
+* Altamente configurable
+* Temas de color
