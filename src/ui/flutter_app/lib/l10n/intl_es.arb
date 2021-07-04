@@ -36,7 +36,7 @@
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "Humanos vs. LAN",
+    "humanVsLAN": "Humanos contra LAN",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
@@ -60,11 +60,11 @@
     "@moveList": {
         "description": "Move list"
     },
-    "noGameRecord": "No hay registro",
+    "noGameRecord": "Sin registro",
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "OK",
+    "ok": "Aceptar",
     "@ok": {
         "description": "OK"
     },
@@ -100,7 +100,7 @@
     "@tipRemove": {
         "description": "Remove a piece."
     },
-    "tipBanRemove": "No se puede quitar.",
+    "tipBanRemove": "No se puede retirar.",
     "@tipBanRemove": {
         "description": "Cannot remove."
     },
@@ -108,15 +108,15 @@
     "@tipRemoved": {
         "description": "Removed."
     },
-    "tipMove": "Mover una pieza.",
+    "tipMove": "Mueva una pieza.",
     "@tipMove": {
         "description": "Move a piece."
     },
-    "tipCannotPlace": "No puedes colocar tu pieza aquí.",
+    "tipCannotPlace": "No puede colocar su pieza aquí.",
     "@tipCannotPlace": {
         "description": "You can't place your piece here."
     },
-    "tipCannotMove": "No puedes mover tu pieza aquí.",
+    "tipCannotMove": "No puede mover su pieza aquí.",
     "@tipCannotMove": {
         "description": "You can't move your piece here."
     },
@@ -132,7 +132,7 @@
     "@tipSelectOpponentsPiece": {
         "description": "Select one of your opponent's pieces."
     },
-    "tipCannotRemovePieceFromMill": "No puedes quitar una pieza de un molino.",
+    "tipCannotRemovePieceFromMill": "No puede retirar una pieza de un molino.",
     "@tipCannotRemovePieceFromMill": {
         "description": "You cannot remove a piece from a mill."
     },
@@ -140,7 +140,7 @@
     "@tipCanMoveOnePoint": {
         "description": "A piece can move 1 point."
     },
-    "tipCannotMoveOpponentsPieces": "No puedes mover las piezas de tu oponente.",
+    "tipCannotMoveOpponentsPieces": "No puede mover las piezas de su oponente.",
     "@tipCannotMoveOpponentsPieces": {
         "description": "You can't move your opponent's pieces."
     },
@@ -148,15 +148,15 @@
     "@tipThreePiecesInLine": {
         "description": "There are 3 pieces in a line."
     },
-    "tipSelectPieceToMove": "Selecciona tu pieza para moverla.",
+    "tipSelectPieceToMove": "Seleccione su pieza para moverla.",
     "@tipSelectPieceToMove": {
         "description": "Select your piece to move."
     },
-    "tipHaveThreePiecesLeft": "Te quedan 3 piezas.",
+    "tipHaveThreePiecesLeft": "Le quedan 3 piezas.",
     "@tipHaveThreePiecesLeft": {
         "description": "You have 3 pieces left."
     },
-    "tipCanMoveToAnyPoint": "Puedes moverte a cualquier punto que quieras",
+    "tipCanMoveToAnyPoint": "Puede moverse a cualquier punto que prefiera",
     "@tipCanMoveToAnyPoint": {
         "description": "You can move to any point you like."
     },
@@ -164,7 +164,7 @@
     "@tipToMove": {
         "description": " to move."
     },
-    "whiteWin": "¡El jugador 1 gana!",
+    "whiteWin": "¡Jugador 1 gana!",
     "@whiteWin": {
         "description": "Player 1 wins!"
     },
@@ -172,11 +172,11 @@
     "@blackWin": {
         "description": "Player 2 wins!"
     },
-    "won": "Ganado",
+    "won": "Victoria",
     "@won": {
         "description": "Won"
     },
-    "lost": "Perdido",
+    "lost": "Derrota",
     "@lost": {
         "description": "Lost"
     },
@@ -224,7 +224,7 @@
     "@recording": {
         "description": "Recording..."
     },
-    "stopRecording": "Detener la grabación",
+    "stopRecording": "Detener grabación",
     "@stopRecording": {
         "description": "Stop recording"
     },
@@ -232,7 +232,7 @@
     "@showRecording": {
         "description": "Show recording"
     },
-    "noRecording": "No hay grabación.",
+    "noRecording": "Sin grabación.",
     "@noRecording": {
         "description": "No recording."
     },
@@ -260,11 +260,11 @@
     "@error": {
         "description": "Error"
     },
-    "winRate": "Tasa de ganancia",
+    "winRate": "Tasa de victoria",
     "@winRate": {
         "description": "Win Rate"
     },
-    "score": "Puntuación",
+    "score": "Puntaje",
     "@score": {
         "description": "Score"
     },
@@ -280,11 +280,11 @@
     "@loseReasonlessThanThree": {
         "description": " piece count is less than three."
     },
-    "loseReasonResign": " renuncia.",
+    "loseReasonResign": " se retira.",
     "@loseReasonResign": {
         "description": " resign."
     },
-    "loseReasonNoWay": " no hay manera de ir.",
+    "loseReasonNoWay": " no encuentra forma de avanzar.",
     "@loseReasonNoWay": {
         "description": " is no way to go."
     },
@@ -292,7 +292,7 @@
     "@loseReasonBoardIsFull": {
         "description": "The board is full, no way to go."
     },
-    "loseReasonTimeOver": "Tiempo terminado",
+    "loseReasonTimeOver": "Se acabó el tiempo",
     "@loseReasonTimeOver": {
         "description": "Time Over"
     },
@@ -308,7 +308,7 @@
     "@drawReasonThreefoldRepetition": {
         "description": "It is a Draw because of threefold repetition."
     },
-    "gameOverUnknownReason": "Se acabó el juego Razón desconocida.",
+    "gameOverUnknownReason": "¡Se acabó el juego! Razón desconocida.",
     "@gameOverUnknownReason": {
         "description": "Game Over! Unknown reason."
     },
@@ -316,15 +316,15 @@
     "@gameOver": {
         "description": "Game Over"
     },
-    "youWin": "Has ganado. ¡Enhorabuena!",
+    "youWin": "Ha ganado. ¡Enhorabuena!",
     "@youWin": {
         "description": "You win! Congratulations!"
     },
-    "challengeHarderLevel": "¿Desafío de un nivel más difícil?\nEl nuevo nivel será el nivel ",
+    "challengeHarderLevel": "¿Desafiar un nivel más difícil? Incrementará la dificultad",
     "@challengeHarderLevel": {
         "description": "Challenge harder level?"
     },
-    "youLose": "¡Pierdes!",
+    "youLose": "Ha perdido!",
     "@youLose": {
         "description": "You Lose!"
     },
@@ -344,7 +344,7 @@
     "@version": {
         "description": "Version"
     },
-    "thanks": "Gracias",
+    "thanks": "Agradecimientos",
     "@thanks": {
         "description": "Thanks"
     },
@@ -364,7 +364,7 @@
     "@skillLevel": {
         "description": "Difficulty level"
     },
-    "moveTime": "Tiempo de reflexión de la IA",
+    "moveTime": "Tiempo de razonamiento de la IA",
     "@moveTime": {
         "description": "AI thinking time"
     },
@@ -404,11 +404,11 @@
     "@alternate": {
         "description": "Alternate"
     },
-    "isAutoRestart": "Reinicio automático del juego al terminar la partida",
+    "isAutoRestart": "Autoreiniciar del juego al terminar la partida",
     "@isAutoRestart": {
         "description": "Auto-restart game when game over"
     },
-    "isAutoChangeFirstMove": "Cambiar automáticamente el primer movimiento",
+    "isAutoChangeFirstMove": "Autocambiar el primer movimiento",
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
     },
@@ -416,11 +416,11 @@
     "@resignIfMostLose": {
         "description": "AI Resign if Most Lose"
     },
-    "shufflingEnabled": "Movimiento aleatorio",
+    "shufflingEnabled": "Mover al azar",
     "@shufflingEnabled": {
         "description": "Random move"
     },
-    "learnEndgame": "Aprender el final de la partida",
+    "learnEndgame": "Estudiar al final de la partida",
     "@learnEndgame": {
         "description": "Learn Endgame"
     },
@@ -480,11 +480,11 @@
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
-    "mayRemoveMultiple": "Multi-removimiento",
+    "mayRemoveMultiple": "Removido múltiple",
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "Si una jugadora cierra más de un molino a la vez, podrá eliminar el número de molinos que haya cerrado.",
+    "mayRemoveMultiple_Detail": "Si una jugadora cierra más de un molino a la vez, podrá remover el número de molinos que haya cerrado.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
@@ -492,7 +492,7 @@
     "@mayRemoveFromMillsAlways": {
         "description": "Destroy mills"
     },
-    "mayRemoveFromMillsAlways_Detail": "Por defecto, los jugadores deben eliminar primero cualquier otra pieza antes de eliminar una pieza de un molino formado. Activa esta opción para desactivar la limitación.",
+    "mayRemoveFromMillsAlways_Detail": "Por defecto, los jugadores deben remover primero cualquier otra pieza antes de retirar una pieza de un molino formado. Activa esta opción para desactivar la limitación.",
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
@@ -508,11 +508,11 @@
     "@isLoseButNotChangeSideWhenNoWay": {
         "description": "Lose when no legal moves"
     },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perderá si su oponente lo bloquea de manera que no pueda moverse. Cambia de bando para mover si esta opción está desactivada.",
+    "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perderá si su oponente lo bloquea de manera que no pueda moverse. Cambie de bando para mover si esta opción está desactivada.",
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
     },
-    "mayFly": "Volar",
+    "mayFly": "Vuelo",
     "@mayFly": {
         "description": "Flying"
     },
@@ -552,11 +552,11 @@
     "@feedback": {
         "description": "Feedback"
     },
-    "exit": "Salir de",
+    "exit": "Salir",
     "@exit": {
         "description": "Exit"
     },
-    "ruleSettings": "Configuración de la regla",
+    "ruleSettings": "Ajustes del reglamento",
     "@ruleSettings": {
         "description": "Rule Settings"
     },
@@ -644,7 +644,7 @@
     "@exitApp": {
         "description": "The app will exit."
     },
-    "exitAppManually": "Tienes que cerrar inmediatamente y volver a abrir la aplicación para que tenga efecto.",
+    "exitAppManually": "Tiene que cerrar inmediatamente y volver a abrir la aplicación para que surta efecto.",
     "@exitAppManually": {
         "description": "You have to close immediately and reopen the app to take effect."
     },
@@ -676,7 +676,7 @@
     "@howToPlay": {
         "description": "How to play"
     },
-    "toPlacePiece": "Toca en cualquier punto disponible para colocar la pieza.",
+    "toPlacePiece": "Toque en cualquier punto disponible para colocar la pieza.",
     "@toPlacePiece": {
         "description": "Tap on any available point to place the piece."
     },
@@ -688,15 +688,15 @@
     "@toMovePiece": {
         "description": "Tap on point connected to piece to move it."
     },
-    "toRemovePiece": "Toque en la pieza del oponente para eliminarla.",
+    "toRemovePiece": "Toque en la pieza del oponente para removerla.",
     "@toRemovePiece": {
         "description": "Tap on the opponent's one piece to remove."
     },
-    "needToCreateMillFirst": "Para poder eliminar una pieza es necesario crear un molino.",
+    "needToCreateMillFirst": "Para poder remover una pieza es necesario crear un molino.",
     "@needToCreateMillFirst": {
         "description": "You need to create a mill first before you can remove a piece."
     },
-    "needToPlayWithOwnPieces": "Tienes que jugar con tus piezas.",
+    "needToPlayWithOwnPieces": "Tiene que jugar con sus piezas.",
     "@needToPlayWithOwnPieces": {
         "description": "You need to play with your pieces."
     },
@@ -712,7 +712,7 @@
     "@results": {
         "description": "Results"
     },
-    "cannotRemoveFromMill": "No se puede eliminar del molino.",
+    "cannotRemoveFromMill": "No se puede remover del molino.",
     "@cannotRemoveFromMill": {
         "description": "Cannot remove from the mill."
     },
@@ -753,15 +753,15 @@
     "@takeBack": {
         "description": "Take back"
     },
-    "takingBack": "Retirar...",
+    "takingBack": "Retrocediendo...",
     "@takingBack": {
         "description": "Taking back..."
     },
-    "waiting": "Esperar...",
+    "waiting": "Espere...",
     "@waiting": {
         "description": "Waiting..."
     },
-    "stepForward": "Avanzar",
+    "stepForward": "Adelantar",
     "@stepForward": {
         "description": "Step forward"
     },
@@ -769,7 +769,7 @@
     "@takeBackAll": {
         "description": "Take back all"
     },
-    "stepForwardAll": "Dar un paso adelante todo",
+    "stepForwardAll": "Adelantar todo",
     "@stepForwardAll": {
         "description": "Step forward all"
     },
@@ -785,7 +785,7 @@
     "@crackMill": {
         "description": "Crack-mill"
     },
-    "crackMill_Detail": "Si un jugador sólo tiene piezas en molinos, las piezas en los molinos no se bloquearán para ser retiradas.",
+    "crackMill_Detail": "Si un jugador sólo tiene piezas en molinos, las piezas en los molinos no se bloquearán para ser removidas.",
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
     },
@@ -801,7 +801,7 @@
     "@theme": {
         "description": "Theme"
     },
-    "helpContent": "El objetivo del juego es dejar al adversario con menos de tres piezas o sin movimientos legales.\n\nLa partida se empata automáticamente si se produce una posición por tercera vez, o si no se ha realizado ninguna retirada en los últimos 100 movimientos (configurables).\n\nEl juego se desarrolla en tres fases:\n\n1. Colocación de las piezas en los puntos vacíos\n2. Mover las piezas a los puntos adyacentes\n3. (fase opcional) Mover las piezas a cualquier punto vacante cuando el jugador se ha quedado con tres piezas\n\nColocación de\n\nEl juego comienza con un tablero vacío, que consiste en una cuadrícula con veinticuatro puntos. Los jugadores se turnan para colocar sus piezas en los puntos vacíos hasta que cada jugador haya colocado todas las piezas en el tablero. Si un jugador puede colocar tres de sus piezas en línea recta, tiene un \"molino\" y puede eliminar una de las piezas de su oponente del tablero.\n\nEn algunas variantes de reglas, los jugadores deben eliminar primero cualquier otra pieza antes de eliminar una pieza de un molino formado.\n\nEn algunas variantes de reglas, todos los puntos de las piezas retiradas no pueden volver a colocarse en la fase de colocación.\n\nUna vez que se han utilizado todas las piezas, los jugadores se turnan para mover.\n\nMoviendo\n\nPara mover, un jugador mueve una de sus piezas a lo largo de una línea del tablero hasta un punto adyacente libre. Si no puede hacerlo, ha perdido la partida. Al igual que en la fase de colocación, un jugador que alinea tres de sus piezas en una línea del tablero tiene un molino y puede eliminar una de las piezas de su oponente. Cualquier jugador se reduce a dos piezas y no tiene opción de formar nuevos molinos, por lo que pierde la partida. Un jugador también puede perder con más de tres piezas si su oponente las bloquea para que no puedan ser movidas.\n\nVolando\n\nEn algunas variantes de las reglas, una vez que a un jugador le quedan sólo tres piezas, sus piezas pueden \"\"volar\"\", \"\"saltar\"\" o \"\"brincar\"\" a cualquier punto vacante, no sólo a los adyacentes.",
+    "helpContent": "El objetivo del juego es dejar al adversario con menos de tres piezas o sin movimientos legales.\n\nLa partida se empata automáticamente si se reposiciona por tercera vez, o si no se ha realizado ninguna retirada en los últimos 100 movimientos (configurable).\n\nEl juego se desarrolla en tres fases:\n\n1. Colocación de las piezas en los puntos vacíos\n2. Movimiento de piezas a los puntos adyacentes\n3. (fase opcional) Movimiento de piezas a cualquier punto libre cuando el jugador se ha quedado con tres piezas\n\nColocación\n\nEl juego comienza con un tablero vacío, que consiste en una cuadrícula con veinticuatro puntos. Los jugadores se turnan para colocar sus piezas en los puntos libres hasta que cada jugador haya colocado todas las piezas del tablero. Si un jugador consigue colocar tres de sus piezas en línea recta, tiene un \"molino\" y puede remover una de las piezas de su oponente del tablero.\n\nEn algunas varaciones, ocurre que los jugadores deben remover primero cualquier otra pieza antes de retirar una pieza de un molino formado.\n\nEn algunas variantes, exista la regla que todos los puntos de las piezas retiradas no pueden volver al tablero en la fase de colocación.\n\nUna vez que se han utilizado todas las piezas, los jugadores se turnan para mover.\n\nMovimiento\n\nPara mover, un jugador mueve una de sus piezas a lo largo de una línea del tablero hasta un punto adyacente libre. Si no puede hacerlo, ha perdido la partida. Al igual que en la fase de colocación, un jugador que alinea tres de sus piezas en una línea del tablero tiene un molino y puede retirar una de las piezas de su oponente. Cualquier jugador que le restará dos piezas, no tendrá opción de formar nuevos molinos y perderá la partida. Un jugador también puede perder con más de tres piezas si su oponente las bloquea para que no puedan moverse.\n\nVuelo\n\nEn una variante común, una vez que un jugador le quede sólo tres piezas, sus piezas podrán \"\"volar\"\", \"\"saltar\"\" o \"\"brincar\"\" a cualquier punto libre, no sólo a los adyacentes.",
     "@helpContent": {
         "description": "Help Content"
     },
@@ -837,15 +837,15 @@
     "@advanced": {
         "description": "Advanced"
     },
-    "placing": "Colocación de",
+    "placing": "Colocación",
     "@placing": {
         "description": "Placing"
     },
-    "moving": "Mover",
+    "moving": "Movimiento",
     "@moving": {
         "description": "Moving"
     },
-    "removing": "Eliminación de",
+    "removing": "Retirado",
     "@removing": {
         "description": "Removing"
     },
@@ -905,7 +905,7 @@
     "@notAIsTurn": {
         "description": "It is not the AI's turn."
     },
-    "aiIsNotThinking": "La IA no está pensando.",
+    "aiIsNotThinking": "La IA no está razonando.",
     "@aiIsNotThinking": {
         "description": "AI is not thinking."
     },
@@ -917,7 +917,7 @@
     "@atEnd": {
         "description": "At the end of the move list."
     },
-    "tapBackAgainToLeave": "Vuelve a tocar para salir.",
+    "tapBackAgainToLeave": "Vuelva a tocar para salir.",
     "@tapBackAgainToLeave": {
         "description": "Tap back again to leave."
     },
