@@ -252,7 +252,7 @@
     "@gameStarted": {
         "description": "Game started, please place"
     },
-    "analyzing": "Analyzing ...",
+    "analyzing": "Analyzing...",
     "@analyzing": {
         "description": "Analyzing ..."
     },
@@ -416,7 +416,7 @@
     "@resignIfMostLose": {
         "description": "AI Resign if Most Lose"
     },
-    "shufflingEnabled": "Random move",
+    "shufflingEnabled": "Move randomly",
     "@shufflingEnabled": {
         "description": "Random move"
     },
@@ -753,11 +753,11 @@
     "@takeBack": {
         "description": "Take back"
     },
-    "takingBack": "Taking back",
+    "takingBack": "Taking back...",
     "@takingBack": {
         "description": "Taking back..."
     },
-    "waiting": "Waiting",
+    "waiting": "Waiting...",
     "@waiting": {
         "description": "Waiting..."
     },
