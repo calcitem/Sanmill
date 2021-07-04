@@ -320,7 +320,7 @@
     "@youWin": {
         "description": "You win! Congratulations!"
     },
-    "challengeHarderLevel": "¿Desafiar un nivel más difícil? Incrementará la dificultad",
+    "challengeHarderLevel": "¿Desafiar un nivel más difícil? Incrementará la dificultad a ",
     "@challengeHarderLevel": {
         "description": "Challenge harder level?"
     },
@@ -496,7 +496,7 @@
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull": "El segundo jugador pierde cuando el tablero está lleno",
+    "isWhiteLoseButNotDrawWhenBoardFull": "El segundo jugador pierde cuando el tablero está lleno.",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
@@ -524,7 +524,7 @@
     "@nMoveRule": {
         "description": "N-move rule"
     },
-    "nMoveRule_Detail": "La partida se empata si no ha habido ninguna retirada en un número determinado de movimientos por parte de cada jugador.",
+    "nMoveRule_Detail": "La partida se empata si no ha habido ninguna retirada en un número determinado de movimientos.",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
@@ -652,7 +652,7 @@
     "@pick": {
         "description": "Pick "
     },
-    "info": "Información",
+    "info": "Info",
     "@info": {
         "description": "Info"
     },

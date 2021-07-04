@@ -151,7 +151,7 @@ class SpanishStrings extends Strings {
   String get languageName => 'Español';
 
   @override
-  String get tapBackAgainToLeave => 'Vuelve a tocar para salir.';
+  String get tapBackAgainToLeave => 'Vuelva a tocar para salir.';
 }
 
 /// et
