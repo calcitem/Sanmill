@@ -881,7 +881,7 @@
     "@drawOnHumanExperience": {
         "description": "Draw on the human experience"
     },
-    "considerMobility": "考虑增强棋子活动能力",
+    "considerMobility": "增强棋子活动能力",
     "@considerMobility": {
         "description": "Consider mobility of pieces"
     },
@@ -953,7 +953,7 @@
     "@mayMoveInPlacingPhase": {
         "description": "The pieces can move in the placing phase"
     },
-    "mayMoveInPlacingPhase_Detail": "摆子阶段和走子阶段无严格界限。即，玩家可以在每一步棋中决定是要摆子还是走子（只要还有剩余的棋子可以摆子）。",
+    "mayMoveInPlacingPhase_Detail": "摆子阶段和走子阶段无严格界限。即，玩家可以在每一步棋中决定是要摆子还是走子 (只要还有剩余的棋子可以摆子)。",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     }
