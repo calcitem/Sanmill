@@ -65,6 +65,7 @@ Map<String, Strings> languageCodeToStrings = {
   "th": ThaiStrings(),
   "tr": TurkishStrings(),
   "zh": ChineseStrings(),
+  "zh_Hant": TraditionalChineseStrings(),
 };
 
 /// Interface strings
@@ -426,6 +427,15 @@ class ChineseStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => '再次按返回键退出应用';
+}
+
+/// zh-Hant
+class TraditionalChineseStrings extends Strings {
+  @override
+  String get languageName => '繁體中文';
+
+  @override
+  String get tapBackAgainToLeave => '再次按 Back 鍵退出';
 }
 
 final supportedLocales = [

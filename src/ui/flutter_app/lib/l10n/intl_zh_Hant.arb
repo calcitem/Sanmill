@@ -1,0 +1,960 @@
+{
+    "@@locale": "zh_Hant",
+    "appName": "直棋",
+    "@appName": {
+        "description": "The app name"
+    },
+    "welcome": "歡迎使用",
+    "@welcome": {
+        "description": "Welcome"
+    },
+    "yes": "是",
+    "@yes": {
+        "description": "Yes"
+    },
+    "no": "否",
+    "@no": {
+        "description": "No"
+    },
+    "game": "遊戲",
+    "@game": {
+        "description": "Game"
+    },
+    "humanVsAi": "人機對戰",
+    "@humanVsAi": {
+        "description": "Human Vs AI"
+    },
+    "humanVsHuman": "雙人對戰",
+    "@humanVsHuman": {
+        "description": "Human Vs Human"
+    },
+    "aiVsAi": "機器對戰",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
+    },
+    "humanVsCloud": "挑戰雲端",
+    "@humanVsCloud": {
+        "description": "Human Vs Cloud"
+    },
+    "humanVsLAN": "聯網對戰",
+    "@humanVsLAN": {
+        "description": "Human Vs LAN"
+    },
+    "testViaLAN": "聯網測試",
+    "@testViaLAN": {
+        "description": "Test Via LAN"
+    },
+    "move": "著法",
+    "@move": {
+        "description": "Move"
+    },
+    "moves": "步",
+    "@moves": {
+        "description": " Moves"
+    },
+    "showMoveList": "顯示棋譜",
+    "@showMoveList": {
+        "description": "Move list"
+    },
+    "moveList": "棋譜",
+    "@moveList": {
+        "description": "Move list"
+    },
+    "noGameRecord": "暫無著法",
+    "@noGameRecord": {
+        "description": "No record"
+    },
+    "ok": "好的",
+    "@ok": {
+        "description": "OK"
+    },
+    "confirm": "確認",
+    "@confirm": {
+        "description": "Confirm"
+    },
+    "cancel": "取消",
+    "@cancel": {
+        "description": "Cancel"
+    },
+    "copyright": "版權所有 © 2021 Calcitem Studio",
+    "@copyright": {
+        "description": "Copyright"
+    },
+    "tipSelectWrong": "選擇的子不對",
+    "@tipSelectWrong": {
+        "description": "Select the wrong piece."
+    },
+    "tipPlace": "請落子",
+    "@tipPlace": {
+        "description": "Place your pieces."
+    },
+    "tipBanPlace": "不能落在此處",
+    "@tipBanPlace": {
+        "description": "Cannot place it here."
+    },
+    "tipPlaced": "已落子",
+    "@tipPlaced": {
+        "description": "Placed."
+    },
+    "tipRemove": "請吃子",
+    "@tipRemove": {
+        "description": "Remove a piece."
+    },
+    "tipBanRemove": "不能吃這顆子",
+    "@tipBanRemove": {
+        "description": "Cannot remove."
+    },
+    "tipRemoved": "已吃子",
+    "@tipRemoved": {
+        "description": "Removed."
+    },
+    "tipMove": "請走子",
+    "@tipMove": {
+        "description": "Move a piece."
+    },
+    "tipCannotPlace": "不可在此處落子",
+    "@tipCannotPlace": {
+        "description": "You can't place your piece here."
+    },
+    "tipCannotMove": "不可移到此處",
+    "@tipCannotMove": {
+        "description": "You can't move your piece here."
+    },
+    "tipMill": "三子連珠 請吃子",
+    "@tipMill": {
+        "description": "Mill! Take your opponent's piece."
+    },
+    "tipContinueMill": "請繼續吃子",
+    "@tipContinueMill": {
+        "description": "Continue to take your opponent's piece."
+    },
+    "tipSelectOpponentsPiece": "請選擇對方的棋子",
+    "@tipSelectOpponentsPiece": {
+        "description": "Select one of your opponent's pieces."
+    },
+    "tipCannotRemovePieceFromMill": "不能吃三連中的棋子",
+    "@tipCannotRemovePieceFromMill": {
+        "description": "You cannot remove a piece from a mill."
+    },
+    "tipCanMoveOnePoint": "請走到相鄰空位",
+    "@tipCanMoveOnePoint": {
+        "description": "A piece can move 1 point."
+    },
+    "tipCannotMoveOpponentsPieces": "不能移動對方的棋子",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
+    },
+    "tipThreePiecesInLine": "三顆棋子排成一線",
+    "@tipThreePiecesInLine": {
+        "description": "There are 3 pieces in a line."
+    },
+    "tipSelectPieceToMove": "請選擇要移動的己方棋子",
+    "@tipSelectPieceToMove": {
+        "description": "Select your piece to move."
+    },
+    "tipHaveThreePiecesLeft": "只剩下3顆棋子了",
+    "@tipHaveThreePiecesLeft": {
+        "description": "You have 3 pieces left."
+    },
+    "tipCanMoveToAnyPoint": "可飛子到任意空位",
+    "@tipCanMoveToAnyPoint": {
+        "description": "You can move to any point you like."
+    },
+    "tipToMove": "行棋",
+    "@tipToMove": {
+        "description": " to move."
+    },
+    "whiteWin": "先手方勝",
+    "@whiteWin": {
+        "description": "Player 1 wins!"
+    },
+    "blackWin": "後手方勝",
+    "@blackWin": {
+        "description": "Player 2 wins!"
+    },
+    "won": "勝",
+    "@won": {
+        "description": "Won"
+    },
+    "lost": "負",
+    "@lost": {
+        "description": "Lost"
+    },
+    "aborted": "中斷",
+    "@aborted": {
+        "description": "Aborted"
+    },
+    "draw": "和棋",
+    "@draw": {
+        "description": "It is a Draw!"
+    },
+    "thinking": "對方思考中...",
+    "@thinking": {
+        "description": "Thinking..."
+    },
+    "newGame": "開始新局",
+    "@newGame": {
+        "description": "New game"
+    },
+    "importGame": "導入棋局",
+    "@importGame": {
+        "description": "Import game"
+    },
+    "exportGame": "匯出棋局",
+    "@exportGame": {
+        "description": "Export game"
+    },
+    "gameImported": "棋譜已從剪貼簿導入",
+    "@gameImported": {
+        "description": "Game imported from the clipboard."
+    },
+    "cannotImport": "無法導入",
+    "@cannotImport": {
+        "description": "Cannot import"
+    },
+    "movesAndRulesNotMatch": "著法和棋規不匹配",
+    "@movesAndRulesNotMatch": {
+        "description": "Rules and moves do not match."
+    },
+    "startRecording": "開始錄製",
+    "@startRecording": {
+        "description": "Start recording"
+    },
+    "recording": "錄製中...",
+    "@recording": {
+        "description": "Recording..."
+    },
+    "stopRecording": "停止錄製",
+    "@stopRecording": {
+        "description": "Stop recording"
+    },
+    "showRecording": "重播錄製",
+    "@showRecording": {
+        "description": "Show recording"
+    },
+    "noRecording": "沒有可重播的",
+    "@noRecording": {
+        "description": "No recording."
+    },
+    "pleaseWait": "請稍候...",
+    "@pleaseWait": {
+        "description": "Please wait..."
+    },
+    "restartGame": "重新開局？",
+    "@restartGame": {
+        "description": "Restart current game?"
+    },
+    "restart": "重開局",
+    "@restart": {
+        "description": "Restart"
+    },
+    "gameStarted": "遊戲開始 請落子",
+    "@gameStarted": {
+        "description": "Game started, please place"
+    },
+    "analyzing": "正在分析局面...",
+    "@analyzing": {
+        "description": "Analyzing ..."
+    },
+    "error": "錯誤",
+    "@error": {
+        "description": "Error"
+    },
+    "winRate": "勝率",
+    "@winRate": {
+        "description": "Win Rate"
+    },
+    "score": "比分",
+    "@score": {
+        "description": "Score"
+    },
+    "white": "先手方",
+    "@white": {
+        "description": "Player 1"
+    },
+    "black": "後手方",
+    "@black": {
+        "description": "Player 2"
+    },
+    "loseReasonlessThanThree": "剩餘棋子少於3枚。",
+    "@loseReasonlessThanThree": {
+        "description": " piece count is less than three."
+    },
+    "loseReasonResign": "認輸了。",
+    "@loseReasonResign": {
+        "description": " resign."
+    },
+    "loseReasonNoWay": "無路可走。",
+    "@loseReasonNoWay": {
+        "description": " is no way to go."
+    },
+    "loseReasonBoardIsFull": "因棋盤擺滿而無路可走。",
+    "@loseReasonBoardIsFull": {
+        "description": "The board is full, no way to go."
+    },
+    "loseReasonTimeOver": "超時判負。",
+    "@loseReasonTimeOver": {
+        "description": "Time Over"
+    },
+    "drawReasonRule50": "走子階段連續多步在規則指定的步數內未吃子，判和。",
+    "@drawReasonRule50": {
+        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+    },
+    "drawReasonBoardIsFull": "棋盤擺滿，無路可走，判和。",
+    "@drawReasonBoardIsFull": {
+        "description": "It is a Draw because the board is full"
+    },
+    "drawReasonThreefoldRepetition": "三次重複局面和。",
+    "@drawReasonThreefoldRepetition": {
+        "description": "It is a Draw because of threefold repetition."
+    },
+    "gameOverUnknownReason": "遊戲結束，原因未知！",
+    "@gameOverUnknownReason": {
+        "description": "Game Over! Unknown reason."
+    },
+    "gameOver": "遊戲結束",
+    "@gameOver": {
+        "description": "Game Over"
+    },
+    "youWin": "恭喜你贏了",
+    "@youWin": {
+        "description": "You win! Congratulations!"
+    },
+    "challengeHarderLevel": "後續提升難度嗎？\n提升後的難度等級將為",
+    "@challengeHarderLevel": {
+        "description": "Challenge harder level?"
+    },
+    "youLose": "你輸了",
+    "@youLose": {
+        "description": "You Lose!"
+    },
+    "analyze": "分析",
+    "@analyze": {
+        "description": "Analyze"
+    },
+    "playerName": "棋手姓名",
+    "@playerName": {
+        "description": "Player Name"
+    },
+    "about": "關於",
+    "@about": {
+        "description": "About"
+    },
+    "version": "版本",
+    "@version": {
+        "description": "Version"
+    },
+    "thanks": "致謝",
+    "@thanks": {
+        "description": "Thanks"
+    },
+    "settings": "設定",
+    "@settings": {
+        "description": "Settings"
+    },
+    "options": "選項",
+    "@options": {
+        "description": "Options"
+    },
+    "preferences": "遊戲設定",
+    "@preferences": {
+        "description": "Preferences"
+    },
+    "skillLevel": "難度等級",
+    "@skillLevel": {
+        "description": "Difficulty level"
+    },
+    "moveTime": "機器思考時間",
+    "@moveTime": {
+        "description": "AI thinking time"
+    },
+    "difficulty": "遊戲難度",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
+    "playSounds": "聲音",
+    "@playSounds": {
+        "description": "Sound effects"
+    },
+    "playSoundsInTheGame": "行棋時播放聲音",
+    "@playSoundsInTheGame": {
+        "description": "Play sounds in the game"
+    },
+    "keepMuteWhenTakingBack": "悔棋時保持靜音",
+    "@keepMuteWhenTakingBack": {
+        "description": "Keep mute when taking back"
+    },
+    "tone": "提示音效",
+    "@tone": {
+        "description": "Tone"
+    },
+    "whoMovesFirst": "先手",
+    "@whoMovesFirst": {
+        "description": "First move"
+    },
+    "human": "人類",
+    "@human": {
+        "description": "Human"
+    },
+    "ai": "機器",
+    "@ai": {
+        "description": "AI"
+    },
+    "alternate": "交替",
+    "@alternate": {
+        "description": "Alternate"
+    },
+    "isAutoRestart": "棋局結束時自動重新開局",
+    "@isAutoRestart": {
+        "description": "Auto-restart game when game over"
+    },
+    "isAutoChangeFirstMove": "開局時自動交換先後手",
+    "@isAutoChangeFirstMove": {
+        "description": "Auto Change First Move"
+    },
+    "resignIfMostLose": "機器明顯劣勢時自動認輸",
+    "@resignIfMostLose": {
+        "description": "AI Resign if Most Lose"
+    },
+    "shufflingEnabled": "機器隨機走子",
+    "@shufflingEnabled": {
+        "description": "Random move"
+    },
+    "learnEndgame": "殘局庫自學習",
+    "@learnEndgame": {
+        "description": "Learn Endgame"
+    },
+    "openingBook": "使用開局庫",
+    "@openingBook": {
+        "description": "Opening Book"
+    },
+    "misc": "其他",
+    "@misc": {
+        "description": "Miscellaneous"
+    },
+    "rules": "棋規",
+    "@rules": {
+        "description": "Rules"
+    },
+    "piecesCount": "棋子數",
+    "@piecesCount": {
+        "description": "The number of pieces each player has"
+    },
+    "piecesCount_Detail": "設定對弈雙方分別擁有的棋子數。",
+    "@piecesCount_Detail": {
+        "description": "How many pieces does each player have?"
+    },
+    "flyPieceCount": "剩餘多少子可飛子",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
+    "flyPieceCount_Detail": "如允許飛子，則當一方剩餘多少枚棋子時可以飛棋。",
+    "@flyPieceCount_Detail": {
+        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    },
+    "piecesAtLeastCount": "少於幾個子則輸棋",
+    "@piecesAtLeastCount": {
+        "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "斜線",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
+    },
+    "hasDiagonalLines_Detail": "在棋盤上增加四條斜線。",
+    "@hasDiagonalLines_Detail": {
+        "description": "Add four diagonal lines to the board."
+    },
+    "hasBannedLocations": "禁點",
+    "@hasBannedLocations": {
+        "description": "Mark and delay removing pieces"
+    },
+    "hasBannedLocations_Detail": "擺子階段，被吃的子都被標記起來，暫不移除。雙方擺完棋子後，再統一將被標記的棋子全部移除，然後進入走子階段。",
+    "@hasBannedLocations_Detail": {
+        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+    },
+    "isDefenderMoveFirst": "後擺子的先走子",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
+    "isDefenderMoveFirst_Detail": "在擺子階段先擺子的一方，在走子階段先走子。",
+    "@isDefenderMoveFirst_Detail": {
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
+    },
+    "mayRemoveMultiple": "吃多子",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
+    },
+    "mayRemoveMultiple_Detail": "若同時形成多個三連，則形成幾個三連就能吃對方幾個子。",
+    "@mayRemoveMultiple_Detail": {
+        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+    },
+    "mayRemoveFromMillsAlways": "允許吃三連中的子",
+    "@mayRemoveFromMillsAlways": {
+        "description": "Destroy mills"
+    },
+    "mayRemoveFromMillsAlways_Detail": "預設情況下，不能吃三連中的子，除非對方所有子都在三連中。打開此選項可解除此限制。",
+    "@mayRemoveFromMillsAlways_Detail": {
+        "description": "mayRemoveFromMillsAlways_Detail"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull": "當棋盤擺滿時先擺子的輸棋",
+    "@isWhiteLoseButNotDrawWhenBoardFull": {
+        "description": "The second player loses when the board is full"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "對於十二子棋，在擺子階段的最後，若棋盤擺滿而雙方均未吃子，則先手方輸棋，而非和棋。",
+    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+    },
+    "isLoseButNotChangeSideWhenNoWay": "當無路可走時輸棋",
+    "@isLoseButNotChangeSideWhenNoWay": {
+        "description": "Lose when no legal moves"
+    },
+    "isLoseButNotChangeSideWhenNoWay_Detail": "走子階段，當無路可走時輸棋，而非轉為由對方繼續走子。",
+    "@isLoseButNotChangeSideWhenNoWay_Detail": {
+        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    },
+    "mayFly": "飛子",
+    "@mayFly": {
+        "description": "Flying"
+    },
+    "mayFly_Detail": "當一方剩餘三或四枚(可配置)棋子時，此方可將棋子移動到棋盤任意空位上。",
+    "@mayFly_Detail": {
+        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "N步規則",
+    "@nMoveRule": {
+        "description": "N-move rule"
+    },
+    "nMoveRule_Detail": "指定當連續多少步中沒有吃子時判為和局。",
+    "@nMoveRule_Detail": {
+        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+    },
+    "rollback": "選擇",
+    "@rollback": {
+        "description": "Rollback"
+    },
+    "pleaseSelect": "請選擇",
+    "@pleaseSelect": {
+        "description": "Please select"
+    },
+    "copy": "複製",
+    "@copy": {
+        "description": "Copy"
+    },
+    "moveHistoryCopied": "棋譜已複製到剪貼簿",
+    "@moveHistoryCopied": {
+        "description": "Move history copied to clipboard"
+    },
+    "help": "幫助",
+    "@help": {
+        "description": "Help"
+    },
+    "feedback": "問題回饋",
+    "@feedback": {
+        "description": "Feedback"
+    },
+    "exit": "退出",
+    "@exit": {
+        "description": "Exit"
+    },
+    "ruleSettings": "規則設定",
+    "@ruleSettings": {
+        "description": "Rule Settings"
+    },
+    "color": "顏色",
+    "@color": {
+        "description": "Color"
+    },
+    "boardColor": "棋盤顏色",
+    "@boardColor": {
+        "description": "Board color"
+    },
+    "pieceColor": "棋子顏色",
+    "@pieceColor": {
+        "description": "Piece color"
+    },
+    "backgroundColor": "背景顏色",
+    "@backgroundColor": {
+        "description": "Background color"
+    },
+    "lineColor": "線條顏色",
+    "@lineColor": {
+        "description": "Board line color"
+    },
+    "whitePieceColor": "先手方棋子顏色",
+    "@whitePieceColor": {
+        "description": "Player 1 piece color"
+    },
+    "blackPieceColor": "後手方棋子顏色",
+    "@blackPieceColor": {
+        "description": "Player 2 piece color"
+    },
+    "messageColor": "提示訊息顏色",
+    "@messageColor": {
+        "description": "Message color"
+    },
+    "aiIsLazy": "機器領先時放鬆",
+    "@aiIsLazy": {
+        "description": "AI is Lazy"
+    },
+    "isPieceCountInHandShown": "顯示手中剩餘棋子數",
+    "@isPieceCountInHandShown": {
+        "description": "Show count of pieces in hand"
+    },
+    "isNotationsShown": "棋盤邊緣顯示座標",
+    "@isNotationsShown": {
+        "description": "Show notations on board"
+    },
+    "isHistoryNavigationToolbarShown": "顯示著法導航工具列",
+    "@isHistoryNavigationToolbarShown": {
+        "description": "Show history navigation toolbar"
+    },
+    "display": "顯示",
+    "@display": {
+        "description": "Display"
+    },
+    "boardBorderLineWidth": "棋盤外框線寬",
+    "@boardBorderLineWidth": {
+        "description": "Board borderline width"
+    },
+    "boardInnerLineWidth": "棋盤內部線寬",
+    "@boardInnerLineWidth": {
+        "description": "Board inner line width"
+    },
+    "pieceWidth": "棋子大小",
+    "@pieceWidth": {
+        "description": "Piece width"
+    },
+    "fontSize": "字體大小",
+    "@fontSize": {
+        "description": "Font size"
+    },
+    "standardNotation": "標準棋譜格式",
+    "@standardNotation": {
+        "description": "Standard notation"
+    },
+    "restore": "重設",
+    "@restore": {
+        "description": "Restore"
+    },
+    "restoreDefaultSettings": "恢復默認設定",
+    "@restoreDefaultSettings": {
+        "description": "Restore Default Settings"
+    },
+    "exitApp": "App 將退出。",
+    "@exitApp": {
+        "description": "The app will exit."
+    },
+    "exitAppManually": "您需要立即退出並重新打開本程式才能使預設設定生效。",
+    "@exitAppManually": {
+        "description": "You have to close immediately and reopen the app to take effect."
+    },
+    "pick": "選擇",
+    "@pick": {
+        "description": "Pick "
+    },
+    "info": "訊息",
+    "@info": {
+        "description": "Info"
+    },
+    "hint": "提示",
+    "@hint": {
+        "description": "Hint"
+    },
+    "player": "玩家",
+    "@player": {
+        "description": "player"
+    },
+    "player1": "先手方",
+    "@player1": {
+        "description": "Player 1"
+    },
+    "player2": "後手方",
+    "@player2": {
+        "description": "Player 2"
+    },
+    "howToPlay": "玩法說明",
+    "@howToPlay": {
+        "description": "How to play"
+    },
+    "toPlacePiece": "點擊棋盤上的交叉點放置棋子。",
+    "@toPlacePiece": {
+        "description": "Tap on any available point to place the piece."
+    },
+    "toSelectPiece": "請選擇自己要移動的棋子。",
+    "@toSelectPiece": {
+        "description": "Tap on a piece to move it."
+    },
+    "toMovePiece": "點擊和此棋子相鄰的點以移動棋子。",
+    "@toMovePiece": {
+        "description": "Tap on point connected to piece to move it."
+    },
+    "toRemovePiece": "點擊對方的一顆棋子以吃子。",
+    "@toRemovePiece": {
+        "description": "Tap on the opponent's one piece to remove."
+    },
+    "needToCreateMillFirst": "您需要先形成三連，才能吃掉對方的棋子。",
+    "@needToCreateMillFirst": {
+        "description": "You need to create a mill first before you can remove a piece."
+    },
+    "needToPlayWithOwnPieces": "您需要走自己的棋子。",
+    "@needToPlayWithOwnPieces": {
+        "description": "You need to play with your pieces."
+    },
+    "statistics": "統計",
+    "@statistics": {
+        "description": "Statistics"
+    },
+    "totalGames": "盤數",
+    "@totalGames": {
+        "description": "Total games"
+    },
+    "results": "結果",
+    "@results": {
+        "description": "Results"
+    },
+    "cannotRemoveFromMill": "不能吃三連中的子。",
+    "@cannotRemoveFromMill": {
+        "description": "Cannot remove from the mill."
+    },
+    "left": "剩餘",
+    "@left": {
+        "description": "left"
+    },
+    "privacyPolicy": "隱私政策",
+    "@privacyPolicy": {
+        "description": "Privacy Policy"
+    },
+    "privacyPolicy_Detail_1": "請您務必審慎閱讀、充分理解《使用者協議》和《隱私政策》各條款，包括但不限於：\n為了改善我們向您提供的服務，基於您的明示授權，我們可能會獲取您的設備型號、診斷資料、電子郵寄地址等資訊，您有權拒絕或取消授權。我們將在每次請求發送診斷資料前，通過彈窗形式征得您的明示同意。\n您可閱讀《",
+    "@privacyPolicy_Detail_1": {
+        "description": "Privacy Policy Detail 1"
+    },
+    "privacyPolicy_Detail_2": "》瞭解詳細資訊。如您同意，請點擊“同意”開始接受我們的服務。",
+    "@privacyPolicy_Detail_2": {
+        "description": "Privacy Policy Detail 2"
+    },
+    "and": "》和《",
+    "accept": "同意",
+    "@accept": {
+        "description": "Accept"
+    },
+    "undo": "悔棋",
+    "@undo": {
+        "description": "Undo"
+    },
+    "undoOption": "悔棋",
+    "@undoOption": {
+        "description": "Undo option"
+    },
+    "undoOption_Detail": "允許悔棋",
+    "@undoOption_Detail": {
+        "description": "It is possible to undo a move."
+    },
+    "takeBack": "回退一步",
+    "@takeBack": {
+        "description": "Take back"
+    },
+    "takingBack": "回退中",
+    "@takingBack": {
+        "description": "Taking back..."
+    },
+    "waiting": "請稍等",
+    "@waiting": {
+        "description": "Waiting..."
+    },
+    "stepForward": "前進一步",
+    "@stepForward": {
+        "description": "Step forward"
+    },
+    "takeBackAll": "回退到底",
+    "@takeBackAll": {
+        "description": "Take back all"
+    },
+    "stepForwardAll": "前進到底",
+    "@stepForwardAll": {
+        "description": "Step forward all"
+    },
+    "moveNow": "立即行棋",
+    "@moveNow": {
+        "description": "Move now"
+    },
+    "done": "完成",
+    "@done": {
+        "description": "Done."
+    },
+    "crackMill": "不允許吃全三連",
+    "@crackMill": {
+        "description": "Crack-mill"
+    },
+    "crackMill_Detail": "若對方所有的子都在三連中, 也不允許吃子。",
+    "@crackMill_Detail": {
+        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+    },
+    "animationDuration": "動畫持續時長",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
+    "none": "無",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "主題",
+    "@theme": {
+        "description": "Theme"
+    },
+    "helpContent": "直棋是一個非常古老的智力遊戲，現已流傳到中國各地，演變出“棋三”、“三棋”、“三三棋”、“打三棋”、“成三棋”、“下連”等多個變種。\n\n遊戲目標為讓對手被吃得僅剩不到三枚棋子。\n\n三次重複局面，或連續百步（可配置）內無吃子，則和棋。 \n\n遊戲分三階段：\n\n1. 在空位上擺子；\n2. 將棋子移動到相鄰空位；\n3. 當只剩三枚棋子時，可“飛子”（可選）。\n\n擺子階段\n\n棋盤上有二十四個空點。玩家交替在空位上落子，直至手中無子。若一方將自己的三枚棋子排成一排，則稱為形成一個“三連”，便可吃掉對方的棋子，然後繼續行棋。\n\n某些規則變體規定，只能吃掉對方不在“三連”中的子，除非對方所有的子都在“三連”之中。\n\n還有些規則變體規定，在擺子階段，被吃掉的子所在的空位，雙方都不能再在上面擺子。 \n\n當雙方手中的棋子都擺完後，則進入走子階段。\n\n走子階段\n\n玩家將自己的棋子移動到相鄰的點上。若無子可走，則判負。和擺子階段類似，形成“三連”時便可吃掉對方的棋子。當一方的棋子僅剩兩枚，則敗局已定，判負。若棋盤上多於三枚棋子，但無子可走，也會被判負。\n\n飛子階段\n\n某些規則變體中，一旦一方剩三枚棋子時，便可“飛”到任意空位上，無論該空位是否鄰接。\n",
+    "@helpContent": {
+        "description": "Help Content"
+    },
+    "versionInfo": "版本資訊",
+    "@versionInfo": {
+        "description": "Version info"
+    },
+    "eula": "使用者協定",
+    "@eula": {
+        "description": "EULA"
+    },
+    "license": "許可證",
+    "@license": {
+        "description": "License"
+    },
+    "sourceCode": "原始程式碼",
+    "@sourceCode": {
+        "description": "Source code"
+    },
+    "thirdPartyNotices": "協力廠商聲明",
+    "@thirdPartyNotices": {
+        "description": "Third-party notices"
+    },
+    "appVersion": "應用版本",
+    "@appVersion": {
+        "description": "App Version"
+    },
+    "general": "常規",
+    "@general": {
+        "description": "General"
+    },
+    "advanced": "高級",
+    "@advanced": {
+        "description": "Advanced"
+    },
+    "placing": "擺子",
+    "@placing": {
+        "description": "Placing"
+    },
+    "moving": "走子",
+    "@moving": {
+        "description": "Moving"
+    },
+    "removing": "吃子",
+    "@removing": {
+        "description": "Removing"
+    },
+    "gameOverCondition": "終局條件",
+    "@gameOverCondition": {
+        "description": "Game over condition"
+    },
+    "aisPlayStyle": "機器的棋風",
+    "@aisPlayStyle": {
+        "description": "AI's playstyle"
+    },
+    "passive": "消極被動",
+    "@passive": {
+        "description": "Passive"
+    },
+    "timeout": "超時",
+    "@timeout": {
+        "description": "Timeout"
+    },
+    "personalization": "外觀設定",
+    "@personalization": {
+        "description": "Personalization"
+    },
+    "forDevelopers": "開發者選項",
+    "@forDevelopers": {
+        "description": "For developers"
+    },
+    "developerMode": "開發者模式",
+    "@developerMode": {
+        "description": "Developer mode"
+    },
+    "drawOnHumanExperience": "借鑒人類經驗",
+    "@drawOnHumanExperience": {
+        "description": "Draw on the human experience"
+    },
+    "considerMobility": "增強棋子活動能力",
+    "@considerMobility": {
+        "description": "Consider mobility of pieces"
+    },
+    "pieceCount": "棋子數",
+    "@pieceCount": {
+        "description": "Piece count"
+    },
+    "inHand": "手上",
+    "@inHand": {
+        "description": "in hand"
+    },
+    "onBoard": "棋盤上",
+    "@onBoard": {
+        "description": "on board"
+    },
+    "boardTop": "棋盤和上邊緣的間距",
+    "@boardTop": {
+        "description": "Board offset from the top"
+    },
+    "notAIsTurn": "現在不是輪到電腦行棋",
+    "@notAIsTurn": {
+        "description": "It is not the AI's turn."
+    },
+    "aiIsNotThinking": "電腦並非正在思考中",
+    "@aiIsNotThinking": {
+        "description": "AI is not thinking."
+    },
+    "autoReplay": "自動重播",
+    "@autoReplay": {
+        "description": "Auto re-play moves"
+    },
+    "atEnd": "已經到底了",
+    "@atEnd": {
+        "description": "At the end of the move list."
+    },
+    "tapBackAgainToLeave": "再次按 Back 鍵退出",
+    "@tapBackAgainToLeave": {
+        "description": "Tap back again to leave."
+    },
+    "environmentVariables": "環境變數",
+    "@environmentVariables": {
+        "description": "Environment variables"
+    },
+    "more": "更多",
+    "@more": {
+        "description": "More"
+    },
+    "experimental": "此仍屬實驗性功能。",
+    "@experimental": {
+        "description": "This is an experimental feature."
+    },
+    "experiments": "實驗性功能",
+    "@experiments": {
+        "description": "Experiments"
+    },
+    "ossLicenses": "開放原始程式碼許可",
+    "@ossLicenses": {
+        "description": "Open source licenses"
+    },
+    "language": "顯示語言",
+    "@language": {
+        "description": "Languages"
+    },
+    "defaultLanguage": "預設語言",
+    "@defaultLanguage": {
+        "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "可以在擺子階段走子",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "擺子階段和走子階段無嚴格界限。即，玩家可以在每一步棋中決定是要擺子還是走子 (只要還有剩餘的棋子可以擺子)。",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    }
+}
