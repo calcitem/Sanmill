@@ -497,6 +497,7 @@
     <ClInclude Include="src\rule.h" />
     <ClInclude Include="src\types.h" />
     <QtMoc Include="src\test\test.h" />
+    <ClInclude Include="src\uct\mcts.h" />
     <ClInclude Include="src\ui\qt\boarditem.h" />
     <QtMoc Include="src\ui\qt\client.h" />
     <QtMoc Include="src\ui\qt\game.h">
@@ -772,6 +773,7 @@
     <ClCompile Include="src\position.cpp" />
     <ClCompile Include="src\rule.cpp" />
     <ClCompile Include="src\test\test.cpp" />
+    <ClCompile Include="src\uct\mcts.cpp" />
     <ClCompile Include="src\ui\qt\boarditem.cpp" />
     <ClCompile Include="src\ui\qt\client.cpp" />
     <ClCompile Include="src\ui\qt\game.cpp" />

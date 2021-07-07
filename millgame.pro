@@ -37,6 +37,7 @@ SOURCES += \
     src/main.cpp \
     src/search.cpp \
     src/mills.cpp \
+    src/uct/mcts.cpp \
     src/test/test.cpp \
     src/ui/qt/gamewindow.cpp \
     src/ui/qt/pieceitem.cpp \
@@ -72,6 +73,7 @@ HEADERS  += \
     src/rule.h \
     src/types.h \
     src/mills.h \
+    src/uct/mcts.h \
     src/test/test.h \
     src/ui/qt/client.h \
     src/ui/qt/game.h \

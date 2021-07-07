@@ -49,6 +49,12 @@
     <Filter Include="Perfect AI Files">
       <UniqueIdentifier>{d93d8682-a140-4172-a71d-d32ed65560cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\uct">
+      <UniqueIdentifier>{1bf30e10-f8ca-4d1e-a49b-1b61b733e95f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\uct">
+      <UniqueIdentifier>{cec39a6f-1ea6-4dc3-b997-2ec6fb066d1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -164,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="src\perfect\perfect.h">
       <Filter>Perfect AI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\uct\mcts.h">
+      <Filter>Header Files\uct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -454,6 +463,9 @@
     </ClCompile>
     <ClCompile Include="src\perfect\perfect_test.cpp">
       <Filter>Perfect AI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uct\mcts.cpp">
+      <Filter>Source Files\uct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
