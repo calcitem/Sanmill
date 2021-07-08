@@ -26,6 +26,7 @@ import 'package:sanmill/widgets/settings_list_tile.dart';
 import 'package:sanmill/widgets/settings_switch_list_tile.dart';
 
 import 'list_item_divider.dart';
+import 'snack_bar.dart';
 
 class RuleSettingsPage extends StatefulWidget {
   @override
@@ -400,6 +401,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     print("[config] rule.mayMoveInPlacingPhase: $value");
 
     Config.save();
+
+    if (value) {
+      showSnackBar(context, S.of(context).experimental);
+    }
   }
 
   setIsDefenderMoveFirst(bool value) async {
