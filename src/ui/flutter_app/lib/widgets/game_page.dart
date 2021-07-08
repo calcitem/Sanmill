@@ -43,6 +43,7 @@ import 'board.dart';
 import 'dialog.dart';
 import 'game_settings_page.dart';
 import 'picker.dart';
+import 'snack_bar.dart';
 
 double boardWidth = 0.0;
 
@@ -456,13 +457,13 @@ class _GamePageState extends State<GamePage>
     if (isMoveNow == true) {
       if (!Game.instance.isAiToMove()) {
         print("[engineToGo] Human to Move. Cannot get search result now.");
-        showSnackBar(S.of(context).notAIsTurn);
+        showSnackBar(context, S.of(context).notAIsTurn);
         return;
       }
       if (!Game.instance.position.recorder.isClean()) {
         print(
             "[engineToGo] History is not clean. Cannot get search result now.");
-        showSnackBar(S.of(context).aiIsNotThinking);
+        showSnackBar(context, S.of(context).aiIsNotThinking);
         return;
       }
     }
@@ -593,7 +594,7 @@ class _GamePageState extends State<GamePage>
     final moveHistoryText = Game.instance.position.moveHistoryText;
 
     Clipboard.setData(ClipboardData(text: moveHistoryText)).then((_) {
-      showSnackBar(S.of(context).moveHistoryCopied);
+      showSnackBar(context, S.of(context).moveHistoryCopied);
     });
   }
 
@@ -893,10 +894,10 @@ class _GamePageState extends State<GamePage>
       case "null":
       case "out-of-range":
       case "equal":
-        showSnackBar(S.of(context).atEnd);
+        showSnackBar(context, S.of(context).atEnd);
         break;
       default:
-        showSnackBar(S.of(context).movesAndRulesNotMatch);
+        showSnackBar(context, S.of(context).movesAndRulesNotMatch);
         break;
     }
 
@@ -981,7 +982,7 @@ class _GamePageState extends State<GamePage>
               onPressed: () =>
                   Clipboard.setData(ClipboardData(text: moveHistoryText))
                       .then((_) {
-                showSnackBar(S.of(context).moveHistoryCopied);
+                showSnackBar(context, S.of(context).moveHistoryCopied);
               }),
             ),
             TextButton(
@@ -1367,20 +1368,6 @@ class _GamePageState extends State<GamePage>
         animationValue: animation.value,
       ),
     );
-  }
-
-  void showSnackBar(String message,
-      {Duration duration = const Duration(milliseconds: 4000)}) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(
-          fontSize: Config.fontSize,
-        ),
-      ),
-      duration: duration,
-    ));
   }
 
   String getInfoText() {
