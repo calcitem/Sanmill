@@ -1,0 +1,3 @@
+v1.1.13
+
+* Añade traducciones automáticas en canarés/noruego/uzbeko/vietnamita.

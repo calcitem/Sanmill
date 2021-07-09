@@ -1,0 +1,3 @@
+v1.1.13
+
+* Fügen Sie Kannada/Norwegisch/Usbekisch/Vietnamesisch maschinelle Übersetzungen hinzu.
