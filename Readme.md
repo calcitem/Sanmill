@@ -15,7 +15,7 @@
 <img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on GitHub" height="54"/></a>
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a09e5b5ab4f04b1585acb478af0bd593)](https://app.codacy.com/manual/calcitem/Sanmill?utm_source=github.com&utm_medium=referral&utm_content=calcitem/Sanmill&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd51135302af45a989a382d3a3d9eadc)](https://www.codacy.com/gh/calcitem/Sanmill/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calcitem/Sanmill&amp;utm_campaign=Badge_Grade)
 
 [Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful UCI-like N men's morris program with CUI, Flutter GUI and Qt GUI.
 
