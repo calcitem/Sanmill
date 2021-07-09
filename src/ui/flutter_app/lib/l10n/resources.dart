@@ -46,12 +46,14 @@ Map<String, Strings> languageCodeToStrings = {
   "id": IndonesianStrings(),
   "it": ItalianStrings(),
   "ja": JapaneseStrings(),
+  "kn": KannadaStrings(),
   "ko": KoreanStrings(),
   "lt": LithuanianStrings(),
   "lv": LatvianStrings(),
   "mk": MacedonianStrings(),
   "ms": MalayStrings(),
   "nl": DutchStrings(),
+  "nn": NorwegianStrings(),
   "pl": PolishStrings(),
   "pt": PortugueseStrings(),
   "ro": RomanianStrings(),
@@ -64,6 +66,8 @@ Map<String, Strings> languageCodeToStrings = {
   "te": TeluguStrings(),
   "th": ThaiStrings(),
   "tr": TurkishStrings(),
+  "uz": UzbekStrings(),
+  "vi": VietnameseStrings(),
   "zh": ChineseStrings(),
   "zh_Hant": TraditionalChineseStrings(),
 };
@@ -256,6 +260,15 @@ class JapaneseStrings extends Strings {
   String get tapBackAgainToLeave => 'もう一度returnを押してアプリケーションを終了する';
 }
 
+/// kn
+class KannadaStrings extends Strings {
+  @override
+  String get languageName => 'ಕನ್ನಡ';
+
+  @override
+  String get tapBackAgainToLeave => 'ಬಿಡಲು ಮತ್ತೆ ಟ್ಯಾಪ್ ಮಾಡಿ.';
+}
+
 /// ko
 class KoreanStrings extends Strings {
   @override
@@ -309,6 +322,15 @@ class DutchStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => 'Tik opnieuw om te vertrekken.';
+}
+
+/// nn
+class NorwegianStrings extends Strings {
+  @override
+  String get languageName => 'Norsk';
+
+  @override
+  String get tapBackAgainToLeave => 'Trykk tilbake for å dra.';
 }
 
 /// pl
@@ -418,6 +440,25 @@ class TurkishStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => 'Tocca di nuovo per uscire.';
+}
+
+/// uz
+class UzbekStrings extends Strings {
+  @override
+  String get languageName => 'O\'zbek';
+
+  @override
+  String get tapBackAgainToLeave => 'Ketish uchun yana bir marta bosing.';
+}
+
+/// vi
+class VietnameseStrings extends Strings {
+  @override
+  String get languageName => 'Tiếng Việt';
+
+  @override
+  String get tapBackAgainToLeave =>
+      'Nhấn phím quay lại một lần nữa để thoát ứng dụng.';
 }
 
 /// zh
