@@ -1,5 +1,6 @@
 ## Overview
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cefae8608d1940b7b2787cd4fb033059)](https://app.codacy.com/gh/calcitem/Sanmill?utm_source=github.com&utm_medium=referral&utm_content=calcitem/Sanmill&utm_campaign=Badge_Grade_Settings)
 [![YouTube](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
 
 <a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
