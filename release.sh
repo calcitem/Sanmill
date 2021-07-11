@@ -87,10 +87,10 @@ echo "* Versionshinweise." >> $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "* Notas de publicación." >> $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "* 发布说明。" >> $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
-notepad $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-notepad $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-notepad $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-notepad $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+code $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+code $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+code $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+code $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
 # Git commit
 git status -s
