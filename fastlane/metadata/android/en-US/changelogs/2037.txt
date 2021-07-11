@@ -1,0 +1,3 @@
+v1.1.14
+
+* Set default rule to Twelve Men's Morris when the country is Iran.

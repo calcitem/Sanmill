@@ -1,0 +1,3 @@
+v1.1.14
+
+* Setzen Sie die Standardregel auf Twelve Men's Morris, wenn das Land der Iran ist.
