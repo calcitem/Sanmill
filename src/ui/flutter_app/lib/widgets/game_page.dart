@@ -1631,7 +1631,7 @@ class _GamePageState extends State<GamePage>
   void didPush() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPush route: $route');
-    await widget.engine.setOptions();
+    await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
       setState(() {});
@@ -1642,7 +1642,7 @@ class _GamePageState extends State<GamePage>
   void didPopNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPopNext route: $route');
-    await widget.engine.setOptions();
+    await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
     }
@@ -1652,7 +1652,7 @@ class _GamePageState extends State<GamePage>
   void didPushNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPushNext route: $route');
-    await widget.engine.setOptions();
+    await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
     }

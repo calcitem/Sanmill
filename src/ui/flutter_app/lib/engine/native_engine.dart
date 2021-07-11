@@ -18,8 +18,10 @@
 
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 
@@ -131,7 +133,7 @@ class NativeEngine extends Engine {
     await send('stop');
   }
 
-  Future<void> setOptions() async {
+  Future<void> setOptions(BuildContext context) async {
     if (Config.settingsLoaded == false) {
       print("[engine] Settings is not loaded yet, now load settings...");
       await Config.loadSettings();

@@ -17,6 +17,7 @@
 */
 
 import 'package:sanmill/common/constants.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
 
@@ -67,10 +68,11 @@ class Config {
   static int messageColor = AppTheme.messageColor.value;
 
   // Rules
-  static int piecesCount = 9;
+  static int piecesCount = specialCountryAndRegion == "Iran" ? 12 : 9;
   static int flyPieceCount = 3;
   static int piecesAtLeastCount = 3;
-  static bool hasDiagonalLines = false;
+  static bool hasDiagonalLines =
+      specialCountryAndRegion == "Iran" ? true : false;
   static bool hasBannedLocations = false;
   static bool mayMoveInPlacingPhase = false;
   static bool isDefenderMoveFirst = false;
@@ -139,12 +141,14 @@ class Config {
         settings['MessageColor'] ?? AppTheme.messageColor.value;
 
     // Rules
-    rule.piecesCount = Config.piecesCount = settings['PiecesCount'] ?? 9;
+    rule.piecesCount = Config.piecesCount =
+        settings['PiecesCount'] ?? (specialCountryAndRegion == "Iran" ? 12 : 9);
     rule.flyPieceCount = Config.flyPieceCount = settings['FlyPieceCount'] ?? 3;
     rule.piecesAtLeastCount =
         Config.piecesAtLeastCount = settings['PiecesAtLeastCount'] ?? 3;
-    rule.hasDiagonalLines =
-        Config.hasDiagonalLines = settings['HasDiagonalLines'] ?? false;
+    rule.hasDiagonalLines = Config.hasDiagonalLines =
+        settings['HasDiagonalLines'] ??
+            (specialCountryAndRegion == "Iran" ? true : false);
     rule.hasBannedLocations =
         Config.hasBannedLocations = settings['HasBannedLocations'] ?? false;
     rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase =

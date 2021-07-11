@@ -16,13 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/l10n/resources.dart';
+
 class Rule {
-  String name = "Nine Men's Morris";
+  String name = "Default Rule";
   String description = "";
-  int piecesCount = 9;
+  int piecesCount = specialCountryAndRegion == "Iran" ? 12 : 9;
   int flyPieceCount = 3;
   int piecesAtLeastCount = 3;
-  bool hasDiagonalLines = false;
+  bool hasDiagonalLines = specialCountryAndRegion == "Iran" ? true : false;
   bool hasBannedLocations = false;
   bool mayMoveInPlacingPhase = false;
   bool isDefenderMoveFirst = false;

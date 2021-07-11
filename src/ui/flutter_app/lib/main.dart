@@ -126,6 +126,8 @@ class _SanmillAppState extends State<SanmillApp> {
 
   @override
   Widget build(BuildContext context) {
+    setSpecialCountryAndRegion(context);
+
     return MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.

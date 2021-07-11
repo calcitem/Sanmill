@@ -565,3 +565,20 @@ Bidirectionality getBidirectionality(BuildContext context) {
     return Bidirectionality.leftToRight;
   }
 }
+
+String specialCountryAndRegion = "";
+
+setSpecialCountryAndRegion(BuildContext context) {
+  Locale currentLocale = Localizations.localeOf(context);
+
+  switch (currentLocale.countryCode) {
+    case "IR":
+      specialCountryAndRegion = "Iran";
+      break;
+    default:
+      specialCountryAndRegion = "";
+      break;
+  }
+
+  print("Set Special Country and Region to $specialCountryAndRegion.");
+}

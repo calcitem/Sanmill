@@ -19,6 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_card.dart';
@@ -200,7 +201,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Navigator.of(context).pop();
 
       setState(() {
-        rule.piecesCount = Config.piecesCount = piecesCount ?? 9;
+        rule.piecesCount = Config.piecesCount =
+            piecesCount ?? (specialCountryAndRegion == "Iran" ? 12 : 9);
       });
 
       print("[config] rule.piecesCount: ${rule.piecesCount}");
