@@ -5,6 +5,12 @@ TEMPLATE_FILE=include/version.h.template
 PUBSPEC_YAML_FILE=src/ui/flutter_app/pubspec.yaml
 GIT_BRANCH=master
 
+SED=sed
+
+if [ "$(uname)" == "Darwin" ]; then
+	SED=gsed
+fi
+
 rm -f $VERSION_H
 
 git rev-list HEAD | sort > config.git-hash
@@ -37,7 +43,7 @@ fi
 
 rm -f config.git-hash
 
-sed "s/\$FULL_VERSION/$GIT_VERSION/g" < $TEMPLATE_FILE > $VERSION_H
+$SED "s/\$FULL_VERSION/$GIT_VERSION/g" < $TEMPLATE_FILE > $VERSION_H
 
 git update-index --assume-unchanged $VERSION_H
 
@@ -47,5 +53,5 @@ echo "Generated $VERSION_H"
 echo
 cat $VERSION_H
 
-sed -i '/version:/d' ${PUBSPEC_YAML_FILE}
-sed -i "4i\version: ${APP_VERSION}" ${PUBSPEC_YAML_FILE}
+$SED -i '/version:/d' ${PUBSPEC_YAML_FILE}
+$SED -i "4i\version: ${APP_VERSION}" ${PUBSPEC_YAML_FILE}

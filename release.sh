@@ -8,11 +8,17 @@ DE_CHANGLOG_DIR=fastlane/metadata/android/de-DE/changelogs
 ES_CHANGLOG_DIR=fastlane/metadata/android/es-ES/changelogs
 ZH_CHANGLOG_DIR=fastlane/metadata/android/zh-CN/changelogs
 
+SED=sed
+
+if [ "$(uname)" == "Darwin" ]; then
+	SED=gsed
+fi
+
 # Update Build Number
 ./version.sh
 
 # version: 1.0.6+1811
-VERSION_STRING=`sed -n '4p' $YAML_FILE`
+VERSION_STRING=`$SED -n '4p' $YAML_FILE`
 echo "VERSION_STRING = $VERSION_STRING"
 
 # 1.0.6+1811
@@ -57,17 +63,17 @@ NEW_VERSION_STRING="version: $NEW_FULL_VERSION"
 echo "NEW_VERSION_STRING = $NEW_VERSION_STRING"
 
 # Modify yaml
-sed -i "s/${VERSION_STRING}/${NEW_VERSION_STRING}/g" $YAML_FILE
+$SED -i "s/${VERSION_STRING}/${NEW_VERSION_STRING}/g" $YAML_FILE
 
 # Modify Qt
 OLD_FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$OLD_PATCH_NUMBER"
 FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$PATCH_NUMBER"
-sed -i "s/${OLD_FILEVERSION}/${FILEVERSION}/g" $QT_RC_FILE
-sed -i "s/${OLD_VERSION}/${NEW_VERSION}/g" $QT_RC_FILE
+$SED -i "s/${OLD_FILEVERSION}/${FILEVERSION}/g" $QT_RC_FILE
+$SED -i "s/${OLD_VERSION}/${NEW_VERSION}/g" $QT_RC_FILE
 
 # Modify Runner.rc
-sed -i "s/${OLD_FILEVERSION}/${FILEVERSION}/g" $FLUTTER_WINDOWS_RC_FILE
-sed -i "s/${OLD_VERSION}/${NEW_VERSION}/g" $FLUTTER_WINDOWS_RC_FILE
+$SED -i "s/${OLD_FILEVERSION}/${FILEVERSION}/g" $FLUTTER_WINDOWS_RC_FILE
+$SED -i "s/${OLD_VERSION}/${NEW_VERSION}/g" $FLUTTER_WINDOWS_RC_FILE
 
 # Changelog
 rm -f ${BUILD_NUMBER}.txt
@@ -87,17 +93,17 @@ echo "* Versionshinweise." >> $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "* Notas de publicación." >> $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "* 发布说明。" >> $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
-code $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-code $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-code $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-code $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+vi $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+vi $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+vi $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+vi $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
 # Git commit
 git status -s
 git add .
 git commit -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION" -s
 git tag -d v$NEW_VERSION || true
-git tag -s v$NEW_VERSION
+git tag -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION" -s v$NEW_VERSION
 git tag -v v$NEW_VERSION
 git push origin v$NEW_VERSION -f
 git push origin master
