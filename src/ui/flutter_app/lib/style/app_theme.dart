@@ -105,7 +105,7 @@ class AppTheme {
       height: 1.5,
       color: moveHistoryTextColor);
 
-  static double boardTop = 36.0;
+  static double boardTop = 75.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;
   static double boardBorderRadius = 5.0;

@@ -56,7 +56,7 @@ class Config {
   static double boardInnerLineWidth = 2.0;
   static double pieceWidth = 0.9;
   static double fontSize = 16.0;
-  static double boardTop = 36.0;
+  static double boardTop = 75.0;
   static double animationDuration = 0.0;
 
   // Color
@@ -126,7 +126,7 @@ class Config {
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
     Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
     Config.fontSize = settings['FontSize'] ?? 16.0;
-    Config.boardTop = settings['BoardTop'] ?? 36;
+    Config.boardTop = settings['BoardTop'] ?? 75;
     Config.animationDuration = settings['AnimationDuration'] ?? 0;
 
     // Color

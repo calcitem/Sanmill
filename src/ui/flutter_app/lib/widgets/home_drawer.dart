@@ -183,7 +183,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           children: <Widget>[
             animatedBuilder,
             Padding(
-              padding: const EdgeInsets.only(top: 8, left: 4),
+              padding: const EdgeInsets.only(top: 30, left: 4),
               child: animatedTextKit,
             ),
           ],

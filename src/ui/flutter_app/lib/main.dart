@@ -100,7 +100,9 @@ Future<void> main() async {
     );
   }
 
+  /*
   SystemChrome.setEnabledSystemUIOverlays([]);
+  */
 }
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
