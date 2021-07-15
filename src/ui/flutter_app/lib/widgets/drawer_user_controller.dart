@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/home_drawer.dart';
@@ -216,7 +217,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
           //full-screen Width with widget.screenView
           child: Container(
             decoration: BoxDecoration(
-              color: AppTheme.drawerColor,
+              color: Color(Config.drawerColor),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                     color: AppTheme.drawerBoxerShadowColor, blurRadius: 24),
@@ -229,7 +230,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
     );
 
     return Scaffold(
-      backgroundColor: AppTheme.drawerColor,
+      backgroundColor: Color(Config.drawerColor),
       body: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.horizontal,

@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Ni ločenih faz postavljanja in premikanja, tj. igralci se lahko pri vsaki potezi odločijo, ali želijo postaviti figuro na igralno ploščo ali premakniti eno od svojih figur (če imajo še preostale figure za postavitev).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

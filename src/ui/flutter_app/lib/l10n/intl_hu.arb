@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Nincs külön elhelyezési és mozgási fázis, azaz a játékosok minden lépésnél eldönthetik, hogy egy bábut akarnak-e elhelyezni a táblán, vagy pedig az egyik bábujukat akarják-e mozgatni (amíg van még elhelyezendő bábujuk).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "A menü színe",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "A menü szövegének színe",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "A menü háttérszíne",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

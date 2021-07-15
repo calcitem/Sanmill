@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "ત્યાં કોઈ વિશિષ્ટ પ્લેસિંગ અને મૂવિંગ તબક્કાઓ નથી, એટલે કે, ખેલાડીઓ દરેક ચાલ પર નિર્ણય લઈ શકે છે કે શું તેઓ બોર્ડ પર કોઈ ભાગ મૂકવા માંગે છે અથવા તેમના ટુકડાઓમાંથી એક ખસેડવા માંગે છે (જ્યાં સુધી તેમની પાસે બાકીના ટુકડાઓ મૂકવા બાકી છે).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

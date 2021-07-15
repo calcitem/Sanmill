@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Не существует отдельных фаз размещения и перемещения, т.е. игроки могут решать на каждом ходу, хотят ли они разместить фигуру на доске или переместить одну из своих фигур (пока у них есть оставшиеся фигуры для размещения).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Цвет меню",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Цвет текста меню",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Цвет фона меню",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

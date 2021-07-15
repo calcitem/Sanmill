@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Nėra atskirų dėliojimo ir judėjimo fazių, t. y. kiekvieno ėjimo metu žaidėjai gali nuspręsti, ar jie nori dėti figūrą ant lentos, ar perkelti vieną iš savo figūrų (jei tik turi likusių figūrų, kurias galima dėti).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

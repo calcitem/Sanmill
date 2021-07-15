@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Neexistujú žiadne odlišné fázy umiestňovania a presunu, t. j. hráči sa môžu pri každom ťahu rozhodnúť, či chcú umiestniť figúrku na hraciu plochu, alebo presunúť jednu zo svojich figúrok (pokiaľ im zostávajú figúrky na umiestnenie).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

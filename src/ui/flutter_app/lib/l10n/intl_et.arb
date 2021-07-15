@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Puuduvad eraldi paigutus- ja liikumisfaasid, st mängijad võivad igal käigul otsustada, kas nad soovivad paigutada mängulauale ühe mängukivi või liigutada ühte oma mängukivi (niikaua kui neil on allesjäänud mängukivid, mida paigutada).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

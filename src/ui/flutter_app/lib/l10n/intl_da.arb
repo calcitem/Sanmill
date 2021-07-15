@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Der er ingen særskilte placerings- og flyttefaser, dvs. spillerne kan ved hvert træk beslutte, om de vil placere en brik på brættet eller flytte en af deres brikker (så længe de har resterende brikker til at placere).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

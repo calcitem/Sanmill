@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "ప్రత్యేకమైన ఉంచడం మరియు కదిలే దశలు లేవు, అనగా, ఆటగాళ్ళు ప్రతి కదలికలో బోర్డు మీద ఒక భాగాన్ని ఉంచాలనుకుంటున్నారా లేదా వారి ముక్కలలో ఒకదాన్ని తరలించాలా అని నిర్ణయించుకోవచ్చు (వారు ఉంచడానికి మిగిలిన ముక్కలు ఉన్నంత వరకు).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

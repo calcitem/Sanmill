@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "এখানে কোনও পৃথক স্থাপন এবং চলমান পর্যায় নেই, অর্থাত্ খেলোয়াড়রা প্রতিটি পদক্ষেপে সিদ্ধান্ত নিতে পারেন তারা বোর্ডে কোনও টুকরো রাখতে চান বা তাদের কোনও টুকরা স্থানান্তরিত করতে চান (যতক্ষণ না তাদের কাছে টুকরো টুকরো টুকরো স্থান রয়েছে)।",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

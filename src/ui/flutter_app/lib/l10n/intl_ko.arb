@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "유 각기와 보행기 사이에는 엄격한 경계가 없습니다. 즉, 플레이어는 움직일 때마다 움직일 것인지 움직일 것인지 결정할 수 있습니다 (움직일 수있는 조각이 남아있는 한).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Tidak ada fase penempatan dan pemindahan yang berbeda, yaitu, para pemain dapat memutuskan pada setiap gerakan apakah mereka ingin menempatkan bidak di papan atau memindahkan salah satu bidak mereka (selama mereka memiliki bidak yang tersisa untuk ditempatkan).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

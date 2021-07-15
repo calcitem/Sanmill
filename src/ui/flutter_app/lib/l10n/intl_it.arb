@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Non ci sono fasi di piazzamento e di spostamento distinte, cioè i giocatori possono decidere ad ogni mossa se vogliono piazzare un pezzo sulla tavola o muovere uno dei loro pezzi (finché hanno pezzi rimanenti da piazzare).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

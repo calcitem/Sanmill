@@ -59,6 +59,9 @@ class _PersonalizationSettingsPageState
       S.of(context).whitePieceColor: Config.whitePieceColor,
       S.of(context).blackPieceColor: Config.blackPieceColor,
       S.of(context).messageColor: Config.messageColor,
+      S.of(context).drawerColor: Config.drawerColor,
+      S.of(context).drawerBackgroundColor: Config.drawerBackgroundColor,
+      S.of(context).drawerTextColor: Config.drawerTextColor,
     };
 
     AlertDialog alert = AlertDialog(
@@ -100,6 +103,12 @@ class _PersonalizationSettingsPageState
               Config.blackPieceColor = pickerColor.value;
             } else if (colorString == S.of(context).messageColor) {
               Config.messageColor = pickerColor.value;
+            } else if (colorString == S.of(context).drawerColor) {
+              Config.drawerColor = pickerColor.value;
+            } else if (colorString == S.of(context).drawerBackgroundColor) {
+              Config.drawerBackgroundColor = pickerColor.value;
+            } else if (colorString == S.of(context).drawerTextColor) {
+              Config.drawerTextColor = pickerColor.value;
             }
 
             Config.save();
@@ -474,6 +483,27 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).messageColor,
             trailingColor: Config.messageColor,
             onTap: () => showColorDialog(S.of(context).messageColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).drawerColor,
+            trailingColor: Config.drawerColor,
+            onTap: () => showColorDialog(S.of(context).drawerColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).drawerBackgroundColor,
+            trailingColor: Config.drawerBackgroundColor,
+            onTap: () => showColorDialog(S.of(context).drawerBackgroundColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).drawerTextColor,
+            trailingColor: Config.drawerTextColor,
+            onTap: () => showColorDialog(S.of(context).drawerTextColor),
           ),
         ],
       ),

@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "擺子階段和走子階段無嚴格界限。即，玩家可以在每一步棋中決定是要擺子還是走子 (只要還有剩餘的棋子可以擺子)。",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "菜单颜色",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "菜单文字颜色",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "菜单背景颜色",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "No hay fases distintas de colocación y movimiento, es decir, los jugadores pueden decidir en cada movimiento si quieren colocar una pieza en el tablero o mover una de sus piezas (siempre que les queden piezas por colocar).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Color del menú",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Color del texto del menú",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Color de fondo del menú",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

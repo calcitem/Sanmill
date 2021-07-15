@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Er zijn geen verschillende plaatsings- en beweegfases, d.w.z. de spelers kunnen bij elke zet beslissen of ze een stuk op het bord willen plaatsen of een van hun stukken willen verplaatsen (zolang ze nog stukken over hebben om te plaatsen).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

@@ -66,6 +66,9 @@ class Config {
   static int whitePieceColor = AppTheme.whitePieceColor.value;
   static int blackPieceColor = AppTheme.blackPieceColor.value;
   static int messageColor = AppTheme.messageColor.value;
+  static int drawerColor = AppTheme.drawerColor.value;
+  static int drawerBackgroundColor = AppTheme.drawerBackgroundColor.value;
+  static int drawerTextColor = AppTheme.drawerTextColor.value;
 
   // Rules
   static int piecesCount = specialCountryAndRegion == "Iran" ? 12 : 9;
@@ -139,6 +142,11 @@ class Config {
         settings['BlackPieceColor'] ?? AppTheme.blackPieceColor.value;
     Config.messageColor =
         settings['MessageColor'] ?? AppTheme.messageColor.value;
+    Config.drawerColor = settings['DrawerColor'] ?? AppTheme.drawerColor.value;
+    Config.drawerBackgroundColor = settings['DrawerBackgroundColor'] ??
+        AppTheme.drawerBackgroundColor.value;
+    Config.drawerTextColor =
+        settings['DrawerTextColor'] ?? AppTheme.drawerTextColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount =
@@ -216,6 +224,9 @@ class Config {
     settings['WhitePieceColor'] = Config.whitePieceColor;
     settings['BlackPieceColor'] = Config.blackPieceColor;
     settings['MessageColor'] = Config.messageColor;
+    settings['DrawerColor'] = Config.drawerColor;
+    settings['DrawerBackgroundColor'] = Config.drawerBackgroundColor;
+    settings['DrawerTextColor'] = Config.drawerTextColor;
 
     // Rules
     settings['PiecesCount'] = Config.piecesCount;

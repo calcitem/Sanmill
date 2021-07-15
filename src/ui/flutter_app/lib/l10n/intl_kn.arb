@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "ಯಾವುದೇ ವಿಶಿಷ್ಟವಾದ ಇರಿಸುವ ಮತ್ತು ಚಲಿಸುವ ಹಂತಗಳಿಲ್ಲ, ಅಂದರೆ, ಆಟಗಾರರು ಪ್ರತಿ ಚಲನೆಯಲ್ಲೂ ಒಂದು ತುಂಡನ್ನು ಬೋರ್ಡ್‌ನಲ್ಲಿ ಇಡಬೇಕೆ ಅಥವಾ ಅವರ ಒಂದು ತುಣುಕನ್ನು ಚಲಿಸಬೇಕೆ ಎಂದು ನಿರ್ಧರಿಸಬಹುದು (ಅವರು ಉಳಿದಿರುವ ತುಣುಕುಗಳನ್ನು ಇಡುವವರೆಗೆ).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menu color",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menu text color",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menu background color",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }

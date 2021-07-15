@@ -226,7 +226,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     */
 
     var scaffold = Scaffold(
-      backgroundColor: AppTheme.drawerBackgroundColor,
+      backgroundColor: Color(Config.drawerBackgroundColor),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -292,7 +292,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     var listItemIcon = Icon(listItem.icon!.icon,
         color: widget.screenIndex == listItem.index
             ? AppTheme.drawerHighlightIconColor
-            : AppTheme.drawerIconColor);
+            : Color(Config.drawerTextColor));
 
     var stack = Stack(
       children: <Widget>[
@@ -318,7 +318,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   fontSize: Config.fontSize,
                   color: widget.screenIndex == listItem.index
                       ? AppTheme.drawerHighlightTextColor
-                      : AppTheme.drawerTextColor,
+                      : Color(Config.drawerTextColor),
                 ),
               ),
             ],

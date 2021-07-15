@@ -956,5 +956,17 @@
     "mayMoveInPlacingPhase_Detail": "Es gibt keine getrennten Setz- und Zugphasen, d.h. die Spieler können bei jedem Zug entscheiden, ob sie einen Stein auf dem Brett setzen oder einen ihrer Steine bewegen wollen (solange sie noch Steine zum Setzen haben).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menüfarbe",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menütextfarbe",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerBackgroundColor": "Menühintergrundfarbe",
+    "@drawerBackgroundColor": {
+        "description": "Menu background color"
     }
 }
