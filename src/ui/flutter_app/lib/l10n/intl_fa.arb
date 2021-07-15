@@ -204,7 +204,7 @@
     "@exportGame": {
         "description": "Export game"
     },
-    "gameImported": "بازی از کلیپ بورد وارد شده است.",
+    "gameImported": "بازی از بریده‌دان وارد شده است.",
     "@gameImported": {
         "description": "Game imported from the clipboard."
     },
@@ -220,11 +220,11 @@
     "@startRecording": {
         "description": "Start recording"
     },
-    "recording": "ضبط ...",
+    "recording": "درحال ضبط...",
     "@recording": {
         "description": "Recording..."
     },
-    "stopRecording": "ضبط را متوقف کنید",
+    "stopRecording": "ضبط کردن را متوقف کنید",
     "@stopRecording": {
         "description": "Stop recording"
     },
@@ -236,7 +236,7 @@
     "@noRecording": {
         "description": "No recording."
     },
-    "pleaseWait": "لطفا صبر کنید...",
+    "pleaseWait": "شکیبا باشید...",
     "@pleaseWait": {
         "description": "Please wait..."
     },
@@ -296,19 +296,19 @@
     "@loseReasonTimeOver": {
         "description": "Time Over"
     },
-    "drawReasonRule50": "در مرحله متحرک ، هیچ قطعه ای در آخرین تعداد حرکت خاص حذف نشده است.",
+    "drawReasonRule50": "در مرحله حرکت کردن ، هیچ مهره‌ای در آخرین تعداد حرکت خاص حذف نشده است.",
     "@drawReasonRule50": {
         "description": "In the moving phase, no piece has been removed in the last specific number of moves."
     },
-    "drawReasonBoardIsFull": "نتیجه قرعه‌کشی مساوی است.چون تخته پر است.",
+    "drawReasonBoardIsFull": "نتیجه مساوی است.چون تخته پر است.",
     "@drawReasonBoardIsFull": {
         "description": "It is a Draw because the board is full"
     },
-    "drawReasonThreefoldRepetition": "این یک قرعه کشی است ، زیرا تکرار سه برابر است.",
+    "drawReasonThreefoldRepetition": "نتیجه مساوی است ب دلیل سه بار تکرار",
     "@drawReasonThreefoldRepetition": {
         "description": "It is a Draw because of threefold repetition."
     },
-    "gameOverUnknownReason": "بازی تمام شد! دلیل نامعلوم.",
+    "gameOverUnknownReason": "بازی تمام شد! دلیل ناشناخته.",
     "@gameOverUnknownReason": {
         "description": "Game Over! Unknown reason."
     },
@@ -344,7 +344,7 @@
     "@version": {
         "description": "Version"
     },
-    "thanks": "با تشکر",
+    "thanks": "با تشکر از",
     "@thanks": {
         "description": "Thanks"
     },
@@ -376,11 +376,11 @@
     "@playSounds": {
         "description": "Sound effects"
     },
-    "playSoundsInTheGame": "پخش صداها را در بازی",
+    "playSoundsInTheGame": "پخش صداها در بازی",
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
-    "keepMuteWhenTakingBack": "هنگام بازگشت به عقب ، بی صدا را حفظ کنید",
+    "keepMuteWhenTakingBack": "هنگام بازگشت به عقب ، حالت بی صدا را حفظ کنید",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"
     },
@@ -400,11 +400,11 @@
     "@ai": {
         "description": "AI"
     },
-    "alternate": "متناوب",
+    "alternate": "جایگزین",
     "@alternate": {
         "description": "Alternate"
     },
-    "isAutoRestart": "وقتی بازی تمام شد بازی را دوباره راه اندازی کنید",
+    "isAutoRestart": "راه‌اندازی دوباره بازی بصورت خودکار وقتی بازی تمام شد",
     "@isAutoRestart": {
         "description": "Auto-restart game when game over"
     },
@@ -444,11 +444,11 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
-    "flyPieceCount": "تعداد مهره‌های پرواز",
+    "flyPieceCount": "تعداد مهره‌های پروازی",
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
-    "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که یک بازیکن به تعداد قطعه های خاص کاهش می یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، مانند سایر قسمت های بازی ، به هر نقطه اشغال نشده منتقل می شوند.",
+    "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که مهره های بازیکن به تعداد خاصی کاهش یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، می توانند ‌به هر نقطه اشغال نشده منتقل شوند.",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
@@ -464,11 +464,11 @@
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
-    "hasBannedLocations": "برداشتن مهره‌ها را علامت گذاری کرده و به تأخیر بیندازید",
+    "hasBannedLocations": "برداشتن(حذف) مهره‌ها را علامت گذاشته و به تأخیر بیندازید",
     "@hasBannedLocations": {
         "description": "Mark and delay removing pieces"
     },
-    "hasBannedLocations_Detail": "در مرحله قرار دادن ، نقاط قطعات برداشته شده دیگر قادر به قرار دادن نخواهند بود.",
+    "hasBannedLocations_Detail": "در مرحله جای‌گذاری مهره‌ها ، نقاط مهره‌های برداشته شده دیگر قادر به پذیرش مهره جدید نخواهند بود.",
     "@hasBannedLocations_Detail": {
         "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
     },
@@ -476,39 +476,39 @@
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "بازیکنی که در مرحله قرارگیری دوم حرکت می کند در مرحله متحرک اول حرکت می کند.",
+    "isDefenderMoveFirst_Detail": "بازیکنی که در مرحله جای‌گذاری مهره‌ها در نوبت دوم حرکت می کند در مرحله حرکت دادن مهره‌ها اول حرکت می کند.",
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
-    "mayRemoveMultiple": "می تواند چند مهره را حذف کند",
+    "mayRemoveMultiple": "حذف چندگانه مهره‌ها",
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "اگر یک بازیکن یک باره بیش از یک آسیاب را ببندد ، می تواند تعداد آسیاب هایی را که بسته است از بین ببرد.",
+    "mayRemoveMultiple_Detail": "اگر یک بازیکن یک باره بیش از یک دوز را حاصل شود ، می تواند به تعداد دوز هایی که حاصل شده، مهره‌های حریف را بردارد.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
-    "mayRemoveFromMillsAlways": "دوز ها را نابود کنید",
+    "mayRemoveFromMillsAlways": "نابودسازی دوزها",
     "@mayRemoveFromMillsAlways": {
         "description": "Destroy mills"
     },
-    "mayRemoveFromMillsAlways_Detail": "به طور پیش فرض ، بازیکنان باید قبل از برداشتن قطعه ای از آسیاب تشکیل شده ، سایر قطعات را حذف کنند. برای غیرفعال کردن محدودیت ، این گزینه را فعال کنید.",
+    "mayRemoveFromMillsAlways_Detail": "به طور پیش فرض ، بازیکنان باید قبل از برداشتن مهره‌ای از دوز تشکیل شده ، سایر مهره‌ها را حذف کنند. برای غیرفعال کردن محدودیت ، این گزینه را فعال کنید.",
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull": "هنگامی که تخته پر میشود بازیکن دوم بازنده می‌شود",
+    "isWhiteLoseButNotDrawWhenBoardFull": "هنگامی که تخته پر میشود بازیکن دوم می‌بازد",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "در پایان مرحله قرار دادن ، وقتی تخته پر است ، طرفی که ابتدا قرار می گیرد بازی را می‌بازد ، در غیر این صورت بازی مساوی است.",
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "در پایان مرحله جای‌گذاری مهره‌ها ، وقتی تخته پر است ، طرفی که ابتدا مهره‌ای قرار می‌دهد بازی را می‌بازد ، در غیر این صورت بازی مساوی است.",
     "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
         "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
     },
-    "isLoseButNotChangeSideWhenNoWay": "وقتی حرکت قانونی وجود ندارد بازنده ای.",
+    "isLoseButNotChangeSideWhenNoWay": "وقتی حرکت مجازی وجود ندارد می‌بازید.",
     "@isLoseButNotChangeSideWhenNoWay": {
         "description": "Lose when no legal moves"
     },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "اگر حریف مانع آنها شود تا بازیکن نتواند آنها را جابجا کند بازیکن شکست می خورد. در صورت غیرفعال بودن گزینه ، جهت حرکت را تغییر دهید.",
+    "isLoseButNotChangeSideWhenNoWay_Detail": "بازیکن شکست می‌خورد اگر حریف مانع جابجایی مهره‌های او شود . تغییر طرف حرکت در صورت غیرفعال بودن گزینه.",
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
     },
@@ -524,7 +524,7 @@
     "@nMoveRule": {
         "description": "N-move rule"
     },
-    "nMoveRule_Detail": "در صورتی که در تعداد حرکات خاصی از سوی هر بازیکن حذف نشده باشد ، بازی قرعه کشی می شود.",
+    "nMoveRule_Detail": "در صورتی که در تعداد حرکات خاصی از سوی هر بازیکن حذف نشده باشد ، بازی مساوی می شود.",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
@@ -540,7 +540,7 @@
     "@copy": {
         "description": "Copy"
     },
-    "moveHistoryCopied": "انتقال تاریخچه کپی شده به کلیپ بورد",
+    "moveHistoryCopied": "تاریخچه انتقال به بریده‌دان کپی شده",
     "@moveHistoryCopied": {
         "description": "Move history copied to clipboard"
     },
@@ -576,7 +576,7 @@
     "@backgroundColor": {
         "description": "Background color"
     },
-    "lineColor": "رنگ خط تخته",
+    "lineColor": "رنگ خطوط تخته",
     "@lineColor": {
         "description": "Board line color"
     },
@@ -612,11 +612,11 @@
     "@display": {
         "description": "Display"
     },
-    "boardBorderLineWidth": "عرض خط مرزی تخته",
+    "boardBorderLineWidth": "عرض خطوط مرزی تخته",
     "@boardBorderLineWidth": {
         "description": "Board borderline width"
     },
-    "boardInnerLineWidth": "عرض خط داخلی تخته",
+    "boardInnerLineWidth": "عرض خطوط داخلی تخته",
     "@boardInnerLineWidth": {
         "description": "Board inner line width"
     },
@@ -712,7 +712,7 @@
     "@results": {
         "description": "Results"
     },
-    "cannotRemoveFromMill": "شما نمیتوانید آن را از دوز حذف کنید.",
+    "cannotRemoveFromMill": "شما نمیتوانید مهره‌ای از یک دوز را حذف کنید.",
     "@cannotRemoveFromMill": {
         "description": "Cannot remove from the mill."
     },
@@ -733,7 +733,7 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " و ",
-    "accept": "تایید کنید",
+    "accept": "پذیرفتن",
     "@accept": {
         "description": "Accept"
     },
@@ -749,15 +749,15 @@
     "@undoOption_Detail": {
         "description": "It is possible to undo a move."
     },
-    "takeBack": "برگرد",
+    "takeBack": "پس گرفتن",
     "@takeBack": {
         "description": "Take back"
     },
-    "takingBack": "پس گرفتن... ",
+    "takingBack": "در حال پس گرفتن... ",
     "@takingBack": {
         "description": "Taking back..."
     },
-    "waiting": "در انتظار..",
+    "waiting": "چشم به راه...",
     "@waiting": {
         "description": "Waiting..."
     },
@@ -765,11 +765,11 @@
     "@stepForward": {
         "description": "Step forward"
     },
-    "takeBackAll": "همه را پس بگیرید",
+    "takeBackAll": "پس گرفتن همه",
     "@takeBackAll": {
         "description": "Take back all"
     },
-    "stepForwardAll": "قدم جلو تا انتها",
+    "stepForwardAll": "جلو رفتن تا انتها",
     "@stepForwardAll": {
         "description": "Step forward all"
     },
@@ -781,11 +781,11 @@
     "@done": {
         "description": "Done."
     },
-    "crackMill": "آسیاب را ترک بزنید",
+    "crackMill": "دوز را در هم بشکنید",
     "@crackMill": {
         "description": "Crack-mill"
     },
-    "crackMill_Detail": "اگر پخش کننده فقط قطعاتی در آسیاب داشته باشد ، قطعات موجود در آسیاب قفل نمی شوند تا برداشته شوند.",
+    "crackMill_Detail": "اگر بازیکنی فقط دارای مهره‌هایی در دوز ها باید، قطعات موجود در آسیاب برای برداشته شدن قفل نمی شوند.",
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
     },
@@ -793,7 +793,7 @@
     "@animationDuration": {
         "description": "Animation duration"
     },
-    "none": "هیچ یک",
+    "none": "هیچ‌یک",
     "@none": {
         "description": "None"
     },
@@ -801,7 +801,7 @@
     "@theme": {
         "description": "Theme"
     },
-    "helpContent": "بازی دوز یکی از بازی هاي جذابی اسـت کـه در دسته بازی هاي فکری قرار می گیرد. این بازی با کمک یک شماره مقوا یا کاغذ و 24 شماره مهره دو رنگ بازی میشود. یک شماره طرح هندسی روی کاغذ کشیده می شود و بازیکنان تلاش میکنند تا 3 مهره را دریک ردیف بنشانند. بازیکنان حریف نیز تلاش می کنند تا جلوی موفقیت دیگران را بگیرند و تلاش کنند.\nتا مهره هاي خودرا روی دریک ردیف قرار بدهند. این بازی بـه روش ساده تری نیز انجام میشود کـه بازیکنان با داشتن تنها 3مهره سعی می کنند کـه مهره ها را بـه چینش مناسب برسانند. بازی دوز بـه صورت 9تایی و 12 تایی انجام می شود. این بازی قدمت طولانی دارد و مردم از زمان هاي قدیم نیز این بازی را در دسته بازی هاي جذاب فکر قرار داده بودند. در گذشته مردم بـه جای استفاده از مهره، از سنگ هاي رنگی و یا تیله استفاده می کردند. سنگ ها و تیله ها باید بـه تعداد مساوی ودر دو رنگ موجود می بود. گفته می شود کـه مردم تلاش میکردند کـه سنگ هایي گرد و بـه رنگ هاي سیاه و سفید بیابند و از آنها دراین بازی استفاده کنند.\nیک نفر اقدام به شروع بازی می کند و اولین مهره را گذاشته و مهره ها یک در میان در جایگاه خود قرار می گیرند. چنانچه کسی موفق به پر کردن ۳ خانه در یک راستا و یک خط شود می تواند یکی از مهره های حریف را از گود بازی حذف نماید. البته بایستی به این نکته توجه داشت که در بازی سه تایی با روی خط قرار گرفتن سه مهره بازی به اتمام میرسد و دلیل این اتفاق، آن است که مهره های حریف به عدد دو رسیده و دیگر نمی تواند بازی را ادامه دهد.\nیادآوری گرم: بازیکنان عزیز ، بسیار متاسفم ، ترجمه فارسی فعلی ترجمه ماشینی است که باعث دردسر شما شده است. ما صمیمانه از شما دعوت می کنیم که در ترجمه این برنامه بازی به نسخه اصلی فارسی به ما کمک کنید تا بازیکنان بیشتری بهره مند شوند ، بسیار ممنون!\nاگر در این برنامه هیچ قانونی با آن آشنا نیستید ، لطفاً برای ما بنویسید و ما تمام تلاش خود را می کنیم تا قوانینی جدید برای خدمت به بازیکنان بیشتر اضافه کنیم.",
+    "helpContent": "بازی دوز یکی از بازی هاي جذابی اسـت کـه در دسته بازی هاي فکری قرار می گیرد. این بازی با کمک یک مقوا یا کاغذ و 24 عدد مهره دو رنگ بازی میشود. یک طرح هندسی روی کاغذ کشیده می شود و بازیکنان تلاش میکنند تا 3 مهره را دریک ردیف بنشانند. بازیکن حریف نیز تلاش می کند تا جلوی موفقیت دیگری را بگیرد و مانع شود تا مهره هاي خودرا روی دریک ردیف قرار دهد.\n این بازی بـه روش ساده تری نیز انجام میشود کـه بازیکنان با داشتن تنها 3مهره سعی می کنند کـه مهره ها را بـه چینش مناسب برسانند. بازی دوز بـه صورت 9تایی و 12 تایی انجام می شود. این بازی قدمت طولانی دارد و مردم از زمان هاي قدیم نیز این بازی را در دسته بازی هاي جذاب فکری قرار داده‌اند. در گذشته مردم بـه جای استفاده از مهره، از سنگ هاي رنگی و یا تیله استفاده می کردند. سنگ ها و تیله ها باید بـه تعداد مساوی ودر دو رنگ موجود می بود. گفته می شود کـه مردم تلاش میکردند کـه سنگ هایي گرد و بـه رنگ هاي سیاه و سفید بیابند و از آنها دراین بازی استفاده کنند.\nیک نفر اقدام به شروع بازی می کند و اولین مهره را گذاشته و مهره ها یک در میان در جایگاه خود قرار می گیرند. چنانچه کسی موفق به پر کردن ۳ خانه در یک راستا و یک خط شود می تواند یکی از مهره های حریف را از گود بازی حذف نماید. البته بایستی به این نکته توجه داشت که در بازی سه تایی با روی خط قرار گرفتن سه مهره بازی به اتمام میرسد و دلیل این اتفاق، آن است که مهره های حریف به عدد دو رسیده و دیگر نمی تواند بازی را ادامه دهد.\n\nعذرخواهی گرم: بازیکنان عزیز ، بسیار متاسفم ، ترجمه فارسی فعلی ترجمه ماشینی است که باعث دردسر شما شده است. ما صمیمانه از شما دعوت می کنیم که در ترجمه این بازی به نسخه اصلی فارسی به ما کمک کنید تا بازیکنان بیشتری بهره مند شوند ، سپاسگزارم!\nاگر در این برنامه قانونی وجود دارد که با آن آشنا نیستید ، لطفاً برای ما بنویسید و ما تمام تلاش خود را می کنیم تا قوانینی جدید برای خدمت به بازیکنان بیشتر اضافه کنیم.",
     "@helpContent": {
         "description": "Help Content"
     },
@@ -837,7 +837,7 @@
     "@advanced": {
         "description": "Advanced"
     },
-    "placing": "قرار دادن",
+    "placing": "جای‌گذاری",
     "@placing": {
         "description": "Placing"
     },
@@ -853,7 +853,7 @@
     "@gameOverCondition": {
         "description": "Game over condition"
     },
-    "aisPlayStyle": "سبک بازی کامپیوتر",
+    "aisPlayStyle": "سبک بازی هوش مصنوعی",
     "@aisPlayStyle": {
         "description": "AI's playstyle"
     },
@@ -881,11 +881,11 @@
     "@drawOnHumanExperience": {
         "description": "Draw on the human experience"
     },
-    "considerMobility": "تحرک قطعات را در نظر بگیرید",
+    "considerMobility": "در نظر گرفتن تحرک مهره‌ها",
     "@considerMobility": {
         "description": "Consider mobility of pieces"
     },
-    "pieceCount": "تعداد قطعه",
+    "pieceCount": "تعداد مهره‌ها",
     "@pieceCount": {
         "description": "Piece count"
     },
@@ -897,23 +897,23 @@
     "@onBoard": {
         "description": "on board"
     },
-    "boardTop": "بالا",
+    "boardTop": "فاصله تخته بازی از بالا",
     "@boardTop": {
         "description": "Board offset from the top"
     },
-    "notAIsTurn": "نوبت به کامپیوتر نمی رسد.",
+    "notAIsTurn": "نوبت رایانه نیست.",
     "@notAIsTurn": {
         "description": "It is not the AI's turn."
     },
-    "aiIsNotThinking": "کامپیوتر فکر نمی کند.",
+    "aiIsNotThinking": "هوش مصنوعی در حال فکر کردن نیست",
     "@aiIsNotThinking": {
         "description": "AI is not thinking."
     },
-    "autoReplay": "پخش خودکار حرکت می کند",
+    "autoReplay": "پخش خودکار حرکات",
     "@autoReplay": {
         "description": "Auto re-play moves"
     },
-    "atEnd": "در پایین لیست تاریخچه.",
+    "atEnd": "در پایان لیست حرکت ها قرار دارید.",
     "@atEnd": {
         "description": "At the end of the move list."
     },
@@ -949,7 +949,7 @@
     "@defaultLanguage": {
         "description": "Default language"
     },
-    "mayMoveInPlacingPhase": "مهره ها می توانند در مرحله قرارگیری حرکت کنند",
+    "mayMoveInPlacingPhase": "مهره ها می توانند در مرحله جای‌گذاری حرکت کنند",
     "@mayMoveInPlacingPhase": {
         "description": "The pieces can move in the placing phase"
     },
