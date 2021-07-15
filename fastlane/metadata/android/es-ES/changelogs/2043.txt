@@ -1,0 +1,4 @@
+v1.1.15
+
+* Configuración de color del menú de soporte.
+* Mejorar la traducción al persa.
