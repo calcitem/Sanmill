@@ -96,13 +96,15 @@ Future<void> main() async {
 
   if (Platform.isAndroid) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
+      ),
     );
   }
 
-  /*
-  SystemChrome.setEnabledSystemUIOverlays([]);
-  */
+  //SystemChrome.setEnabledSystemUIOverlays([]);
 }
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
