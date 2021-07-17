@@ -100,6 +100,8 @@ Future<void> main() async {
         statusBarColor: Colors.transparent,
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.black,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
   }
