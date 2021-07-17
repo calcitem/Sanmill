@@ -9,9 +9,11 @@ ES_CHANGLOG_DIR=fastlane/metadata/android/es-ES/changelogs
 ZH_CHANGLOG_DIR=fastlane/metadata/android/zh-CN/changelogs
 
 SED=sed
+EDITOR=notepad
 
 if [ "$(uname)" == "Darwin" ]; then
 	SED=gsed
+	EDITOR=vi
 fi
 
 # Update Build Number
@@ -93,10 +95,11 @@ echo "* Versionshinweise." >> $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "* Notas de publicación." >> $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "* 发布说明。" >> $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
-vi $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-vi $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-vi $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-vi $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+
+$EDITOR $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+$EDITOR $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+$EDITOR $ES_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+$EDITOR $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
 # Git commit
 git status -s
