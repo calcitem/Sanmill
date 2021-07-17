@@ -957,15 +957,15 @@
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     },
-    "drawerColor": "菜单颜色",
+    "drawerColor": "菜單顏色",
     "@drawerColor": {
         "description": "Menu color"
     },
-    "drawerTextColor": "菜单文字颜色",
+    "drawerTextColor": "菜單文字顏色",
     "@drawerTextColor": {
         "description": "Menu text color"
     },
-    "drawerBackgroundColor": "菜单背景颜色",
+    "drawerBackgroundColor": "菜單背景色",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
     }
