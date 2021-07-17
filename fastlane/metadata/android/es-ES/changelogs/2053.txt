@@ -1,0 +1,5 @@
+v1.1.16
+
+* Mostrar barra de estado para dispositivos de pantalla grande.
+* No mostrar la configuración de la barra de herramientas de navegación si la relación de aspecto de la ventana es inferior a 1,7.
+* Mejorar la traducción al persa.

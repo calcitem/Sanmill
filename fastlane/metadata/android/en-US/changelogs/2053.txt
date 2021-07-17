@@ -1,0 +1,5 @@
+v1.1.16
+
+* Show status bar for large screen device.
+* Do not show navigation toolbar setting if window aspect ratio is less than 1.7.
+* Improve Persian translation.

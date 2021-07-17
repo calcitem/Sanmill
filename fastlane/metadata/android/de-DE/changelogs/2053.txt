@@ -1,0 +1,5 @@
+v1.1.16
+
+* Statusleiste für Großbildgeräte anzeigen.
+* Einstellung der Navigationssymbolleiste nicht anzeigen, wenn das Seitenverhältnis des Fensters weniger als 1,7 beträgt.
+* Verbessern Sie die persische Übersetzung.
