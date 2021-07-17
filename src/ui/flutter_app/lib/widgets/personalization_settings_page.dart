@@ -388,13 +388,15 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).isNotationsShown,
           ),
           ListItemDivider(),
-          SettingsSwitchListTile(
+          Constants.windowAspectRatio > 1.7
+              ? SettingsSwitchListTile(
             context: context,
             value: Config.isHistoryNavigationToolbarShown,
             onChanged: setIsHistoryNavigationToolbarShown,
             titleString: S.of(context).isHistoryNavigationToolbarShown,
-          ),
-          ListItemDivider(),
+          ) : SizedBox(height: 1),
+          Constants.windowAspectRatio > 1.7
+              ? ListItemDivider(): SizedBox(height: 1),
           SettingsListTile(
               context: context,
               titleString: S.of(context).boardBorderLineWidth,

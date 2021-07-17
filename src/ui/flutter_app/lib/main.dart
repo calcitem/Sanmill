@@ -92,7 +92,7 @@ Future<void> main() async {
   );
 
   print(window.physicalSize);
-  print(Constants.windowHeight);
+  print(Constants.windowAspectRatio);
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],

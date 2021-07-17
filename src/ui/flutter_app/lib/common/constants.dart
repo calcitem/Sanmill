@@ -67,7 +67,9 @@ class Constants {
   static String githubThanksURL = "$githubRepoWiKiURL/thanks";
   static String giteeThanksURL = "$giteeRepoWiKiURL/thanks";
 
+  static final windowWidth = window.physicalSize.width;
   static final windowHeight = window.physicalSize.height;
+  static final windowAspectRatio = windowHeight / windowWidth;
 }
 
 bool isSmallScreen() {
