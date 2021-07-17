@@ -18,6 +18,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:catcher/catcher.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
@@ -90,11 +91,14 @@ Future<void> main() async {
     profileConfig: profileOptions,
   );
 
+  print(window.physicalSize);
+  print(Constants.windowHeight);
+
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
-  if (Platform.isAndroid) {
+  if (Platform.isAndroid && isLargeScreen()) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -106,7 +110,9 @@ Future<void> main() async {
     );
   }
 
-  //SystemChrome.setEnabledSystemUIOverlays([]);
+  if (isSmallScreen()) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
+  }
 }
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();

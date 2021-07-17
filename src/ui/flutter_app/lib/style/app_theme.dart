@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/style/colors.dart';
 
 class AppTheme {
@@ -105,7 +106,7 @@ class AppTheme {
       height: 1.5,
       color: moveHistoryTextColor);
 
-  static double boardTop = 75.0;
+  static double boardTop = isLargeScreen()? 75.0 : 36.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;
   static double boardBorderRadius = 5.0;

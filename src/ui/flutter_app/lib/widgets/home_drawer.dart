@@ -21,6 +21,7 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -183,7 +184,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           children: <Widget>[
             animatedBuilder,
             Padding(
-              padding: const EdgeInsets.only(top: 30, left: 4),
+              padding: EdgeInsets.only(top: (isLargeScreen() ? 30 : 8), left: 4),
               child: animatedTextKit,
             ),
           ],

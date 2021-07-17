@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:ui';
+
 class Constants {
   static String appName = "Mill";
   static String authorAccount = "calcitem";
@@ -64,4 +66,13 @@ class Constants {
 
   static String githubThanksURL = "$githubRepoWiKiURL/thanks";
   static String giteeThanksURL = "$giteeRepoWiKiURL/thanks";
+
+  static final windowHeight = window.physicalSize.height;
+}
+
+bool isSmallScreen() {
+  return Constants.windowHeight <= 800;
+}
+bool isLargeScreen() {
+  return !isSmallScreen();
 }
