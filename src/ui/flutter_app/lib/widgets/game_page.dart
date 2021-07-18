@@ -1260,24 +1260,24 @@ class _GamePageState extends State<GamePage>
   Widget createPageHeader() {
     Map<EngineType, IconData> engineTypeToIconLeft = {
       EngineType.humanVsAi: Config.aiMovesFirst
-          ? FluentIcons.bot_24_regular
-          : FluentIcons.person_24_regular,
-      EngineType.humanVsHuman: FluentIcons.person_24_regular,
-      EngineType.aiVsAi: FluentIcons.bot_24_regular,
-      EngineType.humanVsCloud: FluentIcons.person_24_regular,
-      EngineType.humanVsLAN: FluentIcons.person_24_regular,
-      EngineType.testViaLAN: FluentIcons.wifi_1_24_regular,
+          ? FluentIcons.bot_24_filled
+          : FluentIcons.person_24_filled,
+      EngineType.humanVsHuman: FluentIcons.person_24_filled,
+      EngineType.aiVsAi: FluentIcons.bot_24_filled,
+      EngineType.humanVsCloud: FluentIcons.person_24_filled,
+      EngineType.humanVsLAN: FluentIcons.person_24_filled,
+      EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
     };
 
     Map<EngineType, IconData> engineTypeToIconRight = {
       EngineType.humanVsAi: Config.aiMovesFirst
-          ? FluentIcons.person_24_regular
-          : FluentIcons.bot_24_regular,
-      EngineType.humanVsHuman: FluentIcons.person_24_regular,
-      EngineType.aiVsAi: FluentIcons.bot_24_regular,
-      EngineType.humanVsCloud: FluentIcons.cloud_24_regular,
-      EngineType.humanVsLAN: FluentIcons.wifi_1_24_regular,
-      EngineType.testViaLAN: FluentIcons.wifi_1_24_regular,
+          ? FluentIcons.person_24_filled
+          : FluentIcons.bot_24_filled,
+      EngineType.humanVsHuman: FluentIcons.person_24_filled,
+      EngineType.aiVsAi: FluentIcons.bot_24_filled,
+      EngineType.humanVsCloud: FluentIcons.cloud_24_filled,
+      EngineType.humanVsLAN: FluentIcons.wifi_1_24_filled,
+      EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
     };
 
     IconData iconArrow = getIconArrow();
