@@ -110,7 +110,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerListItem(
         index: DrawerIndex.feedback,
         title: S.of(context).feedback,
-        icon: Icon(FluentIcons.person_feedback_24_regular),
+        icon: Icon(FluentIcons.chat_warning_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.Help,
