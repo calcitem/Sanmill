@@ -1,0 +1,3 @@
+v1.1.17
+
+* Ermöglicht die Konfiguration der Farbe der Symbolleiste.
