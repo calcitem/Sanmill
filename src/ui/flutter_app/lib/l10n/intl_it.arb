@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Colore di sfondo del menu",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Colore voce evidenziazione menu",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Colore di sfondo della barra degli strumenti principale",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "colore dell'icona della barra degli strumenti principale",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Colore di sfondo della barra di navigazione",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Colore dell'icona della barra degli strumenti di navigazione",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Nascondi automaticamente la barra degli strumenti",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Posizione della barra degli strumenti sullo schermo",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Superiore",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Parte inferiore",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centro",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Tinta unita",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Immagine",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Scegli la tua foto",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Leggero",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Buio",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Temi",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Tema attuale",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Salva tema",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "caratteri",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Mostra grafico di analisi",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analisi",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Salva il gioco",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Carica gioco",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Posizione di installazione",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Mostra mosse legali",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Mostra l'ultima mossa",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Mostra frecce",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Pezzi",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Mostra analisi",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Discussioni",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Mettersi in gioco",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Aiutaci a migliorare la traduzione",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Tutorial",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Mulino Classico",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Mulino Misto",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Mulino di Ceylon",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Il mulino può essere rotto e rifatto ripetutamente",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Se un giocatore rompe un mulino per creare immediatamente un nuovo mulino, tale giocatore può riportare tale pezzo all'incrocio originale nella sua prossima mossa se fa un nuovo mulino.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "La partita è patta se un giocatore ha tre pezzi e dopo dieci mosse nessun giocatore rimuove i pezzi dell'avversario",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Quando un giocatore ha tre pezzi e nessuno dei due giocatori può rimuovere il pezzo di un avversario entro dieci mosse, la partita è patta.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

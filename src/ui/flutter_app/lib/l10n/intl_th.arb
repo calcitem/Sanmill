@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "สีพื้นหลังของเมนู",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "สีของรายการไฮไลท์เมนู",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือหลัก",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "สีไอคอนแถบเครื่องมือหลัก",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือนำทาง",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "สีไอคอนแถบเครื่องมือนำทาง",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "ซ่อนแถบเครื่องมือโดยอัตโนมัติ",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "ตำแหน่งแถบเครื่องมือบนหน้าจอ",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "ท็อป",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "ด้านล่าง",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "ศูนย์",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "สีทึบ",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "ภาพ",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "เลือกรูปภาพของคุณ",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "เบา",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "มืด",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "ธีม",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "ธีมปัจจุบัน",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "บันทึกธีม",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "แบบอักษร",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "แสดงกราฟการวิเคราะห์",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "บทวิเคราะห์",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "บันทึกเกม",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "โหลดเกมส์",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "ตำแหน่งการติดตั้ง",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "แสดงการเคลื่อนไหวทางกฎหมาย",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "แสดงการเคลื่อนไหวล่าสุด",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "แสดงลูกศร",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "ชิ้น",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "แสดงบทวิเคราะห์",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "กระทู้",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "มีส่วนเกี่ยวข้อง",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "ช่วยปรับปรุงการแปล",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "กวดวิชา",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "โรงสีคลาสสิค",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "โรงสีผสม",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "ซีลอนมิลล์",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "โรงสีอาจหักแล้วทำใหม่ซ้ำๆ",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "หากผู้เล่นทำลายโรงโม่เพื่อสร้างโรงสีใหม่ทันที ผู้เล่นดังกล่าวสามารถย้ายชิ้นส่วนดังกล่าวกลับไปที่ทางแยกเดิมในการย้ายครั้งต่อไปหากสร้างโรงสีใหม่",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "เกมจะถูกสุ่มขึ้นถ้าผู้เล่นมีสามชิ้นและหลังจากผ่านไปสิบกระบวนแล้วผู้เล่นจะไม่ถอดชิ้นส่วนของฝ่ายตรงข้าม",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "เมื่อผู้เล่นลดลงเหลือสามชิ้น และผู้เล่นไม่สามารถถอดชิ้นส่วนของฝ่ายตรงข้ามได้ภายในสิบกระบวนท่า เกมจะเสมอกัน",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

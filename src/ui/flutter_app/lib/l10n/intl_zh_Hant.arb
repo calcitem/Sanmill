@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "菜單背景色",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "菜單高亮條目背景色",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "主工具欄背景色",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "主工具欄圖標色",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "導航工具欄背景色",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "導航工具欄圖標色",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "自動隱藏工具欄",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "工具欄在屏幕上的位置",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "頂部",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "底部",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "中部",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "純色",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "圖片",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "選擇圖片",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "明亮",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "暗黑",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "主題",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "當前主題",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "保存主題",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "字體",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "顯示分析圖",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "分析",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "保存遊戲",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "加載遊戲",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "設定局面",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "顯示合法著法",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "顯示最後一著",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "顯示箭頭",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "棋子",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "顯示分析",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "線程數",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "參與項目",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "幫助翻譯",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "教程",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "經典磨坊",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "混合磨坊",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "錫蘭磨坊",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "允許反复連續形成三連",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "如果一方在一著中解除了一個三連並同時形成了一個新的三連，那麼允許其在下一步棋把這個棋子再移回前一著的位置，從而反复連續形成三連。",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "一方剩下三個棋子並十步內雙方均未吃子則和棋",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "當一方只剩下三顆棋子時，而雙方都不能在接下來十步之內吃掉對方的棋子，則判為和棋。",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Warna latar menu",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Warna item highlight menu",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Warna latar bar alat utama",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "warna ikon bar alat utama",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Warna latar bar alat navigasi",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Warna ikon bar alat navigasi",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Sembunyikan bar alat secara automatik",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Lokasi bar alat di skrin",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Atas",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Bawah",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Pusat",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Warna pepejal",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Gambar",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Pilih gambar anda",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Cahaya",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Gelap",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Tema",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Tema semasa",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Simpan tema",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Fon",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Tunjukkan grafik analisis",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analisis",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Simpan permainan",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Muatkan permainan",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Kedudukan persediaan",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Tunjukkan langkah undang-undang",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Tunjukkan langkah terakhir",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Tunjukkan anak panah",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Kepingan",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Tunjukkan analisis",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Benang",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Melibatkan diri",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Bantu meningkatkan terjemahan",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Tutorial",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Kilang Klasik",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Kilang Campuran",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Kilang Ceylon",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Kilang boleh rosak dan dibuat semula berulang kali",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Sekiranya pemain memecahkan kilang untuk membuat kilang baru dengan segera, pemain tersebut dapat menggerakkan sekeping itu kembali ke persimpangan asal pada langkah seterusnya jika ia membuat kilang baru.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Permainan digambar jika pemain mempunyai tiga keping dan setelah sepuluh gerakan tidak ada pemain yang mengeluarkan potongan lawan",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Apabila pemain turun menjadi tiga keping, dan tidak ada pemain yang dapat melepaskan potongan lawan dalam sepuluh gerakan, permainan adalah seri.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

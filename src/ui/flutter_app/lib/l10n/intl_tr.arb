@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Menü arka plan rengi",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Menü vurgulama öğesi rengi",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Ana araç çubuğu arka plan rengi",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "ana araç çubuğu simge rengi",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Gezinme araç çubuğu arka plan rengi",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Gezinme araç çubuğu simge rengi",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Araç çubuğunu otomatik olarak gizle",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Ekrandaki araç çubuğu konumu",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Üst",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Alt",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Merkez",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Koyu renk",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Resim",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Resminizi seçin",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Işık",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "karanlık",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Temalar",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Mevcut tema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Temayı kaydet",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Yazı Tipleri",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Analiz grafiğini göster",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "analiz",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Oyunu kaydet",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Oyunu yükle",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Kurulum konumu",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Yasal hamleleri göster",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Son hareketi göster",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Okları göster",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "adet",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Analizi göster",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "İş Parçacığı",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Katılın",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Çeviriyi iyileştirmeye yardımcı olun",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "öğretici",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klasik Değirmen",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "karışık değirmen",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Seylan Değirmeni",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Değirmen kırılabilir ve tekrar tekrar yapılabilir",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Bir oyuncu hemen yeni bir değirmen oluşturmak için bir değirmeni kırarsa, bu oyuncu yeni bir değirmen yaparsa bir sonraki hamlesinde bu parçayı orijinal bağlantı noktasına geri taşıyabilir.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Bir oyuncunun üç taşı varsa ve on hamleden sonra hiçbir oyuncu rakibin taşlarını kaldırmazsa oyun berabere biter.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Bir oyuncu üç parçaya düştüğünde ve hiçbir oyuncu on hamle içinde rakibinin taşını çıkaramazsa, oyun berabere olur.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

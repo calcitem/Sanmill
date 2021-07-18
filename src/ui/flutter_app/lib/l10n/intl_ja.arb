@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "メニューの背景色",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "メニューのハイライトアイテムの色",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "メインツールバーの背景色",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "メインツールバーアイコンの色",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "ナビゲーションツールバーの背景色",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "ナビゲーションツールバーのアイコンの色",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "ツールバーを自動的に非表示",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "画面上のツールバーの位置",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "上",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "下",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "センター",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "ソリッドカラー",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "画像",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "あなたの写真を選択してください",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "光",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "闇",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "テーマ",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "現在のテーマ",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "テーマを保存",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "フォント",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "分析グラフを表示する",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "分析",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "ゲームを保存する",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "ゲームをロードする",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "セットアップ位置",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "法的な動きを示す",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "最後の動きを表示",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "矢印を表示",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "ピース",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "分析を表示",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "スレッド",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "参加する",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "翻訳の改善にご協力ください",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "チュートリアル",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "クラシックミル",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "混合ミル",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "セイロンミル",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "ミルが壊れて繰り返し作り直される可能性があります",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "プレイヤーがミルを壊してすぐに新しいミルを作成した場合、そのようなプレイヤーは、新しいミルを作成した場合、次の移動でそのようなピースを元のジャンクションに戻すことができます。",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "プレイヤーが3つの駒を持っていて、10回移動した後、どちらのプレイヤーも対戦相手の駒を削除しない場合、ゲームは引き分けになります。",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "プレーヤーが3ピースになり、どちらのプレーヤーも10手以内に相手のピースを取り除くことができない場合、ゲームは引き分けになります。",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Menu background color",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Barva zvýraznění položky nabídky",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Barva pozadí hlavního panelu nástrojů",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "barva ikony hlavního panelu nástrojů",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Barva pozadí navigačního panelu nástrojů",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Barva ikony navigačního panelu nástrojů",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Automatické skrytí panelu nástrojů",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Umístění panelu nástrojů na obrazovce",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Nahoru",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Spodní část",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Středisko",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Plná barva",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Obrázek",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Vyberte si obrázek",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Světlo",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Dark",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Témata",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Aktuální téma",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Uložit téma",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Písma",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Zobrazit graf analýzy",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analýza",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Uložit hru",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Načtení hry",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Pozice nastavení",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Zobrazit legální pohyby",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Zobrazit poslední tah",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Zobrazit šipky",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Kusy",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Zobrazit analýzu",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Vlákna",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Zapojte se",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Pomozte zlepšit překlad",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Výukový program",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klasický mlýn",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Smíšený mlýn",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Cejlonský mlýn",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Mlýn může být opakovaně rozbit a znovu vyroben",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Pokud hráč rozbije mlýn, aby okamžitě vytvořil nový mlýn, může takovou figurku v dalším tahu přesunout zpět na původní křižovatku, pokud vytvoří nový mlýn.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Hra je nerozhodná, pokud má hráč tři figurky a po deseti tazích žádný z hráčů neodstraní soupeřovy figurky.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Když hráčům zbývají tři figury a žádný z nich nedokáže odstranit soupeřovu figuru do deseti tahů, hraje se nerozhodně.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

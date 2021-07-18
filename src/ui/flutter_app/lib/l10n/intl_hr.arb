@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Boja pozadine izbornika",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Boja stavke isticanja izbornika",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Boja pozadine glavne alatne trake",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "boja ikone glavne alatne trake",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Boja pozadine navigacijske alatne trake",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Boja ikone navigacijske alatne trake",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Automatski sakrij alatnu traku",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Mjesto alatne trake na zaslonu",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Vrh",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Dno",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centar",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Jednobojna",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Slika",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Odaberite svoju sliku",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Svjetlo",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Mračno",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Teme",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Trenutna tema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Spremi temu",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Krstionica",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Prikaži grafikon analize",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analiza",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Spremi igru",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Učitaj igru",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Položaj za postavljanje",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Pokažite legalne poteze",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Prikaži posljednji potez",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Pokaži strelice",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Komadići",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Prikaži analizu",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Niti",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Uključiti se",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Pomozite poboljšati prijevod",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Vodič",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klasični mlin",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Miješani mlin",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Cejlonski mlin",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Mlin se može više puta lomiti i prepravljati",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Ako igrač razbije mlin da bi odmah stvorio novi mlin, takav igrač može vratiti svoj komad natrag na izvorni spoj u svom sljedećem potezu ako napravi novi mlin.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Igra se izvlači ako igrač ima tri figure, a nakon deset poteza niti jedan igrač ne uklanja protivničke dijelove",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kada igrač padne na tri komada, a niti jedan igrač ne može ukloniti protivnički komad u roku od deset poteza, igra je neriješena.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

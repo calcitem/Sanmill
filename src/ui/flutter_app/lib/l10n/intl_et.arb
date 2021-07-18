@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Menüü taustavärv",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Izvēlnes izcelšanas vienuma krāsa",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Galvenās rīkjoslas fona krāsa",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "galvenās rīkjoslas ikonas krāsa",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Navigācijas rīkjoslas fona krāsa",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Navigācijas rīkjoslas ikonas krāsa",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Automātiski paslēpt rīkjoslu",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Rīkjoslas atrašanās vieta ekrānā",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Tops",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Apakšā",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centrs",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Vienkrāsaina",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Bilde",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Izvēlieties savu attēlu",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Gaisma",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Tumšs",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Tēmas",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Pašreizējā tēma",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Saglabāt motīvu",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Fonti",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Rādīt analīzes grafiku",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analīze",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Saglabā spēli",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Ielādēt spēli",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Iestatīšanas pozīcija",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Rādīt likumīgus gājienus",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Rādīt pēdējo kustību",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Rādīt bultiņas",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Gabali",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Rādīt analīzi",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Vītnes",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Iesaistīties",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Palīdziet uzlabot tulkošanu",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Apmācība",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Κλασικό μύλο",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Μικτός Μύλος",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Μύλος Κεϋλάνης",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Dzirnavas var būt salauztas un atkārtoti pārtaisītas",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Ja spēlētājs pārtrauc dzirnavas, lai nekavējoties izveidotu jaunu dzirnavu, šāds spēlētājs var nākamajā gabalā pārvietot šo gabalu atpakaļ uz sākotnējo krustojumu, ja tas izveido jaunu dzirnavu.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spēle tiek izlozēta, ja spēlētājam ir trīs figūras un pēc desmit kustībām neviens spēlētājs nenoņem pretinieka figūras",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kad spēlētājs ir nonācis līdz trim figūrām un neviens spēlētājs nevar noņemt pretinieka gabalu desmit gājienu laikā, spēle ir neizšķirta.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

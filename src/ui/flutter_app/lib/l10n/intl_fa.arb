@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "رنگ پس زمینه منو",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "رنگ مورد برجسته منو",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "رنگ زمینه اصلی نوار ابزار",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "رنگ نماد نوار ابزار اصلی",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "رنگ زمینه نوار ابزار پیمایش",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "رنگ نماد نوار ابزار پیمایش",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "به طور خودکار نوار ابزار را مخفی کنید",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "مکان نوار ابزار روی صفحه",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "بالا",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "پایین",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "مرکز",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "رنگ جامد",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "تصویر",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "عکس خود را انتخاب کنید",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "سبک",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "تاریک",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "مضامین",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "موضوع فعلی",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "ذخیره موضوع",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "قلم ها",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "نمودار تجزیه و تحلیل را نشان دهید",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "تحلیل و بررسی",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "ذخیره بازی",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "بازی را بارگذاری کنید",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "موقعیت راه اندازی",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "حرکات قانونی را نشان دهید",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "آخرین حرکت را نشان دهید",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "پیکان ها را نشان دهید",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "قطعات",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "تجزیه و تحلیل را نشان دهید",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "موضوعات",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "مشارکت کنید",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "به بهبود ترجمه کمک کنید",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "آموزش",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "آسیاب کلاسیک",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "آسیاب مخلوط",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "آسیاب سیلان",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "آسیاب ممکن است بارها شکسته و دوباره ساخته شود",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "اگر بازیکنی آسیاب را بشکند تا بلافاصله آسیاب جدیدی ایجاد کند ، اگر یک آسیاب جدید ایجاد کند ، در حرکت بعدی خود می تواند چنین قطعه ای را به محل اصلی برگرداند.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "هنگامی که یک بازیکن به سه قطعه کاهش می یابد و هیچ یک از بازیکنان نمی توانند در طی ده حرکت قطعه حریف را بردارند ، بازی مساوی است.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

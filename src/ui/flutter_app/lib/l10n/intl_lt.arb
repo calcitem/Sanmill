@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Meniu fono spalva",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Meniu paryškinti elemento spalvą",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Pagrindinės įrankių juostos fono spalva",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "pagrindinės įrankių juostos piktogramos spalva",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Naršymo įrankių juostos fono spalva",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Naršymo įrankių juostos piktogramos spalva",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Automatiškai slėpti įrankių juostą",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Įrankių juostos vieta ekrane",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Į viršų",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Apačia",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centras",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Vienoda spalva",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Paveikslėlis",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Pasirinkite savo paveikslėlį",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Šviesa",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Tamsu",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Temos",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Dabartinė tema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Išsaugoti temą",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Šriftai",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Rodyti analizės grafiką",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analizė",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Išsaugoti žaidimą",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Užkrauti žaidimą",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Sąrankos padėtis",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Rodyti teisėtus judesius",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Rodyti paskutinį žingsnį",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Rodyti rodykles",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Pjesės",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Rodyti analizę",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Siūlai",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Įsitraukite",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Padėkite tobulinti vertimą",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Pamoka",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klasikinis malūnas",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Mišrus malūnas",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceilono malūnas",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Malūnas gali būti sulaužytas ir pakartotinai perdarytas",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Jei žaidėjas sulaužo malūną ir nedelsdamas sukuria naują malūną, toks žaidėjas gali perkelti tokį kūrinį atgal į pradinę sankryžą kitame savo žingsnyje, jei jis padarys naują malūną.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Žaidimas yra lygus, jei žaidėjas turi tris figūras ir po dešimties judesių nė vienas žaidėjas nepašalina varžovo figūrų",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kai žaidėjas nesiekia trijų dalių ir nė vienas žaidėjas negali pašalinti priešininko figūros per dešimt ėjimų, žaidimas yra lygus.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

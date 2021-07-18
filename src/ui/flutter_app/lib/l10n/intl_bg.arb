@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Цвят на фона на менюто",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Цвят на елемента за подчертаване на менюто",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Основен цвят на фона на лентата с инструменти",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "цвят на иконата на основната лента с инструменти",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Цвят на фона на лентата с инструменти за навигация",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Цвят на иконата на лентата с инструменти за навигация",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Автоматично скриване на лентата с инструменти",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Местоположение на лентата с инструменти на екрана",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Топ",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Дъно",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Център",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Плътен цвят",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Снимка",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Изберете своята снимка",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Светлина",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Dark",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Теми",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Текуща тема",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Запазване на темата",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Шрифтове",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Показване на графиката за анализ",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Анализ",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Запазване на играта",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Зареждане на играта",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Позиция за настройка",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Показване на законни ходове",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Показване на последния ход",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Показване на стрелките",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Парчета",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Показване на анализ",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Нишки",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Включете се",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Помогнете за подобряване на превода",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Учебник",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Класическа мелница",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Смесена мелница",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Цейлонска мелница",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Мелницата може да бъде счупена и преправена многократно",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Ако играч счупи мелница, за да създаде веднага нова мелница, той може да премести тази фигура обратно в оригиналния възел в следващия си ход, ако тя създава нова мелница.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Играта е реми, ако един от играчите има три фигури и след десет хода никой от тях не премахне фигурите на противника.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Когато един играч има само три фигури и никой от тях не може да отстрани противникова фигура в рамките на десет хода, играта е реми.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

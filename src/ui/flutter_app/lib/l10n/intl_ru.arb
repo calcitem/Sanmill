@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Цвет фона меню",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Цвет выделения пункта меню",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Цвет фона основной панели инструментов",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "цвет значка основной панели инструментов",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Цвет фона панели инструментов навигации",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Цвет значка панели инструментов навигации",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Автоматически скрывать панель инструментов",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Расположение панели инструментов на экране",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Вершина",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Нижний",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Центр",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Сплошной цвет",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Картина",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Выбери свою картинку",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Свет",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Темный",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Темы",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Текущая тема",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Сохранить тему",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Шрифты",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Показать график анализа",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Анализ",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Сохранить игру",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Загрузить игру",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Положение установки",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Показать легальные ходы",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Показать последний ход",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Показать стрелки",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Шт",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Показать анализ",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Потоки",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Увлекаться",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Помогите улучшить перевод",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Руководство",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Классическая мельница",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Смешанная мельница",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Цейлонская мельница",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Мельница может быть многократно сломана и переделана",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Если игрок ломает мельницу, чтобы немедленно создать новую мельницу, такой игрок может переместить такой кусок обратно к исходному соединению своим следующим ходом, если он сделает новую мельницу.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Игра считается ничьей, если у игрока есть три фишки и после десяти ходов ни один из игроков не убирает фишки соперника.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Когда у игрока осталось три фишки, и ни один из игроков не может убрать фишку соперника в течение десяти ходов, игра считается ничьей.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Menyu fon rangi",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Menyu element rangini ajratib ko'rsatish",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Asosiy asboblar paneli fon rangi",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "asosiy asboblar paneli piktogramma rangi",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Navigatsiya asboblar panelining fon rangi",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Navigatsiya asboblar paneli piktogramma rangi",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Asboblar panelini avtomatik ravishda yashirish",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Asboblar panelining ekrandagi joylashuvi",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Yuqori",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Pastki",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Markaz",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Qattiq rang",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Rasm",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Rasmingizni tanlang",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Engil",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "To'q",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Mavzular",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Joriy mavzu",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Mavzuni saqlash",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Shriftlar",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Tahlil grafikasini ko'rsatish",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Tahlil",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "O'yinni saqlang",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "O'yinni yuklang",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "O'rnatish pozitsiyasi",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Qonuniy harakatlarni ko'rsating",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Oxirgi harakatni ko'rsating",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Oklarni ko'rsatish",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Parchalar",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Tahlilni ko'rsatish",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Iplar",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Qo'shilmoq",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Tarjimani yaxshilashga yordam bering",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Qo'llanma",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klassik tegirmon",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Aralash tegirmon",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Seylon tegirmoni",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Tegirmon buzilib, qayta tiklanishi mumkin",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Agar o'yinchi darhol yangi tegirmon yaratish uchun tegirmonni sindirib tashlasa, bunday o'yinchi yangi tegirmon qilsa, keyingi harakatida bunday buyumni asl bog'lanish joyiga qaytarishi mumkin.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Agar o'yinchi uchta bo'lakka ega bo'lsa va o'nta harakatdan so'ng ikkala o'yinchi ham raqib qismlarini olib tashlamasa, o'yin o'tkaziladi",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Agar o'yinchi uchta bo'lakka tushib qolsa va hech bir o'yinchi raqibning qismini o'nta harakat davomida olib tashlay olmasa, o'yin durang bo'ladi.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

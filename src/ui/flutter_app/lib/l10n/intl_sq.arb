@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Ngjyra e sfondit të menysë",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Ngjyrosni ngjyrën e artikullit në meny",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Ngjyra kryesore e sfondit të shiritit të veglave",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "ngjyra kryesore e ikonës së shiritit të veglave",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Ngjyra e sfondit të shiritit të mjeteve të navigimit",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Ngjyra e ikonës së shiritit të mjeteve të navigimit",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Fshihni automatikisht shiritin e veglave",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Vendndodhja e shiritit të mjeteve në ekran",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Top",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Fund",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Qendra",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Ngjyra e ngurtë",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Foto",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Zgjidhni foton tuaj",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Drita",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "E errët",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Temat",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Tema aktuale",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Ruaj temën",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Shkronjat",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Të tregojë grafikun e analizës",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analiza",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Ruaj lojën",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Ngarko lojën",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Pozicioni i konfigurimit",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Trego lëvizjet ligjore",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Shfaq lëvizjen e fundit",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Trego shigjeta",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Copëza",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Trego analizën",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Threads",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Perfshihesh",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Ndihmoni në përmirësimin e përkthimit",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Tutorial",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Mulli klasik",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Mulli i përzier",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Mulliri i Ceilonit",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Mulli mund të thyhet dhe të ribëhet vazhdimisht",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Nëse një lojtar thyen një mulli për të krijuar menjëherë një mulli të ri, një lojtar i tillë mund ta zhvendosë pjesën e tij përsëri në kryqëzimin origjinal në lëvizjen e tij të radhës nëse bën një mulli të ri.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Loja barazohet nëse një lojtar ka tre pjesë dhe pas dhjetë lëvizjeve asnjë lojtar nuk heq pjesët e kundërshtarit",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kur një lojtar është në tre copa, dhe asnjë lojtar nuk mund të heqë një pjesë të kundërshtarit brenda dhjetë lëvizjeve, loja është një barazim.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

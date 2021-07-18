@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "ಮೆನು ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "ಮೆನು ಐಟಂ ಬಣ್ಣವನ್ನು ಹೈಲೈಟ್ ಮಾಡುತ್ತದೆ",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "ಮುಖ್ಯ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "ಮುಖ್ಯ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "ಟೂಲ್‌ಬಾರ್ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರೆಮಾಡಿ",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "ಪರದೆಯ ಮೇಲೆ ಟೂಲ್‌ಬಾರ್ ಸ್ಥಳ",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "ಟಾಪ್",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "ಕೆಳಗೆ",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "ಕೇಂದ್ರ",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "ಗಾಢ ಬಣ್ಣ",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "ಚಿತ್ರ",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "ನಿಮ್ಮ ಚಿತ್ರವನ್ನು ಆರಿಸಿ",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "ಬೆಳಕು",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "ಡಾರ್ಕ್",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "ಥೀಮ್ಗಳು",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "ಪ್ರಸ್ತುತ ಥೀಮ್",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "ಥೀಮ್ ಉಳಿಸಿ",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "ಫಾಂಟ್‌ಗಳು",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "ವಿಶ್ಲೇಷಣೆ ಗ್ರಾಫ್ ತೋರಿಸಿ",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "ವಿಶ್ಲೇಷಣೆ",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "ಆಟ ಉಳಿಸು",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "ಆಟವನ್ನು ಲೋಡ್ ಮಾಡಿ",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "ಸೆಟಪ್ ಸ್ಥಾನ",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "ಕಾನೂನು ಕ್ರಮಗಳನ್ನು ತೋರಿಸಿ",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "ಕೊನೆಯ ನಡೆಯನ್ನು ತೋರಿಸಿ",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "ಬಾಣಗಳನ್ನು ತೋರಿಸಿ",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "ತುಣುಕುಗಳು",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "ವಿಶ್ಲೇಷಣೆಯನ್ನು ತೋರಿಸಿ",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "ಎಳೆಗಳು",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "ತೊಡಗಿಸಿಕೊಳ್ಳಿ",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "ಅನುವಾದವನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "ಟ್ಯುಟೋರಿಯಲ್",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "ಕ್ಲಾಸಿಕ್ ಮಿಲ್",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "ಮಿಶ್ರ ಮಿಲ್",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "ಸಿಲೋನ್ ಮಿಲ್",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "ಗಿರಣಿಯನ್ನು ಮುರಿದು ಪದೇ ಪದೇ ರಿಮೇಕ್ ಮಾಡಬಹುದು",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "ಹೊಸ ಗಿರಣಿಯನ್ನು ರಚಿಸಲು ಆಟಗಾರನು ಗಿರಣಿಯನ್ನು ಮುರಿದರೆ, ಅಂತಹ ಆಟಗಾರನು ಹೊಸ ಗಿರಣಿಯನ್ನು ಮಾಡಿದರೆ ಅಂತಹ ತುಣುಕನ್ನು ತನ್ನ ಮುಂದಿನ ನಡೆಯಲ್ಲಿ ಮೂಲ ಜಂಕ್ಷನ್‌ಗೆ ಹಿಂತಿರುಗಿಸಬಹುದು.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ ಮತ್ತು ಹತ್ತು ಚಲನೆಗಳ ನಂತರ ಯಾವುದೇ ಆಟಗಾರನು ಎದುರಾಳಿಯ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕದಿದ್ದರೆ ಆಟವನ್ನು ಎಳೆಯಲಾಗುತ್ತದೆ",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ಒಬ್ಬ ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳಿಗೆ ಇಳಿದಾಗ, ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ಹತ್ತು ಚಲನೆಗಳ ಒಳಗೆ ಎದುರಾಳಿಯ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆಟವು ಡ್ರಾ ಆಗಿದೆ.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

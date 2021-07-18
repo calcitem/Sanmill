@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Боја позадине менија",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Боја ставке истицања менија",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Боја позадине главне траке с алаткама",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "боја иконе главне траке са алаткама",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Боја позадине траке са алаткама за навигацију",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Боја иконе траке са алаткама за навигацију",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Аутоматски сакриј траку са алаткама",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Локација траке са алаткама на екрану",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Врх",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Дно",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Центар",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Једнобојну",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Слика",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Изаберите своју слику",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Светлост",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Тамно",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Теме",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Тренутна тема",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Сачувај тему",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Фонтови",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Прикажи графикон анализе",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Анализа",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Сачувај игру",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Учитај игру",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Положај за подешавање",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Покажите легалне потезе",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Прикажи последњи потез",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Прикажи стрелице",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Комада",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Прикажи анализу",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Нити",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Умешати се",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Помозите да се побољша превод",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Приручник",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Цлассиц Милл",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Мешани млин",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Цеилон Милл",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Млин се може више пута ломити и преправљати",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Ако играч разбије млин да би одмах створио нови млин, такав играч може да врати такав комад назад на првобитни спој у свом следећем потезу ако направи нови млин.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Игра се извлачи ако играч има три фигуре, а након десет потеза ниједан играч не уклања противничке фигуре",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Када играч падне на три дела, а ниједан играч не може уклонити противнички комад у року од десет потеза, игра је нерешена.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

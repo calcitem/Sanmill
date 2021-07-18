@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Valikon taustaväri",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Valikon kohokohdan väri",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Päätyökalurivin taustaväri",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "päätyökalurivin kuvakkeen väri",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Navigointityökalurivin taustaväri",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Navigointityökalurivin kuvakkeen väri",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Piilota työkalurivi automaattisesti",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Työkalupalkin sijainti näytöllä",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Alkuun",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Pohja",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Keskusta",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Yksivärinen",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Kuva",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Valitse kuvasi",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Kevyt",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Tumma",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Teemat",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Nykyinen teema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Tallenna teema",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Fontit",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Näytä analyysikaavio",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analyysi",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Tallentaa pelin",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Lataa peli",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Asennusasento",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Näytä lailliset siirrot",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Näytä viimeinen siirto",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Näytä nuolet",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Kappaleita",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Näytä analyysi",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Langat",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Ota mukaan",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Auta parantamaan käännöksiä",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Opetusohjelma",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Classic Mill",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Sekoitettu mylly",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceylon Mill",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Mylly voidaan rikkoa ja tehdä uudelleen toistuvasti",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Jos pelaaja rikkoo myllyn uuden myllyn luomiseksi välittömästi, pelaaja voi siirtää tällaisen kappaleen takaisin alkuperäiseen risteykseen seuraavalla liikkeellään, jos se tekee uuden myllyn.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Peli vedetään, jos pelaajalla on kolme nappulaa ja kymmenen siirron jälkeen kumpikaan pelaaja ei poista vastustajan nappuloita",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kun pelaaja on pudonnut kolmeen nappulaan eikä kumpikaan pelaaja voi poistaa vastustajan nappulaa kymmenen siirron sisällä, peli on tasapeli.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

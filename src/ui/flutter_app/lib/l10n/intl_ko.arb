@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "메뉴 배경색",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "메뉴 하이라이트 항목 색상",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "기본 도구 모음 배경색",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "기본 도구 모음 아이콘 색상",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "탐색 도구 모음 배경색",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "탐색 도구 모음 아이콘 색상",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "도구 모음 자동 숨기기",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "화면의 도구 모음 위치",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "상단",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "바닥",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "센터",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "단색",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "그림",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "사진을 선택하세요",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "빛",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "어두운",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "테마",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "현재 테마",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "테마 저장",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "글꼴",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "분석 그래프 표시",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "분석",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "게임을 저장",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "게임 로드",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "설정 위치",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "합법적인 움직임 표시",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "마지막 이동 표시",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "화살표 표시",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "조각",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "분석 표시",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "스레드",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "참여하다",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "번역 개선에 참여",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "지도 시간",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "클래식 밀",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "혼합 밀",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "실론 밀",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "밀은 부서지고 반복적으로 다시 만들어질 수 있습니다.",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "플레이어가 즉시 새 공장을 만들기 위해 공장을 부수는 경우, 그러한 플레이어는 새 공장을 만드는 경우 다음 이동에서 그러한 조각을 원래 접합으로 다시 이동할 수 있습니다.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "플레이어가 3개의 피스를 가지고 있고 10번의 이동 후에 어느 플레이어도 상대방의 피스를 제거하지 않으면 게임이 무승부입니다.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "플레이어의 기물이 세 개로 줄어들고 두 플레이어 모두 10번의 이동 이내에 상대방의 말을 제거할 수 없는 경우 게임은 무승부입니다.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

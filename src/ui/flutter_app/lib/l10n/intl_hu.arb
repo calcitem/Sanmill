@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "A menü háttérszíne",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "A menü kiemelésének színe",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "A fő eszköztár háttérszíne",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "fő eszköztár ikon színe",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "A navigációs eszköztár háttérszíne",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "A navigációs eszköztár ikonjának színe",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Az eszköztár automatikus elrejtése",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Az eszköztár helye a képernyőn",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Felül",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Alsó",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Központ",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Szolid szín",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Kép",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Válassza ki a képét",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Fény",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Sötét",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Témák",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Aktuális téma",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Téma mentése",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Betűtípusok",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Elemzési grafikon megjelenítése",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Elemzés",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Játék mentése",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Játék betöltése",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Beállítási helyzet",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Jogi lépések megjelenítése",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Az utolsó lépés megjelenítése",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Nyilak megjelenítése",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Darabok",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Elemzés megjelenítése",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Szálak",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Részt venni",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Segítsen javítani a fordítást",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Bemutató",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Classic Mill",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Vegyes malom",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceiloni malom",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Lehet, hogy a malom megszakad, és többször átdolgozik",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Ha egy játékos megtöri a malmot, hogy azonnal új malmot hozzon létre, akkor az ilyen darabot a következő lépésével visszahelyezheti az eredeti kereszteződésbe, ha új malmot készít.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "A játék sorsolásra kerül, ha egy játékosnak három darabja van, és tíz mozdulat után egyik játékos sem távolítja el az ellenfél darabjait",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ha egy játékos három darabból áll, és egyik játékos sem tudja eltávolítani az ellenfél darabját tíz mozdulaton belül, akkor a játék döntetlen.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

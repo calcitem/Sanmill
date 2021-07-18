@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "మెనూ నేపథ్య రంగు",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "మెను అంశం రంగును హైలైట్ చేస్తుంది",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "ప్రధాన ఉపకరణపట్టీ నేపథ్య రంగు",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "ప్రధాన ఉపకరణపట్టీ చిహ్నం రంగు",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "నావిగేషన్ టూల్ బార్ నేపథ్య రంగు",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "నావిగేషన్ టూల్ బార్ చిహ్నం రంగు",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "ఉపకరణపట్టీని స్వయంచాలకంగా దాచండి",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "తెరపై ఉపకరణపట్టీ స్థానం",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "టాప్",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "దిగువ",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "కేంద్రం",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "ఘన రంగు",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "చిత్రం",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "మీ చిత్రాన్ని ఎంచుకోండి",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "కాంతి",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "చీకటి",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "థీమ్స్",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "ప్రస్తుత థీమ్",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "థీమ్‌ను సేవ్ చేయండి",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "ఫాంట్లు",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "విశ్లేషణ గ్రాఫ్ చూపించు",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "విశ్లేషణ",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "ఆటను సేవ్ చేయండి",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "ఆట లోడ్",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "సెటప్ స్థానం",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "చట్టపరమైన కదలికలను చూపించు",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "చివరి కదలికను చూపించు",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "బాణాలు చూపించు",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "ముక్కలు",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "విశ్లేషణ చూపించు",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "థ్రెడ్లు",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "చేరి చేసుకోగా",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "అనువాదాన్ని మెరుగుపరచడంలో సహాయపడండి",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "ట్యుటోరియల్",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "క్లాసిక్ మిల్",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "మిశ్రమ మిల్లు",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "సిలోన్ మిల్",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "మిల్లు విచ్ఛిన్నమై పదేపదే రీమేక్ చేయవచ్చు",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "ఒక కొత్త మిల్లును సృష్టించడానికి ఒక ఆటగాడు ఒక మిల్లును విచ్ఛిన్నం చేస్తే, అలాంటి ఆటగాడు కొత్త మిల్లును తయారు చేస్తే, ఆ ముక్కను తన తదుపరి కదలికలో అసలు జంక్షన్‌కు తిరిగి తరలించవచ్చు.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ఒక ఆటగాడికి మూడు ముక్కలు ఉంటే ఆట డ్రా అవుతుంది మరియు పది కదలికల తరువాత ఆటగాడు ప్రత్యర్థి ముక్కలను తొలగించడు",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ఒక ఆటగాడు మూడు ముక్కలుగా ఉన్నప్పుడు, మరియు ఏ ఆటగాడు పది కదలికలలో ప్రత్యర్థి భాగాన్ని తీసివేయలేడు, ఆట డ్రా.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

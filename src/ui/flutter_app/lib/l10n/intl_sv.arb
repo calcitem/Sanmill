@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Meny bakgrundsfärg",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Meny markera objektets färg",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Huvudfärg för verktygsfältet",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "huvudverktygsfältets ikonfärg",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Navigationsverktygsfältets bakgrundsfärg",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Navigationsverktygsfältets ikonfärg",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Dölj verktygsfältet automatiskt",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Verktygsfältets placering på skärmen",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Topp",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Botten",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centrum",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Enfärgade",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Bild",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Välj din bild",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Ljus",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Mörk",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Teman",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Aktuellt tema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Spara tema",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Typsnitt",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Visa analysdiagram",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analys",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Spara spelet",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Belastnings spel",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Inställningsposition",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Visa lagliga drag",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Visa sista drag",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Visa pilar",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Bitar",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Visa analys",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Trådar",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Bli involverad",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Hjälp till att förbättra översättningen",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Handledning",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klassisk kvarn",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Blandad kvarn",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceylon kvarn",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Kvarnen kan brytas om och göras om upprepade gånger",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Om en spelare bryter en kvarn för att skapa en ny kvarn omedelbart, kan en sådan spelare flytta en sådan bit tillbaka till den ursprungliga korsningen i sitt nästa drag om den gör en ny kvarn.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spelet dras om en spelare har tre delar och efter tio drag tar ingen spelare bort motståndarens bitar",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "När en spelare är nere i tre delar, och ingen spelare kan ta bort en motståndares bit inom tio drag, är spelet oavgjort.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

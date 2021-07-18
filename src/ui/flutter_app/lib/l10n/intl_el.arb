@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Χρώμα φόντου μενού",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Χρώμα στοιχείου επισήμανσης μενού",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Χρώμα φόντου κύριας γραμμής εργαλείων",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "χρώμα εικονιδίου κύριας γραμμής εργαλείων",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Χρώμα φόντου στη γραμμή εργαλείων πλοήγησης",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Χρώμα εικονιδίου γραμμής εργαλείων πλοήγησης",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Κρύψτε αυτόματα τη γραμμή εργαλείων",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Τοποθεσία γραμμής εργαλείων στην οθόνη",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Μπλουζα",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Κάτω μέρος",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Κέντρο",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Στερεό χρώμα",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Εικόνα",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Επιλέξτε την εικόνα σας",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Φως",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Σκοτάδι",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Θέματα",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Τρέχον θέμα",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Αποθήκευση θέματος",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Γραμματοσειρές",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Εμφάνιση γραφήματος ανάλυσης",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Ανάλυση",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Αποθήκευση παιχνιδιού",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Φόρτωσε το παιχνίδι",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Θέση εγκατάστασης",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Εμφάνιση νομικών κινήσεων",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Εμφάνιση τελευταίας κίνησης",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Εμφάνιση βελών",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Κομμάτια",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Εμφάνιση ανάλυσης",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Νήματα",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Εμπλέκομαι",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Βοηθήστε στη βελτίωση της μετάφρασης",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Φροντιστήριο",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Κλασικό μύλο",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Μικτός Μύλος",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Μύλος Κεϋλάνης",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Ο μύλος μπορεί να σπάσει και να ξανακατασκευαστεί",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Εάν ένας παίκτης σπάσει ένα μύλο για να δημιουργήσει ένα νέο μύλο αμέσως, ένας τέτοιος παίκτης μπορεί να μετακινήσει ένα τέτοιο κομμάτι πίσω στην αρχική διασταύρωση στην επόμενη κίνηση του, αν κάνει ένα νέο μύλο.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Το παιχνίδι τραβιέται αν ένας παίκτης έχει τρία κομμάτια και μετά από δέκα κινήσεις κανένας παίκτης δεν αφαιρεί τα κομμάτια του αντιπάλου",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Όταν ένας παίκτης είναι κάτω από τρία κομμάτια και κανένας παίκτης δεν μπορεί να αφαιρέσει ένα κομμάτι ενός αντιπάλου μέσα σε δέκα κινήσεις, το παιχνίδι είναι ισοπαλία.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

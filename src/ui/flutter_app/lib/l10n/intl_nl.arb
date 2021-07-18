@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Achtergrondkleur menu",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Kleur van menumarkeringen",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Achtergrondkleur hoofdwerkbalk",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "kleur van hoofdwerkbalkpictogram",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Achtergrondkleur van navigatiewerkbalk",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Pictogramkleur navigatiewerkbalk",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "De werkbalk automatisch verbergen",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Locatie van werkbalk op scherm",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Top",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Bodem",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centrum",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Effen kleur",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Afbeelding",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Kies je foto",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Licht",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Donker",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Thema's",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Huidig thema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Thema opslaan",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Lettertypen",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Analysegrafiek weergeven",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analyse",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Spel opslaan",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Spel laden",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Opstellingspositie:",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Laat legale zetten zien",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Laatste zet tonen",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Pijlen tonen",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Stukken",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Toon analyse",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Draden",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Raak betrokken",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Help de vertaling te verbeteren",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "zelfstudie",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klassieke molen",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Gemengde Molen",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceylon molen",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "De molen kan herhaaldelijk worden gebroken en opnieuw gemaakt",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Als een speler een molen breekt om onmiddellijk een nieuwe molen te maken, kan zo'n speler zo'n stuk terug verplaatsen naar de oorspronkelijke kruising in zijn volgende zet als hij een nieuwe molen maakt.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Het spel is remise als een speler drie stukken heeft en na tien zetten geen van beide spelers de stukken van de tegenstander verwijdert",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wanneer een speler nog maar drie stukken heeft en geen van beide spelers kan het stuk van een tegenstander binnen tien zetten verwijderen, is het spel gelijkspel.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

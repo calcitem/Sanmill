@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "لون خلفية القائمة",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "لون عنصر تسليط الضوء على القائمة",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "لون خلفية شريط الأدوات الرئيسي",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "لون رمز شريط الأدوات الرئيسي",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "لون خلفية شريط أدوات التنقل",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "لون رمز شريط أدوات التنقل",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "إخفاء شريط الأدوات تلقائيًا",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "موقع شريط الأدوات على الشاشة",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "قمة",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "الأسفل",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "مركز",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "اللون الصامد",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "صورة",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "اختر صورتك",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "ضوء",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "داكن",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "ثيمات",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "الموضوع الحالي",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "حفظ الموضوع",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "الخطوط",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "إظهار الرسم البياني للتحليل",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "تحليل",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "حفظ اللعبة",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "لعبة تحميل",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "وضع الإعداد",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "إظهار التحركات القانونية",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "عرض الخطوة الأخيرة",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "السهام المعرض",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "قطع",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "عرض التحليل",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "الخيوط",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "شارك",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "ساعد في تحسين الترجمة",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "درس تعليمي",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "المطحنة الكلاسيكية",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "مطحنة مختلطة",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "مطحنة سيلان",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "قد يتم كسر المطحنة وإعادة صنعها بشكل متكرر",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "إذا كسر لاعب طاحونة لإنشاء طاحونة جديدة على الفور ، فيمكن لهذا اللاعب إعادة هذه القطعة إلى التقاطع الأصلي في حركته التالية إذا قام بعمل طاحونة جديدة.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "تُعادل اللعبة إذا كان للاعب ثلاث قطع وبعد عشر نقلات لا يزيل أي لاعب قطع الخصم",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "عندما ينخفض اللاعب إلى ثلاث قطع ، ولا يمكن لأي لاعب إزالة قطعة الخصم في غضون عشر نقلات ، تكون اللعبة بمثابة تعادل.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

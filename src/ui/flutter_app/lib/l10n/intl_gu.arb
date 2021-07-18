@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "મેનુ પૃષ્ઠભૂમિ રંગ",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "મેનુ પ્રકાશિત આઇટમનો રંગ",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "મુખ્ય ટૂલબાર પૃષ્ઠભૂમિ રંગ",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "મુખ્ય ટૂલબાર ચિહ્ન રંગ",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "નેવિગેશન ટૂલબાર પૃષ્ઠભૂમિ રંગ",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "નેવિગેશન ટૂલબાર આયકન રંગ",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "ટૂલબારને આપમેળે છુપાવો",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "સ્ક્રીન પર ટૂલબાર સ્થાન",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "ટોચ",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "નીચે",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "કેન્દ્ર",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "પાકો રંગ",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "ચિત્ર",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "તમારું ચિત્ર પસંદ કરો",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "પ્રકાશ",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "શ્યામ",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "થીમ્સ",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "વર્તમાન થીમ",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "થીમ સાચવો",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "ફontsન્ટ્સ",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "વિશ્લેષણ ગ્રાફ બતાવો",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "વિશ્લેષણ",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "રમત સાચવો",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "રમત લોડ કરો",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "સેટઅપ પોઝિશન",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "કાનૂની ચાલ બતાવો",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "છેલ્લી ચાલ બતાવો",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "તીર બતાવો",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "ટુકડાઓ",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "વિશ્લેષણ બતાવો",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "થ્રેડો",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "સામેલ કરો",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "ભાષાંતર સુધારવામાં સહાય કરો",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "ટ્યુટોરિયલ",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "ઉત્તમ નમૂનાના મિલ",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "મિશ્રિત મિલ",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "સિલોન મિલ",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "મીલ તૂટી શકે છે અને ફરીથી રિમેડ થઈ શકે છે",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "જો કોઈ ખેલાડી તરત જ નવી મિલ બનાવવા માટે મિલ તોડી નાખે છે, તો આવી ખેલાડી જો નવી મિલ બનાવે છે, તો તે આગળની ચાલમાં આવા ભાગને પાછલા મૂળ જંકશન પર ખસેડી શકે છે.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "રમત દોરવામાં આવે છે જો કોઈ ખેલાડી પાસે ત્રણ ટુકડાઓ હોય અને દસ ચાલ પછી કોઈ પણ ખેલાડી વિરોધીના ટુકડાને દૂર કરે નહીં",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "જ્યારે કોઈ ખેલાડી ત્રણ ટુકડાઓ નીચે હોય, અને કોઈ પણ ખેલાડી દસ ચાલની અંદર વિરોધીનો ભાગ કા .ી શકે નહીં, ત્યારે રમત ડ્રો છે.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

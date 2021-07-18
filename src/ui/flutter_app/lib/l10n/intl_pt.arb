@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Cor de fundo do menu",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Cor do item de destaque do menu",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Cor de fundo da barra de ferramentas principal",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "cor do ícone da barra de ferramentas principal",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Cor de fundo da barra de navegação",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Cor do ícone da barra de ferramentas de navegação",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Ocultar automaticamente a barra de ferramentas",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Localização da barra de ferramentas na tela",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Principal",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Inferior",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centro",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Cor sólida",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Foto",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Escolha sua foto",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Luz",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Escuro",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Temas",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Tema atual",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Salvar tema",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Fontes",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Mostrar gráfico de análise",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Análise",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Salvar jogo",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Carregar jogo",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Posição de configuração",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Mostrar movimentos legais",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Mostrar a última jogada",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Mostrar Setas",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Peças",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Mostrar análise",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Tópicos",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Se envolver",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Ajude a melhorar a tradução",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Tutorial",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Moinho Clássico",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Moinho Misto",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceylon Mill",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "O moinho pode ser quebrado e refeito repetidamente",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Se um jogador quebra um moinho para criar um novo moinho imediatamente, esse jogador pode mover tal peça de volta para a junção original em seu próximo movimento se ele fizer um novo moinho.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "O jogo está empatado se um jogador tiver três peças e após dez jogadas nenhum jogador remove as peças do adversário",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Quando um jogador está com apenas três peças e nenhum dos jogadores consegue remover a peça do oponente em dez movimentos, o jogo termina em empate.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

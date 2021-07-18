@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Menu background color",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Culoarea elementului de evidențiere a meniului",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Culoarea de fundal a barei de instrumente principale",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "culoarea pictogramei barei de instrumente principale",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Culoarea fundalului barei de instrumente de navigare",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Culoarea pictogramei barei de instrumente de navigare",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Ascundeți automat bara de instrumente",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Locația barei de instrumente pe ecran",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Top",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Fund",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centru",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Culoare solida",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Imagine",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Alege poza ta",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Ușoară",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Întuneric",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Teme",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Tema actuală",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Salvați tema",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Fonturi",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Afișați graficul de analiză",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analiză",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Salveaza jocul",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Incarca jocul",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Poziția de configurare",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Afișați mișcări legale",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Afișează ultima mișcare",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Arată săgețile",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Piese",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Afișați analiza",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Fire",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "A se implica",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Ajutați la îmbunătățirea traducerii",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Tutorial",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Moara clasică",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Moară mixtă",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Moara din Ceylon",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Moara poate fi spartă și refăcută în mod repetat",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Dacă un jucător sparge o moară pentru a crea imediat o moară nouă, un astfel de jucător poate muta o astfel de piesă înapoi la joncțiunea originală în următoarea sa mutare, dacă face o moară nouă.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Când un jucător are până la trei piese și niciunul dintre jucători nu poate elimina piesa adversarului în decurs de zece mutări, jocul este egal.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }

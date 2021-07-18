@@ -968,5 +968,165 @@
     "drawerBackgroundColor": "Màu nền menu",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
+    },
+    "drawerHighlightItemColor": "Màu của mục đánh dấu menu",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Màu nền của thanh công cụ chính",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "màu biểu tượng chính của thanh công cụ",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Màu nền của thanh công cụ điều hướng",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Màu biểu tượng thanh công cụ điều hướng",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Tự động ẩn thanh công cụ",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Vị trí thanh công cụ trên màn hình",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Hàng đầu",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Dưới cùng",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Trung tâm",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Màu đồng nhất",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Hình ảnh",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Chọn hình ảnh của bạn",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Ánh sáng",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Tối",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Chủ đề",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Chủ đề hiện tại",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Lưu chủ đề",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "fonts": "Phông chữ",
+    "@fonts": {
+        "description": "Fonts"
+    },
+    "showAnalysisGraph": "Hiển thị đồ thị phân tích",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Phân tích",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Lưu trò chơi",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Tải trò chơi",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Thiết lập vị trí",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Hiển thị các động thái hợp pháp",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Hiển thị nước đi cuối cùng",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Hiển thị mũi tên",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Miếng",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Hiển thị phân tích",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Chủ đề",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Tham gia",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Giúp cải thiện bản dịch",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Hướng dẫn",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Cối xay cổ điển",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Nhà máy hỗn hợp",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Nhà máy Ceylon",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Cối xay có thể bị hỏng và làm lại nhiều lần",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Nếu người chơi phá cối xay để tạo cối xay mới ngay lập tức, người chơi đó có thể di chuyển mảnh đó trở lại điểm giao nhau ban đầu trong nước đi tiếp theo của mình nếu nó tạo ra cối xay mới.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Trò chơi được rút ra nếu một người chơi có ba quân cờ và sau mười nước đi không người chơi nào loại bỏ quân cờ của đối thủ",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Khi một người chơi hạ được ba quân cờ và không người chơi nào có thể loại bỏ quân cờ của đối thủ trong vòng mười nước đi, trò chơi sẽ hòa.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
 }
