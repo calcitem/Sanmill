@@ -20,6 +20,7 @@ import 'dart:async';
 
 //import 'dart:typed_data';
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
@@ -1258,21 +1259,25 @@ class _GamePageState extends State<GamePage>
 
   Widget createPageHeader() {
     Map<EngineType, IconData> engineTypeToIconLeft = {
-      EngineType.humanVsAi: Config.aiMovesFirst ? Icons.computer : Icons.person,
-      EngineType.humanVsHuman: Icons.person,
-      EngineType.aiVsAi: Icons.computer,
-      EngineType.humanVsCloud: Icons.person,
-      EngineType.humanVsLAN: Icons.person,
-      EngineType.testViaLAN: Icons.cast,
+      EngineType.humanVsAi: Config.aiMovesFirst
+          ? FluentIcons.bot_24_regular
+          : FluentIcons.person_24_regular,
+      EngineType.humanVsHuman: FluentIcons.person_24_regular,
+      EngineType.aiVsAi: FluentIcons.bot_24_regular,
+      EngineType.humanVsCloud: FluentIcons.person_24_regular,
+      EngineType.humanVsLAN: FluentIcons.person_24_regular,
+      EngineType.testViaLAN: FluentIcons.wifi_1_24_regular,
     };
 
     Map<EngineType, IconData> engineTypeToIconRight = {
-      EngineType.humanVsAi: Config.aiMovesFirst ? Icons.person : Icons.computer,
-      EngineType.humanVsHuman: Icons.person,
-      EngineType.aiVsAi: Icons.computer,
-      EngineType.humanVsCloud: Icons.cloud,
-      EngineType.humanVsLAN: Icons.cast,
-      EngineType.testViaLAN: Icons.cast,
+      EngineType.humanVsAi: Config.aiMovesFirst
+          ? FluentIcons.person_24_regular
+          : FluentIcons.bot_24_regular,
+      EngineType.humanVsHuman: FluentIcons.person_24_regular,
+      EngineType.aiVsAi: FluentIcons.bot_24_regular,
+      EngineType.humanVsCloud: FluentIcons.cloud_24_regular,
+      EngineType.humanVsLAN: FluentIcons.wifi_1_24_regular,
+      EngineType.testViaLAN: FluentIcons.wifi_1_24_regular,
     };
 
     IconData iconArrow = getIconArrow();
@@ -1318,34 +1323,38 @@ class _GamePageState extends State<GamePage>
   }
 
   IconData getIconArrow() {
-    IconData iconArrow = Icons.code;
+    IconData iconArrow = FluentIcons.code_24_regular;
 
     if (Game.instance.position.phase == Phase.gameOver) {
       switch (Game.instance.position.winner) {
         case PieceColor.white:
-          iconArrow =
-              ltr ? Icons.toggle_off_outlined : Icons.toggle_on_outlined;
+          iconArrow = ltr
+              ? FluentIcons.thumb_dislike_24_regular
+              : FluentIcons.thumb_like_24_regular;
           break;
         case PieceColor.black:
-          iconArrow =
-              ltr ? Icons.toggle_on_outlined : Icons.toggle_off_outlined;
+          iconArrow = ltr
+              ? FluentIcons.thumb_like_24_regular
+              : FluentIcons.thumb_dislike_24_regular;
           break;
         default:
-          iconArrow = Icons.view_agenda;
+          iconArrow = FluentIcons.handshake_24_regular;
           break;
       }
     } else {
       switch (Game.instance.sideToMove) {
         case PieceColor.white:
-          iconArrow =
-              ltr ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right;
+          iconArrow = ltr
+              ? FluentIcons.chevron_left_24_regular
+              : FluentIcons.chevron_right_24_regular;
           break;
         case PieceColor.black:
-          iconArrow =
-              ltr ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_left;
+          iconArrow = ltr
+              ? FluentIcons.chevron_right_24_regular
+              : FluentIcons.chevron_left_24_regular;
           break;
         default:
-          iconArrow = Icons.code;
+          iconArrow = FluentIcons.code_24_regular;
           break;
       }
     }
@@ -1420,7 +1429,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.casino_outlined,
+            FluentIcons.board_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).game,
@@ -1435,7 +1444,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.room_preferences_outlined,
+            FluentIcons.settings_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).options,
@@ -1450,7 +1459,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.list_alt,
+            FluentIcons.calendar_agenda_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).move,
@@ -1465,7 +1474,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.lightbulb_outline,
+            FluentIcons.lightbulb_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
           Text(S.of(context).info,
@@ -1502,7 +1511,9 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            ltr ? Icons.first_page : Icons.last_page,
+            ltr
+                ? FluentIcons.arrow_previous_24_regular
+                : FluentIcons.arrow_next_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
         ],
@@ -1515,7 +1526,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.keyboard_arrow_left,
+            FluentIcons.chevron_left_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
         ],
@@ -1528,7 +1539,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            Icons.keyboard_arrow_right,
+            FluentIcons.chevron_right_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
         ],
@@ -1541,7 +1552,9 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            ltr ? Icons.last_page : Icons.first_page,
+            ltr
+                ? FluentIcons.arrow_next_24_regular
+                : FluentIcons.arrow_previous_24_regular,
             color: AppTheme.toolbarIconColor,
           ),
         ],

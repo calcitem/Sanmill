@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/l10n/resources.dart';
@@ -72,7 +73,10 @@ class SettingsListTile extends StatelessWidget {
                   trailingColor == null ? null : Color(trailingColor!),
             ),
           ),
-          Icon(ltr ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_left,
+          Icon(
+              ltr
+                  ? FluentIcons.chevron_right_24_regular
+                  : FluentIcons.chevron_left_24_regular,
               color: AppTheme.listTileSubtitleColor)
         ],
       ),

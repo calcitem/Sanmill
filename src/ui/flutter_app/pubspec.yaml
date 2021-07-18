@@ -31,6 +31,7 @@ dependencies:
   animated_text_kit: ^4.1.1
   flutter_colorpicker: ^0.4.0
   device_info_plus_platform_interface: ^2.1.0
+  fluentui_system_icons: ^1.1.134
   #pref: ^2.3.0
   #screen_recorder: ^0.0.2
 

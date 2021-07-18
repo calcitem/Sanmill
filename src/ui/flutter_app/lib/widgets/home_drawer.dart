@@ -19,6 +19,7 @@
 import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/constants.dart';
@@ -79,47 +80,47 @@ class _HomeDrawerState extends State<HomeDrawer> {
       DrawerListItem(
         index: DrawerIndex.humanVsAi,
         title: S.of(context).humanVsAi,
-        icon: Icon(Icons.person_outline),
+        icon: Icon(FluentIcons.person_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.humanVsHuman,
         title: S.of(context).humanVsHuman,
-        icon: Icon(Icons.people_outline),
+        icon: Icon(FluentIcons.people_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.aiVsAi,
         title: S.of(context).aiVsAi,
-        icon: Icon(Icons.computer),
+        icon: Icon(FluentIcons.bot_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.preferences,
         title: S.of(context).preferences,
-        icon: Icon(Icons.settings_outlined),
+        icon: Icon(FluentIcons.options_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.ruleSettings,
         title: S.of(context).ruleSettings,
-        icon: Icon(Icons.rule),
+        icon: Icon(FluentIcons.task_list_ltr_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.personalization,
         title: S.of(context).personalization,
-        icon: Icon(Icons.color_lens_outlined),
+        icon: Icon(FluentIcons.design_ideas_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.feedback,
         title: S.of(context).feedback,
-        icon: Icon(Icons.feedback_outlined),
+        icon: Icon(FluentIcons.person_feedback_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.Help,
         title: S.of(context).help,
-        icon: Icon(Icons.help_outline),
+        icon: Icon(FluentIcons.question_circle_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.About,
         title: S.of(context).about,
-        icon: Icon(Icons.info_outline),
+        icon: Icon(FluentIcons.info_24_regular),
       ),
     ];
 
@@ -184,7 +185,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
           children: <Widget>[
             animatedBuilder,
             Padding(
-              padding: EdgeInsets.only(top: (isLargeScreen() ? 30 : 8), left: 4),
+              padding:
+                  EdgeInsets.only(top: (isLargeScreen() ? 30 : 8), left: 4),
               child: animatedTextKit,
             ),
           ],
@@ -204,7 +206,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
         textAlign: TextAlign.left,
       ),
       trailing: Icon(
-        Icons.power_settings_new,
+        FluentIcons.power_24_regular,
         color: AppTheme.exitIconColor,
       ),
       onTap: () async {
