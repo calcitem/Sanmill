@@ -14,6 +14,8 @@ class AppTheme {
   /// Game page
   static var gamePageHeaderIconColor = Colors.white;
   static var boardBackgroundColor = UIColors.burlyWood;
+  static var mainToolbarBackgroundColor = UIColors.burlyWood;
+  static var navigationToolbarBackgroundColor = UIColors.burlyWood;
   static var boardLineColor = Color(0x996D000D);
   static var blackPieceColor = Color.fromARGB(0xFF, 0x00, 0x00, 0x00);
   static var blackPieceBorderColor = Color.fromARGB(0xFF, 0x22, 0x22, 0x22);
@@ -22,8 +24,9 @@ class AppTheme {
   static var messageColor = Colors.white;
   static var banColor = Color.fromARGB(0xFF, 0xFF, 0x00, 0x00); // unused
   static var banBorderColor = Color.fromARGB(0x80, 0xFF, 0x00, 0x00); // unused
-  static var toolbarIconColor = listTileSubtitleColor;
-  static var toolbarTextColor = toolbarIconColor;
+  static var mainToolbarIconColor = listTileSubtitleColor;
+  static var navigationToolbarIconColor = listTileSubtitleColor;
+  static var toolbarTextColor = mainToolbarIconColor;
   static var moveHistoryTextColor = Colors.yellow;
   static var moveHistoryDialogBackgroundColor = Colors.transparent;
   static var infoDialogBackgroundColor = moveHistoryDialogBackgroundColor;
@@ -106,7 +109,7 @@ class AppTheme {
       height: 1.5,
       color: moveHistoryTextColor);
 
-  static double boardTop = isLargeScreen()? 75.0 : 36.0;
+  static double boardTop = isLargeScreen() ? 75.0 : 36.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;
   static double boardBorderRadius = 5.0;

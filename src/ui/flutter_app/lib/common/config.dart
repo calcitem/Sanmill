@@ -56,7 +56,7 @@ class Config {
   static double boardInnerLineWidth = 2.0;
   static double pieceWidth = 0.9;
   static double fontSize = 16.0;
-  static double boardTop = isLargeScreen()? 75.0 : 36.0;
+  static double boardTop = isLargeScreen() ? 75.0 : 36.0;
   static double animationDuration = 0.0;
 
   // Color
@@ -69,6 +69,14 @@ class Config {
   static int drawerColor = AppTheme.drawerColor.value;
   static int drawerBackgroundColor = AppTheme.drawerBackgroundColor.value;
   static int drawerTextColor = AppTheme.drawerTextColor.value;
+  static int drawerHighlightItemColor = AppTheme.drawerHighlightItemColor.value;
+  static int mainToolbarBackgroundColor =
+      AppTheme.mainToolbarBackgroundColor.value;
+  static int mainToolbarIconColor = AppTheme.mainToolbarIconColor.value;
+  static int navigationToolbarBackgroundColor =
+      AppTheme.navigationToolbarBackgroundColor.value;
+  static int navigationToolbarIconColor =
+      AppTheme.navigationToolbarIconColor.value;
 
   // Rules
   static int piecesCount = specialCountryAndRegion == "Iran" ? 12 : 9;
@@ -126,7 +134,7 @@ class Config {
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
     Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
     Config.fontSize = settings['FontSize'] ?? 16.0;
-    Config.boardTop = settings['BoardTop'] ?? (isLargeScreen()? 75 :36);
+    Config.boardTop = settings['BoardTop'] ?? (isLargeScreen() ? 75 : 36);
     Config.animationDuration = settings['AnimationDuration'] ?? 0;
 
     // Color
@@ -147,6 +155,19 @@ class Config {
         AppTheme.drawerBackgroundColor.value;
     Config.drawerTextColor =
         settings['DrawerTextColor'] ?? AppTheme.drawerTextColor.value;
+    Config.drawerHighlightItemColor = settings['DrawerHighlightItemColor'] ??
+        AppTheme.drawerHighlightItemColor.value;
+    Config.mainToolbarBackgroundColor =
+        settings['MainToolbarBackgroundColor'] ??
+            AppTheme.mainToolbarBackgroundColor.value;
+    Config.mainToolbarIconColor =
+        settings['MainToolbarIconColor'] ?? AppTheme.mainToolbarIconColor.value;
+    Config.navigationToolbarBackgroundColor =
+        settings['NavigationToolbarBackgroundColor'] ??
+            AppTheme.navigationToolbarBackgroundColor.value;
+    Config.navigationToolbarIconColor =
+        settings['NavigationToolbarIconColor'] ??
+            AppTheme.navigationToolbarIconColor.value;
 
     // Rules
     rule.piecesCount = Config.piecesCount =
@@ -227,6 +248,12 @@ class Config {
     settings['DrawerColor'] = Config.drawerColor;
     settings['DrawerBackgroundColor'] = Config.drawerBackgroundColor;
     settings['DrawerTextColor'] = Config.drawerTextColor;
+    settings['DrawerHighlightItemColor'] = Config.drawerHighlightItemColor;
+    settings['MainToolbarBackgroundColor'] = Config.mainToolbarBackgroundColor;
+    settings['MainToolbarIconColor'] = Config.mainToolbarIconColor;
+    settings['NavigationToolbarBackgroundColor'] =
+        Config.navigationToolbarBackgroundColor;
+    settings['NavigationToolbarIconColor'] = Config.navigationToolbarIconColor;
 
     // Rules
     settings['PiecesCount'] = Config.piecesCount;

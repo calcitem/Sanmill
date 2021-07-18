@@ -62,6 +62,14 @@ class _PersonalizationSettingsPageState
       S.of(context).drawerColor: Config.drawerColor,
       S.of(context).drawerBackgroundColor: Config.drawerBackgroundColor,
       S.of(context).drawerTextColor: Config.drawerTextColor,
+      S.of(context).drawerHighlightItemColor: Config.drawerHighlightItemColor,
+      S.of(context).mainToolbarBackgroundColor:
+          Config.mainToolbarBackgroundColor,
+      S.of(context).mainToolbarIconColor: Config.mainToolbarIconColor,
+      S.of(context).navigationToolbarBackgroundColor:
+          Config.navigationToolbarBackgroundColor,
+      S.of(context).navigationToolbarIconColor:
+          Config.navigationToolbarIconColor,
     };
 
     AlertDialog alert = AlertDialog(
@@ -109,6 +117,19 @@ class _PersonalizationSettingsPageState
               Config.drawerBackgroundColor = pickerColor.value;
             } else if (colorString == S.of(context).drawerTextColor) {
               Config.drawerTextColor = pickerColor.value;
+            } else if (colorString == S.of(context).drawerHighlightItemColor) {
+              Config.drawerHighlightItemColor = pickerColor.value;
+            } else if (colorString ==
+                S.of(context).mainToolbarBackgroundColor) {
+              Config.mainToolbarBackgroundColor = pickerColor.value;
+            } else if (colorString == S.of(context).mainToolbarIconColor) {
+              Config.mainToolbarIconColor = pickerColor.value;
+            } else if (colorString ==
+                S.of(context).navigationToolbarBackgroundColor) {
+              Config.navigationToolbarBackgroundColor = pickerColor.value;
+            } else if (colorString ==
+                S.of(context).navigationToolbarIconColor) {
+              Config.navigationToolbarIconColor = pickerColor.value;
             }
 
             Config.save();
@@ -390,13 +411,15 @@ class _PersonalizationSettingsPageState
           ListItemDivider(),
           Constants.windowAspectRatio > 1.7
               ? SettingsSwitchListTile(
-            context: context,
-            value: Config.isHistoryNavigationToolbarShown,
-            onChanged: setIsHistoryNavigationToolbarShown,
-            titleString: S.of(context).isHistoryNavigationToolbarShown,
-          ) : SizedBox(height: 1),
+                  context: context,
+                  value: Config.isHistoryNavigationToolbarShown,
+                  onChanged: setIsHistoryNavigationToolbarShown,
+                  titleString: S.of(context).isHistoryNavigationToolbarShown,
+                )
+              : SizedBox(height: 1),
           Constants.windowAspectRatio > 1.7
-              ? ListItemDivider(): SizedBox(height: 1),
+              ? ListItemDivider()
+              : SizedBox(height: 1),
           SettingsListTile(
               context: context,
               titleString: S.of(context).boardBorderLineWidth,
@@ -506,6 +529,45 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).drawerTextColor,
             trailingColor: Config.drawerTextColor,
             onTap: () => showColorDialog(S.of(context).drawerTextColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).drawerHighlightItemColor,
+            trailingColor: Config.drawerHighlightItemColor,
+            onTap: () =>
+                showColorDialog(S.of(context).drawerHighlightItemColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).mainToolbarBackgroundColor,
+            trailingColor: Config.mainToolbarBackgroundColor,
+            onTap: () =>
+                showColorDialog(S.of(context).mainToolbarBackgroundColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).mainToolbarIconColor,
+            trailingColor: Config.mainToolbarIconColor,
+            onTap: () => showColorDialog(S.of(context).mainToolbarIconColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).navigationToolbarBackgroundColor,
+            trailingColor: Config.navigationToolbarBackgroundColor,
+            onTap: () =>
+                showColorDialog(S.of(context).navigationToolbarBackgroundColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).navigationToolbarIconColor,
+            trailingColor: Config.navigationToolbarIconColor,
+            onTap: () =>
+                showColorDialog(S.of(context).navigationToolbarIconColor),
           ),
         ],
       ),

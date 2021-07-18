@@ -1430,10 +1430,10 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.board_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.mainToolbarIconColor),
           ),
           Text(S.of(context).game,
-              style: TextStyle(color: AppTheme.toolbarTextColor)),
+              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
         ],
       ),
       onPressed: onGameButtonPressed,
@@ -1445,10 +1445,10 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.settings_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.mainToolbarIconColor),
           ),
           Text(S.of(context).options,
-              style: TextStyle(color: AppTheme.toolbarTextColor)),
+              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
         ],
       ),
       onPressed: onOptionButtonPressed,
@@ -1460,10 +1460,10 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.calendar_agenda_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.mainToolbarIconColor),
           ),
           Text(S.of(context).move,
-              style: TextStyle(color: AppTheme.toolbarTextColor)),
+              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
         ],
       ),
       onPressed: onMoveButtonPressed,
@@ -1475,10 +1475,10 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.lightbulb_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.mainToolbarIconColor),
           ),
           Text(S.of(context).info,
-              style: TextStyle(color: AppTheme.toolbarTextColor)),
+              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
         ],
       ),
       onPressed: onInfoButtonPressed,
@@ -1487,7 +1487,7 @@ class _GamePageState extends State<GamePage>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: Color(Config.boardBackgroundColor),
+        color: Color(Config.mainToolbarBackgroundColor),
       ),
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: EdgeInsets.symmetric(vertical: 2),
@@ -1514,7 +1514,7 @@ class _GamePageState extends State<GamePage>
             ltr
                 ? FluentIcons.arrow_previous_24_regular
                 : FluentIcons.arrow_next_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.navigationToolbarIconColor),
           ),
         ],
       ),
@@ -1527,7 +1527,7 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.chevron_left_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.navigationToolbarIconColor),
           ),
         ],
       ),
@@ -1540,7 +1540,7 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.chevron_right_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.navigationToolbarIconColor),
           ),
         ],
       ),
@@ -1555,7 +1555,7 @@ class _GamePageState extends State<GamePage>
             ltr
                 ? FluentIcons.arrow_next_24_regular
                 : FluentIcons.arrow_previous_24_regular,
-            color: AppTheme.toolbarIconColor,
+            color: Color(Config.navigationToolbarIconColor),
           ),
         ],
       ),
@@ -1565,7 +1565,7 @@ class _GamePageState extends State<GamePage>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: Color(Config.boardBackgroundColor),
+        color: Color(Config.navigationToolbarBackgroundColor),
       ),
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: EdgeInsets.symmetric(vertical: 2),

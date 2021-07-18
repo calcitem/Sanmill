@@ -278,7 +278,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
               width: MediaQuery.of(context).size.width * 0.75 - 64,
               height: 46,
               decoration: BoxDecoration(
-                color: AppTheme.drawerHighlightItemColor,
+                color: Color(Config.drawerHighlightItemColor),
                 borderRadius: new BorderRadius.only(
                   topLeft: Radius.circular(ltr ? 0 : radius),
                   topRight: Radius.circular(ltr ? radius : 0),
