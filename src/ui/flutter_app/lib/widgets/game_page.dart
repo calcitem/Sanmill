@@ -1282,7 +1282,7 @@ class _GamePageState extends State<GamePage>
 
     IconData iconArrow = getIconArrow();
 
-    var iconColor = AppTheme.gamePageHeaderIconColor;
+    var iconColor = Color(Config.messageColor);
 
     var iconRow = Row(
       children: <Widget>[

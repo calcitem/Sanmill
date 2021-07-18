@@ -12,7 +12,6 @@ class AppTheme {
   static var dialogTitleColor = appPrimaryColor;
 
   /// Game page
-  static var gamePageHeaderIconColor = Colors.white;
   static var boardBackgroundColor = UIColors.burlyWood;
   static var mainToolbarBackgroundColor = UIColors.burlyWood;
   static var navigationToolbarBackgroundColor = UIColors.burlyWood;
