@@ -374,6 +374,19 @@ void mill_table_init()
 
 void move_priority_list_shuffle()
 {
+    if (gameOptions.getSkillLevel() == 1) {
+        for (auto i = 8; i < 32; i++) {     // TODO: SQ_BEGIN & SQ_END
+            MoveList<LEGAL>::movePriorityList[i - int(SQ_BEGIN)] = (Square)i;
+        }
+        if (gameOptions.getShufflingEnabled()) {
+            const uint32_t seed = static_cast<uint32_t>(now());
+
+            std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(),
+                         std::default_random_engine(seed));
+        }
+        return;
+    }
+
     std::array<Square, 4> movePriorityList0;
     std::array<Square, 8> movePriorityList1;
     std::array<Square, 4> movePriorityList2;
