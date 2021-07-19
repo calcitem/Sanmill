@@ -294,7 +294,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
     var listItemIcon = Icon(listItem.icon!.icon,
         color: widget.screenIndex == listItem.index
-            ? AppTheme.drawerHighlightIconColor
+            ? Color(Config.drawerTextColor) // TODO: drawerHighlightTextColor
             : Color(Config.drawerTextColor));
 
     var stack = Stack(
@@ -317,10 +317,13 @@ class _HomeDrawerState extends State<HomeDrawer> {
               Text(
                 listItem.title,
                 style: TextStyle(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: widget.screenIndex == listItem.index
+                      ? FontWeight.w700
+                      : FontWeight.w500,
                   fontSize: Config.fontSize,
                   color: widget.screenIndex == listItem.index
-                      ? AppTheme.drawerHighlightTextColor
+                      ? Color(Config
+                          .drawerTextColor) // TODO: drawerHighlightTextColor
                       : Color(Config.drawerTextColor),
                 ),
               ),
