@@ -1,0 +1,5 @@
+v1.1.18
+
+* When the skill level is 1, AI moves more randomly to reduce the difficulty.
+* Fix navigation toolbar setting disappears on some devices.
+* Fix drawer highlight item text color.

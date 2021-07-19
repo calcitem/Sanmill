@@ -1,0 +1,5 @@
+v1.1.18
+
+* Wenn die Fähigkeitsstufe 1 ist, bewegt sich die KI zufälliger, um den Schwierigkeitsgrad zu verringern.
+* Die Einstellung der Navigationssymbolleiste verschwindet auf einigen Geräten.
+* Korrigieren Sie die Textfarbe des Schubladenhervorhebungselements
