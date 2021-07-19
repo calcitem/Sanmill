@@ -1474,7 +1474,7 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            FluentIcons.lightbulb_24_regular,
+            FluentIcons.book_information_24_regular,
             color: Color(Config.mainToolbarIconColor),
           ),
           Text(S.of(context).info,
