@@ -146,6 +146,17 @@ class _HomeDrawerState extends State<HomeDrawer> {
       },
     );
 
+    var animatedTextsColors = [
+      Color(Config.drawerTextColor),
+      Colors.black,
+      Colors.blue,
+      Colors.yellow,
+      Colors.red,
+      Color(Config.darkBackgroundColor),
+      Color(Config.boardBackgroundColor),
+      Color(Config.drawerHighlightItemColor),
+    ];
+
     var animatedTextKit = AnimatedTextKit(
         animatedTexts: [
           ColorizeAnimatedText(
@@ -154,7 +165,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
               fontSize: Config.fontSize + 16,
               fontWeight: FontWeight.w600,
             ),
-            colors: AppTheme.animatedTextsColors,
+            colors: animatedTextsColors,
             textAlign: TextAlign.start,
             speed: const Duration(milliseconds: 3000),
           ),

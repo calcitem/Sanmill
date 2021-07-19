@@ -68,13 +68,6 @@ class AppTheme {
   static var navigationHomeScreenBackgroundColor =
       UIColors.nearlyWhite; // TODO: no use?
 
-  static const animatedTextsColors = [
-    Colors.black,
-    Colors.blue,
-    Colors.yellow,
-    Colors.red,
-  ];
-
   // Theme
 
   static const sliderThemeData = SliderThemeData(
