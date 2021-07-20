@@ -143,6 +143,14 @@ class _AboutPageState extends State<AboutPage> {
       ListItemDivider(),
       SettingsListTile(
         context: context,
+        titleString: S.of(context).helpImproveTranslate,
+        onTap: () {
+          _launchHelpImproveTranslate();
+        },
+      ),
+      ListItemDivider(),
+      SettingsListTile(
+        context: context,
         titleString: S.of(context).thanks,
         onTap: () {
           _launchThanks();
@@ -249,6 +257,21 @@ class _AboutPageState extends State<AboutPage> {
       _launchURL(Constants.giteePrivacyPolicyURL);
     } else {
       _launchURL(Constants.githubPrivacyPolicyURL);
+    }
+  }
+
+  _launchHelpImproveTranslate() async {
+    String? locale = "en_US";
+
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
+
+    print("$tag local = $locale");
+    if (locale != null && locale.startsWith("zh_")) {
+      _launchURL(Constants.giteeHelpImproveTranslateURL);
+    } else {
+      _launchURL(Constants.githubHelpImproveTranslateURL);
     }
   }
 

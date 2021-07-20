@@ -57,12 +57,17 @@ class Constants {
   static String giteeSourceCodeURL = "$giteeRepoURL";
 
   static String githubThirdPartyNoticesURL =
-      "$githubRepoURL/wiki/third-party_notices";
+      "$githubRepoWiKiURL/third-party_notices";
   static String giteeThirdPartyNoticesURL =
-      "$giteeRepoURL/wikis/third-party_notices";
+      "$giteeRepoWiKiURL/wikis/third-party_notices";
 
   static String githubPrivacyPolicyURL = "$githubRepoWiKiURL/privacy_policy";
   static String giteePrivacyPolicyURL = "$giteeRepoWiKiURL/privacy_policy_zh";
+
+  static String githubHelpImproveTranslateURL =
+      "$githubRepoWiKiURL/Translation-and-Localization";
+  static String giteeHelpImproveTranslateURL =
+      "$giteeRepoWiKiURL/Translation-and-Localization";
 
   static String githubThanksURL = "$githubRepoWiKiURL/thanks";
   static String giteeThanksURL = "$giteeRepoWiKiURL/thanks";
@@ -75,6 +80,7 @@ class Constants {
 bool isSmallScreen() {
   return Constants.windowHeight <= 800;
 }
+
 bool isLargeScreen() {
   return !isSmallScreen();
 }
