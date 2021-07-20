@@ -348,7 +348,7 @@ class PortugueseStrings extends Strings {
   String get languageName => 'Português';
 
   @override
-  String get tapBackAgainToLeave => 'Bater novamente para sair.';
+  String get tapBackAgainToLeave => 'Toque novamente para sair.';
 }
 
 /// ro
