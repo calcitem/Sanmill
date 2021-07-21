@@ -126,6 +126,14 @@ class GameRecorder {
     return "";
   }
 
+  bool isDalmaxMoveList(String text) {
+    if (text.length >= 15 && text.substring(0, 14) == "[Event \"Dalmax") {
+      return true;
+    }
+
+    return false;
+  }
+
   bool isPlayOkMoveList(String text) {
     if (text.length >= 4 &&
         text.substring(0, 3) == "1. " &&
@@ -153,6 +161,10 @@ class GameRecorder {
   }
 
   String import(String moveList) {
+    if (isDalmaxMoveList(moveList)) {
+      return importDalmax(moveList);
+    }
+
     if (isPlayOkMoveList(moveList)) {
       return importPlayOk(moveList);
     }
@@ -242,6 +254,10 @@ class GameRecorder {
     }
 
     return "";
+  }
+
+  String importDalmax(String moveList) {
+    return import(moveList.substring(moveList.indexOf("1. ")));
   }
 
   String importPlayOk(String moveList) {
