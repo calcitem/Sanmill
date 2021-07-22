@@ -1173,9 +1173,10 @@ class _GamePageState extends State<GamePage>
                       fontSize: Config.fontSize,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (!isTopLevel) Config.skillLevel++;
                     Config.save();
+                    await widget.engine.setOptions(context);
                     print("[config] skillLevel: ${Config.skillLevel}");
                     Navigator.of(context).pop();
                   }),
