@@ -498,6 +498,8 @@ Depth get_search_depth(const Position *pos)
                     return (Depth)level;
                 }
             }
+        } else if (pos->phase == Phase::moving) {
+            return (Depth)level;
         }
     }
 
