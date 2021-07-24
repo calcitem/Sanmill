@@ -455,6 +455,9 @@
     <ClCompile Include="src\perfect\perfect_test.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="millgame.rc">

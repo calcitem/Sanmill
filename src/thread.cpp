@@ -27,6 +27,10 @@
 #include "perfect/perfect.h"
 #endif
 
+#ifdef MCTS_AI
+#include "mcts.h"
+#endif
+
 #ifdef FLUTTER_UI
 #include "engine_main.h"
 #endif
@@ -145,6 +149,14 @@ void Thread::idle_loop()
             }
         } else {
 #endif // PERFECT_AI_SUPPORT
+#ifdef MCTS_AI
+            MCTSOptions mctsOptions;
+
+            Move move = computeMove(rootPos, mctsOptions);
+
+            strCommand = UCI::move(move); // moveToCommand(move);
+            emitCommand();
+#else  // MCTS_AI
 #ifdef OPENING_BOOK
             // gameOptions.getOpeningBook()
             if (!openingBookDeque.empty()) {
@@ -169,6 +181,7 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
             }
 #endif
+#endif // MCTS_AI
 #ifdef PERFECT_AI_SUPPORT
         }
 #endif // PERFECT_AI_SUPPORT

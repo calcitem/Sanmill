@@ -29,6 +29,10 @@
 #include "search.h"
 #include "thread_win32_osx.h"
 
+#ifdef MCTS_AI
+#include "mcts.h"
+#endif
+
 #include "config.h"
 
 #ifdef QT_GUI_LIB
@@ -64,6 +68,11 @@ public:
     void wait_for_search_finished();
 
     Position *rootPos { nullptr };
+
+#ifdef MCTS_AI
+    Move computeMove(Position *position,
+                     const MCTSOptions options);
+#endif
 
     // Mill Game
 

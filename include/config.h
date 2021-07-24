@@ -54,6 +54,9 @@
 //#define PVS_AI
 #define MTDF_AI
 
+#define MCTS_AI
+//#define MCTS_PLD
+
 #ifndef DISABLE_PERFECT_AI
 #ifdef _MSC_VER
 #ifndef __clang__

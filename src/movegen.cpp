@@ -145,6 +145,21 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     return cur;
 }
 
+template<>
+ExtMove *generate<LEGAL>(Position &pos, Sanmill::Stack<Move, MAX_MOVES> &moves, bool b)
+{
+    ExtMove extMoves[MAX_MOVES] { {MOVE_NONE, 0} };
+    ExtMove *endMoves = generate<LEGAL>(pos, extMoves);
+    int movesSize = int(endMoves - extMoves);
+    moves.clear();
+
+    for (size_t i = 0; i < movesSize; i++) {
+        moves.push(extMoves[i].move);
+    }
+
+    return endMoves;
+}
+
 
 template<>
 void MoveList<LEGAL>::create()

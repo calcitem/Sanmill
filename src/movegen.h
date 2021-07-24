@@ -24,6 +24,10 @@
 
 #include "types.h"
 
+#ifdef MCTS_AI
+#include "stack.h"
+#endif
+
 class Position;
 
 enum GenType
@@ -61,6 +65,9 @@ inline bool operator<(const ExtMove &f, const ExtMove &s) noexcept
 
 template<GenType>
 ExtMove *generate(Position &pos, ExtMove *moveList);
+
+template<GenType>
+ExtMove *generate(Position &pos, Sanmill::Stack<Move, MAX_MOVES> &moves, bool b);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.
