@@ -143,7 +143,7 @@ public:
     Color sideToMove { NOCOLOR };
 };
 
-Node *computeTree(Position &position,
+Node *computeTree(Position position,
                   const MCTSOptions options,
                   mt19937_64::result_type initialSeed);
 

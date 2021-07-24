@@ -152,7 +152,7 @@ void Thread::idle_loop()
 #ifdef MCTS_AI
             MCTSOptions mctsOptions;
 
-            Move move = computeMove(rootPos, mctsOptions);
+            Move move = computeMove(*rootPos, mctsOptions);
 
             strCommand = UCI::move(move); // moveToCommand(move);
             emitCommand();

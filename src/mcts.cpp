@@ -268,7 +268,7 @@ string Node::indentString(int indent) const
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
-Node *computeTree(Position &position,
+Node *computeTree(Position position,
                   const MCTSOptions options,
                   mt19937_64::result_type initialSeed)
 {
@@ -296,8 +296,8 @@ Node *computeTree(Position &position,
         //auto node = root.get();
         Node *node = root;
 
-        Position pos;
-        memcpy(&pos, &position, sizeof(position));  // TODO
+        Position pos = position;
+        //memcpy(&pos, &position, sizeof(position));  // TODO
 
         // Select a path through the tree to a leaf node.
         while (!node->hasUntriedMoves() && node->hasChildren()) {
@@ -343,16 +343,16 @@ Node *computeTree(Position &position,
     return root;
 }
 
-Move Thread::computeMove(Position *position,
+Move Thread::computeMove(Position position,
                          const MCTSOptions options)
 {
     // Will support more players later.
-    assert(position->sideToMove == BLACK || position->sideToMove == WHITE);
+    assert(position.sideToMove == BLACK || position.sideToMove == WHITE);
 
     Mills::move_priority_list_shuffle();
 
     ExtMove moves[MAX_MOVES] { {MOVE_NONE, 0} };
-    ExtMove *endMoves = generate<LEGAL>(*position, moves);
+    ExtMove *endMoves = generate<LEGAL>(position, moves);
     int movesSize = int(endMoves - moves);
 
     assert(movesSize > 0);
@@ -372,7 +372,7 @@ Move Thread::computeMove(Position *position,
 
     for (int t = 0; t < options.nThreads; ++t) {
         auto func = [t, &position, &jobOptions, this]() -> Node* {
-            return computeTree(*position, jobOptions, 1012411 * t + 12515);
+            return computeTree(position, jobOptions, 1012411 * t + 12515);
         };
 
         rootFutures[t] = async(launch::async, func);

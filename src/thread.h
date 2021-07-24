@@ -70,7 +70,7 @@ public:
     Position *rootPos { nullptr };
 
 #ifdef MCTS_AI
-    Move computeMove(Position *position,
+    Move computeMove(Position position,
                      const MCTSOptions options);
 #endif
 
