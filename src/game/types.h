@@ -38,7 +38,7 @@ enum move_t : int32_t
     //MOVE_NULL = 65
 };
 
-static const int MOVE_COUNT = 40;
+static const int MOVE_COUNT = 80;
 
 enum color_t : uint8_t
 {

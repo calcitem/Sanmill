@@ -34,8 +34,8 @@
 
 //#define UCT_DEMO
 
-#define ALPHABETA_AI
-//#define MCTS_AI
+//#define ALPHABETA_AI
+#define MCTS_AI
 
 #ifdef TEST_MODE
 #define DONOT_PLAY_SOUND
