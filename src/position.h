@@ -96,6 +96,7 @@ public:
 #endif // THREEFOLD_REPETITION
     int rule50_count() const;
 
+
     /// Mill Game
 
     Piece *get_board() noexcept;

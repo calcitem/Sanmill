@@ -56,7 +56,7 @@ bool hasMoves(Position &pos)
     checkInvariant(pos);
 
     Color winner = pos.get_winner();
-    if (winner != NOCOLOR) {
+    if (winner != NOBODY) {
         return false;
     }
 
@@ -70,7 +70,7 @@ double getResult(Position &pos, Color currentSideToMove)
 
     auto winner = pos.get_winner();
 
-    if (winner == NOCOLOR) {
+    if (winner == NOBODY) {
         return 0.5;
     }
 
@@ -83,7 +83,7 @@ double getResult(Position &pos, Color currentSideToMove)
 
 void checkInvariant(Position &pos)
 {
-    assert(pos.sideToMove == BLACK || pos.sideToMove == WHITE);
+    assert(pos.sideToMove == WHITE || pos.sideToMove == BLACK);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +283,7 @@ Node *computeTree(Position position,
     }
 
     // Will support more players later.
-    assert(position.sideToMove == BLACK || position.sideToMove == WHITE);
+    assert(position.sideToMove == WHITE || position.sideToMove == BLACK);
 
     Node *root = new Node(position);
 
@@ -347,7 +347,7 @@ Move Thread::computeMove(Position position,
                          const MCTSOptions options)
 {
     // Will support more players later.
-    assert(position.sideToMove == BLACK || position.sideToMove == WHITE);
+    assert(position.sideToMove == WHITE || position.sideToMove == BLACK);
 
     Mills::move_priority_list_shuffle();
 

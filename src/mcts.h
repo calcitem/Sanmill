@@ -83,7 +83,7 @@ private:
 
 using namespace std;
 
-static const int THREADS_COUNT = 2;
+static const int THREADS_COUNT = 1;
 
 class MCTSOptions
 {
@@ -140,7 +140,7 @@ public:
     Move move { MOVE_NONE };
     int childrenSize { 0 };
 
-    Color sideToMove { NOCOLOR };
+    Color sideToMove { NOBODY };
 };
 
 Node *computeTree(Position position,
