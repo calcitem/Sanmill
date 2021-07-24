@@ -351,12 +351,21 @@ Move Thread::computeMove(Position position,
 
     Mills::move_priority_list_shuffle();
 
+#if 0
     ExtMove moves[MAX_MOVES] { {MOVE_NONE, 0} };
     ExtMove *endMoves = generate<LEGAL>(position, moves);
     int movesSize = int(endMoves - moves);
 
     assert(movesSize > 0);
     if (movesSize == 1) {
+        return moves[0];
+    }
+#endif
+
+    Sanmill::Stack<Move, MAX_MOVES> moves;
+    generate<LEGAL>(position, moves, false);
+    assert(moves.size() > 0);
+    if (moves.size() == 1) {
         return moves[0];
     }
 
