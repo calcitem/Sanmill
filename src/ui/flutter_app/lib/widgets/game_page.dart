@@ -1527,7 +1527,9 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            FluentIcons.chevron_left_24_regular,
+            ltr
+                ? FluentIcons.chevron_left_24_regular
+                : FluentIcons.chevron_right_24_regular,
             color: Color(Config.navigationToolbarIconColor),
           ),
         ],
@@ -1540,7 +1542,9 @@ class _GamePageState extends State<GamePage>
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
           Icon(
-            FluentIcons.chevron_right_24_regular,
+            ltr
+                ? FluentIcons.chevron_right_24_regular
+                : FluentIcons.chevron_left_24_regular,
             color: Color(Config.navigationToolbarIconColor),
           ),
         ],
