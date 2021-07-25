@@ -1,0 +1,3 @@
+v1.1.21
+
+* Fix take-back and step-forward buttons icon direction in right-to-left layout.
