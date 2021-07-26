@@ -185,7 +185,7 @@ void UCI::loop(int argc, char *argv[])
 
     do {
 #ifdef FLUTTER_UI
-        static const int LINE_INPUT_MAX_CHAR = 1024;
+        static const int LINE_INPUT_MAX_CHAR = 4096;
         char line[LINE_INPUT_MAX_CHAR];
         CommandChannel *channel = CommandChannel::getInstance();
         while (!channel->popupCommand(line))

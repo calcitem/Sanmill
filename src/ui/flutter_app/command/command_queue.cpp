@@ -60,7 +60,7 @@ bool CommandQueue::read(char *dest)
         return false;
     }
 
-    strncpy(dest, commands[readIndex], 1024);   // See  uci.cpp LINE_INPUT_MAX_CHAR
+    strncpy(dest, commands[readIndex], 4096);   // See  uci.cpp LINE_INPUT_MAX_CHAR
     strncpy(commands[readIndex], "", COMMAND_LENGTH);
 
     if (++readIndex == MAX_COMMAND_COUNT) {
