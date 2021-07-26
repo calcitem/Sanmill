@@ -1,0 +1,3 @@
+v1.1.22
+
+When humans vs. AI, the two sides have made many moves but have not taken the opponent's pieces for many consecutive moves, and the AI will get frozen. This issue has been resolved.

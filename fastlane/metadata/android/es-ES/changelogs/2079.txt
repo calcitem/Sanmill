@@ -1,0 +1,3 @@
+v1.1.22
+
+Cuando los humanos contra la IA, los dos bandos han hecho muchos movimientos pero no han tomado las piezas del oponente durante muchos movimientos consecutivos, y la IA se congelará. Este problema se ha resuelto.
