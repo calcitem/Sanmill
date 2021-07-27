@@ -32,6 +32,7 @@ Map<String, Strings> languageCodeToStrings = {
   "cs": CzechStrings(),
   "da": DanishStrings(),
   "de": GermanStrings(),
+  "de_CH": SwissGermanStrings(),
   "el": GreekStrings(),
   "en": EnglishStrings(),
   "es": SpanishStrings(),
@@ -127,6 +128,15 @@ class DanishStrings extends Strings {
 class GermanStrings extends Strings {
   @override
   String get languageName => 'Deutsch';
+
+  @override
+  String get tapBackAgainToLeave => 'Nochmal drücken um zu Beenden.';
+}
+
+/// de-ch
+class SwissGermanStrings extends Strings {
+  @override
+  String get languageName => 'Schweizerdeutsch';
 
   @override
   String get tapBackAgainToLeave => 'Nochmal drücken um zu Beenden.';
