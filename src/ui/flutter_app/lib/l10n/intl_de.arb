@@ -212,7 +212,7 @@
     "@cannotImport": {
         "description": "Cannot import"
     },
-    "movesAndRulesNotMatch": "Les mouvements et les règles ne correspondent pas.",
+    "movesAndRulesNotMatch": "Regeln und Züge stimmen nicht überein.",
     "@movesAndRulesNotMatch": {
         "description": "Rules and moves do not match."
     },
