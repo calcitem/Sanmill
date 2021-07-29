@@ -596,7 +596,7 @@
     "@aiIsLazy": {
         "description": "AI is Lazy"
     },
-    "isPieceCountInHandShown": "Show count of pieces in hand",
+    "isPieceCountInHandShown": "Show count of unplaced pieces",
     "@isPieceCountInHandShown": {
         "description": "Show count of pieces in hand"
     },
@@ -977,7 +977,7 @@
     "@mainToolbarBackgroundColor": {
         "description": "Main toolbar background color"
     },
-    "mainToolbarIconColor": "main toolbar icon color",
+    "mainToolbarIconColor": "Main toolbar icon color",
     "@mainToolbarIconColor": {
         "description": "main toolbar icon color"
     },
