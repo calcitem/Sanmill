@@ -997,7 +997,7 @@
     "@toolbarLocationOnScreen": {
         "description": "Toolbar location on screen"
     },
-    "top": "oben",
+    "top": "Oben",
     "@top": {
         "description": "Top"
     },
