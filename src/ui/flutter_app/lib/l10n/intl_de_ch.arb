@@ -320,7 +320,7 @@
     "@youWin": {
         "description": "You win! Congratulations!"
     },
-    "challengeHarderLevel": "E schwäreri Stufe probiere? Neui Stufe:",
+    "challengeHarderLevel": "E schwäreri Stufe probiere? Neui Stufe: ",
     "@challengeHarderLevel": {
         "description": "Challenge harder level?"
     },
@@ -396,7 +396,7 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "Computer gäge Computer",
+    "ai": "Computer",
     "@ai": {
         "description": "AI"
     },
@@ -432,7 +432,7 @@
     "@misc": {
         "description": "Miscellaneous"
     },
-    "rules": "Regle und Zug stimme nid überih.",
+    "rules": "Regle",
     "@rules": {
         "description": "Rules"
     },
@@ -484,31 +484,31 @@
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "",
+    "mayRemoveMultiple_Detail": "Wenn ein Spieler mehr als eine Mühle gleichzeitig schließt, darf er entsprechend viele Steine entfernen.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
-    "mayRemoveFromMillsAlways": "",
+    "mayRemoveFromMillsAlways": "Mühlen zerstören",
     "@mayRemoveFromMillsAlways": {
         "description": "Destroy mills"
     },
-    "mayRemoveFromMillsAlways_Detail": "",
+    "mayRemoveFromMillsAlways_Detail": "Normalerweise müssen Spieler alle freien Steine entfernen, bevor Steine aus einer Mühle entfernt werden dürfen. Diese Option hebt diese Beschränkung auf.",
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull": "",
+    "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "",
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wenn das Brett am Ende der Setzphase voll ist, verliert der Spieler, der zuerst gezogen hat. Sonst unentschieden.",
     "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
         "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
     },
-    "isLoseButNotChangeSideWhenNoWay": "",
+    "isLoseButNotChangeSideWhenNoWay": "Verlieren wenn kein Zug möglich ist",
     "@isLoseButNotChangeSideWhenNoWay": {
         "description": "Lose when no legal moves"
     },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "",
+    "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, daß er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
     },
@@ -520,15 +520,15 @@
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
-    "nMoveRule": "",
+    "nMoveRule": "N-Züge-Regel",
     "@nMoveRule": {
         "description": "N-move rule"
     },
-    "nMoveRule_Detail": "",
+    "nMoveRule_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
-    "rollback": "",
+    "rollback": "Rollback",
     "@rollback": {
         "description": "Rollback"
     },
@@ -556,7 +556,7 @@
     "@exit": {
         "description": "Exit"
     },
-    "ruleSettings": "Regle und Zug stimme nid überih.",
+    "ruleSettings": "Regle",
     "@ruleSettings": {
         "description": "Rule Settings"
     },
@@ -628,7 +628,7 @@
     "@fontSize": {
         "description": "Font size"
     },
-    "standardNotation": "",
+    "standardNotation": "WMD-Notation",
     "@standardNotation": {
         "description": "Standard notation"
     },
@@ -676,27 +676,27 @@
     "@howToPlay": {
         "description": "How to play"
     },
-    "toPlacePiece": "",
+    "toPlacePiece": "Tippe auf einen freien Punkt, um den Stein zu setzen.",
     "@toPlacePiece": {
         "description": "Tap on any available point to place the piece."
     },
-    "toSelectPiece": "",
+    "toSelectPiece": "Tippe auf einen Stein, um ihn zu ziehen.",
     "@toSelectPiece": {
         "description": "Tap on a piece to move it."
     },
-    "toMovePiece": "",
+    "toMovePiece": "Tippe auf einen mit einem Stein verbundenen Punkt, um ihn zu ziehen.",
     "@toMovePiece": {
         "description": "Tap on point connected to piece to move it."
     },
-    "toRemovePiece": "",
+    "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
     "@toRemovePiece": {
         "description": "Tap on the opponent's one piece to remove."
     },
-    "needToCreateMillFirst": "",
+    "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
     "@needToCreateMillFirst": {
         "description": "You need to create a mill first before you can remove a piece."
     },
-    "needToPlayWithOwnPieces": "",
+    "needToPlayWithOwnPieces": "Du musst mit deinen eigenen Steinen spielen.",
     "@needToPlayWithOwnPieces": {
         "description": "You need to play with your pieces."
     },
@@ -724,15 +724,15 @@
     "@privacyPolicy": {
         "description": "Privacy Policy"
     },
-    "privacyPolicy_Detail_1": "",
+    "privacyPolicy_Detail_1": "Bitte lies sorgfältig und stelle sicher, daß du alles verstanden hast und zustimmst ",
     "@privacyPolicy_Detail_1": {
         "description": "Privacy Policy Detail 1"
     },
-    "privacyPolicy_Detail_2": "",
+    "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, daß du diesen Bestimmungen zustimmst.",
     "@privacyPolicy_Detail_2": {
         "description": "Privacy Policy Detail 2"
     },
-    "and": " u",
+    "and": " u ",
     "accept": "Akzeptiere",
     "@accept": {
         "description": "Accept"
@@ -785,7 +785,7 @@
     "@crackMill": {
         "description": "Crack-mill"
     },
-    "crackMill_Detail": "",
+    "crackMill_Detail": "Wenn ein Spieler nur Steine in Mühlen hat, können diese Steine entfernt werden.",
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
     },
@@ -801,7 +801,7 @@
     "@theme": {
         "description": "Theme"
     },
-    "helpContent": "",
+    "helpContent": "Das Ziel des Spiels ist es, daß der Gegner weniger als drei Steine hat oder sich nicht mehr bewegen kann.\n\nDas Spiel endet automatisch unentschieden, wenn eine Spielposition das dritte mal auftritt, oder wenn in den letzten 100 (konfigurierbar) Zügen kein Stein entfernt wurde.\n\nDas Spiel läuft in drei Phasen ab:\n\n1. Steine auf freie Punkte setzen\n2. Steine auf angrenzende Punkte schieben\n3. (optionale Phase) Steine auf beliebige freie Punkte setzen wenn der Spieler nur noch drei Steine hat\n\nSetzphase\n\nDas Spiel beginnt mit einem leeren Spielbrett, das aus einem Gitter mit vierundzwanzig Punkten besteht. Die Spieler setzen abwechselnd Steine auf freie Punkte, bis jeder Spieler alle Steine gesetzt hat. Wenn ein Spieler drei Steine in einer geraden Linie setzt, dann hat er eine \"Mühle\" und darf einen gegnerischen Stein vom Spielbrett nehmen.\n\nIn einigen Regelvarianten müssen die Spieler alle anderen Steine entfernen, bevor ein Stein aus einer Mühle genommen werden kann.\n\nIn einigen Regelvarianten dürfen Steine in der Setzphase nicht wieder auf Punkte gesetzt werden, von denen bereits Steine genommen wurden.\n\nWenn alle Steine gesetzt worden sind, ziehen die Spieler abwechselnd einen Stein.\n\nZugphase\n\nBeim Ziehen bewegt ein Spieler einen seiner Steine entlang einer Linie zum nächsten freien Punkt. Wenn er das nicht kann, hat er verloren. Genau wie in der Setzphase führen drei Steine in einer Linie zu einer Mühle, und der Spieler darf einen der gegnerischen Steine entfernen. Ein Spieler mit nur zwei Steinen kann keine Mühlen mehr bekommen und verliert deshalb. Ein Spieler kann auch mit mehr als drei Steinen verlieren, wenn sein Gegner ihn so blockiert hat, daß er seine Steine nicht mehr bewegen kann.\n\nEndphase\n\nIn einigen Regelvarianten kann ein Spieler, dem nur noch drei Steine verbleiben, mit seinen Steinen auf jeden freien Punkt \"fliegen\", \"hüpfen\" oder \"springen\", nicht nur auf benachbarte.\n\n",
     "@helpContent": {
         "description": "Help Content"
     },
@@ -881,7 +881,7 @@
     "@drawOnHumanExperience": {
         "description": "Draw on the human experience"
     },
-    "considerMobility": "",
+    "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
     "@considerMobility": {
         "description": "Consider mobility of pieces"
     },
@@ -933,7 +933,7 @@
     "@experimental": {
         "description": "This is an experimental feature."
     },
-    "experiments": "",
+    "experiments": "Experimente",
     "@experiments": {
         "description": "Experiments"
     },
@@ -949,51 +949,51 @@
     "@defaultLanguage": {
         "description": "Default language"
     },
-    "mayMoveInPlacingPhase": "",
+    "mayMoveInPlacingPhase": "Die Steine können sich in der Setzphase bewegen",
     "@mayMoveInPlacingPhase": {
         "description": "The pieces can move in the placing phase"
     },
-    "mayMoveInPlacingPhase_Detail": "",
+    "mayMoveInPlacingPhase_Detail": "Es gibt keine getrennten Setz- und Zugphasen, d.h. die Spieler können bei jedem Zug entscheiden, ob sie einen Stein auf dem Brett setzen oder einen ihrer Steine bewegen wollen (solange sie noch Steine zum Setzen haben).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     },
-    "drawerColor": "",
+    "drawerColor": "Menüfarbe",
     "@drawerColor": {
         "description": "Menu color"
     },
-    "drawerTextColor": "",
+    "drawerTextColor": "Menütextfarbe",
     "@drawerTextColor": {
         "description": "Menu text color"
     },
-    "drawerBackgroundColor": "",
+    "drawerBackgroundColor": "Menühintergrundfarbe",
     "@drawerBackgroundColor": {
         "description": "Menu background color"
     },
-    "drawerHighlightItemColor": "",
+    "drawerHighlightItemColor": "Farbe des Menümarkierungselements",
     "@drawerHighlightItemColor": {
         "description": "Menu highlight item color"
     },
-    "mainToolbarBackgroundColor": "",
+    "mainToolbarBackgroundColor": "Hintergrundfarbe der Hauptsymbolleiste",
     "@mainToolbarBackgroundColor": {
         "description": "Main toolbar background color"
     },
-    "mainToolbarIconColor": "",
+    "mainToolbarIconColor": "Symbolfarbe der Hauptsymbolleiste",
     "@mainToolbarIconColor": {
         "description": "main toolbar icon color"
     },
-    "navigationToolbarBackgroundColor": "",
+    "navigationToolbarBackgroundColor": "Hintergrundfarbe der Navigationsleiste",
     "@navigationToolbarBackgroundColor": {
         "description": "Navigation toolbar background color"
     },
-    "navigationToolbarIconColor": "",
+    "navigationToolbarIconColor": "Symbolfarbe der Navigationssymbolleiste",
     "@navigationToolbarIconColor": {
         "description": "Navigation toolbar icon color"
     },
-    "autoHideToolbar": "",
+    "autoHideToolbar": "Symbolleiste automatisch ausblenden",
     "@autoHideToolbar": {
         "description": "Automatically hide the toolbar"
     },
-    "toolbarLocationOnScreen": "",
+    "toolbarLocationOnScreen": "Position der Symbolleiste auf dem Bildschirm",
     "@toolbarLocationOnScreen": {
         "description": "Toolbar location on screen"
     },
@@ -1049,7 +1049,7 @@
     "@showAnalysisGraph": {
         "description": "Show analysis graph"
     },
-    "analysis": "Analüsegrafik ahzeige",
+    "analysis": "Analyse",
     "@analysis": {
         "description": "Analysis"
     },
@@ -1113,19 +1113,19 @@
     "@ceylonMill": {
         "description": "Ceylon Mill"
     },
-    "mayBreakAndRemakeMillRepeatedly": "",
+    "mayBreakAndRemakeMillRepeatedly": "Mühle kann wiederholt gebrochen und neu hergestellt werden",
     "@mayBreakAndRemakeMillRepeatedly": {
         "description": "Mill may be broken and remade repeatedly"
     },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "",
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Wenn ein Spieler eine Mühle zerstört, um sofort eine neue Mühle zu bauen, kann dieser Spieler diesen Stein in seinem nächsten Zug zurück zur ursprünglichen Kreuzung bewegen, wenn er eine neue Mühle baut.",
     "@mayBreakAndRemakeMillRepeatedly_Detail": {
         "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
     },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "",
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
         "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
     },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "",
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wenn ein Spieler nur noch drei Steine übrig hat und keiner der Spieler einen gegnerischen Stein innerhalb von zehn Zügen entfernen kann, ist das Spiel unentschieden.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     }
