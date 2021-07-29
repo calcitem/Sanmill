@@ -72,8 +72,8 @@ class BoardPainter extends PiecesBasePainter {
       }
 
       TextSpan textSpan = TextSpan(
-          style:
-              TextStyle(fontSize: 48, color: AppTheme.boardLineColor), // TODO
+          style: TextStyle(
+              fontSize: 48, color: Color(Config.boardLineColor)), // TODO
           text: pieceInHandCountStr);
 
       TextPainter textPainter = TextPainter(
