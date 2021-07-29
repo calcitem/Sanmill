@@ -1,0 +1,4 @@
+v1.1.23
+
+* Set count of unplaced pieces' text color to board line color
+* Add Swiss German translation (WIP)

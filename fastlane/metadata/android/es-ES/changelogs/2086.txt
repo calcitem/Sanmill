@@ -1,0 +1,4 @@
+v1.1.23
+
+* Establecer el recuento del color del texto de las piezas no colocadas en el color de la línea del tablero.
+* Agregue la traducción al alemán suizo (WIP).
