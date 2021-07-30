@@ -20,11 +20,11 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Ihminen vastaan tekoäly",
+    "humanVsAi": "Ihminen tekoälyä vastaan",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "Ihminen vastaan ihminen",
+    "humanVsHuman": "Ihminen ihmistä vastaan",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
