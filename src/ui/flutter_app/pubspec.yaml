@@ -24,7 +24,7 @@ dependencies:
   devicelocale: ^0.4.2
   double_back_to_close_app: ^2.0.1
   flutter_picker: ^2.0.2
-  flutter_email_sender: ^5.0.1
+  flutter_email_sender: ^5.0.2
   feedback:
     git:
       url: git://github.com/calcitem/feedback.git
