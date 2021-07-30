@@ -1,0 +1,4 @@
+v1.1.24
+
+* Show unplaced pieces counter by default.
+* Improve Finnish translation.

@@ -1,0 +1,4 @@
+v1.1.24
+
+* Standardmäßig nicht platzierte Stückzähler anzeigen.
+* Finnische Übersetzung verbessern.
