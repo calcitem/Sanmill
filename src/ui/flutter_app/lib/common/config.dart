@@ -49,7 +49,7 @@ class Config {
   // Display
   static String languageCode = Constants.defaultLanguageCodeName;
   static bool standardNotationEnabled = true;
-  static bool isPieceCountInHandShown = false;
+  static bool isPieceCountInHandShown = true;
   static bool isNotationsShown = false;
   static bool isHistoryNavigationToolbarShown = false;
   static double boardBorderLineWidth = 2.0;
@@ -126,7 +126,7 @@ class Config {
     Config.standardNotationEnabled =
         settings['StandardNotationEnabled'] ?? true;
     Config.isPieceCountInHandShown =
-        settings['IsPieceCountInHandShown'] ?? false;
+        settings['IsPieceCountInHandShown'] ?? true;
     Config.isNotationsShown = settings['IsNotationsShown'] ?? false;
     Config.isHistoryNavigationToolbarShown =
         settings['IsHistoryNavigationToolbarShown'] ?? false;
