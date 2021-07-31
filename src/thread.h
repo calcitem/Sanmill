@@ -22,6 +22,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <mutex>
+#include <thread>
 #include <vector>
 
 #include "movepick.h"
@@ -63,7 +64,14 @@ public:
     void start_searching();
     void wait_for_search_finished();
 
+    size_t id() const
+    {
+        return idx;
+    }
+
     Position *rootPos { nullptr };
+    Search::RootMoves rootMoves;
+    Depth rootDepth, completedDepth;
 
     // Mill Game
 
@@ -148,6 +156,12 @@ struct MainThread : public Thread
 {
     using Thread::Thread;
 
+    int search() /* override */;
+
+    double previousTimeReduction;
+    Value bestPreviousScore;
+    Value iterValue[4];
+
     int callsCnt;
     bool stopOnPonderhit;
     std::atomic_bool ponder;
@@ -168,6 +182,10 @@ struct ThreadPool : public std::vector<Thread *>
     {
         return static_cast<MainThread *>(front());
     }
+
+    Thread *get_best_thread() const;
+    void start_searching();
+    void wait_for_search_finished() const;
 
     std::atomic_bool stop, increaseDepth;
 

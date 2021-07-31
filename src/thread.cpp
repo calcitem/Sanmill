@@ -17,7 +17,9 @@
 */
 
 #include <iomanip>
+#include <algorithm> // For std::count
 
+#include "search.h"
 #include "thread.h"
 #include "uci.h"
 #include "option.h"
@@ -116,6 +118,14 @@ void Thread::wait_for_search_finished()
 
 void Thread::idle_loop()
 {
+    // If OS already scheduled us on a different group than 0 then don't overwrite
+    // the choice, eventually we are one of many one-threaded processes running on
+    // some Windows NUMA hardware, for instance in fishtest. To make it simple,
+    // just check if running threads are below a threshold, in this case all this
+    // NUMA machinery is not needed.
+    if (Options["Threads"] > 8)
+        WinProcGroup::bindThisThread(idx);
+
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
         searching = false;
@@ -530,6 +540,10 @@ void ThreadPool::clear()
 {
     for (Thread *th : *this)
         th->clear();
+
+    main()->callsCnt = 0;
+    main()->bestPreviousScore = VALUE_INFINITE;
+    main()->previousTimeReduction = 1.0;
 }
 
 
@@ -543,11 +557,64 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
     main()->stopOnPonderhit = stop = false;
     increaseDepth = true;
     main()->ponder = ponderMode;
+    Search::RootMoves rootMoves;
+
+    for (const auto &m : MoveList<LEGAL>(*pos))
+        rootMoves.emplace_back(m);
 
     // We use Position::set() to set root position across threads.
     for (Thread *th : *this) {
+        th->rootMoves = rootMoves;
         th->rootPos = pos;
     }
 
     main()->start_searching();
+}
+
+Thread *ThreadPool::get_best_thread() const
+{
+    Thread *bestThread = front();
+    std::map<Move, int64_t> votes;
+    Value minScore = VALUE_NONE;
+
+    // Find minimum score of all threads
+    for (Thread *th : *this)
+        minScore = std::min(minScore, th->rootMoves[0].score);
+
+    // Vote according to score and depth, and select the best thread
+    for (Thread *th : *this) {
+        votes[th->rootMoves[0].pv[0]] +=
+            (th->rootMoves[0].score - minScore + 14) * int(th->completedDepth);
+
+        if (abs(bestThread->rootMoves[0].score) >= VALUE_TB_WIN_IN_MAX_PLY) {
+            // Make sure we pick the shortest mate / TB conversion or stave off mate the longest
+            if (th->rootMoves[0].score > bestThread->rootMoves[0].score)
+                bestThread = th;
+        } else if (th->rootMoves[0].score >= VALUE_TB_WIN_IN_MAX_PLY
+                   || (th->rootMoves[0].score > VALUE_TB_LOSS_IN_MAX_PLY
+                       && votes[th->rootMoves[0].pv[0]] > votes[bestThread->rootMoves[0].pv[0]]))
+            bestThread = th;
+    }
+
+    return bestThread;
+}
+
+
+/// Start non-main threads
+
+void ThreadPool::start_searching()
+{
+    for (Thread *th : *this)
+        if (th != front())
+            th->start_searching();
+}
+
+
+/// Wait for non-main threads
+
+void ThreadPool::wait_for_search_finished() const
+{
+    for (Thread *th : *this)
+        if (th != front())
+            th->wait_for_search_finished();
 }

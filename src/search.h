@@ -20,7 +20,9 @@
 #define SEARCH_H_INCLUDED
 
 #include <vector>
-
+#include "misc.h"
+#include "movepick.h"
+#include "types.h"
 #include "endgame.h"
 
 #ifdef CYCLE_STAT
@@ -31,6 +33,39 @@ using namespace std;
 
 namespace Search
 {
+
+/// RootMove struct is used for moves at the root of the tree. For each root move
+/// we store a score and a PV (really a refutation in the case of moves which
+/// fail low). Score is normally set at -VALUE_INFINITE for all non-pv moves.
+
+struct RootMove
+{
+    explicit RootMove(Move m) : pv(1, m)
+    {
+    }
+
+    bool operator==(const Move &m) const
+    {
+        return pv[0] == m;
+    }
+
+    bool operator<(const RootMove &m) const
+    {
+        // Sort in descending order
+        return m.score != score ? m.score < score
+            : m.previousScore < previousScore;
+    }
+
+    Value score = -VALUE_INFINITE;
+    Value previousScore = -VALUE_INFINITE;
+    int selDepth = 0;
+    int tbRank = 0;
+    Value tbScore;
+    std::vector<Move> pv;
+};
+
+typedef std::vector<RootMove> RootMoves;
+
 
 void init() noexcept;
 void clear();

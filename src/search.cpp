@@ -18,7 +18,7 @@
 
 #include "evaluate.h"
 #include "thread.h"
-//#include "uci.h"
+#include "uci.h"
 
 #include "endgame.h"
 #include "option.h"
@@ -51,6 +51,51 @@ void Search::clear()
     TT.clear();
 #endif
     Threads.clear();
+}
+
+
+/// MainThread::search() is started when the program receives the UCI 'go'
+/// command. It searches from the root position and outputs the "bestmove".
+
+int MainThread::search()
+{
+    int ret = 0;
+    /* Color */ us = rootPos->side_to_move();
+
+    if (rootMoves.empty()) {
+        rootMoves.emplace_back(MOVE_NONE);
+    } else {
+        Threads.start_searching(); // start non-main threads
+        ret = Thread::search();          // main thread start searching
+    }
+
+    // When we reach the maximum depth, we can arrive here without a raise of
+    // Threads.stop. However, if we are pondering or in an infinite search,
+    // the UCI protocol states that we shouldn't print the best move before the
+    // GUI sends a "stop" or "ponderhit" command. We therefore simply wait here
+    // until the GUI sends one of those commands.
+
+    while (!Threads.stop) {
+    } // Busy wait for a stop or a ponder reset
+
+   // Stop the threads if not already stopped (also raise the stop if
+   // "ponderhit" just reset Threads.ponder).
+    Threads.stop = true;
+
+    // Wait until all threads have finished
+    Threads.wait_for_search_finished();
+
+    Thread *bestThread = this;
+
+    bestThread = Threads.get_best_thread();
+
+    bestPreviousScore = bestThread->rootMoves[0].score;
+
+    sync_cout << "bestmove " << UCI::move(bestThread->rootMoves[0].pv[0]);
+
+    std::cout << sync_endl;
+
+    return ret;
 }
 
 
