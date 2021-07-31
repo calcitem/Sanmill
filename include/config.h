@@ -62,15 +62,15 @@
 #ifndef DISABLE_PERFECT_AI
 #ifdef _MSC_VER
 #ifndef __clang__
-//#define PERFECT_AI_SUPPORT
+//#define MADWEASEL_MUEHLE_PERFECT_AI
 #endif
-#ifdef PERFECT_AI_SUPPORT
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #define MADWEASEL_MUEHLE_RULE
 #endif
 #endif
 #endif
 
-//#define PERFECT_AI_TEST
+//#define MADWEASEL_MUEHLE_PERFECT_AI_TEST
 
 //#define DEBUG_MODE
 

@@ -21,7 +21,7 @@ unsigned int endTestAtLayer = NUM_LAYERS - 1;
 
 bool calculateDatabase = false;
 
-#ifdef PERFECT_AI_TEST
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI_TEST
 int main(void)
 #else
 int perfect_main(void)

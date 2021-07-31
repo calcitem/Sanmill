@@ -23,7 +23,7 @@
 #include "option.h"
 #include "mills.h"
 
-#ifdef PERFECT_AI_SUPPORT
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #include "perfect/perfect.h"
 #endif
 
@@ -135,7 +135,7 @@ void Thread::idle_loop()
 
         clear_tt();
 
-#ifdef PERFECT_AI_SUPPORT
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
         if (gameOptions.getPerfectAiEnabled()) {
             bestMove = perfect_search();
             assert(bestMove != MOVE_NONE);
@@ -144,7 +144,7 @@ void Thread::idle_loop()
                 emitCommand();
             }
         } else {
-#endif // PERFECT_AI_SUPPORT
+#endif // MADWEASEL_MUEHLE_PERFECT_AI
 #ifdef OPENING_BOOK
             // gameOptions.getOpeningBook()
             if (!openingBookDeque.empty()) {
@@ -169,9 +169,9 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
             }
 #endif
-#ifdef PERFECT_AI_SUPPORT
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
         }
-#endif // PERFECT_AI_SUPPORT
+#endif // MADWEASEL_MUEHLE_PERFECT_AI
     }
 }
 

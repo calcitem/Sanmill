@@ -31,7 +31,7 @@
 
 #include "config.h"
 
-#ifdef PERFECT_AI_SUPPORT
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #include "perfect/perfect.h"
 #endif
 
@@ -222,7 +222,7 @@ void Test::readFromMemory()
             sharedMemory.unlock();
             readStr = str;
 
-#ifdef PERFECT_AI_SUPPORT
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
             if (gameOptions.getPerfectAiEnabled()) {
                 perfect_command(str.toStdString().c_str());
             }
