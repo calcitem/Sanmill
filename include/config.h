@@ -25,8 +25,6 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#define EVALUATE_MOBILITY
-
 //#undef QT_GUI_LIB
 
 //#define UCI_AUTO_RE_GO

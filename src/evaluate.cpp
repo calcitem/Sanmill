@@ -57,7 +57,6 @@ Value Evaluation::value()
         break;
 
     case Phase::placing:
-#ifdef EVALUATE_MOBILITY
         if (gameOptions.getConsiderMobility()) {
             value += pos.get_mobility_diff();
         } else if (gameOptions.getDrawOnHumanExperience()) {
@@ -65,7 +64,6 @@ Value Evaluation::value()
                 value += pos.get_mobility_diff();
             }
         }
-#endif  /* EVALUATE_MOBILITY */
 
         pieceInHandDiffCount = pos.piece_in_hand_count(WHITE) - pos.piece_in_hand_count(BLACK);
         value += VALUE_EACH_PIECE_INHAND * pieceInHandDiffCount;
@@ -88,11 +86,9 @@ Value Evaluation::value()
         break;
 
     case Phase::moving:
-#ifdef EVALUATE_MOBILITY
         if (gameOptions.getConsiderMobility()) {
             value += pos.get_mobility_diff();
         }
-#endif  /* EVALUATE_MOBILITY */
 
         value = (pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK)) * VALUE_EACH_PIECE_ONBOARD;
 
