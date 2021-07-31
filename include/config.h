@@ -78,8 +78,6 @@
 
 #define DEPTH_ADJUST (0)
 
-//#define NULL_MOVE
-
 //#define TIME_STAT
 //#define CYCLE_STAT
 
