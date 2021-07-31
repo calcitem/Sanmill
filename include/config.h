@@ -25,6 +25,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
+/// If qmake is used and QT + = GUI is included in the configuration, QT_GUI_LIB will be defined automatically.
+/// If qmake is not used, QT_GUI_LIB is defined by Visual C++ .vcxproj file.
 //#undef QT_GUI_LIB
 
 //#define UCI_AUTO_RE_GO
@@ -32,6 +34,7 @@
 //#define UCI_DO_BEST_MOVE
 #define ANALYZE_POSITION
 
+/// FLUTTER_UI is defined by CMakeList.txt of flutter_app.
 #ifdef FLUTTER_UI
 #undef QT_GUI_LIB
 #undef ANALYZE_POSITION
@@ -50,7 +53,10 @@
 
 //#define UCT_DEMO
 
+/// Principal Variation Search
 //#define PVS_AI
+
+/// MTD(f)
 #define MTDF_AI
 
 #ifndef DISABLE_PERFECT_AI
