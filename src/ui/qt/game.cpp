@@ -71,9 +71,9 @@ Game::Game(
     // The difference is that the background in view does not change with the view transformation, 
     // and the background in scene changes with the view transformation
     //scene.setBackgroundBrush(QPixmap(":/image/resources/image/background.png"));
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     scene.setBackgroundBrush(QColor(239, 239, 239));
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
     //resetAiPlayers();
     createAiThreads();
@@ -877,7 +877,7 @@ bool Game::actionPiece(QPointF p)
 
     // When you click the chessboard while browsing the history, it is considered repentance
     if (currentRow != manualListModel.rowCount() - 1) {
-#ifndef MOBILE_APP_UI
+#ifndef QT_MOBILE_APP_UI
         // Define new dialog box
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Question);
@@ -890,7 +890,7 @@ bool Game::actionPiece(QPointF p)
         (msgBox.button(QMessageBox::Cancel))->setText(tr("No"));
 
         if (QMessageBox::Ok == msgBox.exec()) {
-#endif /* !MOBILE_APP_UI */
+#endif /* !QT_MOBILE_APP_UI */
             const int rowCount = manualListModel.rowCount();
             const int removeCount = rowCount - currentRow - 1;
             manualListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
@@ -909,11 +909,11 @@ bool Game::actionPiece(QPointF p)
                 updateScence();
                 message = QString::fromStdString(getTips());
                 emit statusBarChanged(message);
-#ifndef MOBILE_APP_UI
+#ifndef QT_MOBILE_APP_UI
             }
         } else {
             return false;
-#endif /* !MOBILE_APP_UI */
+#endif /* !QT_MOBILE_APP_UI */
         }
     }
 

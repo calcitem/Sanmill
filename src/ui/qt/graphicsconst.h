@@ -21,11 +21,11 @@
 
 #include "config.h"
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
 constexpr short BOARD_SIZE = 500;
 #else
 constexpr short BOARD_SIZE = 550;
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
 constexpr short BOARD_MINISIZE = 150; // Minimum width and height, i.e. 1 / 4 Size
 constexpr short PIECE_SIZE = 56;

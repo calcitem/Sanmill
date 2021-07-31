@@ -90,24 +90,24 @@ void BoardItem::paint(QPainter *painter,
     Q_UNUSED(widget)
 
     // Fill shadow
-#ifndef MOBILE_APP_UI
+#ifndef QT_MOBILE_APP_UI
     QColor shadowColor(128, 42, 42);
     shadowColor.setAlphaF(0.3);
     painter->fillRect(boundingRect(), QBrush(shadowColor));
-#endif /* ! MOBILE_APP_UI */
+#endif /* ! QT_MOBILE_APP_UI */
 
     // Fill in picture
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     painter->setPen(Qt::NoPen);
     painter->setBrush(QColor(239, 239, 239));
     painter->drawRect(-size / 2, -size / 2, size, size);
 #else
     painter->drawPixmap(-size / 2, -size / 2, size, size,
                         QPixmap(":/image/resources/image/board.png"));
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
     // Solid line brush
-#ifdef  MOBILE_APP_UI
+#ifdef  QT_MOBILE_APP_UI
     QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
 #else
     QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);

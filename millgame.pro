@@ -101,7 +101,7 @@ TRANSLATIONS += millgame-qt_zh_CN.ts
 DEFINES += DISABLE_PERFECT_AI
 
 # Mobile App support
-#DEFINES += MOBILE_APP_UI
+#DEFINES += QT_MOBILE_APP_UI
 
 # With C++17 support
 greaterThan(QT_MAJOR_VERSION, 4) {

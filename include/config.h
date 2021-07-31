@@ -45,7 +45,8 @@
 
 #define NET_FIGHT_SUPPORT
 
-//#define MOBILE_APP_UI
+/// Qt simple GUI like a mobile app (WIP)
+//#define QT_MOBILE_APP_UI
 
 //#define QT_UI_TEST_MODE
 
@@ -123,7 +124,7 @@
 #define PLAYER_DRAW_SEAT_NUMBER
 #endif
 
-#ifndef MOBILE_APP_UI
+#ifndef QT_MOBILE_APP_UI
 #define SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 

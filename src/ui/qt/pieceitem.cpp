@@ -48,11 +48,11 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
 
     removeLineWeight = LINE_WEIGHT * 5;
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     selectLineColor = Qt::gray;
 #else
     selectLineColor = Qt::darkYellow;
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
     removeLineColor = QColor(227, 23, 13);
     removeLineColor.setAlphaF(0.9);
@@ -84,26 +84,26 @@ void PieceItem::paint(QPainter *painter,
     switch (model) {
     case Models::whitePiece:
         // If the model is white, draw white pieces
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(0, 93, 172));
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
             QPixmap(":/image/resources/image/white_piece.png"));
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
         break;
 
     case Models::blackPiece:
         // If the model is black, draw black pieces
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(231, 36, 46));
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
             QPixmap(":/image/resources/image/black_piece.png"));
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
         break;
     default:
         break;

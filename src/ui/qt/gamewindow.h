@@ -50,18 +50,18 @@ public:
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     void mousePressEvent(QMouseEvent *mouseEvent) override;
     void mouseMoveEvent(QMouseEvent *mouseEvent) override;
     void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
 private slots:
     void initialize();
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     void ctxMenu(const QPoint &pos);
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
     void actionRules_triggered();
 
@@ -120,7 +120,7 @@ private:
     QFile file;
     QTimer autoRunTimer;
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     bool m_move {false};
     QPoint m_startPoint;
     QPoint m_windowPoint;

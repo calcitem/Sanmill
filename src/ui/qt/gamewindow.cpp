@@ -98,7 +98,7 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
     const int unith = (deskTopRect.height() - height()) / 2;
     this->move(unitw, unith);
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     // Hide menu bar, toolbar, status bar, etc
     ui.menuBar->setVisible(false);
     ui.mainToolBar->setVisible(false);
@@ -185,7 +185,7 @@ void MillGameWindow::initialize()
     connect(ui.actionResign_G, SIGNAL(triggered()),
             game, SLOT(resign()));
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     connect(ui.pushButton_resign, SIGNAL(released()),
             game, SLOT(resign()));
 #endif
@@ -319,13 +319,13 @@ void MillGameWindow::initialize()
     connect(ui.actionPrevious_B, &QAction::triggered,
             this, &MillGameWindow::on_actionRowChange);
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     connect(ui.pushButton_retractMove, &QPushButton::released,
             this, &MillGameWindow::on_actionRowChange);
 
     connect(ui.pushButton_newGame, &QPushButton::released,
             this, &MillGameWindow::on_actionNew_N_triggered);
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
     connect(ui.actionNext_F, &QAction::triggered,
             this, &MillGameWindow::on_actionRowChange);
@@ -341,7 +341,7 @@ void MillGameWindow::initialize()
     on_actionRowChange();
 
     // Set form size
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
 #if 0
     const int screen_iPhone_XS_Max[] = {1242, 2688};
     const int screen_iPhone_XS[] = {1125, 2436};
@@ -356,7 +356,7 @@ void MillGameWindow::initialize()
 #endif
     const int screen_iPhone_SE[] = {640, 1136};
     this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
-#else /* MOBILE_APP_UI */
+#else /* QT_MOBILE_APP_UI */
 
     // Fix window size
     if (game->fixWindowSizeEnabled()) {
@@ -375,7 +375,7 @@ void MillGameWindow::initialize()
     ui.pushButton_resign->setVisible(false);
     ui.pushButton_retractMove->setVisible(false);
     ui.pushButton_hint->setVisible(false);
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
 #ifdef SHOW_MAXIMIZED_ON_LOAD
     showMaximized();
@@ -383,10 +383,10 @@ void MillGameWindow::initialize()
                             Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
 #endif // SHOW_MAXIMIZED_ON_LOAD
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     ui.pushButton_option->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(ui.pushButton_option, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ctxMenu(const QPoint &)));
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
     ui.actionEngine1_T->setChecked(game->isAiPlayer[WHITE]);
     ui.actionEngine2_R->setChecked(game->isAiPlayer[BLACK]);    
@@ -409,14 +409,14 @@ void MillGameWindow::initialize()
     ui.actionDeveloperMode->setChecked(gameOptions.getDeveloperMode());
 }
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
 void MillGameWindow::ctxMenu(const QPoint &pos)
 {
     QMenu *menu = new QMenu;
     menu->addAction(tr("Test Item"), this, SLOT(on_actionNew_N_triggered()));
     menu->exec(ui.pushButton_option->mapToGlobal(pos));
 }
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
 
 void MillGameWindow::ruleInfo()
 {
@@ -751,9 +751,9 @@ void MillGameWindow::on_actionRowChange()
         if (obsender == ui.actionBegin_S) {
             ui.listView->setCurrentIndex(model->index(0, 0));
         } else if (obsender == ui.actionPrevious_B
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
                    || obsender == ui.pushButton_retractMove
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
                    ) {
             if (currentRow > 0) {
                 ui.listView->setCurrentIndex(model->index(currentRow - 1, 0));
@@ -1035,7 +1035,7 @@ void MillGameWindow::on_actionAbout_A_triggered()
     delete dialog;
 }
 
-#ifdef MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
 void MillGameWindow::mousePressEvent(QMouseEvent *mouseEvent)
 {
     if (mouseEvent->button() == Qt::LeftButton) {
@@ -1059,4 +1059,4 @@ void MillGameWindow::mouseReleaseEvent(QMouseEvent *mouseEvent)
         m_move = false;
     }
 }
-#endif /* MOBILE_APP_UI */
+#endif /* QT_MOBILE_APP_UI */
