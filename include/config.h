@@ -29,9 +29,16 @@
 /// If qmake is not used, QT_GUI_LIB is defined by Visual C++ .vcxproj file.
 //#undef QT_GUI_LIB
 
+/// In UCI, do move when the opponent has done moving, usually for the test.
 //#define UCI_AUTO_RE_GO
+
+/// In UCI, restart the game when the game is over, usually for the test.
 //#define UCI_AUTO_RESTART
+
+/// In UCI, AI will do the best move when the best move is searched.
 //#define UCI_DO_BEST_MOVE
+
+/// Print position analysis information.
 #define ANALYZE_POSITION
 
 /// FLUTTER_UI is defined by CMakeList.txt of flutter_app.
@@ -105,13 +112,18 @@
 #define DONOT_USE_POPCNT
 #endif
 
-// WIP, Debugging only
+/// Opening book (WIP)
 //#define OPENING_BOOK
 
+/// Endgame learning (WIP)
 //#define ENDGAME_LEARNING
 //#define ENDGAME_LEARNING_FORCE
 
+/// The threefold repetition rule (also known as repetition of position) states that
+/// the game is drawn if the same position occurs three times.
 #define THREEFOLD_REPETITION
+
+/// The game is drawn if there has been no removal in a specific number of moves.
 #define RULE_50
 
 //#define MESSAGEBOX_ENABLE
