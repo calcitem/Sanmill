@@ -644,7 +644,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         currentSquare = s;
 
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
         if (pieceInHandCount[WHITE] == 0 &&
             pieceInHandCount[BLACK] == 0 &&
             is_all_surrounded(~sideToMove, SQ_0, s)) {
@@ -657,7 +657,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         const int n = mills_count(currentSquare);
 
         if (n == 0
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
             || is_all_in_mills(them)
 #endif
             ) {
@@ -693,7 +693,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 
     } else if (phase == Phase::moving) {
 
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
         if (is_all_surrounded(~sideToMove, currentSquare, s)) {
             set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
         }
@@ -701,7 +701,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         if (check_if_game_is_over()) {
             return true;
         }
-#endif // MUEHLE_NMM
+#endif // MADWEASEL_MUEHLE_RULE
 
         // If illegal
         if (pieceOnBoardCount[sideToMove] > rule.flyPieceCount ||
@@ -743,7 +743,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         const int n = mills_count(currentSquare);
 
         if (n == 0
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
             || is_all_in_mills(them)
 #endif
             ) {
@@ -782,7 +782,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (!rule.mayRemoveFromMillsAlways &&
         potential_mills_count(s, NOBODY)
-#ifndef MUEHLE_NMM
+#ifndef MADWEASEL_MUEHLE_RULE
         && !is_all_in_mills(~sideToMove)
 #endif
        ) {
@@ -1263,9 +1263,9 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount, int &theirP
 }
 
 bool Position::is_all_surrounded(Color c
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
                                  , Square from, Square to
-#endif // MUEHLE_NMM
+#endif // MADWEASEL_MUEHLE_RULE
                                 ) const
 {
     // Full
@@ -1280,10 +1280,10 @@ bool Position::is_all_surrounded(Color c
 
     Bitboard bb = byTypeBB[ALL_PIECES];
 
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
     CLEAR_BIT(bb, from);
     SET_BIT(bb, to);
-#endif // MUEHLE_NMM
+#endif // MADWEASEL_MUEHLE_RULE
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
         if ((c & color_on(s)) &&

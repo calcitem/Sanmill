@@ -133,9 +133,9 @@ public:
 
     void surrounded_pieces_count(Square s, int &ourPieceCount, int &theirPieceCount, int &bannedCount, int &emptyCount);
     bool is_all_surrounded(Color c
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
                            , Square from = SQ_0, Square to = SQ_0
-#endif // MUEHLE_NMM
+#endif // MADWEASEL_MUEHLE_RULE
     ) const;
 
     static void print_board();

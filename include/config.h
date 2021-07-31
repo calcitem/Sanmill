@@ -65,7 +65,7 @@
 //#define PERFECT_AI_SUPPORT
 #endif
 #ifdef PERFECT_AI_SUPPORT
-#define MUEHLE_NMM
+#define MADWEASEL_MUEHLE_RULE
 #endif
 #endif
 #endif

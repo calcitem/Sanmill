@@ -1103,9 +1103,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
         gameStart();
     }
 
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
     if (position.get_phase() != Phase::gameOver) {
-#endif // MUEHLE_NMM
+#endif // MADWEASEL_MUEHLE_RULE
         loggerDebug("Computer: %s\n\n", cmd.c_str());
 
         moveHistory.emplace_back(cmd);
@@ -1118,9 +1118,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
         if (!position.command(cmd.c_str()))
             return false;
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
     }
-#endif // MUEHLE_NMM
+#endif // MADWEASEL_MUEHLE_RULE
 
     sideToMove = position.side_to_move();
 
@@ -1662,7 +1662,7 @@ void Game::setTips()
         case GameOverReason::loseReasonlessThanThree:
             break;
         case GameOverReason::loseReasonNoWay:
-#ifdef MUEHLE_NMM
+#ifdef MADWEASEL_MUEHLE_RULE
             if (!isInverted) {
                 turnStr = char_to_string(color_to_char(~p.sideToMove));
             } else {
