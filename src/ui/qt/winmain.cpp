@@ -20,6 +20,7 @@
 #include "misc.h"
 #include "bitboard.h"
 #include "position.h"
+#include "thread.h"
 
 QString APP_FILENAME_DEFAULT = "MillGame";
 
@@ -46,6 +47,7 @@ int main(int argc, char *argv[])
 {
     Bitboards::init();
     Position::init();
+    Threads.set(size_t(2));
 
     QResource::registerResource("gamewindow.rcc");
 

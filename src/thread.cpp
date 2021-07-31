@@ -118,6 +118,7 @@ void Thread::wait_for_search_finished()
 
 void Thread::idle_loop()
 {
+#if 0
     // If OS already scheduled us on a different group than 0 then don't overwrite
     // the choice, eventually we are one of many one-threaded processes running on
     // some Windows NUMA hardware, for instance in fishtest. To make it simple,
@@ -125,6 +126,7 @@ void Thread::idle_loop()
     // NUMA machinery is not needed.
     if (Options["Threads"] > 8)
         WinProcGroup::bindThisThread(idx);
+#endif
 
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
@@ -524,9 +526,11 @@ void ThreadPool::set(size_t requested)
             push_back(new Thread(size()));
         clear();
 
+#if 0
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new thread pool size
         TT.resize(size_t(Options["Hash"]));
+#endif
 #endif
 
         // Init thread number dependent search params.
