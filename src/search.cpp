@@ -387,23 +387,23 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth ori
 #ifdef PVS_AI
         if (i == 0) {
             if (after != before) {
-                value = -search(depth - 1 + epsilon, -beta, -alpha);
+                value = -search(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
             } else {
-                value = search(depth - 1 + epsilon, alpha, beta);
+                value = search(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
             }
         } else {
             if (after != before) {
-                value = -search(depth - 1 + epsilon, -alpha - VALUE_PVS_WINDOW, -alpha);
+                value = -search(pos, ss, depth - 1 + epsilon, originDepth, -alpha - VALUE_PVS_WINDOW, -alpha, bestMove);
 
                 if (value > alpha && value < beta) {
-                    value = -search(depth - 1 + epsilon, -beta, -alpha);
+                    value = -search(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
                     //assert(value >= alpha && value <= beta);
                 }
             } else {
-                value = search(depth - 1 + epsilon, alpha, alpha + VALUE_PVS_WINDOW);
+                value = search(pos, ss, depth - 1 + epsilon, originDepth, alpha, alpha + VALUE_PVS_WINDOW, bestMove);
 
                 if (value > alpha && value < beta) {
-                    value = search(depth - 1 + epsilon, alpha, beta);
+                    value = search(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
                     //assert(value >= alpha && value <= beta);
                 }
             }
