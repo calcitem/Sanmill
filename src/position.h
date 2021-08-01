@@ -145,7 +145,6 @@ public:
 
     int piece_to_remove_count() const;
 
-    int get_mobility(Color c) const;
     int get_mobility_diff() const;
     void updateMobility(MoveType mt, Square s);
     //template <typename Mt> void updateMobility(Square from, Square to);
