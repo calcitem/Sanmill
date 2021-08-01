@@ -581,7 +581,7 @@ bool Position::reset()
             break;
     }
 
-    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03zu t%02d",
+    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03u t%02d",
                 r + 1, rule.nMoveRule, 0) > 0) {
         return true;
     }

@@ -70,7 +70,7 @@ struct Rule
     bool mayFly;
 
     // The N-move rule in Mill states that if no remove has been made in the last N moves.
-    size_t nMoveRule;
+    unsigned int nMoveRule;
 };
 
 #define N_RULES 5

@@ -36,7 +36,7 @@
 struct StateInfo
 {
     // Copied when making a move
-    int rule50 {0};
+    unsigned int rule50 {0};
     int pliesFromNull;
 
     // Not copied when making a move (will be recomputed anyhow)
@@ -94,7 +94,7 @@ public:
     bool has_game_cycle() const;
     bool has_repeated(Sanmill::Stack<Position> &ss) const;
 #endif // THREEFOLD_REPETITION
-    int rule50_count() const;
+    unsigned int rule50_count() const;
 
 
     /// Mill Game
@@ -253,7 +253,7 @@ inline int Position::game_ply() const
     return gamePly;
 }
 
-inline int Position::rule50_count() const
+inline unsigned int Position::rule50_count() const
 {
     return st.rule50;
 }

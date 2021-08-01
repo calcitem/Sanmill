@@ -154,7 +154,7 @@ void on_mayFly(const Option &o)
 
 void on_nMoveRule(const Option &o)
 {
-    rule.nMoveRule = (size_t)o;
+    rule.nMoveRule = (unsigned int)o;
 }
 
 /// Our case insensitive less() function as required by UCI protocol

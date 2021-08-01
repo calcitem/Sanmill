@@ -484,7 +484,7 @@ Depth get_search_depth(const Position *pos)
 
             if (gameOptions.getDrawOnHumanExperience()) {
                 if (index == 4 &&
-                    is_star_squares_full((Position *)pos)) {
+                    is_star_squares_full(const_cast<Position *>(pos))) {
                     d = 1;  // In order to use Mobility
                 }
             }

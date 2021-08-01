@@ -394,7 +394,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 T
     elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
 
     char record[64] = { 0 };
-    if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03zu t%02d", r + 1, rule.nMoveRule, 0) <= 0) {
+    if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03u t%02d", r + 1, rule.nMoveRule, 0) <= 0) {
         assert(0);
     }
     string cmd(record);
