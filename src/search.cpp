@@ -115,7 +115,7 @@ int Thread::search()
         posKeyHistory.clear();
         rootPos->st.rule50 = 0;
     } else if (rootPos->get_phase() == Phase::moving) {
-        rootPos->st.rule50 = (int)posKeyHistory.size();
+        rootPos->st.rule50 = (unsigned int)posKeyHistory.size();
     }
 
 
