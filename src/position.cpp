@@ -145,7 +145,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
     }
 
 #undef P
-    
+
     const auto fill = os.fill();
     const auto flags = os.flags();
 
@@ -745,7 +745,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         board[currentSquare] = NO_PIECE;
 
         currentSquare = s;
-        
+
         const int n = mills_count(currentSquare);
 
         if (n == 0
@@ -980,11 +980,6 @@ void Position::update_score()
 
 bool Position::check_if_game_is_over()
 {
-    if (phase == Phase::ready ||
-        phase == Phase::gameOver) {
-        return true;
-    }
-
 #ifdef RULE_50
     if (rule.nMoveRule > 0 &&
         posKeyHistory.size() > rule.nMoveRule) {
