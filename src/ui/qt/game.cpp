@@ -1278,8 +1278,10 @@ bool Game::command(const string &cmd, bool update /* = true */)
         drawrate = (float)position.score_draw * 100 / total;
     }
 
+    const auto flags = cout.flags();
     cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << endl;
     cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
+    cout.flags(flags);
 
     return true;
 }

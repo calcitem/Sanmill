@@ -284,11 +284,13 @@ void Thread::analyze(Color c)
     string strUs = (c == WHITE ? "White" : "Black");
     string strThem = (c == WHITE ? "Black" : "White");
 
+    const auto flags = cout.flags();
+
     loggerDebug("Depth: %d\n\n", originDepth);
 
     const Position *p = rootPos;
 
-    cout << *p << "\n" << endl;
+    cout << *p << endl;
     cout << std::dec;
 
     switch (p->get_phase()) {
@@ -398,6 +400,7 @@ void Thread::analyze(Color c)
 
     cout << "Score: " << (int)nbwin << " : " << (int)nwwin << " : " << (int)ndraw << "\ttotal: " << (int)total << endl;
     cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
+    cout.flags(flags);
 #endif // !QT_GUI_LIB
 
 out:

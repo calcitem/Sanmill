@@ -145,9 +145,15 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
     }
 
 #undef P
+    
+    const auto fill = os.fill();
+    const auto flags = os.flags();
 
     os << "\nFen: " << pos.fen() << "\nKey: " << std::hex << std::uppercase
-        << std::setfill('0') << std::setw(16) << pos.key();
+        << std::setfill('0') << std::setw(16) << pos.key() << std::endl;
+
+    os.flags(flags);
+    os.fill(fill);
 
     return os;
 }
