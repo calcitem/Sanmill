@@ -133,8 +133,6 @@ void Thread::idle_loop()
             continue;
         }
 
-        clear_tt();
-
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
         if (gameOptions.getPerfectAiEnabled()) {
             bestMove = perfect_search();
@@ -409,15 +407,6 @@ out:
 Depth Thread::get_depth()
 {
     return Mills::get_search_depth(rootPos);
-}
-
-void Thread::clear_tt()
-{
-    if (strcmp(rule.name, rule.name) != 0) {
-#ifdef TRANSPOSITION_TABLE_ENABLE
-        TranspositionTable::clear();
-#endif // TRANSPOSITION_TABLE_ENABLE
-    }
 }
 
 string Thread::next_move()

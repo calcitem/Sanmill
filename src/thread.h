@@ -74,7 +74,6 @@ public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    void clear_tt();
     string next_move();
     Depth get_depth();
 
