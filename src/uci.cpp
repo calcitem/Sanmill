@@ -162,21 +162,23 @@ void UCI::loop(int argc, char *argv[])
 
     switch (rule.piecesCount) {
     case 9:
-        strncpy(StartFEN, StartFEN9, BUFSIZ);
+        strncpy(StartFEN, StartFEN9, BUFSIZ - 1);
         break;
     case 10:
-        strncpy(StartFEN, StartFEN10, BUFSIZ);
+        strncpy(StartFEN, StartFEN10, BUFSIZ - 1);
         break;
     case 11:
-        strncpy(StartFEN, StartFEN11, BUFSIZ);
+        strncpy(StartFEN, StartFEN11, BUFSIZ - 1);
         break;
     case 12:
-        strncpy(StartFEN, StartFEN12, BUFSIZ);
+        strncpy(StartFEN, StartFEN12, BUFSIZ - 1);
         break;
     default:
         assert(0);
         break;
     }
+
+    StartFEN[BUFSIZ - 1] = '\0';
 
     pos->set(StartFEN, Threads.main());
 
