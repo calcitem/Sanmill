@@ -147,9 +147,8 @@ struct MainThread : public Thread
 {
     using Thread::Thread;
 
-    int callsCnt;
-    bool stopOnPonderhit;
-    std::atomic_bool ponder;
+    bool stopOnPonderhit { false };
+    std::atomic_bool ponder { false };
 };
 
 
