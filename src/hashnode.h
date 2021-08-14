@@ -56,7 +56,7 @@ namespace CTSL  // Concurrent Thread Safe Library
             HashNode *next; // Pointer to the next node in the same bucket
 #endif
         private:
-            K key;   // the key key
+            K key {0};   // the key key
             V value; // the value corresponding to the key
     };
 
