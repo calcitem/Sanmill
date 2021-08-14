@@ -354,3 +354,7 @@ src/sanmill
 # Sourcetrail files
 *.srctrl*
 compile_commands.json
+
+# Coverity files
+cov-int
+*.tgz
