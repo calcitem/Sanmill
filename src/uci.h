@@ -62,7 +62,7 @@ private:
 
   std::string defaultValue, currentValue, type;
   int min, max;
-  size_t idx;
+  size_t idx {0};
   OnChange on_change;
 };
 
