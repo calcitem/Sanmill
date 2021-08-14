@@ -118,6 +118,9 @@ void Thread::idle_loop()
 {
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
+        // CID 338451: Data race condition(MISSING_LOCK)
+        // missing_lock : Accessing this->searching without holding lock Thread.mutex.
+        // Elsewhere, Thread.searching is accessed with Thread.mutex held 2 out of 3 times(2 of these accesses strongly imply that it is necessary).
         searching = false;
 
         cv.notify_one(); // Wake up anyone waiting for search finished
@@ -538,6 +541,10 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
 
     // We use Position::set() to set root position across threads.
     for (Thread *th : *this) {
+        // Fix CID 338443: Data race condition (MISSING_LOCK)
+        // missing_lock: Accessing th->rootPos without holding lock Thread.mutex. 
+        // Elsewhere, Thread.rootPos is accessed with Thread.mutex held 1 out of 2 times (1 of these accesses strongly imply that it is necessary).
+        std::lock_guard<std::mutex> lk(th->mutex);
         th->rootPos = pos;
     }
 
