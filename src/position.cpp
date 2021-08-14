@@ -797,29 +797,21 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     revert_key(s);
 
+    Piece pc = board[s];
+
+    CLEAR_BIT(byTypeBB[type_of(pc)], s);    // TODO: rule.hasBannedLocations and placing need?
+    CLEAR_BIT(byColorBB[color_of(pc)], s);
+
+    updateMobility(MOVETYPE_REMOVE, s);
+
     if (rule.hasBannedLocations && phase == Phase::placing) {
         // Remove and put ban
-        Piece pc = board[s];
-
-        CLEAR_BIT(byTypeBB[type_of(pc)], s);    // TODO
-        CLEAR_BIT(byColorBB[color_of(pc)], s);
-
-        updateMobility(MOVETYPE_REMOVE, s);
-
         pc = board[s] = BAN_STONE;
         update_key(s);
-
         SET_BIT(byTypeBB[type_of(pc)], s);
     } else {
         // Remove only
-        const Piece pc = board[s];
-
         CLEAR_BIT(byTypeBB[ALL_PIECES], s);
-        CLEAR_BIT(byTypeBB[type_of(pc)], s);
-        CLEAR_BIT(byColorBB[color_of(pc)], s);
-
-        updateMobility(MOVETYPE_REMOVE, s);
-
         board[s] = NO_PIECE;
     }
 
