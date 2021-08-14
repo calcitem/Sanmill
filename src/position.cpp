@@ -860,7 +860,9 @@ bool Position::remove_piece(Square s, bool updateRecord)
     change_side_to_move();
 
 check:
-    check_if_game_is_over();
+    if (check_if_game_is_over()) {
+        return true;
+    }
 
     return true;
 }
