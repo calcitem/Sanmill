@@ -69,7 +69,7 @@ void MovePicker::score()
         // TODO: rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
-            if (ourMillsCount > 0) {
+            if (ourMillsCount > 0 && !(to == pos.millFrom[pos.side_to_move()] && from == pos.millTo[pos.side_to_move()])) {
                 cur->value += RATING_ONE_MILL * ourMillsCount;
             } else if (pos.get_phase() == Phase::placing) {
                 // placing phrase, check if place sq can block their close mill

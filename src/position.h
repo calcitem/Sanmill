@@ -202,6 +202,9 @@ public:
     char record[RECORD_LEN_MAX] { '\0' };
 
     Move move { MOVE_NONE };
+
+    Square millFrom[COLOR_NB]{ SQ_NONE };
+    Square millTo[COLOR_NB]{ SQ_NONE };
 };
 
 extern std::ostream &operator<<(std::ostream &os, const Position &pos);

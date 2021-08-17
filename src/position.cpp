@@ -744,11 +744,19 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         board[currentSquare] = NO_PIECE;
 
+        bool flag = false;
+
+        if (millFrom[side_to_move()] == s && millTo[side_to_move()] == currentSquare) {
+            flag = true;
+        }
+
+        millFrom[side_to_move()] = currentSquare;
+        millTo[side_to_move()] = s;
+
         currentSquare = s;
+        int n = 0;
 
-        const int n = mills_count(currentSquare);
-
-        if (n == 0
+        if (flag == true || (n = mills_count(currentSquare)) == 0
 #ifdef MADWEASEL_MUEHLE_RULE
             || is_all_in_mills(them)
 #endif

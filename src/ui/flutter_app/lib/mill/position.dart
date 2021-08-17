@@ -86,6 +86,11 @@ class Position {
 
   late Move move;
 
+  int millFromWhite = 0;
+  int millFromBlack = 0;
+  int millToWhite = 0;
+  int millToBlack = 0;
+
   Position.clone(Position other) {
     _grid = [];
     other._grid.forEach((piece) => _grid.add(piece));
@@ -567,11 +572,27 @@ class Position {
       board[currentSquare] =
           _grid[squareToIndex[currentSquare]!] = Piece.noPiece;
 
+      bool flag = false;
+
+      if (sideToMove() == PieceColor.black) {
+        if (millFromBlack == s && millToBlack == currentSquare) {
+          flag = true;
+        }
+        millFromBlack = currentSquare;
+        millToBlack = s;
+      } else if (sideToMove() == PieceColor.white) {
+        if (millFromWhite == s && millToWhite == currentSquare) {
+          flag = true;
+        }
+        millFromWhite = currentSquare;
+        millToWhite = s;
+      }
+
       currentSquare = s;
-      int n = millsCount(currentSquare);
+      int n = 0;
 
       // midgame
-      if (n == 0) {
+      if (flag == true || (n = millsCount(currentSquare)) == 0) {
         action = Act.select;
         changeSideToMove();
 
