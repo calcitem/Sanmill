@@ -1156,6 +1156,13 @@ class Position {
       posAfterLastRemove = i + 1;
     }
 
+    posAfterLastRemove -= 4;
+    if (posAfterLastRemove < 0) {
+      posAfterLastRemove = 0;
+    }
+
+    //posAfterLastRemove = 0;
+
     //print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
 
     for (int i = posAfterLastRemove; i < recorder!.movesCount; i++) {
@@ -1164,11 +1171,13 @@ class Position {
 
     //print("moves = $moves");
 
+    /*
     var idx = moves.indexOf('-(');
     if (idx != -1) {
       //print("moves[$idx] is -(");
       assert(false);
     }
+    */
 
     return moves.length > 0 ? moves.substring(1) : '';
   }
