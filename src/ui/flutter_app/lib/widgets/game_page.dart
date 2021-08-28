@@ -144,8 +144,12 @@ class _GamePageState extends State<GamePage>
 
   showTip(String? tip) {
     if (!mounted) return;
-    if (tip != null) print("[tip] $tip");
-
+    if (tip != null) {
+      print("[tip] $tip");
+      if (Config.screenReaderSupport) {
+        //showSnackBar(context, tip);
+      }
+    }
     setState(() => _tip = tip);
   }
 
@@ -429,6 +433,19 @@ class _GamePageState extends State<GamePage>
         position.recorder.prune();
         position.recorder.moveIn(m, position);
 
+        if (Config.screenReaderSupport && m.notation != null) {
+          /*
+          var playerName = "";
+          if (position.sideToMove() == PieceColor.white) {
+            playerName = S.of(context).player + " 1";
+          } else if (position.sideToMove() == PieceColor.black) {
+            playerName = S.of(context).player + " 2";
+          }
+          */
+
+          showSnackBar(context, S.of(context).human + ": " + m.notation!);
+        }
+
         setState(() {});
 
         if (position.winner == PieceColor.nobody) {
@@ -518,6 +535,9 @@ class _GamePageState extends State<GamePage>
 
           Game.instance.doMove(move.move);
           showTips();
+          if (Config.screenReaderSupport && move.notation != null) {
+            showSnackBar(context, S.of(context).ai + ": " + move.notation!);
+          }
           break;
         case 'timeout':
           if (mounted) {
@@ -1511,11 +1531,14 @@ class _GamePageState extends State<GamePage>
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
-          Icon(
-            ltr
-                ? FluentIcons.arrow_previous_24_regular
-                : FluentIcons.arrow_next_24_regular,
-            color: Color(Config.navigationToolbarIconColor),
+          Semantics(
+            label: S.of(context).takeBackAll,
+            child: Icon(
+              ltr
+                  ? FluentIcons.arrow_previous_24_regular
+                  : FluentIcons.arrow_next_24_regular,
+              color: Color(Config.navigationToolbarIconColor),
+            ),
           ),
         ],
       ),
@@ -1526,11 +1549,14 @@ class _GamePageState extends State<GamePage>
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
-          Icon(
-            ltr
-                ? FluentIcons.chevron_left_24_regular
-                : FluentIcons.chevron_right_24_regular,
-            color: Color(Config.navigationToolbarIconColor),
+          Semantics(
+            label: S.of(context).takeBack,
+            child: Icon(
+              ltr
+                  ? FluentIcons.chevron_left_24_regular
+                  : FluentIcons.chevron_right_24_regular,
+              color: Color(Config.navigationToolbarIconColor),
+            ),
           ),
         ],
       ),
@@ -1541,11 +1567,14 @@ class _GamePageState extends State<GamePage>
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
-          Icon(
-            ltr
-                ? FluentIcons.chevron_right_24_regular
-                : FluentIcons.chevron_left_24_regular,
-            color: Color(Config.navigationToolbarIconColor),
+          Semantics(
+            label: S.of(context).stepForward,
+            child: Icon(
+              ltr
+                  ? FluentIcons.chevron_right_24_regular
+                  : FluentIcons.chevron_left_24_regular,
+              color: Color(Config.navigationToolbarIconColor),
+            ),
           ),
         ],
       ),
@@ -1556,11 +1585,14 @@ class _GamePageState extends State<GamePage>
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
-          Icon(
-            ltr
-                ? FluentIcons.arrow_next_24_regular
-                : FluentIcons.arrow_previous_24_regular,
-            color: Color(Config.navigationToolbarIconColor),
+          Semantics(
+            label: S.of(context).stepForwardAll,
+            child: Icon(
+              ltr
+                  ? FluentIcons.arrow_next_24_regular
+                  : FluentIcons.arrow_previous_24_regular,
+              color: Color(Config.navigationToolbarIconColor),
+            ),
           ),
         ],
       ),
@@ -1612,7 +1644,7 @@ class _GamePageState extends State<GamePage>
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
       body: Column(children: <Widget>[
-        header,
+        BlockSemantics(child: header),
         board,
         Config.isHistoryNavigationToolbarShown
             ? historyNavToolbar

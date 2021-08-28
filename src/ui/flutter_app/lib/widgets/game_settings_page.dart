@@ -183,6 +183,20 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   List<Widget> children(BuildContext context) {
     return <Widget>[
+      Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
+      SettingsCard(
+        context: context,
+        children: <Widget>[
+          SettingsSwitchListTile(
+            context: context,
+            value: !Config.aiMovesFirst,
+            onChanged: setWhoMovesFirst,
+            titleString:
+                Config.aiMovesFirst ? S.of(context).ai : S.of(context).human,
+          ),
+        ],
+      ),
+      SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -261,16 +275,15 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             )
           : Container(height: 0.0, width: 0.0),
       SizedBox(height: AppTheme.sizedBoxHeight),
-      Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
+      Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
         children: <Widget>[
           SettingsSwitchListTile(
             context: context,
-            value: !Config.aiMovesFirst,
-            onChanged: setWhoMovesFirst,
-            titleString:
-                Config.aiMovesFirst ? S.of(context).ai : S.of(context).human,
+            value: Config.screenReaderSupport,
+            onChanged: setScreenReaderSupport,
+            titleString: S.of(context).screenReaderSupport,
           ),
         ],
       ),
@@ -479,6 +492,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     });
 
     print("[config] keepMuteWhenTakingBack: $value");
+
+    Config.save();
+  }
+
+  setScreenReaderSupport(bool value) async {
+    setState(() {
+      Config.screenReaderSupport = value;
+    });
+
+    print("[config] screenReaderSupport: $value");
 
     Config.save();
   }

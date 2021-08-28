@@ -191,7 +191,9 @@ class Audios {
 
   static playTone(var soundId) async {
     Chain.capture(() async {
-      if (!Config.toneEnabled || isTemporaryMute) {
+      if (!Config.toneEnabled ||
+          isTemporaryMute ||
+          Config.screenReaderSupport) {
         return;
       }
 

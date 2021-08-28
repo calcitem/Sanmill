@@ -1128,5 +1128,21 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "当一方只剩下三颗棋子时，而双方都不能在接下来十步之内吃掉对方的棋子，则判为和棋。",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "主菜单",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "board": "棋盘",
+    "@mainMenu": {
+        "description": "Board"
+    },
+    "accessibility": "无障碍",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "支持屏幕阅读器",
+    "@accessibility": {
+        "description": "Screen reader support"
     }
 }

@@ -40,10 +40,35 @@ class Board extends StatelessWidget {
   Widget build(BuildContext context) {
     var padding = AppTheme.boardPadding;
 
+    var coordinates = [];
+
+    for (var file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
+      for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
+        coordinates.add("$file$rank");
+      }
+    }
+
     var container = Container(
       margin: EdgeInsets.symmetric(
-        vertical: padding,
-        horizontal: (width - padding * 2) / 6 / 2 + padding,
+        vertical: 0,
+        horizontal: 0,
+      ),
+      child: GridView(
+        scrollDirection: Axis.horizontal,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 7,
+        ),
+        children: List.generate(7 * 7, (index) {
+          return Center(
+            child: Text(
+              coordinates[index],
+              style: TextStyle(
+                fontSize: Config.fontSize,
+                color: Config.developerMode ? Colors.red : Colors.transparent,
+              ),
+            ),
+          );
+        }),
       ),
     );
 
@@ -70,6 +95,12 @@ class Board extends StatelessWidget {
     );
 
     return GestureDetector(
+      /*
+      child: Semantics(
+        label: S.of(context).board,
+        child: boardContainer,
+      ),
+      */
       child: boardContainer,
       onTapUp: (d) {
         final gridWidth = (width - padding * 2);

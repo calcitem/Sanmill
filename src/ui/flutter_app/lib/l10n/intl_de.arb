@@ -1128,5 +1128,21 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wenn ein Spieler nur noch drei Steine übrig hat und keiner der Spieler einen gegnerischen Stein innerhalb von zehn Zügen entfernen kann, ist das Spiel unentschieden.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Hauptmenü",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "board": "Planke",
+    "@mainMenu": {
+        "description": "Board"
+    },
+    "accessibility": "Barrierefreiheit",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
+    "@accessibility": {
+        "description": "Screen reader support"
     }
 }
