@@ -1150,23 +1150,39 @@
         "description": "Close"
     },
     "whitePiece": "White piece",
-    "@close": {
+    "@whitePiece": {
         "description": "White piece"
     },
     "blackPiece": "Black piece",
-    "@close": {
+    "@blackPiece": {
         "description": "Black piece"
     },
     "banPoint": "Ban point",
-    "@close": {
+    "@banPoint": {
         "description": "Ban point"
     },
     "emptyPoint": "Empty point",
-    "@close": {
+    "@emptyPoint": {
         "description": "Empty point"
     },
     "noPoint": "No point",
-    "@close": {
+    "@noPoint": {
         "description": "No point"
-    }
+    },
+    "placingPhase": "Placing phase",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+	"movingPhase": "Moving phase",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+	"flyingPhase": "Flying phase",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+	"sideToMove": "Side to move",
+    "@sideToMove": {
+        "description": "Side to move"
+    }	
 }

@@ -1150,23 +1150,39 @@
         "description": "Close"
     },
     "whitePiece": "白棋",
-    "@close": {
+    "@whitePiece": {
         "description": "White piece"
     },
     "blackPiece": "黑棋",
-    "@close": {
+    "@blackPiece": {
         "description": "Black piece"
     },
     "banPoint": "被压",
-    "@close": {
+    "@banPoint": {
         "description": "Ban point"
     },
     "emptyPoint": "空点",
-    "@close": {
+    "@emptyPoint": {
         "description": "Empty point"
     },
     "noPoint": "无点",
-    "@close": {
+    "@noPoint": {
         "description": "No point"
+    },
+	"placingPhase": "摆子阶段",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+	"movingPhase": "走子阶段",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+	"flyingPhase": "飞子阶段",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+	"sideToMove": "轮到",
+    "@sideToMove": {
+        "description": "Side to move"
     }
 }

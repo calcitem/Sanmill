@@ -1168,5 +1168,21 @@
     "noPoint": "Kein Punkt",
     "@close": {
         "description": "No point"
+    },
+    "placingPhase": "Setzphase",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+	"movingPhase": "Bewegungsphase",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+	"flyingPhase": "Flugphase",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+	"sideToMove": "Wer soll umziehen",
+    "@sideToMove": {
+        "description": "Side to move"
     }
 }

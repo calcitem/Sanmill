@@ -1423,46 +1423,80 @@ class _GamePageState extends State<GamePage>
   }
 
   String getInfoText() {
-    String ret = S.of(context).score +
+    String phase = "";
+
+    var pos = Game.instance.position;
+
+    switch (pos.phase) {
+      case Phase.placing:
+        phase = S.of(context).placingPhase;
+        break;
+      case Phase.moving:
+        phase = S.of(context).movingPhase;
+        break;
+      default:
+        break;
+    }
+
+    String pieceCountInHand = pos.phase == Phase.placing
+        ? S.of(context).player1 +
+            " " +
+            S.of(context).inHand +
+            ": " +
+            pos.pieceInHandCount[PieceColor.white].toString() +
+            "\n" +
+            S.of(context).player2 +
+            " " +
+            S.of(context).inHand +
+            ": " +
+            pos.pieceInHandCount[PieceColor.black].toString() +
+            "\n"
+        : "";
+
+    String sideToMove = "";
+    if (pos.side == PieceColor.white) {
+      sideToMove = S.of(context).player1;
+    } else if (pos.side == PieceColor.black) {
+      sideToMove = S.of(context).player2;
+    }
+
+    String tip = _tip == null ? "" : _tip!;
+
+    String ret = phase +
         "\n" +
-        S.of(context).player1 +
-        ": " +
-        Game.instance.position.score[PieceColor.white].toString() +
+        S.of(context).sideToMove +
+        sideToMove +
         "\n" +
-        S.of(context).player2 +
-        ": " +
-        Game.instance.position.score[PieceColor.black].toString() +
-        "\n" +
-        S.of(context).draw +
-        ": " +
-        Game.instance.position.score[PieceColor.draw].toString() +
+        tip +
         "\n\n" +
         S.of(context).pieceCount +
         "\n" +
-        S.of(context).player1 +
-        " " +
-        S.of(context).inHand +
-        ": " +
-        Game.instance.position.pieceInHandCount[PieceColor.white].toString() +
-        "\n" +
-        S.of(context).player2 +
-        " " +
-        S.of(context).inHand +
-        ": " +
-        Game.instance.position.pieceInHandCount[PieceColor.black].toString() +
-        "\n" +
+        pieceCountInHand +
         S.of(context).player1 +
         " " +
         S.of(context).onBoard +
         ": " +
-        Game.instance.position.pieceOnBoardCount[PieceColor.white].toString() +
+        pos.pieceOnBoardCount[PieceColor.white].toString() +
         "\n" +
         S.of(context).player2 +
         " " +
         S.of(context).onBoard +
         ": " +
-        Game.instance.position.pieceOnBoardCount[PieceColor.black].toString() +
-        "\n";
+        pos.pieceOnBoardCount[PieceColor.black].toString() +
+        "\n\n" +
+        S.of(context).score +
+        "\n" +
+        S.of(context).player1 +
+        ": " +
+        pos.score[PieceColor.white].toString() +
+        "\n" +
+        S.of(context).player2 +
+        ": " +
+        pos.score[PieceColor.black].toString() +
+        "\n" +
+        S.of(context).draw +
+        ": " +
+        pos.score[PieceColor.draw].toString();
     return ret;
   }
 
