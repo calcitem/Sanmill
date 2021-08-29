@@ -1144,5 +1144,9 @@
     "screenReaderSupport": "Screen reader support",
     "@accessibility": {
         "description": "Screen reader support"
+    },
+    "close": "Close",
+    "@close": {
+        "description": "Close"
     }
 }

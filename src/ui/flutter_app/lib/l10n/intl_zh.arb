@@ -1144,5 +1144,9 @@
     "screenReaderSupport": "支持屏幕阅读器",
     "@accessibility": {
         "description": "Screen reader support"
+    },
+    "close": "关闭",
+    "@close": {
+        "description": "Close"
     }
 }

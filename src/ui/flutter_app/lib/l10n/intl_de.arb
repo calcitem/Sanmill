@@ -1144,5 +1144,9 @@
     "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
     "@accessibility": {
         "description": "Screen reader support"
+    },
+    "close": "Schließen Sie",
+    "@close": {
+        "description": "Close"
     }
 }

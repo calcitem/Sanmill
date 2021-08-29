@@ -743,6 +743,17 @@ class _GamePageState extends State<GamePage>
               ),
               onPressed: onExportGameButtonPressed,
             ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            Config.screenReaderSupport
+                ? SimpleDialogOption(
+                    child: Text(
+                      S.of(context).close,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+                : SizedBox(height: 1),
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             Config.experimentsEnabled
@@ -883,6 +894,17 @@ class _GamePageState extends State<GamePage>
               ),
               onPressed: onMoveNowButtonPressed,
             ),
+            SizedBox(height: AppTheme.sizedBoxHeight),
+            Config.screenReaderSupport
+                ? SimpleDialogOption(
+                    child: Text(
+                      S.of(context).close,
+                      style: AppTheme.simpleDialogOptionTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+                : SizedBox(height: 1),
           ],
         );
       },
