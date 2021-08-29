@@ -198,7 +198,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             Padding(
               padding:
                   EdgeInsets.only(top: (isLargeScreen() ? 30 : 8), left: 4),
-              child: animatedTextKit,
+              child: ExcludeSemantics(child: animatedTextKit),
             ),
           ],
         ),
@@ -348,6 +348,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
 
     return Material(
+      // Semantics: Main menu item
       color: Colors.transparent,
       child: InkWell(
         splashColor: AppTheme.drawerSplashColor,
