@@ -1148,5 +1148,25 @@
     "close": "关闭",
     "@close": {
         "description": "Close"
+    },
+    "whitePiece": "白棋",
+    "@close": {
+        "description": "White piece"
+    },
+    "blackPiece": "黑棋",
+    "@close": {
+        "description": "Black piece"
+    },
+    "banPoint": "被压",
+    "@close": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "空点",
+    "@close": {
+        "description": "Empty point"
+    },
+    "noPoint": "无点",
+    "@close": {
+        "description": "No point"
     }
 }

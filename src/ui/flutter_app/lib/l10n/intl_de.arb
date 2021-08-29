@@ -1148,5 +1148,25 @@
     "close": "Schließen Sie",
     "@close": {
         "description": "Close"
+    },
+    "whitePiece": "Weißer Stein",
+    "@close": {
+        "description": "White piece"
+    },
+    "blackPiece": "Schwarzer Stein",
+    "@close": {
+        "description": "Black piece"
+    },
+    "banPoint": "Verbotsstelle",
+    "@close": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Leere Stelle",
+    "@close": {
+        "description": "Empty point"
+    },
+    "noPoint": "Kein Punkt",
+    "@close": {
+        "description": "No point"
     }
 }

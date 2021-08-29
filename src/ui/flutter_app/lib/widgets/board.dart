@@ -18,7 +18,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
+import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/painting/board_painter.dart';
 import 'package:sanmill/painting/pieces_painter.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -28,6 +30,7 @@ class Board extends StatelessWidget {
   final double height;
   final Function(BuildContext, int) onBoardTap;
   final animationValue;
+  List<String> squareDesc = [];
   final String tag = "[board]";
 
   Board({
@@ -40,13 +43,7 @@ class Board extends StatelessWidget {
   Widget build(BuildContext context) {
     var padding = AppTheme.boardPadding;
 
-    var coordinates = [];
-
-    for (var file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
-      for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
-        coordinates.add("$file$rank");
-      }
-    }
+    buildSquareDescription(context);
 
     var container = Container(
       margin: EdgeInsets.symmetric(
@@ -61,7 +58,7 @@ class Board extends StatelessWidget {
         children: List.generate(7 * 7, (index) {
           return Center(
             child: Text(
-              coordinates[index],
+              squareDesc[index],
               style: TextStyle(
                 fontSize: Config.fontSize,
                 color: Config.developerMode ? Colors.red : Colors.transparent,
@@ -127,5 +124,154 @@ class Board extends StatelessWidget {
         onBoardTap(context, index);
       },
     );
+  }
+
+  void buildSquareDescription(BuildContext context) {
+    List<String> coordinates = [];
+    List<String> pieceDesc = [];
+
+    var map = [
+      /* 1 */
+      1,
+      8,
+      15,
+      22,
+      29,
+      36,
+      43,
+      /* 2 */
+      2,
+      9,
+      16,
+      23,
+      30,
+      37,
+      44,
+      /* 3 */
+      3,
+      10,
+      17,
+      24,
+      31,
+      38,
+      45,
+      /* 4 */
+      4,
+      11,
+      18,
+      25,
+      32,
+      39,
+      46,
+      /* 5 */
+      5,
+      12,
+      19,
+      26,
+      33,
+      40,
+      47,
+      /* 6 */
+      6,
+      13,
+      20,
+      27,
+      34,
+      41,
+      48,
+      /* 7 */
+      7,
+      14,
+      21,
+      28,
+      35,
+      42,
+      49
+    ];
+
+    var checkPoints = [
+      /* 1 */
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      /* 2 */
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      /* 3 */
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      /* 4 */
+      1,
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      /* 5 */
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      /* 6 */
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      /* 7 */
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1
+    ];
+
+    for (var file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
+      for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
+        coordinates.add("$file$rank");
+      }
+    }
+
+    for (var i = 0; i < 7 * 7; i++) {
+      if (checkPoints[i] == 0) {
+        pieceDesc.add(S.of(context).noPoint);
+      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.white) {
+        pieceDesc.add(S.of(context).whitePiece);
+      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.black) {
+        pieceDesc.add(S.of(context).blackPiece);
+      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.ban) {
+        pieceDesc.add(S.of(context).banPoint);
+      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.none) {
+        pieceDesc.add(S.of(context).emptyPoint);
+      }
+    }
+
+    squareDesc.clear();
+
+    for (var i = 0; i < 7 * 7; i++) {
+      squareDesc.add(pieceDesc[map[i] - 1] + ": " + coordinates[i]);
+    }
   }
 }

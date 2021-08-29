@@ -1148,5 +1148,25 @@
     "close": "Close",
     "@close": {
         "description": "Close"
+    },
+    "whitePiece": "White piece",
+    "@close": {
+        "description": "White piece"
+    },
+    "blackPiece": "Black piece",
+    "@close": {
+        "description": "Black piece"
+    },
+    "banPoint": "Ban point",
+    "@close": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Empty point",
+    "@close": {
+        "description": "Empty point"
+    },
+    "noPoint": "No point",
+    "@close": {
+        "description": "No point"
     }
 }
