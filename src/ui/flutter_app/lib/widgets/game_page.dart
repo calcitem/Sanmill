@@ -1453,20 +1453,42 @@ class _GamePageState extends State<GamePage>
             "\n"
         : "";
 
-    String sideToMove = "";
+    String us = "";
+    String them = "";
     if (pos.side == PieceColor.white) {
-      sideToMove = S.of(context).player1;
+      us = S.of(context).player1;
+      them = S.of(context).player2;
     } else if (pos.side == PieceColor.black) {
-      sideToMove = S.of(context).player2;
+      us = S.of(context).player2;
+      them = S.of(context).player1;
     }
 
-    String tip = _tip == null ? "" : _tip!;
+    String tip = (_tip == null || !Config.screenReaderSupport) ? "" : "\n$_tip";
+
+    String lastMove = "";
+    if (pos.recorder != null &&
+        pos.recorder.lastMove != null &&
+        pos.recorder.lastMove.notation != null) {
+      String n1 = pos.recorder.lastMove.notation;
+
+      if (n1.startsWith("x")) {
+        String n2 = pos.recorder.moveAt(pos.recorder.movesCount - 2).notation;
+        lastMove = n2 + n1;
+      } else {
+        lastMove = n1;
+      }
+      if (Config.screenReaderSupport) {
+        lastMove = S.of(context).lastMove + ": " + them + " " + lastMove + "\n";
+      } else {
+        lastMove = S.of(context).lastMove + ": " + lastMove + "\n";
+      }
+    }
 
     String ret = phase +
         "\n" +
+        lastMove +
         S.of(context).sideToMove +
-        sideToMove +
-        "\n" +
+        us +
         tip +
         "\n\n" +
         S.of(context).pieceCount +

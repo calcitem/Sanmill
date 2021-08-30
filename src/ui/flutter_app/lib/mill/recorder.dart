@@ -366,6 +366,8 @@ class GameRecorder {
 
   get movesCount => _history.length;
 
+  get lastMove => movesCount == 0 ? null : moveAt(movesCount - 1);
+
   String buildMoveHistoryText({cols = 2}) {
     if (_history.length == 0) {
       return '';
