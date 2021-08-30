@@ -64,19 +64,22 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   SliderTheme _skillLevelSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.skillLevel.toDouble(),
-        min: 1,
-        max: 20,
-        divisions: 19,
-        label: Config.skillLevel.round().toString(),
-        onChanged: (value) {
-          setState(() {
-            print("[config] Slider value: $value");
-            Config.skillLevel = value.toInt();
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).skillLevel,
+        child: Slider(
+          value: Config.skillLevel.toDouble(),
+          min: 1,
+          max: 20,
+          divisions: 19,
+          label: Config.skillLevel.round().toString(),
+          onChanged: (value) {
+            setState(() {
+              print("[config] Slider value: $value");
+              Config.skillLevel = value.toInt();
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }
@@ -84,19 +87,22 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   SliderTheme _moveTimeSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.moveTime.toDouble(),
-        min: 0,
-        max: 60,
-        divisions: 60,
-        label: Config.moveTime.round().toString(),
-        onChanged: (value) {
-          setState(() {
-            print("[config] Slider value: $value");
-            Config.moveTime = value.toInt();
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).moveTime,
+        child: Slider(
+          value: Config.moveTime.toDouble(),
+          min: 0,
+          max: 60,
+          divisions: 60,
+          label: Config.moveTime.round().toString(),
+          onChanged: (value) {
+            setState(() {
+              print("[config] Slider value: $value");
+              Config.moveTime = value.toInt();
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }

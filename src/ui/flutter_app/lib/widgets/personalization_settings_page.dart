@@ -162,19 +162,22 @@ class _PersonalizationSettingsPageState
   SliderTheme _boardBorderLineWidthSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.boardBorderLineWidth.toDouble(),
-        min: 0.0,
-        max: 20.0,
-        divisions: 200,
-        label: Config.boardBorderLineWidth.toStringAsFixed(1),
-        onChanged: (value) {
-          setState(() {
-            print("[config] BoardBorderLineWidth value: $value");
-            Config.boardBorderLineWidth = value;
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).boardBorderLineWidth,
+        child: Slider(
+          value: Config.boardBorderLineWidth.toDouble(),
+          min: 0.0,
+          max: 20.0,
+          divisions: 200,
+          label: Config.boardBorderLineWidth.toStringAsFixed(1),
+          onChanged: (value) {
+            setState(() {
+              print("[config] BoardBorderLineWidth value: $value");
+              Config.boardBorderLineWidth = value;
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }
@@ -193,19 +196,22 @@ class _PersonalizationSettingsPageState
   SliderTheme _boardInnerLineWidthSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.boardInnerLineWidth.toDouble(),
-        min: 0.0,
-        max: 20.0,
-        divisions: 200,
-        label: Config.boardInnerLineWidth.toStringAsFixed(1),
-        onChanged: (value) {
-          setState(() {
-            print("[config] BoardInnerLineWidth value: $value");
-            Config.boardInnerLineWidth = value;
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).boardInnerLineWidth,
+        child: Slider(
+          value: Config.boardInnerLineWidth.toDouble(),
+          min: 0.0,
+          max: 20.0,
+          divisions: 200,
+          label: Config.boardInnerLineWidth.toStringAsFixed(1),
+          onChanged: (value) {
+            setState(() {
+              print("[config] BoardInnerLineWidth value: $value");
+              Config.boardInnerLineWidth = value;
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }
@@ -224,19 +230,22 @@ class _PersonalizationSettingsPageState
   SliderTheme _pieceWidthSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.pieceWidth.toDouble(),
-        min: 0.5,
-        max: 1.0,
-        divisions: 50,
-        label: Config.pieceWidth.toStringAsFixed(1),
-        onChanged: (value) {
-          setState(() {
-            print("[config] pieceWidth value: $value");
-            Config.pieceWidth = value;
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).pieceWidth,
+        child: Slider(
+          value: Config.pieceWidth.toDouble(),
+          min: 0.5,
+          max: 1.0,
+          divisions: 50,
+          label: Config.pieceWidth.toStringAsFixed(1),
+          onChanged: (value) {
+            setState(() {
+              print("[config] pieceWidth value: $value");
+              Config.pieceWidth = value;
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }
@@ -255,19 +264,22 @@ class _PersonalizationSettingsPageState
   SliderTheme _fontSizeSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.fontSize.toDouble(),
-        min: 16,
-        max: 32,
-        divisions: 16,
-        label: Config.fontSize.toStringAsFixed(1),
-        onChanged: (value) {
-          setState(() {
-            print("[config] fontSize value: $value");
-            Config.fontSize = value;
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).fontSize,
+        child: Slider(
+          value: Config.fontSize.toDouble(),
+          min: 16,
+          max: 32,
+          divisions: 16,
+          label: Config.fontSize.toStringAsFixed(1),
+          onChanged: (value) {
+            setState(() {
+              print("[config] fontSize value: $value");
+              Config.fontSize = value;
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }
@@ -286,19 +298,22 @@ class _PersonalizationSettingsPageState
   SliderTheme _boardTopSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.boardTop.toDouble(),
-        min: 0.0,
-        max: 288.0,
-        divisions: 288,
-        label: Config.boardTop.toStringAsFixed(1),
-        onChanged: (value) {
-          setState(() {
-            print("[config] BoardTop value: $value");
-            Config.boardTop = value;
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).boardTop,
+        child: Slider(
+          value: Config.boardTop.toDouble(),
+          min: 0.0,
+          max: 288.0,
+          divisions: 288,
+          label: Config.boardTop.toStringAsFixed(1),
+          onChanged: (value) {
+            setState(() {
+              print("[config] BoardTop value: $value");
+              Config.boardTop = value;
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }
@@ -317,19 +332,22 @@ class _PersonalizationSettingsPageState
   SliderTheme _animationDurationSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
-      child: Slider(
-        value: Config.animationDuration.toDouble(),
-        min: 0.0,
-        max: 5.0,
-        divisions: 50,
-        label: Config.animationDuration.toStringAsFixed(1),
-        onChanged: (value) {
-          setState(() {
-            print("[config] AnimationDuration value: $value");
-            Config.animationDuration = value;
-            Config.save();
-          });
-        },
+      child: Semantics(
+        label: S.of(context).animationDuration,
+        child: Slider(
+          value: Config.animationDuration.toDouble(),
+          min: 0.0,
+          max: 5.0,
+          divisions: 50,
+          label: Config.animationDuration.toStringAsFixed(1),
+          onChanged: (value) {
+            setState(() {
+              print("[config] AnimationDuration value: $value");
+              Config.animationDuration = value;
+              Config.save();
+            });
+          },
+        ),
       ),
     );
   }
