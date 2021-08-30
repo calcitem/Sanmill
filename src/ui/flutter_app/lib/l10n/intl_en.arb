@@ -1189,8 +1189,8 @@
     "@lastMove": {
         "description": "Last move"
     },
-	"select": "Select",
-    "@select": {
-        "description": "Select"
+	"selected": "Selected",
+    "@selected": {
+        "description": "Selected"
     }
 }

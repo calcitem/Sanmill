@@ -21,7 +21,10 @@ import 'package:sanmill/common/config.dart';
 
 void showSnackBar(BuildContext context, String message,
     {Duration duration = const Duration(milliseconds: 4000)}) {
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  if (!Config.screenReaderSupport) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(
       message,

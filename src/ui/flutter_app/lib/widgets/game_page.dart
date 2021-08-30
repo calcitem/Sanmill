@@ -254,6 +254,9 @@ class _GamePageState extends State<GamePage>
               //Audios.playTone(Audios.millSoundId);
               if (mounted) {
                 showTip(S.of(context).tipMill);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).tipMill);
+                }
               }
             } else {
               //Audios.playTone(Audios.placeSoundId);
@@ -273,6 +276,9 @@ class _GamePageState extends State<GamePage>
             print("[tap] putPiece: skip [$sq]");
             if (mounted) {
               showTip(S.of(context).tipBanPlace);
+              if (Config.screenReaderSupport) {
+                showSnackBar(context, S.of(context).tipBanPlace);
+              }
             }
           }
 
@@ -284,6 +290,9 @@ class _GamePageState extends State<GamePage>
           if (position.phase == Phase.placing) {
             if (mounted) {
               showTip(S.of(context).tipCannotPlace);
+              if (Config.screenReaderSupport) {
+                showSnackBar(context, S.of(context).tipCannotPlace);
+              }
             }
             break;
           }
@@ -304,9 +313,15 @@ class _GamePageState extends State<GamePage>
                 print("[tap] May fly.");
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);
+                  if (Config.screenReaderSupport) {
+                    showSnackBar(context, S.of(context).tipCanMoveToAnyPoint);
+                  }
                 }
               } else if (mounted) {
                 showTip(S.of(context).tipPlace);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).selected);
+                }
               }
 
               break;
@@ -315,6 +330,9 @@ class _GamePageState extends State<GamePage>
               print("[tap] selectPiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipCannotMove);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).tipCannotMove);
+                }
               }
               break;
             case -3:
@@ -322,6 +340,9 @@ class _GamePageState extends State<GamePage>
               print("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipCanMoveOnePoint);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).tipCanMoveOnePoint);
+                }
               }
               break;
             case -4:
@@ -329,6 +350,9 @@ class _GamePageState extends State<GamePage>
               print("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectPieceToMove);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).tipSelectPieceToMove);
+                }
               }
               break;
             default:
@@ -336,6 +360,9 @@ class _GamePageState extends State<GamePage>
               print("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectWrong);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).tipSelectWrong);
+                }
               }
               break;
           }
@@ -353,6 +380,9 @@ class _GamePageState extends State<GamePage>
               if (Game.instance.position.pieceToRemoveCount >= 1) {
                 if (mounted) {
                   showTip(S.of(context).tipContinueMill);
+                  if (Config.screenReaderSupport) {
+                    showSnackBar(context, S.of(context).tipContinueMill);
+                  }
                 }
               } else {
                 if (Game.instance.engineType == EngineType.humanVsAi) {
@@ -376,6 +406,9 @@ class _GamePageState extends State<GamePage>
               print("[tap] removePiece: Cannot Remove our pieces, skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectOpponentsPiece);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).tipSelectOpponentsPiece);
+                }
               }
               break;
             case -3:
@@ -384,6 +417,10 @@ class _GamePageState extends State<GamePage>
                   "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipCannotRemovePieceFromMill);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(
+                      context, S.of(context).tipCannotRemovePieceFromMill);
+                }
               }
               break;
             default:
@@ -391,6 +428,9 @@ class _GamePageState extends State<GamePage>
               print("[tap] removePiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipBanRemove);
+                if (Config.screenReaderSupport) {
+                  showSnackBar(context, S.of(context).tipBanRemove);
+                }
               }
               break;
           }
@@ -433,18 +473,11 @@ class _GamePageState extends State<GamePage>
         position.recorder.prune();
         position.recorder.moveIn(m, position);
 
+        /*
         if (Config.screenReaderSupport && m.notation != null) {
-          /*
-          var playerName = "";
-          if (position.sideToMove() == PieceColor.white) {
-            playerName = S.of(context).player + " 1";
-          } else if (position.sideToMove() == PieceColor.black) {
-            playerName = S.of(context).player + " 2";
-          }
-          */
-
           showSnackBar(context, S.of(context).human + ": " + m.notation!);
         }
+        */
 
         setState(() {});
 
@@ -502,6 +535,15 @@ class _GamePageState extends State<GamePage>
       } else {
         if (mounted) {
           showTip(S.of(context).thinking);
+
+          Move? m = Game.instance.position.recorder.lastMove;
+
+          if (Config.screenReaderSupport &&
+              Game.instance.position.action != Act.remove &&
+              m != null &&
+              m.notation != null) {
+            showSnackBar(context, S.of(context).human + ": " + m.notation!);
+          }
         }
       }
 
@@ -542,6 +584,9 @@ class _GamePageState extends State<GamePage>
         case 'timeout':
           if (mounted) {
             showTip(S.of(context).timeout);
+            if (Config.screenReaderSupport) {
+              showSnackBar(context, S.of(context).timeout);
+            }
           }
 
           //if (Config.developerMode) {
@@ -573,6 +618,9 @@ class _GamePageState extends State<GamePage>
 
     if (mounted) {
       showTip(S.of(context).gameStarted);
+      if (Config.screenReaderSupport) {
+        showSnackBar(context, S.of(context).gameStarted);
+      }
     }
 
     if (Game.instance.isAiToMove()) {
@@ -601,12 +649,19 @@ class _GamePageState extends State<GamePage>
 
     if (importFailedStr != "") {
       showTip(S.of(context).cannotImport + " " + importFailedStr);
+      if (Config.screenReaderSupport) {
+        showSnackBar(
+            context, S.of(context).cannotImport + " " + importFailedStr);
+      }
       return;
     }
 
     await onStepForwardAllButtonPressed(pop: false);
 
     showTip(S.of(context).gameImported);
+    if (Config.screenReaderSupport) {
+      showSnackBar(context, S.of(context).gameImported);
+    }
   }
 
   onExportGameButtonPressed() async {
@@ -956,6 +1011,9 @@ class _GamePageState extends State<GamePage>
 
     if (mounted) {
       showTip(S.of(context).done);
+      if (Config.screenReaderSupport) {
+        showSnackBar(context, S.of(context).done); // TODO: Last move
+      }
     }
   }
 
@@ -1271,6 +1329,9 @@ class _GamePageState extends State<GamePage>
                     Game.instance.newGame();
                     if (mounted) {
                       showTip(S.of(context).gameStarted);
+                      if (Config.screenReaderSupport) {
+                        showSnackBar(context, S.of(context).gameStarted);
+                      }
                     }
 
                     if (Game.instance.isAiToMove()) {

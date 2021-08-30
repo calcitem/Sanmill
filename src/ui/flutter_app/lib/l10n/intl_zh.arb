@@ -1189,8 +1189,8 @@
     "@lastMove": {
         "description": "Last move"
     },
-	"select": "选中",
-    "@select": {
-        "description": "Select"
+	"selected": "已选中",
+    "@selected": {
+        "description": "Selected"
     }
 }
