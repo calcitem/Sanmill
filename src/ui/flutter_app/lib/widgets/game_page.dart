@@ -714,47 +714,49 @@ class _GamePageState extends State<GamePage>
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          backgroundColor: Colors.transparent,
-          children: <Widget>[
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).newGame,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
+        return Semantics(
+          label: S.of(context).game,
+          child: SimpleDialog(
+            backgroundColor: Colors.transparent,
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text(
+                  S.of(context).newGame,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: onStartNewGameButtonPressed,
               ),
-              onPressed: onStartNewGameButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).importGame,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
+              SizedBox(height: AppTheme.sizedBoxHeight),
+              SimpleDialogOption(
+                child: Text(
+                  S.of(context).importGame,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: onImportGameButtonPressed,
               ),
-              onPressed: onImportGameButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).exportGame,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
+              SizedBox(height: AppTheme.sizedBoxHeight),
+              SimpleDialogOption(
+                child: Text(
+                  S.of(context).exportGame,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: onExportGameButtonPressed,
               ),
-              onPressed: onExportGameButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            Config.screenReaderSupport
-                ? SimpleDialogOption(
-                    child: Text(
-                      S.of(context).close,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                : SizedBox(height: 1),
-            /*
+              SizedBox(height: AppTheme.sizedBoxHeight),
+              Config.screenReaderSupport
+                  ? SimpleDialogOption(
+                      child: Text(
+                        S.of(context).close,
+                        style: AppTheme.simpleDialogOptionTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  : SizedBox(height: 1),
+              /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             Config.experimentsEnabled
                 ? SimpleDialogOption(
@@ -793,7 +795,7 @@ class _GamePageState extends State<GamePage>
                   )
                 : SizedBox(height: 1),
             */
-            /*
+              /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
@@ -804,7 +806,8 @@ class _GamePageState extends State<GamePage>
               onPressed: onAutoReplayButtonPressed,
             ),
             */
-          ],
+            ],
+          ),
         );
       },
     );
@@ -822,90 +825,93 @@ class _GamePageState extends State<GamePage>
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          backgroundColor: Colors.transparent,
-          children: <Widget>[
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SimpleDialogOption(
-                    child: Text(
-                      S.of(context).takeBack,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
+        return Semantics(
+          label: S.of(context).move,
+          child: SimpleDialog(
+            backgroundColor: Colors.transparent,
+            children: <Widget>[
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SimpleDialogOption(
+                      child: Text(
+                        S.of(context).takeBack,
+                        style: AppTheme.simpleDialogOptionTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: onTakeBackButtonPressed,
                     ),
-                    onPressed: onTakeBackButtonPressed,
-                  ),
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SizedBox(height: AppTheme.sizedBoxHeight),
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SimpleDialogOption(
-                    child: Text(
-                      S.of(context).stepForward,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SizedBox(height: AppTheme.sizedBoxHeight),
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SimpleDialogOption(
+                      child: Text(
+                        S.of(context).stepForward,
+                        style: AppTheme.simpleDialogOptionTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: onStepForwardButtonPressed,
                     ),
-                    onPressed: onStepForwardButtonPressed,
-                  ),
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SizedBox(height: AppTheme.sizedBoxHeight),
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SimpleDialogOption(
-                    child: Text(
-                      S.of(context).takeBackAll,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SizedBox(height: AppTheme.sizedBoxHeight),
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SimpleDialogOption(
+                      child: Text(
+                        S.of(context).takeBackAll,
+                        style: AppTheme.simpleDialogOptionTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: onTakeBackAllButtonPressed,
                     ),
-                    onPressed: onTakeBackAllButtonPressed,
-                  ),
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SizedBox(height: AppTheme.sizedBoxHeight),
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SimpleDialogOption(
-                    child: Text(
-                      S.of(context).stepForwardAll,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SizedBox(height: AppTheme.sizedBoxHeight),
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SimpleDialogOption(
+                      child: Text(
+                        S.of(context).stepForwardAll,
+                        style: AppTheme.simpleDialogOptionTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: onStepForwardAllButtonPressed,
                     ),
-                    onPressed: onStepForwardAllButtonPressed,
-                  ),
-            Config.isHistoryNavigationToolbarShown
-                ? SizedBox(height: 1)
-                : SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).showMoveList,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
+              Config.isHistoryNavigationToolbarShown
+                  ? SizedBox(height: 1)
+                  : SizedBox(height: AppTheme.sizedBoxHeight),
+              SimpleDialogOption(
+                child: Text(
+                  S.of(context).showMoveList,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: onMoveListButtonPressed,
               ),
-              onPressed: onMoveListButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).moveNow,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
+              SizedBox(height: AppTheme.sizedBoxHeight),
+              SimpleDialogOption(
+                child: Text(
+                  S.of(context).moveNow,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: onMoveNowButtonPressed,
               ),
-              onPressed: onMoveNowButtonPressed,
-            ),
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            Config.screenReaderSupport
-                ? SimpleDialogOption(
-                    child: Text(
-                      S.of(context).close,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                : SizedBox(height: 1),
-          ],
+              SizedBox(height: AppTheme.sizedBoxHeight),
+              Config.screenReaderSupport
+                  ? SimpleDialogOption(
+                      child: Text(
+                        S.of(context).close,
+                        style: AppTheme.simpleDialogOptionTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  : SizedBox(height: 1),
+            ],
+          ),
         );
       },
     );

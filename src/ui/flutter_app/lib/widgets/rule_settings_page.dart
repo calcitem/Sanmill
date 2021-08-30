@@ -212,42 +212,45 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('9'),
-            groupValue: Config.piecesCount,
-            value: 9,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('10'),
-            groupValue: Config.piecesCount,
-            value: 10,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('11'),
-            groupValue: Config.piecesCount,
-            value: 11,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('12'),
-            groupValue: Config.piecesCount,
-            value: 12,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-        ],
+      builder: (BuildContext context) => Semantics(
+        label: S.of(context).piecesCount,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('9'),
+              groupValue: Config.piecesCount,
+              value: 9,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('10'),
+              groupValue: Config.piecesCount,
+              value: 10,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('11'),
+              groupValue: Config.piecesCount,
+              value: 11,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('12'),
+              groupValue: Config.piecesCount,
+              value: 12,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+          ],
+        ),
       ),
     );
   }
@@ -269,42 +272,45 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('30'),
-            groupValue: Config.nMoveRule,
-            value: 30,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('50'),
-            groupValue: Config.nMoveRule,
-            value: 50,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('100'),
-            groupValue: Config.nMoveRule,
-            value: 100,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('200'),
-            groupValue: Config.nMoveRule,
-            value: 200,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-        ],
+      builder: (BuildContext context) => Semantics(
+        label: S.of(context).nMoveRule,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('30'),
+              groupValue: Config.nMoveRule,
+              value: 30,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('50'),
+              groupValue: Config.nMoveRule,
+              value: 50,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('100'),
+              groupValue: Config.nMoveRule,
+              value: 100,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('200'),
+              groupValue: Config.nMoveRule,
+              value: 200,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+          ],
+        ),
       ),
     );
   }
@@ -326,26 +332,29 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('3'),
-            groupValue: Config.flyPieceCount,
-            value: 3,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-          RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
-            title: Text('4'),
-            groupValue: Config.flyPieceCount,
-            value: 4,
-            onChanged: callback,
-          ),
-          ListItemDivider(),
-        ],
+      builder: (BuildContext context) => Semantics(
+        label: S.of(context).flyPieceCount,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('3'),
+              groupValue: Config.flyPieceCount,
+              value: 3,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('4'),
+              groupValue: Config.flyPieceCount,
+              value: 4,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+          ],
+        ),
       ),
     );
   }
