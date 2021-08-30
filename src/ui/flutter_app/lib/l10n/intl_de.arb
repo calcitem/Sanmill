@@ -1150,23 +1150,23 @@
         "description": "Close"
     },
     "whitePiece": "Weißer Stein",
-    "@close": {
+    "@whitePiece": {
         "description": "White piece"
     },
     "blackPiece": "Schwarzer Stein",
-    "@close": {
+    "@blackPiece": {
         "description": "Black piece"
     },
     "banPoint": "Verbotsstelle",
-    "@close": {
+    "@banPoint": {
         "description": "Ban point"
     },
     "emptyPoint": "Leere Stelle",
-    "@close": {
+    "@emptyPoint": {
         "description": "Empty point"
     },
     "noPoint": "Kein Punkt",
-    "@close": {
+    "@noPoint": {
         "description": "No point"
     },
     "placingPhase": "Setzphase",
@@ -1188,5 +1188,9 @@
 	"lastMove": "Letzter Zug",
     "@lastMove": {
         "description": "Last move"
+    },
+	"select": "Auswählen",
+    "@select": {
+        "description": "Select"
     }
 }

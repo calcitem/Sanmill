@@ -1188,5 +1188,9 @@
 	"lastMove": "最后一着",
     "@lastMove": {
         "description": "Last move"
+    },
+	"select": "选中",
+    "@select": {
+        "description": "Select"
     }
 }
