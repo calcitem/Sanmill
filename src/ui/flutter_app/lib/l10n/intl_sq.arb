@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kur një lojtar është në tre copa, dhe asnjë lojtar nuk mund të heqë një pjesë të kundërshtarit brenda dhjetë lëvizjeve, loja është një barazim.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Menuja kryesore",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Aksesueshmëria",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Mbështetje për lexuesin e ekranit",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Mbylle",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Copë e bardhë",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Copë e zezë",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Pika e ndalimit",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Pika bosh",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Pa pikë",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Faza e vendosjes",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Faza e lëvizjes",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Faza e fluturimit",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Anash për të lëvizur",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Lëvizja e fundit",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Zgjedhur",
+    "@selected": {
+        "description": "Selected"
     }
 }

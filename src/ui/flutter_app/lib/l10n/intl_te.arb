@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ఒక ఆటగాడు మూడు ముక్కలుగా ఉన్నప్పుడు, మరియు ఏ ఆటగాడు పది కదలికలలో ప్రత్యర్థి భాగాన్ని తీసివేయలేడు, ఆట డ్రా.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "ప్రధాన మెనూ",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "సౌలభ్యాన్ని",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "స్క్రీన్ రీడర్ మద్దతు",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "దగ్గరగా",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "తెల్ల ముక్క",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "నల్ల ముక్క",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "బాన్ పాయింట్",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "ఖాళీ పాయింట్",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "ప్రయోజనం లేదు",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "ఉంచడం దశ",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "కదిలే దశ",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "ఎగిరే దశ",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "తరలించడానికి వైపు",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "చివరి కదలిక",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "ఎంపిక చేయబడింది",
+    "@selected": {
+        "description": "Selected"
     }
 }

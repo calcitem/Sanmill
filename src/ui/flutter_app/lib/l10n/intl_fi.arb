@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kun pelaaja on pudonnut kolmeen nappulaan eikä kumpikaan pelaaja voi poistaa vastustajan nappulaa kymmenen siirron sisällä, peli on tasapeli.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Päävalikko",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Esteettömyys",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Näytönlukuohjelman tuki",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "kiinni",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Valkoinen pala",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Musta pala",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Kieltokohta",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Tyhjä kohta",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Ei järkeä",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Sijoitusvaihe",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Muuttovaihe",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Lentävä vaihe",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Sivu liikkua",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Viimeinen liike",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Valittu",
+    "@selected": {
+        "description": "Selected"
     }
 }

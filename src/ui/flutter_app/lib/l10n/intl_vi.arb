@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Khi một người chơi hạ được ba quân cờ và không người chơi nào có thể loại bỏ quân cờ của đối thủ trong vòng mười nước đi, trò chơi sẽ hòa.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Thực đơn chính",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Khả năng tiếp cận",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Hỗ trợ trình đọc màn hình",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Gần",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Mảnh trắng",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Mảnh đen",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Cấm điểm",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Điểm trống",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Không có điểm",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Giai đoạn đặt",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Giai đoạn di chuyển",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Giai đoạn bay",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Bên cạnh để di chuyển",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Di chuyển lần cuối",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Đã chọn",
+    "@selected": {
+        "description": "Selected"
     }
 }

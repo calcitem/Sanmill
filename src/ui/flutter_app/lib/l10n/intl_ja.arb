@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "プレーヤーが3ピースになり、どちらのプレーヤーも10手以内に相手のピースを取り除くことができない場合、ゲームは引き分けになります。",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "メインメニュー",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "アクセシビリティ",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "スクリーンリーダーのサポート",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "閉鎖",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "白いチェス",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "黒のチェス",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "押しつぶされる",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "空のポイント",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "意味が無い",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "スイングステージ",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "ウォーキングステージ",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "つま先ステージ",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "振り向く",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "最後の動き",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "選択済み",
+    "@selected": {
+        "description": "Selected"
     }
 }

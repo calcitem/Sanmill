@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "عندما ينخفض اللاعب إلى ثلاث قطع ، ولا يمكن لأي لاعب إزالة قطعة الخصم في غضون عشر نقلات ، تكون اللعبة بمثابة تعادل.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "القائمة الرئيسية",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "إمكانية الوصول",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "دعم قارئ الشاشة",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "قريب",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "قطعة بيضاء",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "قطعة سوداء",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "نقطة الحظر",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "نقطة فارغة",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "لا جدوى",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "مرحلة وضع",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "المرحلة المتحركة",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "مرحلة الطيران",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "جانب للتحرك",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "الحركة الاخيرة",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "المحدد",
+    "@selected": {
+        "description": "Selected"
     }
 }

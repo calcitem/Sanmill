@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Cuando un jugador tiene tres piezas y ninguno de los jugadores puede quitar una pieza del oponente en diez movimientos, el juego es un empate.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Menú principal",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Accesibilidad",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Soporte de lector de pantalla",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Cerrar",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Pieza blanca",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Pieza negra",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Punto de prohibición",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Punto vacio",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "No tiene sentido",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Fase de colocación",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Fase móvil",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Fase de vuelo",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Lado para mover",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Última jugada",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Seleccionado",
+    "@selected": {
+        "description": "Selected"
     }
 }

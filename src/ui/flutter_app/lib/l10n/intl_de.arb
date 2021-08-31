@@ -1133,16 +1133,12 @@
     "@mainMenu": {
         "description": "Main menu"
     },
-    "board": "Planke",
-    "@mainMenu": {
-        "description": "Board"
-    },
     "accessibility": "Barrierefreiheit",
     "@accessibility": {
         "description": "Accessibility"
     },
     "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
-    "@accessibility": {
+    "@screenReaderSupport": {
         "description": "Screen reader support"
     },
     "close": "Schließen Sie",

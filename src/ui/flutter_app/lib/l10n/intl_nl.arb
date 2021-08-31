@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wanneer een speler nog maar drie stukken heeft en geen van beide spelers kan het stuk van een tegenstander binnen tien zetten verwijderen, is het spel gelijkspel.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Hoofdmenu",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Toegankelijkheid",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ondersteuning voor schermlezers",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Dichtbij",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Wit stuk",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Zwart stuk",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Ban punt",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Leeg punt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Geen punt",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Plaatsingsfase",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Bewegende fase",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Vliegende fase",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Kant om te bewegen",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "laatste zet",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Geselecteerd",
+    "@selected": {
+        "description": "Selected"
     }
 }

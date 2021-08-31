@@ -1133,16 +1133,12 @@
     "@mainMenu": {
         "description": "Main menu"
     },
-    "board": "Board",
-    "@mainMenu": {
-        "description": "Board"
-    },
     "accessibility": "Accessibility",
     "@accessibility": {
         "description": "Accessibility"
     },
     "screenReaderSupport": "Screen reader support",
-    "@accessibility": {
+    "@screenReaderSupport": {
         "description": "Screen reader support"
     },
     "close": "Close",

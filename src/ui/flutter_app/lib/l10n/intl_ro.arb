@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Când un jucător are până la trei piese și niciunul dintre jucători nu poate elimina piesa adversarului în decurs de zece mutări, jocul este egal.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Meniu principal",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Accesibilitate",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Suport pentru cititor de ecran",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Închide",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Piesa alba",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Piesa neagră",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Punct de interzicere",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Punct gol",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Nici un punct",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Faza de plasare",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Faza în mișcare",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Faza de zbor",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Partea de mișcare",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Ultima mișcare",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Selectat",
+    "@selected": {
+        "description": "Selected"
     }
 }

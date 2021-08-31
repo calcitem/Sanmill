@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kai žaidėjas nesiekia trijų dalių ir nė vienas žaidėjas negali pašalinti priešininko figūros per dešimt ėjimų, žaidimas yra lygus.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Pagrindinis meniu",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Prieinamumas",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ekrano skaitytuvo palaikymas",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Uždaryti",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Baltas gabalas",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Juodas gabalas",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Draudimo taškas",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Tuščias taškas",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Nėra prasmės",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Įdėjimo fazė",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Judėjimo fazė",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Skraidymo fazė",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Šonas judėti",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Paskutinis ėjimas",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Pasirinkta",
+    "@selected": {
+        "description": "Selected"
     }
 }

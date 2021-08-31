@@ -1133,16 +1133,12 @@
     "@mainMenu": {
         "description": "Main menu"
     },
-    "board": "棋盘",
-    "@mainMenu": {
-        "description": "Board"
-    },
     "accessibility": "无障碍",
     "@accessibility": {
         "description": "Accessibility"
     },
     "screenReaderSupport": "支持屏幕阅读器",
-    "@accessibility": {
+    "@screenReaderSupport": {
         "description": "Screen reader support"
     },
     "close": "关闭",

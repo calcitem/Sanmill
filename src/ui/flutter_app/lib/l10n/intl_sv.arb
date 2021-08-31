@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "När en spelare är nere i tre delar, och ingen spelare kan ta bort en motståndares bit inom tio drag, är spelet oavgjort.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Huvudmeny",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Tillgänglighet",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Skärmläsarstöd",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Stänga",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Vit bit",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Svart bit",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Förbudspunkt",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Tom punkt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Ingen idé",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Placeringsfas",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Flyttfas",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Flygande fas",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Sida att flytta",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Sista drag",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Vald",
+    "@selected": {
+        "description": "Selected"
     }
 }

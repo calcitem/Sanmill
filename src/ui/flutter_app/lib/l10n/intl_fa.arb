@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "هنگامی که یک بازیکن به سه قطعه کاهش می یابد و هیچ یک از بازیکنان نمی توانند در طی ده حرکت قطعه حریف را بردارند ، بازی مساوی است.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "منوی اصلی",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "دسترسی",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "پشتیبانی از صفحه خوان",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "نزدیک",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "قطعه سفید",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "قطعه مشکی",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "نقطه ممنوعیت",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "نقطه خالی",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "فایده ای نداره",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "فاز قرار دادن",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "فاز متحرک",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "مرحله پرواز",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "جهت حرکت",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "آخرین حرکت",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "انتخاب شد",
+    "@selected": {
+        "description": "Selected"
     }
 }

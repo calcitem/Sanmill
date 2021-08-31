@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Όταν ένας παίκτης είναι κάτω από τρία κομμάτια και κανένας παίκτης δεν μπορεί να αφαιρέσει ένα κομμάτι ενός αντιπάλου μέσα σε δέκα κινήσεις, το παιχνίδι είναι ισοπαλία.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Κυρίως μενού",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Προσιτότητα",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Υποστήριξη αναγνώστη οθόνης",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Κλείσε",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Λευκό κομμάτι",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Μαύρο κομμάτι",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Σημείο απαγόρευσης",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Κενό σημείο",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Δεν έχει νόημα",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Φάση τοποθέτησης",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+	"movingPhase": "Μετακινούμενη φάση",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+	"flyingPhase": "Φάση πτήσης",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+	"sideToMove": "Πλευρά για μετακίνηση",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+	"lastMove": "Τελευταία κίνηση",
+    "@lastMove": {
+        "description": "Last move"
+    },
+	"selected": "Επιλεγμένο",
+    "@selected": {
+        "description": "Selected"
     }
 }

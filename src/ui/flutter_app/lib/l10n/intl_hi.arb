@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "जब एक खिलाड़ी के तीन टुकड़े हो जाते हैं, और कोई भी खिलाड़ी दस चालों के भीतर प्रतिद्वंद्वी के टुकड़े को नहीं हटा सकता है, तो खेल ड्रॉ होता है।",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "मुख्य मेनू",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "सरल उपयोग",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "स्क्रीन रीडर समर्थन",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "बंद करे",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "सफेद टुकड़ा",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "काला टुकड़ा",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "प्रतिबंध बिंदु",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "खाली बिंदु",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "कोई फायदा नहीं",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "चरण रखना",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "मूविंग फेज",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "उड़ान चरण",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "स्थानांतरित करने के लिए पक्ष",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "अंतिम चाल",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "गिने चुने",
+    "@selected": {
+        "description": "Selected"
     }
 }

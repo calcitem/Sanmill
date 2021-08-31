@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Lorsqu'un joueur n'a plus que trois pièces et qu'aucun des deux joueurs ne peut retirer la pièce d'un adversaire en dix coups, le jeu est un match nul.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Menu principal",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Accessibilité",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Prise en charge du lecteur d'écran",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "proche",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Pièce blanche",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Pièce noire",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Point d'interdiction",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Point vide",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Pas de point",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Phase de placement",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Phase de déplacement",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Phase de vol",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Côté à déplacer",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Dernier coup",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Choisi",
+    "@selected": {
+        "description": "Selected"
     }
 }

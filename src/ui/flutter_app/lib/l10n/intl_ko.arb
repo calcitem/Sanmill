@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "플레이어의 기물이 세 개로 줄어들고 두 플레이어 모두 10번의 이동 이내에 상대방의 말을 제거할 수 없는 경우 게임은 무승부입니다.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "메인 메뉴",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "접근성",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "스크린 리더 지원",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "닫다",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "흰색 조각",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "검은 조각",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "금지 포인트",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "빈 점",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "포인트 없음",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "배치 단계",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "이동 단계",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "비행 단계",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "이동할 면",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "마지막 이동",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "선택된",
+    "@selected": {
+        "description": "Selected"
     }
 }

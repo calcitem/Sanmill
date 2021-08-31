@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Кога играчот е спуштен на три дела, и ниту еден играч не може да отстрани противнички парче во рок од десет потези, играта е нерешена.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Главно мени",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Пристапност",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Поддршка за читач на екран",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Затвори",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Бело парче",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Црно парче",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Забрана точка",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Празна точка",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Без смисла",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Фаза на поставување",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Фаза на движење",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Фаза на летање",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Страна за движење",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Последен потег",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Избрано",
+    "@selected": {
+        "description": "Selected"
     }
 }

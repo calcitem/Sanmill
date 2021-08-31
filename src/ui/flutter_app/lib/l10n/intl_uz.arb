@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Agar o'yinchi uchta bo'lakka tushib qolsa va hech bir o'yinchi raqibning qismini o'nta harakat davomida olib tashlay olmasa, o'yin durang bo'ladi.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Asosiy menyu",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Maxsus imkoniyatlar",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ekranni o'quvchini qo'llab -quvvatlash",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Yopish",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Oq bo'lak",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Qora parcha",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Taqiqlanish nuqtasi",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Bo'sh nuqta",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Gap yo'q",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Joylashtirish bosqichi",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Harakatlanish bosqichi",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Uchish bosqichi",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Harakatlanadigan tomon",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Oxirgi harakat",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Tanlangan",
+    "@selected": {
+        "description": "Selected"
     }
 }

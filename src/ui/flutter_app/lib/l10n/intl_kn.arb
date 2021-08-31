@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ಒಬ್ಬ ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳಿಗೆ ಇಳಿದಾಗ, ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ಹತ್ತು ಚಲನೆಗಳ ಒಳಗೆ ಎದುರಾಳಿಯ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆಟವು ಡ್ರಾ ಆಗಿದೆ.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "ಮುಖ್ಯ ಪಟ್ಟಿ",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "ಪ್ರವೇಶಿಸುವಿಕೆ",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "ಸ್ಕ್ರೀನ್ ರೀಡರ್ ಬೆಂಬಲ",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "ಮುಚ್ಚಿ",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "ಬಿಳಿ ತುಂಡು",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "ಕಪ್ಪು ತುಂಡು",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "ಬ್ಯಾನ್ ಪಾಯಿಂಟ್",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "ಖಾಲಿ ಬಿಂದು",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "ಯಾವುದೇ ಅರ್ಥವಿಲ್ಲ",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "ಇರಿಸುವ ಹಂತ",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "ಚಲಿಸುವ ಹಂತ",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "ಹಾರುವ ಹಂತ",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "ಬದಿಗೆ ಸರಿಸಲು",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "ಕೊನೆಯ ನಡೆ",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ",
+    "@selected": {
+        "description": "Selected"
     }
 }

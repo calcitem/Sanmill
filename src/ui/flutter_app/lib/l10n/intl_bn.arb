@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "যখন কোনও খেলোয়াড় তিন টুকরো হয়ে যায় এবং কোনও খেলোয়াড়ই প্রতিপক্ষের টুকরোটিকে দশটি চালের মধ্যে সরিয়ে ফেলতে পারে না, খেলাটি ড্র the",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "প্রধান সূচি",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "সহজলভ্যতা",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "স্ক্রিন রিডার সমর্থন",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "বন্ধ",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "সাদা টুকরা",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "কালো টুকরা",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "ব্যান পয়েন্ট",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "খালি বিন্দু",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "বিন্দু নেই",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "স্থাপন পর্ব",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "চলন্ত পর্ব",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "উড়ন্ত পর্ব",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "সরাতে সাইড",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "শেষ পদক্ষেপ",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "নির্বাচিত",
+    "@selected": {
+        "description": "Selected"
     }
 }

@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Когда у игрока осталось три фишки, и ни один из игроков не может убрать фишку соперника в течение десяти ходов, игра считается ничьей.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Главное меню",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Доступность",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Поддержка программы чтения с экрана",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Закрывать",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Белый кусок",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Черный кусок",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Точка запрета",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Пустая точка",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Нет смысла",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Фаза размещения",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Движущаяся фаза",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Фаза полета",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Сторона для движения",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Последний ход",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Выбрано",
+    "@selected": {
+        "description": "Selected"
     }
 }

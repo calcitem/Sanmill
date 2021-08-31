@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Bir oyuncu üç parçaya düştüğünde ve hiçbir oyuncu on hamle içinde rakibinin taşını çıkaramazsa, oyun berabere olur.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Ana menü",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Ulaşılabilirlik",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ekran okuyucu desteği",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Kapat",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Beyaz parça",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Siyah parça",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "yasak noktası",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "boş nokta",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Anlamı yok",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "yerleştirme aşaması",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Hareketli aşama",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Uçma aşaması",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Taşınacak taraf",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "son hareket",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Seçildi",
+    "@selected": {
+        "description": "Selected"
     }
 }

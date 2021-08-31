@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ha egy játékos három darabból áll, és egyik játékos sem tudja eltávolítani az ellenfél darabját tíz mozdulaton belül, akkor a játék döntetlen.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Főmenü",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Megközelíthetőség",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Képernyőolvasó támogatás",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Bezárás",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Fehér darab",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Fekete darab",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Tiltási pont",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Üres pont",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Nincs értelme",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Helyezési fázis",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Mozgó fázis",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Repülő fázis",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Oldalt mozgatni",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Utolsó lépés",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Kiválasztott",
+    "@selected": {
+        "description": "Selected"
     }
 }

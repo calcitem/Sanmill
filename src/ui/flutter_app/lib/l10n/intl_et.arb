@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kad spēlētājs ir nonācis līdz trim figūrām un neviens spēlētājs nevar noņemt pretinieka gabalu desmit gājienu laikā, spēle ir neizšķirta.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Peamenüü",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Juurdepääsetavus",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ekraanilugeja tugi",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Sulge",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Valge tükk",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Must tükk",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Keelupunkt",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Tühi punkt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Pole mõtet",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Asetamise faas",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Liikuv faas",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Lendav faas",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Külg liikumiseks",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Viimane käik",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Valitud",
+    "@selected": {
+        "description": "Selected"
     }
 }

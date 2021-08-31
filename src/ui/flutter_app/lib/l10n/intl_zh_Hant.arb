@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "當一方只剩下三顆棋子時，而雙方都不能在接下來十步之內吃掉對方的棋子，則判為和棋。",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "主菜單",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "無障礙",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "屏幕閱讀器支援",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "關閉",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "白棋",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "黑棋",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "禁點",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "空點",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "無點",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "擺子階段",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "走子階段",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "飛子階段",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "輪到",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "最後一著",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "已選中",
+    "@selected": {
+        "description": "Selected"
     }
 }

@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ak je počet hráčov na tri figúrky a žiadny hráč nedokáže odstrániť súperovu figúrku do desiatich ťahov, hra sa končí remízou.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Hlavné menu",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Prístupnosť",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Podpora čítačky obrazovky",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Zavrieť",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Biely kus",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Čierny kúsok",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Ban point",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Prázdny bod",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Nemá to cenu",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Fáza umiestnenia",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Pohyblivá fáza",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Lietajúca fáza",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Strana na pohyb",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Posledný ťah",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Vybraný",
+    "@selected": {
+        "description": "Selected"
     }
 }

@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ketika seorang pemain turun menjadi tiga bagian, dan tidak ada pemain yang dapat menghapus bagian lawan dalam sepuluh gerakan, permainannya seri.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Menu utama",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Aksesibilitas",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Dukungan pembaca layar",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Menutup",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Potongan putih",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "potongan hitam",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Titik larangan",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "titik kosong",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Tidak ada poin",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Menempatkan fase",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Fase bergerak",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Fase terbang",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Sisi untuk bergerak",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Langkah terakhir",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Terpilih",
+    "@selected": {
+        "description": "Selected"
     }
 }

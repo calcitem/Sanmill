@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Når en spiller er nede i tre stykker, og ingen af spillerne kan fjerne en modstanders stykke inden for ti træk, er spillet uafgjort.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Hovedmenu",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Tilgængelighed",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Understøttelse af skærmlæser",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Tæt",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Hvidt stykke",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Sort stykke",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Forbudspunkt",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Tomt punkt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Ingen pointe",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Placeringsfase",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Flyttefase",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Flyvende fase",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Siden skal flyttes",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Sidste træk",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Valgte",
+    "@selected": {
+        "description": "Selected"
     }
 }

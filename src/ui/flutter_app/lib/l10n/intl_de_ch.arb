@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wenn ein Spieler nur noch drei Steine übrig hat und keiner der Spieler einen gegnerischen Stein innerhalb von zehn Zügen entfernen kann, ist das Spiel unentschieden.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Hauptmenü",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Barrierefreiheit",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Nah dran",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Weißes Stück",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Schwarzes Stück",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Sperrpunkt",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Leerer Punkt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Kein Punkt",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Platzierungsphase",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Bewegungsphase",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Flugphase",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Seite zum Bewegen",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Letzter Zug",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Ausgewählt",
+    "@selected": {
+        "description": "Selected"
     }
 }

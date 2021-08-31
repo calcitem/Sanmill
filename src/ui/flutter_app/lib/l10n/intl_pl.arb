@@ -1128,5 +1128,65 @@
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kiedy gracz ma do trzech pionów i żaden z graczy nie może usunąć pionka przeciwnika w ciągu dziesięciu ruchów, gra kończy się remisem.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "mainMenu": "Menu główne",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Dostępność",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Obsługa czytników ekranu",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "close": "Blisko",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Biały kawałek",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Czarny kawałek",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "banPoint": "Punkt zakazu",
+    "@banPoint": {
+        "description": "Ban point"
+    },
+    "emptyPoint": "Pusty punkt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Bez sensu",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Faza rozmieszczania",
+    "@placingPhase": {
+        "placingPhase": "Placing phase"
+    },
+    "movingPhase": "Faza ruchu",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Faza latania",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Strona do ruchu",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Ostatni ruch",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Wybrany",
+    "@selected": {
+        "description": "Selected"
     }
 }
