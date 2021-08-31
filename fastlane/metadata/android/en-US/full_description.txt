@@ -13,4 +13,5 @@ Features:
 * Adjustable playing strength
 * Highly configurable
 * Color themes
+* Accessibility
 

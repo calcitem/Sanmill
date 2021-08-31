@@ -13,3 +13,4 @@ Características:
 * Fuerza de juego ajustable
 * Altamente configurable
 * Temas de color
+* Accesibilidad
