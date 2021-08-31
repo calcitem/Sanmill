@@ -271,7 +271,12 @@ class Board extends StatelessWidget {
     squareDesc.clear();
 
     for (var i = 0; i < 7 * 7; i++) {
-      squareDesc.add(coordinates[i] + ": " + pieceDesc[map[i] - 1]);
+      var desc = pieceDesc[map[i] - 1];
+      if (desc == S.of(context).emptyPoint) {
+        squareDesc.add(coordinates[i] + ": " + desc);
+      } else {
+        squareDesc.add(desc + ": " + coordinates[i]);
+      }
     }
   }
 }
