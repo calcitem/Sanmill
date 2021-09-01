@@ -1555,6 +1555,7 @@ class _GamePageState extends State<GamePage>
         "\n" +
         lastMove +
         S.of(context).sideToMove +
+        ": " +
         us +
         tip +
         "\n\n" +
