@@ -619,6 +619,7 @@ class _GamePageState extends State<GamePage>
     if (mounted) {
       showTip(S.of(context).gameStarted);
       if (Config.screenReaderSupport) {
+        ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).gameStarted);
       }
     }
