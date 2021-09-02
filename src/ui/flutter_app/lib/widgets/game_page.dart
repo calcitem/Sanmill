@@ -277,6 +277,7 @@ class _GamePageState extends State<GamePage>
             if (mounted) {
               showTip(S.of(context).tipBanPlace);
               if (Config.screenReaderSupport) {
+                ScaffoldMessenger.of(context).clearSnackBars();
                 showSnackBar(context, S.of(context).tipBanPlace);
               }
             }
@@ -291,6 +292,7 @@ class _GamePageState extends State<GamePage>
             if (mounted) {
               showTip(S.of(context).tipCannotPlace);
               if (Config.screenReaderSupport) {
+                ScaffoldMessenger.of(context).clearSnackBars();
                 showSnackBar(context, S.of(context).tipCannotPlace);
               }
             }
@@ -314,12 +316,14 @@ class _GamePageState extends State<GamePage>
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);
                   if (Config.screenReaderSupport) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
                     showSnackBar(context, S.of(context).tipCanMoveToAnyPoint);
                   }
                 }
               } else if (mounted) {
                 showTip(S.of(context).tipPlace);
                 if (Config.screenReaderSupport) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).selected);
                 }
               }
@@ -331,6 +335,7 @@ class _GamePageState extends State<GamePage>
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipCannotMove);
                 if (Config.screenReaderSupport) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).tipCannotMove);
                 }
               }
@@ -341,6 +346,7 @@ class _GamePageState extends State<GamePage>
               if (mounted) {
                 showTip(S.of(context).tipCanMoveOnePoint);
                 if (Config.screenReaderSupport) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).tipCanMoveOnePoint);
                 }
               }
@@ -361,6 +367,7 @@ class _GamePageState extends State<GamePage>
               if (mounted) {
                 showTip(S.of(context).tipSelectWrong);
                 if (Config.screenReaderSupport) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).tipSelectWrong);
                 }
               }
@@ -418,6 +425,7 @@ class _GamePageState extends State<GamePage>
               if (mounted) {
                 showTip(S.of(context).tipCannotRemovePieceFromMill);
                 if (Config.screenReaderSupport) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(
                       context, S.of(context).tipCannotRemovePieceFromMill);
                 }
@@ -508,12 +516,14 @@ class _GamePageState extends State<GamePage>
     if (isMoveNow == true) {
       if (!Game.instance.isAiToMove()) {
         print("[engineToGo] Human to Move. Cannot get search result now.");
+        ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).notAIsTurn);
         return;
       }
       if (!Game.instance.position.recorder.isClean()) {
         print(
             "[engineToGo] History is not clean. Cannot get search result now.");
+        ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).aiIsNotThinking);
         return;
       }
@@ -632,6 +642,7 @@ class _GamePageState extends State<GamePage>
 
   onImportGameButtonPressed() async {
     Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).clearSnackBars();
 
     ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
@@ -651,6 +662,7 @@ class _GamePageState extends State<GamePage>
     if (importFailedStr != "") {
       showTip(S.of(context).cannotImport + " " + importFailedStr);
       if (Config.screenReaderSupport) {
+        ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(
             context, S.of(context).cannotImport + " " + importFailedStr);
       }
@@ -661,6 +673,7 @@ class _GamePageState extends State<GamePage>
 
     showTip(S.of(context).gameImported);
     if (Config.screenReaderSupport) {
+      ScaffoldMessenger.of(context).clearSnackBars();
       showSnackBar(context, S.of(context).gameImported);
     }
   }
@@ -999,9 +1012,11 @@ class _GamePageState extends State<GamePage>
       case "null":
       case "out-of-range":
       case "equal":
+        ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).atEnd);
         break;
       default:
+        ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).movesAndRulesNotMatch);
         break;
     }
@@ -1011,9 +1026,33 @@ class _GamePageState extends State<GamePage>
     isGoingToHistory = false;
 
     if (mounted) {
-      showTip(S.of(context).done);
+      String text = "";
+      var pos = Game.instance.position;
+
+      /*
+      String us = "";
+      String them = "";
+      if (pos.side == PieceColor.white) {
+        us = S.of(context).player1;
+        them = S.of(context).player2;
+      } else if (pos.side == PieceColor.black) {
+        us = S.of(context).player2;
+        them = S.of(context).player1;
+      }
+      */
+
+      var lastEffectiveMove = pos.recorder.lastEffectiveMove;
+      if (lastEffectiveMove != null && lastEffectiveMove.notation != null) {
+        text = S.of(context).lastMove + ": " + lastEffectiveMove.notation;
+      } else {
+        text = S.of(context).atEnd;
+      }
+
+      showTip(text);
+
       if (Config.screenReaderSupport) {
-        showSnackBar(context, S.of(context).done); // TODO: Last move
+        ScaffoldMessenger.of(context).clearSnackBars();
+        showSnackBar(context, text);
       }
     }
   }
@@ -1043,6 +1082,7 @@ class _GamePageState extends State<GamePage>
     final moveHistoryText = Game.instance.position.moveHistoryText;
     var end = Game.instance.moveHistory.length - 1;
     Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).clearSnackBars();
 
     showDialog(
       context: context,
@@ -1090,6 +1130,7 @@ class _GamePageState extends State<GamePage>
               onPressed: () =>
                   Clipboard.setData(ClipboardData(text: moveHistoryText))
                       .then((_) {
+                ScaffoldMessenger.of(context).clearSnackBars();
                 showSnackBar(context, S.of(context).moveHistoryCopied);
               }),
             ),
@@ -1331,6 +1372,7 @@ class _GamePageState extends State<GamePage>
                     if (mounted) {
                       showTip(S.of(context).gameStarted);
                       if (Config.screenReaderSupport) {
+                        ScaffoldMessenger.of(context).clearSnackBars();
                         showSnackBar(context, S.of(context).gameStarted);
                       }
                     }

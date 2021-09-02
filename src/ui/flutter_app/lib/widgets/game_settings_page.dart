@@ -116,6 +116,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         showCountdownDialog(context, 10, _events, _restore);
       } else {
         _restore();
+        ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(S.of(context).exitAppManually)));
       }

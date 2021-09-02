@@ -414,6 +414,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     Config.save();
 
     if (value) {
+      ScaffoldMessenger.of(context).clearSnackBars();
       showSnackBar(context, S.of(context).experimental);
     }
   }
