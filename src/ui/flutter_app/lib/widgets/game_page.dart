@@ -1534,6 +1534,8 @@ class _GamePageState extends State<GamePage>
 
   String getInfoText() {
     String phase = "";
+    String period = Config.screenReaderSupport ? "." : "";
+    String comma = Config.screenReaderSupport ? "," : "";
 
     var pos = Game.instance.position;
 
@@ -1554,13 +1556,15 @@ class _GamePageState extends State<GamePage>
             S.of(context).inHand +
             ": " +
             pos.pieceInHandCount[PieceColor.white].toString() +
-            ",\n" +
+            comma +
+            "\n" +
             S.of(context).player2 +
             " " +
             S.of(context).inHand +
             ": " +
             pos.pieceInHandCount[PieceColor.black].toString() +
-            ",\n"
+            comma +
+            "\n"
         : "";
 
     String us = "";
@@ -1588,22 +1592,30 @@ class _GamePageState extends State<GamePage>
         lastMove = n1;
       }
       if (Config.screenReaderSupport) {
-        lastMove =
-            S.of(context).lastMove + ": " + them + ", " + lastMove + ".\n";
+        lastMove = S.of(context).lastMove +
+            ": " +
+            them +
+            ", " +
+            lastMove +
+            period +
+            "\n";
       } else {
-        lastMove = S.of(context).lastMove + ": " + lastMove + ".\n";
+        lastMove = S.of(context).lastMove + ": " + lastMove + period + "\n";
       }
     }
 
     String ret = phase +
-        ".\n" +
+        period +
+        "\n" +
         lastMove +
         S.of(context).sideToMove +
         ": " +
         us +
-        ". " +
+        period +
         tip +
-        "\n\n" +
+        "\n" +
+        period +
+        "\n" +
         S.of(context).pieceCount +
         ":\n" +
         pieceCountInHand +
@@ -1612,27 +1624,31 @@ class _GamePageState extends State<GamePage>
         S.of(context).onBoard +
         ": " +
         pos.pieceOnBoardCount[PieceColor.white].toString() +
-        ",\n" +
+        comma +
+        "\n" +
         S.of(context).player2 +
         " " +
         S.of(context).onBoard +
         ": " +
         pos.pieceOnBoardCount[PieceColor.black].toString() +
-        ".\n\n" +
+        period +
+        "\n\n" +
         S.of(context).score +
         ":\n" +
         S.of(context).player1 +
         ": " +
         pos.score[PieceColor.white].toString() +
-        ",\n" +
+        comma +
+        "\n" +
         S.of(context).player2 +
         ": " +
         pos.score[PieceColor.black].toString() +
-        ",\n" +
+        comma +
+        "\n" +
         S.of(context).draw +
         ": " +
         pos.score[PieceColor.draw].toString() +
-        ".";
+        period;
     return ret;
   }
 
