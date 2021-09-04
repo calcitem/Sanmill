@@ -6,8 +6,18 @@ import 'package:sanmill/style/colors.dart';
 class AppTheme {
   AppTheme._();
 
-  // Color
+  // Theme data
+  static var lightThemeData = ThemeData(
+    primarySwatch: AppTheme.appPrimaryColor,
+    brightness: Brightness.light,
+  );
 
+  static var darkThemeData = ThemeData(
+    primarySwatch: AppTheme.appPrimaryColor,
+    brightness: Brightness.dark,
+  );
+
+  // Color
   static var appPrimaryColor = Colors.green; // Appbar & Dialog button
   static var dialogTitleColor = appPrimaryColor;
 

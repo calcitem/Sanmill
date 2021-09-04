@@ -154,7 +154,8 @@ class _SanmillAppState extends State<SanmillApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: supportedLocales,
-      theme: ThemeData(primarySwatch: AppTheme.appPrimaryColor),
+      theme: AppTheme.lightThemeData,
+      darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: DoubleBackToCloseApp(
