@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Ez így döntetlen",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Gondolkodás...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Képernyőolvasó támogatás",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Ez egy döntetlen!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Húz",
+    "@draw": {
+        "description": "Draw"
     }
 }

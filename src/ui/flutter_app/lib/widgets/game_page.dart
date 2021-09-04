@@ -163,7 +163,7 @@ class _GamePageState extends State<GamePage>
     Map<String, String> colorWinStrings = {
       PieceColor.white: S.of(context).whiteWin,
       PieceColor.black: S.of(context).blackWin,
-      PieceColor.draw: S.of(context).draw
+      PieceColor.draw: S.of(context).isDraw
     };
 
     if (winner == PieceColor.nobody) {
@@ -1273,7 +1273,7 @@ class _GamePageState extends State<GamePage>
           ? S.of(context).youWin
           : S.of(context).gameOver,
       GameResult.lose: S.of(context).gameOver,
-      GameResult.draw: S.of(context).draw
+      GameResult.draw: S.of(context).isDraw
     };
 
     var dialogTitle = retMap[result];

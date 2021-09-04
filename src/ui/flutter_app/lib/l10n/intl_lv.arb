@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Tas ir neizšķirts",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Domājot...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Ekrāna lasītāja atbalsts",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Tas ir neizšķirts",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Zīmēt",
+    "@draw": {
+        "description": "Draw"
     }
 }

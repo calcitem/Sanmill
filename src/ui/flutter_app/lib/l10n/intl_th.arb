@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "มันคือการจับสลาก",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "กำลังคิด...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "รองรับโปรแกรมอ่านหน้าจอ",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "มันคือการจับสลาก",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "วาด",
+    "@draw": {
+        "description": "Draw"
     }
 }

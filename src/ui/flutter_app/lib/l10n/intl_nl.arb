@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Het is een gelijkspel",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Ik denk...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Ondersteuning voor schermlezers",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Het is een gelijkspel",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Tekenen",
+    "@draw": {
+        "description": "Draw"
     }
 }

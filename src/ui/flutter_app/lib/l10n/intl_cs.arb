@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Je to Draw",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Myslící...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Podpora čtečky obrazovky",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Je to remíza!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Kreslit",
+    "@draw": {
+        "description": "Draw"
     }
 }

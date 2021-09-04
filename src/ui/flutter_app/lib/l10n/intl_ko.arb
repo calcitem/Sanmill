@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "무승부",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "다른 사람이 ...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "스크린 리더 지원",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "추첨입니다",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "그리다",
+    "@draw": {
+        "description": "Draw"
     }
 }

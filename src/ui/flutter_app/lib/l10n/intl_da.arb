@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Det er uafgjort",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Tænker...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Understøttelse af skærmlæser",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Det er uafgjort",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Tegne",
+    "@draw": {
+        "description": "Draw"
     }
 }

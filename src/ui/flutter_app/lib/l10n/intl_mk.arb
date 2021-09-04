@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Тоа е нерешено",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Размислувајќи ...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Поддршка за читач на екран",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Тоа е Нерешено",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Нацртај",
+    "@draw": {
+        "description": "Draw"
     }
 }

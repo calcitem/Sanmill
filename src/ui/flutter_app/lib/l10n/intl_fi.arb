@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Se on tasapeli",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Ajattelen...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Näytönlukuohjelman tuki",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Se on tasapeli",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Tasapeli",
+    "@draw": {
+        "description": "Draw"
     }
 }

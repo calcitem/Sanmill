@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Vẽ tranh",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Người kia đang nghĩ ...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Hỗ trợ trình đọc màn hình",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Đó là một trận hòa",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Vẽ",
+    "@draw": {
+        "description": "Draw"
     }
 }

@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "It is a Draw",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Thinking...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Screen reader support",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "It is a Draw!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Draw",
+    "@draw": {
+        "description": "Draw"
     }
 }

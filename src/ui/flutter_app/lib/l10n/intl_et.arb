@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "See on viik",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Mõtlemine...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Ekraanilugeja tugi",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "See on viik",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Joonista",
+    "@draw": {
+        "description": "Draw"
     }
 }

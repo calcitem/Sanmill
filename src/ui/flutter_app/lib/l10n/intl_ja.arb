@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "ドロー",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "相手が考えているのは...。",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "スクリーンリーダーのサポート",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "引き分けです",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "描く",
+    "@draw": {
+        "description": "Draw"
     }
 }

@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Așa este remiză",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Cugetare...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Suport pentru cititor de ecran",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Este o remiză!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "A desena",
+    "@draw": {
+        "description": "Draw"
     }
 }

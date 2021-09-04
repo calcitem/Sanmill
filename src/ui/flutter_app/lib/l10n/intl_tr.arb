@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Bu bir Beraberlik",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "düşünmek...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Ekran okuyucu desteği",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Bu bir Beraberlik!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Çizmek",
+    "@draw": {
+        "description": "Draw"
     }
 }

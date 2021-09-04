@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Ισοπαλία",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Σκέφτομαι...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Υποστήριξη αναγνώστη οθόνης",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Είναι Κλήρωση",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Σχεδιάζω",
+    "@draw": {
+        "description": "Draw"
     }
 }

@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Lygiosios",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Galvoju...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Ekrano skaitytuvo palaikymas",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Tai Lygiosios",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Lygiosios",
+    "@draw": {
+        "description": "Draw"
     }
 }

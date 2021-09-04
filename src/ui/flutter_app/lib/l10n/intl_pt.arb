@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "É um empate",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Pensando...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Suporte para leitor de tela",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "É um empate.",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Empate",
+    "@draw": {
+        "description": "Draw"
     }
 }

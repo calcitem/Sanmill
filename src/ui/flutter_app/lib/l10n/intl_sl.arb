@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Je neodločen izid",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Razmišljanje...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Podpora za bralnik zaslona",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "To je neodločeno",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Žrebanje",
+    "@draw": {
+        "description": "Draw"
     }
 }

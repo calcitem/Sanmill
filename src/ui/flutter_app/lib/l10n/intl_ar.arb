@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "إنه تعادل",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "التفكير ...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "دعم قارئ الشاشة",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "إنه تعادل",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "يرسم",
+    "@draw": {
+        "description": "Draw"
     }
 }

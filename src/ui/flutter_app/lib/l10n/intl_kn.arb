@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "ಇದು ಡ್ರಾ",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "ಆಲೋಚನೆ...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "ಸ್ಕ್ರೀನ್ ರೀಡರ್ ಬೆಂಬಲ",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "ಇದು ಡ್ರಾ ಆಗಿದೆ",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "ಡ್ರಾ",
+    "@draw": {
+        "description": "Draw"
     }
 }

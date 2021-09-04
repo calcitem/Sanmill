@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Равенство",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Мислене...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Поддръжка на екранен четец",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Това е равенство",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Рисувам",
+    "@draw": {
+        "description": "Draw"
     }
 }

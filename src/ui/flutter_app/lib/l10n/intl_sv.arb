@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Det är oavgjort",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Tänker...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Skärmläsarstöd",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Det är oavgjort!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Dra",
+    "@draw": {
+        "description": "Draw"
     }
 }

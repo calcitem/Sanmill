@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Ничья",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Размышления...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Поддержка программы чтения с экрана",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Это розыгрыш!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Рисовать",
+    "@draw": {
+        "description": "Draw"
     }
 }

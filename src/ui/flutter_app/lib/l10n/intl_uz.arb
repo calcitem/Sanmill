@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Bu durang",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Fikrlash ...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Ekranni o'quvchini qo'llab -quvvatlash",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Bu durang",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Chizma",
+    "@draw": {
+        "description": "Draw"
     }
 }

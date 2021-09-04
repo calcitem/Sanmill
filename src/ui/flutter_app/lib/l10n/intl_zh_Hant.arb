@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "和棋",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "對方思考中...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "屏幕閱讀器支援",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "It is a Draw",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Draw",
+    "@draw": {
+        "description": "Draw"
     }
 }

@@ -184,10 +184,6 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "draw": "Ia adalah Cabutan",
-    "@draw": {
-        "description": "It is a Draw!"
-    },
     "thinking": "Berfikir ...",
     "@thinking": {
         "description": "Thinking..."
@@ -1188,5 +1184,13 @@
     "screenReaderSupport": "Sokongan pembaca skrin",
     "@screenReaderSupport": {
         "description": "Screen reader support"
+    },
+    "isDraw": "Ia adalah Cabutan",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Lukis",
+    "@draw": {
+        "description": "Draw"
     }
 }
