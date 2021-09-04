@@ -1554,13 +1554,13 @@ class _GamePageState extends State<GamePage>
             S.of(context).inHand +
             ": " +
             pos.pieceInHandCount[PieceColor.white].toString() +
-            "\n" +
+            ",\n" +
             S.of(context).player2 +
             " " +
             S.of(context).inHand +
             ": " +
             pos.pieceInHandCount[PieceColor.black].toString() +
-            "\n"
+            ",\n"
         : "";
 
     String us = "";
@@ -1588,48 +1588,51 @@ class _GamePageState extends State<GamePage>
         lastMove = n1;
       }
       if (Config.screenReaderSupport) {
-        lastMove = S.of(context).lastMove + ": " + them + " " + lastMove + "\n";
+        lastMove =
+            S.of(context).lastMove + ": " + them + ", " + lastMove + ".\n";
       } else {
-        lastMove = S.of(context).lastMove + ": " + lastMove + "\n";
+        lastMove = S.of(context).lastMove + ": " + lastMove + ".\n";
       }
     }
 
     String ret = phase +
-        "\n" +
+        ".\n" +
         lastMove +
         S.of(context).sideToMove +
         ": " +
         us +
+        ". " +
         tip +
         "\n\n" +
         S.of(context).pieceCount +
-        "\n" +
+        ":\n" +
         pieceCountInHand +
         S.of(context).player1 +
         " " +
         S.of(context).onBoard +
         ": " +
         pos.pieceOnBoardCount[PieceColor.white].toString() +
-        "\n" +
+        ",\n" +
         S.of(context).player2 +
         " " +
         S.of(context).onBoard +
         ": " +
         pos.pieceOnBoardCount[PieceColor.black].toString() +
-        "\n\n" +
+        ".\n\n" +
         S.of(context).score +
-        "\n" +
+        ":\n" +
         S.of(context).player1 +
         ": " +
         pos.score[PieceColor.white].toString() +
-        "\n" +
+        ",\n" +
         S.of(context).player2 +
         ": " +
         pos.score[PieceColor.black].toString() +
-        "\n" +
+        ",\n" +
         S.of(context).draw +
         ": " +
-        pos.score[PieceColor.draw].toString();
+        pos.score[PieceColor.draw].toString() +
+        ".";
     return ret;
   }
 
