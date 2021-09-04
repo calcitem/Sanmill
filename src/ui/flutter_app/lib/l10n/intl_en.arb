@@ -1129,18 +1129,6 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "mainMenu": "Main menu",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Accessibility",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Screen reader support",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
     "close": "Close",
     "@close": {
         "description": "Close"
@@ -1169,24 +1157,36 @@
     "@placingPhase": {
         "placingPhase": "Placing phase"
     },
-	"movingPhase": "Moving phase",
+    "movingPhase": "Moving phase",
     "@movingPhase": {
         "description": "Moving phase"
     },
-	"flyingPhase": "Flying phase",
+    "flyingPhase": "Flying phase",
     "@flyingPhase": {
         "description": "Flying phase"
     },
-	"sideToMove": "Side to move",
+    "sideToMove": "Side to move",
     "@sideToMove": {
         "description": "Side to move"
     },
-	"lastMove": "Last move",
+    "lastMove": "Last move",
     "@lastMove": {
         "description": "Last move"
     },
-	"selected": "Selected",
+    "selected": "Selected",
     "@selected": {
         "description": "Selected"
+    },
+    "mainMenu": "Main menu",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Accessibility",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Screen reader support",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
     }
 }

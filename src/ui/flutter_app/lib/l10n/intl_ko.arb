@@ -1129,18 +1129,6 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "mainMenu": "메인 메뉴",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "접근성",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "스크린 리더 지원",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
     "close": "닫다",
     "@close": {
         "description": "Close"
@@ -1188,5 +1176,17 @@
     "selected": "선택된",
     "@selected": {
         "description": "Selected"
+    },
+    "mainMenu": "메인 메뉴",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "접근성",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "스크린 리더 지원",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
     }
 }

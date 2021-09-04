@@ -1129,18 +1129,6 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "mainMenu": "主菜单",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "无障碍",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "支持屏幕阅读器",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
     "close": "关闭",
     "@close": {
         "description": "Close"
@@ -1165,28 +1153,40 @@
     "@noPoint": {
         "description": "No point"
     },
-	"placingPhase": "摆子阶段",
+    "placingPhase": "摆子阶段",
     "@placingPhase": {
         "placingPhase": "Placing phase"
     },
-	"movingPhase": "走子阶段",
+    "movingPhase": "走子阶段",
     "@movingPhase": {
         "description": "Moving phase"
     },
-	"flyingPhase": "飞子阶段",
+    "flyingPhase": "飞子阶段",
     "@flyingPhase": {
         "description": "Flying phase"
     },
-	"sideToMove": "轮到",
+    "sideToMove": "轮到",
     "@sideToMove": {
         "description": "Side to move"
     },
-	"lastMove": "最后一着",
+    "lastMove": "最后一着",
     "@lastMove": {
         "description": "Last move"
     },
-	"selected": "已选中",
+    "selected": "已选中",
     "@selected": {
         "description": "Selected"
+    },
+    "mainMenu": "主菜单",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "无障碍",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "支持屏幕阅读器",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
     }
 }

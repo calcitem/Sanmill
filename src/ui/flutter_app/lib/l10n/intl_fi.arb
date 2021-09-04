@@ -1129,18 +1129,6 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "mainMenu": "Päävalikko",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Esteettömyys",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Näytönlukuohjelman tuki",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
     "close": "kiinni",
     "@close": {
         "description": "Close"
@@ -1188,5 +1176,17 @@
     "selected": "Valittu",
     "@selected": {
         "description": "Selected"
+    },
+    "mainMenu": "Päävalikko",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Esteettömyys",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Näytönlukuohjelman tuki",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
     }
 }

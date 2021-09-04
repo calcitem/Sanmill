@@ -1129,18 +1129,6 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "mainMenu": "Asosiy menyu",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Maxsus imkoniyatlar",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Ekranni o'quvchini qo'llab -quvvatlash",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
     "close": "Yopish",
     "@close": {
         "description": "Close"
@@ -1188,5 +1176,17 @@
     "selected": "Tanlangan",
     "@selected": {
         "description": "Selected"
+    },
+    "mainMenu": "Asosiy menyu",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Maxsus imkoniyatlar",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ekranni o'quvchini qo'llab -quvvatlash",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
     }
 }

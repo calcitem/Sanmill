@@ -1129,18 +1129,6 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "mainMenu": "Thực đơn chính",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Khả năng tiếp cận",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Hỗ trợ trình đọc màn hình",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
     "close": "Gần",
     "@close": {
         "description": "Close"
@@ -1188,5 +1176,17 @@
     "selected": "Đã chọn",
     "@selected": {
         "description": "Selected"
+    },
+    "mainMenu": "Thực đơn chính",
+    "@mainMenu": {
+        "description": "Main menu"
+    },
+    "accessibility": "Khả năng tiếp cận",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Hỗ trợ trình đọc màn hình",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
     }
 }
