@@ -1604,6 +1604,14 @@ class _GamePageState extends State<GamePage>
       }
     }
 
+    String addedPeriod = "";
+    if (Config.screenReaderSupport &&
+        tip.length >= 1 &&
+        tip[tip.length - 1] != '.' &&
+        tip[tip.length - 1] != '!') {
+      addedPeriod = ".";
+    }
+
     String ret = phase +
         period +
         "\n" +
@@ -1613,9 +1621,8 @@ class _GamePageState extends State<GamePage>
         us +
         period +
         tip +
-        "\n" +
-        period +
-        "\n" +
+        addedPeriod +
+        "\n\n" +
         S.of(context).pieceCount +
         ":\n" +
         pieceCountInHand +
