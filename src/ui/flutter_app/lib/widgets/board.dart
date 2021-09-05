@@ -19,6 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/painting/board_painter.dart';
@@ -248,9 +249,19 @@ class Board extends StatelessWidget {
       1
     ];
 
-    for (var file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
-      for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
-        coordinates.add("$file$rank");
+    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+
+    if (ltr) {
+      for (var file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
+        for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
+          coordinates.add("$file$rank");
+        }
+      }
+    } else {
+      for (var file in ['g', 'f', 'e', 'd', 'c', 'b', 'a']) {
+        for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
+          coordinates.add("$file$rank");
+        }
       }
     }
 
