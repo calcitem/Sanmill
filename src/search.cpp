@@ -244,6 +244,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     Move ttMove = MOVE_NONE;
 #endif // TT_MOVE_ENABLE
 
+    // Transposition table lookup
+
 #if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     const Key posKey = pos->key();
 #endif
@@ -275,7 +277,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
     // check transposition-table
 
-    const Value oldAlpha = alpha;
+    const Value oldAlpha = alpha;   // To flag BOUND_EXACT when eval above alpha and no available moves
 
     Bound type = BOUND_NONE;
 
@@ -331,8 +333,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     }
 #endif // THREEFOLD_REPETITION
 
-    // recurse
-
+    // Initialize a MovePicker object for the current position, and prepare
+    // to search the moves. 
     MovePicker mp(*pos);
     Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
@@ -369,10 +371,13 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 #endif // !DISABLE_PREFETCH
 #endif // TRANSPOSITION_TABLE_ENABLE
 
+    // Loop through the moves until no moves remain or a beta cutoff occurs
     for (int i = 0; i < moveCount; i++) {
         ss.push(*(pos));
         const Color before = pos->sideToMove;
         Move move = mp.moves[i].move;
+
+        // Make and search the move
         pos->do_move(move);
         const Color after = pos->sideToMove;
 
@@ -435,7 +440,12 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
                     bestMove = move;
                 }
 
-                break;
+                if (value < beta) // Update alpha! Always alpha < beta
+                    alpha = value;
+                else {
+                    assert(value >= beta); // Fail high
+                    break; // Fail high
+                }
             }
         }
     }
