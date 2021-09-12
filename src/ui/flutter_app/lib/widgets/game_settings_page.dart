@@ -69,8 +69,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         child: Slider(
           value: Config.skillLevel.toDouble(),
           min: 1,
-          max: 20,
-          divisions: 19,
+          max: 30,
+          divisions: 29,
           label: Config.skillLevel.round().toString(),
           onChanged: (value) {
             setState(() {

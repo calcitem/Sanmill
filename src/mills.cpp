@@ -628,7 +628,7 @@ Depth get_search_depth(const Position *pos)
     }
 
     // Do not too weak
-    if (depthLimit == 20 && d <= 4) {   // TODO
+    if (depthLimit == 30 && d <= 4) {   // TODO
         d = 4;
     }
 #endif

@@ -1282,7 +1282,7 @@ class _GamePageState extends State<GamePage>
       return;
     }
 
-    bool isTopLevel = (Config.skillLevel == 20); // TODO: 20
+    bool isTopLevel = (Config.skillLevel == 30); // TODO: 30
 
     if (result == GameResult.win &&
         !isTopLevel &&
