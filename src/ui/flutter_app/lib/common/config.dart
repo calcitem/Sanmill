@@ -43,7 +43,7 @@ class Config {
   static bool learnEndgame = false;
   static bool openingBook = false;
   static bool drawOnHumanExperience = true;
-  static bool considerMobility = false;
+  static bool considerMobility = true;
   static bool developerMode = false;
   static bool experimentsEnabled = false;
 
@@ -118,7 +118,7 @@ class Config {
     Config.learnEndgame = settings['LearnEndgame'] ?? false;
     Config.openingBook = settings['OpeningBook'] ?? false;
     Config.drawOnHumanExperience = settings['DrawOnHumanExperience'] ?? true;
-    Config.considerMobility = settings['ConsiderMobility'] ?? false;
+    Config.considerMobility = settings['ConsiderMobility'] ?? true;
     Config.developerMode = settings['DeveloperMode'] ?? false;
     Config.experimentsEnabled = settings['ExperimentsEnabled'] ?? false;
 

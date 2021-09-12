@@ -223,7 +223,7 @@ private:
     bool depthExtension {true};
     bool openingBook { false };
     bool drawOnHumanExperience { true };
-    bool considerMobility { false };
+    bool considerMobility { true };
     bool developerMode { false };
 };
 
