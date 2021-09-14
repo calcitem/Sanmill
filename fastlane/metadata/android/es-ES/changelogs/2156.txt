@@ -1,0 +1,6 @@
+v1.1.30
+
+* Evitar que la IA sea demasiado agresiva en la fase de apertura, lo que puede provocar fácilmente pérdidas.
+* Aumentar el valor máximo del nivel de habilidad de 20 a 30.
+* Activar la opción "Considerar la movilidad de las piezas" por defecto.
+* Añade la opción "Color de resaltado de las piezas" y ponla en rojo por defecto.

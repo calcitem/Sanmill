@@ -1,0 +1,6 @@
+v1.1.30
+
+* Vermeiden Sie, dass die KI in der Eröffnungsphase zu aggressiv agiert, was leicht zu Verlusten führen kann.
+* Erhöhen Sie den maximalen Wert der Fertigkeitsstufe von 20 auf 30.
+* Standardmäßig ist die Option "Mobilität der Steine berücksichtigen" aktiviert.
+* Fügen Sie die Einstellung "Farbe der Steinmarkierung" hinzu und setzen Sie Rot als Standard.

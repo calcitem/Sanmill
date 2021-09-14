@@ -1,0 +1,6 @@
+v1.1.30
+
+* Avoid the AI being too aggressive in the opening phase, which can easily lead to losses.
+* Increase the max value of skill level from 20 to 30.
+* Set 'Consider mobility of pieces' to on as default.
+* Add 'Piece highlight color' setting and set red as default.
