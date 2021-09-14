@@ -1192,5 +1192,9 @@
     "draw": "Tegne",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Farge på høydepunktet",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

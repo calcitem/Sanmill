@@ -1192,5 +1192,9 @@
     "draw": "和棋",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "棋子高亮颜色",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

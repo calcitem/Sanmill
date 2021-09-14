@@ -1192,5 +1192,9 @@
     "draw": "Zeichnen",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Farbe des Stein-Highlights",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

@@ -1192,5 +1192,9 @@
     "draw": "Chizma",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Rangni ajratib ko'rsatish",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

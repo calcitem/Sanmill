@@ -1192,5 +1192,9 @@
     "draw": "قرعه کشی",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "رنگ برجسته آجیل",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

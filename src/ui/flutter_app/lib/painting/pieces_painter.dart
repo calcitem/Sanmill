@@ -184,6 +184,7 @@ class PiecesPainter extends PiecesBasePainter {
     if (focusIndex != invalidIndex) {
       final int row = focusIndex! ~/ 7, column = focusIndex % 7;
 
+      /*
       focusPositionColor = Color.fromARGB(
               (Color(Config.whitePieceColor).alpha +
                       Color(Config.blackPieceColor).alpha) ~/
@@ -198,6 +199,9 @@ class PiecesPainter extends PiecesBasePainter {
                       Color(Config.blackPieceColor).blue) ~/
                   2)
           .withOpacity(0.5);
+      */
+
+      focusPositionColor = Color(Config.pieceHighlightColor);
 
       paint.color = focusPositionColor;
       paint.style = PaintingStyle.stroke;

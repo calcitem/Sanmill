@@ -58,6 +58,7 @@ class _PersonalizationSettingsPageState
       S.of(context).lineColor: Config.boardLineColor,
       S.of(context).whitePieceColor: Config.whitePieceColor,
       S.of(context).blackPieceColor: Config.blackPieceColor,
+      S.of(context).pieceHighlightColor: Config.pieceHighlightColor,
       S.of(context).messageColor: Config.messageColor,
       S.of(context).drawerColor: Config.drawerColor,
       S.of(context).drawerBackgroundColor: Config.drawerBackgroundColor,
@@ -109,6 +110,8 @@ class _PersonalizationSettingsPageState
               Config.whitePieceColor = pickerColor.value;
             } else if (colorString == S.of(context).blackPieceColor) {
               Config.blackPieceColor = pickerColor.value;
+            } else if (colorString == S.of(context).pieceHighlightColor) {
+              Config.pieceHighlightColor = pickerColor.value;
             } else if (colorString == S.of(context).messageColor) {
               Config.messageColor = pickerColor.value;
             } else if (colorString == S.of(context).drawerColor) {
@@ -515,6 +518,13 @@ class _PersonalizationSettingsPageState
             titleString: S.of(context).blackPieceColor,
             trailingColor: Config.blackPieceColor,
             onTap: () => showColorDialog(S.of(context).blackPieceColor),
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).pieceHighlightColor,
+            trailingColor: Config.pieceHighlightColor,
+            onTap: () => showColorDialog(S.of(context).pieceHighlightColor),
           ),
           ListItemDivider(),
           SettingsListTile(

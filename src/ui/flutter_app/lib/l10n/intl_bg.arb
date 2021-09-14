@@ -1192,5 +1192,9 @@
     "draw": "Рисувам",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Цвят за подчертаване на парче",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

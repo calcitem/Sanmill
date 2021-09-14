@@ -26,10 +26,11 @@ class AppTheme {
   static var mainToolbarBackgroundColor = UIColors.burlyWood;
   static var navigationToolbarBackgroundColor = UIColors.burlyWood;
   static var boardLineColor = Color(0x996D000D);
-  static var blackPieceColor = Color.fromARGB(0xFF, 0x00, 0x00, 0x00);
-  static var blackPieceBorderColor = Color.fromARGB(0xFF, 0x22, 0x22, 0x22);
   static var whitePieceColor = Color.fromARGB(0xFF, 0xFF, 0xFF, 0xFF);
   static var whitePieceBorderColor = Color.fromARGB(0xFF, 0x66, 0x00, 0x00);
+  static var blackPieceColor = Color.fromARGB(0xFF, 0x00, 0x00, 0x00);
+  static var blackPieceBorderColor = Color.fromARGB(0xFF, 0x22, 0x22, 0x22);
+  static var pieceHighlightColor = Colors.red;
   static var messageColor = Colors.white;
   static var banColor = Color.fromARGB(0xFF, 0xFF, 0x00, 0x00); // unused
   static var banBorderColor = Color.fromARGB(0x80, 0xFF, 0x00, 0x00); // unused

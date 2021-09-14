@@ -1192,5 +1192,9 @@
     "draw": "ಡ್ರಾ",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "ಪೀಸ್ ಹೈಲೈಟ್ ಬಣ್ಣ",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

@@ -1192,5 +1192,9 @@
     "draw": "Нацртај",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Боја за истакнување на парче",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

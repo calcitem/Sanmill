@@ -1192,5 +1192,9 @@
     "draw": "crtati",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Boja isticanja komada",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

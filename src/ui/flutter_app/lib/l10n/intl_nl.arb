@@ -1192,5 +1192,9 @@
     "draw": "Tekenen",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Stuk markeerkleur",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

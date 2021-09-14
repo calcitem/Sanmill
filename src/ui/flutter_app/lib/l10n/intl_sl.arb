@@ -1192,5 +1192,9 @@
     "draw": "Žrebanje",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Barva poudarka kosa",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

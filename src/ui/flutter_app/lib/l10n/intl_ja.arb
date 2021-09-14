@@ -1192,5 +1192,9 @@
     "draw": "描く",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "チェッカーのハイライト色",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

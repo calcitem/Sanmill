@@ -1192,5 +1192,9 @@
     "draw": "Dibujar",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Color de resaltado de la pieza",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

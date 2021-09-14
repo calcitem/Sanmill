@@ -1192,5 +1192,9 @@
     "draw": "గీయండి",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "పీస్ హైలైట్ రంగు",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

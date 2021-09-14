@@ -1192,5 +1192,9 @@
     "draw": "Kreslit",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Barva zvýraznění kusu",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

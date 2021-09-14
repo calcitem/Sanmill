@@ -1192,5 +1192,9 @@
     "draw": "Joonista",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Tükk esiletõstetud värv",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

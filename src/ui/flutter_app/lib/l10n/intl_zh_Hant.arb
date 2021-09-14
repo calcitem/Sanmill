@@ -1192,5 +1192,9 @@
     "draw": "Draw",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "棋子高亮顏色",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

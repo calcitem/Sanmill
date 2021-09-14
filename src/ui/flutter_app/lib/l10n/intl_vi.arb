@@ -1192,5 +1192,9 @@
     "draw": "Vẽ",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Màu nổi bật mảnh",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

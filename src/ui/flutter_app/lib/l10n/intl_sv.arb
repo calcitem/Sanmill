@@ -1192,5 +1192,9 @@
     "draw": "Dra",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Del markera färg",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

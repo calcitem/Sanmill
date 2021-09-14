@@ -1192,5 +1192,9 @@
     "draw": "Lukis",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Warna kemuncak kepingan",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

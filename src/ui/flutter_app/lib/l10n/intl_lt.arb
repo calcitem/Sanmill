@@ -1192,5 +1192,9 @@
     "draw": "Lygiosios",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Kūrinio paryškinimo spalva",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

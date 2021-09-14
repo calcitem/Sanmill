@@ -1192,5 +1192,9 @@
     "draw": "Dessiner",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Couleur de surbrillance de la pièce",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

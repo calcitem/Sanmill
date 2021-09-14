@@ -1192,5 +1192,9 @@
     "draw": "Húz",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "A lemez kiemelésének színe",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

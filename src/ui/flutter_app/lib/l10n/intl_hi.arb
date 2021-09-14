@@ -1192,5 +1192,9 @@
     "draw": "खींचना",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "टुकड़ा हाइलाइट रंग",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

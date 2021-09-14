@@ -1192,5 +1192,9 @@
     "draw": "Disegno",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Colore evidenziazione pezzo",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

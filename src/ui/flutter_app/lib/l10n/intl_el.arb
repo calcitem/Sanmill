@@ -1192,5 +1192,9 @@
     "draw": "Σχεδιάζω",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Χρώμα φωτισμού κομμάτι",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

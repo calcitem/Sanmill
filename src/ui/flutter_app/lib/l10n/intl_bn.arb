@@ -1192,5 +1192,9 @@
     "draw": "আঁকা",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "পিস হাইলাইট কালার",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

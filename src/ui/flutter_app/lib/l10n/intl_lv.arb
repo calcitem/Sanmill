@@ -1192,5 +1192,9 @@
     "draw": "Zīmēt",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Gabalu izceltā krāsa",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

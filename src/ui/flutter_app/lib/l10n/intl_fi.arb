@@ -1192,5 +1192,9 @@
     "draw": "Tasapeli",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Kappaleen korostusväri",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

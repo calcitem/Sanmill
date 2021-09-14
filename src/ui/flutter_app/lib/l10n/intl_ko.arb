@@ -1192,5 +1192,9 @@
     "draw": "그리다",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "체크 하이라이트 색상",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

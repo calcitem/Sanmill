@@ -1192,5 +1192,9 @@
     "draw": "દોરો",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "પીસ હાઇલાઇટ કલર",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

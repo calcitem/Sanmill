@@ -1192,5 +1192,9 @@
     "draw": "يرسم",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "لون تسليط الضوء على قطعة",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

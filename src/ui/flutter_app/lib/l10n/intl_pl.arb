@@ -1192,5 +1192,9 @@
     "draw": "Remis",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Kolor podświetlenia kawałka",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

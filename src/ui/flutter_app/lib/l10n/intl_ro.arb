@@ -1192,5 +1192,9 @@
     "draw": "A desena",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Culoarea de evidențiere a piesei",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

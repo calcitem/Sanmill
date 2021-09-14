@@ -1192,5 +1192,9 @@
     "draw": "วาด",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "ชิ้นไฮไลท์สี",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

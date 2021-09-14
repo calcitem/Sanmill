@@ -1192,5 +1192,9 @@
     "draw": "Çizmek",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Parça vurgu rengi",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

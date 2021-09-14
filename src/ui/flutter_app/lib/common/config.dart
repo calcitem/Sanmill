@@ -66,6 +66,7 @@ class Config {
   static int boardBackgroundColor = AppTheme.boardBackgroundColor.value;
   static int whitePieceColor = AppTheme.whitePieceColor.value;
   static int blackPieceColor = AppTheme.blackPieceColor.value;
+  static int pieceHighlightColor = AppTheme.pieceHighlightColor.value;
   static int messageColor = AppTheme.messageColor.value;
   static int drawerColor = AppTheme.drawerColor.value;
   static int drawerBackgroundColor = AppTheme.drawerBackgroundColor.value;
@@ -150,6 +151,8 @@ class Config {
         settings['WhitePieceColor'] ?? AppTheme.whitePieceColor.value;
     Config.blackPieceColor =
         settings['BlackPieceColor'] ?? AppTheme.blackPieceColor.value;
+    Config.pieceHighlightColor =
+        settings['PieceHighlightColor'] ?? AppTheme.pieceHighlightColor.value;
     Config.messageColor =
         settings['MessageColor'] ?? AppTheme.messageColor.value;
     Config.drawerColor = settings['DrawerColor'] ?? AppTheme.drawerColor.value;
@@ -247,6 +250,7 @@ class Config {
     settings['BoardBackgroundColor'] = Config.boardBackgroundColor;
     settings['WhitePieceColor'] = Config.whitePieceColor;
     settings['BlackPieceColor'] = Config.blackPieceColor;
+    settings['PieceHighlightColor'] = Config.pieceHighlightColor;
     settings['MessageColor'] = Config.messageColor;
     settings['DrawerColor'] = Config.drawerColor;
     settings['DrawerBackgroundColor'] = Config.drawerBackgroundColor;

@@ -1192,5 +1192,9 @@
     "draw": "Nakreslite",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Farba zvýraznenia kusu",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

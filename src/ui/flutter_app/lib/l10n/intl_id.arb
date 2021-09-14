@@ -1192,5 +1192,9 @@
     "draw": "Seri",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Warna sorot potongan",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }

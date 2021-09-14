@@ -1192,5 +1192,9 @@
     "draw": "Рисовать",
     "@draw": {
         "description": "Draw"
+    },
+    "pieceHighlightColor": "Цвет выделения детали",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
     }
 }
