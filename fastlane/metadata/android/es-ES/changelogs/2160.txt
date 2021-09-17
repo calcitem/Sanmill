@@ -1,0 +1,4 @@
+v1.1.31
+
+* Nine Men's Morris: Arregla la IA para que las blancas no puedan hacer un molino en la fase de apertura, lo que hace que la IA sea vulnerable a perder la partida.
+* Twelve Men's Morris: Aumenta el poder de la IA.

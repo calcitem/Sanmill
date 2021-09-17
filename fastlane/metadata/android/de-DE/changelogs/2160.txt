@@ -1,0 +1,4 @@
+v1.1.31
+
+* Neun-Männer-Morris: Die KI kann Weiß in der Eröffnungsphase daran hindern, eine Mühle zu bauen, so dass die KI anfällig ist, das Spiel zu verlieren.
+* Twelve Men's Morris: Verstärkt die KI-Power.

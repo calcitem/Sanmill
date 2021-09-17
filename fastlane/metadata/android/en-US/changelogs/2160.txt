@@ -1,0 +1,4 @@
+v1.1.31
+
+* Nine Men's Morris: Fix AI is likely to block white from making a mill in the opening phase, thus making AI vulnerable to lose the game.
+* Twelve Men's Morris: Boost the AI power.
