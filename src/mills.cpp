@@ -468,19 +468,33 @@ Depth get_search_depth(const Position *pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
-            const Depth placingDepthTable[25] = {
-                  +1,  1,  +1,  1,   /* 0 ~ 3 */
-                  +3, 3, +15, 15,   /* 4 ~ 7 */
-                  +15, 2, +8,  0,    /* 8 ~ 11 */
-                  +0, 0, +0,  0,     /* 12 ~ 15 */
-                  +0, 0, +0,  0,     /* 16 ~ 19 */
-                  +0, 0, +0,  0,     /* 20 ~ 23 */
-                  +0                 /* 24 */
+            const Depth placingDepthTable9[25] = {
+                 +1,  1,  +1,  1,    /* 0 ~ 3 */
+                 +3,  3, +15, 15,    /* 4 ~ 7 */
+                 +15, 2,  +8,  0,    /* 8 ~ 11 */
+                 +0,  0,  +0,  0,    /* 12 ~ 15 */
+                 +0,  0,  +0,  0,    /* 16 ~ 19 */
+                 +0,  0,  +0,  0,    /* 20 ~ 23 */
+                 +0                  /* 24 */
+            };
+
+            const Depth placingDepthTable12[25] = {
+                 +1,  2,  +2,  4,    /* 0 ~ 3 */
+                 +4, 12, +12, 18,    /* 4 ~ 7 */
+                +12,  0,  +0,  0,    /* 8 ~ 11 */
+                 +0,  0,  +0,  0,    /* 12 ~ 15 */
+                 +0,  0,  +0,  0,    /* 16 ~ 19 */
+                 +0,  0,  +0,  0,    /* 20 ~ 23 */
+                 +0                  /* 24 */
             };
 
             const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
 
-            d = placingDepthTable[index];
+            if (rule.hasDiagonalLines) {
+                d = placingDepthTable12[index];
+            } else {
+                d = placingDepthTable9[index];
+            }
 
 #if 0
             if (gameOptions.getDrawOnHumanExperience()) {
