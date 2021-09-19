@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "পিস হাইলাইট কালার",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "অ্যালগরিদম",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

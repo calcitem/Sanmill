@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Del markera färg",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritm",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

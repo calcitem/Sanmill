@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "टुकड़ा हाइलाइट रंग",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "कलन विधि",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

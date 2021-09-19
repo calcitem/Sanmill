@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "పీస్ హైలైట్ రంగు",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "అల్గోరిథం",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

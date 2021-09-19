@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "チェッカーのハイライト色",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "アルゴリズム",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

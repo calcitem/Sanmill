@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Ngjyra e theksimit të copës",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritmi",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

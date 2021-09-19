@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Farge på høydepunktet",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritme",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

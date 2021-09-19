@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Kūrinio paryškinimo spalva",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritmas",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

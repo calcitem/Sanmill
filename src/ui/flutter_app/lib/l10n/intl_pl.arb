@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Kolor podświetlenia kawałka",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algorytm",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

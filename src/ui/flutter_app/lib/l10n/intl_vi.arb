@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Màu nổi bật mảnh",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Thuật toán",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

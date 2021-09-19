@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "رنگ برجسته آجیل",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "الگوریتم",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

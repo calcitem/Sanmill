@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Farba zvýraznenia kusu",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritmus",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

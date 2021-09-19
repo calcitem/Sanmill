@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "لون تسليط الضوء على قطعة",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "الخوارزمية",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

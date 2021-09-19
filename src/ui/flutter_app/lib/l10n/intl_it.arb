@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Colore evidenziazione pezzo",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritmo",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

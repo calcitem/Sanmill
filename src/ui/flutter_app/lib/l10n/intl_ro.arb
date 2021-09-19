@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Culoarea de evidențiere a piesei",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritm",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

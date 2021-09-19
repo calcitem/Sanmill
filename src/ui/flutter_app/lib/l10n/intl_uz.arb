@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Rangni ajratib ko'rsatish",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritm",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "棋子高亮顏色",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "算法",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

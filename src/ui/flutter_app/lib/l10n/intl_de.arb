@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Farbe des Stein-Highlights",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algorithmus",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

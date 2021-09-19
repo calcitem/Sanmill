@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Barva poudarka kosa",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritem",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

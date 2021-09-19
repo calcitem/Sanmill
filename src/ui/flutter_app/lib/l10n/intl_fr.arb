@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Couleur de surbrillance de la pièce",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algorithme",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

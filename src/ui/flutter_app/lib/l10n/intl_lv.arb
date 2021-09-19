@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Gabalu izceltā krāsa",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritms",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

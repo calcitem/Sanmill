@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Цвет выделения детали",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Алгоритм",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

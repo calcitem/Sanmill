@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Stuk markeerkleur",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritme",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

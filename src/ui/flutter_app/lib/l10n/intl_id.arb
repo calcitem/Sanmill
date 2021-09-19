@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Warna sorot potongan",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "algoritma",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

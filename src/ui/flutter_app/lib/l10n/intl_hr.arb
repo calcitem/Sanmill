@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Boja isticanja komada",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritam",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

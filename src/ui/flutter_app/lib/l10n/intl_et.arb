@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Tükk esiletõstetud värv",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritm",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

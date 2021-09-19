@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "ชิ้นไฮไลท์สี",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "อัลกอริทึม",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

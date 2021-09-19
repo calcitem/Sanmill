@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Боја за истакнување на парче",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Алгоритам",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

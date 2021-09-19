@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Χρώμα φωτισμού κομμάτι",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Αλγόριθμος",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "A lemez kiemelésének színe",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritmus",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

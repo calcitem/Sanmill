@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Warna kemuncak kepingan",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritma",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }

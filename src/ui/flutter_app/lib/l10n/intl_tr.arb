@@ -1196,5 +1196,9 @@
     "pieceHighlightColor": "Parça vurgu rengi",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "algoritma",
+    "@algorithm": {
+        "description": "Algorithm"
     }
 }
