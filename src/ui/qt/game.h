@@ -239,6 +239,12 @@ public slots:
     // Move Time
     void setMoveTime(int val);
 
+    // Algorithm
+    void setAlphaBetaAlgorithm(bool enabled);
+    void setPvsAlgorithm(bool enabled);
+    void setMtdfAlgorithm(bool enabled);
+    void setAlgorithm(int val);
+
     // Draw on human experience
     void setDrawOnHumanExperience(bool enabled);
 

@@ -42,6 +42,7 @@ class Config {
   static bool shufflingEnabled = true;
   static bool learnEndgame = false;
   static bool openingBook = false;
+  static int algorithm = 2;
   static bool drawOnHumanExperience = true;
   static bool considerMobility = true;
   static bool developerMode = false;
@@ -118,6 +119,7 @@ class Config {
     Config.shufflingEnabled = settings['ShufflingEnabled'] ?? true;
     Config.learnEndgame = settings['LearnEndgame'] ?? false;
     Config.openingBook = settings['OpeningBook'] ?? false;
+    Config.algorithm = settings['Algorithm'] ?? 2;
     Config.drawOnHumanExperience = settings['DrawOnHumanExperience'] ?? true;
     Config.considerMobility = settings['ConsiderMobility'] ?? true;
     Config.developerMode = settings['DeveloperMode'] ?? false;
@@ -225,6 +227,7 @@ class Config {
     settings['ShufflingEnabled'] = Config.shufflingEnabled;
     settings['LearnEndgame'] = Config.learnEndgame;
     settings['OpeningBook'] = Config.openingBook;
+    settings['Algorithm'] = Config.algorithm;
     settings['DrawOnHumanExperience'] = Config.drawOnHumanExperience;
     settings['ConsiderMobility'] = Config.considerMobility;
     settings['DeveloperMode'] = Config.developerMode;

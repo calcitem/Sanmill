@@ -75,6 +75,11 @@ void on_random_move(const Option &o)
     gameOptions.setShufflingEnabled((bool)o);
 }
 
+void on_algorithm(const Option &o)
+{
+    gameOptions.setAlgorithm((int)o);
+}
+
 void on_drawOnHumanExperience(const Option &o)
 {
     gameOptions.setDrawOnHumanExperience((bool)o);
@@ -191,6 +196,7 @@ void init(OptionsMap &o)
     o["UCI_Elo"] << Option(1350, 1350, 2850);
 
     o["Shuffling"] << Option(true, on_random_move);
+    o["Algorithm"] << Option(2, 0, 2, on_algorithm);
     o["DrawOnHumanExperience"] << Option(true, on_drawOnHumanExperience);
     o["ConsiderMobility"] << Option(true, on_considerMobility);
     o["DeveloperMode"] << Option(true, on_developerMode);

@@ -205,6 +205,15 @@ void MillGameWindow::initialize()
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)),
             game, SLOT(setAnimation(bool)));
 
+    connect(ui.actionAlphaBetaAlgorithm, SIGNAL(toggled(bool)),
+            game, SLOT(setAlphaBetaAlgorithm(bool)));
+
+    connect(ui.actionPvsAlgorithm, SIGNAL(toggled(bool)),
+            game, SLOT(setPvsAlgorithm(bool)));
+
+    connect(ui.actionMtdfAlgorithm, SIGNAL(toggled(bool)),
+            game, SLOT(setMtdfAlgorithm(bool)));
+
     connect(ui.actionDrawOnHumanExperience, SIGNAL(toggled(bool)),
             game, SLOT(setDrawOnHumanExperience(bool)));
 
@@ -394,6 +403,43 @@ void MillGameWindow::initialize()
     ui.actionFixWindowSize->setChecked(game->fixWindowSizeEnabled());
     ui.actionSound_S->setChecked(game->soundEnabled());
     ui.actionAnimation_A->setChecked(game->animationEnabled());
+
+    auto alignmentGroup = new QActionGroup(this);
+    alignmentGroup->addAction(ui.actionAlphaBetaAlgorithm);
+    alignmentGroup->addAction(ui.actionPvsAlgorithm);
+    alignmentGroup->addAction(ui.actionMtdfAlgorithm);
+    alignmentGroup->addAction(ui.actionPerfect_AI);
+
+    switch (gameOptions.getAlgorithm()) {
+        case 0:
+            ui.actionAlphaBetaAlgorithm->setChecked(true);
+            ui.actionPvsAlgorithm->setChecked(false);
+            ui.actionMtdfAlgorithm->setChecked(false);
+            ui.actionPerfect_AI->setChecked(false);
+            loggerDebug("Algorithm is Alpha-Beta.\n");
+            break;
+        case 1:
+            ui.actionAlphaBetaAlgorithm->setChecked(false);
+            ui.actionPvsAlgorithm->setChecked(true);
+            ui.actionMtdfAlgorithm->setChecked(false);
+            ui.actionPerfect_AI->setChecked(false);
+            loggerDebug("Algorithm is PVS.\n");
+            break;
+        case 2:
+            ui.actionAlphaBetaAlgorithm->setChecked(false);
+            ui.actionPvsAlgorithm->setChecked(false);
+            ui.actionMtdfAlgorithm->setChecked(true);
+            ui.actionPerfect_AI->setChecked(false);
+            loggerDebug("Algorithm is MTD(f).\n");
+            break;
+        default:
+            ui.actionAlphaBetaAlgorithm->setChecked(false);
+            ui.actionPvsAlgorithm->setChecked(false);
+            ui.actionMtdfAlgorithm->setChecked(false);
+            ui.actionPerfect_AI->setChecked(true);
+            loggerDebug("Algorithm is other.\n");
+            break;
+    }
 
     ui.actionDrawOnHumanExperience->setChecked(gameOptions.getDrawOnHumanExperience());
     ui.actionConsiderMobility->setChecked(gameOptions.getConsiderMobility());

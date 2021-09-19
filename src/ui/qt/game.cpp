@@ -135,6 +135,7 @@ void Game::loadSettings()
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
     setSkillLevel(empty ? 1 : settings->value("Options/SkillLevel").toInt());
     setMoveTime(empty ? 1 : settings->value("Options/MoveTime").toInt());
+    setAlgorithm(empty ? 2 : settings->value("Options/Algorithm").toInt());
     setDrawOnHumanExperience(empty ? true : settings->value("Options/DrawOnHumanExperience").toBool());
     setConsiderMobility(empty ? true : settings->value("Options/ConsiderMobility").toBool());
     setAiIsLazy(empty ? false : settings->value("Options/AiIsLazy").toBool());
@@ -585,6 +586,39 @@ void Game::setMoveTime(int val)
 {
     gameOptions.setMoveTime(val);
     settings->setValue("Options/MoveTime", val);
+}
+
+void Game::setAlphaBetaAlgorithm(bool enabled)
+{
+    if (enabled) {
+        gameOptions.setAlgorithm(0);
+        settings->setValue("Options/Algorithm", 0);
+        loggerDebug("Algorithm is changed to Alpha-Beta.\n");
+    }
+}
+
+void Game::setPvsAlgorithm(bool enabled)
+{
+    if (enabled) {
+        gameOptions.setAlgorithm(1);
+        settings->setValue("Options/Algorithm", 1);
+        loggerDebug("Algorithm is changed to PVS.\n");
+    }
+}
+
+void Game::setMtdfAlgorithm(bool enabled)
+{
+    if (enabled) {
+        gameOptions.setAlgorithm(2);
+        settings->setValue("Options/Algorithm", 2);
+        loggerDebug("Algorithm is changed to MTD(f).\n");
+    }
+}
+
+void Game::setAlgorithm(int val)
+{
+    gameOptions.setAlgorithm(val);
+    settings->setValue("Options/Algorithm", val);
 }
 
 void Game::setDrawOnHumanExperience(bool enabled)

@@ -167,6 +167,83 @@ public:
         return openingBook;
     }
 
+    // Algorithm
+
+    void setAlphaBetaAlgorithm(bool enabled) noexcept
+    {
+        if (enabled) {
+            algorithm = 0;
+        }
+    }
+
+    bool getAlphaBetaAlgorithm() const noexcept
+    {
+        return algorithm == 0;
+    }
+
+    void setPvsAlgorithm(bool enabled) noexcept
+    {
+        if (enabled) {
+            algorithm = 1;
+        }
+    }
+
+    bool getPvsAlgorithm() const noexcept
+    {
+        return algorithm == 1;
+    }
+
+    void setMtdfAlgorithm(bool enabled) noexcept
+    {
+        if (enabled) {
+            algorithm = 2;
+        }
+    }
+
+    bool getMtdfAlgorithm() const noexcept
+    {
+        return algorithm == 2;
+    }
+
+    void setAlgorithm(int val) noexcept
+    {
+        algorithm = val;
+
+#if 0
+        switch (val) {
+        case 0:
+            setAlphaBetaAlgorithm(true);
+            setPvsAlgorithm(false);
+            setMtdfAlgorithm(false);
+            setPerfectAiEnabled(false);
+            break;
+        case 1:
+            setAlphaBetaAlgorithm(false);
+            setPvsAlgorithm(true);
+            setMtdfAlgorithm(false);
+            setPerfectAiEnabled(false);
+            break;
+        case 2:
+            setAlphaBetaAlgorithm(false);
+            setPvsAlgorithm(false);
+            setMtdfAlgorithm(true);
+            setPerfectAiEnabled(false);
+            break;
+        default:
+            setAlphaBetaAlgorithm(false);
+            setPvsAlgorithm(false);
+            setMtdfAlgorithm(false);
+            setPerfectAiEnabled(true);
+            break;
+        };
+#endif
+    }
+
+    int getAlgorithm() const noexcept
+    {
+        return algorithm;
+    }
+
     // DrawOnHumanExperience
 
     void setDrawOnHumanExperience(bool enabled) noexcept
@@ -218,6 +295,7 @@ private:
 #else
     bool learnEndgame { false };
 #endif
+    int algorithm { 2 };
     bool perfectAiEnabled { false };
     bool IDSEnabled { false };
     bool depthExtension {true};

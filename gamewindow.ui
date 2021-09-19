@@ -320,7 +320,11 @@
     <property name="title">
      <string>AI</string>
     </property>
+    <addaction name="actionAlphaBetaAlgorithm"/>
+    <addaction name="actionPvsAlgorithm"/>
+    <addaction name="actionMtdfAlgorithm"/>
     <addaction name="actionPerfect_AI"/>
+    <addaction name="separator"/>
     <addaction name="actionDrawOnHumanExperience"/>
     <addaction name="actionConsiderMobility"/>
     <addaction name="actionIDS_I"/>
@@ -1311,9 +1315,45 @@
     <string>Opening Book (WIP)</string>
    </property>
   </action>
+    <action name="actionAlphaBetaAlgorithm">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Alpha-Beta Algorithm </string>
+   </property>
+  </action>
+    <action name="actionPvsAlgorithm">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>PVS Algorithm</string>
+   </property>
+  </action>
+    <action name="actionMtdfAlgorithm">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>MTD(f) Algorithm</string>
+   </property>
+  </action>
   <action name="actionPerfect_AI">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Perfect AI</string>

@@ -47,6 +47,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   late StreamController<int> _events;
 
+  var algorithmNames = ['Alpha-Beta', 'PVS', 'MTD(f)'];
+
   final String tag = "[game_settings_page]";
 
   @override
@@ -226,6 +228,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       SettingsCard(
         context: context,
         children: <Widget>[
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).algorithm,
+            trailingString: algorithmNames[Config.algorithm],
+            onTap: setAlgorithm,
+          ),
+          ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.drawOnHumanExperience,
@@ -395,6 +404,58 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     print("[config] aiMovesFirst: $value");
 
     Config.save();
+  }
+
+  setAlgorithm() {
+    callback(int? algorithm) async {
+      print("[config] algorithm = $algorithm");
+
+      Navigator.of(context).pop();
+
+      setState(() {
+        Config.algorithm = algorithm ?? 2;
+      });
+
+      print("[config] Config.algorithm: ${Config.algorithm}");
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Semantics(
+        label: S.of(context).algorithm,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('Alpha-Beta'),
+              groupValue: Config.algorithm,
+              value: 0,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('PVS'),
+              groupValue: Config.algorithm,
+              value: 1,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('MTD(f)'),
+              groupValue: Config.algorithm,
+              value: 2,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+          ],
+        ),
+      ),
+    );
   }
 
   setDrawOnHumanExperience(bool value) async {

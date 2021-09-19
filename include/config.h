@@ -60,12 +60,6 @@
 
 //#define UCT_DEMO
 
-/// Principal Variation Search
-//#define PVS_AI
-
-/// MTD(f)
-#define MTDF_AI
-
 #ifndef DISABLE_PERFECT_AI
 #ifdef _MSC_VER
 #ifndef __clang__

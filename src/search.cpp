@@ -130,10 +130,13 @@ int Thread::search()
     }
 #endif
 
-#ifndef MTDF_AI
-    Value alpha = -VALUE_INFINITE;
-    Value beta = VALUE_INFINITE;
-#endif
+    Value alpha = VALUE_NONE;
+    Value beta = VALUE_NONE;
+
+    if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */) {
+        alpha = -VALUE_INFINITE;
+        beta = VALUE_INFINITE;
+    }
 
     if (gameOptions.getMoveTime() > 0 || gameOptions.getIDSEnabled()) {
         loggerDebug("IDS: ");
@@ -150,11 +153,12 @@ int Thread::search()
 #endif
 #endif
 
-#ifdef MTDF_AI
-            value = MTDF(rootPos, ss, value, i, i, bestMove);
-#else
-            value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
-#endif
+            if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
+                //loggerDebug("Algorithm: MTD(f).\n");
+                value = MTDF(rootPos, ss, value, i, i, bestMove);
+            } else {
+                value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
+            }
 
             loggerDebug("%d(%d) ", value, value - lastValue);
 
@@ -178,18 +182,16 @@ int Thread::search()
 #endif
 #endif
 
-#ifndef MTDF_AI
-    if (gameOptions.getIDSEnabled()) {
+    if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */ && gameOptions.getIDSEnabled()) {
         alpha = -VALUE_INFINITE;
         beta = VALUE_INFINITE;
     }
-#endif
 
-#ifdef MTDF_AI
-    value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
-#else
-    value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
-#endif
+    if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
+        value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
+    } else {
+        value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
+    }
 
 out:
 
@@ -389,37 +391,41 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
         //epsilon += pos->piece_to_remove_count();
 
-#ifdef PVS_AI
-        if (i == 0) {
+        if (gameOptions.getAlgorithm() == 1 /* PVS */) {
+            //loggerDebug("Algorithm: PVS.\n");
+
+            if (i == 0) {
+                if (after != before) {
+                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
+                } else {
+                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
+                }
+            } else {
+                if (after != before) {
+                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -alpha - VALUE_PVS_WINDOW, -alpha, bestMove);
+
+                    if (value > alpha && value < beta) {
+                        value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
+                        //assert(value >= alpha && value <= beta);
+                    }
+                } else {
+                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, alpha + VALUE_PVS_WINDOW, bestMove);
+
+                    if (value > alpha && value < beta) {
+                        value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
+                        //assert(value >= alpha && value <= beta);
+                    }
+                }
+            }
+        } else {
+            //loggerDebug("Algorithm: Alpha-Beta.\n");
+
             if (after != before) {
                 value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
             } else {
                 value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
             }
-        } else {
-            if (after != before) {
-                value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -alpha - VALUE_PVS_WINDOW, -alpha, bestMove);
-
-                if (value > alpha && value < beta) {
-                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
-                    //assert(value >= alpha && value <= beta);
-                }
-            } else {
-                value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, alpha + VALUE_PVS_WINDOW, bestMove);
-
-                if (value > alpha && value < beta) {
-                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
-                    //assert(value >= alpha && value <= beta);
-                }
-            }
         }
-#else
-        if (after != before) {
-            value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
-        } else {
-            value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
-        }
-#endif // PVS_AI
 
         pos->undo_move(ss);
 
