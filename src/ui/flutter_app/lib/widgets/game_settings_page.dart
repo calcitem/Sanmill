@@ -411,7 +411,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Navigator.of(context).pop();
 
       setState(() {
-        Config.algorithm = algorithm ?? 2;
+        Config.algorithm = algorithm ?? AiAlgorithm.mtdf;
       });
 
       print("[config] Config.algorithm: ${Config.algorithm}");
@@ -430,7 +430,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               activeColor: AppTheme.switchListTileActiveColor,
               title: Text('Alpha-Beta'),
               groupValue: Config.algorithm,
-              value: 0,
+              value: AiAlgorithm.alphaBeta,
               onChanged: callback,
             ),
             ListItemDivider(),
@@ -438,7 +438,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               activeColor: AppTheme.switchListTileActiveColor,
               title: Text('PVS'),
               groupValue: Config.algorithm,
-              value: 1,
+              value: AiAlgorithm.pvs,
               onChanged: callback,
             ),
             ListItemDivider(),
@@ -446,7 +446,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               activeColor: AppTheme.switchListTileActiveColor,
               title: Text('MTD(f)'),
               groupValue: Config.algorithm,
-              value: 2,
+              value: AiAlgorithm.mtdf,
               onChanged: callback,
             ),
             ListItemDivider(),

@@ -186,6 +186,8 @@ enum GameOverReason {
   drawReasonBoardIsFull
 }
 
+enum AiAlgorithm { alphaBeta, pvs, mtdf, perfectDatabase, cloud }
+
 enum PieceType { none, whiteStone, blackStone, ban, count, stone }
 
 class Piece {

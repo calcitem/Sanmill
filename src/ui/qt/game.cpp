@@ -135,7 +135,7 @@ void Game::loadSettings()
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
     setSkillLevel(empty ? 1 : settings->value("Options/SkillLevel").toInt());
     setMoveTime(empty ? 1 : settings->value("Options/MoveTime").toInt());
-    setAlgorithm(empty ? 2 : settings->value("Options/Algorithm").toInt());
+    setAlgorithm(empty ? AiAlgorithm::mtdf : settings->value("Options/Algorithm").toInt());
     setDrawOnHumanExperience(empty ? true : settings->value("Options/DrawOnHumanExperience").toBool());
     setConsiderMobility(empty ? true : settings->value("Options/ConsiderMobility").toBool());
     setAiIsLazy(empty ? false : settings->value("Options/AiIsLazy").toBool());
@@ -591,24 +591,24 @@ void Game::setMoveTime(int val)
 void Game::setAlphaBetaAlgorithm(bool enabled)
 {
     if (enabled) {
-        gameOptions.setAlgorithm(0);
-        settings->setValue("Options/Algorithm", 0);
+        gameOptions.setAlgorithm(AiAlgorithm::alphaBeta);
+        settings->setValue("Options/Algorithm", AiAlgorithm::alphaBeta);
     }
 }
 
 void Game::setPvsAlgorithm(bool enabled)
 {
     if (enabled) {
-        gameOptions.setAlgorithm(1);
-        settings->setValue("Options/Algorithm", 1);
+        gameOptions.setAlgorithm(AiAlgorithm::pvs);
+        settings->setValue("Options/Algorithm", AiAlgorithm::pvs);
     }
 }
 
 void Game::setMtdfAlgorithm(bool enabled)
 {
     if (enabled) {
-        gameOptions.setAlgorithm(2);
-        settings->setValue("Options/Algorithm", 2);
+        gameOptions.setAlgorithm(AiAlgorithm::mtdf);
+        settings->setValue("Options/Algorithm", AiAlgorithm::mtdf);
     }
 }
 

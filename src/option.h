@@ -172,58 +172,58 @@ public:
     void setAlphaBetaAlgorithm(bool enabled) noexcept
     {
         if (enabled) {
-            algorithm = 0;
+            algorithm = AiAlgorithm::alphaBeta;
         }
     }
 
     bool getAlphaBetaAlgorithm() const noexcept
     {
-        return algorithm == 0;
+        return algorithm == AiAlgorithm::alphaBeta;
     }
 
     void setPvsAlgorithm(bool enabled) noexcept
     {
         if (enabled) {
-            algorithm = 1;
+            algorithm = AiAlgorithm::pvs;
         }
     }
 
     bool getPvsAlgorithm() const noexcept
     {
-        return algorithm == 1;
+        return algorithm == AiAlgorithm::pvs;
     }
 
     void setMtdfAlgorithm(bool enabled) noexcept
     {
         if (enabled) {
-            algorithm = 2;
+            algorithm = AiAlgorithm::mtdf;
         }
     }
 
     bool getMtdfAlgorithm() const noexcept
     {
-        return algorithm == 2;
+        return algorithm == AiAlgorithm::mtdf;
     }
 
-    void setAlgorithm(int val) noexcept
+    void setAlgorithm(AiAlgorithm val) noexcept
     {
         algorithm = val;
 
 #if 0
         switch (val) {
-        case 0:
+        case AiAlgorithm::alphaBeta:
             setAlphaBetaAlgorithm(true);
             setPvsAlgorithm(false);
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(false);
             break;
-        case 1:
+        case AiAlgorithm::pvs:
             setAlphaBetaAlgorithm(false);
             setPvsAlgorithm(true);
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(false);
             break;
-        case 2:
+        case AiAlgorithm::mtdf:
             setAlphaBetaAlgorithm(false);
             setPvsAlgorithm(false);
             setMtdfAlgorithm(true);
@@ -295,7 +295,7 @@ private:
 #else
     bool learnEndgame { false };
 #endif
-    int algorithm { 2 };
+    AiAlgorithm algorithm { AiAlgorithm::mtdf };
     bool perfectAiEnabled { false };
     bool IDSEnabled { false };
     bool depthExtension {true};

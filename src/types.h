@@ -184,6 +184,15 @@ enum class GameOverReason
     drawReasonBoardIsFull,
 };
 
+enum class AiAlgorithm
+{
+    alphaBeta = 0,
+    pvs = 1,
+    mtdf = 2,
+    perfectDatabase = 3,
+    cloud = 4
+};
+
 enum Bound : uint8_t
 {
     BOUND_NONE,

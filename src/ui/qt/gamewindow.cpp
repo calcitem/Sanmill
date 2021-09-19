@@ -405,19 +405,19 @@ void MillGameWindow::initialize()
     ui.actionAnimation_A->setChecked(game->animationEnabled());
 
     switch (gameOptions.getAlgorithm()) {
-        case 0:
+        case AiAlgorithm::alphaBeta:
             ui.actionAlphaBetaAlgorithm->setChecked(true);
             ui.actionPvsAlgorithm->setChecked(false);
             ui.actionMtdfAlgorithm->setChecked(false);
             ui.actionPerfect_AI->setChecked(false);
             break;
-        case 1:
+        case AiAlgorithm::pvs:
             ui.actionAlphaBetaAlgorithm->setChecked(false);
             ui.actionPvsAlgorithm->setChecked(true);
             ui.actionMtdfAlgorithm->setChecked(false);
             ui.actionPerfect_AI->setChecked(false);
             break;
-        case 2:
+        case AiAlgorithm::mtdf:
             ui.actionAlphaBetaAlgorithm->setChecked(false);
             ui.actionPvsAlgorithm->setChecked(false);
             ui.actionMtdfAlgorithm->setChecked(true);
