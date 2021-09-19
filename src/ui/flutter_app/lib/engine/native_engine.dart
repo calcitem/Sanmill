@@ -139,6 +139,7 @@ class NativeEngine extends Engine {
     }
 
     await send('setoption name DeveloperMode value ${Config.developerMode}');
+    await send('setoption name Algorithm value ${Config.algorithm}');
     await send(
         'setoption name DrawOnHumanExperience value ${Config.drawOnHumanExperience}');
     await send(
