@@ -1,0 +1,6 @@
+    },
+    "algorithm": "Algorithm",
+    "@algorithm": {
+        "description": "Algorithm"
+    }
+}
