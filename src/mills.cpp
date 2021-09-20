@@ -470,7 +470,7 @@ Depth get_search_depth(const Position *pos)
         if (pos->phase == Phase::placing) {
             const Depth placingDepthTable9[25] = {
                  +1,  1,  +1,  1,    /* 0 ~ 3 */
-                 +3,  3, +15, 15,    /* 4 ~ 7 */
+                 +3,  3,  +3, 15,    /* 4 ~ 7 */
                  +15, 2,  +8,  0,    /* 8 ~ 11 */
                  +0,  0,  +0,  0,    /* 12 ~ 15 */
                  +0,  0,  +0,  0,    /* 16 ~ 19 */
