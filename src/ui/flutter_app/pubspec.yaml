@@ -12,16 +12,16 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.3
-  soundpool: ^2.1.0
-  path_provider: ^2.0.2
-  package_info_plus: ^1.0.4
+  soundpool: ^2.2.0
+  path_provider: ^2.0.5
+  package_info_plus: ^1.0.6
   uuid: ^3.0.4
-  url_launcher: ^6.0.9
+  url_launcher: ^6.0.11
   intl: 0.17.0
-  catcher: ^0.6.7
+  catcher: ^0.6.8
   stack_trace: ^1.10.0
 
-  devicelocale: ^0.4.2
+  devicelocale: ^0.4.3
   double_back_to_close_app: ^2.0.1
   flutter_picker: ^2.0.2
   flutter_email_sender: ^5.0.2
@@ -31,7 +31,7 @@ dependencies:
   animated_text_kit: ^4.1.1
   flutter_colorpicker: ^0.6.0
   device_info_plus_platform_interface: ^2.1.0
-  fluentui_system_icons: ^1.1.134
+  fluentui_system_icons: ^1.1.140
   #pref: ^2.3.0
   #screen_recorder: ^0.0.2
 
