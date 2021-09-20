@@ -468,6 +468,11 @@ Depth get_search_depth(const Position *pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
+
+            if (!gameOptions.getDrawOnHumanExperience()) {
+                return (Depth)level;
+            }
+
             const Depth placingDepthTable9[25] = {
                  +1,  1,  +1,  1,    /* 0 ~ 3 */
                  +3,  3,  +3, 15,    /* 4 ~ 7 */

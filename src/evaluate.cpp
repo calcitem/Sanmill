@@ -59,10 +59,6 @@ Value Evaluation::value()
     case Phase::placing:
         if (gameOptions.getConsiderMobility()) {
             value += pos.get_mobility_diff();
-        } else if (gameOptions.getDrawOnHumanExperience()) {
-            if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) <= 5) {
-                value += pos.get_mobility_diff();
-            }
         }
 
         pieceInHandDiffCount = pos.piece_in_hand_count(WHITE) - pos.piece_in_hand_count(BLACK);
