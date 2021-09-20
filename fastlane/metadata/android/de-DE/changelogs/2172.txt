@@ -1,0 +1,3 @@
+v1.1.34
+
+Vermeiden Sie es, dass Weiß in der Eröffnungsphase zu aggressiv vorgeht, denn dadurch kann die Partie schnell verloren gehen.

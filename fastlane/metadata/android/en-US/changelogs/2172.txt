@@ -1,0 +1,3 @@
+v1.1.34
+
+Avoid the white being too aggressive in the opening phase, which can quickly lose the game.

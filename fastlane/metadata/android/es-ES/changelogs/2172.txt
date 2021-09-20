@@ -1,0 +1,3 @@
+v1.1.34
+
+Evite que las blancas sean demasiado agresivas en la fase de apertura, ya que pueden perder rápidamente la partida.
