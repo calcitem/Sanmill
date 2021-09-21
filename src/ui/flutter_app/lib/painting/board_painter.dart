@@ -65,6 +65,11 @@ class BoardPainter extends PiecesBasePainter {
       var pieceInHandCount =
           Game.instance.position.pieceInHandCount[PieceColor.black];
 
+      if (Game.instance.position.pieceOnBoardCount[PieceColor.white] == 0 &&
+          Game.instance.position.pieceOnBoardCount[PieceColor.black] == 0) {
+        pieceInHandCount = Config.piecesCount;
+      }
+
       var pieceInHandCountStr = "";
 
       if (Game.instance.position.phase == Phase.placing) {
