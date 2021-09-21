@@ -213,6 +213,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           SettingsListTile(
             context: context,
             titleString: S.of(context).skillLevel,
+            //trailingString: "L" + Config.skillLevel.toString(),
             onTap: setSkillLevel,
           ),
           ListItemDivider(),
