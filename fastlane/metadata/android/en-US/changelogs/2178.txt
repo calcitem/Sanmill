@@ -1,0 +1,3 @@
+v1.1.35
+
+Optimize the AI's ability to control the situation in the opening phase.

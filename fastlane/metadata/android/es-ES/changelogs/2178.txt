@@ -1,0 +1,3 @@
+v1.1.35
+
+Optimizar la capacidad de la IA para controlar la situación en la fase de apertura.
