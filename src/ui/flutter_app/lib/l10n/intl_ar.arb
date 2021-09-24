@@ -20,7 +20,7 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "ضد الآلة",
+    "humanVsAi": "لاعب ضد الآلة",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
@@ -44,7 +44,7 @@
     "@testViaLAN": {
         "description": "Test Via LAN"
     },
-    "move": "يتحرك",
+    "move": "الحركة",
     "@move": {
         "description": "Move"
     },
@@ -52,7 +52,7 @@
     "@moves": {
         "description": " Moves"
     },
-    "showMoveList": "قائمة النقل",
+    "showMoveList": "قائمة الحركات",
     "@showMoveList": {
         "description": "Move list"
     },
@@ -88,7 +88,7 @@
     "@tipPlace": {
         "description": "Place your pieces."
     },
-    "tipBanPlace": "لا يمكن وضعه هنا.",
+    "tipBanPlace": "لا يمكنك وضعها هنا.",
     "@tipBanPlace": {
         "description": "Cannot place it here."
     },
@@ -160,7 +160,7 @@
     "@tipCanMoveToAnyPoint": {
         "description": "You can move to any point you like."
     },
-    "tipToMove": "  للانتقال.",
+    "tipToMove": " للانتقال.",
     "@tipToMove": {
         "description": " to move."
     },
@@ -172,11 +172,11 @@
     "@blackWin": {
         "description": "Player 2 wins!"
     },
-    "won": "وون",
+    "won": "فوز",
     "@won": {
         "description": "Won"
     },
-    "lost": "ضائع",
+    "lost": "خسارة",
     "@lost": {
         "description": "Lost"
     },
@@ -184,7 +184,7 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "thinking": "التفكير ...",
+    "thinking": "يفكر ...",
     "@thinking": {
         "description": "Thinking..."
     },
@@ -192,15 +192,15 @@
     "@newGame": {
         "description": "New game"
     },
-    "importGame": "لعبة الاستيراد",
+    "importGame": "استيراد اللعبة",
     "@importGame": {
         "description": "Import game"
     },
-    "exportGame": "لعبة التصدير",
+    "exportGame": "تصدير اللعبة",
     "@exportGame": {
         "description": "Export game"
     },
-    "gameImported": "اللعبة مستوردة من الحافظة.",
+    "gameImported": "تم استيراد اللعبة من الحافظة.",
     "@gameImported": {
         "description": "Game imported from the clipboard."
     },
@@ -272,7 +272,7 @@
     "@black": {
         "description": "Player 2"
     },
-    "loseReasonlessThanThree": "  عدد القطع أقل من ثلاثة.",
+    "loseReasonlessThanThree": " عدد القطع أقل من ثلاثة.",
     "@loseReasonlessThanThree": {
         "description": " piece count is less than three."
     },
@@ -296,11 +296,11 @@
     "@drawReasonRule50": {
         "description": "In the moving phase, no piece has been removed in the last specific number of moves."
     },
-    "drawReasonBoardIsFull": "إنه تعادل لأن اللوحة ممتلئة",
+    "drawReasonBoardIsFull": "إنه تعادل لأن اللوحة ممتلئة.",
     "@drawReasonBoardIsFull": {
         "description": "It is a Draw because the board is full"
     },
-    "drawReasonThreefoldRepetition": "إنه قرعة بسبب التكرار الثلاثي.",
+    "drawReasonThreefoldRepetition": "إنه تعادل بسبب التكرار الثلاثي.",
     "@drawReasonThreefoldRepetition": {
         "description": "It is a Draw because of threefold repetition."
     },
@@ -320,7 +320,7 @@
     "@challengeHarderLevel": {
         "description": "Challenge harder level?"
     },
-    "youLose": "أنت تخسر!",
+    "youLose": "لقد خسرت!",
     "@youLose": {
         "description": "You Lose!"
     },
@@ -388,11 +388,11 @@
     "@whoMovesFirst": {
         "description": "First move"
     },
-    "human": "بشر",
+    "human": "لاعب",
     "@human": {
         "description": "Human"
     },
-    "ai": "منظمة العفو الدولية",
+    "ai": "الذكاء الاصطناعى",
     "@ai": {
         "description": "AI"
     },
@@ -532,7 +532,7 @@
     "@pleaseSelect": {
         "description": "Please select"
     },
-    "copy": "ينسخ",
+    "copy": "نسخ",
     "@copy": {
         "description": "Copy"
     },
@@ -548,7 +548,7 @@
     "@feedback": {
         "description": "Feedback"
     },
-    "exit": "مخرج",
+    "exit": "خروج",
     "@exit": {
         "description": "Exit"
     },
@@ -728,7 +728,7 @@
     "@privacyPolicy_Detail_2": {
         "description": "Privacy Policy Detail 2"
     },
-    "and": "  و",
+    "and": " و ",
     "accept": "قبول",
     "@accept": {
         "description": "Accept"
