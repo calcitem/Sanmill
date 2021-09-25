@@ -1,0 +1,4 @@
+v1.1.36
+
+* Beheben Sie das Anzeigeproblem der Symbolrichtung im rechts-nach-links-Layout.
+* Verbesserte arabische Übersetzung.
