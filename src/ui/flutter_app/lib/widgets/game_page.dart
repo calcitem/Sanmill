@@ -1481,14 +1481,10 @@ class _GamePageState extends State<GamePage>
     if (Game.instance.position.phase == Phase.gameOver) {
       switch (Game.instance.position.winner) {
         case PieceColor.white:
-          iconArrow = ltr
-              ? FluentIcons.thumb_dislike_24_regular
-              : FluentIcons.thumb_like_24_regular;
+          iconArrow = FluentIcons.thumb_dislike_24_regular;
           break;
         case PieceColor.black:
-          iconArrow = ltr
-              ? FluentIcons.thumb_like_24_regular
-              : FluentIcons.thumb_dislike_24_regular;
+          iconArrow = FluentIcons.thumb_like_24_regular;
           break;
         default:
           iconArrow = FluentIcons.handshake_24_regular;
@@ -1497,14 +1493,10 @@ class _GamePageState extends State<GamePage>
     } else {
       switch (Game.instance.sideToMove) {
         case PieceColor.white:
-          iconArrow = ltr
-              ? FluentIcons.chevron_left_24_regular
-              : FluentIcons.chevron_right_24_regular;
+          iconArrow = FluentIcons.chevron_left_24_regular;
           break;
         case PieceColor.black:
-          iconArrow = ltr
-              ? FluentIcons.chevron_right_24_regular
-              : FluentIcons.chevron_left_24_regular;
+          iconArrow = FluentIcons.chevron_right_24_regular;
           break;
         default:
           iconArrow = FluentIcons.code_24_regular;
