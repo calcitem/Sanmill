@@ -24,11 +24,11 @@
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "آلات ضد بعضها البعض",
+    "humanVsHuman": "لاعب ضد لاعب",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "AI مقابل AI",
+    "aiVsAi": "آلة ضد آلة",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
@@ -64,15 +64,15 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "نعم",
+    "ok": "حسنا",
     "@ok": {
         "description": "OK"
     },
-    "confirm": "يتأكد",
+    "confirm": "تأكيد",
     "@confirm": {
         "description": "Confirm"
     },
-    "cancel": "يلغي",
+    "cancel": "إلغاء",
     "@cancel": {
         "description": "Cancel"
     },
@@ -100,7 +100,7 @@
     "@tipRemove": {
         "description": "Remove a piece."
     },
-    "tipBanRemove": "لا يمكن الإزالة.",
+    "tipBanRemove": "لا يمكنك إزالتها.",
     "@tipBanRemove": {
         "description": "Cannot remove."
     },
@@ -116,7 +116,7 @@
     "@tipCannotPlace": {
         "description": "You can't place your piece here."
     },
-    "tipCannotMove": "لا يمكنك تحريك قطعتك هنا.",
+    "tipCannotMove": "لا يمكنك تحريك قطعتك الى هنا.",
     "@tipCannotMove": {
         "description": "You can't move your piece here."
     },
@@ -232,7 +232,7 @@
     "@noRecording": {
         "description": "No recording."
     },
-    "pleaseWait": "أرجو الإنتظار...",
+    "pleaseWait": "برجاء الإنتظار...",
     "@pleaseWait": {
         "description": "Please wait..."
     },
@@ -360,11 +360,11 @@
     "@skillLevel": {
         "description": "Difficulty level"
     },
-    "moveTime": "وقت التفكير بالذكاء الاصطناعي",
+    "moveTime": "وقت التفكير للذكاء الاصطناعي",
     "@moveTime": {
         "description": "AI thinking time"
     },
-    "difficulty": "صعوبة",
+    "difficulty": "الصعوبة",
     "@difficulty": {
         "description": "Difficulty"
     },
@@ -392,7 +392,7 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "الذكاء الاصطناعى",
+    "ai": "آلة",
     "@ai": {
         "description": "AI"
     },
@@ -404,7 +404,7 @@
     "@isAutoRestart": {
         "description": "Auto-restart game when game over"
     },
-    "isAutoChangeFirstMove": "التغيير التلقائي الحركة الأولى",
+    "isAutoChangeFirstMove": "تبديل لون القطعة المرة القادمة",
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
     },
@@ -440,7 +440,7 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
-    "flyPieceCount": "رقم القطعة الطائرة",
+    "flyPieceCount": "عدد القطع",
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
@@ -524,7 +524,7 @@
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
-    "rollback": "التراجع",
+    "rollback": "تراجع",
     "@rollback": {
         "description": "Rollback"
     },
@@ -536,7 +536,7 @@
     "@copy": {
         "description": "Copy"
     },
-    "moveHistoryCopied": "نسخ محفوظات النقل إلى الحافظة",
+    "moveHistoryCopied": "تم نسخ سجل الحركات إلى الحافظة",
     "@moveHistoryCopied": {
         "description": "Move history copied to clipboard"
     },
@@ -560,7 +560,7 @@
     "@color": {
         "description": "Color"
     },
-    "boardColor": "لون اللوح",
+    "boardColor": "لون اللوحة",
     "@boardColor": {
         "description": "Board color"
     },
@@ -576,11 +576,11 @@
     "@lineColor": {
         "description": "Board line color"
     },
-    "whitePieceColor": "لون اللاعب 1 قطعة",
+    "whitePieceColor": "لون قطعة اللاعب 1",
     "@whitePieceColor": {
         "description": "Player 1 piece color"
     },
-    "blackPieceColor": "لون لاعب 2 قطعة",
+    "blackPieceColor": "لون قطعة اللاعب 2",
     "@blackPieceColor": {
         "description": "Player 2 piece color"
     },
@@ -596,11 +596,11 @@
     "@isPieceCountInHandShown": {
         "description": "Show count of pieces in hand"
     },
-    "isNotationsShown": "عرض الملاحظات على متن الطائرة",
+    "isNotationsShown": "عرض الملاحظات على لوحة اللعب",
     "@isNotationsShown": {
         "description": "Show notations on board"
     },
-    "isHistoryNavigationToolbarShown": "إظهار شريط التنقل في التاريخ",
+    "isHistoryNavigationToolbarShown": "إظهار شريط التنقل في السجل",
     "@isHistoryNavigationToolbarShown": {
         "description": "Show history navigation toolbar"
     },
@@ -612,7 +612,7 @@
     "@boardBorderLineWidth": {
         "description": "Board borderline width"
     },
-    "boardInnerLineWidth": "عرض الخط الداخلي للوحة",
+    "boardInnerLineWidth": "عرض الخط الداخلي لللوحة",
     "@boardInnerLineWidth": {
         "description": "Board inner line width"
     },
@@ -628,7 +628,7 @@
     "@standardNotation": {
         "description": "Standard notation"
     },
-    "restore": "يعيد",
+    "restore": "استعادة",
     "@restore": {
         "description": "Restore"
     },
@@ -640,11 +640,11 @@
     "@exitApp": {
         "description": "The app will exit."
     },
-    "exitAppManually": "يجب عليك إغلاق التطبيق على الفور وإعادة فتحه ليصبح ساري المفعول.",
+    "exitAppManually": "يجب عليك إغلاق التطبيق على الفور وإعادة فتحه لتطبيق التغييرات.",
     "@exitAppManually": {
         "description": "You have to close immediately and reopen the app to take effect."
     },
-    "pick": "قطف او يقطف",
+    "pick": "اختر",
     "@pick": {
         "description": "Pick "
     },
@@ -692,7 +692,7 @@
     "@needToCreateMillFirst": {
         "description": "You need to create a mill first before you can remove a piece."
     },
-    "needToPlayWithOwnPieces": "أنت بحاجة للعب مع القطع الخاصة بك.",
+    "needToPlayWithOwnPieces": "أنت بحاجة للعب بالقطع الخاصة بك.",
     "@needToPlayWithOwnPieces": {
         "description": "You need to play with your pieces."
     },
@@ -773,7 +773,7 @@
     "@moveNow": {
         "description": "Move now"
     },
-    "done": "منجز.",
+    "done": "تم.",
     "@done": {
         "description": "Done."
     },
@@ -789,7 +789,7 @@
     "@animationDuration": {
         "description": "Animation duration"
     },
-    "none": "لا أحد",
+    "none": "بدون",
     "@none": {
         "description": "None"
     },
@@ -813,7 +813,7 @@
     "@license": {
         "description": "License"
     },
-    "sourceCode": "مصدر الرمز",
+    "sourceCode": "الشفرة المصدرية",
     "@sourceCode": {
         "description": "Source code"
     },
@@ -825,7 +825,7 @@
     "@appVersion": {
         "description": "App Version"
     },
-    "general": "جنرال لواء",
+    "general": "عام",
     "@general": {
         "description": "General"
     },
@@ -833,15 +833,15 @@
     "@advanced": {
         "description": "Advanced"
     },
-    "placing": "وضع",
+    "placing": "وضع القطع",
     "@placing": {
         "description": "Placing"
     },
-    "moving": "متحرك",
+    "moving": "الحركة",
     "@moving": {
         "description": "Moving"
     },
-    "removing": "إزالة",
+    "removing": "الازالة",
     "@removing": {
         "description": "Removing"
     },
@@ -881,7 +881,7 @@
     "@considerMobility": {
         "description": "Consider mobility of pieces"
     },
-    "pieceCount": "قطعة العد",
+    "pieceCount": "عدد القطع",
     "@pieceCount": {
         "description": "Piece count"
     },
@@ -889,15 +889,15 @@
     "@inHand": {
         "description": "in hand"
     },
-    "onBoard": "صعد على متنها",
+    "onBoard": "على اللوحة",
     "@onBoard": {
         "description": "on board"
     },
-    "boardTop": "إزاحة المجلس من الأعلى",
+    "boardTop": "إزاحة اللوحة من الأعلى",
     "@boardTop": {
         "description": "Board offset from the top"
     },
-    "notAIsTurn": "لم يحن دور منظمة العفو الدولية.",
+    "notAIsTurn": "لم يحن دور الآلة.",
     "@notAIsTurn": {
         "description": "It is not the AI's turn."
     },
@@ -909,7 +909,7 @@
     "@autoReplay": {
         "description": "Auto re-play moves"
     },
-    "atEnd": "في نهاية قائمة النقل.",
+    "atEnd": "في نهاية قائمة الحركة.",
     "@atEnd": {
         "description": "At the end of the move list."
     },
@@ -993,15 +993,15 @@
     "@toolbarLocationOnScreen": {
         "description": "Toolbar location on screen"
     },
-    "top": "قمة",
+    "top": "بالاعلى",
     "@top": {
         "description": "Top"
     },
-    "bottom": "الأسفل",
+    "bottom": "بالأسفل",
     "@bottom": {
         "description": "Bottom"
     },
-    "center": "مركز",
+    "center": "بالمنتصف",
     "@center": {
         "description": "Center"
     },
@@ -1053,7 +1053,7 @@
     "@saveGame": {
         "description": "Save game"
     },
-    "loadGame": "لعبة تحميل",
+    "loadGame": "تحميل لعبة",
     "@loadGame": {
         "description": "Load game"
     },
@@ -1069,7 +1069,7 @@
     "@showLastMove": {
         "description": "Show last move"
     },
-    "showArrows": "السهام المعرض",
+    "showArrows": "عرض الاسهم",
     "@showArrows": {
         "description": "Show arrows"
     },
@@ -1093,7 +1093,7 @@
     "@helpImproveTranslate": {
         "description": "Help improve translate"
     },
-    "tutorial": "درس تعليمي",
+    "tutorial": "تعليمي",
     "@tutorial": {
         "description": "Tutorial"
     },
@@ -1149,11 +1149,11 @@
     "@noPoint": {
         "description": "No point"
     },
-    "placingPhase": "مرحلة وضع",
+    "placingPhase": "مرحلة الوضع",
     "@placingPhase": {
         "placingPhase": "Placing phase"
     },
-    "movingPhase": "المرحلة المتحركة",
+    "movingPhase": "مرحلة تحريك القطع",
     "@movingPhase": {
         "description": "Moving phase"
     },
@@ -1189,7 +1189,7 @@
     "@isDraw": {
         "description": "It is a Draw!"
     },
-    "draw": "يرسم",
+    "draw": "تعادل",
     "@draw": {
         "description": "Draw"
     },
