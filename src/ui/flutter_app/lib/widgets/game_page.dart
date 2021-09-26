@@ -1481,10 +1481,14 @@ class _GamePageState extends State<GamePage>
     if (Game.instance.position.phase == Phase.gameOver) {
       switch (Game.instance.position.winner) {
         case PieceColor.white:
-          iconArrow = FluentIcons.thumb_dislike_24_regular;
+          iconArrow = ltr
+              ? FluentIcons.toggle_left_24_regular
+              : FluentIcons.toggle_right_24_regular;
           break;
         case PieceColor.black:
-          iconArrow = FluentIcons.thumb_like_24_regular;
+          iconArrow = ltr
+              ? FluentIcons.toggle_right_24_regular
+              : FluentIcons.toggle_left_24_regular;
           break;
         default:
           iconArrow = FluentIcons.handshake_24_regular;
