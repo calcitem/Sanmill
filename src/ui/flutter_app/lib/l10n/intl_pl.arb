@@ -1200,5 +1200,13 @@
     "algorithm": "Algorytm",
     "@algorithm": {
         "description": "Algorithm"
+    },
+    "removeUnplacedPiece": "Usuń nieumieszczony kawałek",
+    "@removeUnplacedPiece": {
+        "description": "Remove unplaced piece"
+    },
+    "removeUnplacedPiece_Detail": "Jeśli gracz utworzy młyn w fazie układania, usunie nieumieszczony pion przeciwnika i kontynuuje ruch.",
+    "@removeUnplacedPiece_Detail": {
+        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
     }
 }

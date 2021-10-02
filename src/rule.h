@@ -56,6 +56,9 @@ struct Rule
     // Enable this option to disable the limitation.
     bool mayRemoveFromMillsAlways;
 
+    // If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move.
+    bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
+
     // At the end of the placing phase, when the board is full,
     // the side that places first loses the game, otherwise, the game is a draw.
     bool isWhiteLoseButNotDrawWhenBoardFull;

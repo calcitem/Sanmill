@@ -142,6 +142,11 @@ void on_mayRemoveFromMillsAlways(const Option &o)
     rule.mayRemoveFromMillsAlways = (bool)o;
 }
 
+void on_mayOnlyRemoveUnplacedPieceInPlacingPhase(const Option &o)
+{
+    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = (bool)o;
+}
+
 void on_isWhiteLoseButNotDrawWhenBoardFull(const Option &o)
 {
     rule.isWhiteLoseButNotDrawWhenBoardFull = (bool)o;
@@ -211,6 +216,7 @@ void init(OptionsMap &o)
     o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
     o["MayRemoveFromMillsAlways"] << Option(false, on_mayRemoveFromMillsAlways);
+    o["MayOnlyRemoveUnplacedPieceInPlacingPhase"] << Option(false, on_mayOnlyRemoveUnplacedPieceInPlacingPhase);
     o["IsWhiteLoseButNotDrawWhenBoardFull"] << Option(true, on_isWhiteLoseButNotDrawWhenBoardFull);
     o["IsLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["MayFly"] << Option(true, on_mayFly);

@@ -109,6 +109,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             subtitleString:
                 S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
           ),
+          ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.mayOnlyRemoveUnplacedPieceInPlacingPhase,
+            onChanged: setMayOnlyRemoveUnplacedPieceInPlacingPhase,
+            titleString: S.of(context).removeUnplacedPiece,
+            subtitleString: S.of(context).removeUnplacedPiece_Detail,
+          ),
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
@@ -398,6 +406,17 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     });
 
     print("[config] rule.isWhiteLoseButNotDrawWhenBoardFull: $value");
+
+    Config.save();
+  }
+
+  setMayOnlyRemoveUnplacedPieceInPlacingPhase(bool value) async {
+    setState(() {
+      rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
+          Config.mayOnlyRemoveUnplacedPieceInPlacingPhase = value;
+    });
+
+    print("[config] rule.mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
 
     Config.save();
   }

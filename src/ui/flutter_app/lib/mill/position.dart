@@ -522,7 +522,37 @@ class Position {
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
-        action = Act.remove;
+
+        if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+            pieceInHandCount[them] != null) {
+          pieceInHandCount[them] =
+              pieceInHandCount[them]! - 1; // Or pieceToRemoveCount?
+
+          if (pieceInHandCount[them]! < 0) {
+            pieceInHandCount[them] = 0;
+          }
+
+          if (pieceInHandCount[PieceColor.white] == 0 &&
+              pieceInHandCount[PieceColor.black] == 0) {
+            if (checkIfGameIsOver()) {
+              return true;
+            }
+
+            phase = Phase.moving;
+            action = Act.select;
+
+            if (rule.isDefenderMoveFirst) {
+              changeSideToMove();
+            }
+
+            if (checkIfGameIsOver()) {
+              return true;
+            }
+          }
+        } else {
+          action = Act.remove;
+        }
+
         Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone(Audios.millSoundId);
       }

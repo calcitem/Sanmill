@@ -30,6 +30,7 @@ class Rule {
   bool isDefenderMoveFirst = false;
   bool mayRemoveMultiple = false;
   bool mayRemoveFromMillsAlways = false;
+  bool mayOnlyRemoveUnplacedPieceInPlacingPhase = false;
   bool isWhiteLoseButNotDrawWhenBoardFull = true;
   bool isLoseButNotChangeSideWhenNoWay = true;
   bool mayFly = true;

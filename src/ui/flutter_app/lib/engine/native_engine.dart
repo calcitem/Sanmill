@@ -165,6 +165,8 @@ class NativeEngine extends Engine {
     await send(
         'setoption name MayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}');
     await send(
+        'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${Config.mayOnlyRemoveUnplacedPieceInPlacingPhase}');
+    await send(
         'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${Config.isWhiteLoseButNotDrawWhenBoardFull}');
     await send(
         'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');

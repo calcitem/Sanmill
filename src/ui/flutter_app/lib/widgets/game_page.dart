@@ -263,10 +263,14 @@ class _GamePageState extends State<GamePage>
               if (Game.instance.engineType == EngineType.humanVsAi && mounted) {
                 showTip(S.of(context).tipPlaced);
               } else if (mounted) {
-                var side = Game.instance.sideToMove == PieceColor.white
-                    ? S.of(context).black
-                    : S.of(context).white;
-                showTip(side + S.of(context).tipToMove);
+                if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+                  showTip(S.of(context).tipPlaced); // TODO: Change tip
+                } else {
+                  var side = Game.instance.sideToMove == PieceColor.white
+                      ? S.of(context).black
+                      : S.of(context).white;
+                  showTip(side + S.of(context).tipToMove);
+                }
               }
             }
             ret = true;

@@ -1200,5 +1200,13 @@
     "algorithm": "Algoritm",
     "@algorithm": {
         "description": "Algorithm"
+    },
+    "removeUnplacedPiece": "O'rnatilmagan qismni olib tashlang",
+    "@removeUnplacedPiece": {
+        "description": "Remove unplaced piece"
+    },
+    "removeUnplacedPiece_Detail": "Agar o'yinchi joylashtirish bosqichida tegirmonni hosil qilsa, u raqibning joylanmagan qismini olib tashlaydi va harakatni davom ettiradi.",
+    "@removeUnplacedPiece_Detail": {
+        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
     }
 }

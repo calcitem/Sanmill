@@ -92,6 +92,7 @@ class Config {
   static bool isDefenderMoveFirst = false;
   static bool mayRemoveMultiple = false;
   static bool mayRemoveFromMillsAlways = false;
+  static bool mayOnlyRemoveUnplacedPieceInPlacingPhase = false;
   static bool isWhiteLoseButNotDrawWhenBoardFull = true;
   static bool isLoseButNotChangeSideWhenNoWay = true;
   static bool mayFly = true;
@@ -195,6 +196,9 @@ class Config {
         Config.mayRemoveMultiple = settings['MayRemoveMultiple'] ?? false;
     rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways =
         settings['MayRemoveFromMillsAlways'] ?? false;
+    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
+        Config.mayOnlyRemoveUnplacedPieceInPlacingPhase =
+            settings['MayOnlyRemoveUnplacedPieceInPlacingPhase'] ?? false;
     rule.isWhiteLoseButNotDrawWhenBoardFull =
         Config.isWhiteLoseButNotDrawWhenBoardFull =
             settings['IsWhiteLoseButNotDrawWhenBoardFull'] ?? true;
@@ -275,6 +279,8 @@ class Config {
     settings['IsDefenderMoveFirst'] = Config.isDefenderMoveFirst;
     settings['MayRemoveMultiple'] = Config.mayRemoveMultiple;
     settings['MayRemoveFromMillsAlways'] = Config.mayRemoveFromMillsAlways;
+    settings['MayOnlyRemoveUnplacedPieceInPlacingPhase'] =
+        Config.mayOnlyRemoveUnplacedPieceInPlacingPhase;
     settings['IsWhiteLoseButNotDrawWhenBoardFull'] =
         Config.isWhiteLoseButNotDrawWhenBoardFull;
     settings['IsLoseButNotChangeSideWhenNoWay'] =
