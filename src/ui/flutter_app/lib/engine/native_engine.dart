@@ -172,6 +172,8 @@ class NativeEngine extends Engine {
         'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
     await send('setoption name MayFly value ${Config.mayFly}');
     await send('setoption name NMoveRule value ${Config.nMoveRule}');
+    await send(
+        'setoption name EndgameNMoveRule value ${Config.endgameNMoveRule}');
   }
 
   String getPositionFen(Position position) {

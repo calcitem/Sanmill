@@ -35,6 +35,7 @@ class Rule {
   bool isLoseButNotChangeSideWhenNoWay = true;
   bool mayFly = true;
   int nMoveRule = 100;
+  int endgameNMoveRule = 100;
 }
 
 Rule rule = Rule();

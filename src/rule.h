@@ -74,6 +74,9 @@ struct Rule
 
     // The N-move rule in Mill states that if no remove has been made in the last N moves.
     unsigned int nMoveRule;
+
+    // If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn.
+    unsigned int endgameNMoveRule;
 };
 
 #define N_RULES 5

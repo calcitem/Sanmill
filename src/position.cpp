@@ -1014,6 +1014,13 @@ bool Position::check_if_game_is_over()
         set_gameover(DRAW, GameOverReason::drawReasonRule50);
         return true;
     }
+
+    if (rule.endgameNMoveRule < rule.nMoveRule &&
+        is_three_endgame() &&
+        posKeyHistory.size() > rule.endgameNMoveRule) {
+        set_gameover(DRAW, GameOverReason::drawReasonEndgameRule50);
+        return true;
+    }
 #endif // RULE_50
 
     if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= EFFECTIVE_SQUARE_NB) {

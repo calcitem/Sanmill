@@ -97,6 +97,7 @@ class Config {
   static bool isLoseButNotChangeSideWhenNoWay = true;
   static bool mayFly = true;
   static int nMoveRule = 100;
+  static int endgameNMoveRule = 100;
 
   static Future<void> loadSettings() async {
     print("[config] Loading settings...");
@@ -207,6 +208,7 @@ class Config {
             settings['IsLoseButNotChangeSideWhenNoWay'] ?? true;
     rule.mayFly = Config.mayFly = settings['MayFly'] ?? true;
     rule.nMoveRule = Config.nMoveRule = settings['NMoveRule'] ?? 100;
+    rule.endgameNMoveRule = Config.endgameNMoveRule = settings['EndgameNMoveRule'] ?? 100;
 
     settingsLoaded = true;
     print("[config] Loading settings done!");
@@ -287,6 +289,7 @@ class Config {
         Config.isLoseButNotChangeSideWhenNoWay;
     settings['MayFly'] = Config.mayFly;
     settings['NMoveRule'] = Config.nMoveRule;
+    settings['EndgameNMoveRule'] = Config.endgameNMoveRule;
 
     settings.commit();
 

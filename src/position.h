@@ -150,6 +150,8 @@ public:
     //template <typename Mt> void updateMobility(Square from, Square to);
     int calculate_mobility_diff();
 
+    bool is_three_endgame() const;
+
     static bool is_star_square(Square s);
 
     bool bitboard_is_ok();
@@ -351,6 +353,15 @@ inline int Position::piece_to_remove_count() const
 inline int Position::get_mobility_diff() const
 {
     return mobilityDiff;
+}
+
+inline bool Position::is_three_endgame() const
+{
+    if (get_phase() == Phase::placing) {
+        return false;
+    }
+
+    return pieceOnBoardCount[WHITE] == 3 || pieceOnBoardCount[BLACK] == 3;
 }
 
 #endif // #ifndef POSITION_H_INCLUDED

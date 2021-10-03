@@ -86,6 +86,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             onTap: setNMoveRule,
           ),
           ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).endgameNMoveRule,
+            subtitleString: S.of(context).endgameNMoveRule_Detail,
+            trailingString: Config.endgameNMoveRule.toString(),
+            onTap: setEndgameNMoveRule,
+          ),
+          ListItemDivider(),
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
@@ -321,6 +329,99 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               activeColor: AppTheme.switchListTileActiveColor,
               title: Text('200'),
               groupValue: Config.nMoveRule,
+              value: 200,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  setEndgameNMoveRule() {
+    callback(int? endgameNMoveRule) async {
+      print("[config] endgameNMoveRule = $endgameNMoveRule");
+
+      Navigator.of(context).pop();
+
+      setState(() {
+        rule.endgameNMoveRule =
+            Config.endgameNMoveRule = endgameNMoveRule ?? 100;
+      });
+
+      print("[config] rule.endgameNMoveRule: ${rule.endgameNMoveRule}");
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Semantics(
+        label: S.of(context).endgameNMoveRule,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('5'),
+              groupValue: Config.endgameNMoveRule,
+              value: 5,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('10'),
+              groupValue: Config.endgameNMoveRule,
+              value: 10,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('20'),
+              groupValue: Config.endgameNMoveRule,
+              value: 20,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('30'),
+              groupValue: Config.endgameNMoveRule,
+              value: 30,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('50'),
+              groupValue: Config.endgameNMoveRule,
+              value: 50,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('60'),
+              groupValue: Config.endgameNMoveRule,
+              value: 60,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('100'),
+              groupValue: Config.endgameNMoveRule,
+              value: 100,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('200'),
+              groupValue: Config.endgameNMoveRule,
               value: 200,
               onChanged: callback,
             ),

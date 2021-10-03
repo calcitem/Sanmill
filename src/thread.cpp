@@ -157,7 +157,7 @@ void Thread::idle_loop()
 #endif
                 int ret = search();
 
-                if (ret == 3 || ret == 50) {
+                if (ret == 3 || ret == 50 || ret == 10) {
                     loggerDebug("Draw\n\n");
                     strCommand = "draw";
                     emitCommand();

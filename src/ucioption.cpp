@@ -167,6 +167,11 @@ void on_nMoveRule(const Option &o)
     rule.nMoveRule = (unsigned int)o;
 }
 
+void on_endgameNMoveRule(const Option &o)
+{
+    rule.endgameNMoveRule = (unsigned int)o;
+}
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator() (const string &s1, const string &s2) const
 {
@@ -221,6 +226,7 @@ void init(OptionsMap &o)
     o["IsLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["MayFly"] << Option(true, on_mayFly);
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
+    o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);
 }
 
 

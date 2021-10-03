@@ -183,6 +183,7 @@ enum GameOverReason {
   loseReasonTimeOver,
   drawReasonThreefoldRepetition,
   drawReasonRule50,
+  drawReasonEndgameRule50,
   drawReasonBoardIsFull
 }
 

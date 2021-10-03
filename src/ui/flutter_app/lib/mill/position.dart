@@ -293,6 +293,10 @@ class Position {
       // TODO: WAR to judge rule50
       if (rule.nMoveRule > 0 && posKeyHistory.length > rule.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonRule50;
+      } else if (rule.endgameNMoveRule < rule.nMoveRule &&
+          isThreeEndgame() &&
+          posKeyHistory.length > rule.endgameNMoveRule - 1) {
+        gameOverReason = GameOverReason.drawReasonEndgameRule50;
       } else {
         gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
       }
@@ -764,6 +768,15 @@ class Position {
     }
   }
 
+  bool isThreeEndgame() {
+    if (phase == Phase.placing) {
+      return false;
+    }
+
+    return pieceOnBoardCount[PieceColor.white] == 3 ||
+        pieceOnBoardCount[PieceColor.black] == 3;
+  }
+
   bool checkIfGameIsOver() {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
@@ -771,6 +784,13 @@ class Position {
 
     if (rule.nMoveRule > 0 && posKeyHistory.length > rule.nMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawReasonRule50);
+      return true;
+    }
+
+    if (rule.endgameNMoveRule < rule.nMoveRule &&
+        isThreeEndgame() &&
+        posKeyHistory.length > rule.endgameNMoveRule) {
+      setGameOver(PieceColor.draw, GameOverReason.drawReasonEndgameRule50);
       return true;
     }
 

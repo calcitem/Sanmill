@@ -1207,6 +1207,8 @@ class _GamePageState extends State<GamePage>
       GameOverReason.loseReasonTimeOver:
           loserStr + S.of(context).loseReasonTimeOver,
       GameOverReason.drawReasonRule50: S.of(context).drawReasonRule50,
+      GameOverReason.drawReasonEndgameRule50:
+          S.of(context).drawReasonEndgameRule50,
       GameOverReason.drawReasonBoardIsFull: S.of(context).drawReasonBoardIsFull,
       GameOverReason.drawReasonThreefoldRepetition:
           S.of(context).drawReasonThreefoldRepetition,

@@ -1619,6 +1619,9 @@ void Game::appendGameOverReasonToMoveHistory()
     case GameOverReason::drawReasonRule50:
         snprintf(record, Position::RECORD_LEN_MAX, drawReasonRule50Str);
         break;
+    case GameOverReason::drawReasonEndgameRule50:
+        snprintf(record, Position::RECORD_LEN_MAX, drawReasonEndgameRule50Str);
+        break;
     case GameOverReason::loseReasonBoardIsFull:
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonBoardIsFullStr);
         break;
@@ -1719,12 +1722,15 @@ void Game::setTips()
         case GameOverReason::drawReasonRule50:
             reasonStr = "连续50回合无吃子判和。";
             break;
+        case GameOverReason::drawReasonEndgameRule50:
+            reasonStr = "残局中连续50回合无吃子判和。";
+            break;
         case GameOverReason::drawReasonBoardIsFull:
             reasonStr = "棋盘满判和。";
             break;
         default:
             break;
-        }       
+        }
 
         tips = reasonStr + resultStr + scoreStr;
         break;

@@ -26,6 +26,7 @@ extern const char *loseReasonNoWayStr;
 extern const char *loseReasonTimeOverStr;
 extern const char *drawReasonThreefoldRepetitionStr;
 extern const char *drawReasonRule50Str;
+extern const char *drawReasonEndgameRule50Str;
 extern const char *loseReasonBoardIsFullStr;
 extern const char *drawReasonBoardIsFullStr;
 extern const char *loseReasonlessThanThreeStr;
