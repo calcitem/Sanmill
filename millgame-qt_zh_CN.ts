@@ -119,6 +119,11 @@
         <translation>50步</translation>
     </message>
     <message>
+        <location filename="src/ui/qt/gamewindow.cpp" line="520"/>
+        <source>60步</source>
+        <translation>60步</translation>
+    </message>
+    <message>
         <location filename="src/ui/qt/gamewindow.cpp" line="521"/>
         <source>100步</source>
         <translation>100步</translation>

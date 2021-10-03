@@ -558,6 +558,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
     comboBox_step->addItem(tr("10 Moves"), 10);
     comboBox_step->addItem(tr("30 Moves"), 30);
     comboBox_step->addItem(tr("50 Moves"), 50);
+    comboBox_step->addItem(tr("60 Moves"), 60);
     comboBox_step->addItem(tr("100 Moves"), 100);
     comboBox_step->addItem(tr("200 Moves"), 200);
     comboBox_step->setCurrentIndex(comboBox_step->findData(gStep));

@@ -303,6 +303,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
+              title: Text('60'),
+              groupValue: Config.nMoveRule,
+              value: 60,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
               title: Text('100'),
               groupValue: Config.nMoveRule,
               value: 100,
