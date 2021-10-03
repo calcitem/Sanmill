@@ -1010,14 +1010,14 @@ bool Position::check_if_game_is_over()
 {
 #ifdef RULE_50
     if (rule.nMoveRule > 0 &&
-        posKeyHistory.size() > rule.nMoveRule) {
+        posKeyHistory.size() >= rule.nMoveRule) {
         set_gameover(DRAW, GameOverReason::drawReasonRule50);
         return true;
     }
 
     if (rule.endgameNMoveRule < rule.nMoveRule &&
         is_three_endgame() &&
-        posKeyHistory.size() > rule.endgameNMoveRule) {
+        posKeyHistory.size() >= rule.endgameNMoveRule) {
         set_gameover(DRAW, GameOverReason::drawReasonEndgameRule50);
         return true;
     }

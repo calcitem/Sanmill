@@ -291,11 +291,11 @@ class Position {
       }
 
       // TODO: WAR to judge rule50
-      if (rule.nMoveRule > 0 && posKeyHistory.length > rule.nMoveRule - 1) {
+      if (rule.nMoveRule > 0 && posKeyHistory.length >= rule.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonRule50;
       } else if (rule.endgameNMoveRule < rule.nMoveRule &&
           isThreeEndgame() &&
-          posKeyHistory.length > rule.endgameNMoveRule - 1) {
+          posKeyHistory.length >= rule.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonEndgameRule50;
       } else {
         gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
@@ -782,14 +782,14 @@ class Position {
       return true;
     }
 
-    if (rule.nMoveRule > 0 && posKeyHistory.length > rule.nMoveRule) {
+    if (rule.nMoveRule > 0 && posKeyHistory.length >= rule.nMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawReasonRule50);
       return true;
     }
 
     if (rule.endgameNMoveRule < rule.nMoveRule &&
         isThreeEndgame() &&
-        posKeyHistory.length > rule.endgameNMoveRule) {
+        posKeyHistory.length >= rule.endgameNMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawReasonEndgameRule50);
       return true;
     }

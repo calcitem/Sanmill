@@ -97,13 +97,13 @@ int Thread::search()
 
     if (rootPos->get_phase() == Phase::moving) {
 #ifdef RULE_50
-        if (posKeyHistory.size() > rule.nMoveRule) {
+        if (posKeyHistory.size() >= rule.nMoveRule) {
             return 50;
         }
 
         if (rule.endgameNMoveRule < rule.nMoveRule &&
-            rootPos->is_three_endgame() && 
-            posKeyHistory.size() > rule.endgameNMoveRule) {
+            rootPos->is_three_endgame() &&
+            posKeyHistory.size() >= rule.endgameNMoveRule) {
             return 10;
         }
 #endif // RULE_50
@@ -229,8 +229,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 #ifdef RULE_50
     if ((pos->rule50_count() > rule.nMoveRule) ||
         (rule.endgameNMoveRule < rule.nMoveRule &&
-         pos->is_three_endgame() && 
-         pos->rule50_count() > rule.endgameNMoveRule)) {
+         pos->is_three_endgame() &&
+         pos->rule50_count() >= rule.endgameNMoveRule)) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;
