@@ -148,6 +148,19 @@ class GameRecorder {
     return false;
   }
 
+  bool isGoldTokenMoveList(String text) {
+    if (text.length >= 10 &&
+        (text.substring(0, 9) == "GoldToken" ||
+            text.substring(0, 10) == "Past Moves" ||
+            text.substring(0, 5) == "Go to" ||
+            text.substring(0, 4) == "Turn" ||
+            text.substring(0, 8) == "(Player ")) {
+      return true;
+    }
+
+    return false;
+  }
+
   bool isPlayOkNotation(String text) {
     if (int.tryParse(text.substring(3, 4)) != null) {
       return true;
@@ -167,6 +180,10 @@ class GameRecorder {
 
     if (isPlayOkMoveList(moveList)) {
       return importPlayOk(moveList);
+    }
+
+    if (isGoldTokenMoveList(moveList)) {
+      return importGoldToken(moveList);
     }
 
     List<Move> newHistory = [];
@@ -194,6 +211,12 @@ class GameRecorder {
         .replaceAll('.e', '. e')
         .replaceAll('.f', '. f')
         .replaceAll('.g', '. g')
+        // GoldToken
+        .replaceAll('\t', ' ')
+        .replaceAll('place to ', '')
+        .replaceAll('  take ', 'x')
+        .replaceAll(' -> ', '-')
+        // Finally
         .split(' ');
 
     for (var i in list) {
@@ -311,6 +334,20 @@ class GameRecorder {
     }
 
     return "";
+  }
+
+  String importGoldToken(String moveList) {
+    int start = moveList.indexOf("1\t");
+
+    if (start == -1) {
+      start = moveList.indexOf("1 ");
+    }
+
+    if (start == -1) {
+      start = 0;
+    }
+
+    return import(moveList.substring(start));
   }
 
   void jumpToHead() {
