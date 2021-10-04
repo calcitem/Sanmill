@@ -19,6 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/style/app_theme.dart';
 
+// TODO: replace with Divider();
 class ListItemDivider extends StatelessWidget {
   const ListItemDivider({
     Key? key,

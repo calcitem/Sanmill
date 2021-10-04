@@ -33,6 +33,7 @@ import 'env_page.dart';
 import 'list_item_divider.dart';
 
 class Developer {
+  const Developer._();
   static bool developerModeEnabled = false;
 }
 
@@ -42,12 +43,12 @@ class GameSettingsPage extends StatefulWidget {
 }
 
 class _GameSettingsPageState extends State<GameSettingsPage> {
-  Color pickerColor = Color(0xFF808080);
-  Color currentColor = Color(0xFF808080);
+  Color pickerColor = const Color(0xFF808080);
+  Color currentColor = const Color(0xFF808080);
 
   late StreamController<int> _events;
 
-  var algorithmNames = ['Alpha-Beta', 'PVS', 'MTD(f)'];
+  List<String> algorithmNames = ['Alpha-Beta', 'PVS', 'MTD(f)'];
 
   final String tag = "[game_settings_page]";
 
@@ -58,12 +59,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     _events.add(10);
   }
 
-  void _restore() async {
+  Future<void> _restore() async {
     final settings = await Settings.instance();
     await settings.restore();
   }
 
-  SliderTheme _skillLevelSliderTheme(context, setState) {
+  SliderTheme _skillLevelSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
@@ -73,7 +74,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           min: 1,
           max: 30,
           divisions: 29,
-          label: Config.skillLevel.round().toString(),
+          label: Config.skillLevel.toString(),
           onChanged: (value) {
             setState(() {
               print("[config] Slider value: $value");
@@ -86,17 +87,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     );
   }
 
-  SliderTheme _moveTimeSliderTheme(context, setState) {
+  SliderTheme _moveTimeSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
         label: S.of(context).moveTime,
         child: Slider(
           value: Config.moveTime.toDouble(),
-          min: 0,
           max: 60,
           divisions: 60,
-          label: Config.moveTime.round().toString(),
+          label: Config.moveTime.toString(),
           onChanged: (value) {
             setState(() {
               print("[config] Slider value: $value");
@@ -111,8 +111,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   // Restore
 
-  restoreFactoryDefaultSettings() async {
-    confirm() async {
+  Future<void> restoreFactoryDefaultSettings() async {
+    Future<void> confirm() async {
       Navigator.of(context).pop();
       if (Platform.isAndroid) {
         showCountdownDialog(context, 10, _events, _restore);
@@ -120,11 +120,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         _restore();
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).exitAppManually)));
+          SnackBar(content: Text(S.of(context).exitAppManually)),
+        );
       }
     }
 
-    cancel() => Navigator.of(context).pop();
+    void cancel() => Navigator.of(context).pop();
 
     var prompt = "";
 
@@ -136,14 +137,16 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S.of(context).restore,
-              style: TextStyle(
-                color: AppTheme.dialogTitleColor,
-                fontSize: Config.fontSize + 4,
-              )),
+          title: Text(
+            S.of(context).restore,
+            style: TextStyle(
+              color: AppTheme.dialogTitleColor,
+              fontSize: Config.fontSize + 4,
+            ),
+          ),
           content: SingleChildScrollView(
             child: Text(
-              S.of(context).restoreDefaultSettings + "?\n" + prompt,
+              "${S.of(context).restoreDefaultSettings}?\n$prompt",
               style: TextStyle(
                 fontSize: Config.fontSize,
               ),
@@ -151,21 +154,23 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
           actions: <Widget>[
             TextButton(
-                child: Text(
-                  S.of(context).ok,
-                  style: TextStyle(
-                    fontSize: Config.fontSize,
-                  ),
+              onPressed: confirm,
+              child: Text(
+                S.of(context).ok,
+                style: TextStyle(
+                  fontSize: Config.fontSize,
                 ),
-                onPressed: confirm),
+              ),
+            ),
             TextButton(
-                child: Text(
-                  S.of(context).cancel,
-                  style: TextStyle(
-                    fontSize: Config.fontSize,
-                  ),
+              onPressed: cancel,
+              child: Text(
+                S.of(context).cancel,
+                style: TextStyle(
+                  fontSize: Config.fontSize,
                 ),
-                onPressed: cancel),
+              ),
+            ),
           ],
         );
       },
@@ -205,7 +210,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      SizedBox(height: AppTheme.sizedBoxHeight),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -216,7 +221,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             //trailingString: "L" + Config.skillLevel.toString(),
             onTap: setSkillLevel,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).moveTime,
@@ -224,7 +229,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      SizedBox(height: AppTheme.sizedBoxHeight),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).aisPlayStyle, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -235,28 +240,28 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             trailingString: algorithmNames[Config.algorithm],
             onTap: setAlgorithm,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.drawOnHumanExperience,
             onChanged: setDrawOnHumanExperience,
             titleString: S.of(context).drawOnHumanExperience,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.considerMobility,
             onChanged: setConsiderMobility,
             titleString: S.of(context).considerMobility,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.aiIsLazy,
             onChanged: setAiIsLazy,
             titleString: S.of(context).passive,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.shufflingEnabled,
@@ -265,33 +270,36 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      !Platform.isWindows
-          ? SizedBox(height: AppTheme.sizedBoxHeight)
-          : Container(height: 0.0, width: 0.0),
-      !Platform.isWindows
-          ? Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle)
-          : Container(height: 0.0, width: 0.0),
-      !Platform.isWindows
-          ? SettingsCard(
+      if (!Platform.isWindows)
+        const SizedBox(height: AppTheme.sizedBoxHeight)
+      else
+        const SizedBox(height: 0.0, width: 0.0),
+      if (!Platform.isWindows)
+        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle)
+      else
+        const SizedBox(height: 0.0, width: 0.0),
+      if (!Platform.isWindows)
+        SettingsCard(
+          context: context,
+          children: <Widget>[
+            SettingsSwitchListTile(
               context: context,
-              children: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.toneEnabled,
-                  onChanged: setTone,
-                  titleString: S.of(context).playSoundsInTheGame,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.keepMuteWhenTakingBack,
-                  onChanged: setKeepMuteWhenTakingBack,
-                  titleString: S.of(context).keepMuteWhenTakingBack,
-                ),
-              ],
-            )
-          : Container(height: 0.0, width: 0.0),
-      SizedBox(height: AppTheme.sizedBoxHeight),
+              value: Config.toneEnabled,
+              onChanged: setTone,
+              titleString: S.of(context).playSoundsInTheGame,
+            ),
+            const ListItemDivider(),
+            SettingsSwitchListTile(
+              context: context,
+              value: Config.keepMuteWhenTakingBack,
+              onChanged: setKeepMuteWhenTakingBack,
+              titleString: S.of(context).keepMuteWhenTakingBack,
+            ),
+          ],
+        )
+      else
+        const SizedBox(height: 0.0, width: 0.0),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -304,7 +312,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
-      SizedBox(height: AppTheme.sizedBoxHeight),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -314,80 +322,80 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             titleString: S.of(context).restoreDefaultSettings,
             onTap: restoreFactoryDefaultSettings,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
         ],
       ),
-      SizedBox(height: AppTheme.sizedBoxHeight),
-      Developer.developerModeEnabled
-          ? Text(S.of(context).forDevelopers,
-              style: AppTheme.settingsHeaderStyle)
-          : SizedBox(height: 1),
-      Developer.developerModeEnabled
-          ? SettingsCard(
+      const SizedBox(height: AppTheme.sizedBoxHeight),
+      if (Developer.developerModeEnabled)
+        Text(
+          S.of(context).forDevelopers,
+          style: AppTheme.settingsHeaderStyle,
+        )
+      else
+        const SizedBox(height: 1),
+      if (Developer.developerModeEnabled)
+        SettingsCard(
+          context: context,
+          children: <Widget>[
+            SettingsSwitchListTile(
               context: context,
-              children: <Widget>[
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.developerMode,
-                  onChanged: setDeveloperMode,
-                  titleString: S.of(context).developerMode,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.experimentsEnabled,
-                  onChanged: setExperimentsEnabled,
-                  titleString: S.of(context).experiments,
-                ),
-                ListItemDivider(),
-                SettingsSwitchListTile(
-                  context: context,
-                  value: Config.isAutoRestart,
-                  onChanged: setIsAutoRestart,
-                  titleString: S.of(context).isAutoRestart,
-                ),
-                ListItemDivider(),
-                SettingsListTile(
-                  context: context,
-                  titleString: S.of(context).environmentVariables,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EnvironmentVariablesPage(),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            )
-          : SizedBox(height: 1),
+              value: Config.developerMode,
+              onChanged: setDeveloperMode,
+              titleString: S.of(context).developerMode,
+            ),
+            const ListItemDivider(),
+            SettingsSwitchListTile(
+              context: context,
+              value: Config.experimentsEnabled,
+              onChanged: setExperimentsEnabled,
+              titleString: S.of(context).experiments,
+            ),
+            const ListItemDivider(),
+            SettingsSwitchListTile(
+              context: context,
+              value: Config.isAutoRestart,
+              onChanged: setIsAutoRestart,
+              titleString: S.of(context).isAutoRestart,
+            ),
+            const ListItemDivider(),
+            SettingsListTile(
+              context: context,
+              titleString: S.of(context).environmentVariables,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EnvironmentVariablesPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        )
+      else
+        const SizedBox(height: 1),
     ];
   }
 
-  setSkillLevel() async {
+  Future<void> setSkillLevel() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _skillLevelSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _skillLevelSliderTheme(),
       ),
     );
   }
 
-  setMoveTime() async {
+  Future<void> setMoveTime() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _moveTimeSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _moveTimeSliderTheme(),
       ),
     );
   }
 
-  setWhoMovesFirst(bool value) async {
+  Future<void> setWhoMovesFirst(bool value) async {
     setState(() {
       Config.aiMovesFirst = !value;
     });
@@ -397,7 +405,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setAiIsLazy(bool value) async {
+  Future<void> setAiIsLazy(bool value) async {
     setState(() {
       Config.aiIsLazy = value;
     });
@@ -407,8 +415,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setAlgorithm() {
-    callback(int? algorithm) async {
+  void setAlgorithm() {
+    Future<void> callback(int? algorithm) async {
       print("[config] algorithm = $algorithm");
 
       Navigator.of(context).pop();
@@ -431,35 +439,35 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           children: <Widget>[
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
-              title: Text('Alpha-Beta'),
+              title: const Text('Alpha-Beta'),
               groupValue: Config.algorithm,
               value: 0,
               onChanged: callback,
             ),
-            ListItemDivider(),
+            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
-              title: Text('PVS'),
+              title: const Text('PVS'),
               groupValue: Config.algorithm,
               value: 1,
               onChanged: callback,
             ),
-            ListItemDivider(),
+            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
-              title: Text('MTD(f)'),
+              title: const Text('MTD(f)'),
               groupValue: Config.algorithm,
               value: 2,
               onChanged: callback,
             ),
-            ListItemDivider(),
+            const ListItemDivider(),
           ],
         ),
       ),
     );
   }
 
-  setDrawOnHumanExperience(bool value) async {
+  Future<void> setDrawOnHumanExperience(bool value) async {
     setState(() {
       Config.drawOnHumanExperience = value;
     });
@@ -469,7 +477,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setConsiderMobility(bool value) async {
+  Future<void> setConsiderMobility(bool value) async {
     setState(() {
       Config.considerMobility = value;
     });
@@ -479,7 +487,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setIsAutoRestart(bool value) async {
+  Future<void> setIsAutoRestart(bool value) async {
     setState(() {
       Config.isAutoRestart = value;
     });
@@ -489,7 +497,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setIsAutoChangeFirstMove(bool value) async {
+  Future<void> setIsAutoChangeFirstMove(bool value) async {
     setState(() {
       Config.isAutoChangeFirstMove = value;
     });
@@ -499,7 +507,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setResignIfMostLose(bool value) async {
+  Future<void> setResignIfMostLose(bool value) async {
     setState(() {
       Config.resignIfMostLose = value;
     });
@@ -509,7 +517,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setShufflingEnabled(bool value) async {
+  Future<void> setShufflingEnabled(bool value) async {
     setState(() {
       Config.shufflingEnabled = value;
     });
@@ -519,7 +527,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setLearnEndgame(bool value) async {
+  Future<void> setLearnEndgame(bool value) async {
     setState(() {
       Config.learnEndgame = value;
     });
@@ -529,7 +537,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setOpeningBook(bool value) async {
+  Future<void> setOpeningBook(bool value) async {
     setState(() {
       Config.openingBook = value;
     });
@@ -539,7 +547,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setTone(bool value) async {
+  Future<void> setTone(bool value) async {
     setState(() {
       Config.toneEnabled = value;
     });
@@ -549,7 +557,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setKeepMuteWhenTakingBack(bool value) async {
+  Future<void> setKeepMuteWhenTakingBack(bool value) async {
     setState(() {
       Config.keepMuteWhenTakingBack = value;
     });
@@ -559,7 +567,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setScreenReaderSupport(bool value) async {
+  Future<void> setScreenReaderSupport(bool value) async {
     setState(() {
       Config.screenReaderSupport = value;
     });
@@ -569,7 +577,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setDeveloperMode(bool value) async {
+  Future<void> setDeveloperMode(bool value) async {
     setState(() {
       Config.developerMode = value;
     });
@@ -579,7 +587,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setExperimentsEnabled(bool value) async {
+  Future<void> setExperimentsEnabled(bool value) async {
     setState(() {
       Config.experimentsEnabled = value;
     });
@@ -591,7 +599,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   // Display
 
-  setLanguage(String value) async {
+  Future<void> setLanguage(String value) async {
     setState(() {
       Config.languageCode = value;
     });
@@ -601,7 +609,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setIsPieceCountInHandShown(bool value) async {
+  Future<void> setIsPieceCountInHandShown(bool value) async {
     setState(() {
       Config.isPieceCountInHandShown = value;
     });
@@ -611,7 +619,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setIsNotationsShown(bool value) async {
+  Future<void> setIsNotationsShown(bool value) async {
     setState(() {
       Config.isNotationsShown = value;
     });
@@ -621,7 +629,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setIsHistoryNavigationToolbarShown(bool value) async {
+  Future<void> setIsHistoryNavigationToolbarShown(bool value) async {
     setState(() {
       Config.isHistoryNavigationToolbarShown = value;
     });
@@ -631,7 +639,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     Config.save();
   }
 
-  setStandardNotationEnabled(bool value) async {
+  Future<void> setStandardNotationEnabled(bool value) async {
     setState(() {
       Config.standardNotationEnabled = value;
     });

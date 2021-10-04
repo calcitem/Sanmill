@@ -49,12 +49,12 @@ class DrawerListItem {
 }
 
 class HomeDrawer extends StatefulWidget {
-  const HomeDrawer(
-      {Key? key,
-      this.screenIndex,
-      this.iconAnimationController,
-      this.callBackIndex})
-      : super(key: key);
+  const HomeDrawer({
+    Key? key,
+    this.screenIndex,
+    this.iconAnimationController,
+    this.callBackIndex,
+  }) : super(key: key);
 
   final AnimationController? iconAnimationController;
   final DrawerIndex? screenIndex;
@@ -76,77 +76,83 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    List<DrawerListItem> drawerList = <DrawerListItem>[
+    final List<DrawerListItem> drawerList = <DrawerListItem>[
       DrawerListItem(
         index: DrawerIndex.humanVsAi,
         title: S.of(context).humanVsAi,
-        icon: Icon(FluentIcons.person_24_regular),
+        icon: const Icon(FluentIcons.person_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.humanVsHuman,
         title: S.of(context).humanVsHuman,
-        icon: Icon(FluentIcons.people_24_regular),
+        icon: const Icon(FluentIcons.people_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.aiVsAi,
         title: S.of(context).aiVsAi,
-        icon: Icon(FluentIcons.bot_24_regular),
+        icon: const Icon(FluentIcons.bot_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.preferences,
         title: S.of(context).preferences,
-        icon: Icon(FluentIcons.options_24_regular),
+        icon: const Icon(FluentIcons.options_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.ruleSettings,
         title: S.of(context).ruleSettings,
-        icon: Icon(FluentIcons.task_list_ltr_24_regular),
+        icon: const Icon(FluentIcons.task_list_ltr_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.personalization,
         title: S.of(context).personalization,
-        icon: Icon(FluentIcons.design_ideas_24_regular),
+        icon: const Icon(FluentIcons.design_ideas_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.feedback,
         title: S.of(context).feedback,
-        icon: Icon(FluentIcons.chat_warning_24_regular),
+        icon: const Icon(FluentIcons.chat_warning_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.Help,
         title: S.of(context).help,
-        icon: Icon(FluentIcons.question_circle_24_regular),
+        icon: const Icon(FluentIcons.question_circle_24_regular),
       ),
       DrawerListItem(
         index: DrawerIndex.About,
         title: S.of(context).about,
-        icon: Icon(FluentIcons.info_24_regular),
+        icon: const Icon(FluentIcons.info_24_regular),
       ),
     ];
 
-    var rotationTransition = RotationTransition(
-      turns: AlwaysStoppedAnimation<double>(Tween<double>(begin: 0.0, end: 24.0)
-              .animate(CurvedAnimation(
-                  parent: widget.iconAnimationController!,
-                  curve: Curves.fastOutSlowIn))
-              .value /
-          360),
+    final rotationTransition = RotationTransition(
+      turns: AlwaysStoppedAnimation<double>(
+        Tween<double>(begin: 0.0, end: 24.0)
+                .animate(
+                  CurvedAnimation(
+                    parent: widget.iconAnimationController!,
+                    curve: Curves.fastOutSlowIn,
+                  ),
+                )
+                .value /
+            360,
+      ),
     );
 
-    var scaleTransition = ScaleTransition(
+    final scaleTransition = ScaleTransition(
       scale: AlwaysStoppedAnimation<double>(
-          1.0 - (widget.iconAnimationController!.value) * 0.2),
+        1.0 - (widget.iconAnimationController!.value) * 0.2,
+      ),
       child: rotationTransition,
     );
 
-    var animatedBuilder = AnimatedBuilder(
+    final animatedBuilder = AnimatedBuilder(
       animation: widget.iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
         return scaleTransition;
       },
     );
 
-    var animatedTextsColors = [
+    final animatedTextsColors = [
       Color(Config.drawerTextColor),
       Colors.black,
       Colors.blue,
@@ -157,47 +163,46 @@ class _HomeDrawerState extends State<HomeDrawer> {
       Color(Config.drawerHighlightItemColor),
     ];
 
-    var animatedTextKit = AnimatedTextKit(
-        animatedTexts: [
-          ColorizeAnimatedText(
-            S.of(context).appName,
-            textStyle: TextStyle(
-              fontSize: Config.fontSize + 16,
-              fontWeight: FontWeight.w600,
-            ),
-            colors: animatedTextsColors,
-            textAlign: TextAlign.start,
-            speed: const Duration(milliseconds: 3000),
+    final animatedTextKit = AnimatedTextKit(
+      animatedTexts: [
+        ColorizeAnimatedText(
+          S.of(context).appName,
+          textStyle: TextStyle(
+            fontSize: Config.fontSize + 16,
+            fontWeight: FontWeight.w600,
           ),
-        ],
-        pause: const Duration(milliseconds: 30000),
-        repeatForever: true,
-        stopPauseOnTap: true,
-        onTap: () {
-          if (lastTapTime == null ||
-              DateTime.now().difference(lastTapTime!) > Duration(seconds: 1)) {
-            lastTapTime = DateTime.now();
-            print("$tag Tap again in one second to enable developer mode.");
-          } else {
-            lastTapTime = DateTime.now();
-            Developer.developerModeEnabled = true;
-            print("$tag Developer mode enabled.");
-          }
-        });
+          colors: animatedTextsColors,
+          speed: const Duration(milliseconds: 3000),
+        ),
+      ],
+      pause: const Duration(milliseconds: 30000),
+      repeatForever: true,
+      stopPauseOnTap: true,
+      onTap: () {
+        if (lastTapTime == null ||
+            DateTime.now().difference(lastTapTime!) >
+                const Duration(seconds: 1)) {
+          lastTapTime = DateTime.now();
+          print("$tag Tap again in one second to enable developer mode.");
+        } else {
+          lastTapTime = DateTime.now();
+          Developer.developerModeEnabled = true;
+          print("$tag Developer mode enabled.");
+        }
+      },
+    );
 
-    var drawerHeader = Container(
+    final drawerHeader = Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 0.0),
+      padding: EdgeInsets.zero,
       child: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             animatedBuilder,
             Padding(
-              padding:
-                  EdgeInsets.only(top: (isLargeScreen() ? 30 : 8), left: 4),
+              padding: EdgeInsets.only(top: isLargeScreen() ? 30 : 8, left: 4),
               child: ExcludeSemantics(child: animatedTextKit),
             ),
           ],
@@ -239,11 +244,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
     */
 
-    var scaffold = Scaffold(
+    final scaffold = Scaffold(
       backgroundColor: Color(Config.drawerBackgroundColor),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           drawerHeader,
           const SizedBox(height: 4),
@@ -251,7 +255,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(0.0),
+              padding: EdgeInsets.zero,
               itemCount: drawerList.length,
               itemBuilder: (BuildContext context, int index) {
                 return buildInkwell(drawerList[index]);
@@ -272,25 +276,27 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Widget buildInkwell(DrawerListItem listItem) {
-    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
-    double radius = 28.0;
-    var animatedBuilder = AnimatedBuilder(
+    final bool ltr =
+        getBidirectionality(context) == Bidirectionality.leftToRight;
+    const double radius = 28.0;
+    final animatedBuilder = AnimatedBuilder(
       animation: widget.iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
         return Transform(
           transform: Matrix4.translationValues(
-              (MediaQuery.of(context).size.width * 0.75 - 64) *
-                  (1.0 - widget.iconAnimationController!.value - 1.0),
-              0.0,
-              0.0),
+            (MediaQuery.of(context).size.width * 0.75 - 64) *
+                (1.0 - widget.iconAnimationController!.value - 1.0),
+            0.0,
+            0.0,
+          ),
           child: Padding(
-            padding: EdgeInsets.only(top: 8, bottom: 8),
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.75 - 64,
               height: 46,
               decoration: BoxDecoration(
                 color: Color(Config.drawerHighlightItemColor),
-                borderRadius: new BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(ltr ? 0 : radius),
                   topRight: Radius.circular(ltr ? radius : 0),
                   bottomLeft: Radius.circular(ltr ? 0 : radius),
@@ -303,21 +309,20 @@ class _HomeDrawerState extends State<HomeDrawer> {
       },
     );
 
-    var listItemIcon = Icon(listItem.icon!.icon,
-        color: widget.screenIndex == listItem.index
-            ? Color(Config.drawerTextColor) // TODO: drawerHighlightTextColor
-            : Color(Config.drawerTextColor));
+    final listItemIcon = Icon(
+      listItem.icon!.icon,
+      color: widget.screenIndex == listItem.index
+          ? Color(Config.drawerTextColor) // TODO: drawerHighlightTextColor
+          : Color(Config.drawerTextColor),
+    );
 
-    var stack = Stack(
+    final stack = Stack(
       children: <Widget>[
         Container(
           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
           child: Row(
             children: <Widget>[
-              Container(
-                width: 6.0,
-                height: 46.0,
-              ),
+              const SizedBox(width: 6.0, height: 46.0),
               const Padding(
                 padding: EdgeInsets.all(4.0),
               ),
@@ -333,17 +338,19 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       : FontWeight.w500,
                   fontSize: Config.fontSize,
                   color: widget.screenIndex == listItem.index
-                      ? Color(Config
-                          .drawerTextColor) // TODO: drawerHighlightTextColor
+                      ? Color(
+                          Config.drawerTextColor,
+                        ) // TODO: drawerHighlightTextColor
                       : Color(Config.drawerTextColor),
                 ),
               ),
             ],
           ),
         ),
-        widget.screenIndex == listItem.index
-            ? animatedBuilder
-            : const SizedBox()
+        if (widget.screenIndex == listItem.index)
+          animatedBuilder
+        else
+          const SizedBox()
       ],
     );
 

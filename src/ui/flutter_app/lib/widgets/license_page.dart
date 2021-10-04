@@ -46,13 +46,18 @@ class _LicenseAgreementPageState extends State<LicenseAgreementPage> {
       body: ListView(
         children: <Widget>[
           Container(
-              padding: const EdgeInsets.only(
-                  top: 16, left: 16, right: 16, bottom: 16),
-              child: Text(
-                _data != "" ? _data : 'Nothing to show',
-                style: TextStyle(fontFamily: 'Monospace', fontSize: 12),
-                textAlign: TextAlign.left,
-              ))
+            padding: const EdgeInsets.only(
+              top: 16,
+              left: 16,
+              right: 16,
+              bottom: 16,
+            ),
+            child: Text(
+              _data != "" ? _data : 'Nothing to show',
+              style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
+              textAlign: TextAlign.left,
+            ),
+          ),
         ],
       ),
     );

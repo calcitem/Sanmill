@@ -74,7 +74,7 @@ class _GamePageState extends State<GamePage>
   );
   */
   late AnimationController _animationController;
-  late Animation animation;
+  late Animation<double> animation;
   bool disposed = false;
   bool ltr = true;
   final String tag = "[game_page]";
@@ -89,14 +89,14 @@ class _GamePageState extends State<GamePage>
     Game.instance.init();
     widget.engine.startup();
 
-    timer = Timer.periodic(Duration(microseconds: 100), (Timer t) {
+    timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
       _setReadyState();
     });
 
     _initAnimation();
   }
 
-  _setReadyState() async {
+  Future<void> _setReadyState() async {
     print("$tag Check if need to set Ready state...");
     if (!isReady && mounted && Config.settingsLoaded) {
       print("$tag Set Ready State...");
@@ -111,7 +111,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  _initAnimation() {
+  void _initAnimation() {
     _animationController = AnimationController(
       vsync: this,
       duration:
@@ -142,7 +142,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  showTip(String? tip) {
+  void showTip(String? tip) {
     if (!mounted) return;
     if (tip != null) {
       print("[tip] $tip");
@@ -160,7 +160,7 @@ class _GamePageState extends State<GamePage>
 
     final winner = Game.instance.position.winner;
 
-    Map<String, String> colorWinStrings = {
+    final Map<String, String> colorWinStrings = {
       PieceColor.white: S.of(context).whiteWin,
       PieceColor.black: S.of(context).blackWin,
       PieceColor.draw: S.of(context).isDraw
@@ -187,7 +187,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  onBoardTap(BuildContext context, int index) {
+  dynamic onBoardTap(BuildContext context, int index) {
     if (!isReady) {
       print("[tap] Not ready, ignore tapping.");
       return false;
@@ -206,7 +206,7 @@ class _GamePageState extends State<GamePage>
 
     final position = Game.instance.position;
 
-    int? sq = indexToSquare[index];
+    final int? sq = indexToSquare[index];
 
     if (sq == null) {
       print("$tag sq is null, skip tapping.");
@@ -222,7 +222,7 @@ class _GamePageState extends State<GamePage>
         position.pieceOnBoardCount[PieceColor.black] == 0) {
       Game.instance.newGame();
 
-      if (Game.instance.isAiToMove()) {
+      if (Game.instance.isAiToMove()!) {
         if (Game.instance.aiIsSearching()) {
           print("$tag AI is thinking, skip tapping.");
           return false;
@@ -234,7 +234,7 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (Game.instance.isAiToMove() || Game.instance.aiIsSearching()) {
+    if (Game.instance.isAiToMove()! || Game.instance.aiIsSearching()) {
       print("[tap] AI's turn, skip tapping.");
       return false;
     }
@@ -268,11 +268,11 @@ class _GamePageState extends State<GamePage>
                 }
               } else if (mounted) {
                 if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                  showTip(S
-                      .of(context)
-                      .tipPlaced); // TODO: HumanVsHuman - Change tip
+                  showTip(
+                    S.of(context).tipPlaced,
+                  ); // TODO: HumanVsHuman - Change tip
                 } else {
-                  var side = Game.instance.sideToMove == PieceColor.white
+                  final side = Game.instance.sideToMove == PieceColor.white
                       ? S.of(context).black
                       : S.of(context).white;
                   showTip(side + S.of(context).tipToMove);
@@ -308,7 +308,7 @@ class _GamePageState extends State<GamePage>
             }
             break;
           }
-          int selectRet = position.selectPiece(sq);
+          final int selectRet = position.selectPiece(sq);
           switch (selectRet) {
             case 0:
               Audios.playTone(Audios.selectSoundId);
@@ -316,7 +316,7 @@ class _GamePageState extends State<GamePage>
               ret = true;
               print("[tap] selectPiece: [$sq]");
 
-              var us = Game.instance.sideToMove;
+              final us = Game.instance.sideToMove;
               if (position.phase == Phase.moving &&
                   rule.mayFly &&
                   (Game.instance.position.pieceOnBoardCount[us] ==
@@ -387,7 +387,7 @@ class _GamePageState extends State<GamePage>
           break;
 
         case Act.remove:
-          int removeRet = position.removePiece(sq);
+          final int removeRet = position.removePiece(sq);
 
           switch (removeRet) {
             case 0:
@@ -408,7 +408,7 @@ class _GamePageState extends State<GamePage>
                   }
                 } else {
                   if (mounted) {
-                    var them = Game.instance.sideToMove == PieceColor.white
+                    final them = Game.instance.sideToMove == PieceColor.white
                         ? S.of(context).black
                         : S.of(context).white;
                     if (mounted) {
@@ -431,13 +431,16 @@ class _GamePageState extends State<GamePage>
             case -3:
               Audios.playTone(Audios.illegalSoundId);
               print(
-                  "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]");
+                "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
+              );
               if (mounted) {
                 showTip(S.of(context).tipCannotRemovePieceFromMill);
                 if (Config.screenReaderSupport) {
                   ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(
-                      context, S.of(context).tipCannotRemovePieceFromMill);
+                    context,
+                    S.of(context).tipCannotRemovePieceFromMill,
+                  );
                 }
               }
               break;
@@ -461,7 +464,7 @@ class _GamePageState extends State<GamePage>
 
       if (ret) {
         Game.instance.sideToMove = position.sideToMove() ?? PieceColor.nobody;
-        Game.instance.moveHistory.add(position.record);
+        Game.instance.moveHistory.add(position.record!);
 
         // TODO: Need Others?
         // Increment ply counters. In particular,
@@ -471,14 +474,16 @@ class _GamePageState extends State<GamePage>
         ++position.st.rule50;
         ++position.st.pliesFromNull;
 
-        if (position.record.length > "-(1,2)".length) {
-          if (posKeyHistory.length == 0 ||
-              (posKeyHistory.length > 0 &&
+        if (position.record!.length > "-(1,2)".length) {
+          if (posKeyHistory.isEmpty ||
+              (posKeyHistory.isNotEmpty &&
                   position.st.key != posKeyHistory[posKeyHistory.length - 1])) {
             posKeyHistory.add(position.st.key);
             if (rule.threefoldRepetitionRule && position.hasGameCycle()) {
-              position.setGameOver(PieceColor.draw,
-                  GameOverReason.drawReasonThreefoldRepetition);
+              position.setGameOver(
+                PieceColor.draw,
+                GameOverReason.drawReasonThreefoldRepetition,
+              );
             }
           }
         } else {
@@ -487,9 +492,9 @@ class _GamePageState extends State<GamePage>
 
         //position.move = m;
 
-        Move m = Move(position.record);
-        position.recorder.prune();
-        position.recorder.moveIn(m, position);
+        final Move m = Move(position.record);
+        position.recorder!.prune();
+        position.recorder!.moveIn(m, position);
 
         /*
         if (Config.screenReaderSupport && m.notation != null) {
@@ -514,7 +519,7 @@ class _GamePageState extends State<GamePage>
     return ret;
   }
 
-  engineToGo(bool isMoveNow) async {
+  Future<void> engineToGo(bool isMoveNow) async {
     if (!mounted) {
       print("[engineToGo] !mounted, skip engineToGo.");
       return;
@@ -524,15 +529,16 @@ class _GamePageState extends State<GamePage>
     print("[engineToGo] engine type is ${widget.engineType}");
 
     if (isMoveNow == true) {
-      if (!Game.instance.isAiToMove()) {
+      if (!Game.instance.isAiToMove()!) {
         print("[engineToGo] Human to Move. Cannot get search result now.");
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).notAIsTurn);
         return;
       }
-      if (!Game.instance.position.recorder.isClean()) {
+      if (!Game.instance.position.recorder!.isClean()) {
         print(
-            "[engineToGo] History is not clean. Cannot get search result now.");
+          "[engineToGo] History is not clean. Cannot get search result now.",
+        );
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).aiIsNotThinking);
         return;
@@ -541,33 +547,29 @@ class _GamePageState extends State<GamePage>
 
     while ((Config.isAutoRestart == true ||
             Game.instance.position.winner == PieceColor.nobody) &&
-        Game.instance.isAiToMove() &&
+        Game.instance.isAiToMove()! &&
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
-        String score =
-            Game.instance.position.score[PieceColor.white].toString() +
-                " : " +
-                Game.instance.position.score[PieceColor.black].toString() +
-                " : " +
-                Game.instance.position.score[PieceColor.draw].toString();
+        final String score =
+            "${Game.instance.position.score[PieceColor.white]} : ${Game.instance.position.score[PieceColor.black]} : ${Game.instance.position.score[PieceColor.draw]}";
 
         showTip(score);
       } else {
         if (mounted) {
           showTip(S.of(context).thinking);
 
-          Move? m = Game.instance.position.recorder.lastMove;
+          final Move? m = Game.instance.position.recorder!.lastMove;
 
           if (Config.screenReaderSupport &&
               Game.instance.position.action != Act.remove &&
               m != null &&
               m.notation != null) {
-            showSnackBar(context, S.of(context).human + ": " + m.notation!);
+            showSnackBar(context, "${S.of(context).human}: ${m.notation!}");
           }
         }
       }
 
-      late var response;
+      late EngineResponse response;
 
       if (!isMoveNow) {
         print("[engineToGo] Searching...");
@@ -582,8 +584,8 @@ class _GamePageState extends State<GamePage>
 
       switch (response.type) {
         case 'move':
-          Move mv = response.value;
-          final Move move = new Move(mv.move);
+          final Move mv = response.value as Move;
+          final Move move = Move(mv.move);
 
           _animationController.duration =
               Duration(milliseconds: (Config.animationDuration * 1000).toInt());
@@ -592,13 +594,14 @@ class _GamePageState extends State<GamePage>
             _animationController.reset();
           } else {
             print(
-                "[engineToGo] Disposed, so do not reset animationController.");
+              "[engineToGo] Disposed, so do not reset animationController.",
+            );
           }
 
-          Game.instance.doMove(move.move);
+          Game.instance.doMove(move.move!);
           showTips();
           if (Config.screenReaderSupport && move.notation != null) {
-            showSnackBar(context, S.of(context).ai + ": " + move.notation!);
+            showSnackBar(context, "${S.of(context).ai}: ${move.notation!}");
           }
           break;
         case 'timeout':
@@ -625,10 +628,10 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  onStartNewGameButtonPressed() async {
+  Future<void> onStartNewGameButtonPressed() async {
     Navigator.of(context).pop();
 
-    if (Game.instance.isAiToMove()) {
+    if (Game.instance.isAiToMove()!) {
       // TODO: Move now
       //print("$tag New game, AI to move, move now.");
       //await engineToGo(true);
@@ -644,37 +647,36 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (Game.instance.isAiToMove()) {
+    if (Game.instance.isAiToMove()!) {
       print("$tag New game, AI to move.");
       engineToGo(false);
     }
   }
 
-  onImportGameButtonPressed() async {
+  Future<void> onImportGameButtonPressed() async {
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).clearSnackBars();
 
-    ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+    final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
     if (data == null || data.text == null) {
       return;
     }
 
-    String text = data.text!;
+    final String text = data.text!;
 
     print("Clipboard text:");
-    print('$text');
+    print(text);
 
     await onTakeBackAllButtonPressed(pop: false);
-    await Game.instance.position.recorder.clear();
-    var importFailedStr = await Game.instance.position.recorder.import(text);
+    Game.instance.position.recorder!.clear();
+    final importFailedStr = Game.instance.position.recorder!.import(text);
 
     if (importFailedStr != "") {
-      showTip(S.of(context).cannotImport + " " + importFailedStr);
+      showTip("${S.of(context).cannotImport} $importFailedStr");
       if (Config.screenReaderSupport) {
         ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(
-            context, S.of(context).cannotImport + " " + importFailedStr);
+        showSnackBar(context, "${S.of(context).cannotImport} $importFailedStr");
       }
       return;
     }
@@ -688,7 +690,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  onExportGameButtonPressed() async {
+  Future<void> onExportGameButtonPressed() async {
     Navigator.of(context).pop();
 
     final moveHistoryText = Game.instance.position.moveHistoryText;
@@ -780,62 +782,62 @@ class _GamePageState extends State<GamePage>
   }
   */
 
-  onAutoReplayButtonPressed() async {
+  Future<void> onAutoReplayButtonPressed() async {
     Navigator.of(context).pop();
 
     await onTakeBackAllButtonPressed(pop: false);
     await onStepForwardAllButtonPressed(pop: false);
   }
 
-  onGameButtonPressed() {
+  void onGameButtonPressed() {
     showModalBottomSheet(
       //showDialog(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Semantics(
-          label: S.of(context).game,
-          child: SimpleDialog(
-            backgroundColor: Colors.transparent,
-            children: <Widget>[
+      builder: (context) => Semantics(
+        label: S.of(context).game,
+        child: SimpleDialog(
+          backgroundColor: Colors.transparent,
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: onStartNewGameButtonPressed,
+              child: Text(
+                S.of(context).newGame,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              onPressed: onImportGameButtonPressed,
+              child: Text(
+                S.of(context).importGame,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              onPressed: onExportGameButtonPressed,
+              child: Text(
+                S.of(context).exportGame,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: AppTheme.sizedBoxHeight),
+            if (Config.screenReaderSupport)
               SimpleDialogOption(
                 child: Text(
-                  S.of(context).newGame,
+                  S.of(context).close,
                   style: AppTheme.simpleDialogOptionTextStyle,
                   textAlign: TextAlign.center,
                 ),
-                onPressed: onStartNewGameButtonPressed,
-              ),
-              SizedBox(height: AppTheme.sizedBoxHeight),
-              SimpleDialogOption(
-                child: Text(
-                  S.of(context).importGame,
-                  style: AppTheme.simpleDialogOptionTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-                onPressed: onImportGameButtonPressed,
-              ),
-              SizedBox(height: AppTheme.sizedBoxHeight),
-              SimpleDialogOption(
-                child: Text(
-                  S.of(context).exportGame,
-                  style: AppTheme.simpleDialogOptionTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-                onPressed: onExportGameButtonPressed,
-              ),
-              SizedBox(height: AppTheme.sizedBoxHeight),
-              Config.screenReaderSupport
-                  ? SimpleDialogOption(
-                      child: Text(
-                        S.of(context).close,
-                        style: AppTheme.simpleDialogOptionTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  : SizedBox(height: 1),
-              /*
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            else
+              const SizedBox(height: 1),
+            /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             Config.experimentsEnabled
                 ? SimpleDialogOption(
@@ -874,7 +876,7 @@ class _GamePageState extends State<GamePage>
                   )
                 : SizedBox(height: 1),
             */
-              /*
+            /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               child: Text(
@@ -885,118 +887,125 @@ class _GamePageState extends State<GamePage>
               onPressed: onAutoReplayButtonPressed,
             ),
             */
-            ],
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
-  onOptionButtonPressed() {
+  void onOptionButtonPressed() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => GameSettingsPage()),
     );
   }
 
-  onMoveButtonPressed() {
+  void onMoveButtonPressed() {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Semantics(
-          label: S.of(context).move,
-          child: SimpleDialog(
-            backgroundColor: Colors.transparent,
-            children: <Widget>[
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SimpleDialogOption(
-                      child: Text(
-                        S.of(context).takeBack,
-                        style: AppTheme.simpleDialogOptionTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: onTakeBackButtonPressed,
-                    ),
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SizedBox(height: AppTheme.sizedBoxHeight),
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SimpleDialogOption(
-                      child: Text(
-                        S.of(context).stepForward,
-                        style: AppTheme.simpleDialogOptionTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: onStepForwardButtonPressed,
-                    ),
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SizedBox(height: AppTheme.sizedBoxHeight),
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SimpleDialogOption(
-                      child: Text(
-                        S.of(context).takeBackAll,
-                        style: AppTheme.simpleDialogOptionTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: onTakeBackAllButtonPressed,
-                    ),
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SizedBox(height: AppTheme.sizedBoxHeight),
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SimpleDialogOption(
-                      child: Text(
-                        S.of(context).stepForwardAll,
-                        style: AppTheme.simpleDialogOptionTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: onStepForwardAllButtonPressed,
-                    ),
-              Config.isHistoryNavigationToolbarShown
-                  ? SizedBox(height: 1)
-                  : SizedBox(height: AppTheme.sizedBoxHeight),
+      builder: (context) => Semantics(
+        label: S.of(context).move,
+        child: SimpleDialog(
+          backgroundColor: Colors.transparent,
+          children: <Widget>[
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
               SimpleDialogOption(
+                onPressed: onTakeBackButtonPressed,
                 child: Text(
-                  S.of(context).showMoveList,
+                  S.of(context).takeBack,
                   style: AppTheme.simpleDialogOptionTextStyle,
                   textAlign: TextAlign.center,
                 ),
-                onPressed: onMoveListButtonPressed,
               ),
-              SizedBox(height: AppTheme.sizedBoxHeight),
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
+              const SizedBox(height: AppTheme.sizedBoxHeight),
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
               SimpleDialogOption(
+                onPressed: onStepForwardButtonPressed,
                 child: Text(
-                  S.of(context).moveNow,
+                  S.of(context).stepForward,
                   style: AppTheme.simpleDialogOptionTextStyle,
                   textAlign: TextAlign.center,
                 ),
-                onPressed: onMoveNowButtonPressed,
               ),
-              SizedBox(height: AppTheme.sizedBoxHeight),
-              Config.screenReaderSupport
-                  ? SimpleDialogOption(
-                      child: Text(
-                        S.of(context).close,
-                        style: AppTheme.simpleDialogOptionTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  : SizedBox(height: 1),
-            ],
-          ),
-        );
-      },
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
+              const SizedBox(height: AppTheme.sizedBoxHeight),
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
+              SimpleDialogOption(
+                onPressed: onTakeBackAllButtonPressed,
+                child: Text(
+                  S.of(context).takeBackAll,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
+              const SizedBox(height: AppTheme.sizedBoxHeight),
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
+              SimpleDialogOption(
+                onPressed: onStepForwardAllButtonPressed,
+                child: Text(
+                  S.of(context).stepForwardAll,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (Config.isHistoryNavigationToolbarShown)
+              const SizedBox(height: 1)
+            else
+              const SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              onPressed: onMoveListButtonPressed,
+              child: Text(
+                S.of(context).showMoveList,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: AppTheme.sizedBoxHeight),
+            SimpleDialogOption(
+              onPressed: onMoveNowButtonPressed,
+              child: Text(
+                S.of(context).moveNow,
+                style: AppTheme.simpleDialogOptionTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: AppTheme.sizedBoxHeight),
+            if (Config.screenReaderSupport)
+              SimpleDialogOption(
+                child: Text(
+                  S.of(context).close,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            else
+              const SizedBox(height: 1),
+          ],
+        ),
+      ),
     );
   }
 
-  onGotoHistoryButtonsPressed(var func, {bool pop = true}) async {
+  Future<void> onGotoHistoryButtonsPressed(Future<String> func,
+      {bool pop = true}) async {
     if (pop == true) {
       Navigator.of(context).pop();
     }
@@ -1014,7 +1023,7 @@ class _GamePageState extends State<GamePage>
 
     Audios.isTemporaryMute = Config.keepMuteWhenTakingBack;
 
-    var errMove = await func;
+    final errMove = await func;
 
     switch (errMove) {
       case "":
@@ -1037,7 +1046,7 @@ class _GamePageState extends State<GamePage>
 
     if (mounted) {
       String text = "";
-      var pos = Game.instance.position;
+      final pos = Game.instance.position;
 
       /*
       String us = "";
@@ -1051,9 +1060,9 @@ class _GamePageState extends State<GamePage>
       }
       */
 
-      var lastEffectiveMove = pos.recorder.lastEffectiveMove;
+      final lastEffectiveMove = pos.recorder!.lastEffectiveMove;
       if (lastEffectiveMove != null && lastEffectiveMove.notation != null) {
-        text = S.of(context).lastMove + ": " + lastEffectiveMove.notation;
+        text = "${S.of(context).lastMove}: ${lastEffectiveMove.notation}";
       } else {
         text = S.of(context).atEnd;
       }
@@ -1067,30 +1076,32 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  onTakeBackButtonPressed({bool pop = true}) async {
+  Future<void> onTakeBackButtonPressed({bool pop = true}) async {
     onGotoHistoryButtonsPressed(Game.instance.position.takeBack(), pop: pop);
   }
 
-  onStepForwardButtonPressed({bool pop = true}) async {
+  Future<void> onStepForwardButtonPressed({bool pop = true}) async {
     onGotoHistoryButtonsPressed(Game.instance.position.stepForward(), pop: pop);
   }
 
-  onTakeBackAllButtonPressed({bool pop = true}) async {
+  Future<void> onTakeBackAllButtonPressed({bool pop = true}) async {
     onGotoHistoryButtonsPressed(Game.instance.position.takeBackAll(), pop: pop);
   }
 
-  onStepForwardAllButtonPressed({bool pop = true}) async {
-    onGotoHistoryButtonsPressed(Game.instance.position.stepForwardAll(),
-        pop: pop);
+  Future<void> onStepForwardAllButtonPressed({bool pop = true}) async {
+    onGotoHistoryButtonsPressed(
+      Game.instance.position.stepForwardAll(),
+      pop: pop,
+    );
   }
 
-  onTakeBackNButtonPressed(int n, {bool pop = true}) async {
+  Future<void> onTakeBackNButtonPressed(int n, {bool pop = true}) async {
     onGotoHistoryButtonsPressed(Game.instance.position.takeBackN(n), pop: pop);
   }
 
-  onMoveListButtonPressed() {
+  void onMoveListButtonPressed() {
     final moveHistoryText = Game.instance.position.moveHistoryText;
-    var end = Game.instance.moveHistory.length - 1;
+    final end = Game.instance.moveHistory.length - 1;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -1100,11 +1111,13 @@ class _GamePageState extends State<GamePage>
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
-          title: Text(S.of(context).moveList,
-              style: TextStyle(
-                color: AppTheme.moveHistoryTextColor,
-                fontSize: Config.fontSize + 2.0,
-              )),
+          title: Text(
+            S.of(context).moveList,
+            style: TextStyle(
+              color: AppTheme.moveHistoryTextColor,
+              fontSize: Config.fontSize + 2.0,
+            ),
+          ),
           content: SingleChildScrollView(
             child: Text(
               moveHistoryText,
@@ -1113,30 +1126,36 @@ class _GamePageState extends State<GamePage>
             ),
           ),
           actions: <Widget>[
-            end > 0
-                ? TextButton(
-                    child: Text(S.of(context).rollback,
-                        style: AppTheme.moveHistoryTextStyle),
-                    onPressed: () async {
-                      int selectValue = await showPickerNumber(
-                        context,
-                        1,
-                        end,
-                        1,
-                        S.of(context).moves,
-                      );
+            if (end > 0)
+              TextButton(
+                child: Text(
+                  S.of(context).rollback,
+                  style: AppTheme.moveHistoryTextStyle,
+                ),
+                onPressed: () async {
+                  final int selectValue = await showPickerNumber(
+                    context,
+                    1,
+                    end,
+                    1,
+                    S.of(context).moves,
+                  );
 
-                      if (selectValue != 0) {
-                        onTakeBackNButtonPressed(selectValue);
-                      }
-                    },
-                  )
-                : TextButton(
-                    child: Text(""),
-                    onPressed: () => Navigator.of(context).pop()),
+                  if (selectValue != 0) {
+                    onTakeBackNButtonPressed(selectValue);
+                  }
+                },
+              )
+            else
+              TextButton(
+                child: const Text(""),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             TextButton(
-              child: Text(S.of(context).copy,
-                  style: AppTheme.moveHistoryTextStyle),
+              child: Text(
+                S.of(context).copy,
+                style: AppTheme.moveHistoryTextStyle,
+              ),
               onPressed: () =>
                   Clipboard.setData(ClipboardData(text: moveHistoryText))
                       .then((_) {
@@ -1145,8 +1164,10 @@ class _GamePageState extends State<GamePage>
               }),
             ),
             TextButton(
-              child: Text(S.of(context).cancel,
-                  style: AppTheme.moveHistoryTextStyle),
+              child: Text(
+                S.of(context).cancel,
+                style: AppTheme.moveHistoryTextStyle,
+              ),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -1155,12 +1176,12 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  onMoveNowButtonPressed() async {
+  Future<void> onMoveNowButtonPressed() async {
     Navigator.of(context).pop();
     await engineToGo(true);
   }
 
-  onInfoButtonPressed() {
+  void onInfoButtonPressed() {
     final analyzeText = getInfoText();
     showDialog(
       context: context,
@@ -1169,7 +1190,8 @@ class _GamePageState extends State<GamePage>
         return AlertDialog(
           backgroundColor: AppTheme.infoDialogBackgroundColor,
           content: SingleChildScrollView(
-              child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle)),
+            child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle),
+          ),
           actions: <Widget>[
             TextButton(
               child:
@@ -1182,7 +1204,7 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  setPrivacyPolicyAccepted(bool value) async {
+  Future<void> setPrivacyPolicyAccepted(bool value) async {
     setState(() {
       Config.isPrivacyPolicyAccepted = value;
     });
@@ -1192,17 +1214,17 @@ class _GamePageState extends State<GamePage>
     Config.save();
   }
 
-  onShowPrivacyDialog() async {
+  Future<void> onShowPrivacyDialog() async {
     showPrivacyDialog(context, setPrivacyPolicyAccepted);
   }
 
   String getGameOverReasonString(GameOverReason? reason, String? winner) {
     //String winnerStr =
     //    winner == Color.white ? S.of(context).white : S.of(context).black;
-    String loserStr =
+    final String loserStr =
         winner == PieceColor.white ? S.of(context).black : S.of(context).white;
 
-    Map<GameOverReason, String> reasonMap = {
+    final Map<GameOverReason, String> reasonMap = {
       GameOverReason.loseReasonlessThanThree:
           loserStr + S.of(context).loseReasonlessThanThree,
       GameOverReason.loseReasonResign:
@@ -1235,7 +1257,7 @@ class _GamePageState extends State<GamePage>
     return loseReasonStr;
   }
 
-  GameResult getGameResult(var winner) {
+  GameResult getGameResult(String winner) {
     if (isAi[PieceColor.white]! && isAi[PieceColor.black]!) {
       return GameResult.none;
     }
@@ -1263,8 +1285,8 @@ class _GamePageState extends State<GamePage>
     return GameResult.none;
   }
 
-  void showGameResult(var winner) {
-    GameResult result = getGameResult(winner);
+  void showGameResult(String winner) {
+    final GameResult result = getGameResult(winner);
     Game.instance.position.result = result;
 
     switch (result) {
@@ -1280,7 +1302,7 @@ class _GamePageState extends State<GamePage>
         break;
     }
 
-    Map<GameResult, String> retMap = {
+    final Map<GameResult, String> retMap = {
       GameResult.win: Game.instance.engineType == EngineType.humanVsAi
           ? S.of(context).youWin
           : S.of(context).gameOver,
@@ -1288,25 +1310,25 @@ class _GamePageState extends State<GamePage>
       GameResult.draw: S.of(context).isDraw
     };
 
-    var dialogTitle = retMap[result];
+    final dialogTitle = retMap[result];
 
     if (dialogTitle == null) {
       return;
     }
 
-    bool isTopLevel = (Config.skillLevel == 30); // TODO: 30
+    final bool isTopLevel = Config.skillLevel == 30; // TODO: 30
 
     if (result == GameResult.win &&
         !isTopLevel &&
         Game.instance.engineType == EngineType.humanVsAi) {
       var contentStr = getGameOverReasonString(
-          Game.instance.position.gameOverReason, Game.instance.position.winner);
+        Game.instance.position.gameOverReason,
+        Game.instance.position.winner,
+      );
 
       if (!isTopLevel) {
-        contentStr += "\n\n" +
-            S.of(context).challengeHarderLevel +
-            (Config.skillLevel + 1).toString() +
-            "!";
+        contentStr +=
+            "\n\n${S.of(context).challengeHarderLevel}${Config.skillLevel + 1}!";
       }
 
       showDialog(
@@ -1314,11 +1336,13 @@ class _GamePageState extends State<GamePage>
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(dialogTitle,
-                style: TextStyle(
-                  color: AppTheme.dialogTitleColor,
-                  fontSize: Config.fontSize + 4,
-                )),
+            title: Text(
+              dialogTitle,
+              style: TextStyle(
+                color: AppTheme.dialogTitleColor,
+                fontSize: Config.fontSize + 4,
+              ),
+            ),
             content: Text(
               contentStr,
               style: TextStyle(
@@ -1327,27 +1351,29 @@ class _GamePageState extends State<GamePage>
             ),
             actions: <Widget>[
               TextButton(
-                  child: Text(
-                    S.of(context).yes,
-                    style: TextStyle(
-                      fontSize: Config.fontSize,
-                    ),
+                child: Text(
+                  S.of(context).yes,
+                  style: TextStyle(
+                    fontSize: Config.fontSize,
                   ),
-                  onPressed: () async {
-                    if (!isTopLevel) Config.skillLevel++;
-                    Config.save();
-                    await widget.engine.setOptions(context);
-                    print("[config] skillLevel: ${Config.skillLevel}");
-                    Navigator.of(context).pop();
-                  }),
+                ),
+                onPressed: () async {
+                  if (!isTopLevel) Config.skillLevel++;
+                  Config.save();
+                  await widget.engine.setOptions(context);
+                  print("[config] skillLevel: ${Config.skillLevel}");
+                  Navigator.of(context).pop();
+                },
+              ),
               TextButton(
-                  child: Text(
-                    S.of(context).no,
-                    style: TextStyle(
-                      fontSize: Config.fontSize,
-                    ),
+                child: Text(
+                  S.of(context).no,
+                  style: TextStyle(
+                    fontSize: Config.fontSize,
                   ),
-                  onPressed: () => Navigator.of(context).pop()),
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ],
           );
         },
@@ -1358,50 +1384,56 @@ class _GamePageState extends State<GamePage>
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(dialogTitle,
-                style: TextStyle(
-                  color: AppTheme.dialogTitleColor,
-                  fontSize: Config.fontSize + 4,
-                )),
+            title: Text(
+              dialogTitle,
+              style: TextStyle(
+                color: AppTheme.dialogTitleColor,
+                fontSize: Config.fontSize + 4,
+              ),
+            ),
             content: Text(
-              getGameOverReasonString(Game.instance.position.gameOverReason,
-                  Game.instance.position.winner),
+              getGameOverReasonString(
+                Game.instance.position.gameOverReason,
+                Game.instance.position.winner,
+              ),
               style: TextStyle(
                 fontSize: Config.fontSize,
               ),
             ),
             actions: <Widget>[
               TextButton(
-                  child: Text(
-                    S.of(context).restart,
-                    style: TextStyle(
-                      fontSize: Config.fontSize,
-                    ),
+                child: Text(
+                  S.of(context).restart,
+                  style: TextStyle(
+                    fontSize: Config.fontSize,
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Game.instance.newGame();
-                    if (mounted) {
-                      showTip(S.of(context).gameStarted);
-                      if (Config.screenReaderSupport) {
-                        ScaffoldMessenger.of(context).clearSnackBars();
-                        showSnackBar(context, S.of(context).gameStarted);
-                      }
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Game.instance.newGame();
+                  if (mounted) {
+                    showTip(S.of(context).gameStarted);
+                    if (Config.screenReaderSupport) {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      showSnackBar(context, S.of(context).gameStarted);
                     }
+                  }
 
-                    if (Game.instance.isAiToMove()) {
-                      print("$tag New game, AI to move.");
-                      engineToGo(false);
-                    }
-                  }),
+                  if (Game.instance.isAiToMove()!) {
+                    print("$tag New game, AI to move.");
+                    engineToGo(false);
+                  }
+                },
+              ),
               TextButton(
-                  child: Text(
-                    S.of(context).cancel,
-                    style: TextStyle(
-                      fontSize: Config.fontSize,
-                    ),
+                child: Text(
+                  S.of(context).cancel,
+                  style: TextStyle(
+                    fontSize: Config.fontSize,
                   ),
-                  onPressed: () => Navigator.of(context).pop()),
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ],
           );
         },
@@ -1413,7 +1445,8 @@ class _GamePageState extends State<GamePage>
     //
     // when screen's height/width rate is less than 16/9, limit width of board
     final windowSize = MediaQuery.of(context).size;
-    double height = windowSize.height, width = windowSize.width;
+    final double height = windowSize.height;
+    double width = windowSize.width;
 
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
@@ -1423,7 +1456,7 @@ class _GamePageState extends State<GamePage>
   }
 
   Widget createPageHeader() {
-    Map<EngineType, IconData> engineTypeToIconLeft = {
+    final Map<EngineType, IconData> engineTypeToIconLeft = {
       EngineType.humanVsAi: Config.aiMovesFirst
           ? FluentIcons.bot_24_filled
           : FluentIcons.person_24_filled,
@@ -1434,7 +1467,7 @@ class _GamePageState extends State<GamePage>
       EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
     };
 
-    Map<EngineType, IconData> engineTypeToIconRight = {
+    final Map<EngineType, IconData> engineTypeToIconRight = {
       EngineType.humanVsAi: Config.aiMovesFirst
           ? FluentIcons.person_24_filled
           : FluentIcons.bot_24_filled,
@@ -1445,17 +1478,17 @@ class _GamePageState extends State<GamePage>
       EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
     };
 
-    IconData iconArrow = getIconArrow();
+    final IconData iconArrow = getIconArrow();
 
-    var iconColor = Color(Config.messageColor);
+    final iconColor = Color(Config.messageColor);
 
-    var iconRow = Row(
+    final iconRow = Row(
       children: <Widget>[
-        Expanded(child: SizedBox()),
+        const Expanded(child: SizedBox()),
         Icon(engineTypeToIconLeft[widget.engineType], color: iconColor),
         Icon(iconArrow, color: iconColor),
         Icon(engineTypeToIconRight[widget.engineType], color: iconColor),
-        Expanded(child: SizedBox()),
+        const Expanded(child: SizedBox()),
       ],
     );
 
@@ -1467,19 +1500,21 @@ class _GamePageState extends State<GamePage>
           Container(
             height: 4,
             width: 180,
-            margin: EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
               color: Color(Config.boardBackgroundColor),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               _tip!,
               maxLines: 1,
               style: TextStyle(
-                  fontSize: Config.fontSize, color: Color(Config.messageColor)),
+                fontSize: Config.fontSize,
+                color: Color(Config.messageColor),
+              ),
             ), // TODO: Font Size
           ),
         ],
@@ -1542,10 +1577,10 @@ class _GamePageState extends State<GamePage>
 
   String getInfoText() {
     String phase = "";
-    String period = Config.screenReaderSupport ? "." : "";
-    String comma = Config.screenReaderSupport ? "," : "";
+    final String period = Config.screenReaderSupport ? "." : "";
+    final String comma = Config.screenReaderSupport ? "," : "";
 
-    var pos = Game.instance.position;
+    final pos = Game.instance.position;
 
     switch (pos.phase) {
       case Phase.placing:
@@ -1558,21 +1593,8 @@ class _GamePageState extends State<GamePage>
         break;
     }
 
-    String pieceCountInHand = pos.phase == Phase.placing
-        ? S.of(context).player1 +
-            " " +
-            S.of(context).inHand +
-            ": " +
-            pos.pieceInHandCount[PieceColor.white].toString() +
-            comma +
-            "\n" +
-            S.of(context).player2 +
-            " " +
-            S.of(context).inHand +
-            ": " +
-            pos.pieceInHandCount[PieceColor.black].toString() +
-            comma +
-            "\n"
+    final String pieceCountInHand = pos.phase == Phase.placing
+        ? "${S.of(context).player1} ${S.of(context).inHand}: ${pos.pieceInHandCount[PieceColor.white]}$comma\n${S.of(context).player2} ${S.of(context).inHand}: ${pos.pieceInHandCount[PieceColor.black]}$comma\n"
         : "";
 
     String us = "";
@@ -1585,90 +1607,43 @@ class _GamePageState extends State<GamePage>
       them = S.of(context).player1;
     }
 
-    String tip = (_tip == null || !Config.screenReaderSupport) ? "" : "\n$_tip";
+    final String tip =
+        (_tip == null || !Config.screenReaderSupport) ? "" : "\n$_tip";
 
     String lastMove = "";
-    if (pos.recorder != null &&
-        pos.recorder.lastMove != null &&
-        pos.recorder.lastMove.notation != null) {
-      String n1 = pos.recorder.lastMove.notation;
+    if (pos.recorder?.lastMove?.notation != null) {
+      final String n1 = pos.recorder!.lastMove!.notation!;
 
       if (n1.startsWith("x")) {
-        String n2 = pos.recorder.moveAt(pos.recorder.movesCount - 2).notation;
+        final String n2 =
+            pos.recorder!.moveAt(pos.recorder!.movesCount - 2).notation!;
         lastMove = n2 + n1;
       } else {
         lastMove = n1;
       }
       if (Config.screenReaderSupport) {
-        lastMove = S.of(context).lastMove +
-            ": " +
-            them +
-            ", " +
-            lastMove +
-            period +
-            "\n";
+        lastMove = "${S.of(context).lastMove}: $them, $lastMove$period\n";
       } else {
-        lastMove = S.of(context).lastMove + ": " + lastMove + period + "\n";
+        lastMove = "${S.of(context).lastMove}: $lastMove$period\n";
       }
     }
 
     String addedPeriod = "";
     if (Config.screenReaderSupport &&
-        tip.length >= 1 &&
+        tip.isNotEmpty &&
         tip[tip.length - 1] != '.' &&
         tip[tip.length - 1] != '!') {
       addedPeriod = ".";
     }
 
-    String ret = phase +
-        period +
-        "\n" +
-        lastMove +
-        S.of(context).sideToMove +
-        ": " +
-        us +
-        period +
-        tip +
-        addedPeriod +
-        "\n\n" +
-        S.of(context).pieceCount +
-        ":\n" +
-        pieceCountInHand +
-        S.of(context).player1 +
-        " " +
-        S.of(context).onBoard +
-        ": " +
-        pos.pieceOnBoardCount[PieceColor.white].toString() +
-        comma +
-        "\n" +
-        S.of(context).player2 +
-        " " +
-        S.of(context).onBoard +
-        ": " +
-        pos.pieceOnBoardCount[PieceColor.black].toString() +
-        period +
-        "\n\n" +
-        S.of(context).score +
-        ":\n" +
-        S.of(context).player1 +
-        ": " +
-        pos.score[PieceColor.white].toString() +
-        comma +
-        "\n" +
-        S.of(context).player2 +
-        ": " +
-        pos.score[PieceColor.black].toString() +
-        comma +
-        "\n" +
-        S.of(context).draw +
-        ": " +
-        pos.score[PieceColor.draw].toString() +
-        period;
+    final String ret =
+        "$phase$period\n$lastMove${S.of(context).sideToMove}: $us$period$tip$addedPeriod\n\n${S.of(context).pieceCount}:\n$pieceCountInHand${S.of(context).player1} ${S.of(context).onBoard}: ${pos.pieceOnBoardCount[PieceColor.white]}$comma\n${S.of(context).player2} ${S.of(context).onBoard}: ${pos.pieceOnBoardCount[PieceColor.black]}$period\n\n${S.of(context).score}:\n${S.of(context).player1}: ${pos.score[PieceColor.white]}$comma\n${S.of(context).player2}: ${pos.score[PieceColor.black]}$comma\n${S.of(context).draw}: ${pos.score[PieceColor.draw]}$period";
     return ret;
   }
 
   Widget createToolbar() {
-    var gameButton = TextButton(
+    final gameButton = TextButton(
+      onPressed: onGameButtonPressed,
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1676,14 +1651,16 @@ class _GamePageState extends State<GamePage>
             FluentIcons.table_simple_24_regular,
             color: Color(Config.mainToolbarIconColor),
           ),
-          Text(S.of(context).game,
-              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
+          Text(
+            S.of(context).game,
+            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+          ),
         ],
       ),
-      onPressed: onGameButtonPressed,
     );
 
-    var optionsButton = TextButton(
+    final optionsButton = TextButton(
+      onPressed: onOptionButtonPressed,
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1691,14 +1668,16 @@ class _GamePageState extends State<GamePage>
             FluentIcons.settings_24_regular,
             color: Color(Config.mainToolbarIconColor),
           ),
-          Text(S.of(context).options,
-              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
+          Text(
+            S.of(context).options,
+            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+          ),
         ],
       ),
-      onPressed: onOptionButtonPressed,
     );
 
-    var moveButton = TextButton(
+    final moveButton = TextButton(
+      onPressed: onMoveButtonPressed,
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1706,14 +1685,16 @@ class _GamePageState extends State<GamePage>
             FluentIcons.calendar_agenda_24_regular,
             color: Color(Config.mainToolbarIconColor),
           ),
-          Text(S.of(context).move,
-              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
+          Text(
+            S.of(context).move,
+            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+          ),
         ],
       ),
-      onPressed: onMoveButtonPressed,
     );
 
-    var infoButton = TextButton(
+    final infoButton = TextButton(
+      onPressed: onInfoButtonPressed,
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1721,11 +1702,12 @@ class _GamePageState extends State<GamePage>
             FluentIcons.book_information_24_regular,
             color: Color(Config.mainToolbarIconColor),
           ),
-          Text(S.of(context).info,
-              style: TextStyle(color: Color(Config.mainToolbarIconColor))),
+          Text(
+            S.of(context).info,
+            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+          ),
         ],
       ),
-      onPressed: onInfoButtonPressed,
     );
 
     return Container(
@@ -1734,23 +1716,26 @@ class _GamePageState extends State<GamePage>
         color: Color(Config.mainToolbarBackgroundColor),
       ),
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
-      padding: EdgeInsets.symmetric(vertical: 2),
-      child: Row(textDirection: TextDirection.ltr, children: <Widget>[
-        Expanded(child: SizedBox()),
-        gameButton,
-        Expanded(child: SizedBox()),
-        optionsButton,
-        Expanded(child: SizedBox()),
-        moveButton,
-        Expanded(child: SizedBox()), //dashboard_outlined
-        infoButton,
-        Expanded(child: SizedBox()),
-      ]),
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        textDirection: TextDirection.ltr,
+        children: <Widget>[
+          const Expanded(child: SizedBox()),
+          gameButton,
+          const Expanded(child: SizedBox()),
+          optionsButton,
+          const Expanded(child: SizedBox()),
+          moveButton,
+          const Expanded(child: SizedBox()), //dashboard_outlined
+          infoButton,
+          const Expanded(child: SizedBox()),
+        ],
+      ),
     );
   }
 
   Widget createHistoryNavigationToolbar() {
-    var takeBackAllButton = TextButton(
+    final takeBackAllButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1768,7 +1753,7 @@ class _GamePageState extends State<GamePage>
       onPressed: () => onTakeBackAllButtonPressed(pop: false),
     );
 
-    var takeBackButton = TextButton(
+    final takeBackButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1786,7 +1771,7 @@ class _GamePageState extends State<GamePage>
       onPressed: () => onTakeBackButtonPressed(pop: false),
     );
 
-    var stepForwardButton = TextButton(
+    final stepForwardButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1804,7 +1789,7 @@ class _GamePageState extends State<GamePage>
       onPressed: () => onStepForwardButtonPressed(pop: false),
     );
 
-    var stepForwardAllButton = TextButton(
+    final stepForwardAllButton = TextButton(
       child: Column(
         // Replace with a Row for horizontal icon + text
         children: <Widget>[
@@ -1828,25 +1813,31 @@ class _GamePageState extends State<GamePage>
         color: Color(Config.navigationToolbarBackgroundColor),
       ),
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
-      padding: EdgeInsets.symmetric(vertical: 2),
-      child: Row(textDirection: TextDirection.ltr, children: <Widget>[
-        Expanded(child: SizedBox()),
-        takeBackAllButton,
-        Expanded(child: SizedBox()),
-        takeBackButton,
-        Expanded(child: SizedBox()),
-        stepForwardButton,
-        Expanded(child: SizedBox()), //dashboard_outlined
-        stepForwardAllButton,
-        Expanded(child: SizedBox()),
-      ]),
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        textDirection: TextDirection.ltr,
+        children: <Widget>[
+          const Expanded(child: SizedBox()),
+          takeBackAllButton,
+          const Expanded(child: SizedBox()),
+          takeBackButton,
+          const Expanded(child: SizedBox()),
+          stepForwardButton,
+          const Expanded(child: SizedBox()), //dashboard_outlined
+          stepForwardAllButton,
+          const Expanded(child: SizedBox()),
+        ],
+      ),
     );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+    routeObserver.subscribe(
+      this,
+      ModalRoute.of(context)! as PageRoute<dynamic>,
+    );
   }
 
   @override
@@ -1866,15 +1857,18 @@ class _GamePageState extends State<GamePage>
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
-      body: Column(children: <Widget>[
-        BlockSemantics(child: header),
-        board,
-        Config.isHistoryNavigationToolbarShown
-            ? historyNavToolbar
-            : SizedBox(height: 0),
-        SizedBox(height: 1),
-        toolbar,
-      ]),
+      body: Column(
+        children: <Widget>[
+          BlockSemantics(child: header),
+          board,
+          if (Config.isHistoryNavigationToolbarShown)
+            historyNavToolbar
+          else
+            const SizedBox(height: 0),
+          const SizedBox(height: 1),
+          toolbar,
+        ],
+      ),
       /*
       body: Column(children: <Widget>[
         header,
@@ -1901,7 +1895,7 @@ class _GamePageState extends State<GamePage>
   }
 
   @override
-  void didPush() async {
+  Future<void> didPush() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPush route: $route');
     await widget.engine.setOptions(context);
@@ -1912,7 +1906,7 @@ class _GamePageState extends State<GamePage>
   }
 
   @override
-  void didPopNext() async {
+  Future<void> didPopNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPopNext route: $route');
     await widget.engine.setOptions(context);
@@ -1922,7 +1916,7 @@ class _GamePageState extends State<GamePage>
   }
 
   @override
-  void didPushNext() async {
+  Future<void> didPushNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPushNext route: $route');
     await widget.engine.setOptions(context);

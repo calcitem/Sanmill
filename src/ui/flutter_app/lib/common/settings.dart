@@ -29,19 +29,20 @@ class Settings {
   late File _file;
   Map<String, dynamic>? _values = {};
 
-  static instance() async {
+  // TODO: add constructor
+  static Future<Settings> instance() async {
     if (_instance == null) {
       _instance = Settings();
       await _instance!._load(settingsFileName);
       print("[settings] $settingsFileName loaded.");
     }
 
-    return _instance;
+    return _instance!;
   }
 
-  operator [](String key) => _values![key];
+  dynamic operator [](String key) => _values![key];
 
-  operator []=(String key, dynamic value) => _values![key] = value;
+  void operator []=(String key, dynamic value) => _values![key] = value;
 
   Future<bool> commit() async {
     _file.create(recursive: true);
@@ -57,7 +58,7 @@ class Settings {
   Future<bool> _load(String fileName) async {
     // TODO: main() ExternalStorage
     // var docDir = await getExternalStorageDirectory();
-    var docDir = await getApplicationDocumentsDirectory();
+    final docDir = await getApplicationDocumentsDirectory();
 
     _file = File('${docDir.path}/$fileName');
 
@@ -65,7 +66,7 @@ class Settings {
 
     try {
       final contents = await _file.readAsString();
-      _values = jsonDecode(contents);
+      _values = jsonDecode(contents) as Map<String, dynamic>?;
       print(_values);
     } catch (e) {
       print(e);

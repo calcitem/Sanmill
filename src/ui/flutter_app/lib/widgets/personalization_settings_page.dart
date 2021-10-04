@@ -38,8 +38,8 @@ class PersonalizationSettingsPage extends StatefulWidget {
 class _PersonalizationSettingsPageState
     extends State<PersonalizationSettingsPage> {
   // create some values
-  Color pickerColor = Color(0xFF808080);
-  Color currentColor = Color(0xFF808080);
+  Color pickerColor = const Color(0xFF808080);
+  Color currentColor = const Color(0xFF808080);
 
   @override
   void initState() {
@@ -51,8 +51,8 @@ class _PersonalizationSettingsPageState
     setState(() => pickerColor = color);
   }
 
-  showColorDialog(String colorString) async {
-    Map<String, int> colorStrToVal = {
+  Future<void> showColorDialog(String colorString) async {
+    final Map<String, int> colorStrToVal = {
       S.of(context).boardColor: Config.boardBackgroundColor,
       S.of(context).backgroundColor: Config.darkBackgroundColor,
       S.of(context).lineColor: Config.boardLineColor,
@@ -73,9 +73,9 @@ class _PersonalizationSettingsPageState
           Config.navigationToolbarIconColor,
     };
 
-    AlertDialog alert = AlertDialog(
+    final AlertDialog alert = AlertDialog(
       title: Text(
-        S.of(context).pick + " " + colorString,
+        "${S.of(context).pick} $colorString",
         style: TextStyle(
           fontSize: Config.fontSize + 4,
         ),
@@ -84,7 +84,6 @@ class _PersonalizationSettingsPageState
         child: ColorPicker(
           pickerColor: Color(colorStrToVal[colorString]!),
           onColorChanged: changeColor,
-          showLabel: true,
         ),
       ),
       actions: <Widget>[
@@ -162,14 +161,13 @@ class _PersonalizationSettingsPageState
     );
   }
 
-  SliderTheme _boardBorderLineWidthSliderTheme(context, setState) {
+  SliderTheme _boardBorderLineWidthSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
         label: S.of(context).boardBorderLineWidth,
         child: Slider(
-          value: Config.boardBorderLineWidth.toDouble(),
-          min: 0.0,
+          value: Config.boardBorderLineWidth,
           max: 20.0,
           divisions: 200,
           label: Config.boardBorderLineWidth.toStringAsFixed(1),
@@ -185,25 +183,22 @@ class _PersonalizationSettingsPageState
     );
   }
 
-  setBoardBorderLineWidth() async {
+  Future<void> setBoardBorderLineWidth() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _boardBorderLineWidthSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _boardBorderLineWidthSliderTheme(),
       ),
     );
   }
 
-  SliderTheme _boardInnerLineWidthSliderTheme(context, setState) {
+  SliderTheme _boardInnerLineWidthSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
         label: S.of(context).boardInnerLineWidth,
         child: Slider(
-          value: Config.boardInnerLineWidth.toDouble(),
-          min: 0.0,
+          value: Config.boardInnerLineWidth,
           max: 20.0,
           divisions: 200,
           label: Config.boardInnerLineWidth.toStringAsFixed(1),
@@ -219,26 +214,23 @@ class _PersonalizationSettingsPageState
     );
   }
 
-  setBoardInnerLineWidth() async {
+  Future<void> setBoardInnerLineWidth() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _boardInnerLineWidthSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _boardInnerLineWidthSliderTheme(),
       ),
     );
   }
 
-  SliderTheme _pieceWidthSliderTheme(context, setState) {
+  SliderTheme _pieceWidthSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
         label: S.of(context).pieceWidth,
         child: Slider(
-          value: Config.pieceWidth.toDouble(),
+          value: Config.pieceWidth,
           min: 0.5,
-          max: 1.0,
           divisions: 50,
           label: Config.pieceWidth.toStringAsFixed(1),
           onChanged: (value) {
@@ -253,24 +245,22 @@ class _PersonalizationSettingsPageState
     );
   }
 
-  setPieceWidth() async {
+  Future<void> setPieceWidth() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _pieceWidthSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _pieceWidthSliderTheme(),
       ),
     );
   }
 
-  SliderTheme _fontSizeSliderTheme(context, setState) {
+  SliderTheme _fontSizeSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
         label: S.of(context).fontSize,
         child: Slider(
-          value: Config.fontSize.toDouble(),
+          value: Config.fontSize,
           min: 16,
           max: 32,
           divisions: 16,
@@ -287,25 +277,22 @@ class _PersonalizationSettingsPageState
     );
   }
 
-  setFontSize() async {
+  Future<void> setFontSize() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _fontSizeSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _fontSizeSliderTheme(),
       ),
     );
   }
 
-  SliderTheme _boardTopSliderTheme(context, setState) {
+  SliderTheme _boardTopSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
         label: S.of(context).boardTop,
         child: Slider(
-          value: Config.boardTop.toDouble(),
-          min: 0.0,
+          value: Config.boardTop,
           max: 288.0,
           divisions: 288,
           label: Config.boardTop.toStringAsFixed(1),
@@ -321,25 +308,22 @@ class _PersonalizationSettingsPageState
     );
   }
 
-  setBoardTop() async {
+  Future<void> setBoardTop() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _boardTopSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _boardTopSliderTheme(),
       ),
     );
   }
 
-  SliderTheme _animationDurationSliderTheme(context, setState) {
+  SliderTheme _animationDurationSliderTheme() {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
       child: Semantics(
         label: S.of(context).animationDuration,
         child: Slider(
-          value: Config.animationDuration.toDouble(),
-          min: 0.0,
+          value: Config.animationDuration,
           max: 5.0,
           divisions: 50,
           label: Config.animationDuration.toStringAsFixed(1),
@@ -355,13 +339,11 @@ class _PersonalizationSettingsPageState
     );
   }
 
-  setAnimationDuration() async {
+  Future<void> setAnimationDuration() async {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => StatefulBuilder(
-        builder: (context, setState) {
-          return _animationDurationSliderTheme(context, setState);
-        },
+      builder: (_) => StatefulBuilder(
+        builder: (_, __) => _animationDurationSliderTheme(),
       ),
     );
   }
@@ -385,7 +367,7 @@ class _PersonalizationSettingsPageState
   }
 
   List<Widget> children(BuildContext context) {
-    langCallback(var langCode) async {
+    Future<void> langCallback([String? langCode]) async {
       print("[config] languageCode = $langCode");
 
       Navigator.of(context).pop();
@@ -411,67 +393,67 @@ class _PersonalizationSettingsPageState
             trailingString:
                 Config.languageCode == Constants.defaultLanguageCodeName
                     ? ""
-                    : languageCodeToStrings[Config.languageCode.toString()]!
-                        .languageName,
+                    : languageCodeToStrings[Config.languageCode]!.languageName,
             onTap: () => setLanguage(context, langCallback),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isPieceCountInHandShown,
             onChanged: setIsPieceCountInHandShown,
             titleString: S.of(context).isPieceCountInHandShown,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isNotationsShown,
             onChanged: setIsNotationsShown,
             titleString: S.of(context).isNotationsShown,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isHistoryNavigationToolbarShown,
             onChanged: setIsHistoryNavigationToolbarShown,
             titleString: S.of(context).isHistoryNavigationToolbarShown,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
-              context: context,
-              titleString: S.of(context).boardBorderLineWidth,
-              onTap: setBoardBorderLineWidth),
-          ListItemDivider(),
+            context: context,
+            titleString: S.of(context).boardBorderLineWidth,
+            onTap: setBoardBorderLineWidth,
+          ),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).boardInnerLineWidth,
             onTap: setBoardInnerLineWidth,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).pieceWidth,
             onTap: setPieceWidth,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).fontSize,
             onTap: setFontSize,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).boardTop,
             onTap: setBoardTop,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).animationDuration,
             onTap: setAnimationDuration,
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.standardNotationEnabled,
@@ -480,7 +462,7 @@ class _PersonalizationSettingsPageState
           ),
         ],
       ),
-      SizedBox(height: AppTheme.sizedBoxHeight),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         context: context,
@@ -491,70 +473,70 @@ class _PersonalizationSettingsPageState
             trailingColor: Config.boardBackgroundColor,
             onTap: () => showColorDialog(S.of(context).boardColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).backgroundColor,
             trailingColor: Config.darkBackgroundColor,
             onTap: () => showColorDialog(S.of(context).backgroundColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).lineColor,
             trailingColor: Config.boardLineColor,
             onTap: () => showColorDialog(S.of(context).lineColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).whitePieceColor,
             trailingColor: Config.whitePieceColor,
             onTap: () => showColorDialog(S.of(context).whitePieceColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).blackPieceColor,
             trailingColor: Config.blackPieceColor,
             onTap: () => showColorDialog(S.of(context).blackPieceColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).pieceHighlightColor,
             trailingColor: Config.pieceHighlightColor,
             onTap: () => showColorDialog(S.of(context).pieceHighlightColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).messageColor,
             trailingColor: Config.messageColor,
             onTap: () => showColorDialog(S.of(context).messageColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).drawerColor,
             trailingColor: Config.drawerColor,
             onTap: () => showColorDialog(S.of(context).drawerColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).drawerBackgroundColor,
             trailingColor: Config.drawerBackgroundColor,
             onTap: () => showColorDialog(S.of(context).drawerBackgroundColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).drawerTextColor,
             trailingColor: Config.drawerTextColor,
             onTap: () => showColorDialog(S.of(context).drawerTextColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).drawerHighlightItemColor,
@@ -562,7 +544,7 @@ class _PersonalizationSettingsPageState
             onTap: () =>
                 showColorDialog(S.of(context).drawerHighlightItemColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).mainToolbarBackgroundColor,
@@ -570,14 +552,14 @@ class _PersonalizationSettingsPageState
             onTap: () =>
                 showColorDialog(S.of(context).mainToolbarBackgroundColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).mainToolbarIconColor,
             trailingColor: Config.mainToolbarIconColor,
             onTap: () => showColorDialog(S.of(context).mainToolbarIconColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).navigationToolbarBackgroundColor,
@@ -585,7 +567,7 @@ class _PersonalizationSettingsPageState
             onTap: () =>
                 showColorDialog(S.of(context).navigationToolbarBackgroundColor),
           ),
-          ListItemDivider(),
+          const ListItemDivider(),
           SettingsListTile(
             context: context,
             titleString: S.of(context).navigationToolbarIconColor,
@@ -600,7 +582,7 @@ class _PersonalizationSettingsPageState
 
   // Display
 
-  setIsPieceCountInHandShown(bool value) async {
+  Future<void> setIsPieceCountInHandShown(bool value) async {
     setState(() {
       Config.isPieceCountInHandShown = value;
     });
@@ -608,7 +590,7 @@ class _PersonalizationSettingsPageState
     Config.save();
   }
 
-  setIsNotationsShown(bool value) async {
+  Future<void> setIsNotationsShown(bool value) async {
     setState(() {
       Config.isNotationsShown = value;
     });
@@ -616,7 +598,7 @@ class _PersonalizationSettingsPageState
     Config.save();
   }
 
-  setIsHistoryNavigationToolbarShown(bool value) async {
+  Future<void> setIsHistoryNavigationToolbarShown(bool value) async {
     setState(() {
       Config.isHistoryNavigationToolbarShown = value;
     });
@@ -624,7 +606,7 @@ class _PersonalizationSettingsPageState
     Config.save();
   }
 
-  setStandardNotationEnabled(bool value) async {
+  Future<void> setStandardNotationEnabled(bool value) async {
     setState(() {
       Config.standardNotationEnabled = value;
     });

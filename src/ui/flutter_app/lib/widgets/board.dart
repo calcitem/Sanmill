@@ -30,8 +30,8 @@ class Board extends StatelessWidget {
   final double width;
   final double height;
   final Function(BuildContext, int) onBoardTap;
-  final animationValue;
-  List<String> squareDesc = [];
+  final double animationValue;
+  final List<String> squareDesc = [];
   final String tag = "[board]";
 
   Board({
@@ -42,18 +42,15 @@ class Board extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var padding = AppTheme.boardPadding;
+    final padding = AppTheme.boardPadding;
 
     buildSquareDescription(context);
 
-    var container = Container(
-      margin: EdgeInsets.symmetric(
-        vertical: 0,
-        horizontal: 0,
-      ),
+    final container = Container(
+      margin: EdgeInsets.zero,
       child: GridView(
         scrollDirection: Axis.horizontal,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 7,
         ),
         children: List.generate(7 * 7, (index) {
@@ -70,7 +67,7 @@ class Board extends StatelessWidget {
       ),
     );
 
-    var customPaint = CustomPaint(
+    final customPaint = CustomPaint(
       painter: BoardPainter(width: width),
       foregroundPainter: PiecesPainter(
         width: width,
@@ -101,7 +98,7 @@ class Board extends StatelessWidget {
       */
       child: boardContainer,
       onTapUp: (d) {
-        final gridWidth = (width - padding * 2);
+        final gridWidth = width - padding * 2;
         final squareWidth = gridWidth / 7;
         final dx = d.localPosition.dx;
         final dy = d.localPosition.dy;
@@ -128,10 +125,10 @@ class Board extends StatelessWidget {
   }
 
   void buildSquareDescription(BuildContext context) {
-    List<String> coordinates = [];
-    List<String> pieceDesc = [];
+    final List<String> coordinates = [];
+    final List<String> pieceDesc = [];
 
-    var map = [
+    final map = [
       /* 1 */
       1,
       8,
@@ -190,7 +187,7 @@ class Board extends StatelessWidget {
       49
     ];
 
-    var checkPoints = [
+    final checkPoints = [
       /* 1 */
       1,
       0,
@@ -249,17 +246,18 @@ class Board extends StatelessWidget {
       1
     ];
 
-    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    final bool ltr =
+        getBidirectionality(context) == Bidirectionality.leftToRight;
 
     if (ltr) {
-      for (var file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
-        for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
+      for (final file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
+        for (final rank in ['7', '6', '5', '4', '3', '2', '1']) {
           coordinates.add("$file$rank");
         }
       }
     } else {
-      for (var file in ['g', 'f', 'e', 'd', 'c', 'b', 'a']) {
-        for (var rank in ['7', '6', '5', '4', '3', '2', '1']) {
+      for (final file in ['g', 'f', 'e', 'd', 'c', 'b', 'a']) {
+        for (final rank in ['7', '6', '5', '4', '3', '2', '1']) {
           coordinates.add("$file$rank");
         }
       }
@@ -282,11 +280,11 @@ class Board extends StatelessWidget {
     squareDesc.clear();
 
     for (var i = 0; i < 7 * 7; i++) {
-      var desc = pieceDesc[map[i] - 1];
+      final desc = pieceDesc[map[i] - 1];
       if (desc == S.of(context).emptyPoint) {
-        squareDesc.add(coordinates[i] + ": " + desc);
+        squareDesc.add("${coordinates[i]}: $desc");
       } else {
-        squareDesc.add(desc + ": " + coordinates[i]);
+        squareDesc.add("$desc: ${coordinates[i]}");
       }
     }
   }

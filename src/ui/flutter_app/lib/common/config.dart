@@ -24,6 +24,7 @@ import 'package:sanmill/style/app_theme.dart';
 import 'settings.dart';
 
 class Config {
+  const Config._();
   static bool settingsLoaded = false;
 
   static bool isPrivacyPolicyAccepted = false;
@@ -85,8 +86,7 @@ class Config {
   static int piecesCount = specialCountryAndRegion == "Iran" ? 12 : 9;
   static int flyPieceCount = 3;
   static int piecesAtLeastCount = 3;
-  static bool hasDiagonalLines =
-      specialCountryAndRegion == "Iran" ? true : false;
+  static bool hasDiagonalLines = specialCountryAndRegion == "Iran";
   static bool hasBannedLocations = false;
   static bool mayMoveInPlacingPhase = false;
   static bool isDefenderMoveFirst = false;
@@ -100,119 +100,131 @@ class Config {
   static int endgameNMoveRule = 100;
   static bool threefoldRepetitionRule = true;
 
+  // TODO: use jsonSerializable
   static Future<void> loadSettings() async {
     print("[config] Loading settings...");
 
     final settings = await Settings.instance();
 
     Config.isPrivacyPolicyAccepted =
-        settings['IsPrivacyPolicyAccepted'] ?? false;
+        settings['IsPrivacyPolicyAccepted'] as bool? ?? false;
 
     // Preferences
-    Config.toneEnabled = settings['ToneEnabled'] ?? true;
-    Config.keepMuteWhenTakingBack = settings['KeepMuteWhenTakingBack'] ?? true;
-    Config.screenReaderSupport = settings['ScreenReaderSupport'] ?? false;
-    Config.aiMovesFirst = settings['AiMovesFirst'] ?? false;
-    Config.aiIsLazy = settings['AiIsLazy'] ?? false;
-    Config.skillLevel = settings['SkillLevel'] ?? 1;
-    Config.moveTime = settings['MoveTime'] ?? 1;
-    Config.isAutoRestart = settings['IsAutoRestart'] ?? false;
-    Config.isAutoChangeFirstMove = settings['IsAutoChangeFirstMove'] ?? false;
-    Config.resignIfMostLose = settings['ResignIfMostLose'] ?? false;
-    Config.shufflingEnabled = settings['ShufflingEnabled'] ?? true;
-    Config.learnEndgame = settings['LearnEndgame'] ?? false;
-    Config.openingBook = settings['OpeningBook'] ?? false;
-    Config.algorithm = settings['Algorithm'] ?? 2;
-    Config.drawOnHumanExperience = settings['DrawOnHumanExperience'] ?? true;
-    Config.considerMobility = settings['ConsiderMobility'] ?? true;
-    Config.developerMode = settings['DeveloperMode'] ?? false;
-    Config.experimentsEnabled = settings['ExperimentsEnabled'] ?? false;
+    Config.toneEnabled = settings['ToneEnabled'] as bool? ?? true;
+    Config.keepMuteWhenTakingBack =
+        settings['KeepMuteWhenTakingBack'] as bool? ?? true;
+    Config.screenReaderSupport =
+        settings['ScreenReaderSupport'] as bool? ?? false;
+    Config.aiMovesFirst = settings['AiMovesFirst'] as bool? ?? false;
+    Config.aiIsLazy = settings['AiIsLazy'] as bool? ?? false;
+    Config.skillLevel = settings['SkillLevel'] as int? ?? 1;
+    Config.moveTime = settings['MoveTime'] as int? ?? 1;
+    Config.isAutoRestart = settings['IsAutoRestart'] as bool? ?? false;
+    Config.isAutoChangeFirstMove =
+        settings['IsAutoChangeFirstMove'] as bool? ?? false;
+    Config.resignIfMostLose = settings['ResignIfMostLose'] as bool? ?? false;
+    Config.shufflingEnabled = settings['ShufflingEnabled'] as bool? ?? true;
+    Config.learnEndgame = settings['LearnEndgame'] as bool? ?? false;
+    Config.openingBook = settings['OpeningBook'] as bool? ?? false;
+    Config.algorithm = settings['Algorithm'] as int? ?? 2;
+    Config.drawOnHumanExperience =
+        settings['DrawOnHumanExperience'] as bool? ?? true;
+    Config.considerMobility = settings['ConsiderMobility'] as bool? ?? true;
+    Config.developerMode = settings['DeveloperMode'] as bool? ?? false;
+    Config.experimentsEnabled =
+        settings['ExperimentsEnabled'] as bool? ?? false;
 
     // Display
-    Config.languageCode =
-        settings['LanguageCode'] ?? Constants.defaultLanguageCodeName;
+    Config.languageCode = settings['LanguageCode'] as String? ??
+        Constants.defaultLanguageCodeName;
     Config.standardNotationEnabled =
-        settings['StandardNotationEnabled'] ?? true;
+        settings['StandardNotationEnabled'] as bool? ?? true;
     Config.isPieceCountInHandShown =
-        settings['IsPieceCountInHandShown'] ?? true;
-    Config.isNotationsShown = settings['IsNotationsShown'] ?? false;
+        settings['IsPieceCountInHandShown'] as bool? ?? true;
+    Config.isNotationsShown = settings['IsNotationsShown'] as bool? ?? false;
     Config.isHistoryNavigationToolbarShown =
-        settings['IsHistoryNavigationToolbarShown'] ?? false;
-    Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
-    Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
-    Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
-    Config.fontSize = settings['FontSize'] ?? 16.0;
-    Config.boardTop = settings['BoardTop'] ?? (isLargeScreen() ? 75 : 36);
-    Config.animationDuration = settings['AnimationDuration'] ?? 0;
+        settings['IsHistoryNavigationToolbarShown'] as bool? ?? false;
+    Config.boardBorderLineWidth =
+        settings['BoardBorderLineWidth'] as double? ?? 2;
+    Config.boardInnerLineWidth =
+        settings['BoardInnerLineWidth'] as double? ?? 2;
+    Config.pieceWidth = settings['PieceWidth'] as double? ?? 0.9;
+    Config.fontSize = settings['FontSize'] as double? ?? 16.0;
+    Config.boardTop =
+        settings['BoardTop'] as double? ?? (isLargeScreen() ? 75 : 36);
+    Config.animationDuration = settings['AnimationDuration'] as double? ?? 0;
 
     // Color
     Config.boardLineColor =
-        settings['BoardLineColor'] ?? AppTheme.boardLineColor.value;
-    Config.darkBackgroundColor =
-        settings['DarkBackgroundColor'] ?? AppTheme.darkBackgroundColor.value;
-    Config.boardBackgroundColor =
-        settings['BoardBackgroundColor'] ?? AppTheme.boardBackgroundColor.value;
+        settings['BoardLineColor'] as int? ?? AppTheme.boardLineColor.value;
+    Config.darkBackgroundColor = settings['DarkBackgroundColor'] as int? ??
+        AppTheme.darkBackgroundColor.value;
+    Config.boardBackgroundColor = settings['BoardBackgroundColor'] as int? ??
+        AppTheme.boardBackgroundColor.value;
     Config.whitePieceColor =
-        settings['WhitePieceColor'] ?? AppTheme.whitePieceColor.value;
+        settings['WhitePieceColor'] as int? ?? AppTheme.whitePieceColor.value;
     Config.blackPieceColor =
-        settings['BlackPieceColor'] ?? AppTheme.blackPieceColor.value;
-    Config.pieceHighlightColor =
-        settings['PieceHighlightColor'] ?? AppTheme.pieceHighlightColor.value;
+        settings['BlackPieceColor'] as int? ?? AppTheme.blackPieceColor.value;
+    Config.pieceHighlightColor = settings['PieceHighlightColor'] as int? ??
+        AppTheme.pieceHighlightColor.value;
     Config.messageColor =
-        settings['MessageColor'] ?? AppTheme.messageColor.value;
-    Config.drawerColor = settings['DrawerColor'] ?? AppTheme.drawerColor.value;
-    Config.drawerBackgroundColor = settings['DrawerBackgroundColor'] ??
+        settings['MessageColor'] as int? ?? AppTheme.messageColor.value;
+    Config.drawerColor =
+        settings['DrawerColor'] as int? ?? AppTheme.drawerColor.value;
+    Config.drawerBackgroundColor = settings['DrawerBackgroundColor'] as int? ??
         AppTheme.drawerBackgroundColor.value;
     Config.drawerTextColor =
-        settings['DrawerTextColor'] ?? AppTheme.drawerTextColor.value;
-    Config.drawerHighlightItemColor = settings['DrawerHighlightItemColor'] ??
-        AppTheme.drawerHighlightItemColor.value;
+        settings['DrawerTextColor'] as int? ?? AppTheme.drawerTextColor.value;
+    Config.drawerHighlightItemColor =
+        settings['DrawerHighlightItemColor'] as int? ??
+            AppTheme.drawerHighlightItemColor.value;
     Config.mainToolbarBackgroundColor =
-        settings['MainToolbarBackgroundColor'] ??
+        settings['MainToolbarBackgroundColor'] as int? ??
             AppTheme.mainToolbarBackgroundColor.value;
-    Config.mainToolbarIconColor =
-        settings['MainToolbarIconColor'] ?? AppTheme.mainToolbarIconColor.value;
+    Config.mainToolbarIconColor = settings['MainToolbarIconColor'] as int? ??
+        AppTheme.mainToolbarIconColor.value;
     Config.navigationToolbarBackgroundColor =
-        settings['NavigationToolbarBackgroundColor'] ??
+        settings['NavigationToolbarBackgroundColor'] as int? ??
             AppTheme.navigationToolbarBackgroundColor.value;
     Config.navigationToolbarIconColor =
-        settings['NavigationToolbarIconColor'] ??
+        settings['NavigationToolbarIconColor'] as int? ??
             AppTheme.navigationToolbarIconColor.value;
 
     // Rules
-    rule.piecesCount = Config.piecesCount =
-        settings['PiecesCount'] ?? (specialCountryAndRegion == "Iran" ? 12 : 9);
-    rule.flyPieceCount = Config.flyPieceCount = settings['FlyPieceCount'] ?? 3;
+    rule.piecesCount = Config.piecesCount = settings['PiecesCount'] as int? ??
+        (specialCountryAndRegion == "Iran" ? 12 : 9);
+    rule.flyPieceCount =
+        Config.flyPieceCount = settings['FlyPieceCount'] as int? ?? 3;
     rule.piecesAtLeastCount =
-        Config.piecesAtLeastCount = settings['PiecesAtLeastCount'] ?? 3;
+        Config.piecesAtLeastCount = settings['PiecesAtLeastCount'] as int? ?? 3;
     rule.hasDiagonalLines = Config.hasDiagonalLines =
-        settings['HasDiagonalLines'] ??
-            (specialCountryAndRegion == "Iran" ? true : false);
-    rule.hasBannedLocations =
-        Config.hasBannedLocations = settings['HasBannedLocations'] ?? false;
+        settings['HasDiagonalLines'] as bool? ??
+            (specialCountryAndRegion == "Iran");
+    rule.hasBannedLocations = Config.hasBannedLocations =
+        settings['HasBannedLocations'] as bool? ?? false;
     rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase =
-        settings['MayMoveInPlacingPhase'] ?? false;
-    rule.isDefenderMoveFirst =
-        Config.isDefenderMoveFirst = settings['IsDefenderMoveFirst'] ?? false;
-    rule.mayRemoveMultiple =
-        Config.mayRemoveMultiple = settings['MayRemoveMultiple'] ?? false;
+        settings['MayMoveInPlacingPhase'] as bool? ?? false;
+    rule.isDefenderMoveFirst = Config.isDefenderMoveFirst =
+        settings['IsDefenderMoveFirst'] as bool? ?? false;
+    rule.mayRemoveMultiple = Config.mayRemoveMultiple =
+        settings['MayRemoveMultiple'] as bool? ?? false;
     rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways =
-        settings['MayRemoveFromMillsAlways'] ?? false;
-    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
-        Config.mayOnlyRemoveUnplacedPieceInPlacingPhase =
-            settings['MayOnlyRemoveUnplacedPieceInPlacingPhase'] ?? false;
+        settings['MayRemoveFromMillsAlways'] as bool? ?? false;
+    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = Config
+            .mayOnlyRemoveUnplacedPieceInPlacingPhase =
+        settings['MayOnlyRemoveUnplacedPieceInPlacingPhase'] as bool? ?? false;
     rule.isWhiteLoseButNotDrawWhenBoardFull =
         Config.isWhiteLoseButNotDrawWhenBoardFull =
-            settings['IsWhiteLoseButNotDrawWhenBoardFull'] ?? true;
+            settings['IsWhiteLoseButNotDrawWhenBoardFull'] as bool? ?? true;
     rule.isLoseButNotChangeSideWhenNoWay =
         Config.isLoseButNotChangeSideWhenNoWay =
-            settings['IsLoseButNotChangeSideWhenNoWay'] ?? true;
-    rule.mayFly = Config.mayFly = settings['MayFly'] ?? true;
-    rule.nMoveRule = Config.nMoveRule = settings['NMoveRule'] ?? 100;
+            settings['IsLoseButNotChangeSideWhenNoWay'] as bool? ?? true;
+    rule.mayFly = Config.mayFly = settings['MayFly'] as bool? ?? true;
+    rule.nMoveRule = Config.nMoveRule = settings['NMoveRule'] as int? ?? 100;
     rule.endgameNMoveRule =
-        Config.endgameNMoveRule = settings['EndgameNMoveRule'] ?? 100;
+        Config.endgameNMoveRule = settings['EndgameNMoveRule'] as int? ?? 100;
     rule.threefoldRepetitionRule = Config.threefoldRepetitionRule =
-        settings['ThreefoldRepetitionRule'] ?? true;
+        settings['ThreefoldRepetitionRule'] as bool? ?? true;
 
     settingsLoaded = true;
     print("[config] Loading settings done!");

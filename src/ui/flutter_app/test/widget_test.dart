@@ -38,11 +38,13 @@ void main() {
   }
 
   testWidgets('Widget', (WidgetTester tester) async {
-    NavigationHomeScreen screen = NavigationHomeScreen();
-    await tester.pumpWidget(makeTestableWidget(
-      child: screen,
-      locale: const Locale('en'),
-    ));
+    final NavigationHomeScreen screen = NavigationHomeScreen();
+    await tester.pumpWidget(
+      makeTestableWidget(
+        child: screen,
+        locale: const Locale('en'),
+      ),
+    );
     await tester.pump();
     expect(find.text(S.current.appName), findsOneWidget);
   });

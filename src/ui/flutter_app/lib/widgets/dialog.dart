@@ -31,24 +31,28 @@ import 'package:url_launcher/url_launcher.dart';
 int _counter = 0;
 Timer? _timer;
 
-void startTimer(var counter, var events) {
+void startTimer(int counter, StreamController<int> events) {
   _counter = counter;
   if (_timer != null) {
     _timer!.cancel();
   }
-  _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
     (_counter > 0) ? _counter-- : _timer!.cancel();
     events.add(_counter);
   });
 }
 
 void showCountdownDialog(
-    BuildContext ctx, var seconds, var events, void fun()) {
-  var alert = AlertDialog(
+  BuildContext ctx,
+  int seconds,
+  StreamController<int> events,
+  void Function() fun,
+) {
+  final alert = AlertDialog(
     content: StreamBuilder<int>(
       stream: events.stream,
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-        print("Count down: " + snapshot.data.toString());
+        print("Count down: ${snapshot.data}");
 
         if (snapshot.data == 0) {
           fun();
@@ -57,32 +61,28 @@ void showCountdownDialog(
           } else {}
         }
 
-        return Container(
+        return SizedBox(
           height: 128,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                snapshot.data != null ? '${snapshot.data.toString()}' : "10",
-                style: TextStyle(fontSize: 64),
+                snapshot.data != null ? snapshot.data.toString() : "10",
+                style: const TextStyle(fontSize: 64),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Container(
-                  child: Center(
-                      child: Text(
+                child: Center(
+                  child: Text(
                     S.of(ctx).cancel,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: Config.fontSize,
                       fontWeight: FontWeight.bold,
                     ),
-                  )),
+                  ),
                 ),
               ),
             ],
@@ -105,16 +105,19 @@ void showCountdownDialog(
 class _LinkTextSpan extends TextSpan {
   _LinkTextSpan({TextStyle? style, required String url, String? text})
       : super(
-            style: style,
-            text: text ?? url,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                launch(url, forceSafariVC: false);
-              });
+          style: style,
+          text: text ?? url,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              launch(url, forceSafariVC: false);
+            },
+        );
 }
 
-showPrivacyDialog(
-    BuildContext context, setPrivacyPolicyAccepted(bool value)) async {
+Future<void> showPrivacyDialog(
+  BuildContext context,
+  Function(bool value) setPrivacyPolicyAccepted,
+) async {
   String? locale = "en_US";
   late String eulaURL;
   late String privacyPolicyURL;
@@ -133,8 +136,8 @@ showPrivacyDialog(
 
   final ThemeData themeData = Theme.of(context);
   final TextStyle? aboutTextStyle = themeData.textTheme.bodyText1;
-  final TextStyle linkStyle =
-      themeData.textTheme.bodyText1!.copyWith(color: themeData.accentColor);
+  final TextStyle linkStyle = themeData.textTheme.bodyText1!
+      .copyWith(color: themeData.colorScheme.secondary);
 
   showDialog(
     context: context,
@@ -179,15 +182,16 @@ showPrivacyDialog(
             Navigator.of(context).pop();
           },
         ),
-        Platform.isAndroid
-            ? TextButton(
-                child: Text(S.of(context).exit),
-                onPressed: () {
-                  setPrivacyPolicyAccepted(false);
-                  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                },
-              )
-            : Container(height: 0.0, width: 0.0),
+        if (Platform.isAndroid)
+          TextButton(
+            child: Text(S.of(context).exit),
+            onPressed: () {
+              setPrivacyPolicyAccepted(false);
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            },
+          )
+        else
+          const SizedBox(height: 0.0, width: 0.0),
       ],
     ),
   );

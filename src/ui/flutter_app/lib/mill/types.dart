@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-abs(value) => value > 0 ? value : -value;
+int abs(int value) => value > 0 ? value : -value;
 
 class Move {
   static const invalidMove = -1;
@@ -48,7 +48,7 @@ class Move {
   // Used to restore fen step counter when undoing move
   String counterMarks = "";
 
-  parse() {
+  void parse() {
     if (!legal(move)) {
       throw "Error: Invalid Move: $move";
     }
@@ -99,8 +99,7 @@ class Move {
   /// Remove: -(1,2)
   /// Move: (3,1)->(2,1)
 
-  Move.set(String move) {
-    this.move = move;
+  Move.set(this.move) {
     parse();
   }
 
@@ -111,7 +110,7 @@ class Move {
 
     if (move == null || move.length > "(3,1)->(2,1)".length) return false;
 
-    String range = "0123456789(,)->";
+    const String range = "0123456789(,)->";
 
     if (!(move[0] == '(' || move[0] == '-')) {
       return false;
@@ -190,6 +189,7 @@ enum GameOverReason {
 enum PieceType { none, whiteStone, blackStone, ban, count, stone }
 
 class Piece {
+  const Piece._();
   static const noPiece = PieceColor.none;
   static const whiteStone = PieceColor.white;
   static const blackStone = PieceColor.black;
@@ -264,7 +264,7 @@ int makeSquare(int file, int rank) {
 }
 
 bool isOk(int sq) {
-  bool ret = (sq == 0 || (sq >= sqBegin && sq < sqEnd));
+  final bool ret = sq == 0 || (sq >= sqBegin && sq < sqEnd);
 
   if (ret == false) {
     print("[types] $sq is not OK");
@@ -274,7 +274,7 @@ bool isOk(int sq) {
 }
 
 int fileOf(int sq) {
-  return (sq >> 3);
+  return sq >> 3;
 }
 
 int rankOf(int sq) {
@@ -282,13 +282,11 @@ int rankOf(int sq) {
 }
 
 int fromSq(int move) {
-  move = abs(move);
-  return (move >> 8);
+  return abs(move) >> 8;
 }
 
 int toSq(int move) {
-  move = abs(move);
-  return (move & 0x00FF);
+  return abs(move) & 0x00FF;
 }
 
 int makeMove(int from, int to) {

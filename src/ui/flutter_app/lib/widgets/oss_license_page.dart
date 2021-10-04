@@ -23,8 +23,11 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/generated/oss_licenses.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// TODO: use flutters build in viewLicense function
 class FlutterLicense extends LicenseEntry {
+  @override
   final List<String> packages;
+  @override
   final List<LicenseParagraph> paragraphs;
 
   FlutterLicense(this.packages, this.paragraphs);
@@ -37,8 +40,10 @@ class OssLicensesPage extends StatelessWidget {
       yield FlutterLicense([
         'Sound Effects'
       ], [
-        LicenseParagraph(
-            'CC-0\nhttps://freesound.org/people/unfa/sounds/243749/', 0)
+        const LicenseParagraph(
+          'CC-0\nhttps://freesound.org/people/unfa/sounds/243749/',
+          0,
+        )
       ]);
     }
 
@@ -47,8 +52,8 @@ class OssLicensesPage extends StatelessWidget {
     // merging non-dart based dependency list using LicenseRegistry.
     final ossKeys = ossLicenses.keys.toList();
     final lm = <String, List<String>>{};
-    await for (var l in LicenseRegistry.licenses) {
-      for (var p in l.packages) {
+    await for (final l in LicenseRegistry.licenses) {
+      for (final p in l.packages) {
         if (!ossKeys.contains(p)) {
           final lp = lm.putIfAbsent(p, () => []);
           lp.addAll(l.paragraphs.map((p) => p.text));
@@ -56,7 +61,7 @@ class OssLicensesPage extends StatelessWidget {
         }
       }
     }
-    for (var key in lm.keys) {
+    for (final key in lm.keys) {
       ossLicenses[key] = {'license': lm[key]!.join('\n')};
     }
     return ossKeys..sort();
@@ -66,80 +71,104 @@ class OssLicensesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).ossLicenses),
-      ),
-      body: FutureBuilder<List<String>>(
+        appBar: AppBar(
+          title: Text(S.of(context).ossLicenses),
+        ),
+        body: FutureBuilder<List<String>>(
           future: _licenses,
           builder: (context, snapshot) => ListView.separated(
-              padding: const EdgeInsets.all(0),
-              itemCount: snapshot.data?.length ?? 0,
-              itemBuilder: (context, index) {
-                final key = snapshot.data![index];
-                final ossl = ossLicenses[key];
-                final version = ossl['version'];
-                final desc = ossl['description'];
-                return ListTile(
-                    title: Text('$key ${version ?? ''}'),
-                    subtitle: desc != null ? Text(desc) : null,
-                    trailing: Icon(FluentIcons.chevron_right_24_regular),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            MiscOssLicenseSingle(name: key, json: ossl))));
-              },
-              separatorBuilder: (context, index) => const Divider())));
+            padding: EdgeInsets.zero,
+            itemCount: snapshot.data?.length ?? 0,
+            itemBuilder: (context, index) {
+              final key = snapshot.data![index];
+              final ossl = ossLicenses[key] as Map<String, dynamic>;
+              final version = ossl['version'];
+              final desc = ossl['description'] as String?;
+              return ListTile(
+                title: Text('$key ${version ?? ''}'),
+                subtitle: desc != null ? Text(desc) : null,
+                trailing: const Icon(FluentIcons.chevron_right_24_regular),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MiscOssLicenseSingle(name: key, json: ossl),
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(),
+          ),
+        ),
+      );
 }
 
 class MiscOssLicenseSingle extends StatelessWidget {
   final String name;
   final Map<String, dynamic> json;
 
-  String get version => json['version'] == null ? "" : json['version'];
-  String? get description => json['description'];
-  String get licenseText => json['license'];
-  String? get homepage => json['homepage'];
+  String get version => json['version'] as String? ?? "";
+  String? get description => json['description'] as String?;
+  String get licenseText => json['license'] as String;
+  String? get homepage => json['homepage'] as String?;
 
-  MiscOssLicenseSingle({required this.name, required this.json});
+  const MiscOssLicenseSingle({required this.name, required this.json});
 
   String _bodyText() => licenseText.split('\n').map((line) {
         if (line.startsWith('//')) line = line.substring(2);
-        line = line.trim();
-        return line;
+        return line.trim();
       }).join('\n');
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: Text('$name $version')),
         body: Container(
-            color: Theme.of(context).canvasColor,
-            child: ListView(children: <Widget>[
+          color: Theme.of(context).canvasColor,
+          child: ListView(
+            children: <Widget>[
               if (description != null)
                 Padding(
-                    padding: const EdgeInsets.only(
-                        top: 12.0, left: 12.0, right: 12.0),
-                    child: Text(description!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(fontWeight: FontWeight.bold))),
+                  padding: const EdgeInsets.only(
+                    top: 12.0,
+                    left: 12.0,
+                    right: 12.0,
+                  ),
+                  child: Text(
+                    description!,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
               if (homepage != null)
                 Padding(
-                    padding: const EdgeInsets.only(
-                        top: 12.0, left: 12.0, right: 12.0),
-                    child: InkWell(
-                      child: Text(homepage!,
-                          style: const TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline)),
-                      onTap: () => launch(homepage!),
-                    )),
+                  padding: const EdgeInsets.only(
+                    top: 12.0,
+                    left: 12.0,
+                    right: 12.0,
+                  ),
+                  child: InkWell(
+                    child: Text(
+                      homepage!,
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    onTap: () => launch(homepage!),
+                  ),
+                ),
               if (description != null || homepage != null) const Divider(),
               Padding(
                 padding:
                     const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-                child: Text(_bodyText(),
-                    style: Theme.of(context).textTheme.bodyText2),
+                child: Text(
+                  _bodyText(),
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
               ),
-            ])),
+            ],
+          ),
+        ),
       );
 }
