@@ -1,0 +1,8 @@
+v1.1.38
+
+* Unterstützung des Entfernens von nicht gesetzten Steinen - Wenn ein Spieler in der Setzphase die Mühle bildet, kann er den nicht gesetzten Stein des Gegners entfernen und einen weiteren Zug machen.
+* Unterstützung der Endspiel-N-Zug-Regel.
+* Änderung der Urteilsbedingung der N-Zug-Regel von > auf =.
+* Unterstützt dreifache Wiederholungseinstellung.
+* Erlaubt die Konfiguration von Punktstil und Punktbreite.
+* Unterstützt den Import von GoldToken-Zuglisten.

@@ -1,0 +1,8 @@
+v1.1.38
+
+* Apoyar la eliminación de la colocación de piezas no colocadas - Si un jugador forma el molino en la fase de colocación, puede eliminar la pieza no colocada del oponente y continuar haciendo un movimiento.
+* Apoyar la regla del movimiento N del final.
+* Cambia la condición de juicio de la regla del movimiento N de > a =.
+* Soporta la configuración de la repetición triple.
+* Permitir configurar el estilo y el ancho de los puntos.
+* Soporta importar la lista de movimientos de GoldToken.

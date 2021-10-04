@@ -1,0 +1,8 @@
+v1.1.38
+
+* Support removing unplaced piece setting - If a player forms the mill in the placing phase, he can remove the opponent's unplaced piece and continue to make a move.
+* Support Endgame N-Move rule.
+* Change the judgment condition of the N-move rule from > to =.
+* Support threefold repetition setting.
+* Allow configuring point style and point width.
+* Support import GoldToken move list.
