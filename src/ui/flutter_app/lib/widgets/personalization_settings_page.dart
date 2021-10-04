@@ -41,10 +41,6 @@ class _PersonalizationSettingsPageState
   Color pickerColor = const Color(0xFF808080);
   Color currentColor = const Color(0xFF808080);
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   // ValueChanged<Color> callback
   void changeColor(Color color) {
@@ -388,7 +384,6 @@ class _PersonalizationSettingsPageState
         context: context,
         children: <Widget>[
           SettingsListTile(
-            context: context,
             titleString: S.of(context).language,
             trailingString:
                 Config.languageCode == Constants.defaultLanguageCodeName
@@ -419,37 +414,31 @@ class _PersonalizationSettingsPageState
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).boardBorderLineWidth,
             onTap: setBoardBorderLineWidth,
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).boardInnerLineWidth,
             onTap: setBoardInnerLineWidth,
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).pieceWidth,
             onTap: setPieceWidth,
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).fontSize,
             onTap: setFontSize,
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).boardTop,
             onTap: setBoardTop,
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).animationDuration,
             onTap: setAnimationDuration,
           ),
@@ -468,77 +457,66 @@ class _PersonalizationSettingsPageState
         context: context,
         children: <Widget>[
           SettingsListTile(
-            context: context,
             titleString: S.of(context).boardColor,
             trailingColor: Config.boardBackgroundColor,
             onTap: () => showColorDialog(S.of(context).boardColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).backgroundColor,
             trailingColor: Config.darkBackgroundColor,
             onTap: () => showColorDialog(S.of(context).backgroundColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).lineColor,
             trailingColor: Config.boardLineColor,
             onTap: () => showColorDialog(S.of(context).lineColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).whitePieceColor,
             trailingColor: Config.whitePieceColor,
             onTap: () => showColorDialog(S.of(context).whitePieceColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).blackPieceColor,
             trailingColor: Config.blackPieceColor,
             onTap: () => showColorDialog(S.of(context).blackPieceColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).pieceHighlightColor,
             trailingColor: Config.pieceHighlightColor,
             onTap: () => showColorDialog(S.of(context).pieceHighlightColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).messageColor,
             trailingColor: Config.messageColor,
             onTap: () => showColorDialog(S.of(context).messageColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).drawerColor,
             trailingColor: Config.drawerColor,
             onTap: () => showColorDialog(S.of(context).drawerColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).drawerBackgroundColor,
             trailingColor: Config.drawerBackgroundColor,
             onTap: () => showColorDialog(S.of(context).drawerBackgroundColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).drawerTextColor,
             trailingColor: Config.drawerTextColor,
             onTap: () => showColorDialog(S.of(context).drawerTextColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).drawerHighlightItemColor,
             trailingColor: Config.drawerHighlightItemColor,
             onTap: () =>
@@ -546,7 +524,6 @@ class _PersonalizationSettingsPageState
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).mainToolbarBackgroundColor,
             trailingColor: Config.mainToolbarBackgroundColor,
             onTap: () =>
@@ -554,14 +531,12 @@ class _PersonalizationSettingsPageState
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).mainToolbarIconColor,
             trailingColor: Config.mainToolbarIconColor,
             onTap: () => showColorDialog(S.of(context).mainToolbarIconColor),
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).navigationToolbarBackgroundColor,
             trailingColor: Config.navigationToolbarBackgroundColor,
             onTap: () =>
@@ -569,7 +544,6 @@ class _PersonalizationSettingsPageState
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).navigationToolbarIconColor,
             trailingColor: Config.navigationToolbarIconColor,
             onTap: () =>

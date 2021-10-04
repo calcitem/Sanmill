@@ -48,7 +48,7 @@ class DrawerListItem {
   Icon? icon;
 }
 
-class HomeDrawer extends StatefulWidget {
+class HomeDrawer extends StatelessWidget {
   const HomeDrawer({
     Key? key,
     this.screenIndex,
@@ -61,21 +61,9 @@ class HomeDrawer extends StatefulWidget {
   final Function(DrawerIndex?)? callBackIndex;
 
   @override
-  _HomeDrawerState createState() => _HomeDrawerState();
-}
-
-class _HomeDrawerState extends State<HomeDrawer> {
-  DateTime? lastTapTime;
-
-  final String tag = "[home_drawer]";
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    const String tag = "[home_drawer]";
+
     final List<DrawerListItem> drawerList = <DrawerListItem>[
       DrawerListItem(
         index: DrawerIndex.humanVsAi,
@@ -129,7 +117,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
         Tween<double>(begin: 0.0, end: 24.0)
                 .animate(
                   CurvedAnimation(
-                    parent: widget.iconAnimationController!,
+                    parent: iconAnimationController!,
                     curve: Curves.fastOutSlowIn,
                   ),
                 )
@@ -140,13 +128,13 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
     final scaleTransition = ScaleTransition(
       scale: AlwaysStoppedAnimation<double>(
-        1.0 - (widget.iconAnimationController!.value) * 0.2,
+        1.0 - (iconAnimationController!.value) * 0.2,
       ),
       child: rotationTransition,
     );
 
     final animatedBuilder = AnimatedBuilder(
-      animation: widget.iconAnimationController!,
+      animation: iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
         return scaleTransition;
       },
@@ -179,8 +167,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
       repeatForever: true,
       stopPauseOnTap: true,
       onTap: () {
+        DateTime? lastTapTime;
         if (lastTapTime == null ||
-            DateTime.now().difference(lastTapTime!) >
+            DateTime.now().difference(lastTapTime) >
                 const Duration(seconds: 1)) {
           lastTapTime = DateTime.now();
           print("$tag Tap again in one second to enable developer mode.");
@@ -257,9 +246,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
               physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.zero,
               itemCount: drawerList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return buildInkwell(drawerList[index]);
-              },
+              itemBuilder: (BuildContext context, int index) =>
+                  buildInkwell(context, drawerList[index]),
             ),
           ),
           Divider(height: 1, color: AppTheme.drawerDividerColor),
@@ -272,20 +260,20 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Future<void> navigationToScreen(DrawerIndex? index) async {
-    widget.callBackIndex!(index);
+    callBackIndex!(index);
   }
 
-  Widget buildInkwell(DrawerListItem listItem) {
+  Widget buildInkwell(BuildContext context, DrawerListItem listItem) {
     final bool ltr =
         getBidirectionality(context) == Bidirectionality.leftToRight;
     const double radius = 28.0;
     final animatedBuilder = AnimatedBuilder(
-      animation: widget.iconAnimationController!,
+      animation: iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
         return Transform(
           transform: Matrix4.translationValues(
             (MediaQuery.of(context).size.width * 0.75 - 64) *
-                (1.0 - widget.iconAnimationController!.value - 1.0),
+                (1.0 - iconAnimationController!.value - 1.0),
             0.0,
             0.0,
           ),
@@ -311,7 +299,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
     final listItemIcon = Icon(
       listItem.icon!.icon,
-      color: widget.screenIndex == listItem.index
+      color: screenIndex == listItem.index
           ? Color(Config.drawerTextColor) // TODO: drawerHighlightTextColor
           : Color(Config.drawerTextColor),
     );
@@ -333,11 +321,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
               Text(
                 listItem.title,
                 style: TextStyle(
-                  fontWeight: widget.screenIndex == listItem.index
+                  fontWeight: screenIndex == listItem.index
                       ? FontWeight.w700
                       : FontWeight.w500,
                   fontSize: Config.fontSize,
-                  color: widget.screenIndex == listItem.index
+                  color: screenIndex == listItem.index
                       ? Color(
                           Config.drawerTextColor,
                         ) // TODO: drawerHighlightTextColor
@@ -347,10 +335,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ],
           ),
         ),
-        if (widget.screenIndex == listItem.index)
-          animatedBuilder
-        else
-          const SizedBox()
+        if (screenIndex == listItem.index) animatedBuilder else const SizedBox()
       ],
     );
 

@@ -21,45 +21,40 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 
-class LicenseAgreementPage extends StatefulWidget {
-  @override
-  _LicenseAgreementPageState createState() => _LicenseAgreementPageState();
-}
-
-class _LicenseAgreementPageState extends State<LicenseAgreementPage> {
-  String _data = "";
-
-  Future<void> _loadData() async {
-    final _loadedData =
-        await rootBundle.loadString(Constants.gplLicenseFilename);
-    setState(() {
-      _data = _loadedData;
-    });
-  }
-
+class LicenseAgreementPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    _loadData();
+    return FutureBuilder<String>(
+      future: rootBundle.loadString(Constants.gplLicenseFilename),
+      builder: (context, data) {
+        late final String _data;
+        if (!data.hasData) {
+          _data = 'Nothing to show';
+        } else {
+          _data = data.data!;
+        }
 
-    return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).license), centerTitle: true),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(
-              top: 16,
-              left: 16,
-              right: 16,
-              bottom: 16,
-            ),
-            child: Text(
-              _data != "" ? _data : 'Nothing to show',
-              style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
-              textAlign: TextAlign.left,
-            ),
+        return Scaffold(
+          appBar: AppBar(title: Text(S.of(context).license), centerTitle: true),
+          body: ListView(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                ),
+                child: Text(
+                  _data,
+                  style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

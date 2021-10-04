@@ -53,9 +53,8 @@ class GamePage extends StatefulWidget {
   static double screenPaddingH = AppTheme.boardScreenPaddingH;
 
   final EngineType engineType;
-  final Engine engine;
 
-  GamePage(this.engineType) : engine = NativeEngine();
+  const GamePage(this.engineType);
 
   @override
   _GamePageState createState() => _GamePageState();
@@ -63,6 +62,8 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage>
     with RouteAware, SingleTickerProviderStateMixin {
+  final Engine _engine = NativeEngine();
+
   String? _tip = '';
   bool isReady = false;
   bool isGoingToHistory = false;
@@ -87,7 +88,7 @@ class _GamePageState extends State<GamePage>
 
     super.initState();
     Game.instance.init();
-    widget.engine.startup();
+    _engine.startup();
 
     timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
       _setReadyState();
@@ -573,10 +574,10 @@ class _GamePageState extends State<GamePage>
 
       if (!isMoveNow) {
         print("[engineToGo] Searching...");
-        response = await widget.engine.search(Game.instance.position);
+        response = await _engine.search(Game.instance.position);
       } else {
         print("[engineToGo] Get search result now...");
-        response = await widget.engine.search(null);
+        response = await _engine.search(null);
         isMoveNow = false;
       }
 
@@ -1004,8 +1005,10 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  Future<void> onGotoHistoryButtonsPressed(Future<String> func,
-      {bool pop = true}) async {
+  Future<void> onGotoHistoryButtonsPressed(
+    Future<String> func, {
+    bool pop = true,
+  }) async {
     if (pop == true) {
       Navigator.of(context).pop();
     }
@@ -1360,7 +1363,7 @@ class _GamePageState extends State<GamePage>
                 onPressed: () async {
                   if (!isTopLevel) Config.skillLevel++;
                   Config.save();
-                  await widget.engine.setOptions(context);
+                  await _engine.setOptions(context);
                   print("[config] skillLevel: ${Config.skillLevel}");
                   Navigator.of(context).pop();
                 },
@@ -1888,7 +1891,7 @@ class _GamePageState extends State<GamePage>
   void dispose() {
     print("$tag dispose");
     disposed = true;
-    widget.engine.shutdown();
+    _engine.shutdown();
     _animationController.dispose();
     super.dispose();
     routeObserver.unsubscribe(this);
@@ -1898,7 +1901,7 @@ class _GamePageState extends State<GamePage>
   Future<void> didPush() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPush route: $route');
-    await widget.engine.setOptions(context);
+    await _engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
       setState(() {});
@@ -1909,7 +1912,7 @@ class _GamePageState extends State<GamePage>
   Future<void> didPopNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPopNext route: $route');
-    await widget.engine.setOptions(context);
+    await _engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
     }
@@ -1919,7 +1922,7 @@ class _GamePageState extends State<GamePage>
   Future<void> didPushNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     print('$tag Game Page didPushNext route: $route');
-    await widget.engine.setOptions(context);
+    await _engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
     }
