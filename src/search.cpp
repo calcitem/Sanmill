@@ -108,11 +108,10 @@ int Thread::search()
         }
 #endif // RULE_50
 
-#ifdef THREEFOLD_REPETITION
-        if (rootPos->has_game_cycle()) {
+        if (rule.threefoldRepetitionRule &&
+            rootPos->has_game_cycle()) {
             return 3;
         }
-#endif // THREEFOLD_REPETITION
 
         assert(posKeyHistory.size() < 256);
     }
@@ -334,15 +333,14 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
         return bestValue;
     }
 
-#ifdef THREEFOLD_REPETITION
     // if this isn't the root of the search tree (where we have
     // to pick a move and can't simply return VALUE_DRAW) then check to
     // see if the position is a repeat. if so, we can assume that
     // this line is a draw and return VALUE_DRAW.
-    if (depth != originDepth && pos->has_repeated(ss)) {
+    if (rule.threefoldRepetitionRule &&
+        depth != originDepth && pos->has_repeated(ss)) {
         return VALUE_DRAW;
     }
-#endif // THREEFOLD_REPETITION
 
     // Initialize a MovePicker object for the current position, and prepare
     // to search the moves. 

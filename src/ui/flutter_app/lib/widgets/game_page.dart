@@ -470,7 +470,7 @@ class _GamePageState extends State<GamePage>
               (posKeyHistory.length > 0 &&
                   position.st.key != posKeyHistory[posKeyHistory.length - 1])) {
             posKeyHistory.add(position.st.key);
-            if (position.hasGameCycle()) {
+            if (rule.threefoldRepetitionRule && position.hasGameCycle()) {
               position.setGameOver(PieceColor.draw,
                   GameOverReason.drawReasonThreefoldRepetition);
             }

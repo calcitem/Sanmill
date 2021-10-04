@@ -174,6 +174,8 @@ class NativeEngine extends Engine {
     await send('setoption name NMoveRule value ${Config.nMoveRule}');
     await send(
         'setoption name EndgameNMoveRule value ${Config.endgameNMoveRule}');
+    await send(
+        'setoption name ThreefoldRepetitionRule value ${Config.threefoldRepetitionRule}');
   }
 
   String getPositionFen(Position position) {

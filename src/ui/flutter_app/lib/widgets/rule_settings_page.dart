@@ -94,6 +94,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             onTap: setEndgameNMoveRule,
           ),
           ListItemDivider(),
+          SettingsSwitchListTile(
+            context: context,
+            value: Config.threefoldRepetitionRule,
+            onChanged: setThreefoldRepetitionRule,
+            titleString: S.of(context).threefoldRepetitionRule,
+            subtitleString: S.of(context).threefoldRepetitionRule_Detail,
+          ),
+          ListItemDivider(),
         ],
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
@@ -492,6 +500,16 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     });
 
     print("[config] rule.mayFly: $value");
+
+    Config.save();
+  }
+
+  setThreefoldRepetitionRule(bool value) async {
+    setState(() {
+      rule.threefoldRepetitionRule = Config.threefoldRepetitionRule = value;
+    });
+
+    print("[config] rule.threefoldRepetitionRule: $value");
 
     Config.save();
   }

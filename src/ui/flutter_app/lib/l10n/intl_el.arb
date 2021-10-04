@@ -1220,5 +1220,13 @@
     "drawReasonEndgameRule50": "Either player has only three pieces and neither player removes a piece within a specific moves.",
     "@drawReasonEndgameRule50": {
         "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
+    "threefoldRepetitionRule": "Threefold repetition rule",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
+    },
+    "threefoldRepetitionRule_Detail": "The game is drawn if a position occurs for the third time.",
+    "@threefoldRepetitionRule_Detail": {
+        "description": "The game is drawn if a position occurs for the third time."
     }
 }

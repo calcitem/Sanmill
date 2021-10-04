@@ -36,6 +36,7 @@ class Rule {
   bool mayFly = true;
   int nMoveRule = 100;
   int endgameNMoveRule = 100;
+  bool threefoldRepetitionRule = true;
 }
 
 Rule rule = Rule();

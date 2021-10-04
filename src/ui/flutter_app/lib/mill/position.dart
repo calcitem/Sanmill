@@ -297,9 +297,13 @@ class Position {
           isThreeEndgame() &&
           posKeyHistory.length >= rule.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonEndgameRule50;
+      } else if (rule.threefoldRepetitionRule) {
+        gameOverReason =
+            GameOverReason.drawReasonThreefoldRepetition; // TODO: Sure?
       } else {
-        gameOverReason = GameOverReason.drawReasonThreefoldRepetition;
+        gameOverReason = GameOverReason.drawReasonBoardIsFull; // TODO: Sure?
       }
+
       return true;
     }
 
@@ -349,7 +353,7 @@ class Position {
           (posKeyHistory.length > 0 &&
               st.key != posKeyHistory[posKeyHistory.length - 1])) {
         posKeyHistory.add(st.key);
-        if (hasGameCycle()) {
+        if (rule.threefoldRepetitionRule && hasGameCycle()) {
           setGameOver(
               PieceColor.draw, GameOverReason.drawReasonThreefoldRepetition);
         }

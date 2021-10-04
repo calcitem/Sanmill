@@ -194,24 +194,24 @@ bool perfect_command(const char *cmd)
 #if 0
     args = sscanf(cmd, "Player%1u give up!", &t);
 
-//     if (args == 1) {
-//         return resign((Color)t);
-//     }
+    //     if (args == 1) {
+    //         return resign((Color)t);
+    //     }
 
-#ifdef THREEFOLD_REPETITION
-    if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
-        return true;
-    }
+    if (rule.threefoldRepetitionRule) {
+        if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
+            return true;
+        }
 
-    if (!strcmp(cmd, "draw")) {
-        phase = Phase::gameOver;
-        winner = DRAW;
-        score_draw++;
-        gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
-        //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
-        return true;
+        if (!strcmp(cmd, "draw")) {
+            phase = Phase::gameOver;
+            winner = DRAW;
+            score_draw++;
+            gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
+            //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
+            return true;
+        }
     }
-#endif /* THREEFOLD_REPETITION */
 
     return false;
 #endif

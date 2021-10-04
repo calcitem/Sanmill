@@ -494,7 +494,6 @@ out:
 
 int repetition;
 
-#ifdef THREEFOLD_REPETITION
 // Position::has_repeated() tests whether there has been at least one repetition
 // of positions since the last remove.
 
@@ -537,7 +536,6 @@ bool Position::has_game_cycle() const
 
     return false;
 }
-#endif // THREEFOLD_REPETITION
 
 
 /// Mill Game
@@ -965,17 +963,17 @@ bool Position::command(const char *cmd)
         return resign((Color)t);
     }
 
-#ifdef THREEFOLD_REPETITION
-    if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
-        return true;
-    }
+    if (rule.threefoldRepetitionRule) {
+        if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
+            return true;
+        }
 
-    if (!strcmp(cmd, "draw")) {
-        set_gameover(DRAW, GameOverReason::drawReasonThreefoldRepetition);
-        //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
-        return true;
+        if (!strcmp(cmd, "draw")) {
+            set_gameover(DRAW, GameOverReason::drawReasonThreefoldRepetition);
+            //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
+            return true;
+        }
     }
-#endif /* THREEFOLD_REPETITION */
 
     return false;
 }

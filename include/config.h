@@ -113,10 +113,6 @@
 //#define ENDGAME_LEARNING
 //#define ENDGAME_LEARNING_FORCE
 
-/// The threefold repetition rule (also known as repetition of position) states that
-/// the game is drawn if the same position occurs three times.
-#define THREEFOLD_REPETITION
-
 /// The game is drawn if there has been no removal in a specific number of moves.
 #define RULE_50
 

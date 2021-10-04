@@ -77,6 +77,10 @@ struct Rule
 
     // If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn.
     unsigned int endgameNMoveRule;
+
+    // The threefold repetition rule (also known as repetition of position) states that
+    // the game is drawn if the same position occurs three times.
+    bool threefoldRepetitionRule;
 };
 
 #define N_RULES 5
