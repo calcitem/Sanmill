@@ -1213,11 +1213,11 @@
     "@endgameNMoveRule": {
         "description": "Endgame N-Move rule"
     },
-    "endgameNMoveRule_Detail": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn.",
+    "endgameNMoveRule_Detail": "The game is drawn if either player has only three pieces and neither player removes a piece within specific moves.",
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
-    "drawReasonEndgameRule50": "Either player has only three pieces and neither player removes a piece within a specific moves.",
+    "drawReasonEndgameRule50": "Either player has only three pieces, and neither player removes a piece within specific moves.",
     "@drawReasonEndgameRule50": {
         "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
     },
@@ -1240,10 +1240,6 @@
     "pointWidth": "Point width",
     "@pointWidth": {
         "description": "Point width"
-    },
-    "none": "None",
-    "@none": {
-        "description": "None"
     },
     "solid": "Solid",
     "@solid": {

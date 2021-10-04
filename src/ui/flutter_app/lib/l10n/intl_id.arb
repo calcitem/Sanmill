@@ -1209,47 +1209,43 @@
     "@removeUnplacedPiece_Detail": {
         "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
     },
-    "endgameNMoveRule": "Endgame N-Move rule",
+    "endgameNMoveRule": "Aturan N-Move Endgame",
     "@endgameNMoveRule": {
         "description": "Endgame N-Move rule"
     },
-    "endgameNMoveRule_Detail": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn.",
+    "endgameNMoveRule_Detail": "Jika salah satu pemain hanya memiliki tiga bidak dan tidak ada pemain yang mengeluarkan bidak dalam gerakan tertentu, permainan dinyatakan seri.",
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
-    "drawReasonEndgameRule50": "Either player has only three pieces and neither player removes a piece within a specific moves.",
+    "drawReasonEndgameRule50": "Salah satu pemain hanya memiliki tiga bidak dan tidak ada pemain yang mengeluarkan bidak dalam gerakan tertentu.",
     "@drawReasonEndgameRule50": {
         "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
     },
-    "threefoldRepetitionRule": "Threefold repetition rule",
+    "threefoldRepetitionRule": "Aturan pengulangan tiga kali lipat",
     "@threefoldRepetitionRule": {
         "description": "Threefold repetition rule"
     },
-    "threefoldRepetitionRule_Detail": "The game is drawn if a position occurs for the third time.",
+    "threefoldRepetitionRule_Detail": "Permainan dinyatakan seri jika terjadi posisi untuk ketiga kalinya.",
     "@threefoldRepetitionRule_Detail": {
         "description": "The game is drawn if a position occurs for the third time."
     },
-    "continueToMakeMove": "Mill! Continue to make a move.",
+    "continueToMakeMove": "Pabrik! Terus lakukan gerakan.",
     "@continueToMakeMove": {
         "description": "Mill! Continue to make a move."
     },
-    "pointStyle": "Point style",
+    "pointStyle": "Gaya titik",
     "@pointStyle": {
         "description": "Point style"
     },
-    "pointWidth": "Point width",
+    "pointWidth": "Lebar titik",
     "@pointWidth": {
         "description": "Point width"
     },
-    "none": "None",
-    "@none": {
-        "description": "None"
-    },
-    "solid": "Solid",
+    "solid": "Padat",
     "@solid": {
         "description": "Solid"
     },
-    "hollow": "Hollow",
+    "hollow": "Kosong",
     "@hollow": {
         "description": "Hollow"
     }
