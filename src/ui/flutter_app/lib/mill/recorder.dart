@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:sanmill/common/config.dart';
 
 import 'position.dart';
@@ -49,9 +50,9 @@ class GameRecorder {
       }
     } else if ((wmd.length == 8 && wmd[2] == '-' && wmd[5] == 'x') ||
         (wmd.length == 5 && wmd[2] == 'x')) {
-      print("$tag Not support parsing format oo-ooxo notation.");
+     debugPrint("$tag Not support parsing format oo-ooxo notation.");
     } else {
-      print("$tag Parse notation $wmd failed.");
+     debugPrint("$tag Parse notation $wmd failed.");
     }
 
     return move;
@@ -73,7 +74,7 @@ class GameRecorder {
       if (val >= 1 && val <= 24) {
         return playOkNotationToMove[playOk]!;
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+       debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
@@ -85,7 +86,7 @@ class GameRecorder {
       if (val >= 1 && val <= 24) {
         return "-${playOkNotationToMove[sub]!}";
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+       debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
@@ -96,7 +97,7 @@ class GameRecorder {
       if (val1 >= 1 && val1 <= 24) {
         move = playOkNotationToMove[sub1]!;
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+       debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
 
@@ -105,12 +106,12 @@ class GameRecorder {
       if (val2 >= 1 && val2 <= 24) {
         return "$move->${playOkNotationToMove[sub2]!}";
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+       debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
 
-    print("$tag Not support parsing format oo-ooxo PlayOK notation.");
+   debugPrint("$tag Not support parsing format oo-ooxo PlayOK notation.");
     return "";
   }
 
@@ -221,14 +222,14 @@ class GameRecorder {
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
           final String m2 = wmdNotationToMoveString(i.substring(2));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
         } else if (i.length == 8 && i[2] == '-' && i[5] == 'x') {
@@ -237,14 +238,14 @@ class GameRecorder {
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
           final String m2 = wmdNotationToMoveString(i.substring(5));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
         } else {
@@ -253,7 +254,7 @@ class GameRecorder {
           if (m != "") {
             newHistory.add(Move(m));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
         }
@@ -295,7 +296,7 @@ class GameRecorder {
           if (m != "") {
             newHistory.add(Move(m));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
         } else if (iX != -1) {
@@ -303,14 +304,14 @@ class GameRecorder {
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
           final String m2 = playOkNotationToMoveString(i.substring(iX));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
-            print("Cannot import $i");
+           debugPrint("Cannot import $i");
             return i;
           }
         }

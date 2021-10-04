@@ -37,7 +37,7 @@ class NativeEngine extends Engine {
   }
 
   Future<void> send(String command) async {
-    print("[engine] send: $command");
+   debugPrint("[engine] send: $command");
     await platform.invokeMethod('send', command);
   }
 
@@ -70,12 +70,12 @@ class NativeEngine extends Engine {
       await send('go');
       isActive = true;
     } else {
-      print("[engine] Move now");
+     debugPrint("[engine] Move now");
     }
 
     final response = await waitResponse(['bestmove', 'nobestmove']);
 
-    print("[engine] response: $response");
+   debugPrint("[engine] response: $response");
 
     if (response.startsWith('bestmove')) {
       var best = response.substring('bestmove'.length + 1);
@@ -106,7 +106,7 @@ class NativeEngine extends Engine {
     }
 
     if (times > timeLimit) {
-      print("[engine] Timeout. sleep = $sleep, times = $times");
+     debugPrint("[engine] Timeout. sleep = $sleep, times = $times");
       if (Config.developerMode && isActive) {
         throw "Exception: waitResponse timeout.";
       }
@@ -120,7 +120,7 @@ class NativeEngine extends Engine {
         if (response.startsWith(prefix)) {
           return response;
         } else {
-          print("[engine] Unexpected engine response: $response");
+         debugPrint("[engine] Unexpected engine response: $response");
         }
       }
     }
@@ -133,14 +133,14 @@ class NativeEngine extends Engine {
 
   Future<void> stopSearching() async {
     isActive = false;
-    print("[engine] Stop current thinking...");
+   debugPrint("[engine] Stop current thinking...");
     await send('stop');
   }
 
   @override
   Future<void> setOptions(BuildContext context) async {
     if (Config.settingsLoaded == false) {
-      print("[engine] Settings is not loaded yet, now load settings...");
+     debugPrint("[engine] Settings is not loaded yet, now load settings...");
       await Config.loadSettings();
     }
 

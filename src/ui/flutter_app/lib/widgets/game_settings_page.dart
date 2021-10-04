@@ -76,7 +76,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           divisions: 29,
           label: Config.skillLevel.toString(),
           onChanged: (value) => setState(() {
-            print("[config] Slider value: $value");
+           debugPrint("[config] Slider value: $value");
             Config.skillLevel = value.toInt();
             Config.save();
           }),
@@ -96,7 +96,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           divisions: 60,
           label: Config.moveTime.toString(),
           onChanged: (value) => setState(() {
-            print("[config] Slider value: $value");
+           debugPrint("[config] Slider value: $value");
             Config.moveTime = value.toInt();
             Config.save();
           }),
@@ -391,7 +391,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.aiMovesFirst = !value;
     });
 
-    print("[config] aiMovesFirst: ${Config.aiMovesFirst}");
+   debugPrint("[config] aiMovesFirst: ${Config.aiMovesFirst}");
 
     Config.save();
   }
@@ -401,14 +401,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.aiIsLazy = value;
     });
 
-    print("[config] aiMovesFirst: $value");
+   debugPrint("[config] aiMovesFirst: $value");
 
     Config.save();
   }
 
   void setAlgorithm() {
     Future<void> callback(int? algorithm) async {
-      print("[config] algorithm = $algorithm");
+     debugPrint("[config] algorithm = $algorithm");
 
       Navigator.of(context).pop();
 
@@ -416,7 +416,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         Config.algorithm = algorithm ?? 2;
       });
 
-      print("[config] Config.algorithm: ${Config.algorithm}");
+     debugPrint("[config] Config.algorithm: ${Config.algorithm}");
 
       Config.save();
     }
@@ -463,7 +463,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.drawOnHumanExperience = value;
     });
 
-    print("[config] drawOnHumanExperience: $value");
+   debugPrint("[config] drawOnHumanExperience: $value");
 
     Config.save();
   }
@@ -473,7 +473,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.considerMobility = value;
     });
 
-    print("[config] considerMobility: $value");
+   debugPrint("[config] considerMobility: $value");
 
     Config.save();
   }
@@ -483,7 +483,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.isAutoRestart = value;
     });
 
-    print("[config] isAutoRestart: $value");
+   debugPrint("[config] isAutoRestart: $value");
 
     Config.save();
   }
@@ -493,7 +493,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.isAutoChangeFirstMove = value;
     });
 
-    print("[config] isAutoChangeFirstMove: $value");
+   debugPrint("[config] isAutoChangeFirstMove: $value");
 
     Config.save();
   }
@@ -503,7 +503,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.resignIfMostLose = value;
     });
 
-    print("[config] resignIfMostLose: $value");
+   debugPrint("[config] resignIfMostLose: $value");
 
     Config.save();
   }
@@ -513,7 +513,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.shufflingEnabled = value;
     });
 
-    print("[config] shufflingEnabled: $value");
+   debugPrint("[config] shufflingEnabled: $value");
 
     Config.save();
   }
@@ -523,7 +523,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.learnEndgame = value;
     });
 
-    print("[config] learnEndgame: $value");
+   debugPrint("[config] learnEndgame: $value");
 
     Config.save();
   }
@@ -533,7 +533,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.openingBook = value;
     });
 
-    print("[config] openingBook: $value");
+   debugPrint("[config] openingBook: $value");
 
     Config.save();
   }
@@ -543,7 +543,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.toneEnabled = value;
     });
 
-    print("[config] toneEnabled: $value");
+   debugPrint("[config] toneEnabled: $value");
 
     Config.save();
   }
@@ -553,7 +553,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.keepMuteWhenTakingBack = value;
     });
 
-    print("[config] keepMuteWhenTakingBack: $value");
+   debugPrint("[config] keepMuteWhenTakingBack: $value");
 
     Config.save();
   }
@@ -563,7 +563,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.screenReaderSupport = value;
     });
 
-    print("[config] screenReaderSupport: $value");
+   debugPrint("[config] screenReaderSupport: $value");
 
     Config.save();
   }
@@ -573,7 +573,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.developerMode = value;
     });
 
-    print("[config] developerMode: $value");
+   debugPrint("[config] developerMode: $value");
 
     Config.save();
   }
@@ -583,7 +583,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.experimentsEnabled = value;
     });
 
-    print("[config] experimentsEnabled: $value");
+   debugPrint("[config] experimentsEnabled: $value");
 
     Config.save();
   }
@@ -595,7 +595,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.languageCode = value;
     });
 
-    print("[config] languageCode: $value");
+   debugPrint("[config] languageCode: $value");
 
     Config.save();
   }
@@ -605,7 +605,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.isPieceCountInHandShown = value;
     });
 
-    print("[config] isPieceCountInHandShown: $value");
+   debugPrint("[config] isPieceCountInHandShown: $value");
 
     Config.save();
   }
@@ -615,7 +615,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.isNotationsShown = value;
     });
 
-    print("[config] isNotationsShown: $value");
+   debugPrint("[config] isNotationsShown: $value");
 
     Config.save();
   }
@@ -625,7 +625,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.isHistoryNavigationToolbarShown = value;
     });
 
-    print("[config] isHistoryNavigationToolbarShown: $value");
+   debugPrint("[config] isHistoryNavigationToolbarShown: $value");
 
     Config.save();
   }
@@ -635,7 +635,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       Config.standardNotationEnabled = value;
     });
 
-    print("[config] standardNotationEnabled: $value");
+   debugPrint("[config] standardNotationEnabled: $value");
 
     Config.save();
   }

@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/foundation.dart';
+
 int abs(int value) => value > 0 ? value : -value;
 
 class Move {
@@ -82,7 +84,7 @@ class Move {
       removed = Piece.noPiece;
     } else if (move == "draw") {
       // TODO
-      print("[TODO] Computer request draw");
+     debugPrint("[TODO] Computer request draw");
     } else {
       assert(false);
     }
@@ -267,7 +269,7 @@ bool isOk(int sq) {
   final bool ret = sq == 0 || (sq >= sqBegin && sq < sqEnd);
 
   if (ret == false) {
-    print("[types] $sq is not OK");
+   debugPrint("[types] $sq is not OK");
   }
 
   return ret; // TODO: SQ_NONE?

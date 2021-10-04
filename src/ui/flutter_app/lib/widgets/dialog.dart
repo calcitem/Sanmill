@@ -52,7 +52,7 @@ void showCountdownDialog(
     content: StreamBuilder<int>(
       stream: events.stream,
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-        print("Count down: ${snapshot.data}");
+       debugPrint("Count down: ${snapshot.data}");
 
         if (snapshot.data == 0) {
           fun();
@@ -125,7 +125,7 @@ Future<void> showPrivacyDialog(
     locale = await Devicelocale.currentLocale;
   }
 
-  print("[about] local = $locale");
+ debugPrint("[about] local = $locale");
   if (locale != null && locale.startsWith("zh_")) {
     eulaURL = Constants.giteeEulaURL;
     privacyPolicyURL = Constants.giteePrivacyPolicyURL;

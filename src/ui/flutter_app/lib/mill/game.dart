@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
 
@@ -74,7 +75,7 @@ class Game {
   };
 
   bool aiIsSearching() {
-    print(
+    debugPrint(
       "$tag White is searching? ${isSearching[PieceColor.white]}\n"
       "$tag Black is searching? ${isSearching[PieceColor.black]}\n",
     );
@@ -106,7 +107,7 @@ class Game {
         break;
     }
 
-    print(
+    debugPrint(
       "$tag White is AI? ${isAi[PieceColor.white]}\n"
       "$tag Black is AI? ${isAi[PieceColor.black]}\n",
     );
@@ -122,7 +123,7 @@ class Game {
       start();
     }
 
-    print("$tag AI do move: $move");
+    debugPrint("$tag AI do move: $move");
 
     if (!position.doMove(move)) {
       return false;
@@ -132,12 +133,12 @@ class Game {
 
     sideToMove = position.sideToMove() ?? PieceColor.nobody;
 
-    printStat();
+    debugPrintStat();
 
     return true;
   }
 
-  void printStat() {
+  void debugPrintStat() {
     double whiteWinRate = 0;
     double blackWinRate = 0;
     double drawRate = 0;
@@ -159,6 +160,6 @@ class Game {
     final String scoreInfo =
         "Score: ${position.score[PieceColor.white]} : ${position.score[PieceColor.black]} : ${position.score[PieceColor.draw]}\ttotal: $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
-    print("$tag $scoreInfo");
+    debugPrint("$tag $scoreInfo");
   }
 }

@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/recorder.dart';
@@ -237,7 +238,7 @@ class Position {
 
     buffer.write("${st.rule50} ${1 + (gamePly - sideIsBlack) ~/ 2}");
 
-    //print("FEN is $ss");
+    //debugPrint("FEN is $ss");
 
     return buffer.toString();
   }
@@ -250,13 +251,13 @@ class Position {
     final String us = _sideToMove;
 
     if (move.from == move.to) {
-      print("[position] Move $move.move from == to");
+      debugPrint("[position] Move $move.move from == to");
       return false;
     }
 
     if (move.type == MoveType.remove) {
       if (movedPiece(move.to) != us) {
-        print("[position] Move $move.to to != us");
+        debugPrint("[position] Move $move.to to != us");
         return false;
       }
     }
@@ -396,7 +397,7 @@ class Position {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
-          print("[position] Has game cycle.");
+          debugPrint("[position] Has game cycle.");
           return true;
         }
       }
@@ -580,7 +581,7 @@ class Position {
 
         // not in moveTable
         if (md == moveDirectionNumber) {
-          print(
+          debugPrint(
             "[position] putPiece: [$s] is not in [$currentSquare]'s move table.",
           );
           return false;
@@ -746,7 +747,7 @@ class Position {
     gameOverReason = reason;
     winner = w;
 
-    print("[position] Game over, $w win, because of $reason");
+    debugPrint("[position] Game over, $w win, because of $reason");
     updateScore();
   }
 
@@ -846,7 +847,7 @@ class Position {
   void changeSideToMove() {
     setSideToMove(PieceColor.opponent(_sideToMove));
     st.key ^= Zobrist.side;
-    print("[position] $_sideToMove to move.");
+    debugPrint("[position] $_sideToMove to move.");
 
     /*
     if (phase == Phase.moving &&
@@ -854,7 +855,7 @@ class Position {
         isAllSurrounded() &&
         !rule.mayFly &&
         pieceOnBoardCount[sideToMove()]! >= rule.piecesAtLeastCount) {
-      print("[position] $_sideToMove is no way to go.");
+      debugPrint("[position] $_sideToMove is no way to go.");
       changeSideToMove();
     }
     */
@@ -1097,18 +1098,18 @@ class Position {
     String errString = "";
 
     if (recorder == null) {
-      print("[goto] recorder is null.");
+      debugPrint("[goto] recorder is null.");
       return "null";
     }
 
     final history = recorder!.history;
     if (moveIndex < -1 || history.length <= moveIndex) {
-      print("[goto] moveIndex is out of range.");
+      debugPrint("[goto] moveIndex is out of range.");
       return "out-of-range";
     }
 
     if (recorder!.cur == moveIndex) {
-      print("[goto] cur is equal to moveIndex.");
+      debugPrint("[goto] cur is equal to moveIndex.");
       return "equal";
     }
 
@@ -1174,7 +1175,7 @@ class Position {
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
-    //print("recorder.movesCount = ${recorder.movesCount}");
+    //debugPrint("recorder.movesCount = ${recorder.movesCount}");
 
     for (i = recorder!.movesCount - 1; i! >= 0; i--) {
       //if (recorder.moveAt(i).type == MoveType.remove) break;
@@ -1185,18 +1186,18 @@ class Position {
       posAfterLastRemove = i + 1;
     }
 
-    //print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
+    //debugPrint("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
 
     for (int i = posAfterLastRemove; i < recorder!.movesCount; i++) {
       buffer.write(" ${recorder!.moveAt(i).move}");
     }
 
     final String moves = buffer.toString();
-    //print("moves = $moves");
+    //debugPrint("moves = $moves");
 
     final idx = moves.indexOf('-(');
     if (idx != -1) {
-      //print("moves[$idx] is -(");
+      //debugPrint("moves[$idx] is -(");
       assert(false);
     }
 

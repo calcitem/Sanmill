@@ -169,7 +169,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("$tag local = $locale");
+   debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeIssuesURL);
     } else {
@@ -184,7 +184,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("$tag local = $locale");
+   debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeEulaURL);
     } else {
@@ -199,7 +199,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("$tag local = $locale");
+   debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeSourceCodeURL);
     } else {
@@ -221,7 +221,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("$tag local = $locale");
+   debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeThirdPartyNoticesURL);
     } else {
@@ -237,7 +237,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("$tag local = $locale");
+   debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteePrivacyPolicyURL);
     } else {
@@ -252,7 +252,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("$tag local = $locale");
+   debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeHelpImproveTranslateURL);
     } else {
@@ -267,7 +267,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    print("$tag local = $locale");
+   debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeThanksURL);
     } else {
