@@ -38,6 +38,8 @@ class PiecesPainter extends PiecesBasePainter {
   final animationValue;
 
   // TODO: null-safety
+  int? pointStyle = 0;
+  double? pointWidth = 10.0;
   double? pieceWidth = 0.0;
   double? animatedPieceWidth = 0.0;
 
@@ -48,6 +50,8 @@ class PiecesPainter extends PiecesBasePainter {
     this.blurIndex = invalidIndex,
     required this.animationValue,
   }) : super(width: width) {
+    pointStyle = Config.pointStyle;
+    pointWidth = Config.pointWidth;
     pieceWidth = squareWidth * Config.pieceWidth;
     animatedPieceWidth = squareWidth * Config.pieceWidth * animationValue;
   }
@@ -60,6 +64,8 @@ class PiecesPainter extends PiecesBasePainter {
       position: position,
       gridWidth: gridWidth,
       squareWidth: squareWidth,
+      pointStyle: pointStyle,
+      pointWidth: pointWidth,
       pieceWidth: pieceWidth,
       animatedPieceWidth: animatedPieceWidth,
       offsetX: AppTheme.boardPadding + squareWidth / 2,
@@ -80,6 +86,8 @@ class PiecesPainter extends PiecesBasePainter {
     Position? position,
     double? gridWidth,
     double? squareWidth,
+    int? pointStyle,
+    double? pointWidth,
     double? pieceWidth,
     double? animatedPieceWidth,
     double? offsetX,

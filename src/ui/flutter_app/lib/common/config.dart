@@ -56,6 +56,8 @@ class Config {
   static bool isHistoryNavigationToolbarShown = false;
   static double boardBorderLineWidth = 2.0;
   static double boardInnerLineWidth = 2.0;
+  static int pointStyle = 0;
+  static double pointWidth = 10.0;
   static double pieceWidth = 0.9;
   static double fontSize = 16.0;
   static double boardTop = isLargeScreen() ? 75.0 : 36.0;
@@ -140,6 +142,8 @@ class Config {
         settings['IsHistoryNavigationToolbarShown'] ?? false;
     Config.boardBorderLineWidth = settings['BoardBorderLineWidth'] ?? 2;
     Config.boardInnerLineWidth = settings['BoardInnerLineWidth'] ?? 2;
+    Config.pointStyle = settings['PointStyle'] ?? 0;
+    Config.pointWidth = settings['PointWidth'] ?? 10.0;
     Config.pieceWidth = settings['PieceWidth'] ?? 0.9;
     Config.fontSize = settings['FontSize'] ?? 16.0;
     Config.boardTop = settings['BoardTop'] ?? (isLargeScreen() ? 75 : 36);
@@ -252,6 +256,8 @@ class Config {
         Config.isHistoryNavigationToolbarShown;
     settings['BoardBorderLineWidth'] = Config.boardBorderLineWidth;
     settings['BoardInnerLineWidth'] = Config.boardInnerLineWidth;
+    settings['PointStyle'] = Config.pointStyle;
+    settings['PointWidth'] = Config.pointWidth;
     settings['PieceWidth'] = Config.pieceWidth;
     settings['FontSize'] = Config.fontSize;
     settings['BoardTop'] = Config.boardTop;

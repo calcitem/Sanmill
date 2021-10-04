@@ -230,6 +230,92 @@ class _PersonalizationSettingsPageState
     );
   }
 
+  setPointStyle() {
+    callback(int? pointStyle) async {
+      Navigator.of(context).pop();
+
+      setState(() {
+        Config.pointStyle = pointStyle ?? 0;
+      });
+
+      print("[config] pointStyle: $pointStyle");
+
+      Config.save();
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => Semantics(
+        label: S.of(context).pointStyle,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text(S.of(context).none),
+              groupValue: Config.pointStyle,
+              value: 0,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text(S.of(context).solid),
+              groupValue: Config.pointStyle,
+              value: 1,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            /*
+            RadioListTile(
+              activeColor: AppTheme.switchListTileActiveColor,
+              title: Text(S.of(context).hollow),
+              groupValue: Config.pointStyle,
+              value: 2,
+              onChanged: callback,
+            ),
+            ListItemDivider(),
+            */
+          ],
+        ),
+      ),
+    );
+  }
+
+  SliderTheme _pointWidthSliderTheme(context, setState) {
+    return SliderTheme(
+      data: AppTheme.sliderThemeData,
+      child: Semantics(
+        label: S.of(context).pointWidth,
+        child: Slider(
+          value: Config.pointWidth.toDouble(),
+          min: 0,
+          max: 30.0,
+          divisions: 30,
+          label: Config.pointWidth.toStringAsFixed(1),
+          onChanged: (value) {
+            setState(() {
+              print("[config] pointWidth value: $value");
+              Config.pointWidth = value;
+              Config.save();
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  setPointWidth() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (context, setState) {
+          return _pointWidthSliderTheme(context, setState);
+        },
+      ),
+    );
+  }
+
   SliderTheme _pieceWidthSliderTheme(context, setState) {
     return SliderTheme(
       data: AppTheme.sliderThemeData,
@@ -446,6 +532,18 @@ class _PersonalizationSettingsPageState
             context: context,
             titleString: S.of(context).boardInnerLineWidth,
             onTap: setBoardInnerLineWidth,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).pointStyle,
+            onTap: setPointStyle,
+          ),
+          ListItemDivider(),
+          SettingsListTile(
+            context: context,
+            titleString: S.of(context).pointWidth,
+            onTap: setPointWidth,
           ),
           ListItemDivider(),
           SettingsListTile(

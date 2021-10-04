@@ -1232,5 +1232,25 @@
     "continueToMakeMove": "Mill! Continue to make a move.",
     "@continueToMakeMove": {
         "description": "Mill! Continue to make a move."
+    },
+    "pointStyle": "Point style",
+    "@pointStyle": {
+        "description": "Point style"
+    },
+    "pointWidth": "Point width",
+    "@pointWidth": {
+        "description": "Point width"
+    },
+    "none": "None",
+    "@none": {
+        "description": "None"
+    },
+    "solid": "Solid",
+    "@solid": {
+        "description": "Solid"
+    },
+    "hollow": "Hollow",
+    "@hollow": {
+        "description": "Hollow"
     }
 }
