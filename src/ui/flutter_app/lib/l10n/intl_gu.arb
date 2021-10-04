@@ -1228,5 +1228,9 @@
     "threefoldRepetitionRule_Detail": "The game is drawn if a position occurs for the third time.",
     "@threefoldRepetitionRule_Detail": {
         "description": "The game is drawn if a position occurs for the third time."
+    },
+    "continueToMakeMove": "Mill! Continue to make a move.",
+    "@continueToMakeMove": {
+        "description": "Mill! Continue to make a move."
     }
 }
