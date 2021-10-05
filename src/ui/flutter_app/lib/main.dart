@@ -27,12 +27,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/navigation_home_screen.dart';
+import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 import 'services/audios.dart';
 
@@ -54,11 +54,11 @@ Future<void> main() async {
       externalDirStr = ".";
     }
   } catch (e) {
-   debugPrint(e.toString());
+    debugPrint(e.toString());
     externalDirStr = ".";
   }
   final String path = "$externalDirStr/${Constants.crashLogsFileName}";
- debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
+  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
   final String recipients = Constants.recipients;
 
   final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
@@ -89,8 +89,8 @@ Future<void> main() async {
     profileConfig: profileOptions,
   );
 
- debugPrint(window.physicalSize.toString());
- debugPrint(Constants.windowAspectRatio.toString());
+  debugPrint(window.physicalSize.toString());
+  debugPrint(Constants.windowAspectRatio.toString());
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],

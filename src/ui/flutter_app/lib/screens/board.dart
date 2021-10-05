@@ -17,19 +17,22 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/painting/board_painter.dart';
-import 'package:sanmill/painting/pieces_painter.dart';
-import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/painters/board_painter.dart';
+import 'package:sanmill/shared/painters/pieces_painter.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
+
+typedef BoardTapCallback = void Function(int index);
+
 
 class Board extends StatelessWidget {
   final double width;
   final double height;
-  final Function(BuildContext, int) onBoardTap;
+  final BoardTapCallback onBoardTap;
   final double animationValue;
   final List<String> squareDesc = [];
   final String tag = "[board]";
@@ -117,7 +120,7 @@ class Board extends StatelessWidget {
 
         debugPrint("$tag Tap on ($row, $column) <$index>");
 
-        onBoardTap(context, index);
+        onBoardTap(index);
       },
     );
   }

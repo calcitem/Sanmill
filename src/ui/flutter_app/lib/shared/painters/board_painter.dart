@@ -17,11 +17,11 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/game_page.dart';
+import 'package:sanmill/screens/game_page.dart';
+import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 import 'painter_base.dart';
 
@@ -112,7 +112,7 @@ class BoardPainter extends PiecesBasePainter {
         notationH = horizontalNotations[i];
 
         final TextSpan notationSpanV = TextSpan(
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             color: AppTheme.boardLineColor,
           ), // TODO
@@ -120,7 +120,7 @@ class BoardPainter extends PiecesBasePainter {
         );
 
         final TextSpan notationSpanH = TextSpan(
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             color: AppTheme.boardLineColor,
           ), // TODO

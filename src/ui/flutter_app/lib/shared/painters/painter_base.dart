@@ -17,7 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 abstract class PiecesBasePainter extends CustomPainter {
   final double width;

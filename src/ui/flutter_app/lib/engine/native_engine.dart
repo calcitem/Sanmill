@@ -20,9 +20,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/shared/common/config.dart';
 
 import 'engine.dart';
 

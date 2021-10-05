@@ -21,7 +21,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/common/constants.dart';
+import 'package:sanmill/shared/common/constants.dart';
 
 class Settings {
   static final settingsFileName = Constants.settingsFilename;
