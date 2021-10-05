@@ -89,25 +89,17 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
 
     // TODO: use switch case
     final engineType = drawerMap[drawerIndex!];
-    if (engineType != null) {
-      setState(() {
+    setState(() {
+      if (engineType != null) {
         Game.instance.setWhoIsAi(engineType);
         screenView = GamePage(engineType);
-      });
-    } else if (drawerIndex == DrawerIndex.preferences) {
-      setState(() {
+      } else if (drawerIndex == DrawerIndex.preferences) {
         screenView = GameSettingsPage();
-      });
-    } else if (drawerIndex == DrawerIndex.ruleSettings) {
-      setState(() {
+      } else if (drawerIndex == DrawerIndex.ruleSettings) {
         screenView = RuleSettingsPage();
-      });
-    } else if (drawerIndex == DrawerIndex.personalization) {
-      setState(() {
+      } else if (drawerIndex == DrawerIndex.personalization) {
         screenView = PersonalizationSettingsPage();
-      });
-    } else if (drawerIndex == DrawerIndex.feedback && !Config.developerMode) {
-      setState(() {
+      } else if (drawerIndex == DrawerIndex.feedback && !Config.developerMode) {
         if (Platform.isWindows) {
           debugPrint("flutter_email_sender does not support Windows.");
           //_launchFeedback();
@@ -131,18 +123,14 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
             await FlutterEmailSender.send(email);
           });
         }
-      });
-    } else if (drawerIndex == DrawerIndex.Help && !Config.developerMode) {
-      setState(() {
+      } else if (drawerIndex == DrawerIndex.Help && !Config.developerMode) {
         screenView = HelpScreen();
-      });
-    } else if (drawerIndex == DrawerIndex.About && !Config.developerMode) {
-      setState(() {
+      } else if (drawerIndex == DrawerIndex.About && !Config.developerMode) {
         screenView = AboutPage();
-      });
-    } else {
-      //do in your way......
-    }
+      } else {
+        //do in your way......
+      }
+    });
   }
 
   Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {

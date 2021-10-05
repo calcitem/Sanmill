@@ -30,7 +30,6 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 
 import '../shared/dialog.dart';
 import 'env_page.dart';
-import 'list_item_divider.dart';
 
 class Developer {
   const Developer._();
@@ -76,7 +75,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           divisions: 29,
           label: Config.skillLevel.toString(),
           onChanged: (value) => setState(() {
-           debugPrint("[config] Slider value: $value");
+            debugPrint("[config] Slider value: $value");
             Config.skillLevel = value.toInt();
             Config.save();
           }),
@@ -96,7 +95,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           divisions: 60,
           label: Config.moveTime.toString(),
           onChanged: (value) => setState(() {
-           debugPrint("[config] Slider value: $value");
+            debugPrint("[config] Slider value: $value");
             Config.moveTime = value.toInt();
             Config.save();
           }),
@@ -109,7 +108,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
   Future<void> restoreFactoryDefaultSettings() async {
     Future<void> confirm() async {
-      Navigator.of(context).pop();
+      Navigator.pop(context);
       if (Platform.isAndroid) {
         showCountdownDialog(context, 10, _events, _restore);
       } else {
@@ -121,7 +120,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       }
     }
 
-    void cancel() => Navigator.of(context).pop();
+    void cancel() => Navigator.pop(context);
 
     var prompt = "";
 
@@ -216,7 +215,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             //trailingString: "L" + Config.skillLevel.toString(),
             onTap: setSkillLevel,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).moveTime,
             onTap: setMoveTime,
@@ -233,28 +231,24 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             trailingString: algorithmNames[Config.algorithm],
             onTap: setAlgorithm,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.drawOnHumanExperience,
             onChanged: setDrawOnHumanExperience,
             titleString: S.of(context).drawOnHumanExperience,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.considerMobility,
             onChanged: setConsiderMobility,
             titleString: S.of(context).considerMobility,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.aiIsLazy,
             onChanged: setAiIsLazy,
             titleString: S.of(context).passive,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.shufflingEnabled,
@@ -281,7 +275,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               onChanged: setTone,
               titleString: S.of(context).playSoundsInTheGame,
             ),
-            const ListItemDivider(),
             SettingsSwitchListTile(
               context: context,
               value: Config.keepMuteWhenTakingBack,
@@ -314,7 +307,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             titleString: S.of(context).restoreDefaultSettings,
             onTap: restoreFactoryDefaultSettings,
           ),
-          const ListItemDivider(),
         ],
       ),
       const SizedBox(height: AppTheme.sizedBoxHeight),
@@ -335,21 +327,18 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               onChanged: setDeveloperMode,
               titleString: S.of(context).developerMode,
             ),
-            const ListItemDivider(),
             SettingsSwitchListTile(
               context: context,
               value: Config.experimentsEnabled,
               onChanged: setExperimentsEnabled,
               titleString: S.of(context).experiments,
             ),
-            const ListItemDivider(),
             SettingsSwitchListTile(
               context: context,
               value: Config.isAutoRestart,
               onChanged: setIsAutoRestart,
               titleString: S.of(context).isAutoRestart,
             ),
-            const ListItemDivider(),
             SettingsListTile(
               titleString: S.of(context).environmentVariables,
               onTap: () {
@@ -387,36 +376,30 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   }
 
   Future<void> setWhoMovesFirst(bool value) async {
-    setState(() {
-      Config.aiMovesFirst = !value;
-    });
+    setState(() => Config.aiMovesFirst = !value);
 
-   debugPrint("[config] aiMovesFirst: ${Config.aiMovesFirst}");
+    debugPrint("[config] aiMovesFirst: ${Config.aiMovesFirst}");
 
     Config.save();
   }
 
   Future<void> setAiIsLazy(bool value) async {
-    setState(() {
-      Config.aiIsLazy = value;
-    });
+    setState(() => Config.aiIsLazy = value);
 
-   debugPrint("[config] aiMovesFirst: $value");
+    debugPrint("[config] aiMovesFirst: $value");
 
     Config.save();
   }
 
   void setAlgorithm() {
     Future<void> callback(int? algorithm) async {
-     debugPrint("[config] algorithm = $algorithm");
+      debugPrint("[config] algorithm = $algorithm");
 
-      Navigator.of(context).pop();
+      Navigator.pop(context);
 
-      setState(() {
-        Config.algorithm = algorithm ?? 2;
-      });
+      setState(() => Config.algorithm = algorithm ?? 2);
 
-     debugPrint("[config] Config.algorithm: ${Config.algorithm}");
+      debugPrint("[config] Config.algorithm: ${Config.algorithm}");
 
       Config.save();
     }
@@ -435,7 +418,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               value: 0,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('PVS'),
@@ -443,7 +425,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               value: 1,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('MTD(f)'),
@@ -451,7 +432,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               value: 2,
               onChanged: callback,
             ),
-            const ListItemDivider(),
           ],
         ),
       ),
@@ -459,131 +439,105 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   }
 
   Future<void> setDrawOnHumanExperience(bool value) async {
-    setState(() {
-      Config.drawOnHumanExperience = value;
-    });
+    setState(() => Config.drawOnHumanExperience = value);
 
-   debugPrint("[config] drawOnHumanExperience: $value");
+    debugPrint("[config] drawOnHumanExperience: $value");
 
     Config.save();
   }
 
   Future<void> setConsiderMobility(bool value) async {
-    setState(() {
-      Config.considerMobility = value;
-    });
+    setState(() => Config.considerMobility = value);
 
-   debugPrint("[config] considerMobility: $value");
+    debugPrint("[config] considerMobility: $value");
 
     Config.save();
   }
 
   Future<void> setIsAutoRestart(bool value) async {
-    setState(() {
-      Config.isAutoRestart = value;
-    });
+    setState(() => Config.isAutoRestart = value);
 
-   debugPrint("[config] isAutoRestart: $value");
+    debugPrint("[config] isAutoRestart: $value");
 
     Config.save();
   }
 
   Future<void> setIsAutoChangeFirstMove(bool value) async {
-    setState(() {
-      Config.isAutoChangeFirstMove = value;
-    });
+    setState(() => Config.isAutoChangeFirstMove = value);
 
-   debugPrint("[config] isAutoChangeFirstMove: $value");
+    debugPrint("[config] isAutoChangeFirstMove: $value");
 
     Config.save();
   }
 
   Future<void> setResignIfMostLose(bool value) async {
-    setState(() {
-      Config.resignIfMostLose = value;
-    });
+    setState(() => Config.resignIfMostLose = value);
 
-   debugPrint("[config] resignIfMostLose: $value");
+    debugPrint("[config] resignIfMostLose: $value");
 
     Config.save();
   }
 
   Future<void> setShufflingEnabled(bool value) async {
-    setState(() {
-      Config.shufflingEnabled = value;
-    });
+    setState(() => Config.shufflingEnabled = value);
 
-   debugPrint("[config] shufflingEnabled: $value");
+    debugPrint("[config] shufflingEnabled: $value");
 
     Config.save();
   }
 
   Future<void> setLearnEndgame(bool value) async {
-    setState(() {
-      Config.learnEndgame = value;
-    });
+    setState(() => Config.learnEndgame = value);
 
-   debugPrint("[config] learnEndgame: $value");
+    debugPrint("[config] learnEndgame: $value");
 
     Config.save();
   }
 
   Future<void> setOpeningBook(bool value) async {
-    setState(() {
-      Config.openingBook = value;
-    });
+    setState(() => Config.openingBook = value);
 
-   debugPrint("[config] openingBook: $value");
+    debugPrint("[config] openingBook: $value");
 
     Config.save();
   }
 
   Future<void> setTone(bool value) async {
-    setState(() {
-      Config.toneEnabled = value;
-    });
+    setState(() => Config.toneEnabled = value);
 
-   debugPrint("[config] toneEnabled: $value");
+    debugPrint("[config] toneEnabled: $value");
 
     Config.save();
   }
 
   Future<void> setKeepMuteWhenTakingBack(bool value) async {
-    setState(() {
-      Config.keepMuteWhenTakingBack = value;
-    });
+    setState(() => Config.keepMuteWhenTakingBack = value);
 
-   debugPrint("[config] keepMuteWhenTakingBack: $value");
+    debugPrint("[config] keepMuteWhenTakingBack: $value");
 
     Config.save();
   }
 
   Future<void> setScreenReaderSupport(bool value) async {
-    setState(() {
-      Config.screenReaderSupport = value;
-    });
+    setState(() => Config.screenReaderSupport = value);
 
-   debugPrint("[config] screenReaderSupport: $value");
+    debugPrint("[config] screenReaderSupport: $value");
 
     Config.save();
   }
 
   Future<void> setDeveloperMode(bool value) async {
-    setState(() {
-      Config.developerMode = value;
-    });
+    setState(() => Config.developerMode = value);
 
-   debugPrint("[config] developerMode: $value");
+    debugPrint("[config] developerMode: $value");
 
     Config.save();
   }
 
   Future<void> setExperimentsEnabled(bool value) async {
-    setState(() {
-      Config.experimentsEnabled = value;
-    });
+    setState(() => Config.experimentsEnabled = value);
 
-   debugPrint("[config] experimentsEnabled: $value");
+    debugPrint("[config] experimentsEnabled: $value");
 
     Config.save();
   }
@@ -591,51 +545,41 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   // Display
 
   Future<void> setLanguage(String value) async {
-    setState(() {
-      Config.languageCode = value;
-    });
+    setState(() => Config.languageCode = value);
 
-   debugPrint("[config] languageCode: $value");
+    debugPrint("[config] languageCode: $value");
 
     Config.save();
   }
 
   Future<void> setIsPieceCountInHandShown(bool value) async {
-    setState(() {
-      Config.isPieceCountInHandShown = value;
-    });
+    setState(() => Config.isPieceCountInHandShown = value);
 
-   debugPrint("[config] isPieceCountInHandShown: $value");
+    debugPrint("[config] isPieceCountInHandShown: $value");
 
     Config.save();
   }
 
   Future<void> setIsNotationsShown(bool value) async {
-    setState(() {
-      Config.isNotationsShown = value;
-    });
+    setState(() => Config.isNotationsShown = value);
 
-   debugPrint("[config] isNotationsShown: $value");
+    debugPrint("[config] isNotationsShown: $value");
 
     Config.save();
   }
 
   Future<void> setIsHistoryNavigationToolbarShown(bool value) async {
-    setState(() {
-      Config.isHistoryNavigationToolbarShown = value;
-    });
+    setState(() => Config.isHistoryNavigationToolbarShown = value);
 
-   debugPrint("[config] isHistoryNavigationToolbarShown: $value");
+    debugPrint("[config] isHistoryNavigationToolbarShown: $value");
 
     Config.save();
   }
 
   Future<void> setStandardNotationEnabled(bool value) async {
-    setState(() {
-      Config.standardNotationEnabled = value;
-    });
+    setState(() => Config.standardNotationEnabled = value);
 
-   debugPrint("[config] standardNotationEnabled: $value");
+    debugPrint("[config] standardNotationEnabled: $value");
 
     Config.save();
   }

@@ -35,7 +35,7 @@ class Settings {
     if (_instance == null) {
       _instance = Settings();
       await _instance!._load(settingsFileName);
-     debugPrint("[settings] $settingsFileName loaded.");
+      debugPrint("[settings] $settingsFileName loaded.");
     }
 
     return _instance!;
@@ -63,14 +63,14 @@ class Settings {
 
     _file = File('${docDir.path}/$fileName');
 
-   debugPrint("[settings] Loading $_file ...");
+    debugPrint("[settings] Loading $_file ...");
 
     try {
       final contents = await _file.readAsString();
       _values = jsonDecode(contents) as Map<String, dynamic>?;
-     debugPrint(_values.toString());
+      debugPrint(_values.toString());
     } catch (e) {
-     debugPrint(e.toString());
+      debugPrint(e.toString());
       return false;
     }
 
@@ -78,13 +78,13 @@ class Settings {
   }
 
   Future<void> restore() async {
-   debugPrint("[settings] Restoring Settings...");
+    debugPrint("[settings] Restoring Settings...");
 
     if (_file.existsSync()) {
       _file.deleteSync();
-     debugPrint("[settings] $_file deleted");
+      debugPrint("[settings] $_file deleted");
     } else {
-     debugPrint("[settings] $_file does not exist");
+      debugPrint("[settings] $_file does not exist");
     }
   }
 }

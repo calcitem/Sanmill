@@ -26,8 +26,7 @@ import 'package:sanmill/shared/painters/board_painter.dart';
 import 'package:sanmill/shared/painters/pieces_painter.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-typedef BoardTapCallback = void Function(int index);
-
+typedef BoardTapCallback = dynamic Function(int index);
 
 class Board extends StatelessWidget {
   final double width;

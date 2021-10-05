@@ -632,7 +632,7 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> onStartNewGameButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
 
     if (Game.instance.isAiToMove()!) {
       // TODO: Move now
@@ -657,7 +657,7 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> onImportGameButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
@@ -694,7 +694,7 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> onExportGameButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
 
     final moveHistoryText = Game.instance.position.moveHistoryText;
 
@@ -705,7 +705,7 @@ class _GamePageState extends State<GamePage>
 
   /*
   onStartRecordingButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -737,7 +737,7 @@ class _GamePageState extends State<GamePage>
                 fontSize: Config.fontSize,
               ),
             ),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
@@ -751,7 +751,7 @@ class _GamePageState extends State<GamePage>
   }
 
   onStopRecordingButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     screenRecorderController.stop();
     showSnackBar(
       S.of(context).stopRecording,
@@ -760,7 +760,7 @@ class _GamePageState extends State<GamePage>
   }
 
   onShowRecordingButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     showSnackBar(
       S.of(context).pleaseWait,
       duration: Duration(seconds: 1 << 31),
@@ -786,7 +786,7 @@ class _GamePageState extends State<GamePage>
   */
 
   Future<void> onAutoReplayButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
 
     await onTakeBackAllButtonPressed(pop: false);
     await onStepForwardAllButtonPressed(pop: false);
@@ -836,7 +836,7 @@ class _GamePageState extends State<GamePage>
                   style: AppTheme.simpleDialogOptionTextStyle,
                   textAlign: TextAlign.center,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
               )
             else
               const SizedBox(height: 1),
@@ -997,7 +997,7 @@ class _GamePageState extends State<GamePage>
                   style: AppTheme.simpleDialogOptionTextStyle,
                   textAlign: TextAlign.center,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
               )
             else
               const SizedBox(height: 1),
@@ -1012,7 +1012,7 @@ class _GamePageState extends State<GamePage>
     bool pop = true,
   }) async {
     if (pop == true) {
-      Navigator.of(context).pop();
+      Navigator.pop(context);
     }
 
     if (mounted) {
@@ -1109,7 +1109,7 @@ class _GamePageState extends State<GamePage>
   void onMoveListButtonPressed() {
     final moveHistoryText = Game.instance.position.moveHistoryText;
     final end = Game.instance.moveHistory.length - 1;
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
     showDialog(
@@ -1156,7 +1156,7 @@ class _GamePageState extends State<GamePage>
             else
               TextButton(
                 child: const Text(""),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
               ),
             TextButton(
               child: Text(
@@ -1175,7 +1175,7 @@ class _GamePageState extends State<GamePage>
                 S.of(context).cancel,
                 style: AppTheme.moveHistoryTextStyle,
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         );
@@ -1184,7 +1184,7 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> onMoveNowButtonPressed() async {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
     await engineToGo(true);
   }
 
@@ -1203,7 +1203,7 @@ class _GamePageState extends State<GamePage>
             TextButton(
               child:
                   Text(S.of(context).ok, style: AppTheme.moveHistoryTextStyle),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         );
@@ -1212,9 +1212,7 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> setPrivacyPolicyAccepted(bool value) async {
-    setState(() {
-      Config.isPrivacyPolicyAccepted = value;
-    });
+    setState(() => Config.isPrivacyPolicyAccepted = value);
 
     debugPrint("[config] isPrivacyPolicyAccepted: $value");
 
@@ -1371,7 +1369,7 @@ class _GamePageState extends State<GamePage>
                   Config.save();
                   await _engine.setOptions(context);
                   debugPrint("[config] skillLevel: ${Config.skillLevel}");
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
               ),
               TextButton(
@@ -1381,7 +1379,7 @@ class _GamePageState extends State<GamePage>
                     fontSize: Config.fontSize,
                   ),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
               ),
             ],
           );
@@ -1418,7 +1416,7 @@ class _GamePageState extends State<GamePage>
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                   Game.instance.newGame();
                   if (mounted) {
                     showTip(S.of(context).gameStarted);
@@ -1441,7 +1439,7 @@ class _GamePageState extends State<GamePage>
                     fontSize: Config.fontSize,
                   ),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
               ),
             ],
           );

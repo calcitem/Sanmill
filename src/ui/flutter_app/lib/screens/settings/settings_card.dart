@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/screens/list_item_divider.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class SettingsCard extends StatelessWidget {
@@ -34,7 +35,13 @@ class SettingsCard extends StatelessWidget {
     return Card(
       color: AppTheme.cardColor,
       margin: AppTheme.cardMargin,
-      child: Column(children: children),
+      child: ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (_, index) => children[index],
+        separatorBuilder: (_, __) => const ListItemDivider(),
+        itemCount: children.length,
+      ),
     );
   }
 }

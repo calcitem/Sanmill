@@ -165,7 +165,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
               onDrawerClick();
               try {
                 widget.onDrawerCall!(indexType!);
-              } catch (e) {}
+              } catch (_) {}
             },
           ),
         );
