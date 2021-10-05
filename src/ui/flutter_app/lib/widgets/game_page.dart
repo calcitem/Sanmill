@@ -1509,7 +1509,7 @@ class _GamePageState extends State<GamePage>
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          Container(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               _tip!,

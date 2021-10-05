@@ -35,23 +35,17 @@ class LicenseAgreementPage extends StatelessWidget {
         }
 
         return Scaffold(
-          appBar: AppBar(title: Text(S.of(context).license), centerTitle: true),
-          body: ListView(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 16,
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                ),
-                child: Text(
-                  _data,
-                  style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ],
+          appBar: AppBar(
+            title: Text(S.of(context).license),
+            centerTitle: true,
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              _data,
+              style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
+              textAlign: TextAlign.left,
+            ),
           ),
         );
       },

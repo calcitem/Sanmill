@@ -46,24 +46,22 @@ class Board extends StatelessWidget {
 
     buildSquareDescription(context);
 
-    final container = Container(
-      margin: EdgeInsets.zero,
-      child: GridView(
-        scrollDirection: Axis.horizontal,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 7,
-        ),
-        children: List.generate(7 * 7, (index) {
-          return Center(
-            child: Text(
-              squareDesc[index],
-              style: TextStyle(
-                fontSize: Config.fontSize,
-                color: Config.developerMode ? Colors.red : Colors.transparent,
-              ),
+    final grid = GridView(
+      scrollDirection: Axis.horizontal,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 7,
+      ),
+      children: List.generate(
+        7 * 7,
+        (index) => Center(
+          child: Text(
+            squareDesc[index],
+            style: TextStyle(
+              fontSize: Config.fontSize,
+              color: Config.developerMode ? Colors.red : Colors.transparent,
             ),
-          );
-        }),
+          ),
+        ),
       ),
     );
 
@@ -76,7 +74,7 @@ class Board extends StatelessWidget {
         blurIndex: Game.instance.blurIndex,
         animationValue: animationValue,
       ),
-      child: container,
+      child: grid,
     );
 
     final boardContainer = Container(
@@ -105,19 +103,19 @@ class Board extends StatelessWidget {
 
         final column = (dx - padding) ~/ squareWidth;
         if (column < 0 || column > 6) {
-         debugPrint("$tag Tap on column $column (ignored).");
+          debugPrint("$tag Tap on column $column (ignored).");
           return;
         }
 
         final row = (dy - padding) ~/ squareWidth;
         if (row < 0 || row > 6) {
-         debugPrint("$tag Tap on row $row (ignored).");
+          debugPrint("$tag Tap on row $row (ignored).");
           return;
         }
 
         final index = row * 7 + column;
 
-       debugPrint("$tag Tap on ($row, $column) <$index>");
+        debugPrint("$tag Tap on ($row, $column) <$index>");
 
         onBoardTap(context, index);
       },
@@ -128,7 +126,7 @@ class Board extends StatelessWidget {
     final List<String> coordinates = [];
     final List<String> pieceDesc = [];
 
-    final map = [
+    const map = [
       /* 1 */
       1,
       8,
@@ -187,7 +185,7 @@ class Board extends StatelessWidget {
       49
     ];
 
-    final checkPoints = [
+    const checkPoints = [
       /* 1 */
       1,
       0,
@@ -266,14 +264,27 @@ class Board extends StatelessWidget {
     for (var i = 0; i < 7 * 7; i++) {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
-      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.white) {
-        pieceDesc.add(S.of(context).whitePiece);
-      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.black) {
-        pieceDesc.add(S.of(context).blackPiece);
-      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.ban) {
-        pieceDesc.add(S.of(context).banPoint);
-      } else if (Game.instance.position.pieceOnGrid(i) == PieceColor.none) {
-        pieceDesc.add(S.of(context).emptyPoint);
+      } else {
+        switch (Game.instance.position.pieceOnGrid(i)) {
+          case PieceColor.white:
+            pieceDesc.add(S.of(context).whitePiece);
+
+            break;
+          case PieceColor.black:
+            pieceDesc.add(S.of(context).blackPiece);
+
+            break;
+          case PieceColor.ban:
+            pieceDesc.add(S.of(context).banPoint);
+
+            break;
+          case PieceColor.none:
+            pieceDesc.add(S.of(context).emptyPoint);
+
+            break;
+
+          default:
+        }
       }
     }
 

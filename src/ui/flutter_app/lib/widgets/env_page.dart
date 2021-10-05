@@ -39,22 +39,13 @@ class EnvironmentVariablesPage extends StatelessWidget {
             title: Text(S.of(context).environmentVariables),
             centerTitle: true,
           ),
-          body: ListView(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.only(
-                  top: 16,
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                ),
-                child: Text(
-                  _data,
-                  style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ],
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              _data,
+              style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
+              textAlign: TextAlign.left,
+            ),
           ),
         );
       },
