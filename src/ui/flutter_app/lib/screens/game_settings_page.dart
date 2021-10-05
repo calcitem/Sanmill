@@ -307,9 +307,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         Text(
           S.of(context).forDevelopers,
           style: AppTheme.settingsHeaderStyle,
-        )
-      else
-        const SizedBox(height: 1),
+        ),
       if (Developer.developerModeEnabled)
         SettingsCard(
           context: context,
@@ -344,9 +342,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               },
             ),
           ],
-        )
-      else
-        const SizedBox(height: 1),
+        ),
     ];
   }
 

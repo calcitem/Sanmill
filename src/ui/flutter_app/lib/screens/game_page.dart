@@ -839,9 +839,7 @@ class _GamePageState extends State<GamePage>
                   textAlign: TextAlign.center,
                 ),
                 onPressed: () => Navigator.pop(context),
-              )
-            else
-              const SizedBox(height: 1),
+              ),
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),
             Config.experimentsEnabled
@@ -914,9 +912,7 @@ class _GamePageState extends State<GamePage>
         child: SimpleDialog(
           backgroundColor: Colors.transparent,
           children: <Widget>[
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               SimpleDialogOption(
                 onPressed: onTakeBackButtonPressed,
                 child: Text(
@@ -925,13 +921,9 @@ class _GamePageState extends State<GamePage>
                   textAlign: TextAlign.center,
                 ),
               ),
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               SimpleDialogOption(
                 onPressed: onStepForwardButtonPressed,
                 child: Text(
@@ -940,13 +932,9 @@ class _GamePageState extends State<GamePage>
                   textAlign: TextAlign.center,
                 ),
               ),
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               SimpleDialogOption(
                 onPressed: onTakeBackAllButtonPressed,
                 child: Text(
@@ -955,13 +943,9 @@ class _GamePageState extends State<GamePage>
                   textAlign: TextAlign.center,
                 ),
               ),
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               SimpleDialogOption(
                 onPressed: onStepForwardAllButtonPressed,
                 child: Text(
@@ -970,9 +954,7 @@ class _GamePageState extends State<GamePage>
                   textAlign: TextAlign.center,
                 ),
               ),
-            if (Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: 1)
-            else
+            if (!Config.isHistoryNavigationToolbarShown)
               const SizedBox(height: AppTheme.sizedBoxHeight),
             SimpleDialogOption(
               onPressed: onMoveListButtonPressed,
@@ -1000,9 +982,7 @@ class _GamePageState extends State<GamePage>
                   textAlign: TextAlign.center,
                 ),
                 onPressed: () => Navigator.pop(context),
-              )
-            else
-              const SizedBox(height: 1),
+              ),
           ],
         ),
       ),
@@ -1870,11 +1850,7 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           BlockSemantics(child: header),
           board,
-          if (Config.isHistoryNavigationToolbarShown)
-            historyNavToolbar
-          else
-            const SizedBox(height: 0),
-          const SizedBox(height: 1),
+          if (Config.isHistoryNavigationToolbarShown) historyNavToolbar,
           toolbar,
         ],
       ),
