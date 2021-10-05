@@ -71,9 +71,9 @@ class Board extends StatelessWidget {
       painter: BoardPainter(width: width),
       foregroundPainter: PiecesPainter(
         width: width,
-        position: Game.instance.position,
-        focusIndex: Game.instance.focusIndex,
-        blurIndex: Game.instance.blurIndex,
+        position: gameInstance.position,
+        focusIndex: gameInstance.focusIndex,
+        blurIndex: gameInstance.blurIndex,
         animationValue: animationValue,
       ),
       child: grid,
@@ -267,7 +267,7 @@ class Board extends StatelessWidget {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
-        switch (Game.instance.position.pieceOnGrid(i)) {
+        switch (gameInstance.position.pieceOnGrid(i)) {
           case PieceColor.white:
             pieceDesc.add(S.of(context).whitePiece);
 

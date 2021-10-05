@@ -26,14 +26,11 @@ import 'types.dart';
 enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
 
-class Game {
-  static Game? _instance;
-  final String tag = "[game]";
+// TODO: add constructor
+Game gameInstance = Game();
 
-  // TODO: use constructor
-  static Game get instance {
-    return _instance ??= Game();
-  }
+class Game {
+  final String tag = "[game]";
 
   void init() {
     _position = Position();
@@ -131,7 +128,7 @@ class Game {
 
     moveHistory.add(move);
 
-    sideToMove = position.sideToMove() ?? PieceColor.nobody;
+    sideToMove = position.sideToMove;
 
     debugPrintStat();
 

@@ -39,6 +39,7 @@ dev_dependencies:
   flutter_oss_licenses: ^1.0.1
   flutter_test:
     sdk: flutter
+  json_serializable: ^5.0.2
   lint: ^1.0.0
   msix: ^2.1.3
 

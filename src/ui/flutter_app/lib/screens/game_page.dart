@@ -84,10 +84,10 @@ class _GamePageState extends State<GamePage>
   void initState() {
     debugPrint("$tag Engine type: ${widget.engineType}");
 
-    Game.instance.setWhoIsAi(widget.engineType);
+    gameInstance.setWhoIsAi(widget.engineType);
 
     super.initState();
-    Game.instance.init();
+    gameInstance.init();
     _engine.startup();
 
     timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
@@ -159,7 +159,7 @@ class _GamePageState extends State<GamePage>
       return;
     }
 
-    final winner = Game.instance.position.winner;
+    final winner = gameInstance.position.winner;
 
     final Map<String, String> colorWinStrings = {
       PieceColor.white: S.of(context).whiteWin,
@@ -168,11 +168,11 @@ class _GamePageState extends State<GamePage>
     };
 
     if (winner == PieceColor.nobody) {
-      if (Game.instance.position.phase == Phase.placing) {
+      if (gameInstance.position.phase == Phase.placing) {
         if (mounted) {
           showTip(S.of(context).tipPlace);
         }
-      } else if (Game.instance.position.phase == Phase.moving) {
+      } else if (gameInstance.position.phase == Phase.moving) {
         if (mounted) {
           showTip(S.of(context).tipMove);
         }
@@ -199,13 +199,13 @@ class _GamePageState extends State<GamePage>
         Duration(milliseconds: (Config.animationDuration * 1000).toInt());
     _animationController.reset();
 
-    if (Game.instance.engineType == EngineType.aiVsAi ||
-        Game.instance.engineType == EngineType.testViaLAN) {
+    if (gameInstance.engineType == EngineType.aiVsAi ||
+        gameInstance.engineType == EngineType.testViaLAN) {
       debugPrint("$tag Engine type is no human, ignore tapping.");
       return false;
     }
 
-    final position = Game.instance.position;
+    final position = gameInstance.position;
 
     final int? sq = indexToSquare[index];
 
@@ -221,10 +221,10 @@ class _GamePageState extends State<GamePage>
     if (position.phase == Phase.placing &&
         position.pieceOnBoardCount[PieceColor.white] == 0 &&
         position.pieceOnBoardCount[PieceColor.black] == 0) {
-      Game.instance.newGame();
+      gameInstance.newGame();
 
-      if (Game.instance.isAiToMove()!) {
-        if (Game.instance.aiIsSearching()) {
+      if (gameInstance.isAiToMove()!) {
+        if (gameInstance.aiIsSearching()) {
           debugPrint("$tag AI is thinking, skip tapping.");
           return false;
         } else {
@@ -235,13 +235,13 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (Game.instance.isAiToMove()! || Game.instance.aiIsSearching()) {
+    if (gameInstance.isAiToMove()! || gameInstance.aiIsSearching()) {
       debugPrint("[tap] AI's turn, skip tapping.");
       return false;
     }
 
     if (position.phase == Phase.ready) {
-      Game.instance.start();
+      gameInstance.start();
     }
 
     // Human to go
@@ -261,7 +261,7 @@ class _GamePageState extends State<GamePage>
               }
             } else {
               //Audios.playTone(Audios.placeSoundId);
-              if (Game.instance.engineType == EngineType.humanVsAi && mounted) {
+              if (gameInstance.engineType == EngineType.humanVsAi && mounted) {
                 if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                   showTip(S.of(context).continueToMakeMove);
                 } else {
@@ -273,7 +273,7 @@ class _GamePageState extends State<GamePage>
                     S.of(context).tipPlaced,
                   ); // TODO: HumanVsHuman - Change tip
                 } else {
-                  final side = Game.instance.sideToMove == PieceColor.white
+                  final side = gameInstance.sideToMove == PieceColor.white
                       ? S.of(context).black
                       : S.of(context).white;
                   showTip(side + S.of(context).tipToMove);
@@ -313,16 +313,16 @@ class _GamePageState extends State<GamePage>
           switch (selectRet) {
             case 0:
               Audios.playTone(Audios.selectSoundId);
-              Game.instance.select(index);
+              gameInstance.select(index);
               ret = true;
               debugPrint("[tap] selectPiece: [$sq]");
 
-              final us = Game.instance.sideToMove;
+              final us = gameInstance.sideToMove;
               if (position.phase == Phase.moving &&
                   rule.mayFly &&
-                  (Game.instance.position.pieceOnBoardCount[us] ==
+                  (gameInstance.position.pieceOnBoardCount[us] ==
                           Config.flyPieceCount ||
-                      Game.instance.position.pieceOnBoardCount[us] == 3)) {
+                      gameInstance.position.pieceOnBoardCount[us] == 3)) {
                 debugPrint("[tap] May fly.");
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);
@@ -395,7 +395,7 @@ class _GamePageState extends State<GamePage>
               //Audios.playTone(Audios.removeSoundId);
               ret = true;
               debugPrint("[tap] removePiece: [$sq]");
-              if (Game.instance.position.pieceToRemoveCount >= 1) {
+              if (gameInstance.position.pieceToRemoveCount >= 1) {
                 if (mounted) {
                   showTip(S.of(context).tipContinueMill);
                   if (Config.screenReaderSupport) {
@@ -403,13 +403,13 @@ class _GamePageState extends State<GamePage>
                   }
                 }
               } else {
-                if (Game.instance.engineType == EngineType.humanVsAi) {
+                if (gameInstance.engineType == EngineType.humanVsAi) {
                   if (mounted) {
                     showTip(S.of(context).tipRemoved);
                   }
                 } else {
                   if (mounted) {
-                    final them = Game.instance.sideToMove == PieceColor.white
+                    final them = gameInstance.sideToMove == PieceColor.white
                         ? S.of(context).black
                         : S.of(context).white;
                     if (mounted) {
@@ -466,8 +466,8 @@ class _GamePageState extends State<GamePage>
       }
 
       if (ret) {
-        Game.instance.sideToMove = position.sideToMove() ?? PieceColor.nobody;
-        Game.instance.moveHistory.add(position.record!);
+        gameInstance.sideToMove = position.sideToMove;
+        gameInstance.moveHistory.add(position.record!);
 
         // TODO: Need Others?
         // Increment ply counters. In particular,
@@ -514,7 +514,7 @@ class _GamePageState extends State<GamePage>
         }
       }
 
-      Game.instance.sideToMove = position.sideToMove() ?? PieceColor.nobody;
+      gameInstance.sideToMove = position.sideToMove;
 
       setState(() {});
     }); // Chain.capture
@@ -523,6 +523,8 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> engineToGo(bool isMoveNow) async {
+    bool _isMoveNow = isMoveNow;
+
     if (!mounted) {
       debugPrint("[engineToGo] !mounted, skip engineToGo.");
       return;
@@ -531,14 +533,14 @@ class _GamePageState extends State<GamePage>
     // TODO
     debugPrint("[engineToGo] engine type is ${widget.engineType}");
 
-    if (isMoveNow == true) {
-      if (!Game.instance.isAiToMove()!) {
+    if (_isMoveNow) {
+      if (!gameInstance.isAiToMove()!) {
         debugPrint("[engineToGo] Human to Move. Cannot get search result now.");
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).notAIsTurn);
         return;
       }
-      if (!Game.instance.position.recorder!.isClean()) {
+      if (!gameInstance.position.recorder!.isClean()) {
         debugPrint(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
@@ -549,22 +551,22 @@ class _GamePageState extends State<GamePage>
     }
 
     while ((Config.isAutoRestart == true ||
-            Game.instance.position.winner == PieceColor.nobody) &&
-        Game.instance.isAiToMove()! &&
+            gameInstance.position.winner == PieceColor.nobody) &&
+        gameInstance.isAiToMove()! &&
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
         final String score =
-            "${Game.instance.position.score[PieceColor.white]} : ${Game.instance.position.score[PieceColor.black]} : ${Game.instance.position.score[PieceColor.draw]}";
+            "${gameInstance.position.score[PieceColor.white]} : ${gameInstance.position.score[PieceColor.black]} : ${gameInstance.position.score[PieceColor.draw]}";
 
         showTip(score);
       } else {
         if (mounted) {
           showTip(S.of(context).thinking);
 
-          final Move? m = Game.instance.position.recorder!.lastMove;
+          final Move? m = gameInstance.position.recorder!.lastMove;
 
           if (Config.screenReaderSupport &&
-              Game.instance.position.action != Act.remove &&
+              gameInstance.position.action != Act.remove &&
               m != null &&
               m.notation != null) {
             showSnackBar(context, "${S.of(context).human}: ${m.notation!}");
@@ -574,13 +576,13 @@ class _GamePageState extends State<GamePage>
 
       late EngineResponse response;
 
-      if (!isMoveNow) {
+      if (!_isMoveNow) {
         debugPrint("[engineToGo] Searching...");
-        response = await _engine.search(Game.instance.position);
+        response = await _engine.search(gameInstance.position);
       } else {
         debugPrint("[engineToGo] Get search result now...");
         response = await _engine.search(null);
-        isMoveNow = false;
+        _isMoveNow = false;
       }
 
       debugPrint("[engineToGo] Engine response type: ${response.type}");
@@ -601,7 +603,7 @@ class _GamePageState extends State<GamePage>
             );
           }
 
-          Game.instance.doMove(move.move!);
+          gameInstance.doMove(move.move!);
           showTips();
           if (Config.screenReaderSupport && move.notation != null) {
             showSnackBar(context, "${S.of(context).ai}: ${move.notation!}");
@@ -625,8 +627,8 @@ class _GamePageState extends State<GamePage>
       }
 
       if (Config.isAutoRestart == true &&
-          Game.instance.position.winner != PieceColor.nobody) {
-        Game.instance.newGame();
+          gameInstance.position.winner != PieceColor.nobody) {
+        gameInstance.newGame();
       }
     }
   }
@@ -634,13 +636,13 @@ class _GamePageState extends State<GamePage>
   Future<void> onStartNewGameButtonPressed() async {
     Navigator.pop(context);
 
-    if (Game.instance.isAiToMove()!) {
+    if (gameInstance.isAiToMove()!) {
       // TODO: Move now
       //debugPrint("$tag New game, AI to move, move now.");
       //await engineToGo(true);
     }
 
-    Game.instance.newGame();
+    gameInstance.newGame();
 
     if (mounted) {
       showTip(S.of(context).gameStarted);
@@ -650,7 +652,7 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (Game.instance.isAiToMove()!) {
+    if (gameInstance.isAiToMove()!) {
       debugPrint("$tag New game, AI to move.");
       engineToGo(false);
     }
@@ -672,8 +674,8 @@ class _GamePageState extends State<GamePage>
     debugPrint(text);
 
     await onTakeBackAllButtonPressed(pop: false);
-    Game.instance.position.recorder!.clear();
-    final importFailedStr = Game.instance.position.recorder!.import(text);
+    gameInstance.position.recorder!.clear();
+    final importFailedStr = gameInstance.position.recorder!.import(text);
 
     if (importFailedStr != "") {
       showTip("${S.of(context).cannotImport} $importFailedStr");
@@ -696,7 +698,7 @@ class _GamePageState extends State<GamePage>
   Future<void> onExportGameButtonPressed() async {
     Navigator.pop(context);
 
-    final moveHistoryText = Game.instance.position.moveHistoryText;
+    final moveHistoryText = gameInstance.position.moveHistoryText;
 
     Clipboard.setData(ClipboardData(text: moveHistoryText)).then((_) {
       showSnackBar(context, S.of(context).moveHistoryCopied);
@@ -1053,7 +1055,7 @@ class _GamePageState extends State<GamePage>
 
     if (mounted) {
       String text = "";
-      final pos = Game.instance.position;
+      final pos = gameInstance.position;
 
       /*
       String us = "";
@@ -1084,31 +1086,31 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> onTakeBackButtonPressed({bool pop = true}) async {
-    onGotoHistoryButtonsPressed(Game.instance.position.takeBack(), pop: pop);
+    onGotoHistoryButtonsPressed(gameInstance.position.takeBack(), pop: pop);
   }
 
   Future<void> onStepForwardButtonPressed({bool pop = true}) async {
-    onGotoHistoryButtonsPressed(Game.instance.position.stepForward(), pop: pop);
+    onGotoHistoryButtonsPressed(gameInstance.position.stepForward(), pop: pop);
   }
 
   Future<void> onTakeBackAllButtonPressed({bool pop = true}) async {
-    onGotoHistoryButtonsPressed(Game.instance.position.takeBackAll(), pop: pop);
+    onGotoHistoryButtonsPressed(gameInstance.position.takeBackAll(), pop: pop);
   }
 
   Future<void> onStepForwardAllButtonPressed({bool pop = true}) async {
     onGotoHistoryButtonsPressed(
-      Game.instance.position.stepForwardAll(),
+      gameInstance.position.stepForwardAll(),
       pop: pop,
     );
   }
 
   Future<void> onTakeBackNButtonPressed(int n, {bool pop = true}) async {
-    onGotoHistoryButtonsPressed(Game.instance.position.takeBackN(n), pop: pop);
+    onGotoHistoryButtonsPressed(gameInstance.position.takeBackN(n), pop: pop);
   }
 
   void onMoveListButtonPressed() {
-    final moveHistoryText = Game.instance.position.moveHistoryText;
-    final end = Game.instance.moveHistory.length - 1;
+    final moveHistoryText = gameInstance.position.moveHistoryText;
+    final end = gameInstance.moveHistory.length - 1;
     Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -1248,10 +1250,10 @@ class _GamePageState extends State<GamePage>
     };
 
     debugPrint(
-      "$tag Game over reason: ${Game.instance.position.gameOverReason}",
+      "$tag Game over reason: ${gameInstance.position.gameOverReason}",
     );
 
-    String? loseReasonStr = reasonMap[Game.instance.position.gameOverReason];
+    String? loseReasonStr = reasonMap[gameInstance.position.gameOverReason];
 
     if (loseReasonStr == null) {
       loseReasonStr = S.of(context).gameOverUnknownReason;
@@ -1294,7 +1296,7 @@ class _GamePageState extends State<GamePage>
 
   void showGameResult(String winner) {
     final GameResult result = getGameResult(winner);
-    Game.instance.position.result = result;
+    gameInstance.position.result = result;
 
     switch (result) {
       case GameResult.win:
@@ -1310,7 +1312,7 @@ class _GamePageState extends State<GamePage>
     }
 
     final Map<GameResult, String> retMap = {
-      GameResult.win: Game.instance.engineType == EngineType.humanVsAi
+      GameResult.win: gameInstance.engineType == EngineType.humanVsAi
           ? S.of(context).youWin
           : S.of(context).gameOver,
       GameResult.lose: S.of(context).gameOver,
@@ -1327,10 +1329,10 @@ class _GamePageState extends State<GamePage>
 
     if (result == GameResult.win &&
         !isTopLevel &&
-        Game.instance.engineType == EngineType.humanVsAi) {
+        gameInstance.engineType == EngineType.humanVsAi) {
       var contentStr = getGameOverReasonString(
-        Game.instance.position.gameOverReason,
-        Game.instance.position.winner,
+        gameInstance.position.gameOverReason,
+        gameInstance.position.winner,
       );
 
       if (!isTopLevel) {
@@ -1400,8 +1402,8 @@ class _GamePageState extends State<GamePage>
             ),
             content: Text(
               getGameOverReasonString(
-                Game.instance.position.gameOverReason,
-                Game.instance.position.winner,
+                gameInstance.position.gameOverReason,
+                gameInstance.position.winner,
               ),
               style: TextStyle(
                 fontSize: Config.fontSize,
@@ -1417,7 +1419,7 @@ class _GamePageState extends State<GamePage>
                 ),
                 onPressed: () {
                   Navigator.pop(context);
-                  Game.instance.newGame();
+                  gameInstance.newGame();
                   if (mounted) {
                     showTip(S.of(context).gameStarted);
                     if (Config.screenReaderSupport) {
@@ -1426,7 +1428,7 @@ class _GamePageState extends State<GamePage>
                     }
                   }
 
-                  if (Game.instance.isAiToMove()!) {
+                  if (gameInstance.isAiToMove()!) {
                     debugPrint("$tag New game, AI to move.");
                     engineToGo(false);
                   }
@@ -1532,8 +1534,8 @@ class _GamePageState extends State<GamePage>
   IconData getIconArrow() {
     IconData iconArrow = FluentIcons.code_24_regular;
 
-    if (Game.instance.position.phase == Phase.gameOver) {
-      switch (Game.instance.position.winner) {
+    if (gameInstance.position.phase == Phase.gameOver) {
+      switch (gameInstance.position.winner) {
         case PieceColor.white:
           iconArrow = ltr
               ? FluentIcons.toggle_left_24_regular
@@ -1549,7 +1551,7 @@ class _GamePageState extends State<GamePage>
           break;
       }
     } else {
-      switch (Game.instance.sideToMove) {
+      switch (gameInstance.sideToMove) {
         case PieceColor.white:
           iconArrow = FluentIcons.chevron_left_24_regular;
           break;
@@ -1587,7 +1589,7 @@ class _GamePageState extends State<GamePage>
     final String period = Config.screenReaderSupport ? "." : "";
     final String comma = Config.screenReaderSupport ? "," : "";
 
-    final pos = Game.instance.position;
+    final pos = gameInstance.position;
 
     switch (pos.phase) {
       case Phase.placing:
