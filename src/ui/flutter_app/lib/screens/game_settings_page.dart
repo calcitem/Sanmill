@@ -257,14 +257,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           ),
         ],
       ),
+      if (!Platform.isWindows) const SizedBox(height: AppTheme.sizedBoxHeight),
       if (!Platform.isWindows)
-        const SizedBox(height: AppTheme.sizedBoxHeight)
-      else
-        const SizedBox(height: 0.0, width: 0.0),
-      if (!Platform.isWindows)
-        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle)
-      else
-        const SizedBox(height: 0.0, width: 0.0),
+        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
       if (!Platform.isWindows)
         SettingsCard(
           context: context,
@@ -282,9 +277,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
           ],
-        )
-      else
-        const SizedBox(height: 0.0, width: 0.0),
+        ),
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
       SettingsCard(

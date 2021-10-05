@@ -189,9 +189,7 @@ Future<void> showPrivacyDialog(
               setPrivacyPolicyAccepted(false);
               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             },
-          )
-        else
-          const SizedBox(height: 0.0, width: 0.0),
+          ),
       ],
     ),
   );
