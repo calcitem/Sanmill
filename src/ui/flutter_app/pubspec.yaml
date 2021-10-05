@@ -5,7 +5,7 @@ publish_to: none
 version: 1.1.37+2184
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   animated_text_kit: ^4.1.1
@@ -69,5 +69,5 @@ msix_config:
   publisher_display_name: Calcitem Studio
   identity_name: 25314CalcitemStudio.Sanmill
   publisher: CN=3413C020-B420-4E0A-8687-A2C35E878F3A
-  capabilities: ''
+  capabilities: ""
   store: true
