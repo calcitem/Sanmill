@@ -326,10 +326,7 @@ class HomeDrawer extends StatelessWidget {
             ],
           ),
         ),
-        if (screenIndex == listItem.index)
-          animatedBuilder
-        else
-          const SizedBox(),
+        if (screenIndex == listItem.index) animatedBuilder,
       ],
     );
 

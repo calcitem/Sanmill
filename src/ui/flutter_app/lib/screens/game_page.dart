@@ -1472,12 +1472,11 @@ class _GamePageState extends State<GamePage>
     final iconColor = Color(Config.messageColor);
 
     final iconRow = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const Expanded(child: SizedBox()),
         Icon(engineTypeToIconLeft[widget.engineType], color: iconColor),
         Icon(iconArrow, color: iconColor),
         Icon(engineTypeToIconRight[widget.engineType], color: iconColor),
-        const Expanded(child: SizedBox()),
       ],
     );
 
@@ -1707,17 +1706,13 @@ class _GamePageState extends State<GamePage>
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         textDirection: TextDirection.ltr,
         children: <Widget>[
-          const Expanded(child: SizedBox()),
           gameButton,
-          const Expanded(child: SizedBox()),
           optionsButton,
-          const Expanded(child: SizedBox()),
           moveButton,
-          const Expanded(child: SizedBox()), //dashboard_outlined
           infoButton,
-          const Expanded(child: SizedBox()),
         ],
       ),
     );
@@ -1804,17 +1799,13 @@ class _GamePageState extends State<GamePage>
       margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         textDirection: TextDirection.ltr,
         children: <Widget>[
-          const Expanded(child: SizedBox()),
           takeBackAllButton,
-          const Expanded(child: SizedBox()),
           takeBackButton,
-          const Expanded(child: SizedBox()),
           stepForwardButton,
-          const Expanded(child: SizedBox()), //dashboard_outlined
           stepForwardAllButton,
-          const Expanded(child: SizedBox()),
         ],
       ),
     );
