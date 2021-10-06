@@ -4,7 +4,7 @@ import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/colors.dart';
 
 class AppTheme {
-  AppTheme._();
+  const AppTheme._();
 
   // Theme data
   static final lightThemeData = ThemeData(
