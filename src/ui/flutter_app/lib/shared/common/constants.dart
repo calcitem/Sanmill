@@ -78,10 +78,6 @@ class Constants {
   static final windowAspectRatio = windowHeight / windowWidth;
 }
 
-bool isSmallScreen() {
-  return Constants.windowHeight <= 800;
-}
+bool get isSmallScreen => Constants.windowHeight <= 800;
 
-bool isLargeScreen() {
-  return !isSmallScreen();
-}
+bool get isLargeScreen => !isSmallScreen;

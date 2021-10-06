@@ -186,7 +186,7 @@ class HomeDrawer extends StatelessWidget {
         children: <Widget>[
           animatedBuilder,
           Padding(
-            padding: EdgeInsets.only(top: isLargeScreen() ? 30 : 8, left: 4),
+            padding: EdgeInsets.only(top: isLargeScreen ? 30 : 8, left: 4),
             child: ExcludeSemantics(child: animatedTextKit),
           ),
         ],
@@ -326,7 +326,10 @@ class HomeDrawer extends StatelessWidget {
             ],
           ),
         ),
-        if (screenIndex == listItem.index) animatedBuilder else const SizedBox()
+        if (screenIndex == listItem.index)
+          animatedBuilder
+        else
+          const SizedBox(),
       ],
     );
 
