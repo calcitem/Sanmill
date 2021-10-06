@@ -55,8 +55,8 @@ class NativeEngine extends Engine {
     return platform.invokeMethod('isReady');
   }
 
-  Future<bool> isThinking() async {
-    return platform.invokeMethod<bool>('isThinking') as Future<bool>;
+  FutureOr<bool> isThinking() async {
+    return await platform.invokeMethod<bool>('isThinking') ?? false;
   }
 
   @override

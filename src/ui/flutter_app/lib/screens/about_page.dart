@@ -29,8 +29,8 @@ import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../shared/list_item_divider.dart';
 import 'license_page.dart';
-import 'list_item_divider.dart';
 import 'oss_license_page.dart';
 
 class AboutPage extends StatelessWidget {
