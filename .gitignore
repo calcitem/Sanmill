@@ -318,7 +318,7 @@ CMakeLists.txt.user*
 *.bak
 
 # visual studio code
-.vscode/
+#.vscode/
 
 # markdown temp files
 *.md.Html

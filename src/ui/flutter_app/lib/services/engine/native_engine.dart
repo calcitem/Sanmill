@@ -57,10 +57,10 @@ class NativeEngine extends Engine {
 
   FutureOr<bool> isThinking() async {
     final _isThinking = await platform.invokeMethod<bool>('isThinking');
-    if(_isThinking is bool){
+    if (_isThinking is bool) {
       return _isThinking;
-    }else{
-      throw'invalid platform response. Expected a value of type bool';
+    } else {
+      throw 'invalid platform response. Expected a value of type bool';
     }
   }
 
