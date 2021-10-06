@@ -22,8 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
-import 'package:sanmill/screens/list_item_divider.dart';
 
 Map<String, Strings> languageCodeToStrings = {
   "ar": ArabicStrings(),
