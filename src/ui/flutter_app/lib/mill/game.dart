@@ -144,11 +144,7 @@ class Game {
         position.score[PieceColor.black]! +
         position.score[PieceColor.draw]!;
 
-    if (total == 0) {
-      whiteWinRate = 0;
-      blackWinRate = 0;
-      drawRate = 0;
-    } else {
+    if (total != 0) {
       whiteWinRate = position.score[PieceColor.white]! * 100 / total;
       blackWinRate = position.score[PieceColor.black]! * 100 / total;
       drawRate = position.score[PieceColor.draw]! * 100 / total;
