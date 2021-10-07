@@ -268,24 +268,25 @@ class HomeDrawer extends StatelessWidget {
             0.0,
             0.0,
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.75 - 64,
-              height: 46,
-              decoration: BoxDecoration(
-                color: Color(Config.drawerHighlightItemColor),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(ltr ? 0 : radius),
-                  topRight: Radius.circular(ltr ? radius : 0),
-                  bottomLeft: Radius.circular(ltr ? 0 : radius),
-                  bottomRight: Radius.circular(ltr ? radius : 0),
-                ),
-              ),
-            ),
-          ),
+          child: child,
         );
       },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.75 - 64,
+          height: 46,
+          decoration: BoxDecoration(
+            color: Color(Config.drawerHighlightItemColor),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(ltr ? 0 : radius),
+              topRight: Radius.circular(ltr ? radius : 0),
+              bottomLeft: Radius.circular(ltr ? 0 : radius),
+              bottomRight: Radius.circular(ltr ? radius : 0),
+            ),
+          ),
+        ),
+      ),
     );
 
     final listItemIcon = Icon(
