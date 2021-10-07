@@ -30,21 +30,21 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/screens/board.dart';
 import 'package:sanmill/screens/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/dialog.dart';
+import 'package:sanmill/shared/picker.dart';
+import 'package:sanmill/shared/snack_bar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 //import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-import '../shared/dialog.dart';
-import '../shared/picker.dart';
-import '../shared/snack_bar.dart';
-import 'board.dart';
-import 'game_settings_page.dart';
+
 
 double boardWidth = 0.0;
 

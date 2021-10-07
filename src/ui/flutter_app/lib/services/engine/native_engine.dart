@@ -22,9 +22,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/shared/common/config.dart';
 
-import 'engine.dart';
 
 class NativeEngine extends Engine {
   static const platform = MethodChannel('com.calcitem.sanmill/engine');

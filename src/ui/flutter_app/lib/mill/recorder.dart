@@ -17,10 +17,11 @@
 */
 
 import 'package:flutter/foundation.dart';
+import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/shared/common/config.dart';
 
-import 'position.dart';
-import 'types.dart';
+
 
 // TODO
 class GameRecorder {
