@@ -17,17 +17,12 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlBasicMessageChannel,
-                     fl_basic_message_channel,
-                     FL,
-                     BASIC_MESSAGE_CHANNEL,
-                     GObject)
+G_DECLARE_FINAL_TYPE(FlBasicMessageChannel, fl_basic_message_channel, FL,
+                     BASIC_MESSAGE_CHANNEL, GObject)
 
 G_DECLARE_FINAL_TYPE(FlBasicMessageChannelResponseHandle,
-                     fl_basic_message_channel_response_handle,
-                     FL,
-                     BASIC_MESSAGE_CHANNEL_RESPONSE_HANDLE,
-                     GObject)
+                     fl_basic_message_channel_response_handle, FL,
+                     BASIC_MESSAGE_CHANNEL_RESPONSE_HANDLE, GObject)
 
 /**
  * FlBasicMessageChannel:
@@ -105,10 +100,8 @@ G_DECLARE_FINAL_TYPE(FlBasicMessageChannelResponseHandle,
  * programming error.
  */
 typedef void (*FlBasicMessageChannelMessageHandler)(
-    FlBasicMessageChannel* channel,
-    FlValue* message,
-    FlBasicMessageChannelResponseHandle* response_handle,
-    gpointer user_data);
+    FlBasicMessageChannel *channel, FlValue *message,
+    FlBasicMessageChannelResponseHandle *response_handle, gpointer user_data);
 
 /**
  * fl_basic_message_channel_new:
@@ -121,10 +114,9 @@ typedef void (*FlBasicMessageChannelMessageHandler)(
  *
  * Returns: a new #FlBasicMessageChannel.
  */
-FlBasicMessageChannel* fl_basic_message_channel_new(
-    FlBinaryMessenger* messenger,
-    const gchar* name,
-    FlMessageCodec* codec);
+FlBasicMessageChannel *
+fl_basic_message_channel_new(FlBinaryMessenger *messenger, const gchar *name,
+                             FlMessageCodec *codec);
 
 /**
  * fl_basic_message_channel_set_message_handler:
@@ -143,10 +135,8 @@ FlBasicMessageChannel* fl_basic_message_channel_new(
  * handler, set @destroy_notify if you want to detect this.
  */
 void fl_basic_message_channel_set_message_handler(
-    FlBasicMessageChannel* channel,
-    FlBasicMessageChannelMessageHandler handler,
-    gpointer user_data,
-    GDestroyNotify destroy_notify);
+    FlBasicMessageChannel *channel, FlBasicMessageChannelMessageHandler handler,
+    gpointer user_data, GDestroyNotify destroy_notify);
 
 /**
  * fl_basic_message_channel_respond:
@@ -163,10 +153,9 @@ void fl_basic_message_channel_set_message_handler(
  * Returns: %TRUE on success.
  */
 gboolean fl_basic_message_channel_respond(
-    FlBasicMessageChannel* channel,
-    FlBasicMessageChannelResponseHandle* response_handle,
-    FlValue* message,
-    GError** error);
+    FlBasicMessageChannel *channel,
+    FlBasicMessageChannelResponseHandle *response_handle, FlValue *message,
+    GError **error);
 
 /**
  * fl_basic_message_channel_send:
@@ -179,9 +168,8 @@ gboolean fl_basic_message_channel_respond(
  *
  * Asynchronously sends a message.
  */
-void fl_basic_message_channel_send(FlBasicMessageChannel* channel,
-                                   FlValue* message,
-                                   GCancellable* cancellable,
+void fl_basic_message_channel_send(FlBasicMessageChannel *channel,
+                                   FlValue *message, GCancellable *cancellable,
                                    GAsyncReadyCallback callback,
                                    gpointer user_data);
 
@@ -196,10 +184,10 @@ void fl_basic_message_channel_send(FlBasicMessageChannel* channel,
  *
  * Returns: message response on success or %NULL on error.
  */
-FlValue* fl_basic_message_channel_send_finish(FlBasicMessageChannel* channel,
-        GAsyncResult* result,
-        GError** error);
+FlValue *fl_basic_message_channel_send_finish(FlBasicMessageChannel *channel,
+                                              GAsyncResult *result,
+                                              GError **error);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_BASIC_MESSAGE_CHANNEL_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_BASIC_MESSAGE_CHANNEL_H_

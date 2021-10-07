@@ -13,11 +13,8 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlJsonMethodCodec,
-                     fl_json_method_codec,
-                     FL,
-                     JSON_METHOD_CODEC,
-                     FlMethodCodec)
+G_DECLARE_FINAL_TYPE(FlJsonMethodCodec, fl_json_method_codec, FL,
+                     JSON_METHOD_CODEC, FlMethodCodec)
 
 /**
  * FlJsonMethodCodec:
@@ -37,8 +34,8 @@ G_DECLARE_FINAL_TYPE(FlJsonMethodCodec,
  *
  * Returns: a new #FlJsonMethodCodec.
  */
-FlJsonMethodCodec* fl_json_method_codec_new();
+FlJsonMethodCodec *fl_json_method_codec_new();
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_JSON_METHOD_CODEC_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_JSON_METHOD_CODEC_H_

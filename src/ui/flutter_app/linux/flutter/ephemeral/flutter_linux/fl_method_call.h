@@ -33,7 +33,7 @@ G_DECLARE_FINAL_TYPE(FlMethodCall, fl_method_call, FL, METHOD_CALL, GObject)
  *
  * Returns: a method name.
  */
-const gchar* fl_method_call_get_name(FlMethodCall* method_call);
+const gchar *fl_method_call_get_name(FlMethodCall *method_call);
 
 /**
  * fl_method_call_get_args:
@@ -43,7 +43,7 @@ const gchar* fl_method_call_get_name(FlMethodCall* method_call);
  *
  * Returns: an #FlValue.
  */
-FlValue* fl_method_call_get_args(FlMethodCall* method_call);
+FlValue *fl_method_call_get_args(FlMethodCall *method_call);
 
 /**
  * fl_method_call_respond:
@@ -56,9 +56,8 @@ FlValue* fl_method_call_get_args(FlMethodCall* method_call);
  *
  * Returns: %TRUE on success.
  */
-gboolean fl_method_call_respond(FlMethodCall* method_call,
-                                FlMethodResponse* response,
-                                GError** error);
+gboolean fl_method_call_respond(FlMethodCall *method_call,
+                                FlMethodResponse *response, GError **error);
 
 /**
  * fl_method_call_respond_success:
@@ -73,9 +72,8 @@ gboolean fl_method_call_respond(FlMethodCall* method_call,
  *
  * Returns: %TRUE on success.
  */
-gboolean fl_method_call_respond_success(FlMethodCall* method_call,
-                                        FlValue* result,
-                                        GError** error);
+gboolean fl_method_call_respond_success(FlMethodCall *method_call,
+                                        FlValue *result, GError **error);
 
 /**
  * fl_method_call_respond_error:
@@ -90,11 +88,9 @@ gboolean fl_method_call_respond_success(FlMethodCall* method_call,
  *
  * Returns: %TRUE on success.
  */
-gboolean fl_method_call_respond_error(FlMethodCall* method_call,
-                                      const gchar* code,
-                                      const gchar* message,
-                                      FlValue* details,
-                                      GError** error);
+gboolean fl_method_call_respond_error(FlMethodCall *method_call,
+                                      const gchar *code, const gchar *message,
+                                      FlValue *details, GError **error);
 
 /**
  * fl_method_call_respond_not_implemented:
@@ -107,9 +103,9 @@ gboolean fl_method_call_respond_error(FlMethodCall* method_call,
  *
  * Returns: %TRUE on success.
  */
-gboolean fl_method_call_respond_not_implemented(FlMethodCall* method_call,
-        GError** error);
+gboolean fl_method_call_respond_not_implemented(FlMethodCall *method_call,
+                                                GError **error);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_METHOD_CALL_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_METHOD_CALL_H_

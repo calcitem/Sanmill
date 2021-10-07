@@ -57,18 +57,18 @@ typedef struct _FlValue FlValue;
  * Types of #FlValue.
  */
 typedef enum {
-    FL_VALUE_TYPE_NULL,
-    FL_VALUE_TYPE_BOOL,
-    FL_VALUE_TYPE_INT,
-    FL_VALUE_TYPE_FLOAT,
-    FL_VALUE_TYPE_STRING,
-    FL_VALUE_TYPE_UINT8_LIST,
-    FL_VALUE_TYPE_INT32_LIST,
-    FL_VALUE_TYPE_INT64_LIST,
-    FL_VALUE_TYPE_FLOAT_LIST,
-    FL_VALUE_TYPE_LIST,
-    FL_VALUE_TYPE_MAP,
-    FL_VALUE_TYPE_FLOAT32_LIST,
+  FL_VALUE_TYPE_NULL,
+  FL_VALUE_TYPE_BOOL,
+  FL_VALUE_TYPE_INT,
+  FL_VALUE_TYPE_FLOAT,
+  FL_VALUE_TYPE_STRING,
+  FL_VALUE_TYPE_UINT8_LIST,
+  FL_VALUE_TYPE_INT32_LIST,
+  FL_VALUE_TYPE_INT64_LIST,
+  FL_VALUE_TYPE_FLOAT_LIST,
+  FL_VALUE_TYPE_LIST,
+  FL_VALUE_TYPE_MAP,
+  FL_VALUE_TYPE_FLOAT32_LIST,
 } FlValueType;
 
 /**
@@ -79,7 +79,7 @@ typedef enum {
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_null();
+FlValue *fl_value_new_null();
 
 /**
  * fl_value_new_bool:
@@ -90,7 +90,7 @@ FlValue* fl_value_new_null();
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_bool(bool value);
+FlValue *fl_value_new_bool(bool value);
 
 /**
  * fl_value_new_int:
@@ -101,7 +101,7 @@ FlValue* fl_value_new_bool(bool value);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_int(int64_t value);
+FlValue *fl_value_new_int(int64_t value);
 
 /**
  * fl_value_new_float:
@@ -112,7 +112,7 @@ FlValue* fl_value_new_int(int64_t value);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_float(double value);
+FlValue *fl_value_new_float(double value);
 
 /**
  * fl_value_new_string:
@@ -123,7 +123,7 @@ FlValue* fl_value_new_float(double value);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_string(const gchar* value);
+FlValue *fl_value_new_string(const gchar *value);
 
 /**
  * fl_value_new_string_sized:
@@ -135,7 +135,7 @@ FlValue* fl_value_new_string(const gchar* value);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_string_sized(const gchar* value, size_t value_length);
+FlValue *fl_value_new_string_sized(const gchar *value, size_t value_length);
 
 /**
  * fl_value_new_uint8_list:
@@ -147,7 +147,7 @@ FlValue* fl_value_new_string_sized(const gchar* value, size_t value_length);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_uint8_list(const uint8_t* value, size_t value_length);
+FlValue *fl_value_new_uint8_list(const uint8_t *value, size_t value_length);
 
 /**
  * fl_value_new_uint8_list_from_bytes:
@@ -158,7 +158,7 @@ FlValue* fl_value_new_uint8_list(const uint8_t* value, size_t value_length);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_uint8_list_from_bytes(GBytes* value);
+FlValue *fl_value_new_uint8_list_from_bytes(GBytes *value);
 
 /**
  * fl_value_new_int32_list:
@@ -170,7 +170,7 @@ FlValue* fl_value_new_uint8_list_from_bytes(GBytes* value);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_int32_list(const int32_t* value, size_t value_length);
+FlValue *fl_value_new_int32_list(const int32_t *value, size_t value_length);
 
 /**
  * fl_value_new_int64_list:
@@ -182,7 +182,7 @@ FlValue* fl_value_new_int32_list(const int32_t* value, size_t value_length);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_int64_list(const int64_t* value, size_t value_length);
+FlValue *fl_value_new_int64_list(const int64_t *value, size_t value_length);
 
 /**
  * fl_value_new_float32_list:
@@ -194,7 +194,7 @@ FlValue* fl_value_new_int64_list(const int64_t* value, size_t value_length);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_float32_list(const float* value, size_t value_length);
+FlValue *fl_value_new_float32_list(const float *value, size_t value_length);
 
 /**
  * fl_value_new_float_list:
@@ -206,7 +206,7 @@ FlValue* fl_value_new_float32_list(const float* value, size_t value_length);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_float_list(const double* value, size_t value_length);
+FlValue *fl_value_new_float_list(const double *value, size_t value_length);
 
 /**
  * fl_value_new_list:
@@ -236,7 +236,7 @@ FlValue* fl_value_new_float_list(const double* value, size_t value_length);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_list();
+FlValue *fl_value_new_list();
 
 /**
  * fl_value_new_list_from_strv:
@@ -246,7 +246,7 @@ FlValue* fl_value_new_list();
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_list_from_strv(const gchar* const* value);
+FlValue *fl_value_new_list_from_strv(const gchar *const *value);
 
 /**
  * fl_value_new_map:
@@ -282,7 +282,7 @@ FlValue* fl_value_new_list_from_strv(const gchar* const* value);
  *
  * Returns: a new #FlValue.
  */
-FlValue* fl_value_new_map();
+FlValue *fl_value_new_map();
 
 /**
  * fl_value_ref:
@@ -292,7 +292,7 @@ FlValue* fl_value_new_map();
  *
  * Returns: the value that was referenced.
  */
-FlValue* fl_value_ref(FlValue* value);
+FlValue *fl_value_ref(FlValue *value);
 
 /**
  * fl_value_unref:
@@ -301,7 +301,7 @@ FlValue* fl_value_ref(FlValue* value);
  * Decreases the reference count of an #FlValue. When the reference count hits
  * zero @value is destroyed and no longer valid.
  */
-void fl_value_unref(FlValue* value);
+void fl_value_unref(FlValue *value);
 
 /**
  * fl_value_get_type:
@@ -311,7 +311,7 @@ void fl_value_unref(FlValue* value);
  *
  * Returns: an #FlValueType.
  */
-FlValueType fl_value_get_type(FlValue* value);
+FlValueType fl_value_get_type(FlValue *value);
 
 /**
  * fl_value_equal:
@@ -325,7 +325,7 @@ FlValueType fl_value_get_type(FlValue* value);
  *
  * Returns: %TRUE if both values are equivalent.
  */
-bool fl_value_equal(FlValue* a, FlValue* b);
+bool fl_value_equal(FlValue *a, FlValue *b);
 
 /**
  * fl_value_append:
@@ -335,7 +335,7 @@ bool fl_value_equal(FlValue* a, FlValue* b);
  * Adds @child to the end of @value. Calling this with an #FlValue that is not
  * of type #FL_VALUE_TYPE_LIST is a programming error.
  */
-void fl_value_append(FlValue* value, FlValue* child);
+void fl_value_append(FlValue *value, FlValue *child);
 
 /**
  * fl_value_append_take:
@@ -346,7 +346,7 @@ void fl_value_append(FlValue* value, FlValue* child);
  * Calling this with an #FlValue that is not of type #FL_VALUE_TYPE_LIST is a
  * programming error.
  */
-void fl_value_append_take(FlValue* value, FlValue* child);
+void fl_value_append_take(FlValue *value, FlValue *child);
 
 /**
  * fl_value_set:
@@ -358,7 +358,7 @@ void fl_value_append_take(FlValue* value, FlValue* child);
  * the same key it is replaced. Calling this with an #FlValue that is not of
  * type #FL_VALUE_TYPE_MAP is a programming error.
  */
-void fl_value_set(FlValue* value, FlValue* key, FlValue* child_value);
+void fl_value_set(FlValue *value, FlValue *key, FlValue *child_value);
 
 /**
  * fl_value_set_take:
@@ -371,7 +371,7 @@ void fl_value_set(FlValue* value, FlValue* key, FlValue* child_value);
  * is replaced. Calling this with an #FlValue that is not of type
  * #FL_VALUE_TYPE_MAP is a programming error.
  */
-void fl_value_set_take(FlValue* value, FlValue* key, FlValue* child_value);
+void fl_value_set_take(FlValue *value, FlValue *key, FlValue *child_value);
 
 /**
  * fl_value_set_string:
@@ -383,9 +383,8 @@ void fl_value_set_take(FlValue* value, FlValue* key, FlValue* child_value);
  * with the same key it is replaced. Calling this with an #FlValue that is not
  * of type #FL_VALUE_TYPE_MAP is a programming error.
  */
-void fl_value_set_string(FlValue* value,
-                         const gchar* key,
-                         FlValue* child_value);
+void fl_value_set_string(FlValue *value, const gchar *key,
+                         FlValue *child_value);
 
 /**
  * fl_value_set_string_take:
@@ -398,9 +397,8 @@ void fl_value_set_string(FlValue* value,
  * with an #FlValue that is not of type #FL_VALUE_TYPE_MAP is a programming
  * error.
  */
-void fl_value_set_string_take(FlValue* value,
-                              const gchar* key,
-                              FlValue* child_value);
+void fl_value_set_string_take(FlValue *value, const gchar *key,
+                              FlValue *child_value);
 
 /**
  * fl_value_get_bool:
@@ -411,7 +409,7 @@ void fl_value_set_string_take(FlValue* value,
  *
  * Returns: a boolean value.
  */
-bool fl_value_get_bool(FlValue* value);
+bool fl_value_get_bool(FlValue *value);
 
 /**
  * fl_value_get_int:
@@ -422,7 +420,7 @@ bool fl_value_get_bool(FlValue* value);
  *
  * Returns: an integer number.
  */
-int64_t fl_value_get_int(FlValue* value);
+int64_t fl_value_get_int(FlValue *value);
 
 /**
  * fl_value_get_float:
@@ -433,7 +431,7 @@ int64_t fl_value_get_int(FlValue* value);
  *
  * Returns: a floating point number.
  */
-double fl_value_get_float(FlValue* value);
+double fl_value_get_float(FlValue *value);
 
 /**
  * fl_value_get_string:
@@ -444,7 +442,7 @@ double fl_value_get_float(FlValue* value);
  *
  * Returns: a UTF-8 encoded string.
  */
-const gchar* fl_value_get_string(FlValue* value);
+const gchar *fl_value_get_string(FlValue *value);
 
 /**
  * fl_value_get_length:
@@ -458,7 +456,7 @@ const gchar* fl_value_get_string(FlValue* value);
  *
  * Returns: the number of elements inside @value.
  */
-size_t fl_value_get_length(FlValue* value);
+size_t fl_value_get_length(FlValue *value);
 
 /**
  * fl_value_get_uint8_list:
@@ -470,7 +468,7 @@ size_t fl_value_get_length(FlValue* value);
  *
  * Returns: an array of unsigned 8 bit integers.
  */
-const uint8_t* fl_value_get_uint8_list(FlValue* value);
+const uint8_t *fl_value_get_uint8_list(FlValue *value);
 
 /**
  * fl_value_get_int32_list:
@@ -482,7 +480,7 @@ const uint8_t* fl_value_get_uint8_list(FlValue* value);
  *
  * Returns: an array of 32 bit integers.
  */
-const int32_t* fl_value_get_int32_list(FlValue* value);
+const int32_t *fl_value_get_int32_list(FlValue *value);
 
 /**
  * fl_value_get_int64_list:
@@ -494,7 +492,7 @@ const int32_t* fl_value_get_int32_list(FlValue* value);
  *
  * Returns: an array of 64 bit integers.
  */
-const int64_t* fl_value_get_int64_list(FlValue* value);
+const int64_t *fl_value_get_int64_list(FlValue *value);
 
 /**
  * fl_value_get_float32_list:
@@ -506,7 +504,7 @@ const int64_t* fl_value_get_int64_list(FlValue* value);
  *
  * Returns: an array of floating point numbers.
  */
-const float* fl_value_get_float32_list(FlValue* value);
+const float *fl_value_get_float32_list(FlValue *value);
 
 /**
  * fl_value_get_float_list:
@@ -518,7 +516,7 @@ const float* fl_value_get_float32_list(FlValue* value);
  *
  * Returns: an array of floating point numbers.
  */
-const double* fl_value_get_float_list(FlValue* value);
+const double *fl_value_get_float_list(FlValue *value);
 
 /**
  * fl_value_get_list_value:
@@ -532,7 +530,7 @@ const double* fl_value_get_float_list(FlValue* value);
  *
  * Returns: an #FlValue.
  */
-FlValue* fl_value_get_list_value(FlValue* value, size_t index);
+FlValue *fl_value_get_list_value(FlValue *value, size_t index);
 
 /**
  * fl_value_get_map_key:
@@ -546,7 +544,7 @@ FlValue* fl_value_get_list_value(FlValue* value, size_t index);
  *
  * Returns: an #FlValue.
  */
-FlValue* fl_value_get_map_key(FlValue* value, size_t index);
+FlValue *fl_value_get_map_key(FlValue *value, size_t index);
 
 /**
  * fl_value_get_map_value:
@@ -560,7 +558,7 @@ FlValue* fl_value_get_map_key(FlValue* value, size_t index);
  *
  * Returns: an #FlValue.
  */
-FlValue* fl_value_get_map_value(FlValue* value, size_t index);
+FlValue *fl_value_get_map_value(FlValue *value, size_t index);
 
 /**
  * fl_value_lookup:
@@ -577,7 +575,7 @@ FlValue* fl_value_get_map_value(FlValue* value, size_t index);
  *
  * Returns: (allow-none): the value with this key or %NULL if not one present.
  */
-FlValue* fl_value_lookup(FlValue* value, FlValue* key);
+FlValue *fl_value_lookup(FlValue *value, FlValue *key);
 
 /**
  * fl_value_lookup_string:
@@ -594,7 +592,7 @@ FlValue* fl_value_lookup(FlValue* value, FlValue* key);
  *
  * Returns: (allow-none): the value with this key or %NULL if not one present.
  */
-FlValue* fl_value_lookup_string(FlValue* value, const gchar* key);
+FlValue *fl_value_lookup_string(FlValue *value, const gchar *key);
 
 /**
  * fl_value_to_string:
@@ -605,10 +603,10 @@ FlValue* fl_value_lookup_string(FlValue* value, const gchar* key);
  *
  * Returns: UTF-8 text.
  */
-gchar* fl_value_to_string(FlValue* value);
+gchar *fl_value_to_string(FlValue *value);
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(FlValue, fl_value_unref)
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_VALUE_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_VALUE_H_

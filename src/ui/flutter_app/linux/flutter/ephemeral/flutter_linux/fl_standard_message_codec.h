@@ -13,11 +13,8 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlStandardMessageCodec,
-                     fl_standard_message_codec,
-                     FL,
-                     STANDARD_CODEC,
-                     FlMessageCodec)
+G_DECLARE_FINAL_TYPE(FlStandardMessageCodec, fl_standard_message_codec, FL,
+                     STANDARD_CODEC, FlMessageCodec)
 
 /**
  * FlStandardMessageCodec:
@@ -40,8 +37,8 @@ G_DECLARE_FINAL_TYPE(FlStandardMessageCodec,
  *
  * Returns: a new #FlStandardMessageCodec.
  */
-FlStandardMessageCodec* fl_standard_message_codec_new();
+FlStandardMessageCodec *fl_standard_message_codec_new();
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_STANDARD_MESSAGE_CODEC_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_STANDARD_MESSAGE_CODEC_H_

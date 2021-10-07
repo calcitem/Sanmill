@@ -13,10 +13,7 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlStringCodec,
-                     fl_string_codec,
-                     FL,
-                     STRING_CODEC,
+G_DECLARE_FINAL_TYPE(FlStringCodec, fl_string_codec, FL, STRING_CODEC,
                      FlMessageCodec)
 
 /**
@@ -37,8 +34,8 @@ G_DECLARE_FINAL_TYPE(FlStringCodec,
  *
  * Returns: a new #FlStringCodec.
  */
-FlStringCodec* fl_string_codec_new();
+FlStringCodec *fl_string_codec_new();
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_STRING_CODEC_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_STRING_CODEC_H_

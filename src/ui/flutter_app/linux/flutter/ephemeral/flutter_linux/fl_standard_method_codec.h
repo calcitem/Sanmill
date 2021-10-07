@@ -13,11 +13,8 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlStandardMethodCodec,
-                     fl_standard_method_codec,
-                     FL,
-                     STANDARD_METHOD_CODEC,
-                     FlMethodCodec)
+G_DECLARE_FINAL_TYPE(FlStandardMethodCodec, fl_standard_method_codec, FL,
+                     STANDARD_METHOD_CODEC, FlMethodCodec)
 
 /**
  * FlStandardMethodCodec:
@@ -37,8 +34,8 @@ G_DECLARE_FINAL_TYPE(FlStandardMethodCodec,
  *
  * Returns: a new #FlStandardMethodCodec.
  */
-FlStandardMethodCodec* fl_standard_method_codec_new();
+FlStandardMethodCodec *fl_standard_method_codec_new();
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_STANDARD_METHOD_CODEC_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_STANDARD_METHOD_CODEC_H_

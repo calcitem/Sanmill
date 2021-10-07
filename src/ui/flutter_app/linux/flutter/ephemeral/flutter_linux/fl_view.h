@@ -44,7 +44,7 @@ G_DECLARE_FINAL_TYPE(FlView, fl_view, FL, VIEW, GtkContainer)
  *
  * Returns: a new #FlView.
  */
-FlView* fl_view_new(FlDartProject* project);
+FlView *fl_view_new(FlDartProject *project);
 
 /**
  * fl_view_get_engine:
@@ -54,8 +54,8 @@ FlView* fl_view_new(FlDartProject* project);
  *
  * Returns: an #FlEngine.
  */
-FlEngine* fl_view_get_engine(FlView* view);
+FlEngine *fl_view_get_engine(FlView *view);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_VIEW_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_VIEW_H_

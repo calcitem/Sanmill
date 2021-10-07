@@ -33,7 +33,7 @@ G_DECLARE_FINAL_TYPE(FlDartProject, fl_dart_project, FL, DART_PROJECT, GObject)
  *
  * Returns: a new #FlDartProject.
  */
-FlDartProject* fl_dart_project_new();
+FlDartProject *fl_dart_project_new();
 
 /**
  * fl_dart_project_set_enable_mirrors:
@@ -45,7 +45,7 @@ FlDartProject* fl_dart_project_new();
  * Deprecated: This function is temporary and will be removed in a future
  * release.
  */
-void fl_dart_project_set_enable_mirrors(FlDartProject* project,
+void fl_dart_project_set_enable_mirrors(FlDartProject *project,
                                         gboolean enable_mirrors) G_DEPRECATED;
 
 /**
@@ -59,8 +59,8 @@ void fl_dart_project_set_enable_mirrors(FlDartProject* project,
  * Deprecated: This function is temporary and will be removed in a future
  * release.
  */
-gboolean fl_dart_project_get_enable_mirrors(FlDartProject* project)
-G_DEPRECATED;
+gboolean
+fl_dart_project_get_enable_mirrors(FlDartProject *project) G_DEPRECATED;
 
 /**
  * fl_dart_project_get_aot_library_path:
@@ -71,7 +71,7 @@ G_DEPRECATED;
  * Returns: (type filename): an absolute file path, e.g.
  * "/projects/my_dart_project/lib/libapp.so".
  */
-const gchar* fl_dart_project_get_aot_library_path(FlDartProject* project);
+const gchar *fl_dart_project_get_aot_library_path(FlDartProject *project);
 
 /**
  * fl_dart_project_get_assets_path:
@@ -83,7 +83,7 @@ const gchar* fl_dart_project_get_aot_library_path(FlDartProject* project);
  * Returns: (type filename): an absolute directory path, e.g.
  * "/projects/my_dart_project/data/flutter_assets".
  */
-const gchar* fl_dart_project_get_assets_path(FlDartProject* project);
+const gchar *fl_dart_project_get_assets_path(FlDartProject *project);
 
 /**
  * fl_dart_project_get_icu_data_path:
@@ -94,7 +94,7 @@ const gchar* fl_dart_project_get_assets_path(FlDartProject* project);
  * Returns: (type filename): an absolute file path, e.g.
  * "/projects/my_dart_project/data/icudtl.dat".
  */
-const gchar* fl_dart_project_get_icu_data_path(FlDartProject* project);
+const gchar *fl_dart_project_get_icu_data_path(FlDartProject *project);
 
 /**
  * fl_dart_project_set_dart_entrypoint_arguments:
@@ -105,8 +105,8 @@ const gchar* fl_dart_project_get_icu_data_path(FlDartProject* project);
  * Sets the command line arguments to be passed through to the Dart
  * entrypoint function.
  */
-void fl_dart_project_set_dart_entrypoint_arguments(FlDartProject* project,
-        char** argv);
+void fl_dart_project_set_dart_entrypoint_arguments(FlDartProject *project,
+                                                   char **argv);
 
 /**
  * fl_dart_project_get_dart_entrypoint_arguments:
@@ -118,8 +118,8 @@ void fl_dart_project_set_dart_entrypoint_arguments(FlDartProject* project,
  * Returns: a NULL-terminated array of strings containing the command line
  * arguments to be passed to the Dart entrypoint.
  */
-gchar** fl_dart_project_get_dart_entrypoint_arguments(FlDartProject* project);
+gchar **fl_dart_project_get_dart_entrypoint_arguments(FlDartProject *project);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_DART_PROJECT_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_DART_PROJECT_H_

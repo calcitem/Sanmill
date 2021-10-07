@@ -29,40 +29,29 @@ G_BEGIN_DECLS
 #define FL_METHOD_RESPONSE_ERROR fl_method_response_error_quark()
 
 typedef enum {
-    FL_METHOD_RESPONSE_ERROR_FAILED,
-    FL_METHOD_RESPONSE_ERROR_REMOTE_ERROR,
-    FL_METHOD_RESPONSE_ERROR_NOT_IMPLEMENTED,
+  FL_METHOD_RESPONSE_ERROR_FAILED,
+  FL_METHOD_RESPONSE_ERROR_REMOTE_ERROR,
+  FL_METHOD_RESPONSE_ERROR_NOT_IMPLEMENTED,
 } FlMethodResponseError;
 
 GQuark fl_method_response_error_quark(void) G_GNUC_CONST;
 
-G_DECLARE_DERIVABLE_TYPE(FlMethodResponse,
-                         fl_method_response,
-                         FL,
-                         METHOD_RESPONSE,
-                         GObject)
+G_DECLARE_DERIVABLE_TYPE(FlMethodResponse, fl_method_response, FL,
+                         METHOD_RESPONSE, GObject)
 
 struct _FlMethodResponseClass {
-    GObjectClass parent_class;
+  GObjectClass parent_class;
 };
 
-G_DECLARE_FINAL_TYPE(FlMethodSuccessResponse,
-                     fl_method_success_response,
-                     FL,
-                     METHOD_SUCCESS_RESPONSE,
-                     FlMethodResponse)
+G_DECLARE_FINAL_TYPE(FlMethodSuccessResponse, fl_method_success_response, FL,
+                     METHOD_SUCCESS_RESPONSE, FlMethodResponse)
 
-G_DECLARE_FINAL_TYPE(FlMethodErrorResponse,
-                     fl_method_error_response,
-                     FL,
-                     METHOD_ERROR_RESPONSE,
-                     FlMethodResponse)
+G_DECLARE_FINAL_TYPE(FlMethodErrorResponse, fl_method_error_response, FL,
+                     METHOD_ERROR_RESPONSE, FlMethodResponse)
 
 G_DECLARE_FINAL_TYPE(FlMethodNotImplementedResponse,
-                     fl_method_not_implemented_response,
-                     FL,
-                     METHOD_NOT_IMPLEMENTED_RESPONSE,
-                     FlMethodResponse)
+                     fl_method_not_implemented_response, FL,
+                     METHOD_NOT_IMPLEMENTED_RESPONSE, FlMethodResponse)
 
 /**
  * FlMethodResponse:
@@ -127,8 +116,8 @@ G_DECLARE_FINAL_TYPE(FlMethodNotImplementedResponse,
  *
  * Returns: an #FlValue or %NULL on error.
  */
-FlValue* fl_method_response_get_result(FlMethodResponse* response,
-                                       GError** error);
+FlValue *fl_method_response_get_result(FlMethodResponse *response,
+                                       GError **error);
 
 /**
  * fl_method_success_response_new:
@@ -139,7 +128,7 @@ FlValue* fl_method_response_get_result(FlMethodResponse* response,
  *
  * Returns: a new #FlMethodResponse.
  */
-FlMethodSuccessResponse* fl_method_success_response_new(FlValue* result);
+FlMethodSuccessResponse *fl_method_success_response_new(FlValue *result);
 
 /**
  * fl_method_success_response_get_result:
@@ -149,8 +138,8 @@ FlMethodSuccessResponse* fl_method_success_response_new(FlValue* result);
  *
  * Returns: an #FlValue.
  */
-FlValue* fl_method_success_response_get_result(
-    FlMethodSuccessResponse* response);
+FlValue *
+fl_method_success_response_get_result(FlMethodSuccessResponse *response);
 
 /**
  * fl_method_error_response_new:
@@ -163,9 +152,9 @@ FlValue* fl_method_success_response_get_result(
  *
  * Returns: a new #FlMethodErrorResponse.
  */
-FlMethodErrorResponse* fl_method_error_response_new(const gchar* code,
-        const gchar* message,
-        FlValue* details);
+FlMethodErrorResponse *fl_method_error_response_new(const gchar *code,
+                                                    const gchar *message,
+                                                    FlValue *details);
 
 /**
  * fl_method_error_response_get_code:
@@ -175,7 +164,7 @@ FlMethodErrorResponse* fl_method_error_response_new(const gchar* code,
  *
  * Returns: an error code.
  */
-const gchar* fl_method_error_response_get_code(FlMethodErrorResponse* response);
+const gchar *fl_method_error_response_get_code(FlMethodErrorResponse *response);
 
 /**
  * fl_method_error_response_get_message:
@@ -185,8 +174,8 @@ const gchar* fl_method_error_response_get_code(FlMethodErrorResponse* response);
  *
  * Returns: an error message or %NULL if no error message provided.
  */
-const gchar* fl_method_error_response_get_message(
-    FlMethodErrorResponse* response);
+const gchar *
+fl_method_error_response_get_message(FlMethodErrorResponse *response);
 
 /**
  * fl_method_error_response_get_details:
@@ -196,7 +185,7 @@ const gchar* fl_method_error_response_get_message(
  *
  * Returns: an #FlValue or %NULL if no details provided.
  */
-FlValue* fl_method_error_response_get_details(FlMethodErrorResponse* response);
+FlValue *fl_method_error_response_get_details(FlMethodErrorResponse *response);
 
 /**
  * fl_method_not_implemented_response_new:
@@ -205,8 +194,8 @@ FlValue* fl_method_error_response_get_details(FlMethodErrorResponse* response);
  *
  * Returns: a new #FlMethodNotImplementedResponse.
  */
-FlMethodNotImplementedResponse* fl_method_not_implemented_response_new();
+FlMethodNotImplementedResponse *fl_method_not_implemented_response_new();
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_METHOD_RESPONSE_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_METHOD_RESPONSE_H_

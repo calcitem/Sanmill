@@ -24,22 +24,17 @@ G_BEGIN_DECLS
 #define FL_BINARY_MESSENGER_ERROR fl_binary_messenger_codec_error_quark()
 
 typedef enum {
-    FL_BINARY_MESSENGER_ERROR_ALREADY_RESPONDED,
+  FL_BINARY_MESSENGER_ERROR_ALREADY_RESPONDED,
 } FlBinaryMessengerError;
 
 GQuark fl_binary_messenger_codec_error_quark(void) G_GNUC_CONST;
 
-G_DECLARE_FINAL_TYPE(FlBinaryMessenger,
-                     fl_binary_messenger,
-                     FL,
-                     BINARY_MESSENGER,
-                     GObject)
+G_DECLARE_FINAL_TYPE(FlBinaryMessenger, fl_binary_messenger, FL,
+                     BINARY_MESSENGER, GObject)
 
 G_DECLARE_FINAL_TYPE(FlBinaryMessengerResponseHandle,
-                     fl_binary_messenger_response_handle,
-                     FL,
-                     BINARY_MESSENGER_RESPONSE_HANDLE,
-                     GObject)
+                     fl_binary_messenger_response_handle, FL,
+                     BINARY_MESSENGER_RESPONSE_HANDLE, GObject)
 
 /**
  * FlBinaryMessenger:
@@ -70,11 +65,8 @@ G_DECLARE_FINAL_TYPE(FlBinaryMessengerResponseHandle,
  * programming error.
  */
 typedef void (*FlBinaryMessengerMessageHandler)(
-    FlBinaryMessenger* messenger,
-    const gchar* channel,
-    GBytes* message,
-    FlBinaryMessengerResponseHandle* response_handle,
-    gpointer user_data);
+    FlBinaryMessenger *messenger, const gchar *channel, GBytes *message,
+    FlBinaryMessengerResponseHandle *response_handle, gpointer user_data);
 
 /**
  * fl_binary_messenger_set_platform_message_handler:
@@ -94,10 +86,8 @@ typedef void (*FlBinaryMessengerMessageHandler)(
  * handler, set @destroy_notify if you want to detect this.
  */
 void fl_binary_messenger_set_message_handler_on_channel(
-    FlBinaryMessenger* messenger,
-    const gchar* channel,
-    FlBinaryMessengerMessageHandler handler,
-    gpointer user_data,
+    FlBinaryMessenger *messenger, const gchar *channel,
+    FlBinaryMessengerMessageHandler handler, gpointer user_data,
     GDestroyNotify destroy_notify);
 
 /**
@@ -114,10 +104,9 @@ void fl_binary_messenger_set_message_handler_on_channel(
  * Returns: %TRUE on success.
  */
 gboolean fl_binary_messenger_send_response(
-    FlBinaryMessenger* messenger,
-    FlBinaryMessengerResponseHandle* response_handle,
-    GBytes* response,
-    GError** error);
+    FlBinaryMessenger *messenger,
+    FlBinaryMessengerResponseHandle *response_handle, GBytes *response,
+    GError **error);
 
 /**
  * fl_binary_messenger_send_on_channel:
@@ -131,12 +120,11 @@ gboolean fl_binary_messenger_send_response(
  *
  * Asynchronously sends a platform message.
  */
-void fl_binary_messenger_send_on_channel(FlBinaryMessenger* messenger,
-        const gchar* channel,
-        GBytes* message,
-        GCancellable* cancellable,
-        GAsyncReadyCallback callback,
-        gpointer user_data);
+void fl_binary_messenger_send_on_channel(FlBinaryMessenger *messenger,
+                                         const gchar *channel, GBytes *message,
+                                         GCancellable *cancellable,
+                                         GAsyncReadyCallback callback,
+                                         gpointer user_data);
 
 /**
  * fl_binary_messenger_send_on_channel_finish:
@@ -149,10 +137,10 @@ void fl_binary_messenger_send_on_channel(FlBinaryMessenger* messenger,
  *
  * Returns: (transfer full): message response on success or %NULL on error.
  */
-GBytes* fl_binary_messenger_send_on_channel_finish(FlBinaryMessenger* messenger,
-        GAsyncResult* result,
-        GError** error);
+GBytes *fl_binary_messenger_send_on_channel_finish(FlBinaryMessenger *messenger,
+                                                   GAsyncResult *result,
+                                                   GError **error);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_BINARY_MESSENGER_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_BINARY_MESSENGER_H_

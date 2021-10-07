@@ -13,10 +13,7 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlBinaryCodec,
-                     fl_binary_codec,
-                     FL,
-                     BINARY_CODEC,
+G_DECLARE_FINAL_TYPE(FlBinaryCodec, fl_binary_codec, FL, BINARY_CODEC,
                      FlMessageCodec)
 
 /**
@@ -38,8 +35,8 @@ G_DECLARE_FINAL_TYPE(FlBinaryCodec,
  *
  * Returns: a new #FlBinaryCodec.
  */
-FlBinaryCodec* fl_binary_codec_new();
+FlBinaryCodec *fl_binary_codec_new();
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_BINARY_CODEC_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_BINARY_CODEC_H_

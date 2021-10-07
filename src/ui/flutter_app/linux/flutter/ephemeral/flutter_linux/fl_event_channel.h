@@ -18,10 +18,7 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlEventChannel,
-                     fl_event_channel,
-                     FL,
-                     EVENT_CHANNEL,
+G_DECLARE_FINAL_TYPE(FlEventChannel, fl_event_channel, FL, EVENT_CHANNEL,
                      GObject)
 
 /**
@@ -83,9 +80,9 @@ G_DECLARE_FINAL_TYPE(FlEventChannel,
  *
  * Returns: (transfer full): an #FlMethodErrorResponse or %NULL if no error.
  */
-typedef FlMethodErrorResponse* (*FlEventChannelHandler)(FlEventChannel* channel,
-        FlValue* args,
-        gpointer user_data);
+typedef FlMethodErrorResponse *(*FlEventChannelHandler)(FlEventChannel *channel,
+                                                        FlValue *args,
+                                                        gpointer user_data);
 
 /**
  * fl_event_channel_new:
@@ -98,9 +95,8 @@ typedef FlMethodErrorResponse* (*FlEventChannelHandler)(FlEventChannel* channel,
  *
  * Returns: a new #FlEventChannel.
  */
-FlEventChannel* fl_event_channel_new(FlBinaryMessenger* messenger,
-                                     const gchar* name,
-                                     FlMethodCodec* codec);
+FlEventChannel *fl_event_channel_new(FlBinaryMessenger *messenger,
+                                     const gchar *name, FlMethodCodec *codec);
 
 /**
  * fl_event_channel_set_stream_handlers:
@@ -120,11 +116,11 @@ FlEventChannel* fl_event_channel_new(FlBinaryMessenger* messenger,
  * The handlers are removed if the channel is closed or is replaced by another
  * handler, set @destroy_notify if you want to detect this.
  */
-void fl_event_channel_set_stream_handlers(FlEventChannel* channel,
-        FlEventChannelHandler listen_handler,
-        FlEventChannelHandler cancel_handler,
-        gpointer user_data,
-        GDestroyNotify destroy_notify);
+void fl_event_channel_set_stream_handlers(FlEventChannel *channel,
+                                          FlEventChannelHandler listen_handler,
+                                          FlEventChannelHandler cancel_handler,
+                                          gpointer user_data,
+                                          GDestroyNotify destroy_notify);
 
 /**
  * fl_event_channel_send:
@@ -139,10 +135,8 @@ void fl_event_channel_set_stream_handlers(FlEventChannel* channel,
  *
  * Returns: %TRUE if successful.
  */
-gboolean fl_event_channel_send(FlEventChannel* channel,
-                               FlValue* event,
-                               GCancellable* cancellable,
-                               GError** error);
+gboolean fl_event_channel_send(FlEventChannel *channel, FlValue *event,
+                               GCancellable *cancellable, GError **error);
 
 /**
  * fl_event_channel_send_error:
@@ -159,12 +153,9 @@ gboolean fl_event_channel_send(FlEventChannel* channel,
  *
  * Returns: %TRUE if successful.
  */
-gboolean fl_event_channel_send_error(FlEventChannel* channel,
-                                     const gchar* code,
-                                     const gchar* message,
-                                     FlValue* details,
-                                     GCancellable* cancellable,
-                                     GError** error);
+gboolean fl_event_channel_send_error(FlEventChannel *channel, const gchar *code,
+                                     const gchar *message, FlValue *details,
+                                     GCancellable *cancellable, GError **error);
 
 /**
  * fl_event_channel_send_end_of_stream:
@@ -178,10 +169,10 @@ gboolean fl_event_channel_send_error(FlEventChannel* channel,
  *
  * Returns: %TRUE if successful.
  */
-gboolean fl_event_channel_send_end_of_stream(FlEventChannel* channel,
-        GCancellable* cancellable,
-        GError** error);
+gboolean fl_event_channel_send_end_of_stream(FlEventChannel *channel,
+                                             GCancellable *cancellable,
+                                             GError **error);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_EVENT_CHANNEL_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_EVENT_CHANNEL_H_

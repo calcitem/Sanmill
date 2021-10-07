@@ -16,11 +16,8 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlPluginRegistrar,
-                     fl_plugin_registrar,
-                     FL,
-                     PLUGIN_REGISTRAR,
-                     GObject)
+G_DECLARE_FINAL_TYPE(FlPluginRegistrar, fl_plugin_registrar, FL,
+                     PLUGIN_REGISTRAR, GObject)
 
 /**
  * FlPluginRegistrar:
@@ -36,8 +33,8 @@ G_DECLARE_FINAL_TYPE(FlPluginRegistrar,
  *
  * Returns: an #FlBinaryMessenger.
  */
-FlBinaryMessenger* fl_plugin_registrar_get_messenger(
-    FlPluginRegistrar* registrar);
+FlBinaryMessenger *
+fl_plugin_registrar_get_messenger(FlPluginRegistrar *registrar);
 
 /**
  * fl_plugin_registrar_get_view:
@@ -47,8 +44,8 @@ FlBinaryMessenger* fl_plugin_registrar_get_messenger(
  *
  * Returns: (allow-none): an #FlView or %NULL if running in headless mode.
  */
-FlView* fl_plugin_registrar_get_view(FlPluginRegistrar* registrar);
+FlView *fl_plugin_registrar_get_view(FlPluginRegistrar *registrar);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_PLUGIN_REGISTRAR_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_PLUGIN_REGISTRAR_H_

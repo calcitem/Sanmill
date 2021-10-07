@@ -25,17 +25,14 @@ G_BEGIN_DECLS
 #define FL_JSON_MESSAGE_CODEC_ERROR fl_json_message_codec_error_quark()
 
 typedef enum {
-    FL_JSON_MESSAGE_CODEC_ERROR_INVALID_UTF8,
-    FL_JSON_MESSAGE_CODEC_ERROR_INVALID_JSON,
-    FL_JSON_MESSAGE_CODEC_ERROR_INVALID_OBJECT_KEY_TYPE,
+  FL_JSON_MESSAGE_CODEC_ERROR_INVALID_UTF8,
+  FL_JSON_MESSAGE_CODEC_ERROR_INVALID_JSON,
+  FL_JSON_MESSAGE_CODEC_ERROR_INVALID_OBJECT_KEY_TYPE,
 } FlJsonMessageCodecError;
 
 GQuark fl_json_message_codec_error_quark(void) G_GNUC_CONST;
 
-G_DECLARE_FINAL_TYPE(FlJsonMessageCodec,
-                     fl_json_message_codec,
-                     FL,
-                     JSON_CODEC,
+G_DECLARE_FINAL_TYPE(FlJsonMessageCodec, fl_json_message_codec, FL, JSON_CODEC,
                      FlMessageCodec)
 
 /**
@@ -59,7 +56,7 @@ G_DECLARE_FINAL_TYPE(FlJsonMessageCodec,
  *
  * Returns: a new #FlJsonMessageCodec.
  */
-FlJsonMessageCodec* fl_json_message_codec_new();
+FlJsonMessageCodec *fl_json_message_codec_new();
 
 /**
  * fl_json_message_codec_encode:
@@ -72,9 +69,8 @@ FlJsonMessageCodec* fl_json_message_codec_new();
  *
  * Returns: a JSON representation of this value or %NULL on error.
  */
-gchar* fl_json_message_codec_encode(FlJsonMessageCodec* codec,
-                                    FlValue* value,
-                                    GError** error);
+gchar *fl_json_message_codec_encode(FlJsonMessageCodec *codec, FlValue *value,
+                                    GError **error);
 
 /**
  * fl_json_message_codec_decode:
@@ -87,10 +83,9 @@ gchar* fl_json_message_codec_encode(FlJsonMessageCodec* codec,
  *
  * Returns: an #FlValue or %NULL on error.
  */
-FlValue* fl_json_message_codec_decode(FlJsonMessageCodec* codec,
-                                      const gchar* text,
-                                      GError** error);
+FlValue *fl_json_message_codec_decode(FlJsonMessageCodec *codec,
+                                      const gchar *text, GError **error);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_JSON_MESSAGE_CODEC_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_JSON_MESSAGE_CODEC_H_

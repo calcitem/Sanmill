@@ -15,10 +15,7 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_INTERFACE(FlPluginRegistry,
-                    fl_plugin_registry,
-                    FL,
-                    PLUGIN_REGISTRY,
+G_DECLARE_INTERFACE(FlPluginRegistry, fl_plugin_registry, FL, PLUGIN_REGISTRY,
                     GObject)
 
 /**
@@ -28,19 +25,19 @@ G_DECLARE_INTERFACE(FlPluginRegistry,
  */
 
 struct _FlPluginRegistryInterface {
-    GTypeInterface g_iface;
+  GTypeInterface g_iface;
 
-    /**
-     * FlPluginRegistry::get_registrar_for_plugin:
-     * @registry: an #FlPluginRegistry.
-     * @name: plugin name.
-     *
-     * Gets the plugin registrar for the the plugin with @name.
-     *
-     * Returns: (transfer full): an #FlPluginRegistrar.
-     */
-    FlPluginRegistrar* (*get_registrar_for_plugin)(FlPluginRegistry* registry,
-            const gchar* name);
+  /**
+   * FlPluginRegistry::get_registrar_for_plugin:
+   * @registry: an #FlPluginRegistry.
+   * @name: plugin name.
+   *
+   * Gets the plugin registrar for the the plugin with @name.
+   *
+   * Returns: (transfer full): an #FlPluginRegistrar.
+   */
+  FlPluginRegistrar *(*get_registrar_for_plugin)(FlPluginRegistry *registry,
+                                                 const gchar *name);
 };
 
 /**
@@ -52,10 +49,10 @@ struct _FlPluginRegistryInterface {
  *
  * Returns: (transfer full): an #FlPluginRegistrar.
  */
-FlPluginRegistrar* fl_plugin_registry_get_registrar_for_plugin(
-    FlPluginRegistry* registry,
-    const gchar* name);
+FlPluginRegistrar *
+fl_plugin_registry_get_registrar_for_plugin(FlPluginRegistry *registry,
+                                            const gchar *name);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_PLUGIN_REGISTRY_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_PLUGIN_REGISTRY_H_

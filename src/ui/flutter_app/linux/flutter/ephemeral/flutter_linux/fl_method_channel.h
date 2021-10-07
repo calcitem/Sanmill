@@ -19,10 +19,7 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_FINAL_TYPE(FlMethodChannel,
-                     fl_method_channel,
-                     FL,
-                     METHOD_CHANNEL,
+G_DECLARE_FINAL_TYPE(FlMethodChannel, fl_method_channel, FL, METHOD_CHANNEL,
                      GObject)
 
 /**
@@ -109,9 +106,9 @@ G_DECLARE_FINAL_TYPE(FlMethodChannel,
  * responded to. Failing to respond before the last reference to @method_call is
  * dropped is a programming error.
  */
-typedef void (*FlMethodChannelMethodCallHandler)(FlMethodChannel* channel,
-        FlMethodCall* method_call,
-        gpointer user_data);
+typedef void (*FlMethodChannelMethodCallHandler)(FlMethodChannel *channel,
+                                                 FlMethodCall *method_call,
+                                                 gpointer user_data);
 
 /**
  * fl_method_channel_new:
@@ -124,9 +121,8 @@ typedef void (*FlMethodChannelMethodCallHandler)(FlMethodChannel* channel,
  *
  * Returns: a new #FlMethodChannel.
  */
-FlMethodChannel* fl_method_channel_new(FlBinaryMessenger* messenger,
-                                       const gchar* name,
-                                       FlMethodCodec* codec);
+FlMethodChannel *fl_method_channel_new(FlBinaryMessenger *messenger,
+                                       const gchar *name, FlMethodCodec *codec);
 
 /**
  * fl_method_channel_set_method_call_handler:
@@ -144,10 +140,8 @@ FlMethodChannel* fl_method_channel_new(FlBinaryMessenger* messenger,
  * handler, set @destroy_notify if you want to detect this.
  */
 void fl_method_channel_set_method_call_handler(
-    FlMethodChannel* channel,
-    FlMethodChannelMethodCallHandler handler,
-    gpointer user_data,
-    GDestroyNotify destroy_notify);
+    FlMethodChannel *channel, FlMethodChannelMethodCallHandler handler,
+    gpointer user_data, GDestroyNotify destroy_notify);
 
 /**
  * fl_method_channel_invoke_method:
@@ -162,10 +156,9 @@ void fl_method_channel_set_method_call_handler(
  *
  * Calls a method on this channel.
  */
-void fl_method_channel_invoke_method(FlMethodChannel* channel,
-                                     const gchar* method,
-                                     FlValue* args,
-                                     GCancellable* cancellable,
+void fl_method_channel_invoke_method(FlMethodChannel *channel,
+                                     const gchar *method, FlValue *args,
+                                     GCancellable *cancellable,
                                      GAsyncReadyCallback callback,
                                      gpointer user_data);
 
@@ -180,11 +173,10 @@ void fl_method_channel_invoke_method(FlMethodChannel* channel,
  *
  * Returns: (transfer full): an #FlMethodResponse or %NULL on error.
  */
-FlMethodResponse* fl_method_channel_invoke_method_finish(
-    FlMethodChannel* channel,
-    GAsyncResult* result,
-    GError** error);
+FlMethodResponse *
+fl_method_channel_invoke_method_finish(FlMethodChannel *channel,
+                                       GAsyncResult *result, GError **error);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_METHOD_CHANNEL_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_METHOD_CHANNEL_H_

@@ -32,7 +32,7 @@ G_DECLARE_FINAL_TYPE(FlEngine, fl_engine, FL, ENGINE, GObject)
  *
  * Returns: a new #FlEngine.
  */
-FlEngine* fl_engine_new_headless(FlDartProject* project);
+FlEngine *fl_engine_new_headless(FlDartProject *project);
 
 /**
  * fl_engine_get_binary_messenger:
@@ -42,8 +42,8 @@ FlEngine* fl_engine_new_headless(FlDartProject* project);
  *
  * Returns: an #FlBinaryMessenger.
  */
-FlBinaryMessenger* fl_engine_get_binary_messenger(FlEngine* engine);
+FlBinaryMessenger *fl_engine_get_binary_messenger(FlEngine *engine);
 
 G_END_DECLS
 
-#endif  // FLUTTER_SHELL_PLATFORM_LINUX_FL_ENGINE_H_
+#endif // FLUTTER_SHELL_PLATFORM_LINUX_FL_ENGINE_H_
