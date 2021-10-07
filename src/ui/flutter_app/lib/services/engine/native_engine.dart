@@ -25,7 +25,6 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/shared/common/config.dart';
 
-
 class NativeEngine extends Engine {
   static const platform = MethodChannel('com.calcitem.sanmill/engine');
   bool isActive = false;

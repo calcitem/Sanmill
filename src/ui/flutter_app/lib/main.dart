@@ -34,7 +34,6 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-
 Future<void> main() async {
   final catcher = Catcher(
     rootWidget: BetterFeedback(

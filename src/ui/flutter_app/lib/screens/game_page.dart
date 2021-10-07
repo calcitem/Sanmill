@@ -44,8 +44,6 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 //import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-
-
 double boardWidth = 0.0;
 
 class GamePage extends StatefulWidget {

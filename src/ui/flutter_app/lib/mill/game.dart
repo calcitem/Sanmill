@@ -22,8 +22,6 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/shared/common/config.dart';
 
-
-
 enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
 

@@ -38,8 +38,6 @@ import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-
-
 class NavigationHomeScreen extends StatefulWidget {
   @override
   _NavigationHomeScreenState createState() => _NavigationHomeScreenState();

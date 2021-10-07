@@ -21,8 +21,6 @@ import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/shared/common/config.dart';
 
-
-
 // TODO
 class GameRecorder {
   int cur = -1;

@@ -26,8 +26,6 @@ import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 
-
-
 List<int> posKeyHistory = [];
 
 class StateInfo {
