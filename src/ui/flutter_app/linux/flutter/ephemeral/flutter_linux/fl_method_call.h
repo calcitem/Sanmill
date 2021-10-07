@@ -108,7 +108,7 @@ gboolean fl_method_call_respond_error(FlMethodCall* method_call,
  * Returns: %TRUE on success.
  */
 gboolean fl_method_call_respond_not_implemented(FlMethodCall* method_call,
-                                                GError** error);
+        GError** error);
 
 G_END_DECLS
 

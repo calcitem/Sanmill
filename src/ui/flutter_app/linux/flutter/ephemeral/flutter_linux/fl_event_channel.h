@@ -84,8 +84,8 @@ G_DECLARE_FINAL_TYPE(FlEventChannel,
  * Returns: (transfer full): an #FlMethodErrorResponse or %NULL if no error.
  */
 typedef FlMethodErrorResponse* (*FlEventChannelHandler)(FlEventChannel* channel,
-                                                        FlValue* args,
-                                                        gpointer user_data);
+        FlValue* args,
+        gpointer user_data);
 
 /**
  * fl_event_channel_new:
@@ -121,10 +121,10 @@ FlEventChannel* fl_event_channel_new(FlBinaryMessenger* messenger,
  * handler, set @destroy_notify if you want to detect this.
  */
 void fl_event_channel_set_stream_handlers(FlEventChannel* channel,
-                                          FlEventChannelHandler listen_handler,
-                                          FlEventChannelHandler cancel_handler,
-                                          gpointer user_data,
-                                          GDestroyNotify destroy_notify);
+        FlEventChannelHandler listen_handler,
+        FlEventChannelHandler cancel_handler,
+        gpointer user_data,
+        GDestroyNotify destroy_notify);
 
 /**
  * fl_event_channel_send:
@@ -179,8 +179,8 @@ gboolean fl_event_channel_send_error(FlEventChannel* channel,
  * Returns: %TRUE if successful.
  */
 gboolean fl_event_channel_send_end_of_stream(FlEventChannel* channel,
-                                             GCancellable* cancellable,
-                                             GError** error);
+        GCancellable* cancellable,
+        GError** error);
 
 G_END_DECLS
 

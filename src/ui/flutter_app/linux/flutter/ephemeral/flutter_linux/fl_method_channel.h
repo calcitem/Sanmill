@@ -110,8 +110,8 @@ G_DECLARE_FINAL_TYPE(FlMethodChannel,
  * dropped is a programming error.
  */
 typedef void (*FlMethodChannelMethodCallHandler)(FlMethodChannel* channel,
-                                                 FlMethodCall* method_call,
-                                                 gpointer user_data);
+        FlMethodCall* method_call,
+        gpointer user_data);
 
 /**
  * fl_method_channel_new:

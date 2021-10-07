@@ -60,7 +60,7 @@ void fl_dart_project_set_enable_mirrors(FlDartProject* project,
  * release.
  */
 gboolean fl_dart_project_get_enable_mirrors(FlDartProject* project)
-    G_DEPRECATED;
+G_DEPRECATED;
 
 /**
  * fl_dart_project_get_aot_library_path:
@@ -106,7 +106,7 @@ const gchar* fl_dart_project_get_icu_data_path(FlDartProject* project);
  * entrypoint function.
  */
 void fl_dart_project_set_dart_entrypoint_arguments(FlDartProject* project,
-                                                   char** argv);
+        char** argv);
 
 /**
  * fl_dart_project_get_dart_entrypoint_arguments:

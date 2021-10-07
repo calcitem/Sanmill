@@ -29,10 +29,10 @@ G_BEGIN_DECLS
 #define FL_MESSAGE_CODEC_ERROR fl_message_codec_error_quark()
 
 typedef enum {
-  FL_MESSAGE_CODEC_ERROR_FAILED,
-  FL_MESSAGE_CODEC_ERROR_OUT_OF_DATA,
-  FL_MESSAGE_CODEC_ERROR_ADDITIONAL_DATA,
-  FL_MESSAGE_CODEC_ERROR_UNSUPPORTED_TYPE,
+    FL_MESSAGE_CODEC_ERROR_FAILED,
+    FL_MESSAGE_CODEC_ERROR_OUT_OF_DATA,
+    FL_MESSAGE_CODEC_ERROR_ADDITIONAL_DATA,
+    FL_MESSAGE_CODEC_ERROR_UNSUPPORTED_TYPE,
 } FlMessageCodecError;
 
 GQuark fl_message_codec_error_quark(void) G_GNUC_CONST;
@@ -55,42 +55,42 @@ G_DECLARE_DERIVABLE_TYPE(FlMessageCodec,
  */
 
 struct _FlMessageCodecClass {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 
-  /**
-   * FlMessageCodec::encode_message:
-   * @codec: A #FlMessageCodec.
-   * @message: message to encode or %NULL to encode the null value.
-   * @error: (allow-none): #GError location to store the error occurring, or
-   * %NULL.
-   *
-   * Virtual method to encode a message. A subclass must implement this method.
-   * If the subclass cannot handle the type of @message then it must generate a
-   * FL_MESSAGE_CODEC_ERROR_UNSUPPORTED_TYPE error.
-   *
-   * Returns: a binary message or %NULL on error.
-   */
-  GBytes* (*encode_message)(FlMessageCodec* codec,
-                            FlValue* message,
-                            GError** error);
+    /**
+     * FlMessageCodec::encode_message:
+     * @codec: A #FlMessageCodec.
+     * @message: message to encode or %NULL to encode the null value.
+     * @error: (allow-none): #GError location to store the error occurring, or
+     * %NULL.
+     *
+     * Virtual method to encode a message. A subclass must implement this method.
+     * If the subclass cannot handle the type of @message then it must generate a
+     * FL_MESSAGE_CODEC_ERROR_UNSUPPORTED_TYPE error.
+     *
+     * Returns: a binary message or %NULL on error.
+     */
+    GBytes* (*encode_message)(FlMessageCodec* codec,
+                              FlValue* message,
+                              GError** error);
 
-  /**
-   * FlMessageCodec::decode_message:
-   * @codec: an #FlMessageCodec.
-   * @message: binary message to decode.
-   * @error: (allow-none): #GError location to store the error occurring, or
-   * %NULL.
-   *
-   * Virtual method to decode a message. A subclass must implement this method.
-   * If @message is too small then a #FL_MESSAGE_CODEC_ERROR_OUT_OF_DATA error
-   * must be generated. If @message is too large then a
-   * #FL_MESSAGE_CODEC_ERROR_ADDITIONAL_DATA error must be generated.
-   *
-   * Returns: an #FlValue or %NULL on error.
-   */
-  FlValue* (*decode_message)(FlMessageCodec* codec,
-                             GBytes* message,
-                             GError** error);
+    /**
+     * FlMessageCodec::decode_message:
+     * @codec: an #FlMessageCodec.
+     * @message: binary message to decode.
+     * @error: (allow-none): #GError location to store the error occurring, or
+     * %NULL.
+     *
+     * Virtual method to decode a message. A subclass must implement this method.
+     * If @message is too small then a #FL_MESSAGE_CODEC_ERROR_OUT_OF_DATA error
+     * must be generated. If @message is too large then a
+     * #FL_MESSAGE_CODEC_ERROR_ADDITIONAL_DATA error must be generated.
+     *
+     * Returns: an #FlValue or %NULL on error.
+     */
+    FlValue* (*decode_message)(FlMessageCodec* codec,
+                               GBytes* message,
+                               GError** error);
 };
 
 /**
@@ -121,8 +121,8 @@ GBytes* fl_message_codec_encode_message(FlMessageCodec* codec,
  * Returns: an #FlValue or %NULL on error.
  */
 FlValue* fl_message_codec_decode_message(FlMessageCodec* codec,
-                                         GBytes* message,
-                                         GError** error);
+        GBytes* message,
+        GError** error);
 
 G_END_DECLS
 

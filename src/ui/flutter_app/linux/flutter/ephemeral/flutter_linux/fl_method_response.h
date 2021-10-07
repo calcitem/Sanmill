@@ -29,9 +29,9 @@ G_BEGIN_DECLS
 #define FL_METHOD_RESPONSE_ERROR fl_method_response_error_quark()
 
 typedef enum {
-  FL_METHOD_RESPONSE_ERROR_FAILED,
-  FL_METHOD_RESPONSE_ERROR_REMOTE_ERROR,
-  FL_METHOD_RESPONSE_ERROR_NOT_IMPLEMENTED,
+    FL_METHOD_RESPONSE_ERROR_FAILED,
+    FL_METHOD_RESPONSE_ERROR_REMOTE_ERROR,
+    FL_METHOD_RESPONSE_ERROR_NOT_IMPLEMENTED,
 } FlMethodResponseError;
 
 GQuark fl_method_response_error_quark(void) G_GNUC_CONST;
@@ -43,7 +43,7 @@ G_DECLARE_DERIVABLE_TYPE(FlMethodResponse,
                          GObject)
 
 struct _FlMethodResponseClass {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 };
 
 G_DECLARE_FINAL_TYPE(FlMethodSuccessResponse,
@@ -164,8 +164,8 @@ FlValue* fl_method_success_response_get_result(
  * Returns: a new #FlMethodErrorResponse.
  */
 FlMethodErrorResponse* fl_method_error_response_new(const gchar* code,
-                                                    const gchar* message,
-                                                    FlValue* details);
+        const gchar* message,
+        FlValue* details);
 
 /**
  * fl_method_error_response_get_code:

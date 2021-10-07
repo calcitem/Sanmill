@@ -24,7 +24,7 @@ G_BEGIN_DECLS
 #define FL_BINARY_MESSENGER_ERROR fl_binary_messenger_codec_error_quark()
 
 typedef enum {
-  FL_BINARY_MESSENGER_ERROR_ALREADY_RESPONDED,
+    FL_BINARY_MESSENGER_ERROR_ALREADY_RESPONDED,
 } FlBinaryMessengerError;
 
 GQuark fl_binary_messenger_codec_error_quark(void) G_GNUC_CONST;
@@ -132,11 +132,11 @@ gboolean fl_binary_messenger_send_response(
  * Asynchronously sends a platform message.
  */
 void fl_binary_messenger_send_on_channel(FlBinaryMessenger* messenger,
-                                         const gchar* channel,
-                                         GBytes* message,
-                                         GCancellable* cancellable,
-                                         GAsyncReadyCallback callback,
-                                         gpointer user_data);
+        const gchar* channel,
+        GBytes* message,
+        GCancellable* cancellable,
+        GAsyncReadyCallback callback,
+        gpointer user_data);
 
 /**
  * fl_binary_messenger_send_on_channel_finish:
@@ -150,8 +150,8 @@ void fl_binary_messenger_send_on_channel(FlBinaryMessenger* messenger,
  * Returns: (transfer full): message response on success or %NULL on error.
  */
 GBytes* fl_binary_messenger_send_on_channel_finish(FlBinaryMessenger* messenger,
-                                                   GAsyncResult* result,
-                                                   GError** error);
+        GAsyncResult* result,
+        GError** error);
 
 G_END_DECLS
 

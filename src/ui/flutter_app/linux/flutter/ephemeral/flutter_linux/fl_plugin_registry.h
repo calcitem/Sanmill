@@ -28,19 +28,19 @@ G_DECLARE_INTERFACE(FlPluginRegistry,
  */
 
 struct _FlPluginRegistryInterface {
-  GTypeInterface g_iface;
+    GTypeInterface g_iface;
 
-  /**
-   * FlPluginRegistry::get_registrar_for_plugin:
-   * @registry: an #FlPluginRegistry.
-   * @name: plugin name.
-   *
-   * Gets the plugin registrar for the the plugin with @name.
-   *
-   * Returns: (transfer full): an #FlPluginRegistrar.
-   */
-  FlPluginRegistrar* (*get_registrar_for_plugin)(FlPluginRegistry* registry,
-                                                 const gchar* name);
+    /**
+     * FlPluginRegistry::get_registrar_for_plugin:
+     * @registry: an #FlPluginRegistry.
+     * @name: plugin name.
+     *
+     * Gets the plugin registrar for the the plugin with @name.
+     *
+     * Returns: (transfer full): an #FlPluginRegistrar.
+     */
+    FlPluginRegistrar* (*get_registrar_for_plugin)(FlPluginRegistry* registry,
+            const gchar* name);
 };
 
 /**
