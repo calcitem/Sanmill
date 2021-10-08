@@ -27,12 +27,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/navigation_home_screen.dart';
+import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 import 'services/audios.dart';
 

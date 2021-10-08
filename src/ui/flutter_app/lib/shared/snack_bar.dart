@@ -17,20 +17,26 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/shared/common/config.dart';
 
-class ListItemDivider extends StatelessWidget {
-  const ListItemDivider({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Divider(
-      indent: 16,
-      endIndent: 16,
-      thickness: 1.0,
-      color: AppTheme.listItemDividerColor,
-    );
+void showSnackBar(
+  BuildContext context,
+  String message, {
+  Duration duration = const Duration(milliseconds: 4000),
+}) {
+  if (!Config.screenReaderSupport) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(
+          fontSize: Config.fontSize,
+        ),
+      ),
+      duration: duration,
+    ),
+  );
 }
