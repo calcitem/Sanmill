@@ -72,7 +72,7 @@ void showCountdownDialog(
               const SizedBox(height: 20),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
                 child: Center(
                   child: Text(
@@ -179,7 +179,7 @@ Future<void> showPrivacyDialog(
           child: Text(S.of(context).accept),
           onPressed: () {
             setPrivacyPolicyAccepted(true);
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
         if (Platform.isAndroid)

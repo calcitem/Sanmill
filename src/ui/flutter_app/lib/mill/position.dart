@@ -133,11 +133,9 @@ class Position {
 
   bool empty(int sq) => pieceOn(sq) == Piece.noPiece;
 
-  String sideToMove() => _sideToMove;
+  String get sideToMove => _sideToMove;
 
-  String movedPiece(int move) {
-    return pieceOn(fromSq(move));
-  }
+  String movedPiece(int move) => pieceOn(fromSq(move));
 
   bool movePiece(int from, int to) {
     if (selectPiece(from) == 0) {
@@ -477,7 +475,7 @@ class Position {
     }
 
     if (phase == Phase.placing) {
-      piece = sideToMove();
+      piece = sideToMove;
       if (pieceInHandCount[us] != null) {
         pieceInHandCount[us] = pieceInHandCount[us]! - 1;
       }
@@ -526,7 +524,7 @@ class Position {
         } else {
           changeSideToMove();
         }
-        Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone(Audios.placeSoundId);
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
@@ -562,7 +560,7 @@ class Position {
           action = Act.remove;
         }
 
-        Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone(Audios.millSoundId);
       }
     } else if (phase == Phase.moving) {
@@ -571,8 +569,7 @@ class Position {
       }
 
       // if illegal
-      if (pieceOnBoardCount[sideToMove()]! > rule.flyPieceCount ||
-          !rule.mayFly) {
+      if (pieceOnBoardCount[sideToMove]! > rule.flyPieceCount || !rule.mayFly) {
         int md;
 
         for (md = 0; md < moveDirectionNumber; md++) {
@@ -611,14 +608,14 @@ class Position {
         if (checkIfGameIsOver()) {
           return true;
         } else {
-          Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+          gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
           Audios.playTone(Audios.placeSoundId);
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
         action = Act.remove;
-        Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone(Audios.millSoundId);
       }
     } else {
@@ -636,11 +633,11 @@ class Position {
     if (pieceToRemoveCount <= 0) return -1;
 
     // if piece is not their
-    if (!(PieceColor.opponent(sideToMove()) == board[s])) return -2;
+    if (!(PieceColor.opponent(sideToMove) == board[s])) return -2;
 
     if (!rule.mayRemoveFromMillsAlways &&
         potentialMillsCount(s, PieceColor.nobody) > 0 &&
-        !isAllInMills(PieceColor.opponent(sideToMove()))) {
+        !isAllInMills(PieceColor.opponent(sideToMove))) {
       return -3;
     }
 
@@ -666,7 +663,7 @@ class Position {
 
     if (pieceOnBoardCount[them]! + pieceInHandCount[them]! <
         rule.piecesAtLeastCount) {
-      setGameOver(sideToMove(), GameOverReason.loseReasonlessThanThree);
+      setGameOver(sideToMove, GameOverReason.loseReasonlessThanThree);
       return 0;
     }
 
@@ -715,13 +712,13 @@ class Position {
       return -3;
     }
 
-    if (!(board[sq] == sideToMove())) {
+    if (!(board[sq] == sideToMove)) {
       return -4;
     }
 
     currentSquare = sq;
     action = Act.place;
-    Game.instance.blurIndex = squareToIndex[sq]!;
+    gameInstance.blurIndex = squareToIndex[sq]!;
 
     return 0;
   }
@@ -808,7 +805,7 @@ class Position {
     if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
       if (rule.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
-          PieceColor.opponent(sideToMove()),
+          PieceColor.opponent(sideToMove),
           GameOverReason.loseReasonNoWay,
         );
         return true;
@@ -864,9 +861,7 @@ class Position {
   int updateKey(int s) {
     final String pieceType = colorOn(s);
 
-    st.key ^= Zobrist.psq[pieceColorIndex[pieceType]!][s];
-
-    return st.key;
+    return st.key ^= Zobrist.psq[pieceColorIndex[pieceType]!][s];
   }
 
   int revertKey(int s) {
@@ -890,11 +885,12 @@ class Position {
   int potentialMillsCount(int to, String c, {int from = 0}) {
     int n = 0;
     String locbak = Piece.noPiece;
+    String _c = c;
 
     assert(0 <= from && from < sqNumber);
 
-    if (c == PieceColor.nobody) {
-      c = colorOn(to);
+    if (_c == PieceColor.nobody) {
+      _c = colorOn(to);
     }
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
@@ -903,7 +899,8 @@ class Position {
     }
 
     for (int l = 0; l < lineDirectionNumber; l++) {
-      if (c == board[millTable[to][l][0]] && c == board[millTable[to][l][1]]) {
+      if (_c == board[millTable[to][l][0]] &&
+          _c == board[millTable[to][l][1]]) {
         n++;
       }
     }
@@ -978,12 +975,12 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove()]! <= rule.flyPieceCount && rule.mayFly) {
+    if (pieceOnBoardCount[sideToMove]! <= rule.flyPieceCount && rule.mayFly) {
       return false;
     }
 
     for (int s = sqBegin; s < sqEnd; s++) {
-      if (!(sideToMove() == colorOn(s))) {
+      if (!(sideToMove == colorOn(s))) {
         continue;
       }
 
@@ -1112,21 +1109,21 @@ class Position {
     }
 
     // Backup context
-    final engineTypeBackup = Game.instance.engineType;
+    final engineTypeBackup = gameInstance.engineType;
 
-    Game.instance.engineType = EngineType.humanVsHuman;
-    Game.instance.setWhoIsAi(EngineType.humanVsHuman);
+    gameInstance.engineType = EngineType.humanVsHuman;
+    gameInstance.setWhoIsAi(EngineType.humanVsHuman);
 
     final historyBack = history;
 
-    Game.instance.newGame();
+    gameInstance.newGame();
 
     if (moveIndex == -1) {
       errString = "";
     }
 
     for (var i = 0; i <= moveIndex; i++) {
-      if (Game.instance.doMove(history[i].move!) == false) {
+      if (gameInstance.doMove(history[i].move!) == false) {
         errString = history[i].move!;
         break;
       }
@@ -1136,8 +1133,8 @@ class Position {
     }
 
     // Restore context
-    Game.instance.engineType = engineTypeBackup;
-    Game.instance.setWhoIsAi(engineTypeBackup);
+    gameInstance.engineType = engineTypeBackup;
+    gameInstance.setWhoIsAi(engineTypeBackup);
     recorder!.history = historyBack;
     recorder!.cur = moveIndex;
 

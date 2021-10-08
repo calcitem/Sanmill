@@ -86,7 +86,8 @@ class OssLicensesPage extends StatelessWidget {
                 title: Text('$key $version'),
                 subtitle: desc != null ? Text(desc) : null,
                 trailing: const Icon(FluentIcons.chevron_right_24_regular),
-                onTap: () => Navigator.of(context).push(
+                onTap: () => Navigator.push(
+                  context,
                   MaterialPageRoute(
                     builder: (_) => MiscOssLicenseSingle(name: key, json: ossl),
                   ),

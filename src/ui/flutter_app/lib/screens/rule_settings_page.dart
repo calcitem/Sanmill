@@ -27,7 +27,6 @@ import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 import '../shared/snack_bar.dart';
-import 'list_item_divider.dart';
 
 class RuleSettingsPage extends StatefulWidget {
   @override
@@ -63,7 +62,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             trailingString: Config.piecesCount.toString(),
             onTap: setNTotalPiecesEachSide,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.hasDiagonalLines,
@@ -71,21 +69,18 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             titleString: S.of(context).hasDiagonalLines,
             subtitleString: S.of(context).hasDiagonalLines_Detail,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).nMoveRule,
             subtitleString: S.of(context).nMoveRule_Detail,
             trailingString: Config.nMoveRule.toString(),
             onTap: setNMoveRule,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).endgameNMoveRule,
             subtitleString: S.of(context).endgameNMoveRule_Detail,
             trailingString: Config.endgameNMoveRule.toString(),
             onTap: setEndgameNMoveRule,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.threefoldRepetitionRule,
@@ -93,7 +88,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             titleString: S.of(context).threefoldRepetitionRule,
             subtitleString: S.of(context).threefoldRepetitionRule_Detail,
           ),
-          const ListItemDivider(),
         ],
       ),
       const SizedBox(height: AppTheme.sizedBoxHeight),
@@ -108,7 +102,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             titleString: S.of(context).hasBannedLocations,
             subtitleString: S.of(context).hasBannedLocations_Detail,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isWhiteLoseButNotDrawWhenBoardFull,
@@ -117,7 +110,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             subtitleString:
                 S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.mayOnlyRemoveUnplacedPieceInPlacingPhase,
@@ -141,19 +133,13 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
             )
           else
-            const SizedBox(height: 1),
-          if (Config.experimentsEnabled)
-            const ListItemDivider()
-          else
-            const SizedBox(height: 1),
-          SettingsSwitchListTile(
-            context: context,
-            value: Config.isDefenderMoveFirst,
-            onChanged: setIsDefenderMoveFirst,
-            titleString: S.of(context).isDefenderMoveFirst,
-            subtitleString: S.of(context).isDefenderMoveFirst_Detail,
-          ),
-          const ListItemDivider(),
+            SettingsSwitchListTile(
+              context: context,
+              value: Config.isDefenderMoveFirst,
+              onChanged: setIsDefenderMoveFirst,
+              titleString: S.of(context).isDefenderMoveFirst,
+              subtitleString: S.of(context).isDefenderMoveFirst_Detail,
+            ),
           SettingsSwitchListTile(
             context: context,
             value: Config.isLoseButNotChangeSideWhenNoWay,
@@ -176,7 +162,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             titleString: S.of(context).mayFly,
             subtitleString: S.of(context).mayFly_Detail,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).flyPieceCount,
             subtitleString: S.of(context).flyPieceCount_Detail,
@@ -197,7 +182,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             titleString: S.of(context).mayRemoveFromMillsAlways,
             subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.mayRemoveMultiple,
@@ -205,7 +189,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             titleString: S.of(context).mayRemoveMultiple,
             subtitleString: S.of(context).mayRemoveMultiple_Detail,
           ),
-          const ListItemDivider(),
         ],
       ),
     ];
@@ -217,12 +200,12 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     Future<void> callback(int? piecesCount) async {
       debugPrint("[config] piecesCount = $piecesCount");
 
-      Navigator.of(context).pop();
+      Navigator.pop(context);
 
-      setState(() {
-        rule.piecesCount = Config.piecesCount =
-            piecesCount ?? (specialCountryAndRegion == "Iran" ? 12 : 9);
-      });
+      setState(
+        () => rule.piecesCount = Config.piecesCount =
+            piecesCount ?? (specialCountryAndRegion == "Iran" ? 12 : 9),
+      );
 
       debugPrint("[config] rule.piecesCount: ${rule.piecesCount}");
 
@@ -243,7 +226,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 9,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('10'),
@@ -251,7 +233,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 10,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('11'),
@@ -259,7 +240,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 11,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('12'),
@@ -267,7 +247,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 12,
               onChanged: callback,
             ),
-            const ListItemDivider(),
           ],
         ),
       ),
@@ -278,11 +257,9 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     Future<void> callback(int? nMoveRule) async {
       debugPrint("[config] nMoveRule = $nMoveRule");
 
-      Navigator.of(context).pop();
+      Navigator.pop(context);
 
-      setState(() {
-        rule.nMoveRule = Config.nMoveRule = nMoveRule ?? 100;
-      });
+      setState(() => rule.nMoveRule = Config.nMoveRule = nMoveRule ?? 100);
 
       debugPrint("[config] rule.nMoveRule: ${rule.nMoveRule}");
 
@@ -303,7 +280,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 30,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('50'),
@@ -311,7 +287,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 50,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('60'),
@@ -319,7 +294,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 60,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('100'),
@@ -327,7 +301,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 100,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('200'),
@@ -335,7 +308,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 200,
               onChanged: callback,
             ),
-            const ListItemDivider(),
           ],
         ),
       ),
@@ -346,12 +318,12 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     Future<void> callback(int? endgameNMoveRule) async {
       debugPrint("[config] endgameNMoveRule = $endgameNMoveRule");
 
-      Navigator.of(context).pop();
+      Navigator.pop(context);
 
-      setState(() {
-        rule.endgameNMoveRule =
-            Config.endgameNMoveRule = endgameNMoveRule ?? 100;
-      });
+      setState(
+        () => rule.endgameNMoveRule =
+            Config.endgameNMoveRule = endgameNMoveRule ?? 100,
+      );
 
       debugPrint("[config] rule.endgameNMoveRule: ${rule.endgameNMoveRule}");
 
@@ -372,7 +344,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 5,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('10'),
@@ -380,7 +351,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 10,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('20'),
@@ -388,7 +358,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 20,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('30'),
@@ -396,7 +365,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 30,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('50'),
@@ -404,7 +372,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 50,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('60'),
@@ -412,7 +379,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 60,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('100'),
@@ -420,7 +386,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 100,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('200'),
@@ -428,7 +393,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 200,
               onChanged: callback,
             ),
-            const ListItemDivider(),
           ],
         ),
       ),
@@ -439,11 +403,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     Future<void> callback(int? flyPieceCount) async {
       debugPrint("[config] flyPieceCount = $flyPieceCount");
 
-      Navigator.of(context).pop();
+      Navigator.pop(context);
 
-      setState(() {
-        rule.flyPieceCount = Config.flyPieceCount = flyPieceCount ?? 3;
-      });
+      setState(
+        () => rule.flyPieceCount = Config.flyPieceCount = flyPieceCount ?? 3,
+      );
 
       debugPrint("[config] rule.flyPieceCount: ${rule.flyPieceCount}");
 
@@ -464,7 +428,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 3,
               onChanged: callback,
             ),
-            const ListItemDivider(),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('4'),
@@ -472,7 +435,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: 4,
               onChanged: callback,
             ),
-            const ListItemDivider(),
           ],
         ),
       ),
@@ -480,9 +442,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setHasDiagonalLines(bool value) async {
-    setState(() {
-      rule.hasDiagonalLines = Config.hasDiagonalLines = value;
-    });
+    setState(() => rule.hasDiagonalLines = Config.hasDiagonalLines = value);
 
     debugPrint("[config] rule.hasDiagonalLines: $value");
 
@@ -490,9 +450,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setAllowFlyingAllowed(bool value) async {
-    setState(() {
-      rule.mayFly = Config.mayFly = value;
-    });
+    setState(() => rule.mayFly = Config.mayFly = value);
 
     debugPrint("[config] rule.mayFly: $value");
 
@@ -500,9 +458,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setThreefoldRepetitionRule(bool value) async {
-    setState(() {
-      rule.threefoldRepetitionRule = Config.threefoldRepetitionRule = value;
-    });
+    setState(
+      () =>
+          rule.threefoldRepetitionRule = Config.threefoldRepetitionRule = value,
+    );
 
     debugPrint("[config] rule.threefoldRepetitionRule: $value");
 
@@ -512,9 +471,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   // Placing
 
   Future<void> setHasBannedLocations(bool value) async {
-    setState(() {
-      rule.hasBannedLocations = Config.hasBannedLocations = value;
-    });
+    setState(() => rule.hasBannedLocations = Config.hasBannedLocations = value);
 
     debugPrint("[config] rule.hasBannedLocations: $value");
 
@@ -522,10 +479,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setIsWhiteLoseButNotDrawWhenBoardFull(bool value) async {
-    setState(() {
-      rule.isWhiteLoseButNotDrawWhenBoardFull =
-          Config.isWhiteLoseButNotDrawWhenBoardFull = value;
-    });
+    setState(
+      () => rule.isWhiteLoseButNotDrawWhenBoardFull =
+          Config.isWhiteLoseButNotDrawWhenBoardFull = value,
+    );
 
     debugPrint("[config] rule.isWhiteLoseButNotDrawWhenBoardFull: $value");
 
@@ -533,10 +490,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setMayOnlyRemoveUnplacedPieceInPlacingPhase(bool value) async {
-    setState(() {
-      rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
-          Config.mayOnlyRemoveUnplacedPieceInPlacingPhase = value;
-    });
+    setState(
+      () => rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
+          Config.mayOnlyRemoveUnplacedPieceInPlacingPhase = value,
+    );
 
     debugPrint(
       "[config] rule.mayOnlyRemoveUnplacedPieceInPlacingPhase: $value",
@@ -548,9 +505,9 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   // Moving
 
   Future<void> setMayMoveInPlacingPhase(bool value) async {
-    setState(() {
-      rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase = value;
-    });
+    setState(
+      () => rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase = value,
+    );
 
     debugPrint("[config] rule.mayMoveInPlacingPhase: $value");
 
@@ -563,9 +520,9 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setIsDefenderMoveFirst(bool value) async {
-    setState(() {
-      rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
-    });
+    setState(
+      () => rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value,
+    );
 
     debugPrint("[config] rule.isDefenderMoveFirst: $value");
 
@@ -573,10 +530,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setIsLoseButNotChangeSideWhenNoWay(bool value) async {
-    setState(() {
-      rule.isLoseButNotChangeSideWhenNoWay =
-          Config.isLoseButNotChangeSideWhenNoWay = value;
-    });
+    setState(
+      () => rule.isLoseButNotChangeSideWhenNoWay =
+          Config.isLoseButNotChangeSideWhenNoWay = value,
+    );
 
     debugPrint("[config] rule.isLoseButNotChangeSideWhenNoWay: $value");
 
@@ -586,9 +543,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   // Removing
 
   Future<void> setAllowRemovePieceInMill(bool value) async {
-    setState(() {
-      rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways = value;
-    });
+    setState(
+      () => rule.mayRemoveFromMillsAlways =
+          Config.mayRemoveFromMillsAlways = value,
+    );
 
     debugPrint("[config] rule.mayRemoveFromMillsAlways: $value");
 
@@ -596,9 +554,9 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
-    setState(() {
-      rule.mayRemoveMultiple = Config.mayRemoveMultiple = value;
-    });
+    setState(
+      () => rule.mayRemoveMultiple = Config.mayRemoveMultiple = value,
+    );
 
     debugPrint("[config] rule.mayRemoveMultiple: $value");
 
@@ -608,9 +566,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   // Unused
 
   Future<void> setNPiecesAtLeast(int value) async {
-    setState(() {
-      rule.piecesAtLeastCount = Config.piecesAtLeastCount = value;
-    });
+    setState(() => rule.piecesAtLeastCount = Config.piecesAtLeastCount = value);
 
     debugPrint("[config] rule.piecesAtLeastCount: $value");
 

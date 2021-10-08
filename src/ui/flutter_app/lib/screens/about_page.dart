@@ -294,14 +294,14 @@ class _VersionDialog extends StatelessWidget {
         ),
         TextButton(
           child: Text(S.of(context).ok),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context),
         ),
       ],
     );
   }
 
   void _showFlutterVersionInfo(BuildContext context) {
-    Navigator.of(context).pop();
+    Navigator.pop(context);
 
     showDialog(
       context: context,
@@ -332,7 +332,7 @@ class _VersionDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           child: Text(S.of(context).ok),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context),
         ),
       ],
     );
