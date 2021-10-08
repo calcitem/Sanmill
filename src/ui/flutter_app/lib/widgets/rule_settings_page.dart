@@ -220,7 +220,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   setNTotalPiecesEachSide() {
     callback(int? piecesCount) async {
-      print("[config] piecesCount = $piecesCount");
+     debugPrint("[config] piecesCount = $piecesCount");
 
       Navigator.of(context).pop();
 
@@ -229,7 +229,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             piecesCount ?? (specialCountryAndRegion == "Iran" ? 12 : 9);
       });
 
-      print("[config] rule.piecesCount: ${rule.piecesCount}");
+     debugPrint("[config] rule.piecesCount: ${rule.piecesCount}");
 
       Config.save();
     }
@@ -281,7 +281,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   setNMoveRule() {
     callback(int? nMoveRule) async {
-      print("[config] nMoveRule = $nMoveRule");
+     debugPrint("[config] nMoveRule = $nMoveRule");
 
       Navigator.of(context).pop();
 
@@ -289,7 +289,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         rule.nMoveRule = Config.nMoveRule = nMoveRule ?? 100;
       });
 
-      print("[config] rule.nMoveRule: ${rule.nMoveRule}");
+     debugPrint("[config] rule.nMoveRule: ${rule.nMoveRule}");
 
       Config.save();
     }
@@ -349,7 +349,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   setEndgameNMoveRule() {
     callback(int? endgameNMoveRule) async {
-      print("[config] endgameNMoveRule = $endgameNMoveRule");
+     debugPrint("[config] endgameNMoveRule = $endgameNMoveRule");
 
       Navigator.of(context).pop();
 
@@ -358,7 +358,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             Config.endgameNMoveRule = endgameNMoveRule ?? 100;
       });
 
-      print("[config] rule.endgameNMoveRule: ${rule.endgameNMoveRule}");
+     debugPrint("[config] rule.endgameNMoveRule: ${rule.endgameNMoveRule}");
 
       Config.save();
     }
@@ -442,7 +442,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   setFlyPieceCount() {
     callback(int? flyPieceCount) async {
-      print("[config] flyPieceCount = $flyPieceCount");
+     debugPrint("[config] flyPieceCount = $flyPieceCount");
 
       Navigator.of(context).pop();
 
@@ -450,7 +450,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         rule.flyPieceCount = Config.flyPieceCount = flyPieceCount ?? 3;
       });
 
-      print("[config] rule.flyPieceCount: ${rule.flyPieceCount}");
+     debugPrint("[config] rule.flyPieceCount: ${rule.flyPieceCount}");
 
       Config.save();
     }
@@ -489,7 +489,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.hasDiagonalLines = Config.hasDiagonalLines = value;
     });
 
-    print("[config] rule.hasDiagonalLines: $value");
+   debugPrint("[config] rule.hasDiagonalLines: $value");
 
     Config.save();
   }
@@ -499,7 +499,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.mayFly = Config.mayFly = value;
     });
 
-    print("[config] rule.mayFly: $value");
+   debugPrint("[config] rule.mayFly: $value");
 
     Config.save();
   }
@@ -509,7 +509,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.threefoldRepetitionRule = Config.threefoldRepetitionRule = value;
     });
 
-    print("[config] rule.threefoldRepetitionRule: $value");
+   debugPrint("[config] rule.threefoldRepetitionRule: $value");
 
     Config.save();
   }
@@ -521,7 +521,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.hasBannedLocations = Config.hasBannedLocations = value;
     });
 
-    print("[config] rule.hasBannedLocations: $value");
+   debugPrint("[config] rule.hasBannedLocations: $value");
 
     Config.save();
   }
@@ -532,7 +532,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           Config.isWhiteLoseButNotDrawWhenBoardFull = value;
     });
 
-    print("[config] rule.isWhiteLoseButNotDrawWhenBoardFull: $value");
+   debugPrint("[config] rule.isWhiteLoseButNotDrawWhenBoardFull: $value");
 
     Config.save();
   }
@@ -543,7 +543,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           Config.mayOnlyRemoveUnplacedPieceInPlacingPhase = value;
     });
 
-    print("[config] rule.mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
+   debugPrint("[config] rule.mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
 
     Config.save();
   }
@@ -555,7 +555,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase = value;
     });
 
-    print("[config] rule.mayMoveInPlacingPhase: $value");
+   debugPrint("[config] rule.mayMoveInPlacingPhase: $value");
 
     Config.save();
 
@@ -570,7 +570,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value;
     });
 
-    print("[config] rule.isDefenderMoveFirst: $value");
+   debugPrint("[config] rule.isDefenderMoveFirst: $value");
 
     Config.save();
   }
@@ -581,7 +581,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           Config.isLoseButNotChangeSideWhenNoWay = value;
     });
 
-    print("[config] rule.isLoseButNotChangeSideWhenNoWay: $value");
+   debugPrint("[config] rule.isLoseButNotChangeSideWhenNoWay: $value");
 
     Config.save();
   }
@@ -593,7 +593,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.mayRemoveFromMillsAlways = Config.mayRemoveFromMillsAlways = value;
     });
 
-    print("[config] rule.mayRemoveFromMillsAlways: $value");
+   debugPrint("[config] rule.mayRemoveFromMillsAlways: $value");
 
     Config.save();
   }
@@ -603,7 +603,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.mayRemoveMultiple = Config.mayRemoveMultiple = value;
     });
 
-    print("[config] rule.mayRemoveMultiple: $value");
+   debugPrint("[config] rule.mayRemoveMultiple: $value");
 
     Config.save();
   }
@@ -615,7 +615,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       rule.piecesAtLeastCount = Config.piecesAtLeastCount = value;
     });
 
-    print("[config] rule.piecesAtLeastCount: $value");
+   debugPrint("[config] rule.piecesAtLeastCount: $value");
 
     Config.save();
   }

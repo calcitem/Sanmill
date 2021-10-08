@@ -177,11 +177,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
           if (lastTapTime == null ||
               DateTime.now().difference(lastTapTime!) > Duration(seconds: 1)) {
             lastTapTime = DateTime.now();
-            print("$tag Tap again in one second to enable developer mode.");
+         debugPrint("$tag Tap again in one second to enable developer mode.");
           } else {
             lastTapTime = DateTime.now();
             Developer.developerModeEnabled = true;
-            print("$tag Developer mode enabled.");
+         debugPrint("$tag Developer mode enabled.");
           }
         });
 

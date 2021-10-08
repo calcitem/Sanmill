@@ -81,7 +81,7 @@ class _GamePageState extends State<GamePage>
 
   @override
   void initState() {
-    print("$tag Engine type: ${widget.engineType}");
+    debugPrint("$tag Engine type: ${widget.engineType}");
 
     Game.instance.setWhoIsAi(widget.engineType);
 
@@ -97,9 +97,9 @@ class _GamePageState extends State<GamePage>
   }
 
   _setReadyState() async {
-    print("$tag Check if need to set Ready state...");
+    debugPrint("$tag Check if need to set Ready state...");
     if (!isReady && mounted && Config.settingsLoaded) {
-      print("$tag Set Ready State...");
+      debugPrint("$tag Set Ready State...");
       setState(() {});
       isReady = true;
       timer.cancel();
@@ -145,7 +145,7 @@ class _GamePageState extends State<GamePage>
   showTip(String? tip) {
     if (!mounted) return;
     if (tip != null) {
-      print("[tip] $tip");
+      debugPrint("[tip] $tip");
       if (Config.screenReaderSupport) {
         //showSnackBar(context, tip);
       }
@@ -189,7 +189,7 @@ class _GamePageState extends State<GamePage>
 
   onBoardTap(BuildContext context, int index) {
     if (!isReady) {
-      print("[tap] Not ready, ignore tapping.");
+      debugPrint("[tap] Not ready, ignore tapping.");
       return false;
     }
 
@@ -200,7 +200,7 @@ class _GamePageState extends State<GamePage>
 
     if (Game.instance.engineType == EngineType.aiVsAi ||
         Game.instance.engineType == EngineType.testViaLAN) {
-      print("$tag Engine type is no human, ignore tapping.");
+      debugPrint("$tag Engine type is no human, ignore tapping.");
       return false;
     }
 
@@ -209,7 +209,7 @@ class _GamePageState extends State<GamePage>
     int? sq = indexToSquare[index];
 
     if (sq == null) {
-      print("$tag sq is null, skip tapping.");
+      debugPrint("$tag sq is null, skip tapping.");
       return;
     }
 
@@ -224,10 +224,10 @@ class _GamePageState extends State<GamePage>
 
       if (Game.instance.isAiToMove()) {
         if (Game.instance.aiIsSearching()) {
-          print("$tag AI is thinking, skip tapping.");
+          debugPrint("$tag AI is thinking, skip tapping.");
           return false;
         } else {
-          print("[tap] AI is not thinking. AI is to move.");
+          debugPrint("[tap] AI is not thinking. AI is to move.");
           engineToGo(false);
           return false;
         }
@@ -235,7 +235,7 @@ class _GamePageState extends State<GamePage>
     }
 
     if (Game.instance.isAiToMove() || Game.instance.aiIsSearching()) {
-      print("[tap] AI's turn, skip tapping.");
+      debugPrint("[tap] AI's turn, skip tapping.");
       return false;
     }
 
@@ -280,10 +280,10 @@ class _GamePageState extends State<GamePage>
               }
             }
             ret = true;
-            print("[tap] putPiece: [$sq]");
+            debugPrint("[tap] putPiece: [$sq]");
             break;
           } else {
-            print("[tap] putPiece: skip [$sq]");
+            debugPrint("[tap] putPiece: skip [$sq]");
             if (mounted) {
               showTip(S.of(context).tipBanPlace);
               if (Config.screenReaderSupport) {
@@ -314,7 +314,7 @@ class _GamePageState extends State<GamePage>
               Audios.playTone(Audios.selectSoundId);
               Game.instance.select(index);
               ret = true;
-              print("[tap] selectPiece: [$sq]");
+              debugPrint("[tap] selectPiece: [$sq]");
 
               var us = Game.instance.sideToMove;
               if (position.phase == Phase.moving &&
@@ -322,7 +322,7 @@ class _GamePageState extends State<GamePage>
                   (Game.instance.position.pieceOnBoardCount[us] ==
                           Config.flyPieceCount ||
                       Game.instance.position.pieceOnBoardCount[us] == 3)) {
-                print("[tap] May fly.");
+                debugPrint("[tap] May fly.");
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);
                   if (Config.screenReaderSupport) {
@@ -341,7 +341,7 @@ class _GamePageState extends State<GamePage>
               break;
             case -2:
               Audios.playTone(Audios.illegalSoundId);
-              print("[tap] selectPiece: skip [$sq]");
+              debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipCannotMove);
                 if (Config.screenReaderSupport) {
@@ -352,7 +352,7 @@ class _GamePageState extends State<GamePage>
               break;
             case -3:
               Audios.playTone(Audios.illegalSoundId);
-              print("[tap] selectPiece: skip [$sq]");
+              debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipCanMoveOnePoint);
                 if (Config.screenReaderSupport) {
@@ -363,7 +363,7 @@ class _GamePageState extends State<GamePage>
               break;
             case -4:
               Audios.playTone(Audios.illegalSoundId);
-              print("[tap] selectPiece: skip [$sq]");
+              debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectPieceToMove);
                 if (Config.screenReaderSupport) {
@@ -373,7 +373,7 @@ class _GamePageState extends State<GamePage>
               break;
             default:
               Audios.playTone(Audios.illegalSoundId);
-              print("[tap] selectPiece: skip [$sq]");
+              debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectWrong);
                 if (Config.screenReaderSupport) {
@@ -393,7 +393,7 @@ class _GamePageState extends State<GamePage>
             case 0:
               //Audios.playTone(Audios.removeSoundId);
               ret = true;
-              print("[tap] removePiece: [$sq]");
+              debugPrint("[tap] removePiece: [$sq]");
               if (Game.instance.position.pieceToRemoveCount >= 1) {
                 if (mounted) {
                   showTip(S.of(context).tipContinueMill);
@@ -420,7 +420,7 @@ class _GamePageState extends State<GamePage>
               break;
             case -2:
               Audios.playTone(Audios.illegalSoundId);
-              print("[tap] removePiece: Cannot Remove our pieces, skip [$sq]");
+              debugPrint("[tap] removePiece: Cannot Remove our pieces, skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectOpponentsPiece);
                 if (Config.screenReaderSupport) {
@@ -430,8 +430,9 @@ class _GamePageState extends State<GamePage>
               break;
             case -3:
               Audios.playTone(Audios.illegalSoundId);
-              print(
-                  "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]");
+              debugPrint(
+                "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
+              );
               if (mounted) {
                 showTip(S.of(context).tipCannotRemovePieceFromMill);
                 if (Config.screenReaderSupport) {
@@ -443,7 +444,7 @@ class _GamePageState extends State<GamePage>
               break;
             default:
               Audios.playTone(Audios.illegalSoundId);
-              print("[tap] removePiece: skip [$sq]");
+              debugPrint("[tap] removePiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipBanRemove);
                 if (Config.screenReaderSupport) {
@@ -516,23 +517,24 @@ class _GamePageState extends State<GamePage>
 
   engineToGo(bool isMoveNow) async {
     if (!mounted) {
-      print("[engineToGo] !mounted, skip engineToGo.");
+      debugPrint("[engineToGo] !mounted, skip engineToGo.");
       return;
     }
 
     // TODO
-    print("[engineToGo] engine type is ${widget.engineType}");
+    debugPrint("[engineToGo] engine type is ${widget.engineType}");
 
     if (isMoveNow == true) {
-      if (!Game.instance.isAiToMove()) {
-        print("[engineToGo] Human to Move. Cannot get search result now.");
+      if (!Game.instance.isAiToMove()!) {
+        debugPrint("[engineToGo] Human to Move. Cannot get search result now.");
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).notAIsTurn);
         return;
       }
-      if (!Game.instance.position.recorder.isClean()) {
-        print(
-            "[engineToGo] History is not clean. Cannot get search result now.");
+      if (!Game.instance.position.recorder!.isClean()) {
+        debugPrint(
+          "[engineToGo] History is not clean. Cannot get search result now.",
+        );
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).aiIsNotThinking);
         return;
@@ -570,15 +572,15 @@ class _GamePageState extends State<GamePage>
       late var response;
 
       if (!isMoveNow) {
-        print("[engineToGo] Searching...");
+        debugPrint("[engineToGo] Searching...");
         response = await widget.engine.search(Game.instance.position);
       } else {
-        print("[engineToGo] Get search result now...");
+        debugPrint("[engineToGo] Get search result now...");
         response = await widget.engine.search(null);
         isMoveNow = false;
       }
 
-      print("[engineToGo] Engine response type: ${response.type}");
+      debugPrint("[engineToGo] Engine response type: ${response.type}");
 
       switch (response.type) {
         case 'move':
@@ -591,8 +593,9 @@ class _GamePageState extends State<GamePage>
           if (!disposed) {
             _animationController.reset();
           } else {
-            print(
-                "[engineToGo] Disposed, so do not reset animationController.");
+            debugPrint(
+              "[engineToGo] Disposed, so do not reset animationController.",
+            );
           }
 
           Game.instance.doMove(move.move);
@@ -630,7 +633,7 @@ class _GamePageState extends State<GamePage>
 
     if (Game.instance.isAiToMove()) {
       // TODO: Move now
-      //print("$tag New game, AI to move, move now.");
+      //debugPrint("$tag New game, AI to move, move now.");
       //await engineToGo(true);
     }
 
@@ -645,7 +648,7 @@ class _GamePageState extends State<GamePage>
     }
 
     if (Game.instance.isAiToMove()) {
-      print("$tag New game, AI to move.");
+      debugPrint("$tag New game, AI to move.");
       engineToGo(false);
     }
   }
@@ -662,8 +665,8 @@ class _GamePageState extends State<GamePage>
 
     String text = data.text!;
 
-    print("Clipboard text:");
-    print('$text');
+    debugPrint("Clipboard text:");
+    debugPrint(text);
 
     await onTakeBackAllButtonPressed(pop: false);
     await Game.instance.position.recorder.clear();
@@ -1006,7 +1009,7 @@ class _GamePageState extends State<GamePage>
     }
 
     if (isGoingToHistory) {
-      print("[TakeBack] Is going to history, ignore Take Back button press.");
+      debugPrint("[TakeBack] Is going to history, ignore Take Back button press.");
       return;
     }
 
@@ -1187,7 +1190,7 @@ class _GamePageState extends State<GamePage>
       Config.isPrivacyPolicyAccepted = value;
     });
 
-    print("[config] isPrivacyPolicyAccepted: $value");
+    debugPrint("[config] isPrivacyPolicyAccepted: $value");
 
     Config.save();
   }
@@ -1220,13 +1223,13 @@ class _GamePageState extends State<GamePage>
           S.of(context).drawReasonThreefoldRepetition,
     };
 
-    print("$tag Game over reason: ${Game.instance.position.gameOverReason}");
+    debugPrint("$tag Game over reason: ${Game.instance.position.gameOverReason}");
 
     String? loseReasonStr = reasonMap[Game.instance.position.gameOverReason];
 
     if (loseReasonStr == null) {
       loseReasonStr = S.of(context).gameOverUnknownReason;
-      print("$tag Game over reason string: $loseReasonStr");
+      debugPrint("$tag Game over reason string: $loseReasonStr");
       if (Config.developerMode) {
         assert(false);
       }
@@ -1389,11 +1392,12 @@ class _GamePageState extends State<GamePage>
                       }
                     }
 
-                    if (Game.instance.isAiToMove()) {
-                      print("$tag New game, AI to move.");
-                      engineToGo(false);
-                    }
-                  }),
+                  if (Game.instance.isAiToMove()!) {
+                    debugPrint("$tag New game, AI to move.");
+                    engineToGo(false);
+                  }
+                },
+              ),
               TextButton(
                   child: Text(
                     S.of(context).cancel,
@@ -1892,7 +1896,7 @@ class _GamePageState extends State<GamePage>
 
   @override
   void dispose() {
-    print("$tag dispose");
+    debugPrint("$tag dispose");
     disposed = true;
     widget.engine.shutdown();
     _animationController.dispose();
@@ -1903,7 +1907,7 @@ class _GamePageState extends State<GamePage>
   @override
   void didPush() async {
     final route = ModalRoute.of(context)!.settings.name;
-    print('$tag Game Page didPush route: $route');
+    debugPrint('$tag Game Page didPush route: $route');
     await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
@@ -1914,7 +1918,7 @@ class _GamePageState extends State<GamePage>
   @override
   void didPopNext() async {
     final route = ModalRoute.of(context)!.settings.name;
-    print('$tag Game Page didPopNext route: $route');
+    debugPrint('$tag Game Page didPopNext route: $route');
     await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
@@ -1924,7 +1928,7 @@ class _GamePageState extends State<GamePage>
   @override
   void didPushNext() async {
     final route = ModalRoute.of(context)!.settings.name;
-    print('$tag Game Page didPushNext route: $route');
+    debugPrint('$tag Game Page didPushNext route: $route');
     await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
       S.load(Locale(Config.languageCode));
@@ -1934,6 +1938,6 @@ class _GamePageState extends State<GamePage>
   @override
   void didPop() {
     final route = ModalRoute.of(context)!.settings.name;
-    print('$tag Game Page didPop route: $route');
+    debugPrint('$tag Game Page didPop route: $route');
   }
 }
