@@ -22,9 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/shared/common/config.dart';
-
-import 'engine.dart';
 
 class NativeEngine extends Engine {
   static const platform = MethodChannel('com.calcitem.sanmill/engine');
@@ -55,8 +54,13 @@ class NativeEngine extends Engine {
     return platform.invokeMethod('isReady');
   }
 
-  Future<bool> isThinking() async {
-    return platform.invokeMethod<bool>('isThinking') as Future<bool>;
+  FutureOr<bool> isThinking() async {
+    final _isThinking = await platform.invokeMethod<bool>('isThinking');
+    if (_isThinking is bool) {
+      return _isThinking;
+    } else {
+      throw 'Invalid platform response. Expected a value of type bool';
+    }
   }
 
   @override

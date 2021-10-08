@@ -16,15 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
-import 'package:sanmill/screens/home_drawer.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+part of 'package:sanmill/screens/navigation_home_screen.dart';
 
-class DrawerUserController extends StatefulWidget {
-  const DrawerUserController({
+class DrawerController extends StatefulWidget {
+  const DrawerController({
     Key? key,
     this.drawerWidth = AppTheme.drawerWidth,
     this.onDrawerCall,
@@ -44,10 +39,10 @@ class DrawerUserController extends StatefulWidget {
   final DrawerIndex? screenIndex;
 
   @override
-  _DrawerUserControllerState createState() => _DrawerUserControllerState();
+  _DrawerControllerState createState() => _DrawerControllerState();
 }
 
-class _DrawerUserControllerState extends State<DrawerUserController>
+class _DrawerControllerState extends State<DrawerController>
     with TickerProviderStateMixin {
   late final ScrollController scrollController;
   late final AnimationController iconAnimationController;

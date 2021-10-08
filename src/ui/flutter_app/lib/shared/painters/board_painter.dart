@@ -16,14 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
-import 'package:sanmill/mill/game.dart';
-import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/screens/game_page/game_page.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
-
-import 'painter_base.dart';
+part of 'package:sanmill/screens/game_page/game_page.dart';
 
 class BoardPainter extends PiecesBasePainter {
   BoardPainter({required double width}) : super(width: width);

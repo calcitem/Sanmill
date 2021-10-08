@@ -24,14 +24,13 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/screens/settings/settings_list_tile.dart';
+import 'package:sanmill/screens/license_page.dart';
+import 'package:sanmill/screens/oss_license_page.dart';
 import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/list_item_divider.dart';
+import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'license_page.dart';
-import 'list_item_divider.dart';
-import 'oss_license_page.dart';
 
 class AboutPage extends StatelessWidget {
   final String tag = "[about] ";

@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'position.dart';
-import 'rule.dart';
+import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/mill/rule.dart';
 
 class Mills {
   const Mills._();
