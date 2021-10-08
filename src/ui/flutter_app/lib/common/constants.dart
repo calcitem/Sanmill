@@ -19,6 +19,7 @@
 import 'dart:ui';
 
 class Constants {
+  const Constants._();
   static String appName = "Mill";
   static String authorAccount = "calcitem";
   static String projectName = "Sanmill";
@@ -53,8 +54,8 @@ class Constants {
   static String githubEulaURL = "$githubRepoWiKiURL/EULA";
   static String giteeEulaURL = "$giteeRepoWiKiURL/EULA_zh";
 
-  static String githubSourceCodeURL = "$githubRepoURL";
-  static String giteeSourceCodeURL = "$giteeRepoURL";
+  static String githubSourceCodeURL = githubRepoURL;
+  static String giteeSourceCodeURL = giteeRepoURL;
 
   static String githubThirdPartyNoticesURL =
       "$githubRepoWiKiURL/third-party_notices";

@@ -65,13 +65,14 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-    String mode = getMode();
+    final String mode = getMode();
 
     return Scaffold(
       backgroundColor: AppTheme.aboutPageBackgroundColor,
       appBar: AppBar(
-          centerTitle: true,
-          title: Text(S.of(context).about + " " + S.of(context).appName)),
+        centerTitle: true,
+        title: Text("${S.of(context).about} ${S.of(context).appName}"),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -86,16 +87,16 @@ class _AboutPageState extends State<AboutPage> {
       SettingsListTile(
         context: context,
         titleString: S.of(context).versionInfo,
-        subtitleString: Constants.projectName + " $_version" + " " + mode,
+        subtitleString: "${Constants.projectName} $_version $mode",
         onTap: _showVersionInfo,
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).feedback,
         onTap: _launchFeedback,
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).eula,
@@ -103,7 +104,7 @@ class _AboutPageState extends State<AboutPage> {
           _launchEULA();
         },
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).license,
@@ -116,7 +117,7 @@ class _AboutPageState extends State<AboutPage> {
           );
         },
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).sourceCode,
@@ -124,7 +125,7 @@ class _AboutPageState extends State<AboutPage> {
           _launchSourceCode();
         },
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).privacyPolicy,
@@ -132,7 +133,7 @@ class _AboutPageState extends State<AboutPage> {
           _launchPrivacyPolicy();
         },
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).ossLicenses,
@@ -140,7 +141,7 @@ class _AboutPageState extends State<AboutPage> {
           _launchThirdPartyNotices();
         },
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).helpImproveTranslate,
@@ -148,7 +149,7 @@ class _AboutPageState extends State<AboutPage> {
           _launchHelpImproveTranslate();
         },
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       SettingsListTile(
         context: context,
         titleString: S.of(context).thanks,
@@ -156,16 +157,16 @@ class _AboutPageState extends State<AboutPage> {
           _launchThanks();
         },
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
     ];
   }
 
-  _loadVersionInfo() async {
+  Future<void> _loadVersionInfo() async {
     final packageInfo = await PackageInfo.fromPlatform();
 
     if (Platform.isWindows) {
       setState(() {
-        _version = '${packageInfo.version}'; // TODO
+        _version = packageInfo.version; // TODO
       });
     } else {
       setState(() {
@@ -174,11 +175,11 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _launchURL(String url) async {
+  Future<void> _launchURL(String url) async {
     await launch(url);
   }
 
-  _launchFeedback() async {
+  Future<void> _launchFeedback() async {
     String? locale = "en_US";
 
     if (!Platform.isWindows) {
@@ -193,7 +194,7 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _launchEULA() async {
+  Future<void> _launchEULA() async {
     String? locale = "en_US";
 
     if (!Platform.isWindows) {
@@ -208,7 +209,7 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _launchSourceCode() async {
+  Future<void> _launchSourceCode() async {
     String? locale = "en_US";
 
     if (!Platform.isWindows) {
@@ -223,12 +224,13 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _launchThirdPartyNotices() async {
+  Future<void> _launchThirdPartyNotices() async {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OssLicensesPage(),
-        ));
+      context,
+      MaterialPageRoute(
+        builder: (context) => OssLicensesPage(),
+      ),
+    );
     /*
     String? locale = "en_US";
 
@@ -245,7 +247,7 @@ class _AboutPageState extends State<AboutPage> {
     */
   }
 
-  _launchPrivacyPolicy() async {
+  Future<void> _launchPrivacyPolicy() async {
     String? locale = "en_US";
 
     if (!Platform.isWindows) {
@@ -260,7 +262,7 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _launchHelpImproveTranslate() async {
+  Future<void> _launchHelpImproveTranslate() async {
     String? locale = "en_US";
 
     if (!Platform.isWindows) {
@@ -275,7 +277,7 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _launchThanks() async {
+  Future<void> _launchThanks() async {
     String? locale = "en_US";
 
     if (!Platform.isWindows) {
@@ -290,7 +292,7 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  _showVersionInfo() {
+  void _showVersionInfo() {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -302,15 +304,15 @@ class _AboutPageState extends State<AboutPage> {
     return AlertDialog(
       title: Text(
         S.of(context).appName,
-        style: TextStyle(color: AppTheme.dialogTitleColor),
+        style: const TextStyle(color: AppTheme.dialogTitleColor),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(S.of(context).version + ": $_version"),
-          SizedBox(height: AppTheme.sizedBoxHeight),
-          SizedBox(height: AppTheme.sizedBoxHeight),
+          Text("${S.of(context).version}: $_version"),
+          const SizedBox(height: AppTheme.sizedBoxHeight),
+          const SizedBox(height: AppTheme.sizedBoxHeight),
           Text(
             S.of(context).copyright,
             style: TextStyle(
@@ -332,7 +334,7 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  _showFlutterVersionInfo() {
+  void _showFlutterVersionInfo() {
     Navigator.of(context).pop();
 
     showDialog(
@@ -346,14 +348,18 @@ class _AboutPageState extends State<AboutPage> {
     return AlertDialog(
       title: Text(
         S.of(context).more,
-        style: TextStyle(color: AppTheme.dialogTitleColor),
+        style: const TextStyle(color: AppTheme.dialogTitleColor),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "${flutterVersion.toString().replaceAll('{', '').replaceAll('}', '').replaceAll(', ', '\n')}",
+            flutterVersion
+                .toString()
+                .replaceAll('{', '')
+                .replaceAll('}', '')
+                .replaceAll(', ', '\n'),
           ),
         ],
       ),

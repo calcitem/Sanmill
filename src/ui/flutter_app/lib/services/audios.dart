@@ -25,20 +25,22 @@ import 'package:soundpool/soundpool.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 class Audios {
+  const Audios._();
   //static AudioPlayer? _player;
   static Soundpool? _soundpool;
+  // TODO: use enum for the sounds
   static int? _alarmSoundStreamId;
-  static var drawSoundId;
-  static var flySoundId;
-  static var goSoundId;
-  static var illegalSoundId;
-  static var loseSoundId;
-  static var millSoundId;
-  static var placeSoundId;
-  static var removeSoundId;
-  static var selectSoundId;
-  static var winSoundId;
-  static var isTemporaryMute = false;
+  static int? drawSoundId;
+  static int? flySoundId;
+  static int? goSoundId;
+  static int? illegalSoundId;
+  static int? loseSoundId;
+  static int? millSoundId;
+  static int? placeSoundId;
+  static int? removeSoundId;
+  static int? selectSoundId;
+  static int? winSoundId;
+  static bool isTemporaryMute = false;
 
   static Future<void> loadSounds() async {
     if (Platform.isWindows) {
@@ -156,7 +158,7 @@ class Audios {
     }
   }
 
-  static Future<void> _playSound(var soundId) async {
+  static Future<void> _playSound(int? soundId) async {
     if (Platform.isWindows) {
       return;
     }
@@ -169,7 +171,7 @@ class Audios {
       return;
     }
 
-    _alarmSoundStreamId = await _soundpool!.play(await soundId);
+    _alarmSoundStreamId = await _soundpool!.play(soundId);
   }
 
   static Future<void> _stopSound() async {
@@ -190,7 +192,7 @@ class Audios {
     _soundpool!.dispose();
   }
 
-  static playTone(var soundId) async {
+  static Future<void> playTone(int? soundId) async {
     Chain.capture(() async {
       if (!Config.toneEnabled ||
           isTemporaryMute ||

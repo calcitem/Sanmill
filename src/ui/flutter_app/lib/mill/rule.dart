@@ -24,7 +24,7 @@ class Rule {
   int piecesCount = specialCountryAndRegion == "Iran" ? 12 : 9;
   int flyPieceCount = 3;
   int piecesAtLeastCount = 3;
-  bool hasDiagonalLines = specialCountryAndRegion == "Iran" ? true : false;
+  bool hasDiagonalLines = specialCountryAndRegion == "Iran";
   bool hasBannedLocations = false;
   bool mayMoveInPlacingPhase = false;
   bool isDefenderMoveFirst = false;

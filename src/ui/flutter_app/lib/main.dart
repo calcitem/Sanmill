@@ -37,18 +37,19 @@ import 'package:sanmill/widgets/navigation_home_screen.dart';
 import 'services/audios.dart';
 
 Future<void> main() async {
-  var catcher = Catcher(
-      rootWidget: BetterFeedback(
-        child: SanmillApp(),
-        //localeOverride: Locale(Resources.of().languageCode),
-      ),
-      ensureInitialized: true);
+  final catcher = Catcher(
+    rootWidget: BetterFeedback(
+      child: SanmillApp(),
+      //localeOverride: Locale(Resources.of().languageCode),
+    ),
+    ensureInitialized: true,
+  );
 
   String externalDirStr;
   try {
-    Directory? externalDir = await getExternalStorageDirectory();
+    final Directory? externalDir = await getExternalStorageDirectory();
     if (externalDir != null) {
-      externalDirStr = externalDir.path.toString();
+      externalDirStr = externalDir.path;
     } else {
       externalDirStr = ".";
     }
@@ -56,12 +57,11 @@ Future<void> main() async {
    debugPrint(e.toString());
     externalDirStr = ".";
   }
-  String path = externalDirStr + "/" + Constants.crashLogsFileName;
+  final String path = "$externalDirStr/${Constants.crashLogsFileName}";
  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
-  String recipients = Constants.recipients;
+  final String recipients = Constants.recipients;
 
-  CatcherOptions debugOptions =
-      CatcherOptions(PageReportMode(showStackTrace: true), [
+  final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
@@ -71,14 +71,12 @@ Future<void> main() async {
   /// Release configuration.
   /// Same as above, but once user accepts dialog,
   /// user will be prompted to send email with crash to support.
-  CatcherOptions releaseOptions =
-      CatcherOptions(PageReportMode(showStackTrace: true), [
+  final CatcherOptions releaseOptions = CatcherOptions(PageReportMode(), [
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
   ]);
 
-  CatcherOptions profileOptions =
-      CatcherOptions(PageReportMode(showStackTrace: true), [
+  final CatcherOptions profileOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
@@ -100,7 +98,7 @@ Future<void> main() async {
 
   if (Platform.isAndroid && isLargeScreen()) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
@@ -111,7 +109,7 @@ Future<void> main() async {
   }
 
   if (isSmallScreen()) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }
 
@@ -146,7 +144,7 @@ class _SanmillAppState extends State<SanmillApp> {
       navigatorKey: Catcher.navigatorKey,
       key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: [
+      localizationsDelegates: const [
         // ... app-specific localization delegate[s] here
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -159,10 +157,10 @@ class _SanmillAppState extends State<SanmillApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: DoubleBackToCloseApp(
-          child: NavigationHomeScreen(),
           snackBar: SnackBar(
             content: Text(Resources.of().strings.tapBackAgainToLeave),
           ),
+          child: NavigationHomeScreen(),
         ),
       ),
       /*

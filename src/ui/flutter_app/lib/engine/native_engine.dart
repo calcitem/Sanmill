@@ -27,12 +27,13 @@ import 'package:sanmill/mill/types.dart';
 import 'engine.dart';
 
 class NativeEngine extends Engine {
-  static const platform = const MethodChannel('com.calcitem.sanmill/engine');
+  static const platform = MethodChannel('com.calcitem.sanmill/engine');
   bool isActive = false;
 
+  @override
   Future<void> startup() async {
     await platform.invokeMethod('startup');
-    await waitResponse(['uciok'], sleep: 100, times: 0);
+    await waitResponse(['uciok']);
   }
 
   Future<void> send(String command) async {
@@ -41,20 +42,21 @@ class NativeEngine extends Engine {
   }
 
   Future<String?> read() async {
-    return await platform.invokeMethod('read');
+    return platform.invokeMethod('read');
   }
 
+  @override
   Future<void> shutdown() async {
     isActive = false;
     await platform.invokeMethod('shutdown');
   }
 
   Future<bool?> isReady() async {
-    return await platform.invokeMethod('isReady');
+    return platform.invokeMethod('isReady');
   }
 
-  FutureOr<bool> isThinking() async {
-    return await platform.invokeMethod('isThinking');
+  Future<bool> isThinking() async {
+    return platform.invokeMethod<bool>('isThinking') as Future<bool>;
   }
 
   @override
@@ -91,8 +93,11 @@ class NativeEngine extends Engine {
     return EngineResponse('timeout');
   }
 
-  Future<String> waitResponse(List<String> prefixes,
-      {sleep = 100, times = 0}) async {
+  Future<String> waitResponse(
+    List<String> prefixes, {
+    int sleep = 100,
+    int times = 0,
+  }) async {
     var timeLimit = Config.developerMode ? 100 : 6000;
 
     if (Config.moveTime > 0) {
@@ -103,7 +108,7 @@ class NativeEngine extends Engine {
     if (times > timeLimit) {
      debugPrint("[engine] Timeout. sleep = $sleep, times = $times");
       if (Config.developerMode && isActive) {
-        throw ("Exception: waitResponse timeout.");
+        throw "Exception: waitResponse timeout.";
       }
       return '';
     }
@@ -111,7 +116,7 @@ class NativeEngine extends Engine {
     final response = await read();
 
     if (response != null) {
-      for (var prefix in prefixes) {
+      for (final prefix in prefixes) {
         if (response.startsWith(prefix)) {
           return response;
         } else {
@@ -132,50 +137,85 @@ class NativeEngine extends Engine {
     await send('stop');
   }
 
+  @override
   Future<void> setOptions(BuildContext context) async {
     if (Config.settingsLoaded == false) {
      debugPrint("[engine] Settings is not loaded yet, now load settings...");
       await Config.loadSettings();
     }
 
-    await send('setoption name DeveloperMode value ${Config.developerMode}');
-    await send('setoption name Algorithm value ${Config.algorithm}');
     await send(
-        'setoption name DrawOnHumanExperience value ${Config.drawOnHumanExperience}');
+      'setoption name DeveloperMode value ${Config.developerMode}',
+    );
     await send(
-        'setoption name ConsiderMobility value ${Config.considerMobility}');
-    await send('setoption name SkillLevel value ${Config.skillLevel}');
-    await send('setoption name MoveTime value ${Config.moveTime}');
-    await send('setoption name AiIsLazy value ${Config.aiIsLazy}');
-    await send('setoption name Shuffling value ${Config.shufflingEnabled}');
-    await send('setoption name PiecesCount value ${Config.piecesCount}');
-    await send('setoption name FlyPieceCount value ${Config.flyPieceCount}');
+      'setoption name Algorithm value ${Config.algorithm}',
+    );
     await send(
-        'setoption name PiecesAtLeastCount value ${Config.piecesAtLeastCount}');
+      'setoption name DrawOnHumanExperience value ${Config.drawOnHumanExperience}',
+    );
     await send(
-        'setoption name HasDiagonalLines value ${Config.hasDiagonalLines}');
+      'setoption name ConsiderMobility value ${Config.considerMobility}',
+    );
     await send(
-        'setoption name HasBannedLocations value ${Config.hasBannedLocations}');
+      'setoption name SkillLevel value ${Config.skillLevel}',
+    );
     await send(
-        'setoption name MayMoveInPlacingPhase value ${Config.mayMoveInPlacingPhase}');
+      'setoption name MoveTime value ${Config.moveTime}',
+    );
     await send(
-        'setoption name IsDefenderMoveFirst value ${Config.isDefenderMoveFirst}');
+      'setoption name AiIsLazy value ${Config.aiIsLazy}',
+    );
     await send(
-        'setoption name MayRemoveMultiple value ${Config.mayRemoveMultiple}');
+      'setoption name Shuffling value ${Config.shufflingEnabled}',
+    );
     await send(
-        'setoption name MayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}');
+      'setoption name PiecesCount value ${Config.piecesCount}',
+    );
     await send(
-        'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${Config.mayOnlyRemoveUnplacedPieceInPlacingPhase}');
+      'setoption name FlyPieceCount value ${Config.flyPieceCount}',
+    );
     await send(
-        'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${Config.isWhiteLoseButNotDrawWhenBoardFull}');
+      'setoption name PiecesAtLeastCount value ${Config.piecesAtLeastCount}',
+    );
     await send(
-        'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}');
-    await send('setoption name MayFly value ${Config.mayFly}');
-    await send('setoption name NMoveRule value ${Config.nMoveRule}');
+      'setoption name HasDiagonalLines value ${Config.hasDiagonalLines}',
+    );
     await send(
-        'setoption name EndgameNMoveRule value ${Config.endgameNMoveRule}');
+      'setoption name HasBannedLocations value ${Config.hasBannedLocations}',
+    );
     await send(
-        'setoption name ThreefoldRepetitionRule value ${Config.threefoldRepetitionRule}');
+      'setoption name MayMoveInPlacingPhase value ${Config.mayMoveInPlacingPhase}',
+    );
+    await send(
+      'setoption name IsDefenderMoveFirst value ${Config.isDefenderMoveFirst}',
+    );
+    await send(
+      'setoption name MayRemoveMultiple value ${Config.mayRemoveMultiple}',
+    );
+    await send(
+      'setoption name MayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}',
+    );
+    await send(
+      'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${Config.mayOnlyRemoveUnplacedPieceInPlacingPhase}',
+    );
+    await send(
+      'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${Config.isWhiteLoseButNotDrawWhenBoardFull}',
+    );
+    await send(
+      'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}',
+    );
+    await send(
+      'setoption name MayFly value ${Config.mayFly}',
+    );
+    await send(
+      'setoption name NMoveRule value ${Config.nMoveRule}',
+    );
+    await send(
+      'setoption name EndgameNMoveRule value ${Config.endgameNMoveRule}',
+    );
+    await send(
+      'setoption name ThreefoldRepetitionRule value ${Config.threefoldRepetitionRule}',
+    );
   }
 
   String getPositionFen(Position position) {
