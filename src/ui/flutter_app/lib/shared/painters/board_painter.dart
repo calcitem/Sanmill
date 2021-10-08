@@ -19,7 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/screens/game_page.dart';
+import 'package:sanmill/screens/game_page/game_page.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 

@@ -32,19 +32,19 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/screens/board.dart';
 import 'package:sanmill/screens/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/dialog.dart';
+import 'package:sanmill/shared/picker.dart';
+import 'package:sanmill/shared/snack_bar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 //import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-import '../shared/dialog.dart';
-import '../shared/picker.dart';
-import '../shared/snack_bar.dart';
-import 'board.dart';
-import 'game_settings_page.dart';
+part 'package:sanmill/screens/game_page/game_page_tool_bar.dart';
 
 double boardWidth = 0.0;
 
@@ -1670,23 +1670,13 @@ class _GamePageState extends State<GamePage>
       ),
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Color(Config.mainToolbarBackgroundColor),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: screenPaddingH),
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        textDirection: TextDirection.ltr,
-        children: <Widget>[
-          gameButton,
-          optionsButton,
-          moveButton,
-          infoButton,
-        ],
-      ),
+    return GamePageToolBar(
+      children: <Widget>[
+        gameButton,
+        optionsButton,
+        moveButton,
+        infoButton,
+      ],
     );
   }
 
@@ -1743,26 +1733,13 @@ class _GamePageState extends State<GamePage>
       onPressed: () => onStepForwardAllButtonPressed(pop: false),
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Color(Config.navigationToolbarBackgroundColor),
-      ),
-      margin: EdgeInsets.symmetric(
-        horizontal: screenPaddingH,
-        vertical: 1,
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        textDirection: TextDirection.ltr,
-        children: <Widget>[
-          takeBackAllButton,
-          takeBackButton,
-          stepForwardButton,
-          stepForwardAllButton,
-        ],
-      ),
+    return GamePageToolBar(
+      children: <Widget>[
+        takeBackAllButton,
+        takeBackButton,
+        stepForwardButton,
+        stepForwardAllButton,
+      ],
     );
   }
 
@@ -1802,13 +1779,16 @@ class _GamePageState extends State<GamePage>
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),
-      body: Column(
-        children: <Widget>[
-          BlockSemantics(child: header),
-          board,
-          if (Config.isHistoryNavigationToolbarShown) historyNavToolbar,
-          toolbar,
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenPaddingH),
+        child: Column(
+          children: <Widget>[
+            BlockSemantics(child: header),
+            board,
+            if (Config.isHistoryNavigationToolbarShown) historyNavToolbar,
+            toolbar,
+          ],
+        ),
       ),
       /*
       body: Column(children: <Widget>[
