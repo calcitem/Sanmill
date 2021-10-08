@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
@@ -101,7 +102,7 @@ class Config {
   static bool threefoldRepetitionRule = true;
 
   static Future<void> loadSettings() async {
-    print("[config] Loading settings...");
+    debugPrint("[config] Loading settings...");
 
     final settings = await Settings.instance();
 
@@ -215,7 +216,7 @@ class Config {
         settings['ThreefoldRepetitionRule'] ?? true;
 
     settingsLoaded = true;
-    print("[config] Loading settings done!");
+    debugPrint("[config] Loading settings done!");
   }
 
   static Future<bool> save() async {

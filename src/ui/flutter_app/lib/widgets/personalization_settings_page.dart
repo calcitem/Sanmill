@@ -98,7 +98,7 @@ class _PersonalizationSettingsPageState
           onPressed: () {
             setState(() => currentColor = pickerColor);
 
-            print("[config] pickerColor.value: ${pickerColor.value}");
+            debugPrint("[config] pickerColor.value: ${pickerColor.value}");
 
             if (colorString == S.of(context).boardColor) {
               Config.boardBackgroundColor = pickerColor.value;
@@ -175,7 +175,7 @@ class _PersonalizationSettingsPageState
           label: Config.boardBorderLineWidth.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
-              print("[config] BoardBorderLineWidth value: $value");
+              debugPrint("[config] BoardBorderLineWidth value: $value");
               Config.boardBorderLineWidth = value;
               Config.save();
             });
@@ -209,7 +209,7 @@ class _PersonalizationSettingsPageState
           label: Config.boardInnerLineWidth.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
-              print("[config] BoardInnerLineWidth value: $value");
+              debugPrint("[config] BoardInnerLineWidth value: $value");
               Config.boardInnerLineWidth = value;
               Config.save();
             });
@@ -243,7 +243,7 @@ class _PersonalizationSettingsPageState
           label: Config.pieceWidth.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
-              print("[config] pieceWidth value: $value");
+              debugPrint("[config] pieceWidth value: $value");
               Config.pieceWidth = value;
               Config.save();
             });
@@ -277,7 +277,7 @@ class _PersonalizationSettingsPageState
           label: Config.fontSize.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
-              print("[config] fontSize value: $value");
+              debugPrint("[config] fontSize value: $value");
               Config.fontSize = value;
               Config.save();
             });
@@ -311,7 +311,7 @@ class _PersonalizationSettingsPageState
           label: Config.boardTop.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
-              print("[config] BoardTop value: $value");
+              debugPrint("[config] BoardTop value: $value");
               Config.boardTop = value;
               Config.save();
             });
@@ -345,7 +345,7 @@ class _PersonalizationSettingsPageState
           label: Config.animationDuration.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
-              print("[config] AnimationDuration value: $value");
+              debugPrint("[config] AnimationDuration value: $value");
               Config.animationDuration = value;
               Config.save();
             });
@@ -386,7 +386,7 @@ class _PersonalizationSettingsPageState
 
   List<Widget> children(BuildContext context) {
     langCallback(var langCode) async {
-      print("[config] languageCode = $langCode");
+      debugPrint("[config] languageCode = $langCode");
 
       Navigator.of(context).pop();
 
@@ -395,7 +395,7 @@ class _PersonalizationSettingsPageState
         S.load(Locale(Resources.of().languageCode));
       });
 
-      print("[config] Config.languageCode: ${Config.languageCode}");
+      debugPrint("[config] Config.languageCode: ${Config.languageCode}");
 
       Config.save();
     }
@@ -629,7 +629,7 @@ class _PersonalizationSettingsPageState
       Config.standardNotationEnabled = value;
     });
 
-    print("[config] standardNotationEnabled: $value");
+    debugPrint("[config] standardNotationEnabled: $value");
 
     Config.save();
   }

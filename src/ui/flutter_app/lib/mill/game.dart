@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/engine/engine.dart';
 
@@ -80,8 +81,10 @@ class Game {
   };
 
   bool aiIsSearching() {
-    print("$tag White is searching? ${isSearching[PieceColor.white]}\n"
-        "$tag Black is searching? ${isSearching[PieceColor.black]}\n");
+    debugPrint(
+      "$tag White is searching? ${isSearching[PieceColor.white]}\n"
+      "$tag Black is searching? ${isSearching[PieceColor.black]}\n",
+    );
 
     return isSearching[PieceColor.white] == true ||
         isSearching[PieceColor.black] == true;
@@ -110,8 +113,10 @@ class Game {
         break;
     }
 
-    print("$tag White is AI? ${isAi[PieceColor.white]}\n"
-        "$tag Black is AI? ${isAi[PieceColor.black]}\n");
+    debugPrint(
+      "$tag White is AI? ${isAi[PieceColor.white]}\n"
+      "$tag Black is AI? ${isAi[PieceColor.black]}\n",
+    );
   }
 
   select(int pos) {
@@ -124,7 +129,7 @@ class Game {
       start();
     }
 
-    print("$tag AI do move: $move");
+    debugPrint("$tag AI do move: $move");
 
     if (!position.doMove(move)) {
       return false;
@@ -176,6 +181,6 @@ class Game {
         "%" +
         "\n";
 
-    print("$tag $scoreInfo");
+    debugPrint("$tag $scoreInfo");
   }
 }

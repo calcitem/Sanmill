@@ -19,6 +19,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/common/constants.dart';
 
@@ -33,7 +34,7 @@ class Settings {
     if (_instance == null) {
       _instance = Settings();
       await _instance!._load(settingsFileName);
-      print("[settings] $settingsFileName loaded.");
+      debugPrint("[settings] $settingsFileName loaded.");
     }
 
     return _instance;
@@ -61,14 +62,14 @@ class Settings {
 
     _file = File('${docDir.path}/$fileName');
 
-    print("[settings] Loading $_file ...");
+    debugPrint("[settings] Loading $_file ...");
 
     try {
       final contents = await _file.readAsString();
       _values = jsonDecode(contents);
-      print(_values);
+      debugPrint(_values.toString());
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return false;
     }
 
@@ -76,13 +77,13 @@ class Settings {
   }
 
   Future<void> restore() async {
-    print("[settings] Restoring Settings...");
+    debugPrint("[settings] Restoring Settings...");
 
     if (_file.existsSync()) {
       _file.deleteSync();
-      print("[settings] $_file deleted");
+      debugPrint("[settings] $_file deleted");
     } else {
-      print("[settings] $_file does not exist");
+      debugPrint("[settings] $_file does not exist");
     }
   }
 }

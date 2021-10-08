@@ -53,11 +53,11 @@ Future<void> main() async {
       externalDirStr = ".";
     }
   } catch (e) {
-    print(e);
+    debugPrint(e.toString());
     externalDirStr = ".";
   }
   String path = externalDirStr + "/" + Constants.crashLogsFileName;
-  print("[env] ExternalStorageDirectory: " + externalDirStr);
+  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
   String recipients = Constants.recipients;
 
   CatcherOptions debugOptions =
@@ -91,8 +91,8 @@ Future<void> main() async {
     profileConfig: profileOptions,
   );
 
-  print(window.physicalSize);
-  print(Constants.windowAspectRatio);
+  debugPrint(window.physicalSize.toString());
+  debugPrint(Constants.windowAspectRatio.toString());
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
