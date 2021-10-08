@@ -96,7 +96,7 @@ Future<void> main() async {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
-  if (Platform.isAndroid && isLargeScreen()) {
+  if (Platform.isAndroid && isLargeScreen) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -108,7 +108,7 @@ Future<void> main() async {
     );
   }
 
-  if (isSmallScreen()) {
+  if (isSmallScreen) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }

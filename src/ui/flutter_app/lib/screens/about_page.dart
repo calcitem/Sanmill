@@ -34,7 +34,6 @@ import 'list_item_divider.dart';
 import 'oss_license_page.dart';
 
 class AboutPage extends StatelessWidget {
-  // String _version = "";
   final String tag = "[about] ";
 
   String get mode {

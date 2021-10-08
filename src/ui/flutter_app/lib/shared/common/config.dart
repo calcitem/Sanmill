@@ -60,7 +60,7 @@ class Config {
   static double boardInnerLineWidth = 2.0;
   static double pieceWidth = 0.9;
   static double fontSize = 16.0;
-  static double boardTop = isLargeScreen() ? 75.0 : 36.0;
+  static double boardTop = isLargeScreen ? 75.0 : 36.0;
   static double animationDuration = 0.0;
 
   // Color
@@ -146,14 +146,14 @@ class Config {
     Config.isHistoryNavigationToolbarShown =
         settings['IsHistoryNavigationToolbarShown'] as bool? ?? false;
     Config.boardBorderLineWidth =
-        settings['BoardBorderLineWidth'] as double? ?? 2;
+        settings['BoardBorderLineWidth'] as double? ?? 2.0;
     Config.boardInnerLineWidth =
-        settings['BoardInnerLineWidth'] as double? ?? 2;
+        settings['BoardInnerLineWidth'] as double? ?? 2.0;
     Config.pieceWidth = settings['PieceWidth'] as double? ?? 0.9;
     Config.fontSize = settings['FontSize'] as double? ?? 16.0;
     Config.boardTop =
-        settings['BoardTop'] as double? ?? (isLargeScreen() ? 75 : 36);
-    Config.animationDuration = settings['AnimationDuration'] as double? ?? 0;
+        settings['BoardTop'] as double? ?? (isLargeScreen ? 75.0 : 36.0);
+    Config.animationDuration = settings['AnimationDuration'] as double? ?? 0.0;
 
     // Color
     Config.boardLineColor =

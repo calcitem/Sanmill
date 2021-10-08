@@ -49,12 +49,9 @@ import 'game_settings_page.dart';
 double boardWidth = 0.0;
 
 class GamePage extends StatefulWidget {
-  static double boardMargin = AppTheme.boardMargin;
-  static double screenPaddingH = AppTheme.boardScreenPaddingH;
-
   final EngineType engineType;
 
-  const GamePage(this.engineType);
+  const GamePage(this.engineType, {Key? key}) : super(key: key);
 
   @override
   _GamePageState createState() => _GamePageState();
@@ -63,6 +60,9 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage>
     with RouteAware, SingleTickerProviderStateMixin {
   final Engine _engine = NativeEngine();
+
+  late final double screenPaddingH;
+  final double boardMargin = AppTheme.boardMargin;
 
   String? _tip = '';
   bool isReady = false;
@@ -77,25 +77,8 @@ class _GamePageState extends State<GamePage>
   late AnimationController _animationController;
   late Animation<double> animation;
   bool disposed = false;
-  bool ltr = true;
+  late final bool ltr;
   final String tag = "[game_page]";
-
-  @override
-  void initState() {
-    debugPrint("$tag Engine type: ${widget.engineType}");
-
-    gameInstance.setWhoIsAi(widget.engineType);
-
-    super.initState();
-    gameInstance.init();
-    _engine.startup();
-
-    timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
-      _setReadyState();
-    });
-
-    _initAnimation();
-  }
 
   Future<void> _setReadyState() async {
     debugPrint("$tag Check if need to set Ready state...");
@@ -124,9 +107,7 @@ class _GamePageState extends State<GamePage>
       begin: 1.27, // sqrt(1.618) = 1.272
       end: 1.0,
     ).animate(_animationController)
-      ..addListener(() {
-        setState(() {});
-      });
+      ..addListener(() => setState(() {}));
 
     _animationController.addStatusListener((state) {
       if (state == AnimationStatus.completed ||
@@ -904,6 +885,44 @@ class _GamePageState extends State<GamePage>
   }
 
   void onMoveButtonPressed() {
+    final List<Widget> _historyNavigation = [
+      SimpleDialogOption(
+        onPressed: onTakeBackButtonPressed,
+        child: Text(
+          S.of(context).takeBack,
+          style: AppTheme.simpleDialogOptionTextStyle,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
+      SimpleDialogOption(
+        onPressed: onStepForwardButtonPressed,
+        child: Text(
+          S.of(context).stepForward,
+          style: AppTheme.simpleDialogOptionTextStyle,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
+      SimpleDialogOption(
+        onPressed: onTakeBackAllButtonPressed,
+        child: Text(
+          S.of(context).takeBackAll,
+          style: AppTheme.simpleDialogOptionTextStyle,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
+      SimpleDialogOption(
+        onPressed: onStepForwardAllButtonPressed,
+        child: Text(
+          S.of(context).stepForwardAll,
+          style: AppTheme.simpleDialogOptionTextStyle,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      const SizedBox(height: AppTheme.sizedBoxHeight),
+    ];
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -912,50 +931,7 @@ class _GamePageState extends State<GamePage>
         child: SimpleDialog(
           backgroundColor: Colors.transparent,
           children: <Widget>[
-            if (!Config.isHistoryNavigationToolbarShown)
-              SimpleDialogOption(
-                onPressed: onTakeBackButtonPressed,
-                child: Text(
-                  S.of(context).takeBack,
-                  style: AppTheme.simpleDialogOptionTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            if (!Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (!Config.isHistoryNavigationToolbarShown)
-              SimpleDialogOption(
-                onPressed: onStepForwardButtonPressed,
-                child: Text(
-                  S.of(context).stepForward,
-                  style: AppTheme.simpleDialogOptionTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            if (!Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (!Config.isHistoryNavigationToolbarShown)
-              SimpleDialogOption(
-                onPressed: onTakeBackAllButtonPressed,
-                child: Text(
-                  S.of(context).takeBackAll,
-                  style: AppTheme.simpleDialogOptionTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            if (!Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (!Config.isHistoryNavigationToolbarShown)
-              SimpleDialogOption(
-                onPressed: onStepForwardAllButtonPressed,
-                child: Text(
-                  S.of(context).stepForwardAll,
-                  style: AppTheme.simpleDialogOptionTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            if (!Config.isHistoryNavigationToolbarShown)
-              const SizedBox(height: AppTheme.sizedBoxHeight),
+            if (!Config.isHistoryNavigationToolbarShown) ..._historyNavigation,
             SimpleDialogOption(
               onPressed: onMoveListButtonPressed,
               child: Text(
@@ -1430,21 +1406,23 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  void calcScreenPaddingH() {
+  double get _screenPaddingH {
     //
     // when screen's height/width rate is less than 16/9, limit width of board
     final windowSize = MediaQuery.of(context).size;
     final double height = windowSize.height;
     double width = windowSize.width;
 
+    // TODO: maybe use windowSize.aspectratio
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
-      GamePage.screenPaddingH =
-          (windowSize.width - width) / 2 - AppTheme.boardMargin;
+      return (windowSize.width - width) / 2 - AppTheme.boardMargin;
+    } else {
+      return AppTheme.boardScreenPaddingH;
     }
   }
 
-  Widget createPageHeader() {
+  Widget get header {
     final Map<EngineType, IconData> engineTypeToIconLeft = {
       EngineType.humanVsAi: Config.aiMovesFirst
           ? FluentIcons.bot_24_filled
@@ -1467,17 +1445,14 @@ class _GamePageState extends State<GamePage>
       EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
     };
 
-    final IconData iconArrow = getIconArrow();
-
     final iconColor = Color(Config.messageColor);
 
     final iconRow = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const Expanded(child: SizedBox()),
         Icon(engineTypeToIconLeft[widget.engineType], color: iconColor),
         Icon(iconArrow, color: iconColor),
         Icon(engineTypeToIconRight[widget.engineType], color: iconColor),
-        const Expanded(child: SizedBox()),
       ],
     );
 
@@ -1511,7 +1486,7 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  IconData getIconArrow() {
+  IconData get iconArrow {
     IconData iconArrow = FluentIcons.code_24_regular;
 
     if (gameInstance.position.phase == Phase.gameOver) {
@@ -1547,15 +1522,11 @@ class _GamePageState extends State<GamePage>
     return iconArrow;
   }
 
-  Widget createBoard() {
-    boardWidth =
-        MediaQuery.of(context).size.width - GamePage.screenPaddingH * 2;
+  Widget get board {
+    boardWidth = MediaQuery.of(context).size.width - screenPaddingH * 2;
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: GamePage.screenPaddingH,
-        vertical: GamePage.boardMargin,
-      ),
+      margin: EdgeInsets.symmetric(vertical: boardMargin),
       child: Board(
         width: boardWidth,
         onBoardTap: onBoardTap,
@@ -1630,7 +1601,7 @@ class _GamePageState extends State<GamePage>
     return ret;
   }
 
-  Widget createToolbar() {
+  Widget get toolbar {
     final gameButton = TextButton(
       onPressed: onGameButtonPressed,
       child: Column(
@@ -1704,94 +1675,70 @@ class _GamePageState extends State<GamePage>
         borderRadius: BorderRadius.circular(5),
         color: Color(Config.mainToolbarBackgroundColor),
       ),
-      margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
+      margin: EdgeInsets.symmetric(horizontal: screenPaddingH),
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         textDirection: TextDirection.ltr,
         children: <Widget>[
-          const Expanded(child: SizedBox()),
           gameButton,
-          const Expanded(child: SizedBox()),
           optionsButton,
-          const Expanded(child: SizedBox()),
           moveButton,
-          const Expanded(child: SizedBox()), //dashboard_outlined
           infoButton,
-          const Expanded(child: SizedBox()),
         ],
       ),
     );
   }
 
-  Widget createHistoryNavigationToolbar() {
+  Widget get historyNavToolbar {
     final takeBackAllButton = TextButton(
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Semantics(
-            label: S.of(context).takeBackAll,
-            child: Icon(
-              ltr
-                  ? FluentIcons.arrow_previous_24_regular
-                  : FluentIcons.arrow_next_24_regular,
-              color: Color(Config.navigationToolbarIconColor),
-            ),
-          ),
-        ],
+      child: Semantics(
+        label: S.of(context).takeBackAll,
+        child: Icon(
+          ltr
+              ? FluentIcons.arrow_previous_24_regular
+              : FluentIcons.arrow_next_24_regular,
+          color: Color(Config.navigationToolbarIconColor),
+        ),
       ),
       onPressed: () => onTakeBackAllButtonPressed(pop: false),
     );
 
     final takeBackButton = TextButton(
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Semantics(
-            label: S.of(context).takeBack,
-            child: Icon(
-              ltr
-                  ? FluentIcons.chevron_left_24_regular
-                  : FluentIcons.chevron_right_24_regular,
-              color: Color(Config.navigationToolbarIconColor),
-            ),
-          ),
-        ],
+      child: Semantics(
+        label: S.of(context).takeBack,
+        child: Icon(
+          ltr
+              ? FluentIcons.chevron_left_24_regular
+              : FluentIcons.chevron_right_24_regular,
+          color: Color(Config.navigationToolbarIconColor),
+        ),
       ),
       onPressed: () => onTakeBackButtonPressed(pop: false),
     );
 
     final stepForwardButton = TextButton(
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Semantics(
-            label: S.of(context).stepForward,
-            child: Icon(
-              ltr
-                  ? FluentIcons.chevron_right_24_regular
-                  : FluentIcons.chevron_left_24_regular,
-              color: Color(Config.navigationToolbarIconColor),
-            ),
-          ),
-        ],
+      child: Semantics(
+        label: S.of(context).stepForward,
+        child: Icon(
+          ltr
+              ? FluentIcons.chevron_right_24_regular
+              : FluentIcons.chevron_left_24_regular,
+          color: Color(Config.navigationToolbarIconColor),
+        ),
       ),
       onPressed: () => onStepForwardButtonPressed(pop: false),
     );
 
     final stepForwardAllButton = TextButton(
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Semantics(
-            label: S.of(context).stepForwardAll,
-            child: Icon(
-              ltr
-                  ? FluentIcons.arrow_next_24_regular
-                  : FluentIcons.arrow_previous_24_regular,
-              color: Color(Config.navigationToolbarIconColor),
-            ),
-          ),
-        ],
+      child: Semantics(
+        label: S.of(context).stepForwardAll,
+        child: Icon(
+          ltr
+              ? FluentIcons.arrow_next_24_regular
+              : FluentIcons.arrow_previous_24_regular,
+          color: Color(Config.navigationToolbarIconColor),
+        ),
       ),
       onPressed: () => onStepForwardAllButtonPressed(pop: false),
     );
@@ -1801,23 +1748,39 @@ class _GamePageState extends State<GamePage>
         borderRadius: BorderRadius.circular(5),
         color: Color(Config.navigationToolbarBackgroundColor),
       ),
-      margin: EdgeInsets.symmetric(horizontal: GamePage.screenPaddingH),
+      margin: EdgeInsets.symmetric(
+        horizontal: screenPaddingH,
+        vertical: 1,
+      ),
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         textDirection: TextDirection.ltr,
         children: <Widget>[
-          const Expanded(child: SizedBox()),
           takeBackAllButton,
-          const Expanded(child: SizedBox()),
           takeBackButton,
-          const Expanded(child: SizedBox()),
           stepForwardButton,
-          const Expanded(child: SizedBox()), //dashboard_outlined
           stepForwardAllButton,
-          const Expanded(child: SizedBox()),
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    debugPrint("$tag Engine type: ${widget.engineType}");
+
+    gameInstance.setWhoIsAi(widget.engineType);
+
+    super.initState();
+    gameInstance.init();
+    _engine.startup();
+
+    timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
+      _setReadyState();
+    });
+
+    _initAnimation();
   }
 
   @override
@@ -1827,22 +1790,15 @@ class _GamePageState extends State<GamePage>
       this,
       ModalRoute.of(context)! as PageRoute<dynamic>,
     );
+    screenPaddingH = _screenPaddingH;
+    ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
   }
 
   @override
   Widget build(BuildContext context) {
-    ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
-
     if (_tip == '') {
       _tip = S.of(context).welcome;
     }
-
-    calcScreenPaddingH();
-
-    final header = createPageHeader();
-    final board = createBoard();
-    final toolbar = createToolbar();
-    final historyNavToolbar = createHistoryNavigationToolbar();
 
     return Scaffold(
       backgroundColor: Color(Config.darkBackgroundColor),

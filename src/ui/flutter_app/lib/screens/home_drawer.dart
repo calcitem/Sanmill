@@ -186,7 +186,7 @@ class HomeDrawer extends StatelessWidget {
         children: <Widget>[
           animatedBuilder,
           Padding(
-            padding: EdgeInsets.only(top: isLargeScreen() ? 30 : 8, left: 4),
+            padding: EdgeInsets.only(top: isLargeScreen ? 30 : 8, left: 4),
             child: ExcludeSemantics(child: animatedTextKit),
           ),
         ],
@@ -269,7 +269,7 @@ class HomeDrawer extends StatelessWidget {
             0.0,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.75 - 64,
               height: 46,
@@ -298,7 +298,7 @@ class HomeDrawer extends StatelessWidget {
     final stack = Stack(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
             children: <Widget>[
               const SizedBox(height: 46.0, width: 6.0),
@@ -326,7 +326,7 @@ class HomeDrawer extends StatelessWidget {
             ],
           ),
         ),
-        if (screenIndex == listItem.index) animatedBuilder else const SizedBox()
+        if (screenIndex == listItem.index) animatedBuilder,
       ],
     );
 
@@ -336,9 +336,7 @@ class HomeDrawer extends StatelessWidget {
       child: InkWell(
         splashColor: AppTheme.drawerSplashColor,
         highlightColor: AppTheme.drawerHighlightColor,
-        onTap: () {
-          navigationToScreen(listItem.index);
-        },
+        onTap: () => navigationToScreen(listItem.index),
         child: stack,
       ),
     );
