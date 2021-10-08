@@ -37,42 +37,21 @@ class AboutPage extends StatelessWidget {
   // String _version = "";
   final String tag = "[about] ";
 
-  String getMode() {
-    late String ret;
+  String get mode {
     if (kDebugMode) {
-      ret = "- debug";
+      return "- debug";
     } else if (kProfileMode) {
-      ret = "- profile";
+      return "- profile";
     } else if (kReleaseMode) {
-      ret = "";
+      return "";
     } else {
-      ret = "-test";
+      return "-test";
     }
-
-    return ret;
   }
 
   @override
   Widget build(BuildContext context) {
-    final String mode = getMode();
-
-    return Scaffold(
-      backgroundColor: AppTheme.aboutPageBackgroundColor,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("${S.of(context).about} ${S.of(context).appName}"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: children(context, mode),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> children(BuildContext context, String mode) {
-    return <Widget>[
+    final List<Widget> _children = [
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (_, data) {
@@ -95,19 +74,14 @@ class AboutPage extends StatelessWidget {
           );
         },
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).feedback,
         onTap: _launchFeedback,
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).eula,
-        onTap: () {
-          _launchEULA();
-        },
+        onTap: _launchEULA,
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).license,
         onTap: () {
@@ -119,43 +93,40 @@ class AboutPage extends StatelessWidget {
           );
         },
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).sourceCode,
-        onTap: () {
-          _launchSourceCode();
-        },
+        onTap: _launchSourceCode,
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).privacyPolicy,
-        onTap: () {
-          _launchPrivacyPolicy();
-        },
+        onTap: _launchPrivacyPolicy,
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).ossLicenses,
-        onTap: () {
-          _launchThirdPartyNotices(context);
-        },
+        onTap: () => _launchThirdPartyNotices(context),
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).helpImproveTranslate,
-        onTap: () {
-          _launchHelpImproveTranslate();
-        },
+        onTap: _launchHelpImproveTranslate,
       ),
-      const ListItemDivider(),
       SettingsListTile(
         titleString: S.of(context).thanks,
-        onTap: () {
-          _launchThanks();
-        },
+        onTap: _launchThanks,
       ),
-      const ListItemDivider(),
     ];
+
+    return Scaffold(
+      backgroundColor: AppTheme.aboutPageBackgroundColor,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("${S.of(context).about} ${S.of(context).appName}"),
+      ),
+      body: ListView.separated(
+        itemBuilder: (_, index) => _children[index],
+        separatorBuilder: (_, __) => const ListItemDivider(),
+        itemCount: _children.length,
+      ),
+    );
   }
 
   Future<void> _launchURL(String url) async {

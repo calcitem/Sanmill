@@ -37,14 +37,15 @@ class FlutterLicense extends LicenseEntry {
 class OssLicensesPage extends StatelessWidget {
   static Future<List<String>> loadLicenses() async {
     Stream<LicenseEntry> licenses() async* {
-      yield FlutterLicense([
-        'Sound Effects'
-      ], [
-        const LicenseParagraph(
-          'CC-0\nhttps://freesound.org/people/unfa/sounds/243749/',
-          0,
-        )
-      ]);
+      yield FlutterLicense(
+        ['Sound Effects'],
+        [
+          const LicenseParagraph(
+            'CC-0\nhttps://freesound.org/people/unfa/sounds/243749/',
+            0,
+          ),
+        ],
+      );
     }
 
     LicenseRegistry.addLicense(licenses);
@@ -67,17 +68,14 @@ class OssLicensesPage extends StatelessWidget {
     return ossKeys..sort();
   }
 
-  static final _licenses = loadLicenses();
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(S.of(context).ossLicenses),
         ),
         body: FutureBuilder<List<String>>(
-          future: _licenses,
+          future: loadLicenses(),
           builder: (context, snapshot) => ListView.separated(
-            padding: EdgeInsets.zero,
             itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (context, index) {
               final key = snapshot.data![index];
@@ -85,13 +83,12 @@ class OssLicensesPage extends StatelessWidget {
               final version = ossl['version'];
               final desc = ossl['description'] as String?;
               return ListTile(
-                title: Text('$key ${version ?? ''}'),
+                title: Text('$key $version'),
                 subtitle: desc != null ? Text(desc) : null,
                 trailing: const Icon(FluentIcons.chevron_right_24_regular),
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) =>
-                        MiscOssLicenseSingle(name: key, json: ossl),
+                    builder: (_) => MiscOssLicenseSingle(name: key, json: ossl),
                   ),
                 ),
               );
@@ -106,14 +103,17 @@ class MiscOssLicenseSingle extends StatelessWidget {
   final String name;
   final Map<String, dynamic> json;
 
+  const MiscOssLicenseSingle({
+    required this.name,
+    required this.json,
+  });
+
   String get version => json['version'] as String? ?? "";
   String? get description => json['description'] as String?;
   String get licenseText => json['license'] as String;
   String? get homepage => json['homepage'] as String?;
 
-  const MiscOssLicenseSingle({required this.name, required this.json});
-
-  String _bodyText() => licenseText.split('\n').map((line) {
+  String get _bodyText => licenseText.split('\n').map((line) {
         if (line.startsWith('//')) line = line.substring(2);
         return line.trim();
       }).join('\n');
@@ -121,54 +121,55 @@ class MiscOssLicenseSingle extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: Text('$name $version')),
-        body: Container(
-          color: Theme.of(context).canvasColor,
-          child: ListView(
-            children: <Widget>[
-              if (description != null)
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 12.0,
-                    left: 12.0,
-                    right: 12.0,
-                  ),
-                  child: Text(
-                    description!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              if (homepage != null)
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 12.0,
-                    left: 12.0,
-                    right: 12.0,
-                  ),
-                  child: InkWell(
-                    child: Text(
-                      homepage!,
-                      style: const TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                    onTap: () => launch(homepage!),
-                  ),
-                ),
-              if (description != null || homepage != null) const Divider(),
+        backgroundColor: Theme.of(context).canvasColor,
+        body: ListView(
+          children: <Widget>[
+            if (description != null)
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
+                padding: const EdgeInsets.only(
+                  top: 12.0,
+                  left: 12.0,
+                  right: 12.0,
+                ),
                 child: Text(
-                  _bodyText(),
-                  style: Theme.of(context).textTheme.bodyText2,
+                  description!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-            ],
-          ),
+            if (homepage != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 12.0,
+                  left: 12.0,
+                  right: 12.0,
+                ),
+                child: InkWell(
+                  child: Text(
+                    homepage!,
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  onTap: () => launch(homepage!),
+                ),
+              ),
+            if (description != null || homepage != null) const Divider(),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 12.0,
+                left: 12.0,
+                right: 12.0,
+              ),
+              child: Text(
+                _bodyText,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+          ],
         ),
       );
 }

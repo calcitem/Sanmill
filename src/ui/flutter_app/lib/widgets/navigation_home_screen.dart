@@ -29,7 +29,6 @@ import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/about_page.dart';
 import 'package:sanmill/widgets/drawer_user_controller.dart';
 import 'package:sanmill/widgets/help_screen.dart';
@@ -58,26 +57,19 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: UIColors.nearlyWhite,
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: Scaffold(
-          backgroundColor: AppTheme.navigationHomeScreenBackgroundColor,
-          body: DrawerUserController(
-            screenIndex: drawerIndex,
-            drawerWidth: MediaQuery.of(context).size.width * 0.75,
-            onDrawerCall: (DrawerIndex index) {
-              // callback from drawer for replace screen
-              // as user need with passing DrawerIndex (Enum index)
-              changeIndex(index);
-            },
-            // we replace screen view as
-            // we need on navigate starting screens
-            screenView: screenView,
-          ),
-        ),
+    return Scaffold(
+      backgroundColor: AppTheme.navigationHomeScreenBackgroundColor,
+      body: DrawerUserController(
+        screenIndex: drawerIndex,
+        drawerWidth: MediaQuery.of(context).size.width * 0.75,
+        onDrawerCall: (DrawerIndex index) {
+          // callback from drawer for replace screen
+          // as user need with passing DrawerIndex (Enum index)
+          changeIndex(index);
+        },
+        // we replace screen view as
+        // we need on navigate starting screens
+        screenView: screenView,
       ),
     );
   }
@@ -95,6 +87,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
 
     drawerIndex = index;
 
+    // TODO: use switch case
     final engineType = drawerMap[drawerIndex!];
     if (engineType != null) {
       setState(() {
