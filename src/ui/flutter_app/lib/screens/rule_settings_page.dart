@@ -20,13 +20,12 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
-import 'package:sanmill/screens/settings/settings_card.dart';
-import 'package:sanmill/screens/settings/settings_list_tile.dart';
-import 'package:sanmill/screens/settings/settings_switch_list_tile.dart';
 import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/settings/settings_card.dart';
+import 'package:sanmill/shared/settings/settings_list_tile.dart';
+import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
+import 'package:sanmill/shared/snack_bar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
-
-import '../shared/snack_bar.dart';
 
 class RuleSettingsPage extends StatefulWidget {
   @override

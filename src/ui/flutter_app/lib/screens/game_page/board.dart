@@ -16,15 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
-import 'package:sanmill/mill/game.dart';
-import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/painters/board_painter.dart';
-import 'package:sanmill/shared/painters/pieces_painter.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+part of 'package:sanmill/screens/game_page/game_page.dart';
 
 typedef BoardTapCallback = dynamic Function(int index);
 

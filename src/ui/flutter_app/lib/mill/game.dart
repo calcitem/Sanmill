@@ -17,11 +17,10 @@
 */
 
 import 'package:flutter/foundation.dart';
-import 'package:sanmill/engine/engine.dart';
+import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/shared/common/config.dart';
-
-import 'position.dart';
-import 'types.dart';
 
 enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};

@@ -21,15 +21,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/screens/settings/settings_card.dart';
-import 'package:sanmill/screens/settings/settings_list_tile.dart';
-import 'package:sanmill/screens/settings/settings_switch_list_tile.dart';
+import 'package:sanmill/screens/env_page.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/settings.dart';
+import 'package:sanmill/shared/dialog.dart';
+import 'package:sanmill/shared/settings/settings_card.dart';
+import 'package:sanmill/shared/settings/settings_list_tile.dart';
+import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
-
-import '../shared/dialog.dart';
-import 'env_page.dart';
 
 class Developer {
   const Developer._();

@@ -17,16 +17,14 @@
 */
 
 import 'package:flutter/foundation.dart';
-import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/mills.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
-
-import 'mills.dart';
-import 'types.dart';
-import 'zobrist.dart';
+import 'package:sanmill/services/engine/engine.dart';
 
 List<int> posKeyHistory = [];
 

@@ -16,15 +16,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:async';
-
 //import 'dart:typed_data';
+
+import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/engine/engine.dart';
-import 'package:sanmill/engine/native_engine.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/main.dart';
@@ -32,9 +30,10 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/screens/board.dart';
 import 'package:sanmill/screens/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
+import 'package:sanmill/services/engine/engine.dart';
+import 'package:sanmill/services/engine/native_engine.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/dialog.dart';
@@ -45,6 +44,10 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 part 'package:sanmill/screens/game_page/game_page_tool_bar.dart';
+part 'package:sanmill/screens/game_page/board.dart';
+part 'package:sanmill/shared/painters/board_painter.dart';
+part 'package:sanmill/shared/painters/pieces_painter.dart';
+part 'package:sanmill/shared/painters/painter_base.dart';
 
 double boardWidth = 0.0;
 

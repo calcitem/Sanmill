@@ -19,10 +19,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/screens/list_item_divider.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 Map<String, Strings> languageCodeToStrings = {
@@ -520,9 +520,7 @@ class Resources {
 }
 
 Future<void> setLanguage(
-  BuildContext context,
-  Function(String?)? callback,
-) async {
+    BuildContext context, Function(String?)? callback) async {
   final languageColumn = Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
@@ -572,7 +570,7 @@ Bidirectionality getBidirectionality(BuildContext context) {
       currentLocale.languageCode == "he" ||
       currentLocale.languageCode == "ps" ||
       currentLocale.languageCode == "ur") {
-    debugPrint("bidirectionality: RTL");
+    print("bidirectionality: RTL");
     return Bidirectionality.rightToLeft;
   } else {
     return Bidirectionality.leftToRight;
@@ -593,5 +591,5 @@ void setSpecialCountryAndRegion(BuildContext context) {
       break;
   }
 
-  debugPrint("Set Special Country and Region to $specialCountryAndRegion.");
+  print("Set Special Country and Region to $specialCountryAndRegion.");
 }

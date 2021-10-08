@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -33,8 +32,6 @@ import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
-
-import 'services/audios.dart';
 
 Future<void> main() async {
   final catcher = Catcher(
