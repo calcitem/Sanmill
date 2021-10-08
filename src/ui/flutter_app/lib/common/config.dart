@@ -103,7 +103,7 @@ class Config {
 
   // TODO: use jsonSerializable
   static Future<void> loadSettings() async {
-   debugPrint("[config] Loading settings...");
+    debugPrint("[config] Loading settings...");
 
     final settings = await Settings.instance();
 
@@ -228,7 +228,7 @@ class Config {
         settings['ThreefoldRepetitionRule'] as bool? ?? true;
 
     settingsLoaded = true;
-   debugPrint("[config] Loading settings done!");
+    debugPrint("[config] Loading settings done!");
   }
 
   static Future<bool> save() async {

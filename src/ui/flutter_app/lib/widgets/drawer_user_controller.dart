@@ -49,9 +49,9 @@ class DrawerUserController extends StatefulWidget {
 
 class _DrawerUserControllerState extends State<DrawerUserController>
     with TickerProviderStateMixin {
-  late ScrollController scrollController;
-  late AnimationController iconAnimationController;
-  late AnimationController animationController;
+  late final ScrollController scrollController;
+  late final AnimationController iconAnimationController;
+  late final AnimationController animationController;
 
   double scrollOffset = 0.0;
 

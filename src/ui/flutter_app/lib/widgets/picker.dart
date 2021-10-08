@@ -70,9 +70,9 @@ Future<int> showPickerNumber(
       fontSize: Config.fontSize,
     ),
     onConfirm: (Picker picker, List value) async {
-     debugPrint(value.toString());
+      debugPrint(value.toString());
       final selectValues = picker.getSelectedValues();
-     debugPrint(selectValues.toString());
+      debugPrint(selectValues.toString());
       selectValue = selectValues[0];
     },
   ).showDialog(context);

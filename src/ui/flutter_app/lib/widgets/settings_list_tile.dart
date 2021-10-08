@@ -25,7 +25,6 @@ import 'package:sanmill/style/app_theme.dart';
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
     Key? key,
-    required this.context,
     required this.titleString,
     this.subtitleString,
     this.trailingString,
@@ -33,12 +32,11 @@ class SettingsListTile extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final BuildContext context;
   final String titleString;
   final String? subtitleString;
   final String? trailingString;
   final int? trailingColor;
-  final  onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

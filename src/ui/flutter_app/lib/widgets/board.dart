@@ -105,19 +105,19 @@ class Board extends StatelessWidget {
 
         final column = (dx - padding) ~/ squareWidth;
         if (column < 0 || column > 6) {
-         debugPrint("$tag Tap on column $column (ignored).");
+          debugPrint("$tag Tap on column $column (ignored).");
           return;
         }
 
         final row = (dy - padding) ~/ squareWidth;
         if (row < 0 || row > 6) {
-         debugPrint("$tag Tap on row $row (ignored).");
+          debugPrint("$tag Tap on row $row (ignored).");
           return;
         }
 
         final index = row * 7 + column;
 
-       debugPrint("$tag Tap on ($row, $column) <$index>");
+        debugPrint("$tag Tap on ($row, $column) <$index>");
 
         onBoardTap(context, index);
       },

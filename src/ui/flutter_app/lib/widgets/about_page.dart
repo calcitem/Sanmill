@@ -33,20 +33,9 @@ import 'license_page.dart';
 import 'list_item_divider.dart';
 import 'oss_license_page.dart';
 
-class AboutPage extends StatefulWidget {
-  @override
-  _AboutPageState createState() => _AboutPageState();
-}
-
-class _AboutPageState extends State<AboutPage> {
-  String _version = "";
+class AboutPage extends StatelessWidget {
+  // String _version = "";
   final String tag = "[about] ";
-
-  @override
-  void initState() {
-    _loadVersionInfo();
-    super.initState();
-  }
 
   String getMode() {
     late String ret;
@@ -84,21 +73,35 @@ class _AboutPageState extends State<AboutPage> {
 
   List<Widget> children(BuildContext context, String mode) {
     return <Widget>[
-      SettingsListTile(
-        context: context,
-        titleString: S.of(context).versionInfo,
-        subtitleString: "${Constants.projectName} $_version $mode",
-        onTap: _showVersionInfo,
+      FutureBuilder<PackageInfo>(
+        future: PackageInfo.fromPlatform(),
+        builder: (_, data) {
+          late final String _version;
+          if (!data.hasData) {
+            _version = '';
+          } else {
+            final packageInfo = data.data!;
+            if (Platform.isWindows) {
+              _version = packageInfo.version; // TODO
+
+            } else {
+              _version = '${packageInfo.version} (${packageInfo.buildNumber})';
+            }
+          }
+          return SettingsListTile(
+            titleString: S.of(context).versionInfo,
+            subtitleString: "${Constants.projectName} $_version $mode",
+            onTap: () => _showVersionInfo(context, _version),
+          );
+        },
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).feedback,
         onTap: _launchFeedback,
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).eula,
         onTap: () {
           _launchEULA();
@@ -106,7 +109,6 @@ class _AboutPageState extends State<AboutPage> {
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).license,
         onTap: () {
           Navigator.push(
@@ -119,7 +121,6 @@ class _AboutPageState extends State<AboutPage> {
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).sourceCode,
         onTap: () {
           _launchSourceCode();
@@ -127,7 +128,6 @@ class _AboutPageState extends State<AboutPage> {
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).privacyPolicy,
         onTap: () {
           _launchPrivacyPolicy();
@@ -135,15 +135,13 @@ class _AboutPageState extends State<AboutPage> {
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).ossLicenses,
         onTap: () {
-          _launchThirdPartyNotices();
+          _launchThirdPartyNotices(context);
         },
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).helpImproveTranslate,
         onTap: () {
           _launchHelpImproveTranslate();
@@ -151,7 +149,6 @@ class _AboutPageState extends State<AboutPage> {
       ),
       const ListItemDivider(),
       SettingsListTile(
-        context: context,
         titleString: S.of(context).thanks,
         onTap: () {
           _launchThanks();
@@ -159,20 +156,6 @@ class _AboutPageState extends State<AboutPage> {
       ),
       const ListItemDivider(),
     ];
-  }
-
-  Future<void> _loadVersionInfo() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-
-    if (Platform.isWindows) {
-      setState(() {
-        _version = packageInfo.version; // TODO
-      });
-    } else {
-      setState(() {
-        _version = '${packageInfo.version} (${packageInfo.buildNumber})';
-      });
-    }
   }
 
   Future<void> _launchURL(String url) async {
@@ -186,7 +169,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-   debugPrint("$tag local = $locale");
+    debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeIssuesURL);
     } else {
@@ -201,7 +184,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-   debugPrint("$tag local = $locale");
+    debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeEulaURL);
     } else {
@@ -216,7 +199,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-   debugPrint("$tag local = $locale");
+    debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeSourceCodeURL);
     } else {
@@ -224,7 +207,7 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  Future<void> _launchThirdPartyNotices() async {
+  Future<void> _launchThirdPartyNotices(BuildContext context) async {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -254,7 +237,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-   debugPrint("$tag local = $locale");
+    debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteePrivacyPolicyURL);
     } else {
@@ -269,7 +252,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-   debugPrint("$tag local = $locale");
+    debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeHelpImproveTranslateURL);
     } else {
@@ -284,7 +267,7 @@ class _AboutPageState extends State<AboutPage> {
       locale = await Devicelocale.currentLocale;
     }
 
-   debugPrint("$tag local = $locale");
+    debugPrint("$tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeThanksURL);
     } else {
@@ -292,15 +275,27 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  void _showVersionInfo() {
+  void _showVersionInfo(BuildContext context, String version) {
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => versionDialog(context),
+      builder: (_) => _VersionDialog(
+        version: version,
+      ),
     );
   }
+}
 
-  AlertDialog versionDialog(BuildContext context) {
+class _VersionDialog extends StatelessWidget {
+  const _VersionDialog({
+    Key? key,
+    required this.version,
+  }) : super(key: key);
+
+  final String version;
+
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
         S.of(context).appName,
@@ -310,7 +305,7 @@ class _AboutPageState extends State<AboutPage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("${S.of(context).version}: $_version"),
+          Text("${S.of(context).version}: $version"),
           const SizedBox(height: AppTheme.sizedBoxHeight),
           const SizedBox(height: AppTheme.sizedBoxHeight),
           Text(
@@ -324,7 +319,7 @@ class _AboutPageState extends State<AboutPage> {
       actions: <Widget>[
         TextButton(
           child: Text(S.of(context).more),
-          onPressed: () => _showFlutterVersionInfo(),
+          onPressed: () => _showFlutterVersionInfo(context),
         ),
         TextButton(
           child: Text(S.of(context).ok),
@@ -334,17 +329,17 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 
-  void _showFlutterVersionInfo() {
+  void _showFlutterVersionInfo(BuildContext context) {
     Navigator.of(context).pop();
 
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => flutterVersionDialog(context),
+      builder: (context) => _flutterVersionDialog(context),
     );
   }
 
-  AlertDialog flutterVersionDialog(BuildContext context) {
+  AlertDialog _flutterVersionDialog(BuildContext context) {
     return AlertDialog(
       title: Text(
         S.of(context).more,

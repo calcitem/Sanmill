@@ -54,11 +54,11 @@ Future<void> main() async {
       externalDirStr = ".";
     }
   } catch (e) {
-   debugPrint(e.toString());
+    debugPrint(e.toString());
     externalDirStr = ".";
   }
   final String path = "$externalDirStr/${Constants.crashLogsFileName}";
- debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
+  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
   final String recipients = Constants.recipients;
 
   final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
@@ -89,8 +89,8 @@ Future<void> main() async {
     profileConfig: profileOptions,
   );
 
- debugPrint(window.physicalSize.toString());
- debugPrint(Constants.windowAspectRatio.toString());
+  debugPrint(window.physicalSize.toString());
+  debugPrint(Constants.windowAspectRatio.toString());
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
@@ -115,27 +115,13 @@ Future<void> main() async {
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-final globalScaffoldKey = GlobalKey<ScaffoldState>();
-
-class SanmillApp extends StatefulWidget {
-  @override
-  _SanmillAppState createState() => _SanmillAppState();
-}
-
-class _SanmillAppState extends State<SanmillApp> {
-  @override
-  void initState() {
-    super.initState();
-    if (Platform.isWindows) {
-      print("[audio] Audio Player is not support Windows.");
-      return;
-    } else {
-      Audios.loadSounds();
-    }
-  }
+class SanmillApp extends StatelessWidget {
+  final globalScaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    Audios.loadSounds();
+
     setSpecialCountryAndRegion(context);
 
     return MaterialApp(
