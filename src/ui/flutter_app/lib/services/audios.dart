@@ -20,6 +20,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:stack_trace/stack_trace.dart';
@@ -59,7 +60,7 @@ class Audios {
     }
 
     drawSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/draw.mp3"));
+        await _soundpool!.load(await rootBundle.load(Assets.audios.draw));
     if (drawSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -69,7 +70,7 @@ class Audios {
     }
 
     flySoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/fly.mp3"));
+        await _soundpool!.load(await rootBundle.load(Assets.audios.fly));
     if (flySoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -79,7 +80,7 @@ class Audios {
     }
 
     goSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/go.mp3"));
+        await _soundpool!.load(await rootBundle.load(Assets.audios.go));
     if (goSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -88,8 +89,8 @@ class Audios {
       return;
     }
 
-    illegalSoundId = await _soundpool!
-        .load(await rootBundle.load("assets/audios/illegal.mp3"));
+    illegalSoundId =
+        await _soundpool!.load(await rootBundle.load(Assets.audios.illegal));
     if (illegalSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -99,7 +100,7 @@ class Audios {
     }
 
     loseSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/lose.mp3"));
+        await _soundpool!.load(await rootBundle.load(Assets.audios.lose));
     if (loseSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -109,7 +110,7 @@ class Audios {
     }
 
     millSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/mill.mp3"));
+        await _soundpool!.load(await rootBundle.load(Assets.audios.mill));
     if (millSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -118,8 +119,8 @@ class Audios {
       return;
     }
 
-    placeSoundId ??= await _soundpool!
-        .load(await rootBundle.load("assets/audios/place.mp3"));
+    placeSoundId ??=
+        await _soundpool!.load(await rootBundle.load(Assets.audios.place));
     if (placeSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -128,8 +129,8 @@ class Audios {
       return;
     }
 
-    removeSoundId ??= await _soundpool!
-        .load(await rootBundle.load("assets/audios/remove.mp3"));
+    removeSoundId ??=
+        await _soundpool!.load(await rootBundle.load(Assets.audios.remove));
     if (removeSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -138,8 +139,8 @@ class Audios {
       return;
     }
 
-    selectSoundId ??= await _soundpool!
-        .load(await rootBundle.load("assets/audios/select.mp3"));
+    selectSoundId ??=
+        await _soundpool!.load(await rootBundle.load(Assets.audios.select));
     if (selectSoundId == null) {
       if (Config.developerMode) {
         assert(false);
@@ -149,7 +150,7 @@ class Audios {
     }
 
     winSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/win.mp3"));
+        await _soundpool!.load(await rootBundle.load(Assets.audios.win));
     if (winSoundId == null) {
       if (Config.developerMode) {
         assert(false);
