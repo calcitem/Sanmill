@@ -135,9 +135,7 @@ class HomeDrawer extends StatelessWidget {
 
     final animatedBuilder = AnimatedBuilder(
       animation: iconAnimationController!,
-      builder: (BuildContext context, Widget? child) {
-        return scaleTransition;
-      },
+      builder: (_, __) => scaleTransition,
     );
 
     final animatedTextsColors = [
@@ -181,21 +179,17 @@ class HomeDrawer extends StatelessWidget {
       },
     );
 
-    final drawerHeader = Container(
-      width: double.infinity,
-      padding: EdgeInsets.zero,
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            animatedBuilder,
-            Padding(
-              padding: EdgeInsets.only(top: isLargeScreen() ? 30 : 8, left: 4),
-              child: ExcludeSemantics(child: animatedTextKit),
-            ),
-          ],
-        ),
+    final drawerHeader = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          animatedBuilder,
+          Padding(
+            padding: EdgeInsets.only(top: isLargeScreen() ? 30 : 8, left: 4),
+            child: ExcludeSemantics(child: animatedTextKit),
+          ),
+        ],
       ),
     );
 
@@ -233,9 +227,9 @@ class HomeDrawer extends StatelessWidget {
     );
     */
 
-    final scaffold = Scaffold(
-      backgroundColor: Color(Config.drawerBackgroundColor),
-      body: Column(
+    final drawer = Material(
+      color: Color(Config.drawerBackgroundColor),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           drawerHeader,
@@ -244,7 +238,6 @@ class HomeDrawer extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.zero,
               itemCount: drawerList.length,
               itemBuilder: (BuildContext context, int index) =>
                   buildInkwell(context, drawerList[index]),
@@ -256,7 +249,7 @@ class HomeDrawer extends StatelessWidget {
       ),
     );
 
-    return scaffold;
+    return drawer;
   }
 
   Future<void> navigationToScreen(DrawerIndex? index) async {
@@ -278,7 +271,7 @@ class HomeDrawer extends StatelessWidget {
             0.0,
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.75 - 64,
               height: 46,
@@ -306,8 +299,8 @@ class HomeDrawer extends StatelessWidget {
 
     final stack = Stack(
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
             children: <Widget>[
               const SizedBox(width: 6.0, height: 46.0),

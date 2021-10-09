@@ -520,7 +520,9 @@ class Resources {
 }
 
 Future<void> setLanguage(
-    BuildContext context, Function(String?)? callback) async {
+  BuildContext context,
+  Function(String?)? callback,
+) async {
   final languageColumn = Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
@@ -570,7 +572,7 @@ Bidirectionality getBidirectionality(BuildContext context) {
       currentLocale.languageCode == "he" ||
       currentLocale.languageCode == "ps" ||
       currentLocale.languageCode == "ur") {
-    print("bidirectionality: RTL");
+    debugPrint("bidirectionality: RTL");
     return Bidirectionality.rightToLeft;
   } else {
     return Bidirectionality.leftToRight;
@@ -591,5 +593,5 @@ void setSpecialCountryAndRegion(BuildContext context) {
       break;
   }
 
-  print("Set Special Country and Region to $specialCountryAndRegion.");
+  debugPrint("Set Special Country and Region to $specialCountryAndRegion.");
 }

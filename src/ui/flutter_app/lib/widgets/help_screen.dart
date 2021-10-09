@@ -20,14 +20,12 @@ class HelpScreen extends StatelessWidget {
       ),
       backgroundColor: Color(Config.darkBackgroundColor),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            S.of(context).helpContent,
-            style: TextStyle(
-              fontSize: Config.fontSize,
-              color: AppTheme.helpTextColor,
-            ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          S.of(context).helpContent,
+          style: TextStyle(
+            fontSize: Config.fontSize,
+            color: AppTheme.helpTextColor,
           ),
         ),
       ),
