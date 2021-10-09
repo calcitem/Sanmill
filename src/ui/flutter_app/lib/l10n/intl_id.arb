@@ -1,6 +1,6 @@
 {
     "@@locale": "id",
-    "appName": "Pabrik",
+    "appName": "Mill",
     "@appName": {
         "description": "The app name"
     },
@@ -64,7 +64,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "baik",
+    "ok": "Ok",
     "@ok": {
         "description": "OK"
     },
@@ -164,19 +164,19 @@
     "@tipToMove": {
         "description": " to move."
     },
-    "whiteWin": "Player 1 wins!",
+    "whiteWin": "Player 1 menang!",
     "@whiteWin": {
         "description": "Player 1 wins!"
     },
-    "blackWin": "Player 2 wins!",
+    "blackWin": "Player 2 menang!",
     "@blackWin": {
         "description": "Player 2 wins!"
     },
-    "won": "Won",
+    "won": "Menang",
     "@won": {
         "description": "Won"
     },
-    "lost": "Lost",
+    "lost": "Kalah",
     "@lost": {
         "description": "Lost"
     },
@@ -192,11 +192,11 @@
     "@newGame": {
         "description": "New game"
     },
-    "importGame": "Import game",
+    "importGame": "Impor game",
     "@importGame": {
         "description": "Import game"
     },
-    "exportGame": "Export game",
+    "exportGame": "Ekspor game",
     "@exportGame": {
         "description": "Export game"
     },
@@ -212,15 +212,15 @@
     "@movesAndRulesNotMatch": {
         "description": "Rules and moves do not match."
     },
-    "startRecording": "Start recording",
+    "startRecording": "Mulai merekam",
     "@startRecording": {
         "description": "Start recording"
     },
-    "recording": "Recording...",
+    "recording": "Merekam...",
     "@recording": {
         "description": "Recording..."
     },
-    "stopRecording": "Stop recording",
+    "stopRecording": "Stop merekam",
     "@stopRecording": {
         "description": "Stop recording"
     },
