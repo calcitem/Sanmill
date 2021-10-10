@@ -27,8 +27,6 @@ import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-import 'list_item_divider.dart';
-
 class PersonalizationSettingsPage extends StatefulWidget {
   @override
   _PersonalizationSettingsPageState createState() =>
@@ -130,7 +128,7 @@ class _PersonalizationSettingsPageState
             }
 
             Config.save();
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
         TextButton(
@@ -141,7 +139,7 @@ class _PersonalizationSettingsPageState
             ),
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
       ],
@@ -374,7 +372,7 @@ class _PersonalizationSettingsPageState
     Future<void> langCallback([String? langCode]) async {
       debugPrint("[config] languageCode = $langCode");
 
-      Navigator.of(context).pop();
+      Navigator.pop(context);
 
       setState(() {
         Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;
@@ -394,63 +392,53 @@ class _PersonalizationSettingsPageState
           SettingsListTile(
             titleString: S.of(context).language,
             trailingString:
-                Config.languageCode == Constants.defaultLanguageCodeName
-                    ? ""
-                    : languageCodeToStrings[Config.languageCode]!.languageName,
+                Config.languageCode != Constants.defaultLanguageCodeName
+                    ? languageCodeToStrings[Config.languageCode]!.languageName
+                    : "",
             onTap: () => setLanguage(context, langCallback),
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isPieceCountInHandShown,
             onChanged: setIsPieceCountInHandShown,
             titleString: S.of(context).isPieceCountInHandShown,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isNotationsShown,
             onChanged: setIsNotationsShown,
             titleString: S.of(context).isNotationsShown,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.isHistoryNavigationToolbarShown,
             onChanged: setIsHistoryNavigationToolbarShown,
             titleString: S.of(context).isHistoryNavigationToolbarShown,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).boardBorderLineWidth,
             onTap: setBoardBorderLineWidth,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).boardInnerLineWidth,
             onTap: setBoardInnerLineWidth,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).pieceWidth,
             onTap: setPieceWidth,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).fontSize,
             onTap: setFontSize,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).boardTop,
             onTap: setBoardTop,
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).animationDuration,
             onTap: setAnimationDuration,
           ),
-          const ListItemDivider(),
           SettingsSwitchListTile(
             context: context,
             value: Config.standardNotationEnabled,
@@ -469,88 +457,74 @@ class _PersonalizationSettingsPageState
             trailingColor: Config.boardBackgroundColor,
             onTap: () => showColorDialog(S.of(context).boardColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).backgroundColor,
             trailingColor: Config.darkBackgroundColor,
             onTap: () => showColorDialog(S.of(context).backgroundColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).lineColor,
             trailingColor: Config.boardLineColor,
             onTap: () => showColorDialog(S.of(context).lineColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).whitePieceColor,
             trailingColor: Config.whitePieceColor,
             onTap: () => showColorDialog(S.of(context).whitePieceColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).blackPieceColor,
             trailingColor: Config.blackPieceColor,
             onTap: () => showColorDialog(S.of(context).blackPieceColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).pieceHighlightColor,
             trailingColor: Config.pieceHighlightColor,
             onTap: () => showColorDialog(S.of(context).pieceHighlightColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).messageColor,
             trailingColor: Config.messageColor,
             onTap: () => showColorDialog(S.of(context).messageColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).drawerColor,
             trailingColor: Config.drawerColor,
             onTap: () => showColorDialog(S.of(context).drawerColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).drawerBackgroundColor,
             trailingColor: Config.drawerBackgroundColor,
             onTap: () => showColorDialog(S.of(context).drawerBackgroundColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).drawerTextColor,
             trailingColor: Config.drawerTextColor,
             onTap: () => showColorDialog(S.of(context).drawerTextColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).drawerHighlightItemColor,
             trailingColor: Config.drawerHighlightItemColor,
             onTap: () =>
                 showColorDialog(S.of(context).drawerHighlightItemColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).mainToolbarBackgroundColor,
             trailingColor: Config.mainToolbarBackgroundColor,
             onTap: () =>
                 showColorDialog(S.of(context).mainToolbarBackgroundColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).mainToolbarIconColor,
             trailingColor: Config.mainToolbarIconColor,
             onTap: () => showColorDialog(S.of(context).mainToolbarIconColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).navigationToolbarBackgroundColor,
             trailingColor: Config.navigationToolbarBackgroundColor,
             onTap: () =>
                 showColorDialog(S.of(context).navigationToolbarBackgroundColor),
           ),
-          const ListItemDivider(),
           SettingsListTile(
             titleString: S.of(context).navigationToolbarIconColor,
             trailingColor: Config.navigationToolbarIconColor,
@@ -565,33 +539,25 @@ class _PersonalizationSettingsPageState
   // Display
 
   Future<void> setIsPieceCountInHandShown(bool value) async {
-    setState(() {
-      Config.isPieceCountInHandShown = value;
-    });
+    setState(() => Config.isPieceCountInHandShown = value);
 
     Config.save();
   }
 
   Future<void> setIsNotationsShown(bool value) async {
-    setState(() {
-      Config.isNotationsShown = value;
-    });
+    setState(() => Config.isNotationsShown = value);
 
     Config.save();
   }
 
   Future<void> setIsHistoryNavigationToolbarShown(bool value) async {
-    setState(() {
-      Config.isHistoryNavigationToolbarShown = value;
-    });
+    setState(() => Config.isHistoryNavigationToolbarShown = value);
 
     Config.save();
   }
 
   Future<void> setStandardNotationEnabled(bool value) async {
-    setState(() {
-      Config.standardNotationEnabled = value;
-    });
+    setState(() => Config.standardNotationEnabled = value);
 
     debugPrint("[config] standardNotationEnabled: $value");
 

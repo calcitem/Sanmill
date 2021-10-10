@@ -301,7 +301,7 @@ class HomeDrawer extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
             children: <Widget>[
-              const SizedBox(width: 6.0, height: 46.0),
+              const SizedBox(height: 46.0, width: 6.0),
               const Padding(
                 padding: EdgeInsets.all(4.0),
               ),
