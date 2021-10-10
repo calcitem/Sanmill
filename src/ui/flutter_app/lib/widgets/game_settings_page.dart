@@ -75,13 +75,11 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           max: 30,
           divisions: 29,
           label: Config.skillLevel.toString(),
-          onChanged: (value) {
-            setState(() {
-              debugPrint("[config] Slider value: $value");
-              Config.skillLevel = value.toInt();
-              Config.save();
-            });
-          },
+          onChanged: (value) => setState(() {
+            debugPrint("[config] Slider value: $value");
+            Config.skillLevel = value.toInt();
+            Config.save();
+          }),
         ),
       ),
     );
@@ -97,13 +95,11 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
           max: 60,
           divisions: 60,
           label: Config.moveTime.toString(),
-          onChanged: (value) {
-            setState(() {
-              debugPrint("[config] Slider value: $value");
-              Config.moveTime = value.toInt();
-              Config.save();
-            });
-          },
+          onChanged: (value) => setState(() {
+            debugPrint("[config] Slider value: $value");
+            Config.moveTime = value.toInt();
+            Config.save();
+          }),
         ),
       ),
     );
@@ -216,14 +212,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         context: context,
         children: <Widget>[
           SettingsListTile(
-            context: context,
             titleString: S.of(context).skillLevel,
             //trailingString: "L" + Config.skillLevel.toString(),
             onTap: setSkillLevel,
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).moveTime,
             onTap: setMoveTime,
           ),
@@ -235,7 +229,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         context: context,
         children: <Widget>[
           SettingsListTile(
-            context: context,
             titleString: S.of(context).algorithm,
             trailingString: algorithmNames[Config.algorithm],
             onTap: setAlgorithm,
@@ -318,7 +311,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         context: context,
         children: <Widget>[
           SettingsListTile(
-            context: context,
             titleString: S.of(context).restoreDefaultSettings,
             onTap: restoreFactoryDefaultSettings,
           ),
@@ -359,7 +351,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             ),
             const ListItemDivider(),
             SettingsListTile(
-              context: context,
               titleString: S.of(context).environmentVariables,
               onTap: () {
                 Navigator.push(

@@ -44,6 +44,7 @@ class Audios {
 
   static Future<void> loadSounds() async {
     if (Platform.isWindows) {
+      debugPrint("[audio] Audio Player does not support Windows.");
       return;
     }
 

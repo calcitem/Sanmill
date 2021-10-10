@@ -36,11 +36,6 @@ class RuleSettingsPage extends StatefulWidget {
 
 class _RuleSettingsPageState extends State<RuleSettingsPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.lightBackgroundColor,
@@ -63,7 +58,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
         context: context,
         children: <Widget>[
           SettingsListTile(
-            context: context,
             titleString: S.of(context).piecesCount,
             subtitleString: S.of(context).piecesCount_Detail,
             trailingString: Config.piecesCount.toString(),
@@ -79,7 +73,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).nMoveRule,
             subtitleString: S.of(context).nMoveRule_Detail,
             trailingString: Config.nMoveRule.toString(),
@@ -87,7 +80,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).endgameNMoveRule,
             subtitleString: S.of(context).endgameNMoveRule_Detail,
             trailingString: Config.endgameNMoveRule.toString(),
@@ -186,7 +178,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           ),
           const ListItemDivider(),
           SettingsListTile(
-            context: context,
             titleString: S.of(context).flyPieceCount,
             subtitleString: S.of(context).flyPieceCount_Detail,
             trailingString: Config.flyPieceCount.toString(),
@@ -548,7 +539,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     });
 
     debugPrint(
-        "[config] rule.mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
+      "[config] rule.mayOnlyRemoveUnplacedPieceInPlacingPhase: $value",
+    );
 
     Config.save();
   }
