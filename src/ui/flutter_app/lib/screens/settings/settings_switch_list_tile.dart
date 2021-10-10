@@ -23,14 +23,12 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 class SettingsSwitchListTile extends StatelessWidget {
   const SettingsSwitchListTile({
     Key? key,
-    required this.context,
     required this.value,
     required this.onChanged,
     required this.titleString,
     this.subtitleString,
   }) : super(key: key);
 
-  final BuildContext context;
   final bool value;
   final String titleString;
   final String? subtitleString;

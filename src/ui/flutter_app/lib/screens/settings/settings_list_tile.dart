@@ -63,9 +63,7 @@ class SettingsListTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            trailingColor == null
-                ? (trailingString == null ? "" : trailingString!)
-                : trailingColor!.toRadixString(16),
+            trailingColor?.toRadixString(16) ?? trailingString ?? '',
             style: TextStyle(
               fontSize: Config.fontSize,
               backgroundColor:

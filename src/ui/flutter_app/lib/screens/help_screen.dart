@@ -8,12 +8,12 @@ class HelpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Color(Config.darkBackgroundColor),
         centerTitle: true,
         title: Text(
           S.of(context).howToPlay,
           style: TextStyle(
-            fontSize: Config.fontSize + 4,
-            fontWeight: FontWeight.bold,
             color: AppTheme.helpTextColor,
           ),
         ),

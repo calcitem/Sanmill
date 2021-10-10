@@ -29,6 +29,7 @@ class ListItemDivider extends StatelessWidget {
     return Divider(
       indent: 16,
       endIndent: 16,
+      height: 1.0,
       thickness: 1.0,
       color: AppTheme.listItemDividerColor,
     );

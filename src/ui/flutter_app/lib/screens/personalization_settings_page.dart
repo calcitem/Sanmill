@@ -387,7 +387,6 @@ class _PersonalizationSettingsPageState
     return <Widget>[
       Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).language,
@@ -398,19 +397,16 @@ class _PersonalizationSettingsPageState
             onTap: () => setLanguage(context, langCallback),
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.isPieceCountInHandShown,
             onChanged: setIsPieceCountInHandShown,
             titleString: S.of(context).isPieceCountInHandShown,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.isNotationsShown,
             onChanged: setIsNotationsShown,
             titleString: S.of(context).isNotationsShown,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.isHistoryNavigationToolbarShown,
             onChanged: setIsHistoryNavigationToolbarShown,
             titleString: S.of(context).isHistoryNavigationToolbarShown,
@@ -440,7 +436,6 @@ class _PersonalizationSettingsPageState
             onTap: setAnimationDuration,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.standardNotationEnabled,
             onChanged: setStandardNotationEnabled,
             titleString: S.of(context).standardNotation,
@@ -450,7 +445,6 @@ class _PersonalizationSettingsPageState
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).boardColor,

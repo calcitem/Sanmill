@@ -23,11 +23,9 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 class SettingsCard extends StatelessWidget {
   const SettingsCard({
     Key? key,
-    required this.context,
     required this.children,
   }) : super(key: key);
 
-  final BuildContext context;
   final List<Widget> children;
 
   @override

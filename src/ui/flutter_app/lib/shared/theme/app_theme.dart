@@ -4,7 +4,8 @@ import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/colors.dart';
 
 class AppTheme {
-  AppTheme._();
+  const AppTheme._();
+  // TODO: restructure theming. Some theme Elements should be accessed via Theme.of(context)
 
   // Theme data
   static final lightThemeData = ThemeData(
@@ -121,7 +122,7 @@ class AppTheme {
     color: moveHistoryTextColor,
   );
 
-  static double boardTop = isLargeScreen() ? 75.0 : 36.0;
+  static double boardTop = isLargeScreen ? 75.0 : 36.0;
   static double boardMargin = 10.0;
   static double boardScreenPaddingH = 10.0;
   static double boardBorderRadius = 5.0;

@@ -194,10 +194,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
     return <Widget>[
       Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsSwitchListTile(
-            context: context,
             value: !Config.aiMovesFirst,
             onChanged: setWhoMovesFirst,
             titleString:
@@ -208,7 +206,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).skillLevel,
@@ -224,7 +221,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).aisPlayStyle, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).algorithm,
@@ -232,66 +228,50 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             onTap: setAlgorithm,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.drawOnHumanExperience,
             onChanged: setDrawOnHumanExperience,
             titleString: S.of(context).drawOnHumanExperience,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.considerMobility,
             onChanged: setConsiderMobility,
             titleString: S.of(context).considerMobility,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.aiIsLazy,
             onChanged: setAiIsLazy,
             titleString: S.of(context).passive,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.shufflingEnabled,
             onChanged: setShufflingEnabled,
             titleString: S.of(context).shufflingEnabled,
           ),
         ],
       ),
+      if (!Platform.isWindows) const SizedBox(height: AppTheme.sizedBoxHeight),
       if (!Platform.isWindows)
-        const SizedBox(height: AppTheme.sizedBoxHeight)
-      else
-        const SizedBox(height: 0.0, width: 0.0),
-      if (!Platform.isWindows)
-        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle)
-      else
-        const SizedBox(height: 0.0, width: 0.0),
+        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
       if (!Platform.isWindows)
         SettingsCard(
-          context: context,
           children: <Widget>[
             SettingsSwitchListTile(
-              context: context,
               value: Config.toneEnabled,
               onChanged: setTone,
               titleString: S.of(context).playSoundsInTheGame,
             ),
             SettingsSwitchListTile(
-              context: context,
               value: Config.keepMuteWhenTakingBack,
               onChanged: setKeepMuteWhenTakingBack,
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
           ],
-        )
-      else
-        const SizedBox(height: 0.0, width: 0.0),
+        ),
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsSwitchListTile(
-            context: context,
             value: Config.screenReaderSupport,
             onChanged: setScreenReaderSupport,
             titleString: S.of(context).screenReaderSupport,
@@ -301,7 +281,6 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).restoreDefaultSettings,
@@ -317,22 +296,18 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         ),
       if (Developer.developerModeEnabled)
         SettingsCard(
-          context: context,
           children: <Widget>[
             SettingsSwitchListTile(
-              context: context,
               value: Config.developerMode,
               onChanged: setDeveloperMode,
               titleString: S.of(context).developerMode,
             ),
             SettingsSwitchListTile(
-              context: context,
               value: Config.experimentsEnabled,
               onChanged: setExperimentsEnabled,
               titleString: S.of(context).experiments,
             ),
             SettingsSwitchListTile(
-              context: context,
               value: Config.isAutoRestart,
               onChanged: setIsAutoRestart,
               titleString: S.of(context).isAutoRestart,

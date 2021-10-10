@@ -54,7 +54,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     return <Widget>[
       Text(S.of(context).general, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).piecesCount,
@@ -63,7 +62,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             onTap: setNTotalPiecesEachSide,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.hasDiagonalLines,
             onChanged: setHasDiagonalLines,
             titleString: S.of(context).hasDiagonalLines,
@@ -82,7 +80,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             onTap: setEndgameNMoveRule,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.threefoldRepetitionRule,
             onChanged: setThreefoldRepetitionRule,
             titleString: S.of(context).threefoldRepetitionRule,
@@ -93,17 +90,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsSwitchListTile(
-            context: context,
             value: Config.hasBannedLocations,
             onChanged: setHasBannedLocations,
             titleString: S.of(context).hasBannedLocations,
             subtitleString: S.of(context).hasBannedLocations_Detail,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.isWhiteLoseButNotDrawWhenBoardFull,
             onChanged: setIsWhiteLoseButNotDrawWhenBoardFull,
             titleString: S.of(context).isWhiteLoseButNotDrawWhenBoardFull,
@@ -111,7 +105,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
                 S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.mayOnlyRemoveUnplacedPieceInPlacingPhase,
             onChanged: setMayOnlyRemoveUnplacedPieceInPlacingPhase,
             titleString: S.of(context).removeUnplacedPiece,
@@ -122,11 +115,9 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           if (Config.experimentsEnabled)
             SettingsSwitchListTile(
-              context: context,
               value: Config.mayMoveInPlacingPhase,
               onChanged: setMayMoveInPlacingPhase,
               titleString: S.of(context).mayMoveInPlacingPhase,
@@ -134,14 +125,12 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             )
           else
             SettingsSwitchListTile(
-              context: context,
               value: Config.isDefenderMoveFirst,
               onChanged: setIsDefenderMoveFirst,
               titleString: S.of(context).isDefenderMoveFirst,
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.isLoseButNotChangeSideWhenNoWay,
             onChanged: setIsLoseButNotChangeSideWhenNoWay,
             titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
@@ -153,10 +142,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).mayFly, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsSwitchListTile(
-            context: context,
             value: Config.mayFly,
             onChanged: setAllowFlyingAllowed,
             titleString: S.of(context).mayFly,
@@ -173,17 +160,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       const SizedBox(height: AppTheme.sizedBoxHeight),
       Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
-        context: context,
         children: <Widget>[
           SettingsSwitchListTile(
-            context: context,
             value: Config.mayRemoveFromMillsAlways,
             onChanged: setAllowRemovePieceInMill,
             titleString: S.of(context).mayRemoveFromMillsAlways,
             subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
           ),
           SettingsSwitchListTile(
-            context: context,
             value: Config.mayRemoveMultiple,
             onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
             titleString: S.of(context).mayRemoveMultiple,
