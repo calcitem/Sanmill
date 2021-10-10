@@ -24,9 +24,8 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/messages.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
@@ -127,32 +126,28 @@ class SanmillApp extends StatelessWidget {
       navigatorKey: Catcher.navigatorKey,
       key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: const [
-        // ... app-specific localization delegate[s] here
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: supportedLocales,
+      localizationsDelegates: S.localizationsDelegates,
+      supportedLocales: S.supportedLocales,
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: DoubleBackToCloseApp(
-          snackBar: SnackBar(
-            content: Text(Resources.of().strings.tapBackAgainToLeave),
-          ),
-          child: NavigationHomeScreen(),
+      home: const Body(),
+    );
+  }
+}
+
+class Body extends StatelessWidget {
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: DoubleBackToCloseApp(
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToLeave),
         ),
+        child: NavigationHomeScreen(),
       ),
-      /*
-      WillPopScope(
-              onWillPop: () async {
-                Audios.disposePool();
-                return true;
-              },
-      */
     );
   }
 }

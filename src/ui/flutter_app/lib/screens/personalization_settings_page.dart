@@ -18,7 +18,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/messages.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
@@ -376,7 +376,7 @@ class _PersonalizationSettingsPageState
 
       setState(() {
         Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;
-        S.load(Locale(Resources.of().languageCode));
+        //S.load(Locale(Resources.of().languageCode));
       });
 
       debugPrint("[config] Config.languageCode: ${Config.languageCode}");

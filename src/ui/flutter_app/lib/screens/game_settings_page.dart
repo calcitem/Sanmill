@@ -20,7 +20,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/messages.dart';
 import 'package:sanmill/screens/env_page.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/settings.dart';

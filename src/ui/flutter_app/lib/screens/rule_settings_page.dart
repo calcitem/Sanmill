@@ -17,7 +17,7 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/messages.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/shared/common/config.dart';

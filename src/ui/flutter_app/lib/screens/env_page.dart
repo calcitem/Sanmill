@@ -18,7 +18,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/messages.dart';
 import 'package:sanmill/shared/common/constants.dart';
 
 class EnvironmentVariablesPage extends StatelessWidget {

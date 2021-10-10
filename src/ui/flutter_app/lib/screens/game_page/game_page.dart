@@ -23,7 +23,7 @@ import 'dart:async';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/messages.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
@@ -1824,7 +1824,7 @@ class _GamePageState extends State<GamePage>
     debugPrint('$tag Game Page didPush route: $route');
     await _engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+      //S.load(Locale(Config.languageCode));
       setState(() {});
     }
   }
@@ -1835,7 +1835,7 @@ class _GamePageState extends State<GamePage>
     debugPrint('$tag Game Page didPopNext route: $route');
     await _engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+      // S.load(Locale(Config.languageCode));
     }
   }
 
@@ -1845,7 +1845,7 @@ class _GamePageState extends State<GamePage>
     debugPrint('$tag Game Page didPushNext route: $route');
     await _engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+      //S.load(Locale(Config.languageCode));
     }
   }
 
