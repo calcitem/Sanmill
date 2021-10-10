@@ -15,6 +15,9 @@ flutter pub get
 flutter pub global activate intl_utils
 flutter --no-color pub global run intl_utils:generate
 
+flutter pub global activate build_runner
+flutter pub run build_runner build --delete-conflicting-outputs
+
 flutter pub run flutter_oss_licenses:generate.dart
 mv lib/oss_licenses.dart lib/generated
 
