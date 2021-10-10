@@ -172,7 +172,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  dynamic onBoardTap(int index) {
+  Future<dynamic> onBoardTap(int index) async {
     if (!isReady) {
       debugPrint("[tap] Not ready, ignore tapping.");
       return false;
@@ -208,18 +208,18 @@ class _GamePageState extends State<GamePage>
       gameInstance.newGame();
 
       if (gameInstance.isAiToMove) {
-        if (gameInstance.aiIsSearching()) {
+        if (gameInstance.aiIsSearching) {
           debugPrint("$tag AI is thinking, skip tapping.");
           return false;
         } else {
           debugPrint("[tap] AI is not thinking. AI is to move.");
-          engineToGo(false);
+          await engineToGo(false);
           return false;
         }
       }
     }
 
-    if (gameInstance.isAiToMove || gameInstance.aiIsSearching()) {
+    if (gameInstance.isAiToMove || gameInstance.aiIsSearching) {
       debugPrint("[tap] AI's turn, skip tapping.");
       return false;
     }
@@ -231,12 +231,12 @@ class _GamePageState extends State<GamePage>
     // Human to go
 
     bool ret = false;
-    Chain.capture(() {
+    await Chain.capture(() async {
       switch (position.action) {
         case Act.place:
-          if (position.putPiece(sq)) {
+          if (await position.putPiece(sq)) {
             if (position.action == Act.remove) {
-              //Audios.playTone(Audios.millSoundId);
+              //Audios.playTone(Audios.mill);
               if (mounted) {
                 showTip(S.of(context).tipMill);
                 if (Config.screenReaderSupport) {
@@ -244,7 +244,7 @@ class _GamePageState extends State<GamePage>
                 }
               }
             } else {
-              //Audios.playTone(Audios.placeSoundId);
+              //Audios.playTone(Audios.place);
               if (gameInstance.engineType == EngineType.humanVsAi && mounted) {
                 if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                   showTip(S.of(context).continueToMakeMove);
@@ -296,7 +296,7 @@ class _GamePageState extends State<GamePage>
           final int selectRet = position.selectPiece(sq);
           switch (selectRet) {
             case 0:
-              Audios.playTone(Audios.selectSoundId);
+              await Audios.playTone(Sound.select);
               gameInstance.select(index);
               ret = true;
               debugPrint("[tap] selectPiece: [$sq]");
@@ -325,7 +325,7 @@ class _GamePageState extends State<GamePage>
 
               break;
             case -2:
-              Audios.playTone(Audios.illegalSoundId);
+              await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipCannotMove);
@@ -336,7 +336,7 @@ class _GamePageState extends State<GamePage>
               }
               break;
             case -3:
-              Audios.playTone(Audios.illegalSoundId);
+              await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipCanMoveOnePoint);
@@ -347,7 +347,7 @@ class _GamePageState extends State<GamePage>
               }
               break;
             case -4:
-              Audios.playTone(Audios.illegalSoundId);
+              await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectPieceToMove);
@@ -357,7 +357,7 @@ class _GamePageState extends State<GamePage>
               }
               break;
             default:
-              Audios.playTone(Audios.illegalSoundId);
+              await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectWrong);
@@ -372,11 +372,11 @@ class _GamePageState extends State<GamePage>
           break;
 
         case Act.remove:
-          final int removeRet = position.removePiece(sq);
+          final int removeRet = await position.removePiece(sq);
 
           switch (removeRet) {
             case 0:
-              //Audios.playTone(Audios.removeSoundId);
+              //Audios.playTone(Audios.remove);
               ret = true;
               debugPrint("[tap] removePiece: [$sq]");
               if (gameInstance.position.pieceToRemoveCount >= 1) {
@@ -404,7 +404,7 @@ class _GamePageState extends State<GamePage>
               }
               break;
             case -2:
-              Audios.playTone(Audios.illegalSoundId);
+              await Audios.playTone(Sound.illegal);
               debugPrint(
                 "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
               );
@@ -416,7 +416,7 @@ class _GamePageState extends State<GamePage>
               }
               break;
             case -3:
-              Audios.playTone(Audios.illegalSoundId);
+              await Audios.playTone(Sound.illegal);
               debugPrint(
                 "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
               );
@@ -432,7 +432,7 @@ class _GamePageState extends State<GamePage>
               }
               break;
             default:
-              Audios.playTone(Audios.illegalSoundId);
+              await Audios.playTone(Sound.illegal);
               debugPrint("[tap] removePiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipBanRemove);
@@ -587,7 +587,7 @@ class _GamePageState extends State<GamePage>
             );
           }
 
-          gameInstance.doMove(move.move!);
+          await gameInstance.doMove(move.move!);
           showTips();
           if (Config.screenReaderSupport && move.notation != null) {
             showSnackBar(context, "${S.of(context).ai}: ${move.notation!}");
@@ -657,7 +657,7 @@ class _GamePageState extends State<GamePage>
     debugPrint("Clipboard text:");
     debugPrint(text);
 
-    await onTakeBackAllButtonPressed(pop: false);
+    await onTakeBackAllButtonPressed(false);
     gameInstance.position.recorder!.clear();
     final importFailedStr = gameInstance.position.recorder!.import(text);
 
@@ -670,7 +670,7 @@ class _GamePageState extends State<GamePage>
       return;
     }
 
-    await onStepForwardAllButtonPressed(pop: false);
+    await onStepForwardAllButtonPressed(false);
 
     showTip(S.of(context).gameImported);
     if (Config.screenReaderSupport) {
@@ -774,8 +774,8 @@ class _GamePageState extends State<GamePage>
   Future<void> onAutoReplayButtonPressed() async {
     Navigator.pop(context);
 
-    await onTakeBackAllButtonPressed(pop: false);
-    await onStepForwardAllButtonPressed(pop: false);
+    await onTakeBackAllButtonPressed(false);
+    await onStepForwardAllButtonPressed(false);
   }
 
   void onGameButtonPressed() {
@@ -969,8 +969,9 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> onGotoHistoryButtonsPressed(
-    Future<String> func, {
+    HistoryMove move, {
     bool pop = true,
+    int? number,
   }) async {
     if (pop == true) {
       Navigator.pop(context);
@@ -989,9 +990,7 @@ class _GamePageState extends State<GamePage>
 
     isGoingToHistory = true;
 
-    Audios.isTemporaryMute = Config.keepMuteWhenTakingBack;
-
-    final errMove = await func;
+    final errMove = await gameInstance.position.gotoHistory(move, number);
 
     switch (errMove) {
       case "":
@@ -1008,14 +1007,10 @@ class _GamePageState extends State<GamePage>
         break;
     }
 
-    Audios.isTemporaryMute = false;
-
     isGoingToHistory = false;
 
     if (mounted) {
-      String text = "";
       final pos = gameInstance.position;
-
       /*
       String us = "";
       String them = "";
@@ -1028,6 +1023,7 @@ class _GamePageState extends State<GamePage>
       }
       */
 
+      late final String text;
       final lastEffectiveMove = pos.recorder!.lastEffectiveMove;
       if (lastEffectiveMove != null && lastEffectiveMove.notation != null) {
         text = "${S.of(context).lastMove}: ${lastEffectiveMove.notation}";
@@ -1044,28 +1040,37 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  Future<void> onTakeBackButtonPressed({bool pop = true}) async {
-    onGotoHistoryButtonsPressed(gameInstance.position.takeBack(), pop: pop);
-  }
+  Future<void> onTakeBackButtonPressed([bool pop = true]) async =>
+      onGotoHistoryButtonsPressed(
+        HistoryMove.backOne,
+        pop: pop,
+      );
 
-  Future<void> onStepForwardButtonPressed({bool pop = true}) async {
-    onGotoHistoryButtonsPressed(gameInstance.position.stepForward(), pop: pop);
-  }
+  Future<void> onStepForwardButtonPressed([bool pop = true]) async =>
+      onGotoHistoryButtonsPressed(
+        HistoryMove.farward,
+        pop: pop,
+      );
 
-  Future<void> onTakeBackAllButtonPressed({bool pop = true}) async {
-    onGotoHistoryButtonsPressed(gameInstance.position.takeBackAll(), pop: pop);
-  }
+  Future<void> onTakeBackAllButtonPressed([bool pop = true]) async =>
+      onGotoHistoryButtonsPressed(
+        HistoryMove.backAll,
+        pop: pop,
+      );
 
-  Future<void> onStepForwardAllButtonPressed({bool pop = true}) async {
+  Future<void> onStepForwardAllButtonPressed([bool pop = true]) async {
     onGotoHistoryButtonsPressed(
-      gameInstance.position.stepForwardAll(),
+      HistoryMove.forwardAll,
       pop: pop,
     );
   }
 
-  Future<void> onTakeBackNButtonPressed(int n, {bool pop = true}) async {
-    onGotoHistoryButtonsPressed(gameInstance.position.takeBackN(n), pop: pop);
-  }
+  Future<void> onTakeBackNButtonPressed(int n, [bool pop = true]) async =>
+      onGotoHistoryButtonsPressed(
+        HistoryMove.backN,
+        number: n,
+        pop: pop,
+      );
 
   void onMoveListButtonPressed() {
     final moveHistoryText = gameInstance.position.moveHistoryText;
@@ -1177,7 +1182,7 @@ class _GamePageState extends State<GamePage>
 
     debugPrint("[config] isPrivacyPolicyAccepted: $value");
 
-    Config.save();
+    await Config.save();
   }
 
   Future<void> onShowPrivacyDialog() async {
@@ -1259,10 +1264,10 @@ class _GamePageState extends State<GamePage>
 
     switch (result) {
       case GameResult.win:
-        //Audios.playTone(Audios.winSoundId);
+        //Audios.playTone(Audios.win);
         break;
       case GameResult.lose:
-        //Audios.playTone(Audios.loseSoundId);
+        //Audios.playTone(Audios.lose);
         break;
       case GameResult.draw:
         break;
@@ -1694,7 +1699,7 @@ class _GamePageState extends State<GamePage>
           color: Color(Config.navigationToolbarIconColor),
         ),
       ),
-      onPressed: () => onTakeBackAllButtonPressed(pop: false),
+      onPressed: () => onTakeBackAllButtonPressed(false),
     );
 
     final takeBackButton = TextButton(
@@ -1707,7 +1712,7 @@ class _GamePageState extends State<GamePage>
           color: Color(Config.navigationToolbarIconColor),
         ),
       ),
-      onPressed: () => onTakeBackButtonPressed(pop: false),
+      onPressed: () async => onTakeBackButtonPressed(false),
     );
 
     final stepForwardButton = TextButton(
@@ -1720,7 +1725,7 @@ class _GamePageState extends State<GamePage>
           color: Color(Config.navigationToolbarIconColor),
         ),
       ),
-      onPressed: () => onStepForwardButtonPressed(pop: false),
+      onPressed: () async => onStepForwardButtonPressed(false),
     );
 
     final stepForwardAllButton = TextButton(
@@ -1733,7 +1738,7 @@ class _GamePageState extends State<GamePage>
           color: Color(Config.navigationToolbarIconColor),
         ),
       ),
-      onPressed: () => onStepForwardAllButtonPressed(pop: false),
+      onPressed: () async => onStepForwardAllButtonPressed(false),
     );
 
     return GamePageToolBar(
