@@ -28,16 +28,16 @@ import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/drawer_user_controller.dart';
+import 'package:sanmill/screens/game_page/game_page.dart';
+import 'package:sanmill/screens/game_settings_page.dart';
 import 'package:sanmill/screens/help_screen.dart';
 import 'package:sanmill/screens/home_drawer.dart';
+import 'package:sanmill/screens/personalization_settings_page.dart';
+import 'package:sanmill/screens/rule_settings_page.dart';
+import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
-
-import 'game_page.dart';
-import 'game_settings_page.dart';
-import 'personalization_settings_page.dart';
-import 'rule_settings_page.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   @override
