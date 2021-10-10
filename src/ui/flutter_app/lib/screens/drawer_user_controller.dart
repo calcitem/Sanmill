@@ -17,11 +17,11 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/home_drawer.dart';
+import 'package:sanmill/screens/home_drawer.dart';
+import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 class DrawerUserController extends StatefulWidget {
   const DrawerUserController({

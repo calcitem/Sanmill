@@ -17,7 +17,7 @@
 */
 
 import 'package:flutter/foundation.dart';
-import 'package:sanmill/common/config.dart';
+import 'package:sanmill/shared/common/config.dart';
 
 import 'position.dart';
 import 'types.dart';

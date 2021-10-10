@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/widgets/navigation_home_screen.dart';
+import 'package:sanmill/screens/navigation_home_screen.dart';
 
 void main() {
   Widget makeTestableWidget({required Widget child, required Locale locale}) {

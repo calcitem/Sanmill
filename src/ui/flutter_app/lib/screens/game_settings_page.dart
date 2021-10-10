@@ -20,15 +20,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/settings.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/settings_card.dart';
-import 'package:sanmill/widgets/settings_list_tile.dart';
-import 'package:sanmill/widgets/settings_switch_list_tile.dart';
+import 'package:sanmill/screens/settings/settings_card.dart';
+import 'package:sanmill/screens/settings/settings_list_tile.dart';
+import 'package:sanmill/screens/settings/settings_switch_list_tile.dart';
+import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/common/settings.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
-import 'dialog.dart';
+import '../shared/dialog.dart';
 import 'env_page.dart';
 import 'list_item_divider.dart';
 

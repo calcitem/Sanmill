@@ -17,10 +17,10 @@
 */
 
 import 'package:flutter/foundation.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
-import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 import 'settings.dart';
 

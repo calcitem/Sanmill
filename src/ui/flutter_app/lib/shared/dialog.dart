@@ -23,9 +23,9 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/common/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 int _counter = 0;

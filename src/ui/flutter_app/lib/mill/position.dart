@@ -982,15 +982,13 @@ class Position {
       return false;
     }
 
-    int? moveSquare;
-
     for (int s = sqBegin; s < sqEnd; s++) {
       if (!(sideToMove() == colorOn(s))) {
         continue;
       }
 
       for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
-        moveSquare = adjacentSquares[s][d];
+        final int moveSquare = adjacentSquares[s][d];
         if (moveSquare != 0 && board[moveSquare] == Piece.noPiece) {
           return false;
         }
@@ -1010,7 +1008,7 @@ class Position {
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  int getNPiecesInHand() {
+  int get nPiecesInHand {
     pieceInHandCount[PieceColor.white] =
         rule.piecesCount - pieceOnBoardCount[PieceColor.white]!;
     pieceInHandCount[PieceColor.black] =
@@ -1051,7 +1049,7 @@ class Position {
       return -1;
     }
 
-    getNPiecesInHand();
+    nPiecesInHand;
     pieceToRemoveCount = 0;
 
     winner = PieceColor.nobody;

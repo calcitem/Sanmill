@@ -21,12 +21,12 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/game_settings_page.dart';
+import 'package:sanmill/screens/game_settings_page.dart';
+import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 enum DrawerIndex {
   humanVsAi,
@@ -227,7 +227,7 @@ class HomeDrawer extends StatelessWidget {
     );
     */
 
-    final drawer = Material(
+    return Material(
       color: Color(Config.drawerBackgroundColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -248,8 +248,6 @@ class HomeDrawer extends StatelessWidget {
         ],
       ),
     );
-
-    return drawer;
   }
 
   Future<void> navigationToScreen(DrawerIndex? index) async {
@@ -271,7 +269,7 @@ class HomeDrawer extends StatelessWidget {
             0.0,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.75 - 64,
               height: 46,
@@ -300,7 +298,7 @@ class HomeDrawer extends StatelessWidget {
     final stack = Stack(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
             children: <Widget>[
               const SizedBox(width: 6.0, height: 46.0),
