@@ -16,6 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
@@ -27,21 +28,21 @@ class DrawerUserController extends StatefulWidget {
   const DrawerUserController({
     Key? key,
     this.drawerWidth = AppTheme.drawerWidth,
-    this.onDrawerCall,
-    this.screenView,
+    required this.onDrawerCall,
+    required this.screenView,
     this.animatedIconData = AnimatedIcons.arrow_menu,
     this.menuView,
     this.drawerIsOpen,
-    this.screenIndex,
+    required this.screenIndex,
   }) : super(key: key);
 
   final double drawerWidth;
-  final Function(DrawerIndex)? onDrawerCall;
-  final Widget? screenView;
+  final Function(DrawerIndex) onDrawerCall;
+  final Widget screenView;
   final Function(bool)? drawerIsOpen;
   final AnimatedIconData animatedIconData;
   final Widget? menuView;
-  final DrawerIndex? screenIndex;
+  final DrawerIndex screenIndex;
 
   @override
   _DrawerUserControllerState createState() => _DrawerUserControllerState();
@@ -58,7 +59,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
   @override
   void initState() {
     animationController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
 
@@ -89,8 +90,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
           duration: Duration.zero,
           curve: Curves.fastOutSlowIn,
         );
-      } else if (scrollController.offset > 0 &&
-          scrollController.offset < widget.drawerWidth.floor()) {
+      } else if (scrollController.offset < widget.drawerWidth.floor()) {
         iconAnimationController.animateTo(
           (scrollController.offset * 100 / (widget.drawerWidth)) / 100,
           duration: Duration.zero,
@@ -150,6 +150,54 @@ class _DrawerUserControllerState extends State<DrawerUserController>
       },
     );
 
+    final List<DrawerListItem> drawerItems = [
+      DrawerListItem(
+        index: DrawerIndex.humanVsAi,
+        title: S.of(context).humanVsAi,
+        icon: const Icon(FluentIcons.person_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.humanVsHuman,
+        title: S.of(context).humanVsHuman,
+        icon: const Icon(FluentIcons.people_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.aiVsAi,
+        title: S.of(context).aiVsAi,
+        icon: const Icon(FluentIcons.bot_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.preferences,
+        title: S.of(context).preferences,
+        icon: const Icon(FluentIcons.options_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.ruleSettings,
+        title: S.of(context).ruleSettings,
+        icon: const Icon(FluentIcons.task_list_ltr_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.personalization,
+        title: S.of(context).personalization,
+        icon: const Icon(FluentIcons.design_ideas_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.feedback,
+        title: S.of(context).feedback,
+        icon: const Icon(FluentIcons.chat_warning_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.Help,
+        title: S.of(context).help,
+        icon: const Icon(FluentIcons.question_circle_24_regular),
+      ),
+      DrawerListItem(
+        index: DrawerIndex.About,
+        title: S.of(context).about,
+        icon: const Icon(FluentIcons.info_24_regular),
+      ),
+    ];
+
     final animatedBuilder = AnimatedBuilder(
       animation: iconAnimationController,
       builder: (BuildContext context, Widget? child) {
@@ -159,14 +207,15 @@ class _DrawerUserControllerState extends State<DrawerUserController>
           transform:
               Matrix4.translationValues(scrollController.offset, 0.0, 0.0),
           child: HomeDrawer(
-            screenIndex: widget.screenIndex ?? DrawerIndex.humanVsAi,
+            screenIndex: widget.screenIndex,
             iconAnimationController: iconAnimationController,
-            callBackIndex: (DrawerIndex? indexType) {
+            callBackIndex: (DrawerIndex indexType) {
               onDrawerClick();
               try {
-                widget.onDrawerCall!(indexType!);
+                widget.onDrawerCall(indexType);
               } catch (_) {}
             },
+            items: drawerItems,
           ),
         );
       },
@@ -192,17 +241,15 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         // tap on a few home screen area and close the drawer
         if (scrollOffset == 1.0)
           InkWell(
-            onTap: () {
-              onDrawerClick();
-            },
+            onTap: onDrawerClick,
           ),
         Padding(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top + tapOffset,
           ),
           child: SizedBox(
-            width: AppBar().preferredSize.height,
-            height: AppBar().preferredSize.height,
+            width: kToolbarHeight,
+            height: kToolbarHeight,
             child: Material(
               color: Colors.transparent,
               child: inkWell,
@@ -242,9 +289,9 @@ class _DrawerUserControllerState extends State<DrawerUserController>
       ],
     );
 
-    return Scaffold(
-      backgroundColor: Color(Config.drawerColor),
-      body: SingleChildScrollView(
+    return Material(
+      color: Color(Config.drawerColor),
+      child: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.horizontal,
         physics: const PageScrollPhysics(parent: ClampingScrollPhysics()),

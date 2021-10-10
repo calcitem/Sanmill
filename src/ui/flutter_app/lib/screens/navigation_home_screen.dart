@@ -45,8 +45,8 @@ class NavigationHomeScreen extends StatefulWidget {
 }
 
 class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
-  Widget? screenView;
-  DrawerIndex? drawerIndex;
+  late Widget screenView;
+  late DrawerIndex drawerIndex;
 
   @override
   void initState() {
@@ -62,11 +62,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       child: DrawerUserController(
         screenIndex: drawerIndex,
         drawerWidth: MediaQuery.of(context).size.width * 0.75,
-        onDrawerCall: (DrawerIndex index) {
-          // callback from drawer for replace screen
-          // as user need with passing DrawerIndex (Enum index)
-          changeIndex(index);
-        },
+        onDrawerCall: changeIndex,
         // we replace screen view as
         // we need on navigate starting screens
         screenView: screenView,
@@ -74,6 +70,8 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
     );
   }
 
+  /// callback from drawer for replace screen
+  /// as user need with passing DrawerIndex (Enum index)
   void changeIndex(DrawerIndex index) {
     if (drawerIndex == index && drawerIndex != DrawerIndex.feedback) {
       return;
@@ -88,7 +86,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
     drawerIndex = index;
 
     // TODO: use switch case
-    final engineType = drawerMap[drawerIndex!];
+    final engineType = drawerMap[drawerIndex];
     setState(() {
       if (engineType != null) {
         gameInstance.setWhoIsAi(engineType);
