@@ -32,6 +32,7 @@ class Game {
   final String tag = "[game]";
 
   void init() {
+    // TODO: _position is allready initialized with Position(). seems like duplicate code
     _position = Position();
     focusIndex = blurIndex = invalidIndex;
   }
@@ -71,7 +72,7 @@ class Game {
     PieceColor.black: false
   };
 
-  bool aiIsSearching() {
+  bool get aiIsSearching {
     debugPrint(
       "$tag White is searching? ${isSearching[PieceColor.white]}\n"
       "$tag Black is searching? ${isSearching[PieceColor.black]}\n",
@@ -115,14 +116,14 @@ class Game {
     blurIndex = invalidIndex;
   }
 
-  bool doMove(String move) {
+  Future<bool> doMove(String move) async {
     if (position.phase == Phase.ready) {
       start();
     }
 
     debugPrint("$tag AI do move: $move");
 
-    if (!position.doMove(move)) {
+    if (await position.doMove(move) == false) {
       return false;
     }
 

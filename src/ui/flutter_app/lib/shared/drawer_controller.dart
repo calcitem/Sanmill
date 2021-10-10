@@ -111,7 +111,7 @@ class _DrawerControllerState extends State<DrawerController>
     super.initState();
   }
 
-  Future<bool> getInitState() async {
+  bool getInitState() {
     scrollController.jumpTo(
       widget.drawerWidth,
     );

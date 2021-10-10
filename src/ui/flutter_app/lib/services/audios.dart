@@ -24,22 +24,35 @@ import 'package:sanmill/shared/common/config.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:stack_trace/stack_trace.dart';
 
+enum Sound {
+  draw,
+  fly,
+  go,
+  illegal,
+  lose,
+  mill,
+  place,
+  remove,
+  select,
+  win,
+}
+
 class Audios {
   const Audios._();
   //static AudioPlayer? _player;
-  static Soundpool? _soundpool;
-  // TODO: use enum for the sounds
-  static int? _alarmSoundStreamId;
-  static int? drawSoundId;
-  static int? flySoundId;
-  static int? goSoundId;
-  static int? illegalSoundId;
-  static int? loseSoundId;
-  static int? millSoundId;
-  static int? placeSoundId;
-  static int? removeSoundId;
-  static int? selectSoundId;
-  static int? winSoundId;
+  static final Soundpool _soundpool = Soundpool.fromOptions();
+  static bool _initialized = false;
+  static int _alarmSoundStreamId = 0;
+  static late final int _drawSoundId;
+  static late final int _flySoundId;
+  static late final int _goSoundId;
+  static late final int _illegalSoundId;
+  static late final int _loseSoundId;
+  static late final int _millSoundId;
+  static late final int _placeSoundId;
+  static late final int _removeSoundId;
+  static late final int _selectSoundId;
+  static late final int _winSoundId;
   static bool isTemporaryMute = false;
 
   static Future<void> loadSounds() async {
@@ -48,156 +61,110 @@ class Audios {
       return;
     }
 
-    _soundpool ??= Soundpool.fromOptions();
+    _drawSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/draw.mp3"),
+    );
 
-    if (_soundpool == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: _soundpool is null.");
-      return;
-    }
+    _flySoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/fly.mp3"),
+    );
 
-    drawSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/draw.mp3"));
-    if (drawSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: drawSoundId is null.");
-      return;
-    }
+    _goSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/go.mp3"),
+    );
 
-    flySoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/fly.mp3"));
-    if (flySoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: flySoundId is null.");
-      return;
-    }
+    _illegalSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/illegal.mp3"),
+    );
 
-    goSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/go.mp3"));
-    if (goSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: goSoundId is null.");
-      return;
-    }
+    _loseSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/lose.mp3"),
+    );
 
-    illegalSoundId = await _soundpool!
-        .load(await rootBundle.load("assets/audios/illegal.mp3"));
-    if (illegalSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: illegalSoundId is null.");
-      return;
-    }
+    _millSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/mill.mp3"),
+    );
 
-    loseSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/lose.mp3"));
-    if (loseSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: loseSoundId is null.");
-      return;
-    }
+    _placeSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/place.mp3"),
+    );
 
-    millSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/mill.mp3"));
-    if (millSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: millSoundId is null.");
-      return;
-    }
+    _removeSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/remove.mp3"),
+    );
 
-    placeSoundId ??= await _soundpool!
-        .load(await rootBundle.load("assets/audios/place.mp3"));
-    if (placeSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: placeSoundId is null.");
-      return;
-    }
+    _selectSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/select.mp3"),
+    );
 
-    removeSoundId ??= await _soundpool!
-        .load(await rootBundle.load("assets/audios/remove.mp3"));
-    if (removeSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: removeSoundId is null.");
-      return;
-    }
+    _winSoundId = await _soundpool.load(
+      await rootBundle.load("assets/audios/win.mp3"),
+    );
 
-    selectSoundId ??= await _soundpool!
-        .load(await rootBundle.load("assets/audios/select.mp3"));
-    if (selectSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: selectSoundId is null.");
-      return;
-    }
-
-    winSoundId ??=
-        await _soundpool!.load(await rootBundle.load("assets/audios/win.mp3"));
-    if (winSoundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: winSoundId is null.");
-      return;
-    }
+    _initialized = true;
   }
 
-  static Future<void> _playSound(int? soundId) async {
-    if (Platform.isWindows) {
-      return;
+  static Future<void> _playSound(Sound sound) async {
+    assert(!Platform.isWindows);
+
+    late final int soundId;
+
+    switch (sound) {
+      case Sound.draw:
+        soundId = _drawSoundId;
+        break;
+      case Sound.fly:
+        soundId = _flySoundId;
+        break;
+      case Sound.go:
+        soundId = _goSoundId;
+        break;
+      case Sound.illegal:
+        soundId = _illegalSoundId;
+        break;
+      case Sound.lose:
+        soundId = _loseSoundId;
+        break;
+      case Sound.mill:
+        soundId = _millSoundId;
+        break;
+      case Sound.place:
+        soundId = _placeSoundId;
+        break;
+      case Sound.remove:
+        soundId = _removeSoundId;
+        break;
+      case Sound.select:
+        soundId = _selectSoundId;
+        break;
+      case Sound.win:
+        soundId = _winSoundId;
+        break;
     }
 
-    if (soundId == null) {
-      if (Config.developerMode) {
-        assert(false);
-      }
-      debugPrint("[audio] Error: soundId is null.");
-      return;
-    }
-
-    _alarmSoundStreamId = await _soundpool!.play(soundId);
+    _alarmSoundStreamId = await _soundpool.play(soundId);
   }
 
   static Future<void> _stopSound() async {
-    if (Platform.isWindows) {
-      return;
-    }
+    assert(!Platform.isWindows);
 
-    if (_alarmSoundStreamId != null && _alarmSoundStreamId! > 0) {
-      await _soundpool!.stop(_alarmSoundStreamId!);
+    if (_alarmSoundStreamId > 0) {
+      await _soundpool.stop(_alarmSoundStreamId);
     }
   }
 
-  static Future<void> disposePool() async {
-    if (Platform.isWindows) {
-      return;
-    }
+  static void disposePool() {
+    assert(!Platform.isWindows);
 
-    _soundpool!.dispose();
+    _soundpool.dispose();
   }
 
-  static Future<void> playTone(int? soundId) async {
-    Chain.capture(() async {
+  static Future<void> playTone(Sound sound) async {
+    await Chain.capture(() async {
       if (!Config.toneEnabled ||
           isTemporaryMute ||
-          Config.screenReaderSupport) {
+          Config.screenReaderSupport ||
+          !_initialized) {
         return;
       }
 
@@ -206,14 +173,11 @@ class Audios {
         return;
       }
 
+      // TODO: isn't debug chain meant to catch errors? so why catching them in here and not in onError??
       try {
-        if (_soundpool == null) {
-          await loadSounds();
-        }
-
         await _stopSound();
 
-        _playSound(soundId);
+        await _playSound(sound);
       } catch (e) {
         // Fallback for all errors
         debugPrint(e.toString());

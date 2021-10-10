@@ -25,6 +25,7 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
+import 'package:sanmill/shared/common/config.dart';
 
 List<int> posKeyHistory = [];
 
@@ -62,7 +63,7 @@ class Position {
 
   String us = PieceColor.white;
   String them = PieceColor.black;
-  String winner = PieceColor.nobody;
+  String _winner = PieceColor.nobody;
 
   GameOverReason gameOverReason = GameOverReason.noReason;
 
@@ -114,7 +115,7 @@ class Position {
     st.pliesFromNull = other.st.pliesFromNull;
 
     them = other.them;
-    winner = other.winner;
+    _winner = other._winner;
     gameOverReason = other.gameOverReason;
 
     phase = other.phase;
@@ -135,7 +136,7 @@ class Position {
 
   String movedPiece(int move) => pieceOn(fromSq(move));
 
-  bool movePiece(int from, int to) {
+  Future<bool> movePiece(int from, int to) async {
     if (selectPiece(from) == 0) {
       return putPiece(to);
     }
@@ -261,7 +262,7 @@ class Position {
     return true;
   }
 
-  bool doMove(String move) {
+  Future<bool> doMove(String move) async {
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
       if (move["Player".length] == '1') {
@@ -278,7 +279,7 @@ class Position {
 
     if (move == "draw") {
       phase = Phase.gameOver;
-      winner = PieceColor.draw;
+      _winner = PieceColor.draw;
       if (score[PieceColor.draw] != null) {
         score[PieceColor.draw] = score[PieceColor.draw]! + 1;
       }
@@ -287,7 +288,7 @@ class Position {
       if (rule.nMoveRule > 0 && posKeyHistory.length >= rule.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonRule50;
       } else if (rule.endgameNMoveRule < rule.nMoveRule &&
-          isThreeEndgame() &&
+          isThreeEndgame &&
           posKeyHistory.length >= rule.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonEndgameRule50;
       } else if (rule.threefoldRepetitionRule) {
@@ -308,20 +309,20 @@ class Position {
 
     switch (m.type) {
       case MoveType.remove:
-        ret = removePiece(m.to) == 0;
+        ret = await removePiece(m.to) == 0;
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
         }
         break;
       case MoveType.move:
-        ret = movePiece(m.from, m.to);
+        ret = await movePiece(m.from, m.to);
         if (ret) {
           ++st.rule50;
         }
         break;
       case MoveType.place:
-        ret = putPiece(m.to);
+        ret = await putPiece(m.to);
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
@@ -414,7 +415,7 @@ class Position {
     setSideToMove(PieceColor.white);
     action = Act.place;
 
-    winner = PieceColor.nobody;
+    _winner = PieceColor.nobody;
     gameOverReason = GameOverReason.noReason;
 
     clearBoard();
@@ -457,7 +458,7 @@ class Position {
     }
   }
 
-  bool putPiece(int s) {
+  Future<bool> putPiece(int s) async {
     var piece = Piece.noPiece;
     final us = _sideToMove;
 
@@ -472,6 +473,7 @@ class Position {
       start();
     }
 
+    // TODO: use switch case
     if (phase == Phase.placing) {
       piece = sideToMove;
       if (pieceInHandCount[us] != null) {
@@ -501,7 +503,7 @@ class Position {
 
         if (pieceInHandCount[PieceColor.white] == 0 &&
             pieceInHandCount[PieceColor.black] == 0) {
-          if (checkIfGameIsOver()) {
+          if (isGameOver()) {
             return true;
           }
 
@@ -516,14 +518,14 @@ class Position {
             changeSideToMove();
           }
 
-          if (checkIfGameIsOver()) {
+          if (isGameOver()) {
             return true;
           }
         } else {
           changeSideToMove();
         }
         gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
-        Audios.playTone(Audios.placeSoundId);
+        await Audios.playTone(Sound.place);
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
@@ -539,7 +541,7 @@ class Position {
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (checkIfGameIsOver()) {
+            if (isGameOver()) {
               return true;
             }
 
@@ -550,7 +552,7 @@ class Position {
               changeSideToMove();
             }
 
-            if (checkIfGameIsOver()) {
+            if (isGameOver()) {
               return true;
             }
           }
@@ -559,10 +561,10 @@ class Position {
         }
 
         gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
-        Audios.playTone(Audios.millSoundId);
+        await Audios.playTone(Sound.mill);
       }
     } else if (phase == Phase.moving) {
-      if (checkIfGameIsOver()) {
+      if (isGameOver()) {
         return true;
       }
 
@@ -603,18 +605,18 @@ class Position {
         action = Act.select;
         changeSideToMove();
 
-        if (checkIfGameIsOver()) {
+        if (isGameOver()) {
           return true;
         } else {
           gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
-          Audios.playTone(Audios.placeSoundId);
+          await Audios.playTone(Sound.place);
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
         action = Act.remove;
         gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
-        Audios.playTone(Audios.millSoundId);
+        await Audios.playTone(Sound.mill);
       }
     } else {
       assert(false);
@@ -623,7 +625,7 @@ class Position {
     return true;
   }
 
-  int removePiece(int s) {
+  Future<int> removePiece(int s) async {
     if (phase == Phase.ready || phase == Phase.gameOver) return -1;
 
     if (action != Act.remove) return -1;
@@ -641,7 +643,7 @@ class Position {
 
     revertKey(s);
 
-    Audios.playTone(Audios.removeSoundId);
+    await Audios.playTone(Sound.remove);
 
     if (rule.hasBannedLocations && phase == Phase.placing) {
       // Remove and put ban
@@ -685,7 +687,7 @@ class Position {
         }
 
         if (rule.isDefenderMoveFirst) {
-          checkIfGameIsOver();
+          isGameOver();
           return 0;
         }
       } else {
@@ -696,7 +698,7 @@ class Position {
     }
 
     changeSideToMove();
-    checkIfGameIsOver();
+    isGameOver();
 
     return 0;
   }
@@ -733,14 +735,12 @@ class Position {
     return true;
   }
 
-  String getWinner() {
-    return winner;
-  }
+  String get winner => _winner;
 
   void setGameOver(String w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
-    winner = w;
+    _winner = w;
 
     debugPrint("[position] Game over, $w win, because of $reason");
     updateScore();
@@ -748,7 +748,7 @@ class Position {
 
   void updateScore() {
     if (phase == Phase.gameOver) {
-      if (winner == PieceColor.draw) {
+      if (_winner == PieceColor.draw) {
         if (score[PieceColor.draw] != null) {
           score[PieceColor.draw] = score[PieceColor.draw]! + 1;
         }
@@ -756,13 +756,13 @@ class Position {
         return;
       }
 
-      if (score[winner] != null) {
-        score[winner] = score[winner]! + 1;
+      if (score[_winner] != null) {
+        score[_winner] = score[_winner]! + 1;
       }
     }
   }
 
-  bool isThreeEndgame() {
+  bool get isThreeEndgame {
     if (phase == Phase.placing) {
       return false;
     }
@@ -771,7 +771,7 @@ class Position {
         pieceOnBoardCount[PieceColor.black] == 3;
   }
 
-  bool checkIfGameIsOver() {
+  bool isGameOver() {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
     }
@@ -782,7 +782,7 @@ class Position {
     }
 
     if (rule.endgameNMoveRule < rule.nMoveRule &&
-        isThreeEndgame() &&
+        isThreeEndgame &&
         posKeyHistory.length >= rule.endgameNMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawReasonEndgameRule50);
       return true;
@@ -1047,7 +1047,7 @@ class Position {
     nPiecesInHand;
     pieceToRemoveCount = 0;
 
-    winner = PieceColor.nobody;
+    _winner = PieceColor.nobody;
     Mills.adjacentSquaresInit();
     Mills.millTableInit();
     currentSquare = 0;
@@ -1086,25 +1086,29 @@ class Position {
   }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-  Future<String> _gotoHistory(int moveIndex) async {
-    String errString = "";
+  Future<String> gotoHistory(HistoryMove move, [int? index]) async {
+    final int moveIndex = _gotoHistoryIndex(move, index);
 
     if (recorder == null) {
       debugPrint("[goto] recorder is null.");
       return "null";
     }
 
+    if (recorder!.cur == moveIndex) {
+      debugPrint("[goto] cur is equal to moveIndex.");
+      return "equal";
+    }
+
     final history = recorder!.history;
+
     if (moveIndex < -1 || history.length <= moveIndex) {
       debugPrint("[goto] moveIndex is out of range.");
       return "out-of-range";
     }
 
-    if (recorder!.cur == moveIndex) {
-      debugPrint("[goto] cur is equal to moveIndex.");
-      return "equal";
-    }
+    String errString = "";
+
+    Audios.isTemporaryMute = true;
 
     // Backup context
     final engineTypeBackup = gameInstance.engineType;
@@ -1121,13 +1125,10 @@ class Position {
     }
 
     for (var i = 0; i <= moveIndex; i++) {
-      if (gameInstance.doMove(history[i].move!) == false) {
+      if (await gameInstance.doMove(history[i].move!) == false) {
         errString = history[i].move!;
         break;
       }
-
-      //await Future.delayed(Duration(seconds: 1));
-      //setState(() {});
     }
 
     // Restore context
@@ -1136,31 +1137,46 @@ class Position {
     recorder!.history = historyBack;
     recorder!.cur = moveIndex;
 
+    Audios.isTemporaryMute = false;
+    await _gotoHistoryPlaySound(move);
+
     return errString;
   }
 
-  Future<String> takeBackN(int n) async {
-    int index = recorder!.cur - n;
-    if (index < -1) {
-      index = -1;
+  int _gotoHistoryIndex(HistoryMove move, [int? index]) {
+    switch (move) {
+      case HistoryMove.forwardAll:
+        return recorder!.history.length - 1;
+      case HistoryMove.backAll:
+        return -1;
+      case HistoryMove.farward:
+        return recorder!.cur + 1;
+      case HistoryMove.backN:
+        assert(index != null);
+        int _index = recorder!.cur - index!;
+        if (_index < -1) {
+          _index = -1;
+        }
+        return _index;
+      case HistoryMove.backOne:
+        return recorder!.cur - 1;
     }
-    return _gotoHistory(index);
   }
 
-  Future<String> takeBack() async {
-    return _gotoHistory(recorder!.cur - 1);
-  }
+  Future<void> _gotoHistoryPlaySound(HistoryMove move) async {
+    if (!Config.keepMuteWhenTakingBack) {
+      switch (move) {
+        case HistoryMove.forwardAll:
+        case HistoryMove.farward:
+          await Audios.playTone(Sound.place);
+          break;
+        case HistoryMove.backAll:
+        case HistoryMove.backN:
 
-  Future<String> stepForward() async {
-    return _gotoHistory(recorder!.cur + 1);
-  }
-
-  Future<String> takeBackAll() async {
-    return _gotoHistory(-1);
-  }
-
-  Future<String> stepForwardAll() async {
-    return _gotoHistory(recorder!.history.length - 1);
+        case HistoryMove.backOne:
+          await Audios.playTone(Sound.remove);
+      }
+    }
   }
 
   String movesSinceLastRemove() {
@@ -1205,3 +1221,5 @@ class Position {
 
   String? get lastPositionWithRemove => recorder!.lastPositionWithRemove;
 }
+
+enum HistoryMove { forwardAll, backAll, farward, backN, backOne }
