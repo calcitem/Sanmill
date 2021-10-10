@@ -25,21 +25,24 @@ import 'package:sanmill/style/app_theme.dart';
 import 'painter_base.dart';
 
 class PiecePaintParam {
-  // TODO: null-safety
-  final String? piece;
-  final Offset? pos;
-  final bool? animated;
-  PiecePaintParam({this.piece, this.pos, this.animated});
+  final String piece;
+  final Offset pos;
+  final bool animated;
+  PiecePaintParam({
+    required this.piece,
+    required this.pos,
+    required this.animated,
+  });
 }
 
 class PiecesPainter extends PiecesBasePainter {
   final Position? position;
-  final int? focusIndex, blurIndex;
-  final animationValue;
+  final int? focusIndex;
+  final int? blurIndex;
+  final double animationValue;
 
-  // TODO: null-safety
-  double? pieceWidth = 0.0;
-  double? animatedPieceWidth = 0.0;
+  double pieceWidth = 0.0;
+  double animatedPieceWidth = 0.0;
 
   PiecesPainter({
     required double width,
@@ -74,7 +77,7 @@ class PiecesPainter extends PiecesBasePainter {
     return true;
   }
 
-  static doPaint(
+  static void doPaint(
     Canvas canvas,
     Paint paint, {
     Position? position,
@@ -94,8 +97,7 @@ class PiecesPainter extends PiecesBasePainter {
     final shadowPath = Path();
     final piecesToDraw = <PiecePaintParam>[];
 
-    // TODO: null-safety
-    Color? blurPositionColor;
+    late Color blurPositionColor;
     Color focusPositionColor;
 
     // Draw pieces on board
@@ -106,8 +108,9 @@ class PiecesPainter extends PiecesBasePainter {
 
         if (piece == Piece.noPiece) continue;
 
-        var pos = Offset(left! + squareWidth! * col, top! + squareWidth * row);
-        var animated = (focusIndex == index);
+        final pos =
+            Offset(left! + squareWidth! * col, top! + squareWidth * row);
+        final animated = focusIndex == index;
 
         piecesToDraw
             .add(PiecePaintParam(piece: piece, pos: pos, animated: animated));
@@ -131,26 +134,26 @@ class PiecesPainter extends PiecesBasePainter {
     );
     */
 
-    piecesToDraw.forEach((pps) {
-      var pieceRadius = pieceWidth! / 2;
-      var pieceInnerRadius = pieceRadius * 0.99;
+    for (final pps in piecesToDraw) {
+      final pieceRadius = pieceWidth! / 2;
+      final pieceInnerRadius = pieceRadius * 0.99;
 
-      var animatedPieceRadius = animatedPieceWidth! / 2;
-      var animatedPieceInnerRadius = animatedPieceRadius * 0.99;
+      final animatedPieceRadius = animatedPieceWidth! / 2;
+      final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
       // Draw Border of Piece
       switch (pps.piece) {
         case Piece.whiteStone:
           paint.color = AppTheme.whitePieceBorderColor;
           canvas.drawCircle(
-            pps.pos!,
-            pps.animated! ? animatedPieceRadius : pieceRadius,
+            pps.pos,
+            pps.animated ? animatedPieceRadius : pieceRadius,
             paint,
           );
           paint.color = Color(Config.whitePieceColor);
           canvas.drawCircle(
-            pps.pos!,
-            pps.animated! ? animatedPieceInnerRadius : pieceInnerRadius,
+            pps.pos,
+            pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
             paint,
           );
           blurPositionColor = Color(Config.whitePieceColor).withOpacity(0.1);
@@ -158,14 +161,14 @@ class PiecesPainter extends PiecesBasePainter {
         case Piece.blackStone:
           paint.color = AppTheme.blackPieceBorderColor;
           canvas.drawCircle(
-            pps.pos!,
-            pps.animated! ? animatedPieceRadius : pieceRadius,
+            pps.pos,
+            pps.animated ? animatedPieceRadius : pieceRadius,
             paint,
           );
           paint.color = Color(Config.blackPieceColor);
           canvas.drawCircle(
-            pps.pos!,
-            pps.animated! ? animatedPieceInnerRadius : pieceInnerRadius,
+            pps.pos,
+            pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
             paint,
           );
           blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
@@ -177,13 +180,14 @@ class PiecesPainter extends PiecesBasePainter {
           assert(false);
           break;
       }
-    });
+    }
 
     // draw focus and blur position
 
-    if (focusIndex != invalidIndex) {
-      final int row = focusIndex! ~/ 7, column = focusIndex % 7;
+    final int row = focusIndex! ~/ 7;
+    final int column = focusIndex % 7;
 
+    if (focusIndex != invalidIndex) {
       /*
       focusPositionColor = Color.fromARGB(
               (Color(Config.whitePieceColor).alpha +
@@ -215,9 +219,10 @@ class PiecesPainter extends PiecesBasePainter {
     }
 
     if (blurIndex != invalidIndex) {
-      final row = blurIndex! ~/ 7, column = blurIndex % 7;
+      final row = blurIndex! ~/ 7;
+      final column = blurIndex % 7;
 
-      paint.color = blurPositionColor!;
+      paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(

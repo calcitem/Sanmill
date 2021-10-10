@@ -52,7 +52,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   @override
   void initState() {
     drawerIndex = DrawerIndex.humanVsAi;
-    screenView = GamePage(EngineType.humanVsAi);
+    screenView = const GamePage(EngineType.humanVsAi);
     super.initState();
   }
 
@@ -87,7 +87,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       return;
     }
 
-    var drawerMap = {
+    final drawerMap = {
       DrawerIndex.humanVsAi: EngineType.humanVsAi,
       DrawerIndex.humanVsHuman: EngineType.humanVsHuman,
       DrawerIndex.aiVsAi: EngineType.aiVsAi,
@@ -95,7 +95,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
 
     drawerIndex = index;
 
-    var engineType = drawerMap[drawerIndex!];
+    final engineType = drawerMap[drawerIndex!];
     if (engineType != null) {
       setState(() {
         Game.instance.setWhoIsAi(engineType);
@@ -124,17 +124,16 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
             final screenshotFilePath =
                 await writeImageToStorage(feedback.screenshot);
             final packageInfo = await PackageInfo.fromPlatform();
-            var _version =
+            final _version =
                 '${packageInfo.version} (${packageInfo.buildNumber})';
 
             final Email email = Email(
               body: feedback.text,
               subject: Constants.feedbackSubjectPrefix +
-                  "$_version" +
+                  _version +
                   Constants.feedbackSubjectSuffix,
               recipients: [Constants.recipients],
               attachmentPaths: [screenshotFilePath],
-              isHTML: false,
             );
             await FlutterEmailSender.send(email);
           });

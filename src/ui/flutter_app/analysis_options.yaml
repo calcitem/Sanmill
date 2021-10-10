@@ -12,3 +12,4 @@ analyzer:
   exclude:
     # generated code
     - lib/generated/**
+    - lib/l10n/**

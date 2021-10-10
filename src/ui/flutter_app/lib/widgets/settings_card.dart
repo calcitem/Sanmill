@@ -27,7 +27,7 @@ class SettingsCard extends StatelessWidget {
   }) : super(key: key);
 
   final BuildContext context;
-  final children;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {

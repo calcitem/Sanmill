@@ -45,7 +45,7 @@ class BoardPainter extends PiecesBasePainter {
     return false;
   }
 
-  static doPaint(
+  static void doPaint(
     Canvas canvas,
     Paint paint,
     double gridWidth,
@@ -56,8 +56,8 @@ class BoardPainter extends PiecesBasePainter {
     paint.color = Color(Config.boardLineColor);
     paint.style = PaintingStyle.stroke;
 
-    var left = offsetX;
-    var top = offsetY;
+    final left = offsetX;
+    final top = offsetY;
 
     paint.strokeWidth = Config.boardBorderLineWidth;
 
@@ -76,27 +76,34 @@ class BoardPainter extends PiecesBasePainter {
         pieceInHandCountStr = pieceInHandCount.toString();
       }
 
-      TextSpan textSpan = TextSpan(
-          style: TextStyle(
-              fontSize: 48, color: Color(Config.boardLineColor)), // TODO
-          text: pieceInHandCountStr);
+      final TextSpan textSpan = TextSpan(
+        style: TextStyle(
+          fontSize: 48,
+          color: Color(Config.boardLineColor),
+        ), // TODO
+        text: pieceInHandCountStr,
+      );
 
-      TextPainter textPainter = TextPainter(
-          text: textSpan,
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr);
+      final TextPainter textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
 
       textPainter.layout();
 
       textPainter.paint(
-          canvas,
-          Offset(left + squareWidth * 3 - textPainter.width / 2,
-              top + squareWidth * 3 - textPainter.height / 2));
+        canvas,
+        Offset(
+          left + squareWidth * 3 - textPainter.width / 2,
+          top + squareWidth * 3 - textPainter.height / 2,
+        ),
+      );
     }
 
     if (Config.isNotationsShown) {
-      String verticalNotations = "abcdefg";
-      String horizontalNotations = "7654321";
+      const String verticalNotations = "abcdefg";
+      const String horizontalNotations = "7654321";
       String notationV = "";
       String notationH = "";
 
@@ -104,25 +111,29 @@ class BoardPainter extends PiecesBasePainter {
         notationV = verticalNotations[i];
         notationH = horizontalNotations[i];
 
-        TextSpan notationSpanV = TextSpan(
-          style:
-              TextStyle(fontSize: 20, color: AppTheme.boardLineColor), // TODO
+        final TextSpan notationSpanV = TextSpan(
+          style: const TextStyle(
+            fontSize: 20,
+            color: AppTheme.boardLineColor,
+          ), // TODO
           text: notationV,
         );
 
-        TextSpan notationSpanH = TextSpan(
-          style:
-              TextStyle(fontSize: 20, color: AppTheme.boardLineColor), // TODO
+        final TextSpan notationSpanH = TextSpan(
+          style: const TextStyle(
+            fontSize: 20,
+            color: AppTheme.boardLineColor,
+          ), // TODO
           text: notationH,
         );
 
-        TextPainter notationPainterV = TextPainter(
+        final TextPainter notationPainterV = TextPainter(
           text: notationSpanV,
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
         );
 
-        TextPainter notationPainterH = TextPainter(
+        final TextPainter notationPainterH = TextPainter(
           text: notationSpanH,
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
@@ -131,37 +142,45 @@ class BoardPainter extends PiecesBasePainter {
         notationPainterV.layout();
         notationPainterH.layout();
 
-        var offset = (boardWidth - squareWidth * 6) / 4;
+        final offset = (boardWidth - squareWidth * 6) / 4;
 
         /* Show notations "a b c d e f" on board */
 
         if (Config.developerMode) {
           notationPainterV.paint(
             canvas,
-            Offset(left + squareWidth * i - notationPainterV.width / 2,
-                top - offset - notationPainterV.height / 2),
+            Offset(
+              left + squareWidth * i - notationPainterV.width / 2,
+              top - offset - notationPainterV.height / 2,
+            ),
           );
         }
 
         notationPainterV.paint(
           canvas,
-          Offset(left + squareWidth * i - notationPainterV.width / 2,
-              top + squareWidth * 6 + offset - notationPainterV.height / 2),
+          Offset(
+            left + squareWidth * i - notationPainterV.width / 2,
+            top + squareWidth * 6 + offset - notationPainterV.height / 2,
+          ),
         );
 
         /* Show notations "1 2 3 4 5 6 7" on board */
 
         notationPainterH.paint(
           canvas,
-          Offset(left - offset - notationPainterH.width / 2,
-              top + squareWidth * i - notationPainterH.height / 2),
+          Offset(
+            left - offset - notationPainterH.width / 2,
+            top + squareWidth * i - notationPainterH.height / 2,
+          ),
         );
 
         if (Config.developerMode) {
           notationPainterH.paint(
             canvas,
-            Offset(left + squareWidth * 6 + offset - notationPainterH.width / 2,
-                top + squareWidth * i - notationPainterH.height / 2),
+            Offset(
+              left + squareWidth * 6 + offset - notationPainterH.width / 2,
+              top + squareWidth * i - notationPainterH.height / 2,
+            ),
           );
         }
       }
@@ -174,19 +193,27 @@ class BoardPainter extends PiecesBasePainter {
     );
 
     paint.strokeWidth = Config.boardInnerLineWidth;
-    double bias = paint.strokeWidth / 2;
+    final double bias = paint.strokeWidth / 2;
 
     // File B
     canvas.drawRect(
-      Rect.fromLTWH(left + squareWidth * 1, top + squareWidth * 1,
-          squareWidth * 4, squareWidth * 4),
+      Rect.fromLTWH(
+        left + squareWidth * 1,
+        top + squareWidth * 1,
+        squareWidth * 4,
+        squareWidth * 4,
+      ),
       paint,
     );
 
     // File A
     canvas.drawRect(
-      Rect.fromLTWH(left + squareWidth * 2, top + squareWidth * 2,
-          squareWidth * 2, squareWidth * 2),
+      Rect.fromLTWH(
+        left + squareWidth * 2,
+        top + squareWidth * 2,
+        squareWidth * 2,
+        squareWidth * 2,
+      ),
       paint,
     );
 

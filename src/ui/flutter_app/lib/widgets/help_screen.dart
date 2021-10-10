@@ -25,10 +25,14 @@ class _HelpScreenState extends State<HelpScreen> {
           backgroundColor: Color(Config.darkBackgroundColor),
           body: ListView(
             children: <Widget>[
-              SizedBox(height: AppTheme.sizedBoxHeight),
+              const SizedBox(height: AppTheme.sizedBoxHeight),
               Container(
                 padding: const EdgeInsets.only(
-                    top: 48, left: 16, right: 16, bottom: 16),
+                  top: 48,
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                ),
                 child: Text(
                   S.of(context).howToPlay,
                   style: TextStyle(
@@ -40,7 +44,11 @@ class _HelpScreenState extends State<HelpScreen> {
               ),
               Container(
                 padding: const EdgeInsets.only(
-                    top: 16, left: 16, right: 16, bottom: 16),
+                  top: 16,
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                ),
                 child: Text(
                   S.of(context).helpContent,
                   style: TextStyle(

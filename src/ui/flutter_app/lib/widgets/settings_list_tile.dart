@@ -42,7 +42,8 @@ class SettingsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    final bool ltr =
+        getBidirectionality(context) == Bidirectionality.leftToRight;
     return ListTile(
       title: Text(
         titleString,
@@ -74,10 +75,11 @@ class SettingsListTile extends StatelessWidget {
             ),
           ),
           Icon(
-              ltr
-                  ? FluentIcons.chevron_right_24_regular
-                  : FluentIcons.chevron_left_24_regular,
-              color: AppTheme.listTileSubtitleColor)
+            ltr
+                ? FluentIcons.chevron_right_24_regular
+                : FluentIcons.chevron_left_24_regular,
+            color: AppTheme.listTileSubtitleColor,
+          )
         ],
       ),
       onTap: onTap,

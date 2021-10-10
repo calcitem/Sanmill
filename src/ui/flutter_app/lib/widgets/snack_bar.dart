@@ -19,19 +19,24 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 
-void showSnackBar(BuildContext context, String message,
-    {Duration duration = const Duration(milliseconds: 4000)}) {
+void showSnackBar(
+  BuildContext context,
+  String message, {
+  Duration duration = const Duration(milliseconds: 4000),
+}) {
   if (!Config.screenReaderSupport) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(
-      message,
-      style: TextStyle(
-        fontSize: Config.fontSize,
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(
+          fontSize: Config.fontSize,
+        ),
       ),
+      duration: duration,
     ),
-    duration: duration,
-  ));
+  );
 }

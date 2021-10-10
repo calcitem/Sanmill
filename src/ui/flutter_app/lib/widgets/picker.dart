@@ -22,52 +22,60 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 
-Future<int> showPickerNumber(BuildContext context, int begin, int end,
-    int initValue, String suffixString) async {
+Future<int> showPickerNumber(
+  BuildContext context,
+  int begin,
+  int end,
+  int initValue,
+  String suffixString,
+) async {
   int selectValue = 0;
   await Picker(
-      adapter: NumberPickerAdapter(
-        data: [
-          NumberPickerColumn(
-            begin: begin,
-            end: end,
-            initValue: initValue,
-            suffix: Text(
-              suffixString,
-              style: TextStyle(
-                fontSize: Config.fontSize,
-              ),
+    adapter: NumberPickerAdapter(
+      data: [
+        NumberPickerColumn(
+          begin: begin,
+          end: end,
+          initValue: initValue,
+          suffix: Text(
+            suffixString,
+            style: TextStyle(
+              fontSize: Config.fontSize,
             ),
           ),
-        ],
-      ),
-      hideHeader: true,
-      title: Text(S.of(context).pleaseSelect,
-          style: TextStyle(
-            color: AppTheme.appPrimaryColor,
-            fontSize: Config.fontSize + 4.0,
-          )),
-      textStyle: TextStyle(
-        color: Colors.black,
-        fontSize: Config.fontSize,
-      ),
-      selectedTextStyle: TextStyle(color: AppTheme.appPrimaryColor),
-      cancelText: S.of(context).cancel,
-      cancelTextStyle: TextStyle(
+        ),
+      ],
+    ),
+    hideHeader: true,
+    title: Text(
+      S.of(context).pleaseSelect,
+      style: TextStyle(
         color: AppTheme.appPrimaryColor,
-        fontSize: Config.fontSize,
+        fontSize: Config.fontSize + 4.0,
       ),
-      confirmText: S.of(context).confirm,
-      confirmTextStyle: TextStyle(
-        color: AppTheme.appPrimaryColor,
-        fontSize: Config.fontSize,
-      ),
-      onConfirm: (Picker picker, List value) async {
-        debugPrint(value.toString());
-        var selectValues = picker.getSelectedValues();
-        debugPrint(selectValues.toString());
-        selectValue = selectValues[0];
-      }).showDialog(context);
+    ),
+    textStyle: TextStyle(
+      color: Colors.black,
+      fontSize: Config.fontSize,
+    ),
+    selectedTextStyle: const TextStyle(color: AppTheme.appPrimaryColor),
+    cancelText: S.of(context).cancel,
+    cancelTextStyle: TextStyle(
+      color: AppTheme.appPrimaryColor,
+      fontSize: Config.fontSize,
+    ),
+    confirmText: S.of(context).confirm,
+    confirmTextStyle: TextStyle(
+      color: AppTheme.appPrimaryColor,
+      fontSize: Config.fontSize,
+    ),
+    onConfirm: (Picker picker, List value) async {
+      debugPrint(value.toString());
+      final selectValues = picker.getSelectedValues();
+      debugPrint(selectValues.toString());
+      selectValue = selectValues[0];
+    },
+  ).showDialog(context);
 
   return selectValue;
 }

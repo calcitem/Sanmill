@@ -30,27 +30,27 @@ class Game {
   static Game? _instance;
   final String tag = "[game]";
 
-  static get instance {
-    _instance ??= Game();
-    return _instance;
+  // TODO: use constructor
+  static Game get instance {
+    return _instance ??= Game();
   }
 
-  init() {
+  void init() {
     _position = Position();
-    _focusIndex = _blurIndex = invalidIndex;
+    focusIndex = blurIndex = invalidIndex;
   }
 
-  start() {
+  void start() {
     position.reset();
 
     setWhoIsAi(engineType);
   }
 
-  newGame() {
+  void newGame() {
     position.phase = Phase.ready;
     start();
     position.init();
-    _focusIndex = _blurIndex = invalidIndex;
+    focusIndex = blurIndex = invalidIndex;
     moveHistory = [""];
     sideToMove = PieceColor.white;
   }
@@ -64,16 +64,10 @@ class Game {
   List<String> moveHistory = [""];
 
   Position _position = Position();
-  get position => _position;
+  Position get position => _position;
 
-  int _focusIndex = invalidIndex;
-  int _blurIndex = invalidIndex;
-
-  get focusIndex => _focusIndex;
-  set focusIndex(index) => _focusIndex = index;
-
-  get blurIndex => _blurIndex;
-  set blurIndex(index) => _blurIndex = index;
+  int focusIndex = invalidIndex;
+  int blurIndex = invalidIndex;
 
   Map<String, bool> isSearching = {
     PieceColor.white: false,
@@ -119,9 +113,9 @@ class Game {
     );
   }
 
-  select(int pos) {
-    _focusIndex = pos;
-    _blurIndex = invalidIndex;
+  void select(int pos) {
+    focusIndex = pos;
+    blurIndex = invalidIndex;
   }
 
   bool doMove(String move) {
@@ -144,42 +138,23 @@ class Game {
     return true;
   }
 
-  printStat() {
+  void printStat() {
     double whiteWinRate = 0;
     double blackWinRate = 0;
     double drawRate = 0;
 
-    int total = position.score[PieceColor.white] +
-            position.score[PieceColor.black] +
-            position.score[PieceColor.draw] ??
-        0;
+    final int total = position.score[PieceColor.white]! +
+        position.score[PieceColor.black]! +
+        position.score[PieceColor.draw]!;
 
-    if (total == 0) {
-      whiteWinRate = 0;
-      blackWinRate = 0;
-      drawRate = 0;
-    } else {
-      whiteWinRate = position.score[PieceColor.white] * 100 / total ?? 0;
-      blackWinRate = position.score[PieceColor.black] * 100 / total ?? 0;
-      drawRate = position.score[PieceColor.draw] * 100 / total ?? 0;
+    if (total != 0) {
+      whiteWinRate = position.score[PieceColor.white]! * 100 / total;
+      blackWinRate = position.score[PieceColor.black]! * 100 / total;
+      drawRate = position.score[PieceColor.draw]! * 100 / total;
     }
 
-    String scoreInfo = "Score: " +
-        position.score[PieceColor.white].toString() +
-        " : " +
-        position.score[PieceColor.black].toString() +
-        " : " +
-        position.score[PieceColor.draw].toString() +
-        "\ttotal: " +
-        total.toString() +
-        "\n" +
-        whiteWinRate.toString() +
-        "% : " +
-        blackWinRate.toString() +
-        "% : " +
-        drawRate.toString() +
-        "%" +
-        "\n";
+    final String scoreInfo =
+        "Score: ${position.score[PieceColor.white]} : ${position.score[PieceColor.black]} : ${position.score[PieceColor.draw]}\ttotal: $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
     debugPrint("$tag $scoreInfo");
   }
