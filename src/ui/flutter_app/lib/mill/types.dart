@@ -147,10 +147,16 @@ class PieceColor {
   static const draw = '=';
 
   static String of(String piece) {
-    if (white.contains(piece)) return white;
-    if (black.contains(piece)) return black;
-    if (ban.contains(piece)) return ban;
-    return nobody;
+    switch (piece) {
+      case white:
+        return white;
+      case black:
+        return black;
+      case ban:
+        return ban;
+      default:
+        return nobody;
+    }
   }
 
   static bool isSameColor(String p1, String p2) => of(p1) == of(p2);

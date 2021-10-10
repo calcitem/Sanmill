@@ -80,7 +80,7 @@ class _GamePageState extends State<GamePage>
   late AnimationController _animationController;
   late Animation<double> animation;
   bool disposed = false;
-  late final bool ltr;
+  late bool ltr;
   final String tag = "[game_page]";
 
   Future<void> _setReadyState() async {
@@ -207,7 +207,7 @@ class _GamePageState extends State<GamePage>
         position.pieceOnBoardCount[PieceColor.black] == 0) {
       gameInstance.newGame();
 
-      if (gameInstance.isAiToMove()!) {
+      if (gameInstance.isAiToMove) {
         if (gameInstance.aiIsSearching()) {
           debugPrint("$tag AI is thinking, skip tapping.");
           return false;
@@ -219,7 +219,7 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (gameInstance.isAiToMove()! || gameInstance.aiIsSearching()) {
+    if (gameInstance.isAiToMove || gameInstance.aiIsSearching()) {
       debugPrint("[tap] AI's turn, skip tapping.");
       return false;
     }
@@ -518,7 +518,7 @@ class _GamePageState extends State<GamePage>
     debugPrint("[engineToGo] engine type is ${widget.engineType}");
 
     if (_isMoveNow) {
-      if (!gameInstance.isAiToMove()!) {
+      if (!gameInstance.isAiToMove) {
         debugPrint("[engineToGo] Human to Move. Cannot get search result now.");
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).notAIsTurn);
@@ -536,7 +536,7 @@ class _GamePageState extends State<GamePage>
 
     while ((Config.isAutoRestart == true ||
             gameInstance.position.winner == PieceColor.nobody) &&
-        gameInstance.isAiToMove()! &&
+        gameInstance.isAiToMove &&
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
         final String score =
@@ -620,7 +620,7 @@ class _GamePageState extends State<GamePage>
   Future<void> onStartNewGameButtonPressed() async {
     Navigator.pop(context);
 
-    if (gameInstance.isAiToMove()!) {
+    if (gameInstance.isAiToMove) {
       // TODO: Move now
       //debugPrint("$tag New game, AI to move, move now.");
       //await engineToGo(true);
@@ -636,7 +636,7 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (gameInstance.isAiToMove()!) {
+    if (gameInstance.isAiToMove) {
       debugPrint("$tag New game, AI to move.");
       engineToGo(false);
     }
@@ -1387,7 +1387,7 @@ class _GamePageState extends State<GamePage>
                     }
                   }
 
-                  if (gameInstance.isAiToMove()!) {
+                  if (gameInstance.isAiToMove) {
                     debugPrint("$tag New game, AI to move.");
                     engineToGo(false);
                   }

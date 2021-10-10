@@ -53,8 +53,9 @@ class Game {
 
   String sideToMove = PieceColor.white;
 
-  bool? isAiToMove() {
-    return isAi[sideToMove];
+  bool get isAiToMove {
+    assert(sideToMove == PieceColor.white || sideToMove == PieceColor.black);
+    return isAi[sideToMove]!;
   }
 
   List<String> moveHistory = [""];
