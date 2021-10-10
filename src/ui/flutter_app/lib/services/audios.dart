@@ -18,29 +18,33 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/common/config.dart';
+import 'package:sanmill/shared/common/config.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 class Audios {
+  const Audios._();
   //static AudioPlayer? _player;
   static Soundpool? _soundpool;
+  // TODO: use enum for the sounds
   static int? _alarmSoundStreamId;
-  static var drawSoundId;
-  static var flySoundId;
-  static var goSoundId;
-  static var illegalSoundId;
-  static var loseSoundId;
-  static var millSoundId;
-  static var placeSoundId;
-  static var removeSoundId;
-  static var selectSoundId;
-  static var winSoundId;
-  static var isTemporaryMute = false;
+  static int? drawSoundId;
+  static int? flySoundId;
+  static int? goSoundId;
+  static int? illegalSoundId;
+  static int? loseSoundId;
+  static int? millSoundId;
+  static int? placeSoundId;
+  static int? removeSoundId;
+  static int? selectSoundId;
+  static int? winSoundId;
+  static bool isTemporaryMute = false;
 
   static Future<void> loadSounds() async {
     if (Platform.isWindows) {
+      debugPrint("[audio] Audio Player does not support Windows.");
       return;
     }
 
@@ -50,7 +54,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: _soundpool is null.");
+      debugPrint("[audio] Error: _soundpool is null.");
       return;
     }
 
@@ -60,7 +64,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: drawSoundId is null.");
+      debugPrint("[audio] Error: drawSoundId is null.");
       return;
     }
 
@@ -70,7 +74,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: flySoundId is null.");
+      debugPrint("[audio] Error: flySoundId is null.");
       return;
     }
 
@@ -80,7 +84,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: goSoundId is null.");
+      debugPrint("[audio] Error: goSoundId is null.");
       return;
     }
 
@@ -90,7 +94,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: illegalSoundId is null.");
+      debugPrint("[audio] Error: illegalSoundId is null.");
       return;
     }
 
@@ -100,7 +104,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: loseSoundId is null.");
+      debugPrint("[audio] Error: loseSoundId is null.");
       return;
     }
 
@@ -110,7 +114,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: millSoundId is null.");
+      debugPrint("[audio] Error: millSoundId is null.");
       return;
     }
 
@@ -120,7 +124,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: placeSoundId is null.");
+      debugPrint("[audio] Error: placeSoundId is null.");
       return;
     }
 
@@ -130,7 +134,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: removeSoundId is null.");
+      debugPrint("[audio] Error: removeSoundId is null.");
       return;
     }
 
@@ -140,7 +144,7 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: selectSoundId is null.");
+      debugPrint("[audio] Error: selectSoundId is null.");
       return;
     }
 
@@ -150,12 +154,12 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: winSoundId is null.");
+      debugPrint("[audio] Error: winSoundId is null.");
       return;
     }
   }
 
-  static Future<void> _playSound(var soundId) async {
+  static Future<void> _playSound(int? soundId) async {
     if (Platform.isWindows) {
       return;
     }
@@ -164,11 +168,11 @@ class Audios {
       if (Config.developerMode) {
         assert(false);
       }
-      print("[audio] Error: soundId is null.");
+      debugPrint("[audio] Error: soundId is null.");
       return;
     }
 
-    _alarmSoundStreamId = await _soundpool!.play(await soundId);
+    _alarmSoundStreamId = await _soundpool!.play(soundId);
   }
 
   static Future<void> _stopSound() async {
@@ -189,7 +193,7 @@ class Audios {
     _soundpool!.dispose();
   }
 
-  static playTone(var soundId) async {
+  static Future<void> playTone(int? soundId) async {
     Chain.capture(() async {
       if (!Config.toneEnabled ||
           isTemporaryMute ||
@@ -198,7 +202,7 @@ class Audios {
       }
 
       if (Platform.isWindows) {
-        print("audio players is not support Windows.");
+        debugPrint("audio players is not support Windows.");
         return;
       }
 
@@ -212,7 +216,7 @@ class Audios {
         _playSound(soundId);
       } catch (e) {
         // Fallback for all errors
-        print(e);
+        debugPrint(e.toString());
       }
     });
   }

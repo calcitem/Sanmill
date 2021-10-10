@@ -16,16 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/engine/engine.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/mill/mills.dart';
 import 'package:sanmill/mill/recorder.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
-
-import 'mills.dart';
-import 'types.dart';
-import 'zobrist.dart';
+import 'package:sanmill/services/engine/engine.dart';
 
 List<int> posKeyHistory = [];
 
@@ -81,17 +80,25 @@ class Position {
 
   String? record;
 
-  static late var millTable;
-  static late var adjacentSquares;
+  static late List<List<List<int>>> millTable;
+  static late List<List<int>> adjacentSquares;
 
   late Move move;
 
+  Position() {
+    init();
+  }
+
   Position.clone(Position other) {
     _grid = [];
-    other._grid.forEach((piece) => _grid.add(piece));
+    for (final piece in other._grid) {
+      _grid.add(piece);
+    }
 
     board = [];
-    other.board.forEach((piece) => board.add(piece));
+    for (final piece in other.board) {
+      board.add(piece);
+    }
 
     recorder = other.recorder;
 
@@ -124,11 +131,9 @@ class Position {
 
   bool empty(int sq) => pieceOn(sq) == Piece.noPiece;
 
-  String sideToMove() => _sideToMove;
+  String get sideToMove => _sideToMove;
 
-  String movedPiece(int move) {
-    return pieceOn(fromSq(move));
-  }
+  String movedPiece(int move) => pieceOn(fromSq(move));
 
   bool movePiece(int from, int to) {
     if (selectPiece(from) == 0) {
@@ -138,7 +143,7 @@ class Position {
     return false;
   }
 
-  init() {
+  void init() {
     for (var i = 0; i < _grid.length; i++) {
       _grid[i] = Piece.noPiece;
     }
@@ -155,95 +160,83 @@ class Position {
     recorder = GameRecorder(lastPositionWithRemove: fen());
   }
 
-  Position() {
-    init();
-  }
-
   /// fen() returns a FEN representation of the position.
 
   String fen() {
-    var ss = '';
+    final buffer = StringBuffer();
 
     // Piece placement data
     for (var file = 1; file <= fileNumber; file++) {
       for (var rank = 1; rank <= rankNumber; rank++) {
         final piece = pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
-        ss += piece;
+        buffer.write(piece);
       }
 
-      if (file == 3)
-        ss += ' ';
-      else
-        ss += '/';
+      if (file == 3) {
+        buffer.write(' ');
+      } else {
+        buffer.write('/');
+      }
     }
 
     // Active color
-    ss += _sideToMove == PieceColor.white ? "w" : "b";
+    buffer.write(_sideToMove == PieceColor.white ? "w" : "b");
 
-    ss += " ";
+    buffer.write(" ");
 
     // Phrase
     switch (phase) {
       case Phase.none:
-        ss += "n";
+        buffer.write("n");
         break;
       case Phase.ready:
-        ss += "r";
+        buffer.write("r");
         break;
       case Phase.placing:
-        ss += "p";
+        buffer.write("p");
         break;
       case Phase.moving:
-        ss += "m";
+        buffer.write("m");
         break;
       case Phase.gameOver:
-        ss += "o";
+        buffer.write("o");
         break;
       default:
-        ss += "?";
+        buffer.write("?");
         break;
     }
 
-    ss += " ";
+    buffer.write(" ");
 
     // Action
     switch (action) {
       case Act.place:
-        ss += "p";
+        buffer.write("p");
         break;
       case Act.select:
-        ss += "s";
+        buffer.write("s");
         break;
       case Act.remove:
-        ss += "r";
+        buffer.write("r");
         break;
       default:
-        ss += "?";
+        buffer.write("?");
         break;
     }
 
-    ss += " ";
+    buffer.write(" ");
 
-    ss += pieceOnBoardCount[PieceColor.white].toString() +
-        " " +
-        pieceInHandCount[PieceColor.white].toString() +
-        " " +
-        pieceOnBoardCount[PieceColor.black].toString() +
-        " " +
-        pieceInHandCount[PieceColor.black].toString() +
-        " " +
-        pieceToRemoveCount.toString() +
-        " ";
+    buffer.write(
+      "${pieceOnBoardCount[PieceColor.white]} ${pieceInHandCount[PieceColor.white]} ${pieceOnBoardCount[PieceColor.black]} ${pieceInHandCount[PieceColor.black]} $pieceToRemoveCount ",
+    );
 
-    int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
+    final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
-    ss += st.rule50.toString() +
-        " " +
-        (1 + (gamePly - sideIsBlack) ~/ 2).toString();
+    buffer.write("${st.rule50} ${1 + (gamePly - sideIsBlack) ~/ 2}");
 
-    //print("FEN is $ss");
+    //debugPrint("FEN is $ss");
 
-    return ss;
+    return buffer.toString();
   }
 
   /// Position::legal() tests whether a pseudo-legal move is legal
@@ -251,16 +244,16 @@ class Position {
   bool legal(Move move) {
     if (!isOk(move.from) || !isOk(move.to)) return false;
 
-    String us = _sideToMove;
+    final String us = _sideToMove;
 
     if (move.from == move.to) {
-      print("[position] Move $move.move from == to");
+      debugPrint("[position] Move $move.move from == to");
       return false;
     }
 
     if (move.type == MoveType.remove) {
       if (movedPiece(move.to) != us) {
-        print("[position] Move $move.to to != us");
+        debugPrint("[position] Move $move.to to != us");
         return false;
       }
     }
@@ -311,11 +304,11 @@ class Position {
 
     bool ret = false;
 
-    Move m = Move(move);
+    final Move m = Move(move);
 
     switch (m.type) {
       case MoveType.remove:
-        ret = (removePiece(m.to) == 0);
+        ret = removePiece(m.to) == 0;
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
@@ -349,13 +342,15 @@ class Position {
     ++st.pliesFromNull;
 
     if (record != null && record!.length > "-(1,2)".length) {
-      if (posKeyHistory.length == 0 ||
-          (posKeyHistory.length > 0 &&
+      if (posKeyHistory.isEmpty ||
+          (posKeyHistory.isNotEmpty &&
               st.key != posKeyHistory[posKeyHistory.length - 1])) {
         posKeyHistory.add(st.key);
         if (rule.threefoldRepetitionRule && hasGameCycle()) {
           setGameOver(
-              PieceColor.draw, GameOverReason.drawReasonThreefoldRepetition);
+            PieceColor.draw,
+            GameOverReason.drawReasonThreefoldRepetition,
+          );
         }
       }
     } else {
@@ -376,7 +371,7 @@ class Position {
       }
     }
 
-    int size = ss.length;
+    final int size = ss.length;
 
     for (int i = size - 1; i >= 0; i--) {
       if (ss[i].move.type == MoveType.remove) {
@@ -394,11 +389,11 @@ class Position {
 
   bool hasGameCycle() {
     int repetition = 0; // Note: Engine is global val
-    for (var i in posKeyHistory) {
+    for (final i in posKeyHistory) {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
-          print("[position] Has game cycle.");
+          debugPrint("[position] Has game cycle.");
           return true;
         }
       }
@@ -464,7 +459,7 @@ class Position {
 
   bool putPiece(int s) {
     var piece = Piece.noPiece;
-    var us = _sideToMove;
+    final us = _sideToMove;
 
     if (phase == Phase.gameOver ||
         action != Act.place ||
@@ -478,7 +473,7 @@ class Position {
     }
 
     if (phase == Phase.placing) {
-      piece = sideToMove();
+      piece = sideToMove;
       if (pieceInHandCount[us] != null) {
         pieceInHandCount[us] = pieceInHandCount[us]! - 1;
       }
@@ -490,17 +485,19 @@ class Position {
       _grid[squareToIndex[s]!] = piece;
       board[s] = piece;
 
-      record = "(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+      record = "(${fileOf(s)},${rankOf(s)})";
 
       updateKey(s);
 
       currentSquare = s;
 
-      int n = millsCount(currentSquare);
+      final int n = millsCount(currentSquare);
 
       if (n == 0) {
-        assert(pieceInHandCount[PieceColor.white]! >= 0 &&
-            pieceInHandCount[PieceColor.black]! >= 0);
+        assert(
+          pieceInHandCount[PieceColor.white]! >= 0 &&
+              pieceInHandCount[PieceColor.black]! >= 0,
+        );
 
         if (pieceInHandCount[PieceColor.white] == 0 &&
             pieceInHandCount[PieceColor.black] == 0) {
@@ -525,7 +522,7 @@ class Position {
         } else {
           changeSideToMove();
         }
-        Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone(Audios.placeSoundId);
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
@@ -561,7 +558,7 @@ class Position {
           action = Act.remove;
         }
 
-        Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone(Audios.millSoundId);
       }
     } else if (phase == Phase.moving) {
@@ -570,8 +567,7 @@ class Position {
       }
 
       // if illegal
-      if (pieceOnBoardCount[sideToMove()]! > rule.flyPieceCount ||
-          !rule.mayFly) {
+      if (pieceOnBoardCount[sideToMove]! > rule.flyPieceCount || !rule.mayFly) {
         int md;
 
         for (md = 0; md < moveDirectionNumber; md++) {
@@ -580,21 +576,15 @@ class Position {
 
         // not in moveTable
         if (md == moveDirectionNumber) {
-          print(
-              "[position] putPiece: [$s] is not in [$currentSquare]'s move table.");
+          debugPrint(
+            "[position] putPiece: [$s] is not in [$currentSquare]'s move table.",
+          );
           return false;
         }
       }
 
-      record = "(" +
-          fileOf(currentSquare).toString() +
-          "," +
-          rankOf(currentSquare).toString() +
-          ")->(" +
-          fileOf(s).toString() +
-          "," +
-          rankOf(s).toString() +
-          ")";
+      record =
+          "(${fileOf(currentSquare)},${rankOf(currentSquare)})->(${fileOf(s)},${rankOf(s)})";
 
       st.rule50++;
 
@@ -606,7 +596,7 @@ class Position {
           _grid[squareToIndex[currentSquare]!] = Piece.noPiece;
 
       currentSquare = s;
-      int n = millsCount(currentSquare);
+      final int n = millsCount(currentSquare);
 
       // midgame
       if (n == 0) {
@@ -616,14 +606,14 @@ class Position {
         if (checkIfGameIsOver()) {
           return true;
         } else {
-          Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+          gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
           Audios.playTone(Audios.placeSoundId);
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
         action = Act.remove;
-        Game.instance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
         Audios.playTone(Audios.millSoundId);
       }
     } else {
@@ -641,11 +631,11 @@ class Position {
     if (pieceToRemoveCount <= 0) return -1;
 
     // if piece is not their
-    if (!(PieceColor.opponent(sideToMove()) == board[s])) return -2;
+    if (!(PieceColor.opponent(sideToMove) == board[s])) return -2;
 
     if (!rule.mayRemoveFromMillsAlways &&
         potentialMillsCount(s, PieceColor.nobody) > 0 &&
-        !isAllInMills(PieceColor.opponent(sideToMove()))) {
+        !isAllInMills(PieceColor.opponent(sideToMove))) {
       return -3;
     }
 
@@ -662,7 +652,7 @@ class Position {
       board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
     }
 
-    record = "-(" + fileOf(s).toString() + "," + rankOf(s).toString() + ")";
+    record = "-(${fileOf(s)},${rankOf(s)})";
     st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[them] != null) {
@@ -671,7 +661,7 @@ class Position {
 
     if (pieceOnBoardCount[them]! + pieceInHandCount[them]! <
         rule.piecesAtLeastCount) {
-      setGameOver(sideToMove(), GameOverReason.loseReasonlessThanThree);
+      setGameOver(sideToMove, GameOverReason.loseReasonlessThanThree);
       return 0;
     }
 
@@ -720,13 +710,13 @@ class Position {
       return -3;
     }
 
-    if (!(board[sq] == sideToMove())) {
+    if (!(board[sq] == sideToMove)) {
       return -4;
     }
 
     currentSquare = sq;
     action = Act.place;
-    Game.instance.blurIndex = squareToIndex[sq];
+    gameInstance.blurIndex = squareToIndex[sq]!;
 
     return 0;
   }
@@ -752,7 +742,7 @@ class Position {
     gameOverReason = reason;
     winner = w;
 
-    print("[position] Game over, $w win, because of $reason");
+    debugPrint("[position] Game over, $w win, because of $reason");
     updateScore();
   }
 
@@ -813,7 +803,9 @@ class Position {
     if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
       if (rule.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
-            PieceColor.opponent(sideToMove()), GameOverReason.loseReasonNoWay);
+          PieceColor.opponent(sideToMove),
+          GameOverReason.loseReasonNoWay,
+        );
         return true;
       } else {
         changeSideToMove(); // TODO: Need?
@@ -850,7 +842,7 @@ class Position {
   void changeSideToMove() {
     setSideToMove(PieceColor.opponent(_sideToMove));
     st.key ^= Zobrist.side;
-    print("[position] $_sideToMove to move.");
+    debugPrint("[position] $_sideToMove to move.");
 
     /*
     if (phase == Phase.moving &&
@@ -858,18 +850,16 @@ class Position {
         isAllSurrounded() &&
         !rule.mayFly &&
         pieceOnBoardCount[sideToMove()]! >= rule.piecesAtLeastCount) {
-      print("[position] $_sideToMove is no way to go.");
+      debugPrint("[position] $_sideToMove is no way to go.");
       changeSideToMove();
     }
     */
   }
 
   int updateKey(int s) {
-    String pieceType = colorOn(s);
+    final String pieceType = colorOn(s);
 
-    st.key ^= Zobrist.psq[pieceColorIndex[pieceType]!][s];
-
-    return st.key;
+    return st.key ^= Zobrist.psq[pieceColorIndex[pieceType]!][s];
   }
 
   int revertKey(int s) {
@@ -879,7 +869,7 @@ class Position {
   int updateKeyMisc() {
     st.key = st.key << Zobrist.KEY_MISC_BIT >> Zobrist.KEY_MISC_BIT;
 
-    st.key |= (pieceToRemoveCount) << (32 - Zobrist.KEY_MISC_BIT);
+    st.key |= pieceToRemoveCount << (32 - Zobrist.KEY_MISC_BIT);
 
     return st.key;
   }
@@ -893,11 +883,12 @@ class Position {
   int potentialMillsCount(int to, String c, {int from = 0}) {
     int n = 0;
     String locbak = Piece.noPiece;
+    String _c = c;
 
     assert(0 <= from && from < sqNumber);
 
-    if (c == PieceColor.nobody) {
-      c = colorOn(to);
+    if (_c == PieceColor.nobody) {
+      _c = colorOn(to);
     }
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
@@ -906,7 +897,8 @@ class Position {
     }
 
     for (int l = 0; l < lineDirectionNumber; l++) {
-      if (c == board[millTable[to][l][0]] && c == board[millTable[to][l][1]]) {
+      if (_c == board[millTable[to][l][0]] &&
+          _c == board[millTable[to][l][1]]) {
         n++;
       }
     }
@@ -920,10 +912,10 @@ class Position {
 
   int millsCount(int s) {
     int n = 0;
-    List<int?> idx = [0, 0, 0];
+    final List<int?> idx = [0, 0, 0];
     int min = 0;
     int? temp = 0;
-    String m = colorOn(s);
+    final String m = colorOn(s);
 
     for (int i = 0; i < idx.length; i++) {
       idx[0] = s;
@@ -981,20 +973,18 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove()]! <= rule.flyPieceCount && rule.mayFly) {
+    if (pieceOnBoardCount[sideToMove]! <= rule.flyPieceCount && rule.mayFly) {
       return false;
     }
 
-    int? moveSquare;
-
     for (int s = sqBegin; s < sqEnd; s++) {
-      if (!(sideToMove() == colorOn(s))) {
+      if (!(sideToMove == colorOn(s))) {
         continue;
       }
 
       for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
-        moveSquare = adjacentSquares[s][d];
-        if (moveSquare != 0 && board[moveSquare!] == Piece.noPiece) {
+        final int moveSquare = adjacentSquares[s][d];
+        if (moveSquare != 0 && board[moveSquare] == Piece.noPiece) {
           return false;
         }
       }
@@ -1005,15 +995,15 @@ class Position {
 
   bool isStarSquare(int s) {
     if (rule.hasDiagonalLines == true) {
-      return (s == 17 || s == 19 || s == 21 || s == 23);
+      return s == 17 || s == 19 || s == 21 || s == 23;
     }
 
-    return (s == 16 || s == 18 || s == 20 || s == 22);
+    return s == 16 || s == 18 || s == 20 || s == 22;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  int getNPiecesInHand() {
+  int get nPiecesInHand {
     pieceInHandCount[PieceColor.white] =
         rule.piecesCount - pieceOnBoardCount[PieceColor.white]!;
     pieceInHandCount[PieceColor.black] =
@@ -1054,7 +1044,7 @@ class Position {
       return -1;
     }
 
-    getNPiecesInHand();
+    nPiecesInHand;
     pieceToRemoveCount = 0;
 
     winner = PieceColor.nobody;
@@ -1071,7 +1061,7 @@ class Position {
 
     for (int f = 1; f < fileExNumber; f++) {
       for (int r = 0; r < rankNumber; r++) {
-        int s = f * rankNumber + r;
+        final int s = f * rankNumber + r;
         if (board[s] == Piece.whiteStone) {
           if (pieceOnBoardCount[PieceColor.white] != null) {
             pieceOnBoardCount[PieceColor.white] =
@@ -1101,37 +1091,37 @@ class Position {
     String errString = "";
 
     if (recorder == null) {
-      print("[goto] recorder is null.");
+      debugPrint("[goto] recorder is null.");
       return "null";
     }
 
-    var history = recorder!.getHistory();
+    final history = recorder!.history;
     if (moveIndex < -1 || history.length <= moveIndex) {
-      print("[goto] moveIndex is out of range.");
+      debugPrint("[goto] moveIndex is out of range.");
       return "out-of-range";
     }
 
     if (recorder!.cur == moveIndex) {
-      print("[goto] cur is equal to moveIndex.");
+      debugPrint("[goto] cur is equal to moveIndex.");
       return "equal";
     }
 
     // Backup context
-    var engineTypeBackup = Game.instance.engineType;
+    final engineTypeBackup = gameInstance.engineType;
 
-    Game.instance.engineType = EngineType.humanVsHuman;
-    Game.instance.setWhoIsAi(EngineType.humanVsHuman);
+    gameInstance.engineType = EngineType.humanVsHuman;
+    gameInstance.setWhoIsAi(EngineType.humanVsHuman);
 
-    var historyBack = history;
+    final historyBack = history;
 
-    await Game.instance.newGame();
+    gameInstance.newGame();
 
     if (moveIndex == -1) {
       errString = "";
     }
 
     for (var i = 0; i <= moveIndex; i++) {
-      if (Game.instance.doMove(history[i].move) == false) {
+      if (gameInstance.doMove(history[i].move!) == false) {
         errString = history[i].move!;
         break;
       }
@@ -1141,9 +1131,9 @@ class Position {
     }
 
     // Restore context
-    Game.instance.engineType = engineTypeBackup;
-    Game.instance.setWhoIsAi(engineTypeBackup);
-    recorder!.setHistory(historyBack);
+    gameInstance.engineType = engineTypeBackup;
+    gameInstance.setWhoIsAi(engineTypeBackup);
+    recorder!.history = historyBack;
     recorder!.cur = moveIndex;
 
     return errString;
@@ -1170,15 +1160,15 @@ class Position {
   }
 
   Future<String> stepForwardAll() async {
-    return _gotoHistory(recorder!.getHistory().length - 1);
+    return _gotoHistory(recorder!.history.length - 1);
   }
 
   String movesSinceLastRemove() {
     int? i = 0;
-    String moves = "";
+    final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
-    //print("recorder.movesCount = ${recorder.movesCount}");
+    //debugPrint("recorder.movesCount = ${recorder.movesCount}");
 
     for (i = recorder!.movesCount - 1; i! >= 0; i--) {
       //if (recorder.moveAt(i).type == MoveType.remove) break;
@@ -1189,28 +1179,29 @@ class Position {
       posAfterLastRemove = i + 1;
     }
 
-    //print("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
+    //debugPrint("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
 
     for (int i = posAfterLastRemove; i < recorder!.movesCount; i++) {
-      moves += " ${recorder!.moveAt(i).move}";
+      buffer.write(" ${recorder!.moveAt(i).move}");
     }
 
-    //print("moves = $moves");
+    final String moves = buffer.toString();
+    //debugPrint("moves = $moves");
 
-    var idx = moves.indexOf('-(');
+    final idx = moves.indexOf('-(');
     if (idx != -1) {
-      //print("moves[$idx] is -(");
+      //debugPrint("moves[$idx] is -(");
       assert(false);
     }
 
-    return moves.length > 0 ? moves.substring(1) : '';
+    return moves.isNotEmpty ? moves.substring(1) : '';
   }
 
-  get moveHistoryText => recorder!.buildMoveHistoryText();
+  String get moveHistoryText => recorder!.buildMoveHistoryText();
 
-  get side => _sideToMove;
+  String get side => _sideToMove;
 
-  get lastMove => recorder!.last;
+  Move? get lastMove => recorder!.last;
 
-  get lastPositionWithRemove => recorder!.lastPositionWithRemove;
+  String? get lastPositionWithRemove => recorder!.lastPositionWithRemove;
 }

@@ -17,8 +17,10 @@
 */
 
 class Zobrist {
+  const Zobrist._();
+
   static const int KEY_MISC_BIT = 2;
-  static var psq = [
+  static const List<List<int>> psq = [
     [
       0x4E421A,
       0x3962FF,
@@ -189,5 +191,5 @@ class Zobrist {
     ]
   ];
 
-  static int side = 0x201906;
+  static const int side = 0x201906;
 }

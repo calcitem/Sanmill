@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -27,41 +26,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/navigation_home_screen.dart';
-
-import 'services/audios.dart';
+import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 Future<void> main() async {
-  var catcher = Catcher(
-      rootWidget: BetterFeedback(
-        child: SanmillApp(),
-        //localeOverride: Locale(Resources.of().languageCode),
-      ),
-      ensureInitialized: true);
+  final catcher = Catcher(
+    rootWidget: BetterFeedback(
+      child: SanmillApp(),
+      //localeOverride: Locale(Resources.of().languageCode),
+    ),
+    ensureInitialized: true,
+  );
 
   String externalDirStr;
   try {
-    Directory? externalDir = await getExternalStorageDirectory();
+    final Directory? externalDir = await getExternalStorageDirectory();
     if (externalDir != null) {
-      externalDirStr = externalDir.path.toString();
+      externalDirStr = externalDir.path;
     } else {
       externalDirStr = ".";
     }
   } catch (e) {
-    print(e);
+    debugPrint(e.toString());
     externalDirStr = ".";
   }
-  String path = externalDirStr + "/" + Constants.crashLogsFileName;
-  print("[env] ExternalStorageDirectory: " + externalDirStr);
-  String recipients = Constants.recipients;
+  final String path = "$externalDirStr/${Constants.crashLogsFileName}";
+  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
+  final String recipients = Constants.recipients;
 
-  CatcherOptions debugOptions =
-      CatcherOptions(PageReportMode(showStackTrace: true), [
+  final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
@@ -71,14 +68,12 @@ Future<void> main() async {
   /// Release configuration.
   /// Same as above, but once user accepts dialog,
   /// user will be prompted to send email with crash to support.
-  CatcherOptions releaseOptions =
-      CatcherOptions(PageReportMode(showStackTrace: true), [
+  final CatcherOptions releaseOptions = CatcherOptions(PageReportMode(), [
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
   ]);
 
-  CatcherOptions profileOptions =
-      CatcherOptions(PageReportMode(showStackTrace: true), [
+  final CatcherOptions profileOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
@@ -91,16 +86,16 @@ Future<void> main() async {
     profileConfig: profileOptions,
   );
 
-  print(window.physicalSize);
-  print(Constants.windowAspectRatio);
+  debugPrint(window.physicalSize.toString());
+  debugPrint(Constants.windowAspectRatio.toString());
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
-  if (Platform.isAndroid && isLargeScreen()) {
+  if (Platform.isAndroid && isLargeScreen) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
@@ -110,34 +105,20 @@ Future<void> main() async {
     );
   }
 
-  if (isSmallScreen()) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+  if (isSmallScreen) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-final globalScaffoldKey = GlobalKey<ScaffoldState>();
-
-class SanmillApp extends StatefulWidget {
-  @override
-  _SanmillAppState createState() => _SanmillAppState();
-}
-
-class _SanmillAppState extends State<SanmillApp> {
-  @override
-  void initState() {
-    super.initState();
-    if (Platform.isWindows) {
-      print("[audio] Audio Player is not support Windows.");
-      return;
-    } else {
-      Audios.loadSounds();
-    }
-  }
+class SanmillApp extends StatelessWidget {
+  final globalScaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    Audios.loadSounds();
+
     setSpecialCountryAndRegion(context);
 
     return MaterialApp(
@@ -146,7 +127,7 @@ class _SanmillAppState extends State<SanmillApp> {
       navigatorKey: Catcher.navigatorKey,
       key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: [
+      localizationsDelegates: const [
         // ... app-specific localization delegate[s] here
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -159,10 +140,10 @@ class _SanmillAppState extends State<SanmillApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: DoubleBackToCloseApp(
-          child: NavigationHomeScreen(),
           snackBar: SnackBar(
             content: Text(Resources.of().strings.tapBackAgainToLeave),
           ),
+          child: NavigationHomeScreen(),
         ),
       ),
       /*

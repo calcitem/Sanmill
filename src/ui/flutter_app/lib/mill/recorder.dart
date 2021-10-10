@@ -16,34 +16,26 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/common/config.dart';
-
-import 'position.dart';
-import 'types.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/shared/common/config.dart';
 
 // TODO
 class GameRecorder {
   int cur = -1;
   String? lastPositionWithRemove = "";
-  var _history = <Move>[];
+  List<Move> history = <Move>[];
   final tag = "[GameRecorder]";
 
   GameRecorder({this.cur = -1, this.lastPositionWithRemove});
-
-  List<Move> getHistory() {
-    return _history;
-  }
-
-  void setHistory(List<Move> newHistory) {
-    _history = newHistory;
-  }
 
   String wmdNotationToMoveString(String wmd) {
     String move = "";
 
     if (wmd.length == 3 && wmd[0] == "x") {
       if (wmdNotationToMove[wmd.substring(1, 3)] != null) {
-        move = '-' + wmdNotationToMove[wmd.substring(1, 3)]!;
+        move = '-${wmdNotationToMove[wmd.substring(1, 3)]!}';
       }
     } else if (wmd.length == 2) {
       if (wmdNotationToMove[wmd] != null) {
@@ -52,15 +44,14 @@ class GameRecorder {
     } else if (wmd.length == 5 && wmd[2] == '-') {
       if (wmdNotationToMove[(wmd.substring(0, 2))] != null &&
           wmdNotationToMove[(wmd.substring(3, 5))] != null) {
-        move = wmdNotationToMove[(wmd.substring(0, 2))]! +
-            '->' +
-            wmdNotationToMove[(wmd.substring(3, 5))]!;
+        move =
+            '${wmdNotationToMove[(wmd.substring(0, 2))]!}->${wmdNotationToMove[(wmd.substring(3, 5))]!}';
       }
     } else if ((wmd.length == 8 && wmd[2] == '-' && wmd[5] == 'x') ||
         (wmd.length == 5 && wmd[2] == 'x')) {
-      print("$tag Not support parsing format oo-ooxo notation.");
+      debugPrint("$tag Not support parsing format oo-ooxo notation.");
     } else {
-      print("$tag Parse notation $wmd failed.");
+      debugPrint("$tag Parse notation $wmd failed.");
     }
 
     return move;
@@ -69,60 +60,57 @@ class GameRecorder {
   String playOkNotationToMoveString(String playOk) {
     String move = "";
 
-    if (playOk.length == 0) {
+    if (playOk.isEmpty) {
       return "";
     }
 
-    var iDash = playOk.indexOf('-');
-    var iX = playOk.indexOf('x');
+    final iDash = playOk.indexOf('-');
+    final iX = playOk.indexOf('x');
 
     if (iDash == -1 && iX == -1) {
       // 12
-      var val = int.parse(playOk);
+      final val = int.parse(playOk);
       if (val >= 1 && val <= 24) {
-        move = playOkNotationToMove[playOk]!;
-        return move;
+        return playOkNotationToMove[playOk]!;
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
 
     if (iX == 0) {
       // x12
-      var sub = playOk.substring(1);
-      var val = int.parse(sub);
+      final sub = playOk.substring(1);
+      final val = int.parse(sub);
       if (val >= 1 && val <= 24) {
-        move = "-" + playOkNotationToMove[sub]!;
-        return move;
+        return "-${playOkNotationToMove[sub]!}";
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
     if (iDash != -1 && iX == -1) {
       // 12-13
-      var sub1 = playOk.substring(0, iDash);
-      var val1 = int.parse(sub1);
+      final sub1 = playOk.substring(0, iDash);
+      final val1 = int.parse(sub1);
       if (val1 >= 1 && val1 <= 24) {
         move = playOkNotationToMove[sub1]!;
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
 
-      var sub2 = playOk.substring(iDash + 1);
-      var val2 = int.parse(sub2);
+      final sub2 = playOk.substring(iDash + 1);
+      final val2 = int.parse(sub2);
       if (val2 >= 1 && val2 <= 24) {
-        move = move + "->" + playOkNotationToMove[sub2]!;
-        return move;
+        return "$move->${playOkNotationToMove[sub2]!}";
       } else {
-        print("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
 
-    print("$tag Not support parsing format oo-ooxo PlayOK notation.");
+    debugPrint("$tag Not support parsing format oo-ooxo PlayOK notation.");
     return "";
   }
 
@@ -141,7 +129,7 @@ class GameRecorder {
       return true;
     }
 
-    if (text.length > 0 && text[0] == '[') {
+    if (text.isNotEmpty && text[0] == '[') {
       return true;
     }
 
@@ -186,8 +174,8 @@ class GameRecorder {
       return importGoldToken(moveList);
     }
 
-    List<Move> newHistory = [];
-    List<String> list = moveList
+    final List<Move> newHistory = [];
+    final List<String> list = moveList
         .toLowerCase()
         .replaceAll('\n', ' ')
         .replaceAll(',', ' ')
@@ -223,57 +211,57 @@ class GameRecorder {
       i = i.trim();
 
       if (int.tryParse(i) != null) {
-        i = i + '.';
+        i = '$i.';
       }
 
-      if (i.length > 0 && !i.endsWith(".")) {
+      if (i.isNotEmpty && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == 'x') {
           // "a1xc3"
-          String m1 = wmdNotationToMoveString(i.substring(0, 2));
+          final String m1 = wmdNotationToMoveString(i.substring(0, 2));
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
-          String m2 = wmdNotationToMoveString(i.substring(2));
+          final String m2 = wmdNotationToMoveString(i.substring(2));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
         } else if (i.length == 8 && i[2] == '-' && i[5] == 'x') {
           // "a1-b2xc3"
-          String m1 = wmdNotationToMoveString(i.substring(0, 5));
+          final String m1 = wmdNotationToMoveString(i.substring(0, 5));
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
-          String m2 = wmdNotationToMoveString(i.substring(5));
+          final String m2 = wmdNotationToMoveString(i.substring(5));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
         } else {
           // no x
-          String m = wmdNotationToMoveString(i);
+          final String m = wmdNotationToMoveString(i);
           if (m != "") {
             newHistory.add(Move(m));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
         }
       }
     }
 
-    if (newHistory.length > 0) {
-      setHistory(newHistory);
+    if (newHistory.isNotEmpty) {
+      history = newHistory;
     }
 
     return "";
@@ -284,9 +272,9 @@ class GameRecorder {
   }
 
   String importPlayOk(String moveList) {
-    List<Move> newHistory = [];
+    final List<Move> newHistory = [];
 
-    List<String> list = moveList
+    final List<String> list = moveList
         .replaceAll('\n', ' ')
         .replaceAll(' 1/2-1/2', '')
         .replaceAll(' 1-0', '')
@@ -297,40 +285,40 @@ class GameRecorder {
     for (var i in list) {
       i = i.trim();
 
-      if (i.length > 0 &&
+      if (i.isNotEmpty &&
           !i.endsWith(".") &&
           !i.startsWith("[") &&
           !i.endsWith("]")) {
-        var iX = i.indexOf('x');
+        final iX = i.indexOf('x');
         if (iX == -1) {
-          String m = playOkNotationToMoveString(i);
+          final String m = playOkNotationToMoveString(i);
           if (m != "") {
             newHistory.add(Move(m));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
         } else if (iX != -1) {
-          String m1 = playOkNotationToMoveString(i.substring(0, iX));
+          final String m1 = playOkNotationToMoveString(i.substring(0, iX));
           if (m1 != "") {
             newHistory.add(Move(m1));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
-          String m2 = playOkNotationToMoveString(i.substring(iX));
+          final String m2 = playOkNotationToMoveString(i.substring(iX));
           if (m2 != "") {
             newHistory.add(Move(m2));
           } else {
-            print("Cannot import $i");
+            debugPrint("Cannot import $i");
             return i;
           }
         }
       }
     }
 
-    if (newHistory.length > 0) {
-      setHistory(newHistory);
+    if (newHistory.isNotEmpty) {
+      history = newHistory;
     }
 
     return "";
@@ -355,16 +343,16 @@ class GameRecorder {
   }
 
   void jumpToTail() {
-    cur = _history.length - 1;
+    cur = history.length - 1;
   }
 
   void clear() {
-    _history.clear();
+    history.clear();
     cur = 0;
   }
 
   bool isClean() {
-    return cur == _history.length - 1;
+    return cur == history.length - 1;
   }
 
   void prune() {
@@ -372,19 +360,19 @@ class GameRecorder {
       return;
     }
 
-    _history.removeRange(cur + 1, _history.length);
+    history.removeRange(cur + 1, history.length);
   }
 
   void moveIn(Move move, Position position) {
-    if (_history.length > 0) {
-      if (_history[_history.length - 1].move == move.move) {
+    if (history.isNotEmpty) {
+      if (history[history.length - 1].move == move.move) {
         //assert(false);
         // TODO: WAR
         return;
       }
     }
 
-    _history.add(move);
+    history.add(move);
     cur++;
 
     if (move.type == MoveType.remove) {
@@ -393,22 +381,22 @@ class GameRecorder {
   }
 
   Move? removeLast() {
-    if (_history.isEmpty) return null;
-    return _history.removeLast();
+    if (history.isEmpty) return null;
+    return history.removeLast();
   }
 
-  get last => _history.isEmpty ? null : _history.last;
+  Move? get last => history.isEmpty ? null : history.last;
 
-  Move moveAt(int index) => _history[index];
+  Move moveAt(int index) => history[index];
 
-  get movesCount => _history.length;
+  int get movesCount => history.length;
 
-  get lastMove => movesCount == 0 ? null : moveAt(movesCount - 1);
+  Move? get lastMove => movesCount == 0 ? null : moveAt(movesCount - 1);
 
-  get lastEffectiveMove => cur == -1 ? null : moveAt(cur);
+  Move? get lastEffectiveMove => cur == -1 ? null : moveAt(cur);
 
-  String buildMoveHistoryText({cols = 2}) {
-    if (_history.length == 0) {
+  String buildMoveHistoryText({int cols = 2}) {
+    if (history.isEmpty) {
       return '';
     }
 
@@ -421,21 +409,21 @@ class GameRecorder {
         if (k % cols == 1) {
           num = "${(k + 1) ~/ 2}.    ";
           if (k < 9 * cols) {
-            num = " " + num + " ";
+            num = " $num ";
           }
         } else {
           num = "";
         }
-        if (i + 1 <= cur && _history[i + 1].type == MoveType.remove) {
+        if (i + 1 <= cur && history[i + 1].type == MoveType.remove) {
           moveHistoryText +=
-              '$num${_history[i].notation}${_history[i + 1].notation}    ';
+              '$num${history[i].notation}${history[i + 1].notation}    ';
           i++;
         } else {
-          moveHistoryText += '$num${_history[i].notation}    ';
+          moveHistoryText += '$num${history[i].notation}    ';
         }
         k++;
       } else {
-        moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${_history[i].move}　';
+        moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${history[i].move}　';
       }
 
       if (Config.standardNotationEnabled) {
@@ -449,8 +437,6 @@ class GameRecorder {
       moveHistoryText = "";
     }
 
-    moveHistoryText = moveHistoryText.replaceAll('    \n', '\n');
-
-    return moveHistoryText;
+    return moveHistoryText.replaceAll('    \n', '\n');
   }
 }

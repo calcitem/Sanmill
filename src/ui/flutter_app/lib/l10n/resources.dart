@@ -19,11 +19,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/constants.dart';
+import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/style/app_theme.dart';
-import 'package:sanmill/widgets/list_item_divider.dart';
+import 'package:sanmill/shared/list_item_divider.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 Map<String, Strings> languageCodeToStrings = {
   "ar": ArabicStrings(),
@@ -505,7 +505,7 @@ class Resources {
   }
 
   Strings get strings {
-    Strings? ret = languageCodeToStrings[languageCode];
+    final Strings? ret = languageCodeToStrings[languageCode];
 
     if (ret == null) {
       return EnglishStrings();
@@ -519,8 +519,9 @@ class Resources {
   }
 }
 
-setLanguage(BuildContext context, var callback) async {
-  var languageColumn = Column(
+Future<void> setLanguage(
+    BuildContext context, Function(String?)? callback) async {
+  final languageColumn = Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       RadioListTile(
@@ -530,7 +531,7 @@ setLanguage(BuildContext context, var callback) async {
         value: Constants.defaultLanguageCodeName,
         onChanged: callback,
       ),
-      ListItemDivider(),
+      const ListItemDivider(),
       for (var i in languageCodeToStrings.keys)
         RadioListTile(
           activeColor: AppTheme.switchListTileActiveColor,
@@ -563,7 +564,7 @@ enum Bidirectionality {
 }
 
 Bidirectionality getBidirectionality(BuildContext context) {
-  Locale currentLocale = Localizations.localeOf(context);
+  final Locale currentLocale = Localizations.localeOf(context);
   if (currentLocale.languageCode == "ar" ||
       currentLocale.languageCode == "fa" ||
       currentLocale.languageCode == "he" ||
@@ -578,8 +579,8 @@ Bidirectionality getBidirectionality(BuildContext context) {
 
 String specialCountryAndRegion = "";
 
-setSpecialCountryAndRegion(BuildContext context) {
-  Locale currentLocale = Localizations.localeOf(context);
+void setSpecialCountryAndRegion(BuildContext context) {
+  final Locale currentLocale = Localizations.localeOf(context);
 
   switch (currentLocale.countryCode) {
     case "IR":
