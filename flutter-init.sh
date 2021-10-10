@@ -23,10 +23,10 @@ mv lib/oss_licenses.dart lib/generated
 
 mkdir -p "$GEN_FILE_PATH" || true
 
-echo "const Map<String, String> flutterVersion =" > "$FLUTTER_VERSION_FILE"
-flutter --version --machine >> "$FLUTTER_VERSION_FILE"
-echo ";" >> "$FLUTTER_VERSION_FILE"
+echo "const Map<String, String> flutterVersion =" >"$FLUTTER_VERSION_FILE"
+flutter --version --machine >>"$FLUTTER_VERSION_FILE"
+echo ";" >>"$FLUTTER_VERSION_FILE"
 
 mkdir -p "$ENV_FILE_PATH" || true
 touch "$ENV_FILE"
-export > "$ENV_FILE"
+export >"$ENV_FILE"
