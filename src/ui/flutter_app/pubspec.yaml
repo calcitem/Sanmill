@@ -48,7 +48,6 @@ dev_dependencies:
 flutter_gen:
   output: lib/generated/assets/
 
-
 flutter:
   generate: true
   uses-material-design: true
