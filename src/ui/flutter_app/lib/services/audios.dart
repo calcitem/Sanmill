@@ -20,6 +20,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/shared/common/config.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:stack_trace/stack_trace.dart';
@@ -62,43 +63,43 @@ class Audios {
     }
 
     _drawSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/draw.mp3"),
+      await rootBundle.load(Assets.audios.draw),
     );
 
     _flySoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/fly.mp3"),
+      await rootBundle.load(Assets.audios.fly),
     );
 
     _goSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/go.mp3"),
+      await rootBundle.load(Assets.audios.go),
     );
 
     _illegalSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/illegal.mp3"),
+      await rootBundle.load(Assets.audios.illegal),
     );
 
     _loseSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/lose.mp3"),
+      await rootBundle.load(Assets.audios.lose),
     );
 
     _millSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/mill.mp3"),
+      await rootBundle.load(Assets.audios.mill),
     );
 
     _placeSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/place.mp3"),
+      await rootBundle.load(Assets.audios.place),
     );
 
     _removeSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/remove.mp3"),
+      await rootBundle.load(Assets.audios.remove),
     );
 
     _selectSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/select.mp3"),
+      await rootBundle.load(Assets.audios.select),
     );
 
     _winSoundId = await _soundpool.load(
-      await rootBundle.load("assets/audios/win.mp3"),
+      await rootBundle.load(Assets.audios.win),
     );
 
     _initialized = true;

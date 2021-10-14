@@ -17,6 +17,7 @@
 */
 
 import 'dart:ui';
+import 'package:sanmill/generated/assets/assets.gen.dart';
 
 class Constants {
   const Constants._();
@@ -29,8 +30,8 @@ class Constants {
   static String settingsFilename = "${projectNameLower}_settings.json";
   static String crashLogsFileName = "$projectName-crash-logs.txt";
   static String environmentVariablesFilename =
-      "assets/files/environment_variables.txt";
-  static String gplLicenseFilename = "assets/licenses/GPL-3.0.txt";
+      Assets.files.environmentVariables;
+  static String gplLicenseFilename = Assets.licenses.gpl30;
 
   static String defaultLanguageCodeName = "Default";
 
