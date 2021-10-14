@@ -56,7 +56,7 @@ Future<void> main() async {
   }
   final String path = "$externalDirStr/${Constants.crashLogsFileName}";
   debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
-  final String recipients = Constants.recipients;
+  const String recipients = Constants.recipients;
 
   final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),
