@@ -21,8 +21,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 
+@Deprecated('use [LocalDatabaseService] instead')
 class Settings {
   static final settingsFileName = Constants.settingsFilename;
   static Settings? _instance;
@@ -45,16 +48,8 @@ class Settings {
 
   void operator []=(String key, dynamic value) => _values![key] = value;
 
-  Future<bool> commit() async {
-    _file.create(recursive: true);
-
-    final contents = jsonEncode(_values);
-    await _file.writeAsString(contents);
-
-    //print("Settings is committed.");
-
-    return true;
-  }
+  /// migrates the deprecated [Settings] to the new [LocalDatabaseService]
+  Future<void> migrate() async {}
 
   Future<bool> _load(String fileName) async {
     // TODO: main() ExternalStorage
@@ -86,5 +81,31 @@ class Settings {
     } else {
       debugPrint("[settings] $_file does not exist");
     }
+  }
+
+  void initRules() {
+    // Rules
+    rule.piecesCount = LocalDatabaseService.rules.piecesCount;
+    rule.flyPieceCount = LocalDatabaseService.rules.flyPieceCount;
+    rule.piecesAtLeastCount = LocalDatabaseService.rules.piecesAtLeastCount;
+    rule.hasDiagonalLines = LocalDatabaseService.rules.hasDiagonalLines;
+    rule.hasBannedLocations = LocalDatabaseService.rules.hasBannedLocations;
+    rule.mayMoveInPlacingPhase =
+        LocalDatabaseService.rules.mayMoveInPlacingPhase;
+    rule.isDefenderMoveFirst = LocalDatabaseService.rules.isDefenderMoveFirst;
+    rule.mayRemoveMultiple = LocalDatabaseService.rules.mayRemoveMultiple;
+    rule.mayRemoveFromMillsAlways =
+        LocalDatabaseService.rules.mayRemoveFromMillsAlways;
+    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
+        LocalDatabaseService.rules.mayOnlyRemoveUnplacedPieceInPlacingPhase;
+    rule.isWhiteLoseButNotDrawWhenBoardFull =
+        LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull;
+    rule.isLoseButNotChangeSideWhenNoWay =
+        LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay;
+    rule.mayFly = LocalDatabaseService.rules.mayFly;
+    rule.nMoveRule = LocalDatabaseService.rules.nMoveRule;
+    rule.endgameNMoveRule = LocalDatabaseService.rules.endgameNMoveRule;
+    rule.threefoldRepetitionRule =
+        LocalDatabaseService.rules.threefoldRepetitionRule;
   }
 }

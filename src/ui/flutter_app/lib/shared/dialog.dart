@@ -24,8 +24,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 int _counter = 0;
@@ -79,7 +79,7 @@ void showCountdownDialog(
                     S.of(ctx).cancel,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: Config.fontSize,
+                      fontSize: LocalDatabaseService.display.fontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

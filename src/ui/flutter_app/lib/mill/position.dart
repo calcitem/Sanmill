@@ -25,7 +25,7 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 List<int> posKeyHistory = [];
 
@@ -1164,7 +1164,7 @@ class Position {
   }
 
   Future<void> _gotoHistoryPlaySound(HistoryMove move) async {
-    if (!Config.keepMuteWhenTakingBack) {
+    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
       switch (move) {
         case HistoryMove.forwardAll:
         case HistoryMove.farward:

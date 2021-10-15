@@ -30,7 +30,8 @@ class GamePageToolBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: Color(Config.navigationToolbarBackgroundColor),
+        color:
+            LocalDatabaseService.colorSettings.navigationToolbarBackgroundColor,
       ),
       margin: const EdgeInsets.symmetric(vertical: 0.5),
       padding: const EdgeInsets.symmetric(vertical: 2),

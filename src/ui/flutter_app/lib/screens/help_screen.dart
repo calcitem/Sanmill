@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class HelpScreen extends StatelessWidget {
@@ -9,7 +9,7 @@ class HelpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Color(Config.darkBackgroundColor),
+        backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
         centerTitle: true,
         title: Text(
           S.of(context).howToPlay,
@@ -18,13 +18,13 @@ class HelpScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Color(Config.darkBackgroundColor),
+      backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Text(
           S.of(context).helpContent,
           style: TextStyle(
-            fontSize: Config.fontSize,
+            fontSize: LocalDatabaseService.display.fontSize,
             color: AppTheme.helpTextColor,
           ),
         ),

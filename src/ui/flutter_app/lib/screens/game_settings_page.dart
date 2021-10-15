@@ -22,8 +22,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/screens/env_page.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/settings.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/storage/storage_v1.dart';
 import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
@@ -68,15 +68,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       child: Semantics(
         label: S.of(context).skillLevel,
         child: Slider(
-          value: Config.skillLevel.toDouble(),
+          value: LocalDatabaseService.preferences.skillLevel.toDouble(),
           min: 1,
           max: 30,
           divisions: 29,
-          label: Config.skillLevel.toString(),
+          label: LocalDatabaseService.preferences.skillLevel.toString(),
           onChanged: (value) => setState(() {
             debugPrint("[config] Slider value: $value");
-            Config.skillLevel = value.toInt();
-            Config.save();
+            LocalDatabaseService.preferences.skillLevel = value.toInt();
           }),
         ),
       ),
@@ -89,14 +88,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       child: Semantics(
         label: S.of(context).moveTime,
         child: Slider(
-          value: Config.moveTime.toDouble(),
+          value: LocalDatabaseService.preferences.moveTime.toDouble(),
           max: 60,
           divisions: 60,
-          label: Config.moveTime.toString(),
+          label: LocalDatabaseService.preferences.moveTime.toString(),
           onChanged: (value) => setState(() {
             debugPrint("[config] Slider value: $value");
-            Config.moveTime = value.toInt();
-            Config.save();
+            LocalDatabaseService.preferences.moveTime = value.toInt();
           }),
         ),
       ),
@@ -135,14 +133,14 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             S.of(context).restore,
             style: TextStyle(
               color: AppTheme.dialogTitleColor,
-              fontSize: Config.fontSize + 4,
+              fontSize: LocalDatabaseService.display.fontSize + 4,
             ),
           ),
           content: SingleChildScrollView(
             child: Text(
               "${S.of(context).restoreDefaultSettings}?\n$prompt",
               style: TextStyle(
-                fontSize: Config.fontSize,
+                fontSize: LocalDatabaseService.display.fontSize,
               ),
             ),
           ),
@@ -152,7 +150,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Text(
                 S.of(context).ok,
                 style: TextStyle(
-                  fontSize: Config.fontSize,
+                  fontSize: LocalDatabaseService.display.fontSize,
                 ),
               ),
             ),
@@ -161,7 +159,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
               child: Text(
                 S.of(context).cancel,
                 style: TextStyle(
-                  fontSize: Config.fontSize,
+                  fontSize: LocalDatabaseService.display.fontSize,
                 ),
               ),
             ),
@@ -195,10 +193,11 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       SettingsCard(
         children: <Widget>[
           SettingsSwitchListTile(
-            value: !Config.aiMovesFirst,
+            value: !LocalDatabaseService.preferences.aiMovesFirst,
             onChanged: setWhoMovesFirst,
-            titleString:
-                Config.aiMovesFirst ? S.of(context).ai : S.of(context).human,
+            titleString: LocalDatabaseService.preferences.aiMovesFirst
+                ? S.of(context).ai
+                : S.of(context).human,
           ),
         ],
       ),
@@ -208,7 +207,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).skillLevel,
-            //trailingString: "L" + Config.skillLevel.toString(),
+            //trailingString: "L" + LocalDatabaseService.preferences.skillLevel.toString(),
             onTap: setSkillLevel,
           ),
           SettingsListTile(
@@ -223,26 +222,27 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).algorithm,
-            trailingString: algorithmNames[Config.algorithm],
+            trailingString:
+                algorithmNames[LocalDatabaseService.preferences.algorithm],
             onTap: setAlgorithm,
           ),
           SettingsSwitchListTile(
-            value: Config.drawOnHumanExperience,
+            value: LocalDatabaseService.preferences.drawOnHumanExperience,
             onChanged: setDrawOnHumanExperience,
             titleString: S.of(context).drawOnHumanExperience,
           ),
           SettingsSwitchListTile(
-            value: Config.considerMobility,
+            value: LocalDatabaseService.preferences.considerMobility,
             onChanged: setConsiderMobility,
             titleString: S.of(context).considerMobility,
           ),
           SettingsSwitchListTile(
-            value: Config.aiIsLazy,
+            value: LocalDatabaseService.preferences.aiIsLazy,
             onChanged: setAiIsLazy,
             titleString: S.of(context).passive,
           ),
           SettingsSwitchListTile(
-            value: Config.shufflingEnabled,
+            value: LocalDatabaseService.preferences.shufflingEnabled,
             onChanged: setShufflingEnabled,
             titleString: S.of(context).shufflingEnabled,
           ),
@@ -255,12 +255,12 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         SettingsCard(
           children: <Widget>[
             SettingsSwitchListTile(
-              value: Config.toneEnabled,
+              value: LocalDatabaseService.preferences.toneEnabled,
               onChanged: setTone,
               titleString: S.of(context).playSoundsInTheGame,
             ),
             SettingsSwitchListTile(
-              value: Config.keepMuteWhenTakingBack,
+              value: LocalDatabaseService.preferences.keepMuteWhenTakingBack,
               onChanged: setKeepMuteWhenTakingBack,
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
@@ -271,7 +271,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       SettingsCard(
         children: <Widget>[
           SettingsSwitchListTile(
-            value: Config.screenReaderSupport,
+            value: LocalDatabaseService.preferences.screenReaderSupport,
             onChanged: setScreenReaderSupport,
             titleString: S.of(context).screenReaderSupport,
           ),
@@ -297,17 +297,17 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
         SettingsCard(
           children: <Widget>[
             SettingsSwitchListTile(
-              value: Config.developerMode,
+              value: LocalDatabaseService.preferences.developerMode,
               onChanged: setDeveloperMode,
               titleString: S.of(context).developerMode,
             ),
             SettingsSwitchListTile(
-              value: Config.experimentsEnabled,
+              value: LocalDatabaseService.preferences.experimentsEnabled,
               onChanged: setExperimentsEnabled,
               titleString: S.of(context).experiments,
             ),
             SettingsSwitchListTile(
-              value: Config.isAutoRestart,
+              value: LocalDatabaseService.preferences.isAutoRestart,
               onChanged: setIsAutoRestart,
               titleString: S.of(context).isAutoRestart,
             ),
@@ -346,19 +346,17 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   }
 
   Future<void> setWhoMovesFirst(bool value) async {
-    setState(() => Config.aiMovesFirst = !value);
+    setState(() => LocalDatabaseService.preferences.aiMovesFirst = !value);
 
-    debugPrint("[config] aiMovesFirst: ${Config.aiMovesFirst}");
-
-    Config.save();
+    debugPrint(
+      "[config] aiMovesFirst: ${LocalDatabaseService.preferences.aiMovesFirst}",
+    );
   }
 
   Future<void> setAiIsLazy(bool value) async {
-    setState(() => Config.aiIsLazy = value);
+    setState(() => LocalDatabaseService.preferences.aiIsLazy = value);
 
     debugPrint("[config] aiMovesFirst: $value");
-
-    Config.save();
   }
 
   void setAlgorithm() {
@@ -367,11 +365,13 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
       Navigator.pop(context);
 
-      setState(() => Config.algorithm = algorithm ?? 2);
+      setState(
+        () => LocalDatabaseService.preferences.algorithm = algorithm ?? 2,
+      );
 
-      debugPrint("[config] Config.algorithm: ${Config.algorithm}");
-
-      Config.save();
+      debugPrint(
+        "[config] LocalDatabaseService.preferences.algorithm: ${LocalDatabaseService.preferences.algorithm}",
+      );
     }
 
     showModalBottomSheet(
@@ -384,21 +384,21 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('Alpha-Beta'),
-              groupValue: Config.algorithm,
+              groupValue: LocalDatabaseService.preferences.algorithm,
               value: 0,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('PVS'),
-              groupValue: Config.algorithm,
+              groupValue: LocalDatabaseService.preferences.algorithm,
               value: 1,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('MTD(f)'),
-              groupValue: Config.algorithm,
+              groupValue: LocalDatabaseService.preferences.algorithm,
               value: 2,
               onChanged: callback,
             ),
@@ -409,148 +409,127 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
   }
 
   Future<void> setDrawOnHumanExperience(bool value) async {
-    setState(() => Config.drawOnHumanExperience = value);
+    setState(
+      () => LocalDatabaseService.preferences.drawOnHumanExperience = value,
+    );
 
     debugPrint("[config] drawOnHumanExperience: $value");
-
-    Config.save();
   }
 
   Future<void> setConsiderMobility(bool value) async {
-    setState(() => Config.considerMobility = value);
+    setState(() => LocalDatabaseService.preferences.considerMobility = value);
 
     debugPrint("[config] considerMobility: $value");
-
-    Config.save();
   }
 
   Future<void> setIsAutoRestart(bool value) async {
-    setState(() => Config.isAutoRestart = value);
+    setState(() => LocalDatabaseService.preferences.isAutoRestart = value);
 
     debugPrint("[config] isAutoRestart: $value");
-
-    Config.save();
   }
 
   Future<void> setIsAutoChangeFirstMove(bool value) async {
-    setState(() => Config.isAutoChangeFirstMove = value);
+    setState(
+      () => LocalDatabaseService.preferences.isAutoChangeFirstMove = value,
+    );
 
     debugPrint("[config] isAutoChangeFirstMove: $value");
-
-    Config.save();
   }
 
   Future<void> setResignIfMostLose(bool value) async {
-    setState(() => Config.resignIfMostLose = value);
+    setState(() => LocalDatabaseService.preferences.resignIfMostLose = value);
 
     debugPrint("[config] resignIfMostLose: $value");
-
-    Config.save();
   }
 
   Future<void> setShufflingEnabled(bool value) async {
-    setState(() => Config.shufflingEnabled = value);
+    setState(() => LocalDatabaseService.preferences.shufflingEnabled = value);
 
     debugPrint("[config] shufflingEnabled: $value");
-
-    Config.save();
   }
 
   Future<void> setLearnEndgame(bool value) async {
-    setState(() => Config.learnEndgame = value);
+    setState(() => LocalDatabaseService.preferences.learnEndgame = value);
 
     debugPrint("[config] learnEndgame: $value");
-
-    Config.save();
   }
 
   Future<void> setOpeningBook(bool value) async {
-    setState(() => Config.openingBook = value);
+    setState(() => LocalDatabaseService.preferences.openingBook = value);
 
     debugPrint("[config] openingBook: $value");
-
-    Config.save();
   }
 
   Future<void> setTone(bool value) async {
-    setState(() => Config.toneEnabled = value);
+    setState(() => LocalDatabaseService.preferences.toneEnabled = value);
 
     debugPrint("[config] toneEnabled: $value");
-
-    Config.save();
   }
 
   Future<void> setKeepMuteWhenTakingBack(bool value) async {
-    setState(() => Config.keepMuteWhenTakingBack = value);
+    setState(
+      () => LocalDatabaseService.preferences.keepMuteWhenTakingBack = value,
+    );
 
     debugPrint("[config] keepMuteWhenTakingBack: $value");
-
-    Config.save();
   }
 
   Future<void> setScreenReaderSupport(bool value) async {
-    setState(() => Config.screenReaderSupport = value);
+    setState(
+      () => LocalDatabaseService.preferences.screenReaderSupport = value,
+    );
 
     debugPrint("[config] screenReaderSupport: $value");
-
-    Config.save();
   }
 
   Future<void> setDeveloperMode(bool value) async {
-    setState(() => Config.developerMode = value);
+    setState(() => LocalDatabaseService.preferences.developerMode = value);
 
     debugPrint("[config] developerMode: $value");
-
-    Config.save();
   }
 
   Future<void> setExperimentsEnabled(bool value) async {
-    setState(() => Config.experimentsEnabled = value);
+    setState(() => LocalDatabaseService.preferences.experimentsEnabled = value);
 
     debugPrint("[config] experimentsEnabled: $value");
-
-    Config.save();
   }
 
   // Display
 
-  Future<void> setLanguage(String value) async {
-    setState(() => Config.languageCode = value);
+  Future<void> setLanguage(Locale value) async {
+    setState(() => LocalDatabaseService.display.languageCode = value);
 
     debugPrint("[config] languageCode: $value");
-
-    Config.save();
   }
 
   Future<void> setIsPieceCountInHandShown(bool value) async {
-    setState(() => Config.isPieceCountInHandShown = value);
+    setState(
+      () => LocalDatabaseService.display.isPieceCountInHandShown = value,
+    );
 
     debugPrint("[config] isPieceCountInHandShown: $value");
-
-    Config.save();
   }
 
   Future<void> setIsNotationsShown(bool value) async {
-    setState(() => Config.isNotationsShown = value);
+    setState(() => LocalDatabaseService.display.isNotationsShown = value);
 
     debugPrint("[config] isNotationsShown: $value");
-
-    Config.save();
   }
 
   Future<void> setIsHistoryNavigationToolbarShown(bool value) async {
-    setState(() => Config.isHistoryNavigationToolbarShown = value);
+    setState(
+      () =>
+          LocalDatabaseService.display.isHistoryNavigationToolbarShown = value,
+    );
 
     debugPrint("[config] isHistoryNavigationToolbarShown: $value");
-
-    Config.save();
   }
 
   Future<void> setStandardNotationEnabled(bool value) async {
-    setState(() => Config.standardNotationEnabled = value);
+    setState(
+      () => LocalDatabaseService.display.standardNotationEnabled = value,
+    );
 
     debugPrint("[config] standardNotationEnabled: $value");
-
-    Config.save();
   }
 }

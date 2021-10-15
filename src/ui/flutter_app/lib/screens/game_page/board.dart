@@ -51,8 +51,10 @@ class Board extends StatelessWidget {
           child: Text(
             squareDesc[index],
             style: TextStyle(
-              fontSize: Config.fontSize,
-              color: Config.developerMode ? Colors.red : Colors.transparent,
+              fontSize: LocalDatabaseService.display.fontSize,
+              color: LocalDatabaseService.preferences.developerMode
+                  ? Colors.red
+                  : Colors.transparent,
             ),
           ),
         ),
@@ -76,7 +78,7 @@ class Board extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppTheme.boardBorderRadius),
-        color: Color(Config.boardBackgroundColor),
+        color: LocalDatabaseService.colorSettings.boardBackgroundColor,
       ),
       child: customPaint,
     );

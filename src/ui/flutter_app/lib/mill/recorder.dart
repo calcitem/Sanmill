@@ -19,7 +19,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 // TODO
 class GameRecorder {
@@ -405,7 +405,7 @@ class GameRecorder {
     String num = "";
 
     for (var i = 0; i <= cur; i++) {
-      if (Config.standardNotationEnabled) {
+      if (LocalDatabaseService.display.standardNotationEnabled) {
         if (k % cols == 1) {
           num = "${(k + 1) ~/ 2}.    ";
           if (k < 9 * cols) {
@@ -426,7 +426,7 @@ class GameRecorder {
         moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${history[i].move}　';
       }
 
-      if (Config.standardNotationEnabled) {
+      if (LocalDatabaseService.display.standardNotationEnabled) {
         if ((k + 1) % cols == 0) moveHistoryText += '\n';
       } else {
         if ((i + 1) % cols == 0) moveHistoryText += '\n';

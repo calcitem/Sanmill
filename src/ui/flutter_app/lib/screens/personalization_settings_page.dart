@@ -20,8 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
@@ -45,37 +45,48 @@ class _PersonalizationSettingsPageState
   }
 
   Future<void> showColorDialog(String colorString) async {
-    final Map<String, int> colorStrToVal = {
-      S.of(context).boardColor: Config.boardBackgroundColor,
-      S.of(context).backgroundColor: Config.darkBackgroundColor,
-      S.of(context).lineColor: Config.boardLineColor,
-      S.of(context).whitePieceColor: Config.whitePieceColor,
-      S.of(context).blackPieceColor: Config.blackPieceColor,
-      S.of(context).pieceHighlightColor: Config.pieceHighlightColor,
-      S.of(context).messageColor: Config.messageColor,
-      S.of(context).drawerColor: Config.drawerColor,
-      S.of(context).drawerBackgroundColor: Config.drawerBackgroundColor,
-      S.of(context).drawerTextColor: Config.drawerTextColor,
-      S.of(context).drawerHighlightItemColor: Config.drawerHighlightItemColor,
+    final Map<String, Color> colorStrToVal = {
+      S.of(context).boardColor:
+          LocalDatabaseService.colorSettings.boardBackgroundColor,
+      S.of(context).backgroundColor:
+          LocalDatabaseService.colorSettings.darkBackgroundColor,
+      S.of(context).lineColor:
+          LocalDatabaseService.colorSettings.boardLineColor,
+      S.of(context).whitePieceColor:
+          LocalDatabaseService.colorSettings.whitePieceColor,
+      S.of(context).blackPieceColor:
+          LocalDatabaseService.colorSettings.blackPieceColor,
+      S.of(context).pieceHighlightColor:
+          LocalDatabaseService.colorSettings.pieceHighlightColor,
+      S.of(context).messageColor:
+          LocalDatabaseService.colorSettings.messageColor,
+      S.of(context).drawerColor: LocalDatabaseService.colorSettings.drawerColor,
+      S.of(context).drawerBackgroundColor:
+          LocalDatabaseService.colorSettings.drawerBackgroundColor,
+      S.of(context).drawerTextColor:
+          LocalDatabaseService.colorSettings.drawerTextColor,
+      S.of(context).drawerHighlightItemColor:
+          LocalDatabaseService.colorSettings.drawerHighlightItemColor,
       S.of(context).mainToolbarBackgroundColor:
-          Config.mainToolbarBackgroundColor,
-      S.of(context).mainToolbarIconColor: Config.mainToolbarIconColor,
+          LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
+      S.of(context).mainToolbarIconColor:
+          LocalDatabaseService.colorSettings.mainToolbarIconColor,
       S.of(context).navigationToolbarBackgroundColor:
-          Config.navigationToolbarBackgroundColor,
+          LocalDatabaseService.colorSettings.navigationToolbarBackgroundColor,
       S.of(context).navigationToolbarIconColor:
-          Config.navigationToolbarIconColor,
+          LocalDatabaseService.colorSettings.navigationToolbarIconColor,
     };
 
     final AlertDialog alert = AlertDialog(
       title: Text(
         "${S.of(context).pick} $colorString",
         style: TextStyle(
-          fontSize: Config.fontSize + 4,
+          fontSize: LocalDatabaseService.display.fontSize + 4,
         ),
       ),
       content: SingleChildScrollView(
         child: ColorPicker(
-          pickerColor: Color(colorStrToVal[colorString]!),
+          pickerColor: colorStrToVal[colorString]!,
           onColorChanged: changeColor,
         ),
       ),
@@ -84,7 +95,7 @@ class _PersonalizationSettingsPageState
           child: Text(
             S.of(context).confirm,
             style: TextStyle(
-              fontSize: Config.fontSize,
+              fontSize: LocalDatabaseService.display.fontSize,
             ),
           ),
           onPressed: () {
@@ -93,41 +104,49 @@ class _PersonalizationSettingsPageState
             debugPrint("[config] pickerColor.value: ${pickerColor.value}");
 
             if (colorString == S.of(context).boardColor) {
-              Config.boardBackgroundColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.boardBackgroundColor =
+                  pickerColor;
             } else if (colorString == S.of(context).backgroundColor) {
-              Config.darkBackgroundColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.darkBackgroundColor =
+                  pickerColor;
             } else if (colorString == S.of(context).lineColor) {
-              Config.boardLineColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.boardLineColor = pickerColor;
             } else if (colorString == S.of(context).whitePieceColor) {
-              Config.whitePieceColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.whitePieceColor = pickerColor;
             } else if (colorString == S.of(context).blackPieceColor) {
-              Config.blackPieceColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.blackPieceColor = pickerColor;
             } else if (colorString == S.of(context).pieceHighlightColor) {
-              Config.pieceHighlightColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.pieceHighlightColor =
+                  pickerColor;
             } else if (colorString == S.of(context).messageColor) {
-              Config.messageColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.messageColor = pickerColor;
             } else if (colorString == S.of(context).drawerColor) {
-              Config.drawerColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.drawerColor = pickerColor;
             } else if (colorString == S.of(context).drawerBackgroundColor) {
-              Config.drawerBackgroundColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.drawerBackgroundColor =
+                  pickerColor;
             } else if (colorString == S.of(context).drawerTextColor) {
-              Config.drawerTextColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.drawerTextColor = pickerColor;
             } else if (colorString == S.of(context).drawerHighlightItemColor) {
-              Config.drawerHighlightItemColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.drawerHighlightItemColor =
+                  pickerColor;
             } else if (colorString ==
                 S.of(context).mainToolbarBackgroundColor) {
-              Config.mainToolbarBackgroundColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.mainToolbarBackgroundColor =
+                  pickerColor;
             } else if (colorString == S.of(context).mainToolbarIconColor) {
-              Config.mainToolbarIconColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.mainToolbarIconColor =
+                  pickerColor;
             } else if (colorString ==
                 S.of(context).navigationToolbarBackgroundColor) {
-              Config.navigationToolbarBackgroundColor = pickerColor.value;
+              LocalDatabaseService
+                  .colorSettings.navigationToolbarBackgroundColor = pickerColor;
             } else if (colorString ==
                 S.of(context).navigationToolbarIconColor) {
-              Config.navigationToolbarIconColor = pickerColor.value;
+              LocalDatabaseService.colorSettings.navigationToolbarIconColor =
+                  pickerColor;
             }
 
-            Config.save();
             Navigator.pop(context);
           },
         ),
@@ -135,7 +154,7 @@ class _PersonalizationSettingsPageState
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
-              fontSize: Config.fontSize,
+              fontSize: LocalDatabaseService.display.fontSize,
             ),
           ),
           onPressed: () {
@@ -163,15 +182,15 @@ class _PersonalizationSettingsPageState
       child: Semantics(
         label: S.of(context).boardBorderLineWidth,
         child: Slider(
-          value: Config.boardBorderLineWidth,
+          value: LocalDatabaseService.display.boardBorderLineWidth,
           max: 20.0,
           divisions: 200,
-          label: Config.boardBorderLineWidth.toStringAsFixed(1),
+          label: LocalDatabaseService.display.boardBorderLineWidth
+              .toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
               debugPrint("[config] BoardBorderLineWidth value: $value");
-              Config.boardBorderLineWidth = value;
-              Config.save();
+              LocalDatabaseService.display.boardBorderLineWidth = value;
             });
           },
         ),
@@ -197,15 +216,15 @@ class _PersonalizationSettingsPageState
       child: Semantics(
         label: S.of(context).boardInnerLineWidth,
         child: Slider(
-          value: Config.boardInnerLineWidth,
+          value: LocalDatabaseService.display.boardInnerLineWidth,
           max: 20.0,
           divisions: 200,
-          label: Config.boardInnerLineWidth.toStringAsFixed(1),
+          label: LocalDatabaseService.display.boardInnerLineWidth
+              .toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
               debugPrint("[config] BoardInnerLineWidth value: $value");
-              Config.boardInnerLineWidth = value;
-              Config.save();
+              LocalDatabaseService.display.boardInnerLineWidth = value;
             });
           },
         ),
@@ -227,12 +246,10 @@ class _PersonalizationSettingsPageState
       Navigator.pop(context);
 
       setState(
-        () => Config.pointStyle = pointStyle ?? 0,
+        () => LocalDatabaseService.display.pointStyle = pointStyle ?? 0,
       );
 
       debugPrint("[config] pointStyle: $pointStyle");
-
-      Config.save();
     }
 
     showModalBottomSheet(
@@ -245,14 +262,14 @@ class _PersonalizationSettingsPageState
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: Text(S.of(context).none),
-              groupValue: Config.pointStyle,
+              groupValue: LocalDatabaseService.display.pointStyle,
               value: 0,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: Text(S.of(context).solid),
-              groupValue: Config.pointStyle,
+              groupValue: LocalDatabaseService.display.pointStyle,
               value: 1,
               onChanged: callback,
             ),
@@ -260,7 +277,7 @@ class _PersonalizationSettingsPageState
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text(S.of(context).hollow),
-              groupValue: Config.pointStyle,
+              groupValue: LocalDatabaseService.display.pointStyle,
               value: 2,
               onChanged: callback,
             ),
@@ -277,15 +294,14 @@ class _PersonalizationSettingsPageState
       child: Semantics(
         label: S.of(context).pointWidth,
         child: Slider(
-          value: Config.pointWidth,
+          value: LocalDatabaseService.display.pointWidth,
           max: 30.0,
           divisions: 30,
-          label: Config.pointWidth.toStringAsFixed(1),
+          label: LocalDatabaseService.display.pointWidth.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
               debugPrint("[config] pointWidth value: $value");
-              Config.pointWidth = value;
-              Config.save();
+              LocalDatabaseService.display.pointWidth = value;
             });
           },
         ),
@@ -308,15 +324,14 @@ class _PersonalizationSettingsPageState
       child: Semantics(
         label: S.of(context).pieceWidth,
         child: Slider(
-          value: Config.pieceWidth,
+          value: LocalDatabaseService.display.pieceWidth,
           min: 0.5,
           divisions: 50,
-          label: Config.pieceWidth.toStringAsFixed(1),
+          label: LocalDatabaseService.display.pieceWidth.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
               debugPrint("[config] pieceWidth value: $value");
-              Config.pieceWidth = value;
-              Config.save();
+              LocalDatabaseService.display.pieceWidth = value;
             });
           },
         ),
@@ -339,16 +354,15 @@ class _PersonalizationSettingsPageState
       child: Semantics(
         label: S.of(context).fontSize,
         child: Slider(
-          value: Config.fontSize,
+          value: LocalDatabaseService.display.fontSize,
           min: 16,
           max: 32,
           divisions: 16,
-          label: Config.fontSize.toStringAsFixed(1),
+          label: LocalDatabaseService.display.fontSize.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
               debugPrint("[config] fontSize value: $value");
-              Config.fontSize = value;
-              Config.save();
+              LocalDatabaseService.display.fontSize = value;
             });
           },
         ),
@@ -371,15 +385,14 @@ class _PersonalizationSettingsPageState
       child: Semantics(
         label: S.of(context).boardTop,
         child: Slider(
-          value: Config.boardTop,
+          value: LocalDatabaseService.display.boardTop,
           max: 288.0,
           divisions: 288,
-          label: Config.boardTop.toStringAsFixed(1),
+          label: LocalDatabaseService.display.boardTop.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
               debugPrint("[config] BoardTop value: $value");
-              Config.boardTop = value;
-              Config.save();
+              LocalDatabaseService.display.boardTop = value;
             });
           },
         ),
@@ -405,15 +418,15 @@ class _PersonalizationSettingsPageState
       child: Semantics(
         label: S.of(context).animationDuration,
         child: Slider(
-          value: Config.animationDuration,
+          value: LocalDatabaseService.display.animationDuration,
           max: 5.0,
           divisions: 50,
-          label: Config.animationDuration.toStringAsFixed(1),
+          label:
+              LocalDatabaseService.display.animationDuration.toStringAsFixed(1),
           onChanged: (value) {
             setState(() {
               debugPrint("[config] AnimationDuration value: $value");
-              Config.animationDuration = value;
-              Config.save();
+              LocalDatabaseService.display.animationDuration = value;
             });
           },
         ),
@@ -449,19 +462,20 @@ class _PersonalizationSettingsPageState
   }
 
   List<Widget> children(BuildContext context) {
-    Future<void> langCallback([String? langCode]) async {
-      debugPrint("[config] languageCode = $langCode");
+    Future<void> langCallback([Locale? locale]) async {
+      debugPrint("[config] languageCode = $locale");
 
       Navigator.pop(context);
 
       setState(() {
-        Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;
+        LocalDatabaseService.display.languageCode =
+            locale ?? Constants.defaultLocale;
         S.load(Locale(Resources.of().languageCode));
       });
 
-      debugPrint("[config] Config.languageCode: ${Config.languageCode}");
-
-      Config.save();
+      debugPrint(
+        "[config] LocalDatabaseService.display.languageCode: ${LocalDatabaseService.display.languageCode}",
+      );
     }
 
     return <Widget>[
@@ -470,24 +484,26 @@ class _PersonalizationSettingsPageState
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).language,
-            trailingString:
-                Config.languageCode != Constants.defaultLanguageCodeName
-                    ? languageCodeToStrings[Config.languageCode]!.languageName
-                    : "",
+            trailingString: LocalDatabaseService.display.languageCode !=
+                    Constants.defaultLocale
+                ? languageCodeToStrings[
+                        LocalDatabaseService.display.languageCode]!
+                    .languageName
+                : "",
             onTap: () => setLanguage(context, langCallback),
           ),
           SettingsSwitchListTile(
-            value: Config.isPieceCountInHandShown,
+            value: LocalDatabaseService.display.isPieceCountInHandShown,
             onChanged: setIsPieceCountInHandShown,
             titleString: S.of(context).isPieceCountInHandShown,
           ),
           SettingsSwitchListTile(
-            value: Config.isNotationsShown,
+            value: LocalDatabaseService.display.isNotationsShown,
             onChanged: setIsNotationsShown,
             titleString: S.of(context).isNotationsShown,
           ),
           SettingsSwitchListTile(
-            value: Config.isHistoryNavigationToolbarShown,
+            value: LocalDatabaseService.display.isHistoryNavigationToolbarShown,
             onChanged: setIsHistoryNavigationToolbarShown,
             titleString: S.of(context).isHistoryNavigationToolbarShown,
           ),
@@ -524,7 +540,7 @@ class _PersonalizationSettingsPageState
             onTap: setAnimationDuration,
           ),
           SettingsSwitchListTile(
-            value: Config.standardNotationEnabled,
+            value: LocalDatabaseService.display.standardNotationEnabled,
             onChanged: setStandardNotationEnabled,
             titleString: S.of(context).standardNotation,
           ),
@@ -536,80 +552,89 @@ class _PersonalizationSettingsPageState
         children: <Widget>[
           SettingsListTile(
             titleString: S.of(context).boardColor,
-            trailingColor: Config.boardBackgroundColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.boardBackgroundColor,
             onTap: () => showColorDialog(S.of(context).boardColor),
           ),
           SettingsListTile(
             titleString: S.of(context).backgroundColor,
-            trailingColor: Config.darkBackgroundColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.darkBackgroundColor,
             onTap: () => showColorDialog(S.of(context).backgroundColor),
           ),
           SettingsListTile(
             titleString: S.of(context).lineColor,
-            trailingColor: Config.boardLineColor,
+            trailingColor: LocalDatabaseService.colorSettings.boardLineColor,
             onTap: () => showColorDialog(S.of(context).lineColor),
           ),
           SettingsListTile(
             titleString: S.of(context).whitePieceColor,
-            trailingColor: Config.whitePieceColor,
+            trailingColor: LocalDatabaseService.colorSettings.whitePieceColor,
             onTap: () => showColorDialog(S.of(context).whitePieceColor),
           ),
           SettingsListTile(
             titleString: S.of(context).blackPieceColor,
-            trailingColor: Config.blackPieceColor,
+            trailingColor: LocalDatabaseService.colorSettings.blackPieceColor,
             onTap: () => showColorDialog(S.of(context).blackPieceColor),
           ),
           SettingsListTile(
             titleString: S.of(context).pieceHighlightColor,
-            trailingColor: Config.pieceHighlightColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.pieceHighlightColor,
             onTap: () => showColorDialog(S.of(context).pieceHighlightColor),
           ),
           SettingsListTile(
             titleString: S.of(context).messageColor,
-            trailingColor: Config.messageColor,
+            trailingColor: LocalDatabaseService.colorSettings.messageColor,
             onTap: () => showColorDialog(S.of(context).messageColor),
           ),
           SettingsListTile(
             titleString: S.of(context).drawerColor,
-            trailingColor: Config.drawerColor,
+            trailingColor: LocalDatabaseService.colorSettings.drawerColor,
             onTap: () => showColorDialog(S.of(context).drawerColor),
           ),
           SettingsListTile(
             titleString: S.of(context).drawerBackgroundColor,
-            trailingColor: Config.drawerBackgroundColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.drawerBackgroundColor,
             onTap: () => showColorDialog(S.of(context).drawerBackgroundColor),
           ),
           SettingsListTile(
             titleString: S.of(context).drawerTextColor,
-            trailingColor: Config.drawerTextColor,
+            trailingColor: LocalDatabaseService.colorSettings.drawerTextColor,
             onTap: () => showColorDialog(S.of(context).drawerTextColor),
           ),
           SettingsListTile(
             titleString: S.of(context).drawerHighlightItemColor,
-            trailingColor: Config.drawerHighlightItemColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.drawerHighlightItemColor,
             onTap: () =>
                 showColorDialog(S.of(context).drawerHighlightItemColor),
           ),
           SettingsListTile(
             titleString: S.of(context).mainToolbarBackgroundColor,
-            trailingColor: Config.mainToolbarBackgroundColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
             onTap: () =>
                 showColorDialog(S.of(context).mainToolbarBackgroundColor),
           ),
           SettingsListTile(
             titleString: S.of(context).mainToolbarIconColor,
-            trailingColor: Config.mainToolbarIconColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.mainToolbarIconColor,
             onTap: () => showColorDialog(S.of(context).mainToolbarIconColor),
           ),
           SettingsListTile(
             titleString: S.of(context).navigationToolbarBackgroundColor,
-            trailingColor: Config.navigationToolbarBackgroundColor,
+            trailingColor: LocalDatabaseService
+                .colorSettings.navigationToolbarBackgroundColor,
             onTap: () =>
                 showColorDialog(S.of(context).navigationToolbarBackgroundColor),
           ),
           SettingsListTile(
             titleString: S.of(context).navigationToolbarIconColor,
-            trailingColor: Config.navigationToolbarIconColor,
+            trailingColor:
+                LocalDatabaseService.colorSettings.navigationToolbarIconColor,
             onTap: () =>
                 showColorDialog(S.of(context).navigationToolbarIconColor),
           ),
@@ -621,28 +646,27 @@ class _PersonalizationSettingsPageState
   // Display
 
   Future<void> setIsPieceCountInHandShown(bool value) async {
-    setState(() => Config.isPieceCountInHandShown = value);
-
-    Config.save();
+    setState(
+      () => LocalDatabaseService.display.isPieceCountInHandShown = value,
+    );
   }
 
   Future<void> setIsNotationsShown(bool value) async {
-    setState(() => Config.isNotationsShown = value);
-
-    Config.save();
+    setState(() => LocalDatabaseService.display.isNotationsShown = value);
   }
 
   Future<void> setIsHistoryNavigationToolbarShown(bool value) async {
-    setState(() => Config.isHistoryNavigationToolbarShown = value);
-
-    Config.save();
+    setState(
+      () =>
+          LocalDatabaseService.display.isHistoryNavigationToolbarShown = value,
+    );
   }
 
   Future<void> setStandardNotationEnabled(bool value) async {
-    setState(() => Config.standardNotationEnabled = value);
+    setState(
+      () => LocalDatabaseService.display.standardNotationEnabled = value,
+    );
 
     debugPrint("[config] standardNotationEnabled: $value");
-
-    Config.save();
   }
 }

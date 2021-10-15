@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
@@ -57,11 +57,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           SettingsListTile(
             titleString: S.of(context).piecesCount,
             subtitleString: S.of(context).piecesCount_Detail,
-            trailingString: Config.piecesCount.toString(),
+            trailingString: LocalDatabaseService.rules.piecesCount.toString(),
             onTap: setNTotalPiecesEachSide,
           ),
           SettingsSwitchListTile(
-            value: Config.hasDiagonalLines,
+            value: LocalDatabaseService.rules.hasDiagonalLines,
             onChanged: setHasDiagonalLines,
             titleString: S.of(context).hasDiagonalLines,
             subtitleString: S.of(context).hasDiagonalLines_Detail,
@@ -69,17 +69,18 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           SettingsListTile(
             titleString: S.of(context).nMoveRule,
             subtitleString: S.of(context).nMoveRule_Detail,
-            trailingString: Config.nMoveRule.toString(),
+            trailingString: LocalDatabaseService.rules.nMoveRule.toString(),
             onTap: setNMoveRule,
           ),
           SettingsListTile(
             titleString: S.of(context).endgameNMoveRule,
             subtitleString: S.of(context).endgameNMoveRule_Detail,
-            trailingString: Config.endgameNMoveRule.toString(),
+            trailingString:
+                LocalDatabaseService.rules.endgameNMoveRule.toString(),
             onTap: setEndgameNMoveRule,
           ),
           SettingsSwitchListTile(
-            value: Config.threefoldRepetitionRule,
+            value: LocalDatabaseService.rules.threefoldRepetitionRule,
             onChanged: setThreefoldRepetitionRule,
             titleString: S.of(context).threefoldRepetitionRule,
             subtitleString: S.of(context).threefoldRepetitionRule_Detail,
@@ -91,20 +92,22 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       SettingsCard(
         children: <Widget>[
           SettingsSwitchListTile(
-            value: Config.hasBannedLocations,
+            value: LocalDatabaseService.rules.hasBannedLocations,
             onChanged: setHasBannedLocations,
             titleString: S.of(context).hasBannedLocations,
             subtitleString: S.of(context).hasBannedLocations_Detail,
           ),
           SettingsSwitchListTile(
-            value: Config.isWhiteLoseButNotDrawWhenBoardFull,
+            value:
+                LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull,
             onChanged: setIsWhiteLoseButNotDrawWhenBoardFull,
             titleString: S.of(context).isWhiteLoseButNotDrawWhenBoardFull,
             subtitleString:
                 S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
           ),
           SettingsSwitchListTile(
-            value: Config.mayOnlyRemoveUnplacedPieceInPlacingPhase,
+            value: LocalDatabaseService
+                .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase,
             onChanged: setMayOnlyRemoveUnplacedPieceInPlacingPhase,
             titleString: S.of(context).removeUnplacedPiece,
             subtitleString: S.of(context).removeUnplacedPiece_Detail,
@@ -115,22 +118,22 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         children: <Widget>[
-          if (Config.experimentsEnabled)
+          if (LocalDatabaseService.preferences.experimentsEnabled)
             SettingsSwitchListTile(
-              value: Config.mayMoveInPlacingPhase,
+              value: LocalDatabaseService.rules.mayMoveInPlacingPhase,
               onChanged: setMayMoveInPlacingPhase,
               titleString: S.of(context).mayMoveInPlacingPhase,
               subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
             )
           else
             SettingsSwitchListTile(
-              value: Config.isDefenderMoveFirst,
+              value: LocalDatabaseService.rules.isDefenderMoveFirst,
               onChanged: setIsDefenderMoveFirst,
               titleString: S.of(context).isDefenderMoveFirst,
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
           SettingsSwitchListTile(
-            value: Config.isLoseButNotChangeSideWhenNoWay,
+            value: LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay,
             onChanged: setIsLoseButNotChangeSideWhenNoWay,
             titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
             subtitleString:
@@ -143,7 +146,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       SettingsCard(
         children: <Widget>[
           SettingsSwitchListTile(
-            value: Config.mayFly,
+            value: LocalDatabaseService.rules.mayFly,
             onChanged: setAllowFlyingAllowed,
             titleString: S.of(context).mayFly,
             subtitleString: S.of(context).mayFly_Detail,
@@ -151,7 +154,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           SettingsListTile(
             titleString: S.of(context).flyPieceCount,
             subtitleString: S.of(context).flyPieceCount_Detail,
-            trailingString: Config.flyPieceCount.toString(),
+            trailingString: LocalDatabaseService.rules.flyPieceCount.toString(),
             onTap: setFlyPieceCount,
           ),
         ],
@@ -161,13 +164,13 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       SettingsCard(
         children: <Widget>[
           SettingsSwitchListTile(
-            value: Config.mayRemoveFromMillsAlways,
+            value: LocalDatabaseService.rules.mayRemoveFromMillsAlways,
             onChanged: setAllowRemovePieceInMill,
             titleString: S.of(context).mayRemoveFromMillsAlways,
             subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
           ),
           SettingsSwitchListTile(
-            value: Config.mayRemoveMultiple,
+            value: LocalDatabaseService.rules.mayRemoveMultiple,
             onChanged: setAllowRemoveMultiPiecesWhenCloseMultiMill,
             titleString: S.of(context).mayRemoveMultiple,
             subtitleString: S.of(context).mayRemoveMultiple_Detail,
@@ -186,13 +189,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Navigator.pop(context);
 
       setState(
-        () => rule.piecesCount = Config.piecesCount =
+        () => rule.piecesCount = LocalDatabaseService.rules.piecesCount =
             piecesCount ?? (specialCountryAndRegion == "Iran" ? 12 : 9),
       );
 
       debugPrint("[config] rule.piecesCount: ${rule.piecesCount}");
-
-      Config.save();
     }
 
     showModalBottomSheet(
@@ -205,28 +206,28 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('9'),
-              groupValue: Config.piecesCount,
+              groupValue: LocalDatabaseService.rules.piecesCount,
               value: 9,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('10'),
-              groupValue: Config.piecesCount,
+              groupValue: LocalDatabaseService.rules.piecesCount,
               value: 10,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('11'),
-              groupValue: Config.piecesCount,
+              groupValue: LocalDatabaseService.rules.piecesCount,
               value: 11,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('12'),
-              groupValue: Config.piecesCount,
+              groupValue: LocalDatabaseService.rules.piecesCount,
               value: 12,
               onChanged: callback,
             ),
@@ -242,11 +243,12 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
       Navigator.pop(context);
 
-      setState(() => rule.nMoveRule = Config.nMoveRule = nMoveRule ?? 100);
+      setState(
+        () => rule.nMoveRule =
+            LocalDatabaseService.rules.nMoveRule = nMoveRule ?? 100,
+      );
 
       debugPrint("[config] rule.nMoveRule: ${rule.nMoveRule}");
-
-      Config.save();
     }
 
     showModalBottomSheet(
@@ -259,35 +261,35 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('30'),
-              groupValue: Config.nMoveRule,
+              groupValue: LocalDatabaseService.rules.nMoveRule,
               value: 30,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('50'),
-              groupValue: Config.nMoveRule,
+              groupValue: LocalDatabaseService.rules.nMoveRule,
               value: 50,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('60'),
-              groupValue: Config.nMoveRule,
+              groupValue: LocalDatabaseService.rules.nMoveRule,
               value: 60,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('100'),
-              groupValue: Config.nMoveRule,
+              groupValue: LocalDatabaseService.rules.nMoveRule,
               value: 100,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('200'),
-              groupValue: Config.nMoveRule,
+              groupValue: LocalDatabaseService.rules.nMoveRule,
               value: 200,
               onChanged: callback,
             ),
@@ -304,13 +306,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Navigator.pop(context);
 
       setState(
-        () => rule.endgameNMoveRule =
-            Config.endgameNMoveRule = endgameNMoveRule ?? 100,
+        () => rule.endgameNMoveRule = LocalDatabaseService
+            .rules.endgameNMoveRule = endgameNMoveRule ?? 100,
       );
 
       debugPrint("[config] rule.endgameNMoveRule: ${rule.endgameNMoveRule}");
-
-      Config.save();
     }
 
     showModalBottomSheet(
@@ -323,56 +323,56 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('5'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 5,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('10'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 10,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('20'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 20,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('30'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 30,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('50'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 50,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('60'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 60,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('100'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 100,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('200'),
-              groupValue: Config.endgameNMoveRule,
+              groupValue: LocalDatabaseService.rules.endgameNMoveRule,
               value: 200,
               onChanged: callback,
             ),
@@ -389,12 +389,11 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       Navigator.pop(context);
 
       setState(
-        () => rule.flyPieceCount = Config.flyPieceCount = flyPieceCount ?? 3,
+        () => rule.flyPieceCount =
+            LocalDatabaseService.rules.flyPieceCount = flyPieceCount ?? 3,
       );
 
       debugPrint("[config] rule.flyPieceCount: ${rule.flyPieceCount}");
-
-      Config.save();
     }
 
     showModalBottomSheet(
@@ -407,14 +406,14 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('3'),
-              groupValue: Config.flyPieceCount,
+              groupValue: LocalDatabaseService.rules.flyPieceCount,
               value: 3,
               onChanged: callback,
             ),
             RadioListTile(
               activeColor: AppTheme.switchListTileActiveColor,
               title: const Text('4'),
-              groupValue: Config.flyPieceCount,
+              groupValue: LocalDatabaseService.rules.flyPieceCount,
               value: 4,
               onChanged: callback,
             ),
@@ -425,76 +424,69 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   }
 
   Future<void> setHasDiagonalLines(bool value) async {
-    setState(() => rule.hasDiagonalLines = Config.hasDiagonalLines = value);
+    setState(
+      () => rule.hasDiagonalLines =
+          LocalDatabaseService.rules.hasDiagonalLines = value,
+    );
 
     debugPrint("[config] rule.hasDiagonalLines: $value");
-
-    Config.save();
   }
 
   Future<void> setAllowFlyingAllowed(bool value) async {
-    setState(() => rule.mayFly = Config.mayFly = value);
+    setState(() => rule.mayFly = LocalDatabaseService.rules.mayFly = value);
 
     debugPrint("[config] rule.mayFly: $value");
-
-    Config.save();
   }
 
   Future<void> setThreefoldRepetitionRule(bool value) async {
     setState(
-      () =>
-          rule.threefoldRepetitionRule = Config.threefoldRepetitionRule = value,
+      () => rule.threefoldRepetitionRule =
+          LocalDatabaseService.rules.threefoldRepetitionRule = value,
     );
 
     debugPrint("[config] rule.threefoldRepetitionRule: $value");
-
-    Config.save();
   }
 
   // Placing
 
   Future<void> setHasBannedLocations(bool value) async {
-    setState(() => rule.hasBannedLocations = Config.hasBannedLocations = value);
+    setState(
+      () => rule.hasBannedLocations =
+          LocalDatabaseService.rules.hasBannedLocations = value,
+    );
 
     debugPrint("[config] rule.hasBannedLocations: $value");
-
-    Config.save();
   }
 
   Future<void> setIsWhiteLoseButNotDrawWhenBoardFull(bool value) async {
     setState(
       () => rule.isWhiteLoseButNotDrawWhenBoardFull =
-          Config.isWhiteLoseButNotDrawWhenBoardFull = value,
+          LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull = value,
     );
 
     debugPrint("[config] rule.isWhiteLoseButNotDrawWhenBoardFull: $value");
-
-    Config.save();
   }
 
   Future<void> setMayOnlyRemoveUnplacedPieceInPlacingPhase(bool value) async {
     setState(
-      () => rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
-          Config.mayOnlyRemoveUnplacedPieceInPlacingPhase = value,
+      () => rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = LocalDatabaseService
+          .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase = value,
     );
 
     debugPrint(
       "[config] rule.mayOnlyRemoveUnplacedPieceInPlacingPhase: $value",
     );
-
-    Config.save();
   }
 
   // Moving
 
   Future<void> setMayMoveInPlacingPhase(bool value) async {
     setState(
-      () => rule.mayMoveInPlacingPhase = Config.mayMoveInPlacingPhase = value,
+      () => rule.mayMoveInPlacingPhase =
+          LocalDatabaseService.rules.mayMoveInPlacingPhase = value,
     );
 
     debugPrint("[config] rule.mayMoveInPlacingPhase: $value");
-
-    Config.save();
 
     if (value) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -504,23 +496,20 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
 
   Future<void> setIsDefenderMoveFirst(bool value) async {
     setState(
-      () => rule.isDefenderMoveFirst = Config.isDefenderMoveFirst = value,
+      () => rule.isDefenderMoveFirst =
+          LocalDatabaseService.rules.isDefenderMoveFirst = value,
     );
 
     debugPrint("[config] rule.isDefenderMoveFirst: $value");
-
-    Config.save();
   }
 
   Future<void> setIsLoseButNotChangeSideWhenNoWay(bool value) async {
     setState(
       () => rule.isLoseButNotChangeSideWhenNoWay =
-          Config.isLoseButNotChangeSideWhenNoWay = value,
+          LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay = value,
     );
 
     debugPrint("[config] rule.isLoseButNotChangeSideWhenNoWay: $value");
-
-    Config.save();
   }
 
   // Removing
@@ -528,31 +517,29 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   Future<void> setAllowRemovePieceInMill(bool value) async {
     setState(
       () => rule.mayRemoveFromMillsAlways =
-          Config.mayRemoveFromMillsAlways = value,
+          LocalDatabaseService.rules.mayRemoveFromMillsAlways = value,
     );
 
     debugPrint("[config] rule.mayRemoveFromMillsAlways: $value");
-
-    Config.save();
   }
 
   Future<void> setAllowRemoveMultiPiecesWhenCloseMultiMill(bool value) async {
     setState(
-      () => rule.mayRemoveMultiple = Config.mayRemoveMultiple = value,
+      () => rule.mayRemoveMultiple =
+          LocalDatabaseService.rules.mayRemoveMultiple = value,
     );
 
     debugPrint("[config] rule.mayRemoveMultiple: $value");
-
-    Config.save();
   }
 
   // Unused
 
   Future<void> setNPiecesAtLeast(int value) async {
-    setState(() => rule.piecesAtLeastCount = Config.piecesAtLeastCount = value);
+    setState(
+      () => rule.piecesAtLeastCount =
+          LocalDatabaseService.rules.piecesAtLeastCount = value,
+    );
 
     debugPrint("[config] rule.piecesAtLeastCount: $value");
-
-    Config.save();
   }
 }

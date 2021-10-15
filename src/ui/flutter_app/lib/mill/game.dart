@@ -20,7 +20,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
@@ -90,8 +90,8 @@ class Game {
     switch (type) {
       case EngineType.humanVsAi:
       case EngineType.testViaLAN:
-        isAi[PieceColor.white] = Config.aiMovesFirst;
-        isAi[PieceColor.black] = !Config.aiMovesFirst;
+        isAi[PieceColor.white] = LocalDatabaseService.preferences.aiMovesFirst;
+        isAi[PieceColor.black] = !LocalDatabaseService.preferences.aiMovesFirst;
         break;
       case EngineType.humanVsHuman:
       case EngineType.humanVsLAN:

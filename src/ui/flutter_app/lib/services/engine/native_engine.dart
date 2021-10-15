@@ -23,7 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 class NativeEngine extends Engine {
   static const platform = MethodChannel('com.calcitem.sanmill/engine');
@@ -102,16 +102,16 @@ class NativeEngine extends Engine {
     int sleep = 100,
     int times = 0,
   }) async {
-    var timeLimit = Config.developerMode ? 100 : 6000;
+    var timeLimit = LocalDatabaseService.preferences.developerMode ? 100 : 6000;
 
-    if (Config.moveTime > 0) {
+    if (LocalDatabaseService.preferences.moveTime > 0) {
       // TODO: Accurate timeLimit
-      timeLimit = Config.moveTime * 10 * 64 + 10;
+      timeLimit = LocalDatabaseService.preferences.moveTime * 10 * 64 + 10;
     }
 
     if (times > timeLimit) {
       debugPrint("[engine] Timeout. sleep = $sleep, times = $times");
-      if (Config.developerMode && isActive) {
+      if (LocalDatabaseService.preferences.developerMode && isActive) {
         throw "Exception: waitResponse timeout.";
       }
       return '';
@@ -143,82 +143,77 @@ class NativeEngine extends Engine {
 
   @override
   Future<void> setOptions(BuildContext context) async {
-    if (Config.settingsLoaded == false) {
-      debugPrint("[engine] Settings is not loaded yet, now load settings...");
-      await Config.loadSettings();
-    }
-
     await send(
-      'setoption name DeveloperMode value ${Config.developerMode}',
+      'setoption name DeveloperMode value ${LocalDatabaseService.preferences.developerMode}',
     );
     await send(
-      'setoption name Algorithm value ${Config.algorithm}',
+      'setoption name Algorithm value ${LocalDatabaseService.preferences.algorithm}',
     );
     await send(
-      'setoption name DrawOnHumanExperience value ${Config.drawOnHumanExperience}',
+      'setoption name DrawOnHumanExperience value ${LocalDatabaseService.preferences.drawOnHumanExperience}',
     );
     await send(
-      'setoption name ConsiderMobility value ${Config.considerMobility}',
+      'setoption name ConsiderMobility value ${LocalDatabaseService.preferences.considerMobility}',
     );
     await send(
-      'setoption name SkillLevel value ${Config.skillLevel}',
+      'setoption name SkillLevel value ${LocalDatabaseService.preferences.skillLevel}',
     );
     await send(
-      'setoption name MoveTime value ${Config.moveTime}',
+      'setoption name MoveTime value ${LocalDatabaseService.preferences.moveTime}',
     );
     await send(
-      'setoption name AiIsLazy value ${Config.aiIsLazy}',
+      'setoption name AiIsLazy value ${LocalDatabaseService.preferences.aiIsLazy}',
     );
     await send(
-      'setoption name Shuffling value ${Config.shufflingEnabled}',
+      'setoption name Shuffling value ${LocalDatabaseService.preferences.shufflingEnabled}',
     );
     await send(
-      'setoption name PiecesCount value ${Config.piecesCount}',
+      'setoption name PiecesCount value ${LocalDatabaseService.rules.piecesCount}',
     );
     await send(
-      'setoption name FlyPieceCount value ${Config.flyPieceCount}',
+      'setoption name FlyPieceCount value ${LocalDatabaseService.rules.flyPieceCount}',
     );
     await send(
-      'setoption name PiecesAtLeastCount value ${Config.piecesAtLeastCount}',
+      'setoption name PiecesAtLeastCount value ${LocalDatabaseService.rules.piecesAtLeastCount}',
     );
     await send(
-      'setoption name HasDiagonalLines value ${Config.hasDiagonalLines}',
+      'setoption name HasDiagonalLines value ${LocalDatabaseService.rules.hasDiagonalLines}',
     );
     await send(
-      'setoption name HasBannedLocations value ${Config.hasBannedLocations}',
+      'setoption name HasBannedLocations value ${LocalDatabaseService.rules.hasBannedLocations}',
     );
     await send(
-      'setoption name MayMoveInPlacingPhase value ${Config.mayMoveInPlacingPhase}',
+      'setoption name MayMoveInPlacingPhase value ${LocalDatabaseService.rules.mayMoveInPlacingPhase}',
     );
     await send(
-      'setoption name IsDefenderMoveFirst value ${Config.isDefenderMoveFirst}',
+      'setoption name IsDefenderMoveFirst value ${LocalDatabaseService.rules.isDefenderMoveFirst}',
     );
     await send(
-      'setoption name MayRemoveMultiple value ${Config.mayRemoveMultiple}',
+      'setoption name MayRemoveMultiple value ${LocalDatabaseService.rules.mayRemoveMultiple}',
     );
     await send(
-      'setoption name MayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}',
+      'setoption name MayRemoveFromMillsAlways value ${LocalDatabaseService.rules.mayRemoveFromMillsAlways}',
     );
     await send(
-      'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${Config.mayOnlyRemoveUnplacedPieceInPlacingPhase}',
+      'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${LocalDatabaseService.rules.mayOnlyRemoveUnplacedPieceInPlacingPhase}',
     );
     await send(
-      'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${Config.isWhiteLoseButNotDrawWhenBoardFull}',
+      'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull}',
     );
     await send(
-      'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}',
+      'setoption name IsLoseButNotChangeSideWhenNoWay value ${LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay}',
     );
     await send(
-      'setoption name MayFly value ${Config.mayFly}',
+      'setoption name MayFly value ${LocalDatabaseService.rules.mayFly}',
     );
     await send(
-      'setoption name NMoveRule value ${Config.nMoveRule}',
+      'setoption name NMoveRule value ${LocalDatabaseService.rules.nMoveRule}',
     );
     await send(
-      'setoption name EndgameNMoveRule value ${Config.endgameNMoveRule}',
+      'setoption name EndgameNMoveRule value ${LocalDatabaseService.rules.endgameNMoveRule}',
     );
     await send(
-      'setoption name ThreefoldRepetitionRule value ${Config.threefoldRepetitionRule}',
+      'setoption name ThreefoldRepetitionRule value ${LocalDatabaseService.rules.threefoldRepetitionRule}',
     );
   }
 

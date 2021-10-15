@@ -19,9 +19,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -497,11 +497,11 @@ class Resources {
   Resources();
 
   String get languageCode {
-    if (Config.languageCode == Constants.defaultLanguageCodeName) {
+    if (LocalDatabaseService.display.languageCode == Constants.defaultLocale) {
       return Platform.localeName.substring(0, 2);
     }
 
-    return Config.languageCode;
+    return LocalDatabaseService.display.languageCode.languageCode;
   }
 
   Strings get strings {
@@ -520,24 +520,26 @@ class Resources {
 }
 
 Future<void> setLanguage(
-    BuildContext context, Function(String?)? callback) async {
+  BuildContext context,
+  Function(Locale?)? callback,
+) async {
   final languageColumn = Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      RadioListTile(
+      RadioListTile<Locale>(
         activeColor: AppTheme.switchListTileActiveColor,
         title: Text(S.of(context).defaultLanguage),
-        groupValue: Config.languageCode,
-        value: Constants.defaultLanguageCodeName,
+        groupValue: LocalDatabaseService.display.languageCode,
+        value: Constants.defaultLocale,
         onChanged: callback,
       ),
       const ListItemDivider(),
       for (var i in languageCodeToStrings.keys)
-        RadioListTile(
+        RadioListTile<Locale>(
           activeColor: AppTheme.switchListTileActiveColor,
           title: Text(languageCodeToStrings[i]!.languageName),
-          groupValue: Config.languageCode,
-          value: i,
+          groupValue: LocalDatabaseService.display.languageCode,
+          value: Locale(i),
           onChanged: callback,
         ),
     ],

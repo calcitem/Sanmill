@@ -59,7 +59,7 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color(Config.drawerBackgroundColor),
+      color: LocalDatabaseService.colorSettings.drawerBackgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -108,7 +108,7 @@ class HomeDrawer extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.75 - 64,
         height: 46,
         decoration: BoxDecoration(
-          color: Color(Config.drawerHighlightItemColor),
+          color: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(ltr ? 0 : radius),
             topRight: Radius.circular(ltr ? radius : 0),
@@ -122,8 +122,9 @@ class HomeDrawer extends StatelessWidget {
     final listItemIcon = Icon(
       listItem.icon.icon,
       color: isSelected
-          ? Color(Config.drawerTextColor) // TODO: drawerHighlightTextColor
-          : Color(Config.drawerTextColor),
+          ? LocalDatabaseService
+              .colorSettings.drawerTextColor // TODO: drawerHighlightTextColor
+          : LocalDatabaseService.colorSettings.drawerTextColor,
     );
 
     final child = Row(
@@ -140,12 +141,11 @@ class HomeDrawer extends StatelessWidget {
           listItem.title,
           style: TextStyle(
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            fontSize: Config.fontSize,
+            fontSize: LocalDatabaseService.display.fontSize,
             color: isSelected
-                ? Color(
-                    Config.drawerTextColor,
-                  ) // TODO: drawerHighlightTextColor
-                : Color(Config.drawerTextColor),
+                ? LocalDatabaseService.colorSettings.drawerTextColor
+                // TODO: drawerHighlightTextColor
+                : LocalDatabaseService.colorSettings.drawerTextColor,
           ),
         ),
       ],
@@ -183,14 +183,14 @@ class _DrawerHeader extends StatelessWidget {
     const String tag = "[home_drawer]";
 
     final List<Color> animatedTextsColors = [
-      Color(Config.drawerTextColor),
+      LocalDatabaseService.colorSettings.drawerTextColor,
       Colors.black,
       Colors.blue,
       Colors.yellow,
       Colors.red,
-      Color(Config.darkBackgroundColor),
-      Color(Config.boardBackgroundColor),
-      Color(Config.drawerHighlightItemColor),
+      LocalDatabaseService.colorSettings.darkBackgroundColor,
+      LocalDatabaseService.colorSettings.boardBackgroundColor,
+      LocalDatabaseService.colorSettings.drawerHighlightItemColor,
     ];
 
     final rotationTransition = RotationTransition(
@@ -225,7 +225,7 @@ class _DrawerHeader extends StatelessWidget {
           ColorizeAnimatedText(
             S.of(context).appName,
             textStyle: TextStyle(
-              fontSize: Config.fontSize + 16,
+              fontSize: LocalDatabaseService.display.fontSize + 16,
               fontWeight: FontWeight.w600,
             ),
             colors: animatedTextsColors,
