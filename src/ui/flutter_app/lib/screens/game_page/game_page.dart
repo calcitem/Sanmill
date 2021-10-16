@@ -30,7 +30,7 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/screens/game_settings_page.dart';
+import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
@@ -1186,9 +1186,8 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> setPrivacyPolicyAccepted(bool value) async {
-    setState(
-      () => LocalDatabaseService.preferences.isPrivacyPolicyAccepted = value,
-    );
+    LocalDatabaseService.preferences = LocalDatabaseService.preferences
+        .copyWith(isPrivacyPolicyAccepted: value);
 
     debugPrint("[config] isPrivacyPolicyAccepted: $value");
   }
@@ -1341,7 +1340,9 @@ class _GamePageState extends State<GamePage>
                 ),
                 onPressed: () async {
                   if (!isTopLevel) {
-                    LocalDatabaseService.preferences.skillLevel++;
+                    final _pref = LocalDatabaseService.preferences;
+                    LocalDatabaseService.preferences =
+                        _pref.copyWith(skillLevel: _pref.skillLevel + 1);
                   }
                   await _engine.setOptions(context);
                   debugPrint(

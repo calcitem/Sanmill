@@ -22,90 +22,93 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/models/color.dart';
+import 'package:sanmill/models/display.dart';
+import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 
 @Deprecated('use [LocalDatabaseService] instead')
-class Settings {
-  static final settingsFileName = Constants.settingsFilename;
-  static Settings? _instance;
+class Settings {}
 
-  late File _file;
-  Map<String, dynamic>? _values = {};
+class DatabaseV1 {
+  const DatabaseV1._();
 
-  // TODO: add constructor
-  static Future<Settings> instance() async {
-    if (_instance == null) {
-      _instance = Settings();
-      await _instance!._load(settingsFileName);
-      debugPrint("[settings] $settingsFileName loaded.");
-    }
+  static const _tag = "[Database Migration]";
 
-    return _instance!;
-  }
-
-  dynamic operator [](String key) => _values![key];
-
-  void operator []=(String key, dynamic value) => _values![key] = value;
-
-  /// migrates the deprecated [Settings] to the new [LocalDatabaseService]
-  Future<void> migrate() async {}
-
-  Future<bool> _load(String fileName) async {
-    // TODO: main() ExternalStorage
-    // var docDir = await getExternalStorageDirectory();
+  static Future<File> _getFile() async {
+    final fileName = Constants.settingsFilename;
     final docDir = await getApplicationDocumentsDirectory();
 
-    _file = File('${docDir.path}/$fileName');
+    return File('${docDir.path}/$fileName');
+  }
 
-    debugPrint("[settings] Loading $_file ...");
+  /// loads the preferences from the old datastore
+  static Future<Map<String, dynamic>?> _loadFile(File _file) async {
+    debugPrint("$_tag Loading $_file ...");
 
     try {
       final contents = await _file.readAsString();
-      _values = jsonDecode(contents) as Map<String, dynamic>?;
+      final _values = jsonDecode(contents) as Map<String, dynamic>?;
       debugPrint(_values.toString());
+      return _values;
     } catch (e) {
       debugPrint(e.toString());
-      return false;
     }
-
-    return true;
   }
 
-  Future<void> restore() async {
-    debugPrint("[settings] Restoring Settings...");
+  /// migrates the deprecated Settings to the new [LocalDatabaseService]
+  static Future<void> migrateDB() async {
+    final _pref = LocalDatabaseService.preferences;
+    if (!_pref.usesHiveDB) {
+      final _file = await _getFile();
+      final _json = await _loadFile(_file);
+      if (_json != null) {
+        LocalDatabaseService.colorSettings = ColorSettings.fromJson(_json);
+        LocalDatabaseService.display = Display.fromJson(_json);
+        LocalDatabaseService.preferences = Preferences.fromJson(_json);
+        LocalDatabaseService.rules = Rules.fromJson(_json);
+      }
+      await _deleteFile(_file);
+      LocalDatabaseService.preferences = _pref.copyWith(usesHiveDB: true);
+    }
+  }
 
-    if (_file.existsSync()) {
-      _file.deleteSync();
-      debugPrint("[settings] $_file deleted");
+  /// deletes the old settings file
+  static Future<void> _deleteFile(File _file) async {
+    debugPrint("$_tag deleting Settings...");
+
+    if (await _file.exists()) {
+      await _file.delete();
+      debugPrint("$_tag $_file deleted");
     } else {
-      debugPrint("[settings] $_file does not exist");
+      debugPrint("$_tag $_file does not exist");
     }
   }
 
-  void initRules() {
+  /// initializes the [Rules] object with the contents of [LocalDatabaseService.rules]
+  static void initRules() {
+    final _rules = LocalDatabaseService.rules;
     // Rules
-    rule.piecesCount = LocalDatabaseService.rules.piecesCount;
-    rule.flyPieceCount = LocalDatabaseService.rules.flyPieceCount;
-    rule.piecesAtLeastCount = LocalDatabaseService.rules.piecesAtLeastCount;
-    rule.hasDiagonalLines = LocalDatabaseService.rules.hasDiagonalLines;
-    rule.hasBannedLocations = LocalDatabaseService.rules.hasBannedLocations;
-    rule.mayMoveInPlacingPhase =
-        LocalDatabaseService.rules.mayMoveInPlacingPhase;
-    rule.isDefenderMoveFirst = LocalDatabaseService.rules.isDefenderMoveFirst;
-    rule.mayRemoveMultiple = LocalDatabaseService.rules.mayRemoveMultiple;
-    rule.mayRemoveFromMillsAlways =
-        LocalDatabaseService.rules.mayRemoveFromMillsAlways;
+    rule.piecesCount = _rules.piecesCount;
+    rule.flyPieceCount = _rules.flyPieceCount;
+    rule.piecesAtLeastCount = _rules.piecesAtLeastCount;
+    rule.hasDiagonalLines = _rules.hasDiagonalLines;
+    rule.hasBannedLocations = _rules.hasBannedLocations;
+    rule.mayMoveInPlacingPhase = _rules.mayMoveInPlacingPhase;
+    rule.isDefenderMoveFirst = _rules.isDefenderMoveFirst;
+    rule.mayRemoveMultiple = _rules.mayRemoveMultiple;
+    rule.mayRemoveFromMillsAlways = _rules.mayRemoveFromMillsAlways;
     rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
-        LocalDatabaseService.rules.mayOnlyRemoveUnplacedPieceInPlacingPhase;
+        _rules.mayOnlyRemoveUnplacedPieceInPlacingPhase;
     rule.isWhiteLoseButNotDrawWhenBoardFull =
-        LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull;
+        _rules.isWhiteLoseButNotDrawWhenBoardFull;
     rule.isLoseButNotChangeSideWhenNoWay =
-        LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay;
-    rule.mayFly = LocalDatabaseService.rules.mayFly;
-    rule.nMoveRule = LocalDatabaseService.rules.nMoveRule;
-    rule.endgameNMoveRule = LocalDatabaseService.rules.endgameNMoveRule;
-    rule.threefoldRepetitionRule =
-        LocalDatabaseService.rules.threefoldRepetitionRule;
+        _rules.isLoseButNotChangeSideWhenNoWay;
+    rule.mayFly = _rules.mayFly;
+    rule.nMoveRule = _rules.nMoveRule;
+    rule.endgameNMoveRule = _rules.endgameNMoveRule;
+    rule.threefoldRepetitionRule = _rules.threefoldRepetitionRule;
   }
 }

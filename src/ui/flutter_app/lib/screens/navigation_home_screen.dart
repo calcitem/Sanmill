@@ -31,10 +31,10 @@ import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
-import 'package:sanmill/screens/game_settings_page.dart';
+import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/screens/help_screen.dart';
-import 'package:sanmill/screens/personalization_settings_page.dart';
-import 'package:sanmill/screens/rule_settings_page.dart';
+import 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
@@ -98,7 +98,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       } else if (drawerIndex == DrawerIndex.preferences) {
         screenView = GameSettingsPage();
       } else if (drawerIndex == DrawerIndex.ruleSettings) {
-        screenView = RuleSettingsPage();
+        screenView = const RuleSettingsPage();
       } else if (drawerIndex == DrawerIndex.personalization) {
         screenView = PersonalizationSettingsPage();
       } else if (drawerIndex == DrawerIndex.feedback &&
