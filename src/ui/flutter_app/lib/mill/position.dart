@@ -672,7 +672,7 @@ class Position {
     pieceToRemoveCount--;
     updateKeyMisc();
 
-    if (pieceToRemoveCount > 0) {
+    if (pieceToRemoveCount != 0) {
       return 0;
     }
 
