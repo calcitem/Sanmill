@@ -71,9 +71,9 @@ Future<int> showPickerNumber(
     ),
     onConfirm: (Picker picker, List value) async {
       debugPrint(value.toString());
-      final selectValues = picker.getSelectedValues();
+      final List selectValues = picker.getSelectedValues();
       debugPrint(selectValues.toString());
-      selectValue = selectValues[0];
+      selectValue = selectValues[0] as int;
     },
   ).showDialog(context);
 
