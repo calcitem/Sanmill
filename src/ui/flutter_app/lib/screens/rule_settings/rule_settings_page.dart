@@ -193,12 +193,7 @@ class RuleSettingsPage extends StatelessWidget {
     debugPrint("[config] mayRemoveMultiple: $value");
   }
 
-  // Unused
-  void _setNPiecesAtLeast(Rules _rules, int value) {
-    LocalDatabaseService.rules = _rules.copyWith(piecesAtLeastCount: value);
 
-    debugPrint("[config] piecesAtLeastCount: $value");
-  }
 
   Widget _buildRules(BuildContext context, Box<Rules> rulesBox, _) {
     final Rules _rules = rulesBox.get(
