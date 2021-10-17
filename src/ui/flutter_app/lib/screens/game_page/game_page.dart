@@ -43,7 +43,7 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 //import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-part 'package:sanmill/screens/game_page/game_page_tool_bar.dart';
+part 'package:sanmill/screens/game_page/game_page_toolbar.dart';
 part 'package:sanmill/screens/game_page/board.dart';
 part 'package:sanmill/shared/painters/board_painter.dart';
 part 'package:sanmill/shared/painters/pieces_painter.dart';
