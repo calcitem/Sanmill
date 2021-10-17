@@ -16,28 +16,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
-import 'package:sanmill/mill/position.dart';
+/// Temporary data model
+///
+/// holds temporary runtime data that isn't yet or shouldn't be saved to the LocalDatabase
+class Temp {
+  const Temp._();
 
-enum EngineType {
-  humanVsAi,
-  humanVsHuman,
-  aiVsAi,
-  humanVsCloud, // Not Implemented
-  humanVsLAN, // Not Implemented
-  testViaLAN, // Not Implemented
-  none
-}
-
-class EngineResponse {
-  final String type;
-  final dynamic value;
-  EngineResponse(this.type, {this.value});
-}
-
-abstract class Engine {
-  Future<void> setOptions() async {}
-  Future<void> startup() async {}
-  Future<void> shutdown() async {}
-  Future<EngineResponse> search(Position? position);
+  /// represents a temporary value for Preferences.developerMode
+  static bool developerMode = false;
 }

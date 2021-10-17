@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Locale, immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/storage/adapters/locale_adapter.dart';
@@ -29,6 +29,7 @@ part 'display.g.dart';
 /// holds the data needed for the Display Settings
 @HiveType(typeId: 1)
 @JsonSerializable()
+@immutable
 class Display {
   Display({
     this.languageCode = Constants.defaultLocale,
@@ -54,43 +55,78 @@ class Display {
     fromJson: LocaleAdapter.colorFromJson,
     toJson: LocaleAdapter.colorToJson,
   )
-  Locale languageCode;
+  final Locale languageCode;
 
   @HiveField(1)
-  bool standardNotationEnabled;
+  final bool standardNotationEnabled;
 
   @HiveField(2)
-  bool isPieceCountInHandShown;
+  final bool isPieceCountInHandShown;
 
   @HiveField(3)
-  bool isNotationsShown;
+  final bool isNotationsShown;
 
   @HiveField(4)
-  bool isHistoryNavigationToolbarShown;
+  final bool isHistoryNavigationToolbarShown;
 
   @HiveField(5)
-  double boardBorderLineWidth;
+  final double boardBorderLineWidth;
 
   @HiveField(6)
-  double boardInnerLineWidth;
+  final double boardInnerLineWidth;
 
   @HiveField(7)
-  int pointStyle;
+  final int pointStyle;
 
   @HiveField(8)
-  double pointWidth;
+  final double pointWidth;
 
   @HiveField(9)
-  double pieceWidth;
+  final double pieceWidth;
 
   @HiveField(10)
-  double fontSize;
+  final double fontSize;
 
   @HiveField(11)
-  late double boardTop;
+  late final double boardTop;
 
   @HiveField(12)
-  double animationDuration;
+  final double animationDuration;
+
+  /// returns a modified copy of the [Display] object
+  Display copyWith({
+    Locale? languageCode,
+    bool? standardNotationEnabled,
+    bool? isPieceCountInHandShown,
+    bool? isNotationsShown,
+    bool? isHistoryNavigationToolbarShown,
+    double? boardBorderLineWidth,
+    double? boardInnerLineWidth,
+    int? pointStyle,
+    double? pointWidth,
+    double? pieceWidth,
+    double? fontSize,
+    double? boardTop,
+    double? animationDuration,
+  }) =>
+      Display(
+        languageCode: languageCode ?? this.languageCode,
+        standardNotationEnabled:
+            standardNotationEnabled ?? this.standardNotationEnabled,
+        isPieceCountInHandShown:
+            isPieceCountInHandShown ?? this.isPieceCountInHandShown,
+        isNotationsShown: isNotationsShown ?? this.isNotationsShown,
+        isHistoryNavigationToolbarShown: isHistoryNavigationToolbarShown ??
+            this.isHistoryNavigationToolbarShown,
+        boardBorderLineWidth: boardBorderLineWidth ?? this.boardBorderLineWidth,
+        boardInnerLineWidth: boardInnerLineWidth ?? this.boardInnerLineWidth,
+        pointStyle: pointStyle ?? this.pointStyle,
+        pointWidth: pointWidth ?? this.pointWidth,
+        pieceWidth: pieceWidth ?? this.pieceWidth,
+        fontSize: fontSize ?? this.fontSize,
+        boardTop: boardTop ?? this.boardTop,
+        animationDuration: animationDuration ?? this.animationDuration,
+      );
 
   /// encodes a Json style map into a [Display] obbject
   factory Display.fromJson(Map<String, dynamic> json) =>
