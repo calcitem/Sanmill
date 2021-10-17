@@ -22,7 +22,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/models/display.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/models/temporary.dart';
 import 'package:sanmill/screens/env_page.dart';
@@ -111,39 +110,11 @@ class GameSettingsPage extends StatelessWidget {
     debugPrint("$_tag isAutoRestart: $value");
   }
 
-  void _setIsAutoChangeFirstMove(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(isAutoChangeFirstMove: value);
-
-    debugPrint("$_tag isAutoChangeFirstMove: $value");
-  }
-
-  void _setResignIfMostLose(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(resignIfMostLose: value);
-
-    debugPrint("$_tag resignIfMostLose: $value");
-  }
-
   void _setShufflingEnabled(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(shufflingEnabled: value);
 
     debugPrint("$_tag shufflingEnabled: $value");
-  }
-
-  void _setLearnEndgame(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(learnEndgame: value);
-
-    debugPrint("$_tag learnEndgame: $value");
-  }
-
-  void _setOpeningBook(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(openingBook: value);
-
-    debugPrint("$_tag openingBook: $value");
   }
 
   void _setTone(Preferences _preferences, bool value) {
@@ -179,40 +150,6 @@ class GameSettingsPage extends StatelessWidget {
         _preferences.copyWith(experimentsEnabled: value);
 
     debugPrint("$_tag experimentsEnabled: $value");
-  }
-
-  // Display
-  void _setLanguage(Display _display, Locale value) {
-    LocalDatabaseService.display = _display.copyWith(languageCode: value);
-
-    debugPrint("$_tag languageCode: $value");
-  }
-
-  void _setIsPieceCountInHandShown(Display _display, bool value) {
-    LocalDatabaseService.display =
-        _display.copyWith(isPieceCountInHandShown: value);
-
-    debugPrint("$_tag isPieceCountInHandShown: $value");
-  }
-
-  void _setIsNotationsShown(Display _display, bool value) {
-    LocalDatabaseService.display = _display.copyWith(isNotationsShown: value);
-
-    debugPrint("$_tag isNotationsShown: $value");
-  }
-
-  void _setIsHistoryNavigationToolbarShown(Display _display, bool value) {
-    LocalDatabaseService.display =
-        _display.copyWith(isHistoryNavigationToolbarShown: value);
-
-    debugPrint("$_tag isHistoryNavigationToolbarShown: $value");
-  }
-
-  void _setStandardNotationEnabled(Display _display, bool value) {
-    LocalDatabaseService.display =
-        _display.copyWith(standardNotationEnabled: value);
-
-    debugPrint("$_tag standardNotationEnabled: $value");
   }
 
   Column _buildPrefs(BuildContext context, Box<Preferences> prefBox, _) {
