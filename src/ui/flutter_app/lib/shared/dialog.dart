@@ -54,12 +54,7 @@ void showCountdownDialog(
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         debugPrint("Count down: ${snapshot.data}");
 
-        if (snapshot.data == 0) {
-          fun();
-          if (Platform.isAndroid) {
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          } else {}
-        }
+        if (snapshot.data == 0) fun();
 
         return SizedBox(
           height: 128,
@@ -71,9 +66,7 @@ void showCountdownDialog(
               ),
               const SizedBox(height: 20),
               InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
+                onTap: () => Navigator.pop(context),
                 child: Center(
                   child: Text(
                     S.of(ctx).cancel,

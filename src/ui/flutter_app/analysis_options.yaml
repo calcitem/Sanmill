@@ -13,4 +13,3 @@ analyzer:
     # generated code
     - lib/generated/**
     - lib/**/**.g.dart
-    - lib/l10n/**

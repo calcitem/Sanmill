@@ -22,6 +22,8 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/shared/constants.dart';
 
 class EnvironmentVariablesPage extends StatelessWidget {
+  const EnvironmentVariablesPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(

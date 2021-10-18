@@ -16,7 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/widgets.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:flutter/widgets.dart' show Color, immutable;
 import 'package:hive_flutter/adapters.dart'
     show HiveField, HiveType, BinaryReader, BinaryWriter, TypeAdapter;
 import 'package:json_annotation/json_annotation.dart';
@@ -25,11 +26,15 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'color.g.dart';
 
+// TODO: make AppTheme colors const so this file can be cleaner
+
 /// Color data model
 ///
 /// holds the data needed for the Color Settings
 @HiveType(typeId: 0)
 @JsonSerializable()
+@CopyWith()
+@immutable
 class ColorSettings {
   ColorSettings({
     Color? boardLineColor,
@@ -67,7 +72,7 @@ class ColorSettings {
     this.mainToolbarBackgroundColor =
         mainToolbarBackgroundColor ?? AppTheme.mainToolbarBackgroundColor;
     this.mainToolbarIconColor =
-        mainToolbarIconColor ?? AppTheme.mainToolbarBackgroundColor;
+        mainToolbarIconColor ?? AppTheme.mainToolbarIconColor;
     this.navigationToolbarBackgroundColor = navigationToolbarBackgroundColor ??
         AppTheme.navigationToolbarBackgroundColor;
     this.navigationToolbarIconColor =
@@ -78,105 +83,105 @@ class ColorSettings {
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(0)
-  late Color boardLineColor;
+  late final Color boardLineColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(1)
-  late Color darkBackgroundColor;
+  late final Color darkBackgroundColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(2)
-  late Color boardBackgroundColor;
+  late final Color boardBackgroundColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(3)
-  late Color whitePieceColor;
+  late final Color whitePieceColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(4)
-  late Color blackPieceColor;
+  late final Color blackPieceColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(5)
-  late Color pieceHighlightColor;
+  late final Color pieceHighlightColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(6)
-  late Color messageColor;
+  late final Color messageColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(7)
-  late Color drawerColor;
+  late final Color drawerColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(8)
-  late Color drawerBackgroundColor;
+  late final Color drawerBackgroundColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(9)
-  late Color drawerTextColor;
+  late final Color drawerTextColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(10)
-  late Color drawerHighlightItemColor;
+  late final Color drawerHighlightItemColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(11)
-  late Color mainToolbarBackgroundColor;
+  late final Color mainToolbarBackgroundColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(12)
-  late Color mainToolbarIconColor;
+  late final Color mainToolbarIconColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(13)
-  late Color navigationToolbarBackgroundColor;
+  late final Color navigationToolbarBackgroundColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
   @HiveField(14)
-  late Color navigationToolbarIconColor;
+  late final Color navigationToolbarIconColor;
 
   /// encodes a Json style map Coloro a [ColorSettings] obbject
   factory ColorSettings.fromJson(Map<String, dynamic> json) =>

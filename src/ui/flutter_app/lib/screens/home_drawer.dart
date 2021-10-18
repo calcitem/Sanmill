@@ -178,10 +178,16 @@ class _DrawerHeader extends StatelessWidget {
 
   final AnimationController iconAnimationController;
 
+  static const String _tag = "[home_drawer]";
+
+  void _enableDeveloperMode() {
+    Temp.developerMode = true;
+
+    debugPrint("$_tag Developer mode enabled.");
+  }
+
   @override
   Widget build(BuildContext context) {
-    const String tag = "[home_drawer]";
-
     final List<Color> animatedTextsColors = [
       LocalDatabaseService.colorSettings.drawerTextColor,
       Colors.black,
@@ -220,6 +226,7 @@ class _DrawerHeader extends StatelessWidget {
     );
 
     final animation = GestureDetector(
+      onDoubleTap: _enableDeveloperMode,
       child: AnimatedTextKit(
         animatedTexts: [
           ColorizeAnimatedText(
@@ -235,12 +242,8 @@ class _DrawerHeader extends StatelessWidget {
         pause: const Duration(seconds: 3),
         repeatForever: true,
         stopPauseOnTap: true,
-        onTap: () => debugPrint("$tag DoubleTap to enable developer mode."),
+        onTap: () => debugPrint("$_tag DoubleTap to enable developer mode."),
       ),
-      onDoubleTap: () {
-        Developer.developerModeEnabled = true;
-        debugPrint("$tag Developer mode enabled.");
-      },
     );
 
     return Padding(

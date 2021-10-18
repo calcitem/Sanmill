@@ -13,6 +13,7 @@ import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/adapters/color_adapter.dart';
 import 'package:sanmill/services/storage/adapters/locale_adapter.dart';
+import 'package:sanmill/services/storage/storage_v1.dart';
 
 /// Helpers to handle local data storage
 class LocalDatabaseService {
@@ -22,7 +23,7 @@ class LocalDatabaseService {
   static late Box<ColorSettings> _colorSettingsBox;
 
   /// key at wich the [ColorSettings] will be saved in the [_colorSettingsBox]
-  static const String _colorSettingsKey = 'settings';
+  static const String colorSettingsKey = 'settings';
 
   /// key at wich the [_colorSettingsBox] will be saved
   static const String _colorSettingsBoxName = 'colors';
@@ -31,7 +32,7 @@ class LocalDatabaseService {
   static late Box<Display> _displayBox;
 
   /// key at wich the [Display] will be saved in the [_displayBox]
-  static const String _displayKey = 'settings';
+  static const String displayKey = 'settings';
 
   /// key at wich the [_displayBox] will be saved
   static const String _displayBoxName = 'display';
@@ -40,7 +41,7 @@ class LocalDatabaseService {
   static late Box<Preferences> _preferencesBox;
 
   /// key at wich the [Preferences] will be saved in the [_preferencesBox]
-  static const String _preferencesKey = 'settings';
+  static const String preferencesKey = 'settings';
 
   /// key at wich the [_preferencesBox] will be saved
   static const String _preferencesBoxName = 'preferences';
@@ -49,7 +50,7 @@ class LocalDatabaseService {
   static late Box<Rules> _rulesBox;
 
   /// key at wich the [Rules] will be saved in the [_rulesBox]
-  static const String _rulesKey = 'settings';
+  static const String rulesKey = 'settings';
 
   /// key at wich the [_rulesBox] will be saved
   static const String _rulesBoxName = 'rules';
@@ -61,63 +62,71 @@ class LocalDatabaseService {
     await _initDisplay();
     await _initPreferences();
     await _initRules();
+    DatabaseV1.initRules();
+  }
+
+  /// resets the storage
+  static Future<void> resetStorage() async {
+    await _colorSettingsBox.delete(colorSettingsKey);
+    await _displayBox.delete(displayKey);
+    await _preferencesBox.delete(preferencesKey);
+    await _rulesBox.delete(rulesKey);
   }
 
   /// initilizes the [ColorSettings] reference
   static Future<void> _initColorSettings() async {
-    Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
     Hive.registerAdapter<Color>(ColorAdapter());
+    Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
     _colorSettingsBox =
         await Hive.openBox<ColorSettings>(_colorSettingsBoxName);
   }
 
   /// listens to changes inside the settings Box
   static ValueListenable<Box<ColorSettings>> get listenColorSettings =>
-      _colorSettingsBox.listenable(keys: [_colorSettingsKey]);
+      _colorSettingsBox.listenable(keys: [colorSettingsKey]);
 
-  /// saves the given [settings] to the settings Box
-  static set colorSettings(ColorSettings settings) =>
-      _colorSettingsBox.put(_colorSettingsKey, settings);
+  /// saves the given [colors] to the settings Box
+  static set colorSettings(ColorSettings colors) =>
+      _colorSettingsBox.put(colorSettingsKey, colors);
 
   /// gets the given [ColorSettings] from the settings Box
   static ColorSettings get colorSettings =>
-      _colorSettingsBox.get(_colorSettingsKey) ?? ColorSettings();
+      _colorSettingsBox.get(colorSettingsKey) ?? ColorSettings();
 
   /// initilizes the [Display] reference
   static Future<void> _initDisplay() async {
+    Hive.registerAdapter<Locale>(LocaleAdapter());
     Hive.registerAdapter<Display>(DisplayAdapter());
     _displayBox = await Hive.openBox<Display>(_displayBoxName);
   }
 
   /// listens to changes inside the settings Box
   static ValueListenable<Box<Display>> get listenDisplay =>
-      _displayBox.listenable(keys: [_displayKey]);
+      _displayBox.listenable(keys: [displayKey]);
 
-  /// saves the given [settings] to the settings Box
-  static set display(Display settings) =>
-      _displayBox.put(_displayKey, settings);
+  /// saves the given [display] to the settings Box
+  static set display(Display display) => _displayBox.put(displayKey, display);
 
   /// gets the given [Display] from the settings Box
-  static Display get display => _displayBox.get(_displayKey) ?? Display();
+  static Display get display => _displayBox.get(displayKey) ?? Display();
 
   /// initilizes the [Preferences] reference
   static Future<void> _initPreferences() async {
     Hive.registerAdapter<Preferences>(PreferencesAdapter());
-    Hive.registerAdapter<Locale>(LocaleAdapter());
     _preferencesBox = await Hive.openBox<Preferences>(_preferencesBoxName);
   }
 
   /// listens to changes inside the settings Box
   static ValueListenable<Box<Preferences>> get listenPreferences =>
-      _preferencesBox.listenable(keys: [_preferencesKey]);
+      _preferencesBox.listenable(keys: [preferencesKey]);
 
   /// saves the given [settings] to the settings Box
   static set preferences(Preferences settings) =>
-      _preferencesBox.put(_preferencesKey, settings);
+      _preferencesBox.put(preferencesKey, settings);
 
   /// gets the given [Preferences] from the settings Box
   static Preferences get preferences =>
-      _preferencesBox.get(_preferencesKey) ?? Preferences();
+      _preferencesBox.get(preferencesKey) ?? const Preferences();
 
   /// initilizes the [Rules] reference
   static Future<void> _initRules() async {
@@ -127,11 +136,14 @@ class LocalDatabaseService {
 
   /// listens to changes inside the settings Box
   static ValueListenable<Box<Rules>> get listenRules =>
-      _rulesBox.listenable(keys: [_rulesKey]);
+      _rulesBox.listenable(keys: [rulesKey]);
 
-  /// saves the given [settings] to the settings Box
-  static set rules(Rules settings) => _rulesBox.put(_rulesKey, settings);
+  /// saves the given [rules] to the settings Box
+  static set rules(Rules rules) {
+    _rulesBox.put(rulesKey, rules);
+    DatabaseV1.initRules();
+  }
 
   /// gets the given [Rules] from the settings Box
-  static Rules get rules => _rulesBox.get(_rulesKey) ?? Rules();
+  static Rules get rules => _rulesBox.get(rulesKey) ?? Rules();
 }

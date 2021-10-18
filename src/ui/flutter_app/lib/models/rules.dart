@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:flutter/foundation.dart' show immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/l10n/resources.dart';
@@ -27,6 +29,8 @@ part 'rules.g.dart';
 /// holds the data needed for the Rules Settings
 @HiveType(typeId: 3)
 @JsonSerializable()
+@CopyWith()
+@immutable
 class Rules {
   Rules({
     int? piecesCount,
@@ -53,37 +57,37 @@ class Rules {
   }
 
   @HiveField(0)
-  late int piecesCount;
+  late final int piecesCount;
   @HiveField(1)
-  int flyPieceCount;
+  final int flyPieceCount;
   @HiveField(2)
-  int piecesAtLeastCount;
+  final int piecesAtLeastCount;
   @HiveField(3)
-  late bool hasDiagonalLines;
+  late final bool hasDiagonalLines;
   @HiveField(4)
-  bool hasBannedLocations;
+  final bool hasBannedLocations;
   @HiveField(5)
-  bool mayMoveInPlacingPhase;
+  final bool mayMoveInPlacingPhase;
   @HiveField(6)
-  bool isDefenderMoveFirst;
+  final bool isDefenderMoveFirst;
   @HiveField(7)
-  bool mayRemoveMultiple;
+  final bool mayRemoveMultiple;
   @HiveField(8)
-  bool mayRemoveFromMillsAlways;
+  final bool mayRemoveFromMillsAlways;
   @HiveField(9)
-  bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
+  final bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
   @HiveField(10)
-  bool isWhiteLoseButNotDrawWhenBoardFull;
+  final bool isWhiteLoseButNotDrawWhenBoardFull;
   @HiveField(11)
-  bool isLoseButNotChangeSideWhenNoWay;
+  final bool isLoseButNotChangeSideWhenNoWay;
   @HiveField(12)
-  bool mayFly;
+  final bool mayFly;
   @HiveField(13)
-  int nMoveRule;
+  final int nMoveRule;
   @HiveField(14)
-  int endgameNMoveRule;
+  final int endgameNMoveRule;
   @HiveField(15)
-  bool threefoldRepetitionRule;
+  final bool threefoldRepetitionRule;
 
   /// encodes a Json style map into a [Rules] obbject
   factory Rules.fromJson(Map<String, dynamic> json) => _$RulesFromJson(json);

@@ -30,7 +30,8 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/screens/game_settings_page.dart';
+import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
@@ -1186,9 +1187,8 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> setPrivacyPolicyAccepted(bool value) async {
-    setState(
-      () => LocalDatabaseService.preferences.isPrivacyPolicyAccepted = value,
-    );
+    LocalDatabaseService.preferences = LocalDatabaseService.preferences
+        .copyWith(isPrivacyPolicyAccepted: value);
 
     debugPrint("[config] isPrivacyPolicyAccepted: $value");
   }
@@ -1341,12 +1341,13 @@ class _GamePageState extends State<GamePage>
                 ),
                 onPressed: () async {
                   if (!isTopLevel) {
-                    LocalDatabaseService.preferences.skillLevel++;
+                    final _pref = LocalDatabaseService.preferences;
+                    LocalDatabaseService.preferences =
+                        _pref.copyWith(skillLevel: _pref.skillLevel + 1);
+                    debugPrint(
+                      "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
+                    );
                   }
-                  await _engine.setOptions(context);
-                  debugPrint(
-                    "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
-                  );
                   Navigator.pop(context);
                 },
               ),
@@ -1785,11 +1786,17 @@ class _GamePageState extends State<GamePage>
     gameInstance.init();
     _engine.startup();
 
-    timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
-      _setReadyState();
-    });
+    timer = Timer.periodic(
+      const Duration(microseconds: 100),
+      (_) => _setReadyState(),
+    );
 
     _initAnimation();
+
+    LocalDatabaseService.listenPreferences.addListener(() async {
+      await _engine.setOptions();
+      debugPrint("$tag reloaded engine options");
+    });
   }
 
   @override
@@ -1852,7 +1859,7 @@ class _GamePageState extends State<GamePage>
   Future<void> didPush() async {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPush route: $route');
-    await _engine.setOptions(context);
+    await _engine.setOptions();
     if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
       S.load(LocalDatabaseService.display.languageCode);
       setState(() {});
@@ -1863,7 +1870,7 @@ class _GamePageState extends State<GamePage>
   Future<void> didPopNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPopNext route: $route');
-    await _engine.setOptions(context);
+    await _engine.setOptions();
     if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
       S.load(LocalDatabaseService.display.languageCode);
     }
@@ -1873,7 +1880,7 @@ class _GamePageState extends State<GamePage>
   Future<void> didPushNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPushNext route: $route');
-    await _engine.setOptions(context);
+    await _engine.setOptions();
     if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
       S.load(LocalDatabaseService.display.languageCode);
     }

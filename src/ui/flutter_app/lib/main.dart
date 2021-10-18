@@ -31,6 +31,7 @@ import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/storage/storage_v1.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -38,8 +39,9 @@ part 'package:sanmill/services/catcher.dart';
 
 Future<void> main() async {
   await LocalDatabaseService.initStorage();
+  await DatabaseV1.migrateDB();
   final catcher = Catcher(
-    rootWidget: BetterFeedback(
+    rootWidget: const BetterFeedback(
       child: SanmillApp(),
       //localeOverride: Locale(Resources.of().languageCode),
     ),
@@ -73,10 +75,11 @@ Future<void> main() async {
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class SanmillApp extends StatelessWidget {
-  final globalScaffoldKey = GlobalKey<ScaffoldState>();
+  const SanmillApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final globalScaffoldKey = GlobalKey<ScaffoldState>();
     Audios.loadSounds();
 
     setSpecialCountryAndRegion(context);

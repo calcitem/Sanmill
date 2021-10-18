@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:flutter/foundation.dart' show immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -26,8 +28,10 @@ part 'preferences.g.dart';
 /// holds the data needed for the normal Settings
 @HiveType(typeId: 2)
 @JsonSerializable()
+@CopyWith()
+@immutable
 class Preferences {
-  Preferences({
+  const Preferences({
     this.isPrivacyPolicyAccepted = false,
     this.usesHiveDB = false,
     this.toneEnabled = true,
@@ -51,46 +55,46 @@ class Preferences {
   });
 
   @HiveField(0)
-  bool isPrivacyPolicyAccepted;
+  final bool isPrivacyPolicyAccepted;
   @HiveField(1)
-  bool usesHiveDB;
+  final bool usesHiveDB;
 
   @HiveField(2)
-  bool toneEnabled;
+  final bool toneEnabled;
   @HiveField(3)
-  bool keepMuteWhenTakingBack;
+  final bool keepMuteWhenTakingBack;
   @HiveField(4)
-  bool screenReaderSupport;
+  final bool screenReaderSupport;
   @HiveField(5)
-  bool aiMovesFirst;
+  final bool aiMovesFirst;
   @HiveField(6)
-  bool aiIsLazy;
+  final bool aiIsLazy;
   @HiveField(7)
-  int skillLevel;
+  final int skillLevel;
   @HiveField(8)
-  int moveTime;
+  final int moveTime;
   @HiveField(9)
-  bool isAutoRestart;
+  final bool isAutoRestart;
   @HiveField(10)
-  bool isAutoChangeFirstMove;
+  final bool isAutoChangeFirstMove;
   @HiveField(11)
-  bool resignIfMostLose;
+  final bool resignIfMostLose;
   @HiveField(12)
-  bool shufflingEnabled;
+  final bool shufflingEnabled;
   @HiveField(13)
-  bool learnEndgame;
+  final bool learnEndgame;
   @HiveField(14)
-  bool openingBook;
+  final bool openingBook;
   @HiveField(15)
-  int algorithm;
+  final int algorithm;
   @HiveField(16)
-  bool drawOnHumanExperience;
+  final bool drawOnHumanExperience;
   @HiveField(17)
-  bool considerMobility;
+  final bool considerMobility;
   @HiveField(18)
-  bool developerMode;
+  final bool developerMode;
   @HiveField(19)
-  bool experimentsEnabled;
+  final bool experimentsEnabled;
 
   /// encodes a Json style map into a [Preferences] obbject
   factory Preferences.fromJson(Map<String, dynamic> json) =>
