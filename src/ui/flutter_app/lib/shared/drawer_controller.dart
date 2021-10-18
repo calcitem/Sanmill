@@ -120,8 +120,7 @@ class _DrawerControllerState extends State<DrawerController>
 
   @override
   Widget build(BuildContext context) {
-    final bool ltr =
-        getBidirectionality(context) == Bidirectionality.leftToRight;
+    final bool ltr = Directionality.of(context) == TextDirection.ltr;
 
     // this just menu and arrow icon animation
     final inkWell = InkWell(

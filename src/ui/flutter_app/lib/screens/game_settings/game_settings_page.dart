@@ -21,7 +21,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/models/temporary.dart';
 import 'package:sanmill/screens/env_page.dart';

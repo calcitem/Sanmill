@@ -1248,5 +1248,9 @@
     "hollow": "Vuoto",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Italiano",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

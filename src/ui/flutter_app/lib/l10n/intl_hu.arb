@@ -1248,5 +1248,9 @@
     "hollow": "Üreges",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Magyar",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

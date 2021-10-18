@@ -1248,5 +1248,9 @@
     "hollow": "空心圆",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "简体中文",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

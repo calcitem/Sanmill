@@ -1248,5 +1248,9 @@
     "hollow": "Hollow",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "English",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

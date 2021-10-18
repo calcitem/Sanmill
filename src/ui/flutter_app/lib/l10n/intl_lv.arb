@@ -1248,5 +1248,9 @@
     "hollow": "Dobis",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Latvietis",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

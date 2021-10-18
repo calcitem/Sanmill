@@ -1248,5 +1248,9 @@
     "hollow": "أجوف",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "عربى",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

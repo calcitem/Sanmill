@@ -1248,5 +1248,9 @@
     "hollow": "Dziurawy",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Polskie",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

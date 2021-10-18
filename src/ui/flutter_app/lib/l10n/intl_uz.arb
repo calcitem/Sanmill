@@ -1248,5 +1248,9 @@
     "hollow": "Ichi bo'sh",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "O'zbek",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

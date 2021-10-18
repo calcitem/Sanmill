@@ -1248,5 +1248,9 @@
     "hollow": "Šuplje",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Hrvatski",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

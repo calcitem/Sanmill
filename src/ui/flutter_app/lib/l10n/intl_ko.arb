@@ -1248,5 +1248,9 @@
     "hollow": "구멍",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "한국어",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

@@ -1248,5 +1248,9 @@
     "hollow": "Hueco",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Español",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }
