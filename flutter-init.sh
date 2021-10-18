@@ -14,9 +14,6 @@ flutter pub get
 
 flutter gen-l10n
 
-flutter pub run flutter_oss_licenses:generate.dart
-mv lib/oss_licenses.dart lib/generated
-
 mkdir -p "$GEN_FILE_PATH" || true
 
 echo "const Map<String, String> flutterVersion =" >"$FLUTTER_VERSION_FILE"
