@@ -48,7 +48,6 @@ dev_dependencies:
   build_runner: ^2.1.4
   copy_with_extension_gen: ^2.0.3
   flutter_gen_runner: ^4.0.0
-  flutter_oss_licenses: ^1.0.1
   flutter_test:
     sdk: flutter
 
@@ -63,7 +62,7 @@ flutter_gen:
   output: lib/generated/assets/
 
 flutter:
-  generate: true
+  generate: false
   uses-material-design: true
 
   assets:
