@@ -25,7 +25,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
-import 'package:sanmill/screens/oss_license_page.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
@@ -101,7 +100,10 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).ossLicenses,
-        onTap: () => _launchThirdPartyNotices(context),
+        onTap: () => showLicensePage(
+          context: context,
+          applicationName: S.of(context).appName,
+        ),
       ),
       SettingsListTile(
         titleString: S.of(context).helpImproveTranslate,
@@ -174,29 +176,6 @@ class AboutPage extends StatelessWidget {
     } else {
       _launchURL(Constants.githubSourceCodeURL);
     }
-  }
-
-  Future<void> _launchThirdPartyNotices(BuildContext context) async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => OssLicensesPage(),
-      ),
-    );
-    /*
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
-
-   debugPrint("$tag local = $locale");
-    if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(Constants.giteeThirdPartyNoticesURL);
-    } else {
-      _launchURL(Constants.githubThirdPartyNoticesURL);
-    }
-    */
   }
 
   Future<void> _launchPrivacyPolicy() async {
