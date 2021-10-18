@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/colors.dart';
 
 class AppTheme {
@@ -112,12 +112,12 @@ class AppTheme {
   );
 
   static TextStyle simpleDialogOptionTextStyle = TextStyle(
-    fontSize: Config.fontSize + 4.0,
+    fontSize: LocalDatabaseService.display.fontSize + 4.0,
     color: AppTheme.simpleDialogOptionTextColor,
   );
 
   static TextStyle moveHistoryTextStyle = TextStyle(
-    fontSize: Config.fontSize + 2.0,
+    fontSize: LocalDatabaseService.display.fontSize + 2.0,
     height: 1.5,
     color: moveHistoryTextColor,
   );
@@ -128,10 +128,13 @@ class AppTheme {
   static double boardBorderRadius = 5.0;
   static double boardPadding = 5.0;
 
-  static TextStyle settingsHeaderStyle =
-      TextStyle(color: settingsHeaderTextColor, fontSize: Config.fontSize + 4);
+  static TextStyle settingsHeaderStyle = TextStyle(
+    color: settingsHeaderTextColor,
+    fontSize: LocalDatabaseService.display.fontSize + 4,
+  );
 
-  static TextStyle settingsTextStyle = TextStyle(fontSize: Config.fontSize);
+  static TextStyle settingsTextStyle =
+      TextStyle(fontSize: LocalDatabaseService.display.fontSize);
 
   static const cardMargin = EdgeInsets.symmetric(vertical: 4.0);
 

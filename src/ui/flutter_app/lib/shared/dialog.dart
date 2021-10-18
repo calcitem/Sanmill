@@ -24,8 +24,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 int _counter = 0;
@@ -54,12 +54,7 @@ void showCountdownDialog(
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         debugPrint("Count down: ${snapshot.data}");
 
-        if (snapshot.data == 0) {
-          fun();
-          if (Platform.isAndroid) {
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          } else {}
-        }
+        if (snapshot.data == 0) fun();
 
         return SizedBox(
           height: 128,
@@ -71,15 +66,13 @@ void showCountdownDialog(
               ),
               const SizedBox(height: 20),
               InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
+                onTap: () => Navigator.pop(context),
                 child: Center(
                   child: Text(
                     S.of(ctx).cancel,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: Config.fontSize,
+                      fontSize: LocalDatabaseService.display.fontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

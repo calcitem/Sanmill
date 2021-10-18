@@ -19,58 +19,58 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
 import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-Map<String, Strings> languageCodeToStrings = {
-  "ar": ArabicStrings(),
-  "bg": BulgarianStrings(),
-  "bn": BengaliStrings(),
-  "cs": CzechStrings(),
-  "da": DanishStrings(),
-  "de": GermanStrings(),
-  "de_CH": SwissGermanStrings(),
-  "el": GreekStrings(),
-  "en": EnglishStrings(),
-  "es": SpanishStrings(),
-  "et": EstonianStrings(),
-  "fa": FarsiStrings(),
-  "fi": FinnishStrings(),
-  "fr": FrenchStrings(),
-  "gu": GujaratiStrings(),
-  "hi": HindiStrings(),
-  "hr": CroatianStrings(),
-  "hu": HungarianStrings(),
-  "id": IndonesianStrings(),
-  "it": ItalianStrings(),
-  "ja": JapaneseStrings(),
-  "kn": KannadaStrings(),
-  "ko": KoreanStrings(),
-  "lt": LithuanianStrings(),
-  "lv": LatvianStrings(),
-  "mk": MacedonianStrings(),
-  "ms": MalayStrings(),
-  "nl": DutchStrings(),
-  "nn": NorwegianStrings(),
-  "pl": PolishStrings(),
-  "pt": PortugueseStrings(),
-  "ro": RomanianStrings(),
-  "ru": RussianStrings(),
-  "sk": SlovakStrings(),
-  "sl": SlovenianStrings(),
-  "sq": AlbanianStrings(),
-  "sr": SerbianStrings(),
-  "sv": SwedishStrings(),
-  "te": TeluguStrings(),
-  "th": ThaiStrings(),
-  "tr": TurkishStrings(),
-  "uz": UzbekStrings(),
-  "vi": VietnameseStrings(),
-  "zh": ChineseStrings(),
-  "zh_Hant": TraditionalChineseStrings(),
+Map<Locale, Strings> languageCodeToStrings = {
+  const Locale("ar"): ArabicStrings(),
+  const Locale("bg"): BulgarianStrings(),
+  const Locale("bn"): BengaliStrings(),
+  const Locale("cs"): CzechStrings(),
+  const Locale("da"): DanishStrings(),
+  const Locale("de"): GermanStrings(),
+  const Locale("de_CH"): SwissGermanStrings(),
+  const Locale("el"): GreekStrings(),
+  const Locale("en"): EnglishStrings(),
+  const Locale("es"): SpanishStrings(),
+  const Locale("et"): EstonianStrings(),
+  const Locale("fa"): FarsiStrings(),
+  const Locale("fi"): FinnishStrings(),
+  const Locale("fr"): FrenchStrings(),
+  const Locale("gu"): GujaratiStrings(),
+  const Locale("hi"): HindiStrings(),
+  const Locale("hr"): CroatianStrings(),
+  const Locale("hu"): HungarianStrings(),
+  const Locale("id"): IndonesianStrings(),
+  const Locale("it"): ItalianStrings(),
+  const Locale("ja"): JapaneseStrings(),
+  const Locale("kn"): KannadaStrings(),
+  const Locale("ko"): KoreanStrings(),
+  const Locale("lt"): LithuanianStrings(),
+  const Locale("lv"): LatvianStrings(),
+  const Locale("mk"): MacedonianStrings(),
+  const Locale("ms"): MalayStrings(),
+  const Locale("nl"): DutchStrings(),
+  const Locale("nn"): NorwegianStrings(),
+  const Locale("pl"): PolishStrings(),
+  const Locale("pt"): PortugueseStrings(),
+  const Locale("ro"): RomanianStrings(),
+  const Locale("ru"): RussianStrings(),
+  const Locale("sk"): SlovakStrings(),
+  const Locale("sl"): SlovenianStrings(),
+  const Locale("sq"): AlbanianStrings(),
+  const Locale("sr"): SerbianStrings(),
+  const Locale("sv"): SwedishStrings(),
+  const Locale("te"): TeluguStrings(),
+  const Locale("th"): ThaiStrings(),
+  const Locale("tr"): TurkishStrings(),
+  const Locale("uz"): UzbekStrings(),
+  const Locale("vi"): VietnameseStrings(),
+  const Locale("zh"): ChineseStrings(),
+  const Locale("zh_Hant"): TraditionalChineseStrings(),
 };
 
 /// Interface strings
@@ -489,19 +489,19 @@ class TraditionalChineseStrings extends Strings {
   String get tapBackAgainToLeave => '再次按 Back 鍵退出';
 }
 
-final supportedLocales = [
-  for (var i in languageCodeToStrings.keys) Locale.fromSubtags(languageCode: i),
+final List<Locale> supportedLocales = [
+  ...languageCodeToStrings.keys,
 ];
 
 class Resources {
   Resources();
 
   String get languageCode {
-    if (Config.languageCode == Constants.defaultLanguageCodeName) {
+    if (LocalDatabaseService.display.languageCode == Constants.defaultLocale) {
       return Platform.localeName.substring(0, 2);
     }
 
-    return Config.languageCode;
+    return LocalDatabaseService.display.languageCode.languageCode;
   }
 
   Strings get strings {
@@ -514,29 +514,32 @@ class Resources {
     return ret;
   }
 
+  // ignore: prefer_constructors_over_static_methods
   static Resources of() {
     return Resources();
   }
 }
 
 Future<void> setLanguage(
-    BuildContext context, Function(String?)? callback) async {
+  BuildContext context,
+  Function(Locale?)? callback,
+) async {
   final languageColumn = Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      RadioListTile(
+      RadioListTile<Locale>(
         activeColor: AppTheme.switchListTileActiveColor,
         title: Text(S.of(context).defaultLanguage),
-        groupValue: Config.languageCode,
-        value: Constants.defaultLanguageCodeName,
+        groupValue: LocalDatabaseService.display.languageCode,
+        value: Constants.defaultLocale,
         onChanged: callback,
       ),
       const ListItemDivider(),
       for (var i in languageCodeToStrings.keys)
-        RadioListTile(
+        RadioListTile<Locale>(
           activeColor: AppTheme.switchListTileActiveColor,
           title: Text(languageCodeToStrings[i]!.languageName),
-          groupValue: Config.languageCode,
+          groupValue: LocalDatabaseService.display.languageCode,
           value: i,
           onChanged: callback,
         ),
@@ -570,7 +573,7 @@ Bidirectionality getBidirectionality(BuildContext context) {
       currentLocale.languageCode == "he" ||
       currentLocale.languageCode == "ps" ||
       currentLocale.languageCode == "ur") {
-    print("bidirectionality: RTL");
+    debugPrint("bidirectionality: RTL");
     return Bidirectionality.rightToLeft;
   } else {
     return Bidirectionality.leftToRight;
@@ -591,5 +594,5 @@ void setSpecialCountryAndRegion(BuildContext context) {
       break;
   }
 
-  print("Set Special Country and Region to $specialCountryAndRegion.");
+  debugPrint("Set Special Country and Region to $specialCountryAndRegion.");
 }

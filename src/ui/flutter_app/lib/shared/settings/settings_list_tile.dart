@@ -19,7 +19,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/l10n/resources.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class SettingsListTile extends StatelessWidget {
@@ -35,7 +35,7 @@ class SettingsListTile extends StatelessWidget {
   final String titleString;
   final String? subtitleString;
   final String? trailingString;
-  final int? trailingColor;
+  final Color? trailingColor;
   final VoidCallback onTap;
 
   @override
@@ -46,7 +46,7 @@ class SettingsListTile extends StatelessWidget {
       title: Text(
         titleString,
         style: TextStyle(
-          fontSize: Config.fontSize,
+          fontSize: LocalDatabaseService.display.fontSize,
           color: AppTheme.switchListTileTitleColor,
         ),
       ),
@@ -55,7 +55,7 @@ class SettingsListTile extends StatelessWidget {
           : Text(
               subtitleString!,
               style: TextStyle(
-                fontSize: Config.fontSize,
+                fontSize: LocalDatabaseService.display.fontSize,
                 color: AppTheme.listTileSubtitleColor,
               ),
             ),
@@ -63,11 +63,10 @@ class SettingsListTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            trailingColor?.toRadixString(16) ?? trailingString ?? '',
+            trailingColor?.value.toRadixString(16) ?? trailingString ?? '',
             style: TextStyle(
-              fontSize: Config.fontSize,
-              backgroundColor:
-                  trailingColor == null ? null : Color(trailingColor!),
+              fontSize: LocalDatabaseService.display.fontSize,
+              backgroundColor: trailingColor,
             ),
           ),
           Icon(

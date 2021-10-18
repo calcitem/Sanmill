@@ -30,61 +30,25 @@ import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/storage/storage_v1.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
+part 'package:sanmill/services/catcher.dart';
+
 Future<void> main() async {
+  await LocalDatabaseService.initStorage();
+  await DatabaseV1.migrateDB();
   final catcher = Catcher(
-    rootWidget: BetterFeedback(
+    rootWidget: const BetterFeedback(
       child: SanmillApp(),
       //localeOverride: Locale(Resources.of().languageCode),
     ),
     ensureInitialized: true,
   );
 
-  String externalDirStr;
-  try {
-    final Directory? externalDir = await getExternalStorageDirectory();
-    if (externalDir != null) {
-      externalDirStr = externalDir.path;
-    } else {
-      externalDirStr = ".";
-    }
-  } catch (e) {
-    debugPrint(e.toString());
-    externalDirStr = ".";
-  }
-  final String path = "$externalDirStr/${Constants.crashLogsFileName}";
-  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
-  final String recipients = Constants.recipients;
-
-  final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
-    ConsoleHandler(),
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
-    //SentryHandler(SentryClient(sopt))
-  ]);
-
-  /// Release configuration.
-  /// Same as above, but once user accepts dialog,
-  /// user will be prompted to send email with crash to support.
-  final CatcherOptions releaseOptions = CatcherOptions(PageReportMode(), [
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
-  ]);
-
-  final CatcherOptions profileOptions = CatcherOptions(PageReportMode(), [
-    ConsoleHandler(),
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
-  ]);
-
-  /// Pass root widget (MyApp) along with Catcher configuration:
-  catcher.updateConfig(
-    debugConfig: debugOptions,
-    releaseConfig: releaseOptions,
-    profileConfig: profileOptions,
-  );
+  await _initCatcher(catcher);
 
   debugPrint(window.physicalSize.toString());
   debugPrint(Constants.windowAspectRatio.toString());
@@ -103,9 +67,7 @@ Future<void> main() async {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-  }
-
-  if (isSmallScreen) {
+  } else if (isSmallScreen) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }
@@ -113,10 +75,11 @@ Future<void> main() async {
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class SanmillApp extends StatelessWidget {
-  final globalScaffoldKey = GlobalKey<ScaffoldState>();
+  const SanmillApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final globalScaffoldKey = GlobalKey<ScaffoldState>();
     Audios.loadSounds();
 
     setSpecialCountryAndRegion(context);

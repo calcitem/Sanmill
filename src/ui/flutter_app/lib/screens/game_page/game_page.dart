@@ -30,12 +30,13 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/screens/game_settings_page.dart';
+import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/picker.dart';
 import 'package:sanmill/shared/snack_bar.dart';
@@ -43,11 +44,11 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 //import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-part 'package:sanmill/screens/game_page/game_page_toolbar.dart';
 part 'package:sanmill/screens/game_page/board.dart';
+part 'package:sanmill/screens/game_page/game_page_toolbar.dart';
 part 'package:sanmill/shared/painters/board_painter.dart';
-part 'package:sanmill/shared/painters/pieces_painter.dart';
 part 'package:sanmill/shared/painters/painter_base.dart';
+part 'package:sanmill/shared/painters/pieces_painter.dart';
 
 double boardWidth = 0.0;
 
@@ -85,14 +86,14 @@ class _GamePageState extends State<GamePage>
 
   Future<void> _setReadyState() async {
     debugPrint("$tag Check if need to set Ready state...");
-    if (!isReady && mounted && Config.settingsLoaded) {
+    if (!isReady && mounted) {
       debugPrint("$tag Set Ready State...");
       setState(() {});
       isReady = true;
       timer.cancel();
 
       if (Localizations.localeOf(context).languageCode == "zh" &&
-          !Config.isPrivacyPolicyAccepted) {
+          !LocalDatabaseService.preferences.isPrivacyPolicyAccepted) {
         onShowPrivacyDialog();
       }
     }
@@ -101,8 +102,10 @@ class _GamePageState extends State<GamePage>
   void _initAnimation() {
     _animationController = AnimationController(
       vsync: this,
-      duration:
-          Duration(milliseconds: (Config.animationDuration * 1000).toInt()),
+      duration: Duration(
+        milliseconds:
+            (LocalDatabaseService.display.animationDuration * 1000).toInt(),
+      ),
     );
     _animationController.addListener(() {});
 
@@ -131,7 +134,7 @@ class _GamePageState extends State<GamePage>
     if (!mounted) return;
     if (tip != null) {
       debugPrint("[tip] $tip");
-      if (Config.screenReaderSupport) {
+      if (LocalDatabaseService.preferences.screenReaderSupport) {
         //showSnackBar(context, tip);
       }
     }
@@ -167,7 +170,7 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (!Config.isAutoRestart) {
+    if (!LocalDatabaseService.preferences.isAutoRestart) {
       showGameResult(winner);
     }
   }
@@ -179,8 +182,10 @@ class _GamePageState extends State<GamePage>
     }
 
     disposed = false;
-    _animationController.duration =
-        Duration(milliseconds: (Config.animationDuration * 1000).toInt());
+    _animationController.duration = Duration(
+      milliseconds:
+          (LocalDatabaseService.display.animationDuration * 1000).toInt(),
+    );
     _animationController.reset();
 
     if (gameInstance.engineType == EngineType.aiVsAi ||
@@ -239,7 +244,7 @@ class _GamePageState extends State<GamePage>
               //Audios.playTone(Audios.mill);
               if (mounted) {
                 showTip(S.of(context).tipMill);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   showSnackBar(context, S.of(context).tipMill);
                 }
               }
@@ -271,7 +276,7 @@ class _GamePageState extends State<GamePage>
             debugPrint("[tap] putPiece: skip [$sq]");
             if (mounted) {
               showTip(S.of(context).tipBanPlace);
-              if (Config.screenReaderSupport) {
+              if (LocalDatabaseService.preferences.screenReaderSupport) {
                 ScaffoldMessenger.of(context).clearSnackBars();
                 showSnackBar(context, S.of(context).tipBanPlace);
               }
@@ -286,7 +291,7 @@ class _GamePageState extends State<GamePage>
           if (position.phase == Phase.placing) {
             if (mounted) {
               showTip(S.of(context).tipCannotPlace);
-              if (Config.screenReaderSupport) {
+              if (LocalDatabaseService.preferences.screenReaderSupport) {
                 ScaffoldMessenger.of(context).clearSnackBars();
                 showSnackBar(context, S.of(context).tipCannotPlace);
               }
@@ -305,19 +310,19 @@ class _GamePageState extends State<GamePage>
               if (position.phase == Phase.moving &&
                   rule.mayFly &&
                   (gameInstance.position.pieceOnBoardCount[us] ==
-                          Config.flyPieceCount ||
+                          LocalDatabaseService.rules.flyPieceCount ||
                       gameInstance.position.pieceOnBoardCount[us] == 3)) {
                 debugPrint("[tap] May fly.");
                 if (mounted) {
                   showTip(S.of(context).tipCanMoveToAnyPoint);
-                  if (Config.screenReaderSupport) {
+                  if (LocalDatabaseService.preferences.screenReaderSupport) {
                     ScaffoldMessenger.of(context).clearSnackBars();
                     showSnackBar(context, S.of(context).tipCanMoveToAnyPoint);
                   }
                 }
               } else if (mounted) {
                 showTip(S.of(context).tipPlace);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).selected);
                 }
@@ -329,7 +334,7 @@ class _GamePageState extends State<GamePage>
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipCannotMove);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).tipCannotMove);
                 }
@@ -340,7 +345,7 @@ class _GamePageState extends State<GamePage>
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipCanMoveOnePoint);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).tipCanMoveOnePoint);
                 }
@@ -351,7 +356,7 @@ class _GamePageState extends State<GamePage>
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectPieceToMove);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   showSnackBar(context, S.of(context).tipSelectPieceToMove);
                 }
               }
@@ -361,7 +366,7 @@ class _GamePageState extends State<GamePage>
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (mounted) {
                 showTip(S.of(context).tipSelectWrong);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(context, S.of(context).tipSelectWrong);
                 }
@@ -382,7 +387,7 @@ class _GamePageState extends State<GamePage>
               if (gameInstance.position.pieceToRemoveCount >= 1) {
                 if (mounted) {
                   showTip(S.of(context).tipContinueMill);
-                  if (Config.screenReaderSupport) {
+                  if (LocalDatabaseService.preferences.screenReaderSupport) {
                     showSnackBar(context, S.of(context).tipContinueMill);
                   }
                 }
@@ -410,7 +415,7 @@ class _GamePageState extends State<GamePage>
               );
               if (mounted) {
                 showTip(S.of(context).tipSelectOpponentsPiece);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   showSnackBar(context, S.of(context).tipSelectOpponentsPiece);
                 }
               }
@@ -422,7 +427,7 @@ class _GamePageState extends State<GamePage>
               );
               if (mounted) {
                 showTip(S.of(context).tipCannotRemovePieceFromMill);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   ScaffoldMessenger.of(context).clearSnackBars();
                   showSnackBar(
                     context,
@@ -436,7 +441,7 @@ class _GamePageState extends State<GamePage>
               debugPrint("[tap] removePiece: skip [$sq]");
               if (mounted && position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipBanRemove);
-                if (Config.screenReaderSupport) {
+                if (LocalDatabaseService.preferences.screenReaderSupport) {
                   showSnackBar(context, S.of(context).tipBanRemove);
                 }
               }
@@ -484,7 +489,7 @@ class _GamePageState extends State<GamePage>
         position.recorder!.moveIn(m, position);
 
         /*
-        if (Config.screenReaderSupport && m.notation != null) {
+        if (LocalDatabaseService.preferences.screenReaderSupport && m.notation != null) {
           showSnackBar(context, S.of(context).human + ": " + m.notation!);
         }
         */
@@ -534,7 +539,7 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    while ((Config.isAutoRestart == true ||
+    while ((LocalDatabaseService.preferences.isAutoRestart == true ||
             gameInstance.position.winner == PieceColor.nobody) &&
         gameInstance.isAiToMove &&
         mounted) {
@@ -549,7 +554,7 @@ class _GamePageState extends State<GamePage>
 
           final Move? m = gameInstance.position.recorder!.lastMove;
 
-          if (Config.screenReaderSupport &&
+          if (LocalDatabaseService.preferences.screenReaderSupport &&
               gameInstance.position.action != Act.remove &&
               m != null &&
               m.notation != null) {
@@ -576,8 +581,10 @@ class _GamePageState extends State<GamePage>
           final Move mv = response.value as Move;
           final Move move = Move(mv.move);
 
-          _animationController.duration =
-              Duration(milliseconds: (Config.animationDuration * 1000).toInt());
+          _animationController.duration = Duration(
+            milliseconds:
+                (LocalDatabaseService.display.animationDuration * 1000).toInt(),
+          );
 
           if (!disposed) {
             _animationController.reset();
@@ -589,19 +596,20 @@ class _GamePageState extends State<GamePage>
 
           await gameInstance.doMove(move.move!);
           showTips();
-          if (Config.screenReaderSupport && move.notation != null) {
+          if (LocalDatabaseService.preferences.screenReaderSupport &&
+              move.notation != null) {
             showSnackBar(context, "${S.of(context).ai}: ${move.notation!}");
           }
           break;
         case 'timeout':
           if (mounted) {
             showTip(S.of(context).timeout);
-            if (Config.screenReaderSupport) {
+            if (LocalDatabaseService.preferences.screenReaderSupport) {
               showSnackBar(context, S.of(context).timeout);
             }
           }
 
-          //if (Config.developerMode) {
+          //if (LocalDatabaseService.developerMode) {
           //assert(false);
           //}
           return;
@@ -610,7 +618,7 @@ class _GamePageState extends State<GamePage>
           break;
       }
 
-      if (Config.isAutoRestart == true &&
+      if (LocalDatabaseService.preferences.isAutoRestart == true &&
           gameInstance.position.winner != PieceColor.nobody) {
         gameInstance.newGame();
       }
@@ -630,7 +638,7 @@ class _GamePageState extends State<GamePage>
 
     if (mounted) {
       showTip(S.of(context).gameStarted);
-      if (Config.screenReaderSupport) {
+      if (LocalDatabaseService.preferences.screenReaderSupport) {
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).gameStarted);
       }
@@ -663,7 +671,7 @@ class _GamePageState extends State<GamePage>
 
     if (importFailedStr != "") {
       showTip("${S.of(context).cannotImport} $importFailedStr");
-      if (Config.screenReaderSupport) {
+      if (LocalDatabaseService.preferences.screenReaderSupport) {
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, "${S.of(context).cannotImport} $importFailedStr");
       }
@@ -673,7 +681,7 @@ class _GamePageState extends State<GamePage>
     await onStepForwardAllButtonPressed(false);
 
     showTip(S.of(context).gameImported);
-    if (Config.screenReaderSupport) {
+    if (LocalDatabaseService.preferences.screenReaderSupport) {
       ScaffoldMessenger.of(context).clearSnackBars();
       showSnackBar(context, S.of(context).gameImported);
     }
@@ -700,7 +708,7 @@ class _GamePageState extends State<GamePage>
           S.of(context).appName,
           style: TextStyle(
             color: AppTheme.dialogTitleColor,
-            fontSize: Config.fontSize + 4,
+            fontSize: LocalDatabaseService.display.fontSize + 4,
           ),
         ),
         content: Column(
@@ -710,7 +718,7 @@ class _GamePageState extends State<GamePage>
             Text(
               S.of(context).experimental,
               style: TextStyle(
-                fontSize: Config.fontSize,
+                fontSize: LocalDatabaseService.display.fontSize,
               ),
             ),
           ],
@@ -720,7 +728,7 @@ class _GamePageState extends State<GamePage>
             child: Text(
               S.of(context).ok,
               style: TextStyle(
-                fontSize: Config.fontSize,
+                fontSize: LocalDatabaseService.display.fontSize,
               ),
             ),
             onPressed: () => Navigator.pop(context),
@@ -815,7 +823,7 @@ class _GamePageState extends State<GamePage>
               ),
             ),
             const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (Config.screenReaderSupport)
+            if (LocalDatabaseService.preferences.screenReaderSupport)
               SimpleDialogOption(
                 child: Text(
                   S.of(context).close,
@@ -826,7 +834,7 @@ class _GamePageState extends State<GamePage>
               ),
             /*
             SizedBox(height: AppTheme.sizedBoxHeight),
-            Config.experimentsEnabled
+            LocalDatabaseService.experimentsEnabled
                 ? SimpleDialogOption(
                     child: Text(
                       S.of(context).startRecording,
@@ -836,10 +844,10 @@ class _GamePageState extends State<GamePage>
                     onPressed: onStartRecordingButtonPressed,
                   )
                 : SizedBox(height: 1),
-            Config.experimentsEnabled
+            LocalDatabaseService.experimentsEnabled
                 ? SizedBox(height: AppTheme.sizedBoxHeight)
                 : SizedBox(height: 1),
-            Config.experimentsEnabled
+            LocalDatabaseService.experimentsEnabled
                 ? SimpleDialogOption(
                     child: Text(
                       S.of(context).stopRecording,
@@ -849,10 +857,10 @@ class _GamePageState extends State<GamePage>
                     onPressed: onStopRecordingButtonPressed,
                   )
                 : SizedBox(height: 1),
-            Config.experimentsEnabled
+            LocalDatabaseService.experimentsEnabled
                 ? SizedBox(height: AppTheme.sizedBoxHeight)
                 : SizedBox(height: 1),
-            Config.experimentsEnabled
+            LocalDatabaseService.experimentsEnabled
                 ? SimpleDialogOption(
                     child: Text(
                       S.of(context).showRecording,
@@ -934,7 +942,8 @@ class _GamePageState extends State<GamePage>
         child: SimpleDialog(
           backgroundColor: Colors.transparent,
           children: <Widget>[
-            if (!Config.isHistoryNavigationToolbarShown) ..._historyNavigation,
+            if (!LocalDatabaseService.display.isHistoryNavigationToolbarShown)
+              ..._historyNavigation,
             SimpleDialogOption(
               onPressed: onMoveListButtonPressed,
               child: Text(
@@ -953,7 +962,7 @@ class _GamePageState extends State<GamePage>
               ),
             ),
             const SizedBox(height: AppTheme.sizedBoxHeight),
-            if (Config.screenReaderSupport)
+            if (LocalDatabaseService.preferences.screenReaderSupport)
               SimpleDialogOption(
                 child: Text(
                   S.of(context).close,
@@ -1033,7 +1042,7 @@ class _GamePageState extends State<GamePage>
 
       showTip(text);
 
-      if (Config.screenReaderSupport) {
+      if (LocalDatabaseService.preferences.screenReaderSupport) {
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, text);
       }
@@ -1088,7 +1097,7 @@ class _GamePageState extends State<GamePage>
             S.of(context).moveList,
             style: TextStyle(
               color: AppTheme.moveHistoryTextColor,
-              fontSize: Config.fontSize + 2.0,
+              fontSize: LocalDatabaseService.display.fontSize + 2.0,
             ),
           ),
           content: SingleChildScrollView(
@@ -1178,11 +1187,10 @@ class _GamePageState extends State<GamePage>
   }
 
   Future<void> setPrivacyPolicyAccepted(bool value) async {
-    setState(() => Config.isPrivacyPolicyAccepted = value);
+    LocalDatabaseService.preferences = LocalDatabaseService.preferences
+        .copyWith(isPrivacyPolicyAccepted: value);
 
     debugPrint("[config] isPrivacyPolicyAccepted: $value");
-
-    await Config.save();
   }
 
   Future<void> onShowPrivacyDialog() async {
@@ -1222,7 +1230,7 @@ class _GamePageState extends State<GamePage>
     if (loseReasonStr == null) {
       loseReasonStr = S.of(context).gameOverUnknownReason;
       debugPrint("$tag Game over reason string: $loseReasonStr");
-      if (Config.developerMode) {
+      if (LocalDatabaseService.preferences.developerMode) {
         assert(false);
       }
     }
@@ -1289,7 +1297,8 @@ class _GamePageState extends State<GamePage>
       return;
     }
 
-    final bool isTopLevel = Config.skillLevel == 30; // TODO: 30
+    final bool isTopLevel =
+        LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
 
     if (result == GameResult.win &&
         !isTopLevel &&
@@ -1301,7 +1310,7 @@ class _GamePageState extends State<GamePage>
 
       if (!isTopLevel) {
         contentStr +=
-            "\n\n${S.of(context).challengeHarderLevel}${Config.skillLevel + 1}!";
+            "\n\n${S.of(context).challengeHarderLevel}${LocalDatabaseService.preferences.skillLevel + 1}!";
       }
 
       showDialog(
@@ -1313,13 +1322,13 @@ class _GamePageState extends State<GamePage>
               dialogTitle,
               style: TextStyle(
                 color: AppTheme.dialogTitleColor,
-                fontSize: Config.fontSize + 4,
+                fontSize: LocalDatabaseService.display.fontSize + 4,
               ),
             ),
             content: Text(
               contentStr,
               style: TextStyle(
-                fontSize: Config.fontSize,
+                fontSize: LocalDatabaseService.display.fontSize,
               ),
             ),
             actions: <Widget>[
@@ -1327,14 +1336,18 @@ class _GamePageState extends State<GamePage>
                 child: Text(
                   S.of(context).yes,
                   style: TextStyle(
-                    fontSize: Config.fontSize,
+                    fontSize: LocalDatabaseService.display.fontSize,
                   ),
                 ),
                 onPressed: () async {
-                  if (!isTopLevel) Config.skillLevel++;
-                  Config.save();
-                  await _engine.setOptions(context);
-                  debugPrint("[config] skillLevel: ${Config.skillLevel}");
+                  if (!isTopLevel) {
+                    final _pref = LocalDatabaseService.preferences;
+                    LocalDatabaseService.preferences =
+                        _pref.copyWith(skillLevel: _pref.skillLevel + 1);
+                    debugPrint(
+                      "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
+                    );
+                  }
                   Navigator.pop(context);
                 },
               ),
@@ -1342,7 +1355,7 @@ class _GamePageState extends State<GamePage>
                 child: Text(
                   S.of(context).no,
                   style: TextStyle(
-                    fontSize: Config.fontSize,
+                    fontSize: LocalDatabaseService.display.fontSize,
                   ),
                 ),
                 onPressed: () => Navigator.pop(context),
@@ -1361,7 +1374,7 @@ class _GamePageState extends State<GamePage>
               dialogTitle,
               style: TextStyle(
                 color: AppTheme.dialogTitleColor,
-                fontSize: Config.fontSize + 4,
+                fontSize: LocalDatabaseService.display.fontSize + 4,
               ),
             ),
             content: Text(
@@ -1370,7 +1383,7 @@ class _GamePageState extends State<GamePage>
                 gameInstance.position.winner,
               ),
               style: TextStyle(
-                fontSize: Config.fontSize,
+                fontSize: LocalDatabaseService.display.fontSize,
               ),
             ),
             actions: <Widget>[
@@ -1378,7 +1391,7 @@ class _GamePageState extends State<GamePage>
                 child: Text(
                   S.of(context).restart,
                   style: TextStyle(
-                    fontSize: Config.fontSize,
+                    fontSize: LocalDatabaseService.display.fontSize,
                   ),
                 ),
                 onPressed: () {
@@ -1386,7 +1399,7 @@ class _GamePageState extends State<GamePage>
                   gameInstance.newGame();
                   if (mounted) {
                     showTip(S.of(context).gameStarted);
-                    if (Config.screenReaderSupport) {
+                    if (LocalDatabaseService.preferences.screenReaderSupport) {
                       ScaffoldMessenger.of(context).clearSnackBars();
                       showSnackBar(context, S.of(context).gameStarted);
                     }
@@ -1402,7 +1415,7 @@ class _GamePageState extends State<GamePage>
                 child: Text(
                   S.of(context).cancel,
                   style: TextStyle(
-                    fontSize: Config.fontSize,
+                    fontSize: LocalDatabaseService.display.fontSize,
                   ),
                 ),
                 onPressed: () => Navigator.pop(context),
@@ -1432,7 +1445,7 @@ class _GamePageState extends State<GamePage>
 
   Widget get header {
     final Map<EngineType, IconData> engineTypeToIconLeft = {
-      EngineType.humanVsAi: Config.aiMovesFirst
+      EngineType.humanVsAi: LocalDatabaseService.preferences.aiMovesFirst
           ? FluentIcons.bot_24_filled
           : FluentIcons.person_24_filled,
       EngineType.humanVsHuman: FluentIcons.person_24_filled,
@@ -1443,7 +1456,7 @@ class _GamePageState extends State<GamePage>
     };
 
     final Map<EngineType, IconData> engineTypeToIconRight = {
-      EngineType.humanVsAi: Config.aiMovesFirst
+      EngineType.humanVsAi: LocalDatabaseService.preferences.aiMovesFirst
           ? FluentIcons.person_24_filled
           : FluentIcons.bot_24_filled,
       EngineType.humanVsHuman: FluentIcons.person_24_filled,
@@ -1453,7 +1466,7 @@ class _GamePageState extends State<GamePage>
       EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
     };
 
-    final iconColor = Color(Config.messageColor);
+    final iconColor = LocalDatabaseService.colorSettings.messageColor;
 
     final iconRow = Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -1465,7 +1478,7 @@ class _GamePageState extends State<GamePage>
     );
 
     return Container(
-      margin: EdgeInsets.only(top: Config.boardTop),
+      margin: EdgeInsets.only(top: LocalDatabaseService.display.boardTop),
       child: Column(
         children: <Widget>[
           iconRow,
@@ -1474,7 +1487,7 @@ class _GamePageState extends State<GamePage>
             width: 180,
             margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: Color(Config.boardBackgroundColor),
+              color: LocalDatabaseService.colorSettings.boardBackgroundColor,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -1484,11 +1497,11 @@ class _GamePageState extends State<GamePage>
               _tip!,
               maxLines: 1,
               style: TextStyle(
-                fontSize: Config.fontSize,
-                color: Color(Config.messageColor),
+                fontSize: LocalDatabaseService.display.fontSize,
+                color: LocalDatabaseService.colorSettings.messageColor,
               ),
-            ), // TODO: Font Size
-          ),
+            ),
+          ), // TODO: Font Size
         ],
       ),
     );
@@ -1545,8 +1558,10 @@ class _GamePageState extends State<GamePage>
 
   String get infoText {
     String phase = "";
-    final String period = Config.screenReaderSupport ? "." : "";
-    final String comma = Config.screenReaderSupport ? "," : "";
+    final String period =
+        LocalDatabaseService.preferences.screenReaderSupport ? "." : "";
+    final String comma =
+        LocalDatabaseService.preferences.screenReaderSupport ? "," : "";
 
     final pos = gameInstance.position;
 
@@ -1576,7 +1591,9 @@ class _GamePageState extends State<GamePage>
     }
 
     final String tip =
-        (_tip == null || !Config.screenReaderSupport) ? "" : "\n$_tip";
+        (_tip == null || !LocalDatabaseService.preferences.screenReaderSupport)
+            ? ""
+            : "\n$_tip";
 
     String lastMove = "";
     if (pos.recorder?.lastMove?.notation != null) {
@@ -1589,7 +1606,7 @@ class _GamePageState extends State<GamePage>
       } else {
         lastMove = n1;
       }
-      if (Config.screenReaderSupport) {
+      if (LocalDatabaseService.preferences.screenReaderSupport) {
         lastMove = "${S.of(context).lastMove}: $them, $lastMove$period\n";
       } else {
         lastMove = "${S.of(context).lastMove}: $lastMove$period\n";
@@ -1597,7 +1614,7 @@ class _GamePageState extends State<GamePage>
     }
 
     String addedPeriod = "";
-    if (Config.screenReaderSupport &&
+    if (LocalDatabaseService.preferences.screenReaderSupport &&
         tip.isNotEmpty &&
         tip[tip.length - 1] != '.' &&
         tip[tip.length - 1] != '!') {
@@ -1617,11 +1634,13 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.table_simple_24_regular,
-            color: Color(Config.mainToolbarIconColor),
+            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
           ),
           Text(
             S.of(context).game,
-            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+            style: TextStyle(
+              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            ),
           ),
         ],
       ),
@@ -1634,11 +1653,13 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.settings_24_regular,
-            color: Color(Config.mainToolbarIconColor),
+            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
           ),
           Text(
             S.of(context).options,
-            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+            style: TextStyle(
+              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            ),
           ),
         ],
       ),
@@ -1651,11 +1672,13 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.calendar_agenda_24_regular,
-            color: Color(Config.mainToolbarIconColor),
+            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
           ),
           Text(
             S.of(context).move,
-            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+            style: TextStyle(
+              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            ),
           ),
         ],
       ),
@@ -1668,11 +1691,13 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.book_information_24_regular,
-            color: Color(Config.mainToolbarIconColor),
+            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
           ),
           Text(
             S.of(context).info,
-            style: TextStyle(color: Color(Config.mainToolbarIconColor)),
+            style: TextStyle(
+              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            ),
           ),
         ],
       ),
@@ -1696,7 +1721,7 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.arrow_previous_24_regular
               : FluentIcons.arrow_next_24_regular,
-          color: Color(Config.navigationToolbarIconColor),
+          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
         ),
       ),
       onPressed: () => onTakeBackAllButtonPressed(false),
@@ -1709,7 +1734,7 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.chevron_left_24_regular
               : FluentIcons.chevron_right_24_regular,
-          color: Color(Config.navigationToolbarIconColor),
+          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
         ),
       ),
       onPressed: () async => onTakeBackButtonPressed(false),
@@ -1722,7 +1747,7 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.chevron_right_24_regular
               : FluentIcons.chevron_left_24_regular,
-          color: Color(Config.navigationToolbarIconColor),
+          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
         ),
       ),
       onPressed: () async => onStepForwardButtonPressed(false),
@@ -1735,7 +1760,7 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.arrow_next_24_regular
               : FluentIcons.arrow_previous_24_regular,
-          color: Color(Config.navigationToolbarIconColor),
+          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
         ),
       ),
       onPressed: () async => onStepForwardAllButtonPressed(false),
@@ -1761,11 +1786,17 @@ class _GamePageState extends State<GamePage>
     gameInstance.init();
     _engine.startup();
 
-    timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
-      _setReadyState();
-    });
+    timer = Timer.periodic(
+      const Duration(microseconds: 100),
+      (_) => _setReadyState(),
+    );
 
     _initAnimation();
+
+    LocalDatabaseService.listenPreferences.addListener(() async {
+      await _engine.setOptions();
+      debugPrint("$tag reloaded engine options");
+    });
   }
 
   @override
@@ -1786,14 +1817,15 @@ class _GamePageState extends State<GamePage>
     }
 
     return Scaffold(
-      backgroundColor: Color(Config.darkBackgroundColor),
+      backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPaddingH),
         child: Column(
           children: <Widget>[
             BlockSemantics(child: header),
             board,
-            if (Config.isHistoryNavigationToolbarShown) historyNavToolbar,
+            if (LocalDatabaseService.display.isHistoryNavigationToolbarShown)
+              historyNavToolbar,
             toolbar,
           ],
         ),
@@ -1827,9 +1859,9 @@ class _GamePageState extends State<GamePage>
   Future<void> didPush() async {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPush route: $route');
-    await _engine.setOptions(context);
-    if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+    await _engine.setOptions();
+    if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
+      S.load(LocalDatabaseService.display.languageCode);
       setState(() {});
     }
   }
@@ -1838,9 +1870,9 @@ class _GamePageState extends State<GamePage>
   Future<void> didPopNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPopNext route: $route');
-    await _engine.setOptions(context);
-    if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+    await _engine.setOptions();
+    if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
+      S.load(LocalDatabaseService.display.languageCode);
     }
   }
 
@@ -1848,9 +1880,9 @@ class _GamePageState extends State<GamePage>
   Future<void> didPushNext() async {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPushNext route: $route');
-    await _engine.setOptions(context);
-    if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+    await _engine.setOptions();
+    if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
+      S.load(LocalDatabaseService.display.languageCode);
     }
   }
 

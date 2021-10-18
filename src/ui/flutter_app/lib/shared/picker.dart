@@ -19,7 +19,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 Future<int> showPickerNumber(
@@ -40,7 +40,7 @@ Future<int> showPickerNumber(
           suffix: Text(
             suffixString,
             style: TextStyle(
-              fontSize: Config.fontSize,
+              fontSize: LocalDatabaseService.display.fontSize,
             ),
           ),
         ),
@@ -51,23 +51,23 @@ Future<int> showPickerNumber(
       S.of(context).pleaseSelect,
       style: TextStyle(
         color: AppTheme.appPrimaryColor,
-        fontSize: Config.fontSize + 4.0,
+        fontSize: LocalDatabaseService.display.fontSize + 4.0,
       ),
     ),
     textStyle: TextStyle(
       color: Colors.black,
-      fontSize: Config.fontSize,
+      fontSize: LocalDatabaseService.display.fontSize,
     ),
     selectedTextStyle: const TextStyle(color: AppTheme.appPrimaryColor),
     cancelText: S.of(context).cancel,
     cancelTextStyle: TextStyle(
       color: AppTheme.appPrimaryColor,
-      fontSize: Config.fontSize,
+      fontSize: LocalDatabaseService.display.fontSize,
     ),
     confirmText: S.of(context).confirm,
     confirmTextStyle: TextStyle(
       color: AppTheme.appPrimaryColor,
-      fontSize: Config.fontSize,
+      fontSize: LocalDatabaseService.display.fontSize,
     ),
     onConfirm: (Picker picker, List value) async {
       debugPrint(value.toString());

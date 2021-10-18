@@ -46,21 +46,21 @@ class BoardPainter extends PiecesBasePainter {
     required double offsetX,
     required double offsetY,
   }) {
-    paint.color = Color(Config.boardLineColor);
+    paint.color = LocalDatabaseService.colorSettings.boardLineColor;
     paint.style = PaintingStyle.stroke;
 
     final left = offsetX;
     final top = offsetY;
 
-    paint.strokeWidth = Config.boardBorderLineWidth;
+    paint.strokeWidth = LocalDatabaseService.display.boardBorderLineWidth;
 
-    if (Config.isPieceCountInHandShown) {
+    if (LocalDatabaseService.display.isPieceCountInHandShown) {
       var pieceInHandCount =
           gameInstance.position.pieceInHandCount[PieceColor.black];
 
       if (gameInstance.position.pieceOnBoardCount[PieceColor.white] == 0 &&
           gameInstance.position.pieceOnBoardCount[PieceColor.black] == 0) {
-        pieceInHandCount = Config.piecesCount;
+        pieceInHandCount = LocalDatabaseService.rules.piecesCount;
       }
 
       var pieceInHandCountStr = "";
@@ -72,7 +72,7 @@ class BoardPainter extends PiecesBasePainter {
       final TextSpan textSpan = TextSpan(
         style: TextStyle(
           fontSize: 48,
-          color: Color(Config.boardLineColor),
+          color: LocalDatabaseService.colorSettings.boardLineColor,
         ), // TODO
         text: pieceInHandCountStr,
       );
@@ -94,7 +94,7 @@ class BoardPainter extends PiecesBasePainter {
       );
     }
 
-    if (Config.isNotationsShown) {
+    if (LocalDatabaseService.display.isNotationsShown) {
       const String verticalNotations = "abcdefg";
       const String horizontalNotations = "7654321";
       String notationV = "";
@@ -139,7 +139,7 @@ class BoardPainter extends PiecesBasePainter {
 
         /* Show notations "a b c d e f" on board */
 
-        if (Config.developerMode) {
+        if (LocalDatabaseService.preferences.developerMode) {
           notationPainterV.paint(
             canvas,
             Offset(
@@ -167,7 +167,7 @@ class BoardPainter extends PiecesBasePainter {
           ),
         );
 
-        if (Config.developerMode) {
+        if (LocalDatabaseService.preferences.developerMode) {
           notationPainterH.paint(
             canvas,
             Offset(
@@ -185,7 +185,7 @@ class BoardPainter extends PiecesBasePainter {
       paint,
     );
 
-    paint.strokeWidth = Config.boardInnerLineWidth;
+    paint.strokeWidth = LocalDatabaseService.display.boardInnerLineWidth;
     final double bias = paint.strokeWidth / 2;
 
     // File B
@@ -239,14 +239,14 @@ class BoardPainter extends PiecesBasePainter {
     );
 
     // Point
-    if (Config.pointStyle != 0) {
-      if (Config.pointStyle == 1) {
+    if (LocalDatabaseService.display.pointStyle != 0) {
+      if (LocalDatabaseService.display.pointStyle == 1) {
         paint.style = PaintingStyle.fill;
-      } else if (Config.pointStyle == 2) {
+      } else if (LocalDatabaseService.display.pointStyle == 2) {
         paint.style = PaintingStyle.stroke; // TODO: WIP
       }
 
-      final double pointRadius = Config.pointWidth;
+      final double pointRadius = LocalDatabaseService.display.pointWidth;
 
       final points = [
         [0, 0],
@@ -284,7 +284,7 @@ class BoardPainter extends PiecesBasePainter {
       }
     }
 
-    if (!Config.hasDiagonalLines) {
+    if (!LocalDatabaseService.rules.hasDiagonalLines) {
       return;
     }
 

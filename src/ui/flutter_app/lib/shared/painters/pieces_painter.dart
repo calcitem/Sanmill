@@ -47,10 +47,11 @@ class PiecesPainter extends PiecesBasePainter {
     this.blurIndex = invalidIndex,
     required this.animationValue,
   }) : super(width: width) {
-    pointStyle = Config.pointStyle;
-    pointWidth = Config.pointWidth;
-    pieceWidth = squareWidth * Config.pieceWidth;
-    animatedPieceWidth = squareWidth * Config.pieceWidth * animationValue;
+    pointStyle = LocalDatabaseService.display.pointStyle;
+    pointWidth = LocalDatabaseService.display.pointWidth;
+    pieceWidth = squareWidth * LocalDatabaseService.display.pieceWidth;
+    animatedPieceWidth =
+        squareWidth * LocalDatabaseService.display.pieceWidth * animationValue;
   }
 
   @override
@@ -152,13 +153,14 @@ class PiecesPainter extends PiecesBasePainter {
             pps.animated ? animatedPieceRadius : pieceRadius,
             paint,
           );
-          paint.color = Color(Config.whitePieceColor);
+          paint.color = LocalDatabaseService.colorSettings.whitePieceColor;
           canvas.drawCircle(
             pps.pos,
             pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
             paint,
           );
-          blurPositionColor = Color(Config.whitePieceColor).withOpacity(0.1);
+          blurPositionColor = LocalDatabaseService.colorSettings.whitePieceColor
+              .withOpacity(0.1);
           break;
         case Piece.blackStone:
           paint.color = AppTheme.blackPieceBorderColor;
@@ -167,13 +169,14 @@ class PiecesPainter extends PiecesBasePainter {
             pps.animated ? animatedPieceRadius : pieceRadius,
             paint,
           );
-          paint.color = Color(Config.blackPieceColor);
+          paint.color = LocalDatabaseService.colorSettings.blackPieceColor;
           canvas.drawCircle(
             pps.pos,
             pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
             paint,
           );
-          blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
+          blurPositionColor = LocalDatabaseService.colorSettings.blackPieceColor
+              .withOpacity(0.1);
           break;
         case Piece.ban:
           //print("pps.piece is Ban");
@@ -192,22 +195,23 @@ class PiecesPainter extends PiecesBasePainter {
     if (focusIndex != invalidIndex) {
       /*
       focusPositionColor = Color.fromARGB(
-              (Color(Config.whitePieceColor).alpha +
-                      Color(Config.blackPieceColor).alpha) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).alpha +
+                      LocalDatabaseService.colorSettings.blackPieceColor).alpha) ~/
                   2,
-              (Color(Config.whitePieceColor).red +
-                      Color(Config.blackPieceColor).red) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).red +
+                      LocalDatabaseService.colorSettings.blackPieceColor).red) ~/
                   2,
-              (Color(Config.whitePieceColor).green +
-                      Color(Config.blackPieceColor).green) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).green +
+                      LocalDatabaseService.colorSettings.blackPieceColor).green) ~/
                   2,
-              (Color(Config.whitePieceColor).blue +
-                      Color(Config.blackPieceColor).blue) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).blue +
+                      LocalDatabaseService.colorSettings.blackPieceColor).blue) ~/
                   2)
           .withOpacity(0.5);
       */
 
-      focusPositionColor = Color(Config.pieceHighlightColor);
+      focusPositionColor =
+          LocalDatabaseService.colorSettings.pieceHighlightColor;
 
       paint.color = focusPositionColor;
       paint.style = PaintingStyle.stroke;

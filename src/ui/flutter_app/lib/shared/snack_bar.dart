@@ -17,14 +17,14 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 void showSnackBar(
   BuildContext context,
   String message, {
   Duration duration = const Duration(milliseconds: 4000),
 }) {
-  if (!Config.screenReaderSupport) {
+  if (!LocalDatabaseService.preferences.screenReaderSupport) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
@@ -33,7 +33,7 @@ void showSnackBar(
       content: Text(
         message,
         style: TextStyle(
-          fontSize: Config.fontSize,
+          fontSize: LocalDatabaseService.display.fontSize,
         ),
       ),
       duration: duration,

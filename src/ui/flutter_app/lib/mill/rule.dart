@@ -18,6 +18,7 @@
 
 import 'package:sanmill/l10n/resources.dart';
 
+// TODO: deprecate this thingy. No reason to keep it
 class Rule {
   String name = "Default Rule";
   String description = "";

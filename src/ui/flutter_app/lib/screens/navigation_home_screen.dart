@@ -29,15 +29,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/models/temporary.dart';
 import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
-import 'package:sanmill/screens/game_settings_page.dart';
+import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/screens/help_screen.dart';
-import 'package:sanmill/screens/personalization_settings_page.dart';
-import 'package:sanmill/screens/rule_settings_page.dart';
+import 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/shared/common/config.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/home_drawer.dart';
@@ -98,10 +99,11 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       } else if (drawerIndex == DrawerIndex.preferences) {
         screenView = GameSettingsPage();
       } else if (drawerIndex == DrawerIndex.ruleSettings) {
-        screenView = RuleSettingsPage();
+        screenView = const RuleSettingsPage();
       } else if (drawerIndex == DrawerIndex.personalization) {
         screenView = PersonalizationSettingsPage();
-      } else if (drawerIndex == DrawerIndex.feedback && !Config.developerMode) {
+      } else if (drawerIndex == DrawerIndex.feedback &&
+          !LocalDatabaseService.preferences.developerMode) {
         if (Platform.isWindows) {
           debugPrint("flutter_email_sender does not support Windows.");
           //_launchFeedback();
@@ -125,9 +127,11 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
             await FlutterEmailSender.send(email);
           });
         }
-      } else if (drawerIndex == DrawerIndex.Help && !Config.developerMode) {
+      } else if (drawerIndex == DrawerIndex.Help &&
+          !LocalDatabaseService.preferences.developerMode) {
         screenView = HelpScreen();
-      } else if (drawerIndex == DrawerIndex.About && !Config.developerMode) {
+      } else if (drawerIndex == DrawerIndex.About &&
+          !LocalDatabaseService.preferences.developerMode) {
         screenView = AboutPage();
       } else {
         //do in your way......

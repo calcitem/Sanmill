@@ -59,7 +59,7 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color(Config.drawerBackgroundColor),
+      color: LocalDatabaseService.colorSettings.drawerBackgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -108,7 +108,7 @@ class HomeDrawer extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.75 - 64,
         height: 46,
         decoration: BoxDecoration(
-          color: Color(Config.drawerHighlightItemColor),
+          color: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(ltr ? 0 : radius),
             topRight: Radius.circular(ltr ? radius : 0),
@@ -122,8 +122,9 @@ class HomeDrawer extends StatelessWidget {
     final listItemIcon = Icon(
       listItem.icon.icon,
       color: isSelected
-          ? Color(Config.drawerTextColor) // TODO: drawerHighlightTextColor
-          : Color(Config.drawerTextColor),
+          ? LocalDatabaseService
+              .colorSettings.drawerTextColor // TODO: drawerHighlightTextColor
+          : LocalDatabaseService.colorSettings.drawerTextColor,
     );
 
     final child = Row(
@@ -140,12 +141,11 @@ class HomeDrawer extends StatelessWidget {
           listItem.title,
           style: TextStyle(
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            fontSize: Config.fontSize,
+            fontSize: LocalDatabaseService.display.fontSize,
             color: isSelected
-                ? Color(
-                    Config.drawerTextColor,
-                  ) // TODO: drawerHighlightTextColor
-                : Color(Config.drawerTextColor),
+                ? LocalDatabaseService.colorSettings.drawerTextColor
+                // TODO: drawerHighlightTextColor
+                : LocalDatabaseService.colorSettings.drawerTextColor,
           ),
         ),
       ],
@@ -178,19 +178,25 @@ class _DrawerHeader extends StatelessWidget {
 
   final AnimationController iconAnimationController;
 
+  static const String _tag = "[home_drawer]";
+
+  void _enableDeveloperMode() {
+    Temp.developerMode = true;
+
+    debugPrint("$_tag Developer mode enabled.");
+  }
+
   @override
   Widget build(BuildContext context) {
-    const String tag = "[home_drawer]";
-
     final List<Color> animatedTextsColors = [
-      Color(Config.drawerTextColor),
+      LocalDatabaseService.colorSettings.drawerTextColor,
       Colors.black,
       Colors.blue,
       Colors.yellow,
       Colors.red,
-      Color(Config.darkBackgroundColor),
-      Color(Config.boardBackgroundColor),
-      Color(Config.drawerHighlightItemColor),
+      LocalDatabaseService.colorSettings.darkBackgroundColor,
+      LocalDatabaseService.colorSettings.boardBackgroundColor,
+      LocalDatabaseService.colorSettings.drawerHighlightItemColor,
     ];
 
     final rotationTransition = RotationTransition(
@@ -220,12 +226,13 @@ class _DrawerHeader extends StatelessWidget {
     );
 
     final animation = GestureDetector(
+      onDoubleTap: _enableDeveloperMode,
       child: AnimatedTextKit(
         animatedTexts: [
           ColorizeAnimatedText(
             S.of(context).appName,
             textStyle: TextStyle(
-              fontSize: Config.fontSize + 16,
+              fontSize: LocalDatabaseService.display.fontSize + 16,
               fontWeight: FontWeight.w600,
             ),
             colors: animatedTextsColors,
@@ -235,12 +242,8 @@ class _DrawerHeader extends StatelessWidget {
         pause: const Duration(seconds: 3),
         repeatForever: true,
         stopPauseOnTap: true,
-        onTap: () => debugPrint("$tag DoubleTap to enable developer mode."),
+        onTap: () => debugPrint("$_tag DoubleTap to enable developer mode."),
       ),
-      onDoubleTap: () {
-        Developer.developerModeEnabled = true;
-        debugPrint("$tag Developer mode enabled.");
-      },
     );
 
     return Padding(

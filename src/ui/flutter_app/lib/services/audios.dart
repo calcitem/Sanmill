@@ -21,7 +21,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/assets/assets.gen.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:stack_trace/stack_trace.dart';
 
@@ -162,9 +162,9 @@ class Audios {
 
   static Future<void> playTone(Sound sound) async {
     await Chain.capture(() async {
-      if (!Config.toneEnabled ||
+      if (!LocalDatabaseService.preferences.toneEnabled ||
           isTemporaryMute ||
-          Config.screenReaderSupport ||
+          LocalDatabaseService.preferences.screenReaderSupport ||
           !_initialized) {
         return;
       }

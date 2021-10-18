@@ -269,7 +269,7 @@ class _DrawerControllerState extends State<DrawerController>
           //full-screen Width with widget.screenView
           child: Container(
             decoration: BoxDecoration(
-              color: Color(Config.drawerColor),
+              color: LocalDatabaseService.colorSettings.drawerColor,
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: AppTheme.drawerBoxerShadowColor,
@@ -284,7 +284,7 @@ class _DrawerControllerState extends State<DrawerController>
     );
 
     return Material(
-      color: Color(Config.drawerColor),
+      color: LocalDatabaseService.colorSettings.drawerColor,
       child: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.horizontal,
