@@ -14,7 +14,6 @@ flutter pub get
 
 flutter gen-l10n
 
-
 flutter pub run flutter_oss_licenses:generate.dart
 mv lib/oss_licenses.dart lib/generated
 
