@@ -18,7 +18,6 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -40,8 +39,8 @@ class SettingsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool ltr =
-        getBidirectionality(context) == Bidirectionality.leftToRight;
+    final bool ltr = Directionality.of(context) == TextDirection.ltr;
+
     return ListTile(
       title: Text(
         titleString,

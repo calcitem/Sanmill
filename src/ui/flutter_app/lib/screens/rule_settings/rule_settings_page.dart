@@ -18,7 +18,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';

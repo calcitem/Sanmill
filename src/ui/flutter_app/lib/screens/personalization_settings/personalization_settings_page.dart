@@ -19,26 +19,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
+import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
+import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-part 'package:sanmill/screens/personalization_settings/color_selector_list_tile.dart';
 part 'package:sanmill/screens/personalization_settings/animation_duration_slider.dart';
-part 'package:sanmill/screens/personalization_settings/board_top_slider.dart';
 part 'package:sanmill/screens/personalization_settings/board_boarder_line_width_slider.dart';
 part 'package:sanmill/screens/personalization_settings/board_inner_line_width_slider.dart';
+part 'package:sanmill/screens/personalization_settings/board_top_slider.dart';
+part 'package:sanmill/screens/personalization_settings/color_selector_list_tile.dart';
 part 'package:sanmill/screens/personalization_settings/font_size_slider.dart';
-part 'package:sanmill/screens/personalization_settings/point_width_slider.dart';
 part 'package:sanmill/screens/personalization_settings/piece_width_slider.dart';
 part 'package:sanmill/screens/personalization_settings/point_style_modal.dart';
+part 'package:sanmill/screens/personalization_settings/point_width_slider.dart';
+part 'package:sanmill/screens/personalization_settings/language_picker.dart';
 
 class PersonalizationSettingsPage extends StatelessWidget {
   void setBoardBorderLineWidth(BuildContext context) => showModalBottomSheet(
@@ -97,7 +99,11 @@ class PersonalizationSettingsPage extends StatelessWidget {
   void langCallback(BuildContext context, Display _display, [Locale? locale]) {
     Navigator.pop(context);
 
-    LocalDatabaseService.display = _display.copyWith(languageCode: locale);
+    if (locale == null) {
+      LocalDatabaseService.display = _display.copyWithNull(languageCode: true);
+    } else {
+      LocalDatabaseService.display = _display.copyWith(languageCode: locale);
+    }
 
     debugPrint("[config] languageCode = $locale");
   }
@@ -223,11 +229,14 @@ class PersonalizationSettingsPage extends StatelessWidget {
           titleString: S.of(context).language,
           trailingString: LocalDatabaseService.display.languageCode !=
                   Constants.defaultLocale
-              ? languageCodeToStrings[_display.languageCode]!.languageName
+              ? languageCodeToStrings[_display.languageCode]
               : '',
-          onTap: () => setLanguage(
-            context,
-            (locale) => langCallback(context, _display, locale),
+          onTap: () => showDialog(
+            context: context,
+            builder: (_) => _LanguagePicker(
+              currentLocale: _display.languageCode,
+              onChanged: (locale) => langCallback(context, _display, locale),
+            ),
           ),
         ),
         SettingsSwitchListTile(

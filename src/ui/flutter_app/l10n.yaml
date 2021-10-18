@@ -1,4 +1,20 @@
+# see https://flutter.dev/go/i18n-user-guide
+# https://docs.google.com/document/d/10e0saTfAv32OZLRmONy866vnaw0I2jwL8zukykpgWBc/edit#
+#
+# WARNING: DO NOT translate app_XX.arb files directly here. For translations please see:
+# https://weblate.rimikis.de/projects/bierverkostung/
+# (only the source language, app_en.arb is edited manually here).
+#
+# We are now using synthetic packages, so to use `AppLocalizations` inside the code
+# you have to add the following import:
+# import 'package:yahtzee_counter/l10n/app_localizations.g.dart';
+
 arb-dir: lib/l10n
 template-arb-file: intl_en.arb
-output-localization-file: app_localizations.dart
+output-dir: lib/generated/intl/
+output-localization-file: l10n.dart
+output-class: S
 untranslated-messages-file: untranslated-messages-file.txt
+# use-deferred-loading: true #enable for web support
+synthetic-package: false
+nullable-getter: false

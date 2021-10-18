@@ -24,7 +24,7 @@ import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 ///
 /// This adapter provides helper functions to be used with [JsonSerializable]
 /// and is a general [TypeAdapter] to be used with Hive [Box]ses
-class LocaleAdapter extends TypeAdapter<Locale> {
+class LocaleAdapter extends TypeAdapter<Locale?> {
   @override
   final typeId = 7;
 
@@ -35,10 +35,16 @@ class LocaleAdapter extends TypeAdapter<Locale> {
   }
 
   @override
-  void write(BinaryWriter writer, Locale obj) {
-    writer.writeString(obj.languageCode);
+  void write(BinaryWriter writer, Locale? obj) {
+    if (obj != null) {
+      writer.writeString(obj.languageCode);
+    }
   }
 
-  static String colorToJson(Locale locale) => locale.languageCode;
-  static Locale colorFromJson(String value) => Locale(value);
+  static String? colorToJson(Locale? locale) => locale?.languageCode;
+  static Locale? colorFromJson(String? value) {
+    if (value != null) {
+      return Locale(value);
+    }
+  }
 }

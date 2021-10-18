@@ -1248,5 +1248,9 @@
     "hollow": "กลวง",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "ไทย",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

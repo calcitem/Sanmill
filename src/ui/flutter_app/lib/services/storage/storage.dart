@@ -95,7 +95,7 @@ class LocalDatabaseService {
 
   /// initilizes the [Display] reference
   static Future<void> _initDisplay() async {
-    Hive.registerAdapter<Locale>(LocaleAdapter());
+    Hive.registerAdapter<Locale?>(LocaleAdapter());
     Hive.registerAdapter<Display>(DisplayAdapter());
     _displayBox = await Hive.openBox<Display>(_displayBoxName);
   }

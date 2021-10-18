@@ -1248,5 +1248,9 @@
     "hollow": "Gol",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Română",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

@@ -1248,5 +1248,9 @@
     "hollow": "Kosong",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Indonesia",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }
