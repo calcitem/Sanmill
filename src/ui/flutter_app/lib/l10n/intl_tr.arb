@@ -1248,5 +1248,9 @@
     "hollow": "Oyuk",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Türk",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

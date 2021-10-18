@@ -1248,5 +1248,9 @@
     "hollow": "હોલો",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "ગુજરાતી",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

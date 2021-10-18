@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/services/language_info.dart';
 
 // TODO: deprecate this thingy. No reason to keep it
 class Rule {
