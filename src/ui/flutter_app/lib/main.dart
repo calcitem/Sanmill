@@ -24,12 +24,13 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/models/display.dart';
 import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
+import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/services/storage/storage_v1.dart';
 import 'package:sanmill/shared/constants.dart';
@@ -84,38 +85,44 @@ class SanmillApp extends StatelessWidget {
 
     setSpecialCountryAndRegion(context);
 
-    return MaterialApp(
-      /// Add navigator key from Catcher.
-      /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: Catcher.navigatorKey,
-      key: globalScaffoldKey,
-      navigatorObservers: [routeObserver],
-      localizationsDelegates: const [
-        // ... app-specific localization delegate[s] here
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: supportedLocales,
-      theme: AppTheme.lightThemeData,
-      darkTheme: AppTheme.darkThemeData,
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: DoubleBackToCloseApp(
-          snackBar: SnackBar(
-            content: Text(Resources.of().strings.tapBackAgainToLeave),
-          ),
-          child: NavigationHomeScreen(),
+    return ValueListenableBuilder(
+      valueListenable: LocalDatabaseService.listenDisplay,
+      builder: (BuildContext context, Box<Display> displayBox, _) {
+        final Display _display = displayBox.get(
+          LocalDatabaseService.displayKey,
+          defaultValue: Display(),
+        )!;
+        return MaterialApp(
+          /// Add navigator key from Catcher.
+          /// It will be used to navigate user to report page or to show dialog.
+          navigatorKey: Catcher.navigatorKey,
+          key: globalScaffoldKey,
+          navigatorObservers: [routeObserver],
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: _display.languageCode,
+          theme: AppTheme.lightThemeData,
+          darkTheme: AppTheme.darkThemeData,
+          debugShowCheckedModeBanner: false,
+          home: const _Home(),
+        );
+      },
+    );
+  }
+}
+
+class _Home extends StatelessWidget {
+  const _Home({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: DoubleBackToCloseApp(
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToLeave),
         ),
+        child: const NavigationHomeScreen(),
       ),
-      /*
-      WillPopScope(
-              onWillPop: () async {
-                Audios.disposePool();
-                return true;
-              },
-      */
     );
   }
 }

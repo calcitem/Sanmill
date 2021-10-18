@@ -88,8 +88,7 @@ class HomeDrawer extends StatelessWidget {
     final listItem = items[index];
     final bool isSelected = screenIndex == listItem.index;
 
-    final bool ltr =
-        getBidirectionality(context) == Bidirectionality.leftToRight;
+    final bool ltr = Directionality.of(context) == TextDirection.ltr;
     const double radius = 28.0;
     final animatedBuilder = AnimatedBuilder(
       animation: iconAnimationController,
@@ -109,11 +108,9 @@ class HomeDrawer extends StatelessWidget {
         height: 46,
         decoration: BoxDecoration(
           color: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(ltr ? 0 : radius),
-            topRight: Radius.circular(ltr ? radius : 0),
-            bottomLeft: Radius.circular(ltr ? 0 : radius),
-            bottomRight: Radius.circular(ltr ? radius : 0),
+          borderRadius: BorderRadius.horizontal(
+            right: ltr ? const Radius.circular(radius) : Radius.zero,
+            left: !ltr ? const Radius.circular(radius) : Radius.zero,
           ),
         ),
       ),

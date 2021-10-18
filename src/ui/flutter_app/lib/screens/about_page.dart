@@ -23,7 +23,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sanmill/generated/flutter_version.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
 import 'package:sanmill/screens/oss_license_page.dart';
 import 'package:sanmill/shared/constants.dart';

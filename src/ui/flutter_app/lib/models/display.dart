@@ -30,7 +30,7 @@ part 'display.g.dart';
 /// holds the data needed for the Display Settings
 @HiveType(typeId: 1)
 @JsonSerializable()
-@CopyWith()
+@CopyWith(generateCopyWithNull: true)
 @immutable
 class Display {
   Display({
@@ -57,7 +57,7 @@ class Display {
     fromJson: LocaleAdapter.colorFromJson,
     toJson: LocaleAdapter.colorToJson,
   )
-  final Locale languageCode;
+  final Locale? languageCode;
 
   @HiveField(1)
   final bool standardNotationEnabled;

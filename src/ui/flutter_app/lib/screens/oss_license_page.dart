@@ -19,7 +19,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/generated/oss_licenses.dart';
 import 'package:url_launcher/url_launcher.dart';
 

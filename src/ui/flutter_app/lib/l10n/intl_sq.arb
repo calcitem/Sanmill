@@ -1248,5 +1248,9 @@
     "hollow": "Zgavër",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Shqiptare",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

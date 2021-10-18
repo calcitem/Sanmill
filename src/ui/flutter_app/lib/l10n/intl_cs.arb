@@ -1248,5 +1248,9 @@
     "hollow": "Dutý",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Čeština",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

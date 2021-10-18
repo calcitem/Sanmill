@@ -1248,5 +1248,9 @@
     "hollow": "Ontto",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Suomalainen",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }
