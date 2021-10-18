@@ -240,8 +240,8 @@ class Board extends StatelessWidget {
       1
     ];
 
-    final bool ltr =
-        getBidirectionality(context) == Bidirectionality.leftToRight;
+        final bool ltr = Directionality.of(context) == TextDirection.ltr;
+
 
     if (ltr) {
       for (final file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {

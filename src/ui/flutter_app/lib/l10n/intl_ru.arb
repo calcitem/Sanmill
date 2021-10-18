@@ -1248,5 +1248,9 @@
     "hollow": "Пустой",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Pусский",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

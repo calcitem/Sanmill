@@ -23,8 +23,7 @@ import 'dart:async';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
@@ -36,7 +35,6 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/picker.dart';
 import 'package:sanmill/shared/snack_bar.dart';
@@ -1793,10 +1791,12 @@ class _GamePageState extends State<GamePage>
 
     _initAnimation();
 
-    LocalDatabaseService.listenPreferences.addListener(() async {
-      await _engine.setOptions();
-      debugPrint("$tag reloaded engine options");
-    });
+    LocalDatabaseService.listenPreferences.addListener(_refeshEngine);
+  }
+
+  Future<void> _refeshEngine() async {
+    await _engine.setOptions();
+    debugPrint("$tag reloaded engine options");
   }
 
   @override
@@ -1807,7 +1807,7 @@ class _GamePageState extends State<GamePage>
       ModalRoute.of(context)! as PageRoute<dynamic>,
     );
     screenPaddingH = _screenPaddingH;
-    ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    ltr = Directionality.of(context) == TextDirection.ltr;
   }
 
   @override
@@ -1851,39 +1851,27 @@ class _GamePageState extends State<GamePage>
     disposed = true;
     _engine.shutdown();
     _animationController.dispose();
-    super.dispose();
     routeObserver.unsubscribe(this);
+    LocalDatabaseService.listenPreferences.removeListener(_refeshEngine);
+    super.dispose();
   }
 
   @override
-  Future<void> didPush() async {
+  void didPush() {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPush route: $route');
-    await _engine.setOptions();
-    if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
-      S.load(LocalDatabaseService.display.languageCode);
-      setState(() {});
-    }
   }
 
   @override
-  Future<void> didPopNext() async {
+  void didPopNext() {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPopNext route: $route');
-    await _engine.setOptions();
-    if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
-      S.load(LocalDatabaseService.display.languageCode);
-    }
   }
 
   @override
-  Future<void> didPushNext() async {
+  void didPushNext() {
     final route = ModalRoute.of(context)!.settings.name;
     debugPrint('$tag Game Page didPushNext route: $route');
-    await _engine.setOptions();
-    if (LocalDatabaseService.display.languageCode != Constants.defaultLocale) {
-      S.load(LocalDatabaseService.display.languageCode);
-    }
   }
 
   @override

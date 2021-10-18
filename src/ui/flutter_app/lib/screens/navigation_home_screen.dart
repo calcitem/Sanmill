@@ -26,8 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/models/temporary.dart';
 import 'package:sanmill/screens/about_page.dart';
@@ -45,6 +44,7 @@ part 'package:sanmill/screens/home_drawer.dart';
 part 'package:sanmill/shared/drawer_controller.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
+  const NavigationHomeScreen({Key? key}) : super(key: key);
   @override
   _NavigationHomeScreenState createState() => _NavigationHomeScreenState();
 }
