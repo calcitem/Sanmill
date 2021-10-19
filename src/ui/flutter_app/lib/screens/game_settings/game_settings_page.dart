@@ -67,7 +67,7 @@ class GameSettingsPage extends StatelessWidget {
   void _setAiIsLazy(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences = _preferences.copyWith(aiIsLazy: value);
 
-    debugPrint("$_tag aiMovesFirst: $value");
+    debugPrint("$_tag aiIsLazy: $value");
   }
 
   void _setAlgorithm(BuildContext context, Preferences _preferences) {

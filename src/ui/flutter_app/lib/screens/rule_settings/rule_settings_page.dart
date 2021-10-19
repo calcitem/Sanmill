@@ -24,7 +24,7 @@ import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
-import 'package:sanmill/shared/snack_bar.dart';
+import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/rule_settings/fly_piece_count_modal.dart';

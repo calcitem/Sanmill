@@ -37,7 +37,7 @@ import 'package:sanmill/services/engine/native_engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/picker.dart';
-import 'package:sanmill/shared/snack_bar.dart';
+import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 //import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
