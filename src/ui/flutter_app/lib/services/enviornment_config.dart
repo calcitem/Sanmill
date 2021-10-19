@@ -16,14 +16,19 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/services/enviornment_config.dart';
-
-/// Temporary data model
+/// Enviornment configutation
 ///
-/// holds temporary runtime data that isn't yet or shouldn't be saved to the LocalDatabase
-class Temp {
-  const Temp._();
+/// Enables devs to start the app with compile time options
+class EnvironmentConfig {
+  const EnvironmentConfig._();
 
-  /// represents a temporary value for Preferences.developerMode
-  static bool developerMode = EnvironmentConfig.devMode;
+  /// gets weather we build for a monkey test
+  static const monkeyTest = bool.fromEnvironment('monkey_test');
+
+  /// gets weather we build for devMode
+  static const devMode = bool.fromEnvironment('dev_mode');
+
+  /// gets weather we want catcher to be enabled
+  /// defaults to true
+  static const catcher = bool.fromEnvironment('catcher', defaultValue: true);
 }
