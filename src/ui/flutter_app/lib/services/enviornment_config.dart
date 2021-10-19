@@ -28,7 +28,7 @@ class EnvironmentConfig {
   /// gets weather we build for devMode
   static const devMode = bool.fromEnvironment('dev_mode');
 
-  /// gets weather we want catcher to be enabled 
+  /// gets weather we want catcher to be enabled
   /// defaults to true
   static const catcher = bool.fromEnvironment('catcher', defaultValue: true);
 }
