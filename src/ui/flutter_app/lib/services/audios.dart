@@ -56,9 +56,16 @@ class Audios {
   static late final int _winSoundId;
   static bool isTemporaryMute = false;
 
+  static const _tag = '[audio]';
+
   static Future<void> loadSounds() async {
     if (Platform.isWindows) {
-      debugPrint("[audio] Audio Player does not support Windows.");
+      debugPrint("$_tag Audio Player does not support Windows.");
+      return;
+    }
+
+    if (_initialized) {
+      debugPrint("$_tag Audio Player is already initialized.");
       return;
     }
 
@@ -108,7 +115,7 @@ class Audios {
   static Future<void> _playSound(Sound sound) async {
     assert(!Platform.isWindows);
 
-    late final int soundId;
+    final int soundId;
 
     switch (sound) {
       case Sound.draw:
@@ -169,9 +176,9 @@ class Audios {
         return;
       }
 
+      // If the platform is windwos [_initialized] should be false thus this code shouldn't be executed
       if (Platform.isWindows) {
-        debugPrint("audio players is not support Windows.");
-        return;
+        assert(false);
       }
 
       // TODO: isn't debug chain meant to catch errors? so why catching them in here and not in onError??
