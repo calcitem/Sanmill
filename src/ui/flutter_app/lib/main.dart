@@ -30,6 +30,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/screens/navigation_home_screen.dart';
 import 'package:sanmill/services/audios.dart';
+import 'package:sanmill/services/enviornment_config.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/services/storage/storage_v1.dart';
@@ -37,39 +38,30 @@ import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/services/catcher.dart';
+part 'package:sanmill/services/init_system_ui.dart';
 
 Future<void> main() async {
+  debugPrint('Enviornment [catcher]: ${EnvironmentConfig.catcher}');
+  debugPrint('Enviornment [dev_mode]: ${EnvironmentConfig.devMode}');
+  debugPrint('Enviornment [monkey_test]: ${EnvironmentConfig.monkeyTest}');
+
   await LocalDatabaseService.initStorage();
   await DatabaseV1.migrateDB();
-  final catcher = Catcher(
-    rootWidget: const BetterFeedback(
-      child: SanmillApp(),
-      //localeOverride: Locale(Resources.of().languageCode),
-    ),
-    ensureInitialized: true,
-  );
 
-  await _initCatcher(catcher);
+  _initUI();
 
-  debugPrint(window.physicalSize.toString());
-  debugPrint(Constants.windowAspectRatio.toString());
-
-  SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-  );
-
-  if (Platform.isAndroid && isLargeScreen) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.black,
-        systemNavigationBarIconBrightness: Brightness.dark,
+  if (EnvironmentConfig.catcher) {
+    final catcher = Catcher(
+      rootWidget: const BetterFeedback(
+        child: SanmillApp(),
+        //localeOverride: Locale(Resources.of().languageCode),
       ),
+      ensureInitialized: true,
     );
-  } else if (isSmallScreen) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
+    await _initCatcher(catcher);
+  } else {
+    runApp(const SanmillApp());
   }
 }
 
@@ -83,8 +75,6 @@ class SanmillApp extends StatelessWidget {
     final globalScaffoldKey = GlobalKey<ScaffoldState>();
     Audios.loadSounds();
 
-    setSpecialCountryAndRegion(context);
-
     return ValueListenableBuilder(
       valueListenable: LocalDatabaseService.listenDisplay,
       builder: (BuildContext context, Box<Display> displayBox, _) {
@@ -95,7 +85,7 @@ class SanmillApp extends StatelessWidget {
         return MaterialApp(
           /// Add navigator key from Catcher.
           /// It will be used to navigate user to report page or to show dialog.
-          navigatorKey: Catcher.navigatorKey,
+          navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
           key: globalScaffoldKey,
           navigatorObservers: [routeObserver],
           localizationsDelegates: S.localizationsDelegates,
@@ -104,25 +94,22 @@ class SanmillApp extends StatelessWidget {
           theme: AppTheme.lightThemeData,
           darkTheme: AppTheme.darkThemeData,
           debugShowCheckedModeBanner: false,
-          home: const _Home(),
+          home: Builder(
+            builder: (context) {
+              setSpecialCountryAndRegion(context);
+
+              return Scaffold(
+                body: DoubleBackToCloseApp(
+                  snackBar: SnackBar(
+                    content: Text(S.of(context).tapBackAgainToLeave),
+                  ),
+                  child: const NavigationHomeScreen(),
+                ),
+              );
+            },
+          ),
         );
       },
-    );
-  }
-}
-
-class _Home extends StatelessWidget {
-  const _Home({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: DoubleBackToCloseApp(
-        snackBar: SnackBar(
-          content: Text(S.of(context).tapBackAgainToLeave),
-        ),
-        child: const NavigationHomeScreen(),
-      ),
     );
   }
 }

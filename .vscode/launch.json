@@ -1,0 +1,60 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Sanmill",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "src/ui/flutter_app",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Sanmill: Attach to Device",
+      "type": "dart",
+      "request": "attach"
+    },
+    {
+      "name": "Sanmill-dev",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "src/ui/flutter_app",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "dev_mode=true",
+        "--dart-define",
+        "catcher=false"
+      ]
+    },
+    {
+      "name": "Sanmill-monkey",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "src/ui/flutter_app",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "monkey_test=true"
+      ]
+    },
+    {
+      "name": "Sanmill-profile",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "src/ui/flutter_app",
+      "program": "lib/main.dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "Sanmill-release",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "src/ui/flutter_app",
+      "program": "lib/main.dart",
+      "flutterMode": "release"
+    }
+  ]
+}
