@@ -36,6 +36,7 @@ import 'package:sanmill/screens/help_screen.dart';
 import 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/engine/engine.dart';
+import 'package:sanmill/services/enviornment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
@@ -103,7 +104,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       } else if (drawerIndex == DrawerIndex.personalization) {
         screenView = PersonalizationSettingsPage();
       } else if (drawerIndex == DrawerIndex.feedback &&
-          !LocalDatabaseService.preferences.developerMode) {
+          !EnvironmentConfig.monkeyTest) {
         if (Platform.isWindows) {
           debugPrint("flutter_email_sender does not support Windows.");
           //_launchFeedback();
@@ -128,10 +129,10 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
           });
         }
       } else if (drawerIndex == DrawerIndex.Help &&
-          !LocalDatabaseService.preferences.developerMode) {
+          !EnvironmentConfig.monkeyTest) {
         screenView = HelpScreen();
       } else if (drawerIndex == DrawerIndex.About &&
-          !LocalDatabaseService.preferences.developerMode) {
+          !EnvironmentConfig.monkeyTest) {
         screenView = AboutPage();
       } else {
         //do in your way......

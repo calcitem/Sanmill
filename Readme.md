@@ -71,6 +71,21 @@ Use Qt Creator to open `millgame.pro` , or use Visual Studio to open `millgame.s
 
 Run `./flutter-init.sh` , copy `src/ui/flutter_app/android/key.properties.example` to `src/ui/flutter_app/android/key.properties`, modify it, and then use Android Studio or  Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
 
+We use compile time enviornmet configs to enable specific parts of the code:
+
+* `monkey_test` to prepare the app for monkey tests (references to external sites are going to be disabled)
+* `dev_mode` to show the developer mode without needing to enable it first
+* `catcher` to controll the use of catcher (this is on by default and needs to be disabled when needed)
+
+all enviornment configs can be combined and take a value of bool like:
+
+```shell
+flutter run --dart-define catcher=false dev_mode=true
+```
+
+For ease of use some launch configs vor VS-Code and IntelliJ IDEA are available. Just select the
+needed one in the `Run and Debug` or `Run/Debug Configurations` tab.
+
 ## Understanding the code base and participating in the project
 
 Sanmill's improvement over the last couple of years has been a great community effort. There are a few ways to help contribute to its growth.
