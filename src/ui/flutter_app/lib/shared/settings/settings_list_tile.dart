@@ -58,6 +58,7 @@ class SettingsListTile extends StatelessWidget {
                 color: AppTheme.listTileSubtitleColor,
               ),
             ),
+      // TODO: [Leptopoda] fix the trailing widget
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
