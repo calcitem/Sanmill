@@ -144,10 +144,6 @@
 
 //#define ALIGNED_LARGE_PAGES
 
-#ifdef WIN32
-#pragma warning(disable: 4996)
-#endif
-
 #ifndef  __GNUC__
 #define __builtin_expect(expr, n)    (expr)
 #endif
