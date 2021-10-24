@@ -19,13 +19,15 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include "config.h"
+
+#ifdef NET_FIGHT_SUPPORT
+
 #include <QDialog>
 #include <QString>
 #include <QVector>
 #include <queue>
 #include <string>
-
-#include "config.h"
 
 using std::string;
 
@@ -64,5 +66,7 @@ private:
     std::queue<QString> actions;
     QString action;
 };
+
+#endif // NET_FIGHT_SUPPORT
 
 #endif // SERVER_H

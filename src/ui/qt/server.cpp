@@ -16,6 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "config.h"
+
+#ifdef NET_FIGHT_SUPPORT
+
 #include <QtWidgets>
 #include <QtNetwork>
 #include <QtCore>
@@ -193,3 +197,5 @@ void Server::sendAction()
         actions.pop();
     }
 }
+
+#endif // NET_FIGHT_SUPPORT

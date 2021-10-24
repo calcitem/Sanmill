@@ -19,6 +19,10 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include "config.h"
+
+#ifdef NET_FIGHT_SUPPORT
+
 #include <QDataStream>
 #include <QDialog>
 #include <QTcpSocket>
@@ -72,10 +76,13 @@ private:
     QDataStream in;
     QString currentAction;
 
+    // TODO: 'QNetworkSession': was declared deprecated
     QNetworkSession *networkSession = nullptr;
 
     uint16_t port {};
 };
+
+#endif // NET_FIGHT_SUPPORT
 
 #endif // CLIENT_H
 

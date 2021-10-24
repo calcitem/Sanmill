@@ -16,6 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "config.h"
+
+#ifdef NET_FIGHT_SUPPORT
+
 #include <QtWidgets>
 #include <QtNetwork>
 
@@ -199,3 +203,4 @@ void Client::sessionOpened()
     enableGetActionButton();
 }
 
+#endif // NET_FIGHT_SUPPORT

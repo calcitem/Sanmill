@@ -51,7 +51,8 @@
 #define UCI_AUTO_RE_GO
 #endif
 
-#define NET_FIGHT_SUPPORT
+// Play via network (TODO: Port to Qt 6)
+//#define NET_FIGHT_SUPPORT
 
 /// Qt simple GUI like a mobile app (WIP)
 //#define QT_MOBILE_APP_UI
