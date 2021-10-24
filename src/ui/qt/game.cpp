@@ -1551,23 +1551,23 @@ void Game::saveScore()
 
     QTextStream textStream(&file);
 
-    textStream << QCoreApplication::applicationFilePath() << Qt::endl << Qt::endl;
+    textStream << QCoreApplication::applicationFilePath() << "\n" << "\n";
 
-    textStream << gameTest->getKey() << Qt::endl << Qt::endl;
+    textStream << gameTest->getKey() << "\n" << "\n";
 
     if (isAiPlayer[WHITE]) {
-        textStream << "White:\tAI Player" << Qt::endl;
+        textStream << "White:\tAI Player" << "\n";
     } else {
-        textStream << "White:\tHuman Player" << Qt::endl;
+        textStream << "White:\tHuman Player" << "\n";
     }
 
     if (isAiPlayer[BLACK]) {
-        textStream << "Black:\tAI Player" << Qt::endl;
+        textStream << "Black:\tAI Player" << "\n";
     } else {
-        textStream << "Black:\tHuman Player" << Qt::endl;
+        textStream << "Black:\tHuman Player" << "\n";
     }
 
-    textStream << "" << Qt::endl;
+    textStream << "" << "\n";
 
     position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] + position.score_draw;
 
@@ -1575,10 +1575,10 @@ void Game::saveScore()
         goto out;
     }
 
-    textStream << "Sum\t" + QString::number(position.gamesPlayedCount) << Qt::endl;
-    textStream << "White\t" + QString::number(position.score[WHITE])  + "\t" + QString::number(position.score[WHITE] * 10000 / position.gamesPlayedCount) << Qt::endl;
-    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" + QString::number(position.score[BLACK] * 10000 / position.gamesPlayedCount) << Qt::endl;
-    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" + QString::number(position.score_draw * 10000 / position.gamesPlayedCount)  << Qt::endl;
+    textStream << "Sum\t" + QString::number(position.gamesPlayedCount) << "\n";
+    textStream << "White\t" + QString::number(position.score[WHITE])  + "\t" + QString::number(position.score[WHITE] * 10000 / position.gamesPlayedCount) << "\n";
+    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" + QString::number(position.score[BLACK] * 10000 / position.gamesPlayedCount) << "\n";
+    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" + QString::number(position.score_draw * 10000 / position.gamesPlayedCount)  << "\n";
 
 out:
     file.flush();
