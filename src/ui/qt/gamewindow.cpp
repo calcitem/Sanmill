@@ -35,6 +35,8 @@
 #include <QToolTip>
 #include <QPicture>
 #include <QScreen>
+#include <QAction>
+#include <QActionGroup>
 
 #include "gamewindow.h"
 #include "game.h"
