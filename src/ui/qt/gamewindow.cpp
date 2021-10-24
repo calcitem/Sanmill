@@ -35,7 +35,6 @@
 #include <QToolTip>
 #include <QPicture>
 #include <QScreen>
-#include <QDesktopWidget>
 
 #include "gamewindow.h"
 #include "game.h"
@@ -372,7 +371,7 @@ void MillGameWindow::initialize()
         setFixedWidth(width());
         setFixedHeight(height());
     } else {
-        const int h = QApplication::desktop()->height();
+        const int h = QGuiApplication::primaryScreen()->geometry().height();
         this->resize(QSize(h * 3 / 4, h * 3 / 4));
     }
 

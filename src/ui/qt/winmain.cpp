@@ -25,7 +25,7 @@ QString APP_FILENAME_DEFAULT = "MillGame";
 
 #ifdef  QT_GUI_LIB
 #include <QtWidgets/QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QCoreApplication>
 #include <QResource>
 #include <QTranslator>
@@ -53,13 +53,14 @@ int main(int argc, char *argv[])
     QTranslator translator;
     translator.load("millgame-qt_zh_CN");
     a.installTranslator(&translator);
-    MillGameWindow w;   
+    QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
+    MillGameWindow w;
     w.show();
 
     w.setWindowTitle(getAppFileName() +  " (" + QString::number(QCoreApplication::applicationPid()) + ")");
 
 #ifndef _DEBUG
-    w.move((QApplication::desktop()->width() - w.width()) / 4, (QApplication::desktop()->height() - w.height()) / 2);
+    w.move((desktopRect.width() - w.width()) / 4, (desktopRect.height() - w.height()) / 2);
 #endif
 
     return QApplication::exec();
