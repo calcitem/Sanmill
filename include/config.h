@@ -152,6 +152,10 @@
 #define likely(expr)    (__builtin_expect(!!(expr), 1))
 #define unlikely(expr)  (__builtin_expect(!!(expr), 0))
 
+#ifdef _MSC_VER
+#define sscanf  sscanf_s
+#endif
+
 #ifdef FLUTTER_UI
 #include "base.h"
 #endif // FLUTTER_UI

@@ -39,7 +39,11 @@ bool CommandQueue::write(const char *command)
         return false;
     }
 
+#ifdef _MSC_VER
+    strncpy_s(commands[writeIndex], COMMAND_LENGTH, command, COMMAND_LENGTH);
+#else
     strncpy(commands[writeIndex], command, COMMAND_LENGTH);
+#endif
 
     if (readIndex == -1) {
         readIndex = writeIndex;
@@ -60,8 +64,13 @@ bool CommandQueue::read(char *dest)
         return false;
     }
 
+#ifdef _MSC_VER
+    strncpy_s(dest, 4096, (char const *)commands[readIndex], 4096);   // See  uci.cpp LINE_INPUT_MAX_CHAR
+    strncpy_s(commands[readIndex], 4096, "", COMMAND_LENGTH);
+#else
     strncpy(dest, commands[readIndex], 4096);   // See  uci.cpp LINE_INPUT_MAX_CHAR
     strncpy(commands[readIndex], "", COMMAND_LENGTH);
+#endif
 
     if (++readIndex == MAX_COMMAND_COUNT) {
         readIndex = 0;

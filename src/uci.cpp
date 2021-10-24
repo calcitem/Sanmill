@@ -160,6 +160,25 @@ void UCI::loop(int argc, char *argv[])
     Position *pos = new Position;
     string token, cmd;
 
+#ifdef _MSC_VER
+    switch (rule.piecesCount) {
+    case 9:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN9, BUFSIZ - 1);
+        break;
+    case 10:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN10, BUFSIZ - 1);
+        break;
+    case 11:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN11, BUFSIZ - 1);
+        break;
+    case 12:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN12, BUFSIZ - 1);
+        break;
+    default:
+        assert(0);
+        break;
+    }
+#else
     switch (rule.piecesCount) {
     case 9:
         strncpy(StartFEN, StartFEN9, BUFSIZ - 1);
@@ -177,6 +196,7 @@ void UCI::loop(int argc, char *argv[])
         assert(0);
         break;
     }
+#endif
 
     StartFEN[BUFSIZ - 1] = '\0';
 
