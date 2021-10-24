@@ -23,7 +23,7 @@
 #include <QKeyEvent>
 #include <QApplication>
 #include <QTimer>
-#include <QSound>
+#include <QSoundEffect>
 #include <QMessageBox>
 #include <QAbstractButton>
 #include <QPropertyAnimation>
@@ -571,7 +571,10 @@ void Game::playSound(GameSound soundType, Color c)
     }
 
     if (hasSound) {
-        QSound::play(soundPath);
+        QSoundEffect *effect = new QSoundEffect;
+        effect->setSource(QUrl::fromLocalFile(soundPath));
+        effect->setLoopCount(1);
+        effect->play();
     }
 #endif /* ! DONOT_PLAY_SOUND */
 }
