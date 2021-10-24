@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QMatrix>
+#include <QTransform>
 
 #include "gameview.h"
 
@@ -45,7 +45,7 @@ void GameView::flip()
 
     // Method 1: directly multiply the original transformation matrix by the above matrix
     // QMatrix only assigns values to the first two columns of the transformation matrix
-    setMatrix(matrix() * QMatrix(1, 0, 0, -1, 0, 0));
+    setTransform(transform() * QTransform(1, 0, 0, -1, 0, 0));
 
     /* Method 2: manually calculate the new transformation matrix and then assign a value to the scene
      * The efficiency of this method is not necessarily high, and manual calculation is needed
@@ -64,7 +64,7 @@ void GameView::mirror()
      * │ 0  1  0│
      * └ 0  0  1┘
      */
-    setMatrix(matrix() * QMatrix(-1, 0, 0, 1, 0, 0));
+    setTransform(transform() * QTransform(-1, 0, 0, 1, 0, 0));
 }
 
 void GameView::turnRight()
@@ -82,7 +82,7 @@ void GameView::turnRight()
      * │-1  0  0│
      * └ 0  0  1┘
      */
-    setMatrix(matrix() * QMatrix(0, 1, -1, 0, 0, 0));
+    setTransform(transform() * QTransform(0, 1, -1, 0, 0, 0));
 }
 
 void GameView::turnLeft()
@@ -95,7 +95,7 @@ void GameView::turnLeft()
      * │1  0  0│
      * └0  0  1┘
      */
-    setMatrix(matrix() * QMatrix(0, -1, 1, 0, 0, 0));
+    setTransform(transform() * QTransform(0, -1, 1, 0, 0, 0));
 }
 
 
