@@ -37,7 +37,7 @@ PieceItem::PieceItem(QGraphicsItem *parent) :
 
     //setAcceptedMouseButtons(Qt::LeftButton);
 
-    setAcceptedMouseButtons(nullptr);
+    setAcceptedMouseButtons(Qt::MouseButtons());
     //setAcceptHoverEvents(true);
 
     model = Models::noPiece;
