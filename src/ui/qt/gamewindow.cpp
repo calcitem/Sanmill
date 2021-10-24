@@ -517,7 +517,7 @@ void MillGameWindow::saveBook(const QString &path)
     auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
 
     for (const QString &cmd : strlist->stringList()) {
-        textStream << cmd << endl;
+        textStream << cmd << Qt::endl;
     }
 
     file.flush();
@@ -743,7 +743,7 @@ void MillGameWindow::on_actionSave_S_triggered()
             QTextStream textStream(&file);
             auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
             for (const QString &cmd : strlist->stringList())
-                textStream << cmd << endl;
+                textStream << cmd << Qt::endl;
             file.flush();
         }
 
