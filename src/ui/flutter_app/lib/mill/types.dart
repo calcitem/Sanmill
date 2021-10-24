@@ -40,7 +40,7 @@ class Move {
   String removed = Piece.noPiece;
 
   // 'move' is the UCI engine's move-string
-  String? move = "";
+  String move = "";
 
   // "notation" is Standard Notation
   String? notation = "";
@@ -55,30 +55,30 @@ class Move {
       throw "Error: Invalid Move: $move";
     }
 
-    if (move![0] == '-' && move!.length == "-(1,2)".length) {
+    if (move[0] == '-' && move.length == "-(1,2)".length) {
       type = MoveType.remove;
       from = fromFile = fromRank = fromIndex = invalidMove;
-      toFile = int.parse(move![2]);
-      toRank = int.parse(move![4]);
+      toFile = int.parse(move[2]);
+      toRank = int.parse(move[4]);
       to = makeSquare(toFile, toRank);
       notation = "x${squareToWmdNotation[to]}";
       //captured = Piece.noPiece;
-    } else if (move!.length == "(1,2)->(3,4)".length) {
+    } else if (move.length == "(1,2)->(3,4)".length) {
       type = MoveType.move;
-      fromFile = int.parse(move![1]);
-      fromRank = int.parse(move![3]);
+      fromFile = int.parse(move[1]);
+      fromRank = int.parse(move[3]);
       from = makeSquare(fromFile, fromRank);
       fromIndex = squareToIndex[from] ?? invalidMove;
-      toFile = int.parse(move![8]);
-      toRank = int.parse(move![10]);
+      toFile = int.parse(move[8]);
+      toRank = int.parse(move[10]);
       to = makeSquare(toFile, toRank);
       notation = "${squareToWmdNotation[from]}-${squareToWmdNotation[to]}";
       removed = Piece.noPiece;
-    } else if (move!.length == "(1,2)".length) {
+    } else if (move.length == "(1,2)".length) {
       type = MoveType.place;
       from = fromFile = fromRank = fromIndex = invalidMove;
-      toFile = int.parse(move![1]);
-      toRank = int.parse(move![3]);
+      toFile = int.parse(move[1]);
+      toRank = int.parse(move[3]);
       to = makeSquare(toFile, toRank);
       notation = "${squareToWmdNotation[to]}";
       removed = Piece.noPiece;
@@ -105,12 +105,12 @@ class Move {
     parse();
   }
 
-  static bool legal(String? move) {
+  static bool legal(String move) {
     if (move == "draw") {
       return true; // TODO
     }
 
-    if (move == null || move.length > "(3,1)->(2,1)".length) return false;
+    if (move.length > "(3,1)->(2,1)".length) return false;
 
     const String range = "0123456789(,)->";
 

@@ -455,7 +455,7 @@ class _GamePageState extends State<GamePage>
 
       if (ret) {
         gameInstance.sideToMove = position.sideToMove;
-        gameInstance.moveHistory.add(position.record!);
+        gameInstance.moveHistory.add(position.record);
 
         // TODO: Need Others?
         // Increment ply counters. In particular,
@@ -465,7 +465,7 @@ class _GamePageState extends State<GamePage>
         ++position.st.rule50;
         ++position.st.pliesFromNull;
 
-        if (position.record!.length > "-(1,2)".length) {
+        if (position.record.length > "-(1,2)".length) {
           if (posKeyHistory.isEmpty ||
               (posKeyHistory.isNotEmpty &&
                   position.st.key != posKeyHistory[posKeyHistory.length - 1])) {
@@ -484,8 +484,8 @@ class _GamePageState extends State<GamePage>
         //position.move = m;
 
         final Move m = Move(position.record);
-        position.recorder!.prune();
-        position.recorder!.moveIn(m, position);
+        position.recorder.prune();
+        position.recorder.moveIn(m, position);
 
         /*
         if (LocalDatabaseService.preferences.screenReaderSupport && m.notation != null) {
@@ -528,7 +528,7 @@ class _GamePageState extends State<GamePage>
         showSnackBar(context, S.of(context).notAIsTurn);
         return;
       }
-      if (!gameInstance.position.recorder!.isClean()) {
+      if (!gameInstance.position.recorder.isClean()) {
         debugPrint(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
@@ -551,7 +551,7 @@ class _GamePageState extends State<GamePage>
         if (mounted) {
           showTip(S.of(context).thinking);
 
-          final Move? m = gameInstance.position.recorder!.lastMove;
+          final Move? m = gameInstance.position.recorder.lastMove;
 
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               gameInstance.position.action != Act.remove &&
@@ -593,7 +593,7 @@ class _GamePageState extends State<GamePage>
             );
           }
 
-          await gameInstance.doMove(move.move!);
+          await gameInstance.doMove(move.move);
           showTips();
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               move.notation != null) {
@@ -665,8 +665,8 @@ class _GamePageState extends State<GamePage>
     debugPrint(text);
 
     await onTakeBackAllButtonPressed(false);
-    gameInstance.position.recorder!.clear();
-    final importFailedStr = gameInstance.position.recorder!.import(text);
+    gameInstance.position.recorder.clear();
+    final importFailedStr = gameInstance.position.recorder.import(text);
 
     if (importFailedStr != "") {
       showTip("${S.of(context).cannotImport} $importFailedStr");
@@ -1030,7 +1030,7 @@ class _GamePageState extends State<GamePage>
       */
 
       late final String text;
-      final lastEffectiveMove = pos.recorder!.lastEffectiveMove;
+      final lastEffectiveMove = pos.recorder.lastEffectiveMove;
       if (lastEffectiveMove != null && lastEffectiveMove.notation != null) {
         text = "${S.of(context).lastMove}: ${lastEffectiveMove.notation}";
       } else {
@@ -1593,12 +1593,12 @@ class _GamePageState extends State<GamePage>
             : "\n$_tip";
 
     String lastMove = "";
-    if (pos.recorder?.lastMove?.notation != null) {
-      final String n1 = pos.recorder!.lastMove!.notation!;
+    if (pos.recorder.lastMove?.notation != null) {
+      final String n1 = pos.recorder.lastMove!.notation!;
 
       if (n1.startsWith("x")) {
         final String n2 =
-            pos.recorder!.moveAt(pos.recorder!.movesCount - 2).notation!;
+            pos.recorder.moveAt(pos.recorder.movesCount - 2).notation!;
         lastMove = n2 + n1;
       } else {
         lastMove = n1;
