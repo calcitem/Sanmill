@@ -758,7 +758,7 @@ void MillGameWindow::on_actionSaveAs_A_triggered()
 {
     QString path = QFileDialog::getSaveFileName(this,
         tr("Open the move history file"),
-        QDir::currentPath() + tr("MoveHistory_") + QString::number(QDateTime::currentDateTimeUtc().toTime_t())+ ".txt", "TXT(*.txt)");
+        QDir::currentPath() + tr("MoveHistory_") + QDateTime::currentDateTime().toString().replace(" ", "_") + ".txt", "TXT(*.txt)");
 
     saveBook(path);
 }
