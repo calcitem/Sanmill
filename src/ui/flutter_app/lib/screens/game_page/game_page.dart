@@ -81,12 +81,12 @@ class _GamePageState extends State<GamePage>
   late Animation<double> animation;
   bool disposed = false;
   late bool ltr;
-  final String tag = "[game_page]";
+  static const String _tag = "[game_page]";
 
   Future<void> _setReadyState() async {
-    debugPrint("$tag Check if need to set Ready state...");
+    debugPrint("$_tag Check if need to set Ready state...");
     if (!isReady && mounted) {
-      debugPrint("$tag Set Ready State...");
+      debugPrint("$_tag Set Ready State...");
       setState(() {});
       isReady = true;
       timer.cancel();
@@ -189,7 +189,7 @@ class _GamePageState extends State<GamePage>
 
     if (gameInstance.engineType == EngineType.aiVsAi ||
         gameInstance.engineType == EngineType.testViaLAN) {
-      debugPrint("$tag Engine type is no human, ignore tapping.");
+      debugPrint("$_tag Engine type is no human, ignore tapping.");
       return false;
     }
 
@@ -198,7 +198,7 @@ class _GamePageState extends State<GamePage>
     final int? sq = indexToSquare[index];
 
     if (sq == null) {
-      debugPrint("$tag sq is null, skip tapping.");
+      debugPrint("$_tag sq is null, skip tapping.");
       return;
     }
 
@@ -213,7 +213,7 @@ class _GamePageState extends State<GamePage>
 
       if (gameInstance.isAiToMove) {
         if (gameInstance.aiIsSearching) {
-          debugPrint("$tag AI is thinking, skip tapping.");
+          debugPrint("$_tag AI is thinking, skip tapping.");
           return false;
         } else {
           debugPrint("[tap] AI is not thinking. AI is to move.");
@@ -644,7 +644,7 @@ class _GamePageState extends State<GamePage>
     }
 
     if (gameInstance.isAiToMove) {
-      debugPrint("$tag New game, AI to move.");
+      debugPrint("$_tag New game, AI to move.");
       engineToGo(false);
     }
   }
@@ -1219,14 +1219,14 @@ class _GamePageState extends State<GamePage>
     };
 
     debugPrint(
-      "$tag Game over reason: ${gameInstance.position.gameOverReason}",
+      "$_tag Game over reason: ${gameInstance.position.gameOverReason}",
     );
 
     String? loseReasonStr = reasonMap[gameInstance.position.gameOverReason];
 
     if (loseReasonStr == null) {
       loseReasonStr = S.of(context).gameOverUnknownReason;
-      debugPrint("$tag Game over reason string: $loseReasonStr");
+      debugPrint("$_tag Game over reason string: $loseReasonStr");
       if (LocalDatabaseService.preferences.developerMode) {
         assert(false);
       }
@@ -1403,7 +1403,7 @@ class _GamePageState extends State<GamePage>
                   }
 
                   if (gameInstance.isAiToMove) {
-                    debugPrint("$tag New game, AI to move.");
+                    debugPrint("$_tag New game, AI to move.");
                     engineToGo(false);
                   }
                 },
@@ -1775,7 +1775,7 @@ class _GamePageState extends State<GamePage>
 
   @override
   void initState() {
-    debugPrint("$tag Engine type: ${widget.engineType}");
+    debugPrint("$_tag Engine type: ${widget.engineType}");
 
     gameInstance.setWhoIsAi(widget.engineType);
 
@@ -1795,7 +1795,7 @@ class _GamePageState extends State<GamePage>
 
   Future<void> _refeshEngine() async {
     await _engine.setOptions();
-    debugPrint("$tag reloaded engine options");
+    debugPrint("$_tag reloaded engine options");
   }
 
   @override
@@ -1846,7 +1846,7 @@ class _GamePageState extends State<GamePage>
 
   @override
   void dispose() {
-    debugPrint("$tag dispose");
+    debugPrint("$_tag dispose");
     disposed = true;
     _engine.shutdown();
     _animationController.dispose();
@@ -1858,24 +1858,24 @@ class _GamePageState extends State<GamePage>
   @override
   void didPush() {
     final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$tag Game Page didPush route: $route');
+    debugPrint('$_tag Game Page didPush route: $route');
   }
 
   @override
   void didPopNext() {
     final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$tag Game Page didPopNext route: $route');
+    debugPrint('$_tag Game Page didPopNext route: $route');
   }
 
   @override
   void didPushNext() {
     final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$tag Game Page didPushNext route: $route');
+    debugPrint('$_tag Game Page didPushNext route: $route');
   }
 
   @override
   void didPop() {
     final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$tag Game Page didPop route: $route');
+    debugPrint('$_tag Game Page didPop route: $route');
   }
 }
