@@ -43,6 +43,8 @@ part 'package:sanmill/screens/personalization_settings/point_width_slider.dart';
 part 'package:sanmill/screens/personalization_settings/language_picker.dart';
 
 class PersonalizationSettingsPage extends StatelessWidget {
+  const PersonalizationSettingsPage({Key? key}) : super(key: key);
+
   void setBoardBorderLineWidth(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (_) => const _BoardBorderWidthSlider(),

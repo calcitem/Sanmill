@@ -16,30 +16,28 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/screens/home.dart';
+part of '../custom_drawer.dart';
 
-void main() {
-  Widget makeTestableWidget({required Widget child, required Locale locale}) {
-    return MaterialApp(
-      localizationsDelegates: S.localizationsDelegates,
-      supportedLocales: S.supportedLocales,
-      locale: locale,
-      home: child,
-    );
+/// CustomDrawer Value
+///
+/// the different states athe [CustomDrawer] can be in
+class CustomDrawerValue {
+  const CustomDrawerValue({
+    this.visible = false,
+  });
+
+  /// indicates whether drawer visible or not
+  final bool visible;
+
+  /// creates a value with hidden state
+  factory CustomDrawerValue.hidden() {
+    return const CustomDrawerValue();
   }
 
-  testWidgets('Widget', (WidgetTester tester) async {
-    const _screen = Home();
-    await tester.pumpWidget(
-      makeTestableWidget(
-        child: _screen,
-        locale: const Locale('en'),
-      ),
+  /// creates a value with visible state
+  factory CustomDrawerValue.visible() {
+    return const CustomDrawerValue(
+      visible: true,
     );
-    await tester.pump();
-    expect(find.text('Mill'), findsOneWidget);
-  });
+  }
 }

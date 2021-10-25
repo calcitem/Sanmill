@@ -16,30 +16,22 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/// Although marked as a library this package is tightly integrated into the app
+library custom_drawer;
+
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/rendering.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/screens/home.dart';
+import 'package:sanmill/models/temporary.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
-void main() {
-  Widget makeTestableWidget({required Widget child, required Locale locale}) {
-    return MaterialApp(
-      localizationsDelegates: S.localizationsDelegates,
-      supportedLocales: S.supportedLocales,
-      locale: locale,
-      home: child,
-    );
-  }
-
-  testWidgets('Widget', (WidgetTester tester) async {
-    const _screen = Home();
-    await tester.pumpWidget(
-      makeTestableWidget(
-        child: _screen,
-        locale: const Locale('en'),
-      ),
-    );
-    await tester.pump();
-    expect(find.text('Mill'), findsOneWidget);
-  });
-}
+part 'src/controller.dart';
+part 'src/header.dart';
+part 'src/item.dart';
+part 'src/value.dart';
+part 'src/widget.dart';

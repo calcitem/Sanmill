@@ -28,7 +28,7 @@ import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/display.dart';
-import 'package:sanmill/screens/navigation_home_screen.dart';
+import 'package:sanmill/screens/home.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/enviornment_config.dart';
 import 'package:sanmill/services/language_info.dart';
@@ -103,7 +103,7 @@ class SanmillApp extends StatelessWidget {
                   snackBar: SnackBar(
                     content: Text(S.of(context).tapBackAgainToLeave),
                   ),
-                  child: const NavigationHomeScreen(),
+                  child: const Home(),
                 ),
               );
             },
