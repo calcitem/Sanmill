@@ -38,6 +38,7 @@ part 'package:sanmill/screens/game_settings/skill_level_slider.dart';
 part 'package:sanmill/screens/game_settings/move_time_slider.dart';
 
 class GameSettingsPage extends StatelessWidget {
+  const GameSettingsPage({Key? key}) : super(key: key);
   static const List<String> _algorithmNames = ['Alpha-Beta', 'PVS', 'MTD(f)'];
 
   static const String _tag = "[game_settings_page]";

@@ -32,7 +32,9 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
-  final String tag = "[about] ";
+  const AboutPage({Key? key}) : super(key: key);
+
+  static const String tag = "[about] ";
 
   String get mode {
     if (kDebugMode) {

@@ -53,6 +53,7 @@ double boardWidth = 0.0;
 class GamePage extends StatefulWidget {
   final EngineType engineType;
 
+  // TODO: use gameInstamce.enginetype
   const GamePage(this.engineType, {Key? key}) : super(key: key);
 
   @override
@@ -886,12 +887,10 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  void onOptionButtonPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => GameSettingsPage()),
-    );
-  }
+  void onOptionButtonPressed() => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const GameSettingsPage()),
+      );
 
   void onMoveButtonPressed() {
     final List<Widget> _historyNavigation = [

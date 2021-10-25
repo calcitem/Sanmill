@@ -1,0 +1,84 @@
+/*
+  This file is part of Sanmill.
+  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+
+  Sanmill is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Sanmill is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+part of '../custom_drawer.dart';
+
+// TODO: [Leptopoda] maybe extend DrawerHeader
+class CustomDrawerHeader extends StatelessWidget {
+  const CustomDrawerHeader({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  final String title;
+
+  static const String _tag = "[home_drawer]";
+
+  void _enableDeveloperMode() {
+    Temp.developerMode = true;
+
+    debugPrint("$_tag Developer mode enabled.");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Color> _animatedTextsColors = [
+      LocalDatabaseService.colorSettings.drawerTextColor,
+      Colors.black,
+      Colors.blue,
+      Colors.yellow,
+      Colors.red,
+      LocalDatabaseService.colorSettings.darkBackgroundColor,
+      LocalDatabaseService.colorSettings.boardBackgroundColor,
+      LocalDatabaseService.colorSettings.drawerHighlightItemColor,
+    ];
+
+    final animation = GestureDetector(
+      onDoubleTap: _enableDeveloperMode,
+      child: AnimatedTextKit(
+        animatedTexts: [
+          ColorizeAnimatedText(
+            title,
+            textStyle: TextStyle(
+              fontSize: LocalDatabaseService.display.fontSize + 16,
+              fontWeight: FontWeight.w600,
+            ),
+            colors: _animatedTextsColors,
+            speed: const Duration(seconds: 3),
+          ),
+        ],
+        pause: const Duration(seconds: 3),
+        repeatForever: true,
+        stopPauseOnTap: true,
+        onTap: () => debugPrint("$_tag DoubleTap to enable developer mode."),
+      ),
+    );
+
+    final _padding = EdgeInsets.only(
+      bottom: 16.0,
+      top: 16.0 + (isLargeScreen ? 30 : 8),
+      left: 20,
+      right: 16,
+    );
+
+    return Padding(
+      padding: _padding,
+      child: ExcludeSemantics(child: animation),
+    );
+  }
+}
