@@ -24,7 +24,6 @@ import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
@@ -229,8 +228,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
       children: <Widget>[
         SettingsListTile(
           titleString: S.of(context).language,
-          trailingString: LocalDatabaseService.display.languageCode !=
-                  Constants.defaultLocale
+          trailingString: LocalDatabaseService.display.languageCode != null
               ? languageCodeToStrings[_display.languageCode]
               : '',
           onTap: () => showDialog(

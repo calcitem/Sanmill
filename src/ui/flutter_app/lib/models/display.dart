@@ -34,7 +34,7 @@ part 'display.g.dart';
 @immutable
 class Display {
   Display({
-    this.languageCode = Constants.defaultLocale,
+    this.languageCode,
     this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
     this.isNotationsShown = false,

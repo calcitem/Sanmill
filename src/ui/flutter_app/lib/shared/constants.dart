@@ -32,8 +32,6 @@ class Constants {
       "assets/files/environment_variables.txt";
   static const String gplLicenseFilename = "assets/licenses/GPL-3.0.txt";
 
-  static const Locale? defaultLocale = null;
-
   static const String feedbackSubjectPrefix = "[$appName] $projectName ";
   static const String feedbackSubjectSuffix = " Feedback";
 
