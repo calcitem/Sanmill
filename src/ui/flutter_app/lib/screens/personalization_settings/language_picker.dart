@@ -46,7 +46,7 @@ class _LanguagePicker extends StatelessWidget {
             activeColor: AppTheme.switchListTileActiveColor,
             title: Text(languageCodeToStrings[i]!),
             groupValue: currentLocale,
-            value: Locale(i),
+            value: i,
             onChanged: onChanged,
           ),
       ],

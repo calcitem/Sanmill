@@ -230,7 +230,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
           titleString: S.of(context).language,
           trailingString: LocalDatabaseService.display.languageCode != null
               ? languageCodeToStrings[_display.languageCode]
-              : '',
+              : null,
           onTap: () => showDialog(
             context: context,
             builder: (_) => _LanguagePicker(

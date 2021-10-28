@@ -52,10 +52,7 @@ Future<void> main() async {
 
   if (EnvironmentConfig.catcher) {
     final catcher = Catcher(
-      rootWidget: const BetterFeedback(
-        child: SanmillApp(),
-        //localeOverride: Locale(Resources.of().languageCode),
-      ),
+      rootWidget: const SanmillApp(),
       ensureInitialized: true,
     );
 
@@ -103,7 +100,11 @@ class SanmillApp extends StatelessWidget {
                   snackBar: SnackBar(
                     content: Text(S.of(context).tapBackAgainToLeave),
                   ),
-                  child: const Home(),
+                  child: BetterFeedback(
+                    localizationsDelegates: S.localizationsDelegates,
+                    localeOverride: _display.languageCode,
+                    child: const Home(),
+                  ),
                 ),
               );
             },

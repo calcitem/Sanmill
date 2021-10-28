@@ -15,9 +15,7 @@ dependencies:
   device_info_plus_platform_interface: ^2.1.0
   devicelocale: ^0.4.3
   double_back_to_close_app: ^2.0.1
-  feedback:
-    git:
-      url: git://github.com/calcitem/feedback.git
+  feedback: ^2.2.0
   fluentui_system_icons: ^1.1.140
   flutter:
     sdk: flutter
@@ -32,7 +30,7 @@ dependencies:
   hive_flutter: ^1.1.0
 
   #localization
-  intl: 0.17.0
+  intl: ^0.17.0
 
   package_info_plus: ^1.0.6
   path_provider: ^2.0.5
