@@ -1,3 +1,5 @@
+name: Dart Analyze
+
 on: [pull_request]
 
 jobs:
@@ -11,7 +13,8 @@ jobs:
       uses: subosito/flutter-action@v1
     - run: cd src/ui/flutter_app; flutter pub get
     - name: Analyze Flutter
-      uses: ValentinVignal/action-dart-analyze@v0.11
+      uses: zgosalvez/github-actions-analyze-dart@v1.6.1
       with:
         fail-on: 'format'
         working-directory: src/ui/flutter_app
+        analysis-options-file: src/ui/flutter_app/analysis_options.yaml
