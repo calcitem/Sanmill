@@ -4,7 +4,6 @@ jobs:
   linter:
     runs-on: ubuntu-latest
     name: Dart Analyze
-    working-directory: src/ui/flutter_app
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -15,3 +14,4 @@ jobs:
       uses: ValentinVignal/action-dart-analyze@v0.11
       with:
         fail-on: 'format'
+        working-directory: src/ui/flutter_app
