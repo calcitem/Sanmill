@@ -1,0 +1,17 @@
+on: [pull_request]
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    name: Dart Analyze
+    working-directory: src/ui/flutter_app
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1
+    - run: flutter pub get
+    - name: Analyze Flutter
+      uses: ValentinVignal/action-dart-analyze@v0.11
+      with:
+        fail-on: 'format'
