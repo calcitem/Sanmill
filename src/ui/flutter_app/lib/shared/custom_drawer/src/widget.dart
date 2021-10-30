@@ -63,7 +63,8 @@ class _CustomDrawerState extends State<CustomDrawer>
   bool _captured = false;
 
   static const _duration = Duration(milliseconds: 250);
-  static const _slideThreshold = 0.5;
+  static const _slideThreshold = 0.25;
+  static const _slideVelocityThreshold = 1300;
   static const _openRatio = 0.75;
   static const _overlayRadius = 28.0;
 
@@ -121,9 +122,6 @@ class _CustomDrawerState extends State<CustomDrawer>
       ),
     );
 
-    // TODO: [Leptopoda] move the drawer overlay into the main scaffold so we don't need to deal with positioning
-    final rtl = Directionality.of(context) == TextDirection.rtl;
-
     /// menu and arrow icon animation overlay
     final _drawerOverlay = IconButton(
       icon: AnimatedIcon(
@@ -131,10 +129,9 @@ class _CustomDrawerState extends State<CustomDrawer>
         color: AppTheme.drawerAnimationIconColor,
         progress: ReverseAnimation(_animationController),
       ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + (rtl ? 25 : 10),
-      ),
-      tooltip: S.of(context).mainMenu,
+      tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+      // TODO: [Leptopoda] remove this unused string
+      //S.of(context).mainMenu,
       onPressed: () => _controller.toggleDrawer(),
     );
 
@@ -162,12 +159,7 @@ class _CustomDrawerState extends State<CustomDrawer>
               ),
             ],
           ),
-          child: Stack(
-            children: <Widget>[
-              widget.child,
-              _drawerOverlay,
-            ],
-          ),
+          child: widget.child,
         ),
       ),
     );
@@ -184,7 +176,10 @@ class _CustomDrawerState extends State<CustomDrawer>
           onHorizontalDragEnd: widget.disabledGestures ? null : _handleDragEnd,
           onHorizontalDragCancel:
               widget.disabledGestures ? null : _handleDragCancel,
-          child: _mainView,
+          child: DrawerIcon(
+            icon: _drawerOverlay,
+            child: _mainView,
+          ),
         ),
       ],
     );
@@ -257,17 +252,19 @@ class _CustomDrawerState extends State<CustomDrawer>
 
     _captured = false;
 
-    if (_animationController.value >= _slideThreshold) {
-      if (_controller.value.visible) {
-        _animationController.forward();
+    if (_controller.value.visible) {
+      if (_animationController.value <= 1 - _slideThreshold ||
+          details.primaryVelocity! <= -_slideVelocityThreshold) {
+        _controller.hideDrawer();
       } else {
-        _controller.showDrawer();
+        _animationController.forward();
       }
     } else {
-      if (!_controller.value.visible) {
-        _animationController.reverse();
+      if (_animationController.value >= _slideThreshold ||
+          details.primaryVelocity! >= _slideVelocityThreshold) {
+        _controller.showDrawer();
       } else {
-        _controller.hideDrawer();
+        _animationController.reverse();
       }
     }
   }

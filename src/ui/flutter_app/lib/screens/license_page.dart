@@ -37,7 +37,6 @@ class LicenseAgreementPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(S.of(context).license),
-            centerTitle: true,
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),

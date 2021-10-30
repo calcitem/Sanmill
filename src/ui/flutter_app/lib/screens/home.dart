@@ -30,7 +30,7 @@ import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
 import 'package:sanmill/screens/game_settings/game_settings_page.dart';
-import 'package:sanmill/screens/personalization_settings/help_screen.dart';
+import 'package:sanmill/screens/help_screen.dart';
 import 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/engine/engine.dart';

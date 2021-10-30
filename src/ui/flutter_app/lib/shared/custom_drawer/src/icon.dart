@@ -16,22 +16,19 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/// Although marked as a library this package is tightly integrated into the app
-library custom_drawer;
+part of '../custom_drawer.dart';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:sanmill/models/temporary.dart';
-import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/constants.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+class DrawerIcon extends InheritedWidget {
+  final Widget icon;
 
-part 'src/controller.dart';
-part 'src/header.dart';
-part 'src/item.dart';
-part 'src/value.dart';
-part 'src/widget.dart';
-part 'src/icon.dart';
+  const DrawerIcon({
+    required this.icon,
+    required Widget child,
+  }) : super(child: child);
+
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) => false;
+
+  static DrawerIcon? of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<DrawerIcon>();
+}

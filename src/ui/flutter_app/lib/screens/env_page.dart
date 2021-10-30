@@ -39,7 +39,6 @@ class EnvironmentVariablesPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(S.of(context).environmentVariables),
-            centerTitle: true,
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),

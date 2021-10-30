@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class HelpScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class HelpScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
-        centerTitle: true,
+        leading: DrawerIcon.of(context)?.icon,
         title: Text(
           S.of(context).howToPlay,
           style: TextStyle(
