@@ -24,135 +24,93 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
-import 'package:sanmill/screens/navigation_home_screen.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/models/display.dart';
+import 'package:sanmill/screens/home.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/services/enviornment_config.dart';
+import 'package:sanmill/services/language_info.dart';
+import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/storage/storage_v1.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
+part 'package:sanmill/services/catcher.dart';
+part 'package:sanmill/services/init_system_ui.dart';
+
 Future<void> main() async {
-  final catcher = Catcher(
-    rootWidget: BetterFeedback(
-      child: SanmillApp(),
-      //localeOverride: Locale(Resources.of().languageCode),
-    ),
-    ensureInitialized: true,
-  );
+  debugPrint('Enviornment [catcher]: ${EnvironmentConfig.catcher}');
+  debugPrint('Enviornment [dev_mode]: ${EnvironmentConfig.devMode}');
+  debugPrint('Enviornment [monkey_test]: ${EnvironmentConfig.monkeyTest}');
 
-  String externalDirStr;
-  try {
-    final Directory? externalDir = await getExternalStorageDirectory();
-    if (externalDir != null) {
-      externalDirStr = externalDir.path;
-    } else {
-      externalDirStr = ".";
-    }
-  } catch (e) {
-    debugPrint(e.toString());
-    externalDirStr = ".";
-  }
-  final String path = "$externalDirStr/${Constants.crashLogsFileName}";
-  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
-  final String recipients = Constants.recipients;
+  await LocalDatabaseService.initStorage();
+  await DatabaseV1.migrateDB();
 
-  final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
-    ConsoleHandler(),
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
-    //SentryHandler(SentryClient(sopt))
-  ]);
+  _initUI();
 
-  /// Release configuration.
-  /// Same as above, but once user accepts dialog,
-  /// user will be prompted to send email with crash to support.
-  final CatcherOptions releaseOptions = CatcherOptions(PageReportMode(), [
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
-  ]);
-
-  final CatcherOptions profileOptions = CatcherOptions(PageReportMode(), [
-    ConsoleHandler(),
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
-  ]);
-
-  /// Pass root widget (MyApp) along with Catcher configuration:
-  catcher.updateConfig(
-    debugConfig: debugOptions,
-    releaseConfig: releaseOptions,
-    profileConfig: profileOptions,
-  );
-
-  debugPrint(window.physicalSize.toString());
-  debugPrint(Constants.windowAspectRatio.toString());
-
-  SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-  );
-
-  if (Platform.isAndroid && isLargeScreen) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.black,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
+  if (EnvironmentConfig.catcher) {
+    final catcher = Catcher(
+      rootWidget: const SanmillApp(),
+      ensureInitialized: true,
     );
-  }
 
-  if (isSmallScreen) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    await _initCatcher(catcher);
+  } else {
+    runApp(const SanmillApp());
   }
 }
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class SanmillApp extends StatelessWidget {
-  final globalScaffoldKey = GlobalKey<ScaffoldState>();
+  const SanmillApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final globalScaffoldKey = GlobalKey<ScaffoldState>();
     Audios.loadSounds();
 
-    setSpecialCountryAndRegion(context);
+    return ValueListenableBuilder(
+      valueListenable: LocalDatabaseService.listenDisplay,
+      builder: (BuildContext context, Box<Display> displayBox, _) {
+        final Display _display = displayBox.get(
+          LocalDatabaseService.displayKey,
+          defaultValue: Display(),
+        )!;
+        return MaterialApp(
+          /// Add navigator key from Catcher.
+          /// It will be used to navigate user to report page or to show dialog.
+          navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
+          key: globalScaffoldKey,
+          navigatorObservers: [routeObserver],
+          localizationsDelegates: S.localizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: _display.languageCode,
+          theme: AppTheme.lightThemeData,
+          darkTheme: AppTheme.darkThemeData,
+          debugShowCheckedModeBanner: false,
+          home: Builder(
+            builder: (context) {
+              setSpecialCountryAndRegion(context);
 
-    return MaterialApp(
-      /// Add navigator key from Catcher.
-      /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: Catcher.navigatorKey,
-      key: globalScaffoldKey,
-      navigatorObservers: [routeObserver],
-      localizationsDelegates: const [
-        // ... app-specific localization delegate[s] here
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: supportedLocales,
-      theme: AppTheme.lightThemeData,
-      darkTheme: AppTheme.darkThemeData,
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: DoubleBackToCloseApp(
-          snackBar: SnackBar(
-            content: Text(Resources.of().strings.tapBackAgainToLeave),
+              return Scaffold(
+                body: DoubleBackToCloseApp(
+                  snackBar: SnackBar(
+                    content: Text(S.of(context).tapBackAgainToLeave),
+                  ),
+                  child: BetterFeedback(
+                    localizationsDelegates: S.localizationsDelegates,
+                    localeOverride: _display.languageCode,
+                    child: const Home(),
+                  ),
+                ),
+              );
+            },
           ),
-          child: NavigationHomeScreen(),
-        ),
-      ),
-      /*
-      WillPopScope(
-              onWillPop: () async {
-                Audios.disposePool();
-                return true;
-              },
-      */
+        );
+      },
     );
   }
 }

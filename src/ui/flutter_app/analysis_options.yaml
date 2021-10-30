@@ -6,9 +6,10 @@ linter:
     constant_identifier_names: false
     avoid_escaping_inner_quotes: false
     use_build_context_synchronously: false
+    depend_on_referenced_packages: false
 
 analyzer:
   exclude:
     # generated code
     - lib/generated/**
-    - lib/l10n/**
+    - lib/**/**.g.dart

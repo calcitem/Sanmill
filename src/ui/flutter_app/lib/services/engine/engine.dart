@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
 import 'package:sanmill/mill/position.dart';
 
 enum EngineType {
@@ -36,7 +35,7 @@ class EngineResponse {
 }
 
 abstract class Engine {
-  Future<void> setOptions(BuildContext context) async {}
+  Future<void> setOptions() async {}
   Future<void> startup() async {}
   Future<void> shutdown() async {}
   Future<EngineResponse> search(Position? position);

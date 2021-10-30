@@ -23,7 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 class NativeEngine extends Engine {
   static const platform = MethodChannel('com.calcitem.sanmill/engine');
@@ -102,16 +102,18 @@ class NativeEngine extends Engine {
     int sleep = 100,
     int times = 0,
   }) async {
-    var timeLimit = Config.developerMode ? 100 : 6000;
+    final _pref = LocalDatabaseService.preferences;
 
-    if (Config.moveTime > 0) {
+    var timeLimit = _pref.developerMode ? 100 : 6000;
+
+    if (_pref.moveTime > 0) {
       // TODO: Accurate timeLimit
-      timeLimit = Config.moveTime * 10 * 64 + 10;
+      timeLimit = _pref.moveTime * 10 * 64 + 10;
     }
 
     if (times > timeLimit) {
       debugPrint("[engine] Timeout. sleep = $sleep, times = $times");
-      if (Config.developerMode && isActive) {
+      if (_pref.developerMode && isActive) {
         throw "Exception: waitResponse timeout.";
       }
       return '';
@@ -142,83 +144,81 @@ class NativeEngine extends Engine {
   }
 
   @override
-  Future<void> setOptions(BuildContext context) async {
-    if (Config.settingsLoaded == false) {
-      debugPrint("[engine] Settings is not loaded yet, now load settings...");
-      await Config.loadSettings();
-    }
+  Future<void> setOptions() async {
+    final _pref = LocalDatabaseService.preferences;
+    final _rules = LocalDatabaseService.rules;
 
     await send(
-      'setoption name DeveloperMode value ${Config.developerMode}',
+      'setoption name DeveloperMode value ${_pref.developerMode}',
     );
     await send(
-      'setoption name Algorithm value ${Config.algorithm}',
+      'setoption name Algorithm value ${_pref.algorithm}',
     );
     await send(
-      'setoption name DrawOnHumanExperience value ${Config.drawOnHumanExperience}',
+      'setoption name DrawOnHumanExperience value ${_pref.drawOnHumanExperience}',
     );
     await send(
-      'setoption name ConsiderMobility value ${Config.considerMobility}',
+      'setoption name ConsiderMobility value ${_pref.considerMobility}',
     );
     await send(
-      'setoption name SkillLevel value ${Config.skillLevel}',
+      'setoption name SkillLevel value ${_pref.skillLevel}',
     );
     await send(
-      'setoption name MoveTime value ${Config.moveTime}',
+      'setoption name MoveTime value ${_pref.moveTime}',
     );
     await send(
-      'setoption name AiIsLazy value ${Config.aiIsLazy}',
+      'setoption name AiIsLazy value ${_pref.aiIsLazy}',
     );
     await send(
-      'setoption name Shuffling value ${Config.shufflingEnabled}',
+      'setoption name Shuffling value ${_pref.shufflingEnabled}',
     );
     await send(
-      'setoption name PiecesCount value ${Config.piecesCount}',
+      'setoption name PiecesCount value ${_rules.piecesCount}',
     );
     await send(
-      'setoption name FlyPieceCount value ${Config.flyPieceCount}',
+      'setoption name FlyPieceCount value ${_rules.flyPieceCount}',
     );
     await send(
-      'setoption name PiecesAtLeastCount value ${Config.piecesAtLeastCount}',
+      'setoption name PiecesAtLeastCount value ${_rules.piecesAtLeastCount}',
     );
     await send(
-      'setoption name HasDiagonalLines value ${Config.hasDiagonalLines}',
+      'setoption name HasDiagonalLines value ${_rules.hasDiagonalLines}',
     );
     await send(
-      'setoption name HasBannedLocations value ${Config.hasBannedLocations}',
+      'setoption name HasBannedLocations value ${_rules.hasBannedLocations}',
     );
     await send(
-      'setoption name MayMoveInPlacingPhase value ${Config.mayMoveInPlacingPhase}',
+      'setoption name MayMoveInPlacingPhase value ${_rules.mayMoveInPlacingPhase}',
     );
     await send(
-      'setoption name IsDefenderMoveFirst value ${Config.isDefenderMoveFirst}',
+      'setoption name IsDefenderMoveFirst value ${_rules.isDefenderMoveFirst}',
     );
     await send(
-      'setoption name MayRemoveMultiple value ${Config.mayRemoveMultiple}',
+      'setoption name MayRemoveMultiple value ${_rules.mayRemoveMultiple}',
     );
     await send(
-      'setoption name MayRemoveFromMillsAlways value ${Config.mayRemoveFromMillsAlways}',
+      'setoption name MayRemoveFromMillsAlways value ${_rules.mayRemoveFromMillsAlways}',
     );
     await send(
-      'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${Config.mayOnlyRemoveUnplacedPieceInPlacingPhase}',
+      'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${_rules.mayOnlyRemoveUnplacedPieceInPlacingPhase}',
     );
     await send(
-      'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${Config.isWhiteLoseButNotDrawWhenBoardFull}',
+      'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${_rules.isWhiteLoseButNotDrawWhenBoardFull}',
     );
     await send(
-      'setoption name IsLoseButNotChangeSideWhenNoWay value ${Config.isLoseButNotChangeSideWhenNoWay}',
+      'setoption name IsLoseButNotChangeSideWhenNoWay value ${_rules.isLoseButNotChangeSideWhenNoWay}',
     );
     await send(
-      'setoption name MayFly value ${Config.mayFly}',
+      'setoption name MayFly value ${_rules.mayFly}',
     );
     await send(
-      'setoption name NMoveRule value ${Config.nMoveRule}',
+      'setoption name NMoveRule value ${_rules.nMoveRule}',
     );
     await send(
-      'setoption name EndgameNMoveRule value ${Config.endgameNMoveRule}',
+      'setoption name EndgameNMoveRule value ${_rules.endgameNMoveRule}',
     );
     await send(
-      'setoption name ThreefoldRepetitionRule value ${Config.threefoldRepetitionRule}',
+      'setoption name ThreefoldRepetitionRule value ${_rules.threefoldRepetitionRule}',
     );
   }
 

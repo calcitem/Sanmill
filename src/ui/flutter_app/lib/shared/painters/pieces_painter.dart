@@ -30,9 +30,9 @@ class PiecePaintParam {
 }
 
 class PiecesPainter extends PiecesBasePainter {
-  final Position? position;
-  final int? focusIndex;
-  final int? blurIndex;
+  final Position position;
+  final int focusIndex;
+  final int blurIndex;
   final double animationValue;
 
   int pointStyle = 0;
@@ -47,10 +47,11 @@ class PiecesPainter extends PiecesBasePainter {
     this.blurIndex = invalidIndex,
     required this.animationValue,
   }) : super(width: width) {
-    pointStyle = Config.pointStyle;
-    pointWidth = Config.pointWidth;
-    pieceWidth = squareWidth * Config.pieceWidth;
-    animatedPieceWidth = squareWidth * Config.pieceWidth * animationValue;
+    pointStyle = LocalDatabaseService.display.pointStyle;
+    pointWidth = LocalDatabaseService.display.pointWidth;
+    pieceWidth = squareWidth * LocalDatabaseService.display.pieceWidth;
+    animatedPieceWidth =
+        squareWidth * LocalDatabaseService.display.pieceWidth * animationValue;
   }
 
   @override
@@ -80,17 +81,17 @@ class PiecesPainter extends PiecesBasePainter {
   static void doPaint(
     Canvas canvas,
     Paint paint, {
-    Position? position,
-    double? gridWidth,
-    double? squareWidth,
-    int? pointStyle,
-    double? pointWidth,
-    double? pieceWidth,
-    double? animatedPieceWidth,
-    double? offsetX,
-    double? offsetY,
-    int? focusIndex = invalidIndex,
-    int? blurIndex = invalidIndex,
+    required Position position,
+    required double gridWidth,
+    required double squareWidth,
+    required int pointStyle,
+    required double pointWidth,
+    required double pieceWidth,
+    required double animatedPieceWidth,
+    required double offsetX,
+    required double offsetY,
+    int focusIndex = invalidIndex,
+    int blurIndex = invalidIndex,
   }) {
     //
     final left = offsetX;
@@ -106,19 +107,19 @@ class PiecesPainter extends PiecesBasePainter {
     for (var row = 0; row < 7; row++) {
       for (var col = 0; col < 7; col++) {
         final index = row * 7 + col;
-        final piece = position!.pieceOnGrid(index); // No Pieces when initial
+        final piece = position.pieceOnGrid(index); // No Pieces when initial
 
         if (piece == Piece.noPiece) continue;
 
         final pos =
-            Offset(left! + squareWidth! * col, top! + squareWidth * row);
+            Offset(left+ squareWidth* col, top+ squareWidth * row);
         final animated = focusIndex == index;
 
         piecesToDraw
             .add(PiecePaintParam(piece: piece, pos: pos, animated: animated));
 
         shadowPath.addOval(
-          Rect.fromCenter(center: pos, width: pieceWidth!, height: pieceWidth),
+          Rect.fromCenter(center: pos, width: pieceWidth, height: pieceWidth),
         );
       }
     }
@@ -137,10 +138,10 @@ class PiecesPainter extends PiecesBasePainter {
     */
 
     for (final pps in piecesToDraw) {
-      final pieceRadius = pieceWidth! / 2;
+      final pieceRadius = pieceWidth/ 2;
       final pieceInnerRadius = pieceRadius * 0.99;
 
-      final animatedPieceRadius = animatedPieceWidth! / 2;
+      final animatedPieceRadius = animatedPieceWidth/ 2;
       final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
       // Draw Border of Piece
@@ -152,13 +153,14 @@ class PiecesPainter extends PiecesBasePainter {
             pps.animated ? animatedPieceRadius : pieceRadius,
             paint,
           );
-          paint.color = Color(Config.whitePieceColor);
+          paint.color = LocalDatabaseService.colorSettings.whitePieceColor;
           canvas.drawCircle(
             pps.pos,
             pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
             paint,
           );
-          blurPositionColor = Color(Config.whitePieceColor).withOpacity(0.1);
+          blurPositionColor = LocalDatabaseService.colorSettings.whitePieceColor
+              .withOpacity(0.1);
           break;
         case Piece.blackStone:
           paint.color = AppTheme.blackPieceBorderColor;
@@ -167,13 +169,14 @@ class PiecesPainter extends PiecesBasePainter {
             pps.animated ? animatedPieceRadius : pieceRadius,
             paint,
           );
-          paint.color = Color(Config.blackPieceColor);
+          paint.color = LocalDatabaseService.colorSettings.blackPieceColor;
           canvas.drawCircle(
             pps.pos,
             pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
             paint,
           );
-          blurPositionColor = Color(Config.blackPieceColor).withOpacity(0.1);
+          blurPositionColor = LocalDatabaseService.colorSettings.blackPieceColor
+              .withOpacity(0.1);
           break;
         case Piece.ban:
           //print("pps.piece is Ban");
@@ -186,50 +189,51 @@ class PiecesPainter extends PiecesBasePainter {
 
     // draw focus and blur position
 
-    final int row = focusIndex! ~/ 7;
+    final int row = focusIndex~/ 7;
     final int column = focusIndex % 7;
 
     if (focusIndex != invalidIndex) {
       /*
       focusPositionColor = Color.fromARGB(
-              (Color(Config.whitePieceColor).alpha +
-                      Color(Config.blackPieceColor).alpha) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).alpha +
+                      LocalDatabaseService.colorSettings.blackPieceColor).alpha) ~/
                   2,
-              (Color(Config.whitePieceColor).red +
-                      Color(Config.blackPieceColor).red) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).red +
+                      LocalDatabaseService.colorSettings.blackPieceColor).red) ~/
                   2,
-              (Color(Config.whitePieceColor).green +
-                      Color(Config.blackPieceColor).green) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).green +
+                      LocalDatabaseService.colorSettings.blackPieceColor).green) ~/
                   2,
-              (Color(Config.whitePieceColor).blue +
-                      Color(Config.blackPieceColor).blue) ~/
+              (LocalDatabaseService.colorSettings.whitePieceColor).blue +
+                      LocalDatabaseService.colorSettings.blackPieceColor).blue) ~/
                   2)
           .withOpacity(0.5);
       */
 
-      focusPositionColor = Color(Config.pieceHighlightColor);
+      focusPositionColor =
+          LocalDatabaseService.colorSettings.pieceHighlightColor;
 
       paint.color = focusPositionColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
       canvas.drawCircle(
-        Offset(left! + column * squareWidth!, top! + row * squareWidth),
-        animatedPieceWidth! / 2,
+        Offset(left+ column * squareWidth, top+ row * squareWidth),
+        animatedPieceWidth/ 2,
         paint,
       );
     }
 
     if (blurIndex != invalidIndex) {
-      final row = blurIndex! ~/ 7;
+      final row = blurIndex~/ 7;
       final column = blurIndex % 7;
 
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(
-        Offset(left! + column * squareWidth!, top! + row * squareWidth),
-        animatedPieceWidth! / 2 * 0.8,
+        Offset(left+ column * squareWidth, top+ row * squareWidth),
+        animatedPieceWidth/ 2 * 0.8,
         paint,
       );
     }

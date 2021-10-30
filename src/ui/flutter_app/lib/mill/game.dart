@@ -20,7 +20,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
@@ -29,7 +29,7 @@ Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
 Game gameInstance = Game();
 
 class Game {
-  final String tag = "[game]";
+  static const String _tag = "[game]";
 
   void init() {
     // TODO: _position is allready initialized with Position(). seems like duplicate code
@@ -74,8 +74,8 @@ class Game {
 
   bool get aiIsSearching {
     debugPrint(
-      "$tag White is searching? ${isSearching[PieceColor.white]}\n"
-      "$tag Black is searching? ${isSearching[PieceColor.black]}\n",
+      "$_tag White is searching? ${isSearching[PieceColor.white]}\n"
+      "$_tag Black is searching? ${isSearching[PieceColor.black]}\n",
     );
 
     return isSearching[PieceColor.white] == true ||
@@ -90,8 +90,8 @@ class Game {
     switch (type) {
       case EngineType.humanVsAi:
       case EngineType.testViaLAN:
-        isAi[PieceColor.white] = Config.aiMovesFirst;
-        isAi[PieceColor.black] = !Config.aiMovesFirst;
+        isAi[PieceColor.white] = LocalDatabaseService.preferences.aiMovesFirst;
+        isAi[PieceColor.black] = !LocalDatabaseService.preferences.aiMovesFirst;
         break;
       case EngineType.humanVsHuman:
       case EngineType.humanVsLAN:
@@ -106,8 +106,8 @@ class Game {
     }
 
     debugPrint(
-      "$tag White is AI? ${isAi[PieceColor.white]}\n"
-      "$tag Black is AI? ${isAi[PieceColor.black]}\n",
+      "$_tag White is AI? ${isAi[PieceColor.white]}\n"
+      "$_tag Black is AI? ${isAi[PieceColor.black]}\n",
     );
   }
 
@@ -121,7 +121,7 @@ class Game {
       start();
     }
 
-    debugPrint("$tag AI do move: $move");
+    debugPrint("$_tag AI do move: $move");
 
     if (await position.doMove(move) == false) {
       return false;
@@ -154,6 +154,6 @@ class Game {
     final String scoreInfo =
         "Score: ${position.score[PieceColor.white]} : ${position.score[PieceColor.black]} : ${position.score[PieceColor.draw]}\ttotal: $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
-    debugPrint("$tag $scoreInfo");
+    debugPrint("$_tag $scoreInfo");
   }
 }

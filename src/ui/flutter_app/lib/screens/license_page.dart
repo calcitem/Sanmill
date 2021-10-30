@@ -18,8 +18,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/shared/common/constants.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/shared/constants.dart';
 
 class LicenseAgreementPage extends StatelessWidget {
   @override

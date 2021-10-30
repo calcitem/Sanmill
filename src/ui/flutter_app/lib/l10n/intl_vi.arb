@@ -1248,5 +1248,9 @@
     "hollow": "Rỗng",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Tiếng Việt",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

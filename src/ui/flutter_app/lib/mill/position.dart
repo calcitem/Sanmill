@@ -25,7 +25,7 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 List<int> posKeyHistory = [];
 
@@ -44,7 +44,7 @@ class Position {
   List<String> board = List.filled(sqNumber, "");
   List<String> _grid = List.filled(7 * 7, "");
 
-  GameRecorder? recorder;
+  late GameRecorder recorder;
 
   Map<String, int> pieceInHandCount = {
     PieceColor.white: -1,
@@ -79,7 +79,7 @@ class Position {
   int currentSquare = 0;
   int nPlayed = 0;
 
-  String? record;
+  late String record;
 
   static late List<List<List<int>>> millTable;
   static late List<List<int>> adjacentSquares;
@@ -280,9 +280,8 @@ class Position {
     if (move == "draw") {
       phase = Phase.gameOver;
       _winner = PieceColor.draw;
-      if (score[PieceColor.draw] != null) {
-        score[PieceColor.draw] = score[PieceColor.draw]! + 1;
-      }
+
+      score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
       // TODO: WAR to judge rule50
       if (rule.nMoveRule > 0 && posKeyHistory.length >= rule.nMoveRule - 1) {
@@ -342,7 +341,7 @@ class Position {
     ++gamePly;
     ++st.pliesFromNull;
 
-    if (record != null && record!.length > "-(1,2)".length) {
+    if (record.length > "-(1,2)".length) {
       if (posKeyHistory.isEmpty ||
           (posKeyHistory.isNotEmpty &&
               st.key != posKeyHistory[posKeyHistory.length - 1])) {
@@ -360,7 +359,7 @@ class Position {
 
     this.move = m;
 
-    recorder!.moveIn(m, this); // TODO: Is Right?
+    recorder.moveIn(m, this); // TODO: Is Right?
 
     return true;
   }
@@ -748,17 +747,7 @@ class Position {
 
   void updateScore() {
     if (phase == Phase.gameOver) {
-      if (_winner == PieceColor.draw) {
-        if (score[PieceColor.draw] != null) {
-          score[PieceColor.draw] = score[PieceColor.draw]! + 1;
-        }
-
-        return;
-      }
-
-      if (score[_winner] != null) {
-        score[_winner] = score[_winner]! + 1;
-      }
+      score[_winner] = score[_winner]! + 1;
     }
   }
 
@@ -1063,15 +1052,11 @@ class Position {
       for (int r = 0; r < rankNumber; r++) {
         final int s = f * rankNumber + r;
         if (board[s] == Piece.whiteStone) {
-          if (pieceOnBoardCount[PieceColor.white] != null) {
-            pieceOnBoardCount[PieceColor.white] =
-                pieceOnBoardCount[PieceColor.white]! + 1;
-          }
+          pieceOnBoardCount[PieceColor.white] =
+              pieceOnBoardCount[PieceColor.white]! + 1;
         } else if (board[s] == Piece.blackStone) {
-          if (pieceOnBoardCount[PieceColor.black] != null) {
-            pieceOnBoardCount[PieceColor.black] =
-                pieceOnBoardCount[PieceColor.black]! + 1;
-          }
+          pieceOnBoardCount[PieceColor.black] =
+              pieceOnBoardCount[PieceColor.black]! + 1;
         }
       }
     }
@@ -1089,17 +1074,17 @@ class Position {
   Future<String> gotoHistory(HistoryMove move, [int? index]) async {
     final int moveIndex = _gotoHistoryIndex(move, index);
 
-    if (recorder == null) {
-      debugPrint("[goto] recorder is null.");
-      return "null";
-    }
+    //if (recorder == null) {
+    //  debugPrint("[goto] recorder is null.");
+    //  return "null";
+    //}
 
-    if (recorder!.cur == moveIndex) {
+    if (recorder.cur == moveIndex) {
       debugPrint("[goto] cur is equal to moveIndex.");
       return "equal";
     }
 
-    final history = recorder!.history;
+    final history = recorder.history;
 
     if (moveIndex < -1 || history.length <= moveIndex) {
       debugPrint("[goto] moveIndex is out of range.");
@@ -1125,8 +1110,8 @@ class Position {
     }
 
     for (var i = 0; i <= moveIndex; i++) {
-      if (await gameInstance.doMove(history[i].move!) == false) {
-        errString = history[i].move!;
+      if (await gameInstance.doMove(history[i].move) == false) {
+        errString = history[i].move;
         break;
       }
     }
@@ -1134,8 +1119,8 @@ class Position {
     // Restore context
     gameInstance.engineType = engineTypeBackup;
     gameInstance.setWhoIsAi(engineTypeBackup);
-    recorder!.history = historyBack;
-    recorder!.cur = moveIndex;
+    recorder.history = historyBack;
+    recorder.cur = moveIndex;
 
     Audios.isTemporaryMute = false;
     await _gotoHistoryPlaySound(move);
@@ -1146,25 +1131,25 @@ class Position {
   int _gotoHistoryIndex(HistoryMove move, [int? index]) {
     switch (move) {
       case HistoryMove.forwardAll:
-        return recorder!.history.length - 1;
+        return recorder.history.length - 1;
       case HistoryMove.backAll:
         return -1;
       case HistoryMove.farward:
-        return recorder!.cur + 1;
+        return recorder.cur + 1;
       case HistoryMove.backN:
         assert(index != null);
-        int _index = recorder!.cur - index!;
+        int _index = recorder.cur - index!;
         if (_index < -1) {
           _index = -1;
         }
         return _index;
       case HistoryMove.backOne:
-        return recorder!.cur - 1;
+        return recorder.cur - 1;
     }
   }
 
   Future<void> _gotoHistoryPlaySound(HistoryMove move) async {
-    if (!Config.keepMuteWhenTakingBack) {
+    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
       switch (move) {
         case HistoryMove.forwardAll:
         case HistoryMove.farward:
@@ -1180,15 +1165,15 @@ class Position {
   }
 
   String movesSinceLastRemove() {
-    int? i = 0;
+    int i = 0;
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
     //debugPrint("recorder.movesCount = ${recorder.movesCount}");
 
-    for (i = recorder!.movesCount - 1; i! >= 0; i--) {
+    for (i = recorder.movesCount - 1; i >= 0; i--) {
       //if (recorder.moveAt(i).type == MoveType.remove) break;
-      if (recorder!.moveAt(i).move![0] == '-') break;
+      if (recorder.moveAt(i).move[0] == '-') break;
     }
 
     if (i >= 0) {
@@ -1197,8 +1182,8 @@ class Position {
 
     //debugPrint("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
 
-    for (int i = posAfterLastRemove; i < recorder!.movesCount; i++) {
-      buffer.write(" ${recorder!.moveAt(i).move}");
+    for (int i = posAfterLastRemove; i < recorder.movesCount; i++) {
+      buffer.write(" ${recorder.moveAt(i).move}");
     }
 
     final String moves = buffer.toString();
@@ -1213,13 +1198,13 @@ class Position {
     return moves.isNotEmpty ? moves.substring(1) : '';
   }
 
-  String get moveHistoryText => recorder!.buildMoveHistoryText();
+  String get moveHistoryText => recorder.buildMoveHistoryText();
 
   String get side => _sideToMove;
 
-  Move? get lastMove => recorder!.last;
+  Move? get lastMove => recorder.last;
 
-  String? get lastPositionWithRemove => recorder!.lastPositionWithRemove;
+  String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
 }
 
 enum HistoryMove { forwardAll, backAll, farward, backN, backOne }

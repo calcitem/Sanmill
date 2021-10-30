@@ -1248,5 +1248,9 @@
     "hollow": "ফাঁপা",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "বাংলা",
+    "@languageName": {
+        "description": "The name of the current language"
     }
 }

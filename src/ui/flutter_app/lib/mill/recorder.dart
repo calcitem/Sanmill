@@ -19,14 +19,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/shared/common/config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 // TODO
 class GameRecorder {
   int cur = -1;
   String? lastPositionWithRemove = "";
   List<Move> history = <Move>[];
-  final tag = "[GameRecorder]";
+  static const _tag = "[GameRecorder]";
 
   GameRecorder({this.cur = -1, this.lastPositionWithRemove});
 
@@ -49,9 +49,9 @@ class GameRecorder {
       }
     } else if ((wmd.length == 8 && wmd[2] == '-' && wmd[5] == 'x') ||
         (wmd.length == 5 && wmd[2] == 'x')) {
-      debugPrint("$tag Not support parsing format oo-ooxo notation.");
+      debugPrint("$_tag Not support parsing format oo-ooxo notation.");
     } else {
-      debugPrint("$tag Parse notation $wmd failed.");
+      debugPrint("$_tag Parse notation $wmd failed.");
     }
 
     return move;
@@ -73,7 +73,7 @@ class GameRecorder {
       if (val >= 1 && val <= 24) {
         return playOkNotationToMove[playOk]!;
       } else {
-        debugPrint("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
@@ -85,7 +85,7 @@ class GameRecorder {
       if (val >= 1 && val <= 24) {
         return "-${playOkNotationToMove[sub]!}";
       } else {
-        debugPrint("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
@@ -96,7 +96,7 @@ class GameRecorder {
       if (val1 >= 1 && val1 <= 24) {
         move = playOkNotationToMove[sub1]!;
       } else {
-        debugPrint("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
         return "";
       }
 
@@ -105,12 +105,12 @@ class GameRecorder {
       if (val2 >= 1 && val2 <= 24) {
         return "$move->${playOkNotationToMove[sub2]!}";
       } else {
-        debugPrint("$tag Parse PlayOK notation $playOk failed.");
+        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
         return "";
       }
     }
 
-    debugPrint("$tag Not support parsing format oo-ooxo PlayOK notation.");
+    debugPrint("$_tag Not support parsing format oo-ooxo PlayOK notation.");
     return "";
   }
 
@@ -405,7 +405,7 @@ class GameRecorder {
     String num = "";
 
     for (var i = 0; i <= cur; i++) {
-      if (Config.standardNotationEnabled) {
+      if (LocalDatabaseService.display.standardNotationEnabled) {
         if (k % cols == 1) {
           num = "${(k + 1) ~/ 2}.    ";
           if (k < 9 * cols) {
@@ -426,7 +426,7 @@ class GameRecorder {
         moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${history[i].move}　';
       }
 
-      if (Config.standardNotationEnabled) {
+      if (LocalDatabaseService.display.standardNotationEnabled) {
         if ((k + 1) % cols == 0) moveHistoryText += '\n';
       } else {
         if ((i + 1) % cols == 0) moveHistoryText += '\n';

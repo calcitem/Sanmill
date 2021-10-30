@@ -17,35 +17,29 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/generated/l10n.dart';
-import 'package:sanmill/screens/navigation_home_screen.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/screens/home.dart';
 
 void main() {
   Widget makeTestableWidget({required Widget child, required Locale locale}) {
     return MaterialApp(
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
+      localizationsDelegates: S.localizationsDelegates,
+      supportedLocales: S.supportedLocales,
       locale: locale,
       home: child,
     );
   }
 
   testWidgets('Widget', (WidgetTester tester) async {
-    final NavigationHomeScreen screen = NavigationHomeScreen();
+    const _screen = Home();
     await tester.pumpWidget(
       makeTestableWidget(
-        child: screen,
+        child: _screen,
         locale: const Locale('en'),
       ),
     );
     await tester.pump();
-    expect(find.text(S.current.appName), findsOneWidget);
+    expect(find.text('Mill'), findsOneWidget);
   });
 }
