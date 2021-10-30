@@ -20,6 +20,9 @@ class HelpScreen extends StatelessWidget {
             color: AppTheme.helpTextColor,
           ),
         ),
+        iconTheme: IconThemeData(
+          color: AppTheme.helpTextColor,
+        ),
       ),
       backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
       body: SingleChildScrollView(

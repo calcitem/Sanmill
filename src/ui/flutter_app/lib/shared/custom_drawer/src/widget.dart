@@ -126,7 +126,6 @@ class _CustomDrawerState extends State<CustomDrawer>
     final _drawerOverlay = IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.arrow_menu,
-        color: AppTheme.drawerAnimationIconColor,
         progress: ReverseAnimation(_animationController),
       ),
       tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,

@@ -22,7 +22,6 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/rule.dart';
@@ -1346,39 +1345,30 @@ class _GamePageState extends State<GamePage>
   }
 
   IconData get iconArrow {
-    IconData iconArrow = FluentIcons.code_24_regular;
-
     if (gameInstance.position.phase == Phase.gameOver) {
       switch (gameInstance.position.winner) {
         case PieceColor.white:
-          iconArrow = ltr
+          return ltr
               ? FluentIcons.toggle_left_24_regular
               : FluentIcons.toggle_right_24_regular;
-          break;
         case PieceColor.black:
-          iconArrow = ltr
+          return ltr
               ? FluentIcons.toggle_right_24_regular
               : FluentIcons.toggle_left_24_regular;
-          break;
         default:
-          iconArrow = FluentIcons.handshake_24_regular;
-          break;
+          return FluentIcons.handshake_24_regular;
       }
     } else {
       switch (gameInstance.sideToMove) {
         case PieceColor.white:
-          iconArrow = FluentIcons.chevron_left_24_regular;
-          break;
+          return FluentIcons.chevron_left_24_regular;
+
         case PieceColor.black:
-          iconArrow = FluentIcons.chevron_right_24_regular;
-          break;
+          return FluentIcons.chevron_right_24_regular;
         default:
-          iconArrow = FluentIcons.code_24_regular;
-          break;
+          return FluentIcons.code_24_regular;
       }
     }
-
-    return iconArrow;
   }
 
   Widget get board {
@@ -1645,10 +1635,6 @@ class _GamePageState extends State<GamePage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(
-      this,
-      ModalRoute.of(context)! as PageRoute<dynamic>,
-    );
     screenPaddingH = _screenPaddingH;
     ltr = Directionality.of(context) == TextDirection.ltr;
   }
@@ -1664,6 +1650,9 @@ class _GamePageState extends State<GamePage>
         leading: DrawerIcon.of(context)?.icon,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        iconTheme: IconThemeData(
+          color: AppTheme.drawerAnimationIconColor,
+        ),
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
@@ -1688,7 +1677,6 @@ class _GamePageState extends State<GamePage>
     disposed = true;
     _engine.shutdown();
     _animationController.dispose();
-    routeObserver.unsubscribe(this);
     LocalDatabaseService.listenPreferences.removeListener(_refeshEngine);
     super.dispose();
   }
