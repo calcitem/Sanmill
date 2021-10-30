@@ -28,9 +28,6 @@ class Constants {
 
   static String settingsFilename = "${projectNameLower}_settings.json";
   static const String crashLogsFileName = "$projectName-crash-logs.txt";
-  static const String environmentVariablesFilename =
-      "assets/files/environment_variables.txt";
-  static const String gplLicenseFilename = "assets/licenses/GPL-3.0.txt";
 
   static const String feedbackSubjectPrefix = "[$appName] $projectName ";
   static const String feedbackSubjectSuffix = " Feedback";
