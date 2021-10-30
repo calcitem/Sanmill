@@ -1,20 +1,22 @@
 name: Dart Analyze
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   linter:
     runs-on: ubuntu-latest
     name: Dart Analyze
+    container:
+      image:  google/dart:latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set up Flutter
       uses: subosito/flutter-action@v1
-    - run: cd src/ui/flutter_app; flutter pub get
+    - run: bash -x ./flutter-init.sh
     - name: Analyze Flutter
       uses: zgosalvez/github-actions-analyze-dart@v1.6.1
       with:
-        fail-on: 'format'
+        fail-on-warnings: true
         working-directory: src/ui/flutter_app
-        analysis-options-file: src/ui/flutter_app/analysis_options.yaml
+        analysis-options-file: analysis_options.yaml
