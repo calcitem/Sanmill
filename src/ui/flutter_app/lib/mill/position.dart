@@ -161,7 +161,7 @@ class Position {
     recorder = GameRecorder(lastPositionWithRemove: fen());
   }
 
-  /// returns a FEN representation of the position.
+  /// Return a FEN representation of the position.
   String fen() {
     final buffer = StringBuffer();
 
