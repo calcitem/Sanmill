@@ -1542,6 +1542,7 @@ class _GamePageState extends State<GamePage>
     );
 
     return GamePageToolBar(
+      color: LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
       children: <Widget>[
         gameButton,
         optionsButton,
@@ -1605,6 +1606,8 @@ class _GamePageState extends State<GamePage>
     );
 
     return GamePageToolBar(
+      color:
+          LocalDatabaseService.colorSettings.navigationToolbarBackgroundColor,
       children: <Widget>[
         takeBackAllButton,
         takeBackButton,
