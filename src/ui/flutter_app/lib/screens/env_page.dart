@@ -18,8 +18,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/shared/constants.dart';
 
 class EnvironmentVariablesPage extends StatelessWidget {
   const EnvironmentVariablesPage({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class EnvironmentVariablesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: rootBundle.loadString(Constants.environmentVariablesFilename),
+      future: rootBundle.loadString(Assets.files.environmentVariables),
       builder: (context, data) {
         late final String _data;
         if (!data.hasData) {
