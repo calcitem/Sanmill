@@ -12,6 +12,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v1
     - run: bash -x ./flutter-init.sh
+    - run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
     - name: Analyze Flutter
       uses: ValentinVignal/action-dart-analyze@v0.11
       with:
