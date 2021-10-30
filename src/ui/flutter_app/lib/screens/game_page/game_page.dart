@@ -1662,6 +1662,7 @@ class _GamePageState extends State<GamePage>
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
+      extendBodyBehindAppBar: true,
       backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPaddingH),
