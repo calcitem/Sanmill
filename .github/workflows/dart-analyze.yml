@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   linter:
     runs-on: ubuntu-latest
-    name: Dart Analyze
+    name: Lint flutter code
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -13,8 +13,8 @@ jobs:
       uses: subosito/flutter-action@v1
     - run: bash -x ./flutter-init.sh
     - name: Analyze Flutter
-      uses: zgosalvez/github-actions-analyze-dart@v1.6.1
+      uses: ValentinVignal/action-dart-analyze@v0.11
       with:
-        fail-on-warnings: true
+        fail-on: 'format'
         working-directory: src/ui/flutter_app
-        analysis-options-file: ./src/ui/flutter_app/analysis_options.yaml
+        #analysis-options-file: ./src/ui/flutter_app/analysis_options.yaml
