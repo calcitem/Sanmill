@@ -43,8 +43,8 @@ import 'package:sanmill/generated/intl/l10n_lt.dart';
 import 'package:sanmill/generated/intl/l10n_lv.dart';
 import 'package:sanmill/generated/intl/l10n_mk.dart';
 import 'package:sanmill/generated/intl/l10n_ms.dart';
+import 'package:sanmill/generated/intl/l10n_nb.dart';
 import 'package:sanmill/generated/intl/l10n_nl.dart';
-import 'package:sanmill/generated/intl/l10n_nn.dart';
 import 'package:sanmill/generated/intl/l10n_pl.dart';
 import 'package:sanmill/generated/intl/l10n_pt.dart';
 import 'package:sanmill/generated/intl/l10n_ro.dart';
@@ -68,7 +68,7 @@ Map<Locale, String> languageCodeToStrings = {
   const Locale('cs'): SCs().languageName,
   const Locale('da'): SDa().languageName,
   const Locale('de'): SDe().languageName,
-  const Locale('de','CH'): SDeCh().languageName,
+  const Locale('de', 'CH'): SDeCh().languageName,
   const Locale('el'): SEl().languageName,
   const Locale('en'): SEn().languageName,
   const Locale('es'): SEs().languageName,
@@ -90,7 +90,7 @@ Map<Locale, String> languageCodeToStrings = {
   const Locale('mk'): SMk().languageName,
   const Locale('ms'): SMs().languageName,
   const Locale('nl'): SNl().languageName,
-  const Locale('nn'): SNn().languageName,
+  const Locale('nb'): SNb().languageName,
   const Locale('pl'): SPl().languageName,
   const Locale('pt'): SPt().languageName,
   const Locale('ro'): SRo().languageName,
@@ -106,7 +106,8 @@ Map<Locale, String> languageCodeToStrings = {
   const Locale('uz'): SUz().languageName,
   const Locale('vi'): SVi().languageName,
   const Locale('zh'): SZh().languageName,
-  const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'): SZhHant().languageName,
+  const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'):
+      SZhHant().languageName,
 };
 
 String specialCountryAndRegion = "";
