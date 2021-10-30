@@ -17,4 +17,4 @@ jobs:
       with:
         fail-on-warnings: true
         working-directory: src/ui/flutter_app
-        analysis-options-file: analysis_options.yaml
+        analysis-options-file: src/ui/flutter_app/analysis_options.yaml
