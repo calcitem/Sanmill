@@ -2,12 +2,12 @@
 # https://docs.google.com/document/d/10e0saTfAv32OZLRmONy866vnaw0I2jwL8zukykpgWBc/edit#
 #
 # WARNING: DO NOT translate app_XX.arb files directly here. For translations please see:
-# https://weblate.rimikis.de/projects/bierverkostung/
+# https://github.com/calcitem/Sanmill/wiki/Translation-and-Localization
 # (only the source language, app_en.arb is edited manually here).
 #
-# We are now using synthetic packages, so to use `AppLocalizations` inside the code
+# We are now using synthetic packages, so to use `S` (Strings) inside the code
 # you have to add the following import:
-# import 'package:yahtzee_counter/l10n/app_localizations.g.dart';
+# import 'package:sanmill/generated/intl/l10n.dart';
 
 arb-dir: lib/l10n
 template-arb-file: intl_en.arb
