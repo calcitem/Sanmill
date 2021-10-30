@@ -49,15 +49,6 @@ class _PointStyleModal extends StatelessWidget {
             value: 1,
             onChanged: onChanged,
           ),
-          /*
-            RadioListTile(
-              activeColor: AppTheme.switchListTileActiveColor,
-              title: const Text(S.of(context).hollow),
-              groupValue: LocalDatabaseService.display.pointStyle,
-              value: 2,
-              onChanged: callback,
-            ),
-            */
         ],
       ),
     );

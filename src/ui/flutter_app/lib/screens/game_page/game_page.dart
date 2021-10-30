@@ -16,8 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//import 'dart:typed_data';
-
 import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -39,7 +37,6 @@ import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/picker.dart';
 import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
-//import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 part 'package:sanmill/screens/game_page/board.dart';
@@ -71,12 +68,6 @@ class _GamePageState extends State<GamePage>
   bool isReady = false;
   bool isGoingToHistory = false;
   late Timer timer;
-  /*
-  ScreenRecorderController screenRecorderController = ScreenRecorderController(
-    pixelRatio: 1.0,
-    skipFramesBetweenCaptures: 0,
-  );
-  */
   late AnimationController _animationController;
   late Animation<double> animation;
   bool disposed = false;
@@ -487,12 +478,6 @@ class _GamePageState extends State<GamePage>
         position.recorder.prune();
         position.recorder.moveIn(m, position);
 
-        /*
-        if (LocalDatabaseService.preferences.screenReaderSupport && m.notation != null) {
-          showSnackBar(context, S.of(context).human + ": " + m.notation!);
-        }
-        */
-
         setState(() {});
 
         if (position.winner == PieceColor.nobody) {
@@ -696,88 +681,6 @@ class _GamePageState extends State<GamePage>
     });
   }
 
-  /*
-  onStartRecordingButtonPressed() async {
-    Navigator.pop(context);
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => AlertDialog(
-        title: Text(
-          S.of(context).appName,
-          style: TextStyle(
-            color: AppTheme.dialogTitleColor,
-            fontSize: LocalDatabaseService.display.fontSize + 4,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              S.of(context).experimental,
-              style: TextStyle(
-                fontSize: LocalDatabaseService.display.fontSize,
-              ),
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text(
-              S.of(context).ok,
-              style: TextStyle(
-                fontSize: LocalDatabaseService.display.fontSize,
-              ),
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-      ),
-    );
-
-    screenRecorderController.start();
-    showSnackBar(
-      S.of(context).recording,
-      duration: Duration(seconds: 1 << 31),
-    );
-  }
-
-  onStopRecordingButtonPressed() async {
-    Navigator.pop(context);
-    screenRecorderController.stop();
-    showSnackBar(
-      S.of(context).stopRecording,
-      duration: Duration(seconds: 2),
-    );
-  }
-
-  onShowRecordingButtonPressed() async {
-    Navigator.pop(context);
-    showSnackBar(
-      S.of(context).pleaseWait,
-      duration: Duration(seconds: 1 << 31),
-    );
-    var gif = await screenRecorderController.export();
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    if (gif == null) {
-      showSnackBar(S.of(context).noRecording);
-      return;
-    }
-
-    var image = Image.memory(
-      Uint8List.fromList(gif),
-    );
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(backgroundColor: Colors.black, content: image);
-      },
-    );
-  }
-  */
-
   Future<void> onAutoReplayButtonPressed() async {
     Navigator.pop(context);
 
@@ -831,56 +734,6 @@ class _GamePageState extends State<GamePage>
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
-            /*
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            LocalDatabaseService.experimentsEnabled
-                ? SimpleDialogOption(
-                    child: Text(
-                      S.of(context).startRecording,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: onStartRecordingButtonPressed,
-                  )
-                : SizedBox(height: 1),
-            LocalDatabaseService.experimentsEnabled
-                ? SizedBox(height: AppTheme.sizedBoxHeight)
-                : SizedBox(height: 1),
-            LocalDatabaseService.experimentsEnabled
-                ? SimpleDialogOption(
-                    child: Text(
-                      S.of(context).stopRecording,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: onStopRecordingButtonPressed,
-                  )
-                : SizedBox(height: 1),
-            LocalDatabaseService.experimentsEnabled
-                ? SizedBox(height: AppTheme.sizedBoxHeight)
-                : SizedBox(height: 1),
-            LocalDatabaseService.experimentsEnabled
-                ? SimpleDialogOption(
-                    child: Text(
-                      S.of(context).showRecording,
-                      style: AppTheme.simpleDialogOptionTextStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: onShowRecordingButtonPressed,
-                  )
-                : SizedBox(height: 1),
-            */
-            /*
-            SizedBox(height: AppTheme.sizedBoxHeight),
-            SimpleDialogOption(
-              child: Text(
-                S.of(context).autoReplay,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
-              ),
-              onPressed: onAutoReplayButtonPressed,
-            ),
-            */
           ],
         ),
       ),
@@ -1017,17 +870,6 @@ class _GamePageState extends State<GamePage>
 
     if (mounted) {
       final pos = gameInstance.position;
-      /*
-      String us = "";
-      String them = "";
-      if (pos.side == PieceColor.white) {
-        us = S.of(context).player1;
-        them = S.of(context).player2;
-      } else if (pos.side == PieceColor.black) {
-        us = S.of(context).player2;
-        them = S.of(context).player1;
-      }
-      */
 
       late final String text;
       final lastEffectiveMove = pos.recorder.lastEffectiveMove;
@@ -1195,8 +1037,6 @@ class _GamePageState extends State<GamePage>
   }
 
   String getGameOverReasonString(GameOverReason? reason, String? winner) {
-    //String winnerStr =
-    //    winner == Color.white ? S.of(context).white : S.of(context).black;
     final String loserStr =
         winner == PieceColor.white ? S.of(context).black : S.of(context).white;
 
@@ -1829,18 +1669,6 @@ class _GamePageState extends State<GamePage>
           ],
         ),
       ),
-      /*
-      body: Column(children: <Widget>[
-        header,
-        ScreenRecorder(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width,
-          controller: screenRecorderController,
-          child: board,
-        ),
-        toolbar
-      ]),
-      */
     );
   }
 
@@ -1853,29 +1681,5 @@ class _GamePageState extends State<GamePage>
     routeObserver.unsubscribe(this);
     LocalDatabaseService.listenPreferences.removeListener(_refeshEngine);
     super.dispose();
-  }
-
-  @override
-  void didPush() {
-    final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$_tag Game Page didPush route: $route');
-  }
-
-  @override
-  void didPopNext() {
-    final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$_tag Game Page didPopNext route: $route');
-  }
-
-  @override
-  void didPushNext() {
-    final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$_tag Game Page didPushNext route: $route');
-  }
-
-  @override
-  void didPop() {
-    final route = ModalRoute.of(context)!.settings.name;
-    debugPrint('$_tag Game Page didPop route: $route');
   }
 }

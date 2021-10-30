@@ -161,8 +161,7 @@ class Position {
     recorder = GameRecorder(lastPositionWithRemove: fen());
   }
 
-  /// fen() returns a FEN representation of the position.
-
+  /// Return a FEN representation of the position.
   String fen() {
     final buffer = StringBuffer();
 
@@ -1074,11 +1073,6 @@ class Position {
   Future<String> gotoHistory(HistoryMove move, [int? index]) async {
     final int moveIndex = _gotoHistoryIndex(move, index);
 
-    //if (recorder == null) {
-    //  debugPrint("[goto] recorder is null.");
-    //  return "null";
-    //}
-
     if (recorder.cur == moveIndex) {
       debugPrint("[goto] cur is equal to moveIndex.");
       return "equal";
@@ -1169,10 +1163,7 @@ class Position {
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
-    //debugPrint("recorder.movesCount = ${recorder.movesCount}");
-
     for (i = recorder.movesCount - 1; i >= 0; i--) {
-      //if (recorder.moveAt(i).type == MoveType.remove) break;
       if (recorder.moveAt(i).move[0] == '-') break;
     }
 
@@ -1180,18 +1171,14 @@ class Position {
       posAfterLastRemove = i + 1;
     }
 
-    //debugPrint("[movesSinceLastRemove] posAfterLastRemove = $posAfterLastRemove");
-
     for (int i = posAfterLastRemove; i < recorder.movesCount; i++) {
       buffer.write(" ${recorder.moveAt(i).move}");
     }
 
     final String moves = buffer.toString();
-    //debugPrint("moves = $moves");
 
     final idx = moves.indexOf('-(');
     if (idx != -1) {
-      //debugPrint("moves[$idx] is -(");
       assert(false);
     }
 

@@ -137,7 +137,7 @@ class BoardPainter extends PiecesBasePainter {
 
         final offset = (boardWidth - squareWidth * 6) / 4;
 
-        /* Show notations "a b c d e f" on board */
+        // Show notations "a b c d e f" on board
 
         if (LocalDatabaseService.preferences.developerMode) {
           notationPainterV.paint(
@@ -157,7 +157,7 @@ class BoardPainter extends PiecesBasePainter {
           ),
         );
 
-        /* Show notations "1 2 3 4 5 6 7" on board */
+        // Show notations "1 2 3 4 5 6 7" on board
 
         notationPainterH.paint(
           canvas,
