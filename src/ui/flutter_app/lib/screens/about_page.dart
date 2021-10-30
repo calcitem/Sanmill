@@ -26,6 +26,7 @@ import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
 import 'package:sanmill/shared/constants.dart';
+import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
@@ -120,7 +121,7 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.aboutPageBackgroundColor,
       appBar: AppBar(
-        centerTitle: true,
+        leading: DrawerIcon.of(context)?.icon,
         title: Text("${S.of(context).about} ${S.of(context).appName}"),
       ),
       body: ListView.separated(

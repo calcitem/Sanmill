@@ -24,6 +24,7 @@ import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/list_item_divider.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
@@ -304,7 +305,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
-        centerTitle: true,
+        leading: DrawerIcon.of(context)?.icon,
         title: Text(S.of(context).personalization),
       ),
       body: SingleChildScrollView(

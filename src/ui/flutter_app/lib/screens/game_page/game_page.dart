@@ -35,6 +35,7 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/picker.dart';
 import 'package:sanmill/shared/snackbar.dart';
@@ -1816,6 +1817,11 @@ class _GamePageState extends State<GamePage>
     }
 
     return Scaffold(
+      appBar: AppBar(
+        leading: DrawerIcon.of(context)?.icon,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
       backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPaddingH),

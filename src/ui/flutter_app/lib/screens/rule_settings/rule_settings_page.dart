@@ -21,6 +21,7 @@ import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
@@ -337,8 +338,10 @@ class RuleSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.lightBackgroundColor,
-      appBar:
-          AppBar(centerTitle: true, title: Text(S.of(context).ruleSettings)),
+      appBar: AppBar(
+        leading: DrawerIcon.of(context)?.icon,
+        title: Text(S.of(context).ruleSettings),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: ValueListenableBuilder(
