@@ -43,7 +43,7 @@ This distribution of Sanmill consists of the following files:
 
 Sanmill CUI has support for 32 or 64-bit CPUs, certain hardware instructions, big-endian machines such as Power PC, and other platforms.
 
-On Unix-like systems, it should be easy to compile Sanmill directly from the source code with the included Makefile in the folder `src`. In general it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
+It should be easy to compile Sanmill directly from the source code on Unix-like systems with the included Makefile in the folder `src`. Generally, it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
 
 ```shell
 cd src
@@ -51,7 +51,7 @@ make help
 make build ARCH=x86-64-modern
 ```
 
-When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. These information can be found by typing the following commands in a console:
+When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. This information can be found by typing the following commands in a console:
 
 ```shell
 ./sanmill compiler
@@ -69,21 +69,21 @@ Use Qt Creator to open `millgame.pro` , or use Visual Studio to open `millgame.s
 
 ### Flutter App
 
-Run `./flutter-init.sh` , copy `src/ui/flutter_app/android/key.properties.example` to `src/ui/flutter_app/android/key.properties`, modify it, and then use Android Studio or  Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
+Run `./flutter-init.sh` , copy `src/ui/flutter_app/android/key.properties.example` to `src/ui/flutter_app/android/key.properties`, modify it, and then use IntelliJ IDEA or Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
 
-We use compile time enviornmet configs to enable specific parts of the code:
+We use compile-time environment configs to enable specific parts of the code:
 
-* `monkey_test` to prepare the app for monkey tests (references to external sites are going to be disabled)
-* `dev_mode` to show the developer mode without needing to enable it first
-* `catcher` to controll the use of catcher (this is on by default and needs to be disabled when needed)
+* `monkey_test` to prepare the app for monkey tests. (References to external sites are going to be disabled.)
+* `dev_mode` to show the developer mode without needing to enable it first.
+* `catcher` to control the use of catcher. (This is on by default and needs to be disabled when required.)
 
-all enviornment configs can be combined and take a value of bool like:
+All environment configs can be combined and take a value of bool like:
 
 ```shell
 flutter run --dart-define catcher=false dev_mode=true
 ```
 
-For ease of use some launch configs vor VS-Code and IntelliJ IDEA are available. Just select the
+For ease of use, some launch configs for IntelliJ IDEA or Visual Studio Code are available. Just select the
 needed one in the `Run and Debug` or `Run/Debug Configurations` tab.
 
 ## Understanding the code base and participating in the project
@@ -94,7 +94,7 @@ Sanmill's improvement over the last couple of years has been a great community e
 
 If you want to help improve the code, there are several valuable resources:
 
-* [In this wiki,](https://github.com/calcitem/Sanmill/wiki) many techniques used in Sanmill are explained with a lot of background information.
+* [In this wiki](https://github.com/calcitem/Sanmill/wiki), many techniques used in Sanmill are explained with a lot of background information.
 
 * The latest source can always be found on [GitHub](https://github.com/calcitem/Sanmill).
 
@@ -102,7 +102,7 @@ If you want to help improve the code, there are several valuable resources:
 
 ## Terms of use
 
-Sanmill is free, and distributed under the **GNU General Public License version 3**
+Sanmill is free and distributed under the **GNU General Public License version 3**
 (GPL v3). Essentially, this means you are free to do almost exactly
 what you want with the program, including distributing it among your
 friends, making it available for download from your website, selling
@@ -110,7 +110,7 @@ it (either by itself or as part of some bigger software package), or
 using it as the starting point for a software project of your own.
 
 The only real limitation is that whenever you distribute Sanmill in
-some way, you must always include the full source code, or a pointer
+some way, you must always include the full source code or a pointer
 to where the source code can be found. If you make any changes to the
 source code, these changes must also be made available under the GPL.
 
