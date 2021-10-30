@@ -20,9 +20,12 @@ part of 'package:sanmill/screens/game_page/game_page.dart';
 
 class GamePageToolBar extends StatelessWidget {
   final List<Widget> children;
+  final Color? color;
+
   const GamePageToolBar({
     Key? key,
     required this.children,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -30,8 +33,7 @@ class GamePageToolBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color:
-            LocalDatabaseService.colorSettings.navigationToolbarBackgroundColor,
+        color: color,
       ),
       margin: const EdgeInsets.symmetric(vertical: 0.5),
       padding: const EdgeInsets.symmetric(vertical: 2),
