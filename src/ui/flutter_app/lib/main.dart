@@ -35,6 +35,7 @@ import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/services/storage/storage_v1.dart';
 import 'package:sanmill/shared/constants.dart';
+import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/services/catcher.dart';
@@ -74,7 +75,7 @@ class SanmillApp extends StatelessWidget {
 
     return ValueListenableBuilder(
       valueListenable: LocalDatabaseService.listenDisplay,
-      builder: (BuildContext context, Box<Display> displayBox, _) {
+      builder: (BuildContext context, Box<Display> displayBox, child) {
         final Display _display = displayBox.get(
           LocalDatabaseService.displayKey,
           defaultValue: Display(),
@@ -91,26 +92,29 @@ class SanmillApp extends StatelessWidget {
           theme: AppTheme.lightThemeData,
           darkTheme: AppTheme.darkThemeData,
           debugShowCheckedModeBanner: false,
-          home: Builder(
-            builder: (context) {
-              setSpecialCountryAndRegion(context);
-
-              return Scaffold(
-                body: DoubleBackToCloseApp(
-                  snackBar: SnackBar(
-                    content: Text(S.of(context).tapBackAgainToLeave),
-                  ),
-                  child: BetterFeedback(
-                    localizationsDelegates: S.localizationsDelegates,
-                    localeOverride: _display.languageCode,
-                    child: const Home(),
-                  ),
-                ),
-              );
-            },
+          home: BetterFeedback(
+            localizationsDelegates: const [
+              ...S.localizationsDelegates,
+              CustomFeedbackLocalizationsDelegate.delegate,
+            ],
+            localeOverride: _display.languageCode,
+            child: child!,
           ),
         );
       },
+      child: Builder(
+        builder: (context) {
+          setSpecialCountryAndRegion(context);
+          return Scaffold(
+            body: DoubleBackToCloseApp(
+              snackBar: SnackBar(
+                content: Text(S.of(context).tapBackAgainToLeave),
+              ),
+              child: const Home(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
