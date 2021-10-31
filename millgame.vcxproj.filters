@@ -515,7 +515,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\sound\drog.wav">
+    <Media Include="resources\sound\drag.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\forbidden.wav">

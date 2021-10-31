@@ -9,10 +9,10 @@
 #include "strLib.h"
 
 //-----------------------------------------------------------------------------
-// hibit()
+// hiBit()
 // 
 //-----------------------------------------------------------------------------
-int MyString::hibit(unsigned int n)
+int MyString::hiBit(unsigned int n)
 {
     n |= (n >> 1);
     n |= (n >> 2);
@@ -97,7 +97,7 @@ MyString &MyString::assign(const char *cStr)
     // locals
     size_t convertedChars = 0;
     size_t newLength = strlen(cStr);
-    size_t newReserved = (size_t)hibit((unsigned int)newLength) * 2;
+    size_t newReserved = (size_t)hiBit((unsigned int)newLength) * 2;
 
     if (reserved < newReserved)
         this->~MyString();
@@ -126,7 +126,7 @@ MyString &MyString::assign(const WCHAR *cStr)
     // locals
     size_t returnValue;
     size_t newLength = wcslen(cStr);
-    size_t newReserved = (size_t)hibit((unsigned int)newLength) * 2;
+    size_t newReserved = (size_t)hiBit((unsigned int)newLength) * 2;
 
     if (reserved < newReserved)
         this->~MyString();
@@ -164,11 +164,11 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned
     unsigned int actualBufferSize = 0;
     unsigned int curBufferPos = bufferSize;
     unsigned int decimalPos = 0;
-    int integralValue = 0;	 // ACHTUNG: Erlaubt nur 8  Vorkommastellen
-    int fractionalValue = 0; // ACHTUNG: Erlaubt nur 8 Nachkommastellen
+    int integralValue = 0;	 // ATTENTION: Only allows 8 digits before the decimal point
+    int fractionalValue = 0; // ATTENTION: Only allows 8 digits before the decimal point
     int exponentialValue = 1;
-    bool valIsNegativ = false;
-    bool expIsNegativ = false;
+    bool valIsNegative = false;
+    bool expIsNegative = false;
     bool decimalPlace = false;
     bool exponent = false;
     double fractionalFactor[] = { 0,
@@ -198,9 +198,9 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned
         switch (*curByte) {
         case '-':
             if (exponent) {
-                expIsNegativ = true;
+                expIsNegative = true;
             } else {
-                valIsNegativ = true;
+                valIsNegative = true;
             }
             break;
         case '+': /* ignore */
@@ -358,17 +358,17 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned
                     (*pData) += fractionalValue * fractionalFactor[decimalPos];
                 }
 
-                if (valIsNegativ) {
+                if (valIsNegative) {
                     (*pData) *= -1;
                 }
 
                 if (exponent) {
-                    (*pData) *= pow(10, expIsNegativ ? -1 * exponentialValue : 1);
+                    (*pData) *= pow(10, expIsNegative ? -1 * exponentialValue : 1);
                 }
 
                 // init
-                valIsNegativ = false;
-                expIsNegativ = false;
+                valIsNegative = false;
+                expIsNegative = false;
                 decimalPlace = false;
                 exponent = false;
                 integralValue = 0;

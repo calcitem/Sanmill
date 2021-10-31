@@ -34,7 +34,7 @@ MiniMax::MiniMax()
     InitializeCriticalSection(&csDatabase);
     InitializeCriticalSection(&csOsPrint);
 
-    // Tausender-Trennzeichen
+    // Thousands separator
     locale locale("German_Switzerland");
     cout.imbue(locale);
 
@@ -153,7 +153,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         depthOfFullTree = maxDepthOfTree;
         layerInDatabase = false;
         calcDatabase = true;
-        threadManager.uncancelExecution();
+        threadManager.unCancelExecution();
         arrayInfos.vectorArrays.resize(ArrayInfo::numArrayTypes * skvfHeader.numLayers, arrayInfos.listArrays.end());
 
         // calculate layer after layer, beginning with the last one
@@ -287,7 +287,7 @@ void MiniMax::pauseDatabaseCalculation()
 //-----------------------------------------------------------------------------
 void MiniMax::cancelDatabaseCalculation()
 {
-    // when returning from executeParallelLoop() all function shall quit immediatelly up to calculateDatabase()
+    // when returning from executeParallelLoop() all function shall quit immediately up to calculateDatabase()
     threadManager.cancelExecution();
 }
 

@@ -181,7 +181,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
     // Open statistics file
     statFile = CreateFileA(statisticsFileName, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-    // opened file succesfully?
+    // opened file successfully?
     if (statFile == INVALID_HANDLE_VALUE) {
         statFile = nullptr;
         return false;
@@ -196,7 +196,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
     text += "draw states\t";
     text += "invalid states\t";
     text += "total num states\t";
-    text += "num succeding layers\t";
+    text += "num succeeding layers\t";
     text += "partner layer\t";
     text += "size in bytes\t";
     text += "succLayers[0]\t";
@@ -255,10 +255,10 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
 }
 
 //-----------------------------------------------------------------------------
-// anyArrawInfoToUpdate()
+// anyArraryInfoToUpdate()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-bool MiniMax::anyArrawInfoToUpdate()
+bool MiniMax::anyArrayInfoToUpdate()
 {
     return (arrayInfos.arrayInfosToBeUpdated.size() > 0);
 }
@@ -328,7 +328,7 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
     ais.updateCounter = 0;
     listArrays.push_back(ais);
 
-    // notify cahnge
+    // notify change
     ArrayInfoChange	aic;
     aic.arrayInfo = &listArrays.back();
     aic.itemIndex = (unsigned int)listArrays.size() - 1;
@@ -363,7 +363,7 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
                 c->falseOrStop();
             }
 
-            // notify cahnge
+            // notify change
             ArrayInfoChange	aic;
             aic.arrayInfo = nullptr;
             aic.itemIndex = (unsigned int)std::distance(listArrays.begin(), itr);
@@ -384,7 +384,7 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
 
 //-----------------------------------------------------------------------------
 // ArrayInfoContainer::updateArray()
-// called by mltiple CALCULATION-thread
+// called by mutiple CALCULATION-thread
 //-----------------------------------------------------------------------------
 void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned int type)
 {
@@ -394,7 +394,7 @@ void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned
     itr->updateCounter++;
     if (itr->updateCounter > ArrayInfo::updateCounterThreshold) {
 
-        // notify cahnge
+        // notify change
         EnterCriticalSection(&c->csOsPrint);
 
         ArrayInfoChange	aic;

@@ -142,7 +142,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
         m->printBoard(threadNo, shortValueInDatabase);
     }
 
-    // get number of possiblities
+    // get number of possibilities
     m->setOpponentLevel(threadNo, false);
     idPossibility = m->getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
 
@@ -181,11 +181,11 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
 
             // if layer or state number is invalid then value of testes state must be invalid
             if (invalidLayerOrStateNumber && shortValueInDatabase != SKV_VALUE_INVALID) {
-                PRINT(0, m, "ERROR: DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": Succeding state  has invalid layer (" << tmpLayerNumber << ")or state number (" << tmpStateNumber << "), but tested state is not marked as invalid.");
+                PRINT(0, m, "ERROR: DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": Succeeding state  has invalid layer (" << tmpLayerNumber << ")or state number (" << tmpStateNumber << "), but tested state is not marked as invalid.");
                 goto errorInDatabase;
             }
             // BUG: Does not work because, layer 101 is calculated before 105, although removing a stone does need this jump.
-            // if (!layerInDatabaseAndCompleted)										{ PRINT(0,m, "ERROR: DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": Succeding state " << tmpStateNumber << " in an uncalculated layer " << tmpLayerNumber << "! Calc layer first!"); goto errorInDatabase; }
+            // if (!layerInDatabaseAndCompleted)										{ PRINT(0,m, "ERROR: DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": Succeeding state " << tmpStateNumber << " in an uncalculated layer " << tmpLayerNumber << "! Calc layer first!"); goto errorInDatabase; }
 
             // undo move
             m->undo(threadNo, idPossibility[i], isOpponentLevel, pBackup, pPossibilities);
@@ -272,9 +272,9 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
                     j = 1;
             }
 
-            // at least one succeding state must be drawn
+            // at least one succeeding state must be drawn
             if (j == 0) {
-                PRINT(0, m, "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": At least one succeding state must be drawn.");
+                PRINT(0, m, "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": At least one succeeding state must be drawn.");
                 goto errorInDatabase;
             }
 
@@ -443,7 +443,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParameter, unsigned int index)
         shortKnotValue = SKV_VALUE_INVALID;
     }
 
-    // get number of possiblities
+    // get number of possibilities
     idPossibility = m->getPossibilities(tlVars->curThreadNo, &knot.numPossibilities, &knot.isOpponentLevel, &pPossibilities);
 
     // unable to move
@@ -465,7 +465,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParameter, unsigned int index)
             // move
             m->move(tlVars->curThreadNo, idPossibility[curPoss], knot.isOpponentLevel, &pBackup, pPossibilities);
 
-            // get state number of succeding state
+            // get state number of succeeding state
             unsigned int i;
             m->getLayerAndStateNumber(tlVars->curThreadNo, i, subState.stateNumber);
             subState.layerNumber = i;

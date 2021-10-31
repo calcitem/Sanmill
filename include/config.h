@@ -25,8 +25,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-/// If qmake is used and QT + = GUI is included in the configuration, QT_GUI_LIB will be defined automatically.
-/// If qmake is not used, QT_GUI_LIB is defined by Visual C++ .vcxproj file.
+/// If Qt is used and QT += GUI is included in the configuration, QT_GUI_LIB will be defined automatically.
+/// If Qt is not used, QT_GUI_LIB is defined by Visual C++ .vcxproj file.
 //#undef QT_GUI_LIB
 
 /// In UCI, do move when the opponent has done moving, usually for the test.
@@ -104,7 +104,7 @@
 #endif
 
 #ifndef USE_POPCNT
-#define DONOT_USE_POPCNT
+#define DO_NOT_USE_POPCNT
 #endif
 
 /// Opening book (WIP)
@@ -120,10 +120,10 @@
 //#define MESSAGEBOX_ENABLE
 
 #ifdef DEBUG_MODE
-#define DONOT_PLAY_SOUND
+#define DO_NOT_PLAY_SOUND
 #endif
 
-//#define DONOT_PLAY_SOUND
+//#define DO_NOT_PLAY_SOUND
 
 #ifdef DEBUG_MODE
 #define PLAYER_DRAW_SEAT_NUMBER
@@ -133,7 +133,7 @@
 #define SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 
-//#define DONOT_PLAY_WIN_SOUND
+//#define DO_NOT_PLAY_WIN_SOUND
 
 //#define GAME_PLACING_SHOW_REMOVED_PIECES
 

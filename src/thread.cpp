@@ -269,12 +269,12 @@ void sq2str(char *str)
 
 void Thread::analyze(Color c)
 {
-    static float nbwin = 0;
-    static float nwwin = 0;
-    static float ndraw = 0;
+    static float nWhiteWin = 0;
+    static float nBlackWin = 0;
+    static float nDraw = 0;
 #ifndef QT_GUI_LIB
     float total;
-    float bwinrate, wwinrate, drawrate;
+    float blackWinRate, whiteWinRate, drawRate;
 #endif // !QT_GUI_LIB
 
     const int d = (int)originDepth;
@@ -306,13 +306,13 @@ void Thread::analyze(Color c)
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "Draw" << endl;
-            ndraw += 0.5;   // TODO
+            nDraw += 0.5;   // TODO
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << endl;
-            nbwin += 0.5;  // TODO
+            nBlackWin += 0.5;  // TODO
         } else if (p->get_winner() == BLACK) {
             cout << "Black wins" << endl;
-            nwwin += 0.5;    // TODO
+            nWhiteWin += 0.5;    // TODO
         }
         goto out;
         break;
@@ -389,20 +389,20 @@ void Thread::analyze(Color c)
     }
 
 #ifndef QT_GUI_LIB
-    total = nbwin + nwwin + ndraw;
+    total = nBlackWin + nWhiteWin + nDraw;
 
     if (total < 0.01) {
-        bwinrate = 0;
-        wwinrate = 0;
-        drawrate = 0;
+        blackWinRate = 0;
+        whiteWinRate = 0;
+        drawRate = 0;
     } else {
-        bwinrate = (float)nbwin * 100 / total;
-        wwinrate = (float)nwwin * 100 / total;
-        drawrate = (float)ndraw * 100 / total;
+        blackWinRate = (float)nBlackWin * 100 / total;
+        whiteWinRate = (float)nWhiteWin * 100 / total;
+        drawRate = (float)nDraw * 100 / total;
     }
 
-    cout << "Score: " << (int)nbwin << " : " << (int)nwwin << " : " << (int)ndraw << "\ttotal: " << (int)total << endl;
-    cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
+    cout << "Score: " << (int)nBlackWin << " : " << (int)nWhiteWin << " : " << (int)nDraw << "\ttotal: " << (int)total << endl;
+    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
     cout.flags(flags);
 #endif // !QT_GUI_LIB
 

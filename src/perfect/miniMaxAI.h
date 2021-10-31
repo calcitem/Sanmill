@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef MINIMAXAI_H
-#define MINIMAXAI_H
+#ifndef MINIMAX_AI_H
+#define MINIMAX_AI_H
 
 #include <iostream>
 #include <cstdio>

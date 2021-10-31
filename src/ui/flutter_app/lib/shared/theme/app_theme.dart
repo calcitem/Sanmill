@@ -19,7 +19,7 @@ class AppTheme {
   );
 
   // Color
-  static const appPrimaryColor = Colors.green; // Appbar & Dialog button
+  static const appPrimaryColor = Colors.green; // App bar & Dialog button
   static const dialogTitleColor = appPrimaryColor;
 
   /// Game page

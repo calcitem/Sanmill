@@ -25,7 +25,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/models/temporary.dart';
 import 'package:sanmill/screens/env_page.dart';
-import 'package:sanmill/services/enviornment_config.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
@@ -34,9 +34,9 @@ import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/game_settings/algorithm_modal.dart';
+part 'package:sanmill/screens/game_settings/move_time_slider.dart';
 part 'package:sanmill/screens/game_settings/reset_settings_alert.dart';
 part 'package:sanmill/screens/game_settings/skill_level_slider.dart';
-part 'package:sanmill/screens/game_settings/move_time_slider.dart';
 
 class GameSettingsPage extends StatelessWidget {
   const GameSettingsPage({Key? key}) : super(key: key);

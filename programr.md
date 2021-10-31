@@ -10,7 +10,7 @@ Sanmill is written in C++ and Dart. The Sanmill mill game engine supports both W
 
 Sanmill has mostly been tested on Intel & AMD processors but the code is designed to be portable to other processors.
 
-The remainder of this file contains information for use by programmers reading or working on Sanmill source code. I assume that you have a working familiarity with C++. Also, if you have no background in computer chess, you should probably start by reading some of the reference material mentioned at the end of this document.
+The remainder of this file contains information for use by programmers reading or working on Sanmill source code. I assume that you have a working familiarity with C++. Also, if you have no background in computer board game, you should probably start by reading some of the reference material mentioned at the end of this document.
 
 ## Building Sanmill
 

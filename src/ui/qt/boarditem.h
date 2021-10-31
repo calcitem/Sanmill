@@ -37,7 +37,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
 
-    // Use UserType + 1 to represent chess pieces, and use qgraphicsitem_cast() determines whether it is an object of the boarditem class
+    // Use UserType + 1 to represent mill pieces, and determines whether it is an object of the boarditem class
     // Another way is to put the class name in the 0key position of data, SetData(0, "BoardItem"), and then use data(0) to judge
     enum
     {

@@ -16,9 +16,9 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/// Enviornment configutation
+/// Environment configuration
 ///
-/// Enables devs to start the app with compile time options
+/// Enables device to start the app with compile time options
 class EnvironmentConfig {
   const EnvironmentConfig._();
 

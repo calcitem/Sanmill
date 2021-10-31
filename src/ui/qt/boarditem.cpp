@@ -159,7 +159,7 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
 
     // Look for the nearest spot
     for (auto i : position) {
-        // If the distance between the mouse point and the falling point is within the radius of the chess piece
+        // If the distance between the mouse point and the falling point is within the radius of the piece
         if (QLineF(pos, i).length() < PIECE_SIZE / 2) {
             nearestPos = i;
             break;

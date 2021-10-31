@@ -56,13 +56,13 @@ enum class GameSound
     remove,
     select,
     draw,
-    drog,
+    drag,
     banned,
     gameStart,
     resign,
     loss,
     mill,
-    millRepeatly,
+    millRepeatedly,
     move,
     newGame,
     nextMill,
@@ -149,7 +149,7 @@ public:
 
     time_t get_elapsed_time(int us);
     time_t start_timeb() const;
-    void set_start_time(int stimeb);
+    void set_start_time(int time);
     void updateTime();
 
 #ifdef NET_FIGHT_SUPPORT
@@ -210,7 +210,7 @@ public slots:
     // Game reset
     void gameReset();
 
-    // Set edit chess state
+    // Set edit state
     void setEditing(bool arg = true) noexcept;
 
     // Set white and black inversion state
@@ -379,15 +379,15 @@ public slots:
     // Admit defeat
     bool resign();
 
-    // Command line execution of chess score
+    // Command line execution of score
     bool command(const string &cmd, bool update = true);
 
     // Historical situation and situation change
     bool phaseChange(int row, bool forceUpdate = false);
 
-    // Update the chess game display. Only after each step can the situation be refreshed
-    bool updateScence();
-    bool updateScence(Position &p);
+    // Update the game display. Only after each step can the situation be refreshed
+    bool updateScene();
+    bool updateScene(Position &p);
 
 #ifdef NET_FIGHT_SUPPORT
     // The network configuration window is displayed
@@ -412,7 +412,7 @@ protected:
 
 private:
 
-    // Data model of chess object
+    // Data model of object
     Position position;
     Color sideToMove;
 
@@ -424,19 +424,19 @@ private:
     // 2 AI threads
     Thread *aiThread[COLOR_NB];
 
-    // The scene class of chess game
+    // The scene class of game
     GameScene &scene;
 
     // All the pieces
     vector<PieceItem *> pieceList;
 
-    // Current chess pieces
+    // Current pieces
     PieceItem *currentPiece;
 
-    // Current browsing chess score line
+    // Current browsing score line
     int currentRow;
 
-    // Is it in "Edit chess game" state
+    // Is it in "Edit game" state
     bool isEditing;
 
     // Reverse white and black
@@ -535,7 +535,7 @@ private:
     // String used to display the status bar of the main window
     QString message;
 
-    // String list model of chess score
+    // String list model of score
     QStringListModel manualListModel;
 
     // Hint
@@ -549,9 +549,9 @@ inline time_t Game::start_timeb() const
     return startTime;
 }
 
-inline void Game::set_start_time(int stimeb)
+inline void Game::set_start_time(int time)
 {
-    startTime = stimeb;
+    startTime = time;
 }
 
 #endif // GAMECONTROLLER_H

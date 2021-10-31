@@ -64,8 +64,8 @@ public:
     unsigned int warnings[size];		   // array containing the warnings for each board position
     bool stoneMoveAble[size][4];		   // true if stone can be moved in this direction
     unsigned int stonePartOfMill[size];	   // the number of mills, of which this stone is part of
-    unsigned int connectedSquare[size][4]; // static array containg the index of the neighbour or "size"
-    unsigned int neighbour[size][2][2];	   // static array containing the two neighbours of each squares
+    unsigned int connectedSquare[size][4]; // static array containing the index of the neighbour or "size"
+    unsigned int neighbour[size][2][2];	   // static array containing the two neighbors of each squares
     unsigned int stonesSet;				   // number of stones set in the setting phase
     bool settingPhase;					   // true if stonesSet < 18
     unsigned int stoneMustBeRemoved;	   // number of stones which must be removed by the current player

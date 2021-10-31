@@ -95,9 +95,9 @@ MillGameWindow::MillGameWindow(QWidget * parent) :
 
     // Center primary window
     QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
-    const int unitw = (deskTopRect.width() - width()) / 2;
-    const int unith = (deskTopRect.height() - height()) / 2;
-    this->move(unitw, unith);
+    const int w = (deskTopRect.width() - width()) / 2;
+    const int h = (deskTopRect.height() - height()) / 2;
+    this->move(w, h);
 
 #ifdef QT_MOBILE_APP_UI
     // Hide menu bar, toolbar, status bar, etc
@@ -265,7 +265,7 @@ void MillGameWindow::initialize()
     connect(ui.actionTurnRight_R, &QAction::triggered,
             game, &Game::turnRight);
 
-    connect(ui.actionTurnLeftt_L, &QAction::triggered,
+    connect(ui.actionTurnLeft_L, &QAction::triggered,
             game, &Game::turnLeft);
 
     connect(game, SIGNAL(nGamesPlayedChanged(QString)),
@@ -721,7 +721,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
 
     // When reading and displaying the move history, there is no need to refresh the scene
     if (!(game->command(cmd.toStdString(), false))) {
-        QMessageBox msgBox(QMessageBox::Warning, tr("File error"), tr("Not the correct move hisory file"), QMessageBox::Ok);
+        QMessageBox msgBox(QMessageBox::Warning, tr("File error"), tr("Not the correct move history file"), QMessageBox::Ok);
         msgBox.exec();
         return;
     }
@@ -732,7 +732,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
     }
 
     // Finally, refresh the scene
-    game->updateScence();
+    game->updateScene();
 }
 
 void MillGameWindow::on_actionSave_S_triggered()

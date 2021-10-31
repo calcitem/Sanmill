@@ -190,7 +190,7 @@ unsigned int fieldPosIsOfGroup[] = { GROUP_C, GROUP_D, GROUP_C,
 //-----------------------------------------------------------------------------
 PerfectAI::PerfectAI(const char *directory)
 {
-    // loacls
+    // locals
     unsigned int i, a, b, c, totalNumStones;
     unsigned int wCD, bCD, wAB, bAB;
     unsigned int stateAB, stateCD, symStateCD, layerNum;
@@ -229,11 +229,11 @@ PerfectAI::PerfectAI(const char *directory)
         // Read from file
         if (!ReadFile(hFilePreCalcVars, layer, sizeof(Layer) * NUM_LAYERS, &dwBytesRead, nullptr)) return;
         if (!ReadFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, numPositionsAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, numPositionsCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D, &dwBytesRead, nullptr)) return;
         if (!ReadFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesRead, nullptr)) return;
         if (!ReadFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
         if (!ReadFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
@@ -248,8 +248,8 @@ PerfectAI::PerfectAI(const char *directory)
             for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
                 if (a + b > numSquaresGroupA + numSquaresGroupB)
                     continue;
-                originalStateAB[a][b] = new unsigned int[anzahlStellungenAB[a][b]];
-                if (!ReadFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesRead, nullptr)) return;
+                originalStateAB[a][b] = new unsigned int[numPositionsAB[a][b]];
+                if (!ReadFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * numPositionsAB[a][b], &dwBytesRead, nullptr)) return;
             }
         }
 
@@ -258,8 +258,8 @@ PerfectAI::PerfectAI(const char *directory)
             for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
                 if (a + b > numSquaresGroupC + numSquaresGroupD)
                     continue;
-                originalStateCD[a][b] = new unsigned int[anzahlStellungenCD[a][b]];
-                if (!ReadFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesRead, nullptr)) return;
+                originalStateCD[a][b] = new unsigned int[numPositionsCD[a][b]];
+                if (!ReadFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * numPositionsCD[a][b], &dwBytesRead, nullptr)) return;
             }
         }
 
@@ -307,7 +307,7 @@ PerfectAI::PerfectAI(const char *directory)
             symmetryOperationTable[SO_INV_MIR_DIAG_2][i] = soTableInvMirDiag2[i];
         }
 
-        // reverse symmetrie operation
+        // reverse symmetry operation
         reverseSymOperation[SO_TURN_LEFT] = SO_TURN_RIGHT;
         reverseSymOperation[SO_TURN_180] = SO_TURN_180;
         reverseSymOperation[SO_TURN_RIGHT] = SO_TURN_LEFT;
@@ -361,17 +361,17 @@ PerfectAI::PerfectAI(const char *directory)
                 if (a + b > numSquaresGroupA + numSquaresGroupB)
                     continue;
 
-                anzahlStellungenAB[a][b] = mOverN[numSquaresGroupA + numSquaresGroupB][a] * mOverN[numSquaresGroupA + numSquaresGroupB - a][b];
-                originalStateAB[a][b] = new unsigned int[anzahlStellungenAB[a][b]];
-                anzahlStellungenAB[a][b] = 0;
+                numPositionsAB[a][b] = mOverN[numSquaresGroupA + numSquaresGroupB][a] * mOverN[numSquaresGroupA + numSquaresGroupB - a][b];
+                originalStateAB[a][b] = new unsigned int[numPositionsAB[a][b]];
+                numPositionsAB[a][b] = 0;
             }
         }
 
         // mark all indexCD as not indexed
-        for (stateAB = 0; stateAB < MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B; stateAB++)
+        for (stateAB = 0; stateAB < MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B; stateAB++)
             indexAB[stateAB] = NOT_INDEXED;
 
-        for (stateAB = 0; stateAB < MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B; stateAB++) {
+        for (stateAB = 0; stateAB < MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B; stateAB++) {
             // new state ?
             if (indexAB[stateAB] == NOT_INDEXED) {
 
@@ -402,11 +402,11 @@ PerfectAI::PerfectAI(const char *directory)
                     continue;
 
                 // mark original state
-                indexAB[stateAB] = anzahlStellungenAB[a][b];
-                originalStateAB[a][b][anzahlStellungenAB[a][b]] = stateAB;
+                indexAB[stateAB] = numPositionsAB[a][b];
+                originalStateAB[a][b][numPositionsAB[a][b]] = stateAB;
 
                 // state counter
-                anzahlStellungenAB[a][b]++;
+                numPositionsAB[a][b]++;
             }
         }
 
@@ -419,14 +419,14 @@ PerfectAI::PerfectAI(const char *directory)
                     continue;
                 originalStateCD_tmp[a][b] =
                     new unsigned int[mOverN[numSquaresGroupC + numSquaresGroupD][a] * mOverN[numSquaresGroupC + numSquaresGroupD - a][b]];
-                anzahlStellungenCD[a][b] = 0;
+                numPositionsCD[a][b] = 0;
             }
         }
 
         // mark all indexCD as not indexed
-        memset(indexCD, NOT_INDEXED, 4 * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D);
+        memset(indexCD, NOT_INDEXED, 4 * MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D);
 
-        for (stateCD = 0; stateCD < MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D; stateCD++) {
+        for (stateCD = 0; stateCD < MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D; stateCD++) {
             // new state ?
             if (indexCD[stateCD] == NOT_INDEXED) {
 
@@ -469,25 +469,25 @@ PerfectAI::PerfectAI(const char *directory)
                     continue;
 
                 // mark original state
-                indexCD[stateCD] = anzahlStellungenCD[a][b];
+                indexCD[stateCD] = numPositionsCD[a][b];
                 symmetryOperationCD[stateCD] = SO_DO_NOTHING;
-                originalStateCD_tmp[a][b][anzahlStellungenCD[a][b]] = stateCD;
+                originalStateCD_tmp[a][b][numPositionsCD[a][b]] = stateCD;
 
                 // mark all symmetric states
                 for (i = 0; i < NUM_SYM_OPERATIONS; i++) {
 
-                    applySymmetrieOperationOnField(i, myField, symField);
+                    applySymmetryOperationOnField(i, myField, symField);
 
                     symStateCD = symField[squareIndexGroupC[0]] * powerOfThree[15] + symField[squareIndexGroupC[1]] * powerOfThree[14] + symField[squareIndexGroupC[2]] * powerOfThree[13] + symField[squareIndexGroupC[3]] * powerOfThree[12] + symField[squareIndexGroupC[4]] * powerOfThree[11] + symField[squareIndexGroupC[5]] * powerOfThree[10] + symField[squareIndexGroupC[6]] * powerOfThree[9] + symField[squareIndexGroupC[7]] * powerOfThree[8] + symField[squareIndexGroupD[0]] * powerOfThree[7] + symField[squareIndexGroupD[1]] * powerOfThree[6] + symField[squareIndexGroupD[2]] * powerOfThree[5] + symField[squareIndexGroupD[3]] * powerOfThree[4] + symField[squareIndexGroupD[4]] * powerOfThree[3] + symField[squareIndexGroupD[5]] * powerOfThree[2] + symField[squareIndexGroupD[6]] * powerOfThree[1] + symField[squareIndexGroupD[7]] * powerOfThree[0];
 
                     if (stateCD != symStateCD) {
-                        indexCD[symStateCD] = anzahlStellungenCD[a][b];
+                        indexCD[symStateCD] = numPositionsCD[a][b];
                         symmetryOperationCD[symStateCD] = reverseSymOperation[i];
                     }
                 }
 
                 // state counter
-                anzahlStellungenCD[a][b]++;
+                numPositionsCD[a][b]++;
             }
         }
 
@@ -496,8 +496,8 @@ PerfectAI::PerfectAI(const char *directory)
             for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
                 if (a + b > numSquaresGroupC + numSquaresGroupD)
                     continue;
-                originalStateCD[a][b] = new unsigned int[anzahlStellungenCD[a][b]];
-                for (i = 0; i < anzahlStellungenCD[a][b]; i++)
+                originalStateCD[a][b] = new unsigned int[numPositionsCD[a][b]];
+                for (i = 0; i < numPositionsCD[a][b]; i++)
                     originalStateCD[a][b][i] = originalStateCD_tmp[a][b][i];
                 SAFE_DELETE_ARRAY(originalStateCD_tmp[a][b]);
             }
@@ -537,10 +537,10 @@ PerfectAI::PerfectAI(const char *directory)
                                 continue;
 
                             if (layer[layerNum].numSubLayers > 0) {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD];
+                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + numPositionsAB[wAB][bAB] * numPositionsCD[wCD][bCD];
                                 layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1;
                             } else {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD] - 1;
+                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = numPositionsAB[wAB][bAB] * numPositionsCD[wCD][bCD] - 1;
                                 layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = 0;
                             }
                             layer[layerNum].subLayer[layer[layerNum].numSubLayers].numBlackStonesGroupAB = bAB;
@@ -590,10 +590,10 @@ PerfectAI::PerfectAI(const char *directory)
                                 continue;
 
                             if (layer[layerNum].numSubLayers > 0) {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD];
+                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + numPositionsAB[wAB][bAB] * numPositionsCD[wCD][bCD];
                                 layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1;
                             } else {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD] - 1;
+                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = numPositionsAB[wAB][bAB] * numPositionsCD[wCD][bCD] - 1;
                                 layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = 0;
                             }
                             layer[layerNum].subLayer[layer[layerNum].numSubLayers].numBlackStonesGroupAB = bAB;
@@ -616,11 +616,11 @@ PerfectAI::PerfectAI(const char *directory)
         WriteFile(hFilePreCalcVars, &preCalcVarsHeader, preCalcVarsHeader.sizeInBytes, &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, layer, sizeof(Layer) * NUM_LAYERS, &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, numPositionsAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, numPositionsCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B, &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D, &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D, &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
@@ -635,7 +635,7 @@ PerfectAI::PerfectAI(const char *directory)
             for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
                 if (a + b > numSquaresGroupA + numSquaresGroupB)
                     continue;
-                WriteFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesWritten, nullptr);
+                WriteFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * numPositionsAB[a][b], &dwBytesWritten, nullptr);
             }
         }
 
@@ -644,7 +644,7 @@ PerfectAI::PerfectAI(const char *directory)
             for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
                 if (a + b > numSquaresGroupC + numSquaresGroupD)
                     continue;
-                WriteFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesWritten, nullptr);
+                WriteFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * numPositionsCD[a][b], &dwBytesWritten, nullptr);
             }
         }
     }
@@ -1562,10 +1562,10 @@ long long PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
 }
 
 //-----------------------------------------------------------------------------
-// applySymmetrieOperationOnField()
+// applySymmetryOperationOnField()
 // called very often
 //-----------------------------------------------------------------------------
-void PerfectAI::applySymmetrieOperationOnField(unsigned char symmetryOperationNumber, unsigned int *sourceField, unsigned int *destField)
+void PerfectAI::applySymmetryOperationOnField(unsigned char symmetryOperationNumber, unsigned int *sourceField, unsigned int *destField)
 {
     for (unsigned int i = 0; i < fieldStruct::size; i++) {
         destField[i] = sourceField[symmetryOperationTable[symmetryOperationNumber][i]];
@@ -1637,13 +1637,13 @@ unsigned int PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNu
     stateCD = myField[squareIndexGroupC[0]] * parent->powerOfThree[15] + myField[squareIndexGroupC[1]] * parent->powerOfThree[14] + myField[squareIndexGroupC[2]] * parent->powerOfThree[13] + myField[squareIndexGroupC[3]] * parent->powerOfThree[12] + myField[squareIndexGroupC[4]] * parent->powerOfThree[11] + myField[squareIndexGroupC[5]] * parent->powerOfThree[10] + myField[squareIndexGroupC[6]] * parent->powerOfThree[9] + myField[squareIndexGroupC[7]] * parent->powerOfThree[8] + myField[squareIndexGroupD[0]] * parent->powerOfThree[7] + myField[squareIndexGroupD[1]] * parent->powerOfThree[6] + myField[squareIndexGroupD[2]] * parent->powerOfThree[5] + myField[squareIndexGroupD[3]] * parent->powerOfThree[4] + myField[squareIndexGroupD[4]] * parent->powerOfThree[3] + myField[squareIndexGroupD[5]] * parent->powerOfThree[2] + myField[squareIndexGroupD[6]] * parent->powerOfThree[1] + myField[squareIndexGroupD[7]] * parent->powerOfThree[0];
 
     // apply symmetry operation on group A&B
-    parent->applySymmetrieOperationOnField(parent->symmetryOperationCD[stateCD], myField, symField);
+    parent->applySymmetryOperationOnField(parent->symmetryOperationCD[stateCD], myField, symField);
 
     // calc stateAB
     stateAB = symField[squareIndexGroupA[0]] * parent->powerOfThree[7] + symField[squareIndexGroupA[1]] * parent->powerOfThree[6] + symField[squareIndexGroupA[2]] * parent->powerOfThree[5] + symField[squareIndexGroupA[3]] * parent->powerOfThree[4] + symField[squareIndexGroupB[0]] * parent->powerOfThree[3] + symField[squareIndexGroupB[1]] * parent->powerOfThree[2] + symField[squareIndexGroupB[2]] * parent->powerOfThree[1] + symField[squareIndexGroupB[3]] * parent->powerOfThree[0];
 
     // calc index
-    stateNumber = parent->layer[layerNum].subLayer[parent->layer[layerNum].subLayerIndexCD[wCD][bCD]].minIndex * MAX_NUM_STONES_REMOVED_MINUS_1 + parent->indexAB[stateAB] * parent->anzahlStellungenCD[wCD][bCD] * MAX_NUM_STONES_REMOVED_MINUS_1 + parent->indexCD[stateCD] * MAX_NUM_STONES_REMOVED_MINUS_1 + field->stoneMustBeRemoved;
+    stateNumber = parent->layer[layerNum].subLayer[parent->layer[layerNum].subLayerIndexCD[wCD][bCD]].minIndex * MAX_NUM_STONES_REMOVED_MINUS_1 + parent->indexAB[stateAB] * parent->numPositionsCD[wCD][bCD] * MAX_NUM_STONES_REMOVED_MINUS_1 + parent->indexCD[stateCD] * MAX_NUM_STONES_REMOVED_MINUS_1 + field->stoneMustBeRemoved;
 
     return parent->symmetryOperationCD[stateCD];
 }
@@ -1701,8 +1701,8 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
 
     // reconstruct board->board[]
     stateNumberWithInSubLayer = (stateNumber / MAX_NUM_STONES_REMOVED_MINUS_1) - layer[layerNum].subLayer[layer[layerNum].subLayerIndexCD[wCD][bCD]].minIndex;
-    stateNumberWithInAB = stateNumberWithInSubLayer / anzahlStellungenCD[wCD][bCD];
-    stateNumberWithInCD = stateNumberWithInSubLayer % anzahlStellungenCD[wCD][bCD];
+    stateNumberWithInAB = stateNumberWithInSubLayer / numPositionsCD[wCD][bCD];
+    stateNumberWithInCD = stateNumberWithInSubLayer % numPositionsCD[wCD][bCD];
 
     // get stateCD
     stateCD = originalStateCD[wCD][bCD][stateNumberWithInCD];
@@ -1736,7 +1736,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
     myField[squareIndexGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
 
     // apply symmetry operation on group A&B
-    applySymmetrieOperationOnField(reverseSymOperation[symmetryOperationCD[stateCD]], myField, symField);
+    applySymmetryOperationOnField(reverseSymOperation[symmetryOperationCD[stateCD]], myField, symField);
 
     // translate symField[] to board->board[]
     for (i = 0; i < fieldStruct::size; i++) {
@@ -2018,9 +2018,9 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *n
     // add all symmetric states
     for (symmetryOperation = 0; symmetryOperation < NUM_SYM_OPERATIONS; symmetryOperation++) {
 
-        // appy symmetry operation
-        applySymmetrieOperationOnField(symmetryOperation, (unsigned int *)originalField, (unsigned int *)tv->field->board);
-        applySymmetrieOperationOnField(symmetryOperation, (unsigned int *)originalPartOfMill, (unsigned int *)tv->field->stonePartOfMill);
+        // apply symmetry operation
+        applySymmetryOperationOnField(symmetryOperation, (unsigned int *)originalField, (unsigned int *)tv->field->board);
+        applySymmetryOperationOnField(symmetryOperation, (unsigned int *)originalPartOfMill, (unsigned int *)tv->field->stonePartOfMill);
 
         getLayerAndStateNumber(threadNo, layerNum, stateNum);
         symmetricStateNumberArray[*numSymmetricStates] = stateNum;
@@ -2170,8 +2170,8 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int numberOfMillsCurrentPl
             // ...
             if (symmetryOperation == SO_DO_NOTHING || parent->isSymOperationInvariantOnGroupCD(symmetryOperation, originalField)) {
 
-                // appy symmetry operation
-                parent->applySymmetrieOperationOnField(symmetryOperation, (unsigned int *)originalField, (unsigned int *)field->board);
+                // apply symmetry operation
+                parent->applySymmetryOperationOnField(symmetryOperation, (unsigned int *)originalField, (unsigned int *)field->board);
 
                 symOpApplied = getLayerAndStateNumber(predLayerNum, predStateNum);
                 predVars[*amountOfPred].predSymOperation = parent->concSymOperation[symmetryOperation][symOpApplied];
@@ -2196,7 +2196,7 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int numberOfMillsCurrentPl
 
 //-----------------------------------------------------------------------------
 // getPredecessors()
-// CAUTION: States musn't be returned twice.
+// CAUTION: States mustn't be returned twice.
 //-----------------------------------------------------------------------------
 void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
 {
@@ -2675,12 +2675,12 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
 
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
 
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->stonePartOfMill[k];
 
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
                     cout << "predecessor" << endl;
                     cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
                     printBoard(threadNo, 0);
@@ -2706,12 +2706,12 @@ bool PerfectAI::checkGetPredThanGetPoss()
                 for (k = 0; k < tv->field->size; k++)
                     symField[k] = tv->field->board[k];
 
-                applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+                applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
 
                 for (k = 0; k < tv->field->size; k++)
                     symField[k] = tv->field->stonePartOfMill[k];
 
-                applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+                applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
 
                 if (predVars[j].playerToMoveChanged) {
                     k = tv->field->curPlayer->id;
@@ -2752,12 +2752,12 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
 
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
 
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->stonePartOfMill[k];
 
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
 
                     cout << "predecessor" << endl;
                     cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
@@ -2791,12 +2791,12 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
 
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
 
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->stonePartOfMill[k];
 
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
 
                     printBoard(threadNo, 0);
                     idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);

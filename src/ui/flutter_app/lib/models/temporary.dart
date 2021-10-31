@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/services/enviornment_config.dart';
+import 'package:sanmill/services/environment_config.dart';
 
 /// Temporary data model
 ///

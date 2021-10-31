@@ -20,7 +20,7 @@ part of '../custom_drawer.dart';
 
 /// CustomDrawer Value
 ///
-/// the different states athe [CustomDrawer] can be in
+/// the different states at the [CustomDrawer] can be in
 class CustomDrawerValue {
   const CustomDrawerValue({
     this.visible = false,

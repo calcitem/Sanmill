@@ -74,7 +74,7 @@ class DatabaseV1 {
       await _deleteFile(_file);
       LocalDatabaseService.preferences = _pref.copyWith(usesHiveDB: true);
     } else {
-      debugPrint("$_tag we allready use HiveDB. Skipping migration.");
+      debugPrint("$_tag we already use HiveDB. Skipping migration.");
     }
   }
 

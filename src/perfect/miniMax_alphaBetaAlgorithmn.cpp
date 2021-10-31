@@ -273,7 +273,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
                                                                                               &alphaBetaVars, 
                                                                                               alphaBetaVars.layerNumber));
 
-    // so far no multi-threadin implemented
+    // so far no multi-threading implemented
     threadManager.setNumThreads(1);
 
     // process each state in the current layer
@@ -376,7 +376,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
     knot->shortValue = SKV_VALUE_GAME_DRAWN;
     knot->floatValue = (float)knot->shortValue;
 
-    // evaluate situation, musn't occur while calculating database
+    // evaluate situation, mustn't occur while calculating database
     if (tilLevel == 0) {
         if (calcDatabase) {
             // if tilLevel is equal zero it means that memory is gone out, since each recursive step needs memory
@@ -418,8 +418,8 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int
 
             // movement is possible
         } else {
-            // move, letTreeGroe, undo
-            alphaBetaTryPossibilites(knot, 
+            // move, letTreeGrow, undo
+            alphaBetaTryPossibilities(knot, 
                                      rabVars, 
                                      tilLevel, 
                                      idPossibility, 
@@ -516,10 +516,10 @@ bool MiniMax::alphaBetaTryDataBase(Knot *knot,
 }
 
 //-----------------------------------------------------------------------------
-// alphaBetaTryPossibilites()
+// alphaBetaTryPossibilities()
 // 
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaTryPossibilites(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta)
+void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars, unsigned int tilLevel, unsigned int *idPossibility, void *pPossibilities, unsigned int &maxWonfreqValuesSubMoves, float &alpha, float &beta)
 {
     // locals
     void *pBackup;

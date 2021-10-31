@@ -32,7 +32,7 @@ class Game {
   static const String _tag = "[game]";
 
   void init() {
-    // TODO: _position is allready initialized with Position(). seems like duplicate code
+    // TODO: _position is already initialized with Position(). seems like duplicate code
     _position = Position();
     focusIndex = blurIndex = invalidIndex;
   }

@@ -23,7 +23,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'preferences.g.dart';
 
-/// Preferece data model
+/// Preferences data model
 ///
 /// holds the data needed for the normal Settings
 @HiveType(typeId: 2)
@@ -96,10 +96,10 @@ class Preferences {
   @HiveField(19)
   final bool experimentsEnabled;
 
-  /// encodes a Json style map into a [Preferences] obbject
+  /// encodes a Json style map into a [Preferences] object
   factory Preferences.fromJson(Map<String, dynamic> json) =>
       _$PreferencesFromJson(json);
 
-  /// decodes a Json from a [Preferences] obbject
+  /// decodes a Json from a [Preferences] object
   Map<String, dynamic> toJson() => _$PreferencesToJson(this);
 }

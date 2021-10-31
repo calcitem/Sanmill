@@ -22,37 +22,37 @@ class LocalDatabaseService {
   /// [ColorSettings] box reference
   static late Box<ColorSettings> _colorSettingsBox;
 
-  /// key at wich the [ColorSettings] will be saved in the [_colorSettingsBox]
+  /// key at which the [ColorSettings] will be saved in the [_colorSettingsBox]
   static const String colorSettingsKey = 'settings';
 
-  /// key at wich the [_colorSettingsBox] will be saved
+  /// key at which the [_colorSettingsBox] will be saved
   static const String _colorSettingsBoxName = 'colors';
 
   /// [Display] box reference
   static late Box<Display> _displayBox;
 
-  /// key at wich the [Display] will be saved in the [_displayBox]
+  /// key at which the [Display] will be saved in the [_displayBox]
   static const String displayKey = 'settings';
 
-  /// key at wich the [_displayBox] will be saved
+  /// key at which the [_displayBox] will be saved
   static const String _displayBoxName = 'display';
 
   /// [Preferences] box reference
   static late Box<Preferences> _preferencesBox;
 
-  /// key at wich the [Preferences] will be saved in the [_preferencesBox]
+  /// key at which the [Preferences] will be saved in the [_preferencesBox]
   static const String preferencesKey = 'settings';
 
-  /// key at wich the [_preferencesBox] will be saved
+  /// key at which the [_preferencesBox] will be saved
   static const String _preferencesBoxName = 'preferences';
 
   /// [Rules] box reference
   static late Box<Rules> _rulesBox;
 
-  /// key at wich the [Rules] will be saved in the [_rulesBox]
+  /// key at which the [Rules] will be saved in the [_rulesBox]
   static const String rulesKey = 'settings';
 
-  /// key at wich the [_rulesBox] will be saved
+  /// key at which the [_rulesBox] will be saved
   static const String _rulesBoxName = 'rules';
 
   /// initializes the local storage
@@ -73,7 +73,7 @@ class LocalDatabaseService {
     await _rulesBox.delete(rulesKey);
   }
 
-  /// initilizes the [ColorSettings] reference
+  /// initialize the [ColorSettings] reference
   static Future<void> _initColorSettings() async {
     Hive.registerAdapter<Color>(ColorAdapter());
     Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
@@ -93,7 +93,7 @@ class LocalDatabaseService {
   static ColorSettings get colorSettings =>
       _colorSettingsBox.get(colorSettingsKey) ?? ColorSettings();
 
-  /// initilizes the [Display] reference
+  /// initialize the [Display] reference
   static Future<void> _initDisplay() async {
     Hive.registerAdapter<Locale?>(LocaleAdapter());
     Hive.registerAdapter<Display>(DisplayAdapter());
@@ -110,7 +110,7 @@ class LocalDatabaseService {
   /// gets the given [Display] from the settings Box
   static Display get display => _displayBox.get(displayKey) ?? Display();
 
-  /// initilizes the [Preferences] reference
+  /// initialize the [Preferences] reference
   static Future<void> _initPreferences() async {
     Hive.registerAdapter<Preferences>(PreferencesAdapter());
     _preferencesBox = await Hive.openBox<Preferences>(_preferencesBoxName);
@@ -128,7 +128,7 @@ class LocalDatabaseService {
   static Preferences get preferences =>
       _preferencesBox.get(preferencesKey) ?? const Preferences();
 
-  /// initilizes the [Rules] reference
+  /// initialize the [Rules] reference
   static Future<void> _initRules() async {
     Hive.registerAdapter<Rules>(RulesAdapter());
     _rulesBox = await Hive.openBox<Rules>(_rulesBoxName);

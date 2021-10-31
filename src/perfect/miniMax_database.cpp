@@ -307,7 +307,7 @@ void MiniMax::openPlyInfoFile(const char *directory)
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
     hFilePlyInfo = CreateFileA(ssFile.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-    // opened file succesfully
+    // opened file successfully
     if (hFilePlyInfo == INVALID_HANDLE_VALUE) {
         hFilePlyInfo = nullptr;
         return;

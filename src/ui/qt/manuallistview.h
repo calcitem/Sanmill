@@ -25,7 +25,7 @@
 #include "config.h"
 
 /*
- * QlistView derived class
+ * QListView derived class
  * The reason for deriving this class is to overload the sizeHint function
  * Just to make the docking bar(parent window) not too wide and ugly at the beginning
  * QDockWidget does not have a good way to control the initial size, and the reset function has no effect

@@ -30,7 +30,7 @@ CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlo
                         GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 
                         nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-    // opened file succesfully
+    // opened file successfully
     if (hFile == INVALID_HANDLE_VALUE) {
         hFile = nullptr;
         return;
@@ -147,7 +147,7 @@ bool CyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
             // store bock in file
             writeDataToFile(hFile, ((long long)blockSize) * ((long long)curWritingBlock), blockSize, writingBlock);
 
-            // set pointer to beginnig of writing block
+            // set pointer to beginning of writing block
             curWritingPointer = writingBlock;
             curWritingBlock = (curWritingBlock + 1) % numBlocks;
 
@@ -206,7 +206,7 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
             if (curReadingBlock == curWritingBlock) {
                 curReadingPointer = writingBlock;
             } else {
-                // set pointer to beginnig of reading block
+                // set pointer to beginning of reading block
                 curReadingPointer = readingBlock;
 
                 // read whole block from file
@@ -245,7 +245,7 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
     hLoadFile = CreateFileA(fileName, 
                             GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-    // opened file succesfully
+    // opened file successfully
     if (hLoadFile == INVALID_HANDLE_VALUE) {
         return false;
     }
@@ -314,7 +314,7 @@ bool CyclicArray::saveFile(const char *fileName)
     hSaveFile = CreateFileA(fileName, 
                             GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-    // opened file succesfully
+    // opened file successfully
     if (hSaveFile == INVALID_HANDLE_VALUE) {
         return false;
     }

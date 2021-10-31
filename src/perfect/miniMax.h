@@ -47,7 +47,7 @@ database:				The database contains the arrays with the short knot values and the
 /*** Constants ***************************************************************************************************************************/
 #define FPKV_MIN_VALUE -100000.0f // minimum float point knot value
 #define FPKV_MAX_VALUE 100000.0f  // maximum float point knot value
-#define FPKV_THRESHOLD 0.001f	  // threshold used when choosing best move. knot values differing less than this threshold will be regarded as egal
+#define FPKV_THRESHOLD 0.001f	  // threshold used when choosing best move. knot values differing less than this threshold will be regarded as legal
 
 #define SKV_VALUE_INVALID 0			// short knot value: knot value is invalid
 #define SKV_VALUE_GAME_LOST 1		// game lost means that there is no perfect move possible
@@ -77,7 +77,7 @@ database:				The database contains the arrays with the short knot values and the
 
 #define MEASURE_TIME_FREQUENCY 100000 // for io operations per second: measure time every n-th operations
 #define MEASURE_IOPS false			  // true or false - for measurement of the input/output operations per second
-#define MEASURE_ONLY_IO false		  // true or false - to indicate if only the io-operation shall be considered or also the calculating time inbetween
+#define MEASURE_ONLY_IO false		  // true or false - to indicate if only the io-operation shall be considered or also the calculating time in-between
 
 #define MM_ACTION_INIT_RETRO_ANAL 1
 #define MM_ACTION_PREPARE_COUNT_ARRAY 2
@@ -123,7 +123,7 @@ database:				The database contains the arrays with the short knot values and the
 		}                                                   \
 	}
 
-/*** Klassen ***************************************************************************************************************************/
+/*** Classes ***************************************************************************************************************************/
 class MiniMax
 {
     friend class MiniMaxWinInspectDb;
@@ -272,7 +272,7 @@ public:
     bool isLayerInDatabase(unsigned int layerNum);
     long long getLayerSizeInBytes(unsigned int layerNum);
     void setOutputStream(ostream *theStream, void (*printFunc)(void *pUserData), void *pUserData);
-    bool anyArrawInfoToUpdate();
+    bool anyArrayInfoToUpdate();
     ArrayInfoChange getArrayInfoForUpdate();
     void getCurrentCalculatedLayer(vector<unsigned int> &layers);
     LPWSTR getCurrentActionStr();
@@ -700,21 +700,21 @@ private:
         };
     };
 
-    struct AddNumSuccedorsVars : public ThreadManager::ThreadVarsArrayItem, public RetroAnalysisDefaultThreadVars
+    struct AddNumSucceedersVars : public ThreadManager::ThreadVarsArrayItem, public RetroAnalysisDefaultThreadVars
     {
         RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
 
-        AddNumSuccedorsVars()
+        AddNumSucceedersVars()
         {
         };
 
-        AddNumSuccedorsVars(MiniMax *pMiniMax,
+        AddNumSucceedersVars(MiniMax *pMiniMax,
                             retroAnalysisGlobalVars *retroVars,
                             unsigned int layerNumber) : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         {
         };
 
-        void initializeElement(AddNumSuccedorsVars &master)
+        void initializeElement(AddNumSucceedersVars &master)
         {
             *this = master;
         };
@@ -813,7 +813,7 @@ private:
                               RunAlphaBetaVars *rabVars,
                               unsigned int tilLevel,
                               unsigned int &layerNumber, unsigned int &stateNumber);
-    void alphaBetaTryPossibilites(Knot *knot,
+    void alphaBetaTryPossibilities(Knot *knot,
                                   RunAlphaBetaVars *rabVars,
                                   unsigned int tilLevel,
                                   unsigned int *idPossibility,
@@ -841,7 +841,7 @@ private:
     bool calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalculate);
     bool initRetroAnalysis(retroAnalysisGlobalVars &retroVars);
     bool prepareCountArrays(retroAnalysisGlobalVars &retroVars);
-    bool calcNumSuccedors(retroAnalysisGlobalVars &retroVars);
+    bool calcNumSucceeders(retroAnalysisGlobalVars &retroVars);
     bool performRetroAnalysis(retroAnalysisGlobalVars &retroVars);
     bool addStateToProcessQueue(retroAnalysisGlobalVars &retroVars,
                                 RetroAnalysisThreadVars &threadVars,
@@ -852,7 +852,7 @@ private:
         return a.stateNumber < b.stateNumber;
     };
     static DWORD initRetroAnalysisThreadProc(void *pParameter, unsigned int index);
-    static DWORD addNumSuccedorsThreadProc(void *pParameter, unsigned int index);
+    static DWORD addNumSucceedersThreadProc(void *pParameter, unsigned int index);
     static DWORD performRetroAnalysisThreadProc(void *pParameter);
 
     // Progress report functions

@@ -89,9 +89,9 @@ class Rules {
   @HiveField(15)
   final bool threefoldRepetitionRule;
 
-  /// encodes a Json style map into a [Rules] obbject
+  /// encodes a Json style map into a [Rules] object
   factory Rules.fromJson(Map<String, dynamic> json) => _$RulesFromJson(json);
 
-  /// decodes a Json from a [Rules] obbject
+  /// decodes a Json from a [Rules] object
   Map<String, dynamic> toJson() => _$RulesToJson(this);
 }

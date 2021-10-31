@@ -250,7 +250,7 @@
     <addaction name="actionFlip_F"/>
     <addaction name="actionMirror_M"/>
     <addaction name="actionTurnRight_R"/>
-    <addaction name="actionTurnLeftt_L"/>
+    <addaction name="actionTurnLeft_L"/>
     <addaction name="actionInvert_I"/>
    </widget>
    <widget class="QMenu" name="menu_M">
@@ -903,7 +903,7 @@
     <string>Turn Left</string>
    </property>
   </action>
-  <action name="actionTurnLeftt_L">
+  <action name="actionTurnLeft_L">
    <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/LeftHS.png</normaloff>:/icon/resources/icon/LeftHS.png</iconset>

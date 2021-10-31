@@ -28,7 +28,7 @@ jobs:
         with:
           flutter-version: '2.5.3'
 
-      - name: Export environment valiables
+      - name: Export environment valuables
         run: export
 
       - name: Create App version

@@ -461,7 +461,7 @@ Map<String, String> playOkNotationToMove = {
   "1": "(3,8)",
 };
 
-Map<String, String> moveToplayOkNotation =
+Map<String, String> moveToPlayOkNotation =
     playOkNotationToMove.map((k, v) => MapEntry(v, k));
 
 enum GameResult { pending, win, lose, draw, none }

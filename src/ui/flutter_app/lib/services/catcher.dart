@@ -40,7 +40,6 @@ Future<void> _initCatcher(Catcher catcher) async {
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
     EmailManualHandler([recipients], printLogs: true)
-    //SentryHandler(SentryClient(sopt))
   ]);
 
   /// Release configuration.

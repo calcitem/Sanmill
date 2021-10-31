@@ -31,10 +31,10 @@ class CustomDrawer extends StatefulWidget {
     this.disabledGestures = false,
   }) : super(key: key);
 
-  /// Child widget. (Usually awidget that represents the main screen)
+  /// Child widget. (Usually a widget that represents the main screen)
   final Widget child;
 
-  /// controller that controls the widget state. By default a new controller will be geneerated.
+  /// controller that controls the widget state. By default a new controller will be generated.
   final CustomDrawerController? controller;
 
   /// disables the gestures.
@@ -163,7 +163,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       ),
     );
 
-    // TODO: [Leptopdoa] should the geture also apply to the drawer?
+    // TODO: [Leptopdoa] should the gesture also apply to the drawer?
     return Stack(
       children: <Widget>[
         _drawer,

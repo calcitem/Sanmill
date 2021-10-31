@@ -176,7 +176,7 @@ class Audios {
         return;
       }
 
-      // If the platform is windwos [_initialized] should be false thus this code shouldn't be executed
+      // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
       if (Platform.isWindows) {
         assert(false);
       }

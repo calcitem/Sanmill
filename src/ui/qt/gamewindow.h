@@ -83,7 +83,7 @@ private slots:
     void on_actionFlip_F_triggered();
     void on_actionMirror_M_triggered();
     void on_actionTurnRight_R_triggered();
-    void on_actionTurnLeftt_L_triggered();
+    void on_actionTurnLeft_L_triggered();
 #endif
     void on_actionInvert_I_toggled(bool arg1);
     void on_actionRowChange();

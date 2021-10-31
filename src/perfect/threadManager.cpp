@@ -188,10 +188,10 @@ void ThreadManager::cancelExecution()
 }
 
 //-----------------------------------------------------------------------------
-// uncancelExecution()
+// unCancelExecution()
 // 
 //-----------------------------------------------------------------------------
-void ThreadManager::uncancelExecution()
+void ThreadManager::unCancelExecution()
 {
     executionCancelled = false;
 }

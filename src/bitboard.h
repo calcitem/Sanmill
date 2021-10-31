@@ -148,7 +148,7 @@ constexpr Bitboard file_bb(Square s)
 
 inline int popcount(Bitboard b) noexcept
 {
-#ifdef DONOT_USE_POPCNT
+#ifdef DO_NOT_USE_POPCNT
 
     union
     {

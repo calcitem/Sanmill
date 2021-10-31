@@ -1128,7 +1128,7 @@ class Position {
         return recorder.history.length - 1;
       case HistoryMove.backAll:
         return -1;
-      case HistoryMove.farward:
+      case HistoryMove.forward:
         return recorder.cur + 1;
       case HistoryMove.backN:
         assert(index != null);
@@ -1146,7 +1146,7 @@ class Position {
     if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
       switch (move) {
         case HistoryMove.forwardAll:
-        case HistoryMove.farward:
+        case HistoryMove.forward:
           await Audios.playTone(Sound.place);
           break;
         case HistoryMove.backAll:
@@ -1194,4 +1194,4 @@ class Position {
   String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
 }
 
-enum HistoryMove { forwardAll, backAll, farward, backN, backOne }
+enum HistoryMove { forwardAll, backAll, forward, backN, backOne }

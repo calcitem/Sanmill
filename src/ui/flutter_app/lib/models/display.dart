@@ -95,10 +95,10 @@ class Display {
   @HiveField(12)
   final double animationDuration;
 
-  /// encodes a Json style map into a [Display] obbject
+  /// encodes a Json style map into a [Display] object
   factory Display.fromJson(Map<String, dynamic> json) =>
       _$DisplayFromJson(json);
 
-  /// decodes a Json from a [Display] obbject
+  /// decodes a Json from a [Display] object
   Map<String, dynamic> toJson() => _$DisplayToJson(this);
 }

@@ -29,8 +29,8 @@ class _PieceWidthSlider extends StatelessWidget {
         label: S.of(context).pieceWidth,
         child: ValueListenableBuilder(
           valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayaBox, _) {
-            final Display _display = displayaBox.get(
+          builder: (context, Box<Display> displayBox, _) {
+            final Display _display = displayBox.get(
               LocalDatabaseService.colorSettingsKey,
               defaultValue: Display(),
             )!;

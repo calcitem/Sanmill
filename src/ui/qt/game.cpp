@@ -317,7 +317,7 @@ void Game::gameReset()
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
     // Signal update status bar
-    updateScence();
+    updateScene();
     message = QString::fromStdString(getTips());
     emit statusBarChanged(message);
 
@@ -478,7 +478,7 @@ void Game::playSound(GameSound soundType, Color c)
 {
     string soundDir = ":/sound/resources/sound/";
     string sideStr = c == WHITE ? "W" : "B";
-    string oppenentStr = c == BLACK? "W" : "B";
+    string opponentStr = c == BLACK? "W" : "B";
     string filename;
 
     switch (soundType) {
@@ -486,7 +486,7 @@ void Game::playSound(GameSound soundType, Color c)
         filename = "BlockMill_" + sideStr + ".wav";
         break;
     case GameSound::remove:
-        filename = "Remove_" + oppenentStr + ".wav";
+        filename = "Remove_" + opponentStr + ".wav";
         break;
     case GameSound::select:
         filename = "Select.wav";
@@ -494,8 +494,8 @@ void Game::playSound(GameSound soundType, Color c)
     case GameSound::draw:
         filename = "Draw.wav";
         break;
-    case GameSound::drog:
-        filename = "drog.wav";
+    case GameSound::drag:
+        filename = "drag.wav";
         break;
     case GameSound::banned:
         filename = "forbidden.wav";
@@ -512,8 +512,8 @@ void Game::playSound(GameSound soundType, Color c)
     case GameSound::mill:
         filename = "Mill_" + sideStr + ".wav";
         break;
-    case GameSound::millRepeatly:
-        filename = "MillRepeatly_" + sideStr + ".wav";
+    case GameSound::millRepeatedly:
+        filename = "MillRepeatedly_" + sideStr + ".wav";
         break;
     case GameSound::move:
         filename = "move.wav";
@@ -563,7 +563,7 @@ void Game::playSound(GameSound soundType, Color c)
         break;
     };
 
-#ifndef DONOT_PLAY_SOUND
+#ifndef DO_NOT_PLAY_SOUND
     QString soundPath = QString::fromStdString(soundDir + filename);
 
     if (soundPath == "") {
@@ -576,7 +576,7 @@ void Game::playSound(GameSound soundType, Color c)
         effect->setLoopCount(1);
         effect->play();
     }
-#endif /* ! DONOT_PLAY_SOUND */
+#endif /* ! DO_NOT_PLAY_SOUND */
 }
 
 void Game::setSkillLevel(int val)
@@ -733,7 +733,7 @@ void Game::flip()
 
     // Refresh display
     if (currentRow == row - 1)
-        updateScence();
+        updateScene();
     else
         phaseChange(currentRow, true);
 
@@ -758,7 +758,7 @@ void Game::mirror()
 
     // Update display
     if (currentRow == row - 1)
-        updateScence();
+        updateScene();
     else
         phaseChange(currentRow, true);
 
@@ -781,7 +781,7 @@ void Game::turnRight()
 
     // Update display
     if (currentRow == row - 1)
-        updateScence();
+        updateScene();
     else
         phaseChange(currentRow, true);
 
@@ -802,7 +802,7 @@ void Game::turnLeft()
     }
 
     // Update display
-    updateScence();
+    updateScene();
 
     threadsSetAi(&position);
     startAiThreads();
@@ -857,11 +857,11 @@ void Game::timerEvent(QTimerEvent *event)
         timeID = 0;
 
         // Signal update status bar
-        updateScence();
+        updateScene();
         message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
 
-#ifndef DONOT_PLAY_WIN_SOUND
+#ifndef DO_NOT_PLAY_WIN_SOUND
         playSound(GameSound::win, winner);
 #endif
     }
@@ -872,14 +872,14 @@ void Game::timerEvent(QTimerEvent *event)
     static QTime t;
     if (ti < 0)
         ti += 86400; // Prevent the time error caused by 24:00, plus the total number of seconds in a day
-    if (timeWhos == 1)
+    if (timeWho == 1)
     {
         time1 = ti - time2;
         // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
         t = QTime(0, 0, 0, 50).addMSecs(time1);
         emit time1Changed(t.toString("hh:mm:ss"));
     }
-    else if (timeWhos == 2)
+    else if (timeWho == 2)
     {
         time2 = ti - time1;
         // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
@@ -905,14 +905,14 @@ bool Game::actionPiece(QPointF p)
         return false;
     }
 
-    // When the computer is playing chess or searching, the click is invalid
+    // When the computer is playing or searching, the click is invalid
     if (isAIsTurn() ||
         aiThread[WHITE]->searching ||
         aiThread[BLACK]->searching) {
         return false;
     }
 
-    // When you click the chessboard while browsing the history, it is considered repentance
+    // When you click the board while browsing the history, it is considered repentance
     if (currentRow != manualListModel.rowCount() - 1) {
 #ifndef QT_MOBILE_APP_UI
         // Define new dialog box
@@ -943,7 +943,7 @@ bool Game::actionPiece(QPointF p)
                 timeID = startTimer(100);
 
                 // Signal update status bar
-                updateScence();
+                updateScene();
                 message = QString::fromStdString(getTips());
                 emit statusBarChanged(message);
 #ifndef QT_MOBILE_APP_UI
@@ -970,8 +970,8 @@ bool Game::actionPiece(QPointF p)
                 // Play form mill sound effects
                 playSound(GameSound::mill, position.side_to_move());
             } else {
-                // Playing the sound effect of moving chess pieces
-                playSound(GameSound::drog, position.side_to_move());
+                // Playing the sound effect of moving pieces
+                playSound(GameSound::drag, position.side_to_move());
             }
             result = true;
             break;
@@ -1022,11 +1022,11 @@ bool Game::actionPiece(QPointF p)
         }
 
         // Signal update status bar
-        updateScence();
+        updateScene();
         message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
 
-        // Insert the new chess score line into list model
+        // Insert the new score line into list model
         currentRow = manualListModel.rowCount() - 1;
         int k = 0;
 
@@ -1040,7 +1040,7 @@ bool Game::actionPiece(QPointF p)
         }
 
         // Play win or lose sound
-#ifndef DONOT_PLAY_WIN_SOUND
+#ifndef DO_NOT_PLAY_WIN_SOUND
         const Color winner = position.get_winner();
         if (winner != NOBODY &&
             (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
@@ -1073,7 +1073,7 @@ bool Game::actionPiece(QPointF p)
     }
 
     sideToMove = position.side_to_move();
-    updateScence();
+    updateScene();
     return result;
 }
 
@@ -1105,11 +1105,11 @@ bool Game::resign()
     return result;
 }
 
-// Key slot function, command line execution of chess score, independent of actionPiece
+// Key slot function, command line execution of score, independent of actionPiece
 bool Game::command(const string &cmd, bool update /* = true */)
 {
     int total = 0;
-    float bwinrate = 0.0f, wwinrate = 0.0f, drawrate = 0.0f;
+    float blackWinRate = 0.0f, whiteWinRate = 0.0f, drawRate = 0.0f;
 
     Q_UNUSED(hasSound)
 
@@ -1127,7 +1127,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     switch (position.get_action()) {
     case Action::select:
     case Action::place:
-        soundType = GameSound::drog;
+        soundType = GameSound::drag;
         break;
     case Action::remove:
         soundType = GameSound::remove;
@@ -1161,17 +1161,17 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     sideToMove = position.side_to_move();
 
-    if (soundType == GameSound::drog && position.get_action() == Action::remove) {
+    if (soundType == GameSound::drag && position.get_action() == Action::remove) {
         soundType = GameSound::mill;
     }
 
     if (update) {
         playSound(soundType, position.side_to_move());
-        updateScence(position);
+        updateScene(position);
     }
 
     // Signal update status bar
-    updateScence();
+    updateScene();
     message = QString::fromStdString(getTips());
     emit statusBarChanged(message);
 
@@ -1191,7 +1191,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
             if (r++ > currentRow)
                 break;
         }
-        // Insert the new chess score line into list model
+        // Insert the new score line into list model
         while (i != move_hostory()->end()) {
             manualListModel.insertRow(++currentRow);
             manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());
@@ -1199,7 +1199,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     }
 
     // Play win or lose sound
-#ifndef DONOT_PLAY_WIN_SOUND
+#ifndef DO_NOT_PLAY_WIN_SOUND
     const Color winner = position.get_winner();
     if (winner != NOBODY &&
         (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
@@ -1306,18 +1306,18 @@ bool Game::command(const string &cmd, bool update /* = true */)
     total = position.score[WHITE] + position.score[BLACK] + position.score_draw;  
 
     if (total == 0) {
-        bwinrate = 0;
-        wwinrate = 0;
-        drawrate = 0;
+        blackWinRate = 0;
+        whiteWinRate = 0;
+        drawRate = 0;
     } else {
-        bwinrate = (float)position.score[WHITE] * 100 / total;
-        wwinrate = (float)position.score[BLACK] * 100 / total;
-        drawrate = (float)position.score_draw * 100 / total;
+        blackWinRate = (float)position.score[WHITE] * 100 / total;
+        whiteWinRate = (float)position.score[BLACK] * 100 / total;
+        drawRate = (float)position.score_draw * 100 / total;
     }
 
     const auto flags = cout.flags();
     cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << endl;
-    cout << fixed << setprecision(2) << bwinrate << "% : " << wwinrate << "% : " << drawrate << "%" << endl;
+    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
     cout.flags(flags);
 
     return true;
@@ -1326,7 +1326,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 // Browse the historical situation and refresh the situation display through the command function
 bool Game::phaseChange(int row, bool forceUpdate)
 {
-    // If row is the currently viewed chess score line, there is no need to refresh it
+    // If row is the currently viewed score line, there is no need to refresh it
     if (currentRow == row && !forceUpdate)
         return false;
 
@@ -1345,18 +1345,18 @@ bool Game::phaseChange(int row, bool forceUpdate)
     // The key step is to let the penitent bear the loss of time
     set_start_time(static_cast<int>(start_timeb()));
 
-    // Refresh the chess scene
-    updateScence(position);
+    // Refresh the scene
+    updateScene(position);
 
     return true;
 }
 
-bool Game::updateScence()
+bool Game::updateScene()
 {
-    return updateScence(position);
+    return updateScene(position);
 }
 
-bool Game::updateScence(Position &p)
+bool Game::updateScene(Position &p)
 {
     const Piece *board = p.get_board();
     QPointF pos;
@@ -1379,7 +1379,7 @@ bool Game::updateScence(Position &p)
 
         piece->setSelected(false);
 
-        // Convert the subscript of pieceList to the chess code of game
+        // Convert the subscript of pieceList to the code of game
         key = (i % 2) ? (i / 2 + B_STONE_1) : (i / 2 + W_STONE_1);
 
         int j;
@@ -1408,7 +1408,7 @@ bool Game::updateScence(Position &p)
             }
         }
 
-        // If not, place the pieces outside the chessboard
+        // If not, place the pieces outside the board
         if (j == (RANK_NB) * (FILE_NB + 1)) {
             // Judge whether it is a removing seed or an unplaced one
             if (key & W_STONE) {

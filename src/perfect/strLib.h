@@ -44,7 +44,7 @@ public:
     MyString &assign(const char *cStr);
     MyString &assign(const WCHAR *cStr);
 
-    static int hibit(unsigned int n);
+    static int hiBit(unsigned int n);
 };
 
 #endif

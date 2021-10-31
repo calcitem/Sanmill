@@ -62,7 +62,7 @@ struct RetroAnalysisPredVars
     bool playerToMoveChanged;
 };
 
-struct AddNumSuccedorsVars
+struct AddNumSucceedersVars
 {
     MiniMax *pMiniMax;
     unsigned int curThreadNo;

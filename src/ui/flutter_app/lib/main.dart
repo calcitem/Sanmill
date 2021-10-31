@@ -30,7 +30,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/screens/home.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/services/enviornment_config.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/services/storage/storage_v1.dart';
@@ -42,9 +42,9 @@ part 'package:sanmill/services/catcher.dart';
 part 'package:sanmill/services/init_system_ui.dart';
 
 Future<void> main() async {
-  debugPrint('Enviornment [catcher]: ${EnvironmentConfig.catcher}');
-  debugPrint('Enviornment [dev_mode]: ${EnvironmentConfig.devMode}');
-  debugPrint('Enviornment [monkey_test]: ${EnvironmentConfig.monkeyTest}');
+  debugPrint('Environment [catcher]: ${EnvironmentConfig.catcher}');
+  debugPrint('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
+  debugPrint('Environment [monkey_test]: ${EnvironmentConfig.monkeyTest}');
 
   await LocalDatabaseService.initStorage();
   await DatabaseV1.migrateDB();

@@ -183,10 +183,10 @@ class ColorSettings {
   @HiveField(14)
   late final Color navigationToolbarIconColor;
 
-  /// encodes a Json style map Coloro a [ColorSettings] obbject
+  /// encodes a Json style map Color a [ColorSettings] object
   factory ColorSettings.fromJson(Map<String, dynamic> json) =>
       _$ColorSettingsFromJson(json);
 
-  /// decodes a Json from a [ColorSettings] obbject
+  /// decodes a Json from a [ColorSettings] object
   Map<String, dynamic> toJson() => _$ColorSettingsToJson(this);
 }

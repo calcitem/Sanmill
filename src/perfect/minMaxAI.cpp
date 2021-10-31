@@ -324,7 +324,7 @@ inline void MiniMaxAI::setWarning(unsigned int stoneOne, unsigned int stoneTwo, 
     // stone was set
     if (field->board[stoneOne] == field->curPlayer->id) {
 
-        // a warnig was destroyed
+        // a warning was destroyed
         field->warnings[stoneOne] = field->noWarning;
 
         // a warning is created

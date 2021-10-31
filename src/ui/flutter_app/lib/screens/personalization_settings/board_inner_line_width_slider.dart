@@ -29,8 +29,8 @@ class _BoardInnerWidthSlider extends StatelessWidget {
         label: S.of(context).boardInnerLineWidth,
         child: ValueListenableBuilder(
           valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayaBox, _) {
-            final Display _display = displayaBox.get(
+          builder: (context, Box<Display> displayBox, _) {
+            final Display _display = displayBox.get(
               LocalDatabaseService.colorSettingsKey,
               defaultValue: Display(),
             )!;

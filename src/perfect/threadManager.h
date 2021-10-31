@@ -32,7 +32,7 @@ using namespace std; // use standard library namespace
 
 
 
-/*** Strukturen ******************************************************/
+/*** Structures ******************************************************/
 
 
 
@@ -146,7 +146,7 @@ public:
     void pauseExecution();	// un-/suspend all threads
     void cancelExecution(); // termineAllThreads auf true
     bool wasExecutionCancelled();
-    void uncancelExecution(); // sets executionCancelled	to false, otherwise executeParellelLoop returns immediatelly
+    void unCancelExecution(); // sets executionCancelled	to false, otherwise executeParallelLoop returns immediately
                               //... void					setCallBackFunction				(void userFunction(void* pUser), void* pUser, DWORD milliseconds);		// a user function which is called every x-milliseconds during execution between two iterations
 
     // execute

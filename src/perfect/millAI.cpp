@@ -195,7 +195,7 @@ void fieldStruct::createBoard()
     setConnection(22, 23, i, 21, 19);
     setConnection(23, i, i, 22, 14);
 
-    // neighbours
+    // neighbors
     setNeighbour(0, 1, 2, 9, 21);
     setNeighbour(1, 0, 2, 4, 7);
     setNeighbour(2, 0, 1, 14, 23);

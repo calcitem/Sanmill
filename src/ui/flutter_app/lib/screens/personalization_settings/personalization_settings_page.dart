@@ -220,8 +220,8 @@ class PersonalizationSettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDisplay(BuildContext context, Box<Display> displayaBox, _) {
-    final Display _display = displayaBox.get(
+  Widget _buildDisplay(BuildContext context, Box<Display> displayBox, _) {
+    final Display _display = displayBox.get(
       LocalDatabaseService.colorSettingsKey,
       defaultValue: Display(),
     )!;

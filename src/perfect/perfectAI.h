@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef PERFEKT_AI_H
-#define PERFEKT_AI_H
+#ifndef PERFECT_AI_H
+#define PERFECT_AI_H
 
 #include <iostream>
 #include <cstdio>
@@ -46,10 +46,10 @@
 #define GROUP_B 1
 #define GROUP_C 2
 #define GROUP_D 3
-#define MAX_ANZ_STELLUNGEN_A 81
-#define MAX_ANZ_STELLUNGEN_B 81
-#define MAX_ANZ_STELLUNGEN_C (81 * 81)
-#define MAX_ANZ_STELLUNGEN_D (81 * 81)
+#define MAX_ANZ_POSITION_A 81
+#define MAX_ANZ_POSITION_B 81
+#define MAX_ANZ_POSITION_C (81 * 81)
+#define MAX_ANZ_POSITION_D (81 * 81)
 
 #define FREE_SQUARE 0
 #define WHITE_STONE 1
@@ -129,11 +129,11 @@ protected:
     // constant variables for state addressing in the database
     Layer layer[NUM_LAYERS];																	// the layers
     unsigned int layerIndex[2][NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE]; // indices of layer [moving/setting phase][number of white stones][number of black stones]
-    unsigned int anzahlStellungenCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int anzahlStellungenAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int indexAB[MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B];
-    unsigned int indexCD[MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D];
-    unsigned char symmetryOperationCD[MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D]; // index of symmetry operation used to get from the original state to the current one
+    unsigned int numPositionsCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int numPositionsAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
+    unsigned int indexCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
+    unsigned char symmetryOperationCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D]; // index of symmetry operation used to get from the original state to the current one
     unsigned int powerOfThree[numSquaresGroupC + numSquaresGroupD];					// 3^0, 3^1, 3^2, ...
     unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][fieldStruct::size];		// Matrix used for application of the symmetry operations
     unsigned int *originalStateCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
@@ -193,7 +193,7 @@ protected:
     unsigned int getNumberOfLayers();
     unsigned int getNumberOfKnotsInLayer(unsigned int layerNum);
     long long mOverN_Function(unsigned int m, unsigned int n);
-    void applySymmetrieOperationOnField(unsigned char symmetryOperationNumber, unsigned int *sourceField, unsigned int *destField);
+    void applySymmetryOperationOnField(unsigned char symmetryOperationNumber, unsigned int *sourceField, unsigned int *destField);
     bool isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation, int *theField);
     bool shallRetroAnalysisBeUsed(unsigned int layerNum);
     void getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers, unsigned int *succLayers);

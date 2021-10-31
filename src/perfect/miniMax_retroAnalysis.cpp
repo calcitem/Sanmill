@@ -11,8 +11,8 @@ s\*********************************************************************/
 //-----------------------------------------------------------------------------
 // calcKnotValuesByRetroAnalysis()
 // 
-// The COUNT-ARRAY is the main element of the algorithmn. It contains the number of succeding states for the drawn gamestates,
-// whose short knot value has to be determined. If all succeding states (branches representing possible moves) are for example won than,
+// The COUNT-ARRAY is the main element of the algorithmn. It contains the number of succeeding states for the drawn gamestates,
+// whose short knot value has to be determined. If all succeeding states (branches representing possible moves) are for example won than,
 // a state can be marked as lost, since no branch will lead to a drawn or won situation any more.
 // Each time the short knot value of a game state has been determined, the state will be added to 'statesToProcess'.
 // This list is like a queue of states, which still has to be processed.
@@ -258,7 +258,7 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, unsigned int index)
 
     // write data to file
     if (!iraVars->initAlreadyDone) {
-        // curStateValue sollte 2 sein bei index == 1329322
+        // curStateValue should be 2 at index == 1329322
         if (!iraVars->bufferedFile->writeBytes(iraVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char *)&curStateValue)) {
             PRINT(0, m, "ERROR: bufferedFile->writeBytes failed!");
             return m->falseOrStop();
@@ -316,7 +316,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 
     // load file if already existend
     if (GetFileSizeEx(hFileCountArray, &fileSize) && fileSize.QuadPart == retroVars.numKnotsToCalc) {
-        PRINT(2, this, "  Load number of succedors from file: " << ssCountArrayFilePath.str().c_str());
+        PRINT(2, this, "  Load number of succeeders from file: " << ssCountArrayFilePath.str().c_str());
 
         for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
             numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
@@ -338,7 +338,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
         }
 
         // calc values
-        if (!calcNumSuccedors(retroVars)) {
+        if (!calcNumSucceeders(retroVars)) {
             CloseHandle(hFileCountArray);
             return false;
         }
@@ -361,17 +361,17 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 }
 
 //-----------------------------------------------------------------------------
-// calcNumSuccedors()
+// calcNumSucceeders()
 // 
 //-----------------------------------------------------------------------------
-bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
+bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 {
 #ifndef __clang__   // TODO
     // locals
     unsigned int curLayerId;								  // current processed layer within 'layersToCalculate'
     unsigned int layerNumber;								  // layer number of the current process layer
     StateAdress curState;									  // current state counter for loops
-    StateAdress succState;									  // current succeding state counter for loops
+    StateAdress succState;									  // current succeeding state counter for loops
     vector<bool> succCalculated(skvfHeader.numLayers, false); //
 
     // process each layer
@@ -379,7 +379,7 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 
         // set current processed layer number
         layerNumber = retroVars.layersToCalculate[curLayerId];
-        PRINT(0, this, "  *** Calculate number of succeding states for each state of layer " << layerNumber << " ***");
+        PRINT(0, this, "  *** Calculate number of succeeding states for each state of layer " << layerNumber << " ***");
 
         // process layer ...
         if (!succCalculated[layerNumber]) {
@@ -387,10 +387,10 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
             // prepare parameters for multithreading
             succCalculated[layerNumber] = true;
             numStatesProcessed = 0;
-            ThreadManager::ThreadVarsArray<AddNumSuccedorsVars> tva(threadManager.getNumThreads(), (AddNumSuccedorsVars &)AddNumSuccedorsVars(this, &retroVars, layerNumber));
+            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(threadManager.getNumThreads(), (AddNumSucceedersVars &)AddNumSucceedersVars(this, &retroVars, layerNumber));
 
             // process each state in the current layer
-            switch (threadManager.executeParallelLoop(addNumSuccedorsThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1)) {
+            switch (threadManager.executeParallelLoop(addNumSucceedersThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;
             case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -412,7 +412,7 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
             return falseOrStop();
         }
 
-        // ... and process succeding layers
+        // ... and process succeeding layers
         for (curState.layerNumber = 0; curState.layerNumber < layerStats[layerNumber].numSuccLayers; curState.layerNumber++) {
 
             // get current pred. layer
@@ -429,14 +429,14 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
                 continue;
 
             // check all states of pred. layer
-            PRINT(2, this, "    - Do the same for the succeding layer " << (int)succState.layerNumber);
+            PRINT(2, this, "    - Do the same for the succeeding layer " << (int)succState.layerNumber);
 
             // prepare parameters for multithreading
             numStatesProcessed = 0;
-            ThreadManager::ThreadVarsArray<AddNumSuccedorsVars> tva(threadManager.getNumThreads(), (AddNumSuccedorsVars &)AddNumSuccedorsVars(this, &retroVars, succState.layerNumber));
+            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(threadManager.getNumThreads(), (AddNumSucceedersVars &)AddNumSucceedersVars(this, &retroVars, succState.layerNumber));
 
             // process each state in the current layer
-            switch (threadManager.executeParallelLoop(addNumSuccedorsThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {
+            switch (threadManager.executeParallelLoop(addNumSucceedersThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;
             case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -461,13 +461,13 @@ bool MiniMax::calcNumSuccedors(retroAnalysisGlobalVars &retroVars)
 }
 
 //-----------------------------------------------------------------------------
-// addNumSuccedorsThreadProc()
+// addNumSucceedersThreadProc()
 // 
 //-----------------------------------------------------------------------------
-DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, unsigned int index)
+DWORD MiniMax::addNumSucceedersThreadProc(void *pParameter, unsigned int index)
 {
     // locals
-    AddNumSuccedorsVars *ansVars = (AddNumSuccedorsVars *)pParameter;
+    AddNumSucceedersVars *ansVars = (AddNumSucceedersVars *)pParameter;
     MiniMax *m = ansVars->pMiniMax;
     unsigned int numLayersToCalculate = (unsigned int)ansVars->retroVars->layersToCalculate.size();
     unsigned int curLayerId; // current processed layer within 'layersToCalculate'
@@ -477,7 +477,7 @@ DWORD MiniMax::addNumSuccedorsThreadProc(void *pParameter, unsigned int index)
     StateAdress predState;
     StateAdress curState;
     TwoBit curStateValue;
-    PlyInfoVarType numPlies; // number of plies of the current considered succeding state
+    PlyInfoVarType numPlies; // number of plies of the current considered succeeding state
     bool cuStateAddedToProcessQueue = false;
 
     curState.layerNumber = ansVars->layerNumber;

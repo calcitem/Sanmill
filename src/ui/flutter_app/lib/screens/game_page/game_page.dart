@@ -50,7 +50,7 @@ double boardWidth = 0.0;
 class GamePage extends StatefulWidget {
   final EngineType engineType;
 
-  // TODO: use gameInstamce.enginetype
+  // TODO: use gameInstance.engineType
   const GamePage(this.engineType, {Key? key}) : super(key: key);
 
   @override
@@ -896,7 +896,7 @@ class _GamePageState extends State<GamePage>
 
   Future<void> onStepForwardButtonPressed([bool pop = true]) async =>
       onGotoHistoryButtonsPressed(
-        HistoryMove.farward,
+        HistoryMove.forward,
         pop: pop,
       );
 
@@ -1271,7 +1271,7 @@ class _GamePageState extends State<GamePage>
     final double height = windowSize.height;
     double width = windowSize.width;
 
-    // TODO: maybe use windowSize.aspectratio
+    // TODO: maybe use windowSize.aspectRatio
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
       return (windowSize.width - width) / 2 - AppTheme.boardMargin;
@@ -1624,10 +1624,10 @@ class _GamePageState extends State<GamePage>
 
     _initAnimation();
 
-    LocalDatabaseService.listenPreferences.addListener(_refeshEngine);
+    LocalDatabaseService.listenPreferences.addListener(_refreshEngine);
   }
 
-  Future<void> _refeshEngine() async {
+  Future<void> _refreshEngine() async {
     await _engine.setOptions();
     debugPrint("$_tag reloaded engine options");
   }
@@ -1677,7 +1677,7 @@ class _GamePageState extends State<GamePage>
     disposed = true;
     _engine.shutdown();
     _animationController.dispose();
-    LocalDatabaseService.listenPreferences.removeListener(_refeshEngine);
+    LocalDatabaseService.listenPreferences.removeListener(_refreshEngine);
     super.dispose();
   }
 }
