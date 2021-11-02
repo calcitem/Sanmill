@@ -2,10 +2,10 @@
 *        text=auto
 
 # Always perform LF normalization on these files
-*.cpp
+*.cpp    text
 *.dart   text
 *.gradle text
-*.h
+*.h      text
 *.html   text
 *.java   text
 *.json   text
