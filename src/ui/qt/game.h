@@ -24,8 +24,8 @@
  * But it doesn't look good to use one scene class to do so many control module operations
  */
 
-#ifndef GAMECONTROLLER_H
-#define GAMECONTROLLER_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <map>
 #include <vector>
@@ -554,4 +554,4 @@ inline void Game::set_start_time(int time)
     startTime = time;
 }
 
-#endif // GAMECONTROLLER_H
+#endif // GAME_H

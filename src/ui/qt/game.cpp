@@ -102,7 +102,7 @@ Game::Game(
     uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
     client = new Client(nullptr, clientPort);
 
-    // The command line of AI andnetwork
+    // The command line of AI and network
     connect(getClient(), SIGNAL(command(const string &, bool)),
             this, SLOT(command(const string &, bool)));
 #endif // NET_FIGHT_SUPPORT
@@ -1280,7 +1280,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
                 }
             }
 
-#ifdef MESSAGEBOX_ENABLE
+#ifdef MESSAGE_BOX_ENABLE
         message = QString::fromStdString(position.get_tips());
         QMessageBox::about(NULL, "Game Result", message);
 #endif

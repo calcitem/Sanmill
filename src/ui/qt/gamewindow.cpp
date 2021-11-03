@@ -299,14 +299,14 @@ void MillGameWindow::initialize()
             game, SLOT(actionPiece(QPointF)));
 
     // Add a normal display label to the status bar
-    auto *statusBarlabel = new QLabel(this);
+    auto *statusBarLabel = new QLabel(this);
     QFont statusBarFont;
     statusBarFont.setPointSize(16);
-    statusBarlabel->setFont(statusBarFont);
-    ui.statusBar->addWidget(statusBarlabel);
+    statusBarLabel->setFont(statusBarFont);
+    ui.statusBar->addWidget(statusBarLabel);
 
      connect(game, SIGNAL(statusBarChanged(QString)),
-            statusBarlabel, SLOT(setText(QString)));
+            statusBarLabel, SLOT(setText(QString)));
 
     ruleActionList[game->getRuleIndex()]->setChecked(true);
     game->setRule(game->getRuleIndex());
@@ -640,7 +640,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 
     game->saveScore();
 
-#ifdef SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
+#ifdef SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
     QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_hhmmss");
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QString whoWin;
@@ -669,7 +669,7 @@ void MillGameWindow::on_actionNew_N_triggered()
     if (strlist->stringList().size() > 18) {
         saveBook(path);
     }
-#endif /* SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED */
+#endif /* SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED */
 
     ui.actionAutoRun_A->setChecked(false);    
 

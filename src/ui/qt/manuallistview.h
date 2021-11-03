@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MANUALLISTVIEW
-#define MANUALLISTVIEW
+#ifndef MANUAL_LIST_VIEW_H
+#define MANUAL_LIST_VIEW_H
 
 #include <QListView>
 #include <QMouseEvent>
@@ -106,4 +106,4 @@ private:
     bool newEmptyRow {false};
 };
 
-#endif // MANUALLISTVIEW
+#endif // MANUAL_LIST_VIEW_H

@@ -117,7 +117,7 @@
 /// The game is drawn if there has been no removal in a specific number of moves.
 #define RULE_50
 
-//#define MESSAGEBOX_ENABLE
+//#define MESSAGE_BOX_ENABLE
 
 #ifdef DEBUG_MODE
 #define DO_NOT_PLAY_SOUND
@@ -130,7 +130,7 @@
 #endif
 
 #ifndef QT_MOBILE_APP_UI
-#define SAVE_GAMEBOOK_WHEN_ACTION_NEW_TRIGGERED
+#define SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 
 //#define DO_NOT_PLAY_WIN_SOUND
