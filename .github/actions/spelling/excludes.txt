@@ -34,6 +34,8 @@ ignore$
 (?:^|/)strings\.xml$
 \.arb$
 feedback_localization\.dart$
+colors\.dart$
+language_info\.dart$
 zobrist\.dart$
 release\.sh$
 \.txt$

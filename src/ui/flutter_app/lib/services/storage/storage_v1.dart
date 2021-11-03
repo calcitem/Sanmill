@@ -44,7 +44,7 @@ class DatabaseV1 {
     return File('${docDir.path}/$fileName');
   }
 
-  /// loads the preferences from the old datastore
+  /// loads the preferences from the old data store
   static Future<Map<String, dynamic>?> _loadFile(File _file) async {
     debugPrint("$_tag Loading $_file ...");
 

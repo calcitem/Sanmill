@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GAMEITEM_H
-#define GAMEITEM_H
+#ifndef PIECE_ITEM_H
+#define PIECE_ITEM_H
 
 #include <QObject>
 #include <QGraphicsItem>
@@ -130,4 +130,4 @@ private:
     QColor removeLineColor;
 };
 
-#endif // GAMEITEM_H
+#endif // PIECE_ITEM_H

@@ -131,12 +131,12 @@ void Server::sessionOpened()
             return;
         }
 
-#ifdef MESSAGEBOX_ENABLE
+#ifdef MESSAGE_BOX_ENABLE
         QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
     }
     else {
-#ifdef MESSAGEBOX_ENABLE
+#ifdef MESSAGE_BOX_ENABLE
         QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
     }
