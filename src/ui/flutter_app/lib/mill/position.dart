@@ -129,17 +129,13 @@ class Position {
   PieceColor pieceOnGrid(int index) => _grid[index];
   PieceColor pieceOn(int sq) => board[sq];
 
-  bool empty(int sq) => pieceOn(sq) == PieceColor.none;
-
   PieceColor get sideToMove => _sideToMove;
-
   PieceColor movedPiece(int move) => pieceOn(fromSq(move));
 
   Future<bool> movePiece(int from, int to) async {
     if (selectPiece(from) == 0) {
       return putPiece(to);
     }
-
     return false;
   }
 
@@ -167,6 +163,7 @@ class Position {
   /// Return a FEN representation of the position.
   String fen() {
     final buffer = StringBuffer();
+    const space = " ";
 
     // Piece placement data
     for (var file = 1; file <= fileNumber; file++) {
@@ -176,56 +173,20 @@ class Position {
       }
 
       if (file == 3) {
-        buffer.write(' ');
+        buffer.write(space);
       } else {
         buffer.write('/');
       }
     }
 
     // Active color
-    buffer.write(_sideToMove == PieceColor.white ? "w" : "b");
-
-    buffer.write(" ");
+    buffer.write(_sideToMove == PieceColor.white ? "w$space" : "b$space");
 
     // Phrase
-    switch (phase) {
-      case Phase.none:
-        buffer.write("n");
-        break;
-      case Phase.ready:
-        buffer.write("r");
-        break;
-      case Phase.placing:
-        buffer.write("p");
-        break;
-      case Phase.moving:
-        buffer.write("m");
-        break;
-      case Phase.gameOver:
-        buffer.write("o");
-        break;
-      default:
-        buffer.write("?");
-    }
-
-    buffer.write(" ");
+    buffer.write(phase.fen + space);
 
     // Action
-    switch (action) {
-      case Act.place:
-        buffer.write("p");
-        break;
-      case Act.select:
-        buffer.write("s");
-        break;
-      case Act.remove:
-        buffer.write("r");
-        break;
-      default:
-        buffer.write("?");
-    }
-
-    buffer.write(" ");
+    buffer.write(action.fen + space);
 
     buffer.write(
       "${pieceOnBoardCount[PieceColor.white]} ${pieceInHandCount[PieceColor.white]} ${pieceOnBoardCount[PieceColor.black]} ${pieceInHandCount[PieceColor.black]} $pieceToRemoveCount ",
@@ -235,13 +196,12 @@ class Position {
 
     buffer.write("${st.rule50} ${1 + (gamePly - sideIsBlack) ~/ 2}");
 
-    //debugPrint("FEN is $ss");
+    debugPrint("FEN is $buffer");
 
     return buffer.toString();
   }
 
   /// Position::legal() tests whether a pseudo-legal move is legal
-
   bool legal(Move move) {
     if (!isOk(move.from) || !isOk(move.to)) return false;
 
