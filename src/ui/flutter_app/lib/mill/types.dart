@@ -183,7 +183,41 @@ extension PieceColorExtension on PieceColor {
 
 enum Phase { none, ready, placing, moving, gameOver }
 
+extension PhaseExtension on Phase {
+  String get fen {
+    switch (this) {
+      case Phase.none:
+        return "n";
+      case Phase.ready:
+        return "r";
+      case Phase.placing:
+        return "p";
+      case Phase.moving:
+        return "m";
+      case Phase.gameOver:
+        return "o";
+      default:
+        return "?";
+    }
+  }
+}
+
 enum Act { none, select, place, remove }
+
+extension ActExtension on Act {
+  String get fen {
+    switch (this) {
+      case Act.place:
+        return "p";
+      case Act.select:
+        return "s";
+      case Act.remove:
+        return "r";
+      default:
+        return "?";
+    }
+  }
+}
 
 enum GameOverReason {
   noReason,
