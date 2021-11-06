@@ -24,7 +24,7 @@ namespace Sanmill {
 template <typename T, size_t capacity = 128>
 class Stack {
 public:
-    Stack()
+    Stack() noexcept
     {
         arr = new T[capacity];
     }
@@ -61,7 +61,7 @@ public:
         return arr[i];
     }
 
-    inline void push(const T& obj)
+    inline void push(const T& obj) noexcept
     {
         p++;
         memcpy(arr + p, &obj, sizeof(T));

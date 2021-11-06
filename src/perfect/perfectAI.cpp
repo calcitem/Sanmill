@@ -858,7 +858,7 @@ void PerfectAI::prepareBestChoiceCalculation() noexcept
 // ThreadVars()
 //
 //-----------------------------------------------------------------------------
-PerfectAI::ThreadVars::ThreadVars()
+PerfectAI::ThreadVars::ThreadVars() noexcept
 {
     field = nullptr;
     floatValue = 0;
@@ -1014,7 +1014,7 @@ unsigned int* PerfectAI::ThreadVars::getPossStoneRemove(unsigned int* numPossibi
 // getPossibilities()
 //
 //-----------------------------------------------------------------------------
-unsigned int* PerfectAI::getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities) noexcept
+unsigned int* PerfectAI::getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities)
 {
     // locals
     bool aStoneCanBeRemovedFromCurPlayer = 0;
@@ -1486,7 +1486,7 @@ void PerfectAI::getValueOfMoves(unsigned char* moveValue, unsigned int* freqValu
 // printMoveInformation()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept
+void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities)
 {
     // locals
     ThreadVars* tv = &threadVars[threadNo];
@@ -1905,7 +1905,7 @@ string PerfectAI::getOutputInformation(unsigned int layerNum)
 // printBoard()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::printBoard(unsigned int threadNo, unsigned char value) noexcept
+void PerfectAI::printBoard(unsigned int threadNo, unsigned char value)
 {
     ThreadVars* tv = &threadVars[threadNo];
     char wonStr[] = "WON";
@@ -2053,7 +2053,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* n
 // fieldIntegrityOK()
 //
 //-----------------------------------------------------------------------------
-bool PerfectAI::ThreadVars::fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer)
+bool PerfectAI::ThreadVars::fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer) noexcept
 {
     // locals
     int i, j;

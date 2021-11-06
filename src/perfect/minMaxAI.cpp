@@ -608,7 +608,7 @@ void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 // printMoveInformation()
 //
 //-----------------------------------------------------------------------------
-void MiniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept
+void MiniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities)
 {
     // locals
     Possibility* tmpPossibility = (Possibility*)pPossibilities;

@@ -12,7 +12,7 @@
 // showMemoryStatus()
 //
 //-----------------------------------------------------------------------------
-unsigned int MiniMax::getNumThreads()
+unsigned int MiniMax::getNumThreads() noexcept
 {
     return threadManager.getNumThreads();
 }
@@ -21,7 +21,7 @@ unsigned int MiniMax::getNumThreads()
 // anyFreshlyCalculatedLayer()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-bool MiniMax::anyFreshlyCalculatedLayer()
+bool MiniMax::anyFreshlyCalculatedLayer() noexcept
 {
     return (lastCalculatedLayer.size() > 0);
 }
@@ -30,7 +30,7 @@ bool MiniMax::anyFreshlyCalculatedLayer()
 // getLastCalculatedLayer()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-unsigned int MiniMax::getLastCalculatedLayer()
+unsigned int MiniMax::getLastCalculatedLayer() noexcept
 {
     unsigned int tmp = lastCalculatedLayer.front();
     lastCalculatedLayer.pop_front();
@@ -41,7 +41,7 @@ unsigned int MiniMax::getLastCalculatedLayer()
 // isLayerInDatabase()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::isLayerInDatabase(unsigned int layerNum)
+bool MiniMax::isLayerInDatabase(unsigned int layerNum) noexcept
 {
     if (layerStats == nullptr)
         return false;
@@ -52,7 +52,7 @@ bool MiniMax::isLayerInDatabase(unsigned int layerNum)
 // getLayerSizeInBytes()
 //
 //-----------------------------------------------------------------------------
-long long MiniMax::getLayerSizeInBytes(unsigned int layerNum)
+long long MiniMax::getLayerSizeInBytes(unsigned int layerNum) noexcept
 {
     if (plyInfos == nullptr || layerStats == nullptr)
         return 0;
@@ -63,7 +63,7 @@ long long MiniMax::getLayerSizeInBytes(unsigned int layerNum)
 // getNumWonStates()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum) noexcept
 {
     if (layerStats == nullptr)
         return 0;
@@ -74,7 +74,7 @@ MiniMax::StateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
 // getNumLostStates()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum) noexcept
 {
     if (layerStats == nullptr)
         return 0;
@@ -85,7 +85,7 @@ MiniMax::StateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
 // getNumDrawnStates()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum) noexcept
 {
     if (layerStats == nullptr)
         return 0;
@@ -96,7 +96,7 @@ MiniMax::StateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
 // getNumInvalidStates()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumInvalidStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getNumInvalidStates(unsigned int layerNum) noexcept
 {
     if (layerStats == nullptr)
         return 0;
@@ -135,7 +135,7 @@ void MiniMax::showMemoryStatus()
 // setOutputStream()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::setOutputStream(ostream* theStream, void (*printFunc)(void* pUserData), void* pUserData)
+void MiniMax::setOutputStream(ostream* theStream, void (*printFunc)(void* pUserData), void* pUserData) noexcept
 {
     osPrint = theStream;
     pDataForUserPrintFunc = pUserData;
@@ -274,7 +274,7 @@ bool MiniMax::calcLayerStatistics(char* statisticsFileName)
 // anyArraryInfoToUpdate()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-bool MiniMax::anyArrayInfoToUpdate()
+bool MiniMax::anyArrayInfoToUpdate() noexcept
 {
     return (arrayInfos.arrayInfosToBeUpdated.size() > 0);
 }
@@ -283,7 +283,7 @@ bool MiniMax::anyArrayInfoToUpdate()
 // getArrayInfoForUpdate()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
+MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate() noexcept
 {
     MiniMax::ArrayInfoChange tmp = arrayInfos.arrayInfosToBeUpdated.front();
     arrayInfos.arrayInfosToBeUpdated.pop_front();
@@ -294,7 +294,7 @@ MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
 // getCurrentActionStr()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-LPWSTR MiniMax::getCurrentActionStr()
+LPWSTR MiniMax::getCurrentActionStr() noexcept
 {
     switch (curCalculationActionId) {
     case MM_ACTION_INIT_RETRO_ANAL:

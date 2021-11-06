@@ -33,7 +33,7 @@
 
 namespace Bitboards {
 
-void init();
+void init() noexcept;
 const std::string pretty(Bitboard b);
 
 }

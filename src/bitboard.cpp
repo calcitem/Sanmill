@@ -45,7 +45,7 @@ const std::string Bitboards::pretty(Bitboard b)
 /// Bitboards::init() initializes various bitboard tables. It is called at
 /// startup and relies on global objects to be already zero-initialized.
 
-void Bitboards::init()
+void Bitboards::init() noexcept
 {
     for (unsigned i = 0; i < (1 << 16); ++i)
         PopCnt16[i] = (uint8_t)std::bitset<16>(i).count();

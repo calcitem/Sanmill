@@ -156,7 +156,7 @@ protected:
         PerfectAI* parent; //
 
         // constructor
-        ThreadVars();
+        ThreadVars() noexcept;
 
         // Functions
         unsigned int* getPossSettingPhase(unsigned int* numPossibilities, void** pPossibilities);
@@ -174,7 +174,7 @@ protected:
         // database functions
         unsigned int getLayerAndStateNumber(unsigned int& layerNum, unsigned int& stateNumber);
         void setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
-        bool fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer);
+        bool fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer) noexcept;
         void calcPossibleMoves(Player* player);
         void storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars);
     };
@@ -205,13 +205,13 @@ protected:
     void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) noexcept;
     bool getOpponentLevel(unsigned int threadNo) noexcept;
     void deletePossibilities(unsigned int threadNo, void* pPossibilities) noexcept;
-    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities) noexcept;
+    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities);
     void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities) noexcept;
     void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities) noexcept;
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept;
+    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities);
     void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities, unsigned char value, unsigned int* freqValuesSubMoves, PlyInfoVarType plyInfo) noexcept;
     void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) noexcept;
-    void printBoard(unsigned int threadNo, unsigned char value) noexcept;
+    void printBoard(unsigned int threadNo, unsigned char value);
     string getOutputInformation(unsigned int layerNum);
     unsigned int getPartnerLayer(unsigned int layerNum) noexcept;
     void prepareDatabaseCalculation() noexcept;

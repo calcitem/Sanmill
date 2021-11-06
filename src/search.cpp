@@ -29,7 +29,7 @@ Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth 
 
 Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move& bestMove);
 
-bool is_timeout(TimePoint startTime);
+bool is_timeout(TimePoint startTime) noexcept;
 
 /// Search::init() is called at startup
 
@@ -490,7 +490,7 @@ Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth 
     return g;
 }
 
-bool is_timeout(TimePoint startTime)
+bool is_timeout(TimePoint startTime) noexcept
 {
     auto limit = gameOptions.getMoveTime() * 1000;
     TimePoint elapsed = now() - startTime;

@@ -249,20 +249,20 @@ public:
     // Statistics
     bool calcLayerStatistics(char* statisticsFileName);
     void showMemoryStatus();
-    unsigned int getNumThreads();
-    bool anyFreshlyCalculatedLayer();
-    unsigned int getLastCalculatedLayer();
-    StateNumberVarType getNumWonStates(unsigned int layerNum);
-    StateNumberVarType getNumLostStates(unsigned int layerNum);
-    StateNumberVarType getNumDrawnStates(unsigned int layerNum);
-    StateNumberVarType getNumInvalidStates(unsigned int layerNum);
-    bool isLayerInDatabase(unsigned int layerNum);
-    long long getLayerSizeInBytes(unsigned int layerNum);
-    void setOutputStream(ostream* theStream, void (*printFunc)(void* pUserData), void* pUserData);
-    bool anyArrayInfoToUpdate();
-    ArrayInfoChange getArrayInfoForUpdate();
+    unsigned int getNumThreads() noexcept;
+    bool anyFreshlyCalculatedLayer() noexcept;
+    unsigned int getLastCalculatedLayer() noexcept;
+    StateNumberVarType getNumWonStates(unsigned int layerNum) noexcept;
+    StateNumberVarType getNumLostStates(unsigned int layerNum) noexcept;
+    StateNumberVarType getNumDrawnStates(unsigned int layerNum) noexcept;
+    StateNumberVarType getNumInvalidStates(unsigned int layerNum) noexcept;
+    bool isLayerInDatabase(unsigned int layerNum) noexcept;
+    long long getLayerSizeInBytes(unsigned int layerNum) noexcept;
+    void setOutputStream(ostream* theStream, void (*printFunc)(void* pUserData), void* pUserData) noexcept;
+    bool anyArrayInfoToUpdate() noexcept;
+    ArrayInfoChange getArrayInfoForUpdate() noexcept;
     void getCurrentCalculatedLayer(vector<unsigned int>& layers);
-    LPWSTR getCurrentActionStr();
+    LPWSTR getCurrentActionStr() noexcept;
 
     // Main function for getting the best choice
     void* getBestChoice(unsigned int tilLevel, unsigned int* choice, unsigned int maximumNumberOfBranches);
@@ -288,7 +288,7 @@ public:
     virtual unsigned int* getPossibilities(unsigned int threadNo,
         unsigned int* numPossibilities,
         bool* opponentsMove,
-        void** pPossibilities) noexcept
+        void** pPossibilities)
     {
         while (true)
             ;
@@ -422,13 +422,13 @@ public:
             ;
     };
 
-    virtual void printBoard(unsigned int threadNo, unsigned char value) noexcept
+    virtual void printBoard(unsigned int threadNo, unsigned char value)
     {
         while (true)
             ;
     };
 
-    virtual void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept
+    virtual void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities)
     {
         while (true)
             ;

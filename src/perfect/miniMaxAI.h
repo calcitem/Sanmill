@@ -76,7 +76,7 @@ protected:
     void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities) noexcept;
     void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities) noexcept;
     void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue) noexcept;
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept;
+    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities);
 
     unsigned int getNumberOfLayers() noexcept
     {
@@ -126,7 +126,7 @@ protected:
 
     void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) noexcept {};
 
-    void printBoard(unsigned int threadNo, unsigned char value) noexcept {};
+    void printBoard(unsigned int threadNo, unsigned char value) {};
 
     void prepareDatabaseCalculation() noexcept {};
 

@@ -148,7 +148,7 @@ public:
     }
 
     // Function to clean up the hasp map, i.e., remove all entries from it
-    void clear()
+    void clear() noexcept
     {
 #ifdef DISABLE_HASHBUCKET
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
