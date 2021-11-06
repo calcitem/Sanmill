@@ -18,10 +18,10 @@
 
 #include <iomanip>
 
+#include "mills.h"
+#include "option.h"
 #include "thread.h"
 #include "uci.h"
-#include "option.h"
-#include "mills.h"
 
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #include "perfect/perfect.h"
@@ -39,28 +39,30 @@ using namespace std;
 #endif
 
 #if _MSC_VER >= 1600
-#pragma warning(disable:4695)
+#pragma warning(disable : 4695)
 #pragma execution_character_set("ANSI")
 #endif
-
 
 /// Thread constructor launches the thread and waits until it goes to sleep
 /// in idle_loop(). Note that 'searching' and 'exit' should be already set.
 
 Thread::Thread(size_t n
 #ifdef QT_GUI_LIB
-               , QObject *parent
+    ,
+    QObject* parent
 #endif
-) :
+    )
+    :
 #ifdef QT_GUI_LIB
-    QObject(parent),
+    QObject(parent)
+    ,
 #endif
-    idx(n), stdThread(&Thread::idle_loop, this),
-    timeLimit(3600)
+    idx(n)
+    , stdThread(&Thread::idle_loop, this)
+    , timeLimit(3600)
 {
     wait_for_search_finished();
 }
-
 
 /// Thread destructor wakes up the thread in idle_loop() and waits
 /// for its termination. Thread should be already waiting.
@@ -74,7 +76,6 @@ Thread::~Thread()
     stdThread.join();
 }
 
-
 /// Thread::clear() reset histories, usually before a new game
 
 void Thread::clear() noexcept
@@ -82,7 +83,6 @@ void Thread::clear() noexcept
     // TODO: Reset histories
     return;
 }
-
 
 /// Thread::start_searching() wakes up the thread that will start the search
 
@@ -100,7 +100,6 @@ void Thread::pause()
     cv.notify_one(); // Wake up the thread in idle_loop()
 }
 
-
 /// Thread::wait_for_search_finished() blocks on the condition variable
 /// until the thread has finished searching.
 
@@ -109,7 +108,6 @@ void Thread::wait_for_search_finished()
     std::unique_lock<std::mutex> lk(mutex);
     cv.wait(lk, [&] { return !searching; });
 }
-
 
 /// Thread::idle_loop() is where the thread is parked, blocked on the
 /// condition variable, when it has no work to do.
@@ -176,10 +174,9 @@ void Thread::idle_loop()
     }
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 
-void Thread::setAi(Position *p)
+void Thread::setAi(Position* p)
 {
     std::lock_guard<std::mutex> lk(mutex);
 
@@ -192,7 +189,7 @@ void Thread::setAi(Position *p)
 #endif
 }
 
-void Thread::setAi(Position *p, int tl)
+void Thread::setAi(Position* p, int tl)
 {
     setAi(p);
 
@@ -232,16 +229,18 @@ void Thread::emitCommand()
 deque<int> openingBookDeque(
     {
         /* B W */
-        21, 23,
-        19, 20,
-        17, 18,
+        21,
+        23,
+        19,
+        20,
+        17,
+        18,
         15,
-    }
-);
+    });
 
 deque<int> openingBookDequeBak;
 
-void sq2str(char *str)
+void sq2str(char* str)
 {
     int sq = openingBookDeque.front();
     openingBookDeque.pop_front();
@@ -291,7 +290,7 @@ void Thread::analyze(Color c)
 
     loggerDebug("Depth: %d\n\n", originDepth);
 
-    const Position *p = rootPos;
+    const Position* p = rootPos;
 
     cout << *p << endl;
     cout << std::dec;
@@ -306,13 +305,13 @@ void Thread::analyze(Color c)
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "Draw" << endl;
-            nDraw += 0.5;   // TODO
+            nDraw += 0.5; // TODO
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << endl;
-            nBlackWin += 0.5;  // TODO
+            nBlackWin += 0.5; // TODO
         } else if (p->get_winner() == BLACK) {
             cout << "Black wins" << endl;
-            nWhiteWin += 0.5;    // TODO
+            nWhiteWin += 0.5; // TODO
         }
         goto out;
         break;
@@ -324,7 +323,9 @@ void Thread::analyze(Color c)
     }
 
     if (v == VALUE_UNIQUE) {
-        cout << "Unique move" << endl << endl << endl;
+        cout << "Unique move" << endl
+             << endl
+             << endl;
         return;
     }
 
@@ -407,7 +408,8 @@ void Thread::analyze(Color c)
 #endif // !QT_GUI_LIB
 
 out:
-    cout << endl << endl;
+    cout << endl
+         << endl;
 }
 
 Depth Thread::get_depth()
@@ -422,8 +424,7 @@ string Thread::next_move()
     if (gameOptions.isEndgameLearningEnabled()) {
         if (bestvalue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
-            endgame.type = rootPos->side_to_move() == WHITE ?
-                EndGameType::blackWin : EndGameType::whiteWin;
+            endgame.type = rootPos->side_to_move() == WHITE ? EndGameType::blackWin : EndGameType::whiteWin;
             Key endgameHash = rootPos->key(); // TODO: Do not generate hash repeatedly
             saveEndgameHash(endgameHash, endgame);
         }
@@ -443,7 +444,7 @@ string Thread::next_move()
     size_t hashProbeCount = ttHitCount + ttMissCount;
     if (hashProbeCount) {
         loggerDebug("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-                    hashProbeCount, ttHitCount, ttMissCount, ttHitCount * 100 / hashProbeCount);
+            hashProbeCount, ttHitCount, ttMissCount, ttHitCount * 100 / hashProbeCount);
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
@@ -452,18 +453,18 @@ string Thread::next_move()
 }
 
 #ifdef ENDGAME_LEARNING
-bool Thread::probeEndgameHash(Key posKey, Endgame &endgame)
+bool Thread::probeEndgameHash(Key posKey, Endgame& endgame)
 {
     return endgameHashMap.find(posKey, endgame);
 }
 
-int Thread::saveEndgameHash(Key posKey, const Endgame &endgame)
+int Thread::saveEndgameHash(Key posKey, const Endgame& endgame)
 {
     Key hashValue = endgameHashMap.insert(posKey, endgame);
     unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
 
     loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: 0x%08I32x, Address: 0x%08I32x\n",
-                posKey, endgame.type, hashValue, addr);
+        posKey, endgame.type, hashValue, addr);
 
     return 0;
 }
@@ -523,15 +524,14 @@ void ThreadPool::set(size_t requested)
 
 void ThreadPool::clear()
 {
-    for (Thread *th : *this)
+    for (Thread* th : *this)
         th->clear();
 }
-
 
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
 /// returns immediately. Main thread will wake up other threads and start the search.
 
-void ThreadPool::start_thinking(Position *pos, bool ponderMode)
+void ThreadPool::start_thinking(Position* pos, bool ponderMode)
 {
     main()->wait_for_search_finished();
 
@@ -540,9 +540,9 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
     main()->ponder = ponderMode;
 
     // We use Position::set() to set root position across threads.
-    for (Thread *th : *this) {
+    for (Thread* th : *this) {
         // Fix CID 338443: Data race condition (MISSING_LOCK)
-        // missing_lock: Accessing th->rootPos without holding lock Thread.mutex. 
+        // missing_lock: Accessing th->rootPos without holding lock Thread.mutex.
         // Elsewhere, Thread.rootPos is accessed with Thread.mutex held 1 out of 2 times (1 of these accesses strongly imply that it is necessary).
         std::lock_guard<std::mutex> lk(th->mutex);
         th->rootPos = pos;

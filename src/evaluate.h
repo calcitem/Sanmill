@@ -27,7 +27,7 @@ class Position;
 
 namespace Eval {
 
-Value evaluate(Position &pos);
+Value evaluate(Position& pos);
 
 }
 

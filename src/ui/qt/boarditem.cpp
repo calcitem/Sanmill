@@ -16,13 +16,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QPainter>
+
 #include "boarditem.h"
 #include "graphicsconst.h"
-#include <QPainter>
 #include "types.h"
 
-BoardItem::BoardItem(QGraphicsItem *parent) :
-    size(BOARD_SIZE)
+BoardItem::BoardItem(QGraphicsItem* parent)
+    : size(BOARD_SIZE)
 {
     Q_UNUSED(parent)
 
@@ -82,9 +83,9 @@ void BoardItem::setDiagonal(bool arg)
     update(boundingRect());
 }
 
-void BoardItem::paint(QPainter *painter,
-                      const QStyleOptionGraphicsItem *option,
-                      QWidget *widget)
+void BoardItem::paint(QPainter* painter,
+    const QStyleOptionGraphicsItem* option,
+    QWidget* widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
@@ -103,11 +104,11 @@ void BoardItem::paint(QPainter *painter,
     painter->drawRect(-size / 2, -size / 2, size, size);
 #else
     painter->drawPixmap(-size / 2, -size / 2, size, size,
-                        QPixmap(":/image/resources/image/board.png"));
+        QPixmap(":/image/resources/image/board.png"));
 #endif /* QT_MOBILE_APP_UI */
 
     // Solid line brush
-#ifdef  QT_MOBILE_APP_UI
+#ifdef QT_MOBILE_APP_UI
     QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
 #else
     QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
@@ -123,13 +124,13 @@ void BoardItem::paint(QPainter *painter,
     }
 
     // Draw 4 vertical and horizontal lines
-    for (int i = 0; i  < RANK_NB; i += 2) {
+    for (int i = 0; i < RANK_NB; i += 2) {
         painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);
     }
 
     if (hasDiagonalLine) {
         // Draw 4 diagonal lines
-        for (int i = 1; i  < RANK_NB; i += 2) {
+        for (int i = 1; i < RANK_NB; i += 2) {
             painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);
         }
     }
@@ -174,7 +175,7 @@ QPointF BoardItem::polar2pos(File file, Rank rank)
     return position[((int)file - 1) * RANK_NB + (int)rank - 1];
 }
 
-bool BoardItem::pos2polar(QPointF pos, File &file, Rank &rank)
+bool BoardItem::pos2polar(QPointF pos, File& file, Rank& rank)
 {
     // Look for the nearest spot
     for (int i = 0; i < EFFECTIVE_SQUARE_NB; i++) {

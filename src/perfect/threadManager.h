@@ -10,12 +10,11 @@
 #define THREADMANAGER_H
 
 // standard library & win32 api
-#include <windows.h>
 #include <cstdio>
 #include <iostream>
+#include <windows.h>
 
 using namespace std; // use standard library namespace
-
 
 #define TM_SCHEDULE_USER_DEFINED 0
 #define TM_SCHEDULE_STATIC 1
@@ -30,39 +29,33 @@ using namespace std; // use standard library namespace
 #define TM_RETURN_VALUE_INVALID_PARAM 3
 #define TM_RETURN_VALUE_UNEXPECTED_ERROR 4
 
-
-
 /*** Structures ******************************************************/
 
-
-
-class ThreadManager
-{
+class ThreadManager {
 private:
     // structures
-    struct ForLoop
-    {
+    struct ForLoop {
         unsigned int scheduleType;
         int inkrement;
         int initialValue;
         int finalValue;
-        void *pParameter;
+        void* pParameter;
         DWORD(*threadProc)
-            (void *pParameter, unsigned int index); // pointer to the user function to be executed by the threads
-        ThreadManager *threadManager;
+        (void* pParameter, unsigned int index); // pointer to the user function to be executed by the threads
+        ThreadManager* threadManager;
     };
 
     // Variables
     unsigned int numThreads; // number of threads
-    HANDLE *hThread;		 // array of size 'numThreads' containing the thread handles
-    DWORD *threadId;		 // array of size 'numThreads' containing the thread ids
+    HANDLE* hThread; // array of size 'numThreads' containing the thread handles
+    DWORD* threadId; // array of size 'numThreads' containing the thread ids
     bool termineAllThreads;
-    bool executionPaused;	 // switch for the
+    bool executionPaused; // switch for the
     bool executionCancelled; // true when cancelExecution() was called
 
     // barier stuff
     HANDLE hEventBarrierPassedByEveryBody;
-    HANDLE *hBarrier; // array of size 'numThreads' containing the event handles for the barrier
+    HANDLE* hBarrier; // array of size 'numThreads' containing the event handles for the barrier
     unsigned int numThreadsPassedBarrier;
     CRITICAL_SECTION csBarrier;
 
@@ -70,32 +63,24 @@ private:
     static DWORD WINAPI threadForLoop(LPVOID lpParameter);
 
 public:
-    class ThreadVarsArrayItem
-    {
+    class ThreadVarsArrayItem {
     public:
         unsigned int curThreadNo;
 
-        virtual void initializeElement()
-        {
-        };
+        virtual void initializeElement() {};
 
-        virtual void destroyElement()
-        {
-        };
+        virtual void destroyElement() {};
 
-        virtual void reduce()
-        {
-        };
+        virtual void reduce() {};
     };
 
     template <class varType>
-    class ThreadVarsArray
-    {
+    class ThreadVarsArray {
     public:
         unsigned int numberOfThreads;
-        varType *item;
+        varType* item;
 
-        ThreadVarsArray(unsigned int numberOfThreads, varType &master)
+        ThreadVarsArray(unsigned int numberOfThreads, varType& master)
         {
             this->numberOfThreads = numberOfThreads;
             this->item = new varType[numberOfThreads];
@@ -115,9 +100,9 @@ public:
             delete[] item;
         };
 
-        void *getPointerToArray()
+        void* getPointerToArray()
         {
-            return (void *)item;
+            return (void*)item;
         };
 
         unsigned int getSizeOfArray()
@@ -143,15 +128,15 @@ public:
 
     bool setNumThreads(unsigned int newNumThreads);
     void waitForOtherThreads(unsigned int threadNo);
-    void pauseExecution();	// un-/suspend all threads
+    void pauseExecution(); // un-/suspend all threads
     void cancelExecution(); // termineAllThreads auf true
     bool wasExecutionCancelled();
     void unCancelExecution(); // sets executionCancelled	to false, otherwise executeParallelLoop returns immediately
-                              //... void					setCallBackFunction				(void userFunction(void* pUser), void* pUser, DWORD milliseconds);		// a user function which is called every x-milliseconds during execution between two iterations
+        //... void					setCallBackFunction				(void userFunction(void* pUser), void* pUser, DWORD milliseconds);		// a user function which is called every x-milliseconds during execution between two iterations
 
     // execute
-    unsigned int executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize);
-    unsigned int executeParallelLoop(DWORD threadProc(void *pParameter, unsigned int index), void *pParameter, unsigned int parameterStructSize, unsigned int scheduleType, int initialValue, int finalValue, int inkrement);
+    unsigned int executeInParallel(DWORD threadProc(void* pParameter), void* pParameter, unsigned int parameterStructSize);
+    unsigned int executeParallelLoop(DWORD threadProc(void* pParameter, unsigned int index), void* pParameter, unsigned int parameterStructSize, unsigned int scheduleType, int initialValue, int finalValue, int inkrement);
 };
 
 #endif

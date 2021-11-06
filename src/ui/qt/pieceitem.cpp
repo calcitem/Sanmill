@@ -18,18 +18,18 @@
 
 #include "pieceitem.h"
 #include "graphicsconst.h"
-#include <QPainter>
 #include <QGraphicsSceneMouseEvent>
+#include <QPainter>
 #include <QStyleOption>
 
-PieceItem::PieceItem(QGraphicsItem *parent) :
-    QGraphicsItem(parent),
-    num(0)
+PieceItem::PieceItem(QGraphicsItem* parent)
+    : QGraphicsItem(parent)
+    , num(0)
 {
     Q_UNUSED(parent)
-        setFlags(ItemIsSelectable
-                 // | ItemIsMovable
-        );
+    setFlags(ItemIsSelectable
+        // | ItemIsMovable
+    );
 
     setCacheMode(DeviceCoordinateCache);
 
@@ -72,12 +72,12 @@ QPainterPath PieceItem::shape() const
     return path;
 }
 
-void PieceItem::paint(QPainter *painter,
-                      const QStyleOptionGraphicsItem *option,
-                      QWidget *widget)
+void PieceItem::paint(QPainter* painter,
+    const QStyleOptionGraphicsItem* option,
+    QWidget* widget)
 {
     Q_UNUSED(option)
-        Q_UNUSED(widget)
+    Q_UNUSED(widget)
 
     // Empty models don't draw pieces
 
@@ -123,8 +123,7 @@ void PieceItem::paint(QPainter *painter,
         painter->setFont(font);
 
         painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12),
-                            Qt::AlignCenter, QString::number(num));
-
+            Qt::AlignCenter, QString::number(num));
     }
 
     // If the model is selected, draw four small right angles
@@ -153,19 +152,19 @@ void PieceItem::paint(QPainter *painter,
     }
 }
 
-void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
     // When the mouse is pressed, it becomes the shape of the hand it holds
     setCursor(Qt::ClosedHandCursor);
     QGraphicsItem::mousePressEvent(mouseEvent);
 }
 
-void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
     QGraphicsItem::mouseMoveEvent(mouseEvent);
 }
 
-void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
     // When the mouse is released, it becomes an extended hand
     setCursor(Qt::OpenHandCursor);

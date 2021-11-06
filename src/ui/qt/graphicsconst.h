@@ -33,4 +33,3 @@ constexpr short LINE_INTERVAL = 72;
 constexpr short LINE_WEIGHT = 3;
 
 #endif // GRAPHICSCONST
-

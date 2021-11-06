@@ -16,27 +16,28 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
-#include <stdarg.h>
 #include <iostream>
+#include <stdarg.h>
+#include <stdio.h>
 
 #include "base.h"
 #include "command_channel.h"
 
-extern int main(int argc, char* argv[]) ;
+extern int main(int argc, char* argv[]);
 
-void println(const char *str, ...) {
+void println(const char* str, ...)
+{
 
     va_list args;
 
     va_start(args, str);
 
-    char buffer[256] = {0};
+    char buffer[256] = { 0 };
     vsnprintf(buffer, 256, str, args);
 
     va_end(args);
 
-    CommandChannel *channel = CommandChannel::getInstance();
+    CommandChannel* channel = CommandChannel::getInstance();
 
     LOGD("println: %s\n", buffer);
 

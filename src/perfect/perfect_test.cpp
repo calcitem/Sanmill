@@ -1,19 +1,19 @@
+#include "mill.h"
+#include "miniMaxAI.h"
+#include "perfect.h"
+#include "perfectAI.h"
+#include "randomAI.h"
 #include <cstdio>
 #include <iostream>
 #include <windows.h>
-#include "mill.h"
-#include "miniMaxAI.h"
-#include "randomAI.h"
-#include "perfectAI.h"
-#include "perfect.h"
 
-#include "rule.h"
 #include "config.h"
+#include "rule.h"
 
 using namespace std;
 
-extern Mill *mill;
-extern PerfectAI *ai;
+extern Mill* mill;
+extern PerfectAI* ai;
 
 unsigned int startTestFromLayer = 0;
 
@@ -42,7 +42,7 @@ int perfect_main(void)
     cout << "*************************" << endl;
     cout << "* Muehle                *" << endl;
     cout << "*************************" << endl
-        << endl;
+         << endl;
 
     ai->setDatabasePath(databaseDirectory);
 
@@ -59,12 +59,12 @@ int perfect_main(void)
 
         // test database
         cout << endl
-            << "Begin test starting from layer: ";
+             << "Begin test starting from layer: ";
 
         startTestFromLayer;
 
         cout << endl
-            << "End test at layer: ";
+             << "End test at layer: ";
 
         endTestAtLayer;
 
@@ -108,8 +108,7 @@ int perfect_main(void)
             mill->printBoard();
 
             // Human
-            if ((mill->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) ||
-                (mill->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)) {
+            if ((mill->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (mill->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)) {
 
                 do {
                     // Show text
@@ -144,8 +143,7 @@ int perfect_main(void)
                         // undo moves until a human player shall move
                         do {
                             mill->undoMove();
-                        } while (!((mill->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) ||
-                                   (mill->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
+                        } while (!((mill->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (mill->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
 
                         // reprint board
                         break;

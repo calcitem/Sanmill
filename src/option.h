@@ -21,8 +21,7 @@
 
 #include "config.h"
 
-class GameOptions
-{
+class GameOptions {
 public:
     void setSkillLevel(int val) noexcept
     {
@@ -117,7 +116,7 @@ public:
     bool isEndgameLearningEnabled() const noexcept
     {
 #ifdef ENDGAME_LEARNING_FORCE
-        return  true;
+        return true;
 #else
         return learnEndgame;
 #endif
@@ -281,7 +280,6 @@ public:
     }
 
 protected:
-
 private:
     int skillLevel { 1 };
     int moveTime { 1 };
@@ -298,7 +296,7 @@ private:
     int algorithm { 2 };
     bool perfectAiEnabled { false };
     bool IDSEnabled { false };
-    bool depthExtension {true};
+    bool depthExtension { true };
     bool openingBook { false };
     bool drawOnHumanExperience { true };
     bool considerMobility { true };

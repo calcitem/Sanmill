@@ -20,13 +20,13 @@
 
 #ifdef NET_FIGHT_SUPPORT
 
-#include <QtWidgets>
-#include <QtNetwork>
 #include <QtCore>
+#include <QtNetwork>
+#include <QtWidgets>
 
 #include "server.h"
 
-Server::Server(QWidget *parent, uint16_t port)
+Server::Server(QWidget* parent, uint16_t port)
     : QDialog(parent)
     , statusLabel(new QLabel)
 {
@@ -46,8 +46,7 @@ Server::Server(QWidget *parent, uint16_t port)
 
         // If the saved network configuration is not currently discovered use the system default
         QNetworkConfiguration config = manager.configurationFromIdentifier(id);
-        if ((config.state() & QNetworkConfiguration::Discovered) !=
-            QNetworkConfiguration::Discovered) {
+        if ((config.state() & QNetworkConfiguration::Discovered) != QNetworkConfiguration::Discovered) {
             config = manager.defaultConfiguration();
         }
 
@@ -70,7 +69,7 @@ Server::Server(QWidget *parent, uint16_t port)
     buttonLayout->addWidget(quitButton);
     buttonLayout->addStretch(1);
 
-    QVBoxLayout *mainLayout = nullptr;
+    QVBoxLayout* mainLayout = nullptr;
     if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
@@ -124,8 +123,8 @@ void Server::sessionOpened()
         if (!tcpServer->listen(QHostAddress::LocalHost, port)) {
 #ifndef QT_UI_TEST_MODE
             QMessageBox::critical(this, tr("Server"),
-                                  tr("Unable to start the server: %1.")
-                                  .arg(tcpServer->errorString()));
+                tr("Unable to start the server: %1.")
+                    .arg(tcpServer->errorString()));
 #endif // !QT_UI_TEST_MODE
             close();
             return;
@@ -134,8 +133,7 @@ void Server::sessionOpened()
 #ifdef MESSAGE_BOX_ENABLE
         QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
-    }
-    else {
+    } else {
 #ifdef MESSAGE_BOX_ENABLE
         QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
@@ -145,9 +143,8 @@ void Server::sessionOpened()
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
 
     // use the first non-localhost IPv4 address
-    for (const auto &ip : ipAddressesList) {
-        if (ip != QHostAddress::LocalHost &&
-            ip.toIPv4Address()) {
+    for (const auto& ip : ipAddressesList) {
+        if (ip != QHostAddress::LocalHost && ip.toIPv4Address()) {
             ipAddress = ip.toString();
             break;
         }
@@ -158,10 +155,11 @@ void Server::sessionOpened()
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
 
     statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2")
-                         .arg(ipAddress).arg(tcpServer->serverPort()));
+                             .arg(ipAddress)
+                             .arg(tcpServer->serverPort()));
 }
 
-void Server::setAction(const QString &a)
+void Server::setAction(const QString& a)
 {
     // TODO: WAR
     if (actions.size() > 256) {
@@ -182,13 +180,13 @@ void Server::sendAction()
     if (!actions.empty()) {
         action = actions.front();
     }
-    
+
     out << action;
 
-    QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
+    QTcpSocket* clientConnection = tcpServer->nextPendingConnection();
 
     connect(clientConnection, &QAbstractSocket::disconnected,
-            clientConnection, &QObject::deleteLater);
+        clientConnection, &QObject::deleteLater);
 
     clientConnection->write(block);
     clientConnection->disconnectFromHost();

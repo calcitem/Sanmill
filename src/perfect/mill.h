@@ -9,11 +9,11 @@
 #ifndef MILL_H
 #define MILL_H
 
-#include <iostream>
-#include <cstdio>
-#include <time.h>
-#include <stdlib.h>
 #include "millAI.h"
+#include <cstdio>
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 #include "../types.h"
 
@@ -22,46 +22,42 @@ using namespace std;
 #define MAX_NUM_MOVES 10000
 
 #define SAFE_DELETE(p)     \
-	{                      \
-		if (p)             \
-		{                  \
-			delete (p);    \
-			(p) = nullptr; \
-		}                  \
-	}
+    {                      \
+        if (p) {           \
+            delete (p);    \
+            (p) = nullptr; \
+        }                  \
+    }
 
 #define SAFE_DELETE_ARRAY(p) \
-	{                        \
-		if (p)               \
-		{                    \
-			delete[](p);     \
-			(p) = nullptr;   \
-		}                    \
-	}
+    {                        \
+        if (p) {             \
+            delete[](p);     \
+            (p) = nullptr;   \
+        }                    \
+    }
 
-
-class Mill
-{
+class Mill {
 private:
     // Variables
     unsigned int *moveLogFrom, *moveLogTo, movesDone; // array containing the history of moves done
-    MillAI *playerOneAI;							  // class-pointer to the AI of player one
-    MillAI *playerTwoAI;							  // class-pointer to the AI of player two
-    fieldStruct field;								  // current board
-    fieldStruct initialField;						  // undo of the last move is done by setting the initial board und performing all moves saved in history
-    int winner;										  // playerId of the player who has won the game. zero if game is still running.
-    int beginningPlayer;							  // playerId of the player who makes the first move
+    MillAI* playerOneAI; // class-pointer to the AI of player one
+    MillAI* playerTwoAI; // class-pointer to the AI of player two
+    fieldStruct field; // current board
+    fieldStruct initialField; // undo of the last move is done by setting the initial board und performing all moves saved in history
+    int winner; // playerId of the player who has won the game. zero if game is still running.
+    int beginningPlayer; // playerId of the player who makes the first move
 
     // Functions
     void exit();
     void setNextPlayer();
-    void calcPossibleMoves(Player *player);
+    void calcPossibleMoves(Player* player);
     void updateMillsAndWarnings(unsigned int newStone);
-    bool isNormalMovePossible(unsigned int from, unsigned int to, Player *player);
-    void setWarningAndMill(unsigned int stone, 
-                           unsigned int firstNeighbour, 
-                           unsigned int secondNeighbour, 
-                           bool isNewStone);
+    bool isNormalMovePossible(unsigned int from, unsigned int to, Player* player);
+    void setWarningAndMill(unsigned int stone,
+        unsigned int firstNeighbour,
+        unsigned int secondNeighbour,
+        bool isNewStone);
 
 public:
     // Constructor / destructor
@@ -71,25 +67,25 @@ public:
     // Functions
     void undoMove();
     void resetGame();
-    void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer);
-    void setAI(int player, MillAI *AI);
+    void beginNewGame(MillAI* firstPlayerAI, MillAI* secondPlayerAI, int currentPlayer);
+    void setAI(int player, MillAI* AI);
     bool doMove(unsigned int pushFrom, unsigned int pushTo);
-    void getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
-    bool setCurrentGameState(fieldStruct *curState);
-    bool compareWithField(fieldStruct *compareField);
-    bool comparePlayers(Player *playerA, Player *playerB);
+    void getComputersChoice(unsigned int* pushFrom, unsigned int* pushTo);
+    bool setCurrentGameState(fieldStruct* curState);
+    bool compareWithField(fieldStruct* compareField);
+    bool comparePlayers(Player* playerA, Player* playerB);
     void printBoard();
-    bool startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer, bool settingPhase);
+    bool startSettingPhase(MillAI* firstPlayerAI, MillAI* secondPlayerAI, int currentPlayer, bool settingPhase);
     bool putPiece(unsigned int pos, int player);
     bool settingPhaseHasFinished();
-    void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned int *pushTo);
-    void setUpCalcPossibleMoves(Player *player);
+    void getChoiceOfSpecialAI(MillAI* AI, unsigned int* pushFrom, unsigned int* pushTo);
+    void setUpCalcPossibleMoves(Player* player);
     void setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
-    void calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting);
+    void calcNumberOfRestingStones(int& numWhiteStonesResting, int& numBlackStonesResting);
 
     // getter
-    void getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *to);
-    bool getField(int *pField);
+    void getLog(unsigned int& numMovesDone, unsigned int* from, unsigned int* to);
+    bool getField(int* pField);
     bool isCurrentPlayerHuman();
     bool isOpponentPlayerHuman();
 

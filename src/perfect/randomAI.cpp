@@ -29,9 +29,9 @@ RandomAI::~RandomAI()
 
 //-----------------------------------------------------------------------------
 // play()
-// 
+//
 //-----------------------------------------------------------------------------
-void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
+void RandomAI::play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo)
 {
     // locals
     unsigned int from, to, direction;

@@ -25,24 +25,22 @@
 
 #include <vector>
 
-#include "types.h"
 #include "hashmap.h"
+#include "types.h"
 
 using namespace std;
 using namespace CTSL;
 
 static const int SAVE_ENDGAME_EVERY_N_GAMES = 256;
 
-enum class EndGameType : uint32_t
-{
+enum class EndGameType : uint32_t {
     none,
     whiteWin,
     blackWin,
     draw,
 };
 
-struct Endgame
-{
+struct Endgame {
     EndGameType type;
 };
 

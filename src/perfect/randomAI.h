@@ -9,21 +9,18 @@
 #ifndef RANDOM_AI_H
 #define RANDOM_AI_H
 
+#include "millAI.h"
 #include <stdlib.h>
 #include <time.h>
-#include "millAI.h"
 
-
-
-class RandomAI : public MillAI
-{
+class RandomAI : public MillAI {
 public:
     // Constructor / destructor
     RandomAI();
     ~RandomAI();
 
     // Functions
-    void play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo);
+    void play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
 };
 
 #endif

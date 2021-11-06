@@ -30,27 +30,26 @@
 #include <map>
 #include <vector>
 
-#include <QTime>
-#include <QPointF>
-#include <QTextStream>
-#include <QStringListModel>
 #include <QModelIndex>
-#include <QSettings> 
+#include <QPointF>
+#include <QSettings>
+#include <QStringListModel>
+#include <QTextStream>
+#include <QTime>
 
-#include "position.h"
-#include "gamescene.h"
-#include "pieceitem.h"
-#include "thread.h"
-#include "server.h"
 #include "client.h"
-#include "stopwatch.h"
+#include "gamescene.h"
 #include "mills.h"
+#include "pieceitem.h"
+#include "position.h"
+#include "server.h"
+#include "stopwatch.h"
 #include "test.h"
+#include "thread.h"
 
 using namespace std;
 
-enum class GameSound
-{
+enum class GameSound {
     none,
     blockMill,
     remove,
@@ -78,15 +77,13 @@ enum class GameSound
     winAndLossesAreObvious
 };
 
-class Game : public QObject
-{
+class Game : public QObject {
     Q_OBJECT
 
 public:
     explicit Game(
-        GameScene &scene,
-        QObject *parent = nullptr
-    );
+        GameScene& scene,
+        QObject* parent = nullptr);
     ~Game() override;
 
     //  Main window menu bar details
@@ -122,17 +119,17 @@ public:
         return durationTime;
     }
 
-    QStringListModel *getManualListModel()
+    QStringListModel* getManualListModel()
     {
         return &manualListModel;
     }
 
     void setAiDepthTime(int time1, int time2);
-    void getAiDepthTime(int &time1, int &time2);
+    void getAiDepthTime(int& time1, int& time2);
 
     void humanResign();
 
-    Position *getPosition() noexcept
+    Position* getPosition() noexcept
     {
         return &position;
     }
@@ -142,7 +139,7 @@ public:
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    inline const std::vector<std::string> *move_hostory() const
+    inline const std::vector<std::string>* move_hostory() const
     {
         return &moveHistory;
     }
@@ -153,15 +150,15 @@ public:
     void updateTime();
 
 #ifdef NET_FIGHT_SUPPORT
-    Server *server;
-    Client *client;
+    Server* server;
+    Client* client;
 
-    Server *getServer()
+    Server* getServer()
     {
         return server;
     }
 
-    Client *getClient()
+    Client* getClient()
     {
         return client;
     }
@@ -170,34 +167,34 @@ public:
 signals:
 
     // Signal of total disk number change
-    void nGamesPlayedChanged(const QString &score);
+    void nGamesPlayedChanged(const QString& score);
 
     // Player 1 (first hand) signal to change the number of winning sets
-    void score1Changed(const QString &score);
+    void score1Changed(const QString& score);
 
     // Signal for player 2 (backhand) to change the number of winning sets
-    void score2Changed(const QString &score);
+    void score2Changed(const QString& score);
 
     // The signal of the change of draw number
-    void scoreDrawChanged(const QString &score);
+    void scoreDrawChanged(const QString& score);
 
     // Signal of player 1 (first hand) winning rate change
-    void winningRate1Changed(const QString &score);
+    void winningRate1Changed(const QString& score);
 
     // Signal of player 2 (backhand) winning rate change
-    void winningRate2Changed(const QString &score);
+    void winningRate2Changed(const QString& score);
 
     // Signal of change of draw rate
-    void winningRateDrawChanged(const QString &score);
+    void winningRateDrawChanged(const QString& score);
 
     // Player 1 (first hand) time changed signal
-    void time1Changed(const QString &time);
+    void time1Changed(const QString& time);
 
     // Player 2 (backhand) time changed signal
-    void time2Changed(const QString &time);
+    void time2Changed(const QString& time);
 
     // A signal that tells the main window to update the status bar
-    void statusBarChanged(const QString &message);
+    void statusBarChanged(const QString& message);
 
 public slots:
 
@@ -220,8 +217,8 @@ public slots:
     void setEngine(Color color, bool enabled = true);
     void setEngineWhite(bool enabled);
     void setEngineBlack(bool enabled);
-    
-    // Fix Window Size 
+
+    // Fix Window Size
     void setFixWindowSize(bool arg) noexcept;
 
     // Is there a falling animation
@@ -298,7 +295,7 @@ public slots:
 
     bool isAIsTurn();
 
-    void threadsSetAi(Position *p)
+    void threadsSetAi(Position* p)
     {
         aiThread[WHITE]->setAi(p);
         aiThread[BLACK]->setAi(p);
@@ -380,14 +377,14 @@ public slots:
     bool resign();
 
     // Command line execution of score
-    bool command(const string &cmd, bool update = true);
+    bool command(const string& cmd, bool update = true);
 
     // Historical situation and situation change
     bool phaseChange(int row, bool forceUpdate = false);
 
     // Update the game display. Only after each step can the situation be refreshed
     bool updateScene();
-    bool updateScene(Position &p);
+    bool updateScene(Position& p);
 
 #ifdef NET_FIGHT_SUPPORT
     // The network configuration window is displayed
@@ -399,7 +396,7 @@ public slots:
 
     void saveScore();
 
-    Test *getTest()
+    Test* getTest()
     {
         return gameTest;
     }
@@ -408,30 +405,28 @@ protected:
     // bool eventFilter(QObject * watched, QEvent * event);
 
     // Timer
-    void timerEvent(QTimerEvent *event) override;
+    void timerEvent(QTimerEvent* event) override;
 
 private:
-
     // Data model of object
     Position position;
     Color sideToMove;
 
     // Testing
-    Test *gameTest;
+    Test* gameTest;
 
 private:
-
     // 2 AI threads
-    Thread *aiThread[COLOR_NB];
+    Thread* aiThread[COLOR_NB];
 
     // The scene class of game
-    GameScene &scene;
+    GameScene& scene;
 
     // All the pieces
-    vector<PieceItem *> pieceList;
+    vector<PieceItem*> pieceList;
 
     // Current pieces
-    PieceItem *currentPiece;
+    PieceItem* currentPiece;
 
     // Current browsing score line
     int currentRow;
@@ -444,7 +439,7 @@ private:
 
 public:
     const QString SETTINGS_FILE = "settings.ini";
-    QSettings *settings {nullptr};
+    QSettings* settings { nullptr };
 
     void loadSettings();
 
@@ -472,7 +467,6 @@ public:
     }
 
 private:
-
     // Fix Windows Size
     bool fixWindowSize;
 
@@ -506,10 +500,10 @@ private:
     time_t elapsedSeconds[COLOR_NB];
 
     // Is there a drop sound effect
-    inline static bool hasSound {true};
+    inline static bool hasSound { true };
 
     // Do you admit defeat when you lose
-    bool resignIfMostLose_ {false};
+    bool resignIfMostLose_ { false };
 
     // Do you want to exchange first before second
     bool isAutoChangeFirstMove { false };
@@ -541,7 +535,7 @@ private:
     // Hint
     string tips;
 
-    std::vector <std::string> moveHistory;
+    std::vector<std::string> moveHistory;
 };
 
 inline time_t Game::start_timeb() const

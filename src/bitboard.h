@@ -23,16 +23,15 @@
 
 #include "types.h"
 
-#define	SET_BIT(x, bit)     (x |= (1 << bit))
-#define	CLEAR_BIT(x, bit)   (x &= ~(1 << bit))
+#define SET_BIT(x, bit) (x |= (1 << bit))
+#define CLEAR_BIT(x, bit) (x &= ~(1 << bit))
 
-#define S2(a, b)        (square_bb(SQ_##a) | square_bb(SQ_##b))
-#define S3(a, b, c)     (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
-#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
-#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+#define S2(a, b) (square_bb(SQ_##a) | square_bb(SQ_##b))
+#define S3(a, b, c) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
+#define S4(a, b, c, d) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+#define S4(a, b, c, d) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
 
-namespace Bitboards
-{
+namespace Bitboards {
 
 void init();
 const std::string pretty(Bitboard b);
@@ -66,31 +65,30 @@ inline Bitboard square_bb(Square s) noexcept
     return SquareBB[s];
 }
 
-
 /// Overloads of bitwise operators between a Bitboard and a Square for testing
 /// whether a given bit is set in a bitboard, and for setting and clearing bits.
 
-inline Bitboard operator&(Bitboard  b, Square s) noexcept
+inline Bitboard operator&(Bitboard b, Square s) noexcept
 {
     return b & square_bb(s);
 }
 
-inline Bitboard operator|(Bitboard  b, Square s) noexcept
+inline Bitboard operator|(Bitboard b, Square s) noexcept
 {
     return b | square_bb(s);
 }
 
-inline Bitboard operator^(Bitboard  b, Square s) noexcept
+inline Bitboard operator^(Bitboard b, Square s) noexcept
 {
     return b ^ square_bb(s);
 }
 
-inline Bitboard &operator|=(Bitboard &b, Square s) noexcept
+inline Bitboard& operator|=(Bitboard& b, Square s) noexcept
 {
     return b |= square_bb(s);
 }
 
-inline Bitboard &operator^=(Bitboard &b, Square s) noexcept
+inline Bitboard& operator^=(Bitboard& b, Square s) noexcept
 {
     return b ^= square_bb(s);
 }
@@ -119,7 +117,6 @@ constexpr bool more_than_one(Bitboard b)
 {
     return b & (b - 1);
 }
-
 
 /// rank_bb() and file_bb() return a bitboard representing all the squares on
 /// the given file or rank.
@@ -150,9 +147,9 @@ inline int popcount(Bitboard b) noexcept
 {
 #ifdef DO_NOT_USE_POPCNT
 
-    union
-    {
-        Bitboard bb; uint16_t u[2];
+    union {
+        Bitboard bb;
+        uint16_t u[2];
     } v = { b };
 
     return PopCnt16[v.u[0]] + PopCnt16[v.u[1]];

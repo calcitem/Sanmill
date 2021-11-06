@@ -21,18 +21,18 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 
-#include "gamescene.h"
-#include "pieceitem.h"
 #include "boarditem.h"
+#include "gamescene.h"
 #include "graphicsconst.h"
+#include "pieceitem.h"
 #include "types.h"
 
-GameScene::GameScene(QObject *parent) :
-    QGraphicsScene(parent),
-    pos_p1(LINE_INTERVAL * 4, LINE_INTERVAL * 6),
-    pos_p1_g(LINE_INTERVAL *(-4), LINE_INTERVAL * 6),
-    pos_p2(LINE_INTERVAL *(-4), LINE_INTERVAL *(-6)),
-    pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL *(-6))
+GameScene::GameScene(QObject* parent)
+    : QGraphicsScene(parent)
+    , pos_p1(LINE_INTERVAL * 4, LINE_INTERVAL * 6)
+    , pos_p1_g(LINE_INTERVAL * (-4), LINE_INTERVAL * 6)
+    , pos_p2(LINE_INTERVAL * (-4), LINE_INTERVAL * (-6))
+    , pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL * (-6))
 {
     board = new BoardItem;
     board->setDiagonal(false);
@@ -44,20 +44,19 @@ GameScene::~GameScene()
     delete board;
 }
 
-void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
     // Block double click events
     mouseEvent->accept();
 }
 
-
-void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void GameScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
     // Screen mouse down events
     mouseEvent->accept();
 }
 
-void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
     // Only handle left click events
     if (mouseEvent->button() != Qt::LeftButton) {
@@ -66,7 +65,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 
     // If it's a board
-    const QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
+    const QGraphicsItem* item = itemAt(mouseEvent->scenePos(), QTransform());
 
     if (!item || item->type() == BoardItem::Type) {
         QPointF p = mouseEvent->scenePos();
@@ -88,7 +87,7 @@ QPointF GameScene::polar2pos(File file, Rank rank)
     return board->polar2pos(file, rank);
 }
 
-bool GameScene::pos2polar(QPointF pos, File &file, Rank &rank)
+bool GameScene::pos2polar(QPointF pos, File& file, Rank& rank)
 {
     return board->pos2polar(pos, file, rank);
 }

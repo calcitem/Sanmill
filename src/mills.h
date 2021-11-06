@@ -19,26 +19,26 @@
 #ifndef MILL_H_INCLUDED
 #define MILL_H_INCLUDED
 
-#include "types.h"
 #include "config.h"
+#include "position.h"
+#include "types.h"
 
-extern const char *loseReasonNoWayStr;
-extern const char *loseReasonTimeOverStr;
-extern const char *drawReasonThreefoldRepetitionStr;
-extern const char *drawReasonRule50Str;
-extern const char *drawReasonEndgameRule50Str;
-extern const char *loseReasonBoardIsFullStr;
-extern const char *drawReasonBoardIsFullStr;
-extern const char *loseReasonlessThanThreeStr;
-extern const char *loseReasonResignStr;
+extern const char* loseReasonNoWayStr;
+extern const char* loseReasonTimeOverStr;
+extern const char* drawReasonThreefoldRepetitionStr;
+extern const char* drawReasonRule50Str;
+extern const char* drawReasonEndgameRule50Str;
+extern const char* loseReasonBoardIsFullStr;
+extern const char* drawReasonBoardIsFullStr;
+extern const char* loseReasonlessThanThreeStr;
+extern const char* loseReasonResignStr;
 
-namespace Mills
-{
+namespace Mills {
 
 void adjacent_squares_init() noexcept;
 void mill_table_init();
 void move_priority_list_shuffle();
-Depth get_search_depth(const Position *pos);
+Depth get_search_depth(const Position* pos);
 
 }
 

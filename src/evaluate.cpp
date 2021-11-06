@@ -16,28 +16,26 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "bitboard.h"
 #include "evaluate.h"
-#include "thread.h"
+#include "bitboard.h"
 #include "option.h"
+#include "thread.h"
 
-namespace
-{
+namespace {
 
-class Evaluation
-{
+class Evaluation {
 public:
     Evaluation() = delete;
-    explicit Evaluation(Position &p) noexcept : pos(p)
+    explicit Evaluation(Position& p) noexcept
+        : pos(p)
     {
     }
-    Evaluation &operator=(const Evaluation &) = delete;
+    Evaluation& operator=(const Evaluation&) = delete;
     Value value();
 
 private:
-    Position &pos;
+    Position& pos;
 };
-
 
 // Evaluation::value() is the main function of the class. It computes the various
 // parts of the evaluation and returns the value of the position from the point
@@ -49,8 +47,7 @@ Value Evaluation::value()
 
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
-    int pieceToRemoveCount = (pos.side_to_move() == WHITE) ?
-        pos.piece_to_remove_count() : -pos.piece_to_remove_count();;
+    int pieceToRemoveCount = (pos.side_to_move() == WHITE) ? pos.piece_to_remove_count() : -pos.piece_to_remove_count();
 
     switch (pos.get_phase()) {
     case Phase::ready:
@@ -109,13 +106,10 @@ Value Evaluation::value()
             } else {
                 value = VALUE_DRAW;
             }
-        } else if (pos.get_action() == Action::select &&
-                   pos.is_all_surrounded(pos.side_to_move()) &&
-                   rule.isLoseButNotChangeSideWhenNoWay) {
+        } else if (pos.get_action() == Action::select && pos.is_all_surrounded(pos.side_to_move()) && rule.isLoseButNotChangeSideWhenNoWay) {
             const Value delta = pos.side_to_move() == WHITE ? -VALUE_MATE : VALUE_MATE;
             value += delta;
-        }
-        else if (pos.piece_on_board_count(WHITE) < rule.piecesAtLeastCount) {
+        } else if (pos.piece_on_board_count(WHITE) < rule.piecesAtLeastCount) {
             value -= VALUE_MATE;
         } else if (pos.piece_on_board_count(BLACK) < rule.piecesAtLeastCount) {
             value += VALUE_MATE;
@@ -158,11 +152,10 @@ Value Evaluation::value()
 
 } // namespace
 
-
 /// evaluate() is the evaluator for the outer world. It returns a static
 /// evaluation of the position from the point of view of the side to move.
 
-Value Eval::evaluate(Position &pos)
+Value Eval::evaluate(Position& pos)
 {
     return Evaluation(pos).value();
 }

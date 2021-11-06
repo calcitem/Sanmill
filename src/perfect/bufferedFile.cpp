@@ -12,7 +12,7 @@
 // bufferedFile()
 // Creates a cyclic array. The passed file is used as temporary data buffer for the cyclic array.
 //-----------------------------------------------------------------------------
-BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSizeInBytes, const char *fileName)
+BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSizeInBytes, const char* fileName)
 {
     // locals
     unsigned int curThread;
@@ -37,8 +37,8 @@ BufferedFile::BufferedFile(unsigned int numberOfThreads, unsigned int bufferSize
     InitializeCriticalSection(&csIO);
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hFile = CreateFileA(fileName, 
-                        GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hFile = CreateFileA(fileName,
+        GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file successfully
     if (hFile == INVALID_HANDLE_VALUE) {
@@ -75,7 +75,7 @@ BufferedFile::~BufferedFile()
 
 //-----------------------------------------------------------------------------
 // getFileSize()
-// 
+//
 //-----------------------------------------------------------------------------
 long long BufferedFile::getFileSize()
 {
@@ -88,15 +88,15 @@ long long BufferedFile::getFileSize()
 
 //-----------------------------------------------------------------------------
 // flushBuffers()
-// 
+//
 //-----------------------------------------------------------------------------
 bool BufferedFile::flushBuffers()
 {
     for (unsigned int threadNo = 0; threadNo < numThreads; threadNo++) {
-        writeDataToFile(hFile, 
-                        curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], 
-                        bytesInWriteBuffer[threadNo], 
-                        &writeBuffer[threadNo * bufferSize + 0]);
+        writeDataToFile(hFile,
+            curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo],
+            bytesInWriteBuffer[threadNo],
+            &writeBuffer[threadNo * bufferSize + 0]);
         bytesInWriteBuffer[threadNo] = 0;
     }
 
@@ -107,7 +107,7 @@ bool BufferedFile::flushBuffers()
 // writeDataToFile()
 // Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
-void BufferedFile::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
+void BufferedFile::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void* pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
@@ -119,18 +119,18 @@ void BufferedFile::writeDataToFile(HANDLE fd, long long offset, unsigned int siz
 
     while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
-        << "SetFilePointerEx  failed!";
+             << "SetFilePointerEx  failed!";
 
     while (restingBytes > 0) {
         if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
-            pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
+            pData = (void*)(((unsigned char*)pData) + dwBytesWritten);
             if (restingBytes > 0)
                 cout << endl
-                << "Still " << restingBytes << " to write!";
+                     << "Still " << restingBytes << " to write!";
         } else {
             cout << endl
-                << "WriteFile Failed!";
+                 << "WriteFile Failed!";
         }
     }
 
@@ -141,7 +141,7 @@ void BufferedFile::writeDataToFile(HANDLE fd, long long offset, unsigned int siz
 // readDataFromFile()
 // Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
-void BufferedFile::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
+void BufferedFile::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void* pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
@@ -153,18 +153,18 @@ void BufferedFile::readDataFromFile(HANDLE fd, long long offset, unsigned int si
 
     while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
-        << "SetFilePointerEx failed!";
+             << "SetFilePointerEx failed!";
 
     while (restingBytes > 0) {
         if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
-            pData = (void *)(((unsigned char *)pData) + dwBytesRead);
+            pData = (void*)(((unsigned char*)pData) + dwBytesRead);
             if (restingBytes > 0)
                 cout << endl
-                << "Still " << restingBytes << " to read!";
+                     << "Still " << restingBytes << " to read!";
         } else {
             cout << endl
-                << "ReadFile Failed!";
+                 << "ReadFile Failed!";
         }
     }
 
@@ -173,21 +173,21 @@ void BufferedFile::readDataFromFile(HANDLE fd, long long offset, unsigned int si
 
 //-----------------------------------------------------------------------------
 // writeBytes()
-// 
+//
 //-----------------------------------------------------------------------------
-bool BufferedFile::writeBytes(unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(unsigned int numBytes, unsigned char* pData)
 {
     return writeBytes(0, curWritingPointer[0], numBytes, pData);
 }
 
 //-----------------------------------------------------------------------------
 // writeBytes()
-// 
+//
 //-----------------------------------------------------------------------------
-bool BufferedFile::writeBytes(unsigned int threadNo, 
-                              long long positionInFile, 
-                              unsigned int numBytes, 
-                              unsigned char *pData)
+bool BufferedFile::writeBytes(unsigned int threadNo,
+    long long positionInFile,
+    unsigned int numBytes,
+    unsigned char* pData)
 {
     // parameters ok?
     if (threadNo >= numThreads)
@@ -199,13 +199,12 @@ bool BufferedFile::writeBytes(unsigned int threadNo,
     // locals
 
     // if buffer full or not sequential write operation write buffer to file
-    if (bytesInWriteBuffer[threadNo] && 
-        (positionInFile != curWritingPointer[threadNo] || bytesInWriteBuffer[threadNo] + numBytes >= bufferSize)) {
+    if (bytesInWriteBuffer[threadNo] && (positionInFile != curWritingPointer[threadNo] || bytesInWriteBuffer[threadNo] + numBytes >= bufferSize)) {
 
-        writeDataToFile(hFile, 
-                        curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo], 
-                        bytesInWriteBuffer[threadNo], 
-                        &writeBuffer[threadNo * bufferSize + 0]);
+        writeDataToFile(hFile,
+            curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo],
+            bytesInWriteBuffer[threadNo],
+            &writeBuffer[threadNo * bufferSize + 0]);
         bytesInWriteBuffer[threadNo] = 0;
     }
 
@@ -220,21 +219,21 @@ bool BufferedFile::writeBytes(unsigned int threadNo,
 
 //-----------------------------------------------------------------------------
 // takeBytes()
-// 
+//
 //-----------------------------------------------------------------------------
-bool BufferedFile::readBytes(unsigned int numBytes, unsigned char *pData)
+bool BufferedFile::readBytes(unsigned int numBytes, unsigned char* pData)
 {
     return readBytes(0, curReadingPointer[0], numBytes, pData);
 }
 
 //-----------------------------------------------------------------------------
 // takeBytes()
-// 
+//
 //-----------------------------------------------------------------------------
-bool BufferedFile::readBytes(unsigned int threadNo, 
-                             long long positionInFile, 
-                             unsigned int numBytes, 
-                             unsigned char *pData)
+bool BufferedFile::readBytes(unsigned int threadNo,
+    long long positionInFile,
+    unsigned int numBytes,
+    unsigned char* pData)
 {
     // parameters ok?
     if (threadNo >= numThreads)
@@ -245,12 +244,11 @@ bool BufferedFile::readBytes(unsigned int threadNo,
 
     // read from file into buffer if not enough data in buffer or if it is not an sequential reading operation?
     if (positionInFile != curReadingPointer[threadNo] || bytesInReadBuffer[threadNo] < numBytes) {
-        bytesInReadBuffer[threadNo] = 
-            ((positionInFile + bufferSize <= fileSize) ? bufferSize : (unsigned int)(fileSize - positionInFile));
+        bytesInReadBuffer[threadNo] = ((positionInFile + bufferSize <= fileSize) ? bufferSize : (unsigned int)(fileSize - positionInFile));
         if (bytesInReadBuffer[threadNo] < numBytes)
             return false;
-        readDataFromFile(hFile, positionInFile, bytesInReadBuffer[threadNo], 
-                         &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]]);
+        readDataFromFile(hFile, positionInFile, bytesInReadBuffer[threadNo],
+            &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]]);
     }
 
     memcpy(pData, &readBuffer[threadNo * bufferSize + bufferSize - bytesInReadBuffer[threadNo]], numBytes);
