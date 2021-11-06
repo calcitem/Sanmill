@@ -9,6 +9,7 @@
 #include "perfectAI.h"
 #include <cassert>
 
+// clang-format off
 unsigned int soTableTurnLeft[] = {
  2,      14,      23,
     5,   13,   20,
@@ -168,6 +169,7 @@ unsigned int soTableMirrorDiag2[] = {
      18,   10,    3,
   21,       9,       0
 };
+// clang-format on
 
 // define the four groups
 unsigned int squareIndexGroupA[] = { 3, 5, 20, 18 };
