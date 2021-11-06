@@ -114,12 +114,12 @@ public:
         durationTime = i;
     }
 
-    int getDurationTime()
+    int getDurationTime() noexcept
     {
         return durationTime;
     }
 
-    QStringListModel* getManualListModel()
+    QStringListModel* getManualListModel() noexcept
     {
         return &manualListModel;
     }
@@ -134,19 +134,19 @@ public:
         return &position;
     }
 
-    char color_to_char(Color color);
+    char color_to_char(Color color) noexcept;
     std::string char_to_string(char ch);
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    inline const std::vector<std::string>* move_hostory() const
+    inline const std::vector<std::string>* move_hostory() const noexcept
     {
         return &moveHistory;
     }
 
-    time_t get_elapsed_time(int us);
-    time_t start_timeb() const;
-    void set_start_time(int time);
+    time_t get_elapsed_time(int us) noexcept;
+    time_t start_timeb() const noexcept;
+    void set_start_time(int time) noexcept;
     void updateTime();
 
 #ifdef NET_FIGHT_SUPPORT
@@ -219,13 +219,13 @@ public slots:
     void setEngineBlack(bool enabled);
 
     // Fix Window Size
-    void setFixWindowSize(bool arg) noexcept;
+    void setFixWindowSize(bool arg);
 
     // Is there a falling animation
-    void setAnimation(bool arg = true) noexcept;
+    void setAnimation(bool arg = true);
 
     // Is there a drop sound effect
-    void setSound(bool arg = true) noexcept;
+    void setSound(bool arg = true);
 
     // Play the sound
     static void playSound(GameSound soundType, Color c);
@@ -293,7 +293,7 @@ public slots:
     // View rotated 90 degree counterclockwise
     void turnLeft();
 
-    bool isAIsTurn();
+    bool isAIsTurn() noexcept;
 
     void threadsSetAi(Position* p)
     {
@@ -301,7 +301,7 @@ public slots:
         aiThread[BLACK]->setAi(p);
     }
 
-    void resetAiPlayers()
+    void resetAiPlayers() noexcept
     {
         isAiPlayer[WHITE] = false;
         isAiPlayer[BLACK] = false;
@@ -364,7 +364,7 @@ public slots:
         }
     }
 
-    void deleteAiThreads()
+    void deleteAiThreads() noexcept
     {
         delete aiThread[WHITE];
         delete aiThread[BLACK];
@@ -396,7 +396,7 @@ public slots:
 
     void saveScore();
 
-    Test* getTest()
+    Test* getTest() noexcept
     {
         return gameTest;
     }
@@ -443,17 +443,17 @@ public:
 
     void loadSettings();
 
-    bool fixWindowSizeEnabled()
+    bool fixWindowSizeEnabled() noexcept
     {
         return fixWindowSize;
     }
 
-    bool soundEnabled()
+    bool soundEnabled() noexcept
     {
         return hasSound;
     }
 
-    bool animationEnabled()
+    bool animationEnabled() noexcept
     {
         return hasAnimation;
     }
@@ -538,12 +538,12 @@ private:
     std::vector<std::string> moveHistory;
 };
 
-inline time_t Game::start_timeb() const
+inline time_t Game::start_timeb() const noexcept
 {
     return startTime;
 }
 
-inline void Game::set_start_time(int time)
+inline void Game::set_start_time(int time) noexcept
 {
     startTime = time;
 }

@@ -67,11 +67,11 @@ public:
     public:
         unsigned int curThreadNo;
 
-        virtual void initializeElement() {};
+        virtual void initializeElement() noexcept {};
 
-        virtual void destroyElement() {};
+        virtual void destroyElement() noexcept {};
 
-        virtual void reduce() {};
+        virtual void reduce() noexcept {};
     };
 
     template <class varType>
@@ -105,7 +105,7 @@ public:
             return (void*)item;
         };
 
-        unsigned int getSizeOfArray()
+        unsigned int getSizeOfArray() noexcept
         {
             return sizeof(varType);
         };

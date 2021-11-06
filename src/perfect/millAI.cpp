@@ -58,7 +58,7 @@ void fieldStruct::printBoard()
 // GetCharFromStone()
 //
 //-----------------------------------------------------------------------------
-char fieldStruct::GetCharFromStone(int stone)
+char fieldStruct::GetCharFromStone(int stone) noexcept
 {
     switch (stone) {
     case fieldStruct::playerOne:
@@ -111,7 +111,7 @@ void fieldStruct::copyBoard(fieldStruct* destination)
 // copyPlayer()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void Player::copyPlayer(Player* destination)
+void Player::copyPlayer(Player* destination) noexcept
 {
     unsigned int i;
 
@@ -132,7 +132,7 @@ void Player::copyPlayer(Player* destination)
 // createBoard()
 // Creates, but doesn't initialize, the arrays of the of the passed board structure.
 //-----------------------------------------------------------------------------
-void fieldStruct::createBoard()
+void fieldStruct::createBoard() noexcept
 {
     // locals
     unsigned int i;
@@ -224,7 +224,7 @@ void fieldStruct::createBoard()
 // deleteBoard()
 // ...
 //-----------------------------------------------------------------------------
-void fieldStruct::deleteBoard()
+void fieldStruct::deleteBoard() noexcept
 {
     try {
         SAFE_DELETE(curPlayer);
@@ -242,7 +242,7 @@ inline void fieldStruct::setConnection(unsigned int index,
     int firstDirection,
     int secondDirection,
     int thirdDirection,
-    int fourthDirection)
+    int fourthDirection) noexcept
 {
     connectedSquare[index][0] = firstDirection;
     connectedSquare[index][1] = secondDirection;
@@ -258,7 +258,7 @@ inline void fieldStruct::setNeighbour(unsigned int index,
     unsigned int firstNeighbour0,
     unsigned int secondNeighbour0,
     unsigned int firstNeighbour1,
-    unsigned int secondNeighbour1)
+    unsigned int secondNeighbour1) noexcept
 {
     neighbour[index][0][0] = firstNeighbour0;
     neighbour[index][0][1] = secondNeighbour0;

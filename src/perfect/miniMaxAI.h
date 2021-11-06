@@ -70,27 +70,27 @@ protected:
     inline void normalMove(unsigned int from, unsigned int to, Backup* backup);
 
     // Virtual Functions
-    void prepareBestChoiceCalculation();
-    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities);
-    void deletePossibilities(unsigned int threadNo, void* pPossibilities);
-    void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities);
-    void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities);
-    void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue);
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities);
+    void prepareBestChoiceCalculation() noexcept;
+    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities) noexcept;
+    void deletePossibilities(unsigned int threadNo, void* pPossibilities) noexcept;
+    void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities) noexcept;
+    void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities) noexcept;
+    void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue) noexcept;
+    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept;
 
-    unsigned int getNumberOfLayers()
+    unsigned int getNumberOfLayers() noexcept
     {
         return 0;
     };
 
-    unsigned int getNumberOfKnotsInLayer(unsigned int layerNum)
+    unsigned int getNumberOfKnotsInLayer(unsigned int layerNum) noexcept
     {
         return 0;
     };
 
-    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) {};
+    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) noexcept {};
 
-    unsigned int getPartnerLayer(unsigned int layerNum)
+    unsigned int getPartnerLayer(unsigned int layerNum) noexcept
     {
         return 0;
     };
@@ -100,37 +100,37 @@ protected:
         return string("");
     };
 
-    void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) {};
+    void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) noexcept {};
 
-    bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
+    bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber) noexcept
     {
         return false;
     };
 
-    bool getOpponentLevel(unsigned int threadNo)
+    bool getOpponentLevel(unsigned int threadNo) noexcept
     {
         return false;
     };
 
-    unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber)
+    unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber) noexcept
     {
         return 0;
     };
 
-    unsigned int getLayerNumber(unsigned int threadNo)
+    unsigned int getLayerNumber(unsigned int threadNo) noexcept
     {
         return 0;
     };
 
-    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) {};
+    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) noexcept {};
 
-    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) {};
+    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) noexcept {};
 
-    void printBoard(unsigned int threadNo, unsigned char value) {};
+    void printBoard(unsigned int threadNo, unsigned char value) noexcept {};
 
-    void prepareDatabaseCalculation() {};
+    void prepareDatabaseCalculation() noexcept {};
 
-    void wrapUpDatabaseCalculation(bool calculationAborted) {};
+    void wrapUpDatabaseCalculation(bool calculationAborted) noexcept {};
 
 public:
     // Constructor / destructor

@@ -67,7 +67,7 @@ protected slots:
         mouseEvent->accept();
     }
 
-    void rowsInserted(const QModelIndex& parent, int start, int end) override
+    void rowsInserted(const QModelIndex& parent, int start, int end) noexcept override 
     {
         Q_UNUSED(parent)
         Q_UNUSED(start)

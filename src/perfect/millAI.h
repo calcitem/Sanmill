@@ -34,7 +34,7 @@ public:
     unsigned int posTo[MAX_NUM_POS_MOVES]; // target board position of a possible move
     unsigned int posFrom[MAX_NUM_POS_MOVES]; // source board position of a possible move
 
-    void copyPlayer(Player* destination);
+    void copyPlayer(Player* destination) noexcept;
 };
 
 class fieldStruct {
@@ -68,22 +68,22 @@ public:
     // useful functions
     void printBoard();
     void copyBoard(fieldStruct* destination);
-    void createBoard();
-    void deleteBoard();
+    void createBoard() noexcept;
+    void deleteBoard() noexcept;
 
 private:
     // helper functions
-    char GetCharFromStone(int stone);
+    char GetCharFromStone(int stone) noexcept;
     void setConnection(unsigned int index,
         int firstDirection,
         int secondDirection,
         int thirdDirection,
-        int fourthDirection);
+        int fourthDirection) noexcept;
     void setNeighbour(unsigned int index,
         unsigned int firstNeighbour0,
         unsigned int secondNeighbour0,
         unsigned int firstNeighbour1,
-        unsigned int secondNeighbour1);
+        unsigned int secondNeighbour1) noexcept;
 };
 
 #ifdef __clang__ // TODO
@@ -97,7 +97,7 @@ protected:
 
 public:
     // Constructor / destructor
-    MillAI()
+    MillAI() noexcept
     {
         dummyField.createBoard();
     };

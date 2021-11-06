@@ -78,7 +78,7 @@ public:
     string next_move();
     Depth get_depth();
 
-    int getTimeLimit() const
+    int getTimeLimit() const noexcept
     {
         return timeLimit;
     }
@@ -159,7 +159,7 @@ struct ThreadPool : public std::vector<Thread*> {
     void clear();
     void set(size_t);
 
-    MainThread* main() const
+    MainThread* main() const noexcept
     {
         return static_cast<MainThread*>(front());
     }

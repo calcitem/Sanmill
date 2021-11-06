@@ -78,26 +78,26 @@ public:
     // Accessing hash keys
     Key key() const noexcept;
     Key key_after(Move m) const;
-    void construct_key();
+    void construct_key() noexcept;
     Key revert_key(Square s);
     Key update_key(Square s);
     Key update_key_misc();
 
     // Other properties of the position
-    Color side_to_move() const;
-    int game_ply() const;
+    Color side_to_move() const noexcept;
+    int game_ply() const noexcept;
     Thread* this_thread() const;
     bool has_game_cycle() const;
     bool has_repeated(Sanmill::Stack<Position>& ss) const;
-    unsigned int rule50_count() const;
+    unsigned int rule50_count() const noexcept;
 
     /// Mill Game
 
     Piece* get_board() noexcept;
-    Square current_square() const;
-    enum Phase get_phase() const;
-    enum Action get_action() const;
-    const char* get_record() const;
+    Square current_square() const noexcept;
+    enum Phase get_phase() const noexcept;
+    enum Action get_action() const noexcept;
+    const char* get_record() const noexcept;
 
     bool reset();
     bool start();
@@ -135,12 +135,12 @@ public:
 
     static void print_board();
 
-    int piece_on_board_count(Color c) const;
+    int piece_on_board_count(Color c) const noexcept;
     int piece_in_hand_count(Color c) const;
 
-    int piece_to_remove_count() const;
+    int piece_to_remove_count() const noexcept;
 
-    int get_mobility_diff() const;
+    int get_mobility_diff() const noexcept;
     void updateMobility(MoveType mt, Square s);
     //template <typename Mt> void updateMobility(Square from, Square to);
     int calculate_mobility_diff();
@@ -203,7 +203,7 @@ public:
 
 extern std::ostream& operator<<(std::ostream& os, const Position& pos);
 
-inline Color Position::side_to_move() const
+inline Color Position::side_to_move() const noexcept
 {
     return sideToMove;
 }
@@ -240,17 +240,17 @@ inline Key Position::key() const noexcept
     return st.key;
 }
 
-inline void Position::construct_key()
+inline void Position::construct_key() noexcept
 {
     st.key = 0;
 }
 
-inline int Position::game_ply() const
+inline int Position::game_ply() const noexcept
 {
     return gamePly;
 }
 
-inline unsigned int Position::rule50_count() const
+inline unsigned int Position::rule50_count() const noexcept
 {
     return st.rule50;
 }
@@ -309,27 +309,27 @@ inline Piece* Position::get_board() noexcept
     return static_cast<Piece*>(board);
 }
 
-inline Square Position::current_square() const
+inline Square Position::current_square() const noexcept
 {
     return currentSquare;
 }
 
-inline enum Phase Position::get_phase() const
+inline enum Phase Position::get_phase() const noexcept
 {
     return phase;
 }
 
-inline enum Action Position::get_action() const
+inline enum Action Position::get_action() const noexcept
 {
     return action;
 }
 
-inline const char* Position::get_record() const
+inline const char* Position::get_record() const noexcept
 {
     return record;
 }
 
-inline int Position::piece_on_board_count(Color c) const
+inline int Position::piece_on_board_count(Color c) const noexcept
 {
     return pieceOnBoardCount[c];
 }
@@ -339,12 +339,12 @@ inline int Position::piece_in_hand_count(Color c) const
     return pieceInHandCount[c];
 }
 
-inline int Position::piece_to_remove_count() const
+inline int Position::piece_to_remove_count() const noexcept
 {
     return pieceToRemoveCount;
 }
 
-inline int Position::get_mobility_diff() const
+inline int Position::get_mobility_diff() const noexcept
 {
     return mobilityDiff;
 }

@@ -279,7 +279,7 @@ public:
     bool wasDatabaseCalculationCancelled();
 
     // Virtual Functions
-    virtual void prepareBestChoiceCalculation()
+    virtual void prepareBestChoiceCalculation() noexcept
     {
         while (true)
             ;
@@ -288,14 +288,14 @@ public:
     virtual unsigned int* getPossibilities(unsigned int threadNo,
         unsigned int* numPossibilities,
         bool* opponentsMove,
-        void** pPossibilities)
+        void** pPossibilities) noexcept
     {
         while (true)
             ;
         return 0;
     }; // returns a pointer to the possibility-IDs
 
-    virtual void deletePossibilities(unsigned int threadNo, void* pPossibilities)
+    virtual void deletePossibilities(unsigned int threadNo, void* pPossibilities) noexcept
     {
         while (true)
             ;
@@ -306,13 +306,13 @@ public:
         void* pPossibilities,
         TwoBit value,
         unsigned int* freqValuesSubMoves,
-        PlyInfoVarType plyInfo) {};
+        PlyInfoVarType plyInfo) noexcept {};
 
     virtual void move(unsigned int threadNo,
         unsigned int idPossibility,
         bool opponentsMove,
         void** pBackup,
-        void* pPossibilities)
+        void* pPossibilities) noexcept
     {
         while (true)
             ;
@@ -322,38 +322,38 @@ public:
         unsigned int idPossibility,
         bool opponentsMove,
         void* pBackup,
-        void* pPossibilities)
+        void* pPossibilities) noexcept
     {
         while (true)
             ;
     };
 
-    virtual bool shallRetroAnalysisBeUsed(unsigned int layerNum)
+    virtual bool shallRetroAnalysisBeUsed(unsigned int layerNum) noexcept
     {
         return false;
     };
 
-    virtual unsigned int getNumberOfLayers()
+    virtual unsigned int getNumberOfLayers() noexcept
     {
         while (true)
             ;
         return 0;
     };
 
-    virtual unsigned int getNumberOfKnotsInLayer(unsigned int layerNum)
+    virtual unsigned int getNumberOfKnotsInLayer(unsigned int layerNum) noexcept
     {
         while (true)
             ;
         return 0;
     };
 
-    virtual void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers)
+    virtual void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) noexcept
     {
         while (true)
             ;
     };
 
-    virtual unsigned int getPartnerLayer(unsigned int layerNum)
+    virtual unsigned int getPartnerLayer(unsigned int layerNum) noexcept
     {
         while (true)
             ;
@@ -367,26 +367,26 @@ public:
         return string("");
     };
 
-    virtual void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
+    virtual void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) noexcept
     {
         while (true)
             ;
     };
 
-    virtual bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
+    virtual bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber) noexcept
     {
         while (true)
             ;
         return false;
     };
 
-    virtual void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue)
+    virtual void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue) noexcept
     {
         while (true)
             ;
     }; // value of situation for the initial current player
 
-    virtual bool getOpponentLevel(unsigned int threadNo)
+    virtual bool getOpponentLevel(unsigned int threadNo) noexcept
     {
         while (true)
             ;
@@ -395,13 +395,13 @@ public:
 
     virtual unsigned int getLayerAndStateNumber(unsigned int threadNo,
         unsigned int& layerNum,
-        unsigned int& stateNumber)
+        unsigned int& stateNumber) noexcept
     {
         while (true)
             ;
         return 0;
     };
-    virtual unsigned int getLayerNumber(unsigned int threadNo)
+    virtual unsigned int getLayerNumber(unsigned int threadNo) noexcept
     {
         while (true)
             ;
@@ -410,37 +410,37 @@ public:
 
     virtual void getSymStateNumWithDoubles(unsigned int threadNo,
         unsigned int* numSymmetricStates,
-        unsigned int** symStateNumbers)
+        unsigned int** symStateNumbers) noexcept
     {
         while (true)
             ;
     };
 
-    virtual void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars)
+    virtual void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) noexcept
     {
         while (true)
             ;
     };
 
-    virtual void printBoard(unsigned int threadNo, unsigned char value)
+    virtual void printBoard(unsigned int threadNo, unsigned char value) noexcept
     {
         while (true)
             ;
     };
 
-    virtual void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities)
+    virtual void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept
     {
         while (true)
             ;
     };
 
-    virtual void prepareDatabaseCalculation()
+    virtual void prepareDatabaseCalculation() noexcept
     {
         while (true)
             ;
     };
 
-    virtual void wrapUpDatabaseCalculation(bool calculationAborted)
+    virtual void wrapUpDatabaseCalculation(bool calculationAborted) noexcept
     {
         while (true)
             ;
@@ -503,9 +503,9 @@ private:
         LONGLONG statesProcessed;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
 
-        AlphaBetaDefaultThreadVars() {};
+        AlphaBetaDefaultThreadVars() noexcept {};
 
-        AlphaBetaDefaultThreadVars(MiniMax* pMiniMax, AlphaBetaGlobalVars* alphaBetaVars, unsigned int layerNumber)
+        AlphaBetaDefaultThreadVars(MiniMax* pMiniMax, AlphaBetaGlobalVars* alphaBetaVars, unsigned int layerNumber) noexcept
         {
             this->statesProcessed = 0;
             this->layerNumber = layerNumber;
@@ -516,7 +516,7 @@ private:
             }
         };
 
-        void reduceDefault()
+        void reduceDefault() noexcept
         {
             pMiniMax->numStatesProcessed += this->statesProcessed;
             for (unsigned int curStateValue = 0; curStateValue < SKV_NUM_VALUES; curStateValue++) {
@@ -529,25 +529,25 @@ private:
         BufferedFile* bufferedFile;
         bool initAlreadyDone;
 
-        InitAlphaBetaVars() {};
+        InitAlphaBetaVars() noexcept {};
 
         InitAlphaBetaVars(MiniMax* pMiniMax,
             AlphaBetaGlobalVars* alphaBetaVars,
             unsigned int layerNumber,
             BufferedFile* initArray,
-            bool initAlreadyDone)
+            bool initAlreadyDone) noexcept
             : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
         };
 
-        void initializeElement(InitAlphaBetaVars& master)
+        void initializeElement(InitAlphaBetaVars& master) noexcept
         {
             *this = master;
         };
 
-        void reduce()
+        void reduce() noexcept
         {
             reduceDefault();
         };
@@ -558,7 +558,7 @@ private:
         unsigned int* freqValuesSubMovesBranchWon = nullptr; // ...
         unsigned int freqValuesSubMoves[4]; // ...
 
-        RunAlphaBetaVars() {};
+        RunAlphaBetaVars() noexcept {};
 
         RunAlphaBetaVars(MiniMax* pMiniMax,
             AlphaBetaGlobalVars* alphaBetaVars,
@@ -574,7 +574,7 @@ private:
             SAFE_DELETE_ARRAY(freqValuesSubMovesBranchWon);
         }
 
-        void reduce()
+        void reduce() noexcept
         {
             reduceDefault();
         };
@@ -621,9 +621,9 @@ private:
         LONGLONG statesProcessed;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
 
-        RetroAnalysisDefaultThreadVars() {};
+        RetroAnalysisDefaultThreadVars() noexcept {};
 
-        RetroAnalysisDefaultThreadVars(MiniMax* pMiniMax, retroAnalysisGlobalVars* retroVars, unsigned int layerNumber)
+        RetroAnalysisDefaultThreadVars(MiniMax* pMiniMax, retroAnalysisGlobalVars* retroVars, unsigned int layerNumber) noexcept
         {
             this->statesProcessed = 0;
             this->layerNumber = layerNumber;
@@ -634,7 +634,7 @@ private:
             }
         };
 
-        void reduceDefault()
+        void reduceDefault() noexcept
         {
             pMiniMax->numStatesProcessed += this->statesProcessed;
             for (unsigned int curStateValue = 0; curStateValue < SKV_NUM_VALUES; curStateValue++) {
@@ -647,25 +647,25 @@ private:
         BufferedFile* bufferedFile;
         bool initAlreadyDone;
 
-        InitRetroAnalysisVars() {};
+        InitRetroAnalysisVars() noexcept {};
 
         InitRetroAnalysisVars(MiniMax* pMiniMax,
             retroAnalysisGlobalVars* retroVars,
             unsigned int layerNumber,
             BufferedFile* initArray,
-            bool initAlreadyDone)
+            bool initAlreadyDone) noexcept
             : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
         };
 
-        void initializeElement(InitRetroAnalysisVars& master)
+        void initializeElement(InitRetroAnalysisVars& master) noexcept
         {
             *this = master;
         };
 
-        void reduce()
+        void reduce() noexcept
         {
             reduceDefault();
         };
@@ -674,19 +674,19 @@ private:
     struct AddNumSucceedersVars : public ThreadManager::ThreadVarsArrayItem, public RetroAnalysisDefaultThreadVars {
         RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
 
-        AddNumSucceedersVars() {};
+        AddNumSucceedersVars() noexcept {};
 
         AddNumSucceedersVars(MiniMax* pMiniMax,
             retroAnalysisGlobalVars* retroVars,
-            unsigned int layerNumber)
+            unsigned int layerNumber) noexcept
             : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber) {};
 
-        void initializeElement(AddNumSucceedersVars& master)
+        void initializeElement(AddNumSucceedersVars& master) noexcept
         {
             *this = master;
         };
 
-        void reduce()
+        void reduce() noexcept
         {
             reduceDefault();
         };
@@ -788,8 +788,8 @@ private:
         unsigned int& maxWonfreqValuesSubMoves,
         float& alpha,
         float& beta);
-    void alphaBetaCalcPlyInfo(Knot* knot);
-    void alphaBetaCalcKnotValue(Knot* knot);
+    void alphaBetaCalcPlyInfo(Knot* knot) noexcept;
+    void alphaBetaCalcKnotValue(Knot* knot) noexcept;
     void alphaBetaChooseBestMove(Knot* knot,
         RunAlphaBetaVars* rabVars,
         unsigned int tilLevel,
@@ -814,7 +814,7 @@ private:
         RetroAnalysisThreadVars& threadVars,
         unsigned int plyNumber,
         StateAdress* pState);
-    static bool retroAnalysisQueueStateComp(const RetroAnalysisQueueState& a, const RetroAnalysisQueueState& b)
+    static bool retroAnalysisQueueStateComp(const RetroAnalysisQueueState& a, const RetroAnalysisQueueState& b) noexcept
     {
         return a.stateNumber < b.stateNumber;
     };

@@ -182,17 +182,17 @@ protected:
     ThreadVars* threadVars;
 
     // database functions
-    unsigned int getNumberOfLayers();
-    unsigned int getNumberOfKnotsInLayer(unsigned int layerNum);
+    unsigned int getNumberOfLayers() noexcept;
+    unsigned int getNumberOfKnotsInLayer(unsigned int layerNum) noexcept;
     long long mOverN_Function(unsigned int m, unsigned int n);
     void applySymmetryOperationOnField(unsigned char symmetryOperationNumber, unsigned int* sourceField, unsigned int* destField);
     bool isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation, int* theField);
-    bool shallRetroAnalysisBeUsed(unsigned int layerNum);
-    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers);
-    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars);
-    bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber);
-    unsigned int getLayerNumber(unsigned int threadNo);
-    unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber);
+    bool shallRetroAnalysisBeUsed(unsigned int layerNum) noexcept;
+    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) noexcept;
+    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) noexcept;
+    bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber) noexcept;
+    unsigned int getLayerNumber(unsigned int threadNo) noexcept;
+    unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber) noexcept;
 
     // integrity test functions
     bool checkMoveAndSetSituation();
@@ -200,22 +200,22 @@ protected:
     bool checkGetPredThanGetPoss();
 
     // Virtual Functions
-    void prepareBestChoiceCalculation();
-    void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue);
-    void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel);
-    bool getOpponentLevel(unsigned int threadNo);
-    void deletePossibilities(unsigned int threadNo, void* pPossibilities);
-    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities);
-    void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities);
-    void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities);
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities);
-    void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities, unsigned char value, unsigned int* freqValuesSubMoves, PlyInfoVarType plyInfo);
-    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers);
-    void printBoard(unsigned int threadNo, unsigned char value);
+    void prepareBestChoiceCalculation() noexcept;
+    void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue) noexcept;
+    void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) noexcept;
+    bool getOpponentLevel(unsigned int threadNo) noexcept;
+    void deletePossibilities(unsigned int threadNo, void* pPossibilities) noexcept;
+    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities) noexcept;
+    void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities) noexcept;
+    void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities) noexcept;
+    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept;
+    void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities, unsigned char value, unsigned int* freqValuesSubMoves, PlyInfoVarType plyInfo) noexcept;
+    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) noexcept;
+    void printBoard(unsigned int threadNo, unsigned char value) noexcept;
     string getOutputInformation(unsigned int layerNum);
-    unsigned int getPartnerLayer(unsigned int layerNum);
-    void prepareDatabaseCalculation();
-    void wrapUpDatabaseCalculation(bool calculationAborted);
+    unsigned int getPartnerLayer(unsigned int layerNum) noexcept;
+    void prepareDatabaseCalculation() noexcept;
+    void wrapUpDatabaseCalculation(bool calculationAborted) noexcept;
 
 public:
     // Constructor / destructor

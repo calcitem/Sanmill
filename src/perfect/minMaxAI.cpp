@@ -106,7 +106,7 @@ void MiniMaxAI::setSearchDepth(unsigned int depth)
 // prepareBestChoiceCalculation()
 //
 //-----------------------------------------------------------------------------
-void MiniMaxAI::prepareBestChoiceCalculation()
+void MiniMaxAI::prepareBestChoiceCalculation() noexcept
 {
     // calculate current value
     currentValue = 0;
@@ -225,7 +225,7 @@ unsigned int* MiniMaxAI::getPossStoneRemove(unsigned int* numPossibilities, void
 // getPossibilities()
 //
 //-----------------------------------------------------------------------------
-unsigned int* MiniMaxAI::getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities)
+unsigned int* MiniMaxAI::getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities) noexcept
 {
     // set opponentsMove
     *opponentsMove = (field->curPlayer->id == ownId) ? false : true;
@@ -249,7 +249,7 @@ unsigned int* MiniMaxAI::getPossibilities(unsigned int threadNo, unsigned int* n
 // getValueOfSituation()
 //
 //-----------------------------------------------------------------------------
-void MiniMaxAI::getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue)
+void MiniMaxAI::getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue) noexcept
 {
     floatValue = currentValue;
     shortValue = 0;
@@ -259,7 +259,7 @@ void MiniMaxAI::getValueOfSituation(unsigned int threadNo, float& floatValue, Tw
 // deletePossibilities()
 //
 //-----------------------------------------------------------------------------
-void MiniMaxAI::deletePossibilities(unsigned int threadNo, void* pPossibilities)
+void MiniMaxAI::deletePossibilities(unsigned int threadNo, void* pPossibilities) noexcept
 {
 }
 
@@ -267,7 +267,7 @@ void MiniMaxAI::deletePossibilities(unsigned int threadNo, void* pPossibilities)
 // undo()
 //
 //-----------------------------------------------------------------------------
-void MiniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities)
+void MiniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities) noexcept
 {
     // locals
     Backup* oldState = (Backup*)pBackup;
@@ -539,7 +539,7 @@ inline void MiniMaxAI::removeStone(unsigned int from, Backup* backup)
 // move()
 //
 //-----------------------------------------------------------------------------
-void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities)
+void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities) noexcept
 {
     // locals
     Backup* oldState = &oldStates[curSearchDepth];
@@ -608,7 +608,7 @@ void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 // printMoveInformation()
 //
 //-----------------------------------------------------------------------------
-void MiniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities)
+void MiniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept
 {
     // locals
     Possibility* tmpPossibility = (Possibility*)pPossibilities;

@@ -583,7 +583,7 @@ void MiniMax::alphaBetaTryPossibilities(Knot* knot, RunAlphaBetaVars* rabVars, u
 // alphaBetaCalcKnotValue()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaCalcKnotValue(Knot* knot)
+void MiniMax::alphaBetaCalcKnotValue(Knot* knot) noexcept
 {
     // locals
     float maxValue = knot->branches[0].floatValue;
@@ -618,7 +618,7 @@ void MiniMax::alphaBetaCalcKnotValue(Knot* knot)
 // alphaBetaCalcPlyInfo()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaCalcPlyInfo(Knot* knot)
+void MiniMax::alphaBetaCalcPlyInfo(Knot* knot) noexcept
 {
     // locals
     unsigned int i;

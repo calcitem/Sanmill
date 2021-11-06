@@ -448,13 +448,13 @@ void Game::getAiDepthTime(int& time1, int& time2)
     time2 = aiThread[BLACK]->getTimeLimit();
 }
 
-void Game::setFixWindowSize(bool arg) noexcept
+void Game::setFixWindowSize(bool arg)
 {
     fixWindowSize = arg;
     settings->setValue("Options/FixWindowSize", arg);
 }
 
-void Game::setAnimation(bool arg) noexcept
+void Game::setAnimation(bool arg)
 {
     hasAnimation = arg;
 
@@ -467,7 +467,7 @@ void Game::setAnimation(bool arg) noexcept
     settings->setValue("Options/Animation", arg);
 }
 
-void Game::setSound(bool arg) noexcept
+void Game::setSound(bool arg)
 {
     hasSound = arg;
     settings->setValue("Options/Sound", arg);
@@ -888,7 +888,7 @@ void Game::timerEvent(QTimerEvent* event)
 #endif
 }
 
-bool Game::isAIsTurn()
+bool Game::isAIsTurn() noexcept
 {
     return isAiPlayer[sideToMove];
 }
@@ -1588,7 +1588,7 @@ out:
     file.close();
 }
 
-inline char Game::color_to_char(Color color)
+inline char Game::color_to_char(Color color) noexcept
 {
     return static_cast<char>('0' + color);
 }
@@ -1741,7 +1741,7 @@ void Game::setTips()
     }
 }
 
-time_t Game::get_elapsed_time(int us)
+time_t Game::get_elapsed_time(int us) noexcept
 {
     return elapsedSeconds[us];
 }

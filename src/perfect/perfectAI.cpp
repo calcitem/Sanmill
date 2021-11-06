@@ -767,7 +767,7 @@ void PerfectAI::play(fieldStruct* theField, unsigned int* pushFrom, unsigned int
 // prepareDatabaseCalculation()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::prepareDatabaseCalculation()
+void PerfectAI::prepareDatabaseCalculation() noexcept
 {
     // only prepare layers?
     unsigned int curThread;
@@ -787,7 +787,7 @@ void PerfectAI::prepareDatabaseCalculation()
 // wrapUpDatabaseCalculation()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::wrapUpDatabaseCalculation(bool calculationAborted)
+void PerfectAI::wrapUpDatabaseCalculation(bool calculationAborted) noexcept
 {
     // locals
     unsigned int curThread;
@@ -844,7 +844,7 @@ bool PerfectAI::setDatabasePath(const char* directory)
 // prepareBestChoiceCalculation()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::prepareBestChoiceCalculation()
+void PerfectAI::prepareBestChoiceCalculation() noexcept
 {
     for (unsigned int curThread = 0; curThread < getNumThreads(); curThread++) {
         threadVars[curThread].floatValue = 0.0f;
@@ -1014,7 +1014,7 @@ unsigned int* PerfectAI::ThreadVars::getPossStoneRemove(unsigned int* numPossibi
 // getPossibilities()
 //
 //-----------------------------------------------------------------------------
-unsigned int* PerfectAI::getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities)
+unsigned int* PerfectAI::getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities) noexcept
 {
     // locals
     bool aStoneCanBeRemovedFromCurPlayer = 0;
@@ -1057,7 +1057,7 @@ unsigned int* PerfectAI::getPossibilities(unsigned int threadNo, unsigned int* n
 // getValueOfSituation()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue)
+void PerfectAI::getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue) noexcept
 {
     ThreadVars* tv = &threadVars[threadNo];
     floatValue = tv->floatValue;
@@ -1068,7 +1068,7 @@ void PerfectAI::getValueOfSituation(unsigned int threadNo, float& floatValue, Tw
 // deletePossibilities()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::deletePossibilities(unsigned int threadNo, void* pPossibilities)
+void PerfectAI::deletePossibilities(unsigned int threadNo, void* pPossibilities) noexcept
 {
 }
 
@@ -1076,7 +1076,7 @@ void PerfectAI::deletePossibilities(unsigned int threadNo, void* pPossibilities)
 // undo()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities)
+void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities) noexcept
 {
     // locals
     ThreadVars* tv = &threadVars[threadNo];
@@ -1298,7 +1298,7 @@ inline void PerfectAI::ThreadVars::removeStone(unsigned int from, Backup* backup
 // move()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities)
+void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities) noexcept
 {
     // locals
     ThreadVars* tv = &threadVars[threadNo];
@@ -1375,7 +1375,7 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 // storeValueOfMove()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities, unsigned char value, unsigned int* freqValuesSubMoves, PlyInfoVarType plyInfo)
+void PerfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities, unsigned char value, unsigned int* freqValuesSubMoves, PlyInfoVarType plyInfo) noexcept
 {
     // locals
     ThreadVars* tv = &threadVars[threadNo];
@@ -1486,7 +1486,7 @@ void PerfectAI::getValueOfMoves(unsigned char* moveValue, unsigned int* freqValu
 // printMoveInformation()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities)
+void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities) noexcept
 {
     // locals
     ThreadVars* tv = &threadVars[threadNo];
@@ -1505,7 +1505,7 @@ void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossi
 // getNumberOfLayers()
 // called one time
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getNumberOfLayers()
+unsigned int PerfectAI::getNumberOfLayers() noexcept
 {
     return NUM_LAYERS;
 }
@@ -1514,7 +1514,7 @@ unsigned int PerfectAI::getNumberOfLayers()
 // shallRetroAnalysisBeUsed()
 // called one time for each layer time
 //-----------------------------------------------------------------------------
-bool PerfectAI::shallRetroAnalysisBeUsed(unsigned int layerNum)
+bool PerfectAI::shallRetroAnalysisBeUsed(unsigned int layerNum) noexcept
 {
     if (layerNum < 100)
         return true;
@@ -1526,7 +1526,7 @@ bool PerfectAI::shallRetroAnalysisBeUsed(unsigned int layerNum)
 // getNumberOfKnotsInLayer()
 // called one time
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getNumberOfKnotsInLayer(unsigned int layerNum)
+unsigned int PerfectAI::getNumberOfKnotsInLayer(unsigned int layerNum) noexcept
 {
     // locals
     unsigned int numberOfKnots = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1;
@@ -1591,7 +1591,7 @@ void PerfectAI::applySymmetryOperationOnField(unsigned char symmetryOperationNum
 // getLayerNumber()
 //
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getLayerNumber(unsigned int threadNo)
+unsigned int PerfectAI::getLayerNumber(unsigned int threadNo) noexcept
 {
     ThreadVars* tv = &threadVars[threadNo];
     unsigned int numBlackStones = tv->field->oppPlayer->numStones;
@@ -1604,7 +1604,7 @@ unsigned int PerfectAI::getLayerNumber(unsigned int threadNo)
 // getLayerAndStateNumber()
 //
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber)
+unsigned int PerfectAI::getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber) noexcept
 {
     ThreadVars* tv = &threadVars[threadNo];
     return tv->getLayerAndStateNumber(layerNum, stateNumber);
@@ -1668,7 +1668,7 @@ unsigned int PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int& layerNu
 // Current player has white stones, the opponent the black ones.
 //		 Sets up the game situation corresponding to the passed layer number and state.
 //-----------------------------------------------------------------------------
-bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
+bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber) noexcept
 {
     // parameters ok ?
     if (getNumberOfLayers() <= layerNum)
@@ -1905,7 +1905,7 @@ string PerfectAI::getOutputInformation(unsigned int layerNum)
 // printBoard()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::printBoard(unsigned int threadNo, unsigned char value)
+void PerfectAI::printBoard(unsigned int threadNo, unsigned char value) noexcept
 {
     ThreadVars* tv = &threadVars[threadNo];
     char wonStr[] = "WON";
@@ -1947,7 +1947,7 @@ void PerfectAI::getLayerAndStateNumber(unsigned int& layerNum, unsigned int& sta
 // setOpponentLevel()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
+void PerfectAI::setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) noexcept
 {
     ThreadVars* tv = &threadVars[threadNo];
     tv->ownId = isOpponentLevel ? tv->field->oppPlayer->id : tv->field->curPlayer->id;
@@ -1957,7 +1957,7 @@ void PerfectAI::setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
 // getOpponentLevel()
 //
 //-----------------------------------------------------------------------------
-bool PerfectAI::getOpponentLevel(unsigned int threadNo)
+bool PerfectAI::getOpponentLevel(unsigned int threadNo) noexcept
 {
     ThreadVars* tv = &threadVars[threadNo];
     return (tv->ownId == tv->field->oppPlayer->id);
@@ -1967,7 +1967,7 @@ bool PerfectAI::getOpponentLevel(unsigned int threadNo)
 // getPartnerLayer()
 //
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getPartnerLayer(unsigned int layerNum)
+unsigned int PerfectAI::getPartnerLayer(unsigned int layerNum) noexcept
 {
     if (layerNum < 100)
         for (int i = 0; i < 100; i++) {
@@ -1982,7 +1982,7 @@ unsigned int PerfectAI::getPartnerLayer(unsigned int layerNum)
 // getSuccLayers()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers)
+void PerfectAI::getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) noexcept
 {
     // locals
     unsigned int i;
@@ -2012,7 +2012,7 @@ void PerfectAI::getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccL
 // getSymStateNumWithDoubles()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers)
+void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) noexcept
 {
     // locals
     ThreadVars* tv = &threadVars[threadNo];
@@ -2213,7 +2213,7 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int numberOfMillsCurrentPl
 // getPredecessors()
 // CAUTION: States mustn't be returned twice.
 //-----------------------------------------------------------------------------
-void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars)
+void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) noexcept
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // the important variables, which much be updated for the getLayerAndStateNumber function are the following ones:
