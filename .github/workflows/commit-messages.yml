@@ -1,0 +1,18 @@
+name: Commit messages
+
+on: [pull_request]
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify commit messages follow best practices in CI
+        uses: platisd/bad-commit-message-blocker@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Optionally set the subject character limit (default `50`)
+          subject_limit: 50
+          # Optionally set the body character limit (default `72`)
+          body_limit: 72
+          # Optionally set the remote branch name to merge (default `master`)
+          remote_branch: master
