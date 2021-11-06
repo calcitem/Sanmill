@@ -193,14 +193,14 @@ PerfectAI::PerfectAI(const char* directory)
     unsigned int i, a, b, c, totalNumStones;
     unsigned int wCD, bCD, wAB, bAB;
     unsigned int stateAB, stateCD, symStateCD, layerNum;
-    unsigned int myField[fieldStruct::size];
+    unsigned int myField[fieldStruct::size] = { 0 };
     unsigned int symField[fieldStruct::size];
-    unsigned int* originalStateCD_tmp[10][10];
+    unsigned int* originalStateCD_tmp[10][10] = { { 0 } };
     DWORD dwBytesRead = 0;
     DWORD dwBytesWritten = 0;
     HANDLE hFilePreCalcVars;
     stringstream ssPreCalcVarsFilePath;
-    PreCalcedVarsFileHeader preCalcVarsHeader;
+    PreCalcedVarsFileHeader preCalcVarsHeader = { 0 };
 
     //
     threadVars = new ThreadVars[getNumThreads()];
@@ -1404,7 +1404,7 @@ void PerfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibili
 void PerfectAI::getValueOfMoves(unsigned char* moveValue, unsigned int* freqValuesSubMoves, PlyInfoVarType* plyInfo, unsigned int* moveQuality, unsigned char& knotValue, PlyInfoVarType& bestAmountOfPlies)
 {
     // locals
-    unsigned int moveQualities[fieldStruct::size * fieldStruct::size]; // 0 is bad, 1 is good
+    unsigned int moveQualities[fieldStruct::size * fieldStruct::size] = { 0 }; // 0 is bad, 1 is good
     unsigned int i, j;
 
     // set an invalid default value
@@ -1617,7 +1617,7 @@ unsigned int PerfectAI::getLayerAndStateNumber(unsigned int threadNo, unsigned i
 unsigned int PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int& layerNum, unsigned int& stateNumber)
 {
     // locals
-    unsigned int myField[fieldStruct::size];
+    unsigned int myField[fieldStruct::size] = { 0 };
     unsigned int symField[fieldStruct::size];
     unsigned int numBlackStones = field->oppPlayer->numStones;
     unsigned int numWhiteStones = field->curPlayer->numStones;
@@ -1682,7 +1682,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
     unsigned int stateNumberWithInAB;
     unsigned int stateNumberWithInCD;
     unsigned int stateAB, stateCD;
-    unsigned int myField[fieldStruct::size];
+    unsigned int myField[fieldStruct::size] = { 0 };
     unsigned int symField[fieldStruct::size];
     unsigned int numWhiteStones = layer[layerNum].numWhiteStones;
     unsigned int numBlackStones = layer[layerNum].numBlackStones;
@@ -2016,8 +2016,8 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* n
 {
     // locals
     ThreadVars* tv = &threadVars[threadNo];
-    int originalField[fieldStruct::size];
-    unsigned int originalPartOfMill[fieldStruct::size];
+    int originalField[fieldStruct::size] = { 0 };
+    unsigned int originalPartOfMill[fieldStruct::size] = { 0 };
     unsigned int i, symmetryOperation;
     unsigned int layerNum, stateNum;
 
@@ -2167,7 +2167,7 @@ bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation,
 void PerfectAI::ThreadVars::storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars)
 {
     // locals
-    int originalField[fieldStruct::size];
+    int originalField[fieldStruct::size] = { 0 };
     unsigned int i, symmetryOperation, symOpApplied;
     unsigned int predLayerNum, predStateNum;
     unsigned int originalAmountOfPred = *amountOfPred;
@@ -2650,7 +2650,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
     bool isOpponentLevel;
     void* pPossibilities;
     void* pBackup;
-    int symField[fieldStruct::size];
+    int symField[fieldStruct::size] = { 0 };
     RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
 
     // test if each predecessor from getPredecessors() leads to the original state using getPossibilities()

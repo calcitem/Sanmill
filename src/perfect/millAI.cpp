@@ -18,7 +18,7 @@ void fieldStruct::printBoard()
 {
     // locals
     unsigned int index;
-    char c[fieldStruct::size];
+    char c[fieldStruct::size] = { 0 };
 
     for (index = 0; index < fieldStruct::size; index++)
         c[index] = GetCharFromStone(this->board[index]);
